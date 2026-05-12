@@ -1,0 +1,10 @@
+{
+  "name": "field-theory",
+  "version": "0.2.0",
+  "description": "Interactive essay on voltage and energy flow",
+  "private": true,
+  "scripts": {
+    "dev": "npx http-server -p 8080 -c-1 .",
+    "start": "npx http-server -p 8080 -c-1 ."
+  }
+}
