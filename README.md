@@ -95,8 +95,7 @@ field-theory/
 │   │   ├── sources.ts         SOURCES registry — the citation catalog
 │   │   └── useAnimationFrame.ts
 │   └── styles/main.css        Design tokens + components
-├── pages/                 [vanilla originals, kept as reference]
-└── assets/                [vanilla originals, kept as reference]
+└── package.json
 ```
 
 ## How to add a new lab
