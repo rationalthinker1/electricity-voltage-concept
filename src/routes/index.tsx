@@ -1,17 +1,16 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
 
-import { CHAPTER_META, MANIFEST, type ChapterId } from '@/labs/data/manifest';
+import { CHAPTERS } from '@/textbook/data/chapters';
 
 export const Route = createFileRoute('/')({
-  component: TableOfContents,
+  component: Home,
 });
 
-function TableOfContents() {
-  const chapters: ChapterId[] = ['ch1', 'ch2', 'ch3', 'ch4'];
+function Home() {
   return (
     <>
       <section className="book-hero">
-        <div className="imprint">Field · Theory · An interactive textbook · v0.3</div>
+        <div className="imprint">Field · Theory · An interactive textbook · v0.4</div>
         <h1>
           The field is the <em>thing</em>.
         </h1>
@@ -21,53 +20,41 @@ function TableOfContents() {
           {' '}<strong>Electrons crawl. Energy sprints. And it doesn't travel inside the wire at all.</strong>
         </p>
         <p className="lede" style={{ marginTop: 22 }}>
-          This is a textbook in sixteen interactive labs. One equation per lab. Each equation has its own page —
-          sliders to play with the variables, real-time computed outputs, a visualization, a long-form deep dive,
-          and a sources list at the bottom so you can chase the physics back to its origin.
+          This is a textbook in six chapters. Each chapter is a long-form essay with embedded interactive demonstrations
+          you can play with as you read — small canvases, a few sliders, focused on answering one question. When you want
+          the full math, the equation labs in the {' '}
+          <Link to="/reference" style={{ color: 'var(--accent)', textDecoration: 'none', borderBottom: '1px dotted' }}>appendix</Link>
+          {' '} are one click away.
         </p>
       </section>
 
       <div className="toc">
-        {chapters.map(cid => {
-          const meta = CHAPTER_META[cid];
-          const labs = MANIFEST.filter(l => l.chapter === cid);
-          return (
-            <section className="chapter" id={cid} key={cid}>
-              <div className="chapter-head">
-                <div>
-                  <div className="chapter-num">{meta.eyebrow}</div>
-                  <h2 className="chapter-title">{meta.title}</h2>
-                </div>
-                <p className="chapter-blurb">{meta.blurb}</p>
-              </div>
-
-              <div className="lab-list">
-                {labs.map(lab => (
-                  <Link
-                    key={lab.slug}
-                    to="/labs/$slug"
-                    params={{ slug: lab.slug }}
-                    className="lab-row"
-                  >
-                    <span className="lab-id">Lab {lab.number}</span>
-                    <span
-                      className="lab-eq"
-                      dangerouslySetInnerHTML={{ __html: lab.formula }}
-                    />
-                    <span className="lab-name">{lab.title}</span>
-                    <span className="lab-blurb">{lab.blurb}</span>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          );
-        })}
+        <div className="chapter-grid">
+          {CHAPTERS.map(c => (
+            <Link
+              key={c.slug}
+              to="/textbook/$chapterSlug"
+              params={{ chapterSlug: c.slug }}
+              className="chapter-card"
+            >
+              <span className="chap-num">Chapter {c.number}</span>
+              <span className="chap-title">{c.title}</span>
+              <span className="chap-subtitle">{c.subtitle}</span>
+              <span className="chap-blurb">{c.blurb}</span>
+              <span className="chap-cta">Read chapter →</span>
+            </Link>
+          ))}
+        </div>
       </div>
 
       <footer>
         <div className="colophon">
-          <span>Field · Theory · 16 interactive labs · vanilla physics, real sources</span>
-          <span>v0.3</span>
+          <span>Field · Theory · 6 chapters · 16 equation labs · vanilla physics, real sources</span>
+          <span>
+            <Link to="/reference" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
+              Equation appendix →
+            </Link>
+          </span>
         </div>
       </footer>
     </>
