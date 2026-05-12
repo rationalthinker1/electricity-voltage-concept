@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Inductance — Field · Theory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav class="top">
+  <a class="mark" href="../index.html">Field <span>·</span> Theory</a>
+  <div class="links">
+    <a href="../index.html#ch1">I. Electric</a>
+    <a href="../index.html#ch2">II. Magnetic</a>
+    <a href="../index.html#ch3">III. Conduction</a>
+    <a href="../index.html#ch4" class="active">IV. Energy</a>
+  </div>
+  <div class="meta">Lab 4.2 / 4.4</div>
+</nav>
+
+<!-- ──────── HERO ──────── -->
+<section class="eq-hero">
+  <div class="eq-label">Chapter 4 &middot; Lab 4.2 &mdash; Inductance</div>
+  <h1>Coils <em>resist</em> change.</h1>
+  <div class="formula">V = &minus; L (dI/dt) &nbsp; &middot; &nbsp; L = &mu;<sub>0</sub> N&sup2; A / &ell; &nbsp; &middot; &nbsp; U = &frac12; L I&sup2;</div>
+  <p class="deck">
+    An inductor stores energy in its magnetic field. Try to change the current and the inductor produces a back-EMF opposing the change &mdash;
+    Faraday's law applied to a coil's own flux. <strong>L</strong> is the proportionality between rate of current change and induced voltage.
+  </p>
+</section>
+
+<!-- ──────── INTERACTIVE LAB ──────── -->
+<div class="lab">
+  <div class="lab-inner">
+    <div class="lab-header">
+      <span class="title">Interactive Lab &middot; Air-Core Solenoid</span>
+      <span class="id">/ inductance-42 / L = &mu;<sub>0</sub>N&sup2;A/&ell;</span>
+    </div>
+
+    <div class="lab-canvas-wrap">
+      <canvas id="lab" data-height="460"></canvas>
+      <div class="legend">
+        <div class="legend-item"><span class="swatch" style="background:var(--teal)"></span>B field (axial inside)</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--accent)"></span>Current direction</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--pink)"></span>Induced back-EMF</div>
+        <div class="legend-item" style="margin-left:auto;color:var(--accent)">↳ Energy lives inside the coil, in B</div>
+      </div>
+    </div>
+
+    <div class="lab-grid">
+      <!-- Controls -->
+      <div class="controls-panel">
+        <div class="panel-title">Inputs</div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label"><span class="sym">N</span>Turns</span>
+            <span class="slider-value" id="N-value">200</span>
+          </div>
+          <input id="N" type="range" min="1" max="1000" step="1" value="200">
+          <div class="slider-meta"><span>1</span><span>1000</span></div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label"><span class="sym">&ell;</span>Solenoid length</span>
+            <span class="slider-value" id="ell-value">10.0 cm</span>
+          </div>
+          <input id="ell" type="range" min="1" max="50" step="0.1" value="10">
+          <div class="slider-meta"><span>1 cm</span><span>50 cm</span></div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label"><span class="sym">A</span>Cross-section</span>
+            <span class="slider-value" id="A-value">5.0 cm²</span>
+          </div>
+          <input id="A" type="range" min="0.1" max="100" step="0.1" value="5">
+          <div class="slider-meta"><span>0.1 cm²</span><span>100 cm²</span></div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label"><span class="sym">dI/dt</span>Rate of current change</span>
+            <span class="slider-value" id="dIdt-value">+100 A/s</span>
+          </div>
+          <input id="dIdt" type="range" min="-1000" max="1000" step="1" value="100">
+          <div class="slider-meta"><span>&minus;1000 A/s</span><span>+1000 A/s</span></div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label"><span class="sym">I</span>Instantaneous current</span>
+            <span class="slider-value" id="I_inst-value">1.00 A</span>
+          </div>
+          <input id="I_inst" type="range" min="0" max="10" step="0.01" value="1">
+          <div class="slider-meta"><span>0 A</span><span>10 A</span></div>
+        </div>
+
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.1em;line-height:1.6">
+          L grows with N&sup2;. Doubling turns<br>
+          quadruples inductance.
+        </div>
+      </div>
+
+      <!-- Readouts -->
+      <div class="readout-panel">
+        <div class="panel-title">Outputs</div>
+
+        <div class="readout" style="background:var(--accent-soft);margin:8px -28px 8px;padding:14px 28px;border:none">
+          <span class="ro-label" style="color:var(--accent)"><span class="sym" style="color:var(--accent)">L</span>Self-inductance</span>
+          <span class="ro-value" id="ro-L" style="color:var(--accent);font-size:16px">— <span class="unit">H</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">V<sub>ind</sub></span>Back-EMF</span>
+          <span class="ro-value" id="ro-V">— <span class="unit">V</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">B</span>Field inside</span>
+          <span class="ro-value" id="ro-B">— <span class="unit">T</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">&Phi;</span>Flux per turn</span>
+          <span class="ro-value" id="ro-Phi">— <span class="unit">Wb</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">U</span>Stored energy</span>
+          <span class="ro-value" id="ro-U">— <span class="unit">J</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">&tau;</span>L/R time const. (R = 1Ω)</span>
+          <span class="ro-value" id="ro-tau">— <span class="unit">s</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────── EXPLANATION ──────── -->
+<section>
+  <div class="prose reveal">
+    <h3>The mirror of capacitance</h3>
+    <p>
+      An inductor is the dual of a capacitor. A capacitor stores energy in an <em>electric</em> field between separated charges; an inductor
+      stores energy in a <em>magnetic</em> field around moving charges. Where capacitance is the proportionality between charge and voltage,
+      inductance is the proportionality between current and magnetic flux linkage. The two devices are so symmetric that even their differential
+      equations swap:
+    </p>
+    <p class="math">I<sub>C</sub> = C dV/dt &nbsp; &emsp; V<sub>L</sub> = L dI/dt</p>
+    <p>
+      Energy: &frac12;CV&sup2; for the cap, &frac12;LI&sup2; for the inductor. Voltage across one mirrors current through the other. If you've
+      internalized the capacitor, you already half-understand the inductor.
+    </p>
+
+    <h3>Solenoid formula derivation</h3>
+    <p>
+      Take a long solenoid: <strong>N</strong> turns wound over a length <strong>&ell;</strong>, with cross-sectional area <strong>A</strong>,
+      carrying current <strong>I</strong>. Define the turn density <strong>n = N/&ell;</strong>. Apply Ampère's law on a rectangular loop
+      threaded through the coil &mdash; the field outside is negligible, the field inside is uniform and axial:
+    </p>
+    <p class="math">B = &mu;<sub>0</sub> n I = &mu;<sub>0</sub> (N/&ell;) I</p>
+    <p>
+      The flux through one turn is <strong>&Phi; = B&middot;A</strong>. Each of the <strong>N</strong> turns links that flux, so the total
+      flux linkage is <strong>N&Phi;</strong>:
+    </p>
+    <p class="math">N&Phi; = N &middot; &mu;<sub>0</sub> (N/&ell;) I &middot; A = &mu;<sub>0</sub> N&sup2; A I / &ell;</p>
+    <p>
+      Self-inductance is defined as the proportionality between current and flux linkage:
+    </p>
+    <p class="math">L = N&Phi; / I = &mu;<sub>0</sub> N&sup2; A / &ell;</p>
+    <p>
+      The <strong>N&sup2;</strong> is the magic. Doubling the turns doubles the field <em>and</em> doubles the linkages, so the inductance
+      quadruples. Halving the length, holding N fixed, doubles n &mdash; same effect. This is why ferrite-cored inductors and tight winding
+      patterns are everywhere in RF and power design: they buy you huge L cheaply.
+    </p>
+
+    <h3>Why current can't change instantly</h3>
+    <p>
+      Faraday says any change in flux through a loop induces an EMF that opposes the change (Lenz's law). For a self-inductor, the changing
+      flux is caused by changing current in its own coil. The induced voltage that fights this is:
+    </p>
+    <p class="math">V<sub>ind</sub> = &minus; L dI/dt</p>
+    <p>
+      Try to interrupt current instantly &mdash; <strong>dI/dt &rarr; &minus;&infin;</strong> &mdash; and the inductor produces whatever
+      voltage it takes to keep the current flowing for a moment longer. In practice, that voltage will arc across the open switch, ionize air,
+      or destroy a nearby transistor. This isn't a quirk; it's the basis of <em>spark plugs</em>, <em>flyback converters</em>, and
+      <em>ignition coils</em>. Every car still relies on it.
+    </p>
+
+    <p class="pullout">
+      An inductor is a flywheel for electricity. It hates the new current. It loves the current you already gave it.
+    </p>
+
+    <h3>Energy in the magnetic field</h3>
+    <p>
+      Build the current up from 0 to I. At intermediate current <strong>i</strong>, the rate is <strong>di/dt</strong> and the back-EMF
+      opposing your battery is <strong>L di/dt</strong>. Power going into the inductor is <strong>P = V&middot;i = (L di/dt)&middot;i</strong>.
+      Integrate over the ramp:
+    </p>
+    <p class="math">U = &int;<sub>0</sub><sup>I</sup> L i di = &frac12; L I&sup2;</p>
+    <p>
+      Where does it live? Inside the solenoid, where the B field is. The energy density is:
+    </p>
+    <p class="math">u<sub>B</sub> = B&sup2; / (2&mu;<sub>0</sub>)</p>
+    <p>
+      Multiply by the interior volume <strong>A&ell;</strong>, plug in B = &mu;<sub>0</sub>nI, and out pops &frac12;LI&sup2; again &mdash;
+      the same energy, written two different ways. As with the capacitor: <em>the windings don't store the energy. The field inside them does.</em>
+    </p>
+
+    <h3>The capacitor / inductor table</h3>
+    <p>
+      Side by side, every formula reflects across the diagonal:
+    </p>
+    <p class="math">
+      Capacitor: V = Q/C, &nbsp; I = C dV/dt, &nbsp; U = &frac12;CV&sup2; <br>
+      Inductor: &nbsp; I = &Phi;/L, &nbsp; V = L dI/dt, &nbsp; U = &frac12;LI&sup2;
+    </p>
+    <p>
+      Couple one of each across the same wires and you get an LC oscillator: energy sloshes between the cap's E field and the inductor's B
+      field at angular frequency <strong>&omega; = 1/&radic;(LC)</strong>. That's the heart of every radio.
+    </p>
+
+    <h4>RL time constant</h4>
+    <p>
+      Hook a series RL across a battery <strong>V</strong>. Current doesn't jump &mdash; it climbs:
+    </p>
+    <p class="math">I(t) = (V/R) &middot; (1 &minus; e<sup>&minus;t R/L</sup>)</p>
+    <p>
+      The time constant is <strong>&tau; = L/R</strong>. The lab's last readout shows what &tau; would be if you wired this inductor
+      through a 1&Omega; resistor. Big L means a sluggish current rise; the inductor &ldquo;remembers&rdquo; the previous current for
+      <strong>~&tau;</strong>. RC and RL are duals here too: charges build with &tau; = RC, currents build with &tau; = L/R.
+    </p>
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="page-nav reveal">
+    <a href="capacitance.html">
+      <div class="dir">← Lab 4.1</div>
+      <div class="title">Capacitance: C = &epsilon;A/d</div>
+    </a>
+    <a class="next" href="energy-density.html">
+      <div class="dir next">Lab 4.3 →</div>
+      <div class="title">Field Energy Density</div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="colophon">
+    <span>Field &middot; Theory &middot; Lab 4.2</span>
+    <span><a href="../index.html" style="color:var(--text-muted);text-decoration:none">↑ Back to essay</a></span>
+  </div>
+</footer>
+
+<script src="../assets/shared.js"></script>
+<script>
+/* ═════════════════════════════════════════════
+   INDUCTANCE LAB
+   ═════════════════════════════════════════════ */
+(function () {
+  const mu0 = Field.PHYS.mu_0;
+  const canvas = document.getElementById('lab');
+  const ctx = canvas.getContext('2d');
+
+  const state = {
+    N:      200,
+    ell_cm: 10,
+    A_cm2:  5,
+    dIdt:   100,    // A/s
+    I_inst: 1.0,    // A
+  };
+
+  let W = 0, H = 0;
+  Field.autoResize(canvas, ({ w, h }) => { W = w; H = h; });
+
+  const out = { L: 0, V: 0, B: 0, Phi: 0, U: 0, tau: 0 };
+
+  function compute() {
+    const ell_m = state.ell_cm * 1e-2;
+    const A_m2  = state.A_cm2  * 1e-4;
+    const L = mu0 * state.N * state.N * A_m2 / ell_m;
+    const V = L * Math.abs(state.dIdt);
+    const B = mu0 * (state.N / ell_m) * state.I_inst;
+    const Phi = B * A_m2;
+    const U = 0.5 * L * state.I_inst * state.I_inst;
+    const tau = L / 1.0;  // R = 1Ω
+    out.L = L; out.V = V; out.B = B; out.Phi = Phi; out.U = U; out.tau = tau;
+
+    document.getElementById('ro-L').innerHTML   = Field.eng(L, 3, 'H');
+    document.getElementById('ro-V').innerHTML   = Field.eng(V, 3, 'V');
+    document.getElementById('ro-B').innerHTML   = Field.eng(B, 3, 'T');
+    document.getElementById('ro-Phi').innerHTML = Field.eng(Phi, 3, 'Wb');
+    document.getElementById('ro-U').innerHTML   = Field.eng(U, 3, 'J');
+    document.getElementById('ro-tau').innerHTML = Field.eng(tau, 3, 's');
+  }
+
+  let phase = 0;
+
+  function draw() {
+    ctx.fillStyle = '#0d0d10';
+    ctx.fillRect(0, 0, W, H);
+
+    // Geometry
+    const margin = 110;
+    const xL = margin, xR = W - margin;
+    const cy = H * 0.55;
+    // Visual radius from cross-section
+    const r_vis = Math.max(38, Math.min(95, Math.sqrt(state.A_cm2 / 5) * 60));
+    const ellipseRatio = 0.32;
+    const er = r_vis * ellipseRatio;
+
+    const visibleTurns = 12;
+    phase += 0.015;
+    const flowSpeed = state.dIdt;          // pixels-equivalent flow rate
+    const flowOffset = (phase * flowSpeed * 0.04) % 1;
+
+    // Soft halo around the coil suggesting B field (intensity from B)
+    const halo = Math.max(0.06, Math.min(0.65, Math.log10(out.B * 1e3 + 1) * 0.13));
+    const haloGrd = ctx.createLinearGradient(0, cy - r_vis * 2.5, 0, cy + r_vis * 2.5);
+    haloGrd.addColorStop(0,   `rgba(108,197,194,0)`);
+    haloGrd.addColorStop(0.5, `rgba(108,197,194,${halo})`);
+    haloGrd.addColorStop(1,   `rgba(108,197,194,0)`);
+    ctx.fillStyle = haloGrd;
+    ctx.fillRect(xL - 30, cy - r_vis * 2.5, (xR - xL) + 60, r_vis * 5);
+
+    // Back arcs of every turn (behind axis)
+    for (let i = 0; i <= visibleTurns; i++) {
+      const t = i / visibleTurns;
+      const cx = xL + t * (xR - xL);
+      ctx.strokeStyle = 'rgba(255,107,42,0.35)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, er, r_vis, 0, Math.PI, 2 * Math.PI);
+      ctx.stroke();
+    }
+
+    // Big axial B-field arrows inside the coil
+    const nB = 4;
+    const Bmag = Math.log10(out.B * 1e3 + 1);
+    const arrLen = 70 + Math.min(40, Bmag * 18);
+    for (let i = 0; i < nB; i++) {
+      const t = (i + 0.5) / nB;
+      const cx = xL + t * (xR - xL) - arrLen / 2;
+      ctx.strokeStyle = 'rgba(108,197,194,0.9)';
+      ctx.fillStyle = 'rgba(108,197,194,0.95)';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + arrLen, cy);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx + arrLen, cy);
+      ctx.lineTo(cx + arrLen - 10, cy - 6);
+      ctx.lineTo(cx + arrLen - 10, cy + 6);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // Front arcs of every turn (in front of axis)
+    for (let i = 0; i <= visibleTurns; i++) {
+      const t = i / visibleTurns;
+      const cx = xL + t * (xR - xL);
+      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, er, r_vis, 0, 0, Math.PI);
+      ctx.stroke();
+      // current-direction dot on the front (animated along the helix)
+      const dotPhase = (flowOffset + t) % 1;
+      const ang = Math.PI * dotPhase;
+      const dx = cx + Math.cos(ang) * er;
+      const dy = cy + Math.sin(ang) * r_vis;
+      ctx.fillStyle = '#ff6b2a';
+      ctx.beginPath();
+      ctx.arc(dx, dy, 2.4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Lead lines exiting each end
+    ctx.strokeStyle = 'rgba(255,107,42,0.85)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(xL, cy + r_vis);
+    ctx.lineTo(xL - 40, cy + r_vis + 25);
+    ctx.moveTo(xR, cy + r_vis);
+    ctx.lineTo(xR + 40, cy + r_vis + 25);
+    ctx.stroke();
+
+    // Return loops (faint, outside)
+    ctx.strokeStyle = 'rgba(108,197,194,0.18)';
+    ctx.lineWidth = 1;
+    for (let s of [-1, 1]) {
+      ctx.beginPath();
+      ctx.ellipse(W / 2, cy, (xR - xL) / 2 + 50, r_vis * (1.8 + 0.3 * s), 0, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Direction-of-current label
+    ctx.fillStyle = '#ff6b2a';
+    ctx.font = '11px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(state.dIdt >= 0 ? 'I ↗ rising' : 'I ↘ falling', xR + 10, cy - r_vis - 8);
+
+    // Overlay readouts in corner
+    ctx.fillStyle = '#6cc5c2';
+    ctx.font = '11px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText(`B = ${Field.eng(out.B, 3, 'T')} inside`, 24, 28);
+    ctx.fillStyle = '#ff3b6e';
+    ctx.fillText(`V_back = ${Field.eng(out.V, 3, 'V')}`, 24, 48);
+    ctx.fillStyle = '#ff6b2a';
+    ctx.fillText(`L = ${Field.eng(out.L, 3, 'H')}`, 24, 68);
+    ctx.fillStyle = 'rgba(160,158,149,0.85)';
+    ctx.textAlign = 'right';
+    ctx.fillText(`N = ${state.N}   ℓ = ${state.ell_cm.toFixed(1)} cm   A = ${state.A_cm2.toFixed(1)} cm²`, W - 24, 28);
+    ctx.fillText(`dI/dt = ${state.dIdt} A/s   I = ${state.I_inst.toFixed(2)} A`, W - 24, 48);
+
+    // Many-turns indicator
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(160,158,149,0.6)';
+    ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.fillText(`(${state.N} turns; ${visibleTurns} shown)`, (xL + xR) / 2, cy + r_vis + 38);
+
+    requestAnimationFrame(draw);
+  }
+
+  Field.bindSlider('N',      { format: (v) => v.toFixed(0),                  onChange: (v) => { state.N      = v; compute(); } });
+  Field.bindSlider('ell',    { format: (v) => v.toFixed(1) + ' cm',          onChange: (v) => { state.ell_cm = v; compute(); } });
+  Field.bindSlider('A',      { format: (v) => v.toFixed(1) + ' cm²',         onChange: (v) => { state.A_cm2  = v; compute(); } });
+  Field.bindSlider('dIdt',   { format: (v) => (v >= 0 ? '+' : '') + v + ' A/s', onChange: (v) => { state.dIdt = v; compute(); } });
+  Field.bindSlider('I_inst', { format: (v) => v.toFixed(2) + ' A',           onChange: (v) => { state.I_inst = v; compute(); } });
+
+  compute();
+  draw();
+})();
+</script>
+</body>
+</html>

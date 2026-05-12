@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Field of a Point Charge — Field · Theory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav class="top">
+  <a class="mark" href="../index.html">Field <span>·</span> Theory</a>
+  <div class="links">
+    <a href="../index.html#ch1" class="active">I. Electric</a>
+    <a href="../index.html#ch2">II. Magnetic</a>
+    <a href="../index.html#ch3">III. Conduction</a>
+    <a href="../index.html#ch4">IV. Energy</a>
+  </div>
+  <div class="meta">Lab 1.2 / 4.4</div>
+</nav>
+
+<!-- ──────── HERO ──────── -->
+<section class="eq-hero">
+  <div class="eq-label">Chapter 1 &middot; Lab 1.2 &mdash; Field of a Point Charge</div>
+  <h1>Charge tells space to <em>push back</em>.</h1>
+  <div class="formula">E = k Q / r&sup2;</div>
+  <p class="deck">
+    Stop thinking about a force between two charges. Think instead about the <strong>field</strong> a single charge sets up everywhere in space.
+    The field is there whether or not anyone is testing it. Bring a unit positive charge into the field and the force on it is exactly <strong>E</strong>.
+  </p>
+</section>
+
+<!-- ──────── INTERACTIVE LAB ──────── -->
+<div class="lab">
+  <div class="lab-inner">
+    <div class="lab-header">
+      <span class="title">Interactive Lab &middot; Single-Charge Field Map</span>
+      <span class="id">/ efield-1.2 / E = kQ/r&sup2;</span>
+    </div>
+
+    <div class="lab-canvas-wrap">
+      <canvas id="lab" data-height="500"></canvas>
+      <div class="legend">
+        <div class="legend-item"><span class="swatch dot" style="background:var(--pink)"></span>Source charge Q</div>
+        <div class="legend-item"><span class="swatch dot" style="background:var(--accent)"></span>Probe (test charge)</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--accent)"></span>E field lines</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--teal);opacity:.5"></span>Equipotential rings</div>
+        <div class="legend-item" style="margin-left:auto;color:var(--accent)">↳ Drag source or probe</div>
+      </div>
+    </div>
+
+    <div class="lab-grid">
+      <!-- Controls -->
+      <div class="controls-panel">
+        <div class="panel-title">Inputs</div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label"><span class="sym">Q</span>Source charge</span>
+            <span class="slider-value" id="q-value">+10.0 nC</span>
+          </div>
+          <input id="q" type="range" min="-50" max="50" step="0.1" value="10">
+          <div class="slider-meta"><span>&minus;50 nC</span><span>+50 nC</span></div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label"><span class="sym">q<sub>t</sub></span>Test charge</span>
+            <span class="slider-value" id="q_test-value">1.0 nC</span>
+          </div>
+          <input id="q_test" type="range" min="0.1" max="5" step="0.1" value="1">
+          <div class="slider-meta"><span>0.1 nC</span><span>5 nC</span></div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label"><span class="sym">&epsilon;<sub>r</sub></span>Relative permittivity</span>
+            <span class="slider-value" id="er-value">1.0</span>
+          </div>
+          <input id="er" type="range" min="1" max="80" step="0.1" value="1">
+          <div class="slider-meta"><span>1 (vacuum)</span><span>80 (water)</span></div>
+        </div>
+
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.1em;line-height:1.6">
+          1 pixel ≈ 1 mm on canvas.<br>
+          Drag the pink source or the orange probe.
+        </div>
+      </div>
+
+      <!-- Readouts -->
+      <div class="readout-panel">
+        <div class="panel-title">Outputs</div>
+
+        <div class="readout" style="background:var(--accent-soft);margin:8px -28px;padding:14px 28px;border:none">
+          <span class="ro-label" style="color:var(--accent)"><span class="sym" style="color:var(--accent)">|E|</span>Field at probe</span>
+          <span class="ro-value" id="ro-E" style="color:var(--accent);font-size:16px">— <span class="unit">V/m</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">Ê</span>Direction</span>
+          <span class="ro-value" id="ro-Edir">—</span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">F</span>Force on test charge</span>
+          <span class="ro-value" id="ro-F">— <span class="unit">N</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">V</span>Potential at probe</span>
+          <span class="ro-value" id="ro-V">— <span class="unit">V</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">r</span>Distance from source</span>
+          <span class="ro-value" id="ro-r">— <span class="unit">m</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────── EXPLANATION ──────── -->
+<section>
+  <div class="prose reveal">
+    <h3>From force to field</h3>
+    <p>
+      Coulomb's law tells you what happens when two charges meet. That works fine for two charges. But what about ten? Or 10<sup>23</sup>?
+      Worse: how does charge 1 even &ldquo;know&rdquo; where charge 2 is in order to push on it? Action-at-a-distance was the philosophical wound
+      Newton famously refused to suture. Faraday's answer, a century later, was to invent a new object: the <strong>field</strong>.
+    </p>
+    <p>
+      Instead of saying &ldquo;Q&#8321; pulls Q&#8322; from afar,&rdquo; say: Q&#8321; sets up a field <strong>E</strong> at every point in space, and Q&#8322;
+      feels only the field <em>at its own location</em>. Action becomes local. Calculation gets cheap. And in dynamic situations &mdash; jiggling charges,
+      radiating antennas &mdash; the field turns out to have an independent existence: it stores energy, carries momentum, propagates at the
+      speed of light. The field is not bookkeeping; it's a thing.
+    </p>
+
+    <h3>The math</h3>
+    <p>
+      Define <strong>E</strong> as force per unit test charge:
+    </p>
+    <p class="math">E = F / q<sub>test</sub></p>
+    <p>
+      Plug in Coulomb's law for the force from a point charge <strong>Q</strong> at distance <strong>r</strong>, take the limit of vanishing test
+      charge (so the probe doesn't perturb the very field it's measuring), and you get
+    </p>
+    <p class="math">E = k Q / r&sup2;</p>
+    <p>
+      The units are <strong>newtons per coulomb</strong> &mdash; which, after a one-line algebra check, equal <strong>volts per meter</strong>. They are
+      literally the same unit, just measured differently: V/m is what you get if you integrate N/C over a length and divide by charge. The
+      duality between &ldquo;field strength&rdquo; and &ldquo;potential per length&rdquo; is built into the SI definitions.
+    </p>
+    <p>
+      <strong>E</strong> is a vector. For a positive source charge it points radially outward at every point in space; for a negative source
+      it points radially inward. Bring in a positive test charge and the force on it is along <strong>E</strong>. Bring in a negative test
+      charge and the force is anti-parallel to <strong>E</strong>. Same field, different responses depending on the sign of the probe.
+    </p>
+
+    <h3>Why a field at all?</h3>
+    <p>
+      Coulomb wrote down a static law: charges sitting still. But what happens when Q&#8321; suddenly moves? Does Q&#8322; feel the change
+      instantaneously? Einstein's answer was no &mdash; information cannot travel faster than light. The field formalism makes this answer
+      automatic. <strong>E</strong> at a point right now depends on the configuration of charges in that point's <em>past light cone</em>.
+      If a source jiggles, the news of the jiggle ripples outward through the field at speed c.
+    </p>
+    <p class="pullout">
+      A field assigns a force-per-unit-charge to every point in empty space. The &ldquo;empty&rdquo; is wrong; the space is full
+      of <em>possibilities</em> &mdash; a force that would appear the moment any test charge arrived.
+    </p>
+    <p>
+      The static <strong>E = kQ/r&sup2;</strong> you see in the lab is the steady-state limit of this much richer story. It's exact when nothing
+      is moving, and it's a very good approximation when things move slowly enough that retardation effects don't matter.
+    </p>
+
+    <h3>Superposition</h3>
+    <p>
+      Coulomb's law is linear in <strong>Q</strong>, which means the field formalism inherits a fantastic property: the total field from
+      many charges is the vector sum of the individual fields. There's no interaction term, no &ldquo;Q&#8321; interferes with Q&#8322;'s field.&rdquo;
+      Each charge contributes independently and the contributions add.
+    </p>
+    <p class="math">E<sub>total</sub>(r) = &Sigma;<sub>i</sub> k Q<sub>i</sub> (r &minus; r<sub>i</sub>) / |r &minus; r<sub>i</sub>|&sup3;</p>
+    <p>
+      The whole of classical electrostatics is the practical exercise of evaluating this sum &mdash; or its integral form for continuous
+      distributions &mdash; for various charge configurations. Two charges? You get a dipole field. A line of charges? Cylindrical
+      symmetry. A surface? A sheet field. Volume? A bulk field. Same equation in different costumes.
+    </p>
+
+    <h4>Field lines aren't strings</h4>
+    <p>
+      The streaming orange lines in the visualization are a visualization, not a physical entity. Faraday drew them this way because they
+      made the geometry obvious: density of lines indicates field strength, direction of lines indicates field direction. They begin on
+      positive charges and end on negative charges (or run off to infinity in idealized open systems). They never cross &mdash; if they did,
+      it would mean two distinct directions for <strong>E</strong> at one point, which is meaningless. Treat them as cartography. The real field
+      is a continuous vector at every point.
+    </p>
+
+    <h4>The role of &epsilon;<sub>r</sub></h4>
+    <p>
+      Embedded in a polarizable medium, the source charge's field is partially screened by the medium's induced dipoles. The result is
+      <strong>E = kQ/(&epsilon;<sub>r</sub> r&sup2;)</strong> &mdash; same shape, scaled down. Slide it up to 80 (water) and watch the field
+      collapse. The probe still feels something, but eighty times less than it would in vacuum.
+    </p>
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="page-nav reveal">
+    <a href="coulomb.html">
+      <div class="dir">← Lab 1.1</div>
+      <div class="title">Coulomb's Law</div>
+    </a>
+    <a class="next" href="gauss.html">
+      <div class="dir next">Lab 1.3 →</div>
+      <div class="title">Gauss's Law</div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="colophon">
+    <span>Field &middot; Theory &middot; Lab 1.2</span>
+    <span><a href="../index.html" style="color:var(--text-muted);text-decoration:none">↑ Back to essay</a></span>
+  </div>
+</footer>
+
+<script src="../assets/shared.js"></script>
+<script>
+/* ═════════════════════════════════════════════
+   FIELD OF A POINT CHARGE LAB
+   ═════════════════════════════════════════════ */
+(function () {
+  const k = Field.PHYS.k;
+  const canvas = document.getElementById('lab');
+  const ctx = canvas.getContext('2d');
+
+  // 1 px = 1 mm. Positions in normalized [0,1] coords.
+  const state = {
+    src:   { qNC: +10, x: 0.50, y: 0.50, color: '#ff3b6e', label: 'Q' },
+    probe: { x: 0.72, y: 0.42, color: '#ff6b2a', label: 'P' },
+    q_test: 1.0,    // nC
+    er: 1.0,
+  };
+
+  let W = 0, H = 0;
+  const PX_PER_M = 1000;  // 1 px = 1 mm
+  Field.autoResize(canvas, ({ w, h }) => { W = w; H = h; });
+
+  // ─── Drag ───
+  let dragging = null;
+  function nearest(mx, my) {
+    let best = null, bestD = 24;
+    for (const key of ['src', 'probe']) {
+      const p = state[key];
+      const d = Math.hypot(mx - p.x * W, my - p.y * H);
+      if (d < bestD) { bestD = d; best = key; }
+    }
+    return best;
+  }
+  function getMouse(e) {
+    const r = canvas.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return [t.clientX - r.left, t.clientY - r.top];
+  }
+  canvas.addEventListener('mousedown', (e) => {
+    const [mx, my] = getMouse(e);
+    dragging = nearest(mx, my);
+    if (dragging) canvas.style.cursor = 'grabbing';
+  });
+  canvas.addEventListener('mousemove', (e) => {
+    const [mx, my] = getMouse(e);
+    if (dragging) {
+      state[dragging].x = Math.max(0.04, Math.min(0.96, mx / W));
+      state[dragging].y = Math.max(0.08, Math.min(0.92, my / H));
+      compute();
+    } else {
+      canvas.style.cursor = nearest(mx, my) ? 'grab' : 'default';
+    }
+  });
+  window.addEventListener('mouseup', () => { dragging = null; canvas.style.cursor = 'default'; });
+  canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const [mx, my] = getMouse(e);
+    dragging = nearest(mx, my);
+  });
+  canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    if (!dragging) return;
+    const [mx, my] = getMouse(e);
+    state[dragging].x = Math.max(0.04, Math.min(0.96, mx / W));
+    state[dragging].y = Math.max(0.08, Math.min(0.92, my / H));
+    compute();
+  });
+  canvas.addEventListener('touchend', () => { dragging = null; });
+
+  // ─── Physics ───
+  function distance_m() {
+    const dx = (state.probe.x - state.src.x) * W;
+    const dy = (state.probe.y - state.src.y) * H;
+    return Math.hypot(dx, dy) / PX_PER_M;
+  }
+  function fieldAtProbe() {
+    const q = state.src.qNC * 1e-9;
+    const r = Math.max(distance_m(), 1e-4);
+    const Emag = (k * q) / (state.er * r * r);   // signed
+    // unit vector from source to probe
+    const dx = (state.probe.x - state.src.x) * W;
+    const dy = (state.probe.y - state.src.y) * H;
+    const d = Math.hypot(dx, dy) || 1;
+    const ux = dx / d, uy = dy / d;
+    // E points outward from + source, inward toward - source. Magnitude carries sign.
+    return { Ex: Emag * ux, Ey: Emag * uy, Emag, r, q };
+  }
+
+  // ─── Draw ───
+  let phase = 0;
+  function draw() {
+    ctx.fillStyle = '#0d0d10';
+    ctx.fillRect(0, 0, W, H);
+
+    const sx = state.src.x * W, sy = state.src.y * H;
+    const q  = state.src.qNC * 1e-9;
+    const sgn = q >= 0 ? +1 : -1;
+
+    // Equipotential heatmap (very subtle)
+    const cellSize = 8;
+    for (let py = 0; py < H; py += cellSize) {
+      for (let px = 0; px < W; px += cellSize) {
+        const dx = (px - sx), dy = (py - sy);
+        const r_m = Math.max(Math.hypot(dx, dy) / PX_PER_M, 0.001);
+        const v = (k * q) / (state.er * r_m);
+        const t = Math.tanh(v / 200);
+        if (Math.abs(t) < 0.02) continue;
+        ctx.fillStyle = t > 0
+          ? `rgba(255,59,110,${Math.abs(t) * 0.10})`
+          : `rgba(91,174,248,${Math.abs(t) * 0.10})`;
+        ctx.fillRect(px, py, cellSize, cellSize);
+      }
+    }
+
+    // Concentric distance rings at 25, 50, 100, 200 mm
+    const rings = [25, 50, 100, 200];
+    for (const mm of rings) {
+      ctx.setLineDash([3, 5]);
+      ctx.strokeStyle = 'rgba(108,197,194,0.18)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(sx, sy, mm, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(108,197,194,0.45)';
+      ctx.font = '9px JetBrains Mono';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText(mm + ' mm', sx + mm + 4, sy);
+    }
+
+    // Field lines streaming from the source
+    phase += 0.6;
+    const lines = 18;
+    for (let i = 0; i < lines; i++) {
+      const a = (i / lines) * Math.PI * 2;
+      const path = [];
+      // Trace radially outward (or inward for negative)
+      for (let s = 4; s < 600; s += 6) {
+        const x = sx + Math.cos(a) * s * sgn;
+        const y = sy + Math.sin(a) * s * sgn;
+        if (x < 0 || x > W || y < 0 || y > H) break;
+        path.push([x, y]);
+      }
+      // For negative source, draw lines coming IN — reverse so animation flows inward
+      if (sgn < 0) path.reverse();
+      if (path.length > 2) {
+        ctx.strokeStyle = 'rgba(255,107,42,0.16)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(path[0][0], path[0][1]);
+        for (const [x, y] of path) ctx.lineTo(x, y);
+        ctx.stroke();
+        const tIdx = Math.floor((phase + i * 13) % path.length);
+        if (path[tIdx]) {
+          ctx.beginPath();
+          ctx.arc(path[tIdx][0], path[tIdx][1], 1.6, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255,107,42,0.95)';
+          ctx.shadowColor = 'rgba(255,107,42,.6)';
+          ctx.shadowBlur = 5;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      }
+    }
+
+    // Probe arrow showing E direction & magnitude (log scaled)
+    const px = state.probe.x * W, py = state.probe.y * H;
+    const { Ex, Ey, Emag } = fieldAtProbe();
+    const absE = Math.abs(Emag);
+    if (absE > 0) {
+      const len = 22 + Math.min(140, Math.log10(absE + 1) * 22);
+      // direction: if source positive, point outward from source (same as (probe - src))
+      // if source negative, point inward (opposite)
+      const d = Math.hypot(Ex, Ey) || 1;
+      const ux = Ex / d, uy = Ey / d;
+      drawArrow(px, py, px + ux * len, py + uy * len, '#ff6b2a');
+    }
+
+    // Source charge
+    drawCharge(sx, sy, state.src.color, state.src.qNC >= 0 ? '+' : '−', 'Q', Math.abs(state.src.qNC));
+    // Probe
+    drawProbe(px, py, 'P');
+
+    requestAnimationFrame(draw);
+  }
+
+  function drawArrow(x1, y1, x2, y2, color) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    const ang = Math.atan2(y2 - y1, x2 - x1);
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - 9 * Math.cos(ang - 0.4), y2 - 9 * Math.sin(ang - 0.4));
+    ctx.lineTo(x2 - 9 * Math.cos(ang + 0.4), y2 - 9 * Math.sin(ang + 0.4));
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function drawCharge(cx, cy, color, sign, label, magnitude) {
+    const radius = 12 + Math.min(12, magnitude * 0.4);
+    const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 3);
+    grd.addColorStop(0, color);
+    grd.addColorStop(1, color + '00');
+    ctx.fillStyle = grd;
+    ctx.beginPath(); ctx.arc(cx, cy, radius * 3, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#0a0a0b';
+    ctx.font = `bold ${radius}px JetBrains Mono`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(sign, cx, cy);
+    ctx.fillStyle = color;
+    ctx.font = '10px JetBrains Mono';
+    ctx.fillText(label + ' = ' + magnitude.toFixed(1) + ' nC', cx, cy + radius + 14);
+  }
+
+  function drawProbe(cx, cy, label) {
+    ctx.strokeStyle = '#ff6b2a';
+    ctx.lineWidth = 2;
+    ctx.fillStyle = 'rgba(10,10,11,.92)';
+    ctx.beginPath(); ctx.arc(cx, cy, 10, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#ff6b2a';
+    ctx.font = 'bold 11px JetBrains Mono';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(label, cx, cy);
+  }
+
+  // ─── Readouts ───
+  const ro = {
+    E: document.getElementById('ro-E'),
+    Edir: document.getElementById('ro-Edir'),
+    F: document.getElementById('ro-F'),
+    V: document.getElementById('ro-V'),
+    r: document.getElementById('ro-r'),
+  };
+  function compute() {
+    const { Emag, r, q } = fieldAtProbe();
+    const absE = Math.abs(Emag);
+    ro.E.innerHTML = `${Field.pretty(absE)} <span class="unit">V/m</span>`;
+    const dir = q > 0 ? 'radially outward' : (q < 0 ? 'radially inward' : '—');
+    ro.Edir.textContent = dir;
+    ro.Edir.style.color = q > 0 ? 'var(--pink)' : (q < 0 ? 'var(--blue)' : 'var(--text-muted)');
+    const F = (state.q_test * 1e-9) * Emag;   // signed
+    ro.F.innerHTML = `${Field.pretty(Math.abs(F))} <span class="unit">N</span>`;
+    const V = (k * q) / (state.er * Math.max(r, 1e-4));
+    ro.V.innerHTML = `${Field.pretty(V)} <span class="unit">V</span>`;
+    ro.r.innerHTML = `${r.toFixed(3)} <span class="unit">m</span>`;
+  }
+
+  // ─── Slider bindings ───
+  Field.bindSlider('q', {
+    format: (v) => (v >= 0 ? '+' : '') + v.toFixed(1) + ' nC',
+    onChange: (v) => { state.src.qNC = v; compute(); },
+  });
+  Field.bindSlider('q_test', {
+    format: (v) => v.toFixed(1) + ' nC',
+    onChange: (v) => { state.q_test = v; compute(); },
+  });
+  Field.bindSlider('er', {
+    format: (v) => v.toFixed(1),
+    onChange: (v) => { state.er = v; compute(); },
+  });
+
+  // Kick off
+  compute();
+  draw();
+})();
+</script>
+</body>
+</html>

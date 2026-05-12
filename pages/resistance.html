@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Resistance — Field · Theory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav class="top">
+  <a class="mark" href="../index.html">Field <span>·</span> Theory</a>
+  <div class="links">
+    <a href="../index.html#ch1">I. Electric</a>
+    <a href="../index.html#ch2">II. Magnetic</a>
+    <a href="../index.html#ch3" class="active">III. Conduction</a>
+    <a href="../index.html#ch4">IV. Energy</a>
+  </div>
+  <div class="meta">Lab 3.2 / 4.4</div>
+</nav>
+
+<!-- ──────── HERO ──────── -->
+<section class="eq-hero">
+  <div class="eq-label">Chapter 3 &middot; Lab 3.2 &mdash; Resistance</div>
+  <h1>Length adds, <em>area divides</em>.</h1>
+  <div class="formula">R = &rho;L / A = L / (&sigma;A)</div>
+  <p class="deck">
+    The macroscopic Ohm's-law variable. Resistance is a property of the <em>wire</em>, not the field. Take a piece of any conductor and its
+    resistance is what its length and cross-section conspire to be, weighted by the material's resistivity &rho;. The microscopic
+    <strong>J = &sigma;E</strong> is what's happening underneath; this is the lump.
+  </p>
+</section>
+
+<!-- ──────── INTERACTIVE LAB ──────── -->
+<div class="lab">
+  <div class="lab-inner">
+    <div class="lab-header">
+      <span class="title">Interactive Lab &middot; Geometry &amp; Material</span>
+      <span class="id">/ resistance-3.2 / R = &rho;L/A</span>
+    </div>
+
+    <div class="lab-canvas-wrap">
+      <canvas id="lab" data-height="380"></canvas>
+      <div class="legend">
+        <div class="legend-item"><span class="swatch dot" style="background:var(--blue)"></span>Free electrons</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--accent)"></span>Wire body</div>
+        <div class="legend-item"><span class="swatch dot" style="background:var(--teal)"></span>Cross-section gauge</div>
+        <div class="legend-item" style="margin-left:auto;color:var(--accent)">↳ Wire shape responds live to L and A</div>
+      </div>
+    </div>
+
+    <div class="lab-grid">
+      <!-- Controls -->
+      <div class="controls-panel">
+        <div class="panel-title">Inputs</div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label"><span class="sym">m</span>Material</span>
+            <span class="slider-value" id="mat-tag">COPPER</span>
+          </div>
+          <select class="material-select" id="mat">
+            <option value="copper">Copper</option>
+            <option value="silver">Silver</option>
+            <option value="gold">Gold</option>
+            <option value="aluminum">Aluminum</option>
+            <option value="iron">Iron</option>
+            <option value="tungsten">Tungsten (filament)</option>
+            <option value="nichrome">Nichrome (heater)</option>
+          </select>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label"><span class="sym">L</span>Wire length</span>
+            <span class="slider-value" id="L-value">1.00 m</span>
+          </div>
+          <input id="L" type="range" min="0.01" max="100" step="0.01" value="1.0">
+          <div class="slider-meta"><span>0.01 m</span><span>100 m</span></div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label"><span class="sym">A</span>Cross-section</span>
+            <span class="slider-value" id="A-value">1.00 mm&sup2;</span>
+          </div>
+          <input id="A" type="range" min="0.01" max="100" step="0.01" value="1.0">
+          <div class="slider-meta"><span>0.01 mm&sup2;</span><span>100 mm&sup2;</span></div>
+        </div>
+
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.1em;line-height:1.6">
+          R is geometry &times; material.<br>
+          Length stretches series, area parallels.
+        </div>
+      </div>
+
+      <!-- Readouts -->
+      <div class="readout-panel">
+        <div class="panel-title">Outputs</div>
+
+        <div class="readout">
+          <span class="ro-label"><span class="sym">&rho;</span>Resistivity</span>
+          <span class="ro-value" id="ro-rho">— <span class="unit">&Omega;&middot;m</span></span>
+        </div>
+        <div class="readout" style="background:var(--accent-soft);margin:8px -28px;padding:14px 28px;border:none">
+          <span class="ro-label" style="color:var(--accent)"><span class="sym" style="color:var(--accent)">R</span>Resistance</span>
+          <span class="ro-value" id="ro-R" style="color:var(--accent);font-size:16px">— <span class="unit">&Omega;</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">G</span>Conductance</span>
+          <span class="ro-value" id="ro-G">— <span class="unit">S</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">V<sub>1A</sub></span>Voltage @ 1 A</span>
+          <span class="ro-value" id="ro-V_1A">— <span class="unit">V</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">P<sub>1A</sub></span>Power @ 1 A</span>
+          <span class="ro-value" id="ro-P_1A">— <span class="unit">W</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">&asymp;</span>For scale</span>
+          <span class="ro-value" id="ro-comp" style="font-size:11px">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────── EXPLANATION ──────── -->
+<section>
+  <div class="prose reveal">
+    <h3>From microscopic to macroscopic</h3>
+    <p>
+      A previous lab gave the local law: <strong>J = &sigma;E</strong>. At every point inside a conductor, the current density is the conductivity
+      times the field, full stop. That's a statement about <em>points</em>. To wire up a circuit, you need a statement about <em>wires</em>: how
+      much current flows when you connect a real, finite piece of metal to a real voltage source. That statement is <strong>V = IR</strong>, and
+      the lump constant <strong>R</strong> is what the field-level law looks like after you integrate it over the geometry of the wire.
+    </p>
+    <p>
+      Resistance is the rendezvous of material and shape. The material brings its <strong>&sigma;</strong> (or equivalently its resistivity
+      <strong>&rho; = 1/&sigma;</strong>). The shape brings its length and its cross-section. Multiply them together the way the integrals demand,
+      and you get a single number with units of ohms.
+    </p>
+    <p class="pullout">
+      Resistance is what conductivity looks like after geometry has had its say.
+    </p>
+
+    <h3>Derivation, in stages</h3>
+    <p>
+      Imagine a straight wire of length <strong>L</strong> and uniform cross-section <strong>A</strong> connected to a battery of voltage
+      <strong>V</strong>. Inside the wire, the field is roughly uniform along the axis (in steady state, surface charges redistribute to make this so):
+    </p>
+    <p class="math">E = V / L</p>
+    <p>
+      Microscopic Ohm's law converts that field into a current density:
+    </p>
+    <p class="math">J = &sigma; E = &sigma; V / L</p>
+    <p>
+      Total current is current density integrated over the cross-section. For uniform J, that's just <strong>I = JA</strong>:
+    </p>
+    <p class="math">I = &sigma; A V / L</p>
+    <p>
+      Rearrange to put <strong>V</strong> on one side:
+    </p>
+    <p class="math">V = (L / &sigma;A) &middot; I = R &middot; I</p>
+    <p>
+      The bracketed term is the resistance. Substitute <strong>&rho; = 1/&sigma;</strong> (the resistivity is the inverse of conductivity, units
+      of &Omega;&middot;m) and you have the textbook form:
+    </p>
+    <p class="math">R = &rho; L / A</p>
+    <p>
+      Three numbers. A property of the material times a property of the shape. The whole macroscopic theory of DC circuits unfolds from that one line.
+    </p>
+
+    <h3>Why this geometry</h3>
+    <p>
+      Look at the formula and ask two physical questions. Why does <strong>L</strong> live in the numerator? Because length is the path the field
+      drives the charges over. Double the length and you double the distance every coulomb has to travel under the same drag. For a fixed current,
+      that means twice the voltage to push them along &mdash; resistance has doubled.
+    </p>
+    <p>
+      Why does <strong>A</strong> live in the denominator? Because area is the number of parallel paths. Doubling the cross-section means twice as
+      many electrons can flow side-by-side, sharing the load. For the same current you only need half the current density, and so half the field,
+      and so half the voltage. Resistance has halved.
+    </p>
+    <p>
+      The asymmetry between length and area is the whole reason wires are wires &mdash; long, thin, and made of copper. Power transmission engineers
+      live on the area side of the equation. Heater designers live on the length side.
+    </p>
+
+    <h3>Series and parallel</h3>
+    <p>
+      The geometry argument scales up. Two resistors in <em>series</em> share the same current; the voltages add. So:
+    </p>
+    <p class="math">R<sub>series</sub> = R<sub>1</sub> + R<sub>2</sub></p>
+    <p>
+      That's just the formula for a single longer wire, written for two pieces in a row. A long wire <em>is</em> many short wires in series.
+    </p>
+    <p>
+      Two resistors in <em>parallel</em> share the same voltage; the currents add. The arithmetic comes out as:
+    </p>
+    <p class="math">1 / R<sub>parallel</sub> = 1 / R<sub>1</sub> + 1 / R<sub>2</sub></p>
+    <p>
+      That's the formula for a single fatter wire, written for two pieces side-by-side. A fat wire <em>is</em> many thin wires in parallel.
+      Series and parallel rules aren't separate from <strong>R = &rho;L/A</strong> &mdash; they <em>are</em> that formula, applied twice and rearranged.
+    </p>
+
+    <h3>Material is destiny</h3>
+    <p>
+      Try every entry in the material dropdown. The resistance numbers move by orders of magnitude. Copper, the workhorse, has
+      <strong>&rho; &asymp; 1.68&times;10<sup>&minus;8</sup> &Omega;&middot;m</strong>. Silver edges it out by a few percent.
+      <strong>Aluminum</strong> is about 60% as conductive but a third of the density &mdash; the reason long-distance power lines are aluminum-cored
+      rather than copper.
+    </p>
+    <p>
+      <strong>Tungsten</strong> is roughly six times worse than copper at room temperature, but the property that matters is that it stays solid
+      above 3000 K. That's what lets it become a filament. <strong>Nichrome</strong> is intentionally, deliberately bad &mdash; about seventy times
+      worse than copper &mdash; and that's <em>why</em> it ends up in toasters and space heaters. Resistance is the design variable, not the side effect.
+    </p>
+    <p>
+      Past the metals, the dynamic range opens up. Semiconductors range from about <strong>10<sup>&minus;3</sup></strong> to
+      <strong>10<sup>3</sup></strong> &Omega;&middot;m depending on doping. Glass and good ceramics hit <strong>10<sup>12</sup></strong> to
+      <strong>10<sup>16</sup></strong> &Omega;&middot;m. Superconductors below their critical temperature are <em>exactly</em> zero. The resistivity
+      span across condensed matter is roughly <strong>twenty-four orders of magnitude</strong>. No other material parameter varies so violently.
+    </p>
+
+    <h4>Temperature dependence (mentioned, not modelled)</h4>
+    <p>
+      The numbers in the lab above are room-temperature. Real <strong>&rho;</strong> is a function of temperature, and the sign of the dependence
+      flips between conductors and insulators. In metals, lattice ions vibrate harder as <em>T</em> rises, so electrons scatter more, &tau; falls,
+      &sigma; falls, &rho; rises. A glowing tungsten filament carries roughly ten times its cold resistance &mdash; which is also why incandescent
+      bulbs draw a brief inrush current and tend to burn out at the moment of switch-on. In semiconductors and most insulators the dependence runs
+      the other way: higher <em>T</em> liberates more carriers, &rho; <em>falls</em>. The sign of d&rho;/dT is one of the tidiest experimental
+      distinctions between a metal and an insulator.
+    </p>
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="page-nav reveal">
+    <a href="ohms-law.html">
+      <div class="dir">← Lab 3.1</div>
+      <div class="title">Ohm's Law: J = &sigma;E</div>
+    </a>
+    <a class="next" href="drift.html">
+      <div class="dir next">Lab 3.3 →</div>
+      <div class="title">Drift Velocity</div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="colophon">
+    <span>Field &middot; Theory &middot; Lab 3.2</span>
+    <span><a href="../index.html" style="color:var(--text-muted);text-decoration:none">↑ Back to essay</a></span>
+  </div>
+</footer>
+
+<script src="../assets/shared.js"></script>
+<script>
+/* ═════════════════════════════════════════════
+   RESISTANCE LAB  (R = ρL/A)
+   ═════════════════════════════════════════════ */
+(function () {
+  const canvas = document.getElementById('lab');
+  const ctx = canvas.getContext('2d');
+
+  const state = {
+    material: 'copper',
+    L: 1.0,     // m
+    A_mm2: 1.0, // mm²
+  };
+
+  let W = 0, H = 0;
+  Field.autoResize(canvas, ({ w, h }) => { W = w; H = h; layoutWire(); });
+
+  // Wire geometry. Length spans use a log mapping (5 decades of L → ~80–maxSpan px).
+  // Thickness uses log mapping over A (5 decades → 12–152 px).
+  const wireMarginX = 90;
+  let wireLeft = 0, wireRight = 0, wireCY = 0, wireThickness = 0;
+  function layoutWire() {
+    wireCY = H / 2;
+    const maxSpan = W - 2 * wireMarginX;
+    const Lclamp = Math.max(0.01, Math.min(100, state.L));
+    const logFrac = (Math.log10(Lclamp) - Math.log10(0.01)) / (Math.log10(100) - Math.log10(0.01));
+    const span = 80 + logFrac * (maxSpan - 80);
+    wireLeft = (W - span) / 2;
+    wireRight = wireLeft + span;
+    const Aclamp = Math.max(0.01, Math.min(100, state.A_mm2));
+    const tFrac = (Math.log10(Aclamp) - Math.log10(0.01)) / (Math.log10(100) - Math.log10(0.01));
+    wireThickness = 12 + tFrac * 140;
+    seedElectrons();
+  }
+
+  // Electron cloud
+  const N_ELEC = 140;
+  const electrons = [];
+  function seedElectrons() {
+    electrons.length = 0;
+    const top = wireCY - wireThickness / 2 + 3;
+    const bot = wireCY + wireThickness / 2 - 3;
+    const yMin = Math.min(top, bot - 2);
+    const yMax = Math.max(bot, top + 2);
+    for (let i = 0; i < N_ELEC; i++) {
+      electrons.push({
+        x: wireLeft + Math.random() * (wireRight - wireLeft),
+        y: yMin + Math.random() * (yMax - yMin),
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
+      });
+    }
+  }
+
+  const out = { rho: 0, R: 0, G: 0 };
+
+  function compute() {
+    const mat = Field.MATERIALS[state.material];
+    const A_m2 = state.A_mm2 * 1e-6;
+    const sigma = mat.sigma;
+    const rho = 1 / sigma;
+    const R = rho * state.L / A_m2;
+    const G = 1 / R;
+    out.rho = rho; out.R = R; out.G = G;
+
+    document.getElementById('ro-rho').innerHTML  = `${Field.pretty(rho)} <span class="unit">Ω·m</span>`;
+    document.getElementById('ro-R').innerHTML    = `${Field.pretty(R)} <span class="unit">Ω</span>`;
+    document.getElementById('ro-G').innerHTML    = `${Field.pretty(G)} <span class="unit">S</span>`;
+    document.getElementById('ro-V_1A').innerHTML = `${Field.pretty(R)} <span class="unit">V</span>`;
+    document.getElementById('ro-P_1A').innerHTML = `${Field.pretty(R)} <span class="unit">W</span>`;
+    document.getElementById('ro-comp').innerHTML = compareLine();
+
+    document.getElementById('mat-tag').textContent = mat.name.toUpperCase();
+  }
+
+  function compareLine() {
+    const A = state.A_mm2;
+    const L = state.L;
+    let aTxt;
+    if (A < 0.05)      aTxt = 'thinner than a human hair';
+    else if (A < 0.5)  aTxt = 'a thin guitar string';
+    else if (A < 2.5)  aTxt = 'household lamp cord';
+    else if (A < 10)   aTxt = 'heavy appliance cable';
+    else if (A < 50)   aTxt = 'a pencil cross-section';
+    else               aTxt = 'thicker than a tree branch';
+
+    let lTxt;
+    if (L < 0.05)       lTxt = 'a fingernail';
+    else if (L < 0.3)   lTxt = 'a postage stamp lined up';
+    else if (L < 2)     lTxt = 'an arm';
+    else if (L < 10)    lTxt = 'a room';
+    else if (L < 50)    lTxt = 'a house';
+    else                lTxt = 'a city block';
+
+    return `<span style="color:var(--text-dim)">A like</span> ${aTxt} <span style="color:var(--text-muted)">·</span> <span style="color:var(--text-dim)">L like</span> ${lTxt}`;
+  }
+
+  function draw() {
+    ctx.fillStyle = '#0d0d10';
+    ctx.fillRect(0, 0, W, H);
+
+    const top = wireCY - wireThickness / 2;
+    const bot = wireCY + wireThickness / 2;
+
+    // ── Length tick scale above wire ──
+    ctx.strokeStyle = 'rgba(160,158,149,0.35)';
+    ctx.lineWidth = 1;
+    const tickY = top - 32;
+    ctx.beginPath();
+    ctx.moveTo(wireLeft, tickY);
+    ctx.lineTo(wireRight, tickY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(wireLeft, tickY - 5); ctx.lineTo(wireLeft, tickY + 5);
+    ctx.moveTo(wireRight, tickY - 5); ctx.lineTo(wireRight, tickY + 5);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(160,158,149,0.85)';
+    ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    const lLabel = state.L < 0.1 ? (state.L * 1000).toFixed(1) + ' mm'
+                  : state.L < 1   ? (state.L * 100).toFixed(1) + ' cm'
+                  : state.L.toFixed(2) + ' m';
+    ctx.fillText(`L = ${lLabel}`, (wireLeft + wireRight) / 2, tickY - 8);
+
+    // ── Schematic resistor symbol above the length ruler ──
+    drawResistorSymbol(W / 2 - 60, tickY - 56, 120, 22);
+
+    // ── Wire body ──
+    const grd = ctx.createLinearGradient(0, top, 0, bot);
+    grd.addColorStop(0, 'rgba(255,107,42,0.08)');
+    grd.addColorStop(0.5, 'rgba(255,107,42,0.16)');
+    grd.addColorStop(1, 'rgba(255,107,42,0.08)');
+    ctx.fillStyle = grd;
+    const radius = Math.min(14, wireThickness * 0.45);
+    roundRect(ctx, wireLeft, top, wireRight - wireLeft, wireThickness, radius);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+    ctx.lineWidth = 1;
+    roundRect(ctx, wireLeft, top, wireRight - wireLeft, wireThickness, radius);
+    ctx.stroke();
+
+    // ── Electrons inside the wire ──
+    // Drift bias is purely visual — scales mildly with log(G) so high-conductance wires
+    // visibly carry their swarm faster. Real V is not part of this lab; this is only
+    // a hint of "ease of flow".
+    const driftBias = -Math.max(0.05, Math.min(1.8, Math.log10(out.G + 1) * 0.4 + 0.2));
+    ctx.fillStyle = '#5baef8';
+    for (const e of electrons) {
+      e.vx += (Math.random() - 0.5) * 1.2;
+      e.vy += (Math.random() - 0.5) * 1.2;
+      e.vx *= 0.85; e.vy *= 0.85;
+      e.vx += driftBias;
+      e.x += e.vx;
+      e.y += e.vy;
+      if (e.x < wireLeft + 3) e.x = wireRight - 3;
+      if (e.x > wireRight - 3) e.x = wireLeft + 3;
+      if (e.y < top + 3) { e.y = top + 3; e.vy = Math.abs(e.vy); }
+      if (e.y > bot - 3) { e.y = bot - 3; e.vy = -Math.abs(e.vy); }
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // ── Area gauge below wire ──
+    drawAreaGauge(W / 2, bot + 56);
+
+    // ── Material label and R overlay ──
+    ctx.fillStyle = '#ff6b2a';
+    ctx.font = '11px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText(Field.MATERIALS[state.material].name.toUpperCase(), 16, 12);
+    ctx.fillStyle = 'rgba(160,158,149,0.85)';
+    ctx.fillText(`ρ = ${Field.pretty(out.rho)} Ω·m`, 16, 28);
+
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#ff6b2a';
+    ctx.fillText(`R = ${Field.pretty(out.R)} Ω`, W - 16, 12);
+    ctx.fillStyle = 'rgba(160,158,149,0.85)';
+    ctx.fillText(`A = ${state.A_mm2.toFixed(2)} mm²`, W - 16, 28);
+
+    requestAnimationFrame(draw);
+  }
+
+  function drawResistorSymbol(x, y, w, h) {
+    ctx.strokeStyle = 'rgba(108,197,194,0.7)';
+    ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    ctx.moveTo(x, y + h / 2);
+    ctx.lineTo(x + w * 0.10, y + h / 2);
+    const peaks = [0.18, 0.30, 0.42, 0.54, 0.66, 0.78];
+    let up = true;
+    for (const p of peaks) {
+      ctx.lineTo(x + w * p, up ? y : y + h);
+      up = !up;
+    }
+    ctx.lineTo(x + w * 0.90, y + h / 2);
+    ctx.lineTo(x + w, y + h / 2);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(108,197,194,0.85)';
+    ctx.font = '9px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText('R', x + w / 2, y + h + 4);
+  }
+
+  function drawAreaGauge(cx, cy) {
+    const A = Math.max(0.01, Math.min(100, state.A_mm2));
+    const tFrac = (Math.log10(A) - Math.log10(0.01)) / (Math.log10(100) - Math.log10(0.01));
+    const r = 6 + tFrac * 28;
+    ctx.strokeStyle = 'rgba(108,197,194,0.85)';
+    ctx.fillStyle = 'rgba(108,197,194,0.12)';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = 'rgba(108,197,194,0.5)';
+    ctx.beginPath();
+    ctx.moveTo(cx - r - 4, cy); ctx.lineTo(cx + r + 4, cy);
+    ctx.moveTo(cx, cy - r - 4); ctx.lineTo(cx, cy + r + 4);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(108,197,194,0.95)';
+    ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`A = ${state.A_mm2.toFixed(2)} mm²`, cx + r + 12, cy);
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    r = Math.min(r, h / 2, w / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
+  // Bindings
+  document.getElementById('mat').addEventListener('change', (e) => {
+    state.material = e.target.value;
+    compute();
+  });
+  Field.bindSlider('L', {
+    format: (v) => v < 0.1 ? (v * 1000).toFixed(1) + ' mm' : v < 1 ? (v * 100).toFixed(1) + ' cm' : v.toFixed(2) + ' m',
+    onChange: (v) => { state.L = v; layoutWire(); compute(); },
+  });
+  Field.bindSlider('A', {
+    format: (v) => v.toFixed(2) + ' mm²',
+    onChange: (v) => { state.A_mm2 = v; layoutWire(); compute(); },
+  });
+
+  // Kick off
+  layoutWire();
+  compute();
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gauss's Law — Field · Theory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<nav class="top">
+  <a class="mark" href="../index.html">Field <span>·</span> Theory</a>
+  <div class="links">
+    <a href="../index.html#ch1" class="active">I. Electric</a>
+    <a href="../index.html#ch2">II. Magnetic</a>
+    <a href="../index.html#ch3">III. Conduction</a>
+    <a href="../index.html#ch4">IV. Energy</a>
+  </div>
+  <div class="meta">Lab 1.3 / 4.4</div>
+</nav>
+
+<!-- ──────── HERO ──────── -->
+<section class="eq-hero">
+  <div class="eq-label">Chapter 1 &middot; Lab 1.3 &mdash; Gauss's Law</div>
+  <h1>Total flux pays the <em>enclosed charge</em>, nothing else.</h1>
+  <div class="formula">&#8750; E &middot; dA = Q<sub>enc</sub> / &epsilon;<sub>0</sub></div>
+  <p class="deck">
+    Wrap any imaginary closed surface around a region of space. The total electric flux through that surface equals the charge inside,
+    divided by &epsilon;<sub>0</sub>. The surface doesn't have to be near anything. The surface doesn't have to be regular. It just has to enclose.
+  </p>
+</section>
+
+<!-- ──────── INTERACTIVE LAB ──────── -->
+<div class="lab">
+  <div class="lab-inner">
+    <div class="lab-header">
+      <span class="title">Interactive Lab &middot; Flux Through a Sphere</span>
+      <span class="id">/ gauss-1.3 / &#8750; E&middot;dA = Q<sub>enc</sub>/&epsilon;&#8320;</span>
+    </div>
+
+    <div class="lab-canvas-wrap">
+      <canvas id="lab" data-height="520"></canvas>
+      <div class="legend">
+        <div class="legend-item"><span class="swatch dot" style="background:var(--pink)"></span>Charge Q</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--teal)"></span>Gaussian surface</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--accent)"></span>Outward flux</div>
+        <div class="legend-item"><span class="swatch" style="background:var(--blue)"></span>Inward flux</div>
+        <div class="legend-item" style="margin-left:auto;color:var(--accent)">↳ Drag charge or sphere edge</div>
+      </div>
+    </div>
+
+    <div class="lab-grid">
+      <!-- Controls -->
+      <div class="controls-panel">
+        <div class="panel-title">Inputs</div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label"><span class="sym">Q</span>Charge</span>
+            <span class="slider-value" id="q-value">+5.0 nC</span>
+          </div>
+          <input id="q" type="range" min="-20" max="20" step="0.1" value="5">
+          <div class="slider-meta"><span>&minus;20 nC</span><span>+20 nC</span></div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label"><span class="sym">R</span>Sphere radius</span>
+            <span class="slider-value" id="R-value">80 mm</span>
+          </div>
+          <input id="R" type="range" min="10" max="250" step="1" value="80">
+          <div class="slider-meta"><span>10 mm</span><span>250 mm</span></div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-head">
+            <span class="slider-label"><span class="sym">x<sub>Q</sub></span>Charge position</span>
+            <span class="slider-value" id="qpos-value">0 mm</span>
+          </div>
+          <input id="qpos" type="range" min="-200" max="200" step="1" value="0">
+          <div class="slider-meta"><span>&minus;200 mm</span><span>+200 mm</span></div>
+        </div>
+
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:.1em;line-height:1.6">
+          1 pixel ≈ 1 mm on canvas.<br>
+          Move the charge outside the sphere &mdash; flux drops to zero.
+        </div>
+      </div>
+
+      <!-- Readouts -->
+      <div class="readout-panel">
+        <div class="panel-title">Outputs</div>
+
+        <div class="readout">
+          <span class="ro-label"><span class="sym">Q<sub>enc</sub></span>Enclosed charge</span>
+          <span class="ro-value" id="ro-Qenc">— <span class="unit">C</span></span>
+        </div>
+        <div class="readout" style="background:var(--accent-soft);margin:8px -28px;padding:14px 28px;border:none">
+          <span class="ro-label" style="color:var(--accent)"><span class="sym" style="color:var(--accent)">&Phi;</span>Total flux</span>
+          <span class="ro-value" id="ro-Phi" style="color:var(--accent);font-size:16px">— <span class="unit">V&middot;m</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">|E|</span>Field at surface</span>
+          <span class="ro-value" id="ro-Esurf">— <span class="unit">V/m</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">A</span>Surface area (4&pi;R&sup2;)</span>
+          <span class="ro-value" id="ro-Acircle">— <span class="unit">m&sup2;</span></span>
+        </div>
+        <div class="readout">
+          <span class="ro-label"><span class="sym">&#x25CB;</span>Charge location</span>
+          <span class="ro-value" id="ro-checkin">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────── EXPLANATION ──────── -->
+<section>
+  <div class="prose reveal">
+    <h3>The trick</h3>
+    <p>
+      Coulomb's law is calculation. You hand it a charge configuration; it hands you a vector field, point by laborious point. To get the field
+      from a uniformly charged sphere you integrate. From an infinite line of charge: you integrate. From a finite disk: you integrate, and the
+      answer is ugly. Coulomb's law is correct, but it makes you work.
+    </p>
+    <p>
+      Gauss's law is bookkeeping. You don't ask &ldquo;what's the field at this point.&rdquo; You ask: &ldquo;Of all the electric flux passing
+      through this imagined surface I just drew in space, how much net is there?&rdquo; And the answer &mdash; remarkably &mdash; depends
+      only on the charge inside that surface, divided by a constant. The shape of the surface doesn't matter. The location of charges outside
+      the surface doesn't matter. Only what is <em>enclosed</em>.
+    </p>
+    <p class="pullout">
+      Coulomb is calculation. Gauss is bookkeeping. When you have symmetry, the bookkeeping is enough &mdash; and Coulomb falls right out of it.
+    </p>
+
+    <h3>Why it works</h3>
+    <p>
+      Start with the field of a single point charge: <strong>E = kQ/r&sup2;</strong>. Now wrap an imaginary sphere of radius <strong>r</strong>
+      around it, centered on the charge. The field is radial and uniform on that sphere, with magnitude <strong>kQ/r&sup2;</strong>. The sphere
+      has area <strong>4&pi;r&sup2;</strong>. Multiply them:
+    </p>
+    <p class="math">&#8750; E &middot; dA = (kQ/r&sup2;) &middot; 4&pi;r&sup2; = 4&pi;k Q</p>
+    <p>
+      The radius dropped out. The field falls as 1/r&sup2;; the area grows as r&sup2;; the product is independent of r. Now define
+      <strong>k = 1/(4&pi;&epsilon;<sub>0</sub>)</strong>, and the messy 4&pi; tidies away:
+    </p>
+    <p class="math">&#8750; E &middot; dA = Q / &epsilon;<sub>0</sub></p>
+    <p>
+      But more importantly: the same answer holds for <em>any</em> closed surface enclosing the same charge. If you deform the sphere
+      &mdash; squish one side in, stretch another out &mdash; the flux poking through each patch of the new surface changes, but the
+      <em>total</em> integrated flux is unchanged. The geometric reason: every field line leaving the charge has to escape <em>somewhere</em>.
+      It can poke out of any surface enclosing the charge exactly once, in net. Deform the surface and you just trade where it pokes out, not whether.
+    </p>
+    <p>
+      Equally, if the charge is <em>outside</em> the surface, every field line that enters the surface from one side must also exit the other side.
+      Net flux: zero. Drag the charge in the lab past the sphere boundary and watch the flux readout collapse to 0.000.
+    </p>
+
+    <h3>Symmetry buys you the field</h3>
+    <p>
+      Gauss's law alone doesn't give you <strong>E</strong> at a point &mdash; only the integral of <strong>E</strong> over a surface. But
+      if you can argue from symmetry that <strong>E</strong> is uniform and perpendicular over the surface you've chosen, you can pull
+      it out of the integral and solve for it. Worked example: an infinite straight wire with uniform charge per length <strong>&lambda;</strong>.
+    </p>
+    <p>
+      By cylindrical symmetry, <strong>E</strong> must be radial (no preferred angle) and its magnitude can depend only on perpendicular distance
+      <strong>r</strong> (no preferred position along the wire). Wrap a cylindrical Gaussian surface of length <strong>L</strong> and radius
+      <strong>r</strong> around the wire. The end caps contribute nothing (E is parallel to them). The side wall has area <strong>2&pi;rL</strong>,
+      with <strong>E</strong> uniform on it. So
+    </p>
+    <p class="math">E &middot; 2&pi;rL = (&lambda;L) / &epsilon;<sub>0</sub> &nbsp;&nbsp;&rArr;&nbsp;&nbsp; E = &lambda; / (2&pi;&epsilon;<sub>0</sub> r)</p>
+    <p>
+      That's it. Coulomb's law would have required integrating <strong>E</strong> contributions from an infinite line &mdash; doable, but tedious.
+      Gauss got it in one line, because cylindrical symmetry handed you everything you needed.
+    </p>
+
+    <h3>A four-line derivation of Coulomb's law from Gauss</h3>
+    <p>
+      Gauss's law is more fundamental than Coulomb's. To prove it, take a point charge <strong>Q</strong> at the origin. By spherical
+      symmetry, <strong>E</strong> is radial and depends only on r. Wrap a sphere of radius r around it:
+    </p>
+    <p class="math">E &middot; 4&pi;r&sup2; = Q / &epsilon;<sub>0</sub></p>
+    <p class="math">E = Q / (4&pi;&epsilon;<sub>0</sub> r&sup2;) = k Q / r&sup2;</p>
+    <p>
+      You just re-derived Coulomb's law. The inverse-square is forced by Gauss + spherical symmetry + the constancy of <strong>&epsilon;<sub>0</sub></strong>.
+      In Maxwell's equations the foundational object is the divergence of <strong>E</strong>; Coulomb falls out as a special case. Historically
+      humans discovered them backwards, but the modern formulation goes Gauss-first.
+    </p>
+
+    <h4>What is k, really?</h4>
+    <p>
+      The relation <strong>k = 1/(4&pi;&epsilon;<sub>0</sub>)</strong> is not an aesthetic coincidence. The 4&pi; is a geometric artifact of
+      wrapping a sphere around a point: the solid angle subtended by the full sky is 4&pi; steradians. SI units expose &epsilon;<sub>0</sub>
+      because they were built around magnetism (where &mu;<sub>0</sub> = 4&pi; &times; 10<sup>&minus;7</sup> is defined exactly). Gaussian
+      units absorb &epsilon;<sub>0</sub> into the definition of charge, so Coulomb's law becomes <strong>F = q&#8321;q&#8322;/r&sup2;</strong>
+      with no constant at all. Same physics; different bookkeeping.
+    </p>
+
+    <h4>Why this matters for the rest of the textbook</h4>
+    <p>
+      Gauss's law is one of the four Maxwell equations. The other three concern magnetism (no magnetic monopoles), induction (changing B
+      makes E), and Amp&egrave;re-Maxwell (currents and changing E make B). Each one is a statement about flux or circulation. The differential
+      form of Gauss is <strong>&nabla; &middot; E = &rho;/&epsilon;<sub>0</sub></strong> &mdash; charge density is the source of field divergence.
+      That formulation will carry us, eventually, to the Poynting vector in Chapter 4: energy carried by the field, integrated over a surface,
+      paying for power dissipated inside. The whole structure is flux through surfaces, all the way down.
+    </p>
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="page-nav reveal">
+    <a href="e-field.html">
+      <div class="dir">← Lab 1.2</div>
+      <div class="title">Field of a Point Charge</div>
+    </a>
+    <a class="next" href="potential.html">
+      <div class="dir next">Lab 1.4 →</div>
+      <div class="title">Potential Difference</div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="colophon">
+    <span>Field &middot; Theory &middot; Lab 1.3</span>
+    <span><a href="../index.html" style="color:var(--text-muted);text-decoration:none">↑ Back to essay</a></span>
+  </div>
+</footer>
+
+<script src="../assets/shared.js"></script>
+<script>
+/* ═════════════════════════════════════════════
+   GAUSS'S LAW LAB
+   ═════════════════════════════════════════════ */
+(function () {
+  const eps0 = Field.PHYS.eps_0;
+  const k = Field.PHYS.k;
+  const canvas = document.getElementById('lab');
+  const ctx = canvas.getContext('2d');
+
+  // 1 px = 1 mm. The sphere is centered in the canvas; the charge moves horizontally.
+  const state = {
+    qNC: +5,
+    R_mm: 80,        // gaussian sphere radius
+    qpos_mm: 0,      // horizontal offset of charge from sphere center
+  };
+
+  let W = 0, H = 0;
+  Field.autoResize(canvas, ({ w, h }) => { W = w; H = h; });
+
+  function center() { return { cx: W / 2, cy: H / 2 }; }
+  function chargePx() {
+    const { cx, cy } = center();
+    return { x: cx + state.qpos_mm, y: cy };
+  }
+
+  // ─── Drag handling: drag the charge OR the sphere edge (to resize R) ───
+  let dragging = null;   // 'charge' | 'edge' | null
+  function getMouse(e) {
+    const r = canvas.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return [t.clientX - r.left, t.clientY - r.top];
+  }
+  function hitTest(mx, my) {
+    const { cx, cy } = center();
+    const qp = chargePx();
+    if (Math.hypot(mx - qp.x, my - qp.y) < 24) return 'charge';
+    const d = Math.hypot(mx - cx, my - cy);
+    if (Math.abs(d - state.R_mm) < 12) return 'edge';
+    return null;
+  }
+  canvas.addEventListener('mousedown', (e) => {
+    const [mx, my] = getMouse(e);
+    dragging = hitTest(mx, my);
+    if (dragging) canvas.style.cursor = 'grabbing';
+  });
+  canvas.addEventListener('mousemove', (e) => {
+    const [mx, my] = getMouse(e);
+    if (dragging === 'charge') {
+      const { cx } = center();
+      state.qpos_mm = Math.max(-200, Math.min(200, Math.round(mx - cx)));
+      const inp = document.getElementById('qpos');
+      inp.value = state.qpos_mm; inp.dispatchEvent(new Event('input'));
+    } else if (dragging === 'edge') {
+      const { cx, cy } = center();
+      const d = Math.hypot(mx - cx, my - cy);
+      state.R_mm = Math.max(10, Math.min(250, Math.round(d)));
+      const inp = document.getElementById('R');
+      inp.value = state.R_mm; inp.dispatchEvent(new Event('input'));
+    } else {
+      canvas.style.cursor = hitTest(mx, my) ? 'grab' : 'default';
+    }
+    if (dragging) compute();
+  });
+  window.addEventListener('mouseup', () => { dragging = null; canvas.style.cursor = 'default'; });
+  canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const [mx, my] = getMouse(e);
+    dragging = hitTest(mx, my);
+  });
+  canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const [mx, my] = getMouse(e);
+    if (dragging === 'charge') {
+      const { cx } = center();
+      state.qpos_mm = Math.max(-200, Math.min(200, Math.round(mx - cx)));
+      const inp = document.getElementById('qpos');
+      inp.value = state.qpos_mm; inp.dispatchEvent(new Event('input'));
+    } else if (dragging === 'edge') {
+      const { cx, cy } = center();
+      const d = Math.hypot(mx - cx, my - cy);
+      state.R_mm = Math.max(10, Math.min(250, Math.round(d)));
+      const inp = document.getElementById('R');
+      inp.value = state.R_mm; inp.dispatchEvent(new Event('input'));
+    }
+    if (dragging) compute();
+  });
+  canvas.addEventListener('touchend', () => { dragging = null; });
+
+  // ─── Physics ───
+  function isInside() {
+    return Math.abs(state.qpos_mm) < state.R_mm;
+  }
+  function flux() {
+    if (!isInside()) return 0;
+    return (state.qNC * 1e-9) / eps0;
+  }
+  function E_at_surface_center_case() {
+    // For centered charge: |E| = kQ/(R² in m²)
+    const R_m = state.R_mm * 1e-3;
+    return (k * Math.abs(state.qNC) * 1e-9) / (R_m * R_m);
+  }
+  function surfaceArea() {
+    const R_m = state.R_mm * 1e-3;
+    return 4 * Math.PI * R_m * R_m;
+  }
+
+  // ─── Draw ───
+  let phase = 0;
+  function draw() {
+    ctx.fillStyle = '#0d0d10';
+    ctx.fillRect(0, 0, W, H);
+
+    // Grid
+    ctx.strokeStyle = 'rgba(255,255,255,0.025)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+    for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+    const { cx, cy } = center();
+    const qp = chargePx();
+    const inside = isInside();
+    const sgn = state.qNC > 0 ? +1 : (state.qNC < 0 ? -1 : 0);
+
+    // Field lines from charge — straight radial rays
+    phase += 0.5;
+    const nLines = 28;
+    const lineRays = [];
+    for (let i = 0; i < nLines; i++) {
+      const a = (i / nLines) * Math.PI * 2;
+      const dirX = Math.cos(a) * sgn;
+      const dirY = Math.sin(a) * sgn;
+      const path = [];
+      for (let s = 6; s < 700; s += 5) {
+        const x = qp.x + dirX * s;
+        const y = qp.y + dirY * s;
+        if (x < -20 || x > W + 20 || y < -20 || y > H + 20) break;
+        path.push([x, y, s]);
+      }
+      // For negative source, reverse so animation flows inward
+      if (sgn < 0) path.reverse();
+      lineRays.push({ a, dirX, dirY, path });
+    }
+    // Count flux: for each ray, determine if it crosses the sphere going OUT (away from center) or IN
+    let outCount = 0, inCount = 0;
+    for (const ray of lineRays) {
+      // Find intersection of the ray with the sphere boundary.
+      // Ray param: P(s) = qp + (dirX, dirY) * s (in pixels). Sphere: (x-cx)²+(y-cy)² = R².
+      // Solve quadratic.
+      const fx = qp.x - cx, fy = qp.y - cy;
+      const A = ray.dirX * ray.dirX + ray.dirY * ray.dirY;  // = 1
+      const B = 2 * (fx * ray.dirX + fy * ray.dirY);
+      const C = fx * fx + fy * fy - state.R_mm * state.R_mm;
+      const disc = B * B - 4 * A * C;
+      if (disc < 0) continue;
+      const sq = Math.sqrt(disc);
+      const s1 = (-B - sq) / (2 * A);
+      const s2 = (-B + sq) / (2 * A);
+      // Outgoing rays (sgn>=0 means going outward; sgn<0 we reversed but the geometric ray is still outward from qp in direction (dirX, dirY))
+      // For counting flux through the surface: a positive flux line crosses at s>0 going outward (s2>0).
+      // If charge inside sphere: only s2 > 0 typically (s1 < 0 is the "other side" not crossed).
+      // If charge outside: both s1, s2 > 0 — the ray enters and exits.
+      const sOut = state.qNC >= 0 ? +1 : -1;  // sign of "outward" direction relative to charge sign
+      const counts = [];
+      if (s1 > 0) counts.push(s1);
+      if (s2 > 0) counts.push(s2);
+      for (const sCross of counts) {
+        // At the crossing point, is the ray going outward from sphere (away from center) or inward?
+        const xp = qp.x + ray.dirX * sCross;
+        const yp = qp.y + ray.dirY * sCross;
+        const outwardDot = (ray.dirX * (xp - cx) + ray.dirY * (yp - cy));
+        // outwardDot > 0 means ray direction is aligned with outward normal of sphere → outgoing crossing
+        if (sOut > 0) {
+          if (outwardDot > 0) outCount++; else inCount++;
+        } else {
+          // negative charge: rays were reversed (flow inward); flip the count semantics
+          if (outwardDot > 0) inCount++; else outCount++;
+        }
+      }
+    }
+
+    // Draw field rays
+    for (const ray of lineRays) {
+      if (ray.path.length < 2) continue;
+      ctx.strokeStyle = 'rgba(255,107,42,0.13)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(ray.path[0][0], ray.path[0][1]);
+      for (const [x, y] of ray.path) ctx.lineTo(x, y);
+      ctx.stroke();
+      // Tracer
+      const tIdx = Math.floor((phase + ray.a * 30) % ray.path.length);
+      if (ray.path[tIdx]) {
+        const [tx, ty] = ray.path[tIdx];
+        // Color the tracer by whether at this point we're inside or outside the sphere
+        const dCenter = Math.hypot(tx - cx, ty - cy);
+        const stillInSphere = dCenter < state.R_mm;
+        ctx.beginPath();
+        ctx.arc(tx, ty, 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = stillInSphere ? 'rgba(91,174,248,0.85)' : 'rgba(255,107,42,0.95)';
+        ctx.shadowColor = 'rgba(255,107,42,.55)';
+        ctx.shadowBlur = 5;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    // Gaussian sphere — teal wireframe
+    ctx.strokeStyle = inside ? 'rgba(108,197,194,0.85)' : 'rgba(108,197,194,0.55)';
+    ctx.lineWidth = inside ? 2.2 : 1.6;
+    ctx.setLineDash([6, 5]);
+    ctx.beginPath(); ctx.arc(cx, cy, state.R_mm, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Subtle fill to suggest enclosed volume
+    ctx.fillStyle = inside ? 'rgba(108,197,194,0.04)' : 'rgba(108,197,194,0.02)';
+    ctx.beginPath(); ctx.arc(cx, cy, state.R_mm, 0, Math.PI * 2); ctx.fill();
+
+    // Sphere center crosshair
+    ctx.strokeStyle = 'rgba(108,197,194,0.35)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(cx - 6, cy); ctx.lineTo(cx + 6, cy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx, cy - 6); ctx.lineTo(cx, cy + 6); ctx.stroke();
+
+    // Radius label
+    ctx.fillStyle = 'rgba(108,197,194,0.7)';
+    ctx.font = '11px JetBrains Mono';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ctx.fillText('R = ' + state.R_mm + ' mm', cx + state.R_mm + 8, cy - state.R_mm + 4);
+
+    // Charge
+    drawCharge(qp.x, qp.y, '#ff3b6e', state.qNC >= 0 ? '+' : '−', 'Q', Math.abs(state.qNC));
+
+    // Flux counter overlay (top-left)
+    ctx.fillStyle = 'rgba(10,10,11,0.88)';
+    ctx.fillRect(16, 16, 200, 56);
+    ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+    ctx.strokeRect(16, 16, 200, 56);
+    ctx.fillStyle = 'rgba(255,107,42,0.95)';
+    ctx.font = '10px JetBrains Mono';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ctx.fillText('OUTWARD CROSSINGS  ' + outCount, 26, 32);
+    ctx.fillStyle = 'rgba(91,174,248,0.95)';
+    ctx.fillText('INWARD CROSSINGS   ' + inCount, 26, 48);
+    ctx.fillStyle = 'rgba(236,235,229,0.85)';
+    ctx.fillText('NET                ' + (outCount - inCount), 26, 62);
+
+    // Status label
+    const statusX = W - 16, statusY = 32;
+    ctx.fillStyle = 'rgba(10,10,11,0.88)';
+    ctx.fillRect(statusX - 130, 16, 130, 28);
+    ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+    ctx.strokeRect(statusX - 130, 16, 130, 28);
+    ctx.fillStyle = inside ? 'var(--accent)' : 'rgba(160,158,149,0.85)';
+    ctx.fillStyle = inside ? 'rgba(255,107,42,0.95)' : 'rgba(160,158,149,0.85)';
+    ctx.font = '11px JetBrains Mono';
+    ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    ctx.fillText(inside ? 'CHARGE INSIDE' : 'CHARGE OUTSIDE', statusX - 10, statusY);
+
+    requestAnimationFrame(draw);
+  }
+
+  function drawCharge(cx, cy, color, sign, label, magnitude) {
+    const radius = 11 + Math.min(10, magnitude * 0.4);
+    const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 3);
+    grd.addColorStop(0, color);
+    grd.addColorStop(1, color + '00');
+    ctx.fillStyle = grd;
+    ctx.beginPath(); ctx.arc(cx, cy, radius * 3, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#0a0a0b';
+    ctx.font = `bold ${radius}px JetBrains Mono`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(sign, cx, cy);
+    ctx.fillStyle = color;
+    ctx.font = '10px JetBrains Mono';
+    ctx.fillText(label + ' = ' + magnitude.toFixed(1) + ' nC', cx, cy + radius + 14);
+  }
+
+  // ─── Readouts ───
+  const ro = {
+    Qenc: document.getElementById('ro-Qenc'),
+    Phi: document.getElementById('ro-Phi'),
+    Esurf: document.getElementById('ro-Esurf'),
+    Acircle: document.getElementById('ro-Acircle'),
+    checkin: document.getElementById('ro-checkin'),
+  };
+  function compute() {
+    const inside = isInside();
+    const Qenc = inside ? (state.qNC * 1e-9) : 0;
+    ro.Qenc.innerHTML = `${Field.pretty(Qenc)} <span class="unit">C</span>`;
+    ro.Phi.innerHTML = `${Field.pretty(flux())} <span class="unit">V&middot;m</span>`;
+    if (inside && Math.abs(state.qpos_mm) < 1) {
+      ro.Esurf.innerHTML = `${Field.pretty(E_at_surface_center_case())} <span class="unit">V/m</span>`;
+    } else if (inside) {
+      ro.Esurf.innerHTML = `<span style="color:var(--text-muted)">varies over surface</span>`;
+    } else {
+      ro.Esurf.innerHTML = `<span style="color:var(--text-muted)">net flux = 0</span>`;
+    }
+    ro.Acircle.innerHTML = `${Field.pretty(surfaceArea())} <span class="unit">m&sup2;</span>`;
+    ro.checkin.textContent = inside ? 'Inside' : 'Outside';
+    ro.checkin.style.color = inside ? 'var(--accent)' : 'var(--text-muted)';
+  }
+
+  // ─── Slider bindings ───
+  Field.bindSlider('q', {
+    format: (v) => (v >= 0 ? '+' : '') + v.toFixed(1) + ' nC',
+    onChange: (v) => { state.qNC = v; compute(); },
+  });
+  Field.bindSlider('R', {
+    format: (v) => v.toFixed(0) + ' mm',
+    onChange: (v) => { state.R_mm = v; compute(); },
+  });
+  Field.bindSlider('qpos', {
+    format: (v) => (v > 0 ? '+' : '') + v.toFixed(0) + ' mm',
+    onChange: (v) => { state.qpos_mm = v; compute(); },
+  });
+
+  // Kick off
+  compute();
+  draw();
+})();
+</script>
+</body>
+</html>
