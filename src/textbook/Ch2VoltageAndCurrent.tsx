@@ -10,6 +10,7 @@
  * Every numerical claim is cited inline against chapter.sources.
  */
 import { ChapterShell } from '@/components/ChapterShell';
+import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { DriftVelocityDemo } from './demos/DriftVelocity';
 import { SwitchAndBulbDemo } from './demos/SwitchAndBulb';
@@ -185,6 +186,179 @@ export default function Ch2VoltageAndCurrent() {
         pushback turns into heat, and why a long thin wire pushes back more than a short fat one. Those are the
         subject of Chapter 3.
       </p>
+
+      <FAQ intro="Questions readers ask after this chapter — the misconception-busters, the order-of-magnitude sanity checks, and the things nobody quite explains in school.">
+        <FAQItem q="If voltage is between two points, what does it mean to say a wire is at 'ground' or 'zero volts'?">
+          <p>
+            "Ground" is just the agreed-upon <strong>reference point</strong> from which other voltages are measured. In a
+            household circuit it is literally a rod driven into the soil; in a portable circuit it is the battery's
+            negative terminal; in a spacecraft it is the chassis. Calling a point "zero volts" is no different from
+            calling sea level "zero altitude" — the choice is human, the differences are physical. Reassign ground and
+            every node's voltage shifts by the same number, but the <em>differences</em>, which are what move charges,
+            never change <Cite id="griffiths-2017" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why is a 9-volt battery exactly 9 volts — what sets that number?">
+          <p>
+            Chemistry. Each electrochemical cell has a characteristic voltage set by the energy released per electron
+            when its two half-reactions run: about 1.5 V for an alkaline zinc–manganese-dioxide cell, 2.0 V for lead-acid,
+            3.7 V for lithium-ion. A 9 V battery is six 1.5 V alkaline cells stacked in series, summing to nine.
+            <strong>The number is fundamentally a count of joules per coulomb</strong> the chemistry can deliver — no
+            more, no less — and that ratio is fixed by the molecular orbitals of the reactants, not by anything the
+            engineer chose.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="In plain words, what's the actual difference between voltage and current?">
+          <p>
+            Voltage is <em>how badly</em> the charges want to move from one point to another — the energy each coulomb
+            would release if it got there. Current is <em>how many</em> of them actually are moving per second past a
+            given cross-section. A high voltage with no path is like a held breath; a high current is the breath
+            already out. The two are linked through whatever is in between them, which in Chapter 3 will turn out to be
+            resistance.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="One ampere is one coulomb per second — but how many electrons is that, really?">
+          <p>
+            A coulomb is about <strong>6.24×10¹⁸ elementary charges</strong>, so one ampere is roughly six quintillion
+            electrons crossing a fixed plane every second. The number feels impossible until you remember that a single
+            cubic millimeter of copper already contains around 8.5×10¹⁹ free electrons <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
+            Compared to the supply, an ampere of flow is a trickle from a reservoir — which is precisely why drift
+            velocities come out in millimeters per second.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why does flipping a switch light a bulb instantly if electrons drift at fractions of a millimeter per second?">
+          <p>
+            Because the bulb does not wait for any particular electron to arrive. The instant the switch closes, the
+            <strong> electric field</strong> in the wire reconfigures and that reconfiguration travels at roughly
+            two-thirds the speed of light <Cite id="libretexts-conduction" in={SOURCES} />. The electrons already
+            sitting in the filament feel the new field within nanoseconds and begin drifting in place. The energy that
+            heats the tungsten comes from those local electrons colliding with the lattice, not from anything that
+            traveled the length of the cord.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Are the electrons in a battery the same ones that arrive at the bulb?">
+          <p>
+            Almost certainly not. The electrons in the filament were already in the filament when you screwed the bulb
+            in. The electrons in the battery's negative terminal will, in a 20 A circuit, drift at about
+            <strong> 0.02 mm/s</strong> <Cite id="libretexts-conduction" in={SOURCES} /> — over a meter of wire, that's a
+            ten-hour walk. The picture of a charge leaving the battery, traveling down the wire, and arriving at the
+            load is wrong in nearly every literal sense. Charges everywhere along the loop drift simultaneously the
+            moment the field reaches them.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Does AC mean the electrons go forward and back? How far?">
+          <p>
+            Yes, and barely at all. In a 60 Hz household line carrying a few amps through ordinary house wiring, each
+            electron's drift reverses direction 120 times a second, and during each half-cycle it travels on the order of
+            <strong> a few hundred nanometers</strong> — far less than the diameter of a human hair. The same electron
+            you started with stays essentially in place, jittering. The energy delivered to your toaster has nothing to
+            do with that jitter; it comes through the surrounding electromagnetic field, which we'll meet properly in
+            Chapter 6.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Then what actually carries the energy from the battery to the bulb?">
+          <p>
+            The <strong>electromagnetic field in the space around the wire</strong>. Inside a resistive wire the
+            electric field points along its length and the magnetic field circles it; their cross product, the
+            Poynting vector, points radially <em>inward</em> through the wire's surface and integrates exactly to
+            <em> VI</em>, the dissipated power <Cite id="feynman-II-2" in={SOURCES} />. The wire is the destination,
+            not the conduit. This sounds like a parlor trick the first time you hear it; Chapter 6 makes it
+            rigorous.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="If voltage is energy per charge, why doesn't a 1 V capacitor 'run out' after one charge passes through?">
+          <p>
+            Because the capacitor is doing work on <em>every</em> charge that crosses, not on the first one and then
+            quitting. Voltage is an intensive quantity — it describes the energy <em>per</em> coulomb, available to as
+            many coulombs as care to come through. What runs out is whatever maintains the voltage: the chemical
+            reservoir in a battery, the stored field in a capacitor, the rotating magnet in a generator. As long as
+            those keep the potential difference up, every passing charge gets its share.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Does current require a closed loop? Why?">
+          <p>
+            For <em>steady</em> current, yes. Charge is conserved, so any charge piling up at the end of an open wire
+            quickly raises a counter-field that cancels the driving field — the current stops almost immediately. A
+            closed loop lets the charges that leave one point be replaced by charges arriving from another, and the
+            process continues indefinitely. The exception is briefly: in a capacitor or an antenna, you can have a
+            transient current that is part of a larger loop closed not by wire but by a <em>displacement current</em>,
+            i.e. a changing electric field — Maxwell's contribution, also waiting in Chapter 6.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why do we use AC for the power grid and DC for electronics?">
+          <p>
+            Two different optimization targets. AC is trivial to transform up and down in voltage with a passive iron
+            transformer, which lets the grid push a few hundred kilovolts cross-country (low current, low resistive
+            loss) and step it down to 120 V at your wall. DC transformers don't exist passively — they require active
+            switching electronics, which only became cheap recently. <strong>Inside</strong> a device, almost every
+            transistor, sensor, and chip wants a steady, unidirectional voltage; AC would just confuse it. So we ship
+            power as AC and convert at the endpoint.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="What is 'grounding' actually doing safety-wise?">
+          <p>
+            It is giving fault current somewhere to go that isn't <em>you</em>. If a hot wire inside a metal appliance
+            chassis frays and touches the case, the ground wire offers a near-zero-resistance path back to the panel,
+            which sinks enough current to trip the breaker in milliseconds. Without that ground path, the chassis
+            would simply sit at line voltage, waiting for the first person to touch it and the floor at the same time
+            to complete the circuit through their body. The earth itself is not magical; what matters is that the
+            appliance and your feet are tied to the <em>same</em> reference.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why doesn't touching only one terminal of a battery shock you?">
+          <p>
+            Because there's no closed loop. A 9 V battery's two terminals differ by 9 V, but the terminal you touch and
+            the air around your other hand do not — they are at essentially the same potential. No potential difference
+            across you means no current through you. The wall outlet is a different story only because one of its
+            terminals is bonded to ground, and you are too: standing barefoot on a damp floor, your body completes the
+            loop from hot to ground without needing to touch neutral.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Does the signal in an AC line travel faster than in a DC line?">
+          <p>
+            No — the propagation speed depends on the wire's geometry and the surrounding dielectric, not on whether
+            the source is steady or oscillating. In ordinary insulated copper it's around <strong>2×10⁸ m/s</strong>
+            either way <Cite id="libretexts-conduction" in={SOURCES} />, roughly two-thirds the speed of light in
+            vacuum. What AC does change is the <em>direction</em> the signal carries energy: it reverses every
+            half-cycle, so the time-averaged Poynting flow into a resistor is what matters, not the instantaneous one.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="If electrons are everywhere in the copper, where does the 'new' current come from when you connect a battery?">
+          <p>
+            It doesn't come from anywhere — it was already there as random thermal motion. Before you connect the
+            battery, copper's free electrons are zipping around at the Fermi velocity, about <strong>1.6×10⁶ m/s</strong>
+            <Cite id="kittel-2005" in={SOURCES} />, in every direction at once, so their average velocity is zero and no
+            net current flows. The battery's field adds a tiny systematic bias on top of that chaos — a <em>drift</em>
+            of order millimeters per second — and that bias, multiplied across 10²⁸ electrons per cubic meter, is what we
+            measure as amps <Cite id="drude-1900" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why does conventional current point from + to − when actual electrons go the other way?">
+          <p>
+            Historical accident. Benjamin Franklin chose the sign of charge in 1747, more than a century before anyone
+            knew electrons existed, and he guessed wrong about which carrier was moving. By the time J. J. Thomson
+            identified the electron in 1897 and pinned down its negative charge, every textbook, every circuit diagram,
+            and every right-hand rule had baked the older convention in. Rather than rewrite all of electromagnetism,
+            physicists kept "conventional current" pointing the way a positive charge would go and silently inverted
+            the picture for actual electrons <Cite id="griffiths-2017" in={SOURCES} />.
+          </p>
+        </FAQItem>
+      </FAQ>
     </ChapterShell>
   );
 }

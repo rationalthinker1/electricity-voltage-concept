@@ -13,6 +13,7 @@
  * thing all along. The field was.
  */
 import { ChapterShell } from '@/components/ChapterShell';
+import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { BCirculationDemo } from './demos/BCirculation';
 import { EAxialFieldDemo } from './demos/EAxialField';
@@ -232,6 +233,236 @@ export default function Ch6EnergyFlow() {
       <p>
         That is what electricity actually is.
       </p>
+
+      <FAQ
+        intro="The last chapter is the one that produces the most leftover questions. These are the ones that come up when the picture has finally landed and the reader starts pressing on it."
+      >
+        <FAQItem q="If the energy flows through space and not the wire, why does the wire matter at all?">
+          <p>
+            Because the wire is what shapes the field. The Poynting vector <strong>S = (1/μ<sub>0</sub>) E × B</strong> is
+            only nonzero where <strong>E</strong> and <strong>B</strong> both have components transverse to one another, and
+            both of those fields are sourced by the charges sitting on (and currents flowing through) the conductor
+            <Cite id="poynting-1884" in={SOURCES} />. Take the wire away and the boundary condition vanishes — no surface
+            charge to set up the axial <strong>E</strong>, no enclosed current to set up the circumferential <strong>B</strong>,
+            no <strong>S</strong>. The wire isn't carrying energy; it's <em>configuring</em> the surrounding field so that
+            energy has somewhere to go<Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Where does the Poynting vector get its energy from in the first place?">
+          <p>
+            From the battery — or whatever EMF source is driving the circuit. Inside an ideal battery, chemical (or
+            mechanical, or thermal) energy is converted into field energy: the source maintains a non-electrostatic force
+            that does work pushing positive charge from low to high potential, and that work ends up stored in the
+            electromagnetic field surrounding the whole circuit<Cite id="griffiths-2017" in={SOURCES} />. Davis and Kaplan
+            verified this explicitly for a circular circuit, showing that the net Poynting flux <em>leaving</em> the
+            battery equals the net flux <em>entering</em> the resistive arc, with both equal to <strong>VI</strong>
+            <Cite id="davis-kaplan-2011" in={SOURCES} />. The battery is a Poynting source. The resistor is a Poynting
+            sink.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Is the Poynting flow real, or is it just a bookkeeping convenience?">
+          <p>
+            It's as real as any local energy current can be. The differential statement
+          </p>
+          <p className="math">∂u/∂t + ∇·S = −J·E</p>
+          <p>
+            is a pointwise conservation law: field energy density <strong>u</strong> changes at any point only by net
+            <strong> S</strong> divergence or by mechanical work done on charge<Cite id="poynting-1884" in={SOURCES} />. You
+            can't relocate that statement to "the wire" without violating local energy conservation. Strictly speaking, the
+            equations only fix <strong>S</strong> up to the curl of an arbitrary vector field, so the precise local value
+            has a gauge-like ambiguity — but the <em>integrated</em> flux through any closed surface is uniquely determined
+            and matches experiment in every case ever tested<Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="If I cut the wire mid-circuit, the bulb goes out almost instantly. What changed in the field?">
+          <p>
+            The boundary condition collapsed and the field reconfigured at the speed of light. The moment the gap opens,
+            charge piles up on the two new ends until the axial <strong>E</strong> inside what's left of the wire is
+            cancelled — and once <strong>E</strong> inside the conductor goes to zero, so does <strong>J = σE</strong> and
+            so does the circumferential <strong>B</strong>. With both fields gone, <strong>S = (1/μ<sub>0</sub>)E × B</strong>
+            is zero everywhere near the bulb<Cite id="feynman-II-27" in={SOURCES} />. The "off" signal propagates outward
+            from the cut at roughly ⅔ <em>c</em> in copper, which is why "instantly" is a perfectly good first
+            approximation at human scales but wrong at nanosecond ones<Cite id="griffiths-2017" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Does the Poynting picture also work in AC circuits?">
+          <p>
+            Yes, and it gets more interesting. The fields oscillate, so <strong>S(t)</strong> oscillates with them — but
+            the time-averaged Poynting vector still points into resistive loads at the rate of real power delivered,
+          </p>
+          <p className="math">⟨S⟩ · dA averaged over a cycle = ⟨VI⟩ = V<sub>rms</sub> I<sub>rms</sub> cos φ</p>
+          <p>
+            where <em>φ</em> is the load's phase angle<Cite id="jackson-1999" in={SOURCES} />. For purely reactive
+            components — ideal capacitors and inductors — ⟨S⟩ = 0. Energy sloshes in and out through space twice per cycle
+            with no net transfer; that's exactly what "reactive power" is, written in field language
+            <Cite id="griffiths-2017" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Inside an ideal battery, what direction does the Poynting flow point?">
+          <p>
+            Outward. Inside the source, the non-electrostatic EMF drives positive charge from low to high potential, so the
+            current <strong>J</strong> is opposite to the electrostatic <strong>E</strong>. Their dot product <strong>J·E</strong>
+            is <em>negative</em> — the source is doing work <em>against</em> the field, i.e., creating field energy. By
+            Poynting's theorem this shows up as net <strong>S</strong> leaving the battery's volume
+            <Cite id="poynting-1884" in={SOURCES} />. Davis and Kaplan plotted the streamlines explicitly: <strong>S</strong>
+            spreads from the battery in great loops through the surrounding space and converges on every resistive segment
+            of the circuit<Cite id="davis-kaplan-2011" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="In a purely capacitive circuit with no resistance, where does the energy go?">
+          <p>
+            Into the field between the plates, and back out again. While the capacitor charges, <strong>S</strong> points
+            radially <em>inward</em> from the surrounding space into the gap, depositing energy in the growing
+            <strong> E</strong>-field there. The total stored energy works out to <strong>½ C V²</strong>, or equivalently
+            the volume integral of <strong>½ ε<sub>0</sub> E²</strong> over the gap<Cite id="griffiths-2017" in={SOURCES} />.
+            On discharge, the process runs backward — <strong>S</strong> flows out of the gap into the external circuit.
+            Nothing is dissipated; the time-averaged Poynting flux around any cycle is zero<Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Has anyone directly measured the Poynting vector around a wire?">
+          <p>
+            Not pointwise — there is no "Poynting meter" you can stick in space and read off W/m². What has been done, many
+            times over, is to compute <strong>S</strong> from independent measurements of <strong>E</strong> and
+            <strong> B</strong> and verify that the surface integral matches the dissipated power. Davis and Kaplan
+            performed the full 3D numerical version for a realistic circular circuit and showed that
+            <strong> ∮S·dA</strong> over any closed surface enclosing the resistor reproduces <strong>VI</strong> at every
+            point in the parameter space<Cite id="davis-kaplan-2011" in={SOURCES} />. Morris and Styer did the equivalent
+            for a 2D rail geometry and showed the flow lines lie along equipotentials<Cite id="morris-styer-2012" in={SOURCES} />.
+            The fields are measurable; their cross product follows.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why does ∮S·dA over the wire's surface come out to exactly VI, with no error term?">
+          <p>
+            Because both quantities are the same integral, just regrouped. Start from <strong>|S|<sub>surf</sub> = EB/μ<sub>0</sub></strong>,
+            substitute <strong>E = V/L</strong> (axial drop along a uniform wire) and <strong>B = μ<sub>0</sub>I/(2πa)</strong>
+            (Ampère at the surface), and the μ<sub>0</sub> cancels:
+          </p>
+          <p className="math">|S|<sub>surf</sub> · 2π a L = (V I) / (2π a L) · 2π a L = V I</p>
+          <p>
+            The lateral surface area <strong>2πaL</strong> meets the field's <strong>1/(2πaL)</strong> dependence and the
+            geometry drops out completely<Cite id="feynman-II-27" in={SOURCES} />. The identity is exact for any uniform
+            cylindrical resistor; for a non-uniform geometry the result still holds when you integrate over the whole
+            conductor's surface, because Poynting's theorem is a local energy-conservation statement
+            <Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="In a superconductor the Poynting flow doesn't enter the wire. Where does the energy actually end up?">
+          <p>
+            Nowhere along the leads — it just keeps flowing. With σ → ∞, the axial <strong>E</strong> inside the
+            superconductor vanishes, so <strong>S = 0</strong> inside, and so does the radial component of <strong>S</strong>
+            at the surface<Cite id="griffiths-2017" in={SOURCES} />. The flow stays in the surrounding space, parallel to
+            the wire, untouched, and is absorbed only when it reaches whatever resistive element finally closes the circuit
+            (a normal-conducting load, the room-temperature transition at the dewar, etc.)<Cite id="jackson-1999" in={SOURCES} />.
+            In a circuit of one resistor and otherwise superconducting leads, 100% of the dissipation happens at the
+            resistor, by exactly the same Poynting integral that <strong>VI</strong> gives.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Is the Poynting picture compatible with quantum mechanics?">
+          <p>
+            Yes — it generalizes cleanly. In quantum electrodynamics the field is still there, and the operator-valued
+            Poynting vector still gives the local energy flux; its expectation value in any classical-looking state
+            reproduces the classical <strong>S</strong> to extraordinary accuracy<Cite id="jackson-1999" in={SOURCES} />.
+            What QED <em>adds</em> is that the field comes in quanta (photons), so at sufficiently low intensity the
+            classical streamline picture gives way to a probabilistic one. For the DC and 60 Hz and gigahertz cases that
+            run civilization, the photon number per cubic wavelength is astronomical and the classical Poynting picture
+            is exact for any practical purpose<Cite id="griffiths-2017" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Is the energy in the electric field, in the magnetic field, or both?">
+          <p>
+            Both, separately, additively. The local electromagnetic energy density is
+          </p>
+          <p className="math">u = ½ ε<sub>0</sub> E² + (1/2μ<sub>0</sub>) B²</p>
+          <p>
+            with a clean partition into electric and magnetic pieces<Cite id="griffiths-2017" in={SOURCES} />. Around a DC
+            current-carrying wire, the magnetic term dominates near the surface; in the gap of a charged capacitor, the
+            electric term dominates; in a propagating plane wave the two terms are equal on time-average. The Poynting
+            vector <strong>S = (1/μ<sub>0</sub>)E × B</strong> is the <em>flux</em> of this combined energy and only makes
+            sense when both fields are present<Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why is the field energy density quadratic in the fields, rather than linear?">
+          <p>
+            Because the work done to <em>build</em> a field from zero is the integral of force-against-itself. Charging a
+            capacitor from 0 to <strong>Q</strong> requires moving each successive <strong>dq</strong> against the
+            already-present voltage <strong>q/C</strong>, so the total work is <strong>∫(q/C)dq = Q²/(2C) = ½CV²</strong>,
+            and the same quadratic dependence shows up locally as <strong>½ε<sub>0</sub>E²</strong><Cite id="griffiths-2017" in={SOURCES} />.
+            The factor of ½ is the same factor that appears in <strong>½mv²</strong> for the same reason: energy required
+            to assemble a configuration from zero where the resisting force grows linearly with what's already there
+            <Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="If electromagnetic energy is streaming through space all the time, why don't we feel it?">
+          <p>
+            Because nothing in you is electromagnetically resonant at the frequencies dominating ambient fields, and the
+            intensities are absurdly low. Earth's static magnetic field is ~50 μT and 60 Hz electric fields near a wall
+            outlet are a few V/m, giving an ambient time-averaged <strong>|S|</strong> on the order of microwatts per
+            square meter — far below thermal noise in any biological receptor<Cite id="griffiths-2017" in={SOURCES} />. You
+            <em>do</em> feel Poynting flux when it gets concentrated and lossy: a microwave oven, an induction stove, sunlight
+            on skin. Same physics, many orders of magnitude more intensity<Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Is the Poynting picture the same as electromagnetic waves carrying energy?">
+          <p>
+            Yes — there is no separate theory. A propagating EM wave is precisely a configuration in which <strong>E</strong>
+            and <strong>B</strong> are mutually perpendicular and in phase, with <strong>S = (1/μ<sub>0</sub>)E × B</strong>
+            pointing in the direction of propagation and magnitude <strong>cε<sub>0</sub>E²</strong> on time-average
+            <Cite id="jackson-1999" in={SOURCES} />. The energy flow around a DC wire and the energy flow in a sunbeam are
+            the same vector field doing the same job — one is steady, the other oscillates, but Maxwell's equations don't
+            distinguish them<Cite id="maxwell-1865" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="In a long transmission line, where is the energy actually flowing — inside the wires or in the gap between them?">
+          <p>
+            Overwhelmingly in the gap. For a coaxial cable carrying DC at voltage <strong>V</strong> and current <strong>I</strong>,
+            the Poynting flux integrated over any cross-section of the dielectric between inner and outer conductors
+            equals <strong>VI</strong> exactly<Cite id="jackson-1999" in={SOURCES} />. The conductors carry essentially no
+            energy along their interior — for an ideal superconducting line, zero. At AC the same statement holds with
+            <strong> S</strong> oscillating, and at radio frequencies the skin effect pushes current to the surface,
+            making it even more accurate to say that the signal travels in the surrounding dielectric while the metal
+            just guides it<Cite id="griffiths-2017" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Does Maxwell's displacement current play a role in steady-state Poynting flow?">
+          <p>
+            Not in the strict DC limit — the displacement term <strong>ε<sub>0</sub> ∂E/∂t</strong> is zero, so Ampère's
+            law reduces to its pre-Maxwell form and the <strong>B</strong>-field around the wire is given by the enclosed
+            conduction current alone<Cite id="maxwell-1865" in={SOURCES} />. But the displacement current is what makes the
+            Poynting picture self-consistent the moment anything time-varies: in a charging capacitor, the conduction
+            current stops at the plates and the displacement current carries on through the gap, completing the loop and
+            keeping <strong>∇·J<sub>total</sub> = 0</strong> so that energy conservation closes
+            <Cite id="jackson-1999" in={SOURCES} />. Steady state is the special case where you don't need that fix.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Could you, in principle, build a wireless transmission line using the Poynting picture as a design guide?">
+          <p>
+            You already have. Every radio link, every microwave oven cavity, every laser-power-beaming demonstration is
+            literally an engineered Poynting flux from source to load through space<Cite id="jackson-1999" in={SOURCES} />.
+            The interesting case is the near-field one: a tightly resonant pair of coils can exchange energy with
+            efficiency comparable to a wired link, because the Poynting flux is sharply concentrated between them. That's
+            how wireless phone chargers, RFID, and proposed grid-scale wireless transmission all work — and from the
+            field's point of view, even a normal wired circuit is "wireless" in the sense that no joules ever pass
+            through the conductors<Cite id="feynman-II-27" in={SOURCES} />.
+          </p>
+        </FAQItem>
+      </FAQ>
     </ChapterShell>
   );
 }

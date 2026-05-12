@@ -13,6 +13,7 @@
  *   4.4 Solenoid (B = μ₀nI)
  */
 import { ChapterShell } from '@/components/ChapterShell';
+import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { CyclotronDemo } from './demos/Cyclotron';
 import { SolenoidDemo } from './demos/Solenoid';
@@ -239,6 +240,212 @@ export default function Ch4Magnetism() {
         electrostatic interaction whose details have been rotated, by the act of putting the source charges in motion,
         out of the "electric" column and into the "magnetic" one. There's no second force. There never was.
       </p>
+
+      <FAQ intro="Twelve questions that come up if you take the relativistic-shadow picture seriously.">
+        <FAQItem q="If magnetism is just electricity in a different reference frame, why does a stationary bar magnet stick to my fridge — nothing is moving?">
+          <p>
+            Something <em>is</em> moving — you just can't see it. Every iron atom in the magnet contains electrons with
+            intrinsic spin and orbital angular momentum, and each of those is mathematically equivalent to a tiny
+            persistent current loop. In a ferromagnet the loops are aligned over macroscopic domains, so their fields
+            add instead of cancelling <Cite id="feynman-II-13" in={SOURCES} />. The "stationary" magnet is, at the
+            atomic level, a frozen pattern of <strong>~10²³</strong> circulating currents per cubic centimeter.
+          </p>
+          <p>
+            The frame-change argument still works: pick any one of those microscopic loops, hop into the frame of one
+            of its electrons, and what looked like a magnetic interaction becomes the relativistic transform of a
+            Coulomb interaction <Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Where does a bar magnet's field actually come from at the atomic level — currents, or something else?">
+          <p>
+            Two contributions, and the second one is bigger. Electrons orbiting nuclei contribute a small <em>orbital</em>
+            magnetic moment, much like a classical current loop. But the dominant effect in iron, nickel, and cobalt is
+            <strong> electron spin</strong> — an intrinsic angular momentum with no classical analog that nonetheless
+            carries a magnetic dipole moment of about one Bohr magneton per unspun electron
+            <Cite id="griffiths-2017" in={SOURCES} />. When neighboring spins lock into alignment (the exchange
+            interaction, a quantum-mechanical effect) you get a ferromagnet.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why doesn't a magnetic force do work on a charged particle?">
+          <p>
+            Because <strong>F = q(v × B)</strong> is, by construction, perpendicular to <strong>v</strong>. The rate of
+            work done is <strong>F · v</strong>, and the dot product of any vector with something perpendicular to it
+            is zero <Cite id="griffiths-2017" in={SOURCES} />. So a static <strong>B</strong> field can bend a
+            trajectory but cannot change the speed.
+          </p>
+          <p>
+            This is why a cyclotron alone cannot accelerate particles — the actual energy gain comes from the
+            time-varying <em>electric</em> field between the dees, with the magnetic field doing nothing but holding
+            the orbit closed <Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Is there such a thing as a magnetic monopole — a north pole without a south?">
+          <p>
+            Nobody has ever found one. Cut a bar magnet in half and you get two shorter magnets, each with its own north
+            and south, not a north chunk and a south chunk <Cite id="feynman-II-13" in={SOURCES} />. Maxwell's
+            equations encode this as <strong>∇ · B = 0</strong>: magnetic field lines never end on a source, they only
+            form closed loops <Cite id="jackson-1999" in={SOURCES} />. Grand unified theories generically predict
+            monopoles should exist, but the experimental upper limits on their cosmic abundance are extraordinarily
+            tight.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why is the tesla such a huge unit — most magnets seem to be in millitesla or microtesla?">
+          <p>
+            Because <strong>μ₀ = 4π × 10⁻⁷ T·m/A</strong> is tiny <Cite id="codata-2018" in={SOURCES} />. Plug it into
+            the field of a long wire and you find that <strong>1 A</strong> at <strong>1 cm</strong> produces only
+            <strong> ~2×10⁻⁵ T</strong> — twenty microtesla, comparable to the Earth's field at the ground
+            <Cite id="griffiths-2017" in={SOURCES} />. A refrigerator magnet is a few millitesla. A clinical MRI is
+            <strong> 1.5 to 3 T</strong>, which is why it takes a superconducting solenoid carrying hundreds of amps to
+            produce one.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why do two parallel wires carrying current in the same direction attract, when same-sign charges repel?">
+          <p>
+            Because magnetic force is not a force between charges; it's a force between <em>currents</em>, and the
+            geometry of <strong>v × B</strong> flips the sign you'd naively expect <Cite id="ampere-1826" in={SOURCES} />.
+            Wire 1's field at wire 2 circles wire 1; wire 2's current crossed with that field gives a force pulling it
+            toward wire 1. Run the right-hand rule both ways and the attraction is symmetric.
+          </p>
+          <p>
+            The relativistic picture is even cleaner: in the rest frame of the drifting electrons in one wire, length
+            contraction makes the <em>other</em> wire look slightly positively charged from that frame's perspective,
+            and the moving electrons get pulled toward it electrostatically <Cite id="feynman-II-13" in={SOURCES} />.
+            Attraction, from Coulomb.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="What is the right-hand rule actually doing geometrically?">
+          <p>
+            It's a mnemonic for the orientation of the cross product in a right-handed coordinate system. <strong>v × B</strong>
+            is, by definition, perpendicular to both inputs and pointing in whichever of the two perpendicular
+            directions makes <strong>{'(v, B, v × B)'}</strong> a right-handed triple <Cite id="griffiths-2017" in={SOURCES} />.
+            Your right hand happens to be a right-handed coordinate system, so curling fingers from <strong>v</strong> to
+            <strong> B</strong> with thumb extended encodes the orientation manually.
+          </p>
+          <p>
+            If physics had picked the left-handed convention instead, every formula would still work — you'd just flip
+            the sign of <strong>B</strong> everywhere and use your left hand. The choice is conventional; the geometry
+            is not.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="What is the cyclotron frequency, and why is it independent of the particle's speed?">
+          <p>
+            From <strong>r = mv/qB</strong> and <strong>T = 2π r/v</strong>, the speed cancels:
+          </p>
+          <p className="math">f = qB / (2π m)</p>
+          <p>
+            Faster particles trace bigger circles in <em>exactly</em> the same period <Cite id="feynman-II-13" in={SOURCES} />.
+            That's the magic that made Lawrence's cyclotron work in 1932: you can drive the accelerating voltage with a
+            fixed-frequency oscillator, and the particles stay in phase as their orbit radius grows
+            <Cite id="jackson-1999" in={SOURCES} />. The scheme breaks down only at relativistic speeds, where
+            <strong> m</strong> gets a γ-factor and the period drifts — fixed by the <em>synchrotron</em>.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why are some materials magnetic and others not?">
+          <p>
+            Every electron is a tiny magnetic dipole, but in most materials the spins pair up antiparallel inside each
+            filled atomic shell, and the net moment is zero or negligible (this is <em>diamagnetism</em> /
+            <em> paramagnetism</em>, both of order <strong>10⁻⁵</strong>) <Cite id="griffiths-2017" in={SOURCES} />.
+            In iron, nickel, cobalt, and certain rare-earth compounds, an exchange interaction with no classical analog
+            energetically favors <em>parallel</em> alignment of neighboring spins over a domain — millions of atoms
+            locking into a common direction <Cite id="feynman-II-13" in={SOURCES} />. That's ferromagnetism; that's
+            why a fridge magnet works.
+          </p>
+        </FAQItem>
+
+        <FAQItem q={`What's the difference between B and H — and which one is the "real" magnetic field?`}>
+          <p>
+            <strong>B</strong> (the magnetic flux density, in tesla) is what shows up in the Lorentz force law and is
+            what the rest of physics treats as fundamental. <strong>H</strong> (the magnetic field intensity, in A/m)
+            is an engineering bookkeeping construct that separates the field from <em>free</em> currents you control
+            from the field from <em>bound</em> currents inside magnetized matter
+            <Cite id="jackson-1999" in={SOURCES} />. In vacuum they're proportional: <strong>B = μ₀ H</strong>. In
+            iron, <strong>B = μ₀(H + M)</strong>, where <strong>M</strong> is the magnetization of the material
+            <Cite id="griffiths-2017" in={SOURCES} />.
+          </p>
+          <p>
+            If you only care about what force a charged particle feels, you only need <strong>B</strong>.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why does iron concentrate magnetic field — what is it actually doing?">
+          <p>
+            Iron's atomic spins align with whatever external <strong>B</strong> field you apply to it, and their
+            cooperative magnetization <strong>M</strong> adds to the original field
+            <Cite id="griffiths-2017" in={SOURCES} />. The relative permeability <strong>μᵣ</strong> of soft iron is a
+            few thousand, meaning the <strong>B</strong> inside the iron can be a few thousand times the
+            <strong> B</strong> you'd have produced in vacuum with the same solenoid current. That's why an
+            iron-cored electromagnet lifts a car and an air-cored one of the same wire would barely lift a paperclip
+            <Cite id="feynman-II-13" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Can a metal cage shield a region from a magnetic field, the way a Faraday cage shields it from E?">
+          <p>
+            Not very well, for <em>static</em> magnetic fields. A Faraday cage works because mobile charges in the
+            metal rearrange until the interior electric field is zero — but there are no mobile <em>magnetic</em>
+            charges to rearrange <Cite id="griffiths-2017" in={SOURCES} />. To shield a steady <strong>B</strong> you
+            need a high-permeability material like mu-metal, which acts as a low-reluctance "preferred path" that field
+            lines route through, leaving the interior weaker <Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+          <p>
+            For <em>time-varying</em> magnetic fields, ordinary conductors do work: the changing flux induces eddy
+            currents whose own field opposes the change, attenuating the field inside (the skin effect).
+          </p>
+        </FAQItem>
+
+        <FAQItem q="If I shake a charge back and forth, does its magnetic field change instantaneously everywhere?">
+          <p>
+            No — and this was the central insight Maxwell's equations forced on physics. Any change in the source
+            propagates outward at the speed of light <strong>c</strong>, never faster
+            <Cite id="jackson-1999" in={SOURCES} />. The constants of magnetism and electricity satisfy
+            <strong> μ₀ ε₀ = 1/c²</strong>, which is no coincidence: it's how the wave equation falls out of
+            Maxwell's equations <Cite id="codata-2018" in={SOURCES} />.
+          </p>
+          <p>
+            An accelerating charge therefore radiates an outgoing electromagnetic wave, carrying energy away to
+            infinity. That's also why "instantaneous action at a distance" is a fiction — fields are local objects
+            with their own dynamics <Cite id="feynman-II-13" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why does electric current produce a magnetic field, but moving water doesn't?">
+          <p>
+            Water is electrically neutral — every cubic millimeter of it contains as much positive charge in the nuclei
+            as negative charge in the electrons. When you move neutral matter, you move equal-and-opposite charges
+            together, and their magnetic contributions cancel exactly <Cite id="griffiths-2017" in={SOURCES} />.
+            What you need for a net <strong>B</strong> is for one species to move relative to the other — which is
+            exactly what an electric current is: electrons drifting through a stationary positive lattice
+            <Cite id="feynman-II-13" in={SOURCES} />.
+          </p>
+          <p>
+            (If you electrified the water — say, by dissolving salt and applying a voltage so cations and anions drift
+            in opposite directions — then yes, the flowing ions <em>do</em> produce a magnetic field, by Ampère's law
+            <Cite id="ampere-1826" in={SOURCES} />.)
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why does the Hall voltage have a sign — and what did Edwin Hall actually learn from it in 1879?">
+          <p>
+            The Hall voltage's sign tells you which way the carriers had to deflect in the transverse <strong>B</strong>
+            field — and therefore which sign of charge is doing the carrying. Hall measured it on gold and found that
+            the carriers behaved as if <em>negative</em>, two decades before J. J. Thomson identified the electron
+            <Cite id="hall-1879" in={SOURCES} />. The number was right; the picture wasn't yet available.
+          </p>
+          <p>
+            Today the Hall effect is the standard tool for measuring carrier density and sign in semiconductors — and
+            the <em>quantum</em> Hall effect, where the transverse conductance becomes precisely <strong>n e²/h</strong>,
+            is one of the cleanest measurements of fundamental constants we have.
+          </p>
+        </FAQItem>
+      </FAQ>
     </ChapterShell>
   );
 }

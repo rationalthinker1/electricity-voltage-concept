@@ -12,6 +12,7 @@
  * Every numerical or historical claim cites a key from chapter.sources.
  */
 import { ChapterShell } from '@/components/ChapterShell';
+import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { AreaVsResistanceDemo } from './demos/AreaVsResistance';
 import { JouleHeatingDemo } from './demos/JouleHeating';
@@ -215,6 +216,218 @@ export default function Ch3ResistanceAndPower() {
         because moving charge produces a second kind of field, the rotational partner of the electrostatic one, and that
         is where the rest of nineteenth-century physics opens up.
       </p>
+
+      <FAQ
+        intro={
+          <>
+            Resistance is a one-line formula, <em>R = ρL/A</em>, but it touches every wire in a building,
+            every kettle, every transmission line, and every short-circuit fire. These are the questions
+            that come up once the equation starts meeting reality.
+          </>
+        }
+      >
+        <FAQItem q="Why does a thinner wire have higher resistance, even though it's the same material?">
+          <p>
+            Resistance is <strong>R = ρL/A</strong>: halve the cross-section <em>A</em> and you double <em>R</em>
+            <Cite id="griffiths-2017" in={SOURCES} />. The microscopic picture is even cleaner —
+            think of the wire as a bundle of parallel filaments. A fat wire has many filaments carrying current
+            side by side; a thin wire has fewer. With fewer parallel paths, each carrying its share of <em>I</em>,
+            the current density <strong>J = I/A</strong> climbs, and the field <strong>E = J/σ</strong> needed to
+            push it climbs with it. More field over the same length means more voltage drop — i.e., more resistance.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why does a longer wire have more resistance? Geometrically — what's actually doubling?">
+          <p>
+            Voltage drop is the work per unit charge done <em>against</em> the lattice friction. Inside a uniform
+            wire the field is <strong>E = V/L</strong> and the same charge has to traverse the whole length, so
+            doubling <em>L</em> doubles the integrated drop for a fixed <em>E</em>
+            <Cite id="griffiths-2017" in={SOURCES} />. Equivalently, a long wire is many short wires in series: each
+            segment dissipates its share of <em>I²R</em>, and the segments add. The formula <em>R = ρL/A</em>
+            encodes both views at once.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why does copper's resistance go UP with temperature, while a semiconductor's goes DOWN?">
+          <p>
+            In a metal, the carrier density <em>n</em> is essentially fixed — every copper atom donates its one
+            conduction electron whether the wire is cold or hot. Heating up just increases lattice vibrations
+            (phonons), which scatter electrons more often, shortening the Drude time <em>τ</em> and pushing
+            <strong> ρ</strong> up roughly linearly with <em>T</em> above the Debye temperature
+            <Cite id="matthiessen-1864" in={SOURCES} /><Cite id="ashcroft-mermin-1976" in={SOURCES} />. In a
+            semiconductor, <em>n</em> itself is temperature-activated: more heat liberates exponentially more
+            carriers across the band gap, and that swamps the increased scattering. <em>Same equation
+            σ = nq²τ/m</em>, opposite slopes — because in metals only <em>τ</em> moves and in semiconductors
+            <em> n</em> dominates.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="What is a superconductor, and why doesn't it heat up when current flows?">
+          <p>
+            Kamerlingh Onnes cooled mercury to 4.2 K in 1911 and watched its resistance fall to <em>exactly</em>
+            zero<Cite id="onnes-1911" in={SOURCES} />. The microscopic explanation came in 1957 from Bardeen,
+            Cooper, and Schrieffer: below the critical temperature, electrons bind into <strong>Cooper pairs</strong>
+            via a weak phonon-mediated attraction, and the paired condensate cannot exchange small amounts of
+            energy with the lattice because of an opened energy gap<Cite id="bcs-1957" in={SOURCES} />. With no
+            scattering channel, the Drude <em>τ → ∞</em>, so <strong>σ → ∞</strong> and <strong>R → 0</strong>.
+            No <em>I²R</em> means no heat dissipated — the dissipation isn't being hidden, it's literally not
+            happening.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why does a kettle use a thick element, while a hair-dryer or toaster uses a thin coil?">
+          <p>
+            Both want to dissipate ~1–2 kW at line voltage, but they tune the resistance differently. A kettle
+            heats water by direct contact, so its element runs at a few hundred kelvin and can be a moderately
+            thick metal sheath — modest <em>R</em>, big <em>I</em>, lots of surface area in contact with water.
+            A toaster needs to <em>glow</em> red so it can radiate at ~1000 K, which means the element must reach
+            equilibrium where <em>P = εσ<sub>SB</sub>A<sub>surf</sub>T⁴</em> balances <em>I²R</em>. To get there
+            in open air, you go thin and use <strong>nichrome</strong>, whose ρ is ~70× copper's and which doesn't
+            oxidize at red heat<Cite id="kanthal" in={SOURCES} /><Cite id="joule-1841" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="If silver is the best conductor, why is house wiring made of copper?">
+          <p>
+            Silver edges copper by about <strong>5%</strong> in conductivity — σ<sub>Ag</sub> ≈ 6.30×10⁷ S/m vs.
+            σ<sub>Cu</sub> ≈ 5.96×10⁷ S/m<Cite id="crc-resistivity" in={SOURCES} />. But silver is roughly an
+            order of magnitude more expensive per kilogram, and you'd save only a few percent of <em>R</em> by
+            switching. For house wiring, copper is essentially the same conductor at a fraction of the cost,
+            with the bonus of being mechanically friendlier (more ductile, easier to terminate). The 5% gain
+            simply isn't worth it.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Aluminum was banned for new house wiring in the 1970s — why?">
+          <p>
+            Solid-aluminum 15 A / 20 A branch-circuit wiring was installed in millions of U.S. homes between
+            1965 and 1973, when copper prices spiked. It later became notorious for connection fires
+            <Cite id="nec-2017-aluminum" in={SOURCES} />. The bulk metal was fine; the failures happened at
+            terminations. Aluminum forms a hard, <em>insulating</em> oxide layer the moment it sees air, and it
+            <strong> creeps</strong> under the clamping pressure of a screw terminal — so a connection that started
+            tight loosens over years, the oxide grows, contact resistance climbs, and <em>I²R</em> at the joint
+            heats it further in a runaway. Modern aluminum service entrances use larger gauges, antioxidant
+            paste, and AL-rated devices to avoid the failure mode.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why does a long extension cord get warm, but a short one doesn't?">
+          <p>
+            Same current, same material, same gauge — but ten times the length is ten times the resistance.
+            Power dissipated as heat is <strong>P = I²R</strong>, so the long cord dumps ten times as many watts
+            into its own copper<Cite id="griffiths-2017" in={SOURCES} />. A short cord at 10 A through ~6 mΩ
+            wastes ~0.6 W — undetectable. A 30-meter extension at the same current through ~600 mΩ dissipates
+            ~60 W along its length, which a thin plastic sheath cannot get rid of fast enough by convection.
+            The cord warms up; the load on the far end sees a slightly reduced voltage.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why is high-voltage transmission so much more efficient than low-voltage?">
+          <p>
+            For a fixed amount of delivered power <em>P</em>, the line current is <strong>I = P/V</strong>, and the
+            line losses are <strong>P<sub>loss</sub> = I²R = (P/V)² R</strong><Cite id="grainger-power-systems-2003" in={SOURCES} />.
+            Doubling the transmission voltage halves the current and <em>quarters</em> the loss — the dependence
+            is quadratic. That's why long-distance lines run at hundreds of kilovolts, with transformers stepping
+            down to safe domestic voltages right before the wires enter your house. The wires themselves don't
+            change; only the operating point on the <em>I²R</em> curve does.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="If P = I²R, why doesn't a 5 V phone charger melt a thin USB cable?">
+          <p>
+            Because <em>I</em> is small. A 5 V × 2 A charger delivers 10 W; through a typical USB-A cable
+            of ~0.2 Ω round-trip the dissipated power is <em>I²R</em> = 4 × 0.2 = 0.8 W spread over a meter of
+            cable — easily shed by convection<Cite id="griffiths-2017" in={SOURCES} />. The cable does get faintly
+            warm and you lose a tenth of a volt to <em>IR</em> drop. Try it with USB-PD at 100 W / 5 A and a too-thin
+            wire and you genuinely can melt the insulation; this is why high-current USB-C cables include an
+            <em> e-marker</em> chip that negotiates current limits with the charger.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="What is &quot;voltage drop&quot;? Does some voltage actually get lost?">
+          <p>
+            <strong>Voltage isn't conserved; energy is.</strong> When current <em>I</em> passes through a wire of
+            resistance <em>R</em>, the potential at the far end is lower than at the near end by <em>IR</em> —
+            that's the &quot;drop&quot;<Cite id="griffiths-2017" in={SOURCES} />. The missing potential energy didn't
+            vanish; it was converted into heat at the rate <em>I²R</em> as electrons scattered against the lattice.
+            A long thin extension cord shows this dramatically: plug a vacuum cleaner into a 30 m 16-gauge cord and
+            its motor sees noticeably fewer volts than the outlet provides, with the difference radiating from the
+            cord as warmth.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Would a wire have any resistance at all if it were perfectly pure?">
+          <p>
+            Still yes, at any temperature above absolute zero. Even a perfectly pure, perfectly periodic crystal
+            has thermal vibrations — <strong>phonons</strong> — that scatter conduction electrons. Matthiessen's
+            rule writes the total resistivity as a sum: <strong>ρ = ρ<sub>residual</sub> + ρ<sub>phonon</sub>(T)</strong>
+            <Cite id="matthiessen-1864" in={SOURCES} />. The first term comes from impurities, vacancies, and grain
+            boundaries; the second from lattice vibrations. Ultra-pure copper near 4 K can have <em>ρ</em> a thousand
+            times lower than at room temperature, but only a true superconductor reaches exactly zero
+            <Cite id="onnes-1911" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="At the atomic level, what's actually causing the resistance?">
+          <p>
+            Two things, in parallel. Drude's mechanical picture imagines electrons accelerating under <em>E</em>,
+            then colliding with lattice ions and randomizing their drift component every <em>τ</em> ≈ 2×10⁻¹⁴ s
+            <Cite id="drude-1900" in={SOURCES} />. The modern Bloch picture replaces the &quot;collisions&quot; with
+            <strong> scattering off deviations from a perfect crystal</strong> — phonons (lattice vibrations) plus
+            impurities, defects, and grain boundaries — but the rate equation <em>σ = nq²τ/m</em> survives nearly
+            intact<Cite id="ashcroft-mermin-1976" in={SOURCES} />. Resistance is the macroscopic stamp of these
+            quantum scattering events; the kinetic energy gained between scatterings ends up as lattice vibration
+            (heat).
+          </p>
+        </FAQItem>
+
+        <FAQItem q="What's the difference between resistance and impedance?">
+          <p>
+            <strong>Resistance</strong> is the real, dissipative response of a circuit element to current: <em>V = IR</em>,
+            and energy goes into heat at the rate <em>I²R</em>. <strong>Impedance</strong> generalizes it to AC, where
+            capacitors and inductors also limit current but without dissipating — they store and return energy each
+            cycle. Impedance is the complex quantity <strong>Z = R + jX</strong>, where the real part <em>R</em> is
+            still dissipative and the imaginary part <em>X</em> (reactance) is energy-storing
+            <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />. Inside a pure resistor, <em>Z = R</em>; everywhere
+            else, AC needs the full complex picture.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why does nichrome glow red but copper doesn't, at the same current?">
+          <p>
+            For a given current <em>I</em>, the power dissipated per meter is <strong>I²R/L = I²ρ/A</strong> —
+            it scales directly with resistivity. Nichrome's <em>ρ</em> is ~70× copper's<Cite id="kanthal" in={SOURCES} />,
+            so the same current dumps ~70× more watts per meter into nichrome than into copper. Copper sheds that
+            modest amount easily by convection at near-ambient temperature; nichrome cannot, so its temperature climbs
+            until Stefan–Boltzmann radiation balances the input — typically into the red-glow band around 1000 K
+            <Cite id="joule-1841" in={SOURCES} />. Same equation, different equilibrium point.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="A short circuit causes a fire — but what's actually happening at the wire level?">
+          <p>
+            A short circuit replaces the intended load (a few ohms, a few amps) with a near-zero resistance path.
+            With <em>I = V/R</em>, the current rockets to hundreds of amperes within the impedance limit of the
+            supply<Cite id="griffiths-2017" in={SOURCES} />. The wire itself still has its small <em>R</em>, so the
+            dissipated power <em>I²R</em> goes from watts to <em>kilowatts</em> per meter — vastly more than
+            convection and conduction can carry away. Insulation reaches its decomposition temperature in
+            milliseconds and ignites. Fuses and breakers exist precisely to interrupt the loop before the wire's
+            <em> P = I²R</em> overruns its thermal budget.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Does a wire's resistance change while it's hot?">
+          <p>
+            Yes, significantly. Copper's resistivity climbs roughly linearly with temperature above the Debye
+            temperature, with a coefficient of <strong>~0.39%/K</strong>
+            <Cite id="matthiessen-1864" in={SOURCES} /><Cite id="ashcroft-mermin-1976" in={SOURCES} />. A copper
+            winding that's 20 mΩ at room temperature is closer to 28 mΩ at 100 °C. Incandescent tungsten is the
+            extreme case: cold resistance is ~10× lower than operating resistance, which is why bulbs
+            overwhelmingly fail at the instant they're switched on — the inrush current is enormous until the
+            filament heats and <em>R</em> climbs to its steady-state value.
+          </p>
+        </FAQItem>
+      </FAQ>
     </ChapterShell>
   );
 }

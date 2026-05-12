@@ -74,6 +74,8 @@ export const CHAPTERS: ChapterEntry[] = [
     sources: [
       'drude-1900', 'ashcroft-mermin-1976', 'crc-resistivity', 'kanthal',
       'joule-1841', 'griffiths-2017',
+      'onnes-1911', 'bcs-1957', 'matthiessen-1864', 'nec-2017-aluminum',
+      'grainger-power-systems-2003', 'irwin-circuit-analysis-2015',
     ],
   },
   {
@@ -86,7 +88,7 @@ export const CHAPTERS: ChapterEntry[] = [
     relatedLabs: ['biot-savart', 'ampere', 'lorentz'],
     sources: [
       'biot-savart-1820', 'ampere-1826', 'feynman-II-13', 'griffiths-2017',
-      'jackson-1999', 'hall-1879',
+      'jackson-1999', 'hall-1879', 'codata-2018',
     ],
   },
   {
