@@ -49,13 +49,8 @@ export default function BiotSavartLab() {
     // The perpendicular-distance computation in compute() uses the *real* mm-per-pixel
     // ratio so the math always matches the actual rendering.
     // Snap probe to centre + d above segment, in approximate mm-units.
-    setProbe(p => {
-      // We just centre it and use a fraction. The draw loop will re-derive.
-      // Place at y = 0.55 - (d in normalized units). 0.55 is segment y.
-      // For visualization, use d_mm vs L_mm to set the offset:
-      const fracOfHeight = Math.min(0.5, d_mm / 500 * 0.5);
-      return { x: 0.5, y: Math.max(0.05, 0.55 - fracOfHeight) };
-    });
+    const fracOfHeight = Math.min(0.5, (d_mm / 500) * 0.5);
+    setProbe({ x: 0.5, y: Math.max(0.05, 0.55 - fracOfHeight) });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [d_mm]);
 
