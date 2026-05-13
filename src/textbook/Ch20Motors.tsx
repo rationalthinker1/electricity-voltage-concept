@@ -60,6 +60,12 @@ export default function Ch16Motors() {
       </p>
       <Formula>F = I L × B</Formula>
       <p>
+        where <strong>F</strong> is the force on the wire segment (in newtons), <strong>I</strong>{' '}
+        is the current flowing through it (in amperes), <strong>L</strong> is a vector along the
+        wire of length equal to the segment (in metres) pointing in the direction of conventional
+        current, and <strong>B</strong> is the magnetic field at the wire's location (in tesla).
+      </p>
+      <p>
         Bend the wire into a closed rectangular loop of <em>N</em> turns and area <em>A</em>, place it in <strong>B</strong>,
         and the two long sides experience equal-and-opposite forces displaced from the loop's central axis. Those forces
         don't cancel — they form a couple. The resulting <Term def="The rotational analog of force. Torque about an axis is force times the perpendicular distance from the axis. SI unit: N·m.">torque</Term> on
@@ -67,7 +73,12 @@ export default function Ch16Motors() {
       </p>
       <Formula>τ = N I A B sin(θ)</Formula>
       <p>
-        where <em>θ</em> is the angle between the loop's surface normal and the field. Maximum torque when the loop's
+        where <strong>τ</strong> is the magnitude of the torque on the loop (in N·m),
+        <strong> N</strong> is the number of turns in the coil (dimensionless integer),
+        <strong> I</strong> is the current in the coil (in amperes), <strong>A</strong> is the area
+        enclosed by one turn (in m²), <strong>B</strong> is the magnetic field magnitude (in tesla),
+        and <strong>θ</strong> is the angle between the loop's surface normal and the field (in
+        radians). Maximum torque when the loop's
         plane is parallel to <strong>B</strong> (θ = 90°); zero when the plane is perpendicular (θ = 0). That single
         formula is every electric motor in one line. Everything that follows is engineering: how to keep θ in the
         region where <em>sin(θ)</em> is positive, so the torque drives the rotor forward instead of bouncing back and
@@ -228,7 +239,11 @@ export default function Ch16Motors() {
       </p>
       <Formula>n<sub>s</sub> = 120 f / p &nbsp; (RPM)</Formula>
       <p>
-        where <em>f</em> is the line frequency (Hz) and <em>p</em> the pole count. At 60 Hz a 4-pole machine spins its
+        where <strong>n<sub>s</sub></strong> is the synchronous (stator-field) rotational speed in
+        revolutions per minute, <strong>f</strong> is the AC line frequency (in Hz), and
+        <strong> p</strong> is the total pole count of the machine (a dimensionless even integer:
+        2, 4, 6, …). The factor of 120 packages the 60 s/min conversion with the
+        two-poles-per-pole-pair convention. At 60 Hz a 4-pole machine spins its
         stator field at 1800 RPM; an 8-pole machine at 900 RPM. The rotor, sitting inside this rotating field, sees a
         time-varying flux through every bar of its cage. By Faraday's law each bar develops an EMF; because the cage
         is shorted, large currents flow in the bars; those currents in the bars sit inside the stator field; the bars
@@ -244,6 +259,12 @@ export default function Ch16Motors() {
         load — it always slips behind. The fractional difference is the <em><Term def="The fractional difference between synchronous speed and actual rotor speed: s = (n_s − n)/n_s. At full rated load, a typical induction motor runs at s ≈ 2–5%. Slip is the signal that produces torque.">slip</Term></em>:
       </p>
       <Formula>s = (n<sub>s</sub> − n) / n<sub>s</sub></Formula>
+      <p>
+        where <strong>s</strong> is the dimensionless slip (a pure ratio, often quoted as a
+        percentage), <strong>n<sub>s</sub></strong> is the synchronous speed of the rotating stator
+        field (in RPM, from the formula above), and <strong>n</strong> is the actual mechanical
+        rotation speed of the rotor (in RPM).
+      </p>
       <p>
         Typical full-load slip is 2–5 %. At no load, slip drops toward 0.1 % (just enough to overcome bearing friction
         and windage). Load it up and slip rises; the bar EMF rises with it; the bar currents rise; the torque rises.

@@ -105,6 +105,12 @@ export default function Ch14Optics() {
       </p>
       <Formula>n<sub>1</sub> sin θ<sub>1</sub> = n<sub>2</sub> sin θ<sub>2</sub></Formula>
       <p>
+        where <strong>n<sub>1</sub></strong> and <strong>n<sub>2</sub></strong> are the dimensionless
+        refractive indices of the two media, and <strong>θ<sub>1</sub></strong> and
+        <strong> θ<sub>2</sub></strong> are the angles (in radians or degrees) that the incident and
+        refracted rays make with the normal to the interface.
+      </p>
+      <p>
         That is Willebrord Snell's 1621 rule, in our notation. A ray entering a denser medium
         (n<sub>2</sub> &gt; n<sub>1</sub>) bends <em>toward</em> the normal; exiting back into a
         rarer medium it bends away. If you push the angle far enough going from dense to rare,
@@ -151,7 +157,14 @@ export default function Ch14Optics() {
       </p>
       <Formula>1/f = 1/d<sub>o</sub> + 1/d<sub>i</sub></Formula>
       <p>
-        with magnification <strong>m = −d<sub>i</sub>/d<sub>o</sub></strong>. A converging lens with
+        where <strong>f</strong> is the focal length of the lens (in metres, positive for converging
+        lenses), <strong>d<sub>o</sub></strong> is the object distance from the lens (in metres,
+        positive on the incoming side), and <strong>d<sub>i</sub></strong> is the image distance from
+        the lens (in metres, positive on the outgoing side for a real image).
+      </p>
+      <p>
+        with magnification <strong>m = −d<sub>i</sub>/d<sub>o</sub></strong> (a dimensionless ratio;
+        negative values indicate an inverted image). A converging lens with
         the object placed beyond f forms a real, inverted image; placed inside f, a virtual,
         upright, enlarged image (the magnifying glass). The same equation runs a 50-mm camera lens,
         an eyepiece, the cornea + crystalline-lens system of the human eye, and the objective of an
@@ -191,6 +204,12 @@ export default function Ch14Optics() {
         common glasses to four-figure accuracy<Cite id="hecht-2017" in={SOURCES} />:
       </p>
       <Formula>n(λ) ≈ A + B/λ² + C/λ⁴ + …</Formula>
+      <p>
+        where <strong>n(λ)</strong> is the dimensionless refractive index at vacuum wavelength
+        <strong> λ</strong> (in µm by convention for the fitted constants), and <strong>A</strong>,
+        <strong> B</strong>, <strong>C</strong>, … are empirical material-specific constants
+        (A dimensionless; B in µm²; C in µm⁴; etc.).
+      </p>
       <p>
         Crown glass has A ≈ 1.504, B ≈ 0.00420 µm², giving n ≈ 1.514 at 700 nm (red) and
         n ≈ 1.528 at 420 nm (violet) — a spread of about 1%. Small, but it's enough that a
@@ -245,7 +264,15 @@ export default function Ch14Optics() {
         (n<sub>2</sub> cos θ<sub>1</sub> + n<sub>1</sub> cos θ<sub>2</sub>)
       </Formula>
       <p>
-        Reflectance is R = |r|². At normal incidence (θ<sub>1</sub> = 0), s and p degenerate to
+        where <strong>r<sub>s</sub></strong> and <strong>r<sub>p</sub></strong> are the dimensionless
+        amplitude reflection coefficients for the s- and p-polarisations (the ratio of reflected to
+        incident E-field amplitude), <strong>n<sub>1</sub></strong> and <strong>n<sub>2</sub></strong>{' '}
+        are the dimensionless refractive indices on either side of the interface, and
+        <strong> θ<sub>1</sub></strong>, <strong>θ<sub>2</sub></strong> are the incidence and
+        refraction angles measured from the surface normal.
+      </p>
+      <p>
+        Reflectance is R = |r|² (the dimensionless fraction of incident intensity that reflects). At normal incidence (θ<sub>1</sub> = 0), s and p degenerate to
         the same value <strong>R = ((n−1)/(n+1))²</strong> — about <strong>4%</strong> for the
         glass-air interface. As θ<sub>1</sub> rises, R<sub>s</sub> climbs monotonically; R<sub>p</sub>
         first <em>drops to zero</em> at the special angle
@@ -308,6 +335,12 @@ export default function Ch14Optics() {
       </p>
       <Formula>2 n t = (m + ½) λ &nbsp; (one inverting reflection)</Formula>
       <Formula>2 n t = m λ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (zero or two inverting reflections)</Formula>
+      <p>
+        where <strong>n</strong> is the dimensionless refractive index of the film,
+        <strong> t</strong> is the film thickness (in metres), <strong>λ</strong> is the vacuum
+        wavelength of the light (in metres), and <strong>m</strong> is a non-negative integer
+        labelling the interference order (m = 0, 1, 2, …).
+      </p>
       <p>
         A soap bubble is mostly water (n ≈ 1.33) with air on both sides — only the top reflection
         inverts — so the constructive maxima fall at the half-integer formula. As the bubble
@@ -374,7 +407,15 @@ export default function Ch14Optics() {
       </p>
       <Formula>sin θ = m λ / d, &nbsp; m = 0, ±1, ±2, …</Formula>
       <p>
-        and on the screen the bright fringes sit at <strong>y<sub>m</sub> ≈ m λ L / d</strong>.
+        where <strong>θ</strong> is the angle from the central axis to a bright fringe (in radians),
+        <strong> m</strong> is the integer order of the fringe (m = 0 is the central maximum,
+        ±1 the first order, etc.), <strong>λ</strong> is the light's vacuum wavelength (in metres),
+        and <strong>d</strong> is the slit separation (in metres).
+      </p>
+      <p>
+        and on the screen the bright fringes sit at <strong>y<sub>m</sub> ≈ m λ L / d</strong>,
+        where <strong>y<sub>m</sub></strong> is the lateral position of the mth fringe on the screen
+        (in metres) and <strong>L</strong> is the slit-to-screen distance (in metres).
         Fringe spacing <strong>Δy = λ L / d</strong>. For 550-nm light, slits 50 µm apart and a
         screen 500 mm away, the fringes are about 5 mm apart and easily visible by eye. The same
         physics underlies every diffraction-pattern measurement, every grating spectrometer,

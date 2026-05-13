@@ -103,7 +103,16 @@ export default function Ch13Materials() {
       </p>
       <Formula>E<sub>inside</sub> = E<sub>applied</sub> − P/ε₀ = E<sub>applied</sub> / ε<sub>r</sub></Formula>
       <p>
-        with <strong>ε<sub>r</sub> = 1 + χ<sub>e</sub></strong>. The electric{' '}
+        where <strong>E<sub>inside</sub></strong> is the macroscopic electric field within the dielectric
+        (in V/m), <strong>E<sub>applied</sub></strong> is the external field that would be present
+        without the material (in V/m), <strong>P</strong> is the polarization — the volume density of
+        dipole moment (in C/m²), <strong>ε₀ ≈ 8.854×10⁻¹² F/m</strong> is the permittivity of free
+        space, and <strong>ε<sub>r</sub></strong> is the dimensionless relative permittivity of the
+        material.
+      </p>
+      <p>
+        with <strong>ε<sub>r</sub> = 1 + χ<sub>e</sub></strong>, where <strong>χ<sub>e</sub></strong>{' '}
+        is the dimensionless electric susceptibility (linking <em>P = ε₀ χ<sub>e</sub> E</em>). The electric{' '}
         <Term def={<><strong>susceptibility (χ<sub>e</sub>, χ<sub>m</sub>)</strong> — the dimensionless ratio relating a material's response to an applied field. Electric: <em>P = ε₀ χ<sub>e</sub> E</em>, so <em>ε<sub>r</sub> = 1 + χ<sub>e</sub></em>. Magnetic: <em>M = χ<sub>m</sub> H</em>, so <em>μ<sub>r</sub> = 1 + χ<sub>m</sub></em>.</>}>susceptibility</Term>
         {' '}χ<sub>e</sub> tells you how vigorously a material polarizes per unit applied field. For air it's
         about 5×10⁻⁴; for glass, a handful; for water, ∼79 <Cite id="griffiths-2017" in={SOURCES} />. The
@@ -129,6 +138,12 @@ export default function Ch13Materials() {
         Same definition <strong>C = Q/V</strong>, smaller V, so C goes up by the factor ε<sub>r</sub>:
       </p>
       <Formula>C = ε<sub>r</sub> · C<sub>vacuum</sub></Formula>
+      <p>
+        where <strong>C</strong> is the capacitance with the dielectric in place (in farads),
+        <strong> C<sub>vacuum</sub></strong> is the capacitance of the same geometry with a vacuum
+        gap (in farads), and <strong>ε<sub>r</sub></strong> is the dimensionless relative
+        permittivity of the dielectric filling the gap.
+      </p>
 
       <p className="pullout">
         ε<sub>r</sub> is the price of admission for a field into a material — the bigger the number, the
@@ -373,6 +388,14 @@ export default function Ch13Materials() {
         ends up bundled into just two scalar numbers per material:
       </p>
       <Formula>ε<sub>r</sub> = 1 + χ<sub>e</sub>,    μ<sub>r</sub> = 1 + χ<sub>m</sub></Formula>
+      <p>
+        where <strong>ε<sub>r</sub></strong> is the dimensionless relative permittivity (electric
+        response), <strong>μ<sub>r</sub></strong> is the dimensionless relative permeability
+        (magnetic response), <strong>χ<sub>e</sub></strong> is the dimensionless electric
+        susceptibility (<em>P = ε₀ χ<sub>e</sub> E</em>), and <strong>χ<sub>m</sub></strong> is the
+        dimensionless magnetic susceptibility (<em>M = χ<sub>m</sub> H</em>). All four numbers are
+        unitless ratios of the material's response to the applied field.
+      </p>
 
       <SusceptibilityDemo />
 
@@ -390,6 +413,14 @@ export default function Ch13Materials() {
         matter — just rescale ε₀ → ε₀ ε<sub>r</sub> and μ₀ → μ₀ μ<sub>r</sub>. The wave equation now gives
       </p>
       <Formula>v = 1 / √(ε ε<sub>r</sub> μ μ<sub>r</sub>) · √(ε₀ μ₀)... actually,  v = c / √(ε<sub>r</sub> μ<sub>r</sub>) = c/n</Formula>
+      <p>
+        where <strong>v</strong> is the phase speed of the EM wave inside the material (in m/s),
+        <strong> c ≈ 2.998×10⁸ m/s</strong> is the speed of light in vacuum, <strong>ε<sub>r</sub></strong>{' '}
+        and <strong>μ<sub>r</sub></strong> are the dimensionless relative permittivity and
+        permeability of the material, and <strong>n = √(ε<sub>r</sub> μ<sub>r</sub>)</strong> is the
+        dimensionless refractive index. For non-magnetic materials, μ<sub>r</sub> ≈ 1 and
+        n ≈ √ε<sub>r</sub>.
+      </p>
       <p>
         with <strong>n</strong> the <em>refractive index</em> of the material. Light slowing in glass is
         not the photons taking a leisurely path — it's the electromagnetic wave coupling to the bound
@@ -754,6 +785,12 @@ export default function Ch13Materials() {
             polarizability α and number density N — the Clausius–Mossotti relation reads
           </p>
           <Formula size="small">(ε<sub>r</sub> − 1)/(ε<sub>r</sub> + 2) = N α / (3 ε₀)</Formula>
+          <p>
+            where <strong>ε<sub>r</sub></strong> is the dimensionless relative permittivity of the
+            bulk material, <strong>N</strong> is the number density of polarizable molecules (in
+            m⁻³), <strong>α</strong> is the molecular polarizability (in C·m²/V), and
+            <strong> ε₀ ≈ 8.854×10⁻¹² F/m</strong> is the permittivity of free space.
+          </p>
           <p>
             It links the macroscopic permittivity ε<sub>r</sub> to the microscopic α. The factor of (ε + 2)
             in the denominator is a self-field correction: each molecule sits in not only the external

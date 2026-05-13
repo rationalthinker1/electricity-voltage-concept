@@ -74,6 +74,12 @@ export default function Ch15Antennas() {
       </p>
       <Formula>P<sub>rad</sub> = (q² a²) / (6π ε₀ c³)</Formula>
       <p>
+        where <strong>P<sub>rad</sub></strong> is the total time-averaged radiated power (in watts),
+        <strong> q</strong> is the charge (in coulombs), <strong>a</strong> is the magnitude of the
+        charge's acceleration (in m/s²), <strong>ε₀ ≈ 8.854×10⁻¹² F/m</strong> is the permittivity
+        of free space, and <strong>c ≈ 2.998×10⁸ m/s</strong> is the speed of light.
+      </p>
+      <p>
         Three features of that formula are worth pausing on. The <em>a²</em> says everything: a
         charge moving at constant velocity does not radiate (uniform translation is just a Lorentz
         boost of a Coulomb field), but the moment it accelerates, the field has to "kink" to
@@ -108,6 +114,15 @@ export default function Ch15Antennas() {
       <Formula>
         E(r, θ) ∝ (I<sub>0</sub> L ω / c) · sin θ · cos(kr − ωt) / r
       </Formula>
+      <p>
+        where <strong>E(r, θ)</strong> is the magnitude of the radiated electric field (in V/m) at
+        radial distance <strong>r</strong> (in metres) and polar angle <strong>θ</strong> measured
+        from the dipole axis (in radians), <strong>I<sub>0</sub></strong> is the peak current in the
+        wire (in amperes), <strong>L</strong> is the dipole length (in metres),
+        <strong> ω = 2πf</strong> is the angular frequency (in rad/s), <strong>k = ω/c</strong> is
+        the free-space wavenumber (in m⁻¹), and <strong>c ≈ 2.998×10⁸ m/s</strong> is the speed of
+        light.
+      </p>
       <p>
         Two important features of that formula. (1) The 1/r dependence — far enough away, the
         field falls off as one over the distance, and intensity ∝ |E|² falls off as 1/r². This is
@@ -149,6 +164,13 @@ export default function Ch15Antennas() {
         P<sub>rad</sub> = (π η<sub>0</sub> / 3) · (L/λ)² · I<sub>0</sub>²
       </Formula>
       <p>
+        where <strong>P<sub>rad</sub></strong> is the total time-averaged radiated power (in watts),
+        <strong> η₀</strong> is the impedance of free space (in ohms; defined below),
+        <strong> L</strong> is the dipole's physical length (in metres), <strong>λ</strong> is the
+        free-space wavelength of the radiation (in metres), and <strong>I<sub>0</sub></strong> is the
+        peak current at the feedpoint (in amperes).
+      </p>
+      <p>
         with <strong>η₀ = √(μ₀/ε₀) ≈ 377 Ω</strong> the <Term def="η₀ = √(μ₀/ε₀) ≈ 377 Ω. The ratio |E|/|H| in a plane EM wave travelling in vacuum, with units of impedance. Sets the link between radiation pressure, Poynting flux, and antenna impedances.">impedance of free space</Term>. Pull out the
         I₀² and you have <strong>P = ½ R<sub>rad</sub> I₀²</strong> with <strong>R<sub>rad</sub> =
         (2π η₀/3)(L/λ)²</strong>. <Term def="The fictitious resistance that, in series with the antenna's reactance, accounts for the energy lost to radiation. Not heat — just energy converted to outgoing EM waves. For a short dipole R_rad = (2π η₀/3)(L/λ)²; for a half-wave dipole, ≈73 Ω.">Radiation resistance</Term> — a real, ohmic-looking number that
@@ -166,6 +188,12 @@ export default function Ch15Antennas() {
         cable<Cite id="balanis-2016" in={SOURCES} /><Cite id="kraus-marhefka-2002" in={SOURCES} />.
       </p>
       <Formula>f<sub>0</sub> = c / (2 L)</Formula>
+      <p>
+        where <strong>f<sub>0</sub></strong> is the fundamental resonant frequency of the dipole
+        (in Hz), <strong>c ≈ 2.998×10⁸ m/s</strong> is the speed of light, and <strong>L</strong>{' '}
+        is the total physical length of the dipole wire (in metres) — half a wavelength at
+        resonance.
+      </p>
       <p>
         A 1.5-m dipole resonates at 100 MHz; a 50-mm dipole resonates at 3 GHz; a 0.5-µm dipole
         — should you ever build one — would resonate at 300 THz, well into the infrared. (Nano-
@@ -218,6 +246,14 @@ export default function Ch15Antennas() {
       </p>
       <Formula>F<sub>total</sub>(θ, φ) = F<sub>element</sub>(θ, φ) × F<sub>array</sub>(θ, φ)</Formula>
       <p>
+        where <strong>F<sub>total</sub>(θ, φ)</strong> is the dimensionless total radiation pattern
+        of the array at polar angle <strong>θ</strong> and azimuthal angle <strong>φ</strong> (both
+        in radians), <strong>F<sub>element</sub></strong> is the pattern of a single radiating
+        element in isolation, and <strong>F<sub>array</sub></strong> is the array factor — the
+        geometric interference pattern that the array of N elements would produce if every element
+        were an isotropic point source.
+      </p>
+      <p>
         Pattern multiplication is the entire game of <Term def="An array of multiple antenna elements arranged in a geometric pattern, fed with controlled relative phases and amplitudes, so that constructive interference produces a directional beam. Phased arrays use electronic phase shifters to steer the beam without moving mechanical parts.">phased-array antenna</Term> design. Place
         elements at the right spacings, drive them with the right relative phases, and the array
         factor focuses the radiation into a tight beam pointing where you want — without moving
@@ -254,6 +290,12 @@ export default function Ch15Antennas() {
         factor's main lobe steers off broadside by an angle satisfying<Cite id="balanis-2016" in={SOURCES} /><Cite id="kraus-marhefka-2002" in={SOURCES} />:
       </p>
       <Formula>sin θ<sub>steer</sub> = (Δφ · λ) / (2π d)</Formula>
+      <p>
+        where <strong>θ<sub>steer</sub></strong> is the angle the main beam makes with broadside
+        (in radians), <strong>Δφ</strong> is the progressive phase shift applied between adjacent
+        elements (in radians), <strong>λ</strong> is the free-space wavelength (in metres), and
+        <strong> d</strong> is the spacing between adjacent elements (in metres).
+      </p>
       <p>
         No moving parts: change Δφ electronically and the beam swings. With d = λ/2 the array can
         steer the full ±90° hemisphere. Push d much above λ/2 and unwanted "grating lobes" appear
@@ -309,6 +351,14 @@ export default function Ch15Antennas() {
         wavelength λ, the <Term def="P_r/P_t = G_t·G_r·(λ/4πd)². The fundamental link-budget formula for a free-space radio link, derived by Harald Friis at Bell Labs in 1946 from the definition of an effective area A_eff = G λ²/(4π) for the receiving antenna.">Friis transmission equation</Term> says<Cite id="friis-1946" in={SOURCES} />:
       </p>
       <Formula>P<sub>r</sub> = P<sub>t</sub> · G<sub>t</sub> · G<sub>r</sub> · (λ / 4πd)²</Formula>
+      <p>
+        where <strong>P<sub>r</sub></strong> is the power delivered to the matched receive antenna
+        (in watts), <strong>P<sub>t</sub></strong> is the transmitted power (in watts),
+        <strong> G<sub>t</sub></strong> and <strong>G<sub>r</sub></strong> are the dimensionless
+        transmit and receive antenna gains relative to isotropic (often quoted in dBi),
+        <strong> λ</strong> is the operating wavelength (in metres), and <strong>d</strong> is the
+        line-of-sight distance between the antennas (in metres).
+      </p>
       <p>
         The (λ/4πd)² factor is the <em>free-space path loss</em> — the fraction of radiated power
         that an isotropic receiver of effective area λ²/(4π) would intercept at distance d. Every
@@ -419,6 +469,14 @@ export default function Ch15Antennas() {
         physical length is set by the in-medium wavelength<Cite id="balanis-2016" in={SOURCES} />:
       </p>
       <Formula>L ≈ λ / (2 √ε<sub>r</sub>) &nbsp;⇔&nbsp; f<sub>0</sub> ≈ c / (2 L √ε<sub>r</sub>)</Formula>
+      <p>
+        where <strong>L</strong> is the physical length of the patch in the resonant direction (in
+        metres), <strong>λ = c/f<sub>0</sub></strong> is the free-space wavelength at the resonant
+        frequency (in metres), <strong>f<sub>0</sub></strong> is the design resonant frequency
+        (in Hz), <strong>c ≈ 2.998×10⁸ m/s</strong> is the speed of light, and
+        <strong> ε<sub>r</sub></strong> is the dimensionless relative permittivity of the dielectric
+        substrate beneath the patch.
+      </p>
       <p>
         The radiation pattern is broadside (perpendicular to the patch plane), with typical gain
         around <strong>6 dBi</strong> and a half-power beamwidth around 80°. The ground plane sits

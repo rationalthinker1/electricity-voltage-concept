@@ -65,6 +65,12 @@ export default function Ch17Generators() {
       </p>
       <Formula>ℰ = − dΦ / dt</Formula>
       <p>
+        where <strong>ℰ</strong> is the EMF induced around the closed loop (in volts),
+        <strong> Φ</strong> is the magnetic flux through the loop (in webers, equivalently T·m²),
+        and <strong>t</strong> is time (in seconds). The minus sign — Lenz's law — gives the
+        direction: the induced current opposes the change in flux.
+      </p>
+      <p>
         For a coil of <em>N</em> turns linking flux <em>Φ</em>, the EMF is <em>−N dΦ/dt</em>. The minus sign — Lenz's
         law — says the induced current flows in the direction that opposes the change in flux that created it. In a
         generator, that opposition is exactly what produces the mechanical resistance you have to push against to keep
@@ -79,6 +85,13 @@ export default function Ch17Generators() {
         <em> Φ(t) = BA cos(ωt)</em>. The induced EMF is the time derivative<Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula>ℰ(t) = − N · dΦ/dt = N B A ω sin(ωt)</Formula>
+      <p>
+        where <strong>ℰ(t)</strong> is the instantaneous EMF at the coil's terminals (in volts),
+        <strong> N</strong> is the number of turns in the coil (dimensionless integer),
+        <strong> B</strong> is the uniform magnetic field magnitude (in tesla), <strong>A</strong>{' '}
+        is the area enclosed by one turn (in m²), <strong>ω = 2πf</strong> is the angular speed of
+        rotation (in rad/s), and <strong>t</strong> is time (in seconds).
+      </p>
       <p>
         A clean sinusoid. Peak amplitude is <em>NBAω</em>; frequency is <em>ω / 2π</em>. Scale up <em>N</em>,
         <em> B</em>, <em>A</em>, or <em>ω</em> and the output voltage goes up linearly with each. The simplest
@@ -139,6 +152,12 @@ export default function Ch17Generators() {
       </p>
       <Formula>f = (n · p) / 120 &nbsp; (n in RPM, p = pole count)</Formula>
       <p>
+        where <strong>f</strong> is the electrical output frequency (in Hz), <strong>n</strong> is
+        the rotor's mechanical rotation speed (in revolutions per minute), and <strong>p</strong>{' '}
+        is the machine's total pole count (a dimensionless even integer). This is the inverse of
+        the synchronous-speed formula from Chapter 16.
+      </p>
+      <p>
         At 3600 RPM with 2 poles, <em>f</em> = 60 Hz — the North American grid frequency. At 3000 RPM with 2 poles,
         <em> f</em> = 50 Hz — Europe, Asia, Africa. A nuclear or large coal turbine, geared so that its turbine wheel
         runs at exactly synchronous speed, spins forever within a few parts per million of nominal because the grid
@@ -185,10 +204,24 @@ export default function Ch17Generators() {
       </p>
       <Formula>P = (|V<sub>grid</sub>| · |E<sub>f</sub>| / X<sub>s</sub>) · sin δ</Formula>
       <p>
-        where <em>X<sub>s</sub></em> is the synchronous reactance (typically 1–2 per-unit). The reactive power at
-        the terminal is
+        where <strong>P</strong> is the real (active) power delivered to the grid (in watts, or in
+        per-unit on the machine's MVA base), <strong>|V<sub>grid</sub>|</strong> is the magnitude of
+        the grid voltage phasor at the terminals (in volts, or per-unit),
+        <strong> |E<sub>f</sub>|</strong> is the magnitude of the internal EMF set by the rotor's
+        field current (in volts, or per-unit), <strong>X<sub>s</sub></strong> is the synchronous
+        reactance (in ohms, or per-unit; typically 1–2 pu), and <strong>δ</strong> is the load
+        angle — the steady-state phase lead of the rotor flux ahead of the grid voltage phasor (in
+        radians).
+      </p>
+      <p>
+        The reactive power at the terminal is
       </p>
       <Formula>Q = (|V<sub>grid</sub>| · |E<sub>f</sub>| / X<sub>s</sub>) · cos δ − |V<sub>grid</sub>|² / X<sub>s</sub></Formula>
+      <p>
+        where <strong>Q</strong> is the reactive power delivered by the generator (in VAR, or
+        per-unit; positive means the machine sources VARs to the grid), and the remaining symbols
+        carry the same meanings as in the real-power equation above.
+      </p>
       <p>
         Increase mechanical input and the rotor pulls ahead of the grid — <em>δ</em> grows until <em>P</em> matches.
         Increase field current and <em>Q</em> grows: an over-excited generator supplies reactive power to the grid
