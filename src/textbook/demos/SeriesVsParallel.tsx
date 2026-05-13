@@ -11,11 +11,13 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { drawCircuit } from '@/lib/canvasPrimitives';
+import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props {
   figure?: string;
 }
+
+interface StaticCacheEntry { key: string; canvas: HTMLCanvasElement }
 
 export function SeriesVsParallelDemo({ figure }: Props) {
   const [R1, setR1] = useState(10);
@@ -27,8 +29,10 @@ export function SeriesVsParallelDemo({ figure }: Props) {
 
   const Rtot = series ? (R1 + R2) : (R1 * R2) / (R1 + R2);
 
+  const cacheRef = useRef<StaticCacheEntry | null>(null);
+
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, dpr } = info;
     let raf = 0;
 
     function draw() {
@@ -50,71 +54,17 @@ export function SeriesVsParallelDemo({ figure }: Props) {
       // Output node on right
       const outX = w - padX;
 
-      if (series) {
-        // Single loop: bat → R1 → R2 → out corner → return underneath.
-        const xR1 = padX + (outX - padX) * 0.30;
-        const xR2 = padX + (outX - padX) * 0.66;
-        drawCircuit(ctx, {
-          defaultWireColor: 'rgba(255,255,255,0.65)',
-          elements: [
-            { kind: 'battery', at: { x: batX, y: cy },
-              label: '+', labelOffset: { x: -18, y: -10 }, leadLength: 50 },
-            // Top rail with two resistor gaps + loop back along the bottom.
-            { kind: 'wire', points: [{ x: batX, y: yTop }, { x: xR1 - 22, y: yTop }] },
-            { kind: 'resistor', from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
-              label: `R1 = ${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -16 } },
-            { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: xR2 - 22, y: yTop }] },
-            { kind: 'resistor', from: { x: xR2 - 20, y: yTop }, to: { x: xR2 + 20, y: yTop },
-              label: `R2 = ${R2.toFixed(0)}Ω`, labelOffset: { x: 0, y: -16 } },
-            { kind: 'wire',
-              points: [
-                { x: xR2 + 22, y: yTop },
-                { x: outX, y: yTop },
-                { x: outX, y: yBot },
-                { x: batX, y: yBot },
-              ] },
-          ],
-        });
-      } else {
-        // Parallel: two horizontal branches between two vertical junction rails.
-        const nodeL_x = padX + (outX - padX) * 0.28;
-        const nodeR_x = padX + (outX - padX) * 0.72;
-        const branchY1 = cy - 26;
-        const branchY2 = cy + 26;
-        const midA = (nodeL_x + nodeR_x) / 2;
-        drawCircuit(ctx, {
-          defaultWireColor: 'rgba(255,255,255,0.65)',
-          elements: [
-            { kind: 'battery', at: { x: batX, y: cy },
-              label: '+', labelOffset: { x: -18, y: -10 }, leadLength: 50 },
-            // Battery top → left junction.
-            { kind: 'wire', points: [{ x: batX, y: yTop }, { x: nodeL_x, y: yTop }] },
-            // Two vertical junction rails.
-            { kind: 'wire', points: [{ x: nodeL_x, y: yTop }, { x: nodeL_x, y: yBot }] },
-            { kind: 'wire', points: [{ x: nodeR_x, y: yTop }, { x: nodeR_x, y: yBot }] },
-            // Branch 1 leads + resistor.
-            { kind: 'wire', points: [{ x: nodeL_x, y: branchY1 }, { x: midA - 22, y: branchY1 }] },
-            { kind: 'wire', points: [{ x: midA + 22, y: branchY1 }, { x: nodeR_x, y: branchY1 }] },
-            { kind: 'resistor', from: { x: midA - 20, y: branchY1 }, to: { x: midA + 20, y: branchY1 },
-              label: `R1 = ${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -16 } },
-            // Branch 2 leads + resistor.
-            { kind: 'wire', points: [{ x: nodeL_x, y: branchY2 }, { x: midA - 22, y: branchY2 }] },
-            { kind: 'wire', points: [{ x: midA + 22, y: branchY2 }, { x: nodeR_x, y: branchY2 }] },
-            { kind: 'resistor', from: { x: midA - 20, y: branchY2 }, to: { x: midA + 20, y: branchY2 },
-              label: `R2 = ${R2.toFixed(0)}Ω`, labelOffset: { x: 0, y: -16 } },
-            // Right junction → out corner → return rail along the bottom.
-            { kind: 'wire',
-              points: [
-                { x: nodeR_x, y: yTop },
-                { x: outX, y: yTop },
-                { x: outX, y: yBot },
-                { x: batX, y: yBot },
-              ] },
-          ],
-        });
+      // Cache key: schematic depends on canvas size, DPR, series-vs-parallel topology, and the resistor labels.
+      const cacheKey = `${w}x${h}@${dpr}|s${series ? 1 : 0}|R1:${R1}|R2:${R2}`;
+      if (cacheRef.current?.key !== cacheKey) {
+        cacheRef.current = {
+          key: cacheKey,
+          canvas: buildStaticSchematic(w, h, series, R1, R2, dpr),
+        };
       }
+      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
 
-      // Battery negative-terminal glyph (battery primitive only emits the '+' label).
+      // Per-frame overlay: animated current dots + helper text + battery '−' glyph.
       ctx.fillStyle = '#5baef8';
       ctx.font = 'bold 12px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
@@ -202,6 +152,73 @@ export function SeriesVsParallelDemo({ figure }: Props) {
         />
       </DemoControls>
     </Demo>
+  );
+}
+
+function buildStaticSchematic(
+  w: number, h: number,
+  series: boolean, R1: number, R2: number, dpr: number,
+): HTMLCanvasElement {
+  const cy = h / 2;
+  const padX = 60;
+  const yTop = cy - 50;
+  const yBot = cy + 50;
+  const batX = padX;
+  const outX = w - padX;
+
+  let elements: CircuitElement[];
+  if (series) {
+    const xR1 = padX + (outX - padX) * 0.30;
+    const xR2 = padX + (outX - padX) * 0.66;
+    elements = [
+      { kind: 'battery', at: { x: batX, y: cy },
+        label: '+', labelOffset: { x: -18, y: -10 }, leadLength: 50 },
+      { kind: 'wire', points: [{ x: batX, y: yTop }, { x: xR1 - 22, y: yTop }] },
+      { kind: 'resistor', from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
+        label: `R1 = ${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -16 } },
+      { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: xR2 - 22, y: yTop }] },
+      { kind: 'resistor', from: { x: xR2 - 20, y: yTop }, to: { x: xR2 + 20, y: yTop },
+        label: `R2 = ${R2.toFixed(0)}Ω`, labelOffset: { x: 0, y: -16 } },
+      { kind: 'wire',
+        points: [
+          { x: xR2 + 22, y: yTop },
+          { x: outX, y: yTop },
+          { x: outX, y: yBot },
+          { x: batX, y: yBot },
+        ] },
+    ];
+  } else {
+    const nodeL_x = padX + (outX - padX) * 0.28;
+    const nodeR_x = padX + (outX - padX) * 0.72;
+    const branchY1 = cy - 26;
+    const branchY2 = cy + 26;
+    const midA = (nodeL_x + nodeR_x) / 2;
+    elements = [
+      { kind: 'battery', at: { x: batX, y: cy },
+        label: '+', labelOffset: { x: -18, y: -10 }, leadLength: 50 },
+      { kind: 'wire', points: [{ x: batX, y: yTop }, { x: nodeL_x, y: yTop }] },
+      { kind: 'wire', points: [{ x: nodeL_x, y: yTop }, { x: nodeL_x, y: yBot }] },
+      { kind: 'wire', points: [{ x: nodeR_x, y: yTop }, { x: nodeR_x, y: yBot }] },
+      { kind: 'wire', points: [{ x: nodeL_x, y: branchY1 }, { x: midA - 22, y: branchY1 }] },
+      { kind: 'wire', points: [{ x: midA + 22, y: branchY1 }, { x: nodeR_x, y: branchY1 }] },
+      { kind: 'resistor', from: { x: midA - 20, y: branchY1 }, to: { x: midA + 20, y: branchY1 },
+        label: `R1 = ${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -16 } },
+      { kind: 'wire', points: [{ x: nodeL_x, y: branchY2 }, { x: midA - 22, y: branchY2 }] },
+      { kind: 'wire', points: [{ x: midA + 22, y: branchY2 }, { x: nodeR_x, y: branchY2 }] },
+      { kind: 'resistor', from: { x: midA - 20, y: branchY2 }, to: { x: midA + 20, y: branchY2 },
+        label: `R2 = ${R2.toFixed(0)}Ω`, labelOffset: { x: 0, y: -16 } },
+      { kind: 'wire',
+        points: [
+          { x: nodeR_x, y: yTop },
+          { x: outX, y: yTop },
+          { x: outX, y: yBot },
+          { x: batX, y: yBot },
+        ] },
+    ];
+  }
+  return renderCircuitToCanvas(
+    { elements, defaultWireColor: 'rgba(255,255,255,0.65)' },
+    w, h, dpr,
   );
 }
 

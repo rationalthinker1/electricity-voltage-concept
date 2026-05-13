@@ -20,6 +20,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawGlowPath } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -111,19 +112,17 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       const drawPulse = (xc: number, s: number) => {
         if (Math.abs(s) < 0.01) return;
         const sigma = 0.06 * Lx;
-        ctx.strokeStyle = s > 0 ? 'rgba(255,107,42,0.95)' : 'rgba(91,174,248,0.95)';
-        ctx.shadowColor = s > 0 ? 'rgba(255,107,42,0.45)' : 'rgba(91,174,248,0.45)';
-        ctx.shadowBlur = 8;
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
+        const pts: { x: number; y: number }[] = [];
         for (let x = lineX0; x <= lineX1; x += 1) {
           const u = (x - xc) / sigma;
           const v = s * Math.exp(-u * u / 2);
-          if (x === lineX0) ctx.moveTo(x, yPulse(v));
-          else ctx.lineTo(x, yPulse(v));
+          pts.push({ x, y: yPulse(v) });
         }
-        ctx.stroke();
-        ctx.shadowBlur = 0;
+        drawGlowPath(ctx, pts, {
+          color: s > 0 ? 'rgba(255,107,42,0.95)' : 'rgba(91,174,248,0.95)',
+          glowColor: s > 0 ? 'rgba(255,107,42,0.35)' : 'rgba(91,174,248,0.35)',
+          lineWidth: 1.8,
+        });
       };
 
       if (t < 2) {

@@ -18,6 +18,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawGlowPath } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -101,11 +102,7 @@ export function RLCBandpassDemo({ figure }: Props) {
 
       // |H(f)| curve
       const N = 260;
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-      ctx.shadowColor = 'rgba(255,107,42,0.5)';
-      ctx.shadowBlur = 6;
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
+      const curvePts: { x: number; y: number }[] = [];
       for (let i = 0; i <= N; i++) {
         const u = i / N;
         const lf = logMin + u * (logMax - logMin);
@@ -118,10 +115,13 @@ export function RLCBandpassDemo({ figure }: Props) {
         const dB = 20 * Math.log10(Math.max(Hmag, 1e-6));
         const x = plotX + u * plotW;
         const y = yDb(Math.max(dBmin, Math.min(dBmax, dB)));
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        curvePts.push({ x, y });
       }
-      ctx.stroke();
-      ctx.shadowBlur = 0;
+      drawGlowPath(ctx, curvePts, {
+        color: 'rgba(255,107,42,0.95)',
+        glowColor: 'rgba(255,107,42,0.35)',
+        lineWidth: 1.8,
+      });
 
       // Y labels
       ctx.fillStyle = 'rgba(160,158,149,0.85)';

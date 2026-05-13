@@ -15,6 +15,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawGlowPath } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -111,19 +112,16 @@ export function ChargingCurveDemo({ figure }: Props) {
 
       // Trace
       if (s.trace.length > 1) {
-        ctx.strokeStyle = 'rgba(255,59,110,0.95)';
-        ctx.shadowColor = 'rgba(255,59,110,0.5)';
-        ctx.shadowBlur = 6;
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
+        const pts: { x: number; y: number }[] = [];
         for (let i = 0; i < s.trace.length; i++) {
           const p = s.trace[i]!;
-          const tx = xT(p.t - tCut);
-          const ty = yV(p.v);
-          if (i === 0) ctx.moveTo(tx, ty); else ctx.lineTo(tx, ty);
+          pts.push({ x: xT(p.t - tCut), y: yV(p.v) });
         }
-        ctx.stroke();
-        ctx.shadowBlur = 0;
+        drawGlowPath(ctx, pts, {
+          color: 'rgba(255,59,110,0.95)',
+          glowColor: 'rgba(255,59,110,0.35)',
+          lineWidth: 1.8,
+        });
       }
 
       // Labels
