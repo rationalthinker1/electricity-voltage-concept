@@ -25,6 +25,7 @@ export type ChapterSlug =
   | 'maxwell'
   | 'relativity'
   | 'circuits-and-ac'
+  | 'filters-op-amps-tlines'
   | 'materials'
   | 'optics'
   | 'antennas'
@@ -222,13 +223,25 @@ export const CHAPTERS: ChapterEntry[] = [
       'kirchhoff-1845', 'griffiths-2017', 'irwin-circuit-analysis-2015',
       'grainger-power-systems-2003', 'horowitz-hill-2015', 'codata-2018',
       'ansi-c84-1-2020', 'erickson-maksimovic-2020', 'keysight-34465a-datasheet',
-      'oppenheim-willsky-1997', 'sedra-smith-2014', 'widlar-1965',
-      'johnson-graham-1993', 'pozar-2011',
+    ],
+  },
+  {
+    slug: 'filters-op-amps-tlines',
+    number: 13,
+    title: 'Filters, op-amps, and transmission lines',
+    subtitle: 'Frequency, gain, and the moment a wire stops being a single node.',
+    blurb:
+      "The frequency-domain and active-circuit sequel to Ch.12. Transfer functions and Bode plots compress a filter's behaviour to two straight lines; op-amps in negative feedback turn every linear gain block into a two-resistor problem; transmission lines hand off from lumped analysis when the line length crosses ~λ/10. Together: the working analog engineer's toolkit.",
+    relatedLabs: ['capacitance', 'inductance', 'poynting'],
+    sources: [
+      'horowitz-hill-2015', 'oppenheim-willsky-1997', 'sedra-smith-2014',
+      'widlar-1965', 'pozar-2011', 'johnson-graham-1993',
+      'griffiths-2017', 'codata-2018',
     ],
   },
   {
     slug: 'materials',
-    number: 13,
+    number: 14,
     title: 'Materials',
     subtitle: 'What ε and μ actually mean.',
     blurb:
@@ -242,7 +255,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'optics',
-    number: 14,
+    number: 15,
     title: 'Optics from electromagnetism',
     subtitle: 'Light is a wave. Materials slow it down.',
     blurb:
@@ -256,7 +269,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'antennas',
-    number: 15,
+    number: 16,
     title: 'Antennas and radiation',
     subtitle: 'How field becomes radio.',
     blurb:
@@ -270,7 +283,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'motors',
-    number: 16,
+    number: 17,
     title: 'Motors',
     subtitle: 'How a current ends up as a torque.',
     blurb:
@@ -283,7 +296,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'generators',
-    number: 17,
+    number: 18,
     title: 'Generators and the grid',
     subtitle: 'The same machine, run backwards.',
     blurb:
@@ -297,7 +310,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'transformers',
-    number: 18,
+    number: 19,
     title: 'Transformers',
     subtitle: 'Two coils, one core, a different voltage on the other side.',
     blurb:
@@ -311,7 +324,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'rectifiers-and-inverters',
-    number: 19,
+    number: 20,
     title: 'Rectifiers and inverters',
     subtitle: 'AC to DC, DC to AC, and the silicon that makes the swap.',
     blurb:
@@ -325,7 +338,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'batteries',
-    number: 20,
+    number: 21,
     title: 'How a battery works',
     subtitle: 'Chemistry that keeps a voltage on the wires.',
     blurb:
@@ -338,7 +351,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'modern-batteries',
-    number: 21,
+    number: 22,
     title: 'Modern batteries',
     subtitle: 'From lead-acid to lithium-ion to the next thing.',
     blurb:
