@@ -72,6 +72,16 @@ export default function Ch13FiltersOpAmpsTLines() {
         |H(jω)| = 1 / √(1 + (ω/ω<sub>c</sub>)<sup>2</sup>),    ω<sub>c</sub> = 1/RC
       </Formula>
       <p>
+        Why does the corner land at exactly ω<sub>c</sub> = 1/RC? It is the frequency where the
+        capacitor's impedance |1/jωC| = 1/(ωC) crosses through R — below that crossover the cap
+        looks like an open circuit and the divider passes the signal nearly unchanged; above it,
+        the cap is the smaller impedance and shorts the output toward ground. Same crossover, same
+        intuition, for the RL low-pass and every first-order filter: the corner is wherever the
+        frequency-dependent impedance equals the frequency-independent one. At ω<sub>c</sub> the
+        two are equal, so |H| = 1/√2 (the output divider sees a complex equal-magnitude divider),
+        which is exactly the −3 dB power-half point<Cite id="horowitz-hill-2015" in={SOURCES} />.
+      </p>
+      <p>
         The frequency ω<sub>c</sub> is the{' '}
         <Term def={<><strong>cutoff frequency</strong> — the frequency at which a filter's magnitude response has dropped to 1/√2 of its passband value (−3 dB). For an RC filter, <em>ω<sub>c</sub> = 1/RC</em>; <em>f<sub>c</sub> = 1/(2πRC)</em>.</>}>cutoff frequency</Term>
         : below it the filter passes the signal almost flat; above it the amplitude drops as 1/ω,

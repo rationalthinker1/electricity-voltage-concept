@@ -74,6 +74,21 @@ export default function Ch15Antennas() {
       </p>
       <Formula>P<sub>rad</sub> = (q² a²) / (6π ε₀ c³)</Formula>
       <p>
+        Three features of that formula are worth pausing on. The <em>a²</em> says everything: a
+        charge moving at constant velocity does not radiate (uniform translation is just a Lorentz
+        boost of a Coulomb field), but the moment it accelerates, the field has to "kink" to
+        propagate the news outward and that kink carries away a flux proportional to <em>|a|²</em>.
+        The <em>q²</em> is the same square-of-source you see in every two-step radiation argument
+        — the field scales as q, the intensity as |field|². The factor of <em>1/c³</em> is the
+        smoking gun for non-relativistic radiation: two powers of c come from the retarded
+        transverse-field amplitude (which scales as a/c²), and another power emerges when Poynting
+        flux <em>εcE²</em> is integrated over the radiation sphere; the net result is that
+        radiation is an intrinsically feeble effect at speeds well below c<Cite id="jackson-1999" in={SOURCES} /><Cite id="griffiths-2017" in={SOURCES} />.
+        That is why an electron in a steady current-carrying wire does not radiate, but a single
+        shaken charge — or, equivalently, an oscillating dipole — eventually fills space with
+        measurable energy density.
+      </p>
+      <p>
         An <Term def="A piece of conducting material designed to radiate (transmit) or capture (receive) electromagnetic waves at a particular range of frequencies. The receiving and transmitting properties are tied by reciprocity — the same physical structure works either way.">antenna</Term> is any structure designed to convert circulating current at its feedpoint
         into radiated EM waves (or, by reciprocity, vice versa). The simplest case to analyse,
         and the building block for most others, is the <em>infinitesimal electric dipole</em>:
