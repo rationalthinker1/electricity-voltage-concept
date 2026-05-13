@@ -25,7 +25,13 @@ export type ChapterSlug =
   | 'maxwell'
   | 'relativity'
   | 'circuits-and-ac'
-  | 'materials';
+  | 'materials'
+  | 'optics'
+  | 'antennas'
+  | 'motors'
+  | 'generators'
+  | 'batteries'
+  | 'modern-batteries';
 
 export interface ChapterEntry {
   slug: ChapterSlug;
@@ -228,6 +234,88 @@ export const CHAPTERS: ChapterEntry[] = [
       'clausius-1850', 'langevin-1905', 'weiss-1907', 'debye-1929',
       'griffiths-2017', 'jackson-1999', 'kittel-2005', 'codata-2018',
       'baibich-1988', 'binasch-grunberg-1989', 'moulson-herbert-2003',
+    ],
+  },
+  {
+    slug: 'optics',
+    number: 14,
+    title: 'Optics from electromagnetism',
+    subtitle: 'Light is a wave. Materials slow it down.',
+    blurb:
+      "Drop Ch.9's plane wave onto a sheet of glass. Boundary conditions on E and B make Snell's law fall out for free. Frequency-dependent εᵣ makes prisms split white light. Brewster's angle, total internal reflection, thin-film interference, the laser — all of optics is what classical EM looks like at 10¹⁴ Hz.",
+    relatedLabs: ['poynting', 'energy-density'],
+    sources: [
+      'maxwell-1865', 'feynman-II-21', 'griffiths-2017', 'jackson-1999',
+      'codata-2018', 'hecht-2017', 'born-wolf-1999', 'young-1804',
+      'maiman-1960', 'brewster-1815', 'fresnel-1823',
+    ],
+  },
+  {
+    slug: 'antennas',
+    number: 15,
+    title: 'Antennas and radiation',
+    subtitle: 'How field becomes radio.',
+    blurb:
+      'Push current up and down a wire and the field around it propagates outward — that current carries information to anyone with a matching wire and a receiver. From the dipole pattern (sin²θ) through Yagis and parabolas to phased arrays and Friis transmission. Everything from your Wi-Fi to GPS to the Cosmic Microwave Background hangs on this physics.',
+    relatedLabs: ['poynting', 'energy-density', 'biot-savart'],
+    sources: [
+      'maxwell-1865', 'hertz-1888', 'feynman-II-21', 'griffiths-2017',
+      'jackson-1999', 'balanis-2016', 'friis-1946', 'yagi-1928',
+      'kraus-marhefka-2002', 'codata-2018',
+    ],
+  },
+  {
+    slug: 'motors',
+    number: 16,
+    title: 'Motors',
+    subtitle: 'How a current ends up as a torque.',
+    blurb:
+      "F = q v × B applied to the conduction electrons of a current-carrying coil gives a force on the coil; F·r is torque. Build that into a brushed DC motor, a brushless one, an AC induction (Tesla 1888) machine, a synchronous motor, a stepper. Same physics; six different commutation strategies.",
+    relatedLabs: ['lorentz', 'biot-savart', 'ampere'],
+    sources: [
+      'feynman-II-13', 'griffiths-2017', 'jackson-1999', 'tesla-1888',
+      'fitzgerald-kingsley-umans-2014', 'krishnan-2010-bldc', 'codata-2018',
+    ],
+  },
+  {
+    slug: 'generators',
+    number: 17,
+    title: 'Generators and the grid',
+    subtitle: 'The same machine, run backwards.',
+    blurb:
+      "Spin a magnet past a coil and EMF appears. The synchronous generator that does this 3000 times a minute is sitting at the bottom of every dam, behind every turbine, on the shaft of every car alternator. Three of them on a shaft give you 3-phase; ten thousand of them tied together give you the continental grid.",
+    relatedLabs: ['faraday', 'inductance'],
+    sources: [
+      'faraday-1832', 'feynman-II-17', 'griffiths-2017',
+      'grainger-power-systems-2003', 'fitzgerald-kingsley-umans-2014',
+      'kundur-1994-power-stability', 'codata-2018',
+    ],
+  },
+  {
+    slug: 'batteries',
+    number: 18,
+    title: 'How a battery works',
+    subtitle: 'Chemistry that keeps a voltage on the wires.',
+    blurb:
+      "Volta stacked discs of copper and zinc with cardboard soaked in brine in 1800 and produced a current that lasted. The chemistry inside a single cell — half-reactions, the Nernst equation, the role of the electrolyte — explains every battery that ever existed. We will build that cell from scratch and watch its voltage land on the predicted number.",
+    relatedLabs: ['potential', 'ohms-law'],
+    sources: [
+      'volta-1800-pile', 'nernst-1889', 'daniell-1836',
+      'bard-faulkner-2001', 'griffiths-2017', 'codata-2018',
+    ],
+  },
+  {
+    slug: 'modern-batteries',
+    number: 19,
+    title: 'Modern batteries',
+    subtitle: 'From lead-acid to lithium-ion to the next thing.',
+    blurb:
+      "Lead-acid (1859) still starts your car. Lithium-ion (Whittingham 1976, Goodenough 1980, Yoshino 1985 — 2019 Nobel) starts your phone. Flow cells (vanadium redox), supercapacitors, solid-state cells, fuel cells (PEM, SOFC). The chemistry has changed; the principle hasn't. We catalogue what's actually in your stuff and what's coming next.",
+    relatedLabs: ['capacitance', 'energy-density'],
+    sources: [
+      'whittingham-1976', 'goodenough-1980-licoo2', 'yoshino-1985',
+      'plante-1859', 'larminie-dicks-2003-fuel-cells', 'griffiths-2017',
+      'codata-2018',
     ],
   },
 ];
