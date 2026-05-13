@@ -100,6 +100,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'griffiths-2017', 'crc-resistivity', 'kanthal', 'matthiessen-1864',
       'horowitz-hill-2015', 'iec-60062-2016', 'steinhart-hart-1968',
       'wiedemann-franz-1853', 'ashcroft-mermin-1976', 'codata-2018',
+      'vishay-z-foil', 'vishay-csm-shunt',
     ],
   },
   {

@@ -706,6 +706,24 @@ export const SOURCES: Record<string, Source> = {
   },
 
   /* ─── Ch.4 How a resistor works ─── */
+  'vishay-z-foil': {
+    id: 'vishay-z-foil',
+    title: 'VPR221Z / Z201 Bulk Metal Z-Foil Precision Resistors — Datasheet',
+    author: 'Vishay Precision Group / Vishay Foil Resistors',
+    year: 2023,
+    venue: 'Vishay Foil Resistors document VFR-DS-0011',
+    url: 'https://www.vishay.com/docs/63120/vsmpzfoilfamily.pdf',
+    note: 'Bulk-metal foil precision resistors with tolerance down to ±0.005% and temperature coefficient of resistance ≤ ±0.05 ppm/°C; used as standards for laboratory voltage references and automated test equipment.',
+  },
+  'vishay-csm-shunt': {
+    id: 'vishay-csm-shunt',
+    title: 'WSL / WSLP Power Metal Strip Surface-Mount Current Sense Resistors — Datasheet',
+    author: 'Vishay Dale',
+    year: 2023,
+    venue: 'Vishay Dale document 30100',
+    url: 'https://www.vishay.com/docs/30100/wsl.pdf',
+    note: 'Four-terminal (Kelvin) current-sense resistors from 0.5 mΩ to 100 mΩ in metal-strip construction; ±1% tolerance; rated 1–3 W continuous, with the four-wire connection eliminating lead resistance from the measured voltage drop.',
+  },
   'iec-60062-2016': {
     id: 'iec-60062-2016',
     title: 'IEC 60062:2016 — Marking codes for resistors and capacitors',
