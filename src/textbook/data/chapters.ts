@@ -267,6 +267,7 @@ export const CHAPTERS: ChapterEntry[] = [
     sources: [
       'fourier-1822', 'oppenheim-willsky-1997', 'bracewell-2000',
       'cooley-tukey-1965', 'horowitz-hill-2015', 'griffiths-2017', 'codata-2018',
+      'grainger-power-systems-2003',
     ],
   },
   {
