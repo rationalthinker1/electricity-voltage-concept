@@ -222,6 +222,8 @@ export const CHAPTERS: ChapterEntry[] = [
       'kirchhoff-1845', 'griffiths-2017', 'irwin-circuit-analysis-2015',
       'grainger-power-systems-2003', 'horowitz-hill-2015', 'codata-2018',
       'ansi-c84-1-2020', 'erickson-maksimovic-2020', 'keysight-34465a-datasheet',
+      'oppenheim-willsky-1997', 'sedra-smith-2014', 'widlar-1965',
+      'johnson-graham-1993', 'pozar-2011',
     ],
   },
   {
