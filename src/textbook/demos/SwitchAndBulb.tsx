@@ -19,11 +19,22 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
-import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
+import { drawCircuit, renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
 interface PathSeg { x1: number; y1: number; x2: number; y2: number }
+
+/**
+ * Manual offscreen-canvas cache for the static schematic.
+ *
+ * Per MDN's canvas optimisation guide, the cheapest way to drop per-frame
+ * cost on a mostly-static drawing is to bake it once into an offscreen
+ * HTMLCanvasElement, then drawImage that onto the visible canvas each tick.
+ * Recompute only when the cache key changes (resize, DPR change, or — for
+ * this demo — switch-state / bulb-glow transitions).
+ */
+interface StaticCacheEntry { key: string; canvas: HTMLCanvasElement }
 
 export function SwitchAndBulbDemo({ figure }: Props) {
   const [closed, setClosed] = useState(false);
@@ -37,8 +48,10 @@ export function SwitchAndBulbDemo({ figure }: Props) {
     else closedAtRef.current = null;
   }, [closed]);
 
+  const cacheRef = useRef<StaticCacheEntry | null>(null);
+
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, dpr } = info;
     let raf = 0;
 
     function draw(now: number) {
@@ -58,6 +71,46 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       const sinceClose = closedAtRef.current != null ? (now - closedAtRef.current) / 1000 : 0;
       // Visual: wave fills the loop in ~0.4 s of wallclock. In reality, ~5 ns.
       const fillFrac = isClosed ? Math.min(1, sinceClose / 0.4) : 0;
+      const bulbOn = isClosed && fillFrac >= 1;
+
+      // Cache key for the static schematic: changes only when w/h/dpr or one
+      // of the discrete display states (switch closed, bulb glowing) flips.
+      const cacheKey = `${w}x${h}@${dpr}|c${isClosed ? 1 : 0}|g${bulbOn ? 1 : 0}`;
+      if (cacheRef.current?.key !== cacheKey) {
+        const staticElements: CircuitElement[] = [
+          // Dim base loop (one polyline closing back to the start).
+          { kind: 'wire',
+            points: [
+              { x: batX, y: top }, { x: bulbX, y: top },
+              { x: bulbX, y: bot }, { x: batX, y: bot },
+            ],
+            color: 'rgba(160,158,149,.25)', lineWidth: 4 },
+          // Battery on the left (vertical), tall enough to touch top + bot rails.
+          { kind: 'battery', at: { x: batX, y: bulbY },
+            color: 'rgba(255,255,255,.18)',
+            label: 'battery', labelOffset: { x: 0, y: (bot - top) / 2 + 18 },
+            leadLength: (bot - top) / 2,
+            negativeColor: '#ecebe5', negativePlateLength: 16,
+            plateGap: (bot - top) / 2,
+            positiveColor: '#ecebe5', positivePlateLength: 28 },
+          // Switch on the top rail.
+          { kind: 'switch', at: { x: switchX, y: top },
+            color: isClosed ? '#ff6b2a' : '#ecebe5',
+            label: 'switch',
+            state: isClosed ? 'closed' : 'open-up',
+            terminalGap: 32 },
+          // Bulb on the right side, glowing when the wave reaches it.
+          { kind: 'bulb', at: { x: bulbX, y: bulbY },
+            radius: 16, brightness: bulbOn ? 1 : 0,
+            label: 'bulb', labelOffset: { x: 0, y: 32 } },
+        ];
+        cacheRef.current = {
+          key: cacheKey,
+          canvas: renderCircuitToCanvas({ elements: staticElements }, w, h, dpr),
+        };
+      }
+      // One drawImage replaces ~12 strokes/fills per frame.
+      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
 
       // Loop path, ordered so we can split it into a "dim base" plus an "energised prefix".
       const loop: PathSeg[] = [
@@ -87,36 +140,7 @@ export function SwitchAndBulbDemo({ figure }: Props) {
         }
       }
 
-      const elements: CircuitElement[] = [
-        // Dim base loop (one polyline closing back to the start).
-        { kind: 'wire',
-          points: [
-            { x: batX, y: top }, { x: bulbX, y: top },
-            { x: bulbX, y: bot }, { x: batX, y: bot },
-          ],
-          color: 'rgba(160,158,149,.25)', lineWidth: 4 },
-        // Battery on the left (vertical), tall enough to touch top + bot rails.
-        { kind: 'battery', at: { x: batX, y: bulbY },
-          color: 'rgba(255,255,255,.18)',
-          label: 'battery', labelOffset: { x: 0, y: (bot - top) / 2 + 18 },
-          leadLength: (bot - top) / 2,
-          negativeColor: '#ecebe5', negativePlateLength: 16,
-          plateGap: (bot - top) / 2,
-          positiveColor: '#ecebe5', positivePlateLength: 28 },
-        // Switch on the top rail.
-        { kind: 'switch', at: { x: switchX, y: top },
-          color: isClosed ? '#ff6b2a' : '#ecebe5',
-          label: 'switch',
-          state: isClosed ? 'closed' : 'open-up',
-          terminalGap: 32 },
-        // Bulb on the right side, glowing when the wave reaches it.
-        { kind: 'bulb', at: { x: bulbX, y: bulbY },
-          radius: 16, brightness: isClosed && fillFrac >= 1 ? 1 : 0,
-          label: 'bulb', labelOffset: { x: 0, y: 32 } },
-      ];
-      drawCircuit(ctx, { elements });
-
-      // Energised overlay drawn on top so it sits above the dim base.
+      // Energised overlay drawn on top of the cached backdrop.
       if (energised.length > 1) {
         ctx.save();
         ctx.shadowColor = 'rgba(255,107,42,.6)';

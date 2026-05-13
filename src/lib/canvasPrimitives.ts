@@ -803,3 +803,34 @@ export function drawCircuit(ctx: CanvasRenderingContext2D, spec: CircuitSpec): v
     }
   }
 }
+
+/* ───────────────────────────────────────────────────────────────────────────
+ *  renderCircuitToCanvas — pre-render a CircuitSpec to an offscreen canvas.
+ *
+ *  Per MDN's canvas optimisation guide, the biggest single win for a static
+ *  schematic that's redrawn every frame is to bake it once into an offscreen
+ *  HTMLCanvasElement, then drawImage() that onto the visible canvas each tick.
+ *  The expensive part — many beginPath/stroke calls, gradient fills, label
+ *  measurements — runs once at the resolution the screen will read it at.
+ *
+ *  Returns an HTMLCanvasElement (not OffscreenCanvas — Safari ≤16 lacks 2d
+ *  context support on OffscreenCanvas in workers, and we don't need the
+ *  worker affordance here). The returned canvas is at backing-store size
+ *  (w·dpr × h·dpr); drawImage with the CSS-pixel dimensions to display it.
+ * ─────────────────────────────────────────────────────────────────────── */
+
+export function renderCircuitToCanvas(
+  spec: CircuitSpec,
+  w: number,
+  h: number,
+  dpr = 1,
+): HTMLCanvasElement {
+  const off = document.createElement('canvas');
+  off.width = Math.max(1, Math.floor(w * dpr));
+  off.height = Math.max(1, Math.floor(h * dpr));
+  const ctx = off.getContext('2d');
+  if (!ctx) return off;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  drawCircuit(ctx, spec);
+  return off;
+}
