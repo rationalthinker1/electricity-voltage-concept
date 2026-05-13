@@ -25,10 +25,13 @@ import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { BrewsterAngleDemo } from './demos/BrewsterAngle';
+import { DiffractionGratingDemo } from './demos/DiffractionGrating';
 import { DispersionDemo } from './demos/Dispersion';
 import { DoubleSlitDemo } from './demos/DoubleSlit';
 import { FiberOpticDemo } from './demos/FiberOptic';
 import { LaserCavityDemo } from './demos/LaserCavity';
+import { LensFocusingDemo } from './demos/LensFocusing';
+import { PolarizationMalusLawDemo } from './demos/PolarizationMalusLaw';
 import { SnellsLawDemo } from './demos/SnellsLaw';
 import { ThinFilmDemo } from './demos/ThinFilm';
 import { getChapter } from './data/chapters';
@@ -136,6 +139,49 @@ export default function Ch14Optics() {
         anti-reflection coatings and optical waveguides care about this constantly.
       </p>
 
+      <h2>Lenses and image formation</h2>
+
+      <p>
+        Curve the interface and Snell's law starts doing real work. A <Term def="A piece of transparent material with two refracting surfaces shaped so that parallel rays from one direction converge to (convex) or diverge from (concave) a common focal point. Characterised by a focal length f.">lens</Term> is a slab of glass
+        ground so that incoming parallel rays — all bent by Snell's law at the front face and again
+        at the back — converge to a single <em>focal point</em> on the far side (a converging,
+        biconvex lens) or appear to diverge from a virtual focal point on the same side (a
+        diverging, biconcave lens). For thin lenses the <Term def="The thin-lens approximation 1/f = 1/d_o + 1/d_i for object distance d_o, image distance d_i, and focal length f. Sign convention: distances measured along the direction of light propagation are positive; magnification m = -d_i/d_o.">thin-lens equation</Term> ties the focal
+        length f, object distance d<sub>o</sub>, and image distance d<sub>i</sub> together<Cite id="hecht-2017" in={SOURCES} />:
+      </p>
+      <Formula>1/f = 1/d<sub>o</sub> + 1/d<sub>i</sub></Formula>
+      <p>
+        with magnification <strong>m = −d<sub>i</sub>/d<sub>o</sub></strong>. A converging lens with
+        the object placed beyond f forms a real, inverted image; placed inside f, a virtual,
+        upright, enlarged image (the magnifying glass). The same equation runs a 50-mm camera lens,
+        an eyepiece, the cornea + crystalline-lens system of the human eye, and the objective of an
+        astronomical refractor. Real lenses suffer from chromatic aberration (because n depends on
+        λ — different colours focus at different f) and spherical aberration (because a perfect
+        sphere doesn't focus a perfect point); cancelling those is most of what a professional
+        optical designer does.
+      </p>
+
+      <LensFocusingDemo />
+
+      <TryIt
+        tag="Try 14.1b"
+        question={<>A 50-mm converging lens forms an image of a candle 1.00 m away. Where is the image, and what is the magnification?</>}
+        hint="1/f = 1/d_o + 1/d_i."
+        answer={
+          <>
+            <Formula>1/d<sub>i</sub> = 1/f − 1/d<sub>o</sub> = 1/0.050 − 1/1.00 = 20.0 − 1.0 = 19.0 m⁻¹</Formula>
+            <Formula>d<sub>i</sub> ≈ <strong>0.0526 m = 52.6 mm</strong></Formula>
+            <Formula>m = −d<sub>i</sub>/d<sub>o</sub> = −0.0526/1.00 ≈ <strong>−0.053</strong></Formula>
+            <p>
+              The image forms just past the focal plane, inverted, and about 5% the size of the
+              candle — a tiny upside-down candle on a sensor. That's why a 50-mm "normal" SLR lens
+              with subjects ~1 m away puts a sharply-focused image right around the back of the
+              barrel<Cite id="hecht-2017" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <h2>Why a prism splits white light</h2>
 
       <p>
@@ -218,6 +264,20 @@ export default function Ch14Optics() {
         polarisation-by-reflection in stress-analysis optics, and the way photographers use
         circular polarisers to deepen blue skies.
       </p>
+
+      <p>
+        Place a second polariser (the <em>analyser</em>) behind the first and you get Étienne-Louis
+        Malus's 1809 law: light of intensity I<sub>0</sub> linearly polarised at angle θ<sub>1</sub>
+        passes through an analyser oriented at θ<sub>2</sub> with intensity
+        <strong> I = I<sub>0</sub> cos²(θ<sub>2</sub> − θ<sub>1</sub>)</strong>. Cross the two axes
+        (90° apart) and the field has no component along the analyser — nothing gets through. Add a
+        <Term def="A birefringent plate whose thickness is chosen so that the two orthogonal polarisation components emerge with a 90° relative phase shift. Converts linear polarisation at ±45° to its axes into circular polarisation, and vice versa.">quarter-wave plate</Term> between the two polarisers at 45° to the first axis, and the
+        linear polarisation becomes circular: now the analyser transmits a steady I<sub>0</sub>/2 ·
+        ½ = I<sub>0</sub>/4 regardless of θ<sub>2</sub>, because the rotating E-vector always has a
+        cosine-or-sine component along any axis<Cite id="hecht-2017" in={SOURCES} />.
+      </p>
+
+      <PolarizationMalusLawDemo />
 
       <TryIt
         tag="Try 14.3"
@@ -335,6 +395,37 @@ export default function Ch14Optics() {
             <p>
               Red-orange — about the colour of a helium-neon laser line (632.8 nm) or a
               red-LED<Cite id="hecht-2017" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
+      <p>
+        Take Young's two slits and multiply them: N equally-spaced slits with spacing d. Each pair
+        contributes its own two-beam interference, and the N partial-amplitudes sum to the
+        N-slit pattern <em>|sin(Nβ)/(N sinβ)|²</em> where β = π d sinθ / λ. The principal maxima
+        sit at the same angles as the double-slit (<strong>sin θ = m λ / d</strong>), but every
+        peak now has a full-width-at-half-maximum that scales as <strong>1/N</strong>. That's
+        what makes a <Term def="An optical element with many regularly-spaced grooves (typically 300–2400 lines/mm). Diffracts incident light into a wavelength-dependent set of orders, and is the dispersive element in nearly every modern spectrometer.">diffraction grating</Term> a precision spectroscopic tool: a 1200-line/mm grating
+        illuminated by light of finite bandwidth resolves features down to λ/Δλ ≈ 10⁵ in modest
+        instruments<Cite id="born-wolf-1999" in={SOURCES} />.
+      </p>
+
+      <DiffractionGratingDemo />
+
+      <TryIt
+        tag="Try 14.5b"
+        question={<>A 600-line/mm diffraction grating is illuminated by 550-nm light. At what angle is the first-order (m = 1) maximum?</>}
+        hint="sin θ = m λ / d. Compute d from the line density."
+        answer={
+          <>
+            <Formula>d = 1 mm / 600 = 1.667×10⁻⁶ m = 1.667 µm</Formula>
+            <Formula>sin θ<sub>1</sub> = (1)·(550×10⁻⁹) / (1.667×10⁻⁶) ≈ 0.330</Formula>
+            <Formula>θ<sub>1</sub> = arcsin(0.330) ≈ <strong>19.3°</strong></Formula>
+            <p>
+              Adjacent wavelengths separate by roughly dθ/dλ ≈ m / (d cos θ) ≈ 6.3×10⁵ rad/m
+              ≈ 0.036°/nm at first order. A spectrometer with a 1° detector array can resolve the
+              sodium-D doublet (0.6 nm split, ≈0.022°) at first order with room to spare<Cite id="born-wolf-1999" in={SOURCES} />.
             </p>
           </>
         }

@@ -20,6 +20,9 @@ import { RLCResonanceDemo } from './demos/RLCResonance';
 import { ImpedanceDemo } from './demos/Impedance';
 import { ThreePhaseDemo } from './demos/ThreePhase';
 import { TheveninEquivalentDemo } from './demos/TheveninEquivalent';
+import { VoltageDividerDemo } from './demos/VoltageDivider';
+import { PowerFactorDemo } from './demos/PowerFactor';
+import { SuperpositionDemo } from './demos/Superposition';
 import { getChapter } from './data/chapters';
 
 export default function Ch12CircuitsAndAC() {
@@ -123,6 +126,59 @@ export default function Ch12CircuitsAndAC() {
         the time-varying flux through the loop is negligible. The schematic inherits the
         conservation laws of the underlying field theory.
       </p>
+
+      <h2>Voltage <em>dividers</em> and loading</h2>
+
+      <p>
+        The simplest non-trivial circuit is two resistors in series across a voltage source, with
+        the output tapped off the junction between them. KVL applied to the loop and Ohm's law
+        applied to each leg give one line of algebra:
+      </p>
+      <Formula>V<sub>out</sub> = V<sub>in</sub> · R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>)</Formula>
+      <p>
+        This <strong>voltage divider</strong> is the most-used three-component circuit on Earth.
+        It sets the bias on every transistor in every analog stage, it generates references for
+        ADCs, it scales sensor signals to fit into a microcontroller's input range, and it is the
+        first thing you draw on the back of an envelope when you need a 3.3 V rail from a 5 V
+        supply and don't yet care that it will be lossy.
+      </p>
+
+      <VoltageDividerDemo />
+
+      <p>
+        Pure-divider behaviour holds only when nothing is connected to the output. The moment you
+        attach a real load — an ADC input, an amplifier stage, an instrument probe — the lower
+        leg becomes R<sub>2</sub> ∥ R<sub>L</sub>, and the output sags. The standard failure
+        mode: a nominal V<sub>in</sub>/2 midpoint, tapped off two 100 kΩ resistors, collapses
+        appreciably the moment a 10 kΩ-input meter touches it<Cite id="horowitz-hill-2015" in={SOURCES} />.
+        The engineering rule of thumb is to keep the load impedance at least 10× the Thévenin
+        resistance of the divider, or — better — to follow the divider with an op-amp voltage
+        buffer (Ch.13), so that the next stage sees a near-zero source impedance.
+      </p>
+
+      <TryIt
+        tag="Try 12.1b"
+        question={
+          <>
+            A 9 V battery drives a series chain with R<sub>1</sub> = 1 kΩ and R<sub>2</sub> = 2 kΩ.
+            What is V<sub>out</sub> across R<sub>2</sub> with no load? What does V<sub>out</sub>
+            become when a 6 kΩ load is connected across R<sub>2</sub>?
+          </>
+        }
+        hint={<>Unloaded: V<sub>out</sub> = V<sub>in</sub> R<sub>2</sub>/(R<sub>1</sub>+R<sub>2</sub>). Loaded: replace R<sub>2</sub> with R<sub>2</sub> ∥ R<sub>L</sub>.</>}
+        answer={
+          <>
+            <Formula>V<sub>out, no load</sub> = 9 · 2/(1+2) = <strong>6.0 V</strong></Formula>
+            <p>With the 6 kΩ load in place, the lower leg becomes</p>
+            <Formula>R<sub>2</sub> ∥ R<sub>L</sub> = (2·6)/(2+6) = 1.5 kΩ</Formula>
+            <Formula>V<sub>out, loaded</sub> = 9 · 1.5/(1+1.5) = <strong>5.4 V</strong></Formula>
+            <p>
+              A 10% sag, which would already be unacceptable for many ADC reference circuits and
+              is the textbook reason for the op-amp buffer in Ch.13<Cite id="horowitz-hill-2015" in={SOURCES} /><Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <h2>What the <em>multimeter</em> actually reads</h2>
 
@@ -464,6 +520,42 @@ export default function Ch12CircuitsAndAC() {
         motor banks<Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
 
+      <PowerFactorDemo />
+
+      <p>
+        The shaded area under p(t) — the energy actually delivered each cycle — is exactly the
+        dashed mean line times the period. When φ = 0 (pure resistor), p(t) ≥ 0 everywhere; every
+        microjoule that flows out from the source ends up dissipated in R. When φ = 90° (pure
+        inductor), p(t) is symmetric about zero, the time integral is zero, and the source
+        absorbs as much energy in one quarter cycle as it delivered in the previous one. Real
+        loads sit between the extremes; the power factor cos(φ) tells you what fraction of the
+        volt-ampere product translates into useful work<Cite id="grainger-power-systems-2003" in={SOURCES} />.
+      </p>
+
+      <TryIt
+        tag="Try 12.5b"
+        question={
+          <>
+            An AC load draws <strong>1 kW</strong> of real power and <strong>750 VAR</strong> of
+            reactive power at <strong>240 V<sub>rms</sub> / 60 Hz</strong>. What is its power
+            factor? What line current does it draw?
+          </>
+        }
+        hint={<>S = √(P² + Q²); pf = P/S; I<sub>rms</sub> = S / V<sub>rms</sub>.</>}
+        answer={
+          <>
+            <Formula>S = √(P² + Q²) = √(1000² + 750²) = 1250 VA</Formula>
+            <Formula>pf = P/S = 1000 / 1250 = <strong>0.80</strong></Formula>
+            <Formula>I<sub>rms</sub> = S / V<sub>rms</sub> = 1250 / 240 ≈ <strong>5.21 A</strong></Formula>
+            <p>
+              The wires actually carry 5.21 A even though only 4.17 A would suffice for a
+              unity-pf load delivering the same 1 kW. Power-factor-correction caps shrink the
+              apparent power back toward 1000 VA and the line current toward 4.17 A<Cite id="grainger-power-systems-2003" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <TryIt
         tag="Try 12.5"
         question={
@@ -533,6 +625,18 @@ export default function Ch12CircuitsAndAC() {
         interchangeable: a real voltage source with internal resistance is indistinguishable, from
         outside, from a real current source with the same internal resistance.
       </p>
+
+      <p>
+        The proof that any linear two-terminal network has such an equivalent rests on
+        <strong> superposition</strong>: in any network whose components obey linear constitutive
+        equations, the response to several independent sources is the algebraic sum of the
+        responses to each source acting alone (with the others zeroed). The demo below lets you
+        watch superposition do its thing in a bridge of three resistors and two sources — turn
+        each source on or off, and the branch currents in the live case are always the exact sum
+        of the per-source contributions<Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
+      </p>
+
+      <SuperpositionDemo />
 
       <TheveninEquivalentDemo />
 

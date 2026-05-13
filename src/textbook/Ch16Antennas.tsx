@@ -26,6 +26,9 @@ import { DipoleRadiationPatternDemo } from './demos/DipoleRadiationPattern';
 import { FriisLinkBudgetDemo } from './demos/FriisLinkBudget';
 import { HalfWaveDipoleResonanceDemo } from './demos/HalfWaveDipoleResonance';
 import { NearFarFieldTransitionDemo } from './demos/NearFarFieldTransition';
+import { PatchAntennaDemo } from './demos/PatchAntenna';
+import { PhasedArraySteeringDemo } from './demos/PhasedArraySteering';
+import { PolarizationLossPenaltyDemo } from './demos/PolarizationLossPenalty';
 import { YagiArrayFactorDemo } from './demos/YagiArrayFactor';
 import { getChapter } from './data/chapters';
 
@@ -229,6 +232,42 @@ export default function Ch15Antennas() {
         VHF/UHF<Cite id="balanis-2016" in={SOURCES} /><Cite id="kraus-marhefka-2002" in={SOURCES} />.
       </p>
 
+      <p>
+        Pull the parasitic elements off the Yagi and replace them with a row of <em>actively driven</em>
+        elements, each fed through its own phase shifter, and you have a <em>phased array</em>. With
+        N elements at spacing d and a progressive phase shift Δφ between neighbours, the array
+        factor's main lobe steers off broadside by an angle satisfying<Cite id="balanis-2016" in={SOURCES} /><Cite id="kraus-marhefka-2002" in={SOURCES} />:
+      </p>
+      <Formula>sin θ<sub>steer</sub> = (Δφ · λ) / (2π d)</Formula>
+      <p>
+        No moving parts: change Δφ electronically and the beam swings. With d = λ/2 the array can
+        steer the full ±90° hemisphere. Push d much above λ/2 and unwanted "grating lobes" appear
+        on the other side of broadside — uninvited copies of the main beam at angles where the
+        path-difference comes out an integer wavelength. AESA radars and 5G mmWave base stations
+        live exactly on this edge: λ/2 spacing for the steering range they want, electronic
+        phase shifters in every element to point the beam wherever needed in microseconds.
+      </p>
+
+      <PhasedArraySteeringDemo />
+
+      <TryIt
+        tag="Try 15.3b"
+        question={<>A 4-element phased array at 10 GHz with d = λ/2 spacing. What phase shift Δφ between adjacent elements steers the main beam to 30° off broadside?</>}
+        hint="sin θ_steer = Δφ · λ / (2π d). With d = λ/2 the formula simplifies."
+        answer={
+          <>
+            <Formula>Δφ = (2π d / λ) · sin θ<sub>steer</sub> = (2π · 0.5) · sin 30° = π · 0.5 = π/2 rad</Formula>
+            <Formula>Δφ = π/2 = <strong>90° per element</strong></Formula>
+            <p>
+              So a 4-element array is fed 0°, 90°, 180°, 270° to steer to 30°. Real phased arrays
+              use 6- or 8-bit digital phase shifters per element (5.6° or 1.4° resolution),
+              quantised so the beam pointing remains accurate to a fraction of a beamwidth across
+              the whole steering range<Cite id="balanis-2016" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <TryIt
         tag="Try 15.3"
         question={<>An antenna is rated 12 dBi gain. By what factor does it concentrate the power, relative to an isotropic radiator (one that emits equally in all directions)?</>}
@@ -277,6 +316,16 @@ export default function Ch15Antennas() {
         The same equation applies to a deep-space link at 8 GHz and 25 billion km — only the
         numbers and the receiver are different<Cite id="friis-1946" in={SOURCES} />.
       </p>
+
+      <p>
+        Friis assumes the polarisations at the two ends are matched. If they aren't, multiply by a
+        <Term def="The factor cos²α by which received power drops when transmitter and receiver linear polarisations are misaligned by angle α. The antenna analogue of Malus's law in optics — a dipole only couples to the E-field component along its axis.">polarisation-loss factor</Term> of <strong>cos²α</strong>, where α is the angle between the
+        two linear polarisation axes. Same Malus's law as optics: an antenna is a polarisation
+        filter that only couples to the E-field component along its own axis. A 45° mismatch costs
+        3 dB; a 90° mismatch is a full null on paper and 20–40 dB of suppression in practice<Cite id="balanis-2016" in={SOURCES} />.
+      </p>
+
+      <PolarizationLossPenaltyDemo />
 
       <TryIt
         tag="Try 15.4"
@@ -340,6 +389,47 @@ export default function Ch15Antennas() {
             <p>
               Within about half a metre of the dipole the field is dominated by reactive 1/r³
               terms; beyond, the 1/r radiation field dominates and Friis applies<Cite id="balanis-2016" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
+      <h2>Patch antennas and the printed-circuit radiator</h2>
+
+      <p>
+        A <Term def="A flat rectangular metal patch on a dielectric substrate over a ground plane, fed from below. Resonates as a half-wave standing wave inside the dielectric: L ≈ λ/(2√εᵣ). Radiation is broadside, gain ~6 dBi.">microstrip patch antenna</Term> is the workhorse of everything printed on a circuit board.
+        It's a flat rectangle of copper sitting on a dielectric substrate (FR-4, Rogers RO4003,
+        etc.) over a continuous ground plane. The fundamental resonance is a half-wave standing
+        wave between the two radiating edges — but the wave lives inside the dielectric, so the
+        physical length is set by the in-medium wavelength<Cite id="balanis-2016" in={SOURCES} />:
+      </p>
+      <Formula>L ≈ λ / (2 √ε<sub>r</sub>) &nbsp;⇔&nbsp; f<sub>0</sub> ≈ c / (2 L √ε<sub>r</sub>)</Formula>
+      <p>
+        The radiation pattern is broadside (perpendicular to the patch plane), with typical gain
+        around <strong>6 dBi</strong> and a half-power beamwidth around 80°. The ground plane sits
+        underneath like a mirror, so essentially nothing radiates downward — exactly what you want
+        in a phone (radiate into the user's environment, not into the battery). Add a second
+        resonance by tweaking the patch into an L or T shape, or stack two patches at different
+        heights, and you have multi-band antennas covering Wi-Fi 2.4 / 5 / 6 GHz from a single
+        few-cm² footprint<Cite id="kraus-marhefka-2002" in={SOURCES} />.
+      </p>
+
+      <PatchAntennaDemo />
+
+      <TryIt
+        tag="Try 15.6"
+        question={<>An FR-4 patch antenna (εᵣ = 4.4) is to resonate at 2.45 GHz (the centre of the Wi-Fi 2.4-GHz band). Estimate L.</>}
+        hint="L ≈ c / (2 f₀ √εᵣ)."
+        answer={
+          <>
+            <Formula>λ<sub>0</sub> = c/f = 3×10⁸ / 2.45×10⁹ ≈ 0.1224 m = 12.24 cm</Formula>
+            <Formula>L ≈ λ<sub>0</sub> / (2 √εᵣ) = 0.1224 / (2·√4.4) ≈ 0.1224 / 4.20</Formula>
+            <Formula>L ≈ <strong>0.0292 m ≈ 29 mm</strong></Formula>
+            <p>
+              That's about 1.1 inches per side — exactly the kind of square copper patch you can
+              find printed on the corner of a Wi-Fi access-point PCB. Real designs trim L by a few
+              percent for fringing-field correction, and the patch width W tunes the input
+              impedance separately<Cite id="balanis-2016" in={SOURCES} />.
             </p>
           </>
         }

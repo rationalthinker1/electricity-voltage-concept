@@ -16,11 +16,14 @@ import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { BrushedDCMotorDemo } from './demos/BrushedDCMotor';
+import { BackEMFInRunningMotorDemo } from './demos/BackEMFInRunningMotor';
 import { BLDCCommutationDemo } from './demos/BLDCCommutation';
+import { FieldOrientedControlDemo } from './demos/FieldOrientedControl';
 import { InductionMotorSlipDemo } from './demos/InductionMotorSlip';
 import { SynchronousMotorDemo } from './demos/SynchronousMotor';
 import { StepperMotorDemo } from './demos/StepperMotor';
 import { TorqueSpeedCurveDemo } from './demos/TorqueSpeedCurve';
+import { MotorEfficiencyMapDemo } from './demos/MotorEfficiencyMap';
 import { getChapter } from './data/chapters';
 
 export default function Ch16Motors() {
@@ -119,6 +122,39 @@ export default function Ch16Motors() {
         tolerate the extra cost have moved on.
       </p>
 
+      <p>
+        That back-EMF is worth a closer look, because it is the single equation governing how a brushed DC motor
+        behaves between the moment you connect it and the moment it reaches a steady running speed. In a frozen
+        rotor (ω = 0), the back-EMF is zero, so the full supply voltage drops across the winding resistance and
+        <em> I = V/R</em> — an inrush current commonly 10× the rated running value. As the rotor spins up, back-EMF
+        rises in proportion to speed (<em>E<sub>back</sub> = k<sub>e</sub> ω</em>), the net voltage across <em>R</em>
+        falls, and the current drops to whatever value is required to balance the load torque. The settling time is
+        set by the mechanical inertia, not the electrical time constant: that is why inrush current is brief but
+        ferocious<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
+      </p>
+
+      <BackEMFInRunningMotorDemo />
+
+      <TryIt
+        tag="Try 16.2"
+        question={<>A <strong>12 V</strong> brushed DC motor has winding resistance <strong>R = 1 Ω</strong> and back-EMF constant <strong>k<sub>e</sub> = 0.1 V·s/rad</strong>. What is the starting current at stall? What is the steady-state current at ω = 100 rad/s with negligible load?</>}
+        hint="At stall E_back = 0 so I = V/R. At ω = 100 rad/s, E_back = k_e ω, and I = (V − E_back)/R."
+        answer={
+          <>
+            <p>At stall (ω = 0):</p>
+            <Formula>I_stall = V/R = 12/1 = <strong>12 A</strong></Formula>
+            <p>At ω = 100 rad/s:</p>
+            <Formula>E_back = k_e ω = (0.1)(100) = 10 V</Formula>
+            <Formula>I = (V − E_back) / R = (12 − 10) / 1 = <strong>2 A</strong></Formula>
+            <p>
+              The starting current is 6× the running current — a typical ratio. This is why every motor controller
+              needs either a soft-start, a series inrush limiter, or a power stage rated for the worst-case stall
+              current<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <h2>Brushless DC and PMSM</h2>
 
       <p>
@@ -149,8 +185,20 @@ export default function Ch16Motors() {
         and Korean EVs — is a PMSM<Cite id="krishnan-2010-bldc" in={SOURCES} />.
       </p>
 
+      <p>
+        Field-oriented control deserves a closer look, because it is the single algorithmic trick that turns three
+        wiggling AC phases into the two clean control knobs an engineer wants. Two coordinate transforms — Clarke
+        (3-phase to a stationary 2-axis frame) and Park (2-axis stationary to 2-axis rotor-aligned) — convert the
+        three stator currents into an <em>i<sub>d</sub></em> component aligned with the rotor's flux axis and an
+        <em> i<sub>q</sub></em> component perpendicular to it. Torque is proportional to <em>i<sub>q</sub></em> alone
+        (for a surface PMSM with <em>i<sub>d</sub></em> held at zero), so a single PI loop on <em>i<sub>q</sub></em>
+        gives smooth torque control identical to a brushed DC motor — but with no brushes<Cite id="krishnan-2010-bldc" in={SOURCES} />.
+      </p>
+
+      <FieldOrientedControlDemo />
+
       <TryIt
-        tag="Try 16.2"
+        tag="Try 16.3"
         question={<>A BLDC motor has 4 pole-pairs. The electrical commutation runs at <strong>200 Hz</strong>. What is the mechanical RPM?</>}
         hint="One mechanical revolution per pole-pair set of electrical cycles. So f_mech = f_elec / p_pairs."
         answer={
@@ -210,7 +258,7 @@ export default function Ch16Motors() {
       </Pullout>
 
       <TryIt
-        tag="Try 16.3"
+        tag="Try 16.4"
         question={<>A 4-pole induction motor runs from a 60 Hz line and turns at <strong>1740 RPM</strong> under load. What is the slip?</>}
         hint="Compute synchronous speed first: n_s = 120 f / p."
         answer={
@@ -220,6 +268,23 @@ export default function Ch16Motors() {
             <p>
               Right in the middle of the typical full-load range. A 1.5 % slip would mean the motor is only lightly
               loaded; 6 % would mean it's at or near rated full load<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 16.5"
+        question={<>A 4-pole 60 Hz induction motor runs at <strong>4 %</strong> slip at rated load. What is the rotor RPM?</>}
+        hint="n_s = 120 f / p, then n = n_s · (1 − s)."
+        answer={
+          <>
+            <Formula>n<sub>s</sub> = 120 · 60 / 4 = 1800 RPM</Formula>
+            <Formula>n = n<sub>s</sub> · (1 − s) = 1800 · 0.96 = <strong>1728 RPM</strong></Formula>
+            <p>
+              That 72 RPM gap below synchronous is what produces the torque: the cage bars slip through the rotating
+              field at <em>s · n<sub>s</sub></em>, and the resulting induced bar currents react with the field to
+              pull the rotor along<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
             </p>
           </>
         }
@@ -258,7 +323,7 @@ export default function Ch16Motors() {
       <StepperMotorDemo />
 
       <TryIt
-        tag="Try 16.4"
+        tag="Try 16.6"
         question={<>A NEMA-17 stepper has 200 steps per revolution. You drive it at <strong>1/16 microstepping</strong>, and your controller sends <strong>3200</strong> pulses. How far does the shaft rotate?</>}
         hint="3200 microsteps ÷ 16 microsteps/step = 200 full steps. 200 full steps = one full revolution at this resolution."
         answer={
@@ -302,8 +367,30 @@ export default function Ch16Motors() {
         curve at the design operating point.
       </p>
 
+      <p>
+        Choosing the curve is only half the job; the other half is choosing the <em>operating point on it</em>. A
+        motor is not equally efficient everywhere on its torque–speed plane. Copper losses scale as <em>I²R</em> — and
+        therefore as torque squared. Iron losses (eddy + hysteresis in the laminations) scale roughly with frequency
+        to the 1.5 power. Bearing and windage losses scale with speed. The combination produces a "sweet spot" of
+        peak efficiency near rated torque and rated speed, with efficiency falling off at low loads (where the
+        speed-dependent losses dominate the small useful output) and at high speeds (where iron and PM eddy losses
+        run away). A premium PMSM peaks near 96 % efficiency; a good induction motor near 93 %; a brushed DC motor
+        rarely above 85 %<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
+      </p>
+
+      <MotorEfficiencyMapDemo />
+
+      <p>
+        For an EV, the practical consequence is that the gearbox ratio is chosen to put the motor's operating point
+        inside its bright sweet spot for the typical cruise condition. A single-speed reduction (about 9:1 in a Tesla
+        Model 3) is enough because the PMSM's sweet spot is broad and the inverter can field-weaken to extend
+        constant-power operation toward top speed. Industrial inverter-driven pumps and fans get the same benefit:
+        variable-frequency operation keeps the motor near rated torque at every speed the application
+        demands<Cite id="krishnan-2010-bldc" in={SOURCES} />.
+      </p>
+
       <TryIt
-        tag="Try 16.5"
+        tag="Try 16.7"
         question={<>A brushed DC motor has stall torque <strong>0.8 N·m</strong> and no-load speed <strong>4000 rpm</strong>. Assuming a linear curve, what torque does it produce at <strong>2000 rpm</strong>?</>}
         hint="Linear interpolation between stall and no-load. At half no-load speed, what fraction of stall torque?"
         answer={

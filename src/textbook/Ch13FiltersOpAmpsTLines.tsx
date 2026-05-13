@@ -20,6 +20,9 @@ import { OpAmpInvertingDemo } from './demos/OpAmpInverting';
 import { OpAmpIntegratorDemo } from './demos/OpAmpIntegrator';
 import { TransmissionLineReflectionDemo } from './demos/TransmissionLineReflection';
 import { StandingWavesOnLineDemo } from './demos/StandingWavesOnLine';
+import { SallenKeyFilterDemo } from './demos/SallenKeyFilter';
+import { OpAmpFollowerDemo } from './demos/OpAmpFollower';
+import { SmithChartBasicsDemo } from './demos/SmithChartBasics';
 import { getChapter } from './data/chapters';
 
 export default function Ch13FiltersOpAmpsTLines() {
@@ -119,6 +122,64 @@ export default function Ch13FiltersOpAmpsTLines() {
         Whatever the choice, they all factor into cascades of first- and second-order RLC blocks
         whose individual Bode plots add up (in dB) to the overall response<Cite id="horowitz-hill-2015" in={SOURCES} /><Cite id="oppenheim-willsky-1997" in={SOURCES} />.
       </p>
+
+      <h3>Active filter topologies</h3>
+
+      <p>
+        Passive RLC sections do the job up to a point, but inductors are physically big, hard to
+        integrate on silicon, and tend to pick up stray magnetic coupling. The standard
+        alternative replaces the inductor with an op-amp and a couple of capacitors. The simplest
+        and most-used result is the <strong>Sallen-Key</strong> stage: one op-amp wired as a
+        non-inverting amplifier with two RC sections feeding its (+) input, producing a 2nd-order
+        transfer function whose cutoff and quality factor can be chosen independently<Cite id="horowitz-hill-2015" in={SOURCES} /><Cite id="sedra-smith-2014" in={SOURCES} />.
+      </p>
+      <p>
+        For an equal-component design with R<sub>1</sub> = R<sub>2</sub> = R, C<sub>1</sub> =
+        C<sub>2</sub> = C, and a non-inverting gain K = 1 + R<sub>f</sub>/R<sub>g</sub>, the
+        transfer function works out to
+      </p>
+      <Formula>
+        H(jω) = K / (1 − (ω/ω<sub>0</sub>)<sup>2</sup> + j(ω/ω<sub>0</sub>)(3 − K))
+      </Formula>
+      <p>
+        with corner ω<sub>0</sub> = 1/(RC) and Q = 1/(3 − K). The stopband slope is
+        <strong> −40 dB/decade</strong>, twice as steep as a passive first-order RC; K controls
+        the peaking at f<sub>0</sub>. Cascading two such stages with Q = 0.54 and Q = 1.31
+        produces a 4th-order Butterworth (maximally flat passband, −80 dB/decade roll-off). Other
+        Q pairs give Chebyshev, Bessel, or elliptic responses<Cite id="oppenheim-willsky-1997" in={SOURCES} />.
+      </p>
+
+      <SallenKeyFilterDemo />
+
+      <p>
+        K = 1 (R<sub>f</sub> = 0, a unity-gain follower) gives Q = 1/2, almost a Butterworth
+        single stage. K = 1.586 gives the canonical Butterworth Q = 1/√2. Past K = 3 the
+        denominator's imaginary part flips sign and the circuit oscillates — the textbook
+        Sallen-Key instability. Sit just shy of that boundary and you get an extremely sharp
+        peak useful for narrow-band detection.
+      </p>
+
+      <TryIt
+        tag="Try 13.1b"
+        question={
+          <>
+            A Sallen-Key low-pass uses equal components R = 10 kΩ, C = 10 nF. What is the cutoff
+            frequency f<sub>0</sub>?
+          </>
+        }
+        hint={<>f<sub>0</sub> = 1/(2π R C) for the equal-component Sallen-Key, exactly as for a passive RC.</>}
+        answer={
+          <>
+            <Formula>R · C = 10<sup>4</sup> · 10<sup>−8</sup> = 10<sup>−4</sup> s</Formula>
+            <Formula>f<sub>0</sub> = 1/(2π · 10<sup>−4</sup>) ≈ <strong>1.59 kHz</strong></Formula>
+            <p>
+              Cutoff frequency <strong>≈ 1.59 kHz</strong> — the same RC time constant as a
+              passive low-pass with those components, but the second-order stage rolls off at
+              −40 dB/decade past it instead of −20<Cite id="horowitz-hill-2015" in={SOURCES} /><Cite id="sedra-smith-2014" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <TryIt
         tag="Try 13.1"
@@ -223,6 +284,25 @@ export default function Ch13FiltersOpAmpsTLines() {
 
       <OpAmpIntegratorDemo />
 
+      <p>
+        The single most undersold topology, though, is the one with no gain at all: the
+        <strong> voltage follower</strong>. R<sub>f</sub> = 0, R<sub>g</sub> = ∞; the output is
+        wired straight back to the inverting input. Closed-loop gain is exactly 1. The whole
+        point is the impedance translation: the (+) input draws picoamps from the source, while
+        the output drives whatever load you hand it with the op-amp's tiny open-loop output
+        resistance. A 1 MΩ sensor that would collapse under a 50 Ω load drives a 50 Ω load with
+        zero attenuation once a follower sits between them<Cite id="horowitz-hill-2015" in={SOURCES} />.
+      </p>
+
+      <OpAmpFollowerDemo />
+
+      <p>
+        Every well-designed measurement front-end has a follower (or its differential-input
+        sibling, the instrumentation amplifier) as the very first stage after the sensor — that
+        is what the divider sag in §Voltage dividers and loading was anticipating.
+      </p>
+
+
       <TryIt
         tag="Try 13.2"
         question={
@@ -309,6 +389,56 @@ export default function Ch13FiltersOpAmpsTLines() {
       </p>
 
       <StandingWavesOnLineDemo />
+
+      <h3>The Smith chart</h3>
+
+      <p>
+        Sliding Z<sub>L</sub> around and tracking Γ, |Γ|, and the phase by hand gets old fast.
+        Philip Smith, working at Bell Labs in 1939, found that the right way to visualise it is
+        to plot Γ directly on the unit disk of the complex plane — and to overlay the disk with
+        the conformal images of the constant-resistance and constant-reactance lines under the
+        bilinear map Γ = (z − 1)/(z + 1), where z = Z<sub>L</sub>/Z<sub>0</sub><Cite id="pozar-2011" in={SOURCES} />.
+        Constant-r becomes a family of circles; constant-x becomes a family of arcs. Every passive
+        load lies inside the unit disk; the centre is the matched load (Γ = 0, VSWR = 1); the rim
+        is total reflection.
+      </p>
+
+      <SmithChartBasicsDemo />
+
+      <p>
+        The Smith chart's killer feature is that moving along the line corresponds to rotating
+        around the origin. Drop the load Z<sub>L</sub> at the right end of a piece of cable and
+        the impedance the generator sees at the left end is the original marker, rotated
+        clockwise by 2βℓ = 4π · (ℓ/λ) on the chart. A quarter-wave section
+        (ℓ = λ/4) rotates exactly 180° — turning a short into an open, an open into a short, and a
+        load Z<sub>L</sub> into Z<sub>in</sub> = Z<sub>0</sub><sup>2</sup>/Z<sub>L</sub>. That
+        last identity is the basis of the <strong>quarter-wave transformer</strong>, the
+        single most popular impedance-matching trick in RF and microwave design<Cite id="pozar-2011" in={SOURCES} />.
+      </p>
+
+      <TryIt
+        tag="Try 13.3b"
+        question={
+          <>
+            A 50 Ω load needs to be matched to a generator that wants to see a 200 Ω input
+            impedance, using a single quarter-wave transmission line between them. What
+            characteristic impedance Z<sub>0</sub> must the line have?
+          </>
+        }
+        hint={<>For a quarter-wave line, Z<sub>in</sub> = Z<sub>0</sub><sup>2</sup> / Z<sub>L</sub>. Solve for Z<sub>0</sub>.</>}
+        answer={
+          <>
+            <Formula>Z<sub>0</sub> = √(Z<sub>in</sub> · Z<sub>L</sub>) = √(200 · 50)</Formula>
+            <Formula>Z<sub>0</sub> = √(10 000) = <strong>100 Ω</strong></Formula>
+            <p>
+              A <strong>100 Ω</strong> quarter-wave line transforms a 50 Ω load into a 200 Ω
+              input. The same arithmetic appears in every antenna feed, every microstrip filter,
+              and every monolithic microwave integrated circuit — the geometric mean of the two
+              impedances you need to bridge<Cite id="pozar-2011" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <p>
         When does a wire "become" a transmission line? The standard rule of thumb is when the

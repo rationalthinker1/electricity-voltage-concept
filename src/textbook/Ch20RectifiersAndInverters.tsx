@@ -18,6 +18,9 @@ import { LinearRegulatorDemo } from './demos/LinearRegulator';
 import { BuckConverterDemo } from './demos/BuckConverter';
 import { HBridgeInverterDemo } from './demos/HBridgeInverter';
 import { GridTieInverterDemo } from './demos/GridTieInverter';
+import { BoostConverterDemo } from './demos/BoostConverter';
+import { FlybackConverterDemo } from './demos/FlybackConverter';
+import { PWMInverterOutputDemo } from './demos/PWMInverterOutput';
 import { getChapter } from './data/chapters';
 
 export default function Ch19RectifiersAndInverters() {
@@ -182,6 +185,28 @@ export default function Ch19RectifiersAndInverters() {
         }
       />
 
+      <TryIt
+        tag="Try 19.7"
+        question={
+          <>
+            The same <strong>1000 µF</strong> smoothing cap, but now the load draws only{' '}
+            <strong>100 mA</strong> from 60 Hz mains. What is the peak-to-peak ripple? Use
+            T = 1/(2 · 60) = 8.33 ms because both half-cycles top the cap up.
+          </>
+        }
+        hint={<>Same ΔV ≈ I · T / C, just with I = 0.1 A.</>}
+        answer={
+          <>
+            <Formula>ΔV ≈ 0.1 A · 8.33×10⁻³ s / 10⁻³ F = <strong>0.83 V</strong></Formula>
+            <p>
+              About <strong>830 mV peak-to-peak</strong> — ten times less, exactly as the linear ΔV ∝ I
+              law predicts. The bridge fires twice per line cycle (full-wave), so the cap only has to
+              hold up the load for 8.3 ms between recharges, not 16.7 ms<Cite id="horowitz-hill-2015" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <p className="pullout">
         Four diodes and a capacitor: the most ubiquitous circuit on Earth.
       </p>
@@ -337,6 +362,32 @@ export default function Ch19RectifiersAndInverters() {
         }
       />
 
+      <BoostConverterDemo />
+
+      <TryIt
+        tag="Try 19.6"
+        question={
+          <>
+            A buck converter takes <strong>V<sub>in</sub> = 24 V</strong> at duty cycle <strong>D = 0.3</strong>.
+            What is the ideal output voltage? If the load draws <strong>5 A</strong>, what input current does
+            the ideal converter pull?
+          </>
+        }
+        hint={<>V<sub>out</sub> = D · V<sub>in</sub>; ideal power balance V<sub>in</sub> · I<sub>in</sub> = V<sub>out</sub> · I<sub>out</sub>.</>}
+        answer={
+          <>
+            <Formula>V<sub>out</sub> = 0.3 · 24 = 7.2 V</Formula>
+            <Formula>I<sub>in</sub> = V<sub>out</sub> · I<sub>out</sub> / V<sub>in</sub> = 7.2 · 5 / 24 = 1.5 A</Formula>
+            <p>
+              <strong>7.2 V at 1.5 A in / 5 A out</strong>. The current step-up is exactly the inverse of the
+              voltage step-down — same 36 W on both sides, identical in structure to the transformer power
+              balance from Ch.19. The buck is a "DC transformer" with continuously-adjustable
+              ratio<Cite id="erickson-maksimovic-2020" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <p>
         The{' '}
         <Term def={<><strong>flyback converter</strong> — an isolated SMPS topology using a coupled inductor (transformer) as its energy store. During the switch on-time, energy accumulates in the primary's magnetic field; during the off-time, it transfers to the secondary through the rectifier. Provides galvanic isolation and arbitrary step ratio in one stage.</>}>flyback converter</Term>
@@ -347,6 +398,9 @@ export default function Ch19RectifiersAndInverters() {
         rail — because the transformer breaks the conductive link between the lethal mains side
         and the safe-to-touch output<Cite id="mohan-undeland-robbins-2003" in={SOURCES} />.
       </p>
+
+      <FlybackConverterDemo />
+
       <p>
         High-power AC chopping is the territory of one more device family. In 1956 a Bell Labs
         team (Moll, Tanenbaum, Goldey, Holonyak) published the analysis of the four-layer PNPN
@@ -396,6 +450,19 @@ export default function Ch19RectifiersAndInverters() {
       </p>
 
       <HBridgeInverterDemo />
+
+      <PWMInverterOutputDemo />
+
+      <p>
+        The two sliders in the spectrum view tell the engineering story. Raise the carrier frequency and
+        the harmonic cluster slides rightward — further from the 60 Hz fundamental — so the LC output
+        filter that has to attenuate it can be smaller and lighter for the same residual ripple. Drop the
+        modulation index and the fundamental shrinks proportionally while the carrier sidelobes barely
+        move; the inverter is now producing the same waveform shape at a lower output amplitude. Modern
+        SiC and GaN inverters push f<sub>sw</sub> up by an order of magnitude over the IGBT generation
+        precisely for this reason — every kilogram of output choke saved is a kilogram off an EV's
+        weight<Cite id="erickson-maksimovic-2020" in={SOURCES} />.
+      </p>
 
       <TryIt
         tag="Try 19.5"

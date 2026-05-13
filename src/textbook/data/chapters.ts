@@ -320,6 +320,8 @@ export const CHAPTERS: ChapterEntry[] = [
       'faraday-1832', 'stanley-1886', 'feynman-II-17', 'griffiths-2017',
       'mclyman-2004', 'fitzgerald-kingsley-umans-2014',
       'grainger-power-systems-2003', 'steinmetz-1893', 'codata-2018',
+      'kundur-1994-power-stability', 'erickson-maksimovic-2020',
+      'horowitz-hill-2015',
     ],
   },
   {

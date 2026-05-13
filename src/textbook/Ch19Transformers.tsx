@@ -22,6 +22,9 @@ import { StanleyDemo } from './demos/StanleyDemo';
 import { ImpedanceReflectionDemo } from './demos/ImpedanceReflection';
 import { CoreLossesDemo } from './demos/CoreLosses';
 import { GridHierarchyDemo } from './demos/GridHierarchy';
+import { AutotransformerDemo } from './demos/Autotransformer';
+import { InRushCurrentDemo } from './demos/InRushCurrent';
+import { HighFrequencyTransformerDemo } from './demos/HighFrequencyTransformer';
 import { getChapter } from './data/chapters';
 
 export default function Ch18Transformers() {
@@ -165,6 +168,21 @@ export default function Ch18Transformers() {
         }
       />
 
+      <TryIt
+        tag="Try 18.5"
+        question={<>A step-up transformer raises <strong>12 V</strong> to <strong>240 V</strong> for a small inverter's high-voltage rail. If the primary draws <strong>5 A</strong>, what current does an ideal secondary deliver?</>}
+        hint="Power balance: V_p · I_p = V_s · I_s."
+        answer={
+          <>
+            <Formula>I<sub>s</sub> = V<sub>p</sub> · I<sub>p</sub> / V<sub>s</sub> = 12 · 5 / 240 = <strong>0.25 A</strong></Formula>
+            <p>
+              The turns ratio is 1 : 20 (voltage up), so current goes down by exactly the same factor.
+              Same 60 W on both sides<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <h2>Stanley 1886 and the rise of AC distribution</h2>
 
       <p>
@@ -271,6 +289,35 @@ export default function Ch18Transformers() {
         }
       />
 
+      <h2>Autotransformers: one winding instead of two</h2>
+
+      <p>
+        Everything so far has assumed two electrically separate windings sharing one core. Rewire the
+        same iron: a single continuous winding with a <em>tap</em> brought out at a fraction <em>k</em> of
+        the way down. Feed the full winding from the source; take the load off the portion between the
+        tap and the bottom. The voltage ratio is still the turns ratio — <em>V<sub>s</sub>/V<sub>p</sub> = k</em> —
+        but now the bottom section of the winding is shared between the two circuits.
+        That sharing is the
+        <Term def={<><strong>autotransformer</strong> — a transformer with a single tapped winding instead of two galvanically isolated windings. The shared section between primary and secondary terminals carries only the difference current I<sub>s</sub> − I<sub>p</sub>, allowing it to be wound from lighter wire — for a 2:1 step, autotransformer copper and iron are roughly half that of an isolated two-winding design of the same rating.</>}>autotransformer</Term>'s
+        whole point: the shared portion carries only the <em>difference</em> current
+        <em> I<sub>s</sub> − I<sub>p</sub> = (1 − k) I<sub>s</sub></em>, so it can be wound from much
+        lighter wire. The total copper required falls by a factor of (1 − k) relative to a two-winding
+        design of the same rating<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
+      </p>
+
+      <AutotransformerDemo />
+
+      <p>
+        For small voltage steps the saving is dramatic: a 2:1 (k = 0.5) autotransformer uses about half the
+        copper and iron of an equivalent two-winding transformer; a 10 % step (k = 0.9) uses a tenth. Grid
+        operators take advantage of this routinely — the 345/138 kV interconnect transformers on the bulk
+        power system, the 138/69 kV transformers in older substations, and the <em>variac</em> on a lab
+        bench are all autotransformers<Cite id="grainger-power-systems-2003" in={SOURCES} />. The price is
+        the loss of <em>galvanic isolation</em>: primary and secondary share metal, so a winding short
+        between the upper and lower sections puts the full primary voltage on the load. That is why utility
+        autotransformers are never used to step down to a voltage humans might touch.
+      </p>
+
       <h2>Real transformer non-idealities</h2>
 
       <p>
@@ -308,6 +355,46 @@ export default function Ch18Transformers() {
       </ul>
 
       <CoreLossesDemo />
+
+      <p>
+        Adjacent to saturation lives one more practical non-ideality: <em>inrush</em>. Because the core
+        flux is the time-integral of the applied primary voltage, the instant at which a transformer is
+        first energised sets the DC offset of the flux waveform. Close the breaker at the voltage
+        <em> peak</em> and the integral starts at its natural average; flux swings symmetrically about
+        zero and the core never saturates. Close it at a voltage <em>zero-crossing</em> and the integral
+        has a full half-cycle to climb before the next reversal — pushing the flux to roughly twice its
+        normal peak, deep into the saturation region, before any reverse swing pulls it back. The
+        magnetising current spikes accordingly, by a factor of 10–30× the steady-state value for the
+        first few cycles<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
+      </p>
+
+      <InRushCurrentDemo />
+
+      <p>
+        That spike is why the breaker upstream of a large transformer has an <em>inverse-time</em>
+        trip curve rather than an instantaneous one: the inrush is brief, decaying within ten or twenty
+        line cycles as the asymmetry damps out, and would nuisance-trip an instantaneous breaker every
+        time the transformer was switched on. Modern controlled-switching gear measures the line phase
+        and closes each pole near the optimal instant on purpose, suppressing the inrush by a factor of
+        ten or more<Cite id="kundur-1994-power-stability" in={SOURCES} />.
+      </p>
+
+      <TryIt
+        tag="Try 18.6"
+        question={<>A 4 kVA transformer at <strong>60 Hz</strong> is wound with <strong>N<sub>p</sub> = 200</strong> turns and runs at <strong>B<sub>max</sub> = 1.5 T</strong> for a primary V<sub>rms</sub> = 240 V. What core cross-section A<sub>core</sub> does it need? (Use V = 4.44 · f · N · B · A.)</>}
+        hint="Solve V = 4.44 · f · N · B · A for A."
+        answer={
+          <>
+            <Formula>A<sub>core</sub> = V / (4.44 · f · N · B<sub>max</sub>)</Formula>
+            <Formula>= 240 / (4.44 · 60 · 200 · 1.5) ≈ <strong>3.0 × 10⁻³ m²</strong></Formula>
+            <p>
+              About <strong>30 cm²</strong>, or a roughly 5.5 × 5.5 cm core leg. Doubling the frequency
+              halves the required core area; this is the single most important equation in transformer
+              sizing<Cite id="mclyman-2004" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <p>
         <strong><Term def={<><strong>Leakage inductance</strong> — flux generated by one winding that fails to thread the other winding. Behaves like a series inductance in the transformer's equivalent circuit and contributes to voltage regulation droop under load.</>}>Leakage inductance</Term></strong>
@@ -358,6 +445,29 @@ export default function Ch18Transformers() {
         generated. That number is what makes large-scale electrification economically viable: 95 % of the kilowatts
         leaving the plant actually reach a useful load on the other end. Take away the transformer at any of the
         five layers and the number collapses.
+      </p>
+
+      <h2>The frequency lever — and why your charger is small</h2>
+
+      <p>
+        The same one-line transformer equation — <em>V = 4.44 · f · N · B · A</em> — has a property that the
+        designers of every power supply since the 1970s have exploited mercilessly. Hold the voltage, the turn
+        count, and the peak flux density fixed and the required core cross-section <em>A</em> falls inversely with
+        frequency. Run a 100 W transformer at 60 Hz and it needs roughly 120 cm³ of silicon steel. Run the same
+        100 W transformer at 100 kHz and the equivalent ferrite core is about 1700 times smaller — a few cubic
+        centimetres, weighing five grams instead of six hundred<Cite id="mclyman-2004" in={SOURCES} />.
+      </p>
+
+      <HighFrequencyTransformerDemo />
+
+      <p>
+        This is the single trick behind the gram-scale phone charger in your bag, the 400 Hz electrical system on
+        any commercial aircraft (six times lighter than a 60 Hz system of the same rating), and every modern
+        electric-vehicle traction inverter. The trade-offs do not vanish: at higher frequency, hysteresis loss grows
+        roughly linearly (Steinmetz), eddy-current loss grows quadratically, the windings start to suffer from skin
+        effect, and the silicon doing the switching has its own per-cycle loss — so the practical sweet spot for
+        consumer SMPS is 65–500 kHz<Cite id="erickson-maksimovic-2020" in={SOURCES} />. Push higher than that and
+        you need wide-bandgap semiconductors (SiC, GaN) and very careful magnetics design to stay ahead.
       </p>
 
       <h2>What we have so far</h2>

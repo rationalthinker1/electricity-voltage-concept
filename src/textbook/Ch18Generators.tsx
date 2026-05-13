@@ -17,9 +17,12 @@ import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { RotatingCoilGeneratorDemo } from './demos/RotatingCoilGenerator';
 import { SynchronousGeneratorDemo } from './demos/SynchronousGenerator';
+import { ExcitationControlDemo } from './demos/ExcitationControl';
+import { PowerAngleDeltaDemo } from './demos/PowerAngleDelta';
 import { AlternatorDemo } from './demos/Alternator';
 import { GridSyncDemo } from './demos/GridSync';
 import { LoadFollowingDemo } from './demos/LoadFollowing';
+import { InertialResponseDemo } from './demos/InertialResponse';
 import { getChapter } from './data/chapters';
 
 export default function Ch17Generators() {
@@ -165,6 +168,70 @@ export default function Ch17Generators() {
         }
       />
 
+      <h2>Excitation, the power angle, and pull-out</h2>
+
+      <p>
+        A synchronous generator has two control knobs and one mechanical input. The mechanical input is whatever the
+        prime mover is delivering — water through a turbine, steam through a blade row, the rotational torque of a
+        diesel engine. The two electrical knobs are the rotor's <em>field current</em> <em>I<sub>f</sub></em>, which
+        sets the rotor's magnetic flux and therefore the induced-EMF magnitude <em>|E<sub>f</sub>|</em>, and the
+        rotor's <em>load angle δ</em>, which is the steady-state phase lead of the rotor's flux axis ahead of the
+        grid voltage phasor<Cite id="kundur-1994-power-stability" in={SOURCES} />.
+      </p>
+      <p>
+        At no load, <em>|E<sub>f</sub>|</em> is just the open-circuit terminal voltage: more field current produces
+        more flux, more flux produces more EMF, full stop. Connect that generator to a stiff grid and the story
+        changes. The grid clamps the terminal voltage at <em>|V<sub>grid</sub>|</em>; the real power transferred is
+      </p>
+      <Formula>P = (|V<sub>grid</sub>| · |E<sub>f</sub>| / X<sub>s</sub>) · sin δ</Formula>
+      <p>
+        where <em>X<sub>s</sub></em> is the synchronous reactance (typically 1–2 per-unit). The reactive power at
+        the terminal is
+      </p>
+      <Formula>Q = (|V<sub>grid</sub>| · |E<sub>f</sub>| / X<sub>s</sub>) · cos δ − |V<sub>grid</sub>|² / X<sub>s</sub></Formula>
+      <p>
+        Increase mechanical input and the rotor pulls ahead of the grid — <em>δ</em> grows until <em>P</em> matches.
+        Increase field current and <em>Q</em> grows: an over-excited generator supplies reactive power to the grid
+        (acts like a capacitor); under-excited, it absorbs reactive power (acts like an inductor). The "V curves"
+        familiar to power engineers — armature current vs field current at constant real power — fall out of these
+        two equations<Cite id="grainger-power-systems-2003" in={SOURCES} />.
+      </p>
+
+      <ExcitationControlDemo />
+
+      <p>
+        The power-angle relation <em>P ∝ sin δ</em> has a sharp limit built into it. Real power peaks at <em>δ</em> =
+        90° at a value <em>P<sub>max</sub> = |V·E<sub>f</sub>|/X<sub>s</sub></em>, and past that point the rotor
+        cannot transmit any more power no matter how hard the turbine pushes. The excess mechanical torque accelerates
+        the rotor beyond synchronism — the unit <Term def="The condition in which a synchronous generator's rotor advances by a full electrical pole past the grid phasor. The terminal currents swing through a fault-level transient and the protection relay trips the machine offline.">slips a pole</Term>, the stator currents swing through a fault-level
+        transient as <em>δ</em> wraps from 90° back through 270°, and the protection relay trips the generator off
+        the bus to save it. Stable steady-state operation requires <em>δ</em> well below 90°, typically 20°–45° at
+        rated output, with the remaining margin reserved for fault-ride-through<Cite id="kundur-1994-power-stability" in={SOURCES} />.
+      </p>
+
+      <PowerAngleDeltaDemo />
+
+      <TryIt
+        tag="Try 17.3"
+        question={<>A <strong>600 MW</strong> synchronous generator has <strong>X<sub>s</sub> = 1.5 pu</strong>, <strong>|V<sub>grid</sub>| = 1 pu</strong>, <strong>|E<sub>f</sub>| = 1.4 pu</strong>. What is the steady-state power angle <em>δ</em> when it delivers <strong>500 MW</strong> at rated voltage?</>}
+        hint="Per-unit P = 500/600. Then sin δ = P · X_s / (|V_grid| · |E_f|)."
+        answer={
+          <>
+            <p>Per-unit real power on the machine's own MW base:</p>
+            <Formula>P = 500 / 600 = 0.833 pu</Formula>
+            <Formula>sin δ = P · X<sub>s</sub> / (|V<sub>grid</sub>| · |E<sub>f</sub>|) = 0.833 · 1.5 / (1.0 · 1.4) ≈ 0.893</Formula>
+            <Formula>δ = arcsin(0.893) ≈ <strong>63°</strong></Formula>
+            <p>
+              That's a high power angle by utility-operations standards — the rotor is well up the curve, with
+              <em> P<sub>max</sub> = |V·E<sub>f</sub>|/X<sub>s</sub></em> ≈ 0.93 pu (about 560 MW on the machine's
+              base). Stability margin is thin; in practice the operator would dispatch additional reactive support
+              (raise <em>|E<sub>f</sub>|</em>) to bring <em>δ</em> back down before approving steady operation at
+              this point<Cite id="kundur-1994-power-stability" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <h2>The alternator under your car hood</h2>
 
       <p>
@@ -193,7 +260,7 @@ export default function Ch17Generators() {
       </p>
 
       <TryIt
-        tag="Try 17.3"
+        tag="Try 17.4"
         question={<>A car alternator has <strong>6 pole-pairs</strong>. The engine spins at <strong>3000 RPM</strong> with a <strong>2.5:1</strong> pulley ratio. What is the alternator's electrical frequency?</>}
         hint="Alternator RPM = engine RPM × ratio. Then f_elec = (alt RPM / 60) × pole-pairs."
         answer={
@@ -297,7 +364,7 @@ export default function Ch17Generators() {
       </p>
 
       <TryIt
-        tag="Try 17.4"
+        tag="Try 17.5"
         question={<>A grid loses a <strong>1 GW</strong> generator instantaneously. The system has <strong>200 GW</strong> of total spinning inertia equivalent to <strong>8 GW·s/Hz</strong>. By how much does frequency initially fall in the first second, before any governor response?</>}
         hint="Inertia equation: Δf/Δt ≈ ΔP / (2H), where H is the system inertia constant. Or directly: df/dt = −ΔP / (system inertia in GW·s/Hz)."
         answer={
@@ -311,6 +378,46 @@ export default function Ch17Generators() {
               After one second the frequency would have fallen to ~59.875 Hz. Governor droop typically arrests the
               fall around 59.7 Hz before reserves bring it back. Below ~59.3 Hz the grid would start dropping load to
               avoid cascading collapse<Cite id="kundur-1994-power-stability" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
+      <p>
+        How fast that initial frequency excursion proceeds depends entirely on how much rotational kinetic energy is
+        actually spinning on the grid. The aggregate dynamics are captured by the <em>swing equation</em>: 2H · df/dt
+        = ΔP/P<sub>base</sub>, where <em>H</em> is the system inertia constant (the kinetic energy stored in all
+        synchronous machines, divided by the system MVA base, with units of seconds). A grid dominated by large
+        synchronous machines (coal, hydro, nuclear) has <em>H</em> in the 4–6 s range; a grid dominated by inverter-
+        based renewables can drop below 2 s, and the same disturbance produces a frequency excursion two or three
+        times as steep<Cite id="kundur-1994-power-stability" in={SOURCES} />.
+      </p>
+
+      <InertialResponseDemo />
+
+      <p>
+        This is the live debate of the 2020s. As coal retires and inverter-based wind, solar, and battery storage
+        replace it, the grid loses inertia. <Term def="Algorithms in grid-following or grid-forming inverters that emulate the kinetic-energy release of a spinning rotor by injecting power in proportion to df/dt. Lets battery storage and renewables contribute to inertial response without literal rotating mass.">Synthetic inertia</Term> in batteries and grid-forming inverters can replace some of the
+        lost response, but the regulatory and engineering frameworks for verifying that replacement under fault
+        conditions are still catching up<Cite id="kundur-1994-power-stability" in={SOURCES} />.
+      </p>
+
+      <TryIt
+        tag="Try 17.6"
+        question={<>A grid with total rotational inertia <strong>H = 4 s</strong> instantly loses <strong>500 MW</strong> of generation out of a <strong>10 GW</strong> total load. What is the initial rate of frequency decline <em>df/dt</em>?</>}
+        hint="Swing equation: 2H · (df/dt)/f_nom = −ΔP/P_base. Solve for df/dt at f_nom = 60 Hz."
+        answer={
+          <>
+            <p>Per-unit power imbalance:</p>
+            <Formula>ΔP / P<sub>base</sub> = 500 MW / 10 000 MW = 0.05 pu</Formula>
+            <p>Swing equation:</p>
+            <Formula>df/dt = − (ΔP / P<sub>base</sub>) · f<sub>nom</sub> / (2H) = − 0.05 · 60 / (2 · 4)</Formula>
+            <Formula>df/dt = <strong>−0.375 Hz/s</strong></Formula>
+            <p>
+              That's a steep but recoverable RoCoF for a typical Western Interconnection — governors begin responding
+              within a second and arrest the fall well before any under-frequency load-shedding scheme kicks in. Halve
+              <em> H</em> to 2 s (an inverter-heavy grid) and the same outage produces −0.75 Hz/s — at the edge of
+              what conventional protection relays can ride through<Cite id="kundur-1994-power-stability" in={SOURCES} />.
             </p>
           </>
         }
