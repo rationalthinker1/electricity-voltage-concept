@@ -17,6 +17,8 @@ import { MathBlock, Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
+import { TryIt } from '@/components/TryIt';
+import { Formula } from '@/components/Formula';
 import { PHYS, eng } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
@@ -276,82 +278,246 @@ export default function CapacitanceLab() {
 
   const prose = (
     <>
-      <h3>What “capacity” even means</h3>
+      <h3>Context</h3>
       <p>
-        A capacitor is a device whose voltage across its terminals rises in proportion to the charge you pile on its plates. The proportionality
-        constant is its <strong>capacitance</strong>:
+        A capacitor is two conductors separated by an insulator. Push charge onto one, pull an equal charge off the other, and a voltage
+        builds across the gap. The thing that makes a capacitor a <em>capacitor</em> is that this voltage is exactly proportional to
+        the stored charge. Real devices show up everywhere: every digital logic gate switches by charging and discharging femtofarads
+        of gate capacitance; every switching power supply uses microfarads of bulk hold-up; the touchscreen on your phone reads
+        position by measuring the change in capacitance when a finger gets close.
       </p>
-      <MathBlock>C = Q / V</MathBlock>
       <p>
-        Read it backward: it takes <strong>V</strong> volts of work per coulomb to add one more coulomb's worth of charges to the plates against
-        the repulsion of the charges already there. Big capacitance means it costs little voltage to add charge — the plates accept a lot
-        of <strong>Q</strong> before the voltage climbs. A farad is one coulomb per volt, which is so much charge per volt that real-world
-        capacitors are usually picofarads up to a few millifarads<Cite id="griffiths-2017" in={SOURCES} />.
-      </p>
-
-      <h3>Parallel plates from Gauss</h3>
-      <p>
-        Two flat conductive plates of area <strong>A</strong>, separated by a gap <strong>d</strong>, with charge <strong>+Q</strong> on the top
-        and <strong>−Q</strong> on the bottom. Draw a Gaussian pillbox enclosing the inner face of the top plate. Gauss's law gives<Cite id="griffiths-2017" in={SOURCES} />:
-      </p>
-      <MathBlock>E · A = σ A / ε<sub>0</sub> &nbsp;⇒&nbsp; E = σ / ε<sub>0</sub> = Q / (ε<sub>0</sub> A)</MathBlock>
-      <p>
-        Inside the gap, that field is uniform — constant magnitude, perpendicular to the plates, pointing from the + plate to the − one.
-        The voltage between the plates is then:
-      </p>
-      <MathBlock>V = E · d = Q d / (ε<sub>0</sub> A)</MathBlock>
-      <p>Rearranging Q/V isolates the geometry-only piece:</p>
-      <MathBlock>C = ε<sub>0</sub> A / d</MathBlock>
-      <p>
-        Stick an insulator (a <em>dielectric</em>) into the gap and its molecules polarize: each dipole sets up a tiny counter-field that
-        partially cancels the applied one. The net field drops by a factor <strong>ε<sub>r</sub></strong>, the relative permittivity,
-        so the voltage drops by the same factor, so the capacitance climbs by it<Cite id="jackson-1999" in={SOURCES} />:
-      </p>
-      <MathBlock>C = ε<sub>0</sub> ε<sub>r</sub> A / d</MathBlock>
-
-      <h3>Energy: not in the plates, in the field</h3>
-      <p>
-        Build the charge up from zero. At intermediate charge <strong>q</strong>, the voltage is <strong>v(q) = q/C</strong>, and the work to
-        shove a tiny <strong>dq</strong> from one plate to the other is <strong>dW = v dq</strong>. Integrate from 0 to Q:
-      </p>
-      <MathBlock>U = ∫<sub>0</sub><sup>Q</sup> (q / C) dq = Q² / (2C) = ½ C V²</MathBlock>
-      <p>
-        Where does that energy actually live? It is distributed throughout the volume of the gap, at a density that depends only on the
-        local field<Cite id="jackson-1999" in={SOURCES} />:
-      </p>
-      <MathBlock>u<sub>E</sub> = ½ ε<sub>0</sub> ε<sub>r</sub> E²</MathBlock>
-      <p>
-        Multiply by the gap volume <strong>A d</strong> and you recover the same ½CV² from the work integral. <em>The plates
-        don't store the energy</em> — they only hold the boundary conditions. The energy lives in the field they create. This is the
-        same idea that will run rampant in the Poynting lab two doors down: fields carry energy in their own right<Cite id="feynman-II-2" in={SOURCES} />.
+        The parallel-plate formula below assumes plate area <strong>A ≫ d²</strong>, plates much larger than the gap, so fringing fields
+        at the edges are a small correction<Cite id="griffiths-2017" in={SOURCES} />. It breaks down when the field gets large enough to
+        ionize the dielectric — air breaks down near <strong>3×10⁶ V/m</strong>, and every solid dielectric has its own ceiling<Cite id="jackson-1999" in={SOURCES} />.
+        Above that, the gap arcs and the capacitor is no longer a capacitor.
       </p>
 
+      <h3>Formula</h3>
+      <MathBlock>C = ε<sub>0</sub> ε<sub>r</sub> A / d &nbsp;&emsp; Q = C V &nbsp;&emsp; U = ½ C V² = Q² / (2C)</MathBlock>
+      <p>
+        <strong>C</strong> capacitance (farads). <strong>ε<sub>0</sub></strong> = 8.854×10⁻¹² F/m, the permittivity of free space<Cite id="codata-2018" in={SOURCES} />.
+        <strong>ε<sub>r</sub></strong> relative permittivity of the dielectric in the gap (1 for vacuum, ~80 for water).
+        <strong>A</strong> plate area, <strong>d</strong> gap. <strong>Q</strong> charge on one plate (the other holds −Q). <strong>V</strong> voltage
+        between the plates. <strong>U</strong> stored energy.
+      </p>
+
+      <h3>Intuition</h3>
+      <p>
+        A capacitor doesn't store charge. The plates always have <em>+Q on one and −Q on the other</em>, the total being zero. What's stored
+        is the <em>separation</em>, and the electric field that fills the gap because of it. Bigger plates hold more separated charge before
+        the voltage climbs (more area means more places to put each new electron without crowding); a thinner gap means less voltage per unit
+        of charge (the line integral E·d shrinks); a polarizable dielectric inside lets the molecules align against the applied field and
+        cancel part of it, so more charge fits at the same voltage.
+      </p>
       <Pullout>
-        A capacitor doesn't store charge. The plates always have <em>+Q on one and −Q on the other</em>, the total being zero. What's
-        stored is the separation — and the field that fills the space because of it.
+        A capacitor doesn't store charge. It stores the <em>separation</em> — and the field that fills the space because of it.
       </Pullout>
 
-      <h3>Why dielectrics matter</h3>
+      <h3>Reasoning</h3>
       <p>
-        Capacitance per unit volume is the only metric that matters when you're trying to fit thousands of capacitors onto a chip. Boost
-        <strong> ε<sub>r</sub></strong> and you boost C without growing A. Water comes in around 80; common ceramics push past 1000<Cite id="jackson-1999" in={SOURCES} />.
-        The catch is that all of these have voltage limits — push the field too high and the dielectric breaks down, ionizes, and arcs. The
-        design space is a fight between ε<sub>r</sub>, breakdown strength, and physical thinness.
+        Why <strong>A</strong> on top, <strong>d</strong> on the bottom, and ε<sub>r</sub> multiplying? <strong>A</strong> on top because
+        capacitance scales with how many parallel "slots" the plates offer. <strong>d</strong> on the bottom because a wider gap means a larger
+        voltage to push charges across the same field — so the same Q produces more V, dropping Q/V. <strong>ε<sub>r</sub></strong> on top because
+        the dielectric's polarization weakens the net field, so V drops for the same Q, so Q/V (= C) rises<Cite id="jackson-1999" in={SOURCES} />.
+      </p>
+      <p>
+        Limits. As <strong>d → 0</strong>, C diverges — and so does the field E = V/d at any fixed V, which is the physical reason no real cap
+        survives an arbitrarily thin gap. As <strong>A → ∞</strong>, C grows linearly, but so does the device size; the more useful figure of
+        merit is capacitance per unit volume <strong>C/(Ad) = ε<sub>0</sub>ε<sub>r</sub>/d²</strong>, which is why dielectric thickness, not area,
+        dominates electrolytic and ceramic designs.
       </p>
 
-      <h4>Three timescales</h4>
+      <h3>Derivation</h3>
       <p>
-        Hook a capacitor up through a resistor <strong>R</strong> to a battery <strong>V</strong>. The voltage on the cap approaches its
-        asymptote as <strong>v(t) = V (1 − e<sup>−t/RC</sup>)</strong>. Discharge it through the same resistor and it falls the
-        same way. The product <strong>τ = RC</strong> is the time-constant of any RC circuit<Cite id="griffiths-2017" in={SOURCES} />.
+        Step one — the field. Take a Gaussian pillbox straddling the inner face of the top plate. The flux through its top is zero (E = 0 inside
+        a conductor at equilibrium); the flux through its bottom is E·A pointing down into the gap. Gauss's law equates that to
+        <strong> Q<sub>enc</sub>/ε<sub>0</sub> = σA/ε<sub>0</sub></strong>, giving<Cite id="griffiths-2017" in={SOURCES} />:
+      </p>
+      <Formula>E = σ / ε<sub>0</sub> = Q / (ε<sub>0</sub> A)</Formula>
+      <p>
+        Step two — the voltage. The field in the gap is uniform, perpendicular to the plates. Integrating E along a straight line from one
+        plate to the other:
+      </p>
+      <Formula>V = ∫ E · dℓ = E d = Q d / (ε<sub>0</sub> A)</Formula>
+      <p>Step three — Q/V isolates the geometry-only piece:</p>
+      <Formula>C = Q / V = ε<sub>0</sub> A / d</Formula>
+      <p>
+        Step four — add a dielectric. Inside a polarizable medium, bound charges produce a counter-field that scales the net field by
+        <strong> 1/ε<sub>r</sub></strong>. The voltage scales by the same factor, so C climbs by ε<sub>r</sub><Cite id="jackson-1999" in={SOURCES} />:
+      </p>
+      <Formula>C = ε<sub>0</sub> ε<sub>r</sub> A / d</Formula>
+      <p>
+        Step five — the energy. Build Q up from zero. At intermediate charge <strong>q</strong>, the voltage between plates is q/C, and the work
+        to move dq across that gap is dW = (q/C) dq. Integrate:
+      </p>
+      <Formula>U = ∫<sub>0</sub><sup>Q</sup> (q/C) dq = Q² / (2C) = ½ C V²</Formula>
+      <p>
+        Equivalently, the energy density of the field in the gap is <strong>u<sub>E</sub> = ½ε<sub>0</sub>ε<sub>r</sub>E²</strong>, and multiplying
+        by the gap volume Ad recovers ½CV² exactly. The plates don't hold the energy — the field in the gap does<Cite id="feynman-II-2" in={SOURCES} />.
       </p>
 
-      <h4>One last sanity check</h4>
-      <p>
-        The lab above shows the field between an <em>idealized</em> pair of plates — uniform, abruptly ending at the edges. Real plates
-        have fringing fields that bulge outward near the rim. For aspect ratios where A ≫ d² (almost always, in practice), the fringing
-        contribution to C is a small correction<Cite id="griffiths-2017" in={SOURCES} />.
-      </p>
+      <h3>Worked problems</h3>
+
+      <TryIt
+        tag="Problem 4.1.1"
+        question={<>A parallel-plate capacitor in air: <strong>A = 10 cm²</strong>, <strong>d = 1 mm</strong>. What is C?</>}
+        hint={<>Direct plug-in. ε<sub>r</sub> ≈ 1 for air.</>}
+        answer={
+          <>
+            <p>Convert and substitute:</p>
+            <Formula>C = ε<sub>0</sub> A / d = (8.854×10⁻¹² F/m)(10⁻³ m²) / (10⁻³ m)</Formula>
+            <Formula>C = 8.854×10⁻¹² F ≈ <strong>8.9 pF</strong></Formula>
+            <p>A few picofarads. This is why "build a one-farad cap out of two plates and an air gap" is hopeless — you'd need plate
+            area the size of a small city.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 4.1.2"
+        question={<>Same capacitor, but fill the gap with mylar (<strong>ε<sub>r</sub> ≈ 3</strong>). What is C now?</>}
+        answer={
+          <>
+            <Formula>C = ε<sub>r</sub> · C<sub>air</sub> = 3 × 8.9 pF ≈ <strong>27 pF</strong></Formula>
+            <p>Dielectrics buy you a multiplicative factor at no geometric cost. Ceramics with ε<sub>r</sub> &gt; 1000 can push the same
+            geometry up by three orders of magnitude<Cite id="jackson-1999" in={SOURCES} />.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 4.1.3"
+        question={<>The mylar capacitor above (27 pF) is connected to a <strong>9 V</strong> battery. How much charge sits on each plate?
+          How much energy is stored?</>}
+        answer={
+          <>
+            <Formula>Q = C V = (27×10⁻¹² F)(9 V) = 2.4×10⁻¹⁰ C ≈ <strong>0.24 nC</strong></Formula>
+            <Formula>U = ½ C V² = ½ (27×10⁻¹²)(81) ≈ <strong>1.1×10⁻⁹ J</strong> ≈ 1.1 nJ</Formula>
+            <p>A nanojoule. Capacitors at this scale are timing elements, not energy reservoirs.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 4.1.4"
+        question={<>A <strong>1 µF</strong> capacitor is charged to <strong>5 V</strong>, then connected in parallel with an
+          identical uncharged 1 µF capacitor. What is the final voltage on each? How much energy is lost?</>}
+        hint="Charge is conserved (it has nowhere to go). Energy is not — heat dissipates in the connecting wires."
+        answer={
+          <>
+            <p>Charge conservation: total Q = (1 µF)(5 V) = 5 µC, redistributed across 2 µF of combined capacitance:</p>
+            <Formula>V<sub>final</sub> = Q / C<sub>total</sub> = 5 µC / 2 µF = <strong>2.5 V</strong></Formula>
+            <p>Initial energy: U<sub>i</sub> = ½(1 µF)(5 V)² = 12.5 µJ. Final energy: U<sub>f</sub> = ½(2 µF)(2.5 V)² = 6.25 µJ.</p>
+            <Formula>ΔU = 12.5 − 6.25 = <strong>6.25 µJ lost</strong> (half!)</Formula>
+            <p>Half the energy vanishes as heat in the wires, no matter how low their resistance. The result is independent of R —
+            it's a fundamental consequence of redistributing charge between two ideal caps<Cite id="griffiths-2017" in={SOURCES} />.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 4.1.5"
+        question={<>Three capacitors in series: <strong>1 µF, 2 µF, 3 µF</strong>. Equivalent capacitance?</>}
+        hint="In series, reciprocals add (the gap-distances effectively stack)."
+        answer={
+          <>
+            <Formula>1/C<sub>eq</sub> = 1/1 + 1/2 + 1/3 = 6/6 + 3/6 + 2/6 = 11/6 µF⁻¹</Formula>
+            <Formula>C<sub>eq</sub> = 6/11 µF ≈ <strong>0.545 µF</strong></Formula>
+            <p>Series caps give you <em>less</em> than the smallest one. The smallest cap bottlenecks the chain.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 4.1.6"
+        question={<>Same three caps in <strong>parallel</strong>: 1 µF, 2 µF, 3 µF. Equivalent capacitance?</>}
+        answer={
+          <>
+            <p>In parallel, plates effectively combine — areas add:</p>
+            <Formula>C<sub>eq</sub> = 1 + 2 + 3 = <strong>6 µF</strong></Formula>
+            <p>Parallel caps are the easy case. Voltage is common; charge splits in proportion to each C.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 4.1.7"
+        question={<>A <strong>1 µF</strong> capacitor is initially at 10 V and discharges through a <strong>1 kΩ</strong> resistor.
+          What is the time constant τ? What is the voltage at <strong>t = 1 ms</strong>?</>}
+        answer={
+          <>
+            <Formula>τ = R C = (10³ Ω)(10⁻⁶ F) = 10⁻³ s = <strong>1 ms</strong></Formula>
+            <p>At t = τ, the voltage has fallen to 1/e of its initial value:</p>
+            <Formula>V(1 ms) = 10 · e⁻¹ ≈ 10 × 0.368 ≈ <strong>3.7 V</strong></Formula>
+            <p>One time constant is one e-fold; five time constants and the cap is essentially fully discharged<Cite id="griffiths-2017" in={SOURCES} />.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 4.1.8"
+        question={<>Derive the capacitance of a <strong>spherical capacitor</strong>: concentric spherical shells of inner radius
+          R<sub>1</sub> and outer radius R<sub>2</sub>, with vacuum between them.</>}
+        hint="Use Gauss's law for the field between, then integrate E·dr from R₁ to R₂."
+        answer={
+          <>
+            <p>Between the shells, by Gauss with a spherical Gaussian surface:</p>
+            <Formula>E(r) = Q / (4π ε<sub>0</sub> r²)</Formula>
+            <p>Voltage by line integral:</p>
+            <Formula>V = ∫<sub>R₁</sub><sup>R₂</sup> E dr = (Q / 4π ε<sub>0</sub>) (1/R<sub>1</sub> − 1/R<sub>2</sub>)</Formula>
+            <Formula>C = Q/V = 4π ε<sub>0</sub> R<sub>1</sub> R<sub>2</sub> / (R<sub>2</sub> − R<sub>1</sub>)</Formula>
+            <p>As R<sub>2</sub> → ∞, this reduces to <strong>C = 4πε<sub>0</sub>R<sub>1</sub></strong>, the self-capacitance of a single
+            isolated sphere<Cite id="jackson-1999" in={SOURCES} />.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 4.1.9"
+        question={<>A coaxial cable (RG-58) has inner conductor radius <strong>a = 0.5 mm</strong>, outer shield radius
+          <strong> b = 1.5 mm</strong>, polyethylene dielectric (<strong>ε<sub>r</sub> ≈ 2.3</strong>). Derive C per unit length.</>}
+        hint="Cylindrical Gauss between the conductors gives E(r). Integrate radially."
+        answer={
+          <>
+            <p>Between the conductors, by Gauss on a coaxial cylinder of radius r and length L:</p>
+            <Formula>E(r) = λ / (2π ε<sub>0</sub> ε<sub>r</sub> r), &nbsp; where λ = Q/L</Formula>
+            <Formula>V = ∫<sub>a</sub><sup>b</sup> E dr = (λ / 2π ε<sub>0</sub> ε<sub>r</sub>) ln(b/a)</Formula>
+            <Formula>C/L = λ / V = 2π ε<sub>0</sub> ε<sub>r</sub> / ln(b/a)</Formula>
+            <p>Plug in: ln(1.5/0.5) = ln 3 ≈ 1.099. C/L = 2π(8.854×10⁻¹²)(2.3) / 1.099 ≈ <strong>116 pF/m</strong>. Datasheet RG-58:
+            ~100 pF/m<Cite id="griffiths-2017" in={SOURCES} />. Match within tolerance.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 4.1.10"
+        question={<>An air-gap capacitor has <strong>d = 1 mm</strong> with <strong>V = 100 V</strong> across it. What is the energy
+          density in the gap?</>}
+        answer={
+          <>
+            <Formula>E = V/d = 100 / 10⁻³ = 10⁵ V/m</Formula>
+            <Formula>u<sub>E</sub> = ½ ε<sub>0</sub> E² = ½ (8.854×10⁻¹²)(10¹⁰) ≈ <strong>4.4×10⁻² J/m³</strong></Formula>
+            <p>About 44 mJ per cubic meter — tiny. To compare: air breakdown (3×10⁶ V/m) reaches only ~40 J/m³. Field energy density is
+            cheap until the field gets enormous<Cite id="jackson-1999" in={SOURCES} />.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 4.1.11"
+        question={<>The Leyden jar, invented in 1745 — a glass jar lined inside and out with metal foil. Estimate its capacitance:
+          area <strong>A ≈ 300 cm²</strong>, glass thickness <strong>d ≈ 2 mm</strong>, glass ε<sub>r</sub> ≈ 7. Typical operating voltage?</>}
+        answer={
+          <>
+            <Formula>C = ε<sub>0</sub> ε<sub>r</sub> A / d = (8.854×10⁻¹²)(7)(0.03) / (2×10⁻³)</Formula>
+            <Formula>C ≈ <strong>0.93 nF</strong> ≈ 1 nF</Formula>
+            <p>Operating voltage was limited by glass breakdown — glass survives roughly 10⁷ V/m, so a 2 mm wall handles ~20 kV before
+            puncturing. Eighteenth-century natural philosophers regularly ran them at several kilovolts, with energy ½ C V² of order tens
+            of millijoules — enough to deliver a sharp shock to a chain of demonstrators.</p>
+          </>
+        }
+      />
     </>
   );
 
