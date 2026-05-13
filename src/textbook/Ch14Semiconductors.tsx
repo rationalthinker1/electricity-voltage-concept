@@ -100,6 +100,28 @@ export default function Ch14Semiconductors() {
         silicon is, accordingly, a poor conductor — many orders of magnitude worse than copper,
         many orders of magnitude better than glass.
       </p>
+      <p>
+        The exponential is the whole point. Suppose the gap were half as large — 0.56 eV instead
+        of 1.12. The carrier density would not double; it would rise by a factor of
+        exp(0.28/0.026) ≈ 50&thinsp;000. The same factor explains why a 30 °C summer day in a hot
+        sealed engine bay can change a transistor's leakage by a factor of 100, why germanium
+        (E<sub>g</sub> = 0.67 eV) runs hot and leaky, and why diamond (E<sub>g</sub> = 5.5 eV) is
+        an essentially perfect insulator. The picture: thermal energy kT is the
+        currency, the bandgap is the price; the carrier density is the receipt, and it is the
+        exponential of the negative of the price-to-currency ratio. Make the gap small enough
+        relative to kT and the crystal floods with carriers (a metal-like situation, in the
+        limit). Make it large and the crystal is empty.
+      </p>
+      <p>
+        The factor of 2 in exp(−E<sub>g</sub>/2kT) — rather than the bare exp(−E<sub>g</sub>/kT) —
+        comes from the fact that the Fermi level sits roughly in the middle of the gap in an
+        intrinsic semiconductor, so a typical valence electron only has to be lifted by E<sub>g</sub>/2
+        in energy to reach the most-populated states in the conduction band
+        <Cite id="streetman-banerjee-2015" in={SOURCES} />. Doping shortcuts this: a donor level
+        only 0.045 eV below the conduction-band edge takes essentially no thermal energy to
+        ionise. <em>Effective</em> bandgap, from the standpoint of getting carriers into the
+        band, has been cut from 1.12 eV to a few hundredths of an eV.
+      </p>
 
       <TryIt
         tag="Try 14.1"
@@ -163,7 +185,33 @@ export default function Ch14Semiconductors() {
 
       <p>
         At equilibrium, the voltage across the depletion region is the <Term def={<><strong>built-in potential</strong> V<sub>bi</sub> — the equilibrium voltage across a p-n junction, set by the doping levels. ≈ 0.6–0.7 V for typical Si junctions; this is the &ldquo;0.7 V drop&rdquo; engineers expect from a forward-biased silicon diode.</>}>built-in potential</Term>
-        V<sub>bi</sub>, which for typical silicon doping is ~0.7 V. Apply an external voltage in
+        V<sub>bi</sub>, set by the doping levels through
+      </p>
+      <Formula>V<sub>bi</sub> = (kT/q) ln( N<sub>A</sub> N<sub>D</sub> / n<sub>i</sub>² )</Formula>
+      <p>
+        The formula reads like a thermodynamic statement, because that is exactly what it is.
+        On the n-side the electron density is N<sub>D</sub>; on the p-side it is n<sub>i</sub>²/N<sub>A</sub>
+        (mass-action). The ratio of those two — the "concentration gradient" electrons would like
+        to flatten out by diffusing — is N<sub>A</sub>N<sub>D</sub>/n<sub>i</sub>². At equilibrium the
+        built-in electric field has built up to exactly the height needed to stop that diffusion:
+        the Boltzmann factor of the energy hill, exp(qV<sub>bi</sub>/kT), must equal the
+        concentration ratio. Take the logarithm and divide by q/kT and there is the formula. It is
+        the Einstein relation between mobility and diffusion, written in disguise: drift cancels
+        diffusion when the voltage across the region is V<sub>T</sub>·ln(concentration ratio)
+        <Cite id="streetman-banerjee-2015" in={SOURCES} />.
+      </p>
+      <p>
+        Plug in numbers. For typical silicon doping (N<sub>A</sub> = N<sub>D</sub> = 10¹⁶ cm⁻³,
+        n<sub>i</sub> = 10¹⁰ cm⁻³ at 300 K), the ratio is 10¹². With V<sub>T</sub> ≈ 25.85 mV and
+        ln(10¹²) ≈ 27.6, V<sub>bi</sub> ≈ 0.72 V. That number — the equilibrium voltage your
+        crystal sets up <em>by itself</em>, with no external bias — is also the height of the
+        energy barrier any electron must climb to cross the junction. Forward bias reduces it;
+        reverse bias raises it. For typical silicon doping V<sub>bi</sub> is ~0.7 V — the same
+        ~0.7 V you measure as the forward drop, because to push current you have to flatten almost
+        the entire built-in barrier.
+      </p>
+      <p>
+        Apply an external voltage in
         the <em>forward</em> direction (p-side positive) and you reduce the net field across the
         depletion region; carriers can now diffuse across in large numbers and current flows.
         Apply it in the <em>reverse</em> direction and you increase the field; mobile carriers
@@ -177,6 +225,31 @@ export default function Ch14Semiconductors() {
       </p>
       <Formula>I = I<sub>s</sub> ( exp(qV / nkT) − 1 )</Formula>
       <p>
+        Stare at the shape of the formula until it stops looking like algebra. Forward bias lowers
+        the energy hill that electrons on the n-side have to climb to reach the p-side, from
+        qV<sub>bi</sub> down to q(V<sub>bi</sub> − V). The number of electrons with enough thermal
+        energy to surmount a barrier of height ΔE is Boltzmann's <em>exp(−ΔE/kT)</em>; that is
+        statistical mechanics, not transistor physics. So the population that crosses scales as
+        exp(qV/kT). The pre-factor I<sub>s</sub> is what the same exponential gives at V = 0 — the
+        tiny thermal back-flow of minority carriers across the junction in either direction.
+      </p>
+      <p>
+        The "−1" is a bookkeeping demand of equilibrium. At V = 0, the forward Boltzmann flux and
+        the reverse minority-carrier flux must be equal and opposite — no net current can flow
+        across a junction at thermal equilibrium. The forward term is I<sub>s</sub>·exp(qV/kT),
+        which at V = 0 is just I<sub>s</sub>; subtracting I<sub>s</sub> gives the net flow, and
+        forces I = 0 at V = 0 as required. In strong reverse bias the exponential collapses to
+        zero and I → −I<sub>s</sub>: that is the saturation current, the maximum reverse current
+        the device can supply by sweeping out spontaneously-generated minority carriers.
+      </p>
+      <p>
+        The <Term def={<><strong>thermal voltage</strong> V<sub>T</sub> = kT/q — the natural voltage scale of semiconductor physics. At 300 K, V<sub>T</sub> ≈ 25.85 mV. Every junction's I-V curve changes by a factor of <em>e</em> per V<sub>T</sub> of bias change.</>}>thermal voltage</Term> V<sub>T</sub> = kT/q ≈ 25.85 mV at 300 K is the natural unit
+        <Cite id="codata-2018" in={SOURCES} />: it is the voltage scale over which the Boltzmann
+        factor changes by a factor of <em>e</em>, and the voltage scale over which any junction
+        physics changes meaningfully. Every "60 mV per decade" rule of thumb in this chapter
+        comes from V<sub>T</sub>·ln(10) ≈ 60 mV.
+      </p>
+      <p>
         Here I<sub>s</sub> is the reverse-saturation current (~10⁻⁹ A for silicon, ~10⁻⁵ A for
         Schottky), n is an ideality factor (≈1 for an ideal junction, 1.5–2 for a real diode at
         low current), q is the elementary charge, k is Boltzmann's constant, and T is absolute
@@ -185,6 +258,19 @@ export default function Ch14Semiconductors() {
         milliamps; at V = 0.7 V it is conducting tens of milliamps. That is what an engineer
         means when they say "a silicon diode drops 0.7 V"<Cite id="sedra-smith-2014" in={SOURCES} />.
       </p>
+      <p>
+        The much-quoted "0.7 V" is therefore not a fundamental constant of silicon, but a
+        consequence of two engineering choices: typical operating currents in the
+        milliamp range, and a typical I<sub>s</sub> in the femto- to nanoamp range. With
+        V<sub>T</sub>·ln(10) ≈ 60 mV per decade, getting from femtoamps to milliamps takes about
+        twelve decades, or ~720 mV. Push a diode to microamps instead and V<sub>F</sub> sits
+        around 0.5 V; push it to amps and V<sub>F</sub> rises to ~0.9 V. Same equation, different
+        operating point.
+      </p>
+
+      <Pullout>
+        Every junction in a circuit is doing the same thing: counting how many electrons in a Boltzmann tail have enough energy to climb a barrier.
+      </Pullout>
 
       <TryIt
         tag="Try 14.2"
@@ -258,6 +344,26 @@ export default function Ch14Semiconductors() {
       </p>
       <Formula>I<sub>C</sub> = β · I<sub>B</sub></Formula>
       <p>
+        The asymmetry between the two currents is geometric, not mysterious. The emitter
+        injects, say, a hundred million electrons per second into the base. Those electrons must
+        cross a base region only about a micron thick — much thinner than their typical
+        recombination distance — before they reach the collector depletion field, which sweeps
+        them out. Almost all of them make it. The few that don't recombine with a hole, and
+        every recombined hole has to be replaced by one entering through the base lead. So
+        I<sub>B</sub> is the trickle of replacement holes; I<sub>C</sub> is the flood of electrons
+        that survived the crossing. β is the survival ratio. Make the base thinner or more
+        lightly doped (fewer holes to recombine with) and β rises<Cite id="streetman-banerjee-2015" in={SOURCES} />.
+      </p>
+      <p>
+        β is therefore a number that emerges from a manufacturing process, not a physical
+        constant. Two devices off the same wafer can differ by 50%; β rises with temperature
+        (more carriers diffuse before recombining) and falls at very low or very high I<sub>C</sub>.
+        A good amplifier design either uses negative feedback to make the gain independent of β,
+        or deliberately operates the transistor at a point where the β-spread is acceptable.
+        The Bardeen-Brattain point-contact transistor of 1947 had β ≈ 30; a modern small-signal
+        BJT routinely hits β = 300<Cite id="razavi-2021" in={SOURCES} />.
+      </p>
+      <p>
         with the <Term def={<><strong>current gain</strong> β (also h<sub>FE</sub>) — the ratio I<sub>C</sub>/I<sub>B</sub> for a BJT in the active region. Typically 50–500 for a small-signal device; varies with operating current, temperature, and from part to part.</>}>current gain β</Term> typically 50–500 for a small-signal device
         <Cite id="bardeen-brattain-1948" in={SOURCES} /><Cite id="sedra-smith-2014" in={SOURCES} />.
         Bardeen, Brattain, and Shockley shared the 1956 Nobel for this
@@ -272,7 +378,7 @@ export default function Ch14Semiconductors() {
         the collector junction is no longer reverse-biased and the device acts roughly as a
         small voltage source. Above that, the <em>active region</em>, I<sub>C</sub> is nearly flat,
         independent of V<sub>CE</sub> — a remarkable property — and equal to β·I<sub>B</sub>. The
-        residual slope across the active region is the <em>Early effect</em>: as V<sub>CE</sub>
+        residual slope across the active region is the <Term def={<><strong>Early effect</strong> — the slight rise of I<sub>C</sub> with V<sub>CE</sub> in the BJT active region, caused by collector-base depletion widening into the base. Parameterised by the Early voltage V<sub>A</sub>; sets the device's output resistance r<sub>o</sub> = V<sub>A</sub>/I<sub>C</sub>.</>}>Early effect</Term>: as V<sub>CE</sub>
         rises, the collector depletion region widens slightly into the base, narrowing the
         effective base width and increasing β. A clean small-signal BJT has an Early voltage
         V<sub>A</sub> ≈ 50 V<Cite id="sedra-smith-2014" in={SOURCES} />.
@@ -334,18 +440,52 @@ export default function Ch14Semiconductors() {
       </p>
       <Formula>I<sub>D</sub> = k<sub>n</sub> [ (V<sub>GS</sub> − V<sub>T</sub>) V<sub>DS</sub> − V<sub>DS</sub>²/2 ]</Formula>
       <p>
+        Unpack the formula one factor at a time. The gate-oxide capacitance per unit area is
+        C<sub>ox</sub>; the voltage above threshold is (V<sub>GS</sub> − V<sub>T</sub>); so the
+        sheet charge density of mobile carriers in the inversion layer is
+        Q<sub>s</sub> = C<sub>ox</sub>(V<sub>GS</sub> − V<sub>T</sub>) — exactly the parallel-plate
+        capacitor result from Ch.5, except one of the "plates" is now a thin sheet of induced
+        electrons. The width W (perpendicular to current flow) and length L (along current flow)
+        set the channel's aspect ratio. A field E ≈ V<sub>DS</sub>/L drives the carriers at drift
+        velocity v = µ<sub>n</sub>·E. Current is charge per length × velocity × width:
+        I<sub>D</sub> ≈ (C<sub>ox</sub>·W·V<sub>OV</sub>)·(µ<sub>n</sub>·V<sub>DS</sub>/L), which is
+        the first term. The −V<sub>DS</sub>²/2 correction accounts for the fact that the channel
+        is being squeezed thinner toward the drain end as V<sub>DS</sub> rises — the charge
+        density isn't uniform, it tapers.
+      </p>
+      <p>
         which is approximately linear in V<sub>DS</sub> for small V<sub>DS</sub> — a
         voltage-controlled resistor. In <em>saturation</em> (V<sub>DS</sub> &gt; V<sub>GS</sub> − V<sub>T</sub>),
-        the channel pinches off at the drain end and the current becomes independent of V<sub>DS</sub>:
+        the channel <Term def={<><strong>pinches off</strong> — at the drain end of a saturated MOSFET channel, the local gate-to-channel voltage drops below V<sub>T</sub> and the inversion layer disappears. Carriers crossing the pinch-off point are swept by the drain depletion field; further increase in V<sub>DS</sub> falls across the depletion region rather than across the channel, so I<sub>D</sub> stops growing.</>}>pinches off</Term> at the drain end and the current becomes independent of V<sub>DS</sub>:
       </p>
       <Formula>I<sub>D</sub> = (k<sub>n</sub>/2)(V<sub>GS</sub> − V<sub>T</sub>)²</Formula>
+      <p>
+        Why a square law? Picture two things multiplying. The inversion-layer charge density is
+        proportional to the overdrive V<sub>OV</sub> = V<sub>GS</sub> − V<sub>T</sub> (more gate
+        voltage above threshold piles up more electrons). The average longitudinal field that
+        moves them along the channel is also proportional to V<sub>OV</sub> at pinch-off (because
+        in saturation V<sub>DS</sub> at the pinch point equals V<sub>OV</sub>, and the field is
+        V<sub>OV</sub>/L). Current = charge × velocity, and both factors carry one power of
+        V<sub>OV</sub>. Multiply them: V<sub>OV</sub>². The factor of ½ is the geometric average,
+        accounting for the channel tapering from full thickness at the source to zero at the
+        drain<Cite id="sedra-smith-2014" in={SOURCES} />.
+      </p>
       <p>
         with k<sub>n</sub> = µ<sub>n</sub> C<sub>ox</sub> W/L the transconductance parameter.
         For a small-signal n-MOSFET, k<sub>n</sub> is in the milliamp-per-volt-squared range; for a
         power MOSFET, several amps per volt squared.
       </p>
       <p>
-        JFETs (junction FETs) and the p-channel mirror image (pMOS) round out the family. In
+        Below threshold, V<sub>OV</sub> is negative, the square law would give a nonsensical
+        answer, and the right description is the subthreshold-diffusion regime (touched on in the
+        FAQ). The threshold itself is the precise voltage at which the surface flips from p-type
+        to inverted n-type — i.e. the gate field has finally pulled enough electrons up out of
+        the conduction band of the bulk and into the surface to outnumber the local holes. Below
+        V<sub>T</sub>, no channel. Above V<sub>T</sub>, the channel exists and the square law
+        starts<Cite id="streetman-banerjee-2015" in={SOURCES} />.
+      </p>
+      <p>
+        <Term def={<><strong>JFET</strong> — junction FET. Gate is a reverse-biased p-n junction whose depletion region pinches the channel from the side, rather than an oxide-isolated metal electrode. Higher input impedance than a BJT, lower than a MOSFET; the standard low-noise high-impedance front-end before MOSFETs got cheap.</>}>JFETs</Term> (junction FETs) and the p-channel mirror image (pMOS) round out the family. In
         a JFET, the gate is itself a reverse-biased p-n junction rather than an oxide-insulated
         electrode; the depletion region pinches the channel from the side. In a pMOS, swap
         every doping type and every polarity — current is carried by holes, V<sub>T</sub> and V<sub>DS</sub>
@@ -356,6 +496,10 @@ export default function Ch14Semiconductors() {
         only when it switches, which lets you put 19 billion of them on one die without it
         melting<Cite id="razavi-2021" in={SOURCES} />.
       </p>
+
+      <Pullout>
+        The MOSFET is a parallel-plate capacitor with a current of mobile charge underneath, controlled by the voltage across the plates.
+      </Pullout>
 
       <TryIt
         tag="Try 14.4"
@@ -385,6 +529,16 @@ export default function Ch14Semiconductors() {
       </p>
       <Formula>g<sub>m</sub> = ∂I<sub>C</sub> / ∂V<sub>BE</sub> = I<sub>C</sub> / V<sub>T</sub></Formula>
       <p>
+        Differentiate the Shockley equation and the result almost writes itself. I<sub>C</sub> is
+        proportional to exp(V<sub>BE</sub>/V<sub>T</sub>), so dI/dV brings down a factor of 1/V<sub>T</sub>
+        and reproduces the same I<sub>C</sub> in front. The slope of an exponential is the
+        exponential itself divided by its scale. Numerically: at I<sub>C</sub> = 1 mA and V<sub>T</sub>
+        = 25.85 mV, g<sub>m</sub> = 38.7 mS — a 1 mV wiggle on V<sub>BE</sub> shifts I<sub>C</sub> by
+        38.7 µA. A remarkably clean formula: the transconductance of any BJT depends only on the
+        bias current and (weakly) on temperature, <em>not</em> on β, not on geometry, not on
+        process<Cite id="razavi-2021" in={SOURCES} />.
+      </p>
+      <p>
         where V<sub>T</sub> = kT/q ≈ 25.85 mV at room temperature<Cite id="codata-2018" in={SOURCES} />.
         For an MOSFET in saturation,
         g<sub>m</sub> = k<sub>n</sub> (V<sub>GS</sub> − V<sub>T</sub>) = √(2 k<sub>n</sub> I<sub>D</sub>).
@@ -394,10 +548,42 @@ export default function Ch14Semiconductors() {
         <Cite id="razavi-2021" in={SOURCES} />.
       </p>
       <p>
+        The MOSFET expression g<sub>m</sub> = k<sub>n</sub>·V<sub>OV</sub> = √(2 k<sub>n</sub> I<sub>D</sub>)
+        tells a different story. Differentiate the square law: dI<sub>D</sub>/dV<sub>GS</sub> =
+        k<sub>n</sub>(V<sub>GS</sub> − V<sub>T</sub>). For the <em>same</em> bias current, the BJT's
+        g<sub>m</sub> = I/V<sub>T</sub> = I/(0.026 V) is much larger than the MOSFET's I/(V<sub>OV</sub>/2)
+        with V<sub>OV</sub> typically 0.2–0.5 V. That is the small price you pay for the MOSFET's
+        infinite gate input impedance: less transconductance per amp of bias. Modern analog
+        designers spend a lot of effort recovering it — wide channels (large W/L), short-channel
+        process nodes (small L) — to make MOSFET amplifiers competitive with bipolar ones.
+      </p>
+      <p>
         The other half of the picture is the <Term def={<><strong>load line</strong> — the locus of (I<sub>C</sub>, V<sub>CE</sub>) points satisfying V<sub>CE</sub> = V<sub>CC</sub> − I<sub>C</sub> R<sub>C</sub>. A straight line on the I<sub>C</sub>-V<sub>CE</sub> plane whose intersection with the device's I-V curve sets the Q-point.</>}>load line</Term>. Whatever the transistor does, the
         external circuit (a supply V<sub>CC</sub> and a collector resistor R<sub>C</sub>) imposes its own
-        constraint: KVL around the output loop gives V<sub>CE</sub> = V<sub>CC</sub> − I<sub>C</sub>·R<sub>C</sub>.
-        Plotted on the I<sub>C</sub>-V<sub>CE</sub> plane, that is a straight line from (V<sub>CC</sub>, 0)
+        constraint: KVL around the output loop gives
+      </p>
+      <Formula>V<sub>CE</sub> = V<sub>CC</sub> − I<sub>C</sub> · R<sub>C</sub></Formula>
+      <p>
+        That is Kirchhoff's voltage law applied to a single loop — nothing more. The supply
+        V<sub>CC</sub> is fixed; whatever current flows through R<sub>C</sub> drops some voltage
+        across it; whatever is left appears across the transistor as V<sub>CE</sub>. Solve for
+        I<sub>C</sub> and you get a line of slope −1/R<sub>C</sub> with two end-points: at
+        V<sub>CE</sub> = V<sub>CC</sub> the current is zero (cut-off), and at V<sub>CE</sub> = 0 the
+        current is V<sub>CC</sub>/R<sub>C</sub> (saturation, the maximum the resistor can pass).
+        Every (I<sub>C</sub>, V<sub>CE</sub>) point the circuit can <em>possibly</em> occupy lies on
+        this line, regardless of what the transistor is doing.
+      </p>
+      <p>
+        The transistor, separately, has its own family of I-V curves: one curve per value of
+        I<sub>B</sub>, all of them nearly flat in the active region. The actual operating point
+        — the one place where both constraints can be satisfied at once — is the intersection.
+        Slide I<sub>B</sub> up by a small AC perturbation and the active-region curve moves up
+        bodily; the intersection slides along the fixed load line to a new (I<sub>C</sub>,
+        V<sub>CE</sub>). That sliding-along-the-load-line motion <em>is</em> the amplified signal,
+        and the geometry tells you everything about the swing.
+      </p>
+      <p>
+        Plotted on the I<sub>C</sub>-V<sub>CE</sub> plane, that line runs from (V<sub>CC</sub>, 0)
         to (0, V<sub>CC</sub>/R<sub>C</sub>). The Q-point is where the load line crosses the
         transistor's I<sub>B</sub>-trace. Move I<sub>B</sub> a little — by injecting a small AC signal at
         the base — and Q slides up and down the load line, producing a swing in V<sub>CE</sub>.
@@ -416,8 +602,24 @@ export default function Ch14Semiconductors() {
       </p>
       <Formula>A<sub>v</sub> = ΔV<sub>CE</sub> / Δv<sub>be</sub> = −g<sub>m</sub> · R<sub>C</sub></Formula>
       <p>
-        The minus sign is the inversion: a rising base voltage means more I<sub>C</sub>, more
-        drop across R<sub>C</sub>, lower V<sub>CE</sub><Cite id="sedra-smith-2014" in={SOURCES} />.
+        Read it as a chain rule. A small input wiggle Δv<sub>be</sub> changes the collector current
+        by ΔI<sub>C</sub> = g<sub>m</sub>·Δv<sub>be</sub> (the device's transconductance, doing its
+        one job). That current wiggle, forced through R<sub>C</sub> by Ohm's law, produces a
+        voltage swing ΔV<sub>RC</sub> = R<sub>C</sub>·ΔI<sub>C</sub> across the resistor. Since
+        V<sub>CC</sub> is held constant by the supply, every millivolt that appears across the
+        resistor disappears from V<sub>CE</sub> — hence the minus sign. Multiply: dV<sub>out</sub>/dV<sub>in</sub>
+        = −g<sub>m</sub>·R<sub>C</sub>. The transistor converts voltage to current; the resistor
+        converts current back to voltage; their product is the voltage gain.
+      </p>
+      <p>
+        The product also reveals where amplification gets its leverage. Substitute g<sub>m</sub> =
+        I<sub>C</sub>/V<sub>T</sub> and the gain becomes A<sub>v</sub> = −(I<sub>C</sub>·R<sub>C</sub>)/V<sub>T</sub>.
+        I<sub>C</sub>·R<sub>C</sub> is just the DC voltage dropped across the load resistor at the
+        quiescent point — call it V<sub>RC</sub> — and V<sub>T</sub> is fixed at ~26 mV.
+        Gain ≈ V<sub>RC</sub>/V<sub>T</sub>. Drop a few volts across R<sub>C</sub> and you get a few
+        hundred-fold voltage gain, automatically. That is the whole secret of the common-emitter
+        amplifier: it converts headroom (DC voltage across the load) into gain (AC voltage at the
+        output) at a fixed conversion ratio of 1/V<sub>T</sub>.
       </p>
 
       <h2>The common-emitter amplifier</h2>
@@ -440,6 +642,23 @@ export default function Ch14Semiconductors() {
         V<sub>T</sub> = 25.85 mV. Then g<sub>m</sub> = 1 mA / 25.85 mV ≈ 38.7 mS. With R<sub>C</sub> = 10 kΩ:
       </p>
       <Formula>A<sub>v</sub> = −g<sub>m</sub> R<sub>C</sub> = −(0.0387 S)(10000 Ω) ≈ −387</Formula>
+      <p>
+        The energy ledger is worth pausing on, because it is the source of every working amplifier
+        in the world. The 1 mA bias current flowing from the V<sub>CC</sub> rail through R<sub>C</sub>
+        and the transistor to ground costs 12 mW of continuous DC power. The input signal — a
+        millivolt of AC, drawing on the order of a microamp from the source — contributes at most
+        nanowatts. Yet the output across R<sub>C</sub> swings by hundreds of millivolts and can
+        drive milliamps. Where does the difference come from? The supply. The signal does not
+        add energy; it modulates how much of the supply's energy is steered through the load
+        resistor at each instant. The transistor is a controlled valve; the supply is the
+        reservoir; the signal opens and closes the valve. "Amplification" is a misnomer for what
+        is really gated power<Cite id="razavi-2021" in={SOURCES} />.
+      </p>
+
+      <Pullout>
+        A transistor does not amplify. It gates. The energy comes from the supply; the signal only decides how much of it gets through.
+      </Pullout>
+
       <p>
         A factor of 387 — call it 51 dB — from one transistor and one resistor. In practice
         the gain is lower because R<sub>E</sub> is rarely fully bypassed, and the collector
