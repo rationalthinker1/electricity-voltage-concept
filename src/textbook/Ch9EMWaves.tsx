@@ -64,7 +64,13 @@ export default function Ch9EMWaves() {
       </p>
       <Formula>u = ½ ε₀ |E|² + (1 / 2μ₀) |B|²</Formula>
       <p>
-        and the local conservation law is <InlineMath>∂u/∂t + ∇·S = 0</InlineMath> in empty space — energy in a region
+        where <strong>u</strong> is the local electromagnetic energy density (in J/m³),
+        <strong> |E|</strong> is the magnitude of the electric field at that point (in V/m),
+        <strong> |B|</strong> is the magnitude of the magnetic field (in teslas), and
+        <strong> ε₀ = 8.854×10⁻¹² F/m</strong> and <strong>μ₀ = 4π×10⁻⁷ T·m/A</strong> are the vacuum permittivity
+        and permeability respectively<Cite id="codata-2018" in={SOURCES} />. The two terms split the total cleanly
+        into an electric and a magnetic contribution.
+        The local conservation law is <InlineMath>∂u/∂t + ∇·S = 0</InlineMath> in empty space — energy in a region
         either stays put or flows out through the boundary as <strong>S</strong><Cite id="jackson-1999" in={SOURCES} />.
         Take a hand-sized region of empty space and stir up a field in it. The field cannot just sit there; energy at the
         boundary has to balance. The way nature solves that constraint is to let the field propagate outward.
@@ -79,17 +85,28 @@ export default function Ch9EMWaves() {
       </p>
       <Formula>∇ × E = − ∂B/∂t</Formula>
       <p>
+        where <strong>∇ × E</strong> is the curl of the electric field (a vector measuring how E loops around
+        each point, in V/m²), and <strong>∂B/∂t</strong> is the rate of change of the magnetic field at a fixed
+        point in space (in T/s). The minus sign is the Lenz-law bookkeeping from Ch. 7.
+      </p>
+      <p>
         Ampère's law, with Maxwell's displacement-current correction, says the converse — a changing electric field
         produces a magnetic field that curls around it<Cite id="maxwell-1865" in={SOURCES} />:
       </p>
       <Formula>∇ × B = μ₀ ε₀ ∂E/∂t</Formula>
       <p>
-        (In vacuum, with no real currents.) Take the curl of the first equation, plug in the second on the right-hand
+        where <strong>∇ × B</strong> is the curl of the magnetic field (in T/m), <strong>∂E/∂t</strong> is the
+        rate of change of the electric field at a fixed point (in V/(m·s)), and <strong>μ₀ε₀ = 1/c²</strong> is
+        the product of the vacuum permeability and permittivity (in s²/m²). (In vacuum, with no real currents.) Take the curl of the first equation, plug in the second on the right-hand
         side, and use a standard vector identity. After a few lines of algebra what falls out is a clean second-order
         partial differential equation<Cite id="griffiths-2017" in={SOURCES} /><Cite id="jackson-1999" in={SOURCES} />:
       </p>
       <Formula>∇²E = μ₀ ε₀ ∂²E/∂t²</Formula>
       <p>
+        where <strong>∇²E</strong> is the vector Laplacian of the electric field (the sum of second spatial
+        derivatives, with units of V/m³), <strong>∂²E/∂t²</strong> is the second time derivative of E at a fixed
+        point (in V/(m·s²)), and the coefficient <strong>μ₀ε₀</strong> has units of s²/m² — so its reciprocal is
+        a squared speed.
         And the identical equation for <strong>B</strong>. This is the{' '}
         <Term def={<><strong>wave equation</strong> — a second-order PDE of the form <em>∇²ψ = (1/v²) ∂²ψ/∂t²</em> whose solutions propagate at speed <em>v</em>. For EM waves in vacuum, <em>v = 1/√(μ₀ε₀) = c</em>.</>}>wave equation</Term>, and it has a
         propagation speed sitting right there in the coefficient: <InlineMath>v² = 1/(μ₀ ε₀)</InlineMath>. Plug in the
@@ -247,7 +264,10 @@ export default function Ch9EMWaves() {
       </p>
       <Formula>I(θ) ∝ sin²θ / r²</Formula>
       <p>
-        where θ is measured from the dipole's axis<Cite id="feynman-II-21" in={SOURCES} /><Cite id="jackson-1999" in={SOURCES} />.
+        where <strong>I(θ)</strong> is the time-averaged radiated intensity (in W/m²),
+        <strong> θ</strong> is the polar angle measured from the dipole's axis (so θ = 0 along the antenna, θ = π/2
+        in the equatorial plane), and <strong>r</strong> is the distance from the dipole (in metres). The
+        <em> 1/r²</em> falloff is what energy conservation across an expanding sphere requires<Cite id="feynman-II-21" in={SOURCES} /><Cite id="jackson-1999" in={SOURCES} />.
         The pattern has a maximum perpendicular to the dipole (θ = 90°, the equator) and goes to <em>exactly zero</em>
         along the dipole's own axis (θ = 0 and θ = π). An antenna does not radiate along its own length.
       </p>
@@ -288,6 +308,9 @@ export default function Ch9EMWaves() {
       </p>
       <Formula>P = I / c   (absorbing surface)</Formula>
       <p>
+        where <strong>P</strong> is the radiation pressure on the surface (in pascals, N/m²),
+        <strong> I</strong> is the time-averaged intensity of the incident wave (in W/m²), and
+        <strong> c ≈ 2.998×10⁸ m/s</strong> is the speed of light<Cite id="codata-2018" in={SOURCES} />.
         For a perfectly reflecting surface the momentum reverses, doubling the kick: P = 2I/c. Solar sunlight on a black
         absorber: 1361 / 3×10⁸ ≈ <strong>4.5×10⁻⁶ Pa</strong>. About four-and-a-half micropascals. Real, measurable,
         and — over thousands of square metres and weeks — enough to accelerate a solar sail to interplanetary speeds.

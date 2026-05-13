@@ -51,6 +51,17 @@ export default function Ch10Maxwell() {
       <Formula>∮ E · dℓ = − dΦ<sub>B</sub>/dt</Formula>
       <Formula>∮ B · dℓ = μ₀ ( I<sub>enc</sub> + ε₀ dΦ<sub>E</sub>/dt )</Formula>
       <p>
+        where <strong>E</strong> is the electric field (in V/m, a vector at each point) and
+        <strong> B</strong> is the magnetic field (in teslas); <strong>dA</strong> is the outward-normal area
+        element on a closed surface (in m²) and <strong>dℓ</strong> is the tangent line element around a closed
+        loop (in m); <strong>Q<sub>enc</sub></strong> is the total charge enclosed by the surface (in coulombs)
+        and <strong>I<sub>enc</sub></strong> is the conduction current threading the loop (in amperes);
+        <strong> Φ<sub>B</sub> = ∫∫ B · dA</strong> and <strong>Φ<sub>E</sub> = ∫∫ E · dA</strong> are the
+        magnetic and electric fluxes through a surface bounded by the loop (in webers and V·m respectively); and
+        <strong> ε₀ = 8.854×10⁻¹² F/m</strong> and <strong>μ₀ = 4π×10⁻⁷ T·m/A</strong> are the vacuum permittivity
+        and permeability<Cite id="codata-2018" in={SOURCES} />.
+      </p>
+      <p>
         Two surface integrals ({' '}
         <Term def={<><strong>flux</strong> — the integral of a vector field over a surface, ∫ F · dA. For a closed surface, measures net "flow" of the field out of the enclosed volume. SI units depend on the field (V·m for E-flux, T·m² = Wb for B-flux).</>}>flux</Term> out of a closed surface) and two line integrals (circulation around a closed loop).
         The first equation says charge sources electric flux. The second says nothing sources magnetic flux. The third
@@ -271,18 +282,27 @@ export default function Ch10Maxwell() {
       <Formula>∇ × E = − ∂B/∂t</Formula>
       <Formula>∇ × B = μ₀ ε₀ ∂E/∂t</Formula>
       <p>
+        where <strong>∇ ×</strong> denotes the curl operator, <strong>∂B/∂t</strong> and <strong>∂E/∂t</strong>
+        are the partial derivatives of the fields with respect to time at a fixed point in space (in T/s and
+        V/(m·s) respectively), and <strong>μ₀ε₀</strong> has units of s²/m². These are the differential
+        (point-by-point) forms of the third and fourth integral equations above, with no enclosed conduction
+        current.
         Take the curl of the first equation; use the vector identity <InlineMath>∇×(∇×E) = ∇(∇·E) − ∇²E</InlineMath>;
         invoke Gauss for E (with ρ = 0, so ∇·E = 0); and substitute in the right-hand side of the second equation. After
         the dust settles:
       </p>
       <Formula>∇² E = μ₀ ε₀ ∂²E/∂t²</Formula>
       <p>
-        That's a{' '}
+        where <strong>∇²E</strong> is the vector Laplacian of the electric field (the sum of its three second
+        spatial derivatives, in V/m³) and <strong>∂²E/∂t²</strong> is the second derivative of E with respect to
+        time at a fixed point in space (in V/(m·s²)). That's a{' '}
         <Term def={<><strong>wave equation</strong> — a PDE of the form <em>∇²ψ = (1/v²) ∂²ψ/∂t²</em> whose solutions are travelling waves at speed <em>v</em>. Maxwell's equations in vacuum reduce to this with <em>v = 1/√(μ₀ε₀) = c</em>.</>}>wave equation</Term>. The same manipulation on the second equation gives the same equation for B. Waves of E
         and B, propagating together through vacuum, with phase speed
       </p>
       <Formula>v = 1 / √(μ₀ ε₀)</Formula>
       <p>
+        where <strong>v</strong> is the propagation speed of the wave (in m/s) and
+        <strong> μ₀, ε₀</strong> are the two vacuum constants introduced in §1.
         Maxwell plugged in the experimental values of μ₀ and ε₀ — the latter measured purely from electrostatics, the
         former from forces between current-carrying wires. He got 310,740,000 m/s by his 1865 numbers. Compared to
         Fizeau's 1849 toothed-wheel measurement of the speed of light (315,000,000 m/s), the agreement was extraordinary

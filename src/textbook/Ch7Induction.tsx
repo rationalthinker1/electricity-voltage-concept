@@ -75,12 +75,23 @@ export default function Ch7Induction() {
       </p>
       <Formula>Φ<sub>B</sub> = ∫∫ B · dA</Formula>
       <p>
+        where <strong>Φ<sub>B</sub></strong> is the magnetic flux through the loop (in webers, Wb = T·m² = V·s),
+        <strong> B</strong> is the magnetic field (a vector, in teslas) at each point of the surface, and
+        <strong> dA</strong> is the outward-normal area element of any surface bounded by the loop.
         For a flat loop in a uniform field, this is just <strong>BA cos θ</strong>, where <strong>θ</strong> is the angle
         between the field and the loop's normal. SI unit is the <Term def="SI unit of magnetic flux. 1 Wb = 1 T·m² = 1 V·s. The flux through a one-turn loop changing by one weber per second produces one volt of induced EMF.">weber</Term>. Then the <Term def="Electromotive force: the work per unit charge done by a non-electrostatic source (a battery, a moving conductor, a changing flux) on charges around a loop. Measured in volts, but unlike a voltage it can come from a non-conservative field.">EMF</Term> induced around the loop — the line integral of E around
         its perimeter, the work per unit charge that the loop's own free charges feel — is the negative time derivative
         of that flux, given by <Term def="EMF = −dΦ_B/dt (or −N·dΦ/dt for a coil of N turns). A changing magnetic flux through a loop induces an EMF around it. The foundation of every generator, transformer, and induction motor.">Faraday's law</Term><Cite id="feynman-II-17" in={SOURCES} />:
       </p>
       <Formula>EMF = − dΦ<sub>B</sub> / dt</Formula>
+      <p>
+        where <strong>EMF</strong> is the electromotive force around the loop (in volts — the line integral
+        <strong> ∮ E·dℓ</strong> of the induced electric field, equivalently the work per unit charge a free
+        charge would gain in one trip around the loop), <strong>Φ<sub>B</sub></strong> is the magnetic flux
+        through any surface bounded by the loop (in webers), <strong>t</strong> is time (in seconds), and the
+        minus sign encodes Lenz's law — the induced EMF drives a current whose own flux opposes the change in
+        Φ<sub>B</sub> that produced it<Cite id="feynman-II-17" in={SOURCES} />.
+      </p>
       <p>
         Three things deserve to be said out loud about this equation. First, the surface in the flux integral is
         <em> any</em> surface bounded by the loop — flat, curved, weirdly shaped, doesn't matter. The integral comes out
@@ -184,6 +195,9 @@ export default function Ch7Induction() {
       </p>
       <Formula>EMF(t) = − dΦ/dt = N B A ω sin(ω t)</Formula>
       <p>
+        where <strong>N</strong> is the number of turns in the coil, <strong>B</strong> the uniform magnetic field
+        (in teslas), <strong>A</strong> the area of one turn (in m²), <strong>ω</strong> the angular rate of
+        rotation (in rad/s), and <strong>t</strong> the time (in seconds); the result is an EMF in volts.
         A pure sine wave whose peak is <strong>NBAω</strong>. Crank up <strong>N, B, A,</strong> or <strong>ω</strong>
         and the amplitude grows in proportion. The frequency you get is <strong>f = ω / (2π)</strong>. North American
         wall-outlet power is 60 Hz, which corresponds to a generator shaft turning at <strong>ω = 2π · 60 ≈ 377 rad/s</strong>
@@ -227,6 +241,9 @@ export default function Ch7Induction() {
       </p>
       <Formula>V₁ = N₁ · dΦ/dt &nbsp;&nbsp;&nbsp; V₂ = N₂ · dΦ/dt</Formula>
       <p>
+        where <strong>V₁</strong> and <strong>V₂</strong> are the (open-circuit) terminal voltages on the primary
+        and secondary (in volts), <strong>N₁</strong> and <strong>N₂</strong> are the corresponding turn counts,
+        and <strong>dΦ/dt</strong> is the time rate of change of the shared core flux through one turn (in Wb/s = V).
         Divide and the dΦ/dt cancels exactly, leaving the transformer relation:
       </p>
       <Formula>V₂ / V₁ = N₂ / N₁</Formula>

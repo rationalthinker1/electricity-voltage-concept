@@ -120,7 +120,13 @@ export default function Ch11Relativity() {
       </p>
       <Formula>F<sub>magnetic</sub> (lab) = F<sub>electric</sub> (boosted) </Formula>
       <p>
-        and it holds because the entire apparatus of magnetism is the leading-order correction to the Coulomb
+        where <strong>F<sub>magnetic</sub>(lab)</strong> is the magnetic Lorentz force the test charge feels in
+        the wire's rest frame (in newtons, given by <em>qv × B</em> with <em>B</em> from Biot–Savart) and
+        <strong> F<sub>electric</sub>(boosted)</strong> is the ordinary Coulomb force the same test charge feels
+        in the frame in which it is momentarily at rest (also in newtons, given by <em>qE</em> from the residual
+        linear charge density of the now-non-neutral wire). Both are the force on one and the same physical test
+        charge; only the label changes with the choice of frame.
+        It holds because the entire apparatus of magnetism is the leading-order correction to the Coulomb
         force needed to make electrostatics relativistically consistent. The constant <InlineMath>μ₀</InlineMath>
         is not a new fundamental constant; it's locked to <InlineMath>ε₀</InlineMath> and <InlineMath>c</InlineMath>
         by <InlineMath>μ₀ ε₀ = 1/c²</InlineMath>, exactly the relation special relativity demands

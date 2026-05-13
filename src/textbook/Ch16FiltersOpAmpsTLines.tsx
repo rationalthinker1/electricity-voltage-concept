@@ -66,11 +66,25 @@ export default function Ch13FiltersOpAmpsTLines() {
         H(jω) = (1/jωC) / (R + 1/jωC) = 1 / (1 + jωRC)
       </Formula>
       <p>
+        where <strong>H(jω)</strong> is the complex transfer function (dimensionless ratio
+        of output phasor to input phasor) at angular frequency <strong>ω</strong> (in
+        radians per second), <strong>R</strong> is the series resistance (in ohms),
+        <strong> C</strong> is the shunt capacitance (in farads), and
+        <strong> j = √−1</strong> is the imaginary unit.
+      </p>
+      <p>
         whose magnitude is
       </p>
       <Formula>
         |H(jω)| = 1 / √(1 + (ω/ω<sub>c</sub>)<sup>2</sup>),    ω<sub>c</sub> = 1/RC
       </Formula>
+      <p>
+        where <strong>|H(jω)|</strong> is the dimensionless magnitude of the transfer
+        function at angular frequency <strong>ω</strong> (in radians per second), and
+        <strong> ω<sub>c</sub> = 1/RC</strong> is the cutoff angular frequency (also in
+        radians per second), set by the resistance <strong>R</strong> (in ohms) and the
+        capacitance <strong>C</strong> (in farads).
+      </p>
       <p>
         Why does the corner land at exactly ω<sub>c</sub> = 1/RC? It is the frequency where the
         capacitor's impedance |1/jωC| = 1/(ωC) crosses through R — below that crossover the cap
@@ -116,6 +130,12 @@ export default function Ch13FiltersOpAmpsTLines() {
         H(jω) = R / (R + jωL + 1/jωC) = jωRC / (1 − ω<sup>2</sup>LC + jωRC)
       </Formula>
       <p>
+        where <strong>H(jω)</strong> is the complex (dimensionless) transfer function at
+        angular frequency <strong>ω</strong> (in radians per second), <strong>R</strong> is
+        the series resistance (in ohms), <strong>L</strong> is the inductance (in henries),
+        <strong> C</strong> is the capacitance (in farads), and <strong>j = √−1</strong>.
+      </p>
+      <p>
         which peaks at ω<sub>0</sub> = 1/√(LC) and is small everywhere else — a{' '}
         <strong>band-pass filter</strong>. Its bandwidth (the width of the −3 dB band around
         ω<sub>0</sub>) is Δω = ω<sub>0</sub>/Q, so the same Q-factor that set the sharpness of the
@@ -151,6 +171,15 @@ export default function Ch13FiltersOpAmpsTLines() {
       <Formula>
         H(jω) = K / (1 − (ω/ω<sub>0</sub>)<sup>2</sup> + j(ω/ω<sub>0</sub>)(3 − K))
       </Formula>
+      <p>
+        where <strong>H(jω)</strong> is the (dimensionless) complex transfer function at
+        angular frequency <strong>ω</strong> (in radians per second),
+        <strong> K = 1 + R<sub>f</sub>/R<sub>g</sub></strong> is the dimensionless
+        non-inverting DC gain set by the feedback divider, <strong>ω<sub>0</sub> =
+        1/(RC)</strong> is the cutoff angular frequency (in radians per second) for equal
+        components <strong>R</strong> (in ohms) and <strong>C</strong> (in farads), and
+        <strong> j = √−1</strong>.
+      </p>
       <p>
         with corner ω<sub>0</sub> = 1/(RC) and Q = 1/(3 − K). The stopband slope is
         <strong> −40 dB/decade</strong>, twice as steep as a passive first-order RC; K controls
@@ -355,6 +384,14 @@ export default function Ch13FiltersOpAmpsTLines() {
       </p>
       <Formula>Z<sub>0</sub> = √(L′ / C′)</Formula>
       <p>
+        where <strong>Z<sub>0</sub></strong> is the characteristic impedance of the line
+        (in ohms), <strong>L′</strong> is the inductance per unit length (in henries per
+        metre), and <strong>C′</strong> is the capacitance per unit length (in farads per
+        metre). Z<sub>0</sub> is purely real for a lossless line but does not dissipate
+        energy — it sets the ratio of voltage to current in a wave traveling along the
+        line.
+      </p>
+      <p>
         and a propagation velocity v = 1/√(L′ C′) which works out to roughly two-thirds of c in a
         plastic-dielectric coax. Z<sub>0</sub> is real (in ohms) but it is not a resistor in the
         dissipative sense — it is the ratio of voltage to current in a wave travelling along the
@@ -372,6 +409,13 @@ export default function Ch13FiltersOpAmpsTLines() {
         </strong>
       </p>
       <Formula>Γ = (Z<sub>L</sub> − Z<sub>0</sub>) / (Z<sub>L</sub> + Z<sub>0</sub>)</Formula>
+      <p>
+        where <strong>Γ</strong> is the dimensionless (in general complex) reflection
+        coefficient — the ratio of the reflected to the incident voltage phasor at the
+        termination — <strong>Z<sub>L</sub></strong> is the load impedance at the end of
+        the line (in ohms, in general complex), and <strong>Z<sub>0</sub></strong> is the
+        line's characteristic impedance (in ohms, real for a lossless line).
+      </p>
       <p>
         For a matched load, Γ = 0 (no reflection). For a short (Z<sub>L</sub> = 0), Γ = −1 (full
         inverted reflection — same magnitude, opposite sign). For an open (Z<sub>L</sub> → ∞),
@@ -392,6 +436,13 @@ export default function Ch13FiltersOpAmpsTLines() {
         {' '}(voltage standing-wave ratio):
       </p>
       <Formula>VSWR = V<sub>max</sub> / V<sub>min</sub> = (1 + |Γ|) / (1 − |Γ|)</Formula>
+      <p>
+        where <strong>VSWR</strong> is the dimensionless voltage standing-wave ratio,
+        <strong> V<sub>max</sub></strong> and <strong>V<sub>min</sub></strong> are the
+        maximum and minimum voltage envelope magnitudes along the line (in volts), and
+        <strong> |Γ|</strong> is the magnitude of the reflection coefficient (dimensionless,
+        between 0 and 1 for a passive load).
+      </p>
       <p>
         A perfectly matched line shows VSWR = 1; a 2:1 mismatch is the practical limit for most
         RF work; ∞:1 (short or open) reflects all the power back to the source — which can

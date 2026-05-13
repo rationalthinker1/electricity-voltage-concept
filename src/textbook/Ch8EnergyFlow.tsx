@@ -87,6 +87,9 @@ export default function Ch8EnergyFlow() {
       </p>
       <Formula>E = V / L</Formula>
       <p>
+        where <strong>E</strong> is the magnitude of the axial electric field inside the wire (in V/m, pointing
+        along the wire's axis in the direction of conventional current), <strong>V</strong> is the voltage drop
+        across the wire's ends (in volts), and <strong>L</strong> is the wire's length (in metres).
         This is a point that surprises people. In the electrostatic case, the field inside a conductor is zero — the free
         charges rearrange until it is. In a <em>current-carrying resistive</em> conductor, the field inside is decidedly not
         zero. The non-zero field is exactly what's needed to keep pushing the drifting charge against the friction of the
@@ -102,7 +105,10 @@ export default function Ch8EnergyFlow() {
       </p>
       <Formula>B = μ<sub>0</sub> I / (2π a)</Formula>
       <p>
-        at the surface, with the direction set by the right-hand rule: thumb along the current, fingers curl with the field.
+        where <strong>B</strong> is the magnitude of the magnetic field at the wire's surface (in teslas),
+        <strong> I</strong> is the current through the wire (in amperes), <strong>a</strong> is the wire's radius
+        (in metres), and <strong>μ₀ = 4π×10⁻⁷ T·m/A</strong> is the vacuum permeability<Cite id="codata-2018" in={SOURCES} />.
+        The direction is set by the right-hand rule: thumb along the current, fingers curl with the field.
         It's a circumferential field. Perpendicular at every point to the axial <strong>E</strong> we just identified.
       </p>
 
@@ -125,7 +131,11 @@ export default function Ch8EnergyFlow() {
       </p>
       <Formula>S = (1/μ<sub>0</sub>) E × B</Formula>
       <p>
-        <strong>S</strong> has units of watts per square meter — energy per unit time, per unit cross-sectional area, in the direction
+        where <strong>S</strong> (a vector) is the local electromagnetic energy-flux density at a point in space,
+        <strong> E</strong> is the local electric field (in V/m), <strong>B</strong> is the local magnetic field
+        (in teslas), <strong>μ<sub>0</sub> = 4π×10⁻⁷ T·m/A</strong> is the vacuum permeability, and "<strong>×</strong>" is
+        the ordinary vector cross product (so <strong>S</strong> is perpendicular to both <strong>E</strong> and
+        <strong> B</strong>). <strong>S</strong> has units of watts per square meter — energy per unit time, per unit cross-sectional area, in the direction
         the energy is moving. It is a real, local field defined at every point in space where electric and magnetic fields are
         both present<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
@@ -535,6 +545,11 @@ export default function Ch8EnergyFlow() {
           </p>
           <Formula>∂u/∂t + ∇·S = −J·E</Formula>
           <p>
+            where <strong>u</strong> is the local electromagnetic energy density (in J/m³, given by
+            <em> ½ε₀E² + B²/(2μ₀)</em>), <strong>∂u/∂t</strong> is its partial derivative with respect to time at
+            a fixed point in space, <strong>∇·S</strong> is the divergence of the Poynting vector (in W/m³), and
+            <strong> J·E</strong> is the dot product of the current density (in A/m²) and the electric field (in
+            V/m), i.e., the local rate at which the field does work on charges (W/m³). The equation
             is a pointwise conservation law: field energy density <strong>u</strong> changes at any point only by net
             <strong> S</strong> divergence or by mechanical work done on charge<Cite id="poynting-1884" in={SOURCES} />. You
             can't relocate that statement to "the wire" without violating local energy conservation. Strictly speaking, the

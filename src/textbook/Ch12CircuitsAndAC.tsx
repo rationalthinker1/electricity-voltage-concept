@@ -136,6 +136,13 @@ export default function Ch12CircuitsAndAC() {
       </p>
       <Formula>V<sub>out</sub> = V<sub>in</sub> · R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>)</Formula>
       <p>
+        where <strong>V<sub>in</sub></strong> is the source voltage applied across the series
+        pair (in volts), <strong>V<sub>out</sub></strong> is the voltage across the lower
+        resistor (in volts), and <strong>R<sub>1</sub></strong> and <strong>R<sub>2</sub></strong>
+        are the upper and lower resistor values (in ohms). The output is the supply scaled by
+        the ratio of the lower leg to the total series resistance.
+      </p>
+      <p>
         This <strong>voltage divider</strong> is the most-used three-component circuit on Earth.
         It sets the bias on every transistor in every analog stage, it generates references for
         ADCs, it scales sensor signals to fit into a microcontroller's input range, and it is the
@@ -246,10 +253,25 @@ export default function Ch12CircuitsAndAC() {
       </p>
       <Formula>V<sub>0</sub> = I R + Q/C</Formula>
       <p>
+        where <strong>V<sub>0</sub></strong> is the battery EMF (in volts), <strong>I</strong>
+        is the (time-varying) loop current (in amperes), <strong>R</strong> is the series
+        resistance (in ohms), <strong>Q</strong> is the charge on the capacitor (in coulombs),
+        and <strong>C</strong> is the capacitance (in farads). The two RHS terms are the
+        voltage drop across the resistor and the voltage across the capacitor at the same
+        instant.
+      </p>
+      <p>
         and since I = dQ/dt, you get a first-order linear ODE whose solution is the canonical
         exponential approach:
       </p>
       <Formula>V<sub>C</sub>(t) = V<sub>0</sub> ( 1 − e<sup>−t/τ</sup> ),  τ = R C</Formula>
+      <p>
+        where <strong>V<sub>C</sub>(t)</strong> is the capacitor voltage at time
+        <strong> t</strong> (both in SI: volts and seconds), <strong>V<sub>0</sub></strong>
+        is the supply EMF (in volts) — also the final voltage the cap asymptotically reaches
+        — and <strong>τ = RC</strong> is the circuit's time constant (in seconds), the
+        product of resistance (ohms) and capacitance (farads).
+      </p>
       <p>
         After one time constant, the cap reaches <strong>1 − 1/e ≈ 63%</strong> of the final
         voltage; after three, about 95%; after five, you've effectively arrived. Discharging
@@ -298,9 +320,23 @@ export default function Ch12CircuitsAndAC() {
       </p>
       <Formula>L (d<sup>2</sup>Q/dt<sup>2</sup>) + Q/C = 0</Formula>
       <p>
+        where <strong>L</strong> is the inductance (in henries), <strong>C</strong> is the
+        capacitance (in farads), and <strong>Q(t)</strong> is the charge on the capacitor
+        plates (in coulombs) as a function of time. The first term is the voltage across the
+        inductor (L·dI/dt with I = dQ/dt); the second is the voltage across the capacitor.
+        KVL says they sum to zero around the loop.
+      </p>
+      <p>
         which is the harmonic-oscillator equation with angular frequency
       </p>
       <Formula>ω<sub>0</sub> = 1 / √(L C),   f<sub>0</sub> = 1 / (2π √(L C))</Formula>
+      <p>
+        where <strong>ω<sub>0</sub></strong> is the resonant angular frequency (in radians
+        per second), <strong>f<sub>0</sub></strong> is the corresponding ordinary frequency
+        (in hertz, i.e., cycles per second), <strong>L</strong> is the inductance (in
+        henries), and <strong>C</strong> is the capacitance (in farads). Larger L or C means
+        a slower oscillation.
+      </p>
       <p>
         Identical structure to a pendulum, a vibrating string, or a quantum harmonic oscillator.
         L plays the role of mass (inertia of current), 1/C plays the role of spring stiffness
@@ -354,12 +390,28 @@ export default function Ch12CircuitsAndAC() {
         |I(ω)| = V<sub>0</sub> / √(R<sup>2</sup> + (ωL − 1/ωC)<sup>2</sup>)
       </Formula>
       <p>
+        where <strong>|I(ω)|</strong> is the steady-state current amplitude (in amperes) at
+        driving angular frequency <strong>ω</strong> (in radians per second),
+        <strong> V<sub>0</sub></strong> is the source peak voltage (in volts),
+        <strong> R</strong> is the series resistance (in ohms), <strong>L</strong> is the
+        inductance (in henries), and <strong>C</strong> is the capacitance (in farads). The
+        bracketed term <em>(ωL − 1/ωC)</em> is the net reactance, also in ohms.
+      </p>
+      <p>
         which peaks when ωL = 1/(ωC) — that is, at exactly ω = ω₀ = 1/√(LC). The sharpness of the
         peak is the <strong>
           <Term def={<><strong>Q factor</strong> — quality factor: <em>Q = 2π · (energy stored) / (energy dissipated per cycle)</em>. For a series RLC, <em>Q = ω₀L/R = (1/R)√(L/C)</em>. High-Q resonators ring long and select a narrow band of frequencies.</>}>Q factor</Term>
         </strong>:
       </p>
       <Formula>Q = ω<sub>0</sub> L / R = (1/R) √(L/C)</Formula>
+      <p>
+        where <strong>Q</strong> is the dimensionless quality factor,
+        <strong> ω<sub>0</sub> = 1/√(LC)</strong> is the resonant angular frequency (in
+        radians per second), <strong>L</strong> is the inductance (in henries),
+        <strong> C</strong> is the capacitance (in farads), and <strong>R</strong> is the
+        series resistance (in ohms). High Q means the resonator stores many cycles' worth
+        of energy for every cycle's worth dissipated.
+      </p>
 
       <RLCResonanceDemo />
 
@@ -417,6 +469,16 @@ export default function Ch12CircuitsAndAC() {
       <Formula>Z<sub>L</sub> = jωL</Formula>
       <Formula>Z<sub>C</sub> = 1 / (jωC) = −j / (ωC)</Formula>
       <p>
+        where <strong>Z<sub>R</sub></strong>, <strong>Z<sub>L</sub></strong>, and
+        <strong> Z<sub>C</sub></strong> are the complex impedances (in ohms) of a resistor,
+        inductor, and capacitor at angular frequency <strong>ω</strong> (in radians per
+        second), <strong>R</strong> is the resistance (in ohms), <strong>L</strong> is the
+        inductance (in henries), <strong>C</strong> is the capacitance (in farads), and
+        <strong> j = √−1</strong> is the imaginary unit. Each Z is in general a complex
+        number; multiplication by <em>j</em> represents a +90° phase rotation in the complex
+        plane.
+      </p>
+      <p>
         Resistors are real. Inductors are positive-imaginary: voltage <em>leads</em> current by
         90°, because V<sub>L</sub> = L dI/dt and the derivative of a cosine is a negative sine
         (rotated +90° in the complex plane). Capacitors are negative-imaginary: current
@@ -430,8 +492,13 @@ export default function Ch12CircuitsAndAC() {
       </p>
       <Formula>Z(ω) = R + j ( ωL − 1/ωC )</Formula>
       <p>
-        whose magnitude tells you how much current flows for a given voltage, and whose argument
-        tells you the V–I phase shift<Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
+        where <strong>Z(ω)</strong> is the total complex series impedance (in ohms) at
+        angular frequency <strong>ω</strong> (in radians per second), <strong>R</strong> is
+        the resistance (in ohms, the real part — dissipative), <strong>L</strong> is the
+        inductance (in henries), <strong>C</strong> is the capacitance (in farads), and
+        <strong> j = √−1</strong>. The bracketed imaginary part is the net reactance, also
+        in ohms. The magnitude <em>|Z|</em> sets the current amplitude per volt and the
+        argument <em>∠Z</em> sets the V–I phase shift<Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
       </p>
 
       <ImpedanceDemo />
@@ -478,6 +545,13 @@ export default function Ch12CircuitsAndAC() {
         over a cycle. The instantaneous power oscillates wildly, but the time-average comes out to:
       </p>
       <Formula>⟨P⟩ = V<sub>rms</sub> I<sub>rms</sub> cos(φ)</Formula>
+      <p>
+        where <strong>⟨P⟩</strong> is the average real power delivered to the load (in
+        watts), <strong>V<sub>rms</sub></strong> and <strong>I<sub>rms</sub></strong> are
+        the root-mean-square voltage and current (in volts and amperes), and
+        <strong> φ</strong> is the phase angle (in radians) by which the current lags or
+        leads the voltage. <strong>cos(φ)</strong> is the dimensionless power factor.
+      </p>
       <p>
         with{' '}
         <Term def={<><strong>RMS (root-mean-square)</strong> — the square root of the time-averaged square of a waveform. For a sine of peak <em>V<sub>p</sub></em>, <em>V<sub>rms</sub> = V<sub>p</sub>/√2</em>. The "DC-equivalent" voltage for power dissipation: a resistor on <em>V<sub>rms</sub></em> AC dissipates the same average power as on <em>V<sub>rms</sub></em> DC.</>}>V<sub>rms</sub></Term>
