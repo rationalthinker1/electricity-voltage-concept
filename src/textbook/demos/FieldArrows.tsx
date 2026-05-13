@@ -6,9 +6,10 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { LayeredCanvas, type LayeredCanvasInfo } from '@/components/LayeredCanvas';
 import { Num } from '@/components/Num';
+import { drawCharge } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 
 interface Props { figure?: string }
@@ -20,11 +21,12 @@ export function FieldArrowsDemo({ figure }: Props) {
   const stateRef = useRef({ qNC, pos, probe });
   useEffect(() => { stateRef.current = { qNC, pos, probe }; }, [qNC, pos, probe]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas } = info;
-    let raf = 0;
-
+  const setup = useCallback((info: LayeredCanvasInfo<'field' | 'ui'>) => {
+    const { contexts, w, h, canvas } = info;
+    const fieldCtx = contexts.field;
+    const uiCtx = contexts.ui;
     let dragging = false;
+    let drawUi: () => void;
     function getMouse(e: MouseEvent | TouchEvent): [number, number] {
       const r = canvas.getBoundingClientRect();
       const t = 'touches' in e ? e.touches[0] : e;
@@ -39,13 +41,19 @@ export function FieldArrowsDemo({ figure }: Props) {
         dragging = true; canvas.style.cursor = 'grabbing';
       }
     }
+    function updateProbe(mx: number, my: number) {
+      const nextProbe = {
+        x: Math.max(0.05, Math.min(0.95, mx / w)),
+        y: Math.max(0.10, Math.min(0.90, my / h)),
+      };
+      stateRef.current.probe = nextProbe;
+      setProbe(nextProbe);
+      drawUi();
+    }
     function onMouseMove(e: MouseEvent) {
       const [mx, my] = getMouse(e);
       if (dragging) {
-        setProbe({
-          x: Math.max(0.05, Math.min(0.95, mx / w)),
-          y: Math.max(0.10, Math.min(0.90, my / h)),
-        });
+        updateProbe(mx, my);
       } else {
         const px = stateRef.current.probe.x * w;
         const py = stateRef.current.probe.y * h;
@@ -64,10 +72,7 @@ export function FieldArrowsDemo({ figure }: Props) {
       e.preventDefault();
       if (!dragging) return;
       const [mx, my] = getMouse(e);
-      setProbe({
-        x: Math.max(0.05, Math.min(0.95, mx / w)),
-        y: Math.max(0.10, Math.min(0.90, my / h)),
-      });
+      updateProbe(mx, my);
     }
     function onTouchEnd() { dragging = false; }
 
@@ -78,14 +83,13 @@ export function FieldArrowsDemo({ figure }: Props) {
     canvas.addEventListener('touchmove', onTouchMove, { passive: false });
     canvas.addEventListener('touchend', onTouchEnd);
 
-    function draw() {
-      const { qNC, pos, probe } = stateRef.current;
+    function drawField() {
       const sign = pos ? +1 : -1;
       const q = sign * qNC * 1e-9;
       const cx0 = w / 2, cy0 = h / 2;
       // Map: 1 px = 1 mm physical (so canvas ~ 30 cm wide)
-      ctx.fillStyle = '#0d0d10';
-      ctx.fillRect(0, 0, w, h);
+      fieldCtx.fillStyle = '#0d0d10';
+      fieldCtx.fillRect(0, 0, w, h);
 
       // Field arrow grid
       const step = 36;
@@ -102,49 +106,51 @@ export function FieldArrowsDemo({ figure }: Props) {
           const len = Math.min(20, 5 + Math.log10(Emag + 1) * 1.6);
           const ux = (dx / r) * sign;
           const uy = (dy / r) * sign;
-          ctx.strokeStyle = `rgba(255,107,42,${0.15 + Math.min(0.5, Math.log10(Emag + 1) / 12)})`;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(px - ux * len * 0.3, py - uy * len * 0.3);
-          ctx.lineTo(px + ux * len * 0.7, py + uy * len * 0.7);
-          ctx.stroke();
+          fieldCtx.strokeStyle = `rgba(255,107,42,${0.15 + Math.min(0.5, Math.log10(Emag + 1) / 12)})`;
+          fieldCtx.lineWidth = 1;
+          fieldCtx.beginPath();
+          fieldCtx.moveTo(px - ux * len * 0.3, py - uy * len * 0.3);
+          fieldCtx.lineTo(px + ux * len * 0.7, py + uy * len * 0.7);
+          fieldCtx.stroke();
           // small head
-          ctx.fillStyle = `rgba(255,107,42,${0.25 + Math.min(0.6, Math.log10(Emag + 1) / 12)})`;
-          ctx.beginPath();
-          ctx.arc(px + ux * len * 0.7, py + uy * len * 0.7, 1.4, 0, Math.PI * 2);
-          ctx.fill();
+          fieldCtx.fillStyle = `rgba(255,107,42,${0.25 + Math.min(0.6, Math.log10(Emag + 1) / 12)})`;
+          fieldCtx.beginPath();
+          fieldCtx.arc(px + ux * len * 0.7, py + uy * len * 0.7, 1.4, 0, Math.PI * 2);
+          fieldCtx.fill();
         }
       }
 
       // Charge
       const color = pos ? '#ff3b6e' : '#5baef8';
       const radius = 14 + Math.min(8, qNC * 0.4);
-      const grd = ctx.createRadialGradient(cx0, cy0, 0, cx0, cy0, radius * 3);
-      grd.addColorStop(0, color); grd.addColorStop(1, color + '00');
-      ctx.fillStyle = grd;
-      ctx.beginPath(); ctx.arc(cx0, cy0, radius * 3, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = color;
-      ctx.beginPath(); ctx.arc(cx0, cy0, radius, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#0a0a0b';
-      ctx.font = `bold ${radius}px JetBrains Mono`;
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(pos ? '+' : '−', cx0, cy0);
+      drawCharge(fieldCtx, { x: cx0, y: cy0 }, {
+        color,
+        radius,
+        sign: pos ? '+' : '−',
+        textColor: '#0a0a0b',
+      });
+    }
 
+    drawUi = function drawProbeLayer() {
+      const { probe } = stateRef.current;
+      uiCtx.clearRect(0, 0, w, h);
       // Probe
       const px = probe.x * w, py = probe.y * h;
-      ctx.strokeStyle = '#ff6b2a';
-      ctx.lineWidth = 2;
-      ctx.fillStyle = 'rgba(10,10,11,.9)';
-      ctx.beginPath(); ctx.arc(px, py, 9, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = '#ff6b2a';
-      ctx.font = 'bold 10px JetBrains Mono';
-      ctx.fillText('P', px, py);
+      uiCtx.strokeStyle = '#ff6b2a';
+      uiCtx.lineWidth = 2;
+      uiCtx.fillStyle = 'rgba(10,10,11,.9)';
+      uiCtx.beginPath(); uiCtx.arc(px, py, 9, 0, Math.PI * 2); uiCtx.fill(); uiCtx.stroke();
+      uiCtx.fillStyle = '#ff6b2a';
+      uiCtx.font = 'bold 10px JetBrains Mono';
+      uiCtx.textAlign = 'center';
+      uiCtx.textBaseline = 'middle';
+      uiCtx.fillText('P', px, py);
+    };
 
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
+    drawField();
+    drawUi();
+
     return () => {
-      cancelAnimationFrame(raf);
       canvas.removeEventListener('mousedown', onMouseDown);
       canvas.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
@@ -152,7 +158,7 @@ export function FieldArrowsDemo({ figure }: Props) {
       canvas.removeEventListener('touchmove', onTouchMove);
       canvas.removeEventListener('touchend', onTouchEnd);
     };
-  }, []);
+  }, [qNC, pos]);
 
   // Live readout for the probe
   // Probe distance from canvas center → mm → m
@@ -168,7 +174,7 @@ export function FieldArrowsDemo({ figure }: Props) {
       </>}
       deeperLab={{ slug: 'e-field', label: 'See full lab' }}
     >
-      <AutoResizeCanvas height={300} setup={setup} />
+      <LayeredCanvas height={300} layers={['field', 'ui']} setup={setup} />
       <DemoControls>
         <MiniToggle label={`Charge ${pos ? '+' : '−'}`} checked={pos} onChange={setPos} />
         <MiniSlider

@@ -32,7 +32,6 @@ export function ThreePhaseDemo({ figure }: Props) {
     let raf = 0;
     let simT = 0;
     let lastT = performance.now();
-    const scope: Array<{ t: number; a: number; b: number; c: number; sum: number }> = [];
     const SCOPE_DURATION = 0.05;  // 50 ms window
 
     function draw() {
@@ -48,14 +47,7 @@ export function ThreePhaseDemo({ figure }: Props) {
       // Use the actual omega but with slowed virtual time
       const omega = 2 * Math.PI * f;
       const phase = omega * simT;
-      const va = Vpk * Math.cos(phase);
-      const vb = Vpk * Math.cos(phase - TAU3);
-      const vc = Vpk * Math.cos(phase - 2 * TAU3);
-      const sum = va + vb + vc;
-
-      scope.push({ t: simT, a: va, b: vb, c: vc, sum });
-      const tCut = simT - SCOPE_DURATION;
-      while (scope.length && scope[0].t < tCut) scope.shift();
+      const tStart = simT - SCOPE_DURATION;
 
       ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
@@ -82,8 +74,10 @@ export function ThreePhaseDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.moveTo(plotX, cyP); ctx.lineTo(plotX + plotW, cyP); ctx.stroke();
 
-      const xT = (tt: number) => plotX + ((tt - tCut) / SCOPE_DURATION) * plotW;
+      const xT = (tt: number) => plotX + ((tt - tStart) / SCOPE_DURATION) * plotW;
       const yV = (v: number) => cyP - (v / Vpk) * (plotH / 2) * 0.85;
+      const sampleCount = Math.max(160, Math.floor(plotW));
+      const voltageAt = (t: number, offset: number) => Vpk * Math.cos(omega * t - offset);
 
       // Three traces
       const colors = [
@@ -91,15 +85,15 @@ export function ThreePhaseDemo({ figure }: Props) {
         'rgba(108,197,194,0.95)', // teal
         'rgba(255,107,42,0.95)',  // amber
       ];
-      const keys: Array<'a' | 'b' | 'c'> = ['a', 'b', 'c'];
+      const offsets = [0, TAU3, 2 * TAU3];
       for (let k = 0; k < 3; k++) {
         ctx.strokeStyle = colors[k];
         ctx.lineWidth = 1.5;
         ctx.beginPath();
-        for (let i = 0; i < scope.length; i++) {
-          const p = scope[i];
-          const x = xT(p.t);
-          const y = yV(p[keys[k]]);
+        for (let i = 0; i <= sampleCount; i++) {
+          const t = tStart + (i / sampleCount) * SCOPE_DURATION;
+          const x = xT(t);
+          const y = yV(voltageAt(t, offsets[k]));
           if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
         }
         ctx.stroke();
@@ -110,10 +104,11 @@ export function ThreePhaseDemo({ figure }: Props) {
       ctx.setLineDash([3, 3]);
       ctx.lineWidth = 1.4;
       ctx.beginPath();
-      for (let i = 0; i < scope.length; i++) {
-        const p = scope[i];
-        const x = xT(p.t);
-        const y = yV(p.sum);
+      for (let i = 0; i <= sampleCount; i++) {
+        const t = tStart + (i / sampleCount) * SCOPE_DURATION;
+        const sumTrace = voltageAt(t, 0) + voltageAt(t, TAU3) + voltageAt(t, 2 * TAU3);
+        const x = xT(t);
+        const y = yV(sumTrace);
         if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       }
       ctx.stroke();

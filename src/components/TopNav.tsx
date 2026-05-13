@@ -5,13 +5,19 @@ import { MANIFEST } from '@/labs/data/manifest';
 
 const TOTAL_CHAPTERS = CHAPTERS.length;
 
+interface TopNavProps {
+  themeMode: 'system' | 'light' | 'dark';
+  resolvedTheme: 'light' | 'dark';
+  onCycleTheme: () => void;
+}
+
 /**
  * Sticky top nav. With 11 chapters the pills are too many for inline titles,
  * so we show just the chapter number ("1", "2", ..., "11") with the full
  * title in the title attribute, plus a single "Labs" link to the appendix.
  * Active chapter highlighted in amber.
  */
-export function TopNav() {
+export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) {
   const router = useRouterState();
   const pathname = router.location.pathname;
 
@@ -60,7 +66,19 @@ export function TopNav() {
           Labs
         </Link>
       </div>
-      <div className="meta">{pageMeta}</div>
+      <div className="nav-status">
+        <div className="meta">{pageMeta}</div>
+        <button
+          type="button"
+          className="theme-toggle"
+          onClick={onCycleTheme}
+          aria-label={`Theme: ${themeMode}. Effective theme: ${resolvedTheme}. Activate to cycle theme mode.`}
+          title={`Theme: ${themeMode}`}
+        >
+          <span className="theme-toggle-icon" aria-hidden="true" />
+          <span>{themeMode}</span>
+        </button>
+      </div>
     </nav>
   );
 }

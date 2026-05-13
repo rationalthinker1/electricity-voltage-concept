@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import { Link } from '@tanstack/react-router';
 
@@ -24,8 +24,32 @@ interface DemoProps {
  * /labs/{slug} page for the deeper math.
  */
 export function Demo({ figure, title, question, children, caption, deeperLab }: DemoProps) {
+  const figureRef = useRef<HTMLElement>(null);
+  const [shouldRenderBody, setShouldRenderBody] = useState(false);
+
+  useEffect(() => {
+    const figure = figureRef.current;
+    if (!figure) return;
+    if (!('IntersectionObserver' in window)) {
+      setShouldRenderBody(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          setShouldRenderBody(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '720px 0px' },
+    );
+    observer.observe(figure);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <figure className="demo">
+    <figure ref={figureRef} className="demo">
       <div className="demo-head">
         <span className="demo-fig">{figure ?? 'Fig.'}</span>
         <span className="demo-title">{title}</span>
@@ -36,7 +60,9 @@ export function Demo({ figure, title, question, children, caption, deeperLab }: 
         )}
       </div>
       <div className="demo-question">{question}</div>
-      <div className="demo-body">{children}</div>
+      <div className={shouldRenderBody ? 'demo-body' : 'demo-body demo-body-pending'}>
+        {shouldRenderBody ? children : null}
+      </div>
       {caption && <figcaption className="demo-caption">{caption}</figcaption>}
     </figure>
   );

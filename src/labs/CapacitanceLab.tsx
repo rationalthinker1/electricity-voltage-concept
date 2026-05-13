@@ -90,7 +90,7 @@ export default function CapacitanceLab() {
       }
     }
 
-    function drawBattery(x: number, y: number, topY: number, botY: number) {
+    function drawCapacitorBattery(x: number, y: number, topY: number, botY: number) {
       ctx.strokeStyle = 'rgba(236,235,229,0.7)';
       ctx.lineWidth = 1.6;
       ctx.beginPath();
@@ -184,7 +184,7 @@ export default function CapacitanceLab() {
       drawCharges(xL, topY - 7, plateW, target, '+', '#ff3b6e');
       drawCharges(xL, botY + plateThick + 7, plateW, target, '−', '#5baef8');
 
-      drawBattery(xL - 70, cy, topY, botY);
+      drawCapacitorBattery(xL - 70, cy, topY, botY);
 
       ctx.strokeStyle = 'rgba(236,235,229,0.45)';
       ctx.lineWidth = 1.4;

@@ -14,6 +14,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawCharge } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -92,8 +93,20 @@ export function OscillatingDipoleDemo({ figure }: Props) {
       const yPos = cy - dipoleHalf - disp;
       const yNeg = cy + dipoleHalf - disp;
 
-      drawCharge(ctx, cx, yPos, '#ff3b6e', '+');
-      drawCharge(ctx, cx, yNeg, '#5baef8', '−');
+      drawCharge(ctx, { x: cx, y: yPos }, {
+        color: '#ff3b6e',
+        glow: true,
+        radius: 11,
+        sign: '+',
+        textColor: '#0a0a0b',
+      });
+      drawCharge(ctx, { x: cx, y: yNeg }, {
+        color: '#5baef8',
+        glow: true,
+        radius: 11,
+        sign: '−',
+        textColor: '#0a0a0b',
+      });
 
       // Axis indicator (dashed vertical line)
       ctx.setLineDash([4, 6]);
@@ -144,21 +157,4 @@ export function OscillatingDipoleDemo({ figure }: Props) {
       </DemoControls>
     </Demo>
   );
-}
-
-function drawCharge(
-  ctx: CanvasRenderingContext2D, cx: number, cy: number, color: string, label: string,
-) {
-  const radius = 11;
-  const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 3);
-  grd.addColorStop(0, color);
-  grd.addColorStop(1, color + '00');
-  ctx.fillStyle = grd;
-  ctx.beginPath(); ctx.arc(cx, cy, radius * 3, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = color;
-  ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = '#0a0a0b';
-  ctx.font = `bold ${radius}px JetBrains Mono`;
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText(label, cx, cy);
 }

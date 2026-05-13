@@ -17,6 +17,7 @@ import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
+import { drawArrow, drawCharge } from '@/lib/canvasPrimitives';
 import { PHYS, pretty } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
@@ -204,11 +205,22 @@ export default function EFieldLab() {
         const ux = (dxPx / d) * Math.sign(Emag);
         const uy = (dyPx / d) * Math.sign(Emag);
         const len = 22 + Math.min(140, Math.log10(absE + 1) * 22);
-        drawArrow(ctx, px, py, px + ux * len, py + uy * len, '#ff6b2a');
+        drawArrow(ctx, { x: px, y: py }, { x: px + ux * len, y: py + uy * len }, {
+          color: '#ff6b2a',
+          lineWidth: 2.2,
+          headLength: 9,
+        });
       }
 
       // Source charge
-      drawCharge(ctx, sx, sy, '#ff3b6e', qNC >= 0 ? '+' : '−', 'Q', Math.abs(qNC));
+      drawCharge(ctx, { x: sx, y: sy }, {
+        color: '#ff3b6e',
+        label: 'Q',
+        magnitudeLabel: `= ${Math.abs(qNC).toFixed(1)} nC`,
+        radius: 12 + Math.min(12, Math.abs(qNC) * 0.4),
+        sign: qNC >= 0 ? '+' : '−',
+        textColor: '#0a0a0b',
+      });
       // Probe
       drawProbe(ctx, px, py, 'P');
 
@@ -552,49 +564,6 @@ export default function EFieldLab() {
       prose={prose}
     />
   );
-}
-
-function drawArrow(
-  ctx: CanvasRenderingContext2D,
-  x1: number, y1: number, x2: number, y2: number, color: string,
-) {
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 2.2;
-  ctx.beginPath();
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(x2, y2);
-  ctx.stroke();
-  const ang = Math.atan2(y2 - y1, x2 - x1);
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.moveTo(x2, y2);
-  ctx.lineTo(x2 - 9 * Math.cos(ang - 0.4), y2 - 9 * Math.sin(ang - 0.4));
-  ctx.lineTo(x2 - 9 * Math.cos(ang + 0.4), y2 - 9 * Math.sin(ang + 0.4));
-  ctx.closePath();
-  ctx.fill();
-}
-
-function drawCharge(
-  ctx: CanvasRenderingContext2D,
-  cx: number, cy: number, color: string,
-  sign: string, label: string, magnitude: number,
-) {
-  const radius = 12 + Math.min(12, magnitude * 0.4);
-  const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 3);
-  grd.addColorStop(0, color);
-  grd.addColorStop(1, color + '00');
-  ctx.fillStyle = grd;
-  ctx.beginPath(); ctx.arc(cx, cy, radius * 3, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = color;
-  ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = '#0a0a0b';
-  ctx.font = `bold ${radius}px JetBrains Mono`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(sign, cx, cy);
-  ctx.fillStyle = color;
-  ctx.font = '10px JetBrains Mono';
-  ctx.fillText(label + ' = ' + magnitude.toFixed(1) + ' nC', cx, cy + radius + 14);
 }
 
 function drawProbe(

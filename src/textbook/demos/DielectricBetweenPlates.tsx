@@ -12,6 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawArrow } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 
 interface Props { figure?: string }
@@ -138,32 +139,25 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
       for (let i = 0; i < arrowsN; i++) {
         const ax = px + (i + 0.5) * (plateW / arrowsN);
 
-        function drawArrow(y0: number, len: number, alpha: number) {
-          ctx.strokeStyle = `rgba(255,107,42,${alpha.toFixed(3)})`;
-          ctx.fillStyle = ctx.strokeStyle;
-          ctx.lineWidth = 1.4;
-          ctx.beginPath();
-          ctx.moveTo(ax, y0);
-          ctx.lineTo(ax, y0 + len);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(ax, y0 + len);
-          ctx.lineTo(ax - 3, y0 + len - 6);
-          ctx.lineTo(ax + 3, y0 + len - 6);
-          ctx.closePath();
-          ctx.fill();
-        }
+        const drawFieldArrow = (y0: number, len: number, alpha: number) => {
+          drawArrow(ctx, { x: ax, y: y0 }, { x: ax, y: y0 + len }, {
+            color: `rgba(255,107,42,${alpha.toFixed(3)})`,
+            headLength: 6,
+            headWidth: 3,
+            lineWidth: 1.4,
+          });
+        };
 
         // Above the slab — applied field
         if (inserted) {
-          drawArrow(yTop + 4, slabTop - yTop - 8, 0.85);
+          drawFieldArrow(yTop + 4, slabTop - yTop - 8, 0.85);
           // Inside slab — reduced field
           const insideLen = Math.max(8, (slabBot - slabTop - 8) / Math.max(1, erEff * 0.25));
-          drawArrow(slabTop + 4 + (slabBot - slabTop - 8 - insideLen) / 2, insideLen, 0.4);
+          drawFieldArrow(slabTop + 4 + (slabBot - slabTop - 8 - insideLen) / 2, insideLen, 0.4);
           // Below slab — applied field again
-          drawArrow(slabBot + 4, yBot - slabBot - 8, 0.85);
+          drawFieldArrow(slabBot + 4, yBot - slabBot - 8, 0.85);
         } else {
-          drawArrow(yTop + 4, yBot - yTop - 8, 0.85);
+          drawFieldArrow(yTop + 4, yBot - yTop - 8, 0.85);
         }
       }
 

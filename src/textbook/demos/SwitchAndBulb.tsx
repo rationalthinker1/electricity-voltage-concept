@@ -19,6 +19,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
+import { drawBattery, drawSwitch as drawSchematicSwitch } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -97,10 +98,32 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       }
 
       // Battery
-      drawBattery(ctx, batX, top, bot);
+      drawBattery(ctx, { x: batX, y: (top + bot) / 2 }, {
+        color: 'rgba(255,255,255,.18)',
+        label: 'battery',
+        labelOffset: { x: 0, y: (bot - top) / 2 + 18 },
+        leadLength: (bot - top) / 2,
+        negativeColor: '#ecebe5',
+        negativePlateLength: 16,
+        plateGap: (bot - top) / 2,
+        positiveColor: '#ecebe5',
+        positivePlateLength: 28,
+      });
+      ctx.fillStyle = '#ff3b6e';
+      ctx.font = 'bold 11px JetBrains Mono';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('+', batX - 18, top);
+      ctx.fillStyle = '#5baef8';
+      ctx.fillText('−', batX - 12, bot);
 
       // Switch — a hinge (open) or a closed bridge
-      drawSwitch(ctx, switchX, top, isClosed);
+      drawSchematicSwitch(ctx, { x: switchX, y: top }, {
+        color: isClosed ? '#ff6b2a' : '#ecebe5',
+        label: 'switch',
+        state: isClosed ? 'closed' : 'open-up',
+        terminalGap: 32,
+      });
 
       // Bulb
       const bulbY = (top + bot) / 2;
@@ -148,54 +171,6 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       </DemoControls>
     </Demo>
   );
-}
-
-function drawBattery(ctx: CanvasRenderingContext2D, x: number, top: number, bot: number) {
-  // Two short bars stacked vertically representing battery cells.
-  ctx.strokeStyle = '#ecebe5';
-  ctx.lineWidth = 2;
-  // Long bar (positive) at top
-  ctx.beginPath(); ctx.moveTo(x - 14, top); ctx.lineTo(x + 14, top); ctx.stroke();
-  // Short bar (negative) at bottom
-  ctx.beginPath(); ctx.moveTo(x - 8, bot); ctx.lineTo(x + 8, bot); ctx.stroke();
-  // Connect bars with a thin spine
-  ctx.strokeStyle = 'rgba(255,255,255,.18)';
-  ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(x, top + 2); ctx.lineTo(x, bot - 2); ctx.stroke();
-  // labels
-  ctx.fillStyle = '#ff3b6e';
-  ctx.font = 'bold 11px JetBrains Mono';
-  ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
-  ctx.fillText('+', x - 18, top);
-  ctx.fillStyle = '#5baef8';
-  ctx.fillText('−', x - 12, bot);
-  ctx.fillStyle = 'rgba(160,158,149,.7)';
-  ctx.font = '10px JetBrains Mono';
-  ctx.textAlign = 'center';
-  ctx.fillText('battery', x, bot + 18);
-}
-
-function drawSwitch(ctx: CanvasRenderingContext2D, x: number, y: number, closed: boolean) {
-  // Two contact dots
-  ctx.fillStyle = '#ecebe5';
-  ctx.beginPath(); ctx.arc(x - 16, y, 3, 0, Math.PI * 2); ctx.fill();
-  ctx.beginPath(); ctx.arc(x + 16, y, 3, 0, Math.PI * 2); ctx.fill();
-  // Lever — drawn pivoting from left contact
-  ctx.strokeStyle = closed ? '#ff6b2a' : '#ecebe5';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(x - 16, y);
-  if (closed) {
-    ctx.lineTo(x + 16, y);
-  } else {
-    // angled up and to the right
-    ctx.lineTo(x + 12, y - 18);
-  }
-  ctx.stroke();
-  ctx.fillStyle = 'rgba(160,158,149,.7)';
-  ctx.font = '10px JetBrains Mono';
-  ctx.textAlign = 'center';
-  ctx.fillText('switch', x, y - 26);
 }
 
 function drawBulb(ctx: CanvasRenderingContext2D, x: number, y: number, glow: number) {

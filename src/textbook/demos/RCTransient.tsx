@@ -15,6 +15,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawBattery, drawResistor, drawSwitch, drawWire } from '@/lib/canvasPrimitives';
 
 type Mode = 'open' | 'charging' | 'discharging';
 
@@ -101,32 +102,34 @@ export function RCTransientDemo({ figure }: Props) {
       const yTop = cy - 50;
       const yBot = cy + 50;
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.55)';
-      ctx.lineWidth = 1.5;
-      ctx.lineCap = 'round';
       // top wire: battery+ → switch → resistor → capacitor
-      ctx.beginPath();
-      ctx.moveTo(batX, yTop);
-      ctx.lineTo(swX - 14, yTop);
-      ctx.stroke();
+      drawWire(ctx, [{ x: batX, y: yTop }, { x: swX - 14, y: yTop }]);
       // Switch
-      drawSwitch(ctx, swX, yTop, st.mode);
-      ctx.beginPath();
-      ctx.moveTo(swX + 14, yTop); ctx.lineTo(resX - 22, yTop);
-      ctx.stroke();
-      drawResistorH(ctx, resX, yTop, st.R);
-      ctx.beginPath();
-      ctx.moveTo(resX + 22, yTop); ctx.lineTo(capX, yTop);
-      ctx.stroke();
+      drawSwitch(ctx, { x: swX, y: yTop }, {
+        label: st.mode.toUpperCase(),
+        state: st.mode === 'charging' ? 'closed' : st.mode === 'discharging' ? 'open-down' : 'open-up',
+      });
+      drawWire(ctx, [{ x: swX + 14, y: yTop }, { x: resX - 22, y: yTop }]);
+      drawResistor(ctx, { x: resX - 20, y: yTop }, { x: resX + 20, y: yTop }, {
+        label: fmtR(st.R),
+        labelOffset: { x: 0, y: -10 },
+      });
+      drawWire(ctx, [{ x: resX + 22, y: yTop }, { x: capX, y: yTop }]);
       // Capacitor
       drawCapacitorV(ctx, capX, cy, st.Vc, V0);
       // Bottom wire back to battery
-      ctx.beginPath();
-      ctx.moveTo(capX, cy + 14); ctx.lineTo(capX, yBot);
-      ctx.lineTo(batX, yBot);
-      ctx.stroke();
+      drawWire(ctx, [
+        { x: capX, y: cy + 14 },
+        { x: capX, y: yBot },
+        { x: batX, y: yBot },
+      ]);
       // Battery
-      drawBattery(ctx, batX, cy, V0);
+      drawBattery(ctx, { x: batX, y: cy }, {
+        label: `${V0.toFixed(0)}V`,
+        leadLength: 50,
+        positivePlateLength: 24,
+        negativePlateLength: 14,
+      });
 
       // Current dots when active (only if mode is not open and there is appreciable change)
       const dV = st.mode === 'charging' ? V0 - st.Vc : st.mode === 'discharging' ? st.Vc : 0;
@@ -309,80 +312,6 @@ function fmtT(s: number): string {
   if (s < 1e-3) return (s * 1e6).toFixed(1) + ' µs';
   if (s < 1) return (s * 1e3).toFixed(1) + ' ms';
   return s.toFixed(2) + ' s';
-}
-
-function drawBattery(ctx: CanvasRenderingContext2D, x: number, y: number, V: number) {
-  ctx.strokeStyle = 'rgba(255,255,255,0.65)';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(x, y - 50); ctx.lineTo(x, y - 14);
-  ctx.moveTo(x, y + 14); ctx.lineTo(x, y + 50);
-  ctx.stroke();
-  ctx.strokeStyle = '#ff3b6e';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.moveTo(x - 12, y - 14); ctx.lineTo(x + 12, y - 14);
-  ctx.stroke();
-  ctx.strokeStyle = '#5baef8';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.moveTo(x - 7, y + 14); ctx.lineTo(x + 7, y + 14);
-  ctx.stroke();
-  ctx.fillStyle = 'rgba(255,255,255,0.7)';
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(`${V.toFixed(0)}V`, x - 16, y);
-}
-
-function drawSwitch(ctx: CanvasRenderingContext2D, x: number, y: number, mode: Mode) {
-  ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-  ctx.lineWidth = 1.6;
-  // Two terminals
-  ctx.beginPath();
-  ctx.arc(x - 12, y, 2.2, 0, Math.PI * 2); ctx.fill();
-  ctx.beginPath();
-  ctx.arc(x + 12, y, 2.2, 0, Math.PI * 2); ctx.fill();
-  // Blade
-  ctx.beginPath();
-  ctx.moveTo(x - 12, y);
-  if (mode === 'open') {
-    ctx.lineTo(x + 10, y - 18);
-  } else if (mode === 'charging') {
-    ctx.lineTo(x + 12, y);
-  } else {
-    // discharging — point downward (separate path)
-    ctx.lineTo(x + 10, y + 18);
-  }
-  ctx.stroke();
-  ctx.fillStyle = 'rgba(160,158,149,0.85)';
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(mode.toUpperCase(), x, y - 22);
-}
-
-function drawResistorH(ctx: CanvasRenderingContext2D, cx: number, cy: number, R: number) {
-  const x0 = cx - 20;
-  const x1 = cx + 20;
-  ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-  ctx.lineWidth = 1.6;
-  ctx.beginPath();
-  ctx.moveTo(x0, cy);
-  const steps = 6;
-  const stepW = (x1 - x0) / steps;
-  for (let i = 0; i < steps; i++) {
-    const x = x0 + (i + 0.5) * stepW;
-    const y = cy + (i % 2 === 0 ? -6 : 6);
-    ctx.lineTo(x, y);
-  }
-  ctx.lineTo(x1, cy);
-  ctx.stroke();
-  ctx.fillStyle = '#ff6b2a';
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(fmtR(R), cx, cy - 10);
 }
 
 function drawCapacitorV(ctx: CanvasRenderingContext2D, x: number, cy: number, Vc: number, V0: number) {

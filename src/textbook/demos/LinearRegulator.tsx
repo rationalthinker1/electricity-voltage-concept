@@ -17,6 +17,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawArrow } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -106,9 +107,19 @@ export function LinearRegulatorDemo({ figure }: Props) {
       ctx.fillText('(burned as heat)', xReg + regW / 2, yTop + barH / 2 + 30);
 
       // arrow from input to regulator
-      drawArrow(ctx, xIn + inW + 6, yTop + barH / 2, xReg - 4, yTop + barH / 2, '#ecebe5');
+      drawArrow(
+        ctx,
+        { x: xIn + inW + 6, y: yTop + barH / 2 },
+        { x: xReg - 4, y: yTop + barH / 2 },
+        { color: '#ecebe5', lineWidth: 1.4, headLength: 6, headWidth: 4 },
+      );
       // arrow from regulator to output
-      drawArrow(ctx, xReg + regW + 4, yTop + barH / 2, xOut - 6, yTop + barH / 2, '#ecebe5');
+      drawArrow(
+        ctx,
+        { x: xReg + regW + 4, y: yTop + barH / 2 },
+        { x: xOut - 6, y: yTop + barH / 2 },
+        { color: '#ecebe5', lineWidth: 1.4, headLength: 6, headWidth: 4 },
+      );
 
       // output bar — fraction of P_in
       const outBarH = Math.max(2, barH * (Pout / Math.max(Pin, 0.01)));
@@ -176,20 +187,4 @@ export function LinearRegulatorDemo({ figure }: Props) {
       </DemoControls>
     </Demo>
   );
-}
-
-function drawArrow(ctx: CanvasRenderingContext2D, x0: number, y0: number, x1: number, y1: number, color: string) {
-  ctx.strokeStyle = color;
-  ctx.fillStyle = color;
-  ctx.lineWidth = 1.4;
-  ctx.beginPath();
-  ctx.moveTo(x0, y0); ctx.lineTo(x1, y1);
-  ctx.stroke();
-  const ang = Math.atan2(y1 - y0, x1 - x0);
-  const al = 6;
-  ctx.beginPath();
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(x1 - al * Math.cos(ang - 0.4), y1 - al * Math.sin(ang - 0.4));
-  ctx.lineTo(x1 - al * Math.cos(ang + 0.4), y1 - al * Math.sin(ang + 0.4));
-  ctx.closePath(); ctx.fill();
 }

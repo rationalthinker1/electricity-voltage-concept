@@ -18,6 +18,7 @@ import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
+import { drawCharge } from '@/lib/canvasPrimitives';
 import { PHYS, pretty } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
@@ -289,8 +290,20 @@ export default function PotentialLab() {
       ctx.fill();
 
       // Charges
-      drawCharge(ctx, st.q1.x * w, st.q1.y * h, '#ff3b6e', st.q1NC >= 0 ? '+' : '−', 'Q₁', Math.abs(st.q1NC));
-      drawCharge(ctx, st.q2.x * w, st.q2.y * h, '#5baef8', st.q2NC >= 0 ? '+' : '−', 'Q₂', Math.abs(st.q2NC));
+      drawCharge(ctx, { x: st.q1.x * w, y: st.q1.y * h }, {
+        color: '#ff3b6e',
+        label: 'Q₁',
+        radius: 12 + Math.min(8, Math.abs(st.q1NC) * 0.8),
+        sign: st.q1NC >= 0 ? '+' : '−',
+        textColor: '#0a0a0b',
+      });
+      drawCharge(ctx, { x: st.q2.x * w, y: st.q2.y * h }, {
+        color: '#5baef8',
+        label: 'Q₂',
+        radius: 12 + Math.min(8, Math.abs(st.q2NC) * 0.8),
+        sign: st.q2NC >= 0 ? '+' : '−',
+        textColor: '#0a0a0b',
+      });
 
       // Probes
       drawProbe(ctx, ax, ay, 'A');
@@ -657,29 +670,6 @@ export default function PotentialLab() {
       prose={prose}
     />
   );
-}
-
-function drawCharge(
-  ctx: CanvasRenderingContext2D,
-  cx: number, cy: number, color: string,
-  sign: string, label: string, magnitude: number,
-) {
-  const radius = 12 + Math.min(8, magnitude * 0.8);
-  const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 3);
-  grd.addColorStop(0, color);
-  grd.addColorStop(1, color + '00');
-  ctx.fillStyle = grd;
-  ctx.beginPath(); ctx.arc(cx, cy, radius * 3, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = color;
-  ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = '#0a0a0b';
-  ctx.font = `bold ${radius}px JetBrains Mono`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(sign, cx, cy);
-  ctx.fillStyle = color;
-  ctx.font = '10px JetBrains Mono';
-  ctx.fillText(label, cx, cy + radius + 14);
 }
 
 function drawProbe(

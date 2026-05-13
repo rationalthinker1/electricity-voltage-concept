@@ -17,6 +17,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
+import { drawBattery, drawWire } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -61,6 +62,7 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
       [bulbX - bulbR, cyBot],         // out the bulb bottom
       [batteryX + 18, cyBot],         // bottom wire back
     ];
+    const wirePath = path.map(([x, y]) => ({ x, y }));
     // Cumulative arc lengths
     const segLen: number[] = [];
     let totalLen = 0;
@@ -100,43 +102,6 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
           r: 1.0 + Math.random() * 0.4,
         });
       }
-    }
-
-    function drawWire(yPath: Array<[number, number]>) {
-      ctx.strokeStyle = 'rgba(255,107,42,0.55)';
-      ctx.lineWidth = 3.5;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.beginPath();
-      ctx.moveTo(yPath[0]![0], yPath[0]![1]);
-      for (let i = 1; i < yPath.length; i++) ctx.lineTo(yPath[i]![0], yPath[i]![1]);
-      ctx.stroke();
-    }
-
-    function drawBattery() {
-      // Two parallel plates: long (positive) on top, short (negative) on bottom.
-      const x = batteryX;
-      ctx.strokeStyle = '#ecebe5';
-      ctx.lineWidth = 3;
-      // long plate (top, +)
-      ctx.beginPath();
-      ctx.moveTo(x - 18, cyTop); ctx.lineTo(x + 18, cyTop);
-      ctx.stroke();
-      // short plate (bottom, −)
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(x - 10, cyBot); ctx.lineTo(x + 10, cyBot);
-      ctx.stroke();
-      // labels
-      ctx.fillStyle = '#ff3b6e';
-      ctx.font = 'bold 16px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText('+', x - 30, cyTop);
-      ctx.fillStyle = '#5baef8';
-      ctx.fillText('−', x - 30, cyBot);
-      ctx.fillStyle = 'rgba(160,158,149,.85)';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillText('battery', x, (cyTop + cyBot) / 2);
     }
 
     function drawBulb() {
@@ -183,8 +148,25 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
         ? 'Real picture — energy flows through the field, into the bulb from outside'
         : 'Old picture — electrons stream along the wire, carrying energy', 18, 14);
 
-      drawWire(path);
-      drawBattery();
+      drawWire(ctx, wirePath, { color: 'rgba(255,107,42,0.55)', lineWidth: 3.5 });
+      drawBattery(ctx, { x: batteryX, y: (cyTop + cyBot) / 2 }, {
+        color: 'rgba(255,255,255,0)',
+        label: 'battery',
+        labelOffset: { x: 0, y: 0 },
+        leadLength: (cyBot - cyTop) / 2,
+        negativeColor: '#ecebe5',
+        negativePlateLength: 20,
+        plateGap: (cyBot - cyTop) / 2,
+        positiveColor: '#ecebe5',
+        positivePlateLength: 36,
+      });
+      ctx.fillStyle = '#ff3b6e';
+      ctx.font = 'bold 16px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('+', batteryX - 30, cyTop);
+      ctx.fillStyle = '#5baef8';
+      ctx.fillText('−', batteryX - 30, cyBot);
 
       if (!realPicture) {
         // Old picture: carriers drifting along the loop.

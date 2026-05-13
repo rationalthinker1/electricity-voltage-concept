@@ -30,9 +30,10 @@ export function ConductorRedistributionDemo({ figure }: Props) {
     const { ctx, w, h } = info;
     let raf = 0;
 
-    const N = 80;
+    const N = 60;
     const padX = 80, padY = 40;
     const charges: Charge[] = [];
+    let lastFrame = 0;
     // Initial random cluster in the left third of the box
     for (let i = 0; i < N; i++) {
       const ix = padX + Math.random() * (w * 0.3 - padX);
@@ -40,7 +41,12 @@ export function ConductorRedistributionDemo({ figure }: Props) {
       charges.push({ x: ix, y: iy, vx: 0, vy: 0, ix, iy });
     }
 
-    function draw() {
+    function draw(now = performance.now()) {
+      if (now - lastFrame < 1000 / 30) {
+        raf = requestAnimationFrame(draw);
+        return;
+      }
+      lastFrame = now;
       const { conductor } = stateRef.current;
 
       ctx.fillStyle = '#0d0d10';

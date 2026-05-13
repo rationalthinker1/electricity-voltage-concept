@@ -31,6 +31,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawBattery, drawCurrentSource, drawResistor, drawWire } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -143,33 +144,30 @@ function drawOriginal(
   const yTop = cy - 50;
   const yBot = cy + 50;
 
-  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
-  ctx.lineWidth = 1.5;
-  ctx.lineCap = 'round';
   // Bat to R_s to node X to R_p (down to bottom rail) and to terminal A
-  ctx.beginPath();
-  ctx.moveTo(xS, yTop);
-  ctx.lineTo(xR1 - 18, yTop);
-  ctx.stroke();
-  drawHResistor(ctx, xR1, yTop, 'R_s');
-  ctx.beginPath();
-  ctx.moveTo(xR1 + 18, yTop);
-  ctx.lineTo(xR2, yTop);
-  // Down from node X through R_p to bottom
-  ctx.lineTo(xR2, cy - 18);
-  ctx.stroke();
-  drawVResistor(ctx, xR2, cy, 'R_p');
-  ctx.beginPath();
-  ctx.moveTo(xR2, cy + 18); ctx.lineTo(xR2, yBot);
-  // From node X right to terminal A
-  ctx.moveTo(xR2, yTop); ctx.lineTo(xA, yTop);
-  // Bottom rail
-  ctx.moveTo(xS, yBot); ctx.lineTo(xA, yBot);
-  // Battery
-  ctx.moveTo(xS, yTop); ctx.lineTo(xS, cy - 14);
-  ctx.moveTo(xS, cy + 14); ctx.lineTo(xS, yBot);
-  ctx.stroke();
-  drawBat(ctx, xS, cy);
+  drawWire(ctx, [{ x: xS, y: yTop }, { x: xR1 - 18, y: yTop }]);
+  drawResistor(ctx, { x: xR1 - 18, y: yTop }, { x: xR1 + 18, y: yTop }, {
+    label: 'R_s',
+    labelOffset: { x: 0, y: -10 },
+  });
+  drawWire(ctx, [
+    { x: xR1 + 18, y: yTop },
+    { x: xR2, y: yTop },
+    { x: xR2, y: cy - 18 },
+  ]);
+  drawResistor(ctx, { x: xR2, y: cy - 18 }, { x: xR2, y: cy + 18 }, {
+    label: 'R_p',
+    labelOffset: { x: 10, y: 0 },
+  });
+  drawWire(ctx, [{ x: xR2, y: cy + 18 }, { x: xR2, y: yBot }]);
+  drawWire(ctx, [{ x: xR2, y: yTop }, { x: xA, y: yTop }]);
+  drawWire(ctx, [{ x: xS, y: yBot }, { x: xA, y: yBot }]);
+  drawWire(ctx, [{ x: xS, y: yTop }, { x: xS, y: cy - 14 }]);
+  drawWire(ctx, [{ x: xS, y: cy + 14 }, { x: xS, y: yBot }]);
+  drawBattery(ctx, { x: xS, y: cy }, {
+    label: 'V_s',
+    leadLength: 50,
+  });
   drawTerminal(ctx, xA, yTop, 'A');
   drawTerminal(ctx, xA, yBot, 'B');
   ctx.restore();
@@ -195,24 +193,31 @@ function drawThev(
   const yTop = cy - 50;
   const yBot = cy + 50;
 
-  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
-  ctx.lineWidth = 1.5;
-  ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.moveTo(xS, yTop); ctx.lineTo(xR - 18, yTop); ctx.stroke();
-  drawHResistor(ctx, xR, yTop, `R_Th=${RTh.toFixed(1)}Ω`);
-  ctx.beginPath();
-  ctx.moveTo(xR + 18, yTop); ctx.lineTo(xA, yTop);
-  // Load
-  ctx.lineTo(xA, cy - 18); ctx.stroke();
-  drawVResistor(ctx, xA, cy, `R_L=${RL.toFixed(1)}Ω`);
-  ctx.beginPath();
-  ctx.moveTo(xA, cy + 18); ctx.lineTo(xA, yBot);
-  ctx.moveTo(xS, yBot); ctx.lineTo(xA, yBot);
-  ctx.moveTo(xS, yTop); ctx.lineTo(xS, cy - 14);
-  ctx.moveTo(xS, cy + 14); ctx.lineTo(xS, yBot);
-  ctx.stroke();
-  drawBatLabel(ctx, xS, cy, `V_Th=${Voc.toFixed(2)}V`);
+  drawWire(ctx, [{ x: xS, y: yTop }, { x: xR - 18, y: yTop }]);
+  drawResistor(ctx, { x: xR - 18, y: yTop }, { x: xR + 18, y: yTop }, {
+    label: `R_Th=${RTh.toFixed(1)}Ω`,
+    labelOffset: { x: 0, y: -10 },
+  });
+  drawWire(ctx, [
+    { x: xR + 18, y: yTop },
+    { x: xA, y: yTop },
+    { x: xA, y: cy - 18 },
+  ]);
+  drawResistor(ctx, { x: xA, y: cy - 18 }, { x: xA, y: cy + 18 }, {
+    label: `R_L=${RL.toFixed(1)}Ω`,
+    labelOffset: { x: 10, y: 0 },
+  });
+  drawWire(ctx, [
+    { x: xA, y: cy + 18 },
+    { x: xA, y: yBot },
+    { x: xS, y: yBot },
+  ]);
+  drawWire(ctx, [{ x: xS, y: yTop }, { x: xS, y: cy - 14 }]);
+  drawWire(ctx, [{ x: xS, y: cy + 14 }, { x: xS, y: yBot }]);
+  drawBattery(ctx, { x: xS, y: cy }, {
+    label: `V_Th=${Voc.toFixed(2)}V`,
+    leadLength: 50,
+  });
   drawTerminal(ctx, xA, yTop, 'A');
   drawTerminal(ctx, xA, yBot, 'B');
   // load-line marker
@@ -239,85 +244,50 @@ function drawNort(
   const yTop = cy - 50;
   const yBot = cy + 50;
 
-  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
-  ctx.lineWidth = 1.5;
-  ctx.lineCap = 'round';
   // Current source on left (vertical between rails)
-  ctx.beginPath();
-  ctx.moveTo(xS, yTop); ctx.lineTo(xS, cy - 18);
-  ctx.moveTo(xS, cy + 18); ctx.lineTo(xS, yBot);
-  ctx.stroke();
-  drawCurrentSource(ctx, xS, cy, `I_N=${IN.toFixed(2)}A`);
+  drawWire(ctx, [{ x: xS, y: yTop }, { x: xS, y: cy - 18 }]);
+  drawWire(ctx, [{ x: xS, y: cy + 18 }, { x: xS, y: yBot }]);
+  drawCurrentSource(ctx, { x: xS, y: cy }, {
+    label: `I_N=${IN.toFixed(2)}A`,
+    labelOffset: { x: -20, y: 0 },
+    radius: 16,
+  });
 
   // Parallel resistor R_N between rails
-  ctx.beginPath();
-  ctx.moveTo(xS, yTop); ctx.lineTo(xR, yTop); ctx.lineTo(xR, cy - 18); ctx.stroke();
-  drawVResistor(ctx, xR, cy, `R_N=${RN.toFixed(1)}Ω`);
-  ctx.beginPath();
-  ctx.moveTo(xR, cy + 18); ctx.lineTo(xR, yBot); ctx.lineTo(xS, yBot); ctx.stroke();
+  drawWire(ctx, [
+    { x: xS, y: yTop },
+    { x: xR, y: yTop },
+    { x: xR, y: cy - 18 },
+  ]);
+  drawResistor(ctx, { x: xR, y: cy - 18 }, { x: xR, y: cy + 18 }, {
+    label: `R_N=${RN.toFixed(1)}Ω`,
+    labelOffset: { x: 10, y: 0 },
+  });
+  drawWire(ctx, [
+    { x: xR, y: cy + 18 },
+    { x: xR, y: yBot },
+    { x: xS, y: yBot },
+  ]);
 
   // Load
-  ctx.beginPath();
-  ctx.moveTo(xR, yTop); ctx.lineTo(xA, yTop); ctx.lineTo(xA, cy - 18); ctx.stroke();
-  drawVResistor(ctx, xA, cy, `R_L=${RL.toFixed(1)}Ω`);
-  ctx.beginPath();
-  ctx.moveTo(xA, cy + 18); ctx.lineTo(xA, yBot); ctx.lineTo(xR, yBot); ctx.stroke();
+  drawWire(ctx, [
+    { x: xR, y: yTop },
+    { x: xA, y: yTop },
+    { x: xA, y: cy - 18 },
+  ]);
+  drawResistor(ctx, { x: xA, y: cy - 18 }, { x: xA, y: cy + 18 }, {
+    label: `R_L=${RL.toFixed(1)}Ω`,
+    labelOffset: { x: 10, y: 0 },
+  });
+  drawWire(ctx, [
+    { x: xA, y: cy + 18 },
+    { x: xA, y: yBot },
+    { x: xR, y: yBot },
+  ]);
 
   drawTerminal(ctx, xA, yTop, 'A');
   drawTerminal(ctx, xA, yBot, 'B');
   ctx.restore();
-}
-
-function drawBat(ctx: CanvasRenderingContext2D, x: number, y: number) {
-  ctx.strokeStyle = '#ff3b6e';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.moveTo(x - 12, y - 14); ctx.lineTo(x + 12, y - 14);
-  ctx.stroke();
-  ctx.strokeStyle = '#5baef8';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.moveTo(x - 7, y + 14); ctx.lineTo(x + 7, y + 14);
-  ctx.stroke();
-  ctx.fillStyle = 'rgba(255,255,255,0.7)';
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('V_s', x - 16, y);
-}
-
-function drawBatLabel(ctx: CanvasRenderingContext2D, x: number, y: number, lbl: string) {
-  ctx.strokeStyle = '#ff3b6e';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.moveTo(x - 12, y - 14); ctx.lineTo(x + 12, y - 14);
-  ctx.stroke();
-  ctx.strokeStyle = '#5baef8';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.moveTo(x - 7, y + 14); ctx.lineTo(x + 7, y + 14);
-  ctx.stroke();
-  ctx.fillStyle = 'rgba(255,255,255,0.75)';
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(lbl, x - 16, y);
-}
-
-function drawCurrentSource(ctx: CanvasRenderingContext2D, x: number, y: number, lbl: string) {
-  ctx.strokeStyle = 'rgba(108,197,194,0.95)';
-  ctx.lineWidth = 1.6;
-  ctx.beginPath(); ctx.arc(x, y, 16, 0, Math.PI * 2); ctx.stroke();
-  // Up-arrow inside
-  ctx.beginPath();
-  ctx.moveTo(x, y + 8); ctx.lineTo(x, y - 8);
-  ctx.moveTo(x - 4, y - 4); ctx.lineTo(x, y - 8); ctx.lineTo(x + 4, y - 4);
-  ctx.stroke();
-  ctx.fillStyle = 'rgba(108,197,194,0.95)';
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(lbl, x - 20, y);
 }
 
 function drawTerminal(ctx: CanvasRenderingContext2D, x: number, y: number, lbl: string) {
@@ -328,50 +298,4 @@ function drawTerminal(ctx: CanvasRenderingContext2D, x: number, y: number, lbl: 
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
   ctx.fillText(lbl, x + 8, y);
-}
-
-function drawHResistor(ctx: CanvasRenderingContext2D, cx: number, cy: number, label: string) {
-  const x0 = cx - 18;
-  const x1 = cx + 18;
-  ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-  ctx.lineWidth = 1.6;
-  ctx.beginPath();
-  ctx.moveTo(x0, cy);
-  const steps = 6;
-  const stepW = (x1 - x0) / steps;
-  for (let i = 0; i < steps; i++) {
-    const x = x0 + (i + 0.5) * stepW;
-    const y = cy + (i % 2 === 0 ? -6 : 6);
-    ctx.lineTo(x, y);
-  }
-  ctx.lineTo(x1, cy);
-  ctx.stroke();
-  ctx.fillStyle = '#ff6b2a';
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(label, cx, cy - 10);
-}
-
-function drawVResistor(ctx: CanvasRenderingContext2D, cx: number, cy: number, label: string) {
-  const y0 = cy - 18;
-  const y1 = cy + 18;
-  ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-  ctx.lineWidth = 1.6;
-  ctx.beginPath();
-  ctx.moveTo(cx, y0);
-  const steps = 6;
-  const stepH = (y1 - y0) / steps;
-  for (let i = 0; i < steps; i++) {
-    const y = y0 + (i + 0.5) * stepH;
-    const x = cx + (i % 2 === 0 ? -6 : 6);
-    ctx.lineTo(x, y);
-  }
-  ctx.lineTo(cx, y1);
-  ctx.stroke();
-  ctx.fillStyle = '#ff6b2a';
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(label, cx + 10, cy);
 }

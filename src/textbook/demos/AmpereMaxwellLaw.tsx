@@ -19,6 +19,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawWire } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 
 interface Props { figure?: string }
@@ -56,12 +57,14 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
       // Top-down style view of the wire (drawn as a horizontal line); B-circles
       // are drawn around it at intervals (ellipses to suggest perspective).
       // Wires
-      ctx.strokeStyle = 'rgba(255,107,42,0.8)';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(battX, cy); ctx.lineTo(plate1X, cy);
-      ctx.moveTo(plate2X, cy); ctx.lineTo(endX, cy);
-      ctx.stroke();
+      drawWire(ctx, [{ x: battX, y: cy }, { x: plate1X, y: cy }], {
+        color: 'rgba(255,107,42,0.8)',
+        lineWidth: 3,
+      });
+      drawWire(ctx, [{ x: plate2X, y: cy }, { x: endX, y: cy }], {
+        color: 'rgba(255,107,42,0.8)',
+        lineWidth: 3,
+      });
 
       // Battery glyph (left)
       ctx.fillStyle = '#ff3b6e';

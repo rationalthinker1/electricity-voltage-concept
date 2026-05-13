@@ -18,6 +18,7 @@ import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
+import { drawCharge } from '@/lib/canvasPrimitives';
 import { PHYS, pretty } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
@@ -233,7 +234,14 @@ export default function GaussLab() {
       ctx.fillText('R = ' + R_mm + ' mm', cx + R_mm + 8, cy - R_mm + 4);
 
       // Charge
-      drawCharge(ctx, qp.x, qp.y, '#ff3b6e', qNC >= 0 ? '+' : '−', 'Q', Math.abs(qNC));
+      drawCharge(ctx, { x: qp.x, y: qp.y }, {
+        color: '#ff3b6e',
+        label: 'Q',
+        magnitudeLabel: `= ${Math.abs(qNC).toFixed(1)} nC`,
+        radius: 11 + Math.min(10, Math.abs(qNC) * 0.4),
+        sign: qNC >= 0 ? '+' : '−',
+        textColor: '#0a0a0b',
+      });
 
       // Counter overlay (top-left)
       ctx.fillStyle = 'rgba(10,10,11,0.88)';
@@ -618,27 +626,4 @@ export default function GaussLab() {
       prose={prose}
     />
   );
-}
-
-function drawCharge(
-  ctx: CanvasRenderingContext2D,
-  cx: number, cy: number, color: string,
-  sign: string, label: string, magnitude: number,
-) {
-  const radius = 11 + Math.min(10, magnitude * 0.4);
-  const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 3);
-  grd.addColorStop(0, color);
-  grd.addColorStop(1, color + '00');
-  ctx.fillStyle = grd;
-  ctx.beginPath(); ctx.arc(cx, cy, radius * 3, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = color;
-  ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = '#0a0a0b';
-  ctx.font = `bold ${radius}px JetBrains Mono`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(sign, cx, cy);
-  ctx.fillStyle = color;
-  ctx.font = '10px JetBrains Mono';
-  ctx.fillText(label + ' = ' + magnitude.toFixed(1) + ' nC', cx, cy + radius + 14);
 }

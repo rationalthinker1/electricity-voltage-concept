@@ -19,6 +19,7 @@ import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
+import { drawArrow, drawCharge } from '@/lib/canvasPrimitives';
 import { PHYS, pretty, sci } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
@@ -151,29 +152,19 @@ export default function CoulombLab() {
       const dir1y = sign >= 0 ? -uy : uy;
       const dir2x = -dir1x, dir2y = -dir1y;
 
-      function drawArrow(fromX: number, fromY: number, vx: number, vy: number, length: number) {
-        const tipX = fromX + vx * length;
-        const tipY = fromY + vy * length;
-        ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-        ctx.fillStyle = 'rgba(255,107,42,0.95)';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(fromX + vx * 18, fromY + vy * 18); // start just outside charge
-        ctx.lineTo(tipX, tipY);
-        ctx.stroke();
-        // arrowhead
-        const a = Math.atan2(vy, vx);
-        ctx.beginPath();
-        ctx.moveTo(tipX, tipY);
-        ctx.lineTo(tipX - 8 * Math.cos(a - 0.4), tipY - 8 * Math.sin(a - 0.4));
-        ctx.lineTo(tipX - 8 * Math.cos(a + 0.4), tipY - 8 * Math.sin(a + 0.4));
-        ctx.closePath();
-        ctx.fill();
-      }
-
       if (Math.abs(F) > 1e-30) {
-        drawArrow(x1, y1, dir1x, dir1y, arrowLen);
-        drawArrow(x2, y2, dir2x, dir2y, arrowLen);
+        drawArrow(
+          ctx,
+          { x: x1 + dir1x * 18, y: y1 + dir1y * 18 },
+          { x: x1 + dir1x * arrowLen, y: y1 + dir1y * arrowLen },
+          { color: 'rgba(255,107,42,0.95)', lineWidth: 2 },
+        );
+        drawArrow(
+          ctx,
+          { x: x2 + dir2x * 18, y: y2 + dir2y * 18 },
+          { x: x2 + dir2x * arrowLen, y: y2 + dir2y * arrowLen },
+          { color: 'rgba(255,107,42,0.95)', lineWidth: 2 },
+        );
       }
 
       // r-label in the middle of the line
@@ -187,8 +178,20 @@ export default function CoulombLab() {
       ctx.fillText(`r = ${rLabel}`, mxLabel, myLabel);
 
       // Draw charges
-      drawCharge(ctx, x1, y1, '#ff3b6e', q1nC, 'Q₁');
-      drawCharge(ctx, x2, y2, '#5baef8', q2nC, 'Q₂');
+      drawCharge(ctx, { x: x1, y: y1 }, {
+        color: '#ff3b6e',
+        label: 'Q₁',
+        radius: 12 + Math.min(10, Math.abs(q1nC) * 0.9),
+        sign: q1nC >= 0 ? '+' : '−',
+        textColor: '#0a0a0b',
+      });
+      drawCharge(ctx, { x: x2, y: y2 }, {
+        color: '#5baef8',
+        label: 'Q₂',
+        radius: 12 + Math.min(10, Math.abs(q2nC) * 0.9),
+        sign: q2nC >= 0 ? '+' : '−',
+        textColor: '#0a0a0b',
+      });
 
       raf = requestAnimationFrame(draw);
     }
@@ -543,29 +546,4 @@ export default function CoulombLab() {
       prose={prose}
     />
   );
-}
-
-function drawCharge(
-  ctx: CanvasRenderingContext2D,
-  cx: number, cy: number,
-  color: string,
-  qNC: number,
-  label: string,
-) {
-  const radius = 12 + Math.min(10, Math.abs(qNC) * 0.9);
-  const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 3);
-  grd.addColorStop(0, color);
-  grd.addColorStop(1, color + '00');
-  ctx.fillStyle = grd;
-  ctx.beginPath(); ctx.arc(cx, cy, radius * 3, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = color;
-  ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = '#0a0a0b';
-  ctx.font = `bold ${radius}px JetBrains Mono`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(qNC >= 0 ? '+' : '−', cx, cy);
-  ctx.fillStyle = color;
-  ctx.font = '10px JetBrains Mono';
-  ctx.fillText(label, cx, cy + radius + 14);
 }

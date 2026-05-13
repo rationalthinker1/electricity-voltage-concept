@@ -20,6 +20,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { drawArrow } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -101,16 +102,23 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
           // Circular: rotating arrow at fixed amplitude r = Rwheel*0.7
           const ang = tAnim * 1.5;
           const r = Rwheel * 0.7;
-          drawArrow(ctx, cx, cy, cx + r * Math.cos(ang), cy - r * Math.sin(ang),
-            'rgba(255,107,42,0.95)', 2);
+          drawArrow(
+            ctx,
+            { x: cx, y: cy },
+            { x: cx + r * Math.cos(ang), y: cy - r * Math.sin(ang) },
+            { color: 'rgba(255,107,42,0.95)', lineWidth: 2 },
+          );
         } else {
           const a = (t1Deg * Math.PI) / 180;
           const amp = Rwheel * 0.7;
           // Animate amplitude with a sinusoid to suggest oscillation
           const phase = Math.cos(tAnim * 2);
-          drawArrow(ctx, cx - amp * phase * Math.cos(a), cy + amp * phase * Math.sin(a),
-            cx + amp * phase * Math.cos(a), cy - amp * phase * Math.sin(a),
-            'rgba(255,107,42,0.95)', 2);
+          drawArrow(
+            ctx,
+            { x: cx - amp * phase * Math.cos(a), y: cy + amp * phase * Math.sin(a) },
+            { x: cx + amp * phase * Math.cos(a), y: cy - amp * phase * Math.sin(a) },
+            { color: 'rgba(255,107,42,0.95)', lineWidth: 2 },
+          );
         }
       }, t1Deg);
 
@@ -121,9 +129,12 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
         const amp = Rwheel * 0.7 * ampScale;
         const phase = Math.cos(tAnim * 2);
         if (amp > 0.5) {
-          drawArrow(ctx, cx - amp * phase * Math.cos(a), cy + amp * phase * Math.sin(a),
-            cx + amp * phase * Math.cos(a), cy - amp * phase * Math.sin(a),
-            'rgba(108,197,194,0.95)', 2);
+          drawArrow(
+            ctx,
+            { x: cx - amp * phase * Math.cos(a), y: cy + amp * phase * Math.sin(a) },
+            { x: cx + amp * phase * Math.cos(a), y: cy - amp * phase * Math.sin(a) },
+            { color: 'rgba(108,197,194,0.95)', lineWidth: 2 },
+          );
         }
       }, t2Deg);
 
@@ -174,23 +185,4 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
       </DemoControls>
     </Demo>
   );
-}
-
-function drawArrow(ctx: CanvasRenderingContext2D, x1: number, y1: number, x2: number, y2: number, color: string, w: number) {
-  ctx.strokeStyle = color;
-  ctx.fillStyle = color;
-  ctx.lineWidth = w;
-  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-  const dx = x2 - x1, dy = y2 - y1;
-  const len = Math.hypot(dx, dy);
-  if (len < 4) return;
-  const ux = dx / len, uy = dy / len;
-  const px = -uy, py = ux;
-  const Hh = 7;
-  ctx.beginPath();
-  ctx.moveTo(x2, y2);
-  ctx.lineTo(x2 - ux * Hh + px * 3, y2 - uy * Hh + py * 3);
-  ctx.lineTo(x2 - ux * Hh - px * 3, y2 - uy * Hh - py * 3);
-  ctx.closePath();
-  ctx.fill();
 }

@@ -20,6 +20,7 @@ import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
+import { drawResistor } from '@/lib/canvasPrimitives';
 import { MATERIALS, pretty, type MaterialKey } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
@@ -123,7 +124,13 @@ export default function ResistanceLab() {
       ctx.fillText(`L = ${lLabel}`, (wireLeft + wireRight) / 2, tickY - 8);
 
       // Schematic resistor symbol above the length ruler
-      drawResistorSymbol(ctx, w / 2 - 60, tickY - 56, 120, 22);
+      drawResistor(ctx, { x: w / 2 - 60, y: tickY - 45 }, { x: w / 2 + 60, y: tickY - 45 }, {
+        color: 'rgba(108,197,194,0.7)',
+        label: 'R',
+        labelColor: 'rgba(108,197,194,0.85)',
+        amplitude: 11,
+        labelOffset: { x: 0, y: 24 },
+      });
 
       // Wire body
       const grd = ctx.createLinearGradient(0, top, 0, bot);
@@ -534,28 +541,6 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
   ctx.lineTo(x, y + r);
   ctx.quadraticCurveTo(x, y, x + r, y);
   ctx.closePath();
-}
-
-function drawResistorSymbol(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number) {
-  ctx.strokeStyle = 'rgba(108,197,194,0.7)';
-  ctx.lineWidth = 1.4;
-  ctx.beginPath();
-  ctx.moveTo(x, y + h / 2);
-  ctx.lineTo(x + w * 0.10, y + h / 2);
-  const peaks = [0.18, 0.30, 0.42, 0.54, 0.66, 0.78];
-  let up = true;
-  for (const p of peaks) {
-    ctx.lineTo(x + w * p, up ? y : y + h);
-    up = !up;
-  }
-  ctx.lineTo(x + w * 0.90, y + h / 2);
-  ctx.lineTo(x + w, y + h / 2);
-  ctx.stroke();
-  ctx.fillStyle = 'rgba(108,197,194,0.85)';
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText('R', x + w / 2, y + h + 4);
 }
 
 function drawAreaGauge(ctx: CanvasRenderingContext2D, cx: number, cy: number, Amm2: number) {

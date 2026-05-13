@@ -18,6 +18,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import {
+  drawBattery,
+  drawCurrentSource,
+  drawResistor,
+  drawWire,
+} from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -128,45 +134,50 @@ function drawOriginal(
   const yTop = cy - 50;
   const yBot = cy + 50;
 
-  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
-  ctx.lineWidth = 1.5;
-  ctx.lineCap = 'round';
-
   // Top wire: battery+ → R1 → node
-  ctx.beginPath();
-  ctx.moveTo(xBat, yTop); ctx.lineTo(xR1 - 22, yTop); ctx.stroke();
-  drawResistorH(ctx, xR1, yTop, `R₁ ${fmtR(st.R1)}`, '#ff6b2a');
-  ctx.beginPath();
-  ctx.moveTo(xR1 + 22, yTop); ctx.lineTo(xLoad, yTop); ctx.stroke();
+  drawWire(ctx, [{ x: xBat, y: yTop }, { x: xR1 - 22, y: yTop }]);
+  drawResistor(ctx, { x: xR1 - 20, y: yTop }, { x: xR1 + 20, y: yTop }, {
+    color: '#ff6b2a',
+    label: `R₁ ${fmtR(st.R1)}`,
+    labelOffset: { x: 0, y: -10 },
+  });
+  drawWire(ctx, [{ x: xR1 + 22, y: yTop }, { x: xLoad, y: yTop }]);
 
   // Battery on left
-  drawBattery(ctx, xBat, cy, st.Vs);
+  drawBattery(ctx, { x: xBat, y: cy }, {
+    label: `V_s=${st.Vs.toFixed(1)}V`,
+    leadLength: 50,
+  });
 
   // Bottom wire
-  ctx.beginPath();
-  ctx.moveTo(xBat, yBot); ctx.lineTo(xLoad, yBot); ctx.stroke();
+  drawWire(ctx, [{ x: xBat, y: yBot }, { x: xLoad, y: yBot }]);
 
   // R2 from node-down to ground (vertical) at xMid
-  drawResistorV(ctx, xMid, cy, `R₂ ${fmtR(st.R2)}`, '#ff6b2a');
-  ctx.beginPath();
-  ctx.moveTo(xMid, yTop); ctx.lineTo(xMid, cy - 18); ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(xMid, cy + 18); ctx.lineTo(xMid, yBot); ctx.stroke();
+  drawResistor(ctx, { x: xMid, y: cy - 18 }, { x: xMid, y: cy + 18 }, {
+    color: '#ff6b2a',
+    label: `R₂ ${fmtR(st.R2)}`,
+    labelOffset: { x: 12, y: 0 },
+  });
+  drawWire(ctx, [{ x: xMid, y: yTop }, { x: xMid, y: cy - 18 }]);
+  drawWire(ctx, [{ x: xMid, y: cy + 18 }, { x: xMid, y: yBot }]);
 
   // Current source between top and bottom rails at x just before R_L
   const xIs = x0 + w * 0.78;
-  drawCurrentSource(ctx, xIs, cy, st.Is);
-  ctx.beginPath();
-  ctx.moveTo(xIs, yTop); ctx.lineTo(xIs, cy - 14); ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(xIs, cy + 14); ctx.lineTo(xIs, yBot); ctx.stroke();
+  drawCurrentSource(ctx, { x: xIs, y: cy }, {
+    label: `I_s=${(st.Is * 1000).toFixed(0)}mA`,
+    labelOffset: { x: 0, y: -32 },
+  });
+  drawWire(ctx, [{ x: xIs, y: yTop }, { x: xIs, y: cy - 14 }]);
+  drawWire(ctx, [{ x: xIs, y: cy + 14 }, { x: xIs, y: yBot }]);
 
   // Load resistor (vertical) at xLoad
-  drawResistorV(ctx, xLoad, cy, `R_L ${fmtR(st.RL)}`, '#6cc5c2');
-  ctx.beginPath();
-  ctx.moveTo(xLoad, yTop); ctx.lineTo(xLoad, cy - 18); ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(xLoad, cy + 18); ctx.lineTo(xLoad, yBot); ctx.stroke();
+  drawResistor(ctx, { x: xLoad, y: cy - 18 }, { x: xLoad, y: cy + 18 }, {
+    color: '#6cc5c2',
+    label: `R_L ${fmtR(st.RL)}`,
+    labelOffset: { x: 12, y: 0 },
+  });
+  drawWire(ctx, [{ x: xLoad, y: yTop }, { x: xLoad, y: cy - 18 }]);
+  drawWire(ctx, [{ x: xLoad, y: cy + 18 }, { x: xLoad, y: yBot }]);
 
   // Readout near the load
   ctx.fillStyle = 'rgba(108,197,194,0.95)';
@@ -189,27 +200,29 @@ function drawThevenin(
   const yTop = cy - 50;
   const yBot = cy + 50;
 
-  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
-  ctx.lineWidth = 1.5;
-  ctx.lineCap = 'round';
-
   // Top wire: V_th + → R_th → load
-  ctx.beginPath();
-  ctx.moveTo(xBat, yTop); ctx.lineTo(xR - 22, yTop); ctx.stroke();
-  drawResistorH(ctx, xR, yTop, `R_th ${fmtR(st.Rth)}`, '#ff6b2a');
-  ctx.beginPath();
-  ctx.moveTo(xR + 22, yTop); ctx.lineTo(xLoad, yTop); ctx.stroke();
+  drawWire(ctx, [{ x: xBat, y: yTop }, { x: xR - 22, y: yTop }]);
+  drawResistor(ctx, { x: xR - 20, y: yTop }, { x: xR + 20, y: yTop }, {
+    color: '#ff6b2a',
+    label: `R_th ${fmtR(st.Rth)}`,
+    labelOffset: { x: 0, y: -10 },
+  });
+  drawWire(ctx, [{ x: xR + 22, y: yTop }, { x: xLoad, y: yTop }]);
 
-  drawBattery(ctx, xBat, cy, st.Vth, 'V_th');
+  drawBattery(ctx, { x: xBat, y: cy }, {
+    label: `V_th=${st.Vth.toFixed(1)}V`,
+    leadLength: 50,
+  });
 
-  ctx.beginPath();
-  ctx.moveTo(xBat, yBot); ctx.lineTo(xLoad, yBot); ctx.stroke();
+  drawWire(ctx, [{ x: xBat, y: yBot }, { x: xLoad, y: yBot }]);
 
-  drawResistorV(ctx, xLoad, cy, `R_L ${fmtR(st.RL)}`, '#6cc5c2');
-  ctx.beginPath();
-  ctx.moveTo(xLoad, yTop); ctx.lineTo(xLoad, cy - 18); ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(xLoad, cy + 18); ctx.lineTo(xLoad, yBot); ctx.stroke();
+  drawResistor(ctx, { x: xLoad, y: cy - 18 }, { x: xLoad, y: cy + 18 }, {
+    color: '#6cc5c2',
+    label: `R_L ${fmtR(st.RL)}`,
+    labelOffset: { x: 12, y: 0 },
+  });
+  drawWire(ctx, [{ x: xLoad, y: yTop }, { x: xLoad, y: cy - 18 }]);
+  drawWire(ctx, [{ x: xLoad, y: cy + 18 }, { x: xLoad, y: yBot }]);
 
   ctx.fillStyle = 'rgba(108,197,194,0.95)';
   ctx.font = 'bold 10px "JetBrains Mono", monospace';
@@ -224,103 +237,4 @@ function fmtR(R: number): string {
   if (R >= 1e6) return (R / 1e6).toFixed(1) + ' MΩ';
   if (R >= 1e3) return (R / 1e3).toFixed(1) + ' kΩ';
   return R.toFixed(0) + ' Ω';
-}
-
-function drawBattery(
-  ctx: CanvasRenderingContext2D, x: number, y: number, V: number, label = 'V_s',
-) {
-  ctx.strokeStyle = 'rgba(255,255,255,0.65)';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(x, y - 50); ctx.lineTo(x, y - 14);
-  ctx.moveTo(x, y + 14); ctx.lineTo(x, y + 50);
-  ctx.stroke();
-  ctx.strokeStyle = '#ff3b6e';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.moveTo(x - 12, y - 14); ctx.lineTo(x + 12, y - 14); ctx.stroke();
-  ctx.strokeStyle = '#5baef8';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.moveTo(x - 7, y + 14); ctx.lineTo(x + 7, y + 14); ctx.stroke();
-  ctx.fillStyle = 'rgba(255,255,255,0.85)';
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(`${label}=${V.toFixed(1)}V`, x - 16, y);
-}
-
-function drawResistorH(
-  ctx: CanvasRenderingContext2D, cx: number, cy: number, label: string, color: string,
-) {
-  const x0 = cx - 20, x1 = cx + 20;
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 1.6;
-  ctx.beginPath();
-  ctx.moveTo(x0, cy);
-  const steps = 6;
-  const stepW = (x1 - x0) / steps;
-  for (let i = 0; i < steps; i++) {
-    const x = x0 + (i + 0.5) * stepW;
-    const y = cy + (i % 2 === 0 ? -6 : 6);
-    ctx.lineTo(x, y);
-  }
-  ctx.lineTo(x1, cy);
-  ctx.stroke();
-  ctx.fillStyle = color;
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(label, cx, cy - 10);
-}
-
-function drawResistorV(
-  ctx: CanvasRenderingContext2D, cx: number, cy: number, label: string, color: string,
-) {
-  const y0 = cy - 18, y1 = cy + 18;
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 1.6;
-  ctx.beginPath();
-  ctx.moveTo(cx, y0);
-  const steps = 6;
-  const stepH = (y1 - y0) / steps;
-  for (let i = 0; i < steps; i++) {
-    const y = y0 + (i + 0.5) * stepH;
-    const x = cx + (i % 2 === 0 ? -6 : 6);
-    ctx.lineTo(x, y);
-  }
-  ctx.lineTo(cx, y1);
-  ctx.stroke();
-  ctx.fillStyle = color;
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(label, cx + 12, cy);
-}
-
-function drawCurrentSource(
-  ctx: CanvasRenderingContext2D, cx: number, cy: number, I: number,
-) {
-  // Circle with arrow inside, pointing up (current flowing up into top rail)
-  ctx.strokeStyle = 'rgba(108,197,194,0.95)';
-  ctx.fillStyle = 'rgba(108,197,194,0.95)';
-  ctx.lineWidth = 1.6;
-  ctx.beginPath();
-  ctx.arc(cx, cy, 14, 0, Math.PI * 2);
-  ctx.stroke();
-  // Arrow up
-  ctx.beginPath();
-  ctx.moveTo(cx, cy + 8);
-  ctx.lineTo(cx, cy - 6);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(cx, cy - 9);
-  ctx.lineTo(cx - 4, cy - 3);
-  ctx.lineTo(cx + 4, cy - 3);
-  ctx.closePath();
-  ctx.fill();
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(`I_s=${(I * 1000).toFixed(0)}mA`, cx, cy - 18);
 }

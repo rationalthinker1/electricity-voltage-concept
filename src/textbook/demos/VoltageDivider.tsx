@@ -17,6 +17,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawResistor, drawWire } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -121,18 +122,21 @@ function drawDivider(
   const yBot = h - margin - 10;
 
   // Wires (trunk)
-  ctx.strokeStyle = 'rgba(236,235,229,0.55)';
-  ctx.lineWidth = 1.4;
-  ctx.beginPath();
-  ctx.moveTo(xRail, yTop); ctx.lineTo(xRail, yBot);
-  ctx.stroke();
+  drawWire(ctx, [{ x: xRail, y: yTop }, { x: xRail, y: yBot }], {
+    color: 'rgba(236,235,229,0.55)',
+    lineWidth: 1.4,
+  });
 
   // V_in source: drawn as a small circle on the left
   const xSrc = margin;
-  ctx.beginPath();
-  ctx.moveTo(xSrc, yTop); ctx.lineTo(xRail, yTop);
-  ctx.moveTo(xSrc, yBot); ctx.lineTo(xRail, yBot);
-  ctx.stroke();
+  drawWire(ctx, [{ x: xSrc, y: yTop }, { x: xRail, y: yTop }], {
+    color: 'rgba(236,235,229,0.55)',
+    lineWidth: 1.4,
+  });
+  drawWire(ctx, [{ x: xSrc, y: yBot }, { x: xRail, y: yBot }], {
+    color: 'rgba(236,235,229,0.55)',
+    lineWidth: 1.4,
+  });
 
   ctx.beginPath();
   ctx.arc(xSrc, (yTop + yBot) / 2, 12, 0, Math.PI * 2);
@@ -152,18 +156,24 @@ function drawDivider(
   ctx.stroke();
 
   // R1 resistor box (top half)
-  drawResistor(ctx, xRail, yTop + 18, xRail, yMid - 18, `R₁ = ${formatR(R1)}`, 'rgba(255,59,110,0.9)');
+  drawResistor(ctx, { x: xRail, y: yTop + 18 }, { x: xRail, y: yMid - 18 }, {
+    color: 'rgba(255,59,110,0.9)',
+    label: `R₁ = ${formatR(R1)}`,
+    labelOffset: { x: 16, y: 0 },
+  });
   // R2 resistor box (bottom half)
-  drawResistor(ctx, xRail, yMid + 18, xRail, yBot - 6, `R₂ = ${formatR(R2)}`, 'rgba(108,197,194,0.9)');
+  drawResistor(ctx, { x: xRail, y: yMid + 18 }, { x: xRail, y: yBot - 6 }, {
+    color: 'rgba(108,197,194,0.9)',
+    label: `R₂ = ${formatR(R2)}`,
+    labelOffset: { x: 16, y: 0 },
+  });
 
   // V_out tap at yMid going right
   const yTap = yMid;
-  ctx.strokeStyle = 'rgba(236,235,229,0.55)';
-  ctx.lineWidth = 1.4;
-  ctx.beginPath();
-  ctx.moveTo(xRail, yTap);
-  ctx.lineTo(xLoad, yTap);
-  ctx.stroke();
+  drawWire(ctx, [{ x: xRail, y: yTap }, { x: xLoad, y: yTap }], {
+    color: 'rgba(236,235,229,0.55)',
+    lineWidth: 1.4,
+  });
 
   // Probe node at the load X
   ctx.fillStyle = 'rgba(255,107,42,0.95)';
@@ -173,13 +183,19 @@ function drawDivider(
 
   // If loaded, draw R_L between tap and ground
   if (loaded) {
-    ctx.strokeStyle = 'rgba(236,235,229,0.55)';
-    ctx.lineWidth = 1.4;
-    ctx.beginPath();
-    ctx.moveTo(xLoad, yTap); ctx.lineTo(xLoad, yTap + 24);
-    ctx.moveTo(xLoad, yBot); ctx.lineTo(xRail + 1, yBot);
-    ctx.stroke();
-    drawResistor(ctx, xLoad, yTap + 24, xLoad, yBot - 6, 'R_L = 10 kΩ', 'rgba(91,174,248,0.9)');
+    drawWire(ctx, [{ x: xLoad, y: yTap }, { x: xLoad, y: yTap + 24 }], {
+      color: 'rgba(236,235,229,0.55)',
+      lineWidth: 1.4,
+    });
+    drawWire(ctx, [{ x: xLoad, y: yBot }, { x: xRail + 1, y: yBot }], {
+      color: 'rgba(236,235,229,0.55)',
+      lineWidth: 1.4,
+    });
+    drawResistor(ctx, { x: xLoad, y: yTap + 24 }, { x: xLoad, y: yBot - 6 }, {
+      color: 'rgba(91,174,248,0.9)',
+      label: 'R_L = 10 kΩ',
+      labelOffset: { x: 16, y: 0 },
+    });
   }
 
   // Labels
@@ -193,27 +209,6 @@ function drawDivider(
   ctx.fillText(`V_out = ${Vout.toFixed(3)} V`, xLoad + 8, yTap);
 
   ctx.restore();
-}
-
-function drawResistor(
-  ctx: CanvasRenderingContext2D,
-  x0: number, y0: number, _x1: number, y1: number,
-  label: string, color: string,
-) {
-  // Vertical resistor: rectangle of width 16
-  const cx = x0;
-  const yA = Math.min(y0, y1);
-  const yB = Math.max(y0, y1);
-  const boxH = (yB - yA);
-  const boxW = 14;
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 1.5;
-  ctx.strokeRect(cx - boxW / 2, yA, boxW, boxH);
-  ctx.fillStyle = color;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(label, cx + boxW / 2 + 6, yA + boxH / 2);
 }
 
 /* ─── Bar chart of voltage drops ──────────────────────────────────────── */

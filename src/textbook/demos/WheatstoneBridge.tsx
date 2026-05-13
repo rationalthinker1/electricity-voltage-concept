@@ -32,6 +32,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawBattery, drawResistor, drawWire } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -72,55 +73,46 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
       const yBot = h * 0.72;
       const yMid = (yTop + yBot) / 2;
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.55)';
-      ctx.lineWidth = 1.5;
-      ctx.lineCap = 'round';
-
       // Left vertical: battery
-      ctx.beginPath();
-      ctx.moveTo(xL, yTop); ctx.lineTo(xL, yMid - 22);
-      ctx.moveTo(xL, yMid + 22); ctx.lineTo(xL, yBot);
-      ctx.stroke();
+      drawWire(ctx, [{ x: xL, y: yTop }, { x: xL, y: yMid - 22 }]);
+      drawWire(ctx, [{ x: xL, y: yMid + 22 }, { x: xL, y: yBot }]);
       // Right vertical wire
-      ctx.beginPath();
-      ctx.moveTo(xR, yTop); ctx.lineTo(xR, yBot);
-      ctx.stroke();
+      drawWire(ctx, [{ x: xR, y: yTop }, { x: xR, y: yBot }]);
 
       // Top branch: R1, A, R2
-      ctx.beginPath();
-      ctx.moveTo(xL, yTop);
-      ctx.lineTo((xL + xA) / 2 - 22, yTop);
-      ctx.stroke();
-      drawHResistor(ctx, (xL + xA) / 2, yTop, R1, '1');
-      ctx.beginPath();
-      ctx.moveTo((xL + xA) / 2 + 22, yTop);
-      ctx.lineTo(xA, yTop);
-      ctx.lineTo((xA + xR) / 2 - 22, yTop);
-      ctx.stroke();
-      drawHResistor(ctx, (xA + xR) / 2, yTop, R2, '2');
-      ctx.beginPath();
-      ctx.moveTo((xA + xR) / 2 + 22, yTop);
-      ctx.lineTo(xR, yTop);
-      ctx.stroke();
+      const xR1 = (xL + xA) / 2;
+      const xR2 = (xA + xR) / 2;
+      drawWire(ctx, [{ x: xL, y: yTop }, { x: xR1 - 22, y: yTop }]);
+      drawResistor(ctx, { x: xR1 - 20, y: yTop }, { x: xR1 + 20, y: yTop }, {
+        label: `R1=${R1.toFixed(0)}Ω`,
+        labelOffset: { x: 0, y: -12 },
+      });
+      drawWire(ctx, [{ x: xR1 + 22, y: yTop }, { x: xA, y: yTop }, { x: xR2 - 22, y: yTop }]);
+      drawResistor(ctx, { x: xR2 - 20, y: yTop }, { x: xR2 + 20, y: yTop }, {
+        label: `R2=${R2.toFixed(0)}Ω`,
+        labelOffset: { x: 0, y: -12 },
+      });
+      drawWire(ctx, [{ x: xR2 + 22, y: yTop }, { x: xR, y: yTop }]);
 
       // Bottom branch: R3, B, Rx
-      ctx.beginPath();
-      ctx.moveTo(xL, yBot);
-      ctx.lineTo((xL + xB) / 2 - 22, yBot);
-      ctx.stroke();
-      drawHResistor(ctx, (xL + xB) / 2, yBot, R3, '3');
-      ctx.beginPath();
-      ctx.moveTo((xL + xB) / 2 + 22, yBot);
-      ctx.lineTo(xB, yBot);
-      ctx.lineTo((xB + xR) / 2 - 22, yBot);
-      ctx.stroke();
-      drawHResistorLabel(ctx, (xB + xR) / 2, yBot, Rx, 'x');
-      ctx.beginPath();
-      ctx.moveTo((xB + xR) / 2 + 22, yBot);
-      ctx.lineTo(xR, yBot);
-      ctx.stroke();
+      const xR3 = (xL + xB) / 2;
+      const xRx = (xB + xR) / 2;
+      drawWire(ctx, [{ x: xL, y: yBot }, { x: xR3 - 22, y: yBot }]);
+      drawResistor(ctx, { x: xR3 - 20, y: yBot }, { x: xR3 + 20, y: yBot }, {
+        label: `R3=${R3.toFixed(0)}Ω`,
+        labelOffset: { x: 0, y: -12 },
+      });
+      drawWire(ctx, [{ x: xR3 + 22, y: yBot }, { x: xB, y: yBot }, { x: xRx - 22, y: yBot }]);
+      drawResistor(ctx, { x: xRx - 20, y: yBot }, { x: xRx + 20, y: yBot }, {
+        label: `Rx=${Rx.toFixed(0)}Ω`,
+        labelOffset: { x: 0, y: 20 },
+      });
+      drawWire(ctx, [{ x: xRx + 22, y: yBot }, { x: xR, y: yBot }]);
 
-      drawBattery(ctx, xL, yMid, V);
+      drawBattery(ctx, { x: xL, y: yMid }, {
+        label: `${V.toFixed(1)} V`,
+        leadLength: 22,
+      });
 
       // Galvanometer between A and B
       drawGalvanometer(ctx, xA, yMid, dV, V);
@@ -184,24 +176,6 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
   );
 }
 
-function drawBattery(ctx: CanvasRenderingContext2D, x: number, y: number, V: number) {
-  ctx.strokeStyle = '#ff3b6e';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.moveTo(x - 14, y - 14); ctx.lineTo(x + 14, y - 14);
-  ctx.stroke();
-  ctx.strokeStyle = '#5baef8';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.moveTo(x - 8, y + 14); ctx.lineTo(x + 8, y + 14);
-  ctx.stroke();
-  ctx.fillStyle = 'rgba(255,255,255,0.75)';
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(`${V.toFixed(1)} V`, x - 18, y);
-}
-
 function drawGalvanometer(
   ctx: CanvasRenderingContext2D, x: number, y: number, dV: number, V: number,
 ) {
@@ -229,50 +203,4 @@ function drawGalvanometer(
   ctx.textBaseline = 'top';
   ctx.fillText('G', x, y + 22);
   ctx.restore();
-}
-
-function drawHResistor(ctx: CanvasRenderingContext2D, cx: number, cy: number, R: number, idx: string) {
-  const x0 = cx - 20;
-  const x1 = cx + 20;
-  ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-  ctx.lineWidth = 1.6;
-  ctx.beginPath();
-  ctx.moveTo(x0, cy);
-  const steps = 6;
-  const stepW = (x1 - x0) / steps;
-  for (let i = 0; i < steps; i++) {
-    const x = x0 + (i + 0.5) * stepW;
-    const y = cy + (i % 2 === 0 ? -7 : 7);
-    ctx.lineTo(x, y);
-  }
-  ctx.lineTo(x1, cy);
-  ctx.stroke();
-  ctx.fillStyle = '#ff6b2a';
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(`R${idx}=${R.toFixed(0)}Ω`, cx, cy - 12);
-}
-
-function drawHResistorLabel(ctx: CanvasRenderingContext2D, cx: number, cy: number, R: number, idx: string) {
-  const x0 = cx - 20;
-  const x1 = cx + 20;
-  ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-  ctx.lineWidth = 1.6;
-  ctx.beginPath();
-  ctx.moveTo(x0, cy);
-  const steps = 6;
-  const stepW = (x1 - x0) / steps;
-  for (let i = 0; i < steps; i++) {
-    const x = x0 + (i + 0.5) * stepW;
-    const y = cy + (i % 2 === 0 ? -7 : 7);
-    ctx.lineTo(x, y);
-  }
-  ctx.lineTo(x1, cy);
-  ctx.stroke();
-  ctx.fillStyle = '#ff6b2a';
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText(`R${idx}=${R.toFixed(0)}Ω`, cx, cy + 12);
 }

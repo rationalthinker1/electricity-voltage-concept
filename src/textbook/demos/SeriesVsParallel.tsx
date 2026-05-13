@@ -11,6 +11,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawBattery, drawResistor, drawWire } from '@/lib/canvasPrimitives';
 
 interface Props {
   figure?: string;
@@ -46,14 +47,18 @@ export function SeriesVsParallelDemo({ figure }: Props) {
 
       // Battery on left
       const batX = padX;
-      drawBattery(ctx, batX, cy);
+      drawBattery(ctx, { x: batX, y: cy }, {
+        label: '+',
+        labelOffset: { x: -18, y: -10 },
+        leadLength: 50,
+      });
+      ctx.fillStyle = '#5baef8';
+      ctx.font = 'bold 12px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.fillText('−', batX - 18, cy + 18);
 
       // Output node on right
       const outX = w - padX;
-
-      ctx.strokeStyle = 'rgba(255,255,255,0.65)';
-      ctx.lineWidth = 1.5;
-      ctx.lineCap = 'round';
 
       if (series) {
         // Single line: bat → R1 → R2 → bat (return underneath)
@@ -61,22 +66,22 @@ export function SeriesVsParallelDemo({ figure }: Props) {
         const xR2 = padX + (outX - padX) * 0.66;
 
         // Top wire
-        ctx.beginPath();
-        ctx.moveTo(batX, yTop);
-        ctx.lineTo(xR1 - 22, yTop);
-        ctx.stroke();
-        drawResistor(ctx, xR1, yTop, R1, '1');
-        ctx.beginPath();
-        ctx.moveTo(xR1 + 22, yTop);
-        ctx.lineTo(xR2 - 22, yTop);
-        ctx.stroke();
-        drawResistor(ctx, xR2, yTop, R2, '2');
-        ctx.beginPath();
-        ctx.moveTo(xR2 + 22, yTop);
-        ctx.lineTo(outX, yTop);
-        ctx.lineTo(outX, yBot);
-        ctx.lineTo(batX, yBot);
-        ctx.stroke();
+        drawWire(ctx, [{ x: batX, y: yTop }, { x: xR1 - 22, y: yTop }], { color: 'rgba(255,255,255,0.65)' });
+        drawResistor(ctx, { x: xR1 - 20, y: yTop }, { x: xR1 + 20, y: yTop }, {
+          label: `R1 = ${R1.toFixed(0)}Ω`,
+          labelOffset: { x: 0, y: -16 },
+        });
+        drawWire(ctx, [{ x: xR1 + 22, y: yTop }, { x: xR2 - 22, y: yTop }], { color: 'rgba(255,255,255,0.65)' });
+        drawResistor(ctx, { x: xR2 - 20, y: yTop }, { x: xR2 + 20, y: yTop }, {
+          label: `R2 = ${R2.toFixed(0)}Ω`,
+          labelOffset: { x: 0, y: -16 },
+        });
+        drawWire(ctx, [
+          { x: xR2 + 22, y: yTop },
+          { x: outX, y: yTop },
+          { x: outX, y: yBot },
+          { x: batX, y: yBot },
+        ], { color: 'rgba(255,255,255,0.65)' });
 
         // Animated current dots — same I through both resistors
         drawCurrentDotsPath(ctx, t, [
@@ -95,49 +100,39 @@ export function SeriesVsParallelDemo({ figure }: Props) {
         const nodeR_x = padX + (outX - padX) * 0.72;
 
         // Top wire from battery
-        ctx.beginPath();
-        ctx.moveTo(batX, yTop);
-        ctx.lineTo(nodeL_x, yTop);
-        ctx.stroke();
-        // Top branch (R1)
-        ctx.beginPath();
-        ctx.moveTo(nodeL_x, yTop);
-        ctx.lineTo(nodeL_x, cy - 22);
-        ctx.stroke();
-        drawResistorVertical(ctx, nodeL_x, cy - 12, R1, '1', 'left');
-        // skipping — replaced below
+        drawWire(ctx, [{ x: batX, y: yTop }, { x: nodeL_x, y: yTop }], { color: 'rgba(255,255,255,0.65)' });
 
         // Reset: draw two horizontal branches between vertical junction lines.
-        ctx.beginPath();
-        ctx.moveTo(nodeL_x, yTop);
-        ctx.lineTo(nodeL_x, yBot);
-        ctx.moveTo(nodeR_x, yTop);
-        ctx.lineTo(nodeR_x, yBot);
-        ctx.stroke();
+        drawWire(ctx, [{ x: nodeL_x, y: yTop }, { x: nodeL_x, y: yBot }], { color: 'rgba(255,255,255,0.65)' });
+        drawWire(ctx, [{ x: nodeR_x, y: yTop }, { x: nodeR_x, y: yBot }], { color: 'rgba(255,255,255,0.65)' });
 
         const branchY1 = cy - 26;
         const branchY2 = cy + 26;
         const midA = (nodeL_x + nodeR_x) / 2;
 
         // Branch 1
-        ctx.beginPath();
-        ctx.moveTo(nodeL_x, branchY1); ctx.lineTo(midA - 22, branchY1);
-        ctx.moveTo(midA + 22, branchY1); ctx.lineTo(nodeR_x, branchY1);
-        ctx.stroke();
-        drawResistor(ctx, midA, branchY1, R1, '1');
+        drawWire(ctx, [{ x: nodeL_x, y: branchY1 }, { x: midA - 22, y: branchY1 }], { color: 'rgba(255,255,255,0.65)' });
+        drawWire(ctx, [{ x: midA + 22, y: branchY1 }, { x: nodeR_x, y: branchY1 }], { color: 'rgba(255,255,255,0.65)' });
+        drawResistor(ctx, { x: midA - 20, y: branchY1 }, { x: midA + 20, y: branchY1 }, {
+          label: `R1 = ${R1.toFixed(0)}Ω`,
+          labelOffset: { x: 0, y: -16 },
+        });
 
         // Branch 2
-        ctx.beginPath();
-        ctx.moveTo(nodeL_x, branchY2); ctx.lineTo(midA - 22, branchY2);
-        ctx.moveTo(midA + 22, branchY2); ctx.lineTo(nodeR_x, branchY2);
-        ctx.stroke();
-        drawResistor(ctx, midA, branchY2, R2, '2');
+        drawWire(ctx, [{ x: nodeL_x, y: branchY2 }, { x: midA - 22, y: branchY2 }], { color: 'rgba(255,255,255,0.65)' });
+        drawWire(ctx, [{ x: midA + 22, y: branchY2 }, { x: nodeR_x, y: branchY2 }], { color: 'rgba(255,255,255,0.65)' });
+        drawResistor(ctx, { x: midA - 20, y: branchY2 }, { x: midA + 20, y: branchY2 }, {
+          label: `R2 = ${R2.toFixed(0)}Ω`,
+          labelOffset: { x: 0, y: -16 },
+        });
 
         // Bottom return wire
-        ctx.beginPath();
-        ctx.moveTo(nodeR_x, yTop); ctx.lineTo(outX, yTop);
-        ctx.lineTo(outX, yBot); ctx.lineTo(batX, yBot);
-        ctx.stroke();
+        drawWire(ctx, [
+          { x: nodeR_x, y: yTop },
+          { x: outX, y: yTop },
+          { x: outX, y: yBot },
+          { x: batX, y: yBot },
+        ], { color: 'rgba(255,255,255,0.65)' });
 
         // Animated dots — current splits inversely with R
         const Itot = 1; // unit
@@ -206,64 +201,6 @@ export function SeriesVsParallelDemo({ figure }: Props) {
       </DemoControls>
     </Demo>
   );
-}
-
-function drawBattery(ctx: CanvasRenderingContext2D, x: number, y: number) {
-  // long plate (+) above, short plate (−) below
-  ctx.strokeStyle = 'rgba(255,255,255,0.65)';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(x, y - 50); ctx.lineTo(x, y - 14);
-  ctx.moveTo(x, y + 14); ctx.lineTo(x, y + 50);
-  ctx.stroke();
-  // + plate (long)
-  ctx.strokeStyle = '#ff3b6e';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.moveTo(x - 14, y - 14); ctx.lineTo(x + 14, y - 14);
-  ctx.stroke();
-  // − plate (short)
-  ctx.strokeStyle = '#5baef8';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.moveTo(x - 8, y + 14); ctx.lineTo(x + 8, y + 14);
-  ctx.stroke();
-  // labels
-  ctx.fillStyle = '#ff3b6e';
-  ctx.font = 'bold 12px "JetBrains Mono", monospace';
-  ctx.textAlign = 'right';
-  ctx.fillText('+', x - 18, y - 10);
-  ctx.fillStyle = '#5baef8';
-  ctx.fillText('−', x - 18, y + 18);
-}
-
-function drawResistor(ctx: CanvasRenderingContext2D, cx: number, cy: number, R: number, idx: string) {
-  // Zig-zag horizontal, ±22 px wide
-  const x0 = cx - 20;
-  const x1 = cx + 20;
-  ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-  ctx.lineWidth = 1.6;
-  ctx.beginPath();
-  ctx.moveTo(x0, cy);
-  const steps = 6;
-  const stepW = (x1 - x0) / steps;
-  for (let i = 0; i < steps; i++) {
-    const x = x0 + (i + 0.5) * stepW;
-    const y = cy + (i % 2 === 0 ? -7 : 7);
-    ctx.lineTo(x, y);
-  }
-  ctx.lineTo(x1, cy);
-  ctx.stroke();
-  // label
-  ctx.fillStyle = '#ff6b2a';
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.fillText(`R${idx} = ${R.toFixed(0)}Ω`, cx, cy - 16);
-}
-
-// Stub used briefly above; kept for safety.
-function drawResistorVertical(_ctx: CanvasRenderingContext2D, _cx: number, _cy: number, _R: number, _idx: string, _side: 'left' | 'right') {
-  // No-op (replaced by horizontal-branch layout in parallel mode).
 }
 
 function drawCurrentDotsPath(

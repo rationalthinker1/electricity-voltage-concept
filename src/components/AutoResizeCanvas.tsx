@@ -27,25 +27,42 @@ export interface AutoResizeCanvasProps {
 
 /**
  * Canvas that handles devicePixelRatio + window-resize repaint.
- * The setup callback re-runs every time the canvas is resized;
+ * The setup callback re-runs every time the canvas is resized or resumes;
  * it receives a context with the DPR transform already applied.
+ * Animation work is paused while the canvas is away from the viewport.
  */
 export function AutoResizeCanvas({ height, setup, ariaLabel }: AutoResizeCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const setupRef = useRef(setup);
+  const rerunRef = useRef<null | (() => void)>(null);
+
+  useEffect(() => {
+    setupRef.current = setup;
+    rerunRef.current?.();
+  }, [setup]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     let cleanup: void | (() => void);
+    let visible = false;
+    let pageVisible = document.visibilityState === 'visible';
+    let raf = 0;
+    const target = canvas.parentElement;
+
+    function stop() {
+      if (typeof cleanup === 'function') cleanup();
+      cleanup = undefined;
+    }
 
     function applySizeAndSetup() {
-      if (!canvas) return;
-      const dpr = window.devicePixelRatio || 1;
-      const target = canvas.parentElement;
+      if (!canvas || !visible || !pageVisible) return;
       if (!target) return;
       const w = target.clientWidth;
+      if (w <= 0) return;
       const h = height;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.style.width = w + 'px';
       canvas.style.height = h + 'px';
       canvas.width = Math.floor(w * dpr);
@@ -53,25 +70,59 @@ export function AutoResizeCanvas({ height, setup, ariaLabel }: AutoResizeCanvasP
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      if (typeof cleanup === 'function') cleanup();
-      cleanup = setup({ w, h, ctx, dpr, canvas });
+      stop();
+      cleanup = setupRef.current({ w, h, ctx, dpr, canvas });
     }
 
-    applySizeAndSetup();
-
-    let raf = 0;
-    function handleResize() {
+    function scheduleSetup() {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(applySizeAndSetup);
     }
-    window.addEventListener('resize', handleResize);
+    rerunRef.current = scheduleSetup;
+
+    function setRunning(nextVisible: boolean) {
+      visible = nextVisible;
+      if (visible && pageVisible) scheduleSetup();
+      else stop();
+    }
+
+    function handleVisibilityChange() {
+      pageVisible = document.visibilityState === 'visible';
+      if (pageVisible && visible) scheduleSetup();
+      else stop();
+    }
+
+    let resizeObserver: ResizeObserver | undefined;
+    if (target && 'ResizeObserver' in window) {
+      resizeObserver = new ResizeObserver(scheduleSetup);
+      resizeObserver.observe(target);
+    } else {
+      window.addEventListener('resize', scheduleSetup);
+    }
+
+    let intersectionObserver: IntersectionObserver | undefined;
+    if ('IntersectionObserver' in window) {
+      intersectionObserver = new IntersectionObserver(
+        entries => setRunning(entries.some(entry => entry.isIntersecting)),
+        { rootMargin: '320px 0px' },
+      );
+      intersectionObserver.observe(canvas);
+    } else {
+      setRunning(true);
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      resizeObserver?.disconnect();
+      intersectionObserver?.disconnect();
+      window.removeEventListener('resize', scheduleSetup);
       cancelAnimationFrame(raf);
-      if (typeof cleanup === 'function') cleanup();
+      stop();
+      if (rerunRef.current === scheduleSetup) rerunRef.current = null;
     };
-  }, [height, setup]);
+  }, [height]);
 
   return (
     <canvas
