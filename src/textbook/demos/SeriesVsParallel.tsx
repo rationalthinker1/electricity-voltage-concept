@@ -10,7 +10,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
-import { pretty } from '@/lib/physics';
+import { Num } from '@/components/Num';
 
 interface Props {
   figure?: string;
@@ -200,7 +200,7 @@ export function SeriesVsParallelDemo({ figure }: Props) {
         />
         <MiniReadout
           label={series ? 'R₁ + R₂' : '(R₁·R₂)/(R₁+R₂)'}
-          value={pretty(Rtot)}
+          value={<Num value={Rtot} />}
           unit="Ω"
         />
       </DemoControls>

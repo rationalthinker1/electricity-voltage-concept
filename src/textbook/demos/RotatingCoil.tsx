@@ -10,6 +10,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Num } from '@/components/Num';
 import { pretty } from '@/lib/physics';
 
 interface Props { figure?: string }
@@ -234,9 +235,9 @@ export function RotatingCoilDemo({ figure }: Props) {
           format={v => Math.round(v) + ' rad/s'}
           onChange={setOmega}
         />
-        <MiniReadout label="EMFₚₖ = NBAω" value={pretty(computed.peak)} unit="V" />
-        <MiniReadout label="f" value={pretty(computed.f)} unit="Hz" />
-        <MiniReadout label="Vᵣₘₛ" value={pretty(computed.Vrms)} unit="V" />
+        <MiniReadout label="EMFₚₖ = NBAω" value={<Num value={computed.peak} />} unit="V" />
+        <MiniReadout label="f" value={<Num value={computed.f} />} unit="Hz" />
+        <MiniReadout label="Vᵣₘₛ" value={<Num value={computed.Vrms} />} unit="V" />
       </DemoControls>
     </Demo>
   );

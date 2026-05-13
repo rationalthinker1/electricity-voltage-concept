@@ -14,6 +14,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props { figure?: string }
@@ -190,8 +191,8 @@ export function SolenoidDemo({ figure }: Props) {
           format={v => v.toFixed(1) + ' cm'}
           onChange={setLcm}
         />
-        <MiniReadout label="n = N/L" value={pretty(n, 3)} unit="/m" />
-        <MiniReadout label="B (inside)" value={pretty(B_in, 3)} unit="T" />
+        <MiniReadout label="n = N/L" value={<Num value={n} digits={3} />} unit="/m" />
+        <MiniReadout label="B (inside)" value={<Num value={B_in} digits={3} />} unit="T" />
       </DemoControls>
     </Demo>
   );

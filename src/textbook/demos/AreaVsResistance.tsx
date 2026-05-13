@@ -11,7 +11,8 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
-import { MATERIALS, pretty } from '@/lib/physics';
+import { Num } from '@/components/Num';
+import { MATERIALS } from '@/lib/physics';
 
 interface Props {
   figure?: string;
@@ -126,7 +127,7 @@ export function AreaVsResistanceDemo({ figure }: Props) {
           format={v => v.toFixed(2) + ' mm²'}
           onChange={setAmm2}
         />
-        <MiniReadout label="Resistance" value={pretty(R)} unit="Ω" />
+        <MiniReadout label="Resistance" value={<Num value={R} />} unit="Ω" />
       </DemoControls>
     </Demo>
   );

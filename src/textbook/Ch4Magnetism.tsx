@@ -15,6 +15,7 @@
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
+import { Formula } from '@/components/Formula';
 import { CyclotronDemo } from './demos/Cyclotron';
 import { SolenoidDemo } from './demos/Solenoid';
 import { TwoParallelWiresDemo } from './demos/TwoParallelWires';
@@ -67,7 +68,7 @@ export default function Ch4Magnetism() {
         the cleanest formulas in classical physics. At a perpendicular distance <strong>r</strong> from the wire, the
         magnitude is
       </p>
-      <p className="math">|B| = μ₀ I / (2π r)</p>
+      <Formula>|B| = μ₀ I / (2π r)</Formula>
       <p>
         and the direction is tangent to a circle around the wire — wrapping the wire like contour lines around a
         mountain. The right-hand rule fixes which way: point your thumb along the current and your fingers curl
@@ -102,7 +103,7 @@ export default function Ch4Magnetism() {
       <p>
         The force per unit length on either wire works out to
       </p>
-      <p className="math">F / L = μ₀ I₁ I₂ / (2π d)</p>
+      <Formula>F / L = μ₀ I₁ I₂ / (2π d)</Formula>
       <p>
         with <strong>d</strong> the wire spacing. Same sign of current → attractive (negative if you've adopted the
         sign convention that "outward" is positive). Opposite signs → repulsive. From 1948 to 2019 the SI ampere was
@@ -131,7 +132,7 @@ export default function Ch4Magnetism() {
         Wires aren't the only things that feel magnetic forces — a single moving charge does too. The Lorentz force
         law, the cleanest statement in all of magnetism, is
       </p>
-      <p className="math">F = q ( v × B )</p>
+      <Formula>F = q ( v × B )</Formula>
       <p>
         with the cross product giving a force perpendicular to <em>both</em> the velocity and the field. The two facts
         worth pausing on:
@@ -149,11 +150,11 @@ export default function Ch4Magnetism() {
         Second, "perpendicular to <strong>v</strong>" plus "constant magnitude" is the recipe for circular motion. A
         charged particle injected into a uniform magnetic field traces out a circle of radius
       </p>
-      <p className="math">r = m v / (q B)</p>
+      <Formula>r = m v / (q B)</Formula>
       <p>
         and goes around it with period
       </p>
-      <p className="math">T = 2π m / (q B)</p>
+      <Formula>T = 2π m / (q B)</Formula>
       <p>
         — which, remarkably, has no <strong>v</strong> in it. Faster particles trace bigger circles in <em>exactly</em>
         the same amount of time. That's the foundation of the cyclotron, of mass spectrometers, of every accelerator
@@ -186,7 +187,7 @@ export default function Ch4Magnetism() {
       <p>
         For a long solenoid (length much greater than radius), the field inside is
       </p>
-      <p className="math">B = μ₀ n I</p>
+      <Formula>B = μ₀ n I</Formula>
       <p>
         with <strong>n = N / L</strong> the number of turns per unit length. No dependence on radius (so long as you
         stay inside), no dependence on where along the axis you measure (so long as you're not near the ends). Outside
@@ -338,7 +339,7 @@ export default function Ch4Magnetism() {
           <p>
             From <strong>r = mv/qB</strong> and <strong>T = 2π r/v</strong>, the speed cancels:
           </p>
-          <p className="math">f = qB / (2π m)</p>
+          <Formula>f = qB / (2π m)</Formula>
           <p>
             Faster particles trace bigger circles in <em>exactly</em> the same period <Cite id="feynman-II-13" in={SOURCES} />.
             That's the magic that made Lawrence's cyclotron work in 1932: you can drive the accelerating voltage with a

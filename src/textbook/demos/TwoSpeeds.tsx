@@ -17,7 +17,8 @@ import { useCallback, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
-import { MATERIALS, PHYS, formatTime, pretty } from '@/lib/physics';
+import { Num } from '@/components/Num';
+import { MATERIALS, PHYS, formatTime } from '@/lib/physics';
 
 interface Props { figure?: string }
 
@@ -140,7 +141,7 @@ export function TwoSpeedsDemo({ figure }: Props) {
       <DemoControls>
         <MiniReadout label="elapsed" value={formatTime(elapsed_s)} />
         <MiniReadout label="drift moved" value={driftDist_mm < 0.001 ? '<0.001' : driftDist_mm.toFixed(3)} unit="mm" />
-        <MiniReadout label="signal trips" value={pretty(signalTrips)} unit="× 20 cm" />
+        <MiniReadout label="signal trips" value={<Num value={signalTrips} />} unit="× 20 cm" />
         <MiniReadout label="signal / drift" value="~10¹³" unit="×" />
       </DemoControls>
     </Demo>

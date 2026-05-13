@@ -8,6 +8,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props { figure?: string }
@@ -121,7 +122,7 @@ export function InverseSquareDemo({ figure }: Props) {
           format={v => v < 100 ? v.toFixed(1) + ' cm' : '1.00 m'}
           onChange={setRCm}
         />
-        <MiniReadout label="F (1 µC each)" value={pretty(F)} unit="N" />
+        <MiniReadout label="F (1 µC each)" value={<Num value={F} />} unit="N" />
       </DemoControls>
     </Demo>
   );

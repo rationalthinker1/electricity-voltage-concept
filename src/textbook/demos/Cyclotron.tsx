@@ -13,6 +13,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props { figure?: string }
@@ -219,9 +220,9 @@ export function CyclotronDemo({ figure }: Props) {
           format={v => pretty(v, 2) + ' T'}
           onChange={setB}
         />
-        <MiniReadout label="radius" value={pretty(r_real, 3)} unit="m" />
-        <MiniReadout label="period" value={pretty(T_real, 3)} unit="s" />
-        <MiniReadout label="frequency" value={pretty(f_real, 3)} unit="Hz" />
+        <MiniReadout label="radius" value={<Num value={r_real} digits={3} />} unit="m" />
+        <MiniReadout label="period" value={<Num value={T_real} digits={3} />} unit="s" />
+        <MiniReadout label="frequency" value={<Num value={f_real} digits={3} />} unit="Hz" />
       </DemoControls>
     </Demo>
   );

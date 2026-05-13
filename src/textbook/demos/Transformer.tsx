@@ -11,7 +11,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { pretty } from '@/lib/physics';
+import { Num } from '@/components/Num';
 
 interface Props { figure?: string }
 
@@ -221,7 +221,7 @@ export function TransformerDemo({ figure }: Props) {
           format={v => Math.round(v) + ' V'}
           onChange={setV1}
         />
-        <MiniReadout label="V₂ = V₁·N₂/N₁" value={pretty(V2)} unit="V" />
+        <MiniReadout label="V₂ = V₁·N₂/N₁" value={<Num value={V2} />} unit="V" />
         <MiniReadout label="ratio" value={(N2 / N1).toFixed(3)} unit="×" />
       </DemoControls>
     </Demo>

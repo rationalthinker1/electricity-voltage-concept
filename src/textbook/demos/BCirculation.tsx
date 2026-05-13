@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props { figure?: string }
@@ -175,7 +176,7 @@ export function BCirculationDemo({ figure }: Props) {
           format={v => v.toFixed(2) + ' mm'}
           onChange={setAMm}
         />
-        <MiniReadout label="|B| at surface" value={pretty(Bsurf)} unit="T" />
+        <MiniReadout label="|B| at surface" value={<Num value={Bsurf} />} unit="T" />
       </DemoControls>
     </Demo>
   );

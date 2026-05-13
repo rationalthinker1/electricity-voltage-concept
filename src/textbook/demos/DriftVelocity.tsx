@@ -13,7 +13,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { MATERIALS, PHYS, formatTime, pretty } from '@/lib/physics';
+import { Num } from '@/components/Num';
+import { MATERIALS, PHYS, formatTime } from '@/lib/physics';
 
 interface Props { figure?: string }
 
@@ -161,7 +162,7 @@ export function DriftVelocityDemo({ figure }: Props) {
           format={v => v.toFixed(2) + ' mm²'}
           onChange={setAmm2}
         />
-        <MiniReadout label="drift v_d" value={pretty(vd)} unit="m/s" />
+        <MiniReadout label="drift v_d" value={<Num value={vd} />} unit="m/s" />
         <MiniReadout label="time to cross 1 m" value={formatTime(t1m)} />
       </DemoControls>
     </Demo>

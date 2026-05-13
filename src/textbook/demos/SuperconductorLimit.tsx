@@ -19,6 +19,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
+import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props { figure?: string }
@@ -295,9 +296,9 @@ export function SuperconductorLimitDemo({ figure }: Props) {
           checked={supercon}
           onChange={setSupercon}
         />
-        <MiniReadout label="E inside" value={pretty(E_in)} unit="V/m" />
-        <MiniReadout label="|S| inside" value={pretty(S_in)} unit="W/m²" />
-        <MiniReadout label="P dissipated" value={pretty(P_dissipated)} unit="W" />
+        <MiniReadout label="E inside" value={<Num value={E_in} />} unit="V/m" />
+        <MiniReadout label="|S| inside" value={<Num value={S_in} />} unit="W/m²" />
+        <MiniReadout label="P dissipated" value={<Num value={P_dissipated} />} unit="W" />
       </DemoControls>
     </Demo>
   );

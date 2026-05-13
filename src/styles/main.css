@@ -1716,3 +1716,113 @@ nav.top .links a.active { color: var(--accent); }
   .faq-answer { padding-left: 28px; font-size: 14.5px; }
   .faq-q-marker { width: 22px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   v0.6 — Formula component + inline numeric typography
+═══════════════════════════════════════════════════════════════ */
+
+/* Block-display formulas. Replaces ad-hoc <p className="math">. */
+.formula-block {
+  margin: 36px auto;
+  padding: 18px 32px;
+  max-width: 56ch;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.formula-block::before,
+.formula-block::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 8px;
+  height: 1px;
+  background: var(--accent);
+  transform: translateY(-50%);
+}
+.formula-block::before { left: -8px; }
+.formula-block::after  { right: -8px; }
+
+.formula-content {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 30px;
+  line-height: 1.4;
+  letter-spacing: -.005em;
+  color: var(--text);
+  /* Better sub/sup baseline so Fraunces italics don't collide */
+  font-feature-settings: "ss01", "lnum";
+}
+.formula-content sub,
+.formula-content sup {
+  font-size: 0.55em;
+  font-style: italic;
+  line-height: 0;
+  position: relative;
+}
+.formula-content sub { vertical-align: -0.4em; }
+.formula-content sup { vertical-align:  0.55em; }
+
+.formula-content .formula-var {
+  color: var(--accent);
+  font-style: italic;
+}
+
+.formula-caption {
+  margin-top: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.formula-block.formula-small { margin: 24px auto; padding: 12px 24px; }
+.formula-block.formula-small .formula-content { font-size: 22px; }
+.formula-block.formula-large { padding: 28px 36px; }
+.formula-block.formula-large .formula-content { font-size: 40px; }
+
+/* Compact inline math — inside paragraphs / FAQ answers */
+.formula-inline {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.05em;
+  color: var(--text);
+  white-space: nowrap;
+}
+.formula-inline sub, .formula-inline sup {
+  font-size: 0.65em;
+  line-height: 0;
+}
+.formula-inline sub { vertical-align: -0.35em; }
+.formula-inline sup { vertical-align:  0.5em; }
+
+/* When a formula appears inside FAQ answers, scale down */
+.faq-answer .formula-block { margin: 18px 0; max-width: none; }
+.faq-answer .formula-block .formula-content { font-size: 22px; }
+
+@media (max-width: 600px) {
+  .formula-content { font-size: 24px; }
+  .formula-block { padding: 14px 18px; }
+}
+
+/* MiniReadout fix — sub/sup baseline now that we pass JSX, not HTML strings */
+.mini-readout-value sub,
+.mini-readout-value sup {
+  font-size: 0.7em;
+  line-height: 0;
+  font-family: 'JetBrains Mono', monospace;
+}
+.mini-readout-value sub { vertical-align: -0.35em; }
+.mini-readout-value sup { vertical-align:  0.45em; }
+
+/* Same fix for normal Readout (.ro-value) for any inline JSX numbers */
+.ro-value sub, .ro-value sup {
+  font-size: 0.7em;
+  line-height: 0;
+  font-family: 'JetBrains Mono', monospace;
+}
+.ro-value sub { vertical-align: -0.35em; }
+.ro-value sup { vertical-align:  0.45em; }

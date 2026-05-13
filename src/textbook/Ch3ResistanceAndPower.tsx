@@ -14,6 +14,7 @@
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
+import { Formula } from '@/components/Formula';
 import { AreaVsResistanceDemo } from './demos/AreaVsResistance';
 import { JouleHeatingDemo } from './demos/JouleHeating';
 import { LengthVsResistanceDemo } from './demos/LengthVsResistance';
@@ -48,7 +49,7 @@ export default function Ch3ResistanceAndPower() {
         The microscopic Ohm's law from the previous chapter said that inside a conductor, current density is proportional
         to the electric field driving it:
       </p>
-      <p className="math">J = σ E</p>
+      <Formula>J = σ E</Formula>
       <p>
         with <strong>σ</strong> the conductivity, a property of the material. Drude's 1900 free-electron picture gave a
         mechanical explanation<Cite id="drude-1900" in={SOURCES} />: an electron accelerates under <strong>E</strong> for an
@@ -61,7 +62,7 @@ export default function Ch3ResistanceAndPower() {
         Wrap that microscopic law up over a whole wire — a length <strong>L</strong>, a cross-section <strong>A</strong>,
         a uniform field along the axis — and you get the macroscopic version every electrical engineer carries around:
       </p>
-      <p className="math">V = I R</p>
+      <Formula>V = I R</Formula>
       <p>
         Voltage drop equals current times resistance. <em>Resistance</em> is the global lump that bundles up everything
         the local conductivity does to charges as they cross the wire. It depends on the material (through σ) and it
@@ -76,7 +77,7 @@ export default function Ch3ResistanceAndPower() {
         then <strong>J = σE = σV/L</strong>. The total current — which is just <em>J</em> integrated over the cross-section —
         is <strong>I = JA = σAV/L</strong>. Comparing to <strong>V = IR</strong>:
       </p>
-      <p className="math">R = L / (σ A) = ρ L / A</p>
+      <Formula>R = L / (σ A) = ρ L / A</Formula>
       <p>
         where <strong>ρ = 1/σ</strong> is the resistivity. Two clean geometric facts fall out. <strong>Twice the length, twice the
         resistance</strong> — because the field has to push each electron through twice as much lattice. <strong>Twice
@@ -148,12 +149,12 @@ export default function Ch3ResistanceAndPower() {
       <p>
         Per unit volume, the rate of energy transfer from field to lattice is the dot product <strong>J·E</strong>:
       </p>
-      <p className="math">p<sub>v</sub> = J · E = σ E²</p>
+      <Formula>p<sub>v</sub> = J · E = σ E²</Formula>
       <p>
         Always positive in a resistor (J and E point the same way). Integrate over the wire's volume <strong>LA</strong>,
         with E = V/L throughout, and the macroscopic power drops out:
       </p>
-      <p className="math">P = σ A V² / L = V² / R = V I = I² R</p>
+      <Formula>P = σ A V² / L = V² / R = V I = I² R</Formula>
       <p>
         James Joule established this experimentally in 1841 with a calorimeter that became the namesake of the SI unit
         of energy<Cite id="joule-1841" in={SOURCES} />. The microscopic and macroscopic accounts agree exactly — they have
@@ -178,12 +179,12 @@ export default function Ch3ResistanceAndPower() {
         Two resistors in a circuit can be wired two ways. Put them in <strong>series</strong> — a single loop, everything
         the same current — and the voltage drops add: <em>V = IR₁ + IR₂ = I(R₁ + R₂)</em>. The combined resistance is the sum:
       </p>
-      <p className="math">R<sub>series</sub> = R₁ + R₂</p>
+      <Formula>R<sub>series</sub> = R₁ + R₂</Formula>
       <p>
         Put them in <strong>parallel</strong> — two branches at the same voltage <em>V</em> — and the currents add:
         <em> I = V/R₁ + V/R₂ = V(1/R₁ + 1/R₂)</em>, so the reciprocals combine:
       </p>
-      <p className="math">1 / R<sub>parallel</sub> = 1/R₁ + 1/R₂</p>
+      <Formula>1 / R<sub>parallel</sub> = 1/R₁ + 1/R₂</Formula>
       <p>
         Two equal resistors in parallel give half their value; in general, the parallel combination is always less than
         either branch on its own<Cite id="griffiths-2017" in={SOURCES} />.

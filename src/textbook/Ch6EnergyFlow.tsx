@@ -15,6 +15,7 @@
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
+import { Formula } from '@/components/Formula';
 import { BCirculationDemo } from './demos/BCirculation';
 import { EAxialFieldDemo } from './demos/EAxialField';
 import { PoyntingInflowDemo } from './demos/PoyntingInflow';
@@ -81,7 +82,7 @@ export default function Ch6EnergyFlow() {
         wire of length <strong>L</strong> with voltage drop <strong>V</strong> across its ends, the integral of <strong>E·dℓ</strong> along the
         axis must equal <strong>V</strong>, and by symmetry <strong>E</strong> is uniform along the way<Cite id="feynman-II-27" in={SOURCES} />:
       </p>
-      <p className="math">E = V / L</p>
+      <Formula>E = V / L</Formula>
       <p>
         This is a point that surprises people. In the electrostatic case, the field inside a conductor is zero — the free
         charges rearrange until it is. In a <em>current-carrying resistive</em> conductor, the field inside is decidedly not
@@ -96,7 +97,7 @@ export default function Ch6EnergyFlow() {
         <strong> B·dℓ</strong> around a closed loop equals μ<sub>0</sub> times the enclosed current. Wrap that loop around the wire at radius
         <strong> a</strong> and you get
       </p>
-      <p className="math">B = μ<sub>0</sub> I / (2π a)</p>
+      <Formula>B = μ<sub>0</sub> I / (2π a)</Formula>
       <p>
         at the surface, with the direction set by the right-hand rule: thumb along the current, fingers curl with the field.
         It's a circumferential field. Perpendicular at every point to the axial <strong>E</strong> we just identified.
@@ -118,7 +119,7 @@ export default function Ch6EnergyFlow() {
         area at any point in space is given by the cross product of <strong>E</strong> and <strong>B</strong>, scaled by the
         permeability of free space<Cite id="poynting-1884" in={SOURCES} />:
       </p>
-      <p className="math">S = (1/μ<sub>0</sub>) E × B</p>
+      <Formula>S = (1/μ<sub>0</sub>) E × B</Formula>
       <p>
         <strong>S</strong> has units of watts per square meter — energy per unit time, per unit cross-sectional area, in the direction
         the energy is moving. It is a real, local field defined at every point in space where electric and magnetic fields are
@@ -145,13 +146,13 @@ export default function Ch6EnergyFlow() {
         It's one thing to wave at the radial direction; it's another to count the joules. Do the algebra. At the wire's
         surface,
       </p>
-      <p className="math">|S|<sub>surf</sub> = E B / μ<sub>0</sub> = V I / (2π a L)</p>
+      <Formula>|S|<sub>surf</sub> = E B / μ<sub>0</sub> = V I / (2π a L)</Formula>
       <p>
         where the second equality just substitutes <em>E = V/L</em> and <em>B = μ<sub>0</sub>I/(2πa)</em> from above. The
         wire's lateral surface area is <strong>2πaL</strong>. So the total energy flowing inward through that surface, per
         second, is the surface integral
       </p>
-      <p className="math">∮ S · dA = |S|<sub>surf</sub> · 2π a L = V I</p>
+      <Formula>∮ S · dA = |S|<sub>surf</sub> · 2π a L = V I</Formula>
       <p>
         Exactly <strong>VI</strong>. The Poynting flux through the wire's surface equals the dissipated power, identically, by
         construction. No approximation. No "in the limit of." It is the same quantity, written in two different ways<Cite id="jackson-1999" in={SOURCES} />.
@@ -266,7 +267,7 @@ export default function Ch6EnergyFlow() {
           <p>
             It's as real as any local energy current can be. The differential statement
           </p>
-          <p className="math">∂u/∂t + ∇·S = −J·E</p>
+          <Formula>∂u/∂t + ∇·S = −J·E</Formula>
           <p>
             is a pointwise conservation law: field energy density <strong>u</strong> changes at any point only by net
             <strong> S</strong> divergence or by mechanical work done on charge<Cite id="poynting-1884" in={SOURCES} />. You
@@ -294,7 +295,7 @@ export default function Ch6EnergyFlow() {
             Yes, and it gets more interesting. The fields oscillate, so <strong>S(t)</strong> oscillates with them — but
             the time-averaged Poynting vector still points into resistive loads at the rate of real power delivered,
           </p>
-          <p className="math">⟨S⟩ · dA averaged over a cycle = ⟨VI⟩ = V<sub>rms</sub> I<sub>rms</sub> cos φ</p>
+          <Formula>⟨S⟩ · dA averaged over a cycle = ⟨VI⟩ = V<sub>rms</sub> I<sub>rms</sub> cos φ</Formula>
           <p>
             where <em>φ</em> is the load's phase angle<Cite id="jackson-1999" in={SOURCES} />. For purely reactive
             components — ideal capacitors and inductors — ⟨S⟩ = 0. Energy sloshes in and out through space twice per cycle
@@ -345,7 +346,7 @@ export default function Ch6EnergyFlow() {
             substitute <strong>E = V/L</strong> (axial drop along a uniform wire) and <strong>B = μ<sub>0</sub>I/(2πa)</strong>
             (Ampère at the surface), and the μ<sub>0</sub> cancels:
           </p>
-          <p className="math">|S|<sub>surf</sub> · 2π a L = (V I) / (2π a L) · 2π a L = V I</p>
+          <Formula>|S|<sub>surf</sub> · 2π a L = (V I) / (2π a L) · 2π a L = V I</Formula>
           <p>
             The lateral surface area <strong>2πaL</strong> meets the field's <strong>1/(2πaL)</strong> dependence and the
             geometry drops out completely<Cite id="feynman-II-27" in={SOURCES} />. The identity is exact for any uniform
@@ -383,7 +384,7 @@ export default function Ch6EnergyFlow() {
           <p>
             Both, separately, additively. The local electromagnetic energy density is
           </p>
-          <p className="math">u = ½ ε<sub>0</sub> E² + (1/2μ<sub>0</sub>) B²</p>
+          <Formula>u = ½ ε<sub>0</sub> E² + (1/2μ<sub>0</sub>) B²</Formula>
           <p>
             with a clean partition into electric and magnetic pieces<Cite id="griffiths-2017" in={SOURCES} />. Around a DC
             current-carrying wire, the magnetic term dominates near the surface; in the gap of a charged capacitor, the

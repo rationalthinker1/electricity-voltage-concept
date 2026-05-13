@@ -12,6 +12,7 @@
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
+import { Formula } from '@/components/Formula';
 import { DriftVelocityDemo } from './demos/DriftVelocity';
 import { SwitchAndBulbDemo } from './demos/SwitchAndBulb';
 import { TwoSpeedsDemo } from './demos/TwoSpeeds';
@@ -50,7 +51,7 @@ export default function Ch2VoltageAndCurrent() {
         Formally, the potential at a point is defined as a line integral of the electric field from a reference point to
         that point, with a minus sign:
       </p>
-      <p className="math">V<sub>ab</sub> = V<sub>b</sub> − V<sub>a</sub> = − ∫<sub>a</sub><sup>b</sup> E · dℓ</p>
+      <Formula>V<sub>ab</sub> = V<sub>b</sub> − V<sub>a</sub> = − ∫<sub>a</sub><sup>b</sup> E · dℓ</Formula>
       <p>
         The minus sign is convention: walking <em>against</em> the field gains you potential, the way climbing
         <em>against</em> gravity gains you altitude. For static charges the integral is path-independent <Cite id="feynman-II-2" in={SOURCES} />
@@ -79,7 +80,7 @@ export default function Ch2VoltageAndCurrent() {
         second, which works out to about <strong>6.24×10¹⁸ elementary charges per second</strong> moving past a fixed
         cross-section. That is an absurd number of electrons. It will get more absurd in two paragraphs.
       </p>
-      <p className="math">I = dQ / dt</p>
+      <Formula>I = dQ / dt</Formula>
       <p>
         Current has a direction. By the convention Benjamin Franklin set in 1747 — long before anyone knew electrons
         existed — current points the direction <em>positive</em> charge would move. In an ordinary copper wire the actual
@@ -106,11 +107,11 @@ export default function Ch2VoltageAndCurrent() {
       <p>
         In two equations <Cite id="drude-1900" in={SOURCES} />:
       </p>
-      <p className="math">v<sub>d</sub> = I / (n q A)</p>
+      <Formula>v<sub>d</sub> = I / (n q A)</Formula>
       <p>
         Plug in numbers. One amp through a 2.5 mm² copper wire:
       </p>
-      <p className="math">v<sub>d</sub> = 1 / (8.5×10²⁸ · 1.6×10⁻¹⁹ · 2.5×10⁻⁶) ≈ 2.9×10⁻⁵ m/s</p>
+      <Formula>v<sub>d</sub> = 1 / (8.5×10²⁸ · 1.6×10⁻¹⁹ · 2.5×10⁻⁶) ≈ 2.9×10⁻⁵ m/s</Formula>
       <p>
         Three hundredths of a millimeter per second. A 12-gauge wire carrying 20 A — the kind feeding your kitchen
         outlet — has a drift velocity of about <strong>0.02 mm/s</strong> <Cite id="libretexts-conduction" in={SOURCES} />.
@@ -136,7 +137,7 @@ export default function Ch2VoltageAndCurrent() {
         typical copper wiring <Cite id="libretexts-conduction" in={SOURCES} />. That ratio is the central
         you-thought-you-understood-this-but-you-didn't moment.
       </p>
-      <p className="math">v<sub>signal</sub> / v<sub>drift</sub>  ≈  2×10⁸ / 3×10⁻⁵  ≈  10¹³</p>
+      <Formula>v<sub>signal</sub> / v<sub>drift</sub>  ≈  2×10⁸ / 3×10⁻⁵  ≈  10¹³</Formula>
 
       <TwoSpeedsDemo />
 

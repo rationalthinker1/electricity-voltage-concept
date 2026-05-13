@@ -11,7 +11,8 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
-import { PHYS, pretty } from '@/lib/physics';
+import { Num } from '@/components/Num';
+import { PHYS } from '@/lib/physics';
 
 interface Props {
   figure?: string;
@@ -121,7 +122,7 @@ export function TwoChargesDemo({ figure }: Props) {
         />
         <MiniReadout
           label={sameSign ? 'Repulsive |F|' : 'Attractive |F|'}
-          value={pretty(Math.abs(F))}
+          value={<Num value={Math.abs(F)} />}
           unit="N"
         />
       </DemoControls>

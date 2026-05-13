@@ -14,6 +14,7 @@
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
+import { Formula } from '@/components/Formula';
 import { LenzsLawDemo } from './demos/LenzsLaw';
 import { MagnetThroughCoilDemo } from './demos/MagnetThroughCoil';
 import { RotatingCoilDemo } from './demos/RotatingCoil';
@@ -69,14 +70,14 @@ export default function Ch5Induction() {
         Faraday's insight took its modern compact form a generation later, in Maxwell's hands. Define the magnetic flux
         through a surface bounded by the loop:
       </p>
-      <p className="math">Φ<sub>B</sub> = ∫∫ B · dA</p>
+      <Formula>Φ<sub>B</sub> = ∫∫ B · dA</Formula>
       <p>
         For a flat loop in a uniform field, this is just <strong>BA cos θ</strong>, where <strong>θ</strong> is the angle
         between the field and the loop's normal. Then the EMF induced around the loop — the line integral of E around
         its perimeter, the work per unit charge that the loop's own free charges feel — is the negative time derivative
         of that flux<Cite id="feynman-II-17" in={SOURCES} />:
       </p>
-      <p className="math">EMF = − dΦ<sub>B</sub> / dt</p>
+      <Formula>EMF = − dΦ<sub>B</sub> / dt</Formula>
       <p>
         Three things deserve to be said out loud about this equation. First, the surface in the flux integral is
         <em> any</em> surface bounded by the loop — flat, curved, weirdly shaped, doesn't matter. The integral comes out
@@ -157,11 +158,11 @@ export default function Ch5Induction() {
         in a fixed field and let the geometry do the work. The flux through a flat coil of area <strong>A</strong>
         rotating at angular rate <strong>ω</strong> in a uniform field <strong>B</strong> is
       </p>
-      <p className="math">Φ(t) = N B A cos(ω t)</p>
+      <Formula>Φ(t) = N B A cos(ω t)</Formula>
       <p>
         and Faraday's law immediately gives
       </p>
-      <p className="math">EMF(t) = − dΦ/dt = N B A ω sin(ω t)</p>
+      <Formula>EMF(t) = − dΦ/dt = N B A ω sin(ω t)</Formula>
       <p>
         A pure sine wave whose peak is <strong>NBAω</strong>. Crank up <strong>N, B, A,</strong> or <strong>ω</strong>
         and the amplitude grows in proportion. The frequency you get is <strong>f = ω / (2π)</strong>. North American
@@ -187,11 +188,11 @@ export default function Ch5Induction() {
         around a shared iron core and the same flux <strong>Φ(t)</strong> threads both of them. Apply Faraday's law to
         each:
       </p>
-      <p className="math">V₁ = N₁ · dΦ/dt &nbsp;&nbsp;&nbsp; V₂ = N₂ · dΦ/dt</p>
+      <Formula>V₁ = N₁ · dΦ/dt &nbsp;&nbsp;&nbsp; V₂ = N₂ · dΦ/dt</Formula>
       <p>
         Divide and the dΦ/dt cancels exactly, leaving the transformer relation:
       </p>
-      <p className="math">V₂ / V₁ = N₂ / N₁</p>
+      <Formula>V₂ / V₁ = N₂ / N₁</Formula>
       <p>
         Whatever AC voltage you put on the primary, you get back an AC voltage on the secondary scaled by the turns
         ratio. Step up: more turns on the secondary than the primary. Step down: fewer<Cite id="griffiths-2017" in={SOURCES} />.
@@ -247,7 +248,7 @@ export default function Ch5Induction() {
             Magnetic flux is <strong>how many field lines pierce a surface</strong>, weighted by how perpendicular
             they hit it. Formally:
           </p>
-          <p className="math">Φ<sub>B</sub> = ∫∫ B · dA</p>
+          <Formula>Φ<sub>B</sub> = ∫∫ B · dA</Formula>
           <p>
             For a flat loop in a uniform field, that's just <strong>BA cos θ</strong>: field strength times area
             times the cosine of the angle between the field and the loop's normal<Cite id="griffiths-2017" in={SOURCES} />.

@@ -8,7 +8,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { PHYS, pretty } from '@/lib/physics';
+import { Num } from '@/components/Num';
+import { PHYS } from '@/lib/physics';
 
 interface Props { figure?: string }
 
@@ -176,7 +177,7 @@ export function FieldArrowsDemo({ figure }: Props) {
           format={v => v.toFixed(1) + ' nC'}
           onChange={setQNC}
         />
-        <MiniReadout label="|E| at probe" value={pretty(Eprobe)} unit="V/m" />
+        <MiniReadout label="|E| at probe" value={<Num value={Eprobe} />} unit="V/m" />
       </DemoControls>
     </Demo>
   );

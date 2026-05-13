@@ -14,6 +14,7 @@
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
+import { Formula } from '@/components/Formula';
 import { ConductorRedistributionDemo } from './demos/ConductorRedistribution';
 import { EquipotentialsDemo } from './demos/Equipotentials';
 import { FieldArrowsDemo } from './demos/FieldArrows';
@@ -56,7 +57,7 @@ export default function Ch1WhatIsElectricity() {
       <p>
         The force between two point charges is given by Coulomb's law <Cite id="coulomb-1785" in={SOURCES} />:
       </p>
-      <p className="math">F = k Q₁ Q₂ / r²</p>
+      <Formula>F = k Q₁ Q₂ / r²</Formula>
       <p>
         with <strong>k = 8.99×10⁹ N·m²/C²</strong> in SI units <Cite id="codata-2018" in={SOURCES} />. Sign convention: if
         Q₁ and Q₂ have the same sign, F is positive (push apart); opposite signs, F is negative (pull together).
@@ -108,7 +109,7 @@ export default function Ch1WhatIsElectricity() {
         physical thing, defined at every point, that tells whatever charge happens to be there what force to feel. The
         symbol is <strong>E</strong>, and its definition is direct:
       </p>
-      <p className="math">E = F / q<sub>test</sub></p>
+      <Formula>E = F / q<sub>test</sub></Formula>
       <p>
         Force per unit positive charge. SI units: newtons per coulomb, or equivalently volts per meter. The two are
         identical — you can derive it in one line<Cite id="hyperphysics-emag" in={SOURCES} />.
@@ -117,7 +118,7 @@ export default function Ch1WhatIsElectricity() {
         With the field framework in hand, Coulomb's law takes a slightly different shape. A point charge <strong>Q</strong>
         produces a field whose magnitude at distance <strong>r</strong> is
       </p>
-      <p className="math">|E| = k Q / r²</p>
+      <Formula>|E| = k Q / r²</Formula>
       <p>
         and whose direction is radially outward from <strong>Q</strong> (if Q is positive) or inward (if Q is negative). Bring any
         other charge into that field and the force on it is <strong>F = qE</strong>. The new charge doesn't talk to the

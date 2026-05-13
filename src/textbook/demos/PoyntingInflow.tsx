@@ -17,6 +17,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props { figure?: string }
@@ -267,9 +268,9 @@ export function PoyntingInflowDemo({ figure }: Props) {
           format={v => v.toFixed(1) + ' V'}
           onChange={setV}
         />
-        <MiniReadout label="|S| at surface" value={pretty(computed.S)} unit="W/m²" />
-        <MiniReadout label="P_surf = ∮S·dA" value={pretty(computed.P_surf)} unit="W" />
-        <MiniReadout label="P_VI = V·I" value={pretty(computed.P_vi)} unit="W" />
+        <MiniReadout label="|S| at surface" value={<Num value={computed.S} />} unit="W/m²" />
+        <MiniReadout label="P_surf = ∮S·dA" value={<Num value={computed.P_surf} />} unit="W" />
+        <MiniReadout label="P_VI = V·I" value={<Num value={computed.P_vi} />} unit="W" />
         <MiniReadout label="match" value={computed.match.toFixed(3)} unit="×" />
       </DemoControls>
     </Demo>

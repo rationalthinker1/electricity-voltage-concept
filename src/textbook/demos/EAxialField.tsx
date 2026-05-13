@@ -14,6 +14,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Num } from '@/components/Num';
 import { pretty } from '@/lib/physics';
 
 interface Props { figure?: string }
@@ -168,7 +169,7 @@ export function EAxialFieldDemo({ figure }: Props) {
           format={v => v.toFixed(2) + ' m'}
           onChange={setL}
         />
-        <MiniReadout label="E along axis" value={pretty(E)} unit="V/m" />
+        <MiniReadout label="E along axis" value={<Num value={E} />} unit="V/m" />
       </DemoControls>
     </Demo>
   );

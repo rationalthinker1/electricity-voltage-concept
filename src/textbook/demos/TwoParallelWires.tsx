@@ -12,7 +12,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { PHYS, pretty } from '@/lib/physics';
+import { Num } from '@/components/Num';
+import { PHYS } from '@/lib/physics';
 
 interface Props { figure?: string }
 
@@ -230,7 +231,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
         />
         <MiniReadout
           label={attractive ? 'F/L (attract)' : 'F/L (repel)'}
-          value={pretty(Math.abs(F_per_L), 3)}
+          value={<Num value={Math.abs(F_per_L)} digits={3} />}
           unit="N/m"
         />
       </DemoControls>

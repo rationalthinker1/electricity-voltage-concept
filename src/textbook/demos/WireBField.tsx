@@ -11,6 +11,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props { figure?: string }
@@ -253,7 +254,7 @@ export function WireBFieldDemo({ figure }: Props) {
           format={v => v.toFixed(1) + ' A'}
           onChange={setI}
         />
-        <MiniReadout label="|B| at probe" value={pretty(Bprobe, 2)} unit="T" />
+        <MiniReadout label="|B| at probe" value={<Num value={Bprobe} digits={2} />} unit="T" />
       </DemoControls>
     </Demo>
   );

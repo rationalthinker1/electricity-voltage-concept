@@ -14,7 +14,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { pretty } from '@/lib/physics';
+import { Num } from '@/components/Num';
 
 interface Props { figure?: string }
 
@@ -259,7 +259,7 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
           format={v => Math.round(v).toString()}
           onChange={v => setN(Math.round(v))}
         />
-        <MiniReadout label="EMF (instant.)" value={pretty(emfNow)} unit="V" />
+        <MiniReadout label="EMF (instant.)" value={<Num value={emfNow} />} unit="V" />
       </DemoControls>
     </Demo>
   );

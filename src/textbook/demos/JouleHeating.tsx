@@ -12,6 +12,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
+import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props {
@@ -190,7 +191,7 @@ export function JouleHeatingDemo({ figure }: Props) {
           format={v => v.toFixed(1) + ' Ω'}
           onChange={setR}
         />
-        <MiniReadout label="Power" value={pretty(P)} unit="W" />
+        <MiniReadout label="Power" value={<Num value={P} />} unit="W" />
         <MiniReadout label="Equilibrium T" value={T_eq.toFixed(0)} unit="K" />
       </DemoControls>
     </Demo>

@@ -10,7 +10,8 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import {
   Demo, DemoControls, MiniReadout,
 } from '@/components/Demo';
-import { MATERIALS, pretty, type MaterialKey } from '@/lib/physics';
+import { Num } from '@/components/Num';
+import { MATERIALS, type MaterialKey } from '@/lib/physics';
 
 interface Props {
   figure?: string;
@@ -156,8 +157,8 @@ export function MaterialPickerDemo({ figure }: Props) {
             {MATERIALS[k]!.name.replace(' (filament)', '').replace(' (heater)', '')}
           </button>
         ))}
-        <MiniReadout label="Current" value={pretty(I)} unit="A" />
-        <MiniReadout label="Power" value={pretty(P)} unit="W" />
+        <MiniReadout label="Current" value={<Num value={I} />} unit="A" />
+        <MiniReadout label="Power" value={<Num value={P} />} unit="W" />
       </DemoControls>
     </Demo>
   );
