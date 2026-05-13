@@ -21,6 +21,7 @@ import { MathBlock, Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
+import { TryIt } from '@/components/TryIt';
 import { MATERIALS, PHYS, pretty, type MaterialKey } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
@@ -249,85 +250,249 @@ export default function OhmsLawLab() {
 
   const prose = (
     <>
-      <h3>The intuition</h3>
+      <h3>Context</h3>
+      <p>
+        Ohm's law — <strong>V = IR</strong> — is the working equation of every battery-powered circuit, every wall outlet, every signal-carrying
+        trace on every circuit board. Connect a real piece of conductor to a real voltage source, and the steady-state current that flows is
+        proportional to the voltage, with a constant of proportionality called the <em>resistance</em>. The law is valid for ordinary metals at
+        ordinary temperatures over many orders of magnitude in current density — and breaks down at the extremes: in superconductors (R = 0 below
+        a critical temperature), in semiconductors driven near breakdown, in incandescent filaments hot enough that ρ has run away from its cold
+        value<Cite id="crc-resistivity" in={SOURCES} />, in lightning channels where the air's behavior is nonlinear, and at the femtosecond
+        timescales where the Drude scattering time itself becomes resolvable<Cite id="drude-1900" in={SOURCES} />.
+      </p>
+
+      <h3>Formula</h3>
+      <MathBlock>V = I R</MathBlock>
+      <p>
+        Where <strong>V</strong> is the voltage across a conductor in volts (V), <strong>I</strong> is the current through it in amperes (A), and
+        <strong> R</strong> is the resistance in ohms (Ω = V/A). The microscopic counterpart is <strong>J = σE</strong>, with <strong>J</strong>
+        the current density in A/m², <strong>E</strong> the field driving the charges in V/m, and <strong>σ</strong> the conductivity in S/m. The
+        two are related by geometry: <strong>R = L / (σA)</strong> for a uniform wire of length <strong>L</strong> and cross-section
+        <strong> A</strong>.
+      </p>
+
+      <h3>Intuition</h3>
       <p>
         Picture a sled being pushed across snow. Push harder and it goes faster — but it doesn't keep accelerating forever, because friction
-        bleeds off the gain. After a short startup the sled settles at a steady speed proportional to the push. <strong>That is Ohm's law.</strong>
-        The push is the electric field. The sled is an electron. The snow is the metal lattice it keeps colliding with<Cite id="drude-1900" in={SOURCES} />.
-      </p>
-      <p>
-        Conductivity <strong>σ</strong> is how slick the snow is. Silver and copper are practically ice. Iron is gravelly slush. Nichrome is sand —
-        designed to be barely conductive so that pushing current through it forces a lot of friction-heat into the wire. That's a toaster<Cite id="kanthal" in={SOURCES} />.
+        bleeds off the gain. After a short startup the sled settles at a steady speed proportional to the push. The push is the electric field.
+        The sled is an electron. The snow is the metal lattice it keeps colliding with<Cite id="drude-1900" in={SOURCES} />. Steady current under
+        constant voltage isn't a mass accelerating forever; it's a drag race in which the drag exactly cancels the drive.
       </p>
       <Pullout>
         Conductivity is a single number that bundles up <em>everything</em> about how charges navigate a particular material —
         how many free charges there are, how heavy they are, how often they crash.
       </Pullout>
 
-      <h3>The math, in stages</h3>
+      <h3>Reasoning</h3>
       <p>
-        A voltage <strong>V</strong> applied across a wire of length <strong>L</strong> sets up a roughly uniform electric field inside it. By
-        definition, volts per meter:
+        Why <em>linear</em>? Because the steady-state drift velocity is set by a balance between two terms each linear in <strong>E</strong>:
+        the acceleration <strong>qE/m</strong> over the mean time between collisions <strong>τ</strong>. Double <strong>E</strong> and you double
+        both the acceleration and the gain per scattering event, giving twice the drift. Linearity is a Drude consequence, not a postulate.
+      </p>
+      <p>
+        Why does <strong>R</strong> have the form <strong>L/(σA)</strong>? Length is in the numerator because it's the path the field drives the
+        charges over: more obstacles in series. Area is in the denominator because it's the number of parallel lanes available: more side-by-side
+        traffic for the same current density. Material conductivity <strong>σ</strong> bundles up <em>n</em> (carrier density), <em>q</em> (charge
+        per carrier), <em>τ</em> (mean free time), and <em>m</em> (effective mass) into one number<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
+      </p>
+
+      <h3>Derivation</h3>
+      <p>
+        Apply a voltage <strong>V</strong> across a wire of length <strong>L</strong>. In steady state surface charges redistribute to make the
+        field inside roughly uniform along the axis:
       </p>
       <MathBlock>E = V / L</MathBlock>
       <p>
-        That field accelerates charges. The microscopic Ohm's law says the resulting <em>current density</em> — current per unit cross-section —
-        is just the field times the conductivity:
-      </p>
-      <MathBlock>J = σ E</MathBlock>
-      <p>
-        Integrate over the cross-section <strong>A</strong> and you get the total current:
-      </p>
-      <MathBlock>I = J A</MathBlock>
-      <p>
-        Put it together: <strong>I = σA · V/L</strong>. Re-arrange and the familiar macroscopic Ohm's law falls out:
-      </p>
-      <MathBlock>V = I R,   R = L / (σ A)</MathBlock>
-      <p>
-        Try the defaults — copper, V = 12 V, L = 1 m, A = 2.5 mm². Resistance comes out around 7 mΩ; current crosses 1700 A.
-        That's not a wire, that's a short circuit. Real household-scale numbers come from much longer wires or much smaller cross-sections;
-        the slider lets you walk into that regime.
-      </p>
-
-      <h3>Why does this linear relationship even hold?</h3>
-      <p>
-        The Drude model (1900) gives the cleanest classical picture<Cite id="drude-1900" in={SOURCES} />. Treat the free electrons in a metal as a gas
-        between collisions with the lattice ions — a mean time <strong>τ ≈ 2×10<sup>−14</sup> s</strong> in copper at room temperature<Cite id="libretexts-conduction" in={SOURCES} />.
-        Between collisions the applied field accelerates them with <strong>a = qE/m</strong>. Each collision randomizes direction, so on average the
-        velocity gained from the field is <em>kept</em> for a time τ before being scrambled. The drift velocity is therefore:
+        In the Drude picture, an electron between collisions accelerates with <strong>a = qE/m</strong>, gaining velocity for an average time
+        <strong> τ</strong>, then losing memory of it. The mean drift velocity is:
       </p>
       <MathBlock>v<sub>d</sub> = (q τ / m) E</MathBlock>
+      <p>Current density is charge density times drift:</p>
+      <MathBlock>J = n q v<sub>d</sub> = (n q² τ / m) E ≡ σ E</MathBlock>
       <p>
-        And since current density is <strong>J = n q v<sub>d</sub></strong> (charge density times drift speed), we get the microscopic identity<Cite id="ashcroft-mermin-1976" in={SOURCES} />:
+        Integrate over the cross-section <strong>A</strong>:
       </p>
-      <MathBlock>σ = n q² τ / m</MathBlock>
+      <MathBlock>I = J A = σ A V / L</MathBlock>
       <p>
-        Every term is a property of the material. <strong>n</strong> is how many free charges are around, <strong>τ</strong> is how long they survive between
-        crashes, <strong>m</strong> is how hard they are to push. Bundle them up, get one number, call it σ. The classical Drude picture is an
-        approximation — the actual speeds involved are quantum (Fermi-level), not thermal — but for steady-current behavior it is essentially right<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
+        Rearrange to put V on one side:
       </p>
-
-      <h3>The hard part: power, not energy, is the right thing to track</h3>
+      <MathBlock>V = (L / σ A) · I = I R,   R = L / (σ A)</MathBlock>
       <p>
-        Every collision dumps the kinetic energy the electron picked up from the field as heat into the lattice. The <em>rate</em> at which this
-        happens per unit volume is the dot product <strong>J · E = σE²</strong>. Integrate over the wire volume and you get the total power dissipated.
-        The same number falls out as:
+        Ohm's law isn't a separate postulate. It's what <strong>J = σE</strong> looks like after geometry has had its say<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
+        Try the defaults — copper, V = 12 V, L = 1 m, A = 2.5 mm². Resistance comes out around 7 mΩ; current crosses 1700 A. That's not a wire,
+        that's a short circuit. Real household-scale numbers come from much longer wires or much smaller cross-sections — and from voltages of
+        a few volts across kilohm-scale lumped resistors, where the readout sits at milliamps not kiloamps.
+      </p>
+      <p>
+        The same algebra gives you power. Each second, <em>I</em> coulombs cross the resistor; each loses <em>V</em> joules to the lattice:
       </p>
       <MathBlock>P = V I = V² / R = I² R</MathBlock>
       <p>
-        That's Joule heating. Doubling <strong>V</strong> doubles <strong>I</strong> but <em>quadruples</em> <strong>P</strong>. Tungsten filament
-        bulbs glow because tungsten's σ is low, so any given current needs a substantial E along the wire, and all that I²R becomes thermal
-        radiation hot enough to be visible<Cite id="crc-resistivity" in={SOURCES} />.
+        Doubling <strong>V</strong> doubles <strong>I</strong> but <em>quadruples</em> <strong>P</strong>. That's why tungsten filaments
+        glow<Cite id="crc-resistivity" in={SOURCES} /> and why nichrome ribbons are the entire product of a toaster<Cite id="kanthal" in={SOURCES} />.
       </p>
 
-      <h4>About the material dropdown</h4>
-      <p>
-        <strong>Silver</strong> and <strong>copper</strong> are the kings of room-temperature conductivity (σ ≈ 6×10<sup>7</sup> S/m). Silver is
-        marginally better but orders of magnitude more expensive, so all building wire is copper. <strong>Aluminum</strong> is about 60% as
-        conductive but a third as dense, which is why long-distance power lines are aluminum. <strong>Iron</strong> is roughly 6× worse than copper.
-        <strong> Tungsten</strong> is worse still but stays solid at incandescent temperatures, so it makes filaments. <strong>Nichrome</strong> is
-        intentionally bad — designed for heating elements, where you <em>want</em> high resistance per length<Cite id="crc-resistivity" in={SOURCES} /><Cite id="kanthal" in={SOURCES} />.
-      </p>
+      <h3>Worked problems</h3>
+
+      <TryIt
+        tag="Problem 3.1.1"
+        question={<>A 100 Ω resistor sits across a 10 V battery. What current flows?</>}
+        hint={<>Direct application of V = IR.</>}
+        answer={
+          <>
+            <MathBlock>I = V / R = 10 V / 100 Ω = 0.10 A</MathBlock>
+            <p>Answer: <strong>0.10 A = 100 mA</strong>.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.1.2"
+        question={<>A circuit reads 5 mA through some unknown resistor at 5 V across it. What is R?</>}
+        hint={<>Rearrange V = IR.</>}
+        answer={
+          <>
+            <MathBlock>R = V / I = 5 V / 0.005 A = 1000 Ω = 1 kΩ</MathBlock>
+            <p>Answer: <strong>R = 1 kΩ</strong>. A very common bench-resistor value, not by accident.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.1.3"
+        question={<>A 1 kΩ and a 2 kΩ resistor sit in series across a 9 V battery. What is the current, and what voltage drops across each?</>}
+        hint={<>Same current everywhere in a series chain.</>}
+        answer={
+          <>
+            <p>Resistors in series add:</p>
+            <MathBlock>R<sub>total</sub> = 1 kΩ + 2 kΩ = 3 kΩ</MathBlock>
+            <MathBlock>I = 9 V / 3000 Ω = 3 mA</MathBlock>
+            <MathBlock>V<sub>1</sub> = I R<sub>1</sub> = 3 mA · 1 kΩ = 3 V</MathBlock>
+            <MathBlock>V<sub>2</sub> = I R<sub>2</sub> = 3 mA · 2 kΩ = 6 V</MathBlock>
+            <p>The drops sum to 9 V — the battery's full EMF — as Kirchhoff requires.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.1.4"
+        question={<>Two 1 kΩ resistors are placed in parallel across a 12 V supply. What is the equivalent resistance and the total current drawn?</>}
+        answer={
+          <>
+            <p>Parallel resistors combine by reciprocal sum:</p>
+            <MathBlock>1/R<sub>eq</sub> = 1/1000 + 1/1000 = 2/1000   ⇒   R<sub>eq</sub> = 500 Ω</MathBlock>
+            <MathBlock>I = V / R<sub>eq</sub> = 12 / 500 = 24 mA</MathBlock>
+            <p>Each 1 kΩ resistor carries half the current (12 mA) — they share the load symmetrically.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.1.5"
+        question={<>A 10 Ω and a 30 Ω resistor are in series across 12 V. What is the power dissipated in each?</>}
+        answer={
+          <>
+            <MathBlock>I = 12 V / (10 + 30) Ω = 0.30 A</MathBlock>
+            <MathBlock>P<sub>10</sub> = I² R = (0.3)² · 10 = 0.90 W</MathBlock>
+            <MathBlock>P<sub>30</sub> = I² R = (0.3)² · 30 = 2.70 W</MathBlock>
+            <p>
+              The bigger resistor dissipates three times more power, because the same current flows through both but the larger one drops more
+              voltage. Power in a series chain is proportional to R.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.1.6"
+        question={<>A voltage divider has V<sub>in</sub> = 9 V, R<sub>1</sub> = 2 kΩ on top, R<sub>2</sub> = 3 kΩ on bottom, with V<sub>out</sub> taken across R<sub>2</sub>. Compute V<sub>out</sub>.</>}
+        hint={<>The unloaded divider formula: V<sub>out</sub> = V<sub>in</sub> · R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>).</>}
+        answer={
+          <>
+            <MathBlock>V<sub>out</sub> = 9 · 3 / (2 + 3) = 9 · 3/5 = 5.4 V</MathBlock>
+            <p>Answer: <strong>5.4 V</strong>. Voltage divides between series resistors in proportion to their R values.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.1.7"
+        question={<>A 10 kΩ potentiometer is wired as a voltage divider on 5 V. The wiper is set to a fraction <em>x</em> of the way from the bottom (0 to 1). Express V<sub>wiper</sub> as a function of <em>x</em>.</>}
+        answer={
+          <>
+            <p>The resistance below the wiper is <em>xR</em>, the resistance above is <em>(1−x)R</em>. The total is <em>R</em>:</p>
+            <MathBlock>V<sub>wiper</sub> = 5 · (x R) / R = 5 x V</MathBlock>
+            <p>
+              Answer: a linear pot is a linear divider — <strong>V<sub>wiper</sub> = 5x V</strong>. At <em>x</em> = 0.5, the wiper sits at 2.5 V.
+              The total resistance value (10 kΩ) drops out entirely; only the ratio matters when the load is light.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.1.8"
+        question={<>Two 1 kΩ ± 5% resistors are placed in series. What is the worst-case total resistance, and the relative tolerance of the series combination?</>}
+        answer={
+          <>
+            <p>Each resistor's value lies in [950, 1050] Ω. Worst-case high is 2100 Ω; worst-case low is 1900 Ω. The nominal sum is 2000 Ω.</p>
+            <MathBlock>tolerance = ±100 / 2000 = ±5%</MathBlock>
+            <p>
+              Answer: total <strong>2 kΩ ± 5%</strong>. Tolerances of equal-percentage resistors don't add in series — they stay the same percentage. (They <em>do</em> add in absolute Ω terms.) The percentage error of a sum is a weighted average of the individuals' percentage errors.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.1.9"
+        question={<>A galvanometer movement reads 1 mA full-scale with an internal resistance of 100 Ω. To turn it into a 100 mA ammeter, what shunt resistor must be placed across the movement?</>}
+        hint={<>Shunt absorbs the extra 99 mA at the same 0.1 V the movement drops at full scale.</>}
+        answer={
+          <>
+            <p>At full scale the movement drops V = 1 mA · 100 Ω = 0.1 V. The shunt sees that same 0.1 V and must carry the remaining 99 mA:</p>
+            <MathBlock>R<sub>shunt</sub> = 0.1 V / 0.099 A ≈ 1.01 Ω</MathBlock>
+            <p>
+              Answer: about <strong>1.0 Ω</strong> in parallel. The shunt's smallness — two orders of magnitude below the movement — is why
+              ammeters insert almost no resistance into a circuit, and why a 1% error in the shunt becomes a 1% error in the reading.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.1.10"
+        question={<>A voltmeter with 10 MΩ input impedance measures across the lower leg of a 1 MΩ + 1 MΩ divider on 1 V. What does it read, and by how much does it perturb the divider?</>}
+        answer={
+          <>
+            <p>Unloaded, the divider sits at 0.500 V. Attaching the voltmeter puts 10 MΩ in parallel with the bottom 1 MΩ:</p>
+            <MathBlock>R<sub>bot</sub><sup>′</sup> = (1 · 10) / (1 + 10) = 10/11 ≈ 0.909 MΩ</MathBlock>
+            <MathBlock>V<sub>read</sub> = 1 · 0.909 / (1 + 0.909) ≈ 0.476 V</MathBlock>
+            <p>
+              The reading is about <strong>0.476 V</strong> — roughly 4.8% low. The lesson: a 10× input impedance ratio still costs a few percent.
+              For precision measurements across a megohm source, you need a 10<sup>9</sup>-ohm-grade meter (an electrometer) or you have to model
+              the loading.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.1.11"
+        question={<>A 12 V car battery with 0.01 Ω internal resistance is connected to a 100 A starter motor load. What is the terminal voltage during cranking?</>}
+        hint={<>The internal resistance drops a voltage I R<sub>int</sub> that subtracts from the EMF.</>}
+        answer={
+          <>
+            <MathBlock>V<sub>drop</sub> = I R<sub>int</sub> = 100 · 0.01 = 1.0 V</MathBlock>
+            <MathBlock>V<sub>term</sub> = 12 − 1 = 11 V</MathBlock>
+            <p>
+              Answer: terminal voltage falls to <strong>~11 V</strong> during cranking. That's why headlights dim when you start the engine —
+              the battery's internal R is dropping a real volt under heavy load. A weak battery with R<sub>int</sub> = 0.05 Ω would drop to
+              7 V under the same load, and the starter wouldn't crank.
+            </p>
+          </>
+        }
+      />
     </>
   );
 

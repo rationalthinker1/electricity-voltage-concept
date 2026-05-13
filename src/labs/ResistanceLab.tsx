@@ -19,6 +19,7 @@ import { MathBlock, Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
+import { TryIt } from '@/components/TryIt';
 import { MATERIALS, pretty, type MaterialKey } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
@@ -252,96 +253,260 @@ export default function ResistanceLab() {
 
   const prose = (
     <>
-      <h3>From microscopic to macroscopic</h3>
+      <h3>Context</h3>
       <p>
-        A previous lab gave the local law: <strong>J = σE</strong>. At every point inside a conductor, the current density is the conductivity
-        times the field, full stop. That's a statement about <em>points</em>. To wire up a circuit, you need a statement about <em>wires</em>: how
-        much current flows when you connect a real, finite piece of metal to a real voltage source. That statement is <strong>V = IR</strong>, and
-        the lump constant <strong>R</strong> is what the field-level law looks like after you integrate it over the geometry of the wire<Cite id="griffiths-2017" in={SOURCES} />.
+        Every wire has a resistance. The microscopic law <strong>J = σE</strong> is local — it tells you the current density at a single point.
+        But circuits are built from finite, shaped pieces of conductor, and an engineer needs a single number characterizing each piece. That
+        number is the resistance, and for a uniform straight wire it's set entirely by three quantities: the resistivity <strong>ρ</strong> of
+        the material, the length <strong>L</strong>, and the cross-sectional area <strong>A</strong>. The relation <strong>R = ρL/A</strong>
+        holds for steady DC current in a uniform, isotropic, ohmic conductor at constant temperature<Cite id="griffiths-2017" in={SOURCES} />.
+        It breaks down for non-uniform geometries (use an integral), for anisotropic materials (resistivity is a tensor), at high frequencies
+        (the skin effect concentrates current near the surface, effectively shrinking A), and once heating makes <em>ρ</em> a moving
+        target<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
+
+      <h3>Formula</h3>
+      <MathBlock>R = ρ L / A</MathBlock>
       <p>
-        Resistance is the rendezvous of material and shape. The material brings its <strong>σ</strong> (or equivalently its resistivity
-        <strong> ρ = 1/σ</strong>). The shape brings its length and its cross-section. Multiply them together the way the integrals demand,
-        and you get a single number with units of ohms.
+        Where <strong>R</strong> is resistance in ohms (Ω), <strong>ρ</strong> is the bulk resistivity of the material in Ω·m,
+        <strong> L</strong> is the length of the conductor in meters, and <strong>A</strong> is its cross-sectional area in m². Equivalent form
+        with conductivity <strong>σ = 1/ρ</strong> (units S/m): <strong>R = L / (σA)</strong>. Reciprocally, <strong>conductance G = 1/R</strong>
+        in siemens (S).
+      </p>
+
+      <h3>Intuition</h3>
+      <p>
+        Resistance is the rendezvous of material and shape. Material brings how slick the medium is (σ, ρ). Geometry brings how many obstacles
+        sit in series (L) and how many parallel lanes are available (A). The asymmetry between length and area is the whole reason wires are
+        wires: long, thin, and made of copper. Power transmission engineers live on the area side. Heater designers live on the length
+        side<Cite id="kanthal" in={SOURCES} />.
       </p>
       <Pullout>
         Resistance is what conductivity looks like after geometry has had its say.
       </Pullout>
 
-      <h3>Derivation, in stages</h3>
+      <h3>Reasoning</h3>
       <p>
-        Imagine a straight wire of length <strong>L</strong> and uniform cross-section <strong>A</strong> connected to a battery of voltage
-        <strong> V</strong>. Inside the wire, the field is roughly uniform along the axis (in steady state, surface charges redistribute to make this so):
+        Why does <strong>L</strong> sit on top? Length is the path the field drives charges over. Double the length and every coulomb travels
+        twice as far under the same per-unit-length drag. For a fixed current, that means twice the voltage to push them through — R doubles.
+        A long wire <em>is</em> two short wires in series.
+      </p>
+      <p>
+        Why does <strong>A</strong> sit on the bottom? Area is the number of parallel lanes. Double the cross-section and twice as many
+        electrons flow side-by-side, sharing the load. For the same total current, you only need half the current density, and so half the
+        field, and so half the voltage — R halves. A fat wire <em>is</em> two thin wires in parallel.
+      </p>
+      <p>
+        Why the exact power of 1 in both? Because <strong>R</strong> sums linearly in series (length doubles ⇒ R doubles) and combines by
+        reciprocal sum in parallel (two equal areas in parallel ⇒ R halves). Any other exponent would violate Kirchhoff's circuit
+        laws<Cite id="griffiths-2017" in={SOURCES} />.
+      </p>
+
+      <h3>Derivation</h3>
+      <p>
+        Start with a uniform wire of length L, cross-section A, with a battery of voltage V at the ends. In steady state, surface charges
+        redistribute so the field inside is uniform and axial:
       </p>
       <MathBlock>E = V / L</MathBlock>
-      <p>Microscopic Ohm's law converts that field into a current density:</p>
+      <p>Microscopic Ohm's law gives current density:</p>
       <MathBlock>J = σ E = σ V / L</MathBlock>
-      <p>
-        Total current is current density integrated over the cross-section. For uniform J, that's just <strong>I = JA</strong>:
-      </p>
-      <MathBlock>I = σ A V / L</MathBlock>
-      <p>Rearrange to put <strong>V</strong> on one side:</p>
+      <p>Total current is J integrated over the cross-section. For uniform J, that's just JA:</p>
+      <MathBlock>I = J A = σ A V / L</MathBlock>
+      <p>Rearrange for V:</p>
       <MathBlock>V = (L / σA) · I = R · I</MathBlock>
-      <p>
-        The bracketed term is the resistance. Substitute <strong>ρ = 1/σ</strong> (the resistivity is the inverse of conductivity, units
-        of Ω·m) and you have the textbook form:
-      </p>
+      <p>Substitute ρ = 1/σ:</p>
       <MathBlock>R = ρ L / A</MathBlock>
-      <p>Three numbers. A property of the material times a property of the shape.</p>
-
-      <h3>Why this geometry</h3>
       <p>
-        Why does <strong>L</strong> live in the numerator? Length is the path the field drives the charges over. Double the length and you double
-        the distance every coulomb has to travel under the same drag. For a fixed current, that means twice the voltage to push them along — resistance has doubled.
+        Series and parallel rules fall out of the same derivation. For two segments end-to-end with the same current, voltages add:
+        <strong> R<sub>series</sub> = R<sub>1</sub> + R<sub>2</sub></strong> — exactly what you'd get by doubling L. For two side-by-side wires
+        with the same voltage, currents add: <strong>1/R<sub>parallel</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub></strong> — exactly what you'd
+        get by adding the areas.
       </p>
       <p>
-        Why does <strong>A</strong> live in the denominator? Area is the number of parallel paths. Doubling the cross-section means twice as
-        many electrons can flow side-by-side, sharing the load. For the same current you only need half the current density, and so half the
-        field, and so half the voltage. Resistance has halved.
+        For temperature dependence (not modelled in the lab), a linear approximation works over modest ranges:
       </p>
+      <MathBlock>ρ(T) ≈ ρ<sub>0</sub> · [1 + α (T − T<sub>0</sub>)]</MathBlock>
       <p>
-        The asymmetry between length and area is the whole reason wires are wires — long, thin, and made of copper. Power transmission engineers
-        live on the area side of the equation. Heater designers live on the length side<Cite id="kanthal" in={SOURCES} />.
-      </p>
-
-      <h3>Series and parallel</h3>
-      <p>
-        Two resistors in <em>series</em> share the same current; the voltages add. So:
-      </p>
-      <MathBlock>R<sub>series</sub> = R<sub>1</sub> + R<sub>2</sub></MathBlock>
-      <p>That's the formula for a single longer wire, written for two pieces in a row. A long wire <em>is</em> many short wires in series.</p>
-      <p>Two resistors in <em>parallel</em> share the same voltage; the currents add:</p>
-      <MathBlock>1 / R<sub>parallel</sub> = 1 / R<sub>1</sub> + 1 / R<sub>2</sub></MathBlock>
-      <p>
-        That's the formula for a single fatter wire, written for two pieces side-by-side. Series and parallel rules aren't separate from
-        <strong> R = ρL/A</strong> — they <em>are</em> that formula, applied twice and rearranged<Cite id="griffiths-2017" in={SOURCES} />.
+        with α ≈ 3.9×10⁻³ /K for copper at room temperature<Cite id="crc-resistivity" in={SOURCES} />. In metals α &gt; 0 (more lattice
+        vibrations, more scattering); in intrinsic semiconductors α &lt; 0 (thermal activation generates more carriers). The sign of dρ/dT is one
+        of the tidiest experimental distinctions between a metal and an insulator<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
 
-      <h3>Material is destiny</h3>
+      <h3>Worked problems</h3>
+
       <p>
-        Try every entry in the material dropdown. Copper, the workhorse, has <strong>ρ ≈ 1.7×10<sup>−8</sup> Ω·m</strong>.
-        Silver edges it out by a few percent. <strong>Aluminum</strong> is about 60% as conductive but a third of the density — the reason long-distance
-        power lines are aluminum-cored rather than copper<Cite id="crc-resistivity" in={SOURCES} />.
-      </p>
-      <p>
-        <strong>Tungsten</strong> is roughly six times worse than copper at room temperature, but the property that matters is that it stays solid
-        above 3000 K. That's what lets it become a filament<Cite id="crc-resistivity" in={SOURCES} />. <strong>Nichrome</strong> is intentionally,
-        deliberately bad — about seventy times worse than copper — and that's <em>why</em> it ends up in toasters and space heaters<Cite id="kanthal" in={SOURCES} />.
-        Resistance is the design variable, not the side effect.
-      </p>
-      <p>
-        Past the metals, the dynamic range opens up. Semiconductors, insulators, and superconductors span more than twenty orders of magnitude
-        in resistivity. No other material parameter varies so violently<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
+        Reference numbers (CRC, room-temperature)<Cite id="crc-resistivity" in={SOURCES} />: ρ<sub>Cu</sub> ≈ 1.68×10⁻⁸ Ω·m,
+        ρ<sub>Al</sub> ≈ 2.65×10⁻⁸ Ω·m, ρ<sub>Fe</sub> ≈ 1.0×10⁻⁷ Ω·m, ρ<sub>W</sub> ≈ 5.6×10⁻⁸ Ω·m, ρ<sub>nichrome</sub> ≈ 1.1×10⁻⁶ Ω·m.
+        Temperature coefficient α<sub>Cu</sub> ≈ 3.9×10⁻³ /K.
       </p>
 
-      <h4>Temperature dependence (mentioned, not modelled)</h4>
-      <p>
-        The numbers in the lab above are room-temperature. Real <strong>ρ</strong> is a function of temperature, and the sign of the dependence
-        flips between conductors and insulators. In metals, lattice ions vibrate harder as <em>T</em> rises, so electrons scatter more, τ falls,
-        σ falls, ρ rises<Cite id="ashcroft-mermin-1976" in={SOURCES} />. A glowing tungsten filament carries roughly ten times its cold resistance —
-        which is also why incandescent bulbs draw a brief inrush current and tend to burn out at the moment of switch-on. The sign of dρ/dT is one
-        of the tidiest experimental distinctions between a metal and an insulator.
-      </p>
+      <TryIt
+        tag="Problem 3.2.1"
+        question={<>A copper wire 1 mm² in cross-section and 1 m long, at 20 °C. What is its resistance?</>}
+        answer={
+          <>
+            <MathBlock>R = ρ L / A = (1.68×10⁻⁸) · 1 / (1×10⁻⁶) = 1.68×10⁻² Ω</MathBlock>
+            <p>Answer: <strong>≈ 17 mΩ</strong>. That's about a tenth of an ohm per six meters of millimeter-thick copper.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.2.2"
+        question={<>Same geometry, aluminum instead of copper. How does R compare?</>}
+        answer={
+          <>
+            <MathBlock>R<sub>Al</sub> = (2.65×10⁻⁸) · 1 / (1×10⁻⁶) ≈ 26.5 mΩ</MathBlock>
+            <p>
+              Answer: about <strong>26.5 mΩ</strong> — roughly 58% more resistance than copper. But aluminum is one-third the density. Per
+              kilogram, aluminum conducts about twice as well as copper, which is why long-distance overhead transmission lines are
+              aluminum-cored — they sag less under their own weight.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.2.3"
+        question={<>The same copper wire (1 mm² × 1 m), but heated to 100 °C. What is its resistance now?</>}
+        hint={<>Use ρ(T) = ρ<sub>0</sub> · [1 + α ΔT] with α ≈ 3.9×10⁻³/K.</>}
+        answer={
+          <>
+            <MathBlock>ΔT = 100 − 20 = 80 K</MathBlock>
+            <MathBlock>ρ(100°C) ≈ ρ<sub>0</sub> · (1 + 0.0039 · 80) = ρ<sub>0</sub> · 1.31</MathBlock>
+            <MathBlock>R ≈ 17 mΩ · 1.31 ≈ 22 mΩ</MathBlock>
+            <p>
+              Answer: about <strong>22 mΩ</strong>, a 31% increase. Motor windings and transformer copper run hot enough that this matters for
+              efficiency calculations.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.2.4"
+        question={<>AWG 14 copper wire has a cross-section of about 2.08 mm². You run 30 m of it from a panel to a far outlet. What is the round-trip resistance (out and back)?</>}
+        answer={
+          <>
+            <p>Total wire length is 2 × 30 = 60 m:</p>
+            <MathBlock>R = (1.68×10⁻⁸) · 60 / (2.08×10⁻⁶) ≈ 0.485 Ω</MathBlock>
+            <p>
+              Answer: about <strong>0.49 Ω</strong> round-trip. At 15 A this drops V = I R ≈ 7.3 V — about 6% of 120 V, near the U.S. National
+              Electrical Code's recommended 3% per branch / 5% total ceiling. That's why long runs go up a gauge.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.2.5"
+        question={<>You double the length of a wire and halve its cross-sectional area. By what factor does R change?</>}
+        answer={
+          <>
+            <MathBlock>R<sub>new</sub>/R<sub>old</sub> = (L<sub>new</sub>/L<sub>old</sub>) · (A<sub>old</sub>/A<sub>new</sub>) = 2 · 2 = 4</MathBlock>
+            <p>Answer: R increases by a factor of <strong>4</strong>. The geometric effects compound multiplicatively, not additively.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.2.6"
+        question={<>Seawater has ρ ≈ 0.2 Ω·m. Compute the resistance of a 1 m cube of seawater, measured face-to-face.</>}
+        answer={
+          <>
+            <p>L = 1 m, A = 1 m²:</p>
+            <MathBlock>R = (0.2) · 1 / 1 = 0.2 Ω</MathBlock>
+            <p>
+              Answer: <strong>0.2 Ω</strong> per meter-cube — about ten million times more resistive than a copper cube of the same size, but
+              still vastly less than freshwater (which is ~10⁴ Ω·m or more, depending on impurities). Salt ions carry the current; the salinity
+              and temperature set ρ.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.2.7"
+        question={<>A 14 AWG copper branch circuit carries 15 A over a 30 m one-way run. What voltage drops along the round-trip wiring?</>}
+        answer={
+          <>
+            <p>Using the 0.49 Ω round-trip from Problem 3.2.4:</p>
+            <MathBlock>V<sub>drop</sub> = I R = 15 A · 0.49 Ω ≈ 7.3 V</MathBlock>
+            <p>
+              Answer: <strong>≈ 7.3 V</strong>, about 6% of the 120 V supply. Lights at the far end will be visibly dimmer; resistive heaters
+              will run noticeably below rated power (since P ∝ V²). Code says to go to 12 AWG.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.2.8"
+        question={<>In one sentence: why is resistance directly proportional to L?</>}
+        answer={
+          <>
+            <p>
+              Because doubling the length stacks two identical pieces of wire in series, and resistors in series add — equivalently, each
+              electron has to push past twice as many lattice ions on its trip from one end to the other, so for the same drift speed (same
+              current) you need twice the voltage.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.2.9"
+        question={<>A thin metal film 100 nm thick is patterned into a square 10 mm on a side. If the bulk resistivity of the film is ρ ≈ 2×10⁻⁸ Ω·m, what is the resistance measured edge-to-edge across the square?</>}
+        hint={<>L = 10 mm, A = thickness · width.</>}
+        answer={
+          <>
+            <p>A = (100×10⁻⁹ m) · (10×10⁻³ m) = 1×10⁻⁹ m²</p>
+            <MathBlock>R = ρ L / A = (2×10⁻⁸) · (10×10⁻³) / (1×10⁻⁹) = 0.2 Ω</MathBlock>
+            <p>
+              Answer: <strong>≈ 0.2 Ω per square</strong>. Notice that the width <em>cancels the length</em> for a square (L/A both scale with
+              the side, but A includes thickness). That cancellation is why thin-film designers quote <em>sheet resistance</em>
+              <strong> R<sub>s</sub> = ρ/t</strong> in Ω/□ (ohms per square): the resistance of any square patch of film, regardless of size, is
+              just R<sub>s</sub>, and total R for a strip of N squares is N · R<sub>s</sub>.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.2.10"
+        question={<>Why do precision lab measurements use a four-wire (Kelvin) connection to a resistor, not a two-wire one?</>}
+        answer={
+          <>
+            <p>
+              The wires leading from the meter to the device-under-test are themselves resistors. In a two-wire measurement, the current source
+              and the voltmeter share those leads — so the meter reads <em>R<sub>device</sub> + R<sub>leads</sub></em>. The lead resistance can
+              be 0.1 Ω or more, which is fatal when measuring milliohm devices.
+            </p>
+            <p>
+              In a four-wire measurement, current is forced down a dedicated pair of leads, while a separate pair of voltage-sense leads taps
+              directly across the device. The voltage-sense leads carry essentially zero current (a high-impedance meter), so their resistance
+              drops no voltage, so the reading <em>V<sub>sense</sub>/I<sub>force</sub></em> sees only R<sub>device</sub>. Lead resistance is
+              cancelled by construction.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 3.2.11"
+        question={<>AWG 16 aluminum wire has cross-section about 1.31 mm². Compute the resistance of 1 km of it, and the current that flows if you connect such a wire across a 12 V battery (zero internal resistance, no other load).</>}
+        answer={
+          <>
+            <MathBlock>R = (2.65×10⁻⁸) · 1000 / (1.31×10⁻⁶) ≈ 20.2 Ω</MathBlock>
+            <MathBlock>I = V / R = 12 / 20.2 ≈ 0.59 A</MathBlock>
+            <p>
+              Answer: about <strong>20 Ω</strong> and <strong>~0.6 A</strong>. The full 12 V drops along the wire itself — useful as an extended
+              heating element, useless as a transmission line. Real telecom and power lines run at kilovolts precisely so that the I·R drop is
+              a small fraction of the line voltage.
+            </p>
+          </>
+        }
+      />
     </>
   );
 
