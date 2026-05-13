@@ -314,8 +314,8 @@ export const CHAPTERS: ChapterEntry[] = [
     relatedLabs: ['capacitance', 'energy-density'],
     sources: [
       'whittingham-1976', 'goodenough-1980-licoo2', 'yoshino-1985',
-      'plante-1859', 'larminie-dicks-2003-fuel-cells', 'griffiths-2017',
-      'codata-2018',
+      'plante-1859', 'larminie-dicks-2003-fuel-cells', 'bard-faulkner-2001',
+      'griffiths-2017', 'codata-2018',
     ],
   },
 ];
