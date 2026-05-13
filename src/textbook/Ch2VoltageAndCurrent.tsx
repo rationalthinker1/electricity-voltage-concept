@@ -16,10 +16,12 @@ import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { CursorEFieldOnWireDemo } from './demos/CursorEFieldOnWire';
 import { DriftVelocityDemo } from './demos/DriftVelocity';
 import { SwitchAndBulbDemo } from './demos/SwitchAndBulb';
 import { TwoSpeedsDemo } from './demos/TwoSpeeds';
 import { VoltageAsHeightDemo } from './demos/VoltageAsHeight';
+import { VoltageDrivesFlowDemo } from './demos/VoltageDrivesFlow';
 import { getChapter } from './data/chapters';
 
 export default function Ch2VoltageAndCurrent() {
@@ -101,6 +103,22 @@ export default function Ch2VoltageAndCurrent() {
         is one joule per coulomb. That single identity is why "1.5 V" on a battery is a statement about energy: it
         says the cell can deposit 1.5 joules of energy onto every coulomb of charge that flows out one terminal and
         back into the other<Cite id="feynman-II-2" in={SOURCES} />.
+      </p>
+
+      <VoltageDrivesFlowDemo />
+
+      <p>
+        That operational picture has a knob the reader can already turn. Hook a battery of
+        voltage <em>V</em> across a fixed resistive load and a fixed current flows: in the
+        demo above, <em>I = V/R</em> for <em>R</em> = 10 Ω. Doubling <em>V</em> doubles the
+        current — and, via <em>v<sub>d</sub> = I/(nqA)</em>, doubles the drift speed of the
+        electrons inside the copper. But the drift stays microscopic across the whole slider
+        range, never breaking out of tens of micrometres per second. What lifts dramatically
+        is the power <em>P = V·I = V²/R</em>: a quadratic, not a linear, function of voltage.
+        That is the reason the load gets so much brighter when you crank <em>V</em>, and the
+        reason the grid pushes power cross-country at hundreds of kilovolts. Chapter 3 makes
+        Ohm's law and power rigorous; Chapter 8 will show that the energy isn't actually
+        flowing through the copper at all.
       </p>
 
       <h3>The cleanest case: a uniform field between two plates</h3>
@@ -233,6 +251,17 @@ export default function Ch2VoltageAndCurrent() {
         getting from the switch to the bulb to make it glow, it is not the electrons that were sitting near the switch.
         They will not arrive for hours.
       </p>
+
+      <p>
+        Before moving on, one demonstration of how directly those drifting electrons respond to <em>any</em> electric
+        field — not just the battery's. Bring an external charge near the wire and the free electrons inside feel it
+        immediately. They pile up, recoil, and redistribute over the conductor's surface until their own field cancels
+        the intruder's everywhere in the bulk. That cancellation happens in picoseconds and is the reason an
+        electrostatic conductor has <em>E = 0</em> inside <Cite id="griffiths-2017" in={SOURCES} />. The transient — the
+        electrons actually doing the rearranging — is what the next demo lets you watch.
+      </p>
+
+      <CursorEFieldOnWireDemo />
 
       <TryIt
         tag="Try 2.3"

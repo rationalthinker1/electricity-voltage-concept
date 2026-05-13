@@ -19,6 +19,7 @@ import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { BatteryBulbFieldsDemo } from './demos/BatteryBulbFields';
 import { BCirculationDemo } from './demos/BCirculation';
 import { EAxialFieldDemo } from './demos/EAxialField';
 import { PoyntingInflowDemo } from './demos/PoyntingInflow';
@@ -63,6 +64,20 @@ export default function Ch8EnergyFlow() {
         electrons made it from one end of the wire to the other. They don't carry the energy. Something else does — and that
         something else moves at about ⅔ the speed of light, which is the speed of an electromagnetic disturbance through the
         material surrounding a copper wire.
+      </p>
+
+      <BatteryBulbFieldsDemo />
+
+      <p>
+        Three physical fields are present in the picture above, and the demo lets you toggle each one on and off. The yellow
+        dots are the conduction electrons, drifting along the copper at roughly <strong>10⁻⁴ m/s</strong>. The teal circles are
+        the magnetic field <strong>B</strong> curling around each wire segment, set by Ampère's law<Cite id="feynman-II-27" in={SOURCES} />.
+        The pink arrows are the electric field <strong>E</strong> — axial inside the conductor (Ohm's law demands it) and
+        dipole-style in the surrounding air, threading from the positive terminal to the negative. The amber arrows are the
+        Poynting vector <strong>S = (1/μ<sub>0</sub>) E × B</strong>, drawn at every grid point where the other two are visible.
+        Look at where those amber arrows point: <em>into</em> the wire near the bulb, <em>out of</em> the wire near the
+        battery<Cite id="poynting-1884" in={SOURCES} />. The energy is moving through the space around the copper, not along
+        its interior.
       </p>
 
       <WhereDoesEnergyFlowDemo />
