@@ -25,6 +25,9 @@ export type ChapterSlug =
   | 'maxwell'
   | 'relativity'
   | 'circuits-and-ac'
+  | 'network-analysis'
+  | 'semiconductors'
+  | 'fourier-harmonics'
   | 'filters-op-amps-tlines'
   | 'materials'
   | 'optics'
@@ -226,8 +229,49 @@ export const CHAPTERS: ChapterEntry[] = [
     ],
   },
   {
-    slug: 'filters-op-amps-tlines',
+    slug: 'network-analysis',
     number: 13,
+    title: 'Network analysis methods',
+    subtitle: 'Mesh, nodal, superposition, Norton, Y-Δ, max-power.',
+    blurb:
+      "Kirchhoff in Ch.12 is enough in principle; this chapter gives you the systematic procedures every working engineer reaches for in practice. Mesh-current and nodal analysis turn any linear network into a small linear system. Superposition lets you handle multiple sources one at a time. Norton's theorem is the current-source twin of Thévenin's. Y-Δ transformations (Kennelly 1899) untangle bridge networks. The maximum-power-transfer theorem tells you when to match impedances.",
+    relatedLabs: ['ohms-law', 'resistance'],
+    sources: [
+      'kirchhoff-1845', 'maxwell-1873', 'kennelly-1899', 'norton-1926',
+      'irwin-circuit-analysis-2015', 'horowitz-hill-2015',
+      'hayt-kemmerly-durbin-2018', 'griffiths-2017', 'codata-2018',
+    ],
+  },
+  {
+    slug: 'semiconductors',
+    number: 14,
+    title: 'Semiconductors and transistors',
+    subtitle: 'p-n junctions, BJTs, and FETs — what is inside the chip.',
+    blurb:
+      "Until here every component has been a passive lump of metal or dielectric. This chapter opens the active devices: the silicon p-n junction (Shockley 1949), the bipolar junction transistor (Bardeen-Brattain-Shockley 1947), and the field-effect transistor (Kahng-Atalla MOSFET 1959). From single doped crystals through diodes, BJTs, JFETs, and MOSFETs to small-signal amplifiers, switches, and load-line analysis.",
+    relatedLabs: ['ohms-law', 'capacitance'],
+    sources: [
+      'shockley-1949', 'bardeen-brattain-1948', 'kahng-atalla-1960',
+      'shockley-1956-nobel', 'streetman-banerjee-2015', 'sedra-smith-2014',
+      'razavi-2021', 'horowitz-hill-2015', 'griffiths-2017', 'codata-2018',
+    ],
+  },
+  {
+    slug: 'fourier-harmonics',
+    number: 15,
+    title: 'Fourier and harmonic analysis',
+    subtitle: 'Every periodic signal is a sum of sines.',
+    blurb:
+      "Fourier 1822: any periodic function decomposes into a sum of sines and cosines at integer multiples of the fundamental frequency. That single fact rewrote signal processing, audio engineering, communications, and power electronics. We trace the Fourier series, harmonic synthesis, the RMS of a complex wave (Parseval), how harmonics propagate through linear filters, and how SMPS and motor drives inject harmonics back into the grid.",
+    relatedLabs: ['ohms-law', 'capacitance'],
+    sources: [
+      'fourier-1822', 'oppenheim-willsky-1997', 'bracewell-2000',
+      'cooley-tukey-1965', 'horowitz-hill-2015', 'griffiths-2017', 'codata-2018',
+    ],
+  },
+  {
+    slug: 'filters-op-amps-tlines',
+    number: 16,
     title: 'Filters, op-amps, and transmission lines',
     subtitle: 'Frequency, gain, and the moment a wire stops being a single node.',
     blurb:
@@ -241,7 +285,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'materials',
-    number: 14,
+    number: 17,
     title: 'Materials',
     subtitle: 'What ε and μ actually mean.',
     blurb:
@@ -255,7 +299,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'optics',
-    number: 15,
+    number: 18,
     title: 'Optics from electromagnetism',
     subtitle: 'Light is a wave. Materials slow it down.',
     blurb:
@@ -269,7 +313,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'antennas',
-    number: 16,
+    number: 19,
     title: 'Antennas and radiation',
     subtitle: 'How field becomes radio.',
     blurb:
@@ -283,7 +327,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'motors',
-    number: 17,
+    number: 20,
     title: 'Motors',
     subtitle: 'How a current ends up as a torque.',
     blurb:
@@ -296,7 +340,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'generators',
-    number: 18,
+    number: 21,
     title: 'Generators and the grid',
     subtitle: 'The same machine, run backwards.',
     blurb:
@@ -310,7 +354,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'transformers',
-    number: 19,
+    number: 22,
     title: 'Transformers',
     subtitle: 'Two coils, one core, a different voltage on the other side.',
     blurb:
@@ -326,7 +370,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'rectifiers-and-inverters',
-    number: 20,
+    number: 23,
     title: 'Rectifiers and inverters',
     subtitle: 'AC to DC, DC to AC, and the silicon that makes the swap.',
     blurb:
@@ -340,7 +384,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'batteries',
-    number: 21,
+    number: 24,
     title: 'How a battery works',
     subtitle: 'Chemistry that keeps a voltage on the wires.',
     blurb:
@@ -353,7 +397,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'modern-batteries',
-    number: 22,
+    number: 25,
     title: 'Modern batteries',
     subtitle: 'From lead-acid to lithium-ion to the next thing.',
     blurb:
