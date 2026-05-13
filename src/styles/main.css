@@ -332,15 +332,18 @@ section {
 }
 .eq-hero h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
 .eq-hero .formula {
-  font-family: 'Fraunces', serif;
+  font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
   font-style: italic;
-  font-weight: 300;
-  font-size: clamp(48px, 8vw, 96px);
-  letter-spacing: -.015em;
+  font-weight: 400;
+  font-size: clamp(44px, 7vw, 84px);
+  line-height: 1.25;
+  letter-spacing: .01em;
   margin: 30px 0 24px;
   color: var(--accent);
 }
-.eq-hero .formula sub, .eq-hero .formula sup { font-size: .55em; }
+.eq-hero .formula sub, .eq-hero .formula sup { font-size: .58em; line-height: 0; }
+.eq-hero .formula sub { vertical-align: -.32em; }
+.eq-hero .formula sup { vertical-align:  .5em; }
 .eq-hero .deck {
   font-size: 19px;
   line-height: 1.5;
@@ -687,16 +690,17 @@ select.material-select:focus { outline: none; border-color: var(--accent); }
   margin-bottom: 20px;
 }
 .eq-card .eq-formula {
-  font-family: 'Fraunces', serif;
+  font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
   font-style: italic;
-  font-weight: 300;
-  font-size: 42px;
-  letter-spacing: -.01em;
+  font-weight: 400;
+  font-size: 38px;
+  letter-spacing: .005em;
   margin-bottom: 18px;
   color: var(--text);
+  line-height: 1.4;
 }
 .eq-card .eq-formula sub, .eq-card .eq-formula sup {
-  font-size: .55em;
+  font-size: .58em;
   font-style: italic;
 }
 .eq-card .eq-desc {
@@ -1051,14 +1055,17 @@ footer {
   text-transform: uppercase;
 }
 .lab-row .lab-eq {
-  font-family: 'Fraunces', serif;
+  font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
   font-style: italic;
-  font-weight: 300;
-  font-size: 30px;
-  letter-spacing: -.01em;
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: .005em;
   color: var(--accent);
+  line-height: 1.3;
 }
-.lab-row .lab-eq sub, .lab-row .lab-eq sup { font-size: .55em; font-style: italic; }
+.lab-row .lab-eq sub, .lab-row .lab-eq sup { font-size: .6em; line-height: 0; }
+.lab-row .lab-eq sub { vertical-align: -.32em; }
+.lab-row .lab-eq sup { vertical-align:  .5em; }
 .lab-row .lab-name {
   font-size: 15px;
   color: var(--text);
@@ -1585,7 +1592,7 @@ nav.top .links a.active { color: var(--accent); }
   font-size: 15px;
 }
 .related-lab-link .rl-eq {
-  font-family: 'Fraunces', serif;
+  font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
   font-style: italic;
   color: var(--accent);
   font-size: 18px;
@@ -1745,29 +1752,39 @@ nav.top .links a.active { color: var(--accent); }
 .formula-block::after  { right: -8px; }
 
 .formula-content {
-  font-family: 'Fraunces', serif;
+  /* STIX Two Text — designed by AMS for math/scientific typography.
+     Italic by convention; operators that need upright can use .formula-op
+     or the <var> tag (CSS resets to normal style). */
+  font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
   font-style: italic;
-  font-weight: 300;
-  font-size: 30px;
-  line-height: 1.4;
-  letter-spacing: -.005em;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.55;
+  letter-spacing: .005em;
   color: var(--text);
-  /* Better sub/sup baseline so Fraunces italics don't collide */
   font-feature-settings: "ss01", "lnum";
 }
 .formula-content sub,
 .formula-content sup {
-  font-size: 0.55em;
+  font-size: 0.62em;
   font-style: italic;
   line-height: 0;
   position: relative;
+  letter-spacing: 0;
 }
-.formula-content sub { vertical-align: -0.4em; }
+.formula-content sub { vertical-align: -0.32em; }
 .formula-content sup { vertical-align:  0.55em; }
 
 .formula-content .formula-var {
   color: var(--accent);
   font-style: italic;
+}
+
+/* Operators / numerals / units that should stay upright in formulas */
+.formula-content .formula-op,
+.formula-content var,
+.formula-content .upright {
+  font-style: normal;
 }
 
 .formula-caption {
@@ -1786,12 +1803,14 @@ nav.top .links a.active { color: var(--accent); }
 
 /* Compact inline math — inside paragraphs / FAQ answers */
 .formula-inline {
-  font-family: 'Fraunces', serif;
+  font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
   font-style: italic;
   font-size: 1.05em;
   color: var(--text);
   white-space: nowrap;
+  font-feature-settings: "lnum";
 }
+.formula-inline var, .formula-inline .upright { font-style: normal; }
 .formula-inline sub, .formula-inline sup {
   font-size: 0.65em;
   line-height: 0;
