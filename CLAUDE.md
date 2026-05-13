@@ -7,11 +7,12 @@
 
 ## 0. TL;DR
 
-An interactive electromagnetism textbook. **Eleven chapters** of narrative
-prose with embedded interactive demos, plus **sixteen equation labs** in an
-appendix. Built on React + Vite + TypeScript + TanStack Router. The site's
-core promise: **every numerical or historical claim is cited to a real
-primary source. No AI hallucinations.**
+An interactive electromagnetism textbook. **Twenty-six chapters** of narrative
+prose with embedded interactive demos (now 100+), plus **sixteen equation labs**
+in an appendix (each restructured to Context / Formula / Intuition / Reasoning /
+Derivation / 10+ worked problems with hidden solutions). Built on React + Vite +
+TypeScript + TanStack Router. The site's core promise: **every numerical or
+historical claim is cited to a real primary source. No AI hallucinations.**
 
 ```
 npm install
@@ -27,9 +28,12 @@ npm run typecheck
 The book opens with a thesis: *most people learn electricity through a
 broken metaphor — water in a pipe — and the real story is stranger and more
 beautiful*. The narrative builds from charge and field (Ch.1) through
-voltage and current (Ch.2) up to the Poynting capstone (Ch.6: "energy flows
+voltage and current (Ch.2) up to the Poynting capstone (Ch.8: "energy flows
 through the field, not the wire") and onward through EM waves, Maxwell's
-synthesis, special relativity, circuits, and materials.
+synthesis, special relativity, circuit theory, network analysis, semiconductors,
+Fourier analysis, filters/op-amps, materials, optics, antennas, motors,
+generators, magnetically coupled circuits, transformers, rectifiers/inverters,
+and batteries.
 
 Audience: a technical reader who wants the real picture. Senior-engineer or
 physics-curious. Comfortable with vector calculus, real numbers, and the
@@ -92,8 +96,8 @@ field-theory/
     │   └── reference.tsx              ← /reference   — equation lab TOC (appendix)
     ├── textbook/
     │   ├── data/chapters.ts        ← chapter manifest (single source of truth)
-    │   ├── Ch1WhatIsElectricity.tsx ... Ch11Materials.tsx   (11 chapter files)
-    │   └── demos/                  ← 53+ small embedded demo components
+    │   ├── Ch1WhatIsElectricity.tsx ... Ch26ModernBatteries.tsx (26 chapter files)
+    │   └── demos/                  ← 100+ small embedded demo components
     ├── labs/
     │   ├── data/manifest.ts        ← equation-lab manifest
     │   └── CoulombLab.tsx ... PoyntingLab.tsx               (16 lab files)
@@ -102,7 +106,7 @@ field-theory/
     │   ├── LabShell.tsx            ← lab page layout
     │   ├── LabLayout.tsx           ← LabGrid, Panel, LegendItem
     │   ├── Hero.tsx                ← equation-lab hero block
-    │   ├── TopNav.tsx              ← sticky nav (11 chapter pills + Labs)
+    │   ├── TopNav.tsx              ← sticky nav (26 chapter pills + Labs)
     │   ├── PageNav.tsx             ← prev/next at end of every lab
     │   ├── Demo.tsx                ← embedded demo card (chapters)
     │   │                             also exports DemoControls, MiniSlider,
@@ -125,6 +129,41 @@ field-theory/
     │   └── useAnimationFrame.ts
     └── styles/main.css             ← all design tokens + components
 ```
+
+### Chapter map (current numbering, 26 chapters)
+
+| # | Slug | Title |
+|---|---|---|
+| 1 | `what-is-electricity` | Charge and field |
+| 2 | `voltage-and-current` | Voltage and current |
+| 3 | `resistance-and-power` | Resistance and power |
+| 4 | `how-a-resistor-works` | How a resistor works |
+| 5 | `capacitors` | Capacitors |
+| 6 | `magnetism` | Magnetism |
+| 7 | `induction` | Induction |
+| 8 | `energy-flow` | Where the energy actually flows (Poynting capstone) |
+| 9 | `em-waves` | Electromagnetic waves |
+| 10 | `maxwell` | Maxwell's synthesis |
+| 11 | `relativity` | Relativity and EM |
+| 12 | `circuits-and-ac` | Circuits, AC, and impedance |
+| 13 | `network-analysis` | Network analysis methods (mesh, nodal, Norton, Y-Δ, max-power) |
+| 14 | `semiconductors` | Semiconductors and transistors |
+| 15 | `fourier-harmonics` | Fourier and harmonic analysis |
+| 16 | `filters-op-amps-tlines` | Filters, op-amps, and transmission lines |
+| 17 | `materials` | Materials (ε, μ, polarization, magnetic domains) |
+| 18 | `optics` | Optics from EM |
+| 19 | `antennas` | Antennas and radiation |
+| 20 | `motors` | Motors |
+| 21 | `generators` | Generators and the grid |
+| 22 | `magnetically-coupled-circuits` | Magnetically coupled circuits |
+| 23 | `transformers` | Transformers |
+| 24 | `rectifiers-and-inverters` | Rectifiers and inverters |
+| 25 | `batteries` | How a battery works |
+| 26 | `modern-batteries` | Modern batteries (Li-ion, solid-state, flow) |
+
+Renumbers happen periodically as new chapters slot in. The **slug** is the
+stable URL; the chapter number can shift. Always look up by slug in
+`src/textbook/data/chapters.ts`, never hardcode the integer.
 
 ---
 

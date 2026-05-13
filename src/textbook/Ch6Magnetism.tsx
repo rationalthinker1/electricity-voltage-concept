@@ -133,6 +133,16 @@ export default function Ch6Magnetism() {
         That definition is what the <strong>μ₀ = 4π × 10⁻⁷</strong> exact value used to be; the 2019 SI redefinition
         based the ampere instead on the elementary charge <strong>e</strong>, demoting μ₀ to a measured quantity.
       </p>
+      <p>
+        The product structure is not mysterious — it's just <strong>F = IL × B</strong> applied twice. Each wire sits in the
+        field produced by the other: wire 2 feels its partner's field <strong>B₁ = μ₀ I₁ / (2π d)</strong> (the 1/r law from
+        the previous section), and the magnetic force on a length <strong>L</strong> of current <strong>I₂</strong> in that
+        field is <strong>F = I₂ L B₁</strong>. Substitute and divide by L to get the force per unit length. The
+        <strong> 1/d</strong> falloff is the same cylindrical geometry as a single wire; the <strong>I₁ I₂</strong> on top is
+        one factor of current for the source field and one for the responding wire. Reverse either current and the cross-product
+        sign flips, which is why same-sign currents attract while opposite-sign currents repel — opposite of charges, same
+        underlying right-hand rule<Cite id="ampere-1826" in={SOURCES} />.
+      </p>
 
       <TwoParallelWiresDemo />
 
