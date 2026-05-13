@@ -16,6 +16,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
+import { drawGlowPath } from '@/lib/canvasPrimitives';
 
 type WaveKind = 'square' | 'sine' | 'triangle';
 
@@ -128,18 +129,16 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       ctx.stroke();
 
       // V_out (orange)
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-      ctx.shadowColor = 'rgba(255,107,42,0.45)';
-      ctx.shadowBlur = 4;
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
+      const voutPts: { x: number; y: number }[] = [];
       for (let i = 0; i <= N; i++) {
-        const x = plotX + (i / N) * plotW;
-        const y = yV(samplesOut[i]);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        voutPts.push({ x: plotX + (i / N) * plotW, y: yV(samplesOut[i]) });
       }
-      ctx.stroke();
-      ctx.shadowBlur = 0;
+      drawGlowPath(ctx, voutPts, {
+        color: 'rgba(255,107,42,0.95)',
+        lineWidth: 1.8,
+        glowColor: 'rgba(255,107,42,0.35)',
+        glowWidth: 5,
+      });
 
       // Y labels
       ctx.fillStyle = 'rgba(160,158,149,0.85)';

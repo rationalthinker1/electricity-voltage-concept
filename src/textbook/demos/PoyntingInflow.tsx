@@ -17,6 +17,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 
@@ -158,17 +159,14 @@ export function PoyntingInflowDemo({ figure }: Props) {
       ctx.beginPath(); ctx.ellipse(g.wireXR, g.wireCY, er, r, 0, 0, Math.PI * 2); ctx.stroke();
 
       // Surface glow
-      ctx.shadowColor = 'rgba(255,107,42,0.45)';
-      ctx.shadowBlur = 16;
-      ctx.strokeStyle = 'rgba(255,107,42,0.4)';
-      ctx.lineWidth = 0.5;
-      ctx.beginPath();
-      ctx.moveTo(g.wireXL, g.wireCY - r);
-      ctx.lineTo(g.wireXR, g.wireCY - r);
-      ctx.moveTo(g.wireXL, g.wireCY + r);
-      ctx.lineTo(g.wireXR, g.wireCY + r);
-      ctx.stroke();
-      ctx.shadowBlur = 0;
+      drawGlowPath(ctx,
+        [{ x: g.wireXL, y: g.wireCY - r }, { x: g.wireXR, y: g.wireCY - r }],
+        { color: 'rgba(255,107,42,0.4)', lineWidth: 0.5,
+          glowColor: 'rgba(255,107,42,0.35)', glowWidth: 10 });
+      drawGlowPath(ctx,
+        [{ x: g.wireXL, y: g.wireCY + r }, { x: g.wireXR, y: g.wireCY + r }],
+        { color: 'rgba(255,107,42,0.4)', lineWidth: 0.5,
+          glowColor: 'rgba(255,107,42,0.35)', glowWidth: 10 });
 
       // E axial arrows
       const nE = 5;

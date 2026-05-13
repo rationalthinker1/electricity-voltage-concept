@@ -18,9 +18,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
+import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
+
+interface StaticCacheEntry { key: string; canvas: HTMLCanvasElement }
 
 export function TheveninEquivalentDemo({ figure }: Props) {
   const [Vs, setVs] = useState(12);          // V
@@ -42,8 +44,10 @@ export function TheveninEquivalentDemo({ figure }: Props) {
     stateRef.current = { Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload };
   }, [Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload]);
 
+  const cacheRef = useRef<StaticCacheEntry | null>(null);
+
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, dpr } = info;
     let raf = 0;
 
     function draw() {
@@ -54,23 +58,40 @@ export function TheveninEquivalentDemo({ figure }: Props) {
 
       const splitX = w / 2;
 
-      // Divider
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
-      ctx.beginPath(); ctx.moveTo(splitX, 14); ctx.lineTo(splitX, h - 14); ctx.stroke();
+      // Cache key: invalidates on resize/DPR or any slider movement
+      // (all parameters feed component labels or load-readout text).
+      const cacheKey =
+        `${w}x${h}@${dpr}|${st.Vs.toFixed(3)}|${st.R1.toFixed(2)}|${st.R2.toFixed(2)}` +
+        `|${st.Is.toFixed(6)}|${st.RL.toFixed(2)}|${st.Vth.toFixed(4)}|${st.Rth.toFixed(4)}` +
+        `|${st.Vload.toFixed(4)}|${st.Iload.toFixed(6)}`;
+      if (cacheRef.current?.key !== cacheKey) {
+        const elements: CircuitElement[] = [
+          ...buildOriginalElements(0, 22, splitX, h - 22, st),
+          ...buildTheveninElements(splitX, 22, splitX, h - 22, st),
+        ];
+        const off = renderCircuitToCanvas({ elements }, w, h, dpr);
+        const offCtx = off.getContext('2d');
+        if (offCtx) {
+          // Panel titles, dividing line, and load-side V_L/I_L readouts —
+          // all functions of (w,h,sliders) so they belong in the cache.
+          offCtx.strokeStyle = 'rgba(255,255,255,0.10)';
+          offCtx.beginPath();
+          offCtx.moveTo(splitX, 14); offCtx.lineTo(splitX, h - 14); offCtx.stroke();
 
-      // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('Original network', splitX / 2, 6);
-      ctx.fillText('Thévenin equivalent', splitX + splitX / 2, 6);
+          offCtx.fillStyle = 'rgba(160,158,149,0.85)';
+          offCtx.font = '10px "JetBrains Mono", monospace';
+          offCtx.textAlign = 'center';
+          offCtx.textBaseline = 'top';
+          offCtx.fillText('Original network', splitX / 2, 6);
+          offCtx.fillText('Thévenin equivalent', splitX + splitX / 2, 6);
 
-      // ── LEFT: Original network ──────────────────────────────
-      drawOriginal(ctx, 0, 22, splitX, h - 22, st);
-
-      // ── RIGHT: Thévenin equivalent ──────────────────────────
-      drawThevenin(ctx, splitX, 22, splitX, h - 22, st);
+          drawLoadReadouts(offCtx, 0, 22, splitX, h - 22, st);
+          drawLoadReadouts(offCtx, splitX, 22, splitX, h - 22, st);
+        }
+        cacheRef.current = { key: cacheKey, canvas: off };
+      }
+      // Single blit replaces ~30 strokes/fills per frame.
+      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
 
       raf = requestAnimationFrame(draw);
     }
@@ -117,10 +138,9 @@ interface ST {
   Vth: number; Rth: number; Vload: number; Iload: number;
 }
 
-function drawOriginal(
-  ctx: CanvasRenderingContext2D,
+function buildOriginalElements(
   x0: number, y0: number, w: number, h: number, st: ST,
-) {
+): CircuitElement[] {
   const cy = y0 + h / 2;
   const xBat = x0 + 40;
   const xR1 = x0 + w * 0.40;
@@ -132,7 +152,7 @@ function drawOriginal(
   const xIs = x0 + w * 0.78;
 
   // Two-source network: V_s + R_1 series, R_2 shunt, I_s parallel, R_L load.
-  const elements: CircuitElement[] = [
+  return [
     { kind: 'wire', points: [{ x: xBat, y: yTop }, { x: xR1 - 22, y: yTop }] },
     { kind: 'resistor', from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
       color: '#ff6b2a', label: `R₁ ${fmtR(st.R1)}`, labelOffset: { x: 0, y: -10 } },
@@ -153,22 +173,11 @@ function drawOriginal(
     { kind: 'wire', points: [{ x: xLoad, y: yTop }, { x: xLoad, y: cy - 18 }] },
     { kind: 'wire', points: [{ x: xLoad, y: cy + 18 }, { x: xLoad, y: yBot }] },
   ];
-  drawCircuit(ctx, { elements });
-
-  // Readout near the load
-  ctx.fillStyle = 'rgba(108,197,194,0.95)';
-  ctx.font = 'bold 10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(`V_L = ${st.Vload.toFixed(2)} V`, xLoad + 12, cy - 8);
-  ctx.fillStyle = 'rgba(91,174,248,0.95)';
-  ctx.fillText(`I_L = ${(st.Iload * 1000).toFixed(1)} mA`, xLoad + 12, cy + 8);
 }
 
-function drawThevenin(
-  ctx: CanvasRenderingContext2D,
+function buildTheveninElements(
   x0: number, y0: number, w: number, h: number, st: ST,
-) {
+): CircuitElement[] {
   const cy = y0 + h / 2;
   const xBat = x0 + 50;
   const xR = x0 + w * 0.45;
@@ -177,7 +186,7 @@ function drawThevenin(
   const yBot = cy + 50;
 
   // Thévenin: single V_th in series with R_th feeding R_L.
-  const elements: CircuitElement[] = [
+  return [
     { kind: 'wire', points: [{ x: xBat, y: yTop }, { x: xR - 22, y: yTop }] },
     { kind: 'resistor', from: { x: xR - 20, y: yTop }, to: { x: xR + 20, y: yTop },
       color: '#ff6b2a', label: `R_th ${fmtR(st.Rth)}`, labelOffset: { x: 0, y: -10 } },
@@ -190,8 +199,14 @@ function drawThevenin(
     { kind: 'wire', points: [{ x: xLoad, y: yTop }, { x: xLoad, y: cy - 18 }] },
     { kind: 'wire', points: [{ x: xLoad, y: cy + 18 }, { x: xLoad, y: yBot }] },
   ];
-  drawCircuit(ctx, { elements });
+}
 
+function drawLoadReadouts(
+  ctx: CanvasRenderingContext2D,
+  x0: number, y0: number, w: number, h: number, st: ST,
+) {
+  const cy = y0 + h / 2;
+  const xLoad = x0 + w - 40;
   ctx.fillStyle = 'rgba(108,197,194,0.95)';
   ctx.font = 'bold 10px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';

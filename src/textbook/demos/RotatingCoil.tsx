@@ -10,6 +10,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 import { pretty } from '@/lib/physics';
 
@@ -178,19 +179,20 @@ export function RotatingCoilDemo({ figure }: Props) {
 
       // trace
       if (scope.length > 2) {
-        ctx.strokeStyle = 'rgba(255,59,110,0.95)';
-        ctx.shadowColor = 'rgba(255,59,110,0.5)';
-        ctx.shadowBlur = 6;
-        ctx.lineWidth = 1.6;
-        ctx.beginPath();
+        const tracePts: { x: number; y: number }[] = [];
         for (let i = 0; i < scope.length; i++) {
           const s = scope[i];
-          const x = scopeX + ((s.t - tCut) / SCOPE_DURATION) * scopeW;
-          const y = scopeCy - (s.emf / yScale) * (scopeH / 2) * 0.9;
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          tracePts.push({
+            x: scopeX + ((s.t - tCut) / SCOPE_DURATION) * scopeW,
+            y: scopeCy - (s.emf / yScale) * (scopeH / 2) * 0.9,
+          });
         }
-        ctx.stroke();
-        ctx.shadowBlur = 0;
+        drawGlowPath(ctx, tracePts, {
+          color: 'rgba(255,59,110,0.95)',
+          lineWidth: 1.6,
+          glowColor: 'rgba(255,59,110,0.4)',
+          glowWidth: 6,
+        });
       }
 
       ctx.fillStyle = 'rgba(160,158,149,0.75)';

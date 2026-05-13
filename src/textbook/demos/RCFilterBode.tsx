@@ -14,6 +14,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
+import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 
 interface Props { figure?: string }
@@ -115,11 +116,7 @@ export function RCFilterBodeDemo({ figure }: Props) {
 
       // Magnitude curve
       const N = 220;
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-      ctx.shadowColor = 'rgba(255,107,42,0.5)';
-      ctx.shadowBlur = 6;
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
+      const magPts: { x: number; y: number }[] = [];
       for (let i = 0; i <= N; i++) {
         const u = i / N;
         const lf = logMin + u * (logMax - logMin);
@@ -129,19 +126,20 @@ export function RCFilterBodeDemo({ figure }: Props) {
           ? 1 / Math.sqrt(1 + r * r)
           : r / Math.sqrt(1 + r * r);
         const dB = 20 * Math.log10(Math.max(Hmag, 1e-6));
-        const x = plotX + u * plotW;
-        const y = yMag(Math.max(dBmin, Math.min(dBmax, dB)));
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        magPts.push({
+          x: plotX + u * plotW,
+          y: yMag(Math.max(dBmin, Math.min(dBmax, dB))),
+        });
       }
-      ctx.stroke();
-      ctx.shadowBlur = 0;
+      drawGlowPath(ctx, magPts, {
+        color: 'rgba(255,107,42,0.95)',
+        lineWidth: 1.8,
+        glowColor: 'rgba(255,107,42,0.4)',
+        glowWidth: 7,
+      });
 
       // Phase curve
-      ctx.strokeStyle = 'rgba(108,197,194,0.95)';
-      ctx.shadowColor = 'rgba(108,197,194,0.45)';
-      ctx.shadowBlur = 4;
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
+      const phPts: { x: number; y: number }[] = [];
       for (let i = 0; i <= N; i++) {
         const u = i / N;
         const lf = logMin + u * (logMax - logMin);
@@ -151,12 +149,14 @@ export function RCFilterBodeDemo({ figure }: Props) {
         const phaseDeg = mode === 'low'
           ? -Math.atan(r) * 180 / Math.PI
           : (Math.PI / 2 - Math.atan(r)) * 180 / Math.PI;
-        const x = plotX + u * plotW;
-        const y = yPh(phaseDeg);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        phPts.push({ x: plotX + u * plotW, y: yPh(phaseDeg) });
       }
-      ctx.stroke();
-      ctx.shadowBlur = 0;
+      drawGlowPath(ctx, phPts, {
+        color: 'rgba(108,197,194,0.95)',
+        lineWidth: 1.6,
+        glowColor: 'rgba(108,197,194,0.35)',
+        glowWidth: 5,
+      });
 
       // Y-axis labels
       ctx.fillStyle = 'rgba(160,158,149,0.85)';

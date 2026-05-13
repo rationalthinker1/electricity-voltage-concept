@@ -20,6 +20,7 @@ import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
 import { Formula } from '@/components/Formula';
+import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS, pretty } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
@@ -177,17 +178,14 @@ export default function PoyntingLab() {
       ctx.stroke();
 
       // Surface glow (energy absorbed)
-      ctx.shadowColor = 'rgba(255,107,42,0.45)';
-      ctx.shadowBlur = 18;
-      ctx.strokeStyle = 'rgba(255,107,42,0.4)';
-      ctx.lineWidth = 0.5;
-      ctx.beginPath();
-      ctx.moveTo(g.wireXL, g.wireCY - r);
-      ctx.lineTo(g.wireXR, g.wireCY - r);
-      ctx.moveTo(g.wireXL, g.wireCY + r);
-      ctx.lineTo(g.wireXR, g.wireCY + r);
-      ctx.stroke();
-      ctx.shadowBlur = 0;
+      drawGlowPath(ctx,
+        [{ x: g.wireXL, y: g.wireCY - r }, { x: g.wireXR, y: g.wireCY - r }],
+        { color: 'rgba(255,107,42,0.4)', lineWidth: 0.5,
+          glowColor: 'rgba(255,107,42,0.35)', glowWidth: 12 });
+      drawGlowPath(ctx,
+        [{ x: g.wireXL, y: g.wireCY + r }, { x: g.wireXR, y: g.wireCY + r }],
+        { color: 'rgba(255,107,42,0.4)', lineWidth: 0.5,
+          glowColor: 'rgba(255,107,42,0.35)', glowWidth: 12 });
 
       // E field arrows (axial)
       const nE = 5;

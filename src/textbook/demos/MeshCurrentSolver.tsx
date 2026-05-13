@@ -29,9 +29,11 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
+import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
+
+interface StaticCacheEntry { key: string; canvas: HTMLCanvasElement }
 
 function solveMesh(V1: number, V2: number, R1: number, R2: number, R3: number) {
   const a11 = R1 + R2;
@@ -67,8 +69,10 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
     };
   }, [V1, V2, R1, R2, R3, sol.I1, sol.I2, sol.I_R1, sol.I_R2, sol.I_R3]);
 
+  const cacheRef = useRef<StaticCacheEntry | null>(null);
+
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, dpr } = info;
     let raf = 0;
 
     function draw() {
@@ -86,63 +90,48 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
       const xRight = w - padX;
       const xMid = (xLeft + xRight) / 2;
 
-      const xR1 = (xLeft + xMid) / 2;
-      const xR3 = (xMid + xRight) / 2;
+      // Cache key: invalidates on resize/DPR change or any slider movement.
+      // Mesh-loop arrows are drawn live on top — they animate with t.
+      const cacheKey =
+        `${w}x${h}@${dpr}|${V1.toFixed(2)}|${V2.toFixed(2)}` +
+        `|${R1.toFixed(0)}|${R2.toFixed(0)}|${R3.toFixed(0)}` +
+        `|${sol.I_R2.toFixed(6)}`;
+      if (cacheRef.current?.key !== cacheKey) {
+        const elements = buildMeshSchematic(w, h, V1, V2, R1, R2, R3);
+        const off = renderCircuitToCanvas({ elements }, w, h, dpr);
+        const offCtx = off.getContext('2d');
+        if (offCtx) {
+          // Static text overlays: node labels, R₂ branch-current readout, caption.
+          offCtx.fillStyle = 'rgba(255,255,255,0.8)';
+          offCtx.font = 'bold 11px "JetBrains Mono", monospace';
+          offCtx.textAlign = 'left';
+          offCtx.textBaseline = 'bottom';
+          offCtx.fillText('A', xMid + 6, yTop - 4);
+          offCtx.textBaseline = 'top';
+          offCtx.fillText('B', xMid + 6, yBot + 6);
 
-      // Two-mesh network: V1 left, V2 right, R2 the shared middle branch.
-      const elements: CircuitElement[] = [
-        { kind: 'wire', points: [{ x: xLeft, y: yTop }, { x: xR1 - 22, y: yTop }] },
-        { kind: 'resistor', from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
-          label: `R1=${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
-        { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: xMid, y: yTop }] },
-        { kind: 'wire', points: [{ x: xMid, y: yTop }, { x: xR3 - 22, y: yTop }] },
-        { kind: 'resistor', from: { x: xR3 - 20, y: yTop }, to: { x: xR3 + 20, y: yTop },
-          label: `R3=${R3.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
-        { kind: 'wire', points: [{ x: xR3 + 22, y: yTop }, { x: xRight, y: yTop }] },
-        { kind: 'wire', points: [{ x: xLeft, y: yBot }, { x: xRight, y: yBot }] },
-        { kind: 'wire', points: [{ x: xLeft, y: yTop }, { x: xLeft, y: h / 2 - 22 }] },
-        { kind: 'wire', points: [{ x: xLeft, y: h / 2 + 22 }, { x: xLeft, y: yBot }] },
-        { kind: 'wire', points: [{ x: xRight, y: yTop }, { x: xRight, y: h / 2 - 22 }] },
-        { kind: 'wire', points: [{ x: xRight, y: h / 2 + 22 }, { x: xRight, y: yBot }] },
-        { kind: 'wire', points: [{ x: xMid, y: yTop }, { x: xMid, y: h / 2 - 22 }] },
-        { kind: 'wire', points: [{ x: xMid, y: h / 2 + 22 }, { x: xMid, y: yBot }] },
-        { kind: 'battery', at: { x: xLeft, y: h / 2 },
-          label: `V₁=${V1.toFixed(1)}V`, leadLength: 22 },
-        { kind: 'battery', at: { x: xRight, y: h / 2 },
-          label: `V₂=${V2.toFixed(1)}V`, leadLength: 22 },
-        { kind: 'resistor', from: { x: xMid, y: h / 2 - 20 }, to: { x: xMid, y: h / 2 + 20 },
-          label: `R2=${R2.toFixed(0)}Ω`, labelOffset: { x: -60, y: 0 } },
-      ];
-      drawCircuit(ctx, { elements });
+          offCtx.fillStyle = 'rgba(91,174,248,0.95)';
+          offCtx.font = '10px "JetBrains Mono", monospace';
+          offCtx.textAlign = 'left';
+          offCtx.textBaseline = 'middle';
+          offCtx.fillText(`I_R₂ = I₁ − I₂ = ${fmtA(sol.I_R2)}`, xMid + 14, h / 2);
 
-      // Mesh-current arrows: clockwise loops
+          offCtx.fillStyle = 'rgba(160,158,149,0.7)';
+          offCtx.font = '10px "JetBrains Mono", monospace';
+          offCtx.textAlign = 'left';
+          offCtx.textBaseline = 'top';
+          offCtx.fillText('Two clockwise mesh currents I₁, I₂', 12, 10);
+        }
+        cacheRef.current = { key: cacheKey, canvas: off };
+      }
+      // Blit cached schematic in one drawImage; live mesh-loop arrows on top.
+      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+
+      // Per-frame overlay: rotating arrowhead around each mesh-loop ellipse.
       drawMeshLoop(ctx, xLeft + 30, yTop + 18, xMid - 30, yBot - 18,
         'I₁', 'rgba(255,107,42,0.85)', sol.I1, t);
       drawMeshLoop(ctx, xMid + 30, yTop + 18, xRight - 30, yBot - 18,
         'I₂', 'rgba(108,197,194,0.85)', sol.I2, t);
-
-      // Node labels A, B
-      ctx.fillStyle = 'rgba(255,255,255,0.8)';
-      ctx.font = 'bold 11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('A', xMid + 6, yTop - 4);
-      ctx.textBaseline = 'top';
-      ctx.fillText('B', xMid + 6, yBot + 6);
-
-      // Branch current annotations
-      ctx.fillStyle = 'rgba(91,174,248,0.95)';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`I_R₂ = I₁ − I₂ = ${fmtA(sol.I_R2)}`, xMid + 14, h / 2);
-
-      // Top corner caption
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('Two clockwise mesh currents I₁, I₂', 12, 10);
 
       raf = requestAnimationFrame(draw);
     }
@@ -180,6 +169,45 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
       </DemoControls>
     </Demo>
   );
+}
+
+function buildMeshSchematic(
+  w: number, h: number,
+  V1: number, V2: number, R1: number, R2: number, R3: number,
+): CircuitElement[] {
+  const padX = 60;
+  const yTop = h / 2 - 70;
+  const yBot = h / 2 + 70;
+  const xLeft = padX;
+  const xRight = w - padX;
+  const xMid = (xLeft + xRight) / 2;
+  const xR1 = (xLeft + xMid) / 2;
+  const xR3 = (xMid + xRight) / 2;
+
+  // Two-mesh network: V1 left, V2 right, R2 the shared middle branch.
+  return [
+    { kind: 'wire', points: [{ x: xLeft, y: yTop }, { x: xR1 - 22, y: yTop }] },
+    { kind: 'resistor', from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
+      label: `R1=${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
+    { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: xMid, y: yTop }] },
+    { kind: 'wire', points: [{ x: xMid, y: yTop }, { x: xR3 - 22, y: yTop }] },
+    { kind: 'resistor', from: { x: xR3 - 20, y: yTop }, to: { x: xR3 + 20, y: yTop },
+      label: `R3=${R3.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
+    { kind: 'wire', points: [{ x: xR3 + 22, y: yTop }, { x: xRight, y: yTop }] },
+    { kind: 'wire', points: [{ x: xLeft, y: yBot }, { x: xRight, y: yBot }] },
+    { kind: 'wire', points: [{ x: xLeft, y: yTop }, { x: xLeft, y: h / 2 - 22 }] },
+    { kind: 'wire', points: [{ x: xLeft, y: h / 2 + 22 }, { x: xLeft, y: yBot }] },
+    { kind: 'wire', points: [{ x: xRight, y: yTop }, { x: xRight, y: h / 2 - 22 }] },
+    { kind: 'wire', points: [{ x: xRight, y: h / 2 + 22 }, { x: xRight, y: yBot }] },
+    { kind: 'wire', points: [{ x: xMid, y: yTop }, { x: xMid, y: h / 2 - 22 }] },
+    { kind: 'wire', points: [{ x: xMid, y: h / 2 + 22 }, { x: xMid, y: yBot }] },
+    { kind: 'battery', at: { x: xLeft, y: h / 2 },
+      label: `V₁=${V1.toFixed(1)}V`, leadLength: 22 },
+    { kind: 'battery', at: { x: xRight, y: h / 2 },
+      label: `V₂=${V2.toFixed(1)}V`, leadLength: 22 },
+    { kind: 'resistor', from: { x: xMid, y: h / 2 - 20 }, to: { x: xMid, y: h / 2 + 20 },
+      label: `R2=${R2.toFixed(0)}Ω`, labelOffset: { x: -60, y: 0 } },
+  ];
 }
 
 function fmtA(I: number): string {

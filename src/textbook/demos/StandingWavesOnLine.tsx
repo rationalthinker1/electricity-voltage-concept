@@ -14,6 +14,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 
 interface Props { figure?: string }
@@ -71,11 +72,7 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
       // Load is at x = wavelengths, so β x = 2π x.
       const N = 400;
       // Instantaneous V(x,t) trace — sine that "stands" with moving phase
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-      ctx.shadowColor = 'rgba(255,107,42,0.4)';
-      ctx.shadowBlur = 4;
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
+      const vPts: { x: number; y: number }[] = [];
       for (let i = 0; i <= N; i++) {
         const u = i / N;
         const x = u * wavelengths;
@@ -87,12 +84,14 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
         const v = Math.cos(phase - 2 * Math.PI * x)
                 + Gamma * Math.cos(phase + 2 * Math.PI * x);
         void d;
-        const X = plotX + u * plotW;
-        const Y = yV(v);
-        if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y);
+        vPts.push({ x: plotX + u * plotW, y: yV(v) });
       }
-      ctx.stroke();
-      ctx.shadowBlur = 0;
+      drawGlowPath(ctx, vPts, {
+        color: 'rgba(255,107,42,0.95)',
+        lineWidth: 1.6,
+        glowColor: 'rgba(255,107,42,0.35)',
+        glowWidth: 5,
+      });
 
       // Envelope ±|V(x)|
       ctx.strokeStyle = 'rgba(108,197,194,0.75)';

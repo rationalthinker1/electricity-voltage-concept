@@ -9,6 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls } from '@/components/Demo';
+import { drawGlowPath } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -165,24 +166,24 @@ export function LeydenJarReplayDemo({ figure }: Props) {
         const age = (performance.now() - s.sparkT) / 600;
         if (age < 1) {
           const alpha = 1 - age;
-          ctx.strokeStyle = `rgba(255,255,200,${alpha})`;
-          ctx.shadowColor = 'rgba(255,200,80,0.9)';
-          ctx.shadowBlur = 14;
-          ctx.lineWidth = 2.5;
           // Zigzag from (cx + 11, yT - 64) to (px - 50, py - 70)
-          let lx = cx + 11, ly = yT - 64;
+          const lx = cx + 11, ly = yT - 64;
           const tx = px - 50, ty = py - 70;
-          ctx.beginPath();
-          ctx.moveTo(lx, ly);
+          const sparkPts: { x: number; y: number }[] = [{ x: lx, y: ly }];
           for (let k = 1; k <= 8; k++) {
             const fr = k / 8;
-            const x = lx + (tx - lx) * fr + (Math.random() - 0.5) * 14;
-            const y = ly + (ty - ly) * fr + (Math.random() - 0.5) * 10;
-            ctx.lineTo(x, y);
+            sparkPts.push({
+              x: lx + (tx - lx) * fr + (Math.random() - 0.5) * 14,
+              y: ly + (ty - ly) * fr + (Math.random() - 0.5) * 10,
+            });
           }
-          ctx.lineTo(tx, ty);
-          ctx.stroke();
-          ctx.shadowBlur = 0;
+          sparkPts.push({ x: tx, y: ty });
+          drawGlowPath(ctx, sparkPts, {
+            color: `rgba(255,255,200,${alpha})`,
+            lineWidth: 2.5,
+            glowColor: `rgba(255,200,80,${0.6 * alpha})`,
+            glowWidth: 9,
+          });
         }
       }
 

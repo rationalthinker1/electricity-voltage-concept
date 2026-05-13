@@ -12,6 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawGlowPath } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -89,11 +90,7 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       }
       ctx.stroke();
       // V_out (orange), with rail clipping
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-      ctx.shadowColor = 'rgba(255,107,42,0.45)';
-      ctx.shadowBlur = 4;
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
+      const voutPts: { x: number; y: number }[] = [];
       for (let i = 0; i <= N; i++) {
         const u = i / N;
         const t = u * 2 / freq;
@@ -101,12 +98,14 @@ export function OpAmpInvertingDemo({ figure }: Props) {
         let vout = gain * vin;
         if (vout > V_SUP) vout = V_SUP;
         else if (vout < -V_SUP) vout = -V_SUP;
-        const x = plotX + u * plotW;
-        const y = yV(vout);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        voutPts.push({ x: plotX + u * plotW, y: yV(vout) });
       }
-      ctx.stroke();
-      ctx.shadowBlur = 0;
+      drawGlowPath(ctx, voutPts, {
+        color: 'rgba(255,107,42,0.95)',
+        lineWidth: 1.8,
+        glowColor: 'rgba(255,107,42,0.35)',
+        glowWidth: 5,
+      });
 
       // Y axis labels
       ctx.fillStyle = 'rgba(160,158,149,0.85)';

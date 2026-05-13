@@ -19,6 +19,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 
 interface Props { figure?: string }
@@ -112,11 +113,7 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       // Magnitude and phase curves
       const N = 280;
       // Magnitude
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-      ctx.shadowColor = 'rgba(255,107,42,0.5)';
-      ctx.shadowBlur = 6;
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
+      const magPts: { x: number; y: number }[] = [];
       for (let i = 0; i <= N; i++) {
         const u = i / N;
         const lf = logMin + u * (logMax - logMin);
@@ -127,12 +124,17 @@ export function SallenKeyFilterDemo({ figure }: Props) {
         const im = r * (3 - K);
         const mag = K / Math.sqrt(re * re + im * im);
         const dB = 20 * Math.log10(Math.max(mag, 1e-6));
-        const x = plotX + u * plotW;
-        const y = yMag(Math.max(dBmin, Math.min(dBmax, dB)));
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        magPts.push({
+          x: plotX + u * plotW,
+          y: yMag(Math.max(dBmin, Math.min(dBmax, dB))),
+        });
       }
-      ctx.stroke();
-      ctx.shadowBlur = 0;
+      drawGlowPath(ctx, magPts, {
+        color: 'rgba(255,107,42,0.95)',
+        lineWidth: 1.8,
+        glowColor: 'rgba(255,107,42,0.4)',
+        glowWidth: 7,
+      });
 
       // Reference passive RC (slope -20 dB/dec) for comparison
       ctx.strokeStyle = 'rgba(160,158,149,0.45)';
@@ -154,11 +156,7 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // Phase
-      ctx.strokeStyle = 'rgba(108,197,194,0.95)';
-      ctx.shadowColor = 'rgba(108,197,194,0.45)';
-      ctx.shadowBlur = 4;
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
+      const phPts: { x: number; y: number }[] = [];
       let lastPhase = 0;
       for (let i = 0; i <= N; i++) {
         const u = i / N;
@@ -173,12 +171,17 @@ export function SallenKeyFilterDemo({ figure }: Props) {
         while (ph - lastPhase > 90) ph -= 360;
         while (lastPhase - ph > 90) ph += 360;
         lastPhase = ph;
-        const x = plotX + u * plotW;
-        const y = yPh(Math.max(phMin, Math.min(phMax, ph)));
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        phPts.push({
+          x: plotX + u * plotW,
+          y: yPh(Math.max(phMin, Math.min(phMax, ph))),
+        });
       }
-      ctx.stroke();
-      ctx.shadowBlur = 0;
+      drawGlowPath(ctx, phPts, {
+        color: 'rgba(108,197,194,0.95)',
+        lineWidth: 1.6,
+        glowColor: 'rgba(108,197,194,0.35)',
+        glowWidth: 5,
+      });
 
       // Axis labels
       ctx.fillStyle = 'rgba(160,158,149,0.85)';

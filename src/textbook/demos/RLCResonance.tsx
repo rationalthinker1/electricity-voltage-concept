@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 
 interface Props { figure?: string }
@@ -95,11 +96,7 @@ export function RLCResonanceDemo({ figure }: Props) {
 
       // The |I| curve
       const N = 250;
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-      ctx.shadowColor = 'rgba(255,107,42,0.5)';
-      ctx.shadowBlur = 6;
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
+      const curvePts: { x: number; y: number }[] = [];
       for (let i = 0; i <= N; i++) {
         const u = i / N;
         const lf = logMin + u * (logMax - logMin);
@@ -108,12 +105,17 @@ export function RLCResonanceDemo({ figure }: Props) {
         const X = om * L - 1 / (om * C);
         const Zmag = Math.sqrt(R * R + X * X);
         const I = V0 / Zmag;
-        const x = plotX + u * plotW;
-        const y = plotY + plotH - (I / Imax) * plotH * 0.95;
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        curvePts.push({
+          x: plotX + u * plotW,
+          y: plotY + plotH - (I / Imax) * plotH * 0.95,
+        });
       }
-      ctx.stroke();
-      ctx.shadowBlur = 0;
+      drawGlowPath(ctx, curvePts, {
+        color: 'rgba(255,107,42,0.95)',
+        lineWidth: 1.8,
+        glowColor: 'rgba(255,107,42,0.4)',
+        glowWidth: 7,
+      });
 
       // Half-power band (|I|² half) — at I = Imax/√2 ≈ 0.707 Imax
       const yHalf = plotY + plotH - 0.707 * plotH * 0.95;

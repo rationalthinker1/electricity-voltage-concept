@@ -31,9 +31,11 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
+import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
+
+interface StaticCacheEntry { key: string; canvas: HTMLCanvasElement }
 
 export function NortonTheveninDemo({ figure }: Props) {
   const [Vs, setVs] = useState(12);
@@ -56,8 +58,10 @@ export function NortonTheveninDemo({ figure }: Props) {
     stateRef.current = { V_oc, R_Th, I_N, RL };
   }, [V_oc, R_Th, I_N, RL]);
 
+  const cacheRef = useRef<StaticCacheEntry | null>(null);
+
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, dpr } = info;
     let raf = 0;
 
     function draw() {
@@ -66,12 +70,34 @@ export function NortonTheveninDemo({ figure }: Props) {
       ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
-      // Three panels: original, Thévenin, Norton
-      const colW = w / 3;
-      drawOriginal(ctx, 0, 0, colW, h);
-      drawThev(ctx, colW, 0, colW, h, V_oc, R_Th, RL);
-      drawNort(ctx, 2 * colW, 0, colW, h, I_N, R_Th, RL);
+      // Cache key: invalidates on resize/DPR change or any slider movement
+      // (every parameter feeds either label text or panel geometry).
+      const cacheKey = `${w}x${h}@${dpr}|${V_oc.toFixed(4)}|${R_Th.toFixed(4)}|${I_N.toFixed(4)}|${RL.toFixed(4)}`;
+      if (cacheRef.current?.key !== cacheKey) {
+        const colW = w / 3;
+        const off = renderCircuitToCanvas(
+          { elements: buildAllPanels(w, h, colW, V_oc, R_Th, I_N, RL) },
+          w, h, dpr,
+        );
+        // Bake the panel titles into the cache alongside the schematic.
+        const offCtx = off.getContext('2d');
+        if (offCtx) {
+          offCtx.fillStyle = 'rgba(160,158,149,0.85)';
+          offCtx.font = '11px "JetBrains Mono", monospace';
+          offCtx.textAlign = 'center';
+          offCtx.textBaseline = 'top';
+          offCtx.fillText('Original network', colW / 2, 12);
+          offCtx.fillText('Thévenin equivalent + load', colW + colW / 2, 12);
+          offCtx.fillText('Norton equivalent + load', 2 * colW + colW / 2, 12);
+        }
+        cacheRef.current = { key: cacheKey, canvas: off };
+      }
+      // Blit the cached schematic in one drawImage call.
+      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
 
+      // Per-frame overlay: the panel-divider strokes and the ⇌ glyphs sit
+      // on top of the cached schematic so they're crisp at any zoom.
+      const colW = w / 3;
       ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.beginPath();
       ctx.moveTo(colW, 8); ctx.lineTo(colW, h - 8);
@@ -125,17 +151,45 @@ export function NortonTheveninDemo({ figure }: Props) {
   );
 }
 
-function drawOriginal(
-  ctx: CanvasRenderingContext2D, x0: number, y0: number, w: number, h: number,
-) {
-  ctx.save();
-  ctx.translate(x0, y0);
-  ctx.fillStyle = 'rgba(160,158,149,0.85)';
-  ctx.font = '11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText('Original network', w / 2, 12);
+function buildAllPanels(
+  w: number, h: number, colW: number,
+  Voc: number, RTh: number, IN: number, RL: number,
+): CircuitElement[] {
+  void w;
+  return [
+    ...buildOriginal(0, 0, colW, h),
+    ...buildThev(colW, 0, colW, h, Voc, RTh, RL),
+    ...buildNort(2 * colW, 0, colW, h, IN, RTh, RL),
+  ];
+}
 
+// Translate every element's coordinates by (x0, y0).
+function translateElements(els: CircuitElement[], x0: number, y0: number): CircuitElement[] {
+  const tp = (p: { x: number; y: number }) => ({ x: p.x + x0, y: p.y + y0 });
+  return els.map((el): CircuitElement => {
+    switch (el.kind) {
+      case 'wire': return { ...el, points: el.points.map(tp) };
+      case 'resistor':
+      case 'capacitor':
+      case 'inductor':
+      case 'arrow':
+        return { ...el, from: tp(el.from), to: tp(el.to) };
+      case 'battery':
+      case 'currentSource':
+      case 'switch':
+      case 'bulb':
+      case 'ground':
+      case 'node':
+      case 'voltmeter':
+      case 'charge':
+        return { ...el, at: tp(el.at) };
+    }
+  });
+}
+
+function buildOriginal(
+  x0: number, y0: number, w: number, h: number,
+): CircuitElement[] {
   const cy = h / 2;
   const xS = 26;
   const xR1 = 64;
@@ -163,27 +217,17 @@ function drawOriginal(
     { kind: 'node', at: { x: xA, y: yBot }, radius: 4, color: 'rgba(255,107,42,0.95)',
       label: 'B', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
   ];
-  drawCircuit(ctx, { elements });
-  ctx.restore();
+  return translateElements(elements, x0, y0);
 }
 
-function drawThev(
-  ctx: CanvasRenderingContext2D, x0: number, y0: number, w: number, h: number,
+function buildThev(
+  x0: number, y0: number, w: number, h: number,
   Voc: number, RTh: number, RL: number,
-) {
-  ctx.save();
-  ctx.translate(x0, y0);
-  ctx.fillStyle = 'rgba(160,158,149,0.85)';
-  ctx.font = '11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText('Thévenin equivalent + load', w / 2, 12);
-
+): CircuitElement[] {
   const cy = h / 2;
   const xS = 26;
   const xR = 70;
   const xA = w - 60;
-  const xL = w - 30;
   const yTop = cy - 50;
   const yBot = cy + 50;
 
@@ -204,24 +248,13 @@ function drawThev(
     { kind: 'node', at: { x: xA, y: yBot }, radius: 4, color: 'rgba(255,107,42,0.95)',
       label: 'B', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
   ];
-  drawCircuit(ctx, { elements });
-  // load-line marker
-  void xL;
-  ctx.restore();
+  return translateElements(elements, x0, y0);
 }
 
-function drawNort(
-  ctx: CanvasRenderingContext2D, x0: number, y0: number, w: number, h: number,
+function buildNort(
+  x0: number, y0: number, w: number, h: number,
   IN: number, RN: number, RL: number,
-) {
-  ctx.save();
-  ctx.translate(x0, y0);
-  ctx.fillStyle = 'rgba(160,158,149,0.85)';
-  ctx.font = '11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText('Norton equivalent + load', w / 2, 12);
-
+): CircuitElement[] {
   const cy = h / 2;
   const xS = 36;
   const xR = 84;
@@ -248,6 +281,5 @@ function drawNort(
     { kind: 'node', at: { x: xA, y: yBot }, radius: 4, color: 'rgba(255,107,42,0.95)',
       label: 'B', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
   ];
-  drawCircuit(ctx, { elements });
-  ctx.restore();
+  return translateElements(elements, x0, y0);
 }
