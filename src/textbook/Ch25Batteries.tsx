@@ -229,6 +229,16 @@ export default function Ch18Batteries() {
       </p>
       <Formula>V = V° − (RT / nF) · ln Q</Formula>
       <p>
+        where <strong>V</strong> is the open-circuit cell voltage at the actual operating conditions (in volts),
+        <strong> V°</strong> is the standard cell potential at 1 M concentrations, 1 atm, 298 K (in volts),
+        <strong> R</strong> is the universal gas constant 8.314 J/(mol·K),
+        <strong> T</strong> is the absolute temperature (in kelvins),
+        <strong> n</strong> is the number of electrons transferred per reaction event (dimensionless integer),
+        <strong> F</strong> is the Faraday constant ≈ 96 485 C/mol (the charge of one mole of electrons), and
+        <strong> Q</strong> is the dimensionless reaction quotient — the ratio of product activities to reactant
+        activities at the moment of measurement<Cite id="codata-2018" in={SOURCES} />.
+      </p>
+      <p>
         The log is not arbitrary. The chemical potential of a dilute species scales as <em>kT ln c</em> — a direct
         consequence of the Boltzmann factor governing how molecules populate energy levels at temperature T. Halve a
         reactant's concentration and its free energy per particle drops by <em>kT ln 2</em>; the cell voltage, which is
@@ -290,6 +300,13 @@ export default function Ch18Batteries() {
         ideal source V_OC in series with a resistor R_int, and the loaded terminal voltage is
       </p>
       <Formula>V<sub>term</sub> = V<sub>OC</sub> · R<sub>L</sub> / (R<sub>int</sub> + R<sub>L</sub>)</Formula>
+      <p>
+        where <strong>V<sub>term</sub></strong> is the loaded terminal voltage at the battery's posts (in volts),
+        <strong> V<sub>OC</sub></strong> is the open-circuit (no-load) voltage set by the cell chemistry (in volts),
+        <strong> R<sub>int</sub></strong> is the cell's effective internal resistance (in ohms), and
+        <strong> R<sub>L</sub></strong> is the external load resistance (in ohms). The expression is just a voltage
+        divider between R<sub>int</sub> and R<sub>L</sub>.
+      </p>
       <p>
         R_int comes from three places: the bulk resistance of the electrolyte (limited ion mobility), the kinetic
         <Term def="The 'extra' voltage you need to apply beyond E° to make a reaction run at a useful rate. Governed by the Butler–Volmer equation; falls logarithmically with current density. The reason a fuel cell at open-circuit reads 1.0 V instead of the thermodynamic 1.23 V."> overpotential</Term> needed to drive the electrode reactions at a useful rate (Butler–Volmer kinetics), and the

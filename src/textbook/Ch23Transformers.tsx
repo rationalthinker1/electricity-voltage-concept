@@ -69,16 +69,33 @@ export default function Ch18Transformers() {
       </p>
       <Formula>V<sub>s</sub>(t) = − N<sub>s</sub> dΦ / dt</Formula>
       <p>
+        where <strong>V<sub>s</sub>(t)</strong> is the instantaneous secondary terminal voltage (in volts),
+        <strong> N<sub>s</sub></strong> is the number of turns on the secondary winding (dimensionless), and
+        <strong> dΦ/dt</strong> is the time rate of change of the magnetic flux threading each turn of the core
+        (in webers per second, equivalently volts).
+      </p>
+      <p>
         Apply the same logic to the primary. If the core's magnetic resistance (reluctance) is small enough that we
         can ignore the small magnetizing current — the ideal-transformer approximation — the primary's terminal
         voltage is also balanced by its own induced EMF<Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula>V<sub>p</sub>(t) = − N<sub>p</sub> dΦ / dt</Formula>
       <p>
+        where <strong>V<sub>p</sub>(t)</strong> is the instantaneous primary terminal voltage (in volts),
+        <strong> N<sub>p</sub></strong> is the number of turns on the primary winding (dimensionless), and
+        <strong> dΦ/dt</strong> is the same shared core flux (in webers per second) that threads both windings.
+      </p>
+      <p>
         Divide the two equations and the <em>dΦ/dt</em> cancels. What survives is the most famous one-liner in
         electrical engineering:
       </p>
       <Formula>V<sub>s</sub> / V<sub>p</sub> = N<sub>s</sub> / N<sub>p</sub></Formula>
+      <p>
+        where <strong>V<sub>p</sub></strong> and <strong>V<sub>s</sub></strong> are the primary and secondary
+        terminal voltages (in volts, RMS or peak — the ratio holds either way), and
+        <strong> N<sub>p</sub></strong> and <strong>N<sub>s</sub></strong> are the corresponding turn counts
+        (dimensionless integers). The whole expression is a pure ratio with no units.
+      </p>
       <p>
         The voltage ratio between the two coils equals the ratio of their turn counts. Wind 200 turns on the primary
         and 20 turns on the secondary, drive the primary at 240 V, and the secondary sits at 24 V — independent of
@@ -111,10 +128,22 @@ export default function Ch18Transformers() {
       </p>
       <Formula>V<sub>p</sub> I<sub>p</sub> = V<sub>s</sub> I<sub>s</sub></Formula>
       <p>
+        where <strong>V<sub>p</sub></strong>, <strong>V<sub>s</sub></strong> are the primary and secondary terminal
+        voltages (in volts) and <strong>I<sub>p</sub></strong>, <strong>I<sub>s</sub></strong> are the corresponding
+        winding currents (in amperes). Both sides have units of watts: real power into the primary equals real
+        power delivered by the secondary in the ideal limit.
+      </p>
+      <p>
         Combine that with <em>V<sub>s</sub>/V<sub>p</sub> = N<sub>s</sub>/N<sub>p</sub></em> and the current ratio
         falls out as the <em>inverse</em> of the turns ratio:
       </p>
       <Formula>I<sub>s</sub> / I<sub>p</sub> = N<sub>p</sub> / N<sub>s</sub></Formula>
+      <p>
+        where <strong>I<sub>p</sub></strong> and <strong>I<sub>s</sub></strong> are the primary and secondary
+        winding currents (in amperes), and <strong>N<sub>p</sub></strong>, <strong>N<sub>s</sub></strong> are the
+        turn counts (dimensionless). The current ratio is the reciprocal of the voltage ratio: whichever side has
+        more turns carries less current.
+      </p>
       <p>
         A 10:1 <Term def={<><strong>step-down</strong> — the secondary turn count is smaller than the primary; voltage decreases, current increases. The pole transformer outside your house is step-down.</>}>step-down</Term>
         transformer takes 1000 V at 1 A on the primary and delivers 100 V at 10 A on the secondary. Same kilowatt.
@@ -214,6 +243,12 @@ export default function Ch18Transformers() {
       </p>
       <Formula>P<sub>loss</sub> = (P / V)² · R = P² R / V²</Formula>
       <p>
+        where <strong>P<sub>loss</sub></strong> is the I²R power dissipated in the line (in watts),
+        <strong> P</strong> is the real power being delivered to the far end (in watts),
+        <strong> V</strong> is the line voltage at which that power is sent (in volts), and
+        <strong> R</strong> is the total resistance of the transmission line (in ohms).
+      </p>
+      <p>
         Quadratic in 1/V. Double the line voltage and the loss falls by a factor of four. Raise it tenfold and the
         loss drops a hundredfold. That is why the wires running the length of a continent operate at 230, 345, 500,
         or even 765 kV — the higher the better, until the air around the conductor itself starts to ionise (corona
@@ -254,6 +289,12 @@ export default function Ch18Transformers() {
         <em> V<sub>p</sub>/I<sub>p</sub></em> — the impedance seen looking into the primary — is therefore:
       </p>
       <Formula>Z<sub>p</sub> = (N<sub>p</sub> / N<sub>s</sub>)² · Z<sub>L</sub></Formula>
+      <p>
+        where <strong>Z<sub>p</sub></strong> is the impedance seen looking into the primary terminals (in ohms),
+        <strong> Z<sub>L</sub></strong> is the actual load impedance connected to the secondary (in ohms), and
+        <strong> N<sub>p</sub>/N<sub>s</sub></strong> is the primary-to-secondary turns ratio (dimensionless).
+        Both impedances may be complex; the multiplication is on the complex value.
+      </p>
       <p>
         The square comes from the fact that the turns ratio appears once in voltage and once (inversely) in current.
         A 20:1 step-down transformer makes an 8 Ω speaker look like 8 · 400 = 3.2 kΩ when seen from the primary.

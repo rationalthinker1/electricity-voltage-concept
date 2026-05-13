@@ -241,6 +241,14 @@ export default function Ch19ModernBatteries() {
         V = Q/C — because there is no chemistry, only field. For a constant-current discharge:
       </p>
       <Formula>V(t) = V<sub>0</sub> − (I / C) · t</Formula>
+      <p>
+        where <strong>V(t)</strong> is the terminal voltage at time t (in volts),
+        <strong> V<sub>0</sub></strong> is the initial fully-charged voltage (in volts),
+        <strong> I</strong> is the constant discharge current (in amperes; positive when current flows out of
+        the capacitor), <strong>C</strong> is the supercapacitor's capacitance (in farads), and
+        <strong> t</strong> is the elapsed time since discharge began (in seconds). The slope is a straight
+        downward line — the signature of capacitive, not chemical, storage.
+      </p>
 
       <SupercapacitorDemo />
 

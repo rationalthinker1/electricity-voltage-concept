@@ -231,6 +231,13 @@ export default function Ch19RectifiersAndInverters() {
       </p>
       <Formula>P<sub>diss</sub> = (V<sub>in</sub> − V<sub>out</sub>) · I<sub>load</sub></Formula>
       <p>
+        where <strong>P<sub>diss</sub></strong> is the power burned as heat in the pass transistor (in watts),
+        <strong> V<sub>in</sub></strong> is the regulator's input voltage (in volts),
+        <strong> V<sub>out</sub></strong> is the regulated output voltage (in volts), and
+        <strong> I<sub>load</sub></strong> is the current flowing through the load (in amperes; the same current
+        also flows through the pass transistor in series).
+      </p>
+      <p>
         The efficiency is just η = V<sub>out</sub>/V<sub>in</sub>. Stepping 12 V down to 5 V wastes
         58% of every input watt. Stepping 24 V down to 3.3 V wastes 86%. There is also a minimum
         operating margin: a standard LM7805 needs at least about <strong>2 V of headroom</strong>
@@ -300,6 +307,12 @@ export default function Ch19RectifiersAndInverters() {
       </p>
       <Formula>(V<sub>in</sub> − V<sub>out</sub>) · D = V<sub>out</sub> · (1 − D)</Formula>
       <Formula>V<sub>out</sub> = D · V<sub>in</sub></Formula>
+      <p>
+        where <strong>V<sub>in</sub></strong> is the buck converter's DC input voltage (in volts),
+        <strong> V<sub>out</sub></strong> is the regulated DC output voltage (in volts), and
+        <strong> D = t<sub>on</sub>/T<sub>sw</sub></strong> is the duty cycle — the fraction of each switching
+        period the high-side switch is closed (dimensionless, between 0 and 1).
+      </p>
       <p>
         The output is just the input scaled by the duty cycle. No power is dissipated by the
         switching action itself (in the limit of an ideal switch with zero on-resistance), so the
