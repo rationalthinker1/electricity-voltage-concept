@@ -1,11 +1,403 @@
+/**
+ * Chapter 8 — Maxwell's equations together
+ *
+ * Synthesis chapter. Ch.1 gave us Gauss for E; Ch.4 introduced Ampère and
+ * implicitly no-monopoles; Ch.5 was Faraday; Ch.6 made Maxwell's
+ * displacement-current addition load-bearing. This chapter stacks all four
+ * laws on one page, then runs the famous calculation that pulls c out of
+ * ε₀ and μ₀ alone.
+ */
 import { ChapterShell } from '@/components/ChapterShell';
-import { getChapter } from '@/textbook/data/chapters';
+import { FAQ, FAQItem } from '@/components/FAQ';
+import { Cite } from '@/components/SourcesList';
+import { Formula, InlineMath } from '@/components/Formula';
+import { AmpereMaxwellLawDemo } from './demos/AmpereMaxwellLaw';
+import { CFromMaxwellDemo } from './demos/CFromMaxwell';
+import { FaradayLawDemo } from './demos/FaradayLaw';
+import { GaussBLawDemo } from './demos/GaussBLaw';
+import { GaussELawDemo } from './demos/GaussELaw';
+import { getChapter } from './data/chapters';
 
 export default function Ch8Maxwell() {
   const chapter = getChapter('maxwell')!;
+  const SOURCES = chapter.sources;
+
   return (
     <ChapterShell chapter={chapter}>
-      <p>Chapter draft in progress — narrative, embedded demos, and FAQ coming up.</p>
+      <p>
+        Up to now you've met each law in its own setting. Gauss's law for the electric field appeared in Chapter&nbsp;1,
+        the moment we asked how a point charge sprays its influence into a sphere of empty space. The no-monopole rule
+        for the magnetic field was implicit in Chapter&nbsp;4, every time we drew B-field circles closing on themselves
+        around a wire. Faraday's law was the entire subject of Chapter&nbsp;5: change a flux, get a voltage. And Ampère's
+        law — promoted by Maxwell's correction — quietly made Chapter&nbsp;6's Poynting picture self-consistent, with the
+        displacement-current term tying off a hole that Ampère alone could not close.
+      </p>
+      <p>
+        Today they all stand together. Four equations. One field. The whole book up to this point is the four lines that
+        follow — and the wave equation that drops out when you put them in a blender<Cite id="feynman-II-18" in={SOURCES} />.
+      </p>
+
+      <h2>Four laws on <em>one</em> page</h2>
+
+      <p>
+        Maxwell published the unified theory in 1865<Cite id="maxwell-1865" in={SOURCES} />. The modern integral form,
+        which is the easiest to look at:
+      </p>
+      <Formula>∮ E · dA = Q<sub>enc</sub> / ε₀</Formula>
+      <Formula>∮ B · dA = 0</Formula>
+      <Formula>∮ E · dℓ = − dΦ<sub>B</sub>/dt</Formula>
+      <Formula>∮ B · dℓ = μ₀ ( I<sub>enc</sub> + ε₀ dΦ<sub>E</sub>/dt )</Formula>
+      <p>
+        Two surface integrals (flux out of a closed surface) and two line integrals (circulation around a closed loop).
+        The first equation says charge sources electric flux. The second says nothing sources magnetic flux. The third
+        says a changing magnetic flux induces an electric circulation. The fourth says a current — or a changing electric
+        flux — induces a magnetic circulation. Read them out loud and you have everything classical electromagnetism
+        knows<Cite id="griffiths-2017" in={SOURCES} />.
+      </p>
+      <p className="pullout">
+        Two divergence laws (what flows <em>out</em> of a closed box). Two curl laws (what flows <em>around</em> a closed loop).
+        The pattern is too clean to be accidental.
+      </p>
+
+      <h2>Gauss's law for <em>E</em></h2>
+
+      <p>
+        The first equation says: the net electric flux through any closed surface is equal to the charge enclosed inside
+        it, divided by ε₀. Pull a charge inside, flux goes up; push it back out, flux falls to zero. The shape of the
+        surface doesn't matter — sphere, cube, ugly potato — only the total charge inside it counts<Cite id="gauss-1813" in={SOURCES} />.
+      </p>
+
+      <GaussELawDemo />
+
+      <p>
+        The physical content is straightforward: <strong>the only way for a closed surface to have net E flux out of it is if
+        there's net charge inside</strong>. If no charge is enclosed, every field line that enters must exit somewhere
+        else — the books balance. This is the same divergence theorem Gauss proved for gravitational fields in 1813;
+        applying it to electric fields gives you the law that bears his name<Cite id="griffiths-2017" in={SOURCES} />.
+        For a sphere centered on a point charge, the integral specializes to Coulomb's law (the 4π in 1/(4πε₀) is just
+        the surface area of a unit sphere) — same physics, different bookkeeping.
+      </p>
+
+      <h2>Gauss's law for <em>B</em></h2>
+
+      <p>
+        The second equation looks anemic next to the first — there's no source term on the right. That's the point.
+      </p>
+      <Formula>∮ B · dA = 0</Formula>
+      <p>
+        Every closed surface, anywhere in the universe, has exactly zero net magnetic flux through it. Equivalently:
+        every B-field line is a closed loop. There are no isolated magnetic sources from which lines emerge or into
+        which they disappear. <strong>No magnetic monopoles</strong><Cite id="jackson-1999" in={SOURCES} />.
+      </p>
+
+      <GaussBLawDemo />
+
+      <p>
+        This is an experimental fact — not a derivation. Cut a bar magnet in half and you do not get a north pole and
+        a south pole; you get two smaller bar magnets, each with both poles. Decades of searches with extraordinary
+        sensitivity have failed to find a single isolated magnetic charge<Cite id="griffiths-2017" in={SOURCES} />.
+        If one ever does turn up, the equation gains a source term and the symmetry of the four laws becomes much
+        cleaner — but until then, the right-hand side is zero, and that asymmetry is one of the open puzzles of the
+        Standard Model.
+      </p>
+
+      <h2>Faraday's law</h2>
+
+      <p>
+        The third equation, discovered experimentally by Faraday in 1831 and published in 1832<Cite id="faraday-1832" in={SOURCES} />:
+      </p>
+      <Formula>∮ E · dℓ = − dΦ<sub>B</sub>/dt</Formula>
+      <p>
+        A magnetic flux that changes in time produces a circulating electric field. Equivalently: <strong>a time-varying
+        B is itself a source of E</strong> — you don't need charges to make an electric field, only a changing magnetic
+        one<Cite id="feynman-II-18" in={SOURCES} />.
+      </p>
+
+      <FaradayLawDemo />
+
+      <p>
+        The minus sign is the one piece of bookkeeping that is not optional. It encodes Lenz's law: the induced EMF
+        always points in the direction whose induced current would <em>oppose</em> the change in flux. If the universe
+        let the induced current reinforce the change, you would have free energy on tap. The minus sign is energy
+        conservation, made visible<Cite id="griffiths-2017" in={SOURCES} />.
+      </p>
+      <p>
+        Faraday's law also retires, finally, the picture of E as a quantity that lives only near charges.
+        Static charges make E, yes — but a magnet you wave around in empty space also makes E. The field is
+        sourced by <em>two</em> things now: charge density, and changing magnetic flux.
+      </p>
+
+      <h2>Ampère–Maxwell law</h2>
+
+      <p>
+        The fourth equation is the one Maxwell rewrote. Ampère's original law, established empirically in 1826
+        <Cite id="ampere-1826" in={SOURCES} />, was the magnetic counterpart of Faraday's:
+      </p>
+      <Formula>∮ B · dℓ = μ₀ I<sub>enc</sub></Formula>
+      <p>
+        Current sources circulating B. Beautiful — but, Maxwell noticed in 1865, <em>broken</em> in any situation where
+        the current isn't continuous. The canonical counter-example is a parallel-plate capacitor in the middle of being
+        charged. Wrap an Amperian loop around the wire feeding one plate, and the formula gives a B-field tied to the
+        wire's current. Slide the same loop a few centimeters along, into the gap between the plates, and — no
+        conduction current pierces it. Same loop, same circulation expected by symmetry, suddenly zero current. Ampère's
+        law disagrees with itself depending on where you draw the surface<Cite id="maxwell-1865" in={SOURCES} />.
+      </p>
+      <p>
+        Maxwell's fix was to add a second term:
+      </p>
+      <Formula>∮ B · dℓ = μ₀ ( I<sub>enc</sub> + ε₀ dΦ<sub>E</sub>/dt )</Formula>
+      <p>
+        The term <InlineMath>ε₀ dΦ<sub>E</sub>/dt</InlineMath> is the <em>displacement current</em>. In the capacitor
+        gap there's no conduction current — but the E-field between the plates is growing, the electric flux through
+        the loop is growing with it, and Maxwell's term exactly fills in for the missing conduction current. The two
+        contributions are equal by charge conservation (continuity equation): whatever amount of charge per second is
+        flowing into the plate is exactly the rate at which the flux is growing in the gap.
+      </p>
+
+      <AmpereMaxwellLawDemo />
+
+      <p className="pullout">
+        The displacement current isn't a current. It's the universe insisting that changing electric fields make magnetic ones.
+      </p>
+      <p>
+        This was Maxwell's stroke of genius, and the moment electromagnetism became one theory. Now both curl equations
+        are symmetric: a changing B sources circulating E (Faraday), and a changing E sources circulating B (Ampère–Maxwell).
+        The two of them, taken together, can sustain each other in empty space — which is exactly the next paragraph
+        <Cite id="feynman-II-18" in={SOURCES} />.
+      </p>
+
+      <h2>The four together → <em>light</em></h2>
+
+      <p>
+        Take the two curl equations, far from any charges or currents — pure vacuum, <InlineMath>ρ = 0, J = 0</InlineMath>:
+      </p>
+      <Formula>∇ × E = − ∂B/∂t</Formula>
+      <Formula>∇ × B = μ₀ ε₀ ∂E/∂t</Formula>
+      <p>
+        Take the curl of the first equation; use the vector identity <InlineMath>∇×(∇×E) = ∇(∇·E) − ∇²E</InlineMath>;
+        invoke Gauss for E (with ρ = 0, so ∇·E = 0); and substitute in the right-hand side of the second equation. After
+        the dust settles:
+      </p>
+      <Formula>∇² E = μ₀ ε₀ ∂²E/∂t²</Formula>
+      <p>
+        That's a wave equation. The same manipulation on the second equation gives the same equation for B. Waves of E
+        and B, propagating together through vacuum, with phase speed
+      </p>
+      <Formula>v = 1 / √(μ₀ ε₀)</Formula>
+      <p>
+        Maxwell plugged in the experimental values of μ₀ and ε₀ — the latter measured purely from electrostatics, the
+        former from forces between current-carrying wires. He got 310,740,000 m/s by his 1865 numbers. Compared to
+        Fizeau's 1849 toothed-wheel measurement of the speed of light (315,000,000 m/s), the agreement was extraordinary
+        for the era. Maxwell wrote, in <em>A Dynamical Theory of the Electromagnetic Field</em>, that the agreement
+        "seems to show that light and magnetism are affections of the same substance, and that light is an electromagnetic
+        disturbance"<Cite id="maxwell-1865" in={SOURCES} />.
+      </p>
+
+      <CFromMaxwellDemo />
+
+      <p>
+        With modern CODATA values<Cite id="codata-2018" in={SOURCES} />, the calculated speed matches the measured speed
+        to within the experimental uncertainty. After the 1983 SI redefinition, the speed of light is exact by
+        definition; the relation <InlineMath>c = 1/√(ε₀ μ₀)</InlineMath> is now what locks ε₀ to μ₀, not the other way around.
+        Hertz produced and detected radio-frequency electromagnetic waves in 1887, confirming Maxwell directly
+        <Cite id="hertz-1888" in={SOURCES} />.
+      </p>
+      <p>
+        Chapter&nbsp;7's electromagnetic waves are the natural sequel: they're solutions to the very wave equation we
+        just derived. Everything from radio to X-rays, from photonics to wireless networks, from sunlight reaching your
+        retina to the cosmic microwave background, lives in these four lines.
+      </p>
+
+      <FAQ
+        intro="Loose threads from the synthesis chapter — questions that tend to come up after reading the four equations side by side."
+      >
+        <FAQItem q="Why are there exactly four equations and not five or three?">
+          <p>
+            The four equations correspond to two physical fields (E and B) crossed with two ways a field can have a
+            source (a divergence — flux out of a closed surface — or a curl — circulation around a closed loop). That's
+            a 2×2 grid, hence four equations. The current asymmetry — only E has a charge source on the divergence side
+            — is what would change if a magnetic monopole were found, but the four-equation structure itself reflects
+            the structure of vector calculus on a three-dimensional manifold<Cite id="griffiths-2017" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Are Maxwell's equations linear? Why does that matter?">
+          <p>
+            Yes — in vacuum the equations are perfectly linear in <strong>E</strong> and <strong>B</strong>. That's why
+            superposition works: shine two flashlights at each other and the beams pass through each other unaffected.
+            Two charges? Add their fields. Two radio signals on the same frequency? They simply sum. Linearity is what
+            makes Fourier analysis work for EM waves, why antennas can transmit multiple frequencies at once, and why
+            the whole signal-processing toolkit applies to electromagnetism without modification. (In matter, response
+            can be nonlinear at high intensities; "nonlinear optics" exists because the polarizability of the medium
+            itself starts to depend on field amplitude.)<Cite id="jackson-1999" in={SOURCES} />
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Where does charge conservation fit into the four laws?">
+          <p>
+            It's already there — built into the structure. Take the divergence of the Ampère–Maxwell equation and use
+            Gauss for E: the result is <strong>∂ρ/∂t + ∇·J = 0</strong>, the continuity equation, which is exactly the
+            statement that charge is locally conserved. In fact, this is the reason Maxwell <em>had</em> to add the
+            displacement-current term: without it, the divergence of Ampère's right-hand side wouldn't match the
+            divergence of the left, and charge conservation would fail in any non-steady situation
+            <Cite id="feynman-II-18" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why is there a μ₀ε₀ but no 'G₀' gravitational equivalent?">
+          <p>
+            Because gravity, in its weak-field form, doesn't have an analogous curl law: Newtonian gravity has only the
+            equivalent of Gauss's law (∇·g = −4πGρ). General relativity supplies the full nonlinear structure, and the
+            speed of gravitational waves does fall out of Einstein's equations — and it equals c. So the analogy works,
+            but only at the level of the full field theory, not at the level of Newton's law. There's no single
+            "gravitational ε₀" because the constant G plays the role of both source-strength and propagation-speed
+            normalization<Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="What does 'displacement current' actually displace?">
+          <p>
+            Nothing. The name is a historical fossil from Maxwell's mechanical model of the ether, in which he
+            imagined real charges being slightly displaced inside a dielectric medium that filled empty space. The
+            ether is gone, the displacement is gone, but the term name survives. What's left is the operative
+            mathematical fact: a time-varying electric flux contributes to the magnetic circulation, exactly like a
+            conduction current does. It's a current in the bookkeeping sense — same units, same role in the equation —
+            but not a flow of anything<Cite id="maxwell-1865" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Have we ever seen a magnetic monopole?">
+          <p>
+            No. Searches have included cosmic-ray detectors, accelerator experiments, ancient meteorites scanned with
+            SQUIDs, and large-scale dedicated experiments like MoEDAL at the LHC. The result, every time: no
+            confirmed monopole. The current experimental upper bound on monopole flux is small enough that they must
+            be either extraordinarily rare or extraordinarily heavy<Cite id="griffiths-2017" in={SOURCES} />. Dirac
+            showed in 1931 that the existence of even one monopole anywhere in the universe would explain why electric
+            charge is quantized — making their absence one of physics's open puzzles.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="What would change if we did find one?">
+          <p>
+            The second equation would gain a source term: <strong>∮B·dA = μ₀ Q<sub>m,enc</sub></strong>, and Faraday's
+            law would gain a "magnetic current" term symmetric to the conduction-current term in Ampère–Maxwell. The
+            theory becomes perfectly symmetric under the duality E ↔ cB. Nothing else has to change. The practical
+            consequence: a brand-new kind of stable, very massive particle exists, and the constraint of electric-charge
+            quantization gets a deep explanation<Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Is the symmetry between E and B perfect, or does the monopole asymmetry break it?">
+          <p>
+            In vacuum, far from any sources, the symmetry is perfect — swap E for cB and B for −E/c and the source-free
+            Maxwell equations are invariant. With sources, the asymmetry shows up only in <em>which</em> sources exist:
+            we have electric charges and currents, no magnetic ones. The mathematical structure could accommodate both
+            symmetrically; nature just hasn't supplied the second kind. This is one of those rare situations where the
+            theory is more symmetric than the universe<Cite id="griffiths-2017" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Could the four laws be wrong? How would we know?">
+          <p>
+            Classical Maxwell electromagnetism is wrong at very short distances (where quantum electrodynamics is
+            needed) and at very strong fields (where vacuum polarization causes nonlinear corrections). Within their
+            classical domain, though, the equations are checked routinely to extreme precision — GPS, particle
+            accelerators, radio astronomy, semiconductor design, the whole apparatus of modern physics. If a deviation
+            existed at our energy scales, it would have shown up in some experiment by now. The boundary is sharp:
+            Maxwell holds beautifully until quantum effects matter, then QED takes over and Maxwell falls out as the
+            classical limit<Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Are Maxwell's equations true in curved spacetime, near a black hole?">
+          <p>
+            Yes, in their covariant form. Written using the electromagnetic field tensor <strong>F<sup>μν</sup></strong>
+            and the covariant derivative, Maxwell's equations carry directly over to curved spacetime. The integral
+            form we showed above is the flat-spacetime specialization; in curved spacetime the surfaces, loops, and
+            derivatives all gain metric corrections, and light bends along null geodesics. The structure of "four
+            equations" is preserved — in tensor notation it becomes only two<Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="What's the role of ε₀ and μ₀ — are they fundamental, or arbitrary unit choices?">
+          <p>
+            More the second than the first. In SI units, ε₀ and μ₀ are unit-conversion constants between the electrical
+            quantities (charge, current) and the mechanical ones (force, length) that they happen to enter into equations
+            with. In Gaussian units, both are absent — there's just <em>c</em>. The combination that's truly physical is
+            the fine-structure constant <strong>α = e²/(4πε₀ ℏ c)</strong>, which is dimensionless and equals roughly
+            1/137. Everything ε₀ and μ₀ tell you, dimensionally, can be repackaged into α and the speed of light
+            <Cite id="codata-2018" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="After the 2019 SI redefinition, are ε₀ and μ₀ still exact?">
+          <p>
+            No — and this is a recent change. Before 2019, μ₀ was defined to be exactly 4π×10⁻⁷ T·m/A and ε₀ was exact
+            via ε₀ = 1/(μ₀ c²). After the 2019 SI revision, the elementary charge <em>e</em>, Planck's constant
+            <em> h</em>, the Boltzmann constant <em>k</em>, and the Avogadro number became the exact defining constants.
+            ε₀ and μ₀ are now experimentally determined quantities, tied to the measured value of the fine-structure
+            constant α. The numerical change is tiny — about 2×10⁻¹⁰ relative — but conceptually it flipped them from
+            "definitions" to "measurements"<Cite id="codata-2018" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why isn't there a 'Faraday's law for B' that involves dE/dt?">
+          <p>
+            There is — that's the Ampère–Maxwell law. The fourth equation, with the displacement-current term, says
+            exactly that a changing E sources a circulating B. It's not labelled "Faraday for B" by historical accident
+            (Faraday was about induction in coils, where the changing thing is B). But mathematically, the two curl
+            equations are mirror twins: changing B makes E loop; changing E makes B loop. The only difference is
+            the minus sign in Faraday, which encodes Lenz / energy conservation, and the μ₀ε₀ factor on the Ampère–Maxwell
+            side<Cite id="feynman-II-18" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Why does the wave equation predict the speed of LIGHT — wasn't Maxwell just doing electricity?">
+          <p>
+            That was Maxwell's astonishment too. He was doing electricity and magnetism, derived the wave equation
+            from his completed set of four laws, looked at the propagation speed, and realized it matched the
+            independently-measured speed of light to within experimental error. From <em>A Dynamical Theory of the
+            Electromagnetic Field</em>: the agreement of the numbers <em>"seems to show that light and magnetism are
+            affections of the same substance"</em><Cite id="maxwell-1865" in={SOURCES} />. Until that moment, optics
+            and electromagnetism were separate subjects. After it, they were the same subject.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Can you derive Coulomb's law from Maxwell's equations?">
+          <p>
+            Yes — it's a direct consequence of Gauss's law for E plus the assumption of spherical symmetry around a
+            point source. Draw a sphere of radius r centred on the charge; by symmetry E is radial and constant on
+            the sphere; the integral <strong>∮E·dA = E·4πr²</strong> equals <strong>Q/ε₀</strong>; solve for
+            <strong> E = Q/(4πε₀ r²)</strong>; multiply by a test charge q to get the force. Coulomb's 1785 inverse-square
+            law falls out of the more general law without further assumption<Cite id="griffiths-2017" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="Could you replace the four equations with a single one using tensors / four-vectors?">
+          <p>
+            With four-vectors, four becomes two; with differential forms or fully covariant tensor notation, two becomes
+            one. Defining the electromagnetic field tensor <strong>F<sup>μν</sup></strong>, Maxwell's equations
+            collapse to <strong>∂<sub>μ</sub>F<sup>μν</sup> = μ₀ J<sup>ν</sup></strong> (the two source equations) and
+            <strong> ∂<sub>[α</sub>F<sub>βγ]</sub> = 0</strong> (the two source-free equations, an algebraic Bianchi
+            identity). In the language of differential forms, the second pair becomes <strong>dF = 0</strong> and the
+            first <strong>d⋆F = J</strong>. None of this changes the physics, but it makes the relativistic structure
+            of electromagnetism manifest — and it's the form that generalizes cleanly to curved spacetime
+            <Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+        </FAQItem>
+
+        <FAQItem q="How does QED relate to these — is QED just Maxwell + quantization?">
+          <p>
+            Close, but with a twist. Quantum electrodynamics promotes the classical field <strong>F<sup>μν</sup></strong>
+            to a quantum operator, treats the photon as the quantum of the field, and replaces classical charged sources
+            with quantized matter fields (electrons, positrons). The result is one of the most precisely-tested theories
+            in all of science — the electron's anomalous magnetic moment is predicted by QED to twelve decimal places
+            of accuracy. In the classical limit, where field quanta are numerous enough that you can ignore individual
+            photons, QED reduces to Maxwell. So Maxwell's equations are the classical limit of QED, not its opposite
+            <Cite id="feynman-II-18" in={SOURCES} />.
+          </p>
+        </FAQItem>
+      </FAQ>
     </ChapterShell>
   );
 }
