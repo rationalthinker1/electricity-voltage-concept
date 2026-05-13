@@ -32,9 +32,11 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
+import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
+
+interface StaticCache { key: string; canvas: HTMLCanvasElement }
 
 export function WheatstoneBridgeDemo({ figure }: Props) {
   const [V, setV] = useState(10);
@@ -54,8 +56,10 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
     stateRef.current = { V, R1, R2, R3, Rx, V_A, V_B, dV };
   }, [V, R1, R2, R3, Rx, V_A, V_B, dV]);
 
+  const cacheRef = useRef<StaticCache | null>(null);
+
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, dpr } = info;
     let raf = 0;
 
     function draw() {
@@ -77,46 +81,55 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
       const xR3 = (xL + xB) / 2;
       const xRx = (xB + xR) / 2;
 
-      // Diamond bridge: battery on left rail, four resistors around the diamond, galv across A–B.
-      const elements: CircuitElement[] = [
-        // Left rail (split around battery).
-        { kind: 'wire', points: [{ x: xL, y: yTop }, { x: xL, y: yMid - 22 }] },
-        { kind: 'wire', points: [{ x: xL, y: yMid + 22 }, { x: xL, y: yBot }] },
-        // Right rail.
-        { kind: 'wire', points: [{ x: xR, y: yTop }, { x: xR, y: yBot }] },
-        // Battery on the left rail.
-        { kind: 'battery', at: { x: xL, y: yMid },
-          label: `${V.toFixed(1)} V`, leadLength: 22 },
-        // Top branch: R1, node A, R2.
-        { kind: 'wire', points: [{ x: xL, y: yTop }, { x: xR1 - 22, y: yTop }] },
-        { kind: 'resistor',
-          from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
-          label: `R1=${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
-        { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: xA, y: yTop }, { x: xR2 - 22, y: yTop }] },
-        { kind: 'resistor',
-          from: { x: xR2 - 20, y: yTop }, to: { x: xR2 + 20, y: yTop },
-          label: `R2=${R2.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
-        { kind: 'wire', points: [{ x: xR2 + 22, y: yTop }, { x: xR, y: yTop }] },
-        // Bottom branch: R3, node B, Rx.
-        { kind: 'wire', points: [{ x: xL, y: yBot }, { x: xR3 - 22, y: yBot }] },
-        { kind: 'resistor',
-          from: { x: xR3 - 20, y: yBot }, to: { x: xR3 + 20, y: yBot },
-          label: `R3=${R3.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
-        { kind: 'wire', points: [{ x: xR3 + 22, y: yBot }, { x: xB, y: yBot }, { x: xRx - 22, y: yBot }] },
-        { kind: 'resistor',
-          from: { x: xRx - 20, y: yBot }, to: { x: xRx + 20, y: yBot },
-          label: `Rx=${Rx.toFixed(0)}Ω`, labelOffset: { x: 0, y: 20 } },
-        { kind: 'wire', points: [{ x: xRx + 22, y: yBot }, { x: xR, y: yBot }] },
-        // Node dots at A and B.
-        { kind: 'node', at: { x: xA, y: yTop }, color: 'rgba(255,107,42,0.95)', radius: 4 },
-        { kind: 'node', at: { x: xB, y: yBot }, color: 'rgba(255,107,42,0.95)', radius: 4 },
-      ];
-      drawCircuit(ctx, { elements });
+      // Cache key invalidates on resize / DPR change and whenever any slider that
+      // changes the rendered schematic labels (V, R1, R2, R3, Rx) moves.
+      const cacheKey = `${w}x${h}@${dpr}|V${V}|R1${R1}|R2${R2}|R3${R3}|Rx${Rx}`;
+      if (cacheRef.current?.key !== cacheKey) {
+        // Diamond bridge: battery on left rail, four resistors around the diamond, galv across A–B.
+        const staticElements: CircuitElement[] = [
+          // Left rail (split around battery).
+          { kind: 'wire', points: [{ x: xL, y: yTop }, { x: xL, y: yMid - 22 }] },
+          { kind: 'wire', points: [{ x: xL, y: yMid + 22 }, { x: xL, y: yBot }] },
+          // Right rail.
+          { kind: 'wire', points: [{ x: xR, y: yTop }, { x: xR, y: yBot }] },
+          // Battery on the left rail.
+          { kind: 'battery', at: { x: xL, y: yMid },
+            label: `${V.toFixed(1)} V`, leadLength: 22 },
+          // Top branch: R1, node A, R2.
+          { kind: 'wire', points: [{ x: xL, y: yTop }, { x: xR1 - 22, y: yTop }] },
+          { kind: 'resistor',
+            from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
+            label: `R1=${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
+          { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: xA, y: yTop }, { x: xR2 - 22, y: yTop }] },
+          { kind: 'resistor',
+            from: { x: xR2 - 20, y: yTop }, to: { x: xR2 + 20, y: yTop },
+            label: `R2=${R2.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
+          { kind: 'wire', points: [{ x: xR2 + 22, y: yTop }, { x: xR, y: yTop }] },
+          // Bottom branch: R3, node B, Rx.
+          { kind: 'wire', points: [{ x: xL, y: yBot }, { x: xR3 - 22, y: yBot }] },
+          { kind: 'resistor',
+            from: { x: xR3 - 20, y: yBot }, to: { x: xR3 + 20, y: yBot },
+            label: `R3=${R3.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
+          { kind: 'wire', points: [{ x: xR3 + 22, y: yBot }, { x: xB, y: yBot }, { x: xRx - 22, y: yBot }] },
+          { kind: 'resistor',
+            from: { x: xRx - 20, y: yBot }, to: { x: xRx + 20, y: yBot },
+            label: `Rx=${Rx.toFixed(0)}Ω`, labelOffset: { x: 0, y: 20 } },
+          { kind: 'wire', points: [{ x: xRx + 22, y: yBot }, { x: xR, y: yBot }] },
+          // Node dots at A and B.
+          { kind: 'node', at: { x: xA, y: yTop }, color: 'rgba(255,107,42,0.95)', radius: 4 },
+          { kind: 'node', at: { x: xB, y: yBot }, color: 'rgba(255,107,42,0.95)', radius: 4 },
+        ];
+        cacheRef.current = {
+          key: cacheKey,
+          canvas: renderCircuitToCanvas({ elements: staticElements }, w, h, dpr),
+        };
+      }
+      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
 
-      // Galvanometer between A and B — needle deflection is dynamic, so this stays imperative.
+      // Dynamic overlay: galvanometer needle deflects with the live imbalance dV.
       drawGalvanometer(ctx, xA, yMid, dV, V);
 
-      // Node labels (A, B with their potentials).
+      // Dynamic overlay: live node potentials and chapter header.
       ctx.fillStyle = 'rgba(255,255,255,0.85)';
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
@@ -125,7 +138,6 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.fillText(`B   ${V_B.toFixed(3)} V`, xB + 8, yBot + 6);
 
-      // Header
       ctx.fillStyle = 'rgba(160,158,149,0.75)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';

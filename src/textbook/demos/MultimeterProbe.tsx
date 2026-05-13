@@ -42,7 +42,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
-import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
+import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+
+interface StaticCache { key: string; canvas: HTMLCanvasElement }
 
 type Mode = 'V_DC' | 'V_AC' | 'I_DC' | 'R';
 
@@ -241,9 +243,11 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
     }
   }, [redProbe, blackProbe, mode]);
 
+  const cacheRef = useRef<StaticCache | null>(null);
+
   /* ── Drawing ─────────────────────────────────────────────────────── */
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, canvas } = info;
+    const { ctx, canvas, dpr } = info;
     let raf = 0;
 
     function projectTP(tp: TP, w: number, h: number) {
@@ -355,13 +359,6 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
       ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
-      // Header label
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('Six-node bench network — drag the probes to any TP', 12, 10);
-
       // Resolve node positions
       const p_bat = projectTP(TPS[0], w, h);
       const p1 = projectTP(TPS[1], w, h);
@@ -378,40 +375,70 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
       const r4cy = (p4.y + p6.y) / 2;
       const capCy = (p2.y + p4.y) / 2;
 
-      // Six-node bench network: battery → R1 → TP1=TP2 rail; left branch R2 then R3 to GND; right branch C then R4 to bottom rail.
-      const elements: CircuitElement[] = [
-        { kind: 'wire', points: [p_bat, { x: p_bat.x, y: p1.y }, { x: p1.x - 24, y: p1.y }] },
-        { kind: 'resistor', from: { x: r1cx - 20, y: p1.y }, to: { x: r1cx + 20, y: p1.y },
-          amplitude: 6, label: `R₁ = ${R1} Ω`, labelOffset: { x: 0, y: -10 } },
-        { kind: 'wire', points: [{ x: r1cx + 20, y: p1.y }, p1] },
-        { kind: 'wire', points: [p1, p2] },
-        { kind: 'wire', points: [p1, { x: p1.x, y: r2cy - 20 }] },
-        { kind: 'resistor', from: { x: p1.x, y: r2cy - 20 }, to: { x: p1.x, y: r2cy + 20 },
-          amplitude: 6, label: `R₂ = ${R2} Ω`, labelOffset: { x: 12, y: 0 } },
-        { kind: 'wire', points: [{ x: p1.x, y: r2cy + 20 }, p3] },
-        { kind: 'wire', points: [p2, { x: p2.x, y: capCy - 14 }] },
-        { kind: 'wire', points: [{ x: p2.x, y: capCy + 14 }, p4] },
-        { kind: 'wire', points: [p3, { x: p3.x, y: r3cy - 20 }] },
-        { kind: 'resistor', from: { x: p3.x, y: r3cy - 20 }, to: { x: p3.x, y: r3cy + 20 },
-          amplitude: 6, label: `R₃ = ${R3} Ω`, labelOffset: { x: 12, y: 0 } },
-        { kind: 'wire', points: [{ x: p3.x, y: r3cy + 20 }, p5] },
-        { kind: 'wire', points: [p4, { x: p4.x, y: r4cy - 20 }] },
-        { kind: 'resistor', from: { x: p4.x, y: r4cy - 20 }, to: { x: p4.x, y: r4cy + 20 },
-          amplitude: 6, label: `R₄ = ${R4} Ω`, labelOffset: { x: 12, y: 0 } },
-        { kind: 'wire', points: [{ x: p4.x, y: r4cy + 20 }, p6] },
-        { kind: 'wire', points: [p5, p6] },
-        { kind: 'wire', points: [p5, { x: p_gnd.x, y: p5.y }, p_gnd] },
-        { kind: 'battery', at: { x: p_bat.x, y: p_bat.y - 24 },
-          label: `${V_BATT.toFixed(0)} V`, labelOffset: { x: 28, y: 0 },
-          leadLength: 14, negativePlateLength: 14, plateGap: 4, positivePlateLength: 24 },
-        { kind: 'ground', at: p_gnd, color: 'rgba(160,158,149,0.85)', size: 20, leadLength: 4 },
-      ];
-      drawCircuit(ctx, { elements, defaultWireColor: 'rgba(255,255,255,0.55)', defaultWireWidth: 1.5 });
+      // Cache key invalidates only on resize / DPR change — the schematic uses
+      // module-level constants for V_BATT / R1..R4 / C_VAL so no slider state
+      // affects the static layer.
+      const cacheKey = `${w}x${h}@${dpr}`;
+      if (cacheRef.current?.key !== cacheKey) {
+        // Six-node bench network: battery → R1 → TP1=TP2 rail; left branch R2 then R3 to GND; right branch C then R4 to bottom rail.
+        const elements: CircuitElement[] = [
+          { kind: 'wire', points: [p_bat, { x: p_bat.x, y: p1.y }, { x: p1.x - 24, y: p1.y }] },
+          { kind: 'resistor', from: { x: r1cx - 20, y: p1.y }, to: { x: r1cx + 20, y: p1.y },
+            amplitude: 6, label: `R₁ = ${R1} Ω`, labelOffset: { x: 0, y: -10 } },
+          { kind: 'wire', points: [{ x: r1cx + 20, y: p1.y }, p1] },
+          { kind: 'wire', points: [p1, p2] },
+          { kind: 'wire', points: [p1, { x: p1.x, y: r2cy - 20 }] },
+          { kind: 'resistor', from: { x: p1.x, y: r2cy - 20 }, to: { x: p1.x, y: r2cy + 20 },
+            amplitude: 6, label: `R₂ = ${R2} Ω`, labelOffset: { x: 12, y: 0 } },
+          { kind: 'wire', points: [{ x: p1.x, y: r2cy + 20 }, p3] },
+          { kind: 'wire', points: [p2, { x: p2.x, y: capCy - 14 }] },
+          { kind: 'wire', points: [{ x: p2.x, y: capCy + 14 }, p4] },
+          { kind: 'wire', points: [p3, { x: p3.x, y: r3cy - 20 }] },
+          { kind: 'resistor', from: { x: p3.x, y: r3cy - 20 }, to: { x: p3.x, y: r3cy + 20 },
+            amplitude: 6, label: `R₃ = ${R3} Ω`, labelOffset: { x: 12, y: 0 } },
+          { kind: 'wire', points: [{ x: p3.x, y: r3cy + 20 }, p5] },
+          { kind: 'wire', points: [p4, { x: p4.x, y: r4cy - 20 }] },
+          { kind: 'resistor', from: { x: p4.x, y: r4cy - 20 }, to: { x: p4.x, y: r4cy + 20 },
+            amplitude: 6, label: `R₄ = ${R4} Ω`, labelOffset: { x: 12, y: 0 } },
+          { kind: 'wire', points: [{ x: p4.x, y: r4cy + 20 }, p6] },
+          { kind: 'wire', points: [p5, p6] },
+          { kind: 'wire', points: [p5, { x: p_gnd.x, y: p5.y }, p_gnd] },
+          { kind: 'battery', at: { x: p_bat.x, y: p_bat.y - 24 },
+            label: `${V_BATT.toFixed(0)} V`, labelOffset: { x: 28, y: 0 },
+            leadLength: 14, negativePlateLength: 14, plateGap: 4, positivePlateLength: 24 },
+          { kind: 'ground', at: p_gnd, color: 'rgba(160,158,149,0.85)', size: 20, leadLength: 4 },
+        ];
+        const off = renderCircuitToCanvas(
+          { elements, defaultWireColor: 'rgba(255,255,255,0.55)', defaultWireWidth: 1.5 },
+          w, h, dpr,
+        );
+        // Bake the header label, the standalone capacitor symbol, and the TP dots
+        // + labels into the same offscreen image so a single drawImage replaces
+        // many strokes/fills per frame.
+        const sctx = off.getContext('2d')!;
+        sctx.fillStyle = 'rgba(160,158,149,0.7)';
+        sctx.font = '10px "JetBrains Mono", monospace';
+        sctx.textAlign = 'left';
+        sctx.textBaseline = 'top';
+        sctx.fillText('Six-node bench network — drag the probes to any TP', 12, 10);
+        drawCapacitorV(sctx, p2.x, capCy, 'C', `${(C_VAL * 1e6).toFixed(0)} µF`);
+        for (const tp of TPS) {
+          const p = projectTP(tp, w, h);
+          sctx.fillStyle = 'rgba(255,107,42,0.95)';
+          sctx.beginPath(); sctx.arc(p.x, p.y, 4, 0, Math.PI * 2); sctx.fill();
+          sctx.fillStyle = 'rgba(236,235,229,0.85)';
+          sctx.font = 'bold 10px "JetBrains Mono", monospace';
+          const onLeftSide = tp.x < 0.5;
+          sctx.textAlign = onLeftSide ? 'right' : 'left';
+          sctx.textBaseline = 'middle';
+          const dx = onLeftSide ? -8 : 8;
+          sctx.fillText(tp.label, p.x + dx, p.y);
+        }
+        cacheRef.current = { key: cacheKey, canvas: off };
+      }
+      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
 
-      // Capacitor in the right branch — inline so plate spacing matches the tight wire bracket.
-      drawCapacitorV(ctx, p2.x, capCy, 'C', `${(C_VAL * 1e6).toFixed(0)} µF`);
-
-      // Current dots — only along the main R1–R2–R3 path
+      // Dynamic overlay: animated current dots crawling along the main R1–R2–R3 path.
       const Imax = I_main;
       drawCurrentDotsPath(ctx, st.t, [
         p_bat,
@@ -421,27 +448,13 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
         p_gnd,
       ], I_main / Imax);
 
-      // Draw TP dots + labels
-      for (const tp of TPS) {
-        const p = projectTP(tp, w, h);
-        ctx.fillStyle = 'rgba(255,107,42,0.95)';
-        ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = 'rgba(236,235,229,0.85)';
-        ctx.font = 'bold 10px "JetBrains Mono", monospace';
-        const onLeftSide = tp.x < 0.5;
-        ctx.textAlign = onLeftSide ? 'right' : 'left';
-        ctx.textBaseline = 'middle';
-        const dx = onLeftSide ? -8 : 8;
-        ctx.fillText(tp.label, p.x + dx, p.y);
-      }
-
-      // Probes
+      // Dynamic overlay: the two draggable probes drawn at their current TPs.
       const pRed = tpById(st.red, w, h);
       const pBlk = tpById(st.black, w, h);
       drawProbe(ctx, pRed, '#ff3b6e', '+');
       drawProbe(ctx, pBlk, '#5baef8', '−');
 
-      // Probe tip readouts (a small ribbon at top of canvas)
+      // Dynamic overlay: ribbon at the top echoing which TP each probe touches.
       ctx.fillStyle = 'rgba(255,59,110,0.95)';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';

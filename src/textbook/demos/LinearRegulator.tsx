@@ -21,6 +21,8 @@ import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
+interface StaticCache { key: string; canvas: HTMLCanvasElement }
+
 const V_OUT = 5.0;
 const V_DROPOUT = 2.0;
 
@@ -40,8 +42,10 @@ export function LinearRegulatorDemo({ figure }: Props) {
     stateRef.current = { Vin, Iload, regulating, Vout, Pin, Pout, Pdiss, eta };
   }, [Vin, Iload, regulating, Vout, Pin, Pout, Pdiss, eta]);
 
+  const cacheRef = useRef<StaticCache | null>(null);
+
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, dpr } = info;
     let raf = 0;
     let t = 0;
 
@@ -68,84 +72,118 @@ export function LinearRegulatorDemo({ figure }: Props) {
       const xReg = padL + inW + gap;
       const xOut = padL + inW + gap + regW + gap;
 
-      // input bar — full P_in
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
-      ctx.fillRect(xIn, yTop, inW, barH);
+      // Cache key invalidates on resize / DPR change and whenever the regulating
+      // flag flips (which swaps the regulator block fill + stroke colour).
+      const cacheKey = `${w}x${h}@${dpr}|r${regulating ? 1 : 0}`;
+      if (cacheRef.current?.key !== cacheKey) {
+        // The static layer is everything whose geometry & colour does not depend
+        // on slider numbers: full P_in bar fill, regulator block fill/outline,
+        // chip name + state badge, the two flow arrows, header axis labels, footer.
+        const off = document.createElement('canvas');
+        off.width = Math.max(1, Math.floor(w * dpr));
+        off.height = Math.max(1, Math.floor(h * dpr));
+        const sctx = off.getContext('2d')!;
+        sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        // Input bar (full P_in column).
+        sctx.fillStyle = 'rgba(255,107,42,0.85)';
+        sctx.fillRect(xIn, yTop, inW, barH);
+        // P_in header.
+        sctx.fillStyle = '#ecebe5';
+        sctx.font = 'bold 13px "JetBrains Mono", monospace';
+        sctx.textAlign = 'center'; sctx.textBaseline = 'bottom';
+        sctx.fillText('P_in', xIn + inW / 2, yTop - 22);
+
+        // Regulator block.
+        sctx.fillStyle = regulating ? 'rgba(108,197,194,0.20)' : 'rgba(255,59,110,0.25)';
+        sctx.fillRect(xReg, yTop, regW, barH);
+        sctx.strokeStyle = regulating ? 'rgba(108,197,194,0.85)' : 'rgba(255,59,110,0.85)';
+        sctx.lineWidth = 1.5;
+        sctx.strokeRect(xReg, yTop, regW, barH);
+        sctx.fillStyle = '#ecebe5';
+        sctx.font = 'bold 12px "DM Sans", sans-serif';
+        sctx.textAlign = 'center'; sctx.textBaseline = 'middle';
+        sctx.fillText('LM7805', xReg + regW / 2, yTop + barH / 2 - 26);
+        sctx.font = '10px "DM Sans", sans-serif';
+        sctx.fillStyle = regulating ? '#6cc5c2' : '#ff3b6e';
+        sctx.fillText(regulating ? 'regulating' : 'in dropout', xReg + regW / 2, yTop + barH / 2 - 10);
+
+        // "(burned as heat)" caption sits below the wiggle and never moves.
+        sctx.font = '10px "JetBrains Mono", monospace';
+        sctx.fillStyle = 'rgba(160,158,149,0.85)';
+        sctx.fillText('(burned as heat)', xReg + regW / 2, yTop + barH / 2 + 30);
+
+        // P_out header.
+        sctx.fillStyle = '#ecebe5';
+        sctx.font = 'bold 13px "JetBrains Mono", monospace';
+        sctx.textAlign = 'center'; sctx.textBaseline = 'bottom';
+        sctx.fillText('P_out', xOut + outW / 2, yTop - 22);
+
+        // Source → regulator → load energy-flow arrows (purely geometric).
+        const flowArrows: CircuitElement[] = [
+          { kind: 'arrow',
+            from: { x: xIn + inW + 6, y: yTop + barH / 2 },
+            to:   { x: xReg - 4,      y: yTop + barH / 2 },
+            color: '#ecebe5', lineWidth: 1.4, headLength: 6, headWidth: 4 },
+          { kind: 'arrow',
+            from: { x: xReg + regW + 4, y: yTop + barH / 2 },
+            to:   { x: xOut - 6,        y: yTop + barH / 2 },
+            color: '#ecebe5', lineWidth: 1.4, headLength: 6, headWidth: 4 },
+        ];
+        // We already used the offscreen context to draw the static rectangles;
+        // route the arrows through the same offscreen ctx so everything bakes into
+        // a single image we can drawImage in one call per frame.
+        drawCircuit(sctx, { elements: flowArrows });
+
+        // Footer rule.
+        sctx.fillStyle = 'rgba(160,158,149,0.55)';
+        sctx.font = '9px "JetBrains Mono", monospace';
+        sctx.textAlign = 'center'; sctx.textBaseline = 'bottom';
+        sctx.fillText(
+          'Linear regulator: η = V_out / V_in.  Dropout requires V_in − V_out ≥ ~2 V.',
+          w / 2, h - 8,
+        );
+
+        cacheRef.current = { key: cacheKey, canvas: off };
+      }
+      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+
+      // Dynamic overlay: live P_in / Vin numbers under the input column.
       ctx.fillStyle = '#ecebe5';
-      ctx.font = 'bold 13px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
-      ctx.fillText(`P_in`, xIn + inW / 2, yTop - 22);
       ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.fillText(`${Pin.toFixed(2)} W`, xIn + inW / 2, yTop - 6);
       ctx.textBaseline = 'top';
       ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText(`${Vin.toFixed(1)} V × I_load`, xIn + inW / 2, yTop + barH + 6);
 
-      // regulator block
-      ctx.fillStyle = regulating ? 'rgba(108,197,194,0.20)' : 'rgba(255,59,110,0.25)';
-      ctx.fillRect(xReg, yTop, regW, barH);
-      ctx.strokeStyle = regulating ? 'rgba(108,197,194,0.85)' : 'rgba(255,59,110,0.85)';
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(xReg, yTop, regW, barH);
-
-      ctx.fillStyle = '#ecebe5';
-      ctx.font = 'bold 12px "DM Sans", sans-serif';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText('LM7805', xReg + regW / 2, yTop + barH / 2 - 26);
-      ctx.font = '10px "DM Sans", sans-serif';
-      ctx.fillStyle = regulating ? '#6cc5c2' : '#ff3b6e';
-      ctx.fillText(regulating ? 'regulating' : 'in dropout', xReg + regW / 2, yTop + barH / 2 - 10);
-
-      // dissipation indicator: animated heat wiggle
+      // Dynamic overlay: animated heat wiggle + P_diss readout in the regulator.
       const heatFrac = Math.min(1, Pdiss / Math.max(Pin, 0.01));
       const wig = Math.sin(t * 5) * 3;
       ctx.fillStyle = `rgba(255, ${107 - heatFrac * 80}, ${42 - heatFrac * 30}, ${0.4 + heatFrac * 0.5})`;
       ctx.font = 'bold 12px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(`P_diss = ${Pdiss.toFixed(2)} W`, xReg + regW / 2, yTop + barH / 2 + 12 + wig);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
-      ctx.fillText('(burned as heat)', xReg + regW / 2, yTop + barH / 2 + 30);
 
-      // Source → regulator → load energy-flow arrows.
-      const flowArrows: CircuitElement[] = [
-        { kind: 'arrow',
-          from: { x: xIn + inW + 6, y: yTop + barH / 2 },
-          to:   { x: xReg - 4,      y: yTop + barH / 2 },
-          color: '#ecebe5', lineWidth: 1.4, headLength: 6, headWidth: 4 },
-        { kind: 'arrow',
-          from: { x: xReg + regW + 4, y: yTop + barH / 2 },
-          to:   { x: xOut - 6,        y: yTop + barH / 2 },
-          color: '#ecebe5', lineWidth: 1.4, headLength: 6, headWidth: 4 },
-      ];
-      drawCircuit(ctx, { elements: flowArrows });
-
-      // output bar — fraction of P_in
+      // Dynamic overlay: output bar height = Pout / Pin fraction.
       const outBarH = Math.max(2, barH * (Pout / Math.max(Pin, 0.01)));
       ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.fillRect(xOut, yTop + (barH - outBarH), outW, outBarH);
 
+      // Dynamic overlay: live P_out / Vout numbers under the output column.
       ctx.fillStyle = '#ecebe5';
-      ctx.font = 'bold 13px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
-      ctx.fillText('P_out', xOut + outW / 2, yTop - 22);
       ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.fillText(`${Pout.toFixed(2)} W`, xOut + outW / 2, yTop - 6);
       ctx.textBaseline = 'top';
       ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText(`${Vout.toFixed(2)} V × I_load`, xOut + outW / 2, yTop + barH + 6);
 
-      // efficiency badge at top
+      // Dynamic overlay: efficiency badge.
       ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText(`η = P_out / P_in = ${(eta * 100).toFixed(1)} %`, w / 2, 12);
-
-      // footer rule
-      ctx.fillStyle = 'rgba(160,158,149,0.55)';
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('Linear regulator: η = V_out / V_in.  Dropout requires V_in − V_out ≥ ~2 V.',
-        w / 2, h - 8);
 
       raf = requestAnimationFrame(draw);
     }
