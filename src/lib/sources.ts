@@ -705,7 +705,35 @@ export const SOURCES: Record<string, Source> = {
     note: 'Classical theory of synchrotron radiation: relativistic electrons in a circular orbit radiate into a forward cone of half-angle ~1/γ, with total power scaling as γ⁴/ρ² for circular orbit of radius ρ.',
   },
 
-  /* ─── Ch.4 Capacitors ─── */
+  /* ─── Ch.4 How a resistor works ─── */
+  'iec-60062-2016': {
+    id: 'iec-60062-2016',
+    title: 'IEC 60062:2016 — Marking codes for resistors and capacitors',
+    author: 'International Electrotechnical Commission',
+    year: 2016,
+    venue: 'IEC, Geneva',
+    url: 'https://webstore.iec.ch/publication/24711',
+    note: 'Defines the four-band and five-band colour codes for fixed resistors and the BS 1852 letter-and-digit code (e.g., 4R7, 1K0, 10K).',
+  },
+  'steinhart-hart-1968': {
+    id: 'steinhart-hart-1968',
+    title: 'Calibration curves for thermistors',
+    author: 'John S. Steinhart, Stanley R. Hart',
+    year: 1968,
+    venue: 'Deep-Sea Research and Oceanographic Abstracts 15 (4), 497–503',
+    url: 'https://doi.org/10.1016/0011-7471(68)90057-0',
+    note: 'Empirical 1/T = A + B·ln(R) + C·(ln R)³ relation used to convert NTC thermistor resistance to absolute temperature.',
+  },
+  'wiedemann-franz-1853': {
+    id: 'wiedemann-franz-1853',
+    title: "Über die Wärme-Leitungsfähigkeit der Metalle (On the heat conductivity of metals)",
+    author: 'Gustav Wiedemann, Rudolf Franz',
+    year: 1853,
+    venue: 'Annalen der Physik 165 (8), 497–531',
+    note: "Empirical observation that the ratio of thermal to electrical conductivity κ/σ is the same for all metals at a given temperature; later, Lorenz (1872) found the ratio scales as L₀·T with L₀ ≈ 2.44×10⁻⁸ W·Ω·K⁻². The Wiedemann–Franz law explains why good electrical conductors are good thermal conductors.",
+  },
+
+  /* ─── Ch.5 Capacitors ─── */
   'leyden-jar-1745': {
     id: 'leyden-jar-1745',
     title: 'The Leyden jar — independent discovery (E. G. von Kleist, October 1745; Pieter van Musschenbroek, 1746)',

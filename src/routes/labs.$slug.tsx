@@ -24,6 +24,7 @@ const LAB_MODULES: Record<string, ReturnType<typeof lazy>> = {
   'circuit-builder': lazy(() => import('@/labs/CircuitBuilderLab')),
 };
 
+
 export const Route = createFileRoute('/labs/$slug')({
   beforeLoad: ({ params }) => {
     if (!getLab(params.slug)) throw notFound();

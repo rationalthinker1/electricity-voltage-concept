@@ -23,7 +23,7 @@ import { TwoParallelWiresDemo } from './demos/TwoParallelWires';
 import { WireBFieldDemo } from './demos/WireBField';
 import { getChapter } from './data/chapters';
 
-export default function Ch5Magnetism() {
+export default function Ch6Magnetism() {
   const chapter = getChapter('magnetism')!;
   const SOURCES = chapter.sources;
 

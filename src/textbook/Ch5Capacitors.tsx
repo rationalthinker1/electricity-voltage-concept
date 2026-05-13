@@ -26,7 +26,7 @@ import { PlateGeometryDemo } from './demos/PlateGeometry';
 import { WhyHarderEachChargeDemo } from './demos/WhyHarderEachCharge';
 import { getChapter } from './data/chapters';
 
-export default function Ch4Capacitors() {
+export default function Ch5Capacitors() {
   const chapter = getChapter('capacitors')!;
   const SOURCES = chapter.sources;
 

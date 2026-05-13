@@ -24,7 +24,7 @@ import { SuperconductorLimitDemo } from './demos/SuperconductorLimit';
 import { WhereDoesEnergyFlowDemo } from './demos/WhereDoesEnergyFlow';
 import { getChapter } from './data/chapters';
 
-export default function Ch7EnergyFlow() {
+export default function Ch8EnergyFlow() {
   const chapter = getChapter('energy-flow')!;
   const SOURCES = chapter.sources;
 

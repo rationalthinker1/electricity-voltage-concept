@@ -24,7 +24,7 @@ import { WireFromMovingFrameDemo } from './demos/WireFromMovingFrame';
 import { WireFromRestDemo } from './demos/WireFromRest';
 import { getChapter } from './data/chapters';
 
-export default function Ch10Relativity() {
+export default function Ch11Relativity() {
   const chapter = getChapter('relativity')!;
   const SOURCES = chapter.sources;
 
