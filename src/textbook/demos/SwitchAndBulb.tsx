@@ -19,7 +19,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
-import { drawBattery, drawSwitch as drawSchematicSwitch } from '@/lib/canvasPrimitives';
+import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -52,63 +52,82 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       const batX = margin;
       const bulbX = w - margin;
       const switchX = (batX + bulbX) / 2;
+      const bulbY = (top + bot) / 2;
 
-      // Path is a rectangle: battery+ → up → right to switch → right to bulb → down → left → battery−.
-      // Segments, ordered as the wave travels (battery+ → out → bulb → return).
-      const segs: PathSeg[] = [
-        { x1: batX, y1: top, x2: switchX, y2: top },     // battery top → switch (left half of top)
-        { x1: switchX, y1: top, x2: bulbX, y2: top },    // switch → bulb top (right half of top)
-        { x1: bulbX, y1: top, x2: bulbX, y2: bot },      // down through bulb
-        { x1: bulbX, y1: bot, x2: batX, y2: bot },       // back along bottom
-      ];
-      const segLens = segs.map(s => Math.hypot(s.x2 - s.x1, s.y2 - s.y1));
-      const totalLen = segLens.reduce((a, b) => a + b, 0);
-
-      // Wire colour — amber when energised, dim when not.
       const isClosed = closedRef.current;
       const sinceClose = closedAtRef.current != null ? (now - closedAtRef.current) / 1000 : 0;
       // Visual: wave fills the loop in ~0.4 s of wallclock. In reality, ~5 ns.
       const fillFrac = isClosed ? Math.min(1, sinceClose / 0.4) : 0;
+
+      // Loop path, ordered so we can split it into a "dim base" plus an "energised prefix".
+      const loop: PathSeg[] = [
+        { x1: batX,    y1: top, x2: switchX, y2: top },  // battery top → switch
+        { x1: switchX, y1: top, x2: bulbX,   y2: top },  // switch → bulb
+        { x1: bulbX,   y1: top, x2: bulbX,   y2: bot },  // down past bulb
+        { x1: bulbX,   y1: bot, x2: batX,    y2: bot },  // return along bottom
+      ];
+      const segLens = loop.map(s => Math.hypot(s.x2 - s.x1, s.y2 - s.y1));
+      const totalLen = segLens.reduce((a, b) => a + b, 0);
       const fillLen = fillFrac * totalLen;
 
-      // Draw base wire (dim) for everything
-      ctx.strokeStyle = 'rgba(160,158,149,.25)';
-      ctx.lineWidth = 4;
-      for (const s of segs) {
-        ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2); ctx.stroke();
-      }
-
-      // Overlay the energised portion in amber
+      // Energised polyline = the prefix of the loop covered by fillLen.
+      const energised: { x: number; y: number }[] = [];
       if (fillLen > 0) {
-        ctx.strokeStyle = '#ff6b2a';
-        ctx.lineWidth = 4;
-        ctx.shadowColor = 'rgba(255,107,42,.6)';
-        ctx.shadowBlur = 8;
+        energised.push({ x: loop[0]!.x1, y: loop[0]!.y1 });
         let remaining = fillLen;
-        for (let i = 0; i < segs.length && remaining > 0; i++) {
-          const s = segs[i];
-          const L = segLens[i];
+        for (let i = 0; i < loop.length && remaining > 0; i++) {
+          const s = loop[i]!;
+          const L = segLens[i]!;
           const take = Math.min(remaining, L);
-          const tx = s.x1 + (s.x2 - s.x1) * (take / L);
-          const ty = s.y1 + (s.y2 - s.y1) * (take / L);
-          ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(tx, ty); ctx.stroke();
+          energised.push({
+            x: s.x1 + (s.x2 - s.x1) * (take / L),
+            y: s.y1 + (s.y2 - s.y1) * (take / L),
+          });
           remaining -= take;
         }
-        ctx.shadowBlur = 0;
       }
 
-      // Battery
-      drawBattery(ctx, { x: batX, y: (top + bot) / 2 }, {
-        color: 'rgba(255,255,255,.18)',
-        label: 'battery',
-        labelOffset: { x: 0, y: (bot - top) / 2 + 18 },
-        leadLength: (bot - top) / 2,
-        negativeColor: '#ecebe5',
-        negativePlateLength: 16,
-        plateGap: (bot - top) / 2,
-        positiveColor: '#ecebe5',
-        positivePlateLength: 28,
-      });
+      const elements: CircuitElement[] = [
+        // Dim base loop (one polyline closing back to the start).
+        { kind: 'wire',
+          points: [
+            { x: batX, y: top }, { x: bulbX, y: top },
+            { x: bulbX, y: bot }, { x: batX, y: bot },
+          ],
+          color: 'rgba(160,158,149,.25)', lineWidth: 4 },
+        // Battery on the left (vertical), tall enough to touch top + bot rails.
+        { kind: 'battery', at: { x: batX, y: bulbY },
+          color: 'rgba(255,255,255,.18)',
+          label: 'battery', labelOffset: { x: 0, y: (bot - top) / 2 + 18 },
+          leadLength: (bot - top) / 2,
+          negativeColor: '#ecebe5', negativePlateLength: 16,
+          plateGap: (bot - top) / 2,
+          positiveColor: '#ecebe5', positivePlateLength: 28 },
+        // Switch on the top rail.
+        { kind: 'switch', at: { x: switchX, y: top },
+          color: isClosed ? '#ff6b2a' : '#ecebe5',
+          label: 'switch',
+          state: isClosed ? 'closed' : 'open-up',
+          terminalGap: 32 },
+        // Bulb on the right side, glowing when the wave reaches it.
+        { kind: 'bulb', at: { x: bulbX, y: bulbY },
+          radius: 16, brightness: isClosed && fillFrac >= 1 ? 1 : 0,
+          label: 'bulb', labelOffset: { x: 0, y: 32 } },
+      ];
+      drawCircuit(ctx, { elements });
+
+      // Energised overlay drawn on top so it sits above the dim base.
+      if (energised.length > 1) {
+        ctx.save();
+        ctx.shadowColor = 'rgba(255,107,42,.6)';
+        ctx.shadowBlur = 8;
+        drawCircuit(ctx, {
+          elements: [{ kind: 'wire', points: energised, color: '#ff6b2a', lineWidth: 4 }],
+        });
+        ctx.restore();
+      }
+
+      // Polarity glyphs hugging the battery's two leads.
       ctx.fillStyle = '#ff3b6e';
       ctx.font = 'bold 11px JetBrains Mono';
       ctx.textAlign = 'right';
@@ -116,19 +135,6 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       ctx.fillText('+', batX - 18, top);
       ctx.fillStyle = '#5baef8';
       ctx.fillText('−', batX - 12, bot);
-
-      // Switch — a hinge (open) or a closed bridge
-      drawSchematicSwitch(ctx, { x: switchX, y: top }, {
-        color: isClosed ? '#ff6b2a' : '#ecebe5',
-        label: 'switch',
-        state: isClosed ? 'closed' : 'open-up',
-        terminalGap: 32,
-      });
-
-      // Bulb
-      const bulbY = (top + bot) / 2;
-      const bulbGlow = isClosed && fillFrac >= 1 ? 1 : 0;
-      drawBulb(ctx, bulbX, bulbY, bulbGlow);
 
       // Annotations
       ctx.fillStyle = isClosed ? '#ff6b2a' : 'rgba(160,158,149,.55)';
@@ -173,31 +179,3 @@ export function SwitchAndBulbDemo({ figure }: Props) {
   );
 }
 
-function drawBulb(ctx: CanvasRenderingContext2D, x: number, y: number, glow: number) {
-  // Glow halo when on
-  if (glow > 0) {
-    const grd = ctx.createRadialGradient(x, y, 0, x, y, 60);
-    grd.addColorStop(0, `rgba(255,200,80,${0.45 * glow})`);
-    grd.addColorStop(1, 'rgba(255,200,80,0)');
-    ctx.fillStyle = grd;
-    ctx.beginPath(); ctx.arc(x, y, 60, 0, Math.PI * 2); ctx.fill();
-  }
-  // Bulb circle
-  ctx.strokeStyle = glow > 0 ? '#ffcc55' : 'rgba(160,158,149,.55)';
-  ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.arc(x, y, 16, 0, Math.PI * 2); ctx.stroke();
-  // Filament (a little zigzag)
-  ctx.strokeStyle = glow > 0 ? '#ff8c1e' : 'rgba(160,158,149,.4)';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(x - 8, y + 4);
-  ctx.lineTo(x - 4, y - 4);
-  ctx.lineTo(x, y + 4);
-  ctx.lineTo(x + 4, y - 4);
-  ctx.lineTo(x + 8, y + 4);
-  ctx.stroke();
-  ctx.fillStyle = 'rgba(160,158,149,.7)';
-  ctx.font = '10px JetBrains Mono';
-  ctx.textAlign = 'center';
-  ctx.fillText('bulb', x, y + 32);
-}
