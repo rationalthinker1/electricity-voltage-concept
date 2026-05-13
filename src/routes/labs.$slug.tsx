@@ -21,6 +21,7 @@ const LAB_MODULES: Record<string, ReturnType<typeof lazy>> = {
   'inductance':     lazy(() => import('@/labs/InductanceLab')),
   'energy-density': lazy(() => import('@/labs/EnergyDensityLab')),
   'poynting':       lazy(() => import('@/labs/PoyntingLab')),
+  'circuit-builder': lazy(() => import('@/labs/CircuitBuilderLab')),
 };
 
 export const Route = createFileRoute('/labs/$slug')({

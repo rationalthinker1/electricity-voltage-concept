@@ -11,6 +11,7 @@ import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
 import { KirchhoffsLawsDemo } from './demos/KirchhoffsLaws';
+import { MultimeterProbeDemo } from './demos/MultimeterProbe';
 import { RCTransientDemo } from './demos/RCTransient';
 import { LCOscillationDemo } from './demos/LCOscillation';
 import { RLCResonanceDemo } from './demos/RLCResonance';
@@ -114,6 +115,59 @@ export default function Ch11CircuitsAndAC() {
         charge can accumulate (ρ doesn't change at a node). KVL is what ∮E·dℓ = 0 reduces to when
         the time-varying flux through the loop is negligible. The schematic inherits the
         conservation laws of the underlying field theory.
+      </p>
+
+      <h2>What the <em>multimeter</em> actually reads</h2>
+
+      <p>
+        Every claim in the previous section is something a multimeter on a bench can check. A
+        digital multimeter has two probes — a red one wired to its (+) input and a black one
+        wired to its (−) input — and a rotary switch that picks a mode. The display shows one
+        number. What that number means depends entirely on which mode is selected; the same probe
+        positions can give wildly different readings under V_DC, V_AC, I_DC, or Ω.
+      </p>
+      <p>
+        In <strong>V_DC</strong> mode, the meter measures the time-averaged potential difference
+        between its probe tips. Internally the input is buffered by a high-impedance amplifier
+        (1 GΩ on a modern bench DMM<Cite id="keysight-34465a-datasheet" in={SOURCES} />) so that
+        almost no current is drawn from the circuit under test — the meter reads the node voltage
+        without perturbing it. The displayed value is exactly V<sub>red</sub> − V<sub>black</sub>,
+        which is why a "negative" reading just means you swapped the probes.
+      </p>
+      <p>
+        In <strong>V_AC</strong> mode, the same input stage is followed by a true-RMS detector
+        that computes the square-root of the time-average of the squared signal over a window of
+        many line periods<Cite id="keysight-34465a-datasheet" in={SOURCES} />. For a sinusoid of
+        peak V<sub>p</sub>, the answer is V<sub>p</sub>/√2; for a pure DC level, V_AC reads zero.
+        That's the right answer for the bench network here — it's a DC circuit, so V_AC on any
+        pair of probes is identically zero at steady state.
+      </p>
+      <p>
+        <strong>I_DC</strong> mode is fundamentally different: the meter inserts a low-resistance
+        shunt in <em>series</em> with the current path and measures the voltage across that
+        shunt<Cite id="horowitz-hill-2015" in={SOURCES} />. You have to break the wire and let
+        the current pass through the meter — putting the probes on two arbitrary TPs doesn't
+        give a current reading, because there's no series path through the meter. In this demo
+        we cheat slightly and show the steady-state current through whichever wire segment your
+        probes straddle.
+      </p>
+      <p>
+        <strong>Ω</strong> mode disconnects the live circuit entirely. The meter forces a small
+        known current through the probes and measures the resulting voltage. For that to make
+        sense, the device under test must be unpowered — which here we model by mentally shorting
+        the battery and removing the (open at DC) capacitor. The reading is then the equivalent
+        Thévenin resistance of the rest of the network seen between the two probe tips.
+      </p>
+
+      <MultimeterProbeDemo />
+
+      <p>
+        Try V_DC with red on TP1 and black on GND: you get the 8.66 V drop across the bottom
+        two-resistor stack, exactly as KVL predicts. Move the red probe to TP4 and the reading
+        snaps to 0 V — the right-hand branch carries no DC current, so every test point past the
+        capacitor sits at ground potential. Switch to Ω mode and probe between TP1 and GND: the
+        meter sees R₁ in parallel with (R₂ + R₃), about 339 Ω, exactly the value you'd compute
+        by hand. The schematic is doing real predictive work.
       </p>
 
       <h2>The <em>RC</em> time constant</h2>

@@ -389,6 +389,30 @@ export const SOURCES: Record<string, Source> = {
     venue: 'Cambridge University Press',
     note: 'Working engineer\'s reference for practical AC, impedance, op-amps, and signal-handling; cross-checked numerical examples for Ch.10.',
   },
+  'nilsson-riedel-2018': {
+    id: 'nilsson-riedel-2018',
+    title: 'Electric Circuits, 11th ed.',
+    author: 'James W. Nilsson, Susan A. Riedel',
+    year: 2018,
+    venue: 'Pearson',
+    note: 'Standard undergraduate circuits text. Reference for nodal analysis, transient response of RC/RL/RLC networks, and operating-point computation.',
+  },
+  'ho-ruehli-brennan-1975': {
+    id: 'ho-ruehli-brennan-1975',
+    title: 'The Modified Nodal Approach to Network Analysis',
+    author: 'Chung-Wen Ho, Albert E. Ruehli, Pierce A. Brennan',
+    year: 1975,
+    venue: 'IEEE Transactions on Circuits and Systems CAS-22 (6), 504–509',
+    note: 'Original MNA formulation: augment Kirchhoff current equations with branch-current unknowns for voltage sources and inductors. The matrix shape used by SPICE and by this lab.',
+  },
+  'shockley-1949': {
+    id: 'shockley-1949',
+    title: 'The Theory of p-n Junctions in Semiconductors and p-n Junction Transistors',
+    author: 'William Shockley',
+    year: 1949,
+    venue: 'Bell System Technical Journal 28 (3), 435–489',
+    note: 'Original derivation of the diode equation I = Iₛ (exp(qV/kT) − 1). The piecewise-linear "0.7 V drop, small on-resistance" approximation used in this lab is the standard textbook simplification of that curve.',
+  },
   'clausius-1850': {
     id: 'clausius-1850',
     title: 'Ueber die Art der Bewegung, welche wir Wärme nennen / Polarization in dielectrics (Clausius–Mossotti work, 1850s)',
@@ -697,6 +721,17 @@ export const SOURCES: Record<string, Source> = {
     year: 1782,
     venue: 'Philosophical Transactions of the Royal Society of London 72, 237–280',
     note: "Introduces the relation Q = CV and the term 'capacity' — the linear proportionality of stored charge to applied potential, with the constant of proportionality a property of the device.",
+  },
+
+  /* ─── Ch.11 Instrumentation ─── */
+  'keysight-34465a-datasheet': {
+    id: 'keysight-34465a-datasheet',
+    title: 'Keysight Truevolt Series Digital Multimeters — 34465A / 34470A Data Sheet',
+    author: 'Keysight Technologies',
+    year: 2023,
+    venue: 'Keysight Technologies publication 5991-1983EN',
+    url: 'https://www.keysight.com/us/en/assets/7018-04209/data-sheets/5991-1983.pdf',
+    note: '6½-digit and 7½-digit bench DMMs. Specifies 1 GΩ DC input impedance on the 0.1/1/10 V ranges, true-RMS AC measurement with selectable AC bandwidth, and DC voltage accuracy of order 0.0030% of reading. Used as the canonical modern-DMM datasheet for claims about input impedance, true-RMS behaviour, and bench-instrument accuracy.',
   },
 };
 

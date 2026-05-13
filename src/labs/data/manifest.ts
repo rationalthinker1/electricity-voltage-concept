@@ -207,6 +207,17 @@ export const MANIFEST: LabManifestEntry[] = [
     heroHeadline: 'Energy flows <em>through space</em>, not through copper.',
     deck: 'Around a current-carrying wire, E points along the axis and B circles it. Their cross product points radially inward — energy enters the wire from every direction at once. Integrate that flux over the wire’s lateral surface and you get exactly VI.',
   },
+
+  // ─── Appendix — Sandbox ───
+  {
+    number: 'A.1', slug: 'circuit-builder', chapter: 'ch3',
+    title: 'Circuit Builder',
+    formula: 'G v = i  (Modified Nodal Analysis)',
+    blurb: 'Drag, drop, wire. A live SPICE-lite solver in the browser. Build any of the circuits from the rest of the textbook.',
+    heroLabel: 'Appendix · Lab A.1 — Circuit Builder',
+    heroHeadline: 'Drag, drop, <em>solve</em>.',
+    deck: 'A schematic editor with a live Modified Nodal Analysis solver. Drop batteries, resistors, capacitors, inductors, diodes, switches, and bulbs on a grid; click pin-to-pin to wire them. The solver runs Kirchhoff\'s laws every frame, integrating reactive components with trapezoidal companion models. Load a preset to see RC charging, an RLC resonator, or a half-wave rectifier.',
+  },
 ];
 
 /** Lookup a lab by slug. */
@@ -241,4 +252,5 @@ export const BASE_LAB_SOURCES: Record<string, SourceKey[]> = {
   inductance:    ['griffiths-2017', 'feynman-II-17', 'jackson-1999', 'codata-2018'],
   'energy-density': ['poynting-1884', 'jackson-1999', 'griffiths-2017'],
   poynting:      ['poynting-1884', 'feynman-II-27', 'davis-kaplan-2011', 'morris-styer-2012', 'jackson-1999'],
+  'circuit-builder': ['kirchhoff-1845', 'ho-ruehli-brennan-1975', 'nilsson-riedel-2018', 'horowitz-hill-2015', 'shockley-1949'],
 };
