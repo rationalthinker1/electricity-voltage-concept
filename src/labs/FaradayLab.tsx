@@ -10,12 +10,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { Formula } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
 import { MathBlock, Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
+import { TryIt } from '@/components/TryIt';
 import { pretty } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
@@ -296,63 +298,218 @@ export default function FaradayLab() {
 
   const prose = (
     <>
-      <h3>The connection between magnetism and electricity</h3>
+      <h3>Context</h3>
       <p>
-        Up to this point in the chapter, all magnetic fields have been <em>static</em>. They sit in space; they push moving charges sideways; they
-        do no work. Then in the early 1830s, Michael Faraday wound copper around two iron rings, connected one to a galvanometer, and pulsed a
-        current through the other. The galvanometer twitched — not while the current flowed, but at the moment it switched on, and again the
-        moment it switched off. <em>Changing</em> magnetic flux produces an electric field<Cite id="faraday-1832" in={SOURCES} />.
+        Faraday's law says that a <em>changing</em> magnetic flux through a closed loop induces an electromotive force (EMF) around that loop.
+        Static B-fields do no work and induce nothing; only the rate of change matters. The flux can change because <strong>B</strong> changes,
+        because the loop area changes, or because the loop reorients (rotates) — all three produce EMF, and all three are unified by one
+        equation<Cite id="faraday-1832" in={SOURCES} />.
       </p>
       <p>
-        Pull a bar magnet through a coil of wire and a current flows in the wire. The voltage driving that current is the induced EMF, and its size
-        is set by how fast the flux is changing through the loop. Spin a coil in a uniform field and the flux oscillates sinusoidally — you have
-        a generator<Cite id="feynman-II-17" in={SOURCES} />.
-      </p>
-
-      <h3>The math, in stages</h3>
-      <p>The flux through a loop is the field strength projected onto the loop's normal, integrated over its area:</p>
-      <MathBlock>Φ<sub>B</sub> = ∫∫ B · dA</MathBlock>
-      <p>
-        For a flat coil of area <strong>A</strong> in a uniform field, this reduces to <strong>Φ = BA cos θ</strong> where <strong>θ</strong>
-        is the angle between <strong>B</strong> and the coil's normal. Wind <strong>N</strong> turns and the loops share a single flux path, so the
-        total flux linkage is <strong>NΦ</strong>. If the coil spins at angular rate <strong>ω</strong>:
-      </p>
-      <MathBlock>Φ(t) = N B A cos(ω t)</MathBlock>
-      <p>Faraday's law says the induced EMF is the negative time derivative of the flux:</p>
-      <MathBlock>EMF = − dΦ/dt = N B A ω sin(ω t)</MathBlock>
-      <p>
-        Sinusoidal output whose peak is set by every input variable: <strong>N, B, A, ω</strong>. Crank any one and the amplitude of the
-        scope trace above grows in proportion. The frequency you read off is <strong>f = ω/(2π)</strong><Cite id="griffiths-2017" in={SOURCES} />.
+        It applies to any closed loop, any field, any reason for the flux to change. Combined with Maxwell's correction to Ampère's law, it
+        is what allows light: oscillating <strong>E</strong> regenerates <strong>B</strong>, and vice versa, with the disturbance propagating
+        at <strong>c</strong><Cite id="griffiths-2017" in={SOURCES} />. The differential form <strong>∇ × E = −∂B/∂t</strong> applies even in
+        empty space — no loop of wire required.
       </p>
 
-      <h3>The minus sign — Lenz's law</h3>
+      <h3>Formula</h3>
+      <MathBlock>EMF = − dΦ<sub>B</sub> / dt</MathBlock>
+      <p>Variable glossary:</p>
+      <ul>
+        <li><strong>EMF</strong> — induced electromotive force around the loop, in volts (V). The line integral of E around the loop.</li>
+        <li><strong>Φ<sub>B</sub></strong> — magnetic flux through the loop: Φ<sub>B</sub> = ∫∫ B · dA, in webers (Wb = T·m²).</li>
+        <li><strong>B</strong> — magnetic field, in tesla (T).</li>
+        <li><strong>A</strong> — area of the loop, in m². For a flat coil in a uniform field, Φ = BA cos θ, with θ the angle between B and the loop's normal.</li>
+        <li><strong>N</strong> — number of turns. For an N-turn coil, total flux linkage is NΦ, and EMF = −N dΦ/dt.</li>
+        <li><strong>The minus sign</strong> — Lenz's law: the induced current opposes the change in flux that caused it. Encodes energy conservation.</li>
+      </ul>
+      <p>For a flat coil of N turns, area A, in a uniform B rotating at angular rate ω:</p>
+      <MathBlock>Φ(t) = N B A cos(ω t),    EMF(t) = N B A ω sin(ω t)</MathBlock>
+
+      <h3>Intuition</h3>
       <p>
-        The minus sign in <strong>EMF = −dΦ/dt</strong> looks like a sign convention; it isn't. It encodes a real physical principle: the
-        induced EMF drives a current whose <em>own</em> magnetic field opposes the change in flux that produced it. Push a magnet's north pole
-        toward a coil, and the induced current organizes itself to push back. Pull the magnet away, and the induced current reverses to attract it<Cite id="feynman-II-17" in={SOURCES} />.
-      </p>
-      <p>
-        This is energy conservation in disguise. The mechanical work you do cranking the shaft against the magnetic resistance is exactly the
-        electrical energy delivered to the load. If the sign were positive, you'd have a perpetual motion machine on every workbench.
+        Think of magnetic flux as a count of B-field lines piercing the loop. Faraday says: change that count and you produce a voltage around
+        the rim, with magnitude equal to the rate of change. Three ways to change the count: (a) make the field stronger or weaker, (b) make
+        the loop bigger or smaller, (c) tilt the loop relative to the field. All three produce the same kind of EMF.
       </p>
       <Pullout>
         Magnetism never <em>moves</em>; only the flux does. Move the flux and electricity falls out.
       </Pullout>
 
-      <h3>What an AC generator is</h3>
+      <h3>Reasoning</h3>
       <p>
-        A coil spinning at constant <strong>ω</strong> inside a constant magnetic field puts out a sine wave whose peak amplitude is
-        <strong> NBAω</strong>. That equation is literally the design formula for an alternator. North American wall-outlet power is 60 Hz, so
-        <strong> ω = 2π · 60 ≈ 377 rad/s</strong>. Set the slider near 200 rad/s to see the scope trace at a few tens of Hz.
+        Why the minus sign? Lenz's law. The induced current drives its own B that opposes the change in flux. Push a north pole toward a
+        coil and the induced current creates a north pole back at you — pushing back. If the sign were positive, the induced current would
+        attract the magnet, accelerating it, increasing the flux change, increasing the current, and you'd have a perpetual-motion machine
+        on every workbench. The minus sign is energy conservation written in equation form<Cite id="feynman-II-17" in={SOURCES} />.
+      </p>
+      <p>
+        Why is EMF proportional to N? Each turn experiences the same dΦ/dt, and the EMFs add in series. Why proportional to A? Bigger loop,
+        more flux, larger dΦ. Why proportional to ω? Faster rotation, faster flux change. Limit checks: at ω = 0, no rotation, no flux change,
+        no EMF. At θ = 0 (loop face-on to B) the flux is maximum but dΦ/dt is instantaneously zero — and indeed EMF passes through zero at that
+        instant of the rotation. The peaks of EMF occur when the loop is edge-on, where Φ = 0 but dΦ/dt is maximum.
       </p>
 
-      <h4>Maxwell's reformulation</h4>
+      <h3>Derivation</h3>
       <p>
-        In differential form, Faraday's law reads <strong>∇ × E = −∂B/∂t</strong>: a changing magnetic field creates a curling electric field,
-        even in empty space — no loop of wire required. Pair this with Maxwell's correction to Ampère's law (introduced in the previous lab) and
-        you have light: oscillating <strong>E</strong> regenerates <strong>B</strong>, oscillating <strong>B</strong> regenerates <strong>E</strong>,
-        and the whole disturbance propagates at <strong>c</strong><Cite id="griffiths-2017" in={SOURCES} />.
+        For motional EMF (loop moving through a static B), follow the carriers. A free electron in a moving conductor feels a Lorentz force
+        <strong> qv × B</strong>; integrating that force per unit charge around the loop gives the EMF directly. For a rod of length L moving
+        with velocity v perpendicular to a B field:
       </p>
+      <MathBlock>EMF = ∮ (v × B) · dℓ = B L v</MathBlock>
+      <p>
+        For the rotating-coil case in this lab, the flux is <strong>Φ(t) = NBA cos(ωt)</strong>. Differentiate:
+      </p>
+      <MathBlock>EMF = −dΦ/dt = +N B A ω sin(ω t)</MathBlock>
+      <p>
+        The peak EMF is <strong>NBAω</strong>; the RMS value is <strong>NBAω/√2</strong>. North American mains is 60 Hz, so
+        <strong> ω = 2π · 60 ≈ 377 rad/s</strong> — that's the design point for every AC generator on the grid<Cite id="griffiths-2017" in={SOURCES} />.
+      </p>
+      <p>
+        For a loop that doesn't move but sits in a changing B, you can't use the v × B trick — but you can still write
+        <strong> ∮ E · dℓ = −dΦ/dt</strong>. That's the line integral of a real, induced electric field that exists in space whether or not
+        the loop is there. In differential form: <strong>∇ × E = −∂B/∂t</strong>. Maxwell's elevation of this to a field equation is what
+        makes light possible<Cite id="feynman-II-17" in={SOURCES} />.
+      </p>
+
+      <h3>Worked problems</h3>
+
+      <TryIt
+        tag="Problem 2.4.1"
+        question={<>A <strong>100-turn coil</strong> sits in a magnetic field rising at <strong>dB/dt = 0.1 T/s</strong>. Coil area <strong>A = 100 cm²</strong>. Find the EMF.</>}
+        hint="EMF = N A dB/dt; convert cm² → m²."
+        answer={
+          <>
+            <p>A = 100 cm² = 10⁻² m².</p>
+            <Formula>EMF = N A dB/dt = (100)(10⁻²)(0.1) = 0.1 V</Formula>
+            <p>Answer: <strong>0.1 V = 100 mV</strong>. Easily detectable on any voltmeter.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.4.2"
+        question={<>Same coil (100 turns, 100 cm²), now B is held constant at <strong>0.5 T</strong>, but the area is shrinking at <strong>dA/dt = −50 cm²/s</strong>. Find the EMF.</>}
+        hint="EMF = N B dA/dt for constant B."
+        answer={
+          <>
+            <p>dA/dt = −50 cm²/s = −5 × 10⁻³ m²/s.</p>
+            <Formula>EMF = N B dA/dt = (100)(0.5)(−5×10⁻³) = −0.25 V</Formula>
+            <p>Answer: <strong>0.25 V</strong> in magnitude. The sign tells you which way the induced current flows: it tries to maintain the original flux through the shrinking loop.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.4.3"
+        question={<>A conducting bar of length <strong>L = 0.5 m</strong> slides on rails through a uniform <strong>B = 0.3 T</strong> at <strong>v = 4 m/s</strong>. Find the motional EMF.</>}
+        hint="EMF = BLv."
+        answer={
+          <>
+            <Formula>EMF = B L v = (0.3)(0.5)(4) = 0.6 V</Formula>
+            <p>Answer: <strong>0.6 V</strong>. This is the elemental case of motional EMF — free electrons in the bar feel a Lorentz force qv × B that drives them along the bar; charge piles up at the ends; the resulting line integral of E around the rail circuit equals BLv.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.4.4"
+        question={<>A coil with <strong>N = 200</strong>, <strong>A = 50 cm²</strong>, in a <strong>B = 0.4 T</strong> field, rotates at <strong>ω = 377 rad/s</strong> (60 Hz). Find the peak EMF and the RMS EMF.</>}
+        hint="Peak = NBAω, RMS = peak/√2."
+        answer={
+          <>
+            <p>A = 50 cm² = 5 × 10⁻³ m².</p>
+            <Formula>EMF<sub>peak</sub> = N B A ω = (200)(0.4)(5×10⁻³)(377) ≈ 151 V</Formula>
+            <Formula>EMF<sub>rms</sub> = 151 / √2 ≈ 107 V</Formula>
+            <p>Answer: peak <strong>~151 V</strong>, RMS <strong>~107 V</strong>. Close to North American 120 V mains — a 250-turn coil of slightly larger area would land you right on it.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.4.5"
+        question={<>A primary solenoid with <strong>N<sub>1</sub> = 1000</strong> turns has current ramping at <strong>dI/dt = 50 A/s</strong>. A secondary coil with <strong>N<sub>2</sub> = 50</strong> turns is wound coaxially around it. The primary's self-inductance is <strong>L<sub>1</sub> = 0.2 H</strong>, and the coupling is perfect. Find the EMF induced in the secondary. (Mutual inductance M = (N₂/N₁) L₁ for perfect coupling.)</>}
+        hint="EMF₂ = M dI₁/dt."
+        answer={
+          <>
+            <Formula>M = (N₂ / N₁) L₁ = (50/1000)(0.2) = 0.01 H</Formula>
+            <Formula>EMF₂ = M dI₁/dt = (0.01)(50) = 0.5 V</Formula>
+            <p>Answer: <strong>0.5 V</strong>. This is the basic transformer relation: an oscillating primary current induces a proportional secondary voltage, scaled by the mutual inductance.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.4.6"
+        question={<>Lenz's law sign check: a circular metal ring lies on a table; a permanent magnet with its N-pole pointing down is brought toward it from above. Which way does the induced current flow as seen from above?</>}
+        hint="The induced current must produce a B-field that opposes the increasing downward flux."
+        answer={
+          <>
+            <p>The magnet's downward flux through the ring is increasing as it approaches. By Lenz's law, the induced current creates its own B that opposes the change — i.e., points <strong>upward</strong> at the ring's centre. By the right-hand rule, an upward-pointing B requires the current to flow <strong>counterclockwise as seen from above</strong>. The ring effectively becomes a north pole on its top face, repelling the incoming N-pole. This is exactly what eddy-current braking exploits.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.4.7"
+        question={<>An aircraft with wingspan <strong>L = 30 m</strong> flies horizontally at <strong>v = 250 m/s</strong> through Earth's vertical magnetic field component <strong>B<sub>vert</sub> = 50 µT</strong>. Find the EMF between the wingtips.</>}
+        hint="EMF = B L v."
+        answer={
+          <>
+            <Formula>EMF = B<sub>vert</sub> L v = (5×10⁻⁵)(30)(250) = 0.375 V</Formula>
+            <p>Answer: <strong>~0.38 V</strong>. Real but small. You cannot tap it — the aircraft is also a single conducting body, so any external circuit moves through the same flux and sees the same EMF, cancelling. (The "Faraday disk" trick of using a sliding contact to extract the EMF works at airframe speeds in principle, but mechanical losses overwhelm it.)</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.4.8"
+        question={<>A transformer has turns ratio <strong>N<sub>1</sub> : N<sub>2</sub> = 100 : 10</strong>. The primary is driven at peak voltage <strong>V<sub>1,peak</sub> = 120 V</strong>. Assuming ideal coupling, find the secondary peak voltage.</>}
+        hint="For an ideal transformer, V₂/V₁ = N₂/N₁."
+        answer={
+          <>
+            <Formula>V<sub>2,peak</sub> = (N₂ / N₁) V<sub>1,peak</sub> = (10/100)(120) = 12 V</Formula>
+            <p>Answer: <strong>12 V</strong>. The flux is shared between primary and secondary; each turn picks up the same dΦ/dt, so voltages scale with turn count. Currents scale inversely (energy conservation: V₁I₁ = V₂I₂ for an ideal transformer).</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.4.9"
+        question={<>An RL circuit has <strong>L = 10 mH</strong> and <strong>R = 1 Ω</strong>. At t = 0 a battery is connected. What is the time constant τ for the current to grow toward its steady-state value?</>}
+        hint="For an RL circuit, τ = L/R. The current rises as I(t) = (V/R)(1 − exp(−t/τ))."
+        answer={
+          <>
+            <Formula>τ = L / R = 0.010 / 1 = 0.010 s = 10 ms</Formula>
+            <p>Answer: <strong>10 ms</strong>. After one τ, the current has reached ~63% of its final value; after 5τ, it's within 1%. Inductance is what makes circuits "slow" — Faraday's law applied to the coil's own flux generates a back-EMF that opposes the change.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.4.10"
+        question={<>A square loop of side <strong>a = 10 cm</strong> falls vertically out of a horizontal uniform <strong>B = 0.3 T</strong> region. When the loop is half out, it's falling at <strong>v = 2 m/s</strong>. Find the EMF at that instant.</>}
+        hint="Only the horizontal edge inside B contributes motional EMF; rate of flux change is B·a·v."
+        answer={
+          <>
+            <p>The loop's flux is decreasing as more of it leaves the field. The rate is</p>
+            <Formula>dΦ/dt = B · (rate of area leaving) = B · a · v = (0.3)(0.10)(2) = 0.06 Wb/s</Formula>
+            <Formula>|EMF| = 0.06 V = 60 mV</Formula>
+            <p>Answer: <strong>~60 mV</strong>. The induced current circulates to maintain flux, which by Lenz's law also exerts a retarding force on the loop — the falling loop experiences "magnetic drag."</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.4.11"
+        question={<>Conceptual: why does a copper-pendulum that swings between the poles of a strong magnet slow down quickly, even though copper is non-magnetic?</>}
+        hint="Eddy currents."
+        answer={
+          <>
+            <p>As the copper plate moves through the inhomogeneous field, the flux through any small region of it changes — inducing circulating "eddy" currents inside the plate. These currents dissipate energy via I²R heating in the copper, draining the pendulum's kinetic energy. By Lenz's law, the eddies also produce magnetic moments that oppose the motion through the field — a retarding force on top of the resistive loss. This is the working principle of every eddy-current brake on a roller-coaster, train, or commercial scale.</p>
+          </>
+        }
+      />
     </>
   );
 

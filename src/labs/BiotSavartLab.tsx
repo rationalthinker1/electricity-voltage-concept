@@ -14,12 +14,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { Formula } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
 import { MathBlock, Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
+import { TryIt } from '@/components/TryIt';
 import { PHYS, pretty } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
@@ -328,73 +330,246 @@ export default function BiotSavartLab() {
 
   const prose = (
     <>
-      <h3>Build a field from pieces</h3>
+      <h3>Context</h3>
       <p>
-        Biot–Savart is to magnetism what Coulomb's law is to electricity — but with a cross product. Every infinitesimal piece of current
-        <strong> dℓ</strong> contributes a tiny field <strong>dB</strong> at every point in space, falling off like <strong>1/r²</strong>,
-        and perpendicular to both the current and the line from the segment to the field point<Cite id="biot-savart-1820" in={SOURCES} />.
+        Biot–Savart describes the magnetic field set up by a <em>steady</em> current. Pick any infinitesimal piece <strong>dℓ</strong>
+        of a wire carrying current <strong>I</strong>; that piece contributes a tiny field <strong>dB</strong> at every point in space.
+        Sum (integrate) the contributions over the whole circuit and you have the total <strong>B</strong>. The law is the magnetic
+        analog of Coulomb's law for charges<Cite id="biot-savart-1820" in={SOURCES} />.
       </p>
       <p>
-        Curl the fingers of your right hand from <strong>dℓ</strong> toward the radius vector <strong>r̂</strong>; your thumb points along
-        <strong> dB</strong>. That cross product is what makes magnetic field lines wrap <em>around</em> the current rather than radiating outward<Cite id="feynman-II-13" in={SOURCES} />.
+        It applies whenever the currents are steady (<strong>∂J/∂t = 0</strong>) and the geometry is fixed. It does <em>not</em> apply to
+        radiating sources: an accelerating charge produces a field with retardation and a slower-falling <strong>1/r</strong> piece that
+        Biot–Savart misses. For ordinary DC and slow AC at scales much smaller than a wavelength, it is exact<Cite id="jackson-1999" in={SOURCES} />.
+      </p>
+
+      <h3>Formula</h3>
+      <MathBlock>dB = (μ<sub>0</sub> / 4π) · I dℓ × r̂ / r²</MathBlock>
+      <p>Variable glossary:</p>
+      <ul>
+        <li><strong>dB</strong> — infinitesimal magnetic field at the field point, in tesla (T).</li>
+        <li><strong>μ<sub>0</sub></strong> — permeability of free space, ≈ 4π × 10<sup>−7</sup> T·m/A<Cite id="griffiths-2017" in={SOURCES} />.</li>
+        <li><strong>I</strong> — current in the wire, in amperes (A).</li>
+        <li><strong>dℓ</strong> — vector segment of the wire pointing along conventional current flow, in m.</li>
+        <li><strong>r̂</strong> — unit vector from the segment to the field point.</li>
+        <li><strong>r</strong> — distance from the segment to the field point, in m.</li>
+      </ul>
+      <p>For a finite straight segment of length L, on its perpendicular bisector at distance d:</p>
+      <MathBlock>|B| = (μ<sub>0</sub> I / 4π d) · 2L / √(L² + 4d²)</MathBlock>
+      <p>And in the long-wire limit L → ∞:</p>
+      <MathBlock>B<sub>∞</sub> = μ<sub>0</sub> I / (2π d)</MathBlock>
+
+      <h3>Intuition</h3>
+      <p>
+        Curl the fingers of your right hand from <strong>dℓ</strong> toward <strong>r̂</strong>; your thumb points along <strong>dB</strong>.
+        That cross product is what makes magnetic field lines wrap <em>around</em> the current rather than radiating outward<Cite id="feynman-II-13" in={SOURCES} />.
+        The <strong>1/r²</strong> falloff is the same geometric dilution that gave Coulomb his exponent of two: the influence of a point
+        source is spread over the surface of a sphere of area <strong>4πr²</strong>.
       </p>
       <Pullout>
         Currents do not radiate force outward like charges. They <em>circulate</em> it.
       </Pullout>
 
-      <h3>The math, in stages</h3>
-      <p>The full statement:</p>
-      <MathBlock>dB = (μ<sub>0</sub> I / 4π) · (dℓ × r̂) / r²</MathBlock>
+      <h3>Reasoning</h3>
       <p>
-        The constant out front, <strong>μ<sub>0</sub>/4π ≈ 10<sup>−7</sup> T·m/A</strong>, is the magnetic
-        Coulomb constant. The cross product <strong>dℓ × r̂</strong> packages the geometry: only the component of <strong>dℓ</strong>
-        perpendicular to <strong>r̂</strong> contributes, and the result is perpendicular to both. The <strong>1/r²</strong> is the same
-        inverse-square fall-off you saw with point charges<Cite id="griffiths-2017" in={SOURCES} />.
+        Every piece earns its place. The <strong>I dℓ</strong> factor is the source strength — more current means more field, linearly. The
+        <strong> 1/r²</strong> is geometric dilution in three dimensions (Coulomb's exponent, Gauss's law). The <strong>× r̂</strong> is what
+        makes the field <em>perpendicular</em> to both source and line-of-sight — only the component of <strong>dℓ</strong> normal to
+        <strong> r̂</strong> contributes, and the resulting <strong>dB</strong> sits in the plane perpendicular to that.
       </p>
       <p>
-        For a finite straight segment of length <strong>L</strong>, measured perpendicular from its midpoint at distance <strong>d</strong>, the
-        integral can be done by hand. The closed form is<Cite id="jackson-1999" in={SOURCES} />:
-      </p>
-      <MathBlock>|B| = (μ<sub>0</sub> I / 4π d) · 2L / √(L² + 4d²)</MathBlock>
-      <p>
-        Take <strong>L → ∞</strong> and the second factor approaches 2, recovering the infinite-wire result:
-      </p>
-      <MathBlock>B<sub>∞</sub> = μ<sub>0</sub> I / (2π d)</MathBlock>
-
-      <h3>Why a cross product?</h3>
-      <p>
-        The cross product isn't an arbitrary mathematical choice — it falls out of the physics. The force on a moving charge in a magnetic
-        field is <strong>F = q v × B</strong>. For Newton's third law to hold between two current-carrying wires, and for the force-on-current
-        law <strong>F = Iℓ × B</strong> to be consistent, <strong>B</strong> itself has to come out of a cross product of the source
-        current with the radius vector<Cite id="griffiths-2017" in={SOURCES} />.
-      </p>
-      <p>
-        Electric fields point <em>away from</em> charges; magnetic fields curl <em>around</em> currents. Two different rules for two different
-        geometries.
+        Limit checks: on the wire's own axis <strong>dℓ ∥ r̂</strong> so the cross product vanishes — no field straight ahead of a current
+        element, exactly the opposite of an electric monopole. Flip the current direction and <strong>dℓ</strong> flips, so <strong>B</strong>
+        flips with it — Newton's third law is preserved between two parallel wires. The factor <strong>μ<sub>0</sub>/(4π) = 10<sup>−7</sup> T·m/A</strong>
+        was fixed exactly by the historical definition of the ampere<Cite id="griffiths-2017" in={SOURCES} />. The slider above lets you
+        crank <strong>d</strong> against <strong>L</strong>: near the segment <strong>|B|/B<sub>∞</sub></strong> hugs 1; far away
+        (<strong>d ≫ L</strong>) it falls like <strong>1/d²</strong> because a finite stub of current looks like a magnetic dipole.
       </p>
 
-      <h3>When the segment is long enough to act infinite</h3>
+      <h3>Derivation</h3>
       <p>
-        The slider above lets you crank <strong>d</strong> against <strong>L</strong>. Near the segment (small <strong>d</strong>, big <strong>L</strong>),
-        the geometry looks essentially like an infinite wire and <strong>|B|/B<sub>∞</sub></strong> hugs 1. Far from a finite segment, however, you
-        start to see the ends: the field falls off faster than <strong>1/d</strong>, eventually like <strong>1/d²</strong> because, far enough away,
-        a finite segment looks like a point dipole<Cite id="jackson-1999" in={SOURCES} />.
+        Biot and Savart (1820) measured the deflection of a compass needle at varying perpendicular distances from a long straight current
+        and fit the data<Cite id="biot-savart-1820" in={SOURCES} />. The modern derivation runs in reverse. Start with a moving point charge:
+        in the lab frame, a charge <strong>q</strong> moving at velocity <strong>v</strong> (with v ≪ c) produces approximately
       </p>
+      <MathBlock>B(r) ≈ (μ<sub>0</sub> / 4π) · q v × r̂ / r²</MathBlock>
       <p>
-        That crossover — from "wire that goes on forever" to "tiny stub of current pointing somewhere" — is what the slider plays with.
-        Most circuit calculations use the infinite-wire approximation, which is fine as long as you stay inside the segment's near zone.
+        A current <strong>I</strong> in a wire is just a stream of charges, so <strong>I dℓ</strong> plays the role of <strong>qv</strong> for
+        each segment. Substituting and summing gives Biot–Savart<Cite id="griffiths-2017" in={SOURCES} />. To get the infinite-wire result,
+        place the wire along the <em>x</em>-axis with the field point at <em>(0, d, 0)</em>: <strong>dℓ × r⃗ / r³</strong> reduces to
+        <strong> ẑ · d / (x² + d²)<sup>3/2</sup> dx</strong>, and the elementary integral
+        <strong> ∫<sub>−∞</sub><sup>∞</sup> d dx / (x² + d²)<sup>3/2</sup> = 2/d</strong> delivers <strong>|B| = μ<sub>0</sub> I / (2π d)</strong><Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <h4>Connection to special relativity</h4>
-      <p>
-        A static charge has only an electric field. A <em>moving</em> charge has both <strong>E</strong> and <strong>B</strong>. In a different inertial
-        frame, the same charge may appear to move at a different speed, so the split between electric and magnetic looks different too. The total
-        electromagnetic field is the invariant; <strong>B</strong> alone is frame-dependent<Cite id="feynman-II-13" in={SOURCES} />.
-      </p>
-      <p>
-        Magnetism, in this sense, is the relativistic shadow of electricity. Biot–Savart is what that shadow looks like in the steady,
-        slow-current limit — the same regime as Coulomb's law for electrostatics.
-      </p>
+      <h3>Worked problems</h3>
+
+      <TryIt
+        tag="Problem 2.1.1"
+        question={<>A circular loop of radius <strong>R = 5 cm</strong> carries <strong>I = 2 A</strong>. Find <strong>B</strong> at the centre.</>}
+        hint="Every dℓ is perpendicular to r̂ at the centre, and r = R for every piece."
+        answer={
+          <>
+            <p>At the centre, r = R and every dℓ ⊥ r̂, so each dB points along the axis (right-hand rule) and</p>
+            <Formula>|B| = (μ₀ I / 4π R²) · ∮ dℓ = (μ₀ I / 4π R²) · 2πR = μ₀ I / (2R)</Formula>
+            <Formula>|B| = (4π×10⁻⁷)(2) / (2 × 0.05) ≈ 2.51 × 10⁻⁵ T</Formula>
+            <p>Answer: <strong>~25 µT</strong>, about half Earth's surface field.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.1.2"
+        question={<>Same loop (R = 5 cm, I = 2 A). Find <strong>B</strong> on the axis at <strong>z = 12 cm</strong> from the centre.</>}
+        hint="On-axis: B(z) = μ₀IR² / [2(R² + z²)^(3/2)]."
+        answer={
+          <>
+            <p>Standard on-axis result:</p>
+            <Formula>|B|(z) = μ₀ I R² / [2(R² + z²)<sup>3/2</sup>]</Formula>
+            <p>With R = 0.05 m, z = 0.12 m: R² + z² = 0.0169 m², (R² + z²)<sup>3/2</sup> ≈ 0.00220 m³.</p>
+            <Formula>|B| = (4π×10⁻⁷)(2)(0.0025) / (2 × 0.00220) ≈ 1.43 × 10⁻⁶ T</Formula>
+            <p>Answer: <strong>~1.4 µT</strong>. About 18× weaker than at the centre.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.1.3"
+        question={<>Derive <strong>|B| = μ<sub>0</sub>I/(2πr)</strong> for an infinite straight wire by direct Biot–Savart integration.</>}
+        hint="Wire along x̂; field point at (0, r, 0); integrate x from −∞ to ∞."
+        answer={
+          <>
+            <p>With wire along x̂ and field point at (0, r, 0), dℓ = x̂ dx, r⃗ = (−x, r, 0), |r⃗| = √(x² + r²):</p>
+            <Formula>dℓ × r̂ = ẑ · r / √(x² + r²) dx</Formula>
+            <Formula>dB<sub>z</sub> = (μ₀ I / 4π) · r dx / (x² + r²)<sup>3/2</sup></Formula>
+            <Formula>∫<sub>−∞</sub><sup>∞</sup> r dx / (x² + r²)<sup>3/2</sup> = [x / (r√(x² + r²))]<sub>−∞</sub><sup>∞</sup> = 2/r</Formula>
+            <Formula>|B| = μ₀ I / (2π r)</Formula>
+            <p>QED.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.1.4"
+        question={<>A long solenoid with <strong>n = 1000 turns/m</strong> carries <strong>I = 0.5 A</strong>. Find <strong>B</strong> inside.</>}
+        hint="Stacking on-axis loop fields (or invoking Ampère): B = μ₀nI."
+        answer={
+          <>
+            <p>For a long solenoid the on-axis field is uniform:</p>
+            <Formula>|B| = μ₀ n I = (4π×10⁻⁷)(1000)(0.5) = 6.28 × 10⁻⁴ T</Formula>
+            <p>Answer: <strong>~0.63 mT</strong>.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.1.5"
+        question={<>A square loop of side <strong>L = 10 cm</strong> carries <strong>I = 3 A</strong>. Find <strong>B</strong> at the centre.</>}
+        hint="Each side is a finite segment at perpendicular distance L/2. Add the four contributions."
+        answer={
+          <>
+            <p>Finite-segment formula at d = L/2: √(L² + 4(L/2)²) = √(2L²) = L√2.</p>
+            <Formula>|B|<sub>side</sub> = (μ₀ I / (4π · L/2)) · 2L / (L√2) = μ₀ I √2 / (π L)</Formula>
+            <p>Four sides add:</p>
+            <Formula>|B|<sub>centre</sub> = 4√2 μ₀ I / (π L) = (4√2 × 4π×10⁻⁷ × 3) / (π × 0.10) ≈ 6.79 × 10⁻⁵ T</Formula>
+            <p>Answer: <strong>~68 µT</strong>.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.1.6"
+        question={<>Two parallel wires <strong>d = 2 cm</strong> apart carry <strong>I<sub>1</sub> = 5 A</strong> and <strong>I<sub>2</sub> = 3 A</strong> in the same direction. Find the force per unit length between them.</>}
+        hint="Wire 1 sits in the field of wire 2; F/L = I₁B₂."
+        answer={
+          <>
+            <p>Field of wire 2 at wire 1: <strong>B₂ = μ₀I₂/(2πd)</strong>. Force per length on wire 1:</p>
+            <Formula>F/L = I₁ B₂ = μ₀ I₁ I₂ / (2π d)</Formula>
+            <Formula>F/L = (4π×10⁻⁷)(5)(3) / (2π × 0.02) = 1.5 × 10⁻⁴ N/m</Formula>
+            <p>Answer: <strong>~150 µN/m</strong>, attractive (same-direction currents pull together). This relation was the historical definition of the ampere.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.1.7"
+        question={<>A Helmholtz pair: two coaxial loops of radius <strong>R</strong> carrying current <strong>I</strong> in the same sense, separated by <strong>R</strong>. Derive <strong>B</strong> on-axis at the midpoint and show <strong>dB/dz = 0</strong> there.</>}
+        hint="Sum two on-axis loop fields at z = ±R/2. Use symmetry."
+        answer={
+          <>
+            <p>On-axis field of one loop centred at z = a:</p>
+            <Formula>B(z) = μ₀ I R² / [2(R² + (z − a)²)<sup>3/2</sup>]</Formula>
+            <p>Two loops at a = ±R/2:</p>
+            <Formula>B<sub>tot</sub>(z) = (μ₀ I R² / 2) [(R² + (z − R/2)²)<sup>−3/2</sup> + (R² + (z + R/2)²)<sup>−3/2</sup>]</Formula>
+            <p>At z = 0 each denominator equals (5R²/4)<sup>3/2</sup>:</p>
+            <Formula>B(0) = (μ₀ I R² / 2) · 2 · (4/5)<sup>3/2</sup> R<sup>−3</sup> = (4/5)<sup>3/2</sup> μ₀ I / R ≈ 0.7155 μ₀ I / R</Formula>
+            <p>By symmetry B(z) = B(−z), so dB/dz|<sub>z=0</sub> = 0. The R-spacing also forces d²B/dz²|<sub>z=0</sub> = 0 — the field is uniform to fourth order, which is why the geometry is so useful in the lab.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.1.8"
+        question={<>A semicircular arc of radius <strong>R = 4 cm</strong> carries <strong>I = 6 A</strong>. Find <strong>B</strong> at the centre.</>}
+        hint="Half a full loop; straight leads (if collinear with the radius) contribute zero."
+        answer={
+          <>
+            <p>For a full loop, B<sub>centre</sub> = μ₀I/(2R). A semicircle is half:</p>
+            <Formula>|B| = μ₀ I / (4R) = (4π×10⁻⁷)(6) / (4 × 0.04) ≈ 4.71 × 10⁻⁵ T</Formula>
+            <p>Answer: <strong>~47 µT</strong>. Straight leads along the line of the radius have dℓ ∥ r̂ and contribute nothing.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.1.9"
+        question={<>A solenoid 10 cm long with 1000 turns carries 0.5 A. Estimate <strong>B</strong> at the centre, treating it as long.</>}
+        hint="n = N/L. In the long-solenoid limit, B = μ₀nI."
+        answer={
+          <>
+            <p>Turns per metre: n = 1000/0.10 = 10⁴ turns/m.</p>
+            <Formula>|B|<sub>long</sub> = μ₀ n I = (4π×10⁻⁷)(10⁴)(0.5) = 6.28 × 10⁻³ T</Formula>
+            <p>Answer: <strong>~6.3 mT</strong> in the long-solenoid limit. If R ≈ 1 cm so L/2R = 5, the finite-length correction cos θ = 5/√26 ≈ 0.981 gives <strong>~6.16 mT</strong> — within 2%.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.1.10"
+        question={<>An MRI gradient coil — a Maxwell pair (two coaxial loops of radius <strong>R = 0.3 m</strong> carrying opposite currents, separated by <strong>√3 R</strong>) — must produce <strong>dB/dz = 50 mT/m</strong> at the centre. Estimate the required ampere-turns NI.</>}
+        hint="The Maxwell-pair geometry gives dB/dz|₀ ≈ 0.14 μ₀NI/R²."
+        answer={
+          <>
+            <p>The Maxwell pair (opposing currents, separation √3 R) cancels the second derivative and gives a linear gradient:</p>
+            <Formula>dB/dz|<sub>0</sub> ≈ 0.140 μ₀ N I / R²</Formula>
+            <Formula>NI = (dB/dz) · R² / (0.140 · μ₀) = (0.05)(0.09) / (0.140 × 4π×10⁻⁷) ≈ 2.56 × 10⁴ A-turns</Formula>
+            <p>Answer: about <strong>26 kA-turns</strong>. A real gradient coil might run 250 turns at 100 A — the high dI/dt during MRI sequencing flexes the coil against the main field and produces the characteristic loud clicks.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.1.11"
+        question={<>Conceptual: why is <strong>B = 0</strong> along the line of extension of a long straight wire, far from its ends?</>}
+        hint="What is dℓ × r̂ when both point along the wire?"
+        answer={
+          <>
+            <p>On the wire's own axis, r̂ points along the wire and so does dℓ — so dℓ × r̂ = 0 for every segment. Every contribution to B is zero. This is geometric: electric fields radiate outward from a point charge, but magnetic fields cannot exist along the line of a current. The cross-product structure forbids it.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Problem 2.1.12"
+        question={<>Conceptual: for a finite straight wire of length <strong>L</strong>, how does <strong>B</strong> scale at perpendicular distances <strong>d ≫ L</strong>?</>}
+        hint="Take the d ≫ L limit of the finite-segment formula."
+        answer={
+          <>
+            <p>In <strong>|B| = (μ₀I/4πd)·2L/√(L² + 4d²)</strong>, when d ≫ L the square root reduces to 2d:</p>
+            <Formula>|B| ≈ (μ₀ I L) / (4π d²)</Formula>
+            <p>So B ∝ 1/d², not 1/d. Far from a finite current stub, it looks like a magnetic point source — a current dipole<Cite id="jackson-1999" in={SOURCES} />. The infinite-wire 1/d behaviour only holds when the wire's length dominates the distance.</p>
+          </>
+        }
+      />
     </>
   );
 
