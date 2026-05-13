@@ -229,6 +229,15 @@ export default function Ch18Batteries() {
       </p>
       <Formula>V = V° − (RT / nF) · ln Q</Formula>
       <p>
+        The log is not arbitrary. The chemical potential of a dilute species scales as <em>kT ln c</em> — a direct
+        consequence of the Boltzmann factor governing how molecules populate energy levels at temperature T. Halve a
+        reactant's concentration and its free energy per particle drops by <em>kT ln 2</em>; the cell voltage, which is
+        free energy divided by the charge per electron, shifts by the same amount divided by <em>nF</em>. So a tenfold
+        concentration change moves V by exactly <em>(RT/nF) ln 10</em>, the famous 59 mV per decade at room temperature
+        for a one-electron reaction. The <em>nF</em> in the denominator is just the unit-conversion: <em>n</em>
+        electrons transferred per reaction event, <em>F</em> coulombs per mole of electrons<Cite id="nernst-1889" in={SOURCES} />.
+      </p>
+      <p>
         Here R is the gas constant (8.314 J/mol·K), T is absolute temperature, n is the number of electrons transferred
         per reaction event, F is the <Term def="The total charge of one mole of electrons: F = N_A · e ≈ 96 485 C/mol. The unit-conversion constant that takes you from chemistry's 'moles of electrons' to physics's 'coulombs of charge.'">Faraday constant</Term> (the charge per mole of electrons, ≈ 96 485 C/mol)<Cite id="codata-2018" in={SOURCES} />, and <strong>Q</strong> is the <em>reaction quotient</em> — the ratio of product concentrations to reactant
         concentrations. For the Daniell cell:
