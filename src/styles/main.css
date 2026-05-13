@@ -1864,3 +1864,163 @@ nav.top .links a.active { color: var(--accent); }
   .chapter-pills { gap: 9px; }
   .chapter-pills a { font-size: 11px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   v0.8 — Case-study section + cards
+═══════════════════════════════════════════════════════════════ */
+.case-studies {
+  max-width: 70ch;
+  margin: 100px auto 0;
+  padding-top: 36px;
+  border-top: 1px solid var(--border-strong);
+}
+.case-studies-head {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  display: flex; align-items: center; gap: 14px;
+}
+.case-studies-head::before {
+  content: ''; width: 36px; height: 1px; background: var(--accent);
+}
+.case-studies-intro {
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.55;
+  margin-bottom: 30px;
+  font-style: italic;
+  max-width: 55ch;
+}
+.case-studies-list {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+/* Individual case-study card */
+.case-study {
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  padding: 30px 32px 26px;
+  position: relative;
+  overflow: hidden;
+}
+.case-study::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--accent);
+  opacity: .8;
+}
+.case-head { margin-bottom: 20px; }
+.case-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding: 2px 8px;
+  background: var(--accent-soft);
+  border-radius: 2px;
+}
+.case-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: -.015em;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+.case-title em { color: var(--accent); }
+.case-summary {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--text-dim);
+  margin: 0;
+}
+.case-body {
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--text-dim);
+}
+.case-body p { margin-bottom: 1em; }
+.case-body p:last-child { margin-bottom: 0; }
+.case-body strong { color: var(--text); font-weight: 500; }
+.case-body em { color: var(--text); font-style: italic; }
+.case-body .math {
+  font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 18px;
+  text-align: center;
+  margin: 14px 0;
+  color: var(--text);
+}
+.case-body .cite {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  vertical-align: super;
+  line-height: 0;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 1px 5px;
+  margin: 0 1px;
+  border-radius: 2px;
+  text-decoration: none;
+}
+.case-body .cite:hover { background: var(--accent); color: var(--bg); }
+.case-body .formula-block {
+  margin: 16px 0;
+  padding: 12px 18px;
+  max-width: none;
+  border-color: var(--border);
+}
+.case-body .formula-block .formula-content { font-size: 22px; }
+
+/* Spec sheet (key numbers, optional) */
+.case-specs {
+  margin: 24px 0 0;
+  padding: 18px 22px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  border-radius: 3px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px 26px;
+}
+.case-spec-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.case-spec-row dt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.case-spec-row dd {
+  margin: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: .02em;
+}
+
+@media (max-width: 600px) {
+  .case-study { padding: 22px 20px; }
+  .case-title { font-size: 22px; }
+}
