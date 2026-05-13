@@ -113,6 +113,25 @@ export function pinCoords(c: PlacedComponent): [{ x: number; y: number }, { x: n
   return [p0, { x: c.x + dx, y: c.y + dy }];
 }
 
+/**
+ * Walk every integer grid point along a wire's L-path (horizontal then vertical),
+ * matching how the canvas draws it: from → (to.x, from.y) → to.
+ * Every intermediate point belongs to the same electrical node as the endpoints,
+ * which is what a probe dropped on a wire mid-segment depends on.
+ */
+export function* wirePathPoints(w: Wire): Generator<{ x: number; y: number }> {
+  const { from, to } = w;
+  const xStep = from.x === to.x ? 0 : (from.x < to.x ? 1 : -1);
+  const yStep = from.y === to.y ? 0 : (from.y < to.y ? 1 : -1);
+  // Horizontal sweep at y = from.y.
+  let x = from.x;
+  yield { x, y: from.y };
+  while (x !== to.x) { x += xStep; yield { x, y: from.y }; }
+  // Vertical sweep at x = to.x, skipping the corner we already yielded.
+  let y = from.y;
+  while (y !== to.y) { y += yStep; yield { x: to.x, y }; }
+}
+
 /** Partition pins + wire endpoints into nodes. */
 export function buildNodeMap(doc: CircuitDoc): NodeMap {
   const uf = new UnionFind();
@@ -124,9 +143,15 @@ export function buildNodeMap(doc: CircuitDoc): NodeMap {
     if (p1) uf.add(pkey(p1.x, p1.y));
   }
   for (const w of doc.wires) {
-    uf.add(pkey(w.from.x, w.from.y));
-    uf.add(pkey(w.to.x, w.to.y));
-    uf.union(pkey(w.from.x, w.from.y), pkey(w.to.x, w.to.y));
+    // Register every grid point along the L-path so probes dropped mid-segment
+    // resolve to the same node as the wire's endpoints.
+    let prev: string | null = null;
+    for (const pt of wirePathPoints(w)) {
+      const k = pkey(pt.x, pt.y);
+      uf.add(k);
+      if (prev !== null) uf.union(prev, k);
+      prev = k;
+    }
   }
   // Ground anchor: merge all ground pin coords into a single class.
   let groundRoot: string | null = null;

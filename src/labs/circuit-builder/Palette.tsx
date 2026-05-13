@@ -43,6 +43,15 @@ export function Palette({ armed, onArm }: PaletteProps) {
         <div className="cb-palette-grid">
           <button
             type="button"
+            className={'cb-palette-btn' + (armed === null ? ' active' : '')}
+            onClick={() => onArm(null)}
+            title="Select / move components; click empty space to deselect"
+          >
+            <ToolIcon kind="cursor" />
+            <span className="cb-palette-label">Select</span>
+          </button>
+          <button
+            type="button"
             className={'cb-palette-btn' + (armed === 'wire' ? ' active' : '')}
             onClick={() => onArm(armed === 'wire' ? null : 'wire')}
             title="Click two pins to draw a wire"
@@ -80,7 +89,7 @@ export function Palette({ armed, onArm }: PaletteProps) {
               : armed === 'ammeter'
                 ? 'Click a component to probe its current.'
                 : `Placing: ${kindDisplayName(armed as ComponentKind)}. Click canvas.`
-          : 'Pick a tool above.'}
+          : 'Select mode. Click to select; Delete removes the selection.'}
       </div>
     </div>
   );
@@ -165,8 +174,15 @@ function CompIcon({ kind }: { kind: ComponentKind }) {
   }
 }
 
-function ToolIcon({ kind }: { kind: 'wire' | 'voltmeter' | 'ammeter' }) {
+function ToolIcon({ kind }: { kind: 'wire' | 'voltmeter' | 'ammeter' | 'cursor' }) {
   const w = 36, h = 18;
+  if (kind === 'cursor') {
+    return (
+      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="#a09e95" strokeWidth={1.4} strokeLinejoin="round">
+        <path d="M14 3 L14 15 L17 12 L20 17 L22 16 L19 11 L23 11 Z" fill="#16161a" />
+      </svg>
+    );
+  }
   if (kind === 'wire') {
     return (
       <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="#a09e95" strokeWidth={1.4}>

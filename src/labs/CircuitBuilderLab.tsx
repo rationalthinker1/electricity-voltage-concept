@@ -74,6 +74,7 @@ export default function CircuitBuilderLab() {
   // UI state.
   const [armed, setArmed] = useState<ArmedTool>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedWireId, setSelectedWireId] = useState<string | null>(null);
   const [running, setRunning] = useState(true);
   const [solverResult, setSolverResult] = useState<SolverResult | null>(null);
 
@@ -196,10 +197,6 @@ export default function CircuitBuilderLab() {
     setDoc(prev => ({ ...prev, probes: prev.probes.filter(p => p.id !== id) }));
   }, []);
 
-  const deleteWire = useCallback((id: string) => {
-    setDoc(prev => ({ ...prev, wires: prev.wires.filter(w => w.id !== id) }));
-  }, []);
-
   const updateSelected = useCallback((next: PlacedComponent) => {
     setDoc(prev => ({
       ...prev,
@@ -208,6 +205,11 @@ export default function CircuitBuilderLab() {
   }, []);
 
   const deleteSelected = useCallback(() => {
+    if (selectedWireId) {
+      setDoc(prev => ({ ...prev, wires: prev.wires.filter(w => w.id !== selectedWireId) }));
+      setSelectedWireId(null);
+      return;
+    }
     if (!selectedId) return;
     setDoc(prev => ({
       ...prev,
@@ -216,7 +218,23 @@ export default function CircuitBuilderLab() {
       probes: prev.probes.filter(p => p.componentId !== selectedId),
     }));
     setSelectedId(null);
-  }, [selectedId]);
+  }, [selectedId, selectedWireId]);
+
+  // Delete / Backspace removes the current selection (wire or component).
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key !== 'Delete' && e.key !== 'Backspace') return;
+      const t = e.target as HTMLElement | null;
+      // Don't steal Backspace while the user is editing a value in the inspector.
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+      if (selectedWireId || selectedId) {
+        e.preventDefault();
+        deleteSelected();
+      }
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [deleteSelected, selectedId, selectedWireId]);
 
   const rotateSelected = useCallback(() => {
     if (!selectedId) return;
@@ -236,6 +254,7 @@ export default function CircuitBuilderLab() {
     if (!preset) return;
     setDoc(clonePresetDoc(preset.doc));
     setSelectedId(null);
+    setSelectedWireId(null);
     setArmed(null);
     resetContext(ctxRef.current);
   }, []);
@@ -243,8 +262,19 @@ export default function CircuitBuilderLab() {
   const clearAll = useCallback(() => {
     setDoc({ components: [], wires: [], probes: [] });
     setSelectedId(null);
+    setSelectedWireId(null);
     setArmed(null);
     resetContext(ctxRef.current);
+  }, []);
+
+  // Selecting a component clears the wire selection and vice versa.
+  const selectComponent = useCallback((id: string | null) => {
+    setSelectedId(id);
+    if (id !== null) setSelectedWireId(null);
+  }, []);
+  const selectWire = useCallback((id: string | null) => {
+    setSelectedWireId(id);
+    if (id !== null) setSelectedId(null);
   }, []);
 
   const selected = useMemo(
@@ -345,16 +375,18 @@ export default function CircuitBuilderLab() {
             wires={doc.wires}
             probes={doc.probes}
             selectedId={selectedId}
+            selectedWireId={selectedWireId}
             armed={armed}
             onPlaceComponent={placeComponent}
             onPlaceWire={placeWire}
-            onSelect={setSelectedId}
+            onSelect={selectComponent}
+            onSelectWire={selectWire}
             onMoveComponent={moveComponent}
             onPlaceVoltProbe={placeVoltProbe}
             onPlaceAmmProbe={placeAmmProbe}
             onDeleteProbe={deleteProbe}
-            onDeleteWire={deleteWire}
             solverResult={solverResult}
+            nodeMap={nodeMap}
           />
 
           <div className="cb-bottom">

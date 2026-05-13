@@ -23,9 +23,9 @@ import { useCallback, useEffect, useRef } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 
 import { drawComponent, GRID_PX } from './components';
-import { pinCoords } from './solver';
+import { pinCoords, pkey, eng } from './solver';
 import type {
-  ComponentKind, GridPoint, PlacedComponent, Probe, SolverResult, Wire,
+  ComponentKind, GridPoint, NodeMap, PlacedComponent, Probe, SolverResult, Wire,
 } from './types';
 
 const CANVAS_HEIGHT = 480;
@@ -37,19 +37,22 @@ interface CanvasEditorProps {
   wires: Wire[];
   probes: Probe[];
   selectedId: string | null;
+  selectedWireId: string | null;
   armed: ArmedTool;
 
   onPlaceComponent: (kind: ComponentKind, at: GridPoint) => void;
   onPlaceWire: (from: GridPoint, to: GridPoint) => void;
   onSelect: (id: string | null) => void;
+  onSelectWire: (id: string | null) => void;
   onMoveComponent: (id: string, to: GridPoint) => void;
   onPlaceVoltProbe: (at: GridPoint) => void;
   onPlaceAmmProbe: (componentId: string) => void;
   onDeleteProbe: (id: string) => void;
-  onDeleteWire: (id: string) => void;
 
   /** Latest solver result for live coloring. */
   solverResult: SolverResult | null;
+  /** Node map for resolving voltmeter probe positions to node voltages. */
+  nodeMap: NodeMap;
 }
 
 interface UIState {
@@ -261,10 +264,11 @@ export function CanvasEditor(props: CanvasEditorProps) {
       }
       const wire = hitTestWire(mx, my);
       if (wire) {
-        propsRef.current.onDeleteWire(wire.id);
+        propsRef.current.onSelectWire(wire.id);
         return;
       }
       propsRef.current.onSelect(null);
+      propsRef.current.onSelectWire(null);
     }
 
     function onMouseUp() {
@@ -348,8 +352,10 @@ export function CanvasEditor(props: CanvasEditorProps) {
       for (const wr of p.wires) {
         const a = { x: wr.from.x * GRID_PX, y: wr.from.y * GRID_PX };
         const b = { x: wr.to.x * GRID_PX,   y: wr.to.y * GRID_PX };
-        ctx.strokeStyle = ui.hoverWireId === wr.id ? '#ff6b2a' : '#a09e95';
-        ctx.lineWidth = 1.8;
+        const isSelected = p.selectedWireId === wr.id;
+        const isHovered = ui.hoverWireId === wr.id;
+        ctx.strokeStyle = isSelected ? '#ff6b2a' : isHovered ? '#ffb084' : '#a09e95';
+        ctx.lineWidth = isSelected ? 2.6 : 1.8;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         // Manhattan: horizontal then vertical from a → b.
@@ -470,16 +476,38 @@ export function CanvasEditor(props: CanvasEditorProps) {
         ctx.stroke();
       }
 
-      // Live voltage readouts at probes.
+      // Live voltage / current readouts drawn next to each probe badge.
       if (p.solverResult) {
-        // Voltage probe readouts (we draw the value to the side).
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textBaseline = 'middle';
         for (const probe of p.probes) {
           if (probe.kind === 'voltmeter' && probe.at) {
-            // Node index = whatever the merged set says it is.
-            const key = `${probe.at.x},${probe.at.y}`;
-            // We can't easily get NodeMap here; lab computes & passes a map below.
-            // For now, draw small badge only; values live in the bottom panel.
-            void key;
+            const idx = p.nodeMap.index.get(pkey(probe.at.x, probe.at.y));
+            const v = idx !== undefined ? p.solverResult.nodeVoltages[idx] : 0;
+            const text = eng(v, 3) + 'V';
+            const cx = probe.at.x * GRID_PX + 14;
+            const cy = probe.at.y * GRID_PX + 14;
+            ctx.fillStyle = 'rgba(13,13,16,0.85)';
+            const padX = 4, w0 = ctx.measureText(text).width + padX * 2;
+            ctx.fillRect(cx + 12, cy - 8, w0, 16);
+            ctx.fillStyle = '#6cc5c2';
+            ctx.textAlign = 'left';
+            ctx.fillText(text, cx + 12 + padX, cy + 0.5);
+          } else if (probe.kind === 'ammeter' && probe.componentId) {
+            const c = p.components.find(cc => cc.id === probe.componentId);
+            if (!c) continue;
+            const [a, b] = pinCoords(c);
+            if (!b) continue;
+            const i = p.solverResult.componentCurrents.get(probe.componentId) ?? 0;
+            const text = eng(i, 3) + 'A';
+            const cx = (a.x + b.x) * GRID_PX / 2 + 16;
+            const cy = (a.y + b.y) * GRID_PX / 2 + 16;
+            ctx.fillStyle = 'rgba(13,13,16,0.85)';
+            const padX = 4, w0 = ctx.measureText(text).width + padX * 2;
+            ctx.fillRect(cx + 12, cy - 8, w0, 16);
+            ctx.fillStyle = '#ff6b2a';
+            ctx.textAlign = 'left';
+            ctx.fillText(text, cx + 12 + padX, cy + 0.5);
           }
         }
       }
