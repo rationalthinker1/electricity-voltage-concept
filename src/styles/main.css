@@ -1826,3 +1826,22 @@ nav.top .links a.active { color: var(--accent); }
 }
 .ro-value sub { vertical-align: -0.35em; }
 .ro-value sup { vertical-align:  0.45em; }
+
+/* ═══════════════════════════════════════════════════════════════
+   v0.7 — compact chapter pills (11 chapters now)
+═══════════════════════════════════════════════════════════════ */
+.chapter-pills {
+  gap: 14px;
+}
+.chapter-pills a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: .12em;
+  min-width: 22px;
+  text-align: center;
+  padding: 2px 0;
+}
+@media (max-width: 900px) {
+  .chapter-pills { gap: 9px; }
+  .chapter-pills a { font-size: 11px; }
+}

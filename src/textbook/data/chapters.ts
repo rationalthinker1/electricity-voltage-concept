@@ -18,7 +18,12 @@ export type ChapterSlug =
   | 'resistance-and-power'
   | 'magnetism'
   | 'induction'
-  | 'energy-flow';
+  | 'energy-flow'
+  | 'em-waves'
+  | 'maxwell'
+  | 'relativity'
+  | 'circuits-and-ac'
+  | 'materials';
 
 export interface ChapterEntry {
   slug: ChapterSlug;
@@ -115,6 +120,72 @@ export const CHAPTERS: ChapterEntry[] = [
     sources: [
       'poynting-1884', 'maxwell-1865', 'feynman-II-27', 'davis-kaplan-2011',
       'morris-styer-2012', 'griffiths-2017', 'jackson-1999',
+    ],
+  },
+  {
+    slug: 'em-waves',
+    number: 7,
+    title: 'Electromagnetic waves',
+    subtitle: 'Strip the wire. The field still moves.',
+    blurb:
+      "Take Ch.6's picture and remove the absorbing conductor. The field doesn't stop — it propagates outward at c, carrying energy and momentum through empty space. Maxwell predicted it in 1865; Hertz produced and detected it in 1887. Light, radio, X-rays — same physics, different wavelengths.",
+    relatedLabs: ['poynting', 'energy-density'],
+    sources: [
+      'maxwell-1865', 'hertz-1888', 'feynman-II-21', 'griffiths-2017',
+      'jackson-1999', 'codata-2018',
+    ],
+  },
+  {
+    slug: 'maxwell',
+    number: 8,
+    title: "Maxwell's equations together",
+    subtitle: 'Four laws. One field.',
+    blurb:
+      "Gauss for E. Gauss for B (no monopoles). Faraday. Ampère, plus Maxwell's displacement-current correction. Stacked on one page, they say: electric and magnetic fields are one thing, they propagate, and their propagation speed is c. The whole book up to here is the four lines of this chapter.",
+    relatedLabs: ['gauss', 'ampere', 'faraday', 'poynting'],
+    sources: [
+      'maxwell-1865', 'gauss-1813', 'faraday-1832', 'ampere-1826',
+      'hertz-1888', 'feynman-II-18', 'griffiths-2017', 'jackson-1999',
+      'codata-2018',
+    ],
+  },
+  {
+    slug: 'relativity',
+    number: 9,
+    title: 'Relativity and electromagnetism',
+    subtitle: 'Magnetism is electricity, viewed from a moving train.',
+    blurb:
+      "Ch.4 promised it; here it pays off. A current-carrying wire is electrically neutral in its rest frame but appears charged in a frame moving along with the current — and that apparent charge is exactly the magnetic force the test charge feels in the original frame. E and B are not two fields; they are one tensor, viewed from different angles.",
+    relatedLabs: ['lorentz', 'biot-savart'],
+    sources: [
+      'einstein-1905', 'feynman-II-13', 'griffiths-2017', 'jackson-1999',
+      'purcell-morin-2013',
+    ],
+  },
+  {
+    slug: 'circuits-and-ac',
+    number: 10,
+    title: 'Circuits, AC, and impedance',
+    subtitle: 'When the field gets compressed into a schematic.',
+    blurb:
+      "What happens when you stop thinking about fields and start thinking about wires, components, and nodes. Kirchhoff's two laws, the RC and RL transients, the LC oscillation, AC impedance, resonance and Q, the real-power / reactive-power split, and why the grid uses three-phase.",
+    relatedLabs: ['ohms-law', 'capacitance', 'inductance', 'joule'],
+    sources: [
+      'kirchhoff-1845', 'griffiths-2017', 'irwin-circuit-analysis-2015',
+      'grainger-power-systems-2003', 'horowitz-hill-2015', 'codata-2018',
+    ],
+  },
+  {
+    slug: 'materials',
+    number: 11,
+    title: 'Materials',
+    subtitle: 'What ε and μ actually mean.',
+    blurb:
+      "Up to here, εᵣ and μᵣ have been sliders without a story. This chapter opens them up: bound charge and polarization, electric susceptibility, the molecular dipoles inside water, diamagnetism vs paramagnetism vs ferromagnetism, magnetic domains, hysteresis, and why iron concentrates magnetic flux while copper barely notices.",
+    relatedLabs: ['potential', 'capacitance', 'inductance'],
+    sources: [
+      'clausius-1850', 'langevin-1905', 'weiss-1907', 'debye-1929',
+      'griffiths-2017', 'jackson-1999', 'kittel-2005', 'codata-2018',
     ],
   },
 ];

@@ -3,30 +3,30 @@ import { Link, useRouterState } from '@tanstack/react-router';
 import { CHAPTERS } from '@/textbook/data/chapters';
 import { MANIFEST } from '@/labs/data/manifest';
 
+const TOTAL_CHAPTERS = CHAPTERS.length;
+
 /**
- * Sticky top nav. Shows the six narrative chapters as pills with the current
- * chapter highlighted; resolves the active chapter from either /textbook/...
- * or /labs/... (in which case it walks back through the manifest to find
- * which textbook chapter is most-related to the current lab).
+ * Sticky top nav. With 11 chapters the pills are too many for inline titles,
+ * so we show just the chapter number ("1", "2", ..., "11") with the full
+ * title in the title attribute, plus a single "Labs" link to the appendix.
+ * Active chapter highlighted in amber.
  */
 export function TopNav() {
   const router = useRouterState();
   const pathname = router.location.pathname;
 
-  // Determine which chapter is active.
   let activeChapter: string | null = null;
-  let pageMeta = 'An interactive textbook · v.04';
+  let pageMeta = 'An interactive textbook · v.07';
 
   if (pathname.startsWith('/textbook/')) {
     const slug = pathname.split('/')[2];
     const c = CHAPTERS.find(ch => ch.slug === slug);
-    if (c) { activeChapter = c.slug; pageMeta = `Chapter ${c.number} / 6`; }
+    if (c) { activeChapter = c.slug; pageMeta = `Chapter ${c.number} / ${TOTAL_CHAPTERS}`; }
   } else if (pathname.startsWith('/labs/')) {
     const labSlug = pathname.split('/')[2];
     const lab = MANIFEST.find(l => l.slug === labSlug);
     if (lab) {
       pageMeta = `Lab ${lab.number} · appendix`;
-      // Find the first chapter that lists this lab as related — light it up.
       const related = CHAPTERS.find(ch => ch.relatedLabs.includes(labSlug));
       if (related) activeChapter = related.slug;
     }
@@ -39,23 +39,23 @@ export function TopNav() {
       <Link to="/" className="mark">
         Field <span>·</span> Theory
       </Link>
-      <div className="links">
+      <div className="links chapter-pills">
         {CHAPTERS.map(c => (
           <Link
             key={c.slug}
             to="/textbook/$chapterSlug"
             params={{ chapterSlug: c.slug }}
             className={activeChapter === c.slug ? 'active' : ''}
-            title={c.title}
+            title={`Ch.${c.number} — ${c.title}`}
           >
-            {c.number}. {shortTitle(c.title)}
+            {c.number}
           </Link>
         ))}
         <Link
           to="/reference"
           className={pathname === '/reference' ? 'active' : ''}
           title="Equation labs (appendix)"
-          style={{ borderLeft: '1px solid var(--border-strong)', paddingLeft: 18, marginLeft: 4 }}
+          style={{ borderLeft: '1px solid var(--border-strong)', paddingLeft: 16, marginLeft: 6 }}
         >
           Labs
         </Link>
@@ -63,13 +63,4 @@ export function TopNav() {
       <div className="meta">{pageMeta}</div>
     </nav>
   );
-}
-
-function shortTitle(title: string): string {
-  // Compact form for the nav pill: drop common words.
-  return title
-    .replace(/^What is /, '')
-    .replace(/^Where the energy actually flows$/, 'Energy flow')
-    .replace(/^Resistance and power$/, 'Resistance')
-    .replace(/^Voltage and current$/, 'Voltage');
 }
