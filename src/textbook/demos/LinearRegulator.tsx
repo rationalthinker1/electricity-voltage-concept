@@ -17,7 +17,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { drawArrow } from '@/lib/canvasPrimitives';
+import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -106,20 +106,18 @@ export function LinearRegulatorDemo({ figure }: Props) {
       ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText('(burned as heat)', xReg + regW / 2, yTop + barH / 2 + 30);
 
-      // arrow from input to regulator
-      drawArrow(
-        ctx,
-        { x: xIn + inW + 6, y: yTop + barH / 2 },
-        { x: xReg - 4, y: yTop + barH / 2 },
-        { color: '#ecebe5', lineWidth: 1.4, headLength: 6, headWidth: 4 },
-      );
-      // arrow from regulator to output
-      drawArrow(
-        ctx,
-        { x: xReg + regW + 4, y: yTop + barH / 2 },
-        { x: xOut - 6, y: yTop + barH / 2 },
-        { color: '#ecebe5', lineWidth: 1.4, headLength: 6, headWidth: 4 },
-      );
+      // Source → regulator → load energy-flow arrows.
+      const flowArrows: CircuitElement[] = [
+        { kind: 'arrow',
+          from: { x: xIn + inW + 6, y: yTop + barH / 2 },
+          to:   { x: xReg - 4,      y: yTop + barH / 2 },
+          color: '#ecebe5', lineWidth: 1.4, headLength: 6, headWidth: 4 },
+        { kind: 'arrow',
+          from: { x: xReg + regW + 4, y: yTop + barH / 2 },
+          to:   { x: xOut - 6,        y: yTop + barH / 2 },
+          color: '#ecebe5', lineWidth: 1.4, headLength: 6, headWidth: 4 },
+      ];
+      drawCircuit(ctx, { elements: flowArrows });
 
       // output bar — fraction of P_in
       const outBarH = Math.max(2, barH * (Pout / Math.max(Pin, 0.01)));

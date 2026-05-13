@@ -17,7 +17,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
-import { drawBattery, drawWire } from '@/lib/canvasPrimitives';
+import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -148,18 +148,18 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
         ? 'Real picture — energy flows through the field, into the bulb from outside'
         : 'Old picture — electrons stream along the wire, carrying energy', 18, 14);
 
-      drawWire(ctx, wirePath, { color: 'rgba(255,107,42,0.55)', lineWidth: 3.5 });
-      drawBattery(ctx, { x: batteryX, y: (cyTop + cyBot) / 2 }, {
-        color: 'rgba(255,255,255,0)',
-        label: 'battery',
-        labelOffset: { x: 0, y: 0 },
-        leadLength: (cyBot - cyTop) / 2,
-        negativeColor: '#ecebe5',
-        negativePlateLength: 20,
-        plateGap: (cyBot - cyTop) / 2,
-        positiveColor: '#ecebe5',
-        positivePlateLength: 36,
-      });
+      // Static schematic backdrop: battery on the left, current-loop wire to the bulb.
+      const schematic: CircuitElement[] = [
+        { kind: 'wire', points: wirePath, color: 'rgba(255,107,42,0.55)', lineWidth: 3.5 },
+        { kind: 'battery', at: { x: batteryX, y: (cyTop + cyBot) / 2 },
+          color: 'rgba(255,255,255,0)',
+          label: 'battery', labelOffset: { x: 0, y: 0 },
+          leadLength: (cyBot - cyTop) / 2,
+          negativeColor: '#ecebe5', negativePlateLength: 20,
+          plateGap: (cyBot - cyTop) / 2,
+          positiveColor: '#ecebe5', positivePlateLength: 36 },
+      ];
+      drawCircuit(ctx, { elements: schematic });
       ctx.fillStyle = '#ff3b6e';
       ctx.font = 'bold 16px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';

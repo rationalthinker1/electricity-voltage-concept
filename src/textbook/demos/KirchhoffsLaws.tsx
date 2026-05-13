@@ -30,7 +30,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { drawBattery, drawResistor, drawWire } from '@/lib/canvasPrimitives';
+import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -79,42 +79,31 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       const nodeA_x = padX + (outX - padX) * 0.55;
       const nodeB_x = nodeA_x;
 
-      // Top: bat (+) → R1 → node A → R3 → top-right corner → down to bot-right
       const xR1 = padX + (nodeA_x - padX) * 0.30;
-      drawWire(ctx, [{ x: batX, y: yTop }, { x: xR1 - 22, y: yTop }]);
-      drawResistor(ctx, { x: xR1 - 20, y: yTop }, { x: xR1 + 20, y: yTop }, {
-        label: `R1=${R1.toFixed(0)}Ω`,
-        labelOffset: { x: 0, y: -12 },
-      });
-      drawWire(ctx, [{ x: xR1 + 22, y: yTop }, { x: nodeA_x, y: yTop }]);
-
       const xR3 = nodeA_x + (outX - nodeA_x) * 0.5;
-      drawWire(ctx, [{ x: nodeA_x, y: yTop }, { x: xR3 - 22, y: yTop }]);
-      drawResistor(ctx, { x: xR3 - 20, y: yTop }, { x: xR3 + 20, y: yTop }, {
-        label: `R3=${R3.toFixed(0)}Ω`,
-        labelOffset: { x: 0, y: -12 },
-      });
-      drawWire(ctx, [
-        { x: xR3 + 22, y: yTop },
-        { x: outX, y: yTop },
-        { x: outX, y: yBot },
-        { x: nodeB_x, y: yBot },
-        { x: batX, y: yBot },
-      ]);
 
-      // Middle branch: A → R2 → B
-      drawWire(ctx, [{ x: nodeA_x, y: yTop }, { x: nodeA_x, y: h / 2 - 22 }]);
-      drawResistor(ctx, { x: nodeA_x, y: h / 2 - 20 }, { x: nodeA_x, y: h / 2 + 20 }, {
-        label: `R2=${R2.toFixed(0)}Ω`,
-        labelOffset: { x: 12, y: 0 },
-      });
-      drawWire(ctx, [{ x: nodeA_x, y: h / 2 + 22 }, { x: nodeA_x, y: yBot }]);
-
-      // Battery
-      drawBattery(ctx, { x: batX, y: h / 2 }, {
-        label: `${V.toFixed(1)} V`,
-        leadLength: 60,
-      });
+      // Two-loop network: battery on left, R1 + R3 along top rail, R2 down the middle branch.
+      const elements: CircuitElement[] = [
+        { kind: 'wire', points: [{ x: batX, y: yTop }, { x: xR1 - 22, y: yTop }] },
+        { kind: 'resistor', from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
+          label: `R1=${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
+        { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: nodeA_x, y: yTop }] },
+        { kind: 'wire', points: [{ x: nodeA_x, y: yTop }, { x: xR3 - 22, y: yTop }] },
+        { kind: 'resistor', from: { x: xR3 - 20, y: yTop }, to: { x: xR3 + 20, y: yTop },
+          label: `R3=${R3.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
+        { kind: 'wire', points: [
+          { x: xR3 + 22, y: yTop }, { x: outX, y: yTop },
+          { x: outX, y: yBot }, { x: nodeB_x, y: yBot }, { x: batX, y: yBot },
+        ] },
+        { kind: 'wire', points: [{ x: nodeA_x, y: yTop }, { x: nodeA_x, y: h / 2 - 22 }] },
+        { kind: 'resistor', from: { x: nodeA_x, y: h / 2 - 20 }, to: { x: nodeA_x, y: h / 2 + 20 },
+          label: `R2=${R2.toFixed(0)}Ω`, labelOffset: { x: 12, y: 0 } },
+        { kind: 'wire', points: [{ x: nodeA_x, y: h / 2 + 22 }, { x: nodeA_x, y: yBot }] },
+        { kind: 'battery', at: { x: batX, y: h / 2 }, label: `${V.toFixed(1)} V`, leadLength: 60 },
+        { kind: 'node', at: { x: nodeA_x, y: yTop }, color: 'rgba(255,107,42,0.95)' },
+        { kind: 'node', at: { x: nodeB_x, y: yBot }, color: 'rgba(255,107,42,0.95)' },
+      ];
+      drawCircuit(ctx, { elements });
 
       // Node labels
       ctx.fillStyle = 'rgba(255,255,255,0.8)';
@@ -124,11 +113,6 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       ctx.fillText('A', nodeA_x + 6, yTop - 4);
       ctx.textBaseline = 'top';
       ctx.fillText('B', nodeB_x + 6, yBot + 6);
-
-      // Node dots
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
-      ctx.beginPath(); ctx.arc(nodeA_x, yTop, 3.5, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.arc(nodeB_x, yBot, 3.5, 0, Math.PI * 2); ctx.fill();
 
       // Current dots
       const maxI = Math.max(I1, 1e-9);

@@ -42,11 +42,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
-import {
-  drawBattery as drawSchematicBattery,
-  drawResistor as drawSchematicResistor,
-  drawWire as drawSchematicWire,
-} from '@/lib/canvasPrimitives';
+import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 
 type Mode = 'V_DC' | 'V_AC' | 'I_DC' | 'R';
 
@@ -376,75 +372,44 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
       const p6 = projectTP(TPS[6], w, h);
       const p_gnd = projectTP(TPS[7], w, h);
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.55)';
-      ctx.lineWidth = 1.5;
-      ctx.lineCap = 'round';
-
-      // Battery → R1 → TP1 (vertical-ish run from p_bat down to p1)
-      drawSchematicWire(ctx, [p_bat, { x: p_bat.x, y: p1.y }]);
-      drawSchematicWire(ctx, [{ x: p_bat.x, y: p1.y }, { x: p1.x - 24, y: p1.y }]);
       const r1cx = (p_bat.x + p1.x - 24) / 2;
-      drawSchematicResistor(ctx, { x: r1cx - 20, y: p1.y }, { x: r1cx + 20, y: p1.y }, {
-        amplitude: 6,
-        label: `R₁ = ${R1} Ω`,
-        labelOffset: { x: 0, y: -10 },
-      });
-      drawSchematicWire(ctx, [{ x: r1cx + 20, y: p1.y }, p1]);
+      const r2cy = (p1.y + p3.y) / 2;
+      const r3cy = (p3.y + p5.y) / 2;
+      const r4cy = (p4.y + p6.y) / 2;
+      const capCy = (p2.y + p4.y) / 2;
 
-      // Top rail TP1 — TP2
-      drawSchematicWire(ctx, [p1, p2]);
+      // Six-node bench network: battery → R1 → TP1=TP2 rail; left branch R2 then R3 to GND; right branch C then R4 to bottom rail.
+      const elements: CircuitElement[] = [
+        { kind: 'wire', points: [p_bat, { x: p_bat.x, y: p1.y }, { x: p1.x - 24, y: p1.y }] },
+        { kind: 'resistor', from: { x: r1cx - 20, y: p1.y }, to: { x: r1cx + 20, y: p1.y },
+          amplitude: 6, label: `R₁ = ${R1} Ω`, labelOffset: { x: 0, y: -10 } },
+        { kind: 'wire', points: [{ x: r1cx + 20, y: p1.y }, p1] },
+        { kind: 'wire', points: [p1, p2] },
+        { kind: 'wire', points: [p1, { x: p1.x, y: r2cy - 20 }] },
+        { kind: 'resistor', from: { x: p1.x, y: r2cy - 20 }, to: { x: p1.x, y: r2cy + 20 },
+          amplitude: 6, label: `R₂ = ${R2} Ω`, labelOffset: { x: 12, y: 0 } },
+        { kind: 'wire', points: [{ x: p1.x, y: r2cy + 20 }, p3] },
+        { kind: 'wire', points: [p2, { x: p2.x, y: capCy - 14 }] },
+        { kind: 'wire', points: [{ x: p2.x, y: capCy + 14 }, p4] },
+        { kind: 'wire', points: [p3, { x: p3.x, y: r3cy - 20 }] },
+        { kind: 'resistor', from: { x: p3.x, y: r3cy - 20 }, to: { x: p3.x, y: r3cy + 20 },
+          amplitude: 6, label: `R₃ = ${R3} Ω`, labelOffset: { x: 12, y: 0 } },
+        { kind: 'wire', points: [{ x: p3.x, y: r3cy + 20 }, p5] },
+        { kind: 'wire', points: [p4, { x: p4.x, y: r4cy - 20 }] },
+        { kind: 'resistor', from: { x: p4.x, y: r4cy - 20 }, to: { x: p4.x, y: r4cy + 20 },
+          amplitude: 6, label: `R₄ = ${R4} Ω`, labelOffset: { x: 12, y: 0 } },
+        { kind: 'wire', points: [{ x: p4.x, y: r4cy + 20 }, p6] },
+        { kind: 'wire', points: [p5, p6] },
+        { kind: 'wire', points: [p5, { x: p_gnd.x, y: p5.y }, p_gnd] },
+        { kind: 'battery', at: { x: p_bat.x, y: p_bat.y - 24 },
+          label: `${V_BATT.toFixed(0)} V`, labelOffset: { x: 28, y: 0 },
+          leadLength: 14, negativePlateLength: 14, plateGap: 4, positivePlateLength: 24 },
+        { kind: 'ground', at: p_gnd, color: 'rgba(160,158,149,0.85)', size: 20, leadLength: 4 },
+      ];
+      drawCircuit(ctx, { elements, defaultWireColor: 'rgba(255,255,255,0.55)', defaultWireWidth: 1.5 });
 
-      // TP1 → R2 → TP3
-      drawSchematicWire(ctx, [p1, { x: p1.x, y: (p1.y + p3.y) / 2 - 20 }]);
-      drawSchematicResistor(ctx, { x: p1.x, y: (p1.y + p3.y) / 2 - 20 }, { x: p1.x, y: (p1.y + p3.y) / 2 + 20 }, {
-        amplitude: 6,
-        label: `R₂ = ${R2} Ω`,
-        labelOffset: { x: 12, y: 0 },
-      });
-      drawSchematicWire(ctx, [{ x: p1.x, y: (p1.y + p3.y) / 2 + 20 }, p3]);
-
-      // TP2 → C → TP4
-      drawSchematicWire(ctx, [p2, { x: p2.x, y: (p2.y + p4.y) / 2 - 14 }]);
-      drawCapacitorV(ctx, p2.x, (p2.y + p4.y) / 2, 'C', `${(C_VAL * 1e6).toFixed(0)} µF`);
-      drawSchematicWire(ctx, [{ x: p2.x, y: (p2.y + p4.y) / 2 + 14 }, p4]);
-
-      // TP3 → R3 → TP5
-      drawSchematicWire(ctx, [p3, { x: p3.x, y: (p3.y + p5.y) / 2 - 20 }]);
-      drawSchematicResistor(ctx, { x: p3.x, y: (p3.y + p5.y) / 2 - 20 }, { x: p3.x, y: (p3.y + p5.y) / 2 + 20 }, {
-        amplitude: 6,
-        label: `R₃ = ${R3} Ω`,
-        labelOffset: { x: 12, y: 0 },
-      });
-      drawSchematicWire(ctx, [{ x: p3.x, y: (p3.y + p5.y) / 2 + 20 }, p5]);
-
-      // TP4 → R4 → TP6
-      drawSchematicWire(ctx, [p4, { x: p4.x, y: (p4.y + p6.y) / 2 - 20 }]);
-      drawSchematicResistor(ctx, { x: p4.x, y: (p4.y + p6.y) / 2 - 20 }, { x: p4.x, y: (p4.y + p6.y) / 2 + 20 }, {
-        amplitude: 6,
-        label: `R₄ = ${R4} Ω`,
-        labelOffset: { x: 12, y: 0 },
-      });
-      drawSchematicWire(ctx, [{ x: p4.x, y: (p4.y + p6.y) / 2 + 20 }, p6]);
-
-      // Bottom rail TP5 — TP6
-      drawSchematicWire(ctx, [p5, p6]);
-
-      // TP5 → GND
-      drawSchematicWire(ctx, [p5, { x: p_gnd.x, y: p5.y }]);
-      drawSchematicWire(ctx, [{ x: p_gnd.x, y: p5.y }, p_gnd]);
-
-      // Battery symbol drawn at p_bat location with a small gap from top
-      drawSchematicBattery(ctx, { x: p_bat.x, y: p_bat.y - 24 }, {
-        label: `${V_BATT.toFixed(0)} V`,
-        labelOffset: { x: 28, y: 0 },
-        leadLength: 14,
-        negativePlateLength: 14,
-        plateGap: 4,
-        positivePlateLength: 24,
-      });
-
-      // GND symbol
-      drawGndSymbol(ctx, p_gnd.x, p_gnd.y + 4);
+      // Capacitor in the right branch — inline so plate spacing matches the tight wire bracket.
+      drawCapacitorV(ctx, p2.x, capCy, 'C', `${(C_VAL * 1e6).toFixed(0)} µF`);
 
       // Current dots — only along the main R1–R2–R3 path
       const Imax = I_main;
@@ -570,16 +535,6 @@ function drawCapacitorV(ctx: CanvasRenderingContext2D, cx: number, cy: number, l
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
   ctx.fillText(`${label} = ${value}`, cx + 18, cy);
-}
-
-function drawGndSymbol(ctx: CanvasRenderingContext2D, x: number, y: number) {
-  ctx.strokeStyle = 'rgba(160,158,149,0.85)';
-  ctx.lineWidth = 1.4;
-  ctx.beginPath();
-  ctx.moveTo(x - 10, y); ctx.lineTo(x + 10, y);
-  ctx.moveTo(x - 7, y + 4); ctx.lineTo(x + 7, y + 4);
-  ctx.moveTo(x - 4, y + 8); ctx.lineTo(x + 4, y + 8);
-  ctx.stroke();
 }
 
 function drawProbe(ctx: CanvasRenderingContext2D, p: Pt, color: string, sym: string) {

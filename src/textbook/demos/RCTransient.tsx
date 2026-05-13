@@ -15,7 +15,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { drawBattery, drawResistor, drawSwitch, drawWire } from '@/lib/canvasPrimitives';
+import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 
 type Mode = 'open' | 'charging' | 'discharging';
 
@@ -102,34 +102,25 @@ export function RCTransientDemo({ figure }: Props) {
       const yTop = cy - 50;
       const yBot = cy + 50;
 
-      // top wire: battery+ → switch → resistor → capacitor
-      drawWire(ctx, [{ x: batX, y: yTop }, { x: swX - 14, y: yTop }]);
-      // Switch
-      drawSwitch(ctx, { x: swX, y: yTop }, {
-        label: st.mode.toUpperCase(),
-        state: st.mode === 'charging' ? 'closed' : st.mode === 'discharging' ? 'open-down' : 'open-up',
-      });
-      drawWire(ctx, [{ x: swX + 14, y: yTop }, { x: resX - 22, y: yTop }]);
-      drawResistor(ctx, { x: resX - 20, y: yTop }, { x: resX + 20, y: yTop }, {
-        label: fmtR(st.R),
-        labelOffset: { x: 0, y: -10 },
-      });
-      drawWire(ctx, [{ x: resX + 22, y: yTop }, { x: capX, y: yTop }]);
-      // Capacitor
+      // RC loop: battery → switch → resistor → capacitor → back to battery.
+      const elements: CircuitElement[] = [
+        { kind: 'wire', points: [{ x: batX, y: yTop }, { x: swX - 14, y: yTop }] },
+        { kind: 'switch', at: { x: swX, y: yTop },
+          label: st.mode.toUpperCase(),
+          state: st.mode === 'charging' ? 'closed' : st.mode === 'discharging' ? 'open-down' : 'open-up' },
+        { kind: 'wire', points: [{ x: swX + 14, y: yTop }, { x: resX - 22, y: yTop }] },
+        { kind: 'resistor', from: { x: resX - 20, y: yTop }, to: { x: resX + 20, y: yTop },
+          label: fmtR(st.R), labelOffset: { x: 0, y: -10 } },
+        { kind: 'wire', points: [{ x: resX + 22, y: yTop }, { x: capX, y: yTop }] },
+        { kind: 'wire', points: [{ x: capX, y: cy + 14 }, { x: capX, y: yBot }, { x: batX, y: yBot }] },
+        { kind: 'battery', at: { x: batX, y: cy },
+          label: `${V0.toFixed(0)}V`, leadLength: 50,
+          positivePlateLength: 24, negativePlateLength: 14 },
+      ];
+      drawCircuit(ctx, { elements });
+
+      // Capacitor with dynamic charge-coloured plates layered on top.
       drawCapacitorV(ctx, capX, cy, st.Vc, V0);
-      // Bottom wire back to battery
-      drawWire(ctx, [
-        { x: capX, y: cy + 14 },
-        { x: capX, y: yBot },
-        { x: batX, y: yBot },
-      ]);
-      // Battery
-      drawBattery(ctx, { x: batX, y: cy }, {
-        label: `${V0.toFixed(0)}V`,
-        leadLength: 50,
-        positivePlateLength: 24,
-        negativePlateLength: 14,
-      });
 
       // Current dots when active (only if mode is not open and there is appreciable change)
       const dV = st.mode === 'charging' ? V0 - st.Vc : st.mode === 'discharging' ? st.Vc : 0;

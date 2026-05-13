@@ -32,7 +32,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { drawBattery, drawResistor, drawWire } from '@/lib/canvasPrimitives';
+import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -72,55 +72,51 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
       const yTop = h * 0.28;
       const yBot = h * 0.72;
       const yMid = (yTop + yBot) / 2;
-
-      // Left vertical: battery
-      drawWire(ctx, [{ x: xL, y: yTop }, { x: xL, y: yMid - 22 }]);
-      drawWire(ctx, [{ x: xL, y: yMid + 22 }, { x: xL, y: yBot }]);
-      // Right vertical wire
-      drawWire(ctx, [{ x: xR, y: yTop }, { x: xR, y: yBot }]);
-
-      // Top branch: R1, A, R2
       const xR1 = (xL + xA) / 2;
       const xR2 = (xA + xR) / 2;
-      drawWire(ctx, [{ x: xL, y: yTop }, { x: xR1 - 22, y: yTop }]);
-      drawResistor(ctx, { x: xR1 - 20, y: yTop }, { x: xR1 + 20, y: yTop }, {
-        label: `R1=${R1.toFixed(0)}Ω`,
-        labelOffset: { x: 0, y: -12 },
-      });
-      drawWire(ctx, [{ x: xR1 + 22, y: yTop }, { x: xA, y: yTop }, { x: xR2 - 22, y: yTop }]);
-      drawResistor(ctx, { x: xR2 - 20, y: yTop }, { x: xR2 + 20, y: yTop }, {
-        label: `R2=${R2.toFixed(0)}Ω`,
-        labelOffset: { x: 0, y: -12 },
-      });
-      drawWire(ctx, [{ x: xR2 + 22, y: yTop }, { x: xR, y: yTop }]);
-
-      // Bottom branch: R3, B, Rx
       const xR3 = (xL + xB) / 2;
       const xRx = (xB + xR) / 2;
-      drawWire(ctx, [{ x: xL, y: yBot }, { x: xR3 - 22, y: yBot }]);
-      drawResistor(ctx, { x: xR3 - 20, y: yBot }, { x: xR3 + 20, y: yBot }, {
-        label: `R3=${R3.toFixed(0)}Ω`,
-        labelOffset: { x: 0, y: -12 },
-      });
-      drawWire(ctx, [{ x: xR3 + 22, y: yBot }, { x: xB, y: yBot }, { x: xRx - 22, y: yBot }]);
-      drawResistor(ctx, { x: xRx - 20, y: yBot }, { x: xRx + 20, y: yBot }, {
-        label: `Rx=${Rx.toFixed(0)}Ω`,
-        labelOffset: { x: 0, y: 20 },
-      });
-      drawWire(ctx, [{ x: xRx + 22, y: yBot }, { x: xR, y: yBot }]);
 
-      drawBattery(ctx, { x: xL, y: yMid }, {
-        label: `${V.toFixed(1)} V`,
-        leadLength: 22,
-      });
+      // Diamond bridge: battery on left rail, four resistors around the diamond, galv across A–B.
+      const elements: CircuitElement[] = [
+        // Left rail (split around battery).
+        { kind: 'wire', points: [{ x: xL, y: yTop }, { x: xL, y: yMid - 22 }] },
+        { kind: 'wire', points: [{ x: xL, y: yMid + 22 }, { x: xL, y: yBot }] },
+        // Right rail.
+        { kind: 'wire', points: [{ x: xR, y: yTop }, { x: xR, y: yBot }] },
+        // Battery on the left rail.
+        { kind: 'battery', at: { x: xL, y: yMid },
+          label: `${V.toFixed(1)} V`, leadLength: 22 },
+        // Top branch: R1, node A, R2.
+        { kind: 'wire', points: [{ x: xL, y: yTop }, { x: xR1 - 22, y: yTop }] },
+        { kind: 'resistor',
+          from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
+          label: `R1=${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
+        { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: xA, y: yTop }, { x: xR2 - 22, y: yTop }] },
+        { kind: 'resistor',
+          from: { x: xR2 - 20, y: yTop }, to: { x: xR2 + 20, y: yTop },
+          label: `R2=${R2.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
+        { kind: 'wire', points: [{ x: xR2 + 22, y: yTop }, { x: xR, y: yTop }] },
+        // Bottom branch: R3, node B, Rx.
+        { kind: 'wire', points: [{ x: xL, y: yBot }, { x: xR3 - 22, y: yBot }] },
+        { kind: 'resistor',
+          from: { x: xR3 - 20, y: yBot }, to: { x: xR3 + 20, y: yBot },
+          label: `R3=${R3.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
+        { kind: 'wire', points: [{ x: xR3 + 22, y: yBot }, { x: xB, y: yBot }, { x: xRx - 22, y: yBot }] },
+        { kind: 'resistor',
+          from: { x: xRx - 20, y: yBot }, to: { x: xRx + 20, y: yBot },
+          label: `Rx=${Rx.toFixed(0)}Ω`, labelOffset: { x: 0, y: 20 } },
+        { kind: 'wire', points: [{ x: xRx + 22, y: yBot }, { x: xR, y: yBot }] },
+        // Node dots at A and B.
+        { kind: 'node', at: { x: xA, y: yTop }, color: 'rgba(255,107,42,0.95)', radius: 4 },
+        { kind: 'node', at: { x: xB, y: yBot }, color: 'rgba(255,107,42,0.95)', radius: 4 },
+      ];
+      drawCircuit(ctx, { elements });
 
-      // Galvanometer between A and B
+      // Galvanometer between A and B — needle deflection is dynamic, so this stays imperative.
       drawGalvanometer(ctx, xA, yMid, dV, V);
 
-      // Node dots and labels
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
-      ctx.beginPath(); ctx.arc(xA, yTop, 4, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.arc(xB, yBot, 4, 0, Math.PI * 2); ctx.fill();
+      // Node labels (A, B with their potentials).
       ctx.fillStyle = 'rgba(255,255,255,0.85)';
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
