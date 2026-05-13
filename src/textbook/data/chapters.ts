@@ -30,6 +30,8 @@ export type ChapterSlug =
   | 'antennas'
   | 'motors'
   | 'generators'
+  | 'transformers'
+  | 'rectifiers-and-inverters'
   | 'batteries'
   | 'modern-batteries';
 
@@ -292,8 +294,36 @@ export const CHAPTERS: ChapterEntry[] = [
     ],
   },
   {
-    slug: 'batteries',
+    slug: 'transformers',
     number: 18,
+    title: 'Transformers',
+    subtitle: 'Two coils, one core, a different voltage on the other side.',
+    blurb:
+      "Wrap two coils around the same iron ring and a changing current in one drives a proportional voltage in the other. Faraday discovered the principle in 1831; Stanley turned it into a working power-grid component in 1885; and from that moment, electricity could be sent across continents. Step up to 500 kV for transmission, step down to 240 V for your wall, step down again to 5 V for your phone — all the same physics.",
+    relatedLabs: ['faraday', 'inductance'],
+    sources: [
+      'faraday-1832', 'stanley-1886', 'feynman-II-17', 'griffiths-2017',
+      'mclyman-2004', 'fitzgerald-kingsley-umans-2014',
+      'grainger-power-systems-2003', 'steinmetz-1893', 'codata-2018',
+    ],
+  },
+  {
+    slug: 'rectifiers-and-inverters',
+    number: 19,
+    title: 'Rectifiers and inverters',
+    subtitle: 'AC to DC, DC to AC, and the silicon that makes the swap.',
+    blurb:
+      "Your wall outlet is AC. Every chip in your laptop wants DC. Your roof's solar panel produces DC; the grid wants AC. The two-way bridge between them is power electronics — diode rectifiers (1904 onward), SCRs (1957), the buck/boost/flyback topologies that hide inside every wall-wart, and the grid-tie inverter that pushes your panels onto the 60 Hz line. We trace the path of energy through each of these.",
+    relatedLabs: ['rc-circuit', 'capacitance'],
+    sources: [
+      'fleming-1904', 'shockley-1949', 'moll-tanenbaum-goldey-holonyak-1956',
+      'mohan-undeland-robbins-2003', 'erickson-maksimovic-2020',
+      'horowitz-hill-2015', 'griffiths-2017', 'codata-2018',
+    ],
+  },
+  {
+    slug: 'batteries',
+    number: 20,
     title: 'How a battery works',
     subtitle: 'Chemistry that keeps a voltage on the wires.',
     blurb:
@@ -306,7 +336,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'modern-batteries',
-    number: 19,
+    number: 21,
     title: 'Modern batteries',
     subtitle: 'From lead-acid to lithium-ion to the next thing.',
     blurb:

@@ -979,6 +979,76 @@ export const SOURCES: Record<string, Source> = {
     venue: 'Wiley',
     note: 'Practical reference for PEM, SOFC, AFC, and PAFC fuel cell types, with thermodynamic limits, polarization curves, and balance-of-plant.',
   },
+
+  /* ─── Ch.18 Transformers ─── */
+  'stanley-1886': {
+    id: 'stanley-1886',
+    title: 'Westinghouse Electric Company first commercial AC distribution system, Great Barrington MA',
+    author: 'William Stanley Jr.',
+    year: 1886,
+    venue: 'The Electrical World (March 20, 1886); described later in Stanley, "Alternating current distribution," AIEE Transactions 7 (1890), 553–587',
+    note: 'First practical step-down transformer in commercial service. 25 store and office building lights powered from a 500 V AC primary stepped down to 100 V — proof of concept for grid-scale AC distribution.',
+  },
+  'mclyman-2004': {
+    id: 'mclyman-2004',
+    title: 'Transformer and Inductor Design Handbook, 3rd ed.',
+    author: 'Colonel Wm. T. McLyman',
+    year: 2004,
+    venue: 'Marcel Dekker / CRC Press',
+    note: 'Comprehensive design reference for transformers and inductors: core materials, window utilization, regulation, losses, thermal design, and high-frequency effects.',
+  },
+  'steinmetz-1893': {
+    id: 'steinmetz-1893',
+    title: 'Complex Quantities and Their Use in Electrical Engineering',
+    author: 'Charles Proteus Steinmetz',
+    year: 1893,
+    venue: 'Proceedings of the International Electrical Congress, Chicago, 33–74',
+    note: 'Introduced the use of complex numbers (j-operator) to AC circuit analysis, making transformer and AC machine design tractable for the first time.',
+  },
+
+  /* ─── Ch.19 Rectifiers and inverters ─── */
+  'fleming-1904': {
+    id: 'fleming-1904',
+    title: 'Instrument for converting alternating electric currents into continuous currents',
+    author: 'John Ambrose Fleming',
+    year: 1904,
+    venue: 'US Patent 803,684 (filed April 19, 1905; granted November 7, 1905); UK Patent 24,850 (1904)',
+    note: 'The Fleming valve — a thermionic vacuum diode that rectified AC to pulsating DC. The first electronic rectifier.',
+  },
+  'shockley-1949': {
+    id: 'shockley-1949',
+    title: 'The Theory of p-n Junctions in Semiconductors and p-n Junction Transistors',
+    author: 'William Shockley',
+    year: 1949,
+    venue: 'Bell System Technical Journal 28 (3), 435–489',
+    url: 'https://doi.org/10.1002/j.1538-7305.1949.tb03645.x',
+    note: 'Shockley diode equation I = I_s(exp(qV/nkT)−1) — the foundation of every semiconductor rectifier. Shared the 1956 Nobel Prize in Physics with Bardeen and Brattain for the transistor.',
+  },
+  'moll-tanenbaum-goldey-holonyak-1956': {
+    id: 'moll-tanenbaum-goldey-holonyak-1956',
+    title: 'P-N-P-N Transistor Switches',
+    author: 'John L. Moll, Morris Tanenbaum, J. M. Goldey, Nick Holonyak',
+    year: 1956,
+    venue: 'Proceedings of the IRE 44 (9), 1174–1182',
+    url: 'https://doi.org/10.1109/JRPROC.1956.275172',
+    note: 'Bell Labs analysis of the four-layer PNPN structure (thyristor / SCR). General Electric brought the SCR to market in 1957; it became the workhorse of high-power AC control and HVDC conversion.',
+  },
+  'mohan-undeland-robbins-2003': {
+    id: 'mohan-undeland-robbins-2003',
+    title: 'Power Electronics: Converters, Applications, and Design, 3rd ed.',
+    author: 'Ned Mohan, Tore M. Undeland, William P. Robbins',
+    year: 2003,
+    venue: 'Wiley',
+    note: 'Standard undergraduate power-electronics textbook. Source for rectifier topologies, buck/boost/flyback DC-DC converters, single-phase and three-phase inverters, PWM strategies, and grid-tie interfacing.',
+  },
+  'erickson-maksimovic-2020': {
+    id: 'erickson-maksimovic-2020',
+    title: 'Fundamentals of Power Electronics, 3rd ed.',
+    author: 'Robert W. Erickson, Dragan Maksimović',
+    year: 2020,
+    venue: 'Springer',
+    note: 'Graduate-level reference. Inductor volt-second balance, capacitor charge balance, small-signal modelling, control design, and a rigorous treatment of switching converter dynamics.',
+  },
 };
 
 export type SourceKey = keyof typeof SOURCES;
