@@ -17,7 +17,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { drawResistor, drawWire } from '@/lib/canvasPrimitives';
+import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -117,27 +117,62 @@ function drawDivider(
   const margin = 20;
   const xRail = margin + 30;          // x of the divider trunk
   const xLoad = w - margin - 30;      // x of the load branch (if any)
+  const xSrc = margin;
   const yTop = margin + 10;
   const yMid = Math.floor(h / 2);
   const yBot = h - margin - 10;
+  const yTap = yMid;
 
-  // Wires (trunk)
-  drawWire(ctx, [{ x: xRail, y: yTop }, { x: xRail, y: yBot }], {
-    color: 'rgba(236,235,229,0.55)',
-    lineWidth: 1.4,
-  });
+  // Static schematic: V source on left → divider trunk → R1 / R2 → tap to load.
+  const elements: CircuitElement[] = [
+    // Top and bottom rails from the source to the trunk, then trunk top→bottom.
+    { kind: 'wire',
+      points: [
+        { x: xSrc, y: yTop }, { x: xRail, y: yTop },
+        { x: xRail, y: yBot }, { x: xSrc, y: yBot },
+      ] },
+    // R1 on the top half of the trunk.
+    { kind: 'resistor',
+      from: { x: xRail, y: yTop + 18 },
+      to:   { x: xRail, y: yMid - 18 },
+      color: 'rgba(255,59,110,0.9)',
+      label: `R₁ = ${formatR(R1)}`,
+      labelOffset: { x: 16, y: 0 } },
+    // R2 on the bottom half of the trunk.
+    { kind: 'resistor',
+      from: { x: xRail, y: yMid + 18 },
+      to:   { x: xRail, y: yBot - 6 },
+      color: 'rgba(108,197,194,0.9)',
+      label: `R₂ = ${formatR(R2)}`,
+      labelOffset: { x: 16, y: 0 } },
+    // Tap wire from the trunk midpoint out to the load column.
+    { kind: 'wire', points: [{ x: xRail, y: yTap }, { x: xLoad, y: yTap }] },
+    // Output probe dot at the load column.
+    { kind: 'node', at: { x: xLoad, y: yTap }, color: 'rgba(255,107,42,0.95)', radius: 4 },
+    // Ground symbol at the bottom of the trunk.
+    { kind: 'ground', at: { x: xRail, y: yBot }, leadLength: 0, size: 12 },
+  ];
+  if (loaded) {
+    elements.push(
+      // Load branch: tap → corner, corner → ground rail.
+      { kind: 'wire',
+        points: [{ x: xLoad, y: yTap }, { x: xLoad, y: yTap + 24 }] },
+      { kind: 'wire',
+        points: [{ x: xLoad, y: yBot }, { x: xRail + 1, y: yBot }] },
+      // R_L between the tap and ground.
+      { kind: 'resistor',
+        from: { x: xLoad, y: yTap + 24 },
+        to:   { x: xLoad, y: yBot - 6 },
+        color: 'rgba(91,174,248,0.9)',
+        label: 'R_L = 10 kΩ',
+        labelOffset: { x: 16, y: 0 } },
+    );
+  }
+  drawCircuit(ctx, { elements, defaultWireColor: 'rgba(236,235,229,0.55)', defaultWireWidth: 1.4 });
 
-  // V_in source: drawn as a small circle on the left
-  const xSrc = margin;
-  drawWire(ctx, [{ x: xSrc, y: yTop }, { x: xRail, y: yTop }], {
-    color: 'rgba(236,235,229,0.55)',
-    lineWidth: 1.4,
-  });
-  drawWire(ctx, [{ x: xSrc, y: yBot }, { x: xRail, y: yBot }], {
-    color: 'rgba(236,235,229,0.55)',
-    lineWidth: 1.4,
-  });
-
+  // V source: circle + 'V' glyph centred on its terminals.
+  ctx.strokeStyle = 'rgba(236,235,229,0.55)';
+  ctx.lineWidth = 1.4;
   ctx.beginPath();
   ctx.arc(xSrc, (yTop + yBot) / 2, 12, 0, Math.PI * 2);
   ctx.stroke();
@@ -147,65 +182,12 @@ function drawDivider(
   ctx.textBaseline = 'middle';
   ctx.fillText('V', xSrc, (yTop + yBot) / 2);
 
-  // Ground symbol at bottom
-  ctx.strokeStyle = 'rgba(160,158,149,0.7)';
-  ctx.beginPath();
-  ctx.moveTo(xRail - 6, yBot); ctx.lineTo(xRail + 6, yBot);
-  ctx.moveTo(xRail - 4, yBot + 3); ctx.lineTo(xRail + 4, yBot + 3);
-  ctx.moveTo(xRail - 2, yBot + 6); ctx.lineTo(xRail + 2, yBot + 6);
-  ctx.stroke();
-
-  // R1 resistor box (top half)
-  drawResistor(ctx, { x: xRail, y: yTop + 18 }, { x: xRail, y: yMid - 18 }, {
-    color: 'rgba(255,59,110,0.9)',
-    label: `R₁ = ${formatR(R1)}`,
-    labelOffset: { x: 16, y: 0 },
-  });
-  // R2 resistor box (bottom half)
-  drawResistor(ctx, { x: xRail, y: yMid + 18 }, { x: xRail, y: yBot - 6 }, {
-    color: 'rgba(108,197,194,0.9)',
-    label: `R₂ = ${formatR(R2)}`,
-    labelOffset: { x: 16, y: 0 },
-  });
-
-  // V_out tap at yMid going right
-  const yTap = yMid;
-  drawWire(ctx, [{ x: xRail, y: yTap }, { x: xLoad, y: yTap }], {
-    color: 'rgba(236,235,229,0.55)',
-    lineWidth: 1.4,
-  });
-
-  // Probe node at the load X
-  ctx.fillStyle = 'rgba(255,107,42,0.95)';
-  ctx.beginPath();
-  ctx.arc(xLoad, yTap, 4, 0, Math.PI * 2);
-  ctx.fill();
-
-  // If loaded, draw R_L between tap and ground
-  if (loaded) {
-    drawWire(ctx, [{ x: xLoad, y: yTap }, { x: xLoad, y: yTap + 24 }], {
-      color: 'rgba(236,235,229,0.55)',
-      lineWidth: 1.4,
-    });
-    drawWire(ctx, [{ x: xLoad, y: yBot }, { x: xRail + 1, y: yBot }], {
-      color: 'rgba(236,235,229,0.55)',
-      lineWidth: 1.4,
-    });
-    drawResistor(ctx, { x: xLoad, y: yTap + 24 }, { x: xLoad, y: yBot - 6 }, {
-      color: 'rgba(91,174,248,0.9)',
-      label: 'R_L = 10 kΩ',
-      labelOffset: { x: 16, y: 0 },
-    });
-  }
-
-  // Labels
+  // Per-frame value labels.
   ctx.fillStyle = 'rgba(255,107,42,0.9)';
-  ctx.font = 'bold 10px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
   ctx.fillText(`V_in = ${Vin.toFixed(1)} V`, xSrc - 4, yTop - 12);
   ctx.fillStyle = 'rgba(255,107,42,0.95)';
-  ctx.textAlign = 'left';
   ctx.fillText(`V_out = ${Vout.toFixed(3)} V`, xLoad + 8, yTap);
 
   ctx.restore();

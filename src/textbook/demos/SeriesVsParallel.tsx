@@ -11,7 +11,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { drawBattery, drawResistor, drawWire } from '@/lib/canvasPrimitives';
+import { drawCircuit } from '@/lib/canvasPrimitives';
 
 interface Props {
   figure?: string;
@@ -47,92 +47,94 @@ export function SeriesVsParallelDemo({ figure }: Props) {
 
       // Battery on left
       const batX = padX;
-      drawBattery(ctx, { x: batX, y: cy }, {
-        label: '+',
-        labelOffset: { x: -18, y: -10 },
-        leadLength: 50,
-      });
+      // Output node on right
+      const outX = w - padX;
+
+      if (series) {
+        // Single loop: bat → R1 → R2 → out corner → return underneath.
+        const xR1 = padX + (outX - padX) * 0.30;
+        const xR2 = padX + (outX - padX) * 0.66;
+        drawCircuit(ctx, {
+          defaultWireColor: 'rgba(255,255,255,0.65)',
+          elements: [
+            { kind: 'battery', at: { x: batX, y: cy },
+              label: '+', labelOffset: { x: -18, y: -10 }, leadLength: 50 },
+            // Top rail with two resistor gaps + loop back along the bottom.
+            { kind: 'wire', points: [{ x: batX, y: yTop }, { x: xR1 - 22, y: yTop }] },
+            { kind: 'resistor', from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
+              label: `R1 = ${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -16 } },
+            { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: xR2 - 22, y: yTop }] },
+            { kind: 'resistor', from: { x: xR2 - 20, y: yTop }, to: { x: xR2 + 20, y: yTop },
+              label: `R2 = ${R2.toFixed(0)}Ω`, labelOffset: { x: 0, y: -16 } },
+            { kind: 'wire',
+              points: [
+                { x: xR2 + 22, y: yTop },
+                { x: outX, y: yTop },
+                { x: outX, y: yBot },
+                { x: batX, y: yBot },
+              ] },
+          ],
+        });
+      } else {
+        // Parallel: two horizontal branches between two vertical junction rails.
+        const nodeL_x = padX + (outX - padX) * 0.28;
+        const nodeR_x = padX + (outX - padX) * 0.72;
+        const branchY1 = cy - 26;
+        const branchY2 = cy + 26;
+        const midA = (nodeL_x + nodeR_x) / 2;
+        drawCircuit(ctx, {
+          defaultWireColor: 'rgba(255,255,255,0.65)',
+          elements: [
+            { kind: 'battery', at: { x: batX, y: cy },
+              label: '+', labelOffset: { x: -18, y: -10 }, leadLength: 50 },
+            // Battery top → left junction.
+            { kind: 'wire', points: [{ x: batX, y: yTop }, { x: nodeL_x, y: yTop }] },
+            // Two vertical junction rails.
+            { kind: 'wire', points: [{ x: nodeL_x, y: yTop }, { x: nodeL_x, y: yBot }] },
+            { kind: 'wire', points: [{ x: nodeR_x, y: yTop }, { x: nodeR_x, y: yBot }] },
+            // Branch 1 leads + resistor.
+            { kind: 'wire', points: [{ x: nodeL_x, y: branchY1 }, { x: midA - 22, y: branchY1 }] },
+            { kind: 'wire', points: [{ x: midA + 22, y: branchY1 }, { x: nodeR_x, y: branchY1 }] },
+            { kind: 'resistor', from: { x: midA - 20, y: branchY1 }, to: { x: midA + 20, y: branchY1 },
+              label: `R1 = ${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -16 } },
+            // Branch 2 leads + resistor.
+            { kind: 'wire', points: [{ x: nodeL_x, y: branchY2 }, { x: midA - 22, y: branchY2 }] },
+            { kind: 'wire', points: [{ x: midA + 22, y: branchY2 }, { x: nodeR_x, y: branchY2 }] },
+            { kind: 'resistor', from: { x: midA - 20, y: branchY2 }, to: { x: midA + 20, y: branchY2 },
+              label: `R2 = ${R2.toFixed(0)}Ω`, labelOffset: { x: 0, y: -16 } },
+            // Right junction → out corner → return rail along the bottom.
+            { kind: 'wire',
+              points: [
+                { x: nodeR_x, y: yTop },
+                { x: outX, y: yTop },
+                { x: outX, y: yBot },
+                { x: batX, y: yBot },
+              ] },
+          ],
+        });
+      }
+
+      // Battery negative-terminal glyph (battery primitive only emits the '+' label).
       ctx.fillStyle = '#5baef8';
       ctx.font = 'bold 12px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText('−', batX - 18, cy + 18);
 
-      // Output node on right
-      const outX = w - padX;
-
       if (series) {
-        // Single line: bat → R1 → R2 → bat (return underneath)
-        const xR1 = padX + (outX - padX) * 0.30;
-        const xR2 = padX + (outX - padX) * 0.66;
-
-        // Top wire
-        drawWire(ctx, [{ x: batX, y: yTop }, { x: xR1 - 22, y: yTop }], { color: 'rgba(255,255,255,0.65)' });
-        drawResistor(ctx, { x: xR1 - 20, y: yTop }, { x: xR1 + 20, y: yTop }, {
-          label: `R1 = ${R1.toFixed(0)}Ω`,
-          labelOffset: { x: 0, y: -16 },
-        });
-        drawWire(ctx, [{ x: xR1 + 22, y: yTop }, { x: xR2 - 22, y: yTop }], { color: 'rgba(255,255,255,0.65)' });
-        drawResistor(ctx, { x: xR2 - 20, y: yTop }, { x: xR2 + 20, y: yTop }, {
-          label: `R2 = ${R2.toFixed(0)}Ω`,
-          labelOffset: { x: 0, y: -16 },
-        });
-        drawWire(ctx, [
-          { x: xR2 + 22, y: yTop },
-          { x: outX, y: yTop },
-          { x: outX, y: yBot },
-          { x: batX, y: yBot },
-        ], { color: 'rgba(255,255,255,0.65)' });
-
-        // Animated current dots — same I through both resistors
+        // Animated current dots — same I through both resistors.
         drawCurrentDotsPath(ctx, t, [
           { x: batX, y: yTop }, { x: outX, y: yTop },
           { x: outX, y: yBot }, { x: batX, y: yBot },
         ], 1.0);
-
-        // Caption
         ctx.fillStyle = 'rgba(160,158,149,0.85)';
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText('same current through both — voltages add', cx, h - 14);
       } else {
-        // Parallel: two branches between two junction nodes
         const nodeL_x = padX + (outX - padX) * 0.28;
         const nodeR_x = padX + (outX - padX) * 0.72;
-
-        // Top wire from battery
-        drawWire(ctx, [{ x: batX, y: yTop }, { x: nodeL_x, y: yTop }], { color: 'rgba(255,255,255,0.65)' });
-
-        // Reset: draw two horizontal branches between vertical junction lines.
-        drawWire(ctx, [{ x: nodeL_x, y: yTop }, { x: nodeL_x, y: yBot }], { color: 'rgba(255,255,255,0.65)' });
-        drawWire(ctx, [{ x: nodeR_x, y: yTop }, { x: nodeR_x, y: yBot }], { color: 'rgba(255,255,255,0.65)' });
-
         const branchY1 = cy - 26;
         const branchY2 = cy + 26;
-        const midA = (nodeL_x + nodeR_x) / 2;
-
-        // Branch 1
-        drawWire(ctx, [{ x: nodeL_x, y: branchY1 }, { x: midA - 22, y: branchY1 }], { color: 'rgba(255,255,255,0.65)' });
-        drawWire(ctx, [{ x: midA + 22, y: branchY1 }, { x: nodeR_x, y: branchY1 }], { color: 'rgba(255,255,255,0.65)' });
-        drawResistor(ctx, { x: midA - 20, y: branchY1 }, { x: midA + 20, y: branchY1 }, {
-          label: `R1 = ${R1.toFixed(0)}Ω`,
-          labelOffset: { x: 0, y: -16 },
-        });
-
-        // Branch 2
-        drawWire(ctx, [{ x: nodeL_x, y: branchY2 }, { x: midA - 22, y: branchY2 }], { color: 'rgba(255,255,255,0.65)' });
-        drawWire(ctx, [{ x: midA + 22, y: branchY2 }, { x: nodeR_x, y: branchY2 }], { color: 'rgba(255,255,255,0.65)' });
-        drawResistor(ctx, { x: midA - 20, y: branchY2 }, { x: midA + 20, y: branchY2 }, {
-          label: `R2 = ${R2.toFixed(0)}Ω`,
-          labelOffset: { x: 0, y: -16 },
-        });
-
-        // Bottom return wire
-        drawWire(ctx, [
-          { x: nodeR_x, y: yTop },
-          { x: outX, y: yTop },
-          { x: outX, y: yBot },
-          { x: batX, y: yBot },
-        ], { color: 'rgba(255,255,255,0.65)' });
 
         // Animated dots — current splits inversely with R
         const Itot = 1; // unit
