@@ -316,6 +316,36 @@ canonical opening of Ch.1 ("Rub a balloon on your hair…") is the bar.
 Every chapter has a concrete physical hook in its opening paragraph and
 one `<Pullout>` quote.
 
+### Formula rule — define every symbol with the formula
+
+**Every `<Formula>` block in chapter prose is immediately followed by a
+"where" paragraph spelling out what each symbol means and what its SI
+units are.** Don't drop a formula and expect the reader to infer
+notation from earlier prose or a `<Term>` popover. The canonical
+pattern from Ch.1:
+
+```tsx
+<Formula>F = k Q₁ Q₂ / r²</Formula>
+<p>
+  where <strong>F</strong> is the magnitude of the force each charge
+  exerts on the other (in newtons), <strong>Q₁</strong> and
+  <strong>Q₂</strong> are the two charges (in coulombs, signed),
+  <strong>r</strong> is the distance between them (in metres), and
+  <strong>k = 8.99×10⁹ N·m²/C²</strong> is Coulomb's constant in SI
+  units<Cite id="codata-2018" in={SOURCES} />.
+</p>
+```
+
+This applies to formulas in narrative prose. **TryIt answer blocks are
+exempt** — there the formula is a worked substitution with the numeric
+values already in place, so the symbols are explicit in context.
+
+Place the formula and its glossary **at or before** the first
+interactive demo that exercises it. The interactive demo can come
+either before the formula (concrete experience first, then formalised)
+or after it; either order is fine, but the symbols in the formula must
+be defined no later than the formula itself appears.
+
 ### Chapter section checklist
 
 Every chapter must include, in this order:

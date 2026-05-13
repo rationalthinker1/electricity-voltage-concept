@@ -67,8 +67,13 @@ export default function Ch1WhatIsElectricity() {
       </p>
       <Formula>F = k Q₁ Q₂ / r²</Formula>
       <p>
-        with <strong>k = 8.99×10⁹ N·m²/C²</strong> in SI units <Cite id="codata-2018" in={SOURCES} />. Sign convention: if
-        Q₁ and Q₂ have the same sign, F is positive (push apart); opposite signs, F is negative (pull together).
+        where <strong>F</strong> is the magnitude of the force each charge exerts on the other (in newtons),
+        <strong> Q₁</strong> and <strong>Q₂</strong> are the two charges (in coulombs, signed),
+        <strong> r</strong> is the distance between them (in metres), and
+        <strong> k = 8.99×10⁹ N·m²/C²</strong> is Coulomb's constant in SI units<Cite id="codata-2018" in={SOURCES} />.
+        Sign convention: if Q₁ and Q₂ have the same sign, F is positive (push apart); opposite signs, F is negative (pull together).
+      </p>
+      <p>
         The constant is <em>enormous</em>. Two coulombs of free charge separated by one meter would push each other
         apart with about <strong>9 billion newtons</strong> — roughly the weight of three Eiffel Towers.
       </p>
@@ -164,18 +169,23 @@ export default function Ch1WhatIsElectricity() {
       </p>
       <Formula>E = F / q<sub>test</sub></Formula>
       <p>
-        Force per unit positive charge. SI units: newtons per coulomb, or equivalently volts per meter. The two are
-        identical — you can derive it in one line<Cite id="hyperphysics-emag" in={SOURCES} />.
+        where <strong>E</strong> is the electric-field vector at the point of interest (units: N/C, equivalently V/m),
+        <strong> F</strong> is the force the field exerts on a small <em>test charge</em> placed at that point, and
+        <strong> q<sub>test</sub></strong> is the value of that test charge (in coulombs). Force per unit positive
+        charge. The N/C-versus-V/m identity falls out in one line<Cite id="hyperphysics-emag" in={SOURCES} />.
       </p>
       <p>
-        With the field framework in hand, Coulomb's law takes a slightly different shape. A point charge <strong>Q</strong>
-        produces a field whose magnitude at distance <strong>r</strong> is
+        With the field framework in hand, Coulomb's law takes a slightly different shape. A point charge
+        <strong> Q</strong> produces a field whose magnitude at distance <strong>r</strong> from it is
       </p>
       <Formula>|E| = k Q / r²</Formula>
       <p>
-        and whose direction is radially outward from <strong>Q</strong> (if Q is positive) or inward (if Q is negative). Bring any
-        other charge into that field and the force on it is <strong>F = qE</strong>. The new charge doesn't talk to the
-        old one — it talks only to the field at its own location <Cite id="feynman-II-2" in={SOURCES} />.
+        where <strong>|E|</strong> is the magnitude of the field (N/C), <strong>k</strong> is Coulomb's constant,
+        <strong> Q</strong> is the source charge (signed, in coulombs), and <strong>r</strong> is the distance from
+        the source charge to the point where the field is being evaluated (in metres). The direction is radially
+        outward from <strong>Q</strong> (if Q is positive) or inward (if Q is negative). Bring any other charge
+        <strong> q</strong> into that field and the force on it is <strong>F = qE</strong> — the new charge doesn't
+        talk to the old one, it talks only to the field at its own location<Cite id="feynman-II-2" in={SOURCES} />.
       </p>
 
       <FieldArrowsDemo />
