@@ -19,7 +19,7 @@ import { GaussBLawDemo } from './demos/GaussBLaw';
 import { GaussELawDemo } from './demos/GaussELaw';
 import { getChapter } from './data/chapters';
 
-export default function Ch8Maxwell() {
+export default function Ch9Maxwell() {
   const chapter = getChapter('maxwell')!;
   const SOURCES = chapter.sources;
 

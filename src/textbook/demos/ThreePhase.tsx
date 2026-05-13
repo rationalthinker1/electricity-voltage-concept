@@ -60,16 +60,18 @@ export function ThreePhaseDemo({ figure }: Props) {
       ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
-      const splitX = w * 0.62;
+      // Split: oscilloscope left, phasor right. Use a more generous left
+      // share at narrow widths so the waveform labels don't crowd.
+      const splitX = Math.max(w * 0.58, w - 240);
 
       // ── LEFT: scope of three waveforms
       ctx.save();
       ctx.beginPath(); ctx.rect(0, 0, splitX, h); ctx.clip();
 
       const plotX = 36;
-      const plotW = splitX - 60;
-      const plotY = 28;
-      const plotH = h - 56;
+      const plotW = Math.max(80, splitX - 60);
+      const plotY = 32;
+      const plotH = h - 60;
       const cyP = plotY + plotH / 2;
 
       ctx.strokeStyle = 'rgba(255,255,255,0.10)';
@@ -144,8 +146,8 @@ export function ThreePhaseDemo({ figure }: Props) {
       ctx.beginPath(); ctx.rect(splitX, 0, w - splitX, h); ctx.clip();
 
       const pcx = splitX + (w - splitX) / 2;
-      const pcy = h / 2;
-      const pR = Math.min((w - splitX) / 2, h / 2) - 24;
+      const pcy = h / 2 + 8;
+      const pR = Math.max(50, Math.min((w - splitX) / 2 - 18, h / 2 - 36));
 
       // Reference circle
       ctx.strokeStyle = 'rgba(255,255,255,0.10)';
@@ -212,7 +214,7 @@ export function ThreePhaseDemo({ figure }: Props) {
         at 120°, summing geometrically to the origin.
       </>}
     >
-      <AutoResizeCanvas height={260} setup={setup} />
+      <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="f"

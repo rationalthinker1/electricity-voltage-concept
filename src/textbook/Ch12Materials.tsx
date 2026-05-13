@@ -27,7 +27,7 @@ import { ParamagnetVsDiamagnetDemo } from './demos/ParamagnetVsDiamagnet';
 import { SusceptibilityDemo } from './demos/Susceptibility';
 import { WhyWaterPolarizesDemo } from './demos/WhyWaterPolarizes';
 
-export default function Ch11Materials() {
+export default function Ch12Materials() {
   const chapter = getChapter('materials')!;
   const SOURCES = chapter.sources;
 

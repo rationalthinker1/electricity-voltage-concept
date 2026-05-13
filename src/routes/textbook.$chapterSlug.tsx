@@ -7,14 +7,15 @@ const CHAPTER_MODULES: Record<string, ReturnType<typeof lazy>> = {
   'what-is-electricity':   lazy(() => import('@/textbook/Ch1WhatIsElectricity')),
   'voltage-and-current':   lazy(() => import('@/textbook/Ch2VoltageAndCurrent')),
   'resistance-and-power':  lazy(() => import('@/textbook/Ch3ResistanceAndPower')),
-  'magnetism':             lazy(() => import('@/textbook/Ch4Magnetism')),
-  'induction':             lazy(() => import('@/textbook/Ch5Induction')),
-  'energy-flow':           lazy(() => import('@/textbook/Ch6EnergyFlow')),
-  'em-waves':              lazy(() => import('@/textbook/Ch7EMWaves')),
-  'maxwell':               lazy(() => import('@/textbook/Ch8Maxwell')),
-  'relativity':            lazy(() => import('@/textbook/Ch9Relativity')),
-  'circuits-and-ac':       lazy(() => import('@/textbook/Ch10CircuitsAndAC')),
-  'materials':             lazy(() => import('@/textbook/Ch11Materials')),
+  'capacitors':            lazy(() => import('@/textbook/Ch4Capacitors')),
+  'magnetism':             lazy(() => import('@/textbook/Ch5Magnetism')),
+  'induction':             lazy(() => import('@/textbook/Ch6Induction')),
+  'energy-flow':           lazy(() => import('@/textbook/Ch7EnergyFlow')),
+  'em-waves':              lazy(() => import('@/textbook/Ch8EMWaves')),
+  'maxwell':               lazy(() => import('@/textbook/Ch9Maxwell')),
+  'relativity':            lazy(() => import('@/textbook/Ch10Relativity')),
+  'circuits-and-ac':       lazy(() => import('@/textbook/Ch11CircuitsAndAC')),
+  'materials':             lazy(() => import('@/textbook/Ch12Materials')),
 };
 
 export const Route = createFileRoute('/textbook/$chapterSlug')({

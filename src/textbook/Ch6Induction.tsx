@@ -22,7 +22,7 @@ import { RotatingCoilDemo } from './demos/RotatingCoil';
 import { TransformerDemo } from './demos/Transformer';
 import { getChapter } from './data/chapters';
 
-export default function Ch5Induction() {
+export default function Ch6Induction() {
   const chapter = getChapter('induction')!;
   const SOURCES = chapter.sources;
 

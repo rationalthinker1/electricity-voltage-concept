@@ -25,7 +25,7 @@ import { RadiationPressureDemo } from './demos/RadiationPressure';
 import { SpeedOfLightDemo } from './demos/SpeedOfLight';
 import { getChapter } from './data/chapters';
 
-export default function Ch7EMWaves() {
+export default function Ch8EMWaves() {
   const chapter = getChapter('em-waves')!;
   const SOURCES = chapter.sources;
 

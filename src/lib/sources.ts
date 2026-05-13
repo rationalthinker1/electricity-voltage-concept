@@ -680,6 +680,24 @@ export const SOURCES: Record<string, Source> = {
     url: 'https://doi.org/10.1103/PhysRev.75.1912',
     note: 'Classical theory of synchrotron radiation: relativistic electrons in a circular orbit radiate into a forward cone of half-angle ~1/γ, with total power scaling as γ⁴/ρ² for circular orbit of radius ρ.',
   },
+
+  /* ─── Ch.4 Capacitors ─── */
+  'leyden-jar-1745': {
+    id: 'leyden-jar-1745',
+    title: 'The Leyden jar — independent discovery (E. G. von Kleist, October 1745; Pieter van Musschenbroek, 1746)',
+    author: 'E. G. von Kleist; Pieter van Musschenbroek',
+    year: 1745,
+    venue: 'Correspondence and demonstrations to the Royal Society',
+    note: 'First practical capacitor — a glass jar lined inside and out with metal foil, charged by friction; held a substantial charge and discharged with an audible spark.',
+  },
+  'volta-1782': {
+    id: 'volta-1782',
+    title: 'Del modo di rendere sensibilissima la più debole elettricità sia artificiale sia naturale (On the way of making the weakest electricity sensible, both artificial and natural)',
+    author: 'Alessandro Volta',
+    year: 1782,
+    venue: 'Philosophical Transactions of the Royal Society of London 72, 237–280',
+    note: "Introduces the relation Q = CV and the term 'capacity' — the linear proportionality of stored charge to applied potential, with the constant of proportionality a property of the device.",
+  },
 };
 
 export type SourceKey = keyof typeof SOURCES;

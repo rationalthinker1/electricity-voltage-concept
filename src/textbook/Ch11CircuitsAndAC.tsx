@@ -18,7 +18,7 @@ import { ImpedanceDemo } from './demos/Impedance';
 import { ThreePhaseDemo } from './demos/ThreePhase';
 import { getChapter } from './data/chapters';
 
-export default function Ch10CircuitsAndAC() {
+export default function Ch11CircuitsAndAC() {
   const chapter = getChapter('circuits-and-ac')!;
   const SOURCES = chapter.sources;
 

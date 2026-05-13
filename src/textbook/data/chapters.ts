@@ -16,6 +16,7 @@ export type ChapterSlug =
   | 'what-is-electricity'
   | 'voltage-and-current'
   | 'resistance-and-power'
+  | 'capacitors'
   | 'magnetism'
   | 'induction'
   | 'energy-flow'
@@ -87,8 +88,21 @@ export const CHAPTERS: ChapterEntry[] = [
     ],
   },
   {
-    slug: 'magnetism',
+    slug: 'capacitors',
     number: 4,
+    title: 'Capacitors',
+    subtitle: 'Storing charge across a gap.',
+    blurb:
+      "Put two metal plates close together, push charge onto one of them, and the second plate pulls equal-and-opposite charge to its near face. The gap between fills with an electric field. The field stores energy. The more charge you stack, the harder it gets to add the next bit — voltage rises linearly, work rises quadratically. That is the capacitor.",
+    relatedLabs: ['capacitance', 'energy-density', 'potential'],
+    sources: [
+      'leyden-jar-1745', 'volta-1782', 'griffiths-2017', 'jackson-1999',
+      'feynman-II-2', 'horowitz-hill-2015', 'codata-2018',
+    ],
+  },
+  {
+    slug: 'magnetism',
+    number: 5,
     title: 'Magnetism',
     subtitle: 'The rotational half.',
     blurb:
@@ -102,7 +116,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'induction',
-    number: 5,
+    number: 6,
     title: 'Induction',
     subtitle: 'Change is a voltage.',
     blurb:
@@ -116,7 +130,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'energy-flow',
-    number: 6,
+    number: 7,
     title: 'Where the energy actually flows',
     subtitle: 'Through the field. Not through the copper.',
     blurb:
@@ -130,7 +144,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'em-waves',
-    number: 7,
+    number: 8,
     title: 'Electromagnetic waves',
     subtitle: 'Strip the wire. The field still moves.',
     blurb:
@@ -145,7 +159,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'maxwell',
-    number: 8,
+    number: 9,
     title: "Maxwell's equations together",
     subtitle: 'Four laws. One field.',
     blurb:
@@ -160,7 +174,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'relativity',
-    number: 9,
+    number: 10,
     title: 'Relativity and electromagnetism',
     subtitle: 'Magnetism is electricity, viewed from a moving train.',
     blurb:
@@ -174,7 +188,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'circuits-and-ac',
-    number: 10,
+    number: 11,
     title: 'Circuits, AC, and impedance',
     subtitle: 'When the field gets compressed into a schematic.',
     blurb:
@@ -188,7 +202,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'materials',
-    number: 11,
+    number: 12,
     title: 'Materials',
     subtitle: 'What ε and μ actually mean.',
     blurb:
