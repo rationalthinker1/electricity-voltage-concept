@@ -834,3 +834,94 @@ export function renderCircuitToCanvas(
   drawCircuit(ctx, spec);
   return off;
 }
+
+/* ───────────────────────────────────────────────────────────────────────────
+ *  drawGlowPath — fast glowing polyline without ctx.shadowBlur.
+ *
+ *  shadowBlur is implemented as a software-side gaussian on every browser and
+ *  costs ~3-10x more than a plain stroke for the same path. For animated
+ *  paths that need a glow halo, the cheaper trick is:
+ *    1. Stroke the path once at a wider lineWidth with a translucent colour
+ *       (the "bleed").
+ *    2. Stroke it again at the normal lineWidth with the saturated colour.
+ *  The result reads as a soft halo at a fraction of the GPU cost.
+ *
+ *  Use this anywhere you would have set shadowBlur on a moving polyline —
+ *  current-flow indicators, wave packets, traces on an oscilloscope, the
+ *  energised loop in SwitchAndBulb, etc.
+ * ─────────────────────────────────────────────────────────────────────── */
+
+interface GlowPathOptions extends WireOptions {
+  /** Outer-halo line width. Defaults to (lineWidth ?? 1.5) + 4. */
+  glowWidth?: number;
+  /** Outer-halo colour. Defaults to a translucent version of color. */
+  glowColor?: string;
+}
+
+export function drawGlowPath(
+  ctx: CanvasRenderingContext2D,
+  points: CanvasPoint[],
+  options: GlowPathOptions = {},
+) {
+  if (points.length < 2) return;
+  const color = options.color ?? 'rgba(255,107,42,0.95)';
+  const lineWidth = options.lineWidth ?? 1.5;
+  const glowWidth = options.glowWidth ?? lineWidth + 4;
+  const glowColor = options.glowColor ?? translucent(color, 0.35);
+
+  ctx.save();
+  ctx.lineCap = options.lineCap ?? 'round';
+  ctx.lineJoin = options.lineJoin ?? 'round';
+  // Outer halo first.
+  ctx.strokeStyle = glowColor;
+  ctx.lineWidth = glowWidth;
+  ctx.beginPath();
+  ctx.moveTo(points[0]!.x, points[0]!.y);
+  for (let i = 1; i < points.length; i++) ctx.lineTo(points[i]!.x, points[i]!.y);
+  ctx.stroke();
+  // Inner saturated line on top.
+  ctx.strokeStyle = color;
+  ctx.lineWidth = lineWidth;
+  // beginPath is required so we don't double-stroke the previous fat path
+  // (which would compound the halo width on top of the inner line).
+  ctx.beginPath();
+  ctx.moveTo(points[0]!.x, points[0]!.y);
+  for (let i = 1; i < points.length; i++) ctx.lineTo(points[i]!.x, points[i]!.y);
+  ctx.stroke();
+  ctx.restore();
+}
+
+/**
+ * Best-effort opacity adjustment for an arbitrary CSS colour string.
+ * Recognises #rrggbb, #rrggbbaa, rgb(...), rgba(...), and hsl(...)/hsla(...).
+ * For anything else it returns the colour unchanged.
+ */
+function translucent(color: string, alpha: number): string {
+  // #rrggbb or #rrggbbaa
+  if (color.startsWith('#')) {
+    if (color.length === 7) {
+      const r = parseInt(color.slice(1, 3), 16);
+      const g = parseInt(color.slice(3, 5), 16);
+      const b = parseInt(color.slice(5, 7), 16);
+      return `rgba(${r},${g},${b},${alpha})`;
+    }
+    if (color.length === 9) {
+      const r = parseInt(color.slice(1, 3), 16);
+      const g = parseInt(color.slice(3, 5), 16);
+      const b = parseInt(color.slice(5, 7), 16);
+      return `rgba(${r},${g},${b},${alpha})`;
+    }
+    return color;
+  }
+  // rgb(r,g,b) or rgba(r,g,b,a) — replace/inject alpha.
+  const rgbMatch = color.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+  if (rgbMatch) {
+    return `rgba(${rgbMatch[1]},${rgbMatch[2]},${rgbMatch[3]},${alpha})`;
+  }
+  // hsl(...) / hsla(...) — same trick.
+  const hslMatch = color.match(/^hsla?\((.+?),(.+?),(.+?)(?:,.+)?\)$/);
+  if (hslMatch) {
+    return `hsla(${hslMatch[1]},${hslMatch[2]},${hslMatch[3]},${alpha})`;
+  }
+  return color;
+}
