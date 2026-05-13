@@ -269,6 +269,17 @@ export default function Ch4HowAResistorWorks() {
         with material-specific constants A, B, C. NTCs are how every electronics enclosure measures its own temperature: read
         R, plug into Steinhart–Hart, get T.
       </p>
+      <p>
+        The shape of the equation is worth unpacking. A semiconducting thermistor's resistance is dominated by the
+        carrier population, which is thermally activated: <em>R ∝ exp(E<sub>g</sub>/2k<sub>B</sub>T)</em>. Take the
+        logarithm and you get <em>ln R</em> linear in <strong>1/T</strong> — that's the leading <em>B · ln R</em> term, and
+        it would suffice for a 10 K window. Across a real range (−40 °C to +125 °C, the typical span of a CPU thermistor)
+        the bandgap drifts, the mobility curves over, and the linear law in <em>1/T</em> versus <em>ln R</em> bows
+        gently. Steinhart and Hart found in 1968 that adding a single cubic term <em>C · (ln R)³</em> — no quadratic,
+        empirically, since it added nothing — flattens the residual to within millikelvins over the entire
+        range<Cite id="steinhart-hart-1968" in={SOURCES} />. It is a Taylor-like fit in the right variable, not a
+        derivation from first principles.
+      </p>
 
       <RvsTemperatureDemo />
 
