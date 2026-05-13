@@ -78,6 +78,20 @@ export default function Ch13NetworkAnalysis() {
         # equations = (N − 1)<sub>KCL</sub> + (B − N + 1)<sub>KVL</sub> = B
       </Formula>
       <p>
+        Why <em>N − 1</em> KCL equations rather than <em>N</em>? Add up the KCL
+        equation at every single node and every branch current appears exactly
+        twice — once entering, once leaving — so the grand total is identically
+        zero. The <em>N</em>-th equation is the negative sum of the other
+        <InlineMath> N − 1</InlineMath>; it carries no new information. The same
+        accounting trick explains <em>B − N + 1</em> for KVL: write KVL on a big
+        loop that encloses several smaller loops and you get the sum of the
+        smaller ones' KVL equations, so only the irreducibly small "windowpane"
+        loops count. The two independent counts <em>N − 1</em> and
+        <em> B − N + 1</em> add to exactly <em>B</em> — one equation per branch
+        current, no redundancy, no shortfall. The number falls out of topology
+        alone<Cite id="kirchhoff-1845" in={SOURCES} />.
+      </p>
+      <p>
         On a six-resistor bridge — five nodes, eight branches — that's already a
         system of eight equations. Doable. On the modest analog front-end of a
         condenser microphone (dozens of components, maybe twenty nodes), the
@@ -96,6 +110,33 @@ export default function Ch13NetworkAnalysis() {
         because computers are very good at sparse matrices and they don't care which
         view of the network is conceptually cleaner<Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />.
       </p>
+
+      <TryIt
+        tag="Try 13.0"
+        question={
+          <>
+            A planar network has <strong>N = 7 nodes</strong> and
+            <strong> B = 11 branches</strong>. How many independent KCL and KVL
+            equations does Kirchhoff's framework give you, and how many mesh
+            currents vs node voltages would each analysis method use?
+          </>
+        }
+        hint={<>Independent KCL count is N − 1; independent KVL count (and mesh count) is B − N + 1. Non-reference node count is also N − 1.</>}
+        answer={
+          <>
+            <Formula>KCL equations: N − 1 = 6</Formula>
+            <Formula>KVL / mesh count: B − N + 1 = 11 − 7 + 1 = 5</Formula>
+            <p>
+              Total = 11, exactly the branch-current count. Mesh analysis would
+              build a <strong>5 × 5</strong> system; nodal analysis would build
+              a <strong>6 × 6</strong> system. Mesh wins by one unknown — but
+              not by much, and either method delivers the same answer. The
+              topology counts are settled before you write a single
+              equation<Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <h2><em>Mesh-current</em> analysis (Maxwell, 1873)</h2>
 
@@ -131,6 +172,22 @@ export default function Ch13NetworkAnalysis() {
         −R₂ I₁ + (R₂ + R₃) I₂ = −V₂
       </Formula>
       <p>
+        Why do mesh currents work at all? Because a current that circulates
+        around a closed loop enters every node along its path and leaves it
+        again — so KCL at each node is satisfied automatically, for free, with
+        no further algebra. The only constraint left to impose is KVL around
+        each loop. That is the conceptual trade: by parametrising with
+        loop-circulating quantities instead of branch currents, we have already
+        cashed in the <em>N − 1</em> KCL equations, leaving only the
+        <em> B − N + 1</em> KVL equations to write. Look at the structure of
+        the system above. The diagonal coefficient on each row is the total
+        resistance the corresponding mesh current sees as it circulates; the
+        off-diagonal coefficient is the <em>shared</em> resistance between two
+        meshes (with a minus sign because the two mesh currents push opposite
+        ways through it). The right-hand side is the EMF the loop encloses.
+        Every entry of the matrix has a direct physical reading.
+      </p>
+      <p>
         Two equations, two unknowns — solve by Cramer's rule, substitution, or any
         2×2 inverse you like. The actual branch currents follow immediately:
         I<sub>R₁</sub> = I₁, I<sub>R₃</sub> = I₂, I<sub>R₂</sub> = I₁ − I₂. For a
@@ -150,6 +207,10 @@ export default function Ch13NetworkAnalysis() {
         passive networks), exactly the kind of matrix LU-decomposition and Gaussian
         elimination devour at machine speed.
       </p>
+      <Pullout>
+        A mesh current pays KCL its dues automatically, just by being a loop.
+        That is the whole trick.
+      </Pullout>
 
       <TryIt
         tag="Try 13.1"
@@ -200,6 +261,23 @@ export default function Ch13NetworkAnalysis() {
         V_A · (1/R₁ + 1/R₂ + 1/R₃) = V₁/R₁ + V₂/R₃
       </Formula>
       <p>
+        The same duality argument that made mesh currents satisfy KCL for free
+        makes nodal voltages satisfy KVL for free. Walk around any closed loop
+        adding up potential differences; you return to the node you started at,
+        and the algebraic sum of the differences along the way is identically
+        zero. (Sum the side-lengths of a triangle as signed differences of
+        vertex altitudes and you get zero — that is just the definition of a
+        potential.) So nodal analysis parametrises with quantities that have
+        already cashed in the <em>B − N + 1</em> KVL equations, and only the
+        <em> N − 1</em> KCL equations at the non-reference nodes are left to
+        write. Read the second form of the equation above as a single principle:
+        the sum of all conductances connected to node A, multiplied by V<sub>A</sub>,
+        equals the sum of injected currents from each neighbouring fixed voltage.
+        Total-conductance times node-voltage on the left, source currents on
+        the right. The matrix is symmetric for the same topological reason the
+        mesh matrix is symmetric.
+      </p>
+      <p>
         One equation, one unknown. Compare that to the two-equation mesh system on
         the same network: the nodal view is genuinely cheaper here. The general rule
         is that mesh analysis is preferable when the network has many independent
@@ -218,6 +296,10 @@ export default function Ch13NetworkAnalysis() {
         algebraic rearrangements of the same KCL+KVL system; there is exactly one
         steady-state solution and any consistent method must reach it.
       </p>
+      <Pullout>
+        Mesh currents pre-pay KCL; node voltages pre-pay KVL. Pick whichever
+        debt you'd rather not carry by hand.
+      </Pullout>
 
       <TryIt
         tag="Try 13.2"
@@ -277,6 +359,23 @@ export default function Ch13NetworkAnalysis() {
         Ch.12's "Superposition" figure to play with it, then come back here for
         what superposition makes possible.
       </p>
+      <p>
+        The underlying algebra is the linearity property. If a circuit's
+        response <em>y</em> depends on two source amplitudes
+        <InlineMath> x₁</InlineMath> and <InlineMath>x₂</InlineMath> through
+        <InlineMath> y = a x₁ + b x₂</InlineMath> for some network-dependent
+        constants <em>a</em>, <em>b</em>, then setting
+        <InlineMath> x₂ = 0</InlineMath> gives <em>y</em><sub>1</sub>
+        = <em>a x₁</em>, setting <InlineMath>x₁ = 0</InlineMath> gives
+        <em> y</em><sub>2</sub> = <em>b x₂</em>, and the two responses add to the
+        original. The whole trick is that no nonlinear term — no
+        <em> x₁ x₂</em>, no <InlineMath>x₁²</InlineMath>, no <em>e</em><sup><em>x₁</em></sup>
+        — appears anywhere in the constitutive equations. The moment one does
+        (a diode's exponential <em>I-V</em>, a transistor's saturation
+        nonlinearity, a transformer's hysteresis loop), the cross-terms couple
+        the sources and superposition fails: the network's response to two
+        signals together is not the sum of its responses to each<Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
+      </p>
 
       <TryIt
         tag="Try 13.3"
@@ -318,6 +417,34 @@ export default function Ch13NetworkAnalysis() {
       <Formula>
         I<sub>N</sub> = V<sub>Th</sub> / R<sub>Th</sub>,   R<sub>N</sub> = R<sub>Th</sub>
       </Formula>
+      <p>
+        The picture behind the algebra: plot the terminal voltage <em>V</em>
+        against the terminal current <em>I</em> drawn from a linear two-terminal
+        network. Because every internal element is linear, the
+        <em> V – I</em> relation at the terminals must be a straight line. Two
+        measurements pin it down. Leave the terminals open and the network
+        delivers no current: that point is
+        <em> (I = 0, V = V<sub>oc</sub>)</em>. Short the terminals together and
+        the network delivers no voltage: that point is
+        <em> (I = I<sub>sc</sub>, V = 0)</em>. The line through those two points
+        is <em>V = V<sub>oc</sub> − I · R<sub>Th</sub></em> with
+        <em> R<sub>Th</sub> = V<sub>oc</sub>/I<sub>sc</sub></em>. That single
+        line is the entire external behaviour of the network. Thévenin reads it
+        as "<em>V<sub>oc</sub></em> behind a series resistor
+        <em> R<sub>Th</sub></em>"; Norton reads the same line as
+        "<em>I<sub>sc</sub></em> through a parallel resistor
+        <em> R<sub>N</sub> = R<sub>Th</sub></em>". They are two parametrisations
+        of one straight line.
+      </p>
+      <p>
+        Why must <em>I<sub>N</sub> = V<sub>Th</sub>/R<sub>Th</sub></em>?
+        Substitute <em>V = 0</em> into Thévenin's relation: the short-circuit
+        current is <em>V<sub>Th</sub>/R<sub>Th</sub></em> — and that, by
+        definition, is what Norton calls <em>I<sub>N</sub></em>. The conversion
+        is not a coincidence; it is the requirement that the two source forms
+        deliver the same load current and load voltage for <em>every</em> load
+        you might hang on the terminals.
+      </p>
       <p>
         The two forms are exactly equivalent: an ideal voltage source V in series
         with R is indistinguishable, from outside the terminals, from an ideal
@@ -373,6 +500,34 @@ export default function Ch13NetworkAnalysis() {
         }
       />
 
+      <TryIt
+        tag="Try 13.4b"
+        question={
+          <>
+            A 24 V battery in series with 8 Ω feeds the same node as a 12 V
+            battery in series with 4 Ω. Convert both branches to their Norton
+            forms, combine in parallel, and then convert back to a single
+            Thévenin equivalent at the shared node.
+          </>
+        }
+        hint={<>Each Thévenin branch (V in series with R) becomes a Norton branch (V/R in parallel with R). Parallel current sources add; parallel resistors combine by reciprocals.</>}
+        answer={
+          <>
+            <Formula>I<sub>N1</sub> = 24/8 = 3 A in parallel with 8 Ω</Formula>
+            <Formula>I<sub>N2</sub> = 12/4 = 3 A in parallel with 4 Ω</Formula>
+            <Formula>I<sub>N,total</sub> = 3 + 3 = 6 A</Formula>
+            <Formula>R<sub>parallel</sub> = (8·4)/(8+4) = 32/12 ≈ 2.67 Ω</Formula>
+            <Formula>V<sub>Th,eq</sub> = I<sub>N,total</sub> · R<sub>parallel</sub> ≈ <strong>16 V</strong></Formula>
+            <p>
+              A two-branch sub-network collapses to a single 16 V source behind
+              2.67 Ω, ready to plug into the rest of the analysis. Source
+              transformation is the working engineer's most-used algebraic
+              move<Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <h2><em>Y-Δ</em> transformations (Kennelly, 1899)</h2>
 
       <p>
@@ -414,6 +569,26 @@ export default function Ch13NetworkAnalysis() {
       <Formula>
         R<sub>CA</sub> = (R<sub>a</sub>R<sub>b</sub> + R<sub>b</sub>R<sub>c</sub> + R<sub>c</sub>R<sub>a</sub>) / R<sub>b</sub>
       </Formula>
+      <p>
+        Where does this peculiar product-over-sum structure come from? The
+        derivation is a sober exercise in three equations and three unknowns.
+        Probe the network at terminals A and B with the third terminal C left
+        floating. The Y presents
+        <em> R<sub>a</sub> + R<sub>b</sub></em> (a series chain through the
+        interior node); the Δ presents
+        <em> R<sub>AB</sub></em> in parallel with
+        <em> R<sub>CA</sub> + R<sub>BC</sub></em>. For the two networks to be
+        externally indistinguishable, those two impedances must be equal.
+        Write the same equality for terminals B-C and for C-A — three equations
+        — and solve the resulting 3×3 algebraic system for the Δ resistances in
+        terms of the Y resistances. The symmetric quantity
+        <em> R<sub>a</sub>R<sub>b</sub> + R<sub>b</sub>R<sub>c</sub> + R<sub>c</sub>R<sub>a</sub></em>
+        in every numerator is the determinant-like combination that emerges
+        from solving the system, and the single Y-leg in each denominator picks
+        out which terminal-pair you're transforming for. The asymmetry between
+        numerator and denominator is the algebraic price of moving from a
+        single-interior-node topology to a no-interior-node one.
+      </p>
       <p>
         Or the other way around, Δ → Y, with the dual mapping
         R<sub>a</sub> = R<sub>AB</sub>R<sub>CA</sub> / (R<sub>AB</sub> + R<sub>BC</sub> + R<sub>CA</sub>),
@@ -481,6 +656,19 @@ export default function Ch13NetworkAnalysis() {
         P<sub>L</sub> = I<sup>2</sup> R<sub>L</sub> = V<sub>Th</sub><sup>2</sup> R<sub>L</sub> / (R<sub>S</sub> + R<sub>L</sub>)<sup>2</sup>
       </Formula>
       <p>
+        The two limits make the curve obvious before you do any calculus. At
+        <em> R<sub>L</sub> → 0</em> (a short across the terminals) the current
+        is large but the voltage across <em>R<sub>L</sub></em> is zero: no
+        power. At <em>R<sub>L</sub> → ∞</em> (an open circuit) the voltage is
+        large but the current is zero: again no power. Somewhere between those
+        extremes <em>P<sub>L</sub></em> peaks. The numerator is linear in
+        <em> R<sub>L</sub></em> and pulls the curve up; the denominator is
+        quadratic in <em>R<sub>L</sub></em> and pulls it back down at large
+        <em> R<sub>L</sub></em>. The peak is where these two competing forces
+        balance — and balance turns out to occur exactly when the load matches
+        the source.
+      </p>
+      <p>
         Differentiate with respect to R<sub>L</sub>, set the derivative to zero,
         and the answer falls out in two lines: <strong>R<sub>L</sub> = R<sub>S</sub></strong>.
         Plug that back in and the maximum power is
@@ -488,6 +676,28 @@ export default function Ch13NetworkAnalysis() {
       <Formula>
         P<sub>L,max</sub> = V<sub>Th</sub><sup>2</sup> / (4 R<sub>S</sub>)
       </Formula>
+      <p>
+        The factor of four is the geometric mean lurking inside the algebra: at
+        <em> R<sub>L</sub> = R<sub>S</sub></em> the current is
+        <em> I = V<sub>Th</sub>/(2 R<sub>S</sub>)</em>, and the load voltage is
+        <em> I R<sub>L</sub> = V<sub>Th</sub>/2</em> — the source has handed
+        exactly half its EMF over to the load. The product
+        <em> V · I = V<sub>Th</sub>²/(4 R<sub>S</sub>)</em> drops out
+        immediately. The remaining half of the EMF falls across
+        <em> R<sub>S</sub></em> and dissipates inside the source, which is why
+        max-power transfer and max-efficiency operating points cannot coincide:
+        the source has to be working as hard as the load to push the matched
+        current through.
+      </p>
+      <p>
+        Sanity-check the formula in two limits. If <em>R<sub>S</sub> → 0</em>
+        (a perfect voltage source), <em>P<sub>L,max</sub> → ∞</em> for any
+        finite <em>V<sub>Th</sub></em> — exactly what an ideal source could
+        deliver into a finite load. If <em>V<sub>Th</sub> → 0</em>,
+        <em> P<sub>L,max</sub> → 0</em> regardless of <em>R<sub>S</sub></em> —
+        no EMF, no power. Both limits land where physical intuition says they
+        should.
+      </p>
       <p>
         — exactly a quarter of the short-circuit power the source could deliver into
         a wire (V<sub>Th</sub>²/R<sub>S</sub>), and exactly half of the source's
@@ -510,6 +720,11 @@ export default function Ch13NetworkAnalysis() {
         engineer's goal is usually maximum efficiency, not maximum power transfer;
         an RF engineer's goal is the opposite.
       </p>
+      <Pullout>
+        Maximum power is not maximum efficiency. The two goals point in
+        opposite directions, and choosing the wrong one melts your output
+        stage.
+      </Pullout>
       <p>
         For AC, the{' '}
         <Term def={<><strong>maximum-power-transfer theorem</strong> — in a linear AC network, maximum average power is delivered to a load when its impedance equals the complex conjugate of the source's: <em>Z<sub>L</sub> = Z<sub>S</sub><sup>*</sup></em>. The reactances cancel, the resistances match, and the average load power is <em>|V<sub>Th</sub>|² / (4 R<sub>S</sub>)</em>.</>}>maximum-power-transfer theorem</Term>{' '}
