@@ -346,6 +346,24 @@ either before the formula (concrete experience first, then formalised)
 or after it; either order is fine, but the symbols in the formula must
 be defined no later than the formula itself appears.
 
+**Multiple forms for foundational quantities.** When a quantity has
+several equivalent definitions — a formal one, an operational one, a
+clean special-case form — show all of them, each with its own
+"where" paragraph. The formal definition is general but abstract; the
+operational form is the one the reader will hold in their head; the
+special-case form is the one they will recognise on a circuit. Ch.2
+voltage is the canonical example:
+
+- Formal: `V_ab = −∫_a^b E·dℓ` (line integral; general)
+- Operational: `V = W/q = ΔU/q` (energy per coulomb)
+- Special case: `V = E·d` (uniform field between parallel plates)
+- Companion: `W = qV` (work to move a charge through V)
+
+Each carries a different piece of intuition. Same applies to power
+(`P = VI` / `P = I²R` / `P = V²/R`), current (`I = dQ/dt` / `I = nqv_dA`),
+resistance (`R = V/I` / `R = ρL/A`), capacitance (`C = Q/V` /
+`C = ε₀ε_r A/d`), EMF (`ε = −dΦ/dt` / `ε = BLv`), and many others.
+
 ### Chapter section checklist
 
 Every chapter must include, in this order:

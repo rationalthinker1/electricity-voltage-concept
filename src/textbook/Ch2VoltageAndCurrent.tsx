@@ -81,6 +81,51 @@ export default function Ch2VoltageAndCurrent() {
         kinetic energy of the charge — which, in a wire full of fixed obstacles, almost immediately becomes heat. The
         battery is the climber lifting the ball back up. Voltage is the height it lifted to.
       </p>
+
+      <h3>Voltage as energy per unit charge</h3>
+
+      <p>
+        The line integral is the formal definition; the way every working engineer holds voltage in their head is
+        operationally — as the energy it takes (or releases) per coulomb of charge moved from one point to the other.
+        Move a charge <strong>q</strong> against a potential difference <strong>V</strong> and you do work
+      </p>
+      <Formula>W = q V</Formula>
+      <p>
+        where <strong>W</strong> is the work done on the charge (in joules), <strong>q</strong> is the charge being
+        moved (in coulombs, signed), and <strong>V</strong> is the potential difference between the start and end
+        points (in volts). Equivalently, rearrange to read voltage off as work-per-charge:
+      </p>
+      <Formula>V = W / q = ΔU / q</Formula>
+      <p>
+        where <strong>ΔU</strong> is the change in electrical potential energy of the charge (in joules). One volt
+        is one joule per coulomb. That single identity is why "1.5 V" on a battery is a statement about energy: it
+        says the cell can deposit 1.5 joules of energy onto every coulomb of charge that flows out one terminal and
+        back into the other<Cite id="feynman-II-2" in={SOURCES} />.
+      </p>
+
+      <h3>The cleanest case: a uniform field between two plates</h3>
+
+      <p>
+        Inside a parallel-plate capacitor with the plates a distance <strong>d</strong> apart, the electric field is
+        uniform — same magnitude, same direction at every point in the gap. The line integral collapses to a single
+        product. The voltage between the plates is
+      </p>
+      <Formula>V = E d</Formula>
+      <p>
+        where <strong>V</strong> is the potential difference between the two plates (in volts),
+        <strong> E</strong> is the magnitude of the uniform electric field in the gap (in V/m), and
+        <strong> d</strong> is the gap distance (in metres). Voltage and field, in this geometry, are two ways of
+        saying the same thing. The work to push a charge <strong>q</strong> from one plate to the other is then
+      </p>
+      <Formula>W = q V = q E d</Formula>
+      <p>
+        the product of charge, field, and distance — exactly Newton's <em>work = force × distance</em> with
+        <em> F = qE</em> from Ch.1. And for any intermediate height <em>h</em> off the bottom plate, the voltage
+        relative to the bottom is just <em>V(h) = E h</em>: a perfect linear ramp from 0 at the bottom to
+        <em> V<sub>plate</sub></em> at the top. The "electrical landscape" inside a parallel-plate cap is a perfectly
+        sloped ski hill, and any charge dropped in slides down it<Cite id="feynman-II-2" in={SOURCES} /><Cite id="griffiths-2017" in={SOURCES} />.
+      </p>
+
       <p className="pullout">
         Voltage is not a property of a place. It is a property of the path between two places.
       </p>
