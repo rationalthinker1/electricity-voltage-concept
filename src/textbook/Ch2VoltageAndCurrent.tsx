@@ -9,6 +9,7 @@
  *
  * Every numerical claim is cited inline against chapter.sources.
  */
+import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
@@ -187,6 +188,91 @@ export default function Ch2VoltageAndCurrent() {
         pushback turns into heat, and why a long thin wire pushes back more than a short fat one. Those are the
         subject of Chapter 3.
       </p>
+
+      <CaseStudies
+        intro={
+          <>
+            Two places this chapter's split between drift and signal — and its insistence that
+            voltage is always a difference — surfaces in objects you use or hear about every day.
+          </>
+        }
+      >
+        <CaseStudy
+          tag="Case 2.1"
+          title="USB-C Power Delivery: 240 watts down a hair-thin cable"
+          summary="Lifting the voltage so the current — and the drift it implies — stays civilized."
+          specs={[
+            { label: 'Maximum EPR voltage / current', value: <>48 V at 5 A <Cite id="usb-pd-r3" in={SOURCES} /></> },
+            { label: 'Maximum negotiated power (EPR)', value: <>240 W <Cite id="usb-pd-r3" in={SOURCES} /></> },
+            { label: 'E-marker chip required for', value: <>≥5 A cables <Cite id="usb-pd-r3" in={SOURCES} /></> },
+            { label: 'Free-electron density in copper conductors', value: <>~8.5×10<sup>28</sup> /m<sup>3</sup> <Cite id="ashcroft-mermin-1976" in={SOURCES} /></> },
+          ]}
+        >
+          <p>
+            The original USB spec delivered 2.5 W at a fixed 5 V — enough to spin a flash drive,
+            not enough to do anything else. Modern USB-C Power Delivery, in its Extended Power
+            Range mode, negotiates up to <strong>48 V at 5 A</strong> for a total of
+            <strong> 240 W</strong> through a cable not much thicker than a shoelace
+            <Cite id="usb-pd-r3" in={SOURCES} />. That is enough to charge a gaming laptop or run a
+            small monitor.
+          </p>
+          <p>
+            The trick is the choice of variable. Power is <em>P = VI</em>; double the voltage and
+            you can deliver the same power at half the current. With <em>n ≈ 8.5×10²⁸ /m³</em>
+            free electrons in copper<Cite id="ashcroft-mermin-1976" in={SOURCES} />, the drift
+            speed <strong>v<sub>d</sub> = I/(nqA)</strong> stays in the millimeters-per-second
+            range — the same crawl this chapter just described — even as the conductor moves real
+            power. The cable carries the energy through the surrounding field at near-c, while the
+            actual electrons in the copper sit there jittering with a vanishingly small bias on
+            top<Cite id="libretexts-conduction" in={SOURCES} />.
+          </p>
+          <p>
+            That same logic forces a piece of hardware: cables rated for ≥5 A must carry an
+            <em> e-marker</em> chip that tells the source what current the conductor and connector
+            can survive<Cite id="usb-pd-r3" in={SOURCES} />. Without it the source refuses to
+            negotiate above 3 A. Voltage is still always a difference — between the cable's two
+            data pins — but the difference is now used to decide how many amperes the engineering
+            on either end is willing to commit to.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 2.2"
+          title="The electric eel: a stack of biological batteries"
+          summary="Several thousand cells in series, briefly producing the voltage of a Tesla pack."
+          specs={[
+            { label: 'Peak discharge voltage', value: <>~600 V <Cite id="catania-2015" in={SOURCES} /></> },
+            { label: 'Peak discharge current', value: <>~1 A <Cite id="catania-2015" in={SOURCES} /></> },
+            { label: 'Discharge duration', value: <>~2 ms pulses, ~400 pulses/s in a high-frequency volley <Cite id="catania-2015" in={SOURCES} /></> },
+            { label: 'Mechanism', value: <>electrocytes stacked in series; each contributes ~150 mV <Cite id="catania-2015" in={SOURCES} /></> },
+          ]}
+        >
+          <p>
+            <em>Electrophorus electricus</em> spends most of its life in murky Amazonian water and
+            does most of its hunting with electricity. Lining each side of its body are thousands
+            of flattened cells called <strong>electrocytes</strong>, each of which uses ion pumps
+            to maintain a small potential difference across its membrane. Stacked in series like
+            a battery pack, the small potentials add. A direct probe measurement reports peak
+            discharges of about <strong>600 V at ~1 A</strong> during predatory strikes
+            <Cite id="catania-2015" in={SOURCES} />.
+          </p>
+          <p>
+            The relevant physics is the chapter's first lesson: voltage is a sum of differences
+            along a path. One electrocyte across an ion gradient produces maybe a hundred and
+            fifty millivolts; thousands in series produce hundreds of volts. The fish doesn't
+            generate more <em>charge</em> than any other animal — it generates a longer
+            <em> stack</em>, summing identical small ΔV terms along the path from head to tail.
+          </p>
+          <p>
+            On the current side, the eel's brief peak of about an ampere into the surrounding
+            water is unremarkable as raw current — your house wiring sees twenty times that — but
+            it is delivered at hundreds of volts and is enough to stun a fish a body-length away.
+            The pulses last only a couple of milliseconds and recur in high-frequency volleys
+            during a strike<Cite id="catania-2015" in={SOURCES} />, exploiting the same
+            voltage-times-current product that, indoors, runs your toaster.
+          </p>
+        </CaseStudy>
+      </CaseStudies>
 
       <FAQ intro="Questions readers ask after this chapter — the misconception-busters, the order-of-magnitude sanity checks, and the things nobody quite explains in school.">
         <FAQItem q="If voltage is between two points, what does it mean to say a wire is at 'ground' or 'zero volts'?">

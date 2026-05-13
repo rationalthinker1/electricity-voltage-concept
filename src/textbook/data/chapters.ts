@@ -53,6 +53,7 @@ export const CHAPTERS: ChapterEntry[] = [
     sources: [
       'coulomb-1785', 'cavendish-1773', 'williams-faller-hill-1971',
       'gauss-1813', 'griffiths-2017', 'feynman-II-2', 'codata-2018',
+      'rakov-uman-2003', 'uman-2001',
     ],
   },
   {
@@ -66,6 +67,7 @@ export const CHAPTERS: ChapterEntry[] = [
     sources: [
       'feynman-II-2', 'griffiths-2017', 'drude-1900', 'ashcroft-mermin-1976',
       'kittel-2005', 'libretexts-conduction',
+      'usb-pd-r3', 'catania-2015',
     ],
   },
   {
@@ -81,6 +83,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'joule-1841', 'griffiths-2017',
       'onnes-1911', 'bcs-1957', 'matthiessen-1864', 'nec-2017-aluminum',
       'grainger-power-systems-2003', 'irwin-circuit-analysis-2015',
+      'coaton-marsden-1997',
     ],
   },
   {
@@ -94,6 +97,7 @@ export const CHAPTERS: ChapterEntry[] = [
     sources: [
       'biot-savart-1820', 'ampere-1826', 'feynman-II-13', 'griffiths-2017',
       'jackson-1999', 'hall-1879', 'codata-2018',
+      'lauterbur-1973', 'bruning-lhc-2004', 'chulliat-wmm-2020', 'duncan-thompson-1992',
     ],
   },
   {
@@ -107,6 +111,7 @@ export const CHAPTERS: ChapterEntry[] = [
     sources: [
       'faraday-1832', 'feynman-II-17', 'griffiths-2017', 'maxwell-1865',
       'jackson-1999',
+      'wpc-qi-1.3', 'lucia-induction-2014', 'grainger-power-systems-2003',
     ],
   },
   {
@@ -120,6 +125,7 @@ export const CHAPTERS: ChapterEntry[] = [
     sources: [
       'poynting-1884', 'maxwell-1865', 'feynman-II-27', 'davis-kaplan-2011',
       'morris-styer-2012', 'griffiths-2017', 'jackson-1999',
+      'pozar-2011', 'kopp-lean-2011', 'green-bohn-2015', 'codata-2018',
     ],
   },
   {
@@ -132,7 +138,9 @@ export const CHAPTERS: ChapterEntry[] = [
     relatedLabs: ['poynting', 'energy-density'],
     sources: [
       'maxwell-1865', 'hertz-1888', 'feynman-II-21', 'griffiths-2017',
-      'jackson-1999', 'codata-2018',
+      'jackson-1999', 'codata-2018', 'poynting-1884',
+      'ieee-80211', 'buffler-1993', 'tsuda-2013-ikaros', 'rontgen-1895',
+      'rappaport-2013-mmwave', 'kopp-lean-2011',
     ],
   },
   {
@@ -147,6 +155,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'maxwell-1865', 'gauss-1813', 'faraday-1832', 'ampere-1826',
       'hertz-1888', 'feynman-II-18', 'griffiths-2017', 'jackson-1999',
       'codata-2018',
+      'hong-2001-wireless', 'kaplan-hegarty-2017', 'ewen-purcell-1951',
     ],
   },
   {
@@ -160,6 +169,7 @@ export const CHAPTERS: ChapterEntry[] = [
     sources: [
       'einstein-1905', 'feynman-II-13', 'griffiths-2017', 'jackson-1999',
       'purcell-morin-2013',
+      'ashby-2003', 'kaplan-hegarty-2017', 'schwinger-1949', 'bruning-lhc-2004',
     ],
   },
   {
@@ -173,6 +183,7 @@ export const CHAPTERS: ChapterEntry[] = [
     sources: [
       'kirchhoff-1845', 'griffiths-2017', 'irwin-circuit-analysis-2015',
       'grainger-power-systems-2003', 'horowitz-hill-2015', 'codata-2018',
+      'ansi-c84-1-2020', 'erickson-maksimovic-2020',
     ],
   },
   {
@@ -186,6 +197,7 @@ export const CHAPTERS: ChapterEntry[] = [
     sources: [
       'clausius-1850', 'langevin-1905', 'weiss-1907', 'debye-1929',
       'griffiths-2017', 'jackson-1999', 'kittel-2005', 'codata-2018',
+      'baibich-1988', 'binasch-grunberg-1989', 'moulson-herbert-2003',
     ],
   },
 ];

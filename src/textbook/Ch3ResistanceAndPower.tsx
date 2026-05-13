@@ -11,6 +11,7 @@
  *
  * Every numerical or historical claim cites a key from chapter.sources.
  */
+import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
@@ -217,6 +218,134 @@ export default function Ch3ResistanceAndPower() {
         because moving charge produces a second kind of field, the rotational partner of the electrostatic one, and that
         is where the rest of nineteenth-century physics opens up.
       </p>
+
+      <CaseStudies
+        intro={
+          <>
+            Three places the same <em>P = I²R</em> equation gets exploited at radically different
+            design points — once to make heat the product, once to suppress it as waste, and once
+            to push it all the way to zero.
+          </>
+        }
+      >
+        <CaseStudy
+          tag="Case 3.1"
+          title="The incandescent bulb: engineered for inefficiency"
+          summary="A century of indoor light by deliberately picking the worst point on the radiation curve."
+          specs={[
+            { label: 'Filament material', value: <>tungsten <Cite id="coaton-marsden-1997" in={SOURCES} /></> },
+            { label: 'Operating temperature', value: <>~2700–3000 K <Cite id="coaton-marsden-1997" in={SOURCES} /></> },
+            { label: 'Tungsten conductivity', value: <>~1.79×10<sup>7</sup> S/m at 20 °C <Cite id="crc-resistivity" in={SOURCES} /></> },
+            { label: 'Cold-to-hot resistance ratio', value: <>~10× <Cite id="coaton-marsden-1997" in={SOURCES} /></> },
+            { label: 'Luminous efficacy', value: <>~10–15 lm/W (≲ 10% radiated as visible) <Cite id="coaton-marsden-1997" in={SOURCES} /></> },
+          ]}
+        >
+          <p>
+            An incandescent lamp is a deliberately bad conductor placed in series with an
+            otherwise excellent one. Tungsten's room-temperature σ of about
+            <strong> 1.79×10⁷ S/m</strong><Cite id="crc-resistivity" in={SOURCES} /> is six times
+            worse than copper's, and at its operating temperature near <strong>2700–3000 K</strong>
+            its resistivity climbs by another factor of about ten<Cite id="coaton-marsden-1997" in={SOURCES} />.
+            That hot resistance is what limits the current to a few hundred milliamps, dissipating
+            something like 60 W as Joule heat inside a hair-thin coil<Cite id="joule-1841" in={SOURCES} />.
+          </p>
+          <p>
+            The cold-resistance ratio is also why bulbs die specifically the instant they are
+            switched on. At room temperature, <em>R</em> is roughly a tenth of its operating
+            value, so the inrush current is roughly ten times the steady-state operating current
+            until the filament heats up<Cite id="coaton-marsden-1997" in={SOURCES} />. The
+            already-thinnest spot melts a hair sooner than the rest of the coil, and the lamp
+            opens.
+          </p>
+          <p>
+            The bulb's central design irony is that it works by being terrible. Stefan–Boltzmann
+            radiation goes as <em>T⁴</em>, but the fraction of that radiation falling in the
+            visible band is small at any temperature a metal can survive. Only about
+            <strong> 10–15 lumens per watt</strong> emerges as visible light from a typical
+            household incandescent<Cite id="coaton-marsden-1997" in={SOURCES} /> — under ten
+            percent of the electrical input. The rest is infrared, which is to say, heat. Modern
+            LED lamps reach 100+ lm/W by abandoning the thermal-radiation route entirely.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 3.2"
+          title="Long-distance transmission: why the grid runs at hundreds of kilovolts"
+          summary="Quartering the line current quarters the loss; the obvious lever, applied at planetary scale."
+          specs={[
+            { label: 'Typical high-voltage transmission', value: <>~115 kV to 765 kV <Cite id="grainger-power-systems-2003" in={SOURCES} /></> },
+            { label: 'Loss scaling for fixed delivered power', value: <>P<sub>loss</sub> = (P/V)<sup>2</sup> R <Cite id="grainger-power-systems-2003" in={SOURCES} /></> },
+            { label: 'Aluminum conductor conductivity', value: <>~3.77×10<sup>7</sup> S/m (~63% of Cu) <Cite id="crc-resistivity" in={SOURCES} /></> },
+            { label: 'Reason aluminum wins outdoors', value: <>roughly one-third the density of copper <Cite id="crc-resistivity" in={SOURCES} /></> },
+          ]}
+        >
+          <p>
+            A transmission line is just a long resistor. Take a 1 GW load fed at 11 kV: the line
+            current is about <strong>91 kA</strong>, and the per-meter <em>I²R</em> dissipation
+            in any realistic conductor is catastrophic. Push the same gigawatt at 500 kV and the
+            current drops to <strong>2 kA</strong>; the loss along the same conductor drops by a
+            factor of <strong>(500/11)² ≈ 2000</strong><Cite id="grainger-power-systems-2003" in={SOURCES} />.
+            That quadratic in <em>V</em> is the single biggest reason the grid exists in its
+            current form.
+          </p>
+          <p>
+            The conductor choice is the second lever. Outdoor transmission lines are almost
+            always <em>aluminum</em>, not copper, even though aluminum's conductivity is only
+            about <strong>3.77×10⁷ S/m</strong> — roughly 63% of copper's<Cite id="crc-resistivity" in={SOURCES} />.
+            For a long span suspended in air, the dominant constraint is the conductor's own
+            weight pulling on the towers, and aluminum is roughly one-third the density of
+            copper. The extra cross-section needed to hit the same <em>R</em> still comes out
+            lighter and cheaper. Inside your walls, where copper's mechanical and termination
+            properties win, the calculus flips back<Cite id="nec-2017-aluminum" in={SOURCES} />.
+          </p>
+          <p>
+            Every transformer in the chain — generator step-up, regional substation, neighborhood
+            pole-top — exists for the same reason. The actual current the wall outlet hands you
+            is set by what your appliance asks of it; everything upstream is the grid choosing
+            voltages so that the line current at each stage is sane against the local <em>R</em>.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 3.3"
+          title="Superconducting cables: the resistor that isn't"
+          summary="Onnes 1911 to grid-scale prototypes: what happens when ρ is literally zero."
+          specs={[
+            { label: 'Discovery of zero resistance in mercury', value: <>1911, at T = 4.2 K <Cite id="onnes-1911" in={SOURCES} /></> },
+            { label: 'Mechanism', value: <>Cooper-paired electron condensate <Cite id="bcs-1957" in={SOURCES} /></> },
+            { label: 'DC resistivity below T_c', value: <>~0 (no upper bound from experiment) <Cite id="onnes-1911" in={SOURCES} /></> },
+            { label: 'Joule heating in the conductor itself', value: <>0, because I<sup>2</sup>R = 0 <Cite id="joule-1841" in={SOURCES} /></> },
+          ]}
+        >
+          <p>
+            Heike Kamerlingh Onnes cooled mercury to <strong>4.2 K</strong> in his Leiden
+            cryogenics lab in 1911 and watched its DC resistance drop, abruptly, to zero
+            <Cite id="onnes-1911" in={SOURCES} />. Half a century later Bardeen, Cooper, and
+            Schrieffer explained why: below a critical temperature, electrons in certain metals
+            bind into <strong>Cooper pairs</strong> through a phonon-mediated interaction, and
+            the paired condensate cannot exchange small amounts of momentum with the lattice
+            because of an opened energy gap<Cite id="bcs-1957" in={SOURCES} />. With no available
+            scattering channel, the Drude time effectively diverges, the conductivity diverges
+            with it, and the resistance is genuinely zero<Cite id="drude-1900" in={SOURCES} /><Cite id="ashcroft-mermin-1976" in={SOURCES} />.
+          </p>
+          <p>
+            For a transmission cable the consequence is direct: <em>I²R</em> drops to literally
+            zero in the cable itself. There is no in-conductor heat dissipation, no temperature
+            rise, no current-limited derating. The catch is the cryogenic plant required to keep
+            the conductor below its critical temperature — and the much subtler caveat that
+            superconductors carry AC <em>imperfectly</em>, since alternating fields still drive
+            the unpaired electrons present at non-zero T into normal scattering and produce
+            modest losses<Cite id="bcs-1957" in={SOURCES} />.
+          </p>
+          <p>
+            The clean implication for this chapter is that everything we've said about
+            <em> P = I²R</em> assumes an ordinary metallic conductor with a finite ρ. Strip the
+            ρ and the entire dissipation argument vanishes — exactly as the formula promises.
+            The fact that we use copper instead is a thermodynamic cost calculation, not a
+            physical necessity.
+          </p>
+        </CaseStudy>
+      </CaseStudies>
 
       <FAQ
         intro={

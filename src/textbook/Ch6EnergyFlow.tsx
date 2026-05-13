@@ -13,6 +13,7 @@
  * thing all along. The field was.
  */
 import { ChapterShell } from '@/components/ChapterShell';
+import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
@@ -234,6 +235,133 @@ export default function Ch6EnergyFlow() {
       <p>
         That is what electricity actually is.
       </p>
+
+      <CaseStudies
+        intro={
+          <>
+            Three places the Poynting picture is not a thought experiment but the standard engineering description —
+            from a coaxial cable on a workbench to the entire global solar energy budget.
+          </>
+        }
+      >
+        <CaseStudy
+          tag="Case 6.1"
+          title="Coaxial cable"
+          summary={<em>The signal travels in the plastic between the conductors. The copper just guides it.</em>}
+          specs={[
+            { label: 'Standard impedance (RF / video)', value: '50 Ω or 75 Ω' },
+            { label: 'Mode of propagation', value: 'TEM (Transverse Electromagnetic)' },
+            { label: 'Velocity factor (typical)', value: '0.66–0.85 × c' },
+            { label: 'Loss in inner conductor (DC, ideal SC)', value: '0' },
+            { label: 'Cross-section integral of S', value: '= VI exactly' },
+          ]}
+        >
+          <p>
+            A coaxial cable is the cleanest possible test of Chapter 6's central claim. For an ideal lossless line
+            with inner radius <strong>a</strong> and outer radius <strong>b</strong>, the static <strong>E</strong>
+            between the conductors is purely radial, and the magnetostatic <strong>B</strong> is purely
+            circumferential. Their cross product <strong>S = (1/µ₀) E × B</strong> points axially, along the cable,
+            in the direction of energy flow<Cite id="pozar-2011" in={SOURCES} />. Integrate <strong>S</strong> over
+            any cross-section of the dielectric and the answer is <strong>VI</strong> — exactly. The conductors
+            themselves carry zero energy along their interior, in the limit of perfect conductivity
+            <Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+          <p>
+            The characteristic impedance, the parameter every RF engineer lives by, is set by the geometry of the
+            dielectric region between the conductors: <strong>Z₀ = (η / 2π) · ln(b/a) / √εᵣ</strong>, with
+            <strong> η ≈ 377 Ω</strong> the impedance of free space<Cite id="pozar-2011" in={SOURCES} />. Standard
+            RG-6 video cable comes out to <strong>75 Ω</strong>; RG-58 instrumentation cable to <strong>50 Ω</strong>.
+            The propagation speed is <strong>c/√εᵣ</strong>, which for typical polyethylene dielectrics works out
+            to roughly <strong>~0.66 c</strong> — exactly the "two-thirds the speed of light" number that keeps
+            appearing throughout this book.
+          </p>
+          <p>
+            At gigahertz frequencies the skin effect pushes whatever current does flow in the metal out to the
+            surface within a few micrometers. From the field's point of view, the inside of the conductor is empty
+            space the signal never visits<Cite id="griffiths-2017" in={SOURCES} />. The wire is, more literally
+            than the rest of the book makes it sound, just a guide for the field's boundary condition.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 6.2"
+          title="A solar panel and the Sun's Poynting flux"
+          summary={<em>1361 watts per square meter, streaming across 150 million kilometers of vacuum.</em>}
+          specs={[
+            { label: 'Total solar irradiance at 1 AU', value: '1360.8 ± 0.5 W/m²' },
+            { label: 'Distance traveled', value: '~1.496 × 10¹¹ m' },
+            { label: 'Travel time', value: '~8.3 min' },
+            { label: 'Earth\'s intercepted power', value: '~1.74 × 10¹⁷ W' },
+            { label: 'Annual global energy demand (2024)', value: '~6 × 10²⁰ J' },
+            { label: 'Same as Earth\'s intercept for', value: '~1 hour' },
+          ]}
+        >
+          <p>
+            The solar constant — the time-averaged <strong>|S|</strong> arriving at the top of Earth's atmosphere
+            from the Sun — was measured most precisely by the SORCE/TIM space radiometer during the 2008 solar
+            minimum at <strong>1360.8 ± 0.5 W/m²</strong><Cite id="kopp-lean-2011" in={SOURCES} />. That is a
+            real, local Poynting flux. Every square meter of cross-section between here and the photosphere is
+            carrying that much energy per second across vacuum at the speed of light — the same vector field
+            <strong> S = (1/µ₀) E × B</strong> that flows into a resistive wire in the rest of this chapter.
+          </p>
+          <p>
+            For a propagating electromagnetic wave in vacuum, <strong>E</strong> and <strong>B</strong> are
+            mutually perpendicular and in phase, with the time-averaged Poynting magnitude
+            <strong> ⟨|S|⟩ = ½ c ε₀ E₀²</strong><Cite id="jackson-1999" in={SOURCES} />. Plugging in the solar
+            constant gives a peak field amplitude near Earth of <strong>E₀ ≈ 1000 V/m</strong>, with a
+            corresponding <strong>B₀ ≈ 3 µT</strong> — comparable in magnitude to the geomagnetic field. The Sun
+            quietly streams a few microtesla of oscillating <strong>B</strong> through every cubic meter of empty
+            space inside Earth's orbit, all day, forever.
+          </p>
+          <p>
+            A photovoltaic panel is a region where the Poynting flux from the Sun gets absorbed in a thin
+            semiconductor and partly redirected into an electrical circuit. The absorption mechanism is quantum (a
+            photon promoting an electron across the bandgap), but the bookkeeping is purely classical: incoming
+            Poynting flux equals dissipated solar power plus delivered electrical power plus radiated thermal
+            output<Cite id="poynting-1884" in={SOURCES} />. The same conservation equation that says
+            <strong> ∮S·dA = VI</strong> for a resistive wire says <strong>∫S·dA = P_in</strong> for the front
+            face of a solar panel.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 6.3"
+          title="The HTS power cable demonstration"
+          summary={<em>A superconducting transmission line in service: nearly all the energy stays in the dielectric.</em>}
+          specs={[
+            { label: 'Operating voltage class', value: '~66 kV' },
+            { label: 'Phase current', value: '~2–3 kA' },
+            { label: 'Conductor', value: 'BSCCO or YBCO tape' },
+            { label: 'Operating temperature', value: '~70 K (liquid nitrogen)' },
+            { label: 'Resistive loss in the SC core', value: 'essentially 0' },
+            { label: 'Net AC losses', value: 'a few W/m (cooling overhead dominates)' },
+          ]}
+        >
+          <p>
+            High-temperature superconducting (HTS) power cables have been operated at utility scale since the
+            mid-2000s — Yokohama, Albany, Essen and others — using BSCCO- or YBCO-coated tape conductors cooled by
+            forced-flow liquid nitrogen at around <strong>70 K</strong><Cite id="green-bohn-2015" in={SOURCES} />.
+            Inside the superconducting core the DC resistance is exactly zero; even at <strong>50/60 Hz</strong>
+            the residual AC loss in the tape is a few watts per meter, dwarfed by the cryogenic overhead of keeping
+            the cryostat cold.
+          </p>
+          <p>
+            In the Chapter 6 language: as <strong>σ → ∞</strong>, the axial <strong>E</strong> inside the
+            conductor goes to zero, and so does the radial component of <strong>S</strong> at the conductor's
+            surface<Cite id="griffiths-2017" in={SOURCES} />. The Poynting flux stays in the surrounding
+            dielectric and slides on past the conductor untouched. All of the dissipation moves to whatever
+            normal-conducting load finally closes the circuit at the far end<Cite id="jackson-1999" in={SOURCES} />.
+            The leads are rails for the field; the resistor is where the joules actually land.
+          </p>
+          <p>
+            Conventional copper transmission cables lose a few percent of delivered power to I²R heating across
+            hundreds of kilometers; HTS demonstrators have shown that, in principle, that loss can be moved off
+            the conductor entirely. The reason it hasn't displaced copper in the grid is not the physics — the
+            Poynting integral works exactly as Chapter 6 predicts — but the engineering of cryogenics at
+            kilometer scale.
+          </p>
+        </CaseStudy>
+      </CaseStudies>
 
       <FAQ
         intro="The last chapter is the one that produces the most leftover questions. These are the ones that come up when the picture has finally landed and the reader starts pressing on it."

@@ -12,6 +12,7 @@
  * Cite only from chapter.sources. Match Ch1 voice.
  */
 import { ChapterShell } from '@/components/ChapterShell';
+import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
@@ -223,6 +224,130 @@ export default function Ch5Induction() {
         field stops being a mathematical bookkeeper for forces and starts carrying actual energy across actual empty
         space.
       </p>
+
+      <CaseStudies
+        intro={
+          <>
+            Three industries built directly on top of <strong>EMF = −dΦ/dt</strong> — operating at wildly different
+            scales and frequencies, all running the same minus sign.
+          </>
+        }
+      >
+        <CaseStudy
+          tag="Case 5.1"
+          title="The power grid and the synchronous generator"
+          summary={<em>Every wall outlet on Earth traces back to a coil spinning past a magnet at 50 or 60 Hz.</em>}
+          specs={[
+            { label: 'Grid frequency (North America)', value: '60 Hz' },
+            { label: 'Grid frequency (Europe / most of Asia)', value: '50 Hz' },
+            { label: 'Shaft angular rate at 60 Hz', value: '~377 rad/s (3600 rpm)' },
+            { label: 'Iron-core saturation field', value: '~1.5–2 T' },
+            { label: 'Output of a large turbogenerator', value: 'up to ~1.5 GW' },
+            { label: 'Transmission voltages', value: '110–765 kV' },
+          ]}
+        >
+          <p>
+            A modern synchronous generator is the chapter equation made of steel. Rotate a multi-pole field winding
+            at angular rate <strong>ω</strong> inside a stator carrying <strong>N</strong> turns of copper, and the
+            stator sees a flux that swings as <strong>Φ(t) = NBA cos(ωt)</strong>. Faraday's law immediately gives
+            the peak terminal voltage <strong>NBAω</strong> at exactly the angular frequency of the rotor
+            <Cite id="griffiths-2017" in={SOURCES} />. The whole continental grid is locked in phase with that
+            sinusoid; every alternator on the system, in every country sharing a frequency, turns its rotor at a
+            rational multiple of the same <strong>ω</strong>.
+          </p>
+          <p>
+            The reason transmission lines run at hundreds of kilovolts is the other equation from this chapter:
+            transformers. Doubling the voltage halves the current for a given delivered power, and the I²R losses
+            in the line drop by a factor of four<Cite id="grainger-power-systems-2003" in={SOURCES} />. A
+            <strong> 765 kV</strong> long-distance link carries the same power as a hypothetical <strong>7.65 kV</strong>
+            link with one ten-thousandth the resistive loss along the way<Cite id="feynman-II-17" in={SOURCES} />.
+            The whole multi-stage step-up / step-down architecture of the grid exists because the relation
+            <strong> V₂/V₁ = N₂/N₁</strong> is exact in the lossless limit and stays within a few percent in
+            practice.
+          </p>
+          <p>
+            The output is identical no matter what spins the shaft. Steam turbines (coal, gas, nuclear), water
+            turbines (hydro), and increasingly wind turbines all hand off mechanical power to the same family of
+            three-phase synchronous machines. What comes out the electrical end is governed by the same equation
+            Faraday discovered with a switch and an iron ring in 1831<Cite id="faraday-1832" in={SOURCES} />.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 5.2"
+          title="Wireless phone charging (Qi)"
+          summary={<em>An air-gap transformer at 100–200 kHz, sitting under your nightstand.</em>}
+          specs={[
+            { label: 'BPP (baseline) max delivered power', value: '5 W' },
+            { label: 'EPP (extended) max delivered power', value: '15 W' },
+            { label: 'Operating frequency range', value: '110–205 kHz' },
+            { label: 'Coil-to-coil spacing', value: '~3–8 mm' },
+            { label: 'Typical end-to-end efficiency', value: '~60–80%' },
+          ]}
+        >
+          <p>
+            The Qi standard from the Wireless Power Consortium specifies the same physics as a transformer, just
+            with the iron core removed. A primary coil in the charging pad oscillates at a frequency in the
+            <strong> 110–205 kHz</strong> band; the secondary coil, embedded in the back of the phone, sees a
+            time-varying flux and develops an induced EMF by Faraday's law<Cite id="wpc-qi-1.3" in={SOURCES} />.
+            Baseline Power Profile devices deliver up to <strong>5 W</strong>; the Extended Power Profile reaches
+            <strong> 15 W</strong>.
+          </p>
+          <p>
+            Without an iron core threading both coils, the coupling coefficient <strong>k = M / √(L₁ L₂)</strong>
+            is well below unity — most of the primary's flux leaks into the surrounding air rather than threading
+            the secondary<Cite id="griffiths-2017" in={SOURCES} />. The system is consequently far less efficient
+            than a wired link. Real-world end-to-end efficiency from wall outlet to phone battery is typically
+            <strong> 60–80%</strong>, versus <strong>≥ 95%</strong> for a USB-C cable<Cite id="feynman-II-17" in={SOURCES} />.
+            The "wasted" power becomes heat in the coils and in nearby ferrous metal — which is why a coin or a
+            paperclip on a Qi pad will warm up disconcertingly.
+          </p>
+          <p>
+            The 100 kHz scale is not arbitrary: it sits in a sweet spot where copper losses are tolerable, where
+            ferrite shielding can guide the flux effectively, and where the radiated emissions are easy to keep
+            below the relevant EMC limits. The whole industry runs the equation <strong>EMF = −N dΦ/dt</strong>
+            written for an air-gap coupling, at a frequency chosen to make <strong>dΦ/dt</strong> large enough to
+            deliver a meaningful current.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 5.3"
+          title="The induction cooktop"
+          summary={<em>A short-circuited transformer that happens to be your saucepan.</em>}
+          specs={[
+            { label: 'Typical operating frequency', value: '20–100 kHz' },
+            { label: 'Per-burner output power', value: '1.5–3.7 kW' },
+            { label: 'End-to-end efficiency', value: '~85–90%' },
+            { label: 'Required cookware', value: 'ferromagnetic (Fe, some stainless)' },
+            { label: 'Glass-ceramic surface', value: 'remains cool to touch' },
+          ]}
+        >
+          <p>
+            An induction hob is a transformer whose secondary is your frying pan. Beneath the glass-ceramic
+            surface, a flat spiral coil is driven by power electronics at a frequency in the
+            <strong> 20–100 kHz</strong> range<Cite id="lucia-induction-2014" in={SOURCES} />. The resulting
+            oscillating <strong>B</strong> field penetrates the glass (which is essentially invisible to it) and
+            enters the iron base of any compatible pan placed on top.
+          </p>
+          <p>
+            Inside the pan, two distinct loss mechanisms turn the field into heat. First, the changing flux drives
+            large circulating eddy currents in the iron — Faraday's law applied to the pan's own bulk
+            <Cite id="feynman-II-17" in={SOURCES} />. The eddy currents dissipate as I²R heating in the pan's
+            resistivity. Second, the alternating field repeatedly re-magnetises the ferromagnetic domains of the
+            iron, and the hysteresis loop pays an energy cost on every cycle<Cite id="griffiths-2017" in={SOURCES} />.
+            Both processes happen inside the pan itself; the cooktop surface stays cool because there is nothing
+            ferromagnetic in the glass to absorb the field.
+          </p>
+          <p>
+            Wall-to-pan efficiencies of <strong>85–90%</strong> are routine, well above the ~40% you get from a
+            gas burner. The catch is that the pan has to be ferromagnetic. Aluminium and copper cookware barely
+            couple to the field — their high conductivity gives them a small skin depth and a small hysteresis
+            term, so most of the flux passes through without being absorbed<Cite id="jackson-1999" in={SOURCES} />.
+            That is the entire reason the supermarket aisle for "induction-compatible" cookware exists.
+          </p>
+        </CaseStudy>
+      </CaseStudies>
 
       <FAQ
         intro={

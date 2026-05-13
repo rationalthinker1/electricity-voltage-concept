@@ -13,6 +13,7 @@
  *   9.3 EBTransform          — pure E_y in one frame becomes E + B in a boosted frame
  *   9.4 FieldTensor          — the 4×4 antisymmetric F^μν matrix, components mix under boost
  */
+import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
@@ -190,6 +191,168 @@ export default function Ch9Relativity() {
         electromagnetism look the same in every inertial frame. The book you've been reading has, in this sense,
         been one story all along: charges, fields, and the geometry of spacetime they live in.
       </p>
+
+      <CaseStudies
+        intro="Four places where the relativistic structure of electromagnetism stops being a thought experiment and starts being a budget item."
+      >
+        <CaseStudy
+          tag="Case 9.1"
+          title="GPS — the satellite clocks were tuned for relativity before launch"
+          summary={<em>Special relativity slows them. General relativity speeds them up more. The net offset is 38.6 microseconds a day, and the engineers compensated for it on the ground.</em>}
+          specs={[
+            { label: 'Satellite orbital velocity', value: '~3.87 km/s' },
+            { label: 'Special-relativistic clock slowing', value: '~−7.2 μs/day (kinematic time dilation)' },
+            { label: 'Gravitational clock speed-up', value: '~+45.7 μs/day (lower potential at Earth)' },
+            { label: 'Net offset, satellite vs ground', value: '~+38.5 μs/day (satellite fast)' },
+            { label: 'Pre-launch correction', value: 'Onboard frequency set to 10.22999999543 MHz vs nominal 10.23 MHz' },
+            { label: 'Ranging error if uncorrected', value: '~11.6 km per day of drift' },
+          ]}
+        >
+          <p>
+            The GPS satellites carry caesium and rubidium atomic clocks that must keep time to about a nanosecond
+            against the ground network. Special relativity says the clocks should run <em>slow</em> by
+            <InlineMath> ½(v/c)² ≈ 8.3 × 10⁻¹¹</InlineMath> — roughly <strong>−7.2 μs per day</strong> at orbital
+            speeds of 3.87 km/s. General relativity says they should run <em>fast</em> by the gravitational-potential
+            difference <InlineMath>ΔΦ/c²</InlineMath> — at 20,200 km altitude, about
+            <strong> +45.7 μs per day</strong>. The net is <strong>+38.5 μs/day</strong>
+            <Cite id="ashby-2003" in={SOURCES} />.
+          </p>
+          <p>
+            Thirty-eight microseconds a day, untreated, would corrupt ranging by about
+            <InlineMath> c · Δt ≈ 11.6 km</InlineMath> per day. Within a week, GPS would be useless. The fix was
+            baked into the hardware: the satellite oscillators are deliberately tuned to a frequency
+            <strong> below</strong> the nominal 10.23 MHz before launch, so that when the spacecraft reaches
+            orbital altitude and velocity, the combined SR slowing and GR speed-up bring them onto the ground
+            value<Cite id="ashby-2003" in={SOURCES} /><Cite id="kaplan-hegarty-2017" in={SOURCES} />.
+          </p>
+          <p>
+            That single number, 10.22999999543 MHz, is special and general relativity entering a
+            consumer-electronics product specification. Every time your phone's location reads "accurate to
+            within 5 m," Einstein has been quietly invoiced. The relativistic shadow of electricity that
+            Chapter 9 opened with is the same one operating here — Maxwell's equations are the same in every
+            inertial frame, and propagating signals must be timed in a way that respects that.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 9.2"
+          title="The wire-and-test-charge, with actual numbers"
+          summary={<em>Restating §3's derivation with copper, a 1 A current, and γ−1 ≈ 10⁻²⁵. The wire really does look charged from a moving frame; it's just that the per-electron correction is ridiculously small.</em>}
+          specs={[
+            { label: 'Wire', value: '12-gauge copper, A ≈ 3.31 mm²' },
+            { label: 'Current', value: 'I = 1 A (steady)' },
+            { label: 'Drift velocity in lab frame', value: 'v_d ≈ 2.2 × 10⁻⁵ m/s' },
+            { label: 'Lorentz factor', value: 'γ ≈ 1 + (v_d/c)²/2 ≈ 1 + 2.7×10⁻²⁵' },
+            { label: 'Free-electron density n', value: '8.50 × 10²⁸ m⁻³ (copper)' },
+            { label: 'Net frame-induced λ\' (test v = v_d)', value: '~−n e v_d² A / c² ≈ −5 × 10⁻²⁵ C/m per metre of wire' },
+          ]}
+        >
+          <p>
+            The thought experiment in §1 is exact; let's run the arithmetic. In the lab frame, copper's electron
+            density is <strong>n = 8.50 × 10²⁸ m⁻³</strong>, and at <strong>1 A</strong> through a 12-gauge
+            cross-section the drift velocity is about <strong>2.2 × 10⁻⁵ m/s</strong> — slower than a
+            snail<Cite id="purcell-morin-2013" in={SOURCES} />. The Lorentz factor of that drift is
+            <InlineMath> γ − 1 ≈ ½(v_d/c)² ≈ 2.7 × 10⁻²⁵</InlineMath>. Stupendously close to one.
+          </p>
+          <p>
+            Boost to a frame co-moving with the electrons at <InlineMath>v_d</InlineMath>. The positive lattice
+            now drifts backward at <InlineMath>v_d</InlineMath> in that frame; it Lorentz-contracts; its linear
+            charge density rises by <InlineMath>γ</InlineMath>. The electrons, now at rest, see their own density
+            drop by exactly the inverse factor. The two effects don't cancel — they leave a residual linear
+            charge density of order <InlineMath>n e v_d² A / c²</InlineMath>, which works out to about
+            <strong> 5 × 10⁻²⁵ C per metre</strong> of wire<Cite id="purcell-morin-2013" in={SOURCES} />.
+          </p>
+          <p>
+            That number is ludicrous on a per-metre basis — an electron carries
+            <InlineMath> e ≈ 1.6 × 10⁻¹⁹ C</InlineMath>, so we are talking about a deficit of
+            <InlineMath> ~3 × 10⁻⁶</InlineMath> electrons per metre. And yet, multiplied by the
+            <InlineMath> n A ≈ 2.8 × 10²³</InlineMath> conduction electrons per metre, the
+            <em> charge imbalance per electron</em> is of order γ − 1, and the bookkeeping is exact: the Coulomb
+            force in the boosted frame from this tiny residual λ' is precisely
+            <InlineMath> F = q v_d (μ₀ I / 2π d)</InlineMath> — the magnetic Lorentz force you'd compute in the
+            lab frame from Biot–Savart<Cite id="feynman-II-13" in={SOURCES} />. Magnetism: an enormous pile of
+            γ − 1's, summed coherently.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 9.3"
+          title="The LHC — protons close enough to c that γ matters by the gigaelectronvolt"
+          summary={<em>26.659 km circumference, 7 TeV per proton, γ ≈ 7460. Relativistic mass-energy isn't a correction — it's the budget.</em>}
+          specs={[
+            { label: 'Circumference', value: '26.659 km' },
+            { label: 'Beam energy', value: '7 TeV per proton (design)' },
+            { label: 'Proton rest energy', value: '0.938 GeV' },
+            { label: 'Lorentz factor γ at 7 TeV', value: '~7460' },
+            { label: 'β = v/c at 7 TeV', value: '1 − 9 × 10⁻⁹' },
+            { label: 'Dipole bending field', value: '8.33 T (NbTi superconducting, 1.9 K)' },
+            { label: 'Number of dipole magnets', value: '1232' },
+          ]}
+        >
+          <p>
+            The Large Hadron Collider at CERN is what you get when you take γ seriously as an engineering
+            parameter. The design beam energy is <strong>7 TeV</strong> per proton, against a rest-mass energy of
+            <strong> 938 MeV</strong>, giving <strong>γ ≈ 7460</strong><Cite id="bruning-lhc-2004" in={SOURCES} />.
+            At that γ, the protons travel at <InlineMath>1 − 9 × 10⁻⁹</InlineMath> times c: their speed differs
+            from light by under three metres per second, but their momentum is 7460 times the non-relativistic
+            value, and the bending magnetic field must be sized accordingly.
+          </p>
+          <p>
+            The relativistic momentum-radius relation is <InlineMath>p = q B ρ</InlineMath>, and at 7 TeV / c the
+            momentum that 1232 superconducting dipoles must steer into a 26.659 km ring forces
+            <strong> B = 8.33 T</strong> — at the edge of what NbTi at 1.9 K will do
+            <Cite id="bruning-lhc-2004" in={SOURCES} />. Drop γ to non-relativistic levels and the same momentum
+            would imply a velocity above c, which doesn't exist. The four-momentum
+            <InlineMath> p<sup>μ</sup> = (E/c, p)</InlineMath>, transforming as a four-vector under Lorentz
+            boosts, is the bookkeeping that makes the budget work<Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+          <p>
+            Every magnet, every focusing quadrupole, every RF cavity is sized to handle relativistic protons. The
+            beam itself, viewed from a co-moving frame, would see a 26 km ring Lorentz-contracted to under four
+            metres in the direction of motion — and the dipole's quasi-static magnetic field would, in that
+            frame, contain a substantial electric component, exactly the way Chapter 9 says. Particle physics
+            spends most of its hardware budget paying for γ.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 9.4"
+          title="Synchrotron radiation — γ⁴ in your photon budget"
+          summary={<em>Bend a relativistic electron and it radiates a pencil-beam of light, with intensity scaling as the fourth power of γ.</em>}
+          specs={[
+            { label: 'Radiation half-cone angle', value: '~1/γ (radians, in lab frame)' },
+            { label: 'Power scaling for circular orbit', value: 'P ∝ γ⁴ / ρ² (Larmor in relativistic form)' },
+            { label: 'Diamond Light Source electron energy', value: '3 GeV (γ ≈ 5870)' },
+            { label: 'Diamond storage-ring circumference', value: '561.6 m' },
+            { label: 'Critical photon energy (typical bend magnet)', value: '~keV range (hard X-ray)' },
+            { label: 'First derivation', value: 'Schwinger, Phys. Rev. 75, 1912 (1949)' },
+          ]}
+        >
+          <p>
+            A non-relativistic accelerating charge radiates the dipole pattern of Chapter 7 — broad, sin²θ around
+            the acceleration axis. Push the charge to relativistic speed and that pattern, viewed in the lab
+            frame, gets Lorentz-aberrated into a tight cone of half-angle <strong>~1/γ</strong> in the forward
+            direction. The total radiated power picks up an additional factor of <strong>γ⁴</strong> for a
+            circular orbit, which is why electron storage rings make excellent X-ray sources but proton ones
+            mostly don't (γ at the same energy scales as 1/m, so protons radiate roughly
+            <InlineMath> (m_e/m_p)⁴ ≈ 10⁻¹³</InlineMath> as efficiently)<Cite id="schwinger-1949" in={SOURCES} />.
+          </p>
+          <p>
+            Julian Schwinger worked out the classical theory in 1949<Cite id="schwinger-1949" in={SOURCES} />.
+            The angular distribution is the boosted dipole pattern of §5 of Chapter 7 — you can derive it by
+            applying a Lorentz transformation to the rest-frame angular distribution, the same kind of
+            transformation that turns "magnetic" force into "electric" force in §3 of this chapter. The radiation
+            is a direct consequence of the field tensor mixing under boosts.
+          </p>
+          <p>
+            Practically: every third-generation synchrotron light source — Diamond, the APS, ESRF, the ALS — is a
+            ring of GeV-scale electrons whose orbital deflections in bend magnets and insertion devices produce a
+            pencil-beam of hard X-rays a billion times brighter than a laboratory rotating-anode source. Without
+            relativity those machines would not exist. The factor of γ⁴ in the radiated power is what makes the
+            economics work; the factor of 1/γ in the cone angle is what makes the brightness work.
+          </p>
+        </CaseStudy>
+      </CaseStudies>
 
       <FAQ intro="Sixteen questions that come up if you take the relativistic-shadow picture seriously.">
         <FAQItem q='If magnetism is "relativistic," why is its strength so similar to the electric force at everyday speeds?'>

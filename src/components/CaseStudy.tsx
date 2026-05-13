@@ -6,11 +6,11 @@ interface CaseStudyProps {
   /** Title — e.g., "A Faraday cage in your microwave" */
   title: string;
   /** One-line summary / sub-title, italic */
-  summary?: string;
+  summary?: ReactNode;
   /** The actual case content (prose, math, optional spec panel) */
   children: ReactNode;
   /** Optional "spec sheet" — key numbers shown as a compact list */
-  specs?: Array<{ label: string; value: ReactNode }>;
+  specs?: Array<{ label: ReactNode; value: ReactNode }>;
 }
 
 /**

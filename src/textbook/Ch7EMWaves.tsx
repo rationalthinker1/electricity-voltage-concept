@@ -13,6 +13,7 @@
  *   7.4 OscillatingDipole  — sin²θ pattern; ω slider; λ = c/f
  *   7.5 RadiationPressure  — P = I/c; solar-constant default
  */
+import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
@@ -238,6 +239,158 @@ export default function Ch7EMWaves() {
         room is the field that carries your phone signal is the field that an X-ray machine uses to photograph your
         hand. Strip the wire, and what's left is everything else.
       </p>
+
+      <CaseStudies
+        intro="Four real engineering systems, all running on solutions of the same wave equation. Different λ, different hardware, identical physics."
+      >
+        <CaseStudy
+          tag="Case 7.1"
+          title="The microwave oven"
+          summary={<em>A 2.45 GHz standing wave, dumped into the dielectric loss of liquid water.</em>}
+          specs={[
+            { label: 'Frequency f', value: '2.450 GHz (ISM band)' },
+            { label: 'Wavelength in air λ = c/f', value: '~12.2 cm' },
+            { label: 'Magnetron output power', value: '700–1100 W (typical home unit)' },
+            { label: 'Photon energy ℏω', value: '~10⁻⁵ eV (far below any chemical bond)' },
+            { label: 'εᵣ of liquid water near 2.45 GHz', value: '~78 (real), ~10 (imaginary loss)' },
+          ]}
+        >
+          <p>
+            A magnetron drives the oven's cavity at <strong>2.450 GHz</strong>, one of the
+            internationally reserved <em>industrial, scientific and medical</em> (ISM) bands set aside so that
+            high-power radiators won't interfere with licensed communications<Cite id="buffler-1993" in={SOURCES} />.
+            The cavity is a metal box one to two wavelengths on a side, so the field inside is a three-dimensional
+            standing wave with nodes and antinodes spaced a few centimetres apart — which is exactly why every
+            decent oven has a turntable.
+          </p>
+          <p>
+            The mechanism is <strong>not a resonance with a water molecule</strong>. Liquid water has rotational
+            transitions in the far infrared, several orders of magnitude above 2.45 GHz. The oven heats by
+            <em> dielectric loss</em>: the oscillating <strong>E</strong>-field drags the permanent dipole moments
+            of H₂O molecules back and forth against viscous friction with their neighbours. The complex permittivity
+            <InlineMath> εᵣ = ε' − i ε''</InlineMath> has a broad <em>ε''</em> peak in the GHz band, and the power
+            absorbed per unit volume is <InlineMath>P = ω ε₀ ε'' |E|²</InlineMath><Cite id="griffiths-2017" in={SOURCES} />.
+            That formula is energy conservation: the Poynting flux into the food equals the rate at which the
+            dipoles do work against intermolecular drag, and all of it ends up as heat.
+          </p>
+          <p>
+            The choice of 2.45 GHz is an engineering compromise. Higher frequencies heat the surface preferentially
+            (penetration depth scales with λ); much lower ones are inefficiently absorbed by typical food volumes.
+            Industrial drying ovens often use 915 MHz (another ISM band) for thicker loads — same physics, deeper soak.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 7.2"
+          title="Wi-Fi and 5G — same wave equation, three orders of magnitude apart"
+          summary={<em>From 2.4 GHz home routers to 28 GHz mmWave cells: a frequency choice is a propagation choice.</em>}
+          specs={[
+            { label: 'Wi-Fi 6 (802.11ax) bands', value: '2.4, 5, and 6 GHz' },
+            { label: 'λ at 2.4 GHz / 5 GHz', value: '~12.5 cm / ~6.0 cm' },
+            { label: '5G FR2 (mmWave) range', value: '24.25–52.6 GHz' },
+            { label: 'λ at 28 GHz', value: '~10.7 mm' },
+            { label: 'Free-space path loss penalty, 28 GHz vs 2.4 GHz', value: '~21 dB (factor ~130) at the same range' },
+          ]}
+        >
+          <p>
+            Every Wi-Fi link is a textbook plane-wave transmission, slightly degraded by walls. The
+            <strong> 802.11ax</strong> standard (Wi-Fi 6) defines operation in the 2.4 GHz ISM band, the 5 GHz
+            UNII bands, and — since the 2020 FCC ruling — the 6 GHz band as well<Cite id="ieee-80211" in={SOURCES} />.
+            At <strong>2.4 GHz</strong>, λ ≈ 12.5 cm, which diffracts comfortably around furniture and through
+            drywall. At <strong>5 GHz</strong>, λ ≈ 6 cm; throughput climbs because more spectrum is available,
+            but signal punches through fewer obstacles.
+          </p>
+          <p>
+            Push by another order of magnitude and you reach 5G <em>millimetre-wave</em>: bands from
+            <strong> 24–53 GHz</strong> with λ near a centimetre<Cite id="rappaport-2013-mmwave" in={SOURCES} />.
+            Free-space loss scales as <InlineMath>(4π d / λ)²</InlineMath>, so a 28 GHz link suffers about
+            <strong> 21 dB</strong> more loss than a 2.4 GHz link at the same distance — and atmospheric oxygen
+            adds a 60 GHz absorption peak that effectively walls off another band. The trade-off is the wave
+            equation's: shorter λ buys bandwidth and tighter beam-forming (an antenna a fixed size in metres is
+            many wavelengths across at mmWave, hence highly directional) at the cost of range and obstacle
+            penetration.
+          </p>
+          <p>
+            The link budget is just Maxwell's <InlineMath>⟨I⟩ = ½ ε₀ c E₀²</InlineMath> from §6, integrated over
+            an aperture. The protocol stack on top of it would be unrecognisable to Hertz; the physics underneath
+            is what he measured in 1887<Cite id="hertz-1888" in={SOURCES} />.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 7.3"
+          title="IKAROS — the first spacecraft driven by photon pressure"
+          summary={<em>JAXA, 2010: a 14 m square of polyimide film, accelerated through interplanetary space by sunlight alone.</em>}
+          specs={[
+            { label: 'Launch', value: '21 May 2010, H-IIA F17, Tanegashima' },
+            { label: 'Sail size', value: '20 m × 20 m polyimide film' },
+            { label: 'Sail thickness', value: '~7.5 μm' },
+            { label: 'Demonstrated acceleration at ~1 AU', value: '~1.12 mm/s per day' },
+            { label: 'Solar constant at 1 AU', value: '1360.8 W/m²' },
+            { label: 'Ideal P (full reflection)', value: '2 × 1361 / 3×10⁸ ≈ 9.1 μPa' },
+          ]}
+        >
+          <p>
+            <strong>IKAROS</strong> — Interplanetary Kite-craft Accelerated by Radiation Of the Sun — was JAXA's
+            June 2010 demonstration that Maxwell's <strong>P = I/c</strong> works in deep space
+            <Cite id="tsuda-2013-ikaros" in={SOURCES} />. After separation from the Akatsuki Venus orbiter, IKAROS
+            unfurled a 20-metre-square polyimide sail by centrifugal-spin deployment and used the resulting
+            radiation pressure as its only thrust during the Venus-flyby cruise.
+          </p>
+          <p>
+            The numbers are sobering. At 1 AU the solar constant is <strong>1361 W/m²</strong>
+            <Cite id="kopp-lean-2011" in={SOURCES} />. On a perfectly reflecting sail this gives
+            <InlineMath> 2 I / c ≈ 9 × 10⁻⁶ Pa</InlineMath> — under ten micropascals. IKAROS's measured
+            acceleration of ~1.12 mm/s per day matches what the integrated pressure over its ~200 m² area predicts
+            for the sail's non-ideal reflectivity. Maxwell's 1865 prediction that an EM wave carries momentum
+            <InlineMath> p = U/c</InlineMath><Cite id="maxwell-1865" in={SOURCES} /> stopped being a curiosity and
+            became a propulsion system.
+          </p>
+          <p>
+            The implications scale: a sail of order 10⁴ m², kept thin, can in principle reach the outer planets
+            without carrying reaction mass. Sunlight runs out as <InlineMath>1/r²</InlineMath>, but
+            <em> any</em> thrust beats <em>no</em> thrust in a vacuum, and the integrated <InlineMath>Δv</InlineMath>
+            over a few years is enough to chase Mercury or push past Pluto.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 7.4"
+          title="Röntgen's hand — X-rays as the short-wavelength end of the spectrum"
+          summary={<em>8 November 1895: same wave equation, λ ≈ 10⁻¹⁰ m, and suddenly bones cast shadows.</em>}
+          specs={[
+            { label: 'Discovery', value: '8 Nov 1895, Würzburg' },
+            { label: 'First medical radiograph', value: "22 Dec 1895 (Anna Bertha Röntgen's hand)" },
+            { label: 'Diagnostic X-ray wavelength', value: '~0.01–0.1 nm (10–100 pm)' },
+            { label: 'Photon energy range', value: '~10–100 keV' },
+            { label: 'Frequency', value: '~3×10¹⁶ to 3×10¹⁹ Hz' },
+          ]}
+        >
+          <p>
+            Röntgen reported, in late 1895, <em>"a new kind of rays"</em> emerging from a cathode-ray tube wrapped
+            in black cardboard — rays that fogged a photographic plate across the room and cast shadows of the
+            bones of a hand placed between the tube and the plate<Cite id="rontgen-1895" in={SOURCES} />. He did
+            not know what they were; he called them <em>X-Strahlen</em> for the unknown. Within a few months,
+            European hospitals were taking diagnostic radiographs.
+          </p>
+          <p>
+            We now know: same wave equation as visible light, wavelength roughly five orders of magnitude shorter
+            (10⁻¹¹–10⁻¹⁰ m), photon energy correspondingly larger (tens of keV). The penetration through soft
+            tissue and absorption by bone come from §7 of this chapter — wavelength-dependent atomic response.
+            At keV energies, photoelectric absorption scales roughly as <InlineMath>Z⁴/E³</InlineMath>; calcium
+            (Z = 20) in bone soaks up far more X-ray than the carbon, hydrogen, oxygen, and nitrogen of soft
+            tissue<Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+          <p>
+            Production is the dipole-radiation formula run in reverse. Electrons accelerated through ~100 kV
+            slam into a tungsten anode; the sudden deceleration is exactly the "charge changing velocity"
+            condition for radiation from §5<Cite id="feynman-II-21" in={SOURCES} />. The resulting
+            <em> Bremsstrahlung</em> spectrum, plus tungsten's characteristic Kα and Kβ lines, is what every
+            dental and chest X-ray uses. Maxwell to Röntgen to a broken finger on a Tuesday afternoon — one
+            equation, three decades, several Nobel Prizes.
+          </p>
+        </CaseStudy>
+      </CaseStudies>
 
       <FAQ
         intro="Loose threads on EM waves — the questions that surface after the first pass through Maxwell's prediction."

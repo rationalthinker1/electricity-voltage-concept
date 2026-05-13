@@ -7,6 +7,7 @@
  * laws on one page, then runs the famous calculation that pulls c out of
  * ε₀ and μ₀ alone.
  */
+import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
@@ -207,6 +208,163 @@ export default function Ch8Maxwell() {
         just derived. Everything from radio to X-rays, from photonics to wireless networks, from sunlight reaching your
         retina to the cosmic microwave background, lives in these four lines.
       </p>
+
+      <CaseStudies
+        intro="Three case studies that turn the four equations into verifiable hardware: the experiment that proved Maxwell, the demonstration that crossed an ocean, and the constellation that puts the four laws in your pocket."
+      >
+        <CaseStudy
+          tag="Case 8.1"
+          title="Hertz, 1887–1888 — the first verification"
+          summary={<em>A spark gap, a resonant loop, and the laboratory production of the waves Maxwell had predicted twenty-three years earlier.</em>}
+          specs={[
+            { label: 'Transmitter', value: 'Ruhmkorff coil + spark-gap dipole' },
+            { label: 'Wavelength range', value: 'roughly 0.6 to 6 m' },
+            { label: 'Frequency range', value: '~50 MHz to ~500 MHz' },
+            { label: 'Detector', value: 'Resonant copper loop with micrometer spark gap' },
+            { label: 'Standing-wave measurement', value: 'Reflection from a zinc sheet ~13 m from source' },
+            { label: 'Inferred propagation speed', value: 'Consistent with c, within Hertz\'s ~10% error bars' },
+          ]}
+        >
+          <p>
+            Maxwell published the unified theory in 1865<Cite id="maxwell-1865" in={SOURCES} />. He died in 1879
+            without having seen it tested at radio wavelengths. The experimental verification came from the
+            Karlsruhe laboratory of <strong>Heinrich Hertz</strong>, who in 1887–1888 built the first deliberate
+            electromagnetic-wave transmitter and detector and showed that the waves obeyed every prediction the
+            four equations made<Cite id="hertz-1888" in={SOURCES} />.
+          </p>
+          <p>
+            The transmitter was an oscillating dipole — two metal rods with a small gap between them, charged by
+            an induction coil until the gap broke down in a spark. Each spark damped-rang the rod-pair as a tuned
+            LC oscillator at radio frequency, radiating a short burst of the kind of wave §5 of Chapter 7
+            describes. The detector, a few metres away, was a resonant loop with its own micrometer gap; when the
+            wave arrived, the induced EMF reached breakdown and a tiny secondary spark jumped<Cite id="hertz-1888" in={SOURCES} />.
+          </p>
+          <p>
+            Hertz did three things with the apparatus, each of which was Maxwell falling out clean. He measured
+            the wavelength by reflecting the wave off a metal sheet and mapping the resulting standing-wave nodes
+            (a millimetre ruler, two sparks, one weekend's work). He confirmed transverse polarization by rotating
+            the detector loop. And — multiplying λ by the known f of the spark oscillator — he obtained a
+            propagation speed consistent with c. The four equations had just become physics, not algebra.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 8.2"
+          title="Marconi, 1901 — Maxwell crosses an ocean"
+          summary={<em>12 December 1901: a three-dot Morse "S" from Poldhu, Cornwall, received on a kite-flown antenna at Signal Hill, Newfoundland.</em>}
+          specs={[
+            { label: 'Date', value: '12 December 1901' },
+            { label: 'Path', value: 'Poldhu, Cornwall → Signal Hill, Newfoundland' },
+            { label: 'Great-circle distance', value: '~3500 km' },
+            { label: 'Transmitter type', value: 'Spark-gap, capacitor-driven, ~20 kW input' },
+            { label: 'Carrier wavelength', value: '~366 m (estimated ~820 kHz, MF band)' },
+            { label: 'Receiver antenna', value: '~150 m wire on a kite' },
+          ]}
+        >
+          <p>
+            Thirteen years after Hertz, <strong>Guglielmo Marconi</strong> wagered that Maxwell's waves would
+            travel over the horizon — that the curvature of the Earth would not, in fact, stop them. On
+            12 December 1901 he and his assistant George Kemp received what they reported as the Morse letter
+            "S" (three dots) transmitted from his station at Poldhu, Cornwall, on a kite-flown wire antenna at
+            Signal Hill in St. John's, Newfoundland<Cite id="hong-2001-wireless" in={SOURCES} />.
+          </p>
+          <p>
+            Several things had to be true for the experiment to work, and all of them ride on Maxwell. The
+            propagating wave had to be a real physical object that could carry coded information across thousands
+            of kilometres of empty atmosphere — guaranteed by the wave equation derived from the four laws. The
+            antenna had to convert oscillating current into far-field radiation — that's §5 of Chapter 7. The
+            receiving antenna had to convert the arriving <strong>E</strong>-field back into a measurable current
+            — Faraday's law in its open-circuit form. None of it should have surprised anyone who had read Maxwell;
+            all of it was new in 1901, because no one had thought to try the experiment at that range
+            <Cite id="hong-2001-wireless" in={SOURCES} />.
+          </p>
+          <p>
+            Marconi did not know it at the time, but his signal travelled by bouncing off the
+            <em> ionosphere</em>, an upper-atmospheric plasma layer whose refractive index becomes imaginary for
+            radio frequencies below ~30 MHz. The reflection is itself a Maxwell-equations boundary problem. Within
+            a decade, transatlantic radio was a working commercial service. Within thirty, it had broken the
+            British Admiralty's monopoly on long-range signalling and rewired every navy.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 8.3"
+          title="GPS — twenty-four satellites running on Maxwell's equations"
+          summary={<em>1575.42 MHz, 20,200 km altitude, position to a few metres anywhere on Earth.</em>}
+          specs={[
+            { label: 'L1 carrier frequency', value: '1575.42 MHz' },
+            { label: 'L1 wavelength', value: '~19 cm' },
+            { label: 'Constellation', value: '~24+ active satellites in 6 orbital planes' },
+            { label: 'Orbital altitude', value: '~20,200 km (≈12 sidereal-hour orbit)' },
+            { label: 'Broadcast EIRP per satellite', value: '~27 dBW (≈500 W effective)' },
+            { label: 'Received signal level at Earth', value: '~−130 dBm (below thermal noise)' },
+          ]}
+        >
+          <p>
+            Twenty-thousand kilometres above your head, two dozen-odd satellites broadcast a continuous,
+            phase-coherent <strong>1575.42 MHz</strong> carrier modulated with a pseudo-random ranging code
+            <Cite id="kaplan-hegarty-2017" in={SOURCES} />. Your phone's GPS receiver listens for at least four of
+            them, correlates the codes to recover travel time, and trilaterates a position. The whole edifice is
+            <em> Maxwell's equations in action</em>: a transmitted plane wave, a free-space path-loss budget set
+            by the wave's <InlineMath>1/r²</InlineMath> intensity fall-off, a receiver antenna obeying the
+            reciprocity theorem.
+          </p>
+          <p>
+            The numbers force respect. The received signal at the ground is around <strong>−130 dBm</strong> —
+            roughly <InlineMath>10⁻¹⁶</InlineMath> watts, well below the receiver's thermal noise floor. GPS
+            works only because the pseudo-random code provides ~43 dB of processing gain when correlated against
+            the receiver's local replica. That a planet's worth of users can be located to within metres using a
+            signal weaker than the static in their headphones is one of Maxwell's quieter triumphs.
+          </p>
+          <p>
+            And the timing precision needed for it to work — nanoseconds per microsecond of round-trip — turns
+            out to require <em>relativistic</em> corrections to the satellite clocks before launch. Chapter 9
+            picks that thread up. Here it is enough to say: every "you are here" arrow on a map is, underneath,
+            a confirmation that the four equations of §1 hold to twelve decimal places after they bounce off
+            atmospheric refraction, orbital mechanics, and an EIRP budget that would have astonished Hertz.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 8.4"
+          title="The 21 cm hydrogen line"
+          summary={<em>1420.406 MHz: an atomic spin-flip transition that maps the galaxy.</em>}
+          specs={[
+            { label: 'Frequency', value: '1420.40575177 MHz' },
+            { label: 'Wavelength', value: '21.106 cm' },
+            { label: 'Transition', value: 'Hyperfine spin-flip of hydrogen 1s ground state' },
+            { label: 'Predicted', value: 'H. C. van de Hulst, 1944' },
+            { label: 'Detected', value: 'Ewen & Purcell, Harvard, 25 March 1951' },
+            { label: 'Mean lifetime of the upper state', value: '~10⁷ years (forbidden M1 transition)' },
+          ]}
+        >
+          <p>
+            One of the most useful EM waves in all of astronomy is produced by neutral hydrogen atoms with
+            essentially no help from any laboratory. In the 1s ground state of H, the electron's spin can be
+            parallel or antiparallel to the proton's; the parallel configuration sits about
+            <strong> 5.87 μeV</strong> higher. The forbidden magnetic-dipole transition between them has a mean
+            lifetime around <strong>10⁷ years</strong>, but the interstellar medium contains so many hydrogen
+            atoms — <InlineMath>~10⁶⁷</InlineMath> in the Milky Way alone — that the integrated emission is
+            comfortably detectable from Earth<Cite id="ewen-purcell-1951" in={SOURCES} />.
+          </p>
+          <p>
+            Hendrik van de Hulst predicted the line in 1944 from quantum mechanics applied to Maxwell's equations
+            in the standard way — bound-state energies of a charged particle in a Coulomb potential, plus the
+            hyperfine coupling to nuclear spin. <strong>Harold Ewen and Edward Purcell</strong> built a horn
+            antenna on the roof of the Harvard physics building and detected it on 25 March 1951
+            <Cite id="ewen-purcell-1951" in={SOURCES} />. Within a few years it was a primary mapping tool: galactic
+            spiral arms, the rotation curves that pointed at dark matter, the cosmic 21-cm signal from the early
+            universe.
+          </p>
+          <p>
+            From the perspective of the four equations, the line is the cleanest possible Maxwell solution:
+            an oscillating magnetic dipole moment radiating into vacuum at one fixed frequency, with the
+            transverse plane-wave structure of §7. The reason it's so useful is the reason §7 emphasized: a
+            wave at λ = 21 cm passes through interstellar dust that visible light cannot, so radio telescopes
+            see structures hidden from optical ones.
+          </p>
+        </CaseStudy>
+      </CaseStudies>
 
       <FAQ
         intro="Loose threads from the synthesis chapter — questions that tend to come up after reading the four equations side by side."

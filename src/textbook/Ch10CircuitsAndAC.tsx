@@ -5,6 +5,7 @@
  * to nodes, branches, components, and complex impedance. Seven sections, six
  * embedded demos, FAQ at the end.
  */
+import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
@@ -317,6 +318,129 @@ export default function Ch10CircuitsAndAC() {
         phase, power factor, three-phase delta. Chapters 1–6 explain <em>why</em> any of this is
         true. Chapter 10 is what you actually use<Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
+
+      <CaseStudies intro="Three places where the lumped, complex-impedance picture of this chapter does the heavy lifting in working hardware.">
+        <CaseStudy
+          tag="Case 10.1"
+          title="The North-American power grid"
+          summary={<>60 Hz three-phase, from a 120/240 V wall outlet to a 765 kV transmission line — one network, six orders of magnitude in voltage.</>}
+          specs={[
+            { label: 'Grid frequency (NA)', value: '60 Hz' },
+            { label: 'Residential service', value: '120 V / 240 V split-phase' },
+            { label: 'Commercial 3-phase', value: '208Y/120 V, 480Y/277 V' },
+            { label: 'Sub-transmission', value: '34.5–138 kV' },
+            { label: 'Transmission classes', value: '230, 345, 500, 765 kV' },
+            { label: 'Three-phase advantage', value: <>√3 ≈ 1.73× power / conductor</> },
+          ]}
+        >
+          <p>
+            ANSI C84.1 codifies the nominal voltages every utility in North America delivers: 120 V
+            line-to-neutral and 240 V line-to-line at a residential meter, 208Y/120 V or 480Y/277 V
+            for commercial three-phase service, and a step-ladder of transmission classes — 69, 115,
+            138, 230, 345, 500, and 765 kV — at the long-distance end<Cite id="ansi-c84-1-2020" in={SOURCES} />.
+            Why so many tiers? Because transmission losses scale as
+            <strong> P<sub>loss</sub> = (P<sub>load</sub>/V)² R</strong>: doubling the line voltage
+            quarters the I²R loss for the same delivered power<Cite id="grainger-power-systems-2003" in={SOURCES} />.
+            765 kV across a thousand kilometres loses a few percent; doing the same at 120 V would
+            require conductors thicker than the towers holding them up.
+          </p>
+          <p>
+            Three-phase is the second trick. Three voltages 120° apart, summed at a balanced load,
+            cancel exactly — no neutral return current required. Three conductors then carry √3 times
+            the power of a single-phase pair of the same weight, and a three-phase motor sees a
+            magnetic field that rotates automatically at synchronous speed, no commutator or
+            starting circuitry needed. Every transmission line in the network is three-phase; your
+            house just taps one phase (plus neutral and an oppositely-phased leg) off the local
+            distribution transformer<Cite id="grainger-power-systems-2003" in={SOURCES} />.
+          </p>
+          <p>
+            The 60-Hz choice itself is mid-1890s path-dependence. Westinghouse standardised on 60 Hz
+            in the United States; AEG had already picked 50 Hz in Germany; both work, both are now
+            locked in by a continent's worth of installed equipment. Aircraft electrical systems,
+            where transformer mass matters more than line losses, use 400 Hz instead — the
+            transformer core volume scales roughly as 1/<em>f</em> for a given power
+            handling<Cite id="horowitz-hill-2015" in={SOURCES} />.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 10.2"
+          title="The RLC tank inside an analog radio"
+          summary={<>A capacitor, an inductor, and the entire AM and FM dial — selectivity is just resonance.</>}
+          specs={[
+            { label: 'AM broadcast band (US)', value: '535 – 1705 kHz' },
+            { label: 'FM broadcast band (US)', value: '88 – 108 MHz' },
+            { label: 'AM channel spacing', value: '10 kHz' },
+            { label: 'FM channel spacing', value: '200 kHz' },
+            { label: 'Required Q at 1 MHz', value: '~100' },
+            { label: 'Resonance formula', value: <>f<sub>0</sub> = 1 / (2π√(LC))</> },
+          ]}
+        >
+          <p>
+            An analog AM receiver tunes by changing C (a variable air capacitor) or L (a ferrite
+            slug screwed into a coil) until the resonant frequency
+            <InlineMath> f<sub>0</sub> = 1/(2π√(LC))</InlineMath> matches the carrier of the station
+            you want. The U.S. AM band runs from 535 to 1705 kHz with 10 kHz channel spacing; to
+            reject the neighbouring station only 10 kHz away while passing the audio sidebands,
+            the tuned circuit needs a quality factor on the order of 100 at the carrier
+            frequency<Cite id="horowitz-hill-2015" in={SOURCES} />.
+          </p>
+          <p>
+            That Q comes directly from the formula in this chapter: <InlineMath>Q = (1/R)√(L/C)</InlineMath>.
+            With a typical antenna-coil inductance of around 250 µH and the variable capacitor swept
+            from roughly 30 pF to 365 pF to cover the band, choosing a coil with an effective series
+            resistance in the few-ohm range lands Q comfortably above 100<Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
+            FM receivers do the same trick three orders of magnitude up: at 100 MHz the inductances
+            shrink to tens of nanohenries and the capacitors to tens of picofarads, but the
+            mathematics is identical.
+          </p>
+          <p>
+            Modern receivers do most of this in silicon, but the front-end is still an LC tank — a
+            "preselector" filter that picks one slice of the spectrum before the rest of the chain
+            digitises it. The graph in §RLC and resonance is the entire reason your phone can pick
+            up a Wi-Fi packet at 2.4 GHz without drowning in everything else on the air.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 10.3"
+          title="The brick on your laptop charger"
+          summary={<>A switched-mode supply running at 50–500 kHz beats a 60-Hz linear regulator by an order of magnitude in size and a factor of two in efficiency.</>}
+          specs={[
+            { label: 'Mains input (NA)', value: <>120 V<sub>rms</sub>, 60 Hz</> },
+            { label: 'Internal switching frequency', value: '50 – 500 kHz' },
+            { label: 'SMPS efficiency (typical)', value: '85 – 95 %' },
+            { label: 'Linear regulator efficiency', value: '~50 % (20 V → 5 V)' },
+            { label: 'Transformer mass scaling', value: <>∝ 1/<em>f</em></> },
+            { label: 'USB-PD EPR maximum', value: '48 V × 5 A = 240 W' },
+          ]}
+        >
+          <p>
+            A linear power supply rectifies 60 Hz mains, smooths it with a big electrolytic, and
+            then burns the excess voltage as heat across a pass transistor — efficiency is roughly
+            V<sub>out</sub>/V<sub>in</sub>, so stepping rectified ~170 V<sub>peak</sub> down to 5 V
+            wastes about 97% of the input as heat. Worse, the 60 Hz transformer itself has to handle
+            the full output power at line frequency, which makes it physically large.
+          </p>
+          <p>
+            A switched-mode supply rearranges the problem. It rectifies the AC into ~170 V DC, then
+            chops that DC with a MOSFET at 50–500 kHz into a small high-frequency transformer, and
+            rectifies the secondary back into smooth DC. Transformer core volume scales roughly as
+            1/<em>f</em> for a given power handling, so jumping from 60 Hz to 100 kHz shrinks the
+            magnetic mass by more than three orders of magnitude<Cite id="erickson-maksimovic-2020" in={SOURCES} />.
+            That's why a modern USB-C charger weighs grams instead of kilograms.
+          </p>
+          <p>
+            Typical conversion efficiencies are 85–95% across the load range, against ~50% for the
+            best linear regulators converting from rectified mains<Cite id="erickson-maksimovic-2020" in={SOURCES} />.
+            The price is electromagnetic complexity: the same 100 kHz square-wave switching edge
+            that miniaturises the transformer also produces broadband EMI, which is why every
+            SMPS contains line filters, Y-capacitors, and a snubber circuit on the primary side. The
+            schematic abstractions of this chapter — Z<sub>L</sub>, Z<sub>C</sub>, power factor —
+            are the working engineer's day-to-day tools for taming all of it<Cite id="horowitz-hill-2015" in={SOURCES} />.
+          </p>
+        </CaseStudy>
+      </CaseStudies>
 
       <FAQ
         intro="The questions a careful reader asks after meeting a soldering iron for the first time."

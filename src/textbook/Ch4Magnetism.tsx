@@ -13,6 +13,7 @@
  *   4.4 Solenoid (B = μ₀nI)
  */
 import { ChapterShell } from '@/components/ChapterShell';
+import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
@@ -241,6 +242,163 @@ export default function Ch4Magnetism() {
         electrostatic interaction whose details have been rotated, by the act of putting the source charges in motion,
         out of the "electric" column and into the "magnetic" one. There's no second force. There never was.
       </p>
+
+      <CaseStudies
+        intro={
+          <>
+            Four places that magnetism shows up at industrial or astrophysical scale — spanning roughly twenty orders of
+            magnitude in <strong>B</strong>, all running on the same Biot–Savart and Lorentz equations from this chapter.
+          </>
+        }
+      >
+        <CaseStudy
+          tag="Case 4.1"
+          title="The clinical MRI scanner"
+          summary={<em>A superconducting solenoid the size of a car, tuned to flip your hydrogen nuclei.</em>}
+          specs={[
+            { label: 'Typical clinical B₀', value: '1.5–3 T' },
+            { label: 'Research / 7 T systems', value: '7–11.7 T' },
+            { label: 'Earth\'s surface field, for comparison', value: '~25–65 µT' },
+            { label: 'Solenoid winding', value: 'NbTi at ~4 K' },
+            { label: 'Coil current', value: 'hundreds of A' },
+            { label: 'Bore diameter', value: '~60 cm' },
+          ]}
+        >
+          <p>
+            Paul Lauterbur's 1973 paper in <em>Nature</em> proposed using superimposed magnetic-field gradients on top
+            of a strong, uniform static <strong>B₀</strong> to spatially encode an NMR signal — the technique he called
+            zeugmatography and that became magnetic resonance imaging<Cite id="lauterbur-1973" in={SOURCES} />. The
+            entire scheme depends on the precession of hydrogen nuclei in <strong>B₀</strong>, with the precession
+            frequency set by <strong>ω = γ B₀</strong>. A bigger <strong>B₀</strong> means a higher Larmor frequency,
+            a larger population difference between spin states, and a stronger signal — which is why clinical scanners
+            kept climbing from <strong>0.3 T</strong> in the early 1980s to today's <strong>1.5–3 T</strong>
+            workhorses and the small but growing fleet of <strong>7 T</strong> research machines.
+          </p>
+          <p>
+            None of this is possible with copper. To produce <strong>3 T</strong> uniformly over a meter-scale bore,
+            the formula <strong>B = µ₀ n I</strong> for a solenoid demands tens of thousands of ampere-turns. A
+            resistive copper coil would dissipate megawatts as I²R heat and need active water cooling. Instead,
+            clinical MRI magnets are wound from niobium–titanium superconducting wire and cooled in liquid helium near
+            <strong> 4 K</strong>; once energised, the coil is short-circuited on itself and the current circulates
+            for years with no power input<Cite id="griffiths-2017" in={SOURCES} />.
+          </p>
+          <p>
+            The Lorentz force on iron objects near the bore is dramatic: a steel oxygen cylinder pulled into a
+            <strong> 3 T</strong> field has killed patients. The energy stored in the field, <strong>U = B²/(2µ₀)</strong>
+            integrated over the bore, runs to several megajoules — comparable to the kinetic energy of a small
+            car. A "quench," in which a tiny normal-conducting patch propagates through the windings and dumps that
+            energy as helium boil-off, is one of the few engineering failures large enough to vent through the roof
+            of a hospital.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 4.2"
+          title="The Large Hadron Collider's dipole magnets"
+          summary={<em>1232 superconducting magnets, each one bending a proton beam through a 2.8 km arc.</em>}
+          specs={[
+            { label: 'Dipole magnets in the ring', value: '1232' },
+            { label: 'Peak operating field', value: '8.33 T' },
+            { label: 'Coil current at peak', value: '11,850 A' },
+            { label: 'Operating temperature', value: '1.9 K (superfluid He)' },
+            { label: 'Ring circumference', value: '26.7 km' },
+            { label: 'Design beam energy', value: '7 TeV per proton' },
+          ]}
+        >
+          <p>
+            A relativistic proton moving in a magnetic field traces out a circle of radius <strong>r = p / (qB)</strong>.
+            For the LHC's design beam energy of <strong>7 TeV</strong>, that radius works out — given the available
+            real estate inside the existing LEP tunnel — to demand a bending field of <strong>8.33 T</strong> in the
+            dipole sections<Cite id="bruning-lhc-2004" in={SOURCES} />. To produce it, CERN built and installed
+            <strong> 1232</strong> superconducting NbTi dipole magnets, each <strong>14.3 m</strong> long, each carrying
+            <strong> 11,850 A</strong> through its windings at the design point.
+          </p>
+          <p>
+            NbTi loses its superconductivity above <strong>~9 T</strong> at <strong>4.2 K</strong>; to push the field
+            higher you have to push the temperature lower. The LHC's magnets sit in a bath of superfluid helium at
+            <strong> 1.9 K</strong>, which buys back a few hundred millitesla of operating margin and dramatically
+            improves the thermal conductivity of the cryogen<Cite id="bruning-lhc-2004" in={SOURCES} />. The whole
+            <strong> 27 km</strong> ring is the largest single piece of cryogenic equipment ever built.
+          </p>
+          <p>
+            The fundamental physics is the Lorentz force from this chapter: <strong>F = q(v × B)</strong>, with the
+            cross-product geometry forcing the orbit closed. The engineering is everything that goes into producing a
+            uniform <strong>8.3 T</strong> field, persistent for hours, across <strong>1232</strong> magnets in series,
+            with the bore stable to <strong>~100 µm</strong> over kilometers.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 4.3"
+          title="Earth's magnetic field"
+          summary={<em>A weak dipole, a leaky shield, and the reason any compass needle ever points north.</em>}
+          specs={[
+            { label: 'Total intensity at the surface', value: '~25–65 µT' },
+            { label: 'Equatorial minimum', value: '~25 µT' },
+            { label: 'Polar maximum', value: '~65 µT' },
+            { label: 'Source depth', value: '~3000 km (outer core)' },
+            { label: 'Polarity reversal interval', value: '~10⁵–10⁶ yr (irregular)' },
+          ]}
+        >
+          <p>
+            The World Magnetic Model maintained jointly by the U.S. NCEI and the British Geological Survey gives the
+            total intensity of Earth's surface field as roughly <strong>25,000 nT</strong> near the magnetic equator
+            and <strong>65,000 nT</strong> near the poles — i.e., <strong>25–65 µT</strong><Cite id="chulliat-wmm-2020" in={SOURCES} />.
+            That is about <strong>fifty thousand times</strong> weaker than a clinical MRI, and about a hundred million
+            times weaker than the surface of a magnetar. Yet it is enough to align every compass needle on the planet
+            and to deflect the solar wind into the auroral ovals.
+          </p>
+          <p>
+            The field is generated by convection of molten iron in Earth's outer core — a self-sustaining magnetohydrodynamic
+            dynamo whose current loops are essentially Ampère's law writ planetary: moving electrically conducting
+            fluid carries currents, currents make <strong>B</strong>, and feedback between the fluid motion and the
+            field locks the whole pattern into a quasi-stable dipole<Cite id="jackson-1999" in={SOURCES} />. The
+            "north pole" of the dipole drifts at tens of kilometers per year and reverses irregularly on geological
+            timescales.
+          </p>
+          <p>
+            Charged particles streaming from the Sun get deflected by this field via the Lorentz force, spiralling
+            down field lines toward the poles where they finally collide with the upper atmosphere. The same equation
+            that fixes the cyclotron radius in the earlier section — <strong>r = mv/(qB)</strong> — sets the geometry
+            of the magnetosphere<Cite id="feynman-II-13" in={SOURCES} />.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 4.4"
+          title="A magnetar"
+          summary={<em>The strongest magnets in the known universe, ten quadrillion times the Earth's field.</em>}
+          specs={[
+            { label: 'Surface dipole field', value: '~10¹⁰–10¹¹ T' },
+            { label: 'Ratio to clinical MRI', value: '~3 × 10¹⁰' },
+            { label: 'Stellar radius', value: '~10–12 km' },
+            { label: 'Rotation period', value: '~2–12 s' },
+            { label: 'Lifetime of activity', value: '~10⁴ yr' },
+          ]}
+        >
+          <p>
+            Robert Duncan and Christopher Thompson proposed in 1992 that a small subclass of neutron stars are born
+            with magnetic fields a thousand times stronger than the typical pulsar — surface dipole fields on the
+            order of <strong>10¹⁴–10¹⁵ G</strong>, or <strong>10¹⁰–10¹¹ T</strong>
+            <Cite id="duncan-thompson-1992" in={SOURCES} />. They named the objects <em>magnetars</em>. About thirty
+            confirmed examples are known in our galaxy.
+          </p>
+          <p>
+            At these field strengths the energy density <strong>B²/(2µ₀)</strong> dominates over every other
+            astrophysical energy density nearby, including the rest-mass energy density of ordinary matter for fields
+            above <strong>~10¹⁰ T</strong>. The vacuum itself becomes birefringent, the quantum electrodynamic
+            corrections to Maxwell's equations stop being small, and the atomic structure of any matter on the
+            star's surface is reorganised by the field into long, anisotropic chains aligned with <strong>B</strong>
+            <Cite id="jackson-1999" in={SOURCES} />.
+          </p>
+          <p>
+            The same Ampère and Biot–Savart equations from this chapter still apply — they have to, since they're
+            just consequences of how moving charge couples to itself — but in regimes where the linear approximations
+            of classical electromagnetism start to require relativistic and quantum corrections. Magnetars are the
+            extreme test of the equations we've been writing down on a workbench.
+          </p>
+        </CaseStudy>
+      </CaseStudies>
 
       <FAQ intro="Twelve questions that come up if you take the relativistic-shadow picture seriously.">
         <FAQItem q="If magnetism is just electricity in a different reference frame, why does a stationary bar magnet stick to my fridge — nothing is moving?">

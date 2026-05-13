@@ -11,6 +11,7 @@
  * Every numerical or historical claim is cited inline via <Cite/> against
  * the chapter's `sources` array (defined in src/textbook/data/chapters.ts).
  */
+import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
@@ -189,6 +190,91 @@ export default function Ch1WhatIsElectricity() {
       <p>
         That is electrostatics — electricity standing still. In Chapter 2 we let it move.
       </p>
+
+      <CaseStudies
+        intro={
+          <>
+            Three places the bottom-layer physics of this chapter — charged surfaces, inverse-square
+            forces, and conductors that redistribute their free electrons — shows up in the world at
+            full scale.
+          </>
+        }
+      >
+        <CaseStudy
+          tag="Case 1.1"
+          title="Lightning: the largest electrostatics demo on Earth"
+          summary="Atmospheric convection lifts charge until the field across a kilometers-thick capacitor breaks down all at once."
+          specs={[
+            { label: 'Cloud-to-ground potential', value: <>~10<sup>8</sup>–10<sup>9</sup> V <Cite id="rakov-uman-2003" in={SOURCES} /></> },
+            { label: 'Median peak return-stroke current', value: <>~30 kA <Cite id="rakov-uman-2003" in={SOURCES} /></> },
+            { label: 'Median charge transferred per flash', value: <>~5 C <Cite id="rakov-uman-2003" in={SOURCES} /></> },
+            { label: 'Channel breakdown field in air', value: <>~3 MV/m <Cite id="uman-2001" in={SOURCES} /></> },
+          ]}
+        >
+          <p>
+            A thundercloud is a slow electrostatic generator. Updrafts and ice–graupel collisions
+            sort charge by mass, lifting positive charge to the anvil and dumping negative charge
+            into a layer a few kilometers above ground. The cloud and the ground become the two
+            plates of a stupendously large, leaky capacitor. The intervening air is an insulator —
+            until the field between the plates reaches roughly the dielectric strength of air,
+            around <strong>3 MV/m</strong> at the channel scale, at which point the air ionizes
+            and a conductive path punches through<Cite id="uman-2001" in={SOURCES} />.
+          </p>
+          <p>
+            What follows is Coulomb's law cashing its check. Cloud-base-to-ground voltages of
+            <strong> 10⁸–10⁹ V</strong> drive median return-stroke currents around <strong>30 kA</strong>
+            through a channel a few centimeters wide<Cite id="rakov-uman-2003" in={SOURCES} />. The
+            total charge transferred is modest — about <strong>5 C</strong> for a median negative
+            cloud-to-ground flash — but that quantity multiplied by hundreds of millions of volts
+            is a gigajoule of electrostatic energy dumped in milliseconds.
+          </p>
+          <p>
+            Every piece of the picture lives in this chapter. Two kinds of charge, separated by an
+            insulator. A field that grows until it reaches the breakdown threshold of the
+            intervening medium. A conductive path that then carries the discharge between the two
+            stores. Nothing essentially different from a balloon stuck to a wall — only the
+            numbers are different by twenty orders of magnitude.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 1.2"
+          title="The car in a thunderstorm: a Faraday cage on wheels"
+          summary="Why a metal shell at unknown potential keeps the inside electrically quiet."
+          specs={[
+            { label: 'Equilibrium E-field inside a closed conductor', value: <>0 V/m <Cite id="griffiths-2017" in={SOURCES} /></> },
+            { label: 'Excess charge location', value: <>on the outer surface <Cite id="griffiths-2017" in={SOURCES} /></> },
+            { label: 'Inverse-square exponent bound from null-cavity tests', value: <>2 to within ~3×10<sup>−16</sup> <Cite id="williams-faller-hill-1971" in={SOURCES} /></> },
+            { label: "Cavendish's 1773 bound on the same exponent", value: <>2 to within ~1/50 <Cite id="cavendish-1773" in={SOURCES} /></> },
+          ]}
+        >
+          <p>
+            A common piece of folklore says a car protects you from lightning because of its
+            rubber tires. The rubber is essentially irrelevant — the steel shell is doing all the
+            work. Any closed conductor, charged or uncharged, holds the field inside its cavity at
+            exactly zero in equilibrium. Free electrons in the metal redistribute themselves on the
+            <em> outer</em> surface until any field they produce inside the cavity cancels every
+            external field that tries to penetrate<Cite id="griffiths-2017" in={SOURCES} />.
+          </p>
+          <p>
+            This is the Faraday-cage theorem, and it is the same theorem Cavendish exploited
+            backwards in 1773. He charged a hollow conducting sphere and looked for any charge
+            induced on a second sphere placed inside it. He found none, and the absence let him
+            bound the inverse-square exponent to within about <strong>1/50</strong> of exactly 2
+            <Cite id="cavendish-1773" in={SOURCES} />. Williams, Faller, and Hill repeated the
+            experiment with concentric icosahedra in 1971 and sharpened the bound to
+            <strong> ~3×10⁻¹⁶</strong><Cite id="williams-faller-hill-1971" in={SOURCES} />. If the
+            exponent weren't exactly 2, the field inside a closed conductor wouldn't exactly cancel,
+            and the car-in-storm story would not be as clean as it is.
+          </p>
+          <p>
+            For a real lightning strike, an enormous transient current flows through the body
+            shell on its way to ground — paint flashes, antennas vaporize, electronics often die.
+            But the cavity stays an equipotential, so the occupants inside do not see a potential
+            difference across themselves. Tires don't matter; geometry does.
+          </p>
+        </CaseStudy>
+      </CaseStudies>
 
       <FAQ
         intro="Loose threads from the chapter — the questions a careful reader tends to surface after the first pass."

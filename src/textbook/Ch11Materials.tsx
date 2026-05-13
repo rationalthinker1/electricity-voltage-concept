@@ -14,6 +14,7 @@
  *   11.4 Ferromagnet          — domains and the hysteresis loop
  *   11.5 Susceptibility       — χ_e and χ_m bar chart
  */
+import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Formula, InlineMath } from '@/components/Formula';
@@ -265,6 +266,132 @@ export default function Ch11Materials() {
         gateway into electromagnetism, and electromagnetism in matter as the wide gateway into optics,
         condensed-matter physics, and chemistry. Two sliders. Eleven chapters. One field.
       </p>
+
+      <CaseStudies intro="Three places where the susceptibility numbers of this chapter become the working tolerances of an industry.">
+        <CaseStudy
+          tag="Case 11.1"
+          title="Giant magnetoresistance in hard-drive read heads"
+          summary={<>A Nobel-winning bilayer effect that read a generation of hard drives — engineered ferromagnet/non-magnet sandwiches whose resistance flips with a few-gauss field.</>}
+          specs={[
+            { label: 'Discovery (independent)', value: 'Fert (Orsay) & Grünberg (Jülich), 1988–89' },
+            { label: 'Original ΔR/R (Fe/Cr, 4.2 K)', value: '~50 %' },
+            { label: 'Original applied field', value: '~2 T' },
+            { label: 'First commercial GMR HDD head', value: 'IBM, 1997' },
+            { label: 'Nobel Prize in Physics', value: '2007 (Fert & Grünberg)' },
+            { label: 'Magnetic mechanism', value: 'spin-dependent electron scattering' },
+          ]}
+        >
+          <p>
+            Baibich and collaborators in Fert's group at Orsay reported a ~50% resistance change in
+            Fe/Cr superlattices at 4.2 K under an applied field of a few tesla — far larger than any
+            previously known magnetoresistive effect<Cite id="baibich-1988" in={SOURCES} />. A
+            parallel discovery at Jülich on Fe/Cr/Fe trilayers by Grünberg's group appeared shortly
+            after<Cite id="binasch-grunberg-1989" in={SOURCES} />. The two papers shared the 2007
+            Nobel Prize in Physics.
+          </p>
+          <p>
+            The mechanism is the chapter's ferromagnetism story, sharpened by a quantum
+            spin-dependent scattering rule: in a thin non-magnetic spacer between two magnetic
+            layers, conduction electrons whose spin is parallel to the local magnetization scatter
+            weakly, while antiparallel-spin electrons scatter strongly. When the two ferromagnetic
+            layers are antiparallel (zero field), every electron is "wrong" in one of the layers
+            and the resistance is high. A small applied field flips both layers parallel, and
+            electrons of one spin now travel relatively freely through the whole stack — resistance
+            drops abruptly<Cite id="kittel-2005" in={SOURCES} />.
+          </p>
+          <p>
+            By 1997, IBM had engineered GMR-based "spin valves" into the read head of every new
+            hard drive on the market. The areal density of magnetic storage went from a few hundred
+            megabits per square inch in the early 1990s to tens of gigabits per square inch by the
+            mid-2000s, and the new sensor was a major reason. The ferromagnetic domain physics of
+            §"Ferromagnets and the hysteresis loop" wasn't a curiosity any more; it was reading
+            every email you sent for a decade.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 11.2"
+          title="The ceramic capacitor on every PCB"
+          summary={<>Barium titanate ferroelectrics push εᵣ into the thousands and pack farads of capacitance into millimetres of board space.</>}
+          specs={[
+            { label: 'Air-gap dielectric εᵣ', value: '~1.0006' },
+            { label: 'Glass εᵣ', value: '4 – 10' },
+            { label: 'BaTiO₃ εᵣ (near T_C)', value: '1000 – 10 000' },
+            { label: 'BaTiO₃ Curie temperature', value: '~120 °C (393 K)' },
+            { label: 'X7R tolerance', value: '±15 % from −55 to +125 °C' },
+            { label: 'MLCC internal electrodes', value: '50 – 1000 layers' },
+          ]}
+        >
+          <p>
+            Barium titanate (BaTiO₃) is a ferroelectric — a material with a <em>spontaneous</em>
+            electric polarization below its Curie temperature of about 120 °C, in direct analogy to
+            ferromagnetism in iron<Cite id="kittel-2005" in={SOURCES} />. Its relative permittivity
+            peaks at the ferroelectric transition and stays in the thousands across normal
+            operating temperatures; Moulson and Herbert tabulate room-temperature values from about
+            1000 in coarse-grained pure BaTiO₃ up to 10000 in carefully-doped formulations
+            <Cite id="moulson-herbert-2003" in={SOURCES} />. That is three to four orders of
+            magnitude above the εᵣ ≈ 4–10 of glass.
+          </p>
+          <p>
+            A multilayer ceramic capacitor (MLCC) stacks dozens to thousands of thin BaTiO₃ layers
+            with interleaved nickel or palladium electrodes; the capacitances add in parallel.
+            That's how a 1 µF capacitor fits in a 1 mm × 0.5 mm package. The price is non-linearity:
+            BaTiO₃'s εᵣ depends on temperature, applied DC bias, frequency, and age. The industry
+            classifies the trade-offs with codes like X7R (capacitance held within ±15% from −55 °C
+            to +125 °C) and Y5V (much looser temperature spec, but higher capacitance density)
+            <Cite id="moulson-herbert-2003" in={SOURCES} />.
+          </p>
+          <p>
+            Every smartphone, every laptop motherboard, every USB charger contains hundreds of
+            MLCCs. The whole technology rides on one fact from this chapter: a material with a
+            permanent dipole can have a permittivity orders of magnitude above vacuum — and if you
+            can make that material ferroelectric and stable, you can store a useful charge in a
+            volume the size of a sesame seed.
+          </p>
+        </CaseStudy>
+
+        <CaseStudy
+          tag="Case 11.3"
+          title="Curie temperatures: iron versus gadolinium"
+          summary={<>Two ferromagnets, two Curie points 750 K apart — and the reason gadolinium can be a refrigerant near room temperature while iron cannot.</>}
+          specs={[
+            { label: 'T_C (iron)', value: '~1043 K (770 °C)' },
+            { label: 'T_C (cobalt)', value: '~1394 K (1121 °C)' },
+            { label: 'T_C (nickel)', value: '~627 K (354 °C)' },
+            { label: 'T_C (gadolinium)', value: '~292 K (19 °C)' },
+            { label: 'M_s (iron, 0 K)', value: '~1.7×10⁶ A/m' },
+            { label: 'Atomic moment, Fe', value: '~2.22 μ_B' },
+          ]}
+        >
+          <p>
+            Kittel tabulates Curie temperatures of the elemental ferromagnets: iron at 1043 K,
+            cobalt at 1394 K, nickel at 627 K, gadolinium at about 292 K<Cite id="kittel-2005" in={SOURCES} />.
+            The vast separation is set by the exchange-coupling energy between neighbouring spins;
+            in 3d transition metals it is large (tens of meV per pair), while in 4f rare earths the
+            relevant exchange runs indirectly through the conduction electrons and is much weaker
+            — hence gadolinium's barely-above-ice-point T<sub>C</sub>.
+          </p>
+          <p>
+            Above T<sub>C</sub> the spontaneous alignment evaporates and the material becomes an
+            ordinary paramagnet with susceptibility falling as 1/(T − T<sub>C</sub>) — the
+            Curie–Weiss law<Cite id="weiss-1907" in={SOURCES} />. At T<sub>C</sub> itself, the
+            magnetic specific heat develops a sharp peak. Because gadolinium's transition sits
+            within reach of a domestic compressor, it is the working substance of the
+            <strong> magnetocaloric refrigerator</strong>: cycle Gd through a strong magnetic field
+            on and off, and the entropy associated with its spin order shows up as a temperature
+            change of a few kelvin per cycle<Cite id="kittel-2005" in={SOURCES} />. Iron's
+            T<sub>C</sub> of 770 °C makes the same trick irrelevant for everyday cooling.
+          </p>
+          <p>
+            The Curie point also sets a hard ceiling for any permanent magnet. Drop a neodymium
+            magnet (T<sub>C</sub> for Nd₂Fe₁₄B ≈ 585 K) into a campfire and it cools back into a
+            random domain pattern — the magnetisation does not survive. Operating temperature
+            limits in datasheets for motor magnets and read-head magnets are set well below
+            T<sub>C</sub>, because the remanence drops continuously as you approach the
+            transition<Cite id="weiss-1907" in={SOURCES} /><Cite id="kittel-2005" in={SOURCES} />.
+          </p>
+        </CaseStudy>
+      </CaseStudies>
 
       <FAQ
         intro="The microscopic story raises a lot of questions a quick read won't answer. Here are the ones a careful reader tends to surface."
