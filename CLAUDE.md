@@ -116,6 +116,8 @@ field-theory/
     │   ├── SourcesList.tsx         ← <SourcesList>, <Cite>
     │   ├── FAQ.tsx                 ← <FAQ>, <FAQItem>
     │   ├── CaseStudy.tsx           ← <CaseStudies>, <CaseStudy>
+    │   ├── TryIt.tsx               ← <TryIt question=… answer=… /> exercise card
+    │   ├── Term.tsx                ← <Term def="…"> inline glossary popover
     │   └── Prose.tsx               ← MathBlock, Pullout, Kbd
     ├── lib/
     │   ├── physics.ts              ← PHYS (CODATA), MATERIALS, formatters
@@ -237,6 +239,15 @@ export default function ChNSomeName() {
 
       {/* …more h2 sections with demos, prose, formulas… */}
 
+      {/* 3–5 TryIt exercises distributed through the chapter, each
+          placed right after the h2 section whose physics it exercises. */}
+      <TryIt
+        tag="Try 4.2"
+        question={<>Compute …</>}
+        hint="Use the formula from the previous section."
+        answer={<><p>Plug in: …</p><Formula>…</Formula><p>Answer: <strong>…</strong></p></>}
+      />
+
       <CaseStudies intro="Where this physics shows up in working systems.">
         <CaseStudy tag="Case N.1" title="…" summary="…" specs={[…]}>
           <p>…</p>
@@ -265,6 +276,31 @@ Confident, slightly literary, real numbers, no filler, no emoji. The
 canonical opening of Ch.1 ("Rub a balloon on your hair…") is the bar.
 Every chapter has a concrete physical hook in its opening paragraph and
 one `<Pullout>` quote.
+
+### Chapter section checklist
+
+Every chapter must include, in this order:
+
+1. **Opening hook** — 1–2 paragraphs with a concrete physical example.
+   First letter gets a drop-cap (auto, via CSS).
+2. **5–7 narrative `<h2>` sections** — each with prose, ≥1 embedded
+   `<XxxDemo />`, and ≥1 `<Formula>` block where appropriate.
+3. **One `<Pullout>` quote** — the chapter's quotable thesis line.
+4. **3–5 `<TryIt>` exercises** — short calculation problems distributed
+   through the narrative, placed right after the relevant h2 section.
+   Hidden-then-reveal answer; uses real numbers from earlier in the
+   chapter. See §13b.
+5. **Glossary terms via `<Term def="…">…</Term>`** — first mention of any
+   technical term gets a dotted-underline + hover/tap popover with a
+   short definition. Aim for ~8–15 tagged terms per chapter. See §13b.
+6. **`<CaseStudies>` block** — ≥2 `<CaseStudy>` cards with real-world
+   examples and a `specs` sheet of 3–6 cited numbers.
+7. **`<FAQ>` block** — ≥12 `<FAQItem>` entries mixing beginner / sharper
+   / misconception-busting questions; answers 2–6 sentences with
+   `<Cite />` for every claim.
+
+Auto-rendered by `<ChapterShell>`: chapter hero, related-labs sidebar,
+sources list, prev/next chapter nav. Don't write those manually.
 
 ---
 
@@ -450,6 +486,59 @@ The build runs strict TypeScript and Vite together. Anything that fails
   agent touches `src/lib/sources.ts` or
   `src/textbook/data/chapters.ts` at the same time, you'll get merge
   conflicts. Either serialize or hand each agent disjoint chapters.
+
+---
+
+## 13b. Try-it-yourself exercises and glossary terms
+
+Two newer chapter elements that complement the narrative + demos:
+
+### `<TryIt>` — short exercises
+
+```tsx
+<TryIt
+  tag="Try 4.2"
+  question={<>A 1 µF capacitor holds <strong>100 µC</strong>. What is V?</>}
+  hint="Use Q = CV."
+  answer={
+    <>
+      <p>Direct application of the chapter's formula:</p>
+      <Formula>V = Q/C = 100×10⁻⁶ / 1×10⁻⁶ = 100 V</Formula>
+      <p>Answer: <strong>100 V</strong>.</p>
+    </>
+  }
+/>
+```
+
+Rules:
+- 3–5 per chapter, distributed through the narrative (not bunched at
+  the end).
+- Place immediately after the h2 section whose physics it tests.
+- Question should be solvable in 2–3 lines using a formula from earlier
+  in the chapter.
+- Answer can include `<Formula>`, `<Cite>`, `<strong>`, `<em>`, and
+  short prose explanation.
+
+### `<Term def="…">term</Term>` — glossary popovers
+
+```tsx
+<p>
+  The {' '}
+  <Term def={<><strong>capacitance</strong> — the proportionality between charge stored and applied voltage; <em>Q = CV</em>. SI unit: farad.</>}>capacitance</Term>
+  {' '} of a parallel-plate capacitor is C = ε₀A/d.
+</p>
+```
+
+Rules:
+- Tag the FIRST mention of any non-obvious technical term in the chapter.
+- Definition is a short noun-phrase or one-sentence gloss. Can include
+  `<strong>`, `<em>`, simple math, optionally a tiny `<Cite/>`.
+- Don't double-tag the same term twice in a chapter.
+- Aim for 8–15 tagged terms per chapter (more in introductory chapters,
+  fewer in later ones where vocabulary is established).
+- Examples of terms worth tagging: capacitance, dielectric, permittivity,
+  EMF, magnetic flux, Lenz's law, drift velocity, conductivity,
+  reactance, impedance, Q factor, polarization, susceptibility.
 
 ---
 

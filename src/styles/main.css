@@ -2024,3 +2024,156 @@ nav.top .links a.active { color: var(--accent); }
   .case-study { padding: 22px 20px; }
   .case-title { font-size: 22px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   v0.9 — Try-it-yourself exercises + glossary popovers
+═══════════════════════════════════════════════════════════════ */
+
+/* TryIt card — inline exercise with hidden-reveal answer */
+.tryit {
+  margin: 32px 0;
+  padding: 20px 24px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--teal);
+  border-radius: 3px;
+  position: relative;
+}
+.tryit-head { margin-bottom: 12px; }
+.tryit-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--teal);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  background: var(--teal-soft);
+  border-radius: 2px;
+}
+.tryit-question {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 19px;
+  line-height: 1.4;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.tryit-hint {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  font-style: italic;
+}
+.tryit-reveal {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 6px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all .15s ease;
+  margin-top: 4px;
+}
+.tryit-reveal:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+.tryit-answer {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dotted var(--border-strong);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-dim);
+}
+.tryit-answer strong { color: var(--text); font-weight: 500; }
+.tryit-answer em { color: var(--text); font-style: italic; }
+.tryit-answer p { margin-bottom: 0.9em; }
+.tryit-answer p:last-child { margin-bottom: 0; }
+.tryit-answer .formula-block { margin: 14px 0; padding: 10px 16px; }
+.tryit-answer .formula-block .formula-content { font-size: 20px; }
+.tryit-answer .cite {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  vertical-align: super;
+  line-height: 0;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 1px 5px;
+  margin: 0 1px;
+  border-radius: 2px;
+  text-decoration: none;
+}
+.tryit-answer .cite:hover { background: var(--accent); color: var(--bg); }
+
+/* Glossary Term — inline dotted-underline with popover */
+.term {
+  position: relative;
+  cursor: help;
+  color: var(--text);
+  border-bottom: 1px dotted var(--accent);
+  padding-bottom: 1px;
+  outline: none;
+  font-style: inherit;
+}
+.term:hover, .term:focus, .term.open {
+  color: var(--accent);
+}
+.term-popover {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 320px;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--accent);
+  border-radius: 3px;
+  font-family: 'DM Sans', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-dim);
+  letter-spacing: 0;
+  z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .12s ease, visibility .12s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,.4);
+}
+.term.open .term-popover,
+.term:hover .term-popover,
+.term:focus .term-popover {
+  opacity: 1;
+  visibility: visible;
+}
+.term-popover strong { color: var(--text); font-weight: 500; }
+.term-popover em { color: var(--text); font-style: italic; }
+.term-popover::after {
+  /* downward-pointing triangle below the popover */
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--bg-card);
+}
+
+@media (max-width: 600px) {
+  .term-popover { max-width: 240px; font-size: 12.5px; }
+  .tryit { padding: 16px 18px; }
+  .tryit-question { font-size: 17px; }
+}
