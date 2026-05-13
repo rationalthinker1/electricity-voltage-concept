@@ -126,7 +126,11 @@ export default function Ch6Magnetism() {
       </p>
       <Formula>F / L = μ₀ I₁ I₂ / (2π d)</Formula>
       <p>
-        with <strong>d</strong> the wire spacing. Same sign of current → attractive (negative if you've adopted the
+        where <strong>F</strong> is the magnitude of the force one wire exerts on a segment of the other (in newtons),
+        <strong> L</strong> is the length of that segment (in metres) so <strong>F/L</strong> has units of N/m,
+        <strong> I₁</strong> and <strong>I₂</strong> are the currents in the two wires (in amperes, signed by direction),
+        <strong> d</strong> is the perpendicular spacing between the wires (in metres), and
+        <strong> μ₀ ≈ 1.257×10⁻⁶ T·m/A</strong> is the permeability of free space <Cite id="codata-2018" in={SOURCES} />. Same sign of current → attractive (negative if you've adopted the
         sign convention that "outward" is positive). Opposite signs → repulsive. From 1948 to 2019 the SI ampere was
         defined operationally as exactly the current that, flowing in two infinitely long parallel wires one meter
         apart, produces a force of <strong>2×10⁻⁷ N/m</strong> between them <Cite id="griffiths-2017" in={SOURCES} />.
@@ -181,7 +185,10 @@ export default function Ch6Magnetism() {
       </p>
       <Formula>F = q ( v × B )</Formula>
       <p>
-        with the cross product giving a force perpendicular to <em>both</em> the velocity and the field. The two facts
+        where <strong>F</strong> is the force vector on the charged particle (in newtons), <strong>q</strong> is its charge
+        (in coulombs, signed), <strong>v</strong> is its velocity vector (in m/s), <strong>B</strong> is the local
+        magnetic flux density vector (in tesla), and <strong>×</strong> denotes the vector cross product — so the force
+        comes out perpendicular to <em>both</em> the velocity and the field. The two facts
         worth pausing on:
       </p>
       <p>
@@ -199,10 +206,16 @@ export default function Ch6Magnetism() {
       </p>
       <Formula>r = m v / (q B)</Formula>
       <p>
-        and goes around it with period
+        where <strong>r</strong> is the radius of the circular orbit (in metres), <strong>m</strong> is the particle's mass
+        (in kilograms), <strong>v</strong> is its speed perpendicular to <em>B</em> (in m/s), <strong>q</strong> is its
+        charge magnitude (in coulombs), and <strong>B</strong> is the magnetic flux density (in tesla).
+      </p>
+      <p>
+        It goes around it with period
       </p>
       <Formula>T = 2π m / (q B)</Formula>
       <p>
+        where <strong>T</strong> is the orbital period (in seconds) and <em>m</em>, <em>q</em>, <em>B</em> are as above
         — which, remarkably, has no <strong>v</strong> in it. Faster particles trace bigger circles in <em>exactly</em>
         the same amount of time. That's the foundation of the <Term def="A particle accelerator that uses a uniform B field to bend charged particles into circular orbits and a fixed-frequency oscillating E field between two D-shaped electrodes to accelerate them. Invented by E. O. Lawrence in 1932; works because the cyclotron period T = 2πm/qB is independent of speed (non-relativistically).">cyclotron</Term>, of mass spectrometers, of every accelerator
         smaller than a kilometer across. It's also why an aurora is shaped the way it is: charged particles from the
@@ -271,7 +284,10 @@ export default function Ch6Magnetism() {
       </p>
       <Formula>B = μ₀ n I</Formula>
       <p>
-        with <strong>n = N / L</strong> the number of turns per unit length. No dependence on radius (so long as you
+        where <strong>B</strong> is the magnetic flux density on the solenoid's axis (in tesla),
+        <strong> μ₀ ≈ 1.257×10⁻⁶ T·m/A</strong> is the permeability of free space <Cite id="codata-2018" in={SOURCES} />,
+        <strong> I</strong> is the current through the wire (in amperes), and <strong>n = N / L</strong> is the number of
+        turns per unit length (in turns per metre, with <em>N</em> the total turn count over solenoid length <em>L</em>). No dependence on radius (so long as you
         stay inside), no dependence on where along the axis you measure (so long as you're not near the ends). Outside
         the solenoid the field is, in the idealized limit, exactly zero — the mathematical statement of the fact that
         all the field lines that exit one end have to come back in through the other. There are no isolated sources of B,

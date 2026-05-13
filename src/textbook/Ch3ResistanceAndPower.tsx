@@ -59,7 +59,8 @@ export default function Ch3ResistanceAndPower() {
       </p>
       <Formula>J = σ E</Formula>
       <p>
-        with <strong>σ</strong> the{' '}
+        where <strong>J</strong> is the current density vector (current per unit cross-sectional area, in A/m²),
+        <strong> E</strong> is the local electric field driving the carriers (in V/m), and <strong>σ</strong> is the{' '}
         <Term def={<><strong>conductivity</strong> (σ) — a material property relating current density to applied field, <em>J = σE</em>. SI unit: S/m. Reciprocal of resistivity ρ. Copper ≈ 5.96×10⁷ S/m.</>}>conductivity</Term>, a property of the material. Drude's 1900 free-electron picture gave a
         mechanical explanation<Cite id="drude-1900" in={SOURCES} />: an electron accelerates under <strong>E</strong> for an
         average time <strong>τ</strong> between collisions with ions in the lattice, picks up a small drift velocity, then
@@ -73,6 +74,8 @@ export default function Ch3ResistanceAndPower() {
       </p>
       <Formula>V = I R</Formula>
       <p>
+        where <strong>V</strong> is the voltage drop end-to-end (in volts), <strong>I</strong> is the current through the wire
+        (in amperes), and <strong>R</strong> is the wire's resistance (in ohms, Ω = V/A).
         Voltage drop equals current times resistance. <em>Resistance</em> is the global lump that bundles up everything
         the local conductivity does to charges as they cross the wire. It depends on the material (through σ) and it
         depends on the geometry (through L and A), and that combination is the entire content of the rest of the chapter<Cite id="griffiths-2017" in={SOURCES} />.
@@ -177,11 +180,18 @@ export default function Ch3ResistanceAndPower() {
       </p>
       <Formula>p<sub>v</sub> = J · E = σ E²</Formula>
       <p>
+        where <strong>p<sub>v</sub></strong> is the power dissipated per unit volume of conductor (in W/m³),
+        <strong> J</strong> is the current density vector (A/m²), <strong>E</strong> is the local electric field (V/m), and
+        <strong> σ</strong> the conductivity (S/m). The dot product is the rate of work done by the field on the drifting charges.
         Always positive in a resistor (J and E point the same way). Integrate over the wire's volume <strong>LA</strong>,
         with E = V/L throughout, and the macroscopic power drops out:
       </p>
       <Formula>P = σ A V² / L = V² / R = V I = I² R</Formula>
       <p>
+        where <strong>P</strong> is the total power dissipated by the resistor (in watts, W = J/s),
+        <strong> V</strong> is the voltage across it (V), <strong>I</strong> is the current through it (A),
+        <strong> R</strong> is its resistance (Ω), and <em>L</em>, <em>A</em>, <em>σ</em> are the geometric and material
+        quantities from above. The four expressions are algebraically identical once <em>V = IR</em> is substituted.
         James Joule established this experimentally in 1841 with a calorimeter that became the namesake of the SI unit
         of energy<Cite id="joule-1841" in={SOURCES} />. The phenomenon is called{' '}
         <Term def={<><strong>Joule heating</strong> (ohmic / resistive heating) — the conversion of electrical energy to heat in a resistor at the rate <em>P = I²R</em>. The dissipated power equals the work the field does on charges, which scatter into lattice vibrations.</>}>Joule heating</Term>, and the SI unit of power — one joule per second — is the{' '}

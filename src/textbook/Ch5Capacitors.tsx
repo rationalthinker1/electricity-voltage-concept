@@ -103,7 +103,10 @@ export default function Ch5Capacitors() {
       </p>
       <Formula>Q = C V</Formula>
       <p>
-        with C measured in <Term def="SI unit of capacitance. 1 F = 1 coulomb per volt. A huge unit — practical capacitors range from picofarads to millifarads; only supercapacitors reach whole farads.">farad</Term>s — one coulomb per volt. For an idealised pair of <Term def="The textbook capacitor geometry: two flat conductors of area A separated by a thin gap d, with C = ε₀εᵣA/d. The basis for almost every capacitance calculation.">parallel-plate</Term>s of area <strong>A</strong>
+        where <strong>Q</strong> is the magnitude of charge on each plate (in coulombs; the two plates carry +Q and −Q),
+        <strong> V</strong> is the voltage across the gap (in volts), and <strong>C</strong> is the capacitance of the
+        device — its proportionality constant between charge and voltage,
+        measured in <Term def="SI unit of capacitance. 1 F = 1 coulomb per volt. A huge unit — practical capacitors range from picofarads to millifarads; only supercapacitors reach whole farads.">farad</Term>s — one coulomb per volt. For an idealised pair of <Term def="The textbook capacitor geometry: two flat conductors of area A separated by a thin gap d, with C = ε₀εᵣA/d. The basis for almost every capacitance calculation.">parallel-plate</Term>s of area <strong>A</strong>
         separated by a vacuum gap of width <strong>d</strong>, Gauss's law applied to the surface of one plate gives a
         uniform field <strong>E = Q/(ε₀A)</strong> in the gap, and integrating that field across the gap yields a voltage
         <strong> V = Ed = Qd/(ε₀A)</strong>. Re-arranging<Cite id="griffiths-2017" in={SOURCES} />:
@@ -198,6 +201,10 @@ export default function Ch5Capacitors() {
       </p>
       <Formula>U = ∫<sub>0</sub><sup>Q</sup> (q / C) dq = Q² / (2C) = ½ C V²</Formula>
       <p>
+        where <strong>U</strong> is the total energy stored in the capacitor (in joules), <strong>Q</strong> is the final
+        charge on each plate (in coulombs), <strong>V = Q/C</strong> is the final voltage across it (in volts),
+        <strong> C</strong> is the capacitance (in farads), and the dummy variable <strong>q</strong> runs from 0 to <em>Q</em>
+        across the integration.
         The factor of one half is doing real work in that formula. If the relationship between charge and voltage were not
         linear — if the (N+1)<sup>th</sup> charge cost the <em>same</em> as the first — the answer would be QV. Because each
         charge cost progressively more, the total averages out to half of (full Q) × (final V). The first electron crossed
@@ -210,6 +217,12 @@ export default function Ch5Capacitors() {
         strength<Cite id="jackson-1999" in={SOURCES} />:
       </p>
       <Formula>u<sub>E</sub> = ½ ε₀ ε<sub>r</sub> E²</Formula>
+      <p>
+        where <strong>u<sub>E</sub></strong> is the electric-field energy per unit volume (in J/m³),
+        <strong> ε₀ ≈ 8.854×10⁻¹² F/m</strong> is the vacuum permittivity <Cite id="codata-2018" in={SOURCES} />,
+        <strong> ε<sub>r</sub></strong> is the dimensionless relative permittivity of whatever fills the gap (1 for vacuum),
+        and <strong>E</strong> is the local electric-field magnitude (in V/m).
+      </p>
 
       <EnergyInTheGapDemo />
 
@@ -256,6 +269,13 @@ export default function Ch5Capacitors() {
         <Cite id="horowitz-hill-2015" in={SOURCES} />:
       </p>
       <Formula>V<sub>C</sub>(t) = V<sub>0</sub> (1 − e<sup>−t/RC</sup>)</Formula>
+      <p>
+        where <strong>V<sub>C</sub>(t)</strong> is the voltage across the capacitor as a function of time (in volts),
+        <strong> V<sub>0</sub></strong> is the (constant) source/battery voltage (in volts), <strong>t</strong> is time
+        elapsed since the switch closed (in seconds), <strong>R</strong> is the series resistance (in ohms), and
+        <strong> C</strong> is the capacitance (in farads). The product <strong>RC</strong> has units of seconds and sets
+        the timescale of the exponential approach.
+      </p>
 
       <ChargingCurveDemo />
 

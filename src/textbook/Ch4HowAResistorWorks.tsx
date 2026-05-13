@@ -62,6 +62,9 @@ export default function Ch4HowAResistorWorks() {
       </p>
       <Formula>R = ρ L / A</Formula>
       <p>
+        where <strong>R</strong> is the resistance (in ohms, Ω), <strong>ρ</strong> is the material's resistivity
+        (in Ω·m; ≈ 1.7×10⁻⁸ for copper), <strong>L</strong> is the conductor length (in metres), and
+        <strong> A</strong> is its cross-sectional area (in m²).
         Resistance is resistivity times length over cross-section. For a fixed bit of material that's a relation between three
         numbers, and you can dial any one of them by changing the geometry. A real resistor is a small, mass-produced device
         engineered to land at one specific value of <strong>R</strong>, with one specific tolerance, and to dissipate up to one
@@ -176,6 +179,9 @@ export default function Ch4HowAResistorWorks() {
       </p>
       <Formula>P = I² R = V² / R</Formula>
       <p>
+        where <strong>P</strong> is the power dissipated as heat in the resistor (in watts, W = J/s),
+        <strong> I</strong> is the current through it (in amperes), <strong>V</strong> is the voltage across it (in volts),
+        and <strong>R</strong> is its resistance (in ohms). The two forms are equivalent via <em>V = IR</em>.
         That power becomes heat inside the resistor body. The body has to dump that heat into the surrounding air, mostly by
         natural convection, before its internal temperature climbs past the safe limit (around <strong>155 °C</strong> for a
         typical film resistor). A 1/4 W axial resistor running at its rated 1/4 W in 25 °C still air comes to a steady-state
@@ -266,7 +272,10 @@ export default function Ch4HowAResistorWorks() {
       </p>
       <Formula>1 / T = A + B · ln R + C · (ln R)³</Formula>
       <p>
-        with material-specific constants A, B, C. NTCs are how every electronics enclosure measures its own temperature: read
+        where <strong>T</strong> is the absolute temperature of the thermistor bead (in kelvin),
+        <strong> R</strong> is its measured resistance (in ohms), and <strong>A</strong>, <strong>B</strong>,
+        <strong> C</strong> are empirical fitting constants specific to a given thermistor part (units chosen so each term comes
+        out in K⁻¹; typical magnitudes: A ~ 10⁻³, B ~ 2–4×10⁻⁴, C ~ 10⁻⁷). NTCs are how every electronics enclosure measures its own temperature: read
         R, plug into Steinhart–Hart, get T.
       </p>
       <p>
@@ -336,7 +345,9 @@ export default function Ch4HowAResistorWorks() {
       </p>
       <Formula>κ / σ = L<sub>0</sub> · T</Formula>
       <p>
-        with <strong>L₀ ≈ 2.44×10⁻⁸ W·Ω·K⁻²</strong>. Sommerfeld derived L₀ exactly from the free-electron model in 1928:
+        where <strong>κ</strong> is the thermal conductivity (in W/(m·K)), <strong>σ</strong> is the electrical
+        conductivity (in S/m), <strong>T</strong> is the absolute temperature (in kelvin), and <strong>L₀</strong> is the
+        Lorenz number. With <strong>L₀ ≈ 2.44×10⁻⁸ W·Ω·K⁻²</strong>, Sommerfeld derived L₀ exactly from the free-electron model in 1928:
         L₀ = (π²/3)(k<sub>B</sub>/e)² with k<sub>B</sub> the Boltzmann constant and e the elementary charge
         <Cite id="codata-2018" in={SOURCES} /><Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>

@@ -58,6 +58,13 @@ export default function Ch2VoltageAndCurrent() {
       </p>
       <Formula>V<sub>ab</sub> = V<sub>b</sub> − V<sub>a</sub> = − ∫<sub>a</sub><sup>b</sup> E · dℓ</Formula>
       <p>
+        where <strong>V<sub>a</sub></strong> and <strong>V<sub>b</sub></strong> are the potentials (in volts, J/C) at
+        the two endpoints, <strong>V<sub>ab</sub></strong> is the potential difference between them,
+        <strong> E</strong> is the electric field vector (in V/m, equivalently N/C),
+        <strong> dℓ</strong> is the infinitesimal vector element of any path from <em>a</em> to <em>b</em> (in metres), and the
+        integral runs along that path.
+      </p>
+      <p>
         The minus sign is convention: walking <em>against</em> the field gains you potential, the way climbing
         <em>against</em> gravity gains you altitude. For static charges the integral is path-independent <Cite id="feynman-II-2" in={SOURCES} />
         — the field is conservative, ∇×<strong>E</strong> = 0 — which is what lets you talk about the voltage at a point
@@ -105,6 +112,11 @@ export default function Ch2VoltageAndCurrent() {
       </p>
       <Formula>I = dQ / dt</Formula>
       <p>
+        where <strong>I</strong> is the current (in amperes, A = C/s), <strong>Q</strong> is the net charge that has
+        crossed a chosen fixed cross-section (in coulombs), and <strong>t</strong> is time (in seconds). The sign of
+        <strong> I</strong> follows the direction of conventional positive-charge flow across that surface.
+      </p>
+      <p>
         Current has a direction. By the convention Benjamin Franklin set in 1747 — long before anyone knew electrons
         existed — current points the direction <em>positive</em> charge would move. In an ordinary copper wire the actual
         carriers are electrons, which are negative, and they drift the opposite way from the{' '}
@@ -151,6 +163,13 @@ export default function Ch2VoltageAndCurrent() {
         <Term def={<><strong>Drude model</strong> — Paul Drude's 1900 picture of electrons as a classical gas inside a metal, accelerated by <em>E</em> between collisions with lattice ions every <em>τ</em>. Predicts <em>σ = nq²τ/m</em>.</>}>Drude model</Term>) <Cite id="drude-1900" in={SOURCES} />:
       </p>
       <Formula>v<sub>d</sub> = I / (n q A)</Formula>
+      <p>
+        where <strong>v<sub>d</sub></strong> is the average drift speed of the carriers (in m/s),
+        <strong> I</strong> is the current (in amperes), <strong>n</strong> is the free-carrier number density
+        (in carriers per m³; ≈ 8.5×10²⁸/m³ for copper <Cite id="ashcroft-mermin-1976" in={SOURCES} />),
+        <strong> q</strong> is the charge per carrier (in coulombs; for electrons, the elementary charge
+        <em>e</em> ≈ 1.602×10⁻¹⁹ C), and <strong>A</strong> is the wire's cross-sectional area (in m²).
+      </p>
       <p>
         Plug in numbers. One amp through a 2.5 mm² copper wire:
       </p>
