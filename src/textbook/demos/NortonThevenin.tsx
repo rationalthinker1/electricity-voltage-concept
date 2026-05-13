@@ -31,7 +31,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { drawBattery, drawCurrentSource, drawResistor, drawWire } from '@/lib/canvasPrimitives';
+import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -144,32 +144,26 @@ function drawOriginal(
   const yTop = cy - 50;
   const yBot = cy + 50;
 
-  // Bat to R_s to node X to R_p (down to bottom rail) and to terminal A
-  drawWire(ctx, [{ x: xS, y: yTop }, { x: xR1 - 18, y: yTop }]);
-  drawResistor(ctx, { x: xR1 - 18, y: yTop }, { x: xR1 + 18, y: yTop }, {
-    label: 'R_s',
-    labelOffset: { x: 0, y: -10 },
-  });
-  drawWire(ctx, [
-    { x: xR1 + 18, y: yTop },
-    { x: xR2, y: yTop },
-    { x: xR2, y: cy - 18 },
-  ]);
-  drawResistor(ctx, { x: xR2, y: cy - 18 }, { x: xR2, y: cy + 18 }, {
-    label: 'R_p',
-    labelOffset: { x: 10, y: 0 },
-  });
-  drawWire(ctx, [{ x: xR2, y: cy + 18 }, { x: xR2, y: yBot }]);
-  drawWire(ctx, [{ x: xR2, y: yTop }, { x: xA, y: yTop }]);
-  drawWire(ctx, [{ x: xS, y: yBot }, { x: xA, y: yBot }]);
-  drawWire(ctx, [{ x: xS, y: yTop }, { x: xS, y: cy - 14 }]);
-  drawWire(ctx, [{ x: xS, y: cy + 14 }, { x: xS, y: yBot }]);
-  drawBattery(ctx, { x: xS, y: cy }, {
-    label: 'V_s',
-    leadLength: 50,
-  });
-  drawTerminal(ctx, xA, yTop, 'A');
-  drawTerminal(ctx, xA, yBot, 'B');
+  // Source network: V_s in series with R_s plus bleeder R_p across A–B.
+  const elements: CircuitElement[] = [
+    { kind: 'wire', points: [{ x: xS, y: yTop }, { x: xR1 - 18, y: yTop }] },
+    { kind: 'resistor', from: { x: xR1 - 18, y: yTop }, to: { x: xR1 + 18, y: yTop },
+      label: 'R_s', labelOffset: { x: 0, y: -10 } },
+    { kind: 'wire', points: [{ x: xR1 + 18, y: yTop }, { x: xR2, y: yTop }, { x: xR2, y: cy - 18 }] },
+    { kind: 'resistor', from: { x: xR2, y: cy - 18 }, to: { x: xR2, y: cy + 18 },
+      label: 'R_p', labelOffset: { x: 10, y: 0 } },
+    { kind: 'wire', points: [{ x: xR2, y: cy + 18 }, { x: xR2, y: yBot }] },
+    { kind: 'wire', points: [{ x: xR2, y: yTop }, { x: xA, y: yTop }] },
+    { kind: 'wire', points: [{ x: xS, y: yBot }, { x: xA, y: yBot }] },
+    { kind: 'wire', points: [{ x: xS, y: yTop }, { x: xS, y: cy - 14 }] },
+    { kind: 'wire', points: [{ x: xS, y: cy + 14 }, { x: xS, y: yBot }] },
+    { kind: 'battery', at: { x: xS, y: cy }, label: 'V_s', leadLength: 50 },
+    { kind: 'node', at: { x: xA, y: yTop }, radius: 4, color: 'rgba(255,107,42,0.95)',
+      label: 'A', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
+    { kind: 'node', at: { x: xA, y: yBot }, radius: 4, color: 'rgba(255,107,42,0.95)',
+      label: 'B', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
+  ];
+  drawCircuit(ctx, { elements });
   ctx.restore();
 }
 
@@ -193,33 +187,24 @@ function drawThev(
   const yTop = cy - 50;
   const yBot = cy + 50;
 
-  drawWire(ctx, [{ x: xS, y: yTop }, { x: xR - 18, y: yTop }]);
-  drawResistor(ctx, { x: xR - 18, y: yTop }, { x: xR + 18, y: yTop }, {
-    label: `R_Th=${RTh.toFixed(1)}Ω`,
-    labelOffset: { x: 0, y: -10 },
-  });
-  drawWire(ctx, [
-    { x: xR + 18, y: yTop },
-    { x: xA, y: yTop },
-    { x: xA, y: cy - 18 },
-  ]);
-  drawResistor(ctx, { x: xA, y: cy - 18 }, { x: xA, y: cy + 18 }, {
-    label: `R_L=${RL.toFixed(1)}Ω`,
-    labelOffset: { x: 10, y: 0 },
-  });
-  drawWire(ctx, [
-    { x: xA, y: cy + 18 },
-    { x: xA, y: yBot },
-    { x: xS, y: yBot },
-  ]);
-  drawWire(ctx, [{ x: xS, y: yTop }, { x: xS, y: cy - 14 }]);
-  drawWire(ctx, [{ x: xS, y: cy + 14 }, { x: xS, y: yBot }]);
-  drawBattery(ctx, { x: xS, y: cy }, {
-    label: `V_Th=${Voc.toFixed(2)}V`,
-    leadLength: 50,
-  });
-  drawTerminal(ctx, xA, yTop, 'A');
-  drawTerminal(ctx, xA, yBot, 'B');
+  // Thévenin equivalent: V_Th in series with R_Th feeding R_L.
+  const elements: CircuitElement[] = [
+    { kind: 'wire', points: [{ x: xS, y: yTop }, { x: xR - 18, y: yTop }] },
+    { kind: 'resistor', from: { x: xR - 18, y: yTop }, to: { x: xR + 18, y: yTop },
+      label: `R_Th=${RTh.toFixed(1)}Ω`, labelOffset: { x: 0, y: -10 } },
+    { kind: 'wire', points: [{ x: xR + 18, y: yTop }, { x: xA, y: yTop }, { x: xA, y: cy - 18 }] },
+    { kind: 'resistor', from: { x: xA, y: cy - 18 }, to: { x: xA, y: cy + 18 },
+      label: `R_L=${RL.toFixed(1)}Ω`, labelOffset: { x: 10, y: 0 } },
+    { kind: 'wire', points: [{ x: xA, y: cy + 18 }, { x: xA, y: yBot }, { x: xS, y: yBot }] },
+    { kind: 'wire', points: [{ x: xS, y: yTop }, { x: xS, y: cy - 14 }] },
+    { kind: 'wire', points: [{ x: xS, y: cy + 14 }, { x: xS, y: yBot }] },
+    { kind: 'battery', at: { x: xS, y: cy }, label: `V_Th=${Voc.toFixed(2)}V`, leadLength: 50 },
+    { kind: 'node', at: { x: xA, y: yTop }, radius: 4, color: 'rgba(255,107,42,0.95)',
+      label: 'A', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
+    { kind: 'node', at: { x: xA, y: yBot }, radius: 4, color: 'rgba(255,107,42,0.95)',
+      label: 'B', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
+  ];
+  drawCircuit(ctx, { elements });
   // load-line marker
   void xL;
   ctx.restore();
@@ -244,58 +229,25 @@ function drawNort(
   const yTop = cy - 50;
   const yBot = cy + 50;
 
-  // Current source on left (vertical between rails)
-  drawWire(ctx, [{ x: xS, y: yTop }, { x: xS, y: cy - 18 }]);
-  drawWire(ctx, [{ x: xS, y: cy + 18 }, { x: xS, y: yBot }]);
-  drawCurrentSource(ctx, { x: xS, y: cy }, {
-    label: `I_N=${IN.toFixed(2)}A`,
-    labelOffset: { x: -20, y: 0 },
-    radius: 16,
-  });
-
-  // Parallel resistor R_N between rails
-  drawWire(ctx, [
-    { x: xS, y: yTop },
-    { x: xR, y: yTop },
-    { x: xR, y: cy - 18 },
-  ]);
-  drawResistor(ctx, { x: xR, y: cy - 18 }, { x: xR, y: cy + 18 }, {
-    label: `R_N=${RN.toFixed(1)}Ω`,
-    labelOffset: { x: 10, y: 0 },
-  });
-  drawWire(ctx, [
-    { x: xR, y: cy + 18 },
-    { x: xR, y: yBot },
-    { x: xS, y: yBot },
-  ]);
-
-  // Load
-  drawWire(ctx, [
-    { x: xR, y: yTop },
-    { x: xA, y: yTop },
-    { x: xA, y: cy - 18 },
-  ]);
-  drawResistor(ctx, { x: xA, y: cy - 18 }, { x: xA, y: cy + 18 }, {
-    label: `R_L=${RL.toFixed(1)}Ω`,
-    labelOffset: { x: 10, y: 0 },
-  });
-  drawWire(ctx, [
-    { x: xA, y: cy + 18 },
-    { x: xA, y: yBot },
-    { x: xR, y: yBot },
-  ]);
-
-  drawTerminal(ctx, xA, yTop, 'A');
-  drawTerminal(ctx, xA, yBot, 'B');
+  // Norton equivalent: I_N in parallel with R_N feeding R_L.
+  const elements: CircuitElement[] = [
+    { kind: 'wire', points: [{ x: xS, y: yTop }, { x: xS, y: cy - 18 }] },
+    { kind: 'wire', points: [{ x: xS, y: cy + 18 }, { x: xS, y: yBot }] },
+    { kind: 'currentSource', at: { x: xS, y: cy },
+      label: `I_N=${IN.toFixed(2)}A`, labelOffset: { x: -20, y: 0 }, radius: 16 },
+    { kind: 'wire', points: [{ x: xS, y: yTop }, { x: xR, y: yTop }, { x: xR, y: cy - 18 }] },
+    { kind: 'resistor', from: { x: xR, y: cy - 18 }, to: { x: xR, y: cy + 18 },
+      label: `R_N=${RN.toFixed(1)}Ω`, labelOffset: { x: 10, y: 0 } },
+    { kind: 'wire', points: [{ x: xR, y: cy + 18 }, { x: xR, y: yBot }, { x: xS, y: yBot }] },
+    { kind: 'wire', points: [{ x: xR, y: yTop }, { x: xA, y: yTop }, { x: xA, y: cy - 18 }] },
+    { kind: 'resistor', from: { x: xA, y: cy - 18 }, to: { x: xA, y: cy + 18 },
+      label: `R_L=${RL.toFixed(1)}Ω`, labelOffset: { x: 10, y: 0 } },
+    { kind: 'wire', points: [{ x: xA, y: cy + 18 }, { x: xA, y: yBot }, { x: xR, y: yBot }] },
+    { kind: 'node', at: { x: xA, y: yTop }, radius: 4, color: 'rgba(255,107,42,0.95)',
+      label: 'A', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
+    { kind: 'node', at: { x: xA, y: yBot }, radius: 4, color: 'rgba(255,107,42,0.95)',
+      label: 'B', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
+  ];
+  drawCircuit(ctx, { elements });
   ctx.restore();
-}
-
-function drawTerminal(ctx: CanvasRenderingContext2D, x: number, y: number, lbl: string) {
-  ctx.fillStyle = 'rgba(255,107,42,0.95)';
-  ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = 'rgba(255,255,255,0.9)';
-  ctx.font = 'bold 11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(lbl, x + 8, y);
 }

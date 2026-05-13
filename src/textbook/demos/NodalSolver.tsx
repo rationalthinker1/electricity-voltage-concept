@@ -24,7 +24,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { drawBattery, drawResistor, drawWire } from '@/lib/canvasPrimitives';
+import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -84,51 +84,36 @@ export function NodalSolverDemo({ figure }: Props) {
       const xRight = w - padX;
       const xMid = (xLeft + xRight) / 2;
 
-      // Top wire with R1 and R3
       const xR1 = (xLeft + xMid) / 2;
       const xR3 = (xMid + xRight) / 2;
-      drawWire(ctx, [{ x: xLeft, y: yTop }, { x: xR1 - 22, y: yTop }]);
-      drawResistor(ctx, { x: xR1 - 20, y: yTop }, { x: xR1 + 20, y: yTop }, {
-        label: `R1=${R1.toFixed(0)}Ω`,
-        labelOffset: { x: 0, y: -12 },
-      });
-      drawWire(ctx, [{ x: xR1 + 22, y: yTop }, { x: xMid, y: yTop }, { x: xR3 - 22, y: yTop }]);
-      drawResistor(ctx, { x: xR3 - 20, y: yTop }, { x: xR3 + 20, y: yTop }, {
-        label: `R3=${R3.toFixed(0)}Ω`,
-        labelOffset: { x: 0, y: -12 },
-      });
-      drawWire(ctx, [{ x: xR3 + 22, y: yTop }, { x: xRight, y: yTop }]);
 
-      // Bottom rail = ground
-      drawWire(ctx, [{ x: xLeft, y: yBot }, { x: xRight, y: yBot }]);
-
-      // Vertical legs (batteries on the outside, R2 in the middle)
-      drawWire(ctx, [{ x: xLeft, y: yTop }, { x: xLeft, y: h / 2 - 22 }]);
-      drawWire(ctx, [{ x: xLeft, y: h / 2 + 22 }, { x: xLeft, y: yBot }]);
-      drawWire(ctx, [{ x: xRight, y: yTop }, { x: xRight, y: h / 2 - 22 }]);
-      drawWire(ctx, [{ x: xRight, y: h / 2 + 22 }, { x: xRight, y: yBot }]);
-      drawWire(ctx, [{ x: xMid, y: yTop }, { x: xMid, y: h / 2 - 22 }]);
-      drawWire(ctx, [{ x: xMid, y: h / 2 + 22 }, { x: xMid, y: yBot }]);
-
-      drawBattery(ctx, { x: xLeft, y: h / 2 }, {
-        label: `V₁=${V1.toFixed(1)}V`,
-        leadLength: 22,
-      });
-      drawBattery(ctx, { x: xRight, y: h / 2 }, {
-        label: `V₂=${V2.toFixed(1)}V`,
-        leadLength: 22,
-      });
-      drawResistor(ctx, { x: xMid, y: h / 2 - 20 }, { x: xMid, y: h / 2 + 20 }, {
-        label: `R2=${R2.toFixed(0)}Ω`,
-        labelOffset: { x: -60, y: 0 },
-      });
-
-      // Highlight node A and ground
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
-      ctx.beginPath(); ctx.arc(xMid, yTop, 5, 0, Math.PI * 2); ctx.fill();
-
-      // Ground symbol on bottom rail
-      drawGround(ctx, xMid, yBot);
+      // Same topology as the mesh demo; bottom rail = ground, node A is the unknown.
+      const elements: CircuitElement[] = [
+        { kind: 'wire', points: [{ x: xLeft, y: yTop }, { x: xR1 - 22, y: yTop }] },
+        { kind: 'resistor', from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
+          label: `R1=${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
+        { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: xMid, y: yTop }, { x: xR3 - 22, y: yTop }] },
+        { kind: 'resistor', from: { x: xR3 - 20, y: yTop }, to: { x: xR3 + 20, y: yTop },
+          label: `R3=${R3.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
+        { kind: 'wire', points: [{ x: xR3 + 22, y: yTop }, { x: xRight, y: yTop }] },
+        { kind: 'wire', points: [{ x: xLeft, y: yBot }, { x: xRight, y: yBot }] },
+        { kind: 'wire', points: [{ x: xLeft, y: yTop }, { x: xLeft, y: h / 2 - 22 }] },
+        { kind: 'wire', points: [{ x: xLeft, y: h / 2 + 22 }, { x: xLeft, y: yBot }] },
+        { kind: 'wire', points: [{ x: xRight, y: yTop }, { x: xRight, y: h / 2 - 22 }] },
+        { kind: 'wire', points: [{ x: xRight, y: h / 2 + 22 }, { x: xRight, y: yBot }] },
+        { kind: 'wire', points: [{ x: xMid, y: yTop }, { x: xMid, y: h / 2 - 22 }] },
+        { kind: 'wire', points: [{ x: xMid, y: h / 2 + 22 }, { x: xMid, y: yBot }] },
+        { kind: 'battery', at: { x: xLeft, y: h / 2 },
+          label: `V₁=${V1.toFixed(1)}V`, leadLength: 22 },
+        { kind: 'battery', at: { x: xRight, y: h / 2 },
+          label: `V₂=${V2.toFixed(1)}V`, leadLength: 22 },
+        { kind: 'resistor', from: { x: xMid, y: h / 2 - 20 }, to: { x: xMid, y: h / 2 + 20 },
+          label: `R2=${R2.toFixed(0)}Ω`, labelOffset: { x: -60, y: 0 } },
+        // Node A dot (amber) and ground glyph at the reference rail.
+        { kind: 'node', at: { x: xMid, y: yTop }, radius: 5, color: 'rgba(255,107,42,0.95)' },
+        { kind: 'ground', at: { x: xMid, y: yBot }, color: 'rgba(108,197,194,0.85)' },
+      ];
+      drawCircuit(ctx, { elements });
 
       // Node labels
       ctx.fillStyle = 'rgba(255,255,255,0.85)';
@@ -204,13 +189,3 @@ function fmtA(I: number): string {
   return (I * 1e6).toFixed(0) + ' µA';
 }
 
-function drawGround(ctx: CanvasRenderingContext2D, x: number, y: number) {
-  ctx.strokeStyle = 'rgba(108,197,194,0.85)';
-  ctx.lineWidth = 1.4;
-  ctx.beginPath();
-  ctx.moveTo(x, y); ctx.lineTo(x, y + 6);
-  ctx.moveTo(x - 10, y + 6); ctx.lineTo(x + 10, y + 6);
-  ctx.moveTo(x - 6, y + 10); ctx.lineTo(x + 6, y + 10);
-  ctx.moveTo(x - 3, y + 14); ctx.lineTo(x + 3, y + 14);
-  ctx.stroke();
-}

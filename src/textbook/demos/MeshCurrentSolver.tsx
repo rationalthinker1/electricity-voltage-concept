@@ -29,7 +29,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { drawBattery, drawResistor, drawWire } from '@/lib/canvasPrimitives';
+import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 
 interface Props { figure?: string }
 
@@ -86,48 +86,34 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
       const xRight = w - padX;
       const xMid = (xLeft + xRight) / 2;
 
-      // Left battery V1 (vertical) at xLeft
-      // Top wire xLeft -> R1 -> xMid (A)
       const xR1 = (xLeft + xMid) / 2;
       const xR3 = (xMid + xRight) / 2;
-      drawWire(ctx, [{ x: xLeft, y: yTop }, { x: xR1 - 22, y: yTop }]);
-      drawResistor(ctx, { x: xR1 - 20, y: yTop }, { x: xR1 + 20, y: yTop }, {
-        label: `R1=${R1.toFixed(0)}Ω`,
-        labelOffset: { x: 0, y: -12 },
-      });
-      drawWire(ctx, [{ x: xR1 + 22, y: yTop }, { x: xMid, y: yTop }]);
 
-      // Top wire xMid -> R3 -> xRight
-      drawWire(ctx, [{ x: xMid, y: yTop }, { x: xR3 - 22, y: yTop }]);
-      drawResistor(ctx, { x: xR3 - 20, y: yTop }, { x: xR3 + 20, y: yTop }, {
-        label: `R3=${R3.toFixed(0)}Ω`,
-        labelOffset: { x: 0, y: -12 },
-      });
-      drawWire(ctx, [{ x: xR3 + 22, y: yTop }, { x: xRight, y: yTop }]);
-
-      // Bottom return rails
-      drawWire(ctx, [{ x: xLeft, y: yBot }, { x: xRight, y: yBot }]);
-
-      // Vertical legs
-      drawWire(ctx, [{ x: xLeft, y: yTop }, { x: xLeft, y: h / 2 - 22 }]);
-      drawWire(ctx, [{ x: xLeft, y: h / 2 + 22 }, { x: xLeft, y: yBot }]);
-      drawWire(ctx, [{ x: xRight, y: yTop }, { x: xRight, y: h / 2 - 22 }]);
-      drawWire(ctx, [{ x: xRight, y: h / 2 + 22 }, { x: xRight, y: yBot }]);
-      drawWire(ctx, [{ x: xMid, y: yTop }, { x: xMid, y: h / 2 - 22 }]);
-      drawWire(ctx, [{ x: xMid, y: h / 2 + 22 }, { x: xMid, y: yBot }]);
-
-      drawBattery(ctx, { x: xLeft, y: h / 2 }, {
-        label: `V₁=${V1.toFixed(1)}V`,
-        leadLength: 22,
-      });
-      drawBattery(ctx, { x: xRight, y: h / 2 }, {
-        label: `V₂=${V2.toFixed(1)}V`,
-        leadLength: 22,
-      });
-      drawResistor(ctx, { x: xMid, y: h / 2 - 20 }, { x: xMid, y: h / 2 + 20 }, {
-        label: `R2=${R2.toFixed(0)}Ω`,
-        labelOffset: { x: -60, y: 0 },
-      });
+      // Two-mesh network: V1 left, V2 right, R2 the shared middle branch.
+      const elements: CircuitElement[] = [
+        { kind: 'wire', points: [{ x: xLeft, y: yTop }, { x: xR1 - 22, y: yTop }] },
+        { kind: 'resistor', from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
+          label: `R1=${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
+        { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: xMid, y: yTop }] },
+        { kind: 'wire', points: [{ x: xMid, y: yTop }, { x: xR3 - 22, y: yTop }] },
+        { kind: 'resistor', from: { x: xR3 - 20, y: yTop }, to: { x: xR3 + 20, y: yTop },
+          label: `R3=${R3.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
+        { kind: 'wire', points: [{ x: xR3 + 22, y: yTop }, { x: xRight, y: yTop }] },
+        { kind: 'wire', points: [{ x: xLeft, y: yBot }, { x: xRight, y: yBot }] },
+        { kind: 'wire', points: [{ x: xLeft, y: yTop }, { x: xLeft, y: h / 2 - 22 }] },
+        { kind: 'wire', points: [{ x: xLeft, y: h / 2 + 22 }, { x: xLeft, y: yBot }] },
+        { kind: 'wire', points: [{ x: xRight, y: yTop }, { x: xRight, y: h / 2 - 22 }] },
+        { kind: 'wire', points: [{ x: xRight, y: h / 2 + 22 }, { x: xRight, y: yBot }] },
+        { kind: 'wire', points: [{ x: xMid, y: yTop }, { x: xMid, y: h / 2 - 22 }] },
+        { kind: 'wire', points: [{ x: xMid, y: h / 2 + 22 }, { x: xMid, y: yBot }] },
+        { kind: 'battery', at: { x: xLeft, y: h / 2 },
+          label: `V₁=${V1.toFixed(1)}V`, leadLength: 22 },
+        { kind: 'battery', at: { x: xRight, y: h / 2 },
+          label: `V₂=${V2.toFixed(1)}V`, leadLength: 22 },
+        { kind: 'resistor', from: { x: xMid, y: h / 2 - 20 }, to: { x: xMid, y: h / 2 + 20 },
+          label: `R2=${R2.toFixed(0)}Ω`, labelOffset: { x: -60, y: 0 } },
+      ];
+      drawCircuit(ctx, { elements });
 
       // Mesh-current arrows: clockwise loops
       drawMeshLoop(ctx, xLeft + 30, yTop + 18, xMid - 30, yBot - 18,
