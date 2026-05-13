@@ -22,6 +22,8 @@ import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
+import { Term } from '@/components/Term';
+import { TryIt } from '@/components/TryIt';
 import { BuildAResistorDemo } from './demos/BuildAResistor';
 import { ColorCodeDecoderDemo } from './demos/ColorCodeDecoder';
 import { PowerDeratingDemo } from './demos/PowerDerating';
@@ -69,7 +71,7 @@ export default function Ch4HowAResistorWorks() {
       <p>
         There are two big families. <strong>Fixed-value</strong> resistors — what you find by the thousand in any circuit — come
         as a moulded cylinder of ceramic with a thin film of conducting material wrapped around it (carbon, metal, or metal
-        oxide), or as a coil of resistance wire (nichrome, manganin). <strong>Variable</strong> resistors — pots, rheostats,
+        oxide), or as a coil of resistance wire (nichrome, manganin) — a <Term def="A resistor built by coiling high-resistivity alloy wire (nichrome, manganin) around a ceramic former. Bulk construction lets it dissipate tens of watts.">wirewound</Term> resistor. <strong>Variable</strong> resistors — <Term def="A three-terminal resistive track with a sliding wiper contact, used as an adjustable voltage divider or rheostat.">potentiometer</Term>s, rheostats,
         trimmers, thermistors, photoresistors, strain gauges — are the same basic idea, but with one of the geometry parameters
         (or the resistivity itself) set up to change in response to something the user controls.
       </p>
@@ -86,8 +88,8 @@ export default function Ch4HowAResistorWorks() {
         The films differ in what they're made of. <em>Carbon composition</em> is the oldest type — a slug of pressed
         carbon-graphite powder mixed with binder. Cheap, but noisy and prone to drifting in value with humidity and age; mostly
         obsolete now except in pulse-power applications where its bulk construction is an advantage<Cite id="horowitz-hill-2015" in={SOURCES} />.
-        <em> Carbon film</em> replaced it in the 1960s: a vacuum-deposited carbon spiral on a ceramic rod, cheap and reasonably
-        stable, ±5% tolerance, slightly negative temperature coefficient. <em>Metal film</em> took over the precision tier in
+        <em> <Term def="A resistor made by vacuum-depositing a thin spiral of pyrolytic carbon onto a ceramic rod. Cheap, reasonably stable, ±5% typical, slightly negative TCR.">Carbon film</Term></em> replaced it in the 1960s: a vacuum-deposited carbon spiral on a ceramic rod, cheap and reasonably
+        stable, ±5% <Term def="The manufacturer's guarantee on how close the actual resistance is to the nominal printed value. ±5% means the part lies inside [0.95·R, 1.05·R].">tolerance</Term>, slightly negative <Term def="Temperature coefficient of resistance. The fractional change in R per kelvin of temperature change, usually quoted in parts per million per kelvin (ppm/K).">temperature coefficient (TCR)</Term>. <em><Term def="A resistor made by sputtering a thin nickel-chromium or tantalum-nitride film onto a ceramic substrate, then laser-trimming to value. Tight tolerance (±0.1–1%), very low noise, small positive TCR.">Metal film</Term></em> took over the precision tier in
         the 1970s: a sputtered nickel-chromium or tantalum-nitride film with ±0.1–1% tolerance, very low noise, and a small
         positive TCR. If you reach into a precision analog circuit, almost every fixed resistor is a metal film
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
@@ -122,6 +124,41 @@ export default function Ch4HowAResistorWorks() {
 
       <ColorCodeDecoderDemo />
 
+      <TryIt
+        tag="Try 4.1"
+        question={<>Decode the four-band resistor: <em>brown · black · red · gold</em>. What value and tolerance?</>}
+        hint="Brown=1, black=0, red=×100, gold=±5%."
+        answer={
+          <>
+            <p>
+              First two digit bands read <strong>1·0</strong>; multiplier band (red) is <strong>×10²</strong>;
+              tolerance band (gold) is <strong>±5%</strong>.
+            </p>
+            <Formula>R = 10 × 10² Ω ±5% = <strong>1 kΩ ±5%</strong></Formula>
+            <p>
+              So the actual resistance is guaranteed to fall in the range [950 Ω, 1050 Ω]<Cite id="iec-60062-2016" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 4.2"
+        question={<>A resistor is marked &ldquo;10 kΩ ±5%&rdquo;. What range of actual resistance values is the manufacturer guaranteeing?</>}
+        answer={
+          <>
+            <p>
+              ±5% of 10 kΩ is ±500 Ω, so the actual R lies anywhere in the band
+              <strong> [9.5 kΩ, 10.5 kΩ]</strong>. The part is guaranteed not to fall outside that band at the time of manufacture
+              and (within the datasheet's stated drift) over its working life<Cite id="horowitz-hill-2015" in={SOURCES} />.
+            </p>
+            <p>
+              <strong>Range: 9.5 kΩ to 10.5 kΩ.</strong>
+            </p>
+          </>
+        }
+      />
+
       <p>
         Resistor values are not arbitrary numbers. They follow a geometric series chosen so that consecutive values are spaced
         by a fixed ratio. The E12 series — used for ±10% parts — has twelve values per decade, spaced by the twelfth root of 10
@@ -149,6 +186,45 @@ export default function Ch4HowAResistorWorks() {
 
       <PowerDeratingDemo />
 
+      <TryIt
+        tag="Try 4.3"
+        question={<>You connect a 1/4 W resistor directly across a 5 V supply. What is the <em>minimum</em> R that keeps the power dissipation at or below its rating?</>}
+        hint="Use P = V² / R, then set P_max = 0.25 W and solve for R."
+        answer={
+          <>
+            <Formula>P = V² / R &nbsp;⇒&nbsp; R ≥ V² / P<sub>max</sub></Formula>
+            <p>
+              Plug in <strong>V = 5 V</strong>, <strong>P<sub>max</sub> = 0.25 W</strong>:
+            </p>
+            <Formula>R ≥ (5)² / 0.25 = <strong>100 Ω</strong></Formula>
+            <p>
+              Any smaller R draws more than 1/4 W and the part overheats<Cite id="horowitz-hill-2015" in={SOURCES} />.
+              In practice you would derate further if the resistor sits in a warm enclosure.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 4.4"
+        question={<>What is the resistance of 50 cm of #30 AWG nichrome wire? (Take ρ<sub>nichrome</sub> ≈ 1.1×10⁻⁶ Ω·m; cross-section A ≈ 0.0507 mm².)</>}
+        hint="R = ρL/A. Watch the unit conversions on A."
+        answer={
+          <>
+            <Formula>R = ρ L / A</Formula>
+            <p>
+              Convert: <strong>L = 0.50 m</strong>, <strong>A = 0.0507 mm² = 5.07×10⁻⁸ m²</strong>,
+              <strong> ρ = 1.1×10⁻⁶ Ω·m</strong><Cite id="kanthal" in={SOURCES} />.
+            </p>
+            <Formula>R = (1.1×10⁻⁶)(0.50) / (5.07×10⁻⁸) ≈ <strong>10.8 Ω</strong></Formula>
+            <p>
+              A common Joule-heating geometry: half a metre of #30 nichrome carrying a few amps from a low-voltage supply
+              is roughly what you need to make a glowing wire cutter.
+            </p>
+          </>
+        }
+      />
+
       <p>
         The derating curve is part of every resistor datasheet. For most film resistors the allowed dissipation is 100% of
         rated up to about 70 °C ambient, then falls linearly to zero at the maximum body temperature (~155 °C). What that means
@@ -162,7 +238,7 @@ export default function Ch4HowAResistorWorks() {
       <h2>R is not constant: temperature coefficient</h2>
 
       <p>
-        The resistivity ρ that goes into <em>R = ρL/A</em> is itself a function of temperature. Matthiessen, in 1864, observed
+        The resistivity ρ that goes into <em>R = ρL/A</em> is itself a function of temperature. <Term def="The empirical statement that the resistivity of a metal can be decomposed additively into a temperature-independent impurity/defect term and a temperature-dependent phonon-scattering term: ρ(T) = ρ_residual + ρ_phonon(T).">Matthiessen's rule</Term>, formulated in 1864, observed
         that for pure metals the resistivity decomposes additively<Cite id="matthiessen-1864" in={SOURCES} />:
       </p>
       <Formula>ρ(T) = ρ<sub>residual</sub> + ρ<sub>phonon</sub>(T)</Formula>
@@ -184,7 +260,7 @@ export default function Ch4HowAResistorWorks() {
       <p>
         Carbon-film resistors go the other way: TCR is small and slightly <em>negative</em> (≈ −200 to −500 ppm/K). And at the
         extreme end of the spectrum sit thermistors and PTC polyswitches, engineered to have <em>large</em> TCRs on purpose. A
-        negative-temperature-coefficient (NTC) thermistor uses a semiconducting metal oxide whose carrier population grows
+        <Term def="Negative-temperature-coefficient thermistor: a semiconducting metal-oxide bead whose resistance drops sharply (factor of ~2 per 25 °C) as temperature rises. The standard temperature sensor in CPU sockets, battery packs, and thermostats.">negative-temperature-coefficient (NTC)</Term> thermistor uses a semiconducting metal oxide whose carrier population grows
         exponentially with temperature — the resistance drops by a factor of two for every ~25 °C rise in the practical range.
         The Steinhart–Hart relation gives the engineering form<Cite id="steinhart-hart-1968" in={SOURCES} />:
       </p>
@@ -197,7 +273,7 @@ export default function Ch4HowAResistorWorks() {
       <RvsTemperatureDemo />
 
       <p>
-        Positive-temperature-coefficient devices come in two flavours. PTC polymer thermistors (polyswitches, sold under the
+        <Term def="Positive-temperature-coefficient device: a resistor whose R rises sharply with temperature, used as a self-resetting fuse. PTC polymer thermistors trip via a crystalline-to-amorphous transition in the polymer matrix.">Positive-temperature-coefficient (PTC)</Term> devices come in two flavours. PTC polymer thermistors (polyswitches, sold under the
         trade name PolySwitch) sit at a low fixed resistance until current heats them past a trip point, at which point a
         crystalline-to-amorphous transition in the polymer matrix sends R up by a factor of 1000 in milliseconds. Used as
         self-resetting fuses in USB ports, automotive electronics, and laptop battery packs. Ceramic PTCs based on
@@ -225,7 +301,7 @@ export default function Ch4HowAResistorWorks() {
       </p>
       <p>
         The other variable cousins change R in response to a physical input. <em>Thermistors</em> — both NTC and PTC — are
-        resistors whose ρ depends strongly on temperature (above). <em>Photoresistors</em>, also called LDRs, are typically a
+        resistors whose ρ depends strongly on temperature (above). <em><Term def="Photoresistor / light-dependent resistor. A semiconductor film (classically cadmium sulfide) whose resistance drops by orders of magnitude when illuminated, as photons promote electrons across the bandgap.">Photoresistors</Term></em>, also called LDRs, are typically a
         thin film of cadmium sulfide: in the dark CdS has very few free carriers and its resistance is in the megohms; in
         bright light photons promote electrons across the bandgap and R drops to a few hundred ohms. The dynamic range is
         about four orders of magnitude. <em>Strain gauges</em> are very thin metal foils glued to the surface whose strain you
@@ -244,8 +320,8 @@ export default function Ch4HowAResistorWorks() {
       <p>
         Gustav Wiedemann and Rudolph Franz, in 1853, measured both κ (thermal conductivity, W/m·K) and σ (electrical
         conductivity, S/m) for a panel of metals at room temperature and observed that their ratio was the same constant for
-        all of them<Cite id="wiedemann-franz-1853" in={SOURCES} />. Ludvig Lorenz extended the result two decades later by
-        showing the ratio scales as <strong>L₀·T</strong>:
+        all of them — the <Term def="κ/σ = L₀·T. In a metal, both heat and electrical current are carried by the same gas of free electrons, so the ratio of thermal to electrical conductivity is a universal constant (the Lorenz number) times absolute temperature.">Wiedemann–Franz law</Term><Cite id="wiedemann-franz-1853" in={SOURCES} />. Ludvig Lorenz extended the result two decades later by
+        showing the ratio scales as <strong>L₀·T</strong>, with L₀ called the <Term def="The universal proportionality constant in the Wiedemann–Franz law, L₀ ≈ 2.44×10⁻⁸ W·Ω·K⁻². Sommerfeld derived it from the free-electron model as L₀ = (π²/3)(k_B/e)².">Lorenz number</Term>:
       </p>
       <Formula>κ / σ = L<sub>0</sub> · T</Formula>
       <p>
@@ -255,6 +331,23 @@ export default function Ch4HowAResistorWorks() {
       </p>
 
       <WiedemannFranzDemo />
+
+      <TryIt
+        tag="Try 4.5"
+        question={<>Use the Wiedemann–Franz law to predict the ratio <strong>κ/σ</strong> for copper at room temperature (T = 300 K). Take L₀ = 2.44×10⁻⁸ W·Ω·K⁻².</>}
+        hint="κ/σ = L₀·T. The answer has units of W·Ω/K (= V²/K)."
+        answer={
+          <>
+            <Formula>κ / σ = L<sub>0</sub> · T = (2.44×10⁻⁸ W·Ω·K⁻²)(300 K)</Formula>
+            <Formula>κ / σ ≈ <strong>7.32×10⁻⁶ W·Ω·K⁻¹</strong></Formula>
+            <p>
+              Plugging copper's measured σ ≈ 5.96×10⁷ S/m gives κ ≈ 436 W/m·K, within a few percent of the
+              tabulated value (~400 W/m·K)<Cite id="ashcroft-mermin-1976" in={SOURCES} />. The same gas of electrons doing
+              both jobs.
+            </p>
+          </>
+        }
+      />
 
       <p>
         The physics is one sentence. In a metal, the same gas of free electrons carries both the electrical current (drifting

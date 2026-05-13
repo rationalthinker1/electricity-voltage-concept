@@ -14,6 +14,8 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
+import { Term } from '@/components/Term';
+import { TryIt } from '@/components/TryIt';
 import { DriftVelocityDemo } from './demos/DriftVelocity';
 import { SwitchAndBulbDemo } from './demos/SwitchAndBulb';
 import { TwoSpeedsDemo } from './demos/TwoSpeeds';
@@ -41,7 +43,9 @@ export default function Ch2VoltageAndCurrent() {
       <h2>Voltage isn't pressure. It's a <em>difference</em>.</h2>
 
       <p>
-        The standard plumbing analogy says voltage is like water pressure: a battery pushes electrons through a wire the
+        The standard plumbing analogy says{' '}
+        <Term def={<><strong>voltage</strong> (potential difference) — the work done per unit positive charge to move it between two points: <em>V<sub>ab</sub></em> = −∫<sub>a</sub><sup>b</sup> <em>E·dℓ</em>. SI unit: volt (1 V = 1 J/C). Always defined between two points.</>}>voltage</Term>{' '}
+        is like water pressure: a battery pushes electrons through a wire the
         way a pump pushes water through a pipe. The analogy is appealing and gets you about a third of the way before it
         breaks down. The first thing to fix is the idea that voltage is a property of a single point. It isn't. <strong>Voltage is
         a property of a path between two points.</strong> A point in space can be assigned a potential, but only after you've
@@ -74,10 +78,28 @@ export default function Ch2VoltageAndCurrent() {
         Voltage is not a property of a place. It is a property of the path between two places.
       </p>
 
+      <TryIt
+        tag="Try 2.1"
+        question={
+          <>A battery transfers <strong>1 J</strong> of energy to <strong>1 mC</strong> of charge as it moves from one
+          terminal to the other. What is the potential difference between the terminals?</>
+        }
+        hint="Voltage is energy per unit charge: V = W/Q."
+        answer={
+          <>
+            <p>By definition, the voltage between two points is the work per unit charge:</p>
+            <Formula>V = W/Q = 1 J / 1×10⁻³ C = 1000 V</Formula>
+            <p>Answer: <strong>1000 V (1 kV)</strong>.</p>
+          </>
+        }
+      />
+
       <h2>What current actually <em>is</em></h2>
 
       <p>
-        Current is the flow of charge — coulombs per second, with units called amperes. One amp is one coulomb per
+        <Term def={<><strong>Current</strong> — the rate at which charge crosses a surface, <em>I = dQ/dt</em>. SI unit: ampere (1 A = 1 C/s). A signed scalar pointing the way conventional positive charge would move.</>}>Current</Term>{' '}
+        is the flow of charge — coulombs per second, with units called{' '}
+        <Term def={<><strong>ampere</strong> — the SI unit of current; 1 A = 1 coulomb per second ≈ 6.24×10¹⁸ elementary charges per second. Defined since 2019 by fixing the value of <em>e</em>.</>}>amperes</Term>. One amp is one coulomb per
         second, which works out to about <strong>6.24×10¹⁸ elementary charges per second</strong> moving past a fixed
         cross-section. That is an absurd number of electrons. It will get more absurd in two paragraphs.
       </p>
@@ -85,7 +107,8 @@ export default function Ch2VoltageAndCurrent() {
       <p>
         Current has a direction. By the convention Benjamin Franklin set in 1747 — long before anyone knew electrons
         existed — current points the direction <em>positive</em> charge would move. In an ordinary copper wire the actual
-        carriers are electrons, which are negative, and they drift the opposite way from the conventional current
+        carriers are electrons, which are negative, and they drift the opposite way from the{' '}
+        <Term def={<><strong>conventional current</strong> — the direction positive charge would move, by Franklin's 1747 sign choice. In metals the actual carriers (electrons) drift the opposite way; the convention is universal anyway.</>}>conventional current</Term>{' '}
         arrow <Cite id="griffiths-2017" in={SOURCES} />. Every diagram in every electronics textbook silently asks you to
         carry that inversion in your head. Most people learn to do it without noticing.
       </p>
@@ -95,18 +118,37 @@ export default function Ch2VoltageAndCurrent() {
         electrons in a wire really do move when current flows. They just move much, much more slowly than you'd guess.
       </p>
 
+      <TryIt
+        tag="Try 2.2"
+        question={
+          <>A current of <strong>1 A</strong> flows past a fixed cross-section. How many electrons cross that section
+          per second?</>
+        }
+        hint="One ampere = one coulomb per second; each electron carries e = 1.602×10⁻¹⁹ C."
+        answer={
+          <>
+            <p>The number per second is just the current divided by the elementary charge <Cite id="codata-2018" in={SOURCES} />:</p>
+            <Formula>N = I/e = 1 / 1.602×10⁻¹⁹ ≈ 6.24×10¹⁸ electrons/s</Formula>
+            <p>Answer: <strong>~6.24×10¹⁸ electrons per second</strong> — six quintillion, every second, for every amp.</p>
+          </>
+        }
+      />
+
       <h2>The astonishing slowness of <em>electrons</em></h2>
 
       <p>
         In a copper wire, roughly one of each atom's electrons is loose — not bound to any particular nucleus, free to
         wander. That gives a free-electron density of about <strong>n ≈ 8.5×10²⁸ /m³</strong> <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
-        These electrons are not at rest. They scream around at the Fermi velocity, roughly <strong>1.6×10⁶ m/s</strong>,
+        These electrons are not at rest. They scream around at the{' '}
+        <Term def={<><strong>Fermi velocity</strong> — the speed of electrons at the Fermi surface of a metal, set by quantum degeneracy. For copper, <em>v<sub>F</sub></em> ≈ 1.6×10⁶ m/s — about 0.5% of <em>c</em>.</>}>Fermi velocity</Term>, roughly <strong>1.6×10⁶ m/s</strong>,
         bouncing off lattice ions every <strong>τ ≈ 2×10⁻¹⁴ s</strong> <Cite id="kittel-2005" in={SOURCES} /><Cite id="libretexts-conduction" in={SOURCES} />.
-        Apply a field and on top of all that random motion they pick up a tiny <em>average</em> drift in the direction
-        opposite the field. That average drift is what current is made of.
+        Apply a field and on top of all that random motion they pick up a tiny <em>average</em>{' '}
+        <Term def={<><strong>drift velocity</strong> — the small average velocity of charge carriers superimposed on their random thermal motion when an electric field is applied. <em>v<sub>d</sub> = I/(nqA)</em>. Typically millimeters per second in household wiring.</>}>drift</Term>{' '}
+        in the direction opposite the field. That average drift is what current is made of.
       </p>
       <p>
-        In two equations <Cite id="drude-1900" in={SOURCES} />:
+        In two equations (the{' '}
+        <Term def={<><strong>Drude model</strong> — Paul Drude's 1900 picture of electrons as a classical gas inside a metal, accelerated by <em>E</em> between collisions with lattice ions every <em>τ</em>. Predicts <em>σ = nq²τ/m</em>.</>}>Drude model</Term>) <Cite id="drude-1900" in={SOURCES} />:
       </p>
       <Formula>v<sub>d</sub> = I / (n q A)</Formula>
       <p>
@@ -128,12 +170,32 @@ export default function Ch2VoltageAndCurrent() {
         They will not arrive for hours.
       </p>
 
+      <TryIt
+        tag="Try 2.3"
+        question={
+          <>A <strong>1.5 mm²</strong> copper wire carries <strong>5 A</strong>. Compute the drift velocity, using
+          <em> n</em> ≈ 8.5×10²⁸ /m³ for copper.</>
+        }
+        hint={<>Plug into v<sub>d</sub> = I/(nqA), using q = e = 1.602×10⁻¹⁹ C and converting mm² to m².</>}
+        answer={
+          <>
+            <p>With <em>A</em> = 1.5×10⁻⁶ m², and <em>n</em> from Ashcroft &amp; Mermin <Cite id="ashcroft-mermin-1976" in={SOURCES} />:</p>
+            <Formula>v<sub>d</sub> = I/(nqA) = 5 / (8.5×10²⁸ · 1.602×10⁻¹⁹ · 1.5×10⁻⁶) ≈ 2.4×10⁻⁴ m/s</Formula>
+            <p>
+              Answer: about <strong>0.24 mm/s</strong>. At that crawl, a single electron takes roughly 70 minutes to
+              traverse a one-meter wire.
+            </p>
+          </>
+        }
+      />
+
       <h2>The two speeds in the same wire</h2>
 
       <p>
         Inside a copper wire two completely different things can be said to "move," and they move at speeds that differ
         by thirteen orders of magnitude. The electrons themselves drift at millimeters per second. The
-        <em> electromagnetic signal</em> — the disturbance in the field that tells charges everywhere along the wire to
+        <em> electromagnetic{' '}
+        <Term def={<><strong>signal propagation</strong> — the speed at which a disturbance in the electromagnetic field around a conductor travels. Set by the wire's geometry and surrounding dielectric, typically ~⅔ <em>c</em> in insulated copper, not by the speed of any electron.</>}>signal</Term></em> — the disturbance in the field that tells charges everywhere along the wire to
         start drifting — propagates at roughly two-thirds the speed of light, around <strong>2×10⁸ m/s</strong> in
         typical copper wiring <Cite id="libretexts-conduction" in={SOURCES} />. That ratio is the central
         you-thought-you-understood-this-but-you-didn't moment.
@@ -141,6 +203,27 @@ export default function Ch2VoltageAndCurrent() {
       <Formula>v<sub>signal</sub> / v<sub>drift</sub>  ≈  2×10⁸ / 3×10⁻⁵  ≈  10¹³</Formula>
 
       <TwoSpeedsDemo />
+
+      <TryIt
+        tag="Try 2.4"
+        question={
+          <>Take the drift velocity from Try 2.3 (≈ 0.24 mm/s) and the typical signal speed in copper (≈ 2×10⁸ m/s).
+          What is the ratio v<sub>signal</sub>/v<sub>drift</sub>, and how long would the signal take to travel 30 cm
+          compared to the electron?</>
+        }
+        hint="Just divide the two speeds, then divide 0.30 m by each."
+        answer={
+          <>
+            <p>The ratio of speeds <Cite id="libretexts-conduction" in={SOURCES} />:</p>
+            <Formula>v<sub>signal</sub>/v<sub>drift</sub> ≈ 2×10⁸ / 2.4×10⁻⁴ ≈ 8×10¹¹</Formula>
+            <p>
+              Time for the signal to cross 30 cm: 0.30 / (2×10⁸) = <strong>1.5 ns</strong>. Time for a single drifting
+              electron: 0.30 / (2.4×10⁻⁴) ≈ <strong>1250 s ≈ 21 minutes</strong>. Nearly twelve orders of magnitude
+              separate the two.
+            </p>
+          </>
+        }
+      />
 
       <p>
         The signal is not made of electrons. It is the electromagnetic field reconfiguring itself, and that

@@ -16,6 +16,8 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
+import { Term } from '@/components/Term';
+import { TryIt } from '@/components/TryIt';
 import { AreaVsResistanceDemo } from './demos/AreaVsResistance';
 import { JouleHeatingDemo } from './demos/JouleHeating';
 import { LengthVsResistanceDemo } from './demos/LengthVsResistance';
@@ -34,8 +36,11 @@ export default function Ch3ResistanceAndPower() {
         hot. The filament inside is closer to <strong>2800 K</strong> — hot enough that a sliver of its blackbody spectrum spills into the
         visible and the bulb does what it was built to do. Where did all that heat come from? Not from the wall, not directly.
         It came from the lattice of tungsten atoms inside the filament absorbing the kinetic energy of electrons that the
-        electric field had been accelerating between collisions. <strong>Resistance</strong> is the macroscopic name for that
-        lossy hand-off, and <strong>power</strong> is the rate at which it happens.
+        electric field had been accelerating between collisions.{' '}
+        <Term def={<><strong>Resistance</strong> — the proportionality between voltage drop and current in a conductor, <em>V = IR</em>. SI unit: ohm (Ω = V/A). Encodes both geometry and material.</>}><strong>Resistance</strong></Term>{' '}
+        is the macroscopic name for that lossy hand-off, and{' '}
+        <Term def={<><strong>power</strong> — the rate at which energy is transferred or converted, <em>P = dE/dt</em>. SI unit: watt (W = J/s). For a resistor, <em>P = VI = I²R = V²/R</em>.</>}><strong>power</strong></Term>{' '}
+        is the rate at which it happens.
       </p>
       <p>
         This chapter is about the friction. Why a long wire resists more than a short one, why a thin wire resists more
@@ -47,12 +52,15 @@ export default function Ch3ResistanceAndPower() {
       <h2>What <em>resistance</em> is</h2>
 
       <p>
-        The microscopic Ohm's law from the previous chapter said that inside a conductor, current density is proportional
+        The microscopic{' '}
+        <Term def={<><strong>Ohm's law</strong> — the empirical linear relation between current and voltage in an ordinary conductor: <em>V = IR</em> (macroscopic) or <em>J = σE</em> (microscopic). Holds for metals at ordinary fields; fails for diodes, plasmas, etc.</>}>Ohm's law</Term>{' '}
+        from the previous chapter said that inside a conductor, current density is proportional
         to the electric field driving it:
       </p>
       <Formula>J = σ E</Formula>
       <p>
-        with <strong>σ</strong> the conductivity, a property of the material. Drude's 1900 free-electron picture gave a
+        with <strong>σ</strong> the{' '}
+        <Term def={<><strong>conductivity</strong> (σ) — a material property relating current density to applied field, <em>J = σE</em>. SI unit: S/m. Reciprocal of resistivity ρ. Copper ≈ 5.96×10⁷ S/m.</>}>conductivity</Term>, a property of the material. Drude's 1900 free-electron picture gave a
         mechanical explanation<Cite id="drude-1900" in={SOURCES} />: an electron accelerates under <strong>E</strong> for an
         average time <strong>τ</strong> between collisions with ions in the lattice, picks up a small drift velocity, then
         scatters and starts over. Average it out and you get a steady drift proportional to <em>E</em> — friction with a
@@ -80,7 +88,8 @@ export default function Ch3ResistanceAndPower() {
       </p>
       <Formula>R = L / (σ A) = ρ L / A</Formula>
       <p>
-        where <strong>ρ = 1/σ</strong> is the resistivity. Two clean geometric facts fall out. <strong>Twice the length, twice the
+        where <strong>ρ = 1/σ</strong> is the{' '}
+        <Term def={<><strong>resistivity</strong> (ρ) — a material's intrinsic resistance per unit length per unit cross-section: <em>R = ρL/A</em>. SI unit: Ω·m. Reciprocal of conductivity. Copper ≈ 1.7×10⁻⁸ Ω·m.</>}>resistivity</Term>. Two clean geometric facts fall out. <strong>Twice the length, twice the
         resistance</strong> — because the field has to push each electron through twice as much lattice. <strong>Twice
         the cross-section, half the resistance</strong> — because there are twice as many parallel paths for current to
         flow through<Cite id="griffiths-2017" in={SOURCES} />.
@@ -101,6 +110,22 @@ export default function Ch3ResistanceAndPower() {
         resistance by a factor of one hundred. Power-line conductors are deliberately huge; integrated-circuit traces
         are deliberately microscopic; the geometric R = ρL/A formula handles both extremes with the same arithmetic.
       </p>
+
+      <TryIt
+        tag="Try 3.1"
+        question={
+          <>What is the resistance of a <strong>10 m</strong> length of copper wire with a <strong>2 mm²</strong>
+          cross-section, using σ<sub>Cu</sub> ≈ 5.96×10⁷ S/m?</>
+        }
+        hint="R = L/(σA). Convert mm² to m²."
+        answer={
+          <>
+            <p>With <em>A</em> = 2×10⁻⁶ m² and <em>σ</em><sub>Cu</sub> = 5.96×10⁷ S/m <Cite id="crc-resistivity" in={SOURCES} />:</p>
+            <Formula>R = L/(σA) = 10 / (5.96×10⁷ · 2×10⁻⁶) ≈ 0.0839 Ω</Formula>
+            <p>Answer: about <strong>84 mΩ</strong> — a 10 A current through this wire dissipates ~8 W.</p>
+          </>
+        }
+      />
 
       <h2>Material is destiny</h2>
 
@@ -158,7 +183,9 @@ export default function Ch3ResistanceAndPower() {
       <Formula>P = σ A V² / L = V² / R = V I = I² R</Formula>
       <p>
         James Joule established this experimentally in 1841 with a calorimeter that became the namesake of the SI unit
-        of energy<Cite id="joule-1841" in={SOURCES} />. The microscopic and macroscopic accounts agree exactly — they have
+        of energy<Cite id="joule-1841" in={SOURCES} />. The phenomenon is called{' '}
+        <Term def={<><strong>Joule heating</strong> (ohmic / resistive heating) — the conversion of electrical energy to heat in a resistor at the rate <em>P = I²R</em>. The dissipated power equals the work the field does on charges, which scatter into lattice vibrations.</>}>Joule heating</Term>, and the SI unit of power — one joule per second — is the{' '}
+        <Term def={<><strong>watt</strong> — the SI unit of power, 1 W = 1 J/s. Named after James Watt; <em>P = VI</em> in watts when <em>V</em> is in volts and <em>I</em> in amperes.</>}>watt</Term>. The microscopic and macroscopic accounts agree exactly — they have
         to, since they describe the same energy flow at two zoom levels<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
@@ -174,15 +201,57 @@ export default function Ch3ResistanceAndPower() {
         resistance let a cherry-red coil sit in open air for years without crumbling. Same physics, different design points.
       </p>
 
+      <TryIt
+        tag="Try 3.2"
+        question={
+          <>A toaster element has a hot resistance of <strong>6 Ω</strong> and runs on a <strong>120 V</strong>
+          mains line. What current does it draw, and how much power does it dissipate?</>
+        }
+        hint="Use I = V/R, then P = VI (or P = V²/R)."
+        answer={
+          <>
+            <p>Ohm's law gives the current; the power follows from <em>P = VI</em> <Cite id="griffiths-2017" in={SOURCES} />:</p>
+            <Formula>I = V/R = 120 / 6 = 20 A</Formula>
+            <Formula>P = V²/R = 120² / 6 = 2400 W</Formula>
+            <p>Answer: <strong>20 A</strong> and <strong>2.4 kW</strong> — typical for a vigorous countertop toaster.</p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 3.3"
+        question={
+          <>How long would a perfectly efficient <strong>1 kW</strong> kettle take to raise <strong>0.5 L</strong>
+          of water by <strong>80 K</strong>? (Take <em>c</em><sub>water</sub> = 4186 J/(kg·K).)</>
+        }
+        hint="Energy in = energy out: P · t = m c ΔT. 0.5 L of water has mass 0.5 kg."
+        answer={
+          <>
+            <p>Energy required:</p>
+            <Formula>E = m c ΔT = (0.5)(4186)(80) ≈ 1.67×10⁵ J</Formula>
+            <p>Time at 1000 W:</p>
+            <Formula>t = E/P = 1.67×10⁵ / 1000 ≈ 167 s</Formula>
+            <p>
+              Answer: about <strong>2 min 47 s</strong>. Real kettles take a bit longer because some heat leaks to the
+              jug and steam, but this is the lower bound.
+            </p>
+          </>
+        }
+      />
+
       <h2>Series and parallel</h2>
 
       <p>
-        Two resistors in a circuit can be wired two ways. Put them in <strong>series</strong> — a single loop, everything
+        Two resistors in a circuit can be wired two ways. Put them in{' '}
+        <Term def={<><strong>series</strong> — components connected end-to-end so the same current flows through each; their resistances add: <em>R = R₁ + R₂ + …</em></>}><strong>series</strong></Term>{' '}
+        — a single loop, everything
         the same current — and the voltage drops add: <em>V = IR₁ + IR₂ = I(R₁ + R₂)</em>. The combined resistance is the sum:
       </p>
       <Formula>R<sub>series</sub> = R₁ + R₂</Formula>
       <p>
-        Put them in <strong>parallel</strong> — two branches at the same voltage <em>V</em> — and the currents add:
+        Put them in{' '}
+        <Term def={<><strong>parallel</strong> — components connected across the same two nodes so each sees the same voltage; their conductances add (reciprocal resistances): 1/<em>R</em> = 1/<em>R₁</em> + 1/<em>R₂</em> + …</>}><strong>parallel</strong></Term>{' '}
+        — two branches at the same voltage <em>V</em> — and the currents add:
         <em> I = V/R₁ + V/R₂ = V(1/R₁ + 1/R₂)</em>, so the reciprocals combine:
       </p>
       <Formula>1 / R<sub>parallel</sub> = 1/R₁ + 1/R₂</Formula>
@@ -202,6 +271,24 @@ export default function Ch3ResistanceAndPower() {
         of them in parallel gives ρL/A again. "Long = series" and "fat = parallel" both recover the geometric law by the rules
         in this section. The macroscopic and geometric pictures are the same picture.
       </p>
+
+      <TryIt
+        tag="Try 3.4"
+        question={
+          <>A <strong>5 Ω</strong> resistor sits in series with the parallel combination of <strong>10 Ω</strong> and
+          <strong> 15 Ω</strong>. What is the total resistance across the network?</>
+        }
+        hint="Combine the parallel pair first, then add the series 5 Ω."
+        answer={
+          <>
+            <p>The parallel combination of 10 Ω and 15 Ω <Cite id="griffiths-2017" in={SOURCES} />:</p>
+            <Formula>R<sub>p</sub> = (10 · 15) / (10 + 15) = 150 / 25 = 6 Ω</Formula>
+            <p>Adding the 5 Ω in series:</p>
+            <Formula>R<sub>tot</sub> = 5 + 6 = 11 Ω</Formula>
+            <p>Answer: <strong>11 Ω</strong>.</p>
+          </>
+        }
+      />
 
       <h2>What we have so far</h2>
 
@@ -383,7 +470,9 @@ export default function Ch3ResistanceAndPower() {
             In a metal, the carrier density <em>n</em> is essentially fixed — every copper atom donates its one
             conduction electron whether the wire is cold or hot. Heating up just increases lattice vibrations
             (phonons), which scatter electrons more often, shortening the Drude time <em>τ</em> and pushing
-            <strong> ρ</strong> up roughly linearly with <em>T</em> above the Debye temperature
+            <strong> ρ</strong> up roughly linearly with <em>T</em> above the Debye temperature — a slope quantified
+            by the metal's{' '}
+            <Term def={<><strong>temperature coefficient of resistance</strong> (α) — the fractional change in resistance per kelvin: R(T) ≈ R₀ [1 + α (T − T₀)]. For copper near room temperature, α ≈ 0.00393 /K.</>}>temperature coefficient</Term>
             <Cite id="matthiessen-1864" in={SOURCES} /><Cite id="ashcroft-mermin-1976" in={SOURCES} />. In a
             semiconductor, <em>n</em> itself is temperature-activated: more heat liberates exponentially more
             carriers across the band gap, and that swamps the increased scattering. <em>Same equation
@@ -394,7 +483,10 @@ export default function Ch3ResistanceAndPower() {
 
         <FAQItem q="What is a superconductor, and why doesn't it heat up when current flows?">
           <p>
-            Kamerlingh Onnes cooled mercury to 4.2 K in 1911 and watched its resistance fall to <em>exactly</em>
+            A{' '}
+            <Term def={<><strong>superconductor</strong> — a material whose DC resistance drops to exactly zero below a critical temperature T<sub>c</sub>. Cooper pairs of electrons condense into a gapped state that cannot scatter off the lattice. Discovered by Onnes (1911); explained by BCS theory (1957).</>}>superconductor</Term>{' '}
+            is a material whose DC resistance vanishes below a critical temperature. Kamerlingh Onnes
+            cooled mercury to 4.2 K in 1911 and watched its resistance fall to <em>exactly</em>
             zero<Cite id="onnes-1911" in={SOURCES} />. The microscopic explanation came in 1957 from Bardeen,
             Cooper, and Schrieffer: below the critical temperature, electrons bind into <strong>Cooper pairs</strong>
             via a weak phonon-mediated attraction, and the paired condensate cannot exchange small amounts of
@@ -489,8 +581,9 @@ export default function Ch3ResistanceAndPower() {
         <FAQItem q="Would a wire have any resistance at all if it were perfectly pure?">
           <p>
             Still yes, at any temperature above absolute zero. Even a perfectly pure, perfectly periodic crystal
-            has thermal vibrations — <strong>phonons</strong> — that scatter conduction electrons. Matthiessen's
-            rule writes the total resistivity as a sum: <strong>ρ = ρ<sub>residual</sub> + ρ<sub>phonon</sub>(T)</strong>
+            has thermal vibrations — <strong>phonons</strong> — that scatter conduction electrons.{' '}
+            <Term def={<><strong>Matthiessen's rule</strong> — the total resistivity of a metal is the sum of independent scattering contributions: <em>ρ</em> = <em>ρ</em><sub>impurity</sub> + <em>ρ</em><sub>phonon</sub>(T) + …. Independent because the scattering rates add.</>}>Matthiessen's rule</Term>{' '}
+            writes the total resistivity as a sum: <strong>ρ = ρ<sub>residual</sub> + ρ<sub>phonon</sub>(T)</strong>
             <Cite id="matthiessen-1864" in={SOURCES} />. The first term comes from impurities, vacancies, and grain
             boundaries; the second from lattice vibrations. Ultra-pure copper near 4 K can have <em>ρ</em> a thousand
             times lower than at room temperature, but only a true superconductor reaches exactly zero

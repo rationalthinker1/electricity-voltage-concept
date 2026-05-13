@@ -17,6 +17,8 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
+import { Term } from '@/components/Term';
+import { TryIt } from '@/components/TryIt';
 import { CyclotronDemo } from './demos/Cyclotron';
 import { SolenoidDemo } from './demos/Solenoid';
 import { TwoParallelWiresDemo } from './demos/TwoParallelWires';
@@ -37,7 +39,7 @@ export default function Ch6Magnetism() {
         circulating across Europe and the rest of the century was spent figuring out what had just happened.
       </p>
       <p>
-        What had happened was this: a current in a wire produces a magnetic field. The compass needle — itself a small
+        What had happened was this: a current in a wire produces a <Term def="The vector field B that surrounds moving charge and exerts a sideways force on other moving charge via F = qv × B. SI units are tesla.">magnetic field</Term>. The compass needle — itself a small
         magnet — felt that field and turned to align with it. The whole edifice of magnetism, including the everyday
         magnet stuck to your fridge, would turn out to be the same phenomenon. Currents make magnetic fields. Atoms
         contain little circulating charges, which is to say little currents, which is to say little magnets. There is
@@ -54,8 +56,8 @@ export default function Ch6Magnetism() {
       </p>
       <p>
         Then Ørsted's compass moved. Within months Biot and Savart had measured how the field around a wire fell off
-        with distance<Cite id="biot-savart-1820" in={SOURCES} />, and Ampère was building a complete force law between
-        current elements <Cite id="ampere-1826" in={SOURCES} />. The picture that emerged, and that Maxwell would later
+        with distance — what we now call the <Term def="The differential law giving the magnetic field dB at a point from a small current element I dℓ: dB = (μ₀/4π) I dℓ × r̂ / r². Integrate it around any current path and you get B.">Biot–Savart law</Term><Cite id="biot-savart-1820" in={SOURCES} />, and Ampère was building a complete force law between
+        current elements — eventually compressed into <Term def="The integral law ∮ B · dℓ = μ₀ I_enclosed. The magnetic counterpart of Gauss's law: the circulation of B around a closed loop equals μ₀ times the total current threading the loop.">Ampère's law</Term><Cite id="ampere-1826" in={SOURCES} />. The picture that emerged, and that Maxwell would later
         sharpen into its modern shape, is that <em>moving</em> charge is the source of magnetism. Static charge makes
         an electric field. Charge in motion makes <em>both</em> an electric field <em>and</em> a magnetic one. The
         force a permanent magnet exerts on a paperclip is the cumulative effect of an enormous number of atomic-scale
@@ -72,10 +74,11 @@ export default function Ch6Magnetism() {
       <Formula>|B| = μ₀ I / (2π r)</Formula>
       <p>
         and the direction is tangent to a circle around the wire — wrapping the wire like contour lines around a
-        mountain. The right-hand rule fixes which way: point your thumb along the current and your fingers curl
+        mountain. The <Term def="A mnemonic for the orientation of cross products in a right-handed coordinate system. For B around a wire: point your right thumb along the current and your fingers curl in the direction of B. For F = qv × B: fingers from v to B, thumb gives F.">right-hand rule</Term> fixes which way: point your thumb along the current and your fingers curl
         around the wire in the direction of <strong>B</strong>. The constant <strong>μ₀ ≈ 1.257×10⁻⁶ T·m/A</strong>
         is the permeability of free space <Cite id="codata-2018" in={SOURCES} />; it plays the same role for magnetism
         that <strong>1/(4π ε₀)</strong> plays for electricity, and the two are linked by <strong>μ₀ ε₀ = 1/c²</strong>.
+        The SI unit for B is the <Term def="SI unit of magnetic flux density. 1 T = 1 kg / (A·s²) = 1 V·s/m². Earth's field is ~50 µT, a fridge magnet ~5 mT, a clinical MRI 1.5–3 T, a neutron-star magnetar ~10¹⁰ T.">tesla</Term> (T).
       </p>
       <p>
         Biot and Savart got there empirically by hanging a compass needle near a wire and measuring deflection vs.
@@ -85,6 +88,23 @@ export default function Ch6Magnetism() {
       </p>
 
       <WireBFieldDemo />
+
+      <TryIt
+        tag="Try 6.1"
+        question={<>A long straight wire carries <strong>I = 10 A</strong>. What is the magnitude of B at a perpendicular distance of <strong>5 cm</strong>?</>}
+        hint="B = μ₀ I / (2π r), with μ₀ = 4π × 10⁻⁷ T·m/A."
+        answer={
+          <>
+            <Formula>|B| = μ₀ I / (2π r)</Formula>
+            <Formula>|B| = (4π×10⁻⁷)(10) / (2π · 0.05) = (4π×10⁻⁶) / (0.1π) = <strong>4×10⁻⁵ T = 40 µT</strong></Formula>
+            <p>
+              About the size of Earth's surface field<Cite id="chulliat-wmm-2020" in={SOURCES} /> — a 10 A wire at 5 cm
+              produces a B comparable to the planet's own dipole. The 2π in the denominator is geometric: field lines spread
+              around a cylinder, not a sphere, so the fall-off is 1/r, not 1/r²<Cite id="codata-2018" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <p>
         The factor of <strong>2π</strong> is geometric, the same way the <strong>4π</strong> in Coulomb's law is
@@ -116,6 +136,23 @@ export default function Ch6Magnetism() {
 
       <TwoParallelWiresDemo />
 
+      <TryIt
+        tag="Try 6.2"
+        question={<>Two long parallel wires carry <strong>100 A</strong> each in the same direction, separated by <strong>10 cm</strong>. What is the force per unit length between them, and is it attractive or repulsive?</>}
+        hint="F/L = μ₀ I₁ I₂ / (2π d). Same direction of current → attractive."
+        answer={
+          <>
+            <Formula>F / L = μ₀ I<sub>1</sub> I<sub>2</sub> / (2π d)</Formula>
+            <Formula>F / L = (4π×10⁻⁷)(100)(100) / (2π · 0.10) = <strong>0.02 N/m = 20 mN/m</strong></Formula>
+            <p>
+              The force is <strong>attractive</strong> (parallel currents pull together)<Cite id="ampere-1826" in={SOURCES} />.
+              20 mN/m is about two grams of weight per metre — detectable with a torsion balance, invisible against the
+              wire's own tension.
+            </p>
+          </>
+        }
+      />
+
       <p>
         The result is striking enough that you might wonder why we never see two power lines pulling each other
         together. The answer is the size of <strong>μ₀</strong>: between two wires carrying 100 A each, separated by
@@ -130,8 +167,7 @@ export default function Ch6Magnetism() {
       <h2>Force on a moving <em>charge</em></h2>
 
       <p>
-        Wires aren't the only things that feel magnetic forces — a single moving charge does too. The Lorentz force
-        law, the cleanest statement in all of magnetism, is
+        Wires aren't the only things that feel magnetic forces — a single moving charge does too. The <Term def="The force on a charge q moving at velocity v through E and B fields: F = q(E + v × B). The full statement of how electromagnetic fields push charged particles around.">Lorentz force</Term> law, the cleanest statement in all of magnetism, is
       </p>
       <Formula>F = q ( v × B )</Formula>
       <p>
@@ -158,7 +194,7 @@ export default function Ch6Magnetism() {
       <Formula>T = 2π m / (q B)</Formula>
       <p>
         — which, remarkably, has no <strong>v</strong> in it. Faster particles trace bigger circles in <em>exactly</em>
-        the same amount of time. That's the foundation of the cyclotron, of mass spectrometers, of every accelerator
+        the same amount of time. That's the foundation of the <Term def="A particle accelerator that uses a uniform B field to bend charged particles into circular orbits and a fixed-frequency oscillating E field between two D-shaped electrodes to accelerate them. Invented by E. O. Lawrence in 1932; works because the cyclotron period T = 2πm/qB is independent of speed (non-relativistically).">cyclotron</Term>, of mass spectrometers, of every accelerator
         smaller than a kilometer across. It's also why an aurora is shaped the way it is: charged particles from the
         sun spiral down Earth's magnetic field lines, drawn toward the poles, depositing their energy into the upper
         atmosphere along the way <Cite id="feynman-II-13" in={SOURCES} />.
@@ -166,12 +202,47 @@ export default function Ch6Magnetism() {
 
       <CyclotronDemo />
 
+      <TryIt
+        tag="Try 6.3"
+        question={<>A 1 m segment of wire carries <strong>5 A</strong> perpendicular to a uniform <strong>B = 0.1 T</strong> field. What is the force on the segment?</>}
+        hint="For a straight wire of length L perpendicular to B, F = B I L."
+        answer={
+          <>
+            <Formula>F = B I L = (0.1 T)(5 A)(1 m) = <strong>0.5 N</strong></Formula>
+            <p>
+              About a 50 g weight per metre of wire. This is the force that runs every motor on Earth: a current-carrying
+              wire sitting in a magnetic field feels a sideways push, and arranging the geometry so the push turns into
+              rotation is the entire idea of a DC motor<Cite id="griffiths-2017" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 6.4"
+        question={<>A non-relativistic electron with kinetic energy 1 keV enters a <strong>B = 1 mT</strong> field perpendicular to its velocity. What is its cyclotron radius? (m<sub>e</sub> = 9.11×10⁻³¹ kg, e = 1.602×10⁻¹⁹ C.)</>}
+        hint="First find v from ½mv² = KE. Then r = mv/(qB)."
+        answer={
+          <>
+            <p>First convert: KE = 1 keV = 1.602×10⁻¹⁶ J. Solve for v:</p>
+            <Formula>v = √(2 · KE / m) = √(2 · 1.602×10⁻¹⁶ / 9.11×10⁻³¹) ≈ 1.88×10⁷ m/s</Formula>
+            <p>(About 6% of c, so non-relativistic is borderline but OK.) Then:</p>
+            <Formula>r = m v / (q B) = (9.11×10⁻³¹)(1.88×10⁷) / (1.602×10⁻¹⁹ · 1×10⁻³)</Formula>
+            <Formula>r ≈ <strong>0.107 m ≈ 11 cm</strong></Formula>
+            <p>
+              An order-of-magnitude consistency check: the radius scales linearly with v and inversely with B<Cite id="feynman-II-13" in={SOURCES} />.
+              Higher field, tighter spiral; faster particle, broader circle.
+            </p>
+          </>
+        }
+      />
+
       <p>
         Inside an ordinary copper wire, the moving charges are conduction electrons, and the same Lorentz force still
         applies — but now in the presence of a billion-billion other charges and a fixed positive lattice. If you put
         a current-carrying conductor in a transverse <strong>B</strong> field, the magnetic force pushes the carriers
         sideways across the slab until enough of them pile up on one face to make a transverse <em>electric</em> field
-        that exactly cancels the magnetic deflection in steady state. The voltage across the slab — the
+        that exactly cancels the magnetic deflection in steady state. This is the <Term def="The transverse voltage that appears across a current-carrying slab placed in a perpendicular magnetic field. Its sign reveals the sign of the charge carriers; its magnitude reveals the carrier density. Used to confirm in 1879 that current in metals is carried by negatively-charged particles.">Hall effect</Term>: the voltage across the slab — the
         <em> Hall voltage</em> — has a sign that tells you the sign of the carriers. Edwin Hall used it in 1879 to
         confirm experimentally that current in metals is carried by negative charges <Cite id="hall-1879" in={SOURCES} />,
         decades before anyone knew what an electron was.
@@ -180,7 +251,7 @@ export default function Ch6Magnetism() {
       <h2>Solenoid: a <em>controllable</em> magnet</h2>
 
       <p>
-        Take a wire, coil it into a tight helix, run a current through it. Each turn contributes its own magnetic field,
+        Take a wire, coil it into a tight helix, run a current through it — a <Term def="A long helical coil of wire. When current flows, the turns reinforce each other inside to give a strong, nearly uniform B field along the axis (B = μ₀ n I); outside the field nearly cancels. The simplest practical electromagnet.">solenoid</Term>. Each turn contributes its own magnetic field,
         and inside the bundle they all reinforce each other. Outside, they mostly cancel. The result is a region of
         strong, nearly uniform magnetic field along the solenoid's axis — a permanent-magnet-like field that you can
         switch on and off, and whose strength you control with a knob.
@@ -193,7 +264,8 @@ export default function Ch6Magnetism() {
         with <strong>n = N / L</strong> the number of turns per unit length. No dependence on radius (so long as you
         stay inside), no dependence on where along the axis you measure (so long as you're not near the ends). Outside
         the solenoid the field is, in the idealized limit, exactly zero — the mathematical statement of the fact that
-        all the field lines that exit one end have to come back in through the other.
+        all the field lines that exit one end have to come back in through the other. There are no isolated sources of B,
+        no <Term def="A hypothetical isolated north or south magnetic pole — a source of B field with no opposite-pole counterpart. Has never been observed. Maxwell's equation ∇ · B = 0 encodes the experimental fact that B field lines always close on themselves.">magnetic monopole</Term>s: field lines always close on themselves.
       </p>
 
       <SolenoidDemo />

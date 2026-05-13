@@ -16,6 +16,8 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
+import { Term } from '@/components/Term';
+import { TryIt } from '@/components/TryIt';
 import { ConductorRedistributionDemo } from './demos/ConductorRedistribution';
 import { EquipotentialsDemo } from './demos/Equipotentials';
 import { FieldArrowsDemo } from './demos/FieldArrows';
@@ -33,7 +35,8 @@ export default function Ch1WhatIsElectricity() {
         Rub a balloon on your hair and stick it to a wall. The balloon stays — through paint, through gravity, through your
         fingers tugging at it — held there by something that doesn't touch anything. <strong>That</strong> is electricity in
         its rawest form. Not the neat 60 Hz alternating current in your wall outlet, not the bright sparks of a thundercloud.
-        Just two surfaces full of opposite charges, and a force between them.
+        Just two surfaces full of opposite{' '}
+        <Term def={<><strong>charge</strong> — a conserved scalar property of matter that produces and responds to electromagnetic fields. Comes in two signs; the elementary unit is <em>e</em> = 1.602176634×10⁻¹⁹ C (exact).</>}>charges</Term>, and a force between them.
       </p>
       <p>
         This chapter is about the bottom layer: what charge actually is, why it produces a force that drops off as the inverse
@@ -56,7 +59,11 @@ export default function Ch1WhatIsElectricity() {
       <TwoChargesDemo />
 
       <p>
-        The force between two point charges is given by Coulomb's law <Cite id="coulomb-1785" in={SOURCES} />:
+        The force between two{' '}
+        <Term def={<><strong>point charge</strong> — an idealised charge with no spatial extent, used as a building block. Real charged objects are integrated as sums of point charges.</>}>point charges</Term>{' '}
+        is given by{' '}
+        <Term def={<><strong>Coulomb's law</strong> — the force between two point charges falls off as the inverse square of their separation: <em>F = k Q₁Q₂/r²</em>. Like signs repel, unlike attract.</>}>Coulomb's law</Term>{' '}
+        <Cite id="coulomb-1785" in={SOURCES} />:
       </p>
       <Formula>F = k Q₁ Q₂ / r²</Formula>
       <p>
@@ -72,6 +79,26 @@ export default function Ch1WhatIsElectricity() {
         excess electrons, sitting on a balloon that contains roughly <strong>10²³</strong> of them. Almost nothing.
         Enough to fight gravity for a few minutes.
       </p>
+
+      <TryIt
+        tag="Try 1.1"
+        question={
+          <>Two small spheres sit 10 cm apart in air, carrying <strong>+5 nC</strong> and <strong>−3 nC</strong>.
+          What is the magnitude of the Coulomb force between them, and is it attractive or repulsive?</>
+        }
+        hint="Use F = k Q₁Q₂/r² with k = 8.99×10⁹ N·m²/C² and convert nC and cm to SI."
+        answer={
+          <>
+            <p>
+              Plug directly into Coulomb's law with <em>k</em> = 8.99×10⁹ N·m²/C² <Cite id="codata-2018" in={SOURCES} />:
+            </p>
+            <Formula>F = (8.99×10⁹)(5×10⁻⁹)(3×10⁻⁹) / (0.10)² = 1.35×10⁻⁵ N</Formula>
+            <p>
+              The signs are opposite, so the force is attractive. Magnitude: <strong>1.35×10⁻⁵ N (~13.5 µN)</strong>, attractive.
+            </p>
+          </>
+        }
+      />
 
       <h2>Why exactly the <em>square</em>?</h2>
 
@@ -92,10 +119,34 @@ export default function Ch1WhatIsElectricity() {
       <p>
         Cavendish bounded the deviation from <em>exactly</em> 2 to within ±1/50 with a clever null-cavity experiment in
         1773, decades before Coulomb's published result <Cite id="cavendish-1773" in={SOURCES} />. Modern measurements
-        have pushed the bound to roughly <strong>±3×10⁻¹⁶</strong> — the exponent is 2 to sixteen decimal places<Cite id="williams-faller-hill-1971" in={SOURCES} />. There are very few power laws in physics tested this precisely.
+        have pushed the bound to roughly <strong>±3×10⁻¹⁶</strong> — the exponent is 2 to sixteen decimal places<Cite id="williams-faller-hill-1971" in={SOURCES} />. There are very few{' '}
+        <Term def={<><strong>inverse-square law</strong> — any force law where magnitude falls as 1/r². Coulomb's electrostatic force and Newton's gravitational force are the canonical examples; both reflect the surface area of a sphere growing as 4πr².</>}>power laws</Term>{' '}
+        in physics tested this precisely.
       </p>
 
       <InverseSquareDemo />
+
+      <TryIt
+        tag="Try 1.2"
+        question={
+          <>Two protons sit 1 fm (10⁻¹⁵ m) apart — roughly a nuclear separation. Compute the ratio of the electric repulsion to the gravitational attraction between them.</>
+        }
+        hint={<>Use F<sub>e</sub> = kQ²/r² and F<sub>g</sub> = Gm²/r². The <em>r</em>² cancels.</>}
+        answer={
+          <>
+            <p>
+              Both forces scale as 1/r², so the ratio is independent of distance — pure constants.
+              With <em>e</em> = 1.602×10⁻¹⁹ C, <em>m<sub>p</sub></em> = 1.673×10⁻²⁷ kg,
+              <em> k</em> = 8.99×10⁹ N·m²/C², and <em>G</em> = 6.674×10⁻¹¹ N·m²/kg² <Cite id="codata-2018" in={SOURCES} />:
+            </p>
+            <Formula>F<sub>e</sub>/F<sub>g</sub> = k e² / (G m<sub>p</sub>²) ≈ 1.24×10³⁶</Formula>
+            <p>
+              The electric force between two protons is about <strong>10³⁶ times</strong> stronger than the
+              gravitational force. Gravity is utterly negligible at atomic scales.
+            </p>
+          </>
+        }
+      />
 
       <h2>From <em>force</em> to <em>field</em></h2>
 
@@ -106,7 +157,8 @@ export default function Ch1WhatIsElectricity() {
       </p>
       <p>
         Michael Faraday, who had less mathematics than any of his peers and more imagination than most of them combined,
-        proposed in the 1830s that the empty space around a charge is not, in fact, empty. It contains a <em>field</em>: a
+        proposed in the 1830s that the empty space around a charge is not, in fact, empty. It contains a{' '}
+        <Term def={<><strong>electric field</strong> — a vector quantity <em>E</em> defined at every point in space; the force on a small test charge <em>q</em> at that point is <em>F = qE</em>. Units: N/C, equivalently V/m.</>}>field</Term>: a
         physical thing, defined at every point, that tells whatever charge happens to be there what force to feel. The
         symbol is <strong>E</strong>, and its definition is direct:
       </p>
@@ -137,6 +189,29 @@ export default function Ch1WhatIsElectricity() {
         field that obeys its own dynamics.
       </p>
 
+      <TryIt
+        tag="Try 1.3"
+        question={
+          <>A <strong>+10 nC</strong> point charge sits at the origin. What is the magnitude of <strong>E</strong> at a
+          point 5 cm away, and what force would an electron feel there?</>
+        }
+        hint="|E| = kQ/r²; then F = qE with q = e = 1.602×10⁻¹⁹ C."
+        answer={
+          <>
+            <p>The field magnitude from a point charge <Cite id="feynman-II-2" in={SOURCES} />:</p>
+            <Formula>|E| = kQ/r² = (8.99×10⁹)(10×10⁻⁹) / (0.05)² = 3.60×10⁴ N/C</Formula>
+            <p>
+              An electron carries charge −<em>e</em>, so the force has magnitude
+            </p>
+            <Formula>F = eE = (1.602×10⁻¹⁹)(3.60×10⁴) ≈ 5.76×10⁻¹⁵ N</Formula>
+            <p>
+              directed toward the positive source charge. Field: <strong>3.6×10⁴ N/C</strong>; force on the electron:
+              <strong> 5.8×10⁻¹⁵ N</strong> attractive.
+            </p>
+          </>
+        }
+      />
+
       <h2>Two charges, two patterns</h2>
 
       <p>
@@ -149,19 +224,41 @@ export default function Ch1WhatIsElectricity() {
       <EquipotentialsDemo />
 
       <p>
-        The teal dotted contours in the demo above are <em>equipotential lines</em> — sets of points all at the same
+        The teal dotted contours in the demo above are{' '}
+        <Term def={<><strong>equipotential</strong> — a surface (or curve in 2D) on which the electrostatic potential <em>V</em> has a single value. The electric field is everywhere perpendicular to equipotentials and points toward lower <em>V</em>.</>}>equipotential lines</Term>{' '}
+        — sets of points all at the same
         electrostatic potential <strong>V</strong>. They're the contour lines of an invisible mountain whose height is
         the potential. The electric field always points "downhill," perpendicular to the equipotentials. We'll spend
         Chapter&nbsp;2 on what V means and why it's the variable everyone actually measures.
       </p>
 
+      <TryIt
+        tag="Try 1.4"
+        question={
+          <>A <strong>+1 µC</strong> point charge sits in vacuum. What is the electrostatic potential
+          at a point 1 m away, taking infinity as the reference (V → 0 at r → ∞)?</>
+        }
+        hint="For a point charge, V(r) = kQ/r."
+        answer={
+          <>
+            <p>The potential of a single point charge, with V(∞) = 0, is <Cite id="griffiths-2017" in={SOURCES} />:</p>
+            <Formula>V = kQ/r = (8.99×10⁹)(1×10⁻⁶) / 1 = 8.99×10³ V</Formula>
+            <p>Answer: <strong>~9000 V (9 kV)</strong> at 1 m. A single microcoulomb is already a kilovolt-class source.</p>
+          </>
+        }
+      />
+
       <h2>Conductors, insulators, and why your hair does that</h2>
 
       <p>
         Materials come in two extreme types from the standpoint of charge mobility, with everything else on a sliding
-        scale between them. In a <strong>conductor</strong> — copper, silver, salt water, your skin to a small degree —
+        scale between them. In a{' '}
+        <Term def={<><strong>conductor</strong> — a material with mobile charge carriers (usually electrons) free to drift under an applied field. Metals and electrolytes are the canonical examples.</>}><strong>conductor</strong></Term>{' '}
+        — copper, silver, salt water, your skin to a small degree —
         some of the electrons in each atom are not bound to any particular nucleus. They drift through the material, free
-        to be pushed around by any applied field. In an <strong>insulator</strong> — glass, dry plastic, dry air — every
+        to be pushed around by any applied field. In an{' '}
+        <Term def={<><strong>insulator</strong> (dielectric) — a material in which all electrons are bound; charges can polarise but not flow. Glass, dry air, plastics.</>}><strong>insulator</strong></Term>{' '}
+        — glass, dry plastic, dry air — every
         electron is locked into a chemical bond and cannot move more than the diameter of an atom.
       </p>
       <p>
@@ -314,7 +411,8 @@ export default function Ch1WhatIsElectricity() {
 
         <FAQItem q="What is the constant k in Coulomb's law, and why is it so absurdly large?">
           <p>
-            In SI units <strong>k = 1/(4πε₀) ≈ 8.99×10⁹ N·m²/C²</strong>, where <strong>ε₀</strong> is the permittivity
+            In SI units <strong>k = 1/(4πε₀) ≈ 8.99×10⁹ N·m²/C²</strong>, where <strong>ε₀</strong> is the{' '}
+            <Term def={<><strong>permittivity</strong> of free space — the SI constant ε₀ ≈ 8.854×10⁻¹² F/m that sets the strength of the electrostatic interaction in vacuum.</>}>permittivity</Term>{' '}
             of free space<Cite id="codata-2018" in={SOURCES} />. It looks huge because the coulomb is a wildly
             oversized unit — one coulomb is the charge of about <strong>6.24×10¹⁸</strong> electrons. Real laboratory
             charges sit at the nanocoulomb to microcoulomb level, and at those scales the forces become ordinary. The
@@ -326,7 +424,9 @@ export default function Ch1WhatIsElectricity() {
         <FAQItem q="Why exactly 4π in 1/(4πε₀), and not just π or 2π?">
           <p>
             The <strong>4π</strong> is the surface area of a unit sphere — it's the geometry of three-dimensional space
-            leaking into the equations. Gauss's law in its clean form reads ∮E·dA = Q/ε₀, with no π anywhere
+            leaking into the equations.{' '}
+            <Term def={<><strong>Gauss's law</strong> — the electric flux through any closed surface equals the enclosed charge divided by ε₀: ∮<em>E·dA</em> = <em>Q</em><sub>enc</sub>/ε₀. One of Maxwell's four equations.</>}>Gauss's law</Term>{' '}
+            in its clean form reads ∮E·dA = Q/ε₀, with no π anywhere
             <Cite id="gauss-1813" in={SOURCES} />. When you specialize that to a point charge and integrate over a
             sphere of radius r, the sphere's area <strong>4πr²</strong> appears in the denominator, leaving Coulomb's
             law looking like F = Q₁Q₂/(4πε₀r²). The 4π is where you choose to hide the geometry: in Coulomb's law, or in

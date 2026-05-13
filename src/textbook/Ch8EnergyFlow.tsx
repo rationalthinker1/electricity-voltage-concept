@@ -17,6 +17,8 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
+import { Term } from '@/components/Term';
+import { TryIt } from '@/components/TryIt';
 import { BCirculationDemo } from './demos/BCirculation';
 import { EAxialFieldDemo } from './demos/EAxialField';
 import { PoyntingInflowDemo } from './demos/PoyntingInflow';
@@ -118,7 +120,8 @@ export default function Ch8EnergyFlow() {
         electromagnetic energy lives and how it moves<Cite id="maxwell-1865" in={SOURCES} />. The full derivation was tidied
         up nineteen years later by John Henry Poynting, who showed in a single elegant paper that the energy flux per unit
         area at any point in space is given by the cross product of <strong>E</strong> and <strong>B</strong>, scaled by the
-        permeability of free space<Cite id="poynting-1884" in={SOURCES} />:
+        permeability of free space<Cite id="poynting-1884" in={SOURCES} />, a quantity now known as the{' '}
+        <Term def={<><strong>Poynting vector</strong> — the local electromagnetic energy-flux density, <em>S = (1/μ₀) E × B</em>. SI units W/m². Points in the direction electromagnetic energy is flowing.</>}>Poynting vector</Term>:
       </p>
       <Formula>S = (1/μ<sub>0</sub>) E × B</Formula>
       <p>
@@ -128,7 +131,8 @@ export default function Ch8EnergyFlow() {
       </p>
       <p>
         Now turn the right-hand rule on the situation we built in the last section. <strong>E</strong> points along the wire's axis;
-        <strong> B</strong> circles the wire. Their cross product points <em>radially inward</em>, perpendicular to both, on every side of
+        <strong> B</strong> circles the wire. Their cross product points{' '}
+        <Term def={<><strong>radial flux</strong> — energy or field flow pointing along the cylindrical radius (toward or away from the axis). For a current-carrying wire, the Poynting vector points radially inward at the surface.</>}>radially inward</Term>, perpendicular to both, on every side of
         the wire at once. Energy is flowing into the wire. It comes from the surrounding space — from <em>everywhere</em> in
         the surrounding space — and gets absorbed at the surface.
       </p>
@@ -151,11 +155,14 @@ export default function Ch8EnergyFlow() {
       <p>
         where the second equality just substitutes <em>E = V/L</em> and <em>B = μ<sub>0</sub>I/(2πa)</em> from above. The
         wire's lateral surface area is <strong>2πaL</strong>. So the total energy flowing inward through that surface, per
-        second, is the surface integral
+        second, is the{' '}
+        <Term def={<><strong>surface integral</strong> — the integral of a vector field's normal component over a (typically closed) surface. For the Poynting vector, ∮ S · dA gives the total electromagnetic power flowing across that surface.</>}>surface integral</Term>
       </p>
       <Formula>∮ S · dA = |S|<sub>surf</sub> · 2π a L = V I</Formula>
       <p>
-        Exactly <strong>VI</strong>. The Poynting flux through the wire's surface equals the dissipated power, identically, by
+        Exactly <strong>VI</strong>. The{' '}
+        <Term def={<><strong>Poynting flux</strong> — the integral of the Poynting vector over a surface, ∮ S · dA. Gives the net electromagnetic power crossing that surface in watts.</>}>Poynting flux</Term>{' '}
+        through the wire's surface equals the dissipated power, identically, by
         construction. No approximation. No "in the limit of." It is the same quantity, written in two different ways<Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
@@ -165,6 +172,57 @@ export default function Ch8EnergyFlow() {
         The "P_surf / P_VI = 1.000" readout in the demo above is the entire chapter compressed into one number. Move any
         slider you like — the ratio doesn't budge. It can't. The integral and the algebra are the same statement.
       </p>
+
+      <TryIt
+        tag="Try 8.1"
+        question={
+          <>A straight copper wire of radius <strong>a = 1 mm</strong> and length <strong>L = 1 m</strong> drops
+          <strong> V = 12 V</strong> across its ends while carrying <strong>I = 5 A</strong>. Compute the magnitude of the
+          Poynting vector at the wire's surface.</>
+        }
+        hint="At the surface, |S| = E·B/μ₀ = VI/(2π a L). Plug numbers directly."
+        answer={
+          <>
+            <p>
+              Use the surface formula derived in this section<Cite id="feynman-II-27" in={SOURCES} />:
+            </p>
+            <Formula>|S|<sub>surf</sub> = V I / (2π a L)</Formula>
+            <p>
+              Plugging in: <em>2π a L</em> = 2π × (10⁻³ m) × (1 m) ≈ 6.283×10⁻³ m². Then
+              <em> V I</em> = 12 × 5 = 60 W, so
+            </p>
+            <Formula>|S|<sub>surf</sub> = 60 / 6.283×10⁻³ ≈ 9.55×10³ W/m²</Formula>
+            <p>
+              About <strong>9.5 kW/m²</strong> of Poynting flux pouring radially inward at every point on the wire's
+              surface — a few times the solar constant<Cite id="kopp-lean-2011" in={SOURCES} />, in the air around a
+              modestly resistive bit of copper.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 8.2"
+        question={
+          <>For that same wire, verify directly that the total Poynting flux integrated over the lateral surface equals
+          the dissipated power <strong>VI</strong>.</>
+        }
+        hint="Multiply |S|_surf by the lateral surface area 2π a L."
+        answer={
+          <>
+            <p>
+              The lateral surface area is <strong>2π a L</strong>. The Poynting flux is uniform on the surface
+              and points inward, so<Cite id="jackson-1999" in={SOURCES} />:
+            </p>
+            <Formula>∮ S · dA = |S|<sub>surf</sub> · 2π a L = [V I / (2π a L)] · (2π a L) = V I</Formula>
+            <p>
+              Numerically, <em>9.55×10³ × 6.283×10⁻³</em> = <strong>60 W</strong> — identical to <em>VI</em> = 12 × 5 = 60 W.
+              The 2π a L on top cancels the 2π a L on bottom; the geometry drops out completely. This is not coincidence —
+              it is the local form of Poynting's theorem<Cite id="poynting-1884" in={SOURCES} />, in two lines.
+            </p>
+          </>
+        }
+      />
 
       <p className="pullout">
         The wire is not the medium. The wire is the destination.
@@ -200,7 +258,8 @@ export default function Ch8EnergyFlow() {
       </p>
       <p>
         From microscopic Ohm's law, <strong>E = J/σ</strong>. As σ → ∞ at fixed current density, the axial field inside the
-        conductor must go to zero. (You cannot sustain a non-zero <strong>E</strong> in a perfect conductor at equilibrium —
+        conductor must go to zero. (You cannot sustain a non-zero <strong>E</strong> in a perfect{' '}
+        <Term def={<><strong>superconductor</strong> — a material with exactly zero DC electrical resistance below a critical temperature. Persistent currents flow with no voltage drop and no dissipation; the axial E-field inside vanishes.</>}>superconductor</Term>{' '}at equilibrium —
         the free charges would rearrange instantly.) So <strong>E</strong> inside the wire vanishes, and so does <strong>S</strong>
         inside. The energy doesn't enter at all. It keeps streaming, parallel to the wire, in the surrounding space, and slides
         on past untouched<Cite id="griffiths-2017" in={SOURCES} /><Cite id="jackson-1999" in={SOURCES} />.
@@ -215,6 +274,85 @@ export default function Ch8EnergyFlow() {
         energy goes — but no joules are lost from the field along the way. In a circuit with one resistor and superconducting
         leads, the entire energy budget happens at the resistor. The leads are just rails for the field.
       </p>
+
+      <TryIt
+        tag="Try 8.3"
+        question={
+          <>Sunlight at the top of Earth's atmosphere delivers a time-averaged Poynting flux of about
+          <strong> 1361 W/m²</strong>. What is the corresponding peak electric-field amplitude <em>E₀</em> in the wave?</>
+        }
+        hint="For a plane wave in vacuum, ⟨|S|⟩ = ½ c ε₀ E₀². Solve for E₀."
+        answer={
+          <>
+            <p>
+              The time-averaged Poynting magnitude for a plane wave is<Cite id="jackson-1999" in={SOURCES} />:
+            </p>
+            <Formula>⟨|S|⟩ = ½ c ε₀ E₀²</Formula>
+            <p>
+              Solve for <em>E₀</em>:
+            </p>
+            <Formula>E₀ = √(2 ⟨|S|⟩ / (c ε₀))</Formula>
+            <p>
+              Plug in <em>⟨|S|⟩</em> = 1361 W/m²<Cite id="kopp-lean-2011" in={SOURCES} />, <em>c</em> = 2.998×10⁸ m/s, and
+              <em> ε₀</em> = 8.854×10⁻¹² F/m<Cite id="codata-2018" in={SOURCES} />:
+            </p>
+            <Formula>E₀ = √(2 × 1361 / (2.998×10⁸ × 8.854×10⁻¹²)) ≈ 1013 V/m</Formula>
+            <p>
+              About <strong>1.0 kV/m</strong> of peak oscillating electric field, threading every cubic meter of space
+              between here and the Sun.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 8.4"
+        question={
+          <>An ideal lossless capacitor is driven by a sinusoidal voltage source. Over one complete AC cycle, what is the
+          net Poynting flux into the capacitor's volume?</>
+        }
+        hint="No resistance means no time-averaged dissipation; Poynting's theorem is then telling you something about reactive energy."
+        answer={
+          <>
+            <p>
+              <strong>Zero, on time-average.</strong> While the capacitor charges, <strong>S</strong> flows radially inward from
+              the surrounding space into the gap, building up field energy <em>½ ε₀ E²</em> per unit volume in the dielectric.
+              On discharge the flow reverses and the same energy streams back out into the external circuit
+              <Cite id="griffiths-2017" in={SOURCES} />. Integrate over a full cycle and the inflow and outflow cancel
+              identically<Cite id="jackson-1999" in={SOURCES} />:
+            </p>
+            <Formula>⟨ ∮ S · dA ⟩<sub>cycle</sub> = 0</Formula>
+            <p>
+              In circuit-theory language, an ideal capacitor consumes zero <em>real</em> power; in field language, the
+              Poynting flux is purely reactive. Energy sloshes in and out through space twice per cycle with no net transfer.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 8.5"
+        question={
+          <>A <strong>100 Ω</strong> resistor has <strong>10 V</strong> across it. Without using the
+          formula <em>P = V²/R</em>, show that the Poynting flow into the resistor delivers exactly the dissipated power.</>
+        }
+        hint="Compute the current first, then use ∮ S · dA = V I from this chapter's derivation."
+        answer={
+          <>
+            <p>
+              The current is <em>I = V/R</em> = 10 / 100 = <strong>0.1 A</strong>. The Poynting integral over the resistor's
+              surface gives<Cite id="feynman-II-27" in={SOURCES} />:
+            </p>
+            <Formula>∮ S · dA = V I = 10 × 0.1 = 1.0 W</Formula>
+            <p>
+              And for cross-check, <em>V²/R</em> = 100 / 100 = <strong>1.0 W</strong>. The two routes give the same answer
+              because they are the same energy-conservation statement — one written as a surface integral of field flux, the
+              other as a volume integral of <strong>J·E</strong>, balanced by Poynting's theorem<Cite id="poynting-1884" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
 
       <h2>What the textbook was <em>for</em></h2>
 
@@ -510,7 +648,8 @@ export default function Ch8EnergyFlow() {
 
         <FAQItem q="Is the energy in the electric field, in the magnetic field, or both?">
           <p>
-            Both, separately, additively. The local electromagnetic energy density is
+            Both, separately, additively. The local electromagnetic{' '}
+            <Term def={<><strong>energy density</strong> — energy stored per unit volume in the electromagnetic field, <em>u = ½ε₀E² + B²/(2μ₀)</em>. SI units J/m³. Integrate over a region to get total field energy.</>}>energy density</Term>{' '}is
           </p>
           <Formula>u = ½ ε<sub>0</sub> E² + (1/2μ<sub>0</sub>) B²</Formula>
           <p>

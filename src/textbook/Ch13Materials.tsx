@@ -19,6 +19,8 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Formula, InlineMath } from '@/components/Formula';
 import { Cite } from '@/components/SourcesList';
+import { Term } from '@/components/Term';
+import { TryIt } from '@/components/TryIt';
 import { getChapter } from './data/chapters';
 import { DielectricBetweenPlatesDemo } from './demos/DielectricBetweenPlates';
 import { DipoleInFieldDemo } from './demos/DipoleInField';
@@ -52,7 +54,10 @@ export default function Ch13Materials() {
 
       <p>
         In vacuum, Maxwell's equations are written in terms of two universal constants:
-        <strong> ε₀</strong> (the permittivity of free space) and <strong>μ₀</strong> (the permeability).
+        <strong> ε₀</strong> (the{' '}
+        <Term def={<><strong>permittivity</strong> — the proportionality between electric displacement and field, <em>D = εE</em>. Vacuum value <em>ε₀</em> ≈ 8.854×10⁻¹² F/m; absolute permittivity <em>ε = ε₀ε<sub>r</sub></em>, with <em>ε<sub>r</sub></em> the dimensionless relative permittivity (dielectric constant).</>}>permittivity</Term>
+        {' '}of free space) and <strong>μ₀</strong> (the{' '}
+        <Term def={<><strong>permeability</strong> — the proportionality between magnetic field and auxiliary field, <em>B = μH</em>. Vacuum value <em>μ₀ = 4π×10⁻⁷ H/m</em> (CODATA, post-2019 redefinition); absolute permeability <em>μ = μ₀μ<sub>r</sub></em>, with <em>μ<sub>r</sub></em> the dimensionless relative permeability.</>}>permeability</Term>).
         Together they fix the speed of light: <InlineMath>c = 1/√(ε₀ μ₀)</InlineMath>
         <Cite id="codata-2018" in={SOURCES} />. Once you put matter into the picture, every formula that
         contained ε₀ keeps working if you just replace ε₀ with <strong>ε = ε₀ ε<sub>r</sub></strong>, and
@@ -80,7 +85,9 @@ export default function Ch13Materials() {
       <DipoleInFieldDemo />
 
       <p>
-        That field of tilted dipoles is the material's <strong>polarization</strong>, written
+        That field of tilted dipoles is the material's <strong>
+          <Term def={<><strong>polarization (P)</strong> — the volume density of electric dipole moment in a dielectric. SI unit: C/m². Linked to bound charge by <em>ρ<sub>b</sub> = −∇·P</em>, and to the applied field by <em>P = ε₀ χ<sub>e</sub> E</em> for linear dielectrics.</>}>polarization</Term>
+        </strong>, written
         <strong> P</strong>. Per unit volume, it's the number density of dipoles times the average dipole
         moment per molecule. Inside the body of the material, neighboring dipoles cancel each other's bound
         charges — each "+" end of one molecule sits next to the "−" end of the next. What survives is a thin
@@ -96,8 +103,9 @@ export default function Ch13Materials() {
       </p>
       <Formula>E<sub>inside</sub> = E<sub>applied</sub> − P/ε₀ = E<sub>applied</sub> / ε<sub>r</sub></Formula>
       <p>
-        with <strong>ε<sub>r</sub> = 1 + χ<sub>e</sub></strong>. The electric susceptibility
-        χ<sub>e</sub> tells you how vigorously a material polarizes per unit applied field. For air it's
+        with <strong>ε<sub>r</sub> = 1 + χ<sub>e</sub></strong>. The electric{' '}
+        <Term def={<><strong>susceptibility (χ<sub>e</sub>, χ<sub>m</sub>)</strong> — the dimensionless ratio relating a material's response to an applied field. Electric: <em>P = ε₀ χ<sub>e</sub> E</em>, so <em>ε<sub>r</sub> = 1 + χ<sub>e</sub></em>. Magnetic: <em>M = χ<sub>m</sub> H</em>, so <em>μ<sub>r</sub> = 1 + χ<sub>m</sub></em>.</>}>susceptibility</Term>
+        {' '}χ<sub>e</sub> tells you how vigorously a material polarizes per unit applied field. For air it's
         about 5×10⁻⁴; for glass, a handful; for water, ∼79 <Cite id="griffiths-2017" in={SOURCES} />. The
         Clausius–Mossotti relation links χ<sub>e</sub> to the molecular polarizability α and the number
         density N — derived independently by Mossotti in 1846 and Clausius in 1850
@@ -127,6 +135,50 @@ export default function Ch13Materials() {
         more of the field gets bought off by bound charge before it reaches the other side.
       </p>
 
+      <TryIt
+        tag="Try 13.1"
+        question={
+          <>
+            A parallel-plate capacitor has capacitance <strong>C₀ = 100 pF</strong> with a vacuum gap.
+            Fill the gap with mica (<em>ε<sub>r</sub></em> ≈ 6.7), same geometry. What is the new capacitance?
+          </>
+        }
+        hint={<>C = ε<sub>r</sub> · C<sub>vacuum</sub>.</>}
+        answer={
+          <>
+            <Formula>C = ε<sub>r</sub> · C<sub>0</sub> = 6.7 · 100 pF = 670 pF</Formula>
+            <p>
+              Capacitance rises by a factor of <strong>6.7 → 670 pF</strong>. Mica's <em>ε<sub>r</sub></em>{' '}
+              ≈ 6.7 plus its high breakdown field is why early radio circuits used mica capacitors for
+              tuned stages<Cite id="griffiths-2017" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 13.2"
+        question={
+          <>
+            For two identical capacitors charged to the same voltage <em>V</em>, one with a vacuum gap and one
+            with a water dielectric (<em>ε<sub>r</sub></em> ≈ 80), compare the stored energies.
+          </>
+        }
+        hint={<>U = ½CV²; C scales with ε<sub>r</sub> when V is held fixed.</>}
+        answer={
+          <>
+            <Formula>
+              U<sub>water</sub> / U<sub>vacuum</sub> = C<sub>water</sub> / C<sub>vacuum</sub> = ε<sub>r</sub> = 80
+            </Formula>
+            <p>
+              The water-filled cap stores <strong>80×</strong> the energy for the same V — at the cost of
+              water's high conductivity and dielectric loss above kHz, which is why nobody actually builds
+              capacitors with liquid-water dielectrics in practice<Cite id="griffiths-2017" in={SOURCES} /><Cite id="debye-1929" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <p>
         Why is ε<sub>r</sub>(water) ≈ 80 — twenty times bigger than glass and a hundred and fifty thousand
         times bigger than air? Because water has a permanent dipole moment, built into its asymmetric
@@ -141,7 +193,9 @@ export default function Ch13Materials() {
         molecules tumble randomly and the bulk polarization is zero. Apply a field and the equilibrium
         distribution shifts: the Boltzmann factor <InlineMath>exp(p·E / kT)</InlineMath> favors orientations
         with <strong>p</strong> along <strong>E</strong>. Integrate over the angular distribution and you
-        recover the <em>Langevin function</em>, which at small fields gives a polarization linear in E with
+        recover the <em>{' '}
+          <Term def={<><strong>Langevin function</strong> — the function <em>L(x) = coth(x) − 1/x</em>, which gives the mean alignment <em>⟨cos θ⟩</em> of independent classical dipoles in a field at thermal equilibrium with <em>x = pE/kT</em> (or <em>μB/kT</em>). Linear in <em>x</em> at low field, saturating to 1 at high field.</>}>Langevin function</Term>
+        </em>, which at small fields gives a polarization linear in E with
         a 1/T temperature dependence (Curie's law for dielectrics). Heat water up and ε<sub>r</sub>
         drops; cool it down and it rises. Same molecule; different thermal scramble.
       </p>
@@ -154,7 +208,9 @@ export default function Ch13Materials() {
       </p>
 
       <p>
-        <strong>Diamagnetism.</strong> Apply <strong>B</strong> to any material — water, glass, copper, your
+        <strong>
+          <Term def={<><strong>diamagnetism</strong> — the universal, feeble negative magnetic response of any material due to Lenz's-law currents induced in atomic electron orbits when <em>B</em> is applied. <em>χ<sub>m</sub></em> on the order of <em>−10⁻⁵</em>; present in every substance but masked by stronger para- or ferromagnetism if those exist.</>}>Diamagnetism</Term>.
+        </strong> Apply <strong>B</strong> to any material — water, glass, copper, your
         own body. The change in flux through every electron orbit induces a tiny circulating current, and
         by Lenz's law that current opposes the applied <strong>B</strong>. The result is a feeble negative
         magnetization. Every material has this; it's a property of the electrons' orbital response, not of
@@ -163,7 +219,9 @@ export default function Ch13Materials() {
       </p>
 
       <p>
-        <strong>Paramagnetism.</strong> Atoms or molecules with an unpaired electron carry a permanent
+        <strong>
+          <Term def={<><strong>paramagnetism</strong> — weak positive magnetic response from independent permanent atomic moments aligning with an applied <em>B</em> against thermal noise. <em>χ<sub>m</sub></em> typically <em>+10⁻⁵</em> to <em>+10⁻³</em>; follows Curie's law <em>χ ∝ 1/T</em> at room temperature.</>}>Paramagnetism</Term>.
+        </strong> Atoms or molecules with an unpaired electron carry a permanent
         magnetic moment. In zero field they tumble randomly; in an applied field they weakly align with
         <strong> B</strong>, fighting thermal noise. Langevin worked out the equilibrium theory in 1905 —
         the magnetization follows the same Langevin function as for electric dipoles
@@ -173,7 +231,9 @@ export default function Ch13Materials() {
       </p>
 
       <p>
-        <strong>Ferromagnetism.</strong> In iron, cobalt, nickel, and a handful of their alloys and oxides,
+        <strong>
+          <Term def={<><strong>ferromagnetism</strong> — the strong cooperative ordering of atomic spins below a Curie temperature <em>T<sub>C</sub></em>, driven by quantum-mechanical exchange coupling. Spontaneous magnetization, domain structure, and <em>χ<sub>m</sub></em> up to <em>10⁶</em>. Iron, cobalt, nickel, gadolinium and their alloys.</>}>Ferromagnetism</Term>.
+        </strong> In iron, cobalt, nickel, and a handful of their alloys and oxides,
         a quantum-mechanical exchange interaction between neighboring spins is so strong it overwhelms
         thermal noise — entire macroscopic regions ("domains") align spontaneously, even with no applied
         field <Cite id="weiss-1907" in={SOURCES} /><Cite id="kittel-2005" in={SOURCES} />. Apply a weak
@@ -183,6 +243,30 @@ export default function Ch13Materials() {
       </p>
 
       <ParamagnetVsDiamagnetDemo />
+
+      <TryIt
+        tag="Try 13.3"
+        question={
+          <>
+            A paramagnetic sample has <em>χ<sub>m</sub></em> = 1×10⁻⁴ and sits in a 1 T external field.
+            Estimate its magnetization <strong>M</strong>.
+          </>
+        }
+        hint={<>For small χ<sub>m</sub>: H ≈ B/μ₀, so M = χ<sub>m</sub> H ≈ χ<sub>m</sub> B/μ₀.</>}
+        answer={
+          <>
+            <Formula>
+              M = χ<sub>m</sub> B / μ<sub>0</sub> = (1×10⁻⁴ · 1) / (4π×10⁻⁷) ≈ 79.6 A/m
+            </Formula>
+            <p>
+              <strong>M ≈ 80 A/m</strong> — five orders of magnitude below iron's saturation
+              <em> M<sub>s</sub></em> ≈ 1.7×10⁶ A/m. That gap is why paramagnetic levitation in a 1 T
+              lab magnet barely lifts an O₂ droplet, while a kitchen magnet sticks to a fridge
+              door<Cite id="kittel-2005" in={SOURCES} /><Cite id="codata-2018" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <p>
         The two boxes look superficially similar — both are bags of magnetic moments responding to the
@@ -197,7 +281,9 @@ export default function Ch13Materials() {
 
       <p>
         Pierre Weiss in 1907 proposed that ferromagnets aren't uniformly magnetized at all — they break up
-        into microscopic <strong>domains</strong>, regions of uniform magnetization separated by thin walls
+        into microscopic <strong>
+          <Term def={<><strong>magnetic domain</strong> — a region of a ferromagnet inside which the spontaneous magnetization is uniform and aligned along one easy axis. Domains are separated by thin walls (Bloch or Néel walls) across which the moment rotates; their pattern minimises the total magnetostatic energy.</>}>domains</Term>
+        </strong>, regions of uniform magnetization separated by thin walls
         across which the magnetization rotates from one direction to another
         <Cite id="weiss-1907" in={SOURCES} />. In an unmagnetized lump of iron the domains point every which
         way, cancelling on average. The lump as a whole has zero <strong>M</strong>.
@@ -215,17 +301,69 @@ export default function Ch13Materials() {
       <FerromagnetDemo />
 
       <p>
-        Trace one full B sweep and the M-vs-B curve closes a loop — the <strong>hysteresis loop</strong>.
+        Trace one full B sweep and the M-vs-B curve closes a loop — the <strong>
+          <Term def={<><strong>hysteresis loop</strong> — the closed <em>M</em>–<em>H</em> (or <em>M</em>–<em>B</em>) curve traced by a ferromagnet as the applied field is cycled. The enclosed area equals the energy dissipated per cycle per unit volume; remanence is the <em>M</em>-intercept and coercivity the <em>H</em>-intercept.</>}>hysteresis loop</Term>
+        </strong>.
         The area enclosed is the energy dissipated per cycle (per unit volume) as domain walls click past
         their pinning sites. For a transformer iron core you want this area as small as possible; for a
         permanent magnet you want it as large as possible. Two ends of the same physics, two completely
         different alloy recipes.
       </p>
       <p>
-        Heat a ferromagnet past its <strong>Curie temperature</strong> (770 °C for iron, 1115 °C for
+        Heat a ferromagnet past its <strong>
+          <Term def={<><strong>Curie temperature (T<sub>C</sub>)</strong> — the temperature above which thermal energy overwhelms the exchange coupling that orders neighbouring spins. Below <em>T<sub>C</sub></em> a ferromagnet has spontaneous magnetization; above it, the material is paramagnetic with <em>χ<sub>m</sub> ∝ 1/(T − T<sub>C</sub>)</em> (Curie–Weiss law).</>}>Curie temperature</Term>
+        </strong> (770 °C for iron, 1115 °C for
         cobalt) and the exchange coupling loses to thermal noise — the domains evaporate and the material
         becomes an ordinary paramagnet. This is why dropping a magnet in a campfire wipes it.
       </p>
+
+      <TryIt
+        tag="Try 13.4"
+        question={
+          <>
+            A 1000-turn air-core solenoid has inductance <strong>L₀ = 2 mH</strong>. Insert a soft-iron core
+            with <em>μ<sub>r</sub></em> ≈ 5000, same geometry. What is the new inductance?
+          </>
+        }
+        hint={<>L = μ<sub>r</sub> · L<sub>air</sub> for a tightly-coupled solenoid.</>}
+        answer={
+          <>
+            <Formula>L = μ<sub>r</sub> · L<sub>0</sub> = 5000 · 2 mH = 10 H</Formula>
+            <p>
+              The iron core jumps the inductance by a factor of <strong>5000 → 10 H</strong>. That is
+              the whole reason every audio transformer, mains transformer, and switched-mode-supply
+              transformer is wound on iron (or, at higher frequencies, on a ferrite) rather than on
+              air<Cite id="kittel-2005" in={SOURCES} /><Cite id="griffiths-2017" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 13.5"
+        question={
+          <>
+            Iron's Curie temperature is <em>T<sub>C</sub></em> ≈ 1043 K. Using the rough power-law{' '}
+            <em>M(T) ≈ M₀ (1 − T/T<sub>C</sub>)<sup>β</sup></em> with critical exponent <em>β</em> ≈ 0.37,
+            estimate the fraction of saturation magnetization remaining 100 K below the Curie point.
+          </>
+        }
+        hint={<>Set T = T<sub>C</sub> − 100 K, so 1 − T/T<sub>C</sub> = 100/1043.</>}
+        answer={
+          <>
+            <Formula>1 − T/T<sub>C</sub> = 100 / 1043 ≈ 0.0959</Formula>
+            <Formula>M/M<sub>0</sub> ≈ (0.0959)<sup>0.37</sup> ≈ 0.42</Formula>
+            <p>
+              At 100 K below the transition, only <strong>~42 %</strong> of saturation magnetization
+              survives. Within 10 K of <em>T<sub>C</sub></em>, M drops below 20 %. That steep decline is
+              why permanent-magnet datasheets quote a maximum operating temperature well below the
+              Curie point — and why magnetocaloric refrigeration with gadolinium (<em>T<sub>C</sub></em>{' '}
+              ≈ 292 K) lands in the right temperature window for kitchen-scale
+              cooling<Cite id="kittel-2005" in={SOURCES} /><Cite id="weiss-1907" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <h2>The <em>big picture</em>: one number per material per response</h2>
 
@@ -323,7 +461,9 @@ export default function Ch13Materials() {
           ]}
         >
           <p>
-            Barium titanate (BaTiO₃) is a ferroelectric — a material with a <em>spontaneous</em>
+            Barium titanate (BaTiO₃) is a{' '}
+            <Term def={<><strong>ferroelectric</strong> — a material with a spontaneous, switchable electric polarization below a Curie temperature, in direct analogy to a ferromagnet. Unit cells distort along one axis, giving each cell a permanent dipole; cells cooperate over macroscopic domains. <em>ε<sub>r</sub></em> in the thousands and electric hysteresis loops.</>}>ferroelectric</Term>
+            {' '}— a material with a <em>spontaneous</em>
             electric polarization below its Curie temperature of about 120 °C, in direct analogy to
             ferromagnetism in iron<Cite id="kittel-2005" in={SOURCES} />. Its relative permittivity
             peaks at the ferroelectric transition and stays in the thousands across normal

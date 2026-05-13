@@ -10,6 +10,8 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
+import { Term } from '@/components/Term';
+import { TryIt } from '@/components/TryIt';
 import { KirchhoffsLawsDemo } from './demos/KirchhoffsLaws';
 import { MultimeterProbeDemo } from './demos/MultimeterProbe';
 import { RCTransientDemo } from './demos/RCTransient';
@@ -85,14 +87,18 @@ export default function Ch12CircuitsAndAC() {
         solve any DC network of resistors and sources.
       </p>
       <p>
-        <strong>KCL — Kirchhoff's current law.</strong> At any node in a circuit, the sum of
+        <strong>
+          <Term def={<><strong>Kirchhoff's current law (KCL)</strong> — at any node, the algebraic sum of currents in equals the sum out: <em>Σ I = 0</em>. A statement of charge conservation in the lumped-element limit.</>}>KCL — Kirchhoff's current law</Term>.
+        </strong> At any node in a circuit, the sum of
         currents flowing in equals the sum flowing out. This is charge conservation. Charge
         doesn't pile up in a wire — every electron that enters a junction has to leave by some
         other branch in the same instant. Algebraically:
       </p>
       <Formula>Σ I<sub>in</sub> = Σ I<sub>out</sub></Formula>
       <p>
-        <strong>KVL — Kirchhoff's voltage law.</strong> Around any closed loop, the algebraic sum
+        <strong>
+          <Term def={<><strong>Kirchhoff's voltage law (KVL)</strong> — around any closed loop, the algebraic sum of voltage rises and drops is zero: <em>Σ V = 0</em>. A statement of energy conservation in the lumped-element limit.</>}>KVL — Kirchhoff's voltage law</Term>.
+        </strong> Around any closed loop, the algebraic sum
         of voltage rises and drops is zero. This is energy conservation. Voltage is potential
         energy per unit charge; if a test charge made a round trip through a loop and didn't end
         up with the same potential energy it started with, you'd have an energy source for free.
@@ -204,6 +210,24 @@ export default function Ch12CircuitsAndAC() {
         around exactly this exponential.
       </p>
 
+      <TryIt
+        tag="Try 12.1"
+        question={
+          <>What is the RMS voltage of a sinusoidal mains signal with peak <strong>169.7 V</strong>?</>
+        }
+        hint={<>For a pure sine, V<sub>rms</sub> = V<sub>p</sub>/√2.</>}
+        answer={
+          <>
+            <Formula>V<sub>rms</sub> = 169.7 V / √2 ≈ 120.0 V</Formula>
+            <p>
+              That is exactly the North American nominal: <strong>120 V<sub>rms</sub></strong>, which is why
+              wall outlets are rated for ≈170 V peak insulation even though "120 V" appears on the
+              label<Cite id="horowitz-hill-2015" in={SOURCES} /><Cite id="ansi-c84-1-2020" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <h2><em>LC</em> oscillation — the electrical pendulum</h2>
 
       <p>
@@ -235,13 +259,36 @@ export default function Ch12CircuitsAndAC() {
         frequency.
       </p>
 
+      <TryIt
+        tag="Try 12.2"
+        question={
+          <>
+            Find the resonant frequency f₀ of an LC tank with <em>L</em> = 10 mH and{' '}
+            <em>C</em> = 10 µF.
+          </>
+        }
+        hint={<>f₀ = 1 / (2π √(L C)).</>}
+        answer={
+          <>
+            <Formula>√(L C) = √(10⁻² · 10⁻⁵) = √(10⁻⁷) ≈ 3.162×10⁻⁴ s</Formula>
+            <Formula>f<sub>0</sub> = 1 / (2π · 3.162×10⁻⁴) ≈ 503 Hz</Formula>
+            <p>
+              Resonant frequency <strong>≈ 503 Hz</strong>. Drop either L or C by 100× and f₀ scales up by
+              10×<Cite id="horowitz-hill-2015" in={SOURCES} /><Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <h2><em>RLC</em> and resonance</h2>
 
       <p>
         Now add back the resistor and drive the network with a sinusoidal source V(t) = V₀ cos(ωt).
         Two new effects appear at once: the oscillation becomes <strong>damped</strong> (R dissipates
         energy on every cycle), and the system responds preferentially to one driving frequency —
-        <strong> resonance</strong>.
+        <strong>
+          {' '}<Term def={<><strong>resonance</strong> — the frequency at which a driven oscillator stores energy most efficiently and responds with the largest amplitude. In a series RLC circuit, <em>ω₀ = 1/√(LC)</em>, where the inductive and capacitive reactances exactly cancel.</>}>resonance</Term>
+        </strong>.
       </p>
       <p>
         The steady-state current amplitude as a function of driving frequency is
@@ -251,11 +298,35 @@ export default function Ch12CircuitsAndAC() {
       </Formula>
       <p>
         which peaks when ωL = 1/(ωC) — that is, at exactly ω = ω₀ = 1/√(LC). The sharpness of the
-        peak is the <strong>Q factor</strong>:
+        peak is the <strong>
+          <Term def={<><strong>Q factor</strong> — quality factor: <em>Q = 2π · (energy stored) / (energy dissipated per cycle)</em>. For a series RLC, <em>Q = ω₀L/R = (1/R)√(L/C)</em>. High-Q resonators ring long and select a narrow band of frequencies.</>}>Q factor</Term>
+        </strong>:
       </p>
       <Formula>Q = ω<sub>0</sub> L / R = (1/R) √(L/C)</Formula>
 
       <RLCResonanceDemo />
+
+      <TryIt
+        tag="Try 12.3"
+        question={
+          <>
+            For the series RLC with <em>R</em> = 1 Ω, <em>L</em> = 10 mH, <em>C</em> = 10 µF, compute the
+            quality factor Q.
+          </>
+        }
+        hint={<>Q = (1/R) √(L/C).</>}
+        answer={
+          <>
+            <Formula>L/C = 10⁻² / 10⁻⁵ = 10³</Formula>
+            <Formula>Q = (1/1) · √(10³) ≈ 31.6</Formula>
+            <p>
+              Q ≈ <strong>31.6</strong> — sharp enough to ring for ~10 cycles before losing 1/e of its
+              energy. Drop R to 0.1 Ω and Q jumps to 316; crystal oscillators reach 10⁶ on the same
+              formula<Cite id="horowitz-hill-2015" in={SOURCES} /><Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <p>
         A high-Q circuit (small R) responds to a narrow band of frequencies around f₀ and rejects
@@ -278,9 +349,12 @@ export default function Ch12CircuitsAndAC() {
         plane.
       </p>
       <p>
-        Represent each sinusoid V(t) = V₀ cos(ωt + φ) by the complex number V₀ e<sup>jφ</sup> at
+        Represent each sinusoid V(t) = V₀ cos(ωt + φ) by the complex{' '}
+        <Term def={<><strong>phasor</strong> — a complex number <em>V₀ e<sup>jφ</sup></em> that encodes the amplitude and phase of a sinusoid at a fixed frequency. Time-derivatives <em>d/dt</em> become multiplications by <em>jω</em>, and linear differential equations turn into linear algebra in ℂ.</>}>phasor</Term>
+        {' '}V₀ e<sup>jφ</sup> at
         a fixed ω. Then time-derivatives become multiplications by jω, and Ohm's law generalises
-        to <strong>V = I Z</strong>, where Z is the complex <em>impedance</em>:
+        to <strong>V = I Z</strong>, where Z is the complex{' '}
+        <Term def={<><strong>impedance</strong> — the complex generalisation of resistance for sinusoidal signals: <em>Z = R + jX</em>. Real part dissipates (resistance); imaginary part stores and returns energy (reactance). SI unit: ohm.</>}>impedance</Term>:
       </p>
       <Formula>Z<sub>R</sub> = R</Formula>
       <Formula>Z<sub>L</sub> = jωL</Formula>
@@ -290,6 +364,9 @@ export default function Ch12CircuitsAndAC() {
         90°, because V<sub>L</sub> = L dI/dt and the derivative of a cosine is a negative sine
         (rotated +90° in the complex plane). Capacitors are negative-imaginary: current
         <em> leads</em> voltage by 90°, because I = C dV/dt<Cite id="horowitz-hill-2015" in={SOURCES} />.
+        The frequency-dependent magnitude of the imaginary part is the component's{' '}
+        <Term def={<><strong>reactance</strong> — the imaginary part of impedance, the energy-storing (non-dissipative) component: <em>X<sub>L</sub> = ωL</em> for inductors, <em>X<sub>C</sub> = −1/(ωC)</em> for capacitors. SI unit: ohm.</>}>reactance</Term>:
+        <em> X<sub>L</sub> = ωL</em> grows with frequency; <em>|X<sub>C</sub>| = 1/(ωC)</em> shrinks.
       </p>
       <p>
         Series impedances add. The full series RLC has impedance
@@ -310,6 +387,33 @@ export default function Ch12CircuitsAndAC() {
         same picture as the previous demo, viewed from a different angle.
       </p>
 
+      <TryIt
+        tag="Try 12.4"
+        question={
+          <>
+            Compute the reactance of a <strong>10 µF</strong> capacitor at 60 Hz, and of a{' '}
+            <strong>10 mH</strong> inductor at 60 Hz.
+          </>
+        }
+        hint={<>X<sub>C</sub> = 1/(2π f C); X<sub>L</sub> = 2π f L.</>}
+        answer={
+          <>
+            <Formula>
+              X<sub>C</sub> = 1 / (2π · 60 · 10⁻⁵) ≈ 265.3 Ω
+            </Formula>
+            <Formula>
+              X<sub>L</sub> = 2π · 60 · 10⁻² ≈ 3.77 Ω
+            </Formula>
+            <p>
+              At 60 Hz, the 10 µF cap looks like <strong>≈ 265 Ω</strong> and the 10 mH inductor
+              like <strong>≈ 3.77 Ω</strong>. Bump f to 60 kHz and the cap shrinks by 1000× while the
+              inductor grows by 1000× — which is why coupling caps and choke inductors swap roles in
+              high-frequency design<Cite id="horowitz-hill-2015" in={SOURCES} /><Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <h2>AC <em>power</em> — and why the grid is three-phase</h2>
 
       <p>
@@ -318,8 +422,12 @@ export default function Ch12CircuitsAndAC() {
       </p>
       <Formula>⟨P⟩ = V<sub>rms</sub> I<sub>rms</sub> cos(φ)</Formula>
       <p>
-        with V<sub>rms</sub> = V<sub>p</sub>/√2 and likewise for I. The factor cos(φ) is the
-        <strong> power factor</strong>. A purely resistive load has φ = 0 and cos(φ) = 1 — every
+        with{' '}
+        <Term def={<><strong>RMS (root-mean-square)</strong> — the square root of the time-averaged square of a waveform. For a sine of peak <em>V<sub>p</sub></em>, <em>V<sub>rms</sub> = V<sub>p</sub>/√2</em>. The "DC-equivalent" voltage for power dissipation: a resistor on <em>V<sub>rms</sub></em> AC dissipates the same average power as on <em>V<sub>rms</sub></em> DC.</>}>V<sub>rms</sub></Term>
+        {' '}= V<sub>p</sub>/√2 and likewise for I. The factor cos(φ) is the
+        <strong>{' '}
+          <Term def={<><strong>power factor</strong> — the ratio of real to apparent power, <em>cos(φ)</em>, where <em>φ</em> is the voltage–current phase shift. 1 for a purely resistive load, 0 for a purely reactive one.</>}>power factor</Term>
+        </strong>. A purely resistive load has φ = 0 and cos(φ) = 1 — every
         watt of VI is real, useful, heat-generating power. A purely reactive load (pure L or pure
         C) has φ = ±90° and cos(φ) = 0 — the load draws current, but on average no energy
         actually transfers; energy sloshes in and out each half-cycle.
@@ -328,12 +436,24 @@ export default function Ch12CircuitsAndAC() {
         Engineers split the three quantities apart:
       </p>
       <ul>
-        <li><strong>Real power</strong> P = V<sub>rms</sub> I<sub>rms</sub> cos(φ), units watts (W).
-          What dissipates as heat or does mechanical work.</li>
-        <li><strong>Reactive power</strong> Q = V<sub>rms</sub> I<sub>rms</sub> sin(φ), units VAR
-          (volt-amperes reactive). Sloshes between source and load every cycle.</li>
-        <li><strong>Apparent power</strong> S = V<sub>rms</sub> I<sub>rms</sub>, units VA. The
-          magnitude of the complex power phasor; what the wires actually carry.</li>
+        <li>
+          <strong>
+            <Term def={<><strong>real power</strong> — the time-averaged power actually delivered to a load: <em>P = V<sub>rms</sub> I<sub>rms</sub> cos(φ)</em>. SI unit: watt (W).</>}>Real power</Term>
+          </strong> P = V<sub>rms</sub> I<sub>rms</sub> cos(φ), units watts (W).
+          What dissipates as heat or does mechanical work.
+        </li>
+        <li>
+          <strong>
+            <Term def={<><strong>reactive power</strong> — the part of the AC product that sloshes between source and load with no net energy transfer: <em>Q = V<sub>rms</sub> I<sub>rms</sub> sin(φ)</em>. SI unit: volt-ampere reactive (VAR).</>}>Reactive power</Term>
+          </strong> Q = V<sub>rms</sub> I<sub>rms</sub> sin(φ), units VAR
+          (volt-amperes reactive). Sloshes between source and load every cycle.
+        </li>
+        <li>
+          <strong>
+            <Term def={<><strong>apparent power</strong> — the product of RMS voltage and RMS current, <em>S = V<sub>rms</sub> I<sub>rms</sub></em>. The magnitude of the complex power phasor; sets the wire and transformer ratings. SI unit: volt-ampere (VA).</>}>Apparent power</Term>
+          </strong> S = V<sub>rms</sub> I<sub>rms</sub>, units VA. The
+          magnitude of the complex power phasor; what the wires actually carry.
+        </li>
       </ul>
       <p>
         A motor with cos(φ) = 0.7 doing 700 W of real work draws 1000 VA from the line — and the
@@ -342,8 +462,34 @@ export default function Ch12CircuitsAndAC() {
         <strong> power-factor correction capacitors</strong> to cancel the inductive lag of their
         motor banks<Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
+
+      <TryIt
+        tag="Try 12.5"
+        question={
+          <>
+            A factory draws <strong>1000 VA</strong> at a power factor of <em>cos(φ)</em> = 0.7. What is the
+            real power delivered, and how much reactive power is sloshing in and out?
+          </>
+        }
+        hint={<>P = S cos(φ), Q = S sin(φ); sin(φ) = √(1 − cos²(φ)).</>}
+        answer={
+          <>
+            <Formula>P = 1000 · 0.7 = 700 W</Formula>
+            <Formula>sin(φ) = √(1 − 0.49) ≈ 0.714</Formula>
+            <Formula>Q = 1000 · 0.714 ≈ 714 VAR</Formula>
+            <p>
+              Real power <strong>= 700 W</strong>; reactive power <strong>≈ 714 VAR</strong>. The wires
+              still carry the full 1000 VA, which is why utilities bill heavy-industry customers for
+              apparent power and why power-factor-correction capacitors pay for themselves so
+              quickly<Cite id="grainger-power-systems-2003" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
       <p>
-        The grid itself goes a step further: three independent phases, 120° apart in time. Sum
+        The grid itself goes a step further:{' '}
+        <Term def={<><strong>three-phase</strong> — a power-distribution scheme with three sinusoidal voltages of equal amplitude, 120° apart in phase. A balanced load needs no neutral return; three conductors carry <em>√3 ≈ 1.73×</em> the power of a single-phase pair of equal weight, and a three-phase motor sees an automatically-rotating magnetic field.</>}>three independent phases</Term>,
+        120° apart in time. Sum
         the three voltages and you get zero at every instant, which means a balanced three-phase
         load needs no neutral return wire. Three conductors carry √3 ≈ 1.73× the power of a
         single-phase line of the same conductor weight, and a three-phase motor produces a

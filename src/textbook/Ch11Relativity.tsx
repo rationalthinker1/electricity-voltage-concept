@@ -18,6 +18,8 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
+import { Term } from '@/components/Term';
+import { TryIt } from '@/components/TryIt';
 import { EBTransformDemo } from './demos/EBTransform';
 import { FieldTensorDemo } from './demos/FieldTensor';
 import { WireFromMovingFrameDemo } from './demos/WireFromMovingFrame';
@@ -33,7 +35,8 @@ export default function Ch11Relativity() {
       <p>
         Five chapters ago we made a promise. At the end of Chapter&nbsp;4, after teaching the Biot–Savart law, the
         right-hand rule, and the magnetic force on two parallel wires, we claimed that none of it was really a
-        separate force. <em>Magnetism is what electricity looks like when you change reference frames.</em> A
+        separate force. <em>Magnetism is what electricity looks like when you change{' '}
+        <Term def={<><strong>reference frame</strong> — a choice of observer (position + state of motion) against which positions, times, and velocities are measured. Inertial frames move uniformly relative to one another; physical laws must take the same form in all of them.</>}>reference frames</Term>.</em> A
         slogan, no derivation. Now we redeem it.
       </p>
       <p>
@@ -88,7 +91,8 @@ export default function Ch11Relativity() {
         On the train (moving rightward at <InlineMath>v_test</InlineMath>), the ions appear to drift leftward at
         <InlineMath> -v_test</InlineMath>, and the electrons appear to drift at the relativistic difference
         <InlineMath> v_d' = (v_d - v_test) / (1 - v_d · v_test / c²)</InlineMath>. Both speeds are nonzero. The
-        positive lattice is now moving and Lorentz-contracts; the electrons are moving too and contract by a
+        positive lattice is now moving and{' '}
+        <Term def={<><strong>length contraction</strong> — in special relativity, an object of proper length <em>L₀</em> measured along its direction of motion appears shortened to <em>L = L₀/γ</em> in any frame in which it moves at speed <em>v</em>.</>}>Lorentz-contracts</Term>; the electrons are moving too and contract by a
         <em> different</em> amount, because contraction depends on speed
         <Cite id="einstein-1905" in={SOURCES} /><Cite id="purcell-morin-2013" in={SOURCES} />.
       </p>
@@ -126,13 +130,35 @@ export default function Ch11Relativity() {
         Magnetism is not a separate force. It is the geometry of moving charge.
       </p>
       <p>
-        The drift velocity in copper is on the order of a millimeter per second — vastly less than c — so
-        γ&nbsp;≈&nbsp;1 to fifteen decimal places, and the relativistic correction looks ridiculously small. It
+        The drift velocity in copper is on the order of a millimeter per second — vastly less than c — so the{' '}
+        <Term def={<><strong>gamma factor (γ)</strong> — the Lorentz factor <em>γ = 1/√(1 − v²/c²)</em>. Equal to 1 at rest, diverging at <em>v → c</em>. Controls time dilation, length contraction, and relativistic mass-energy.</>}>γ</Term> ≈ 1 to fifteen decimal places, and the relativistic correction looks ridiculously small. It
         <em> is</em> ridiculously small per electron. But there are about
         <strong> 10²³</strong> electrons per cubic centimeter of copper, and the imbalance times that number is
         what gives the wire its measurable magnetic effect. Magnetism is a colossal pile of tiny relativistic
         corrections, summed coherently <Cite id="purcell-morin-2013" in={SOURCES} />.
       </p>
+
+      <TryIt
+        tag="Try 11.1"
+        question={
+          <>Compute the Lorentz factor γ for an object moving at <em>v</em> = 0.1c, 0.5c, 0.9c, and 0.99c.</>
+        }
+        hint="γ = 1/√(1 − β²), where β = v/c."
+        answer={
+          <>
+            <p>Plug each β into the formula:</p>
+            <Formula>γ(0.1c) = 1/√(1 − 0.01) ≈ 1.0050</Formula>
+            <Formula>γ(0.5c) = 1/√(1 − 0.25) ≈ 1.1547</Formula>
+            <Formula>γ(0.9c) = 1/√(1 − 0.81) ≈ 2.2942</Formula>
+            <Formula>γ(0.99c) = 1/√(1 − 0.9801) ≈ 7.0888</Formula>
+            <p>
+              γ stays within a few percent of 1 until well past half the speed of light, then climbs steeply.
+              At 0.99c, time dilation and length contraction are already a factor of <strong>~7</strong>
+              <Cite id="einstein-1905" in={SOURCES} /><Cite id="jackson-1999" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <h2>E and B <em>together</em></h2>
 
@@ -143,11 +169,13 @@ export default function Ch11Relativity() {
         numbers among themselves the way an ordinary rotation mixes the three components of a vector.
       </p>
       <p>
-        The clean way to write it is as a 4×4 antisymmetric matrix, the <strong>electromagnetic field tensor</strong>
-        <em> F<sup>μν</sup></em> <Cite id="jackson-1999" in={SOURCES} /><Cite id="griffiths-2017" in={SOURCES} />.
+        The clean way to write it is as a 4×4 antisymmetric matrix, the{' '}
+        <Term def={<><strong>electromagnetic field tensor (F<sup>μν</sup>)</strong> — the rank-2 antisymmetric tensor whose six independent components are the three of <em>E/c</em> and the three of <em>B</em>. Maxwell's equations rewrite as <em>∂<sub>μ</sub>F<sup>μν</sup> = μ₀J<sup>ν</sup></em> and <em>∂<sub>[α</sub>F<sub>μν]</sub> = 0</em>, manifestly Lorentz-covariant.</>}>electromagnetic field tensor</Term>
+        {' '}<em>F<sup>μν</sup></em> <Cite id="jackson-1999" in={SOURCES} /><Cite id="griffiths-2017" in={SOURCES} />.
         Its diagonal is zero (by antisymmetry); the top row contains the three components of E (divided by c);
-        the remaining off-diagonal entries are the three components of B. Apply a Lorentz transformation
-        <InlineMath> Λ<sup>μ</sup><sub>α</sub></InlineMath> to both indices and the components mix according to
+        the remaining off-diagonal entries are the three components of B. Apply a{' '}
+        <Term def={<><strong>Lorentz transformation</strong> — the linear change of coordinates between two inertial frames in special relativity. Mixes time and space coordinates so that the speed of light is the same in every frame; the matrix <em>Λ<sup>μ</sup><sub>α</sub></em> acts on four-vectors and tensors.</>}>Lorentz transformation</Term>
+        {' '}<InlineMath>Λ<sup>μ</sup><sub>α</sub></InlineMath> to both indices and the components mix according to
         <InlineMath> F'<sup>μν</sup> = Λ<sup>μ</sup><sub>α</sub> Λ<sup>ν</sup><sub>β</sub> F<sup>αβ</sup></InlineMath>.
         Boost in the x-direction and you reproduce the transformation rules Einstein wrote down in §9 of his 1905
         paper <Cite id="einstein-1905" in={SOURCES} />.
@@ -156,7 +184,9 @@ export default function Ch11Relativity() {
       <EBTransformDemo />
 
       <p>
-        The tensor is not just a notational trick. Two Lorentz invariants live inside it —
+        The tensor is not just a notational trick. Two{' '}
+        <Term def={<><strong>Lorentz invariant</strong> — a quantity built from four-vectors or tensors that takes the same value in every inertial frame. The spacetime <em>invariant interval</em> <em>s² = c²t² − x² − y² − z²</em> is the canonical example.</>}>Lorentz invariants</Term>
+        {' '}live inside it —
         <InlineMath> F<sub>μν</sub>F<sup>μν</sup> ∝ B² - E²/c²</InlineMath> and the pseudo-scalar
         <InlineMath> ε<sub>μνρσ</sub>F<sup>μν</sup>F<sup>ρσ</sup> ∝ E·B</InlineMath> — which means every observer
         agrees on the sign of <InlineMath>B² - E²/c²</InlineMath> and on whether E and B are perpendicular. The
@@ -186,11 +216,101 @@ export default function Ch11Relativity() {
         <Cite id="einstein-1905" in={SOURCES} />.
       </p>
       <p>
-        Resolving that asymmetry is what produced special relativity. The whole architecture — time dilation,
+        Resolving that asymmetry is what produced special relativity. The whole architecture —{' '}
+        <Term def={<><strong>time dilation</strong> — a clock moving at speed <em>v</em> relative to an observer ticks slow by the factor γ: an interval <em>Δτ</em> in the clock's rest frame appears as <em>Δt = γ·Δτ</em> in the observer's frame.</>}>time dilation</Term>,
         length contraction, mass-energy equivalence, the cosmic speed limit — fell out of insisting that
         electromagnetism look the same in every inertial frame. The book you've been reading has, in this sense,
         been one story all along: charges, fields, and the geometry of spacetime they live in.
       </p>
+
+      <TryIt
+        tag="Try 11.2"
+        question={
+          <>A 1-metre rod flies past you lengthwise at <em>v</em> = 0.5c. What length do you measure?</>
+        }
+        hint="Length contraction: L = L₀/γ, in the direction of motion."
+        answer={
+          <>
+            <p>From Try 11.1, γ(0.5c) ≈ 1.1547.</p>
+            <Formula>L = L₀/γ = 1 m / 1.1547 ≈ 0.866 m</Formula>
+            <p>
+              The contracted length is <strong>≈ 0.866 m</strong> — about <em>√(1 − 0.25)</em>. Transverse
+              dimensions are unchanged<Cite id="einstein-1905" in={SOURCES} /><Cite id="purcell-morin-2013" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 11.3"
+        question={
+          <>
+            GPS satellites orbit at <em>v</em> ≈ 3.87 km/s with a gravitational potential ≈ 5.3×10⁻¹⁰ <em>c²</em>
+            shallower than at Earth's surface. Roughly, how much do their clocks gain or lose per day relative
+            to the ground?
+          </>
+        }
+        hint={<>SR slow-down: −½(v/c)²·day; GR speed-up: ΔΦ/c² · day.</>}
+        answer={
+          <>
+            <p>Convert each fraction to microseconds in a day of 86 400 s.</p>
+            <Formula>SR: −½(v/c)² ≈ −8.3×10⁻¹¹  →  −7.2 μs/day</Formula>
+            <Formula>GR: +ΔΦ/c² ≈ +5.3×10⁻¹⁰  →  +45.7 μs/day</Formula>
+            <p>
+              Net offset: <strong>+38.5 μs/day</strong> (satellite clocks tick fast). Uncorrected,
+              that drift would corrupt ranging by ~11.6 km per day; GPS engineers detune the satellite
+              oscillators on the ground to compensate<Cite id="ashby-2003" in={SOURCES} /><Cite id="kaplan-hegarty-2017" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 11.4"
+        question={
+          <>
+            At the LHC, 7 TeV protons (rest energy 938 MeV) have γ ≈ 7460. How close is their speed to c?
+            Express <em>v/c</em> as <em>1 − ε</em> and estimate ε.
+          </>
+        }
+        hint={<>For large γ, β = √(1 − 1/γ²) ≈ 1 − 1/(2γ²).</>}
+        answer={
+          <>
+            <p>Expand to leading order:</p>
+            <Formula>1 − v/c ≈ 1/(2γ²) = 1/(2·7460²) ≈ 9 × 10⁻⁹</Formula>
+            <p>
+              So <strong>v/c ≈ 1 − 9 × 10⁻⁹</strong>: a 7 TeV proton lags light by under three metres per
+              second around the 26.659 km ring<Cite id="bruning-lhc-2004" in={SOURCES} /><Cite id="jackson-1999" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 11.5"
+        question={
+          <>
+            A relativistic electron moves perpendicular to a uniform <em>B</em> = 1 T at <em>v</em> = 0.9c.
+            What is its cyclotron radius? Use the relativistic momentum <em>p = γmv</em>.
+          </>
+        }
+        hint={<>r = p/(qB) with p = γmv; m<sub>e</sub> = 9.109×10⁻³¹ kg, e = 1.602×10⁻¹⁹ C.</>}
+        answer={
+          <>
+            <p>From Try 11.1, γ(0.9c) ≈ 2.294. Then</p>
+            <Formula>
+              p = γ m<sub>e</sub> v = 2.294 · 9.109×10⁻³¹ · 2.70×10⁸ ≈ 5.64×10⁻²² kg·m/s
+            </Formula>
+            <Formula>
+              r = p / (eB) = 5.64×10⁻²² / (1.602×10⁻¹⁹ · 1) ≈ 3.52×10⁻³ m
+            </Formula>
+            <p>
+              Cyclotron radius <strong>≈ 3.5 mm</strong>. The non-relativistic estimate would have given
+              ~1.5 mm; γ ≈ 2.3 inflates the radius by the same factor<Cite id="jackson-1999" in={SOURCES} /><Cite id="codata-2018" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <CaseStudies
         intro="Four places where the relativistic structure of electromagnetism stops being a thought experiment and starts being a budget item."
@@ -303,7 +423,9 @@ export default function Ch11Relativity() {
             <strong> B = 8.33 T</strong> — at the edge of what NbTi at 1.9 K will do
             <Cite id="bruning-lhc-2004" in={SOURCES} />. Drop γ to non-relativistic levels and the same momentum
             would imply a velocity above c, which doesn't exist. The four-momentum
-            <InlineMath> p<sup>μ</sup> = (E/c, p)</InlineMath>, transforming as a four-vector under Lorentz
+            <InlineMath> p<sup>μ</sup> = (E/c, p)</InlineMath>, transforming as a{' '}
+            <Term def={<><strong>four-vector</strong> — an object with four components (one temporal, three spatial) that transforms under Lorentz boosts the way <em>(ct, x, y, z)</em> does. Examples: position <em>x<sup>μ</sup></em>, momentum <em>p<sup>μ</sup> = (E/c, p)</em>, current <em>J<sup>μ</sup> = (cρ, J)</em>, potential <em>A<sup>μ</sup> = (V/c, A)</em>.</>}>four-vector</Term>
+            {' '}under Lorentz
             boosts, is the bookkeeping that makes the budget work<Cite id="jackson-1999" in={SOURCES} />.
           </p>
           <p>

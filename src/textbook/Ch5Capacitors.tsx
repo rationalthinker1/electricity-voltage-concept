@@ -18,6 +18,8 @@ import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
+import { Term } from '@/components/Term';
+import { TryIt } from '@/components/TryIt';
 import { BuildACapacitorDemo } from './demos/BuildACapacitor';
 import { ChargingCurveDemo } from './demos/ChargingCurve';
 import { EnergyInTheGapDemo } from './demos/EnergyInTheGap';
@@ -35,7 +37,7 @@ export default function Ch5Capacitors() {
       <p>
         Hold two coins a millimeter apart and connect each to a different terminal of a battery. Charges slosh onto the metal until
         the two faces opposite the gap carry equal and opposite amounts, and the field between them matches the battery's pull.
-        You have just built a capacitor — the simplest device in all of electronics. There are thousands of them inside the
+        You have just built a <Term def="A two-terminal device that stores energy in the electric field between two conductors separated by an insulating gap (the dielectric). Defined by Q = CV.">capacitor</Term> — the simplest device in all of electronics. There are thousands of them inside the
         phone in your pocket, hundreds inside the cable that charges it, and a few thousand farads worth on the bus that the
         engineer hopes one day will replace your morning coffee with regenerative braking.
       </p>
@@ -55,12 +57,12 @@ export default function Ch5Capacitors() {
         a chemistry textbook — and the other plate immediately rearranges its free electrons so that an equal and opposite
         charge migrates to its facing surface<Cite id="griffiths-2017" in={SOURCES} />. The gap fills with a uniform electric
         field, pointing from the positive plate to the negative one. The total charge on the device is still zero — what one
-        plate gained, the other lost — but the <em>separation</em> of charge represents stored energy. That's it. That's a
+        plate gained, the other lost — but the <Term def="The configuration in which equal-and-opposite charges sit on two conductors with an insulator between them. Setting this up costs work; tearing it down releases that work back. The thing a capacitor actually 'stores.'">charge separation</Term> represents stored energy. That's it. That's a
         capacitor.
       </p>
       <p>
         Most of the capacitors in your life are wound, stacked, or printed versions of this same idea. A modern ceramic
-        chip capacitor is a sandwich of dozens of metallised layers laminated together; an electrolytic capacitor is a long
+        chip capacitor is a sandwich of dozens of metallised layers laminated together; an <Term def="A capacitor that achieves high capacitance per volume by growing a thin aluminium- or tantalum-oxide dielectric on a foil anode through electrochemistry. The oxide only insulates with the correct polarity, so these caps are polarised — reversing them destroys the oxide and the cap.">electrolytic</Term> capacitor is a long
         strip of foil rolled into a can with a wet paste in between; the touch sensor on your phone screen is a printed grid
         of tiny capacitors whose values your finger perturbs. They differ in scale, in dielectric, in geometry — not in
         principle.
@@ -97,11 +99,11 @@ export default function Ch5Capacitors() {
         Alessandro Volta gave the device its first proper definition in 1782, in a paper to the Royal Society. He observed
         that the charge a body could hold was proportional to the potential difference applied to it, and called the
         constant of proportionality the body's <em>capacity</em><Cite id="volta-1782" in={SOURCES} />. We call the same
-        quantity capacitance now, and write it as
+        quantity <Term def="The proportionality between charge stored and voltage applied: C = Q/V. SI unit is the farad. Determined by geometry and the dielectric, not by the source or the charge.">capacitance</Term> now, and write it as
       </p>
       <Formula>Q = C V</Formula>
       <p>
-        with C measured in farads — one coulomb per volt. For an idealised pair of parallel plates of area <strong>A</strong>
+        with C measured in <Term def="SI unit of capacitance. 1 F = 1 coulomb per volt. A huge unit — practical capacitors range from picofarads to millifarads; only supercapacitors reach whole farads.">farad</Term>s — one coulomb per volt. For an idealised pair of <Term def="The textbook capacitor geometry: two flat conductors of area A separated by a thin gap d, with C = ε₀εᵣA/d. The basis for almost every capacitance calculation.">parallel-plate</Term>s of area <strong>A</strong>
         separated by a vacuum gap of width <strong>d</strong>, Gauss's law applied to the surface of one plate gives a
         uniform field <strong>E = Q/(ε₀A)</strong> in the gap, and integrating that field across the gap yields a voltage
         <strong> V = Ed = Qd/(ε₀A)</strong>. Re-arranging<Cite id="griffiths-2017" in={SOURCES} />:
@@ -110,13 +112,33 @@ export default function Ch5Capacitors() {
       <p>
         Capacitance is geometry. More area, more capacity. Less gap, more capacity. (And no surprise: a wider plate has more
         room to spread charge thinly; a smaller gap means a given charge separation produces a smaller voltage.) Slide a
-        non-conducting material — a <em>dielectric</em> — into the gap and its molecules polarise: each one sets up a tiny
+        non-conducting material — a <Term def="An insulator inserted between capacitor plates. Its molecules polarise in the applied field, partially cancelling it and lowering V for a given Q. The net effect is to multiply capacitance by the material's relative permittivity εᵣ.">dielectric</Term> — into the gap and its molecules polarise: each one sets up a tiny
         counter-field that partially cancels the applied one, dropping V for a given Q and pushing C up by a factor
-        <strong> εᵣ</strong>, the material's relative permittivity<Cite id="jackson-1999" in={SOURCES} />.
+        <strong> εᵣ</strong>, the material's <Term def="Dimensionless number εᵣ giving how much a dielectric reduces the field for the same charge on the plates. Vacuum is 1; air ≈ 1; water ≈ 80; specialised ceramics push past 1000.">relative permittivity</Term><Cite id="jackson-1999" in={SOURCES} />.
       </p>
       <Formula>C = ε₀ ε<sub>r</sub> A / d</Formula>
 
       <PlateGeometryDemo />
+
+      <TryIt
+        tag="Try 5.1"
+        question={<>Two square plates 5 cm × 5 cm are held 0.5 mm apart in vacuum. What is their capacitance?</>}
+        hint="C = ε₀ A / d. Convert everything to SI."
+        answer={
+          <>
+            <p>
+              Area: <strong>A = (0.05 m)² = 2.5×10⁻³ m²</strong>. Gap: <strong>d = 5×10⁻⁴ m</strong>.
+              ε₀ = 8.854×10⁻¹² F/m<Cite id="codata-2018" in={SOURCES} />.
+            </p>
+            <Formula>C = ε₀ A / d = (8.854×10⁻¹²)(2.5×10⁻³) / (5×10⁻⁴)</Formula>
+            <Formula>C ≈ <strong>44 pF</strong></Formula>
+            <p>
+              A laboratory-scale parallel-plate cap of this size lands solidly in the picofarad range. To get a microfarad
+              into a millimetre cube the industry stacks dozens of thin high-εᵣ layers in parallel<Cite id="horowitz-hill-2015" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <p>
         The constant <strong>ε₀ ≈ 8.854×10⁻¹² F/m</strong><Cite id="codata-2018" in={SOURCES} /> is so small that real-world
@@ -143,6 +165,25 @@ export default function Ch5Capacitors() {
       </p>
 
       <WhyHarderEachChargeDemo />
+
+      <TryIt
+        tag="Try 5.2"
+        question={<>A 10 nF capacitor already carries 100 nC. How much work does it take to add the next 1 nC?</>}
+        hint="The work to move charge δq across the existing voltage V is δq · V, with V = Q/C."
+        answer={
+          <>
+            <p>
+              Current voltage: <strong>V = Q/C = 100 nC / 10 nF = 10 V</strong>.
+              Work to add the next 1 nC:
+            </p>
+            <Formula>W ≈ δq · V = (1×10⁻⁹ C)(10 V) = <strong>10 nJ</strong></Formula>
+            <p>
+              The cost rises linearly with how full the cap already is — adding 1 nC to an empty cap costs essentially zero,
+              and adding 1 nC at 200 nC of charge would cost twice as much<Cite id="griffiths-2017" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <p>
         This is also why the capacitor is the cleanest physical model of the running-out-of-easy-wins phenomenon — the more
@@ -185,10 +226,30 @@ export default function Ch5Capacitors() {
         and the field that fills the gap because of it.
       </Pullout>
 
+      <TryIt
+        tag="Try 5.3"
+        question={<>A 100 µF capacitor is charged to 12 V. How much energy is stored? And how many electrons of net charge sit on each plate?</>}
+        hint="U = ½ C V². For the count, use Q = CV and divide by e = 1.602×10⁻¹⁹ C."
+        answer={
+          <>
+            <Formula>U = ½ C V² = ½ (1×10⁻⁴)(12)² = <strong>7.2×10⁻³ J ≈ 7.2 mJ</strong></Formula>
+            <p>
+              And the charge separation:
+            </p>
+            <Formula>Q = C V = (100×10⁻⁶)(12) = 1.2×10⁻³ C = 1.2 mC</Formula>
+            <Formula>N = Q / e = 1.2×10⁻³ / 1.602×10⁻¹⁹ ≈ <strong>7.5×10¹⁵ electrons</strong></Formula>
+            <p>
+              About seven quadrillion electrons swapped sides — large in count, tiny in mass, and the 7 mJ they represent
+              is enough to make a satisfying spark across a screwdriver if you discharge the cap directly<Cite id="codata-2018" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <h2>Charging through a resistor — the RC curve</h2>
 
       <p>
-        Connect a capacitor in series with a resistor R to a battery of voltage V₀, and close the switch. The capacitor starts
+        Connect a capacitor in series with a resistor R to a battery of voltage V₀, and close the switch. The result is the canonical <Term def="A capacitor and resistor in series, the simplest first-order linear circuit. Its time response is governed by the time constant τ = RC.">RC circuit</Term>. The capacitor starts
         empty (V_C = 0) and the full battery voltage initially appears across the resistor, driving a current I = V₀/R. As
         charge accumulates on the cap, V_C rises and the voltage across the resistor — V₀ − V_C — falls. The current falls
         with it. Kirchhoff plus Q = CV gives a first-order ODE whose solution is the canonical exponential approach
@@ -198,8 +259,24 @@ export default function Ch5Capacitors() {
 
       <ChargingCurveDemo />
 
+      <TryIt
+        tag="Try 5.4"
+        question={<>An RC circuit has R = 10 kΩ and C = 100 µF. What is the time constant τ? Roughly how long to charge to 99% of the supply voltage?</>}
+        hint="τ = RC. 'Effectively done' is conventionally 5τ (99.3%)."
+        answer={
+          <>
+            <Formula>τ = R C = (1×10⁴ Ω)(1×10⁻⁴ F) = <strong>1 s</strong></Formula>
+            <p>
+              After one time constant the cap reaches 1 − 1/e ≈ 63.2% of V₀. After 5τ it reaches 99.3%, the standard
+              engineering threshold for &ldquo;fully charged&rdquo;<Cite id="horowitz-hill-2015" in={SOURCES} />.
+            </p>
+            <Formula>5τ = <strong>5 s</strong> &nbsp; (to reach ≈ 99% of V₀)</Formula>
+          </>
+        }
+      />
+
       <p>
-        The product <strong>τ = RC</strong> is the time constant — the time for V_C to reach (1 − 1/e) ≈ 63% of V₀.
+        The product <strong>τ = RC</strong> is the <Term def="τ = RC. The characteristic time for an RC circuit to respond — V_C reaches (1 − 1/e) ≈ 63% of its final value in one τ, and 99.3% by 5τ.">time constant</Term> — the time for V_C to reach (1 − 1/e) ≈ 63% of V₀.
         After 5τ, the capacitor is at 99.3% of V₀ and is effectively "done" charging for most engineering purposes. The
         same τ governs the discharge curve (with the sign of the exponent flipped), the response of any first-order linear
         filter, and the small-signal time response of every analog-electronics building block.
@@ -214,7 +291,7 @@ export default function Ch5Capacitors() {
       <h2>From Leyden jars to your phone</h2>
 
       <p>
-        The first capacitor was an accident. In October 1745, the German cleric Ewald Georg von Kleist tried to draw a spark
+        The first capacitor — a <Term def="The first practical capacitor (1745–1746). A glass jar lined inside and outside with metal foil, the glass acting as a dielectric between two effective 'plates.' Named after Leiden, where Pieter van Musschenbroek's painful version of it was famous.">Leyden jar</Term> — was an accident. In October 1745, the German cleric Ewald Georg von Kleist tried to draw a spark
         from a nail driven into a small medicine bottle; the next year, independently, the Dutch professor Pieter van
         Musschenbroek and his student in Leiden held a glass jar of water connected to a charged friction generator and got a
         shock so violent that Musschenbroek wrote to his friend Réaumur that he "would not take a second [shock] for the
@@ -230,7 +307,7 @@ export default function Ch5Capacitors() {
         glass jar into the wax-paper capacitors of the radio era, then the polyester and ceramic capacitors of the transistor
         age, then the multi-layer ceramic chip capacitors of today — which fit 1 µF into a package about 0.4 mm on a side, by
         stacking dozens of thin metallised dielectric layers in parallel<Cite id="horowitz-hill-2015" in={SOURCES} />. At the
-        other extreme, electrochemical "supercapacitors" exploit double-layer effects at the surface of porous electrodes to
+        other extreme, electrochemical <Term def="A capacitor whose effective plates are the metal-electrolyte interfaces inside porous carbon electrodes. Effective surface area is square kilometres per gram and the effective gap is the Debye length; the device reaches thousands of farads per cell at a few volts working voltage.">supercapacitor</Term>s exploit double-layer effects at the surface of porous electrodes to
         reach hundreds of farads — at the cost of a low working voltage of a few volts per cell. We'll get to those families
         in Chapter 12.
       </p>

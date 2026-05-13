@@ -18,6 +18,8 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
+import { Term } from '@/components/Term';
+import { TryIt } from '@/components/TryIt';
 import { OscillatingDipoleDemo } from './demos/OscillatingDipole';
 import { PlaneWaveDemo } from './demos/PlaneWave';
 import { PolarizationDemo } from './demos/Polarization';
@@ -41,7 +43,8 @@ export default function Ch9EMWaves() {
         That is a wave. Maxwell predicted it in 1865, from the four equations he'd just finished collecting<Cite id="maxwell-1865" in={SOURCES} />.
         Heinrich Hertz produced and detected it in his laboratory in 1887, confirming the prediction at radio
         wavelengths<Cite id="hertz-1888" in={SOURCES} />. Everything in your wireless world — radio, microwaves, infrared
-        heaters, visible light, X-rays, gamma rays — is the same physical object the Poynting flux was always pointing toward.
+        heaters, visible light, X-rays, gamma rays — is the same{' '}
+        <Term def={<><strong>electromagnetic wave</strong> — a self-sustaining oscillation of <em>E</em> and <em>B</em> fields in vacuum, mutually perpendicular and in phase, propagating at the speed of light c.</>}>electromagnetic wave</Term>, the same physical object the Poynting flux was always pointing toward.
         This chapter is what it looks like once it gets to leave the wire behind.
       </p>
 
@@ -87,7 +90,8 @@ export default function Ch9EMWaves() {
       </p>
       <Formula>∇²E = μ₀ ε₀ ∂²E/∂t²</Formula>
       <p>
-        And the identical equation for <strong>B</strong>. This is the <strong>wave equation</strong>, and it has a
+        And the identical equation for <strong>B</strong>. This is the{' '}
+        <Term def={<><strong>wave equation</strong> — a second-order PDE of the form <em>∇²ψ = (1/v²) ∂²ψ/∂t²</em> whose solutions propagate at speed <em>v</em>. For EM waves in vacuum, <em>v = 1/√(μ₀ε₀) = c</em>.</>}>wave equation</Term>, and it has a
         propagation speed sitting right there in the coefficient: <InlineMath>v² = 1/(μ₀ ε₀)</InlineMath>. Plug in the
         measured values of the two constants — ε₀ = 8.854×10⁻¹² F/m and μ₀ = 1.257×10⁻⁶ T·m/A — and you get
         <strong> v = 2.998×10⁸ m/s</strong><Cite id="codata-2018" in={SOURCES} />. Which is, to six figures, the speed of light
@@ -102,10 +106,31 @@ export default function Ch9EMWaves() {
         Drop a relative permittivity εᵣ and a relative permeability μᵣ into the same calculation — that is, put the
         wave inside a material — and the speed becomes <InlineMath>v = 1/√(εᵣ μᵣ ε₀ μ₀) = c/√(εᵣ μᵣ)</InlineMath>. The
         slowdown factor <InlineMath>n = √(εᵣ μᵣ)</InlineMath> is exactly what every introductory optics course calls
-        the refractive index<Cite id="griffiths-2017" in={SOURCES} />. Window glass has εᵣ ≈ 2.25 and μᵣ ≈ 1, so light in
+        the{' '}
+        <Term def={<><strong>refractive index</strong> — the dimensionless factor by which a medium slows light, <em>n = c/v = √(εᵣμᵣ)</em>. Air ≈ 1.0003, water ≈ 1.33, glass ≈ 1.5, diamond ≈ 2.4.</>}>refractive index</Term><Cite id="griffiths-2017" in={SOURCES} />. Window glass has εᵣ ≈ 2.25 and μᵣ ≈ 1, so light in
         glass travels at c/1.5. The whole edifice of refraction — Snell's law, lenses, fibre optics — is sitting in that
         one square root.
       </p>
+
+      <TryIt
+        tag="Try 9.1"
+        question={
+          <>What is the speed of light inside ordinary window glass, for which <strong>n = 1.5</strong>?</>
+        }
+        hint="v = c/n; use c = 2.998×10⁸ m/s."
+        answer={
+          <>
+            <p>
+              From <em>v = c/n</em> with <em>c</em> = 2.998×10⁸ m/s<Cite id="codata-2018" in={SOURCES} />:
+            </p>
+            <Formula>v = (2.998×10⁸) / 1.5 = 1.999×10⁸ m/s</Formula>
+            <p>
+              About <strong>2.0×10⁸ m/s</strong>, or two-thirds the vacuum speed — the same "⅔ c" that appears in
+              copper-coaxial signal propagation throughout this book<Cite id="griffiths-2017" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <h2>What the wave <em>looks like</em></h2>
 
@@ -117,7 +142,8 @@ export default function Ch9EMWaves() {
       <p>
         where k is the wavenumber, ω the angular frequency, and the wave's phase speed is
         <InlineMath>v = ω/k</InlineMath>. Plug this into Maxwell's equations and three facts fall out immediately
-        <Cite id="griffiths-2017" in={SOURCES} />. First, <strong>E</strong> is transverse — perpendicular to the
+        <Cite id="griffiths-2017" in={SOURCES} />. First, <strong>E</strong> is{' '}
+        <Term def={<><strong>transverse</strong> — oscillating perpendicular to the direction of propagation. EM waves in vacuum are transverse; sound waves in air are longitudinal (oscillating along the propagation direction).</>}>transverse</Term> — perpendicular to the
         direction of travel. (In our example, the wave moves in x and E points in y.) Second, the same equations
         force <strong>B</strong> to be perpendicular to both <strong>E</strong> and <strong>k̂</strong>, so
         in our example B points in z. Third, the ratio of their amplitudes is fixed:
@@ -131,16 +157,60 @@ export default function Ch9EMWaves() {
       <PlaneWaveDemo />
 
       <p>
-        Wavelength λ and frequency f obey the universal <InlineMath>λ f = c</InlineMath>. A 1 GHz radio wave has
+        <Term def={<><strong>Wavelength</strong> (λ) — the spatial period of a wave, the distance between successive crests. SI units metres.</>}>Wavelength</Term> λ and{' '}
+        <Term def={<><strong>frequency</strong> (f) — the number of full oscillations per second, in hertz (1 Hz = 1 cycle/s). Related to wavelength by <em>λ f = v</em>.</>}>frequency</Term> f obey the universal <InlineMath>λ f = c</InlineMath>. A 1 GHz radio wave has
         λ = 30 cm. Yellow light at 5×10¹⁴ Hz has λ ≈ 600 nm. An X-ray at 10¹⁸ Hz has λ ≈ 0.3 nm. Same wave equation,
         same speed; different λ.
       </p>
+
+      <TryIt
+        tag="Try 9.2"
+        question={
+          <>Wi-Fi (and a microwave oven's magnetron) operate near <strong>2.4 GHz</strong>. What is the wavelength of that
+          wave in air?</>
+        }
+        hint="λ = c/f, with c ≈ 3.00×10⁸ m/s."
+        answer={
+          <>
+            <p>
+              Use <em>λ = c/f</em><Cite id="codata-2018" in={SOURCES} />:
+            </p>
+            <Formula>λ = (2.998×10⁸ m/s) / (2.4×10⁹ Hz) ≈ 0.125 m</Formula>
+            <p>
+              About <strong>12.5 cm</strong> — comparable to the width of your hand, and roughly half the cavity of a
+              microwave oven (which is why the standing-wave nodes are spaced a few centimetres apart and the turntable
+              exists)<Cite id="buffler-1993" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 9.3"
+        question={
+          <>Green light has a wavelength of about <strong>530 nm</strong> in vacuum. What is its frequency?</>
+        }
+        hint="f = c/λ."
+        answer={
+          <>
+            <p>
+              Convert 530 nm to metres: 5.30×10⁻⁷ m. Then<Cite id="codata-2018" in={SOURCES} />:
+            </p>
+            <Formula>f = (2.998×10⁸) / (5.30×10⁻⁷) ≈ 5.66×10¹⁴ Hz</Formula>
+            <p>
+              About <strong>5.7×10¹⁴ Hz</strong>, or 570 terahertz — the wave equation, run at a third of a million times the
+              speed of the fastest oscilloscope on Earth<Cite id="feynman-II-21" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <h2><em>Polarization</em></h2>
 
       <p>
         Once you know <strong>E</strong> is transverse to the propagation direction, the next question is which
-        transverse direction it points. That direction is the wave's <strong>polarization</strong>. A linearly
+        transverse direction it points. That direction is the wave's{' '}
+        <Term def={<><strong>polarization</strong> — the direction of oscillation of the <em>E</em>-field in a transverse wave. Linear: E oscillates along a fixed line. Circular: E rotates at the wave frequency. Elliptical: anything in between.</>}>polarization</Term>. A linearly
         polarized wave has its <strong>E</strong> oscillating along one fixed line (the line might be vertical,
         horizontal, or tilted). A circularly polarized wave has its <strong>E</strong> rotating in a circle at the
         wave's frequency — produced by superposing two perpendicular linear components 90° out of phase. Anything in
@@ -170,7 +240,8 @@ export default function Ch9EMWaves() {
         <Cite id="feynman-II-21" in={SOURCES} />.
       </p>
       <p>
-        The simplest radiating source is the <strong>oscillating dipole</strong> — a pair of opposite charges whose
+        The simplest radiating source is the{' '}
+        <Term def={<><strong>oscillating dipole</strong> — two opposite charges whose separation varies sinusoidally in time, or equivalently a sinusoidal current on a short antenna. The canonical radiating source; its far-field intensity goes as <em>sin²θ / r²</em>.</>}>oscillating dipole</Term> — a pair of opposite charges whose
         separation wobbles in time, equivalently a current oscillating along a short antenna. The far-field intensity
         radiated by such a dipole follows a clean angular pattern:
       </p>
@@ -212,7 +283,8 @@ export default function Ch9EMWaves() {
       <p>
         Maxwell's theory makes a second, sharper prediction: the wave carries not just energy but
         <strong> momentum</strong>, in the ratio <InlineMath>p = U/c</InlineMath><Cite id="jackson-1999" in={SOURCES} />.
-        A wave depositing energy on an absorbing surface deposits momentum too, and that's a pressure:
+        A wave depositing energy on an absorbing surface deposits momentum too, and that's a{' '}
+        <Term def={<><strong>radiation pressure</strong> — the force per unit area exerted by an EM wave on an absorbing or reflecting surface. <em>P = I/c</em> for full absorption, <em>P = 2I/c</em> for full reflection. SI units Pa (N/m²).</>}>pressure</Term>:
       </p>
       <Formula>P = I / c   (absorbing surface)</Formula>
       <p>
@@ -223,11 +295,56 @@ export default function Ch9EMWaves() {
 
       <RadiationPressureDemo />
 
+      <TryIt
+        tag="Try 9.4"
+        question={
+          <>A <strong>1 kW/m²</strong> laser beam hits a perfect absorber. What is the radiation pressure on the absorber?</>
+        }
+        hint="P = I/c for a perfect absorber. Use c ≈ 3.00×10⁸ m/s."
+        answer={
+          <>
+            <p>
+              For an absorbing surface, the wave's momentum flux deposits as pressure<Cite id="jackson-1999" in={SOURCES} />:
+            </p>
+            <Formula>P = I / c = (1000) / (2.998×10⁸) ≈ 3.34×10⁻⁶ Pa</Formula>
+            <p>
+              About <strong>3.3 μPa</strong> — eleven orders of magnitude below atmospheric pressure. Yet integrated over
+              the 200 m² polyimide sail of JAXA's IKAROS spacecraft, the same order of pressure delivers a measurable
+              ~1 mm/s/day acceleration in deep space<Cite id="tsuda-2013-ikaros" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
+      <TryIt
+        tag="Try 9.5"
+        question={
+          <>Radio signals from a lunar mission travel to Earth across roughly <strong>384,000 km</strong>. How long does
+          one trip take?</>
+        }
+        hint="Δt = d/c."
+        answer={
+          <>
+            <p>
+              Convert the distance: <em>d</em> = 3.84×10⁸ m. Then with <em>c</em> = 2.998×10⁸ m/s<Cite id="codata-2018" in={SOURCES} />:
+            </p>
+            <Formula>Δt = (3.84×10⁸) / (2.998×10⁸) ≈ 1.28 s</Formula>
+            <p>
+              About <strong>1.28 seconds</strong> one-way, ~2.6 s round-trip. The audible delay between Mission Control
+              and the Apollo astronauts in 1969 was exactly this: a wave equation, integrated across vacuum, at one
+              specific speed<Cite id="hertz-1888" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <h2>The <em>spectrum</em></h2>
 
       <p>
-        One wave equation, one speed, one structure: all of it is the same physics, distinguished only by wavelength.
-        Radio (λ from kilometres down to centimetres), microwaves (cm down to mm), infrared (mm down to ~700 nm),
+        One wave equation, one speed, one structure: all of it is the same physics, distinguished only by wavelength. The
+        electromagnetic{' '}
+        <Term def={<><strong>spectrum</strong> — the full range of EM-wave wavelengths, from kilometre-scale radio down to sub-picometre gamma rays. One wave equation, one propagation speed, many λ.</>}>spectrum</Term> covers
+        radio (λ from kilometres down to centimetres), microwaves (cm down to mm), infrared (mm down to ~700 nm),
         visible light (~400–700 nm), ultraviolet (~400 nm down to ~10 nm), X-rays (~10 nm down to ~0.01 nm), gamma
         rays (shorter still). The way a wave interacts with matter depends sharply on λ — radio passes through walls,
         visible light scatters off them, X-rays go through soft tissue and stop at bone, gamma rays go through almost
@@ -375,7 +492,7 @@ export default function Ch9EMWaves() {
           </p>
           <p>
             We now know: same wave equation as visible light, wavelength roughly five orders of magnitude shorter
-            (10⁻¹¹–10⁻¹⁰ m), photon energy correspondingly larger (tens of keV). The penetration through soft
+            (10⁻¹¹–10⁻¹⁰ m), <Term def={<><strong>photon</strong> — the quantum of the electromagnetic field. A wave of frequency <em>f</em> exchanges energy with matter in discrete packets of <em>E = h f = ℏω</em>. The classical wave description and the photon description are different scales of the same field.</>}>photon</Term> energy correspondingly larger (tens of keV). The penetration through soft
             tissue and absorption by bone come from §7 of this chapter — wavelength-dependent atomic response.
             At keV energies, photoelectric absorption scales roughly as <InlineMath>Z⁴/E³</InlineMath>; calcium
             (Z = 20) in bone soaks up far more X-ray than the carbon, hydrogen, oxygen, and nitrogen of soft

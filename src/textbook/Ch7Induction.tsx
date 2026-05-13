@@ -16,6 +16,8 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
+import { Term } from '@/components/Term';
+import { TryIt } from '@/components/TryIt';
 import { LenzsLawDemo } from './demos/LenzsLaw';
 import { MagnetThroughCoilDemo } from './demos/MagnetThroughCoil';
 import { RotatingCoilDemo } from './demos/RotatingCoil';
@@ -40,7 +42,7 @@ export default function Ch7Induction() {
         Not while the current flowed steadily, but at the <em>moment of connection</em>, and again at the moment of
         disconnection<Cite id="faraday-1832" in={SOURCES} />. The thing that mattered was not the magnetic field. It was
         the magnetic field <em>changing</em>. Once you can see that distinction, the world reorganises around it.
-        Generators, transformers, induction motors, wireless chargers, the wall socket the screen you're reading this on
+        That is <Term def="The production of an EMF in a circuit by a changing magnetic flux through it. Discovered by Faraday in 1831; the working principle of generators, transformers, induction motors, and wireless chargers.">electromagnetic induction</Term>. Generators, transformers, induction motors, wireless chargers, the wall socket the screen you're reading this on
         is plugged into — all of them are running the same equation that Faraday wrote down in his lab notebook that
         evening.
       </p>
@@ -68,15 +70,15 @@ export default function Ch7Induction() {
       <h2>The <em>law</em></h2>
 
       <p>
-        Faraday's insight took its modern compact form a generation later, in Maxwell's hands. Define the magnetic flux
+        Faraday's insight took its modern compact form a generation later, in Maxwell's hands. Define the <Term def="The surface integral of B over a bounded surface: Φ_B = ∫∫ B · dA. For a flat loop in a uniform field, Φ = BA cos θ. SI unit is the weber (Wb = T·m²).">magnetic flux</Term>
         through a surface bounded by the loop:
       </p>
       <Formula>Φ<sub>B</sub> = ∫∫ B · dA</Formula>
       <p>
         For a flat loop in a uniform field, this is just <strong>BA cos θ</strong>, where <strong>θ</strong> is the angle
-        between the field and the loop's normal. Then the EMF induced around the loop — the line integral of E around
+        between the field and the loop's normal. SI unit is the <Term def="SI unit of magnetic flux. 1 Wb = 1 T·m² = 1 V·s. The flux through a one-turn loop changing by one weber per second produces one volt of induced EMF.">weber</Term>. Then the <Term def="Electromotive force: the work per unit charge done by a non-electrostatic source (a battery, a moving conductor, a changing flux) on charges around a loop. Measured in volts, but unlike a voltage it can come from a non-conservative field.">EMF</Term> induced around the loop — the line integral of E around
         its perimeter, the work per unit charge that the loop's own free charges feel — is the negative time derivative
-        of that flux<Cite id="feynman-II-17" in={SOURCES} />:
+        of that flux, given by <Term def="EMF = −dΦ_B/dt (or −N·dΦ/dt for a coil of N turns). A changing magnetic flux through a loop induces an EMF around it. The foundation of every generator, transformer, and induction motor.">Faraday's law</Term><Cite id="feynman-II-17" in={SOURCES} />:
       </p>
       <Formula>EMF = − dΦ<sub>B</sub> / dt</Formula>
       <p>
@@ -103,6 +105,23 @@ export default function Ch7Induction() {
 
       <MagnetThroughCoilDemo />
 
+      <TryIt
+        tag="Try 7.1"
+        question={<>A 100-turn coil sees the flux through it change by <strong>ΔΦ = 10⁻⁴ Wb</strong> over <strong>Δt = 1 ms</strong>. What is the magnitude of the induced EMF?</>}
+        hint="|EMF| = N · |dΦ/dt|."
+        answer={
+          <>
+            <Formula>|EMF| = N · |ΔΦ / Δt| = 100 · (10⁻⁴ Wb / 10⁻³ s)</Formula>
+            <Formula>|EMF| = <strong>10 V</strong></Formula>
+            <p>
+              Each turn contributes the same dΦ/dt, and the EMFs add in series — that's why coils have lots of
+              turns<Cite id="feynman-II-17" in={SOURCES} />. A hundred turns × a hundred volts per weber per second
+              = ten volts here.
+            </p>
+          </>
+        }
+      />
+
       <p>
         Two things you can read off the demo immediately. First, holding the magnet still leaves the lamp dark. A
         permanent magnet is sitting right inside the coil delivering a perfectly real magnetic field, and the loop does
@@ -120,7 +139,7 @@ export default function Ch7Induction() {
 
       <p>
         It is tempting to read the minus sign as a bookkeeping detail, an artifact of how someone defined "positive"
-        around the loop. It is not. It encodes a hard constraint from energy conservation, articulated by Heinrich Lenz
+        around the loop. It is not. It encodes a hard constraint from energy conservation — <Term def="The induced current always flows in the direction that opposes the change in flux that produced it. Equivalent to the minus sign in Faraday's law and demanded by energy conservation: without it, induction would be a perpetual-motion machine.">Lenz's law</Term> — articulated by Heinrich Lenz
         in 1834 and provably equivalent to it: <strong>the induced current always flows in the direction that opposes
         the change in flux that produced it</strong><Cite id="feynman-II-17" in={SOURCES} />.
       </p>
@@ -173,6 +192,23 @@ export default function Ch7Induction() {
 
       <RotatingCoilDemo />
 
+      <TryIt
+        tag="Try 7.2"
+        question={<>A 50-turn coil with area <strong>A = 100 cm²</strong> rotates at <strong>60 Hz</strong> in a uniform <strong>B = 0.1 T</strong> field. What is the peak induced EMF?</>}
+        hint="Peak EMF = NBAω, with ω = 2πf."
+        answer={
+          <>
+            <p>Convert: A = 100 cm² = 0.01 m²; ω = 2π · 60 ≈ 377 rad/s.</p>
+            <Formula>EMF<sub>peak</sub> = N B A ω = 50 · 0.1 · 0.01 · 377</Formula>
+            <Formula>EMF<sub>peak</sub> ≈ <strong>18.85 V</strong></Formula>
+            <p>
+              This is the same equation that runs every wall outlet on Earth; only the constants differ between a
+              benchtop demo and a 1.5 GW turbogenerator<Cite id="griffiths-2017" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <p>
         Every wall socket on Earth is the far end of a wire connected, eventually, to a coil somewhere upstream that is
         spinning past stator windings inside a steel-and-copper drum the size of a building. The shaft is being turned by
@@ -185,8 +221,8 @@ export default function Ch7Induction() {
       <h2>Transformers and the long-distance <em>grid</em></h2>
 
       <p>
-        Faraday's law has a second consequence that is just as load-bearing for modern infrastructure. Wind two coils
-        around a shared iron core and the same flux <strong>Φ(t)</strong> threads both of them. Apply Faraday's law to
+        Faraday's law has a second consequence that is just as load-bearing for modern infrastructure: the <Term def="Two coils linked by a shared magnetic core. The same dΦ/dt threads both, so V₂/V₁ = N₂/N₁ and (lossless limit) I₂/I₁ = N₁/N₂. Step up, step down, or isolate — the device that makes long-distance AC transmission practical.">transformer</Term>.
+        Wind two coils around a shared iron core and the same flux <strong>Φ(t)</strong> threads both of them. Apply Faraday's law to
         each:
       </p>
       <Formula>V₁ = N₁ · dΦ/dt &nbsp;&nbsp;&nbsp; V₂ = N₂ · dΦ/dt</Formula>
@@ -204,6 +240,23 @@ export default function Ch7Induction() {
 
       <TransformerDemo />
 
+      <TryIt
+        tag="Try 7.3"
+        question={<>A transformer's primary has 500 turns and is connected to 230 V AC. The secondary has 100 turns. What is the (ideal) secondary voltage?</>}
+        hint="V₂/V₁ = N₂/N₁."
+        answer={
+          <>
+            <Formula>V₂ = V₁ · (N₂ / N₁) = 230 · (100 / 500)</Formula>
+            <Formula>V₂ = <strong>46 V</strong></Formula>
+            <p>
+              A step-down by a factor of five. In the ideal lossless limit the current scales the opposite way:
+              I₂/I₁ = N₁/N₂ = 5, so power V·I is preserved across the transformer<Cite id="griffiths-2017" in={SOURCES} />.
+              Real transformers achieve 95–99% efficiency at their design point.
+            </p>
+          </>
+        }
+      />
+
       <p>
         The reason this matters at planetary scale is the <strong>I²R</strong> loss in transmission lines. The power
         delivered down a wire is <strong>P = V · I</strong>, but the heat dissipated along the way is
@@ -214,6 +267,32 @@ export default function Ch7Induction() {
         exist, and transformers exist because the same flux through two coils gives two voltages in proportion to their
         turn counts.
       </p>
+      <p>
+        The same physics shows up inside a single coil. A current through a loop sets up its own flux, and if that current
+        changes, Faraday's law produces a back-EMF in the same loop — this is <Term def="The coil's own resistance to a changing current. A current I in a coil sets up flux Φ proportional to I, and dI/dt produces a back-EMF V = −L dI/dt. SI unit is the henry.">self-inductance</Term> <strong>L</strong>,
+        defined by <strong>V = −L dI/dt</strong>. For two separate coils, a changing current in one induces a voltage
+        in the other through their shared flux — that is <Term def="The coupling coefficient M between two coils, defined by V₂ = −M dI₁/dt. A transformer is engineered to maximise M; a magnetically shielded inductor is engineered to minimise it.">mutual inductance</Term> <strong>M</strong>.
+        Both have SI unit the <Term def="SI unit of inductance. 1 H = 1 V·s/A — a one-henry inductor produces a one-volt back-EMF when its current changes at one ampere per second. Named after Joseph Henry, who discovered self-induction independently of Faraday.">henry</Term> (H). The general concept of <Term def="The property by which a coil resists changes in its current, storing energy ½LI² in its magnetic field. Includes both self-inductance (single coil) and mutual inductance (between coils).">inductance</Term> is what makes a transformer work, makes an inductor an inductor, and is one of the two reactive ingredients (with capacitance) in every AC circuit.
+      </p>
+
+      <TryIt
+        tag="Try 7.4"
+        question={<>What is the self-inductance of a long air-core solenoid with <strong>N = 1000 turns</strong>, length <strong>ℓ = 10 cm</strong>, and cross-section <strong>A = 1 cm²</strong>?</>}
+        hint={<>L = μ₀ N² A / ℓ, with μ₀ = 4π × 10⁻⁷ T·m/A.</>}
+        answer={
+          <>
+            <p>Convert: A = 1 cm² = 1×10⁻⁴ m²; ℓ = 0.10 m.</p>
+            <Formula>L = μ₀ N² A / ℓ = (4π×10⁻⁷)(1000)² (1×10⁻⁴) / 0.10</Formula>
+            <Formula>L ≈ <strong>1.26×10⁻³ H ≈ 1.26 mH</strong></Formula>
+            <p>
+              A few millihenries from a thousand turns on a finger-sized form is typical for an audio-frequency
+              air-core inductor<Cite id="griffiths-2017" in={SOURCES} />. Adding a soft-iron core multiplies L by the
+              core's relative permeability μ<sub>r</sub>, often by a factor of several thousand<Cite id="jackson-1999" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <p>
         Faraday's discovery had one more thing inside it that he didn't see, and that Maxwell did. If a changing
         <strong> B</strong> produces a curling <strong>E</strong> in empty space, then by symmetry — once you add the
@@ -332,7 +411,7 @@ export default function Ch7Induction() {
           </p>
           <p>
             Inside the pan, two distinct loss mechanisms turn the field into heat. First, the changing flux drives
-            large circulating eddy currents in the iron — Faraday's law applied to the pan's own bulk
+            large circulating <Term def="Circulating loop currents induced inside a bulk conductor by a changing magnetic flux. By Lenz's law they oppose the flux change, and their I²R dissipation heats the conductor. The working principle of induction cooking, magnetic brakes, and metal detectors; the loss mechanism that forces transformer cores to be laminated.">eddy current</Term>s in the iron — Faraday's law applied to the pan's own bulk
             <Cite id="feynman-II-17" in={SOURCES} />. The eddy currents dissipate as I²R heating in the pan's
             resistivity. Second, the alternating field repeatedly re-magnetises the ferromagnetic domains of the
             iron, and the hysteresis loop pays an energy cost on every cycle<Cite id="griffiths-2017" in={SOURCES} />.

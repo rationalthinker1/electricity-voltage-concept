@@ -12,6 +12,8 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
+import { Term } from '@/components/Term';
+import { TryIt } from '@/components/TryIt';
 import { AmpereMaxwellLawDemo } from './demos/AmpereMaxwellLaw';
 import { CFromMaxwellDemo } from './demos/CFromMaxwell';
 import { FaradayLawDemo } from './demos/FaradayLaw';
@@ -49,21 +51,23 @@ export default function Ch10Maxwell() {
       <Formula>∮ E · dℓ = − dΦ<sub>B</sub>/dt</Formula>
       <Formula>∮ B · dℓ = μ₀ ( I<sub>enc</sub> + ε₀ dΦ<sub>E</sub>/dt )</Formula>
       <p>
-        Two surface integrals (flux out of a closed surface) and two line integrals (circulation around a closed loop).
+        Two surface integrals ({' '}
+        <Term def={<><strong>flux</strong> — the integral of a vector field over a surface, ∫ F · dA. For a closed surface, measures net "flow" of the field out of the enclosed volume. SI units depend on the field (V·m for E-flux, T·m² = Wb for B-flux).</>}>flux</Term> out of a closed surface) and two line integrals (circulation around a closed loop).
         The first equation says charge sources electric flux. The second says nothing sources magnetic flux. The third
         says a changing magnetic flux induces an electric circulation. The fourth says a current — or a changing electric
         flux — induces a magnetic circulation. Read them out loud and you have everything classical electromagnetism
         knows<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
       <p className="pullout">
-        Two divergence laws (what flows <em>out</em> of a closed box). Two curl laws (what flows <em>around</em> a closed loop).
+        Two <Term def={<><strong>divergence</strong> — a scalar measure of how much a vector field flows out of an infinitesimal volume. ∇·F &gt; 0 means a source, ∇·F &lt; 0 a sink, ∇·F = 0 a divergence-free field. The divergence theorem ties ∮F·dA = ∫∇·F dV.</>}>divergence</Term> laws (what flows <em>out</em> of a closed box). Two{' '}
+        <Term def={<><strong>curl</strong> — a vector measure of a field's local circulation. ∇×F is nonzero where field lines loop around an axis. Stokes' theorem ties ∮F·dℓ = ∫(∇×F)·dA.</>}>curl</Term> laws (what flows <em>around</em> a closed loop).
         The pattern is too clean to be accidental.
       </p>
 
       <h2>Gauss's law for <em>E</em></h2>
 
       <p>
-        The first equation says: the net electric flux through any closed surface is equal to the charge enclosed inside
+        The first equation — <Term def={<><strong>Gauss's law</strong> — the net electric flux through any closed surface equals the enclosed charge divided by ε₀: ∮ E · dA = Q<sub>enc</sub>/ε₀. Equivalent to Coulomb's inverse-square law plus the assumption of spherical symmetry.</>}>Gauss's law</Term> — says: the net electric flux through any closed surface is equal to the charge enclosed inside
         it, divided by ε₀. Pull a charge inside, flux goes up; push it back out, flux falls to zero. The shape of the
         surface doesn't matter — sphere, cube, ugly potato — only the total charge inside it counts<Cite id="gauss-1813" in={SOURCES} />.
       </p>
@@ -79,6 +83,27 @@ export default function Ch10Maxwell() {
         the surface area of a unit sphere) — same physics, different bookkeeping.
       </p>
 
+      <TryIt
+        tag="Try 10.1"
+        question={
+          <>A closed surface of any shape encloses a total charge of <strong>1 μC</strong>. What is the total electric
+          flux through that surface?</>
+        }
+        hint="Apply Gauss directly: Φ_E = Q_enc / ε₀. The shape doesn't matter."
+        answer={
+          <>
+            <p>
+              Gauss's law gives the flux from the enclosed charge alone<Cite id="gauss-1813" in={SOURCES} />:
+            </p>
+            <Formula>Φ<sub>E</sub> = Q<sub>enc</sub> / ε₀ = (1×10⁻⁶) / (8.854×10⁻¹²)</Formula>
+            <p>
+              ≈ <strong>1.13×10⁵ V·m</strong>, with <em>ε₀</em> = 8.854×10⁻¹² F/m<Cite id="codata-2018" in={SOURCES} />.
+              The shape of the surface — sphere, cube, ugly potato — is irrelevant. Only the enclosed charge counts.
+            </p>
+          </>
+        }
+      />
+
       <h2>Gauss's law for <em>B</em></h2>
 
       <p>
@@ -88,7 +113,8 @@ export default function Ch10Maxwell() {
       <p>
         Every closed surface, anywhere in the universe, has exactly zero net magnetic flux through it. Equivalently:
         every B-field line is a closed loop. There are no isolated magnetic sources from which lines emerge or into
-        which they disappear. <strong>No magnetic monopoles</strong><Cite id="jackson-1999" in={SOURCES} />.
+        which they disappear. <strong>No magnetic{' '}
+        <Term def={<><strong>monopole</strong> — a hypothetical isolated north or south magnetic pole. None has ever been observed; every B-field line is a closed loop. The asymmetry with electric charge (which has free monopoles, the electron and proton) is an open puzzle of the Standard Model.</>}>monopoles</Term></strong><Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
       <GaussBLawDemo />
@@ -102,10 +128,32 @@ export default function Ch10Maxwell() {
         Standard Model.
       </p>
 
+      <TryIt
+        tag="Try 10.2"
+        question={
+          <>What is the net magnetic flux through any closed surface — say, a sphere drawn anywhere in the universe?</>
+        }
+        hint="Read the second equation."
+        answer={
+          <>
+            <p>
+              Exactly <strong>zero</strong>, no matter where or how big the surface is<Cite id="jackson-1999" in={SOURCES} />:
+            </p>
+            <Formula>∮ B · dA = 0</Formula>
+            <p>
+              Whatever <strong>B</strong>-flux enters one side of any closed surface, the same amount comes out somewhere
+              else. Every magnetic field line is a closed loop with no beginning and no end — because there is no
+              isolated north or south pole to start or stop on<Cite id="griffiths-2017" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <h2>Faraday's law</h2>
 
       <p>
-        The third equation, discovered experimentally by Faraday in 1831 and published in 1832<Cite id="faraday-1832" in={SOURCES} />:
+        The third equation —{' '}
+        <Term def={<><strong>Faraday's law</strong> — a changing magnetic flux through a loop drives an EMF around the loop: ∮ E · dℓ = − dΦ<sub>B</sub>/dt. The minus sign (Lenz's law) encodes energy conservation. Discovered experimentally by Faraday in 1831; see Ch. 7 for the full story.</>}>Faraday's law</Term>{' '}— discovered experimentally by Faraday in 1831 and published in 1832<Cite id="faraday-1832" in={SOURCES} />:
       </p>
       <Formula>∮ E · dℓ = − dΦ<sub>B</sub>/dt</Formula>
       <p>
@@ -122,6 +170,28 @@ export default function Ch10Maxwell() {
         let the induced current reinforce the change, you would have free energy on tap. The minus sign is energy
         conservation, made visible<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
+
+      <TryIt
+        tag="Try 10.3"
+        question={
+          <>The magnetic flux through a single-turn loop ramps linearly from <strong>0</strong> to <strong>1 mWb</strong>
+          over <strong>1 ms</strong>. What is the magnitude of the induced EMF around the loop?</>
+        }
+        hint="EMF = |dΦ_B/dt| for a single turn."
+        answer={
+          <>
+            <p>
+              By Faraday's law<Cite id="faraday-1832" in={SOURCES} />:
+            </p>
+            <Formula>|EMF| = |dΦ<sub>B</sub>/dt| = (1×10⁻³ Wb) / (1×10⁻³ s) = 1 V</Formula>
+            <p>
+              <strong>1 V</strong> exactly, for the duration of the ramp. (The minus sign sets direction — which way the
+              induced current would flow — but doesn't change the magnitude.) Multiply by <em>N</em> turns and the EMF
+              scales linearly, which is the whole reason transformers work<Cite id="griffiths-2017" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
       <p>
         Faraday's law also retires, finally, the picture of E as a quantity that lives only near charges.
         Static charges make E, yes — but a magnet you wave around in empty space also makes E. The field is
@@ -131,7 +201,8 @@ export default function Ch10Maxwell() {
       <h2>Ampère–Maxwell law</h2>
 
       <p>
-        The fourth equation is the one Maxwell rewrote. Ampère's original law, established empirically in 1826
+        The fourth equation — the{' '}
+        <Term def={<><strong>Ampère–Maxwell law</strong> — currents and changing electric flux together source a magnetic circulation: ∮ B · dℓ = μ₀(I<sub>enc</sub> + ε₀ dΦ<sub>E</sub>/dt). Maxwell's 1865 displacement-current correction is what closes the loop and produces electromagnetic waves.</>}>Ampère–Maxwell law</Term>{' '}— is the one Maxwell rewrote. Ampère's original law, established empirically in 1826
         <Cite id="ampere-1826" in={SOURCES} />, was the magnetic counterpart of Faraday's:
       </p>
       <Formula>∮ B · dℓ = μ₀ I<sub>enc</sub></Formula>
@@ -148,7 +219,8 @@ export default function Ch10Maxwell() {
       </p>
       <Formula>∮ B · dℓ = μ₀ ( I<sub>enc</sub> + ε₀ dΦ<sub>E</sub>/dt )</Formula>
       <p>
-        The term <InlineMath>ε₀ dΦ<sub>E</sub>/dt</InlineMath> is the <em>displacement current</em>. In the capacitor
+        The term <InlineMath>ε₀ dΦ<sub>E</sub>/dt</InlineMath> is the{' '}
+        <Term def={<><strong>displacement current</strong> — the term <em>J<sub>D</sub> = ε₀ ∂E/∂t</em> that Maxwell added to Ampère's law in 1865. Not an actual flow of charge, but a changing electric flux that sources B exactly as a real current would. Without it, charge conservation fails in time-varying situations.</>}><em>displacement current</em></Term>. In the capacitor
         gap there's no conduction current — but the E-field between the plates is growing, the electric flux through
         the loop is growing with it, and Maxwell's term exactly fills in for the missing conduction current. The two
         contributions are equal by charge conservation (continuity equation): whatever amount of charge per second is
@@ -156,6 +228,30 @@ export default function Ch10Maxwell() {
       </p>
 
       <AmpereMaxwellLawDemo />
+
+      <TryIt
+        tag="Try 10.4"
+        question={
+          <>The electric field inside a charging capacitor's gap is changing at a rate of <strong>1 GV/(m·s)</strong>
+          (i.e. <strong>10⁹ V/m per second</strong>). What is the displacement-current density <em>J<sub>D</sub></em> there?</>
+        }
+        hint="J_D = ε₀ dE/dt."
+        answer={
+          <>
+            <p>
+              Plug in <em>ε₀</em> = 8.854×10⁻¹² F/m<Cite id="codata-2018" in={SOURCES} />:
+            </p>
+            <Formula>J<sub>D</sub> = ε₀ dE/dt = (8.854×10⁻¹²)(10⁹) ≈ 8.85×10⁻³ A/m²</Formula>
+            <p>
+              About <strong>8.85 mA/m²</strong> — a modest current density, but spread over the plate area it produces
+              exactly the same magnetic circulation that the conduction current in the wires does
+              <Cite id="maxwell-1865" in={SOURCES} />. Without Maxwell's term, ∮B·dℓ would jump discontinuously as the
+              Amperian surface crosses the plate; with it, the integral is continuous and charge is conserved
+              <Cite id="feynman-II-18" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
 
       <p className="pullout">
         The displacement current isn't a current. It's the universe insisting that changing electric fields make magnetic ones.
@@ -181,7 +277,8 @@ export default function Ch10Maxwell() {
       </p>
       <Formula>∇² E = μ₀ ε₀ ∂²E/∂t²</Formula>
       <p>
-        That's a wave equation. The same manipulation on the second equation gives the same equation for B. Waves of E
+        That's a{' '}
+        <Term def={<><strong>wave equation</strong> — a PDE of the form <em>∇²ψ = (1/v²) ∂²ψ/∂t²</em> whose solutions are travelling waves at speed <em>v</em>. Maxwell's equations in vacuum reduce to this with <em>v = 1/√(μ₀ε₀) = c</em>.</>}>wave equation</Term>. The same manipulation on the second equation gives the same equation for B. Waves of E
         and B, propagating together through vacuum, with phase speed
       </p>
       <Formula>v = 1 / √(μ₀ ε₀)</Formula>
@@ -203,6 +300,29 @@ export default function Ch10Maxwell() {
         Hertz produced and detected radio-frequency electromagnetic waves in 1887, confirming Maxwell directly
         <Cite id="hertz-1888" in={SOURCES} />.
       </p>
+
+      <TryIt
+        tag="Try 10.5"
+        question={
+          <>Compute the propagation speed <em>c = 1/√(μ₀ ε₀)</em> directly from the modern values of the two constants.</>
+        }
+        hint="μ₀ ≈ 1.257×10⁻⁶ T·m/A, ε₀ ≈ 8.854×10⁻¹² F/m."
+        answer={
+          <>
+            <p>
+              Use CODATA values<Cite id="codata-2018" in={SOURCES} />: <em>μ₀</em> = 1.25664×10⁻⁶ T·m/A,
+              <em> ε₀</em> = 8.8542×10⁻¹² F/m. Then
+            </p>
+            <Formula>μ₀ ε₀ = 1.25664×10⁻⁶ × 8.8542×10⁻¹² ≈ 1.1127×10⁻¹⁷ s²/m²</Formula>
+            <Formula>c = 1 / √(1.1127×10⁻¹⁷) ≈ 2.998×10⁸ m/s</Formula>
+            <p>
+              Exactly the speed of light — <strong>2.998×10⁸ m/s</strong> — falling out of two constants measured by
+              electrostatic and magnetostatic experiments alone. The number that astonished Maxwell in 1865 is the same
+              number you just got with a calculator<Cite id="maxwell-1865" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
       <p>
         Chapter&nbsp;7's electromagnetic waves are the natural sequel: they're solutions to the very wave equation we
         just derived. Everything from radio to X-rays, from photonics to wireless networks, from sunlight reaching your
