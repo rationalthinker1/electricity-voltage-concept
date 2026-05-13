@@ -96,6 +96,21 @@ export default function Ch15FourierHarmonics() {
         f(t) = a<sub>0</sub>/2 + Σ<sub>n=1</sub><sup>∞</sup> [a<sub>n</sub> cos(nω<sub>0</sub>t) + b<sub>n</sub> sin(nω<sub>0</sub>t)]
       </Formula>
       <p>
+        Stare at that sum for a moment. It says: pick a list of sine and cosine waves whose periods <em>fit evenly</em> into
+        the interval T — one fits once, one twice, one three times, on up — choose the right amplitudes a<sub>n</sub> and
+        b<sub>n</sub>, and you can add them up to make literally any periodic shape you like. The reason the
+        frequencies have to be integer multiples of ω<sub>0</sub> is that any non-integer-multiple sine would <em>not</em>
+        return to its starting value after time T; it would still be in the middle of a cycle. Only sines whose period
+        divides T cleanly leave the function looking the same at t and at t + T. Restricting to <Term def="An integer multiple of the fundamental: nω₀ for n = 1, 2, 3, ... Only these frequencies preserve periodicity T.">integer-multiple frequencies</Term> is
+        not a choice — it is forced by the periodicity.
+      </p>
+      <p>
+        The <strong>a<sub>0</sub>/2</strong> term out front is just the DC offset — the constant cosine (cos(0) = 1) that the
+        sum needs in case f has a nonzero mean. The factor of 1/2 isn't a mistake; it falls out of the same projection formula
+        the other coefficients use, applied to the n = 0 case. Writing it that way keeps all of the a<sub>n</sub> formulas
+        below uniform.
+      </p>
+      <p>
         The integer <strong>n</strong> indexes the <Term def="A sinusoidal component of a periodic signal at an integer multiple of the fundamental frequency. The n-th harmonic is at nf₀.">harmonic</Term> of the
         <Term def="The lowest frequency in the Fourier series of a periodic signal, f₀ = 1/T. All other components sit at integer multiples of f₀.">fundamental frequency</Term>. The
         <Term def="The amplitude a_n or b_n of one term in a Fourier series, given by an integral that projects the function onto cos(nω₀t) or sin(nω₀t).">Fourier coefficients</Term> a<sub>n</sub> and b<sub>n</sub> are extracted from f by the projection integrals:
@@ -106,6 +121,24 @@ export default function Ch15FourierHarmonics() {
       <Formula>
         b<sub>n</sub> = (2/T) ∫<sub>0</sub><sup>T</sup> f(t) sin(nω<sub>0</sub>t) dt
       </Formula>
+      <p>
+        These integrals look intimidating until you recognise them as <em>dot products</em>. In ordinary 3D, the x-component
+        of a vector <strong>v</strong> is <em>v · x̂</em> — the dot product with the unit vector along x. The integral
+        ∫f(t) cos(nω<sub>0</sub>t) dt is the same construction, just applied in an infinite-dimensional space whose
+        &ldquo;axes&rdquo; are the basis functions cos(nω<sub>0</sub>t) and sin(nω<sub>0</sub>t) rather than the three
+        Cartesian directions. The integral is the
+        <Term def="The infinite-dimensional generalisation of the dot product: ⟨f, g⟩ = ∫f(t)g(t) dt. Two functions are 'orthogonal' if this integral is zero, the same way two vectors are perpendicular when their dot product is zero.">inner product</Term>; it measures &ldquo;how much of cos(nω<sub>0</sub>t) is in f.&rdquo;
+      </p>
+      <p>
+        Where does the <strong>2/T</strong> out front come from? It is just normalisation by the length of the basis vector.
+        In 3D, x̂ is a unit vector, so <em>v · x̂</em> gives the x-component directly. The Fourier basis functions are
+        <em>not</em> unit length: ∫<sub>0</sub><sup>T</sup> cos²(nω<sub>0</sub>t) dt = T/2, because cos² averages to 1/2 over a
+        full period and the interval has length T. To turn a raw inner product into a coefficient you divide by the squared
+        length T/2 — which is exactly the factor 2/T. The &ldquo;2&rdquo; is geometric, not magical. The reason the
+        DC term uses a<sub>0</sub>/2 (with the &frac12;) is that the constant basis function <em>1</em> has squared length T,
+        not T/2 — so its normaliser is 1/T, and to write it with the same 2/T formula as the other a<sub>n</sub> you carry an
+        extra factor of 1/2 on the term itself.
+      </p>
       <p>
         The geometry behind these formulas is the same geometry that lets you decompose a 3D vector into its x, y, and z
         components. The sines and cosines {`{1, cos(ω₀t), sin(ω₀t), cos(2ω₀t), sin(2ω₀t), ...}`} form an orthonormal basis on
@@ -120,6 +153,25 @@ export default function Ch15FourierHarmonics() {
         zero. If f is <Term def="A function with f(−t) = −f(t). Its Fourier series contains only sine terms; the DC and all a_n vanish.">odd</Term> (f(−t) = −f(t)), only the sine terms survive. Symmetry kills half the work before
         you start.
       </p>
+      <p>
+        It is worth being explicit about the orthogonality identity that the whole construction rests on. For any positive
+        integers m and n:
+      </p>
+      <Formula>
+        ∫<sub>0</sub><sup>T</sup> sin(mω<sub>0</sub>t) cos(nω<sub>0</sub>t) dt = 0 &nbsp; (for all m, n)
+      </Formula>
+      <p>
+        Why is this zero? The product-to-sum identity rewrites the integrand as
+        <em> ½ [sin((m+n)ω<sub>0</sub>t) + sin((m−n)ω<sub>0</sub>t)]</em> — two pure sines at integer multiples of ω<sub>0</sub>.
+        Every such sine completes an integer number of cycles in [0, T], and an integer number of cycles of a sine averages to
+        zero. Equivalently: think of sin(ω<sub>0</sub>t) and cos(ω<sub>0</sub>t) as the y- and x-components of a unit phasor
+        rotating on a circle. Sin and cos point at right angles in the complex plane; their inner product is zero by the same
+        geometry that says <em>x̂ · ŷ = 0</em>. The analogous identities ∫sin(mω<sub>0</sub>t) sin(nω<sub>0</sub>t) dt and
+        ∫cos(mω<sub>0</sub>t) cos(nω<sub>0</sub>t) dt also vanish whenever m ≠ n, by the same trick.
+      </p>
+      <Pullout>
+        The Fourier series isn't a clever trick. It is just the dot product, run on functions instead of arrows.
+      </Pullout>
 
       <TryIt
         tag="Try 15.1"
@@ -158,6 +210,24 @@ export default function Ch15FourierHarmonics() {
         V(t) = (4 V<sub>0</sub> / π)[sin(ω<sub>0</sub> t) + sin(3 ω<sub>0</sub> t)/3 + sin(5 ω<sub>0</sub> t)/5 + …]
       </Formula>
       <p>
+        Two features of this series cry out for an explanation. First, <em>why only odd harmonics?</em> A square wave shifted
+        by half a period is the negative of itself: f(t + T/2) = −f(t). Plug that into a sine of frequency nω<sub>0</sub>: a
+        shift of T/2 advances the phase by nπ. For even n, that phase shift is a multiple of 2π — the sine returns unchanged,
+        which is incompatible with the function flipping sign. So the even-n components must vanish; the symmetry literally
+        zeros them out. The same argument forces all the a<sub>n</sub> (cosines) to vanish, because the square is also odd
+        about t = 0.
+      </p>
+      <p>
+        Second, <em>why amplitudes that fall as 1/n?</em> Each b<sub>n</sub> is the projection integral
+        (2/T) ∫ sq(t) sin(nω<sub>0</sub>t) dt. Because the square is constant ±V<sub>0</sub>, the integral reduces to counting
+        the net area under sin(nω<sub>0</sub>t) over a half-period — which works out to <em>4V<sub>0</sub>/(nπ)</em>. The
+        factor of n in the denominator appears because a higher-frequency sine spends more time near zero and less near its
+        peaks per half-period of the square; its average over the half-period scales inversely with how many extra wiggles it
+        squeezes into the same span. The slow 1/n roll-off is also why a square is a stress test for filters: it carries
+        non-negligible energy out to very high harmonics, and any system that can't keep up will show distortion long before
+        the bandlimit you might have expected.
+      </p>
+      <p>
         Only the odd harmonics appear — a consequence of half-wave symmetry, f(t + T/2) = −f(t), which kills every even-n
         term. The amplitudes fall as 1/n: the 3rd harmonic is one-third the height of the fundamental, the 5th one-fifth, and
         so on. Truncate the series at any finite N and you get a band-limited approximation to the square; let N go to
@@ -174,6 +244,18 @@ export default function Ch15FourierHarmonics() {
         <Term def="The persistent ~8.95% overshoot at jump discontinuities of a truncated Fourier series, named after J. Willard Gibbs (1899). The overshoot does not vanish as N → ∞; it merely narrows in time.">Gibbs phenomenon</Term>: a real, persistent
         feature of any truncated Fourier series at a jump discontinuity. The overshoot does not get smaller as you add more
         harmonics; only the width of the overshoot shrinks<Cite id="bracewell-2000" in={SOURCES} />.
+      </p>
+      <p>
+        Here is the intuition. A perfect step discontinuity is, in some sense, &ldquo;infinitely high frequency&rdquo; — you
+        change V<sub>0</sub> volts in zero time, which a real signal cannot do. Any truncated Fourier sum is band-limited (it
+        contains frequencies up to Nω<sub>0</sub> and nothing higher) and a band-limited function literally cannot follow an
+        infinitely fast jump. So near the discontinuity the partial sum must overshoot — and it does, by a fixed fraction of
+        the jump height that turns out to be <em>(1/π) · ∫<sub>0</sub><sup>π</sup> sinc(x) dx − 1/2 ≈ 0.0895</em>, exactly
+        8.95% of the step. As N grows, the wave gets closer to the target everywhere <em>except</em> in a thin band right at
+        the jump, whose width shrinks like 1/N. The overshoot height stays at 9% forever; you can never sum your way out of
+        it. This is more than a curiosity — the same effect appears as ringing artefacts in MRI images reconstructed from
+        truncated k-space, as pre-echo in lossy audio codecs, and as the &ldquo;ringing&rdquo; on an oscilloscope step
+        response that has been heavily filtered.
       </p>
       <p>
         The triangle wave behaves differently. Its coefficients fall as 1/n², not 1/n, so the partial sum converges much
@@ -240,11 +322,30 @@ export default function Ch15FourierHarmonics() {
         V<sub>RMS</sub>² = (a<sub>0</sub>/2)² + (1/2) Σ<sub>n=1</sub><sup>∞</sup> [a<sub>n</sub>² + b<sub>n</sub>²]
       </Formula>
       <p>
+        This is Pythagoras in infinite dimensions. In 3D, the squared length of a vector is the sum of squared components:
+        <em> ||v||² = x² + y² + z²</em>. Parseval says exactly the same thing for functions — the squared &ldquo;length&rdquo;
+        of f (defined as the time-average of f²) is the sum of squared lengths of its components along each independent
+        basis direction. The cross-terms <em>a<sub>m</sub>a<sub>n</sub> · 2cos(mω<sub>0</sub>t)cos(nω<sub>0</sub>t)</em>
+        that would otherwise show up in ⟨f, f⟩ all integrate to zero, because the basis is orthogonal. The factor of 1/2 in
+        front of each squared coefficient is the same one we kept tripping over earlier: a sine of peak amplitude A has
+        mean-square A²/2, because cos² averages to 1/2 over a period. Every harmonic carries half of its peak² of energy.
+      </p>
+      <p>
         Equivalently, if you know the peak amplitudes V<sub>n</sub> of each harmonic and the DC offset V<sub>0</sub>:
       </p>
       <Formula>
         V<sub>RMS</sub> = √[V<sub>0</sub>² + (1/2) Σ V<sub>n</sub>²]
       </Formula>
+      <p>
+        Read this as &ldquo;each harmonic is an independent source of mean-square energy.&rdquo; They add by squares —
+        Pythagoras — not linearly. The fundamental and the 3rd harmonic don't constructively combine into something larger
+        than √2× either of them, and they don't destructively cancel either; they sit at right angles in the function space
+        and their energies simply add. The DC term is special: it has no oscillation to average down, so its full V<sub>0</sub>²
+        contributes directly (with no factor of 1/2). Everything else gets the cos² half-factor.
+      </p>
+      <Pullout>
+        Each harmonic carries its own energy. The total mean-square is just the sum — Pythagoras in a basis of sines.
+      </Pullout>
       <p>
         The geometric content is the same orthonormality that let us extract the coefficients in the first place: total
         mean-square energy is the sum of mean-square energies in each independent basis direction. The cross-terms vanish
@@ -281,6 +382,22 @@ export default function Ch15FourierHarmonics() {
       <Formula>
         if f<sub>in</sub>(t) = Σ V<sub>n</sub> sin(nω<sub>0</sub>t + φ<sub>n</sub>), then f<sub>out</sub>(t) = Σ |H(jnω<sub>0</sub>)| V<sub>n</sub> sin(nω<sub>0</sub>t + φ<sub>n</sub> + ∠H(jnω<sub>0</sub>))
       </Formula>
+      <p>
+        This formula is the entire reason filters are designable. The harmonics are orthogonal, so the filter can be analysed
+        one frequency at a time: harmonic n enters at amplitude V<sub>n</sub>, gets multiplied by the complex number
+        H(jnω<sub>0</sub>) — which scales its amplitude by <em>|H(jnω<sub>0</sub>)|</em> and rotates its phase by
+        <em> ∠H(jnω<sub>0</sub>)</em> — and exits independently of every other harmonic. The filter does not couple harmonic
+        3 to harmonic 5; they don't talk to each other on the way through. That uncoupling is exactly the same orthogonality
+        that made the projection integrals work in the first place.
+      </p>
+      <p>
+        If filters didn't have this property, designing one would require solving a system of equations that coupled all
+        frequencies at once — intractable. Instead, you draw a single curve |H(jω)| versus ω (the
+        <Term def="The magnitude of the transfer function as a function of frequency: |H(jω)| versus ω. A filter's design specification.">magnitude response</Term>) and another
+        ∠H(jω) versus ω (the <Term def="The angle of the transfer function as a function of frequency: ∠H(jω) versus ω. Determines the time delay each harmonic experiences.">phase response</Term>), and you can read off what the filter does to any signal by sampling those two curves at the
+        signal's harmonics. The whole field of filter design — Butterworth, Chebyshev, elliptic, Bessel — is built on this
+        one observation.
+      </p>
       <p>
         Run a square wave through an RC low-pass with corner frequency f<sub>c</sub>. The fundamental at f<sub>0</sub> sees
         gain 1/√(1+(f<sub>0</sub>/f<sub>c</sub>)²) and phase −arctan(f<sub>0</sub>/f<sub>c</sub>). The 3rd harmonic at 3f<sub>0</sub>
@@ -361,6 +478,14 @@ export default function Ch15FourierHarmonics() {
         THD = √(V<sub>2</sub>² + V<sub>3</sub>² + V<sub>4</sub>² + …) / V<sub>1</sub>
       </Formula>
       <p>
+        THD is a Pythagoras ratio: the RMS &ldquo;length&rdquo; of everything above the fundamental, divided by the RMS of the
+        fundamental itself. The squares-then-square-root structure is unavoidable because energies, not amplitudes, are what
+        add across orthogonal harmonics — and energy goes as amplitude squared. If a signal had two harmonics at the same
+        amplitude V<sub>n</sub> = V<sub>m</sub> = V, the contribution to the numerator would be √2 · V, not 2V, because the
+        two are at right angles in function space. The denominator V<sub>1</sub> is the fundamental — the &ldquo;intended&rdquo;
+        signal — so THD literally answers &ldquo;what fraction of my signal is junk?&rdquo;
+      </p>
+      <p>
         with V<sub>n</sub> the RMS amplitude of the n-th harmonic and V<sub>1</sub> the RMS of the fundamental. Audio
         engineers quote it in percent; power engineers quote it in percent too, but reference IEEE 519 (the standard
         governing utility-side harmonic limits): individual harmonic voltages must stay below 3–5% of fundamental on a public
@@ -390,6 +515,14 @@ export default function Ch15FourierHarmonics() {
         X[k] = Σ<sub>n=0</sub><sup>N−1</sup> x[n] · e<sup>−j 2π k n / N</sup>
       </Formula>
       <p>
+        Compare this with the continuous projection integral a<sub>k</sub> = (2/T) ∫ f(t) cos(kω<sub>0</sub>t) dt. The
+        structure is identical — a sum that pairs each sample of x with a complex sinusoid at frequency k. The complex
+        exponential <em>e<sup>−j 2π k n / N</sup></em> is just cos(2π k n / N) − j sin(2π k n / N), a pair of basis functions
+        bundled into one rotating phasor. The sum is again an inner product: <em>X[k]</em> measures &ldquo;how much of the
+        k-th complex sinusoid lives in the sample sequence x.&rdquo; The complex form is more compact than carrying separate
+        a<sub>n</sub> and b<sub>n</sub>; the real and imaginary parts of X[k] hold the cosine and sine projections respectively.
+      </p>
+      <p>
         Compute it naively and you have N multiplies and adds for each of the N output bins — a total of <em>N²</em>
         complex operations. For N = 1024 that's about a million; for N = 65536 it's about four billion. In the 1960s — when
         computers ran at megahertz, not gigahertz — that was prohibitive for any real-time signal processing.
@@ -401,6 +534,17 @@ export default function Ch15FourierHarmonics() {
         multiplies (the &ldquo;butterflies&rdquo;). Recurse the split log<sub>2</sub> N times and the total operation count
         collapses to N log<sub>2</sub> N. The algorithm came to be called the
         <Term def="Fast Fourier Transform: any of a family of O(N log N) algorithms for computing the DFT. The Cooley-Tukey radix-2 decomposition is the most famous, published in 1965.">Fast Fourier Transform</Term> (FFT).
+      </p>
+      <p>
+        It's worth pausing on <em>why</em> this divide-and-conquer even works. The DFT depends on the complex sinusoid
+        <em> ω<sub>N</sub> = e<sup>−j 2π / N</sup></em>, and these have a beautiful multiplicative structure:
+        <em> ω<sub>N</sub>² = ω<sub>N/2</sub></em>. In words, the basis sinusoid for a length-N DFT, squared, is the basis
+        sinusoid for a length-(N/2) DFT. So whenever you encounter a power <em>ω<sub>N</sub><sup>2kn</sup></em> (which arises
+        when you fold the even-indexed samples of x together), it can be rewritten as <em>ω<sub>N/2</sub><sup>kn</sup></em> —
+        the basis vector for a smaller DFT. That algebraic identity is what makes the recursion possible. Each level of the
+        recursion costs O(N) operations to combine its sub-results; there are log<sub>2</sub> N levels; the total is N log N.
+        The FFT isn't a clever shortcut <em>around</em> the DFT — it is the DFT computed in the order its own algebra
+        suggests.
       </p>
 
       <FFTAlgorithmAnimationDemo />
