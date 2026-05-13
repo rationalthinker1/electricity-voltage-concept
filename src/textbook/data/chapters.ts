@@ -34,6 +34,7 @@ export type ChapterSlug =
   | 'antennas'
   | 'motors'
   | 'generators'
+  | 'magnetically-coupled-circuits'
   | 'transformers'
   | 'rectifiers-and-inverters'
   | 'batteries'
@@ -354,8 +355,23 @@ export const CHAPTERS: ChapterEntry[] = [
     ],
   },
   {
-    slug: 'transformers',
+    slug: 'magnetically-coupled-circuits',
     number: 22,
+    title: 'Magnetically coupled circuits',
+    subtitle: 'When one coil makes another coil care.',
+    blurb:
+      "Ch.7 handled a single coil and its self-inductance. The grown-up version of induction lives in two coils sharing a magnetic field: mutual inductance M, the coupling coefficient k, the dot convention that keeps the signs honest, and the T-equivalent and reflected-impedance tricks that let you analyse coupled circuits without writing a flux integral. The math that transformers, wireless chargers, current probes, and RFID readers all rely on.",
+    relatedLabs: ['faraday', 'inductance'],
+    sources: [
+      'henry-1832', 'faraday-1832', 'maxwell-1865', 'maxwell-1873',
+      'griffiths-2017', 'jackson-1999', 'feynman-II-17',
+      'hayt-kemmerly-durbin-2018', 'irwin-circuit-analysis-2015',
+      'horowitz-hill-2015', 'codata-2018',
+    ],
+  },
+  {
+    slug: 'transformers',
+    number: 23,
     title: 'Transformers',
     subtitle: 'Two coils, one core, a different voltage on the other side.',
     blurb:
@@ -371,7 +387,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'rectifiers-and-inverters',
-    number: 23,
+    number: 24,
     title: 'Rectifiers and inverters',
     subtitle: 'AC to DC, DC to AC, and the silicon that makes the swap.',
     blurb:
@@ -385,7 +401,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'batteries',
-    number: 24,
+    number: 25,
     title: 'How a battery works',
     subtitle: 'Chemistry that keeps a voltage on the wires.',
     blurb:
@@ -398,7 +414,7 @@ export const CHAPTERS: ChapterEntry[] = [
   },
   {
     slug: 'modern-batteries',
-    number: 25,
+    number: 26,
     title: 'Modern batteries',
     subtitle: 'From lead-acid to lithium-ion to the next thing.',
     blurb:

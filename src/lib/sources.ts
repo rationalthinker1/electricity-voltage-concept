@@ -582,6 +582,16 @@ export const SOURCES: Record<string, Source> = {
     url: 'https://www.nema.org/standards/view/american-national-standard-for-electric-power-systems-and-equipment-voltage-ratings-60-hertz',
     note: 'Nominal North-American service voltages: 120/240 V split-phase residential; 208 Y/120, 480 Y/277 V commercial three-phase; standard transmission classes from 69 kV through 765 kV.',
   },
+  /* ─── Ch.22 Magnetically coupled circuits ─── */
+  'henry-1832': {
+    id: 'henry-1832',
+    title: 'On the production of currents and sparks of electricity from magnetism',
+    author: 'Joseph Henry',
+    year: 1832,
+    venue: 'American Journal of Science 22, 403–408',
+    note: 'Independent discovery of electromagnetic induction (simultaneously with Faraday). First demonstration of self-induction and the high-voltage spark from a collapsing coil. The SI unit of inductance — the henry (H) — bears his name.',
+  },
+
   /* ─── Ch.13 Network analysis ─── */
   'maxwell-1873': {
     id: 'maxwell-1873',

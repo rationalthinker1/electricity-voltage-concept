@@ -25,10 +25,11 @@ const CHAPTER_MODULES: Record<string, ReturnType<typeof lazy>> = {
   'antennas':              lazy(() => import('@/textbook/Ch19Antennas')),
   'motors':                lazy(() => import('@/textbook/Ch20Motors')),
   'generators':            lazy(() => import('@/textbook/Ch21Generators')),
-  'transformers':          lazy(() => import('@/textbook/Ch22Transformers')),
-  'rectifiers-and-inverters': lazy(() => import('@/textbook/Ch23RectifiersAndInverters')),
-  'batteries':             lazy(() => import('@/textbook/Ch24Batteries')),
-  'modern-batteries':      lazy(() => import('@/textbook/Ch25ModernBatteries')),
+  'magnetically-coupled-circuits': lazy(() => import('@/textbook/Ch22MagneticallyCoupledCircuits')),
+  'transformers':          lazy(() => import('@/textbook/Ch23Transformers')),
+  'rectifiers-and-inverters': lazy(() => import('@/textbook/Ch24RectifiersAndInverters')),
+  'batteries':             lazy(() => import('@/textbook/Ch25Batteries')),
+  'modern-batteries':      lazy(() => import('@/textbook/Ch26ModernBatteries')),
 };
 
 export const Route = createFileRoute('/textbook/$chapterSlug')({
