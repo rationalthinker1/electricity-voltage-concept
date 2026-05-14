@@ -50,8 +50,11 @@ No hand-waving. No filler.
   commit messages.
 - **No new colors.** The palette is fixed: amber primary, teal secondary,
   pink/blue reserved for charge polarity. See §4.
-- **No build-step gymnastics.** Vite + plain CSS file. No Tailwind, no
-  CSS-in-JS, no PostCSS plugins beyond what Vite ships.
+- **Tailwind v4 is allowed alongside the CSS file.** Tailwind's `@theme`
+  exposes the existing tokens (`--accent`, `--bg-card`, etc.) as utility
+  classes. New components may use Tailwind utilities; existing classes in
+  `src/styles/main.css` keep working and migrate file-by-file. No
+  CSS-in-JS, no PostCSS plugins beyond what Vite + Tailwind ship.
 
 ---
 
