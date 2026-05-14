@@ -25,6 +25,7 @@ import { getChapter } from './data/chapters';
 import { DielectricBetweenPlatesDemo } from './demos/DielectricBetweenPlates';
 import { DipoleInFieldDemo } from './demos/DipoleInField';
 import { FerromagnetDemo } from './demos/Ferromagnet';
+import { ImageChargeField3DDemo } from './demos/ImageChargeField3D';
 import { ParamagnetVsDiamagnetDemo } from './demos/ParamagnetVsDiamagnet';
 import { SusceptibilityDemo } from './demos/Susceptibility';
 import { WhyWaterPolarizesDemo } from './demos/WhyWaterPolarizes';
@@ -213,6 +214,39 @@ export default function Ch13Materials() {
         </em>, which at small fields gives a polarization linear in E with
         a 1/T temperature dependence (Curie's law for dielectrics). Heat water up and ε<sub>r</sub>
         drops; cool it down and it rises. Same molecule; different thermal scramble.
+      </p>
+
+      <h2>The conductor as the <em>limiting case</em>: image charges</h2>
+
+      <p>
+        Push ε<sub>r</sub> to infinity and the dielectric becomes a conductor. The bound charges that
+        used to merely tilt now slide freely, and they slide exactly far enough to cancel the field
+        inside the material to zero. What was a thin layer of bound surface charge on a dielectric
+        becomes a layer of free surface charge on a conductor — and at the conductor's surface, the
+        electric field must be perpendicular, because any tangential component would push the still-free
+        electrons until it wasn't.
+      </p>
+      <p>
+        That boundary condition has a beautiful consequence for the field of a point charge sitting
+        above a grounded metal plane. The induced surface charge on the plane redistributes itself in
+        exactly the pattern that, above the plane, the total field looks identical to two point charges
+        in vacuum: the real <strong>+q</strong> at height <em>d</em>, plus a fictitious mirror{' '}
+        <strong>−q</strong> at depth <em>d</em> below the plane. The mirror is not a real charge — it
+        is a mathematical stand-in for the induced surface charge — but the field it produces above the
+        plane is the right one, because both configurations satisfy the same boundary condition
+        (potential = 0 on the plane) and the same source equation (∇·E = ρ/ε₀ from the real charge alone
+        above the plane)<Cite id="griffiths-2017" in={SOURCES} /><Cite id="jackson-1999" in={SOURCES} />.
+      </p>
+
+      <ImageChargeField3DDemo />
+
+      <p>
+        Drag the scene to orbit. Every field line leaving <strong>+q</strong> terminates somewhere on
+        the plane, hitting it perpendicularly — and the induced surface-charge density σ peaks directly
+        beneath the charge and falls off as <InlineMath>σ(r) = −qd/(2π(r²+d²)^(3/2))</InlineMath>.
+        Integrate σ over the whole plane and you recover exactly −q: every field line that started on
+        the real charge ends on a piece of induced surface charge, and the total adds up to a perfect
+        mirror's worth<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
       <h2>Three kinds of <em>magnetic response</em></h2>

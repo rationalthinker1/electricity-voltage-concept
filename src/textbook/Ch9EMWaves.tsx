@@ -25,6 +25,7 @@ import { PlaneWaveDemo } from './demos/PlaneWave';
 import { PolarizationDemo } from './demos/Polarization';
 import { RadiationPressureDemo } from './demos/RadiationPressure';
 import { SpeedOfLightDemo } from './demos/SpeedOfLight';
+import { WireToAntennaTransition3DDemo } from './demos/WireToAntennaTransition3D';
 import { getChapter } from './data/chapters';
 
 export default function Ch9EMWaves() {
@@ -282,6 +283,29 @@ export default function Ch9EMWaves() {
         real<Cite id="hertz-1888" in={SOURCES} />. The technology that runs on this discovery, two-and-a-half
         generations later, fills your pockets.
       </p>
+      <p>
+        One more move is worth making before we leave the radiation story. We have so far treated "circuit"
+        and "antenna" as separate categories — wires for circuits, antennas for radio. They are not. They are
+        two ends of the same axis. A piece of wire of length <strong>L</strong> driven at frequency
+        <strong> f</strong> behaves as a lumped circuit element when <InlineMath>λ ≫ L</InlineMath>, and as
+        a radiator when <InlineMath>λ ≲ 2L</InlineMath>. Nothing about the metal changes; only the ratio
+        <InlineMath> L/λ</InlineMath> does. The next demo holds the wire at a constant 1 m and slides the
+        frequency upward so you can watch the same conductor cross that boundary in real time.
+      </p>
+      <p>
+        At low <em>f</em> the wire has effectively the same voltage at every point — a single circuit node, no
+        far field. Climb past <InlineMath>f = c/(2L)</InlineMath> and a standing-wave current pattern sets up
+        along the wire; the canonical centre-fed pattern factor
+      </p>
+      <Formula>F(θ) = ( cos(kL cosθ / 2) − cos(kL/2) ) / sinθ</Formula>
+      <p>
+        develops a single fat toroidal lobe broadside to the conductor (the half-wave dipole). Push higher and
+        the lobe splits — at <InlineMath>L = λ</InlineMath> the current reverses sign on the two halves of the
+        wire and the pattern develops multiple lobes<Cite id="jackson-1999" in={SOURCES} />. The wire never
+        stopped being a wire; what changed was how its electromagnetic field behaves at the new wavelength.
+      </p>
+
+      <WireToAntennaTransition3DDemo />
 
       <h2>Energy and <em>momentum</em> in a wave</h2>
 

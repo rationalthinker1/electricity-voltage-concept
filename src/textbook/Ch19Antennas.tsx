@@ -22,6 +22,7 @@ import { Formula } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { DipoleRadiation3DDemo } from './demos/DipoleRadiation3D';
 import { DipoleRadiationPatternDemo } from './demos/DipoleRadiationPattern';
 import { FriisLinkBudgetDemo } from './demos/FriisLinkBudget';
 import { HalfWaveDipoleResonanceDemo } from './demos/HalfWaveDipoleResonance';
@@ -139,6 +140,23 @@ export default function Ch15Antennas() {
       </p>
 
       <DipoleRadiationPatternDemo />
+
+      <p>
+        That polar plot is a slice through the dipole. The full radiation pattern lives in 3D —
+        and because the geometry is rotationally symmetric about the wire, you get the 2D lobe
+        by spinning it once around the axis. The result is a torus: a fat donut, with the antenna
+        threaded vertically through the hole. The donut is widest at the equator (perpendicular
+        to the wire, where sinθ = 1) and pinched to zero at the two poles (along the wire, where
+        sinθ = 0)<Cite id="balanis-2016" in={SOURCES} /><Cite id="kraus-marhefka-2002" in={SOURCES} />.
+      </p>
+      <p>
+        Drag the figure below to orbit the camera. The exponent slider lets you sharpen the
+        pattern beyond the short-dipole's sin²θ: n=2 is the canonical short-electric dipole, while
+        increasing n shrinks the half-power beamwidth — what happens, qualitatively, when you
+        stack more elements or move to a longer end-fire antenna<Cite id="balanis-2016" in={SOURCES} />.
+      </p>
+
+      <DipoleRadiation3DDemo />
 
       <TryIt
         tag="Try 15.1"

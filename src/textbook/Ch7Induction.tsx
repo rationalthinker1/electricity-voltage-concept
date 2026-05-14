@@ -21,6 +21,7 @@ import { TryIt } from '@/components/TryIt';
 import { LenzsLawDemo } from './demos/LenzsLaw';
 import { MagnetThroughCoilDemo } from './demos/MagnetThroughCoil';
 import { RotatingCoilDemo } from './demos/RotatingCoil';
+import { RotatingCoilFlux3DDemo } from './demos/RotatingCoilFlux3D';
 import { TransformerDemo } from './demos/Transformer';
 import { getChapter } from './data/chapters';
 
@@ -205,6 +206,23 @@ export default function Ch7Induction() {
       </p>
 
       <RotatingCoilDemo />
+
+      <p>
+        The oscilloscope above tells you <em>what</em> comes out the terminals; it does not, by itself, tell you
+        <em> why</em> a constant rotation has to produce a sinusoid. The reason is geometric, and geometry is
+        easier to see in three dimensions than two. The flux through a flat loop is not
+        <strong> B·A</strong> — it is <strong>B·A·cos θ</strong>, where θ is the angle between the loop's normal
+        and the field. Spinning the loop sweeps that angle linearly in time, so the flux traces a cosine, and the
+        EMF — the negative time derivative — traces a sine shifted by a quarter cycle.
+      </p>
+      <p>
+        The demo below is the same physics, rendered in 3D so the projection is literal: drag to orbit, watch n̂
+        pivot relative to B, watch the translucent disc fill and fade as <strong>cos θ</strong> swings from +1 to
+        0 to −1. The rolling plot underneath stacks Φ<sub>B</sub>(t) on ε(t) with their phase offset visible at a
+        glance<Cite id="feynman-II-17" in={SOURCES} />.
+      </p>
+
+      <RotatingCoilFlux3DDemo />
 
       <TryIt
         tag="Try 7.2"

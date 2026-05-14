@@ -22,6 +22,7 @@ import { TryIt } from '@/components/TryIt';
 import { BatteryBulbFieldsDemo } from './demos/BatteryBulbFields';
 import { BCirculationDemo } from './demos/BCirculation';
 import { EAxialFieldDemo } from './demos/EAxialField';
+import { PoyntingCoax3DDemo } from './demos/PoyntingCoax3D';
 import { PoyntingInflowDemo } from './demos/PoyntingInflow';
 import { SuperconductorLimitDemo } from './demos/SuperconductorLimit';
 import { WhereDoesEnergyFlowDemo } from './demos/WhereDoesEnergyFlow';
@@ -197,6 +198,21 @@ export default function Ch8EnergyFlow() {
         The "P_surf / P_VI = 1.000" readout in the demo above is the entire chapter compressed into one number. Move any
         slider you like — the ratio doesn't budge. It can't. The integral and the algebra are the same statement.
       </p>
+
+      <p>
+        That demo collapses the geometry into a flat side-view, which is the right move for getting the algebra to land but
+        hides the cross-product structure of <strong>S = (1/μ<sub>0</sub>) E × B</strong>. Spin the next one — a coaxial cable
+        in 3D. Pink radial <strong>E</strong> threads from the inner conductor to the outer braid, teal circumferential
+        <strong> B</strong> wraps the inner conductor, and their cross product points <em>along</em> the cable axis<Cite id="pozar-2011" in={SOURCES} />.
+        Every joule the source delivers to the load streams through the empty dielectric between the two conductors, not
+        through the copper itself.
+      </p>
+      <p>
+        The same surface-integral identity holds, with the surface now a cross-sectional disk of the dielectric:
+        <strong> ∮ S · dA = V·I </strong>exactly<Cite id="poynting-1884" in={SOURCES} /><Cite id="feynman-II-27" in={SOURCES} />.
+      </p>
+
+      <PoyntingCoax3DDemo />
 
       <TryIt
         tag="Try 8.1"
