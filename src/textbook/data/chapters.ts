@@ -40,6 +40,14 @@ export type ChapterSlug =
   | 'batteries'
   | 'modern-batteries';
 
+export type TrackId = 'practical' | 'bench' | 'rigor';
+
+export const TRACKS: Record<TrackId, { name: string; description: string; accent: string }> = {
+  practical: { name: 'Practical electrician', description: 'For wiring a house and reading a panel safely.', accent: 'teal' },
+  bench:     { name: 'Bench engineer',        description: 'For designing analog and digital electronics.', accent: 'accent' },
+  rigor:     { name: 'Physics rigor',         description: 'For the full Maxwell-relativity-Poynting story.', accent: 'pink' },
+};
+
 export interface ChapterEntry {
   slug: ChapterSlug;
   /** "Chapter 1", "Chapter 2", ... */
@@ -54,6 +62,16 @@ export interface ChapterEntry {
   relatedLabs: string[];
   /** Sources cited across this chapter */
   sources: SourceKey[];
+  /** One-sentence thesis. Rendered at the top of the syllabus card. */
+  punchline?: string;
+  /** 3–5 short bullets of what the reader will be able to do after this chapter. */
+  objectives?: string[];
+  /** Approximate reading + demo time in minutes. */
+  timeToRead?: number;
+  /** Other chapters this one assumes you've read. Slugs. */
+  prereqs?: ChapterSlug[];
+  /** Which preset curriculum tracks include this chapter. */
+  tracks?: TrackId[];
 }
 
 export const CHAPTERS: ChapterEntry[] = [
@@ -70,6 +88,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'gauss-1813', 'griffiths-2017', 'feynman-II-2', 'codata-2018',
       'rakov-uman-2003', 'uman-2001',
     ],
+    punchline:
+      'Two kinds of charge, an inverse-square law that is really a fact about 3D space, and a field that turns force-at-a-distance into a property of the empty space around a charge.',
+    objectives: [
+      'Compute the Coulomb force between two point charges and predict its direction.',
+      'Explain why the inverse-square law is geometrically inevitable in three dimensions.',
+      'Sketch the electric field of a point charge, a dipole, and a parallel-plate pair.',
+      'Use Gauss’s law to find the field of a symmetric charge distribution.',
+      'Distinguish between charge as a property of matter and the field it sources.',
+    ],
+    timeToRead: 30,
+    prereqs: [],
+    tracks: ['practical', 'bench', 'rigor'],
   },
   {
     slug: 'voltage-and-current',
@@ -84,6 +114,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'kittel-2005', 'libretexts-conduction',
       'usb-pd-r3', 'catania-2015',
     ],
+    punchline:
+      'Voltage is energy per coulomb, current is charge per second, and the signal that lights the bulb travels in the field — not in the slow drift of the electrons themselves.',
+    objectives: [
+      'Convert between work, charge, and voltage using V = W/q.',
+      'Compute drift velocity from current density and predict its (surprisingly small) magnitude.',
+      'Explain why a switch lights a lamp at the speed of light despite millimetre-per-second drift.',
+      'Distinguish electrostatic potential difference from EMF.',
+      'Recognise three equivalent forms of voltage and pick the right one for a given problem.',
+    ],
+    timeToRead: 30,
+    prereqs: ['what-is-electricity'],
+    tracks: ['practical', 'bench', 'rigor'],
   },
   {
     slug: 'resistance-and-power',
@@ -100,6 +142,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'grainger-power-systems-2003', 'irwin-circuit-analysis-2015',
       'coaton-marsden-1997',
     ],
+    punchline:
+      'Resistance is electrons colliding with a lattice; power dissipated is the kinetic energy lost in each collision, summed across the wire and turned into heat.',
+    objectives: [
+      'Apply Ohm’s law (V = IR) and predict current, voltage, or resistance for a simple circuit.',
+      'Compute resistance from geometry using R = ρL/A.',
+      'Calculate dissipated power three ways (P = VI, I²R, V²/R) and pick the most convenient.',
+      'Explain Joule heating microscopically as energy transferred from electrons to lattice phonons.',
+      'Predict how temperature shifts resistance and why metals warm but superconductors do not.',
+    ],
+    timeToRead: 30,
+    prereqs: ['voltage-and-current'],
+    tracks: ['practical', 'bench', 'rigor'],
   },
   {
     slug: 'how-a-resistor-works',
@@ -115,6 +169,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'wiedemann-franz-1853', 'ashcroft-mermin-1976', 'codata-2018',
       'vishay-z-foil', 'vishay-csm-shunt',
     ],
+    punchline:
+      'A resistor is a physically engineered chunk of material with a known R, a known power rating, a known tolerance, and a known temperature coefficient — and every choice in its design is a trade-off.',
+    objectives: [
+      'Read a four-band and five-band colour code and translate it to a resistance with tolerance.',
+      'Select a resistor wattage given expected dissipation with adequate derating headroom.',
+      'Recognise the right resistor technology (carbon film, metal film, wirewound, foil, shunt) for a given job.',
+      'Predict how thermistors and photoresistors change R with temperature or light.',
+      'Compute small-signal behaviour around a pot’s wiper position.',
+    ],
+    timeToRead: 25,
+    prereqs: ['resistance-and-power'],
+    tracks: ['bench', 'rigor'],
   },
   {
     slug: 'capacitors',
@@ -128,6 +194,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'leyden-jar-1745', 'volta-1782', 'griffiths-2017', 'jackson-1999',
       'feynman-II-2', 'horowitz-hill-2015', 'codata-2018',
     ],
+    punchline:
+      'Two plates and a gap store energy in the electric field between them — voltage rises linearly with charge, energy quadratically, and the dielectric multiplies both.',
+    objectives: [
+      'Compute capacitance of a parallel-plate geometry from C = ε₀ε_r A/d.',
+      'Predict charge, voltage, and stored energy using Q = CV and U = ½CV².',
+      'Sketch the RC charging curve and identify the time constant τ = RC.',
+      'Explain how a dielectric reduces field strength inside the gap.',
+      'Pick between ceramic, electrolytic, film, and supercapacitor styles for a given application.',
+    ],
+    timeToRead: 30,
+    prereqs: ['what-is-electricity', 'voltage-and-current'],
+    tracks: ['bench', 'rigor'],
   },
   {
     slug: 'magnetism',
@@ -142,6 +220,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'jackson-1999', 'hall-1879', 'codata-2018',
       'lauterbur-1973', 'bruning-lhc-2004', 'chulliat-wmm-2020', 'duncan-thompson-1992',
     ],
+    punchline:
+      'Moving charges make B-fields and B-fields push moving charges sideways — the rotational half of electromagnetism that nature has been holding back until you got the linear half right.',
+    objectives: [
+      'Apply the Biot–Savart law to compute B around a straight wire and a circular loop.',
+      'Use Ampère’s law to find B inside a solenoid and a toroid.',
+      'Predict the Lorentz force F = qv × B on a charged particle.',
+      'Explain why two parallel currents attract and two anti-parallel currents repel.',
+      'Trace the Hall voltage that distinguishes carrier sign in a conductor.',
+    ],
+    timeToRead: 35,
+    prereqs: ['what-is-electricity', 'voltage-and-current'],
+    tracks: ['bench', 'rigor'],
   },
   {
     slug: 'induction',
@@ -156,6 +246,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'jackson-1999',
       'wpc-qi-1.3', 'lucia-induction-2014', 'grainger-power-systems-2003',
     ],
+    punchline:
+      'A magnetic flux that changes in time is a voltage — and the minus sign in Faraday’s law is energy conservation in disguise.',
+    objectives: [
+      'Compute EMF from a changing flux using ε = −dΦ/dt.',
+      'Apply Lenz’s law to predict the direction of an induced current.',
+      'Calculate self-inductance L for a solenoid and use V = L dI/dt for a coil.',
+      'Recognise the RL transient and identify τ = L/R.',
+      'Explain how a wireless charger transfers energy across an air gap.',
+    ],
+    timeToRead: 30,
+    prereqs: ['magnetism'],
+    tracks: ['bench', 'rigor'],
   },
   {
     slug: 'energy-flow',
@@ -170,6 +272,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'morris-styer-2012', 'griffiths-2017', 'jackson-1999',
       'pozar-2011', 'kopp-lean-2011', 'green-bohn-2015', 'codata-2018',
     ],
+    punchline:
+      'Energy flows through the field surrounding the wire, not through the copper — and the Poynting vector S = E × B / μ₀ tells you exactly where it goes.',
+    objectives: [
+      'Compute the Poynting vector S = E × B / μ₀ for a simple DC circuit.',
+      'Trace the energy flow from a battery through the field into a resistor.',
+      'Evaluate energy density u = ½ε₀E² + ½B²/μ₀ inside a capacitor or inductor.',
+      'Explain why a coaxial cable carries energy outside the inner conductor.',
+      'Identify the radiation regime where S becomes the intensity of an EM wave.',
+    ],
+    timeToRead: 35,
+    prereqs: ['voltage-and-current', 'resistance-and-power', 'magnetism', 'induction'],
+    tracks: ['bench', 'rigor'],
   },
   {
     slug: 'em-waves',
@@ -185,6 +299,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'ieee-80211', 'buffler-1993', 'tsuda-2013-ikaros', 'rontgen-1895',
       'rappaport-2013-mmwave', 'kopp-lean-2011',
     ],
+    punchline:
+      'When you let the EM field detach from the source, it does not stop — it propagates outward at c, carrying energy and momentum through empty space.',
+    objectives: [
+      'Derive the plane-wave speed c = 1/√(ε₀μ₀) from Maxwell’s equations.',
+      'Relate E, B, and propagation direction in a plane wave.',
+      'Compute the intensity of a plane wave from its peak field strength.',
+      'Recognise wavelength bands from radio through gamma rays on a single physical spectrum.',
+      'Explain why an accelerating charge radiates while a steady current does not.',
+    ],
+    timeToRead: 30,
+    prereqs: ['energy-flow'],
+    tracks: ['rigor'],
   },
   {
     slug: 'maxwell',
@@ -200,6 +326,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'codata-2018',
       'hong-2001-wireless', 'kaplan-hegarty-2017', 'ewen-purcell-1951',
     ],
+    punchline:
+      'Four equations — two divergences and two curls — say that E and B are a single propagating field whose speed in vacuum is exactly c.',
+    objectives: [
+      'State each of Maxwell’s four equations in both integral and differential form.',
+      'Explain why Maxwell’s displacement-current term was required for consistency.',
+      'Derive the wave equation for E and B in vacuum from Maxwell’s equations.',
+      'Recognise which equation governs which physical setup (capacitor, solenoid, antenna, etc.).',
+      'Use the equations to predict that the speed of light is a property of vacuum.',
+    ],
+    timeToRead: 30,
+    prereqs: ['em-waves'],
+    tracks: ['rigor'],
   },
   {
     slug: 'relativity',
@@ -214,6 +352,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'purcell-morin-2013',
       'ashby-2003', 'kaplan-hegarty-2017', 'schwinger-1949', 'bruning-lhc-2004',
     ],
+    punchline:
+      'E and B are not two fields but one tensor — what looks magnetic in one frame is the electric force on length-contracted charge in another.',
+    objectives: [
+      'Apply the Lorentz transformation to the electric and magnetic field components.',
+      'Show that a current-carrying wire appears charged to a moving observer.',
+      'Explain why magnetic forces are a relativistic correction to electric ones, despite their everyday strength.',
+      'Recognise invariants of the EM field (E·B and E² − c²B²).',
+      'Predict frame-dependent observations for a test charge near a moving current.',
+    ],
+    timeToRead: 30,
+    prereqs: ['magnetism', 'em-waves'],
+    tracks: ['rigor'],
   },
   {
     slug: 'circuits-and-ac',
@@ -228,6 +378,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'grainger-power-systems-2003', 'horowitz-hill-2015', 'codata-2018',
       'ansi-c84-1-2020', 'erickson-maksimovic-2020', 'keysight-34465a-datasheet',
     ],
+    punchline:
+      'Kirchhoff’s two laws, plus complex impedance, collapse the entire EM field around a working circuit into a tractable algebra of nodes and loops.',
+    objectives: [
+      'Apply Kirchhoff’s voltage and current laws to a multi-loop circuit.',
+      'Solve RC and RL transients and identify their time constants.',
+      'Compute impedance Z = R + jX for series RLC at a given frequency.',
+      'Identify resonance and quality factor Q in an RLC tank circuit.',
+      'Distinguish real, reactive, and apparent power on an AC line.',
+    ],
+    timeToRead: 35,
+    prereqs: ['resistance-and-power', 'capacitors', 'induction'],
+    tracks: ['practical', 'bench', 'rigor'],
   },
   {
     slug: 'network-analysis',
@@ -242,6 +404,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'irwin-circuit-analysis-2015', 'horowitz-hill-2015',
       'hayt-kemmerly-durbin-2018', 'griffiths-2017', 'codata-2018',
     ],
+    punchline:
+      'Any linear network reduces to a small system of linear equations — mesh, nodal, Thévenin, Norton, Y-Δ, and max-power are the standard tools for writing them.',
+    objectives: [
+      'Solve a multi-loop circuit by mesh-current analysis.',
+      'Solve the same circuit by nodal analysis and check the two answers agree.',
+      'Apply superposition to a network with multiple independent sources.',
+      'Reduce a bridge network using a Y-Δ transformation.',
+      'Apply the maximum-power-transfer theorem to choose a load resistance.',
+    ],
+    timeToRead: 30,
+    prereqs: ['circuits-and-ac'],
+    tracks: ['practical', 'bench', 'rigor'],
   },
   {
     slug: 'semiconductors',
@@ -256,6 +430,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'shockley-1956-nobel', 'streetman-banerjee-2015', 'sedra-smith-2014',
       'razavi-2021', 'horowitz-hill-2015', 'griffiths-2017', 'codata-2018',
     ],
+    punchline:
+      'Doping silicon turns it from an inert crystal into a controllable charge carrier; pn-junctions, BJTs, and FETs are the three logical machines you can build from doped slabs.',
+    objectives: [
+      'Explain the role of n-type and p-type doping in establishing carrier concentrations.',
+      'Predict diode behaviour using the Shockley diode equation.',
+      'Identify the four BJT operating regions on a load line.',
+      'Distinguish JFET and MOSFET operating principles and their gate-isolation differences.',
+      'Apply small-signal models to a common-emitter or common-source amplifier.',
+    ],
+    timeToRead: 35,
+    prereqs: ['resistance-and-power'],
+    tracks: ['bench', 'rigor'],
   },
   {
     slug: 'fourier-harmonics',
@@ -270,6 +456,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'cooley-tukey-1965', 'horowitz-hill-2015', 'griffiths-2017', 'codata-2018',
       'grainger-power-systems-2003',
     ],
+    punchline:
+      'Any periodic waveform is exactly a sum of harmonic sines — and decomposing into that sum is the single move that drives signal processing, communications, and power-electronics analysis.',
+    objectives: [
+      'Compute the Fourier series of a simple periodic signal (square, triangle, sawtooth).',
+      'Apply Parseval’s theorem to relate time-domain RMS to frequency-domain coefficients.',
+      'Predict how a linear filter changes the amplitude of each harmonic.',
+      'Recognise the THD of a distorted waveform and what causes it.',
+      'Explain why grid harmonics from non-linear loads matter for transformers and motors.',
+    ],
+    timeToRead: 30,
+    prereqs: ['circuits-and-ac'],
+    tracks: ['bench', 'rigor'],
   },
   {
     slug: 'filters-op-amps-tlines',
@@ -284,6 +482,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'widlar-1965', 'pozar-2011', 'johnson-graham-1993',
       'griffiths-2017', 'codata-2018',
     ],
+    punchline:
+      'Transfer functions compress filters to two straight lines, op-amps with feedback turn gain into a resistor ratio, and transmission lines kick in the moment a wire is no longer a single node.',
+    objectives: [
+      'Sketch the Bode plot of a first-order RC or RL filter and identify the corner frequency.',
+      'Design inverting and non-inverting op-amp gain stages with given resistor values.',
+      'Recognise when feedback fails and an op-amp circuit oscillates or saturates.',
+      'Compute the characteristic impedance Z₀ of a transmission line from L and C per unit length.',
+      'Determine when lumped circuit analysis breaks down and a distributed model is required.',
+    ],
+    timeToRead: 35,
+    prereqs: ['circuits-and-ac', 'semiconductors'],
+    tracks: ['bench', 'rigor'],
   },
   {
     slug: 'materials',
@@ -298,6 +508,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'griffiths-2017', 'jackson-1999', 'kittel-2005', 'codata-2018',
       'baibich-1988', 'binasch-grunberg-1989', 'moulson-herbert-2003',
     ],
+    punchline:
+      'εᵣ comes from bound charges shifting and aligning inside molecules; μᵣ comes from spin and orbital moments arranging themselves in domains.',
+    objectives: [
+      'Distinguish bound charge from free charge and predict polarization P in a dielectric.',
+      'Relate susceptibility, permittivity, and dielectric constant.',
+      'Classify a material as diamagnetic, paramagnetic, or ferromagnetic based on its response.',
+      'Read a B–H hysteresis loop and identify coercivity and remanence.',
+      'Predict how iron concentrates flux while copper does not.',
+    ],
+    timeToRead: 30,
+    prereqs: ['capacitors', 'magnetism'],
+    tracks: ['rigor'],
   },
   {
     slug: 'optics',
@@ -312,6 +534,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'codata-2018', 'hecht-2017', 'born-wolf-1999', 'young-1804',
       'maiman-1960', 'brewster-1815', 'fresnel-1823',
     ],
+    punchline:
+      'Optics is electromagnetism at 10¹⁴ Hz — boundary conditions on E and B at a glass surface generate Snell, Brewster, Fresnel, and the rest of classical optics for free.',
+    objectives: [
+      'Derive Snell’s law from boundary conditions on the EM field.',
+      'Apply Fresnel equations to predict reflection and transmission coefficients.',
+      'Identify Brewster’s angle and explain why polarized sunglasses reduce glare.',
+      'Predict thin-film interference colours from wavelength and film thickness.',
+      'Sketch the basic operation of a laser as stimulated emission in a resonator.',
+    ],
+    timeToRead: 30,
+    prereqs: ['em-waves'],
+    tracks: ['rigor'],
   },
   {
     slug: 'antennas',
@@ -326,6 +560,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'jackson-1999', 'balanis-2016', 'friis-1946', 'yagi-1928',
       'kraus-marhefka-2002', 'codata-2018',
     ],
+    punchline:
+      'An antenna is a length of wire whose current pattern radiates a known field — pick the geometry to pick the beam.',
+    objectives: [
+      'Sketch the dipole radiation pattern (sin²θ) and identify its nulls and maxima.',
+      'Apply the Friis transmission equation to compute received signal power.',
+      'Predict antenna gain from aperture or array element count.',
+      'Distinguish near-field from far-field regions around a transmitter.',
+      'Recognise common antenna families (dipole, Yagi, parabolic, phased array).',
+    ],
+    timeToRead: 30,
+    prereqs: ['em-waves'],
+    tracks: ['rigor'],
   },
   {
     slug: 'motors',
@@ -339,6 +585,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'feynman-II-13', 'griffiths-2017', 'jackson-1999', 'tesla-1888',
       'fitzgerald-kingsley-umans-2014', 'krishnan-2010-bldc', 'codata-2018',
     ],
+    punchline:
+      'The Lorentz force on a current-carrying coil in a B-field is a torque — commutation is the engineering art of keeping that torque pushing the same way as the coil rotates.',
+    objectives: [
+      'Compute the torque on a current loop in a uniform magnetic field.',
+      'Distinguish the commutation strategies of brushed, brushless, induction, and synchronous motors.',
+      'Predict back-EMF from rotor speed and recognise its role as a self-limiter.',
+      'Read a torque–speed curve and identify the operating point under a given load.',
+      'Recognise where each motor family is preferred in industry.',
+    ],
+    timeToRead: 30,
+    prereqs: ['magnetism', 'induction'],
+    tracks: ['rigor'],
   },
   {
     slug: 'generators',
@@ -353,6 +611,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'grainger-power-systems-2003', 'fitzgerald-kingsley-umans-2014',
       'kundur-1994-power-stability', 'codata-2018',
     ],
+    punchline:
+      'Run a motor backwards and you have a generator — three of them on one shaft gives 3-phase, and tens of thousands of them in lockstep give the continental grid.',
+    objectives: [
+      'Predict the EMF of a coil rotating in a uniform magnetic field.',
+      'Explain why a generator’s output is naturally sinusoidal.',
+      'Trace the three-phase output of a synchronous machine and its 120° offsets.',
+      'Recognise the role of governors and exciters in maintaining grid frequency and voltage.',
+      'Identify the difference between a synchronous and an asynchronous generator.',
+    ],
+    timeToRead: 25,
+    prereqs: ['induction', 'motors'],
+    tracks: ['rigor'],
   },
   {
     slug: 'magnetically-coupled-circuits',
@@ -368,6 +638,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'hayt-kemmerly-durbin-2018', 'irwin-circuit-analysis-2015',
       'horowitz-hill-2015', 'codata-2018',
     ],
+    punchline:
+      'Two coils sharing flux are described by mutual inductance M and coupling coefficient k — the dot convention keeps signs honest, and reflected impedance handles everything else.',
+    objectives: [
+      'Compute mutual inductance M for a pair of coupled coils.',
+      'Apply the dot convention to determine the polarity of induced voltage.',
+      'Compute the coupling coefficient k = M/√(L₁L₂) for a coil pair.',
+      'Reduce a coupled circuit using reflected impedance into the primary.',
+      'Translate between physical coupling and the T-equivalent network.',
+    ],
+    timeToRead: 25,
+    prereqs: ['induction'],
+    tracks: ['bench', 'rigor'],
   },
   {
     slug: 'transformers',
@@ -384,6 +666,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'kundur-1994-power-stability', 'erickson-maksimovic-2020',
       'horowitz-hill-2015',
     ],
+    punchline:
+      'Two coils on a shared iron core trade voltage for current by the turns ratio — the device that made long-distance power transmission possible.',
+    objectives: [
+      'Apply the ideal transformer voltage and current ratios V₂/V₁ = N₂/N₁ and I₂/I₁ = N₁/N₂.',
+      'Predict reflected impedance through a transformer.',
+      'Identify core loss, copper loss, and leakage inductance in a real transformer.',
+      'Sketch the equivalent circuit including magnetizing branch and series leakage.',
+      'Explain why grid transmission uses step-up to hundreds of kV.',
+    ],
+    timeToRead: 30,
+    prereqs: ['magnetically-coupled-circuits'],
+    tracks: ['bench', 'rigor'],
   },
   {
     slug: 'rectifiers-and-inverters',
@@ -398,6 +692,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'mohan-undeland-robbins-2003', 'erickson-maksimovic-2020',
       'horowitz-hill-2015', 'griffiths-2017', 'codata-2018',
     ],
+    punchline:
+      'Rectifiers fold AC down to DC, inverters shape DC back into AC, and switched-mode topologies use a fast switch plus an L or C to step voltage with almost no heat.',
+    objectives: [
+      'Sketch the output of a half-wave and full-wave bridge rectifier driving a capacitor.',
+      'Compute ripple voltage for a given load current and reservoir capacitance.',
+      'Identify buck, boost, and flyback topologies and predict their voltage conversion ratios.',
+      'Explain how a grid-tie inverter synthesises a 60 Hz sine from PV-panel DC.',
+      'Pick the right power-semiconductor family (diode, SCR, MOSFET, IGBT) for a given switching speed.',
+    ],
+    timeToRead: 30,
+    prereqs: ['semiconductors', 'filters-op-amps-tlines'],
+    tracks: ['bench', 'rigor'],
   },
   {
     slug: 'batteries',
@@ -411,6 +717,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'volta-1800-pile', 'nernst-1889', 'daniell-1836',
       'bard-faulkner-2001', 'griffiths-2017', 'codata-2018',
     ],
+    punchline:
+      'A battery is two half-reactions separated by an electrolyte — the energy difference between the two redox couples is the cell voltage, predicted exactly by the Nernst equation.',
+    objectives: [
+      'Identify the half-reactions at the anode and cathode of a galvanic cell.',
+      'Compute open-circuit voltage from standard electrode potentials.',
+      'Apply the Nernst equation to predict voltage at non-standard concentrations.',
+      'Distinguish primary (non-rechargeable) from secondary (rechargeable) cells.',
+      'Recognise the role of the electrolyte and separator in cell operation.',
+    ],
+    timeToRead: 25,
+    prereqs: ['voltage-and-current'],
+    tracks: ['rigor'],
   },
   {
     slug: 'modern-batteries',
@@ -425,6 +743,18 @@ export const CHAPTERS: ChapterEntry[] = [
       'plante-1859', 'larminie-dicks-2003-fuel-cells', 'bard-faulkner-2001',
       'griffiths-2017', 'codata-2018',
     ],
+    punchline:
+      'From lead-acid through Li-ion to solid-state, flow, and fuel cells, the chemistry varies but every cell still trades electron energy across two half-reactions.',
+    objectives: [
+      'Compare the energy density of lead-acid, NiMH, and Li-ion chemistries.',
+      'Explain the intercalation mechanism that lets a Li-ion cell cycle thousands of times.',
+      'Distinguish a battery from a supercapacitor by their charge-storage mechanisms.',
+      'Recognise the architectural differences of a flow battery versus a sealed cell.',
+      'Identify why solid-state cells promise higher energy density and improved safety.',
+    ],
+    timeToRead: 25,
+    prereqs: ['batteries'],
+    tracks: ['rigor'],
   },
 ];
 

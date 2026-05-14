@@ -65,6 +65,27 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
         >
           Labs
         </Link>
+        <Link
+          to="/map"
+          className={pathname === '/map' ? 'active' : ''}
+          title="Course map · prerequisite DAG"
+        >
+          Map
+        </Link>
+        <Link
+          to="/tracks"
+          className={pathname === '/tracks' ? 'active' : ''}
+          title="Preset curriculum tracks"
+        >
+          Tracks
+        </Link>
+        <Link
+          to="/me"
+          className={pathname === '/me' ? 'active' : ''}
+          title="Your reading progress"
+        >
+          Progress
+        </Link>
       </div>
       <div className="nav-status">
         <div className="meta">{pageMeta}</div>

@@ -1,3 +1,13 @@
+/* Tailwind v4 — theme + utilities ONLY (no preflight).
+   We skip the default preflight reset because this project already has a
+   hand-rolled reset and bespoke prose/heading/list styles; running
+   preflight on top would strip default list markers and heading sizes
+   used by existing narrative components. New components can still opt
+   in to utility classes like bg-bg-card, text-accent, font-mono, etc. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
 /* ═══════════════════════════════════════════════════════════════
    Field · Theory — shared design system
    Used by index.html and all interactive pages.
@@ -54,6 +64,34 @@
   --slider-track: rgba(23,21,17,.18);
   --shadow-strong: rgba(23,21,17,.18);
   --grain-opacity: .025;
+}
+
+/* ─── Tailwind v4 @theme — expose existing CSS custom-property tokens as
+   utility classes (bg-bg-card, text-accent, border-border-strong, etc.).
+   These read from the var()-backed tokens above, so utilities automatically
+   honour [data-theme="light"] overrides. ─── */
+@theme {
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-bg-card: var(--bg-card);
+  --color-bg-card-hover: var(--bg-card-hover);
+  --color-text: var(--text);
+  --color-text-dim: var(--text-dim);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-glow: var(--accent-glow);
+  --color-teal: var(--teal);
+  --color-teal-soft: var(--teal-soft);
+  --color-pink: var(--pink);
+  --color-blue: var(--blue);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-canvas-bg: var(--canvas-bg);
+  --font-display: 'Fraunces', serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-math: 'STIX Two Text', serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -2267,4 +2305,216 @@ nav.top .links a.active { color: var(--accent); }
   .term-popover { max-width: 240px; font-size: 12.5px; }
   .tryit { padding: 16px 18px; }
   .tryit-question { font-size: 17px; }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Chapter syllabus card — at-a-glance course-shell metadata.
+   Sits between the chapter title strip and the narrative prose.
+   Visually quieter than the title so it doesn't compete.
+   ──────────────────────────────────────────────────────────────── */
+
+.chapter-syllabus-card {
+  margin: 28px 0 36px;
+  padding: 20px 22px 22px;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.015),
+    rgba(255, 255, 255, 0.005));
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent-soft);
+  border-radius: 6px;
+}
+
+.chapter-syllabus-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.chapter-syllabus-card-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.chapter-syllabus-card-chapter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+.chapter-syllabus-card-punchline {
+  margin: 4px 0 16px;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.chapter-syllabus-card-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 32px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.syllabus-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.syllabus-stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.syllabus-stat-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.chapter-syllabus-card-tracks { display: flex; flex-direction: column; }
+.chapter-syllabus-card-prereqs { margin-bottom: 14px; }
+
+.chapter-syllabus-card-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+}
+
+.syllabus-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
+  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.syllabus-badge-default { /* base */ }
+.syllabus-badge-teal {
+  color: var(--teal);
+  border-color: rgba(108, 197, 194, 0.28);
+  background: rgba(108, 197, 194, 0.06);
+}
+.syllabus-badge-accent {
+  color: var(--accent);
+  border-color: var(--accent-soft);
+  background: rgba(255, 107, 42, 0.06);
+}
+.syllabus-badge-pink {
+  color: var(--pink);
+  border-color: rgba(255, 59, 110, 0.28);
+  background: rgba(255, 59, 110, 0.06);
+}
+.syllabus-badge-link {
+  text-decoration: none;
+  color: var(--text-dim);
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+.syllabus-badge-link:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.chapter-syllabus-card-objectives {
+  margin-top: 4px;
+}
+.chapter-syllabus-card-objectives ul {
+  margin: 6px 0 0;
+  padding-left: 20px;
+  list-style: disc;
+  color: var(--text-dim);
+}
+.chapter-syllabus-card-objectives li {
+  font-size: 14.5px;
+  line-height: 1.55;
+  margin-bottom: 4px;
+}
+
+@media (max-width: 600px) {
+  .chapter-syllabus-card { padding: 16px 16px 18px; }
+  .chapter-syllabus-card-punchline { font-size: 15.5px; }
+  .chapter-syllabus-card-stats { gap: 18px 22px; }
+  .chapter-syllabus-card-objectives li { font-size: 13.5px; }
+}
+
+/* ── Mark-as-complete (chapter footer) ── */
+.chap-complete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 32px 0 24px;
+  padding: 18px 22px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.chap-complete-btn {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .15s ease, opacity .15s ease;
+}
+.chap-complete-btn:hover { background: var(--accent-glow); }
+.chap-complete-btn.is-complete,
+.chap-complete-btn:disabled {
+  background: transparent;
+  color: var(--teal);
+  border: 1px solid var(--teal);
+  cursor: default;
+}
+.chap-complete-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  text-decoration: none;
+}
+.chap-complete-link:hover { color: var(--accent); }
+
+.chap-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-elevated);
+  border: 1px solid var(--teal);
+  color: var(--teal);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  z-index: 1000;
+  animation: chap-toast-in .25s ease-out;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+@keyframes chap-toast-in {
+  from { opacity: 0; transform: translate(-50%, 8px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
 }
