@@ -12,12 +12,6 @@ interface TopNavProps {
   onCycleTheme: () => void;
 }
 
-/**
- * Sticky top nav. With 11 chapters the pills are too many for inline titles,
- * so we show just the chapter number ("1", "2", ..., "11") with the full
- * title in the title attribute, plus a single "Labs" link to the appendix.
- * Active chapter highlighted in amber.
- */
 export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) {
   const router = useRouterState();
   const pathname = router.location.pathname;
@@ -52,10 +46,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
             key={c.slug}
             to="/textbook/$chapterSlug"
             params={{ chapterSlug: c.slug }}
-            className={clsx(
-              'font-3 text-[12px] text-text-muted no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors hover:text-color-4 max-[900px]:text-[11px] max-[760px]:text-[10px]',
-              activeChapter === c.slug && 'text-accent',
-            )}
+            className={clsx('nav-pill', activeChapter === c.slug && 'nav-pill-active')}
             title={`Ch.${c.number} — ${c.title}`}
           >
             {c.number}
@@ -63,10 +54,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
         ))}
         <Link
           to="/reference"
-          className={clsx(
-            'font-3 text-[12px] text-text-muted no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors hover:text-color-4 border-l border-border-2 pl-lg ml-[6px] max-[900px]:text-[11px] max-[760px]:text-[10px]',
-            pathname === '/reference' && 'text-accent',
-          )}
+          className={clsx('nav-pill-divider', pathname === '/reference' && 'nav-pill-active')}
           title="Equation labs (appendix)"
         >
           Labs
@@ -74,35 +62,35 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
         <Link
           to="/labs/$slug"
           params={{ slug: 'circuit-builder' }}
-          className={clsx('font-3 text-[12px] text-text-muted no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors hover:text-color-4 max-[900px]:text-[11px] max-[760px]:text-[10px]', pathname === '/labs/circuit-builder' && 'text-accent')}
+          className={clsx('nav-pill', pathname === '/labs/circuit-builder' && 'nav-pill-active')}
           title="Free-form circuit-builder sandbox"
         >
           Build
         </Link>
         <Link
           to="/map"
-          className={clsx('font-3 text-[12px] text-text-muted no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors hover:text-color-4 max-[900px]:text-[11px] max-[760px]:text-[10px]', pathname === '/map' && 'text-accent')}
+          className={clsx('nav-pill', pathname === '/map' && 'nav-pill-active')}
           title="Course map · prerequisite DAG"
         >
           Map
         </Link>
         <Link
           to="/tracks"
-          className={clsx('font-3 text-[12px] text-text-muted no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors hover:text-color-4 max-[900px]:text-[11px] max-[760px]:text-[10px]', pathname === '/tracks' && 'text-accent')}
+          className={clsx('nav-pill', pathname === '/tracks' && 'nav-pill-active')}
           title="Preset curriculum tracks"
         >
           Tracks
         </Link>
         <Link
           to="/capstones"
-          className={clsx('font-3 text-[12px] text-text-muted no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors hover:text-color-4 max-[900px]:text-[11px] max-[760px]:text-[10px]', pathname.startsWith('/capstone') && 'text-accent')}
+          className={clsx('nav-pill', pathname.startsWith('/capstone') && 'nav-pill-active')}
           title="Capstone integration projects"
         >
           Capstones
         </Link>
         <Link
           to="/me"
-          className={clsx('font-3 text-[12px] text-text-muted no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors hover:text-color-4 max-[900px]:text-[11px] max-[760px]:text-[10px]', pathname === '/me' && 'text-accent')}
+          className={clsx('nav-pill', pathname === '/me' && 'nav-pill-active')}
           title="Your reading progress"
         >
           Progress

@@ -8,7 +8,7 @@ interface HeroProps {
 export function Hero({ lab }: HeroProps) {
   return (
     <section className="container-max pt-[150px] pb-[70px]">
-      <div className="text-meta text-color-accent mb-[18px] flex items-center gap-[14px] before:content-[''] before:w-[36px] before:h-[1px] before:bg-color-accent">{lab.heroLabel}</div>
+      <div className="eyebrow-rule">{lab.heroLabel}</div>
       <h1
         className="title-xl max-w-[11ch] mb-[30px] [&_em]:italic [&_em]:font-normal [&_em]:text-color-accent"
         dangerouslySetInnerHTML={{ __html: lab.heroHeadline }}

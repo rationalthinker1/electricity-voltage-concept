@@ -1071,6 +1071,305 @@ body::before {
     .equation-card-1 { @apply py-[14px] px-[18px]; }
     .list-copy-1 li { @apply text-[13.5px]; }
   }
+
+  /* ═══════════════════════════════════════════════════════════════
+     Semantic recipe layer — generalized, theme-aware recipes that
+     compose Tailwind utilities via @apply. These are the names
+     components should reach for in JSX. Most alias the existing
+     numbered recipes above; new recipes (.nav-pill, .eyebrow-rule,
+     .banner-*, .pill-base, .input-base, etc.) cover repeated visual
+     patterns found across components.
+  ═══════════════════════════════════════════════════════════════ */
+
+  /* — Layout primitives — */
+  .container-max {
+    @apply max-w-[1480px] mx-auto px-[40px] max-[760px]:px-xl;
+  }
+  .page-section {
+    @apply py-[80px] max-[760px]:py-[56px];
+  }
+  .section-reveal {
+    @apply opacity-100;
+  }
+  .prose-content {
+    @apply max-w-[70ch] mx-auto;
+  }
+  .visually-hidden {
+    @apply absolute w-px h-px overflow-hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  /* — Typography aliases (semantic → numbered scale) — */
+  .title-xl {
+    font-family: var(--font-2);
+    font-weight: 300;
+    font-size: clamp(56px, 9vw, 132px);
+    line-height: .95;
+    letter-spacing: -.035em;
+    color: var(--color-4);
+  }
+  .title-lg {
+    font-family: var(--font-2);
+    font-weight: 300;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1;
+    letter-spacing: -.03em;
+    color: var(--color-4);
+  }
+  .title-md {
+    font-family: var(--font-2);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    color: var(--color-4);
+  }
+  .title-sm {
+    font-family: var(--font-2);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 1.15;
+    letter-spacing: -.02em;
+    color: var(--color-4);
+  }
+  .title-xs {
+    font-family: var(--font-1);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.35;
+    color: var(--color-4);
+  }
+  .title-eyebrow {
+    font-family: var(--font-3);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .text-meta {
+    @apply font-3 text-[11px] tracking-[.12em] uppercase text-color-5;
+  }
+  .text-deck {
+    @apply font-2 italic font-light text-[20px] leading-[1.35] text-color-5 max-w-[60ch];
+  }
+  .text-formula {
+    @apply font-4 italic text-color-4;
+  }
+  .text-formula-var {
+    @apply font-4 italic;
+  }
+  .text-formula-inline {
+    @apply font-4 italic;
+  }
+
+  /* — Eyebrow + intro aliases (no numeric suffix) — */
+  .eyebrow-rule {
+    @apply font-3 text-[11px] tracking-[.25em] uppercase mb-[18px] flex items-center gap-[14px];
+    color: var(--recipe-accent, var(--accent));
+  }
+  .eyebrow-rule::before {
+    content: '';
+    width: 36px;
+    height: 1px;
+    background: var(--recipe-accent, var(--accent));
+  }
+  .intro {
+    @apply text-color-5 text-[15px] leading-[1.55] mb-[28px] italic max-w-[55ch];
+  }
+
+  /* — Card / surface aliases — */
+  .card-base,
+  .card-primary {
+    @apply bg-color-3 border border-border-1 rounded-5 p-lg;
+  }
+  .card-elevated {
+    @apply bg-color-2 border border-border-2 rounded-5 p-lg shadow-1;
+  }
+  .card-muted,
+  .card-subtle {
+    @apply bg-white/[.02] border border-border-1 rounded-4 p-md;
+  }
+  .card-outlined {
+    background: transparent;
+    border: 1px solid var(--border-2);
+    border-radius: var(--radius-5);
+    padding: var(--spacing-lg);
+  }
+  .card-glass {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-1);
+    border-radius: var(--radius-5);
+    padding: var(--spacing-lg);
+    backdrop-filter: blur(8px);
+  }
+  .card-figure {
+    @apply bg-color-3 border border-border-2 rounded-3 p-0 overflow-hidden;
+  }
+  .card-formula {
+    @apply bg-color-3 border border-border-1 rounded-5 my-[40px] py-[28px] px-[36px] text-center text-[32px];
+    font-family: var(--font-4);
+    font-style: italic;
+    color: var(--color-4);
+  }
+  .card-panel {
+    @apply bg-white/[.02] border border-border-1 rounded-4 p-md flex flex-col gap-md;
+  }
+  .card-header {
+    @apply px-lg py-md border-b border-border;
+  }
+  .card-body { @apply px-lg py-lg; }
+  .card-footer {
+    @apply px-lg py-md border-t border-border flex items-center justify-end gap-md;
+  }
+
+  /* — Lists, dividers, sections — */
+  .list-divided { @apply border-t border-border; }
+  .list-divided > * + * { @apply border-t border-border; }
+
+  /* — Disclosure aliases (no numeric suffix) — */
+  .disclosure-base { @apply border-b border-border; }
+  .disclosure-summary {
+    @apply cursor-pointer flex items-baseline gap-[14px] py-[18px] outline-none;
+    list-style: none;
+  }
+  .disclosure-summary::-webkit-details-marker { display: none; }
+  .disclosure-base:hover .disclosure-title { color: var(--recipe-accent, var(--accent)); }
+  .disclosure-summary:focus-visible .disclosure-title {
+    outline: 1px solid var(--recipe-accent, var(--accent));
+    outline-offset: 4px;
+  }
+  .disclosure-marker {
+    @apply font-3 text-[11px] tracking-[.15em] shrink-0 w-[28px];
+    color: var(--recipe-accent, var(--accent));
+  }
+  .disclosure-title {
+    @apply font-2 italic font-light text-[20px] text-color-4 leading-[1.3] flex-1 min-w-0;
+  }
+  .disclosure-chev {
+    @apply font-3 text-[14px] shrink-0 transition-transform duration-150;
+    color: var(--recipe-accent, var(--accent));
+  }
+  .disclosure-base[open] .disclosure-chev { transform: rotate(45deg); }
+
+  /* — Pills / chips / badges — */
+  .pill-base {
+    @apply inline-flex items-center gap-xs px-[10px] py-[2px] rounded-pill border border-border-1 font-3 text-[11px] tracking-[.08em] uppercase text-color-5 bg-white/[.04];
+  }
+  .pill-icon { @apply inline-flex items-center justify-center; }
+
+  /* — Nav links (extracted from TopNav: 14-utility string × 7) — */
+  .nav-pill {
+    @apply font-3 text-[12px] text-text-muted no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors;
+  }
+  .nav-pill:hover { color: var(--color-4); }
+  .nav-pill-active { color: var(--accent); }
+  @media (max-width: 900px) { .nav-pill { @apply text-[11px]; } }
+  @media (max-width: 760px) { .nav-pill { @apply text-[10px]; } }
+
+  .nav-pill-divider {
+    @apply font-3 text-[12px] text-text-muted no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors border-l border-border-2 pl-lg ml-[6px];
+  }
+  .nav-pill-divider:hover { color: var(--color-4); }
+  @media (max-width: 900px) { .nav-pill-divider { @apply text-[11px]; } }
+  @media (max-width: 760px) { .nav-pill-divider { @apply text-[10px]; } }
+
+  /* — Banners — */
+  .banner-base {
+    @apply flex items-start gap-md p-md rounded-4 border;
+  }
+  .banner-info    { background: var(--bg-elevated); border-color: var(--border-2); color: var(--color-4); }
+  .banner-success { background: var(--teal-soft); border-color: rgba(108,197,194,0.35); color: var(--color-4); }
+  .banner-warn    { background: var(--accent-soft); border-color: rgba(255,107,42,0.35); color: var(--color-4); }
+  .banner-danger  { background: rgba(255,59,110,0.12); border-color: rgba(255,59,110,0.35); color: var(--color-4); }
+  .banner-icon { @apply shrink-0 mt-[2px]; }
+  .banner-body { @apply flex-1 min-w-0 text-[14px] leading-[1.5]; }
+
+  /* — Buttons / actions / links — */
+  .button-primary {
+    @apply inline-flex items-center gap-sm px-lg py-sm rounded-4 font-3 text-[11px] tracking-[.12em] uppercase border cursor-pointer transition-colors;
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+  .button-primary:hover { background: var(--accent-glow); }
+  .button-icon {
+    @apply inline-flex items-center justify-center w-[22px] h-[22px] rounded-pill border border-border-1 bg-transparent text-text-muted cursor-pointer transition-colors;
+  }
+  .button-icon:hover { color: var(--color-4); border-color: var(--border-2); }
+
+  .link-accent {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--accent);
+  }
+  .link-accent:hover { background: var(--accent-soft); }
+
+  .link-pager {
+    @apply flex flex-col gap-xs p-lg rounded-4 border border-border-1 no-underline text-color-4;
+    background: var(--bg-card);
+    transition: border-color .15s, background .15s;
+  }
+  .link-pager:hover { border-color: var(--accent); background: var(--bg-card-hover); }
+
+  /* — Forms / inputs — */
+  .input-base {
+    @apply w-full px-md py-sm rounded-4 border border-border-1 bg-transparent text-color-4 font-3 text-[13px];
+    outline: none;
+  }
+  .input-base:focus { border-color: var(--accent); }
+
+  .choice-list { @apply flex flex-col gap-md; }
+  .choice-card {
+    @apply flex items-start gap-md p-md rounded-4 border border-border-1 cursor-pointer transition-colors;
+    background: var(--bg-card);
+  }
+  .choice-card:hover { border-color: var(--border-2); }
+  .choice-card.is-selected { border-color: var(--accent); background: var(--accent-soft); }
+
+  /* — Demo / lab structure aliases — */
+  .canvas-base {
+    @apply bg-canvas-bg;
+    contain: layout paint style;
+  }
+  .canvas-base canvas { @apply block w-full; }
+  .canvas-panel {
+    @apply bg-white/[.02] border border-border-1 rounded-4 p-0 overflow-hidden;
+  }
+  .title-panel { @apply font-3 text-[10px] tracking-[.22em] uppercase text-color-5; }
+  .toolbar-base { @apply flex flex-wrap items-center gap-md; }
+  .legend-base { @apply flex flex-wrap items-center gap-md font-3 text-[11px] text-text-muted; }
+  .question-base {
+    @apply px-[22px] py-md border-b border-border font-2 italic font-light text-[17px] text-color-4;
+  }
+  .caption-base {
+    @apply px-[22px] py-[14px] border-t border-border text-[13px] leading-[1.5] italic text-text-muted;
+  }
+  .kbd-base {
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid var(--border-2);
+    border-radius: var(--radius-2);
+    background: var(--bg-elevated);
+    font-family: var(--font-3);
+    font-size: 11px;
+    color: var(--color-4);
+  }
+
+  /* — Tooltip surface (used by Term popover, etc.) — */
+  .surface-tooltip {
+    @apply absolute z-[100] pointer-events-none opacity-0 transition-all duration-150;
+  }
+  .group:hover .surface-tooltip,
+  .group:focus-visible .surface-tooltip { @apply opacity-100 pointer-events-auto; }
+
+  /* — Color/state swatches (legend dots) — */
+  .swatch-base {
+    @apply inline-block w-[14px] h-[14px] rounded-2 border border-border-1;
+  }
+  .swatch-dot { @apply rounded-pill; }
 }
 
 /* ─── Progress bar ─── */
