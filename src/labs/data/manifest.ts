@@ -254,6 +254,24 @@ export const MANIFEST: LabManifestEntry[] = [
     heroHeadline: 'Run a <em>grid</em>.',
     deck: 'A one-line-diagram editor for power systems. Drop generators (coal, CCGT, hydro, wind, solar PV with inverter, battery storage); add step-up transformers, transmission lines with R + jX, sub-stations, distribution feeders, and residential / industrial loads. The sandbox solves a power-flow balance every step, evolves system frequency through the swing equation when a generator trips, and shows the voltage profile across the entire network. Integrates Ch.12 (AC + impedance), Ch.21 (generators + inertia), Ch.22 (mutual coupling), Ch.23 (transformers), Ch.24 (rectifiers + inverters for the renewables), Ch.31 (big loads).',
   },
+  {
+    number: 'A.6', slug: 'rf-link', chapter: 'ch4',
+    title: 'RF Link / Antenna Matching',
+    formula: 'Γ = (Z_ant − Z₀) / (Z_ant + Z₀)',
+    blurb: 'Build a complete radio hop: transmitter, coax, matching reactance, antenna gain, path loss, and received power.',
+    heroLabel: 'Appendix · Lab A.6 — RF Link',
+    heroHeadline: 'Match an <em>antenna</em>.',
+    deck: 'A radio-link workbench. Pick a frequency, cable run, antenna impedance, matching reactance, gains, and path distance. The sandbox computes reflection coefficient, VSWR, mismatch loss, delivered antenna power, free-space path loss, and received power. Integrates Ch.12 (impedance), Ch.16 (transmission lines), Ch.19 (antennas), and Ch.8 (Poynting energy flow).',
+  },
+  {
+    number: 'A.7', slug: 'power-supply', chapter: 'ch4',
+    title: 'Power Supply Designer',
+    formula: 'ΔV ≈ I_load / (f_ripple C)',
+    blurb: 'Design the transformer, rectifier, smoothing capacitor, regulator, and load for a practical AC-to-DC supply.',
+    heroLabel: 'Appendix · Lab A.7 — Power Supply Designer',
+    heroHeadline: 'Build a <em>DC rail</em>.',
+    deck: 'A complete linear AC-to-DC supply. Choose transformer secondary voltage, rectifier topology, diode drop, reservoir capacitance, load current, and regulator target. Watch ripple, headroom, diode heating, regulator heating, and efficiency update live. Integrates Ch.5 (capacitors), Ch.7 (induction), Ch.23 (transformers), Ch.24 (rectifiers), and Ch.3 (Joule heating).',
+  },
 ];
 
 /** Lookup a lab by slug. */
@@ -293,4 +311,6 @@ export const BASE_LAB_SOURCES: Record<string, SourceKey[]> = {
   'motor-drive':     ['sedra-smith-2014', 'erickson-maksimovic-2020', 'horowitz-hill-2015', 'griffiths-2017', 'codata-2018'],
   'ev-bench':        ['sae-j1772', 'iec-62196', 'ul-2231', 'erickson-maksimovic-2020', 'sedra-smith-2014', 'codata-2018'],
   'power-grid':      ['kirchhoff-1845', 'grainger-power-systems-2003', 'kundur-1994-power-stability', 'horowitz-hill-2015', 'codata-2018'],
+  'rf-link':         ['pozar-2011', 'balanis-2016', 'friis-1946', 'kraus-marhefka-2002', 'feynman-II-21', 'codata-2018'],
+  'power-supply':    ['horowitz-hill-2015', 'mohan-undeland-robbins-2003', 'mclyman-2004', 'fleming-1904', 'codata-2018'],
 };

@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link, useRouterState } from '@tanstack/react-router';
 import clsx from 'clsx';
 
@@ -35,23 +36,86 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
     pageMeta = 'Equation appendix';
   }
 
+  const [chaptersOpen, setChaptersOpen] = useState(false);
+  const chaptersMenuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => { setChaptersOpen(false); }, [pathname]);
+
+  useEffect(() => {
+    if (!chaptersOpen) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setChaptersOpen(false);
+    }
+    function onClick(e: MouseEvent) {
+      if (chaptersMenuRef.current && !chaptersMenuRef.current.contains(e.target as Node)) {
+        setChaptersOpen(false);
+      }
+    }
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('mousedown', onClick);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('mousedown', onClick);
+    };
+  }, [chaptersOpen]);
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-[998] py-[22px] px-[40px] flex justify-between items-center border-b border-border bg-[linear-gradient(180deg,var(--nav-bg-start),var(--nav-bg-end))] backdrop-blur-[12px] max-[760px]:py-lg max-[760px]:px-xl max-[760px]:flex-wrap max-[760px]:gap-md">
       <Link to="/" className="font-2 italic font-light text-[20px] tracking-[-.02em] text-color-4 no-underline [&_span]:text-accent">
         Field <span>·</span> Theory
       </Link>
       <div className="flex gap-[14px] items-center max-[900px]:gap-[9px] max-[760px]:gap-[14px]">
-        {CHAPTERS.map(c => (
-          <Link
-            key={c.slug}
-            to="/textbook/$chapterSlug"
-            params={{ chapterSlug: c.slug }}
-            className={clsx('nav-pill', activeChapter === c.slug && 'nav-pill-active')}
-            title={`Ch.${c.number} — ${c.title}`}
+        <div ref={chaptersMenuRef} className="relative">
+          <button
+            type="button"
+            className={clsx(
+              'nav-pill inline-flex items-center gap-[6px] cursor-pointer bg-transparent border-0',
+              activeChapter && 'nav-pill-active',
+            )}
+            aria-haspopup="menu"
+            aria-expanded={chaptersOpen}
+            onClick={() => setChaptersOpen(o => !o)}
+            title="Browse all chapters"
           >
-            {c.number}
-          </Link>
-        ))}
+            Chapters
+            <span aria-hidden="true" className={clsx('inline-block transition-transform', chaptersOpen && 'rotate-180')}>▾</span>
+          </button>
+          {chaptersOpen && (
+            <div
+              role="menu"
+              aria-label="All chapters"
+              className="fixed top-[72px] left-1/2 -translate-x-1/2 z-[999] w-[min(1100px,calc(100vw-40px))] max-h-[calc(100vh-100px)] overflow-y-auto py-[28px] px-[32px] rounded-5 border border-border-2 bg-bg-elevated shadow-[0_24px_60px_var(--shadow-strong)]"
+            >
+              <div className="flex items-baseline justify-between mb-xl pb-md border-b border-border">
+                <span className="font-3 text-[11px] text-text-muted uppercase tracking-[.18em]">All chapters</span>
+                <span className="font-3 text-[11px] text-text-muted tracking-[.05em] tabular-nums">{CHAPTERS.length} total</span>
+              </div>
+              <ul className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-x-xl gap-y-[2px] list-none m-0 p-0">
+                {CHAPTERS.map(c => (
+                  <li key={c.slug} className="m-0 p-0">
+                    <Link
+                      to="/textbook/$chapterSlug"
+                      params={{ chapterSlug: c.slug }}
+                      role="menuitem"
+                      className={clsx(
+                        'grid grid-cols-[34px_1fr] items-baseline gap-md py-[10px] px-md rounded-3 no-underline transition-colors',
+                        activeChapter === c.slug
+                          ? 'text-accent bg-accent-soft'
+                          : 'text-color-4 hover:bg-bg-card-hover',
+                      )}
+                    >
+                      <span className={clsx(
+                        'font-3 text-[12px] text-right tabular-nums',
+                        activeChapter === c.slug ? 'text-accent' : 'text-text-muted',
+                      )}>{c.number}</span>
+                      <span className="font-1 text-[14px] leading-[1.35]">{c.title}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
         <Link
           to="/reference"
           className={clsx('nav-pill-divider', pathname === '/reference' && 'nav-pill-active')}

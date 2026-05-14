@@ -13,6 +13,7 @@ import {
   onProgressChange,
   type ProgressState,
 } from '@/lib/progress';
+import '@/styles/tracks.css';
 
 export const Route = createFileRoute('/tracks')({
   component: TracksPage,

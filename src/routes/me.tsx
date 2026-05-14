@@ -20,6 +20,7 @@ import {
 } from '@/lib/progress';
 import { BadgeShelf } from '@/components/BadgeShelf';
 import { BADGES } from '@/textbook/data/badges';
+import '@/styles/me.css';
 
 export const Route = createFileRoute('/me')({
   component: MePage,

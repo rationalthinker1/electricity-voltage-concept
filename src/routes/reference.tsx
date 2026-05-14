@@ -12,13 +12,13 @@ function Reference() {
   return (
     <>
       <section className="book-hero">
-        <div className="imprint">Appendix · Equation labs + sandbox</div>
+        <div className="imprint">Appendix · Equation labs + sandboxes</div>
         <h1>The <em>equations</em>, one at a time.</h1>
         <p className="lede">
-          Sixteen interactive equation labs plus a circuit-builder sandbox. Each lab has full sliders,
+          Sixteen interactive equation labs plus integrated system sandboxes. Each lab has full sliders,
           live readouts, a visualization, a long-form math walkthrough, and a per-page sources block.
-          The sandbox is a free-form schematic editor: drop components, wire them up, watch the MNA
-          solver run live.
+          The sandboxes stitch multiple chapters together: circuits, house wiring, motors, EVs, grids,
+          RF links, and power supplies.
         </p>
         <p className="lede" style={{ marginTop: 22 }}>
           Reading the textbook chapters? These are linked from inside each chapter as "Go deeper" pages. You can also
@@ -100,7 +100,7 @@ function Reference() {
 
       <footer>
         <div className="colophon">
-          <span>Field · Theory · Equation appendix · 16 labs</span>
+          <span>Field · Theory · Equation appendix · labs + sandboxes</span>
           <span>
             <Link to="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
               ↑ Back to chapters

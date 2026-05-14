@@ -175,7 +175,7 @@
   --font-4: var(--font-4);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* * { box-sizing: border-box; margin: 0; padding: 0; } */
 html { scroll-behavior: smooth; }
 
 body {
@@ -469,7 +469,7 @@ body::before {
   }
 
   /* — Lists, dividers, sections — */
-  .list-divided { @apply border-t border-border; }
+  .list-divided { @apply border-t border-border py-2; }
   .list-divided > * + * { @apply border-t border-border; }
 
   /* — Disclosure aliases (no numeric suffix) — */

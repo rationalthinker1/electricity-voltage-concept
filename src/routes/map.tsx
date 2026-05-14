@@ -2,6 +2,7 @@ import { Link, createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 
 import { CHAPTERS, type ChapterEntry, type ChapterSlug } from '@/textbook/data/chapters';
+import '@/styles/map.css';
 
 export const Route = createFileRoute('/map')({
   component: MapPage,

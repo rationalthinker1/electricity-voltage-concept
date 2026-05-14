@@ -1,0 +1,493 @@
+/* /capstones — capstone integration projects */
+
+.capstones-page {
+  padding: 140px 40px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.capstones-header { margin-bottom: 32px; }
+.capstones-eyebrow {
+  font-family: var(--font-3);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  margin-bottom: 12px;
+}
+.capstones-page h1 {
+  font-family: var(--font-2);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 52px;
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  color: var(--color-4);
+  margin: 0 0 14px;
+}
+.capstones-page h1 em {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 400;
+}
+.capstones-lede {
+  font-family: var(--font-1);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-5);
+  max-width: 720px;
+}
+
+.capstones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
+  margin-top: 28px;
+}
+.capstones-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform .15s ease;
+}
+.capstones-card-link:hover {
+  transform: translateY(-2px);
+}
+.capstones-card {
+  height: 100%;
+}
+.capstones-card-num {
+  font-family: var(--font-3);
+  font-size: 11px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  margin-bottom: 10px;
+}
+.capstones-card-title {
+  font-family: var(--font-2);
+  font-style: italic;
+  font-size: 26px;
+  line-height: 1.18;
+  margin: 0 0 8px;
+  color: var(--color-4);
+}
+.capstones-card-sub {
+  font-family: var(--font-1);
+  font-size: 14px;
+  color: var(--color-5);
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+.capstones-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.capstones-card-cta {
+  font-family: var(--font-3);
+  font-size: 12px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+
+.capstones-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.capstones-back {
+  font-family: var(--font-3);
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  text-decoration: none;
+}
+.capstones-back:hover { color: var(--accent); }
+
+/* ─── individual capstone page ─── */
+
+.capstone-page {
+  padding: 130px 40px 80px;
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.capstone-hero {
+  margin-bottom: 48px;
+}
+.capstone-eyebrow {
+  font-family: var(--font-3);
+  font-size: 11px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  margin-bottom: 14px;
+}
+.capstone-title {
+  font-family: var(--font-2);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 48px;
+  line-height: 1.08;
+  letter-spacing: -.02em;
+  color: var(--color-4);
+  margin: 0 0 8px;
+}
+.capstone-subtitle {
+  font-family: var(--font-2);
+  font-size: 20px;
+  color: var(--color-5);
+  margin: 0 0 20px;
+  font-style: italic;
+}
+.capstone-intro {
+  font-family: var(--font-1);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--color-4);
+  margin-bottom: 24px;
+}
+.capstone-intro p {
+  margin: 0 0 14px;
+}
+.capstone-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.capstone-chips {
+  margin-top: 18px;
+  padding: 14px 16px;
+  background: var(--color-2);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-6);
+}
+.capstone-chips-label {
+  font-family: var(--font-3);
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  margin-bottom: 8px;
+}
+.capstone-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.capstone-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  background: var(--card-1-bg);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-3);
+  font-size: 11px;
+  color: var(--color-5);
+  text-decoration: none;
+  letter-spacing: .04em;
+  transition: border-color .12s ease, color .12s ease;
+}
+.capstone-chip:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ─── steps ─── */
+
+.capstone-steps {
+  margin-bottom: 40px;
+}
+.capstone-steps-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.capstone-steps-head h2 {
+  font-family: var(--font-2);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 32px;
+  color: var(--color-4);
+  margin: 0;
+}
+.capstone-reset {
+  background: transparent;
+  border: 1px solid var(--border-2);
+  color: var(--text-muted);
+  font-family: var(--font-3);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  padding: 6px 12px;
+  border-radius: var(--radius-4);
+  cursor: pointer;
+  transition: color .12s ease, border-color .12s ease;
+}
+.capstone-reset:hover { color: var(--accent); border-color: var(--accent); }
+
+.capstone-step-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.capstone-step {
+  position: relative;
+}
+.capstone-step-done .capstone-step-card {
+  border-color: var(--teal);
+}
+.capstone-step-card {
+  /* re-uses .ui-card styles, just tightening up */
+}
+
+.capstone-step-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: baseline;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.capstone-step-num {
+  font-family: var(--font-3);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+.capstone-step-title {
+  font-family: var(--font-2);
+  font-style: italic;
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--color-4);
+  margin: 0;
+  line-height: 1.2;
+}
+.capstone-step-done-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-3);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  cursor: pointer;
+  user-select: none;
+}
+.capstone-step-done-toggle input[type="checkbox"] {
+  accent-color: var(--teal);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+.capstone-step-done .capstone-step-done-toggle { color: var(--teal); }
+
+.capstone-step-problem {
+  font-family: var(--font-1);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--color-4);
+}
+.capstone-step-problem p { margin: 0 0 12px; }
+.capstone-step-problem ul,
+.capstone-step-problem ol {
+  margin: 8px 0 12px;
+  padding-left: 22px;
+}
+.capstone-step-problem li { margin: 4px 0; }
+
+.capstone-step-hint {
+  margin: 14px 0;
+  padding: 10px 14px;
+  background: var(--color-2);
+  border-left: 3px solid var(--teal);
+  border-radius: var(--radius-3);
+  font-family: var(--font-1);
+  font-size: 14px;
+  color: var(--color-5);
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+.capstone-step-hint-tag {
+  font-family: var(--font-3);
+  font-size: 10px;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+
+.capstone-step-reveal {
+  margin: 12px 0 0;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-3);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  padding: 8px 14px;
+  border-radius: var(--radius-4);
+  cursor: pointer;
+  transition: background .12s ease;
+}
+.capstone-step-reveal:hover { background: var(--accent-soft); }
+
+.capstone-step-solution {
+  margin-top: 16px;
+  padding: 16px 18px;
+  background: var(--color-2);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-3);
+  font-family: var(--font-1);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--color-4);
+}
+.capstone-step-solution p { margin: 0 0 12px; }
+.capstone-step-solution ul,
+.capstone-step-solution ol {
+  margin: 8px 0 12px;
+  padding-left: 22px;
+}
+.capstone-step-solution li { margin: 4px 0; }
+
+/* ─── stretch ─── */
+
+.capstone-stretch {
+  margin: 40px 0;
+}
+.capstone-stretch-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.capstone-stretch-tag {
+  font-family: var(--font-3);
+  font-size: 10px;
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  padding: 3px 8px;
+  border: 1px solid var(--blue);
+  border-radius: var(--radius-3);
+}
+.capstone-stretch-head h3 {
+  font-family: var(--font-2);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 22px;
+  color: var(--color-4);
+  margin: 0;
+  line-height: 1.25;
+}
+.capstone-stretch-body {
+  font-family: var(--font-1);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--color-4);
+}
+.capstone-stretch-problem p,
+.capstone-stretch-solution p {
+  margin: 0 0 12px;
+}
+.capstone-stretch-problem ul,
+.capstone-stretch-problem ol,
+.capstone-stretch-solution ul,
+.capstone-stretch-solution ol {
+  margin: 8px 0 12px;
+  padding-left: 22px;
+}
+
+.capstone-stretch-reveal {
+  margin-top: 12px;
+}
+.capstone-stretch-reveal summary {
+  cursor: pointer;
+  font-family: var(--font-3);
+  font-size: 12px;
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  padding: 8px 0;
+  list-style: none;
+}
+.capstone-stretch-reveal summary::-webkit-details-marker { display: none; }
+.capstone-stretch-reveal summary:hover { color: var(--accent); }
+.capstone-stretch-solution {
+  margin-top: 10px;
+  padding: 14px 16px;
+  background: var(--card-1-bg);
+  border-radius: var(--radius-3);
+}
+
+/* ─── sources + nav ─── */
+
+.capstone-sources {
+  margin: 40px 0 24px;
+}
+
+.capstone-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 30px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+.capstone-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-5);
+  background: var(--color-2);
+  text-decoration: none;
+  transition: border-color .12s ease, background .12s ease;
+}
+.capstone-nav-link:hover {
+  border-color: var(--accent);
+  background: var(--card-1-bg);
+}
+.capstone-nav-link-next { text-align: right; }
+.capstone-nav-dir {
+  font-family: var(--font-3);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+.capstone-nav-title {
+  font-family: var(--font-1);
+  font-size: 14px;
+  color: var(--color-4);
+}
+
+@media (max-width: 700px) {
+  .capstones-page,
+  .capstone-page { padding: 120px 18px 60px; }
+  .capstones-page h1,
+  .capstone-title { font-size: 34px; }
+  .capstone-step-head { grid-template-columns: 1fr; gap: 6px; }
+  .capstone-step-done-toggle { justify-self: start; }
+  .capstone-nav { grid-template-columns: 1fr; }
+  .capstone-nav-link-next { text-align: left; }
+}

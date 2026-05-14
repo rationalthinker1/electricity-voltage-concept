@@ -26,6 +26,8 @@ const LAB_MODULES: Record<string, ReturnType<typeof lazy>> = {
   'motor-drive':     lazy(() => import('@/labs/MotorDriveLab')),
   'ev-bench':        lazy(() => import('@/labs/EVBenchLab')),
   'power-grid':      lazy(() => import('@/labs/PowerGridLab')),
+  'rf-link':         lazy(() => import('@/labs/RFLinkLab')),
+  'power-supply':    lazy(() => import('@/labs/PowerSupplyLab')),
 };
 
 

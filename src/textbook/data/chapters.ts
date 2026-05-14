@@ -491,7 +491,7 @@ export const CHAPTERS: ChapterEntry[] = [
     subtitle: 'Frequency, gain, and the moment a wire stops being a single node.',
     blurb:
       "The frequency-domain and active-circuit sequel to Ch.12. Transfer functions and Bode plots compress a filter's behaviour to two straight lines; op-amps in negative feedback turn every linear gain block into a two-resistor problem; transmission lines hand off from lumped analysis when the line length crosses ~λ/10. Together: the working analog engineer's toolkit.",
-    relatedLabs: ['capacitance', 'inductance', 'poynting'],
+    relatedLabs: ['capacitance', 'inductance', 'poynting', 'rf-link'],
     sources: [
       'horowitz-hill-2015', 'oppenheim-willsky-1997', 'sedra-smith-2014',
       'widlar-1965', 'pozar-2011', 'johnson-graham-1993',
@@ -569,7 +569,7 @@ export const CHAPTERS: ChapterEntry[] = [
     subtitle: 'How field becomes radio.',
     blurb:
       'Push current up and down a wire and the field around it propagates outward — that current carries information to anyone with a matching wire and a receiver. From the dipole pattern (sin²θ) through Yagis and parabolas to phased arrays and Friis transmission. Everything from your Wi-Fi to GPS to the Cosmic Microwave Background hangs on this physics.',
-    relatedLabs: ['poynting', 'energy-density', 'biot-savart'],
+    relatedLabs: ['poynting', 'energy-density', 'biot-savart', 'rf-link'],
     sources: [
       'maxwell-1865', 'hertz-1888', 'feynman-II-21', 'griffiths-2017',
       'jackson-1999', 'balanis-2016', 'friis-1946', 'yagi-1928',
@@ -620,7 +620,7 @@ export const CHAPTERS: ChapterEntry[] = [
     subtitle: 'The same machine, run backwards.',
     blurb:
       "Spin a magnet past a coil and EMF appears. The synchronous generator that does this 3000 times a minute is sitting at the bottom of every dam, behind every turbine, on the shaft of every car alternator. Three of them on a shaft give you 3-phase; ten thousand of them tied together give you the continental grid.",
-    relatedLabs: ['faraday', 'inductance'],
+    relatedLabs: ['faraday', 'inductance', 'power-supply'],
     sources: [
       'faraday-1832', 'feynman-II-17', 'griffiths-2017',
       'grainger-power-systems-2003', 'fitzgerald-kingsley-umans-2014',
@@ -701,7 +701,7 @@ export const CHAPTERS: ChapterEntry[] = [
     subtitle: 'AC to DC, DC to AC, and the silicon that makes the swap.',
     blurb:
       "Your wall outlet is AC. Every chip in your laptop wants DC. Your roof's solar panel produces DC; the grid wants AC. The two-way bridge between them is power electronics — diode rectifiers (1904 onward), SCRs (1957), the buck/boost/flyback topologies that hide inside every wall-wart, and the grid-tie inverter that pushes your panels onto the 60 Hz line. We trace the path of energy through each of these.",
-    relatedLabs: ['rc-circuit', 'capacitance'],
+    relatedLabs: ['power-supply', 'capacitance', 'circuit-builder'],
     sources: [
       'fleming-1904', 'shockley-1949', 'moll-tanenbaum-goldey-holonyak-1956',
       'mohan-undeland-robbins-2003', 'erickson-maksimovic-2020',
@@ -949,7 +949,7 @@ export const CHAPTERS: ChapterEntry[] = [
     subtitle: 'The seven conversions that get 1 V to your CPU.',
     blurb:
       "Follow the power inside your laptop charger and laptop. Wall AC → C13 → input filter → bridge rectifier → bulk cap → flyback transformer at ~100 kHz → secondary rectifier → 20 V DC → cable → power-delivery negotiation → buck converter to 5 V/3.3 V/1.8 V/1.1 V → on-die LDOs to 0.8 V at the CPU rail. Every chapter of this textbook converges on the inside of one cable.",
-    relatedLabs: ['joule', 'capacitance', 'inductance', 'circuit-builder'],
+    relatedLabs: ['joule', 'capacitance', 'inductance', 'circuit-builder', 'power-supply'],
     sources: [
       'erickson-maksimovic-2020', 'horowitz-hill-2015',
       'usb-pd-r3', 'sedra-smith-2014', 'codata-2018',
