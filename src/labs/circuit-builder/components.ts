@@ -17,8 +17,17 @@ export const GRID_PX = 20;
 /** Half-thickness of the "body" of a component perpendicular to its axis. */
 const BODY_HALF = 10;
 
-import type { ThemeColors } from '@/lib/canvasTheme';
-export type { ThemeColors };
+const COLOR = {
+  body:    'rgba(20, 20, 24, 0.96)',
+  stroke:  '#a09e95',
+  strokeHi: '#ecebe5',
+  accent:  '#ff6b2a',
+  teal:    '#6cc5c2',
+  pink:    '#ff3b6e',
+  blue:    '#5baef8',
+  muted:   '#5b5953',
+  glow:    'rgba(255,107,42,0.5)',
+};
 
 interface DrawCtx {
   ctx: CanvasRenderingContext2D;
@@ -35,15 +44,13 @@ interface DrawCtx {
   voltage: number;
   /** Optional brightness override for bulbs (computed in lab). */
   brightness?: number;
-  /** Theme-aware colors. */
-  colors: ThemeColors;
 }
 
 /** Set stroke style based on selected/hovered/current. */
 function strokeForState(ctx: CanvasRenderingContext2D, st: DrawCtx) {
-  if (st.selected) ctx.strokeStyle = st.colors.accent;
-  else if (st.hovered) ctx.strokeStyle = st.colors.strokeHi;
-  else ctx.strokeStyle = st.colors.stroke;
+  if (st.selected) ctx.strokeStyle = COLOR.accent;
+  else if (st.hovered) ctx.strokeStyle = COLOR.strokeHi;
+  else ctx.strokeStyle = COLOR.stroke;
   ctx.lineWidth = 1.7;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
@@ -55,7 +62,7 @@ function drawBody(
   p0: { x: number; y: number }, p1: { x: number; y: number },
   innerHalf: number,
   bodyHalfLen: number,
-  fill: boolean | string = true,
+  fill = true,
 ) {
   const ax = p1.x - p0.x;
   const ay = p1.y - p0.y;
@@ -73,7 +80,7 @@ function drawBody(
   ctx.lineTo(cx - hx + wx, cy - hy + wy);
   ctx.closePath();
   if (fill) {
-    ctx.fillStyle = fill === true ? '#16161a' : (fill as string);
+    ctx.fillStyle = COLOR.body;
     ctx.fill();
   }
   ctx.stroke();
@@ -116,7 +123,7 @@ function drawResistor(st: DrawCtx) {
   // Leads
   drawLeads(ctx, p0, p1, bodyHalf);
   // Hidden background body for hit-area visibility
-  drawBody(ctx, p0, p1, BODY_HALF, bodyHalf, st.colors.body);
+  drawBody(ctx, p0, p1, BODY_HALF, bodyHalf, true);
   // Zig-zag
   ctx.beginPath();
   const zigCount = 6;
@@ -136,7 +143,7 @@ function drawResistor(st: DrawCtx) {
 /* ───────── Battery ───────── */
 function drawBattery(st: DrawCtx) {
   if (!st.p1) return;
-  const { ctx, p0, p1, colors } = st;
+  const { ctx, p0, p1 } = st;
   strokeForState(ctx, st);
   const ax = p1.x - p0.x;
   const ay = p1.y - p0.y;
@@ -158,13 +165,13 @@ function drawBattery(st: DrawCtx) {
   ctx.stroke();
   // Positive plate (pin1 side)
   const posCx = cx + ux * 4, posCy = cy + uy * 4;
-  ctx.strokeStyle = st.selected ? colors.accent : colors.pink;
+  ctx.strokeStyle = st.selected ? COLOR.accent : COLOR.pink;
   ctx.beginPath();
   ctx.moveTo(posCx + nx * longHalf, posCy + ny * longHalf);
   ctx.lineTo(posCx - nx * longHalf, posCy - ny * longHalf);
   ctx.stroke();
   // Label "+" and "−"
-  ctx.fillStyle = colors.stroke;
+  ctx.fillStyle = COLOR.stroke;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.fillText('−', negCx + nx * (shortHalf + 8), negCy + ny * (shortHalf + 8));
@@ -174,16 +181,16 @@ function drawBattery(st: DrawCtx) {
 /* ───────── AC source ───────── */
 function drawAC(st: DrawCtx) {
   if (!st.p1) return;
-  const { ctx, p0, p1, colors } = st;
+  const { ctx, p0, p1 } = st;
   strokeForState(ctx, st);
   drawLeads(ctx, p0, p1, 12);
   const cx = (p0.x + p1.x) / 2;
   const cy = (p0.y + p1.y) / 2;
   // Circle
-  ctx.fillStyle = colors.body;
+  ctx.fillStyle = COLOR.body;
   ctx.beginPath(); ctx.arc(cx, cy, 12, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   // Sine inside
-  ctx.strokeStyle = colors.teal;
+  ctx.strokeStyle = COLOR.teal;
   ctx.lineWidth = 1.3;
   ctx.beginPath();
   for (let i = -8; i <= 8; i++) {
@@ -248,7 +255,7 @@ function drawInductor(st: DrawCtx) {
 /* ───────── Diode ───────── */
 function drawDiode(st: DrawCtx) {
   if (!st.p1) return;
-  const { ctx, p0, p1, colors } = st;
+  const { ctx, p0, p1 } = st;
   strokeForState(ctx, st);
   drawLeads(ctx, p0, p1, 9);
   const ax = p1.x - p0.x, ay = p1.y - p0.y;
@@ -260,7 +267,7 @@ function drawDiode(st: DrawCtx) {
   const tipX = cx + ux * 7, tipY = cy + uy * 7;
   const baseLx = cx - ux * 7 + nx * 8, baseLy = cy - uy * 7 + ny * 8;
   const baseRx = cx - ux * 7 - nx * 8, baseRy = cy - uy * 7 - ny * 8;
-  ctx.fillStyle = colors.body;
+  ctx.fillStyle = COLOR.body;
   ctx.beginPath();
   ctx.moveTo(tipX, tipY);
   ctx.lineTo(baseLx, baseLy);
@@ -292,7 +299,7 @@ function drawBulb(st: DrawCtx) {
     ctx.beginPath(); ctx.arc(cx, cy, 30, 0, Math.PI * 2); ctx.fill();
   }
   // Circle.
-  ctx.fillStyle = st.colors.body;
+  ctx.fillStyle = COLOR.body;
   ctx.beginPath(); ctx.arc(cx, cy, 13, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   // X inside (filament).
   ctx.beginPath();
@@ -305,7 +312,7 @@ function drawBulb(st: DrawCtx) {
 /* ───────── Switch ───────── */
 function drawSwitch(st: DrawCtx, open: boolean) {
   if (!st.p1) return;
-  const { ctx, p0, p1, colors } = st;
+  const { ctx, p0, p1 } = st;
   strokeForState(ctx, st);
   drawLeads(ctx, p0, p1, 10);
   const ax = p1.x - p0.x, ay = p1.y - p0.y;
@@ -316,7 +323,7 @@ function drawSwitch(st: DrawCtx, open: boolean) {
   // Two contact dots.
   const lx = cx - ux * 8, ly = cy - uy * 8;
   const rx = cx + ux * 8, ry = cy + uy * 8;
-  ctx.fillStyle = colors.body;
+  ctx.fillStyle = COLOR.body;
   ctx.beginPath(); ctx.arc(lx, ly, 2.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   ctx.beginPath(); ctx.arc(rx, ry, 2.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   // Hinge from lx,ly: either straight to rx,ry (closed) or lifted (open).
@@ -368,7 +375,7 @@ export function drawComponent(c: PlacedComponent, st: DrawCtx) {
     const cy = (st.p0.y + st.p1.y) / 2;
     const dy = Math.abs(st.p1.x - st.p0.x) > Math.abs(st.p1.y - st.p0.y) ? 24 : 0;
     const dx = Math.abs(st.p1.x - st.p0.x) > Math.abs(st.p1.y - st.p0.y) ? 0 : 24;
-    st.ctx.fillStyle = st.colors.muted;
+    st.ctx.fillStyle = COLOR.muted;
     st.ctx.font = '10px "JetBrains Mono", monospace';
     st.ctx.textAlign = 'center';
     st.ctx.textBaseline = 'middle';
@@ -407,112 +414,6 @@ function fmtH(v: number): string {
   if (v >= 1) return v.toPrecision(3) + ' H';
   if (v >= 1e-3) return (v * 1e3).toPrecision(3) + ' mH';
   return (v * 1e6).toPrecision(3) + ' µH';
-}
-
-export interface TooltipInfo {
-  title: string;
-  description: string;
-  formula: string;
-  behavior: string;
-}
-
-/** Rich tooltip content for palette buttons and canvas hover. */
-export function kindTooltip(
-  k: PlacedComponent['kind'] | 'wire' | 'voltmeter' | 'ammeter' | 'cursor',
-): TooltipInfo {
-  switch (k) {
-    case 'battery':
-      return {
-        title: 'Battery (DC)',
-        description: 'An ideal voltage source that maintains a constant potential difference between its terminals.',
-        formula: 'V = constant',
-        behavior: 'Supplies fixed voltage regardless of current. Positive terminal is pink; negative is gray.',
-      };
-    case 'ac':
-      return {
-        title: 'AC Source',
-        description: 'A time-varying voltage source that oscillates sinusoidally.',
-        formula: 'V(t) = V₀ sin(2πft)',
-        behavior: 'Voltage swings positive and negative at the set frequency and amplitude.',
-      };
-    case 'resistor':
-      return {
-        title: 'Resistor',
-        description: 'Dissipates electrical energy as heat; opposes the flow of current.',
-        formula: 'V = IR    P = I²R',
-        behavior: 'Current is proportional to the voltage across it. Ohm\'s law at work.',
-      };
-    case 'capacitor':
-      return {
-        title: 'Capacitor',
-        description: 'Stores energy in an electric field between two conductive plates.',
-        formula: 'Q = CV    i = C dV/dt',
-        behavior: 'Blocks DC after charging, passes AC. Voltage cannot change instantaneously.',
-      };
-    case 'inductor':
-      return {
-        title: 'Inductor',
-        description: 'Stores energy in a magnetic field generated by current through a coil.',
-        formula: 'V = L dI/dt',
-        behavior: 'Opposes changes in current. Current cannot change instantaneously.',
-      };
-    case 'diode':
-      return {
-        title: 'Diode',
-        description: 'Allows current to flow in one direction only, blocking reverse voltage.',
-        formula: 'I = Iₛ(e^{qV/kT} − 1)',
-        behavior: 'Modeled as 0.7 V drop when forward-biased, open circuit when reverse-biased.',
-      };
-    case 'bulb':
-      return {
-        title: 'Bulb',
-        description: 'A resistive filament that emits light proportional to power dissipation.',
-        formula: 'P = I²R    Brightness ∝ P',
-        behavior: 'Glows brighter as more current passes through. Acts like a temperature-dependent resistor.',
-      };
-    case 'switch':
-      return {
-        title: 'Switch',
-        description: 'A mechanical break in a circuit that can open or close a conductive path.',
-        formula: 'R ≈ 0 (closed)    R → ∞ (open)',
-        behavior: 'Toggle open/closed in the inspector. Closed is a near-short; open is a near-open.',
-      };
-    case 'ground':
-      return {
-        title: 'Ground',
-        description: 'Reference node defined as 0 V. The solver requires at least one ground.',
-        formula: 'V = 0',
-        behavior: 'Every circuit needs one ground node as the voltage reference. Place at least one.',
-      };
-    case 'wire':
-      return {
-        title: 'Wire',
-        description: 'An ideal zero-resistance connection between two nodes.',
-        formula: 'R = 0    V₁ = V₂',
-        behavior: 'Click two pins to connect them. Wires enforce the same voltage at both ends.',
-      };
-    case 'voltmeter':
-      return {
-        title: 'Voltmeter Probe',
-        description: 'Measures the electric potential at a node relative to ground.',
-        formula: 'Reading = V_node − V_ground',
-        behavior: 'Click any node to place. The value appears in the Probes panel and on the canvas.',
-      };
-    case 'ammeter':
-      return {
-        title: 'Ammeter Probe',
-        description: 'Measures the current flowing through a specific component.',
-        formula: 'Reading = I_component',
-        behavior: 'Click a component to attach. Positive sign means current flows pin 0 → pin 1.',
-      };
-    case 'cursor':
-      return {
-        title: 'Select',
-        description: 'Select, drag, and inspect components.',
-        formula: '—',
-        behavior: 'Click a component to select it. Drag to move. Press Delete to remove. Double-click a switch to toggle.',
-      };
-  }
 }
 
 /** Human-readable display name for the palette / inspector header. */

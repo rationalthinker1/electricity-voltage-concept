@@ -96,7 +96,7 @@ export default function BiotSavartLab() {
   }, [I, L_mm, probe]);
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
+    const { ctx, w, h, canvas } = info;
     let raf = 0;
     let dragging = false;
 
@@ -152,7 +152,7 @@ export default function BiotSavartLab() {
 
     function draw() {
       const { I, L_mm, probe } = stateRef.current;
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Faint guide grid
@@ -192,7 +192,7 @@ export default function BiotSavartLab() {
       const arrowScale = Math.min(80 / Math.max(totalMag, 1e-6), 8e5);
 
       // r̂ rays
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
       ctx.lineWidth = 1;
       for (const c of contribs) {
         ctx.beginPath();
@@ -253,7 +253,7 @@ export default function BiotSavartLab() {
       ctx.lineWidth = 1.6;
       ctx.strokeRect(segX1, segCy - 8, lengthPx, 16);
       // Arrowhead → current direction
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = '#ff3b6e';
       const arrowSize = 16;
       const arrowCx = segCx + 4;
       ctx.beginPath();
@@ -262,7 +262,7 @@ export default function BiotSavartLab() {
       ctx.lineTo(arrowCx - arrowSize / 2, segCy + arrowSize / 2);
       ctx.closePath(); ctx.fill();
       // Segment label
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -274,7 +274,7 @@ export default function BiotSavartLab() {
       ctx.fillStyle = 'rgba(10,10,11,0.9)';
       ctx.beginPath(); ctx.arc(probeX, probeY, 11, 0, Math.PI * 2);
       ctx.fill(); ctx.stroke();
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = 'bold 10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('P', probeX, probeY);

@@ -12,15 +12,13 @@ interface FAQItemProps {
  */
 export function FAQItem({ q, children }: FAQItemProps) {
   return (
-    <details className="disclosure-base">
-      <summary className="disclosure-summary group">
-        <span className="disclosure-marker text-color-accent">Q.</span>
-        <span className="disclosure-title group-hover:text-color-accent">{q}</span>
-        <span className="disclosure-chev text-color-accent" aria-hidden>+</span>
+    <details className="disclosure-1">
+      <summary className="disclosure-summary-1">
+        <span className="disclosure-marker-1 accent-brand">Q.</span>
+        <span className="disclosure-title-1">{q}</span>
+        <span className="disclosure-chev-1 accent-brand" aria-hidden>+</span>
       </summary>
-      <div className="pb-[22px] pl-[42px] text-color-text-dim text-[15.5px] leading-[1.65] max-[600px]:pl-[28px] max-[600px]:text-[14.5px]">
-        {children}
-      </div>
+      <div className="richtext-compact-1">{children}</div>
     </details>
   );
 }
@@ -41,11 +39,10 @@ interface FAQProps {
  */
 export function FAQ({ eyebrow = 'Frequently asked', intro, children }: FAQProps) {
   return (
-    <section className="section-reveal max-w-[70ch] mx-auto mt-[100px] mb-0 pt-[36px] border-t border-color-border-strong">
-      <div className="text-meta text-color-accent mb-[18px] flex items-center gap-[14px] before:content-[''] before:w-[36px] before:h-[1px] before:bg-color-accent">{eyebrow}</div>
-      {intro && <p className="text-color-text-dim text-[15px] leading-[1.55] mb-[28px] italic max-w-[55ch]">{intro}</p>}
-      <div className="list-divided">{children}</div>
+    <section className="section-narrow-1">
+      <div className="eyebrow-rule-1 accent-brand">{eyebrow}</div>
+      {intro && <p className="intro-1">{intro}</p>}
+      <div className="list-divided-1">{children}</div>
     </section>
   );
 }
-

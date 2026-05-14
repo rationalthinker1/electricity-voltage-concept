@@ -15,7 +15,6 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -47,7 +46,7 @@ export function VariableResistorsDemo({ figure }: Props) {
     function draw() {
       const { wiper, lux } = stateRef.current;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       // ──────── LEFT: Potentiometer ────────
@@ -61,7 +60,7 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.fillStyle = 'rgba(190,160,140,0.32)';
       roundRect(ctx, trackL, trackY - trackH / 2, trackR - trackL, trackH, 4);
       ctx.fill();
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
       ctx.stroke();
 
       // Resistive material texture (faint diagonal hatches)
@@ -80,9 +79,9 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.restore();
 
       // Terminals A (left) and B (right)
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = '#5baef8';
       ctx.fillRect(trackL - 14, trackY - 4, 12, 8);
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.fillRect(trackR + 2, trackY - 4, 12, 8);
 
       // Wire down from terminals to "leads"
@@ -93,7 +92,7 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.moveTo(trackR + 8, trackY + 4); ctx.lineTo(trackR + 8, H - 16);
       ctx.stroke();
 
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('A', trackL - 8, H - 4);
@@ -109,7 +108,7 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.lineTo(wiperX, trackY - trackH / 2 - 2);
       ctx.stroke();
       // Wiper contact ball
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.beginPath();
       ctx.arc(wiperX, trackY - trackH / 2 - 2, 6, 0, Math.PI * 2);
       ctx.fill();
@@ -119,28 +118,28 @@ export function VariableResistorsDemo({ figure }: Props) {
       // Wiper terminal W (top)
       ctx.fillStyle = '#ffb84a';
       ctx.fillRect(wiperX - 6, trackY - 36, 12, 8);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText('W (wiper)', wiperX, trackY - 42);
 
       // R_AW / R_WB labels
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = 'rgba(91,174,248,0.85)';
       ctx.textAlign = 'left';
       ctx.fillText(`R_AW`, trackL, trackY + 28);
       ctx.fillText(fmtOhms(R_TOTAL * (1 - wiper)), trackL, trackY + 42);
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.85)';
       ctx.textAlign = 'right';
       ctx.fillText(`R_WB`, trackR, trackY + 28);
       ctx.fillText(fmtOhms(R_TOTAL * wiper), trackR, trackY + 42);
 
       // Title
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText(`POTENTIOMETER — R_total = ${(R_TOTAL / 1e3).toFixed(0)} kΩ`, trackL, 8);
 
       // ──────── Divider ────────
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.beginPath(); ctx.moveTo(splitX, 0); ctx.lineTo(splitX, H); ctx.stroke();
 
       // ──────── RIGHT: LDR ────────
@@ -204,14 +203,14 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.stroke();
 
       // Lux label
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`${lux.toFixed(lux < 10 ? 1 : 0)} lux`, ldrCX, ldrCY - pH / 2 - 36);
       ctx.fillText(`R = ${fmtOhms(R_LDR)}`, ldrCX, ldrCY + pH / 2 + 22);
 
       // Title
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

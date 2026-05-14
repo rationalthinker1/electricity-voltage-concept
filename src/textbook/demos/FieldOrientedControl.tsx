@@ -38,7 +38,7 @@ export function FieldOrientedControlDemo({ figure }: Props) {
   }, [iqRef, idRef]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let t0 = performance.now();
 
@@ -48,7 +48,7 @@ export function FieldOrientedControlDemo({ figure }: Props) {
 
       const { iqRef, idRef } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padT = 18, padB = 18, padL = 16, padR = 16;
@@ -78,15 +78,15 @@ export function FieldOrientedControlDemo({ figure }: Props) {
 
       // ------- Left panel: i_a, i_b, i_c ----------
       const x0L = padL, y0 = padT;
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(x0L, y0, colW, plotH);
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
       for (let g = 1; g < 4; g++) {
         const yg = y0 + (g / 4) * plotH;
         ctx.beginPath(); ctx.moveTo(x0L, yg); ctx.lineTo(x0L + colW, yg); ctx.stroke();
       }
       // Zero line
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
       ctx.beginPath();
       ctx.moveTo(x0L, y0 + plotH / 2); ctx.lineTo(x0L + colW, y0 + plotH / 2);
       ctx.stroke();
@@ -109,27 +109,27 @@ export function FieldOrientedControlDemo({ figure }: Props) {
       }
 
       // Title
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('stator: i_a, i_b, i_c   (3-phase)', x0L + 6, y0 + 4);
 
       // ------- Right panel: i_d, i_q ----------
       const x0R = padL + colW + gap;
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(x0R, y0, colW, plotH);
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
       for (let g = 1; g < 4; g++) {
         const yg = y0 + (g / 4) * plotH;
         ctx.beginPath(); ctx.moveTo(x0R, yg); ctx.lineTo(x0R + colW, yg); ctx.stroke();
       }
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
       ctx.beginPath();
       ctx.moveTo(x0R, y0 + plotH / 2); ctx.lineTo(x0R + colW, y0 + plotH / 2);
       ctx.stroke();
 
       // i_d (flat) — pink
-      ctx.strokeStyle = colors.pink;
+      ctx.strokeStyle = '#ff3b6e';
       ctx.lineWidth = 2;
       ctx.beginPath();
       const yId = y0 + plotH / 2 - (idRef / aMax) * (plotH / 2 - 4);
@@ -144,14 +144,14 @@ export function FieldOrientedControlDemo({ figure }: Props) {
       ctx.stroke();
 
       // Labels right panel
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('rotor-aligned: i_d, i_q   (d-q frame)', x0R + 6, y0 + 4);
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.textAlign = 'right';
       ctx.fillText(`i_q = ${iqRef.toFixed(1)} A  (torque)`, x0R + colW - 6, yIq - 12);
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.fillText(`i_d = ${idRef.toFixed(1)} A  (flux)`, x0R + colW - 6, yId + 4);
 
       raf = requestAnimationFrame(draw);

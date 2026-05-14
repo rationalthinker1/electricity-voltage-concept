@@ -36,7 +36,7 @@ export function TwoSpeedsDemo({ figure }: Props) {
   const trackLength_m = 0.20;                   // 20 cm physical length
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     const padX = 60;
@@ -52,7 +52,7 @@ export function TwoSpeedsDemo({ figure }: Props) {
       const elapsedMs = now - startRef.current;
       tickRef.current = elapsedMs / 1000; // seconds (real wallclock)
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const yTop = h * 0.32;
@@ -85,7 +85,7 @@ export function TwoSpeedsDemo({ figure }: Props) {
       dot1.addColorStop(0, '#5baef8'); dot1.addColorStop(1, '#5baef800');
       ctx.fillStyle = dot1;
       ctx.beginPath(); ctx.arc(driftX, yTop, 18, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.blue;
+      ctx.fillStyle = '#5baef8';
       ctx.beginPath(); ctx.arc(driftX, yTop, 5, 0, Math.PI * 2); ctx.fill();
 
       // ── Signal pulse — would cross 200 mm in trackLength_m / v_signal = 1 ns.
@@ -106,7 +106,7 @@ export function TwoSpeedsDemo({ figure }: Props) {
       sigGrd.addColorStop(0, '#ff6b2a'); sigGrd.addColorStop(1, '#ff6b2a00');
       ctx.fillStyle = sigGrd;
       ctx.beginPath(); ctx.arc(sigX, yBot, 22, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.beginPath(); ctx.arc(sigX, yBot, 6, 0, Math.PI * 2); ctx.fill();
 
       // Re-render React-side readouts ~5×/s

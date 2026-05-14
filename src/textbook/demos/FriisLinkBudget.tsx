@@ -13,7 +13,6 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -43,7 +42,7 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
     let raf = 0;
     function draw() {
       const { Ptmw, GtDbi, GrDbi, fMHz, dM } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       const cy = H / 2;
@@ -81,29 +80,29 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       ctx.moveTo(txX, cy - 22); ctx.lineTo(txX, cy + 22);
       ctx.stroke();
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.textAlign = 'center';
       ctx.fillText(`TX · ${Ptmw.toFixed(0)} mW`, txX, cy + 40);
       ctx.fillText(`G_t = ${GtDbi.toFixed(1)} dBi`, txX, cy + 54);
 
       // Rx antenna
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.95)';
       ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.moveTo(rxX, cy - 22); ctx.lineTo(rxX, cy + 22);
       ctx.stroke();
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.95)';
       ctx.fillText(`RX`, rxX, cy + 40);
       ctx.fillText(`G_r = ${GrDbi.toFixed(1)} dBi`, rxX, cy + 54);
 
       // Distance label
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.moveTo(txX, cy); ctx.lineTo(rxX, cy);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText(`d = ${dM.toFixed(1)} m, f = ${fMHz.toFixed(0)} MHz, λ = ${(PHYS.c / (fMHz * 1e6) * 1000).toFixed(1)} mm`,
         (txX + rxX) / 2, cy - 14);
 

@@ -32,13 +32,13 @@ export function AreaVsResistanceDemo({ figure }: Props) {
   const R = L / (sigma * A_m2);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { Amm2 } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Wire thickness scales with sqrt(A) so visual width matches diameter
@@ -60,15 +60,15 @@ export function AreaVsResistanceDemo({ figure }: Props) {
       ctx.fillStyle = grd;
       roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, Math.min(10, thickness * 0.45));
       ctx.fill();
-      ctx.strokeStyle = colors.textDim;
+      ctx.strokeStyle = 'rgba(255,255,255,0.45)';
       ctx.lineWidth = 1;
       roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, Math.min(10, thickness * 0.45));
       ctx.stroke();
 
       // End caps
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.fillRect(wireLeft - 10, top - 4, 4, thickness + 8);
-      ctx.fillStyle = colors.blue;
+      ctx.fillStyle = '#5baef8';
       ctx.fillRect(wireRight + 6, top - 4, 4, thickness + 8);
 
       // Cross-section inset (right side)
@@ -77,7 +77,7 @@ export function AreaVsResistanceDemo({ figure }: Props) {
       const insetMaxR = Math.min(46, h / 2 - 30);
       const insetR = 8 + tFrac * (insetMaxR - 8);
 
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.arc(insetCX, insetCY, insetMaxR + 4, 0, Math.PI * 2);
@@ -87,20 +87,20 @@ export function AreaVsResistanceDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(insetCX, insetCY, insetR, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = colors.accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.85)';
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.arc(insetCX, insetCY, insetR, 0, Math.PI * 2);
       ctx.stroke();
 
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('cross-section', insetCX, insetCY + insetMaxR + 18);
       ctx.fillText(`${Amm2.toFixed(2)} mm²`, insetCX, insetCY + insetMaxR + 30);
 
       // Label
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText(`COPPER  ·  L = ${L.toFixed(1)} m`, wireLeft, 18);

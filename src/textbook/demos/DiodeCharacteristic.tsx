@@ -66,12 +66,12 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { V, T }; }, [V, T]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { V, T } = stateRef.current;
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 20, padT = 18, padB = 36;
@@ -86,7 +86,7 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
       const yOf = (i: number) => padT + plotH - ((i - Imin) / (Imax - Imin)) * plotH;
 
       // frame + axes
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(padL, padT, plotW, plotH);
       ctx.beginPath();
       ctx.moveTo(padL, yOf(0)); ctx.lineTo(padL + plotW, yOf(0));
@@ -106,7 +106,7 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
       ctx.restore();
 
       // gridlines (V every 1 V, I every 50 mA)
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
       ctx.beginPath();
       for (let v = Math.ceil(Vmin); v <= Math.floor(Vmax); v++) {
         const x = xOf(v);
@@ -168,7 +168,7 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
         const { color, label } = FAMILIES[kind];
         ctx.fillStyle = color;
         ctx.fillRect(legendX, lY + 3, 10, 2);
-        ctx.fillStyle = colors.text;
+        ctx.fillStyle = 'rgba(236,235,229,0.85)';
         ctx.fillText(label, legendX + 16, lY);
         lY += 14;
       });

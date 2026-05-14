@@ -52,11 +52,11 @@ export function RMSOfComplexWaveDemo() {
   const crestFactor = rmsNum > 0 ? peakNum / rmsNum : 0;
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     function draw() {
       const { a1, a2, a3, a5 } = stateRef.current;
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padX = 36;
@@ -64,7 +64,7 @@ export function RMSOfComplexWaveDemo() {
       const midY = h / 2;
       const halfH = (h - 2 * padY) / 2 * 0.9;
 
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
       ctx.beginPath(); ctx.moveTo(padX, midY); ctx.lineTo(w - padX, midY); ctx.stroke();
 
       // Scale: max possible peak = 1 + |a2| + |a3| + |a5|
@@ -106,7 +106,7 @@ export function RMSOfComplexWaveDemo() {
       const yRms = midY - rmsParseval * scale;
       ctx.beginPath(); ctx.moveTo(padX, yRms); ctx.lineTo(w - padX, yRms); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.9)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('+V_rms', padX + 2, yRms - 3);

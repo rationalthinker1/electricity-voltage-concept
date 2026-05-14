@@ -16,7 +16,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -39,12 +38,12 @@ export function CouplingCoefficientDemo({ figure }: Props) {
   }), [k]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { k } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Top half: cartoon of two coils with air gap shrinking as k grows
@@ -78,7 +77,7 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       drawCoil(ctx, c2x, cy, 'C2');
 
       // Annotate regime
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
@@ -118,7 +117,7 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       ctx.fillText('k', plotX + plotW / 2, plotY + plotH + 4);
 
       // Curve
-      ctx.strokeStyle = getCanvasColors().accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.85)';
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       for (let i = 0; i <= 100; i++) {
@@ -188,7 +187,7 @@ function drawCoil(ctx: CanvasRenderingContext2D, cx: number, cy: number, label: 
   const rx = 18;
   const colH = 64;
   const dy = colH / turns;
-  ctx.strokeStyle = getCanvasColors().accent;
+  ctx.strokeStyle = 'rgba(255,107,42,0.95)';
   ctx.lineWidth = 1.6;
   for (let i = 0; i < turns; i++) {
     const y = cy - colH / 2 + (i + 0.5) * dy;

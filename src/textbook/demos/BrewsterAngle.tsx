@@ -12,7 +12,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -30,7 +29,7 @@ export function BrewsterAngleDemo({ figure }: Props) {
     let raf = 0;
     function draw() {
       const { n1, n2 } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       // Plot area
@@ -41,14 +40,14 @@ export function BrewsterAngleDemo({ figure }: Props) {
       const plotH = y0 - y1;
 
       // Axes
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(x0, y0); ctx.lineTo(x1, y0); // x-axis
       ctx.moveTo(x0, y0); ctx.lineTo(x0, y1); // y-axis
       ctx.stroke();
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.textAlign = 'center';
       for (let d = 0; d <= 90; d += 15) {
         const x = x0 + (d / 90) * plotW;
@@ -83,7 +82,7 @@ export function BrewsterAngleDemo({ figure }: Props) {
       }
 
       // R_s curve (pink)
-      ctx.strokeStyle = getCanvasColors().pink;
+      ctx.strokeStyle = 'rgba(255,59,110,0.95)';
       ctx.lineWidth = 2;
       ctx.beginPath();
       for (let i = 0; i <= 360; i++) {
@@ -96,7 +95,7 @@ export function BrewsterAngleDemo({ figure }: Props) {
       ctx.stroke();
 
       // R_p curve (teal)
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.95)';
       ctx.beginPath();
       for (let i = 0; i <= 360; i++) {
         const d = (i / 360) * 89.5;
@@ -111,21 +110,21 @@ export function BrewsterAngleDemo({ figure }: Props) {
       const brDeg = (Math.atan(n2 / n1) * 180) / Math.PI;
       const bx = x0 + (brDeg / 90) * plotW;
       ctx.setLineDash([3, 4]);
-      ctx.strokeStyle = getCanvasColors().accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.85)';
       ctx.lineWidth = 1.2;
       ctx.beginPath(); ctx.moveTo(bx, y0); ctx.lineTo(bx, y1); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`θ_B = ${brDeg.toFixed(2)}°`, bx, y1 - 4);
 
       // Legend
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.textAlign = 'left';
       ctx.fillText('R_s · ⊥ to plane', x1 - 130, y1 + 14);
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = '#6cc5c2';
       ctx.fillText('R_p · ∥ to plane', x1 - 130, y1 + 28);
 
       raf = requestAnimationFrame(draw);

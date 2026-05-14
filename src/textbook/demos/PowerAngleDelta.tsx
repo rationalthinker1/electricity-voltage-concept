@@ -42,19 +42,19 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
   }, [pMech]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { pMech } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padL = 56, padR = 24, padT = 22, padB = 38;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
       ctx.strokeRect(padL, padT, plotW, plotH);
 
       const pMax = Math.max(P_MAX * 1.1, 1.4);
@@ -62,7 +62,7 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
       const yAt = (p: number) => padT + plotH - (p / pMax) * plotH;
 
       // Gridlines
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
       for (let d = 30; d < 180; d += 30) {
         ctx.beginPath();
         ctx.moveTo(xAt(d), padT); ctx.lineTo(xAt(d), padT + plotH);
@@ -96,7 +96,7 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
       ctx.stroke();
       // Unstable branch dashed
       ctx.setLineDash([4, 4]);
-      ctx.strokeStyle = colors.accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.5)';
       ctx.beginPath();
       for (let i = 90; i <= 180; i++) {
         const d = i;
@@ -117,30 +117,30 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
       // Operating point
       if (pMech <= P_MAX) {
         const d = (Math.asin(pMech / P_MAX) * 180) / Math.PI;
-        ctx.fillStyle = colors.blue;
+        ctx.fillStyle = '#5baef8';
         ctx.beginPath();
         ctx.arc(xAt(d), yAt(pMech), 7, 0, Math.PI * 2);
         ctx.fill();
       } else {
         // Pull-out: marker red at the curve peak
-        ctx.fillStyle = colors.pink;
+        ctx.fillStyle = '#ff3b6e';
         ctx.beginPath();
         ctx.arc(xAt(90), yAt(P_MAX), 8, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = colors.pink;
+        ctx.fillStyle = '#ff3b6e';
         ctx.font = 'bold 11px "JetBrains Mono", monospace';
         ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
         ctx.fillText('POLE SLIP — TRIP', xAt(90), yAt(P_MAX) - 12);
       }
 
       // P_max line
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       ctx.fillText(`P_max = V·E_f/X_s = ${P_MAX.toFixed(2)} pu`, padL + 8, yAt(P_MAX) - 8);
 
       // Axis labels
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       for (let d = 0; d <= 180; d += 30) {
         ctx.fillText(d.toFixed(0) + '°', xAt(d), padT + plotH + 4);
@@ -152,10 +152,10 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
 
       // Stable / unstable region labels
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.7)';
       ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
       ctx.fillText('stable: δ < 90°', padL + 8, padT + plotH - 6);
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.7)';
       ctx.textAlign = 'right';
       ctx.fillText('unstable: δ > 90°', padL + plotW - 8, padT + plotH - 6);
 

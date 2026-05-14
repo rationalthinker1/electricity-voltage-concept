@@ -65,7 +65,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
   const phiMax = useMemo(() => B * LOOP_AREA, [B]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
+    const { ctx, w, h, canvas } = info;
     const dispose = attachOrbit(canvas, camRef.current);
     let raf = 0;
     let lastReal = performance.now();
@@ -132,7 +132,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       if (readoutsTimer.current === 0) setReadouts({ phi, emf });
 
       // ───── background ─────
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const sceneH = h * 0.72;   // top region for the 3D scene
@@ -234,7 +234,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       const axisBot = project({ x: 0, y: -1.3, z: 0 }, cam, w, sceneH);
       if (axisTop.depth > 0 && axisBot.depth > 0) {
         ctx.save();
-        ctx.strokeStyle = colors.borderStrong;
+        ctx.strokeStyle = 'rgba(255,255,255,0.18)';
         ctx.setLineDash([4, 4]);
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -256,7 +256,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
           cam, w, sceneH,
         );
         if (labelP.depth > 0) {
-          ctx.fillStyle = colors.text;
+          ctx.fillStyle = 'rgba(236,235,229,0.95)';
           ctx.font = 'italic 12px "STIX Two Text", serif';
           ctx.textAlign = 'left';
           ctx.textBaseline = 'middle';
@@ -265,12 +265,12 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       }
 
       // B-field label, top-left.
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText(`B → ${st.B.toFixed(2)}  (along +x)`, 12, 12);
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.fillText(`θ = ${((theta % (2 * Math.PI)) * 180 / Math.PI).toFixed(0)}°`, 12, 28);
       ctx.fillStyle = 'rgba(160,158,149,0.55)';
       ctx.fillText('drag to orbit', 12, sceneH - 18);
@@ -279,7 +279,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
 
       // ───── Time-series plot (bottom strip) ─────
       // Divider line.
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(0, plotY0);
@@ -298,7 +298,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       const emfMaxLocal = Math.max(st.B * LOOP_AREA * st.omega, 0.01);
 
       // Zero line.
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.16)';
       ctx.beginPath();
       ctx.moveTo(plotLeft, plotCy);
       ctx.lineTo(plotRight, plotCy);

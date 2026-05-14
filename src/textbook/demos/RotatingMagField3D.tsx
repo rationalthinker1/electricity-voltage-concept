@@ -86,7 +86,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
   const readoutsTimer = useRef(0);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
+    const { ctx, w, h, canvas } = info;
     const dispose = attachOrbit(canvas, camRef.current);
     let raf = 0;
     let lastReal = performance.now();
@@ -178,7 +178,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       }
 
       // ───── background ─────
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Optional faint reference floor circle in the x-z plane.
@@ -192,7 +192,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
         ));
       }
       if (floorPts.every(p => p.depth > 0)) {
-        ctx.strokeStyle = colors.border;
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(floorPts[0]!.x, floorPts[0]!.y);
@@ -277,7 +277,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
             // Polarity glyph: + / − on the face at the centre.
             const cx = (screen[0]!.x + screen[2]!.x) / 2;
             const cy = (screen[0]!.y + screen[2]!.y) / 2;
-            ctx.fillStyle = colors.text;
+            ctx.fillStyle = 'rgba(236,235,229,0.95)';
             ctx.font = 'bold 14px "JetBrains Mono", monospace';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -307,7 +307,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       const axisBot = project({ x: 0, y: -STATOR_THICK - 0.8, z: 0 }, cam, w, h);
       if (axisTop.depth > 0 && axisBot.depth > 0) {
         ctx.save();
-        ctx.strokeStyle = colors.borderStrong;
+        ctx.strokeStyle = 'rgba(255,255,255,0.16)';
         ctx.setLineDash([4, 4]);
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -403,25 +403,25 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       // Tiny disc at the rotor's base.
       const baseP = project({ x: 0, y: 0, z: 0 }, cam, w, h);
       if (baseP.depth > 0) {
-        ctx.fillStyle = colors.text;
+        ctx.fillStyle = 'rgba(236,235,229,0.55)';
         ctx.beginPath();
         ctx.arc(baseP.x, baseP.y, 3, 0, Math.PI * 2);
         ctx.fill();
       }
 
       // ───── HUD labels ─────
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText(`I_A = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[0]!)).toFixed(2)} A`, 12, 12);
       ctx.fillStyle = COIL_COLORS[0]!;
       ctx.fillText(`A`, 2, 12);
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText(`I_B = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[1]!)).toFixed(2)} A`, 12, 26);
       ctx.fillStyle = COIL_COLORS[1]!;
       ctx.fillText(`B`, 2, 26);
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText(`I_C = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[2]!)).toFixed(2)} A`, 12, 40);
       ctx.fillStyle = COIL_COLORS[2]!;
       ctx.fillText(`C`, 2, 40);

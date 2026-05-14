@@ -31,7 +31,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
   const attractive = parallel;
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let t0 = performance.now();
 
@@ -39,7 +39,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
       const now = performance.now();
       const dt = (now - t0) / 1000;
       const { I1, I2, dCm, parallel } = stateRef.current;
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Visual layout: wires drawn end-on, separated by dCm centered horizontally.
@@ -82,7 +82,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
           const tx = -Math.sin(theta) * arrowDir;
           const ty =  Math.cos(theta) * arrowDir;
           const len = 6;
-          ctx.strokeStyle = colors.teal;
+          ctx.strokeStyle = 'rgba(108,197,194,0.55)';
           ctx.fillStyle = ctx.strokeStyle;
           ctx.lineWidth = 1;
           ctx.beginPath();
@@ -118,7 +118,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
         ctx.beginPath(); ctx.arc(cx, cy_, wireR, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
         ctx.strokeStyle = '#ff6b2a';
-        ctx.fillStyle = colors.accent;
+        ctx.fillStyle = '#ff6b2a';
         if (intoPage) {
           ctx.lineWidth = 1.8;
           const k = wireR * 0.55;

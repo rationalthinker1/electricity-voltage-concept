@@ -60,7 +60,7 @@ export default function JouleLab() {
   }, [material, V, L, Amm2, computed]);
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     const wireMarginX = 90;
@@ -104,7 +104,7 @@ export default function JouleLab() {
       const top = wireCY - thickness / 2;
       const bot = wireCY + thickness / 2;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const col = tempToColor(computed.T_eq);
@@ -157,23 +157,23 @@ export default function JouleLab() {
       }
 
       // Battery terminals
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.shadowColor = 'rgba(255,59,110,0.6)';
       ctx.shadowBlur = 14;
       ctx.fillRect(wireLeft - 18, top - 6, 4, thickness + 12);
       ctx.shadowBlur = 0;
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.font = 'bold 18px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('+', wireLeft - 32, wireCY);
 
-      ctx.fillStyle = colors.blue;
+      ctx.fillStyle = '#5baef8';
       ctx.shadowColor = 'rgba(91,174,248,0.6)';
       ctx.shadowBlur = 14;
       ctx.fillRect(wireRight + 14, top - 6, 4, thickness + 12);
       ctx.shadowBlur = 0;
-      ctx.fillStyle = colors.blue;
+      ctx.fillStyle = '#5baef8';
       ctx.fillText('−', wireRight + 32, wireCY);
 
       // Heat shimmer
@@ -201,14 +201,14 @@ export default function JouleLab() {
 
       // Overlays
       ctx.textBaseline = 'top';
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '14px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.shadowColor = 'rgba(255,107,42,0.6)';
       ctx.shadowBlur = 8;
       ctx.fillText(`P = ${pretty(computed.P).replace(/<[^>]+>/g, '')} W`, 16, 12);
       ctx.shadowBlur = 0;
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       const bulbs100 = computed.P / 100;
       let bulbTxt: string;
@@ -222,17 +222,17 @@ export default function JouleLab() {
       ctx.font = '14px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText(`T ≈ ${pretty(computed.T_eq).replace(/<[^>]+>/g, '')} K`, w - 16, 12);
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText(describeGlow(computed.T_eq, computed.P), w - 16, 36);
 
       // Material below
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
       ctx.fillText(MATERIALS[material]!.name.toUpperCase(), wireLeft, bot + 24);
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.9)';
       ctx.textAlign = 'right';
       const lLabel = L < 0.1 ? (L * 1000).toFixed(1) + ' mm' : L.toFixed(3) + ' m';
       ctx.fillText(`V = ${V.toFixed(2)} V   ·   L = ${lLabel}   ·   A = ${Amm2.toFixed(3)} mm²`, wireRight, bot + 24);

@@ -28,7 +28,7 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
   const Vrms = Vpk / Math.sqrt(2);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let simT = 0;
     let lastT = performance.now();
@@ -54,7 +54,7 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
       const tCut = simT - SCOPE_DURATION;
       while (scope.length && scope[0].t < tCut) scope.shift();
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
       const splitX = w * 0.42;
 
@@ -67,12 +67,12 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
       const R = Math.min(splitX, h) * 0.36;
 
       // Stator ring
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.lineWidth = 1.2;
       ctx.beginPath(); ctx.arc(cx, cy, R + 14, 0, Math.PI * 2); ctx.stroke();
 
       // Three stator coil positions at 120° apart
-      const phaseColors = ['#ff3b6e', '#6cc5c2', '#ff6b2a'];
+      const colors = ['#ff3b6e', '#6cc5c2', '#ff6b2a'];
       const labels = ['A', 'B', 'C'];
       const baseAngles = [Math.PI / 2, Math.PI / 2 - TAU3, Math.PI / 2 - 2 * TAU3];
       // Each coil's instantaneous induced voltage is cos(phase - k·120°)
@@ -84,14 +84,14 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
         // glow proportional to |drive|
         const v = Math.abs(drives[k]);
         const grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, 28);
-        grd.addColorStop(0, phaseColors[k] + Math.floor(v * 180).toString(16).padStart(2, '0'));
-        grd.addColorStop(1, phaseColors[k] + '00');
+        grd.addColorStop(0, colors[k] + Math.floor(v * 180).toString(16).padStart(2, '0'));
+        grd.addColorStop(1, colors[k] + '00');
         ctx.fillStyle = grd;
         ctx.beginPath(); ctx.arc(sx, sy, 28, 0, Math.PI * 2); ctx.fill();
-        ctx.strokeStyle = phaseColors[k];
+        ctx.strokeStyle = colors[k];
         ctx.lineWidth = 1.5;
         ctx.beginPath(); ctx.arc(sx, sy, 14, 0, Math.PI * 2); ctx.stroke();
-        ctx.fillStyle = phaseColors[k];
+        ctx.fillStyle = colors[k];
         ctx.font = 'bold 12px JetBrains Mono';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText(labels[k], sx, sy);
@@ -107,23 +107,23 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
       const ny = cy - rsin * rotR;
       const sxx = cx - rcos * rotR;
       const syy = cy + rsin * rotR;
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
       ctx.lineWidth = 12;
       ctx.lineCap = 'round';
       ctx.beginPath();
       ctx.moveTo(sxx, syy); ctx.lineTo(nx, ny); ctx.stroke();
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.beginPath(); ctx.arc(nx, ny, 10, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.blue;
+      ctx.fillStyle = '#5baef8';
       ctx.beginPath(); ctx.arc(sxx, syy, 10, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0a0a0b';
       ctx.font = 'bold 10px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('N', nx, ny);
       ctx.fillText('S', sxx, syy);
       ctx.lineCap = 'butt';
 
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('rotor (PM or DC-excited)', 8, 8);
@@ -131,7 +131,7 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
       ctx.restore();
 
       // Divider
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
       ctx.beginPath(); ctx.moveTo(splitX, 0); ctx.lineTo(splitX, h); ctx.stroke();
 
       // RIGHT: scope
@@ -143,7 +143,7 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
       const scopeH = h - 48;
       const cyS = scopeY + scopeH / 2;
       // Grid
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
       ctx.strokeRect(scopeX, scopeY, scopeW, scopeH);
       ctx.beginPath();
       ctx.moveTo(scopeX, cyS); ctx.lineTo(scopeX + scopeW, cyS);
@@ -151,7 +151,7 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
 
       const traces: Array<'a' | 'b' | 'c'> = ['a', 'b', 'c'];
       for (let k = 0; k < 3; k++) {
-        ctx.strokeStyle = phaseColors[k];
+        ctx.strokeStyle = colors[k];
         ctx.lineWidth = 1.6;
         ctx.beginPath();
         for (let i = 0; i < scope.length; i++) {
@@ -164,10 +164,10 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
         ctx.stroke();
       }
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = phaseColors[0]; ctx.fillText('V_A', scopeX + 4, scopeY + 12);
-      ctx.fillStyle = phaseColors[1]; ctx.fillText('V_B', scopeX + 38, scopeY + 12);
-      ctx.fillStyle = phaseColors[2]; ctx.fillText('V_C', scopeX + 72, scopeY + 12);
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = colors[0]; ctx.fillText('V_A', scopeX + 4, scopeY + 12);
+      ctx.fillStyle = colors[1]; ctx.fillText('V_B', scopeX + 38, scopeY + 12);
+      ctx.fillStyle = colors[2]; ctx.fillText('V_C', scopeX + 72, scopeY + 12);
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.textAlign = 'right';
       ctx.fillText(`${f.toFixed(0)} Hz`, scopeX + scopeW - 4, scopeY + 12);
       ctx.restore();

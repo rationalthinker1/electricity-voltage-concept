@@ -4,9 +4,8 @@
  * to disarm.
  */
 
-import { useState } from 'react';
-import { kindDisplayName, kindTooltip, type TooltipInfo } from './components';
 import type { ComponentKind } from './types';
+import { kindDisplayName } from './components';
 
 const KINDS: ComponentKind[] = [
   'battery', 'ac', 'resistor', 'capacitor', 'inductor',
@@ -19,17 +18,6 @@ interface PaletteProps {
 }
 
 export function Palette({ armed, onArm }: PaletteProps) {
-  const [hoverTip, setHoverTip] = useState<TooltipInfo | null>(null);
-
-  function handleEnter(k: ComponentKind | 'wire' | 'voltmeter' | 'ammeter' | 'cursor') {
-    setHoverTip(kindTooltip(k === 'cursor' ? 'cursor' : k as ComponentKind | 'wire' | 'voltmeter' | 'ammeter'));
-  }
-  function handleLeave() {
-    setHoverTip(null);
-  }
-
-  const tip = hoverTip ?? (armed ? kindTooltip(armed === 'wire' || armed === 'voltmeter' || armed === 'ammeter' ? armed : armed as ComponentKind) : kindTooltip('cursor'));
-
   return (
     <div className="cb-palette">
       <div className="cb-palette-section">
@@ -41,8 +29,7 @@ export function Palette({ armed, onArm }: PaletteProps) {
               type="button"
               className={'cb-palette-btn' + (armed === k ? ' active' : '')}
               onClick={() => onArm(armed === k ? null : k)}
-              onMouseEnter={() => handleEnter(k)}
-              onMouseLeave={handleLeave}
+              title={kindDisplayName(k)}
             >
               <CompIcon kind={k} />
               <span className="cb-palette-label">{kindDisplayName(k)}</span>
@@ -58,8 +45,7 @@ export function Palette({ armed, onArm }: PaletteProps) {
             type="button"
             className={'cb-palette-btn' + (armed === null ? ' active' : '')}
             onClick={() => onArm(null)}
-            onMouseEnter={() => handleEnter('cursor')}
-            onMouseLeave={handleLeave}
+            title="Select / move components; click empty space to deselect"
           >
             <ToolIcon kind="cursor" />
             <span className="cb-palette-label">Select</span>
@@ -68,8 +54,7 @@ export function Palette({ armed, onArm }: PaletteProps) {
             type="button"
             className={'cb-palette-btn' + (armed === 'wire' ? ' active' : '')}
             onClick={() => onArm(armed === 'wire' ? null : 'wire')}
-            onMouseEnter={() => handleEnter('wire')}
-            onMouseLeave={handleLeave}
+            title="Click two pins to draw a wire"
           >
             <ToolIcon kind="wire" />
             <span className="cb-palette-label">Wire</span>
@@ -78,8 +63,7 @@ export function Palette({ armed, onArm }: PaletteProps) {
             type="button"
             className={'cb-palette-btn' + (armed === 'voltmeter' ? ' active' : '')}
             onClick={() => onArm(armed === 'voltmeter' ? null : 'voltmeter')}
-            onMouseEnter={() => handleEnter('voltmeter')}
-            onMouseLeave={handleLeave}
+            title="Click a node to place a voltmeter probe"
           >
             <ToolIcon kind="voltmeter" />
             <span className="cb-palette-label">Voltmeter</span>
@@ -88,8 +72,7 @@ export function Palette({ armed, onArm }: PaletteProps) {
             type="button"
             className={'cb-palette-btn' + (armed === 'ammeter' ? ' active' : '')}
             onClick={() => onArm(armed === 'ammeter' ? null : 'ammeter')}
-            onMouseEnter={() => handleEnter('ammeter')}
-            onMouseLeave={handleLeave}
+            title="Click a component to attach an ammeter"
           >
             <ToolIcon kind="ammeter" />
             <span className="cb-palette-label">Ammeter</span>
@@ -97,13 +80,16 @@ export function Palette({ armed, onArm }: PaletteProps) {
         </div>
       </div>
 
-      <div className="cb-palette-info">
-        <div className="cb-palette-info-title">{tip.title}</div>
-        <div className="cb-palette-info-desc">{tip.description}</div>
-        {tip.formula !== '—' && (
-          <div className="cb-palette-info-formula">{tip.formula}</div>
-        )}
-        <div className="cb-palette-info-behavior">{tip.behavior}</div>
+      <div className="cb-palette-hint">
+        {armed
+          ? armed === 'wire'
+            ? 'Click pin A, then pin B.'
+            : armed === 'voltmeter'
+              ? 'Click any node.'
+              : armed === 'ammeter'
+                ? 'Click a component to probe its current.'
+                : `Placing: ${kindDisplayName(armed as ComponentKind)}. Click canvas.`
+          : 'Select mode. Click to select; Delete removes the selection.'}
       </div>
     </div>
   );
@@ -112,8 +98,7 @@ export function Palette({ armed, onArm }: PaletteProps) {
 /* Inline SVG icons matched to the canvas drawings. */
 
 function CompIcon({ kind }: { kind: ComponentKind }) {
-  const stroke = 'var(--color-text-dim)';
-  const surface = 'var(--color-surface)';
+  const stroke = '#a09e95';
   const w = 36, h = 18;
   const props = {
     width: w, height: h, viewBox: `0 0 ${w} ${h}`,
@@ -129,7 +114,7 @@ function CompIcon({ kind }: { kind: ComponentKind }) {
     case 'battery':
       return (
         <svg {...props}>
-          <path d="M2 9 L14 9 M14 4 L14 14 M18 2 L18 16 M18 9 L34 9" stroke="var(--color-pink)" />
+          <path d="M2 9 L14 9 M14 4 L14 14 M18 2 L18 16 M18 9 L34 9" stroke="#ff3b6e" />
           <path d="M2 9 L14 9 M14 4 L14 14" />
         </svg>
       );
@@ -138,7 +123,7 @@ function CompIcon({ kind }: { kind: ComponentKind }) {
         <svg {...props}>
           <path d="M2 9 L11 9 M25 9 L34 9" />
           <circle cx="18" cy="9" r="6" />
-          <path d="M13 9 Q15 4 18 9 T23 9" stroke="var(--color-teal)" />
+          <path d="M13 9 Q15 4 18 9 T23 9" stroke="#6cc5c2" />
         </svg>
       );
     case 'capacitor':
@@ -159,7 +144,7 @@ function CompIcon({ kind }: { kind: ComponentKind }) {
       return (
         <svg {...props}>
           <path d="M2 9 L12 9 M24 9 L34 9" />
-          <path d="M12 3 L24 9 L12 15 Z" fill={surface} />
+          <path d="M12 3 L24 9 L12 15 Z" fill="#16161a" />
           <path d="M24 3 L24 15" />
         </svg>
       );
@@ -167,7 +152,7 @@ function CompIcon({ kind }: { kind: ComponentKind }) {
       return (
         <svg {...props}>
           <path d="M2 9 L10 9 M26 9 L34 9" />
-          <circle cx="18" cy="9" r="6" fill={surface} />
+          <circle cx="18" cy="9" r="6" fill="#16161a" />
           <path d="M14 5 L22 13 M22 5 L14 13" />
         </svg>
       );
@@ -175,8 +160,8 @@ function CompIcon({ kind }: { kind: ComponentKind }) {
       return (
         <svg {...props}>
           <path d="M2 9 L11 9 M25 9 L34 9" />
-          <circle cx="11" cy="9" r="1.5" fill={surface} />
-          <circle cx="25" cy="9" r="1.5" fill={surface} />
+          <circle cx="11" cy="9" r="1.5" fill="#16161a" />
+          <circle cx="25" cy="9" r="1.5" fill="#16161a" />
           <path d="M11 9 L24 3" />
         </svg>
       );
@@ -191,35 +176,34 @@ function CompIcon({ kind }: { kind: ComponentKind }) {
 
 function ToolIcon({ kind }: { kind: 'wire' | 'voltmeter' | 'ammeter' | 'cursor' }) {
   const w = 36, h = 18;
-  const surface = 'var(--color-surface)';
   if (kind === 'cursor') {
     return (
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-text-dim)" strokeWidth={1.4} strokeLinejoin="round">
-        <path d="M14 3 L14 15 L17 12 L20 17 L22 16 L19 11 L23 11 Z" fill={surface} />
+      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="#a09e95" strokeWidth={1.4} strokeLinejoin="round">
+        <path d="M14 3 L14 15 L17 12 L20 17 L22 16 L19 11 L23 11 Z" fill="#16161a" />
       </svg>
     );
   }
   if (kind === 'wire') {
     return (
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-text-dim)" strokeWidth={1.4}>
+      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="#a09e95" strokeWidth={1.4}>
         <path d="M2 14 L14 14 L14 4 L34 4" />
-        <circle cx="2" cy="14" r="1.5" fill="var(--color-text-dim)" />
-        <circle cx="34" cy="4" r="1.5" fill="var(--color-text-dim)" />
+        <circle cx="2" cy="14" r="1.5" fill="#a09e95" />
+        <circle cx="34" cy="4" r="1.5" fill="#a09e95" />
       </svg>
     );
   }
   if (kind === 'voltmeter') {
     return (
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-teal)" strokeWidth={1.4}>
+      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="#6cc5c2" strokeWidth={1.4}>
         <circle cx="18" cy="9" r="7" />
-        <text x="18" y="12" textAnchor="middle" fontSize="9" fontFamily="JetBrains Mono" fill="var(--color-teal)" stroke="none">V</text>
+        <text x="18" y="12" textAnchor="middle" fontSize="9" fontFamily="JetBrains Mono" fill="#6cc5c2" stroke="none">V</text>
       </svg>
     );
   }
   return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-accent)" strokeWidth={1.4}>
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="#ff6b2a" strokeWidth={1.4}>
       <circle cx="18" cy="9" r="7" />
-      <text x="18" y="12" textAnchor="middle" fontSize="9" fontFamily="JetBrains Mono" fill="var(--color-accent)" stroke="none">A</text>
+      <text x="18" y="12" textAnchor="middle" fontSize="9" fontFamily="JetBrains Mono" fill="#ff6b2a" stroke="none">A</text>
     </svg>
   );
 }

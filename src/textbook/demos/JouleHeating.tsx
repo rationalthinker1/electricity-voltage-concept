@@ -33,7 +33,7 @@ export function JouleHeatingDemo({ figure }: Props) {
   const T_eq = stefanT(P);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     type Shim = { x: number; y: number; life: number; vy: number; wob: number };
     const shimmer: Shim[] = [];
@@ -46,7 +46,7 @@ export function JouleHeatingDemo({ figure }: Props) {
       const col = tempToColor(T);
       const visiblePower = P_ > 0.05 && T > 600;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const wireLeft = 80;
@@ -94,16 +94,16 @@ export function JouleHeatingDemo({ figure }: Props) {
         ctx.stroke();
         ctx.shadowBlur = 0;
       } else {
-        ctx.strokeStyle = colors.borderStrong;
+        ctx.strokeStyle = 'rgba(255,255,255,0.35)';
         ctx.lineWidth = 1;
         roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 8);
         ctx.stroke();
       }
 
       // Battery terminals
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.fillRect(wireLeft - 12, top - 4, 4, thickness + 8);
-      ctx.fillStyle = colors.blue;
+      ctx.fillStyle = '#5baef8';
       ctx.fillRect(wireRight + 8, top - 4, 4, thickness + 8);
 
       // Heat shimmer above the wire
@@ -144,7 +144,7 @@ export function JouleHeatingDemo({ figure }: Props) {
 
       // Overlays
       ctx.textBaseline = 'top';
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '13px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText(`P = ${pretty(P_).replace(/<[^>]+>/g, '')} W`, 14, 12);
@@ -153,12 +153,12 @@ export function JouleHeatingDemo({ figure }: Props) {
       ctx.font = '13px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText(`T ≈ ${T.toFixed(0)} K`, w - 14, 12);
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText(describeGlow(T, P_), w - 14, 30);
 
       // Bottom: I, R labels
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`I = ${I.toFixed(2)} A   ·   R = ${R.toFixed(2)} Ω   ·   surface ≈ 1 cm²`, w / 2, bot + 14);

@@ -73,7 +73,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
   const lambda_new = lambda0 * (gamma_test - gamma_e_new);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let last = performance.now();
     let phaseIon = 0;
@@ -106,7 +106,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       const ionContract = Math.pow(g_test, 1.0);
       const elecContract = Math.pow(g_test, 1.0) * 0.94;  // small differential
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const wireY = h * 0.65;
@@ -127,7 +127,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       wireGrd.addColorStop(1, `rgba(255,59,110,${(tintPink * 0.6).toFixed(3)})`);
       ctx.fillStyle = wireGrd;
       ctx.fillRect(wireXL, wireTop, wireLen, wireH);
-      ctx.strokeStyle = colors.accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.45)';
       ctx.lineWidth = 1;
       ctx.strokeRect(wireXL, wireTop, wireLen, wireH);
 
@@ -149,9 +149,9 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
         halo.addColorStop(1, 'rgba(255,59,110,0)');
         ctx.fillStyle = halo;
         ctx.beginPath(); ctx.arc(x, y, 11, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = colors.pink;
+        ctx.fillStyle = '#ff3b6e';
         ctx.beginPath(); ctx.arc(x, y, 4.5, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = colors.bg;
+        ctx.fillStyle = '#0a0a0b';
         ctx.font = 'bold 8px "JetBrains Mono", monospace';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText('+', x, y);
@@ -168,9 +168,9 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
         halo.addColorStop(1, 'rgba(91,174,248,0)');
         ctx.fillStyle = halo;
         ctx.beginPath(); ctx.arc(x, y, 11, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = colors.blue;
+        ctx.fillStyle = '#5baef8';
         ctx.beginPath(); ctx.arc(x, y, 4.5, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = colors.bg;
+        ctx.fillStyle = '#0a0a0b';
         ctx.font = 'bold 8px "JetBrains Mono", monospace';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText('−', x, y);
@@ -184,14 +184,14 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       halo.addColorStop(1, 'rgba(255,107,42,0)');
       ctx.fillStyle = halo;
       ctx.beginPath(); ctx.arc(tx, ty, 22, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.beginPath(); ctx.arc(tx, ty, 9, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0a0a0b';
       ctx.font = 'bold 10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('+', tx, ty);
 
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textBaseline = 'alphabetic';
       ctx.fillText("test charge   v' = 0", tx, ty - 26);
@@ -201,8 +201,8 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       const lam = (gamma_test - 1 / Math.sqrt(1 - 0 * 0)); // simplified for sign
       if (b > 0.02) {
         const arrowLen = Math.min(48, 10 + Math.log10(1 + b * 100) * 22);
-        ctx.strokeStyle = colors.accent;
-        ctx.fillStyle = colors.accent;
+        ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+        ctx.fillStyle = 'rgba(255,107,42,0.95)';
         ctx.lineWidth = 2;
         // arrow from below the test charge upward (repulsion: wire is +, test is +)
         const ax = tx;
@@ -217,7 +217,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
         ctx.lineTo(ax + 5, ay1 + 8);
         ctx.closePath(); ctx.fill();
         ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.accent;
+        ctx.fillStyle = 'rgba(255,107,42,0.9)';
         ctx.textAlign = 'left';
         ctx.fillText('F = q E', ax + 14, ay0 - arrowLen / 2);
         void lam;

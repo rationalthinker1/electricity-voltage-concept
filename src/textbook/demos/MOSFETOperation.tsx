@@ -49,14 +49,14 @@ export function MOSFETOperationDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { V_GS, V_DS }; }, [V_GS, V_DS]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { V_GS, V_DS } = stateRef.current;
       const Vov = Math.max(0, V_GS - V_T);
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // split: left half = device, right half = I-V plot
@@ -69,7 +69,7 @@ export function MOSFETOperationDemo({ figure }: Props) {
       // substrate (p-type, blue tint)
       ctx.fillStyle = 'rgba(91,174,248,0.10)';
       ctx.fillRect(dL, dT + dH * 0.4, dW, dH * 0.6);
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(dL, dT + dH * 0.4, dW, dH * 0.6);
 
       // source and drain (n+ regions, pink tint)
@@ -77,10 +77,10 @@ export function MOSFETOperationDemo({ figure }: Props) {
       const drnL = dL + dW * 0.72, drnR = dR - 6;
       const ndT = dT + dH * 0.4;
       const ndB = ndT + dH * 0.35;
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.18)';
       ctx.fillRect(srcL, ndT, srcR - srcL, ndB - ndT);
       ctx.fillRect(drnL, ndT, drnR - drnL, ndB - ndT);
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(srcL, ndT, srcR - srcL, ndB - ndT);
       ctx.strokeRect(drnL, ndT, drnR - drnL, ndB - ndT);
 
@@ -93,11 +93,11 @@ export function MOSFETOperationDemo({ figure }: Props) {
       // gate (above oxide)
       ctx.fillStyle = 'rgba(255,107,42,0.22)';
       ctx.fillRect(oxL, dT + 14, oxR - oxL, oxT - (dT + 14));
-      ctx.strokeStyle = colors.accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.85)';
       ctx.strokeRect(oxL, dT + 14, oxR - oxL, oxT - (dT + 14));
 
       // labels
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.9)';
       ctx.font = 'bold 10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -137,12 +137,12 @@ export function MOSFETOperationDemo({ figure }: Props) {
 
       // arrow from D to S inside the channel if conducting
       if (Vov > 0 && V_DS > 0) {
-        ctx.strokeStyle = colors.accent;
+        ctx.strokeStyle = 'rgba(255,107,42,0.9)';
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.moveTo(oxR - 4, ndT + 2); ctx.lineTo(oxL + 8, ndT + 2);
         ctx.stroke();
-        ctx.fillStyle = colors.accent;
+        ctx.fillStyle = 'rgba(255,107,42,0.9)';
         ctx.beginPath();
         ctx.moveTo(oxL + 4, ndT + 2);
         ctx.lineTo(oxL + 10, ndT - 1);
@@ -150,7 +150,7 @@ export function MOSFETOperationDemo({ figure }: Props) {
         ctx.closePath();
         ctx.fill();
       } else if (Vov === 0) {
-        ctx.fillStyle = colors.textDim;
+        ctx.fillStyle = 'rgba(160,158,149,0.7)';
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -158,7 +158,7 @@ export function MOSFETOperationDemo({ figure }: Props) {
       }
 
       // header on left
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -175,11 +175,11 @@ export function MOSFETOperationDemo({ figure }: Props) {
       const yOf = (i: number) => pT + pH - (i / Imax) * pH;
 
       // frame
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(pL, pT, pW, pH);
 
       // gridlines
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
       ctx.beginPath();
       for (let v = 0; v <= Vmax; v++) {
         ctx.moveTo(xOf(v), pT); ctx.lineTo(xOf(v), pT + pH);
@@ -199,7 +199,7 @@ export function MOSFETOperationDemo({ figure }: Props) {
       ctx.fillText(`${(Imax * 1000).toFixed(0)} mA`, pL - 4, yOf(Imax));
       ctx.fillText('0', pL - 4, yOf(0));
 
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.8)';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText('V_DS (volts)', pL + pW / 2, pT + pH + 18);
@@ -241,7 +241,7 @@ export function MOSFETOperationDemo({ figure }: Props) {
       ctx.moveTo(opX, pT); ctx.lineTo(opX, pT + pH);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.95)';
       ctx.beginPath();
       ctx.arc(opX, opY, 4, 0, Math.PI * 2);
       ctx.fill();

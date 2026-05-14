@@ -17,7 +17,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -41,7 +40,7 @@ export function PatchAntennaDemo({ figure }: Props) {
     function draw() {
       const { Lmm, eps } = stateRef.current;
       tAnim += 0.05;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       // Left: top-view of patch + ground plane. Right: broadside cosine-ish lobe.
@@ -55,7 +54,7 @@ export function PatchAntennaDemo({ figure }: Props) {
       const subH = H * 0.55;
       ctx.fillStyle = 'rgba(108,197,194,0.10)';
       ctx.fillRect(cxL - subW / 2, cyL - subH / 2, subW, subH);
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.5)';
       ctx.lineWidth = 1;
       ctx.strokeRect(cxL - subW / 2, cyL - subH / 2, subW, subH);
 
@@ -63,7 +62,7 @@ export function PatchAntennaDemo({ figure }: Props) {
       const patchPxPerMm = Math.min(subW * 0.7 / 60, subH * 0.7 / 60); // 60 mm full range
       const Lpx = Lmm * patchPxPerMm;
       const Wpatch = Lpx * 0.8;
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.fillRect(cxL - Lpx / 2, cyL - Wpatch / 2, Lpx, Wpatch);
 
       // E-field on the two radiating edges — sinusoidal in time, opposite ends
@@ -71,7 +70,7 @@ export function PatchAntennaDemo({ figure }: Props) {
       const arrowLen = Wpatch * 0.55 * phase;
       // Left edge: upward arrow when phase>0
       ctx.strokeStyle = '#0a0a0b';
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0a0a0b';
       ctx.lineWidth = 2;
       drawArr(ctx, cxL - Lpx / 2, cyL, cxL - Lpx / 2, cyL - arrowLen);
       drawArr(ctx, cxL + Lpx / 2, cyL, cxL + Lpx / 2, cyL + arrowLen);
@@ -80,13 +79,13 @@ export function PatchAntennaDemo({ figure }: Props) {
       ctx.fillStyle = 'rgba(255,255,255,0.85)';
       ctx.beginPath(); ctx.arc(cxL - Lpx / 4, cyL, 3, 0, Math.PI * 2); ctx.fill();
       ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.textAlign = 'center';
       ctx.fillText('feed', cxL - Lpx / 4, cyL + 14);
 
       // Labels
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.9)';
       ctx.textAlign = 'left';
       ctx.fillText(`L = ${Lmm.toFixed(1)} mm`, 12, 18);
       ctx.fillText(`εᵣ = ${eps.toFixed(2)}`, 12, 32);
@@ -98,13 +97,13 @@ export function PatchAntennaDemo({ figure }: Props) {
       const cyR = H / 2;
       const R = Math.min((W - splitX) * 0.40, H * 0.40);
 
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.lineWidth = 1;
       for (let f = 0.25; f <= 1.001; f += 0.25) {
         ctx.beginPath(); ctx.arc(cxR, cyR, R * f, 0, Math.PI * 2); ctx.stroke();
       }
       // Ground plane line at the bottom of the polar
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.5)';
       ctx.setLineDash([3, 4]);
       ctx.beginPath();
       ctx.moveTo(cxR - R, cyR); ctx.lineTo(cxR + R, cyR);
@@ -113,7 +112,7 @@ export function PatchAntennaDemo({ figure }: Props) {
 
       // Pattern: ~cos^n(θ) for the upper half only (broadside, blocked below ground plane).
       // n chosen to give roughly 6 dBi HPBW ≈ 80°.
-      ctx.strokeStyle = getCanvasColors().accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
       ctx.fillStyle = 'rgba(255,107,42,0.12)';
       ctx.lineWidth = 1.8;
       ctx.beginPath();
@@ -136,7 +135,7 @@ export function PatchAntennaDemo({ figure }: Props) {
 
       // Labels
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.8)';
       ctx.textAlign = 'center';
       ctx.fillText('broadside (zenith)', cxR, cyR - R - 8);
       ctx.fillText('ground plane', cxR, cyR + 14);

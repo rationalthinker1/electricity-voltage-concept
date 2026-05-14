@@ -11,7 +11,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -34,7 +33,7 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
       const k = om / C_SIM;
       const lam = (2 * Math.PI) / k;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       const cx = W / 2;
@@ -53,7 +52,7 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
       // Far-field circle (annotated) at r = 2 λ for contrast
       const rFF = 2 * lam;
       if (rFF < Math.min(W, H) / 2) {
-        ctx.strokeStyle = getCanvasColors().teal;
+        ctx.strokeStyle = 'rgba(108,197,194,0.45)';
         ctx.setLineDash([3, 4]);
         ctx.beginPath(); ctx.arc(cx, cy, rFF, 0, Math.PI * 2); ctx.stroke();
         ctx.setLineDash([]);
@@ -98,19 +97,19 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
       ctx.putImageData(img, 0, 0);
 
       // Dipole at the origin (two charges)
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.beginPath(); ctx.arc(cx, cy - 6, 4, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = '#5baef8';
       ctx.beginPath(); ctx.arc(cx, cy + 6, 4, 0, Math.PI * 2); ctx.fill();
 
       // Labels
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.95)';
       ctx.textAlign = 'left';
       ctx.fillText(`near-field r ≲ λ/2π = ${rNF.toFixed(0)} px`, 12, 18);
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.95)';
       ctx.fillText(`far-field r ≫ λ/2π`, 12, 32);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText(`λ = ${lam.toFixed(0)} px`, 12, 46);
 
       raf = requestAnimationFrame(draw);

@@ -16,7 +16,6 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -74,12 +73,12 @@ export function ChargingCurveDemo({ figure }: Props) {
       const tCut = Math.max(0, s.simT - PLOT_DURATION);
       while (s.trace.length && s.trace[0]!.t < tCut) s.trace.shift();
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       const pX = 30, pY = 26;
       const pW = W - 60, pH = H - 60;
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.lineWidth = 1;
       ctx.strokeRect(pX, pY, pW, pH);
 
@@ -96,7 +95,7 @@ export function ChargingCurveDemo({ figure }: Props) {
       const y63 = yV(V0 * (1 - 1 / Math.E));
       ctx.beginPath(); ctx.moveTo(pX, y63); ctx.lineTo(pX + pW, y63); ctx.stroke();
 
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
       const y99 = yV(V0 * 0.99);
       ctx.beginPath(); ctx.moveTo(pX, y99); ctx.lineTo(pX + pW, y99); ctx.stroke();
       ctx.setLineDash([]);
@@ -106,7 +105,7 @@ export function ChargingCurveDemo({ figure }: Props) {
       ctx.setLineDash([3, 3]);
       const xTau = xT(tauNow);
       if (xTau < pX + pW) { ctx.beginPath(); ctx.moveTo(xTau, pY); ctx.lineTo(xTau, pY + pH); ctx.stroke(); }
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
       const x5tau = xT(5 * tauNow);
       if (x5tau < pX + pW) { ctx.beginPath(); ctx.moveTo(x5tau, pY); ctx.lineTo(x5tau, pY + pH); ctx.stroke(); }
       ctx.setLineDash([]);
@@ -126,22 +125,22 @@ export function ChargingCurveDemo({ figure }: Props) {
       }
 
       // Labels
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'bottom';
       ctx.fillText(`V₀ = ${V0} V`, pX + pW - 4, y0line - 2);
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.fillText('63% V₀  (after 1τ)', pX + pW - 4, y63 - 2);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText('99% V₀  (after 5τ)', pX + pW - 4, y99 - 2);
 
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText(`τ = RC`, Math.min(xTau + 4, pX + pW - 60), pY + 4);
 
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.8)';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('V_C(t)', pX, 8);

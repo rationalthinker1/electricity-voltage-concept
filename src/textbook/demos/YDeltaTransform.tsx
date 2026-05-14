@@ -28,7 +28,6 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -58,13 +57,13 @@ export function YDeltaTransformDemo({ figure }: Props) {
   }, [Ra, Rb, Rc, delta.R_AB, delta.R_BC, delta.R_CA]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { Ra, Rb, Rc, delta } = stateRef.current;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Two panels side by side
@@ -76,11 +75,11 @@ export function YDeltaTransformDemo({ figure }: Props) {
       drawDeltaNetwork(ctx, halfW, 0, halfW, h, delta.R_AB, delta.R_BC, delta.R_CA);
 
       // Divider
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.beginPath(); ctx.moveTo(halfW, 8); ctx.lineTo(halfW, h - 8); ctx.stroke();
 
       // Equivalence arrow
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.font = 'bold 14px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -139,7 +138,7 @@ function drawYNetwork(
   const C = { x: cx + r * 0.866, y: cy + r * 0.5 };
   const N = { x: cx, y: cy };
 
-  ctx.strokeStyle = getCanvasColors().textDim;
+  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
   ctx.lineWidth = 1.5;
   ctx.lineCap = 'round';
   // Three legs with embedded resistors
@@ -153,10 +152,10 @@ function drawYNetwork(
   drawTerminal(ctx, C, 'C');
 
   // Centre node
-  ctx.fillStyle = getCanvasColors().teal;
+  ctx.fillStyle = 'rgba(108,197,194,0.85)';
   ctx.beginPath(); ctx.arc(N.x, N.y, 3, 0, Math.PI * 2); ctx.fill();
 
-  ctx.fillStyle = getCanvasColors().textDim;
+  ctx.fillStyle = 'rgba(160,158,149,0.85)';
   ctx.font = '11px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
@@ -178,7 +177,7 @@ function drawDeltaNetwork(
   const B = { x: cx - r * 0.866, y: cy + r * 0.5 };
   const C = { x: cx + r * 0.866, y: cy + r * 0.5 };
 
-  ctx.strokeStyle = getCanvasColors().textDim;
+  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
   ctx.lineWidth = 1.5;
   ctx.lineCap = 'round';
   drawLineResistor(ctx, A.x, A.y, B.x, B.y, `R_AB=${RAB.toFixed(1)}Ω`);
@@ -189,7 +188,7 @@ function drawDeltaNetwork(
   drawTerminal(ctx, B, 'B');
   drawTerminal(ctx, C, 'C');
 
-  ctx.fillStyle = getCanvasColors().textDim;
+  ctx.fillStyle = 'rgba(160,158,149,0.85)';
   ctx.font = '11px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
@@ -198,7 +197,7 @@ function drawDeltaNetwork(
 }
 
 function drawTerminal(ctx: CanvasRenderingContext2D, p: { x: number; y: number }, label: string) {
-  ctx.fillStyle = getCanvasColors().accent;
+  ctx.fillStyle = 'rgba(255,107,42,0.95)';
   ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = 'rgba(255,255,255,0.9)';
   ctx.font = 'bold 12px "JetBrains Mono", monospace';
@@ -224,14 +223,14 @@ function drawLineResistor(
   const segLen = (end - start) / segs;
   const amp = 6;
 
-  ctx.strokeStyle = getCanvasColors().textDim;
+  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
   ctx.lineWidth = 1.5;
   ctx.beginPath();
   ctx.moveTo(x0, y0);
   ctx.lineTo(x0 + ux * start, y0 + uy * start);
   ctx.stroke();
 
-  ctx.strokeStyle = getCanvasColors().accent;
+  ctx.strokeStyle = 'rgba(255,107,42,0.95)';
   ctx.lineWidth = 1.6;
   ctx.beginPath();
   let cx = x0 + ux * start;
@@ -246,7 +245,7 @@ function drawLineResistor(
   ctx.lineTo(x0 + ux * end, y0 + uy * end);
   ctx.stroke();
 
-  ctx.strokeStyle = getCanvasColors().textDim;
+  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
   ctx.lineWidth = 1.5;
   ctx.beginPath();
   ctx.moveTo(x0 + ux * end, y0 + uy * end);
@@ -256,7 +255,7 @@ function drawLineResistor(
   // Label at midpoint, offset perpendicular
   const mx = (x0 + x1) / 2 + px * 14;
   const my = (y0 + y1) / 2 + py * 14;
-  ctx.fillStyle = getCanvasColors().accent;
+  ctx.fillStyle = '#ff6b2a';
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';

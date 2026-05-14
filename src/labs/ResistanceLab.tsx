@@ -23,7 +23,6 @@ import { TryIt } from '@/components/TryIt';
 import { drawResistor } from '@/lib/canvasPrimitives';
 import { MATERIALS, pretty, type MaterialKey } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 const SLUG = 'resistance';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -49,7 +48,7 @@ export default function ResistanceLab() {
   }, [material, L, Amm2, computed]);
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     const wireMarginX = 90;
@@ -102,7 +101,7 @@ export default function ResistanceLab() {
       const top = wireCY - thickness / 2;
       const bot = wireCY + thickness / 2;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Length tick scale above wire
@@ -115,7 +114,7 @@ export default function ResistanceLab() {
       ctx.moveTo(wireLeft, tickY - 5); ctx.lineTo(wireLeft, tickY + 5);
       ctx.moveTo(wireRight, tickY - 5); ctx.lineTo(wireRight, tickY + 5);
       ctx.stroke();
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'alphabetic';
@@ -149,7 +148,7 @@ export default function ResistanceLab() {
 
       // Electrons. Visual drift bias hints at "ease of flow" (log G), not real v_d
       const driftBias = -Math.max(0.05, Math.min(1.8, Math.log10(computed.G + 1) * 0.4 + 0.2));
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = '#5baef8';
       for (const e of electrons) {
         e.vx += (Math.random() - 0.5) * 1.2;
         e.vy += (Math.random() - 0.5) * 1.2;
@@ -167,18 +166,18 @@ export default function ResistanceLab() {
       drawAreaGauge(ctx, w / 2, bot + 56, Amm2);
 
       // Overlays
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText(MATERIALS[material]!.name.toUpperCase(), 16, 12);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText(`ρ = ${pretty(computed.rho).replace(/<[^>]+>/g, '')} Ω·m`, 16, 28);
 
       ctx.textAlign = 'right';
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.fillText(`R = ${pretty(computed.R).replace(/<[^>]+>/g, '')} Ω`, w - 16, 12);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText(`A = ${Amm2.toFixed(2)} mm²`, w - 16, 28);
 
       raf = requestAnimationFrame(draw);
@@ -548,16 +547,16 @@ function drawAreaGauge(ctx: CanvasRenderingContext2D, cx: number, cy: number, Am
   const A = Math.max(0.01, Math.min(100, Amm2));
   const tFrac = (Math.log10(A) - Math.log10(0.01)) / (Math.log10(100) - Math.log10(0.01));
   const r = 6 + tFrac * 28;
-  ctx.strokeStyle = getCanvasColors().teal;
+  ctx.strokeStyle = 'rgba(108,197,194,0.85)';
   ctx.fillStyle = 'rgba(108,197,194,0.12)';
   ctx.lineWidth = 1.2;
   ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-  ctx.strokeStyle = getCanvasColors().teal;
+  ctx.strokeStyle = 'rgba(108,197,194,0.5)';
   ctx.beginPath();
   ctx.moveTo(cx - r - 4, cy); ctx.lineTo(cx + r + 4, cy);
   ctx.moveTo(cx, cy - r - 4); ctx.lineTo(cx, cy + r + 4);
   ctx.stroke();
-  ctx.fillStyle = getCanvasColors().teal;
+  ctx.fillStyle = 'rgba(108,197,194,0.95)';
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';

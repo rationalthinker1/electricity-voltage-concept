@@ -9,7 +9,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
@@ -75,7 +74,7 @@ export function RvsTemperatureDemo({ figure }: Props) {
 
     function draw() {
       const { shown, T_C } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       const padL = 56, padR = 18, padT = 26, padB = 32;
@@ -94,7 +93,7 @@ export function RvsTemperatureDemo({ figure }: Props) {
       };
 
       // Frame
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(padL, padT);
@@ -103,12 +102,12 @@ export function RvsTemperatureDemo({ figure }: Props) {
       ctx.stroke();
 
       // Gridlines
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       for (let t = -20; t <= 200; t += 40) {
         const x = xT(t);
-        ctx.strokeStyle = getCanvasColors().border;
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
         ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + gH); ctx.stroke();
         ctx.fillText(`${t}`, x, padT + gH + 14);
       }
@@ -118,19 +117,19 @@ export function RvsTemperatureDemo({ figure }: Props) {
       for (let lp = -1; lp <= 1; lp++) {
         const v = Math.pow(10, lp);
         const y = yR(v);
-        ctx.strokeStyle = getCanvasColors().border;
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
         ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + gW, y); ctx.stroke();
         ctx.fillText(`${v < 1 ? v.toFixed(1) : v.toFixed(0)}×`, padL - 6, y + 3);
       }
 
       // T_ref marker
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(xT(T_REF), padT); ctx.lineTo(xT(T_REF), padT + gH);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.textAlign = 'left';
       ctx.fillText('20 °C ref', xT(T_REF) + 4, padT + 10);
 
@@ -166,7 +165,7 @@ export function RvsTemperatureDemo({ figure }: Props) {
       }
 
       // Title
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

@@ -12,7 +12,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -33,7 +32,7 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       const { L } = stateRef.current;
       const f0_ = PHYS.c / (2 * L);
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       // Plot area
@@ -49,14 +48,14 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       const Zmax = 1500;
 
       // Axes
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(x0, y0); ctx.lineTo(x1, y0);
       ctx.moveTo(x0, y0); ctx.lineTo(x0, y1);
       ctx.stroke();
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.textAlign = 'center';
       for (let i = 0; i <= 5; i++) {
         const fr = fmin + (fmax - fmin) * i / 5;
@@ -81,7 +80,7 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       // Approximate |Z(f)|: at f₀, |Z| = 73 Ω; off-resonance, a large cot-like reactance.
       // Use Z ≈ R_rad − j·Z₀·cot(kL/2) for a centre-fed dipole with Z₀ ~ 120·(ln(L/r) − 1) ≈ 600 Ω.
       const Z0 = 600;
-      ctx.strokeStyle = getCanvasColors().accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
       ctx.lineWidth = 2;
       ctx.beginPath();
       for (let i = 0; i <= 300; i++) {
@@ -100,17 +99,17 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       // Resonance marker at f₀
       const xRes = x0 + ((f0_ - fmin) / (fmax - fmin)) * plotW;
       ctx.setLineDash([3, 4]);
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.95)';
       ctx.beginPath(); ctx.moveTo(xRes, y0); ctx.lineTo(xRes, y1); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.95)';
       ctx.textAlign = 'center';
       ctx.fillText(`f₀ = ${formatHz(f0_)}`, xRes, y1 - 4);
 
       // 73-Ω horizontal line
       const y73 = y0 - (73 / Zmax) * plotH;
       ctx.setLineDash([2, 4]);
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.30)';
       ctx.beginPath(); ctx.moveTo(x0, y73); ctx.lineTo(x1, y73); ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = 'rgba(255,255,255,0.7)';

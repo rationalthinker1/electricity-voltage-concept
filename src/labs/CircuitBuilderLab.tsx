@@ -44,7 +44,6 @@ import { CanvasEditor } from './circuit-builder/CanvasEditor';
 import { Inspector } from './circuit-builder/Inspector';
 import { Palette } from './circuit-builder/Palette';
 import { defaultValue } from './circuit-builder/components';
-import { getCanvasColors } from '@/lib/canvasTheme';
 import { PRESETS, clonePresetDoc } from './circuit-builder/presets';
 import {
   buildNodeMap, eng, makeContext, pkey, resetContext, step,
@@ -554,7 +553,6 @@ function Scope({ data }: ScopeProps) {
   useEffect(() => {
     const c = ref.current;
     if (!c) return;
-    const colors = getCanvasColors();
     const dpr = window.devicePixelRatio || 1;
     const w = c.parentElement?.clientWidth ?? 320;
     const h = 80;
@@ -565,15 +563,15 @@ function Scope({ data }: ScopeProps) {
     const ctx = c.getContext('2d');
     if (!ctx) return;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = colors.bg;
+    ctx.fillStyle = '#0a0a0b';
     ctx.fillRect(0, 0, w, h);
     // Axes.
-    ctx.strokeStyle = colors.border;
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2); ctx.stroke();
     if (data.length < 2) {
-      ctx.fillStyle = colors.muted;
+      ctx.fillStyle = '#5b5953';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('— no probe data —', w / 2, h / 2 - 6);
@@ -588,7 +586,7 @@ function Scope({ data }: ScopeProps) {
     const pad = (vMax - vMin) * 0.1;
     vMin -= pad; vMax += pad;
     // Trace.
-    ctx.strokeStyle = colors.teal;
+    ctx.strokeStyle = '#6cc5c2';
     ctx.lineWidth = 1.4;
     ctx.beginPath();
     for (let i = 0; i < data.length; i++) {
@@ -600,7 +598,7 @@ function Scope({ data }: ScopeProps) {
     }
     ctx.stroke();
     // Y range labels.
-    ctx.fillStyle = colors.stroke;
+    ctx.fillStyle = '#a09e95';
     ctx.font = '9px "JetBrains Mono", monospace';
     ctx.textAlign = 'right';
     ctx.fillText(vMax.toFixed(2) + ' V', w - 4, 10);
@@ -751,41 +749,13 @@ const CSS = `
 .cb-palette-label {
   flex: 1;
 }
-.cb-palette-info {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding-top: 10px;
-  border-top: 1px solid var(--border);
-  min-height: 110px;
-}
-.cb-palette-info-title {
+.cb-palette-hint {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  font-weight: 500;
-}
-.cb-palette-info-desc {
-  font-size: 11px;
-  color: var(--text-dim);
-  line-height: 1.45;
-}
-.cb-palette-info-formula {
-  font-family: 'STIX Two Text', serif;
-  font-style: italic;
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.4;
-  padding: 4px 8px;
-  background: var(--bg-elevated);
-  border-radius: 3px;
-  border: 1px solid var(--border);
-}
-.cb-palette-info-behavior {
   font-size: 10px;
   color: var(--text-muted);
-  line-height: 1.45;
-  font-style: italic;
+  line-height: 1.5;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
 }
 
 /* Inspector */

@@ -14,7 +14,6 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -41,7 +40,7 @@ export function EnergyInTheGapDemo({ figure }: Props) {
       const s = stateRef.current;
       phase += 0.02;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       const plateW = Math.min(W * 0.7, 460);
@@ -70,13 +69,13 @@ export function EnergyInTheGapDemo({ figure }: Props) {
         const fx = xL + 18 + ((plateW - 36) * (i + 0.5)) / Nfield;
         const cycle = (phase * 70 + i * 11) % usable;
         const y1 = topY + plateThick + 8 + cycle;
-        ctx.strokeStyle = getCanvasColors().pink;
+        ctx.strokeStyle = 'rgba(255,59,110,0.85)';
         ctx.lineWidth = 1.3;
         ctx.beginPath();
         ctx.moveTo(fx, y1 - arrLen);
         ctx.lineTo(fx, y1);
         ctx.stroke();
-        ctx.fillStyle = getCanvasColors().pink;
+        ctx.fillStyle = 'rgba(255,59,110,0.95)';
         ctx.beginPath();
         ctx.moveTo(fx, y1);
         ctx.lineTo(fx - 3.5, y1 - 6);
@@ -90,20 +89,20 @@ export function EnergyInTheGapDemo({ figure }: Props) {
       drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, '#5baef8');
 
       // Labels
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('u_E = ½ ε₀ E²', 14, 12);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText(`E = ${(s.E / 1000).toFixed(1)} kV/m`, 14, 28);
       ctx.fillText(`u_E = ${s.u_E.toExponential(2)} J/m³`, 14, 42);
 
       // Caption arrow pointing at the haze
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.textAlign = 'right';
       ctx.fillText('← the energy lives here', W - 14, cy - 6);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.fillText('not in the plates', W - 14, cy + 8);
 
       raf = requestAnimationFrame(draw);

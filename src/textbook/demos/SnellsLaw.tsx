@@ -11,7 +11,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -40,7 +39,7 @@ export function SnellsLawDemo({ figure }: Props) {
       const totalIntRefl = Math.abs(sr) > 1;
       const th2 = totalIntRefl ? 0 : Math.asin(sr);
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       const cx = W / 2;
@@ -53,13 +52,13 @@ export function SnellsLawDemo({ figure }: Props) {
       ctx.fillRect(0, cy, W, H - cy);
 
       // Interface line
-      ctx.strokeStyle = getCanvasColors().textDim;
+      ctx.strokeStyle = 'rgba(255,255,255,0.45)';
       ctx.lineWidth = 1.2;
       ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(W, cy); ctx.stroke();
 
       // Normal (dashed)
       ctx.setLineDash([4, 5]);
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.30)';
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(cx, 10); ctx.lineTo(cx, H - 10); ctx.stroke();
       ctx.setLineDash([]);
@@ -76,7 +75,7 @@ export function SnellsLawDemo({ figure }: Props) {
         const rx = cx + L * Math.sin(th1);
         const ry = cy - L * Math.cos(th1);
         drawRay(ctx, cx, cy, rx, ry, 'rgba(255,59,110,0.9)', 2.2);
-        ctx.fillStyle = getCanvasColors().pink;
+        ctx.fillStyle = '#ff3b6e';
         ctx.font = 'bold 12px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText('TOTAL INTERNAL REFLECTION', cx, H - 16);
@@ -89,14 +88,14 @@ export function SnellsLawDemo({ figure }: Props) {
 
       // Labels
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.9)';
       ctx.textAlign = 'left';
       ctx.fillText(`n₁ = ${n1.toFixed(2)}`, 12, 18);
       ctx.fillText(`n₂ = ${n2.toFixed(2)}`, 12, H - 8);
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.fillText(`θ₁ = ${thetaDeg.toFixed(1)}°`, cx + 8, cy - 30);
       if (!totalIntRefl) {
-        ctx.fillStyle = getCanvasColors().teal;
+        ctx.fillStyle = 'rgba(108,197,194,0.95)';
         ctx.fillText(`θ₂ = ${((th2 * 180) / Math.PI).toFixed(1)}°`, cx + 8, cy + 36);
       }
 

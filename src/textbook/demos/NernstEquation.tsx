@@ -12,7 +12,6 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -42,13 +41,13 @@ export function NernstEquationDemo({ figure }: Props) {
 
     function draw() {
       const s = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       // Plot V vs ln(Q) for current T, with marker
       const pX = 36, pY = 26;
       const pW = W - 60, pH = H - 60;
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(pX, pY, pW, pH);
 
       // V range: V° ± 0.4 V (covers our Q sweep)
@@ -75,7 +74,7 @@ export function NernstEquationDemo({ figure }: Props) {
 
       // Nernst line: V = V° − (RT/nF)·lnQ
       const slope = R_GAS * T / (N_ELECTRONS * F_FARADAY);
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.95)';
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       for (let i = 0; i <= 80; i++) {
@@ -101,7 +100,7 @@ export function NernstEquationDemo({ figure }: Props) {
       ctx.stroke();
 
       // Axes
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

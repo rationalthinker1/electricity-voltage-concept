@@ -38,7 +38,7 @@ export function StanleyDemo({ figure }: Props) {
   }, [distanceKm, Vline]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let t0 = performance.now();
 
@@ -50,7 +50,7 @@ export function StanleyDemo({ figure }: Props) {
       const Ploss = I * I * R;
       const eff = P_LOAD_W / (P_LOAD_W + Ploss);
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const cy = h * 0.45;
@@ -97,21 +97,21 @@ export function StanleyDemo({ figure }: Props) {
       for (let i = 0; i < positions.length; i++) {
         const p = positions[i];
         ctx.fillStyle = '#16161a';
-        ctx.strokeStyle = colors.accent;
+        ctx.strokeStyle = 'rgba(255,107,42,0.7)';
         ctx.lineWidth = 1.4;
         ctx.fillRect(p.x, cy - blockH / 2, blockW, blockH);
         ctx.strokeRect(p.x, cy - blockH / 2, blockW, blockH);
-        ctx.fillStyle = colors.accent;
+        ctx.fillStyle = 'rgba(255,107,42,0.9)';
         ctx.font = 'bold 10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText(p.label, p.x + blockW / 2, cy - 6);
-        ctx.fillStyle = colors.textDim;
+        ctx.fillStyle = 'rgba(160,158,149,0.85)';
         ctx.font = '9px "JetBrains Mono", monospace';
         ctx.fillText(p.sub, p.x + blockW / 2, cy + 8);
       }
 
       // Short wires between non-transmission blocks
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
       ctx.lineWidth = 1;
       for (let i = 0; i < positions.length - 1; i++) {
         if (i === 1) continue;          // skip transmission segment (already drawn)
@@ -122,13 +122,13 @@ export function StanleyDemo({ figure }: Props) {
       }
 
       // Labels: V_line above the transmission segment; distance below
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       const lcx = (lineX0 + lineX1) / 2;
       ctx.fillText(`V_line = ${formatVoltage(Vline)}`, lcx, cy - 18);
       ctx.fillText(`I = ${formatCurrent(I)}`, lcx, cy - 32);
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.textBaseline = 'top';
       ctx.fillText(`${distanceKm} km · R = ${R.toFixed(1)} Ω`, lcx, cy + 24);
 
@@ -136,11 +136,11 @@ export function StanleyDemo({ figure }: Props) {
       const barX = padX, barY = h - 30, barW = w - 2 * padX, barH = 14;
       ctx.fillStyle = 'rgba(255,255,255,0.05)';
       ctx.fillRect(barX, barY, barW, barH);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.7)';
       ctx.fillRect(barX, barY, barW * eff, barH);
       ctx.fillStyle = 'rgba(255,107,42,0.55)';
       ctx.fillRect(barX + barW * eff, barY, barW * (1 - eff), barH);
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       ctx.fillText(`delivered: ${(eff * 100).toFixed(1)} %`, barX + 4, barY + barH / 2);

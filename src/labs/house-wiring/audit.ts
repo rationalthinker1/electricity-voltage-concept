@@ -128,6 +128,7 @@ export function audit(doc: HouseDoc): AuditResult {
   /* ── Index helpers ── */
   const roomById = new Map(doc.rooms.map(r => [r.id, r]));
   const breakerById = new Map(doc.breakers.map(b => [b.id, b]));
+  const deviceById = new Map(doc.devices.map(d => [d.id, d]));
   const applianceById = new Map(doc.appliances.map(a => [a.id, a]));
   const cableByDeviceId = new Map<string, Cable>();
   for (const c of doc.cables) cableByDeviceId.set(c.deviceId, c);
@@ -575,20 +576,20 @@ export function applianceDefault(k: Appliance['kind']):
   Omit<Appliance, 'id' | 'on' | 'label'>
 {
   switch (k) {
-    case 'toaster':        return { kind: k, watts: 1500, volts: 120, continuous: false };
-    case 'kettle':         return { kind: k, watts: 1500, volts: 120, continuous: false };
-    case 'microwave':      return { kind: k, watts: 1200, volts: 120, continuous: false };
-    case 'dishwasher':     return { kind: k, watts: 1200, volts: 120, continuous: false };
-    case 'fridge':         return { kind: k, watts:  700, volts: 120, continuous: false };
-    case 'washer':         return { kind: k, watts: 1200, volts: 120, continuous: false };
-    case 'dryer':          return { kind: k, watts: 5500, volts: 240, continuous: false };
-    case 'range':          return { kind: k, watts: 8000, volts: 240, continuous: false };
-    case 'water-heater':   return { kind: k, watts: 4500, volts: 240, continuous: true  };
-    case 'heat-pump':      return { kind: k, watts: 6000, volts: 240, continuous: true  };
-    case 'ev-charger':     return { kind: k, watts: 7680, volts: 240, continuous: true  };  // 32 A continuous
-    case 'general-lights': return { kind: k, watts:  900, volts: 120, continuous: true  };
-    case 'tv':             return { kind: k, watts:  150, volts: 120, continuous: false };
-    case 'computer':       return { kind: k, watts:  300, volts: 120, continuous: false };
+    case 'toaster':        return { watts: 1500, volts: 120, continuous: false };
+    case 'kettle':         return { watts: 1500, volts: 120, continuous: false };
+    case 'microwave':      return { watts: 1200, volts: 120, continuous: false };
+    case 'dishwasher':     return { watts: 1200, volts: 120, continuous: false };
+    case 'fridge':         return { watts:  700, volts: 120, continuous: false };
+    case 'washer':         return { watts: 1200, volts: 120, continuous: false };
+    case 'dryer':          return { watts: 5500, volts: 240, continuous: false };
+    case 'range':          return { watts: 8000, volts: 240, continuous: false };
+    case 'water-heater':   return { watts: 4500, volts: 240, continuous: true  };
+    case 'heat-pump':      return { watts: 6000, volts: 240, continuous: true  };
+    case 'ev-charger':     return { watts: 7680, volts: 240, continuous: true  };  // 32 A continuous
+    case 'general-lights': return { watts:  900, volts: 120, continuous: true  };
+    case 'tv':             return { watts:  150, volts: 120, continuous: false };
+    case 'computer':       return { watts:  300, volts: 120, continuous: false };
   }
 }
 

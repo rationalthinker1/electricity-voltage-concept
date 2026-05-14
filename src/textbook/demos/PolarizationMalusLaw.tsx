@@ -21,7 +21,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { drawArrow } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -43,7 +42,7 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
     let tAnim = 0;
     function draw() {
       const { t1Deg, t2Deg, qwp } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       tAnim += 0.04;
@@ -58,13 +57,13 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
         const cx = panelW * idx + panelW / 2;
         const cy = cyMid;
         // Background wheel
-        ctx.strokeStyle = getCanvasColors().border;
+        ctx.strokeStyle = 'rgba(255,255,255,0.10)';
         ctx.lineWidth = 1;
         ctx.beginPath(); ctx.arc(cx, cy, Rwheel, 0, Math.PI * 2); ctx.stroke();
         // Polariser axis line, if any
         if (axisDeg !== null) {
           const a = (axisDeg * Math.PI) / 180;
-          ctx.strokeStyle = getCanvasColors().teal;
+          ctx.strokeStyle = 'rgba(108,197,194,0.85)';
           ctx.lineWidth = 2.5;
           ctx.beginPath();
           ctx.moveTo(cx - Rwheel * 1.1 * Math.cos(a), cy + Rwheel * 1.1 * Math.sin(a));
@@ -75,14 +74,14 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
         drawE(cx, cy);
         // Title
         ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillStyle = getCanvasColors().textDim;
+        ctx.fillStyle = 'rgba(160,158,149,0.85)';
         ctx.textAlign = 'center';
         ctx.fillText(title, cx, cy + Rwheel + 22);
       }
 
       // (1) Unpolarised: draw 8 random-orientation arrows
       panel(0, 'unpolarised', (cx, cy) => {
-        ctx.strokeStyle = getCanvasColors().accent;
+        ctx.strokeStyle = 'rgba(255,107,42,0.85)';
         ctx.lineWidth = 1.5;
         const Nv = 8;
         for (let i = 0; i < Nv; i++) {
@@ -140,7 +139,7 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
       }, t2Deg);
 
       // Connecting arrows between panels
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(panelW * 0.95, cyMid); ctx.lineTo(panelW * 1.05, cyMid);
@@ -149,7 +148,7 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
 
       // Header / readouts
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.textAlign = 'left';
       ctx.fillText(`I/I₀ = ${fracOut.toFixed(3)}`, 12, 18);
       ctx.textAlign = 'right';

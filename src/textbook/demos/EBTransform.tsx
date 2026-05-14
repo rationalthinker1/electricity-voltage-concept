@@ -41,7 +41,7 @@ export function EBTransformDemo({ figure }: Props) {
   const cB_over_E = Ey_new !== 0 ? Math.abs(PHYS.c * Bz_new) / Math.abs(Ey_new) : 0;
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
@@ -52,11 +52,11 @@ export function EBTransformDemo({ figure }: Props) {
       const induced = g * b; // |cB'|/|E_y| = γβ when starting from pure E_y
       void g;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Background grid
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
       ctx.lineWidth = 1;
       const gs = 36;
       for (let x = gs / 2; x < w; x += gs) {
@@ -68,11 +68,11 @@ export function EBTransformDemo({ figure }: Props) {
 
       // Two side-by-side "windows": left = rest frame, right = boosted frame
       const midX = w / 2;
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(midX, 14); ctx.lineTo(midX, h - 14); ctx.stroke();
 
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('REST FRAME · pure E_y', midX / 2, 18);
@@ -80,8 +80,8 @@ export function EBTransformDemo({ figure }: Props) {
 
       // Helper: draw a grid of upward pink arrows representing E_y
       function drawE(left: number, right: number, scale: number) {
-        ctx.strokeStyle = colors.pink;
-        ctx.fillStyle = colors.pink;
+        ctx.strokeStyle = 'rgba(255,59,110,0.85)';
+        ctx.fillStyle = 'rgba(255,59,110,0.85)';
         ctx.lineWidth = 1.5;
         const cols = 4, rows = 4;
         const dx = (right - left) / cols;
@@ -139,11 +139,11 @@ export function EBTransformDemo({ figure }: Props) {
       }
 
       // Caption on right pane
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText("B_z'  (induced, into page)", midX + 18, h - 18);
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.85)';
       ctx.fillText("E_y'  = γ·E_y", midX + 18, h - 34);
 
       raf = requestAnimationFrame(draw);

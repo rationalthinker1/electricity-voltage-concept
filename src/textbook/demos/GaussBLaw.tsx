@@ -23,13 +23,13 @@ export function GaussBLawDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { hasMagnet }; }, [hasMagnet]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let phase = 0;
 
     function draw() {
       const { hasMagnet } = stateRef.current;
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const cx = w / 2, cy = h / 2;
@@ -88,7 +88,7 @@ export function GaussBLawDemo({ figure }: Props) {
 
         // Inside the magnet: field lines go S → N (internal direction is opposite
         // to external direction, making the loop closed).
-        ctx.strokeStyle = colors.teal;
+        ctx.strokeStyle = 'rgba(108,197,194,0.45)';
         ctx.lineWidth = 1;
         ctx.setLineDash([4, 3]);
         for (let i = -2; i <= 2; i++) {
@@ -111,7 +111,7 @@ export function GaussBLawDemo({ figure }: Props) {
         ctx.strokeStyle = 'rgba(255,255,255,0.2)';
         ctx.lineWidth = 1;
         ctx.strokeRect(sx, cy - magH / 2, magW, magH);
-        ctx.fillStyle = colors.bg;
+        ctx.fillStyle = '#0a0a0b';
         ctx.font = 'bold 13px JetBrains Mono';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText('S', sx + magW / 4, cy);
@@ -124,7 +124,7 @@ export function GaussBLawDemo({ figure }: Props) {
         const rx = magW / 2 + 60, ry = 60;
         // upper loop
         const a1 = Math.PI + t * Math.PI;       // π → 2π (N over top to S)
-        ctx.fillStyle = colors.accent;
+        ctx.fillStyle = 'rgba(255,107,42,0.95)';
         ctx.beginPath();
         ctx.arc(cx + rx * Math.cos(a1), cy + ry * Math.sin(a1), 3.5, 0, Math.PI * 2);
         ctx.fill();
@@ -142,7 +142,7 @@ export function GaussBLawDemo({ figure }: Props) {
           ctx.lineTo(bx + bw + 80, y);
           ctx.stroke();
           // arrowhead on right
-          ctx.fillStyle = colors.teal;
+          ctx.fillStyle = 'rgba(108,197,194,0.85)';
           const tipX = bx + bw + 60;
           ctx.beginPath();
           ctx.moveTo(tipX + 6, y);
@@ -151,7 +151,7 @@ export function GaussBLawDemo({ figure }: Props) {
           ctx.closePath();
           ctx.fill();
         }
-        ctx.fillStyle = colors.textDim;
+        ctx.fillStyle = 'rgba(160,158,149,0.7)';
         ctx.font = '11px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -159,18 +159,18 @@ export function GaussBLawDemo({ figure }: Props) {
       }
 
       // The Gaussian box
-      ctx.strokeStyle = colors.accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.85)';
       ctx.setLineDash([6, 4]);
       ctx.lineWidth = 1.6;
       ctx.strokeRect(bx, by, bw, bh);
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('Gaussian surface', bx + 8, by - 16);
 
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.fillText('∮B·dA = 0  (always)', 14, 14);
 
       raf = requestAnimationFrame(draw);

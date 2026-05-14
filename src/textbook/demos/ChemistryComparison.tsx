@@ -10,7 +10,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -81,12 +80,12 @@ export function ChemistryComparisonDemo({ figure }: Props) {
 
     function draw() {
       const s = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       const pX = 56, pY = 24;
       const pW = W - 72, pH = H - 64;
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(pX, pY, pW, pH);
 
       const values = CHEMS.map(c => c.data[s.metric]);
@@ -106,20 +105,20 @@ export function ChemistryComparisonDemo({ figure }: Props) {
         ctx.fillRect(x, y, barW, barH);
 
         // value label on top
-        ctx.fillStyle = getCanvasColors().text;
+        ctx.fillStyle = 'rgba(236,235,229,0.9)';
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
         ctx.fillText(s.spec.format(v), x + barW / 2, y - 2);
 
         // x label
-        ctx.fillStyle = getCanvasColors().textDim;
+        ctx.fillStyle = 'rgba(160,158,149,0.85)';
         ctx.textBaseline = 'top';
         ctx.fillText(c.name, x + barW / 2, pY + pH + 4);
       }
 
       // Metric label
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

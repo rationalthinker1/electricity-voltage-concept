@@ -20,7 +20,6 @@ import { TryIt } from '@/components/TryIt';
 import { drawArrow, drawCharge } from '@/lib/canvasPrimitives';
 import { PHYS, pretty } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 const SLUG = 'e-field';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -58,7 +57,7 @@ export default function EFieldLab() {
   }, [qNC, qTestNC, er, src, probe, sizePx]);
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, } = info;
+    const { ctx, w, h, canvas } = info;
     setSizePx({ W: w, H: h });
     let raf = 0;
     let dragging: 'src' | 'probe' | null = null;
@@ -120,7 +119,7 @@ export default function EFieldLab() {
 
     function draw() {
       const { qNC, er, src, probe } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const sx = src.x * w, sy = src.y * h;
@@ -147,7 +146,7 @@ export default function EFieldLab() {
       const rings = [25, 50, 100, 200];
       for (const mm of rings) {
         ctx.setLineDash([3, 5]);
-        ctx.strokeStyle = getCanvasColors().tealSoft;
+        ctx.strokeStyle = 'rgba(108,197,194,0.18)';
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.arc(sx, sy, mm, 0, Math.PI * 2);
@@ -185,7 +184,7 @@ export default function EFieldLab() {
           if (t) {
             ctx.beginPath();
             ctx.arc(t[0], t[1], 1.6, 0, Math.PI * 2);
-            ctx.fillStyle = getCanvasColors().accent;
+            ctx.fillStyle = 'rgba(255,107,42,0.95)';
             ctx.shadowColor = 'rgba(255,107,42,.6)';
             ctx.shadowBlur = 5;
             ctx.fill();
@@ -575,7 +574,7 @@ function drawProbe(
   ctx.lineWidth = 2;
   ctx.fillStyle = 'rgba(10,10,11,.92)';
   ctx.beginPath(); ctx.arc(cx, cy, 10, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-  ctx.fillStyle = getCanvasColors().accent;
+  ctx.fillStyle = '#ff6b2a';
   ctx.font = 'bold 11px JetBrains Mono';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';

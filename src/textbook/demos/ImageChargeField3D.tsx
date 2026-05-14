@@ -89,14 +89,14 @@ export function ImageChargeField3DDemo({ figure }: Props) {
   }, [q, d, showImage, showSigma]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
+    const { ctx, w, h, canvas } = info;
     const cam: OrbitCamera = { yaw: 0.6, pitch: 0.35, distance: 9, fov: Math.PI / 4 };
     const dispose = attachOrbit(canvas, cam);
     let raf = 0;
 
     function draw() {
       const { q, d, showImage, showSigma } = stateRef.current;
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // 1. The grounded plane — a 6x6 wireframe square at y=0 with diagonals.
@@ -116,14 +116,14 @@ export function ImageChargeField3DDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fill();
       // Wireframe — border + diagonals.
-      ctx.strokeStyle = colors.teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.45)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(corners2D[0]!.x, corners2D[0]!.y);
       for (let i = 1; i < 4; i++) ctx.lineTo(corners2D[i]!.x, corners2D[i]!.y);
       ctx.closePath();
       ctx.stroke();
-      ctx.strokeStyle = colors.tealSoft;
+      ctx.strokeStyle = 'rgba(108,197,194,0.18)';
       // Grid lines (every 1 unit) for spatial reference.
       for (let g = -planeHalf + 1; g < planeHalf; g++) {
         const a = project(v3(g, 0, -planeHalf), cam, w, h);
@@ -254,7 +254,7 @@ export function ImageChargeField3DDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(realPos.x, realPos.y, realR, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0a0a0b';
       ctx.font = 'bold 12px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -277,23 +277,23 @@ export function ImageChargeField3DDemo({ figure }: Props) {
         ctx.arc(imgPos.x, imgPos.y, imgR, 0, Math.PI * 2);
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = colors.blue;
+        ctx.fillStyle = 'rgba(91,174,248,0.95)';
         ctx.font = 'bold 12px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('−', imgPos.x, imgPos.y);
         ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.blue;
+        ctx.fillStyle = 'rgba(91,174,248,0.7)';
         ctx.fillText('image (fictitious)', imgPos.x, imgPos.y + imgR + 12);
         ctx.restore();
       }
 
       // 6. Labels.
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.85)';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('grounded conducting plane (y = 0)', 14, h - 14);
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText('drag to orbit', 14, 18);
 

@@ -15,7 +15,6 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -61,12 +60,12 @@ export function SupercapacitorDemo({ figure }: Props) {
 
     function draw() {
       const s = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       const pX = 40, pY = 22;
       const pW = W - 56, pH = H - 50;
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(pX, pY, pW, pH);
 
       // V axis 0..V_max
@@ -85,7 +84,7 @@ export function SupercapacitorDemo({ figure }: Props) {
         const tMin = trace[0]!.t;
         const tMax = trace[trace.length - 1]!.t;
         const tSpan = Math.max(tMax - tMin, 1e-6);
-        ctx.strokeStyle = getCanvasColors().pink;
+        ctx.strokeStyle = 'rgba(255,59,110,0.95)';
         ctx.lineWidth = 1.8;
         ctx.beginPath();
         for (let i = 0; i < trace.length; i++) {
@@ -98,7 +97,7 @@ export function SupercapacitorDemo({ figure }: Props) {
       }
 
       // Labels
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

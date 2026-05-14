@@ -37,7 +37,7 @@ export function AlternatorDemo({ figure }: Props) {
   }, [engineRpm]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let simT = 0;
     let lastT = performance.now();
@@ -56,7 +56,7 @@ export function AlternatorDemo({ figure }: Props) {
       if (dt > 0.1) dt = 0.1;
       simT += dt * slow;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Two stacked plots
@@ -68,7 +68,7 @@ export function AlternatorDemo({ figure }: Props) {
       const cy2 = topY + plotH + midGap + plotH / 2;
 
       // Top: 3-phase raw
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(padL, topY, plotW, plotH);
       ctx.beginPath();
       ctx.moveTo(padL, cy1); ctx.lineTo(padL + plotW, cy1);
@@ -83,12 +83,12 @@ export function AlternatorDemo({ figure }: Props) {
       const samples = 240;
       const tWindow = 2 / Math.max(f, 1);  // show 2 cycles
       const peak = 17;   // ~17 V peak from a 14 V regulated output
-      const phaseColors = ['#ff3b6e', '#6cc5c2', '#ff6b2a'];
+      const colors = ['#ff3b6e', '#6cc5c2', '#ff6b2a'];
 
       // Draw the three raw phases on the top plot.
       const phases = [0, -TAU3, -2 * TAU3];
       for (let k = 0; k < 3; k++) {
-        ctx.strokeStyle = phaseColors[k];
+        ctx.strokeStyle = colors[k];
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         for (let i = 0; i <= samples; i++) {
@@ -123,20 +123,20 @@ export function AlternatorDemo({ figure }: Props) {
       ctx.stroke();
 
       // Regulator level dotted line (at +14 V)
-      ctx.strokeStyle = colors.teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.45)';
       ctx.setLineDash([4, 4]);
       const yReg = cy2 + (plotH / 2) * 0.85 - (V_REG / peak) * (plotH * 0.85);
       ctx.beginPath();
       ctx.moveTo(padL, yReg); ctx.lineTo(padL + plotW, yReg);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.7)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       ctx.fillText('14 V', padL - 4, yReg);
 
       // Labels
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('raw 3-phase AC', padL + 4, topY + 4);

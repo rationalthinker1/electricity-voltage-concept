@@ -43,7 +43,7 @@ export function InductionMotorSlipDemo({ figure }: Props) {
   }, [f, load]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let lastT = performance.now();
     let statorAng = 0;     // rotating-field angle
@@ -68,7 +68,7 @@ export function InductionMotorSlipDemo({ figure }: Props) {
       statorAng += omega_s * scale * dt;
       rotorAng += omega_rotor * scale * dt;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const cx = w / 2;
@@ -76,7 +76,7 @@ export function InductionMotorSlipDemo({ figure }: Props) {
       const R = Math.min(w, h) * 0.36;
 
       // Stator: ring with N and S poles indicated by the rotating field.
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.lineWidth = 1.2;
       ctx.beginPath(); ctx.arc(cx, cy, R + 18, 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.arc(cx, cy, R - 4, 0, Math.PI * 2); ctx.stroke();
@@ -86,17 +86,17 @@ export function InductionMotorSlipDemo({ figure }: Props) {
       const sFy = cy - Math.sin(statorAng) * R * 0.95;
       const sSx = cx - Math.cos(statorAng) * R * 0.95;
       const sSy = cy + Math.sin(statorAng) * R * 0.95;
-      ctx.strokeStyle = colors.teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.45)';
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(sSx, sSy); ctx.lineTo(sFx, sFy); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.7)';
       ctx.beginPath(); ctx.arc(sFx, sFy, 9, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.4)';
       ctx.beginPath(); ctx.arc(sSx, sSy, 9, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0a0a0b';
       ctx.font = 'bold 10px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('N', sFx, sFy);
@@ -115,18 +115,18 @@ export function InductionMotorSlipDemo({ figure }: Props) {
         ctx.beginPath(); ctx.arc(bx, by, 5, 0, Math.PI * 2); ctx.fill();
       }
       // End ring (the shorting ring of the squirrel cage)
-      ctx.strokeStyle = colors.accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.45)';
       ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.arc(cx, cy, rBar, 0, Math.PI * 2); ctx.stroke();
       // Rotor body hint
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.beginPath(); ctx.arc(cx, cy, rBar - 16, 0, Math.PI * 2); ctx.stroke();
 
       // Rotor reference marker (so the user sees rotor speed vs stator)
       const refA = rotorAng;
       const rmx = cx + Math.cos(refA) * (rBar - 10);
       const rmy = cy - Math.sin(refA) * (rBar - 10);
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.beginPath(); ctx.arc(rmx, rmy, 4, 0, Math.PI * 2); ctx.fill();
 
       // Labels

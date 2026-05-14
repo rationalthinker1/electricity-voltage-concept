@@ -12,7 +12,6 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -49,7 +48,7 @@ export function DaniellCellDemo({ figure }: Props) {
       const s = stateRef.current;
       phase += 0.04;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       // Two beakers side by side
@@ -63,9 +62,9 @@ export function DaniellCellDemo({ figure }: Props) {
       drawBeaker(ctx, rightX, beakerY, beakerW, beakerH, 'rgba(255,107,42,0.18)', 'CuSO₄');
 
       // Porous separator (vertical bar between)
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.45)';
       ctx.fillRect(W / 2 - 6, beakerY + 20, 12, beakerH - 30);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -120,7 +119,7 @@ export function DaniellCellDemo({ figure }: Props) {
 
       // Resistor box (zigzag) or open gap
       if (s.loaded) {
-        ctx.strokeStyle = getCanvasColors().accent;
+        ctx.strokeStyle = 'rgba(255,107,42,0.9)';
         ctx.lineWidth = 1.6;
         ctx.beginPath();
         const x0 = W / 2 - 22, x1 = W / 2 + 22;
@@ -147,7 +146,7 @@ export function DaniellCellDemo({ figure }: Props) {
         for (let i = 0; i < arrowCount; i++) {
           const frac = ((phase * 0.6 + i / arrowCount) % 1);
           const xa = (leftX + beakerW / 2) + frac * (rightX + beakerW / 2 - (leftX + beakerW / 2));
-          ctx.fillStyle = getCanvasColors().blue;
+          ctx.fillStyle = 'rgba(91,174,248,0.85)';
           ctx.font = '11px "JetBrains Mono", monospace';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
@@ -156,7 +155,7 @@ export function DaniellCellDemo({ figure }: Props) {
       }
 
       // Half-reactions
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -212,7 +211,7 @@ function drawBeaker(
   fluidColor: string, label: string,
 ) {
   // Glass body
-  ctx.strokeStyle = getCanvasColors().borderStrong;
+  ctx.strokeStyle = 'rgba(255,255,255,0.18)';
   ctx.lineWidth = 1.5;
   ctx.beginPath();
   ctx.moveTo(x, y);
@@ -224,7 +223,7 @@ function drawBeaker(
   ctx.fillStyle = fluidColor;
   ctx.fillRect(x + 2, y + 12, w - 4, h - 14);
   // Fluid label
-  ctx.fillStyle = getCanvasColors().textDim;
+  ctx.fillStyle = 'rgba(160,158,149,0.7)';
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'bottom';

@@ -29,14 +29,14 @@ export function EAxialFieldDemo({ figure }: Props) {
   const E = V / L;
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let phase = 0;
 
     function draw() {
       const { V, L } = stateRef.current;
       const E_ = V / L;
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const margin = 80;
@@ -71,7 +71,7 @@ export function EAxialFieldDemo({ figure }: Props) {
       ctx.stroke();
 
       // End caps
-      ctx.strokeStyle = colors.accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.5)';
       ctx.beginPath(); ctx.ellipse(wireXL, wireCY, er, r, 0, 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.ellipse(wireXR, wireCY, er, r, 0, 0, Math.PI * 2); ctx.stroke();
 
@@ -80,8 +80,8 @@ export function EAxialFieldDemo({ figure }: Props) {
       const nArrows = 6;
       // Visual scaling for arrow length, capped so it stays inside wire.
       const arrLen = Math.min(80, 32 + Math.log10(Math.max(1, E_)) * 14);
-      ctx.strokeStyle = colors.pink;
-      ctx.fillStyle = colors.pink;
+      ctx.strokeStyle = 'rgba(255,59,110,0.95)';
+      ctx.fillStyle = 'rgba(255,59,110,0.95)';
       ctx.lineWidth = 2;
       for (let i = 0; i < nArrows; i++) {
         const t = (i + 0.5) / nArrows;
@@ -101,7 +101,7 @@ export function EAxialFieldDemo({ figure }: Props) {
 
       // Subtle moving tracer dots along the axis to suggest the field "pushing"
       phase += 0.012;
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.6)';
       const nDots = 5;
       for (let i = 0; i < nDots; i++) {
         const f = ((i / nDots) + phase) % 1;
@@ -110,19 +110,19 @@ export function EAxialFieldDemo({ figure }: Props) {
       }
 
       // Terminals — battery hookup
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.fillRect(wireXL - 22, wireCY - r - 4, 4, 2 * r + 8);
-      ctx.fillStyle = colors.blue;
+      ctx.fillStyle = '#5baef8';
       ctx.fillRect(wireXR + 18, wireCY - r - 4, 4, 2 * r + 8);
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.font = 'bold 14px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('+', wireXL - 36, wireCY);
-      ctx.fillStyle = colors.blue;
+      ctx.fillStyle = '#5baef8';
       ctx.fillText('−', wireXR + 36, wireCY);
 
       // Labels
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.85)';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.fillText('E  (axial)', (wireXL + wireXR) / 2, wireCY - r - 14);
@@ -134,7 +134,7 @@ export function EAxialFieldDemo({ figure }: Props) {
       ctx.textAlign = 'right';
       ctx.fillText(`L = ${L.toFixed(2)} m`, w - 18, h - 24);
       ctx.textAlign = 'center';
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.fillText(`E = V / L = ${pretty(E_)} V/m`, w / 2, h - 24);
 
       raf = requestAnimationFrame(draw);

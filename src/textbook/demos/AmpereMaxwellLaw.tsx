@@ -38,13 +38,13 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
   const I_disp = I;
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let phase = 0;
 
     function draw() {
       const { I, r_mm } = stateRef.current;
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const cy = h / 2;
@@ -67,27 +67,27 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
       });
 
       // Battery glyph (left)
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.fillRect(battX - 8, cy - 18, 4, 36);
-      ctx.fillStyle = colors.blue;
+      ctx.fillStyle = '#5baef8';
       ctx.fillRect(battX - 16, cy - 10, 4, 20);
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText('battery', battX - 10, cy + 22);
 
       // Capacitor plates (vertical bars)
       const plateH = 80;
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.fillRect(plate1X - 3, cy - plateH / 2, 4, plateH);
       ctx.fillRect(plate2X, cy - plateH / 2, 4, plateH);
 
       // Plate charge labels (+ on left plate, − on right)
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.font = 'bold 14px JetBrains Mono';
       ctx.textBaseline = 'middle';
       ctx.fillText('+', plate1X - 18, cy - plateH / 2 - 14);
-      ctx.fillStyle = colors.blue;
+      ctx.fillStyle = '#5baef8';
       ctx.fillText('−', plate2X + 18, cy - plateH / 2 - 14);
 
       // E-field between the plates (growing). Render as several pink arrows.
@@ -100,7 +100,7 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
         ctx.moveTo(plate1X + 4, y); ctx.lineTo(plate2X - 6, y);
         ctx.stroke();
         // arrowhead
-        ctx.fillStyle = colors.pink;
+        ctx.fillStyle = 'rgba(255,59,110,0.85)';
         ctx.beginPath();
         ctx.moveTo(plate2X - 6, y);
         ctx.lineTo(plate2X - 12, y - 3);
@@ -109,7 +109,7 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
         ctx.fill();
       }
       // Label E
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.9)';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText('E growing', (plate1X + plate2X) / 2, cy + plateH / 2 + 6);
@@ -152,8 +152,8 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
           const tLen = Math.hypot(tx, ty);
           const tnx = tx / tLen, tny = ty / tLen;
           const L = 6;
-          ctx.strokeStyle = colors.teal;
-          ctx.fillStyle = colors.teal;
+          ctx.strokeStyle = 'rgba(108,197,194,0.95)';
+          ctx.fillStyle = 'rgba(108,197,194,0.95)';
           ctx.lineWidth = 1.2;
           ctx.beginPath();
           ctx.moveTo(ax - tnx * L / 2, ay - tny * L / 2);
@@ -181,7 +181,7 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
       }
 
       // I label and current direction near wires
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       ctx.fillText(`I = ${I.toFixed(2)} A →`, battX + 30, cy + 18);

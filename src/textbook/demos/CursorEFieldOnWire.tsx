@@ -24,7 +24,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   drawCircuit, drawArrow, renderCircuitToCanvas, type CircuitElement,
 } from '@/lib/canvasPrimitives';
@@ -153,7 +152,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
       const { cursorPos, qNC, showBatteryField } = stateRef.current;
 
       // Background
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Static schematic cache
@@ -232,7 +231,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
         ctx.beginPath();
         ctx.arc(ui.cx, ui.cy, 7, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = getCanvasColors().bg;
+        ctx.fillStyle = '#0a0a0b';
         ctx.font = 'bold 10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -298,7 +297,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
       // cursor's perturbation is the only thing moving the electrons.
       const baseDrift = showBatteryField ? 0.55 : 0.0;
 
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = '#5baef8';
       for (const eDot of electrons) {
         // Thermal kick — small, just to keep things alive.
         eDot.vx += (Math.random() - 0.5) * 0.8;

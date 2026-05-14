@@ -13,7 +13,6 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -72,12 +71,12 @@ export function CellDischargeDemo({ figure }: Props) {
     let raf = 0;
 
     function draw() {
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       const pX = 36, pY = 22;
       const pW = W - 60, pH = H - 50;
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(pX, pY, pW, pH);
 
       // V axis 0 .. V_full + 0.1
@@ -88,7 +87,7 @@ export function CellDischargeDemo({ figure }: Props) {
       const xSOC = (s: number) => pX + (1 - s) * pW;
 
       // Theoretical V_OC curve
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.55)';
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       for (let i = 0; i <= 80; i++) {
@@ -101,7 +100,7 @@ export function CellDischargeDemo({ figure }: Props) {
       ctx.stroke();
 
       // Theoretical V_term under current load
-      ctx.strokeStyle = getCanvasColors().accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       const s = stateRef.current;
@@ -124,7 +123,7 @@ export function CellDischargeDemo({ figure }: Props) {
       ctx.fill();
 
       // Axes
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -135,11 +134,11 @@ export function CellDischargeDemo({ figure }: Props) {
       ctx.textAlign = 'right';
       ctx.fillText('empty', pX + pW, pY + pH + 4);
 
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
       ctx.fillText('V_OC (open)', pX + pW - 4, pY + 4);
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.fillText('V_term (loaded)', pX + pW - 4, pY + 18);
 
       raf = requestAnimationFrame(draw);

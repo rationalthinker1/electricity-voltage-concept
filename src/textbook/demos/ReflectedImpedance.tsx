@@ -18,7 +18,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -59,7 +58,7 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
   }, [omegaKrad, k, L1mH, L2mH, RLOhm]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
@@ -77,7 +76,7 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       const zinIm = omega * L1 + reflIm;
       const mag = Math.sqrt(zinRe * zinRe + zinIm * zinIm);
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Layout
@@ -86,16 +85,16 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       const srcX = 24;
       const srcW = 70, srcH = 60;
       ctx.fillStyle = '#16161a';
-      ctx.strokeStyle = getCanvasColors().accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.7)';
       ctx.lineWidth = 1.4;
       ctx.fillRect(srcX, cy - srcH / 2, srcW, srcH);
       ctx.strokeRect(srcX, cy - srcH / 2, srcW, srcH);
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.9)';
       ctx.font = 'bold 10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('AC', srcX + srcW / 2, cy - 8);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.fillText(`ω = ${omegaKrad} krad/s`, srcX + srcW / 2, cy + 8);
 
@@ -108,7 +107,7 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       drawCoilTwo(ctx, c2x, cy, 'L₂', `${L2mH.toFixed(1)} mH`);
 
       // Wires from source to L1, from L2 to R_L
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(srcX + srcW, cy - 6); ctx.lineTo(c1x - 22, cy - 6);
@@ -116,14 +115,14 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       ctx.stroke();
 
       // M arc
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.45)';
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.moveTo(c1x + 22, cy);
       ctx.lineTo(c2x - 22, cy);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`M = ${(M * 1e6).toFixed(0)} µH`, (c1x + c2x) / 2, cy - 30);
@@ -132,21 +131,21 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       const ldX = c2x + 50;
       const ldW = 70, ldH = 60;
       ctx.fillStyle = '#16161a';
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.7)';
       ctx.lineWidth = 1.4;
       ctx.fillRect(ldX, cy - ldH / 2, ldW, ldH);
       ctx.strokeRect(ldX, cy - ldH / 2, ldW, ldH);
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.9)';
       ctx.font = 'bold 10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('R_L', ldX + ldW / 2, cy - 8);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.fillText(`${RLOhm.toFixed(0)} Ω`, ldX + ldW / 2, cy + 8);
 
       // Wires from L2 to R_L
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(c2x + 22, cy - 6); ctx.lineTo(ldX, cy - 6);
@@ -154,7 +153,7 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       ctx.stroke();
 
       // Top annotation: Z_in
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.font = 'bold 12px "STIX Two Text", "Fraunces", serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -164,7 +163,7 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       );
 
       // Reflected ghost-impedance label below
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
@@ -228,7 +227,7 @@ function drawCoilTwo(ctx: CanvasRenderingContext2D, cx: number, cy: number, labe
   const rx = 14;
   const colH = 60;
   const dy = colH / turns;
-  ctx.strokeStyle = getCanvasColors().accent;
+  ctx.strokeStyle = 'rgba(255,107,42,0.95)';
   ctx.lineWidth = 1.4;
   for (let i = 0; i < turns; i++) {
     const y = cy - colH / 2 + (i + 0.5) * dy;
@@ -236,7 +235,7 @@ function drawCoilTwo(ctx: CanvasRenderingContext2D, cx: number, cy: number, labe
     ctx.ellipse(cx, y, rx, dy * 0.42, 0, 0, Math.PI * 2);
     ctx.stroke();
   }
-  ctx.fillStyle = getCanvasColors().accent;
+  ctx.fillStyle = 'rgba(255,107,42,0.85)';
   ctx.font = 'bold 10px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';

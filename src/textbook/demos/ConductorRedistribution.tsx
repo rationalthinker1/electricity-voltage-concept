@@ -27,7 +27,7 @@ export function ConductorRedistributionDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { conductor }; }, [conductor]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     const N = 60;
@@ -49,7 +49,7 @@ export function ConductorRedistributionDemo({ figure }: Props) {
       lastFrame = now;
       const { conductor } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Container box

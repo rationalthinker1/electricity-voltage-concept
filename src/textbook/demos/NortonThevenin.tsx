@@ -32,7 +32,6 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -68,7 +67,7 @@ export function NortonTheveninDemo({ figure }: Props) {
     function draw() {
       const { V_oc, R_Th, I_N, RL } = stateRef.current;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Cache key: invalidates on resize/DPR change or any slider movement
@@ -99,13 +98,13 @@ export function NortonTheveninDemo({ figure }: Props) {
       // Per-frame overlay: the panel-divider strokes and the ⇌ glyphs sit
       // on top of the cached schematic so they're crisp at any zoom.
       const colW = w / 3;
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.beginPath();
       ctx.moveTo(colW, 8); ctx.lineTo(colW, h - 8);
       ctx.moveTo(2 * colW, 8); ctx.lineTo(2 * colW, h - 8);
       ctx.stroke();
 
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.font = 'bold 14px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';

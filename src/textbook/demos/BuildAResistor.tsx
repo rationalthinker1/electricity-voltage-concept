@@ -19,7 +19,6 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -81,7 +80,7 @@ export function BuildAResistorDemo({ figure }: Props) {
       const f = FAMILIES[familyKey];
       phase += 0.012;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       // Layout
@@ -106,7 +105,7 @@ export function BuildAResistorDemo({ figure }: Props) {
       roundRect(ctx, bodyL, bodyT, bodyW, bodyH, 18);
       ctx.fillStyle = shellColor;
       ctx.fill();
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
       ctx.lineWidth = 1;
       ctx.stroke();
 
@@ -174,7 +173,7 @@ export function BuildAResistorDemo({ figure }: Props) {
       }
 
       // Labels
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -185,9 +184,9 @@ export function BuildAResistorDemo({ figure }: Props) {
 
       // Tolerance band on the right
       ctx.textAlign = 'right';
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.fillText(`R = ${fmtOhms(R)}`, W - 12, 10);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText(`±${(f.tol * 100).toFixed(f.tol < 0.01 ? 2 : 0)}%   ${fmtOhms(Rmin)} … ${fmtOhms(Rmax)}`, W - 12, 24);
 
       void phase;

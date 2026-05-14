@@ -41,7 +41,7 @@ export function GridHierarchyDemo({ figure }: Props) {
   const canvasContainerRef = useRef<HTMLDivElement>(null);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
+    const { ctx, w, h, canvas } = info;
     let raf = 0;
 
     function onClick(e: MouseEvent) {
@@ -60,7 +60,7 @@ export function GridHierarchyDemo({ figure }: Props) {
     function draw() {
       const { selected } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const cy = h / 2;
@@ -106,7 +106,7 @@ export function GridHierarchyDemo({ figure }: Props) {
         } else {
           ctx.fillText(lbl, cx, by + 18);
         }
-        ctx.fillStyle = colors.teal;
+        ctx.fillStyle = 'rgba(108,197,194,0.85)';
         ctx.font = '9px "JetBrains Mono", monospace';
         ctx.fillText(s.voltage, cx, by + blockH - 12);
 

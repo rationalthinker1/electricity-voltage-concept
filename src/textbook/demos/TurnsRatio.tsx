@@ -30,7 +30,7 @@ export function TurnsRatioDemo({ figure }: Props) {
   }, [ratio]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let t0 = performance.now();
 
@@ -40,7 +40,7 @@ export function TurnsRatioDemo({ figure }: Props) {
       // visual time scaling: show 60 Hz cycles at ~2 Hz so eye can track
       const tVis = t * (2 / F_HZ);
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 30;
@@ -50,12 +50,12 @@ export function TurnsRatioDemo({ figure }: Props) {
       const cy = padT + plotH / 2;
 
       // Frame
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.lineWidth = 1;
       ctx.strokeRect(padL, padT, plotW, plotH);
 
       // Zero line
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.16)';
       ctx.beginPath();
       ctx.moveTo(padL, cy); ctx.lineTo(padL + plotW, cy);
       ctx.stroke();
@@ -65,7 +65,7 @@ export function TurnsRatioDemo({ figure }: Props) {
       const yScale = (plotH / 2) * 0.92 / yMax;
 
       // Gridlines at ±100 V, ±50 V
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
       [-150, -100, -50, 50, 100, 150].forEach(v => {
         const y = cy - v * yScale;
         ctx.beginPath();
@@ -88,7 +88,7 @@ export function TurnsRatioDemo({ figure }: Props) {
       const omega = 2 * Math.PI * F_HZ;
 
       // V_p in pink
-      ctx.strokeStyle = colors.pink;
+      ctx.strokeStyle = 'rgba(255,59,110,0.85)';
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       for (let i = 0; i <= samples; i++) {
@@ -101,7 +101,7 @@ export function TurnsRatioDemo({ figure }: Props) {
       ctx.stroke();
 
       // V_s in amber
-      ctx.strokeStyle = colors.accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       for (let i = 0; i <= samples; i++) {
@@ -116,9 +116,9 @@ export function TurnsRatioDemo({ figure }: Props) {
       // Legend
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.95)';
       ctx.fillText('— V_p (170 V peak)', padL + 8, padT + 6);
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.fillText(`— V_s = n · V_p`, padL + 8, padT + 22);
 
       // x-axis label

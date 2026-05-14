@@ -1,7 +1,4 @@
 import type { ReactNode } from 'react';
-import { Card } from '@/components/ui/Card';
-import { Pill } from '@/components/ui/Pill';
-import { Stack } from '@/components/ui/Stack';
 
 interface CaseStudyProps {
   /** Numerical tag like "Case 1.1" — shown in monospace as eyebrow */
@@ -23,28 +20,24 @@ interface CaseStudyProps {
  */
 export function CaseStudy({ tag, title, summary, children, specs }: CaseStudyProps) {
   return (
-    <Card variant="default" accent="accent" className="relative overflow-hidden">
-      <header className="mb-5">
-        {tag && (
-          <div className="mb-4">
-            <Pill variant="accent">{tag}</Pill>
-          </div>
-        )}
-        <h3 className="title-md !italic !text-2xl mb-2">{title}</h3>
-        {summary && <p className="font-display italic text-text-dim text-lg leading-snug m-0">{summary}</p>}
+    <article className="article-card-1 card-accent-brand">
+      <header className="article-header-1">
+        {tag && <span className="chip chip-accent chip-sm">{tag}</span>}
+        <h3 className="title-4 article-title-1">{title}</h3>
+        {summary && <p className="summary-1">{summary}</p>}
       </header>
-      <div className="text-text-dim leading-relaxed text-[15.5px]">{children}</div>
+      <div className="richtext-1">{children}</div>
       {specs && specs.length > 0 && (
-        <dl className="spec-grid-1 mt-6">
+        <dl className="spec-grid-1">
           {specs.map((s, i) => (
             <div className="spec-row-1" key={i}>
-              <dt className="text-meta !text-[10px]">{s.label}</dt>
-              <dd className="font-mono text-accent text-sm">{s.value}</dd>
+              <dt>{s.label}</dt>
+              <dd>{s.value}</dd>
             </div>
           ))}
         </dl>
       )}
-    </Card>
+    </article>
   );
 }
 
@@ -61,11 +54,10 @@ interface CaseStudiesProps {
  */
 export function CaseStudies({ intro, children }: CaseStudiesProps) {
   return (
-    <section className="section-reveal max-w-[70ch] mx-auto px-10">
-      <div className="eyebrow-rule-1 !mb-6">Case studies</div>
+    <section className="section-narrow-1">
+      <div className="eyebrow-rule-1 accent-brand">Case studies</div>
       {intro && <p className="intro-1">{intro}</p>}
-      <Stack gap={36}>{children}</Stack>
+      <div className="stack-2">{children}</div>
     </section>
   );
 }
-

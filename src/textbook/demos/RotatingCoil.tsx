@@ -34,7 +34,7 @@ export function RotatingCoilDemo({ figure }: Props) {
   }, [B, omega]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let simT = 0;
     let lastRealT = performance.now();
@@ -54,7 +54,7 @@ export function RotatingCoilDemo({ figure }: Props) {
 
       const emf = N_TURNS * B * A_M2 * omega * Math.sin(omega * simT);
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const splitX = w * 0.42;
@@ -91,7 +91,7 @@ export function RotatingCoilDemo({ figure }: Props) {
       const persp = coilW * Math.cos(angle) * 0.18;
 
       // axis
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.16)';
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(coilCx, 18); ctx.lineTo(coilCx, h - 18); ctx.stroke();
@@ -127,7 +127,7 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       ctx.fillText('n̂', coilCx + projNx + 4, coilCy + projNy);
 
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(`B → ${B.toFixed(2)} T`, 12, 12);
@@ -135,7 +135,7 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.restore();
 
       // divider
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
       ctx.beginPath();
       ctx.moveTo(splitX, 0); ctx.lineTo(splitX, h); ctx.stroke();
 
@@ -155,14 +155,14 @@ export function RotatingCoilDemo({ figure }: Props) {
       const yScale = Math.max(peak, 0.01);
 
       // grid
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
       ctx.lineWidth = 1;
       for (let i = 0; i <= 4; i++) {
         const y = scopeCy - scopeH / 2 + (i * scopeH) / 4;
         ctx.beginPath(); ctx.moveTo(scopeX, y); ctx.lineTo(scopeX + scopeW, y); ctx.stroke();
       }
       // zero line
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.16)';
       ctx.beginPath();
       ctx.moveTo(scopeX, scopeCy); ctx.lineTo(scopeX + scopeW, scopeCy); ctx.stroke();
 
@@ -200,7 +200,7 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('EMF(t)', scopeX, 12);
       ctx.textAlign = 'right';
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.fillText(`peak = ${pretty(peak)} V`, scopeX + scopeW, 12);
 
       ctx.restore();

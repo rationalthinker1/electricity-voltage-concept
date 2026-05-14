@@ -51,11 +51,11 @@ export function THDAndDistortionDemo() {
   }, [Aclip]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     function draw() {
       const { Aclip } = stateRef.current;
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padX = 36;
@@ -64,7 +64,7 @@ export function THDAndDistortionDemo() {
 
       // Top: time-domain clipped sine
       const tMid = padY + halfH / 2 + 4;
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
       ctx.beginPath(); ctx.moveTo(padX, tMid); ctx.lineTo(w - padX, tMid); ctx.stroke();
       // Reference: unclipped sine
       ctx.strokeStyle = 'rgba(108,197,194,0.4)';
@@ -105,7 +105,7 @@ export function THDAndDistortionDemo() {
       ctx.moveTo(padX, yDn); ctx.lineTo(w - padX, yDn);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.8)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('time domain', padX, padY + 8);
@@ -113,7 +113,7 @@ export function THDAndDistortionDemo() {
       // Bottom: spectrum
       const bMid = padY + halfH + halfH * 0.95 + 4;
       const bH = halfH * 0.85;
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
       ctx.beginPath(); ctx.moveTo(padX, bMid); ctx.lineTo(w - padX, bMid); ctx.stroke();
 
       const maxAmp = Math.max(...coeffs.map(c => Math.abs(c)), 0.01);
@@ -128,19 +128,19 @@ export function THDAndDistortionDemo() {
         ctx.fillStyle = n === 1 ? 'rgba(108,197,194,0.85)' : '#ff6b2a';
         ctx.fillRect(x, bMid - hPx, barW, hPx);
         if (amp / maxAmp > 0.06) {
-          ctx.fillStyle = colors.text;
+          ctx.fillStyle = 'rgba(236,235,229,0.85)';
           ctx.font = '9px "JetBrains Mono", monospace';
           ctx.textAlign = 'center';
           ctx.fillText(amp.toFixed(2), x + barW / 2, bMid - hPx - 3);
         }
       }
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       for (let n = 1; n <= nMax; n += 2) {
         ctx.fillText(n.toString() + 'f', xOf(n), bMid + 12);
       }
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.8)';
       ctx.textAlign = 'left';
       ctx.fillText('spectrum', padX, padY + halfH + 14);
 

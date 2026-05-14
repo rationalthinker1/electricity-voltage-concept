@@ -25,7 +25,7 @@ export function WireBFieldDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { I, intoPage, probe }; }, [I, intoPage, probe]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
+    const { ctx, w, h, canvas } = info;
     let raf = 0;
     let dragging = false;
 
@@ -84,7 +84,7 @@ export function WireBFieldDemo({ figure }: Props) {
 
     function draw() {
       const { I, intoPage, probe } = stateRef.current;
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const cx0 = w / 2, cy0 = h / 2;
@@ -156,7 +156,7 @@ export function WireBFieldDemo({ figure }: Props) {
 
       // × (into page) or • (out of page) glyph.
       ctx.strokeStyle = '#ff6b2a';
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       if (intoPage) {
         ctx.lineWidth = 2;
         const k = wireR * 0.55;
@@ -194,7 +194,7 @@ export function WireBFieldDemo({ figure }: Props) {
       ctx.strokeStyle = '#ff6b2a';
       ctx.lineWidth = 2;
       ctx.beginPath(); ctx.arc(px, py, 9, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = 'bold 10px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('P', px, py);
@@ -204,7 +204,7 @@ export function WireBFieldDemo({ figure }: Props) {
       ctx.textBaseline = 'alphabetic';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText(`r = ${(r_m * 1000).toFixed(0)} mm`, px, py - 16);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = '#6cc5c2';
       ctx.fillText(`|B| = ${pretty(Bprobe, 2)} T`, px, py + 22);
 
       raf = requestAnimationFrame(draw);

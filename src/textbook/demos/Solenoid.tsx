@@ -32,7 +32,7 @@ export function SolenoidDemo({ figure }: Props) {
   const B_in = PHYS.mu_0 * n * I;
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let t0 = performance.now();
 
@@ -41,7 +41,7 @@ export function SolenoidDemo({ figure }: Props) {
       const dt = (now - t0) / 1000;
       const { N, I, Lcm } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Solenoid bounds (centered horizontally)
@@ -110,7 +110,7 @@ export function SolenoidDemo({ figure }: Props) {
       }
 
       // Faint exterior return-loop arrows (above and below)
-      ctx.strokeStyle = colors.tealSoft;
+      ctx.strokeStyle = 'rgba(108,197,194,0.18)';
       ctx.lineWidth = 1;
       const yOff = ringRy + 36;
       for (const yDir of [-1, +1]) {
@@ -133,7 +133,7 @@ export function SolenoidDemo({ figure }: Props) {
           ctx.fill();
         }
         // Curve hints at the ends (left turnaround going up-and-in, right turnaround going down-and-in)
-        ctx.strokeStyle = colors.tealSoft;
+        ctx.strokeStyle = 'rgba(108,197,194,0.18)';
         ctx.beginPath();
         ctx.moveTo(sxL, yy);
         ctx.quadraticCurveTo(sxL - 30, cy, sxL, cy);
@@ -149,7 +149,7 @@ export function SolenoidDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`L = ${Lcm.toFixed(1)} cm  ·  N = ${N}  ·  n = ${pretty(N / (Lcm * 1e-2), 2)} /m`, w / 2, h - 18);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = '#6cc5c2';
       ctx.fillText(`B (inside) = ${pretty(PHYS.mu_0 * (N / (Lcm * 1e-2)) * I, 3)} T`, w / 2, 24);
 
       raf = requestAnimationFrame(draw);

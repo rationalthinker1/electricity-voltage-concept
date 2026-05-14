@@ -50,13 +50,13 @@ export function SmithChartBasicsDemo({ figure }: Props) {
   }, [R, X, Gr, Gi, Gmag, showQwave]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { Gr, Gi, Gmag, showQwave } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const margin = 18;
@@ -65,14 +65,14 @@ export function SmithChartBasicsDemo({ figure }: Props) {
       const cy = h / 2;
 
       // Outer unit circle |Γ| = 1
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.20)';
       ctx.lineWidth = 1.3;
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);
       ctx.stroke();
 
       // Real axis
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.beginPath();
       ctx.moveTo(cx - radius, cy); ctx.lineTo(cx + radius, cy);
       ctx.stroke();
@@ -110,7 +110,7 @@ export function SmithChartBasicsDemo({ figure }: Props) {
         drawArcClipped(ctx, cx + cxg * radius, cy + cyg_up * radius, rg * radius, cx, cy, radius);
       }
       // Centre cross (Γ = 0 — matched)
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.beginPath();
       ctx.arc(cx, cy, 2, 0, Math.PI * 2);
       ctx.fill();
@@ -120,7 +120,7 @@ export function SmithChartBasicsDemo({ figure }: Props) {
       ctx.fillText('Γ = 0  (matched, Z = 50Ω)', cx + 4, cy + 4);
 
       // |Γ| = const circle (VSWR circle)
-      ctx.strokeStyle = colors.accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.45)';
       ctx.setLineDash([3, 3]);
       ctx.lineWidth = 1.1;
       ctx.beginPath();
@@ -137,7 +137,7 @@ export function SmithChartBasicsDemo({ figure }: Props) {
       ctx.strokeStyle = 'rgba(255,255,255,0.9)';
       ctx.lineWidth = 1;
       ctx.stroke();
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.95)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
@@ -152,11 +152,11 @@ export function SmithChartBasicsDemo({ figure }: Props) {
         ctx.fill();
         ctx.strokeStyle = 'rgba(255,255,255,0.9)';
         ctx.stroke();
-        ctx.fillStyle = colors.teal;
+        ctx.fillStyle = 'rgba(108,197,194,0.95)';
         ctx.fillText('Z_in (λ/4)', pZin.x + 8, pZin.y - 2);
 
         // Connect through origin
-        ctx.strokeStyle = colors.teal;
+        ctx.strokeStyle = 'rgba(108,197,194,0.5)';
         ctx.setLineDash([2, 3]);
         ctx.beginPath();
         ctx.moveTo(pZ.x, pZ.y); ctx.lineTo(pZin.x, pZin.y);
@@ -165,7 +165,7 @@ export function SmithChartBasicsDemo({ figure }: Props) {
       }
 
       // Edge labels
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';

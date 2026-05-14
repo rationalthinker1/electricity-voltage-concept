@@ -36,7 +36,6 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   attachOrbit,
   project,
@@ -307,7 +306,7 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       const len = Math.hypot(dx, dy);
       if (len > 2) {
         const ux = dx / len, uy = dy / len;
-        ctx.fillStyle = getCanvasColors().text;
+        ctx.fillStyle = 'rgba(236,235,229,0.95)';
         ctx.beginPath();
         ctx.moveTo(pThumb.x, pThumb.y);
         ctx.lineTo(pThumb.x - ux * 7 - uy * 3.5, pThumb.y - uy * 7 + ux * 3.5);
@@ -352,7 +351,7 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
         const flen = Math.hypot(fdx, fdy);
         if (flen > 1) {
           const ux = fdx / flen, uy = fdy / flen;
-          ctx.fillStyle = getCanvasColors().text;
+          ctx.fillStyle = 'rgba(236,235,229,0.85)';
           ctx.beginPath();
           ctx.moveTo(b.x, b.y);
           ctx.lineTo(b.x - ux * 5 - uy * 2.5, b.y - uy * 5 + ux * 2.5);
@@ -366,7 +365,7 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
     function draw() {
       const s = stateRef.current;
       // Background.
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       const sign = s.reverse ? -1 : 1;
@@ -434,15 +433,15 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       // ── Annotations ────────────────────────────────────────────────
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText('drag to rotate', 12, 12);
       ctx.fillStyle = 'rgba(160,158,149,0.65)';
       ctx.fillText(`r₁ = ${(r1).toFixed(2)}   r₂ = ${(r2).toFixed(2)}   r₃ = ${(r3).toFixed(2)}`, 12, 28);
 
       ctx.textAlign = 'right';
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.fillText(s.reverse ? 'I  amber · current −ŷ' : 'I  amber · current +ŷ', W - 12, 12);
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.95)';
       ctx.fillText('B  teal · azimuthal (right-hand rule)', W - 12, 28);
       ctx.fillStyle = 'rgba(236,235,229,0.70)';
       if (s.showHand) {

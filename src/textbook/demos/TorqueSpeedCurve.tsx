@@ -28,13 +28,13 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
   }, [showDC, showInd, showSync, showStep]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { showDC, showInd, showSync, showStep } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Plot area
@@ -45,7 +45,7 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
       const plotY = padT;
 
       // Axes
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.20)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(plotX, plotY); ctx.lineTo(plotX, plotY + plotH);
@@ -53,7 +53,7 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
       ctx.stroke();
 
       // Grid lines
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
       for (let i = 1; i <= 4; i++) {
         const x = plotX + (i / 5) * plotW;
         ctx.beginPath(); ctx.moveTo(x, plotY); ctx.lineTo(x, plotY + plotH); ctx.stroke();
@@ -62,7 +62,7 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
       }
 
       // Axis labels
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -81,7 +81,7 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.moveTo(nsX, plotY); ctx.lineTo(nsX, plotY + plotH); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.7)';
       ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.fillText('n_s', nsX, plotY - 4);
 
@@ -94,7 +94,7 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
       function legendLine(color: string, label: string) {
         ctx.fillStyle = color;
         ctx.fillRect(legendX, legendY + 4, 18, 2);
-        ctx.fillStyle = colors.text;
+        ctx.fillStyle = 'rgba(236,235,229,0.85)';
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
         ctx.fillText(label, legendX + 24, legendY + 5);

@@ -10,7 +10,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -50,7 +49,7 @@ export function LeydenJarReplayDemo({ figure }: Props) {
     function draw() {
       const s = stateRef.current;
       phase += 0.02;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       // Jar geometry
@@ -74,7 +73,7 @@ export function LeydenJarReplayDemo({ figure }: Props) {
       ctx.stroke();
 
       // Glass body
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.55)';
       ctx.fillStyle = 'rgba(108,197,194,0.08)';
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -100,7 +99,7 @@ export function LeydenJarReplayDemo({ figure }: Props) {
       ctx.fillRect(xL + 10, yT + 25, jarW - 20, jarH - 35);
 
       // Brass rod & ball protruding through stopper
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillRect(cx - 3, yT - 60, 6, 60);
       ctx.beginPath();
       ctx.arc(cx, yT - 64, 11, 0, Math.PI * 2);
@@ -189,7 +188,7 @@ export function LeydenJarReplayDemo({ figure }: Props) {
       }
 
       // Title text
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

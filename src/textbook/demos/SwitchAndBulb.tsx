@@ -20,7 +20,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 import { drawCircuit, renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -56,7 +55,7 @@ export function SwitchAndBulbDemo({ figure }: Props) {
     let raf = 0;
 
     function draw(now: number) {
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Layout — battery at left, switch in middle-top, bulb at right.
@@ -153,12 +152,12 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       }
 
       // Polarity glyphs hugging the battery's two leads.
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.font = 'bold 11px JetBrains Mono';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
       ctx.fillText('+', batX - 18, top);
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = '#5baef8';
       ctx.fillText('−', batX - 12, bot);
 
       // Annotations

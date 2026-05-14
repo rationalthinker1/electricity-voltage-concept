@@ -13,7 +13,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -44,7 +43,7 @@ export function DispersionDemo({ figure }: Props) {
     let raf = 0;
     function draw() {
       const { A, B } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       // ── Prism geometry: equilateral triangle, apex up
@@ -154,7 +153,7 @@ export function DispersionDemo({ figure }: Props) {
 
       // Label
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.textAlign = 'left';
       ctx.fillText(`n(λ) = A + B/λ²`, 12, 18);
       ctx.fillText(`A = ${A.toFixed(2)}, B = ${B.toFixed(4)} µm²`, 12, 32);

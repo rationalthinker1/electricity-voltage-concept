@@ -28,7 +28,6 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   attachOrbit,
   project,
@@ -244,7 +243,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
       t += dt;
       const st = stateRef.current;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       // ── 1) lamination stack (painter back-to-front along z) ──
@@ -322,7 +321,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
         // Φ label near the top bar.
         const lp = project(v3(0, LEG_TOP_Y + 0.25, 0), cam, W, H);
         if (lp.depth > 0) {
-          ctx.fillStyle = getCanvasColors().accent;
+          ctx.fillStyle = 'rgba(255,107,42,0.85)';
           ctx.font = 'italic 12px "STIX Two Text", serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
@@ -391,7 +390,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
             const len = Math.hypot(dx, dy);
             if (len > 2) {
               const ux = dx / len, uy = dy / len;
-              ctx.fillStyle = getCanvasColors().accent;
+              ctx.fillStyle = 'rgba(255,107,42,0.95)';
               ctx.beginPath();
               ctx.moveTo(ph.x, ph.y);
               ctx.lineTo(ph.x - ux * 8 - uy * 4, ph.y - uy * 8 + ux * 4);
@@ -402,7 +401,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
           }
         }
         // Scale-by-magnitude annotation in a corner.
-        ctx.fillStyle = getCanvasColors().accent;
+        ctx.fillStyle = 'rgba(255,107,42,0.7)';
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'right';
         ctx.textBaseline = 'top';
@@ -481,18 +480,18 @@ export function TransformerFlux3DDemo({ figure }: Props) {
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText('drag to rotate', 12, 12);
       ctx.fillStyle = 'rgba(160,158,149,0.6)';
       ctx.fillText('laminated iron core', 12, 28);
 
       ctx.textAlign = 'right';
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.85)';
       ctx.fillText(`primary  N_p = ${st.Np}`, W - 12, 12);
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = 'rgba(91,174,248,0.85)';
       ctx.fillText(`secondary  N_s = ${st.Ns}`, W - 12, 28);
       if (st.showFlux) {
-        ctx.fillStyle = getCanvasColors().accent;
+        ctx.fillStyle = 'rgba(255,107,42,0.85)';
         ctx.fillText('Φ through iron', W - 12, 44);
       }
 

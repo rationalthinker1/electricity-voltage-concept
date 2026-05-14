@@ -44,13 +44,13 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
   }, [f]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { f } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Two boxes: left = 60 Hz reference, right = current frequency
@@ -72,7 +72,7 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
       drawIsoCube(ctx, rightCX, cy, newSide, accentColor, accentFill);
 
       // Labels
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText('60 Hz mains (Si steel)', leftCX, 12);
@@ -82,7 +82,7 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
       ctx.fillText(`V ≈ ${V_REF_CM3} cm³`, leftCX, cy + refSide / 2 + 24);
       ctx.fillText(`mass ≈ ${M_REF_G} g`, leftCX, cy + refSide / 2 + 38);
 
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.95)';
       ctx.fillText(`V ≈ ${formatVol(V_REF_CM3 * scale)}`, rightCX, cy + refSide / 2 + 24);
       ctx.fillText(`mass ≈ ${formatMass(M_REF_G * scale)}`, rightCX, cy + refSide / 2 + 38);
 
@@ -101,7 +101,7 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
       else if (f < 30e3) tag = 'aircraft 400 Hz / audio';
       else if (f < 200e3) tag = 'modern SMPS / wall-wart';
       else tag = 'GaN / SiC high-density';
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText(tag, rightCX, h - 16);

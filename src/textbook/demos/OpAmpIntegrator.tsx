@@ -44,7 +44,7 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
   }, [R, C, fHz, VinAmp, kind]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     const t0 = performance.now();
 
@@ -53,7 +53,7 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       const tau = R * C;
       const tnow = (performance.now() - t0) / 1000;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 30, padT = 22, padB = 22;
@@ -61,7 +61,7 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(plotX, plotY, plotW, plotH);
 
       // Window holds 2 periods
@@ -70,12 +70,12 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       const yV = (v: number) =>
         plotY + plotH / 2 - (v / V_SUP) * (plotH / 2 - 4);
 
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
       for (let v = -V_SUP; v <= V_SUP; v += 2) {
         const y = yV(v);
         ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
       }
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
       const y0 = yV(0);
       ctx.beginPath(); ctx.moveTo(plotX, y0); ctx.lineTo(plotX + plotW, y0); ctx.stroke();
 
@@ -141,7 +141,7 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       });
 
       // Y labels
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
@@ -150,14 +150,14 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       ctx.fillText('-8 V', plotX - 4, yV(-V_SUP));
 
       // Header
-      ctx.fillStyle = colors.blue;
+      ctx.fillStyle = 'rgba(91,174,248,0.9)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText(`V_in (${kind})`, plotX + 4, plotY + 4);
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.9)';
       ctx.fillText('V_out = -(1/RC)∫V_in dt', plotX + 100, plotY + 4);
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.85)';
       ctx.textAlign = 'right';
       ctx.fillText(`τ = RC = ${fmtT(tau)}`, plotX + plotW - 4, plotY + 4);
 

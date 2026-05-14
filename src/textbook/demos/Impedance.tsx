@@ -35,13 +35,13 @@ export function ImpedanceDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { R, XL, XC, Zmag, phi }; }, [R, XL, XC, Zmag, phi]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { R, XL, XC, Zmag, phi } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const cx = w / 2;
@@ -52,14 +52,14 @@ export function ImpedanceDemo({ figure }: Props) {
       const scale = half / span;
 
       // Axes
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(20, cy); ctx.lineTo(w - 20, cy);
       ctx.moveTo(cx, 20); ctx.lineTo(cx, h - 20);
       ctx.stroke();
 
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
@@ -90,7 +90,7 @@ export function ImpedanceDemo({ figure }: Props) {
       drawVector(ctx, p0x, p0y, p3x, p3y, 'rgba(255,107,42,0.95)', '', 2.2);
 
       // Magnitude / phase annotation
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
@@ -98,11 +98,11 @@ export function ImpedanceDemo({ figure }: Props) {
       const midY = (p0y + p3y) / 2;
       ctx.fillText(`|Z| = ${Zmag.toFixed(2)} Ω`, midX, midY);
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.85)';
       ctx.fillText(`φ = ${(phi * 180 / Math.PI).toFixed(1)}°`, midX, midY + 14);
 
       // Phase arc from real axis to Z
-      ctx.strokeStyle = colors.accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.45)';
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       const arcR = 26;

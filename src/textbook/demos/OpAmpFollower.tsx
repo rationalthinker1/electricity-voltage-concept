@@ -20,7 +20,6 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -43,12 +42,12 @@ export function OpAmpFollowerDemo({ figure }: Props) {
   }, [Vs, Rs, RL, VdirectLoad, bufferOn]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { Vs, Rs, RL, VdirectLoad, bufferOn } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Top half: schematic. Bottom half: voltage bar chart.
@@ -126,13 +125,13 @@ function drawSchematic(
   ctx.beginPath();
   ctx.arc(xSrc, yWire, 12, 0, Math.PI * 2);
   ctx.stroke();
-  ctx.fillStyle = getCanvasColors().accent;
+  ctx.fillStyle = 'rgba(255,107,42,0.9)';
   ctx.font = 'bold 10px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('V_s', xSrc, yWire);
 
-  ctx.fillStyle = getCanvasColors().accent;
+  ctx.fillStyle = 'rgba(255,107,42,0.85)';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'bottom';
   ctx.fillText(`${Vs.toFixed(2)} V`, xSrc - 8, yWire - 18);
@@ -145,9 +144,9 @@ function drawSchematic(
   const xRsLeft = xSrc + 30;
   const xRsRight = xRsLeft + 60;
   // R_s resistor (horizontal box)
-  ctx.strokeStyle = getCanvasColors().pink;
+  ctx.strokeStyle = 'rgba(255,59,110,0.9)';
   ctx.strokeRect(xRsLeft, yWire - 7, 60, 14);
-  ctx.fillStyle = getCanvasColors().pink;
+  ctx.fillStyle = 'rgba(255,59,110,0.9)';
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'bottom';
@@ -163,7 +162,7 @@ function drawSchematic(
   if (bufferOn) {
     const xTri = xRsRight + 30;
     const triH = 38;
-    ctx.strokeStyle = getCanvasColors().teal;
+    ctx.strokeStyle = 'rgba(108,197,194,0.9)';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(xTri, yWire - triH / 2);
@@ -172,7 +171,7 @@ function drawSchematic(
     ctx.closePath();
     ctx.stroke();
     // + / − markings
-    ctx.fillStyle = getCanvasColors().teal;
+    ctx.fillStyle = 'rgba(108,197,194,0.9)';
     ctx.font = '9px "JetBrains Mono", monospace';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
@@ -193,7 +192,7 @@ function drawSchematic(
     ctx.stroke();
     xNodeOut = xTri + 70;
 
-    ctx.fillStyle = getCanvasColors().teal;
+    ctx.fillStyle = 'rgba(108,197,194,0.85)';
     ctx.font = '9px "JetBrains Mono", monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'bottom';
@@ -210,14 +209,14 @@ function drawSchematic(
   // Vertical R_L
   ctx.strokeStyle = 'rgba(91,174,248,0.9)';
   ctx.strokeRect(xRL - 7, yWire + 4, 14, 60);
-  ctx.fillStyle = getCanvasColors().blue;
+  ctx.fillStyle = 'rgba(91,174,248,0.9)';
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
   ctx.fillText(`R_L = ${formatR(RL)}`, xRL + 10, yWire + 34);
 
   // Probe dot at load node + V_load label
-  ctx.fillStyle = getCanvasColors().accent;
+  ctx.fillStyle = 'rgba(255,107,42,0.95)';
   ctx.beginPath();
   ctx.arc(xNodeOut, yWire, 4, 0, Math.PI * 2);
   ctx.fill();
@@ -243,7 +242,7 @@ function drawSchematic(
   ctx.stroke();
 
   // V_load readout
-  ctx.fillStyle = getCanvasColors().accent;
+  ctx.fillStyle = 'rgba(255,107,42,0.95)';
   ctx.font = 'bold 11px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
@@ -270,7 +269,7 @@ function drawBars(
   const yOf = (v: number) => padT + plotH - (v / vmax) * plotH;
 
   // Frame
-  ctx.strokeStyle = getCanvasColors().border;
+  ctx.strokeStyle = 'rgba(255,255,255,0.10)';
   ctx.strokeRect(padL, padT, plotW, plotH);
 
   // Three bars: V_s, V_load no-buffer, V_load with buffer
@@ -287,7 +286,7 @@ function drawBars(
     ctx.fillStyle = bars[i].color;
     ctx.fillRect(xC - barW / 2, top, barW, bot - top);
 
-    ctx.fillStyle = getCanvasColors().text;
+    ctx.fillStyle = 'rgba(236,235,229,0.85)';
     ctx.font = '9px "JetBrains Mono", monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';

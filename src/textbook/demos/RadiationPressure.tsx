@@ -16,7 +16,6 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -45,7 +44,7 @@ export function RadiationPressureDemo({ figure }: Props) {
 
     function draw() {
       const { I } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       const cy = H / 2;
@@ -85,8 +84,8 @@ export function RadiationPressureDemo({ figure }: Props) {
       ctx.strokeRect(targetX, targetTop, targetW, targetBot - targetTop);
       // Force arrow on the target — small, but consistently rightward
       const armLen = 22 + Math.log10(I + 10) * 6;
-      ctx.strokeStyle = getCanvasColors().accent;
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(targetX + targetW + 2, cy);
@@ -103,10 +102,10 @@ export function RadiationPressureDemo({ figure }: Props) {
 
       // Labels
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.textAlign = 'left';
       ctx.fillText('absorbing target · feels P = I/c', targetX - 80, targetTop - 8);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText('EM wave packets →', xL, 22);
 
       raf = requestAnimationFrame(draw);

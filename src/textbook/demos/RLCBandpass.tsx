@@ -38,13 +38,13 @@ export function RLCBandpassDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { R, L, C, f0, Q }; }, [R, L, C, f0, Q]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { R, L, C, f0, Q } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Frequency window: 3 decades centred on f0
@@ -57,14 +57,14 @@ export function RLCBandpassDemo({ figure }: Props) {
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(plotX, plotY, plotW, plotH);
 
       // dB axis: -40 to +5
       const dBmin = -40, dBmax = 5;
       const yDb = (db: number) => plotY + plotH - ((db - dBmin) / (dBmax - dBmin)) * plotH;
 
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
       for (let db = dBmin; db <= dBmax; db += 10) {
         const y = yDb(db);
         ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
@@ -78,7 +78,7 @@ export function RLCBandpassDemo({ figure }: Props) {
       for (let lf = Math.ceil(logMin); lf <= Math.floor(logMax); lf++) {
         const f = Math.pow(10, lf);
         const x = plotX + ((lf - logMin) / (logMax - logMin)) * plotW;
-        ctx.strokeStyle = colors.border;
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
         ctx.beginPath(); ctx.moveTo(x, plotY); ctx.lineTo(x, plotY + plotH); ctx.stroke();
         ctx.fillStyle = 'rgba(160,158,149,0.6)';
         ctx.fillText(fmtFreq(f), x, plotY + plotH + 4);
@@ -86,7 +86,7 @@ export function RLCBandpassDemo({ figure }: Props) {
 
       // f_0 marker
       const xf0 = plotX + ((Math.log10(f0) - logMin) / (logMax - logMin)) * plotW;
-      ctx.strokeStyle = colors.teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.55)';
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(xf0, plotY); ctx.lineTo(xf0, plotY + plotH); ctx.stroke();
@@ -124,7 +124,7 @@ export function RLCBandpassDemo({ figure }: Props) {
       });
 
       // Y labels
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
@@ -133,12 +133,12 @@ export function RLCBandpassDemo({ figure }: Props) {
       ctx.fillText('-40', plotX - 4, yDb(-40));
 
       // Header
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText(`|H(f)|  band-pass`, plotX + 4, plotY + 4);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.9)';
       ctx.textAlign = 'right';
       ctx.fillText(`f₀ = ${fmtFreq(f0)}   Q = ${Q.toFixed(1)}`, plotX + plotW - 4, plotY + 4);
 

@@ -27,7 +27,6 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   attachOrbit,
   project,
@@ -170,12 +169,12 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       ensureSurface(kL);
 
       // Background.
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       // Faint equatorial reference circle (radius 1 in xz).
       const NEQ = 64;
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       for (let i = 0; i <= NEQ; i++) {
@@ -251,7 +250,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
         });
       // Feedpoint marker.
       const pCen = project({ x: 0, y: 0, z: 0 }, cam, W, H);
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.beginPath();
       ctx.arc(pCen.x, pCen.y, 3.5, 0, Math.PI * 2);
       ctx.fill();
@@ -301,7 +300,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       }
 
       // Wire-tip labels.
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
@@ -312,10 +311,10 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       // Top-left readout overlay.
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.fillText(`f = ${formatHz(fHz)}`, 14, 14);
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.95)';
       ctx.fillText(`λ = ${lam >= 1 ? lam.toFixed(2) + ' m' : (lam * 100).toFixed(1) + ' cm'}`, 14, 30);
       ctx.fillStyle = 'rgba(236,235,229,0.78)';
       ctx.fillText(`L/λ = ${(L_METERS / lam).toFixed(3)}`, 14, 46);
@@ -340,7 +339,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       ctx.moveTo(barX0, barY);
       ctx.lineTo(barX0 + wirePix, barY);
       ctx.stroke();
-      ctx.fillStyle = getCanvasColors().text;
+      ctx.fillStyle = 'rgba(236,235,229,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
@@ -368,7 +367,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       ctx.fillText(lam > 2 ? `λ = ${lam.toFixed(2)} m (off-scale)` : `λ = ${lam.toFixed(2)} m`, barX0, barY + 14);
       if (halfWave) {
         ctx.textAlign = 'right';
-        ctx.fillStyle = getCanvasColors().accent;
+        ctx.fillStyle = 'rgba(255,107,42,0.95)';
         ctx.fillText('half-wave resonance', barX1, barY - 18);
       }
 

@@ -37,7 +37,7 @@ export function MaterialPickerDemo({ figure }: Props) {
   const P = V * I;
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
@@ -46,7 +46,7 @@ export function MaterialPickerDemo({ figure }: Props) {
       const R = L / (sigma * A_m2);
       const I_ = V / R;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Bar chart of currents across all 5 materials, log scale
@@ -68,7 +68,7 @@ export function MaterialPickerDemo({ figure }: Props) {
       const logRange = logMax - logMin;
 
       // Axis baseline
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
       ctx.beginPath();
       ctx.moveTo(padL, padT);
       ctx.lineTo(padL, h - padB);
@@ -78,12 +78,12 @@ export function MaterialPickerDemo({ figure }: Props) {
       // Decade gridlines
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.5)';
       const decadeStart = Math.ceil(logMin);
       const decadeEnd = Math.floor(logMax);
       for (let d = decadeStart; d <= decadeEnd; d++) {
         const x = padL + ((d - logMin) / logRange) * innerW;
-        ctx.strokeStyle = colors.border;
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
         ctx.beginPath();
         ctx.moveTo(x, padT);
         ctx.lineTo(x, h - padB);
@@ -123,7 +123,7 @@ export function MaterialPickerDemo({ figure }: Props) {
       });
 
       // Header
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText(`V = ${V} V   ·   L = ${L} m   ·   A = ${A_mm2} mm²`, 10, 16);

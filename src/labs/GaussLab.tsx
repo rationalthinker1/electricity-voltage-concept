@@ -45,7 +45,7 @@ export default function GaussLab() {
   }, [qNC, R_mm, qpos_mm]);
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
+    const { ctx, w, h, canvas } = info;
     let raf = 0;
     let dragging: 'charge' | 'edge' | null = null;
     let phase = 0;
@@ -118,7 +118,7 @@ export default function GaussLab() {
 
     function draw() {
       const { qNC, R_mm, qpos_mm } = stateRef.current;
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Faint grid
@@ -227,7 +227,7 @@ export default function GaussLab() {
       ctx.beginPath(); ctx.moveTo(cx, cy - 6); ctx.lineTo(cx, cy + 6); ctx.stroke();
 
       // Radius label
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.7)';
       ctx.font = '11px JetBrains Mono';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
@@ -246,22 +246,22 @@ export default function GaussLab() {
       // Counter overlay (top-left)
       ctx.fillStyle = 'rgba(10,10,11,0.88)';
       ctx.fillRect(16, 16, 200, 64);
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(16, 16, 200, 64);
       ctx.font = '10px JetBrains Mono';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.fillText('OUTWARD CROSSINGS  ' + outCount, 26, 30);
-      ctx.fillStyle = colors.blue;
+      ctx.fillStyle = 'rgba(91,174,248,0.95)';
       ctx.fillText('INWARD CROSSINGS   ' + inCount, 26, 46);
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.85)';
       ctx.fillText('NET                ' + (outCount - inCount), 26, 62);
 
       // Status indicator (top-right)
       ctx.fillStyle = 'rgba(10,10,11,0.88)';
       ctx.fillRect(w - 146, 16, 130, 28);
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(w - 146, 16, 130, 28);
       ctx.fillStyle = inside ? 'rgba(255,107,42,0.95)' : 'rgba(160,158,149,0.85)';
       ctx.font = '11px JetBrains Mono';

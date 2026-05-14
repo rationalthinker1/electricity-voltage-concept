@@ -38,7 +38,7 @@ export function GridSyncDemo({ figure }: Props) {
   }, [fGen, phiDeg, vGen]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let simT = 0;
     let lastT = performance.now();
@@ -52,7 +52,7 @@ export function GridSyncDemo({ figure }: Props) {
       // slow real-time playback so we can see ~60 Hz
       simT += dt * 0.06;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 30, padT = 30, padB = 40;
@@ -60,7 +60,7 @@ export function GridSyncDemo({ figure }: Props) {
       const plotH = h - padT - padB;
       const cy = padT + plotH / 2;
 
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(padL, padT, plotW, plotH);
       ctx.beginPath();
       ctx.moveTo(padL, cy); ctx.lineTo(padL + plotW, cy);
@@ -97,7 +97,7 @@ export function GridSyncDemo({ figure }: Props) {
       ctx.stroke();
 
       // Difference (red, shaded)
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.18)';
       ctx.beginPath();
       let started = false;
       for (let i = 0; i <= samples; i++) {
@@ -130,7 +130,7 @@ export function GridSyncDemo({ figure }: Props) {
       ctx.fillText('generator', padL + 40, padT + 14);
 
       // Δf, Δφ, ΔV readout near bottom
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       const dPhi = Math.abs(phiDeg) % 360;

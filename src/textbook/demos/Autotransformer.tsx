@@ -50,7 +50,7 @@ export function AutotransformerDemo({ figure }: Props) {
   }, [k, Vp, Iload]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
+    const { ctx, w, h, canvas } = info;
     let raf = 0;
     let dragging = false;
 
@@ -93,7 +93,7 @@ export function AutotransformerDemo({ figure }: Props) {
     function draw() {
       const { k } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // ─────── Left side: autotransformer ───────
@@ -135,7 +135,7 @@ export function AutotransformerDemo({ figure }: Props) {
       }
 
       // Tap marker — small triangle and dashed line
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.95)';
       ctx.beginPath();
       ctx.moveTo(coilCX + r + 4, tapY);
       ctx.lineTo(coilCX + r + 14, tapY - 6);
@@ -152,7 +152,7 @@ export function AutotransformerDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // Primary lead (top)
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.30)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(coilCX - r - 4, coilTop - 4);
@@ -162,21 +162,21 @@ export function AutotransformerDemo({ figure }: Props) {
       ctx.stroke();
 
       // Labels
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       ctx.fillText(`V_p = ${Vp.toFixed(0)} V`, coilCX + r + 18, coilTop + (tapY - coilTop) / 2);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.95)';
       ctx.fillText(`V_s = ${(Vp * k).toFixed(0)} V`, coilCX + r + 18, tapY + (coilBot - tapY) / 2);
 
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.fillText('autotransformer', coilCX, coilTop - 12);
       ctx.textBaseline = 'top';
       ctx.fillText(`tap k = ${k.toFixed(2)}`, coilCX, coilBot + 12);
 
       // Divider
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(w * 0.50, coilTop - 16); ctx.lineTo(w * 0.50, coilBot + 16);
@@ -200,7 +200,7 @@ export function AutotransformerDemo({ figure }: Props) {
       const primDy = coilH / primTurns;
       for (let i = 0; i < primTurns; i++) {
         const y = coilTop + (i + 0.5) * primDy;
-        ctx.strokeStyle = colors.accent;
+        ctx.strokeStyle = 'rgba(255,107,42,0.95)';
         ctx.lineWidth = 1.6;
         ctx.beginPath();
         ctx.ellipse(pX, y, 11, primDy * 0.45, 0, 0, Math.PI);
@@ -218,7 +218,7 @@ export function AutotransformerDemo({ figure }: Props) {
       const secDy = secH / secTurns;
       for (let i = 0; i < secTurns; i++) {
         const y = secTop + (i + 0.5) * secDy;
-        ctx.strokeStyle = colors.teal;
+        ctx.strokeStyle = 'rgba(108,197,194,0.95)';
         ctx.lineWidth = 1.6;
         ctx.beginPath();
         ctx.ellipse(sX, y, 11, secDy * 0.45, 0, 0, Math.PI);
@@ -229,7 +229,7 @@ export function AutotransformerDemo({ figure }: Props) {
         ctx.stroke();
       }
 
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.fillText('isolated 2-winding', (pX + sX) / 2, coilTop - 12);
@@ -243,7 +243,7 @@ export function AutotransformerDemo({ figure }: Props) {
       ctx.fillText('drag tap ↕', 6, 6);
 
       // Warning ribbon
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.textAlign = 'center';
       ctx.fillText('no galvanic isolation', coilCX, 6);
 

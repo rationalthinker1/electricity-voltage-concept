@@ -59,13 +59,13 @@ export function MaxPowerTransferDemo({ figure }: Props) {
   }, [V, RS, RL, ac, XS, XL, conjMatch, P_L, P_max]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { V, RS, RL, ac, XS, XL, P_L, P_max } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padL = 56, padR = 16, padT = 32, padB = 38;
@@ -73,7 +73,7 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       const plotH = h - padT - padB;
 
       // Axes
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
       ctx.lineWidth = 1;
       ctx.strokeRect(padL, padT, plotW, plotH);
 
@@ -85,7 +85,7 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       const yOfEta = (e: number) => padT + plotH - e * plotH;
 
       // P_L(R_L) curve
-      ctx.strokeStyle = colors.accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       const N = 200;
@@ -105,7 +105,7 @@ export function MaxPowerTransferDemo({ figure }: Props) {
 
       // Efficiency curve η = R_L / (R_S + R_L) (only real-part bookkeeping;
       // shape is the same for the AC conjugate-matched case at each R_L)
-      ctx.strokeStyle = colors.teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.85)';
       ctx.lineWidth = 1.4;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -132,20 +132,20 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       // Current R_L marker (cursor)
       const xCur = xOf(RL / RS);
       const yCur = yOf(P_L);
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.95)';
       ctx.beginPath(); ctx.arc(xCur, yCur, 5, 0, Math.PI * 2); ctx.fill();
 
       // Labels
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('P_L  (W)  — amber', 12, 12);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.fillText('η  — teal dashed', 12, 26);
 
       // x-axis ticks
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -153,12 +153,12 @@ export function MaxPowerTransferDemo({ figure }: Props) {
         const x = xOf(r);
         ctx.fillStyle = 'rgba(255,255,255,0.10)';
         ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + plotH); ctx.stroke();
-        ctx.fillStyle = colors.textDim;
+        ctx.fillStyle = 'rgba(160,158,149,0.85)';
         ctx.fillText(`${r}·R_S`, x, padT + plotH + 4);
       }
 
       // y-axis tick: P_max
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
@@ -167,7 +167,7 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       ctx.fillText('1', padL - 4, padT);
 
       // Peak label
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.font = 'bold 10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';

@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { getCanvasColors, type ThemeColors } from '@/lib/canvasTheme';
 
 export interface CanvasInfo {
   /** CSS width in pixels */
@@ -12,8 +11,6 @@ export interface CanvasInfo {
   dpr: number;
   /** The canvas element itself */
   canvas: HTMLCanvasElement;
-  /** Theme-aware colors for the current light / dark mode. */
-  colors: ThemeColors;
 }
 
 export interface AutoResizeCanvasProps {
@@ -74,7 +71,7 @@ export function AutoResizeCanvas({ height, setup, ariaLabel }: AutoResizeCanvasP
       if (!ctx) return;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       stop();
-      cleanup = setupRef.current({ w, h, ctx, dpr, canvas, colors: getCanvasColors() });
+      cleanup = setupRef.current({ w, h, ctx, dpr, canvas });
     }
 
     function scheduleSetup() {

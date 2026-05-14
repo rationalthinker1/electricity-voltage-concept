@@ -17,7 +17,6 @@ import {
   Demo, DemoControls, MiniReadout,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -61,7 +60,7 @@ export function WiedemannFranzDemo({ figure }: Props) {
 
     function draw() {
       const { metalKey } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       // Two-axis bar chart: for each metal plot κ (left axis) and σ (right axis)
@@ -73,7 +72,7 @@ export function WiedemannFranzDemo({ figure }: Props) {
       const gH = H - padT - padB;
       const rowH = gH / METALS.length;
 
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
       ctx.beginPath();
       ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + gH);
       ctx.lineTo(padL + gW, padT + gH);
@@ -83,7 +82,7 @@ export function WiedemannFranzDemo({ figure }: Props) {
       const maxS = 7e7;
 
       ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
 
@@ -118,16 +117,16 @@ export function WiedemannFranzDemo({ figure }: Props) {
       });
 
       // Headers
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('κ — thermal conductivity (W/m·K)', padL, 8);
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.fillText('σ — electrical conductivity (S/m)', padL, 22);
 
       // Headline: average Lorenz across the metals
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText(`L₀ = 2.44×10⁻⁸ W·Ω·K⁻²`, W - 12, 8);

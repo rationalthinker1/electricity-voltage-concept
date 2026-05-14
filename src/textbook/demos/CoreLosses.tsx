@@ -35,7 +35,7 @@ export function CoreLossesDemo({ figure }: Props) {
   const totalLoss = hystLoss + eddyLoss;
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let simT = 0;
     let lastT = performance.now();
@@ -48,7 +48,7 @@ export function CoreLossesDemo({ figure }: Props) {
       if (dt > 0.1) dt = 0.1;
       simT += dt;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const splitX = w * 0.5;
@@ -61,15 +61,15 @@ export function CoreLossesDemo({ figure }: Props) {
       const cyL = h / 2;
       const plotW = splitX - 2 * pad;
       const plotH = h - 2 * pad;
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(pad, pad, plotW, plotH);
       // axes
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.16)';
       ctx.beginPath();
       ctx.moveTo(pad, cyL); ctx.lineTo(pad + plotW, cyL);
       ctx.moveTo(cxL, pad); ctx.lineTo(cxL, pad + plotH);
       ctx.stroke();
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('B', cxL + 4, pad + 2);
@@ -85,7 +85,7 @@ export function CoreLossesDemo({ figure }: Props) {
       const Bscale = plotH * 0.4;
       const PHASE = 0.55;  // lag angle in radians (hysteresis)
       // Draw the full closed loop as a trace
-      ctx.strokeStyle = colors.accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.85)';
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       const steps = 240;
@@ -111,9 +111,9 @@ export function CoreLossesDemo({ figure }: Props) {
       const B = Bmax * Bsat;
       const dx = cxL + (H / Math.max(1, Hmax)) * Hscale * Hmax;
       const dy = cyL - B * Bscale;
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.95)';
       ctx.beginPath(); ctx.arc(dx, dy, 4, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('B-H hysteresis loop', pad + 4, pad + 4);
@@ -121,7 +121,7 @@ export function CoreLossesDemo({ figure }: Props) {
       ctx.restore();
 
       // Divider
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
       ctx.beginPath(); ctx.moveTo(splitX, 0); ctx.lineTo(splitX, h); ctx.stroke();
 
       // RIGHT: eddy currents
@@ -137,7 +137,7 @@ export function CoreLossesDemo({ figure }: Props) {
       ctx.strokeRect(rx, ry, rw, rh);
 
       // Flux into the page (centre dots)
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.5)';
       for (let i = 0; i < 16; i++) {
         const px = rx + (i % 4 + 1) * rw / 5;
         const py = ry + Math.floor(i / 4 + 1) * rh / 5;
@@ -159,7 +159,7 @@ export function CoreLossesDemo({ figure }: Props) {
           ctx.stroke();
         }
         // Lamination divider lines
-        ctx.strokeStyle = colors.borderStrong;
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
         ctx.setLineDash([2, 3]);
         for (let i = 1; i < nLam; i++) {
           const y0 = ry + i * rh / nLam;
@@ -168,7 +168,7 @@ export function CoreLossesDemo({ figure }: Props) {
           ctx.stroke();
         }
         ctx.setLineDash([]);
-        ctx.fillStyle = colors.teal;
+        ctx.fillStyle = 'rgba(108,197,194,0.85)';
       } else {
         // One big loop spanning the whole cross-section
         ctx.strokeStyle = `rgba(255,59,110,${0.45 + 0.5 * animPhase})`;
@@ -176,12 +176,12 @@ export function CoreLossesDemo({ figure }: Props) {
         ctx.beginPath();
         ctx.rect(rx + 6, ry + 6, rw - 12, rh - 12);
         ctx.stroke();
-        ctx.fillStyle = colors.pink;
+        ctx.fillStyle = 'rgba(255,59,110,0.85)';
       }
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(laminated ? 'LAMINATED (50 thin layers)' : 'SOLID CORE', rx + 4, ry - 16);
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.fillText('eddy-current loops in cross-section', rx + 4, h - 18);
       ctx.restore();
 

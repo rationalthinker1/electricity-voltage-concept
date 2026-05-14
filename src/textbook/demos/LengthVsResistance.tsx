@@ -32,13 +32,13 @@ export function LengthVsResistanceDemo({ figure }: Props) {
   const R = L / (sigma * A_m2);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { L } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Layout: full canvas spans 10 m of physical scale; wire occupies
@@ -55,8 +55,8 @@ export function LengthVsResistanceDemo({ figure }: Props) {
       const bot = wireCY + thickness / 2;
 
       // Tick marks every meter
-      ctx.strokeStyle = colors.borderStrong;
-      ctx.fillStyle = colors.textDim;
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       const nTicks = Math.floor(L) + 1;
@@ -78,19 +78,19 @@ export function LengthVsResistanceDemo({ figure }: Props) {
       ctx.fillStyle = grd;
       roundRect(ctx, wireLeft, top, wireLen, thickness, 8);
       ctx.fill();
-      ctx.strokeStyle = colors.textDim;
+      ctx.strokeStyle = 'rgba(255,255,255,0.45)';
       ctx.lineWidth = 1;
       roundRect(ctx, wireLeft, top, wireLen, thickness, 8);
       ctx.stroke();
 
       // End caps
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.fillRect(wireLeft - 10, top - 4, 4, thickness + 8);
-      ctx.fillStyle = colors.blue;
+      ctx.fillStyle = '#5baef8';
       ctx.fillRect(wireRight + 6, top - 4, 4, thickness + 8);
 
       // Label
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`COPPER  ·  A = ${A_mm2.toFixed(1)} mm²`, w / 2, top - 14);

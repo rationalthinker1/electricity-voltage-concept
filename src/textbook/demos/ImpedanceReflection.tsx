@@ -10,7 +10,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -28,14 +27,14 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
   }, [ratio]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { ratio } = stateRef.current;
       const Zp = ratio * ratio * Z_LOAD;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Layout: source box on left, transformer in middle, load on right.
@@ -46,15 +45,15 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
       const srcX = padX;
       const srcW = 80, srcH = 50;
       ctx.fillStyle = '#16161a';
-      ctx.strokeStyle = getCanvasColors().accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.7)';
       ctx.lineWidth = 1.4;
       ctx.fillRect(srcX, cy - srcH / 2, srcW, srcH);
       ctx.strokeRect(srcX, cy - srcH / 2, srcW, srcH);
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.9)';
       ctx.font = 'bold 10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('TUBE AMP', srcX + srcW / 2, cy - 8);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.fillText('~5 kΩ plate', srcX + srcW / 2, cy + 8);
 
@@ -73,7 +72,7 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
       // Secondary coil (right bar)
       drawCoilCol(ctx, trX + trW - 16, cy - 22, cy + 22, Math.max(2, Math.round(Math.min(14, Math.max(3, Math.round(ratio * 1.4))) / Math.max(ratio, 1) * ratio / ratio + 2)));
       // Labels for N_p / N_s as a ratio
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText(`N_p : N_s = ${ratio.toFixed(0)} : 1`, trX + trW / 2, cy + trH / 2 + 4);
@@ -82,20 +81,20 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
       const ldX = w - padX - 80;
       const ldW = 80, ldH = 50;
       ctx.fillStyle = '#16161a';
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.7)';
       ctx.lineWidth = 1.4;
       ctx.fillRect(ldX, cy - ldH / 2, ldW, ldH);
       ctx.strokeRect(ldX, cy - ldH / 2, ldW, ldH);
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.9)';
       ctx.font = 'bold 10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('SPEAKER', ldX + ldW / 2, cy - 8);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.fillText('8 Ω', ldX + ldW / 2, cy + 8);
 
       // Wires
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(srcX + srcW, cy - 6); ctx.lineTo(trX, cy - 6);
@@ -105,11 +104,11 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
       ctx.stroke();
 
       // Z arrows / annotations
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.fillText(`looking in: Z_p = ${formatZ(Zp)}`, (srcX + srcW + trX) / 2, cy - 16);
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.fillText(`secondary: Z_s = 8 Ω`, (trX + trW + ldX) / 2, cy - 16);
 
       // Match indicator: how close to ~5 kΩ source impedance?
@@ -166,7 +165,7 @@ function drawCoilCol(
   const dy = (yBot - yTop) / Math.max(turns, 1);
   for (let i = 0; i < turns; i++) {
     const y = yTop + (i + 0.5) * dy;
-    ctx.strokeStyle = getCanvasColors().accent;
+    ctx.strokeStyle = 'rgba(255,107,42,0.95)';
     ctx.lineWidth = 1.4;
     ctx.beginPath();
     ctx.ellipse(cx, y, 8, dy * 0.42, 0, 0, Math.PI * 2);

@@ -43,13 +43,13 @@ export default function AmpereLab() {
   }, [I, r_mm, nWires]);
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let phase = 0;
 
     function draw() {
       const { I, r_mm, nWires } = stateRef.current;
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       phase += 0.018;
@@ -87,7 +87,7 @@ export default function AmpereLab() {
       }
 
       // Amperian loop
-      ctx.strokeStyle = colors.teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.95)';
       ctx.lineWidth = 2.2;
       ctx.setLineDash([6, 4]);
       ctx.beginPath(); ctx.arc(cx, cy, loopPx, 0, Math.PI * 2); ctx.stroke();
@@ -102,7 +102,7 @@ export default function AmpereLab() {
       ctx.strokeStyle = 'rgba(255,107,42,0.55)';
       ctx.lineWidth = 3;
       ctx.beginPath(); ctx.arc(cx, cy, loopPx, 0, dlAngle); ctx.stroke();
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.shadowColor = 'rgba(255,107,42,0.7)';
       ctx.shadowBlur = 10;
       ctx.beginPath(); ctx.arc(dlx, dly, 5, 0, Math.PI * 2); ctx.fill();
@@ -154,7 +154,7 @@ export default function AmpereLab() {
       ctx.moveTo(cx, cy); ctx.lineTo(cx + loopPx, cy);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.95)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
@@ -167,12 +167,12 @@ export default function AmpereLab() {
       const circ = Bcirc * 2 * Math.PI * r_m;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.fillText(`∮ B·dℓ = ${pretty(circ)} T·m`, 24, 28);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.95)';
       ctx.fillText(`μ₀ I_enc = ${pretty(mu0Ienc)} T·m`, 24, 48);
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText(`|B| on loop = ${pretty(Bcirc)} T`, 24, 68);
       ctx.textAlign = 'right';
       ctx.fillStyle = 'rgba(255,59,110,0.95)';

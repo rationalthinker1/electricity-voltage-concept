@@ -44,13 +44,13 @@ export function BJTCharacteristicDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { V_CE, beta, I_B_pick }; }, [V_CE, beta, I_B_pick]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { V_CE, beta, I_B_pick } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padL = 60, padR = 20, padT = 20, padB = 36;
@@ -64,11 +64,11 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       const yOf = (i: number) => padT + plotH - (i / Imax) * plotH;
 
       // frame
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(padL, padT, plotW, plotH);
 
       // gridlines
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
       ctx.beginPath();
       for (let v = 0; v <= Vmax; v += 2) {
         ctx.moveTo(xOf(v), padT); ctx.lineTo(xOf(v), padT + plotH);
@@ -93,7 +93,7 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       }
 
       // axis titles
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.8)';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText('V_CE (volts)', padL + plotW / 2, padT + plotH + 18);
@@ -105,7 +105,7 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       ctx.restore();
 
       // V_CE_sat boundary
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.setLineDash([2, 4]);
       ctx.beginPath();
       ctx.moveTo(xOf(V_CE_SAT), padT); ctx.lineTo(xOf(V_CE_SAT), padT + plotH);
@@ -155,13 +155,13 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       ctx.moveTo(opX, padT); ctx.lineTo(opX, padT + plotH);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.95)';
       ctx.beginPath();
       ctx.arc(opX, opY, 4, 0, Math.PI * 2);
       ctx.fill();
 
       // header
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

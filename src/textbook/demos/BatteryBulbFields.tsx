@@ -32,7 +32,6 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -289,7 +288,7 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
       const voltage = s.V;
       const brightness = isClosed ? Math.min(1, current / 6) : 0;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const cacheKey = `${w}x${h}@${dpr}|c${isClosed ? 1 : 0}|b${brightness.toFixed(2)}`;
@@ -340,7 +339,7 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
         // Axial chevrons inside the wire — small pink triangles along
         // the path showing the direction of axial E.
         const nE = 24;
-        ctx.fillStyle = getCanvasColors().pink;
+        ctx.fillStyle = 'rgba(255,59,110,0.85)';
         for (let i = 0; i < nE; i++) {
           const t = (i + 0.5) / nE;
           const pt = pointOnLoop(t);

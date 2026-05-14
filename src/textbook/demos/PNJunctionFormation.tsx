@@ -32,7 +32,7 @@ export function PNJunctionFormationDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { Vbias }; }, [Vbias]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     // Carrier dots are stateful so they can drift on bias.
@@ -58,7 +58,7 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       const { Vbias } = stateRef.current;
       const w_rel = Math.max(0.18, Math.sqrt(Math.max(0, V_BI - Vbias) / V_BI));
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padL = 30, padR = 30, padT = 26, padB = 26;
@@ -81,7 +81,7 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       ctx.fillRect(padL + plotW * xL, padT, plotW * (xR - xL), plotH);
 
       // depletion boundary lines
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(padL + plotW * xL, padT); ctx.lineTo(padL + plotW * xL, padT + plotH);
@@ -98,12 +98,12 @@ export function PNJunctionFormationDemo({ figure }: Props) {
         // p-side of depletion (negative ions)
         const xp = padL + plotW * (xL + ((i + 0.5) / nIons) * (0.5 - xL));
         const yp = padT + plotH * (0.15 + 0.7 * ((i * 0.37) % 1));
-        ctx.fillStyle = colors.blue;
+        ctx.fillStyle = 'rgba(91,174,248,0.95)';
         ctx.fillText('−', xp, yp);
         // n-side of depletion (positive ions)
         const xn = padL + plotW * (0.5 + ((i + 0.5) / nIons) * (xR - 0.5));
         const yn = padT + plotH * (0.15 + 0.7 * ((i * 0.41 + 0.13) % 1));
-        ctx.fillStyle = colors.pink;
+        ctx.fillStyle = 'rgba(255,59,110,0.95)';
         ctx.fillText('+', xn, yn);
       }
 
@@ -114,7 +114,7 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       const arrowY = padT + plotH * 0.5;
       const arrowL = padL + plotW * (0.5 + dHalf * 0.3);
       const arrowR = padL + plotW * (0.5 + dHalf * 0.85);
-      ctx.strokeStyle = colors.accent;
+      ctx.strokeStyle = 'rgba(255,107,42,0.85)';
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.moveTo(arrowR, arrowY); ctx.lineTo(arrowL, arrowY);
@@ -127,9 +127,9 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       ctx.lineTo(arrowL + 5, arrowY - 4);
       ctx.lineTo(arrowL + 5, arrowY + 4);
       ctx.closePath();
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.fill();
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
@@ -159,7 +159,7 @@ export function PNJunctionFormationDemo({ figure }: Props) {
         const cx = padL + plotW * c.x;
         const cy = padT + plotH * c.y;
         if (c.kind === 'e') {
-          ctx.fillStyle = colors.pink;
+          ctx.fillStyle = 'rgba(255,59,110,0.85)';
           ctx.beginPath();
           ctx.arc(cx, cy, 2.6, 0, Math.PI * 2);
           ctx.fill();
@@ -173,24 +173,24 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       }
 
       // labels
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.9)';
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('n-type', padL + 6, padT + 4);
-      ctx.fillStyle = colors.blue;
+      ctx.fillStyle = 'rgba(91,174,248,0.9)';
       ctx.textAlign = 'right';
       ctx.fillText('p-type', padL + plotW - 6, padT + 4);
 
       // depletion region label
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText(`depletion region   (W/W₀ = ${w_rel.toFixed(2)})`, padL + plotW * 0.5, padT + plotH - 16);
 
       // header
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       let mode = 'zero bias';

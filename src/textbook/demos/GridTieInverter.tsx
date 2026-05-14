@@ -42,7 +42,7 @@ export function GridTieInverterDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { Ipk, thetaDeg, P, Q }; }, [Ipk, thetaDeg, P, Q]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let phase = 0;
 
@@ -51,7 +51,7 @@ export function GridTieInverterDemo({ figure }: Props) {
       const theta = (thetaDeg * Math.PI) / 180;
       phase += 0.012;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 80, padT = 18, padB = 28;
@@ -59,7 +59,7 @@ export function GridTieInverterDemo({ figure }: Props) {
       const plotH = h - padT - padB;
       const cy = padT + plotH / 2;
 
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(padL, padT, plotW, plotH);
       ctx.beginPath();
       ctx.moveTo(padL, cy); ctx.lineTo(padL + plotW, cy);
@@ -118,7 +118,7 @@ export function GridTieInverterDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       const lx = padL + plotW + 8;
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.85)';
       ctx.fillRect(lx, padT + 8 - 1, 10, 2); ctx.fillText('V_grid',   lx + 14, padT + 8);
       ctx.fillStyle = 'rgba(255,107,42,1.0)';
       ctx.fillRect(lx, padT + 24 - 1, 10, 2); ctx.fillText('I_inj',   lx + 14, padT + 24);
@@ -126,7 +126,7 @@ export function GridTieInverterDemo({ figure }: Props) {
       ctx.fillRect(lx, padT + 40 - 2, 10, 4); ctx.fillText('p(t)',    lx + 14, padT + 40);
 
       // Phase / power readout
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText(

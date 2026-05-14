@@ -25,7 +25,6 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -79,7 +78,7 @@ export function NodalSolverDemo({ figure }: Props) {
     function draw() {
       const { V1, V2, R1, R2, R3, nodal } = stateRef.current;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Cache key: invalidates on resize/DPR or any slider movement. Nothing

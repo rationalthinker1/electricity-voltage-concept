@@ -15,7 +15,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -36,7 +35,7 @@ export function PolarizationDemo({ figure }: Props) {
       const { phi, delta } = stateRef.current;
       const om = 2.0;
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       const cx = W / 2;
@@ -44,13 +43,13 @@ export function PolarizationDemo({ figure }: Props) {
       const R = Math.min(W, H) * 0.36;
 
       // Axes (y horizontal, z vertical — we're looking down -x)
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 5]);
       ctx.beginPath(); ctx.moveTo(cx - R, cy); ctx.lineTo(cx + R, cy); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(cx, cy - R); ctx.lineTo(cx, cy + R); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('y', cx + R + 6, cy + 4);
@@ -100,8 +99,8 @@ export function PolarizationDemo({ figure }: Props) {
       const cur = eVec(t);
       const px = cx + cur.yEy * R;
       const py = cy - cur.zEz * R;
-      ctx.strokeStyle = getCanvasColors().pink;
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.strokeStyle = 'rgba(255,59,110,0.95)';
+      ctx.fillStyle = 'rgba(255,59,110,0.95)';
       ctx.lineWidth = 2.2;
       ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.stroke();
       // Arrowhead
@@ -129,11 +128,11 @@ export function PolarizationDemo({ figure }: Props) {
       } else if (Math.abs(dAbs - Math.PI / 2) < 0.05 && Math.abs(Math.abs(phi) - Math.PI / 4) < 0.08) {
         stateLabel = 'circular';
       }
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText(`polarization: ${stateLabel}`, 14, 22);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.fillText('view: looking down the propagation axis →', 14, 38);
 
       raf = requestAnimationFrame(draw);

@@ -33,10 +33,10 @@ export function TwoChargesDemo({ figure }: Props) {
   const sameSign = Math.sign(q1) === Math.sign(q2);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     const sameSign_ = q1Pos === q2Pos;
     const F_ = (PHYS.k * (q1Pos ? 1 : -1) * (q2Pos ? 1 : -1) * (magNC * 1e-9) ** 2) / ((rCm * 1e-2) ** 2);
-    ctx.fillStyle = colors.bg;
+    ctx.fillStyle = '#0d0d10';
     ctx.fillRect(0, 0, w, h);
 
     // Map cm to pixels: full canvas spans 30 cm → centered.

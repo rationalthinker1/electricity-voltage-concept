@@ -20,7 +20,6 @@ import { TryIt } from '@/components/TryIt';
 import { Formula } from '@/components/Formula';
 import { PHYS, eng, sci } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 const SLUG = 'energy-density';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -128,7 +127,7 @@ export default function EnergyDensityLab() {
           ctx.beginPath();
           ctx.moveTo(px, topY); ctx.lineTo(px, tipY);
           ctx.stroke();
-          ctx.fillStyle = getCanvasColors().pink;
+          ctx.fillStyle = 'rgba(255,59,110,0.9)';
           ctx.beginPath();
           ctx.moveTo(px, tipY);
           ctx.lineTo(px - 3, tipY - 5);
@@ -138,13 +137,13 @@ export default function EnergyDensityLab() {
         }
       }
 
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = '#ff3b6e';
       ctx.font = 'italic 22px Fraunces, serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'alphabetic';
       ctx.fillText('E field', cx, y0 - 26);
 
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '13px "JetBrains Mono", monospace';
       ctx.fillText(`u_E = ${eng(uE, 2, 'J/m³')}`, cx, y0 + size + 26);
     }
@@ -161,7 +160,7 @@ export default function EnergyDensityLab() {
       ctx.fill();
       ctx.shadowBlur = 0;
 
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.55)';
       ctx.lineWidth = 1.4;
       roundRect(x0, y0, size, size, 6);
       ctx.stroke();
@@ -196,18 +195,18 @@ export default function EnergyDensityLab() {
         }
       }
 
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = '#6cc5c2';
       ctx.font = 'bold 22px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('⊙', cx, cy);
 
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = '#6cc5c2';
       ctx.font = 'italic 22px Fraunces, serif';
       ctx.textBaseline = 'alphabetic';
       ctx.fillText('B field', cx, y0 - 26);
 
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '13px "JetBrains Mono", monospace';
       ctx.fillText(`u_B = ${eng(uB, 2, 'J/m³')}`, cx, y0 + size + 26);
     }
@@ -215,7 +214,7 @@ export default function EnergyDensityLab() {
     function drawComparisonBar(cx: number, cy: number, totalW: number, uE: number, uB: number) {
       const total = uE + uB;
       if (total <= 0) {
-        ctx.fillStyle = getCanvasColors().textDim;
+        ctx.fillStyle = 'rgba(160,158,149,0.5)';
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText('zero field — set E or B above', cx, cy);
@@ -227,10 +226,10 @@ export default function EnergyDensityLab() {
       ctx.fillStyle = 'rgba(255,255,255,0.05)';
       roundRect(x0, cy - h / 2, totalW, h, 6);
       ctx.fill();
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.85)';
       roundRect(x0, cy - h / 2, totalW * fracE, h, 6);
       ctx.fill();
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       roundRect(x0 + totalW * fracE, cy - h / 2, totalW * (1 - fracE), h, 6);
       ctx.fill();
       ctx.fillStyle = 'rgba(160,158,149,0.95)';
@@ -246,7 +245,7 @@ export default function EnergyDensityLab() {
     function draw() {
       const s = stateRef.current;
       const out = s.computed;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
       phase += 0.02;
 
@@ -259,12 +258,12 @@ export default function EnergyDensityLab() {
       drawBCube(xL_B, yMid, cubeSize, s.B, out.uB);
       drawComparisonBar(W / 2, H - 56, Math.min(W * 0.55, 520), out.uE, out.uB);
 
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = '#ff6b2a';
       ctx.font = '12px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
       ctx.fillText(`u_total = ${eng(out.u, 3, 'J/m³')}`, 24, 28);
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.fillText(`U over ${eng(s.Vol, 2, 'm³')} = ${eng(out.U, 3, 'J')}`, 24, 48);
 

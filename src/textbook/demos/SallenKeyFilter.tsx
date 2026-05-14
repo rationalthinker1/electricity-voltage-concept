@@ -38,13 +38,13 @@ export function SallenKeyFilterDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { f0, K, Q }; }, [f0, K, Q]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { f0, K, Q } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 40, padT = 22, padB = 22;
@@ -69,13 +69,13 @@ export function SallenKeyFilterDemo({ figure }: Props) {
         phY0 + phH - ((p - phMin) / (phMax - phMin)) * phH;
 
       // Frames
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.lineWidth = 1;
       ctx.strokeRect(plotX, magY0, plotW, magH);
       ctx.strokeRect(plotX, phY0, plotW, phH);
 
       // Gridlines (mag every 20 dB, phase every 45°)
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
       for (let db = dBmin; db <= dBmax; db += 20) {
         const y = yMag(db);
         ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
@@ -93,7 +93,7 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       for (let lf = Math.ceil(logMin); lf <= Math.floor(logMax); lf++) {
         const f = Math.pow(10, lf);
         const x = plotX + ((lf - logMin) / (logMax - logMin)) * plotW;
-        ctx.strokeStyle = colors.border;
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
         ctx.beginPath(); ctx.moveTo(x, magY0); ctx.lineTo(x, magY0 + magH); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(x, phY0); ctx.lineTo(x, phY0 + phH); ctx.stroke();
         ctx.fillStyle = 'rgba(160,158,149,0.6)';
@@ -102,7 +102,7 @@ export function SallenKeyFilterDemo({ figure }: Props) {
 
       // f0 marker
       const xf0 = plotX + ((Math.log10(f0) - logMin) / (logMax - logMin)) * plotW;
-      ctx.strokeStyle = colors.teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.55)';
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(xf0, magY0); ctx.lineTo(xf0, magY0 + magH);
@@ -184,7 +184,7 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       });
 
       // Axis labels
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
@@ -196,15 +196,15 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       ctx.fillText('-180°', plotX - 4, yPh(-180));
 
       // Headers
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.9)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('|H(jω)|  [dB]   (dashed = 1st-order RC reference)', plotX + 4, magY0 + 4);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.9)';
       ctx.fillText('arg H(jω)  [deg]', plotX + 4, phY0 + 4);
 
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.9)';
       ctx.textAlign = 'right';
       ctx.fillText(
         `K = ${K.toFixed(2)},  Q = ${Q.toFixed(2)},  f₀ = ${fmtFreqShort(f0)}`,

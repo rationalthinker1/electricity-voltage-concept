@@ -23,7 +23,6 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { MATERIALS, PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -83,7 +82,7 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       const Inorm = Math.min(1, Math.abs(I_now) / (24 / R_OHMS));
 
       // Background.
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Build / reuse the static schematic cache. Key includes a coarsened
@@ -171,7 +170,7 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       // the opposite way, so the dots (cyan electrons) move right→left.
       const visSpeed = 90 * Inorm;  // px/s at full slider
       const dots = dotsRef.current!;
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = '#5baef8';
       for (const d of dots) {
         d.x -= visSpeed * dt;
         if (d.x < wireLeft) d.x += wireLength;

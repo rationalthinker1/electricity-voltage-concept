@@ -36,7 +36,7 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { Gamma, wavelengths }; }, [Gamma, wavelengths]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     const t0 = performance.now();
 
@@ -44,7 +44,7 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
       const { Gamma, wavelengths } = stateRef.current;
       const phase = ((performance.now() - t0) / 1000) * 2 * Math.PI * 0.8;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 30, padT = 24, padB = 36;
@@ -52,7 +52,7 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.strokeRect(plotX, plotY, plotW, plotH);
 
       // y axis ±2.2
@@ -60,12 +60,12 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
       const yV = (v: number) => plotY + plotH / 2 - (v / yMax) * (plotH / 2 - 4);
 
       // gridlines
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
       for (let v = -2; v <= 2; v++) {
         const y = yV(v);
         ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
       }
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
       ctx.beginPath(); ctx.moveTo(plotX, yV(0)); ctx.lineTo(plotX + plotW, yV(0)); ctx.stroke();
 
       // x is position from source (left) to load (right) measured in wavelengths
@@ -122,7 +122,7 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
       ctx.stroke();
 
       // Axis labels
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
@@ -139,14 +139,14 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
       ctx.fillText('position along line (λ)', plotX + plotW / 2, plotY + plotH + 18);
 
       // Header
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.9)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('V(x,t)  (instantaneous)', plotX + 4, plotY + 4);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.9)';
       ctx.fillText('±|V(x)|  envelope', plotX + 180, plotY + 4);
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.9)';
       ctx.textAlign = 'right';
       ctx.fillText(`VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`,
         plotX + plotW - 4, plotY + 4);

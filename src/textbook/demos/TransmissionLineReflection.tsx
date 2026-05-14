@@ -38,7 +38,7 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { Gamma }; }, [Gamma]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     const t0 = performance.now();
 
@@ -46,7 +46,7 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       const { Gamma } = stateRef.current;
       const t = ((performance.now() - t0) / 1000) % 5;  // 5-s loop
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 50, padT = 40, padB = 40;
@@ -54,7 +54,7 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       const cy = padT + (h - padT - padB) / 2;
 
       // Line itself (drawn as two horizontal conductors)
-      ctx.strokeStyle = colors.textDim;
+      ctx.strokeStyle = 'rgba(255,255,255,0.45)';
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       ctx.moveTo(lineX0, cy - 18); ctx.lineTo(lineX1, cy - 18); ctx.stroke();
@@ -69,14 +69,14 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       ctx.moveTo(lineX0 - 16, cy + 18); ctx.lineTo(lineX0, cy + 18);
       ctx.moveTo(lineX0 - 16, cy - 22); ctx.lineTo(lineX0 - 16, cy + 22);
       ctx.stroke();
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
       ctx.fillText('source', lineX0 - 22, cy);
 
       // Load on the right (vertical resistor)
-      ctx.strokeStyle = colors.teal;
+      ctx.strokeStyle = '#6cc5c2';
       ctx.lineWidth = 2;
       // resistor zigzag vertical
       const y0r = cy - 14, y1r = cy + 14;
@@ -90,13 +90,13 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       }
       ctx.lineTo(lineX1, y1r); ctx.lineTo(lineX1, cy + 18);
       ctx.stroke();
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = '#6cc5c2';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       ctx.fillText(`Z_L = ${ZL >= 1e5 ? '∞' : ZL.toFixed(0) + ' Ω'}`, lineX1 + 8, cy);
 
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.7)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -140,7 +140,7 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       }
 
       // Header
-      ctx.fillStyle = colors.text;
+      ctx.fillStyle = 'rgba(236,235,229,0.9)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

@@ -33,7 +33,6 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -181,7 +180,7 @@ export function TransformerDesignerDemo({ figure }: Props) {
       const { Np, Ns, shape, coreKey, fluxFill, saturating } = stateRef.current;
       const mat = CORE_MATERIALS[coreKey];
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       const cx = W / 2;
@@ -194,7 +193,7 @@ export function TransformerDesignerDemo({ figure }: Props) {
       }
 
       // Top-left label
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -205,7 +204,7 @@ export function TransformerDesignerDemo({ figure }: Props) {
       // Top-right warning
       if (saturating) {
         ctx.textAlign = 'right';
-        ctx.fillStyle = getCanvasColors().pink;
+        ctx.fillStyle = '#ff3b6e';
         ctx.font = 'bold 11px "JetBrains Mono", monospace';
         ctx.fillText('CORE SATURATING', W - 12, 10);
         ctx.fillStyle = 'rgba(255,59,110,0.8)';
@@ -347,7 +346,7 @@ function drawECore(
   const winH = coreH - 2 * limb;
 
   // Cut out the windows (paint background).
-  ctx.fillStyle = getCanvasColors().bg;
+  ctx.fillStyle = '#0d0d10';
   ctx.fillRect(winX1, y0 + limb, winW, winH);
   ctx.fillRect(winX2, y0 + limb, winW, winH);
 
@@ -365,7 +364,7 @@ function drawECore(
 
   // Lamination hatch lines for visual texture (vertical thin lines).
   ctx.save();
-  ctx.strokeStyle = getCanvasColors().border;
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
   ctx.lineWidth = 1;
   for (let x = x0 + 4; x < x0 + coreW; x += 6) {
     ctx.beginPath();
@@ -392,7 +391,7 @@ function drawECore(
   const loadY1 = cy - 36;
   const loadY2 = cy + 36;
   // Leads
-  ctx.strokeStyle = getCanvasColors().teal;
+  ctx.strokeStyle = 'rgba(108,197,194,0.85)';
   ctx.lineWidth = 1.6;
   ctx.beginPath();
   ctx.moveTo(rightLimbX + limb * 0.45 + 6, loadY1);
@@ -401,7 +400,7 @@ function drawECore(
   ctx.lineTo(loadX, loadY2);
   ctx.stroke();
   drawResistorZigzag(ctx, loadX, loadY1, loadX, loadY2, '#6cc5c2');
-  ctx.fillStyle = getCanvasColors().teal;
+  ctx.fillStyle = 'rgba(108,197,194,0.85)';
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
@@ -452,7 +451,7 @@ function drawToroid(
   const loadX = cx + Router + 56;
   const loadY1 = cy - 30;
   const loadY2 = cy + 30;
-  ctx.strokeStyle = getCanvasColors().teal;
+  ctx.strokeStyle = 'rgba(108,197,194,0.85)';
   ctx.lineWidth = 1.6;
   ctx.beginPath();
   ctx.moveTo(cx + Router * 1.05, loadY1);
@@ -461,7 +460,7 @@ function drawToroid(
   ctx.lineTo(loadX, loadY2);
   ctx.stroke();
   drawResistorZigzag(ctx, loadX, loadY1, loadX, loadY2, '#6cc5c2');
-  ctx.fillStyle = getCanvasColors().teal;
+  ctx.fillStyle = 'rgba(108,197,194,0.85)';
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';

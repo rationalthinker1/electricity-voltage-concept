@@ -17,7 +17,7 @@
  *   /labs/house-wiring/FloorplanCanvas    ← floorplan + panel renderer
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { LabShell } from '@/components/LabShell';
 import { MathBlock, Pullout } from '@/components/Prose';
@@ -225,7 +225,7 @@ export default function HouseWiringLab() {
       if (kind) {
         const def = applianceDefault(kind);
         newApplianceId = `a${Date.now()}-${Math.floor(Math.random() * 9999)}`;
-        appliances = [...appliances, { id: newApplianceId, ...def, on: false, label: applianceLabel(kind) }];
+        appliances = [...appliances, { id: newApplianceId, kind, ...def, on: false, label: applianceLabel(kind) }];
       }
       return {
         ...prev,

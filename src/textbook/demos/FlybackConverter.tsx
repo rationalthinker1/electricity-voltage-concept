@@ -54,7 +54,7 @@ export function FlybackConverterDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { ...computed, duty }; }, [computed, duty]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     let t0 = performance.now();
 
@@ -70,7 +70,7 @@ export function FlybackConverterDemo({ figure }: Props) {
       if (onPhase) storedFrac = phi / duty;
       else storedFrac = 1 - (phi - duty) / Math.max(1 - duty, 0.01);
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Transformer in the middle
@@ -102,7 +102,7 @@ export function FlybackConverterDemo({ figure }: Props) {
 
       // Primary side: switch + V_in below
       const pCX = pX - 60;
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.30)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(pX - 6, coreTop + 10); ctx.lineTo(pCX, coreTop + 10);
@@ -110,7 +110,7 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.stroke();
 
       // V_in label
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       ctx.fillText('V_in', pCX - 2, (coreTop + coreBot) / 2);
@@ -118,14 +118,14 @@ export function FlybackConverterDemo({ figure }: Props) {
       // SW indicator on primary line
       ctx.fillStyle = onPhase ? 'rgba(255,107,42,0.95)' : 'rgba(160,158,149,0.45)';
       ctx.fillRect(pCX + 4, coreBot - 16, 14, 12);
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0a0a0b';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(onPhase ? 'ON' : 'off', pCX + 11, coreBot - 10);
 
       // Secondary side: diode + cap + load
       const sCX = sX + 60;
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.30)';
       ctx.beginPath();
       ctx.moveTo(sX + 6, coreTop + 10); ctx.lineTo(sCX, coreTop + 10);
       ctx.moveTo(sX + 6, coreBot - 10); ctx.lineTo(sCX, coreBot - 10);
@@ -147,7 +147,7 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.stroke();
 
       // V_out label
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       ctx.fillText(`V_out = ${Vout.toFixed(1)} V`, sCX + 6, (coreTop + coreBot) / 2);
@@ -161,7 +161,7 @@ export function FlybackConverterDemo({ figure }: Props) {
       drawArrowUp(ctx, sX + 18, coreBot - 30, 14);
 
       // Phase label
-      ctx.fillStyle = colors.textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.85)';
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText(onPhase ? 'ON  —  storing energy in L_p' : 'OFF  —  dumping into C_out', w / 2, 6);
@@ -188,7 +188,7 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.fillText(`turns ratio n = N_p/N_s`, w / 2, h - 18);
 
       // Isolation barrier (dashed vertical line through the core)
-      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.20)';
       ctx.setLineDash([3, 4]);
       ctx.lineWidth = 1;
       ctx.beginPath();

@@ -158,13 +158,13 @@ export function FilterDesignerDemo({ figure }: Props) {
   }, [topology, R, C, L, f0, Haudio, Hhum]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw(now: number) {
       const { topology, R, C, L, f0 } = stateRef.current;
 
-      ctx.fillStyle = colors.bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       // Layout: three panels. Top-left = noisy input; top-right = output;
@@ -180,20 +180,20 @@ export function FilterDesignerDemo({ figure }: Props) {
       const bodeX0 = pad,          bodeY0 = pad + topH + gap, bodeX1 = w - pad,             bodeY1 = h - pad;
 
       // Panel frames
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
       ctx.lineWidth = 1;
       ctx.strokeRect(inX0, inY0, inX1 - inX0, inY1 - inY0);
       ctx.strokeRect(outX0, outY0, outX1 - outX0, outY1 - outY0);
       ctx.strokeRect(bodeX0, bodeY0, bodeX1 - bodeX0, bodeY1 - bodeY0);
 
       // Labels
-      ctx.fillStyle = colors.accent;
+      ctx.fillStyle = 'rgba(255,107,42,0.9)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('noisy input  1 kHz tone + 60 Hz hum', inX0 + 6, inY0 + 4);
       ctx.fillText('filtered output', outX0 + 6, outY0 + 4);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.9)';
       ctx.fillText('|H(f)|  [dB]', bodeX0 + 6, bodeY0 + 4);
 
       // === Time-domain plots ===
@@ -262,7 +262,7 @@ export function FilterDesignerDemo({ figure }: Props) {
       });
 
       // Centre lines + scale tag in each scope panel
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
       ctx.beginPath(); ctx.moveTo(inX0,  inMidY); ctx.lineTo(inX1,  inMidY); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(outX0, outMidY); ctx.lineTo(outX1, outMidY); ctx.stroke();
       ctx.fillStyle = 'rgba(160,158,149,0.55)';
@@ -282,7 +282,7 @@ export function FilterDesignerDemo({ figure }: Props) {
       const yDb = (db: number) => by + bh - ((db - dBmin) / (dBmax - dBmin)) * bh;
 
       // Gridlines
-      ctx.strokeStyle = colors.border;
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
       for (let lf = logMin; lf <= logMax; lf++) {
         const f = Math.pow(10, lf);
         const x = xf(f);
@@ -295,9 +295,9 @@ export function FilterDesignerDemo({ figure }: Props) {
       }
       for (let db = dBmin; db <= dBmax; db += 20) {
         const y = yDb(db);
-        ctx.strokeStyle = colors.border;
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
         ctx.beginPath(); ctx.moveTo(bx, y); ctx.lineTo(bx + bw, y); ctx.stroke();
-        ctx.fillStyle = colors.textDim;
+        ctx.fillStyle = 'rgba(160,158,149,0.7)';
         ctx.font = '9px "JetBrains Mono", monospace';
         ctx.textAlign = 'right';
         ctx.textBaseline = 'middle';
@@ -310,15 +310,15 @@ export function FilterDesignerDemo({ figure }: Props) {
       ctx.setLineDash([3, 3]);
       ctx.beginPath(); ctx.moveTo(xHum, by); ctx.lineTo(xHum, by + bh); ctx.stroke();
       const xAudio = xf(F_AUDIO);
-      ctx.strokeStyle = colors.teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.55)';
       ctx.beginPath(); ctx.moveTo(xAudio, by); ctx.lineTo(xAudio, by + bh); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.pink;
+      ctx.fillStyle = 'rgba(255,59,110,0.85)';
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('60 Hz hum', xHum + 3, by + 16);
-      ctx.fillStyle = colors.teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.fillText('1 kHz audio', xAudio + 3, by + 16);
 
       // |H(f)| curve

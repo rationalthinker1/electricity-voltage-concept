@@ -10,7 +10,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -33,7 +32,7 @@ export function DoubleSlitDemo({ figure }: Props) {
     let raf = 0;
     function draw() {
       const { lamNm, dMicron, LMm } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, W, H);
 
       const lam_ = lamNm * 1e-9;
@@ -57,10 +56,10 @@ export function DoubleSlitDemo({ figure }: Props) {
       const halfSlit = 22;
       const slitTop = { x: slitX, y: cy - halfSlit };
       const slitBot = { x: slitX, y: cy + halfSlit };
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(slitX - 3, slitTop.y - 4, 6, 8);
       ctx.fillRect(slitX - 3, slitBot.y - 4, 6, 8);
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = 'rgba(108,197,194,0.95)';
       ctx.lineWidth = 1.5;
       ctx.strokeRect(slitX - 3, slitTop.y - 4, 6, 8);
       ctx.strokeRect(slitX - 3, slitBot.y - 4, 6, 8);
@@ -97,7 +96,7 @@ export function DoubleSlitDemo({ figure }: Props) {
       const plotL = screenX + 12;
       const plotR = W - 20;
       const plotW = plotR - plotL;
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(plotL, padTop); ctx.lineTo(plotL, H - padBot); ctx.stroke();
       ctx.strokeStyle = `rgba(${r},${g},${b},0.95)`;
@@ -112,7 +111,7 @@ export function DoubleSlitDemo({ figure }: Props) {
       ctx.stroke();
 
       // Rays from slits to centre of screen
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(slitTop.x, slitTop.y); ctx.lineTo(screenX, cy);
@@ -120,7 +119,7 @@ export function DoubleSlitDemo({ figure }: Props) {
       ctx.stroke();
 
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = 'rgba(160,158,149,0.9)';
       ctx.textAlign = 'center';
       ctx.fillText('slits', slitX, padTop - 8);
       ctx.fillText('screen', screenX, padTop - 8);

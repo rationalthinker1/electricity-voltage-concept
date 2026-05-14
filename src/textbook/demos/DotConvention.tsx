@@ -14,7 +14,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -38,12 +37,12 @@ export function DotConventionDemo({ figure }: Props) {
   }, [c2DotTop, i1IntoDot]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { c2DotTop, i1IntoDot } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = '#0d0d10';
       ctx.fillRect(0, 0, w, h);
 
       const cy = h / 2;
@@ -72,7 +71,7 @@ export function DotConventionDemo({ figure }: Props) {
       ctx.lineTo(c2x - 24, cy);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = 'rgba(108,197,194,0.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('M', (c1x + c2x) / 2, cy - 8);
@@ -133,7 +132,7 @@ function drawSchematicCoil(
   cx: number, cy: number, h: number, label: string, valueLabel: string,
 ) {
   // Schematic-style: three half-loops on the right side of a vertical wire
-  ctx.strokeStyle = getCanvasColors().accent;
+  ctx.strokeStyle = 'rgba(255,107,42,0.95)';
   ctx.lineWidth = 1.6;
   const top = cy - h / 2;
   const bot = cy + h / 2;
@@ -171,7 +170,7 @@ function drawSchematicCoil(
   ctx.stroke();
 
   // Labels
-  ctx.fillStyle = getCanvasColors().accent;
+  ctx.fillStyle = 'rgba(255,107,42,0.85)';
   ctx.font = 'bold 11px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -193,7 +192,7 @@ function drawCurrentArrow(
   x0: number, y0: number, x1: number, y1: number, label: string,
 ) {
   ctx.strokeStyle = 'rgba(91,174,248,0.9)';
-  ctx.fillStyle = getCanvasColors().blue;
+  ctx.fillStyle = 'rgba(91,174,248,0.9)';
   ctx.lineWidth = 1.6;
   ctx.beginPath();
   ctx.moveTo(x0, y0);
