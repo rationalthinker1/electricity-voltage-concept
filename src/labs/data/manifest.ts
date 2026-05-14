@@ -245,6 +245,15 @@ export const MANIFEST: LabManifestEntry[] = [
     heroHeadline: 'Power an <em>EV</em>.',
     deck: 'A bench for the full EV chain. Build a battery pack (cells in series and parallel; pick chemistry: NMC, LFP, NCA); add a BMS (cell balancing, current limit, thermal cut-out); add an onboard charger or DC-fast coupler; add an inverter; add a traction motor; pick a regen strategy. Run a drive cycle (city, highway, mountain) and watch SoC, cell temperatures, charging behaviour, and range. Integrates Ch.5 (capacitors), Ch.22 (mutual coupling), Ch.23 (transformers), Ch.24 (inverters), Ch.25–26 (batteries), Ch.31 (big loads), and the new Ch.41 (EV powertrain).',
   },
+  {
+    number: 'A.5', slug: 'power-grid', chapter: 'ch4',
+    title: 'Power Grid Simulator',
+    formula: 'P_loss = I² R · n_lines + Σ generator droop',
+    blurb: 'Build a whole grid: generators, transmission lines, transformers, loads. Trip a generator and watch system frequency dip; add storage and watch it ride through.',
+    heroLabel: 'Appendix · Lab A.5 — Power Grid Simulator',
+    heroHeadline: 'Run a <em>grid</em>.',
+    deck: 'A one-line-diagram editor for power systems. Drop generators (coal, CCGT, hydro, wind, solar PV with inverter, battery storage); add step-up transformers, transmission lines with R + jX, sub-stations, distribution feeders, and residential / industrial loads. The sandbox solves a power-flow balance every step, evolves system frequency through the swing equation when a generator trips, and shows the voltage profile across the entire network. Integrates Ch.12 (AC + impedance), Ch.21 (generators + inertia), Ch.22 (mutual coupling), Ch.23 (transformers), Ch.24 (rectifiers + inverters for the renewables), Ch.31 (big loads).',
+  },
 ];
 
 /** Lookup a lab by slug. */
@@ -283,4 +292,5 @@ export const BASE_LAB_SOURCES: Record<string, SourceKey[]> = {
   'house-wiring':    ['nec-2023', 'nfpa-70e-2024', 'ul-498', 'nema-wd-6', 'grainger-power-systems-2003', 'codata-2018'],
   'motor-drive':     ['sedra-smith-2014', 'erickson-maksimovic-2020', 'horowitz-hill-2015', 'griffiths-2017', 'codata-2018'],
   'ev-bench':        ['sae-j1772', 'iec-62196', 'ul-2231', 'erickson-maksimovic-2020', 'sedra-smith-2014', 'codata-2018'],
+  'power-grid':      ['kirchhoff-1845', 'grainger-power-systems-2003', 'kundur-1994-power-stability', 'horowitz-hill-2015', 'codata-2018'],
 };
