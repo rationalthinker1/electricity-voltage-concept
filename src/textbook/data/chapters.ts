@@ -52,7 +52,8 @@ export type ChapterSlug =
   | 'house-new-circuit'
   | 'house-smart-retrofits'
   | 'house-outdoor-wet'
-  | 'house-surge-grounding';
+  | 'house-surge-grounding'
+  | 'ev-powertrain';
 
 export type TrackId = 'practical' | 'bench' | 'rigor';
 
@@ -1114,6 +1115,32 @@ export const CHAPTERS: ChapterEntry[] = [
     timeToRead: 35,
     prereqs: ['house-safety', 'house-panel'],
     tracks: ['practical'],
+  },
+  {
+    slug: 'ev-powertrain',
+    number: 41,
+    title: 'The electric vehicle powertrain',
+    subtitle: 'From battery cell to wheel torque, in seven stages.',
+    blurb:
+      "Every modern EV is the same seven-stage chain — pack, BMS, contactor, DC/DC, inverter, motor, gearbox — wrapped around one big lithium battery. This chapter walks each stage, names the dominant losses, and shows how the same physics from Ch.20 (motors), Ch.23 (mutual coupling), Ch.24 (rectifiers + inverters), and Ch.26 (modern batteries) integrates into a vehicle that converts 90% of its plug energy into kinetic energy at the wheels — three times the efficiency of any internal-combustion engine.",
+    relatedLabs: ['circuit-builder'],
+    sources: [
+      'sae-j1772', 'iec-62196', 'ul-2231',
+      'sedra-smith-2014', 'erickson-maksimovic-2020',
+      'horowitz-hill-2015', 'codata-2018',
+    ],
+    punchline:
+      "An EV is a battery on wheels with seven power-electronics stages between the cell and the road — and every one of those stages has appeared in a previous chapter of this textbook.",
+    objectives: [
+      "Trace energy from a Li-ion cell through pack, BMS, contactor, DC/DC, inverter, motor, and gearbox to wheel torque.",
+      "Explain why PMSM dominates over induction for traction, and why Tesla still uses both.",
+      "Compute range from rolling friction + aero drag + auxiliary load + drivetrain efficiency.",
+      "Predict charge-time at L1 / L2 / DCFC given pack capacity, charger power, and the CC-CV taper.",
+      "Identify the dominant battery-degradation mechanism for a typical commute cycle (calendar vs cycle, depth-of-discharge sensitivity).",
+    ],
+    timeToRead: 35,
+    prereqs: ['motors', 'rectifiers-and-inverters', 'magnetically-coupled-circuits', 'modern-batteries', 'house-big-loads'],
+    tracks: ['practical', 'bench'],
   },
 ];
 

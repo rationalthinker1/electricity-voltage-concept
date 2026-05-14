@@ -208,7 +208,7 @@ export const MANIFEST: LabManifestEntry[] = [
     deck: 'Around a current-carrying wire, E points along the axis and B circles it. Their cross product points radially inward — energy enters the wire from every direction at once. Integrate that flux over the wire’s lateral surface and you get exactly VI.',
   },
 
-  // ─── Appendix — Sandbox ───
+  // ─── Appendix — Sandboxes ───
   {
     number: 'A.1', slug: 'circuit-builder', chapter: 'ch3',
     title: 'Circuit Builder',
@@ -217,6 +217,33 @@ export const MANIFEST: LabManifestEntry[] = [
     heroLabel: 'Appendix · Lab A.1 — Circuit Builder',
     heroHeadline: 'Drag, drop, <em>solve</em>.',
     deck: 'A schematic editor with a live Modified Nodal Analysis solver. Drop batteries, resistors, capacitors, inductors, diodes, switches, and bulbs on a grid; click pin-to-pin to wire them. The solver runs Kirchhoff\'s laws every frame, integrating reactive components with trapezoidal companion models. Load a preset to see RC charging, an RLC resonator, or a half-wave rectifier.',
+  },
+  {
+    number: 'A.2', slug: 'house-wiring', chapter: 'ch3',
+    title: 'House Wiring Sandbox',
+    formula: 'NEC 220.82 demand + 240.4 ampacity + 314.16 box fill',
+    blurb: 'Wire an entire house from the panel to every receptacle. The sandbox runs a live NEC audit and lets you trip breakers, simulate loads, and find the violations.',
+    heroLabel: 'Appendix · Lab A.2 — House Wiring Sandbox',
+    heroHeadline: 'Wire a whole <em>house</em>.',
+    deck: 'A floorplan editor. Drop receptacles, switches, light fixtures, appliances onto rooms. Pick a panel size. Run NM-B cable from panel to each device. Add breakers (15/20/30/50 A; AFCI/GFCI/dual-function). The sandbox tracks per-circuit demand, voltage drop, box fill, and NEC compliance live. Turn on a kettle and microwave on the same 20 A circuit — watch the breaker trip. Built to test the full practical track (Ch.27–40) in one playground.',
+  },
+  {
+    number: 'A.3', slug: 'motor-drive', chapter: 'ch2',
+    title: 'Motor + Drive Sandbox',
+    formula: 'V_dq = R i_dq + L d(i_dq)/dt + ω L i_dq + ω ψ',
+    blurb: 'Pick a motor, pick a controller, pick a load profile. The sandbox simulates the full electro-mechanical loop: phase currents, torque, speed, efficiency map.',
+    heroLabel: 'Appendix · Lab A.3 — Motor + Drive Sandbox',
+    heroHeadline: 'Drive a <em>motor</em>.',
+    deck: 'A bench for the complete motor + power-electronics chain. Choose a motor (brushed DC, BLDC, induction, PMSM, stepper); pick a controller (full-bridge PWM, 3-phase inverter with FOC, ESC with Hall sensors, micro-stepping driver); pick a load (constant torque, constant power, fan, regenerative). Watch torque/speed curves, phase-current waveforms, efficiency map, and the live control response as you tune the PI gains. Integrates Ch.14 (semiconductors), Ch.16 (filters / op-amps), Ch.20 (motors), Ch.24 (rectifiers + inverters).',
+  },
+  {
+    number: 'A.4', slug: 'ev-bench', chapter: 'ch4',
+    title: 'EV / Battery / Charger Bench',
+    formula: 'P_wheel = P_battery × η_inv × η_motor × η_gearbox',
+    blurb: 'A complete EV powertrain. Battery pack, BMS, onboard charger, EVSE, inverter, traction motor. Pick a drive cycle and watch state-of-charge, temperature, regen, range.',
+    heroLabel: 'Appendix · Lab A.4 — EV Bench',
+    heroHeadline: 'Power an <em>EV</em>.',
+    deck: 'A bench for the full EV chain. Build a battery pack (cells in series and parallel; pick chemistry: NMC, LFP, NCA); add a BMS (cell balancing, current limit, thermal cut-out); add an onboard charger or DC-fast coupler; add an inverter; add a traction motor; pick a regen strategy. Run a drive cycle (city, highway, mountain) and watch SoC, cell temperatures, charging behaviour, and range. Integrates Ch.5 (capacitors), Ch.22 (mutual coupling), Ch.23 (transformers), Ch.24 (inverters), Ch.25–26 (batteries), Ch.31 (big loads), and the new Ch.41 (EV powertrain).',
   },
 ];
 
@@ -253,4 +280,7 @@ export const BASE_LAB_SOURCES: Record<string, SourceKey[]> = {
   'energy-density': ['poynting-1884', 'jackson-1999', 'griffiths-2017'],
   poynting:      ['poynting-1884', 'feynman-II-27', 'davis-kaplan-2011', 'morris-styer-2012', 'jackson-1999'],
   'circuit-builder': ['kirchhoff-1845', 'ho-ruehli-brennan-1975', 'nilsson-riedel-2018', 'horowitz-hill-2015', 'shockley-1949'],
+  'house-wiring':    ['nec-2023', 'nfpa-70e-2024', 'ul-498', 'nema-wd-6', 'grainger-power-systems-2003', 'codata-2018'],
+  'motor-drive':     ['sedra-smith-2014', 'erickson-maksimovic-2020', 'horowitz-hill-2015', 'griffiths-2017', 'codata-2018'],
+  'ev-bench':        ['sae-j1772', 'iec-62196', 'ul-2231', 'erickson-maksimovic-2020', 'sedra-smith-2014', 'codata-2018'],
 };

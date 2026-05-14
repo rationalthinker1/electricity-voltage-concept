@@ -44,6 +44,7 @@ const CHAPTER_MODULES: Record<string, ReturnType<typeof lazy>> = {
   'house-smart-retrofits':    lazy(() => import('@/textbook/Ch38HouseSmartRetrofits')),
   'house-outdoor-wet':        lazy(() => import('@/textbook/Ch39HouseOutdoorWet')),
   'house-surge-grounding':    lazy(() => import('@/textbook/Ch40HouseSurgeGrounding')),
+  'ev-powertrain':            lazy(() => import('@/textbook/Ch41EVPowertrain')),
 };
 
 export const Route = createFileRoute('/textbook/$chapterSlug')({
