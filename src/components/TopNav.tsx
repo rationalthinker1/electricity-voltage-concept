@@ -80,6 +80,13 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
           Tracks
         </Link>
         <Link
+          to="/capstones"
+          className={pathname.startsWith('/capstone') ? 'active' : ''}
+          title="Capstone integration projects"
+        >
+          Capstones
+        </Link>
+        <Link
           to="/me"
           className={pathname === '/me' ? 'active' : ''}
           title="Your reading progress"

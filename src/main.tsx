@@ -8,6 +8,7 @@ import './styles/ui.css';
 import './styles/badges.css';
 import './styles/review.css';
 import './styles/quiz.css';
+import './styles/capstones.css';
 
 const router = createRouter({ routeTree, defaultPreload: 'intent' });
 
