@@ -46,7 +46,13 @@ export type ChapterSlug =
   | 'house-big-loads'
   | 'house-safety'
   | 'house-smart-meter'
-  | 'house-plug-to-chip';
+  | 'house-plug-to-chip'
+  | 'house-replacing-fixtures'
+  | 'house-troubleshooting'
+  | 'house-new-circuit'
+  | 'house-smart-retrofits'
+  | 'house-outdoor-wet'
+  | 'house-surge-grounding';
 
 export type TrackId = 'practical' | 'bench' | 'rigor';
 
@@ -958,6 +964,156 @@ export const CHAPTERS: ChapterEntry[] = [
     timeToRead: 35,
     prereqs: ['rectifiers-and-inverters', 'semiconductors'],
     tracks: ['practical', 'bench'],
+  },
+  {
+    slug: 'house-replacing-fixtures',
+    number: 35,
+    title: 'Replacing outlets, switches, and fixtures',
+    subtitle: 'The most common repair, done so it stays done.',
+    blurb:
+      "The first repair every DIYer does and most do wrong at least once. How to verify dead, undo a backstab without snapping the screw, distinguish a switch-leg from a hot-leg, ground a metal box, replace a 5-15 with a tamper-resistant or GFCI, swap a single-pole switch for a smart dimmer, hang a paddle fan without breaking the ceiling-box weight rating. Every step pinned to the theory you already have plus the NEC clauses that apply.",
+    relatedLabs: ['ohms-law', 'resistance'],
+    sources: [
+      'nec-2023', 'nfpa-70e-2024', 'ul-498', 'nema-wd-6',
+      'lutron-dimmer-app-note', 'iec-60479-2018', 'codata-2018',
+    ],
+    punchline:
+      'A 9-V battery proves a circuit is dead better than your eyes do — and the right way to pigtail a daisy-chained outlet is the difference between a junction and a fire.',
+    objectives: [
+      'Verify a circuit is dead with a non-contact tester plus a two-pole probe.',
+      'Identify a switch leg vs a hot leg from the box wiring alone.',
+      'Replace a standard duplex, a GFCI, a smart switch, and a paddle fan without violating NEC 314 box-fill or 250 grounding.',
+      'Decide when to pigtail vs daisy-chain, and why daisy-chaining loads through a device wears it out.',
+      'Apply NEC 404.2(C) (neutral in every switch box) to a smart-switch retrofit.',
+    ],
+    timeToRead: 35,
+    prereqs: ['house-switches-receptacles'],
+    tracks: ['practical'],
+  },
+  {
+    slug: 'house-troubleshooting',
+    number: 36,
+    title: 'Troubleshooting: the meter and the flowchart',
+    subtitle: 'Why is this outlet dead? A diagnosis tree.',
+    blurb:
+      "A working multimeter is half the toolkit; the diagnostic flowchart is the other half. Non-contact voltage testers, two-pole probes, the DMM, and the clamp meter — what each one actually measures and the trap each one sets. Phantom voltage. The 'is it the breaker, the GFCI upstream, the loose neutral, or the burnt backstab?' branching tree. A whole chapter on not jumping to conclusions.",
+    relatedLabs: ['ohms-law', 'circuit-builder'],
+    sources: [
+      'nec-2023', 'ul-498', 'horowitz-hill-2015',
+      'keysight-34465a-datasheet', 'iec-60479-2018', 'codata-2018',
+    ],
+    punchline:
+      'Half of every electrical bug looks like the breaker. The other half looks like the breaker, but isn\'t.',
+    objectives: [
+      'Choose the right meter (NCVT, two-pole, DMM, clamp) for the question at hand.',
+      'Recognise phantom voltage and explain why a 1 MΩ DMM reads "120 V" on a dead floating wire.',
+      'Apply the four-step diagnostic flow: panel → branch → device → load.',
+      'Distinguish a tripped GFCI / AFCI / thermal-magnetic breaker from a true short.',
+      'Read a clamp meter\'s amp reading and infer the load it represents.',
+    ],
+    timeToRead: 35,
+    prereqs: ['house-switches-receptacles', 'house-panel'],
+    tracks: ['practical'],
+  },
+  {
+    slug: 'house-new-circuit',
+    number: 37,
+    title: 'Adding a new branch circuit',
+    subtitle: 'Panel knockout to wall plate, in twelve steps.',
+    blurb:
+      "How a working electrician adds a 20 A circuit from the panel to a new receptacle: load calculation, breaker choice, wire size, NM-B vs MC vs conduit, drilling studs (NEC 300.4), stapling cable, ganging a new box (NEC 314), making up the connections, landing on the bus. Each step grounded in the theory chapter that proves why the rule exists.",
+    relatedLabs: ['ohms-law', 'resistance', 'joule'],
+    sources: [
+      'nec-2023', 'ul-498', 'nfpa-70e-2024', 'nema-wd-6',
+      'grainger-power-systems-2003', 'codata-2018',
+    ],
+    punchline:
+      'A new circuit is sized backward: pick the device, the device picks the wire, the wire picks the breaker, the breaker picks the panel slot.',
+    objectives: [
+      'Run an NEC 220.82 demand calculation to confirm panel headroom for a new circuit.',
+      'Size conductor and breaker for a known continuous + non-continuous load.',
+      'Choose between NM-B (Romex), MC, or EMT for a given install path.',
+      'Apply NEC 300.4 hole protection and NEC 314.16 box-fill calculations on a 4-conductor 12 AWG box.',
+      'Land the new circuit at the panel without violating bus-bar ratings or AIC.',
+    ],
+    timeToRead: 40,
+    prereqs: ['house-panel', 'house-branch-circuits'],
+    tracks: ['practical'],
+  },
+  {
+    slug: 'house-smart-retrofits',
+    number: 38,
+    title: 'Smart-switch retrofits',
+    subtitle: 'Wi-Fi, Z-Wave, Matter, and the no-neutral problem.',
+    blurb:
+      "The retrofit market has its own ecology. Lutron Caséta (proprietary 434 MHz, works without a neutral via the bleeder). Z-Wave (sub-GHz mesh). Zigbee (2.4 GHz mesh). Matter over Thread (the new convergence). And the structural NEC 404.2(C) requirement of a neutral in every switch box that finally caught up with smart switches. Three-way smart pairs, dimmable-LED phase choice (leading vs trailing), and what 'companion' vs 'add-on' means.",
+    relatedLabs: ['ohms-law', 'inductance'],
+    sources: [
+      'nec-2023', 'lutron-dimmer-app-note', 'ul-498',
+      'nema-wd-6', 'horowitz-hill-2015', 'codata-2018',
+    ],
+    punchline:
+      'A smart switch is a radio plus a triac plus a 30 mW microcontroller — and the most interesting design trade is how it stays powered when the load is off.',
+    objectives: [
+      'Identify a smart-switch family from its radio spec (Caséta / Z-Wave / Zigbee / Matter+Thread).',
+      'Explain how a no-neutral smart switch steals power through the load and why it limits to LED loads above ~25 W.',
+      'Wire a smart 3-way using the manufacturer\'s companion-switch traveler protocol rather than NEC 3-way conventions.',
+      'Match a leading-edge vs trailing-edge dimmer to a given LED driver type.',
+      'Diagnose the most common smart-switch failure modes: ghost light from leakage current, intermittent radio dropout from metal boxes.',
+    ],
+    timeToRead: 35,
+    prereqs: ['house-switches-receptacles', 'house-replacing-fixtures'],
+    tracks: ['practical'],
+  },
+  {
+    slug: 'house-outdoor-wet',
+    number: 39,
+    title: 'Outdoor, wet locations, and EV chargers',
+    subtitle: 'Where the code stops trusting humans entirely.',
+    blurb:
+      "Outdoor receptacles (WR-rated, in-use covers, GFCI), pool and hot-tub bonding (NEC 680 equipotential grid), landscape lighting (low-voltage transformers), and the modern centerpiece: the hardwired Level-2 EV charger on a NEMA 14-50 or dedicated 60 A run. Every wet-location rule is calibrated to keep current out of a human standing in damp soil — and the bonding grid around a pool is one of the most precise applications of equipotential physics you will ever install.",
+    relatedLabs: ['ohms-law', 'joule'],
+    sources: [
+      'nec-2023', 'sae-j1772', 'ul-2231', 'iec-62196',
+      'iec-60479-2018', 'codata-2018',
+    ],
+    punchline:
+      'A pool\'s equipotential bonding grid is Ch.32 made literal: weld every metal surface within 1.5 m of the water to the same potential and the swimmer\'s body cannot become a parallel path.',
+    objectives: [
+      'Identify a WR / TR receptacle and the in-use vs flat-cover rules of NEC 406.9.',
+      'Map a pool equipotential bonding grid per NEC 680.26 and explain the safety physics.',
+      'Choose between hardwired vs NEMA 14-50 plug-in for a Level-2 EV charger; size the circuit and conduit.',
+      'Apply NEC 210.8 GFCI requirements to every receptacle you can think of (kitchen, bath, outdoor, garage, basement, pool, laundry, dishwasher).',
+      'Install landscape-lighting low-voltage transformers without violating NEC 411.',
+    ],
+    timeToRead: 35,
+    prereqs: ['house-big-loads', 'house-safety'],
+    tracks: ['practical'],
+  },
+  {
+    slug: 'house-surge-grounding',
+    number: 40,
+    title: 'Surge protection and the grounding electrode system',
+    subtitle: 'The two physical structures that keep the house alive in a strike.',
+    blurb:
+      "A lightning strike can put 10 kA on the service drop for 20 µs. The grounding electrode system (ground rod, Ufer, water bond), the bonding jumper, and the layered SPD installation (Type 1 ahead of the meter, Type 2 inside the panel, Type 3 at sensitive loads per UL 1449) divert that surge to dirt without letting it cook the wiring or the equipment. Plus generator interlocks, transfer switches, and what 'isolated ground' actually means.",
+    relatedLabs: ['joule', 'ohms-law', 'capacitance'],
+    sources: [
+      'nec-2023', 'ul-1449', 'ieee-c62-41', 'nfpa-70e-2024',
+      'iec-60479-2018', 'codata-2018',
+    ],
+    punchline:
+      'A surge protector does not stop a lightning strike — it gives the strike a much cheaper path to ground than your refrigerator.',
+    objectives: [
+      'Distinguish Type 1, Type 2, and Type 3 SPDs and where each goes (UL 1449).',
+      'Size the grounding electrode conductor per NEC 250.66 from the service-entrance ampacity.',
+      'Explain why two ground rods 6 ft apart beat one ground rod for transient impedance, even if either alone tests at <25 Ω.',
+      'Wire a generator interlock kit and identify the failure mode it prevents (back-feed to the line).',
+      'Read an SPD\'s "let-through voltage" spec and predict the residual at the protected load.',
+    ],
+    timeToRead: 35,
+    prereqs: ['house-safety', 'house-panel'],
+    tracks: ['practical'],
   },
 ];
 

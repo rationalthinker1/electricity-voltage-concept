@@ -756,6 +756,22 @@ export const SOURCES: Record<string, Source> = {
     venue: 'UL Solutions',
     note: 'Listing standard for North-American plugs and receptacles; defines temperature-rise, contact resistance, and dielectric-withstand performance.',
   },
+  'ul-1449': {
+    id: 'ul-1449',
+    title: 'UL 1449: Standard for Surge Protective Devices',
+    author: 'Underwriters Laboratories',
+    year: 2014,
+    venue: 'UL Solutions, 4th ed.',
+    note: 'Listing standard for residential and commercial surge protective devices. Establishes the Type 1 / Type 2 / Type 3 classification by installation point, the nominal discharge current rating, and the voltage-protection-rating (VPR) test methodology.',
+  },
+  'ieee-c62-41': {
+    id: 'ieee-c62-41',
+    title: 'IEEE C62.41.2: Recommended Practice on Characterization of Surges in Low-Voltage AC Power Circuits',
+    author: 'IEEE Surge Protective Devices Committee',
+    year: 2002,
+    venue: 'IEEE Standards Association',
+    note: 'Defines the canonical 1.2/50 µs voltage and 8/20 µs current surge waveforms used to certify SPDs. The "category A/B/C" location framework explains why a panel-level SPD sees a faster, harder transient than a downstream point-of-use SPD.',
+  },
   'ul-2231': {
     id: 'ul-2231',
     title: 'UL 2231: Personnel Protection Systems for Electric Vehicle (EV) Supply Circuits',
