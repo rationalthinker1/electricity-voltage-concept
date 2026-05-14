@@ -38,7 +38,15 @@ export type ChapterSlug =
   | 'transformers'
   | 'rectifiers-and-inverters'
   | 'batteries'
-  | 'modern-batteries';
+  | 'modern-batteries'
+  | 'house-grid-arrives'
+  | 'house-panel'
+  | 'house-branch-circuits'
+  | 'house-switches-receptacles'
+  | 'house-big-loads'
+  | 'house-safety'
+  | 'house-smart-meter'
+  | 'house-plug-to-chip';
 
 export type TrackId = 'practical' | 'bench' | 'rigor';
 
@@ -755,6 +763,201 @@ export const CHAPTERS: ChapterEntry[] = [
     timeToRead: 25,
     prereqs: ['batteries'],
     tracks: ['rigor'],
+  },
+
+  /* ─── Applied track: how your house actually works ─── */
+
+  {
+    slug: 'house-grid-arrives',
+    number: 27,
+    title: 'The grid arrives at your meter',
+    subtitle: 'From substation to service drop to revenue meter.',
+    blurb:
+      "The last mile of the power grid: how three-phase transmission steps down through a distribution transformer on a pole or pad to the single-phase 240 V split that enters most North American homes, why neutral is bonded to ground at the service entrance, and what the rotating disk or LCD on your meter is actually measuring.",
+    relatedLabs: ['ohms-law', 'joule'],
+    sources: [
+      'ansi-c84-1-2020', 'nec-2023', 'ieee-std-3001-2-2017',
+      'grainger-power-systems-2003', 'codata-2018',
+    ],
+    punchline:
+      'The three-phase grid steps down through one final transformer on a pole or pad into a 240 V split-phase service that lands at your meter base — that is the first piece of electricity you actually own.',
+    objectives: [
+      'Trace the path of power from a substation to your meter and name each step.',
+      'Explain why North-American residential service is 240 V split-phase with a centre-tap neutral.',
+      'Describe what a kilowatt-hour meter measures and how it computes accumulated energy.',
+      'Predict the consequences of an open neutral on the service entrance.',
+    ],
+    timeToRead: 25,
+    prereqs: ['voltage-and-current', 'transformers'],
+    tracks: ['practical'],
+  },
+  {
+    slug: 'house-panel',
+    number: 28,
+    title: 'Inside the panel',
+    subtitle: 'Bus bars, breakers, and the geometry of safety.',
+    blurb:
+      'The main service panel is just two bus bars, a neutral bar, a ground bar, and a stack of breakers — yet it encodes every safety rule for the building. Why two hots are 180° out of phase, how a 240 V breaker straddles both bus stabs, what AFCI / GFCI / standard breakers detect, and the bonding/grounding logic that keeps fault current finding the panel rather than you.',
+    relatedLabs: ['ohms-law', 'joule', 'resistance'],
+    sources: [
+      'nec-2023', 'nema-ab-1', 'ul-489', 'square-d-qo-datasheet',
+      'eaton-br-datasheet', 'codata-2018',
+    ],
+    punchline:
+      'Two bus bars, two phases, a neutral bar, a ground bar, and a stack of breakers — the whole geometry of household electrical safety is in there.',
+    objectives: [
+      'Identify every component inside a residential service panel.',
+      'Explain why a 240 V breaker straddles both bus stabs.',
+      'Distinguish the trip mechanisms of standard, GFCI, and AFCI breakers.',
+      'Trace a fault current from a short-circuited appliance back to the panel and out through the ground rod.',
+    ],
+    timeToRead: 30,
+    prereqs: ['house-grid-arrives'],
+    tracks: ['practical'],
+  },
+  {
+    slug: 'house-branch-circuits',
+    number: 29,
+    title: 'Branch circuits',
+    subtitle: 'Wires sized to keep their copper from melting.',
+    blurb:
+      'A branch circuit is a length of wire from a breaker to a string of outlets and back. The breaker amperage, the conductor gauge, the conduit fill, and the wire insulation are all chosen together — pick one wrong and the wire melts before the breaker trips. The full chain: ampacity tables, NM-B/UF-B/THHN, voltage drop over a long run, and why kitchens want their own 20 A circuit.',
+    relatedLabs: ['ohms-law', 'resistance', 'joule'],
+    sources: [
+      'nec-2023', 'nec-2017-aluminum', 'codata-2018',
+      'awg-table-nec', 'nfpa-70e-2024',
+    ],
+    punchline:
+      'A branch circuit is a length of wire that has to stay cool enough not to melt while the breaker stays slow enough not to nuisance-trip.',
+    objectives: [
+      'Pick the correct breaker size and wire gauge for a given load profile.',
+      'Compute voltage drop over a long run and decide when to upsize the wire.',
+      'Distinguish NM-B, UF-B, and THHN by jacket, environment, and ampacity rating.',
+      'Explain why kitchens and bathrooms get dedicated 20 A circuits.',
+    ],
+    timeToRead: 30,
+    prereqs: ['house-panel'],
+    tracks: ['practical'],
+  },
+  {
+    slug: 'house-switches-receptacles',
+    number: 30,
+    title: 'Receptacles, switches, and the three-way puzzle',
+    subtitle: 'How the wire becomes a useable outlet — and why two switches confuse everyone.',
+    blurb:
+      'Inside a wall box: hot, neutral, ground, and the three brass / silver / green screw colours that make sense once you see them. Single-pole switches, three-way pairs, four-way mid-loop switches, dimmers, and smart switches. Plus the NEMA receptacle family — 5-15, 5-20, 6-15, 14-30, 14-50 — and how you can read which one to use from the device that needs power.',
+    relatedLabs: ['ohms-law', 'circuit-builder'],
+    sources: [
+      'nec-2023', 'nema-wd-6', 'ul-498',
+      'lutron-dimmer-app-note', 'codata-2018',
+    ],
+    punchline:
+      'Two three-way switches at the top and bottom of a stairwell look impossible until you see the two travellers between them — then it is just a simple two-state machine.',
+    objectives: [
+      'Wire a single-pole, three-way, and four-way switch correctly given the box and load positions.',
+      'Identify a NEMA receptacle pattern and predict what plug fits it.',
+      'Explain how a leading-edge phase-cut dimmer dims an incandescent bulb without overheating.',
+      'Trace the hot / neutral / ground path through a daisy-chained string of duplex receptacles.',
+    ],
+    timeToRead: 35,
+    prereqs: ['house-branch-circuits'],
+    tracks: ['practical'],
+  },
+  {
+    slug: 'house-big-loads',
+    number: 31,
+    title: 'Big loads — dryers, ranges, EVs, heat pumps',
+    subtitle: 'Why some outlets need both hots and no neutral.',
+    blurb:
+      'A 120 V circuit uses one hot and a neutral; a 240 V circuit uses two hots that are 180° out of phase and (sometimes) no neutral at all. Dryers, electric ranges, heat pumps, hot tubs, and EV chargers all live on this side of the panel. The cause-and-effect of demand-load calculations, why the panel may need an upgrade for an EV, and the difference between a 14-30 (dryer) and a 14-50 (range / level-2 EV).',
+    relatedLabs: ['joule', 'circuit-builder'],
+    sources: [
+      'nec-2023', 'sae-j1772', 'ul-2231',
+      'iec-62196', 'codata-2018', 'grainger-power-systems-2003',
+    ],
+    punchline:
+      'A 240 V appliance taps the panel between two hots that are exactly out of phase — twice the voltage, half the current, no neutral required for the main load.',
+    objectives: [
+      'Compute the demand load for a residential panel given a fixed load profile.',
+      'Explain why a heat-pump dryer can use a 120 V outlet while a resistive dryer cannot.',
+      'Distinguish SAE J1772 (level 1 / 2 AC) from CCS (level 3 DC fast) EV charging.',
+      'Decide whether a panel can host a new 14-50 EV outlet or needs a service upgrade.',
+    ],
+    timeToRead: 35,
+    prereqs: ['house-panel', 'house-branch-circuits'],
+    tracks: ['practical'],
+  },
+  {
+    slug: 'house-safety',
+    number: 32,
+    title: 'Safety and what kills you',
+    subtitle: 'Current, not voltage. And the milliseconds that matter.',
+    blurb:
+      "What current through a human body actually does, why GFCIs trip at 5 mA in 25 ms, what an arc-fault circuit interrupter listens for, why a bird on a single high-voltage line is fine but a squirrel that bridges two lines is not, and how PPE arc-flash ratings work. The Dalziel current-through-heart curves are the real safety standard; voltage is a proxy.",
+    relatedLabs: ['ohms-law', 'joule'],
+    sources: [
+      'iec-60479-2018', 'dalziel-1956', 'nfpa-70e-2024',
+      'nec-2023', 'osha-1910-269', 'codata-2018',
+    ],
+    punchline:
+      'Voltage gets the headlines; current through the heart is what actually kills you. 100 mA at 60 Hz for one second is the canonical lethal dose.',
+    objectives: [
+      'Read the Dalziel current-vs-time threshold chart and locate the let-go, ventricular-fibrillation, and tissue-burn regions.',
+      'Explain the trip mechanism of a GFCI and the 5 mA / 25 ms standard.',
+      'Distinguish series-arc faults (AFCI domain) from parallel-arc faults.',
+      'Decide what PPE arc-flash category is required for a given fault energy.',
+    ],
+    timeToRead: 30,
+    prereqs: ['house-panel', 'house-branch-circuits'],
+    tracks: ['practical'],
+  },
+  {
+    slug: 'house-smart-meter',
+    number: 33,
+    title: 'The smart meter and the bill',
+    subtitle: 'What is measured, what is billed, and how net metering works.',
+    blurb:
+      'Modern meters measure real energy (kWh), apparent energy (kVAh), reactive energy (kVARh), and demand peaks (kW max over a 15-min window). Time-of-use rates charge different prices at different hours. Net metering credits your solar exports at the prevailing rate or a fixed buyback. Power-factor penalties hit industrial customers but rarely residential ones.',
+    relatedLabs: ['joule'],
+    sources: [
+      'ansi-c12-1-2014', 'ansi-c12-20-2015', 'ieee-1547-2018',
+      'codata-2018', 'grainger-power-systems-2003',
+    ],
+    punchline:
+      'Your meter measures four different "energies" at once; only one of them shows up on the bill — and which one depends on whether you are a house or a factory.',
+    objectives: [
+      'Distinguish real, reactive, and apparent power from a meter readout.',
+      'Read a time-of-use schedule and predict which hours are most expensive.',
+      'Explain how a bidirectional meter handles solar export and the difference between net metering and feed-in tariffs.',
+      'Decide whether a residential customer pays for power-factor correction (almost never).',
+    ],
+    timeToRead: 25,
+    prereqs: ['house-grid-arrives'],
+    tracks: ['practical'],
+  },
+  {
+    slug: 'house-plug-to-chip',
+    number: 34,
+    title: 'From plug to chip',
+    subtitle: 'The seven conversions that get 1 V to your CPU.',
+    blurb:
+      "Follow the power inside your laptop charger and laptop. Wall AC → C13 → input filter → bridge rectifier → bulk cap → flyback transformer at ~100 kHz → secondary rectifier → 20 V DC → cable → power-delivery negotiation → buck converter to 5 V/3.3 V/1.8 V/1.1 V → on-die LDOs to 0.8 V at the CPU rail. Every chapter of this textbook converges on the inside of one cable.",
+    relatedLabs: ['joule', 'capacitance', 'inductance', 'circuit-builder'],
+    sources: [
+      'erickson-maksimovic-2020', 'horowitz-hill-2015',
+      'usb-pd-r3', 'sedra-smith-2014', 'codata-2018',
+    ],
+    punchline:
+      'Your laptop runs at less than 1 V; the wall delivers 120 V AC. Seven separate power conversions sit between them — and each one is a chapter of this textbook.',
+    objectives: [
+      'Name and order the seven conversion stages from wall AC to CPU rail.',
+      'Identify which stage causes which efficiency loss in a typical 90 W laptop charger.',
+      'Explain how USB-PD negotiates a voltage between source and sink in milliseconds.',
+      'Predict what happens to a CPU when the on-die LDO regulating its core voltage fails.',
+    ],
+    timeToRead: 35,
+    prereqs: ['rectifiers-and-inverters', 'semiconductors'],
+    tracks: ['practical', 'bench'],
   },
 ];
 

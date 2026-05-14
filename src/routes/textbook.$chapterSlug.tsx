@@ -30,6 +30,14 @@ const CHAPTER_MODULES: Record<string, ReturnType<typeof lazy>> = {
   'rectifiers-and-inverters': lazy(() => import('@/textbook/Ch24RectifiersAndInverters')),
   'batteries':             lazy(() => import('@/textbook/Ch25Batteries')),
   'modern-batteries':      lazy(() => import('@/textbook/Ch26ModernBatteries')),
+  'house-grid-arrives':       lazy(() => import('@/textbook/Ch27HouseGridArrives')),
+  'house-panel':              lazy(() => import('@/textbook/Ch28HousePanel')),
+  'house-branch-circuits':    lazy(() => import('@/textbook/Ch29HouseBranchCircuits')),
+  'house-switches-receptacles': lazy(() => import('@/textbook/Ch30HouseSwitchesReceptacles')),
+  'house-big-loads':          lazy(() => import('@/textbook/Ch31HouseBigLoads')),
+  'house-safety':             lazy(() => import('@/textbook/Ch32HouseSafety')),
+  'house-smart-meter':        lazy(() => import('@/textbook/Ch33HouseSmartMeter')),
+  'house-plug-to-chip':       lazy(() => import('@/textbook/Ch34HousePlugToChip')),
 };
 
 export const Route = createFileRoute('/textbook/$chapterSlug')({
