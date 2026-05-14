@@ -19,6 +19,7 @@ import { Formula } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { AreaVsResistanceDemo } from './demos/AreaVsResistance';
+import { DriftInCopper3DDemo } from './demos/DriftInCopper3D';
 import { JouleHeatingDemo } from './demos/JouleHeating';
 import { LengthVsResistanceDemo } from './demos/LengthVsResistance';
 import { MaterialPickerDemo } from './demos/MaterialPicker';
@@ -175,6 +176,18 @@ export default function Ch3ResistanceAndPower() {
         a lattice ion, and that gained kinetic energy is dumped into the lattice as a vibrational mode. The lattice warms.
         The electron starts over<Cite id="drude-1900" in={SOURCES} /><Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
+
+      <DriftInCopper3DDemo />
+
+      <p>
+        The 3D view above puts numbers on the picture. The cyan electrons inside the copper bounce at thermal
+        speeds of order <strong>10⁵ m/s</strong> — every direction, mostly cancelling — while the average <em>drift</em>
+        toward +x is of order <strong>10⁻⁴ m/s</strong> at a few amps. The ratio v<sub>th</sub>/v<sub>d</sub> is around
+        <strong> 10¹⁰</strong>: a hurricane of random motion with the faintest steady breeze threaded through it. Yet
+        that breeze is the entire macroscopic current, and the energy each electron loses to the lattice on every
+        collision is the entire macroscopic heat<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
+      </p>
+
       <p>
         Per unit volume, the rate of energy transfer from field to lattice is the dot product <strong>J·E</strong>:
       </p>

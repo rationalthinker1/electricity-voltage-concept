@@ -19,6 +19,7 @@ import { CFromMaxwellDemo } from './demos/CFromMaxwell';
 import { FaradayLawDemo } from './demos/FaradayLaw';
 import { GaussBLawDemo } from './demos/GaussBLaw';
 import { GaussELawDemo } from './demos/GaussELaw';
+import { MaxwellEquations3DDemo } from './demos/MaxwellEquations3D';
 import { getChapter } from './data/chapters';
 
 export default function Ch10Maxwell() {
@@ -74,6 +75,18 @@ export default function Ch10Maxwell() {
         <Term def={<><strong>curl</strong> — a vector measure of a field's local circulation. ∇×F is nonzero where field lines loop around an axis. Stokes' theorem ties ∮F·dℓ = ∫(∇×F)·dA.</>}>curl</Term> laws (what flows <em>around</em> a closed loop).
         The pattern is too clean to be accidental.
       </p>
+
+      <p>
+        Before we treat each equation on its own, it's worth seeing all four sitting in the same region of space at once.
+        The demo below is a single rotating cubical box — the <em>same</em> box for all four laws — with four toggleable
+        facets: a point charge inside (Gauss for E), a bar magnet inside (Gauss for B, with every field line closing on
+        itself), a wire loop with a ramping flux through it (Faraday), and a charging capacitor (Ampère–Maxwell, with the
+        displacement-current term filling in for the missing conduction current in the gap)<Cite id="maxwell-1865" in={SOURCES} />.
+        Drag to orbit; pick a mode; watch the integral on each side of the active equation match numerically as you change
+        the source<Cite id="jackson-1999" in={SOURCES} />.
+      </p>
+
+      <MaxwellEquations3DDemo />
 
       <h2>Gauss's law for <em>E</em></h2>
 

@@ -26,6 +26,7 @@ import { AutotransformerDemo } from './demos/Autotransformer';
 import { TransformerDesignerDemo } from './demos/TransformerDesigner';
 import { InRushCurrentDemo } from './demos/InRushCurrent';
 import { HighFrequencyTransformerDemo } from './demos/HighFrequencyTransformer';
+import { TransformerFlux3DDemo } from './demos/TransformerFlux3D';
 import { getChapter } from './data/chapters';
 
 export default function Ch18Transformers() {
@@ -456,6 +457,9 @@ export default function Ch18Transformers() {
         well-built distribution unit) and limits the rate at which fault current can flow through the
         transformer — which is actually useful as a short-circuit protection mechanism on the grid.
       </p>
+
+      <TransformerFlux3DDemo />
+
       <p>
         Finally there is the <em>magnetizing current</em> — the small current the primary must draw, even at
         no-load, to establish the core flux against the core's finite permeability. In a power-grid transformer

@@ -24,6 +24,7 @@ import { BuildACapacitorDemo } from './demos/BuildACapacitor';
 import { ChargingCurveDemo } from './demos/ChargingCurve';
 import { EnergyInTheGapDemo } from './demos/EnergyInTheGap';
 import { LeydenJarReplayDemo } from './demos/LeydenJarReplay';
+import { ParallelPlate3DDemo } from './demos/ParallelPlate3D';
 import { PlateGeometryDemo } from './demos/PlateGeometry';
 import { WhyHarderEachChargeDemo } from './demos/WhyHarderEachCharge';
 import { getChapter } from './data/chapters';
@@ -122,6 +123,20 @@ export default function Ch5Capacitors() {
       <Formula>C = ε₀ ε<sub>r</sub> A / d</Formula>
 
       <PlateGeometryDemo />
+
+      <ParallelPlate3DDemo />
+
+      <p>
+        The 3D view above makes the underlying picture geometrical. The surface-charge density
+        <strong> σ = Q/A</strong> sits on the inner faces of the two plates as equal and opposite sheets;
+        between them, the field is the same everywhere — uniform in magnitude and direction — with
+        <strong> E = σ/ε₀ = V/d</strong>. Toggle the Gauss pillbox to see the operational statement of
+        Gauss's law: a closed cylinder piercing one plate has its top cap outside the conductor
+        (where E = 0) and its bottom cap in the field-filled gap. The only nonzero contribution to
+        <strong> ∮ D · dA</strong> comes from that bottom cap, and it equals exactly the charge
+        <strong> σA</strong> on the slice of plate the pillbox encloses<Cite id="jackson-1999" in={SOURCES} />.
+        Re-arrange and you get back <InlineMath>C = ε₀ A / d</InlineMath>.
+      </p>
 
       <TryIt
         tag="Try 5.1"

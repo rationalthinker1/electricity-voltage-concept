@@ -32,6 +32,7 @@ import { FiberOpticDemo } from './demos/FiberOptic';
 import { LaserCavityDemo } from './demos/LaserCavity';
 import { LensFocusingDemo } from './demos/LensFocusing';
 import { PolarizationMalusLawDemo } from './demos/PolarizationMalusLaw';
+import { SnellLaw3DDemo } from './demos/SnellLaw3D';
 import { SnellsLawDemo } from './demos/SnellsLaw';
 import { ThinFilmDemo } from './demos/ThinFilm';
 import { getChapter } from './data/chapters';
@@ -120,6 +121,20 @@ export default function Ch14Optics() {
       </p>
 
       <SnellsLawDemo />
+
+      <p>
+        The 2D picture is the standard textbook diagram, but it hides a structural
+        fact worth seeing: all four rays — incident, reflected, refracted, and the
+        surface normal — lie in a single plane, called the <em>plane of incidence</em>.
+        That follows directly from matching the tangential component of <strong>k</strong>{' '}
+        across the boundary: the in-plane wavevector is preserved, so any out-of-plane
+        component the reflected or refracted ray might acquire is forced to be zero
+        <Cite id="griffiths-2017" in={SOURCES} />. Drag the next demo around to see
+        the planarity in 3D, then tilt the camera until you're looking edge-on at the
+        plane and the canonical 2D refraction triangle pops back out.
+      </p>
+
+      <SnellLaw3DDemo />
 
       <TryIt
         tag="Try 14.1"

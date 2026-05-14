@@ -20,6 +20,7 @@ import { BackEMFInRunningMotorDemo } from './demos/BackEMFInRunningMotor';
 import { BLDCCommutationDemo } from './demos/BLDCCommutation';
 import { FieldOrientedControlDemo } from './demos/FieldOrientedControl';
 import { InductionMotorSlipDemo } from './demos/InductionMotorSlip';
+import { RotatingMagField3DDemo } from './demos/RotatingMagField3D';
 import { SynchronousMotorDemo } from './demos/SynchronousMotor';
 import { StepperMotorDemo } from './demos/StepperMotor';
 import { TorqueSpeedCurveDemo } from './demos/TorqueSpeedCurve';
@@ -248,6 +249,20 @@ export default function Ch16Motors() {
         time-varying flux through every bar of its cage. By Faraday's law each bar develops an EMF; because the cage
         is shorted, large currents flow in the bars; those currents in the bars sit inside the stator field; the bars
         feel <em>F = IL × B</em>; and the rotor begins to spin in the same direction as the field<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
+      </p>
+
+      <RotatingMagField3DDemo />
+
+      <p>
+        It is worth pausing on the algebraic miracle that makes the three-phase trick work. Each coil's
+        contribution to the field at the bore centre is its instantaneous current times a unit vector pointing
+        along its own radial axis. Sum the three contributions for the standard sequence
+        <em> I<sub>x</sub>(t) = I<sub>0</sub> cos(ωt + φ<sub>x</sub>)</em> with φ = 0, −120°, −240°, and the three
+        time-varying scalars combine with the three fixed spatial vectors to give a single vector
+        <em> B(t)</em> of constant magnitude (3/2) <em>B<sub>0</sub></em> rotating about the bore axis at
+        angular speed ω. Constant magnitude — no pulsation. Pure rotation. That is the property
+        Tesla discovered in 1888 and the reason three is the smallest phase count that builds a usable
+        induction or synchronous machine<Cite id="tesla-1888" in={SOURCES} />.
       </p>
 
       <InductionMotorSlipDemo />

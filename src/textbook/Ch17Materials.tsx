@@ -23,6 +23,7 @@ import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { getChapter } from './data/chapters';
 import { DielectricBetweenPlatesDemo } from './demos/DielectricBetweenPlates';
+import { DipoleAlignment3DDemo } from './demos/DipoleAlignment3D';
 import { DipoleInFieldDemo } from './demos/DipoleInField';
 import { FerromagnetDemo } from './demos/Ferromagnet';
 import { ImageChargeField3DDemo } from './demos/ImageChargeField3D';
@@ -120,6 +121,22 @@ export default function Ch13Materials() {
         Clausius–Mossotti relation links χ<sub>e</sub> to the molecular polarizability α and the number
         density N — derived independently by Mossotti in 1846 and Clausius in 1850
         <Cite id="clausius-1850" in={SOURCES} />.
+      </p>
+
+      <DipoleAlignment3DDemo />
+
+      <p>
+        Drag the block to rotate it. At <strong>E<sub>ext</sub> = 0</strong> the dipoles tumble
+        isotropically — the mean of <em>cos θ</em> over the population is zero, and so is the bulk{' '}
+        <strong>P</strong>. Crank up the field and the deterministic torque begins to outrun the thermal
+        kick; the equilibrium alignment is the Langevin function <em>L(pE/kT) = coth(pE/kT) − kT/pE</em>,
+        linear at small drive and saturating to 1 at large drive
+        <Cite id="langevin-1905" in={SOURCES} /><Cite id="griffiths-2017" in={SOURCES} />. Raise the
+        temperature and the same field buys you less alignment — the steady-state ⟨cos θ⟩ scales as
+        1/T at small fields, which is Curie's law for dielectrics<Cite id="debye-1929" in={SOURCES} />.
+        The dipole tails pile up on the left face and the heads on the right: those are the bound
+        surface charges, and their net field <em>opposes</em> the applied one. That cancellation is
+        where ε<sub>r</sub> comes from — read it directly off the readout as the alignment grows.
       </p>
 
       <h2>Bound charge, free charge, and the dielectric in a capacitor</h2>

@@ -66,6 +66,14 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
           Labs
         </Link>
         <Link
+          to="/labs/$slug"
+          params={{ slug: 'circuit-builder' }}
+          className={pathname === '/labs/circuit-builder' ? 'active' : ''}
+          title="Free-form circuit-builder sandbox"
+        >
+          Build
+        </Link>
+        <Link
           to="/map"
           className={pathname === '/map' ? 'active' : ''}
           title="Course map · prerequisite DAG"

@@ -19,6 +19,7 @@ import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { BiotSavartWire3DDemo } from './demos/BiotSavartWire3D';
 import { CyclotronDemo } from './demos/Cyclotron';
 import { SolenoidDemo } from './demos/Solenoid';
 import { TwoParallelWiresDemo } from './demos/TwoParallelWires';
@@ -88,6 +89,8 @@ export default function Ch6Magnetism() {
       </p>
 
       <WireBFieldDemo />
+
+      <BiotSavartWire3DDemo />
 
       <TryIt
         tag="Try 6.1"
