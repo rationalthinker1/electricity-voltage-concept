@@ -63,14 +63,14 @@ export function InRushCurrentDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { thetaDeg }; }, [thetaDeg]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     function draw() {
       const { thetaDeg } = stateRef.current;
       const theta = (thetaDeg * Math.PI) / 180;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 16, padT = 18, padB = 28;
@@ -81,7 +81,7 @@ export function InRushCurrentDemo({ figure }: Props) {
       const midB = padT + subH + 8;
       const botI = padT + 2 * (subH + 8);
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(padL, topV, plotW, subH);
       ctx.strokeRect(padL, midB, plotW, subH);
       ctx.strokeRect(padL, botI, plotW, subH);
@@ -156,7 +156,7 @@ export function InRushCurrentDemo({ figure }: Props) {
       ctx.stroke();
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       ctx.fillText('+V', padL - 4, yV(1));

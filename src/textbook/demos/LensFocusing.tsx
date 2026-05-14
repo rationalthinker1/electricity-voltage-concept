@@ -16,6 +16,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -42,7 +43,7 @@ export function LensFocusingDemo({ figure }: Props) {
       const { fAbs, convex, dObj } = stateRef.current;
       const f = convex ? fAbs : -fAbs;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Geometry: lens at x = lensX (centre); pixel scale: pxPerCm
@@ -52,13 +53,13 @@ export function LensFocusingDemo({ figure }: Props) {
       const pxPerCm = Math.min((W - 60) / 40, (H - 60) / 14);
 
       // Optical axis
-      ctx.strokeStyle = 'rgba(255,255,255,0.20)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(20, axisY); ctx.lineTo(W - 20, axisY); ctx.stroke();
 
       // Lens shape — a vertical line with tick marks at top/bottom; convex looks like ()
       const lensHalfH = 60;
-      ctx.strokeStyle = 'rgba(108,197,194,0.95)';
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 2;
       ctx.beginPath();
       if (convex) {
@@ -81,14 +82,14 @@ export function LensFocusingDemo({ figure }: Props) {
 
       // Focal points on each side
       const fpx = pxPerCm * fAbs;
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       function focalDot(x: number) {
         ctx.beginPath(); ctx.arc(x, axisY, 3.5, 0, Math.PI * 2); ctx.fill();
       }
       focalDot(lensX + fpx);
       focalDot(lensX - fpx);
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.textAlign = 'center';
       ctx.fillText('F', lensX + fpx, axisY + 16);
       ctx.fillText('F', lensX - fpx, axisY + 16);
@@ -120,13 +121,13 @@ export function LensFocusingDemo({ figure }: Props) {
         const yEnd = yIn + dyRay * t;
 
         if (convex) {
-          ctx.strokeStyle = 'rgba(255,107,42,0.85)';
+          ctx.strokeStyle = getCanvasColors().accent;
           ctx.beginPath();
           ctx.moveTo(lensX, yIn); ctx.lineTo(xEnd, yEnd);
           ctx.stroke();
         } else {
           // Concave: outgoing ray diverges. Solid forward ray + dashed virtual extension back to focal point on near side.
-          ctx.strokeStyle = 'rgba(255,107,42,0.85)';
+          ctx.strokeStyle = getCanvasColors().accent;
           ctx.beginPath();
           // direction: from (lensX, yIn) AWAY from (lensX - fpx, axisY)
           const dvx = lensX - (lensX - fpx);
@@ -154,8 +155,8 @@ export function LensFocusingDemo({ figure }: Props) {
       const objHpx = 28;     // object arrow height
       const objX = lensX - pxPerCm * dObj;
       // Object arrow (red, upward)
-      ctx.strokeStyle = '#ff3b6e';
-      ctx.fillStyle = '#ff3b6e';
+      ctx.strokeStyle = getCanvasColors().pink;
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(objX, axisY); ctx.lineTo(objX, axisY - objHpx); ctx.stroke();
@@ -172,8 +173,8 @@ export function LensFocusingDemo({ figure }: Props) {
       if (Number.isFinite(di) && Math.abs(di) * pxPerCm < W && Math.abs(m) < 30) {
         const imgX = lensX + pxPerCm * di;
         const imgHpx = objHpx * m;     // signed; negative m → inverted (downward)
-        ctx.strokeStyle = '#5baef8';
-        ctx.fillStyle = '#5baef8';
+        ctx.strokeStyle = getCanvasColors().blue;
+        ctx.fillStyle = getCanvasColors().blue;
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(imgX, axisY); ctx.lineTo(imgX, axisY - imgHpx); ctx.stroke();
@@ -194,7 +195,7 @@ export function LensFocusingDemo({ figure }: Props) {
         const tipY0 = axisY - objHpx;
 
         // (a) horizontal from tip to lens
-        ctx.strokeStyle = 'rgba(108,197,194,0.55)';
+        ctx.strokeStyle = getCanvasColors().teal;
         ctx.beginPath(); ctx.moveTo(tipX, tipY0); ctx.lineTo(lensX, tipY0); ctx.stroke();
         // then from lens toward far focal point and beyond to image-tip x
         const farFx = lensX + (convex ? fpx : -fpx);
@@ -207,7 +208,7 @@ export function LensFocusingDemo({ figure }: Props) {
           ctx.beginPath(); ctx.moveTo(lensX, tipY0); ctx.lineTo(imgX, yA); ctx.stroke();
         }
         // (b) ray through centre, undeviated
-        ctx.strokeStyle = 'rgba(108,197,194,0.55)';
+        ctx.strokeStyle = getCanvasColors().teal;
         ctx.beginPath();
         ctx.moveTo(tipX, tipY0);
         // extend through (lensX, axisY) to imgX
@@ -219,7 +220,7 @@ export function LensFocusingDemo({ figure }: Props) {
 
       // Labels
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'left';
       ctx.fillText(`f = ${convex ? '+' : '−'}${fAbs.toFixed(1)} cm`, 12, 18);
       ctx.fillText(`d₀ = ${dObj.toFixed(1)} cm`, 12, 34);

@@ -22,8 +22,8 @@ export function InverseSquareDemo({ figure }: Props) {
   const F = (PHYS.k * q * q) / (r * r);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    ctx.fillStyle = '#0d0d10';
+    const { ctx, w, h, colors } = info;
+    ctx.fillStyle = colors.bg;
     ctx.fillRect(0, 0, w, h);
 
     // Plot region
@@ -82,7 +82,7 @@ export function InverseSquareDemo({ figure }: Props) {
     ctx.moveTo(padL, my); ctx.lineTo(mx, my);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = '#ff6b2a';
+    ctx.fillStyle = colors.accent;
     ctx.beginPath(); ctx.arc(mx, my, 5, 0, Math.PI * 2); ctx.fill();
 
     // Slope label

@@ -18,6 +18,7 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -55,7 +56,7 @@ export function VoltageDividerDemo({ figure }: Props) {
     function draw() {
       const { Vin, R1, R2, Vout, loaded } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       // Layout: schematic on the left half, bar chart on the right half
@@ -222,11 +223,11 @@ function drawDividerOverlay(
 
   // Per-frame value labels.
   ctx.font = 'bold 10px "JetBrains Mono", monospace';
-  ctx.fillStyle = 'rgba(255,107,42,0.9)';
+  ctx.fillStyle = getCanvasColors().accent;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
   ctx.fillText(`V_in = ${Vin.toFixed(1)} V`, xSrc - 4, yTop - 12);
-  ctx.fillStyle = 'rgba(255,107,42,0.95)';
+  ctx.fillStyle = getCanvasColors().accent;
   ctx.fillText(`V_out = ${Vout.toFixed(3)} V`, xLoad + 8, yTap);
 
   ctx.restore();
@@ -251,7 +252,7 @@ function drawBars(
   const yOf = (v: number) => padT + plotH - (v / vmax) * plotH;
 
   // Frame
-  ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+  ctx.strokeStyle = getCanvasColors().border;
   ctx.strokeRect(padL, padT, plotW, plotH);
 
   // Tick: V_in line
@@ -270,31 +271,31 @@ function drawBars(
   const xB = padL + plotW * 0.65 - barW / 2;
 
   // R1 drop
-  ctx.fillStyle = 'rgba(255,59,110,0.7)';
+  ctx.fillStyle = getCanvasColors().pink;
   const r1Top = yOf(Vin);
   const r1Bot = yOf(Vout);
   ctx.fillRect(xA, r1Top, barW, r1Bot - r1Top);
   // R2 / V_out
-  ctx.fillStyle = 'rgba(108,197,194,0.85)';
+  ctx.fillStyle = getCanvasColors().teal;
   const r2Top = yOf(Vout);
   const r2Bot = yOf(0);
   ctx.fillRect(xB, r2Top, barW, r2Bot - r2Top);
 
   // Bar labels
-  ctx.fillStyle = 'rgba(236,235,229,0.9)';
+  ctx.fillStyle = getCanvasColors().text;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
   ctx.fillText('V across R₁', xA + barW / 2, padT + plotH + 4);
   ctx.fillText('V_out (across R₂)', xB + barW / 2, padT + plotH + 4);
-  ctx.fillStyle = 'rgba(255,59,110,0.95)';
+  ctx.fillStyle = getCanvasColors().pink;
   ctx.textBaseline = 'bottom';
   ctx.fillText(`${VR1.toFixed(2)} V`, xA + barW / 2, r1Top - 2);
-  ctx.fillStyle = 'rgba(108,197,194,0.95)';
+  ctx.fillStyle = getCanvasColors().teal;
   ctx.fillText(`${Vout.toFixed(3)} V`, xB + barW / 2, r2Top - 2);
 
   // Title
-  ctx.fillStyle = 'rgba(160,158,149,0.85)';
+  ctx.fillStyle = getCanvasColors().textDim;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';

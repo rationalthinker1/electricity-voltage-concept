@@ -57,13 +57,13 @@ export function BoostConverterDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = computed; }, [computed]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     function draw() {
       const { Vout, Iout, Tsw, tOn, dIL_pp } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 20, padT = 18, padB = 28;
@@ -73,7 +73,7 @@ export function BoostConverterDemo({ figure }: Props) {
       const top = padT;
       const mid = padT + subH + 12;
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(padL, top, plotW, subH);
       ctx.strokeRect(padL, mid, plotW, subH);
 

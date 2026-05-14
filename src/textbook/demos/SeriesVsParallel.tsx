@@ -12,6 +12,7 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -40,7 +41,7 @@ export function SeriesVsParallelDemo({ figure }: Props) {
       st.t += 0.016;
       const { R1, R2, series, t } = st;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       const cx = w / 2;
@@ -65,7 +66,7 @@ export function SeriesVsParallelDemo({ figure }: Props) {
       ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
 
       // Per-frame overlay: animated current dots + helper text + battery '−' glyph.
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = getCanvasColors().blue;
       ctx.font = 'bold 12px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText('−', batX - 18, cy + 18);
@@ -76,7 +77,7 @@ export function SeriesVsParallelDemo({ figure }: Props) {
           { x: batX, y: yTop }, { x: outX, y: yTop },
           { x: outX, y: yBot }, { x: batX, y: yBot },
         ], 1.0);
-        ctx.fillStyle = 'rgba(160,158,149,0.85)';
+        ctx.fillStyle = getCanvasColors().textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText('same current through both — voltages add', cx, h - 14);
@@ -106,7 +107,7 @@ export function SeriesVsParallelDemo({ figure }: Props) {
           { x: nodeL_x, y: branchY2 }, { x: nodeR_x, y: branchY2 },
         ], I2);
 
-        ctx.fillStyle = 'rgba(160,158,149,0.85)';
+        ctx.fillStyle = getCanvasColors().textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText('same voltage across both — currents add', cx, h - 14);

@@ -12,6 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -48,7 +49,7 @@ export function ThinFilmDemo({ figure }: Props) {
     let raf = 0;
     function draw() {
       const { thickNm, n2, n1, n3 } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Spectrum strip at the top showing R(λ) for the film
@@ -78,11 +79,11 @@ export function ThinFilmDemo({ figure }: Props) {
         ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
         ctx.fillRect(stripLeft + x, stripTop, 1, stripH);
       }
-      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.strokeRect(stripLeft, stripTop, stripW, stripH);
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'right';
       ctx.fillText('R(λ)', stripLeft - 6, stripTop + 18);
       ctx.textAlign = 'left';
@@ -103,14 +104,14 @@ export function ThinFilmDemo({ figure }: Props) {
       ctx.fillRect(stripLeft, sectionY + 40 + filmPxH, stripW, sectionH - 40 - filmPxH);
 
       // Boundary lines
-      ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+      ctx.strokeStyle = getCanvasColors().textDim;
       ctx.beginPath();
       ctx.moveTo(stripLeft, sectionY + 40); ctx.lineTo(stripRight, sectionY + 40);
       ctx.moveTo(stripLeft, sectionY + 40 + filmPxH); ctx.lineTo(stripRight, sectionY + 40 + filmPxH);
       ctx.stroke();
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.9)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'left';
       ctx.fillText(`air · n=${n1.toFixed(2)}`, stripLeft + 6, sectionY + 18);
       ctx.fillText(`film · n=${n2.toFixed(2)}, t=${thickNm.toFixed(0)} nm`,
@@ -126,7 +127,7 @@ export function ThinFilmDemo({ figure }: Props) {
       ctx.lineTo(rx0, sectionY + 40);
       ctx.stroke();
       // First reflection at top boundary
-      ctx.strokeStyle = 'rgba(255,107,42,0.9)';
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.beginPath();
       ctx.moveTo(rx0, sectionY + 40);
       ctx.lineTo(rx0 + 18, sectionY + 8);
@@ -138,7 +139,7 @@ export function ThinFilmDemo({ figure }: Props) {
       ctx.lineTo(rx0 + 8, sectionY + 40 + filmPxH);
       ctx.stroke();
       // Second reflection back up
-      ctx.strokeStyle = 'rgba(108,197,194,0.9)';
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.beginPath();
       ctx.moveTo(rx0 + 8, sectionY + 40 + filmPxH);
       ctx.lineTo(rx0 + 26, sectionY + 8);

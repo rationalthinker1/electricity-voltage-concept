@@ -28,6 +28,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   attachOrbit, depthSortIndices, project, v3,
   type OrbitCamera, type Vec3,
@@ -170,7 +171,7 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
     }
 
     function draw() {
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       const s = stateRef.current;
@@ -264,17 +265,17 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
       // Annotations
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to rotate', 12, 12);
       ctx.fillStyle = 'rgba(160,158,149,0.6)';
       ctx.fillText(`inner radius a = ${R_INNER.toFixed(2)}   outer b = ${R_OUTER.toFixed(2)}`, 12, 28);
 
       ctx.textAlign = 'right';
-      ctx.fillStyle = 'rgba(255,59,110,0.85)';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.fillText('E  pink · radial', W - 12, 12);
-      ctx.fillStyle = 'rgba(108,197,194,0.85)';
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.fillText('B  teal · circumferential', W - 12, 28);
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText('S = E × B / μ₀ · axial', W - 12, 44);
 
       raf = requestAnimationFrame(draw);

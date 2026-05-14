@@ -22,6 +22,7 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -109,7 +110,7 @@ export function BuildACapacitorDemo({ figure }: Props) {
       const s = stateRef.current;
       phase += 0.02;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Layout: capacitor on the left ~62%, inset graph + work bar on right.
@@ -164,13 +165,13 @@ export function BuildACapacitorDemo({ figure }: Props) {
           const cycle = (phase * 60 + i * 9) % usable;
           const y1 = (dirDown ? topY + plateThick + 6 + cycle : botY - plateThick - 6 - cycle);
           const y0 = dirDown ? y1 - arrLen : y1 + arrLen;
-          ctx.strokeStyle = 'rgba(255,59,110,0.85)';
+          ctx.strokeStyle = getCanvasColors().pink;
           ctx.lineWidth = 1.3;
           ctx.beginPath();
           ctx.moveTo(fx, y0);
           ctx.lineTo(fx, y1);
           ctx.stroke();
-          ctx.fillStyle = 'rgba(255,59,110,0.95)';
+          ctx.fillStyle = getCanvasColors().pink;
           ctx.beginPath();
           ctx.moveTo(fx, y1);
           ctx.lineTo(fx - 3.5, y1 + (dirDown ? -6 : 6));
@@ -189,7 +190,7 @@ export function BuildACapacitorDemo({ figure }: Props) {
       drawChargeDots(ctx, xL, botY + plateThick + 9, plateW, drawDotsCount, symBot, colBot);
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -199,7 +200,7 @@ export function BuildACapacitorDemo({ figure }: Props) {
       ctx.restore();
 
       // Divider
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = getCanvasColors().border;
       ctx.beginPath(); ctx.moveTo(splitX, 0); ctx.lineTo(splitX, H); ctx.stroke();
 
       // ── RIGHT: inset graph (top half) + work-bar (bottom)
@@ -212,12 +213,12 @@ export function BuildACapacitorDemo({ figure }: Props) {
       const gY = 24;
 
       // Frame
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = getCanvasColors().border;
       ctx.lineWidth = 1;
       ctx.strokeRect(pX, gY, pW, gH);
 
       // Title
-      ctx.fillStyle = 'rgba(160,158,149,0.8)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
@@ -236,7 +237,7 @@ export function BuildACapacitorDemo({ figure }: Props) {
         const yU = (u: number) => gY + gH - (Math.abs(u) / maxU) * (gH * 0.92);
 
         // V line (pink)
-        ctx.strokeStyle = 'rgba(255,59,110,0.95)';
+        ctx.strokeStyle = getCanvasColors().pink;
         ctx.lineWidth = 1.6;
         ctx.beginPath();
         for (let i = 0; i < hist.length; i++) {
@@ -248,7 +249,7 @@ export function BuildACapacitorDemo({ figure }: Props) {
         ctx.stroke();
 
         // U curve (amber)
-        ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+        ctx.strokeStyle = getCanvasColors().accent;
         ctx.lineWidth = 1.6;
         ctx.beginPath();
         for (let i = 0; i < hist.length; i++) {
@@ -263,7 +264,7 @@ export function BuildACapacitorDemo({ figure }: Props) {
       // ── Work bar (bottom of right pane)
       const barY = gY + gH + 24;
       const barH = 12;
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
@@ -278,10 +279,10 @@ export function BuildACapacitorDemo({ figure }: Props) {
       const fill = Math.max(0, Math.min(1, Math.abs(s.V) / Math.max(histMaxV, 1e-12)));
       ctx.fillStyle = 'rgba(255,255,255,0.06)';
       ctx.fillRect(pX, barY, pW, barH);
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.fillRect(pX, barY, pW * fill, barH);
 
-      ctx.fillStyle = 'rgba(236,235,229,0.7)';
+      ctx.fillStyle = getCanvasColors().text;
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
       ctx.fillText(`${(s.workForNext * 1e9).toFixed(3)} nJ`, pX + pW, barY + barH + 4);

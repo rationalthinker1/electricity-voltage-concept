@@ -21,6 +21,7 @@ import { TryIt } from '@/components/TryIt';
 import { Formula } from '@/components/Formula';
 import { PHYS, eng } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 const SLUG = 'capacitance';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -112,18 +113,18 @@ export default function CapacitanceLab() {
       ctx.lineTo(x + 38, botY - 3);
       ctx.stroke();
 
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('+', x + 22, y - 18);
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = getCanvasColors().blue;
       ctx.fillText('−', x + 18, y + 16);
     }
 
     function draw() {
       const s = stateRef.current;
       const out = s.computed;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
       phase += 0.018;
 
@@ -196,15 +197,15 @@ export default function CapacitanceLab() {
       ctx.stroke();
 
       // Labels
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
       ctx.fillText(`C = ${eng(out.C, 3, 'F')}`, 24, 28);
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.fillText(`V = ${s.V.toFixed(1)} V`, 24, 48);
       ctx.fillText(`E = ${eng(out.E, 3, 'V/m')}`, 24, 66);
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'right';
       ctx.fillText(
         `A = ${s.A_cm2.toFixed(0)} cm²   d = ${s.d_mm.toFixed(2)} mm   εr = ${s.er.toFixed(1)}`,

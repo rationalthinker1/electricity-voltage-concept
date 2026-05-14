@@ -15,6 +15,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -49,7 +50,7 @@ export function PowerDeratingDemo({ figure }: Props) {
 
     function draw() {
       const { T_C, P_nom, P_actual } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       const padL = 50;
@@ -60,7 +61,7 @@ export function PowerDeratingDemo({ figure }: Props) {
       const gH = H - padT - padB;
 
       // Axes
-      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(padL, padT);
@@ -74,12 +75,12 @@ export function PowerDeratingDemo({ figure }: Props) {
       const yF = (f: number) => padT + (1 - f) * gH;
 
       // Gridlines / labels
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       for (let t = 0; t <= 175; t += 25) {
         const x = xT(t);
-        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+        ctx.strokeStyle = getCanvasColors().border;
         ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + gH); ctx.stroke();
         ctx.fillText(`${t}`, x, padT + gH + 14);
       }
@@ -88,7 +89,7 @@ export function PowerDeratingDemo({ figure }: Props) {
       ctx.textAlign = 'right';
       for (let f = 0; f <= 1.0001; f += 0.25) {
         const y = yF(f);
-        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+        ctx.strokeStyle = getCanvasColors().border;
         ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + gW, y); ctx.stroke();
         ctx.fillText(`${(f * 100).toFixed(0)}%`, padL - 6, y + 3);
       }
@@ -126,7 +127,7 @@ export function PowerDeratingDemo({ figure }: Props) {
       ctx.stroke();
 
       // Knee marker
-      ctx.strokeStyle = 'rgba(255,107,42,0.5)';
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(xT(T_KNEE), padT);
@@ -134,13 +135,13 @@ export function PowerDeratingDemo({ figure }: Props) {
       ctx.stroke();
       ctx.setLineDash([]);
 
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'left';
       ctx.fillText(`Knee at ${T_KNEE} °C`, xT(T_KNEE) + 4, padT + 10);
       ctx.fillText(`Zero at ${T_ZERO} °C`, xT(T_ZERO) - 60, padT + 24);
 
       // Title
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

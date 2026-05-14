@@ -54,7 +54,7 @@ export function BandStructureDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { mat, T }; }, [mat, T]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     function draw() {
@@ -62,7 +62,7 @@ export function BandStructureDemo({ figure }: Props) {
       const { Eg, color } = MATERIALS[mat];
       const occ = occupancy(Eg, T);
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 70, padR = 30, padT = 28, padB = 30;
@@ -74,7 +74,7 @@ export function BandStructureDemo({ figure }: Props) {
       const yOf = (e: number) => padT + plotH * (1 - e / Emax);
 
       // axis
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(padL, padT, plotW, plotH);
 
       // y-axis ticks every 1 eV
@@ -84,7 +84,7 @@ export function BandStructureDemo({ figure }: Props) {
       ctx.textBaseline = 'middle';
       for (let e = 0; e <= 6; e++) {
         ctx.fillText(`${e} eV`, padL - 6, yOf(e));
-        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+        ctx.strokeStyle = colors.border;
         ctx.beginPath();
         ctx.moveTo(padL, yOf(e));
         ctx.lineTo(padL + plotW, yOf(e));
@@ -140,20 +140,20 @@ export function BandStructureDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fill();
 
-      ctx.fillStyle = 'rgba(236,235,229,0.9)';
+      ctx.fillStyle = colors.text;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       ctx.fillText(`E_g = ${Eg.toFixed(2)} eV`, arrowX + 10, (yOf(vbTop) + yOf(cbBot)) / 2);
 
       // band labels
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'left';
       ctx.fillText('valence band (full)', padL + plotW - 150, yOf(-0.4));
       ctx.fillText('conduction band',      padL + plotW - 150, yOf(cbBot + 0.4));
 
       // header
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

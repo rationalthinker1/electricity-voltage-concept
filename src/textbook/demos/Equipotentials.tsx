@@ -17,11 +17,11 @@ export function EquipotentialsDemo({ figure }: Props) {
   const [dipole, setDipole] = useState(true);     // +,− vs +,+
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     const q1NC = +5;
     const q2NC = dipole ? -5 : +5;
 
-    ctx.fillStyle = '#0d0d10';
+    ctx.fillStyle = colors.bg;
     ctx.fillRect(0, 0, w, h);
 
     const cy = h / 2;

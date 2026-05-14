@@ -20,6 +20,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -84,7 +85,7 @@ export function PoyntingInflowDemo({ figure }: Props) {
     function draw() {
       const s = stateRef.current;
       const out = s.computed;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       const g = getWireGeom();
@@ -170,8 +171,8 @@ export function PoyntingInflowDemo({ figure }: Props) {
 
       // E axial arrows
       const nE = 5;
-      ctx.strokeStyle = 'rgba(255,59,110,0.95)';
-      ctx.fillStyle = 'rgba(255,59,110,0.95)';
+      ctx.strokeStyle = getCanvasColors().pink;
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.lineWidth = 2;
       const arrLen = 50;
       for (let i = 0; i < nE; i++) {
@@ -188,7 +189,7 @@ export function PoyntingInflowDemo({ figure }: Props) {
       }
 
       // FRONT-half B ellipses with arrowheads
-      ctx.strokeStyle = 'rgba(108,197,194,0.85)';
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 1.4;
       for (let i = 0; i < nB; i++) {
         const t = (i + 0.5) / nB;
@@ -198,7 +199,7 @@ export function PoyntingInflowDemo({ figure }: Props) {
         ctx.stroke();
         const ax = cx + er * 1.6;
         const ay = g.wireCY;
-        ctx.fillStyle = 'rgba(108,197,194,0.95)';
+        ctx.fillStyle = getCanvasColors().teal;
         ctx.beginPath();
         ctx.moveTo(ax, ay);
         ctx.lineTo(ax - 6, ay - 4);
@@ -207,31 +208,31 @@ export function PoyntingInflowDemo({ figure }: Props) {
       }
 
       // Terminals
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.fillRect(g.wireXL - 22, g.wireCY - r - 4, 4, 2 * r + 8);
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = getCanvasColors().blue;
       ctx.fillRect(g.wireXR + 18, g.wireCY - r - 4, 4, 2 * r + 8);
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.font = 'bold 14px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('+', g.wireXL - 36, g.wireCY);
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = getCanvasColors().blue;
       ctx.fillText('−', g.wireXR + 36, g.wireCY);
 
       // Numerics overlay
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText(`|S| = ${pretty(out.S)} W/m²`, 18, 14);
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.fillText(`E = ${pretty(out.E)} V/m`, 18, 30);
-      ctx.fillStyle = '#6cc5c2';
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.fillText(`B = ${pretty(out.B)} T`, 18, 46);
 
       ctx.textAlign = 'right';
       ctx.fillStyle = 'rgba(160,158,149,.85)';
       ctx.fillText(`a = ${a_mm.toFixed(2)} mm   L = ${L.toFixed(2)} m`, W - 18, 14);
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText(`P_surf / P_VI = ${out.match.toFixed(3)}`, W - 18, 30);
 
       raf = requestAnimationFrame(draw);

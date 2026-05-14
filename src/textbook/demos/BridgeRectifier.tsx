@@ -78,7 +78,7 @@ export function BridgeRectifierDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { Vp, sim }; }, [Vp, sim]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let phase = 0;
 
@@ -86,7 +86,7 @@ export function BridgeRectifierDemo({ figure }: Props) {
       const { Vp, sim } = stateRef.current;
       phase += 0.005;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 80, padT = 18, padB = 30;
@@ -98,7 +98,7 @@ export function BridgeRectifierDemo({ figure }: Props) {
       const yOf = (v: number) => cy - (v / vMax) * (plotH * 0.45);
 
       // frame
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(padL, padT, plotW, plotH);
       ctx.beginPath();
       ctx.moveTo(padL, cy); ctx.lineTo(padL + plotW, cy);
@@ -127,7 +127,7 @@ export function BridgeRectifierDemo({ figure }: Props) {
       ctx.stroke();
 
       // |V_rect|: rectified (teal)
-      ctx.strokeStyle = 'rgba(108,197,194,0.85)';
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1.3;
       ctx.beginPath();
       for (let k = 0; k <= sim.N; k++) {
@@ -168,12 +168,12 @@ export function BridgeRectifierDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       const lx = padL + plotW + 8;
-      ctx.fillStyle = 'rgba(236,235,229,0.55)'; ctx.fillRect(lx, padT + 8 - 1, 10, 2);
-      ctx.fillStyle = 'rgba(236,235,229,0.85)'; ctx.fillText('V_in', lx + 14, padT + 8);
-      ctx.fillStyle = 'rgba(108,197,194,0.85)'; ctx.fillRect(lx, padT + 24 - 1, 10, 2);
-      ctx.fillStyle = 'rgba(236,235,229,0.85)'; ctx.fillText('|V_rect|', lx + 14, padT + 24);
+      ctx.fillStyle = colors.text; ctx.fillRect(lx, padT + 8 - 1, 10, 2);
+      ctx.fillStyle = colors.text; ctx.fillText('V_in', lx + 14, padT + 8);
+      ctx.fillStyle = colors.teal; ctx.fillRect(lx, padT + 24 - 1, 10, 2);
+      ctx.fillStyle = colors.text; ctx.fillText('|V_rect|', lx + 14, padT + 24);
       ctx.fillStyle = 'rgba(255,107,42,1.0)'; ctx.fillRect(lx, padT + 40 - 1, 10, 2);
-      ctx.fillStyle = 'rgba(236,235,229,0.85)'; ctx.fillText('V_out', lx + 14, padT + 40);
+      ctx.fillStyle = colors.text; ctx.fillText('V_out', lx + 14, padT + 40);
 
       raf = requestAnimationFrame(draw);
     }

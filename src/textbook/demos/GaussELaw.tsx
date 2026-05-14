@@ -29,12 +29,12 @@ export function GaussELawDemo({ figure }: Props) {
   const flux = outside ? 0 : Q / PHYS.eps_0;
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     function draw() {
       const { qNC, outside } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const cx = w / 2, cy = h / 2;
@@ -87,12 +87,12 @@ export function GaussELawDemo({ figure }: Props) {
       }
 
       // Gaussian surface (the box)
-      ctx.strokeStyle = 'rgba(255,107,42,0.85)';
+      ctx.strokeStyle = colors.accent;
       ctx.setLineDash([6, 4]);
       ctx.lineWidth = 1.6;
       ctx.strokeRect(bx, by, bw, bh);
       ctx.setLineDash([]);
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = colors.accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -108,13 +108,13 @@ export function GaussELawDemo({ figure }: Props) {
       ctx.beginPath(); ctx.arc(chargeX, chargeY, cR * 3, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = cColor;
       ctx.beginPath(); ctx.arc(chargeX, chargeY, cR, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#0a0a0b';
+      ctx.fillStyle = colors.bg;
       ctx.font = `bold ${cR}px JetBrains Mono`;
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(qNC >= 0 ? '+' : '−', chargeX, chargeY);
 
       // Label
-      ctx.fillStyle = 'rgba(236,235,229,0.85)';
+      ctx.fillStyle = colors.text;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textBaseline = 'top';
       ctx.fillText(
@@ -123,7 +123,7 @@ export function GaussELawDemo({ figure }: Props) {
         chargeY + cR + 10,
       );
       ctx.textAlign = 'left';
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = colors.textDim;
       ctx.fillText('∮E·dA = Q_enc / ε₀', 14, 14);
 
       raf = requestAnimationFrame(draw);

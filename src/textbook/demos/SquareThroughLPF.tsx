@@ -31,12 +31,12 @@ export function SquareThroughLPFDemo() {
   const Hfund = 1 / Math.sqrt(1 + (1 / fcRatio) ** 2);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     function draw() {
       const { fcRatio } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padX = 32;
@@ -49,10 +49,10 @@ export function SquareThroughLPFDemo() {
       function panel(idx: number, plot: (mx: number, my: number, ph: number) => void, label: string) {
         const top = padY + idx * panelH;
         const mid = top + panelH / 2;
-        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+        ctx.strokeStyle = colors.border;
         ctx.beginPath(); ctx.moveTo(padX, mid); ctx.lineTo(w - padX, mid); ctx.stroke();
         plot(padX, mid, panelH / 2);
-        ctx.fillStyle = 'rgba(160,158,149,0.7)';
+        ctx.fillStyle = colors.textDim;
         ctx.font = '9px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         ctx.fillText(label, padX, top + 10);
@@ -60,7 +60,7 @@ export function SquareThroughLPFDemo() {
 
       // Input: square wave (sum of odd harmonics)
       panel(0, (mx, my, half) => {
-        ctx.strokeStyle = '#5baef8';
+        ctx.strokeStyle = colors.blue;
         ctx.lineWidth = 2;
         ctx.beginPath();
         for (let i = 0; i <= samples; i++) {
@@ -91,14 +91,14 @@ export function SquareThroughLPFDemo() {
         // f_c marker
         const xc = mx + (fcRatio / N_HARMONICS) * (w - 2 * padX);
         ctx.setLineDash([3, 4]);
-        ctx.strokeStyle = 'rgba(255,107,42,0.7)';
+        ctx.strokeStyle = colors.accent;
         ctx.beginPath(); ctx.moveTo(xc, my - half); ctx.lineTo(xc, my + half); ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = 'rgba(255,107,42,0.9)';
+        ctx.fillStyle = colors.accent;
         ctx.font = '9px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         ctx.fillText(`f_c = ${fcRatio.toFixed(1)}·f₀`, xc + 4, my - half + 12);
-        ctx.fillStyle = 'rgba(160,158,149,0.7)';
+        ctx.fillStyle = colors.textDim;
         ctx.textAlign = 'right';
         ctx.fillText('|H(f)|', w - padX - 2, my + half - 4);
       }, 'filter |H(f)|');

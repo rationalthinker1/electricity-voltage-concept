@@ -13,6 +13,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -49,7 +50,7 @@ export function LaserCavityDemo({ figure }: Props) {
       lastT = t;
       const { pumpOn, photonCount } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Cavity mirrors at x = mirrorL and x = mirrorR
@@ -106,7 +107,7 @@ export function LaserCavityDemo({ figure }: Props) {
           // 90% reflect, 10% escape (output beam)
           if (Math.random() < 0.10) {
             // Emit out the right side
-            ctx.strokeStyle = 'rgba(255,107,42,0.9)';
+            ctx.strokeStyle = getCanvasColors().accent;
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(mirrorR + 6, ph.y);
@@ -129,7 +130,7 @@ export function LaserCavityDemo({ figure }: Props) {
           }
         }
         // Draw the photon as a small bright streak
-        ctx.strokeStyle = 'rgba(255,107,42,0.85)';
+        ctx.strokeStyle = getCanvasColors().accent;
         ctx.lineWidth = 1.6;
         ctx.beginPath();
         ctx.moveTo(ph.x, ph.y);
@@ -143,13 +144,13 @@ export function LaserCavityDemo({ figure }: Props) {
 
       // Labels
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'center';
       ctx.fillText('100% mirror', mirrorL, 28);
       ctx.fillText('output coupler', mirrorR, 28);
       ctx.textAlign = 'left';
       ctx.fillText('gain medium', mirrorL + 8, H - 8);
-      ctx.fillStyle = 'rgba(255,107,42,0.9)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.textAlign = 'right';
       ctx.fillText('coherent output →', W - 8, cy - 14);
 

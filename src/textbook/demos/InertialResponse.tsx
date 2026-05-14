@@ -60,7 +60,7 @@ export function InertialResponseDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { deltaP, showHigh, showLow }; }, [deltaP, showHigh, showLow]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     function draw() {
@@ -68,13 +68,13 @@ export function InertialResponseDemo({ figure }: Props) {
       const traceHigh = showHigh ? simulate(5, deltaP) : null;
       const traceLow = showLow ? simulate(1, deltaP) : null;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 56, padR = 24, padT = 22, padB = 38;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
-      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(padL, padT, plotW, plotH);
 
       const fMin = F_NOM - 3;
@@ -83,7 +83,7 @@ export function InertialResponseDemo({ figure }: Props) {
       const yAt = (f: number) => padT + plotH - ((f - fMin) / (fMax - fMin)) * plotH;
 
       // Gridlines
-      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.strokeStyle = colors.border;
       for (let f = Math.ceil(fMin); f <= fMax; f += 0.5) {
         const y = yAt(f);
         ctx.beginPath();
@@ -91,7 +91,7 @@ export function InertialResponseDemo({ figure }: Props) {
         ctx.stroke();
       }
       // Nominal freq line
-      ctx.strokeStyle = 'rgba(108,197,194,0.45)';
+      ctx.strokeStyle = colors.teal;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.moveTo(padL, yAt(F_NOM)); ctx.lineTo(padL + plotW, yAt(F_NOM));
@@ -99,7 +99,7 @@ export function InertialResponseDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // Y axis labels
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       for (let f = Math.ceil(fMin); f <= 60; f += 1) {
@@ -141,7 +141,7 @@ export function InertialResponseDemo({ figure }: Props) {
       const lg = (color: string, label: string) => {
         ctx.fillStyle = color;
         ctx.fillRect(legX, legY + 4, 14, 3);
-        ctx.fillStyle = 'rgba(236,235,229,0.85)';
+        ctx.fillStyle = colors.text;
         ctx.fillText(label, legX + 20, legY + 1);
         legY += 14;
       };

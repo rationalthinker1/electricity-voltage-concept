@@ -10,6 +10,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -34,7 +35,7 @@ export function PlaneWaveDemo({ figure }: Props) {
       const om = stateRef.current.omega;
       const k = om / C_SIM;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Coordinate system: x runs left→right; y is the screen-vertical (E lives here);
@@ -46,7 +47,7 @@ export function PlaneWaveDemo({ figure }: Props) {
       const ZSCALE_Y = Math.sin((25 * Math.PI) / 180);
 
       // Propagation axis (x-axis), drawn as a thick centre line
-      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(xL, cy); ctx.lineTo(xR, cy); ctx.stroke();
 
@@ -57,7 +58,7 @@ export function PlaneWaveDemo({ figure }: Props) {
       ctx.lineTo(xR - 10, cy - 5);
       ctx.lineTo(xR - 10, cy + 5);
       ctx.closePath(); ctx.fill();
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('x · direction of propagation', xR - 200, cy + 16);
@@ -100,7 +101,7 @@ export function PlaneWaveDemo({ figure }: Props) {
       }
       ctx.stroke();
 
-      ctx.strokeStyle = 'rgba(108,197,194,0.45)';
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.beginPath();
       for (let i = 0; i <= N * 3; i++) {
         const u = i / (N * 3);
@@ -115,12 +116,12 @@ export function PlaneWaveDemo({ figure }: Props) {
 
       // Legend
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.textAlign = 'left';
       ctx.fillText('E (y)', 14, 22);
-      ctx.fillStyle = '#6cc5c2';
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.fillText('B (z)', 14, 38);
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('in phase · |B| = |E|/c', 14, 54);
 
       raf = requestAnimationFrame(draw);

@@ -31,7 +31,7 @@ export function OpAmpInvertingDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { gain, Vamp }; }, [gain, Vamp]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     const t0 = performance.now();
 
@@ -39,7 +39,7 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       const { gain, Vamp } = stateRef.current;
       const tnow = (performance.now() - t0) / 1000;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 30, padT = 24, padB = 24;
@@ -47,7 +47,7 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(plotX, plotY, plotW, plotH);
 
       // Voltage axis ±V_SUP
@@ -55,13 +55,13 @@ export function OpAmpInvertingDemo({ figure }: Props) {
         plotY + plotH / 2 - (v / V_SUP) * (plotH / 2 - 6);
 
       // gridlines & rails
-      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.strokeStyle = colors.border;
       for (let v = -10; v <= 10; v += 2) {
         const y = yV(v);
         ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
       }
       // zero line
-      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.strokeStyle = colors.borderStrong;
       const y0 = yV(0);
       ctx.beginPath(); ctx.moveTo(plotX, y0); ctx.lineTo(plotX + plotW, y0); ctx.stroke();
       // rails
@@ -108,7 +108,7 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       });
 
       // Y axis labels
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
@@ -117,21 +117,21 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       ctx.fillText('-10 V', plotX - 4, yNeg);
 
       // Header
-      ctx.fillStyle = 'rgba(91,174,248,0.9)';
+      ctx.fillStyle = colors.blue;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('V_in', plotX + 4, plotY + 4);
-      ctx.fillStyle = 'rgba(255,107,42,0.9)';
+      ctx.fillStyle = colors.accent;
       ctx.fillText('V_out', plotX + 40, plotY + 4);
-      ctx.fillStyle = 'rgba(236,235,229,0.9)';
+      ctx.fillStyle = colors.text;
       ctx.textAlign = 'right';
       ctx.fillText(`gain = ${gain.toFixed(1)}×`, plotX + plotW - 4, plotY + 4);
 
       // Rail clipping warning
       const peakOut = Math.abs(gain * Vamp);
       if (peakOut > V_SUP) {
-        ctx.fillStyle = 'rgba(255,59,110,0.95)';
+        ctx.fillStyle = colors.pink;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
         ctx.fillText('RAILED — V_out clipped to ±10 V supply', plotX + plotW / 2, plotY + plotH - 4);

@@ -19,6 +19,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -53,7 +54,7 @@ export function TheveninEquivalentDemo({ figure }: Props) {
     function draw() {
       const st = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       const splitX = w / 2;
@@ -207,12 +208,12 @@ function drawLoadReadouts(
 ) {
   const cy = y0 + h / 2;
   const xLoad = x0 + w - 40;
-  ctx.fillStyle = 'rgba(108,197,194,0.95)';
+  ctx.fillStyle = getCanvasColors().teal;
   ctx.font = 'bold 10px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
   ctx.fillText(`V_L = ${st.Vload.toFixed(2)} V`, xLoad + 12, cy - 8);
-  ctx.fillStyle = 'rgba(91,174,248,0.95)';
+  ctx.fillStyle = getCanvasColors().blue;
   ctx.fillText(`I_L = ${(st.Iload * 1000).toFixed(1)} mA`, xLoad + 12, cy + 8);
 }
 

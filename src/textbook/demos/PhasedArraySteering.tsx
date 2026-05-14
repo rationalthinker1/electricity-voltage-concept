@@ -12,6 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -33,7 +34,7 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
     let raf = 0;
     function draw() {
       const { N, dOverLam, phiDeg } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Layout: left = element strip; right = polar pattern
@@ -42,7 +43,7 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
       // Element strip on the left
       const cyEl = H / 2;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'left';
       ctx.fillText(`N = ${N} elements`, 12, 18);
       ctx.fillText(`d = ${dOverLam.toFixed(2)}λ`, 12, 32);
@@ -54,10 +55,10 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
       const x0 = splitX * 0.45;
       for (let k = 0; k < N; k++) {
         const yk = cyEl - stripH / 2 + k * dy;
-        ctx.fillStyle = 'rgba(108,197,194,0.85)';
+        ctx.fillStyle = getCanvasColors().teal;
         ctx.beginPath(); ctx.arc(x0, yk, 4, 0, Math.PI * 2); ctx.fill();
         // Phase label
-        ctx.fillStyle = 'rgba(160,158,149,0.7)';
+        ctx.fillStyle = getCanvasColors().textDim;
         ctx.font = '9px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         const ph = ((k * phiDeg) % 360).toFixed(0);
@@ -70,13 +71,13 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
       const R = Math.min((W - splitX) * 0.42, H * 0.42);
 
       // Reference circles
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = getCanvasColors().border;
       ctx.lineWidth = 1;
       for (let f = 0.25; f <= 1.001; f += 0.25) {
         ctx.beginPath(); ctx.arc(cx, cy, R * f, 0, Math.PI * 2); ctx.stroke();
       }
       // Broadside line — horizontal (since array axis is vertical, broadside is horizontal)
-      ctx.strokeStyle = 'rgba(255,255,255,0.20)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.setLineDash([3, 4]);
       ctx.beginPath(); ctx.moveTo(cx - R, cy); ctx.lineTo(cx + R, cy); ctx.stroke();
       ctx.setLineDash([]);
@@ -84,7 +85,7 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
       // Compute |AF(θ)| where θ = angle measured from broadside (horizontal in screen).
       // φ between -π/2 and π/2 (the visible hemisphere on the right side of the array).
       const phiRad = (phiDeg * Math.PI) / 180;
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1.8;
       ctx.fillStyle = 'rgba(255,107,42,0.12)';
       ctx.beginPath();
@@ -116,7 +117,7 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
       const sinSt = phiRad / (2 * Math.PI * dOverLam);
       if (Math.abs(sinSt) <= 1) {
         const thS = Math.asin(sinSt);
-        ctx.strokeStyle = 'rgba(108,197,194,0.95)';
+        ctx.strokeStyle = getCanvasColors().teal;
         ctx.setLineDash([4, 5]);
         ctx.lineWidth = 1.5;
         ctx.beginPath();
@@ -124,19 +125,19 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
         ctx.lineTo(cx + R * Math.cos(thS), cy - R * Math.sin(thS));
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = '#6cc5c2';
+        ctx.fillStyle = getCanvasColors().teal;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         ctx.fillText(`θ_steer = ${(thS * 180 / Math.PI).toFixed(1)}°`, cx + R * Math.cos(thS) + 6, cy - R * Math.sin(thS));
       } else {
-        ctx.fillStyle = '#ff3b6e';
+        ctx.fillStyle = getCanvasColors().pink;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText('|sin θ_steer| > 1 — grating lobe regime', cx, cy + R + 20);
       }
 
       // Pattern axis labels
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('broadside (θ=0)', cx + R + 12, cy + 4);

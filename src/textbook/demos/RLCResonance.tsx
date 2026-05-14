@@ -37,13 +37,13 @@ export function RLCResonanceDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { R, L, C, f0, omega0 }; }, [R, L, C, f0, omega0]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     function draw() {
       const { R, L, C, f0 } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Plot region
@@ -62,14 +62,14 @@ export function RLCResonanceDemo({ figure }: Props) {
       const logMin = Math.log10(fMin);
       const logMax = Math.log10(fMax);
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(plotX, plotY, plotW, plotH);
 
       // Compute peak so we can scale vertically. Peak |I| = V0/R.
       const Imax = V0 / R;
 
       // Grid
-      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.strokeStyle = colors.border;
       for (let i = 1; i < 5; i++) {
         const y = plotY + (i * plotH) / 5;
         ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
@@ -82,14 +82,14 @@ export function RLCResonanceDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       for (const tf of tickFs) {
         const x = plotX + ((Math.log10(tf) - logMin) / (logMax - logMin)) * plotW;
-        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+        ctx.strokeStyle = colors.border;
         ctx.beginPath(); ctx.moveTo(x, plotY); ctx.lineTo(x, plotY + plotH); ctx.stroke();
         ctx.fillText(fmtFreq(tf), x, plotY + plotH + 4);
       }
 
       // f0 marker (vertical dashed)
       const x0 = plotX + ((Math.log10(f0) - logMin) / (logMax - logMin)) * plotW;
-      ctx.strokeStyle = 'rgba(108,197,194,0.5)';
+      ctx.strokeStyle = colors.teal;
       ctx.setLineDash([4, 4]);
       ctx.beginPath(); ctx.moveTo(x0, plotY); ctx.lineTo(x0, plotY + plotH); ctx.stroke();
       ctx.setLineDash([]);
@@ -127,26 +127,26 @@ export function RLCResonanceDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('|I(f)| / Imax', plotX, 8);
-      ctx.fillStyle = 'rgba(108,197,194,0.85)';
+      ctx.fillStyle = colors.teal;
       ctx.textAlign = 'right';
       ctx.fillText(`f₀ = ${fmtFreq(f0)}`, plotX + plotW, 8);
-      ctx.fillStyle = 'rgba(255,59,110,0.85)';
+      ctx.fillStyle = colors.pink;
       ctx.fillText('−3 dB (½ power)', plotX + plotW, plotY + plotH * 0.18);
 
       // Q factor annotation near peak
       const Qnow = (2 * Math.PI * f0 * L) / R;
-      ctx.fillStyle = 'rgba(236,235,229,0.95)';
+      ctx.fillStyle = colors.text;
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
       ctx.fillText(`Q ≈ ${Qnow.toFixed(2)}`, x0, plotY + plotH - 0.95 * plotH - 4);
 
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';

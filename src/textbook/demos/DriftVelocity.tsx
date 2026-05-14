@@ -36,7 +36,7 @@ export function DriftVelocityDemo({ figure }: Props) {
   const t1m = 1 / vd; // seconds to traverse 1 m
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     const wireTop = h * 0.32;
@@ -53,7 +53,7 @@ export function DriftVelocityDemo({ figure }: Props) {
 
     function draw() {
       const { I } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Wire body — soft amber rounded rectangle
@@ -72,9 +72,9 @@ export function DriftVelocityDemo({ figure }: Props) {
       ctx.stroke();
 
       // Battery terminals
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = colors.pink;
       ctx.fillRect(wireLeft - 10, wireTop + 8, 4, wireBot - wireTop - 16);
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = colors.blue;
       ctx.fillRect(wireRight + 6, wireTop + 8, 4, wireBot - wireTop - 16);
       ctx.fillStyle = 'rgba(160,158,149,.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
@@ -106,7 +106,7 @@ export function DriftVelocityDemo({ figure }: Props) {
       const vd_real = I / (n * PHYS.e * stateRef.current.Amm2 * 1e-6);
       const driftBias = Math.max(0.04, Math.min(2.0, vd_real * 6e4));
 
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = colors.blue;
       for (const e of electrons) {
         // Thermal kick
         e.vx += (Math.random() - 0.5) * 1.4;

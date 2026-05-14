@@ -50,7 +50,7 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
   }, [tauLoad]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let lastT = performance.now();
     let omega = 0;
@@ -77,14 +77,14 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
       if (histE.length > HISTORY_LEN) histE.shift();
 
       // Layout: scope on top, bar plot below.
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 56, padR = 24, padT = 18, padB = 22;
       const plotH = h - padT - padB;
       const plotW = w - padL - padR;
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.strokeRect(padL, padT, plotW, plotH);
 
@@ -94,7 +94,7 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
       const xT = (i: number) => padL + (i / (HISTORY_LEN - 1)) * plotW;
 
       // Gridlines
-      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.strokeStyle = colors.border;
       for (let i = 1; i < 4; i++) {
         const y = padT + (i / 4) * plotH;
         ctx.beginPath();
@@ -103,7 +103,7 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
       }
 
       // V_applied — flat line at top (constant)
-      ctx.strokeStyle = 'rgba(108,197,194,0.55)';
+      ctx.strokeStyle = colors.teal;
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1.4;
       ctx.beginPath();
@@ -123,7 +123,7 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
       ctx.stroke();
 
       // Back-EMF trace (blue)
-      ctx.strokeStyle = '#5baef8';
+      ctx.strokeStyle = colors.blue;
       ctx.lineWidth = 2;
       ctx.beginPath();
       for (let i = 0; i < histE.length; i++) {
@@ -134,7 +134,7 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
       ctx.stroke();
 
       // Axis labels
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       ctx.fillText('I → V/R', padL - 6, yI(V_SUPPLY / R_WIND));
@@ -149,7 +149,7 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
       const lg = (color: string, label: string) => {
         ctx.fillStyle = color;
         ctx.fillRect(legX, legY + 4, 14, 3);
-        ctx.fillStyle = 'rgba(236,235,229,0.85)';
+        ctx.fillStyle = colors.text;
         ctx.fillText(label, legX + 20, legY + 1);
         legY += 14;
       };

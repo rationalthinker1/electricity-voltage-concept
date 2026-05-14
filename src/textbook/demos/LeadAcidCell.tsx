@@ -16,6 +16,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -50,7 +51,7 @@ export function LeadAcidCellDemo({ figure }: Props) {
 
     function draw() {
       const s = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Single beaker (jar) with two lead plates inside
@@ -58,7 +59,7 @@ export function LeadAcidCellDemo({ figure }: Props) {
       const jarW = W - 80, jarH = H - 70;
 
       // Glass
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1.5;
       ctx.strokeRect(jarX, jarY, jarW, jarH);
 
@@ -101,7 +102,7 @@ export function LeadAcidCellDemo({ figure }: Props) {
       }
 
       // Plate labels
-      ctx.fillStyle = 'rgba(160,158,149,0.9)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';

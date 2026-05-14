@@ -243,7 +243,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
   }, []);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas } = info;
+    const { ctx, w, h, canvas, colors } = info;
     let raf = 0;
 
     function getXY(e: MouseEvent | TouchEvent): [number, number] {
@@ -343,7 +343,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
       const L = layout(w, h);
 
       // Background.
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Static elements: power source (battery), bulb, switches drawn manually.

@@ -13,6 +13,7 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -33,7 +34,7 @@ export function PlateGeometryDemo({ figure }: Props) {
 
     function draw() {
       const s = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       const cx = W / 2;
@@ -61,7 +62,7 @@ export function PlateGeometryDemo({ figure }: Props) {
       ctx.moveTo(xL, topY - 22); ctx.lineTo(xL, topY - 14);
       ctx.moveTo(xL + plateW, topY - 22); ctx.lineTo(xL + plateW, topY - 14);
       ctx.stroke();
-      ctx.fillStyle = 'rgba(236,235,229,0.7)';
+      ctx.fillStyle = getCanvasColors().text;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
@@ -75,13 +76,13 @@ export function PlateGeometryDemo({ figure }: Props) {
       ctx.moveTo(xD - 4, botY - plateThick); ctx.lineTo(xD + 4, botY - plateThick);
       ctx.moveTo(xD, topY + plateThick); ctx.lineTo(xD, botY - plateThick);
       ctx.stroke();
-      ctx.fillStyle = 'rgba(236,235,229,0.7)';
+      ctx.fillStyle = getCanvasColors().text;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       ctx.fillText(`d = ${s.d_mm.toFixed(2)} mm`, xD + 10, cy);
 
       // C label
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

@@ -14,6 +14,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -36,7 +37,7 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
   }, [Np, Ns, Vp, Rload]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, } = info;
     let raf = 0;
     let t0 = performance.now();
 
@@ -48,7 +49,7 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       const t = (performance.now() - t0) / 1000;
       const omega = 2 * Math.PI * 1.4;     // 1.4 Hz visual
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       const coreLeft = w * 0.22;
@@ -111,7 +112,7 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       // AC source on the left
       const srcX = coreLeft - 50;
       const srcY = cy;
-      ctx.strokeStyle = 'rgba(255,107,42,0.85)';
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1.4;
       ctx.beginPath(); ctx.arc(srcX, srcY, 16, 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath();
@@ -121,7 +122,7 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
         if (k === -10) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       }
       ctx.stroke();
-      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(srcX + 16, srcY - 8);
@@ -137,7 +138,7 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       // Load resistor on the right
       const loadX = coreRight + 50;
       const loadY = cy;
-      ctx.strokeStyle = 'rgba(108,197,194,0.85)';
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 1.4;
       // Zigzag resistor symbol
       ctx.beginPath();
@@ -148,7 +149,7 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       }
       ctx.lineTo(zx, loadY + 14);
       ctx.stroke();
-      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(secX + 22, cy - halfH);
@@ -162,17 +163,17 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       ctx.stroke();
 
       // Labels
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText(`N_p = ${Np}`, primX, coreBot + 6);
       ctx.fillText(`V_p = ${Vp.toFixed(0)} V`, srcX, srcY + 26);
-      ctx.fillStyle = 'rgba(108,197,194,0.85)';
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.fillText(`N_s = ${Ns}`, secX, coreBot + 6);
       ctx.fillText(`V_s = ${Vs.toFixed(1)} V`, loadX, loadY + 26);
       ctx.fillText(`R = ${Rload.toFixed(0)} Ω`, loadX, loadY + 40);
 
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'center';
       ctx.fillText('iron core · shared Φ(t)', (coreLeft + coreRight) / 2, coreTop - 14);
 
@@ -264,7 +265,7 @@ function drawCoil(
     ctx.beginPath();
     ctx.ellipse(cx, y, armHalf + 3, r, 0, Math.PI, 2 * Math.PI);
     ctx.stroke();
-    ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+    ctx.strokeStyle = getCanvasColors().accent;
     ctx.beginPath();
     ctx.ellipse(cx, y, armHalf + 3, r, 0, 0, Math.PI);
     ctx.stroke();

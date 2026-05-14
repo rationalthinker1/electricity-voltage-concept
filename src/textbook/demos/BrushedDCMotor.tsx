@@ -39,7 +39,7 @@ export function BrushedDCMotorDemo({ figure }: Props) {
   }, [V]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let lastT = performance.now();
     let theta = 0;     // rotor angle (rad)
@@ -69,7 +69,7 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       const cy = h / 2;
       const R = Math.min(w, h) * 0.36;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Stator magnets (left N = pink, right S = blue)
@@ -81,7 +81,7 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.strokeStyle = 'rgba(255,59,110,0.5)';
       ctx.lineWidth = 1.2;
       ctx.strokeRect(cx - R - magW, cy - magH / 2, magW, magH);
-      ctx.fillStyle = 'rgba(255,59,110,0.9)';
+      ctx.fillStyle = colors.pink;
       ctx.font = 'bold 14px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('N', cx - R - magW / 2, cy);
@@ -90,7 +90,7 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.fillRect(cx + R, cy - magH / 2, magW, magH);
       ctx.strokeStyle = 'rgba(91,174,248,0.5)';
       ctx.strokeRect(cx + R, cy - magH / 2, magW, magH);
-      ctx.fillStyle = 'rgba(91,174,248,0.9)';
+      ctx.fillStyle = colors.blue;
       ctx.fillText('S', cx + R + magW / 2, cy);
 
       // Field lines (subtle horizontal arrows)
@@ -113,7 +113,7 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       }
 
       // Stator iron ring (faint)
-      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.arc(cx, cy, R + 4, 0, Math.PI * 2); ctx.stroke();
 
@@ -153,15 +153,15 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       // Determine which end is "above" the rotor's horizontal axis.
       const topEnd = endAy < endBy ? { x: endAx, y: endAy } : { x: endBx, y: endBy };
       const botEnd = endAy < endBy ? { x: endBx, y: endBy } : { x: endAx, y: endAy };
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = colors.pink;
       ctx.beginPath(); ctx.arc(topEnd.x, topEnd.y, 7, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#0a0a0b';
+      ctx.fillStyle = colors.bg;
       ctx.font = 'bold 10px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('×', topEnd.x, topEnd.y);
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = colors.blue;
       ctx.beginPath(); ctx.arc(botEnd.x, botEnd.y, 7, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#0a0a0b';
+      ctx.fillStyle = colors.bg;
       ctx.fillText('·', botEnd.x, botEnd.y);
 
       // Force arrows on the two long sides (F = IL × B).
@@ -169,7 +169,7 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       // But after commutation it's always the top end that's labelled ×, so torque is always CCW visually.
       const fLen = Math.max(8, Math.min(36, drive * 30 + 10));
       ctx.strokeStyle = '#ff6b2a';
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = colors.accent;
       ctx.lineWidth = 2;
       // top end: arrow upward (in screen)
       ctx.beginPath();

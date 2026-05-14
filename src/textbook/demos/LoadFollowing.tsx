@@ -46,13 +46,13 @@ export function LoadFollowingDemo({ figure }: Props) {
   }, [hour]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     function draw() {
       const { hour } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 48, padR = 24, padT = 24, padB = 38;
@@ -62,7 +62,7 @@ export function LoadFollowingDemo({ figure }: Props) {
       const yAt = (frac: number) => padT + plotH - frac * plotH;
 
       // Frame
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(padL, padT, plotW, plotH);
       // Horizontal gridlines at 0.25, 0.5, 0.75
       for (let i = 1; i < 4; i++) {
@@ -135,7 +135,7 @@ export function LoadFollowingDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.moveTo(mx, padT); ctx.lineTo(mx, padT + plotH);
       ctx.stroke();
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = colors.accent;
       ctx.beginPath();
       ctx.arc(mx, yAt(loadFracAt(hour)), 5, 0, Math.PI * 2);
       ctx.fill();
@@ -159,7 +159,7 @@ export function LoadFollowingDemo({ figure }: Props) {
       const lg = (color: string, label: string) => {
         ctx.fillStyle = color;
         ctx.fillRect(legX, legY + 4, 14, 4);
-        ctx.fillStyle = 'rgba(236,235,229,0.85)';
+        ctx.fillStyle = colors.text;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.fillText(label, legX + 20, legY + 2);
         legY += 14;

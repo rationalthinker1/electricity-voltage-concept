@@ -67,14 +67,14 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
   }, [motorType, tauOp, omegaOp]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     function draw() {
       const { motorType, tauOp, omegaOp } = stateRef.current;
       const motor = MOTORS[motorType];
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 56, padR = 100, padT = 22, padB = 38;
@@ -103,14 +103,14 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
       }
 
       // Frame
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.strokeRect(padL, padT, plotW, plotH);
 
       // Operating point marker
       const opX = padL + omegaOp * plotW;
       const opY = padT + (1 - tauOp) * plotH;
-      ctx.strokeStyle = '#5baef8';
+      ctx.strokeStyle = colors.blue;
       ctx.lineWidth = 2;
       ctx.beginPath(); ctx.arc(opX, opY, 8, 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath();
@@ -119,7 +119,7 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
       ctx.stroke();
 
       // Axis labels
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText('speed (per unit) →', padL + plotW / 2, padT + plotH + 18);
@@ -154,11 +154,11 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
         ctx.fillStyle = `rgb(${r},${g},${b})`;
         ctx.fillRect(cbX, padT + j, cbW, 1);
       }
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.strokeStyle = colors.borderStrong;
       ctx.strokeRect(cbX, padT, cbW, cbH);
 
       // Color bar labels
-      ctx.fillStyle = 'rgba(236,235,229,0.85)';
+      ctx.fillStyle = colors.text;
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText('η = 0.95', cbX + cbW + 4, padT + 2);
@@ -167,7 +167,7 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
       ctx.fillText('0.40', cbX + cbW + 4, padT + cbH - 2);
 
       // Title
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = colors.accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(motor.name + ' — efficiency map', padL + 6, padT + 4);

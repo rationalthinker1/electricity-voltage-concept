@@ -16,6 +16,7 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath, renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 type Mode = 'open' | 'charging' | 'discharging';
 
@@ -87,7 +88,7 @@ export function RCTransientDemo({ figure }: Props) {
       const tCut = Math.max(0, st.simT - PLOT_DURATION);
       while (st.trace.length && st.trace[0].t < tCut) st.trace.shift();
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       const splitX = Math.min(w * 0.42, 320);
@@ -134,10 +135,10 @@ export function RCTransientDemo({ figure }: Props) {
 
         // Bake the static plot frame + grid + V0 + 63% lines + their labels into
         // the same offscreen image alongside the schematic.
-        sctx.strokeStyle = 'rgba(255,255,255,0.10)';
+        sctx.strokeStyle = getCanvasColors().border;
         sctx.lineWidth = 1;
         sctx.strokeRect(plotX, plotY, plotW, plotH);
-        sctx.strokeStyle = 'rgba(255,255,255,0.06)';
+        sctx.strokeStyle = getCanvasColors().border;
         for (let i = 0; i <= 4; i++) {
           const y = plotY + (i * plotH) / 4;
           sctx.beginPath(); sctx.moveTo(plotX, y); sctx.lineTo(plotX + plotW, y); sctx.stroke();
@@ -148,19 +149,19 @@ export function RCTransientDemo({ figure }: Props) {
         sctx.strokeStyle = 'rgba(108,197,194,0.35)';
         sctx.beginPath(); sctx.moveTo(plotX, y63); sctx.lineTo(plotX + plotW, y63); sctx.stroke();
         sctx.setLineDash([]);
-        sctx.fillStyle = 'rgba(255,107,42,0.85)';
+        sctx.fillStyle = getCanvasColors().accent;
         sctx.font = '10px "JetBrains Mono", monospace';
         sctx.textAlign = 'right'; sctx.textBaseline = 'bottom';
         sctx.fillText(`V₀ = ${V0} V`, plotX + plotW - 4, y0line - 2);
-        sctx.fillStyle = 'rgba(108,197,194,0.85)';
+        sctx.fillStyle = getCanvasColors().teal;
         sctx.fillText('63% V₀', plotX + plotW - 4, y63 - 2);
-        sctx.fillStyle = 'rgba(160,158,149,0.8)';
+        sctx.fillStyle = getCanvasColors().textDim;
         sctx.font = '10px "JetBrains Mono", monospace';
         sctx.textAlign = 'left'; sctx.textBaseline = 'top';
         sctx.fillText('V_C(t)', plotX, 8);
 
         // Divider between the two panes (extends across the full height).
-        sctx.strokeStyle = 'rgba(255,255,255,0.08)';
+        sctx.strokeStyle = getCanvasColors().border;
         sctx.beginPath(); sctx.moveTo(splitX, 0); sctx.lineTo(splitX, h); sctx.stroke();
 
         cacheRef.current = { key: cacheKey, canvas: off };
@@ -197,7 +198,7 @@ export function RCTransientDemo({ figure }: Props) {
       }
 
       // Dynamic overlay: live R / C / τ readout in the schematic pane.
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -236,12 +237,12 @@ export function RCTransientDemo({ figure }: Props) {
       }
 
       // Dynamic overlay: τ-marker label + live V_C readout + (6τ) window legend.
-      ctx.fillStyle = 'rgba(108,197,194,0.85)';
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText(`τ = ${fmtT(tauNow)}`, Math.min(xTau + 4, plotX + plotW - 80), plotY + 4);
-      ctx.fillStyle = 'rgba(160,158,149,0.8)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'right';
       ctx.fillText(`V_C = ${st.Vc.toFixed(2)} V`, plotX + plotW, 8);
       ctx.textAlign = 'center';
@@ -317,7 +318,7 @@ function drawCapacitorV(ctx: CanvasRenderingContext2D, x: number, cy: number, Vc
   const yTop = cy - 8;
   const yBot = cy + 8;
   // Vertical leads
-  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+  ctx.strokeStyle = getCanvasColors().textDim;
   ctx.lineWidth = 1.5;
   ctx.beginPath();
   // (leads drawn elsewhere)
@@ -330,7 +331,7 @@ function drawCapacitorV(ctx: CanvasRenderingContext2D, x: number, cy: number, Vc
   ctx.moveTo(x - 12, yTop); ctx.lineTo(x + 12, yTop);
   ctx.moveTo(x - 12, yBot); ctx.lineTo(x + 12, yBot);
   ctx.stroke();
-  ctx.fillStyle = 'rgba(160,158,149,0.85)';
+  ctx.fillStyle = getCanvasColors().textDim;
   ctx.font = '9px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';

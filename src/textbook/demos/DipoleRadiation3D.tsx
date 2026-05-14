@@ -27,6 +27,7 @@ import {
   type Vec3,
 } from '@/lib/projection3d';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -137,7 +138,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
       ensureSurface(s.n);
 
       // Background.
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Reference: faint equatorial disc outline (a circle of radius 1 in xz).
@@ -147,7 +148,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
         const ph = (i / NEQ) * 2 * Math.PI;
         eq.push(project({ x: Math.cos(ph), y: 0, z: Math.sin(ph) }, cam, W, H));
       }
-      ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+      ctx.strokeStyle = getCanvasColors().border;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(eq[0]!.x, eq[0]!.y);
@@ -157,7 +158,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
       // Reference: xz-plane meridian outline at φ ∈ {0, π}, used by the 2D
       // dipole demo — useful for the reader to relate the 2D slice to the 3D.
       const NMER = 96;
-      ctx.strokeStyle = 'rgba(108,197,194,0.18)';
+      ctx.strokeStyle = getCanvasColors().tealSoft;
       ctx.lineWidth = 1;
       ctx.beginPath();
       for (let i = 0; i <= NMER; i++) {
@@ -274,7 +275,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
 
       // Feedpoint marker — the centre of the dipole.
       const pCen = project({ x: 0, y: 0, z: 0 }, cam, W, H);
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.beginPath();
       ctx.arc(pCen.x, pCen.y, 3.5, 0, Math.PI * 2);
       ctx.fill();
@@ -288,7 +289,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
           const dir = ay > 0 ? 1 : -1;
           const tail = project({ x: 0, y: ay - dir * 0.06, z: 0 }, cam, W, H);
           const tip = project({ x: 0, y: ay + dir * 0.06, z: 0 }, cam, W, H);
-          ctx.strokeStyle = 'rgba(255,59,110,0.85)';
+          ctx.strokeStyle = getCanvasColors().pink;
           ctx.lineWidth = 1.6;
           ctx.beginPath();
           ctx.moveTo(tail.x, tail.y);
@@ -302,7 +303,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
           const nx = -uy, ny = ux;
           const head = 5;
           const wing = 3;
-          ctx.fillStyle = 'rgba(255,59,110,0.85)';
+          ctx.fillStyle = getCanvasColors().pink;
           ctx.beginPath();
           ctx.moveTo(tip.x, tip.y);
           ctx.lineTo(tip.x - ux * head + nx * wing, tip.y - uy * head + ny * wing);
@@ -313,7 +314,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
       }
 
       // Axis labels at the dipole tips.
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
@@ -324,9 +325,9 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
       // Top-left overlay.
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText(`r(θ) = sin^${s.n.toFixed(1)} θ`, 14, 14);
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to orbit', 14, 30);
 
       raf = requestAnimationFrame(draw);

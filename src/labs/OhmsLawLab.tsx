@@ -55,7 +55,7 @@ export default function OhmsLawLab() {
   }, [material, V, L, Amm2, computed]);
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     const wireMarginX = 80;
@@ -98,7 +98,7 @@ export default function OhmsLawLab() {
       const top = wireCY - thickness / 2;
       const bot = wireCY + thickness / 2;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Wire body
@@ -113,30 +113,30 @@ export default function OhmsLawLab() {
       roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 14); ctx.stroke();
 
       // Battery terminals
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = colors.pink;
       ctx.shadowColor = 'rgba(255,59,110,0.6)';
       ctx.shadowBlur = 14;
       ctx.fillRect(wireLeft - 18, top - 6, 4, thickness + 12);
       ctx.shadowBlur = 0;
       ctx.font = 'bold 18px "JetBrains Mono", monospace';
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = colors.pink;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('+', wireLeft - 32, wireCY);
 
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = colors.blue;
       ctx.shadowColor = 'rgba(91,174,248,0.6)';
       ctx.shadowBlur = 14;
       ctx.fillRect(wireRight + 14, top - 6, 4, thickness + 12);
       ctx.shadowBlur = 0;
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = colors.blue;
       ctx.fillText('−', wireRight + 32, wireCY);
 
       // E-field arrows along centerline (L → R: conventional current direction)
       const nArrows = 7;
       const arrowLen = 28 + Math.min(1, Math.log10(computed.E + 1) / 4) * 16;
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
+      ctx.strokeStyle = colors.accent;
+      ctx.fillStyle = colors.accent;
       ctx.lineWidth = 1.5;
       for (let i = 0; i < nArrows; i++) {
         const t = (i + 0.5) / nArrows;
@@ -154,7 +154,7 @@ export default function OhmsLawLab() {
       // Electrons (drift opposite to conventional current → leftward).
       // VISUAL ONLY: real v_d is fractions of a mm/s; we scale ~100× so anything is visible.
       const driftBias = -Math.max(0.02, Math.min(2.0, computed.vd * 100));
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = colors.blue;
       for (const e of electrons) {
         e.vx += (Math.random() - 0.5) * 1.4;
         e.vy += (Math.random() - 0.5) * 1.4;
@@ -169,13 +169,13 @@ export default function OhmsLawLab() {
       }
 
       // Labels
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = colors.accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'alphabetic';
       ctx.fillText(MATERIALS[material]!.name.toUpperCase(), w / 2, top - 18);
 
-      ctx.fillStyle = 'rgba(160,158,149,0.9)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText(`V = ${V.toFixed(1)} V`, wireLeft, bot + 24);

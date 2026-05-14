@@ -16,6 +16,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -43,7 +44,7 @@ export function DiffractionGratingDemo({ figure }: Props) {
       const lam_ = lamNm * 1e-9;
       const d_ = 1e-3 / linesPerMm;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Plot intensity vs sin θ over the range [-1, 1]
@@ -59,7 +60,7 @@ export function DiffractionGratingDemo({ figure }: Props) {
       const yBase = y0 + plotH;
 
       // Axes
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(x0, yBase); ctx.lineTo(x0 + plotW, yBase);
@@ -93,7 +94,7 @@ export function DiffractionGratingDemo({ figure }: Props) {
       ctx.stroke();
 
       // Mark expected principal-maximum positions sinθ = m λ/d
-      ctx.strokeStyle = 'rgba(255,255,255,0.30)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.setLineDash([3, 4]);
       const mMax = Math.floor(d_ / lam_);
       for (let m = -mMax; m <= mMax; m++) {
@@ -104,7 +105,7 @@ export function DiffractionGratingDemo({ figure }: Props) {
         ctx.moveTo(xx, y0); ctx.lineTo(xx, yBase + 4);
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = 'rgba(160,158,149,0.9)';
+        ctx.fillStyle = getCanvasColors().textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText(`m=${m}`, xx, yBase + 16);
@@ -114,7 +115,7 @@ export function DiffractionGratingDemo({ figure }: Props) {
 
       // Axis labels
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'left';
       ctx.fillText(`N = ${N}`, padL + 4, padTop + 12);
       ctx.fillText(`λ = ${lamNm.toFixed(0)} nm`, padL + 4, padTop + 26);
