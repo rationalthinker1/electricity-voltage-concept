@@ -1,6 +1,7 @@
-import type { ReactNode } from 'react';
 import { Link } from '@tanstack/react-router';
 
+import { Pill, type PillVariant } from '@/components/ui/Pill';
+import { Stat } from '@/components/ui/Stat';
 import {
   type ChapterEntry,
   type TrackId,
@@ -12,30 +13,7 @@ interface SyllabusCardProps {
   chapter: ChapterEntry;
 }
 
-/**
- * Minimal local Badge primitive. A future pass can swap for a shared
- * UI primitive once the shared component lands.
- */
-function Badge({
-  children,
-  tone = 'default',
-}: {
-  children: ReactNode;
-  tone?: 'default' | 'teal' | 'accent' | 'pink';
-}) {
-  return <span className={`syllabus-badge syllabus-badge-${tone}`}>{children}</span>;
-}
-
-function Stat({ label, value }: { label: string; value: ReactNode }) {
-  return (
-    <div className="syllabus-stat">
-      <div className="syllabus-stat-label">{label}</div>
-      <div className="syllabus-stat-value">{value}</div>
-    </div>
-  );
-}
-
-const TRACK_TONE: Record<TrackId, 'teal' | 'accent' | 'pink'> = {
+const TRACK_TONE: Record<TrackId, PillVariant> = {
   practical: 'teal',
   bench: 'accent',
   rigor: 'pink',
@@ -84,16 +62,14 @@ export function SyllabusCard({ chapter }: SyllabusCardProps) {
 
       <div className="chapter-syllabus-card-stats">
         {typeof timeToRead === 'number' && (
-          <Stat label="Time to read" value={<>~{timeToRead} min</>} />
+          <Stat label="Time to read" value={`~${timeToRead}`} unit="min" />
         )}
         {tracks && tracks.length > 0 && (
           <div className="chapter-syllabus-card-tracks">
             <div className="syllabus-stat-label">Tracks</div>
             <div className="chapter-syllabus-card-badge-row">
               {tracks.map(t => (
-                <Badge key={t} tone={TRACK_TONE[t]}>
-                  {TRACKS[t].name}
-                </Badge>
+                <Pill key={t} variant={TRACK_TONE[t]}>{TRACKS[t].name}</Pill>
               ))}
             </div>
           </div>
@@ -109,9 +85,11 @@ export function SyllabusCard({ chapter }: SyllabusCardProps) {
                 key={c.slug}
                 to="/textbook/$chapterSlug"
                 params={{ chapterSlug: c.slug }}
-                className="syllabus-badge syllabus-badge-link"
+                style={{ textDecoration: 'none' }}
               >
-                Ch.{c.number} · {c.title}
+                <Pill variant="subtle" interactive>
+                  Ch.{c.number} · {c.title}
+                </Pill>
               </Link>
             ))}
           </div>
