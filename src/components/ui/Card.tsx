@@ -24,11 +24,11 @@ export function Card({
   return (
     <div
       className={clsx(
-        'card-shell-1',
-        variant === 'default' && 'card-shell-default-1',
-        variant === 'elevated' && 'card-shell-elevated-1',
-        variant === 'outlined' && 'card-shell-outlined-1',
-        variant === 'subtle' && 'card-shell-subtle-1',
+        'card-base',
+        variant === 'default' && 'card-primary',
+        variant === 'elevated' && 'card-elevated',
+        variant === 'outlined' && 'card-outlined',
+        variant === 'subtle' && 'card-subtle',
         accent === 'accent' && 'card-accent-brand',
         accent === 'teal' && 'card-accent-teal',
         accent === 'pink' && 'card-accent-pink',
@@ -36,9 +36,10 @@ export function Card({
         className,
       )}
     >
-      {header !== undefined && <header className="card-header-1">{header}</header>}
-      <div className="card-body-1">{children}</div>
-      {footer !== undefined && <footer className="card-footer-1">{footer}</footer>}
+      {header !== undefined && <header className="card-header">{header}</header>}
+      <div className="card-body">{children}</div>
+      {footer !== undefined && <footer className="card-footer">{footer}</footer>}
     </div>
   );
 }
+

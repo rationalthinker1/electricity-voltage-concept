@@ -43,33 +43,34 @@ export function LabShell({
     <>
       <Hero lab={lab} />
 
-      <div className="relative py-[80px] px-0 border-y border-border bg-color-2">
-        <div className="max-w-[1480px] mx-auto px-[40px] relative">
-          <div className="flex justify-between items-baseline flex-wrap gap-md mb-[30px] pb-[20px] border-b border-border">
-            <span className="label-mono-2">Interactive Lab · {labSubtitle}</span>
-            <span className="meta-1">/ {labId}</span>
+      <div className="relative py-[80px] px-0 border-y border-color-border bg-color-bg-elevated">
+        <div className="container-max">
+          <div className="flex justify-between items-baseline flex-wrap gap-md mb-[30px] pb-[20px] border-b border-color-border">
+            <span className="text-meta">Interactive Lab · {labSubtitle}</span>
+            <span className="text-meta text-color-text-dim">/ {labId}</span>
           </div>
           {legend}
           {labContent}
         </div>
       </div>
 
-      <section>
-        <div className="prose reveal in">{prose}</div>
+      <section className="page-section">
+        <div className="prose-content section-reveal">{prose}</div>
 
         <SourcesList ids={sourceKeys} />
 
         <PageNav prev={prev} next={next} />
       </section>
 
-      <footer>
-        <div className="colophon">
+      <footer className="page-section pt-[100px] pb-[60px] border-t border-color-border">
+        <div className="flex justify-between items-center text-meta text-color-text-muted">
           <span>Field · Theory · Lab {lab.number}</span>
           <span>
-            <a href="/" className="text-text-muted no-underline">↑ Back to contents</a>
+            <a href="/" className="text-color-text-muted no-underline hover:text-color-accent">↑ Back to contents</a>
           </span>
         </div>
       </footer>
     </>
   );
 }
+

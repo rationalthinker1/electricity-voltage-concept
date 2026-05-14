@@ -30,9 +30,9 @@ interface FormulaProps {
 
 export function Formula({ children, caption, size = 'normal' }: FormulaProps) {
   return (
-    <div className={clsx('equation-card-1 accent-brand', size !== 'normal' && `equation-${size}-1`)} role="math">
-      <div className="equation-content-1">{children}</div>
-      {caption && <div className="caption-mono-1">{caption}</div>}
+    <div className={clsx('card-formula', size !== 'normal' && (size === 'small' ? 'my-[24px] py-md px-xl text-[22px]' : 'py-[28px] px-[36px] text-[40px]'))} role="math">
+      <div className="text-formula">{children}</div>
+      {caption && <div className="mt-[10px] font-mono text-[10px] tracking-[.2em] uppercase text-color-text-muted">{caption}</div>}
     </div>
   );
 }
@@ -46,19 +46,20 @@ interface FormulaHTMLProps {
 /** Escape hatch — render an HTML string. Use sparingly; prefer JSX. */
 export function FormulaHTML({ html, caption, size = 'normal' }: FormulaHTMLProps) {
   return (
-    <div className={clsx('equation-card-1 accent-brand', size !== 'normal' && `equation-${size}-1`)} role="math">
-      <div className="equation-content-1" dangerouslySetInnerHTML={{ __html: html }} />
-      {caption && <div className="caption-mono-1">{caption}</div>}
+    <div className={clsx('card-formula', size !== 'normal' && (size === 'small' ? 'my-[24px] py-md px-xl text-[22px]' : 'py-[28px] px-[36px] text-[40px]'))} role="math">
+      <div className="text-formula" dangerouslySetInnerHTML={{ __html: html }} />
+      {caption && <div className="mt-[10px] font-mono text-[10px] tracking-[.2em] uppercase text-color-text-muted">{caption}</div>}
     </div>
   );
 }
 
 /** Variable accent — slight amber tint to distinguish symbols from operators. */
 export function Var({ children }: { children: ReactNode }) {
-  return <span className="equation-var-1">{children}</span>;
+  return <span className="text-formula-var">{children}</span>;
 }
 
 /** Inline math — small enough to live inside a sentence. */
 export function InlineMath({ children }: { children: ReactNode }) {
-  return <span className="equation-inline-1">{children}</span>;
+  return <span className="text-formula-inline">{children}</span>;
 }
+

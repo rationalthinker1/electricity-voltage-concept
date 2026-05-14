@@ -35,7 +35,7 @@ export function StepperMotorDemo({ figure }: Props) {
   }, [auto, rateHz]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     // Smoothed rotor angle (so step transitions look like a quick jump)
     let curAng = 0;
@@ -47,7 +47,7 @@ export function StepperMotorDemo({ figure }: Props) {
       const diff = target - curAng;
       curAng += diff * 0.4;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const cx = w / 2;
@@ -55,7 +55,7 @@ export function StepperMotorDemo({ figure }: Props) {
       const R = Math.min(w, h) * 0.36;
 
       // Stator: 8 evenly-spaced poles (typical hybrid stepper)
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1.2;
       ctx.beginPath(); ctx.arc(cx, cy, R + 14, 0, Math.PI * 2); ctx.stroke();
 
@@ -74,7 +74,7 @@ export function StepperMotorDemo({ figure }: Props) {
       }
 
       // Rotor — toothed disc with a marker tooth
-      ctx.strokeStyle = 'rgba(255,255,255,0.20)';
+      ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1.2;
       ctx.beginPath(); ctx.arc(cx, cy, R * 0.6, 0, Math.PI * 2); ctx.stroke();
       // Teeth — 50 small teeth (gives 200 fine positions with 4-phase commutation)
@@ -93,7 +93,7 @@ export function StepperMotorDemo({ figure }: Props) {
       const mkA = curAng;
       const mkX = cx + Math.cos(mkA) * R * 0.66;
       const mkY = cy + Math.sin(mkA) * R * 0.66;
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = colors.pink;
       ctx.beginPath(); ctx.arc(mkX, mkY, 6, 0, Math.PI * 2); ctx.fill();
 
       // Center hub

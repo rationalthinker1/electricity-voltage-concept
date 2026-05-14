@@ -56,7 +56,7 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { V_CC, R_C, Av, Vce, Vin_mV }; }, [V_CC, R_C, Av, Vce, Vin_mV]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let t0 = 0;
 
@@ -65,7 +65,7 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       const tSec = (ts - t0) / 1000;
       const { V_CC, Av, Vce, Vin_mV } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 16, padT = 24, padB = 30;
@@ -82,18 +82,18 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       const yOf = (v: number) => padT + plotH - ((v - Vmin) / (Vmax - Vmin)) * plotH;
 
       // axes
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(padL, padT, plotW, plotH);
 
       // V_CC line
-      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx.strokeStyle = colors.border;
       ctx.setLineDash([2, 4]);
       ctx.beginPath();
       ctx.moveTo(padL, yOf(V_CC)); ctx.lineTo(padL + plotW, yOf(V_CC));
       ctx.moveTo(padL, yOf(Vce)); ctx.lineTo(padL + plotW, yOf(Vce));
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
@@ -102,7 +102,7 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       ctx.fillText('0', padL - 4, yOf(0));
 
       // x-axis title
-      ctx.fillStyle = 'rgba(160,158,149,0.8)';
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText('time', padL + plotW / 2, padT + plotH + 16);
@@ -113,7 +113,7 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       const inputBase = 0.4;
       const inputAmp = (Vin_mV / 1000) * 80; // amplification factor for display
       const N = 240;
-      ctx.strokeStyle = 'rgba(108,197,194,0.95)';
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {
@@ -126,7 +126,7 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       ctx.stroke();
 
       // output waveform: V_out(t) = V_CE + A_v · Vin(t) (clamped to supply rails)
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {
@@ -145,9 +145,9 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = 'rgba(108,197,194,0.95)';
+      ctx.fillStyle = colors.teal;
       ctx.fillText(`V_in   amp = ${Vin_mV.toFixed(1)} mV   (shown ×80 for visibility)`, padL + 6, padT + 4);
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
+      ctx.fillStyle = colors.accent;
       ctx.fillText(`V_out  amp = ${(Math.abs(Av) * Vin_mV).toFixed(1)} mV   A_v = ${Av.toFixed(0)}`, padL + 6, padT + 18);
 
       raf = requestAnimationFrame(draw);

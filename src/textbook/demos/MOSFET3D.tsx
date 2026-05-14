@@ -29,6 +29,7 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   attachOrbit, project, v3,
   type OrbitCamera, type Point2D, type Vec3,
@@ -255,7 +256,7 @@ export function MOSFET3DDemo({ figure }: Props) {
       const overdrive = Math.max(0, s.V_GS - V_T);
       const channelOn = overdrive > 0;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Painter's-algorithm-friendly draw order: substrate first
@@ -470,7 +471,7 @@ export function MOSFET3DDemo({ figure }: Props) {
       labelAt(v3(0, SUB.y0 + 0.18, SUB.z1 - 0.05), 'p-substrate (body)', 'rgba(91,174,248,0.9)');
 
       // Top-left help.
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'left';
       ctx.fillText('drag to rotate', 12, 12);
 

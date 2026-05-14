@@ -20,6 +20,7 @@ import { TryIt } from '@/components/TryIt';
 import { Formula } from '@/components/Formula';
 import { PHYS, eng } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 const SLUG = 'inductance';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -57,7 +58,7 @@ export default function InductanceLab() {
       const s = stateRef.current;
       const out = s.computed;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       const margin = 110;
@@ -98,8 +99,8 @@ export default function InductanceLab() {
       for (let i = 0; i < nB; i++) {
         const t = (i + 0.5) / nB;
         const cx = xL + t * (xR - xL) - arrLen / 2;
-        ctx.strokeStyle = 'rgba(108,197,194,0.9)';
-        ctx.fillStyle = 'rgba(108,197,194,0.95)';
+        ctx.strokeStyle = getCanvasColors().teal;
+        ctx.fillStyle = getCanvasColors().teal;
         ctx.lineWidth = 2.5;
         ctx.beginPath();
         ctx.moveTo(cx, cy);
@@ -117,7 +118,7 @@ export default function InductanceLab() {
       for (let i = 0; i <= visibleTurns; i++) {
         const t = i / visibleTurns;
         const cx = xL + t * (xR - xL);
-        ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+        ctx.strokeStyle = getCanvasColors().accent;
         ctx.lineWidth = 2.2;
         ctx.beginPath();
         ctx.ellipse(cx, cy, er, r_vis, 0, 0, Math.PI);
@@ -126,14 +127,14 @@ export default function InductanceLab() {
         const ang = Math.PI * dotPhase;
         const dx = cx + Math.cos(ang) * er;
         const dy = cy + Math.sin(ang) * r_vis;
-        ctx.fillStyle = '#ff6b2a';
+        ctx.fillStyle = getCanvasColors().accent;
         ctx.beginPath();
         ctx.arc(dx, dy, 2.4, 0, Math.PI * 2);
         ctx.fill();
       }
 
       // Lead lines exiting each end
-      ctx.strokeStyle = 'rgba(255,107,42,0.85)';
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(xL, cy + r_vis);
@@ -143,7 +144,7 @@ export default function InductanceLab() {
       ctx.stroke();
 
       // Return-loop hints
-      ctx.strokeStyle = 'rgba(108,197,194,0.18)';
+      ctx.strokeStyle = getCanvasColors().tealSoft;
       ctx.lineWidth = 1;
       for (const sgn of [-1, 1] as const) {
         ctx.beginPath();
@@ -152,20 +153,20 @@ export default function InductanceLab() {
       }
 
       // Current direction label
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
       ctx.fillText(s.dIdt >= 0 ? 'I ↗ rising' : 'I ↘ falling', xR + 10, cy - r_vis - 8);
 
       // Corner readouts
-      ctx.fillStyle = '#6cc5c2';
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.fillText(`B = ${eng(out.B, 3, 'T')} inside`, 24, 28);
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.fillText(`V_back = ${eng(out.V, 3, 'V')}`, 24, 48);
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText(`L = ${eng(out.L, 3, 'H')}`, 24, 68);
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'right';
       ctx.fillText(
         `N = ${s.N}   ℓ = ${s.ell_cm.toFixed(1)} cm   A = ${s.A_cm2.toFixed(1)} cm²`,

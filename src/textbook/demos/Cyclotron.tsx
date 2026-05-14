@@ -41,7 +41,7 @@ export function CyclotronDemo({ figure }: Props) {
   const f_real = 1 / T_real;
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let lastT = performance.now();
 
@@ -74,7 +74,7 @@ export function CyclotronDemo({ figure }: Props) {
       const rPx = rPxMin + t * (rPxMax - rPxMin);
 
       // Background
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // × marks for B into page.
@@ -142,14 +142,14 @@ export function CyclotronDemo({ figure }: Props) {
       ctx.beginPath(); ctx.arc(px, py, 22, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = color;
       ctx.beginPath(); ctx.arc(px, py, 7, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#0a0a0b';
+      ctx.fillStyle = colors.bg;
       ctx.font = 'bold 9px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(positive ? '+' : '−', px, py);
 
       // Velocity arrow
       ctx.strokeStyle = '#ff6b2a';
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = colors.accent;
       ctx.lineWidth = 1.5;
       const aLen = 22;
       ctx.beginPath();

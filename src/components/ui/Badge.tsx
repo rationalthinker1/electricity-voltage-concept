@@ -17,5 +17,6 @@ export function Badge({
   children,
   className,
 }: BadgeProps) {
-  return <span className={clsx('chip', `chip-${variant}`, `chip-${size}`, className)}>{children}</span>;
+  return <span className={clsx('pill-base', `pill-${variant}`, `pill-${size}`, className)}>{children}</span>;
 }
+

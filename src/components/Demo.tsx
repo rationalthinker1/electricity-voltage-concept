@@ -50,21 +50,21 @@ export function Demo({ figure, title, question, children, caption, deeperLab }: 
   }, []);
 
   return (
-    <figure ref={figureRef} className="card-figure-1">
-      <div className="header-1">
-        <span className="kicker-1 accent-brand">{figure ?? 'Fig.'}</span>
-        <span className="title-5 grow-1">{title}</span>
+    <figure ref={figureRef} className="card-figure">
+      <div className="flex flex-wrap items-baseline gap-lg px-[22px] py-lg bg-color-bg-elevated border-b border-color-border">
+        <span className="text-meta text-color-accent">{figure ?? 'Fig.'}</span>
+        <span className="title-sm flex-1 min-w-0">{title}</span>
         {deeperLab && (
-          <Link to="/labs/$slug" params={{ slug: deeperLab.slug }} className="link-1 accent-brand">
+          <Link to="/labs/$slug" params={{ slug: deeperLab.slug }} className="text-meta text-color-accent no-underline hover:underline">
             {deeperLab.label} →
           </Link>
         )}
       </div>
-      <div className="question-1 accent-brand surface-soft">{question}</div>
-      <div className={clsx('canvas-1', !shouldRenderBody && 'canvas-pending-1')}>
+      <div className="question-base bg-color-accent-soft">{question}</div>
+      <div className={clsx('canvas-base', !shouldRenderBody && 'min-h-[320px]')}>
         {shouldRenderBody ? children : null}
       </div>
-      {caption && <figcaption className="caption-1">{caption}</figcaption>}
+      {caption && <figcaption className="caption-base">{caption}</figcaption>}
     </figure>
   );
 }
@@ -74,7 +74,7 @@ interface DemoControlsProps {
 }
 /** Bottom strip of a demo card — small controls (slider, toggle) sit here. */
 export function DemoControls({ children }: DemoControlsProps) {
-  return <div className="controls-1">{children}</div>;
+  return <div className="toolbar-base">{children}</div>;
 }
 
 interface MiniSliderProps {
@@ -93,17 +93,17 @@ interface MiniSliderProps {
 export function MiniSlider({ label, value, min, max, step = 0.01, format, onChange }: MiniSliderProps) {
   const pct = ((value - min) / (max - min)) * 100;
   return (
-    <label className="slider-1">
-      <span className="slider-label-1">{label}</span>
+    <label className="flex flex-col gap-xs min-w-[160px] flex-1">
+      <span className="text-meta">{label}</span>
       <input
-        className="slider-input-1 demo-range"
+        className="w-full h-[18px] appearance-none bg-transparent cursor-pointer demo-range"
         type="range"
         min={min} max={max} step={step}
         value={value}
         onChange={e => onChange(parseFloat(e.target.value))}
         style={{ ['--pct' as string]: `${pct}%` }}
       />
-      <span className="slider-value-1 accent-brand">{format ? format(value) : value.toFixed(2)}</span>
+      <span className="text-meta text-color-accent">{format ? format(value) : value.toFixed(2)}</span>
     </label>
   );
 }
@@ -117,7 +117,10 @@ export function MiniToggle({ label, checked, onChange }: MiniToggleProps) {
   return (
     <button
       type="button"
-      className={clsx('toggle-1', checked && 'toggle-active-1 accent-brand')}
+      className={clsx(
+        'bg-transparent border border-color-border-strong text-color-text-dim px-md py-[6px] font-mono text-[10px] tracking-[.15em] uppercase cursor-pointer rounded-xs transition-colors',
+        checked && 'bg-color-accent text-color-bg border-color-accent'
+      )}
       onClick={() => onChange(!checked)}
       aria-pressed={checked}
     >
@@ -133,11 +136,12 @@ interface MiniReadoutProps {
 }
 export function MiniReadout({ label, value, unit }: MiniReadoutProps) {
   return (
-    <div className="readout-1">
-      <span className="readout-label-1">{label}</span>
-      <span className="readout-value-1 accent-brand">
-        {value}{unit && <span className="readout-unit-1"> {unit}</span>}
+    <div className="inline-flex items-baseline gap-sm font-mono text-[11px]">
+      <span className="text-color-text-muted uppercase tracking-[.12em]">{label}</span>
+      <span className="text-[13px] text-color-accent [&_sub]:text-[.75em] [&_sup]:text-[.75em] [&_sub]:align-[-0.35em] [&_sup]:align-[0.45em]">
+        {value}{unit && <span className="text-color-text-muted text-[10px]"> {unit}</span>}
       </span>
     </div>
   );
 }
+

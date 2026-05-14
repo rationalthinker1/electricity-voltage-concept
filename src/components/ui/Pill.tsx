@@ -24,19 +24,19 @@ export function Pill({
 }: PillProps) {
   const content = (
     <>
-      {icon !== undefined && <span className="pill-icon-1">{icon}</span>}
+      {icon !== undefined && <span className="pill-icon">{icon}</span>}
       <span>{children}</span>
     </>
   );
   const classes = clsx(
-    'pill-1',
-    variant === 'default' && 'pill-default-1',
-    variant === 'accent' && 'pill-accent-1',
-    variant === 'teal' && 'pill-teal-1',
-    variant === 'pink' && 'pill-pink-1',
-    variant === 'blue' && 'pill-blue-1',
-    variant === 'subtle' && 'pill-subtle-1',
-    interactive && 'pill-interactive-1',
+    'pill-base',
+    variant === 'default' && 'pill-default',
+    variant === 'accent' && 'pill-accent',
+    variant === 'teal' && 'pill-teal',
+    variant === 'pink' && 'pill-pink',
+    variant === 'blue' && 'pill-blue',
+    variant === 'subtle' && 'pill-subtle',
+    interactive && 'pill-interactive',
     className,
   );
 
@@ -49,3 +49,4 @@ export function Pill({
   }
   return <span className={classes}>{content}</span>;
 }
+

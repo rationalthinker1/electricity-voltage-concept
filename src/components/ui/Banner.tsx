@@ -21,21 +21,21 @@ export function Banner({
   return (
     <div
       className={clsx(
-        'banner-1',
-        variant === 'info' && 'banner-info-1 accent-blue',
-        variant === 'warn' && 'banner-warn-1 accent-brand',
-        variant === 'success' && 'banner-success-1 accent-teal',
-        variant === 'danger' && 'banner-danger-1 accent-pink',
+        'banner-base',
+        variant === 'info' && 'banner-info',
+        variant === 'warn' && 'banner-warn',
+        variant === 'success' && 'banner-success',
+        variant === 'danger' && 'banner-danger',
         className,
       )}
       role={variant === 'danger' || variant === 'warn' ? 'alert' : 'status'}
     >
-      {icon !== undefined && <span className="banner-icon-1" aria-hidden="true">{icon}</span>}
-      <div className="banner-body-1">{children}</div>
+      {icon !== undefined && <span className="banner-icon" aria-hidden="true">{icon}</span>}
+      <div className="banner-body">{children}</div>
       {onDismiss && (
         <button
           type="button"
-          className="button-icon-1"
+          className="button-icon"
           onClick={onDismiss}
           aria-label="Dismiss"
         >
@@ -45,3 +45,4 @@ export function Banner({
     </div>
   );
 }
+

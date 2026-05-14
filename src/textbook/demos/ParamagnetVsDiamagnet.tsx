@@ -32,7 +32,7 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
   const [Mdia, setMdia] = useState(0);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     // Two boxes side by side
@@ -105,7 +105,7 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
     function draw() {
       const { B } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Update — paramagnet aligns to angle 0 (with B); diamagnet to π (against B)
@@ -116,7 +116,7 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
 
       // Draw boxes
       for (const box of boxes) {
-        ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+        ctx.strokeStyle = colors.borderStrong;
         ctx.lineWidth = 1;
         ctx.setLineDash([3, 3]);
         ctx.strokeRect(box.x0, box.y0, box.w, box.h);
@@ -144,7 +144,7 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
       ctx.textAlign = 'left';
       ctx.fillText(`B (external) →`, 16, 22);
       const Bw = Math.min(140, 30 + B * 11);
-      ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+      ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(110, 18);
@@ -159,10 +159,10 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
       ctx.fill();
 
       // Labels showing net M magnitude on each box
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = colors.accent;
       ctx.textAlign = 'right';
       ctx.fillText(`M = ${(mPara).toFixed(2)}`, boxes[0].x0 + boxes[0].w - 8, h - 12);
-      ctx.fillStyle = 'rgba(108,197,194,0.85)';
+      ctx.fillStyle = colors.teal;
       ctx.fillText(`M = ${(mDia).toFixed(2)}`, boxes[1].x0 + boxes[1].w - 8, h - 12);
 
       // Throttle React state updates

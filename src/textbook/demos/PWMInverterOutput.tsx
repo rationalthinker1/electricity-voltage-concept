@@ -43,7 +43,7 @@ export function PWMInverterOutputDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { fSw, m }; }, [fSw, m]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let phase = 0;
 
@@ -51,7 +51,7 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       const { fSw, m } = stateRef.current;
       phase += 0.01;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 16, padT = 18, padB = 28;
@@ -61,7 +61,7 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       const top = padT;
       const bot = padT + subH + 12;
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(padL, top, plotW, subH);
       ctx.strokeRect(padL, bot, plotW, subH);
 
@@ -71,13 +71,13 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       const yTime = (v: number) => (top + subH / 2) - (v / V_DC) * (subH / 2 - 4);
 
       // Mid-line
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.beginPath();
       ctx.moveTo(padL, top + subH / 2); ctx.lineTo(padL + plotW, top + subH / 2);
       ctx.stroke();
 
       // Raw PWM (pale)
-      ctx.strokeStyle = 'rgba(255,107,42,0.45)';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 0.9;
       ctx.beginPath();
       let prevY = yTime(V_DC);
@@ -132,7 +132,7 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       const yOfA = (a: number) => yBase - a * (yBase - yPeak);
 
       // Log-frequency grid + decade ticks
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.fillStyle = 'rgba(160,158,149,0.65)';
       ctx.font = '9px "JetBrains Mono", monospace';
@@ -184,7 +184,7 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       ctx.moveTo(xC, bot); ctx.lineTo(xC, bot + subH);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = 'rgba(236,235,229,0.85)';
+      ctx.fillStyle = colors.text;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(`LC corner f_sw/10 = ${formatHz(fCorner)}`, xC + 3, bot + 4);

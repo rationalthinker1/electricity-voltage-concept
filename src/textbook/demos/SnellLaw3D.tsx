@@ -31,6 +31,7 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   attachOrbit, project, v3,
   type OrbitCamera, type Point2D, type Vec3,
@@ -84,7 +85,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
   }, [theta1Deg, n2, showReflected, showPlane, tirMode, computed]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas } = info;
+    const { ctx, w, h, canvas, } = info;
     const cam: OrbitCamera = { yaw: 0.55, pitch: 0.28, distance: 7.5, fov: Math.PI / 4 };
     const dispose = attachOrbit(canvas, cam);
     let raf = 0;
@@ -93,7 +94,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
       const s = stateRef.current;
       const { theta1, theta2, totalReflection } = s.computed;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       // Geometry. We always anchor the ray geometry to a fixed convention:
@@ -156,7 +157,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
         for (let i = 1; i < 4; i++) ctx.lineTo(c2[i]!.x, c2[i]!.y);
         ctx.closePath();
         ctx.fill();
-        ctx.strokeStyle = 'rgba(255,107,42,0.25)';
+        ctx.strokeStyle = getCanvasColors().accentSoft;
         ctx.setLineDash([5, 4]);
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -184,7 +185,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
       ctx.stroke();
       ctx.restore();
       // Label "n̂" near the top of the normal.
-      ctx.fillStyle = 'rgba(236,235,229,0.8)';
+      ctx.fillStyle = getCanvasColors().text;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
@@ -236,7 +237,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
         // in the lower medium.
         const tagAnchor = v3(0.5, -flip * 0.5, 0);
         const t2 = project(tagAnchor, cam, w, h);
-        ctx.fillStyle = 'rgba(255,107,42,0.85)';
+        ctx.fillStyle = getCanvasColors().accent;
         ctx.font = 'bold 11px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
@@ -247,26 +248,26 @@ export function SnellLaw3DDemo({ figure }: Props) {
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to orbit · look along z to see the 2D triangle', 12, 12);
 
       ctx.textAlign = 'right';
-      ctx.fillStyle = 'rgba(255,107,42,0.9)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText('incident', w - 12, 12);
       if (s.showReflected) {
-        ctx.fillStyle = 'rgba(255,59,110,0.9)';
+        ctx.fillStyle = getCanvasColors().pink;
         ctx.fillText('reflected', w - 12, 28);
       }
       if (refractedEnd) {
-        ctx.fillStyle = 'rgba(108,197,194,0.9)';
+        ctx.fillStyle = getCanvasColors().teal;
         ctx.fillText('refracted', w - 12, 44);
       }
-      ctx.fillStyle = 'rgba(236,235,229,0.7)';
+      ctx.fillStyle = getCanvasColors().text;
       ctx.fillText('normal', w - 12, refractedEnd ? 60 : (s.showReflected ? 44 : 28));
 
       // Medium labels in the corners of the interface.
       ctx.textAlign = 'left';
-      ctx.fillStyle = 'rgba(236,235,229,0.65)';
+      ctx.fillStyle = getCanvasColors().text;
       const labelAbove = s.tirMode
         ? `n₁ = 1.00 (air)`
         : `n₁ = 1.00 (air)`;
@@ -418,7 +419,7 @@ function drawInterfacePlane(
   ctx.closePath();
   ctx.fill();
   // Border.
-  ctx.strokeStyle = 'rgba(108,197,194,0.5)';
+  ctx.strokeStyle = getCanvasColors().teal;
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(c2[0]!.x, c2[0]!.y);
@@ -426,7 +427,7 @@ function drawInterfacePlane(
   ctx.closePath();
   ctx.stroke();
   // Grid (every 0.6 units).
-  ctx.strokeStyle = 'rgba(108,197,194,0.18)';
+  ctx.strokeStyle = getCanvasColors().tealSoft;
   const step = 0.6;
   for (let g = -PLANE_HALF + step; g < PLANE_HALF - 1e-6; g += step) {
     const a = project(v3(g, 0, -PLANE_HALF), cam, w, h);

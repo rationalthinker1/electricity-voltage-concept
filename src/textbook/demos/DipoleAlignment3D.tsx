@@ -132,7 +132,7 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
   }, [Eext, T, showBound]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas } = info;
+    const { ctx, w, h, canvas, colors } = info;
     const cam: OrbitCamera = { yaw: 0.55, pitch: 0.28, distance: 6.5, fov: Math.PI / 4 };
     const dispose = attachOrbit(canvas, cam);
 
@@ -175,7 +175,7 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
       const meanCos = sumCos / dipoles.length;
 
       // ── Background ──────────────────────────────────────────────────
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // ── External E-field arrow grid (passes through the block) ──────
@@ -325,12 +325,12 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
         }
 
         // Tail (−) marker — small blue dot.
-        ctx.fillStyle = 'rgba(91,174,248,0.85)';
+        ctx.fillStyle = colors.blue;
         ctx.beginPath();
         ctx.arc(p1.x, p1.y, 2.1, 0, Math.PI * 2);
         ctx.fill();
         // Head (+) marker — small pink dot.
-        ctx.fillStyle = 'rgba(255,59,110,0.95)';
+        ctx.fillStyle = colors.pink;
         ctx.beginPath();
         ctx.arc(p2.x, p2.y, 2.6, 0, Math.PI * 2);
         ctx.fill();
@@ -378,15 +378,15 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = colors.textDim;
       ctx.fillText('drag to rotate', 12, 12);
-      ctx.fillStyle = 'rgba(108,197,194,0.85)';
+      ctx.fillStyle = colors.teal;
       ctx.fillText('E_ext  teal · along +x', 12, 28);
       ctx.fillStyle = 'rgba(240,200,80,0.85)';
       ctx.fillText('dielectric block', 12, 44);
 
       ctx.textAlign = 'right';
-      ctx.fillStyle = 'rgba(255,107,42,0.9)';
+      ctx.fillStyle = colors.accent;
       ctx.fillText('p  aligned dipole', w - 12, 12);
       ctx.fillStyle = 'rgba(200,195,170,0.75)';
       ctx.fillText('p  scrambled (thermal)', w - 12, 28);

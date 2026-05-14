@@ -24,6 +24,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   attachOrbit, project, v3,
   type OrbitCamera, type Vec3,
@@ -150,7 +151,7 @@ export function PointCharge3DDemo({ figure }: Props) {
     const dispose = attachOrbit(canvas, cam);
 
     function draw() {
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       const s = stateRef.current;
@@ -187,7 +188,7 @@ export function PointCharge3DDemo({ figure }: Props) {
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to rotate', 12, 12);
       ctx.fillStyle = 'rgba(160,158,149,0.6)';
       ctx.fillText(
@@ -312,7 +313,7 @@ function drawChargeBall(
   ctx.arc(centre.x, centre.y, rPx * 0.9, 0, Math.PI * 2);
   ctx.fill();
   // Glyph.
-  ctx.fillStyle = '#0a0a0b';
+  ctx.fillStyle = getCanvasColors().bg;
   ctx.font = `bold ${Math.max(10, Math.round(rPx * 1.0))}px "JetBrains Mono", monospace`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';

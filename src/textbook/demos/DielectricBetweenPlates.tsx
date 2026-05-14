@@ -35,7 +35,7 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
   const C_eff = C_vac * erEff;
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     const tStart = performance.now() / 1000;
 
@@ -43,7 +43,7 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
       const t = performance.now() / 1000 - tStart;
       const { V, er, inserted } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Layout: plates horizontal, gap in middle
@@ -54,10 +54,10 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
       const gapH = yBot - yTop;
 
       // Top plate (positive free charge)
-      ctx.fillStyle = 'rgba(255,59,110,0.9)';
+      ctx.fillStyle = colors.pink;
       ctx.fillRect(px, yTop - 6, plateW, 6);
       // Bottom plate (negative free charge)
-      ctx.fillStyle = 'rgba(91,174,248,0.9)';
+      ctx.fillStyle = colors.blue;
       ctx.fillRect(px, yBot, plateW, 6);
 
       // Plate labels
@@ -69,7 +69,7 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
 
       // Free-charge "+" / "−" tick marks along the plates
       const ticks = 12;
-      ctx.fillStyle = '#0a0a0b';
+      ctx.fillStyle = colors.bg;
       ctx.font = '11px "JetBrains Mono", monospace';
       for (let i = 0; i < ticks; i++) {
         const x = px + (i + 0.5) * (plateW / ticks);
@@ -87,10 +87,10 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
         // Slab body
         ctx.fillStyle = 'rgba(108,197,194,0.10)';
         ctx.fillRect(px + 12, slabTop, plateW - 24, slabBot - slabTop);
-        ctx.strokeStyle = 'rgba(108,197,194,0.45)';
+        ctx.strokeStyle = colors.teal;
         ctx.lineWidth = 1;
         ctx.strokeRect(px + 12, slabTop, plateW - 24, slabBot - slabTop);
-        ctx.fillStyle = 'rgba(108,197,194,0.85)';
+        ctx.fillStyle = colors.teal;
         ctx.textAlign = 'left';
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.fillText(`dielectric  ε_r = ${er.toFixed(1)}`, px + 18, slabTop + 14);
@@ -111,7 +111,7 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
         }
 
         // Bound-charge labels
-        ctx.fillStyle = 'rgba(160,158,149,0.85)';
+        ctx.fillStyle = colors.textDim;
         ctx.textAlign = 'left';
         ctx.fillText('bound − on top face', px + 18, slabTop + 28);
         ctx.fillText('bound + on bottom face', px + 18, slabBot - 14);
@@ -123,9 +123,9 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
           for (let j = 0; j < rows; j++) {
             const cx = px + 24 + (i + 0.5) * ((plateW - 48) / cols);
             const cy = slabTop + 22 + (j + 1) * ((slabBot - slabTop - 44) / (rows + 1));
-            ctx.fillStyle = 'rgba(91,174,248,0.7)';
+            ctx.fillStyle = colors.blue;
             ctx.beginPath(); ctx.arc(cx, cy - 4, 1.5, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = 'rgba(255,59,110,0.7)';
+            ctx.fillStyle = colors.pink;
             ctx.beginPath(); ctx.arc(cx, cy + 4, 1.5, 0, Math.PI * 2); ctx.fill();
           }
         }
@@ -170,7 +170,7 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
       }
 
       // Readout overlay
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = colors.accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText(`E_inside = E₀ / ε_r = ${(V / 4e-3 / erEff).toFixed(0)} V/m`, 14, h - 14);

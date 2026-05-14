@@ -56,7 +56,7 @@ export default function FaradayLab() {
   }, []);
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let simT = 0;
     let lastRealT = performance.now();
@@ -79,7 +79,7 @@ export default function FaradayLab() {
       phiRef.current.phi = N * B * A_m2 * Math.cos(omega * simT);
       phiRef.current.emf = N * B * A_m2 * omega * Math.sin(omega * simT);
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const splitX = w * 0.45;
@@ -114,7 +114,7 @@ export default function FaradayLab() {
       const visW = coilW * Math.abs(Math.sin(angle));
       const persp = coilW * Math.cos(angle) * 0.15;
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 4]);
       ctx.beginPath(); ctx.moveTo(coilCx, 30); ctx.lineTo(coilCx, h - 30); ctx.stroke();
@@ -162,7 +162,7 @@ export default function FaradayLab() {
       ctx.textBaseline = 'middle';
       ctx.fillText('n̂', coilCx + projNx + 4, coilCy + projNy);
 
-      ctx.fillStyle = 'rgba(108,197,194,0.95)';
+      ctx.fillStyle = colors.teal;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -171,7 +171,7 @@ export default function FaradayLab() {
       ctx.restore();
 
       // Divider
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(splitX, 0); ctx.lineTo(splitX, h); ctx.stroke();
@@ -204,7 +204,7 @@ export default function FaradayLab() {
         ctx.stroke();
       }
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(scopeX, scopeCy); ctx.lineTo(scopeX + scopeW, scopeCy); ctx.stroke();
@@ -237,12 +237,12 @@ export default function FaradayLab() {
         });
       }
 
-      ctx.fillStyle = 'rgba(160,158,149,0.8)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('EMF(t) — scope', scopeX, 16);
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = colors.accent;
       ctx.textAlign = 'right';
       ctx.fillText(`peak = ${pretty(peak)} V`, scopeX + scopeW, 16);
 
@@ -250,7 +250,7 @@ export default function FaradayLab() {
       ctx.textAlign = 'right';
       ctx.textBaseline = 'bottom';
       ctx.fillText(`now = ${pretty(phiRef.current.emf)} V`, scopeX + scopeW, h - 16);
-      ctx.fillStyle = 'rgba(160,158,149,0.8)';
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'left';
       ctx.fillText(`${SCOPE_DURATION.toFixed(2)} s window`, scopeX, h - 16);
 

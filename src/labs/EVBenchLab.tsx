@@ -23,6 +23,7 @@ import { LabShell } from '@/components/LabShell';
 import { MathBlock, Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 import {
   CELLS,
@@ -803,13 +804,13 @@ function TraceCanvas({ series, channel, label, color, symmetric, scale, fixedMin
       const ctx = c.getContext('2d');
       if (!ctx) return;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.fillStyle = '#0a0a0b';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       const ts = series.t;
       const vsRaw = series[channel];
       if (ts.length < 2) {
-        ctx.fillStyle = '#5b5953';
+        ctx.fillStyle = getCanvasColors().textMuted;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         ctx.fillText(label, 6, 14);
@@ -851,7 +852,7 @@ function TraceCanvas({ series, channel, label, color, symmetric, scale, fixedMin
       ctx.stroke();
       if (vMin < 0 && vMax > 0) {
         const y0 = h - ((0 - vMin) / (vMax - vMin)) * h;
-        ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+        ctx.strokeStyle = getCanvasColors().border;
         ctx.beginPath(); ctx.moveTo(0, y0); ctx.lineTo(w, y0); ctx.stroke();
       }
 
@@ -873,7 +874,7 @@ function TraceCanvas({ series, channel, label, color, symmetric, scale, fixedMin
       ctx.stroke();
 
       // Labels.
-      ctx.fillStyle = '#a09e95';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -884,7 +885,7 @@ function TraceCanvas({ series, channel, label, color, symmetric, scale, fixedMin
       ctx.fillStyle = color;
       ctx.fillText(latest.toFixed(latest > 100 ? 0 : latest > 10 ? 1 : 2), w - 6, 4);
       // Y bounds.
-      ctx.fillStyle = '#5b5953';
+      ctx.fillStyle = getCanvasColors().textMuted;
       ctx.textBaseline = 'bottom';
       ctx.fillText(vMax.toFixed(0), 6, 16);
       ctx.fillText(vMin.toFixed(0), 6, h - 2);
@@ -915,7 +916,7 @@ function EffMapPanel({ cfg, sample }: { cfg: BenchConfig; sample: BenchSample | 
     const ctx = c.getContext('2d');
     if (!ctx) return;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = '#0a0a0b';
+    ctx.fillStyle = getCanvasColors().bg;
     ctx.fillRect(0, 0, w, h);
 
     const padL = 36;
@@ -943,14 +944,14 @@ function EffMapPanel({ cfg, sample }: { cfg: BenchConfig; sample: BenchSample | 
     }
 
     // Title.
-    ctx.fillStyle = '#a09e95';
+    ctx.fillStyle = getCanvasColors().textDim;
     ctx.font = '10px "JetBrains Mono", monospace';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
     ctx.fillText(`PMSM efficiency map — peak τ = ${cfg.drive.peakTorqueNm} N·m, peak P = ${cfg.drive.peakPowerKW} kW`, padL, 6);
 
     // Axes.
-    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctx.strokeStyle = getCanvasColors().borderStrong;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(padL, padT);
@@ -959,7 +960,7 @@ function EffMapPanel({ cfg, sample }: { cfg: BenchConfig; sample: BenchSample | 
     ctx.stroke();
 
     // X ticks (speed-fraction).
-    ctx.fillStyle = '#5b5953';
+    ctx.fillStyle = getCanvasColors().textMuted;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
     for (let i = 0; i <= 4; i++) {
@@ -993,7 +994,7 @@ function EffMapPanel({ cfg, sample }: { cfg: BenchConfig; sample: BenchSample | 
       const tf = Math.max(-1.1, Math.min(1.1, tFrac));
       const x = padL + (sf / 1.3) * plotW;
       const y = padT + (1 - (tf + 1.1) / 2.2) * plotH;
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.strokeStyle = '#ecebe5';
       ctx.lineWidth = 1.5;
       ctx.beginPath();

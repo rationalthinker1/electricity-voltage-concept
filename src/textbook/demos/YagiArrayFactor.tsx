@@ -11,6 +11,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -33,7 +34,7 @@ export function YagiArrayFactorDemo({ figure }: Props) {
     let raf = 0;
     function draw() {
       const { nDir } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Left half: plan view of the elements. Right half: polar pattern.
@@ -57,7 +58,7 @@ export function YagiArrayFactorDemo({ figure }: Props) {
         ctx.lineTo(x, cyTop + len / 2);
         ctx.stroke();
         ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.fillStyle = 'rgba(160,158,149,0.7)';
+        ctx.fillStyle = getCanvasColors().textDim;
         ctx.textAlign = 'center';
         ctx.fillText(label, x, cyTop + len / 2 + 12);
       }
@@ -65,14 +66,14 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       drawElement(xDrv, 70, 'driven', true);
       xDirs.forEach((x, i) => drawElement(x, 60 - i * 1.5, `D${i + 1}`, false));
       // Boom line connecting elements
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(xRef, cyTop); ctx.lineTo(xDirs.length ? xDirs[xDirs.length - 1] : xDrv, cyTop);
       ctx.stroke();
 
       // Forward arrow
-      ctx.fillStyle = 'rgba(255,107,42,0.9)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.beginPath();
       const ax = split - 18;
       ctx.moveTo(ax, cyTop);
@@ -80,7 +81,7 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       ctx.lineTo(ax - 8, cyTop + 4);
       ctx.closePath(); ctx.fill();
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.textAlign = 'right';
       ctx.fillText('forward →', ax - 12, cyTop - 6);
 
@@ -90,13 +91,13 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       const R = Math.min((W - split) * 0.42, H * 0.42);
 
       // Concentric circles
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = getCanvasColors().border;
       ctx.lineWidth = 1;
       for (let f = 0.25; f <= 1.001; f += 0.25) {
         ctx.beginPath(); ctx.arc(cx, cy, R * f, 0, Math.PI * 2); ctx.stroke();
       }
       // Axes
-      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      ctx.strokeStyle = getCanvasColors().border;
       ctx.beginPath();
       ctx.moveTo(cx - R, cy); ctx.lineTo(cx + R, cy);
       ctx.moveTo(cx, cy - R); ctx.lineTo(cx, cy + R);
@@ -105,7 +106,7 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       // Pattern: cos²ⁿ(φ/2) gives a forward-pointing lobe that sharpens with n.
       // φ measured from the forward direction (+x).
       const sharp = 1.5 + nDir * 0.9;
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.fillStyle = 'rgba(255,107,42,0.18)';
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -126,7 +127,7 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       ctx.stroke();
 
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'center';
       ctx.fillText('forward (+x)', cx + R + 12, cy + 4);
       ctx.fillText('back (−x)', cx - R - 12, cy + 4);

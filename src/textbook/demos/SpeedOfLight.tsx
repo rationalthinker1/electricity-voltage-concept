@@ -15,6 +15,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -40,7 +41,7 @@ export function SpeedOfLightDemo({ figure }: Props) {
       const { er, mr } = stateRef.current;
       const ratio = 1 / Math.sqrt(er * mr);          // v / c, normalised
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       const xL = 60;
@@ -62,7 +63,7 @@ export function SpeedOfLightDemo({ figure }: Props) {
       drawPulse(ctx, xMed, yB, 'rgba(108,197,194,0.85)');
 
       // Vertical guide showing how much the medium pulse has lagged the reference
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.setLineDash([3, 5]);
       ctx.beginPath(); ctx.moveTo(xRef, yA); ctx.lineTo(xRef, yB); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(xMed, yA); ctx.lineTo(xMed, yB); ctx.stroke();
@@ -114,7 +115,7 @@ function drawLane(
   xL: number, xR: number, y: number,
   label: string, color: string,
 ) {
-  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.strokeStyle = getCanvasColors().borderStrong;
   ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(xL, y); ctx.lineTo(xR, y); ctx.stroke();
   ctx.fillStyle = color;

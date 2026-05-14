@@ -15,6 +15,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -44,14 +45,14 @@ export function MutualInductanceTwoCoilsDemo({ figure }: Props) {
   }, [distanceCm, tiltDeg]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, } = info;
     let raf = 0;
 
     function draw() {
       const { distanceCm, tiltDeg } = stateRef.current;
       const k = couplingK(distanceCm, tiltDeg);
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       // Coil 1 on the left, coil 2 on the right.
@@ -69,7 +70,7 @@ export function MutualInductanceTwoCoilsDemo({ figure }: Props) {
       drawCoil(ctx, c2x, cy, tiltDeg, 'C2');
 
       // Readout strip at the bottom: how many lines thread C2
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
@@ -128,7 +129,7 @@ function drawCoil(
   const rx = 18;
   const colH = 76;
   const dy = colH / turns;
-  ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+  ctx.strokeStyle = getCanvasColors().accent;
   ctx.lineWidth = 1.6;
   for (let i = 0; i < turns; i++) {
     const y = -colH / 2 + (i + 0.5) * dy;
@@ -137,7 +138,7 @@ function drawCoil(
     ctx.stroke();
   }
   // Label
-  ctx.fillStyle = 'rgba(255,107,42,0.85)';
+  ctx.fillStyle = getCanvasColors().accent;
   ctx.font = 'bold 11px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -189,7 +190,7 @@ function drawFieldLines(
   ctx.setLineDash([]);
 
   // Direction arrow on coil 1
-  ctx.fillStyle = 'rgba(255,107,42,0.7)';
+  ctx.fillStyle = getCanvasColors().accent;
   ctx.font = '9px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.fillText('I₁', c1x, c1y - 56);

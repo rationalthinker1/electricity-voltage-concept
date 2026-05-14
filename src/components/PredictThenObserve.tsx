@@ -159,22 +159,22 @@ export function PredictThenObserve({
         accent="accent"
         className="my-[28px] mx-0 mb-[18px]"
         header={
-          <div className="inline-cluster-2">
+          <div className="flex flex-wrap items-center gap-md">
             <Badge variant="accent" size="sm">Predict first</Badge>
-            <span className="meta-1">Commit to a guess — being wrong is fine.</span>
+            <span className="text-meta">Commit to a guess — being wrong is fine.</span>
           </div>
         }
       >
-        <div className="prompt-1">{question}</div>
+        <div className="text-prompt">{question}</div>
         {spec.kind === 'multiple-choice' ? (
-          <fieldset className="choice-list-1 fieldset-plain-1">
-            <legend className="visually-hidden-1">Choose one</legend>
+          <fieldset className="choice-list mb-lg border-0 p-0 m-0">
+            <legend className="visually-hidden">Choose one</legend>
             {spec.options.map(opt => {
               const checked = mcSelected === opt.id;
               return (
                 <label
                   key={opt.id}
-                  className={clsx('choice-card-1', checked && 'is-selected accent-brand')}
+                  className={clsx('choice-card', checked && 'is-selected')}
                 >
                   <input
                     type="radio"
@@ -183,16 +183,16 @@ export function PredictThenObserve({
                     checked={checked}
                     onChange={() => setMcSelected(opt.id)}
                   />
-                  <span className="grow-1">{opt.label}</span>
+                  <span className="flex-1 min-w-0">{opt.label}</span>
                 </label>
               );
             })}
           </fieldset>
         ) : (
-          <div className="inline-baseline-2 field-row-1">
+          <div className="inline-flex items-center gap-[10px] mb-lg">
             <input
               type="text"
-              className="field-input-1"
+              className="input-base"
               value={shortInput}
               onChange={e => setShortInput(e.target.value)}
               placeholder={spec.placeholder ?? 'Your prediction'}
@@ -203,13 +203,13 @@ export function PredictThenObserve({
                 }
               }}
             />
-            {spec.unit && <span className="field-unit-1">{spec.unit}</span>}
+            {spec.unit && <span className="text-meta">{spec.unit}</span>}
           </div>
         )}
-        <div className="actions-end-1">
+        <div className="flex justify-end gap-md">
           <button
             type="button"
-            className="button-solid-1 accent-brand"
+            className="button-primary"
             onClick={handleSubmit}
             disabled={
               spec.kind === 'multiple-choice' ? !mcSelected : shortInput.trim().length === 0
@@ -229,17 +229,17 @@ export function PredictThenObserve({
         accent="teal"
         className="my-[28px] mx-0 mb-[18px]"
         header={
-          <div className="inline-cluster-2">
+          <div className="flex flex-wrap items-center gap-md">
             <Badge variant="teal" size="sm">Prediction locked in</Badge>
           </div>
         }
       >
-        <p className="copy-muted-1">
+        <p className="font-body text-[15.5px] text-color-text-dim leading-[1.55] m-0 mb-[14px]">
           You guessed: <strong>{displayedAnswer}</strong>
         </p>
-        {reveal ? <div className="callout-1 accent-teal">{reveal(answer)}</div> : null}
-        <div className="actions-end-1">
-          <button type="button" className="button-solid-1 accent-brand" onClick={handleReveal}>
+        {reveal ? <div className="text-[14.5px] text-color-text-dim leading-[1.55] mb-lg py-md px-[14px] bg-color-bg-elevated border-l-2 border-l-color-teal rounded-r-xs">{reveal(answer)}</div> : null}
+        <div className="flex justify-end gap-md">
+          <button type="button" className="button-primary" onClick={handleReveal}>
             Reveal demo
           </button>
         </div>
@@ -253,10 +253,10 @@ export function PredictThenObserve({
 
   return (
     <div className="my-[18px] mx-0">
-      <Banner variant={annotationVariant} className="annotation-1">
-        <span className="label-mono-1">Your prediction:</span>{' '}
+      <Banner variant={annotationVariant} className="mb-md text-[13.5px]">
+        <span className="font-mono text-[10.5px] tracking-[.12em] uppercase text-color-text-muted mb-[6px]">Your prediction:</span>{' '}
         <strong>{displayedAnswer}</strong>{' '}
-        <span className="copy-muted-2">
+        <span className="text-[13px] text-color-text-dim mt-[2px]">
           Try the demo to see if you were right.
         </span>
       </Banner>
@@ -264,3 +264,4 @@ export function PredictThenObserve({
     </div>
   );
 }
+

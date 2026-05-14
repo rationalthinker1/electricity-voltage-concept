@@ -34,6 +34,7 @@ import { Formula } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   add, attachOrbit, length, normalize, project, scale, sub, v3,
   type OrbitCamera, type Vec3,
@@ -193,7 +194,7 @@ function drawGaussE(
   ctx.beginPath();
   ctx.arc(origin.x, origin.y, rad, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = '#0a0a0b';
+  ctx.fillStyle = getCanvasColors().bg;
   ctx.font = 'bold 13px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -272,21 +273,21 @@ function drawGaussB(
   ctx.stroke();
   ctx.lineCap = 'butt';
   // N pole label (top, pink).
-  ctx.fillStyle = '#ff3b6e';
+  ctx.fillStyle = getCanvasColors().pink;
   ctx.beginPath();
   ctx.arc(pt.x, pt.y, 9, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = '#0a0a0b';
+  ctx.fillStyle = getCanvasColors().bg;
   ctx.font = 'bold 11px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('N', pt.x, pt.y);
   // S pole label (bottom, blue).
-  ctx.fillStyle = '#5baef8';
+  ctx.fillStyle = getCanvasColors().blue;
   ctx.beginPath();
   ctx.arc(pb.x, pb.y, 9, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = '#0a0a0b';
+  ctx.fillStyle = getCanvasColors().bg;
   ctx.fillText('S', pb.x, pb.y);
 
   // 2. Trace closed B-field loops by integrating the dipole field forward
@@ -322,7 +323,7 @@ function drawGaussB(
             const len = Math.hypot(dx, dy);
             if (len < 1) continue;
             const ux = dx / len, uy = dy / len;
-            ctx.fillStyle = 'rgba(108,197,194,0.95)';
+            ctx.fillStyle = getCanvasColors().teal;
             ctx.beginPath();
             ctx.moveTo(p2.x, p2.y);
             ctx.lineTo(p2.x - ux * 5 - uy * 3, p2.y - uy * 5 + ux * 3);
@@ -583,7 +584,7 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
   }, [mode, q, mDipole, dBdt, dEdt]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas } = info;
+    const { ctx, w, h, canvas, } = info;
     const cam: OrbitCamera = { yaw: 0.55, pitch: 0.30, distance: 6.0, fov: Math.PI / 4 };
     const dispose = attachOrbit(canvas, cam);
     let raf = 0;
@@ -592,7 +593,7 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
     function draw() {
       const tNow = (performance.now() - t0) / 1000;
       const s = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       // Shared wireframe cube.
@@ -611,7 +612,7 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('drag to orbit · same box for all four laws', 12, 12);
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.fillText(MODE_TITLES[s.mode], 12, h - 22);
 

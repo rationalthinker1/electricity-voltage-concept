@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { SourcesList } from './SourcesList';
 import { SyllabusCard } from './SyllabusCard';
 import { Quiz } from './Quiz';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './ui';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent, Card, Banner } from './ui';
 import { type ChapterEntry, getChapterNeighbors } from '@/textbook/data/chapters';
 import { MANIFEST } from '@/labs/data/manifest';
 import { getQuiz, getPassingScore } from '@/textbook/data/quizzes';
@@ -112,7 +112,7 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
         <SourcesList ids={chapter.sources} />
       </div>
 
-      <div className="action-card-1">
+      <Card variant="default" className="flex flex-wrap items-center justify-between gap-lg my-10 px-[22px] py-[18px] rounded-lg">
         <button
           type="button"
           className={clsx('button-solid-1 accent-brand', isComplete && 'is-complete accent-teal')}
@@ -122,8 +122,8 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
         >
           {isComplete ? 'Marked complete ✓' : 'Mark this chapter complete'}
         </button>
-        <Link to="/me" className="link-1 accent-brand">View your progress →</Link>
-      </div>
+        <Link to="/me" className="link-accent text-sm font-mono uppercase tracking-wider">View your progress →</Link>
+      </Card>
 
       {toast && (
         <div className="toast-1 accent-teal" role="status" aria-live="polite">{toast}</div>
@@ -132,19 +132,21 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
       {quiz && (
         <div className="section-narrow-2">
           {quizStatus.passed ? (
-            <div className="notice-1 accent-teal">
-              <div className="notice-body-1">
-                Quiz passed (<strong>{Math.round(quizStatus.bestScore * 100)}%</strong>).
-                You&rsquo;ve already met the mastery threshold for this chapter.
+            <Banner variant="success" className="my-8">
+              <div className="flex items-center justify-between w-full">
+                <div>
+                  Quiz passed (<strong>{Math.round(quizStatus.bestScore * 100)}%</strong>).
+                  You&rsquo;ve already met the mastery threshold for this chapter.
+                </div>
+                <Link
+                  to="/quiz/$chapterSlug"
+                  params={{ chapterSlug: chapter.slug }}
+                  className="link-accent ml-4 whitespace-nowrap"
+                >
+                  Retake quiz →
+                </Link>
               </div>
-              <Link
-                to="/quiz/$chapterSlug"
-                params={{ chapterSlug: chapter.slug }}
-                className="link-1 accent-teal"
-              >
-                Retake quiz →
-              </Link>
-            </div>
+            </Banner>
           ) : (
             <Accordion>
               <AccordionItem id="mastery-quiz">

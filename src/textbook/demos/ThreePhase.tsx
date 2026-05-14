@@ -28,7 +28,7 @@ export function ThreePhaseDemo({ figure }: Props) {
   const Vrms = Vpk / Math.sqrt(2);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let simT = 0;
     let lastT = performance.now();
@@ -49,7 +49,7 @@ export function ThreePhaseDemo({ figure }: Props) {
       const phase = omega * simT;
       const tStart = simT - SCOPE_DURATION;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Split: oscilloscope left, phasor right. Use a more generous left
@@ -66,11 +66,11 @@ export function ThreePhaseDemo({ figure }: Props) {
       const plotH = h - 60;
       const cyP = plotY + plotH / 2;
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(plotX, plotY, plotW, plotH);
 
       // Zero line
-      ctx.strokeStyle = 'rgba(255,255,255,0.16)';
+      ctx.strokeStyle = colors.borderStrong;
       ctx.beginPath();
       ctx.moveTo(plotX, cyP); ctx.lineTo(plotX + plotW, cyP); ctx.stroke();
 
@@ -80,14 +80,14 @@ export function ThreePhaseDemo({ figure }: Props) {
       const voltageAt = (t: number, offset: number) => Vpk * Math.cos(omega * t - offset);
 
       // Three traces
-      const colors = [
+      const phaseColors = [
         'rgba(255,59,110,0.95)',  // pink
         'rgba(108,197,194,0.95)', // teal
         'rgba(255,107,42,0.95)',  // amber
       ];
       const offsets = [0, TAU3, 2 * TAU3];
       for (let k = 0; k < 3; k++) {
-        ctx.strokeStyle = colors[k];
+        ctx.strokeStyle = phaseColors[k];
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         for (let i = 0; i <= sampleCount; i++) {
@@ -118,13 +118,13 @@ export function ThreePhaseDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = colors[0]; ctx.fillText('V_a', plotX + 4, plotY + 4);
-      ctx.fillStyle = colors[1]; ctx.fillText('V_b', plotX + 36, plotY + 4);
-      ctx.fillStyle = colors[2]; ctx.fillText('V_c', plotX + 68, plotY + 4);
-      ctx.fillStyle = 'rgba(236,235,229,0.85)';
+      ctx.fillStyle = phaseColors[0]; ctx.fillText('V_a', plotX + 4, plotY + 4);
+      ctx.fillStyle = phaseColors[1]; ctx.fillText('V_b', plotX + 36, plotY + 4);
+      ctx.fillStyle = phaseColors[2]; ctx.fillText('V_c', plotX + 68, plotY + 4);
+      ctx.fillStyle = colors.text;
       ctx.fillText('Σ = 0', plotX + 100, plotY + 4);
 
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -133,7 +133,7 @@ export function ThreePhaseDemo({ figure }: Props) {
       ctx.restore();
 
       // Divider
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = colors.border;
       ctx.beginPath(); ctx.moveTo(splitX, 0); ctx.lineTo(splitX, h); ctx.stroke();
 
       // ── RIGHT: phasor diagram
@@ -145,7 +145,7 @@ export function ThreePhaseDemo({ figure }: Props) {
       const pR = Math.max(50, Math.min((w - splitX) / 2 - 18, h / 2 - 36));
 
       // Reference circle
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.arc(pcx, pcy, pR, 0, Math.PI * 2); ctx.stroke();
@@ -157,7 +157,7 @@ export function ThreePhaseDemo({ figure }: Props) {
 
       // Three rotating phasors
       const angles = [phase, phase - TAU3, phase - 2 * TAU3];
-      const cols = [colors[0], colors[1], colors[2]];
+      const cols = [phaseColors[0], phaseColors[1], phaseColors[2]];
       const labels = ['a', 'b', 'c'];
       for (let k = 0; k < 3; k++) {
         const ax = pcx + Math.cos(angles[k]) * pR;
@@ -181,7 +181,7 @@ export function ThreePhaseDemo({ figure }: Props) {
         ctx.fillText(labels[k], ax + 10 * Math.cos(ang), ay + 10 * Math.sin(ang));
       }
 
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';

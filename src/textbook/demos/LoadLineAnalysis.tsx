@@ -54,13 +54,13 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { V_CC, R_C, I_B }; }, [V_CC, R_C, I_B]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     function draw() {
       const { V_CC, R_C, I_B } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 60, padR = 20, padT = 22, padB = 36;
@@ -74,11 +74,11 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
       const yOf = (i: number) => padT + plotH - (i / Imax) * plotH;
 
       // frame
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(padL, padT, plotW, plotH);
 
       // gridlines
-      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+      ctx.strokeStyle = colors.border;
       ctx.beginPath();
       const vStep = Vmax > 20 ? 5 : 2;
       for (let v = 0; v <= Vmax + 1e-9; v += vStep) {
@@ -104,7 +104,7 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
       }
 
       // axis titles
-      ctx.fillStyle = 'rgba(160,158,149,0.8)';
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText('V_CE (volts)', padL + plotW / 2, padT + plotH + 18);
@@ -135,7 +135,7 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
 
       // load line: from (V_CC, 0) to (0, V_CC/R_C)
       const I_sat = V_CC / R_C;
-      ctx.strokeStyle = 'rgba(108,197,194,0.95)';
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       ctx.moveTo(xOf(V_CC), yOf(0));
@@ -143,7 +143,7 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
       ctx.stroke();
 
       // load-line endpoint labels
-      ctx.fillStyle = 'rgba(108,197,194,0.95)';
+      ctx.fillStyle = colors.teal;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
       ctx.fillText(`V_CC = ${V_CC.toFixed(1)} V`, xOf(V_CC), yOf(0) - 4);
@@ -152,18 +152,18 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
       ctx.fillText(`V_CC/R_C = ${(I_sat * 1000).toFixed(1)} mA`, xOf(0) + 6, yOf(Math.min(Imax, I_sat)));
 
       // Q-point dot
-      ctx.fillStyle = 'rgba(236,235,229,0.95)';
+      ctx.fillStyle = colors.text;
       ctx.beginPath();
       ctx.arc(xOf(Vq), yOf(Math.min(Imax, Iq)), 5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = 'rgba(236,235,229,0.95)';
+      ctx.fillStyle = colors.text;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
       ctx.fillText(`Q-point  (${Vq.toFixed(2)} V, ${(Iq * 1000).toFixed(2)} mA)`, xOf(Vq) + 8, yOf(Math.min(Imax, Iq)) - 6);
 
       // header
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText(`V_CC = ${V_CC.toFixed(1)} V   R_C = ${R_C.toFixed(0)} Ω   I_B = ${(I_B * 1e6).toFixed(1)} µA   β = ${beta}`, padL, 6);

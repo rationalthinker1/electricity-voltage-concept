@@ -34,13 +34,13 @@ export function RCFilterBodeDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { R, C, fc, mode }; }, [R, C, fc, mode]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     function draw() {
       const { fc, mode } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Frequency range: 0.01·fc .. 100·fc (log)
@@ -58,7 +58,7 @@ export function RCFilterBodeDemo({ figure }: Props) {
       const plotW = w - padL - padR;
 
       // Magnitude plot frame
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.strokeRect(plotX, magY0, plotW, magH);
       ctx.strokeRect(plotX, phaseY0, plotW, phaseH);
@@ -72,7 +72,7 @@ export function RCFilterBodeDemo({ figure }: Props) {
       const yPh = (p: number) => phaseY0 + phaseH - ((p - phMin) / (phMax - phMin)) * phaseH;
 
       // gridlines
-      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.strokeStyle = colors.border;
       for (let db = dBmin; db <= dBmax; db += 10) {
         const y = yMag(db);
         ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
@@ -90,7 +90,7 @@ export function RCFilterBodeDemo({ figure }: Props) {
       for (let lf = Math.ceil(logMin); lf <= Math.floor(logMax); lf++) {
         const f = Math.pow(10, lf);
         const x = plotX + ((lf - logMin) / (logMax - logMin)) * plotW;
-        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+        ctx.strokeStyle = colors.border;
         ctx.beginPath(); ctx.moveTo(x, magY0); ctx.lineTo(x, magY0 + magH); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(x, phaseY0); ctx.lineTo(x, phaseY0 + phaseH); ctx.stroke();
         ctx.fillStyle = 'rgba(160,158,149,0.6)';
@@ -99,7 +99,7 @@ export function RCFilterBodeDemo({ figure }: Props) {
 
       // f_c marker
       const xfc = plotX + ((Math.log10(fc) - logMin) / (logMax - logMin)) * plotW;
-      ctx.strokeStyle = 'rgba(108,197,194,0.55)';
+      ctx.strokeStyle = colors.teal;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(xfc, magY0); ctx.lineTo(xfc, magY0 + magH); ctx.stroke();
@@ -159,7 +159,7 @@ export function RCFilterBodeDemo({ figure }: Props) {
       });
 
       // Y-axis labels
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
@@ -171,15 +171,15 @@ export function RCFilterBodeDemo({ figure }: Props) {
       ctx.fillText('+90°', plotX - 4, yPh(90));
 
       // Header labels
-      ctx.fillStyle = 'rgba(255,107,42,0.9)';
+      ctx.fillStyle = colors.accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('|H(jω)|  [dB]', plotX + 4, magY0 + 4);
-      ctx.fillStyle = 'rgba(108,197,194,0.9)';
+      ctx.fillStyle = colors.teal;
       ctx.fillText('arg H(jω)  [deg]', plotX + 4, phaseY0 + 4);
 
-      ctx.fillStyle = 'rgba(236,235,229,0.9)';
+      ctx.fillStyle = colors.text;
       ctx.textAlign = 'right';
       ctx.fillText(`${mode === 'low' ? 'low-pass' : 'high-pass'}  f_c = ${fmtFreqShort(fc)}`,
         plotX + plotW - 4, magY0 + 4);

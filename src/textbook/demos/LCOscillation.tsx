@@ -17,6 +17,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -45,7 +46,7 @@ export function LCOscillationDemo({ figure }: Props) {
   }, [L, C, omega0, Q0]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, } = info;
     let raf = 0;
     stateRef.current.lastT = performance.now();
     // visual playback speed factor — slow real oscillation to ~2 Hz visible
@@ -69,7 +70,7 @@ export function LCOscillationDemo({ figure }: Props) {
       // Better: derive U_L from energy conservation (since visual phase doesn't respect ω₀)
       const Ul = Math.max(0, Utotal - Uc);
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       const splitX = Math.min(w * 0.55, 380);
@@ -87,7 +88,7 @@ export function LCOscillationDemo({ figure }: Props) {
       const yT = cy - boxH / 2;
       const yB = cy + boxH / 2;
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+      ctx.strokeStyle = getCanvasColors().textDim;
       ctx.lineWidth = 1.5;
       ctx.lineCap = 'round';
       // Left + bottom + right wires (top has cap in middle, gap for inductor on right)
@@ -114,7 +115,7 @@ export function LCOscillationDemo({ figure }: Props) {
       ctx.moveTo(cx - plateW / 2, yT + plateGap / 2);
       ctx.lineTo(cx + plateW / 2, yT + plateGap / 2);
       ctx.stroke();
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
@@ -139,7 +140,7 @@ export function LCOscillationDemo({ figure }: Props) {
       drawCurrentDotsPath(ctx, st.simT * 60 * dir, pathPts, Iscale);
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -153,7 +154,7 @@ export function LCOscillationDemo({ figure }: Props) {
       ctx.restore();
 
       // Divider
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = getCanvasColors().border;
       ctx.beginPath(); ctx.moveTo(splitX, 0); ctx.lineTo(splitX, h); ctx.stroke();
 
       // ── RIGHT: energy bars
@@ -171,7 +172,7 @@ export function LCOscillationDemo({ figure }: Props) {
       ctx.fillStyle = 'rgba(255,255,255,0.04)';
       ctx.fillRect(x1, barY, barW, barH);
       ctx.fillRect(x2, barY, barW, barH);
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = getCanvasColors().border;
       ctx.strokeRect(x1, barY, barW, barH);
       ctx.strokeRect(x2, barY, barW, barH);
 
@@ -180,24 +181,24 @@ export function LCOscillationDemo({ figure }: Props) {
       const hC = fracC * barH;
       const hL = fracL * barH;
       // Capacitor bar (amber)
-      ctx.fillStyle = 'rgba(255,107,42,0.7)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.fillRect(x1, barY + barH - hC, barW, hC);
       // Inductor bar (teal)
-      ctx.fillStyle = 'rgba(108,197,194,0.7)';
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.fillRect(x2, barY + barH - hL, barW, hL);
 
-      ctx.fillStyle = 'rgba(236,235,229,0.95)';
+      ctx.fillStyle = getCanvasColors().text;
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText('U_C', x1 + barW / 2, barY + barH + 6);
       ctx.fillText('U_L', x2 + barW / 2, barY + barH + 6);
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText(`${(fracC * 100).toFixed(0)}%`, x1 + barW / 2, barY + barH + 22);
       ctx.fillText(`${(fracL * 100).toFixed(0)}%`, x2 + barW / 2, barY + barH + 22);
 
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -266,7 +267,7 @@ function fmtA(I: number): string {
 
 function drawInductorV(ctx: CanvasRenderingContext2D, x: number, cy: number, L: number) {
   // Three small half-loops stacked vertically
-  ctx.strokeStyle = 'rgba(108,197,194,0.95)';
+  ctx.strokeStyle = getCanvasColors().teal;
   ctx.lineWidth = 1.6;
   const loops = 3;
   const totalH = 36;
@@ -278,7 +279,7 @@ function drawInductorV(ctx: CanvasRenderingContext2D, x: number, cy: number, L: 
     ctx.arc(x, yLoop, loopH / 2, -Math.PI / 2, Math.PI / 2, false);
     ctx.stroke();
   }
-  ctx.fillStyle = '#6cc5c2';
+  ctx.fillStyle = getCanvasColors().teal;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';

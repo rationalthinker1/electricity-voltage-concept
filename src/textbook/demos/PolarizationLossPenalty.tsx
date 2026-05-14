@@ -14,6 +14,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -33,7 +34,7 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
     function draw() {
       const { alphaDeg } = stateRef.current;
       tAnim += 0.05;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Three columns: Tx | propagating wave | Rx
@@ -55,7 +56,7 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
         ctx.beginPath(); ctx.arc(cx + Rt * Math.sin(a), cy - Rt * Math.cos(a), 4, 0, Math.PI * 2); ctx.fill();
         ctx.beginPath(); ctx.arc(cx - Rt * Math.sin(a), cy + Rt * Math.cos(a), 4, 0, Math.PI * 2); ctx.fill();
         ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillStyle = 'rgba(160,158,149,0.85)';
+        ctx.fillStyle = getCanvasColors().textDim;
         ctx.textAlign = 'center';
         ctx.fillText(label, cx, H - 14);
       }
@@ -66,14 +67,14 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
       const wcx = colW * 1.5;
       const Rmid = Math.min(colW * 0.30, H * 0.32);
       // Bounding box
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = getCanvasColors().border;
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.arc(wcx, cy, Rmid, 0, Math.PI * 2); ctx.stroke();
       // Animated vertical E-vector
       const ampPhase = Math.cos(tAnim * 2);
       const E = Rmid * 0.85 * ampPhase;
-      ctx.strokeStyle = 'rgba(255,107,42,0.9)';
-      ctx.fillStyle = 'rgba(255,107,42,0.9)';
+      ctx.strokeStyle = getCanvasColors().accent;
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.lineWidth = 2.2;
       ctx.beginPath();
       ctx.moveTo(wcx, cy);
@@ -88,12 +89,12 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fill();
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'center';
       ctx.fillText('E-field (vertical)', wcx, cy + Rmid + 14);
 
       // Connecting arrows
-      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(colW * 0.5 + Rt + 6, cy); ctx.lineTo(wcx - Rmid - 4, cy);
@@ -107,8 +108,8 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
       const ux = Math.sin(a);
       const uy = -Math.cos(a);
       const rxCx = colW * 2.5;
-      ctx.strokeStyle = 'rgba(108,197,194,0.9)';
-      ctx.fillStyle = 'rgba(108,197,194,0.9)';
+      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(rxCx, cy);
@@ -117,7 +118,7 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
 
       // Header
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'left';
       ctx.fillText(`P_r / P_r,max = cos²(α) = ${frac.toFixed(3)}`, 12, 18);
       ctx.textAlign = 'right';

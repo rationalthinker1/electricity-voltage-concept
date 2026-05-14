@@ -24,7 +24,7 @@ export function FerromagnetDemo({ figure }: Props) {
   const [M, setM] = useState(0);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     // Grid of domain cells. Each holds a direction angle.
@@ -69,7 +69,7 @@ export function FerromagnetDemo({ figure }: Props) {
     function draw() {
       const { B } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Domain evolution: at intervals, flip a few cells toward B
@@ -135,14 +135,14 @@ export function FerromagnetDemo({ figure }: Props) {
         }
       }
       // Domain boundary outline
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 3]);
       ctx.strokeRect(0, top, w, panelH);
       ctx.setLineDash([]);
 
       // Label
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('Domain map (pink = +M, blue = −M)', 8, top - 8);
@@ -156,14 +156,14 @@ export function FerromagnetDemo({ figure }: Props) {
       const cy_ax = (py0 + py1) / 2;
 
       // axes
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(px0, cy_ax); ctx.lineTo(px1, cy_ax);
       ctx.moveTo(cx_ax, py0); ctx.lineTo(cx_ax, py1);
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('M', cx_ax + 4, py0 + 10);
@@ -192,11 +192,11 @@ export function FerromagnetDemo({ figure }: Props) {
       // Current operating point
       const opX = xOf(B);
       const opY = yOf(M);
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
+      ctx.fillStyle = colors.accent;
       ctx.beginPath();
       ctx.arc(opX, opY, 5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = 'rgba(108,197,194,0.85)';
+      ctx.fillStyle = colors.teal;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText(`(B, M) = (${B.toFixed(2)}, ${M.toFixed(2)})`, px0, py1 - 4);

@@ -12,7 +12,7 @@ interface MaterialSelectProps {
 export function MaterialSelect({ value, onChange }: MaterialSelectProps) {
   return (
     <select
-      className="select-1 accent-brand"
+      className="select-base text-color-accent"
       value={value}
       onChange={e => onChange(e.target.value as MaterialKey)}
     >
@@ -22,3 +22,4 @@ export function MaterialSelect({ value, onChange }: MaterialSelectProps) {
     </select>
   );
 }
+

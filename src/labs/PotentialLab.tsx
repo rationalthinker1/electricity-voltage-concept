@@ -21,6 +21,7 @@ import { TryIt } from '@/components/TryIt';
 import { drawCharge } from '@/lib/canvasPrimitives';
 import { PHYS, pretty } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 const SLUG = 'potential';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -87,7 +88,7 @@ export default function PotentialLab() {
   }, [q1NC, q2NC, er, q1, q2, pA, pB, sizePx]);
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas } = info;
+    const { ctx, w, h, canvas, } = info;
     setSizePx({ W: w, H: h });
     let raf = 0;
     let dragging: 'q1' | 'q2' | 'pA' | 'pB' | null = null;
@@ -192,7 +193,7 @@ export default function PotentialLab() {
 
     function draw() {
       const st = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       // Equipotential heatmap (subtle)
@@ -261,7 +262,7 @@ export default function PotentialLab() {
             if (t) {
               ctx.beginPath();
               ctx.arc(t[0] * w, t[1] * h, 1.6, 0, Math.PI * 2);
-              ctx.fillStyle = 'rgba(255,107,42,0.95)';
+              ctx.fillStyle = getCanvasColors().accent;
               ctx.shadowColor = 'rgba(255,107,42,.6)';
               ctx.shadowBlur = 5;
               ctx.fill();
@@ -680,7 +681,7 @@ function drawProbe(
   ctx.lineWidth = 2;
   ctx.fillStyle = 'rgba(10,10,11,.9)';
   ctx.beginPath(); ctx.arc(cx, cy, 10, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-  ctx.fillStyle = '#ff6b2a';
+  ctx.fillStyle = getCanvasColors().accent;
   ctx.font = 'bold 11px JetBrains Mono';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';

@@ -48,7 +48,7 @@ export function SusceptibilityDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { log }; }, [log]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     function drawBars(bars: Bar[], x0: number, panelW: number, title: string) {
@@ -58,13 +58,13 @@ export function SusceptibilityDemo({ figure }: Props) {
       const usableH = baseY - top;
       const slot = panelW / bars.length;
 
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = colors.accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText(title, x0 + 4, top - 14);
 
       // Axis baseline
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.strokeStyle = colors.borderStrong;
       ctx.beginPath();
       ctx.moveTo(x0, baseY);
       ctx.lineTo(x0 + panelW, baseY);
@@ -119,7 +119,7 @@ export function SusceptibilityDemo({ figure }: Props) {
         for (let e = logMinExp; e <= logMaxExp; e++) {
           const frac = (e - logMinExp) / (logMaxExp - logMinExp);
           const y = baseY - frac * usableH;
-          ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+          ctx.strokeStyle = colors.border;
           ctx.beginPath();
           ctx.moveTo(x0, y);
           ctx.lineTo(x0 + panelW, y);
@@ -139,7 +139,7 @@ export function SusceptibilityDemo({ figure }: Props) {
     }
 
     function draw() {
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const pad = 36;
@@ -148,7 +148,7 @@ export function SusceptibilityDemo({ figure }: Props) {
       drawBars(MAGNETIC, pad * 2 + panelW, panelW, 'χₘ  (magnetic susceptibility)');
 
       // Divider
-      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      ctx.strokeStyle = colors.border;
       ctx.beginPath();
       ctx.moveTo(pad + panelW + pad / 2, 14);
       ctx.lineTo(pad + panelW + pad / 2, h - 14);
