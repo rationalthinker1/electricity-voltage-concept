@@ -53,7 +53,8 @@ export type ChapterSlug =
   | 'house-smart-retrofits'
   | 'house-outdoor-wet'
   | 'house-surge-grounding'
-  | 'ev-powertrain';
+  | 'ev-powertrain'
+  | 'fiber-optics';
 
 export type TrackId = 'practical' | 'bench' | 'rigor';
 
@@ -1141,6 +1142,40 @@ export const CHAPTERS: ChapterEntry[] = [
     timeToRead: 35,
     prereqs: ['motors', 'rectifiers-and-inverters', 'magnetically-coupled-circuits', 'modern-batteries', 'house-big-loads'],
     tracks: ['practical', 'bench'],
+  },
+  {
+    slug: 'fiber-optics',
+    number: 42,
+    title: 'Fiber-optic communication',
+    subtitle: 'How total internal reflection moves a petabit across the Pacific.',
+    blurb:
+      "The internet is mostly glass. Every transatlantic packet, every video stream, every backbone trunk on Earth travels as light pulses bouncing down hair-thin silica strands — single-mode fiber, 9 μm core, 0.2 dB/km loss, 80+ wavelengths multiplexed onto one pair. This chapter follows the physics from Snell's law to the ITU DWDM grid: critical angle and the numerical aperture; why 1550 nm is the global telecom wavelength; how chromatic and modal dispersion limit reach; what an EDFA does; and why one fiber pair can carry ~25 Tb/s today.",
+    relatedLabs: [],
+    sources: [
+      'kao-hockham-1966',
+      'kapron-keck-maurer-1970',
+      'miya-1979',
+      'itu-t-g652',
+      'itu-t-g694-1',
+      'agrawal-2010',
+      'saleh-teich-2007',
+      'hecht-2017',
+      'born-wolf-1999',
+      'desurvire-1987',
+      'codata-2018',
+    ],
+    punchline:
+      'A telecom fiber is a transparent rod whose only job is to keep light bouncing inside it — and the entire global internet rides on getting the bouncing angle right to within a tenth of a degree.',
+    objectives: [
+      'Derive the critical angle and numerical aperture of a step-index fiber from Snell\'s law.',
+      'Explain why 1310 nm and 1550 nm are the standard telecom windows.',
+      'Compute the link-budget reach of a fiber given launched power, loss, and receiver sensitivity.',
+      'Distinguish modal dispersion from chromatic dispersion and predict the dominant one for a given fiber type.',
+      'Describe the role of the erbium-doped fiber amplifier in long-haul WDM systems.',
+    ],
+    timeToRead: 30,
+    prereqs: ['em-waves', 'optics', 'materials'],
+    tracks: ['rigor', 'bench'],
   },
 ];
 
