@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from '@tanstack/react-router';
+import clsx from 'clsx';
 
 import { SourcesList } from './SourcesList';
 import { SyllabusCard } from './SyllabusCard';
@@ -80,66 +81,66 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
   }
 
   return (
-    <article className="chapter-page">
-      <div className="chapter-eyebrow">Chapter {chapter.number}</div>
+    <article className="article-page-1">
+      <div className="eyebrow-rule-1 accent-brand">Chapter {chapter.number}</div>
       <h1 dangerouslySetInnerHTML={{ __html: chapter.title }} />
-      <p className="chap-deck" dangerouslySetInnerHTML={{ __html: chapter.subtitle }} />
+      <p className="deck-1 accent-brand" dangerouslySetInnerHTML={{ __html: chapter.subtitle }} />
 
       <SyllabusCard chapter={chapter} />
 
-      <div className="narrative">{children}</div>
+      <div className="narrative-1">{children}</div>
 
       {labs.length > 0 && (
-        <aside className="related-labs">
-          <div className="related-labs-head">Go deeper · Related equation labs</div>
+        <aside className="section-narrow-2">
+          <div className="eyebrow-2 accent-brand">Go deeper · Related equation labs</div>
           {labs.map(l => (
             <Link
               key={l.slug}
               to="/labs/$slug"
               params={{ slug: l.slug }}
-              className="related-lab-link"
+              className="link-row-1"
             >
-              <span className="rl-name">{l.title}</span>
-              <span className="rl-eq" dangerouslySetInnerHTML={{ __html: l.formula }} />
-              <div className="rl-blurb">{l.blurb}</div>
+              <span className="link-row-title-1">{l.title}</span>
+              <span className="equation-inline-1 text-accent-current" dangerouslySetInnerHTML={{ __html: l.formula }} />
+              <div className="caption-2">{l.blurb}</div>
             </Link>
           ))}
         </aside>
       )}
 
-      <div className="related-labs">
+      <div className="section-narrow-2">
         <SourcesList ids={chapter.sources} />
       </div>
 
-      <div className="chap-complete">
+      <div className="action-card-1">
         <button
           type="button"
-          className={`chap-complete-btn ${isComplete ? 'is-complete' : ''}`}
+          className={clsx('button-solid-1 accent-brand', isComplete && 'is-complete accent-teal')}
           onClick={handleMarkComplete}
           disabled={isComplete}
           aria-pressed={isComplete}
         >
           {isComplete ? 'Marked complete ✓' : 'Mark this chapter complete'}
         </button>
-        <Link to="/me" className="chap-complete-link">View your progress →</Link>
+        <Link to="/me" className="link-1 accent-brand">View your progress →</Link>
       </div>
 
       {toast && (
-        <div className="chap-toast" role="status" aria-live="polite">{toast}</div>
+        <div className="toast-1 accent-teal" role="status" aria-live="polite">{toast}</div>
       )}
 
       {quiz && (
-        <div className="chapter-quiz-section">
+        <div className="section-narrow-2">
           {quizStatus.passed ? (
-            <div className="quiz-inline-passed">
-              <div className="quiz-inline-passed-body">
+            <div className="notice-1 accent-teal">
+              <div className="notice-body-1">
                 Quiz passed (<strong>{Math.round(quizStatus.bestScore * 100)}%</strong>).
                 You&rsquo;ve already met the mastery threshold for this chapter.
               </div>
               <Link
                 to="/quiz/$chapterSlug"
                 params={{ chapterSlug: chapter.slug }}
-                className="quiz-inline-link"
+                className="link-1 accent-teal"
               >
                 Retake quiz →
               </Link>
@@ -159,27 +160,27 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
         </div>
       )}
 
-      <nav className="chap-page-nav">
+      <nav className="pager-1 pager-narrow-1">
         {prev ? (
-          <Link to="/textbook/$chapterSlug" params={{ chapterSlug: prev.slug }}>
-            <div className="dir">← Chapter {prev.number}</div>
-            <div className="ch-title">{prev.title}</div>
+          <Link to="/textbook/$chapterSlug" params={{ chapterSlug: prev.slug }} className="pager-link-1">
+            <div className="pager-dir-1">← Chapter {prev.number}</div>
+            <div className="pager-title-2">{prev.title}</div>
           </Link>
         ) : (
-          <Link to="/">
-            <div className="dir">← Back</div>
-            <div className="ch-title">Contents</div>
+          <Link to="/" className="pager-link-1">
+            <div className="pager-dir-1">← Back</div>
+            <div className="pager-title-2">Contents</div>
           </Link>
         )}
         {next ? (
-          <Link to="/textbook/$chapterSlug" params={{ chapterSlug: next.slug }} className="next">
-            <div className="dir next">Chapter {next.number} →</div>
-            <div className="ch-title">{next.title}</div>
+          <Link to="/textbook/$chapterSlug" params={{ chapterSlug: next.slug }} className="pager-link-1 align-end-1">
+            <div className="pager-dir-1">Chapter {next.number} →</div>
+            <div className="pager-title-2">{next.title}</div>
           </Link>
         ) : (
-          <Link to="/reference" className="next">
-            <div className="dir next">Appendix →</div>
-            <div className="ch-title">Equation labs</div>
+          <Link to="/reference" className="pager-link-1 align-end-1">
+            <div className="pager-dir-1">Appendix →</div>
+            <div className="pager-title-2">Equation labs</div>
           </Link>
         )}
       </nav>

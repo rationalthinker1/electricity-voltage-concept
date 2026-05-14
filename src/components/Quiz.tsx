@@ -6,6 +6,7 @@ import {
   type ChangeEvent,
   type ReactNode,
 } from 'react';
+import clsx from 'clsx';
 
 import { Card, Banner } from '@/components/ui';
 import {
@@ -85,17 +86,17 @@ function gradeOne(q: QuizQuestion, given: string): GradedQuestion {
       ? describeChoice(q, q.correctIndex)
       : null;
   } else if (q.type === 'short-answer') {
-    if (given !== '') givenDisplay = <span className="quiz-given-text">{given}</span>;
+    if (given !== '') givenDisplay = <span className="text-mono-num">{given}</span>;
     const accepted = (q.acceptedAnswers ?? []).map(normalizeText);
     isCorrect = accepted.includes(normalizeText(given));
     correctDisplay = q.acceptedAnswers && q.acceptedAnswers[0]
-      ? <span className="quiz-correct-text">{q.acceptedAnswers[0]}</span>
+      ? <span className="text-mono-num text-accent-current accent-teal">{q.acceptedAnswers[0]}</span>
       : null;
   } else if (q.type === 'numeric') {
     const parsed = parseNumeric(given);
     if (parsed !== null) {
       givenDisplay = (
-        <span className="quiz-given-text">
+        <span className="text-mono-num">
           {parsed}{q.unit ? ` ${q.unit}` : ''}
         </span>
       );
@@ -107,7 +108,7 @@ function gradeOne(q: QuizQuestion, given: string): GradedQuestion {
       isCorrect = Math.abs(parsed - q.targetValue) <= allowed;
     }
     correctDisplay = q.targetValue !== undefined ? (
-      <span className="quiz-correct-text">
+      <span className="text-mono-num text-accent-current accent-teal">
         {q.targetValue}{q.unit ? ` ${q.unit}` : ''}
       </span>
     ) : null;
@@ -143,12 +144,12 @@ function QuestionInput({
   if (question.type === 'multiple-choice' || question.type === 'true-false') {
     const choices = question.choices ?? [];
     return (
-      <div className="quiz-choices" role="radiogroup">
+      <div className="choice-list-1" role="radiogroup">
         {choices.map((c, idx) => {
           const id = `${question.id}-opt-${idx}`;
           const checked = value === String(idx);
           return (
-            <label key={idx} htmlFor={id} className={`quiz-choice${checked ? ' is-selected' : ''}`}>
+            <label key={idx} htmlFor={id} className={clsx('choice-card-1', checked && 'is-selected accent-brand')}>
               <input
                 id={id}
                 type="radio"
@@ -158,7 +159,7 @@ function QuestionInput({
                 disabled={disabled}
                 onChange={() => onChange(String(idx))}
               />
-              <span className="quiz-choice-body">{c}</span>
+              <span className="grow-1">{c}</span>
             </label>
           );
         })}
@@ -167,17 +168,17 @@ function QuestionInput({
   }
   if (question.type === 'numeric') {
     return (
-      <div className="quiz-numeric">
+      <div className="inline-baseline-2">
         <input
           type="text"
           inputMode="decimal"
-          className="quiz-input"
+          className="field-input-1"
           value={value}
           disabled={disabled}
           placeholder="Enter a number"
           onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
         />
-        {question.unit && <span className="quiz-unit">{question.unit}</span>}
+        {question.unit && <span className="field-unit-1">{question.unit}</span>}
       </div>
     );
   }
@@ -185,7 +186,7 @@ function QuestionInput({
   return (
     <input
       type="text"
-      className="quiz-input quiz-input-text"
+      className="field-input-1 field-input-text-1"
       value={value}
       disabled={disabled}
       placeholder="Type your answer"
@@ -212,17 +213,21 @@ function QuestionCard({
   const status = graded ? (graded.isCorrect ? 'correct' : 'wrong') : 'pending';
   return (
     <Card
-      className={`quiz-question quiz-question-${status}`}
+      className={clsx(
+        'question-card-1',
+        status === 'correct' && 'question-correct-1',
+        status === 'wrong' && 'question-wrong-1',
+      )}
       header={
-        <div className="quiz-q-head">
-          <span className="quiz-q-num">Question {index + 1}</span>
+        <div className="split-header-2">
+          <span className="meta-1">Question {index + 1}</span>
           {graded && (
             <span
-              className={`quiz-q-status quiz-q-status-${status}`}
+              className={clsx('status-pill-1', status === 'correct' ? 'accent-teal' : 'accent-pink')}
               aria-label={graded.isCorrect ? 'Correct' : 'Incorrect'}
             >
               {graded.isCorrect ? ICON_CORRECT : ICON_WRONG}
-              <span className="quiz-q-status-label">
+              <span className="status-label-1">
                 {graded.isCorrect ? 'Correct' : 'Incorrect'}
               </span>
             </span>
@@ -230,7 +235,7 @@ function QuestionCard({
         </div>
       }
     >
-      <div className="quiz-q-prompt">{question.prompt}</div>
+      <div className="prompt-1">{question.prompt}</div>
       <QuestionInput
         question={question}
         value={value}
@@ -238,14 +243,14 @@ function QuestionCard({
         onChange={onChange}
       />
       {graded && (
-        <div className="quiz-q-feedback">
+        <div className="feedback-1">
           {!graded.isCorrect && graded.correctDisplay && (
-            <div className="quiz-q-correct">
-              <span className="quiz-feedback-label">Correct answer:</span>{' '}
-              <span className="quiz-feedback-value">{graded.correctDisplay}</span>
+            <div className="copy-1">
+              <span className="label-mono-1">Correct answer:</span>{' '}
+              <span className="text-accent-current accent-teal">{graded.correctDisplay}</span>
             </div>
           )}
-          <div className="quiz-q-explanation">{question.explanation}</div>
+          <div className="copy-muted-1">{question.explanation}</div>
         </div>
       )}
     </Card>
@@ -315,16 +320,16 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
   const passed = submitted ? submitted.score >= passingScore : false;
 
   return (
-    <section className="quiz" id={`quiz-${chapterSlug}`}>
-      {heading && <div className="quiz-heading">{heading}</div>}
+    <section className="quiz-stack-1" id={`quiz-${chapterSlug}`}>
+      {heading && <div className="title-4">{heading}</div>}
 
       {submitted ? (
         <Banner variant={passed ? 'success' : 'warn'}>
-          <div className="quiz-score-line">
+          <div className="copy-1">
             You scored <strong>{submitted.numCorrect}/{submitted.numTotal}</strong>{' '}
-            <span className="quiz-score-pct">({scorePct}%)</span>.
+            <span className="meta-1">({scorePct}%)</span>.
           </div>
-          <div className="quiz-score-sub">
+          <div className="copy-muted-2">
             {passed
               ? <>You passed — this chapter is marked complete. You can retake the quiz any time.</>
               : <>Need {passingPct}% to mark this chapter complete.</>}
@@ -332,16 +337,16 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
         </Banner>
       ) : status.passed ? (
         <Banner variant="success">
-          <div className="quiz-score-line">
+          <div className="copy-1">
             Previously passed at <strong>{Math.round(status.bestScore * 100)}%</strong>.{' '}
-            <span className="quiz-score-sub">
+            <span className="copy-muted-2">
               {status.attempts} attempt{status.attempts === 1 ? '' : 's'} so far.
             </span>
           </div>
         </Banner>
       ) : status.attempts > 0 ? (
         <Banner variant="info">
-          <div className="quiz-score-line">
+          <div className="copy-1">
             Best score so far: <strong>{Math.round(status.bestScore * 100)}%</strong>{' '}
             across {status.attempts} attempt{status.attempts === 1 ? '' : 's'}.
             You need {passingPct}% to mark this chapter complete.
@@ -349,14 +354,14 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
         </Banner>
       ) : (
         <Banner variant="info">
-          <div className="quiz-score-line">
+          <div className="copy-1">
             Mastery check &middot; {quiz.questions.length} questions.
             Need {passingPct}% to mark this chapter complete.
           </div>
         </Banner>
       )}
 
-      <div className="quiz-questions">
+      <div className="stack-1">
         {quiz.questions.map((q, i) => (
           <QuestionCard
             key={q.id}
@@ -370,15 +375,15 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
         ))}
       </div>
 
-      <div className="quiz-actions">
+      <div className="actions-end-1">
         {submitted ? (
-          <button type="button" className="quiz-btn quiz-btn-primary" onClick={handleRetry}>
+          <button type="button" className="button-solid-1 accent-brand" onClick={handleRetry}>
             Retry quiz
           </button>
         ) : (
           <button
             type="button"
-            className="quiz-btn quiz-btn-primary"
+            className="button-solid-1 accent-brand"
             onClick={handleSubmit}
             disabled={!allAnswered}
           >

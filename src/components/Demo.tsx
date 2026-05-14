@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import { Link } from '@tanstack/react-router';
+import clsx from 'clsx';
 
 interface DemoProps {
   /** Optional figure number, e.g. "Fig. 1.3" */
@@ -49,21 +50,21 @@ export function Demo({ figure, title, question, children, caption, deeperLab }: 
   }, []);
 
   return (
-    <figure ref={figureRef} className="demo">
-      <div className="demo-head">
-        <span className="demo-fig">{figure ?? 'Fig.'}</span>
-        <span className="demo-title">{title}</span>
+    <figure ref={figureRef} className="card-figure-1">
+      <div className="header-1">
+        <span className="kicker-1 accent-brand">{figure ?? 'Fig.'}</span>
+        <span className="title-5 grow-1">{title}</span>
         {deeperLab && (
-          <Link to="/labs/$slug" params={{ slug: deeperLab.slug }} className="demo-deeper">
+          <Link to="/labs/$slug" params={{ slug: deeperLab.slug }} className="link-1 accent-brand">
             {deeperLab.label} →
           </Link>
         )}
       </div>
-      <div className="demo-question">{question}</div>
-      <div className={shouldRenderBody ? 'demo-body' : 'demo-body demo-body-pending'}>
+      <div className="question-1 accent-brand surface-soft">{question}</div>
+      <div className={clsx('canvas-1', !shouldRenderBody && 'canvas-pending-1')}>
         {shouldRenderBody ? children : null}
       </div>
-      {caption && <figcaption className="demo-caption">{caption}</figcaption>}
+      {caption && <figcaption className="caption-1">{caption}</figcaption>}
     </figure>
   );
 }
@@ -73,7 +74,7 @@ interface DemoControlsProps {
 }
 /** Bottom strip of a demo card — small controls (slider, toggle) sit here. */
 export function DemoControls({ children }: DemoControlsProps) {
-  return <div className="demo-controls">{children}</div>;
+  return <div className="controls-1">{children}</div>;
 }
 
 interface MiniSliderProps {
@@ -92,16 +93,17 @@ interface MiniSliderProps {
 export function MiniSlider({ label, value, min, max, step = 0.01, format, onChange }: MiniSliderProps) {
   const pct = ((value - min) / (max - min)) * 100;
   return (
-    <label className="mini-slider">
-      <span className="mini-slider-label">{label}</span>
+    <label className="slider-1">
+      <span className="slider-label-1">{label}</span>
       <input
+        className="slider-input-1 demo-range"
         type="range"
         min={min} max={max} step={step}
         value={value}
         onChange={e => onChange(parseFloat(e.target.value))}
         style={{ ['--pct' as string]: `${pct}%` }}
       />
-      <span className="mini-slider-value">{format ? format(value) : value.toFixed(2)}</span>
+      <span className="slider-value-1 accent-brand">{format ? format(value) : value.toFixed(2)}</span>
     </label>
   );
 }
@@ -115,7 +117,7 @@ export function MiniToggle({ label, checked, onChange }: MiniToggleProps) {
   return (
     <button
       type="button"
-      className={`mini-toggle${checked ? ' on' : ''}`}
+      className={clsx('toggle-1', checked && 'toggle-active-1 accent-brand')}
       onClick={() => onChange(!checked)}
       aria-pressed={checked}
     >
@@ -131,10 +133,10 @@ interface MiniReadoutProps {
 }
 export function MiniReadout({ label, value, unit }: MiniReadoutProps) {
   return (
-    <div className="mini-readout">
-      <span className="mini-readout-label">{label}</span>
-      <span className="mini-readout-value">
-        {value}{unit && <span className="mini-readout-unit"> {unit}</span>}
+    <div className="readout-1">
+      <span className="readout-label-1">{label}</span>
+      <span className="readout-value-1 accent-brand">
+        {value}{unit && <span className="readout-unit-1"> {unit}</span>}
       </span>
     </div>
   );

@@ -172,7 +172,68 @@ stable URL; the chapter number can shift. Always look up by slug in
 
 ## 4. Design system
 
-### Color tokens (in `src/styles/main.css`)
+### Field Recipes styling model
+
+This project uses **Field Recipes**: a three-layer styling system where
+`src/styles/main.css` defines generalized design primitives, and components
+compose those primitives with Tailwind utilities.
+
+The dependency chain must stay:
+
+```txt
+:root variables
+  → Tailwind @theme utilities in main.css
+  → generalized recipe classes in @layer components
+  → React className strings plus Tailwind utilities for one-off layout
+```
+
+Only generalized, reusable base classes belong in `main.css`: cards,
+headings, labels, buttons, fields, disclosures, sections, stacks, accents,
+surfaces, and other patterns that can be reused across several components.
+Do not add a class to `main.css` just because one component needs a wrapper,
+grid, hero, nav, or special badge treatment.
+
+For reusable patterns, prefer compact recipe combinations:
+
+```tsx
+<figure className="card-figure-1 accent-brand">
+  <div className="header-1">
+    <span className="kicker-1 accent-brand">Fig.</span>
+    <span className="title-5 grow-1">...</span>
+  </div>
+</figure>
+```
+
+For component-specific structure, use Tailwind utilities directly in JSX:
+
+```tsx
+<nav className="fixed top-0 left-0 right-0 z-[998] flex items-center border-b border-border">
+  ...
+</nav>
+```
+
+Write class names inline in JSX. Do not hide static class strings in local
+objects such as `demoRecipe`, `styles`, or `classes`; that makes the markup
+harder to scan. Use `clsx` directly only when a class is conditional or
+derived from props/state.
+
+Recipes may be numbered (`card-1`, `title-5`, `slider-1`) or named variants
+(`accent-brand`, `accent-teal`, `surface-soft`, `surface-solid`). Numbered
+recipes define structure; named variants define tone/state.
+
+### Primitive standards
+
+| Standard | Tokens/classes | Purpose |
+|---|---|---|
+| Colors | `--color-1` through `--color-6` and theme utilities like `bg-color-3`, `text-color-4` | fixed primitive palette mapped to bg, elevated, card, text, dim text, accent |
+| Spacing | `--spacing-xs` through `--spacing-xxl` and utilities like `gap-lg`, `p-xl` | shared gaps, padding, margins |
+| Radius | `--radius-1` through `--radius-6`, `--radius-pill` and utilities like `rounded-3` | shared corners for controls/cards/pills |
+| Borders/shadows | `--border-1`, `--border-2`, `--shadow-1` through `--shadow-3` and utilities like `border-border-2`, `shadow-1` | shared depth and line strength |
+| Fonts | `--font-1` through `--font-4` and utilities like `font-1`, `font-3` | body, display, mono, math |
+| Structure recipes | `.card-*`, `.header-*`, `.title-*`, `.link-*`, `.slider-*`, `.toggle-*`, `.readout-*` | reusable shapes only; not one-component wrappers |
+| Variant recipes | `.accent-*`, `.surface-*`, `.card-accent-*`, `*-active-*` | reusable tone, emphasis, and state |
+
+### Color tokens
 
 ```css
 --bg:           #0a0a0b           /* warm near-black */
@@ -206,33 +267,48 @@ reuse pink/blue where you need additional differentiation.
 
 Loaded from Google Fonts via a single stylesheet link in `index.html`.
 
-### Tailwind component layer
+### Recipe layer rules
 
-`src/styles/main.css` declares a `@layer components` block that defines
-project-flavoured Tailwind class names. Use these in JSX as
-`className="panel-card chip chip-accent"` rather than re-rolling CSS.
-The existing component CSS (`cb-*`, `chapter-*`, `lab-*`, `ui-*`) is
-untouched; new components are free to mix Tailwind utilities with these
-shortcuts.
+`src/styles/main.css` declares `@theme` and `@layer components`. Recipe
+classes in `@layer components` should usually be written with Tailwind
+`@apply`, and those Tailwind utilities should resolve to variables defined in
+`:root`.
 
-| Class | What it gives you |
-|---|---|
-| `panel-card` | bg-card + border + 8px radius + 1rem pad (default container) |
-| `panel-elevated` | bg-elevated + stronger border + soft shadow (raised) |
-| `panel-subtle` | translucent + thin border (background panel) |
-| `chip` | mono-uppercase pill, tiny dim text |
-| `chip-accent` / `chip-teal` / `chip-pink` / `chip-blue` | recoloured chip |
-| `text-eyebrow` | small mono uppercase label |
-| `text-stat` | 1.6 rem mono numeric, tabular |
-| `text-display` | Fraunces italic 1.875 rem |
-| `text-mono-num` | mono + tabular-nums (for live readouts) |
-| `section-rule` | top border + spacing for a new section |
-| `cite-inline` | small accent-tinted citation badge (used by `<Cite>`) |
-| `kbd` | inline keyboard glyph with stepped bottom border |
+Good:
 
-For colour utilities, `@theme` exposes the existing tokens as
-`bg-bg-card`, `text-accent`, `border-border-strong`, etc. These swap
-automatically when `[data-theme="light"]` is set on `<html>`.
+```css
+.card-1 { @apply bg-color-3 border border-border-1 rounded-5 p-lg; }
+.header-1 { @apply flex flex-wrap items-baseline gap-lg px-[22px] py-lg bg-color-2; }
+.accent-teal {
+  --recipe-accent: var(--teal);
+  --recipe-accent-soft: var(--teal-soft);
+}
+```
+
+Good JSX:
+
+```tsx
+className="question-1 accent-brand surface-soft"
+className={clsx('toggle-1', checked && 'toggle-active-1 accent-brand')}
+className="max-w-[1480px] mx-auto px-[40px]" // one-off component layout
+```
+
+Avoid:
+
+- adding component-specific selectors to `main.css`
+- inventing a recipe when a one-off Tailwind utility string is clearer
+- local static class-name maps like `demoRecipe` when the classes can be inline
+- component-specific CSS selectors that duplicate recipes
+- adding raw colors, one-off spacing, or one-off font stacks outside `:root`
+- keeping legacy aliases after a component has migrated to Field Recipes
+
+Plain CSS is still acceptable for browser pseudo-elements, canvas/range input
+quirks, `details[open]` selectors, and other cases Tailwind cannot express
+cleanly.
+
+For colour utilities, `@theme` exposes the existing tokens as `bg-color-3`,
+`text-accent`, `border-border-2`, etc. These swap automatically when
+`[data-theme="light"]` is set on `<html>`.
 
 ---
 

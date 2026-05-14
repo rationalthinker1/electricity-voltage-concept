@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import clsx from 'clsx';
 
 interface PanelProps {
   title: string;
@@ -10,8 +11,8 @@ interface PanelProps {
 /** Controls or readouts panel. */
 export function Panel({ title, children, variant = 'inputs' }: PanelProps) {
   return (
-    <div className={variant === 'inputs' ? 'controls-panel' : 'readout-panel'}>
-      <div className="panel-title">{title}</div>
+    <div className={clsx('panel-card-1', variant === 'inputs' ? 'accent-brand' : 'accent-teal')}>
+      <div className="panel-title-1">{title}</div>
       {children}
     </div>
   );
@@ -35,11 +36,11 @@ interface LabGridProps {
 export function LabGrid({ canvas, legend, inputs, outputs }: LabGridProps) {
   return (
     <>
-      <div className="lab-canvas-wrap">
+      <div className="canvas-panel-1">
         {canvas}
-        {legend && <div className="legend">{legend}</div>}
+        {legend && <div className="legend-bar-1 accent-brand">{legend}</div>}
       </div>
-      <div className="lab-grid">
+      <div className="grid-split-1">
         <Panel title="Inputs" variant="inputs">{inputs}</Panel>
         <Panel title="Outputs" variant="outputs">{outputs}</Panel>
       </div>
@@ -55,10 +56,10 @@ interface LegendItemProps {
 }
 export function LegendItem({ swatchColor, dot, children, style }: LegendItemProps) {
   return (
-    <div className="legend-item" style={style}>
+    <div className="legend-item-1" style={style}>
       {swatchColor && (
         <span
-          className={dot ? 'swatch dot' : 'swatch'}
+          className={dot ? 'swatch-1 swatch-dot-1' : 'swatch-1'}
           style={{ background: swatchColor }}
         />
       )}

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import clsx from 'clsx';
 
 export type BannerVariant = 'info' | 'warn' | 'success' | 'danger';
 
@@ -17,16 +18,24 @@ export function Banner({
   onDismiss,
   className,
 }: BannerProps) {
-  const classes = ['ui-banner', `ui-banner-${variant}`];
-  if (className) classes.push(className);
   return (
-    <div className={classes.join(' ')} role={variant === 'danger' || variant === 'warn' ? 'alert' : 'status'}>
-      {icon !== undefined && <span className="ui-banner-icon" aria-hidden="true">{icon}</span>}
-      <div className="ui-banner-body">{children}</div>
+    <div
+      className={clsx(
+        'banner-1',
+        variant === 'info' && 'banner-info-1 accent-blue',
+        variant === 'warn' && 'banner-warn-1 accent-brand',
+        variant === 'success' && 'banner-success-1 accent-teal',
+        variant === 'danger' && 'banner-danger-1 accent-pink',
+        className,
+      )}
+      role={variant === 'danger' || variant === 'warn' ? 'alert' : 'status'}
+    >
+      {icon !== undefined && <span className="banner-icon-1" aria-hidden="true">{icon}</span>}
+      <div className="banner-body-1">{children}</div>
       {onDismiss && (
         <button
           type="button"
-          className="ui-banner-close"
+          className="button-icon-1"
           onClick={onDismiss}
           aria-label="Dismiss"
         >

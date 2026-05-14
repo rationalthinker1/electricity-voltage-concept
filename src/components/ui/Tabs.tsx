@@ -9,6 +9,7 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from 'react';
+import clsx from 'clsx';
 
 interface TabsContextValue {
   activeId: string;
@@ -69,14 +70,14 @@ export function Tabs({ value, defaultValue, onChange, children, className }: Tab
 
   return (
     <TabsContext.Provider value={ctx}>
-      <div className={['ui-tabs', className].filter(Boolean).join(' ')}>{children}</div>
+      <div className={clsx('tabs-1', className)}>{children}</div>
     </TabsContext.Provider>
   );
 }
 
 export function TabList({ children, className }: { children?: ReactNode; className?: string }) {
   return (
-    <div role="tablist" className={['ui-tablist', className].filter(Boolean).join(' ')}>
+    <div role="tablist" className={clsx('tab-list-1', className)}>
       {children}
     </div>
   );
@@ -112,7 +113,7 @@ export function Tab({ id, children, disabled }: TabProps) {
       disabled={disabled}
       onClick={() => ctx.setActive(id)}
       onKeyDown={onKeyDown}
-      className={['ui-tab', selected ? 'ui-tab-active' : ''].filter(Boolean).join(' ')}
+      className={clsx('tab-1', selected && 'tab-active-1 accent-brand')}
     >
       {children}
     </button>
@@ -134,7 +135,7 @@ export function TabPanel({ id, children }: TabPanelProps) {
       role="tabpanel"
       id={`${ctx.baseId}-panel-${id}`}
       aria-labelledby={`${ctx.baseId}-tab-${id}`}
-      className="ui-tabpanel"
+      className="tab-panel-1"
     >
       {children}
     </div>

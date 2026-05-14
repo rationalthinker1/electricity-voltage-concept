@@ -9,28 +9,28 @@ interface PageNavProps {
 
 export function PageNav({ prev, next }: PageNavProps) {
   return (
-    <div className="page-nav reveal in">
+    <div className="pager-1 reveal in">
       {prev ? (
-        <Link to="/labs/$slug" params={{ slug: prev.slug }}>
-          <div className="dir">← Lab {prev.number}</div>
-          <div className="title">{prev.title}</div>
+        <Link to="/labs/$slug" params={{ slug: prev.slug }} className="pager-link-1">
+          <div className="pager-dir-1">← Lab {prev.number}</div>
+          <div className="pager-title-1">{prev.title}</div>
         </Link>
       ) : (
-        <Link to="/">
-          <div className="dir">← Back</div>
-          <div className="title">Contents</div>
+        <Link to="/" className="pager-link-1">
+          <div className="pager-dir-1">← Back</div>
+          <div className="pager-title-1">Contents</div>
         </Link>
       )}
 
       {next ? (
-        <Link to="/labs/$slug" params={{ slug: next.slug }} className="next">
-          <div className="dir next">Lab {next.number} →</div>
-          <div className="title">{next.title}</div>
+        <Link to="/labs/$slug" params={{ slug: next.slug }} className="pager-link-1 align-end-1">
+          <div className="pager-dir-1">Lab {next.number} →</div>
+          <div className="pager-title-1">{next.title}</div>
         </Link>
       ) : (
-        <Link to="/" className="next">
-          <div className="dir next">Finish →</div>
-          <div className="title">Back to contents</div>
+        <Link to="/" className="pager-link-1 align-end-1">
+          <div className="pager-dir-1">Finish →</div>
+          <div className="pager-title-1">Back to contents</div>
         </Link>
       )}
     </div>

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import clsx from 'clsx';
 
 export interface ReadoutProps {
   /** Greek letter or variable name shown in italic before the label */
@@ -22,43 +23,32 @@ export interface ReadoutProps {
 export function Readout({ sym, label, valueHTML, value, unit, highlight }: ReadoutProps) {
   if (highlight) {
     return (
-      <div
-        className="readout"
-        style={{
-          background: 'var(--accent-soft)',
-          margin: '8px -28px',
-          padding: '14px 28px',
-          border: 'none',
-        }}
-      >
-        <span className="ro-label" style={{ color: 'var(--accent)' }}>
-          <span className="sym" style={{ color: 'var(--accent)' }}>{sym}</span>
+      <div className="readout-row-1 readout-highlight-1 accent-brand">
+        <span className="readout-label-2">
+          <span className="readout-symbol-1">{sym}</span>
           {label}
         </span>
-        <span
-          className="ro-value"
-          style={{ color: 'var(--accent)', fontSize: 16 }}
-        >
+        <span className="readout-number-1 readout-number-lg-1">
           {valueHTML
             ? <span dangerouslySetInnerHTML={{ __html: valueHTML }} />
             : value ?? '—'}
-          {unit && <span className="unit"> {unit}</span>}
+          {unit && <span className="readout-unit-2"> {unit}</span>}
         </span>
       </div>
     );
   }
 
   return (
-    <div className="readout">
-      <span className="ro-label">
-        <span className="sym">{sym}</span>
+    <div className={clsx('readout-row-1 accent-teal')}>
+      <span className="readout-label-2">
+        <span className="readout-symbol-1">{sym}</span>
         {label}
       </span>
-      <span className="ro-value">
+      <span className="readout-number-1">
         {valueHTML
           ? <span dangerouslySetInnerHTML={{ __html: valueHTML }} />
           : value ?? '—'}
-        {unit && <span className="unit"> {unit}</span>}
+        {unit && <span className="readout-unit-2"> {unit}</span>}
       </span>
     </div>
   );

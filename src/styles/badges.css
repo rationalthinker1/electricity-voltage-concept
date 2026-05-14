@@ -4,25 +4,25 @@
  * amber/accent (rare), pink (epic).
  * ──────────────────────────────────────────────────────────────── */
 
-.badge-shelf {
+.achievement-shelf {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
-.badge-shelf-meta {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+.achievement-meta {
+  font-family: var(--font-3), ui-monospace, monospace;
   font-size: 12px;
-  color: var(--text-dim);
+  color: var(--color-5);
   letter-spacing: 0.04em;
 }
 
-.badge-shelf-meta strong {
-  color: var(--text);
+.achievement-meta strong {
+  color: var(--color-4);
   font-weight: 500;
 }
 
-.badge-grid {
+.achievement-grid {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -32,34 +32,34 @@
 }
 
 @media (max-width: 720px) {
-  .badge-grid {
+  .achievement-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.badge-tile {
+.achievement-card {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   padding: 14px 10px 12px;
-  border-radius: 10px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  border-radius: var(--radius-6);
+  background: var(--card-1-bg);
+  border: 1px solid var(--border-1);
   transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
   cursor: default;
   outline: none;
 }
 
-.badge-tile:hover,
-.badge-tile:focus-visible {
+.achievement-card:hover,
+.achievement-card:focus-visible {
   transform: translateY(-1px);
-  border-color: var(--border-strong);
+  border-color: var(--border-2);
   background: var(--bg-card-hover);
 }
 
-.badge-icon {
+.achievement-icon {
   position: relative;
   width: 52px;
   height: 52px;
@@ -67,16 +67,16 @@
   place-items: center;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-1);
 }
 
-.badge-glyph {
-  font-family: 'STIX Two Text', 'JetBrains Mono', ui-monospace, monospace;
+.achievement-glyph {
+  font-family: var(--font-4), var(--font-3), ui-monospace, monospace;
   font-size: 24px;
   line-height: 1;
 }
 
-.badge-lock {
+.achievement-lock {
   position: absolute;
   right: -4px;
   bottom: -4px;
@@ -86,28 +86,28 @@
   place-items: center;
   border-radius: 50%;
   background: var(--bg);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-2);
   font-size: 11px;
   color: var(--text-muted);
 }
 
-.badge-body {
+.achievement-body {
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.badge-name {
-  font-family: 'DM Sans', system-ui, sans-serif;
+.achievement-name {
+  font-family: var(--font-1), system-ui, sans-serif;
   font-size: 13px;
   font-weight: 500;
-  color: var(--text);
+  color: var(--color-4);
   line-height: 1.2;
 }
 
-.badge-rarity-label {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+.achievement-rarity-label {
+  font-family: var(--font-3), ui-monospace, monospace;
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -115,53 +115,53 @@
 }
 
 /* ─── Earned states (per rarity) ─── */
-.badge-earned.badge-rarity-common .badge-icon {
+.achievement-earned.achievement-rarity-common .achievement-icon {
   background: rgba(236, 235, 229, 0.08);
   border-color: rgba(236, 235, 229, 0.25);
-  color: var(--text);
+  color: var(--color-4);
 }
-.badge-earned.badge-rarity-common .badge-rarity-label { color: var(--text-dim); }
+.achievement-earned.achievement-rarity-common .achievement-rarity-label { color: var(--color-5); }
 
-.badge-earned.badge-rarity-uncommon .badge-icon {
+.achievement-earned.achievement-rarity-uncommon .achievement-icon {
   background: rgba(108, 197, 194, 0.12);
   border-color: rgba(108, 197, 194, 0.45);
   color: var(--teal);
   box-shadow: 0 0 12px rgba(108, 197, 194, 0.22);
 }
-.badge-earned.badge-rarity-uncommon .badge-rarity-label { color: var(--teal); }
+.achievement-earned.achievement-rarity-uncommon .achievement-rarity-label { color: var(--teal); }
 
-.badge-earned.badge-rarity-rare .badge-icon {
+.achievement-earned.achievement-rarity-rare .achievement-icon {
   background: var(--accent-soft);
   border-color: var(--accent);
   color: var(--accent);
   box-shadow: 0 0 16px var(--accent-glow);
 }
-.badge-earned.badge-rarity-rare .badge-rarity-label { color: var(--accent); }
+.achievement-earned.achievement-rarity-rare .achievement-rarity-label { color: var(--accent); }
 
-.badge-earned.badge-rarity-epic .badge-icon {
+.achievement-earned.achievement-rarity-epic .achievement-icon {
   background: rgba(255, 59, 110, 0.14);
   border-color: var(--pink);
   color: var(--pink);
   box-shadow: 0 0 18px rgba(255, 59, 110, 0.4);
 }
-.badge-earned.badge-rarity-epic .badge-rarity-label { color: var(--pink); }
+.achievement-earned.achievement-rarity-epic .achievement-rarity-label { color: var(--pink); }
 
 /* ─── Locked state (uniform greyscale) ─── */
-.badge-locked .badge-icon {
+.achievement-locked .achievement-icon {
   filter: grayscale(1);
   opacity: 0.55;
 }
 
-.badge-locked .badge-glyph {
+.achievement-locked .achievement-glyph {
   color: var(--text-muted);
 }
 
-.badge-locked .badge-name {
-  color: var(--text-dim);
+.achievement-locked .achievement-name {
+  color: var(--color-5);
 }
 
 /* ─── Tooltip (CSS-only) ─── */
-.badge-tooltip {
+.achievement-tooltip {
   position: absolute;
   bottom: calc(100% + 8px);
   left: 50%;
@@ -169,11 +169,11 @@
   width: max-content;
   max-width: 240px;
   padding: 10px 12px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-strong);
-  border-radius: 8px;
+  background: var(--color-2);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-5);
   font-size: 12px;
-  color: var(--text);
+  color: var(--color-4);
   opacity: 0;
   pointer-events: none;
   transition: opacity 140ms ease, transform 140ms ease;
@@ -182,32 +182,32 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
-.badge-tile:hover .badge-tooltip,
-.badge-tile:focus-visible .badge-tooltip {
+.achievement-card:hover .achievement-tooltip,
+.achievement-card:focus-visible .achievement-tooltip {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
 
-.badge-tt-name {
+.achievement-tooltip-name {
   font-weight: 500;
   margin-bottom: 4px;
 }
 
-.badge-tt-desc {
-  color: var(--text-dim);
+.achievement-tooltip-desc {
+  color: var(--color-5);
   margin-bottom: 4px;
   line-height: 1.45;
 }
 
-.badge-tt-flavor {
-  font-family: 'Fraunces', Georgia, serif;
+.achievement-tooltip-flavor {
+  font-family: var(--font-2), Georgia, serif;
   font-style: italic;
-  color: var(--text);
+  color: var(--color-4);
   line-height: 1.45;
 }
 
-.badge-tt-locked {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+.achievement-tooltip-locked {
+  font-family: var(--font-3), ui-monospace, monospace;
   font-size: 11px;
   color: var(--text-muted);
   letter-spacing: 0.04em;

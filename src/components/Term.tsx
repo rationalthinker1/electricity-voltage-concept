@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import clsx from 'clsx';
 
 interface TermProps {
   /** Short definition that appears in the popover. */
@@ -36,7 +37,10 @@ export function Term({ def, children }: TermProps) {
   return (
     <span
       ref={ref}
-      className={`term${open ? ' open' : ''}`}
+      className={clsx(
+        'group relative cursor-help text-color-4 border-b border-dotted border-accent pb-px outline-none hover:text-accent focus:text-accent accent-brand',
+        open && 'text-accent',
+      )}
       onClick={() => setOpen(o => !o)}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
@@ -48,7 +52,14 @@ export function Term({ def, children }: TermProps) {
       aria-describedby={open ? id : undefined}
     >
       {children}
-      <span className="term-popover" id={id} role="tooltip">
+      <span
+        className={clsx(
+          'absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 w-max max-w-[320px] py-md px-lg bg-color-3 border border-border-2 border-l-[3px] border-l-accent rounded-2 font-1 not-italic font-normal text-[13.5px] leading-[1.5] text-color-5 tracking-normal z-[50] opacity-0 invisible transition-opacity pointer-events-none shadow-1 max-[600px]:max-w-[240px] max-[600px]:text-[12.5px] group-hover:opacity-100 group-hover:visible group-focus:opacity-100 group-focus:visible',
+          open && 'opacity-100 visible',
+        )}
+        id={id}
+        role="tooltip"
+      >
         {def}
       </span>
     </span>

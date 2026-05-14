@@ -43,11 +43,11 @@ export function LabShell({
     <>
       <Hero lab={lab} />
 
-      <div className="lab">
-        <div className="lab-inner">
-          <div className="lab-header">
-            <span className="title">Interactive Lab · {labSubtitle}</span>
-            <span className="id">/ {labId}</span>
+      <div className="relative py-[80px] px-0 border-y border-border bg-color-2">
+        <div className="max-w-[1480px] mx-auto px-[40px] relative">
+          <div className="flex justify-between items-baseline flex-wrap gap-md mb-[30px] pb-[20px] border-b border-border">
+            <span className="label-mono-2">Interactive Lab · {labSubtitle}</span>
+            <span className="meta-1">/ {labId}</span>
           </div>
           {legend}
           {labContent}
@@ -66,7 +66,7 @@ export function LabShell({
         <div className="colophon">
           <span>Field · Theory · Lab {lab.number}</span>
           <span>
-            <a href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>↑ Back to contents</a>
+            <a href="/" className="text-text-muted no-underline">↑ Back to contents</a>
           </span>
         </div>
       </footer>

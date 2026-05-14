@@ -20,17 +20,17 @@ interface CaseStudyProps {
  */
 export function CaseStudy({ tag, title, summary, children, specs }: CaseStudyProps) {
   return (
-    <article className="case-study">
-      <header className="case-head">
-        {tag && <span className="case-tag">{tag}</span>}
-        <h3 className="case-title">{title}</h3>
-        {summary && <p className="case-summary">{summary}</p>}
+    <article className="article-card-1 card-accent-brand">
+      <header className="article-header-1">
+        {tag && <span className="chip chip-accent chip-sm">{tag}</span>}
+        <h3 className="title-4 article-title-1">{title}</h3>
+        {summary && <p className="summary-1">{summary}</p>}
       </header>
-      <div className="case-body">{children}</div>
+      <div className="richtext-1">{children}</div>
       {specs && specs.length > 0 && (
-        <dl className="case-specs">
+        <dl className="spec-grid-1">
           {specs.map((s, i) => (
-            <div className="case-spec-row" key={i}>
+            <div className="spec-row-1" key={i}>
               <dt>{s.label}</dt>
               <dd>{s.value}</dd>
             </div>
@@ -54,10 +54,10 @@ interface CaseStudiesProps {
  */
 export function CaseStudies({ intro, children }: CaseStudiesProps) {
   return (
-    <section className="case-studies">
-      <div className="case-studies-head">Case studies</div>
-      {intro && <p className="case-studies-intro">{intro}</p>}
-      <div className="case-studies-list">{children}</div>
+    <section className="section-narrow-1">
+      <div className="eyebrow-rule-1 accent-brand">Case studies</div>
+      {intro && <p className="intro-1">{intro}</p>}
+      <div className="stack-2">{children}</div>
     </section>
   );
 }

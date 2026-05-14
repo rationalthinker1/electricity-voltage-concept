@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import clsx from 'clsx';
 
 export type StatAccent = 'accent' | 'teal' | 'pink' | 'blue' | undefined;
 
@@ -19,17 +20,14 @@ export function Stat({
   accent,
   className,
 }: StatProps) {
-  const classes = ['ui-stat'];
-  if (accent) classes.push(`ui-stat-${accent}`);
-  if (className) classes.push(className);
   return (
-    <div className={classes.join(' ')}>
-      <div className="ui-stat-label">{label}</div>
-      <div className="ui-stat-value-row">
-        <span className="ui-stat-value">{value}</span>
-        {unit !== undefined && <span className="ui-stat-unit">{unit}</span>}
+    <div className={clsx('stat-card-1', accent && `accent-${accent === 'accent' ? 'brand' : accent}`, className)}>
+      <div className="label-mono-1">{label}</div>
+      <div className="inline-baseline-1">
+        <span className="stat-value-1">{value}</span>
+        {unit !== undefined && <span className="stat-unit-1">{unit}</span>}
       </div>
-      {delta !== undefined && <div className="ui-stat-delta">{delta}</div>}
+      {delta !== undefined && <div className="meta-1">{delta}</div>}
     </div>
   );
 }

@@ -48,26 +48,29 @@ export function SyllabusCard({ chapter }: SyllabusCardProps) {
     .filter((c): c is ChapterEntry => !!c);
 
   return (
-    <section className="chapter-syllabus-card" aria-label="Chapter syllabus">
-      <header className="chapter-syllabus-card-head">
-        <span className="chapter-syllabus-card-eyebrow">Syllabus</span>
-        <span className="chapter-syllabus-card-chapter">
+    <section
+      className="my-[28px] mx-0 mb-[36px] py-[20px] px-[22px] border border-border-1 border-l-2 border-l-accent-soft rounded-4 bg-[linear-gradient(180deg,rgba(255,255,255,.015),rgba(255,255,255,.005))] max-[600px]:py-lg max-[600px]:px-lg max-[600px]:pb-[18px]"
+      aria-label="Chapter syllabus"
+    >
+      <header className="flex items-baseline gap-md flex-wrap mb-[10px] pb-[10px] border-b border-border">
+        <span className="kicker-1 accent-brand">Syllabus</span>
+        <span className="meta-1">
           Chapter {chapter.number} · {chapter.title}
         </span>
       </header>
 
       {punchline && (
-        <p className="chapter-syllabus-card-punchline">{punchline}</p>
+        <p className="summary-1">{punchline}</p>
       )}
 
-      <div className="chapter-syllabus-card-stats">
+      <div className="inline-cluster-1">
         {typeof timeToRead === 'number' && (
           <Stat label="Time to read" value={`~${timeToRead}`} unit="min" />
         )}
         {tracks && tracks.length > 0 && (
-          <div className="chapter-syllabus-card-tracks">
-            <div className="syllabus-stat-label">Tracks</div>
-            <div className="chapter-syllabus-card-badge-row">
+          <div className="stack-0">
+            <div className="label-mono-1">Tracks</div>
+            <div className="flex flex-wrap gap-y-[6px] gap-x-sm">
               {tracks.map(t => (
                 <Pill key={t} variant={TRACK_TONE[t]}>{TRACKS[t].name}</Pill>
               ))}
@@ -77,9 +80,9 @@ export function SyllabusCard({ chapter }: SyllabusCardProps) {
       </div>
 
       {prereqChapters.length > 0 && (
-        <div className="chapter-syllabus-card-prereqs">
-          <div className="syllabus-stat-label">Prerequisites</div>
-          <div className="chapter-syllabus-card-badge-row">
+        <div className="stack-1">
+          <div className="label-mono-1">Prerequisites</div>
+          <div className="flex flex-wrap gap-y-[6px] gap-x-sm">
             {prereqChapters.map(c => (
               <Link
                 key={c.slug}
@@ -97,8 +100,8 @@ export function SyllabusCard({ chapter }: SyllabusCardProps) {
       )}
 
       {objectives && objectives.length > 0 && (
-        <div className="chapter-syllabus-card-objectives">
-          <div className="syllabus-stat-label">
+        <div className="list-copy-1">
+          <div className="label-mono-1">
             After this chapter you will be able to:
           </div>
           <ul>

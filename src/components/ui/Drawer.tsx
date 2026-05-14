@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode, type MouseEvent } from 'react';
+import clsx from 'clsx';
 
 export interface DrawerProps {
   open: boolean;
@@ -49,16 +50,16 @@ export function Drawer({
   return (
     <dialog
       ref={dialogRef}
-      className={['ui-drawer', `ui-drawer-${side}`, className].filter(Boolean).join(' ')}
+      className={clsx('drawer-1', side === 'right' ? 'drawer-right-1' : 'drawer-bottom-1', className)}
       onClick={onBackdropClick}
       aria-label={typeof title === 'string' ? title : 'Drawer'}
     >
-      <div className="ui-drawer-panel">
-        <header className="ui-drawer-header">
-          <div className="ui-drawer-title">{title}</div>
-          <button type="button" className="ui-drawer-close" onClick={onClose} aria-label="Close drawer">×</button>
+      <div className="drawer-panel-1">
+        <header className="drawer-header-1">
+          <div className="title-4">{title}</div>
+          <button type="button" className="button-icon-1" onClick={onClose} aria-label="Close drawer">×</button>
         </header>
-        <div className="ui-drawer-body">{children}</div>
+        <div className="drawer-body-1">{children}</div>
       </div>
     </dialog>
   );

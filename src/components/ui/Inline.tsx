@@ -36,5 +36,5 @@ export function Inline({
     justifyContent: justifyMap[justify],
     ...style,
   };
-  return <div className={['ui-inline', className].filter(Boolean).join(' ')} style={merged}>{children}</div>;
+  return <div className={['inline-box-1', className].filter(Boolean).join(' ')} style={merged}>{children}</div>;
 }
