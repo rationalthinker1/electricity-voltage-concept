@@ -330,3 +330,75 @@
   }
   .me-recent-when, .me-status { grid-column: 2; justify-self: start; }
 }
+
+/* ─── Reviews-due & Badges-section additions ─── */
+.me-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.me-section-head .me-section-title { margin-bottom: 0; }
+
+.me-section-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.me-section-link:hover { border-bottom-color: var(--accent); }
+
+.me-section-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+}
+
+.me-reviews {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.me-review-row {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.me-review-row:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-strong);
+}
+
+.me-review-interval {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--teal);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 700px) {
+  .me-review-row {
+    grid-template-columns: 50px 1fr;
+    row-gap: 4px;
+  }
+  .me-review-interval { grid-column: 2; justify-self: start; }
+}

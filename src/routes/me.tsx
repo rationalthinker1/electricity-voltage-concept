@@ -10,11 +10,19 @@ import {
 } from '@/textbook/data/chapters';
 import {
   getProgress,
+  getDueReviews,
+  getUpcomingReviews,
+  REVIEW_INTERVALS_DAYS,
   onProgressChange,
   resetProgress,
   type ProgressState,
+  type ReviewSchedule,
 } from '@/lib/progress';
+import { BadgeShelf } from '@/components/BadgeShelf';
+import { BADGES } from '@/textbook/data/badges';
 import '@/styles/me.css';
+import '@/styles/badges.css';
+import '@/styles/review.css';
 
 export const Route = createFileRoute('/me')({
   component: MePage,
@@ -98,6 +106,22 @@ function MePage() {
       .filter(x => !!x.p)
       .sort((a, b) => (b.p!.lastOpenedAt ?? 0) - (a.p!.lastOpenedAt ?? 0))
       .slice(0, 5);
+  }, [progress]);
+
+  const reviewPreview = useMemo(() => {
+    void progress;
+    const due = getDueReviews();
+    const upcoming = getUpcomingReviews();
+    const totalScheduled = due.length + upcoming.length;
+    return {
+      list: due.slice(0, 5) as ReviewSchedule[],
+      dueCount: due.length,
+      totalScheduled,
+    };
+  }, [progress]);
+
+  const badgeEarned = useMemo(() => {
+    return BADGES.filter(b => b.earned(progress)).length;
   }, [progress]);
 
   const tableRows = useMemo(() => {
@@ -198,6 +222,48 @@ function MePage() {
             );
           })}
         </div>
+      </section>
+
+      <section className="me-section">
+        <div className="me-section-head">
+          <h2 className="me-section-title">Reviews due</h2>
+          <Link to="/review" className="me-section-link">See all reviews</Link>
+        </div>
+        {reviewPreview.totalScheduled === 0 ? (
+          <p className="me-empty-inline">
+            No reviews scheduled yet. Pass a chapter quiz to start your queue.
+          </p>
+        ) : reviewPreview.list.length === 0 ? (
+          <p className="me-empty-inline">
+            Nothing due right now — {reviewPreview.totalScheduled} review{reviewPreview.totalScheduled === 1 ? '' : 's'} scheduled later.
+          </p>
+        ) : (
+          <ul className="me-reviews">
+            {reviewPreview.list.map((r) => {
+              const ch = CHAPTERS.find(c => c.slug === r.slug);
+              if (!ch) return null;
+              const days = REVIEW_INTERVALS_DAYS[r.intervalIdx] ?? 1;
+              const label = days === 1 ? '1-day' : days === 7 ? '1-week' : days === 30 ? '1-month' : days === 90 ? '3-month' : `${days}-day`;
+              return (
+                <li key={r.slug}>
+                  <Link to="/review" className="me-review-row">
+                    <span className="me-recent-num">Ch.{ch.number}</span>
+                    <span className="me-recent-title">{ch.title}</span>
+                    <span className="me-review-interval">{label} review</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
+
+      <section className="me-section">
+        <div className="me-section-head">
+          <h2 className="me-section-title">Badges</h2>
+          <span className="me-section-meta">{badgeEarned} of {BADGES.length} earned</span>
+        </div>
+        <BadgeShelf />
       </section>
 
       <section className="me-section">

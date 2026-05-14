@@ -3,11 +3,15 @@ import { Link } from '@tanstack/react-router';
 
 import { SourcesList } from './SourcesList';
 import { SyllabusCard } from './SyllabusCard';
+import { Quiz } from './Quiz';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './ui';
 import { type ChapterEntry, getChapterNeighbors } from '@/textbook/data/chapters';
 import { MANIFEST } from '@/labs/data/manifest';
+import { getQuiz, getPassingScore } from '@/textbook/data/quizzes';
 import {
   addTimeSpent,
   getProgress,
+  getQuizStatus,
   markChapterCompleted,
   markChapterOpened,
   onProgressChange,
@@ -27,6 +31,17 @@ interface ChapterShellProps {
 export function ChapterShell({ chapter, children }: ChapterShellProps) {
   const { prev, next } = getChapterNeighbors(chapter.slug);
   const labs = MANIFEST.filter(l => chapter.relatedLabs.includes(l.slug));
+  const quiz = getQuiz(chapter.slug);
+  const passingScore = getPassingScore(chapter.slug);
+
+  // Track quiz status reactively so the inline banner refreshes after attempts.
+  const [quizStatus, setQuizStatus] = useState(() => getQuizStatus(chapter.slug, passingScore));
+  useEffect(() => {
+    setQuizStatus(getQuizStatus(chapter.slug, passingScore));
+    return onProgressChange(() => {
+      setQuizStatus(getQuizStatus(chapter.slug, passingScore));
+    });
+  }, [chapter.slug, passingScore]);
 
   // Mark this chapter as "opened" on mount + on slug change. Accumulate
   // time-on-page into localStorage; bumps streak inside the helper.
@@ -111,6 +126,37 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
 
       {toast && (
         <div className="chap-toast" role="status" aria-live="polite">{toast}</div>
+      )}
+
+      {quiz && (
+        <div className="chapter-quiz-section">
+          {quizStatus.passed ? (
+            <div className="quiz-inline-passed">
+              <div className="quiz-inline-passed-body">
+                Quiz passed (<strong>{Math.round(quizStatus.bestScore * 100)}%</strong>).
+                You&rsquo;ve already met the mastery threshold for this chapter.
+              </div>
+              <Link
+                to="/quiz/$chapterSlug"
+                params={{ chapterSlug: chapter.slug }}
+                className="quiz-inline-link"
+              >
+                Retake quiz →
+              </Link>
+            </div>
+          ) : (
+            <Accordion>
+              <AccordionItem id="mastery-quiz">
+                <AccordionTrigger>
+                  Mastery check &middot; {quiz.questions.length} questions
+                </AccordionTrigger>
+                <AccordionContent>
+                  <Quiz chapterSlug={chapter.slug} />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          )}
+        </div>
       )}
 
       <nav className="chap-page-nav">
