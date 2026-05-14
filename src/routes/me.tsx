@@ -20,7 +20,6 @@ import {
 } from '@/lib/progress';
 import { BadgeShelf } from '@/components/BadgeShelf';
 import { BADGES } from '@/textbook/data/badges';
-import '@/styles/me.css';
 
 export const Route = createFileRoute('/me')({
   component: MePage,
@@ -55,6 +54,13 @@ function chapterStatus(slug: ChapterSlug, progress: ProgressState): 'none' | 'op
   if (!p) return 'none';
   return p.status === 'completed' ? 'completed' : 'opened';
 }
+
+// Reusable inline class fragments
+const META = 'font-3 text-[11px] tracking-[.12em] uppercase text-text-muted';
+const META_SM = 'font-3 text-[10px] tracking-[.12em] uppercase text-text-muted';
+const SECTION_TITLE = 'font-2 italic font-light text-[26px] text-color-4 m-0 mb-md';
+const CARD = 'bg-color-3 border border-border-1';
+const STATUS_PILL = 'font-3 text-[10px] tracking-[.12em] uppercase py-[3px] px-sm rounded-pill border border-border-2 text-text-muted whitespace-nowrap';
 
 function MePage() {
   const [progress, setProgress] = useState<ProgressState>(() => getProgress());
@@ -169,51 +175,57 @@ function MePage() {
   const isEmpty = stats.opened === 0;
 
   return (
-    <section className="me-page">
-      <header className="me-header">
-        <div className="me-eyebrow">Field · Theory · Your transcript</div>
-        <h1>Where you are in the <em>book</em>.</h1>
-        <p className="me-lede">
+    <section className="pt-[140px] pb-[80px] px-[40px] max-w-[1100px] mx-auto max-[760px]:pt-[120px] max-[760px]:pb-[60px] max-[760px]:px-[18px]">
+      <header className="mb-[28px]">
+        <div className="font-3 text-[11px] text-text-muted uppercase tracking-[.18em] mb-md">Field · Theory · Your transcript</div>
+        <h1 className="font-2 italic font-light text-[52px] leading-[1.05] tracking-[-.02em] m-0 mb-[14px] text-color-4 max-[760px]:text-[36px] [&_em]:italic [&_em]:text-accent [&_em]:font-normal">Where you are in the <em>book</em>.</h1>
+        <p className="font-1 text-[15px] text-color-5 leading-[1.6] max-w-[640px]">
           All progress data lives only in this browser. Open another browser or
           clear site data and you start fresh.
         </p>
       </header>
 
       {isEmpty ? (
-        <div className="me-empty">
+        <div className={`${CARD} rounded-5 p-lg my-[24px] font-1 text-color-5`}>
           <p>You haven't opened any chapters yet. {' '}
-            <Link to="/" className="me-empty-link">Pick one from the contents</Link>{' '}
+            <Link to="/" className="text-accent no-underline border-b border-dotted border-accent">Pick one from the contents</Link>{' '}
             or {' '}
-            <Link to="/tracks" className="me-empty-link">choose a track</Link>{' '}
+            <Link to="/tracks" className="text-accent no-underline border-b border-dotted border-accent">choose a track</Link>{' '}
             to start.
           </p>
         </div>
       ) : null}
 
-      <div className="me-stats">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-lg my-[32px]">
         <Stat label="Opened" value={`${stats.opened}`} sub={`of ${CHAPTERS.length}`} />
         <Stat label="Completed" value={`${stats.completed}`} sub={`of ${CHAPTERS.length}`} />
         <Stat label="Time on book" value={formatDuration(stats.totalTimeMs)} />
         <Stat label="Day streak" value={`${stats.streak}`} sub={stats.streak === 1 ? 'day' : 'days'} />
       </div>
 
-      <section className="me-section">
-        <h2 className="me-section-title">Active tracks</h2>
-        <div className="me-tracks">
+      <section className="my-[40px]">
+        <h2 className={SECTION_TITLE}>Active tracks</h2>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-lg">
           {trackStats.map(t => {
             const pct = t.total ? Math.round((t.completed / t.total) * 100) : 0;
             return (
               <Link
                 key={t.id}
                 to="/tracks"
-                className={`me-track ${t.touched ? 'me-track-touched' : 'me-track-untouched'}`}
-                style={{ ['--me-accent' as string]: `var(--${t.accent})` } as React.CSSProperties}
+                className={`block no-underline ${CARD} rounded-6 p-lg transition-colors hover:bg-bg-card-hover ${t.touched ? '' : 'opacity-65'}`}
+                style={{
+                  ['--me-accent' as string]: `var(--${t.accent})`,
+                  borderTop: '3px solid var(--me-accent)',
+                } as React.CSSProperties}
               >
-                <div className="me-track-name">{t.name}</div>
-                <div className="me-track-bar">
-                  <div className="me-track-bar-fill" style={{ width: `${pct}%` }} />
+                <div className="font-1 text-[14px] text-color-4 mb-[10px]">{t.name}</div>
+                <div className="w-full h-[6px] bg-color-2 rounded-pill overflow-hidden border border-border-1">
+                  <div
+                    className="h-full transition-[width] duration-300"
+                    style={{ width: `${pct}%`, background: 'var(--me-accent)' }}
+                  />
                 </div>
-                <div className="me-track-meta">
+                <div className={`${META_SM} mt-sm`}>
                   {t.completed}/{t.total} · {pct}%
                 </div>
               </Link>
@@ -222,21 +234,26 @@ function MePage() {
         </div>
       </section>
 
-      <section className="me-section">
-        <div className="me-section-head">
-          <h2 className="me-section-title">Reviews due</h2>
-          <Link to="/review" className="me-section-link">See all reviews</Link>
+      <section className="my-[40px]">
+        <div className="flex items-baseline justify-between gap-md mb-[14px]">
+          <h2 className={`${SECTION_TITLE} mb-0`}>Reviews due</h2>
+          <Link
+            to="/review"
+            className="font-3 text-[11px] tracking-[.08em] uppercase text-accent no-underline border-b border-solid border-transparent hover:border-accent"
+          >
+            See all reviews
+          </Link>
         </div>
         {reviewPreview.totalScheduled === 0 ? (
-          <p className="me-empty-inline">
+          <p className="font-1 text-text-muted italic">
             No reviews scheduled yet. Pass a chapter quiz to start your queue.
           </p>
         ) : reviewPreview.list.length === 0 ? (
-          <p className="me-empty-inline">
+          <p className="font-1 text-text-muted italic">
             Nothing due right now — {reviewPreview.totalScheduled} review{reviewPreview.totalScheduled === 1 ? '' : 's'} scheduled later.
           </p>
         ) : (
-          <ul className="me-reviews">
+          <ul className="list-none m-0 p-0 grid gap-[6px]">
             {reviewPreview.list.map((r) => {
               const ch = CHAPTERS.find(c => c.slug === r.slug);
               if (!ch) return null;
@@ -244,10 +261,13 @@ function MePage() {
               const label = days === 1 ? '1-day' : days === 7 ? '1-week' : days === 30 ? '1-month' : days === 90 ? '3-month' : `${days}-day`;
               return (
                 <li key={r.slug}>
-                  <Link to="/review" className="me-review-row">
-                    <span className="me-recent-num">Ch.{ch.number}</span>
-                    <span className="me-recent-title">{ch.title}</span>
-                    <span className="me-review-interval">{label} review</span>
+                  <Link
+                    to="/review"
+                    className={`grid grid-cols-[60px_1fr_auto] gap-md items-center py-md px-md ${CARD} rounded-5 no-underline text-color-4 hover:bg-bg-card-hover hover:border-border-2 max-[700px]:grid-cols-[50px_1fr] max-[700px]:gap-y-[4px]`}
+                  >
+                    <span className={META}>Ch.{ch.number}</span>
+                    <span>{ch.title}</span>
+                    <span className="font-3 text-[11px] text-teal tracking-[.06em] uppercase max-[700px]:col-start-2 max-[700px]:justify-self-start">{label} review</span>
                   </Link>
                 </li>
               );
@@ -256,43 +276,57 @@ function MePage() {
         )}
       </section>
 
-      <section className="me-section">
-        <div className="me-section-head">
-          <h2 className="me-section-title">Badges</h2>
-          <span className="me-section-meta">{badgeEarned} of {BADGES.length} earned</span>
+      <section className="my-[40px]">
+        <div className="flex items-baseline justify-between gap-md mb-[14px]">
+          <h2 className={`${SECTION_TITLE} mb-0`}>Badges</h2>
+          <span className="font-3 text-[11px] tracking-[.08em] text-color-5">{badgeEarned} of {BADGES.length} earned</span>
         </div>
         <BadgeShelf />
       </section>
 
-      <section className="me-section">
-        <h2 className="me-section-title">Recent chapters</h2>
+      <section className="my-[40px]">
+        <h2 className={SECTION_TITLE}>Recent chapters</h2>
         {recent.length === 0 ? (
-          <p className="me-empty-inline">Nothing opened yet.</p>
+          <p className="font-1 text-text-muted italic">Nothing opened yet.</p>
         ) : (
-          <ul className="me-recent">
-            {recent.map(({ c, p }) => (
-              <li key={c.slug}>
-                <Link to="/textbook/$chapterSlug" params={{ chapterSlug: c.slug }} className="me-recent-row">
-                  <span className="me-recent-num">Ch.{c.number}</span>
-                  <span className="me-recent-title">{c.title}</span>
-                  <span className={`me-status me-status-${chapterStatus(c.slug, progress)}`}>
-                    {chapterStatus(c.slug, progress) === 'completed' ? '✓ complete' :
-                     chapterStatus(c.slug, progress) === 'opened'    ? '◐ opened'  : '○ none'}
-                  </span>
-                  <span className="me-recent-when">{formatDate(p?.lastOpenedAt)}</span>
-                </Link>
-              </li>
-            ))}
+          <ul className="list-none p-0 m-0 flex flex-col gap-[4px]">
+            {recent.map(({ c, p }) => {
+              const st = chapterStatus(c.slug, progress);
+              const statusClass =
+                st === 'completed' ? 'text-teal border-teal' :
+                st === 'opened'    ? 'text-accent border-accent' : '';
+              return (
+                <li key={c.slug}>
+                  <Link
+                    to="/textbook/$chapterSlug"
+                    params={{ chapterSlug: c.slug }}
+                    className={`grid grid-cols-[60px_1fr_auto_auto] gap-lg items-center py-md px-[14px] border border-border-1 bg-color-3 rounded-5 no-underline text-color-4 font-1 text-[14px] transition-colors hover:bg-bg-card-hover max-[700px]:grid-cols-[50px_1fr] max-[700px]:gap-y-[6px]`}
+                  >
+                    <span className={META}>Ch.{c.number}</span>
+                    <span>{c.title}</span>
+                    <span className={`${STATUS_PILL} ${statusClass} max-[700px]:col-start-2 max-[700px]:justify-self-start`}>
+                      {st === 'completed' ? '✓ complete' :
+                       st === 'opened'    ? '◐ opened'  : '○ none'}
+                    </span>
+                    <span className={`font-3 text-[11px] text-text-muted max-[700px]:col-start-2 max-[700px]:justify-self-start`}>{formatDate(p?.lastOpenedAt)}</span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         )}
       </section>
 
-      <section className="me-section">
-        <div className="me-table-head">
-          <h2 className="me-section-title">All chapters</h2>
-          <div className="me-filter">
+      <section className="my-[40px]">
+        <div className="flex justify-between items-center mb-sm flex-wrap gap-md">
+          <h2 className={SECTION_TITLE}>All chapters</h2>
+          <div className={META}>
             <label>Filter:&nbsp;</label>
-            <select value={filter} onChange={e => setFilter(e.target.value as FilterStatus)}>
+            <select
+              value={filter}
+              onChange={e => setFilter(e.target.value as FilterStatus)}
+              className="bg-color-3 border border-border-2 text-color-4 py-[4px] px-md font-3 text-[11px] rounded-3"
+            >
               <option value="all">all</option>
               <option value="none">not started</option>
               <option value="opened">opened</option>
@@ -300,15 +334,25 @@ function MePage() {
             </select>
           </div>
         </div>
-        <div className="me-table-wrap">
-          <table className="me-table">
+        <div className={`${CARD} rounded-6 overflow-hidden`}>
+          <table className="w-full border-collapse [&_tr:last-child_td]:border-b-0">
             <thead>
               <tr>
-                <th onClick={() => toggleSort('number')} className="sortable">#</th>
-                <th onClick={() => toggleSort('title')} className="sortable">Chapter</th>
-                <th onClick={() => toggleSort('status')} className="sortable">Status</th>
-                <th onClick={() => toggleSort('lastOpened')} className="sortable">Last opened</th>
-                <th onClick={() => toggleSort('time')} className="sortable">Time</th>
+                {([
+                  ['number', '#'],
+                  ['title', 'Chapter'],
+                  ['status', 'Status'],
+                  ['lastOpened', 'Last opened'],
+                  ['time', 'Time'],
+                ] as [SortKey, string][]).map(([key, label]) => (
+                  <th
+                    key={key}
+                    onClick={() => toggleSort(key)}
+                    className="text-left font-3 text-[10px] text-text-muted uppercase tracking-[.12em] py-md px-[14px] border-b border-border bg-color-2 cursor-pointer select-none hover:text-accent"
+                  >
+                    {label}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
@@ -318,16 +362,20 @@ function MePage() {
             </tbody>
           </table>
           {tableRows.length === 0 && (
-            <p className="me-empty-inline" style={{ padding: 18 }}>No chapters match this filter.</p>
+            <p className="font-1 text-text-muted italic" style={{ padding: 18 }}>No chapters match this filter.</p>
           )}
         </div>
       </section>
 
-      <section className="me-danger">
-        <button type="button" className="me-reset" onClick={handleReset}>
+      <section className={`mt-[60px] p-xl border border-border-1 rounded-6 bg-color-3 text-center`}>
+        <button
+          type="button"
+          onClick={handleReset}
+          className="bg-transparent border border-pink text-pink py-md px-[22px] rounded-5 font-3 text-[12px] uppercase tracking-[.12em] cursor-pointer transition-colors hover:bg-pink hover:text-bg"
+        >
           Reset all progress
         </button>
-        <p className="me-reset-note">
+        <p className={`${META_SM} mt-md mb-0`}>
           Clears localStorage. There is no server copy.
         </p>
       </section>
@@ -337,10 +385,10 @@ function MePage() {
 
 function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="me-stat">
-      <div className="me-stat-label">{label}</div>
-      <div className="me-stat-value">{value}</div>
-      {sub && <div className="me-stat-sub">{sub}</div>}
+    <div className="bg-color-3 border border-border-1 rounded-6 p-lg">
+      <div className="font-3 text-[11px] text-text-muted uppercase tracking-[.12em] mb-sm">{label}</div>
+      <div className="font-2 text-[42px] font-light text-color-4 leading-none">{value}</div>
+      {sub && <div className="font-3 text-[11px] text-text-muted mt-[4px] tracking-[.12em] uppercase">{sub}</div>}
     </div>
   );
 }
@@ -353,22 +401,25 @@ function ChapterRow({
   lastOpened: number;
   timeMs: number;
 }) {
+  const statusClass =
+    status === 'completed' ? 'text-teal border-teal' :
+    status === 'opened'    ? 'text-accent border-accent' : '';
   return (
     <tr>
-      <td className="me-cell-num">{chapter.number}</td>
-      <td className="me-cell-title">
+      <td className="py-md px-[14px] border-b border-border font-3 text-[11px] text-text-muted">{chapter.number}</td>
+      <td className="py-md px-[14px] border-b border-border font-1 text-[13px] [&_a]:text-color-4 [&_a]:no-underline [&_a]:border-b [&_a]:border-dotted [&_a]:border-transparent [&_a:hover]:border-accent [&_a:hover]:text-accent">
         <Link to="/textbook/$chapterSlug" params={{ chapterSlug: chapter.slug }}>
           {chapter.title}
         </Link>
       </td>
-      <td>
-        <span className={`me-status me-status-${status}`}>
+      <td className="py-md px-[14px] border-b border-border">
+        <span className={`${STATUS_PILL} ${statusClass}`}>
           {status === 'completed' ? '✓ complete' :
            status === 'opened'    ? '◐ opened'  : '○ none'}
         </span>
       </td>
-      <td className="me-cell-date">{formatDate(lastOpened || undefined)}</td>
-      <td className="me-cell-time">{formatDuration(timeMs)}</td>
+      <td className="py-md px-[14px] border-b border-border font-3 text-[11px] text-text-muted">{formatDate(lastOpened || undefined)}</td>
+      <td className="py-md px-[14px] border-b border-border font-3 text-[11px] text-text-muted">{formatDuration(timeMs)}</td>
     </tr>
   );
 }
