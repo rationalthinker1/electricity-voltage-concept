@@ -4,6 +4,7 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 
 import { routeTree } from './routeTree.gen';
 import './styles/main.css';
+import './styles/ui.css';
 
 const router = createRouter({ routeTree, defaultPreload: 'intent' });
 
