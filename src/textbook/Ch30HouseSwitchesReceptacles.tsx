@@ -20,6 +20,7 @@ import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { getChapter } from './data/chapters';
+import { ThreeWaySwitchBuilderDemo } from './demos/ThreeWaySwitchBuilder';
 
 export default function Ch30HouseSwitchesReceptacles() {
   const chapter = getChapter('house-switches-receptacles')!;
@@ -316,6 +317,26 @@ export default function Ch30HouseSwitchesReceptacles() {
         switch. Electrically the two topologies are identical — only the path the cables physically take through the
         wall differs.
       </p>
+      <p>
+        It is much easier to <em>see</em> the three-way wiring than to read about it, and easier still to misroute a
+        wire yourself once and learn what goes wrong than to memorise the diagram. The demo below exposes the ten
+        terminals of a minimal three-way circuit — power-hot, power-neutral, the common and two travellers of each
+        switch, and the bulb's hot and neutral screws — and lets you connect them with click-to-wire. Your job is to
+        produce the canonical 3-way topology: hot into the first switch's common, traveller-to-traveller between the
+        two switches, second switch's common out to the bulb, neutral from the source straight to the bulb. Five wires
+        total.
+      </p>
+      <p>
+        Once the wiring is right, the bulb lights when both switches point at the same traveller; flipping either one
+        toggles the lamp. The two common beginner mistakes are flagged in red as you make them. The first is wiring both
+        of switch 1's travellers to the <em>same</em> screw on switch 2 — that collapses the SPDT into a single-pole
+        switch and the second switch loses its half of the XOR. The second is routing the neutral through one of the
+        switches — switches interrupt only the hot, and a neutral that detours through a switch leaves the lamp
+        de-energised whenever the switch happens to break the wrong leg.
+      </p>
+
+      <ThreeWaySwitchBuilderDemo />
+
       <p>
         For three or more switches controlling a single load — a stairwell with a switch at the top, middle, and
         bottom — the two endpoints remain three-ways and any switch in between becomes a{' '}

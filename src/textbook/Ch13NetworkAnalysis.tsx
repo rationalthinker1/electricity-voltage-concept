@@ -14,6 +14,7 @@ import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { PredictThenObserve } from '@/components/PredictThenObserve';
 import { MeshCurrentSolverDemo } from './demos/MeshCurrentSolver';
 import { NodalSolverDemo } from './demos/NodalSolver';
 import { WheatstoneBridgeDemo } from './demos/WheatstoneBridge';
@@ -707,7 +708,33 @@ export default function Ch13NetworkAnalysis() {
         {' '}at the max-power point is exactly 50 %<Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} /><Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <MaxPowerTransferDemo />
+      <PredictThenObserve
+        storageKey="ch13-max-power-transfer"
+        question={
+          <>
+            Maximum power is delivered to the load when the load resistance equals the source resistance. At that exact
+            operating point, the <em>efficiency</em> (power-into-load divided by power-from-source) is …
+          </>
+        }
+        spec={{
+          kind: 'multiple-choice',
+          options: [
+            { id: 'a', label: '25%' },
+            { id: 'b', label: '50%' },
+            { id: 'c', label: '75%' },
+            { id: 'd', label: '100%' },
+          ],
+          correctIds: ['b'],
+        }}
+        reveal={() => (
+          <>
+            Half the dissipated power goes into the source's own internal resistance, half into the load — which is why
+            power systems are never run at the maximum-power-transfer point.
+          </>
+        )}
+      >
+        <MaxPowerTransferDemo />
+      </PredictThenObserve>
 
       <p>
         Slide R<sub>L</sub> through R<sub>S</sub> and the power curve peaks

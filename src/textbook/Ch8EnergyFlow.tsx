@@ -19,6 +19,7 @@ import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { PredictThenObserve } from '@/components/PredictThenObserve';
 import { BatteryBulbFieldsDemo } from './demos/BatteryBulbFields';
 import { BCirculationDemo } from './demos/BCirculation';
 import { EAxialFieldDemo } from './demos/EAxialField';
@@ -192,7 +193,32 @@ export default function Ch8EnergyFlow() {
         construction. No approximation. No "in the limit of." It is the same quantity, written in two different ways<Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <PoyntingInflowDemo />
+      <PredictThenObserve
+        storageKey="ch8-poynting-inflow"
+        question={
+          <>
+            A battery powers a bulb through two copper wires. The energy that ends up lighting the bulb travels primarily through …
+          </>
+        }
+        spec={{
+          kind: 'multiple-choice',
+          options: [
+            { id: 'a', label: 'The copper of the wires themselves' },
+            { id: 'b', label: 'The empty space (field) alongside the wires' },
+            { id: 'c', label: 'The air inside the bulb' },
+            { id: 'd', label: 'Inside the filament, end to end' },
+          ],
+          correctIds: ['b'],
+        }}
+        reveal={() => (
+          <>
+            This is the entire chapter's punchline. The Poynting vector S = E × B / µ₀ points <em>into</em> the wire from
+            the surrounding field, not along the wire's length.
+          </>
+        )}
+      >
+        <PoyntingInflowDemo />
+      </PredictThenObserve>
 
       <p>
         The "P_surf / P_VI = 1.000" readout in the demo above is the entire chapter compressed into one number. Move any

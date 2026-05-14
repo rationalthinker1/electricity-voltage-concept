@@ -18,6 +18,7 @@ import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { PredictThenObserve } from '@/components/PredictThenObserve';
 import { ConductorRedistributionDemo } from './demos/ConductorRedistribution';
 import { EquipotentialsDemo } from './demos/Equipotentials';
 import { FieldArrowsDemo } from './demos/FieldArrows';
@@ -56,7 +57,27 @@ export default function Ch1WhatIsElectricity() {
         carry the inversion in your head.)
       </p>
 
-      <TwoChargesDemo />
+      <PredictThenObserve
+        storageKey="ch1-two-charges"
+        question={
+          <>
+            Two positive point charges of <strong>1 nC</strong> each sit <strong>1 cm</strong> apart in air. The force
+            between them is closest to:
+          </>
+        }
+        spec={{
+          kind: 'multiple-choice',
+          options: [
+            { id: 'a', label: '9 µN (micronewtons)' },
+            { id: 'b', label: '9 mN (millinewtons)' },
+            { id: 'c', label: '9 N (newtons)' },
+            { id: 'd', label: '9 kN (kilonewtons)' },
+          ],
+          correctIds: ['a'],
+        }}
+      >
+        <TwoChargesDemo />
+      </PredictThenObserve>
 
       <p>
         The force between two{' '}
@@ -129,7 +150,26 @@ export default function Ch1WhatIsElectricity() {
         in physics tested this precisely.
       </p>
 
-      <InverseSquareDemo />
+      <PredictThenObserve
+        storageKey="ch1-inverse-square"
+        question={
+          <>
+            If you <strong>double</strong> the distance between two point charges, the force between them …
+          </>
+        }
+        spec={{
+          kind: 'multiple-choice',
+          options: [
+            { id: 'a', label: 'Doubles' },
+            { id: 'b', label: 'Halves' },
+            { id: 'c', label: 'Drops to one quarter' },
+            { id: 'd', label: 'Drops to one eighth' },
+          ],
+          correctIds: ['c'],
+        }}
+      >
+        <InverseSquareDemo />
+      </PredictThenObserve>
 
       <TryIt
         tag="Try 1.2"

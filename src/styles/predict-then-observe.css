@@ -1,0 +1,197 @@
+/* ─── Predict-then-observe wrapper ───────────────────────────────────── */
+
+.pto-card {
+  margin: 28px 0 18px;
+}
+
+.pto-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pto-header-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.pto-question {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--text);
+  margin: 0 0 16px;
+}
+
+.pto-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: none;
+  padding: 0;
+  margin: 0 0 16px;
+}
+
+.pto-legend-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.pto-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--bg-elevated);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--text-dim);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+.pto-option:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+  background: var(--bg-card-hover);
+}
+
+.pto-option.is-selected {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+.pto-option input[type='radio'] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  margin: 0;
+  flex-shrink: 0;
+  position: relative;
+  cursor: pointer;
+  background: transparent;
+}
+
+.pto-option input[type='radio']:checked {
+  border-color: var(--accent);
+}
+
+.pto-option input[type='radio']:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.pto-option-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.pto-short {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+}
+
+.pto-short-input {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  padding: 10px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  border-radius: 3px;
+  transition: border-color 0.15s ease;
+}
+
+.pto-short-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.pto-short-unit {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.pto-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.pto-submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pto-confirm {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--text-dim);
+  margin: 0 0 14px;
+}
+
+.pto-answer-strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.pto-reveal-copy {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14.5px;
+  color: var(--text-dim);
+  line-height: 1.55;
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  background: var(--bg-elevated);
+  border-left: 2px solid var(--teal);
+  border-radius: 0 3px 3px 0;
+}
+
+.pto-revealed {
+  margin: 18px 0;
+}
+
+.pto-annotation {
+  margin-bottom: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+}
+
+.pto-annotation-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.pto-annotation-tail {
+  color: var(--text-dim);
+}

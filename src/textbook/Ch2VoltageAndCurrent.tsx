@@ -16,6 +16,7 @@ import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { PredictThenObserve } from '@/components/PredictThenObserve';
 import { CursorEFieldOnWireDemo } from './demos/CursorEFieldOnWire';
 import { DriftVelocityDemo } from './demos/DriftVelocity';
 import { SwitchAndBulbDemo } from './demos/SwitchAndBulb';
@@ -244,7 +245,26 @@ export default function Ch2VoltageAndCurrent() {
         ten hours. For a forty-foot extension cord at the same current, more than a hundred.
       </p>
 
-      <DriftVelocityDemo />
+      <PredictThenObserve
+        storageKey="ch2-drift-velocity"
+        question={
+          <>
+            An individual electron inside a typical 1-amp copper wire is drifting along at roughly what speed?
+          </>
+        }
+        spec={{
+          kind: 'multiple-choice',
+          options: [
+            { id: 'a', label: '100 m/s (about a fast car)' },
+            { id: 'b', label: '1 m/s (a slow walk)' },
+            { id: 'c', label: '1 mm/s (almost imperceptible)' },
+            { id: 'd', label: '0.03 mm/s (slower than a snail)' },
+          ],
+          correctIds: ['d'],
+        }}
+      >
+        <DriftVelocityDemo />
+      </PredictThenObserve>
 
       <p>
         And yet the lamp at the far end of that extension cord turns on the instant you flip the switch. Whatever is
@@ -338,7 +358,26 @@ export default function Ch2VoltageAndCurrent() {
         with tungsten ions, dumping kinetic energy as heat. (6) The filament heats to ~2800 K and glows.
       </p>
 
-      <SwitchAndBulbDemo />
+      <PredictThenObserve
+        storageKey="ch2-switch-bulb"
+        question={
+          <>
+            You close the switch on a circuit with a long wire and a bulb at the far end. How long until the bulb lights?
+          </>
+        }
+        spec={{
+          kind: 'multiple-choice',
+          options: [
+            { id: 'a', label: 'Essentially instantly (~5 nanoseconds per metre of wire)' },
+            { id: 'b', label: 'A fraction of a second (perceptible delay)' },
+            { id: 'c', label: 'Several seconds, while the electrons travel from switch to bulb' },
+            { id: 'd', label: 'It depends entirely on the bulb resistance' },
+          ],
+          correctIds: ['a'],
+        }}
+      >
+        <SwitchAndBulbDemo />
+      </PredictThenObserve>
 
       <p>
         Notice what is not in that list. No electron travels from the switch to the bulb. No charge "flows through" the

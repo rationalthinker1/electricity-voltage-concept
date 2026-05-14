@@ -16,6 +16,7 @@ import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { RCFilterBodeDemo } from './demos/RCFilterBode';
 import { RLCBandpassDemo } from './demos/RLCBandpass';
+import { FilterDesignerDemo } from './demos/FilterDesigner';
 import { OpAmpInvertingDemo } from './demos/OpAmpInverting';
 import { OpAmpIntegratorDemo } from './demos/OpAmpIntegrator';
 import { TransmissionLineReflectionDemo } from './demos/TransmissionLineReflection';
@@ -144,6 +145,19 @@ export default function Ch13FiltersOpAmpsTLines() {
       </p>
 
       <RLCBandpassDemo />
+
+      <p>
+        A working filter designer faces a concrete problem: pick R, L, C (or
+        equivalently the topology) to scrub the unwanted frequencies and pass
+        the wanted ones. The build-it demo below pins a 1 kHz audio tone and
+        50 / 60 Hz mains hum onto the same input, then asks you to choose a
+        topology and tune component values until the audio survives and the
+        hum is gone. Switch between RC low-pass, RC high-pass, RLC band-pass,
+        and band-reject (notch); watch the Bode plot, time-domain output, and
+        residual-hum readout update live.
+      </p>
+
+      <FilterDesignerDemo />
 
       <p>
         Higher-order filters are built by stacking simple sections. A Butterworth filter is

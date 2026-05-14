@@ -12,6 +12,7 @@ import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { PredictThenObserve } from '@/components/PredictThenObserve';
 import { KirchhoffsLawsDemo } from './demos/KirchhoffsLaws';
 import { MultimeterProbeDemo } from './demos/MultimeterProbe';
 import { RCTransientDemo } from './demos/RCTransient';
@@ -278,7 +279,27 @@ export default function Ch12CircuitsAndAC() {
         through R follows the mirror curve, decaying as <InlineMath>e<sup>−t/τ</sup></InlineMath>.
       </p>
 
-      <RCTransientDemo />
+      <PredictThenObserve
+        storageKey="ch12-rc-transient"
+        question={
+          <>
+            A capacitor charges through a resistor toward a fixed supply voltage. After exactly one time-constant{' '}
+            <em>τ = RC</em>, it has reached roughly what fraction of its final voltage?
+          </>
+        }
+        spec={{
+          kind: 'multiple-choice',
+          options: [
+            { id: 'a', label: 'About 37%' },
+            { id: 'b', label: 'About 50%' },
+            { id: 'c', label: 'About 63%' },
+            { id: 'd', label: 'About 95%' },
+          ],
+          correctIds: ['c'],
+        }}
+      >
+        <RCTransientDemo />
+      </PredictThenObserve>
 
       <p>
         Try R = 1 kΩ and C = 220 µF: τ = 0.22 s — visibly slow on the demo plot. Drop C to 10 µF
@@ -344,7 +365,26 @@ export default function Ch12CircuitsAndAC() {
         the total U<sub>C</sub> + U<sub>L</sub> stays constant<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <LCOscillationDemo />
+      <PredictThenObserve
+        storageKey="ch12-lc-oscillation"
+        question={
+          <>
+            An <em>ideal</em> LC tank (no resistance) is started with the capacitor fully charged. What happens?
+          </>
+        }
+        spec={{
+          kind: 'multiple-choice',
+          options: [
+            { id: 'a', label: 'It discharges once through the inductor and comes to rest' },
+            { id: 'b', label: 'It oscillates at ω = 1/√(LC) indefinitely' },
+            { id: 'c', label: 'It oscillates briefly, then decays to zero' },
+            { id: 'd', label: 'The current grows without bound' },
+          ],
+          correctIds: ['b'],
+        }}
+      >
+        <LCOscillationDemo />
+      </PredictThenObserve>
 
       <p>
         With L = 10 mH and C = 100 µF, f₀ ≈ 159 Hz. Scale C down to 100 pF and f₀ jumps to about
@@ -413,7 +453,26 @@ export default function Ch12CircuitsAndAC() {
         of energy for every cycle's worth dissipated.
       </p>
 
-      <RLCResonanceDemo />
+      <PredictThenObserve
+        storageKey="ch12-rlc-resonance"
+        question={
+          <>
+            A <em>series</em> RLC circuit is driven by an AC source at its resonant frequency. The current is …
+          </>
+        }
+        spec={{
+          kind: 'multiple-choice',
+          options: [
+            { id: 'a', label: 'Maximised (impedance is at its minimum, R)' },
+            { id: 'b', label: 'Minimised (impedance is at its maximum)' },
+            { id: 'c', label: 'Exactly zero' },
+            { id: 'd', label: '90° out of phase with the voltage' },
+          ],
+          correctIds: ['a'],
+        }}
+      >
+        <RLCResonanceDemo />
+      </PredictThenObserve>
 
       <TryIt
         tag="Try 12.3"

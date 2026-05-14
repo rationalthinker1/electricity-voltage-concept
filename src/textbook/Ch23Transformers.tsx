@@ -23,6 +23,7 @@ import { ImpedanceReflectionDemo } from './demos/ImpedanceReflection';
 import { CoreLossesDemo } from './demos/CoreLosses';
 import { GridHierarchyDemo } from './demos/GridHierarchy';
 import { AutotransformerDemo } from './demos/Autotransformer';
+import { TransformerDesignerDemo } from './demos/TransformerDesigner';
 import { InRushCurrentDemo } from './demos/InRushCurrent';
 import { HighFrequencyTransformerDemo } from './demos/HighFrequencyTransformer';
 import { getChapter } from './data/chapters';
@@ -396,6 +397,16 @@ export default function Ch18Transformers() {
       </ul>
 
       <CoreLossesDemo />
+
+      <p>
+        With the four loss mechanisms named, here is a designer's view of how the
+        knobs interact. The build-it demo below holds a target output (V, I, f) fixed
+        and lets you trade primary turns, core area, peak flux density, and winding
+        copper diameter against each other. Watch how the dominant loss flips from
+        copper to core (and back) as you sweep frequency.
+      </p>
+
+      <TransformerDesignerDemo />
 
       <p>
         Adjacent to saturation lives one more practical non-ideality: <em>inrush</em>. Because the core
