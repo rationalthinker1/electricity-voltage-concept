@@ -622,6 +622,121 @@ export default function Ch41EVPowertrain() {
         driveway does the work of a power grid in miniature.
       </Pullout>
 
+      <h2>Why charging is billed in kWh, not litres, not amps, not minutes</h2>
+
+      <p>
+        The single most-confused unit in the EV world is the kilowatt-hour. Drivers
+        used to gasoline ask: "Why doesn't the charger sell me a litre of charge, or
+        a kilometre, or an amp?" The answer is that <em>energy</em> is the conserved
+        quantity that ultimately moves the car — and energy is what the battery
+        stores, what the grid delivers, and what the utility meters. Every other
+        candidate unit (volts, amps, time, distance) is a derived measurement that
+        depends on context the charger can't control.
+      </p>
+
+      <h3>Energy is conserved; nothing else is</h3>
+
+      <p>
+        Watts measure the <em>rate</em> at which energy moves. Joules and watt-hours
+        measure the <em>total</em> amount. Both are valid; engineers prefer the joule
+        for physics derivations and the watt-hour for billing because 1 J = 1 W·s is
+        an awkward size for household quantities — a 60 W lightbulb running for an
+        hour consumes 216,000 J, which is just 0.06 kWh. Scaling up to the kWh
+        bracket makes the numbers human-readable: a kitchen kettle uses about 0.1
+        kWh per boil, an EV uses 15–25 kWh per 100 km, a typical home uses 30 kWh
+        per day.
+      </p>
+      <Formula>1 kWh = 3.6 × 10⁶ J = 3.6 MJ</Formula>
+      <p>
+        where <strong>kWh</strong> is one kilowatt-hour (a kilowatt held for an
+        hour), <strong>J</strong> is one joule (one watt-second), and the factor
+        <strong> 3.6 × 10⁶</strong> comes from 1000 W × 3600 s. The unit is large
+        enough that household bills land in two- and three-digit ranges instead of
+        seven- and eight-digit ones. Cite <Cite id="codata-2018" in={SOURCES} /> for
+        the underlying SI definitions.
+      </p>
+
+      <h3>Why the other candidates lose</h3>
+
+      <p>
+        <strong>Volts.</strong> Volts measure potential difference, not energy. A
+        battery that reads 350 V tells you nothing about how far you can drive — a
+        full pack and an empty pack both read approximately 350 V open-circuit
+        because the OCV-vs-SOC curve is mostly flat through the middle 80% of state
+        of charge.
+      </p>
+      <p>
+        <strong>Amps.</strong> Amps measure flow rate, not the total flow. "I drew
+        100 A at the wall" answers a different question — selling amps alone would
+        let an unscrupulous charger run you at 100 A × 100 V instead of 100 A ×
+        240 V and deliver less than half the energy for the same amperage.
+      </p>
+      <p>
+        <strong>Time.</strong> Selling charging by the minute is what some
+        third-party DCFC operators do, and it has a perverse incentive: the network
+        is happiest if your car charges slowly, since each minute pays the same. A
+        Porsche Taycan that can absorb 270 kW pays the same per minute as a Nissan
+        Leaf throttling at 50 kW. Most operators have moved to per-kWh pricing
+        precisely because per-minute pricing punishes cars with faster charge
+        acceptance.
+      </p>
+      <p>
+        <strong>Distance.</strong> "Sell me 200 km of range" sounds intuitive but
+        runs into the fundamental problem that range depends on the car, the
+        driver, the weather, and the terrain. A kWh into a 75 kWh Model 3 returns
+        ~5.5 km at flat 110 km/h; that same kWh into a 200 kWh Hummer EV returns
+        ~3 km. The utility cannot sell what depends on what the customer does with
+        it after the cable disconnects.
+      </p>
+      <p>
+        <strong>Litres / gallons.</strong> The gasoline analogy fails for a deeper
+        reason: liquid fuel is sold by volume because the energy density per litre
+        is approximately constant (gasoline: ~33 MJ/L; diesel: ~36 MJ/L). The
+        retailer doesn't sell you joules because the conversion to litres is fixed
+        by the chemistry. Battery chemistries don't share that consistency — a
+        21700 NMC cell holds ~17 Wh; a 21700 LFP cell holds ~13 Wh — so a "1 L
+        equivalent" volume measure for charge would change with every chemistry
+        revision. Energy is the chemistry-invariant currency.
+      </p>
+
+      <h3>What charging-station displays actually measure</h3>
+
+      <p>
+        A DC-fast charger samples DC bus voltage and DC bus current many times per
+        second, multiplies them to get instantaneous power in watts, integrates
+        that over the session in seconds to produce delivered energy in joules,
+        and divides by 3.6 × 10⁶ to display kilowatt-hours. The session
+        accumulates the integral
+      </p>
+      <Formula>
+        E<sub>delivered</sub> = ∫₀ᵀ V<sub>dc</sub>(t) × I<sub>dc</sub>(t) dt
+      </Formula>
+      <p>
+        where <strong>E<sub>delivered</sub></strong> is the energy that flowed
+        across the coupler during the session (in joules; divide by 3.6×10⁶ for
+        kWh), <strong>V<sub>dc</sub>(t)</strong> is the instantaneous DC bus
+        voltage (volts), <strong>I<sub>dc</sub>(t)</strong> is the instantaneous
+        DC bus current (amperes), and <strong>T</strong> is the session duration
+        (seconds). The integration is done in real time by the charger's metering
+        circuit — typically certified to ±0.5% per accuracy class 0.5 of OIML R
+        46, the same class used for residential utility meters.
+      </p>
+      <p>
+        For AC charging on a Level 2 EVSE, the relevant integral is on the AC
+        side (V<sub>rms</sub>(t) × I<sub>rms</sub>(t) × cos φ(t)), but the
+        on-board charger's losses mean only ~88-92% of that integral makes it to
+        the pack. Some networks bill you for what flowed through the meter
+        (closer to "wall energy"); others bill for what reached the pack
+        ("delivered energy"). Read the fine print.
+      </p>
+
+      <p className="caption-1">
+        The takeaway: kWh wins because it is the chemistry-invariant, vehicle-
+        invariant, driver-invariant unit of the actual conserved quantity changing
+        hands. It is the same unit your utility uses on your home bill, which
+        lets the EV slot into the same accounting framework as your refrigerator.
+      </p>
+
       <h2>Range and the back-of-envelope</h2>
 
       <p>
