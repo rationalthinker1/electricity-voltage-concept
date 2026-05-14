@@ -2,7 +2,6 @@ import { Link, createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 
 import { CHAPTERS, type ChapterEntry, type ChapterSlug } from '@/textbook/data/chapters';
-import '@/styles/map.css';
 
 export const Route = createFileRoute('/map')({
   component: MapPage,
@@ -95,6 +94,60 @@ function layoutGraph(chapters: ChapterEntry[]): {
   return { nodes, edges, width, height };
 }
 
+// SVG-only styles: SVG elements can't consume Tailwind text/fill utilities
+// uniformly across stroke/fill transitions, so we keep a tiny scoped block.
+const SVG_STYLES = `
+.map-edge {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 1.2;
+  marker-end: url(#arrow);
+  color: var(--border-strong);
+  transition: stroke .2s ease, opacity .2s ease;
+}
+.map-edge-active {
+  stroke: var(--accent);
+  color: var(--accent);
+  stroke-width: 1.8;
+  opacity: 1;
+}
+.map-edge-faded { opacity: .25; }
+
+.map-node { cursor: pointer; transition: opacity .2s ease; }
+.map-node:focus { outline: none; }
+.map-node-rect {
+  fill: var(--bg-elevated);
+  stroke: var(--border-strong);
+  stroke-width: 1;
+  transition: fill .2s ease, stroke .2s ease;
+}
+.map-node-num {
+  font-family: var(--font-3);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  fill: var(--text-muted);
+}
+.map-node-title {
+  font-family: var(--font-1);
+  font-size: 13px;
+  fill: var(--text);
+}
+.map-node:hover .map-node-rect,
+.map-node:focus .map-node-rect,
+.map-node-hover .map-node-rect {
+  fill: var(--accent-soft);
+  stroke: var(--accent);
+}
+.map-node-hover .map-node-num { fill: var(--accent); }
+.map-node-hover .map-node-title { fill: var(--text); }
+.map-node-prereq .map-node-rect { fill: var(--bg-elevated); stroke: var(--teal); }
+.map-node-prereq .map-node-num { fill: var(--teal); }
+.map-node-dep .map-node-rect { fill: var(--bg-elevated); stroke: var(--pink); }
+.map-node-dep .map-node-num { fill: var(--pink); }
+.map-node-faded { opacity: .35; }
+`;
+
 function MapPage() {
   const [hovered, setHovered] = useState<ChapterSlug | null>(null);
   const navigate = useNavigate();
@@ -141,15 +194,20 @@ function MapPage() {
   }
 
   return (
-    <section className="map-page">
-      <div className="map-header">
-        <div className="map-eyebrow">Field · Theory · Course map</div>
-        <h1>The chapter <em>graph</em>.</h1>
-        <p className="map-lede">
+    <section className="pt-[140px] pb-[80px] px-[40px] max-w-[1300px] mx-auto max-[700px]:pt-[120px] max-[700px]:pb-[60px] max-[700px]:px-[18px]">
+      <style>{SVG_STYLES}</style>
+      <div className="mb-[28px]">
+        <div className="font-3 text-[11px] text-text-muted uppercase tracking-[.18em] mb-[12px]">
+          Field · Theory · Course map
+        </div>
+        <h1 className="font-2 italic font-light text-[52px] leading-[1.05] tracking-[-.02em] text-color-4 m-0 mb-[14px] max-[700px]:text-[36px] [&_em]:italic [&_em]:text-accent [&_em]:font-normal">
+          The chapter <em>graph</em>.
+        </h1>
+        <p className="font-1 text-[16px] leading-[1.6] text-color-5 max-w-[640px] max-[700px]:text-[15px]">
           Each chapter sits above its prerequisites. Click a node to open it.
           Hover to highlight the dependency chain.
           {!hasPrereqData && (
-            <span className="map-degrade">
+            <span className="text-accent italic">
               {' '}Prerequisite data is still loading — only chapter positions are
               shown until the manifest is populated.
             </span>
@@ -157,15 +215,19 @@ function MapPage() {
         </p>
       </div>
 
-      <div className="map-legend">
-        <span className="legend-swatch legend-self" /> selected
-        <span className="legend-swatch legend-prereq" /> prerequisite
-        <span className="legend-swatch legend-dep" /> depends on
+      <div className="flex gap-[16px] items-center font-3 text-[11px] text-color-5 uppercase tracking-[.12em] mb-[18px] flex-wrap">
+        <span className="inline-block w-[14px] h-[14px] rounded-3 border border-border-2 align-middle mr-[6px] ml-[12px] bg-accent" /> selected
+        <span className="inline-block w-[14px] h-[14px] rounded-3 border border-border-2 align-middle mr-[6px] ml-[12px] bg-teal" /> prerequisite
+        <span className="inline-block w-[14px] h-[14px] rounded-3 border border-border-2 align-middle mr-[6px] ml-[12px] bg-pink" /> depends on
       </div>
 
-      <div className="map-viewport" role="region" aria-label="Chapter prerequisite graph">
+      <div
+        className="bg-color-3 border border-border-1 rounded-[12px] p-[12px] overflow-auto [-webkit-overflow-scrolling:touch]"
+        role="region"
+        aria-label="Chapter prerequisite graph"
+      >
         <svg
-          className="map-svg"
+          className="block max-w-full h-auto text-text-muted"
           viewBox={`0 0 ${width} ${height}`}
           width={width}
           height={height}
@@ -196,9 +258,9 @@ function MapPage() {
               const y2 = to.y;
               const midY = (y1 + y2) / 2;
               const d = `M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`;
-              const cls = ['edge'];
-              if (edgeHighlighted(e)) cls.push('edge-active');
-              else cls.push('edge-faded');
+              const cls = ['map-edge'];
+              if (edgeHighlighted(e)) cls.push('map-edge-active');
+              else cls.push('map-edge-faded');
               return <path key={i} d={d} className={cls.join(' ')} />;
             })}
           </g>
@@ -255,9 +317,9 @@ function MapPage() {
         </svg>
       </div>
 
-      <div className="map-footer">
-        <Link to="/" className="map-back">← Back to contents</Link>
-        <Link to="/tracks" className="map-back">Tracks →</Link>
+      <div className="flex justify-between items-center mt-[28px] pt-[20px] border-t border-border-1">
+        <Link to="/" className="font-3 text-[12px] tracking-[.12em] uppercase text-text-muted no-underline hover:text-accent">← Back to contents</Link>
+        <Link to="/tracks" className="font-3 text-[12px] tracking-[.12em] uppercase text-text-muted no-underline hover:text-accent">Tracks →</Link>
       </div>
     </section>
   );

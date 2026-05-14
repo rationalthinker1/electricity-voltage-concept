@@ -7,7 +7,6 @@ import { SourcesList } from '@/components/SourcesList';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Banner } from '@/components/ui/Banner';
-import '@/styles/capstones.css';
 
 export const Route = createFileRoute('/capstone/$id')({
   beforeLoad: ({ params }) => {
@@ -88,24 +87,24 @@ function CapstonePage() {
   })();
 
   return (
-    <article className="capstone-page">
-      <header className="capstone-hero">
-        <div className="capstone-eyebrow">Capstone {capstone.number} · Integration project</div>
-        <h1 className="capstone-title">{capstone.title}</h1>
-        <p className="capstone-subtitle"><em>{capstone.subtitle}</em></p>
+    <article className="pt-[130px] pb-[80px] px-[40px] max-w-[920px] mx-auto max-[760px]:pt-[120px] max-[760px]:pb-[60px] max-[760px]:px-[18px]">
+      <header className="mb-[48px]">
+        <div className="font-3 text-[11px] text-accent uppercase tracking-[.18em] mb-[14px]">Capstone {capstone.number} · Integration project</div>
+        <h1 className="font-2 italic font-light text-[48px] leading-[1.08] tracking-[-.02em] text-color-4 m-0 mb-[8px] max-[760px]:text-[34px]">{capstone.title}</h1>
+        <p className="font-2 text-[20px] text-color-5 m-0 mb-[20px] italic"><em>{capstone.subtitle}</em></p>
 
-        <div className="capstone-intro">{capstone.intro}</div>
+        <div className="font-1 text-[16px] leading-[1.65] text-color-4 mb-[24px] [&_p]:m-0 [&_p]:mb-[14px]">{capstone.intro}</div>
 
-        <div className="capstone-meta">
+        <div className="flex flex-wrap gap-[8px] my-[18px]">
           <Badge variant="accent">≈ {capstone.estimatedMinutes} min</Badge>
           <Badge variant="subtle">{capstone.steps.length} steps</Badge>
           <Badge variant="subtle">{capstone.requiredChapters.length} chapters</Badge>
           <Badge variant="teal">{completedCount}/{totalSteps} done · {pct}%</Badge>
         </div>
 
-        <div className="capstone-chips">
-          <div className="capstone-chips-label">Built on:</div>
-          <div className="capstone-chips-row">
+        <div className="mt-[18px] py-[14px] px-[16px] bg-color-2 border border-border-1 rounded-6">
+          <div className="font-3 text-[10px] text-text-muted uppercase tracking-[.14em] mb-[8px]">Built on:</div>
+          <div className="flex flex-wrap gap-[6px]">
             {capstone.requiredChapters.map(slug => {
               const ch = CHAPTERS.find(c => c.slug === slug);
               if (!ch) return null;
@@ -114,7 +113,7 @@ function CapstonePage() {
                   key={slug}
                   to="/textbook/$chapterSlug"
                   params={{ chapterSlug: slug }}
-                  className="capstone-chip"
+                  className="inline-block py-[4px] px-[10px] bg-color-3 border border-border-2 rounded-pill font-3 text-[11px] text-color-5 no-underline tracking-[.04em] transition-colors duration-[120ms] ease-out hover:text-accent hover:border-accent"
                 >
                   Ch.{ch.number} · {ch.title}
                 </Link>
@@ -124,13 +123,13 @@ function CapstonePage() {
         </div>
       </header>
 
-      <section className="capstone-steps">
-        <div className="capstone-steps-head">
-          <h2>Walkthrough</h2>
+      <section className="mb-[40px]">
+        <div className="flex items-baseline justify-between mb-[18px]">
+          <h2 className="font-2 italic font-light text-[32px] text-color-4 m-0">Walkthrough</h2>
           {completedCount > 0 && (
             <button
               type="button"
-              className="capstone-reset"
+              className="bg-transparent border border-border-2 text-text-muted font-3 text-[11px] uppercase tracking-[.12em] py-[6px] px-[12px] rounded-4 cursor-pointer transition-colors duration-[120ms] ease-out hover:text-accent hover:border-accent"
               onClick={resetProgress}
               aria-label="Reset capstone progress"
             >
@@ -139,7 +138,7 @@ function CapstonePage() {
           )}
         </div>
 
-        <ol className="capstone-step-list">
+        <ol className="list-none p-0 m-0 flex flex-col gap-[20px]">
           {capstone.steps.map((step, idx) => (
             <StepCard
               key={step.id}
@@ -152,57 +151,57 @@ function CapstonePage() {
         </ol>
       </section>
 
-      <section className="capstone-stretch">
+      <section className="my-[40px]">
         <Banner variant="info">
-          <div className="capstone-stretch-head">
-            <span className="capstone-stretch-tag">Stretch</span>
-            <h3>{capstone.stretch.title}</h3>
+          <div className="flex items-baseline gap-[12px] mb-[10px]">
+            <span className="font-3 text-[10px] text-blue uppercase tracking-[.14em] py-[3px] px-[8px] border border-blue rounded-3">Stretch</span>
+            <h3 className="font-2 italic font-light text-[22px] text-color-4 m-0 leading-[1.25]">{capstone.stretch.title}</h3>
           </div>
-          <div className="capstone-stretch-body">
-            <div className="capstone-stretch-problem">{capstone.stretch.problem}</div>
-            <details className="capstone-stretch-reveal">
-              <summary>Show one approach →</summary>
-              <div className="capstone-stretch-solution">{capstone.stretch.solution}</div>
+          <div className="font-1 text-[15px] leading-[1.65] text-color-4">
+            <div className="[&_p]:m-0 [&_p]:mb-[12px] [&_ul]:my-[8px] [&_ul]:mb-[12px] [&_ul]:pl-[22px] [&_ol]:my-[8px] [&_ol]:mb-[12px] [&_ol]:pl-[22px]">{capstone.stretch.problem}</div>
+            <details className="mt-[12px] [&_summary::-webkit-details-marker]:hidden">
+              <summary className="cursor-pointer font-3 text-[12px] text-blue uppercase tracking-[.14em] py-[8px] list-none hover:text-accent">Show one approach →</summary>
+              <div className="mt-[10px] py-[14px] px-[16px] bg-color-3 rounded-3 [&_p]:m-0 [&_p]:mb-[12px] [&_ul]:my-[8px] [&_ul]:mb-[12px] [&_ul]:pl-[22px] [&_ol]:my-[8px] [&_ol]:mb-[12px] [&_ol]:pl-[22px]">{capstone.stretch.solution}</div>
             </details>
           </div>
         </Banner>
       </section>
 
-      <section className="capstone-sources">
+      <section className="my-[40px] mb-[24px]">
         <SourcesList ids={capstone.sources} />
       </section>
 
-      <nav className="capstone-nav">
+      <nav className="grid grid-cols-2 gap-[18px] mt-[30px] pt-[22px] border-t border-border max-[760px]:grid-cols-1">
         {neighbors.prev ? (
           <Link
             to="/capstone/$id"
             params={{ id: neighbors.prev.id }}
-            className="capstone-nav-link"
+            className="flex flex-col gap-[4px] py-[14px] px-[16px] border border-border-1 rounded-5 bg-color-2 no-underline transition-colors duration-[120ms] ease-out hover:border-accent hover:bg-color-3"
           >
-            <span className="capstone-nav-dir">← Previous</span>
-            <span className="capstone-nav-title">
+            <span className="font-3 text-[11px] text-text-muted uppercase tracking-[.14em]">← Previous</span>
+            <span className="font-1 text-[14px] text-color-4">
               Capstone {neighbors.prev.number} · {neighbors.prev.title}
             </span>
           </Link>
         ) : (
-          <Link to="/capstones" className="capstone-nav-link">
-            <span className="capstone-nav-dir">← All capstones</span>
+          <Link to="/capstones" className="flex flex-col gap-[4px] py-[14px] px-[16px] border border-border-1 rounded-5 bg-color-2 no-underline transition-colors duration-[120ms] ease-out hover:border-accent hover:bg-color-3">
+            <span className="font-3 text-[11px] text-text-muted uppercase tracking-[.14em]">← All capstones</span>
           </Link>
         )}
         {neighbors.next ? (
           <Link
             to="/capstone/$id"
             params={{ id: neighbors.next.id }}
-            className="capstone-nav-link capstone-nav-link-next"
+            className="flex flex-col gap-[4px] py-[14px] px-[16px] border border-border-1 rounded-5 bg-color-2 no-underline transition-colors duration-[120ms] ease-out hover:border-accent hover:bg-color-3 text-right max-[760px]:text-left"
           >
-            <span className="capstone-nav-dir">Next →</span>
-            <span className="capstone-nav-title">
+            <span className="font-3 text-[11px] text-text-muted uppercase tracking-[.14em]">Next →</span>
+            <span className="font-1 text-[14px] text-color-4">
               Capstone {neighbors.next.number} · {neighbors.next.title}
             </span>
           </Link>
         ) : (
-          <Link to="/me" className="capstone-nav-link capstone-nav-link-next">
-            <span className="capstone-nav-dir">Progress →</span>
+          <Link to="/me" className="flex flex-col gap-[4px] py-[14px] px-[16px] border border-border-1 rounded-5 bg-color-2 no-underline transition-colors duration-[120ms] ease-out hover:border-accent hover:bg-color-3 text-right max-[760px]:text-left">
+            <span className="font-3 text-[11px] text-text-muted uppercase tracking-[.14em]">Progress →</span>
           </Link>
         )}
       </nav>
@@ -220,38 +219,44 @@ interface StepCardProps {
 function StepCard({ step, index, done, onToggleDone }: StepCardProps) {
   const [showSolution, setShowSolution] = useState(false);
   return (
-    <li className={`capstone-step${done ? ' capstone-step-done' : ''}`}>
-      <Card variant="default" className="capstone-step-card">
-        <div className="capstone-step-head">
-          <div className="capstone-step-num">Step {index}</div>
-          <h3 className="capstone-step-title">{step.title}</h3>
-          <label className="capstone-step-done-toggle">
+    <li className="relative">
+      <Card
+        variant="default"
+        className={done ? '!border-teal' : undefined}
+      >
+        <div className="grid grid-cols-[auto_1fr_auto] gap-[14px] items-baseline mb-[12px] pb-[10px] border-b border-border max-[760px]:grid-cols-1 max-[760px]:gap-[6px]">
+          <div className="font-3 text-[11px] text-text-muted uppercase tracking-[.14em]">Step {index}</div>
+          <h3 className="font-2 italic text-[24px] font-light text-color-4 m-0 leading-[1.2]">{step.title}</h3>
+          <label
+            className={`inline-flex items-center gap-[6px] font-3 text-[11px] uppercase tracking-[.12em] cursor-pointer select-none max-[760px]:justify-self-start ${done ? 'text-teal' : 'text-text-muted'}`}
+          >
             <input
               type="checkbox"
               checked={done}
               onChange={onToggleDone}
               aria-label={`Mark step ${index} as done`}
+              className="w-[14px] h-[14px] cursor-pointer accent-teal"
             />
             <span>Done</span>
           </label>
         </div>
-        <div className="capstone-step-problem">{step.problem}</div>
+        <div className="font-1 text-[15px] leading-[1.65] text-color-4 [&_p]:m-0 [&_p]:mb-[12px] [&_ul]:my-[8px] [&_ul]:mb-[12px] [&_ul]:pl-[22px] [&_ol]:my-[8px] [&_ol]:mb-[12px] [&_ol]:pl-[22px] [&_li]:my-[4px]">{step.problem}</div>
         {step.hint && !showSolution && (
-          <div className="capstone-step-hint">
-            <span className="capstone-step-hint-tag">Hint</span>
+          <div className="my-[14px] py-[10px] px-[14px] bg-color-2 border-l-[3px] border-teal rounded-3 font-1 text-[14px] text-color-5 flex gap-[10px] items-baseline">
+            <span className="font-3 text-[10px] text-teal uppercase tracking-[.14em]">Hint</span>
             <span>{step.hint}</span>
           </div>
         )}
         <button
           type="button"
-          className="capstone-step-reveal"
+          className="mt-[12px] bg-transparent border border-accent text-accent font-3 text-[12px] uppercase tracking-[.14em] py-[8px] px-[14px] rounded-4 cursor-pointer transition-colors duration-[120ms] ease-out hover:bg-accent-soft"
           onClick={() => setShowSolution(s => !s)}
           aria-expanded={showSolution}
         >
           {showSolution ? 'Hide solution ↑' : 'Show solution →'}
         </button>
         {showSolution && (
-          <div className="capstone-step-solution">{step.solution}</div>
+          <div className="mt-[16px] py-[16px] px-[18px] bg-color-2 border-l-[3px] border-accent rounded-3 font-1 text-[15px] leading-[1.65] text-color-4 [&_p]:m-0 [&_p]:mb-[12px] [&_ul]:my-[8px] [&_ul]:mb-[12px] [&_ul]:pl-[22px] [&_ol]:my-[8px] [&_ol]:mb-[12px] [&_ol]:pl-[22px] [&_li]:my-[4px]">{step.solution}</div>
         )}
       </Card>
     </li>

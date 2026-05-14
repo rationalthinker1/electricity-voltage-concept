@@ -12,13 +12,15 @@ interface FAQItemProps {
  */
 export function FAQItem({ q, children }: FAQItemProps) {
   return (
-    <details className="faq-item">
-      <summary>
-        <span className="faq-q-marker">Q.</span>
-        <span className="faq-q-text">{q}</span>
-        <span className="faq-q-chevron" aria-hidden>+</span>
+    <details className="disclosure-base">
+      <summary className="disclosure-summary group">
+        <span className="disclosure-marker text-color-accent">Q.</span>
+        <span className="disclosure-title group-hover:text-color-accent">{q}</span>
+        <span className="disclosure-chev text-color-accent" aria-hidden>+</span>
       </summary>
-      <div className="faq-answer">{children}</div>
+      <div className="pb-[22px] pl-[42px] text-color-text-dim text-[15.5px] leading-[1.65] max-[600px]:pl-[28px] max-[600px]:text-[14.5px]">
+        {children}
+      </div>
     </details>
   );
 }
@@ -39,10 +41,11 @@ interface FAQProps {
  */
 export function FAQ({ eyebrow = 'Frequently asked', intro, children }: FAQProps) {
   return (
-    <section className="faq">
-      <div className="faq-eyebrow">{eyebrow}</div>
-      {intro && <p className="faq-intro">{intro}</p>}
-      <div className="faq-list">{children}</div>
+    <section className="section-reveal max-w-[70ch] mx-auto mt-[100px] mb-0 pt-[36px] border-t border-color-border-strong">
+      <div className="eyebrow-rule">{eyebrow}</div>
+      {intro && <p className="intro">{intro}</p>}
+      <div className="list-divided">{children}</div>
     </section>
   );
 }
+

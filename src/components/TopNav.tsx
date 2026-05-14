@@ -1,4 +1,5 @@
 import { Link, useRouterState } from '@tanstack/react-router';
+import clsx from 'clsx';
 
 import { CHAPTERS } from '@/textbook/data/chapters';
 import { MANIFEST } from '@/labs/data/manifest';
@@ -11,12 +12,6 @@ interface TopNavProps {
   onCycleTheme: () => void;
 }
 
-/**
- * Sticky top nav. With 11 chapters the pills are too many for inline titles,
- * so we show just the chapter number ("1", "2", ..., "11") with the full
- * title in the title attribute, plus a single "Labs" link to the appendix.
- * Active chapter highlighted in amber.
- */
 export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) {
   const router = useRouterState();
   const pathname = router.location.pathname;
@@ -41,17 +36,17 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
   }
 
   return (
-    <nav className="top">
-      <Link to="/" className="mark">
+    <nav className="fixed top-0 left-0 right-0 z-[998] py-[22px] px-[40px] flex justify-between items-center border-b border-border bg-[linear-gradient(180deg,var(--nav-bg-start),var(--nav-bg-end))] backdrop-blur-[12px] max-[760px]:py-lg max-[760px]:px-xl max-[760px]:flex-wrap max-[760px]:gap-md">
+      <Link to="/" className="font-2 italic font-light text-[20px] tracking-[-.02em] text-color-4 no-underline [&_span]:text-accent">
         Field <span>·</span> Theory
       </Link>
-      <div className="links chapter-pills">
+      <div className="flex gap-[14px] items-center max-[900px]:gap-[9px] max-[760px]:gap-[14px]">
         {CHAPTERS.map(c => (
           <Link
             key={c.slug}
             to="/textbook/$chapterSlug"
             params={{ chapterSlug: c.slug }}
-            className={activeChapter === c.slug ? 'active' : ''}
+            className={clsx('nav-pill', activeChapter === c.slug && 'nav-pill-active')}
             title={`Ch.${c.number} — ${c.title}`}
           >
             {c.number}
@@ -59,59 +54,65 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
         ))}
         <Link
           to="/reference"
-          className={pathname === '/reference' ? 'active' : ''}
+          className={clsx('nav-pill-divider', pathname === '/reference' && 'nav-pill-active')}
           title="Equation labs (appendix)"
-          style={{ borderLeft: '1px solid var(--border-strong)', paddingLeft: 16, marginLeft: 6 }}
         >
           Labs
         </Link>
         <Link
           to="/labs/$slug"
           params={{ slug: 'circuit-builder' }}
-          className={pathname === '/labs/circuit-builder' ? 'active' : ''}
+          className={clsx('nav-pill', pathname === '/labs/circuit-builder' && 'nav-pill-active')}
           title="Free-form circuit-builder sandbox"
         >
           Build
         </Link>
         <Link
           to="/map"
-          className={pathname === '/map' ? 'active' : ''}
+          className={clsx('nav-pill', pathname === '/map' && 'nav-pill-active')}
           title="Course map · prerequisite DAG"
         >
           Map
         </Link>
         <Link
           to="/tracks"
-          className={pathname === '/tracks' ? 'active' : ''}
+          className={clsx('nav-pill', pathname === '/tracks' && 'nav-pill-active')}
           title="Preset curriculum tracks"
         >
           Tracks
         </Link>
         <Link
           to="/capstones"
-          className={pathname.startsWith('/capstone') ? 'active' : ''}
+          className={clsx('nav-pill', pathname.startsWith('/capstone') && 'nav-pill-active')}
           title="Capstone integration projects"
         >
           Capstones
         </Link>
         <Link
           to="/me"
-          className={pathname === '/me' ? 'active' : ''}
+          className={clsx('nav-pill', pathname === '/me' && 'nav-pill-active')}
           title="Your reading progress"
         >
           Progress
         </Link>
       </div>
-      <div className="nav-status">
-        <div className="meta">{pageMeta}</div>
+      <div className="flex items-center justify-end gap-[14px]">
+        <div className="meta-1 max-[760px]:hidden">{pageMeta}</div>
         <button
           type="button"
-          className="theme-toggle"
+          className="inline-flex items-center gap-sm min-h-[30px] px-[10px] border border-border-2 rounded-pill bg-color-3 text-text-muted font-3 text-[10px] leading-none tracking-[.12em] uppercase cursor-pointer transition-colors hover:text-color-4 hover:border-accent"
           onClick={onCycleTheme}
           aria-label={`Theme: ${themeMode}. Effective theme: ${resolvedTheme}. Activate to cycle theme mode.`}
           title={`Theme: ${themeMode}`}
         >
-          <span className="theme-toggle-icon" aria-hidden="true" />
+          <span
+            className={clsx(
+              'relative w-[14px] h-[14px] border-[1.5px] border-current rounded-pill',
+              resolvedTheme === 'light' && 'bg-current shadow-[0_0_0_3px_var(--accent-soft)]',
+              resolvedTheme === 'dark' && "after:content-[''] after:absolute after:-top-[2px] after:left-[5px] after:w-[11px] after:h-[11px] after:rounded-pill after:bg-bg",
+            )}
+            aria-hidden="true"
+          />
           <span>{themeMode}</span>
         </button>
       </div>
