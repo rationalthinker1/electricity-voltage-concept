@@ -17,7 +17,6 @@
  *   <FormulaHTML html="..." />   ←  legacy escape hatch
  */
 import type { ReactNode } from 'react';
-import clsx from 'clsx';
 
 interface FormulaProps {
   /** The equation. Use <Var/>, <sub/>, <sup/> for nice typography. */
@@ -30,9 +29,9 @@ interface FormulaProps {
 
 export function Formula({ children, caption, size = 'normal' }: FormulaProps) {
   return (
-    <div className={clsx('equation-card-1 accent-brand', size !== 'normal' && `equation-${size}-1`)} role="math">
-      <div className="equation-content-1">{children}</div>
-      {caption && <div className="caption-mono-1">{caption}</div>}
+    <div className={`formula-block formula-${size}`} role="math">
+      <div className="formula-content">{children}</div>
+      {caption && <div className="formula-caption">{caption}</div>}
     </div>
   );
 }
@@ -46,19 +45,19 @@ interface FormulaHTMLProps {
 /** Escape hatch — render an HTML string. Use sparingly; prefer JSX. */
 export function FormulaHTML({ html, caption, size = 'normal' }: FormulaHTMLProps) {
   return (
-    <div className={clsx('equation-card-1 accent-brand', size !== 'normal' && `equation-${size}-1`)} role="math">
-      <div className="equation-content-1" dangerouslySetInnerHTML={{ __html: html }} />
-      {caption && <div className="caption-mono-1">{caption}</div>}
+    <div className={`formula-block formula-${size}`} role="math">
+      <div className="formula-content" dangerouslySetInnerHTML={{ __html: html }} />
+      {caption && <div className="formula-caption">{caption}</div>}
     </div>
   );
 }
 
 /** Variable accent — slight amber tint to distinguish symbols from operators. */
 export function Var({ children }: { children: ReactNode }) {
-  return <span className="equation-var-1">{children}</span>;
+  return <span className="formula-var">{children}</span>;
 }
 
 /** Inline math — small enough to live inside a sentence. */
 export function InlineMath({ children }: { children: ReactNode }) {
-  return <span className="equation-inline-1">{children}</span>;
+  return <span className="formula-inline">{children}</span>;
 }

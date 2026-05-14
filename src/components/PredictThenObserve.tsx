@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
-import clsx from 'clsx';
 import { Badge, Banner, Card } from './ui';
 
 export type PredictKind = 'multiple-choice' | 'short-answer';
@@ -157,24 +156,24 @@ export function PredictThenObserve({
       <Card
         variant="outlined"
         accent="accent"
-        className="my-[28px] mx-0 mb-[18px]"
+        className="pto-card pto-card-awaiting"
         header={
-          <div className="inline-cluster-2">
+          <div className="pto-header">
             <Badge variant="accent" size="sm">Predict first</Badge>
-            <span className="meta-1">Commit to a guess — being wrong is fine.</span>
+            <span className="pto-header-hint">Commit to a guess — being wrong is fine.</span>
           </div>
         }
       >
-        <div className="prompt-1">{question}</div>
+        <div className="pto-question">{question}</div>
         {spec.kind === 'multiple-choice' ? (
-          <fieldset className="choice-list-1 fieldset-plain-1">
-            <legend className="visually-hidden-1">Choose one</legend>
+          <fieldset className="pto-options">
+            <legend className="pto-legend-sr">Choose one</legend>
             {spec.options.map(opt => {
               const checked = mcSelected === opt.id;
               return (
                 <label
                   key={opt.id}
-                  className={clsx('choice-card-1', checked && 'is-selected accent-brand')}
+                  className={`pto-option${checked ? ' is-selected' : ''}`}
                 >
                   <input
                     type="radio"
@@ -183,16 +182,16 @@ export function PredictThenObserve({
                     checked={checked}
                     onChange={() => setMcSelected(opt.id)}
                   />
-                  <span className="grow-1">{opt.label}</span>
+                  <span className="pto-option-label">{opt.label}</span>
                 </label>
               );
             })}
           </fieldset>
         ) : (
-          <div className="inline-baseline-2 field-row-1">
+          <div className="pto-short">
             <input
               type="text"
-              className="field-input-1"
+              className="pto-short-input"
               value={shortInput}
               onChange={e => setShortInput(e.target.value)}
               placeholder={spec.placeholder ?? 'Your prediction'}
@@ -203,13 +202,13 @@ export function PredictThenObserve({
                 }
               }}
             />
-            {spec.unit && <span className="field-unit-1">{spec.unit}</span>}
+            {spec.unit && <span className="pto-short-unit">{spec.unit}</span>}
           </div>
         )}
-        <div className="actions-end-1">
+        <div className="pto-actions">
           <button
             type="button"
-            className="button-solid-1 accent-brand"
+            className="btn pto-submit"
             onClick={handleSubmit}
             disabled={
               spec.kind === 'multiple-choice' ? !mcSelected : shortInput.trim().length === 0
@@ -227,19 +226,19 @@ export function PredictThenObserve({
       <Card
         variant="outlined"
         accent="teal"
-        className="my-[28px] mx-0 mb-[18px]"
+        className="pto-card pto-card-just-predicted"
         header={
-          <div className="inline-cluster-2">
+          <div className="pto-header">
             <Badge variant="teal" size="sm">Prediction locked in</Badge>
           </div>
         }
       >
-        <p className="copy-muted-1">
-          You guessed: <strong>{displayedAnswer}</strong>
+        <p className="pto-confirm">
+          You guessed: <strong className="pto-answer-strong">{displayedAnswer}</strong>
         </p>
-        {reveal ? <div className="callout-1 accent-teal">{reveal(answer)}</div> : null}
-        <div className="actions-end-1">
-          <button type="button" className="button-solid-1 accent-brand" onClick={handleReveal}>
+        {reveal ? <div className="pto-reveal-copy">{reveal(answer)}</div> : null}
+        <div className="pto-actions">
+          <button type="button" className="btn pto-submit" onClick={handleReveal}>
             Reveal demo
           </button>
         </div>
@@ -252,11 +251,11 @@ export function PredictThenObserve({
     correctness === 'correct' ? 'success' : correctness === 'incorrect' ? 'warn' : 'info';
 
   return (
-    <div className="my-[18px] mx-0">
-      <Banner variant={annotationVariant} className="annotation-1">
-        <span className="label-mono-1">Your prediction:</span>{' '}
-        <strong>{displayedAnswer}</strong>{' '}
-        <span className="copy-muted-2">
+    <div className="pto-revealed">
+      <Banner variant={annotationVariant} className="pto-annotation">
+        <span className="pto-annotation-label">Your prediction:</span>{' '}
+        <strong className="pto-answer-strong">{displayedAnswer}</strong>{' '}
+        <span className="pto-annotation-tail">
           Try the demo to see if you were right.
         </span>
       </Banner>

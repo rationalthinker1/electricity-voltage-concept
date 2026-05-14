@@ -1,5 +1,4 @@
 import type { ReactNode, MouseEventHandler } from 'react';
-import clsx from 'clsx';
 
 export type PillVariant = 'default' | 'accent' | 'teal' | 'pink' | 'blue' | 'subtle';
 
@@ -22,30 +21,23 @@ export function Pill({
   className,
   'aria-label': ariaLabel,
 }: PillProps) {
+  const classes = ['ui-pill', `ui-pill-${variant}`];
+  if (interactive) classes.push('ui-pill-interactive');
+  if (className) classes.push(className);
+
   const content = (
     <>
-      {icon !== undefined && <span className="pill-icon-1">{icon}</span>}
-      <span>{children}</span>
+      {icon !== undefined && <span className="ui-pill-icon">{icon}</span>}
+      <span className="ui-pill-label">{children}</span>
     </>
-  );
-  const classes = clsx(
-    'pill-1',
-    variant === 'default' && 'pill-default-1',
-    variant === 'accent' && 'pill-accent-1',
-    variant === 'teal' && 'pill-teal-1',
-    variant === 'pink' && 'pill-pink-1',
-    variant === 'blue' && 'pill-blue-1',
-    variant === 'subtle' && 'pill-subtle-1',
-    interactive && 'pill-interactive-1',
-    className,
   );
 
   if (interactive) {
     return (
-      <button type="button" className={classes} onClick={onClick} aria-label={ariaLabel}>
+      <button type="button" className={classes.join(' ')} onClick={onClick} aria-label={ariaLabel}>
         {content}
       </button>
     );
   }
-  return <span className={classes}>{content}</span>;
+  return <span className={classes.join(' ')}>{content}</span>;
 }

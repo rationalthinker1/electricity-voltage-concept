@@ -7,7 +7,6 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import clsx from 'clsx';
 
 interface AccordionContextValue {
   openIds: Set<string>;
@@ -54,7 +53,7 @@ export function Accordion({
 
   return (
     <AccordionContext.Provider value={ctx}>
-      <div className={clsx('accordion-1', className)}>{children}</div>
+      <div className={['ui-accordion', className].filter(Boolean).join(' ')}>{children}</div>
     </AccordionContext.Provider>
   );
 }
@@ -85,7 +84,7 @@ export function AccordionItem({ id, children, className }: AccordionItemProps) {
   );
   return (
     <ItemContext.Provider value={value}>
-      <div className={clsx('accordion-item-1', open && 'is-open', className)}>
+      <div className={['ui-accordion-item', open ? 'ui-accordion-item-open' : '', className].filter(Boolean).join(' ')}>
         {children}
       </div>
     </ItemContext.Provider>
@@ -98,14 +97,14 @@ export function AccordionTrigger({ children }: { children?: ReactNode }) {
   return (
     <button
       type="button"
-      className="accordion-trigger-1"
+      className="ui-accordion-trigger"
       aria-expanded={item.open}
       aria-controls={`${item.baseId}-content`}
       id={`${item.baseId}-trigger`}
       onClick={item.toggle}
     >
-      <span className="grow-1">{children}</span>
-      <span className="accordion-chev-1" aria-hidden="true">{item.open ? '−' : '+'}</span>
+      <span className="ui-accordion-trigger-label">{children}</span>
+      <span className="ui-accordion-trigger-chev" aria-hidden="true">{item.open ? '−' : '+'}</span>
     </button>
   );
 }
@@ -119,7 +118,7 @@ export function AccordionContent({ children }: { children?: ReactNode }) {
       role="region"
       id={`${item.baseId}-content`}
       aria-labelledby={`${item.baseId}-trigger`}
-      className="accordion-content-1"
+      className="ui-accordion-content"
     >
       {children}
     </div>

@@ -12,13 +12,13 @@ interface FAQItemProps {
  */
 export function FAQItem({ q, children }: FAQItemProps) {
   return (
-    <details className="disclosure-1">
-      <summary className="disclosure-summary-1">
-        <span className="disclosure-marker-1 accent-brand">Q.</span>
-        <span className="disclosure-title-1">{q}</span>
-        <span className="disclosure-chev-1 accent-brand" aria-hidden>+</span>
+    <details className="faq-item">
+      <summary>
+        <span className="faq-q-marker">Q.</span>
+        <span className="faq-q-text">{q}</span>
+        <span className="faq-q-chevron" aria-hidden>+</span>
       </summary>
-      <div className="richtext-compact-1">{children}</div>
+      <div className="faq-answer">{children}</div>
     </details>
   );
 }
@@ -39,10 +39,10 @@ interface FAQProps {
  */
 export function FAQ({ eyebrow = 'Frequently asked', intro, children }: FAQProps) {
   return (
-    <section className="section-narrow-1">
-      <div className="eyebrow-rule-1 accent-brand">{eyebrow}</div>
-      {intro && <p className="intro-1">{intro}</p>}
-      <div className="list-divided-1">{children}</div>
+    <section className="faq">
+      <div className="faq-eyebrow">{eyebrow}</div>
+      {intro && <p className="faq-intro">{intro}</p>}
+      <div className="faq-list">{children}</div>
     </section>
   );
 }

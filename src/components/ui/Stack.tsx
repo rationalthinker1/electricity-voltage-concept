@@ -26,5 +26,5 @@ export function Stack({
     alignItems: alignMap[align],
     ...style,
   };
-  return <div className={['stack-box-1', className].filter(Boolean).join(' ')} style={merged}>{children}</div>;
+  return <div className={['ui-stack', className].filter(Boolean).join(' ')} style={merged}>{children}</div>;
 }

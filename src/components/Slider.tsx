@@ -37,13 +37,13 @@ export function Slider({
   }, [value, min, max]);
 
   return (
-    <div className="control-slider-1">
-      <div className="control-head-1">
-        <span className="control-label-1">
-          <span className="control-symbol-1 accent-brand" dangerouslySetInnerHTML={{ __html: sym }} />
+    <div className="slider-group">
+      <div className="slider-head">
+        <span className="slider-label">
+          <span className="sym" dangerouslySetInnerHTML={{ __html: sym }} />
           {label}
         </span>
-        <span className="control-value-1 accent-brand" id={labelId}>
+        <span className="slider-value" id={labelId}>
           {format(value)}
         </span>
       </div>
@@ -58,7 +58,7 @@ export function Slider({
         aria-label={label}
       />
       {(metaLeft || metaRight) && (
-        <div className="control-meta-1">
+        <div className="slider-meta">
           <span dangerouslySetInnerHTML={{ __html: metaLeft ?? '' }} />
           <span dangerouslySetInnerHTML={{ __html: metaRight ?? '' }} />
         </div>

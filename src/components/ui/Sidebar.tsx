@@ -1,5 +1,4 @@
 import { useState, type ReactNode } from 'react';
-import clsx from 'clsx';
 
 export interface SidebarProps {
   title?: ReactNode;
@@ -19,23 +18,22 @@ export function Sidebar({
   className,
 }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
+  const classes = [
+    'ui-sidebar',
+    `ui-sidebar-${side}`,
+    collapsed ? 'ui-sidebar-collapsed' : '',
+    className,
+  ].filter(Boolean).join(' ');
+
   return (
-    <aside
-      className={clsx(
-        'sidebar-1',
-        side === 'right' ? 'sidebar-right-1' : 'sidebar-left-1',
-        collapsed && 'is-collapsed',
-        className,
-      )}
-      aria-label={typeof title === 'string' ? title : 'Sidebar'}
-    >
+    <aside className={classes} aria-label={typeof title === 'string' ? title : 'Sidebar'}>
       {(title !== undefined || collapsible) && (
-        <header className="sidebar-header-1">
-          {title !== undefined && <div className="label-mono-1">{title}</div>}
+        <header className="ui-sidebar-header">
+          {title !== undefined && <div className="ui-sidebar-title">{title}</div>}
           {collapsible && (
             <button
               type="button"
-              className="button-icon-bordered-1"
+              className="ui-sidebar-toggle"
               onClick={() => setCollapsed(c => !c)}
               aria-expanded={!collapsed}
               aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
@@ -45,7 +43,7 @@ export function Sidebar({
           )}
         </header>
       )}
-      {!collapsed && <div className="sidebar-body-1">{children}</div>}
+      {!collapsed && <div className="ui-sidebar-body">{children}</div>}
     </aside>
   );
 }
