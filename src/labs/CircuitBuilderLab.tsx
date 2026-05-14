@@ -46,6 +46,7 @@ import { Palette } from './circuit-builder/Palette';
 import { defaultValue } from './circuit-builder/components';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { PRESETS, clonePresetDoc } from './circuit-builder/presets';
+import type { CircuitPreset } from './circuit-builder/types';
 import {
   buildNodeMap, eng, makeContext, pkey, resetContext, step,
 } from './circuit-builder/solver';
@@ -71,6 +72,9 @@ type ArmedTool = ComponentKind | 'wire' | 'voltmeter' | 'ammeter' | null;
 export default function CircuitBuilderLab() {
   // The circuit document.
   const [doc, setDoc] = useState<CircuitDoc>(() => clonePresetDoc(PRESETS[0].doc));
+
+  // Which preset is currently loaded (for showing educational info).
+  const [activePresetId, setActivePresetId] = useState<string>(PRESETS[0]!.id);
 
   // UI state.
   const [armed, setArmed] = useState<ArmedTool>(null);
@@ -254,6 +258,7 @@ export default function CircuitBuilderLab() {
     const preset = PRESETS.find(p => p.id === presetId);
     if (!preset) return;
     setDoc(clonePresetDoc(preset.doc));
+    setActivePresetId(presetId);
     setSelectedId(null);
     setSelectedWireId(null);
     setArmed(null);
@@ -262,6 +267,7 @@ export default function CircuitBuilderLab() {
 
   const clearAll = useCallback(() => {
     setDoc({ components: [], wires: [], probes: [] });
+    setActivePresetId('');
     setSelectedId(null);
     setSelectedWireId(null);
     setArmed(null);
@@ -448,6 +454,7 @@ export default function CircuitBuilderLab() {
             onDelete={deleteSelected}
             onRotate={rotateSelected}
           />
+          <PresetInfo preset={PRESETS.find(p => p.id === activePresetId) ?? null} />
         </aside>
       </div>
     </div>
@@ -609,6 +616,49 @@ function Scope({ data }: ScopeProps) {
     ctx.fillText(eng(tRange, 2) + 's window', 4, h - 4);
   }, [data]);
   return <canvas ref={ref} style={{ display: 'block', width: '100%' }} />;
+}
+
+/* ───────────────────────── Preset Info subcomponent ───────────────────────── */
+
+function PresetInfo({ preset }: { preset: CircuitPreset | null }) {
+  if (!preset) return null;
+  return (
+    <div className="cb-preset-info">
+      <div className="cb-preset-info-topic">{preset.topic}</div>
+      <div className="cb-preset-info-name">{preset.name}</div>
+      <div className="cb-preset-info-goal">
+        <strong>Goal:</strong> {preset.goal}
+      </div>
+      <div className="cb-preset-info-section">
+        <div className="cb-preset-info-section-title">Theory</div>
+        {preset.theory.split('\n\n').map((para, i) => (
+          <p key={i} className="cb-preset-info-para">{para}</p>
+        ))}
+      </div>
+      <div className="cb-preset-info-section">
+        <div className="cb-preset-info-section-title">Formulas</div>
+        {preset.formulas.map((f, i) => (
+          <div key={i} className="cb-preset-info-formula">{f}</div>
+        ))}
+      </div>
+      <div className="cb-preset-info-section">
+        <div className="cb-preset-info-section-title">Calculation</div>
+        <ol className="cb-preset-info-list">
+          {preset.steps.map((s, i) => (
+            <li key={i}>{s}</li>
+          ))}
+        </ol>
+      </div>
+      <div className="cb-preset-info-section">
+        <div className="cb-preset-info-section-title">Try It</div>
+        <ul className="cb-preset-info-list">
+          {preset.hints.map((h, i) => (
+            <li key={i}>{h}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
 }
 
 /* ───────────────────────── Inline CSS ───────────────────────── */
@@ -946,5 +996,82 @@ const CSS = `
   color: var(--text);
   font-family: 'JetBrains Mono', monospace;
   font-weight: 500;
+}
+
+/* Preset info panel */
+.cb-preset-info {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 520px;
+  overflow-y: auto;
+}
+.cb-preset-info-topic {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: .25em;
+}
+.cb-preset-info-name {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--text);
+  line-height: 1.2;
+}
+.cb-preset-info-goal {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  padding: 8px 10px;
+  background: var(--bg-elevated);
+  border-radius: 3px;
+  border: 1px solid var(--border);
+}
+.cb-preset-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cb-preset-info-section-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: .15em;
+}
+.cb-preset-info-para {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.55;
+  margin: 0;
+}
+.cb-preset-info-formula {
+  font-family: 'STIX Two Text', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.5;
+  padding: 6px 10px;
+  background: var(--bg-elevated);
+  border-radius: 3px;
+  border: 1px solid var(--border);
+}
+.cb-preset-info-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+.cb-preset-info-list li {
+  margin-bottom: 5px;
+}
+.cb-preset-info-list li::marker {
+  color: var(--accent);
 }
 `;

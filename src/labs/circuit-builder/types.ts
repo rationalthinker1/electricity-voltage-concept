@@ -83,6 +83,18 @@ export interface CircuitPreset {
   name: string;
   description: string;
   doc: CircuitDoc;
+  /** Short topic tag, e.g. "Ohm's Law", "Kirchhoff's Laws". */
+  topic: string;
+  /** What this preset is meant to teach. */
+  goal: string;
+  /** Conceptual explanation (1–3 paragraphs). */
+  theory: string;
+  /** Key formulas as LaTeX-ish strings. */
+  formulas: string[];
+  /** Step-by-step calculation walkthrough. */
+  steps: string[];
+  /** Suggested experiments / things to notice. */
+  hints: string[];
 }
 
 /* ───────────── Solver-side types ───────────── */
