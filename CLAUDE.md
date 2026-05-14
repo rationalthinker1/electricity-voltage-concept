@@ -206,6 +206,34 @@ reuse pink/blue where you need additional differentiation.
 
 Loaded from Google Fonts via a single stylesheet link in `index.html`.
 
+### Tailwind component layer
+
+`src/styles/main.css` declares a `@layer components` block that defines
+project-flavoured Tailwind class names. Use these in JSX as
+`className="panel-card chip chip-accent"` rather than re-rolling CSS.
+The existing component CSS (`cb-*`, `chapter-*`, `lab-*`, `ui-*`) is
+untouched; new components are free to mix Tailwind utilities with these
+shortcuts.
+
+| Class | What it gives you |
+|---|---|
+| `panel-card` | bg-card + border + 8px radius + 1rem pad (default container) |
+| `panel-elevated` | bg-elevated + stronger border + soft shadow (raised) |
+| `panel-subtle` | translucent + thin border (background panel) |
+| `chip` | mono-uppercase pill, tiny dim text |
+| `chip-accent` / `chip-teal` / `chip-pink` / `chip-blue` | recoloured chip |
+| `text-eyebrow` | small mono uppercase label |
+| `text-stat` | 1.6 rem mono numeric, tabular |
+| `text-display` | Fraunces italic 1.875 rem |
+| `text-mono-num` | mono + tabular-nums (for live readouts) |
+| `section-rule` | top border + spacing for a new section |
+| `cite-inline` | small accent-tinted citation badge (used by `<Cite>`) |
+| `kbd` | inline keyboard glyph with stepped bottom border |
+
+For colour utilities, `@theme` exposes the existing tokens as
+`bg-bg-card`, `text-accent`, `border-border-strong`, etc. These swap
+automatically when `[data-theme="light"]` is set on `<html>`.
+
 ---
 
 ## 5. The sourcing rule (the most important rule)

@@ -121,6 +121,120 @@ body::before {
   mix-blend-mode: overlay;
 }
 
+/* ─── Tailwind component layer — semantic compositions that consume the
+   @theme tokens declared above. Use these in JSX as `className="panel-card"`
+   etc., so future components can be authored with Tailwind utilities + a
+   small vocabulary of project-flavoured shortcuts instead of one-off CSS.
+   The existing CSS classes (cb-*, chapter-*, lab-*, ui-*) are untouched. ─── */
+
+@layer components {
+
+  /* Containers — every demo / case-study / panel-style card derives from one
+     of these three intensity levels. */
+  .panel-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  .panel-elevated {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .panel-subtle {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem;
+  }
+
+  /* Inline chips — mono-uppercase pill labels. Used for chapter tags,
+     specs sheets, statuses, badges. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.04);
+    border-radius: 999px;
+    padding: 0.125rem 0.625rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .chip-accent { border-color: rgba(255,107,42,0.35); color: var(--accent); }
+  .chip-teal   { border-color: rgba(108,197,194,0.35); color: var(--teal); }
+  .chip-pink   { border-color: rgba(255,59,110,0.35); color: var(--pink); }
+  .chip-blue   { border-color: rgba(91,174,248,0.35); color: var(--blue); }
+
+  /* Typography utilities. */
+  .text-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+  }
+  .text-stat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.625rem;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .text-display {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.875rem;
+    color: var(--text);
+    line-height: 1.15;
+  }
+  .text-mono-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Section separator — a thin horizontal rule with vertical breathing room. */
+  .section-rule {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Inline citation badge — small superscripted accent chip used by Cite. */
+  .cite-inline {
+    display: inline-block;
+    margin-left: 0.1rem;
+    padding: 0 0.3rem;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-decoration: none;
+    line-height: 1.4;
+  }
+  .cite-inline:hover { background: var(--accent-glow); }
+
+  /* Inline keyboard glyph. */
+  .kbd {
+    display: inline-block;
+    padding: 0.05rem 0.4rem;
+    border: 1px solid var(--border-strong);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    background: var(--bg-elevated);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text);
+  }
+}
+
 /* ─── Progress bar ─── */
 .progress {
   position: fixed; top: 0; left: 0;
