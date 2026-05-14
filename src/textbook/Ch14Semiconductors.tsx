@@ -30,6 +30,7 @@ import { PNJunctionFormationDemo } from './demos/PNJunctionFormation';
 import { DiodeCharacteristicDemo } from './demos/DiodeCharacteristic';
 import { BJTCharacteristicDemo } from './demos/BJTCharacteristic';
 import { MOSFETOperationDemo } from './demos/MOSFETOperation';
+import { MOSFET3DDemo } from './demos/MOSFET3D';
 import { LoadLineAnalysisDemo } from './demos/LoadLineAnalysis';
 import { CommonEmitterAmpDemo } from './demos/CommonEmitterAmp';
 
@@ -423,6 +424,16 @@ export default function Ch14Semiconductors() {
       </p>
 
       <MOSFETOperationDemo />
+
+      <p>
+        The 2D cross-section makes the I-V curves quantitative; the 3D rendering
+        below makes the geometry visceral. Drag to orbit the device, push V<sub>GS</sub>
+        past V<sub>T</sub>, and watch the inversion layer light up directly under the
+        oxide as a thin channel of electron dots connecting source to drain. Add a
+        V<sub>DS</sub> and the same dots stream toward the drain.
+      </p>
+
+      <MOSFET3DDemo />
 
       <p>
         In an n-channel enhancement MOSFET the substrate is p-type, with two heavily-doped

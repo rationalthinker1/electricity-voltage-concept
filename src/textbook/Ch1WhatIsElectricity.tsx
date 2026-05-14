@@ -23,6 +23,7 @@ import { ConductorRedistributionDemo } from './demos/ConductorRedistribution';
 import { EquipotentialsDemo } from './demos/Equipotentials';
 import { FieldArrowsDemo } from './demos/FieldArrows';
 import { InverseSquareDemo } from './demos/InverseSquare';
+import { PointCharge3DDemo } from './demos/PointCharge3D';
 import { TwoChargesDemo } from './demos/TwoCharges';
 import { getChapter } from './data/chapters';
 
@@ -229,6 +230,16 @@ export default function Ch1WhatIsElectricity() {
       </p>
 
       <FieldArrowsDemo />
+
+      <p>
+        The 2D arrows above slice through the radial pattern in one plane.
+        Rotate around the same point charge in 3D below: ~80 sample arrows on
+        an invisible sphere of radius r let you confirm directly that
+        doubling r quarters the field magnitude. The ratio readout locks at
+        exactly 4.0× — the inverse-square law made geometric.
+      </p>
+
+      <PointCharge3DDemo />
 
       <p>
         The field framework looks like bookkeeping at first — relabel the same algebra. But it pays off in two enormous

@@ -23,6 +23,7 @@ import { Formula } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { PanelBus3DDemo } from './demos/PanelBus3D';
 import { getChapter } from './data/chapters';
 
 export default function Ch28HousePanel() {
@@ -155,6 +156,18 @@ export default function Ch28HousePanel() {
           </>
         }
       />
+
+      <p>
+        The two-column / alternating-phase geometry is much easier to read in 3D
+        than in prose. Drag to orbit the cutaway below: L1 (pink) and L2 (blue) bus
+        bars run the full height of the enclosure, with alternating stabs poking
+        out for each slot. The single-pole breakers each take one stab — one phase.
+        The 2-pole 240 V breaker straddles two adjacent stabs of opposite phase.
+        The neutral and ground bars sit at the bottom, joined by the main bonding
+        jumper exactly once.
+      </p>
+
+      <PanelBus3DDemo />
 
       <h2>The three breaker species: standard, GFCI, AFCI</h2>
 
