@@ -21,7 +21,6 @@ import {
 import { BadgeShelf } from '@/components/BadgeShelf';
 import { BADGES } from '@/textbook/data/badges';
 import '@/styles/me.css';
-import '@/styles/review.css';
 
 export const Route = createFileRoute('/me')({
   component: MePage,
