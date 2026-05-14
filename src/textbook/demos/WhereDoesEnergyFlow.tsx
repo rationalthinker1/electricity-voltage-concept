@@ -18,6 +18,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -164,7 +165,7 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
 
     function draw() {
       const { realPicture } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       // Cache key: backdrop geometry is fixed; key on canvas size + DPR only.
@@ -184,7 +185,7 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
 
       if (!realPicture) {
         // Old picture: carriers drifting along the loop.
-        ctx.fillStyle = '#5baef8';
+        ctx.fillStyle = getCanvasColors().blue;
         for (const c of carriers) {
           c.s += 0.0025;
           if (c.s > 1) c.s -= 1;

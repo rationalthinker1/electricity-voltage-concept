@@ -18,6 +18,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -53,7 +54,7 @@ export function LinearRegulatorDemo({ figure }: Props) {
       const { Vin, Vout, Pin, Pout, Pdiss, eta, regulating } = stateRef.current;
       t += 1 / 60;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       // bar geometry
@@ -86,10 +87,10 @@ export function LinearRegulatorDemo({ figure }: Props) {
         sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
         // Input bar (full P_in column).
-        sctx.fillStyle = 'rgba(255,107,42,0.85)';
+        sctx.fillStyle = getCanvasColors().accent;
         sctx.fillRect(xIn, yTop, inW, barH);
         // P_in header.
-        sctx.fillStyle = '#ecebe5';
+        sctx.fillStyle = getCanvasColors().text;
         sctx.font = 'bold 13px "JetBrains Mono", monospace';
         sctx.textAlign = 'center'; sctx.textBaseline = 'bottom';
         sctx.fillText('P_in', xIn + inW / 2, yTop - 22);
@@ -100,7 +101,7 @@ export function LinearRegulatorDemo({ figure }: Props) {
         sctx.strokeStyle = regulating ? 'rgba(108,197,194,0.85)' : 'rgba(255,59,110,0.85)';
         sctx.lineWidth = 1.5;
         sctx.strokeRect(xReg, yTop, regW, barH);
-        sctx.fillStyle = '#ecebe5';
+        sctx.fillStyle = getCanvasColors().text;
         sctx.font = 'bold 12px "DM Sans", sans-serif';
         sctx.textAlign = 'center'; sctx.textBaseline = 'middle';
         sctx.fillText('LM7805', xReg + regW / 2, yTop + barH / 2 - 26);
@@ -110,11 +111,11 @@ export function LinearRegulatorDemo({ figure }: Props) {
 
         // "(burned as heat)" caption sits below the wiggle and never moves.
         sctx.font = '10px "JetBrains Mono", monospace';
-        sctx.fillStyle = 'rgba(160,158,149,0.85)';
+        sctx.fillStyle = getCanvasColors().textDim;
         sctx.fillText('(burned as heat)', xReg + regW / 2, yTop + barH / 2 + 30);
 
         // P_out header.
-        sctx.fillStyle = '#ecebe5';
+        sctx.fillStyle = getCanvasColors().text;
         sctx.font = 'bold 13px "JetBrains Mono", monospace';
         sctx.textAlign = 'center'; sctx.textBaseline = 'bottom';
         sctx.fillText('P_out', xOut + outW / 2, yTop - 22);
@@ -149,12 +150,12 @@ export function LinearRegulatorDemo({ figure }: Props) {
       ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
 
       // Dynamic overlay: live P_in / Vin numbers under the input column.
-      ctx.fillStyle = '#ecebe5';
+      ctx.fillStyle = getCanvasColors().text;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.fillText(`${Pin.toFixed(2)} W`, xIn + inW / 2, yTop - 6);
       ctx.textBaseline = 'top';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText(`${Vin.toFixed(1)} V × I_load`, xIn + inW / 2, yTop + barH + 6);
 
       // Dynamic overlay: animated heat wiggle + P_diss readout in the regulator.
@@ -167,20 +168,20 @@ export function LinearRegulatorDemo({ figure }: Props) {
 
       // Dynamic overlay: output bar height = Pout / Pin fraction.
       const outBarH = Math.max(2, barH * (Pout / Math.max(Pin, 0.01)));
-      ctx.fillStyle = 'rgba(108,197,194,0.85)';
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.fillRect(xOut, yTop + (barH - outBarH), outW, outBarH);
 
       // Dynamic overlay: live P_out / Vout numbers under the output column.
-      ctx.fillStyle = '#ecebe5';
+      ctx.fillStyle = getCanvasColors().text;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.fillText(`${Pout.toFixed(2)} W`, xOut + outW / 2, yTop - 6);
       ctx.textBaseline = 'top';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText(`${Vout.toFixed(2)} V × I_load`, xOut + outW / 2, yTop + barH + 6);
 
       // Dynamic overlay: efficiency badge.
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText(`η = P_out / P_in = ${(eta * 100).toFixed(1)} %`, w / 2, 12);

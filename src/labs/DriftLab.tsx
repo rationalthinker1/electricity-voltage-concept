@@ -53,7 +53,7 @@ export default function DriftLab() {
   const [trackerDisplay, setTrackerDisplay] = useState({ elapsed: 0, distance_mm: 0 });
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     const wireMarginX = 60;
@@ -120,7 +120,7 @@ export default function DriftLab() {
         trackerX = wireLeft + (wireRight - wireLeft) * 0.15;
       }
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Wire body
@@ -135,7 +135,7 @@ export default function DriftLab() {
       roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 14); ctx.stroke();
 
       // Scale bars at top-left
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -144,7 +144,7 @@ export default function DriftLab() {
 
       // E field arrow
       ctx.strokeStyle = 'rgba(255,59,110,0.9)';
-      ctx.fillStyle = 'rgba(255,59,110,0.9)';
+      ctx.fillStyle = colors.pink;
       ctx.lineWidth = 2;
       const arrLen = 50;
       const arrY = top - 18;
@@ -162,7 +162,7 @@ export default function DriftLab() {
 
       // Electron cloud — VISUAL ONLY drift bias (not the same as the tracker)
       const driftBias = -Math.max(0.02, Math.min(2.0, computed.vd * 1e3));
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = colors.blue;
       for (const e of electrons) {
         e.vx += (Math.random() - 0.5) * 1.8;
         e.vy += (Math.random() - 0.5) * 1.8;
@@ -177,7 +177,7 @@ export default function DriftLab() {
       }
 
       // Tracker dot — uses REAL v_d
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = colors.accent;
       ctx.shadowColor = 'rgba(255,107,42,0.7)';
       ctx.shadowBlur = 14;
       ctx.beginPath();
@@ -195,21 +195,21 @@ export default function DriftLab() {
       ctx.setLineDash([]);
 
       // Punchline annotation
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = colors.accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
       ctx.fillText(`An electron's commute: ${formatTime(computed.t1m)} per meter`, w - 16, 12);
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.fillText(`v_d = ${pretty(computed.vd).replace(/<[^>]+>/g, '')} m/s`, w - 16, 28);
 
       // Material label below
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = colors.accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
       ctx.fillText(MATERIALS[material]!.name.toUpperCase(), wireLeft, bot + 24);
-      ctx.fillStyle = 'rgba(160,158,149,0.9)';
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'right';
       const iLabel = I < 1 ? (I * 1000).toFixed(1) + ' mA' : I.toFixed(2) + ' A';
       ctx.fillText(`I = ${iLabel}   ·   A = ${Amm2.toFixed(2)} mm²`, wireRight, bot + 24);

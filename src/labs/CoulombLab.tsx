@@ -61,7 +61,7 @@ export default function CoulombLab() {
 
   // Canvas setup — runs once on mount + on resize. Reads state via stateRef.
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas } = info;
+    const { ctx, w, h, canvas, colors } = info;
     let raf = 0;
     let dragging: 'p1' | 'p2' | null = null;
 
@@ -128,12 +128,12 @@ export default function CoulombLab() {
       const x1 = p1.x * w, y1 = p1.y * h;
       const x2 = p2.x * w, y2 = p2.y * h;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Dashed distance line + r label
       ctx.setLineDash([6, 6]);
-      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
@@ -170,7 +170,7 @@ export default function CoulombLab() {
       // r-label in the middle of the line
       const mxLabel = (x1 + x2) / 2;
       const myLabel = (y1 + y2) / 2 - 12;
-      ctx.fillStyle = 'rgba(160,158,149,0.9)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       const rNow = stateRef.current.rMeters;

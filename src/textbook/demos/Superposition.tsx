@@ -31,6 +31,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -75,12 +76,12 @@ export function SuperpositionDemo({ figure }: Props) {
       both.V_A, both.I1, both.I2, both.I3, v1on, v2on]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, } = info;
     let raf = 0;
 
     function draw() {
       const { onlyV1, onlyV2, both, v1on, v2on } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       const colW = w / 3;
@@ -94,7 +95,7 @@ export function SuperpositionDemo({ figure }: Props) {
       drawPanel(ctx, 2 * colW, 0, colW, h, label, both, 'rgba(255,107,42,0.95)');
 
       // Sum-arrow header
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -164,14 +165,14 @@ function drawPanel(
   const plotH = h - padT - padB;
 
   // Title
-  ctx.fillStyle = 'rgba(160,158,149,0.85)';
+  ctx.fillStyle = getCanvasColors().textDim;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
   ctx.fillText(title, w / 2, 8);
 
   // Frame
-  ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+  ctx.strokeStyle = getCanvasColors().border;
   ctx.strokeRect(padL, padT, plotW, plotH);
 
   // Find common scale across the three currents
@@ -180,7 +181,7 @@ function drawPanel(
   const yOf = (I: number) => yMid - (I / Imax) * (plotH / 2 - 6);
 
   // Zero line
-  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.strokeStyle = getCanvasColors().borderStrong;
   ctx.beginPath();
   ctx.moveTo(padL, yMid); ctx.lineTo(padL + plotW, yMid);
   ctx.stroke();
@@ -200,7 +201,7 @@ function drawPanel(
     ctx.fillStyle = accent;
     ctx.fillRect(xC - barW / 2, top, barW, hgt);
 
-    ctx.fillStyle = 'rgba(236,235,229,0.85)';
+    ctx.fillStyle = getCanvasColors().text;
     ctx.font = '9px "JetBrains Mono", monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
@@ -220,7 +221,7 @@ function drawPanel(
   ctx.fillText(`−${(Imax * 1000).toFixed(2)} mA`, padL - 4, yOf(-Imax));
 
   // V_A annotation
-  ctx.fillStyle = 'rgba(255,107,42,0.9)';
+  ctx.fillStyle = getCanvasColors().accent;
   ctx.font = '9px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';

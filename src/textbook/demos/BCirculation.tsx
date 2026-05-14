@@ -31,13 +31,13 @@ export function BCirculationDemo({ figure }: Props) {
   const Bsurf = (PHYS.mu_0 * Math.abs(I)) / (2 * Math.PI * a_m);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let phase = 0;
 
     function draw() {
       const { I, a_mm } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const cx = w / 2;
@@ -100,7 +100,7 @@ export function BCirculationDemo({ figure }: Props) {
       const tracerTheta = phase * Math.PI * 2;
       const tx = cx + tracerR * Math.cos(tracerTheta);
       const ty = cy + tracerR * Math.sin(tracerTheta);
-      ctx.fillStyle = 'rgba(108,197,194,0.9)';
+      ctx.fillStyle = colors.teal;
       ctx.beginPath(); ctx.arc(tx, ty, 2.4, 0, Math.PI * 2); ctx.fill();
 
       // ── Wire (end-on disc) at center
@@ -129,7 +129,7 @@ export function BCirculationDemo({ figure }: Props) {
       ctx.fillText(`I = ${I.toFixed(1)} A  ⊗  (into page)`, cx, cy + wireR_px * 3 + 6);
 
       // Top-left labels
-      ctx.fillStyle = '#6cc5c2';
+      ctx.fillStyle = colors.teal;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('B  (circumferential)', 18, 14);
@@ -139,7 +139,7 @@ export function BCirculationDemo({ figure }: Props) {
       // Bottom: surface B value
       const a_m_ = a_mm * 1e-3;
       const B_ = (PHYS.mu_0 * Math.abs(I)) / (2 * Math.PI * a_m_);
-      ctx.fillStyle = '#6cc5c2';
+      ctx.fillStyle = colors.teal;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
       ctx.fillText(`B at surface (r = a) = μ₀ I / (2π a) = ${pretty(B_)} T`, w / 2, h - 12);

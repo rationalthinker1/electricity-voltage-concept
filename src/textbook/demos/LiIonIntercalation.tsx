@@ -9,6 +9,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
@@ -37,7 +38,7 @@ export function LiIonIntercalationDemo({ figure }: Props) {
       const s = stateRef.current;
       phase += 0.03;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       const anodeX = 40;
@@ -58,13 +59,13 @@ export function LiIonIntercalationDemo({ figure }: Props) {
       // Electrolyte — faint amber wash
       ctx.fillStyle = 'rgba(255,107,42,0.06)';
       ctx.fillRect(electrolyteX, topY, electrolyteW, colH);
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = getCanvasColors().border;
       ctx.strokeRect(anodeX, topY, anodeW, colH);
       ctx.strokeRect(cathodeX, topY, anodeW, colH);
 
       // Draw Li⁺ ions intercalated in the slabs
       function drawIonsIn(x: number, w: number, count: number) {
-        ctx.fillStyle = '#5baef8';
+        ctx.fillStyle = getCanvasColors().blue;
         ctx.font = 'bold 10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -89,7 +90,7 @@ export function LiIonIntercalationDemo({ figure }: Props) {
         const dir = s.soc < 0.5 ? -1 : +1;
         const xx = electrolyteX + (dir > 0 ? t : 1 - t) * electrolyteW;
         const yy = topY + colH * (0.25 + 0.5 * ((j * 0.37) % 1));
-        ctx.fillStyle = 'rgba(91,174,248,0.9)';
+        ctx.fillStyle = getCanvasColors().blue;
         ctx.font = 'bold 11px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -97,7 +98,7 @@ export function LiIonIntercalationDemo({ figure }: Props) {
       }
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.9)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
@@ -106,7 +107,7 @@ export function LiIonIntercalationDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.fillText('electrolyte', electrolyteX + electrolyteW / 2, botY + 4);
 
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'left';
       ctx.fillText(`SOC = ${(s.soc * 100).toFixed(0)} %`, 10, 10);
 

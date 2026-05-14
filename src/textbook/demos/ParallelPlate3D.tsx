@@ -29,6 +29,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
+import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   attachOrbit, project, v3,
   type OrbitCamera, type Vec3,
@@ -87,7 +88,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
 
     function draw() {
       const s = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       const half = plateHalfWorld(s.A_cm2);
@@ -369,7 +370,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         const boxX = Math.min(W - boxW - 8, Math.max(8, anchor.x + 18));
         const boxY = Math.min(H - boxH - 8, Math.max(8, anchor.y - boxH - 10));
         // Connector from anchor to box.
-        ctx.strokeStyle = 'rgba(108,197,194,0.55)';
+        ctx.strokeStyle = getCanvasColors().teal;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(anchor.x, anchor.y);
@@ -377,14 +378,14 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         ctx.stroke();
         // Box.
         ctx.fillStyle = 'rgba(13,13,16,0.92)';
-        ctx.strokeStyle = 'rgba(108,197,194,0.55)';
+        ctx.strokeStyle = getCanvasColors().teal;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.rect(boxX, boxY, boxW, boxH);
         ctx.fill();
         ctx.stroke();
         // Lines.
-        ctx.fillStyle = 'rgba(108,197,194,0.95)';
+        ctx.fillStyle = getCanvasColors().teal;
         ctx.textBaseline = 'top';
         for (let i = 0; i < labelLines.length; i++) {
           ctx.fillText(labelLines[i]!, boxX + pad, boxY + pad + i * lineH);
@@ -395,13 +396,13 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to orbit', 12, 12);
-      ctx.fillStyle = 'rgba(255,59,110,0.85)';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.fillText('+ plate', 12, H - 42);
-      ctx.fillStyle = 'rgba(91,174,248,0.85)';
+      ctx.fillStyle = getCanvasColors().blue;
       ctx.fillText('− plate', 12, H - 28);
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText('E-field in the gap', 12, H - 14);
 
       raf = requestAnimationFrame(draw);

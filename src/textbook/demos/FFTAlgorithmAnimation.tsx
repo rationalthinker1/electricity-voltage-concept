@@ -25,12 +25,12 @@ export function FFTAlgorithmAnimationDemo() {
   useEffect(() => { stateRef.current = { logN }; }, [logN]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     function draw() {
       const { logN } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Left half: log-log style operation count plot for N = 8..4096
@@ -94,10 +94,10 @@ export function FFTAlgorithmAnimationDemo() {
       ctx.fillText('10⁷', padL - 3, padT + 8);
 
       // Legend
-      ctx.fillStyle = 'rgba(91,174,248,0.95)';
+      ctx.fillStyle = colors.blue;
       ctx.textAlign = 'left';
       ctx.fillText('naive DFT — N²', padL + 4, padT + 10);
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = colors.accent;
       ctx.fillText('FFT — N log₂ N', padL + 4, padT + 22);
 
       // Right half: butterfly diagram for N = 8
@@ -109,7 +109,7 @@ export function FFTAlgorithmAnimationDemo() {
       const colW = bw / (stages + 1);
       const rowH = bh / Nbf;
 
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('Cooley-Tukey butterfly (N = 8)', bx0, by0 - 2);
@@ -154,7 +154,7 @@ export function FFTAlgorithmAnimationDemo() {
         }
       }
       // Input / output index labels
-      ctx.fillStyle = 'rgba(160,158,149,0.8)';
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'right';
       for (let i = 0; i < Nbf; i++) {
         ctx.fillText('x[' + i + ']', bx0 - 4, by0 + rowH * (i + 0.5) + 3);

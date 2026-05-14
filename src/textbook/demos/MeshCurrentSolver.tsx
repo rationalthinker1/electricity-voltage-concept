@@ -30,6 +30,7 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -80,7 +81,7 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
       st.t += 0.016;
       const { V1, V2, R1, R2, R3, sol, t } = st;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       const padX = 60;

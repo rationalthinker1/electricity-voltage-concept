@@ -52,13 +52,13 @@ export function BuckConverterDemo({ figure }: Props) {
   }, [Vin, Vout, duty, dIL_on, dIL_off, Tsw, tOn, tOff, Iout]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     function draw() {
       const { Vout, duty, dIL_on, dIL_off, Tsw, tOn, Iout } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 20, padT = 18, padB = 32;
@@ -71,7 +71,7 @@ export function BuckConverterDemo({ figure }: Props) {
       const mid = padT + subH + 12;
 
       // frame: SW
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(padL, top, plotW, subH);
       // frame: I_L
       ctx.strokeRect(padL, mid, plotW, subH);

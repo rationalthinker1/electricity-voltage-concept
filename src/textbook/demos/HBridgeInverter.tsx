@@ -35,7 +35,7 @@ export function HBridgeInverterDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { m }; }, [m]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let phase = 0;
 
@@ -43,7 +43,7 @@ export function HBridgeInverterDemo({ figure }: Props) {
       const { m } = stateRef.current;
       phase += 0.012;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 20, padT = 18, padB = 28;
@@ -54,7 +54,7 @@ export function HBridgeInverterDemo({ figure }: Props) {
       const mid = padT + subH + 8;
 
       // frames
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(padL, top, plotW, subH);
       ctx.strokeRect(padL, mid, plotW, subH);
 
@@ -72,7 +72,7 @@ export function HBridgeInverterDemo({ figure }: Props) {
       const yMid = (v: number) => (mid + subH / 2) - (v / V_DC) * (subH / 2 - 4);
 
       // Sine reference (visible on bottom plot, dashed)
-      ctx.strokeStyle = 'rgba(108,197,194,0.45)';
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1.1;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -87,7 +87,7 @@ export function HBridgeInverterDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // PWM output (top plot)
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.1;
       ctx.beginPath();
       let prevY = yTop(V_DC);

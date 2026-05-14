@@ -19,6 +19,7 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -55,7 +56,7 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       const s = stateRef.current;
       phase += 0.012;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Two pads
@@ -74,7 +75,7 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
 
       // Render N existing charges on top plate
       const drawN = Math.min(40, s.N);
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -82,7 +83,7 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
         const x = xL + 10 + ((plateW - 20) * (i + 0.5)) / Math.max(drawN, 1);
         ctx.fillText('+', x, topY - plateThick - 8);
       }
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = getCanvasColors().blue;
       for (let i = 0; i < drawN; i++) {
         const x = xL + 10 + ((plateW - 20) * (i + 0.5)) / Math.max(drawN, 1);
         ctx.fillText('−', x, botY + plateThick + 8);
@@ -116,37 +117,37 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       const wY = botY - climbPhase * (botY - topY);
       const wX = cx + plateW / 2 + 28;
       // Climb arrow
-      ctx.strokeStyle = 'rgba(255,107,42,0.85)';
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(wX, botY);
       ctx.lineTo(wX, wY);
       ctx.stroke();
       // Test charge dot
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.beginPath();
       ctx.arc(wX, wY, 6, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = '#0a0a0b';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.font = 'bold 9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('+q', wX, wY);
 
       // Effort label next to climber
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       ctx.fillText('push', wX + 12, (topY + botY) / 2);
 
       // Plate labels
-      ctx.fillStyle = 'rgba(255,59,110,0.85)';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
       ctx.fillText('top plate (+)', xL - 6, topY - 2);
-      ctx.fillStyle = 'rgba(91,174,248,0.85)';
+      ctx.fillStyle = getCanvasColors().blue;
       ctx.fillText('bottom plate (−)', xL - 6, botY + 2);
 
       // ── Work-tape gauge on the right
@@ -155,13 +156,13 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       const tapeW = Math.min(W - tapeX - 24, 120);
       const tapeH = H - 60;
 
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
       ctx.fillText('Effort ∝ V', tapeX, tapeY - 4);
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = getCanvasColors().border;
       ctx.lineWidth = 1;
       ctx.strokeRect(tapeX, tapeY, tapeW, tapeH);
 
@@ -173,7 +174,7 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       ctx.fillRect(tapeX, tapeY + tapeH - fillH, tapeW, fillH);
 
       // Tick lines
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = getCanvasColors().border;
       for (let i = 1; i <= 4; i++) {
         const y = tapeY + (tapeH * i) / 5;
         ctx.beginPath();
@@ -181,7 +182,7 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
         ctx.stroke();
       }
 
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';

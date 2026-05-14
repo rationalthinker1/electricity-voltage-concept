@@ -32,7 +32,7 @@ export function SynchronousMotorDemo({ figure }: Props) {
   }, [f, loadAngleDeg]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let lastT = performance.now();
     let statorAng = 0;
@@ -53,7 +53,7 @@ export function SynchronousMotorDemo({ figure }: Props) {
       const delta = (loadAngleDeg * Math.PI) / 180;
       const rotorAng = statorAng - delta;     // rotor lags by load angle δ
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const cx = w / 2;
@@ -61,7 +61,7 @@ export function SynchronousMotorDemo({ figure }: Props) {
       const R = Math.min(w, h) * 0.36;
 
       // Stator ring
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1.2;
       ctx.beginPath(); ctx.arc(cx, cy, R + 18, 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.arc(cx, cy, R - 4, 0, Math.PI * 2); ctx.stroke();
@@ -71,15 +71,15 @@ export function SynchronousMotorDemo({ figure }: Props) {
       const sFy = cy - Math.sin(statorAng) * R * 0.95;
       const sSx = cx - Math.cos(statorAng) * R * 0.95;
       const sSy = cy + Math.sin(statorAng) * R * 0.95;
-      ctx.strokeStyle = 'rgba(108,197,194,0.55)';
+      ctx.strokeStyle = colors.teal;
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(sSx, sSy); ctx.lineTo(sFx, sFy); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = 'rgba(108,197,194,0.7)';
+      ctx.fillStyle = colors.teal;
       ctx.beginPath(); ctx.arc(sFx, sFy, 9, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = 'rgba(108,197,194,0.4)';
+      ctx.fillStyle = colors.teal;
       ctx.beginPath(); ctx.arc(sSx, sSy, 9, 0, Math.PI * 2); ctx.fill();
 
       // Rotor — PM bar magnet at rotorAng (no slip — locked to field)
@@ -95,11 +95,11 @@ export function SynchronousMotorDemo({ figure }: Props) {
       ctx.lineCap = 'round';
       ctx.beginPath();
       ctx.moveTo(sxx, syy); ctx.lineTo(nx, ny); ctx.stroke();
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = colors.pink;
       ctx.beginPath(); ctx.arc(nx, ny, 12, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = colors.blue;
       ctx.beginPath(); ctx.arc(sxx, syy, 12, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#0a0a0b';
+      ctx.fillStyle = colors.bg;
       ctx.font = 'bold 11px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('N', nx, ny);
@@ -112,7 +112,7 @@ export function SynchronousMotorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(cx, cy, 30, -statorAng, -rotorAng, statorAng < rotorAng);
       ctx.stroke();
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = colors.accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('δ', cx + 36, cy + 4);

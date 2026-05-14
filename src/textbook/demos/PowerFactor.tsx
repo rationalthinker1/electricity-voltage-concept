@@ -45,13 +45,13 @@ export function PowerFactorDemo({ figure }: Props) {
   }, [Vp, Ip, phi, omega, Preal]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     function draw() {
       const { Vp, Ip, phi, omega, Preal } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 50, padR = 60, padT = 18, padB = 22;
@@ -71,7 +71,7 @@ export function PowerFactorDemo({ figure }: Props) {
       const yScaleI = (plotH / 2) / Math.max(Ip, 1e-3);
 
       // Frame
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.strokeRect(padL, padT, plotW, plotH);
       // Zero line
@@ -80,7 +80,7 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.stroke();
 
       // Vertical T marker
-      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx.strokeStyle = colors.border;
       ctx.setLineDash([2, 3]);
       ctx.beginPath();
       ctx.moveTo(xOf(T), padT); ctx.lineTo(xOf(T), padT + plotH);
@@ -90,7 +90,7 @@ export function PowerFactorDemo({ figure }: Props) {
       const N = 320;
 
       // Instantaneous power p(t) — shaded
-      ctx.fillStyle = 'rgba(255,59,110,0.18)';
+      ctx.fillStyle = colors.pink;
       ctx.beginPath();
       ctx.moveTo(padL, yMid);
       for (let i = 0; i <= N; i++) {
@@ -107,7 +107,7 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.fill();
 
       // v(t) — orange
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {
@@ -120,7 +120,7 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.stroke();
 
       // i(t) — teal
-      ctx.strokeStyle = 'rgba(108,197,194,0.95)';
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {
@@ -133,7 +133,7 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.stroke();
 
       // p(t) — pink line on top of shading
-      ctx.strokeStyle = 'rgba(255,59,110,0.95)';
+      ctx.strokeStyle = colors.pink;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {
@@ -161,11 +161,11 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
+      ctx.fillStyle = colors.accent;
       ctx.fillText('v(t)', padL + plotW + 4, padT + 10);
-      ctx.fillStyle = 'rgba(108,197,194,0.95)';
+      ctx.fillStyle = colors.teal;
       ctx.fillText('i(t)', padL + plotW + 4, padT + 24);
-      ctx.fillStyle = 'rgba(255,59,110,0.95)';
+      ctx.fillStyle = colors.pink;
       ctx.fillText('p(t)=v·i', padL + plotW + 4, padT + 38);
       ctx.fillStyle = 'rgba(255,107,42,0.8)';
       ctx.fillText('⟨p⟩ = P', padL + plotW + 4, yMean);
@@ -177,7 +177,7 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.fillText('2T', xOf(tMax), padT + plotH + 4);
 
       // Header
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

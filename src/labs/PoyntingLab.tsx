@@ -23,6 +23,7 @@ import { Formula } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS, pretty } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 const SLUG = 'poynting';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -90,7 +91,7 @@ export default function PoyntingLab() {
     function draw() {
       const s = stateRef.current;
       const out = s.computed;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       const g = getWireGeom();
@@ -210,7 +211,7 @@ export default function PoyntingLab() {
       }
 
       // FRONT half of B-field ellipses
-      ctx.strokeStyle = 'rgba(108,197,194,0.85)';
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 1.4;
       for (let i = 0; i < nB; i++) {
         const t = (i + 0.5) / nB;
@@ -220,7 +221,7 @@ export default function PoyntingLab() {
         ctx.stroke();
         const ax = cx + er * 1.6;
         const ay = g.wireCY;
-        ctx.fillStyle = 'rgba(108,197,194,0.95)';
+        ctx.fillStyle = getCanvasColors().teal;
         ctx.beginPath();
         ctx.moveTo(ax, ay);
         ctx.lineTo(ax - 6, ay - 4);
@@ -230,7 +231,7 @@ export default function PoyntingLab() {
       }
 
       // Terminals
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.shadowColor = 'rgba(255,59,110,0.6)';
       ctx.shadowBlur = 14;
       ctx.fillRect(g.wireXL - 26, g.wireCY - r - 6, 4, 2 * r + 12);
@@ -238,28 +239,28 @@ export default function PoyntingLab() {
       ctx.font = 'bold 18px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.fillText('+', g.wireXL - 40, g.wireCY);
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = getCanvasColors().blue;
       ctx.shadowColor = 'rgba(91,174,248,0.6)';
       ctx.shadowBlur = 14;
       ctx.fillRect(g.wireXR + 22, g.wireCY - r - 6, 4, 2 * r + 12);
       ctx.shadowBlur = 0;
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = getCanvasColors().blue;
       ctx.fillText('−', g.wireXR + 40, g.wireCY);
 
       // Overlay numerics
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
       ctx.fillText(`|S| = ${pretty(out.S)} W/m²`, 24, 30);
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.fillText(`E = ${pretty(out.E)} V/m`, 24, 50);
-      ctx.fillStyle = '#6cc5c2';
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.fillText(`B = ${pretty(out.B)} T`, 24, 70);
 
-      ctx.fillStyle = 'rgba(160,158,149,0.8)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText(

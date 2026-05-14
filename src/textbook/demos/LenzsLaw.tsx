@@ -38,7 +38,7 @@ export function LenzsLawDemo({ figure }: Props) {
   }, []);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let lastT = performance.now();
     let lastD = stateRef.current.d;
@@ -60,7 +60,7 @@ export function LenzsLawDemo({ figure }: Props) {
       const dir: 0 | 1 | -1 = smoothedRate > 0.05 ? 1 : smoothedRate < -0.05 ? -1 : 0;
       dirRef.current = { dir, rate: smoothedRate };
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const cx = w / 2;
@@ -69,13 +69,13 @@ export function LenzsLawDemo({ figure }: Props) {
 
       // Draw loop (face-on: an ellipse with strong perspective)
       const loopRy = loopR * 0.32;
-      ctx.strokeStyle = 'rgba(255,107,42,0.85)';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.ellipse(cx, cy, loopR, loopRy, 0, 0, Math.PI * 2);
       ctx.stroke();
       // small highlight stroke
-      ctx.strokeStyle = 'rgba(255,107,42,0.25)';
+      ctx.strokeStyle = colors.accentSoft;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.ellipse(cx, cy, loopR + 4, loopRy + 1.5, 0, 0, Math.PI * 2);
@@ -86,14 +86,14 @@ export function LenzsLawDemo({ figure }: Props) {
       const magY = cy - 50 - d * 14;
       const magW = 60, magH = 24;
       // S on top, N on bottom (so N points at loop)
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = colors.blue;
       ctx.fillRect(cx - magW / 2, magY - magH / 2, magW, magH / 2);
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = colors.pink;
       ctx.fillRect(cx - magW / 2, magY, magW, magH / 2);
       ctx.strokeStyle = 'rgba(255,255,255,0.2)';
       ctx.lineWidth = 1;
       ctx.strokeRect(cx - magW / 2, magY - magH / 2, magW, magH);
-      ctx.fillStyle = '#0a0a0b';
+      ctx.fillStyle = colors.bg;
       ctx.font = 'bold 11px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('S', cx, magY - magH / 4);
@@ -101,7 +101,7 @@ export function LenzsLawDemo({ figure }: Props) {
 
       // Magnet's own B-field arrow — pink, pointing down toward loop
       ctx.strokeStyle = 'rgba(255,59,110,0.6)';
-      ctx.fillStyle = 'rgba(255,59,110,0.6)';
+      ctx.fillStyle = colors.pink;
       ctx.lineWidth = 1.4;
       const arrowFromY = magY + magH / 2 + 6;
       const arrowToY = cy - loopRy - 8;
@@ -112,7 +112,7 @@ export function LenzsLawDemo({ figure }: Props) {
       ctx.lineTo(cx - 5, arrowToY - 7);
       ctx.lineTo(cx + 5, arrowToY - 7);
       ctx.closePath(); ctx.fill();
-      ctx.fillStyle = 'rgba(255,59,110,0.7)';
+      ctx.fillStyle = colors.pink;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       ctx.fillText('B (magnet)', cx + 10, (arrowFromY + arrowToY) / 2);
@@ -182,14 +182,14 @@ export function LenzsLawDemo({ figure }: Props) {
         ctx.textAlign = 'center'; ctx.textBaseline = 'top';
         ctx.fillText(`induced current (${ccw ? 'opposes' : 'attracts'})`, cx, cy + loopRy + 18);
       } else {
-        ctx.fillStyle = 'rgba(160,158,149,0.5)';
+        ctx.fillStyle = colors.textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center'; ctx.textBaseline = 'top';
         ctx.fillText('move the magnet to induce a current', cx, cy + loopRy + 18);
       }
 
       // Status pill top-left
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       const status =

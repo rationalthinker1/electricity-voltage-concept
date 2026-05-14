@@ -12,6 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -31,7 +32,7 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
     let raf = 0;
     function draw() {
       const { probeDeg } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       const cx = W / 2;
@@ -39,7 +40,7 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
       const R = Math.min(W, H) * 0.42;
 
       // Concentric reference circles
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = getCanvasColors().border;
       ctx.lineWidth = 1;
       for (let f = 0.25; f <= 1.001; f += 0.25) {
         ctx.beginPath(); ctx.arc(cx, cy, R * f, 0, Math.PI * 2); ctx.stroke();
@@ -47,12 +48,12 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
 
       // Axis (vertical dashed) — the dipole axis
       ctx.setLineDash([4, 5]);
-      ctx.strokeStyle = 'rgba(255,255,255,0.30)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.beginPath(); ctx.moveTo(cx, cy - R - 6); ctx.lineTo(cx, cy + R + 6); ctx.stroke();
       ctx.setLineDash([]);
 
       // Radial spokes every 30°
-      ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+      ctx.strokeStyle = getCanvasColors().border;
       for (let deg = 0; deg < 360; deg += 30) {
         const a = (deg * Math.PI) / 180;
         ctx.beginPath();
@@ -62,7 +63,7 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
       }
 
       // Pattern curve: r(θ) = sin²θ where θ measured from the vertical axis
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 2;
       ctx.fillStyle = 'rgba(255,107,42,0.15)';
       ctx.beginPath();
@@ -86,7 +87,7 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
       const rprobe = R * Math.sin(th) ** 2;
       const pxR = cx + rprobe * Math.sin(th);
       const pyR = cy - rprobe * Math.cos(th);
-      ctx.strokeStyle = 'rgba(108,197,194,0.95)';
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 1.5;
       ctx.setLineDash([3, 4]);
       ctx.beginPath();
@@ -94,18 +95,18 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
       ctx.lineTo(cx + R * Math.sin(th), cy - R * Math.cos(th));
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = '#6cc5c2';
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.beginPath(); ctx.arc(pxR, pyR, 4, 0, Math.PI * 2); ctx.fill();
 
       // Dipole symbol — two charges on the axis
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.beginPath(); ctx.arc(cx, cy - 8, 5, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = getCanvasColors().blue;
       ctx.beginPath(); ctx.arc(cx, cy + 8, 5, 0, Math.PI * 2); ctx.fill();
 
       // Labels
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'center';
       ctx.fillText('axis · 0', cx, cy - R - 12);
       ctx.fillText('axis · π', cx, cy + R + 18);

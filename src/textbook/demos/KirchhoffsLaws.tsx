@@ -31,6 +31,7 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -72,7 +73,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       const I2 = VAB / R2;
       const I3 = VAB / R3;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       const padX = 60;
@@ -153,7 +154,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       ], I1 / maxI);
 
       // Dynamic overlay: live current readouts next to each branch.
-      ctx.fillStyle = 'rgba(91,174,248,0.95)';
+      ctx.fillStyle = getCanvasColors().blue;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
@@ -166,7 +167,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       // Dynamic overlay: KCL / KVL annotation boxes (toggled by the controls).
       if (showKCL) {
         // Highlight node A with a ring + show I1 = I2 + I3 box
-        ctx.strokeStyle = 'rgba(255,107,42,0.9)';
+        ctx.strokeStyle = getCanvasColors().accent;
         ctx.lineWidth = 1.4;
         ctx.beginPath(); ctx.arc(nodeA_x, yTop, 14, 0, Math.PI * 2); ctx.stroke();
 
@@ -176,15 +177,15 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         ctx.strokeStyle = 'rgba(255,107,42,0.6)';
         ctx.fillRect(boxX, boxY, 230, 50);
         ctx.strokeRect(boxX, boxY, 230, 50);
-        ctx.fillStyle = '#ff6b2a';
+        ctx.fillStyle = getCanvasColors().accent;
         ctx.font = 'bold 10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
         ctx.fillText('KCL at node A:', boxX + 8, boxY + 6);
-        ctx.fillStyle = 'rgba(236,235,229,0.95)';
+        ctx.fillStyle = getCanvasColors().text;
         ctx.font = '11px "JetBrains Mono", monospace';
         ctx.fillText(`I₁ = I₂ + I₃`, boxX + 8, boxY + 22);
-        ctx.fillStyle = 'rgba(160,158,149,0.85)';
+        ctx.fillStyle = getCanvasColors().textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.fillText(
           `${fmtA(I1)} = ${fmtA(I2)} + ${fmtA(I3)} ✓`,
@@ -201,12 +202,12 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         ctx.fillRect(boxX, boxY, 258, 82);
         ctx.strokeRect(boxX, boxY, 258, 82);
 
-        ctx.fillStyle = '#6cc5c2';
+        ctx.fillStyle = getCanvasColors().teal;
         ctx.font = 'bold 10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
         ctx.fillText('KVL loops (sum of drops = 0):', boxX + 8, boxY + 6);
-        ctx.fillStyle = 'rgba(236,235,229,0.95)';
+        ctx.fillStyle = getCanvasColors().text;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.fillText(`Left:  V − I₁R₁ − I₂R₂ = 0`, boxX + 8, boxY + 22);
         ctx.fillText(`Right: I₂R₂ − I₃R₃ = 0`, boxX + 8, boxY + 36);
@@ -216,7 +217,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         const drop3 = I3 * R3;
         const lhsL = V - drop1 - drop2;
         const lhsR = drop2 - drop3;
-        ctx.fillStyle = 'rgba(160,158,149,0.85)';
+        ctx.fillStyle = getCanvasColors().textDim;
         ctx.fillText(
           `${V.toFixed(2)} − ${drop1.toFixed(2)} − ${drop2.toFixed(2)} = ${lhsL.toFixed(3)} ✓`,
           boxX + 8, boxY + 52
@@ -228,7 +229,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       }
 
       // Dynamic overlay: top-corner caption text.
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

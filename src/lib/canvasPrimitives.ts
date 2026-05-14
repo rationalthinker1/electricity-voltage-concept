@@ -1,3 +1,5 @@
+import { getCanvasColors } from './canvasTheme';
+
 export interface CanvasPoint {
   x: number;
   y: number;
@@ -73,7 +75,7 @@ export function drawWire(
   if (points.length < 2) return;
 
   ctx.save();
-  ctx.strokeStyle = options.color ?? 'rgba(255,255,255,0.55)';
+  ctx.strokeStyle = options.color ?? getCanvasColors().textDim;
   ctx.lineWidth = options.lineWidth ?? 1.5;
   ctx.lineCap = options.lineCap ?? 'round';
   ctx.lineJoin = options.lineJoin ?? 'round';
@@ -106,7 +108,7 @@ export function drawResistor(
   const step = length / segments;
 
   ctx.save();
-  ctx.strokeStyle = options.color ?? 'rgba(255,107,42,0.95)';
+  ctx.strokeStyle = options.color ?? getCanvasColors().accent;
   ctx.lineWidth = options.lineWidth ?? 1.6;
   ctx.lineCap = options.lineCap ?? 'round';
   ctx.lineJoin = options.lineJoin ?? 'round';
@@ -127,7 +129,7 @@ export function drawResistor(
     const cx = (start.x + end.x) / 2;
     const cy = (start.y + end.y) / 2;
     const offset = options.labelOffset ?? { x: nx * -18, y: ny * -18 };
-    ctx.fillStyle = options.labelColor ?? options.color ?? '#ff6b2a';
+    ctx.fillStyle = options.labelColor ?? options.color ?? getCanvasColors().accent;
     ctx.font = '10px "JetBrains Mono", monospace';
     ctx.textAlign = Math.abs(dx) < Math.abs(dy) ? 'left' : 'center';
     ctx.textBaseline = Math.abs(dx) < Math.abs(dy) ? 'middle' : 'bottom';
@@ -156,8 +158,8 @@ export function drawArrow(
   const headWidth = options.headWidth ?? 5;
 
   ctx.save();
-  ctx.strokeStyle = options.color ?? 'rgba(91,174,248,0.95)';
-  ctx.fillStyle = options.fillColor ?? options.color ?? 'rgba(91,174,248,0.95)';
+  ctx.strokeStyle = options.color ?? getCanvasColors().blue;
+  ctx.fillStyle = options.fillColor ?? options.color ?? getCanvasColors().blue;
   ctx.lineWidth = options.lineWidth ?? 1.6;
   ctx.lineCap = options.lineCap ?? 'round';
   ctx.beginPath();
@@ -178,8 +180,9 @@ export function drawCharge(
   center: CanvasPoint,
   options: ChargeOptions = {},
 ) {
+  const colors = getCanvasColors();
   const sign = options.sign ?? '+';
-  const color = options.color ?? (sign === '+' ? '#ff3b6e' : '#5baef8');
+  const color = options.color ?? (sign === '+' ? colors.pink : colors.blue);
   const radius = options.radius ?? 16;
 
   ctx.save();
@@ -203,7 +206,7 @@ export function drawCharge(
   ctx.fill();
   ctx.stroke();
 
-  ctx.fillStyle = options.textColor ?? '#0a0a0b';
+  ctx.fillStyle = options.textColor ?? colors.bg;
   ctx.font = `bold ${Math.round(radius * 1.1)}px "JetBrains Mono", monospace`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -230,9 +233,10 @@ export function drawBattery(
   const plateGap = options.plateGap ?? 14;
   const positivePlateLength = options.positivePlateLength ?? 28;
   const negativePlateLength = options.negativePlateLength ?? 16;
-  const wireColor = options.color ?? 'rgba(255,255,255,0.65)';
-  const positiveColor = options.positiveColor ?? '#ff3b6e';
-  const negativeColor = options.negativeColor ?? '#5baef8';
+  const colors = getCanvasColors();
+  const wireColor = options.color ?? colors.textDim;
+  const positiveColor = options.positiveColor ?? colors.pink;
+  const negativeColor = options.negativeColor ?? colors.blue;
 
   ctx.save();
   ctx.lineCap = 'round';
@@ -280,7 +284,7 @@ export function drawBattery(
 
   if (options.label) {
     const offset = options.labelOffset ?? (vertical ? { x: -18, y: 0 } : { x: 0, y: -18 });
-    ctx.fillStyle = 'rgba(255,255,255,0.75)';
+    ctx.fillStyle = colors.text;
     ctx.font = '10px "JetBrains Mono", monospace';
     ctx.textAlign = vertical && offset.x < 0 ? 'right' : 'center';
     ctx.textBaseline = 'middle';
@@ -295,7 +299,7 @@ export function drawCurrentSource(
   options: CurrentSourceOptions = {},
 ) {
   const radius = options.radius ?? 14;
-  const color = options.color ?? 'rgba(108,197,194,0.95)';
+  const color = options.color ?? getCanvasColors().teal;
   const direction = options.direction ?? 'up';
   const dirs = {
     up: { x: 0, y: -1 },
@@ -399,7 +403,7 @@ export function drawCapacitor(
   const mid = length / 2;
 
   ctx.save();
-  ctx.strokeStyle = options.color ?? 'rgba(108,197,194,0.95)';
+  ctx.strokeStyle = options.color ?? getCanvasColors().teal;
   ctx.lineWidth = options.lineWidth ?? 1.6;
   ctx.lineCap = options.lineCap ?? 'round';
   // Lead in.
@@ -431,7 +435,7 @@ export function drawCapacitor(
     const cx = (start.x + end.x) / 2;
     const cy = (start.y + end.y) / 2;
     const offset = options.labelOffset ?? { x: nx * -18, y: ny * -18 };
-    ctx.fillStyle = options.labelColor ?? options.color ?? '#6cc5c2';
+    ctx.fillStyle = options.labelColor ?? options.color ?? getCanvasColors().teal;
     ctx.font = '10px "JetBrains Mono", monospace';
     ctx.textAlign = Math.abs(dx) < Math.abs(dy) ? 'left' : 'center';
     ctx.textBaseline = Math.abs(dx) < Math.abs(dy) ? 'middle' : 'bottom';
@@ -460,7 +464,7 @@ export function drawInductor(
   const leadLength = (length - coilLength) / 2;
 
   ctx.save();
-  ctx.strokeStyle = options.color ?? 'rgba(108,197,194,0.95)';
+  ctx.strokeStyle = options.color ?? getCanvasColors().teal;
   ctx.lineWidth = options.lineWidth ?? 1.6;
   ctx.lineCap = options.lineCap ?? 'round';
   // Lead in.
@@ -491,7 +495,7 @@ export function drawInductor(
     const cx = (start.x + end.x) / 2;
     const cy = (start.y + end.y) / 2;
     const offset = options.labelOffset ?? { x: nx * -20, y: ny * -20 };
-    ctx.fillStyle = options.labelColor ?? options.color ?? '#6cc5c2';
+    ctx.fillStyle = options.labelColor ?? options.color ?? getCanvasColors().teal;
     ctx.font = '10px "JetBrains Mono", monospace';
     ctx.textAlign = Math.abs(dx) < Math.abs(dy) ? 'left' : 'center';
     ctx.textBaseline = Math.abs(dx) < Math.abs(dy) ? 'middle' : 'bottom';
@@ -507,7 +511,8 @@ export function drawBulb(
 ) {
   const radius = options.radius ?? 16;
   const brightness = Math.max(0, Math.min(1, options.brightness ?? 0));
-  const baseColor = options.color ?? 'rgba(160,158,149,0.7)';
+  const colors = getCanvasColors();
+  const baseColor = options.color ?? colors.textDim;
   const glowColor = options.glowColor ?? '#ffcc55';
 
   ctx.save();
@@ -526,7 +531,7 @@ export function drawBulb(
   ctx.arc(center.x, center.y, radius, 0, Math.PI * 2);
   ctx.stroke();
   // Filament zigzag.
-  ctx.strokeStyle = brightness > 0 ? '#ff8c1e' : baseColor;
+  ctx.strokeStyle = brightness > 0 ? colors.accent : baseColor;
   ctx.lineWidth = 1.4;
   ctx.beginPath();
   ctx.moveTo(center.x - radius * 0.55, center.y + radius * 0.28);
@@ -538,7 +543,7 @@ export function drawBulb(
 
   if (options.label) {
     const offset = options.labelOffset ?? { x: 0, y: radius + 14 };
-    ctx.fillStyle = options.labelColor ?? 'rgba(160,158,149,0.85)';
+    ctx.fillStyle = options.labelColor ?? colors.textDim;
     ctx.font = '10px "JetBrains Mono", monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -555,7 +560,7 @@ export function drawGround(
   const orientation = options.orientation ?? 'down';
   const size = options.size ?? 10;
   const lead = options.leadLength ?? 8;
-  const color = options.color ?? 'rgba(160,158,149,0.8)';
+  const color = options.color ?? getCanvasColors().textDim;
 
   ctx.save();
   ctx.strokeStyle = color;
@@ -591,8 +596,9 @@ export function drawNodeDot(
   at: CanvasPoint,
   options: NodeDotOptions = {},
 ) {
+  const colors = getCanvasColors();
   const radius = options.radius ?? 3.5;
-  const color = options.color ?? 'rgba(236,235,229,0.85)';
+  const color = options.color ?? colors.text;
   ctx.save();
   ctx.fillStyle = color;
   ctx.beginPath();
@@ -614,8 +620,9 @@ export function drawVoltmeter(
   center: CanvasPoint,
   options: VoltmeterOptions = {},
 ) {
+  const colors = getCanvasColors();
   const radius = options.radius ?? 12;
-  const color = options.color ?? '#6cc5c2';
+  const color = options.color ?? colors.teal;
   ctx.save();
   if (options.leads) {
     ctx.strokeStyle = color;
@@ -635,7 +642,7 @@ export function drawVoltmeter(
     }
   }
   ctx.strokeStyle = color;
-  ctx.fillStyle = '#0d0d10';
+  ctx.fillStyle = colors.bg;
   ctx.lineWidth = 1.5;
   ctx.beginPath();
   ctx.arc(center.x, center.y, radius, 0, Math.PI * 2);
@@ -679,7 +686,7 @@ export function drawSwitch(
   center: CanvasPoint,
   options: SwitchOptions = {},
 ) {
-  const color = options.color ?? 'rgba(255,107,42,0.95)';
+  const color = options.color ?? getCanvasColors().accent;
   const terminalGap = options.terminalGap ?? 24;
   const state = options.state ?? 'closed';
   const left = { x: center.x - terminalGap / 2, y: center.y };
@@ -706,7 +713,7 @@ export function drawSwitch(
 
   if (options.label) {
     const offset = options.labelOffset ?? { x: 0, y: -22 };
-    ctx.fillStyle = 'rgba(160,158,149,0.85)';
+    ctx.fillStyle = getCanvasColors().textDim;
     ctx.font = '9px "JetBrains Mono", monospace';
     ctx.textAlign = 'center';
     ctx.textBaseline = offset.y < 0 ? 'bottom' : 'top';
@@ -752,7 +759,7 @@ export interface CircuitSpec {
 }
 
 export function drawCircuit(ctx: CanvasRenderingContext2D, spec: CircuitSpec): void {
-  const wireColor = spec.defaultWireColor ?? 'rgba(236,235,229,0.55)';
+  const wireColor = spec.defaultWireColor ?? getCanvasColors().textDim;
   const wireWidth = spec.defaultWireWidth ?? 1.4;
   for (const el of spec.elements) {
     switch (el.kind) {
@@ -864,7 +871,7 @@ export function drawGlowPath(
   options: GlowPathOptions = {},
 ) {
   if (points.length < 2) return;
-  const color = options.color ?? 'rgba(255,107,42,0.95)';
+  const color = options.color ?? getCanvasColors().accent;
   const lineWidth = options.lineWidth ?? 1.5;
   const glowWidth = options.glowWidth ?? lineWidth + 4;
   const glowColor = options.glowColor ?? translucent(color, 0.35);

@@ -23,12 +23,13 @@ import { useCallback, useEffect, useRef } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 
 import { drawComponent, GRID_PX } from './components';
+import { getCanvasColors } from '@/lib/canvasTheme';
 import { pinCoords, pkey, eng } from './solver';
 import type {
   ComponentKind, GridPoint, NodeMap, PlacedComponent, Probe, SolverResult, Wire,
 } from './types';
 
-const CANVAS_HEIGHT = 480;
+const CANVAS_HEIGHT = 600;
 
 type ArmedTool = ComponentKind | 'wire' | 'voltmeter' | 'ammeter' | null;
 
@@ -327,12 +328,15 @@ export function CanvasEditor(props: CanvasEditorProps) {
       const p = propsRef.current;
       const ui = uiRef.current;
 
+      // Theme-aware colors.
+      const colors = getCanvasColors();
+
       // Clear & background.
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Grid.
-      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       for (let x = 0; x < w; x += GRID_PX) {
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
@@ -341,7 +345,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
       }
       // Grid dots at intersections (subtle).
-      ctx.fillStyle = 'rgba(255,255,255,0.08)';
+      ctx.fillStyle = colors.border;
       for (let x = 0; x < w; x += GRID_PX) {
         for (let y = 0; y < h; y += GRID_PX) {
           ctx.fillRect(x - 0.5, y - 0.5, 1, 1);
@@ -354,7 +358,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
         const b = { x: wr.to.x * GRID_PX,   y: wr.to.y * GRID_PX };
         const isSelected = p.selectedWireId === wr.id;
         const isHovered = ui.hoverWireId === wr.id;
-        ctx.strokeStyle = isSelected ? '#ff6b2a' : isHovered ? '#ffb084' : '#a09e95';
+        ctx.strokeStyle = isSelected ? colors.accent : isHovered ? colors.strokeHi : colors.stroke;
         ctx.lineWidth = isSelected ? 2.6 : 1.8;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
@@ -383,6 +387,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
           current: p.solverResult?.componentCurrents.get(c.id) ?? 0,
           voltage: 0,
           brightness,
+          colors,
         });
       }
 
@@ -397,7 +402,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
         pinPoints.add(`${wr.from.x},${wr.from.y}`);
         pinPoints.add(`${wr.to.x},${wr.to.y}`);
       }
-      ctx.fillStyle = '#a09e95';
+      ctx.fillStyle = colors.stroke;
       for (const k of pinPoints) {
         const [gx, gy] = k.split(',').map(Number);
         ctx.beginPath();
@@ -409,7 +414,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
       for (const probe of p.probes) {
         if (probe.kind === 'voltmeter' && probe.at) {
           const pp = { x: probe.at.x * GRID_PX, y: probe.at.y * GRID_PX };
-          drawProbeBadge(ctx, pp.x + 14, pp.y + 14, 'V', '#6cc5c2',
+          drawProbeBadge(ctx, pp.x + 14, pp.y + 14, 'V', colors.teal,
             ui.hoverProbeId === probe.id);
         } else if (probe.kind === 'ammeter' && probe.componentId) {
           const c = p.components.find(cc => cc.id === probe.componentId);
@@ -420,7 +425,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
             x: (a.x + b.x) * GRID_PX / 2,
             y: (a.y + b.y) * GRID_PX / 2,
           };
-          drawProbeBadge(ctx, mid.x + 16, mid.y + 16, 'A', '#ff6b2a',
+          drawProbeBadge(ctx, mid.x + 16, mid.y + 16, 'A', colors.accent,
             ui.hoverProbeId === probe.id);
         }
       }
@@ -431,7 +436,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
         const tgt = ui.hoverPin ?? ui.ghost;
         if (tgt) {
           const b = { x: tgt.x * GRID_PX, y: tgt.y * GRID_PX };
-          ctx.strokeStyle = '#6cc5c2';
+          ctx.strokeStyle = colors.teal;
           ctx.lineWidth = 1.5;
           ctx.setLineDash([4, 4]);
           ctx.beginPath();
@@ -442,7 +447,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
           ctx.setLineDash([]);
         }
         // Highlight anchor.
-        ctx.fillStyle = '#6cc5c2';
+        ctx.fillStyle = colors.teal;
         ctx.beginPath();
         ctx.arc(a.x, a.y, 5, 0, Math.PI * 2);
         ctx.fill();
@@ -451,7 +456,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
       // Pin highlight on hover (wire tool).
       if ((p.armed === 'wire' || p.armed === 'voltmeter') && ui.hoverPin) {
         const pp = { x: ui.hoverPin.x * GRID_PX, y: ui.hoverPin.y * GRID_PX };
-        ctx.strokeStyle = '#6cc5c2';
+        ctx.strokeStyle = colors.teal;
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.arc(pp.x, pp.y, 6, 0, Math.PI * 2);
@@ -462,7 +467,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
       if (p.armed && p.armed !== 'wire' && p.armed !== 'voltmeter' && p.armed !== 'ammeter' && ui.ghost) {
         const gx = ui.ghost.x * GRID_PX;
         const gy = ui.ghost.y * GRID_PX;
-        ctx.strokeStyle = 'rgba(255,107,42,0.5)';
+        ctx.strokeStyle = colors.glow;
         ctx.lineWidth = 1.2;
         ctx.setLineDash([3, 3]);
         ctx.beginPath();
@@ -487,10 +492,13 @@ export function CanvasEditor(props: CanvasEditorProps) {
             const text = eng(v, 3) + 'V';
             const cx = probe.at.x * GRID_PX + 14;
             const cy = probe.at.y * GRID_PX + 14;
-            ctx.fillStyle = 'rgba(13,13,16,0.85)';
+            ctx.save();
+            ctx.globalAlpha = 0.9;
+            ctx.fillStyle = colors.bg;
             const padX = 4, w0 = ctx.measureText(text).width + padX * 2;
             ctx.fillRect(cx + 12, cy - 8, w0, 16);
-            ctx.fillStyle = '#6cc5c2';
+            ctx.restore();
+            ctx.fillStyle = colors.teal;
             ctx.textAlign = 'left';
             ctx.fillText(text, cx + 12 + padX, cy + 0.5);
           } else if (probe.kind === 'ammeter' && probe.componentId) {
@@ -502,10 +510,13 @@ export function CanvasEditor(props: CanvasEditorProps) {
             const text = eng(i, 3) + 'A';
             const cx = (a.x + b.x) * GRID_PX / 2 + 16;
             const cy = (a.y + b.y) * GRID_PX / 2 + 16;
-            ctx.fillStyle = 'rgba(13,13,16,0.85)';
+            ctx.save();
+            ctx.globalAlpha = 0.9;
+            ctx.fillStyle = colors.bg;
             const padX = 4, w0 = ctx.measureText(text).width + padX * 2;
             ctx.fillRect(cx + 12, cy - 8, w0, 16);
-            ctx.fillStyle = '#ff6b2a';
+            ctx.restore();
+            ctx.fillStyle = colors.accent;
             ctx.textAlign = 'left';
             ctx.fillText(text, cx + 12 + padX, cy + 0.5);
           }
@@ -548,7 +559,8 @@ function drawProbeBadge(
   ctx: CanvasRenderingContext2D,
   cx: number, cy: number, label: string, color: string, hover: boolean,
 ) {
-  ctx.fillStyle = '#0d0d10';
+  const colors = getCanvasColors();
+  ctx.fillStyle = colors.bg;
   ctx.strokeStyle = color;
   ctx.lineWidth = hover ? 2 : 1.3;
   ctx.beginPath();

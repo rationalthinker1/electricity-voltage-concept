@@ -42,7 +42,7 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
   }, []);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas } = info;
+    const { ctx, w, h, canvas, colors } = info;
     let raf = 0;
     let dragging = false;
     let lastT = performance.now();
@@ -109,7 +109,7 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       emfRef.current = emf;
 
       // Background
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Coil — drawn as series of loop cross-sections (ovals) along an axis
@@ -117,7 +117,7 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       const loops = 9;
       const loopHeight = 70;
       // axis line
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = colors.border;
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -149,7 +149,7 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       }
 
       // Coil label
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = colors.accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -158,7 +158,7 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       // Wire from one end of coil down to indicator lamp on the right
       const lampX = w - 50;
       const lampY = cy + loopHeight / 2 + 60;
-      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(coilCx + coilHalfLen, cy + loopHeight / 2);
@@ -184,7 +184,7 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       ctx.lineWidth = 1.6;
       ctx.fillStyle = `rgba(${lampColor},${0.15 + 0.65 * intensity})`;
       ctx.beginPath(); ctx.arc(lampX, lampY, 12, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('lamp', lampX, lampY + 26);
@@ -203,7 +203,7 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       ctx.strokeStyle = 'rgba(255,255,255,0.2)';
       ctx.lineWidth = 1;
       ctx.strokeRect(mx - magW / 2, magY - magH / 2, magW, magH);
-      ctx.fillStyle = '#0a0a0b';
+      ctx.fillStyle = colors.bg;
       ctx.font = 'bold 14px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('S', mx - magW / 4, magY);

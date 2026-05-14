@@ -34,6 +34,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { MATERIALS, PHYS } from '@/lib/physics';
+import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   attachOrbit, project, v3,
   type OrbitCamera, type Vec3,
@@ -214,7 +215,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
 
     function draw() {
       const s = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Visual scale factors. We exaggerate thermal & drift by huge but
@@ -352,18 +353,18 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to rotate', 12, 12);
       ctx.fillStyle = 'rgba(160,158,149,0.55)';
       ctx.fillText('copper · 56 free electrons · thermal & drift scaled for visibility', 12, H - 18);
 
       ctx.textAlign = 'right';
-      ctx.fillStyle = 'rgba(108,197,194,0.95)';
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.fillText('electrons (cyan)', W - 12, 12);
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText('Cu+ ions (amber)', W - 12, 28);
       if (s.showArrows) {
-        ctx.fillStyle = 'rgba(255,107,42,0.85)';
+        ctx.fillStyle = getCanvasColors().accent;
         ctx.fillText('drift bias → +x', W - 12, 44);
       }
 

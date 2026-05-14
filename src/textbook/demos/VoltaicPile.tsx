@@ -10,6 +10,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
@@ -35,7 +36,7 @@ export function VoltaicPileDemo({ figure }: Props) {
       const s = stateRef.current;
       phase += 0.05;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Layout: pile on left ~55%, stick figure + meter on right.
@@ -68,7 +69,7 @@ export function VoltaicPileDemo({ figure }: Props) {
 
       // Label first / last disc
       if (N > 0) {
-        ctx.fillStyle = 'rgba(160,158,149,0.9)';
+        ctx.fillStyle = getCanvasColors().textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'right';
         ctx.textBaseline = 'middle';
@@ -137,7 +138,7 @@ export function VoltaicPileDemo({ figure }: Props) {
       }
 
       // Voltmeter readout
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

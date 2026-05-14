@@ -30,7 +30,7 @@ export function DipoleInFieldDemo({ figure }: Props) {
   const [align, setAlign] = useState(0);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     // Build the grid of molecules
@@ -53,7 +53,7 @@ export function DipoleInFieldDemo({ figure }: Props) {
     function draw() {
       const { E } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Background E-field arrows (very faint horizontal stream)
@@ -107,23 +107,23 @@ export function DipoleInFieldDemo({ figure }: Props) {
         ctx.lineTo(cx + tx, cy + ty);
         ctx.stroke();
         // negative end (blue) — at -t
-        ctx.fillStyle = 'rgba(91,174,248,0.95)';
+        ctx.fillStyle = colors.blue;
         ctx.beginPath();
         ctx.arc(cx - tx, cy - ty, 3, 0, Math.PI * 2);
         ctx.fill();
         // positive end (pink) — at +t
-        ctx.fillStyle = 'rgba(255,59,110,0.95)';
+        ctx.fillStyle = colors.pink;
         ctx.beginPath();
         ctx.arc(cx + tx, cy + ty, 3, 0, Math.PI * 2);
         ctx.fill();
       }
 
       // Overlay alignment text
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = colors.accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText(`⟨cos θ⟩ = ${meanCos.toFixed(2)}`, 12, 18);
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.fillText(`E (applied) →`, w - 110, 18);
 
       // Throttle React state updates to ~5 Hz

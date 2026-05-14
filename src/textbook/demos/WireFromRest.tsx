@@ -39,7 +39,7 @@ export function WireFromRestDemo({ figure }: Props) {
   }, [vd, showIons, showElectrons, showTest]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let last = performance.now();
     let phase = 0;
@@ -53,7 +53,7 @@ export function WireFromRestDemo({ figure }: Props) {
       const s = stateRef.current;
       phase += dt * s.vd * 60; // visual drift in px/s
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // ─── Geometry
@@ -73,7 +73,7 @@ export function WireFromRestDemo({ figure }: Props) {
       grd.addColorStop(1, 'rgba(255,107,42,0.06)');
       ctx.fillStyle = grd;
       ctx.fillRect(wireXL, wireTop, wireLen, wireH);
-      ctx.strokeStyle = 'rgba(255,107,42,0.45)';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1;
       ctx.strokeRect(wireXL, wireTop, wireLen, wireH);
 
@@ -82,15 +82,15 @@ export function WireFromRestDemo({ figure }: Props) {
         for (let i = 0; i < N; i++) {
           const x = wireXL + (i + 0.5) * (wireLen / N);
           const y = wireY - 14;
-          ctx.fillStyle = '#ff3b6e';
+          ctx.fillStyle = colors.pink;
           const halo = ctx.createRadialGradient(x, y, 0, x, y, 12);
           halo.addColorStop(0, 'rgba(255,59,110,0.55)');
           halo.addColorStop(1, 'rgba(255,59,110,0)');
           ctx.fillStyle = halo;
           ctx.beginPath(); ctx.arc(x, y, 12, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = '#ff3b6e';
+          ctx.fillStyle = colors.pink;
           ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = '#0a0a0b';
+          ctx.fillStyle = colors.bg;
           ctx.font = 'bold 8px "JetBrains Mono", monospace';
           ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillText('+', x, y);
@@ -110,9 +110,9 @@ export function WireFromRestDemo({ figure }: Props) {
           halo.addColorStop(1, 'rgba(91,174,248,0)');
           ctx.fillStyle = halo;
           ctx.beginPath(); ctx.arc(x, y, 12, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = '#5baef8';
+          ctx.fillStyle = colors.blue;
           ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = '#0a0a0b';
+          ctx.fillStyle = colors.bg;
           ctx.font = 'bold 9px "JetBrains Mono", monospace';
           ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillText('−', x, y);
@@ -120,7 +120,7 @@ export function WireFromRestDemo({ figure }: Props) {
       }
 
       // ─── Current direction label
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = colors.accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText('I →   (electrons drift, ions fixed)', wireXR, wireBot + 18);
@@ -135,21 +135,21 @@ export function WireFromRestDemo({ figure }: Props) {
         halo.addColorStop(1, 'rgba(255,107,42,0)');
         ctx.fillStyle = halo;
         ctx.beginPath(); ctx.arc(tx, ty, 22, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#ff6b2a';
+        ctx.fillStyle = colors.accent;
         ctx.beginPath(); ctx.arc(tx, ty, 9, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#0a0a0b';
+        ctx.fillStyle = colors.bg;
         ctx.font = 'bold 10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText('+', tx, ty);
 
         // "v = 0" label
-        ctx.fillStyle = 'rgba(236,235,229,0.85)';
+        ctx.fillStyle = colors.text;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textBaseline = 'alphabetic';
         ctx.fillText('test charge   v = 0', tx, ty - 26);
 
         // "F = 0" marker (no arrow)
-        ctx.fillStyle = 'rgba(108,197,194,0.95)';
+        ctx.fillStyle = colors.teal;
         ctx.font = '11px "JetBrains Mono", monospace';
         ctx.fillText('F = q v × B = 0', tx, ty + 36);
       }

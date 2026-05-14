@@ -12,6 +12,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -26,7 +27,7 @@ export function TransformerDemo({ figure }: Props) {
   const V2 = useMemo(() => V1 * (N2 / N1), [V1, N2, N1]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, } = info;
     let raf = 0;
     let t0 = performance.now();
 
@@ -34,7 +35,7 @@ export function TransformerDemo({ figure }: Props) {
       const { N1, N2, V1 } = stateRef.current;
       const t = (performance.now() - t0) / 1000;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       // Geometry: iron core as a rounded rectangle in the middle
@@ -116,7 +117,7 @@ export function TransformerDemo({ figure }: Props) {
       // AC source — circle with sine-wave squiggle, on the far left
       const srcX = coreLeft - 50;
       const srcY = primCenterY;
-      ctx.strokeStyle = 'rgba(255,107,42,0.85)';
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.arc(srcX, srcY, 16, 0, Math.PI * 2);
@@ -130,7 +131,7 @@ export function TransformerDemo({ figure }: Props) {
       }
       ctx.stroke();
       // Wires from source to primary coil top/bottom
-      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(srcX + 16, srcY - 8);
@@ -156,7 +157,7 @@ export function TransformerDemo({ figure }: Props) {
       ctx.fillStyle = `rgba(255,107,42,${0.15 + 0.55 * lampIntensity})`;
       ctx.lineWidth = 1.4;
       ctx.beginPath(); ctx.arc(loadX, loadY, 12, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(secX + 22, primCenterY - primHalfH);
@@ -170,7 +171,7 @@ export function TransformerDemo({ figure }: Props) {
       ctx.stroke();
 
       // Labels
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText(`N₁ = ${N1}`, primX, coreBot + 6);
@@ -178,7 +179,7 @@ export function TransformerDemo({ figure }: Props) {
       ctx.fillText(`N₂ = ${N2}`, secX, coreBot + 6);
       ctx.fillText(`V₂ = ${V2.toFixed(1)} V`, loadX, loadY + 26);
 
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'center';
       ctx.fillText('iron core · shared Φ', (coreLeft + coreRight) / 2, coreTop - 14);
 
@@ -240,7 +241,7 @@ function drawCoil(
   const dy = (yBot - yTop) / turns;
   const r = dy * 0.42;
   const offset = side === 'left' ? -armHalf - 6 : armHalf + 6;
-  ctx.strokeStyle = 'rgba(255,107,42,0.85)';
+  ctx.strokeStyle = getCanvasColors().accent;
   ctx.lineWidth = 1.6;
   for (let i = 0; i < turns; i++) {
     const y = yTop + (i + 0.5) * dy;
@@ -250,7 +251,7 @@ function drawCoil(
     ctx.ellipse(cx, y, armHalf + 3, r, 0, Math.PI, 2 * Math.PI);
     ctx.stroke();
     // front half (in front)
-    ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+    ctx.strokeStyle = getCanvasColors().accent;
     ctx.beginPath();
     ctx.ellipse(cx, y, armHalf + 3, r, 0, 0, Math.PI);
     ctx.stroke();

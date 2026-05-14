@@ -21,6 +21,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -98,7 +99,7 @@ export function SuperconductorLimitDemo({ figure }: Props) {
 
     function draw() {
       const s = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       const g = getWireGeom();
@@ -207,8 +208,8 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       // ── E axial arrows — drawn only if non-zero
       if (!s.supercon) {
         const nE = 5;
-        ctx.strokeStyle = 'rgba(255,59,110,0.95)';
-        ctx.fillStyle = 'rgba(255,59,110,0.95)';
+        ctx.strokeStyle = getCanvasColors().pink;
+        ctx.fillStyle = getCanvasColors().pink;
         ctx.lineWidth = 2;
         const arrLen = 50;
         for (let i = 0; i < nE; i++) {
@@ -225,14 +226,14 @@ export function SuperconductorLimitDemo({ figure }: Props) {
         }
       } else {
         // Show "E_inside = 0" label inside the wire
-        ctx.fillStyle = 'rgba(108,197,194,0.85)';
+        ctx.fillStyle = getCanvasColors().teal;
         ctx.font = '12px "JetBrains Mono", monospace';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText('E_inside = 0', (g.wireXL + g.wireXR) / 2, g.wireCY);
       }
 
       // FRONT-half B ellipses
-      ctx.strokeStyle = 'rgba(108,197,194,0.85)';
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 1.4;
       for (let i = 0; i < nB; i++) {
         const t = (i + 0.5) / nB;
@@ -242,7 +243,7 @@ export function SuperconductorLimitDemo({ figure }: Props) {
         ctx.stroke();
         const ax = cx + er * 1.6;
         const ay = g.wireCY;
-        ctx.fillStyle = 'rgba(108,197,194,0.95)';
+        ctx.fillStyle = getCanvasColors().teal;
         ctx.beginPath();
         ctx.moveTo(ax, ay);
         ctx.lineTo(ax - 6, ay - 4);
@@ -256,11 +257,11 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       ctx.fillStyle = s.supercon ? '#6cc5c2' : '#ff6b2a';
       ctx.fillText(s.supercon ? 'Mode: superconductor (σ → ∞)' : 'Mode: normal conductor', 18, 14);
 
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.fillText(`E_inside = ${pretty(s.E_in)} V/m`, 18, 30);
-      ctx.fillStyle = '#6cc5c2';
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.fillText(`B_surface = ${pretty(s.B_surf)} T`, 18, 46);
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText(`|S|_inside = ${pretty(s.S_in)} W/m²`, 18, 62);
 
       ctx.textAlign = 'right';

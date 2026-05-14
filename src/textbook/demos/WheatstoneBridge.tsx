@@ -33,6 +33,7 @@ import {
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -65,7 +66,7 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
     function draw() {
       const { V, R1, R2, R3, Rx, V_A, V_B, dV } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       const padX = 60;
@@ -189,7 +190,7 @@ function drawGalvanometer(
 ) {
   ctx.save();
   // Outer circle
-  ctx.strokeStyle = 'rgba(108,197,194,0.95)';
+  ctx.strokeStyle = getCanvasColors().teal;
   ctx.lineWidth = 1.4;
   ctx.beginPath(); ctx.arc(x, y, 18, 0, Math.PI * 2); ctx.stroke();
 
@@ -205,7 +206,7 @@ function drawGalvanometer(
   ctx.lineTo(x + 14 * Math.cos(ang), y + 14 * Math.sin(ang));
   ctx.stroke();
 
-  ctx.fillStyle = 'rgba(108,197,194,0.95)';
+  ctx.fillStyle = getCanvasColors().teal;
   ctx.font = 'bold 10px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';

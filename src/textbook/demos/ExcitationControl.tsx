@@ -54,13 +54,13 @@ export function ExcitationControlDemo({ figure }: Props) {
   }, [iField, loaded, pRef]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     function draw() {
       const { iField, loaded, pRef } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padL = 56, padR = 24, padT = 22, padB = 38;
@@ -68,11 +68,11 @@ export function ExcitationControlDemo({ figure }: Props) {
       const plotH = h - padT - padB;
 
       // Frame
-      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      ctx.strokeStyle = colors.border;
       ctx.strokeRect(padL, padT, plotW, plotH);
 
       // Gridlines
-      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.strokeStyle = colors.border;
       for (let i = 1; i < 5; i++) {
         const x = padL + (i / 5) * plotW;
         ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + plotH); ctx.stroke();
@@ -99,12 +99,12 @@ export function ExcitationControlDemo({ figure }: Props) {
         }
         ctx.stroke();
         // Marker
-        ctx.fillStyle = '#ff6b2a';
+        ctx.fillStyle = colors.accent;
         ctx.beginPath();
         ctx.arc(xAt(iField), yAt(K_F * iField), 6, 0, Math.PI * 2);
         ctx.fill();
         // Y axis label
-        ctx.fillStyle = 'rgba(160,158,149,0.85)';
+        ctx.fillStyle = colors.textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
         ctx.fillText('|V_t| (pu)', padL - 6, padT + plotH / 2);
@@ -136,7 +136,7 @@ export function ExcitationControlDemo({ figure }: Props) {
 
         // Q = 0 reference (unity power-factor) - dashed horizontal
         // Find min of curve by sampling.
-        ctx.strokeStyle = 'rgba(108,197,194,0.5)';
+        ctx.strokeStyle = colors.teal;
         ctx.setLineDash([4, 4]);
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -162,7 +162,7 @@ export function ExcitationControlDemo({ figure }: Props) {
         }
 
         // Y axis label
-        ctx.fillStyle = 'rgba(160,158,149,0.85)';
+        ctx.fillStyle = colors.textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
         ctx.fillText('|I_a| (pu)', padL - 6, padT + plotH / 2);
@@ -180,7 +180,7 @@ export function ExcitationControlDemo({ figure }: Props) {
       }
 
       // X axis ticks
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       for (let iF = 0.5; iF <= 2.5; iF += 0.5) {

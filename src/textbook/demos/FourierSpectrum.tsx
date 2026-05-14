@@ -84,11 +84,11 @@ export function FourierSpectrumDemo() {
   useEffect(() => { stateRef.current = { wave }; }, [wave]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     function draw() {
       const { wave } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Two panels stacked: top time-domain, bottom spectrum
@@ -98,7 +98,7 @@ export function FourierSpectrumDemo() {
       // Top: time domain
       const tH = split - 16;
       const tMid = 8 + tH / 2;
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = colors.border;
       ctx.beginPath(); ctx.moveTo(padX, tMid); ctx.lineTo(w - padX, tMid); ctx.stroke();
       ctx.fillStyle = 'rgba(160,158,149,0.6)';
       ctx.font = '9px "JetBrains Mono", monospace';
@@ -121,7 +121,7 @@ export function FourierSpectrumDemo() {
       // Bottom: spectrum bar chart
       const bMid = split + (h - split) - 24;
       const bH = h - split - 32;
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = colors.border;
       ctx.beginPath(); ctx.moveTo(padX, bMid); ctx.lineTo(w - padX, bMid); ctx.stroke();
 
       const bars = spectrum(wave, 20);
@@ -138,14 +138,14 @@ export function FourierSpectrumDemo() {
         ctx.fillStyle = b.n === 0 ? 'rgba(108,197,194,0.85)' : '#ff6b2a';
         ctx.fillRect(x, bMid - hPx, barW, hPx);
         if (b.amp / maxAmp > 0.08) {
-          ctx.fillStyle = 'rgba(236,235,229,0.85)';
+          ctx.fillStyle = colors.text;
           ctx.font = '9px "JetBrains Mono", monospace';
           ctx.textAlign = 'center';
           ctx.fillText(b.amp.toFixed(2), x + barW / 2, bMid - hPx - 3);
         }
       }
       // axis labels
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       for (let n = 0; n <= nMax; n += 2) {

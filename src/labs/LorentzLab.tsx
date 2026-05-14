@@ -53,7 +53,7 @@ export default function LorentzLab() {
   const [resetTick, setResetTick] = useState(0);
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     // Sim state local to draw loop
@@ -105,7 +105,7 @@ export default function LorentzLab() {
 
     function draw() {
       const { qSign, B, theta } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // B field × marks (into page)
@@ -140,14 +140,14 @@ export default function LorentzLab() {
 
       // Velocity vector
       const vlen = 38;
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(sim.x, sim.y);
       ctx.lineTo(sim.x + sim.vx * vlen, sim.y + sim.vy * vlen);
       ctx.stroke();
       const va = Math.atan2(sim.vy, sim.vx);
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
+      ctx.fillStyle = colors.accent;
       ctx.beginPath();
       ctx.moveTo(sim.x + sim.vx * vlen, sim.y + sim.vy * vlen);
       ctx.lineTo(sim.x + sim.vx * vlen - 8 * Math.cos(va - 0.4), sim.y + sim.vy * vlen - 8 * Math.sin(va - 0.4));
@@ -182,14 +182,14 @@ export default function LorentzLab() {
       ctx.shadowBlur = 14;
       ctx.beginPath(); ctx.arc(sim.x, sim.y, 7, 0, Math.PI * 2); ctx.fill();
       ctx.shadowBlur = 0;
-      ctx.fillStyle = '#0a0a0b';
+      ctx.fillStyle = colors.bg;
       ctx.font = 'bold 9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(qSign < 0 ? '−' : qSign > 0 ? '+' : '0', sim.x, sim.y);
 
       // Pitch-angle annotation
       if (Math.abs(theta - 90) > 5) {
-        ctx.fillStyle = 'rgba(160,158,149,0.85)';
+        ctx.fillStyle = colors.textDim;
         ctx.font = '11px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
@@ -206,19 +206,19 @@ export default function LorentzLab() {
       const T = stateRef.current.B > 1e-9 && qmag > 0 ? (2 * Math.PI * m) / (qmag * stateRef.current.B) : Infinity;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = colors.accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.fillText(`F = ${pretty(F)} N`, 24, 28);
-      ctx.fillStyle = 'rgba(108,197,194,0.95)';
+      ctx.fillStyle = colors.teal;
       ctx.fillText(`r = ${isFinite(r) ? pretty(r) : '∞'} m`, 24, 48);
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.fillText(`T = ${isFinite(T) ? pretty(T) : '∞'} s`, 24, 68);
 
       ctx.textAlign = 'right';
       const partName = qSign < 0 ? 'electron' : qSign > 0 ? 'proton-mass' : 'neutral';
       ctx.fillStyle = partColor;
       ctx.fillText(`q = ${qSign}e (${partName})`, w - 24, 28);
-      ctx.fillStyle = 'rgba(108,197,194,0.95)';
+      ctx.fillStyle = colors.teal;
       ctx.fillText(`B = ${stateRef.current.B.toFixed(2)} T  (⊗ into page)`, w - 24, 48);
 
       raf = requestAnimationFrame(draw);

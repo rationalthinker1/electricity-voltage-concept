@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawCharge } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -42,7 +43,7 @@ export function OscillatingDipoleDemo({ figure }: Props) {
       const t = performance.now() / 1000 - tStart;
       const om = stateRef.current.omega;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       const cx = W / 2;
@@ -110,18 +111,18 @@ export function OscillatingDipoleDemo({ figure }: Props) {
 
       // Axis indicator (dashed vertical line)
       ctx.setLineDash([4, 6]);
-      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(cx, 8); ctx.lineTo(cx, H - 8); ctx.stroke();
       ctx.setLineDash([]);
 
       // Labels: "axis" and "equator (max radiation)"
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'center';
       ctx.fillText('axis · zero radiation', cx, 18);
       ctx.textAlign = 'left';
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText('equator · max radiation →', 14, cy + 4);
 
       raf = requestAnimationFrame(draw);

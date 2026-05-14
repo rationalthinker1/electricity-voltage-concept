@@ -81,11 +81,11 @@ export function HarmonicSynthesisDemo() {
   }
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     function draw() {
       const { target, N, showIdeal } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const padX = 30;
@@ -95,14 +95,14 @@ export function HarmonicSynthesisDemo() {
       const midY = padY + plotH / 2;
 
       // axes
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(padX, midY); ctx.lineTo(padX + plotW, midY);
       ctx.stroke();
       // ±1 reference lines
       ctx.setLineDash([3, 5]);
-      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.strokeStyle = colors.border;
       const yPlus = midY - plotH / 2 * 0.85;
       const yMinus = midY + plotH / 2 * 0.85;
       ctx.beginPath();
@@ -111,7 +111,7 @@ export function HarmonicSynthesisDemo() {
       ctx.stroke();
       ctx.setLineDash([]);
 
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText('+1', padX - 6, yPlus + 4);
@@ -124,7 +124,7 @@ export function HarmonicSynthesisDemo() {
 
       // Plot ideal in dim
       if (showIdeal) {
-        ctx.strokeStyle = 'rgba(108,197,194,0.45)';
+        ctx.strokeStyle = colors.teal;
         ctx.lineWidth = 1.2;
         ctx.beginPath();
         for (let i = 0; i <= N_samples; i++) {
@@ -151,11 +151,11 @@ export function HarmonicSynthesisDemo() {
       ctx.stroke();
 
       // Labels
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = colors.accent;
       ctx.textAlign = 'left';
       ctx.fillText(`partial sum, N = ${N}`, padX + 6, padY + 12);
       if (showIdeal) {
-        ctx.fillStyle = 'rgba(108,197,194,0.85)';
+        ctx.fillStyle = colors.teal;
         ctx.fillText('ideal target', padX + 6, padY + 26);
       }
 

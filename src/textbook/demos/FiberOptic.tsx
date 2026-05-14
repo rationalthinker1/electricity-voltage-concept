@@ -10,6 +10,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -35,7 +36,7 @@ export function FiberOpticDemo({ figure }: Props) {
     let raf = 0;
     function draw() {
       const { angleAxis, nCore, nClad } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       const top = H / 2 - 50;
@@ -106,7 +107,7 @@ export function FiberOpticDemo({ figure }: Props) {
             ctx.moveTo(nx, ny);
             ctx.lineTo(escapeX, escapeY);
             ctx.stroke();
-            ctx.fillStyle = '#ff3b6e';
+            ctx.fillStyle = getCanvasColors().pink;
             ctx.font = 'bold 11px "JetBrains Mono", monospace';
             ctx.textAlign = 'center';
             ctx.fillText('LIGHT ESCAPES', W / 2, H - 14);
@@ -123,12 +124,12 @@ export function FiberOpticDemo({ figure }: Props) {
 
       // Labels
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(160,158,149,0.9)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'left';
       ctx.fillText(`core · n=${nCore.toFixed(3)}`, left + 4, (top + bot) / 2 + 3);
       ctx.fillText(`cladding · n=${nClad.toFixed(3)}`, left + 4, top - 12);
       if (!escapes_) {
-        ctx.fillStyle = 'rgba(108,197,194,0.95)';
+        ctx.fillStyle = getCanvasColors().teal;
         ctx.textAlign = 'right';
         ctx.fillText('total internal reflection', right - 6, top - 12);
       }

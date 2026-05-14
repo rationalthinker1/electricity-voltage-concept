@@ -34,7 +34,7 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
   }, [omega]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let simT = 0;
     let lastT = performance.now();
@@ -54,7 +54,7 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       const visualOmega = Math.min(omega, 2.5);
       const emf = peak * Math.sin(omega * simT);
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
       const splitX = w * 0.42;
 
@@ -66,11 +66,11 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       ctx.fillRect(8, h * 0.18, 26, h * 0.64);
       ctx.fillStyle = 'rgba(91,174,248,0.15)';
       ctx.fillRect(splitX - 34, h * 0.18, 26, h * 0.64);
-      ctx.fillStyle = 'rgba(255,59,110,0.9)';
+      ctx.fillStyle = colors.pink;
       ctx.font = 'bold 12px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('N', 21, h / 2);
-      ctx.fillStyle = 'rgba(91,174,248,0.9)';
+      ctx.fillStyle = colors.blue;
       ctx.fillText('S', splitX - 21, h / 2);
       // Field arrows
       ctx.strokeStyle = 'rgba(108,197,194,0.25)';
@@ -103,14 +103,14 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       ctx.beginPath(); ctx.arc(coilCx, coilCy + coilH / 2 + 14, 6, 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.arc(coilCx, coilCy + coilH / 2 + 28, 6, 0, Math.PI * 2); ctx.stroke();
 
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(`B = ${B_T} T  ·  N = ${N_TURNS}  ·  A = ${(A_M2 * 1e4).toFixed(0)} cm²`, 8, 8);
       ctx.restore();
 
       // Divider
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = colors.border;
       ctx.beginPath(); ctx.moveTo(splitX, 0); ctx.lineTo(splitX, h); ctx.stroke();
 
       // RIGHT: oscilloscope
@@ -126,13 +126,13 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       const yScale = Math.max(peak, 0.01);
 
       // Grid
-      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.strokeStyle = colors.border;
       for (let i = 0; i <= 4; i++) {
         const y = scopeCy - scopeH / 2 + (i * scopeH) / 4;
         ctx.beginPath(); ctx.moveTo(scopeX, y); ctx.lineTo(scopeX + scopeW, y); ctx.stroke();
       }
       // Zero line
-      ctx.strokeStyle = 'rgba(255,255,255,0.16)';
+      ctx.strokeStyle = colors.borderStrong;
       ctx.beginPath();
       ctx.moveTo(scopeX, scopeCy); ctx.lineTo(scopeX + scopeW, scopeCy); ctx.stroke();
       // Peak guides
@@ -148,7 +148,7 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
 
       // Trace
       if (scope.length > 2) {
-        ctx.strokeStyle = 'rgba(255,59,110,0.95)';
+        ctx.strokeStyle = colors.pink;
         ctx.lineWidth = 1.6;
         ctx.beginPath();
         for (let i = 0; i < scope.length; i++) {
@@ -159,12 +159,12 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
         }
         ctx.stroke();
       }
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('EMF(t)', scopeX, 12);
       ctx.textAlign = 'right';
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = colors.accent;
       ctx.fillText(`peak = ${peak.toFixed(1)} V`, scopeX + scopeW, 12);
       ctx.restore();
 

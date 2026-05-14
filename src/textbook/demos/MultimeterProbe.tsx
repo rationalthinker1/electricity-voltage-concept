@@ -43,6 +43,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface StaticCache { key: string; canvas: HTMLCanvasElement }
 
@@ -356,7 +357,7 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
       st.w = w; st.h = h;
 
       // Background
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       // Resolve node positions
@@ -416,7 +417,7 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
         // + labels into the same offscreen image so a single drawImage replaces
         // many strokes/fills per frame.
         const sctx = off.getContext('2d')!;
-        sctx.fillStyle = 'rgba(160,158,149,0.7)';
+        sctx.fillStyle = getCanvasColors().textDim;
         sctx.font = '10px "JetBrains Mono", monospace';
         sctx.textAlign = 'left';
         sctx.textBaseline = 'top';
@@ -424,9 +425,9 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
         drawCapacitorV(sctx, p2.x, capCy, 'C', `${(C_VAL * 1e6).toFixed(0)} µF`);
         for (const tp of TPS) {
           const p = projectTP(tp, w, h);
-          sctx.fillStyle = 'rgba(255,107,42,0.95)';
+          sctx.fillStyle = getCanvasColors().accent;
           sctx.beginPath(); sctx.arc(p.x, p.y, 4, 0, Math.PI * 2); sctx.fill();
-          sctx.fillStyle = 'rgba(236,235,229,0.85)';
+          sctx.fillStyle = getCanvasColors().text;
           sctx.font = 'bold 10px "JetBrains Mono", monospace';
           const onLeftSide = tp.x < 0.5;
           sctx.textAlign = onLeftSide ? 'right' : 'left';
@@ -455,12 +456,12 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
       drawProbe(ctx, pBlk, '#5baef8', '−');
 
       // Dynamic overlay: ribbon at the top echoing which TP each probe touches.
-      ctx.fillStyle = 'rgba(255,59,110,0.95)';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText(`Red(+): ${st.red}`, w - 12, 10);
-      ctx.fillStyle = 'rgba(91,174,248,0.95)';
+      ctx.fillStyle = getCanvasColors().blue;
       ctx.fillText(`Black(−): ${st.black}`, w - 12, 24);
 
       raf = requestAnimationFrame(draw);
@@ -535,15 +536,15 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
 type Pt = { x: number; y: number };
 
 function drawCapacitorV(ctx: CanvasRenderingContext2D, cx: number, cy: number, label: string, value: string) {
-  ctx.strokeStyle = 'rgba(108,197,194,0.9)';
+  ctx.strokeStyle = getCanvasColors().teal;
   ctx.lineWidth = 1.8;
   // Two horizontal plates separated by a gap
   ctx.beginPath();
   ctx.moveTo(cx - 14, cy - 4); ctx.lineTo(cx + 14, cy - 4);
   ctx.moveTo(cx - 14, cy + 4); ctx.lineTo(cx + 14, cy + 4);
   ctx.stroke();
-  ctx.strokeStyle = 'rgba(255,255,255,0.55)';
-  ctx.fillStyle = '#6cc5c2';
+  ctx.strokeStyle = getCanvasColors().textDim;
+  ctx.fillStyle = getCanvasColors().teal;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';

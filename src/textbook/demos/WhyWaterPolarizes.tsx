@@ -25,7 +25,7 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
   const er_estimate = 80 * 300 / T;
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     // Molecule state: orientation of the dipole axis (angle in canvas plane)
@@ -35,7 +35,7 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
     function draw() {
       const { E_on, T } = stateRef.current;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Background field arrows (faint, horizontal)
@@ -82,7 +82,7 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
       const h2y = cy + Math.sin(hAng2) * bondLen;
 
       // Bond lines
-      ctx.strokeStyle = 'rgba(255,255,255,0.30)';
+      ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(cx, cy); ctx.lineTo(h1x, h1y);
@@ -90,11 +90,11 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
       ctx.stroke();
 
       // Oxygen (large, blue — partial negative)
-      ctx.fillStyle = 'rgba(91,174,248,0.95)';
+      ctx.fillStyle = colors.blue;
       ctx.beginPath();
       ctx.arc(cx, cy, 22, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = '#0a0a0b';
+      ctx.fillStyle = colors.bg;
       ctx.font = 'bold 14px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -102,11 +102,11 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
 
       // Hydrogens (small, pink — partial positive)
       for (const [hx, hy] of [[h1x, h1y], [h2x, h2y]]) {
-        ctx.fillStyle = 'rgba(255,59,110,0.95)';
+        ctx.fillStyle = colors.pink;
         ctx.beginPath();
         ctx.arc(hx, hy, 12, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = '#0a0a0b';
+        ctx.fillStyle = colors.bg;
         ctx.font = 'bold 11px "JetBrains Mono", monospace';
         ctx.fillText('H', hx, hy);
       }
@@ -115,8 +115,8 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
       const pLen = 56;
       const pTipX = cx + Math.cos(theta) * pLen;
       const pTipY = cy + Math.sin(theta) * pLen;
-      ctx.strokeStyle = 'rgba(255,107,42,0.95)';
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
+      ctx.strokeStyle = colors.accent;
+      ctx.fillStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(cx, cy);
@@ -129,7 +129,7 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
       ctx.lineTo(pTipX - ux * 9 + uy * 4, pTipY - uy * 9 - ux * 4);
       ctx.closePath();
       ctx.fill();
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = colors.accent;
       ctx.font = 'italic 12px "Fraunces", serif';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
@@ -139,14 +139,14 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
       ctx.textBaseline = 'alphabetic';
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText(`T = ${T.toFixed(0)} K`, 14, h - 16);
       ctx.textAlign = 'right';
       ctx.fillText(`θ = ${(theta * 180 / Math.PI).toFixed(0)}°`, w - 14, h - 16);
       if (E_on) {
-        ctx.fillStyle = 'rgba(255,107,42,0.85)';
+        ctx.fillStyle = colors.accent;
         ctx.textAlign = 'left';
         ctx.fillText('E (external) →', 14, 18);
       }

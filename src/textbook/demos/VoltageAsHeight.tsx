@@ -26,7 +26,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
   const energyJ = voltage; // q = 1 C
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
 
     // Ball position parameterised along the ramp, t ∈ [0, 1].
@@ -35,7 +35,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
 
     function draw() {
       const { voltage, rolling } = stateRef.current;
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Ramp endpoints. Higher voltage → steeper slope. Both ends fixed
@@ -79,7 +79,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       ctx.fillText(`ΔV = ${voltage.toFixed(1)} V`, ax - 10, (ay + baseY) / 2);
 
       // A and B labels
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = colors.accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.fillText('A (high V)', ax, ay - 14);
@@ -124,9 +124,9 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       grd.addColorStop(0, '#ff3b6e'); grd.addColorStop(1, '#ff3b6e00');
       ctx.fillStyle = grd;
       ctx.beginPath(); ctx.arc(cx, cy, radius * 2.5, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = colors.pink;
       ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#0a0a0b';
+      ctx.fillStyle = colors.bg;
       ctx.font = 'bold 12px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('+', cx, cy);

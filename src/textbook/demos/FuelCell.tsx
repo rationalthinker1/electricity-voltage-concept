@@ -15,6 +15,7 @@ import {
   Demo, DemoControls, MiniReadout, MiniSlider,
 } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -48,7 +49,7 @@ export function FuelCellDemo({ figure }: Props) {
       const s = stateRef.current;
       phase += 0.04;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
       // Left half: cell schematic
@@ -69,7 +70,7 @@ export function FuelCellDemo({ figure }: Props) {
       // H₂ channel
       ctx.fillStyle = 'rgba(91,174,248,0.10)';
       ctx.fillRect(x, cellY, flowW, cellH);
-      ctx.fillStyle = 'rgba(91,174,248,0.85)';
+      ctx.fillStyle = getCanvasColors().blue;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -79,7 +80,7 @@ export function FuelCellDemo({ figure }: Props) {
       // Anode catalyst
       ctx.fillStyle = '#444';
       ctx.fillRect(x, cellY, anodeW, cellH);
-      ctx.fillStyle = 'rgba(236,235,229,0.85)';
+      ctx.fillStyle = getCanvasColors().text;
       ctx.fillText('anode', x + anodeW / 2, cellY + 4);
       x += anodeW;
 
@@ -107,7 +108,7 @@ export function FuelCellDemo({ figure }: Props) {
       // Cathode catalyst
       ctx.fillStyle = '#444';
       ctx.fillRect(x, cellY, cathodeW, cellH);
-      ctx.fillStyle = 'rgba(236,235,229,0.85)';
+      ctx.fillStyle = getCanvasColors().text;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -117,7 +118,7 @@ export function FuelCellDemo({ figure }: Props) {
       // O₂ channel
       ctx.fillStyle = 'rgba(255,107,42,0.10)';
       ctx.fillRect(x, cellY, flowW, cellH);
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText('O₂', x + flowW / 2, cellY + 4);
 
       // Reaction labels at bottom
@@ -134,14 +135,14 @@ export function FuelCellDemo({ figure }: Props) {
       const pY = 30;
       const pW = W - pX - 30;
       const pH = H - 60;
-      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.strokeStyle = getCanvasColors().border;
       ctx.strokeRect(pX, pY, pW, pH);
 
       const xI = (ii: number) => pX + (ii / I_LIMIT) * pW;
       const yV = (vv: number) => pY + pH - (vv / V_OCV) * pH;
 
       // Polarization curve
-      ctx.strokeStyle = 'rgba(108,197,194,0.95)';
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       for (let k = 0; k <= 80; k++) {
@@ -161,7 +162,7 @@ export function FuelCellDemo({ figure }: Props) {
       ctx.arc(opX, opY, 5, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';

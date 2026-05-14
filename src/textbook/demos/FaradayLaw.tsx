@@ -34,7 +34,7 @@ export function FaradayLawDemo({ figure }: Props) {
   }, []);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     const t0 = performance.now();
     // Ring buffers for the trace
@@ -62,7 +62,7 @@ export function FaradayLawDemo({ figure }: Props) {
         lastT = now;
       }
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Left panel: the loop + flux
@@ -89,7 +89,7 @@ export function FaradayLawDemo({ figure }: Props) {
       }
 
       // The wire loop itself
-      ctx.strokeStyle = 'rgba(255,107,42,0.85)';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.beginPath(); ctx.arc(loopCx, loopCy, loopR, 0, Math.PI * 2); ctx.stroke();
 
@@ -125,7 +125,7 @@ export function FaradayLawDemo({ figure }: Props) {
       }
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText(`B(t) = B₀ sin(ωt) through loop`, loopCx, loopCy + loopR + 14);
@@ -136,7 +136,7 @@ export function FaradayLawDemo({ figure }: Props) {
       const oscY = 16;
       const oscH = h - 32;
       ctx.fillStyle = '#08080a';
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.fillRect(oscX, oscY, oscW, oscH);
       ctx.strokeRect(oscX, oscY, oscW, oscH);
@@ -175,9 +175,9 @@ export function FaradayLawDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textBaseline = 'top';
       ctx.textAlign = 'left';
-      ctx.fillStyle = 'rgba(108,197,194,0.9)';
+      ctx.fillStyle = colors.teal;
       ctx.fillText('Φ_B  (teal)', oscX + 10, oscY + 8);
-      ctx.fillStyle = 'rgba(255,107,42,0.95)';
+      ctx.fillStyle = colors.accent;
       ctx.fillText('EMF = −dΦ/dt  (amber)', oscX + 10, oscY + 22);
 
       raf = requestAnimationFrame(draw);

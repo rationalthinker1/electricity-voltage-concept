@@ -42,7 +42,7 @@ export function BLDCCommutationDemo({ figure }: Props) {
   const rpm = (fElec / 2) * 60;
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, colors } = info;
     let raf = 0;
     let lastT = performance.now();
     let phase = 0;          // continuous step phase (0..6 then wrap)
@@ -82,7 +82,7 @@ export function BLDCCommutationDemo({ figure }: Props) {
       while (diff < -Math.PI) diff += 2 * Math.PI;
       rotorAng += diff * Math.min(1, dt * 12);
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const cx = w / 2;
@@ -90,7 +90,7 @@ export function BLDCCommutationDemo({ figure }: Props) {
       const R = Math.min(w, h) * 0.38;
 
       // Stator ring
-      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.arc(cx, cy, R + 16, 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.arc(cx, cy, R - 8, 0, Math.PI * 2); ctx.stroke();
@@ -122,7 +122,7 @@ export function BLDCCommutationDemo({ figure }: Props) {
         ctx.beginPath();
         ctx.arc(sx, sy, 22, 0, Math.PI * 2);
         ctx.fill(); ctx.stroke();
-        ctx.fillStyle = 'rgba(236,235,229,0.95)';
+        ctx.fillStyle = colors.text;
         ctx.font = 'bold 13px JetBrains Mono';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText(p.label, sx, sy - 4);
@@ -135,7 +135,7 @@ export function BLDCCommutationDemo({ figure }: Props) {
       if (fmag > 0.01) {
         const ax = cx + Math.cos(statorAng) * R * 0.6;
         const ay = cy - Math.sin(statorAng) * R * 0.6;
-        ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+        ctx.strokeStyle = colors.borderStrong;
         ctx.setLineDash([5, 4]);
         ctx.lineWidth = 1.2;
         ctx.beginPath();
@@ -162,12 +162,12 @@ export function BLDCCommutationDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.moveTo(sxx, syy); ctx.lineTo(nx, ny); ctx.stroke();
       // N pole
-      ctx.fillStyle = '#ff3b6e';
+      ctx.fillStyle = colors.pink;
       ctx.beginPath(); ctx.arc(nx, ny, 11, 0, Math.PI * 2); ctx.fill();
       // S pole
-      ctx.fillStyle = '#5baef8';
+      ctx.fillStyle = colors.blue;
       ctx.beginPath(); ctx.arc(sxx, syy, 11, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#0a0a0b';
+      ctx.fillStyle = colors.bg;
       ctx.font = 'bold 11px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('N', nx, ny);

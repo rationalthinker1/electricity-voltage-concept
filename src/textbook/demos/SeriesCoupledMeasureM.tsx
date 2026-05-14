@@ -15,6 +15,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props { figure?: string }
 
@@ -37,7 +38,7 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
   }, [L1mH, L2mH, k, aiding]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
+    const { ctx, w, h, } = info;
     let raf = 0;
 
     function draw() {
@@ -46,7 +47,7 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
       const Laid = L1mH + L2mH + 2 * Mh;
       const Lopp = L1mH + L2mH - 2 * Mh;
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
       // Two coils in series in the schematic — draw them with arrow tags showing winding sense
@@ -67,7 +68,7 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
       ctx.stroke();
 
       // M label between
-      ctx.fillStyle = 'rgba(108,197,194,0.85)';
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`M = ${Mh.toFixed(2)} mH`, (c1x + c2x) / 2, cy + 24);
@@ -81,7 +82,7 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
         `L_eq = ${(aiding ? Laid : Lopp).toFixed(2)} mH`,
         w / 2, 14,
       );
-      ctx.fillStyle = 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText(
         aiding ? 'series aiding:  L₁ + L₂ + 2M' : 'series opposing:  L₁ + L₂ − 2M',
@@ -96,7 +97,7 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
       ctx.fillText(`L_aid = ${Laid.toFixed(2)} mH`, 12, h - 22);
       ctx.fillText(`L_opp = ${Lopp.toFixed(2)} mH`, 12, h - 8);
       ctx.textAlign = 'right';
-      ctx.fillStyle = 'rgba(255,107,42,0.85)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText(`M = (L_aid − L_opp) / 4 = ${((Laid - Lopp) / 4).toFixed(2)} mH`, w - 12, h - 8);
 
       raf = requestAnimationFrame(draw);
@@ -158,7 +159,7 @@ function drawCoilSeries(
   const loops = 4;
   const span = 44;
   const dy = span / loops;
-  ctx.strokeStyle = 'rgba(255,107,42,0.95)';
+  ctx.strokeStyle = getCanvasColors().accent;
   ctx.lineWidth = 1.6;
   // Lead in
   ctx.beginPath();
@@ -183,7 +184,7 @@ function drawCoilSeries(
   ctx.stroke();
 
   // Labels
-  ctx.fillStyle = 'rgba(255,107,42,0.85)';
+  ctx.fillStyle = getCanvasColors().accent;
   ctx.font = 'bold 11px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
