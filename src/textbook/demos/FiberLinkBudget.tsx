@@ -56,8 +56,8 @@ export function FiberLinkBudgetDemo() {
       ctx.lineWidth = 1;
       ctx.strokeRect(padL, padT, plotW, plotH);
 
-      // Horizontal RX sensitivity threshold
-      ctx.strokeStyle = 'rgba(255,59,110,0.9)';
+      // Horizontal RX sensitivity threshold — theme-aware pink token.
+      ctx.strokeStyle = colors.pink;
       ctx.setLineDash([4, 3]);
       ctx.beginPath();
       const yRx = yOfDbm(rxSens);

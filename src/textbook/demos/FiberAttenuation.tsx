@@ -70,16 +70,20 @@ export function FiberAttenuationDemo() {
       ctx.lineWidth = 1;
       ctx.strokeRect(padL, padT, plotW, plotH);
 
-      // Telecom windows — vertical bands at 850 / 1310 / 1550
+      // Telecom windows — vertical bands at 850 / 1310 / 1550. Theme-aware
+      // tints via globalAlpha so the bands follow light/dark mode.
       const windows = [
-        { l: 850,  label: '850 nm',  color: 'rgba(91,174,248,0.10)' },
-        { l: 1310, label: '1310 nm', color: 'rgba(108,197,194,0.12)' },
-        { l: 1550, label: '1550 nm', color: 'rgba(255,107,42,0.13)' },
+        { l: 850,  color: colors.blue,   alpha: 0.10 },
+        { l: 1310, color: colors.teal,   alpha: 0.14 },
+        { l: 1550, color: colors.accent, alpha: 0.15 },
       ];
       for (const w of windows) {
         const cx = xOfLam(w.l);
+        ctx.save();
+        ctx.globalAlpha = w.alpha;
         ctx.fillStyle = w.color;
         ctx.fillRect(cx - 14, padT, 28, plotH);
+        ctx.restore();
       }
 
       // Loss curve
