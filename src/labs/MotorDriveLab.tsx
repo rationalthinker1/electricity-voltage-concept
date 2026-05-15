@@ -742,12 +742,12 @@ const CSS = `
 
 .md-body {
   display: grid;
-  grid-template-columns: 260px 1fr 260px;
+  grid-template-columns: 260px minmax(0, 1fr) 260px;
   gap: 20px;
   align-items: start;
 }
 @media (max-width: 1200px) {
-  .md-body { grid-template-columns: 1fr; }
+  .md-body { grid-template-columns: minmax(0, 1fr); }
 }
 
 .md-left, .md-right {
@@ -758,11 +758,13 @@ const CSS = `
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 0;
 }
 .md-main {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
 }
 
 .md-panel-title {

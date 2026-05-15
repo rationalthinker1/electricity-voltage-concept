@@ -26,9 +26,8 @@ export function PhaseScope({ trace }: PhaseScopeProps) {
     const c = ref.current;
     if (!c) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = c.parentElement?.clientWidth ?? 320;
+    const w = c.clientWidth || c.parentElement?.clientWidth || 320;
     const h = 160;
-    c.style.width = w + 'px';
     c.style.height = h + 'px';
     c.width = Math.floor(w * dpr);
     c.height = Math.floor(h * dpr);
@@ -121,9 +120,8 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
     const c = ref.current;
     if (!c) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = c.parentElement?.clientWidth ?? 320;
+    const w = c.clientWidth || c.parentElement?.clientWidth || 320;
     const h = 200;
-    c.style.width = w + 'px';
     c.style.height = h + 'px';
     c.width = Math.floor(w * dpr);
     c.height = Math.floor(h * dpr);
@@ -253,9 +251,8 @@ export function EfficiencyMap({ map, snap }: EfficiencyMapProps) {
     const c = ref.current;
     if (!c) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = c.parentElement?.clientWidth ?? 320;
+    const w = c.clientWidth || c.parentElement?.clientWidth || 320;
     const h = 200;
-    c.style.width = w + 'px';
     c.style.height = h + 'px';
     c.width = Math.floor(w * dpr);
     c.height = Math.floor(h * dpr);
