@@ -19,7 +19,7 @@ export function Pullout({ children }: { children: ReactNode }) {
  *  descendant selectors that target `.kbd` keep matching. */
 export function Kbd({ children }: { children: ReactNode }) {
   return (
-    <span className="kbd inline-block py-[.05rem] px-[.4rem] border border-border-strong border-b-2 rounded-3 bg-bg-elevated font-3 text-[11px] text-text">
+    <span className="kbd inline-block py-xxs px-sm border border-border-strong border-b-2 rounded-3 bg-bg-elevated font-3 text-2 text-text">
       {children}
     </span>
   );

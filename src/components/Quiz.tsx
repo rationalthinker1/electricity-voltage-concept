@@ -50,7 +50,7 @@ interface GradeResult {
 
 const ICON_CORRECT = '✓'; // ✓
 const ICON_WRONG = '✗';   // ✗
-const INPUT_CLASS = 'w-full max-w-[360px] py-[10px] px-[14px] card-surface bg-color-2 font-3 text-[15px] text-color-4 transition-[border-color,background] duration-[120ms] ease-in-out focus:outline-none focus:border-accent focus:bg-color-3 disabled:opacity-70 disabled:cursor-not-allowed';
+const INPUT_CLASS = 'w-full max-w-panel py-md px-lg card-surface bg-color-2 font-3 text-6 text-text transition-[border-color,background] duration-[120ms] ease-in-out focus:outline-none focus:border-accent focus:bg-color-3 disabled:opacity-70 disabled:cursor-not-allowed';
 
 /* ---------- Grading helpers ---------- */
 
@@ -154,12 +154,12 @@ function QuestionInput({
               key={idx}
               htmlFor={id}
               className={clsx(
-                'flex items-start gap-md py-[10px] px-[14px] card-surface bg-color-2 cursor-pointer transition-[background,border-color] duration-[120ms] ease-in-out font-1 text-[15px] text-color-4 leading-[1.5] hover:bg-bg-card-hover hover:border-border-2',
+                'flex items-start gap-md py-md px-lg card-surface bg-color-2 cursor-pointer transition-[background,border-color] duration-[120ms] ease-in-out font-1 text-6 text-text leading-[1.5] hover:bg-bg-card-hover hover:border-border-2',
                 checked && 'border-accent bg-accent-soft',
               )}
             >
               <input
-                className="mt-[4px] accent-accent shrink-0 disabled:cursor-not-allowed"
+                className="mt-sm accent-accent shrink-0 disabled:cursor-not-allowed"
                 id={id}
                 type="radio"
                 name={question.id}
@@ -177,17 +177,17 @@ function QuestionInput({
   }
   if (question.type === 'numeric') {
     return (
-      <div className="inline-flex items-center gap-[10px]">
+      <div className="inline-flex items-center gap-md">
         <input
           type="text"
           inputMode="decimal"
-          className={clsx(INPUT_CLASS, 'w-[220px]')}
+          className={clsx(INPUT_CLASS, 'w-panel-sm')}
           value={value}
           disabled={disabled}
           placeholder="Enter a number"
           onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
         />
-        {question.unit && <span className="font-3 text-[14px] text-color-5">{question.unit}</span>}
+        {question.unit && <span className="font-3 text-5 text-text-dim">{question.unit}</span>}
       </div>
     );
   }
@@ -224,23 +224,23 @@ function QuestionCard({
     <Card
       className={clsx(
         'relative',
-        status === 'correct' && '!border-[rgba(108,197,194,.45)]',
-        status === 'wrong' && '!border-[rgba(255,59,110,.45)]',
+        status === 'correct' && '!border-teal/45',
+        status === 'wrong' && '!border-pink/45',
       )}
       header={
-        <div className="flex items-center justify-between gap-md eyebrow-dim text-[12px] tracking-[.06em]">
-          <span className="text-color-5">Question {index + 1}</span>
+        <div className="flex items-center justify-between gap-md eyebrow-dim text-3 tracking-2">
+          <span className="text-text-dim">Question {index + 1}</span>
           {graded && (
             <span
               className={clsx(
-                'inline-flex items-center gap-[6px] font-3 text-[12px] tracking-[.04em]',
+                'inline-flex items-center gap-sm font-3 text-3 tracking-2',
                 status === 'correct' && 'text-teal',
                 status === 'wrong' && 'text-pink',
               )}
               aria-label={graded.isCorrect ? 'Correct' : 'Incorrect'}
             >
               {graded.isCorrect ? ICON_CORRECT : ICON_WRONG}
-              <span className="normal-case tracking-normal text-[12px]">
+              <span className="normal-case tracking-normal text-3">
                 {graded.isCorrect ? 'Correct' : 'Incorrect'}
               </span>
             </span>
@@ -248,7 +248,7 @@ function QuestionCard({
         </div>
       }
     >
-      <div className="body-copy leading-[1.55] text-color-4 my-[10px] mb-[14px] [&_strong]:text-color-4">{question.prompt}</div>
+      <div className="body-copy leading-[1.55] text-text my-md mb-lg [&_strong]:text-text">{question.prompt}</div>
       <QuestionInput
         question={question}
         value={value}
@@ -256,14 +256,14 @@ function QuestionCard({
         onChange={onChange}
       />
       {graded && (
-        <div className="mt-[14px] pt-[14px] border-t border-dashed border-border flex flex-col gap-sm">
+        <div className="mt-lg pt-lg border-t border-dashed border-border flex flex-col gap-sm">
           {!graded.isCorrect && graded.correctDisplay && (
-            <div className="font-1 text-[14px] text-color-4">
-              <span className="eyebrow-dim text-[11px] tracking-[.06em] mr-xs">Correct answer:</span>{' '}
+            <div className="font-1 text-5 text-text">
+              <span className="eyebrow-dim text-2 tracking-2 mr-xs">Correct answer:</span>{' '}
               <span className="text-teal">{graded.correctDisplay}</span>
             </div>
           )}
-          <div className="body-copy text-[14px] leading-[1.55] [&_strong]:text-color-4">{question.explanation}</div>
+          <div className="body-copy text-5 leading-[1.55] [&_strong]:text-text">{question.explanation}</div>
         </div>
       )}
     </Card>
@@ -333,16 +333,16 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
   const passed = submitted ? submitted.score >= passingScore : false;
 
   return (
-    <section id={`quiz-${chapterSlug}`} className="flex flex-col gap-[18px] my-[32px]">
-      {heading && <div className="title-display text-[24px] mb-[4px]">{heading}</div>}
+    <section id={`quiz-${chapterSlug}`} className="flex flex-col gap-lg my-2xl">
+      {heading && <div className="title-display text-8 mb-sm">{heading}</div>}
 
       {submitted ? (
         <Banner variant={passed ? 'success' : 'warn'}>
-          <div className="font-1 text-[15px] text-color-4 [&_strong]:font-3 [&_strong]:font-semibold">
+          <div className="font-1 text-6 text-text [&_strong]:font-3 [&_strong]:font-semibold">
             You scored <strong>{submitted.numCorrect}/{submitted.numTotal}</strong>{' '}
-            <span className="font-3 text-color-5 text-[13px]">({scorePct}%)</span>.
+            <span className="font-3 text-text-dim text-4">({scorePct}%)</span>.
           </div>
-          <div className="font-1 text-[13px] text-color-5 mt-[2px]">
+          <div className="font-1 text-4 text-text-dim mt-xxs">
             {passed
               ? <>You passed — this chapter is marked complete. You can retake the quiz any time.</>
               : <>Need {passingPct}% to mark this chapter complete.</>}
@@ -350,16 +350,16 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
         </Banner>
       ) : status.passed ? (
         <Banner variant="success">
-          <div className="font-1 text-[15px] text-color-4 [&_strong]:font-3 [&_strong]:font-semibold">
+          <div className="font-1 text-6 text-text [&_strong]:font-3 [&_strong]:font-semibold">
             Previously passed at <strong>{Math.round(status.bestScore * 100)}%</strong>.{' '}
-            <span className="font-1 text-[13px] text-color-5 mt-[2px]">
+            <span className="font-1 text-4 text-text-dim mt-xxs">
               {status.attempts} attempt{status.attempts === 1 ? '' : 's'} so far.
             </span>
           </div>
         </Banner>
       ) : status.attempts > 0 ? (
         <Banner variant="info">
-          <div className="font-1 text-[15px] text-color-4 [&_strong]:font-3 [&_strong]:font-semibold">
+          <div className="font-1 text-6 text-text [&_strong]:font-3 [&_strong]:font-semibold">
             Best score so far: <strong>{Math.round(status.bestScore * 100)}%</strong>{' '}
             across {status.attempts} attempt{status.attempts === 1 ? '' : 's'}.
             You need {passingPct}% to mark this chapter complete.
@@ -367,7 +367,7 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
         </Banner>
       ) : (
         <Banner variant="info">
-          <div className="font-1 text-[15px] text-color-4 [&_strong]:font-3 [&_strong]:font-semibold">
+          <div className="font-1 text-6 text-text [&_strong]:font-3 [&_strong]:font-semibold">
             Mastery check &middot; {quiz.questions.length} questions.
             Need {passingPct}% to mark this chapter complete.
           </div>
@@ -390,13 +390,13 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
 
       <div className="flex justify-end gap-md">
         {submitted ? (
-          <button type="button" className="inline-flex items-center gap-sm py-[10px] px-[18px] rounded-5 font-1 text-[14px] font-medium border border-accent bg-accent text-bg cursor-pointer transition-[background,border-color,color] duration-[120ms] ease-in-out hover:brightness-110 disabled:opacity-55 disabled:cursor-not-allowed" onClick={handleRetry}>
+          <button type="button" className="inline-flex items-center gap-sm py-md px-lg rounded-5 font-1 text-5 font-medium border border-accent bg-accent text-bg cursor-pointer transition-[background,border-color,color] duration-[120ms] ease-in-out hover:brightness-110 disabled:opacity-55 disabled:cursor-not-allowed" onClick={handleRetry}>
             Retry quiz
           </button>
         ) : (
           <button
             type="button"
-            className="inline-flex items-center gap-sm py-[10px] px-[18px] rounded-5 font-1 text-[14px] font-medium border border-accent bg-accent text-bg cursor-pointer transition-[background,border-color,color] duration-[120ms] ease-in-out hover:not-disabled:brightness-110 disabled:opacity-55 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-sm py-md px-lg rounded-5 font-1 text-5 font-medium border border-accent bg-accent text-bg cursor-pointer transition-[background,border-color,color] duration-[120ms] ease-in-out hover:not-disabled:brightness-110 disabled:opacity-55 disabled:cursor-not-allowed"
             onClick={handleSubmit}
             disabled={!allAnswered}
           >

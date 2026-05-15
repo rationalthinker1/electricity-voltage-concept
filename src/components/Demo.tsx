@@ -50,22 +50,22 @@ export function Demo({ figure, title, question, children, caption, deeperLab }: 
 
   return (
     <figure ref={figureRef} className="bg-bg-card border border-border-strong rounded-3 overflow-hidden [content-visibility:auto] [contain-intrinsic-size:620px]">
-      <div className="flex items-baseline gap-[16px] py-[16px] px-[22px] border-b border-border bg-bg-elevated flex-wrap">
-        <span className="font-3 text-[10px] text-accent tracking-[.22em] uppercase">{figure ?? 'Fig.'}</span>
-        <span className="font-1 text-[14px] text-text font-medium flex-1">{title}</span>
+      <div className="flex items-baseline gap-lg py-lg px-xl border-b border-border bg-bg-elevated flex-wrap">
+        <span className="font-3 text-1 text-accent tracking-4 uppercase">{figure ?? 'Fig.'}</span>
+        <span className="font-1 text-5 text-text font-medium flex-1">{title}</span>
         {deeperLab && (
-          <Link to="/labs/$slug" params={{ slug: deeperLab.slug }} className="font-3 text-[10px] text-text-muted tracking-[.15em] uppercase no-underline border-b border-dotted border-text-muted hover:text-accent hover:border-accent">
+          <Link to="/labs/$slug" params={{ slug: deeperLab.slug }} className="font-3 text-1 text-text-muted tracking-3 uppercase no-underline border-b border-dotted border-text-muted hover:text-accent hover:border-accent">
             {deeperLab.label} →
           </Link>
         )}
       </div>
-      <div className="py-[12px] px-[22px] font-2 italic font-light text-[17px] text-text border-b border-border bg-accent-soft">{question}</div>
+      <div className="py-lg px-xl font-2 italic font-light text-6 text-text border-b border-border bg-accent-soft">{question}</div>
       <div className={shouldRenderBody
         ? 'bg-canvas-bg [contain:layout_paint_style] [&_canvas]:block [&_canvas]:w-full'
-        : 'bg-canvas-bg [contain:layout_paint_style] [&_canvas]:block [&_canvas]:w-full min-h-[320px]'}>
+        : 'bg-canvas-bg [contain:layout_paint_style] [&_canvas]:block [&_canvas]:w-full min-h-panel'}>
         {shouldRenderBody ? children : null}
       </div>
-      {caption && <figcaption className="py-[14px] px-[22px] text-[13px] text-text-muted italic leading-[1.5] border-t border-border">{caption}</figcaption>}
+      {caption && <figcaption className="py-lg px-xl text-4 text-text-muted italic leading-[1.5] border-t border-border">{caption}</figcaption>}
     </figure>
   );
 }
@@ -75,7 +75,7 @@ interface DemoControlsProps {
 }
 /** Bottom strip of a demo card — small controls (slider, toggle) sit here. */
 export function DemoControls({ children }: DemoControlsProps) {
-  return <div className="flex flex-wrap gap-y-[18px] gap-x-[28px] items-center py-[14px] px-[22px] bg-bg-elevated border-t border-border">{children}</div>;
+  return <div className="flex flex-wrap gap-y-lg gap-x-xl items-center py-lg px-xl bg-bg-elevated border-t border-border">{children}</div>;
 }
 
 interface MiniSliderProps {
@@ -103,7 +103,7 @@ export function MiniSlider({ label, value, min, max, step = 0.01, format, onChan
         onChange={e => onChange(parseFloat(e.target.value))}
         style={{ ['--pct' as string]: `${pct}%` }}
       />
-      <span className="font-3 text-[11px] text-accent tracking-[.04em]">{format ? format(value) : value.toFixed(2)}</span>
+      <span className="font-3 text-2 text-accent tracking-2">{format ? format(value) : value.toFixed(2)}</span>
     </label>
   );
 }
@@ -133,10 +133,10 @@ interface MiniReadoutProps {
 }
 export function MiniReadout({ label, value, unit }: MiniReadoutProps) {
   return (
-    <div className="inline-flex items-baseline gap-[8px] font-3 text-[11px]">
-      <span className="text-text-muted uppercase tracking-[.12em]">{label}</span>
-      <span className="text-accent text-[13px] [&_sub]:text-[.7em] [&_sup]:text-[.7em] [&_sub]:leading-none [&_sup]:leading-none [&_sub]:font-3 [&_sup]:font-3 [&_sub]:align-[-.35em] [&_sup]:align-[.45em]">
-        {value}{unit && <span className="text-text-muted text-[10px]"> {unit}</span>}
+    <div className="inline-flex items-baseline gap-sm font-3 text-2">
+      <span className="text-text-muted uppercase tracking-3">{label}</span>
+      <span className="text-accent text-4 [&_sub]:text-[.7em] [&_sup]:text-[.7em] [&_sub]:leading-none [&_sup]:leading-none [&_sub]:font-3 [&_sup]:font-3 [&_sub]:align-[-.35em] [&_sup]:align-[.45em]">
+        {value}{unit && <span className="text-text-muted text-1"> {unit}</span>}
       </span>
     </div>
   );

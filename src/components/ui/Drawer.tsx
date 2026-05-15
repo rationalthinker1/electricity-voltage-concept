@@ -51,7 +51,7 @@ export function Drawer({
     <dialog
       ref={dialogRef}
       className={clsx(
-        'p-0 border-0 bg-transparent text-color-4 max-w-none max-h-none w-full h-full backdrop:bg-black/55 backdrop:backdrop-blur-[2px]',
+        'p-0 border-0 bg-transparent text-text max-w-none max-h-none w-full h-full backdrop:bg-black/55 backdrop:backdrop-blur-[2px]',
         className,
       )}
       onClick={onBackdropClick}
@@ -64,9 +64,9 @@ export function Drawer({
           side === 'bottom' && 'left-0 right-0 bottom-0 max-h-[80vh] border-t border-t-border-2 rounded-t-6',
         )}
       >
-        <header className="flex items-center justify-between py-[14px] px-[18px] border-b border-border-1 shrink-0">
-          <div className="font-2 italic text-[19px] text-color-4">{title}</div>
-          <button type="button" className="icon-btn border-0 text-[24px] py-0 px-[6px]" onClick={onClose} aria-label="Close drawer">×</button>
+        <header className="flex items-center justify-between py-lg px-lg border-b border-border-1 shrink-0">
+          <div className="font-2 italic text-7 text-text">{title}</div>
+          <button type="button" className="icon-btn border-0 text-8 py-0 px-sm" onClick={onClose} aria-label="Close drawer">×</button>
         </header>
         <div className="p-[18px] overflow-auto flex-1">{children}</div>
       </div>

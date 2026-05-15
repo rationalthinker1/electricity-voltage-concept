@@ -37,13 +37,13 @@ export function Card({
       )}
     >
       {header !== undefined && (
-        <header className="py-[14px] px-[18px] border-b border-border-1 eyebrow-dim text-[12px] tracking-[.08em]">
+        <header className="py-lg px-lg border-b border-border-1 eyebrow-dim text-3 tracking-3">
           {header}
         </header>
       )}
-      <div className="p-[18px] text-color-4">{children}</div>
+      <div className="p-[18px] text-text">{children}</div>
       {footer !== undefined && (
-        <footer className="py-[12px] px-[18px] border-t border-border-1 text-[13px] text-text-muted">
+        <footer className="py-lg px-lg border-t border-border-1 text-4 text-text-muted">
           {footer}
         </footer>
       )}

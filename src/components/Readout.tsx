@@ -21,16 +21,16 @@ export interface ReadoutProps {
  */
 export function Readout({ sym, label, valueHTML, value, unit, highlight }: ReadoutProps) {
   return (
-    <div className={`flex justify-between items-baseline gap-[14px] ${highlight ? 'bg-accent-soft -mx-[28px] my-[8px] py-[14px] px-[28px] border-0' : 'py-[14px] border-b border-border last:border-b-0'}`}>
-      <span className={`font-1 text-[13px] ${highlight ? 'text-accent' : 'text-text-dim'}`}>
-        <span className={`font-2 italic text-[16px] mr-[4px] ${highlight ? 'text-accent' : 'text-teal'}`}>{sym}</span>
+    <div className={`flex justify-between items-baseline gap-md ${highlight ? 'bg-accent-soft -mx-2xl my-md py-lg px-2xl border-0' : 'py-lg border-b border-border last:border-b-0'}`}>
+      <span className={`font-1 text-4 ${highlight ? 'text-accent' : 'text-text-dim'}`}>
+        <span className={`font-2 italic text-6 mr-sm ${highlight ? 'text-accent' : 'text-teal'}`}>{sym}</span>
         {label}
       </span>
-      <span className={`font-3 text-right tracking-[.02em] whitespace-nowrap [&_sub]:text-[.7em] [&_sub]:leading-none [&_sub]:font-3 [&_sub]:align-[-.35em] [&_sup]:text-[.7em] [&_sup]:leading-none [&_sup]:font-3 [&_sup]:align-[.45em] ${highlight ? 'text-accent text-[16px]' : 'text-text text-[14px]'}`}>
+      <span className={`font-3 text-right tracking-normal whitespace-nowrap [&_sub]:text-[.7em] [&_sub]:leading-none [&_sub]:font-3 [&_sub]:align-[-.35em] [&_sup]:text-[.7em] [&_sup]:leading-none [&_sup]:font-3 [&_sup]:align-[.45em] ${highlight ? 'text-accent text-6' : 'text-text text-5'}`}>
         {valueHTML
           ? <span dangerouslySetInnerHTML={{ __html: valueHTML }} />
           : value ?? '—'}
-        {unit && <span className="text-text-muted text-[11px] ml-[4px] tracking-[.08em]"> {unit}</span>}
+        {unit && <span className="text-text-muted text-2 ml-sm tracking-3"> {unit}</span>}
       </span>
     </div>
   );

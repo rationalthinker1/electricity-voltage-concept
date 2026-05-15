@@ -54,7 +54,7 @@ export function Accordion({
 
   return (
     <AccordionContext.Provider value={ctx}>
-      <div className={clsx('flex flex-col gap-[4px]', className)}>{children}</div>
+      <div className={clsx('flex flex-col gap-xs', className)}>{children}</div>
     </AccordionContext.Provider>
   );
 }
@@ -104,14 +104,14 @@ export function AccordionTrigger({ children }: { children?: ReactNode }) {
   return (
     <button
       type="button"
-      className="appearance-none bg-transparent border-0 w-full text-left flex items-center justify-between gap-md py-[12px] px-[16px] cursor-pointer text-color-4 font-[inherit] font-medium hover:bg-bg-card-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_var(--accent-soft)]"
+      className="appearance-none bg-transparent border-0 w-full text-left flex items-center justify-between gap-md py-lg px-lg cursor-pointer text-text font-[inherit] font-medium hover:bg-bg-card-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_var(--accent-soft)]"
       aria-expanded={item.open}
       aria-controls={`${item.baseId}-content`}
       id={`${item.baseId}-trigger`}
       onClick={item.toggle}
     >
       <span className="flex-1">{children}</span>
-      <span className="font-3 text-[18px] text-color-5 leading-none w-[16px] text-center" aria-hidden="true">{item.open ? '−' : '+'}</span>
+      <span className="font-3 text-7 text-text-dim leading-none w-lg text-center" aria-hidden="true">{item.open ? '−' : '+'}</span>
     </button>
   );
 }
@@ -125,7 +125,7 @@ export function AccordionContent({ children }: { children?: ReactNode }) {
       role="region"
       id={`${item.baseId}-content`}
       aria-labelledby={`${item.baseId}-trigger`}
-      className="py-[4px] px-[16px] pb-[16px] text-color-5 text-[15px] leading-[1.65] border-t border-border"
+      className="py-sm px-lg pb-lg text-text-dim text-6 leading-[1.65] border-t border-border"
     >
       {children}
     </div>

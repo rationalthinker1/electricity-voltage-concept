@@ -70,14 +70,14 @@ export function Tabs({ value, defaultValue, onChange, children, className }: Tab
 
   return (
     <TabsContext.Provider value={ctx}>
-      <div className={clsx('flex flex-col gap-[14px]', className)}>{children}</div>
+      <div className={clsx('flex flex-col gap-md', className)}>{children}</div>
     </TabsContext.Provider>
   );
 }
 
 export function TabList({ children, className }: { children?: ReactNode; className?: string }) {
   return (
-    <div role="tablist" className={clsx('flex gap-[2px] border-b border-border-1', className)}>
+    <div role="tablist" className={clsx('flex gap-xs border-b border-border-1', className)}>
       {children}
     </div>
   );
@@ -114,7 +114,7 @@ export function Tab({ id, children, disabled }: TabProps) {
       onClick={() => ctx.setActive(id)}
       onKeyDown={onKeyDown}
       className={clsx(
-        'appearance-none bg-transparent border-0 eyebrow-dim text-[12px] tracking-[.07em] py-[10px] px-[14px] cursor-pointer border-b-2 border-transparent -mb-px transition-colors duration-[120ms] ease-in-out hover:not-disabled:text-color-4 disabled:opacity-45 disabled:cursor-not-allowed',
+        'appearance-none bg-transparent border-0 eyebrow-dim text-3 tracking-2 py-md px-lg cursor-pointer border-b-2 border-transparent -mb-px transition-colors duration-[120ms] ease-in-out hover:not-disabled:text-text disabled:opacity-45 disabled:cursor-not-allowed',
         selected && 'text-accent border-b-accent',
       )}
     >
@@ -138,7 +138,7 @@ export function TabPanel({ id, children }: TabPanelProps) {
       role="tabpanel"
       id={`${ctx.baseId}-panel-${id}`}
       aria-labelledby={`${ctx.baseId}-tab-${id}`}
-      className="text-color-4"
+      className="text-text"
     >
       {children}
     </div>

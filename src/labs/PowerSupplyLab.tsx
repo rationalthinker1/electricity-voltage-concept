@@ -283,7 +283,7 @@ export default function PowerSupplyLab() {
           <button
             key={preset.id}
             type="button"
-            className="eyebrow-muted tracking-[.08em] px-md py-sm rounded-pill border border-border-1 bg-color-3 text-color-5 hover:text-color-4 hover:border-border-2"
+            className="eyebrow-muted tracking-3 px-md py-sm rounded-pill border border-border-1 bg-color-3 text-text-dim hover:text-text hover:border-border-2"
             onClick={() => setCfg({ ...preset })}
           >
             {preset.label}

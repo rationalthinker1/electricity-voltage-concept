@@ -16,7 +16,7 @@ export function Panel({ title, children, variant = 'inputs' }: PanelProps) {
         ? 'bg-bg-card border border-border rounded-[4px] p-[28px]'
         : 'bg-bg-card border border-border rounded-[4px] p-[28px] flex flex-col'
     }>
-      <div className={`font-3 text-[10px] uppercase tracking-[.25em] mb-[24px] flex items-center gap-[10px] before:content-[''] before:w-[22px] before:h-[1px] ${titleAccent}`}>{title}</div>
+      <div className={`font-3 text-1 uppercase tracking-4 mb-xl flex items-center gap-md before:content-[''] before:w-icon before:h-xxs ${titleAccent}`}>{title}</div>
       {children}
     </div>
   );
@@ -43,12 +43,12 @@ export function LabGrid({ canvas, legend, inputs, outputs }: LabGridProps) {
       <div className="bg-color-canvas-bg border border-border rounded-[4px] overflow-hidden relative [&_canvas]:block [&_canvas]:w-full">
         {canvas}
         {legend && (
-          <div className="flex gap-[22px] flex-wrap py-[14px] px-[24px] border-t border-border bg-accent-soft">
+          <div className="flex gap-xl flex-wrap py-lg px-xl border-t border-border bg-accent-soft">
             {legend}
           </div>
         )}
       </div>
-      <div className="grid grid-cols-[1.4fr_1fr] gap-[30px] mt-[30px] max-[1100px]:grid-cols-1">
+      <div className="grid grid-cols-[1.4fr_1fr] gap-xl mt-2xl max-xl:grid-cols-1">
         <Panel title="Inputs" variant="inputs">{inputs}</Panel>
         <Panel title="Outputs" variant="outputs">{outputs}</Panel>
       </div>
@@ -65,12 +65,12 @@ interface LegendItemProps {
 export function LegendItem({ swatchColor, dot, children, style }: LegendItemProps) {
   return (
     <div
-      className="flex items-center gap-[8px] font-3 text-[10px] text-color-text-dim uppercase tracking-[.12em]"
+      className="flex items-center gap-sm font-3 text-1 text-color-text-dim uppercase tracking-3"
       style={style}
     >
       {swatchColor && (
         <span
-          className={dot ? 'w-[8px] h-[8px] rounded-full' : 'w-[14px] h-[2px]'}
+          className={dot ? 'w-sm h-sm rounded-full' : 'w-lg h-xxs'}
           style={{ background: swatchColor }}
         />
       )}

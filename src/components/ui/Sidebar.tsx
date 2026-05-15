@@ -23,20 +23,20 @@ export function Sidebar({
   return (
     <aside
       className={clsx(
-        'sticky top-0 self-start w-[260px] max-h-screen overflow-auto bg-color-2 border border-border-1 rounded-6 flex flex-col transition-[width] duration-150 ease-in-out',
+        'sticky top-0 self-start w-panel-sm max-h-screen overflow-auto bg-color-2 border border-border-1 rounded-6 flex flex-col transition-[width] duration-150 ease-in-out',
         side === 'right' ? 'border-l-border-2' : 'border-r-border-2',
-        collapsed && 'w-[56px] overflow-hidden',
+        collapsed && 'w-3xl overflow-hidden',
         className,
       )}
       aria-label={typeof title === 'string' ? title : 'Sidebar'}
     >
       {(title !== undefined || collapsible) && (
-        <header className="flex items-center justify-between gap-sm py-[12px] px-[14px] border-b border-border-1">
-          {title !== undefined && <div className="eyebrow-dim text-[11px] tracking-[.1em]">{title}</div>}
+        <header className="flex items-center justify-between gap-sm py-lg px-lg border-b border-border-1">
+          {title !== undefined && <div className="eyebrow-dim text-2 tracking-3">{title}</div>}
           {collapsible && (
             <button
               type="button"
-              className="icon-btn border border-border-1 rounded-3 w-[22px] h-[22px] text-[14px] p-0 hover:border-border-2"
+              className="icon-btn border border-border-1 rounded-3 w-icon h-icon text-5 p-0 hover:border-border-2"
               onClick={() => setCollapsed(c => !c)}
               aria-expanded={!collapsed}
               aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
@@ -46,7 +46,7 @@ export function Sidebar({
           )}
         </header>
       )}
-      {!collapsed && <div className="py-[12px] px-[14px]">{children}</div>}
+      {!collapsed && <div className="py-lg px-lg">{children}</div>}
     </aside>
   );
 }

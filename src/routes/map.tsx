@@ -194,16 +194,16 @@ function MapPage() {
   }
 
   return (
-    <section className="pt-[140px] pb-[80px] px-[40px] max-w-[1300px] mx-auto max-[700px]:pt-[120px] max-[700px]:pb-[60px] max-[700px]:px-[18px]">
+    <section className="pt-5xl pb-4xl px-3xl max-w-page-lg mx-auto max-md:pt-5xl max-md:pb-4xl max-md:px-lg">
       <style>{SVG_STYLES}</style>
-      <div className="mb-[28px]">
-        <div className="eyebrow-muted tracking-[.18em] mb-[12px]">
+      <div className="mb-2xl">
+        <div className="eyebrow-muted tracking-4 mb-lg">
           Field · Theory · Course map
         </div>
-        <h1 className="hero-display max-[700px]:text-[36px]">
+        <h1 className="hero-display max-md:text-9">
           The chapter <em>graph</em>.
         </h1>
-        <p className="body-copy max-w-[640px] max-[700px]:text-[15px]">
+        <p className="body-copy max-w-page-sm max-md:text-6">
           Each chapter sits above its prerequisites. Click a node to open it.
           Hover to highlight the dependency chain.
           {!hasPrereqData && (
@@ -215,10 +215,10 @@ function MapPage() {
         </p>
       </div>
 
-      <div className="flex gap-[16px] items-center font-3 text-[11px] text-color-5 uppercase tracking-[.12em] mb-[18px] flex-wrap">
-        <span className="inline-block w-[14px] h-[14px] rounded-3 border border-border-2 align-middle mr-[6px] ml-[12px] bg-accent" /> selected
-        <span className="inline-block w-[14px] h-[14px] rounded-3 border border-border-2 align-middle mr-[6px] ml-[12px] bg-teal" /> prerequisite
-        <span className="inline-block w-[14px] h-[14px] rounded-3 border border-border-2 align-middle mr-[6px] ml-[12px] bg-pink" /> depends on
+      <div className="flex gap-lg items-center font-3 text-2 text-text-dim uppercase tracking-3 mb-lg flex-wrap">
+        <span className="inline-block w-lg h-lg rounded-3 border border-border-2 align-middle mr-sm ml-lg bg-accent" /> selected
+        <span className="inline-block w-lg h-lg rounded-3 border border-border-2 align-middle mr-sm ml-lg bg-teal" /> prerequisite
+        <span className="inline-block w-lg h-lg rounded-3 border border-border-2 align-middle mr-sm ml-lg bg-pink" /> depends on
       </div>
 
       <div
@@ -317,7 +317,7 @@ function MapPage() {
         </svg>
       </div>
 
-      <div className="flex justify-between items-center mt-[28px] pt-[20px] border-t border-border-1">
+      <div className="flex justify-between items-center mt-2xl pt-lg border-t border-border-1">
         <Link to="/" className="eyebrow-muted-link">← Back to contents</Link>
         <Link to="/tracks" className="eyebrow-muted-link">Tracks →</Link>
       </div>

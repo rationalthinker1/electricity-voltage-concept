@@ -58,7 +58,7 @@ export function Slider({
         aria-label={label}
       />
       {(metaLeft || metaRight) && (
-        <div className="flex justify-between mt-[4px] font-3 text-[10px] text-text-muted tracking-[.1em]">
+        <div className="flex justify-between mt-sm font-3 text-1 text-text-muted tracking-3">
           <span dangerouslySetInnerHTML={{ __html: metaLeft ?? '' }} />
           <span dangerouslySetInnerHTML={{ __html: metaRight ?? '' }} />
         </div>

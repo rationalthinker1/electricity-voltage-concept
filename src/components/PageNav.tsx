@@ -9,28 +9,28 @@ interface PageNavProps {
 
 export function PageNav({ prev, next }: PageNavProps) {
   return (
-    <div className="reveal in grid grid-cols-2 max-[760px]:grid-cols-1 gap-px bg-border border border-border mt-[100px] [&_a]:bg-bg [&_a]:py-[36px] [&_a]:px-[32px] [&_a]:no-underline [&_a]:text-inherit [&_a]:transition-colors hover:[&_a]:bg-bg-card-hover">
+    <div className="reveal in grid grid-cols-2 max-md:grid-cols-1 gap-px bg-border border border-border mt-5xl [&_a]:bg-bg [&_a]:py-2xl [&_a]:px-2xl [&_a]:no-underline [&_a]:text-inherit [&_a]:transition-colors hover:[&_a]:bg-bg-card-hover">
       {prev ? (
         <Link to="/labs/$slug" params={{ slug: prev.slug }}>
-          <div className="font-3 text-[10px] text-text-muted uppercase tracking-[.22em] mb-[10px]">← Lab {prev.number}</div>
-          <div className="font-2 italic font-light text-[24px] text-text tracking-[-.02em]">{prev.title}</div>
+          <div className="font-3 text-1 text-text-muted uppercase tracking-4 mb-md">← Lab {prev.number}</div>
+          <div className="font-2 italic font-light text-8 text-text tracking-1">{prev.title}</div>
         </Link>
       ) : (
         <Link to="/">
-          <div className="font-3 text-[10px] text-text-muted uppercase tracking-[.22em] mb-[10px]">← Back</div>
-          <div className="font-2 italic font-light text-[24px] text-text tracking-[-.02em]">Contents</div>
+          <div className="font-3 text-1 text-text-muted uppercase tracking-4 mb-md">← Back</div>
+          <div className="font-2 italic font-light text-8 text-text tracking-1">Contents</div>
         </Link>
       )}
 
       {next ? (
         <Link to="/labs/$slug" params={{ slug: next.slug }}>
-          <div className="font-3 text-[10px] text-text-muted uppercase tracking-[.22em] mb-[10px] text-right">Lab {next.number} →</div>
-          <div className="font-2 italic font-light text-[24px] text-text tracking-[-.02em] text-right">{next.title}</div>
+          <div className="font-3 text-1 text-text-muted uppercase tracking-4 mb-md text-right">Lab {next.number} →</div>
+          <div className="font-2 italic font-light text-8 text-text tracking-1 text-right">{next.title}</div>
         </Link>
       ) : (
         <Link to="/">
-          <div className="font-3 text-[10px] text-text-muted uppercase tracking-[.22em] mb-[10px] text-right">Finish →</div>
-          <div className="font-2 italic font-light text-[24px] text-text tracking-[-.02em] text-right">Back to contents</div>
+          <div className="font-3 text-1 text-text-muted uppercase tracking-4 mb-md text-right">Finish →</div>
+          <div className="font-2 italic font-light text-8 text-text tracking-1 text-right">Back to contents</div>
         </Link>
       )}
     </div>

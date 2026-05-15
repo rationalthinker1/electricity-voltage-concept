@@ -81,7 +81,7 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
 
   return (
     <article className="chapter-page">
-      <div className="font-3 text-accent uppercase tracking-[.25em] mb-[26px] flex items-center gap-[14px] before:content-[''] before:w-[36px] before:h-px before:bg-accent">Chapter {chapter.number}</div>
+      <div className="font-3 text-accent uppercase tracking-4 mb-xl flex items-center gap-md before:content-[''] before:w-icon-lg before:h-px before:bg-accent">Chapter {chapter.number}</div>
       <h1 dangerouslySetInnerHTML={{ __html: chapter.title }} />
       <p className="chap-deck" dangerouslySetInnerHTML={{ __html: chapter.subtitle }} />
 
@@ -90,50 +90,50 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
       <div className="chapter-narrative">{children}</div>
 
       {labs.length > 0 && (
-        <aside className="mx-auto pt-[36px]">
-          <div className="font-3 text-accent uppercase tracking-[.25em] mb-[26px] flex items-center gap-[14px] before:content-[''] before:w-[36px] before:h-px before:bg-accent">Go deeper · Related equation labs</div>
+        <aside className="mx-auto pt-2xl">
+          <div className="font-3 text-accent uppercase tracking-4 mb-xl flex items-center gap-md before:content-[''] before:w-icon-lg before:h-px before:bg-accent">Go deeper · Related equation labs</div>
           {labs.map(l => (
             <Link
               key={l.slug}
               to="/labs/$slug"
               params={{ slug: l.slug }}
-              className="block no-underline text-inherit py-[14px] border-b border-dotted border-border last:border-b-0"
+              className="block no-underline text-inherit py-lg border-b border-dotted border-border last:border-b-0"
             >
               <span className="font-1 font-medium text-text">{l.title}</span>
-              <span className="font-4 italic text-accent text-[18px] ml-[8px]" dangerouslySetInnerHTML={{ __html: l.formula }} />
-              <div className="text-text-muted mt-[4px]">{l.blurb}</div>
+              <span className="font-4 italic text-accent text-7 ml-md" dangerouslySetInnerHTML={{ __html: l.formula }} />
+              <div className="text-text-muted mt-sm">{l.blurb}</div>
             </Link>
           ))}
         </aside>
       )}
 
-      <div className="mx-auto mb-0 pt-[36px]">
+      <div className="mx-auto mb-0 pt-2xl">
         <SourcesList ids={chapter.sources} />
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-[16px] my-[32px] mb-[24px] py-[18px] px-[22px] bg-bg-card border border-border rounded-6">
+      <div className="flex flex-wrap items-center justify-between gap-lg my-2xl mb-xl py-lg px-xl bg-bg-card border border-border rounded-6">
         <button
           type="button"
           className={isComplete
-            ? 'bg-transparent text-teal border border-teal py-[10px] px-[22px] rounded-5 font-3 text-[12px] tracking-[.12em] uppercase cursor-default transition-[background,opacity] hover:bg-transparent'
-            : 'bg-accent text-bg border-0 py-[10px] px-[22px] rounded-5 font-3 text-[12px] tracking-[.12em] uppercase cursor-pointer transition-[background,opacity] hover:bg-accent-glow disabled:bg-transparent disabled:text-teal disabled:border disabled:border-teal disabled:cursor-default'}
+            ? 'bg-transparent text-teal border border-teal py-md px-xl rounded-5 font-3 text-3 tracking-3 uppercase cursor-default transition-[background,opacity] hover:bg-transparent'
+            : 'bg-accent text-bg border-0 py-md px-xl rounded-5 font-3 text-3 tracking-3 uppercase cursor-pointer transition-[background,opacity] hover:bg-accent-glow disabled:bg-transparent disabled:text-teal disabled:border disabled:border-teal disabled:cursor-default'}
           onClick={handleMarkComplete}
           disabled={isComplete}
           aria-pressed={isComplete}
         >
           {isComplete ? 'Marked complete ✓' : 'Mark this chapter complete'}
         </button>
-        <Link to="/me" className="font-3 text-[11px] text-text-muted uppercase tracking-[.12em] no-underline hover:text-accent">View your progress →</Link>
+        <Link to="/me" className="font-3 text-2 text-text-muted uppercase tracking-3 no-underline hover:text-accent">View your progress →</Link>
       </div>
 
       {toast && (
-        <div className="fixed bottom-[28px] left-1/2 -translate-x-1/2 bg-bg-elevated border border-teal text-teal py-[10px] px-[18px] rounded-pill font-3 text-[12px] tracking-[.12em] uppercase z-[1000] shadow-2 animate-[chap-toast-in_.25s_ease-out]" role="status" aria-live="polite">{toast}</div>
+        <div className="fixed bottom-[28px] left-1/2 -translate-x-1/2 bg-bg-elevated border border-teal text-teal py-md px-lg rounded-pill font-3 text-3 tracking-3 uppercase z-[1000] shadow-2 animate-[chap-toast-in_.25s_ease-out]" role="status" aria-live="polite">{toast}</div>
       )}
 
       {quiz && (
-        <div className="mt-[32px]">
+        <div className="mt-2xl">
           {quizStatus.passed ? (
-            <div className="flex items-center justify-between gap-lg py-[14px] px-[18px] my-[24px] card-surface bg-color-2 border-l-[3px] border-l-teal font-1 text-[14px] text-color-4">
+            <div className="flex items-center justify-between gap-lg py-lg px-lg my-xl card-surface bg-color-2 border-l-[3px] border-l-teal font-1 text-5 text-text">
               <div className="flex-1 [&_strong]:font-3 [&_strong]:text-teal">
                 Quiz passed (<strong>{Math.round(quizStatus.bestScore * 100)}%</strong>).
                 You&rsquo;ve already met the mastery threshold for this chapter.
@@ -141,7 +141,7 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
               <Link
                 to="/quiz/$chapterSlug"
                 params={{ chapterSlug: chapter.slug }}
-                className="font-1 text-[13px] text-accent no-underline whitespace-nowrap hover:underline"
+                className="font-1 text-4 text-accent no-underline whitespace-nowrap hover:underline"
               >
                 Retake quiz →
               </Link>
@@ -161,27 +161,27 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
         </div>
       )}
 
-      <nav className="grid grid-cols-2 max-[760px]:grid-cols-1 gap-px bg-border border border-border max-w-[70ch] mx-auto mt-[100px] mb-0">
+      <nav className="grid grid-cols-2 max-md:grid-cols-1 gap-px bg-border border border-border max-w-col-lg mx-auto mt-5xl mb-0">
         {prev ? (
-          <Link to="/textbook/$chapterSlug" params={{ chapterSlug: prev.slug }} className="bg-bg py-[36px] px-[28px] no-underline text-inherit transition-colors hover:bg-bg-card-hover">
-            <div className="font-3 text-[10px] text-text-muted uppercase tracking-[.22em] mb-[10px]">← Chapter {prev.number}</div>
-            <div className="font-2 italic font-light text-[22px] text-text">{prev.title}</div>
+          <Link to="/textbook/$chapterSlug" params={{ chapterSlug: prev.slug }} className="bg-bg py-2xl px-2xl no-underline text-inherit transition-colors hover:bg-bg-card-hover">
+            <div className="font-3 text-1 text-text-muted uppercase tracking-4 mb-md">← Chapter {prev.number}</div>
+            <div className="font-2 italic font-light text-8 text-text">{prev.title}</div>
           </Link>
         ) : (
-          <Link to="/" className="bg-bg py-[36px] px-[28px] no-underline text-inherit transition-colors hover:bg-bg-card-hover">
-            <div className="font-3 text-[10px] text-text-muted uppercase tracking-[.22em] mb-[10px]">← Back</div>
-            <div className="font-2 italic font-light text-[22px] text-text">Contents</div>
+          <Link to="/" className="bg-bg py-2xl px-2xl no-underline text-inherit transition-colors hover:bg-bg-card-hover">
+            <div className="font-3 text-1 text-text-muted uppercase tracking-4 mb-md">← Back</div>
+            <div className="font-2 italic font-light text-8 text-text">Contents</div>
           </Link>
         )}
         {next ? (
-          <Link to="/textbook/$chapterSlug" params={{ chapterSlug: next.slug }} className="bg-bg py-[36px] px-[28px] no-underline text-inherit transition-colors hover:bg-bg-card-hover text-right">
-            <div className="font-3 text-[10px] text-text-muted uppercase tracking-[.22em] mb-[10px]">Chapter {next.number} →</div>
-            <div className="font-2 italic font-light text-[22px] text-text">{next.title}</div>
+          <Link to="/textbook/$chapterSlug" params={{ chapterSlug: next.slug }} className="bg-bg py-2xl px-2xl no-underline text-inherit transition-colors hover:bg-bg-card-hover text-right">
+            <div className="font-3 text-1 text-text-muted uppercase tracking-4 mb-md">Chapter {next.number} →</div>
+            <div className="font-2 italic font-light text-8 text-text">{next.title}</div>
           </Link>
         ) : (
-          <Link to="/reference" className="bg-bg py-[36px] px-[28px] no-underline text-inherit transition-colors hover:bg-bg-card-hover text-right">
-            <div className="font-3 text-[10px] text-text-muted uppercase tracking-[.22em] mb-[10px]">Appendix →</div>
-            <div className="font-2 italic font-light text-[22px] text-text">Equation labs</div>
+          <Link to="/reference" className="bg-bg py-2xl px-2xl no-underline text-inherit transition-colors hover:bg-bg-card-hover text-right">
+            <div className="font-3 text-1 text-text-muted uppercase tracking-4 mb-md">Appendix →</div>
+            <div className="font-2 italic font-light text-8 text-text">Equation labs</div>
           </Link>
         )}
       </nav>

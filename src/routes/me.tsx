@@ -57,10 +57,10 @@ function chapterStatus(slug: ChapterSlug, progress: ProgressState): 'none' | 'op
 
 // Reusable inline class fragments
 const META = 'eyebrow-muted';
-const META_SM = 'eyebrow-muted text-[10px]';
-const SECTION_TITLE = 'title-display font-light text-[26px] mb-md';
+const META_SM = 'eyebrow-muted text-1';
+const SECTION_TITLE = 'title-display font-light text-8 mb-md';
 const CARD = 'card-surface';
-const STATUS_PILL = 'font-3 text-[10px] tracking-[.12em] uppercase py-[3px] px-sm rounded-pill border border-border-2 text-text-muted whitespace-nowrap';
+const STATUS_PILL = 'font-3 text-1 tracking-3 uppercase py-xxs px-sm rounded-pill border border-border-2 text-text-muted whitespace-nowrap';
 
 function MePage() {
   const [progress, setProgress] = useState<ProgressState>(() => getProgress());
@@ -175,18 +175,18 @@ function MePage() {
   const isEmpty = stats.opened === 0;
 
   return (
-    <section className="page-shell pt-[140px] max-w-[1100px]">
-      <header className="mb-[28px]">
-        <div className="eyebrow-muted tracking-[.18em] mb-md">Field · Theory · Your transcript</div>
-        <h1 className="hero-display max-[760px]:text-[36px]">Where you are in the <em>book</em>.</h1>
-        <p className="body-copy text-[15px] max-w-[640px]">
+    <section className="page-shell pt-5xl max-w-page">
+      <header className="mb-2xl">
+        <div className="eyebrow-muted tracking-4 mb-md">Field · Theory · Your transcript</div>
+        <h1 className="hero-display max-md:text-9">Where you are in the <em>book</em>.</h1>
+        <p className="body-copy text-6 max-w-page-sm">
           All progress data lives only in this browser. Open another browser or
           clear site data and you start fresh.
         </p>
       </header>
 
       {isEmpty ? (
-        <div className={`${CARD} rounded-5 p-lg my-[24px] font-1 text-color-5`}>
+        <div className={`${CARD} rounded-5 p-lg my-xl font-1 text-text-dim`}>
           <p>You haven't opened any chapters yet. {' '}
             <Link to="/" className="text-accent no-underline border-b border-dotted border-accent">Pick one from the contents</Link>{' '}
             or {' '}
@@ -196,14 +196,14 @@ function MePage() {
         </div>
       ) : null}
 
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-lg my-[32px]">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-lg my-2xl">
         <Stat label="Opened" value={`${stats.opened}`} sub={`of ${CHAPTERS.length}`} />
         <Stat label="Completed" value={`${stats.completed}`} sub={`of ${CHAPTERS.length}`} />
         <Stat label="Time on book" value={formatDuration(stats.totalTimeMs)} />
         <Stat label="Day streak" value={`${stats.streak}`} sub={stats.streak === 1 ? 'day' : 'days'} />
       </div>
 
-      <section className="my-[40px]">
+      <section className="my-3xl">
         <h2 className={SECTION_TITLE}>Active tracks</h2>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-lg">
           {trackStats.map(t => {
@@ -218,8 +218,8 @@ function MePage() {
                   borderTop: '3px solid var(--me-accent)',
                 } as React.CSSProperties}
               >
-                <div className="font-1 text-[14px] text-color-4 mb-[10px]">{t.name}</div>
-                <div className="w-full h-[6px] bg-color-2 rounded-pill overflow-hidden border border-border-1">
+                <div className="font-1 text-5 text-text mb-md">{t.name}</div>
+                <div className="w-full h-sm bg-color-2 rounded-pill overflow-hidden border border-border-1">
                   <div
                     className="h-full transition-[width] duration-300"
                     style={{ width: `${pct}%`, background: 'var(--me-accent)' }}
@@ -234,12 +234,12 @@ function MePage() {
         </div>
       </section>
 
-      <section className="my-[40px]">
-        <div className="flex items-baseline justify-between gap-md mb-[14px]">
+      <section className="my-3xl">
+        <div className="flex items-baseline justify-between gap-md mb-lg">
           <h2 className={`${SECTION_TITLE} mb-0`}>Reviews due</h2>
           <Link
             to="/review"
-            className="eyebrow-accent text-[11px] tracking-[.08em] no-underline border-b border-solid border-transparent hover:border-accent"
+            className="eyebrow-accent text-2 tracking-3 no-underline border-b border-solid border-transparent hover:border-accent"
           >
             See all reviews
           </Link>
@@ -253,7 +253,7 @@ function MePage() {
             Nothing due right now — {reviewPreview.totalScheduled} review{reviewPreview.totalScheduled === 1 ? '' : 's'} scheduled later.
           </p>
         ) : (
-          <ul className="grid-list gap-[6px]">
+          <ul className="grid-list gap-sm">
             {reviewPreview.list.map((r) => {
               const ch = CHAPTERS.find(c => c.slug === r.slug);
               if (!ch) return null;
@@ -263,11 +263,11 @@ function MePage() {
                 <li key={r.slug}>
                   <Link
                     to="/review"
-                    className={`grid grid-cols-[60px_1fr_auto] gap-md items-center py-md px-md ${CARD} rounded-5 no-underline text-color-4 hover:bg-bg-card-hover hover:border-border-2 max-[700px]:grid-cols-[50px_1fr] max-[700px]:gap-y-[4px]`}
+                    className={`grid grid-cols-[60px_1fr_auto] gap-md items-center py-md px-md ${CARD} rounded-5 no-underline text-text hover:bg-bg-card-hover hover:border-border-2 max-md:grid-cols-[50px_1fr] max-md:gap-y-xs`}
                   >
                     <span className={META}>Ch.{ch.number}</span>
                     <span>{ch.title}</span>
-                    <span className="font-3 text-[11px] text-teal tracking-[.06em] uppercase max-[700px]:col-start-2 max-[700px]:justify-self-start">{label} review</span>
+                    <span className="font-3 text-2 text-teal tracking-2 uppercase max-md:col-start-2 max-md:justify-self-start">{label} review</span>
                   </Link>
                 </li>
               );
@@ -276,20 +276,20 @@ function MePage() {
         )}
       </section>
 
-      <section className="my-[40px]">
-        <div className="flex items-baseline justify-between gap-md mb-[14px]">
+      <section className="my-3xl">
+        <div className="flex items-baseline justify-between gap-md mb-lg">
           <h2 className={`${SECTION_TITLE} mb-0`}>Badges</h2>
-          <span className="font-3 text-[11px] tracking-[.08em] text-color-5">{badgeEarned} of {BADGES.length} earned</span>
+          <span className="font-3 text-2 tracking-3 text-text-dim">{badgeEarned} of {BADGES.length} earned</span>
         </div>
         <BadgeShelf />
       </section>
 
-      <section className="my-[40px]">
+      <section className="my-3xl">
         <h2 className={SECTION_TITLE}>Recent chapters</h2>
         {recent.length === 0 ? (
           <p className="font-1 text-text-muted italic">Nothing opened yet.</p>
         ) : (
-          <ul className="list-none p-0 m-0 flex flex-col gap-[4px]">
+          <ul className="list-none p-0 m-0 flex flex-col gap-xs">
             {recent.map(({ c, p }) => {
               const st = chapterStatus(c.slug, progress);
               const statusClass =
@@ -300,15 +300,15 @@ function MePage() {
                   <Link
                     to="/textbook/$chapterSlug"
                     params={{ chapterSlug: c.slug }}
-                    className={`grid grid-cols-[60px_1fr_auto_auto] gap-lg items-center py-md px-[14px] border border-border-1 bg-color-3 rounded-5 no-underline text-color-4 font-1 text-[14px] transition-colors hover:bg-bg-card-hover max-[700px]:grid-cols-[50px_1fr] max-[700px]:gap-y-[6px]`}
+                    className={`grid grid-cols-[60px_1fr_auto_auto] gap-lg items-center py-md px-lg border border-border-1 bg-color-3 rounded-5 no-underline text-text font-1 text-5 transition-colors hover:bg-bg-card-hover max-md:grid-cols-[50px_1fr] max-md:gap-y-sm`}
                   >
                     <span className={META}>Ch.{c.number}</span>
                     <span>{c.title}</span>
-                    <span className={`${STATUS_PILL} ${statusClass} max-[700px]:col-start-2 max-[700px]:justify-self-start`}>
+                    <span className={`${STATUS_PILL} ${statusClass} max-md:col-start-2 max-md:justify-self-start`}>
                       {st === 'completed' ? '✓ complete' :
                        st === 'opened'    ? '◐ opened'  : '○ none'}
                     </span>
-                    <span className={`font-3 text-[11px] text-text-muted max-[700px]:col-start-2 max-[700px]:justify-self-start`}>{formatDate(p?.lastOpenedAt)}</span>
+                    <span className={`font-3 text-2 text-text-muted max-md:col-start-2 max-md:justify-self-start`}>{formatDate(p?.lastOpenedAt)}</span>
                   </Link>
                 </li>
               );
@@ -317,7 +317,7 @@ function MePage() {
         )}
       </section>
 
-      <section className="my-[40px]">
+      <section className="my-3xl">
         <div className="flex justify-between items-center mb-sm flex-wrap gap-md">
           <h2 className={SECTION_TITLE}>All chapters</h2>
           <div className={META}>
@@ -325,7 +325,7 @@ function MePage() {
             <select
               value={filter}
               onChange={e => setFilter(e.target.value as FilterStatus)}
-              className="bg-color-3 border border-border-2 text-color-4 py-[4px] px-md font-3 text-[11px] rounded-3"
+              className="bg-color-3 border border-border-2 text-text py-sm px-md font-3 text-2 rounded-3"
             >
               <option value="all">all</option>
               <option value="none">not started</option>
@@ -348,7 +348,7 @@ function MePage() {
                   <th
                     key={key}
                     onClick={() => toggleSort(key)}
-                    className="text-left eyebrow-muted text-[10px] py-md px-[14px] border-b border-border bg-color-2 cursor-pointer select-none hover:text-accent"
+                    className="text-left eyebrow-muted text-1 py-md px-lg border-b border-border bg-color-2 cursor-pointer select-none hover:text-accent"
                   >
                     {label}
                   </th>
@@ -367,11 +367,11 @@ function MePage() {
         </div>
       </section>
 
-      <section className={`mt-[60px] p-xl border border-border-1 rounded-6 bg-color-3 text-center`}>
+      <section className={`mt-4xl p-xl border border-border-1 rounded-6 bg-color-3 text-center`}>
         <button
           type="button"
           onClick={handleReset}
-          className="bg-transparent border border-pink text-pink py-md px-[22px] rounded-5 font-3 text-[12px] uppercase tracking-[.12em] cursor-pointer transition-colors hover:bg-pink hover:text-bg"
+          className="bg-transparent border border-pink text-pink py-md px-xl rounded-5 font-3 text-3 uppercase tracking-3 cursor-pointer transition-colors hover:bg-pink hover:text-bg"
         >
           Reset all progress
         </button>
@@ -387,8 +387,8 @@ function Stat({ label, value, sub }: { label: string; value: string; sub?: strin
   return (
     <div className="card-surface rounded-6 p-lg">
       <div className="eyebrow-muted mb-sm">{label}</div>
-      <div className="font-2 text-[42px] font-light text-color-4 leading-none">{value}</div>
-      {sub && <div className="eyebrow-muted mt-[4px]">{sub}</div>}
+      <div className="font-2 text-9 font-light text-text leading-none">{value}</div>
+      {sub && <div className="eyebrow-muted mt-sm">{sub}</div>}
     </div>
   );
 }
@@ -406,20 +406,20 @@ function ChapterRow({
     status === 'opened'    ? 'text-accent border-accent' : '';
   return (
     <tr>
-      <td className="py-md px-[14px] border-b border-border font-3 text-[11px] text-text-muted">{chapter.number}</td>
-      <td className="py-md px-[14px] border-b border-border font-1 text-[13px] [&_a]:text-color-4 [&_a]:no-underline [&_a]:border-b [&_a]:border-dotted [&_a]:border-transparent [&_a:hover]:border-accent [&_a:hover]:text-accent">
+      <td className="py-md px-lg border-b border-border font-3 text-2 text-text-muted">{chapter.number}</td>
+      <td className="py-md px-lg border-b border-border font-1 text-4 [&_a]:text-text [&_a]:no-underline [&_a]:border-b [&_a]:border-dotted [&_a]:border-transparent [&_a:hover]:border-accent [&_a:hover]:text-accent">
         <Link to="/textbook/$chapterSlug" params={{ chapterSlug: chapter.slug }}>
           {chapter.title}
         </Link>
       </td>
-      <td className="py-md px-[14px] border-b border-border">
+      <td className="py-md px-lg border-b border-border">
         <span className={`${STATUS_PILL} ${statusClass}`}>
           {status === 'completed' ? '✓ complete' :
            status === 'opened'    ? '◐ opened'  : '○ none'}
         </span>
       </td>
-      <td className="py-md px-[14px] border-b border-border font-3 text-[11px] text-text-muted">{formatDate(lastOpened || undefined)}</td>
-      <td className="py-md px-[14px] border-b border-border font-3 text-[11px] text-text-muted">{formatDuration(timeMs)}</td>
+      <td className="py-md px-lg border-b border-border font-3 text-2 text-text-muted">{formatDate(lastOpened || undefined)}</td>
+      <td className="py-md px-lg border-b border-border font-3 text-2 text-text-muted">{formatDuration(timeMs)}</td>
     </tr>
   );
 }

@@ -23,11 +23,11 @@ export function Pill({
   'aria-label': ariaLabel,
 }: PillProps) {
   const classes = clsx(
-    'inline-flex items-center gap-[6px] font-3 text-[13px] tracking-[.03em] py-[5px] px-[12px] rounded-pill border border-border-2 bg-color-2 text-color-4 no-underline',
+    'inline-flex items-center gap-sm font-3 text-4 tracking-2 py-sm px-lg rounded-pill border border-border-2 bg-color-2 text-text no-underline',
     variant === 'accent' && 'bg-accent-soft text-accent border-accent-glow',
-    variant === 'teal' && 'bg-teal-soft text-teal border-[rgba(108,197,194,.3)]',
-    variant === 'pink' && 'bg-[rgba(255,59,110,.14)] text-pink border-[rgba(255,59,110,.32)]',
-    variant === 'blue' && 'bg-[rgba(91,174,248,.14)] text-blue border-[rgba(91,174,248,.32)]',
+    variant === 'teal' && 'bg-teal-soft text-teal border-teal/30',
+    variant === 'pink' && 'bg-pink/15 text-pink border-pink/30',
+    variant === 'blue' && 'bg-blue/15 text-blue border-blue/30',
     variant === 'subtle' && 'bg-transparent text-text-muted border-border-1',
     interactive && 'cursor-pointer transition-[background-color,border-color,transform] duration-[120ms] ease-in-out hover:bg-bg-card-hover hover:border-border-2 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_var(--accent-soft)]',
     className,
@@ -35,7 +35,7 @@ export function Pill({
 
   const content = (
     <>
-      {icon !== undefined && <span className="inline-flex text-[14px] leading-none opacity-80">{icon}</span>}
+      {icon !== undefined && <span className="inline-flex text-5 leading-none opacity-80">{icon}</span>}
       <span>{children}</span>
     </>
   );

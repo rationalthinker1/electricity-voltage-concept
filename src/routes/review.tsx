@@ -87,19 +87,19 @@ function ReviewPage() {
   const isEmpty = summary.totalScheduled === 0;
 
   return (
-    <section className="max-w-[940px] mx-auto pt-[48px] px-xl pb-[96px]">
-      <header className="mb-[36px]">
-        <div className="eyebrow-muted mb-[10px]">Field · Theory · Spaced repetition</div>
-        <h1 className="font-2 font-normal text-[clamp(36px,6vw,56px)] leading-[1.05] mb-[14px] text-color-4">
+    <section className="max-w-page mx-auto pt-3xl px-xl pb-4xl">
+      <header className="mb-2xl">
+        <div className="eyebrow-muted mb-md">Field · Theory · Spaced repetition</div>
+        <h1 className="font-2 font-normal text-[clamp(36px,6vw,56px)] leading-[1.05] mb-lg text-text">
           Reviews <em className="italic text-accent">due</em>.
         </h1>
-        <p className="body-copy max-w-[680px] leading-[1.55] mb-xl">
+        <p className="body-copy max-w-page-sm leading-[1.55] mb-xl">
           The system surfaces quizzes you previously passed on a 1-day, 3-day,
           1-week, 1-month, and 3-month schedule. Pass a review to advance to
           the next interval; miss one and you reset to day 1.
         </p>
 
-        <div className="grid grid-cols-4 gap-[12px] max-[720px]:grid-cols-2">
+        <div className="grid grid-cols-4 gap-md max-md:grid-cols-2">
           <SummaryStat label="Due today" value={summary.dueToday} />
           <SummaryStat label="Due this week" value={summary.dueThisWeek} />
           <SummaryStat label="Total scheduled" value={summary.totalScheduled} />
@@ -111,21 +111,21 @@ function ReviewPage() {
       </header>
 
       {isEmpty ? (
-        <div className="p-xl border border-dashed border-border-strong rounded-6 text-color-5 text-center">
+        <div className="p-xl border border-dashed border-border-strong rounded-6 text-text-dim text-center">
           <p>
             No reviews yet. Pass a chapter quiz to start building your review
             queue. {' '}
-            <Link to="/" className="text-accent no-underline border-b border-accent-soft hover:text-color-4">Browse the contents</Link>
+            <Link to="/" className="text-accent no-underline border-b border-accent-soft hover:text-text">Browse the contents</Link>
             {' '} or {' '}
-            <Link to="/me" className="text-accent no-underline border-b border-accent-soft hover:text-color-4">view your transcript</Link>.
+            <Link to="/me" className="text-accent no-underline border-b border-accent-soft hover:text-text">view your transcript</Link>.
           </p>
         </div>
       ) : null}
 
       {due.length > 0 ? (
-        <section className="mt-[32px]">
-          <h2 className="font-2 font-normal text-[22px] mb-[14px] text-color-4">Due now</h2>
-          <ul className="grid-list gap-[12px] grid-cols-2 max-[720px]:grid-cols-1">
+        <section className="mt-2xl">
+          <h2 className="font-2 font-normal text-8 mb-lg text-text">Due now</h2>
+          <ul className="grid-list gap-md grid-cols-2 max-md:grid-cols-1">
             {due.map((r) => (
               <ReviewCard key={r.slug} review={r} now={now} />
             ))}
@@ -134,9 +134,9 @@ function ReviewPage() {
       ) : null}
 
       {upcoming.length > 0 ? (
-        <section className="mt-[32px]">
-          <h2 className="font-2 font-normal text-[22px] mb-[14px] text-color-4">Upcoming reviews</h2>
-          <ul className="grid-list gap-[12px]">
+        <section className="mt-2xl">
+          <h2 className="font-2 font-normal text-8 mb-lg text-text">Upcoming reviews</h2>
+          <ul className="grid-list gap-md">
             {upcoming.map((r) => (
               <UpcomingRow key={r.slug} review={r} now={now} />
             ))}
@@ -149,9 +149,9 @@ function ReviewPage() {
 
 function SummaryStat({ label, value }: { label: string; value: number | string }) {
   return (
-    <div className="py-[12px] px-[14px] bg-bg-card border border-border-1 rounded-5">
-      <div className="font-2 text-[28px] leading-none text-color-4">{value}</div>
-      <div className="eyebrow-muted tracking-[.08em] mt-[6px]">{label}</div>
+    <div className="py-lg px-lg bg-bg-card border border-border-1 rounded-5">
+      <div className="font-2 text-8 leading-none text-text">{value}</div>
+      <div className="eyebrow-muted tracking-3 mt-sm">{label}</div>
     </div>
   );
 }
@@ -160,27 +160,27 @@ function ReviewCard({ review, now }: { review: ReviewSchedule; now: number }) {
   const chapter = getChapter(review.slug as ChapterSlug);
   if (!chapter) return null;
   return (
-    <li className="py-[18px] px-[18px] pb-[16px] bg-bg-card border border-border-2 rounded-[12px] flex flex-col gap-[8px]">
-      <div className="flex flex-wrap gap-[10px] items-center font-3 text-[11px] tracking-[.06em]">
+    <li className="py-lg px-lg pb-lg bg-bg-card border border-border-2 rounded-[12px] flex flex-col gap-sm">
+      <div className="flex flex-wrap gap-md items-center font-3 text-2 tracking-2">
         <span className="text-accent uppercase">Ch.{chapter.number}</span>
         <span className="text-teal uppercase">{intervalLabel(review.intervalIdx)}</span>
         <span className="text-text-muted ml-auto">{relativeDue(review.nextDueAt, now)}</span>
       </div>
-      <div className="font-2 text-[22px] leading-[1.15] text-color-4">{chapter.title}</div>
+      <div className="font-2 text-8 leading-[1.15] text-text">{chapter.title}</div>
       {chapter.subtitle ? (
-        <div className="text-color-5 text-[14px] leading-[1.45]">{chapter.subtitle}</div>
+        <div className="text-text-dim text-5 leading-[1.45]">{chapter.subtitle}</div>
       ) : null}
-      <div className="flex gap-[10px] mt-[6px]">
+      <div className="flex gap-md mt-sm">
         <a
           href={`/textbook/${chapter.slug}?mode=review`}
-          className="inline-flex items-center py-[8px] px-[14px] bg-accent text-bg rounded-4 font-3 text-[12px] tracking-[.06em] no-underline uppercase hover:brightness-110"
+          className="inline-flex items-center py-md px-lg bg-accent text-bg rounded-4 font-3 text-3 tracking-2 no-underline uppercase hover:brightness-110"
         >
           Start review
         </a>
         <Link
           to="/textbook/$chapterSlug"
           params={{ chapterSlug: chapter.slug }}
-          className="inline-flex items-center py-[8px] px-[14px] bg-transparent text-color-5 border border-border-2 rounded-4 font-3 text-[12px] tracking-[.06em] no-underline uppercase hover:text-color-4 hover:border-color-5"
+          className="inline-flex items-center py-md px-lg bg-transparent text-text-dim border border-border-2 rounded-4 font-3 text-3 tracking-2 no-underline uppercase hover:text-text hover:border-color-5"
         >
           Re-read chapter
         </Link>
@@ -193,17 +193,17 @@ function UpcomingRow({ review, now }: { review: ReviewSchedule; now: number }) {
   const chapter = getChapter(review.slug as ChapterSlug);
   if (!chapter) return null;
   return (
-    <li className="grid items-center gap-[12px] py-[10px] px-[14px] bg-bg-card border border-border-1 rounded-5 grid-cols-[60px_1fr_auto_auto] max-[540px]:grid-cols-[60px_1fr] max-[540px]:gap-y-[4px]">
-      <span className="eyebrow-accent text-[11px] tracking-[.06em]">Ch.{chapter.number}</span>
+    <li className="grid items-center gap-md py-md px-lg bg-bg-card border border-border-1 rounded-5 grid-cols-[60px_1fr_auto_auto] max-xs:grid-cols-[60px_1fr] max-xs:gap-y-xs">
+      <span className="eyebrow-accent text-2 tracking-2">Ch.{chapter.number}</span>
       <Link
         to="/textbook/$chapterSlug"
         params={{ chapterSlug: chapter.slug }}
-        className="text-color-4 text-[15px] no-underline hover:text-accent"
+        className="text-text text-6 no-underline hover:text-accent"
       >
         {chapter.title}
       </Link>
-      <span className="font-3 text-[11px] text-teal tracking-[.06em] max-[540px]:justify-self-start">{intervalLabel(review.intervalIdx)}</span>
-      <span className="font-3 text-[11px] text-text-muted tracking-[.04em] max-[540px]:justify-self-end">{relativeDue(review.nextDueAt, now)}</span>
+      <span className="font-3 text-2 text-teal tracking-2 max-xs:justify-self-start">{intervalLabel(review.intervalIdx)}</span>
+      <span className="font-3 text-2 text-text-muted tracking-2 max-xs:justify-self-end">{relativeDue(review.nextDueAt, now)}</span>
     </li>
   );
 }

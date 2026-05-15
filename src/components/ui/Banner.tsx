@@ -21,21 +21,21 @@ export function Banner({
   return (
     <div
       className={clsx(
-        'flex items-start gap-md py-[12px] px-[14px] rounded-5 border border-border-2 bg-color-2 text-color-4 text-[14.5px] leading-[1.55]',
-        variant === 'info' && 'border-[rgba(91,174,248,.32)] bg-[rgba(91,174,248,.08)] [&_.banner-icon]:text-blue',
+        'flex items-start gap-md py-lg px-lg rounded-5 border border-border-2 bg-color-2 text-text text-5 leading-[1.55]',
+        variant === 'info' && 'border-blue/30 bg-blue/10 [&_.banner-icon]:text-blue',
         variant === 'warn' && 'border-accent-glow bg-accent-soft [&_.banner-icon]:text-accent',
-        variant === 'success' && 'border-[rgba(108,197,194,.3)] bg-teal-soft [&_.banner-icon]:text-teal',
-        variant === 'danger' && 'border-[rgba(255,59,110,.32)] bg-[rgba(255,59,110,.10)] [&_.banner-icon]:text-pink',
+        variant === 'success' && 'border-teal/30 bg-teal-soft [&_.banner-icon]:text-teal',
+        variant === 'danger' && 'border-pink/30 bg-pink/10 [&_.banner-icon]:text-pink',
         className,
       )}
       role={variant === 'danger' || variant === 'warn' ? 'alert' : 'status'}
     >
-      {icon !== undefined && <span className="banner-icon text-[16px] leading-[1.4] shrink-0 mt-[2px]" aria-hidden="true">{icon}</span>}
+      {icon !== undefined && <span className="banner-icon text-6 leading-[1.4] shrink-0 mt-xxs" aria-hidden="true">{icon}</span>}
       <div className="flex-1 min-w-0">{children}</div>
       {onDismiss && (
         <button
           type="button"
-          className="icon-btn border-0 text-[20px] py-0 px-[4px] self-start"
+          className="icon-btn border-0 text-7 py-0 px-sm self-start"
           onClick={onDismiss}
           aria-label="Dismiss"
         >

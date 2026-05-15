@@ -35,7 +35,7 @@
   --grain: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.92 0 0 0 0 0.91 0 0 0 0 0.85 0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/></svg>");
 
   /* Numbered semantic aliases consumed by the recipe layer below and by
-     Tailwind utilities (bg-color-3, text-color-4, border-border-1, font-2,
+     Tailwind utilities (bg-color-3, text-text, border-border-1, font-2,
      rounded-4, px-xl, etc.). var() refs to the named tokens above so
      light-mode overrides flow through automatically. */
   --color-1: var(--bg);
@@ -47,12 +47,73 @@
   --border-1: var(--border);
   --border-2: var(--border-strong);
 
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 0.75rem;
-  --spacing-lg: 1rem;
-  --spacing-xl: 1.5rem;
-  --spacing-xxl: 2.5rem;
+  /* Spacing scale — 10 named steps. Drives every p-*, m-*, gap-*, w-*, h-*
+     utility. Existing xs/sm/md/lg/xl unchanged. xxs adds a 2px step for
+     tight pill paddings; 2xl/3xl/4xl/5xl extend the range for section
+     rhythm and page-level paddings. (Old xxl=2.5rem dropped — unused.) */
+  --spacing-xxs: 0.125rem;   /* 2px   */
+  --spacing-xs:  0.25rem;    /* 4px   */
+  --spacing-sm:  0.5rem;     /* 8px   */
+  --spacing-md:  0.75rem;    /* 12px  */
+  --spacing-lg:  1rem;       /* 16px  */
+  --spacing-xl:  1.5rem;     /* 24px  */
+  --spacing-2xl: 2rem;       /* 32px  */
+  --spacing-3xl: 3rem;       /* 48px  */
+  --spacing-4xl: 5rem;       /* 80px  */
+  --spacing-5xl: 8.125rem;   /* 130px */
+
+  /* Em-relative paragraph rhythm — used inside prose descendant
+     selectors like [&_p]:mb-prose-2. Em (not rem) so spacing scales
+     with the parent's font-size; a body paragraph and a caption
+     paragraph each get rhythm appropriate to their own size. */
+  --spacing-prose-1: 0.9em;  /* tight  — exercise answers     */
+  --spacing-prose-2: 1em;    /* normal — case-study body      */
+  --spacing-prose-3: 1.4em;  /* loose  — chapter / lab prose  */
+
+  /* Width/height-specific tokens — for w-/h- on dimensions outside the
+     xxs..5xl ladder. icon = small control circles (close buttons,
+     dots, badges); panel = sidebars and drawers; page = section
+     max-widths; col = ch-based prose-column widths. */
+  --spacing-icon:     22px;   /* default control circle      */
+  --spacing-icon-lg:  36px;   /* large badge / circle        */
+  --spacing-panel-sm: 220px;  /* dropdown / small popover    */
+  --spacing-panel:    320px;  /* sidebar / drawer            */
+  --spacing-page-sm:  720px;  /* narrow page column          */
+  --spacing-page:    1100px;  /* default page max-width      */
+  --spacing-page-lg: 1300px;  /* wide page max-width         */
+  --spacing-col-sm:   36ch;   /* heading column              */
+  --spacing-col:      56ch;   /* body / case-study column    */
+  --spacing-col-lg:   70ch;   /* lab / chapter prose column  */
+
+  /* Type-size scale — 10 steps. Drives text-1 .. text-10. text-1 is the
+     tiniest eyebrow; text-10 is the page hero. */
+  --text-1:  0.625rem;   /* 10px */
+  --text-2:  0.6875rem;  /* 11px */
+  --text-3:  0.75rem;    /* 12px */
+  --text-4:  0.8125rem;  /* 13px */
+  --text-5:  0.875rem;   /* 14px */
+  --text-6:  0.9375rem;  /* 15px */
+  --text-7:  1.125rem;   /* 18px */
+  --text-8:  1.5rem;     /* 24px */
+  --text-9:  2.25rem;    /* 36px */
+  --text-10: 3.25rem;    /* 52px */
+
+  /* Letter-spacing scale — 4 named steps + Tailwind's tracking-normal.
+     tracking-1 tightens display heads; tracking-3 is the standard
+     eyebrow; tracking-4 the widest. */
+  --tracking-1: -0.025em;
+  --tracking-2:  0.05em;
+  --tracking-3:  0.12em;
+  --tracking-4:  0.22em;
+
+  /* Breakpoint scale — 5 widths used by max-* / min-* variants. Numbers
+     chosen to absorb the project's existing arbitrary breakpoints
+     (540/600/700-760/900/1100). */
+  --breakpoint-xs: 540px;
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 760px;
+  --breakpoint-lg: 900px;
+  --breakpoint-xl: 1100px;
 
   --radius-1: 2px;
   --radius-2: 3px;
@@ -122,7 +183,7 @@
   --color-border-strong: var(--border-strong);
   --color-canvas-bg: var(--canvas-bg);
 
-  /* Numbered colour aliases (bg-color-3, text-color-4, border-color-5)
+  /* Numbered colour aliases (bg-color-3, text-text, border-color-5)
      and numbered border aliases (border-border-1, border-border-2).
      Do NOT move these into `@theme inline` — that would freeze the
      dark-mode values into the generated utilities. */
@@ -146,12 +207,54 @@
    py-*, gap-*, m-*, w-*, h-*; radius-* drives rounded-*; font-* drives
    font-*. */
 @theme inline {
-  --spacing-xs: var(--spacing-xs);
-  --spacing-sm: var(--spacing-sm);
-  --spacing-md: var(--spacing-md);
-  --spacing-lg: var(--spacing-lg);
-  --spacing-xl: var(--spacing-xl);
-  --spacing-xxl: var(--spacing-xxl);
+  --spacing-xxs: var(--spacing-xxs);
+  --spacing-xs:  var(--spacing-xs);
+  --spacing-sm:  var(--spacing-sm);
+  --spacing-md:  var(--spacing-md);
+  --spacing-lg:  var(--spacing-lg);
+  --spacing-xl:  var(--spacing-xl);
+  --spacing-2xl: var(--spacing-2xl);
+  --spacing-3xl: var(--spacing-3xl);
+  --spacing-4xl: var(--spacing-4xl);
+  --spacing-5xl: var(--spacing-5xl);
+  --spacing-prose-1: var(--spacing-prose-1);
+  --spacing-prose-2: var(--spacing-prose-2);
+  --spacing-prose-3: var(--spacing-prose-3);
+  --spacing-icon:     var(--spacing-icon);
+  --spacing-icon-lg:  var(--spacing-icon-lg);
+  --spacing-panel-sm: var(--spacing-panel-sm);
+  --spacing-panel:    var(--spacing-panel);
+  --spacing-page-sm:  var(--spacing-page-sm);
+  --spacing-page:     var(--spacing-page);
+  --spacing-page-lg:  var(--spacing-page-lg);
+  --spacing-col-sm:   var(--spacing-col-sm);
+  --spacing-col:      var(--spacing-col);
+  --spacing-col-lg:   var(--spacing-col-lg);
+
+  --text-1:  var(--text-1);
+  --text-2:  var(--text-2);
+  --text-3:  var(--text-3);
+  --text-4:  var(--text-4);
+  --text-5:  var(--text-5);
+  --text-6:  var(--text-6);
+  --text-7:  var(--text-7);
+  --text-8:  var(--text-8);
+  --text-9:  var(--text-9);
+  --text-10: var(--text-10);
+
+  --tracking-1: var(--tracking-1);
+  --tracking-2: var(--tracking-2);
+  --tracking-3: var(--tracking-3);
+  --tracking-4: var(--tracking-4);
+
+  /* Breakpoints need literal pixel values — Tailwind v4 reads these at
+     compile time to generate variant matchers, so `var()` indirection
+     doesn't work here. Keep in sync with the :root declarations above. */
+  --breakpoint-xs: 540px;
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 760px;
+  --breakpoint-lg: 900px;
+  --breakpoint-xl: 1100px;
 
   --radius-1: var(--radius-1);
   --radius-2: var(--radius-2);
@@ -202,16 +305,16 @@ body::before {
 
 @layer components {
   .eyebrow-muted {
-    @apply font-3 text-[11px] tracking-[.12em] uppercase text-text-muted;
+    @apply font-3 text-2 tracking-3 uppercase text-text-muted;
   }
   .title-display {
-    @apply font-2 italic m-0 text-color-4;
+    @apply font-2 italic m-0 text-text;
   }
   .body-copy {
-    @apply font-1 text-[16px] leading-[1.6] text-color-5;
+    @apply font-1 text-6 leading-[1.6] text-text-dim;
   }
   .eyebrow-rule {
-    @apply font-3 text-[11px] tracking-[.25em] uppercase mb-[18px] flex items-center gap-[14px];
+    @apply font-3 text-2 tracking-4 uppercase mb-lg flex items-center gap-md;
     color: var(--accent);
   }
   .eyebrow-rule::before {
@@ -225,10 +328,10 @@ body::before {
   }
 
   /* Eyebrow text — same shape as .eyebrow-muted but on the dim text
-     colour (text-color-5). Size and tracking vary by usage so they
+     colour (text-text-dim). Size and tracking vary by usage so they
      stay inline at the call site. */
   .eyebrow-dim {
-    @apply font-3 uppercase text-color-5;
+    @apply font-3 uppercase text-text-dim;
   }
   /* Eyebrow text — brand-accent variant. Pair with text-[…] /
      tracking-[…] / mb-[…] at the call site. */
@@ -239,7 +342,7 @@ body::before {
      hover. Same shape as .eyebrow-muted at 12px. Repeats across
      capstones, map, and tracks. */
   .eyebrow-muted-link {
-    @apply font-3 text-[12px] tracking-[.12em] uppercase text-text-muted
+    @apply font-3 text-3 tracking-3 uppercase text-text-muted
            no-underline hover:text-accent;
   }
   /* Stripped <ul>/<ol> rendered as a CSS grid. Consumers add
@@ -251,8 +354,8 @@ body::before {
      the focus-visible accent ring shared across the UI kit; border,
      padding, and size stay on the call site. */
   .icon-btn {
-    @apply appearance-none bg-transparent cursor-pointer leading-none text-color-5
-           hover:text-color-4
+    @apply appearance-none bg-transparent cursor-pointer leading-none text-text-dim
+           hover:text-text
            focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent
            focus-visible:outline-offset-2
            focus-visible:shadow-[0_0_0_4px_var(--accent-soft)];
@@ -261,15 +364,15 @@ body::before {
      uses this 40/80 desktop and 18/60 mobile rhythm. Top padding and
      max-w vary so they stay inline. */
   .page-shell {
-    @apply mx-auto pb-[80px] px-[40px]
-           max-[760px]:pt-[120px] max-[760px]:pb-[60px] max-[760px]:px-[18px];
+    @apply mx-auto pb-4xl px-3xl
+           max-md:pt-5xl max-md:pb-4xl max-md:px-lg;
   }
   /* Hero display title — Fraunces 52px with em accent. Same shape as
      .title-display but at the route-level "<title>." headers. Pair
      with a max-[…]:text-[…] responsive shrink. */
   .hero-display {
-    @apply font-2 italic font-light text-color-4 text-[52px] leading-[1.05] tracking-[-.02em]
-           mt-0 mx-0 mb-[14px]
+    @apply font-2 italic font-light text-text text-10 leading-[1.05] tracking-1
+           mt-0 mx-0 mb-lg
            [&_em]:italic [&_em]:text-accent [&_em]:font-normal;
   }
 
@@ -279,7 +382,7 @@ body::before {
      one place (ChapterShell) but extracted because the inline class
      string is too long to read on the element. */
   .chapter-narrative {
-    @apply mx-auto text-[17.5px] leading-[1.72] text-text-dim mt-[25px];
+    @apply mx-auto text-6 leading-[1.72] text-text-dim mt-xl;
   }
   .chapter-narrative > p { margin-bottom: 1.4em; }
   .chapter-narrative > p:first-of-type::first-letter {

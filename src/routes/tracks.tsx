@@ -84,12 +84,12 @@ function TrackCard({ track, chapters, progress }: TrackCardProps) {
       } as React.CSSProperties}
     >
       <header className="mb-md">
-        <div className="title-display text-[24px] mb-[6px]">{meta.name}</div>
-        <p className="body-copy text-[14px] leading-[1.5] m-0">{meta.description}</p>
+        <div className="title-display text-8 mb-sm">{meta.name}</div>
+        <p className="body-copy text-5 leading-[1.5] m-0">{meta.description}</p>
       </header>
 
-      <div className="mb-[18px]">
-        <div className="w-full h-[6px] bg-color-2 rounded-pill overflow-hidden border border-border-1">
+      <div className="mb-lg">
+        <div className="w-full h-sm bg-color-2 rounded-pill overflow-hidden border border-border-1">
           <div
             className="h-full transition-[width] duration-300 ease-in-out bg-[var(--path-accent)]"
             style={{ width: `${pct}%` }}
@@ -104,19 +104,19 @@ function TrackCard({ track, chapters, progress }: TrackCardProps) {
         <Link
           to="/textbook/$chapterSlug"
           params={{ chapterSlug: resumeChapter.slug }}
-          className="flex flex-col gap-[4px] py-md px-md mb-[18px] bg-color-2 border border-border-2 border-l-[3px] border-l-[var(--path-accent)] rounded-5 no-underline font-3 text-[12px] text-color-4 tracking-[.12em] uppercase transition-[background-color,border-color] duration-150 ease-in-out hover:bg-bg-card-hover hover:border-[var(--path-accent)]"
+          className="flex flex-col gap-xs py-md px-md mb-lg bg-color-2 border border-border-2 border-l-[3px] border-l-[var(--path-accent)] rounded-5 no-underline font-3 text-3 text-text tracking-3 uppercase transition-[background-color,border-color] duration-150 ease-in-out hover:bg-bg-card-hover hover:border-[var(--path-accent)]"
         >
           {anyStarted ? 'Resume track →' : 'Start track →'}
-          <span className="font-1 text-[13px] text-color-5 normal-case tracking-normal">
+          <span className="font-1 text-4 text-text-dim normal-case tracking-normal">
             Ch.{resumeChapter.number} · {resumeChapter.title}
           </span>
         </Link>
       )}
 
       {total === 0 ? (
-        <p className="font-1 text-[14px] text-text-muted italic">No chapters are assigned to this track yet.</p>
+        <p className="font-1 text-5 text-text-muted italic">No chapters are assigned to this track yet.</p>
       ) : (
-        <ol className="list-none p-0 m-0 flex flex-col gap-[2px]">
+        <ol className="list-none p-0 m-0 flex flex-col gap-xs">
           {ordered.map(c => {
             const status = statusOf(c.slug, progress);
             const icon =
@@ -133,12 +133,12 @@ function TrackCard({ track, chapters, progress }: TrackCardProps) {
                 <Link
                   to="/textbook/$chapterSlug"
                   params={{ chapterSlug: c.slug }}
-                  className="grid grid-cols-[24px_60px_1fr_auto] gap-[10px] items-center py-sm px-md rounded-4 no-underline text-color-5 font-1 text-[14px] transition-[background-color,color] duration-[120ms] ease-in-out hover:bg-color-2 hover:text-color-4 max-[700px]:grid-cols-[24px_50px_1fr_auto] max-[700px]:gap-[8px]"
+                  className="grid grid-cols-[24px_60px_1fr_auto] gap-md items-center py-sm px-md rounded-4 no-underline text-text-dim font-1 text-5 transition-[background-color,color] duration-[120ms] ease-in-out hover:bg-color-2 hover:text-text max-md:grid-cols-[24px_50px_1fr_auto] max-md:gap-sm"
                 >
-                  <span className="font-3 text-[14px] text-center" style={{ color: statusColor }} aria-hidden="true">{icon}</span>
+                  <span className="font-3 text-5 text-center" style={{ color: statusColor }} aria-hidden="true">{icon}</span>
                   <span className="eyebrow-muted">Ch.{c.number}</span>
                   <span style={{ color: titleColor }}>{c.title}</span>
-                  <span className="font-3 text-[10px] text-text-muted tracking-[.08em]">
+                  <span className="font-3 text-1 text-text-muted tracking-3">
                     {c.timeToRead ? `${c.timeToRead} min` : '—'}
                   </span>
                 </Link>
@@ -173,13 +173,13 @@ function TracksPage() {
   const anyTracksPopulated = trackOrder.some(t => chaptersByTrack[t].length > 0);
 
   return (
-    <section className="pt-[140px] pb-[80px] px-[40px] max-w-[1200px] mx-auto max-[700px]:pt-[120px] max-[700px]:pb-[60px] max-[700px]:px-[18px]">
-      <header className="mb-[28px]">
-        <div className="eyebrow-muted tracking-[.18em] mb-sm">Field · Theory · Tracks</div>
-        <h1 className="title-display font-light text-[52px] leading-[1.05] tracking-[-.02em] mb-[14px] max-[700px]:text-[36px]">
+    <section className="pt-5xl pb-4xl px-3xl max-w-page mx-auto max-md:pt-5xl max-md:pb-4xl max-md:px-lg">
+      <header className="mb-2xl">
+        <div className="eyebrow-muted tracking-4 mb-sm">Field · Theory · Tracks</div>
+        <h1 className="title-display font-light text-10 leading-[1.05] tracking-1 mb-lg max-md:text-9">
           Three <em className="italic text-accent font-normal">paths</em> through the book.
         </h1>
-        <p className="body-copy max-w-[680px]">
+        <p className="body-copy max-w-page-sm">
           Each track is a curated subset of the textbook, ordered so prerequisites
           come first. Pick the one that matches what you want to be able to do.
           Your progress is saved locally in this browser.
@@ -199,7 +199,7 @@ function TracksPage() {
         ))}
       </div>
 
-      <div className="flex justify-between mt-[36px] pt-[20px] border-t border-border">
+      <div className="flex justify-between mt-2xl pt-lg border-t border-border">
         <Link to="/map" className="eyebrow-muted-link">← Course map</Link>
         <Link to="/me" className="eyebrow-muted-link">Your progress →</Link>
       </div>

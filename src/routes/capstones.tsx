@@ -10,13 +10,13 @@ export const Route = createFileRoute('/capstones')({
 
 function CapstonesIndex() {
   return (
-    <section className="page-shell pt-[140px] max-w-[1200px]">
-      <header className="mb-[32px]">
-        <div className="eyebrow-muted tracking-[.18em] mb-[12px]">Field · Theory · Capstones</div>
-        <h1 className="hero-display max-[760px]:text-[34px]">
+    <section className="page-shell pt-5xl max-w-page">
+      <header className="mb-2xl">
+        <div className="eyebrow-muted tracking-4 mb-lg">Field · Theory · Capstones</div>
+        <h1 className="hero-display max-md:text-9">
           Three <em>integration</em> projects.
         </h1>
-        <p className="body-copy max-w-[720px]">
+        <p className="body-copy max-w-page-sm">
           The textbook chapters teach concepts one at a time. The
           capstones force you to integrate four to eight of them at
           once: design a real wall-wart, follow your electric bill back
@@ -27,7 +27,7 @@ function CapstonesIndex() {
         </p>
       </header>
 
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-[22px] mt-[28px]">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-xl mt-2xl">
         {CAPSTONES.map(cap => (
           <Link
             key={cap.id}
@@ -36,10 +36,10 @@ function CapstonesIndex() {
             className="no-underline text-inherit block transition-transform duration-150 ease-out hover:-translate-y-[2px]"
           >
             <Card variant="elevated" accent="accent" className="h-full">
-              <div className="eyebrow-accent text-[11px] tracking-[.14em] mb-[10px]">Capstone {cap.number}</div>
-              <h2 className="title-display text-[26px] leading-[1.18] mb-[8px]">{cap.title}</h2>
-              <p className="body-copy text-[14px] leading-[1.5] m-0 mb-[16px]">{cap.subtitle}</p>
-              <div className="flex flex-wrap gap-[8px] mb-[16px]">
+              <div className="eyebrow-accent text-2 tracking-3 mb-md">Capstone {cap.number}</div>
+              <h2 className="title-display text-8 leading-[1.18] mb-md">{cap.title}</h2>
+              <p className="body-copy text-5 leading-[1.5] m-0 mb-lg">{cap.subtitle}</p>
+              <div className="flex flex-wrap gap-sm mb-lg">
                 <Badge variant="subtle" size="sm">
                   {cap.requiredChapters.length} chapters
                 </Badge>
@@ -50,7 +50,7 @@ function CapstonesIndex() {
                   ≈ {cap.estimatedMinutes} min
                 </Badge>
               </div>
-              <div className="eyebrow-accent text-[12px] tracking-[.14em]">
+              <div className="eyebrow-accent text-3 tracking-3">
                 Start the build →
               </div>
             </Card>
@@ -58,7 +58,7 @@ function CapstonesIndex() {
         ))}
       </div>
 
-      <div className="flex justify-between mt-[40px] pt-[20px] border-t border-border">
+      <div className="flex justify-between mt-3xl pt-lg border-t border-border">
         <Link to="/tracks" className="eyebrow-muted-link">← Tracks</Link>
         <Link to="/me" className="eyebrow-muted-link">Progress →</Link>
       </div>

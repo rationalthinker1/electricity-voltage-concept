@@ -87,24 +87,24 @@ function CapstonePage() {
   })();
 
   return (
-    <article className="page-shell pt-[130px] max-w-[920px]">
-      <header className="mb-[48px]">
-        <div className="eyebrow-accent text-[11px] tracking-[.18em] mb-[14px]">Capstone {capstone.number} · Integration project</div>
-        <h1 className="title-display font-light text-[48px] leading-[1.08] tracking-[-.02em] mb-[8px] max-[760px]:text-[34px]">{capstone.title}</h1>
-        <p className="title-display text-[20px] text-color-5 mb-[20px]"><em>{capstone.subtitle}</em></p>
+    <article className="page-shell pt-5xl max-w-page">
+      <header className="mb-3xl">
+        <div className="eyebrow-accent text-2 tracking-4 mb-lg">Capstone {capstone.number} · Integration project</div>
+        <h1 className="title-display font-light text-10 leading-[1.08] tracking-1 mb-md max-md:text-9">{capstone.title}</h1>
+        <p className="title-display text-7 text-text-dim mb-lg"><em>{capstone.subtitle}</em></p>
 
-        <div className="body-copy leading-[1.65] text-color-4 mb-[24px] [&_p]:m-0 [&_p]:mb-[14px]">{capstone.intro}</div>
+        <div className="body-copy leading-[1.65] text-text mb-xl [&_p]:m-0 [&_p]:mb-lg">{capstone.intro}</div>
 
-        <div className="flex flex-wrap gap-[8px] my-[18px]">
+        <div className="flex flex-wrap gap-sm my-lg">
           <Badge variant="accent">≈ {capstone.estimatedMinutes} min</Badge>
           <Badge variant="subtle">{capstone.steps.length} steps</Badge>
           <Badge variant="subtle">{capstone.requiredChapters.length} chapters</Badge>
           <Badge variant="teal">{completedCount}/{totalSteps} done · {pct}%</Badge>
         </div>
 
-        <div className="mt-[18px] py-[14px] px-[16px] card-surface bg-color-2 rounded-6">
-          <div className="eyebrow-muted text-[10px] tracking-[.14em] mb-[8px]">Built on:</div>
-          <div className="flex flex-wrap gap-[6px]">
+        <div className="mt-lg py-lg px-lg card-surface bg-color-2 rounded-6">
+          <div className="eyebrow-muted text-1 tracking-3 mb-md">Built on:</div>
+          <div className="flex flex-wrap gap-sm">
             {capstone.requiredChapters.map(slug => {
               const ch = CHAPTERS.find(c => c.slug === slug);
               if (!ch) return null;
@@ -113,7 +113,7 @@ function CapstonePage() {
                   key={slug}
                   to="/textbook/$chapterSlug"
                   params={{ chapterSlug: slug }}
-                  className="inline-block py-[4px] px-[10px] bg-color-3 border border-border-2 rounded-pill font-3 text-[11px] text-color-5 no-underline tracking-[.04em] transition-colors duration-[120ms] ease-out hover:text-accent hover:border-accent"
+                  className="inline-block py-sm px-md bg-color-3 border border-border-2 rounded-pill font-3 text-2 text-text-dim no-underline tracking-2 transition-colors duration-[120ms] ease-out hover:text-accent hover:border-accent"
                 >
                   Ch.{ch.number} · {ch.title}
                 </Link>
@@ -123,13 +123,13 @@ function CapstonePage() {
         </div>
       </header>
 
-      <section className="mb-[40px]">
-        <div className="flex items-baseline justify-between mb-[18px]">
-          <h2 className="title-display font-light text-[32px]">Walkthrough</h2>
+      <section className="mb-3xl">
+        <div className="flex items-baseline justify-between mb-lg">
+          <h2 className="title-display font-light text-9">Walkthrough</h2>
           {completedCount > 0 && (
             <button
               type="button"
-              className="bg-transparent border border-border-2 text-text-muted font-3 text-[11px] uppercase tracking-[.12em] py-[6px] px-[12px] rounded-4 cursor-pointer transition-colors duration-[120ms] ease-out hover:text-accent hover:border-accent"
+              className="bg-transparent border border-border-2 text-text-muted font-3 text-2 uppercase tracking-3 py-sm px-lg rounded-4 cursor-pointer transition-colors duration-[120ms] ease-out hover:text-accent hover:border-accent"
               onClick={resetProgress}
               aria-label="Reset capstone progress"
             >
@@ -138,7 +138,7 @@ function CapstonePage() {
           )}
         </div>
 
-        <ol className="list-none p-0 m-0 flex flex-col gap-[20px]">
+        <ol className="list-none p-0 m-0 flex flex-col gap-lg">
           {capstone.steps.map((step, idx) => (
             <StepCard
               key={step.id}
@@ -151,57 +151,57 @@ function CapstonePage() {
         </ol>
       </section>
 
-      <section className="my-[40px]">
+      <section className="my-3xl">
         <Banner variant="info">
-          <div className="flex items-baseline gap-[12px] mb-[10px]">
-            <span className="font-3 text-[10px] text-blue uppercase tracking-[.14em] py-[3px] px-[8px] border border-blue rounded-3">Stretch</span>
-            <h3 className="title-display font-light text-[22px] leading-[1.25]">{capstone.stretch.title}</h3>
+          <div className="flex items-baseline gap-md mb-md">
+            <span className="font-3 text-1 text-blue uppercase tracking-3 py-xxs px-md border border-blue rounded-3">Stretch</span>
+            <h3 className="title-display font-light text-8 leading-[1.25]">{capstone.stretch.title}</h3>
           </div>
-          <div className="body-copy text-[15px] leading-[1.65] text-color-4">
-            <div className="[&_p]:m-0 [&_p]:mb-[12px] [&_ul]:my-[8px] [&_ul]:mb-[12px] [&_ul]:pl-[22px] [&_ol]:my-[8px] [&_ol]:mb-[12px] [&_ol]:pl-[22px]">{capstone.stretch.problem}</div>
-            <details className="mt-[12px] [&_summary::-webkit-details-marker]:hidden">
-              <summary className="cursor-pointer font-3 text-[12px] text-blue uppercase tracking-[.14em] py-[8px] list-none hover:text-accent">Show one approach →</summary>
-              <div className="mt-[10px] py-[14px] px-[16px] bg-color-3 rounded-3 [&_p]:m-0 [&_p]:mb-[12px] [&_ul]:my-[8px] [&_ul]:mb-[12px] [&_ul]:pl-[22px] [&_ol]:my-[8px] [&_ol]:mb-[12px] [&_ol]:pl-[22px]">{capstone.stretch.solution}</div>
+          <div className="body-copy text-6 leading-[1.65] text-text">
+            <div className="[&_p]:m-0 [&_p]:mb-lg [&_ul]:my-md [&_ul]:mb-lg [&_ul]:pl-xl [&_ol]:my-md [&_ol]:mb-lg [&_ol]:pl-xl">{capstone.stretch.problem}</div>
+            <details className="mt-lg [&_summary::-webkit-details-marker]:hidden">
+              <summary className="cursor-pointer font-3 text-3 text-blue uppercase tracking-3 py-md list-none hover:text-accent">Show one approach →</summary>
+              <div className="mt-md py-lg px-lg bg-color-3 rounded-3 [&_p]:m-0 [&_p]:mb-lg [&_ul]:my-md [&_ul]:mb-lg [&_ul]:pl-xl [&_ol]:my-md [&_ol]:mb-lg [&_ol]:pl-xl">{capstone.stretch.solution}</div>
             </details>
           </div>
         </Banner>
       </section>
 
-      <section className="my-[40px] mb-[24px]">
+      <section className="my-3xl mb-xl">
         <SourcesList ids={capstone.sources} />
       </section>
 
-      <nav className="grid grid-cols-2 gap-[18px] mt-[30px] pt-[22px] border-t border-border max-[760px]:grid-cols-1">
+      <nav className="grid grid-cols-2 gap-lg mt-2xl pt-xl border-t border-border max-md:grid-cols-1">
         {neighbors.prev ? (
           <Link
             to="/capstone/$id"
             params={{ id: neighbors.prev.id }}
-            className="flex flex-col gap-[4px] py-[14px] px-[16px] card-surface bg-color-2 no-underline transition-colors duration-[120ms] ease-out hover:border-accent hover:bg-color-3"
+            className="flex flex-col gap-xs py-lg px-lg card-surface bg-color-2 no-underline transition-colors duration-[120ms] ease-out hover:border-accent hover:bg-color-3"
           >
-            <span className="eyebrow-muted tracking-[.14em]">← Previous</span>
-            <span className="font-1 text-[14px] text-color-4">
+            <span className="eyebrow-muted tracking-3">← Previous</span>
+            <span className="font-1 text-5 text-text">
               Capstone {neighbors.prev.number} · {neighbors.prev.title}
             </span>
           </Link>
         ) : (
-          <Link to="/capstones" className="flex flex-col gap-[4px] py-[14px] px-[16px] card-surface bg-color-2 no-underline transition-colors duration-[120ms] ease-out hover:border-accent hover:bg-color-3">
-            <span className="eyebrow-muted tracking-[.14em]">← All capstones</span>
+          <Link to="/capstones" className="flex flex-col gap-xs py-lg px-lg card-surface bg-color-2 no-underline transition-colors duration-[120ms] ease-out hover:border-accent hover:bg-color-3">
+            <span className="eyebrow-muted tracking-3">← All capstones</span>
           </Link>
         )}
         {neighbors.next ? (
           <Link
             to="/capstone/$id"
             params={{ id: neighbors.next.id }}
-            className="flex flex-col gap-[4px] py-[14px] px-[16px] card-surface bg-color-2 no-underline transition-colors duration-[120ms] ease-out hover:border-accent hover:bg-color-3 text-right max-[760px]:text-left"
+            className="flex flex-col gap-xs py-lg px-lg card-surface bg-color-2 no-underline transition-colors duration-[120ms] ease-out hover:border-accent hover:bg-color-3 text-right max-md:text-left"
           >
-            <span className="eyebrow-muted tracking-[.14em]">Next →</span>
-            <span className="font-1 text-[14px] text-color-4">
+            <span className="eyebrow-muted tracking-3">Next →</span>
+            <span className="font-1 text-5 text-text">
               Capstone {neighbors.next.number} · {neighbors.next.title}
             </span>
           </Link>
         ) : (
-          <Link to="/me" className="flex flex-col gap-[4px] py-[14px] px-[16px] card-surface bg-color-2 no-underline transition-colors duration-[120ms] ease-out hover:border-accent hover:bg-color-3 text-right max-[760px]:text-left">
-            <span className="eyebrow-muted tracking-[.14em]">Progress →</span>
+          <Link to="/me" className="flex flex-col gap-xs py-lg px-lg card-surface bg-color-2 no-underline transition-colors duration-[120ms] ease-out hover:border-accent hover:bg-color-3 text-right max-md:text-left">
+            <span className="eyebrow-muted tracking-3">Progress →</span>
           </Link>
         )}
       </nav>
@@ -224,39 +224,39 @@ function StepCard({ step, index, done, onToggleDone }: StepCardProps) {
         variant="default"
         className={done ? '!border-teal' : undefined}
       >
-        <div className="grid grid-cols-[auto_1fr_auto] gap-[14px] items-baseline mb-[12px] pb-[10px] border-b border-border max-[760px]:grid-cols-1 max-[760px]:gap-[6px]">
-          <div className="eyebrow-muted tracking-[.14em]">Step {index}</div>
-          <h3 className="title-display text-[24px] font-light leading-[1.2]">{step.title}</h3>
+        <div className="grid grid-cols-[auto_1fr_auto] gap-md items-baseline mb-lg pb-md border-b border-border max-md:grid-cols-1 max-md:gap-sm">
+          <div className="eyebrow-muted tracking-3">Step {index}</div>
+          <h3 className="title-display text-8 font-light leading-[1.2]">{step.title}</h3>
           <label
-            className={`inline-flex items-center gap-[6px] font-3 text-[11px] uppercase tracking-[.12em] cursor-pointer select-none max-[760px]:justify-self-start ${done ? 'text-teal' : 'text-text-muted'}`}
+            className={`inline-flex items-center gap-sm font-3 text-2 uppercase tracking-3 cursor-pointer select-none max-md:justify-self-start ${done ? 'text-teal' : 'text-text-muted'}`}
           >
             <input
               type="checkbox"
               checked={done}
               onChange={onToggleDone}
               aria-label={`Mark step ${index} as done`}
-              className="w-[14px] h-[14px] cursor-pointer accent-teal"
+              className="w-lg h-lg cursor-pointer accent-teal"
             />
             <span>Done</span>
           </label>
         </div>
-        <div className="body-copy text-[15px] leading-[1.65] text-color-4 [&_p]:m-0 [&_p]:mb-[12px] [&_ul]:my-[8px] [&_ul]:mb-[12px] [&_ul]:pl-[22px] [&_ol]:my-[8px] [&_ol]:mb-[12px] [&_ol]:pl-[22px] [&_li]:my-[4px]">{step.problem}</div>
+        <div className="body-copy text-6 leading-[1.65] text-text [&_p]:m-0 [&_p]:mb-lg [&_ul]:my-md [&_ul]:mb-lg [&_ul]:pl-xl [&_ol]:my-md [&_ol]:mb-lg [&_ol]:pl-xl [&_li]:my-sm">{step.problem}</div>
         {step.hint && !showSolution && (
-          <div className="my-[14px] py-[10px] px-[14px] bg-color-2 border-l-[3px] border-teal rounded-3 font-1 text-[14px] text-color-5 flex gap-[10px] items-baseline">
-            <span className="font-3 text-[10px] text-teal uppercase tracking-[.14em]">Hint</span>
+          <div className="my-lg py-md px-lg bg-color-2 border-l-[3px] border-teal rounded-3 font-1 text-5 text-text-dim flex gap-md items-baseline">
+            <span className="font-3 text-1 text-teal uppercase tracking-3">Hint</span>
             <span>{step.hint}</span>
           </div>
         )}
         <button
           type="button"
-          className="mt-[12px] bg-transparent border border-accent text-accent font-3 text-[12px] uppercase tracking-[.14em] py-[8px] px-[14px] rounded-4 cursor-pointer transition-colors duration-[120ms] ease-out hover:bg-accent-soft"
+          className="mt-lg bg-transparent border border-accent text-accent font-3 text-3 uppercase tracking-3 py-md px-lg rounded-4 cursor-pointer transition-colors duration-[120ms] ease-out hover:bg-accent-soft"
           onClick={() => setShowSolution(s => !s)}
           aria-expanded={showSolution}
         >
           {showSolution ? 'Hide solution ↑' : 'Show solution →'}
         </button>
         {showSolution && (
-          <div className="mt-[16px] py-[16px] px-[18px] bg-color-2 border-l-[3px] border-accent rounded-3 body-copy text-[15px] leading-[1.65] text-color-4 [&_p]:m-0 [&_p]:mb-[12px] [&_ul]:my-[8px] [&_ul]:mb-[12px] [&_ul]:pl-[22px] [&_ol]:my-[8px] [&_ol]:mb-[12px] [&_ol]:pl-[22px] [&_li]:my-[4px]">{step.solution}</div>
+          <div className="mt-lg py-lg px-lg bg-color-2 border-l-[3px] border-accent rounded-3 body-copy text-6 leading-[1.65] text-text [&_p]:m-0 [&_p]:mb-lg [&_ul]:my-md [&_ul]:mb-lg [&_ul]:pl-xl [&_ol]:my-md [&_ol]:mb-lg [&_ol]:pl-xl [&_li]:my-sm">{step.solution}</div>
         )}
       </Card>
     </li>
