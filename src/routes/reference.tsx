@@ -2,24 +2,6 @@ import { Link, createFileRoute } from '@tanstack/react-router';
 
 import { CHAPTER_META, MANIFEST, type ChapterId } from '@/labs/data/manifest';
 
-const CHAPTER_SECTION = 'mb-[70px] scroll-mt-[80px]';
-const CHAPTER_HEAD =
-  'flex items-baseline justify-between mb-[28px] pb-[22px] border-b border-border-strong gap-[30px] flex-wrap';
-const CHAPTER_NUM = 'font-3 text-[11px] text-accent uppercase tracking-[.25em]';
-const CHAPTER_TITLE =
-  'font-2 font-light text-[clamp(36px,5vw,56px)] tracking-[-.025em] text-text leading-none [&_em]:italic [&_em]:text-accent [&_em]:font-normal';
-const CHAPTER_BLURB =
-  'text-[15px] text-text-dim max-w-[36ch] text-right max-[760px]:text-left leading-[1.5]';
-const LAB_LIST =
-  'grid grid-cols-2 max-[760px]:grid-cols-1 gap-px bg-border border border-border';
-const LAB_ROW =
-  'bg-bg py-[28px] px-[32px] no-underline text-inherit flex flex-col gap-[12px] transition-colors relative hover:bg-bg-card-hover';
-const LAB_ID = 'font-3 text-[10px] text-text-muted tracking-[.22em] uppercase';
-const LAB_EQ =
-  'font-4 italic font-normal text-[26px] tracking-[.005em] text-accent leading-[1.3] [&_sub]:text-[.6em] [&_sup]:text-[.6em] [&_sub]:leading-none [&_sup]:leading-none [&_sub]:align-[-.32em] [&_sup]:align-[.5em]';
-const LAB_NAME = 'text-[15px] text-text font-medium';
-const LAB_BLURB = 'text-[13px] text-text-dim leading-[1.5]';
-
 export const Route = createFileRoute('/reference')({
   component: Reference,
 });
@@ -33,15 +15,15 @@ function Reference() {
       key={lab.slug}
       to="/labs/$slug"
       params={{ slug: lab.slug }}
-      className={LAB_ROW}
+      className="bg-bg py-[28px] px-[32px] no-underline text-inherit flex flex-col gap-[12px] transition-colors relative hover:bg-bg-card-hover"
     >
-      <span className={LAB_ID}>Lab {lab.number}</span>
+      <span className="font-3 text-[10px] text-text-muted tracking-[.22em] uppercase">Lab {lab.number}</span>
       <span
-        className={LAB_EQ}
+        className="font-4 italic font-normal text-[26px] tracking-[.005em] text-accent leading-[1.3] [&_sub]:text-[.6em] [&_sup]:text-[.6em] [&_sub]:leading-none [&_sup]:leading-none [&_sub]:align-[-.32em] [&_sup]:align-[.5em]"
         dangerouslySetInnerHTML={{ __html: lab.formula }}
       />
-      <span className={LAB_NAME}>{lab.title}</span>
-      <span className={LAB_BLURB}>{lab.blurb}</span>
+      <span className="text-[15px] text-text font-medium">{lab.title}</span>
+      <span className="text-[13px] text-text-dim leading-[1.5]">{lab.blurb}</span>
     </Link>
   );
 
@@ -66,19 +48,19 @@ function Reference() {
       </section>
 
       {sandboxes.length > 0 && (
-        <section className={`${CHAPTER_SECTION} !mb-[48px]`} id="sandbox">
-          <div className={CHAPTER_HEAD}>
+        <section className="mb-[48px] scroll-mt-[80px]" id="sandbox">
+          <div className="flex items-baseline justify-between mb-[28px] pb-[22px] border-b border-border-strong gap-[30px] flex-wrap">
             <div>
-              <div className={CHAPTER_NUM}>System sandboxes</div>
-              <h2 className={CHAPTER_TITLE}>Put the chapters together</h2>
+              <div className="font-3 text-[11px] text-accent uppercase tracking-[.25em]">System sandboxes</div>
+              <h2 className="font-2 font-light text-[clamp(36px,5vw,56px)] tracking-[-.025em] text-text leading-none [&_em]:italic [&_em]:text-accent [&_em]:font-normal">Put the chapters together</h2>
             </div>
-            <p className={CHAPTER_BLURB}>
+            <p className="text-[15px] text-text-dim max-w-[36ch] text-right max-[760px]:text-left leading-[1.5]">
               The free-form playgrounds. Build circuits, wire houses, drive motors, run grids,
               match antennas, and design power supplies. These are the labs that test whether the
               isolated equations have become one working model in your head.
             </p>
           </div>
-          <div className={LAB_LIST}>
+          <div className="grid grid-cols-2 max-[760px]:grid-cols-1 gap-px bg-border border border-border">
             {sandboxes.map(labRow)}
           </div>
         </section>
@@ -89,16 +71,16 @@ function Reference() {
           const meta = CHAPTER_META[cid];
           const labs = MANIFEST.filter(l => l.chapter === cid && !l.number.startsWith('A.'));
           return (
-            <section className={CHAPTER_SECTION} id={cid} key={cid}>
-              <div className={CHAPTER_HEAD}>
+            <section className="mb-[70px] scroll-mt-[80px]" id={cid} key={cid}>
+              <div className="flex items-baseline justify-between mb-[28px] pb-[22px] border-b border-border-strong gap-[30px] flex-wrap">
                 <div>
-                  <div className={CHAPTER_NUM}>{meta.eyebrow}</div>
-                  <h2 className={CHAPTER_TITLE}>{meta.title}</h2>
+                  <div className="font-3 text-[11px] text-accent uppercase tracking-[.25em]">{meta.eyebrow}</div>
+                  <h2 className="font-2 font-light text-[clamp(36px,5vw,56px)] tracking-[-.025em] text-text leading-none [&_em]:italic [&_em]:text-accent [&_em]:font-normal">{meta.title}</h2>
                 </div>
-                <p className={CHAPTER_BLURB}>{meta.blurb}</p>
+                <p className="text-[15px] text-text-dim max-w-[36ch] text-right max-[760px]:text-left leading-[1.5]">{meta.blurb}</p>
               </div>
 
-              <div className={LAB_LIST}>
+              <div className="grid grid-cols-2 max-[760px]:grid-cols-1 gap-px bg-border border border-border">
                 {labs.map(labRow)}
               </div>
             </section>

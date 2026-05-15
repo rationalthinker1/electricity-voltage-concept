@@ -226,9 +226,36 @@ Use `clsx` for conditional utilities and keep state variants explicit
 (`hover:`, `focus-visible:`, `disabled:`, responsive prefixes, etc.).
 
 Keep CSS selectors in `main.css` only when they are clearly shared or when a
-utility-only version would be brittle or unreadable. If a local component needs
-many repeated utility strings, prefer a small local constant in that component
-over a new global selector.
+utility-only version would be brittle or unreadable.
+
+**Inline class strings, don't extract to file-local constants.** Write the
+Tailwind classes directly inside JSX `className="…"`, even if the string is
+long. Do **not** hoist them to a top-of-file constant like:
+
+```tsx
+// Don't do this — the string lives one place farther from the JSX it
+// describes, and reading the markup now requires a second hop.
+const SYLLABUS_CARD = 'my-[28px] mb-[36px] py-[20px] px-[22px] …';
+return <section className={SYLLABUS_CARD}>…</section>;
+```
+
+Inline form is the convention:
+
+```tsx
+return (
+  <section className="my-[28px] mb-[36px] py-[20px] px-[22px] …">
+    …
+  </section>
+);
+```
+
+If a class string is so long it noticeably hurts readability, that's a
+signal the pattern is repeated and belongs in `main.css` as a generalised
+recipe — not in a local constant. The two acceptable forms are: inline
+Tailwind on the element (default), or a recipe class in `main.css`
+(when the same combination repeats across components). Local-constant
+class strings hide the styling from the JSX without giving it a real
+home in the design system.
 
 For colour utilities, `@theme` exposes the existing tokens as `bg-bg-card`,
 `text-accent`, `border-border-strong`, etc. These swap automatically when
