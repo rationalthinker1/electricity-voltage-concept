@@ -793,12 +793,11 @@ function TraceCanvas({ series, channel, label, color, symmetric, scale, fixedMin
       if (!c) return;
       const parent = c.parentElement;
       const dpr = window.devicePixelRatio || 1;
-      const w = parent?.clientWidth ?? 320;
+      const w = c.clientWidth || parent?.clientWidth || 320;
       const h = 64;
       if (c.width !== Math.floor(w * dpr) || c.height !== Math.floor(h * dpr)) {
         c.width = Math.floor(w * dpr);
         c.height = Math.floor(h * dpr);
-        c.style.width = w + 'px';
         c.style.height = h + 'px';
       }
       const ctx = c.getContext('2d');
@@ -907,11 +906,10 @@ function EffMapPanel({ cfg, sample }: { cfg: BenchConfig; sample: BenchSample | 
     const c = ref.current;
     if (!c) return;
     const dpr = window.devicePixelRatio || 1;
-    const w = c.parentElement?.clientWidth ?? 360;
+    const w = c.clientWidth || c.parentElement?.clientWidth || 360;
     const h = 200;
     c.width = Math.floor(w * dpr);
     c.height = Math.floor(h * dpr);
-    c.style.width = w + 'px';
     c.style.height = h + 'px';
     const ctx = c.getContext('2d');
     if (!ctx) return;
@@ -1097,18 +1095,19 @@ const CSS = `
 
 .ev-body {
   display: grid;
-  grid-template-columns: 260px 1fr 260px;
+  grid-template-columns: 260px minmax(0, 1fr) 260px;
   gap: 16px;
   align-items: start;
 }
 @media (max-width: 1200px) {
-  .ev-body { grid-template-columns: 1fr; }
+  .ev-body { grid-template-columns: minmax(0, 1fr); }
 }
 
 .ev-left, .ev-right {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-width: 0;
 }
 
 .ev-palette, .ev-readout, .ev-trace, .ev-effmap {
@@ -1206,6 +1205,7 @@ const CSS = `
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
 }
 .ev-trace {
   display: flex;
