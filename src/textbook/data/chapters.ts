@@ -94,7 +94,7 @@ export const CHAPTERS: ChapterEntry[] = [
   {
     slug: 'what-is-electricity',
     number: 1,
-    title: 'Charge and field',
+    title: 'Charge and Field',
     subtitle: 'What "electricity" actually is, before anything moves.',
     blurb:
       'The bottom layer. Two kinds of charge, an inverse-square force between them, and the field that fills space around any charged thing. Before voltage, before current, before resistance — this.',
@@ -120,7 +120,7 @@ export const CHAPTERS: ChapterEntry[] = [
   {
     slug: 'voltage-and-current',
     number: 2,
-    title: 'Voltage and current',
+    title: 'Voltage and Current',
     subtitle: 'A difference, and a flow.',
     blurb:
       'Voltage is not pressure. Current is not water in a pipe. The signal that lights the bulb is not made of electrons. Three deeply non-obvious facts that every wall outlet quietly proves.',

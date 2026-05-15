@@ -15,7 +15,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { PredictThenObserve } from '@/components/PredictThenObserve';
@@ -87,7 +87,7 @@ export default function Ch1WhatIsElectricity() {
         <Term def={<><strong className="text-text font-medium">Coulomb's law</strong> — the force between two point charges falls off as the inverse square of their separation: <em className="italic text-text">F = k Q₁Q₂/r²</em>. Like signs repel, unlike attract.</>}>Coulomb's law</Term>{' '}
         <Cite id="coulomb-1785" in={SOURCES} />:
       </p>
-      <Formula>F = k Q₁ Q₂ / r²</Formula>
+      <Formula id="coulomb-force" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">F</strong> is the magnitude of the force each charge exerts on the other (in newtons),
         <strong className="text-text font-medium"> Q₁</strong> and <strong className="text-text font-medium">Q₂</strong> are the two charges (in coulombs, signed),
@@ -113,13 +113,13 @@ export default function Ch1WhatIsElectricity() {
           <>Two small spheres sit 10 cm apart in air, carrying <strong className="text-text font-medium">+5 nC</strong> and <strong className="text-text font-medium">−3 nC</strong>.
           What is the magnitude of the Coulomb force between them, and is it attractive or repulsive?</>
         }
-        hint="Use F = k Q₁Q₂/r² with k = 8.99×10⁹ N·m²/C² and convert nC and cm to SI."
+        hint={<>Use <InlineMath id="coulomb-force" /> with <InlineMath tex="k = 8.99\times 10^{9}\ \text{N·m}^2/\text{C}^2" /> and convert nC and cm to SI.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               Plug directly into Coulomb's law with <em className="italic text-text">k</em> = 8.99×10⁹ N·m²/C² <Cite id="codata-2018" in={SOURCES} />:
             </p>
-            <Formula>F = (8.99×10⁹)(5×10⁻⁹)(3×10⁻⁹) / (0.10)² = 1.35×10⁻⁵ N</Formula>
+            <Formula tex="F = \dfrac{(8.99\times 10^{9})(5\times 10^{-9})(3\times 10^{-9})}{(0.10)^2} = 1.35\times 10^{-5}\ \text{N}" />
             <p className="mb-prose-1 last:mb-0">
               The signs are opposite, so the force is attractive. Magnitude: <strong className="text-text font-medium">1.35×10⁻⁵ N (~13.5 µN)</strong>, attractive.
             </p>
@@ -177,15 +177,15 @@ export default function Ch1WhatIsElectricity() {
         question={
           <>Two protons sit 1 fm (10⁻¹⁵ m) apart — roughly a nuclear separation. Compute the ratio of the electric repulsion to the gravitational attraction between them.</>
         }
-        hint={<>Use F<sub>e</sub> = kQ²/r² and F<sub>g</sub> = Gm²/r². The <em className="italic text-text">r</em>² cancels.</>}
+        hint={<>Use <InlineMath tex="F_e = kQ^2/r^2" /> and <InlineMath tex="F_g = Gm^2/r^2" />. The <InlineMath tex="r^2" /> cancels.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              Both forces scale as 1/r², so the ratio is independent of distance — pure constants.
-              With <em className="italic text-text">e</em> = 1.602×10⁻¹⁹ C, <em className="italic text-text">m<sub>p</sub></em> = 1.673×10⁻²⁷ kg,
-              <em className="italic text-text"> k</em> = 8.99×10⁹ N·m²/C², and <em className="italic text-text">G</em> = 6.674×10⁻¹¹ N·m²/kg² <Cite id="codata-2018" in={SOURCES} />:
+              Both forces scale as <InlineMath tex="1/r^2" />, so the ratio is independent of distance — pure constants.
+              With <InlineMath tex="e = 1.602\times 10^{-19}\ \text{C}" />, <InlineMath tex="m_p = 1.673\times 10^{-27}\ \text{kg}" />,
+              <InlineMath tex="k = 8.99\times 10^{9}\ \text{N·m}^2/\text{C}^2" />, and <InlineMath tex="G = 6.674\times 10^{-11}\ \text{N·m}^2/\text{kg}^2" /> <Cite id="codata-2018" in={SOURCES} />:
             </p>
-            <Formula>F<sub>e</sub>/F<sub>g</sub> = k e² / (G m<sub>p</sub>²) ≈ 1.24×10³⁶</Formula>
+            <Formula tex="\dfrac{F_e}{F_g} = \dfrac{k\, e^2}{G\, m_p^{2}} \approx 1.24\times 10^{36}" />
             <p className="mb-prose-1 last:mb-0">
               The electric force between two protons is about <strong className="text-text font-medium">10³⁶ times</strong> stronger than the
               gravitational force. Gravity is utterly negligible at atomic scales.
@@ -208,7 +208,7 @@ export default function Ch1WhatIsElectricity() {
         physical thing, defined at every point, that tells whatever charge happens to be there what force to feel. The
         symbol is <strong className="text-text font-medium">E</strong>, and its definition is direct:
       </p>
-      <Formula>E = F / q<sub>test</sub></Formula>
+      <Formula id="electric-field-def" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">E</strong> is the electric-field vector at the point of interest (units: N/C, equivalently V/m),
         <strong className="text-text font-medium"> F</strong> is the force the field exerts on a small <em className="italic text-text">test charge</em> placed at that point, and
@@ -219,13 +219,13 @@ export default function Ch1WhatIsElectricity() {
         With the field framework in hand, Coulomb's law takes a slightly different shape. A point charge
         <strong className="text-text font-medium"> Q</strong> produces a field whose magnitude at distance <strong className="text-text font-medium">r</strong> from it is
       </p>
-      <Formula>|E| = k Q / r²</Formula>
+      <Formula id="electric-field-point" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">|E|</strong> is the magnitude of the field (N/C), <strong className="text-text font-medium">k</strong> is Coulomb's constant,
         <strong className="text-text font-medium"> Q</strong> is the source charge (signed, in coulombs), and <strong className="text-text font-medium">r</strong> is the distance from
         the source charge to the point where the field is being evaluated (in metres). The direction is radially
         outward from <strong className="text-text font-medium">Q</strong> (if Q is positive) or inward (if Q is negative). Bring any other charge
-        <strong className="text-text font-medium"> q</strong> into that field and the force on it is <strong className="text-text font-medium">F = qE</strong> — the new charge doesn't
+        <strong className="text-text font-medium"> q</strong> into that field and the force on it is <InlineMath id="force-on-charge" /> — the new charge doesn't
         talk to the old one, it talks only to the field at its own location<Cite id="feynman-II-2" in={SOURCES} />.
       </p>
 
@@ -256,15 +256,15 @@ export default function Ch1WhatIsElectricity() {
           <>A <strong className="text-text font-medium">+10 nC</strong> point charge sits at the origin. What is the magnitude of <strong className="text-text font-medium">E</strong> at a
           point 5 cm away, and what force would an electron feel there?</>
         }
-        hint="|E| = kQ/r²; then F = qE with q = e = 1.602×10⁻¹⁹ C."
+        hint={<><InlineMath id="electric-field-point" />; then <InlineMath id="force-on-charge" /> with <InlineMath tex="q = e = 1.602\times 10^{-19}\ \text{C}" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">The field magnitude from a point charge <Cite id="feynman-II-2" in={SOURCES} />:</p>
-            <Formula>|E| = kQ/r² = (8.99×10⁹)(10×10⁻⁹) / (0.05)² = 3.60×10⁴ N/C</Formula>
+            <Formula tex="|\vec{E}| = \dfrac{kQ}{r^2} = \dfrac{(8.99\times 10^{9})(10\times 10^{-9})}{(0.05)^2} = 3.60\times 10^{4}\ \text{N/C}" />
             <p className="mb-prose-1 last:mb-0">
               An electron carries charge −<em className="italic text-text">e</em>, so the force has magnitude
             </p>
-            <Formula>F = eE = (1.602×10⁻¹⁹)(3.60×10⁴) ≈ 5.76×10⁻¹⁵ N</Formula>
+            <Formula tex="F = eE = (1.602\times 10^{-19})(3.60\times 10^{4}) \approx 5.76\times 10^{-15}\ \text{N}" />
             <p className="mb-prose-1 last:mb-0">
               directed toward the positive source charge. Field: <strong className="text-text font-medium">3.6×10⁴ N/C</strong>; force on the electron:
               <strong className="text-text font-medium"> 5.8×10⁻¹⁵ N</strong> attractive.
@@ -299,11 +299,11 @@ export default function Ch1WhatIsElectricity() {
           <>A <strong className="text-text font-medium">+1 µC</strong> point charge sits in vacuum. What is the electrostatic potential
           at a point 1 m away, taking infinity as the reference (V → 0 at r → ∞)?</>
         }
-        hint="For a point charge, V(r) = kQ/r."
+        hint={<>For a point charge, <InlineMath id="potential-point-charge" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">The potential of a single point charge, with V(∞) = 0, is <Cite id="griffiths-2017" in={SOURCES} />:</p>
-            <Formula>V = kQ/r = (8.99×10⁹)(1×10⁻⁶) / 1 = 8.99×10³ V</Formula>
+            <Formula tex="V = \dfrac{kQ}{r} = \dfrac{(8.99\times 10^{9})(1\times 10^{-6})}{1} = 8.99\times 10^{3}\ \text{V}" />
             <p className="mb-prose-1 last:mb-0">Answer: <strong className="text-text font-medium">~9000 V (9 kV)</strong> at 1 m. A single microcoulomb is already a kilovolt-class source.</p>
           </>
         }
@@ -442,8 +442,8 @@ export default function Ch1WhatIsElectricity() {
             A property, not a substance. An electron <em className="italic text-text">has</em> charge in the same way it has mass; you can't pour
             charge out of a bottle. Franklin's 18th-century picture of a single electrical fluid was wrong in detail
             but not in spirit: what we now call charge is a conserved scalar attached to particles, and the bookkeeping
-            of pluses and minuses he invented still works. Each elementary charge is exactly
-            <strong className="text-text font-medium"> e = 1.602176634×10⁻¹⁹ C</strong> — an exact value since the 2019 SI redefinition
+            of pluses and minuses he invented still works. Each elementary charge is exactly{' '}
+            <InlineMath id="elementary-charge" /> — an exact value since the 2019 SI redefinition
             <Cite id="codata-2018" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -472,7 +472,7 @@ export default function Ch1WhatIsElectricity() {
 
         <FAQItem q="What is the constant k in Coulomb's law, and why is it so absurdly large?">
           <p>
-            In SI units <strong className="text-text font-medium">k = 1/(4πε₀) ≈ 8.99×10⁹ N·m²/C²</strong>, where <strong className="text-text font-medium">ε₀</strong> is the{' '}
+            In SI units <InlineMath id="coulomb-constant" />, where <InlineMath tex="\varepsilon_0" /> is the{' '}
             <Term def={<><strong className="text-text font-medium">permittivity</strong> of free space — the SI constant ε₀ ≈ 8.854×10⁻¹² F/m that sets the strength of the electrostatic interaction in vacuum.</>}>permittivity</Term>{' '}
             of free space<Cite id="codata-2018" in={SOURCES} />. It looks huge because the coulomb is a wildly
             oversized unit — one coulomb is the charge of about <strong className="text-text font-medium">6.24×10¹⁸</strong> electrons. Real laboratory
@@ -486,11 +486,11 @@ export default function Ch1WhatIsElectricity() {
           <p>
             The <strong className="text-text font-medium">4π</strong> is the surface area of a unit sphere — it's the geometry of three-dimensional space
             leaking into the equations.{' '}
-            <Term def={<><strong className="text-text font-medium">Gauss's law</strong> — the electric flux through any closed surface equals the enclosed charge divided by ε₀: ∮<em className="italic text-text">E·dA</em> = <em className="italic text-text">Q</em><sub>enc</sub>/ε₀. One of Maxwell's four equations.</>}>Gauss's law</Term>{' '}
-            in its clean form reads ∮E·dA = Q/ε₀, with no π anywhere
+            <Term def={<><strong className="text-text font-medium">Gauss's law</strong> — the electric flux through any closed surface equals the enclosed charge divided by ε₀: <InlineMath id="gauss-law" />. One of Maxwell's four equations.</>}>Gauss's law</Term>{' '}
+            in its clean form reads <InlineMath id="gauss-law" />, with no <InlineMath tex="\pi" /> anywhere
             <Cite id="gauss-1813" in={SOURCES} />. When you specialize that to a point charge and integrate over a
-            sphere of radius r, the sphere's area <strong className="text-text font-medium">4πr²</strong> appears in the denominator, leaving Coulomb's
-            law looking like F = Q₁Q₂/(4πε₀r²). The 4π is where you choose to hide the geometry: in Coulomb's law, or in
+            sphere of radius <InlineMath tex="r" />, the sphere's area <InlineMath tex="4\pi r^2" /> appears in the denominator, leaving Coulomb's
+            law looking like <InlineMath tex="F = \dfrac{Q_1 Q_2}{4\pi\varepsilon_0 r^2}" />. The <InlineMath tex="4\pi" /> is where you choose to hide the geometry: in Coulomb's law, or in
             Gauss's law, but not both.
           </p>
         </FAQItem>
@@ -499,8 +499,8 @@ export default function Ch1WhatIsElectricity() {
           <p>
             You integrate. Slice the object into infinitesimal pieces, treat each as a point charge dq, and sum the
             contributions vectorially. For continuous distributions this is a volume, surface, or line integral over the
-            charge density. The field framework makes this almost mechanical: every dq contributes
-            <strong className="text-text font-medium"> dE = k dq r̂ / r²</strong>, and superposition guarantees the total field is the integral. The full
+            charge density. The field framework makes this almost mechanical: every <InlineMath tex="dq" /> contributes{' '}
+            <InlineMath tex="d\vec{E} = \dfrac{k\, dq}{r^2}\,\hat{r}" />, and superposition guarantees the total field is the integral. The full
             machinery — including the shortcut of Gauss's law for symmetric distributions — is the bread and butter of
             any electrostatics course<Cite id="griffiths-2017" in={SOURCES} />.
           </p>
@@ -521,8 +521,8 @@ export default function Ch1WhatIsElectricity() {
             It has been checked to extraordinary precision. Cavendish in 1773 used a charged hollow sphere and showed
             that no charge appears on an inner sphere placed inside it — a result that requires the exponent to be 2 to
             within about <strong className="text-text font-medium">1/50</strong> by his analysis<Cite id="cavendish-1773" in={SOURCES} />. Williams,
-            Faller, and Hill in 1971 sharpened the technique with concentric icosahedra and bounded any deviation
-            <strong className="text-text font-medium"> q</strong> in the form 1/r^(2+q) to <strong className="text-text font-medium">q = (2.7 ± 3.1)×10⁻¹⁶</strong>
+            Faller, and Hill in 1971 sharpened the technique with concentric icosahedra and bounded any deviation{' '}
+            <InlineMath tex="q" /> in the form <InlineMath tex="1/r^{2+q}" /> to <InlineMath tex="q = (2.7 \pm 3.1)\times 10^{-16}" />
             <Cite id="williams-faller-hill-1971" in={SOURCES} />. If the photon has a rest mass at all, it is fantastically
             small; the inverse-square law is one of the most precisely confirmed statements in physics.
           </p>
@@ -565,7 +565,7 @@ export default function Ch1WhatIsElectricity() {
           <p>
             No — it isn't made of anything; it's a vector quantity defined at every point in space. You can't compress
             it, but you <em className="italic text-text">can</em> superpose fields (add them) and you can store energy in them. The energy density
-            of an electrostatic field is <strong className="text-text font-medium">u = ½ ε₀ |E|²</strong>, in joules per cubic meter
+            of an electrostatic field is <InlineMath id="field-energy-density" />, in joules per cubic meter
             <Cite id="griffiths-2017" in={SOURCES} />. So in a real sense the field is a fuel tank distributed across
             space, even though it is not a material in the everyday sense.
           </p>
@@ -617,7 +617,7 @@ export default function Ch1WhatIsElectricity() {
           <p>
             Close, but not identical, and — crucially — it has very little to do with the speed of the electrons. The
             signal that flips a switch is a disturbance in the electromagnetic field surrounding the wire, propagating
-            at a fraction (often ~⅔) of the vacuum speed of light <strong className="text-text font-medium">c = 299,792,458 m/s</strong>
+            at a fraction (often ~⅔) of the vacuum speed of light <InlineMath tex="c = 299{,}792{,}458\ \text{m/s}" />
             <Cite id="codata-2018" in={SOURCES} />. The electrons themselves drift along at fractions of a millimeter
             per second. We pull that apart properly in Chapter 2, and the field-flow picture lands in Chapter 6.
           </p>

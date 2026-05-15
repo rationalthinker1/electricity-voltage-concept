@@ -63,7 +63,7 @@ export default function Ch9EMWaves() {
         property of <strong className="text-text font-medium">E</strong> and <strong className="text-text font-medium">B</strong> alone, not of the medium they live in. The energy
         density of the field, also written down by Poynting and Maxwell, is
       </p>
-      <Formula>u = ½ ε₀ |E|² + (1 / 2μ₀) |B|²</Formula>
+      <Formula tex="u = \\tfrac{1}{2} \\varepsilon_0 |\\vec{E}|^2 + \\dfrac{1}{2\\mu_0} |\\vec{B}|^2" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">u</strong> is the local electromagnetic energy density (in J/m³),
         <strong className="text-text font-medium"> |E|</strong> is the magnitude of the electric field at that point (in V/m),
@@ -71,7 +71,7 @@ export default function Ch9EMWaves() {
         <strong className="text-text font-medium"> ε₀ = 8.854×10⁻¹² F/m</strong> and <strong className="text-text font-medium">μ₀ = 4π×10⁻⁷ T·m/A</strong> are the vacuum permittivity
         and permeability respectively<Cite id="codata-2018" in={SOURCES} />. The two terms split the total cleanly
         into an electric and a magnetic contribution.
-        The local conservation law is <InlineMath>∂u/∂t + ∇·S = 0</InlineMath> in empty space — energy in a region
+        The local conservation law is <InlineMath tex="\\partial u/\\partial t + \\nabla\\cdot\\vec{S} = 0" /> in empty space — energy in a region
         either stays put or flows out through the boundary as <strong className="text-text font-medium">S</strong><Cite id="jackson-1999" in={SOURCES} />.
         Take a hand-sized region of empty space and stir up a field in it. The field cannot just sit there; energy at the
         boundary has to balance. The way nature solves that constraint is to let the field propagate outward.
@@ -84,7 +84,7 @@ export default function Ch9EMWaves() {
         the trick that links them. Faraday's law says a changing magnetic field produces an electric field that curls
         around it:
       </p>
-      <Formula>∇ × E = − ∂B/∂t</Formula>
+      <Formula id="maxwell-faraday" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">∇ × E</strong> is the curl of the electric field (a vector measuring how E loops around
         each point, in V/m²), and <strong className="text-text font-medium">∂B/∂t</strong> is the rate of change of the magnetic field at a fixed
@@ -94,7 +94,7 @@ export default function Ch9EMWaves() {
         Ampère's law, with Maxwell's displacement-current correction, says the converse — a changing electric field
         produces a magnetic field that curls around it<Cite id="maxwell-1865" in={SOURCES} />:
       </p>
-      <Formula>∇ × B = μ₀ ε₀ ∂E/∂t</Formula>
+      <Formula tex="\\nabla\\times\\vec{B} = \\mu_0\\varepsilon_0\\dfrac{\\partial \\vec{E}}{\\partial t}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">∇ × B</strong> is the curl of the magnetic field (in T/m), <strong className="text-text font-medium">∂E/∂t</strong> is the
         rate of change of the electric field at a fixed point (in V/(m·s)), and <strong className="text-text font-medium">μ₀ε₀ = 1/c²</strong> is
@@ -102,7 +102,7 @@ export default function Ch9EMWaves() {
         side, and use a standard vector identity. After a few lines of algebra what falls out is a clean second-order
         partial differential equation<Cite id="griffiths-2017" in={SOURCES} /><Cite id="jackson-1999" in={SOURCES} />:
       </p>
-      <Formula>∇²E = μ₀ ε₀ ∂²E/∂t²</Formula>
+      <Formula tex="\\nabla^2 \\vec{E} = \\mu_0\\varepsilon_0\\dfrac{\\partial^2 \\vec{E}}{\\partial t^2}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">∇²E</strong> is the vector Laplacian of the electric field (the sum of second spatial
         derivatives, with units of V/m³), <strong className="text-text font-medium">∂²E/∂t²</strong> is the second time derivative of E at a fixed
@@ -110,7 +110,7 @@ export default function Ch9EMWaves() {
         a squared speed.
         And the identical equation for <strong className="text-text font-medium">B</strong>. This is the{' '}
         <Term def={<><strong className="text-text font-medium">wave equation</strong> — a second-order PDE of the form <em className="italic text-text">∇²ψ = (1/v²) ∂²ψ/∂t²</em> whose solutions propagate at speed <em className="italic text-text">v</em>. For EM waves in vacuum, <em className="italic text-text">v = 1/√(μ₀ε₀) = c</em>.</>}>wave equation</Term>, and it has a
-        propagation speed sitting right there in the coefficient: <InlineMath>v² = 1/(μ₀ ε₀)</InlineMath>. Plug in the
+        propagation speed sitting right there in the coefficient: <InlineMath tex="v^2 = 1/(\\mu_0 \\varepsilon_0)" />. Plug in the
         measured values of the two constants — ε₀ = 8.854×10⁻¹² F/m and μ₀ = 1.257×10⁻⁶ T·m/A — and you get
         <strong className="text-text font-medium"> v = 2.998×10⁸ m/s</strong><Cite id="codata-2018" in={SOURCES} />. Which is, to six figures, the speed of light
         measured by Fizeau and Foucault decades earlier. Maxwell wrote, in 1865: <em className="italic text-text">"We can scarcely avoid the inference that
@@ -122,8 +122,8 @@ export default function Ch9EMWaves() {
 
       <p className="mb-prose-3">
         Drop a relative permittivity εᵣ and a relative permeability μᵣ into the same calculation — that is, put the
-        wave inside a material — and the speed becomes <InlineMath>v = 1/√(εᵣ μᵣ ε₀ μ₀) = c/√(εᵣ μᵣ)</InlineMath>. The
-        slowdown factor <InlineMath>n = √(εᵣ μᵣ)</InlineMath> is exactly what every introductory optics course calls
+        wave inside a material — and the speed becomes <InlineMath tex="v = 1/\\sqrt{\\varepsilon_r \\mu_r \\varepsilon_0 \\mu_0} = c/\\sqrt{\\varepsilon_r \\mu_r}" />. The
+        slowdown factor <InlineMath tex="n = \\sqrt{\\varepsilon_r \\mu_r}" /> is exactly what every introductory optics course calls
         the{' '}
         <Term def={<><strong className="text-text font-medium">refractive index</strong> — the dimensionless factor by which a medium slows light, <em className="italic text-text">n = c/v = √(εᵣμᵣ)</em>. Air ≈ 1.0003, water ≈ 1.33, glass ≈ 1.5, diamond ≈ 2.4.</>}>refractive index</Term><Cite id="griffiths-2017" in={SOURCES} />. Window glass has εᵣ ≈ 2.25 and μᵣ ≈ 1, so light in
         glass travels at c/1.5. The whole edifice of refraction — Snell's law, lenses, fibre optics — is sitting in that
@@ -135,13 +135,13 @@ export default function Ch9EMWaves() {
         question={
           <>What is the speed of light inside ordinary window glass, for which <strong className="text-text font-medium">n = 1.5</strong>?</>
         }
-        hint="v = c/n; use c = 2.998×10⁸ m/s."
+        hint={<><InlineMath tex="v = c/n" />; use <InlineMath tex="c = 2.998\\times 10^{8}\\ \\text{m/s}" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               From <em className="italic text-text">v = c/n</em> with <em className="italic text-text">c</em> = 2.998×10⁸ m/s<Cite id="codata-2018" in={SOURCES} />:
             </p>
-            <Formula>v = (2.998×10⁸) / 1.5 = 1.999×10⁸ m/s</Formula>
+            <Formula tex="v = (2.998\\times 10^{8}) / 1.5 = 1.999\\times 10^{8}\\ \\text{m/s}" />
             <p className="mb-prose-1 last:mb-0">
               About <strong className="text-text font-medium">2.0×10⁸ m/s</strong>, or two-thirds the vacuum speed — the same "⅔ c" that appears in
               copper-coaxial signal propagation throughout this book<Cite id="griffiths-2017" in={SOURCES} />.
@@ -156,17 +156,17 @@ export default function Ch9EMWaves() {
         The plane-wave solution to ∇²E = (1/c²) ∂²E/∂t² is the simplest possible thing: a sinusoidal disturbance
         travelling in one direction. Write it in coordinates, with the wave moving in <strong className="text-text font-medium">+x</strong>:
       </p>
-      <Formula>E(x, t) = E₀ sin(k x − ω t) ŷ</Formula>
+      <Formula tex="\\vec{E}(x, t) = E_0 \\sin(k x - \\omega t)\\,\\hat{y}" />
       <p className="mb-prose-3">
         where k is the wavenumber, ω the angular frequency, and the wave's phase speed is
-        <InlineMath>v = ω/k</InlineMath>. Plug this into Maxwell's equations and three facts fall out immediately
+        <InlineMath tex="v = \\omega/k" />. Plug this into Maxwell's equations and three facts fall out immediately
         <Cite id="griffiths-2017" in={SOURCES} />. First, <strong className="text-text font-medium">E</strong> is{' '}
         <Term def={<><strong className="text-text font-medium">transverse</strong> — oscillating perpendicular to the direction of propagation. EM waves in vacuum are transverse; sound waves in air are longitudinal (oscillating along the propagation direction).</>}>transverse</Term> — perpendicular to the
         direction of travel. (In our example, the wave moves in x and E points in y.) Second, the same equations
         force <strong className="text-text font-medium">B</strong> to be perpendicular to both <strong className="text-text font-medium">E</strong> and <strong className="text-text font-medium">k̂</strong>, so
         in our example B points in z. Third, the ratio of their amplitudes is fixed:
       </p>
-      <Formula>|B| = |E| / c</Formula>
+      <Formula tex="|\\vec{B}| = |\\vec{E}| / c" />
       <p className="mb-prose-3">
         And they oscillate in phase — both reach their peak at the same time and the same place. The whole picture
         rolls forward together at speed c.
@@ -176,7 +176,7 @@ export default function Ch9EMWaves() {
 
       <p className="mb-prose-3">
         <Term def={<><strong className="text-text font-medium">Wavelength</strong> (λ) — the spatial period of a wave, the distance between successive crests. SI units metres.</>}>Wavelength</Term> λ and{' '}
-        <Term def={<><strong className="text-text font-medium">frequency</strong> (f) — the number of full oscillations per second, in hertz (1 Hz = 1 cycle/s). Related to wavelength by <em className="italic text-text">λ f = v</em>.</>}>frequency</Term> f obey the universal <InlineMath>λ f = c</InlineMath>. A 1 GHz radio wave has
+        <Term def={<><strong className="text-text font-medium">frequency</strong> (f) — the number of full oscillations per second, in hertz (1 Hz = 1 cycle/s). Related to wavelength by <em className="italic text-text">λ f = v</em>.</>}>frequency</Term> f obey the universal <InlineMath id="wave-c-lambda-f" />. A 1 GHz radio wave has
         λ = 30 cm. Yellow light at 5×10¹⁴ Hz has λ ≈ 600 nm. An X-ray at 10¹⁸ Hz has λ ≈ 0.3 nm. Same wave equation,
         same speed; different λ.
       </p>
@@ -187,13 +187,13 @@ export default function Ch9EMWaves() {
           <>Wi-Fi (and a microwave oven's magnetron) operate near <strong className="text-text font-medium">2.4 GHz</strong>. What is the wavelength of that
           wave in air?</>
         }
-        hint="λ = c/f, with c ≈ 3.00×10⁸ m/s."
+        hint={<><InlineMath tex="\\lambda = c/f" />, with <InlineMath tex="c \\approx 3.00\\times 10^{8}\\ \\text{m/s}" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               Use <em className="italic text-text">λ = c/f</em><Cite id="codata-2018" in={SOURCES} />:
             </p>
-            <Formula>λ = (2.998×10⁸ m/s) / (2.4×10⁹ Hz) ≈ 0.125 m</Formula>
+            <Formula tex="\\lambda = (2.998\\times 10^{8}\\ \\text{m/s}) / (2.4\\times 10^{9}\\ \\text{Hz}) \\approx 0.125\\ \\text{m}" />
             <p className="mb-prose-1 last:mb-0">
               About <strong className="text-text font-medium">12.5 cm</strong> — comparable to the width of your hand, and roughly half the cavity of a
               microwave oven (which is why the standing-wave nodes are spaced a few centimetres apart and the turntable
@@ -208,13 +208,13 @@ export default function Ch9EMWaves() {
         question={
           <>Green light has a wavelength of about <strong className="text-text font-medium">530 nm</strong> in vacuum. What is its frequency?</>
         }
-        hint="f = c/λ."
+        hint={<><InlineMath tex="f = c/\\lambda" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               Convert 530 nm to metres: 5.30×10⁻⁷ m. Then<Cite id="codata-2018" in={SOURCES} />:
             </p>
-            <Formula>f = (2.998×10⁸) / (5.30×10⁻⁷) ≈ 5.66×10¹⁴ Hz</Formula>
+            <Formula tex="f = (2.998\\times 10^{8}) / (5.30\\times 10^{-7}) \\approx 5.66\\times 10^{14}\\ \\text{Hz}" />
             <p className="mb-prose-1 last:mb-0">
               About <strong className="text-text font-medium">5.7×10¹⁴ Hz</strong>, or 570 terahertz — the wave equation, run at a third of a million times the
               speed of the fastest oscilloscope on Earth<Cite id="feynman-II-21" in={SOURCES} />.
@@ -263,7 +263,7 @@ export default function Ch9EMWaves() {
         separation wobbles in time, equivalently a current oscillating along a short antenna. The far-field intensity
         radiated by such a dipole follows a clean angular pattern:
       </p>
-      <Formula>I(θ) ∝ sin²θ / r²</Formula>
+      <Formula tex="I(\\theta) \\propto \\sin^2\\theta / r^2" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">I(θ)</strong> is the time-averaged radiated intensity (in W/m²),
         <strong className="text-text font-medium"> θ</strong> is the polar angle measured from the dipole's axis (so θ = 0 along the antenna, θ = π/2
@@ -287,9 +287,9 @@ export default function Ch9EMWaves() {
         One more move is worth making before we leave the radiation story. We have so far treated "circuit"
         and "antenna" as separate categories — wires for circuits, antennas for radio. They are not. They are
         two ends of the same axis. A piece of wire of length <strong className="text-text font-medium">L</strong> driven at frequency
-        <strong className="text-text font-medium"> f</strong> behaves as a lumped circuit element when <InlineMath>λ ≫ L</InlineMath>, and as
-        a radiator when <InlineMath>λ ≲ 2L</InlineMath>. Nothing about the metal changes; only the ratio
-        <InlineMath> L/λ</InlineMath> does. The next demo holds the wire at a constant 1 m and slides the
+        <strong className="text-text font-medium"> f</strong> behaves as a lumped circuit element when <InlineMath tex="\\lambda \\gg L" />, and as
+        a radiator when <InlineMath tex="\\lambda \\lesssim 2L" />. Nothing about the metal changes; only the ratio
+        <InlineMath tex="L/\\lambda" /> does. The next demo holds the wire at a constant 1 m and slides the
         frequency upward so you can watch the same conductor cross that boundary in real time.
       </p>
       <p className="mb-prose-3">

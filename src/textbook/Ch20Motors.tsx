@@ -55,11 +55,11 @@ export default function Ch16Motors() {
 
       <p className="mb-prose-3">
         Chapter 6 wrote down the <Term def="The total electromagnetic force on a point charge: F = q(E + v × B). For currents — many charges moving together — the magnetic piece becomes a force per length on the wire.">Lorentz force</Term>
-        on a moving charge: <InlineMath>F = q v × B</InlineMath>. A current is moving charge — many of them, at the
+        on a moving charge: <InlineMath id="lorentz-force" />. A current is moving charge — many of them, at the
         same drift velocity. Sum the per-charge force over a length <em className="italic text-text">L</em> of wire carrying current <em className="italic text-text">I</em> in a
         uniform field <strong className="text-text font-medium">B</strong> and the wire itself feels<Cite id="feynman-II-13" in={SOURCES} />:
       </p>
-      <Formula>F = I L × B</Formula>
+      <Formula id="force-on-wire" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">F</strong> is the force on the wire segment (in newtons), <strong className="text-text font-medium">I</strong>{' '}
         is the current flowing through it (in amperes), <strong className="text-text font-medium">L</strong> is a vector along the
@@ -72,7 +72,7 @@ export default function Ch16Motors() {
         don't cancel — they form a couple. The resulting <Term def="The rotational analog of force. Torque about an axis is force times the perpendicular distance from the axis. SI unit: N·m.">torque</Term> on
         the loop is<Cite id="griffiths-2017" in={SOURCES} />:
       </p>
-      <Formula>τ = N I A B sin(θ)</Formula>
+      <Formula tex="\tau = N I A B \sin\theta" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">τ</strong> is the magnitude of the torque on the loop (in N·m),
         <strong className="text-text font-medium"> N</strong> is the number of turns in the coil (dimensionless integer),
@@ -89,12 +89,12 @@ export default function Ch16Motors() {
       <TryIt
         tag="Try 16.1"
         question={<>A rectangular coil has <strong className="text-text font-medium">N = 100</strong> turns, area <strong className="text-text font-medium">A = 30 cm²</strong>, sits in a field of <strong className="text-text font-medium">B = 0.3 T</strong>, and carries <strong className="text-text font-medium">I = 2 A</strong>. What is the maximum torque?</>}
-        hint="Use τ = N I A B sin(θ), with sin(θ) = 1 at maximum."
+        hint={<>Use <InlineMath tex="\tau = N I A B \sin\theta" />, with <InlineMath tex="\sin\theta = 1" /> at maximum.</>}
         answer={
           <>
-            <p className="mb-prose-1 last:mb-0">Convert A = 30 cm² = 3×10⁻³ m². Maximum torque is at sin(θ) = 1:</p>
-            <Formula>τ_max = N I A B = (100)(2)(3×10⁻³)(0.3)</Formula>
-            <Formula>τ_max = <strong className="text-text font-medium">0.18 N·m</strong></Formula>
+            <p className="mb-prose-1 last:mb-0">Convert A = 30 cm² = 3×10⁻³ m². Maximum torque is at <InlineMath tex="\sin\theta = 1" />:</p>
+            <Formula tex="\tau_{\max} = N I A B = (100)(2)(3\times 10^{-3})(0.3)" />
+            <Formula tex="\tau_{\max} = 0.18\ \text{N·m}" />
             <p className="mb-prose-1 last:mb-0">
               About the torque you'd feel holding a 180 g mass on a 10 cm lever — modest, but enough to drive a small
               cooling fan or position a camera lens<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
@@ -137,9 +137,9 @@ export default function Ch16Motors() {
       <p className="mb-prose-3">
         That back-EMF is worth a closer look, because it is the single equation governing how a brushed DC motor
         behaves between the moment you connect it and the moment it reaches a steady running speed. In a frozen
-        rotor (ω = 0), the back-EMF is zero, so the full supply voltage drops across the winding resistance and
-        <em className="italic text-text"> I = V/R</em> — an inrush current commonly 10× the rated running value. As the rotor spins up, back-EMF
-        rises in proportion to speed (<em className="italic text-text">E<sub>back</sub> = k<sub>e</sub> ω</em>), the net voltage across <em className="italic text-text">R</em>
+        rotor (<InlineMath tex="\omega = 0" />), the back-EMF is zero, so the full supply voltage drops across the winding resistance and
+        <InlineMath tex="I = V/R" /> — an inrush current commonly 10× the rated running value. As the rotor spins up, back-EMF
+        rises in proportion to speed (<InlineMath tex="E_{\text{back}} = k_e\, \omega" />), the net voltage across <em className="italic text-text">R</em>
         falls, and the current drops to whatever value is required to balance the load torque. The settling time is
         set by the mechanical inertia, not the electrical time constant: that is why inrush current is brief but
         ferocious<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
@@ -149,15 +149,15 @@ export default function Ch16Motors() {
 
       <TryIt
         tag="Try 16.2"
-        question={<>A <strong className="text-text font-medium">12 V</strong> brushed DC motor has winding resistance <strong className="text-text font-medium">R = 1 Ω</strong> and back-EMF constant <strong className="text-text font-medium">k<sub>e</sub> = 0.1 V·s/rad</strong>. What is the starting current at stall? What is the steady-state current at ω = 100 rad/s with negligible load?</>}
-        hint="At stall E_back = 0 so I = V/R. At ω = 100 rad/s, E_back = k_e ω, and I = (V − E_back)/R."
+        question={<>A <strong className="text-text font-medium">12 V</strong> brushed DC motor has winding resistance <strong className="text-text font-medium">R = 1 Ω</strong> and back-EMF constant <strong className="text-text font-medium">k<sub>e</sub> = 0.1 V·s/rad</strong>. What is the starting current at stall? What is the steady-state current at <InlineMath tex="\omega = 100\ \text{rad/s}" /> with negligible load?</>}
+        hint={<>At stall <InlineMath tex="E_{\text{back}} = 0" /> so <InlineMath tex="I = V/R" />. At <InlineMath tex="\omega = 100\ \text{rad/s}" />, <InlineMath tex="E_{\text{back}} = k_e\, \omega" />, and <InlineMath tex="I = (V - E_{\text{back}})/R" />.</>}
         answer={
           <>
-            <p className="mb-prose-1 last:mb-0">At stall (ω = 0):</p>
-            <Formula>I_stall = V/R = 12/1 = <strong className="text-text font-medium">12 A</strong></Formula>
-            <p className="mb-prose-1 last:mb-0">At ω = 100 rad/s:</p>
-            <Formula>E_back = k_e ω = (0.1)(100) = 10 V</Formula>
-            <Formula>I = (V − E_back) / R = (12 − 10) / 1 = <strong className="text-text font-medium">2 A</strong></Formula>
+            <p className="mb-prose-1 last:mb-0">At stall (<InlineMath tex="\omega = 0" />):</p>
+            <Formula tex="I_{\text{stall}} = V/R = 12/1 = 12\ \text{A}" />
+            <p className="mb-prose-1 last:mb-0">At <InlineMath tex="\omega = 100\ \text{rad/s}" />:</p>
+            <Formula tex="E_{\text{back}} = k_e\, \omega = (0.1)(100) = 10\ \text{V}" />
+            <Formula tex="I = (V - E_{\text{back}}) / R = (12 - 10) / 1 = 2\ \text{A}" />
             <p className="mb-prose-1 last:mb-0">
               The starting current is 6× the running current — a typical ratio. This is why every motor controller
               needs either a soft-start, a series inrush limiter, or a power stage rated for the worst-case stall
@@ -201,9 +201,9 @@ export default function Ch16Motors() {
         Field-oriented control deserves a closer look, because it is the single algorithmic trick that turns three
         wiggling AC phases into the two clean control knobs an engineer wants. Two coordinate transforms — Clarke
         (3-phase to a stationary 2-axis frame) and Park (2-axis stationary to 2-axis rotor-aligned) — convert the
-        three stator currents into an <em className="italic text-text">i<sub>d</sub></em> component aligned with the rotor's flux axis and an
-        <em className="italic text-text"> i<sub>q</sub></em> component perpendicular to it. Torque is proportional to <em className="italic text-text">i<sub>q</sub></em> alone
-        (for a surface PMSM with <em className="italic text-text">i<sub>d</sub></em> held at zero), so a single PI loop on <em className="italic text-text">i<sub>q</sub></em>
+        three stator currents into an <InlineMath tex="i_d" /> component aligned with the rotor's flux axis and an
+        <InlineMath tex="i_q" /> component perpendicular to it. Torque is proportional to <InlineMath tex="i_q" /> alone
+        (for a surface PMSM with <InlineMath tex="i_d" /> held at zero), so a single PI loop on <InlineMath tex="i_q" />
         gives smooth torque control identical to a brushed DC motor — but with no brushes<Cite id="krishnan-2010-bldc" in={SOURCES} />.
       </p>
 
@@ -212,11 +212,11 @@ export default function Ch16Motors() {
       <TryIt
         tag="Try 16.3"
         question={<>A BLDC motor has 4 pole-pairs. The electrical commutation runs at <strong className="text-text font-medium">200 Hz</strong>. What is the mechanical RPM?</>}
-        hint="One mechanical revolution per pole-pair set of electrical cycles. So f_mech = f_elec / p_pairs."
+        hint={<>One mechanical revolution per pole-pair set of electrical cycles. So <InlineMath tex="f_{\text{mech}} = f_{\text{elec}} / p_{\text{pairs}}" />.</>}
         answer={
           <>
-            <Formula>f_mech = f_elec / p_pairs = 200 / 4 = 50 Hz</Formula>
-            <Formula>RPM = 60 · f_mech = <strong className="text-text font-medium">3000 rpm</strong></Formula>
+            <Formula tex="f_{\text{mech}} = f_{\text{elec}} / p_{\text{pairs}} = 200 / 4 = 50\ \text{Hz}" />
+            <Formula tex="\text{RPM} = 60 \cdot f_{\text{mech}} = 3000\ \text{rpm}" />
             <p className="mb-prose-1 last:mb-0">
               That's a typical e-bike hub motor speed. A 14-pole-pair drone motor at the same electrical 200 Hz would
               only spin at about 850 rpm — high pole count buys you torque at the price of speed<Cite id="krishnan-2010-bldc" in={SOURCES} />.
@@ -238,7 +238,7 @@ export default function Ch16Motors() {
         time — produce a magnetic field that rotates around the bore at the
         <em className="italic text-text"> <Term def="The speed at which the rotating magnetic field produced by a polyphase stator turns. n_s = 120 f / p RPM, where f is line frequency and p the pole count. At 60 Hz a 2-pole machine has n_s = 3600 rpm.">synchronous speed</Term></em>:
       </p>
-      <Formula>n<sub>s</sub> = 120 f / p &nbsp; (RPM)</Formula>
+      <Formula tex="n_s = 120\, f / p \quad (\text{RPM})" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">n<sub>s</sub></strong> is the synchronous (stator-field) rotational speed in
         revolutions per minute, <strong className="text-text font-medium">f</strong> is the AC line frequency (in Hz), and
@@ -248,7 +248,7 @@ export default function Ch16Motors() {
         stator field at 1800 RPM; an 8-pole machine at 900 RPM. The rotor, sitting inside this rotating field, sees a
         time-varying flux through every bar of its cage. By Faraday's law each bar develops an EMF; because the cage
         is shorted, large currents flow in the bars; those currents in the bars sit inside the stator field; the bars
-        feel <em className="italic text-text">F = IL × B</em>; and the rotor begins to spin in the same direction as the field<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
+        feel <InlineMath id="force-on-wire" />; and the rotor begins to spin in the same direction as the field<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
       <RotatingMagField3DDemo />
@@ -257,10 +257,10 @@ export default function Ch16Motors() {
         It is worth pausing on the algebraic miracle that makes the three-phase trick work. Each coil's
         contribution to the field at the bore centre is its instantaneous current times a unit vector pointing
         along its own radial axis. Sum the three contributions for the standard sequence
-        <em className="italic text-text"> I<sub>x</sub>(t) = I<sub>0</sub> cos(ωt + φ<sub>x</sub>)</em> with φ = 0, −120°, −240°, and the three
+        <InlineMath tex="I_x(t) = I_0 \cos(\omega t + \varphi_x)" /> with <InlineMath tex="\varphi = 0,\ -120°,\ -240°" />, and the three
         time-varying scalars combine with the three fixed spatial vectors to give a single vector
-        <em className="italic text-text"> B(t)</em> of constant magnitude (3/2) <em className="italic text-text">B<sub>0</sub></em> rotating about the bore axis at
-        angular speed ω. Constant magnitude — no pulsation. Pure rotation. That is the property
+        <InlineMath tex="\vec{B}(t)" /> of constant magnitude <InlineMath tex="(3/2)\, B_0" /> rotating about the bore axis at
+        angular speed <InlineMath tex="\omega" />. Constant magnitude — no pulsation. Pure rotation. That is the property
         Tesla discovered in 1888 and the reason three is the smallest phase count that builds a usable
         induction or synchronous machine<Cite id="tesla-1888" in={SOURCES} />.
       </p>
@@ -273,7 +273,7 @@ export default function Ch16Motors() {
         would collapse, and the rotor would coast. So the rotor <em className="italic text-text">can never reach</em> synchronous speed under
         load — it always slips behind. The fractional difference is the <em className="italic text-text"><Term def="The fractional difference between synchronous speed and actual rotor speed: s = (n_s − n)/n_s. At full rated load, a typical induction motor runs at s ≈ 2–5%. Slip is the signal that produces torque.">slip</Term></em>:
       </p>
-      <Formula>s = (n<sub>s</sub> − n) / n<sub>s</sub></Formula>
+      <Formula tex="s = (n_s - n) / n_s" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">s</strong> is the dimensionless slip (a pure ratio, often quoted as a
         percentage), <strong className="text-text font-medium">n<sub>s</sub></strong> is the synchronous speed of the rotating stator
@@ -296,11 +296,11 @@ export default function Ch16Motors() {
       <TryIt
         tag="Try 16.4"
         question={<>A 4-pole induction motor runs from a 60 Hz line and turns at <strong className="text-text font-medium">1740 RPM</strong> under load. What is the slip?</>}
-        hint="Compute synchronous speed first: n_s = 120 f / p."
+        hint={<>Compute synchronous speed first: <InlineMath tex="n_s = 120\, f / p" />.</>}
         answer={
           <>
-            <Formula>n<sub>s</sub> = 120 · 60 / 4 = 1800 RPM</Formula>
-            <Formula>s = (1800 − 1740) / 1800 = <strong className="text-text font-medium">3.33%</strong></Formula>
+            <Formula tex="n_s = 120 \cdot 60 / 4 = 1800\ \text{RPM}" />
+            <Formula tex="s = (1800 - 1740) / 1800 = 3.33\%" />
             <p className="mb-prose-1 last:mb-0">
               Right in the middle of the typical full-load range. A 1.5 % slip would mean the motor is only lightly
               loaded; 6 % would mean it's at or near rated full load<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
@@ -312,14 +312,14 @@ export default function Ch16Motors() {
       <TryIt
         tag="Try 16.5"
         question={<>A 4-pole 60 Hz induction motor runs at <strong className="text-text font-medium">4 %</strong> slip at rated load. What is the rotor RPM?</>}
-        hint="n_s = 120 f / p, then n = n_s · (1 − s)."
+        hint={<><InlineMath tex="n_s = 120\, f / p" />, then <InlineMath tex="n = n_s \cdot (1 - s)" />.</>}
         answer={
           <>
-            <Formula>n<sub>s</sub> = 120 · 60 / 4 = 1800 RPM</Formula>
-            <Formula>n = n<sub>s</sub> · (1 − s) = 1800 · 0.96 = <strong className="text-text font-medium">1728 RPM</strong></Formula>
+            <Formula tex="n_s = 120 \cdot 60 / 4 = 1800\ \text{RPM}" />
+            <Formula tex="n = n_s \cdot (1 - s) = 1800 \cdot 0.96 = 1728\ \text{RPM}" />
             <p className="mb-prose-1 last:mb-0">
               That 72 RPM gap below synchronous is what produces the torque: the cage bars slip through the rotating
-              field at <em className="italic text-text">s · n<sub>s</sub></em>, and the resulting induced bar currents react with the field to
+              field at <InlineMath tex="s \cdot n_s" />, and the resulting induced bar currents react with the field to
               pull the rotor along<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
             </p>
           </>
@@ -332,8 +332,8 @@ export default function Ch16Motors() {
         Two more variants round out the family. The <Term def="An AC motor whose rotor turns exactly at the line-synchronous speed n_s = 120 f / p. Achieves zero slip by giving the rotor its own magnetic field (DC excitation or permanent magnets). Used where precision speed matters.">synchronous motor</Term> looks
         like an induction motor from the outside but the rotor has its own field — a DC-fed wound rotor or a set of
         permanent magnets. The rotor's own field locks onto the rotating stator field and follows it at exactly
-        synchronous speed, with no slip. Torque comes from a small lag angle <em className="italic text-text">δ</em> between the rotor and
-        stator-field positions; <em className="italic text-text">τ ∝ sin(δ)</em>. Past <em className="italic text-text">δ = 90°</em> the rotor "pulls out of step" — slips a
+        synchronous speed, with no slip. Torque comes from a small lag angle <InlineMath tex="\delta" /> between the rotor and
+        stator-field positions; <InlineMath tex="\tau \propto \sin\delta" />. Past <InlineMath tex="\delta = 90°" /> the rotor "pulls out of step" — slips a
         pole — and the machine stalls<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
@@ -361,13 +361,13 @@ export default function Ch16Motors() {
       <TryIt
         tag="Try 16.6"
         question={<>A NEMA-17 stepper has 200 steps per revolution. You drive it at <strong className="text-text font-medium">1/16 microstepping</strong>, and your controller sends <strong className="text-text font-medium">3200</strong> pulses. How far does the shaft rotate?</>}
-        hint="3200 microsteps ÷ 16 microsteps/step = 200 full steps. 200 full steps = one full revolution at this resolution."
+        hint="3200 microsteps / 16 microsteps per step = 200 full steps. 200 full steps = one full revolution at this resolution."
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               At 1/16 microstepping there are 200 × 16 = 3200 microsteps per revolution.
             </p>
-            <Formula>θ = 3200 microsteps × (360° / 3200) = <strong className="text-text font-medium">360° = 1 full revolution</strong></Formula>
+            <Formula tex="\theta = 3200\ \text{microsteps} \times (360°/3200) = 360° = 1\ \text{revolution}" />
             <p className="mb-prose-1 last:mb-0">
               Or equivalently 0.1125° per microstep. A 3D printer driving its X-axis through a 20-tooth GT2 pulley
               (2 mm pitch) moves 40 mm per revolution, so each microstep is 40 / 3200 = 12.5 µm of head
@@ -392,20 +392,20 @@ export default function Ch16Motors() {
         falling linearly to zero at the no-load speed where back-EMF nearly equals supply voltage. The induction motor
         has a quasi-flat region just below synchronous speed, then a sharply peaked
         <em className="italic text-text"> pull-out torque</em> at ~10–15 % slip, then a steep collapse below that. The synchronous motor has a
-        vertical line at <em className="italic text-text">n<sub>s</sub></em>: speed is fixed by line frequency until torque exceeds the pull-out
+        vertical line at <InlineMath tex="n_s" />: speed is fixed by line frequency until torque exceeds the pull-out
         value, at which point the machine stalls instantly. The stepper has a roughly flat low-speed region followed
         by a sharp drop above the <em className="italic text-text">pull-out frequency</em><Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        Pumping water through a hydraulic load (torque ∝ ω², the fan-law curve) wants a different motor than driving
-        a positive-displacement compressor (constant torque vs ω). Hoisting a constant weight wants different again.
+        Pumping water through a hydraulic load (torque <InlineMath tex="\propto \omega^2" />, the fan-law curve) wants a different motor than driving
+        a positive-displacement compressor (constant torque vs <InlineMath tex="\omega" />). Hoisting a constant weight wants different again.
         The motor is chosen — and often the gearing too — to put the steady-state intersection of motor curve and load
         curve at the design operating point.
       </p>
 
       <p className="mb-prose-3">
         Choosing the curve is only half the job; the other half is choosing the <em className="italic text-text">operating point on it</em>. A
-        motor is not equally efficient everywhere on its torque–speed plane. Copper losses scale as <em className="italic text-text">I²R</em> — and
+        motor is not equally efficient everywhere on its torque–speed plane. Copper losses scale as <InlineMath tex="I^2 R" /> — and
         therefore as torque squared. Iron losses (eddy + hysteresis in the laminations) scale roughly with frequency
         to the 1.5 power. Bearing and windage losses scale with speed. The combination produces a "sweet spot" of
         peak efficiency near rated torque and rated speed, with efficiency falling off at low loads (where the
@@ -431,8 +431,8 @@ export default function Ch16Motors() {
         hint="Linear interpolation between stall and no-load. At half no-load speed, what fraction of stall torque?"
         answer={
           <>
-            <p className="mb-prose-1 last:mb-0">The curve is τ(n) = τ_stall (1 − n/n_0). At n = 2000 rpm with n_0 = 4000 rpm:</p>
-            <Formula>τ = 0.8 · (1 − 2000/4000) = 0.8 · 0.5 = <strong className="text-text font-medium">0.4 N·m</strong></Formula>
+            <p className="mb-prose-1 last:mb-0">The curve is <InlineMath tex="\tau(n) = \tau_{\text{stall}}\, (1 - n/n_0)" />. At n = 2000 rpm with <InlineMath tex="n_0 = 4000\ \text{rpm}" />:</p>
+            <Formula tex="\tau = 0.8 \cdot (1 - 2000/4000) = 0.8 \cdot 0.5 = 0.4\ \text{N·m}" />
             <p className="mb-prose-1 last:mb-0">
               Maximum mechanical power is reached at exactly half the no-load speed (the curve's midpoint), which is
               a property of every linear torque–speed characteristic<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
@@ -451,7 +451,7 @@ export default function Ch16Motors() {
         currents in the cage: the Tesla induction motor, which self-regulates via slip and powers most of industry.
         Give the rotor its own DC field and it locks to synchronous speed for precise control; cut the rotor into
         many fine teeth and pulse the phases, and you have a stepper, where position is the integral of pulse count.
-        Same underlying physics — <em className="italic text-text">τ = NIAB sin(θ)</em> — six different ways to keep that <em className="italic text-text">sin</em> from going
+        Same underlying physics — <InlineMath tex="\tau = NIAB \sin\theta" /> — six different ways to keep that <em className="italic text-text">sin</em> from going
         the wrong way.
       </p>
       <p className="mb-prose-3">
@@ -491,7 +491,7 @@ export default function Ch16Motors() {
             The drive is a 3-phase inverter generating variable-frequency, variable-amplitude PWM, controlled by a
             field-oriented control loop running at ~10 kHz. At any operating point, the controller measures rotor
             position (or estimates it from back-EMF), transforms the three-phase stator currents into the rotor-aligned
-            <em className="italic text-text"> d-q</em> frame, and runs PI loops on the d-axis (flux) and q-axis (torque) components independently.
+            <InlineMath tex="d\text{-}q" /> frame, and runs PI loops on the d-axis (flux) and q-axis (torque) components independently.
             That decoupling is what lets the same machine deliver flat torque from zero rpm up through the field-
             weakening region near top speed<Cite id="krishnan-2010-bldc" in={SOURCES} />.
           </p>
@@ -592,7 +592,7 @@ export default function Ch16Motors() {
       >
         <FAQItem q="If τ = NIAB sin(θ) is the same formula for every motor, why are there so many different motor designs?">
           <p>
-            Because the formula doesn't tell you how to keep <em className="italic text-text">sin(θ)</em> in the part of its range where the torque
+            Because the formula doesn't tell you how to keep <InlineMath tex="\sin\theta" /> in the part of its range where the torque
             is positive and useful. Every motor family is a different answer to that question. Brushed DC uses a
             mechanical commutator. BLDC and PMSM use electronic commutation against rotor-position feedback. Induction
             uses a rotating stator field with no rotor-side connection, and accepts slip as the price. Synchronous
@@ -616,11 +616,11 @@ export default function Ch16Motors() {
         <FAQItem q="What is back-EMF, and why does it matter?">
           <p>
             A motor is also a generator. As the rotor spins it produces a voltage proportional to its speed:
-            <em className="italic text-text"> E<sub>back</sub> = K<sub>e</sub> ω</em>. This back-EMF opposes the supply voltage, so the net voltage
-            across the winding resistance is <em className="italic text-text">V − E<sub>back</sub></em>, and the current is
-            <em className="italic text-text"> I = (V − E<sub>back</sub>)/R</em>. At stall, E_back = 0 and I = V/R is large — that's why a stalled
+            <InlineMath tex="E_{\text{back}} = K_e\, \omega" />. This back-EMF opposes the supply voltage, so the net voltage
+            across the winding resistance is <InlineMath tex="V - E_{\text{back}}" />, and the current is
+            <InlineMath tex="I = (V - E_{\text{back}})/R" />. At stall, <InlineMath tex="E_{\text{back}} = 0" /> and <InlineMath tex="I = V/R" /> is large — that's why a stalled
             motor pulls a huge current. As the rotor accelerates, back-EMF rises, current falls, and the steady-state
-            speed is the one at which the residual <em className="italic text-text">(V − E<sub>back</sub>)/R</em> current produces just enough
+            speed is the one at which the residual <InlineMath tex="(V - E_{\text{back}})/R" /> current produces just enough
             torque to balance load and losses<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -630,8 +630,7 @@ export default function Ch16Motors() {
             Three is the minimum number of phases that produces a steadily rotating field with constant magnitude in
             both two-dimensional axes — a key property for smooth torque. Tesla's original 1888 patent actually used
             two phases 90° apart, which works but requires four wires (no current cancellation) and gives a slightly
-            pulsating field. Three-phase systems have the mathematically clean property that <em className="italic text-text">cos(ωt) + cos(ωt −
-            120°) + cos(ωt − 240°) = 0</em> at every instant, so three wires carry all the power with no neutral
+            pulsating field. Three-phase systems have the mathematically clean property that <InlineMath tex="\cos(\omega t) + \cos(\omega t - 120°) + \cos(\omega t - 240°) = 0" /> at every instant, so three wires carry all the power with no neutral
             return current. Higher phase counts (6, 9, 12) appear in specialty high-power drives but offer diminishing
             returns past three<Cite id="tesla-1888" in={SOURCES} />.
           </p>
@@ -642,8 +641,8 @@ export default function Ch16Motors() {
             A pole pair is one north–south set of magnetic poles arranged around the rotor. A 2-pole machine has one
             pole pair (one N and one S, on opposite sides); a 4-pole has two pairs alternating around the circumference;
             an 8-pole has four. For the stator field to make one complete spatial revolution around the bore, the
-            electrical phase has to advance through <em className="italic text-text">p/2</em> full cycles, so the mechanical synchronous speed in
-            RPM is <em className="italic text-text">120 f / p</em>. Higher pole count means slower rotation for the same line frequency, traded
+            electrical phase has to advance through <InlineMath tex="p/2" /> full cycles, so the mechanical synchronous speed in
+            RPM is <InlineMath tex="120\, f / p" />. Higher pole count means slower rotation for the same line frequency, traded
             against larger physical size for a given output torque<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -715,7 +714,7 @@ export default function Ch16Motors() {
             (no neodymium-iron-boron supply chain), the rotor tolerates very high temperatures (PM motors can
             irreversibly demagnetise above ~150 °C), and the construction is essentially indestructible (a single
             piece of cast aluminium plus a stack of laminated steel). The disadvantage is slightly lower efficiency,
-            because some of the energy that flows across the air gap is dissipated in I²R losses in the rotor bars.
+            because some of the energy that flows across the air gap is dissipated in <InlineMath tex="I^2 R" /> losses in the rotor bars.
             For very large machines (over 100 kW) the efficiency gap is small enough that induction usually wins on
             ruggedness and cost<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
@@ -761,7 +760,7 @@ export default function Ch16Motors() {
           <p>
             Because the stator iron sees a rotating (and therefore time-varying) magnetic field, which induces eddy
             currents in the iron itself by Faraday's law. Those eddy currents flow in closed loops in the cross-section
-            of the iron and dissipate as I²R heat. Laminating the iron into thin sheets (typically 0.35–0.5 mm thick),
+            of the iron and dissipate as <InlineMath tex="I^2 R" /> heat. Laminating the iron into thin sheets (typically 0.35–0.5 mm thick),
             insulated from each other, breaks the eddy-current paths into smaller, higher-resistance loops, cutting
             the losses by roughly the square of the lamination thickness. Without lamination, a 1 kW stator would
             self-heat to destruction within seconds. The same trick is used in transformers, for the same

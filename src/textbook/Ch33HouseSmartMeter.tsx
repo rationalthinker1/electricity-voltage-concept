@@ -13,7 +13,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -56,7 +56,7 @@ export default function Ch33HouseSmartMeter() {
         <Term def={<><strong className="text-text font-medium">real energy</strong> (kWh) — the time integral of the <em className="italic text-text">instantaneous</em> product V(t)·I(t). Equal to the cumulative work done by the source on the load, counted in joules and then converted to the engineering unit of kilowatt-hours (1 kWh = 3.6×10⁶ J). The only one of the four meter quantities that residential customers pay for.</>}>real energy</Term>,
         in kilowatt-hours, the time integral of instantaneous power:
       </p>
-      <Formula>kWh = ∫ V(t) I(t) dt</Formula>
+      <Formula tex="\\text{kWh} = \\int V(t)\\, I(t)\\, dt" />
       <p className="mb-prose-3">
         where the integral on the right runs over the billing period and yields joules (which the meter then
         divides by 3.6×10⁶ to display kilowatt-hours). <strong className="text-text font-medium">V(t)</strong> is the instantaneous service voltage
@@ -71,7 +71,7 @@ export default function Ch33HouseSmartMeter() {
         in kilovolt-ampere-hours, the integral of the product of root-mean-square voltage and current with their
         phase relationship ignored:
       </p>
-      <Formula>kVAh = ∫ V<sub>rms</sub> I<sub>rms</sub> dt</Formula>
+      <Formula tex="\\text{kVAh} = \\int V_{\\text{rms}}\\, I_{\\text{rms}}\\, dt" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V<sub>rms</sub></strong> and <strong className="text-text font-medium">I<sub>rms</sub></strong> are the running RMS values of
         the voltage and current waveforms (in volts and amperes), computed over a short averaging window. The
@@ -83,7 +83,7 @@ export default function Ch33HouseSmartMeter() {
         <Term def={<><strong className="text-text font-medium">reactive energy</strong> (kVARh) — the cumulative integral of V(t)·I(t-π/2): the part of the VI product that is 90° out of phase. Represents the energy that sloshes into and out of inductors and capacitors each cycle without being dissipated. Industrial customers pay penalties on it; residential ones usually do not.</>}>reactive energy</Term>{' '}
         in kilovolt-ampere-reactive-hours, the integral of voltage against the current shifted by a quarter cycle:
       </p>
-      <Formula>kVARh = ∫ V(t) I(t − π/2ω) dt</Formula>
+      <Formula tex="\\text{kVARh} = \\int V(t)\\, I(t - \\pi/2\\omega)\\, dt" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">ω = 2πf</strong> is the angular frequency of the line (377 rad/s in North America), and the
         quarter-cycle delay isolates the part of the current that is 90° out of phase with the voltage — the part
@@ -91,7 +91,7 @@ export default function Ch33HouseSmartMeter() {
         three integrals together obey a Pythagorean relation that recovers the power triangle from{' '}
         <Term def={<><strong className="text-text font-medium">chapter 12's power triangle</strong> — the right-triangle identity P² + Q² = S², where P is real power, Q is reactive power, and S is apparent power. Each meter integrates each leg over time into its own register, then the triangle holds for the cumulative energies as well: kWh² + kVARh² = kVAh².</>}>chapter 12</Term>:
       </p>
-      <Formula>kVA² = kW² + kVAR²</Formula>
+      <Formula tex="\\text{kVA}^2 = \\text{kW}^2 + \\text{kVAR}^2" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">kVA</strong> is apparent power (in kilovolt-amperes), <strong className="text-text font-medium">kW</strong> is real power (in
         kilowatts — the work-doing component), and <strong className="text-text font-medium">kVAR</strong> is reactive power (in kilovolt-amperes
@@ -120,8 +120,8 @@ export default function Ch33HouseSmartMeter() {
         hint="Multiply daily energy by 30 to get monthly kWh, then by the rate."
         answer={
           <>
-            <Formula>kWh<sub>month</sub> = 30 kWh/day × 30 days = 900 kWh</Formula>
-            <Formula>Bill = 900 kWh × $0.20/kWh = <strong className="text-text font-medium">$180</strong></Formula>
+            <Formula tex="\\text{kWh}_{\\text{month}} = 30\\ \\text{kWh/day} \\times 30\\ \\text{days} = 900\\ \\text{kWh}" />
+            <Formula tex="\\text{Bill} = 900\\ \\text{kWh} \\times \\$0.20/\\text{kWh} = \\$180" />
             <p className="mb-prose-1 last:mb-0">
               Right in the middle of the U.S. residential range. Add a small fixed monthly service charge
               ($5–$15 depending on utility) and that is the whole bill on a flat-rate plan<Cite id="ansi-c12-1-2014" in={SOURCES} />.
@@ -235,7 +235,7 @@ export default function Ch33HouseSmartMeter() {
               If the meter is reading <em className="italic text-text">low</em> by the full 0.5 % allowance, the true energy is the reported
               value divided by 0.995:
             </p>
-            <Formula>kWh<sub>true,max</sub> = 850 / 0.995 ≈ <strong className="text-text font-medium">854.3 kWh</strong></Formula>
+            <Formula tex="\\text{kWh}_{\\text{true,max}} = 850/0.995 \\approx 854.3\\ \\text{kWh}" />
             <p className="mb-prose-1 last:mb-0">
               About 4 kWh of headroom in the customer's favour at this billing total — roughly $0.50 to $1.00
               depending on the rate. Over a million meters and a year of billings, those single-percent margins
@@ -298,11 +298,11 @@ export default function Ch33HouseSmartMeter() {
         hint="Compute kWh in each window separately, then sum the cost at each rate."
         answer={
           <>
-            <Formula>kWh<sub>peak</sub> = 5 kW × 6 h = 30 kWh</Formula>
-            <Formula>kWh<sub>off</sub> = 1.5 kW × 18 h = 27 kWh</Formula>
-            <Formula>Cost<sub>peak</sub> = 30 × $0.30 = $9.00</Formula>
-            <Formula>Cost<sub>off</sub> = 27 × $0.13 = $3.51</Formula>
-            <Formula>Daily total = <strong className="text-text font-medium">$12.51</strong></Formula>
+            <Formula tex="\\text{kWh}_{\\text{peak}} = 5\\ \\text{kW} \\times 6\\ \\text{h} = 30\\ \\text{kWh}" />
+            <Formula tex="\\text{kWh}_{\\text{off}} = 1.5\\ \\text{kW} \\times 18\\ \\text{h} = 27\\ \\text{kWh}" />
+            <Formula tex="\\text{Cost}_{\\text{peak}} = 30 \\times \\$0.30 = \\$9.00" />
+            <Formula tex="\\text{Cost}_{\\text{off}} = 27 \\times \\$0.13 = \\$3.51" />
+            <Formula tex="\\text{Daily total} = \\$12.51" />
             <p className="mb-prose-1 last:mb-0">
               Roughly $375/month from HVAC alone — and notice that the peak window contributes more than twice
               the cost of the off-peak window despite only running a quarter of the hours. Shifting load out of
@@ -331,21 +331,21 @@ export default function Ch33HouseSmartMeter() {
             <p className="mb-prose-1 last:mb-0">
               Before correction, real power is 780 kW and apparent power is 780 / 0.78 = 1000 kVA, so:
             </p>
-            <Formula>kVAR<sub>before</sub> = √(1000² − 780²) = √(1,000,000 − 608,400) = √391,600 ≈ 626 kVAR</Formula>
+            <Formula tex="\\text{kVAR}_{\\text{before}} = \\sqrt{1000^2 - 780^2} = \\sqrt{1{,}000{,}000 - 608{,}400} = \\sqrt{391{,}600} \\approx 626\\ \\text{kVAR}" />
             <p className="mb-prose-1 last:mb-0">
               The penalty threshold of PF = 0.85 at 780 kW real corresponds to:
             </p>
-            <Formula>kVAR<sub>threshold</sub> = 780 × tan(acos(0.85)) ≈ 780 × 0.620 ≈ 483 kVAR</Formula>
-            <Formula>Penalty<sub>before</sub> = (626 − 483) × $5 ≈ <strong className="text-text font-medium">$715/month</strong></Formula>
+            <Formula tex="\\text{kVAR}_{\\text{threshold}} = 780 \\times \\tan(\\arccos(0.85)) \\approx 780 \\times 0.620 \\approx 483\\ \\text{kVAR}" />
+            <Formula tex="\\text{Penalty}_{\\text{before}} = (626 - 483) \\times \\$5 \\approx \\$715/\\text{month}" />
             <p className="mb-prose-1 last:mb-0">
               After correction to PF = 0.95:
             </p>
-            <Formula>kVAR<sub>after</sub> = 780 × tan(acos(0.95)) ≈ 780 × 0.329 ≈ 257 kVAR</Formula>
+            <Formula tex="\\text{kVAR}_{\\text{after}} = 780 \\times \\tan(\\arccos(0.95)) \\approx 780 \\times 0.329 \\approx 257\\ \\text{kVAR}" />
             <p className="mb-prose-1 last:mb-0">
               257 kVAR is below the 483 kVAR threshold, so the penalty drops to zero. The capacitor saves the
               full <strong className="text-text font-medium">$715/month</strong>. The $50,000 capital cost pays back in:
             </p>
-            <Formula>Payback = $50,000 / $715/month ≈ <strong className="text-text font-medium">70 months</strong> ≈ 5.8 years</Formula>
+            <Formula tex="\\text{Payback} = \\$50{,}000/\\$715/\\text{month} \\approx 70\\ \\text{months} \\approx 5.8\\ \\text{years}" />
             <p className="mb-prose-1 last:mb-0">
               A typical industrial PF-correction payback period<Cite id="grainger-power-systems-2003" in={SOURCES} />.
               The energy charge (700 h × 780 kW × $0.10 = $54,600/month) and demand charge ($15 × 780 = $11,700)
@@ -378,7 +378,7 @@ export default function Ch33HouseSmartMeter() {
         <Term def={<><strong className="text-text font-medium">net metering</strong> — a tariff in which the customer is billed for the difference between kWh imported and kWh exported, at the prevailing retail rate. Exports effectively earn the same per-kWh as imports cost. Generous to solar customers; criticised for under-pricing the utility's fixed costs.</>}>net metering</Term>{' '}
         — the customer pays the difference between energy imported and energy exported at a single retail rate:
       </p>
-      <Formula>Bill = R × (kWh<sub>in</sub> − kWh<sub>out</sub>)</Formula>
+      <Formula tex="\\text{Bill} = R \\times (\\text{kWh}_{\\text{in}} - \\text{kWh}_{\\text{out}})" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">R</strong> is the per-kWh retail rate (in $/kWh), <strong className="text-text font-medium">kWh<sub>in</sub></strong> is total
         energy imported from the grid during the billing period (in kWh), and <strong className="text-text font-medium">kWh<sub>out</sub></strong>{' '}
@@ -397,7 +397,7 @@ export default function Ch33HouseSmartMeter() {
         imports and exports, so the customer's incentive becomes "consume own generation when retail rates are
         high; export only when wholesale buy-back rates exceed the value of self-consumption":
       </p>
-      <Formula>Bill = R<sub>peak</sub> × kWh<sub>peak,in</sub> + R<sub>off</sub> × kWh<sub>off,in</sub> − R<sub>export</sub> × kWh<sub>out</sub></Formula>
+      <Formula tex="\\text{Bill} = R_{\\text{peak}} \\times \\text{kWh}_{\\text{peak,in}} + R_{\\text{off}} \\times \\text{kWh}_{\\text{off,in}} - R_{\\text{export}} \\times \\text{kWh}_{\\text{out}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">R<sub>peak</sub></strong> and <strong className="text-text font-medium">R<sub>off</sub></strong> are the peak and off-peak
         per-kWh retail rates (in $/kWh), <strong className="text-text font-medium">kWh<sub>peak,in</sub></strong> and{' '}
@@ -437,9 +437,9 @@ export default function Ch33HouseSmartMeter() {
         hint="Net metering bills the difference between total imported and total exported energy at the retail rate."
         answer={
           <>
-            <Formula>kWh<sub>in</sub> = 8 kWh (evening import)</Formula>
-            <Formula>kWh<sub>out</sub> = 10 kWh (midday export)</Formula>
-            <Formula>Net = (8 − 10) × $0.15 = <strong className="text-text font-medium">−$0.30</strong></Formula>
+            <Formula tex="\\text{kWh}_{\\text{in}} = 8\\ \\text{kWh (evening import)}" />
+            <Formula tex="\\text{kWh}_{\\text{out}} = 10\\ \\text{kWh (midday export)}" />
+            <Formula tex="\\text{Net} = (8 - 10) \\times \\$0.15 = -\\$0.30" />
             <p className="mb-prose-1 last:mb-0">
               A credit of 30 cents — the homeowner exported 2 kWh more than they imported on net. Under net
               metering, that credit rolls forward against future imports. Under the NEM 3.0 export rate of about

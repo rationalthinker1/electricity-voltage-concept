@@ -10,10 +10,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
-import { MathBlock, Pullout } from '@/components/Prose';
+import { Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
@@ -380,7 +380,7 @@ export default function GaussLab() {
       </p>
 
       <h3 className="lab-section-h3">Formula</h3>
-      <MathBlock>∮ E · dA = Q<sub>enc</sub> / ε₀</MathBlock>
+      <Formula id="gauss-law" />
       <p className="mb-prose-3">
         Variable glossary:
       </p>
@@ -437,12 +437,12 @@ export default function GaussLab() {
         around it, centered on the charge. The field is radial and uniform on that sphere, with magnitude <strong className="text-text font-medium">kQ/r²</strong>. The sphere
         has area <strong className="text-text font-medium">4πr²</strong>. Multiply them:
       </p>
-      <MathBlock>∮ E · dA = (kQ/r²) · 4πr² = 4πk Q</MathBlock>
+      <Formula tex="\oint \vec{E}\cdot d\vec{A} = (kQ/r^2)\cdot 4\pi r^2 = 4\pi k\, Q" />
       <p className="mb-prose-3">
         The radius dropped out: the field falls as 1/r², the area grows as r², the product is independent of r. Define
         <strong className="text-text font-medium"> k = 1/(4π ε₀)</strong>, and the 4π tidies away<Cite id="griffiths-2017" in={SOURCES} />:
       </p>
-      <MathBlock>∮ E · dA = Q / ε₀</MathBlock>
+      <Formula tex="\oint \vec{E}\cdot d\vec{A} = \dfrac{Q}{\varepsilon_0}" />
       <p className="mb-prose-3">
         The same answer holds for <em className="italic text-text">any</em> closed surface enclosing the same charge. Deform the sphere — squish one side in, stretch another out —
         and the flux through each patch changes, but the <em className="italic text-text">total</em> integrated flux is unchanged. Every field line leaving the charge has
@@ -456,7 +456,7 @@ export default function GaussLab() {
       <p className="mb-prose-3">
         The differential form, by the divergence theorem:
       </p>
-      <MathBlock>∇ · E = ρ / ε₀</MathBlock>
+      <Formula id="maxwell-gauss-e" />
       <p className="mb-prose-3">
         Charge density is the source of field divergence. In Maxwell's equations this is the foundational object; Coulomb's law falls out as a
         special case<Cite id="jackson-1999" in={SOURCES} />.
@@ -469,8 +469,8 @@ export default function GaussLab() {
         question={<>A point charge of <strong className="text-text font-medium">+1 nC</strong> sits at the origin. Compute the total electric flux through a sphere of radius <strong className="text-text font-medium">5 cm</strong> centered on the charge.</>}
         answer={
           <>
-            <p className="mb-prose-3">The flux through any closed surface enclosing Q is Q/ε₀ — the radius doesn't matter:</p>
-            <Formula>Φ = Q / ε₀ = (10⁻⁹) / (8.854×10⁻¹²) ≈ 113 V·m</Formula>
+            <p className="mb-prose-3">The flux through any closed surface enclosing Q is <InlineMath tex="Q/\varepsilon_0" /> — the radius doesn't matter:</p>
+            <Formula tex="\Phi = Q / \varepsilon_0 = \dfrac{10^{-9}}{8.854\times 10^{-12}} \approx 113\ \text{V·m}" />
             <p className="mb-prose-3">About <strong className="text-text font-medium">113 V·m</strong>. The same answer for a sphere of radius 1 cm, 1 m, or 1 km — what matters is what's inside.</p>
           </>
         }
@@ -482,7 +482,7 @@ export default function GaussLab() {
         answer={
           <>
             <p className="mb-prose-3">Gauss's law cares only about the enclosed charge, not the surface shape. The charge is still inside, still 1 nC:</p>
-            <Formula>Φ = Q / ε₀ ≈ 113 V·m</Formula>
+            <Formula tex="\Phi = Q / \varepsilon_0 \approx 113\ \text{V·m}" />
             <p className="mb-prose-3">Identical to the spherical case. The trade-off: through a cube, <strong className="text-text font-medium">E·dA</strong> is uneven across the surface — strong through the centres of each face, weak at the corners — but the integral comes out the same<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
@@ -493,9 +493,9 @@ export default function GaussLab() {
         question={<>Derive the field outside a uniformly charged solid sphere of radius <strong className="text-text font-medium">R</strong> holding total charge <strong className="text-text font-medium">Q</strong>, at distance <strong className="text-text font-medium">r &gt; R</strong>.</>}
         answer={
           <>
-            <p className="mb-prose-3">Spherical symmetry: E is radial and depends only on r. Wrap a Gaussian sphere of radius r &gt; R around the source. The full charge Q is enclosed:</p>
-            <Formula>∮ E · dA = E · 4πr² = Q / ε₀</Formula>
-            <Formula>E = Q / (4π ε₀ r²) = k Q / r²</Formula>
+            <p className="mb-prose-3">Spherical symmetry: E is radial and depends only on r. Wrap a Gaussian sphere of radius <InlineMath tex="r > R" /> around the source. The full charge Q is enclosed:</p>
+            <Formula tex="\oint \vec{E}\cdot d\vec{A} = E\cdot 4\pi r^2 = \dfrac{Q}{\varepsilon_0}" />
+            <Formula tex="E = \dfrac{Q}{4\pi\varepsilon_0\, r^2} = \dfrac{k\, Q}{r^2}" />
             <p className="mb-prose-3">Identical to a <em className="italic text-text">point charge</em> at the centre. This is the shell theorem: outside, an extended spherically symmetric distribution looks exactly like a point<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
@@ -506,9 +506,9 @@ export default function GaussLab() {
         question={<>Inside the same uniformly charged solid sphere (total charge Q, radius R), what is the field at radius <strong className="text-text font-medium">r &lt; R</strong>?</>}
         answer={
           <>
-            <p className="mb-prose-3">Only the charge inside radius r contributes. For a uniform volume density ρ, the enclosed charge scales as r³/R³:</p>
-            <Formula>Q<sub>enc</sub>(r) = Q · (r³ / R³)</Formula>
-            <Formula>E · 4πr² = Q (r³/R³) / ε₀  ⇒  E = (kQ/R³) r</Formula>
+            <p className="mb-prose-3">Only the charge inside radius r contributes. For a uniform volume density <InlineMath tex="\rho" />, the enclosed charge scales as <InlineMath tex="r^3/R^3" />:</p>
+            <Formula tex="Q_{\text{enc}}(r) = Q \cdot (r^3 / R^3)" />
+            <Formula tex="E\cdot 4\pi r^2 = \dfrac{Q\, (r^3/R^3)}{\varepsilon_0} \;\Rightarrow\; E = \dfrac{k\, Q}{R^3}\, r" />
             <p className="mb-prose-3">The interior field grows <em className="italic text-text">linearly</em> with r, from zero at the centre to its surface value <strong className="text-text font-medium">kQ/R²</strong> at r = R. This is why the inside of a uniformly charged ball is a simple harmonic potential well — a fact exploited in models of nuclear physics and self-gravitating spheres.</p>
           </>
         }
@@ -519,9 +519,9 @@ export default function GaussLab() {
         question={<>Find the field a perpendicular distance <strong className="text-text font-medium">r</strong> from an infinite straight line of charge with linear density <strong className="text-text font-medium">λ</strong> (coulombs per meter).</>}
         answer={
           <>
-            <p className="mb-prose-3">Cylindrical symmetry forces E to be radial and to depend only on perpendicular distance r. Wrap a cylindrical Gaussian surface of length L and radius r around the line. The end caps contribute nothing (E is parallel to them). The side wall has area 2πrL, with E uniform on it:</p>
-            <Formula>E · 2πrL = (λL) / ε₀</Formula>
-            <Formula>E = λ / (2π ε₀ r)</Formula>
+            <p className="mb-prose-3">Cylindrical symmetry forces E to be radial and to depend only on perpendicular distance r. Wrap a cylindrical Gaussian surface of length L and radius r around the line. The end caps contribute nothing (E is parallel to them). The side wall has area <InlineMath tex="2\pi r L" />, with E uniform on it:</p>
+            <Formula tex="E\cdot 2\pi r L = \dfrac{\lambda L}{\varepsilon_0}" />
+            <Formula tex="E = \dfrac{\lambda}{2\pi\varepsilon_0\, r}" />
             <p className="mb-prose-3">One line of algebra. The field falls as 1/r (not 1/r²), because the source extends infinitely in one direction — a sphere of radius r intercepts only a thin slice of it. Coulomb's law would have required integrating contributions from an infinite line; Gauss skips the integral<Cite id="jackson-1999" in={SOURCES} />.</p>
           </>
         }
@@ -532,11 +532,11 @@ export default function GaussLab() {
         question={<>Find the field between two infinite parallel sheets with surface charge densities <strong className="text-text font-medium">+σ</strong> and <strong className="text-text font-medium">−σ</strong> (an idealized parallel-plate capacitor).</>}
         answer={
           <>
-            <p className="mb-prose-3">Each infinite sheet alone, by Gauss with a pillbox of area A straddling it, produces field σ/(2ε₀) on each side, pointing away (for +σ) or toward (for −σ) the sheet:</p>
-            <Formula>E<sub>single sheet</sub> = σ / (2ε₀)</Formula>
-            <p className="mb-prose-3">Between two oppositely charged sheets, the contributions add: both fields point from the +σ sheet toward the −σ sheet. Outside the sheets, they cancel:</p>
-            <Formula>E<sub>between</sub> = σ/(2ε₀) + σ/(2ε₀) = σ / ε₀</Formula>
-            <Formula>E<sub>outside</sub> = σ/(2ε₀) − σ/(2ε₀) = 0</Formula>
+            <p className="mb-prose-3">Each infinite sheet alone, by Gauss with a pillbox of area A straddling it, produces field <InlineMath tex="\sigma/(2\varepsilon_0)" /> on each side, pointing away (for <InlineMath tex="+\sigma" />) or toward (for <InlineMath tex="-\sigma" />) the sheet:</p>
+            <Formula tex="E_{\text{single sheet}} = \dfrac{\sigma}{2\varepsilon_0}" />
+            <p className="mb-prose-3">Between two oppositely charged sheets, the contributions add: both fields point from the <InlineMath tex="+\sigma" /> sheet toward the <InlineMath tex="-\sigma" /> sheet. Outside the sheets, they cancel:</p>
+            <Formula tex="E_{\text{between}} = \dfrac{\sigma}{2\varepsilon_0} + \dfrac{\sigma}{2\varepsilon_0} = \dfrac{\sigma}{\varepsilon_0}" />
+            <Formula tex="E_{\text{outside}} = \dfrac{\sigma}{2\varepsilon_0} - \dfrac{\sigma}{2\varepsilon_0} = 0" />
             <p className="mb-prose-3">This is the textbook result: uniform field <strong className="text-text font-medium">σ/ε₀</strong> between the plates, zero outside. The same answer the parallel-plate capacitor lab (4.1) will need.</p>
           </>
         }
@@ -548,7 +548,7 @@ export default function GaussLab() {
         answer={
           <>
             <p className="mb-prose-3">Wrap a Gaussian surface inside the cavity, anywhere in the empty interior. The enclosed charge is zero:</p>
-            <Formula>∮ E · dA = 0 / ε₀ = 0</Formula>
+            <Formula tex="\oint \vec{E}\cdot d\vec{A} = 0 / \varepsilon_0 = 0" />
             <p className="mb-prose-3">By spherical symmetry, E inside must be radial and uniform on any concentric Gaussian sphere. The only field satisfying both the symmetry and the zero-flux constraint is <strong className="text-text font-medium">E = 0 everywhere inside the cavity</strong>.</p>
             <p className="mb-prose-3">This is the Faraday-cage result: a hollow conductor shields its interior from external electric fields, because any external field induces surface charges that exactly cancel it inside. The result is independent of cavity shape, by similar Gauss-law arguments<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
@@ -561,8 +561,8 @@ export default function GaussLab() {
         answer={
           <>
             <p className="mb-prose-3">Gauss's law uses the net enclosed charge:</p>
-            <Formula>Q<sub>enc</sub> = +1 − 0.7 = +0.3 C</Formula>
-            <Formula>Φ = Q<sub>enc</sub> / ε₀ = 0.3 / (8.854×10⁻¹²) ≈ 3.39×10¹⁰ V·m</Formula>
+            <Formula tex="Q_{\text{enc}} = +1 - 0.7 = +0.3\ \text{C}" />
+            <Formula tex="\Phi = Q_{\text{enc}} / \varepsilon_0 = \dfrac{0.3}{8.854\times 10^{-12}} \approx 3.39\times 10^{10}\ \text{V·m}" />
             <p className="mb-prose-3">About <strong className="text-text font-medium">3.4×10¹⁰ V·m</strong>. The internal arrangement of the two charges doesn't matter; only the algebraic sum does. The field structure inside the surface is wildly nontrivial — there's a dipole-like pattern with field lines running from + to − — but the total escaping flux is fixed.</p>
           </>
         }
@@ -574,9 +574,9 @@ export default function GaussLab() {
         answer={
           <>
             <p className="mb-prose-3">At r = 2 cm, between the shells: a Gaussian sphere of radius 2 cm encloses only the inner shell, charge +5 nC:</p>
-            <Formula>E(2 cm) = k Q<sub>enc</sub> / r² = (8.99×10⁹)(5×10⁻⁹) / (0.02)² ≈ 1.12×10⁵ V/m</Formula>
+            <Formula tex="E(2\ \text{cm}) = \dfrac{k\, Q_{\text{enc}}}{r^2} = \dfrac{(8.99\times 10^{9})(5\times 10^{-9})}{(0.02)^2} \approx 1.12\times 10^{5}\ \text{V/m}" />
             <p className="mb-prose-3">About <strong className="text-text font-medium">112 kV/m</strong>, radially outward. At r = 5 cm, outside both shells: net enclosed charge is +5 nC + (−5 nC) = 0:</p>
-            <Formula>E(5 cm) = 0</Formula>
+            <Formula tex="E(5\ \text{cm}) = 0" />
             <p className="mb-prose-3">Zero field. This is the principle behind coaxial cables — the outer conductor shields the world from the field of the inner conductor when the two carry equal and opposite charge<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
@@ -587,9 +587,9 @@ export default function GaussLab() {
         question={<>An infinite conducting cylinder of radius <strong className="text-text font-medium">R</strong> carries surface linear-charge density <strong className="text-text font-medium">λ</strong>. Compute E at a perpendicular distance <strong className="text-text font-medium">r &gt; R</strong> from the axis.</>}
         answer={
           <>
-            <p className="mb-prose-3">Cylindrical symmetry: E radial, depends only on r. Wrap a Gaussian cylinder of length L, radius r. Total enclosed charge is λL (everything on the conductor's surface inside our cylinder):</p>
-            <Formula>E · 2πrL = (λL) / ε₀</Formula>
-            <Formula>E = λ / (2π ε₀ r)</Formula>
+            <p className="mb-prose-3">Cylindrical symmetry: E radial, depends only on r. Wrap a Gaussian cylinder of length L, radius r. Total enclosed charge is <InlineMath tex="\lambda L" /> (everything on the conductor's surface inside our cylinder):</p>
+            <Formula tex="E\cdot 2\pi r L = \dfrac{\lambda L}{\varepsilon_0}" />
+            <Formula tex="E = \dfrac{\lambda}{2\pi\varepsilon_0\, r}" />
             <p className="mb-prose-3">Identical to the field of an infinite line! Outside the conductor, the cylinder of charge looks like a line. (Inside the conducting material, E is zero — a conductor in electrostatic equilibrium has E = 0 in its bulk.)</p>
           </>
         }
@@ -600,9 +600,9 @@ export default function GaussLab() {
         question={<>Pillbox derivation: from Gauss's law alone, find the field on each side of an infinite sheet of charge with surface density <strong className="text-text font-medium">σ</strong>.</>}
         answer={
           <>
-            <p className="mb-prose-3">Symmetry: E points perpendicular to the sheet, with equal magnitude on each side (and opposite directions, away from the sheet for σ &gt; 0). Wrap a cylindrical "pillbox" Gaussian surface of cross-sectional area A straddling the sheet. The side wall contributes nothing (E parallel to it). Each end cap contributes E·A:</p>
-            <Formula>∮ E · dA = 2 E A = (σ A) / ε₀</Formula>
-            <Formula>E = σ / (2 ε₀)</Formula>
+            <p className="mb-prose-3">Symmetry: E points perpendicular to the sheet, with equal magnitude on each side (and opposite directions, away from the sheet for <InlineMath tex="\sigma > 0" />). Wrap a cylindrical "pillbox" Gaussian surface of cross-sectional area A straddling the sheet. The side wall contributes nothing (E parallel to it). Each end cap contributes <InlineMath tex="E\cdot A" />:</p>
+            <Formula tex="\oint \vec{E}\cdot d\vec{A} = 2\, E\, A = \dfrac{\sigma A}{\varepsilon_0}" />
+            <Formula tex="E = \dfrac{\sigma}{2\varepsilon_0}" />
             <p className="mb-prose-3">The field is <em className="italic text-text">independent of distance</em> from the sheet — a consequence of the sheet being infinite. Real finite sheets approximate this only in the near-field regime, where the observer is much closer to the sheet than to its edges<Cite id="feynman-II-2" in={SOURCES} />.</p>
           </>
         }

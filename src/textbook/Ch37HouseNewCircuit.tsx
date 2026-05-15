@@ -23,7 +23,7 @@
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { Term } from '@/components/Term';
@@ -67,7 +67,7 @@ export default function Ch37HouseNewCircuit() {
         dwelling (in volt-amperes, not watts; the difference matters for motors and electronics but not for resistive
         loads), then apply the 220.82 rule of thumb:
       </p>
-      <Formula>I_demand = (3 × W_first10k / 1000 + 0.40 × W_remainder / 1000) / V</Formula>
+      <Formula tex="I_{\text{demand}} = \dfrac{3 \times W_{\text{first10k}}/1000 + 0.40 \times W_{\text{remainder}}/1000}{V}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">I_demand</strong> is the calculated service demand current (in amperes RMS) that the panel needs
         to be able to carry, <strong className="text-text font-medium">W_first10k</strong> is the first 10 000 VA of summed connected load (taken at
@@ -104,7 +104,7 @@ export default function Ch37HouseNewCircuit() {
               A continuous load is counted at 125%: a 50 A continuous EV charger contributes 50 × 1.25 = 62.5 A to the
               demand calculation. Add to the existing 95 A:
             </p>
-            <Formula>I_total = 95 + 62.5 = 157.5 A &lt; 200 A</Formula>
+            <Formula tex="I_{\text{total}} = 95 + 62.5 = 157.5\ \text{A} < 200\ \text{A}" />
             <p className="mb-prose-1 last:mb-0">
               Answer: <strong className="text-text font-medium">yes, there is headroom</strong>. The new total demand is roughly 158 A on a 200 A
               service, comfortably under the main breaker but with less than 50 A of remaining headroom — adding
@@ -134,7 +134,7 @@ export default function Ch37HouseNewCircuit() {
         Same for an electric tankless water heater, a commercial-grade space heater, or a long-running pool pump.
         NEC 210.19(A)(1)(a) requires that for continuous loads the branch-circuit conductor be sized to:
       </p>
-      <Formula>I_conductor ≥ 1.25 × I_continuous + 1.0 × I_noncontinuous</Formula>
+      <Formula tex="I_{\text{conductor}} \geq 1.25 \times I_{\text{continuous}} + 1.0 \times I_{\text{noncontinuous}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">I_conductor</strong> is the minimum allowable conductor ampacity (in amperes), <strong className="text-text font-medium">I_continuous</strong>
         is the portion of the branch's load that is continuous (in amperes), and <strong className="text-text font-medium">I_noncontinuous</strong> is
@@ -161,7 +161,7 @@ export default function Ch37HouseNewCircuit() {
         branch-circuit voltage drop under 3% and combined feeder-plus-branch drop under 5%<Cite id="nec-2023" in={SOURCES} />.
         The arithmetic is straightforward:
       </p>
-      <Formula>V_drop = 2 × I × R_per_ft × L_oneway</Formula>
+      <Formula tex="V_{\text{drop}} = 2 \times I \times R_{\text{per\_ft}} \times L_{\text{oneway}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V_drop</strong> is the total round-trip voltage drop seen by the load (in volts),
         <strong className="text-text font-medium"> I</strong> is the operating current (in amperes), <strong className="text-text font-medium">R_per_ft</strong> is the conductor's
@@ -189,7 +189,7 @@ export default function Ch37HouseNewCircuit() {
             <p className="mb-prose-1 last:mb-0">
               Round-trip voltage drop at 14 A and 75 ft:
             </p>
-            <Formula>V_drop = 2 × 14 × 0.00159 × 75 = 3.34 V</Formula>
+            <Formula tex="V_{\text{drop}} = 2 \times 14 \times 0.00159 \times 75 = 3.34\ \text{V}" />
             <p className="mb-prose-1 last:mb-0">
               On a 120 V branch that is 3.34 / 120 = 2.8%, which sneaks in just under the 3% informational
               note<Cite id="nec-2023" in={SOURCES} />.
@@ -319,7 +319,7 @@ export default function Ch37HouseNewCircuit() {
         calculation walks the box contents item by item, multiplies each by a per-conductor volume from
         Table 314.16(B), and totals the result:
       </p>
-      <Formula>V_box ≥ Σ(n_cond × v_cond) + V_devices + V_grounds + V_clamps</Formula>
+      <Formula tex="V_{\text{box}} \geq \sum(n_{\text{cond}} \times v_{\text{cond}}) + V_{\text{devices}} + V_{\text{grounds}} + V_{\text{clamps}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V_box</strong> is the labelled internal volume of the box (in cubic inches),
         <strong className="text-text font-medium"> n_cond</strong> is the number of insulated current-carrying conductors entering and remaining in the
@@ -335,12 +335,12 @@ export default function Ch37HouseNewCircuit() {
         single 12-2 NM-B cable entering through an external clamp. Three insulated conductors (hot, neutral; the bare
         ground is counted separately as a single bundle), one receptacle on a yoke, one ground bundle:
       </p>
-      <Formula>V_required = (2 × 2.25) + (2 × 2.25) + (1 × 2.25) = 11.25 in³</Formula>
+      <Formula tex="V_{\text{required}} = (2 \times 2.25) + (2 \times 2.25) + (1 \times 2.25) = 11.25\ \text{in}^3" />
       <p className="mb-prose-3">
         That fits inside the 21 in³ box with margin. If the same box were a feed-through point with two cables (one in,
         one out, daisy-chained), there would be four insulated conductors (two hot, two neutral) plus the grounds:
       </p>
-      <Formula>V_required = (4 × 2.25) + (2 × 2.25) + (1 × 2.25) = 15.75 in³</Formula>
+      <Formula tex="V_{\text{required}} = (4 \times 2.25) + (2 \times 2.25) + (1 \times 2.25) = 15.75\ \text{in}^3" />
       <p className="mb-prose-3">
         Still inside 21 in³. The point of the calculation is not that small boxes fail dramatically — they fail
         quietly, by making the conductors hard to dress and the wirenuts hard to seat properly. An overfilled box is
@@ -361,7 +361,7 @@ export default function Ch37HouseNewCircuit() {
             <p className="mb-prose-1 last:mb-0">
               Item-by-item per NEC 314.16(B):
             </p>
-            <Formula>V_required = (4 × 2.00) + (2 × 2.00) + (1 × 2.00) = 14.00 in³</Formula>
+            <Formula tex="V_{\text{required}} = (4 \times 2.00) + (2 \times 2.00) + (1 \times 2.00) = 14.00\ \text{in}^3" />
             <p className="mb-prose-1 last:mb-0">
               Four insulated conductors at 2.00, one device yoke worth 2× the per-conductor volume, and one ground
               bundle worth a single 2.00. Total 14.0 in³, well inside the 21 in³ box.
@@ -474,13 +474,13 @@ export default function Ch37HouseNewCircuit() {
             <p className="mb-prose-1 last:mb-0">
               The operating current and resulting drop:
             </p>
-            <Formula>I = 1200 W / 120 V = 10 A</Formula>
-            <Formula>V_drop = 2 × 10 × 0.00252 × 100 = 5.04 V</Formula>
+            <Formula tex="I = 1200\ \text{W} / 120\ \text{V} = 10\ \text{A}" />
+            <Formula tex="V_{\text{drop}} = 2 \times 10 \times 0.00252 \times 100 = 5.04\ \text{V}" />
             <p className="mb-prose-1 last:mb-0">
               On a 120 V branch that is 5.04 / 120 = 4.2%, well over the 3% informational recommendation. Upsizing to
               12 AWG (R/ft ≈ 1.59 mΩ/ft) gives:
             </p>
-            <Formula>V_drop_12AWG = 2 × 10 × 0.00159 × 100 = 3.18 V → 2.65%</Formula>
+            <Formula tex="V_{\text{drop,12AWG}} = 2 \times 10 \times 0.00159 \times 100 = 3.18\ \text{V} \to 2.65\%" />
             <p className="mb-prose-1 last:mb-0">
               Answer: <strong className="text-text font-medium">14 AWG fails the 3% recommendation; upsize to 12 AWG</strong>. The 15 A breaker that
               would have gone with 14 AWG can be kept at 15 A with the bigger conductor, or upgraded to 20 A if other
@@ -504,7 +504,7 @@ export default function Ch37HouseNewCircuit() {
             <p className="mb-prose-1 last:mb-0">
               A 24 A continuous load requires a conductor rated for at least 24 × 1.25 = 30 A and a matched breaker:
             </p>
-            <Formula>I_min_conductor = 1.25 × 24 = 30 A</Formula>
+            <Formula tex="I_{\text{min,conductor}} = 1.25 \times 24 = 30\ \text{A}" />
             <p className="mb-prose-1 last:mb-0">
               That is a 10 AWG conductor on a 30 A breaker, not a 12 AWG on a 20 A. The 20 A breaker would trip on the
               first long cut; if it failed to trip (which is the AFCI/GFCI worry), the 12 AWG wire would overheat
@@ -537,7 +537,7 @@ export default function Ch37HouseNewCircuit() {
             { label: 'New load', value: <>1500 W shop vac, 120 V, non-continuous (homeowner cleanup use)</> },
             { label: 'Operating current', value: <>1500 / 120 = 12.5 A</> },
             { label: 'Conductor', value: <>12-2 NM-B with bare ground, ~35 ft one-way <Cite id="nec-2023" in={SOURCES} /></> },
-            { label: 'Voltage drop at 12.5 A', value: <>2 × 12.5 × 0.00159 × 35 ≈ 1.4 V → 1.2%</> },
+            { label: 'Voltage drop at 12.5 A', value: <><InlineMath tex="2 \times 12.5 \times 0.00159 \times 35 \approx 1.4\ \text{V} \to 1.2\%" /></> },
             { label: 'Breaker', value: <>20 A dual-function (AFCI + GFCI) per 210.8 and 210.12 <Cite id="nec-2023" in={SOURCES} /></> },
             { label: 'Receptacle', value: <>single-gang NEMA 5-20R in 21 in³ steel box <Cite id="nema-wd-6" in={SOURCES} /></> },
             { label: 'Path', value: <>panel knockout → ceiling joist run → drop into stud bay → garage receptacle</> },

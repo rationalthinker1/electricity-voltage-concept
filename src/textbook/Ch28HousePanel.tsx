@@ -19,7 +19,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -115,7 +115,7 @@ export default function Ch28HousePanel() {
         side and L2 on the other, giving you both phases of the split-phase service for free<Cite id="nema-ab-1" in={SOURCES} />.
         The voltage between those two stabs is the difference of the two phase voltages,
       </p>
-      <Formula>V<sub>LL</sub> = V<sub>L1</sub> − V<sub>L2</sub> = (+120) − (−120) = 240 V</Formula>
+      <Formula tex="V_{LL} = V_{L1} - V_{L2} = (+120) - (-120) = 240\\ \\text{V}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V<sub>LL</sub></strong> is the line-to-line voltage between the two ungrounded bus bars (in
         volts RMS), <strong className="text-text font-medium">V<sub>L1</sub></strong> is the instantaneous voltage of bus L1 measured with respect to
@@ -149,7 +149,7 @@ export default function Ch28HousePanel() {
               full pairs with one slot left over; with two columns that is 14 two-pole breakers total, plus two
               orphan slots that can take a single-pole 120 V breaker each — or a single tandem.
             </p>
-            <Formula>N<sub>2-pole</sub> = 2 columns × ⌊15 / 2⌋ = 2 × 7 = 14</Formula>
+            <Formula tex="N_{\\text{2-pole}} = 2\\ \\text{columns} \\times \\lfloor 15/2 \\rfloor = 2 \\times 7 = 14" />
             <p className="mb-prose-1 last:mb-0">
               Answer: <strong className="text-text font-medium">14 two-pole 240 V breakers</strong>, with two leftover slots for 120 V branch circuits.
             </p>
@@ -213,7 +213,7 @@ export default function Ch28HousePanel() {
         in the core, the sensing winding picks it up, and a solid-state trip circuit opens the breaker. The
         condition that triggers the trip is just
       </p>
-      <Formula>I<sub>residual</sub> = | I<sub>hot</sub> − I<sub>neutral</sub> | &gt; 5 mA</Formula>
+      <Formula tex="I_{\\text{residual}} = |I_{\\text{hot}} - I_{\\text{neutral}}| > 5\\ \\text{mA}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">I<sub>hot</sub></strong> is the current leaving the panel on the ungrounded conductor (in
         amperes), <strong className="text-text font-medium">I<sub>neutral</sub></strong> is the current returning on the grounded conductor (in
@@ -255,7 +255,7 @@ export default function Ch28HousePanel() {
               The GFCI senses the difference between total current out on hot and total current back on neutral;
               that difference is the sum of every leak to ground on the branch.
             </p>
-            <Formula>I<sub>residual</sub> = 4 mA + 3 mA = 7 mA &gt; 5 mA</Formula>
+            <Formula tex="I_{\\text{residual}} = 4\\ \\text{mA} + 3\\ \\text{mA} = 7\\ \\text{mA} > 5\\ \\text{mA}" />
             <p className="mb-prose-1 last:mb-0">
               4 mA alone does not trip the breaker; with the second leak the combined residual is 7 mA and the
               breaker trips. Answer: <strong className="text-text font-medium">no, then yes</strong> — and this is exactly why "nuisance" GFCI
@@ -284,7 +284,7 @@ export default function Ch28HousePanel() {
         {' '}<Term def={<><strong className="text-text font-medium">arc-flash energy</strong> — the electrical energy dissipated in the arc that forms when a breaker opens under fault conditions. Computed as voltage times fault current times clearing time. Quantified by NFPA 70E in cal/cm² at a working distance; drives PPE selection.</>}>arc-flash energy</Term>,
         which to a good approximation is just
       </p>
-      <Formula>E<sub>arc</sub> ≈ V × I<sub>fault</sub> × t<sub>clear</sub></Formula>
+      <Formula tex="E_{\\text{arc}} \\approx V \\times I_{\\text{fault}} \\times t_{\\text{clear}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">E<sub>arc</sub></strong> is the energy released in the fault arc (in joules),
         <strong className="text-text font-medium"> V</strong> is the system voltage across the arc (in volts; 120 V for a single hot-to-neutral
@@ -293,7 +293,7 @@ export default function Ch28HousePanel() {
         time the breaker takes to interrupt the arc (in seconds). For a numerical sense of scale, take V = 120 V,
         I<sub>fault</sub> = 10 kA, t<sub>clear</sub> = 50 ms:
       </p>
-      <Formula>E<sub>arc</sub> ≈ 120 × 10 000 × 0.050 = 60 000 J = 60 kJ</Formula>
+      <Formula tex="E_{\\text{arc}} \\approx 120 \\times 10{,}000 \\times 0.050 = 60{,}000\\ \\text{J} = 60\\ \\text{kJ}" />
       <p className="mb-prose-3">
         Sixty kilojoules dumped into a few cubic centimetres of air in a tenth of a second. That is enough to
         vaporise the local section of bus bar, eject molten copper, and ignite anything within arm's length. It
@@ -337,14 +337,14 @@ export default function Ch28HousePanel() {
           and how does it compare to the rated dissipation of a fully-loaded <strong className="text-text font-medium">20 A, 120 V</strong> branch
           circuit?</>
         }
-        hint={<>Arc power is V × I; the branch's rated dissipation is its rated voltage × rated current.</>}
+        hint={<>Arc power is <InlineMath tex="V \\times I" />; the branch's rated dissipation is its rated voltage × rated current.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               Arc power and branch rated power:
             </p>
-            <Formula>P<sub>arc</sub> = 240 V × 12 A = 2 880 W</Formula>
-            <Formula>P<sub>branch</sub> = 120 V × 20 A = 2 400 W</Formula>
+            <Formula tex="P_{\\text{arc}} = 240\\ \\text{V} \\times 12\\ \\text{A} = 2{,}880\\ \\text{W}" />
+            <Formula tex="P_{\\text{branch}} = 120\\ \\text{V} \\times 20\\ \\text{A} = 2{,}400\\ \\text{W}" />
             <p className="mb-prose-1 last:mb-0">
               The arc is dissipating <strong className="text-text font-medium">~2.88 kW in a localised hot spot</strong> — more than the entire
               branch's nameplate load, concentrated in a few square millimetres of insulation. The reason AFCIs
@@ -436,19 +436,19 @@ export default function Ch28HousePanel() {
           aluminium</strong> conductors (resistance ≈ 0.524 Ω per 1000 ft, or about <strong className="text-text font-medium">1.72 mΩ/m</strong>).
           The sub is loaded at 80 A. What is the round-trip voltage drop from the main to the sub on each hot?</>
         }
-        hint={<>Voltage drop on one conductor is I × R; the load current flows out one hot and returns through
+        hint={<>Voltage drop on one conductor is <InlineMath tex="I \\times R" />; the load current flows out one hot and returns through
         the other hot (in a 240 V load) or through the neutral (in a 120 V load). Treat one round-trip leg.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               Conductor resistance for 50 m of 1 AWG aluminium:
             </p>
-            <Formula>R = 1.72 mΩ/m × 50 m = 0.086 Ω per conductor</Formula>
+            <Formula tex="R = 1.72\\ \\text{m}\\Omega/\\text{m} \\times 50\\ \\text{m} = 0.086\\ \\Omega\\ \\text{per conductor}" />
             <p className="mb-prose-1 last:mb-0">
               For 240 V loads on the sub the current flows out on one hot and back on the other, so the total drop
               seen by the load is twice this:
             </p>
-            <Formula>ΔV = 2 × I × R = 2 × 80 × 0.086 = 13.8 V</Formula>
+            <Formula tex="\\Delta V = 2 \\times I \\times R = 2 \\times 80 \\times 0.086 = 13.8\\ \\text{V}" />
             <p className="mb-prose-1 last:mb-0">
               Answer: about <strong className="text-text font-medium">14 V drop at 240 V</strong>, or roughly <strong className="text-text font-medium">5.7%</strong>. NEC informational
               note 210.19 suggests keeping branch-circuit drop under 3% and total drop (feeder plus branch) under
@@ -711,7 +711,7 @@ export default function Ch28HousePanel() {
         <FAQItem q="If the ground rod's resistance to dirt is 25–100 Ω, how does the system trip a 20 A breaker when something faults to earth?">
           <p>
             It does not — and this is one of the most widely misunderstood points in residential electrical safety.
-            A bolted fault from a hot wire to a ground rod, through 25 Ω of soil, draws only 120 V / 25 Ω ≈ 4.8 A
+            A bolted fault from a hot wire to a ground rod, through 25 Ω of soil, draws only <InlineMath tex="120\\ \\text{V}/25\\ \\Omega \\approx 4.8\\ \\text{A}" />
             — well below a 20 A breaker's trip threshold. What clears a normal fault is not the dirt path; it is
             the metallic equipment-grounding path back to the transformer through the bonded neutral. Soil
             resistance to a single residential rod is too high to clear a branch fault by itself. The rod's role

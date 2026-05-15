@@ -16,7 +16,7 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { PredictThenObserve } from '@/components/PredictThenObserve';
@@ -76,7 +76,7 @@ export default function Ch8EnergyFlow() {
         the magnetic field <strong className="text-text font-medium">B</strong> curling around each wire segment, set by Ampère's law<Cite id="feynman-II-27" in={SOURCES} />.
         The pink arrows are the electric field <strong className="text-text font-medium">E</strong> — axial inside the conductor (Ohm's law demands it) and
         dipole-style in the surrounding air, threading from the positive terminal to the negative. The amber arrows are the
-        Poynting vector <strong className="text-text font-medium">S = (1/μ<sub>0</sub>) E × B</strong>, drawn at every grid point where the other two are visible.
+        Poynting vector <InlineMath id="poynting-vector" />, drawn at every grid point where the other two are visible.
         Look at where those amber arrows point: <em className="italic text-text">into</em> the wire near the bulb, <em className="italic text-text">out of</em> the wire near the
         battery<Cite id="poynting-1884" in={SOURCES} />. The energy is moving through the space around the copper, not along
         its interior.
@@ -102,7 +102,7 @@ export default function Ch8EnergyFlow() {
         wire of length <strong className="text-text font-medium">L</strong> with voltage drop <strong className="text-text font-medium">V</strong> across its ends, the integral of <strong className="text-text font-medium">E·dℓ</strong> along the
         axis must equal <strong className="text-text font-medium">V</strong>, and by symmetry <strong className="text-text font-medium">E</strong> is uniform along the way<Cite id="feynman-II-27" in={SOURCES} />:
       </p>
-      <Formula>E = V / L</Formula>
+      <Formula tex="E = V / L" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">E</strong> is the magnitude of the axial electric field inside the wire (in V/m, pointing
         along the wire's axis in the direction of conventional current), <strong className="text-text font-medium">V</strong> is the voltage drop
@@ -120,7 +120,7 @@ export default function Ch8EnergyFlow() {
         <strong className="text-text font-medium"> B·dℓ</strong> around a closed loop equals μ<sub>0</sub> times the enclosed current. Wrap that loop around the wire at radius
         <strong className="text-text font-medium"> a</strong> and you get
       </p>
-      <Formula>B = μ<sub>0</sub> I / (2π a)</Formula>
+      <Formula tex="B = \\dfrac{\\mu_0\\, I}{2\\pi a}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">B</strong> is the magnitude of the magnetic field at the wire's surface (in teslas),
         <strong className="text-text font-medium"> I</strong> is the current through the wire (in amperes), <strong className="text-text font-medium">a</strong> is the wire's radius
@@ -146,7 +146,7 @@ export default function Ch8EnergyFlow() {
         permeability of free space<Cite id="poynting-1884" in={SOURCES} />, a quantity now known as the{' '}
         <Term def={<><strong className="text-text font-medium">Poynting vector</strong> — the local electromagnetic energy-flux density, <em className="italic text-text">S = (1/μ₀) E × B</em>. SI units W/m². Points in the direction electromagnetic energy is flowing.</>}>Poynting vector</Term>:
       </p>
-      <Formula>S = (1/μ<sub>0</sub>) E × B</Formula>
+      <Formula id="poynting-vector" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">S</strong> (a vector) is the local electromagnetic energy-flux density at a point in space,
         <strong className="text-text font-medium"> E</strong> is the local electric field (in V/m), <strong className="text-text font-medium">B</strong> is the local magnetic field
@@ -178,14 +178,14 @@ export default function Ch8EnergyFlow() {
         It's one thing to wave at the radial direction; it's another to count the joules. Do the algebra. At the wire's
         surface,
       </p>
-      <Formula>|S|<sub>surf</sub> = E B / μ<sub>0</sub> = V I / (2π a L)</Formula>
+      <Formula tex="|S|_{\\text{surf}} = \\dfrac{E B}{\\mu_0} = \\dfrac{V I}{2\\pi a L}" />
       <p className="mb-prose-3">
         where the second equality just substitutes <em className="italic text-text">E = V/L</em> and <em className="italic text-text">B = μ<sub>0</sub>I/(2πa)</em> from above. The
         wire's lateral surface area is <strong className="text-text font-medium">2πaL</strong>. So the total energy flowing inward through that surface, per
         second, is the{' '}
         <Term def={<><strong className="text-text font-medium">surface integral</strong> — the integral of a vector field's normal component over a (typically closed) surface. For the Poynting vector, ∮ S · dA gives the total electromagnetic power flowing across that surface.</>}>surface integral</Term>
       </p>
-      <Formula>∮ S · dA = |S|<sub>surf</sub> · 2π a L = V I</Formula>
+      <Formula tex="\\oint \\vec{S}\\cdot d\\vec{A} = |S|_{\\text{surf}} \\cdot 2\\pi a L = V I" />
       <p className="mb-prose-3">
         Exactly <strong className="text-text font-medium">VI</strong>. The{' '}
         <Term def={<><strong className="text-text font-medium">Poynting flux</strong> — the integral of the Poynting vector over a surface, ∮ S · dA. Gives the net electromagnetic power crossing that surface in watts.</>}>Poynting flux</Term>{' '}
@@ -212,7 +212,7 @@ export default function Ch8EnergyFlow() {
         }}
         reveal={() => (
           <>
-            This is the entire chapter's punchline. The Poynting vector S = E × B / µ₀ points <em className="italic text-text">into</em> the wire from
+            This is the entire chapter's punchline. The Poynting vector <InlineMath id="poynting-vector" /> points <em className="italic text-text">into</em> the wire from
             the surrounding field, not along the wire's length.
           </>
         )}
@@ -227,7 +227,7 @@ export default function Ch8EnergyFlow() {
 
       <p className="mb-prose-3">
         That demo collapses the geometry into a flat side-view, which is the right move for getting the algebra to land but
-        hides the cross-product structure of <strong className="text-text font-medium">S = (1/μ<sub>0</sub>) E × B</strong>. Spin the next one — a coaxial cable
+        hides the cross-product structure of <InlineMath id="poynting-vector" />. Spin the next one — a coaxial cable
         in 3D. Pink radial <strong className="text-text font-medium">E</strong> threads from the inner conductor to the outer braid, teal circumferential
         <strong className="text-text font-medium"> B</strong> wraps the inner conductor, and their cross product points <em className="italic text-text">along</em> the cable axis<Cite id="pozar-2011" in={SOURCES} />.
         Every joule the source delivers to the load streams through the empty dielectric between the two conductors, not
@@ -235,7 +235,7 @@ export default function Ch8EnergyFlow() {
       </p>
       <p className="mb-prose-3">
         The same surface-integral identity holds, with the surface now a cross-sectional disk of the dielectric:
-        <strong className="text-text font-medium"> ∮ S · dA = V·I </strong>exactly<Cite id="poynting-1884" in={SOURCES} /><Cite id="feynman-II-27" in={SOURCES} />.
+        <InlineMath tex="\\oint \\vec{S}\\cdot d\\vec{A} = V I" /> exactly<Cite id="poynting-1884" in={SOURCES} /><Cite id="feynman-II-27" in={SOURCES} />.
       </p>
 
       <PoyntingCoax3DDemo />
@@ -247,18 +247,18 @@ export default function Ch8EnergyFlow() {
           <strong className="text-text font-medium"> V = 12 V</strong> across its ends while carrying <strong className="text-text font-medium">I = 5 A</strong>. Compute the magnitude of the
           Poynting vector at the wire's surface.</>
         }
-        hint="At the surface, |S| = E·B/μ₀ = VI/(2π a L). Plug numbers directly."
+        hint={<>At the surface, <InlineMath tex="|S| = E\\cdot B/\\mu_0 = VI/(2\\pi a L)" />. Plug numbers directly.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               Use the surface formula derived in this section<Cite id="feynman-II-27" in={SOURCES} />:
             </p>
-            <Formula>|S|<sub>surf</sub> = V I / (2π a L)</Formula>
+            <Formula tex="|S|_{\\text{surf}} = \\dfrac{V I}{2\\pi a L}" />
             <p className="mb-prose-1 last:mb-0">
               Plugging in: <em className="italic text-text">2π a L</em> = 2π × (10⁻³ m) × (1 m) ≈ 6.283×10⁻³ m². Then
               <em className="italic text-text"> V I</em> = 12 × 5 = 60 W, so
             </p>
-            <Formula>|S|<sub>surf</sub> = 60 / 6.283×10⁻³ ≈ 9.55×10³ W/m²</Formula>
+            <Formula tex="|S|_{\\text{surf}} = 60 / 6.283\\times 10^{-3} \\approx 9.55\\times 10^{3}\\ \\text{W/m}^2" />
             <p className="mb-prose-1 last:mb-0">
               About <strong className="text-text font-medium">9.5 kW/m²</strong> of Poynting flux pouring radially inward at every point on the wire's
               surface — a few times the solar constant<Cite id="kopp-lean-2011" in={SOURCES} />, in the air around a
@@ -274,14 +274,14 @@ export default function Ch8EnergyFlow() {
           <>For that same wire, verify directly that the total Poynting flux integrated over the lateral surface equals
           the dissipated power <strong className="text-text font-medium">VI</strong>.</>
         }
-        hint="Multiply |S|_surf by the lateral surface area 2π a L."
+        hint={<>Multiply <InlineMath tex="|S|_{\\text{surf}}" /> by the lateral surface area <InlineMath tex="2\\pi a L" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               The lateral surface area is <strong className="text-text font-medium">2π a L</strong>. The Poynting flux is uniform on the surface
               and points inward, so<Cite id="jackson-1999" in={SOURCES} />:
             </p>
-            <Formula>∮ S · dA = |S|<sub>surf</sub> · 2π a L = [V I / (2π a L)] · (2π a L) = V I</Formula>
+            <Formula tex="\\oint \\vec{S}\\cdot d\\vec{A} = |S|_{\\text{surf}} \\cdot 2\\pi a L = [V I / (2\\pi a L)] \\cdot (2\\pi a L) = V I" />
             <p className="mb-prose-1 last:mb-0">
               Numerically, <em className="italic text-text">9.55×10³ × 6.283×10⁻³</em> = <strong className="text-text font-medium">60 W</strong> — identical to <em className="italic text-text">VI</em> = 12 × 5 = 60 W.
               The 2π a L on top cancels the 2π a L on bottom; the geometry drops out completely. This is not coincidence —
@@ -348,22 +348,22 @@ export default function Ch8EnergyFlow() {
           <>Sunlight at the top of Earth's atmosphere delivers a time-averaged Poynting flux of about
           <strong className="text-text font-medium"> 1361 W/m²</strong>. What is the corresponding peak electric-field amplitude <em className="italic text-text">E₀</em> in the wave?</>
         }
-        hint="For a plane wave in vacuum, ⟨|S|⟩ = ½ c ε₀ E₀². Solve for E₀."
+        hint={<>For a plane wave in vacuum, <InlineMath tex="\\langle|S|\\rangle = \\tfrac{1}{2} c \\varepsilon_0 E_0^2" />. Solve for <InlineMath tex="E_0" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               The time-averaged Poynting magnitude for a plane wave is<Cite id="jackson-1999" in={SOURCES} />:
             </p>
-            <Formula>⟨|S|⟩ = ½ c ε₀ E₀²</Formula>
+            <Formula tex="\\langle|S|\\rangle = \\tfrac{1}{2} c \\varepsilon_0 E_0^2" />
             <p className="mb-prose-1 last:mb-0">
               Solve for <em className="italic text-text">E₀</em>:
             </p>
-            <Formula>E₀ = √(2 ⟨|S|⟩ / (c ε₀))</Formula>
+            <Formula tex="E_0 = \\sqrt{2 \\langle|S|\\rangle / (c \\varepsilon_0)}" />
             <p className="mb-prose-1 last:mb-0">
               Plug in <em className="italic text-text">⟨|S|⟩</em> = 1361 W/m²<Cite id="kopp-lean-2011" in={SOURCES} />, <em className="italic text-text">c</em> = 2.998×10⁸ m/s, and
               <em className="italic text-text"> ε₀</em> = 8.854×10⁻¹² F/m<Cite id="codata-2018" in={SOURCES} />:
             </p>
-            <Formula>E₀ = √(2 × 1361 / (2.998×10⁸ × 8.854×10⁻¹²)) ≈ 1013 V/m</Formula>
+            <Formula tex="E_0 = \\sqrt{2 \\times 1361 / (2.998\\times 10^{8} \\times 8.854\\times 10^{-12})} \\approx 1013\\ \\text{V/m}" />
             <p className="mb-prose-1 last:mb-0">
               About <strong className="text-text font-medium">1.0 kV/m</strong> of peak oscillating electric field, threading every cubic meter of space
               between here and the Sun.
@@ -388,7 +388,7 @@ export default function Ch8EnergyFlow() {
               <Cite id="griffiths-2017" in={SOURCES} />. Integrate over a full cycle and the inflow and outflow cancel
               identically<Cite id="jackson-1999" in={SOURCES} />:
             </p>
-            <Formula>⟨ ∮ S · dA ⟩<sub>cycle</sub> = 0</Formula>
+            <Formula tex="\\langle \\oint \\vec{S}\\cdot d\\vec{A} \\rangle_{\\text{cycle}} = 0" />
             <p className="mb-prose-1 last:mb-0">
               In circuit-theory language, an ideal capacitor consumes zero <em className="italic text-text">real</em> power; in field language, the
               Poynting flux is purely reactive. Energy sloshes in and out through space twice per cycle with no net transfer.
@@ -403,14 +403,14 @@ export default function Ch8EnergyFlow() {
           <>A <strong className="text-text font-medium">100 Ω</strong> resistor has <strong className="text-text font-medium">10 V</strong> across it. Without using the
           formula <em className="italic text-text">P = V²/R</em>, show that the Poynting flow into the resistor delivers exactly the dissipated power.</>
         }
-        hint="Compute the current first, then use ∮ S · dA = V I from this chapter's derivation."
+        hint={<>Compute the current first, then use <InlineMath tex="\\oint \\vec{S}\\cdot d\\vec{A} = V I" /> from this chapter's derivation.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               The current is <em className="italic text-text">I = V/R</em> = 10 / 100 = <strong className="text-text font-medium">0.1 A</strong>. The Poynting integral over the resistor's
               surface gives<Cite id="feynman-II-27" in={SOURCES} />:
             </p>
-            <Formula>∮ S · dA = V I = 10 × 0.1 = 1.0 W</Formula>
+            <Formula tex="\\oint \\vec{S}\\cdot d\\vec{A} = V I = 10 \\times 0.1 = 1.0\\ \\text{W}" />
             <p className="mb-prose-1 last:mb-0">
               And for cross-check, <em className="italic text-text">V²/R</em> = 100 / 100 = <strong className="text-text font-medium">1.0 W</strong>. The two routes give the same answer
               because they are the same energy-conservation statement — one written as a surface integral of field flux, the
@@ -458,14 +458,14 @@ export default function Ch8EnergyFlow() {
             { label: 'Mode of propagation', value: 'TEM (Transverse Electromagnetic)' },
             { label: 'Velocity factor (typical)', value: '0.66–0.85 × c' },
             { label: 'Loss in inner conductor (DC, ideal SC)', value: '0' },
-            { label: 'Cross-section integral of S', value: '= VI exactly' },
+            { label: 'Cross-section integral of S', value: <>= <InlineMath tex="VI" /> exactly</> },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
             A coaxial cable is the cleanest possible test of Chapter 6's central claim. For an ideal lossless line
             with inner radius <strong className="text-text font-medium">a</strong> and outer radius <strong className="text-text font-medium">b</strong>, the static <strong className="text-text font-medium">E</strong>
             between the conductors is purely radial, and the magnetostatic <strong className="text-text font-medium">B</strong> is purely
-            circumferential. Their cross product <strong className="text-text font-medium">S = (1/µ₀) E × B</strong> points axially, along the cable,
+            circumferential. Their cross product <InlineMath id="poynting-vector" /> points axially, along the cable,
             in the direction of energy flow<Cite id="pozar-2011" in={SOURCES} />. Integrate <strong className="text-text font-medium">S</strong> over
             any cross-section of the dielectric and the answer is <strong className="text-text font-medium">VI</strong> — exactly. The conductors
             themselves carry zero energy along their interior, in the limit of perfect conductivity
@@ -473,10 +473,10 @@ export default function Ch8EnergyFlow() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             The characteristic impedance, the parameter every RF engineer lives by, is set by the geometry of the
-            dielectric region between the conductors: <strong className="text-text font-medium">Z₀ = (η / 2π) · ln(b/a) / √εᵣ</strong>, with
-            <strong className="text-text font-medium"> η ≈ 377 Ω</strong> the impedance of free space<Cite id="pozar-2011" in={SOURCES} />. Standard
+            dielectric region between the conductors: <InlineMath tex="Z_0 = (\\eta / 2\\pi) \\cdot \\ln(b/a) / \\sqrt{\\varepsilon_r}" />, with
+            <InlineMath tex="\\eta \\approx 377\\ \\Omega" /> the impedance of free space<Cite id="pozar-2011" in={SOURCES} />. Standard
             RG-6 video cable comes out to <strong className="text-text font-medium">75 Ω</strong>; RG-58 instrumentation cable to <strong className="text-text font-medium">50 Ω</strong>.
-            The propagation speed is <strong className="text-text font-medium">c/√εᵣ</strong>, which for typical polyethylene dielectrics works out
+            The propagation speed is <InlineMath tex="c/\\sqrt{\\varepsilon_r}" />, which for typical polyethylene dielectrics works out
             to roughly <strong className="text-text font-medium">~0.66 c</strong> — exactly the "two-thirds the speed of light" number that keeps
             appearing throughout this book.
           </p>
@@ -507,12 +507,12 @@ export default function Ch8EnergyFlow() {
             minimum at <strong className="text-text font-medium">1360.8 ± 0.5 W/m²</strong><Cite id="kopp-lean-2011" in={SOURCES} />. That is a
             real, local Poynting flux. Every square meter of cross-section between here and the photosphere is
             carrying that much energy per second across vacuum at the speed of light — the same vector field
-            <strong className="text-text font-medium"> S = (1/µ₀) E × B</strong> that flows into a resistive wire in the rest of this chapter.
+            <InlineMath id="poynting-vector" /> that flows into a resistive wire in the rest of this chapter.
           </p>
           <p className="mb-prose-2 last:mb-0">
             For a propagating electromagnetic wave in vacuum, <strong className="text-text font-medium">E</strong> and <strong className="text-text font-medium">B</strong> are
             mutually perpendicular and in phase, with the time-averaged Poynting magnitude
-            <strong className="text-text font-medium"> ⟨|S|⟩ = ½ c ε₀ E₀²</strong><Cite id="jackson-1999" in={SOURCES} />. Plugging in the solar
+            <InlineMath tex="\\langle|S|\\rangle = \\tfrac{1}{2} c \\varepsilon_0 E_0^2" /><Cite id="jackson-1999" in={SOURCES} />. Plugging in the solar
             constant gives a peak field amplitude near Earth of <strong className="text-text font-medium">E₀ ≈ 1000 V/m</strong>, with a
             corresponding <strong className="text-text font-medium">B₀ ≈ 3 µT</strong> — comparable in magnitude to the geomagnetic field. The Sun
             quietly streams a few microtesla of oscillating <strong className="text-text font-medium">B</strong> through every cubic meter of empty
@@ -524,7 +524,7 @@ export default function Ch8EnergyFlow() {
             photon promoting an electron across the bandgap), but the bookkeeping is purely classical: incoming
             Poynting flux equals dissipated solar power plus delivered electrical power plus radiated thermal
             output<Cite id="poynting-1884" in={SOURCES} />. The same conservation equation that says
-            <strong className="text-text font-medium"> ∮S·dA = VI</strong> for a resistive wire says <strong className="text-text font-medium">∫S·dA = P_in</strong> for the front
+            <InlineMath tex="\\oint \\vec{S}\\cdot d\\vec{A} = VI" /> for a resistive wire says <InlineMath tex="\\int \\vec{S}\\cdot d\\vec{A} = P_{\\text{in}}" /> for the front
             face of a solar panel.
           </p>
         </CaseStudy>
@@ -551,7 +551,7 @@ export default function Ch8EnergyFlow() {
             the cryostat cold.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            In the Chapter 6 language: as <strong className="text-text font-medium">σ → ∞</strong>, the axial <strong className="text-text font-medium">E</strong> inside the
+            In the Chapter 6 language: as <InlineMath tex="\\sigma \\to \\infty" />, the axial <strong className="text-text font-medium">E</strong> inside the
             conductor goes to zero, and so does the radial component of <strong className="text-text font-medium">S</strong> at the conductor's
             surface<Cite id="griffiths-2017" in={SOURCES} />. The Poynting flux stays in the surrounding
             dielectric and slides on past the conductor untouched. All of the dissipation moves to whatever
@@ -573,7 +573,7 @@ export default function Ch8EnergyFlow() {
       >
         <FAQItem q="If the energy flows through space and not the wire, why does the wire matter at all?">
           <p>
-            Because the wire is what shapes the field. The Poynting vector <strong className="text-text font-medium">S = (1/μ<sub>0</sub>) E × B</strong> is
+            Because the wire is what shapes the field. The Poynting vector <InlineMath id="poynting-vector" /> is
             only nonzero where <strong className="text-text font-medium">E</strong> and <strong className="text-text font-medium">B</strong> both have components transverse to one another, and
             both of those fields are sourced by the charges sitting on (and currents flowing through) the conductor
             <Cite id="poynting-1884" in={SOURCES} />. Take the wire away and the boundary condition vanishes — no surface
@@ -590,7 +590,7 @@ export default function Ch8EnergyFlow() {
             that does work pushing positive charge from low to high potential, and that work ends up stored in the
             electromagnetic field surrounding the whole circuit<Cite id="griffiths-2017" in={SOURCES} />. Davis and Kaplan
             verified this explicitly for a circular circuit, showing that the net Poynting flux <em className="italic text-text">leaving</em> the
-            battery equals the net flux <em className="italic text-text">entering</em> the resistive arc, with both equal to <strong className="text-text font-medium">VI</strong>
+            battery equals the net flux <em className="italic text-text">entering</em> the resistive arc, with both equal to <InlineMath tex="VI" />
             <Cite id="davis-kaplan-2011" in={SOURCES} />. The battery is a Poynting source. The resistor is a Poynting
             sink.
           </p>
@@ -600,12 +600,12 @@ export default function Ch8EnergyFlow() {
           <p>
             It's as real as any local energy current can be. The differential statement
           </p>
-          <Formula>∂u/∂t + ∇·S = −J·E</Formula>
+          <Formula tex="\\partial u/\\partial t + \\nabla\\cdot\\vec{S} = -\\vec{J}\\cdot\\vec{E}" />
           <p>
             where <strong className="text-text font-medium">u</strong> is the local electromagnetic energy density (in J/m³, given by
-            <em className="italic text-text"> ½ε₀E² + B²/(2μ₀)</em>), <strong className="text-text font-medium">∂u/∂t</strong> is its partial derivative with respect to time at
-            a fixed point in space, <strong className="text-text font-medium">∇·S</strong> is the divergence of the Poynting vector (in W/m³), and
-            <strong className="text-text font-medium"> J·E</strong> is the dot product of the current density (in A/m²) and the electric field (in
+            <InlineMath tex="\\tfrac{1}{2}\\varepsilon_0 E^2 + B^2/(2\\mu_0)" />), <InlineMath tex="\\partial u/\\partial t" /> is its partial derivative with respect to time at
+            a fixed point in space, <InlineMath tex="\\nabla\\cdot\\vec{S}" /> is the divergence of the Poynting vector (in W/m³), and
+            <InlineMath tex="\\vec{J}\\cdot\\vec{E}" /> is the dot product of the current density (in A/m²) and the electric field (in
             V/m), i.e., the local rate at which the field does work on charges (W/m³). The equation
             is a pointwise conservation law: field energy density <strong className="text-text font-medium">u</strong> changes at any point only by net
             <strong className="text-text font-medium"> S</strong> divergence or by mechanical work done on charge<Cite id="poynting-1884" in={SOURCES} />. You
@@ -620,8 +620,8 @@ export default function Ch8EnergyFlow() {
           <p>
             The boundary condition collapsed and the field reconfigured at the speed of light. The moment the gap opens,
             charge piles up on the two new ends until the axial <strong className="text-text font-medium">E</strong> inside what's left of the wire is
-            cancelled — and once <strong className="text-text font-medium">E</strong> inside the conductor goes to zero, so does <strong className="text-text font-medium">J = σE</strong> and
-            so does the circumferential <strong className="text-text font-medium">B</strong>. With both fields gone, <strong className="text-text font-medium">S = (1/μ<sub>0</sub>)E × B</strong>
+            cancelled — and once <strong className="text-text font-medium">E</strong> inside the conductor goes to zero, so does <InlineMath tex="\\vec{J} = \\sigma\\vec{E}" /> and
+            so does the circumferential <strong className="text-text font-medium">B</strong>. With both fields gone, <InlineMath id="poynting-vector" />
             is zero everywhere near the bulb<Cite id="feynman-II-27" in={SOURCES} />. The "off" signal propagates outward
             from the cut at roughly ⅔ <em className="italic text-text">c</em> in copper, which is why "instantly" is a perfectly good first
             approximation at human scales but wrong at nanosecond ones<Cite id="griffiths-2017" in={SOURCES} />.
@@ -633,10 +633,10 @@ export default function Ch8EnergyFlow() {
             Yes, and it gets more interesting. The fields oscillate, so <strong className="text-text font-medium">S(t)</strong> oscillates with them — but
             the time-averaged Poynting vector still points into resistive loads at the rate of real power delivered,
           </p>
-          <Formula>⟨S⟩ · dA averaged over a cycle = ⟨VI⟩ = V<sub>rms</sub> I<sub>rms</sub> cos φ</Formula>
+          <Formula tex="\\langle\\vec{S}\\rangle \\cdot d\\vec{A}\\ \\text{averaged over a cycle} = \\langle VI \\rangle = V_{\\text{rms}} I_{\\text{rms}} \\cos\\varphi" />
           <p>
             where <em className="italic text-text">φ</em> is the load's phase angle<Cite id="jackson-1999" in={SOURCES} />. For purely reactive
-            components — ideal capacitors and inductors — ⟨S⟩ = 0. Energy sloshes in and out through space twice per cycle
+            components — ideal capacitors and inductors — <InlineMath tex="\\langle\\vec{S}\\rangle = 0" />. Energy sloshes in and out through space twice per cycle
             with no net transfer; that's exactly what "reactive power" is, written in field language
             <Cite id="griffiths-2017" in={SOURCES} />.
           </p>
@@ -645,7 +645,7 @@ export default function Ch8EnergyFlow() {
         <FAQItem q="Inside an ideal battery, what direction does the Poynting flow point?">
           <p>
             Outward. Inside the source, the non-electrostatic EMF drives positive charge from low to high potential, so the
-            current <strong className="text-text font-medium">J</strong> is opposite to the electrostatic <strong className="text-text font-medium">E</strong>. Their dot product <strong className="text-text font-medium">J·E</strong>
+            current <strong className="text-text font-medium">J</strong> is opposite to the electrostatic <strong className="text-text font-medium">E</strong>. Their dot product <InlineMath tex="\\vec{J}\\cdot\\vec{E}" />
             is <em className="italic text-text">negative</em> — the source is doing work <em className="italic text-text">against</em> the field, i.e., creating field energy. By
             Poynting's theorem this shows up as net <strong className="text-text font-medium">S</strong> leaving the battery's volume
             <Cite id="poynting-1884" in={SOURCES} />. Davis and Kaplan plotted the streamlines explicitly: <strong className="text-text font-medium">S</strong>
@@ -658,8 +658,8 @@ export default function Ch8EnergyFlow() {
           <p>
             Into the field between the plates, and back out again. While the capacitor charges, <strong className="text-text font-medium">S</strong> points
             radially <em className="italic text-text">inward</em> from the surrounding space into the gap, depositing energy in the growing
-            <strong className="text-text font-medium"> E</strong>-field there. The total stored energy works out to <strong className="text-text font-medium">½ C V²</strong>, or equivalently
-            the volume integral of <strong className="text-text font-medium">½ ε<sub>0</sub> E²</strong> over the gap<Cite id="griffiths-2017" in={SOURCES} />.
+            <strong className="text-text font-medium"> E</strong>-field there. The total stored energy works out to <InlineMath tex="\\tfrac{1}{2} C V^2" />, or equivalently
+            the volume integral of <InlineMath tex="\\tfrac{1}{2} \\varepsilon_0 E^2" /> over the gap<Cite id="griffiths-2017" in={SOURCES} />.
             On discharge, the process runs backward — <strong className="text-text font-medium">S</strong> flows out of the gap into the external circuit.
             Nothing is dissipated; the time-averaged Poynting flux around any cycle is zero<Cite id="jackson-1999" in={SOURCES} />.
           </p>
@@ -671,7 +671,7 @@ export default function Ch8EnergyFlow() {
             times over, is to compute <strong className="text-text font-medium">S</strong> from independent measurements of <strong className="text-text font-medium">E</strong> and
             <strong className="text-text font-medium"> B</strong> and verify that the surface integral matches the dissipated power. Davis and Kaplan
             performed the full 3D numerical version for a realistic circular circuit and showed that
-            <strong className="text-text font-medium"> ∮S·dA</strong> over any closed surface enclosing the resistor reproduces <strong className="text-text font-medium">VI</strong> at every
+            <InlineMath tex="\\oint \\vec{S}\\cdot d\\vec{A}" /> over any closed surface enclosing the resistor reproduces <InlineMath tex="VI" /> at every
             point in the parameter space<Cite id="davis-kaplan-2011" in={SOURCES} />. Morris and Styer did the equivalent
             for a 2D rail geometry and showed the flow lines lie along equipotentials<Cite id="morris-styer-2012" in={SOURCES} />.
             The fields are measurable; their cross product follows.
@@ -680,13 +680,13 @@ export default function Ch8EnergyFlow() {
 
         <FAQItem q="Why does ∮S·dA over the wire's surface come out to exactly VI, with no error term?">
           <p>
-            Because both quantities are the same integral, just regrouped. Start from <strong className="text-text font-medium">|S|<sub>surf</sub> = EB/μ<sub>0</sub></strong>,
-            substitute <strong className="text-text font-medium">E = V/L</strong> (axial drop along a uniform wire) and <strong className="text-text font-medium">B = μ<sub>0</sub>I/(2πa)</strong>
-            (Ampère at the surface), and the μ<sub>0</sub> cancels:
+            Because both quantities are the same integral, just regrouped. Start from <InlineMath tex="|S|_{\\text{surf}} = EB/\\mu_0" />,
+            substitute <InlineMath tex="E = V/L" /> (axial drop along a uniform wire) and <InlineMath tex="B = \\mu_0 I/(2\\pi a)" />
+            (Ampère at the surface), and the <InlineMath tex="\\mu_0" /> cancels:
           </p>
-          <Formula>|S|<sub>surf</sub> · 2π a L = (V I) / (2π a L) · 2π a L = V I</Formula>
+          <Formula tex="|S|_{\\text{surf}} \\cdot 2\\pi a L = (V I) / (2\\pi a L) \\cdot 2\\pi a L = V I" />
           <p>
-            The lateral surface area <strong className="text-text font-medium">2πaL</strong> meets the field's <strong className="text-text font-medium">1/(2πaL)</strong> dependence and the
+            The lateral surface area <InlineMath tex="2\\pi a L" /> meets the field's <InlineMath tex="1/(2\\pi a L)" /> dependence and the
             geometry drops out completely<Cite id="feynman-II-27" in={SOURCES} />. The identity is exact for any uniform
             cylindrical resistor; for a non-uniform geometry the result still holds when you integrate over the whole
             conductor's surface, because Poynting's theorem is a local energy-conservation statement
@@ -696,13 +696,13 @@ export default function Ch8EnergyFlow() {
 
         <FAQItem q="In a superconductor the Poynting flow doesn't enter the wire. Where does the energy actually end up?">
           <p>
-            Nowhere along the leads — it just keeps flowing. With σ → ∞, the axial <strong className="text-text font-medium">E</strong> inside the
-            superconductor vanishes, so <strong className="text-text font-medium">S = 0</strong> inside, and so does the radial component of <strong className="text-text font-medium">S</strong>
+            Nowhere along the leads — it just keeps flowing. With <InlineMath tex="\\sigma \\to \\infty" />, the axial <strong className="text-text font-medium">E</strong> inside the
+            superconductor vanishes, so <InlineMath tex="\\vec{S} = 0" /> inside, and so does the radial component of <strong className="text-text font-medium">S</strong>
             at the surface<Cite id="griffiths-2017" in={SOURCES} />. The flow stays in the surrounding space, parallel to
             the wire, untouched, and is absorbed only when it reaches whatever resistive element finally closes the circuit
             (a normal-conducting load, the room-temperature transition at the dewar, etc.)<Cite id="jackson-1999" in={SOURCES} />.
             In a circuit of one resistor and otherwise superconducting leads, 100% of the dissipation happens at the
-            resistor, by exactly the same Poynting integral that <strong className="text-text font-medium">VI</strong> gives.
+            resistor, by exactly the same Poynting integral that <InlineMath tex="VI" /> gives.
           </p>
         </FAQItem>
 
@@ -723,12 +723,12 @@ export default function Ch8EnergyFlow() {
             Both, separately, additively. The local electromagnetic{' '}
             <Term def={<><strong className="text-text font-medium">energy density</strong> — energy stored per unit volume in the electromagnetic field, <em className="italic text-text">u = ½ε₀E² + B²/(2μ₀)</em>. SI units J/m³. Integrate over a region to get total field energy.</>}>energy density</Term>{' '}is
           </p>
-          <Formula>u = ½ ε<sub>0</sub> E² + (1/2μ<sub>0</sub>) B²</Formula>
+          <Formula tex="u = \\tfrac{1}{2} \\varepsilon_0 E^2 + \\dfrac{1}{2\\mu_0} B^2" />
           <p>
             with a clean partition into electric and magnetic pieces<Cite id="griffiths-2017" in={SOURCES} />. Around a DC
             current-carrying wire, the magnetic term dominates near the surface; in the gap of a charged capacitor, the
             electric term dominates; in a propagating plane wave the two terms are equal on time-average. The Poynting
-            vector <strong className="text-text font-medium">S = (1/μ<sub>0</sub>)E × B</strong> is the <em className="italic text-text">flux</em> of this combined energy and only makes
+            vector <InlineMath id="poynting-vector" /> is the <em className="italic text-text">flux</em> of this combined energy and only makes
             sense when both fields are present<Cite id="jackson-1999" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -737,9 +737,9 @@ export default function Ch8EnergyFlow() {
           <p>
             Because the work done to <em className="italic text-text">build</em> a field from zero is the integral of force-against-itself. Charging a
             capacitor from 0 to <strong className="text-text font-medium">Q</strong> requires moving each successive <strong className="text-text font-medium">dq</strong> against the
-            already-present voltage <strong className="text-text font-medium">q/C</strong>, so the total work is <strong className="text-text font-medium">∫(q/C)dq = Q²/(2C) = ½CV²</strong>,
-            and the same quadratic dependence shows up locally as <strong className="text-text font-medium">½ε<sub>0</sub>E²</strong><Cite id="griffiths-2017" in={SOURCES} />.
-            The factor of ½ is the same factor that appears in <strong className="text-text font-medium">½mv²</strong> for the same reason: energy required
+            already-present voltage <InlineMath tex="q/C" />, so the total work is <InlineMath tex="\\int(q/C)\\,dq = Q^2/(2C) = \\tfrac{1}{2}CV^2" />,
+            and the same quadratic dependence shows up locally as <InlineMath tex="\\tfrac{1}{2}\\varepsilon_0 E^2" /><Cite id="griffiths-2017" in={SOURCES} />.
+            The factor of ½ is the same factor that appears in <InlineMath tex="\\tfrac{1}{2}mv^2" /> for the same reason: energy required
             to assemble a configuration from zero where the resisting force grows linearly with what's already there
             <Cite id="jackson-1999" in={SOURCES} />.
           </p>
@@ -759,8 +759,8 @@ export default function Ch8EnergyFlow() {
         <FAQItem q="Is the Poynting picture the same as electromagnetic waves carrying energy?">
           <p>
             Yes — there is no separate theory. A propagating EM wave is precisely a configuration in which <strong className="text-text font-medium">E</strong>
-            and <strong className="text-text font-medium">B</strong> are mutually perpendicular and in phase, with <strong className="text-text font-medium">S = (1/μ<sub>0</sub>)E × B</strong>
-            pointing in the direction of propagation and magnitude <strong className="text-text font-medium">cε<sub>0</sub>E²</strong> on time-average
+            and <strong className="text-text font-medium">B</strong> are mutually perpendicular and in phase, with <InlineMath id="poynting-vector" />
+            pointing in the direction of propagation and magnitude <InlineMath tex="c\\varepsilon_0 E^2" /> on time-average
             <Cite id="jackson-1999" in={SOURCES} />. The energy flow around a DC wire and the energy flow in a sunbeam are
             the same vector field doing the same job — one is steady, the other oscillates, but Maxwell's equations don't
             distinguish them<Cite id="maxwell-1865" in={SOURCES} />.
@@ -771,7 +771,7 @@ export default function Ch8EnergyFlow() {
           <p>
             Overwhelmingly in the gap. For a coaxial cable carrying DC at voltage <strong className="text-text font-medium">V</strong> and current <strong className="text-text font-medium">I</strong>,
             the Poynting flux integrated over any cross-section of the dielectric between inner and outer conductors
-            equals <strong className="text-text font-medium">VI</strong> exactly<Cite id="jackson-1999" in={SOURCES} />. The conductors carry essentially no
+            equals <InlineMath tex="VI" /> exactly<Cite id="jackson-1999" in={SOURCES} />. The conductors carry essentially no
             energy along their interior — for an ideal superconducting line, zero. At AC the same statement holds with
             <strong className="text-text font-medium"> S</strong> oscillating, and at radio frequencies the skin effect pushes current to the surface,
             making it even more accurate to say that the signal travels in the surrounding dielectric while the metal
@@ -781,12 +781,12 @@ export default function Ch8EnergyFlow() {
 
         <FAQItem q="Does Maxwell's displacement current play a role in steady-state Poynting flow?">
           <p>
-            Not in the strict DC limit — the displacement term <strong className="text-text font-medium">ε<sub>0</sub> ∂E/∂t</strong> is zero, so Ampère's
+            Not in the strict DC limit — the displacement term <InlineMath tex="\\varepsilon_0 \\,\\partial \\vec{E}/\\partial t" /> is zero, so Ampère's
             law reduces to its pre-Maxwell form and the <strong className="text-text font-medium">B</strong>-field around the wire is given by the enclosed
             conduction current alone<Cite id="maxwell-1865" in={SOURCES} />. But the displacement current is what makes the
             Poynting picture self-consistent the moment anything time-varies: in a charging capacitor, the conduction
             current stops at the plates and the displacement current carries on through the gap, completing the loop and
-            keeping <strong className="text-text font-medium">∇·J<sub>total</sub> = 0</strong> so that energy conservation closes
+            keeping <InlineMath tex="\\nabla\\cdot\\vec{J}_{\\text{total}} = 0" /> so that energy conservation closes
             <Cite id="jackson-1999" in={SOURCES} />. Steady state is the special case where you don't need that fix.
           </p>
         </FAQItem>

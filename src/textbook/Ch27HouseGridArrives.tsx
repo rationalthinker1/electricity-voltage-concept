@@ -21,7 +21,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -112,14 +112,14 @@ export default function Ch27HouseGridArrives() {
         more, and at 120 V that means tens of amps of current. Power, current, and voltage are tied by the same
         identity every engineering student learns in the second week:
       </p>
-      <Formula>P = V I</Formula>
+      <Formula id="power-vi" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P</strong> is the real power delivered to the load (in watts), <strong className="text-text font-medium">V</strong> is the RMS
         voltage across the load (in volts), and <strong className="text-text font-medium">I</strong> is the RMS current through it (in amperes), for
         a purely resistive load. Rearrange to read off the current required to deliver a given power at a given
         voltage:
       </p>
-      <Formula>I = P / V</Formula>
+      <Formula tex="I = \\dfrac{P}{V}" />
       <p className="mb-prose-3">
         same symbols, same meaning. The implication is direct: <em className="italic text-text">double the voltage and you halve the current
         required to deliver the same power</em>. A 4,800 W electric dryer at 240 V draws 20 A; the same dryer
@@ -150,15 +150,15 @@ export default function Ch27HouseGridArrives() {
             case, and the I²R loss in 30 m of <strong className="text-text font-medium">1.5 Ω total round-trip</strong> supply wire.
           </>
         }
-        hint="Use I = P/V for each case, then loss = I² × R_wire."
+        hint={<>Use <InlineMath tex="I = P/V" /> for each case, then <InlineMath tex="P_{\\text{loss}} = I^2 R_{\\text{wire}}" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">At 120 V:</p>
-            <Formula>I = P / V = 1500 / 120 = 12.5 A</Formula>
-            <Formula>P<sub>loss</sub> = I² R = (12.5)² · 1.5 ≈ <strong className="text-text font-medium">234 W</strong></Formula>
+            <Formula tex="I = \\dfrac{P}{V} = \\dfrac{1500}{120} = 12.5\\ \\text{A}" />
+            <Formula tex="P_{\\text{loss}} = I^2 R = (12.5)^2 \\cdot 1.5 \\approx 234\\ \\text{W}" />
             <p className="mb-prose-1 last:mb-0">At 240 V:</p>
-            <Formula>I = P / V = 1500 / 240 = 6.25 A</Formula>
-            <Formula>P<sub>loss</sub> = I² R = (6.25)² · 1.5 ≈ <strong className="text-text font-medium">59 W</strong></Formula>
+            <Formula tex="I = \\dfrac{P}{V} = \\dfrac{1500}{240} = 6.25\\ \\text{A}" />
+            <Formula tex="P_{\\text{loss}} = I^2 R = (6.25)^2 \\cdot 1.5 \\approx 59\\ \\text{W}" />
             <p className="mb-prose-1 last:mb-0">
               Doubling the voltage cuts the current in half and the wire loss by a factor of four — the same
               quadratic-in-voltage savings that makes the entire grid run on high-voltage transmission<Cite id="grainger-power-systems-2003" in={SOURCES} />.
@@ -209,8 +209,8 @@ export default function Ch27HouseGridArrives() {
         hint="The current goes out on the hot and returns on the neutral — count both legs of the loop."
         answer={
           <>
-            <Formula>R<sub>loop</sub> = 2 · (50 m · 0.85 mΩ/m) = 85 mΩ</Formula>
-            <Formula>ΔV = I · R<sub>loop</sub> = 100 · 0.085 ≈ 8.5 V</Formula>
+            <Formula tex="R_{\\text{loop}} = 2 \\cdot (50\\ \\text{m} \\cdot 0.85\\ \\text{m}\\Omega/\\text{m}) = 85\\ \\text{m}\\Omega" />
+            <Formula tex="\\Delta V = I \\cdot R_{\\text{loop}} = 100 \\cdot 0.085 \\approx 8.5\\ \\text{V}" />
             <p className="mb-prose-1 last:mb-0">
               That's about <strong className="text-text font-medium">7 %</strong> of the nominal 120 V at the house — high enough to be felt as
               "dim lights when the AC kicks on" and tight against the ANSI C84.1 utilization band, which is
@@ -260,7 +260,7 @@ export default function Ch27HouseGridArrives() {
         their product, and an aluminium-disc eddy-current brake holds the disc's rotational speed proportional to
         instantaneous power<Cite id="grainger-power-systems-2003" in={SOURCES} />. A geared mechanical register
         accumulates total disc revolutions, and so total energy delivered. The disc's spin rate at any moment is
-        proportional to <em className="italic text-text">V · I</em> integrated through the meter's measuring fields; the cumulative count is
+        proportional to <InlineMath tex="V \\cdot I" /> integrated through the meter's measuring fields; the cumulative count is
         the integral.
       </p>
       <p className="mb-prose-3">
@@ -272,7 +272,7 @@ export default function Ch27HouseGridArrives() {
         instant the power delivered is the product of voltage and current; energy is power integrated through
         time:
       </p>
-      <Formula>W = ∫ P dt = ∫ V(t) I(t) dt</Formula>
+      <Formula tex="W = \\int P\\, dt = \\int V(t)\\, I(t)\\, dt" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">W</strong> is the accumulated energy delivered to the customer (in joules — or, the utility's
         unit of choice, kilowatt-hours), <strong className="text-text font-medium">P</strong> is the instantaneous real power (in watts, W = V · A),
@@ -284,7 +284,7 @@ export default function Ch27HouseGridArrives() {
         For the special case of a constant load — a 1,500 W heater on a steady 120 V supply, say — the integral
         collapses to a product:
       </p>
-      <Formula>W = P × t</Formula>
+      <Formula tex="W = P \\times t" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">W</strong>, <strong className="text-text font-medium">P</strong>, and <strong className="text-text font-medium">t</strong> mean the same things as above. The
         practical unit is the{' '}
@@ -297,7 +297,7 @@ export default function Ch27HouseGridArrives() {
         <Term def={<><strong className="text-text font-medium">smart meter</strong> — a solid-state revenue meter with a microcontroller, two-way communication (RF mesh, cellular, or PLC), and the ability to report interval data (typically every 15 minutes) back to the utility. Replaces the monthly meter-reader visit; enables time-of-use rates and demand-response programs.</>}>smart meters</Term>{' '}
         report more than total energy. They log interval data (energy used every 15 minutes), peak{' '}
         <Term def={<><strong className="text-text font-medium">demand</strong> — the highest sustained power draw over a short interval (typically 15 minutes) within a billing cycle. Commercial customers are often billed separately on demand because peak demand drives the utility's generation, transmission, and transformer sizing — not just total energy.</>}>demand</Term>{' '}
-        in the billing cycle, and reactive energy (∫ V · I · sin(φ) dt, in kVARh). Reactive energy is what flows
+        in the billing cycle, and reactive energy (<InlineMath tex="\\int V \\cdot I \\cdot \\sin(\\varphi)\\, dt" />, in kVARh). Reactive energy is what flows
         into and out of motors, fluorescent ballasts, and other reactive loads without ever being dissipated.
         Residential customers are not usually billed on it, but it is the input that lets the utility decide where
         to put capacitor banks — and the input that lets a smart meter tell you the power factor of your overall
@@ -312,12 +312,12 @@ export default function Ch27HouseGridArrives() {
             in kWh, and the monthly cost at <strong className="text-text font-medium">$0.18/kWh</strong>.
           </>
         }
-        hint="W = P · t. Convert 1,500 W to kW first to land directly in kWh."
+        hint={<><InlineMath tex="W = P \\cdot t" />. Convert 1,500 W to kW first to land directly in kWh.</>}
         answer={
           <>
-            <Formula>W = P × t = 1.5 kW × (8 h/day × 30 days) = 1.5 × 240 h</Formula>
-            <Formula>W = <strong className="text-text font-medium">360 kWh</strong></Formula>
-            <Formula>Cost = 360 kWh × $0.18/kWh = <strong className="text-text font-medium">$64.80</strong></Formula>
+            <Formula tex="W = P \\times t = 1.5\\ \\text{kW} \\times (8\\ \\text{h/day} \\times 30\\ \\text{days}) = 1.5 \\times 240\\ \\text{h}" />
+            <Formula tex="W = 360\\ \\text{kWh}" />
+            <Formula tex="\\text{Cost} = 360\\ \\text{kWh} \\times \\$0.18/\\text{kWh} = \\$64.80" />
             <p className="mb-prose-1 last:mb-0">
               Roughly two-thirds of the bill on a single space heater. Time-of-use rates can swing that monthly
               total by 2–3× depending on whether the heater runs in peak hours, which is the whole reason
@@ -335,12 +335,12 @@ export default function Ch27HouseGridArrives() {
             reactive energy delivered in a billing interval. What is the time-averaged power factor of the load?
           </>
         }
-        hint="PF = real / apparent = kWh / √(kWh² + kVARh²)."
+        hint={<><InlineMath tex="\\text{PF} = \\text{real}/\\text{apparent} = \\text{kWh}/\\sqrt{\\text{kWh}^2 + \\text{kVARh}^2}" />.</>}
         answer={
           <>
-            <Formula>S = √(W² + Q²) = √(14.2² + 0.3²) ≈ √(201.6 + 0.09)</Formula>
-            <Formula>S ≈ 14.203 kVAh</Formula>
-            <Formula>PF = W / S = 14.2 / 14.203 ≈ <strong className="text-text font-medium">0.9998</strong></Formula>
+            <Formula tex="S = \\sqrt{W^2 + Q^2} = \\sqrt{14.2^2 + 0.3^2} \\approx \\sqrt{201.6 + 0.09}" />
+            <Formula tex="S \\approx 14.203\\ \\text{kVAh}" />
+            <Formula tex="\\text{PF} = \\dfrac{W}{S} = \\dfrac{14.2}{14.203} \\approx 0.9998" />
             <p className="mb-prose-1 last:mb-0">
               Essentially unity — what you'd expect from a residential load that is mostly resistive (heat,
               lights, electronics with power-factor-corrected supplies). A commercial site with large induction
@@ -399,7 +399,7 @@ export default function Ch27HouseGridArrives() {
         running fridge) and Z₂ the same on the L2 leg. With neutral open, the voltage at the centre point (the
         former neutral bus) is set entirely by the divider ratio between Z₁ and Z₂ across the 240 V supply:
       </p>
-      <Formula>V<sub>centre</sub> = V<sub>240</sub> · Z₁ / (Z₁ + Z₂)</Formula>
+      <Formula tex="V_{\\text{centre}} = V_{240} \\cdot \\dfrac{Z_1}{Z_1 + Z_2}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V<sub>centre</sub></strong> is the voltage of the floating centre node relative to L2 (in
         volts), <strong className="text-text font-medium">V<sub>240</sub></strong> is the end-to-end supply voltage (≈ 240 V RMS for a healthy
@@ -407,7 +407,7 @@ export default function Ch27HouseGridArrives() {
         L1 and L2 legs respectively, lumped at their parallel equivalent. The voltages individually seen by L1 and
         L2 are:
       </p>
-      <Formula>V<sub>L1</sub> = 240 · Z₁ / (Z₁ + Z₂),  V<sub>L2</sub> = 240 · Z₂ / (Z₁ + Z₂)</Formula>
+      <Formula tex="V_{L1} = 240 \\cdot \\dfrac{Z_1}{Z_1 + Z_2}, \\quad V_{L2} = 240 \\cdot \\dfrac{Z_2}{Z_1 + Z_2}" />
       <p className="mb-prose-3">
         The two add to 240 V as required, but they need not split evenly. If one leg is heavily loaded (low Z) and
         the other lightly loaded (high Z), nearly all 240 V appears across the lightly loaded leg — and every
@@ -436,13 +436,13 @@ export default function Ch27HouseGridArrives() {
             what voltage does each leg see?
           </>
         }
-        hint="Compute each load's resistance from R = V²/P at 120 V, then divide 240 V across them as a series voltage divider."
+        hint={<>Compute each load's resistance from <InlineMath tex="R = V^2/P" /> at 120 V, then divide 240 V across them as a series voltage divider.</>}
         answer={
           <>
-            <Formula>R₁ = V² / P₁ = 120² / 4000 = 3.6 Ω</Formula>
-            <Formula>R₂ = V² / P₂ = 120² / 1000 = 14.4 Ω</Formula>
-            <Formula>V<sub>L1</sub> = 240 · R₁ / (R₁ + R₂) = 240 · 3.6 / 18 = <strong className="text-text font-medium">48 V</strong></Formula>
-            <Formula>V<sub>L2</sub> = 240 · R₂ / (R₁ + R₂) = 240 · 14.4 / 18 = <strong className="text-text font-medium">192 V</strong></Formula>
+            <Formula tex="R_1 = \\dfrac{V^2}{P_1} = \\dfrac{120^2}{4000} = 3.6\\ \\Omega" />
+            <Formula tex="R_2 = \\dfrac{V^2}{P_2} = \\dfrac{120^2}{1000} = 14.4\\ \\Omega" />
+            <Formula tex="V_{L1} = 240 \\cdot \\dfrac{R_1}{R_1 + R_2} = 240 \\cdot \\dfrac{3.6}{18} = 48\\ \\text{V}" />
+            <Formula tex="V_{L2} = 240 \\cdot \\dfrac{R_2}{R_1 + R_2} = 240 \\cdot \\dfrac{14.4}{18} = 192\\ \\text{V}" />
             <p className="mb-prose-1 last:mb-0">
               The heavily loaded leg (yours) starves at 48 V — bulbs go dim, motors stall. The lightly loaded
               leg (your neighbour's) sees 192 V — 60 % over rated voltage, enough to destroy nearly anything
@@ -460,7 +460,7 @@ export default function Ch27HouseGridArrives() {
         delivers a 240 V centre-tapped secondary as a three-wire split-phase service. Triplex aerial cable arcs
         across to the house, enters a weatherhead, and runs down through conduit to a meter base, where the
         utility's revenue meter clamps into four jaws under a sealed anti-tampering ring. The meter integrates
-        V · I through time to count kilowatt-hours. Just downstream of the meter, at the main service disconnect,
+        <InlineMath tex="V \\cdot I" /> through time to count kilowatt-hours. Just downstream of the meter, at the main service disconnect,
         the neutral and ground are bonded together at exactly one point — and never again anywhere in the
         building. Break that neutral anywhere upstream and the two 120 V legs become an unequal series divider
         across 240 V; break it downstream and you have created the multi-point bond the code is designed to
@@ -719,7 +719,7 @@ export default function Ch27HouseGridArrives() {
             Because you share a pole-pig and a service drop. When their compressor motor starts, it draws an
             inrush current of perhaps 5–7× its running current for a fraction of a second, and that current flows
             through the shared transformer impedance and the shared upstream conductors. The voltage at the
-            shared bus dips by I·Z, where Z is the Thévenin impedance of the upstream supply seen from the
+            shared bus dips by <InlineMath tex="I \\cdot Z" />, where <InlineMath tex="Z" /> is the Thévenin impedance of the upstream supply seen from the
             transformer secondary. A few percent dip is normal; more than that suggests the transformer or the
             drop is undersized for the diversity factor the utility planners assumed<Cite id="grainger-power-systems-2003" in={SOURCES} /><Cite id="ieee-std-3001-2-2017" in={SOURCES} />.
           </p>
@@ -752,7 +752,7 @@ export default function Ch27HouseGridArrives() {
         <FAQItem q="How is the meter's measurement accurate to a fraction of a percent over decades?">
           <p>
             Mechanical Ferraris meters relied on geometry alone — the disc's torque was exactly proportional to
-            V · I by construction, and the only thing that could drift was the eddy-current brake's calibration,
+            <InlineMath tex="V \\cdot I" /> by construction, and the only thing that could drift was the eddy-current brake's calibration,
             which utilities checked on a rotating sample. Solid-state meters use a precision voltage divider, a
             CT or shunt-resistor current sensor, and an integrating ADC that multiplies the two channels every
             millisecond and accumulates; the multiplier circuit is calibrated at the factory and the meter's

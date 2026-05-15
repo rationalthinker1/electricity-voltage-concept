@@ -43,7 +43,7 @@ export default function Ch42FiberOptics() {
         Light slows down when it enters glass. The ratio between the speed of light in
         vacuum and the speed in the medium is the medium's <Term def={<><strong className="text-text font-medium">refractive index</strong> <em className="italic text-text">n</em> — the ratio <em className="italic text-text">c / v</em>, where <em className="italic text-text">v</em> is the phase velocity of light in the medium. Pure silica at 1550 nm has <em className="italic text-text">n</em> ≈ 1.444. Higher index means slower light, more bending at an interface.</>}>refractive index</Term> <InlineMath>n</InlineMath>. At an interface between two media, Snell's law links the angles on either side<Cite id="hecht-2017" in={SOURCES} />:
       </p>
-      <Formula>n₁ sin θ₁ = n₂ sin θ₂</Formula>
+      <Formula id="snells-law" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">n₁</strong> and <strong className="text-text font-medium">n₂</strong> are the refractive indices of the
         two media, <strong className="text-text font-medium">θ₁</strong> is the angle of the incoming ray to the surface
@@ -52,13 +52,13 @@ export default function Ch42FiberOptics() {
         into a less dense one (n₁ &gt; n₂), the refracted angle grows faster than the
         incident angle. At a special incident angle — the <Term def={<><strong className="text-text font-medium">critical angle</strong> θ_c — the incident angle at which the refracted ray would travel parallel to the interface (sin θ₂ = 1). Beyond it, no refracted ray exists and all the light reflects back into the denser medium.</>}>critical angle</Term> — the refracted ray would be parallel to the surface, and beyond it no refracted ray exists at all. Setting θ₂ = 90° in Snell's law gives<Cite id="born-wolf-1999" in={SOURCES} />:
       </p>
-      <Formula>sin θ_c = n₂ / n₁</Formula>
+      <Formula tex="\sin\theta_c = n_2 / n_1" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">θ_c</strong> is the critical angle measured from the surface normal,
         <strong className="text-text font-medium"> n₁</strong> is the refractive index of the denser medium the light is
         travelling in, and <strong className="text-text font-medium">n₂</strong> is the index of the lighter medium beyond.
-        For a typical single-mode fiber with <InlineMath>n_core = 1.448</InlineMath> and{' '}
-        <InlineMath>n_clad = 1.444</InlineMath>, that critical angle (from the normal) is
+        For a typical single-mode fiber with <InlineMath tex="n_{\text{core}} = 1.448" /> and{' '}
+        <InlineMath tex="n_{\text{clad}} = 1.444" />, that critical angle (from the normal) is
         about <strong className="text-text font-medium">85.2°</strong>. Equivalently, the ray's angle measured{' '}
         <em className="italic text-text">from the fiber axis</em> must stay below <strong className="text-text font-medium">4.8°</strong>. Steeper than
         that and the light leaks out of the cladding within a few millimetres; shallower
@@ -87,14 +87,14 @@ export default function Ch42FiberOptics() {
         satisfy the TIR condition at the core–cladding wall. That cone's half-angle is
         the fiber's <Term def={<><strong className="text-text font-medium">numerical aperture</strong> NA — the sine of the maximum half-angle of the entry cone in air. Determined by the index step between core and cladding: NA = √(n_core² − n_clad²). A single-mode fiber typically has NA ≈ 0.14, accepting rays within ±8° of the axis.</>}>numerical aperture</Term> NA, and it's set entirely by the index step<Cite id="agrawal-2010" in={SOURCES} />:
       </p>
-      <Formula>NA = √(n_core² − n_clad²)</Formula>
+      <Formula tex="NA = \sqrt{n_{\text{core}}^2 - n_{\text{clad}}^2}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">NA</strong> is dimensionless, <strong className="text-text font-medium">n_core</strong> and{' '}
         <strong className="text-text font-medium">n_clad</strong> are the refractive indices of the core and the surrounding
         cladding. The half-angle of the acceptance cone in air is then{' '}
-        <InlineMath>θ_max = arcsin(NA)</InlineMath>. Standard single-mode fiber has{' '}
-        <InlineMath>NA ≈ 0.14</InlineMath> (8° half-angle); multimode fiber pumps the
-        index difference up to <InlineMath>NA ≈ 0.20</InlineMath> (12° half-angle)
+        <InlineMath tex="\theta_{\max} = \arcsin(NA)" />. Standard single-mode fiber has{' '}
+        <InlineMath tex="NA \approx 0.14" /> (8° half-angle); multimode fiber pumps the
+        index difference up to <InlineMath tex="NA \approx 0.20" /> (12° half-angle)
         to make alignment with cheap LED or VCSEL sources easier<Cite id="saleh-teich-2007" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -111,8 +111,8 @@ export default function Ch42FiberOptics() {
         hint={<>NA = √(n_core² − n_clad²); θ_max = arcsin(NA).</>}
         answer={<>
           <p className="mb-prose-1 last:mb-0">Plug in:</p>
-          <Formula>NA = √(1.50² − 1.46²) = √(2.25 − 2.1316) = √0.1184 ≈ 0.344</Formula>
-          <Formula>θ_max = arcsin(0.344) ≈ 20.1°</Formula>
+          <Formula tex="NA = \sqrt{1.50^2 - 1.46^2} = \sqrt{2.25 - 2.1316} = \sqrt{0.1184} \approx 0.344" />
+          <Formula tex="\theta_{\max} = \arcsin(0.344) \approx 20.1\degree" />
           <p className="mb-prose-1 last:mb-0">Acceptance half-angle: <strong className="text-text font-medium">≈ 20°</strong>. The 4% index step here is much larger than telecom SMF (~0.3%); this is closer to a graded-index multimode datacom fiber.</p>
         </>}
       />
@@ -122,15 +122,15 @@ export default function Ch42FiberOptics() {
         How small does the core need to be to admit only one transverse mode? The cutoff
         is governed by a single dimensionless number, the <Term def={<><strong className="text-text font-medium">V parameter</strong> — also called the normalized frequency. Combines core radius, wavelength, and NA into one number that controls how many transverse modes a step-index fiber supports. V &lt; 2.405 ⇒ single-mode.</>}>V parameter</Term><Cite id="saleh-teich-2007" in={SOURCES} />:
       </p>
-      <Formula>V = (2π a / λ) · NA</Formula>
+      <Formula tex="V = (2\pi a / \lambda) \cdot NA" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">a</strong> is the core radius (metres), <strong className="text-text font-medium">λ</strong> the
         free-space wavelength (metres), and <strong className="text-text font-medium">NA</strong> the numerical aperture.
         For a step-index fiber, only the lowest-order LP₀₁ mode propagates when{' '}
-        <InlineMath>V &lt; 2.405</InlineMath> (the first zero of the Bessel function J₀).
+        <InlineMath tex="V < 2.405" /> (the first zero of the Bessel function <InlineMath tex="J_0" />).
         Standard single-mode fiber (ITU-T G.652) has a core radius of about 4.1 μm and an
-        NA of 0.14<Cite id="itu-t-g652" in={SOURCES} />. At λ = 1310 nm,{' '}
-        <InlineMath>V = 2π(4.1×10⁻⁶)(0.14)/(1.31×10⁻⁶) ≈ 2.75</InlineMath> — just into
+        NA of 0.14<Cite id="itu-t-g652" in={SOURCES} />. At <InlineMath tex="\lambda = 1310\ \text{nm}" />,{' '}
+        <InlineMath tex="V = 2\pi(4.1\times 10^{-6})(0.14)/(1.31\times 10^{-6}) \approx 2.75" /> — just into
         the multimode regime, but at 1550 nm V drops to 2.32 and the fiber is solidly
         single-mode. The 1310 nm cutoff is deliberate: it makes the same physical fiber
         usable at both standard telecom windows.
@@ -142,9 +142,9 @@ export default function Ch42FiberOptics() {
         hint={<>Compute V at λ = 850 nm, then divide V²/2.</>}
         answer={<>
           <p className="mb-prose-1 last:mb-0">V parameter:</p>
-          <Formula>V = (2π × 25×10⁻⁶ / 850×10⁻⁹) × 0.20 ≈ 36.9</Formula>
+          <Formula tex="V = (2\pi \times 25\times 10^{-6} / 850\times 10^{-9}) \times 0.20 \approx 36.9" />
           <p className="mb-prose-1 last:mb-0">Number of supported modes:</p>
-          <Formula>N ≈ V²/2 ≈ 36.9² / 2 ≈ 681</Formula>
+          <Formula tex="N \approx V^2/2 \approx 36.9^2 / 2 \approx 681" />
           <p className="mb-prose-1 last:mb-0">About <strong className="text-text font-medium">680 modes</strong> — heavily multimode, which is why this fiber is bandwidth-limited by modal dispersion and runs at 850 nm where a cheap VCSEL is enough.</p>
         </>}
       />
@@ -195,7 +195,7 @@ export default function Ch42FiberOptics() {
         sensitivity, the reach of a fiber link reduces to one subtraction.
         Powers in fiber optics are quoted in <Term def={<><strong className="text-text font-medium">dBm</strong> — decibels relative to 1 milliwatt: P(dBm) = 10·log₁₀(P/1 mW). +0 dBm = 1 mW; +10 dBm = 10 mW; −30 dBm = 1 μW. Convenient because cascading losses add instead of multiplying.</>}>dBm</Term> precisely so that this subtraction is the natural arithmetic:
       </p>
-      <Formula>P_rx = P_tx − L_connectors − α · L</Formula>
+      <Formula tex="P_{\text{rx}} = P_{\text{tx}} - L_{\text{connectors}} - \alpha \cdot L" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P_rx</strong> is the power arriving at the receiver (dBm),{' '}
         <strong className="text-text font-medium">P_tx</strong> is the power launched by the transmitter (dBm),{' '}
@@ -204,7 +204,7 @@ export default function Ch42FiberOptics() {
         is the fiber length (km). The receiver locks as long as <InlineMath>P_rx</InlineMath>{' '}
         exceeds the receiver's sensitivity (typically −28 dBm for a modern coherent
         100 G receiver). The difference between launched power and sensitivity is the{' '}
-        <Term def={<><strong className="text-text font-medium">link budget</strong> — the total optical loss the link can tolerate while still maintaining a working receiver, expressed as the dB margin between launched power and receiver sensitivity after subtracting fixed insertion losses.</>}>link budget</Term>; divide by α and you have the reach.
+        <Term def={<><strong className="text-text font-medium">link budget</strong> — the total optical loss the link can tolerate while still maintaining a working receiver, expressed as the dB margin between launched power and receiver sensitivity after subtracting fixed insertion losses.</>}>link budget</Term>; divide by <InlineMath tex="\alpha" /> and you have the reach.
       </p>
 
       <FiberLinkBudgetDemo />
@@ -215,9 +215,9 @@ export default function Ch42FiberOptics() {
         hint={<>Link budget = launch − splice − sensitivity. Divide by α.</>}
         answer={<>
           <p className="mb-prose-1 last:mb-0">Budget available for fiber loss:</p>
-          <Formula>Budget = 3 − 3 − (−27) = 27 dB</Formula>
+          <Formula tex="\text{Budget} = 3 - 3 - (-27) = 27\ \text{dB}" />
           <p className="mb-prose-1 last:mb-0">Reach at 0.22 dB/km:</p>
-          <Formula>L = 27 / 0.22 ≈ 123 km</Formula>
+          <Formula tex="L = 27 / 0.22 \approx 123\ \text{km}" />
           <p className="mb-prose-1 last:mb-0">Answer: <strong className="text-text font-medium">~123 km</strong>. That's typical of a modern metro span; long-haul backbones place an EDFA every 60–100 km to extend reach to thousands of km.</p>
         </>}
       />
@@ -243,7 +243,7 @@ export default function Ch42FiberOptics() {
       </ul>
       <p className="mb-prose-3">
         The pulse broadening from chromatic dispersion is{' '}
-        <InlineMath>Δt = D · Δλ · L</InlineMath>, where{' '}
+        <InlineMath tex="\Delta t = D \cdot \Delta\lambda \cdot L" />, where{' '}
         <strong className="text-text font-medium">Δt</strong> is the pulse-spread in picoseconds, <strong className="text-text font-medium">D</strong> the
         dispersion coefficient (ps/nm·km), <strong className="text-text font-medium">Δλ</strong> the spectral width of the
         source (nm), and <strong className="text-text font-medium">L</strong> the fiber length (km). For coherent 100 G

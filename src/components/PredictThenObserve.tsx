@@ -262,11 +262,14 @@ export function PredictThenObserve({
   return (
     <div className="my-lg">
       <Banner variant={annotationVariant} className="mb-md font-1 text-4">
-        <span className="eyebrow-muted tracking-3">Your prediction:</span>{' '}
-        <strong className="text-text font-medium">{displayedAnswer}</strong>{' '}
-        <span className="text-text-dim">
-          Try the demo to see if you were right.
-        </span>
+        <div className="body-copy text-5 leading-4 text-text-dim mb-sm">{question}</div>
+        <div>
+          <span className="eyebrow-muted tracking-3">Your prediction:</span>{' '}
+          <strong className="text-text font-medium">{displayedAnswer}</strong>{' '}
+          <span className="text-text-dim">
+            Try the demo to see if you were right.
+          </span>
+        </div>
       </Banner>
       {children}
     </div>

@@ -7,7 +7,7 @@
 
 ## 0. TL;DR
 
-An interactive electromagnetism textbook. **Twenty-six chapters** of narrative
+An interactive electromagnetism textbook. **Forty-two chapters** of narrative
 prose with embedded interactive demos (now 100+), plus **sixteen equation labs**
 in an appendix (each restructured to Context / Formula / Intuition / Reasoning /
 Derivation / 10+ worked problems with hidden solutions). Built on React + Vite +
@@ -33,7 +33,15 @@ through the field, not the wire") and onward through EM waves, Maxwell's
 synthesis, special relativity, circuit theory, network analysis, semiconductors,
 Fourier analysis, filters/op-amps, materials, optics, antennas, motors,
 generators, magnetically coupled circuits, transformers, rectifiers/inverters,
-and batteries.
+and batteries (Ch.26).
+
+Chapters 27–40 are the **house electrician track**: the same physics applied
+to a real residential service, from the grid drop and panel through branch
+circuits, receptacles, big loads, NEC safety, the smart meter, replacements
+and retrofits, outdoor/wet locations, and the grounding electrode system.
+Chapters 41–42 are capstones — an electric-vehicle powertrain (Ch.41) and a
+fiber-optic communication link (Ch.42) — that pull the rest of the book
+together on a single working system.
 
 Audience: a technical reader who wants the real picture. Senior-engineer or
 physics-curious. Comfortable with vector calculus, real numbers, and the

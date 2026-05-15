@@ -15,7 +15,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -133,11 +133,11 @@ export default function Ch30HouseSwitchesReceptacles() {
             rating?
           </>
         }
-        hint="Power, voltage, and current are related by P = VI; solve for I."
+        hint={<>Power, voltage, and current are related by <InlineMath id="power-vi" />; solve for <InlineMath tex="I" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Rearrange the power identity from Ch.3:</p>
-            <Formula>I = P / V = 800 / 119 ≈ 6.7 A</Formula>
+            <Formula tex="I = \\dfrac{P}{V} = \\dfrac{800}{119} \\approx 6.7\\ \\text{A}" />
             <p className="mb-prose-1 last:mb-0">
               Answer: <strong className="text-text font-medium">about 6.7 A</strong>, comfortably under the 15 A rating of a 5-15R<Cite id="nema-wd-6" in={SOURCES} />.
               A second similar load on the same duplex would still be fine; three would start to crowd the breaker.
@@ -170,7 +170,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         The maximum continuous power a given receptacle can deliver follows directly from its voltage and current
         rating:
       </p>
-      <Formula>P_max = V × I_rated</Formula>
+      <Formula tex="P_{\\max} = V \\times I_{\\text{rated}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P_max</strong> is the maximum steady-state power the receptacle can deliver (in watts),
         <strong className="text-text font-medium"> V</strong> is the nominal voltage at the outlet (in volts — 120 V for a 5-pattern, 240 V for a
@@ -207,7 +207,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         the silver side. The receptacle is therefore a pass-through on both conductors, and the next outlet downstream
         gets the same hot and the same neutral as this one. Topologically:
       </p>
-      <Formula>V_outlet ≈ V_line − I_branch × R_run</Formula>
+      <Formula tex="V_{\\text{outlet}} \\approx V_{\\text{line}} - I_{\\text{branch}} \\times R_{\\text{run}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V_outlet</strong> is the voltage available at a given outlet (in volts), <strong className="text-text font-medium">V_line</strong>
         {' '}is the nominal voltage at the panel (120 V for a standard branch), <strong className="text-text font-medium">I_branch</strong> is the total
@@ -233,12 +233,12 @@ export default function Ch30HouseSwitchesReceptacles() {
             current does the wire <em className="italic text-text">between the panel and receptacle #1</em> carry, and is the 20 A breaker happy?
           </>
         }
-        hint="Sum the currents of all downstream loads. Use P = VI at 120 V."
+        hint={<>Sum the currents of all downstream loads. Use <InlineMath id="power-vi" /> at 120 V.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Each load's current at 120 V:</p>
-            <Formula>I_heater = 1500 / 120 = 12.5 A</Formula>
-            <Formula>I_toaster = 1000 / 120 ≈ 8.33 A</Formula>
+            <Formula tex="I_{\\text{heater}} = \\dfrac{1500}{120} = 12.5\\ \\text{A}" />
+            <Formula tex="I_{\\text{toaster}} = \\dfrac{1000}{120} \\approx 8.33\\ \\text{A}" />
             <p className="mb-prose-1 last:mb-0">
               Total at receptacle #1: <strong className="text-text font-medium">≈ 20.8 A</strong>. That exceeds the 20 A breaker's instantaneous rating
               and well exceeds the 80 % continuous rating of 16 A. The breaker would either trip on a thermal-magnetic
@@ -302,7 +302,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         two switches have <em className="italic text-text">matching</em> travellers selected — both 0 or both 1 — and de-energised when they
         differ. In one line of truth-table:
       </p>
-      <Formula>load_state = ¬(S₁ ⊕ S₂)</Formula>
+      <Formula tex="\\text{load\\_state} = \\neg(S_1 \\oplus S_2)" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">S₁</strong> and <strong className="text-text font-medium">S₂</strong> are the binary states of the two switches (which traveller
         each is presently selecting; 0 or 1), <strong className="text-text font-medium">⊕</strong> is the XOR operator, and{' '}
@@ -355,12 +355,12 @@ export default function Ch30HouseSwitchesReceptacles() {
             that new state.
           </>
         }
-        hint="Map up/down to 0/1, compute S₁ ⊕ S₂, and toggle one bit at a time."
+        hint={<>Map up/down to 0/1, compute <InlineMath tex="S_1 \\oplus S_2" />, and toggle one bit at a time.</>}
         answer={
           <>
-            <p className="mb-prose-1 last:mb-0">Encode up = 0 (traveller A) and down = 1 (traveller B). Initial state S₁ = 0, S₂ = 1, so:</p>
-            <Formula>load_state = ¬(0 ⊕ 1) = ¬1 = 0</Formula>
-            <p className="mb-prose-1 last:mb-0">Lamp is <strong className="text-text font-medium">off</strong>. Flip switch 2: S₂ → 0, so load_state = ¬(0 ⊕ 0) = 1. Lamp <strong className="text-text font-medium">on</strong>. Flip switch 1: S₁ → 1, so load_state = ¬(1 ⊕ 0) = 0. Lamp <strong className="text-text font-medium">off</strong> again. Every flip inverts the lamp regardless of the other switch's position — which is exactly the property a staircase wants.</p>
+            <p className="mb-prose-1 last:mb-0">Encode up = 0 (traveller A) and down = 1 (traveller B). Initial state <InlineMath tex="S_1 = 0, S_2 = 1" />, so:</p>
+            <Formula tex="\\text{load\\_state} = \\neg(0 \\oplus 1) = \\neg 1 = 0" />
+            <p className="mb-prose-1 last:mb-0">Lamp is <strong className="text-text font-medium">off</strong>. Flip switch 2: <InlineMath tex="S_2 \\to 0" />, so <InlineMath tex="\\text{load\\_state} = \\neg(0 \\oplus 0) = 1" />. Lamp <strong className="text-text font-medium">on</strong>. Flip switch 1: <InlineMath tex="S_1 \\to 1" />, so <InlineMath tex="\\text{load\\_state} = \\neg(1 \\oplus 0) = 0" />. Lamp <strong className="text-text font-medium">off</strong> again. Every flip inverts the lamp regardless of the other switch's position — which is exactly the property a staircase wants.</p>
           </>
         }
       />
@@ -408,19 +408,19 @@ export default function Ch30HouseSwitchesReceptacles() {
         dimmer with conduction angle α (so the device fires at phase π − α and conducts to π), the RMS voltage
         delivered to a resistive load is:
       </p>
-      <Formula>V_rms = V_peak × √(α/π − sin(2α)/(2π))</Formula>
+      <Formula tex="V_{\\text{rms}} = V_{\\text{peak}} \\times \\sqrt{\\dfrac{\\alpha}{\\pi} - \\dfrac{\\sin(2\\alpha)}{2\\pi}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V_rms</strong> is the root-mean-square voltage across the load (in volts),
         <strong className="text-text font-medium"> V_peak</strong> is the peak of the AC line waveform (in volts; for a nominal 120 V_rms line,
-        V_peak = 120 × √2 ≈ 170 V), and <strong className="text-text font-medium">α</strong> is the conduction angle in radians (0 ≤ α ≤ π). At
-        α = π (the triac is on for the entire half-cycle), the square root reduces to √(1 − 0) = 1, and
-        V_rms = V_peak, which would mean V_peak's RMS equals itself — that's the dimmer fully bypassing the load. In
-        terms of the line RMS V_line = V_peak/√2, the formula is equivalently V_rms = V_line × √(2α/π − sin(2α)/π),
-        which at α = π returns V_line as expected. At α = 0 (the triac never fires), V_rms = 0 and the load is off.
+        <InlineMath tex="V_{\\text{peak}} = 120 \\times \\sqrt{2} \\approx 170\\ \\text{V}" />), and <strong className="text-text font-medium">α</strong> is the conduction angle in radians (<InlineMath tex="0 \\le \\alpha \\le \\pi" />). At
+        <InlineMath tex="\\alpha = \\pi" /> (the triac is on for the entire half-cycle), the square root reduces to <InlineMath tex="\\sqrt{1 - 0} = 1" />, and
+        <InlineMath tex="V_{\\text{rms}} = V_{\\text{peak}}" />, which would mean V_peak's RMS equals itself — that's the dimmer fully bypassing the load. In
+        terms of the line RMS <InlineMath tex="V_{\\text{line}} = V_{\\text{peak}}/\\sqrt{2}" />, the formula is equivalently <InlineMath tex="V_{\\text{rms}} = V_{\\text{line}} \\times \\sqrt{2\\alpha/\\pi - \\sin(2\\alpha)/\\pi}" />,
+        which at <InlineMath tex="\\alpha = \\pi" /> returns <InlineMath tex="V_{\\text{line}}" /> as expected. At <InlineMath tex="\\alpha = 0" /> (the triac never fires), <InlineMath tex="V_{\\text{rms}} = 0" /> and the load is off.
       </p>
       <p className="mb-prose-3">
         The average power delivered to a purely resistive load follows from the usual identity{' '}
-        <strong className="text-text font-medium">P = V_rms² / R</strong>, so cutting the conduction angle by half does <em className="italic text-text">not</em> halve the
+        <InlineMath tex="P = V_{\\text{rms}}^2/R" />, so cutting the conduction angle by half does <em className="italic text-text">not</em> halve the
         delivered power — it removes a chunk of the part of the half-cycle nearest the peak, and the integrand is
         quadratic in voltage there, so the power drops faster than the average. That asymmetry is why incandescent
         dimmers feel "non-linear" near full bright; the lamp's brightness as a function of slider position has a
@@ -446,27 +446,27 @@ export default function Ch30HouseSwitchesReceptacles() {
         question={
           <>
             A 1500 W incandescent shop lamp is on a leading-edge dimmer set to a conduction angle of{' '}
-            <strong className="text-text font-medium">α = π/2</strong> — the triac is conducting for exactly half of each half-cycle. The line is the
+            <InlineMath tex="\\alpha = \\pi/2" /> — the triac is conducting for exactly half of each half-cycle. The line is the
             U.S. standard 120 V_rms (V_peak ≈ 169.7 V). What is the RMS voltage delivered to the lamp, and what is the
             average power dissipated by the bulb (treating its filament as constant resistance for this estimate)?
           </>
         }
-        hint={<>Plug α = π/2 into V_rms = V_peak × √(α/π − sin(2α)/(2π)); note sin(π) = 0. Then compute the bulb's cold-resistance from its 1500 W rating at 120 V_rms.</>}
+        hint={<>Plug <InlineMath tex="\\alpha = \\pi/2" /> into <InlineMath tex="V_{\\text{rms}} = V_{\\text{peak}} \\times \\sqrt{\\alpha/\\pi - \\sin(2\\alpha)/(2\\pi)}" />; note <InlineMath tex="\\sin(\\pi) = 0" />. Then compute the bulb's cold-resistance from its 1500 W rating at 120 V_rms.</>}
         answer={
           <>
-            <p className="mb-prose-1 last:mb-0">With α = π/2 and sin(2·π/2) = sin(π) = 0:</p>
-            <Formula>V_rms = 169.7 × √(0.5 − 0) = 169.7 × √0.5 ≈ 120.0 V</Formula>
+            <p className="mb-prose-1 last:mb-0">With <InlineMath tex="\\alpha = \\pi/2" /> and <InlineMath tex="\\sin(2 \\cdot \\pi/2) = \\sin(\\pi) = 0" />:</p>
+            <Formula tex="V_{\\text{rms}} = 169.7 \\times \\sqrt{0.5 - 0} = 169.7 \\times \\sqrt{0.5} \\approx 120.0\\ \\text{V}" />
             <p className="mb-prose-1 last:mb-0">
-              That happens to be the nominal line RMS — at α = π/2 the leading-edge dimmer delivers exactly the full
-              line's RMS. The resistance implied by the bulb's nameplate is R = V²/P = 120²/1500 = 9.6 Ω, so the average
+              That happens to be the nominal line RMS — at <InlineMath tex="\\alpha = \\pi/2" /> the leading-edge dimmer delivers exactly the full
+              line's RMS. The resistance implied by the bulb's nameplate is <InlineMath tex="R = V^2/P = 120^2/1500 = 9.6\\ \\Omega" />, so the average
               power is:
             </p>
-            <Formula>P = V_rms² / R = 120² / 9.6 ≈ 1500 W</Formula>
+            <Formula tex="P = \\dfrac{V_{\\text{rms}}^2}{R} = \\dfrac{120^2}{9.6} \\approx 1500\\ \\text{W}" />
             <p className="mb-prose-1 last:mb-0">
-              Answer: <strong className="text-text font-medium">≈ 1500 W</strong> — full brightness. The phase-cut formula is symmetric about α = π/2 in
+              Answer: <strong className="text-text font-medium">≈ 1500 W</strong> — full brightness. The phase-cut formula is symmetric about <InlineMath tex="\\alpha = \\pi/2" /> in
               its RMS value because the cut portion of the half-cycle has the same energy as the conducting portion at
               that conduction angle<Cite id="lutron-dimmer-app-note" in={SOURCES} />. Dimming below half-brightness
-              requires α &lt; π/2; below α = π/3 the brightness falls off sharply.
+              requires <InlineMath tex="\\alpha < \\pi/2" />; below <InlineMath tex="\\alpha = \\pi/3" /> the brightness falls off sharply.
             </p>
           </>
         }
@@ -486,8 +486,8 @@ export default function Ch30HouseSwitchesReceptacles() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Apply the 80 % continuous-load factor<Cite id="nec-2023" in={SOURCES} />:</p>
-            <Formula>I_continuous = 0.80 × 50 A = 40 A</Formula>
-            <Formula>P_continuous = V × I = 240 × 40 = 9600 W</Formula>
+            <Formula tex="I_{\\text{continuous}} = 0.80 \\times 50\\ \\text{A} = 40\\ \\text{A}" />
+            <Formula tex="P_{\\text{continuous}} = V \\times I = 240 \\times 40 = 9600\\ \\text{W}" />
             <p className="mb-prose-1 last:mb-0">
               Answer: <strong className="text-text font-medium">40 A continuous, 9.6 kW</strong>. A typical level-2 EV charger sold for a 50 A circuit
               is configured to negotiate exactly that 40 A pilot signal — anything higher would either trip the
@@ -742,7 +742,7 @@ export default function Ch30HouseSwitchesReceptacles() {
           <p>
             It mostly isn't, but the rating on the device traces all the way back to it. A 15 A receptacle's nameplate
             number is a count of coulombs per second of charge flowing through its contacts in steady state, and one
-            ampere is one coulomb per second — about 6.24×10<sup>18</sup> elementary charges of e ≈ 1.602×10<sup>−19</sup> C
+            ampere is one coulomb per second — about <InlineMath tex="6.24\\times 10^{18}" /> elementary charges of <InlineMath tex="e \\approx 1.602\\times 10^{-19}\\ \\text{C}" />
             each, per second<Cite id="codata-2018" in={SOURCES} />. The brass and silver labelling and the slot
             geometry are just engineering wrappers around that count.
           </p>

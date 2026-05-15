@@ -10,10 +10,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
-import { MathBlock, Pullout } from '@/components/Prose';
+import { Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
@@ -415,8 +415,8 @@ export default function PotentialLab() {
       </p>
 
       <h3 className="lab-section-h3">Formula</h3>
-      <MathBlock>V<sub>ab</sub> = V<sub>b</sub> − V<sub>a</sub> = −∫<sub>a</sub><sup>b</sup> E · dℓ</MathBlock>
-      <MathBlock>V(r) = k Q / (ε<sub>r</sub> r)   (single point charge)</MathBlock>
+      <Formula id="voltage-line-integral" />
+      <Formula tex="V(r) = \dfrac{k\, Q}{\varepsilon_r\, r} \quad\text{(single point charge)}" />
       <p className="mb-prose-3">
         Variable glossary:
       </p>
@@ -480,21 +480,21 @@ export default function PotentialLab() {
         Walk from point a to point b and add up E·dℓ along every step. That line integral is the total work the field does on a unit positive
         charge. The voltage from a to b is defined to be the negative of that:
       </p>
-      <MathBlock>V<sub>ab</sub> = −∫<sub>a</sub><sup>b</sup> E · dℓ</MathBlock>
+      <Formula id="voltage-line-integral" />
       <p className="mb-prose-3">
         Path-independence follows from <strong className="text-text font-medium">∇ × E = 0</strong>: by Stokes's theorem the integral of a curl-free field around any closed loop
         is zero, so the integral between any two points depends only on the endpoints. This lets us define a single-valued function V(r) by
         anchoring V(∞) = 0:
       </p>
-      <MathBlock>V(r) = −∫<sub>∞</sub><sup>r</sup> E · dℓ</MathBlock>
+      <Formula tex="V(\vec{r}) = -\int_\infty^{\vec{r}} \vec{E}\cdot d\vec{\ell}" />
       <p className="mb-prose-3">
-        For a point charge Q at the origin, E = kQ/r² r̂. Take a radial path from infinity inward; dℓ = dr r̂:
+        For a point charge Q at the origin, <InlineMath tex="\vec{E} = (kQ/r^2)\, \hat{r}" />. Take a radial path from infinity inward; <InlineMath tex="d\vec{\ell} = dr\, \hat{r}" />:
       </p>
-      <MathBlock>V(r) = −∫<sub>∞</sub><sup>r</sup> (kQ/r'²) dr' = kQ / r</MathBlock>
+      <Formula tex="V(r) = -\int_\infty^{r} \dfrac{kQ}{r'^2}\, dr' = \dfrac{kQ}{r}" />
       <p className="mb-prose-3">
         For many charges, superposition: E is the vector sum, so V is the scalar sum<Cite id="griffiths-2017" in={SOURCES} />:
       </p>
-      <MathBlock>V(r) = Σ<sub>i</sub> k Q<sub>i</sub> / |r − r<sub>i</sub>|</MathBlock>
+      <Formula tex="V(\vec{r}) = \sum_i \dfrac{k\, Q_i}{|\vec{r} - \vec{r}_i|}" />
       <p className="mb-prose-3">
         That is the formula running under the canvas above. V at any point is the algebraic sum of <strong className="text-text font-medium">kQ₁/r₁</strong> and
         <strong className="text-text font-medium"> kQ₂/r₂</strong>; the coloured bands are loci of constant V.

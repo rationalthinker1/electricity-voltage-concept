@@ -110,7 +110,7 @@ export function TwoChargesDemo({ figure }: Props) {
         />
         <MiniSlider
           label="separation"
-          value={rCm} min={2} max={28} step={0.1}
+          value={rCm} min={1} max={28} step={0.1}
           format={v => v.toFixed(1) + ' cm'}
           onChange={setRCm}
         />

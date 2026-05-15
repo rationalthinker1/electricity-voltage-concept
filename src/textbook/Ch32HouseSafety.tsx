@@ -20,7 +20,7 @@
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { Term } from '@/components/Term';
@@ -139,7 +139,7 @@ export default function Ch32HouseSafety() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Direct division:</p>
-            <Formula>I = V / R = 120 V / 2 000 Ω = 60 mA</Formula>
+            <Formula tex="I = \\dfrac{V}{R} = \\dfrac{120\\ \\text{V}}{2{,}000\\ \\Omega} = 60\\ \\text{mA}" />
             <p className="mb-prose-1 last:mb-0">
               Sixty milliamperes hand-to-foot for one second sits squarely in the ventricular-fibrillation band
               (50–100 mA, one-second exposure). The IEC zone is AC-4.1, and the outcome is a real risk of fibrillation
@@ -161,7 +161,7 @@ export default function Ch32HouseSafety() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Same arithmetic, fifty times the resistance:</p>
-            <Formula>I = V / R = 120 V / 100 000 Ω = 1.2 mA</Formula>
+            <Formula tex="I = \\dfrac{V}{R} = \\dfrac{120\\ \\text{V}}{100{,}000\\ \\Omega} = 1.2\\ \\text{mA}" />
             <p className="mb-prose-1 last:mb-0">
               That is below the let-go threshold and barely above the perception threshold — a noticeable but
               harmless tingle, IEC zone AC-1/AC-2 boundary<Cite id="iec-60479-2018" in={SOURCES} />. The lesson is
@@ -234,7 +234,7 @@ export default function Ch32HouseSafety() {
       <p className="mb-prose-3">
         The current driving that test is fixed by Ohm's law applied to the body itself,
       </p>
-      <Formula>I<sub>body</sub> = V<sub>fault</sub> / R<sub>body</sub></Formula>
+      <Formula tex="I_{\\text{body}} = \\dfrac{V_{\\text{fault}}}{R_{\\text{body}}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">I<sub>body</sub></strong> is the current diverted from the normal hot-neutral loop into the
         body (in amperes), <strong className="text-text font-medium">V<sub>fault</sub></strong> is the voltage that appears across the body when it
@@ -308,7 +308,7 @@ export default function Ch32HouseSafety() {
         millisecond, separated by extinctions where the arc loses ionisation, with broadband noise riding on top
         of the 60 Hz fundamental. The instantaneous power dissipated in the arc gap is well-approximated by
       </p>
-      <Formula>P<sub>arc</sub> ≈ V<sub>arc</sub> × I<sub>arc</sub> × δ</Formula>
+      <Formula tex="P_{\\text{arc}} \\approx V_{\\text{arc}} \\times I_{\\text{arc}} \\times \\delta" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P<sub>arc</sub></strong> is the time-averaged power dissipated in the arc gap (in watts),
         <strong className="text-text font-medium"> V<sub>arc</sub></strong> is the voltage drop across the arc itself (in volts; for low-current
@@ -316,8 +316,8 @@ export default function Ch32HouseSafety() {
         voltage), <strong className="text-text font-medium">I<sub>arc</sub></strong> is the current through the arc while it is conducting (in
         amperes), and <strong className="text-text font-medium">δ</strong> is the
         {' '}<Term def={<><strong className="text-text font-medium">duty cycle</strong> — the fraction of the AC half-cycle during which the arc is actively conducting, as opposed to extinguished. A series arc that re-strikes once per half-cycle and burns for about half of each half-cycle has δ ≈ 0.5.</>}>duty cycle</Term>{' '}
-        — the fraction of the AC half-cycle that the arc is actually conducting. For V<sub>arc</sub> = 50 V,
-        I<sub>arc</sub> = 10 A, δ = 0.5, P<sub>arc</sub> ≈ 250 W of heat concentrated in a few cubic millimetres
+        — the fraction of the AC half-cycle that the arc is actually conducting. For <InlineMath tex="V_{\\text{arc}} = 50\\ \\text{V}" />,
+        <InlineMath tex="I_{\\text{arc}} = 10\\ \\text{A}" />, <InlineMath tex="\\delta = 0.5" />, <InlineMath tex="P_{\\text{arc}} \\approx 250\\ \\text{W}" /> of heat concentrated in a few cubic millimetres
         of charred insulation. The arc plasma itself sits at a few thousand kelvin, hot enough to ignite the
         cord jacket immediately and, after that, anything else in the cavity — curtain fabric, blown-in
         cellulose, lath-and-plaster, framing lumber.
@@ -346,21 +346,21 @@ export default function Ch32HouseSafety() {
         question={
           <>An arc fault in a damaged extension cord draws an average of <strong className="text-text font-medium">8 A</strong> through an arc gap
           with a measured drop of <strong className="text-text font-medium">40 V</strong>, with the arc conducting for half of each AC half-cycle
-          (δ = 0.5). What is the time-averaged power dissipated in the arc, and is that enough to ignite cellulose
+          (<InlineMath tex="\\delta = 0.5" />). What is the time-averaged power dissipated in the arc, and is that enough to ignite cellulose
           insulation, whose autoignition threshold is roughly <strong className="text-text font-medium">50 W/cm²</strong> of contact area for paper-like
           materials at piloted ignition?</>
         }
-        hint={<>P<sub>arc</sub> = V<sub>arc</sub> × I<sub>arc</sub> × δ. Then compare the resulting power to the
+        hint={<><InlineMath tex="P_{\\text{arc}} = V_{\\text{arc}} \\times I_{\\text{arc}} \\times \\delta" />. Then compare the resulting power to the
         ignition threshold per square centimetre, given an arc footprint of roughly a few square millimetres.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Plug in:</p>
-            <Formula>P<sub>arc</sub> = 40 V × 8 A × 0.5 = 160 W</Formula>
+            <Formula tex="P_{\\text{arc}} = 40\\ \\text{V} \\times 8\\ \\text{A} \\times 0.5 = 160\\ \\text{W}" />
             <p className="mb-prose-1 last:mb-0">
               That 160 W is concentrated in the arc footprint, an area of order 0.05 cm² (a few square millimetres).
               The power density at the cord jacket is therefore
             </p>
-            <Formula>P<sub>arc</sub> / A ≈ 160 W / 0.05 cm² = 3 200 W/cm²</Formula>
+            <Formula tex="P_{\\text{arc}}/A \\approx 160\\ \\text{W}/0.05\\ \\text{cm}^2 = 3{,}200\\ \\text{W/cm}^2" />
             <p className="mb-prose-1 last:mb-0">
               — roughly sixty times the piloted-ignition threshold for paper-like cellulose. Answer: <strong className="text-text font-medium">160 W
               total, far above ignition threshold</strong>. This is why an AFCI is worth the price even though
@@ -441,7 +441,7 @@ export default function Ch32HouseSafety() {
         enclosed panel the simplified Ralph Lee model — the original 1982 calculation — approximates the radiative
         energy at distance d as
       </p>
-      <Formula>E<sub>arc</sub> ≈ (V × I<sub>bolted</sub> × t<sub>clear</sub>) / (4π d²)</Formula>
+      <Formula tex="E_{\\text{arc}} \\approx \\dfrac{V \\times I_{\\text{bolted}} \\times t_{\\text{clear}}}{4\\pi d^2}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">E<sub>arc</sub></strong> is the incident energy delivered to a surface at distance d during
         the arc (in joules per square metre; convert by 1 cal/cm² = 41 840 J/m² to compare with NFPA 70E's
@@ -481,16 +481,16 @@ export default function Ch32HouseSafety() {
           <>A residential panel has an available bolted fault current of <strong className="text-text font-medium">I<sub>bolted</sub> = 8 000 A</strong>{' '}
           at <strong className="text-text font-medium">V = 240 V</strong>. The upstream main breaker clears in <strong className="text-text font-medium">t<sub>clear</sub> = 0.05 s</strong>.
           At a working distance of <strong className="text-text font-medium">d = 450 mm</strong>, what is the incident energy in cal/cm², and what
-          NFPA 70E PPE category does it correspond to? (Recall 1 cal/cm² = 41 840 J/m².)</>
+          NFPA 70E PPE category does it correspond to? (Recall <InlineMath tex="1\\ \\text{cal/cm}^2 = 41{,}840\\ \\text{J/m}^2" />.)</>
         }
         hint={<>Plug into the Ralph Lee formula above; convert J/m² to cal/cm².</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">The numerator and the spherical-spreading denominator:</p>
-            <Formula>V × I<sub>bolted</sub> × t<sub>clear</sub> = 240 × 8 000 × 0.05 = 96 000 J</Formula>
-            <Formula>4π d² = 4π × (0.45)² ≈ 2.54 m²</Formula>
+            <Formula tex="V \\times I_{\\text{bolted}} \\times t_{\\text{clear}} = 240 \\times 8{,}000 \\times 0.05 = 96{,}000\\ \\text{J}" />
+            <Formula tex="4\\pi d^2 = 4\\pi \\times (0.45)^2 \\approx 2.54\\ \\text{m}^2" />
             <p className="mb-prose-1 last:mb-0">So the incident energy per unit area is</p>
-            <Formula>E ≈ 96 000 / 2.54 ≈ 3.78×10⁴ J/m² ≈ 0.90 cal/cm²</Formula>
+            <Formula tex="E \\approx 96{,}000/2.54 \\approx 3.78\\times 10^{4}\\ \\text{J/m}^2 \\approx 0.90\\ \\text{cal/cm}^2" />
             <p className="mb-prose-1 last:mb-0">
               That sits below NFPA 70E's 1.2 cal/cm² threshold for CAT 1 PPE: in the language of the standard, it
               is below the "no-special-PPE" boundary. Long-sleeve natural-fibre clothing, safety glasses, and

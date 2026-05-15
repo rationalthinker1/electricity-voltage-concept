@@ -11,10 +11,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
-import { MathBlock, Pullout } from '@/components/Prose';
+import { Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
@@ -305,7 +305,7 @@ export default function CoulombLab() {
       </p>
 
       <h3 className="lab-section-h3">Formula</h3>
-      <MathBlock>F = k Q₁ Q₂ / (ε<sub>r</sub> r²)</MathBlock>
+      <Formula tex="F = k\, \dfrac{Q_1 Q_2}{\varepsilon_r\, r^2}" />
       <p className="mb-prose-3">
         Variable glossary:
       </p>
@@ -369,7 +369,7 @@ export default function CoulombLab() {
         isolated point charge be spherically symmetric. Then for any sphere of radius <strong className="text-text font-medium">r</strong> centred on the charge, the field is uniform
         on the surface and the flux integral collapses:
       </p>
-      <MathBlock>E · 4πr² = Q / ε₀ &nbsp;⇒&nbsp; E = Q / (4π ε₀ r²) = k Q / r²</MathBlock>
+      <Formula tex="E\cdot 4\pi r^2 = \dfrac{Q}{\varepsilon_0} \;\Rightarrow\; E = \dfrac{Q}{4\pi\varepsilon_0\, r^2} = \dfrac{k\, Q}{r^2}" />
       <p className="mb-prose-3">
         The force on a second charge <strong className="text-text font-medium">Q₂</strong> placed in that field is <strong className="text-text font-medium">F = Q₂ E = kQ₁Q₂/r²</strong><Cite id="griffiths-2017" in={SOURCES} />.
         In a dielectric medium, bound charges polarize and partially screen the field, dividing the result by ε<sub>r</sub>.
@@ -377,7 +377,7 @@ export default function CoulombLab() {
       <p className="mb-prose-3">
         Compared to gravity: same algebraic shape, vastly different scale. For two electrons at any distance,
       </p>
-      <MathBlock>F<sub>e</sub> / F<sub>g</sub> = k e² / (G m<sub>e</sub>²) ≈ 4.17×10⁴²</MathBlock>
+      <Formula tex="F_e / F_g = \dfrac{k\, e^2}{G\, m_e^2} \approx 4.17\times 10^{42}" />
       <p className="mb-prose-3">
         Four hundred trillion trillion trillion. The reason chairs and planets and bodies hold together at all is the exact charge neutrality
         of matter, not the weakness of electromagnetism<Cite id="griffiths-2017" in={SOURCES} />.
@@ -390,9 +390,9 @@ export default function CoulombLab() {
         question={<>Two charges of <strong className="text-text font-medium">+1 nC</strong> each sit <strong className="text-text font-medium">1 mm</strong> apart in vacuum. What is the force between them?</>}
         answer={
           <>
-            <p className="mb-prose-3">Plug into Coulomb's law with Q₁ = Q₂ = 1×10⁻⁹ C, r = 1×10⁻³ m, ε<sub>r</sub> = 1:</p>
-            <Formula>F = k Q₁ Q₂ / r² = (8.99×10⁹)(10⁻⁹)(10⁻⁹) / (10⁻³)²</Formula>
-            <Formula>F = (8.99×10⁻⁹) / (10⁻⁶) = 8.99×10⁻³ N</Formula>
+            <p className="mb-prose-3">Plug into Coulomb's law with Q₁ = Q₂ = 1×10⁻⁹ C, r = 1×10⁻³ m, <InlineMath tex="\varepsilon_r = 1" />:</p>
+            <Formula tex="F = \dfrac{k\, Q_1 Q_2}{r^2} = \dfrac{(8.99\times 10^{9})(10^{-9})(10^{-9})}{(10^{-3})^2}" />
+            <Formula tex="F = \dfrac{8.99\times 10^{-9}}{10^{-6}} = 8.99\times 10^{-3}\ \text{N}" />
             <p className="mb-prose-3">Roughly <strong className="text-text font-medium">9 mN</strong>, repulsive. About the weight of a grain of rice — for two charges that, by everyday standards, are vanishingly small. The inverse-square geometry, plus the size of <strong className="text-text font-medium">k</strong>, conspires to make even nanocoulombs noticeable when they sit a millimeter apart.</p>
           </>
         }
@@ -404,7 +404,7 @@ export default function CoulombLab() {
         answer={
           <>
             <p className="mb-prose-3">F scales as 1/r². Doubling r multiplies r² by 4, so F shrinks by a factor of 4:</p>
-            <Formula>F(2 mm) / F(1 mm) = (1 mm / 2 mm)² = 1/4</Formula>
+            <Formula tex="F(2\ \text{mm}) / F(1\ \text{mm}) = (1\ \text{mm} / 2\ \text{mm})^2 = 1/4" />
             <p className="mb-prose-3">F = (8.99×10⁻³ N)/4 ≈ <strong className="text-text font-medium">2.25×10⁻³ N</strong>. The inverse-square punishes distance hard: tripling r would have cut F by 9, quadrupling by 16.</p>
           </>
         }
@@ -416,10 +416,10 @@ export default function CoulombLab() {
         answer={
           <>
             <p className="mb-prose-3">Electron charge e = 1.602×10⁻¹⁹ C, mass mₑ = 9.109×10⁻³¹ kg, G = 6.674×10⁻¹¹ N·m²/kg²<Cite id="codata-2018" in={SOURCES} />. Electrostatic:</p>
-            <Formula>F<sub>e</sub> = k e² / r² = (8.99×10⁹)(1.602×10⁻¹⁹)² / (10⁻¹⁰)²</Formula>
-            <Formula>F<sub>e</sub> = (8.99×10⁹)(2.566×10⁻³⁸) / 10⁻²⁰ ≈ 2.31×10⁻⁸ N</Formula>
+            <Formula tex="F_e = \dfrac{k\, e^2}{r^2} = \dfrac{(8.99\times 10^{9})(1.602\times 10^{-19})^2}{(10^{-10})^2}" />
+            <Formula tex="F_e = \dfrac{(8.99\times 10^{9})(2.566\times 10^{-38})}{10^{-20}} \approx 2.31\times 10^{-8}\ \text{N}" />
             <p className="mb-prose-3">Gravitational:</p>
-            <Formula>F<sub>g</sub> = G m<sub>e</sub>² / r² = (6.674×10⁻¹¹)(9.109×10⁻³¹)² / 10⁻²⁰ ≈ 5.54×10⁻⁵¹ N</Formula>
+            <Formula tex="F_g = \dfrac{G\, m_e^2}{r^2} = \dfrac{(6.674\times 10^{-11})(9.109\times 10^{-31})^2}{10^{-20}} \approx 5.54\times 10^{-51}\ \text{N}" />
             <p className="mb-prose-3">Ratio: <strong className="text-text font-medium">F<sub>e</sub>/F<sub>g</sub> ≈ 4.17×10⁴²</strong>. The ratio is independent of r — both forces fall as 1/r² — and it is the same enormous number that the lab readout displays<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
@@ -430,9 +430,9 @@ export default function CoulombLab() {
         question={<>A charge of <strong className="text-text font-medium">+1 µC</strong> and a charge of <strong className="text-text font-medium">−2 µC</strong> sit <strong className="text-text font-medium">5 cm</strong> apart in air. What is the force, and is it attractive or repulsive?</>}
         answer={
           <>
-            <p className="mb-prose-3">Treat air as vacuum (ε<sub>r</sub> ≈ 1.0006, negligible here). With Q₁ = 10⁻⁶ C, Q₂ = −2×10⁻⁶ C, r = 0.05 m:</p>
-            <Formula>F = k Q₁ Q₂ / r² = (8.99×10⁹)(10⁻⁶)(−2×10⁻⁶) / (0.05)²</Formula>
-            <Formula>F = (−1.798×10⁻²) / (2.5×10⁻³) ≈ −7.19 N</Formula>
+            <p className="mb-prose-3">Treat air as vacuum (<InlineMath tex="\varepsilon_r \approx 1.0006" />, negligible here). With Q₁ = 10⁻⁶ C, Q₂ = −2×10⁻⁶ C, r = 0.05 m:</p>
+            <Formula tex="F = \dfrac{k\, Q_1 Q_2}{r^2} = \dfrac{(8.99\times 10^{9})(10^{-6})(-2\times 10^{-6})}{(0.05)^2}" />
+            <Formula tex="F = \dfrac{-1.798\times 10^{-2}}{2.5\times 10^{-3}} \approx -7.19\ \text{N}" />
             <p className="mb-prose-3">Magnitude: <strong className="text-text font-medium">~7.2 N</strong> (about the weight of a 0.7 kg apple). The negative sign confirms it is <strong className="text-text font-medium">attractive</strong> — opposite signs pull together.</p>
           </>
         }
@@ -443,8 +443,8 @@ export default function CoulombLab() {
         question={<>Repeat Problem 1.1.4 with the same two charges and the same separation, but immerse them in <strong className="text-text font-medium">water</strong> (ε<sub>r</sub> ≈ 80). What is the new force?</>}
         answer={
           <>
-            <p className="mb-prose-3">The medium divides Coulomb's force by ε<sub>r</sub>:</p>
-            <Formula>F<sub>water</sub> = F<sub>vacuum</sub> / ε<sub>r</sub> = 7.19 N / 80 ≈ 8.99×10⁻² N</Formula>
+            <p className="mb-prose-3">The medium divides Coulomb's force by <InlineMath tex="\varepsilon_r" />:</p>
+            <Formula tex="F_{\text{water}} = F_{\text{vacuum}} / \varepsilon_r = 7.19\ \text{N} / 80 \approx 8.99\times 10^{-2}\ \text{N}" />
             <p className="mb-prose-3">About <strong className="text-text font-medium">90 mN</strong>, still attractive. Water's bound dipoles align with the field and largely cancel it. This is exactly why ionic salts dissolve in water: the cohesive electrostatic forces between Na⁺ and Cl⁻ are reduced by a factor of 80, easily overcome by thermal motion<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
@@ -456,7 +456,7 @@ export default function CoulombLab() {
         answer={
           <>
             <p className="mb-prose-3">F is linear in each charge and goes as 1/r². Tripling Q₁ multiplies F by 3; halving r multiplies r² by 1/4, so 1/r² multiplies by 4. Net:</p>
-            <Formula>F<sub>new</sub> / F<sub>old</sub> = 3 × 4 = 12</Formula>
+            <Formula tex="F_{\text{new}} / F_{\text{old}} = 3 \times 4 = 12" />
             <p className="mb-prose-3">F increases by a factor of <strong className="text-text font-medium">12</strong>. Sliding both knobs at once compounds quickly.</p>
           </>
         }
@@ -467,8 +467,8 @@ export default function CoulombLab() {
         question={<>Two charges in vacuum experience a force of <strong className="text-text font-medium">100 N</strong> at <strong className="text-text font-medium">1 m</strong>. At what distance would the force drop to <strong className="text-text font-medium">25 N</strong>?</>}
         answer={
           <>
-            <p className="mb-prose-3">Hold Q₁Q₂ fixed and require F to fall by a factor of 4. Since F ∝ 1/r², r must grow by a factor of √4 = 2:</p>
-            <Formula>F₁ / F₂ = r₂² / r₁²  ⇒  r₂ = r₁ √(F₁/F₂) = (1 m) √(100/25) = 2 m</Formula>
+            <p className="mb-prose-3">Hold Q₁Q₂ fixed and require F to fall by a factor of 4. Since <InlineMath tex="F \propto 1/r^2" />, r must grow by a factor of <InlineMath tex="\sqrt{4} = 2" />:</p>
+            <Formula tex="F_1 / F_2 = r_2^2 / r_1^2 \;\Rightarrow\; r_2 = r_1 \sqrt{F_1/F_2} = (1\ \text{m})\sqrt{100/25} = 2\ \text{m}" />
             <p className="mb-prose-3">At <strong className="text-text font-medium">r = 2 m</strong> the force is 25 N. Quartering F means doubling r — the inverse-square law's signature.</p>
           </>
         }
@@ -479,9 +479,9 @@ export default function CoulombLab() {
         question={<>A hydrogen atom: a proton and an electron <strong className="text-text font-medium">0.529 Å</strong> apart (the Bohr radius). Compute the electrostatic force.</>}
         answer={
           <>
-            <p className="mb-prose-3">With q<sub>p</sub> = +e, q<sub>e</sub> = −e, r = 5.29×10⁻¹¹ m:</p>
-            <Formula>F = k e² / r² = (8.99×10⁹)(1.602×10⁻¹⁹)² / (5.29×10⁻¹¹)²</Formula>
-            <Formula>F = (2.307×10⁻²⁸) / (2.80×10⁻²¹) ≈ 8.24×10⁻⁸ N</Formula>
+            <p className="mb-prose-3">With <InlineMath tex="q_p = +e" />, <InlineMath tex="q_e = -e" />, r = 5.29×10⁻¹¹ m:</p>
+            <Formula tex="F = \dfrac{k\, e^2}{r^2} = \dfrac{(8.99\times 10^{9})(1.602\times 10^{-19})^2}{(5.29\times 10^{-11})^2}" />
+            <Formula tex="F = \dfrac{2.307\times 10^{-28}}{2.80\times 10^{-21}} \approx 8.24\times 10^{-8}\ \text{N}" />
             <p className="mb-prose-3">About <strong className="text-text font-medium">82 nN</strong> of attraction. That is the binding force of a single hydrogen atom. Multiply by Avogadro's number per mole and you see why chemistry has the energy density it does<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
@@ -493,8 +493,8 @@ export default function CoulombLab() {
         answer={
           <>
             <p className="mb-prose-3">Superposition: the middle charge feels two forces, equal in magnitude (same charges, same distance) and opposite in direction (one from the left pushing right, one from the right pushing left). They cancel:</p>
-            <Formula>F<sub>left → mid</sub> = +k(10⁻⁹)(10⁻⁹)/(0.01)² = +8.99×10⁻⁵ N (rightward)</Formula>
-            <Formula>F<sub>right → mid</sub> = −8.99×10⁻⁵ N (leftward)</Formula>
+            <Formula tex="F_{\text{left}\to\text{mid}} = +k(10^{-9})(10^{-9})/(0.01)^2 = +8.99\times 10^{-5}\ \text{N (rightward)}" />
+            <Formula tex="F_{\text{right}\to\text{mid}} = -8.99\times 10^{-5}\ \text{N (leftward)}" />
             <p className="mb-prose-3">Net force on the middle charge: <strong className="text-text font-medium">zero</strong>. Note the outer two charges do <em className="italic text-text">not</em> have zero net force — symmetry only protects the middle one.</p>
           </>
         }
@@ -506,7 +506,7 @@ export default function CoulombLab() {
         answer={
           <>
             <p className="mb-prose-3">In Gaussian units, the constant is absorbed into the definition of charge itself. The unit of charge (the statcoulomb, or esu) is chosen so that two unit charges at 1 cm separation exert a force of exactly 1 dyne. Then:</p>
-            <Formula>F (dyne) = q₁ q₂ (esu²) / r² (cm²),  k = 1</Formula>
+            <Formula tex="F\ (\text{dyne}) = q_1 q_2\ (\text{esu}^2) / r^2\ (\text{cm}^2),\quad k = 1" />
             <p className="mb-prose-3">So <strong className="text-text font-medium">k = 1</strong> in Gaussian units, dimensionless. The price is that ε₀ disappears from Coulomb's law but reappears (as 4π) elsewhere in Maxwell's equations. Jackson covers both systems and the conversions between them<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }

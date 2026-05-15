@@ -18,7 +18,7 @@
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { Term } from '@/components/Term';
@@ -119,11 +119,11 @@ export default function Ch39HouseOutdoorWet() {
             <strong className="text-text font-medium">250 kΩ</strong>. What is the leakage current, and will the upstream GFCI trip?
           </>
         }
-        hint={<>Apply I = V/R from Ch.32, then compare to the 5 mA GFCI threshold.</>}
+        hint={<>Apply <InlineMath id="ohms-law" /> rearranged as <InlineMath tex="I = V/R" /> from Ch.32, then compare to the 5 mA GFCI threshold.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Ohm's law across the wet surface track:</p>
-            <Formula>I = V / R = 120 V / 250 000 Ω = 0.48 mA</Formula>
+            <Formula tex="I = V/R = 120\ \text{V} / 250{,}000\ \Omega = 0.48\ \text{mA}" />
             <p className="mb-prose-1 last:mb-0">
               Below the 5 mA / 25 ms GFCI threshold by an order of magnitude<Cite id="nec-2023" in={SOURCES} />.
               The breaker does not trip; the leakage continues. Over weeks the surface film carbonises and the
@@ -167,7 +167,7 @@ export default function Ch39HouseOutdoorWet() {
         of those two surface potentials, which without bonding can be a large fraction of V<sub>fault</sub>. The
         current through the swimmer is then
       </p>
-      <Formula>I<sub>body</sub> = (V<sub>water</sub> − V<sub>ladder</sub>) / R<sub>body</sub></Formula>
+      <Formula tex="I_{\text{body}} = (V_{\text{water}} - V_{\text{ladder}}) / R_{\text{body}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">I<sub>body</sub></strong> is the current through the swimmer (in amperes), <strong className="text-text font-medium">
         V<sub>water</sub></strong> is the potential the fault has imposed on the pool water (in volts),
@@ -184,7 +184,7 @@ export default function Ch39HouseOutdoorWet() {
         {' '}<Term def={<><strong className="text-text font-medium">step potential (soil)</strong> — the voltage drop across the metre of damp earth between a person's two feet when fault current spreads radially from a grounding electrode. Different from the touch potential inside a bonded pool grid, but the same physics.</>}>step-potential</Term>{' '}
         formula for someone walking near a faulted ground rod or downed conductor:
       </p>
-      <Formula>V<sub>step</sub> = E × Δd<sub>step</sub></Formula>
+      <Formula tex="V_{\text{step}} = E \times \Delta d_{\text{step}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V<sub>step</sub></strong> is the voltage difference across the gait between the two feet
         (in volts), <strong className="text-text font-medium">E</strong> is the local potential gradient in the soil surface around the fault (in
@@ -223,8 +223,8 @@ export default function Ch39HouseOutdoorWet() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Voltage across the swimmer is the difference between the two surface potentials:</p>
-            <Formula>ΔV = 20 V − 2 V = 18 V</Formula>
-            <Formula>I = ΔV / R = 18 / 2 000 = 9 mA</Formula>
+            <Formula tex="\Delta V = 20\ \text{V} - 2\ \text{V} = 18\ \text{V}" />
+            <Formula tex="I = \Delta V / R = 18 / 2{,}000 = 9\ \text{mA}" />
             <p className="mb-prose-1 last:mb-0">
               Nine milliamperes hand-to-foot at one second sits inside IEC 60479-1 zone AC-2 — the let-go threshold
               region<Cite id="iec-60479-2018" in={SOURCES} />. The swimmer can probably release the ladder, but
@@ -374,7 +374,7 @@ export default function Ch39HouseOutdoorWet() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Apply the continuous-load multiplier:</p>
-            <Formula>I_breaker_min = 1.25 × 35 = 43.75 A</Formula>
+            <Formula tex="I_{\text{breaker,min}} = 1.25 \times 35 = 43.75\ \text{A}" />
             <p className="mb-prose-1 last:mb-0">
               Round up to the next standard size, which is <strong className="text-text font-medium">50 A</strong>. The conductor must have
               ampacity at least 43.75 A at the 75°C termination; per NEC Table 310.16, <strong className="text-text font-medium">8 AWG copper
@@ -414,7 +414,7 @@ export default function Ch39HouseOutdoorWet() {
         Power delivered to the vehicle's onboard charger is the standard split-phase product from Ch.31, modified
         by the small efficiency of the EVSE's contactor and pilot circuitry:
       </p>
-      <Formula>P<sub>charge</sub> = V × I × η</Formula>
+      <Formula tex="P_{\text{charge}} = V \times I \times \eta" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P<sub>charge</sub></strong> is the AC power delivered to the vehicle's onboard charger (in
         watts), <strong className="text-text font-medium">V</strong> is the line-to-line supply voltage at the EVSE (in volts, nominally 240 V on
@@ -488,7 +488,7 @@ export default function Ch39HouseOutdoorWet() {
               The 40 A rating is the breaker the unit's <em className="italic text-text">own</em> NEMA 14-50 input circuit is sized for, by
               the same 125% rule:
             </p>
-            <Formula>I_breaker = 1.25 × I_continuous</Formula>
+            <Formula tex="I_{\text{breaker}} = 1.25 \times I_{\text{continuous}}" />
             <p className="mb-prose-1 last:mb-0">
               A 40 A breaker permits a 32 A continuous draw (40 / 1.25 = 32). A 50 A breaker permits 40 A
               continuous. A NEMA 14-50 cord cap is sized for 50 A, so the branch is 50 A on 6 AWG copper, the

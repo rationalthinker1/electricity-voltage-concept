@@ -95,7 +95,7 @@ export default function Ch35HouseReplacingFixtures() {
         Why all this for a 120 V residential circuit? Because the relevant current is the one that flows through the
         body, which is the residual voltage divided by the body's resistance:
       </p>
-      <Formula>I<sub>body</sub> = V<sub>residual</sub> / R<sub>body</sub></Formula>
+      <Formula tex="I_{\text{body}} = V_{\text{residual}} / R_{\text{body}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">I<sub>body</sub></strong> is the current that flows through the human standing on the circuit
         (in amperes), <strong className="text-text font-medium">V<sub>residual</sub></strong> is whatever voltage remains across the contact points
@@ -209,7 +209,7 @@ export default function Ch35HouseReplacingFixtures() {
         resistance can rise by a factor of two or three. And once contact resistance rises, the power dissipated in
         the joint at any given current is the runaway:
       </p>
-      <Formula>P<sub>joint</sub> = I<sup>2</sup> R<sub>contact</sub></Formula>
+      <Formula tex="P_{\text{joint}} = I^2 R_{\text{contact}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P<sub>joint</sub></strong> is the power dissipated in the metal-to-metal contact (in watts),
         <strong className="text-text font-medium"> I</strong> is the load current passing through the joint (in amperes RMS), and
@@ -219,7 +219,7 @@ export default function Ch35HouseReplacingFixtures() {
         contact resistance will remain bounded forever. Take a continuous 12 A load through a backstab whose
         contact resistance has degraded to 0.05 Ω:
       </p>
-      <Formula>P<sub>joint</sub> = (12)<sup>2</sup> × 0.05 = 7.2 W</Formula>
+      <Formula tex="P_{\text{joint}} = (12)^2 \times 0.05 = 7.2\ \text{W}" />
       <p className="mb-prose-3">
         Seven watts dissipated in a volume of perhaps a third of a cubic inch, surrounded by plastic, with no
         airflow. The local temperature rises, the brass softens further, the contact pressure drops further, the
@@ -255,7 +255,7 @@ export default function Ch35HouseReplacingFixtures() {
             <p className="mb-prose-1 last:mb-0">
               Direct application of the section's formula:
             </p>
-            <Formula>P<sub>joint</sub> = I<sup>2</sup> R<sub>contact</sub> = (12)<sup>2</sup> × 0.06 = 8.64 W</Formula>
+            <Formula tex="P_{\text{joint}} = I^2 R_{\text{contact}} = (12)^2 \times 0.06 = 8.64\ \text{W}" />
             <p className="mb-prose-1 last:mb-0">
               8.64 W in a one-third-cubic-inch cavity is roughly three to four times the dissipation UL 498 allows
               for a healthy device at its full rated 15 A<Cite id="ul-498" in={SOURCES} />, because a healthy

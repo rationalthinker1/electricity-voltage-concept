@@ -11,7 +11,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -53,7 +53,7 @@ export default function Ch17Generators() {
 
       <p className="mb-prose-3">
         We left Chapter 16 with the synchronous motor: a rotor with its own field, locked to a rotating stator field,
-        spinning at exactly <em className="italic text-text">n<sub>s</sub> = 120 f / p</em>. The rotor's field induces a sinusoidal flux through
+        spinning at exactly <InlineMath tex="n_s = 120\, f / p" />. The rotor's field induces a sinusoidal flux through
         each stator coil, but a moment of thought reveals that the cause-and-effect relationship was a matter of
         choice. The stator's rotating field drives the rotor; equivalently, the rotor's rotating field induces
         voltage in the stator. Drive the rotor by some external mechanical means (a water turbine, a steam turbine, a
@@ -63,7 +63,7 @@ export default function Ch17Generators() {
       <p className="mb-prose-3">
         The bedrock physics is <Term def="A time-changing magnetic flux through a closed loop induces an EMF around that loop equal to −dΦ/dt. The minus sign — Lenz's law — ensures that the induced current opposes the change that created it. Source of all electric power generation.">Faraday's law of induction</Term>:
       </p>
-      <Formula>ℰ = − dΦ / dt</Formula>
+      <Formula id="faraday-law" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">ℰ</strong> is the EMF induced around the closed loop (in volts),
         <strong className="text-text font-medium"> Φ</strong> is the magnetic flux through the loop (in webers, equivalently T·m²),
@@ -71,7 +71,7 @@ export default function Ch17Generators() {
         direction: the induced current opposes the change in flux.
       </p>
       <p className="mb-prose-3">
-        For a coil of <em className="italic text-text">N</em> turns linking flux <em className="italic text-text">Φ</em>, the EMF is <em className="italic text-text">−N dΦ/dt</em>. The minus sign — Lenz's
+        For a coil of <em className="italic text-text">N</em> turns linking flux <em className="italic text-text">Φ</em>, the EMF is <InlineMath tex="-N\, d\Phi/dt" />. The minus sign — Lenz's
         law — says the induced current flows in the direction that opposes the change in flux that created it. In a
         generator, that opposition is exactly what produces the mechanical resistance you have to push against to keep
         the rotor turning. Energy in, work in, work out — strict conservation across the air gap<Cite id="griffiths-2017" in={SOURCES} />.
@@ -81,10 +81,10 @@ export default function Ch17Generators() {
 
       <p className="mb-prose-3">
         Take a single rectangular coil of <em className="italic text-text">N</em> turns and area <em className="italic text-text">A</em>. Rotate it in a uniform magnetic field
-        of magnitude <em className="italic text-text">B</em> at angular speed <em className="italic text-text">ω</em>. The flux through the coil at angle <em className="italic text-text">θ = ωt</em> is
-        <em className="italic text-text"> Φ(t) = BA cos(ωt)</em>. The induced EMF is the time derivative<Cite id="griffiths-2017" in={SOURCES} />:
+        of magnitude <em className="italic text-text">B</em> at angular speed <em className="italic text-text">ω</em>. The flux through the coil at angle <InlineMath tex="\theta = \omega t" /> is
+        <InlineMath tex="\Phi(t) = BA \cos(\omega t)" />. The induced EMF is the time derivative<Cite id="griffiths-2017" in={SOURCES} />:
       </p>
-      <Formula>ℰ(t) = − N · dΦ/dt = N B A ω sin(ωt)</Formula>
+      <Formula tex="\varepsilon(t) = -N \cdot d\Phi/dt = N B A \omega \sin(\omega t)" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">ℰ(t)</strong> is the instantaneous EMF at the coil's terminals (in volts),
         <strong className="text-text font-medium"> N</strong> is the number of turns in the coil (dimensionless integer),
@@ -93,7 +93,7 @@ export default function Ch17Generators() {
         rotation (in rad/s), and <strong className="text-text font-medium">t</strong> is time (in seconds).
       </p>
       <p className="mb-prose-3">
-        A clean sinusoid. Peak amplitude is <em className="italic text-text">NBAω</em>; frequency is <em className="italic text-text">ω / 2π</em>. Scale up <em className="italic text-text">N</em>,
+        A clean sinusoid. Peak amplitude is <InlineMath tex="NBA\omega" />; frequency is <InlineMath tex="\omega / 2\pi" />. Scale up <em className="italic text-text">N</em>,
         <em className="italic text-text"> B</em>, <em className="italic text-text">A</em>, or <em className="italic text-text">ω</em> and the output voltage goes up linearly with each. The simplest
         possible generator — sometimes called a single-phase <Term def="A generator whose output is alternating current; the rotor's field is taken out through slip rings (continuous rings, not the split commutator of a DC machine). The car-alternator usage is historical; modern automotive alternators are 3-phase machines.">alternator</Term>
         — is exactly this picture, with two slip rings carrying the coil's two leads out to the external load.
@@ -102,10 +102,10 @@ export default function Ch17Generators() {
       <RotatingCoilGeneratorDemo />
 
       <p className="mb-prose-3">
-        Connect a resistive load across the coil's leads and current flows: <em className="italic text-text">I = ℰ/R</em>. Now the current-carrying
-        coil sits in the same field <strong className="text-text font-medium">B</strong>, so the wire experiences <em className="italic text-text">F = IL × B</em>: a force on each
+        Connect a resistive load across the coil's leads and current flows: <InlineMath tex="I = \varepsilon/R" />. Now the current-carrying
+        coil sits in the same field <strong className="text-text font-medium">B</strong>, so the wire experiences <InlineMath id="force-on-wire" />: a force on each
         long side, opposing the rotation. The mechanical torque you must apply to keep the rotor spinning is exactly
-        <em className="italic text-text"> P<sub>elec</sub> / ω</em>, where <em className="italic text-text">P<sub>elec</sub></em> is the electrical power being delivered to the
+        <InlineMath tex="P_{\text{elec}} / \omega" />, where <InlineMath tex="P_{\text{elec}}" /> is the electrical power being delivered to the
         load. No load → no current → no back-torque → the rotor spins essentially freely (against bearing friction and
         windage). Full load → maximum current → maximum back-torque. Energy conservation is automatic; you can't extract
         electrical energy without burning mechanical energy at the same rate.
@@ -114,15 +114,15 @@ export default function Ch17Generators() {
       <TryIt
         tag="Try 17.1"
         question={<>A coil with <strong className="text-text font-medium">N = 100</strong> turns and area <strong className="text-text font-medium">A = 200 cm²</strong> rotates at <strong className="text-text font-medium">3600 RPM</strong> in a <strong className="text-text font-medium">0.5 T</strong> field. What is the peak EMF?</>}
-        hint="Convert RPM to ω in rad/s, then plug into NBAω."
+        hint={<>Convert RPM to <InlineMath tex="\omega" /> in rad/s, then plug into <InlineMath tex="NBA\omega" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              First convert: ω = 2π · (3600/60) = 2π · 60 = 120π ≈ 377 rad/s.
+              First convert: <InlineMath tex="\omega = 2\pi \cdot (3600/60) = 2\pi \cdot 60 = 120\pi \approx 377\ \text{rad/s}" />.
               A = 200 cm² = 0.02 m².
             </p>
-            <Formula>ℰ_peak = N B A ω = (100)(0.5)(0.02)(377)</Formula>
-            <Formula>ℰ_peak ≈ <strong className="text-text font-medium">377 V</strong></Formula>
+            <Formula tex="\varepsilon_{\text{peak}} = N B A \omega = (100)(0.5)(0.02)(377)" />
+            <Formula tex="\varepsilon_{\text{peak}} \approx 377\ \text{V}" />
             <p className="mb-prose-1 last:mb-0">
               In RMS that's about 267 V — within a factor of two of standard line voltage. The 3600 RPM happens to be
               the synchronous speed for a 2-pole machine on a 60 Hz grid, which is why utility-scale generators on
@@ -150,7 +150,7 @@ export default function Ch17Generators() {
         turbines). The stator's three windings carry the AC output. The frequency of that output is rigidly tied to
         the rotor's mechanical rotation speed:
       </p>
-      <Formula>f = (n · p) / 120 &nbsp; (n in RPM, p = pole count)</Formula>
+      <Formula tex="f = (n \cdot p) / 120 \quad (n\ \text{in RPM},\ p = \text{pole count})" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">f</strong> is the electrical output frequency (in Hz), <strong className="text-text font-medium">n</strong> is
         the rotor's mechanical rotation speed (in revolutions per minute), and <strong className="text-text font-medium">p</strong>{' '}
@@ -158,8 +158,8 @@ export default function Ch17Generators() {
         the synchronous-speed formula from Chapter 16.
       </p>
       <p className="mb-prose-3">
-        At 3600 RPM with 2 poles, <em className="italic text-text">f</em> = 60 Hz — the North American grid frequency. At 3000 RPM with 2 poles,
-        <em className="italic text-text"> f</em> = 50 Hz — Europe, Asia, Africa. A nuclear or large coal turbine, geared so that its turbine wheel
+        At 3600 RPM with 2 poles, <InlineMath tex="f = 60\ \text{Hz}" /> — the North American grid frequency. At 3000 RPM with 2 poles,
+        <InlineMath tex="f = 50\ \text{Hz}" /> — Europe, Asia, Africa. A nuclear or large coal turbine, geared so that its turbine wheel
         runs at exactly synchronous speed, spins forever within a few parts per million of nominal because the grid
         frequency itself is regulated that precisely<Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
@@ -174,10 +174,10 @@ export default function Ch17Generators() {
       <TryIt
         tag="Try 17.2"
         question={<>A hydroelectric generator at Hoover Dam has <strong className="text-text font-medium">40 poles</strong> and is connected to a 60 Hz grid. At what RPM does its shaft turn?</>}
-        hint="The shaft must turn at synchronous speed: n_s = 120 f / p."
+        hint={<>The shaft must turn at synchronous speed: <InlineMath tex="n_s = 120\, f / p" />.</>}
         answer={
           <>
-            <Formula>n<sub>s</sub> = 120 · 60 / 40 = <strong className="text-text font-medium">180 RPM</strong></Formula>
+            <Formula tex="n_s = 120 \cdot 60 / 40 = 180\ \text{RPM}" />
             <p className="mb-prose-1 last:mb-0">
               Slow! That's the right pace for a low-head hydro turbine — Francis or Kaplan runners want low RPM to keep
               their tip speeds reasonable and cavitation in check. Wind-turbine direct-drive generators use even higher
@@ -192,17 +192,17 @@ export default function Ch17Generators() {
       <p className="mb-prose-3">
         A synchronous generator has two control knobs and one mechanical input. The mechanical input is whatever the
         prime mover is delivering — water through a turbine, steam through a blade row, the rotational torque of a
-        diesel engine. The two electrical knobs are the rotor's <em className="italic text-text">field current</em> <em className="italic text-text">I<sub>f</sub></em>, which
-        sets the rotor's magnetic flux and therefore the induced-EMF magnitude <em className="italic text-text">|E<sub>f</sub>|</em>, and the
+        diesel engine. The two electrical knobs are the rotor's <em className="italic text-text">field current</em> <InlineMath tex="I_f" />, which
+        sets the rotor's magnetic flux and therefore the induced-EMF magnitude <InlineMath tex="|E_f|" />, and the
         rotor's <em className="italic text-text">load angle δ</em>, which is the steady-state phase lead of the rotor's flux axis ahead of the
         grid voltage phasor<Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        At no load, <em className="italic text-text">|E<sub>f</sub>|</em> is just the open-circuit terminal voltage: more field current produces
+        At no load, <InlineMath tex="|E_f|" /> is just the open-circuit terminal voltage: more field current produces
         more flux, more flux produces more EMF, full stop. Connect that generator to a stiff grid and the story
-        changes. The grid clamps the terminal voltage at <em className="italic text-text">|V<sub>grid</sub>|</em>; the real power transferred is
+        changes. The grid clamps the terminal voltage at <InlineMath tex="|V_{\text{grid}}|" />; the real power transferred is
       </p>
-      <Formula>P = (|V<sub>grid</sub>| · |E<sub>f</sub>| / X<sub>s</sub>) · sin δ</Formula>
+      <Formula tex="P = \dfrac{|V_{\text{grid}}| \cdot |E_f|}{X_s} \cdot \sin\delta" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P</strong> is the real (active) power delivered to the grid (in watts, or in
         per-unit on the machine's MVA base), <strong className="text-text font-medium">|V<sub>grid</sub>|</strong> is the magnitude of
@@ -216,14 +216,14 @@ export default function Ch17Generators() {
       <p className="mb-prose-3">
         The reactive power at the terminal is
       </p>
-      <Formula>Q = (|V<sub>grid</sub>| · |E<sub>f</sub>| / X<sub>s</sub>) · cos δ − |V<sub>grid</sub>|² / X<sub>s</sub></Formula>
+      <Formula tex="Q = \dfrac{|V_{\text{grid}}| \cdot |E_f|}{X_s} \cdot \cos\delta - \dfrac{|V_{\text{grid}}|^2}{X_s}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">Q</strong> is the reactive power delivered by the generator (in VAR, or
         per-unit; positive means the machine sources VARs to the grid), and the remaining symbols
         carry the same meanings as in the real-power equation above.
       </p>
       <p className="mb-prose-3">
-        Increase mechanical input and the rotor pulls ahead of the grid — <em className="italic text-text">δ</em> grows until <em className="italic text-text">P</em> matches.
+        Increase mechanical input and the rotor pulls ahead of the grid — <InlineMath tex="\delta" /> grows until <em className="italic text-text">P</em> matches.
         Increase field current and <em className="italic text-text">Q</em> grows: an over-excited generator supplies reactive power to the grid
         (acts like a capacitor); under-excited, it absorbs reactive power (acts like an inductor). The "V curves"
         familiar to power engineers — armature current vs field current at constant real power — fall out of these
@@ -233,12 +233,11 @@ export default function Ch17Generators() {
       <ExcitationControlDemo />
 
       <p className="mb-prose-3">
-        The power-angle relation <em className="italic text-text">P ∝ sin δ</em> has a sharp limit built into it. Real power peaks at <em className="italic text-text">δ</em> =
-        90° at a value <em className="italic text-text">P<sub>max</sub> = |V·E<sub>f</sub>|/X<sub>s</sub></em>, and past that point the rotor
+        The power-angle relation <InlineMath tex="P \propto \sin\delta" /> has a sharp limit built into it. Real power peaks at <InlineMath tex="\delta = 90°" /> at a value <InlineMath tex="P_{\max} = |V \cdot E_f|/X_s" />, and past that point the rotor
         cannot transmit any more power no matter how hard the turbine pushes. The excess mechanical torque accelerates
         the rotor beyond synchronism — the unit <Term def="The condition in which a synchronous generator's rotor advances by a full electrical pole past the grid phasor. The terminal currents swing through a fault-level transient and the protection relay trips the machine offline.">slips a pole</Term>, the stator currents swing through a fault-level
-        transient as <em className="italic text-text">δ</em> wraps from 90° back through 270°, and the protection relay trips the generator off
-        the bus to save it. Stable steady-state operation requires <em className="italic text-text">δ</em> well below 90°, typically 20°–45° at
+        transient as <InlineMath tex="\delta" /> wraps from 90° back through 270°, and the protection relay trips the generator off
+        the bus to save it. Stable steady-state operation requires <InlineMath tex="\delta" /> well below 90°, typically 20°–45° at
         rated output, with the remaining margin reserved for fault-ride-through<Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
 
@@ -247,18 +246,18 @@ export default function Ch17Generators() {
       <TryIt
         tag="Try 17.3"
         question={<>A <strong className="text-text font-medium">600 MW</strong> synchronous generator has <strong className="text-text font-medium">X<sub>s</sub> = 1.5 pu</strong>, <strong className="text-text font-medium">|V<sub>grid</sub>| = 1 pu</strong>, <strong className="text-text font-medium">|E<sub>f</sub>| = 1.4 pu</strong>. What is the steady-state power angle <em className="italic text-text">δ</em> when it delivers <strong className="text-text font-medium">500 MW</strong> at rated voltage?</>}
-        hint="Per-unit P = 500/600. Then sin δ = P · X_s / (|V_grid| · |E_f|)."
+        hint={<>Per-unit P = 500/600. Then <InlineMath tex="\sin\delta = P \cdot X_s / (|V_{\text{grid}}| \cdot |E_f|)" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Per-unit real power on the machine's own MW base:</p>
-            <Formula>P = 500 / 600 = 0.833 pu</Formula>
-            <Formula>sin δ = P · X<sub>s</sub> / (|V<sub>grid</sub>| · |E<sub>f</sub>|) = 0.833 · 1.5 / (1.0 · 1.4) ≈ 0.893</Formula>
-            <Formula>δ = arcsin(0.893) ≈ <strong className="text-text font-medium">63°</strong></Formula>
+            <Formula tex="P = 500 / 600 = 0.833\ \text{pu}" />
+            <Formula tex="\sin\delta = P \cdot X_s / (|V_{\text{grid}}| \cdot |E_f|) = 0.833 \cdot 1.5 / (1.0 \cdot 1.4) \approx 0.893" />
+            <Formula tex="\delta = \arcsin(0.893) \approx 63°" />
             <p className="mb-prose-1 last:mb-0">
               That's a high power angle by utility-operations standards — the rotor is well up the curve, with
-              <em className="italic text-text"> P<sub>max</sub> = |V·E<sub>f</sub>|/X<sub>s</sub></em> ≈ 0.93 pu (about 560 MW on the machine's
+              <InlineMath tex="P_{\max} = |V \cdot E_f|/X_s \approx 0.93\ \text{pu}" /> (about 560 MW on the machine's
               base). Stability margin is thin; in practice the operator would dispatch additional reactive support
-              (raise <em className="italic text-text">|E<sub>f</sub>|</em>) to bring <em className="italic text-text">δ</em> back down before approving steady operation at
+              (raise <InlineMath tex="|E_f|" />) to bring <InlineMath tex="\delta" /> back down before approving steady operation at
               this point<Cite id="kundur-1994-power-stability" in={SOURCES} />.
             </p>
           </>

@@ -21,7 +21,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -111,7 +111,7 @@ export default function Ch36HouseTroubleshooting() {
         lie about phantom voltages on a floating wire. The voltage the DMM reports is the line voltage scaled
         down by the voltage divider formed between the leakage path's impedance and the meter's input impedance:
       </p>
-      <Formula>V<sub>dmm</sub> = V<sub>source</sub> × Z<sub>dmm</sub> / (Z<sub>dmm</sub> + Z<sub>leak</sub>)</Formula>
+      <Formula tex="V_{\text{dmm}} = V_{\text{source}} \times \dfrac{Z_{\text{dmm}}}{Z_{\text{dmm}} + Z_{\text{leak}}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V<sub>dmm</sub></strong> is the voltage the meter displays (in volts AC),
         <strong className="text-text font-medium"> V<sub>source</sub></strong> is the actual line voltage somewhere upstream in the building (in
@@ -154,15 +154,15 @@ export default function Ch36HouseTroubleshooting() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">The impedance of a 30 pF capacitor at 60 Hz:</p>
-            <Formula>Z<sub>leak</sub> = 1 / (2π × 60 × 30×10⁻¹²) ≈ 88 MΩ</Formula>
+            <Formula tex="Z_{\text{leak}} = \dfrac{1}{2\pi \times 60 \times 30\times 10^{-12}} \approx 88\ \text{M}\Omega" />
             <p className="mb-prose-1 last:mb-0">The voltage divider with a 10 MΩ DMM input:</p>
-            <Formula>V<sub>dmm</sub> = 120 × 10 / (10 + 88) ≈ 12 V</Formula>
+            <Formula tex="V_{\text{dmm}} = 120 \times \dfrac{10}{10 + 88} \approx 12\ \text{V}" />
             <p className="mb-prose-1 last:mb-0">
               That's not 87 V — it's closer to 12 V. The 87 V reading you started with implies either a much
               larger coupling capacitance (run the wires parallel for many feet and 200–500 pF is realistic, which
               gives Z<sub>leak</sub> ≈ 5–13 MΩ and V<sub>dmm</sub> ≈ 50–80 V) or a resistive leakage path through
               damp insulation. Either way the cure is the same: <strong className="text-text font-medium">switch to a two-pole probe</strong>. Its
-              ~3 kΩ load impedance reduces V<sub>dmm</sub> to V<sub>source</sub> × 3 kΩ / (3 kΩ + 88 MΩ) ≈
+              ~3 kΩ load impedance reduces V<sub>dmm</sub> to <InlineMath tex="V_{\text{source}} \times 3\ \text{k}\Omega / (3\ \text{k}\Omega + 88\ \text{M}\Omega) \approx" />
               <strong className="text-text font-medium"> 4 mV</strong>, indistinguishable from zero. The wire is dead.
             </p>
           </>
@@ -186,7 +186,7 @@ export default function Ch36HouseTroubleshooting() {
         displacement current through that capacitor into U. With the DMM connected from U to ground, U has a
         path to ground (through the meter) and the displacement current finds it.
       </p>
-      <Formula>I<sub>leak</sub> = ω × C<sub>coupling</sub> × V<sub>hot</sub></Formula>
+      <Formula tex="I_{\text{leak}} = \omega \times C_{\text{coupling}} \times V_{\text{hot}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">I<sub>leak</sub></strong> is the displacement current the coupling capacitor injects into
         the floating wire U (in amperes, AC), <strong className="text-text font-medium">ω = 2πf</strong> is the angular frequency of the line
@@ -194,7 +194,7 @@ export default function Ch36HouseTroubleshooting() {
         and U (in farads), and <strong className="text-text font-medium">V<sub>hot</sub></strong> is the RMS voltage of the hot wire with respect
         to ground (in volts). For C<sub>coupling</sub> = 50 pF and V<sub>hot</sub> = 120 V:
       </p>
-      <Formula>I<sub>leak</sub> = 377 × 50×10⁻¹² × 120 ≈ 2.3 µA</Formula>
+      <Formula tex="I_{\text{leak}} = 377 \times 50\times 10^{-12} \times 120 \approx 2.3\ \mu\text{A}" />
       <p className="mb-prose-3">
         That is the entire current the DMM is being asked to measure — 2.3 microamperes — and the meter
         cheerfully reports it as a voltage by multiplying it by its own 10 MΩ input impedance: 2.3 µA × 10 MΩ ≈
@@ -206,8 +206,7 @@ export default function Ch36HouseTroubleshooting() {
       </p>
       <p className="mb-prose-3">
         Two cures, both standard practice. First, use a two-pole probe instead. Its load impedance — perhaps
-        3 kΩ from an internal solenoid or filament — pulls the voltage divider hard toward zero: V<sub>dmm</sub>
-        = 120 × 3 kΩ / (3 kΩ + 1/jωC) ≈ a few millivolts. The phantom collapses. Second, some Fluke and Klein
+        3 kΩ from an internal solenoid or filament — pulls the voltage divider hard toward zero: <InlineMath tex="V_{\text{dmm}} = 120 \times 3\ \text{k}\Omega / (3\ \text{k}\Omega + 1/j\omega C) \approx" /> a few millivolts. The phantom collapses. Second, some Fluke and Klein
         DMMs have a {' '}
         <Term def={<><strong className="text-text font-medium">low-Z mode</strong> — a DMM range that switches an internal ~3 kΩ load across the input terminals during the voltage measurement. Collapses phantom voltages on floating conductors to a few millivolts. Found on Fluke 117, 87V, T6, and equivalents.</>}>low-Z mode</Term>{' '}
         button (Fluke calls it LoZ) that applies an internal ~3 kΩ load only during the measurement, replicating
@@ -386,7 +385,7 @@ export default function Ch36HouseTroubleshooting() {
         printed on every breaker datasheet plots the relationship; a useful analytical approximation in the
         thermal region is the inverse-square form
       </p>
-      <Formula>t<sub>trip</sub> = K × (I / I<sub>rating</sub>)<sup>−2</sup></Formula>
+      <Formula tex="t_{\text{trip}} = K \times (I / I_{\text{rating}})^{-2}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">t<sub>trip</sub></strong> is the time from current onset to mechanical release (in
         seconds), <strong className="text-text font-medium">I</strong> is the actual current through the breaker (in amperes RMS),
@@ -446,7 +445,7 @@ export default function Ch36HouseTroubleshooting() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">The heater's running current:</p>
-            <Formula>I = P / V = 1500 / 120 = 12.5 A</Formula>
+            <Formula tex="I = P / V = 1500 / 120 = 12.5\ \text{A}" />
             <p className="mb-prose-1 last:mb-0">
               12.5 A is <strong className="text-text font-medium">83% of the 15 A rating</strong> — over the NEC 80% continuous-load limit but
               not a hard overload. At I / I<sub>rating</sub> = 0.833 the breaker is below the thermal trip
@@ -504,10 +503,10 @@ export default function Ch36HouseTroubleshooting() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">The AC's running current and electrical power:</p>
-            <Formula>I<sub>AC</sub> = 23 − 8 = 15 A on L1 (same on L2 for a 240 V load)</Formula>
-            <Formula>P<sub>elec</sub> = 240 × 15 = 3 600 W</Formula>
+            <Formula tex="I_{\text{AC}} = 23 - 8 = 15\ \text{A on L1 (same on L2 for a 240 V load)}" />
+            <Formula tex="P_{\text{elec}} = 240 \times 15 = 3{,}600\ \text{W}" />
             <p className="mb-prose-1 last:mb-0">SEER 14 means about 14 BTU of cooling per Wh of electrical input, so:</p>
-            <Formula>Q<sub>cool</sub> ≈ 14 BTU/Wh × 3 600 W = 50 400 BTU/hr</Formula>
+            <Formula tex="Q_{\text{cool}} \approx 14\ \text{BTU/Wh} \times 3{,}600\ \text{W} = 50{,}400\ \text{BTU/hr}" />
             <p className="mb-prose-1 last:mb-0">
               Answer: <strong className="text-text font-medium">15 A, ~3.6 kW electrical, ~50 000 BTU/hr cooling</strong>. That matches a
               4-ton residential central AC, which is what you'd expect for a typical 2 000 ft² North-American

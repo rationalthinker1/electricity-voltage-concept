@@ -9,10 +9,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
-import { MathBlock, Pullout } from '@/components/Prose';
+import { Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
@@ -333,7 +333,7 @@ export default function EFieldLab() {
       </p>
 
       <h3 className="lab-section-h3">Formula</h3>
-      <MathBlock>E = F / q<sub>test</sub>  &nbsp;&nbsp;and&nbsp;&nbsp;  E = k Q / (ε<sub>r</sub> r²)</MathBlock>
+      <Formula tex="\vec{E} = \dfrac{\vec{F}}{q_{\text{test}}} \quad\text{and}\quad |\vec{E}| = \dfrac{k\, Q}{\varepsilon_r\, r^2}" />
       <p className="mb-prose-3">
         Variable glossary:
       </p>
@@ -390,32 +390,32 @@ export default function EFieldLab() {
 
       <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
-        Start from Coulomb's law for the force on a test charge q<sub>t</sub> placed at distance r from a source charge Q:
+        Start from Coulomb's law for the force on a test charge <InlineMath tex="q_t" /> placed at distance r from a source charge Q:
       </p>
-      <MathBlock>F = k Q q<sub>t</sub> / r²</MathBlock>
+      <Formula tex="F = \dfrac{k\, Q\, q_t}{r^2}" />
       <p className="mb-prose-3">
-        Define the field as the force per unit test charge in the limit q<sub>t</sub> → 0 (so the test probe doesn't reorganise the source
+        Define the field as the force per unit test charge in the limit <InlineMath tex="q_t \to 0" /> (so the test probe doesn't reorganise the source
         distribution):
       </p>
-      <MathBlock>E ≡ lim<sub>q<sub>t</sub> → 0</sub> F / q<sub>t</sub> = k Q / r²</MathBlock>
+      <Formula tex="\vec{E} \equiv \lim_{q_t \to 0} \dfrac{\vec{F}}{q_t} = \dfrac{k\, Q}{r^2}" />
       <p className="mb-prose-3">
-        The factor q<sub>t</sub> divides out cleanly because Coulomb's law is linear in it. The vector form follows by carrying along the
+        The factor <InlineMath tex="q_t" /> divides out cleanly because Coulomb's law is linear in it. The vector form follows by carrying along the
         direction <strong className="text-text font-medium">r̂</strong> from source to probe:
       </p>
-      <MathBlock>E(r) = k Q r̂ / r²</MathBlock>
+      <Formula tex="\vec{E}(\vec{r}) = \dfrac{k\, Q\, \hat{r}}{r^2}" />
       <p className="mb-prose-3">
         For many sources, Coulomb's law is linear in the source charges as well, so the total field is the vector sum:
       </p>
-      <MathBlock>E<sub>total</sub>(r) = Σ<sub>i</sub> k Q<sub>i</sub> (r − r<sub>i</sub>) / |r − r<sub>i</sub>|³</MathBlock>
+      <Formula tex="\vec{E}_{\text{total}}(\vec{r}) = \sum_i \dfrac{k\, Q_i\, (\vec{r} - \vec{r}_i)}{|\vec{r} - \vec{r}_i|^3}" />
       <p className="mb-prose-3">
         Superposition is the entire content of classical electrostatics: pick any charge distribution, sum (or integrate) the per-source
         contributions, get the field at every point<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         In a dielectric medium, the source charge polarizes the surrounding molecules, whose induced dipoles produce a counter-field. The
-        net macroscopic field is the original divided by ε<sub>r</sub>:
+        net macroscopic field is the original divided by <InlineMath tex="\varepsilon_r" />:
       </p>
-      <MathBlock>E<sub>medium</sub> = k Q / (ε<sub>r</sub> r²)</MathBlock>
+      <Formula tex="E_{\text{medium}} = \dfrac{k\, Q}{\varepsilon_r\, r^2}" />
 
       <h3 className="lab-section-h3">Worked problems</h3>
 
@@ -424,8 +424,8 @@ export default function EFieldLab() {
         question={<>What is the field <strong className="text-text font-medium">1 cm</strong> from an isolated <strong className="text-text font-medium">+1 nC</strong> point charge in vacuum?</>}
         answer={
           <>
-            <p className="mb-prose-3">Plug into E = kQ/r² with Q = 10⁻⁹ C, r = 0.01 m:</p>
-            <Formula>E = (8.99×10⁹)(10⁻⁹) / (0.01)² = 8.99 / 10⁻⁴ = 8.99×10⁴ V/m</Formula>
+            <p className="mb-prose-3">Plug into <InlineMath tex="E = kQ/r^2" /> with Q = 10⁻⁹ C, r = 0.01 m:</p>
+            <Formula tex="E = \dfrac{(8.99\times 10^{9})(10^{-9})}{(0.01)^2} = \dfrac{8.99}{10^{-4}} = 8.99\times 10^{4}\ \text{V/m}" />
             <p className="mb-prose-3">About <strong className="text-text font-medium">90 kV/m</strong>, pointing radially outward. For comparison, fair-weather atmospheric field is ~100 V/m and dielectric breakdown of dry air is around 3 MV/m, so this is a real field but not yet enough to ionize the gap.</p>
           </>
         }
@@ -436,8 +436,8 @@ export default function EFieldLab() {
         question={<>A <strong className="text-text font-medium">+2 µC</strong> test charge is placed at the location from Problem 1.2.1. What is the force on it?</>}
         answer={
           <>
-            <p className="mb-prose-3">Force on a charge in a field is F = qE, with the test charge feeling the source's field at its location:</p>
-            <Formula>F = q<sub>test</sub> E = (2×10⁻⁶)(8.99×10⁴) ≈ 0.180 N</Formula>
+            <p className="mb-prose-3">Force on a charge in a field is <InlineMath tex="F = qE" />, with the test charge feeling the source's field at its location:</p>
+            <Formula tex="F = q_{\text{test}}\, E = (2\times 10^{-6})(8.99\times 10^{4}) \approx 0.180\ \text{N}" />
             <p className="mb-prose-3">About <strong className="text-text font-medium">180 mN</strong>, directed outward (positive test charge in a radially-outward field). Notice we treat E as an existing property of the point in space, then ask what force any subsequent charge would feel there — this is the point of the field formalism.</p>
           </>
         }
@@ -449,7 +449,7 @@ export default function EFieldLab() {
         answer={
           <>
             <p className="mb-prose-3">By the shell theorem, the field outside a uniformly charged sphere is the same as if all the charge sat at the centre. So at the surface, r = 1 mm:</p>
-            <Formula>E = (8.99×10⁹)(10⁻⁹) / (10⁻³)² = 8.99×10⁶ V/m</Formula>
+            <Formula tex="E = \dfrac{(8.99\times 10^{9})(10^{-9})}{(10^{-3})^2} = 8.99\times 10^{6}\ \text{V/m}" />
             <p className="mb-prose-3">About <strong className="text-text font-medium">9 MV/m</strong>. This <em className="italic text-text">exceeds</em> the dielectric breakdown threshold of air (~3 MV/m) — a real 1 nC pith ball at this size would actively leak charge to the surrounding air via corona discharge<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
@@ -461,8 +461,8 @@ export default function EFieldLab() {
         answer={
           <>
             <p className="mb-prose-3">By symmetry, the field from the left charge points right (+x) at the origin, and the field from the right charge points left (−x). Equal magnitudes, opposite directions — they cancel:</p>
-            <Formula>E<sub>left → origin</sub> = +(8.99×10⁹)(10⁻⁹) / (0.01)² = +8.99×10⁴ V/m (along +x)</Formula>
-            <Formula>E<sub>right → origin</sub> = −8.99×10⁴ V/m (along −x)</Formula>
+            <Formula tex="E_{\text{left}\to\text{origin}} = +\dfrac{(8.99\times 10^{9})(10^{-9})}{(0.01)^2} = +8.99\times 10^{4}\ \text{V/m (along $+x$)}" />
+            <Formula tex="E_{\text{right}\to\text{origin}} = -8.99\times 10^{4}\ \text{V/m (along $-x$)}" />
             <p className="mb-prose-3">Net field at the midpoint: <strong className="text-text font-medium">E = 0</strong>. The potential V there is <em className="italic text-text">not</em> zero, however — both charges contribute positively to V, which adds rather than cancels. This is the cleanest example of the difference between V and E we will revisit in Lab 1.4.</p>
           </>
         }
@@ -474,9 +474,9 @@ export default function EFieldLab() {
         answer={
           <>
             <p className="mb-prose-3">The +1 nC sits at distance r₊ = 1 cm − 0.5 mm = 9.5 mm from the field point; the −1 nC at r₋ = 1 cm + 0.5 mm = 10.5 mm. Both contributions lie along the +x direction (positive source pushes outward, negative source pulls toward itself):</p>
-            <Formula>E<sub>+</sub> = (8.99×10⁹)(10⁻⁹) / (9.5×10⁻³)² ≈ 9.96×10⁴ V/m</Formula>
-            <Formula>E<sub>−</sub> = −(8.99×10⁹)(10⁻⁹) / (10.5×10⁻³)² ≈ −8.15×10⁴ V/m</Formula>
-            <Formula>E<sub>total</sub> ≈ 1.81×10⁴ V/m, along +x</Formula>
+            <Formula tex="E_{+} = \dfrac{(8.99\times 10^{9})(10^{-9})}{(9.5\times 10^{-3})^2} \approx 9.96\times 10^{4}\ \text{V/m}" />
+            <Formula tex="E_{-} = -\dfrac{(8.99\times 10^{9})(10^{-9})}{(10.5\times 10^{-3})^2} \approx -8.15\times 10^{4}\ \text{V/m}" />
+            <Formula tex="E_{\text{total}} \approx 1.81\times 10^{4}\ \text{V/m, along $+x$}" />
             <p className="mb-prose-3">About <strong className="text-text font-medium">18 kV/m</strong>. The far-field axial dipole approximation 2kp/r³ (with p = qd = 10⁻¹² C·m) gives 1.80×10⁴ V/m — excellent agreement, since 1 cm ≫ 1 mm.</p>
           </>
         }
@@ -487,8 +487,8 @@ export default function EFieldLab() {
         question={<>Earth's fair-weather atmospheric field is roughly <strong className="text-text font-medium">100 V/m</strong> pointing downward. What is the force on a <strong className="text-text font-medium">1 µC</strong> dust particle, and in which direction?</>}
         answer={
           <>
-            <p className="mb-prose-3">F = qE:</p>
-            <Formula>F = (10⁻⁶ C)(100 V/m) = 10⁻⁴ N = 0.1 mN</Formula>
+            <p className="mb-prose-3"><InlineMath tex="F = qE" />:</p>
+            <Formula tex="F = (10^{-6}\ \text{C})(100\ \text{V/m}) = 10^{-4}\ \text{N} = 0.1\ \text{mN}" />
             <p className="mb-prose-3">Directed <strong className="text-text font-medium">downward</strong> if the dust is positively charged (force parallel to E). For a 1 µg dust grain, the gravitational force is mg ≈ (10⁻⁹ kg)(9.8) ≈ 10⁻⁸ N — the electric force is 10,000× larger. This is why fair-weather electricity easily transports charged aerosols.</p>
           </>
         }
@@ -511,8 +511,8 @@ export default function EFieldLab() {
         answer={
           <>
             <p className="mb-prose-3">Energy: 1 J = 1 N·m. Voltage: 1 V = 1 J/C = 1 N·m/C. Divide by length:</p>
-            <Formula>1 V/m = (1 N·m/C) / m = 1 N/C</Formula>
-            <p className="mb-prose-3">The identity reflects that the field is the spatial derivative of the potential: <strong className="text-text font-medium">E = −∇V</strong>. If V drops by 1 V across 1 m, the field strength is 1 V/m — exactly the force per unit charge that would do the work of moving the charge across that potential drop<Cite id="hyperphysics-emag" in={SOURCES} />.</p>
+            <Formula tex="1\ \text{V/m} = (1\ \text{N·m/C}) / \text{m} = 1\ \text{N/C}" />
+            <p className="mb-prose-3">The identity reflects that the field is the spatial derivative of the potential: <InlineMath tex="\vec{E} = -\nabla V" />. If V drops by 1 V across 1 m, the field strength is 1 V/m — exactly the force per unit charge that would do the work of moving the charge across that potential drop<Cite id="hyperphysics-emag" in={SOURCES} />.</p>
           </>
         }
       />
@@ -522,9 +522,9 @@ export default function EFieldLab() {
         question={<>A parallel-plate capacitor with 1 cm² plates holds <strong className="text-text font-medium">+1 nC</strong> on one plate and <strong className="text-text font-medium">−1 nC</strong> on the other. The plates are 1 mm apart. Estimate the field between the plates, using σ/ε₀ where σ is surface charge density.</>}
         answer={
           <>
-            <p className="mb-prose-3">Surface charge density σ = Q/A = 10⁻⁹ C / (10⁻⁴ m²) = 10⁻⁵ C/m². For an ideal parallel-plate capacitor, the field between the plates is uniform:</p>
-            <Formula>E = σ / ε₀ = (10⁻⁵) / (8.854×10⁻¹²) ≈ 1.13×10⁶ V/m</Formula>
-            <p className="mb-prose-3">About <strong className="text-text font-medium">1.1 MV/m</strong>. The voltage across the gap is V = E·d = (1.13×10⁶)(10⁻³) ≈ 1130 V — a substantial potential for very little charge, because the plates are close together. This is the lesson of capacitance, which Lab 4.1 takes up.</p>
+            <p className="mb-prose-3">Surface charge density <InlineMath tex="\sigma = Q/A = 10^{-9}\ \text{C} / (10^{-4}\ \text{m}^2) = 10^{-5}\ \text{C/m}^2" />. For an ideal parallel-plate capacitor, the field between the plates is uniform:</p>
+            <Formula tex="E = \sigma / \varepsilon_0 = \dfrac{10^{-5}}{8.854\times 10^{-12}} \approx 1.13\times 10^{6}\ \text{V/m}" />
+            <p className="mb-prose-3">About <strong className="text-text font-medium">1.1 MV/m</strong>. The voltage across the gap is <InlineMath tex="V = E\cdot d = (1.13\times 10^{6})(10^{-3}) \approx 1130\ \text{V}" /> — a substantial potential for very little charge, because the plates are close together. This is the lesson of capacitance, which Lab 4.1 takes up.</p>
           </>
         }
       />
@@ -535,9 +535,9 @@ export default function EFieldLab() {
         answer={
           <>
             <p className="mb-prose-3">Magnitude from the −5 nC at 3 cm:</p>
-            <Formula>|E₁| = (8.99×10⁹)(5×10⁻⁹) / (0.03)² ≈ 4.99×10⁴ V/m</Formula>
+            <Formula tex="|E_1| = \dfrac{(8.99\times 10^{9})(5\times 10^{-9})}{(0.03)^2} \approx 4.99\times 10^{4}\ \text{V/m}" />
             <p className="mb-prose-3">Direction: toward the −5 nC source (radially inward, since the source is negative). Magnitude from the +10 nC at 6 cm:</p>
-            <Formula>|E₂| = (8.99×10⁹)(10×10⁻⁹) / (0.06)² ≈ 2.50×10⁴ V/m</Formula>
+            <Formula tex="|E_2| = \dfrac{(8.99\times 10^{9})(10\times 10^{-9})}{(0.06)^2} \approx 2.50\times 10^{4}\ \text{V/m}" />
             <p className="mb-prose-3">Direction: away from the +10 nC source (radially outward). Whether they are parallel depends on the geometry of where the field point sits relative to the two sources. In the special case where the field point and both sources are colinear with the sources on the same side — say, both at +x — the two field contributions point in <em className="italic text-text">opposite</em> directions, since toward-the-negative and away-from-the-positive are opposite. They partly cancel: net E ≈ 4.99×10⁴ − 2.50×10⁴ ≈ 2.49×10⁴ V/m, toward the −5 nC.</p>
             <p className="mb-prose-3">The point of the exercise: <strong className="text-text font-medium">fields add as vectors</strong>. You can't blindly sum magnitudes<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>

@@ -15,7 +15,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { AreaVsResistanceDemo } from './demos/AreaVsResistance';
@@ -38,9 +38,9 @@ export default function Ch3ResistanceAndPower() {
         visible and the bulb does what it was built to do. Where did all that heat come from? Not from the wall, not directly.
         It came from the lattice of tungsten atoms inside the filament absorbing the kinetic energy of electrons that the
         electric field had been accelerating between collisions.{' '}
-        <Term def={<><strong className="text-text font-medium">Resistance</strong> — the proportionality between voltage drop and current in a conductor, <em className="italic text-text">V = IR</em>. SI unit: ohm (Ω = V/A). Encodes both geometry and material.</>}><strong className="text-text font-medium">Resistance</strong></Term>{' '}
+        <Term def={<><strong className="text-text font-medium">Resistance</strong> — the proportionality between voltage drop and current in a conductor, <InlineMath id="ohms-law" />. SI unit: ohm (Ω = V/A). Encodes both geometry and material.</>}><strong className="text-text font-medium">Resistance</strong></Term>{' '}
         is the macroscopic name for that lossy hand-off, and{' '}
-        <Term def={<><strong className="text-text font-medium">power</strong> — the rate at which energy is transferred or converted, <em className="italic text-text">P = dE/dt</em>. SI unit: watt (W = J/s). For a resistor, <em className="italic text-text">P = VI = I²R = V²/R</em>.</>}><strong className="text-text font-medium">power</strong></Term>{' '}
+        <Term def={<><strong className="text-text font-medium">power</strong> — the rate at which energy is transferred or converted, <InlineMath tex="P = dE/dt" />. SI unit: watt (W = J/s). For a resistor, <InlineMath tex="P = VI = I^2 R = V^2/R" />.</>}><strong className="text-text font-medium">power</strong></Term>{' '}
         is the rate at which it happens.
       </p>
       <p className="mb-prose-3">
@@ -54,15 +54,15 @@ export default function Ch3ResistanceAndPower() {
 
       <p className="mb-prose-3">
         The microscopic{' '}
-        <Term def={<><strong className="text-text font-medium">Ohm's law</strong> — the empirical linear relation between current and voltage in an ordinary conductor: <em className="italic text-text">V = IR</em> (macroscopic) or <em className="italic text-text">J = σE</em> (microscopic). Holds for metals at ordinary fields; fails for diodes, plasmas, etc.</>}>Ohm's law</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">Ohm's law</strong> — the empirical linear relation between current and voltage in an ordinary conductor: <InlineMath id="ohms-law" /> (macroscopic) or <InlineMath tex="\vec{J} = \sigma\vec{E}" /> (microscopic). Holds for metals at ordinary fields; fails for diodes, plasmas, etc.</>}>Ohm's law</Term>{' '}
         from the previous chapter said that inside a conductor, current density is proportional
         to the electric field driving it:
       </p>
-      <Formula>J = σ E</Formula>
+      <Formula tex="\vec{J} = \sigma\vec{E}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">J</strong> is the current density vector (current per unit cross-sectional area, in A/m²),
         <strong className="text-text font-medium"> E</strong> is the local electric field driving the carriers (in V/m), and <strong className="text-text font-medium">σ</strong> is the{' '}
-        <Term def={<><strong className="text-text font-medium">conductivity</strong> (σ) — a material property relating current density to applied field, <em className="italic text-text">J = σE</em>. SI unit: S/m. Reciprocal of resistivity ρ. Copper ≈ 5.96×10⁷ S/m.</>}>conductivity</Term>, a property of the material. Drude's 1900 free-electron picture gave a
+        <Term def={<><strong className="text-text font-medium">conductivity</strong> (σ) — a material property relating current density to applied field, <InlineMath tex="\vec{J} = \sigma\vec{E}" />. SI unit: S/m. Reciprocal of resistivity ρ. Copper ≈ 5.96×10⁷ S/m.</>}>conductivity</Term>, a property of the material. Drude's 1900 free-electron picture gave a
         mechanical explanation<Cite id="drude-1900" in={SOURCES} />: an electron accelerates under <strong className="text-text font-medium">E</strong> for an
         average time <strong className="text-text font-medium">τ</strong> between collisions with ions in the lattice, picks up a small drift velocity, then
         scatters and starts over. Average it out and you get a steady drift proportional to <em className="italic text-text">E</em> — friction with a
@@ -73,7 +73,7 @@ export default function Ch3ResistanceAndPower() {
         Wrap that microscopic law up over a whole wire — a length <strong className="text-text font-medium">L</strong>, a cross-section <strong className="text-text font-medium">A</strong>,
         a uniform field along the axis — and you get the macroscopic version every electrical engineer carries around:
       </p>
-      <Formula>V = I R</Formula>
+      <Formula id="ohms-law" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V</strong> is the voltage drop end-to-end (in volts), <strong className="text-text font-medium">I</strong> is the current through the wire
         (in amperes), and <strong className="text-text font-medium">R</strong> is the wire's resistance (in ohms, Ω = V/A).
@@ -90,10 +90,10 @@ export default function Ch3ResistanceAndPower() {
         then <strong className="text-text font-medium">J = σE = σV/L</strong>. The total current — which is just <em className="italic text-text">J</em> integrated over the cross-section —
         is <strong className="text-text font-medium">I = JA = σAV/L</strong>. Comparing to <strong className="text-text font-medium">V = IR</strong>:
       </p>
-      <Formula>R = L / (σ A) = ρ L / A</Formula>
+      <Formula tex="R = \dfrac{L}{\sigma A} = \dfrac{\rho L}{A}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">ρ = 1/σ</strong> is the{' '}
-        <Term def={<><strong className="text-text font-medium">resistivity</strong> (ρ) — a material's intrinsic resistance per unit length per unit cross-section: <em className="italic text-text">R = ρL/A</em>. SI unit: Ω·m. Reciprocal of conductivity. Copper ≈ 1.7×10⁻⁸ Ω·m.</>}>resistivity</Term>. Two clean geometric facts fall out. <strong className="text-text font-medium">Twice the length, twice the
+        <Term def={<><strong className="text-text font-medium">resistivity</strong> (ρ) — a material's intrinsic resistance per unit length per unit cross-section: <InlineMath id="resistance-resistivity" />. SI unit: Ω·m. Reciprocal of conductivity. Copper ≈ 1.7×10⁻⁸ Ω·m.</>}>resistivity</Term>. Two clean geometric facts fall out. <strong className="text-text font-medium">Twice the length, twice the
         resistance</strong> — because the field has to push each electron through twice as much lattice. <strong className="text-text font-medium">Twice
         the cross-section, half the resistance</strong> — because there are twice as many parallel paths for current to
         flow through<Cite id="griffiths-2017" in={SOURCES} />.
@@ -121,11 +121,11 @@ export default function Ch3ResistanceAndPower() {
           <>What is the resistance of a <strong className="text-text font-medium">10 m</strong> length of copper wire with a <strong className="text-text font-medium">2 mm²</strong>
           cross-section, using σ<sub>Cu</sub> ≈ 5.96×10⁷ S/m?</>
         }
-        hint="R = L/(σA). Convert mm² to m²."
+        hint={<><InlineMath tex="R = L/(\sigma A)" />. Convert mm² to m².</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">With <em className="italic text-text">A</em> = 2×10⁻⁶ m² and <em className="italic text-text">σ</em><sub>Cu</sub> = 5.96×10⁷ S/m <Cite id="crc-resistivity" in={SOURCES} />:</p>
-            <Formula>R = L/(σA) = 10 / (5.96×10⁷ · 2×10⁻⁶) ≈ 0.0839 Ω</Formula>
+            <Formula tex="R = \dfrac{L}{\sigma A} = \dfrac{10}{(5.96\times 10^{7})(2\times 10^{-6})} \approx 0.0839\ \Omega" />
             <p className="mb-prose-1 last:mb-0">Answer: about <strong className="text-text font-medium">84 mΩ</strong> — a 10 A current through this wire dissipates ~8 W.</p>
           </>
         }
@@ -191,7 +191,7 @@ export default function Ch3ResistanceAndPower() {
       <p className="mb-prose-3">
         Per unit volume, the rate of energy transfer from field to lattice is the dot product <strong className="text-text font-medium">J·E</strong>:
       </p>
-      <Formula>p<sub>v</sub> = J · E = σ E²</Formula>
+      <Formula tex="p_v = \vec{J}\cdot\vec{E} = \sigma E^2" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">p<sub>v</sub></strong> is the power dissipated per unit volume of conductor (in W/m³),
         <strong className="text-text font-medium"> J</strong> is the current density vector (A/m²), <strong className="text-text font-medium">E</strong> is the local electric field (V/m), and
@@ -199,7 +199,7 @@ export default function Ch3ResistanceAndPower() {
         Always positive in a resistor (J and E point the same way). Integrate over the wire's volume <strong className="text-text font-medium">LA</strong>,
         with E = V/L throughout, and the macroscopic power drops out:
       </p>
-      <Formula>P = σ A V² / L = V² / R = V I = I² R</Formula>
+      <Formula tex="P = \dfrac{\sigma A V^2}{L} = \dfrac{V^2}{R} = VI = I^2 R" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P</strong> is the total power dissipated by the resistor (in watts, W = J/s),
         <strong className="text-text font-medium"> V</strong> is the voltage across it (V), <strong className="text-text font-medium">I</strong> is the current through it (A),
@@ -207,8 +207,8 @@ export default function Ch3ResistanceAndPower() {
         quantities from above. The four expressions are algebraically identical once <em className="italic text-text">V = IR</em> is substituted.
         James Joule established this experimentally in 1841 with a calorimeter that became the namesake of the SI unit
         of energy<Cite id="joule-1841" in={SOURCES} />. The phenomenon is called{' '}
-        <Term def={<><strong className="text-text font-medium">Joule heating</strong> (ohmic / resistive heating) — the conversion of electrical energy to heat in a resistor at the rate <em className="italic text-text">P = I²R</em>. The dissipated power equals the work the field does on charges, which scatter into lattice vibrations.</>}>Joule heating</Term>, and the SI unit of power — one joule per second — is the{' '}
-        <Term def={<><strong className="text-text font-medium">watt</strong> — the SI unit of power, 1 W = 1 J/s. Named after James Watt; <em className="italic text-text">P = VI</em> in watts when <em className="italic text-text">V</em> is in volts and <em className="italic text-text">I</em> in amperes.</>}>watt</Term>. The microscopic and macroscopic accounts agree exactly — they have
+        <Term def={<><strong className="text-text font-medium">Joule heating</strong> (ohmic / resistive heating) — the conversion of electrical energy to heat in a resistor at the rate <InlineMath id="power-i2r" />. The dissipated power equals the work the field does on charges, which scatter into lattice vibrations.</>}>Joule heating</Term>, and the SI unit of power — one joule per second — is the{' '}
+        <Term def={<><strong className="text-text font-medium">watt</strong> — the SI unit of power, 1 W = 1 J/s. Named after James Watt; <InlineMath id="power-vi" /> in watts when <em className="italic text-text">V</em> is in volts and <em className="italic text-text">I</em> in amperes.</>}>watt</Term>. The microscopic and macroscopic accounts agree exactly — they have
         to, since they describe the same energy flow at two zoom levels<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
@@ -219,7 +219,7 @@ export default function Ch3ResistanceAndPower() {
         white-hot near <strong className="text-text font-medium">3000 K</strong>. The equilibrium temperature comes from radiation balance — Stefan–Boltzmann
         says a hot surface radiates power proportional to <strong className="text-text font-medium">T⁴</strong>, so a wire dissipating <em className="italic text-text">P</em> watts over
         surface area <em className="italic text-text">A<sub>surf</sub></em> with emissivity <em className="italic text-text">ε</em> sits at the temperature that solves
-        <em className="italic text-text"> P = ε σ<sub>SB</sub> A<sub>surf</sub> T⁴</em>. Tungsten's hostile combination of low conductivity and very high
+        <InlineMath tex="P = \varepsilon\sigma_{\text{SB}} A_{\text{surf}} T^4" />. Tungsten's hostile combination of low conductivity and very high
         melting point lets a thin filament reach incandescent T without melting; nichrome's lower σ and high oxidation
         resistance let a cherry-red coil sit in open air for years without crumbling. Same physics, different design points.
       </p>
@@ -230,12 +230,12 @@ export default function Ch3ResistanceAndPower() {
           <>A toaster element has a hot resistance of <strong className="text-text font-medium">6 Ω</strong> and runs on a <strong className="text-text font-medium">120 V</strong>
           mains line. What current does it draw, and how much power does it dissipate?</>
         }
-        hint="Use I = V/R, then P = VI (or P = V²/R)."
+        hint={<>Use <InlineMath tex="I = V/R" />, then <InlineMath tex="P = VI" /> (or <InlineMath tex="P = V^2/R" />).</>}
         answer={
           <>
-            <p className="mb-prose-1 last:mb-0">Ohm's law gives the current; the power follows from <em className="italic text-text">P = VI</em> <Cite id="griffiths-2017" in={SOURCES} />:</p>
-            <Formula>I = V/R = 120 / 6 = 20 A</Formula>
-            <Formula>P = V²/R = 120² / 6 = 2400 W</Formula>
+            <p className="mb-prose-1 last:mb-0">Ohm's law gives the current; the power follows from <InlineMath tex="P = VI" /> <Cite id="griffiths-2017" in={SOURCES} />:</p>
+            <Formula tex="I = V/R = 120/6 = 20\ \text{A}" />
+            <Formula tex="P = V^2/R = 120^2/6 = 2400\ \text{W}" />
             <p className="mb-prose-1 last:mb-0">Answer: <strong className="text-text font-medium">20 A</strong> and <strong className="text-text font-medium">2.4 kW</strong> — typical for a vigorous countertop toaster.</p>
           </>
         }
@@ -247,13 +247,13 @@ export default function Ch3ResistanceAndPower() {
           <>How long would a perfectly efficient <strong className="text-text font-medium">1 kW</strong> kettle take to raise <strong className="text-text font-medium">0.5 L</strong>
           of water by <strong className="text-text font-medium">80 K</strong>? (Take <em className="italic text-text">c</em><sub>water</sub> = 4186 J/(kg·K).)</>
         }
-        hint="Energy in = energy out: P · t = m c ΔT. 0.5 L of water has mass 0.5 kg."
+        hint={<>Energy in = energy out: <InlineMath tex="P\cdot t = mc\Delta T" />. 0.5 L of water has mass 0.5 kg.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Energy required:</p>
-            <Formula>E = m c ΔT = (0.5)(4186)(80) ≈ 1.67×10⁵ J</Formula>
+            <Formula tex="E = mc\Delta T = (0.5)(4186)(80) \approx 1.67\times 10^{5}\ \text{J}" />
             <p className="mb-prose-1 last:mb-0">Time at 1000 W:</p>
-            <Formula>t = E/P = 1.67×10⁵ / 1000 ≈ 167 s</Formula>
+            <Formula tex="t = E/P = 1.67\times 10^{5} / 1000 \approx 167\ \text{s}" />
             <p className="mb-prose-1 last:mb-0">
               Answer: about <strong className="text-text font-medium">2 min 47 s</strong>. Real kettles take a bit longer because some heat leaks to the
               jug and steam, but this is the lower bound.
@@ -266,18 +266,18 @@ export default function Ch3ResistanceAndPower() {
 
       <p className="mb-prose-3">
         Two resistors in a circuit can be wired two ways. Put them in{' '}
-        <Term def={<><strong className="text-text font-medium">series</strong> — components connected end-to-end so the same current flows through each; their resistances add: <em className="italic text-text">R = R₁ + R₂ + …</em></>}><strong className="text-text font-medium">series</strong></Term>{' '}
+        <Term def={<><strong className="text-text font-medium">series</strong> — components connected end-to-end so the same current flows through each; their resistances add: <InlineMath tex="R = R_1 + R_2 + \ldots" /></>}><strong className="text-text font-medium">series</strong></Term>{' '}
         — a single loop, everything
-        the same current — and the voltage drops add: <em className="italic text-text">V = IR₁ + IR₂ = I(R₁ + R₂)</em>. The combined resistance is the sum:
+        the same current — and the voltage drops add: <InlineMath tex="V = IR_1 + IR_2 = I(R_1 + R_2)" />. The combined resistance is the sum:
       </p>
-      <Formula>R<sub>series</sub> = R₁ + R₂</Formula>
+      <Formula tex="R_{\text{series}} = R_1 + R_2" />
       <p className="mb-prose-3">
         Put them in{' '}
-        <Term def={<><strong className="text-text font-medium">parallel</strong> — components connected across the same two nodes so each sees the same voltage; their conductances add (reciprocal resistances): 1/<em className="italic text-text">R</em> = 1/<em className="italic text-text">R₁</em> + 1/<em className="italic text-text">R₂</em> + …</>}><strong className="text-text font-medium">parallel</strong></Term>{' '}
+        <Term def={<><strong className="text-text font-medium">parallel</strong> — components connected across the same two nodes so each sees the same voltage; their conductances add (reciprocal resistances): <InlineMath tex="1/R = 1/R_1 + 1/R_2 + \ldots" /></>}><strong className="text-text font-medium">parallel</strong></Term>{' '}
         — two branches at the same voltage <em className="italic text-text">V</em> — and the currents add:
-        <em className="italic text-text"> I = V/R₁ + V/R₂ = V(1/R₁ + 1/R₂)</em>, so the reciprocals combine:
+        <InlineMath tex="I = V/R_1 + V/R_2 = V(1/R_1 + 1/R_2)" />, so the reciprocals combine:
       </p>
-      <Formula>1 / R<sub>parallel</sub> = 1/R₁ + 1/R₂</Formula>
+      <Formula tex="1 / R_{\text{parallel}} = 1/R_1 + 1/R_2" />
       <p className="mb-prose-3">
         Two equal resistors in parallel give half their value; in general, the parallel combination is always less than
         either branch on its own<Cite id="griffiths-2017" in={SOURCES} />.
@@ -286,12 +286,12 @@ export default function Ch3ResistanceAndPower() {
       <SeriesVsParallelDemo />
 
       <p className="mb-prose-3">
-        These rules are not arbitrary topology axioms — they are the same geometric R = ρL/A from earlier in the chapter,
+        These rules are not arbitrary topology axioms — they are the same geometric <InlineMath tex="R = \rho L/A" /> from earlier in the chapter,
         looked at from a different angle. <em className="italic text-text">A long wire is many short wires in series.</em> Slice a wire of length <em className="italic text-text">L</em>
-        into <em className="italic text-text">n</em> equal segments; each segment has resistance ρ(L/n)/A, and adding <em className="italic text-text">n</em> of them in series recovers
-        ρL/A — the original formula. <em className="italic text-text">A fat wire is many thin wires in parallel.</em> Slice a wire of cross-section <em className="italic text-text">A</em>
-        into <em className="italic text-text">n</em> filaments of cross-section A/n; each filament has resistance ρL/(A/n) = nρL/A, and combining <em className="italic text-text">n</em>
-        of them in parallel gives ρL/A again. "Long = series" and "fat = parallel" both recover the geometric law by the rules
+        into <em className="italic text-text">n</em> equal segments; each segment has resistance <InlineMath tex="\rho(L/n)/A" />, and adding <em className="italic text-text">n</em> of them in series recovers
+        <InlineMath tex="\rho L/A" /> — the original formula. <em className="italic text-text">A fat wire is many thin wires in parallel.</em> Slice a wire of cross-section <em className="italic text-text">A</em>
+        into <em className="italic text-text">n</em> filaments of cross-section <InlineMath tex="A/n" />; each filament has resistance <InlineMath tex="\rho L/(A/n) = n\rho L/A" />, and combining <em className="italic text-text">n</em>
+        of them in parallel gives <InlineMath tex="\rho L/A" /> again. "Long = series" and "fat = parallel" both recover the geometric law by the rules
         in this section. The macroscopic and geometric pictures are the same picture.
       </p>
 
@@ -305,9 +305,9 @@ export default function Ch3ResistanceAndPower() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">The parallel combination of 10 Ω and 15 Ω <Cite id="griffiths-2017" in={SOURCES} />:</p>
-            <Formula>R<sub>p</sub> = (10 · 15) / (10 + 15) = 150 / 25 = 6 Ω</Formula>
+            <Formula tex="R_p = \dfrac{(10)(15)}{10 + 15} = \dfrac{150}{25} = 6\ \Omega" />
             <p className="mb-prose-1 last:mb-0">Adding the 5 Ω in series:</p>
-            <Formula>R<sub>tot</sub> = 5 + 6 = 11 Ω</Formula>
+            <Formula tex="R_{\text{tot}} = 5 + 6 = 11\ \Omega" />
             <p className="mb-prose-1 last:mb-0">Answer: <strong className="text-text font-medium">11 Ω</strong>.</p>
           </>
         }
@@ -319,7 +319,7 @@ export default function Ch3ResistanceAndPower() {
         Resistance is geometry times material. Geometry contributes a factor of L/A — long-and-thin resists more, short-and-fat
         resists less. Material contributes ρ = 1/σ, ranging from copper's 1.7×10⁻⁸ Ω·m up through tungsten and nichrome and
         out into the insulators. Power dissipated in a resistor is the rate at which the field does work on charges that
-        immediately scatter that energy into lattice vibrations: <em className="italic text-text">P = VI = I²R = V²/R</em>. Every watt of resistive
+        immediately scatter that energy into lattice vibrations: <InlineMath tex="P = VI = I^2 R = V^2/R" />. Every watt of resistive
         dissipation is a watt of heat.
       </p>
       <p className="mb-prose-3">
@@ -332,7 +332,7 @@ export default function Ch3ResistanceAndPower() {
       <CaseStudies
         intro={
           <>
-            Three places the same <em className="italic text-text">P = I²R</em> equation gets exploited at radically different
+            Three places the same <InlineMath tex="P = I^2 R" /> equation gets exploited at radically different
             design points — once to make heat the product, once to suppress it as waste, and once
             to push it all the way to zero.
           </>
@@ -384,17 +384,17 @@ export default function Ch3ResistanceAndPower() {
           summary="Quartering the line current quarters the loss; the obvious lever, applied at planetary scale."
           specs={[
             { label: 'Typical high-voltage transmission', value: <>~115 kV to 765 kV <Cite id="grainger-power-systems-2003" in={SOURCES} /></> },
-            { label: 'Loss scaling for fixed delivered power', value: <>P<sub>loss</sub> = (P/V)<sup>2</sup> R <Cite id="grainger-power-systems-2003" in={SOURCES} /></> },
+            { label: 'Loss scaling for fixed delivered power', value: <><InlineMath tex="P_{\text{loss}} = (P/V)^2 R" /> <Cite id="grainger-power-systems-2003" in={SOURCES} /></> },
             { label: 'Aluminum conductor conductivity', value: <>~3.77×10<sup>7</sup> S/m (~63% of Cu) <Cite id="crc-resistivity" in={SOURCES} /></> },
             { label: 'Reason aluminum wins outdoors', value: <>roughly one-third the density of copper <Cite id="crc-resistivity" in={SOURCES} /></> },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
             A transmission line is just a long resistor. Take a 1 GW load fed at 11 kV: the line
-            current is about <strong className="text-text font-medium">91 kA</strong>, and the per-meter <em className="italic text-text">I²R</em> dissipation
+            current is about <strong className="text-text font-medium">91 kA</strong>, and the per-meter <InlineMath tex="I^2 R" /> dissipation
             in any realistic conductor is catastrophic. Push the same gigawatt at 500 kV and the
             current drops to <strong className="text-text font-medium">2 kA</strong>; the loss along the same conductor drops by a
-            factor of <strong className="text-text font-medium">(500/11)² ≈ 2000</strong><Cite id="grainger-power-systems-2003" in={SOURCES} />.
+            factor of <InlineMath tex="(500/11)^2 \approx 2000" /><Cite id="grainger-power-systems-2003" in={SOURCES} />.
             That quadratic in <em className="italic text-text">V</em> is the single biggest reason the grid exists in its
             current form.
           </p>
@@ -424,7 +424,7 @@ export default function Ch3ResistanceAndPower() {
             { label: 'Discovery of zero resistance in mercury', value: <>1911, at T = 4.2 K <Cite id="onnes-1911" in={SOURCES} /></> },
             { label: 'Mechanism', value: <>Cooper-paired electron condensate <Cite id="bcs-1957" in={SOURCES} /></> },
             { label: 'DC resistivity below T_c', value: <>~0 (no upper bound from experiment) <Cite id="onnes-1911" in={SOURCES} /></> },
-            { label: 'Joule heating in the conductor itself', value: <>0, because I<sup>2</sup>R = 0 <Cite id="joule-1841" in={SOURCES} /></> },
+            { label: 'Joule heating in the conductor itself', value: <>0, because <InlineMath tex="I^2 R = 0" /> <Cite id="joule-1841" in={SOURCES} /></> },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
@@ -439,7 +439,7 @@ export default function Ch3ResistanceAndPower() {
             with it, and the resistance is genuinely zero<Cite id="drude-1900" in={SOURCES} /><Cite id="ashcroft-mermin-1976" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            For a transmission cable the consequence is direct: <em className="italic text-text">I²R</em> drops to literally
+            For a transmission cable the consequence is direct: <InlineMath tex="I^2 R" /> drops to literally
             zero in the cable itself. There is no in-conductor heat dissipation, no temperature
             rise, no current-limited derating. The catch is the cryogenic plant required to keep
             the conductor below its critical temperature — and the much subtler caveat that
@@ -449,7 +449,7 @@ export default function Ch3ResistanceAndPower() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             The clean implication for this chapter is that everything we've said about
-            <em className="italic text-text"> P = I²R</em> assumes an ordinary metallic conductor with a finite ρ. Strip the
+            <InlineMath tex="P = I^2 R" /> assumes an ordinary metallic conductor with a finite ρ. Strip the
             ρ and the entire dissipation argument vanishes — exactly as the formula promises.
             The fact that we use copper instead is a thermodynamic cost calculation, not a
             physical necessity.
@@ -460,7 +460,7 @@ export default function Ch3ResistanceAndPower() {
       <FAQ
         intro={
           <>
-            Resistance is a one-line formula, <em className="italic text-text">R = ρL/A</em>, but it touches every wire in a building,
+            Resistance is a one-line formula, <InlineMath id="resistance-resistivity" />, but it touches every wire in a building,
             every kettle, every transmission line, and every short-circuit fire. These are the questions
             that come up once the equation starts meeting reality.
           </>
@@ -468,11 +468,11 @@ export default function Ch3ResistanceAndPower() {
       >
         <FAQItem q="Why does a thinner wire have higher resistance, even though it's the same material?">
           <p>
-            Resistance is <strong className="text-text font-medium">R = ρL/A</strong>: halve the cross-section <em className="italic text-text">A</em> and you double <em className="italic text-text">R</em>
+            Resistance is <InlineMath id="resistance-resistivity" />: halve the cross-section <em className="italic text-text">A</em> and you double <em className="italic text-text">R</em>
             <Cite id="griffiths-2017" in={SOURCES} />. The microscopic picture is even cleaner —
             think of the wire as a bundle of parallel filaments. A fat wire has many filaments carrying current
             side by side; a thin wire has fewer. With fewer parallel paths, each carrying its share of <em className="italic text-text">I</em>,
-            the current density <strong className="text-text font-medium">J = I/A</strong> climbs, and the field <strong className="text-text font-medium">E = J/σ</strong> needed to
+            the current density <InlineMath tex="J = I/A" /> climbs, and the field <InlineMath tex="E = J/\sigma" /> needed to
             push it climbs with it. More field over the same length means more voltage drop — i.e., more resistance.
           </p>
         </FAQItem>
@@ -480,10 +480,10 @@ export default function Ch3ResistanceAndPower() {
         <FAQItem q="Why does a longer wire have more resistance? Geometrically — what's actually doubling?">
           <p>
             Voltage drop is the work per unit charge done <em className="italic text-text">against</em> the lattice friction. Inside a uniform
-            wire the field is <strong className="text-text font-medium">E = V/L</strong> and the same charge has to traverse the whole length, so
+            wire the field is <InlineMath tex="E = V/L" /> and the same charge has to traverse the whole length, so
             doubling <em className="italic text-text">L</em> doubles the integrated drop for a fixed <em className="italic text-text">E</em>
             <Cite id="griffiths-2017" in={SOURCES} />. Equivalently, a long wire is many short wires in series: each
-            segment dissipates its share of <em className="italic text-text">I²R</em>, and the segments add. The formula <em className="italic text-text">R = ρL/A</em>
+            segment dissipates its share of <InlineMath tex="I^2 R" />, and the segments add. The formula <InlineMath id="resistance-resistivity" />
             encodes both views at once.
           </p>
         </FAQItem>
@@ -495,11 +495,11 @@ export default function Ch3ResistanceAndPower() {
             (phonons), which scatter electrons more often, shortening the Drude time <em className="italic text-text">τ</em> and pushing
             <strong className="text-text font-medium"> ρ</strong> up roughly linearly with <em className="italic text-text">T</em> above the Debye temperature — a slope quantified
             by the metal's{' '}
-            <Term def={<><strong className="text-text font-medium">temperature coefficient of resistance</strong> (α) — the fractional change in resistance per kelvin: R(T) ≈ R₀ [1 + α (T − T₀)]. For copper near room temperature, α ≈ 0.00393 /K.</>}>temperature coefficient</Term>
+            <Term def={<><strong className="text-text font-medium">temperature coefficient of resistance</strong> (α) — the fractional change in resistance per kelvin: <InlineMath tex="R(T) \approx R_0 [1 + \alpha(T - T_0)]" />. For copper near room temperature, α ≈ 0.00393 /K.</>}>temperature coefficient</Term>
             <Cite id="matthiessen-1864" in={SOURCES} /><Cite id="ashcroft-mermin-1976" in={SOURCES} />. In a
             semiconductor, <em className="italic text-text">n</em> itself is temperature-activated: more heat liberates exponentially more
-            carriers across the band gap, and that swamps the increased scattering. <em className="italic text-text">Same equation
-            σ = nq²τ/m</em>, opposite slopes — because in metals only <em className="italic text-text">τ</em> moves and in semiconductors
+            carriers across the band gap, and that swamps the increased scattering. <em className="italic text-text">Same equation</em>
+            <InlineMath tex="\sigma = nq^2\tau/m" />, opposite slopes — because in metals only <em className="italic text-text">τ</em> moves and in semiconductors
             <em className="italic text-text"> n</em> dominates.
           </p>
         </FAQItem>
@@ -514,8 +514,8 @@ export default function Ch3ResistanceAndPower() {
             Cooper, and Schrieffer: below the critical temperature, electrons bind into <strong className="text-text font-medium">Cooper pairs</strong>
             via a weak phonon-mediated attraction, and the paired condensate cannot exchange small amounts of
             energy with the lattice because of an opened energy gap<Cite id="bcs-1957" in={SOURCES} />. With no
-            scattering channel, the Drude <em className="italic text-text">τ → ∞</em>, so <strong className="text-text font-medium">σ → ∞</strong> and <strong className="text-text font-medium">R → 0</strong>.
-            No <em className="italic text-text">I²R</em> means no heat dissipated — the dissipation isn't being hidden, it's literally not
+            scattering channel, the Drude <InlineMath tex="\tau \to \infty" />, so <InlineMath tex="\sigma \to \infty" /> and <InlineMath tex="R \to 0" />.
+            No <InlineMath tex="I^2 R" /> means no heat dissipated — the dissipation isn't being hidden, it's literally not
             happening.
           </p>
         </FAQItem>
@@ -526,7 +526,7 @@ export default function Ch3ResistanceAndPower() {
             heats water by direct contact, so its element runs at a few hundred kelvin and can be a moderately
             thick metal sheath — modest <em className="italic text-text">R</em>, big <em className="italic text-text">I</em>, lots of surface area in contact with water.
             A toaster needs to <em className="italic text-text">glow</em> red so it can radiate at ~1000 K, which means the element must reach
-            equilibrium where <em className="italic text-text">P = εσ<sub>SB</sub>A<sub>surf</sub>T⁴</em> balances <em className="italic text-text">I²R</em>. To get there
+            equilibrium where <InlineMath tex="P = \varepsilon\sigma_{\text{SB}} A_{\text{surf}} T^4" /> balances <InlineMath tex="I^2 R" />. To get there
             in open air, you go thin and use <strong className="text-text font-medium">nichrome</strong>, whose ρ is ~70× copper's and which doesn't
             oxidize at red heat<Cite id="kanthal" in={SOURCES} /><Cite id="joule-1841" in={SOURCES} />.
           </p>
@@ -534,8 +534,8 @@ export default function Ch3ResistanceAndPower() {
 
         <FAQItem q="If silver is the best conductor, why is house wiring made of copper?">
           <p>
-            Silver edges copper by about <strong className="text-text font-medium">5%</strong> in conductivity — σ<sub>Ag</sub> ≈ 6.30×10⁷ S/m vs.
-            σ<sub>Cu</sub> ≈ 5.96×10⁷ S/m<Cite id="crc-resistivity" in={SOURCES} />. But silver is roughly an
+            Silver edges copper by about <strong className="text-text font-medium">5%</strong> in conductivity — <InlineMath tex="\sigma_{\text{Ag}} \approx 6.30\times 10^{7}\ \text{S/m}" /> vs.
+            <InlineMath tex="\sigma_{\text{Cu}} \approx 5.96\times 10^{7}\ \text{S/m}" /><Cite id="crc-resistivity" in={SOURCES} />. But silver is roughly an
             order of magnitude more expensive per kilogram, and you'd save only a few percent of <em className="italic text-text">R</em> by
             switching. For house wiring, copper is essentially the same conductor at a fraction of the cost,
             with the bonus of being mechanically friendlier (more ductile, easier to terminate). The 5% gain
@@ -550,7 +550,7 @@ export default function Ch3ResistanceAndPower() {
             <Cite id="nec-2017-aluminum" in={SOURCES} />. The bulk metal was fine; the failures happened at
             terminations. Aluminum forms a hard, <em className="italic text-text">insulating</em> oxide layer the moment it sees air, and it
             <strong className="text-text font-medium"> creeps</strong> under the clamping pressure of a screw terminal — so a connection that started
-            tight loosens over years, the oxide grows, contact resistance climbs, and <em className="italic text-text">I²R</em> at the joint
+            tight loosens over years, the oxide grows, contact resistance climbs, and <InlineMath tex="I^2 R" /> at the joint
             heats it further in a runaway. Modern aluminum service entrances use larger gauges, antioxidant
             paste, and AL-rated devices to avoid the failure mode.
           </p>
@@ -559,7 +559,7 @@ export default function Ch3ResistanceAndPower() {
         <FAQItem q="Why does a long extension cord get warm, but a short one doesn't?">
           <p>
             Same current, same material, same gauge — but ten times the length is ten times the resistance.
-            Power dissipated as heat is <strong className="text-text font-medium">P = I²R</strong>, so the long cord dumps ten times as many watts
+            Power dissipated as heat is <InlineMath id="power-i2r" />, so the long cord dumps ten times as many watts
             into its own copper<Cite id="griffiths-2017" in={SOURCES} />. A short cord at 10 A through ~6 mΩ
             wastes ~0.6 W — undetectable. A 30-meter extension at the same current through ~600 mΩ dissipates
             ~60 W along its length, which a thin plastic sheath cannot get rid of fast enough by convection.
@@ -569,21 +569,21 @@ export default function Ch3ResistanceAndPower() {
 
         <FAQItem q="Why is high-voltage transmission so much more efficient than low-voltage?">
           <p>
-            For a fixed amount of delivered power <em className="italic text-text">P</em>, the line current is <strong className="text-text font-medium">I = P/V</strong>, and the
-            line losses are <strong className="text-text font-medium">P<sub>loss</sub> = I²R = (P/V)² R</strong><Cite id="grainger-power-systems-2003" in={SOURCES} />.
+            For a fixed amount of delivered power <em className="italic text-text">P</em>, the line current is <InlineMath tex="I = P/V" />, and the
+            line losses are <InlineMath tex="P_{\text{loss}} = I^2 R = (P/V)^2 R" /><Cite id="grainger-power-systems-2003" in={SOURCES} />.
             Doubling the transmission voltage halves the current and <em className="italic text-text">quarters</em> the loss — the dependence
             is quadratic. That's why long-distance lines run at hundreds of kilovolts, with transformers stepping
             down to safe domestic voltages right before the wires enter your house. The wires themselves don't
-            change; only the operating point on the <em className="italic text-text">I²R</em> curve does.
+            change; only the operating point on the <InlineMath tex="I^2 R" /> curve does.
           </p>
         </FAQItem>
 
         <FAQItem q="If P = I²R, why doesn't a 5 V phone charger melt a thin USB cable?">
           <p>
             Because <em className="italic text-text">I</em> is small. A 5 V × 2 A charger delivers 10 W; through a typical USB-A cable
-            of ~0.2 Ω round-trip the dissipated power is <em className="italic text-text">I²R</em> = 4 × 0.2 = 0.8 W spread over a meter of
+            of ~0.2 Ω round-trip the dissipated power is <InlineMath tex="I^2 R = 4 \times 0.2 = 0.8\ \text{W}" /> spread over a meter of
             cable — easily shed by convection<Cite id="griffiths-2017" in={SOURCES} />. The cable does get faintly
-            warm and you lose a tenth of a volt to <em className="italic text-text">IR</em> drop. Try it with USB-PD at 100 W / 5 A and a too-thin
+            warm and you lose a tenth of a volt to <InlineMath tex="IR" /> drop. Try it with USB-PD at 100 W / 5 A and a too-thin
             wire and you genuinely can melt the insulation; this is why high-current USB-C cables include an
             <em className="italic text-text"> e-marker</em> chip that negotiates current limits with the charger.
           </p>
@@ -592,9 +592,9 @@ export default function Ch3ResistanceAndPower() {
         <FAQItem q="What is &quot;voltage drop&quot;? Does some voltage actually get lost?">
           <p>
             <strong className="text-text font-medium">Voltage isn't conserved; energy is.</strong> When current <em className="italic text-text">I</em> passes through a wire of
-            resistance <em className="italic text-text">R</em>, the potential at the far end is lower than at the near end by <em className="italic text-text">IR</em> —
+            resistance <em className="italic text-text">R</em>, the potential at the far end is lower than at the near end by <InlineMath tex="IR" /> —
             that's the &quot;drop&quot;<Cite id="griffiths-2017" in={SOURCES} />. The missing potential energy didn't
-            vanish; it was converted into heat at the rate <em className="italic text-text">I²R</em> as electrons scattered against the lattice.
+            vanish; it was converted into heat at the rate <InlineMath tex="I^2 R" /> as electrons scattered against the lattice.
             A long thin extension cord shows this dramatically: plug a vacuum cleaner into a 30 m 16-gauge cord and
             its motor sees noticeably fewer volts than the outlet provides, with the difference radiating from the
             cord as warmth.

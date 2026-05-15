@@ -14,10 +14,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
-import { MathBlock, Pullout } from '@/components/Prose';
+import { Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
@@ -342,7 +342,7 @@ export default function BiotSavartLab() {
       </p>
 
       <h3 className="lab-section-h3">Formula</h3>
-      <MathBlock>dB = (μ<sub>0</sub> / 4π) · I dℓ × r̂ / r²</MathBlock>
+      <Formula tex="d\vec{B} = \dfrac{\mu_0}{4\pi}\,\dfrac{I\,d\vec{\ell}\times\hat{r}}{r^2}" />
       <p className="mb-prose-3">Variable glossary:</p>
       <ul>
         <li><strong className="text-text font-medium">dB</strong> — infinitesimal magnetic field at the field point, in tesla (T).</li>
@@ -353,9 +353,9 @@ export default function BiotSavartLab() {
         <li><strong className="text-text font-medium">r</strong> — distance from the segment to the field point, in m.</li>
       </ul>
       <p className="mb-prose-3">For a finite straight segment of length L, on its perpendicular bisector at distance d:</p>
-      <MathBlock>|B| = (μ<sub>0</sub> I / 4π d) · 2L / √(L² + 4d²)</MathBlock>
+      <Formula tex="|\vec{B}| = \dfrac{\mu_0 I}{4\pi d}\cdot\dfrac{2L}{\sqrt{L^2 + 4d^2}}" />
       <p className="mb-prose-3">And in the long-wire limit L → ∞:</p>
-      <MathBlock>B<sub>∞</sub> = μ<sub>0</sub> I / (2π d)</MathBlock>
+      <Formula id="b-around-wire" />
 
       <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
@@ -390,7 +390,7 @@ export default function BiotSavartLab() {
         and fit the data<Cite id="biot-savart-1820" in={SOURCES} />. The modern derivation runs in reverse. Start with a moving point charge:
         in the lab frame, a charge <strong className="text-text font-medium">q</strong> moving at velocity <strong className="text-text font-medium">v</strong> (with v ≪ c) produces approximately
       </p>
-      <MathBlock>B(r) ≈ (μ<sub>0</sub> / 4π) · q v × r̂ / r²</MathBlock>
+      <Formula tex="\vec{B}(\vec{r}) \approx \dfrac{\mu_0}{4\pi}\,\dfrac{q\,\vec{v}\times\hat{r}}{r^2}" />
       <p className="mb-prose-3">
         A current <strong className="text-text font-medium">I</strong> in a wire is just a stream of charges, so <strong className="text-text font-medium">I dℓ</strong> plays the role of <strong className="text-text font-medium">qv</strong> for
         each segment. Substituting and summing gives Biot–Savart<Cite id="griffiths-2017" in={SOURCES} />. To get the infinite-wire result,
@@ -408,8 +408,8 @@ export default function BiotSavartLab() {
         answer={
           <>
             <p className="mb-prose-3">At the centre, r = R and every dℓ ⊥ r̂, so each dB points along the axis (right-hand rule) and</p>
-            <Formula>|B| = (μ₀ I / 4π R²) · ∮ dℓ = (μ₀ I / 4π R²) · 2πR = μ₀ I / (2R)</Formula>
-            <Formula>|B| = (4π×10⁻⁷)(2) / (2 × 0.05) ≈ 2.51 × 10⁻⁵ T</Formula>
+            <Formula tex="|\vec{B}| = \dfrac{\mu_0 I}{4\pi R^2}\cdot\oint d\ell = \dfrac{\mu_0 I}{4\pi R^2}\cdot 2\pi R = \dfrac{\mu_0 I}{2R}" />
+            <Formula tex="|\vec{B}| = \dfrac{(4\pi\times 10^{-7})(2)}{2 \times 0.05} \approx 2.51\times 10^{-5}\ \text{T}" />
             <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~25 µT</strong>, about half Earth's surface field.</p>
           </>
         }
@@ -422,9 +422,9 @@ export default function BiotSavartLab() {
         answer={
           <>
             <p className="mb-prose-3">Standard on-axis result:</p>
-            <Formula>|B|(z) = μ₀ I R² / [2(R² + z²)<sup>3/2</sup>]</Formula>
+            <Formula tex="|\vec{B}|(z) = \dfrac{\mu_0 I R^2}{2(R^2 + z^2)^{3/2}}" />
             <p className="mb-prose-3">With R = 0.05 m, z = 0.12 m: R² + z² = 0.0169 m², (R² + z²)<sup>3/2</sup> ≈ 0.00220 m³.</p>
-            <Formula>|B| = (4π×10⁻⁷)(2)(0.0025) / (2 × 0.00220) ≈ 1.43 × 10⁻⁶ T</Formula>
+            <Formula tex="|\vec{B}| = \dfrac{(4\pi\times 10^{-7})(2)(0.0025)}{2 \times 0.00220} \approx 1.43\times 10^{-6}\ \text{T}" />
             <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~1.4 µT</strong>. About 18× weaker than at the centre.</p>
           </>
         }
@@ -437,10 +437,10 @@ export default function BiotSavartLab() {
         answer={
           <>
             <p className="mb-prose-3">With wire along x̂ and field point at (0, r, 0), dℓ = x̂ dx, r⃗ = (−x, r, 0), |r⃗| = √(x² + r²):</p>
-            <Formula>dℓ × r̂ = ẑ · r / √(x² + r²) dx</Formula>
-            <Formula>dB<sub>z</sub> = (μ₀ I / 4π) · r dx / (x² + r²)<sup>3/2</sup></Formula>
-            <Formula>∫<sub>−∞</sub><sup>∞</sup> r dx / (x² + r²)<sup>3/2</sup> = [x / (r√(x² + r²))]<sub>−∞</sub><sup>∞</sup> = 2/r</Formula>
-            <Formula>|B| = μ₀ I / (2π r)</Formula>
+            <Formula tex="d\vec{\ell}\times\hat{r} = \hat{z}\,\dfrac{r}{\sqrt{x^2 + r^2}}\,dx" />
+            <Formula tex="dB_z = \dfrac{\mu_0 I}{4\pi}\cdot\dfrac{r\,dx}{(x^2 + r^2)^{3/2}}" />
+            <Formula tex="\int_{-\infty}^{\infty} \dfrac{r\,dx}{(x^2 + r^2)^{3/2}} = \left[\dfrac{x}{r\sqrt{x^2 + r^2}}\right]_{-\infty}^{\infty} = \dfrac{2}{r}" />
+            <Formula tex="|\vec{B}| = \dfrac{\mu_0 I}{2\pi r}" />
             <p className="mb-prose-3">QED.</p>
           </>
         }
@@ -453,7 +453,7 @@ export default function BiotSavartLab() {
         answer={
           <>
             <p className="mb-prose-3">For a long solenoid the on-axis field is uniform:</p>
-            <Formula>|B| = μ₀ n I = (4π×10⁻⁷)(1000)(0.5) = 6.28 × 10⁻⁴ T</Formula>
+            <Formula tex="|\vec{B}| = \mu_0 n I = (4\pi\times 10^{-7})(1000)(0.5) = 6.28\times 10^{-4}\ \text{T}" />
             <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~0.63 mT</strong>.</p>
           </>
         }
@@ -466,9 +466,9 @@ export default function BiotSavartLab() {
         answer={
           <>
             <p className="mb-prose-3">Finite-segment formula at d = L/2: √(L² + 4(L/2)²) = √(2L²) = L√2.</p>
-            <Formula>|B|<sub>side</sub> = (μ₀ I / (4π · L/2)) · 2L / (L√2) = μ₀ I √2 / (π L)</Formula>
+            <Formula tex="|\vec{B}|_{\text{side}} = \dfrac{\mu_0 I}{4\pi\cdot L/2}\cdot\dfrac{2L}{L\sqrt{2}} = \dfrac{\mu_0 I\sqrt{2}}{\pi L}" />
             <p className="mb-prose-3">Four sides add:</p>
-            <Formula>|B|<sub>centre</sub> = 4√2 μ₀ I / (π L) = (4√2 × 4π×10⁻⁷ × 3) / (π × 0.10) ≈ 6.79 × 10⁻⁵ T</Formula>
+            <Formula tex="|\vec{B}|_{\text{centre}} = \dfrac{4\sqrt{2}\,\mu_0 I}{\pi L} = \dfrac{4\sqrt{2}\times 4\pi\times 10^{-7}\times 3}{\pi\times 0.10} \approx 6.79\times 10^{-5}\ \text{T}" />
             <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~68 µT</strong>.</p>
           </>
         }
@@ -481,8 +481,8 @@ export default function BiotSavartLab() {
         answer={
           <>
             <p className="mb-prose-3">Field of wire 2 at wire 1: <strong className="text-text font-medium">B₂ = μ₀I₂/(2πd)</strong>. Force per length on wire 1:</p>
-            <Formula>F/L = I₁ B₂ = μ₀ I₁ I₂ / (2π d)</Formula>
-            <Formula>F/L = (4π×10⁻⁷)(5)(3) / (2π × 0.02) = 1.5 × 10⁻⁴ N/m</Formula>
+            <Formula tex="F/L = I_1 B_2 = \dfrac{\mu_0 I_1 I_2}{2\pi d}" />
+            <Formula tex="F/L = \dfrac{(4\pi\times 10^{-7})(5)(3)}{2\pi\times 0.02} = 1.5\times 10^{-4}\ \text{N/m}" />
             <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~150 µN/m</strong>, attractive (same-direction currents pull together). This relation was the historical definition of the ampere.</p>
           </>
         }
@@ -495,11 +495,11 @@ export default function BiotSavartLab() {
         answer={
           <>
             <p className="mb-prose-3">On-axis field of one loop centred at z = a:</p>
-            <Formula>B(z) = μ₀ I R² / [2(R² + (z − a)²)<sup>3/2</sup>]</Formula>
+            <Formula tex="B(z) = \dfrac{\mu_0 I R^2}{2(R^2 + (z - a)^2)^{3/2}}" />
             <p className="mb-prose-3">Two loops at a = ±R/2:</p>
-            <Formula>B<sub>tot</sub>(z) = (μ₀ I R² / 2) [(R² + (z − R/2)²)<sup>−3/2</sup> + (R² + (z + R/2)²)<sup>−3/2</sup>]</Formula>
+            <Formula tex="B_{\text{tot}}(z) = \dfrac{\mu_0 I R^2}{2}\left[(R^2 + (z - R/2)^2)^{-3/2} + (R^2 + (z + R/2)^2)^{-3/2}\right]" />
             <p className="mb-prose-3">At z = 0 each denominator equals (5R²/4)<sup>3/2</sup>:</p>
-            <Formula>B(0) = (μ₀ I R² / 2) · 2 · (4/5)<sup>3/2</sup> R<sup>−3</sup> = (4/5)<sup>3/2</sup> μ₀ I / R ≈ 0.7155 μ₀ I / R</Formula>
+            <Formula tex="B(0) = \dfrac{\mu_0 I R^2}{2}\cdot 2\cdot (4/5)^{3/2} R^{-3} = (4/5)^{3/2}\,\dfrac{\mu_0 I}{R} \approx 0.7155\,\dfrac{\mu_0 I}{R}" />
             <p className="mb-prose-3">By symmetry B(z) = B(−z), so dB/dz|<sub>z=0</sub> = 0. The R-spacing also forces d²B/dz²|<sub>z=0</sub> = 0 — the field is uniform to fourth order, which is why the geometry is so useful in the lab.</p>
           </>
         }
@@ -512,7 +512,7 @@ export default function BiotSavartLab() {
         answer={
           <>
             <p className="mb-prose-3">For a full loop, B<sub>centre</sub> = μ₀I/(2R). A semicircle is half:</p>
-            <Formula>|B| = μ₀ I / (4R) = (4π×10⁻⁷)(6) / (4 × 0.04) ≈ 4.71 × 10⁻⁵ T</Formula>
+            <Formula tex="|\vec{B}| = \dfrac{\mu_0 I}{4R} = \dfrac{(4\pi\times 10^{-7})(6)}{4 \times 0.04} \approx 4.71\times 10^{-5}\ \text{T}" />
             <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~47 µT</strong>. Straight leads along the line of the radius have dℓ ∥ r̂ and contribute nothing.</p>
           </>
         }
@@ -525,7 +525,7 @@ export default function BiotSavartLab() {
         answer={
           <>
             <p className="mb-prose-3">Turns per metre: n = 1000/0.10 = 10⁴ turns/m.</p>
-            <Formula>|B|<sub>long</sub> = μ₀ n I = (4π×10⁻⁷)(10⁴)(0.5) = 6.28 × 10⁻³ T</Formula>
+            <Formula tex="|\vec{B}|_{\text{long}} = \mu_0 n I = (4\pi\times 10^{-7})(10^{4})(0.5) = 6.28\times 10^{-3}\ \text{T}" />
             <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~6.3 mT</strong> in the long-solenoid limit. If R ≈ 1 cm so L/2R = 5, the finite-length correction cos θ = 5/√26 ≈ 0.981 gives <strong className="text-text font-medium">~6.16 mT</strong> — within 2%.</p>
           </>
         }
@@ -538,8 +538,8 @@ export default function BiotSavartLab() {
         answer={
           <>
             <p className="mb-prose-3">The Maxwell pair (opposing currents, separation √3 R) cancels the second derivative and gives a linear gradient:</p>
-            <Formula>dB/dz|<sub>0</sub> ≈ 0.140 μ₀ N I / R²</Formula>
-            <Formula>NI = (dB/dz) · R² / (0.140 · μ₀) = (0.05)(0.09) / (0.140 × 4π×10⁻⁷) ≈ 2.56 × 10⁴ A-turns</Formula>
+            <Formula tex="\left.\dfrac{dB}{dz}\right|_{0} \approx 0.140\,\dfrac{\mu_0 N I}{R^2}" />
+            <Formula tex="NI = \dfrac{(dB/dz)\,R^2}{0.140\,\mu_0} = \dfrac{(0.05)(0.09)}{0.140\times 4\pi\times 10^{-7}} \approx 2.56\times 10^{4}\ \text{A-turns}" />
             <p className="mb-prose-3">Answer: about <strong className="text-text font-medium">26 kA-turns</strong>. A real gradient coil might run 250 turns at 100 A — the high dI/dt during MRI sequencing flexes the coil against the main field and produces the characteristic loud clicks.</p>
           </>
         }
@@ -562,8 +562,8 @@ export default function BiotSavartLab() {
         hint="Take the d ≫ L limit of the finite-segment formula."
         answer={
           <>
-            <p className="mb-prose-3">In <strong className="text-text font-medium">|B| = (μ₀I/4πd)·2L/√(L² + 4d²)</strong>, when d ≫ L the square root reduces to 2d:</p>
-            <Formula>|B| ≈ (μ₀ I L) / (4π d²)</Formula>
+            <p className="mb-prose-3">In <InlineMath tex="|\vec{B}| = \dfrac{\mu_0 I}{4\pi d}\cdot\dfrac{2L}{\sqrt{L^2 + 4d^2}}" />, when d ≫ L the square root reduces to 2d:</p>
+            <Formula tex="|\vec{B}| \approx \dfrac{\mu_0 I L}{4\pi d^2}" />
             <p className="mb-prose-3">So B ∝ 1/d², not 1/d. Far from a finite current stub, it looks like a magnetic point source — a current dipole<Cite id="jackson-1999" in={SOURCES} />. The infinite-wire 1/d behaviour only holds when the wire's length dominates the distance.</p>
           </>
         }

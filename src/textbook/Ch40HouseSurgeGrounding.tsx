@@ -15,7 +15,7 @@
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { Term } from '@/components/Term';
@@ -78,7 +78,7 @@ export default function Ch40HouseSurgeGrounding() {
         adjacent loop of wire. The current waveform's dI/dt does the same thing through the unavoidable
         inductance of the service drop and the panel busbars,
       </p>
-      <Formula>V<sub>drop</sub> = L × dI/dt</Formula>
+      <Formula tex="V_{\text{drop}} = L \times dI/dt" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V<sub>drop</sub></strong> is the inductive voltage that appears across a length of
         conductor during a current transient (in volts), <strong className="text-text font-medium">L</strong> is the self-inductance of that
@@ -90,8 +90,8 @@ export default function Ch40HouseSurgeGrounding() {
         be destructive. Six kilovolts across half a millimetre of varnish on a transformer winding is enough.
       </p>
       <p className="mb-prose-3">
-        The total energy in such a pulse is small in absolute terms. Approximating ½ × L × I² for L = 5 µH and
-        I = 10 kA gives 250 J — about the energy of a baseball thrown hard. The problem is that 250 J is
+        The total energy in such a pulse is small in absolute terms. Approximating <InlineMath tex="\tfrac{1}{2} L I^2" /> for <InlineMath tex="L = 5\ \mu\text{H}" /> and
+        <InlineMath tex="I = 10\ \text{kA}" /> gives 250 J — about the energy of a baseball thrown hard. The problem is that 250 J is
         delivered in tens of microseconds, an instantaneous power of order ten megawatts, into whatever
         impedance happens to be in the way. A
         {' '}<Term def={<><strong className="text-text font-medium">metal-oxide varistor (MOV)</strong> — a ceramic disc whose resistance drops by many orders of magnitude above a threshold voltage, set by the zinc-oxide grain structure. The active clamp in most residential SPDs; absorbs surge energy by conducting heavily above its clamp voltage and then returning to high resistance once the transient passes.</>}>metal-oxide varistor</Term>{' '}
@@ -116,9 +116,9 @@ export default function Ch40HouseSurgeGrounding() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">At the 10 kA peak the resistive drop is straightforward:</p>
-            <Formula>V<sub>R</sub> = I × R = 10 000 × 25 = 250 000 V = 250 kV</Formula>
+            <Formula tex="V_R = I \times R = 10{,}000 \times 25 = 250{,}000\ \text{V} = 250\ \text{kV}" />
             <p className="mb-prose-1 last:mb-0">The current's mean rate of rise over the 8 µs edge is dI/dt = 10 kA / 8 µs = 1.25×10⁹ A/s, so</p>
-            <Formula>V<sub>L</sub> = L × dI/dt = 6×10⁻⁶ × 1.25×10⁹ = 7.5×10³ V = 7.5 kV</Formula>
+            <Formula tex="V_L = L \times dI/dt = 6\times 10^{-6} \times 1.25\times 10^{9} = 7.5\times 10^{3}\ \text{V} = 7.5\ \text{kV}" />
             <p className="mb-prose-1 last:mb-0">
               The resistive drop is the larger number on paper — but that is the steady-state value at the peak,
               after the pulse has finished rising. During the rising edge, before the rod-to-soil interface has
@@ -200,7 +200,7 @@ export default function Ch40HouseSurgeGrounding() {
       <p className="mb-prose-3">
         For two rods of equal resistance in parallel, the standard parallel-resistance formula applies:
       </p>
-      <Formula>R<sub>GES total</sub> = 1 / (1/R<sub>1</sub> + 1/R<sub>2</sub>)</Formula>
+      <Formula tex="R_{\text{GES,total}} = \dfrac{1}{1/R_1 + 1/R_2}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">R<sub>GES total</sub></strong> is the combined 60 Hz resistance of the two rods seen from
         the panel (in ohms), and <strong className="text-text font-medium">R<sub>1</sub></strong>, <strong className="text-text font-medium">R<sub>2</sub></strong> are the
@@ -222,8 +222,8 @@ export default function Ch40HouseSurgeGrounding() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Parallel combination of two equal elements halves both:</p>
-            <Formula>R<sub>GES</sub> = 25 / 2 = 12.5 Ω</Formula>
-            <Formula>L<sub>GES</sub> = 6 / 2 = 3 µH</Formula>
+            <Formula tex="R_{\text{GES}} = 25/2 = 12.5\ \Omega" />
+            <Formula tex="L_{\text{GES}} = 6/2 = 3\ \mu\text{H}" />
             <p className="mb-prose-1 last:mb-0">
               The two-rod GES has half the steady-state resistance to earth <em className="italic text-text">and</em> half the inductive
               voltage rise during the surge front. At dI/dt = 1.25×10⁹ A/s the inductive contribution falls from
@@ -294,7 +294,7 @@ export default function Ch40HouseSurgeGrounding() {
         The let-through voltage at the protected equipment is the SPD's own clamping voltage plus the inductive
         voltage rise along its lead wires during the surge:
       </p>
-      <Formula>V<sub>let-through</sub> = V<sub>clamp</sub> + L<sub>lead</sub> × dI/dt</Formula>
+      <Formula tex="V_{\text{let-through}} = V_{\text{clamp}} + L_{\text{lead}} \times dI/dt" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V<sub>let-through</sub></strong> is the voltage the downstream equipment actually sees
         during the surge (in volts), <strong className="text-text font-medium">V<sub>clamp</sub></strong> is the SPD's intrinsic clamping voltage
@@ -317,13 +317,13 @@ export default function Ch40HouseSurgeGrounding() {
           the additional let-through from lead inductance, and what is the total worst-case voltage at the
           protected load?</>
         }
-        hint={<>V<sub>L</sub> = L × dI/dt. Add to the rated VPR.</>}
+        hint={<><InlineMath tex="V_L = L \times dI/dt" />. Add to the rated VPR.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">The inductive lead-voltage rise:</p>
-            <Formula>V<sub>L</sub> = L<sub>lead</sub> × dI/dt = 3×10⁻⁷ × 10⁹ = 300 V</Formula>
+            <Formula tex="V_L = L_{\text{lead}} \times dI/dt = 3\times 10^{-7} \times 10^{9} = 300\ \text{V}" />
             <p className="mb-prose-1 last:mb-0">Stacked on top of the 600 V VPR:</p>
-            <Formula>V<sub>let-through</sub> = 600 + 300 = 900 V</Formula>
+            <Formula tex="V_{\text{let-through}} = 600 + 300 = 900\ \text{V}" />
             <p className="mb-prose-1 last:mb-0">
               The protected load sees 900 V peak instead of the SPD's nameplate 600 V — a 50 % overshoot from
               twelve inches of perfectly ordinary panel wire. Doubling the lead length doubles the inductive

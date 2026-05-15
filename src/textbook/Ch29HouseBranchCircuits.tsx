@@ -11,7 +11,7 @@
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { Term } from '@/components/Term';
@@ -33,7 +33,7 @@ export default function Ch29HouseBranchCircuits() {
         <Term def={<><strong className="text-text font-medium">NM-B (Romex)</strong> — non-metallic-sheathed cable; the standard interior wire for residential framing. Two or three insulated conductors plus a bare ground inside a PVC jacket. The &ldquo;B&rdquo; designates 90 °C-rated insulation, though NEC sizes it to the 60 °C column for residential terminations.</>}>NM-B (Romex)</Term>.
         Plug a 1200 W space heater into the third outlet. Current draw at 120 V is{' '}
         <strong className="text-text font-medium">10 A</strong>. Round-trip resistance through 48 m of 14 AWG copper is about{' '}
-        <strong className="text-text font-medium">0.41 Ω</strong>, so the wire dissipates roughly <strong className="text-text font-medium">I²R ≈ 41 W</strong> along its length —
+        <strong className="text-text font-medium">0.41 Ω</strong>, so the wire dissipates roughly <InlineMath tex="I^2 R \\approx 41\\ \\text{W}" /> along its length —
         spread out, it warms the cable a few degrees above the wood around it. Fine.
       </p>
       <p className="mb-prose-3">
@@ -58,7 +58,7 @@ export default function Ch29HouseBranchCircuits() {
         The thermodynamic balance for a wire in still air is roughly: heat generated per unit length equals heat carried
         away from the surface per unit length. The generation side is what Ch.3 already gave us:
       </p>
-      <Formula>P/L = I² ρ / A</Formula>
+      <Formula tex="P/L = \\dfrac{I^2 \\rho}{A}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P/L</strong> is the power dissipated per metre of wire (in W/m), <strong className="text-text font-medium">I</strong> is the current
         through the conductor (in amperes), <strong className="text-text font-medium">ρ</strong> is the resistivity of copper (≈ 1.68×10⁻⁸ Ω·m at 20 °C)
@@ -112,15 +112,15 @@ export default function Ch29HouseBranchCircuits() {
             Compute the round-trip voltage drop. Is it acceptable for a 120 V circuit under the 3 % guideline?
           </>
         }
-        hint="Use R = ρL/A with copper at ~75 °C resistivity ≈ 2.1×10⁻⁸ Ω·m, then double the length for round-trip, then ΔV = I·R."
+        hint={<>Use <InlineMath id="resistance-resistivity" /> with copper at ~75 °C resistivity ≈ 2.1×10⁻⁸ Ω·m, then double the length for round-trip, then <InlineMath tex="\\Delta V = I \\cdot R" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
               The round-trip path is 50 m of copper at warm operating temperature
               <Cite id="codata-2018" in={SOURCES} />:
             </p>
-            <Formula>R = ρ·(2L)/A = 2.1×10⁻⁸ · 50 / 3.31×10⁻⁶ ≈ 0.317 Ω</Formula>
-            <Formula>ΔV = I·R = 15 · 0.317 ≈ 4.76 V</Formula>
+            <Formula tex="R = \\dfrac{\\rho \\cdot (2L)}{A} = \\dfrac{2.1\\times 10^{-8} \\cdot 50}{3.31\\times 10^{-6}} \\approx 0.317\\ \\Omega" />
+            <Formula tex="\\Delta V = I \\cdot R = 15 \\cdot 0.317 \\approx 4.76\\ \\text{V}" />
             <p className="mb-prose-1 last:mb-0">
               That is about <strong className="text-text font-medium">4.0 %</strong> of 120 V — over NEC's 3 % branch-circuit recommendation
               <Cite id="nec-2023" in={SOURCES} />. The remedy is to drop the worst-case continuous load on this run or
@@ -186,7 +186,7 @@ export default function Ch29HouseBranchCircuits() {
       <p className="mb-prose-3">
         The drop on a single-phase branch is the IR drop along the round-trip copper path:
       </p>
-      <Formula>ΔV = 2 · I · R<sub>per metre</sub> · L</Formula>
+      <Formula tex="\\Delta V = 2 \\cdot I \\cdot R_{\\text{per metre}} \\cdot L" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">ΔV</strong> is the voltage lost in the wire from panel to load (in volts), the factor of{' '}
         <strong className="text-text font-medium">2</strong> accounts for the round-trip path (hot out plus neutral back), <strong className="text-text font-medium">I</strong> is the
@@ -198,8 +198,8 @@ export default function Ch29HouseBranchCircuits() {
       </p>
       <p className="mb-prose-3">
         A worked example: a 14 AWG circuit, 30 m one-way, carrying 10 A. The drop is{' '}
-        <strong className="text-text font-medium">2 · 10 · 0.00845 · 30 ≈ 5.07 V</strong>, or about <strong className="text-text font-medium">4.2 %</strong> of 120 V. That is past the
-        3 % guideline. Going to 12 AWG on the same run: <strong className="text-text font-medium">2 · 10 · 0.00531 · 30 ≈ 3.19 V</strong>, or 2.7 % —
+        <InlineMath tex="2 \\cdot 10 \\cdot 0.00845 \\cdot 30 \\approx 5.07\\ \\text{V}" />, or about <strong className="text-text font-medium">4.2 %</strong> of 120 V. That is past the
+        3 % guideline. Going to 12 AWG on the same run: <InlineMath tex="2 \\cdot 10 \\cdot 0.00531 \\cdot 30 \\approx 3.19\\ \\text{V}" />, or 2.7 % —
         within budget. On long runs, upsizing the wire is the cheapest fix; on 240 V circuits, the same current
         drops only half the percentage because the denominator doubles. That is one quiet reason every modern{' '}
         <Term def={<><strong className="text-text font-medium">dedicated circuit</strong> — a branch circuit serving one and only one piece of equipment, with no other receptacles or loads on it. Required by NEC for ranges, dryers, water heaters, EV chargers, and a few other major appliances.</>}>dedicated circuit</Term>{' '}
@@ -223,7 +223,7 @@ export default function Ch29HouseBranchCircuits() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Total power: 4·60 + 90 + 300 = <strong className="text-text font-medium">630 W</strong>. Current at 120 V:</p>
-            <Formula>I = P/V = 630 / 120 ≈ 5.25 A</Formula>
+            <Formula tex="I = \\dfrac{P}{V} = \\dfrac{630}{120} \\approx 5.25\\ \\text{A}" />
             <p className="mb-prose-1 last:mb-0">
               That is well under the 12 A continuous limit imposed on a 15 A breaker by the 80 %
               rule<Cite id="nec-2023" in={SOURCES} />. The circuit has roughly 7 A of headroom, which is exactly the
@@ -378,7 +378,7 @@ export default function Ch29HouseBranchCircuits() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Total: 1500 + 1100 + 900 = <strong className="text-text font-medium">3500 W</strong>. At 120 V:</p>
-            <Formula>I = 3500 / 120 ≈ 29.2 A</Formula>
+            <Formula tex="I = \\dfrac{3500}{120} \\approx 29.2\\ \\text{A}" />
             <p className="mb-prose-1 last:mb-0">
               That is well over the 20 A rating of the circuit. The breaker will trip in seconds. The fix is to
               distribute the three appliances across the kitchen's two 20 A small-appliance branches — which is
@@ -433,7 +433,7 @@ export default function Ch29HouseBranchCircuits() {
             voltage drop on that wire at full charge?
           </>
         }
-        hint="Apply the 80 % rule to find the breaker rating, then NEC Table 310.16 to find the gauge, then ΔV = 2·I·R_per-m·L."
+        hint={<>Apply the 80 % rule to find the breaker rating, then NEC Table 310.16 to find the gauge, then <InlineMath tex="\\Delta V = 2 \\cdot I \\cdot R_{\\text{per-m}} \\cdot L" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
@@ -445,7 +445,7 @@ export default function Ch29HouseBranchCircuits() {
             <p className="mb-prose-1 last:mb-0">
               4 AWG copper has R<sub>per metre</sub> ≈ 0.83 mΩ/m at 75 °C. Round-trip drop at 50 A across 12 m:
             </p>
-            <Formula>ΔV = 2 · 50 · 0.00083 · 12 ≈ 1.0 V</Formula>
+            <Formula tex="\\Delta V = 2 \\cdot 50 \\cdot 0.00083 \\cdot 12 \\approx 1.0\\ \\text{V}" />
             <p className="mb-prose-1 last:mb-0">
               On a 240 V circuit that is <strong className="text-text font-medium">0.4 %</strong> — well inside the 3 % branch guideline. The wire
               size is set by the 80 % rule and the breaker, not by the voltage drop on this short a run.
@@ -566,7 +566,7 @@ export default function Ch29HouseBranchCircuits() {
             breaker<Cite id="awg-table-nec" in={SOURCES} />. But the round-trip voltage drop check is
             sobering: 10 AWG has R<sub>per metre</sub> ≈ 3.34 mΩ/m at 75 °C, so
           </p>
-          <Formula>ΔV = 2 · 25 · 0.00334 · 30 ≈ 5.0 V</Formula>
+          <Formula tex="\\Delta V = 2 \\cdot 25 \\cdot 0.00334 \\cdot 30 \\approx 5.0\\ \\text{V}" />
           <p className="mb-prose-2 last:mb-0">
             That is <strong className="text-text font-medium">2.1 %</strong> of 240 V — within the 3 % branch guideline, just barely. On a welder
             that already pulses heavily on each strike, the additional voltage sag from the wire is enough to make
@@ -687,7 +687,7 @@ export default function Ch29HouseBranchCircuits() {
         <FAQItem q="How is voltage drop different from impedance drop in an AC circuit?">
           <p>
             On a 60 Hz residential branch with copper at any reasonable gauge, the inductive reactance per metre is
-            small compared to the resistance per metre, so the voltage drop formula ΔV = 2·I·R·L is an excellent
+            small compared to the resistance per metre, so the voltage drop formula <InlineMath tex="\\Delta V = 2 \\cdot I \\cdot R \\cdot L" /> is an excellent
             approximation<Cite id="nec-2023" in={SOURCES} />. NEC Chapter 9 Table 9 gives full impedance values
             including the reactive part for raceway and cable configurations, and for short residential runs the
             correction is well under one percent. The reactive term becomes significant only for very long runs

@@ -8,6 +8,7 @@
  */
 
 import type { ReactNode } from 'react';
+import { Formula } from '@/components/Formula';
 import type { SourceKey } from '@/lib/sources';
 
 export type ChapterId = 'ch1' | 'ch2' | 'ch3' | 'ch4';
@@ -61,7 +62,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: '1.1', slug: 'coulomb', chapter: 'ch1',
     title: "Coulomb's Law",
-    formula: (<>F = k Q₁ Q₂ / r²</>),
+    formula: <Formula id="coulomb-force" />,
     blurb: 'Two charges. One inverse-square law that holds across every order of magnitude.',
     heroLabel: "Chapter 1 · Lab 1.1 — Coulomb's Law",
     heroHeadline: (<>Two charges. <em className="italic font-normal text-accent">One inverse-square law.</em></>),
@@ -70,7 +71,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: '1.2', slug: 'e-field', chapter: 'ch1',
     title: 'Field of a Point Charge',
-    formula: (<>E = k Q / r²</>),
+    formula: <Formula id="electric-field-point" />,
     blurb: 'Replace "force between two charges" with "field set up by one." Faraday\'s decisive move.',
     heroLabel: 'Chapter 1 · Lab 1.2 — Field of a Point Charge',
     heroHeadline: (<>Charge tells space to <em className="italic font-normal text-accent">push back</em>.</>),
@@ -79,7 +80,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: '1.3', slug: 'gauss', chapter: 'ch1',
     title: "Gauss's Law",
-    formula: (<>∮ E · dA = Q<sub>enc</sub> / ε₀</>),
+    formula: <Formula id="gauss-law" />,
     blurb: 'Wrap any imaginary surface around any charge. Total flux equals charge inside, divided by ε₀.',
     heroLabel: "Chapter 1 · Lab 1.3 — Gauss's Law",
     heroHeadline: (<>Total flux pays the <em className="italic font-normal text-accent">enclosed charge</em>, nothing else.</>),
@@ -88,7 +89,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: '1.4', slug: 'potential', chapter: 'ch1',
     title: 'Potential Difference',
-    formula: (<>V<sub>ab</sub> = −∫<sub>a</sub><sup>b</sup> E · dℓ</>),
+    formula: <Formula id="voltage-line-integral" />,
     blurb: 'Voltage is a line integral. A property of the path between two points in a field.',
     heroLabel: 'Chapter 1 · Lab 1.4 — Potential Difference',
     heroHeadline: (<>Voltage is the work you'd do to <em className="italic font-normal text-accent">move a charge</em>.</>),
@@ -175,7 +176,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: '4.1', slug: 'capacitance', chapter: 'ch4',
     title: 'Capacitance',
-    formula: (<>C = ε₀ εᵣ A / d</>),
+    formula: <Formula id="capacitance-parallel-plate" />,
     blurb: 'Stored charge per applied volt. Energy held in the gap field.',
     heroLabel: 'Chapter 4 · Lab 4.1 — Capacitance',
     heroHeadline: (<>Plates hold <em className="italic font-normal text-accent">charge in waiting</em>.</>),
@@ -193,7 +194,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: '4.3', slug: 'energy-density', chapter: 'ch4',
     title: 'Field Energy Density',
-    formula: (<>u = ½ ε₀ E² + B² / (2 μ₀)</>),
+    formula: <Formula tex="u = \tfrac{1}{2}\, \varepsilon_0\, E^2 + \dfrac{B^2}{2\mu_0}" />,
     blurb: 'Joules per cubic meter, stored in the field itself.',
     heroLabel: 'Chapter 4 · Lab 4.3 — Field Energy Density',
     heroHeadline: (<><em className="italic font-normal text-accent">Empty space</em> stores energy.</>),

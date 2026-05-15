@@ -16,7 +16,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -201,7 +201,7 @@ export default function Ch38HouseSmartRetrofits() {
         The power dissipated by that bleeder is simply line voltage times bleeder current:
       </p>
 
-      <Formula>P_bleeder = V_line × I_bleeder</Formula>
+      <Formula tex="P_{\text{bleeder}} = V_{\text{line}} \times I_{\text{bleeder}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P_bleeder</strong> is the steady-state power that the bleeder pulls from the line (in
         watts), <strong className="text-text font-medium">V_line</strong> is the RMS line voltage (120 V in North America, 230 V in most of
@@ -240,7 +240,7 @@ export default function Ch38HouseSmartRetrofits() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Direct substitution into the bleeder formula:</p>
-            <Formula>P_bleeder = 120 V × 0.060 A = 7.2 W</Formula>
+            <Formula tex="P_{\text{bleeder}} = 120\ \text{V} \times 0.060\ \text{A} = 7.2\ \text{W}" />
             <p className="mb-prose-1 last:mb-0">
               That is <strong className="text-text font-medium">almost the bulb's full-on rating</strong> — 7.2 W of dissipation in an 8 W LED.
               The internal converter will charge well past the LED-string forward-voltage threshold and the
@@ -341,7 +341,7 @@ export default function Ch38HouseSmartRetrofits() {
         running from α = π for fully-on down to α = 0 for fully-off):
       </p>
 
-      <Formula>V_rms = V_peak × √(α/π − sin(2α)/(2π))</Formula>
+      <Formula tex="V_{\text{rms}} = V_{\text{peak}} \times \sqrt{\dfrac{\alpha}{\pi} - \dfrac{\sin(2\alpha)}{2\pi}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V_rms</strong> is the RMS voltage delivered to the load (in volts), <strong className="text-text font-medium">V_peak</strong>{' '}
         is the line peak voltage (in volts; 170 V on a 120 V North American line, since V_peak = √2 × V_rms_line),
@@ -359,7 +359,7 @@ export default function Ch38HouseSmartRetrofits() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">The bracket evaluates as 3/4 − sin(3π/2)/(2π) = 0.75 − (−1)/(2π) ≈ 0.75 + 0.159 = 0.909.</p>
-            <Formula>V_rms = 170 V × √0.909 ≈ 162 V (peak basis) → 162 / √2 ≈ 114 V RMS at the load</Formula>
+            <Formula tex="V_{\text{rms}} = 170\ \text{V} \times \sqrt{0.909} \approx 162\ \text{V (peak basis)} \to 162/\sqrt{2} \approx 114\ \text{V RMS at the load}" />
             <p className="mb-prose-1 last:mb-0">
               So the load sees about <strong className="text-text font-medium">114 V RMS</strong>, or 114/120 ≈ 95 % of full voltage. Power
               scales as the square of voltage at fixed resistance, so an Ohmic load would see ~90 % of full
@@ -410,7 +410,7 @@ export default function Ch38HouseSmartRetrofits() {
             { label: 'Box wires', value: 'black + red, no neutral, ground present' },
             { label: 'Load', value: '11 W LED ceiling fixture' },
             { label: 'Bleeder current (Caséta no-neutral)', value: '~35 mA' },
-            { label: 'P_bleeder', value: '120 V × 0.035 A = 4.2 W' },
+            { label: 'P_bleeder', value: <><InlineMath tex="120\ \text{V} \times 0.035\ \text{A} = 4.2\ \text{W}" /></> },
             { label: 'LUT-MLC load capacitor', value: '~$15, mounts in fixture box' },
           ]}
         >
@@ -526,7 +526,7 @@ export default function Ch38HouseSmartRetrofits() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Energy is power times time:</p>
-            <Formula>E = P × t = 0.030 W × (10 × 8760 h) = 0.030 × 87 600 = 2628 Wh ≈ 2.6 kWh</Formula>
+            <Formula tex="E = P \times t = 0.030\ \text{W} \times (10 \times 8760\ \text{h}) = 0.030 \times 87{,}600 = 2628\ \text{Wh} \approx 2.6\ \text{kWh}" />
             <p className="mb-prose-1 last:mb-0">
               Cost over 10 years: 2.6 kWh × $0.15/kWh ≈ <strong className="text-text font-medium">$0.39</strong>. About forty cents over a
               decade — negligible compared to the device cost. Multiply by twenty switches in a typical

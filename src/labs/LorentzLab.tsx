@@ -11,10 +11,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
-import { MathBlock, Pullout } from '@/components/Prose';
+import { Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
@@ -292,7 +292,7 @@ export default function LorentzLab() {
       </p>
 
       <h3 className="lab-section-h3">Formula</h3>
-      <MathBlock>F = q E + q v × B</MathBlock>
+      <Formula tex="\vec{F} = q\vec{E} + q\vec{v}\times\vec{B}" />
       <p className="mb-prose-3">Variable glossary:</p>
       <ul>
         <li><strong className="text-text font-medium">F</strong> — force on the particle, in newtons (N).</li>
@@ -302,7 +302,7 @@ export default function LorentzLab() {
         <li><strong className="text-text font-medium">B</strong> — magnetic field at the particle's location, in tesla (T).</li>
       </ul>
       <p className="mb-prose-3">For motion perpendicular to B (pitch angle 90°), Newton's second law gives circular motion with</p>
-      <MathBlock>r = m v / (|q| B),    T = 2π m / (|q| B),    f = |q| B / (2π m)</MathBlock>
+      <Formula tex="r = \dfrac{m v}{|q| B},\quad T = \dfrac{2\pi m}{|q| B},\quad f = \dfrac{|q| B}{2\pi m}" />
       <p className="mb-prose-3">The radius is the <em className="italic text-text">cyclotron radius</em>; T is the <em className="italic text-text">cyclotron period</em>; f the <em className="italic text-text">cyclotron frequency</em>.</p>
 
       <h3 className="lab-section-h3">Intuition</h3>
@@ -335,9 +335,9 @@ export default function LorentzLab() {
         For a particle of mass <strong className="text-text font-medium">m</strong> moving at speed <strong className="text-text font-medium">v</strong> perpendicular to <strong className="text-text font-medium">B</strong>, the magnetic force
         is <strong className="text-text font-medium">F = |q|vB</strong> and points centripetally (right-hand rule). Newton's second law for circular motion:
       </p>
-      <MathBlock>|q| v B = m v² / r  ⇒  r = m v / (|q| B)</MathBlock>
+      <Formula tex="|q| v B = \dfrac{m v^2}{r} \;\Rightarrow\; r = \dfrac{m v}{|q| B}" />
       <p className="mb-prose-3">Period is circumference divided by speed:</p>
-      <MathBlock>T = 2π r / v = 2π m / (|q| B)</MathBlock>
+      <Formula tex="T = \dfrac{2\pi r}{v} = \dfrac{2\pi m}{|q| B}" />
       <p className="mb-prose-3">
         Frequency <strong className="text-text font-medium">f = 1/T = |q|B/(2πm)</strong>. The electron and proton masses used here are the CODATA 2018 recommended values:
         <strong className="text-text font-medium"> m<sub>e</sub> ≈ 9.109 × 10⁻³¹ kg</strong>, <strong className="text-text font-medium">m<sub>p</sub> ≈ 1.673 × 10⁻²⁷ kg</strong><Cite id="codata-2018" in={SOURCES} />.

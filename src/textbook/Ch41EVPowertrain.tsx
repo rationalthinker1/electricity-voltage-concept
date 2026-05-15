@@ -88,9 +88,7 @@ export default function Ch41EVPowertrain() {
         The pack-level energy budget is straightforward. Total energy stored is the
         product of cell count, cell voltage, and cell capacity:
       </p>
-      <Formula>
-        E<sub>pack</sub> = n<sub>s</sub> × n<sub>p</sub> × V<sub>cell</sub> × Q<sub>cell</sub>
-      </Formula>
+      <Formula tex="E_{\text{pack}} = n_s \times n_p \times V_{\text{cell}} \times Q_{\text{cell}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">E<sub>pack</sub></strong> is the pack energy in watt-hours,{' '}
         <strong className="text-text font-medium">n<sub>s</sub></strong> is the number of cells in series (dimensionless),{' '}
@@ -98,7 +96,7 @@ export default function Ch41EVPowertrain() {
         <strong className="text-text font-medium">V<sub>cell</sub></strong> is the nominal cell voltage in volts (about
         3.6 V for NMC), and <strong className="text-text font-medium">Q<sub>cell</sub></strong> is the cell ampere-hour
         capacity (about 4.8 Ah for a 21700). For the Model 3:{' '}
-        <InlineMath>96 × 46 × 3.6 V × 4.8 Ah ≈ 76.3 kWh</InlineMath>, matching the
+        <InlineMath tex="96 \times 46 \times 3.6\ \text{V} \times 4.8\ \text{Ah} \approx 76.3\ \text{kWh}" />, matching the
         advertised number once you subtract the small reserve at the top and bottom of
         the state-of-charge window<Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
@@ -118,14 +116,12 @@ export default function Ch41EVPowertrain() {
         of 5 C; below those rates the internal resistance and electrolyte chemistry
         stay in the safe envelope. Peak pack power scales as:
       </p>
-      <Formula>
-        P<sub>max</sub> = E<sub>pack</sub> × (C-rate)
-      </Formula>
+      <Formula tex="P_{\text{max}} = E_{\text{pack}} \times \text{(C-rate)}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P<sub>max</sub></strong> is the peak deliverable pack power in
         watts, <strong className="text-text font-medium">E<sub>pack</sub></strong> is the pack energy in watt-hours, and{' '}
         <strong className="text-text font-medium">C-rate</strong> is the per-hour discharge multiplier (in 1/h). A
-        75 kWh pack at 3 C sustained delivers <InlineMath>75 × 3 = 225 kW</InlineMath> —
+        75 kWh pack at 3 C sustained delivers <InlineMath tex="75 \times 3 = 225\ \text{kW}" /> —
         and indeed that is about the rated peak output of a Model 3 long-range single
         motor. The dual-motor Performance variant pulls harder by parallelling more
         cells per string and by burst-running cells past 4 C for short
@@ -139,7 +135,7 @@ export default function Ch41EVPowertrain() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Pack current is power divided by bus voltage:</p>
-            <Formula>I<sub>pack</sub> = P / V<sub>pack</sub> = 80 000 W / 350 V ≈ 229 A</Formula>
+            <Formula tex="I_{\text{pack}} = P / V_{\text{pack}} = 80{,}000\ \text{W} / 350\ \text{V} \approx 229\ \text{A}" />
             <p className="mb-prose-1 last:mb-0">
               Answer: about <strong className="text-text font-medium">230 A</strong>. The high-voltage busbars in the
               pack are rated for this kind of continuous current and double it briefly
@@ -242,17 +238,15 @@ export default function Ch41EVPowertrain() {
       <p className="mb-prose-3">
         Energy balance is simple. Input power equals output power divided by efficiency:
       </p>
-      <Formula>
-        P<sub>HV</sub> = P<sub>aux</sub> / η<sub>DCDC</sub>
-      </Formula>
+      <Formula tex="P_{\text{HV}} = P_{\text{aux}} / \eta_{\text{DCDC}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P<sub>HV</sub></strong> is the power drawn from the high-voltage
         bus in watts, <strong className="text-text font-medium">P<sub>aux</sub></strong> is the power delivered to the
         12 V rail in watts, and <strong className="text-text font-medium">η<sub>DCDC</sub></strong> is the converter
         efficiency (dimensionless, typically 0.92 in a modern automotive DC-DC). A
-        worked example: at <InlineMath>I<sub>aux</sub> = 50 A</InlineMath> drawn at
-        12 V, <InlineMath>P<sub>aux</sub> = 600 W</InlineMath>. At η = 0.92, the
-        high-voltage bus delivers <InlineMath>P<sub>HV</sub> ≈ 650 W</InlineMath>,
+        worked example: at <InlineMath tex="I_{\text{aux}} = 50\ \text{A}" /> drawn at
+        12 V, <InlineMath tex="P_{\text{aux}} = 600\ \text{W}" />. At η = 0.92, the
+        high-voltage bus delivers <InlineMath tex="P_{\text{HV}} \approx 650\ \text{W}" />,
         which at 350 V is about 1.9 A from the pack. The 50 A flowing on the 12 V
         side becomes 1.9 A on the 350 V side — exactly the ratio you would predict
         from the transformer turns ratio in the converter.
@@ -299,9 +293,7 @@ export default function Ch41EVPowertrain() {
         magnet flux and the current orthogonal to it. The simple form of the torque
         equation is:
       </p>
-      <Formula>
-        τ<sub>motor</sub> = (3/2) × p × ψ<sub>PM</sub> × i<sub>q</sub>
-      </Formula>
+      <Formula tex="\tau_{\text{motor}} = \tfrac{3}{2} \times p \times \psi_{\text{PM}} \times i_q" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">τ<sub>motor</sub></strong> is the electromagnetic torque produced
         at the rotor in newton-metres, <strong className="text-text font-medium">p</strong> is the number of pole pairs
@@ -326,9 +318,7 @@ export default function Ch41EVPowertrain() {
         Inverter efficiency is the ratio of mechanical-equivalent output power to
         DC-bus input power:
       </p>
-      <Formula>
-        η<sub>inv</sub> = P<sub>AC,out</sub> / P<sub>DC,in</sub>
-      </Formula>
+      <Formula tex="\eta_{\text{inv}} = P_{\text{AC,out}} / P_{\text{DC,in}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">η<sub>inv</sub></strong> is the dimensionless inverter
         efficiency, <strong className="text-text font-medium">P<sub>AC,out</sub></strong> is the real (in-phase) power
@@ -348,7 +338,7 @@ export default function Ch41EVPowertrain() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Plug into the FOC torque equation:</p>
-            <Formula>τ = (3/2) × 4 × 0.08 Wb × 200 A = 96 N·m</Formula>
+            <Formula tex="\tau = \tfrac{3}{2} \times 4 \times 0.08\ \text{Wb} \times 200\ \text{A} = 96\ \text{N·m}" />
             <p className="mb-prose-1 last:mb-0">
               Answer: about <strong className="text-text font-medium">96 N·m</strong> at the motor shaft. After a 9:1
               gearbox reduction (Stage 6), that becomes <strong className="text-text font-medium">~860 N·m</strong> at
@@ -391,22 +381,20 @@ export default function Ch41EVPowertrain() {
         is the central feature that determines what the motor can and cannot do at a
         given speed:
       </p>
-      <Formula>
-        V<sub>BEMF</sub> = ψ<sub>PM</sub> × ω<sub>e</sub>
-      </Formula>
+      <Formula tex="V_{\text{BEMF}} = \psi_{\text{PM}} \times \omega_e" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V<sub>BEMF</sub></strong> is the line-to-neutral peak back-EMF
         in volts, <strong className="text-text font-medium">ψ<sub>PM</sub></strong> is the permanent-magnet flux linkage
         in weber-turns (the same constant from the torque equation in Stage 4), and{' '}
         <strong className="text-text font-medium">ω<sub>e</sub></strong> is the <em className="italic text-text">electrical</em> angular frequency
         in rad/s. Electrical frequency is mechanical frequency times the pole-pair
-        count: <InlineMath>ω<sub>e</sub> = p × ω<sub>m</sub></InlineMath>. As the
+        count: <InlineMath tex="\omega_e = p \times \omega_m" />. As the
         car accelerates, ω<sub>m</sub> climbs and V<sub>BEMF</sub> climbs linearly with
         it<Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         For the inverter to push current into the stator, the bus voltage has to be
-        higher than the back-EMF. As long as <InlineMath>V<sub>DC</sub>/√3 &gt; V<sub>BEMF</sub></InlineMath>{' '}
+        higher than the back-EMF. As long as <InlineMath tex="V_{\text{DC}}/\sqrt{3} > V_{\text{BEMF}}" />{' '}
         (the inverter can synthesise a sinusoid whose peak exceeds the back-EMF peak),
         the controller can pump full i<sub>q</sub> and the motor produces its rated
         torque. The speed at which the back-EMF just equals the bus voltage limit is
@@ -449,11 +437,11 @@ export default function Ch41EVPowertrain() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">The inverter&rsquo;s peak line-to-neutral output sinusoid is about V<sub>DC</sub>/√3:</p>
-            <Formula>V<sub>BEMF,peak</sub> = V<sub>DC</sub> / √3 ≈ 350 / 1.732 ≈ 202 V</Formula>
+            <Formula tex="V_{\text{BEMF,peak}} = V_{\text{DC}} / \sqrt{3} \approx 350 / 1.732 \approx 202\ \text{V}" />
             <p className="mb-prose-1 last:mb-0">Solve V<sub>BEMF</sub> = ψ<sub>PM</sub> · ω<sub>e</sub> for electrical angular speed:</p>
-            <Formula>ω<sub>e</sub> = 202 / 0.08 ≈ 2525 rad/s</Formula>
-            <p className="mb-prose-1 last:mb-0">Convert to mechanical RPM: ω<sub>m</sub> = ω<sub>e</sub> / p, then RPM = ω<sub>m</sub> · 60 / (2π).</p>
-            <Formula>ω<sub>m</sub> = 2525 / 4 ≈ 631 rad/s → ≈ 6030 RPM</Formula>
+            <Formula tex="\omega_e = 202 / 0.08 \approx 2525\ \text{rad/s}" />
+            <p className="mb-prose-1 last:mb-0">Convert to mechanical RPM: <InlineMath tex="\omega_m = \omega_e / p" />, then <InlineMath tex="\text{RPM} = \omega_m \cdot 60/(2\pi)" />.</p>
+            <Formula tex="\omega_m = 2525 / 4 \approx 631\ \text{rad/s} \to \approx 6030\ \text{RPM}" />
             <p className="mb-prose-1 last:mb-0">
               Answer: about <strong className="text-text font-medium">6000 RPM</strong> mechanical. Above that, the
               inverter saturates and the controller switches into field-weakening to
@@ -512,9 +500,7 @@ export default function Ch41EVPowertrain() {
         heat. The force is proportional to vehicle weight, almost independent of
         speed:
       </p>
-      <Formula>
-        F<sub>roll</sub> = m × g × C<sub>rr</sub>
-      </Formula>
+      <Formula tex="F_{\text{roll}} = m \times g \times C_{rr}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">F<sub>roll</sub></strong> is the rolling-resistance force in
         newtons, <strong className="text-text font-medium">m</strong> is the vehicle mass in kilograms,{' '}
@@ -522,7 +508,7 @@ export default function Ch41EVPowertrain() {
         <strong className="text-text font-medium">C<sub>rr</sub></strong> is the dimensionless{' '}
         <Term def={<><strong className="text-text font-medium">rolling friction coefficient (C_rr)</strong> — the dimensionless ratio of rolling-friction force to vehicle weight. About 0.008 for a modern low-rolling-resistance passenger-car tire on dry pavement; 0.005 for a premium EV tire; 0.015 for a worn or under-inflated tire.</>}>rolling friction coefficient</Term>{' '}
         (about 0.008 for a passenger EV on a modern low-rolling-resistance tire). For
-        a 2000 kg car this gives <InlineMath>F<sub>roll</sub> ≈ 2000 × 9.81 × 0.008 ≈ 160 N</InlineMath> —
+        a 2000 kg car this gives <InlineMath tex="F_{\text{roll}} \approx 2000 \times 9.81 \times 0.008 \approx 160\ \text{N}" /> —
         constant whether the car is creeping or cruising.
       </p>
       <p className="mb-prose-3">
@@ -530,9 +516,7 @@ export default function Ch41EVPowertrain() {
         <Term def={<><strong className="text-text font-medium">aerodynamic drag</strong> — the force resisting motion through air. Proportional to air density, drag coefficient (C_d), frontal area (A), and the square of speed. The dominant resistive force above 80–90 km/h for a modern passenger car.</>}>aerodynamic drag</Term>{' '}
         from pushing the car through air:
       </p>
-      <Formula>
-        F<sub>drag</sub> = ½ × ρ<sub>air</sub> × C<sub>d</sub> × A × v²
-      </Formula>
+      <Formula tex="F_{\text{drag}} = \tfrac{1}{2} \times \rho_{\text{air}} \times C_d \times A \times v^2" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">F<sub>drag</sub></strong> is the drag force in newtons,{' '}
         <strong className="text-text font-medium">ρ<sub>air</sub></strong> is air density (about 1.225 kg/m³ at sea
@@ -544,36 +528,32 @@ export default function Ch41EVPowertrain() {
         <Term def={<><strong className="text-text font-medium">drag area (CdA)</strong> — the product of drag coefficient and frontal area. A single number that captures the aerodynamic-resistance "size" of a vehicle: Model 3 has CdA ≈ 0.51 m², a Hummer EV is about 1.3 m².</>}>drag area (CdA)</Term>{' '}
         — a single number that captures the aerodynamic resistance of the vehicle.
         At 30 m/s (108 km/h) for the Model 3:{' '}
-        <InlineMath>F<sub>drag</sub> ≈ 0.5 × 1.225 × 0.51 × 30² ≈ 280 N</InlineMath>.
+        <InlineMath tex="F_{\text{drag}} \approx 0.5 \times 1.225 \times 0.51 \times 30^2 \approx 280\ \text{N}" />.
         The drag scales as v², so doubling the speed quadruples the drag force and
         cubes the power required to overcome it.
       </p>
       <p className="mb-prose-3">
         The third is the climbing force on a grade:
       </p>
-      <Formula>
-        F<sub>climb</sub> = m × g × sin(θ)
-      </Formula>
+      <Formula tex="F_{\text{climb}} = m \times g \times \sin(\theta)" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">F<sub>climb</sub></strong> is the climbing component of weight
         along the road surface in newtons, <strong className="text-text font-medium">m</strong> and <strong className="text-text font-medium">g</strong>{' '}
         are as before, and <strong className="text-text font-medium">θ</strong> is the road grade angle (in radians or
         degrees). On a 6% grade (θ ≈ 3.4°), sin θ ≈ 0.06, so a 2000 kg car has
-        <InlineMath>F<sub>climb</sub> ≈ 1180 N</InlineMath> — about seven times the
+        <InlineMath tex="F_{\text{climb}} \approx 1180\ \text{N}" /> — about seven times the
         rolling friction and four times the highway aero drag. Hills dominate flat-road
         physics quickly.
       </p>
       <p className="mb-prose-3">
         The fourth is inertia during acceleration:
       </p>
-      <Formula>
-        F<sub>a</sub> = m × a
-      </Formula>
+      <Formula tex="F_a = m \times a" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">F<sub>a</sub></strong> is the inertial force in newtons,{' '}
         <strong className="text-text font-medium">m</strong> is vehicle mass in kilograms, and <strong className="text-text font-medium">a</strong> is
         instantaneous acceleration in m/s². A 0.5g launch on a 2000 kg car needs
-        <InlineMath>2000 × 4.9 = 9800 N</InlineMath> of tractive force — about 35
+        <InlineMath tex="2000 \times 4.9 = 9800\ \text{N}" /> of tractive force — about 35
         times the highway aero drag. That is why peak-acceleration current is the
         sizing constraint on every component upstream of the wheels, not steady-state
         cruise.
@@ -581,15 +561,13 @@ export default function Ch41EVPowertrain() {
       <p className="mb-prose-3">
         Total instantaneous wheel power is the sum times the speed:
       </p>
-      <Formula>
-        P<sub>wheel</sub> = (F<sub>roll</sub> + F<sub>drag</sub> + F<sub>climb</sub> + F<sub>a</sub>) × v
-      </Formula>
+      <Formula tex="P_{\text{wheel}} = (F_{\text{roll}} + F_{\text{drag}} + F_{\text{climb}} + F_a) \times v" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P<sub>wheel</sub></strong> is mechanical power delivered at the
         contact patch in watts, the four F terms are the resistive forces in newtons,
         and <strong className="text-text font-medium">v</strong> is vehicle speed in m/s. For a Model 3 cruising flat
         at 110 km/h (30.6 m/s), F<sub>roll</sub> + F<sub>drag</sub> ≈ 160 + 290 ≈ 450 N,
-        and <InlineMath>P<sub>wheel</sub> ≈ 450 × 30.6 ≈ 13.8 kW</InlineMath>. That
+        and <InlineMath tex="P_{\text{wheel}} \approx 450 \times 30.6 \approx 13.8\ \text{kW}" />. That
         is the entire steady-state mechanical demand of an EV at freeway speed —
         comfortably less than a hairdryer per wheel<Cite id="codata-2018" in={SOURCES} />.
       </p>
@@ -601,9 +579,9 @@ export default function Ch41EVPowertrain() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Setting the two forces equal and solving for v:</p>
-            <Formula>v² = 2 × m × g × C<sub>rr</sub> / (ρ × C<sub>d</sub> × A)</Formula>
-            <Formula>v² = 2 × 2000 × 9.81 × 0.008 / (1.225 × 0.6) ≈ 427</Formula>
-            <Formula>v ≈ 20.7 m/s ≈ 75 km/h</Formula>
+            <Formula tex="v^2 = \dfrac{2 \times m \times g \times C_{rr}}{\rho \times C_d \times A}" />
+            <Formula tex="v^2 = \dfrac{2 \times 2000 \times 9.81 \times 0.008}{1.225 \times 0.6} \approx 427" />
+            <Formula tex="v \approx 20.7\ \text{m/s} \approx 75\ \text{km/h}" />
             <p className="mb-prose-1 last:mb-0">
               Answer: about <strong className="text-text font-medium">75 km/h</strong>. Below that, rolling friction
               dominates the energy budget (so soft tires and weight-reduction matter
@@ -646,7 +624,7 @@ export default function Ch41EVPowertrain() {
         kWh per boil, an EV uses 15–25 kWh per 100 km, a typical home uses 30 kWh
         per day.
       </p>
-      <Formula>1 kWh = 3.6 × 10⁶ J = 3.6 MJ</Formula>
+      <Formula tex="1\ \text{kWh} = 3.6 \times 10^{6}\ \text{J} = 3.6\ \text{MJ}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">kWh</strong> is one kilowatt-hour (a kilowatt held for an
         hour), <strong className="text-text font-medium">J</strong> is one joule (one watt-second), and the factor
@@ -708,9 +686,7 @@ export default function Ch41EVPowertrain() {
         and divides by 3.6 × 10⁶ to display kilowatt-hours. The session
         accumulates the integral
       </p>
-      <Formula>
-        E<sub>delivered</sub> = ∫₀ᵀ V<sub>dc</sub>(t) × I<sub>dc</sub>(t) dt
-      </Formula>
+      <Formula tex="E_{\text{delivered}} = \int_0^T V_{\text{dc}}(t) \times I_{\text{dc}}(t)\, dt" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">E<sub>delivered</sub></strong> is the energy that flowed
         across the coupler during the session (in joules; divide by 3.6×10⁶ for
@@ -744,9 +720,7 @@ export default function Ch41EVPowertrain() {
         napkin. Steady-state highway range is pack energy times drivetrain efficiency
         divided by wheel power demand:
       </p>
-      <Formula>
-        t<sub>cruise</sub> = E<sub>pack</sub> × η<sub>drive</sub> / P<sub>wheel</sub>
-      </Formula>
+      <Formula tex="t_{\text{cruise}} = E_{\text{pack}} \times \eta_{\text{drive}} / P_{\text{wheel}}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">t<sub>cruise</sub></strong> is the cruise time at constant speed
         in hours, <strong className="text-text font-medium">E<sub>pack</sub></strong> is pack energy in kWh,{' '}
@@ -756,9 +730,7 @@ export default function Ch41EVPowertrain() {
         is mechanical power demand at the wheels in kW. Plugging in the Model 3
         numbers from §Stage 7:
       </p>
-      <Formula>
-        t<sub>cruise</sub> = 75 × 0.88 / 13.8 ≈ 4.8 h → 530 km at 110 km/h
-      </Formula>
+      <Formula tex="t_{\text{cruise}} = 75 \times 0.88 / 13.8 \approx 4.8\ \text{h} \to 530\ \text{km at 110 km/h}" />
       <p className="mb-prose-3">
         That is the entire range calculation. Tesla&rsquo;s EPA-rated 530–560 km on
         the Long Range trim, and the equivalent WLTP number of about 600 km, are
@@ -772,7 +744,7 @@ export default function Ch41EVPowertrain() {
         The same back-of-envelope tells you the charging time. A Level-2 EVSE
         delivering 11.5 kW at 92% onboard-charger efficiency delivers 10.6 kW of
         actual chemical energy into the pack. To add 60% of a 75 kWh pack — 45 kWh —
-        takes <InlineMath>45 / 10.6 ≈ 4.2 hours</InlineMath>. A 250 kW DC fast
+        takes <InlineMath tex="45/10.6 \approx 4.2\ \text{hours}" />. A 250 kW DC fast
         charger bypasses the onboard charger entirely, dumps DC straight onto the
         bus through a thicker connector, and adds the same 45 kWh in 12 minutes —
         if the cells will accept it at that C-rate, which they will only over the
@@ -787,11 +759,11 @@ export default function Ch41EVPowertrain() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Energy delivered to the pack per unit wall time:</p>
-            <Formula>P<sub>pack</sub> = η<sub>OBC</sub> × P<sub>EVSE</sub> = 0.92 × 11.5 ≈ 10.6 kW</Formula>
+            <Formula tex="P_{\text{pack}} = \eta_{\text{OBC}} \times P_{\text{EVSE}} = 0.92 \times 11.5 \approx 10.6\ \text{kW}" />
             <p className="mb-prose-1 last:mb-0">Energy needed to go from 20% to 80% of 75 kWh:</p>
-            <Formula>ΔE = 0.6 × 75 = 45 kWh</Formula>
+            <Formula tex="\Delta E = 0.6 \times 75 = 45\ \text{kWh}" />
             <p className="mb-prose-1 last:mb-0">Time required:</p>
-            <Formula>t = ΔE / P<sub>pack</sub> = 45 / 10.6 ≈ 4.25 hours</Formula>
+            <Formula tex="t = \Delta E / P_{\text{pack}} = 45 / 10.6 \approx 4.25\ \text{hours}" />
             <p className="mb-prose-1 last:mb-0">
               Answer: about <strong className="text-text font-medium">4.25 hours</strong>. Real-world chargers taper the
               current as the pack approaches 80% (the CC-CV transition discussed in
@@ -810,10 +782,10 @@ export default function Ch41EVPowertrain() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">Kinetic energy at each speed (converting km/h to m/s):</p>
-            <Formula>v<sub>1</sub> = 100 / 3.6 ≈ 27.8 m/s; v<sub>2</sub> = 50 / 3.6 ≈ 13.9 m/s</Formula>
-            <Formula>ΔKE = ½ × 2000 × (27.8² − 13.9²) ≈ 1000 × (773 − 193) = 580 000 J</Formula>
+            <Formula tex="v_1 = 100/3.6 \approx 27.8\ \text{m/s}; \quad v_2 = 50/3.6 \approx 13.9\ \text{m/s}" />
+            <Formula tex="\Delta KE = \tfrac{1}{2} \times 2000 \times (27.8^2 - 13.9^2) \approx 1000 \times (773 - 193) = 580{,}000\ \text{J}" />
             <p className="mb-prose-1 last:mb-0">Multiply by the regen efficiency to get the recovered energy:</p>
-            <Formula>E<sub>regen</sub> = 0.7 × 580 000 J ≈ 406 000 J ≈ 113 Wh</Formula>
+            <Formula tex="E_{\text{regen}} = 0.7 \times 580{,}000\ \text{J} \approx 406{,}000\ \text{J} \approx 113\ \text{Wh}" />
             <p className="mb-prose-1 last:mb-0">
               Answer: about <strong className="text-text font-medium">110 Wh</strong> back into the pack. In a city
               cycle with frequent slowdowns, regen routinely contributes 15–25% of
@@ -899,7 +871,7 @@ export default function Ch41EVPowertrain() {
             thermal limit on the contacts and the cable conductors (active liquid
             cooling on the cable pushes that higher, but commodity stations stay near
             500 A)<Cite id="iec-62196" in={SOURCES} />. The transferred power is
-            simply <InlineMath>P = V<sub>pack</sub> × I<sub>connector</sub></InlineMath>.
+            simply <InlineMath tex="P = V_{\text{pack}} \times I_{\text{connector}}" />.
             A 400 V pack drawing 500 A from the connector gets 200 kW. An 800 V
             pack drawing the same 500 A gets 400 kW. Doubling the architecture
             voltage roughly doubles the achievable DC-fast charging rate without
@@ -1002,7 +974,7 @@ export default function Ch41EVPowertrain() {
             the cells will accept, and the cells finally store it chemically. Each
             of those stages has the same losses going backwards as forwards: gearbox
             ~2%, motor ~5%, inverter ~3%, BMS + cell ~5%. Multiplying through gives
-            about <InlineMath>0.98 × 0.95 × 0.97 × 0.95 ≈ 0.86</InlineMath>, which
+            about <InlineMath tex="0.98 \times 0.95 \times 0.97 \times 0.95 \approx 0.86" />, which
             matches the 70–85% round-trip efficiency that real cars achieve at
             moderate decelerations. Hard decelerations are limited by the cells&rsquo;
             charge-acceptance C-rate, which is lower than their discharge C-rate, so
@@ -1016,8 +988,8 @@ export default function Ch41EVPowertrain() {
             Field-oriented control transforms the three stator currents into two
             orthogonal components in a frame that rotates with the rotor. The
             component aligned with the rotor flux axis is{' '}
-            <InlineMath>i<sub>d</sub></InlineMath> ("direct-axis"); the component
-            perpendicular to it is <InlineMath>i<sub>q</sub></InlineMath>
+            <InlineMath tex="i_d" /> ("direct-axis"); the component
+            perpendicular to it is <InlineMath tex="i_q" />
             ("quadrature-axis"). The cross product of rotor flux and stator current
             gives torque, which in this frame becomes τ ∝ ψ × i<sub>q</sub> — only
             the quadrature component does work. In a PMSM the rotor flux is fixed
@@ -1071,7 +1043,7 @@ export default function Ch41EVPowertrain() {
             for safety derating)<Cite id="sae-j1772" in={SOURCES} />. After the
             onboard charger&rsquo;s 92% efficiency, about 1.3 kW reaches the pack.
             On a 75 kWh battery, going from 20% to 80% (45 kWh) takes{' '}
-            <InlineMath>45 / 1.3 ≈ 35 hours</InlineMath>. That is too slow for a
+            <InlineMath tex="45/1.3 \approx 35\ \text{hours}" />. That is too slow for a
             primary charging solution but adequate for an overnight top-up of a
             commuter&rsquo;s daily 50 km — about 8 hours plugged in adds back roughly
             the energy used. Level-1 is the everyday default for plug-in hybrids and
@@ -1200,7 +1172,7 @@ export default function Ch41EVPowertrain() {
             is a chemical-energy-per-volume number. Watt-hours per kilometre is
             the direct measurement: a Model 3 averages about 150 Wh/km on the
             EPA cycle, which means a 75 kWh pack will go{' '}
-            <InlineMath>75 000 / 150 = 500 km</InlineMath> on a charge. Translating
+            <InlineMath tex="75{,}000/150 = 500\ \text{km}" /> on a charge. Translating
             that into MPG-equivalent ("MPGe") requires assuming a conversion
             factor between electricity and gasoline (33.7 kWh per US gallon by
             EPA convention), which depends on whether you measure at the pump or

@@ -13,7 +13,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { PredictThenObserve } from '@/components/PredictThenObserve';
@@ -47,7 +47,7 @@ export default function Ch2VoltageAndCurrent() {
 
       <p className="mb-prose-3">
         The standard plumbing analogy says{' '}
-        <Term def={<><strong className="text-text font-medium">voltage</strong> (potential difference) — the work done per unit positive charge to move it between two points: <em className="italic text-text">V<sub>ab</sub></em> = −∫<sub>a</sub><sup>b</sup> <em className="italic text-text">E·dℓ</em>. SI unit: volt (1 V = 1 J/C). Always defined between two points.</>}>voltage</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">voltage</strong> (potential difference) — the work done per unit positive charge to move it between two points: <InlineMath id="voltage-line-integral" />. SI unit: volt (1 V = 1 J/C). Always defined between two points.</>}>voltage</Term>{' '}
         is like water pressure: a battery pushes electrons through a wire the
         way a pump pushes water through a pipe. The analogy is appealing and gets you about a third of the way before it
         breaks down. The first thing to fix is the idea that voltage is a property of a single point. It isn't. <strong className="text-text font-medium">Voltage is
@@ -59,7 +59,7 @@ export default function Ch2VoltageAndCurrent() {
         Formally, the potential at a point is defined as a line integral of the electric field from a reference point to
         that point, with a minus sign:
       </p>
-      <Formula>V<sub>ab</sub> = V<sub>b</sub> − V<sub>a</sub> = − ∫<sub>a</sub><sup>b</sup> E · dℓ</Formula>
+      <Formula tex="V_{ab} = V_b - V_a = -\int_a^b \vec{E}\cdot d\vec{\ell}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V<sub>a</sub></strong> and <strong className="text-text font-medium">V<sub>b</sub></strong> are the potentials (in volts, J/C) at
         the two endpoints, <strong className="text-text font-medium">V<sub>ab</sub></strong> is the potential difference between them,
@@ -70,7 +70,7 @@ export default function Ch2VoltageAndCurrent() {
       <p className="mb-prose-3">
         The minus sign is convention: walking <em className="italic text-text">against</em> the field gains you potential, the way climbing
         <em className="italic text-text">against</em> gravity gains you altitude. For static charges the integral is path-independent <Cite id="feynman-II-2" in={SOURCES} />
-        — the field is conservative, ∇×<strong className="text-text font-medium">E</strong> = 0 — which is what lets you talk about the voltage at a point
+        — the field is conservative, <InlineMath tex="\nabla\times\vec{E} = 0" /> — which is what lets you talk about the voltage at a point
         at all. Drop that property (we will, in Chapter 5) and "voltage" stops meaning what you think it means
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
@@ -92,13 +92,13 @@ export default function Ch2VoltageAndCurrent() {
         operationally — as the energy it takes (or releases) per coulomb of charge moved from one point to the other.
         Move a charge <strong className="text-text font-medium">q</strong> against a potential difference <strong className="text-text font-medium">V</strong> and you do work
       </p>
-      <Formula>W = q V</Formula>
+      <Formula id="work-charge-voltage" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">W</strong> is the work done on the charge (in joules), <strong className="text-text font-medium">q</strong> is the charge being
         moved (in coulombs, signed), and <strong className="text-text font-medium">V</strong> is the potential difference between the start and end
         points (in volts). Equivalently, rearrange to read voltage off as work-per-charge:
       </p>
-      <Formula>V = W / q = ΔU / q</Formula>
+      <Formula tex="V = \dfrac{W}{q} = \dfrac{\Delta U}{q}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">ΔU</strong> is the change in electrical potential energy of the charge (in joules). One volt
         is one joule per coulomb. That single identity is why "1.5 V" on a battery is a statement about energy: it
@@ -111,11 +111,11 @@ export default function Ch2VoltageAndCurrent() {
       <p className="mb-prose-3">
         That operational picture has a knob the reader can already turn. Hook a battery of
         voltage <em className="italic text-text">V</em> across a fixed resistive load and a fixed current flows: in the
-        demo above, <em className="italic text-text">I = V/R</em> for <em className="italic text-text">R</em> = 10 Ω. Doubling <em className="italic text-text">V</em> doubles the
-        current — and, via <em className="italic text-text">v<sub>d</sub> = I/(nqA)</em>, doubles the drift speed of the
+        demo above, <InlineMath tex="I = V/R" /> for <em className="italic text-text">R</em> = 10 Ω. Doubling <em className="italic text-text">V</em> doubles the
+        current — and, via <InlineMath tex="v_d = I/(nqA)" />, doubles the drift speed of the
         electrons inside the copper. But the drift stays microscopic across the whole slider
         range, never breaking out of tens of micrometres per second. What lifts dramatically
-        is the power <em className="italic text-text">P = V·I = V²/R</em>: a quadratic, not a linear, function of voltage.
+        is the power <InlineMath tex="P = V\cdot I = V^2/R" />: a quadratic, not a linear, function of voltage.
         That is the reason the load gets so much brighter when you crank <em className="italic text-text">V</em>, and the
         reason the grid pushes power cross-country at hundreds of kilovolts. Chapter 3 makes
         Ohm's law and power rigorous; Chapter 8 will show that the energy isn't actually
@@ -129,18 +129,18 @@ export default function Ch2VoltageAndCurrent() {
         uniform — same magnitude, same direction at every point in the gap. The line integral collapses to a single
         product. The voltage between the plates is
       </p>
-      <Formula>V = E d</Formula>
+      <Formula id="voltage-uniform-field" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V</strong> is the potential difference between the two plates (in volts),
         <strong className="text-text font-medium"> E</strong> is the magnitude of the uniform electric field in the gap (in V/m), and
         <strong className="text-text font-medium"> d</strong> is the gap distance (in metres). Voltage and field, in this geometry, are two ways of
         saying the same thing. The work to push a charge <strong className="text-text font-medium">q</strong> from one plate to the other is then
       </p>
-      <Formula>W = q V = q E d</Formula>
+      <Formula tex="W = qV = qEd" />
       <p className="mb-prose-3">
         the product of charge, field, and distance — exactly Newton's <em className="italic text-text">work = force × distance</em> with
-        <em className="italic text-text"> F = qE</em> from Ch.1. And for any intermediate height <em className="italic text-text">h</em> off the bottom plate, the voltage
-        relative to the bottom is just <em className="italic text-text">V(h) = E h</em>: a perfect linear ramp from 0 at the bottom to
+        <InlineMath tex="F = qE" /> from Ch.1. And for any intermediate height <em className="italic text-text">h</em> off the bottom plate, the voltage
+        relative to the bottom is just <InlineMath tex="V(h) = Eh" />: a perfect linear ramp from 0 at the bottom to
         <em className="italic text-text"> V<sub>plate</sub></em> at the top. The "electrical landscape" inside a parallel-plate cap is a perfectly
         sloped ski hill, and any charge dropped in slides down it<Cite id="feynman-II-2" in={SOURCES} /><Cite id="griffiths-2017" in={SOURCES} />.
       </p>
@@ -155,11 +155,11 @@ export default function Ch2VoltageAndCurrent() {
           <>A battery transfers <strong className="text-text font-medium">1 J</strong> of energy to <strong className="text-text font-medium">1 mC</strong> of charge as it moves from one
           terminal to the other. What is the potential difference between the terminals?</>
         }
-        hint="Voltage is energy per unit charge: V = W/Q."
+        hint={<>Voltage is energy per unit charge: <InlineMath tex="V = W/Q" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">By definition, the voltage between two points is the work per unit charge:</p>
-            <Formula>V = W/Q = 1 J / 1×10⁻³ C = 1000 V</Formula>
+            <Formula tex="V = \dfrac{W}{Q} = \dfrac{1\ \text{J}}{1\times 10^{-3}\ \text{C}} = 1000\ \text{V}" />
             <p className="mb-prose-1 last:mb-0">Answer: <strong className="text-text font-medium">1000 V (1 kV)</strong>.</p>
           </>
         }
@@ -168,13 +168,13 @@ export default function Ch2VoltageAndCurrent() {
       <h2 className="chapter-h2">What current actually <em>is</em></h2>
 
       <p className="mb-prose-3">
-        <Term def={<><strong className="text-text font-medium">Current</strong> — the rate at which charge crosses a surface, <em className="italic text-text">I = dQ/dt</em>. SI unit: ampere (1 A = 1 C/s). A signed scalar pointing the way conventional positive charge would move.</>}>Current</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">Current</strong> — the rate at which charge crosses a surface, <InlineMath id="current-def" />. SI unit: ampere (1 A = 1 C/s). A signed scalar pointing the way conventional positive charge would move.</>}>Current</Term>{' '}
         is the flow of charge — coulombs per second, with units called{' '}
         <Term def={<><strong className="text-text font-medium">ampere</strong> — the SI unit of current; 1 A = 1 coulomb per second ≈ 6.24×10¹⁸ elementary charges per second. Defined since 2019 by fixing the value of <em className="italic text-text">e</em>.</>}>amperes</Term>. One amp is one coulomb per
         second, which works out to about <strong className="text-text font-medium">6.24×10¹⁸ elementary charges per second</strong> moving past a fixed
         cross-section. That is an absurd number of electrons. It will get more absurd in two paragraphs.
       </p>
-      <Formula>I = dQ / dt</Formula>
+      <Formula id="current-def" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">I</strong> is the current (in amperes, A = C/s), <strong className="text-text font-medium">Q</strong> is the net charge that has
         crossed a chosen fixed cross-section (in coulombs), and <strong className="text-text font-medium">t</strong> is time (in seconds). The sign of
@@ -200,11 +200,11 @@ export default function Ch2VoltageAndCurrent() {
           <>A current of <strong className="text-text font-medium">1 A</strong> flows past a fixed cross-section. How many electrons cross that section
           per second?</>
         }
-        hint="One ampere = one coulomb per second; each electron carries e = 1.602×10⁻¹⁹ C."
+        hint={<>One ampere = one coulomb per second; each electron carries <InlineMath tex="e = 1.602\times 10^{-19}\ \text{C}" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">The number per second is just the current divided by the elementary charge <Cite id="codata-2018" in={SOURCES} />:</p>
-            <Formula>N = I/e = 1 / 1.602×10⁻¹⁹ ≈ 6.24×10¹⁸ electrons/s</Formula>
+            <Formula tex="N = I/e = 1 / (1.602\times 10^{-19}) \approx 6.24\times 10^{18}\ \text{electrons/s}" />
             <p className="mb-prose-1 last:mb-0">Answer: <strong className="text-text font-medium">~6.24×10¹⁸ electrons per second</strong> — six quintillion, every second, for every amp.</p>
           </>
         }
@@ -219,14 +219,14 @@ export default function Ch2VoltageAndCurrent() {
         <Term def={<><strong className="text-text font-medium">Fermi velocity</strong> — the speed of electrons at the Fermi surface of a metal, set by quantum degeneracy. For copper, <em className="italic text-text">v<sub>F</sub></em> ≈ 1.6×10⁶ m/s — about 0.5% of <em className="italic text-text">c</em>.</>}>Fermi velocity</Term>, roughly <strong className="text-text font-medium">1.6×10⁶ m/s</strong>,
         bouncing off lattice ions every <strong className="text-text font-medium">τ ≈ 2×10⁻¹⁴ s</strong> <Cite id="kittel-2005" in={SOURCES} /><Cite id="libretexts-conduction" in={SOURCES} />.
         Apply a field and on top of all that random motion they pick up a tiny <em className="italic text-text">average</em>{' '}
-        <Term def={<><strong className="text-text font-medium">drift velocity</strong> — the small average velocity of charge carriers superimposed on their random thermal motion when an electric field is applied. <em className="italic text-text">v<sub>d</sub> = I/(nqA)</em>. Typically millimeters per second in household wiring.</>}>drift</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">drift velocity</strong> — the small average velocity of charge carriers superimposed on their random thermal motion when an electric field is applied. <InlineMath tex="v_d = I/(nqA)" />. Typically millimeters per second in household wiring.</>}>drift</Term>{' '}
         in the direction opposite the field. That average drift is what current is made of.
       </p>
       <p className="mb-prose-3">
         In two equations (the{' '}
-        <Term def={<><strong className="text-text font-medium">Drude model</strong> — Paul Drude's 1900 picture of electrons as a classical gas inside a metal, accelerated by <em className="italic text-text">E</em> between collisions with lattice ions every <em className="italic text-text">τ</em>. Predicts <em className="italic text-text">σ = nq²τ/m</em>.</>}>Drude model</Term>) <Cite id="drude-1900" in={SOURCES} />:
+        <Term def={<><strong className="text-text font-medium">Drude model</strong> — Paul Drude's 1900 picture of electrons as a classical gas inside a metal, accelerated by <em className="italic text-text">E</em> between collisions with lattice ions every <em className="italic text-text">τ</em>. Predicts <InlineMath tex="\sigma = nq^2\tau/m" />.</>}>Drude model</Term>) <Cite id="drude-1900" in={SOURCES} />:
       </p>
-      <Formula>v<sub>d</sub> = I / (n q A)</Formula>
+      <Formula tex="v_d = \dfrac{I}{n\, q\, A}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">v<sub>d</sub></strong> is the average drift speed of the carriers (in m/s),
         <strong className="text-text font-medium"> I</strong> is the current (in amperes), <strong className="text-text font-medium">n</strong> is the free-carrier number density
@@ -237,7 +237,7 @@ export default function Ch2VoltageAndCurrent() {
       <p className="mb-prose-3">
         Plug in numbers. One amp through a 2.5 mm² copper wire:
       </p>
-      <Formula>v<sub>d</sub> = 1 / (8.5×10²⁸ · 1.6×10⁻¹⁹ · 2.5×10⁻⁶) ≈ 2.9×10⁻⁵ m/s</Formula>
+      <Formula tex="v_d = \dfrac{1}{(8.5\times 10^{28})(1.6\times 10^{-19})(2.5\times 10^{-6})} \approx 2.9\times 10^{-5}\ \text{m/s}" />
       <p className="mb-prose-3">
         Three hundredths of a millimeter per second. A 12-gauge wire carrying 20 A — the kind feeding your kitchen
         outlet — has a drift velocity of about <strong className="text-text font-medium">0.02 mm/s</strong> <Cite id="libretexts-conduction" in={SOURCES} />.
@@ -277,7 +277,7 @@ export default function Ch2VoltageAndCurrent() {
         field — not just the battery's. Bring an external charge near the wire and the free electrons inside feel it
         immediately. They pile up, recoil, and redistribute over the conductor's surface until their own field cancels
         the intruder's everywhere in the bulk. That cancellation happens in picoseconds and is the reason an
-        electrostatic conductor has <em className="italic text-text">E = 0</em> inside <Cite id="griffiths-2017" in={SOURCES} />. The transient — the
+        electrostatic conductor has <InlineMath tex="E = 0" /> inside <Cite id="griffiths-2017" in={SOURCES} />. The transient — the
         electrons actually doing the rearranging — is what the next demo lets you watch.
       </p>
 
@@ -289,11 +289,11 @@ export default function Ch2VoltageAndCurrent() {
           <>A <strong className="text-text font-medium">1.5 mm²</strong> copper wire carries <strong className="text-text font-medium">5 A</strong>. Compute the drift velocity, using
           <em className="italic text-text"> n</em> ≈ 8.5×10²⁸ /m³ for copper.</>
         }
-        hint={<>Plug into v<sub>d</sub> = I/(nqA), using q = e = 1.602×10⁻¹⁹ C and converting mm² to m².</>}
+        hint={<>Plug into <InlineMath tex="v_d = I/(nqA)" />, using <InlineMath tex="q = e = 1.602\times 10^{-19}\ \text{C}" /> and converting mm² to m².</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">With <em className="italic text-text">A</em> = 1.5×10⁻⁶ m², and <em className="italic text-text">n</em> from Ashcroft &amp; Mermin <Cite id="ashcroft-mermin-1976" in={SOURCES} />:</p>
-            <Formula>v<sub>d</sub> = I/(nqA) = 5 / (8.5×10²⁸ · 1.602×10⁻¹⁹ · 1.5×10⁻⁶) ≈ 2.4×10⁻⁴ m/s</Formula>
+            <Formula tex="v_d = \dfrac{I}{nqA} = \dfrac{5}{(8.5\times 10^{28})(1.602\times 10^{-19})(1.5\times 10^{-6})} \approx 2.4\times 10^{-4}\ \text{m/s}" />
             <p className="mb-prose-1 last:mb-0">
               Answer: about <strong className="text-text font-medium">0.24 mm/s</strong>. At that crawl, a single electron takes roughly 70 minutes to
               traverse a one-meter wire.
@@ -313,7 +313,7 @@ export default function Ch2VoltageAndCurrent() {
         typical copper wiring <Cite id="libretexts-conduction" in={SOURCES} />. That ratio is the central
         you-thought-you-understood-this-but-you-didn't moment.
       </p>
-      <Formula>v<sub>signal</sub> / v<sub>drift</sub>  ≈  2×10⁸ / 3×10⁻⁵  ≈  10¹³</Formula>
+      <Formula tex="v_{\text{signal}} / v_{\text{drift}} \approx 2\times 10^{8} / 3\times 10^{-5} \approx 10^{13}" />
 
       <TwoSpeedsDemo />
 
@@ -321,14 +321,14 @@ export default function Ch2VoltageAndCurrent() {
         tag="Try 2.4"
         question={
           <>Take the drift velocity from Try 2.3 (≈ 0.24 mm/s) and the typical signal speed in copper (≈ 2×10⁸ m/s).
-          What is the ratio v<sub>signal</sub>/v<sub>drift</sub>, and how long would the signal take to travel 30 cm
+          What is the ratio <InlineMath tex="v_{\text{signal}}/v_{\text{drift}}" />, and how long would the signal take to travel 30 cm
           compared to the electron?</>
         }
         hint="Just divide the two speeds, then divide 0.30 m by each."
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">The ratio of speeds <Cite id="libretexts-conduction" in={SOURCES} />:</p>
-            <Formula>v<sub>signal</sub>/v<sub>drift</sub> ≈ 2×10⁸ / 2.4×10⁻⁴ ≈ 8×10¹¹</Formula>
+            <Formula tex="v_{\text{signal}}/v_{\text{drift}} \approx 2\times 10^{8} / 2.4\times 10^{-4} \approx 8\times 10^{11}" />
             <p className="mb-prose-1 last:mb-0">
               Time for the signal to cross 30 cm: 0.30 / (2×10⁸) = <strong className="text-text font-medium">1.5 ns</strong>. Time for a single drifting
               electron: 0.30 / (2.4×10⁻⁴) ≈ <strong className="text-text font-medium">1250 s ≈ 21 minutes</strong>. Nearly twelve orders of magnitude
@@ -432,10 +432,10 @@ export default function Ch2VoltageAndCurrent() {
             small monitor.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            The trick is the choice of variable. Power is <em className="italic text-text">P = VI</em>; double the voltage and
-            you can deliver the same power at half the current. With <em className="italic text-text">n ≈ 8.5×10²⁸ /m³</em>
+            The trick is the choice of variable. Power is <InlineMath tex="P = VI" />; double the voltage and
+            you can deliver the same power at half the current. With <InlineMath tex="n \approx 8.5\times 10^{28}\ /\text{m}^3" />
             free electrons in copper<Cite id="ashcroft-mermin-1976" in={SOURCES} />, the drift
-            speed <strong className="text-text font-medium">v<sub>d</sub> = I/(nqA)</strong> stays in the millimeters-per-second
+            speed <InlineMath tex="v_d = I/(nqA)" /> stays in the millimeters-per-second
             range — the same crawl this chapter just described — even as the conductor moves real
             power. The cable carries the energy through the surrounding field at near-c, while the
             actual electrons in the copper sit there jittering with a vanishingly small bias on
@@ -570,7 +570,7 @@ export default function Ch2VoltageAndCurrent() {
             The <strong className="text-text font-medium">electromagnetic field in the space around the wire</strong>. Inside a resistive wire the
             electric field points along its length and the magnetic field circles it; their cross product, the
             Poynting vector, points radially <em className="italic text-text">inward</em> through the wire's surface and integrates exactly to
-            <em className="italic text-text"> VI</em>, the dissipated power <Cite id="feynman-II-2" in={SOURCES} />. The wire is the destination,
+            <InlineMath tex="VI" />, the dissipated power <Cite id="feynman-II-2" in={SOURCES} />. The wire is the destination,
             not the conduit. This sounds like a parlor trick the first time you hear it; Chapter 6 makes it
             rigorous.
           </p>

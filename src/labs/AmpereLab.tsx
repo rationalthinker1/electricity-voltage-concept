@@ -10,10 +10,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { LabGrid, LegendItem } from '@/components/LabLayout';
 import { LabShell } from '@/components/LabShell';
-import { MathBlock, Pullout } from '@/components/Prose';
+import { Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
@@ -236,7 +236,7 @@ export default function AmpereLab() {
       </p>
 
       <h3 className="lab-section-h3">Formula</h3>
-      <MathBlock>∮ B · dℓ = μ<sub>0</sub> I<sub>enc</sub></MathBlock>
+      <Formula tex="\oint \vec{B}\cdot d\vec{\ell} = \mu_0 I_{\text{enc}}" />
       <p className="mb-prose-3">Variable glossary:</p>
       <ul>
         <li><strong className="text-text font-medium">∮</strong> — line integral around a closed Amperian loop.</li>
@@ -246,7 +246,7 @@ export default function AmpereLab() {
         <li><strong className="text-text font-medium">I<sub>enc</sub></strong> — net current piercing any surface bounded by the loop, in A. Current parallel to the loop's right-hand-rule normal counts as positive.</li>
       </ul>
       <p className="mb-prose-3">The full Maxwell–Ampère law adds Maxwell's displacement-current term:</p>
-      <MathBlock>∮ B · dℓ = μ<sub>0</sub> I<sub>enc</sub> + μ<sub>0</sub> ε<sub>0</sub> dΦ<sub>E</sub> / dt</MathBlock>
+      <Formula tex="\oint \vec{B}\cdot d\vec{\ell} = \mu_0 I_{\text{enc}} + \mu_0\varepsilon_0\,\dfrac{d\Phi_E}{dt}" />
 
       <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
@@ -268,8 +268,8 @@ export default function AmpereLab() {
       <p className="mb-prose-3">
         Why the line integral on the left? Because magnetic field lines never end — they form closed loops around currents. A line integral
         around any closed path captures that "circulation" exactly. The mathematical statement equivalent to Ampère in differential form is
-        Stokes' theorem: <strong className="text-text font-medium">∮ B · dℓ = ∫∫ (∇ × B) · dA = μ<sub>0</sub> ∫∫ J · dA = μ<sub>0</sub> I<sub>enc</sub></strong>, giving
-        <strong className="text-text font-medium"> ∇ × B = μ<sub>0</sub> J</strong> locally<Cite id="feynman-II-13" in={SOURCES} />.
+        Stokes' theorem: <InlineMath tex="\oint \vec{B}\cdot d\vec{\ell} = \iint (\nabla\times\vec{B})\cdot d\vec{A} = \mu_0 \iint \vec{J}\cdot d\vec{A} = \mu_0 I_{\text{enc}}" />, giving
+        <InlineMath tex="\nabla\times\vec{B} = \mu_0\vec{J}" /> locally<Cite id="feynman-II-13" in={SOURCES} />.
       </p>
 
       <h3 className="lab-section-h3">Derivation</h3>
@@ -278,7 +278,7 @@ export default function AmpereLab() {
         centred on the wire. Choose an Amperian circle of radius <strong className="text-text font-medium">r</strong>. On every point of that circle, <strong className="text-text font-medium">B · dℓ = |B| dℓ</strong>
         (parallel), and <strong className="text-text font-medium">|B|</strong> is constant. So
       </p>
-      <MathBlock>∮ B · dℓ = |B| · 2πr = (μ<sub>0</sub> I / 2π r) · 2π r = μ<sub>0</sub> I</MathBlock>
+      <Formula tex="\oint \vec{B}\cdot d\vec{\ell} = |\vec{B}|\cdot 2\pi r = \dfrac{\mu_0 I}{2\pi r}\cdot 2\pi r = \mu_0 I" />
       <p className="mb-prose-3">
         — the Ampère relation, derived from the Biot–Savart field of a straight wire. The general statement (any geometry, any loop) follows
         from the differential form <strong className="text-text font-medium">∇ × B = μ<sub>0</sub> J</strong>, which is in turn implied by Biot–Savart for any steady current
@@ -294,8 +294,8 @@ export default function AmpereLab() {
         answer={
           <>
             <p className="mb-prose-3">By cylindrical symmetry, B is tangent to a circle of radius r and has the same magnitude everywhere on it. So</p>
-            <Formula>∮ B · dℓ = |B| · 2π r = μ₀ I<sub>enc</sub> = μ₀ I</Formula>
-            <Formula>|B| = μ₀ I / (2π r) = (4π×10⁻⁷)(10) / (2π × 0.05) = 4 × 10⁻⁵ T</Formula>
+            <Formula tex="\oint \vec{B}\cdot d\vec{\ell} = |\vec{B}|\cdot 2\pi r = \mu_0 I_{\text{enc}} = \mu_0 I" />
+            <Formula tex="|\vec{B}| = \dfrac{\mu_0 I}{2\pi r} = \dfrac{(4\pi\times 10^{-7})(10)}{2\pi\times 0.05} = 4\times 10^{-5}\ \text{T}" />
             <p className="mb-prose-3">Answer: <strong className="text-text font-medium">40 µT</strong>.</p>
           </>
         }
@@ -308,7 +308,7 @@ export default function AmpereLab() {
         answer={
           <>
             <p className="mb-prose-3">Take a rectangle of length L with one long side inside (parallel to the axis) and the other outside (where B = 0). The two short sides cross between in/out at right angles to B — contributing zero. Inside contributes <strong className="text-text font-medium">BL</strong>. The enclosed current is <strong className="text-text font-medium">I × (nL) = nIL</strong>:</p>
-            <Formula>B L = μ₀ n I L  ⇒  B = μ₀ n I</Formula>
+            <Formula tex="BL = \mu_0 n I L \;\Rightarrow\; B = \mu_0 n I" />
             <p className="mb-prose-3">Done — uniform field inside, axial, independent of position. The classic result, in one Ampère application.</p>
           </>
         }
@@ -321,8 +321,8 @@ export default function AmpereLab() {
         answer={
           <>
             <p className="mb-prose-3">By azimuthal symmetry, B is azimuthal and uniform on a circle of radius R inside the toroid. Each of N turns pierces the surface bounded by that circle once:</p>
-            <Formula>∮ B · dℓ = |B| · 2π R = μ₀ N I</Formula>
-            <Formula>|B| = μ₀ N I / (2π R) = (4π×10⁻⁷)(500)(2) / (2π × 0.08) ≈ 2.50 × 10⁻³ T</Formula>
+            <Formula tex="\oint \vec{B}\cdot d\vec{\ell} = |\vec{B}|\cdot 2\pi R = \mu_0 N I" />
+            <Formula tex="|\vec{B}| = \dfrac{\mu_0 N I}{2\pi R} = \dfrac{(4\pi\times 10^{-7})(500)(2)}{2\pi\times 0.08} \approx 2.50\times 10^{-3}\ \text{T}" />
             <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~2.5 mT</strong>.</p>
           </>
         }
@@ -335,9 +335,9 @@ export default function AmpereLab() {
         answer={
           <>
             <p className="mb-prose-3">From Ampère applied to a single sheet (rectangular loop straddling it), one sheet gives <strong className="text-text font-medium">B = μ₀K/2</strong> on each side, in opposite directions on the two sides. Two opposing sheets superpose:</p>
-            <Formula>B<sub>between</sub> = μ₀K/2 + μ₀K/2 = μ₀ K</Formula>
-            <Formula>B<sub>outside</sub> = μ₀K/2 − μ₀K/2 = 0</Formula>
-            <Formula>|B|<sub>between</sub> = (4π×10⁻⁷)(100) = 1.26 × 10⁻⁴ T</Formula>
+            <Formula tex="B_{\text{between}} = \mu_0 K/2 + \mu_0 K/2 = \mu_0 K" />
+            <Formula tex="B_{\text{outside}} = \mu_0 K/2 - \mu_0 K/2 = 0" />
+            <Formula tex="|\vec{B}|_{\text{between}} = (4\pi\times 10^{-7})(100) = 1.26\times 10^{-4}\ \text{T}" />
             <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~126 µT</strong> between the sheets, <strong className="text-text font-medium">0</strong> outside. This is how superconducting solenoids approximate a uniform field — the surface currents on the inside walls of the can.</p>
           </>
         }
@@ -350,9 +350,9 @@ export default function AmpereLab() {
         answer={
           <>
             <p className="mb-prose-3">For uniform current density J in the central conductor, the fraction of I enclosed by radius r &lt; a is (r²/a²).</p>
-            <Formula>r &lt; a:   I<sub>enc</sub> = I (r/a)²,    |B| = μ₀ I r / (2π a²)</Formula>
-            <Formula>a &lt; r &lt; b:   I<sub>enc</sub> = I,    |B| = μ₀ I / (2π r)</Formula>
-            <Formula>r &gt; b:   I<sub>enc</sub> = I − I = 0,    |B| = 0</Formula>
+            <Formula tex="r < a:\quad I_{\text{enc}} = I\,(r/a)^2,\quad |\vec{B}| = \dfrac{\mu_0 I r}{2\pi a^2}" />
+            <Formula tex="a < r < b:\quad I_{\text{enc}} = I,\quad |\vec{B}| = \dfrac{\mu_0 I}{2\pi r}" />
+            <Formula tex="r > b:\quad I_{\text{enc}} = I - I = 0,\quad |\vec{B}| = 0" />
             <p className="mb-prose-3">The field vanishes outside — the reason coax doesn't radiate at DC. Inside the central conductor B grows linearly with r; in the gap it falls as 1/r; outside the shield, nothing.</p>
           </>
         }
@@ -376,10 +376,10 @@ export default function AmpereLab() {
         answer={
           <>
             <p className="mb-prose-3">The displacement current is:</p>
-            <Formula>I<sub>D</sub> = ε₀ A dE/dt = ε₀ A (1/d) dV/dt = ε₀ (A/d) dV/dt = C dV/dt</Formula>
+            <Formula tex="I_D = \varepsilon_0 A\,\dfrac{dE}{dt} = \varepsilon_0 A\,\dfrac{1}{d}\,\dfrac{dV}{dt} = \dfrac{\varepsilon_0 A}{d}\,\dfrac{dV}{dt} = C\,\dfrac{dV}{dt}" />
             <p className="mb-prose-3">That's just the standard capacitor current — the conduction current that flows in the wires <em className="italic text-text">equals</em> the displacement current through the gap, so the Maxwell–Ampère law is consistent for any Amperian loop, whether the bounding surface passes through the wire or the gap. Plug in numbers:</p>
-            <Formula>C = ε₀ A/d = (8.85×10⁻¹²)(10⁻⁴) / (5×10⁻⁴) = 1.77 × 10⁻¹² F</Formula>
-            <Formula>I<sub>D</sub> = C dV/dt = (1.77×10⁻¹²)(10⁶) = 1.77 × 10⁻⁶ A</Formula>
+            <Formula tex="C = \dfrac{\varepsilon_0 A}{d} = \dfrac{(8.85\times 10^{-12})(10^{-4})}{5\times 10^{-4}} = 1.77\times 10^{-12}\ \text{F}" />
+            <Formula tex="I_D = C\,\dfrac{dV}{dt} = (1.77\times 10^{-12})(10^{6}) = 1.77\times 10^{-6}\ \text{A}" />
             <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~1.8 µA</strong> — the displacement current matches the wire current.</p>
           </>
         }
@@ -391,7 +391,7 @@ export default function AmpereLab() {
         hint="Same Ampère-on-a-circle argument as Problem 2.2.3."
         answer={
           <>
-            <Formula>|B| = μ₀ N I / (2π R) = (4π×10⁻⁷)(800)(0.75) / (2π × 0.12) ≈ 1.00 × 10⁻³ T</Formula>
+            <Formula tex="|\vec{B}| = \dfrac{\mu_0 N I}{2\pi R} = \dfrac{(4\pi\times 10^{-7})(800)(0.75)}{2\pi\times 0.12} \approx 1.00\times 10^{-3}\ \text{T}" />
             <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~1.0 mT</strong>.</p>
           </>
         }
@@ -404,8 +404,8 @@ export default function AmpereLab() {
         answer={
           <>
             <p className="mb-prose-3">Fraction enclosed: I<sub>enc</sub> = I (r/R)² = 5 · (0.001/0.002)² = 1.25 A.</p>
-            <Formula>|B| = μ₀ I<sub>enc</sub> / (2π r) = (4π×10⁻⁷)(1.25) / (2π × 0.001) = 2.5 × 10⁻⁴ T</Formula>
-            <p className="mb-prose-3">Equivalently, |B| = μ₀Ir/(2πR²) = (4π×10⁻⁷)(5)(0.001)/(2π × 4×10⁻⁶) ≈ 2.5 × 10⁻⁴ T.</p>
+            <Formula tex="|\vec{B}| = \dfrac{\mu_0 I_{\text{enc}}}{2\pi r} = \dfrac{(4\pi\times 10^{-7})(1.25)}{2\pi\times 0.001} = 2.5\times 10^{-4}\ \text{T}" />
+            <p className="mb-prose-3">Equivalently, <InlineMath tex="|\vec{B}| = \dfrac{\mu_0 I r}{2\pi R^2} = \dfrac{(4\pi\times 10^{-7})(5)(0.001)}{2\pi\times 4\times 10^{-6}} \approx 2.5\times 10^{-4}\ \text{T}" />.</p>
             <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~0.25 mT</strong>. Inside the wire, B grows linearly with r from zero at the centre to μ₀I/(2πR) at the surface.</p>
           </>
         }
@@ -420,8 +420,8 @@ export default function AmpereLab() {
             <p className="mb-prose-3"><strong className="text-text font-medium">Symmetry 1 (axial):</strong> the system is invariant under rotation about the wire and translation along it. So B can only depend on r (the perpendicular distance), not on z or φ.</p>
             <p className="mb-prose-3"><strong className="text-text font-medium">Symmetry 2 (mirror):</strong> reflecting the geometry across any plane containing the wire reverses the sense of current flow and reverses any radial or axial B component. The only B component preserved is azimuthal. So <strong className="text-text font-medium">B = B(r) φ̂</strong>.</p>
             <p className="mb-prose-3"><strong className="text-text font-medium">Apply Ampère</strong> to a circular Amperian loop of radius r coaxial with the wire. B is parallel to dℓ everywhere, |B| is constant:</p>
-            <Formula>∮ B · dℓ = |B| · 2π r = μ₀ I</Formula>
-            <Formula>|B| = μ₀ I / (2π r)</Formula>
+            <Formula tex="\oint \vec{B}\cdot d\vec{\ell} = |\vec{B}|\cdot 2\pi r = \mu_0 I" />
+            <Formula tex="|\vec{B}| = \dfrac{\mu_0 I}{2\pi r}" />
             <p className="mb-prose-3">That's the full chain: symmetry → field structure → Ampère → answer.</p>
           </>
         }
