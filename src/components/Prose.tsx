@@ -1,14 +1,11 @@
 import type { ReactNode } from 'react';
 
-/** Display equation block in italic Fraunces, centered. The `math` class is
- *  kept as a descendant-selector hook for parent contexts (e.g. lab prose) that
- *  override math styling via `[&_.math]:` rules. */
+/** Display equation block in italic Fraunces, centered. Styling lives in
+ *  the .math recipe in main.css; sub/sup descendants are sized there too.
+ *  Class name is also a descendant-selector hook for parent contexts
+ *  (CaseStudy, LabShell) that override math layout. */
 export function MathBlock({ children }: { children: ReactNode }) {
-  return (
-    <p className="math font-2 italic text-8 text-center text-text my-2xl [&_sub]:text-[.55em] [&_sup]:text-[.55em]">
-      {children}
-    </p>
-  );
+  return <p className="math">{children}</p>;
 }
 
 /** Italic pull-out quote with amber left bar. The `pullout` class is kept as a

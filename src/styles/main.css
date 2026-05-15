@@ -435,8 +435,8 @@ body::before {
      with a max-[…]:text-[…] responsive shrink. */
   .hero-display {
     @apply font-2 italic font-light text-text text-10 leading-1 tracking-1
-           mt-0 mx-0 mb-lg
-           [&_em]:italic [&_em]:text-accent [&_em]:font-normal;
+           mt-0 mx-0 mb-lg;
+    em { @apply italic text-accent font-normal; }
   }
 
   /* Math typography for <Formula> block. Styles raw sub/sup/var
@@ -446,28 +446,29 @@ body::before {
      [&_.formula-content]: variants. */
   .formula-content {
     @apply font-4 italic font-normal leading-4 tracking-normal text-text text-8 max-sm:text-8
-           [font-feature-settings:"ss01","lnum"]
-           [&_sub]:text-[.62em] [&_sub]:italic [&_sub]:leading-none [&_sub]:relative [&_sub]:tracking-normal [&_sub]:align-[-.32em]
-           [&_sup]:text-[.62em] [&_sup]:italic [&_sup]:leading-none [&_sup]:relative [&_sup]:tracking-normal [&_sup]:align-[.55em]
-           [&_var]:not-italic [&_.upright]:not-italic
-           [&_.formula-var]:text-accent [&_.formula-var]:italic;
+           [font-feature-settings:"ss01","lnum"];
+    sub, sup { @apply italic leading-none relative tracking-normal; }
+    sub { @apply text-[.62em] align-[-.32em]; }
+    sup { @apply text-[.62em] align-[.55em]; }
+    var, .upright { @apply not-italic; }
+    .formula-var { @apply text-accent italic; }
   }
 
   .formula-inline {
     @apply font-4 italic text-[1.05em] text-text whitespace-nowrap
-           [font-feature-settings:'lnum']
-           [&_var]:not-italic [&_.upright]:not-italic
-           [&_sub]:text-[.65em] [&_sub]:leading-none [&_sub]:align-[-.35em]
-           [&_sup]:text-[.65em] [&_sup]:leading-none [&_sup]:align-[.5em];
+           [font-feature-settings:'lnum'];
+    var, .upright { @apply not-italic; }
+    sub { @apply text-[.65em] leading-none align-[-.35em]; }
+    sup { @apply text-[.65em] leading-none align-[.5em]; }
   }
 
   /* Lab hero formula. Fraunces italic at fluid clamp() size. Descendant
      sub/sup styling matches .formula-content/.formula-inline; size and
      align values tuned for the larger clamp() type. */
   .formula-hero {
-    @apply font-4 italic text-text my-xl text-[clamp(48px,8vw,96px)]
-           [&_sub]:text-[.58em] [&_sub]:leading-none [&_sub]:align-[-.32em]
-           [&_sup]:text-[.58em] [&_sup]:leading-none [&_sup]:align-[.5em];
+    @apply font-4 italic text-text my-xl text-[clamp(48px,8vw,96px)];
+    sub { @apply text-[.58em] leading-none align-[-.32em]; }
+    sup { @apply text-[.58em] leading-none align-[.5em]; }
   }
 
   /* Chapter section heading. Every <h2> in a chapter body uses this
@@ -475,8 +476,8 @@ body::before {
      accent-tinted. */
   .chapter-h2 {
     @apply font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text
-           mt-3xl mb-2xl max-w-[28ch]
-           [&_em]:italic [&_em]:text-accent [&_em]:font-normal;
+           mt-3xl mb-2xl max-w-[28ch];
+    em { @apply italic text-accent font-normal; }
   }
 
   /* Chapter opening paragraph. Every Ch{N}*.tsx renders one of these as
@@ -501,6 +502,15 @@ body::before {
      sub-parts (e.g., GFCI, AFCI, Branch A — L-N reads 120 V). */
   .chapter-h3 {
     @apply font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem];
+  }
+
+  /* Legacy display-equation block (<p className="math">). Used by
+     MathBlock in Prose.tsx for plain-text math; <Formula> is the
+     preferred path. Class name kept so parent contexts (CaseStudy,
+     LabShell, TryIt) can override layout via [&_.math]: rules. */
+  .math {
+    @apply font-2 italic text-8 text-center text-text my-2xl;
+    sub, sup { @apply text-[.55em]; }
   }
 
 }

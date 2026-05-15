@@ -165,7 +165,7 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
         </div>
       )}
 
-      <nav className="card-grid max-w-col-lg mx-auto mt-5xl mb-0">
+      <nav className="card-grid mx-auto mt-5xl mb-0 px-2xl py-xl">
         {prev ? (
           <Link to="/textbook/$chapterSlug" params={{ chapterSlug: prev.slug }} className="nav-item">
             <div className="eyebrow-muted text-1 tracking-4 mb-md">← Chapter {prev.number}</div>
