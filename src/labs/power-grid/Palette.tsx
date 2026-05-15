@@ -144,37 +144,37 @@ function Glyph({ kind }: { kind: 'select' | 'line' | 'transformer' }) {
   const w = 36, h = 18;
   if (kind === 'select') {
     return (
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="#a09e95" strokeWidth={1.4} strokeLinejoin="round">
-        <path d="M14 3 L14 15 L17 12 L20 17 L22 16 L19 11 L23 11 Z" fill="#16161a" />
+      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-text-dim)" strokeWidth={1.4} strokeLinejoin="round">
+        <path d="M14 3 L14 15 L17 12 L20 17 L22 16 L19 11 L23 11 Z" fill="var(--color-bg)" />
       </svg>
     );
   }
   if (kind === 'line') {
     return (
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="#a09e95" strokeWidth={1.4}>
+      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-text-dim)" strokeWidth={1.4}>
         <path d="M3 9 L33 9" />
-        <circle cx="3" cy="9" r="2" fill="#a09e95" />
-        <circle cx="33" cy="9" r="2" fill="#a09e95" />
+        <circle cx="3" cy="9" r="2" fill="var(--color-text-dim)" />
+        <circle cx="33" cy="9" r="2" fill="var(--color-text-dim)" />
       </svg>
     );
   }
   return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="#a09e95" strokeWidth={1.4}>
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-text-dim)" strokeWidth={1.4}>
       <path d="M2 9 L13 9 M23 9 L34 9" />
-      <circle cx="15" cy="9" r="4" fill="#16161a" />
-      <circle cx="21" cy="9" r="4" fill="#16161a" />
+      <circle cx="15" cy="9" r="4" fill="var(--color-bg)" />
+      <circle cx="21" cy="9" r="4" fill="var(--color-bg)" />
     </svg>
   );
 }
 
 function GenGlyph({ kind }: { kind: GeneratorKind }) {
   const colorByKind: Record<GeneratorKind, string> = {
-    coal:    '#a09e95',
-    ccgt:    '#ff6b2a',
-    hydro:   '#5baef8',
-    wind:    '#6cc5c2',
-    solar:   '#ff6b2a',
-    battery: '#ff3b6e',
+    coal:    'var(--color-text-dim)',
+    ccgt:    'var(--color-accent)',
+    hydro:   'var(--color-blue)',
+    wind:    'var(--color-teal)',
+    solar:   'var(--color-accent)',
+    battery: 'var(--color-pink)',
   };
   const labelByKind: Record<GeneratorKind, string> = {
     coal: 'C', ccgt: 'G', hydro: 'H', wind: 'W', solar: 'S', battery: 'B',
@@ -182,7 +182,7 @@ function GenGlyph({ kind }: { kind: GeneratorKind }) {
   const w = 36, h = 18;
   return (
     <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none">
-      <circle cx="18" cy="9" r="7" stroke={colorByKind[kind]} strokeWidth={1.4} fill="#16161a" />
+      <circle cx="18" cy="9" r="7" stroke={colorByKind[kind]} strokeWidth={1.4} fill="var(--color-bg)" />
       <text x="18" y="12" textAnchor="middle" fontSize="9"
             fontFamily="JetBrains Mono" fontWeight="bold" fill={colorByKind[kind]}>
         {labelByKind[kind]}
@@ -194,8 +194,8 @@ function GenGlyph({ kind }: { kind: GeneratorKind }) {
 function LoadGlyph() {
   const w = 36, h = 18;
   return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="#a09e95" strokeWidth={1.4}>
-      <path d="M11 4 L25 4 L18 15 Z" fill="#16161a" />
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-text-dim)" strokeWidth={1.4}>
+      <path d="M11 4 L25 4 L18 15 Z" fill="var(--color-bg)" />
     </svg>
   );
 }

@@ -50,11 +50,12 @@ No hand-waving. No filler.
   commit messages.
 - **No new colors.** The palette is fixed: amber primary, teal secondary,
   pink/blue reserved for charge polarity. See §4.
-- **Tailwind v4 is allowed alongside the CSS file.** Tailwind's `@theme`
-  exposes the existing tokens (`--accent`, `--bg-card`, etc.) as utility
-  classes. New components may use Tailwind utilities; existing classes in
-  `src/styles/main.css` keep working and migrate file-by-file. No
-  CSS-in-JS, no PostCSS plugins beyond what Vite + Tailwind ship.
+- **Prefer Tailwind utilities over new CSS blocks.** Tailwind v4 is the
+  default styling surface for components. Keep design tokens, theme setup,
+  global element rules, and genuinely shared patterns in
+  `src/styles/main.css`, but do not add one-off component selectors there
+  when the same styling can live as utilities in JSX. No CSS-in-JS, no
+  PostCSS plugins beyond what Vite + Tailwind ship.
 
 ---
 
@@ -206,33 +207,32 @@ reuse pink/blue where you need additional differentiation.
 
 Loaded from Google Fonts via a single stylesheet link in `index.html`.
 
-### Tailwind component layer
+### CSS style preference
 
-`src/styles/main.css` declares a `@layer components` block that defines
-project-flavoured Tailwind class names. Use these in JSX as
-`className="panel-card chip chip-accent"` rather than re-rolling CSS.
-The existing component CSS (`cb-*`, `chapter-*`, `lab-*`, `ui-*`) is
-untouched; new components are free to mix Tailwind utilities with these
-shortcuts.
+`src/styles/main.css` should stay small and structural. It owns:
 
-| Class | What it gives you |
-|---|---|
-| `panel-card` | bg-card + border + 8px radius + 1rem pad (default container) |
-| `panel-elevated` | bg-elevated + stronger border + soft shadow (raised) |
-| `panel-subtle` | translucent + thin border (background panel) |
-| `chip` | mono-uppercase pill, tiny dim text |
-| `chip-accent` / `chip-teal` / `chip-pink` / `chip-blue` | recoloured chip |
-| `text-eyebrow` | small mono uppercase label |
-| `text-stat` | 1.6 rem mono numeric, tabular |
-| `text-display` | Fraunces italic 1.875 rem |
-| `text-mono-num` | mono + tabular-nums (for live readouts) |
-| `section-rule` | top border + spacing for a new section |
-| `cite-inline` | small accent-tinted citation badge (used by `<Cite>`) |
-| `kbd` | inline keyboard glyph with stepped bottom border |
+- Tailwind import and `@theme` token exposure.
+- Global tokens and light/dark theme variables.
+- Truly global element rules (`body`, prose defaults, shared page shell).
+- Shared patterns that are reused across multiple components or are awkward
+  to express safely with utilities, such as complex descendant selectors,
+  pseudo-elements, keyframes, canvas/prose baselines, or third-party/native
+  control styling.
 
-For colour utilities, `@theme` exposes the existing tokens as
-`bg-bg-card`, `text-accent`, `border-border-strong`, etc. These swap
-automatically when `[data-theme="light"]` is set on `<html>`.
+For component work, prefer Tailwind utilities directly in JSX. If a class in
+`main.css` would only be used by one component, put that styling in the
+component with Tailwind utilities instead of adding or expanding a CSS block.
+Use `clsx` for conditional utilities and keep state variants explicit
+(`hover:`, `focus-visible:`, `disabled:`, responsive prefixes, etc.).
+
+Keep CSS selectors in `main.css` only when they are clearly shared or when a
+utility-only version would be brittle or unreadable. If a local component needs
+many repeated utility strings, prefer a small local constant in that component
+over a new global selector.
+
+For colour utilities, `@theme` exposes the existing tokens as `bg-bg-card`,
+`text-accent`, `border-border-strong`, etc. These swap automatically when
+`[data-theme="light"]` is set on `<html>`.
 
 ---
 

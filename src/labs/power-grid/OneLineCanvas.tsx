@@ -17,6 +17,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { getCanvasColors, type ThemeColors } from '@/lib/canvasTheme';
 
 import type {
   ArmedTool,
@@ -112,7 +113,6 @@ export function OneLineCanvas(props: Props) {
       return null;
     }
     function generatorAt(mx: number, my: number): { bus: Bus; gen: Generator } | null {
-      // Generators draw above the bus in a stack; pick by approximate bounds.
       const d = propsRef.current.doc;
       for (const b of d.buses) {
         const cx = b.x * GRID_PX;
@@ -343,12 +343,13 @@ export function OneLineCanvas(props: Props) {
     function draw() {
       const p = propsRef.current;
       const ui = uiRef.current;
+      const colors = getCanvasColors();
 
-      ctx.fillStyle = '#0d0d10';
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Grid.
-      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       for (let x = 0; x < w; x += GRID_PX) {
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
@@ -356,7 +357,7 @@ export function OneLineCanvas(props: Props) {
       for (let y = 0; y < h; y += GRID_PX) {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
       }
-      ctx.fillStyle = 'rgba(255,255,255,0.08)';
+      ctx.fillStyle = colors.borderStrong;
       for (let x = 0; x < w; x += GRID_PX) {
         for (let y = 0; y < h; y += GRID_PX) {
           ctx.fillRect(x - 0.5, y - 0.5, 1, 1);
@@ -376,11 +377,11 @@ export function OneLineCanvas(props: Props) {
         // Color: idle gray → teal at 50 % loaded → pink near 100 %.
         const isSel = p.selection?.kind === 'line' && p.selection.id === ln.id;
         const isHover = ui.hoverLineId === ln.id;
-        const stroke = isSel ? '#ff6b2a'
-          : isHover ? '#ffb084'
-          : loadFrac > 0.9 ? '#ff3b6e'
-          : loadFrac > 0.5 ? '#6cc5c2'
-          : '#7a7770';
+        const stroke = isSel ? colors.accent
+          : isHover ? colors.text
+          : loadFrac > 0.9 ? colors.pink
+          : loadFrac > 0.5 ? colors.teal
+          : colors.textMuted;
         ctx.strokeStyle = stroke;
         ctx.lineWidth = isSel ? 3 : 2;
         ctx.beginPath();
@@ -396,7 +397,7 @@ export function OneLineCanvas(props: Props) {
           ctx.font = '9px "JetBrains Mono", monospace';
           ctx.textAlign = 'center';
           const tw = ctx.measureText(text).width;
-          ctx.fillStyle = 'rgba(13,13,16,0.85)';
+          ctx.fillStyle = withAlpha(colors.bg, 0.85);
           ctx.fillRect(mx - tw / 2 - 3, my - 7, tw + 6, 13);
           ctx.fillStyle = stroke;
           ctx.fillText(text, mx, my + 3);
@@ -412,7 +413,7 @@ export function OneLineCanvas(props: Props) {
         const bx = c.x * GRID_PX, by = c.y * GRID_PX;
         const isSel = p.selection?.kind === 'transformer' && p.selection.id === tx.id;
         const isHover = ui.hoverTxId === tx.id;
-        const stroke = isSel ? '#ff6b2a' : isHover ? '#ffb084' : '#a09e95';
+        const stroke = isSel ? colors.accent : isHover ? colors.text : colors.textDim;
         ctx.strokeStyle = stroke;
         ctx.lineWidth = isSel ? 2.4 : 1.6;
         // Skinny line.
@@ -427,7 +428,7 @@ export function OneLineCanvas(props: Props) {
         const ll = Math.hypot(dxn, dyn) || 1;
         const ux = dxn / ll;
         const uy = dyn / ll;
-        ctx.fillStyle = '#0d0d10';
+        ctx.fillStyle = colors.bg;
         ctx.beginPath();
         ctx.arc(mx - ux * 6, my - uy * 6, 6, 0, Math.PI * 2);
         ctx.fill(); ctx.stroke();
@@ -435,7 +436,7 @@ export function OneLineCanvas(props: Props) {
         ctx.arc(mx + ux * 6, my + uy * 6, 6, 0, Math.PI * 2);
         ctx.fill(); ctx.stroke();
         // Rating label.
-        ctx.fillStyle = '#7a7770';
+        ctx.fillStyle = colors.textMuted;
         ctx.font = '8px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText(tx.ratingMVA + ' MVA', mx, my + 18);
@@ -450,7 +451,7 @@ export function OneLineCanvas(props: Props) {
         const v = p.snapshot?.pf.voltage.get(b.id) ?? 1.0;
         // Bar style: short horizontal bar like a real one-line.
         const half = 12;
-        ctx.strokeStyle = isSel ? '#ff6b2a' : isHover ? '#ffb084' : '#ecebe5';
+        ctx.strokeStyle = isSel ? colors.accent : isHover ? colors.text : colors.text;
         ctx.lineWidth = isSel ? 3 : 2.2;
         ctx.beginPath();
         ctx.moveTo(cx - half, cy);
@@ -461,13 +462,13 @@ export function OneLineCanvas(props: Props) {
         if (p.snapshot) {
           ctx.font = '8px "JetBrains Mono", monospace';
           ctx.textAlign = 'left';
-          const vColor = v < 0.95 ? '#ff3b6e' : v > 1.05 ? '#ff3b6e' : '#6cc5c2';
+          const vColor = v < 0.95 ? colors.pink : v > 1.05 ? colors.pink : colors.teal;
           ctx.fillStyle = vColor;
           ctx.fillText(v.toFixed(3) + ' pu', cx + half + 4, cy + 3);
         }
         // Label below.
         if (b.label) {
-          ctx.fillStyle = '#a09e95';
+          ctx.fillStyle = colors.textDim;
           ctx.font = '9px "DM Sans", sans-serif';
           ctx.textAlign = 'center';
           ctx.fillText(b.label + '  ·  ' + b.kv + ' kV', cx, cy + 60);
@@ -480,9 +481,10 @@ export function OneLineCanvas(props: Props) {
           const oy = cy - 32;
           drawGenerator(ctx, ox, oy, g,
             ui.hoverGenId === g.id,
-            p.selection?.kind === 'generator' && p.selection.id === g.id);
+            p.selection?.kind === 'generator' && p.selection.id === g.id,
+            colors);
           // Tie line from gen to bus.
-          ctx.strokeStyle = g.tripped ? '#5b5953' : '#a09e95';
+          ctx.strokeStyle = g.tripped ? colors.textMuted : colors.textDim;
           ctx.lineWidth = 1;
           ctx.setLineDash(g.tripped ? [3, 3] : []);
           ctx.beginPath(); ctx.moveTo(ox, oy + 7); ctx.lineTo(ox, cy); ctx.stroke();
@@ -496,8 +498,9 @@ export function OneLineCanvas(props: Props) {
           const oy = cy + 32;
           drawLoad(ctx, ox, oy, ld,
             ui.hoverLoadId === ld.id,
-            p.selection?.kind === 'load' && p.selection.id === ld.id);
-          ctx.strokeStyle = '#a09e95';
+            p.selection?.kind === 'load' && p.selection.id === ld.id,
+            colors);
+          ctx.strokeStyle = colors.textDim;
           ctx.lineWidth = 1;
           ctx.beginPath(); ctx.moveTo(ox, oy - 7); ctx.lineTo(ox, cy); ctx.stroke();
         }
@@ -507,7 +510,7 @@ export function OneLineCanvas(props: Props) {
       if ((p.armed.kind === 'line' || p.armed.kind === 'transformer') && ui.anchorBusId) {
         const a = p.doc.buses.find((b) => b.id === ui.anchorBusId);
         if (a && ui.ghost) {
-          ctx.strokeStyle = '#6cc5c2';
+          ctx.strokeStyle = colors.teal;
           ctx.lineWidth = 1.5;
           ctx.setLineDash([4, 4]);
           ctx.beginPath();
@@ -515,7 +518,7 @@ export function OneLineCanvas(props: Props) {
           ctx.lineTo(ui.ghost.x * GRID_PX, ui.ghost.y * GRID_PX);
           ctx.stroke();
           ctx.setLineDash([]);
-          ctx.fillStyle = '#6cc5c2';
+          ctx.fillStyle = colors.teal;
           ctx.beginPath();
           ctx.arc(a.x * GRID_PX, a.y * GRID_PX, 5, 0, Math.PI * 2);
           ctx.fill();
@@ -526,7 +529,7 @@ export function OneLineCanvas(props: Props) {
       if (p.armed.kind === 'bus' && ui.ghost) {
         const gx = ui.ghost.x * GRID_PX;
         const gy = ui.ghost.y * GRID_PX;
-        ctx.strokeStyle = 'rgba(255,107,42,0.5)';
+        ctx.strokeStyle = colors.accentGlow;
         ctx.lineWidth = 1.2;
         ctx.setLineDash([3, 3]);
         ctx.beginPath();
@@ -572,14 +575,15 @@ function drawGenerator(
   ctx: CanvasRenderingContext2D,
   cx: number, cy: number, g: Generator,
   hover: boolean, selected: boolean,
+  colors: ThemeColors,
 ) {
   const colorByKind: Record<Generator['kind'], string> = {
-    coal:    '#a09e95',
-    ccgt:    '#ff6b2a',
-    hydro:   '#5baef8',
-    wind:    '#6cc5c2',
-    solar:   '#ff6b2a',
-    battery: '#ff3b6e',
+    coal:    colors.textDim,
+    ccgt:    colors.accent,
+    hydro:   colors.blue,
+    wind:    colors.teal,
+    solar:   colors.accent,
+    battery: colors.pink,
   };
   const labelByKind: Record<Generator['kind'], string> = {
     coal:    'C',
@@ -589,14 +593,14 @@ function drawGenerator(
     solar:   'S',
     battery: 'B',
   };
-  const c = g.tripped ? '#5b5953' : colorByKind[g.kind];
-  ctx.fillStyle = '#0d0d10';
-  ctx.strokeStyle = selected ? '#ff6b2a' : hover ? '#ffb084' : c;
+  const c = g.tripped ? colors.textMuted : colorByKind[g.kind];
+  ctx.fillStyle = colors.bg;
+  ctx.strokeStyle = selected ? colors.accent : hover ? colors.text : c;
   ctx.lineWidth = selected ? 2.2 : hover ? 1.6 : 1.3;
   ctx.beginPath();
   ctx.arc(cx, cy, 7, 0, Math.PI * 2);
   ctx.fill(); ctx.stroke();
-  ctx.fillStyle = g.tripped ? '#5b5953' : c;
+  ctx.fillStyle = g.tripped ? colors.textMuted : c;
   ctx.font = 'bold 9px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -604,7 +608,7 @@ function drawGenerator(
   ctx.textBaseline = 'alphabetic';
   if (g.tripped) {
     // X over the circle.
-    ctx.strokeStyle = '#ff3b6e';
+    ctx.strokeStyle = colors.pink;
     ctx.lineWidth = 1.4;
     ctx.beginPath();
     ctx.moveTo(cx - 6, cy - 6); ctx.lineTo(cx + 6, cy + 6);
@@ -617,6 +621,7 @@ function drawLoad(
   ctx: CanvasRenderingContext2D,
   cx: number, cy: number, ld: Load,
   hover: boolean, selected: boolean,
+  colors: ThemeColors,
 ) {
   const labels: Record<Load['kind'], string> = {
     residential: 'R',
@@ -624,8 +629,8 @@ function drawLoad(
     motor:      'M',
     ev:         'E',
   };
-  ctx.fillStyle = '#0d0d10';
-  ctx.strokeStyle = selected ? '#ff6b2a' : hover ? '#ffb084' : '#a09e95';
+  ctx.fillStyle = colors.bg;
+  ctx.strokeStyle = selected ? colors.accent : hover ? colors.text : colors.textDim;
   ctx.lineWidth = selected ? 2.2 : hover ? 1.6 : 1.3;
   // Downward-pointing triangle.
   ctx.beginPath();
@@ -634,8 +639,26 @@ function drawLoad(
   ctx.lineTo(cx, cy + 7);
   ctx.closePath();
   ctx.fill(); ctx.stroke();
-  ctx.fillStyle = selected ? '#ff6b2a' : '#a09e95';
+  ctx.fillStyle = selected ? colors.accent : colors.textDim;
   ctx.font = 'bold 8px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.fillText(labels[ld.kind], cx, cy - 0.5);
+}
+
+/** Convert any hex / rgb / rgba string to rgba with the given alpha. */
+function withAlpha(color: string, alpha: number): string {
+  if (color.startsWith('rgba(')) {
+    return color.replace(/rgba\(([^,]+),\s*([^,]+),\s*([^,]+),\s*[^)]+\)/, `rgba($1,$2,$3,${alpha})`);
+  }
+  if (color.startsWith('rgb(')) {
+    return color.replace(/rgb\(([^)]+)\)/, `rgba($1,${alpha})`);
+  }
+  if (color.startsWith('#')) {
+    const hex = color.replace('#', '');
+    const r = parseInt(hex.slice(0, 2), 16);
+    const g = parseInt(hex.slice(2, 4), 16);
+    const b = parseInt(hex.slice(4, 6), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+  return color;
 }

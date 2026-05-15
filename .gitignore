@@ -11,3 +11,4 @@ src/routeTree.gen.ts
 .tanstack/
 *.tsbuildinfo
 *.mp4
+main_css_single_component_classes.md

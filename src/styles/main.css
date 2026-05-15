@@ -216,25 +216,6 @@ body::before {
 
   /* Containers — every demo / case-study / panel-style card derives from one
      of these three intensity levels. */
-  .panel-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1rem;
-  }
-  .panel-elevated {
-    background: var(--bg-elevated);
-    border: 1px solid var(--border-strong);
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-  }
-  .panel-subtle {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.75rem;
-  }
 
   /* Inline chips — mono-uppercase pill labels. Used for chapter tags,
      specs sheets, statuses, badges. */
@@ -252,59 +233,12 @@ body::before {
     text-transform: uppercase;
     color: var(--text-dim);
   }
-  .chip-accent { border-color: rgba(255,107,42,0.35); color: var(--accent); }
-  .chip-teal   { border-color: rgba(108,197,194,0.35); color: var(--teal); }
-  .chip-pink   { border-color: rgba(255,59,110,0.35); color: var(--pink); }
-  .chip-blue   { border-color: rgba(91,174,248,0.35); color: var(--blue); }
 
   /* Typography utilities. */
-  .text-eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--text-dim);
-  }
-  .text-stat {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.625rem;
-    font-weight: 500;
-    color: var(--text);
-    letter-spacing: -0.01em;
-  }
-  .text-display {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 1.875rem;
-    color: var(--text);
-    line-height: 1.15;
-  }
-  .text-mono-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-variant-numeric: tabular-nums;
-  }
 
   /* Section separator — a thin horizontal rule with vertical breathing room. */
-  .section-rule {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-  }
 
   /* Inline citation badge — small superscripted accent chip used by Cite. */
-  .cite-inline {
-    display: inline-block;
-    margin-left: 0.1rem;
-    padding: 0 0.3rem;
-    background: var(--accent-soft);
-    color: var(--accent);
-    border-radius: 3px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    text-decoration: none;
-    line-height: 1.4;
-  }
-  .cite-inline:hover { background: var(--accent-glow); }
 
   /* Inline keyboard glyph. */
   .kbd {
@@ -332,18 +266,8 @@ body::before {
   .container-max {
     @apply max-w-[1480px] mx-auto px-[40px] max-[760px]:px-xl;
   }
-  .page-section {
-    @apply py-[80px] max-[760px]:py-[56px];
-  }
   .section-reveal {
     @apply opacity-100;
-  }
-  .prose-content {
-    @apply max-w-[70ch] mx-auto;
-  }
-  .visually-hidden {
-    @apply absolute w-px h-px overflow-hidden;
-    clip: rect(0 0 0 0);
   }
 
   /* — Typography aliases (semantic → numbered scale) — */
@@ -354,46 +278,6 @@ body::before {
     line-height: .95;
     letter-spacing: -.035em;
     color: var(--color-4);
-  }
-  .title-lg {
-    font-family: var(--font-2);
-    font-weight: 300;
-    font-size: clamp(40px, 6vw, 72px);
-    line-height: 1;
-    letter-spacing: -.03em;
-    color: var(--color-4);
-  }
-  .title-md {
-    font-family: var(--font-2);
-    font-style: italic;
-    font-weight: 300;
-    font-size: 32px;
-    line-height: 1.1;
-    letter-spacing: -.02em;
-    color: var(--color-4);
-  }
-  .title-sm {
-    font-family: var(--font-2);
-    font-style: italic;
-    font-weight: 300;
-    font-size: 24px;
-    line-height: 1.15;
-    letter-spacing: -.02em;
-    color: var(--color-4);
-  }
-  .title-xs {
-    font-family: var(--font-1);
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 1.35;
-    color: var(--color-4);
-  }
-  .title-eyebrow {
-    font-family: var(--font-3);
-    font-size: 11px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--text-muted);
   }
 
   .eyebrow-muted {
@@ -407,21 +291,11 @@ body::before {
   .body-copy {
     @apply font-1 text-[16px] leading-[1.6] text-color-5;
   }
-
-  .text-meta {
-    @apply font-3 text-[11px] tracking-[.12em] uppercase text-color-5;
-  }
   .text-deck {
     @apply font-2 italic font-light text-[20px] leading-[1.35] text-color-5 max-w-[60ch];
   }
   .text-formula {
     @apply font-4 italic text-color-4;
-  }
-  .text-formula-var {
-    @apply font-4 italic;
-  }
-  .text-formula-inline {
-    @apply font-4 italic;
   }
 
   /* — Eyebrow + intro aliases (no numeric suffix) — */
@@ -440,51 +314,8 @@ body::before {
   }
 
   /* — Card / surface aliases — */
-  .card-base,
-  .card-primary {
-    @apply bg-color-3 border border-border-1 rounded-5 p-lg;
-  }
   .card-surface {
     @apply bg-color-3 border border-border-1 rounded-5;
-  }
-  .card-elevated {
-    @apply bg-color-2 border border-border-2 rounded-5 p-lg shadow-1;
-  }
-  .card-muted,
-  .card-subtle {
-    @apply bg-white/[.02] border border-border-1 rounded-4 p-md;
-  }
-  .card-outlined {
-    background: transparent;
-    border: 1px solid var(--border-2);
-    border-radius: var(--radius-5);
-    padding: var(--spacing-lg);
-  }
-  .card-glass {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--border-1);
-    border-radius: var(--radius-5);
-    padding: var(--spacing-lg);
-    backdrop-filter: blur(8px);
-  }
-  .card-figure {
-    @apply bg-color-3 border border-border-2 rounded-3 p-0 overflow-hidden;
-  }
-  .card-formula {
-    @apply bg-color-3 border border-border-1 rounded-5 my-[40px] py-[28px] px-[36px] text-center text-[32px];
-    font-family: var(--font-4);
-    font-style: italic;
-    color: var(--color-4);
-  }
-  .card-panel {
-    @apply bg-white/[.02] border border-border-1 rounded-4 p-md flex flex-col gap-md;
-  }
-  .card-header {
-    @apply px-lg py-md border-b border-border;
-  }
-  .card-body { @apply px-lg py-lg; }
-  .card-footer {
-    @apply px-lg py-md border-t border-border flex items-center justify-end gap-md;
   }
 
   /* — Lists, dividers, sections — */
@@ -517,10 +348,6 @@ body::before {
   .disclosure-base[open] .disclosure-chev { transform: rotate(45deg); }
 
   /* — Pills / chips / badges — */
-  .pill-base {
-    @apply inline-flex items-center gap-xs px-[10px] py-[2px] rounded-pill border border-border-1 font-3 text-[11px] tracking-[.08em] uppercase text-color-5 bg-white/[.04];
-  }
-  .pill-icon { @apply inline-flex items-center justify-center; }
 
   /* — Nav links (extracted from TopNav: 14-utility string × 7) — */
   .nav-pill {
@@ -539,99 +366,17 @@ body::before {
   @media (max-width: 760px) { .nav-pill-divider { @apply text-[10px]; } }
 
   /* — Banners — */
-  .banner-base {
-    @apply flex items-start gap-md p-md rounded-4 border;
-  }
-  .banner-info    { background: var(--bg-elevated); border-color: var(--border-2); color: var(--color-4); }
-  .banner-success { background: var(--teal-soft); border-color: rgba(108,197,194,0.35); color: var(--color-4); }
-  .banner-warn    { background: var(--accent-soft); border-color: rgba(255,107,42,0.35); color: var(--color-4); }
-  .banner-danger  { background: rgba(255,59,110,0.12); border-color: rgba(255,59,110,0.35); color: var(--color-4); }
   .banner-icon { @apply shrink-0 mt-[2px]; }
-  .banner-body { @apply flex-1 min-w-0 text-[14px] leading-[1.5]; }
 
   /* — Buttons / actions / links — */
-  .button-primary {
-    @apply inline-flex items-center gap-sm px-lg py-sm rounded-4 font-3 text-[11px] tracking-[.12em] uppercase border cursor-pointer transition-colors;
-    background: var(--accent);
-    color: var(--bg);
-    border-color: var(--accent);
-  }
-  .button-primary:hover { background: var(--accent-glow); }
-  .button-icon {
-    @apply inline-flex items-center justify-center w-[22px] h-[22px] rounded-pill border border-border-1 bg-transparent text-text-muted cursor-pointer transition-colors;
-  }
-  .button-icon:hover { color: var(--color-4); border-color: var(--border-2); }
-
-  .link-accent {
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px dotted var(--accent);
-  }
-  .link-accent:hover { background: var(--accent-soft); }
-
-  .link-pager {
-    @apply flex flex-col gap-xs p-lg rounded-4 border border-border-1 no-underline text-color-4;
-    background: var(--bg-card);
-    transition: border-color .15s, background .15s;
-  }
-  .link-pager:hover { border-color: var(--accent); background: var(--bg-card-hover); }
 
   /* — Forms / inputs — */
-  .input-base {
-    @apply w-full px-md py-sm rounded-4 border border-border-1 bg-transparent text-color-4 font-3 text-[13px];
-    outline: none;
-  }
-  .input-base:focus { border-color: var(--accent); }
-
-  .choice-list { @apply flex flex-col gap-md; }
-  .choice-card {
-    @apply flex items-start gap-md p-md rounded-4 border border-border-1 cursor-pointer transition-colors;
-    background: var(--bg-card);
-  }
-  .choice-card:hover { border-color: var(--border-2); }
-  .choice-card.is-selected { border-color: var(--accent); background: var(--accent-soft); }
 
   /* — Demo / lab structure aliases — */
-  .canvas-base {
-    @apply bg-canvas-bg;
-    contain: layout paint style;
-  }
-  .canvas-base canvas { @apply block w-full; }
-  .canvas-panel {
-    @apply bg-white/[.02] border border-border-1 rounded-4 p-0 overflow-hidden;
-  }
-  .title-panel { @apply font-3 text-[10px] tracking-[.22em] uppercase text-color-5; }
-  .toolbar-base { @apply flex flex-wrap items-center gap-md; }
-  .legend-base { @apply flex flex-wrap items-center gap-md font-3 text-[11px] text-text-muted; }
-  .question-base {
-    @apply px-[22px] py-md border-b border-border font-2 italic font-light text-[17px] text-color-4;
-  }
-  .caption-base {
-    @apply px-[22px] py-[14px] border-t border-border text-[13px] leading-[1.5] italic text-text-muted;
-  }
-  .kbd-base {
-    display: inline-block;
-    padding: 1px 6px;
-    border: 1px solid var(--border-2);
-    border-radius: var(--radius-2);
-    background: var(--bg-elevated);
-    font-family: var(--font-3);
-    font-size: 11px;
-    color: var(--color-4);
-  }
 
   /* — Tooltip surface (used by Term popover, etc.) — */
-  .surface-tooltip {
-    @apply absolute z-[100] pointer-events-none opacity-0 transition-all duration-150;
-  }
-  .group:hover .surface-tooltip,
-  .group:focus-visible .surface-tooltip { @apply opacity-100 pointer-events-auto; }
 
   /* — Color/state swatches (legend dots) — */
-  .swatch-base {
-    @apply inline-block w-[14px] h-[14px] rounded-2 border border-border-1;
-  }
-  .swatch-dot { @apply rounded-pill; }
 }
 
 /* ─── Progress bar ─── */
@@ -690,62 +435,12 @@ nav.top .meta {
   text-transform: uppercase;
   letter-spacing: .15em;
 }
-.nav-status {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 14px;
-}
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 30px;
-  padding: 0 10px;
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  background: var(--bg-card);
-  color: var(--text-muted);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  line-height: 1;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: color .15s ease, border-color .15s ease, background .15s ease;
-}
-.theme-toggle:hover {
-  color: var(--text);
-  border-color: var(--accent);
-}
-.theme-toggle-icon {
-  position: relative;
-  width: 14px;
-  height: 14px;
-  border: 1.5px solid currentColor;
-  border-radius: 999px;
-}
-:root[data-theme="light"] .theme-toggle-icon {
-  background: currentColor;
-  box-shadow: 0 0 0 3px var(--accent-soft);
-}
-:root[data-theme="dark"] .theme-toggle-icon::after {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: 5px;
-  width: 11px;
-  height: 11px;
-  border-radius: 999px;
-  background: var(--bg-card);
-}
 
 @media (max-width: 900px) {
   nav.top { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
   nav.top .links { gap: 14px; }
   nav.top .links a { font-size: 10px; letter-spacing: .12em; }
   nav.top .meta { display: none; }
-  .nav-status { margin-left: auto; }
 }
 
 /* ─── Page layout primitives ─── */
@@ -770,8 +465,7 @@ section {
   padding-bottom: 80px;
   position: relative;
 }
-.hero .eyebrow,
-.section-num {
+.hero .eyebrow {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   color: var(--accent);
@@ -782,13 +476,11 @@ section {
   align-items: center;
   gap: 14px;
 }
-.hero .eyebrow::before,
-.section-num::before {
+.hero .eyebrow::before {
   content: '';
   width: 36px; height: 1px;
   background: var(--accent);
 }
-.section-num { margin-bottom: 24px; }
 
 .hero h1 {
   font-family: 'Fraunces', serif;
@@ -812,68 +504,12 @@ section {
   font-weight: 300;
 }
 .hero .lede strong { color: var(--text); font-weight: 500; }
-
-.hero-canvas {
-  position: absolute;
-  right: -10%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 60%;
-  height: 80%;
-  opacity: .35;
-  pointer-events: none;
-}
-
-.scroll-cue {
-  position: absolute;
-  bottom: 50px;
-  left: 40px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.scroll-cue::after {
-  content: '';
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, var(--text-muted), transparent);
-  animation: scrollDown 2s ease-in-out infinite;
-}
 @keyframes scrollDown {
   0%, 100% { transform: translateY(0); opacity: .5; }
   50% { transform: translateY(8px); opacity: 1; }
 }
 
 /* ─── Section heads ─── */
-.section-head {
-  margin-bottom: 80px;
-  max-width: 80ch;
-}
-.section-title {
-  font-family: 'Fraunces', serif;
-  font-weight: 300;
-  font-size: clamp(40px, 6vw, 72px);
-  line-height: 1;
-  letter-spacing: -.03em;
-  margin-bottom: 24px;
-}
-.section-title em {
-  font-style: italic;
-  color: var(--accent);
-  font-weight: 400;
-}
-.section-deck {
-  font-size: 20px;
-  line-height: 1.5;
-  color: var(--text-dim);
-  font-weight: 300;
-  max-width: 60ch;
-}
 
 /* ─── Prose ─── */
 .prose {
@@ -894,15 +530,6 @@ section {
   margin: 60px 0 24px;
   color: var(--text);
   letter-spacing: -.02em;
-}
-.prose h4 {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: .18em;
-  color: var(--accent);
-  margin: 40px 0 16px;
 }
 .prose .pullout {
   font-family: 'Fraunces', serif;
@@ -934,57 +561,6 @@ section {
 }
 
 /* ─── Hero equation banner ─── */
-.eq-hero {
-  padding: 130px 40px 60px;
-  max-width: 1280px;
-  margin: 0 auto;
-}
-.eq-hero .eq-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .25em;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.eq-hero .eq-label::before {
-  content: '';
-  width: 36px; height: 1px;
-  background: var(--accent);
-}
-.eq-hero h1 {
-  font-family: 'Fraunces', serif;
-  font-weight: 300;
-  font-size: clamp(48px, 7vw, 92px);
-  line-height: .98;
-  letter-spacing: -.035em;
-  margin-bottom: 32px;
-  max-width: 18ch;
-}
-.eq-hero h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
-.eq-hero .formula {
-  font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(44px, 7vw, 84px);
-  line-height: 1.25;
-  letter-spacing: .01em;
-  margin: 30px 0 24px;
-  color: var(--accent);
-}
-.eq-hero .formula sub, .eq-hero .formula sup { font-size: .58em; line-height: 0; }
-.eq-hero .formula sub { vertical-align: -.32em; }
-.eq-hero .formula sup { vertical-align:  .5em; }
-.eq-hero .deck {
-  font-size: 19px;
-  line-height: 1.5;
-  color: var(--text-dim);
-  font-weight: 300;
-  max-width: 60ch;
-}
 
 /* ─── Interactive lab ─── */
 .lab {
@@ -1298,69 +874,6 @@ select.material-select:focus { outline: none; border-color: var(--accent); }
 }
 
 /* ─── Equation card grid (legacy / for index) ─── */
-.equation-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-}
-.eq-card {
-  background: var(--bg);
-  padding: 40px;
-  text-decoration: none;
-  color: inherit;
-  display: block;
-  transition: background .15s ease;
-  position: relative;
-}
-.eq-card:hover { background: var(--bg-card-hover); }
-.eq-card .eq-name {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  letter-spacing: .25em;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-}
-.eq-card .eq-formula {
-  font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: 38px;
-  letter-spacing: .005em;
-  margin-bottom: 18px;
-  color: var(--text);
-  line-height: 1.4;
-}
-.eq-card .eq-formula sub, .eq-card .eq-formula sup {
-  font-size: .58em;
-  font-style: italic;
-}
-.eq-card .eq-desc {
-  font-size: 14px;
-  color: var(--text-dim);
-  line-height: 1.55;
-}
-.eq-card .eq-cta {
-  margin-top: 18px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  opacity: 0;
-  transform: translateX(-6px);
-  transition: all .2s ease;
-}
-.eq-card:hover .eq-cta { opacity: 1; transform: translateX(0); }
-@media (max-width: 760px) {
-  .equation-grid { grid-template-columns: 1fr; }
-  .eq-card .eq-formula { font-size: 32px; }
-}
 
 /* ─── Stats (used in index hero context) ─── */
 .stats {
@@ -1371,99 +884,9 @@ select.material-select:focus { outline: none; border-color: var(--accent); }
   margin: 60px 0;
   border: 1px solid var(--border);
 }
-.stat { background: var(--bg); padding: 36px 32px; }
-.stat .label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  margin-bottom: 16px;
-}
-.stat .value {
-  font-family: 'Fraunces', serif;
-  font-weight: 300;
-  font-size: 48px;
-  line-height: 1;
-  color: var(--text);
-  letter-spacing: -.02em;
-  margin-bottom: 8px;
-}
-.stat .value em { font-style: italic; color: var(--accent); }
-.stat .unit {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: .1em;
-}
-.stat .note {
-  margin-top: 14px;
-  font-size: 13px;
-  color: var(--text-dim);
-  line-height: 1.5;
-}
 @media (max-width: 760px) { .stats { grid-template-columns: 1fr; } }
 
 /* ─── Viz card (legacy from original index) ─── */
-.viz-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  overflow: hidden;
-  position: relative;
-}
-.viz-card .viz-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 24px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-elevated);
-}
-.viz-card .viz-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: .18em;
-}
-.viz-card .viz-id {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: .15em;
-}
-.viz-card canvas {
-  display: block;
-  width: 100%;
-  background:
-    radial-gradient(ellipse at center, rgba(255,107,42,.03) 0%, transparent 70%),
-    linear-gradient(180deg, var(--bg-card) 0%, var(--canvas-bg) 100%);
-}
-.viz-card .viz-caption {
-  padding: 20px 24px;
-  border-top: 1px solid var(--border);
-  font-size: 13px;
-  color: var(--text-dim);
-  line-height: 1.55;
-}
-.viz-card .controls {
-  display: flex;
-  gap: 8px;
-  padding: 14px 24px;
-  border-top: 1px solid var(--border);
-  background: var(--bg-elevated);
-  flex-wrap: wrap;
-}
-.diagram-caption {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-size: 17px;
-  color: var(--text-dim);
-  text-align: center;
-  padding: 18px 24px;
-  border-top: 1px solid var(--border);
-}
 
 /* ─── Split layout ─── */
 .split {
@@ -1472,9 +895,8 @@ select.material-select:focus { outline: none; border-color: var(--accent); }
   gap: 80px;
   align-items: start;
 }
-.split.skew { grid-template-columns: 1.1fr .9fr; }
 @media (max-width: 900px) {
-  .split, .split.skew { grid-template-columns: 1fr; gap: 50px; }
+  .split { grid-template-columns: 1fr; gap: 50px; }
 }
 
 /* ─── Footer ─── */
@@ -1491,19 +913,6 @@ footer {
   margin-bottom: 60px;
 }
 .ref { font-size: 13px; line-height: 1.55; }
-.ref .ref-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  letter-spacing: .2em;
-  margin-bottom: 8px;
-}
-.ref .ref-title {
-  color: var(--text);
-  margin-bottom: 4px;
-  font-weight: 500;
-}
-.ref .ref-author { color: var(--text-dim); font-style: italic; }
 .ref a {
   color: var(--text-dim);
   text-decoration: none;
@@ -1625,96 +1034,6 @@ footer {
   max-width: 1280px;
   margin: 0 auto;
 }
-.chapter {
-  margin-bottom: 70px;
-  scroll-margin-top: 80px;
-}
-.chapter-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 28px;
-  padding-bottom: 22px;
-  border-bottom: 1px solid var(--border-strong);
-  gap: 30px;
-  flex-wrap: wrap;
-}
-.chapter-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .25em;
-}
-.chapter-title {
-  font-family: 'Fraunces', serif;
-  font-weight: 300;
-  font-size: clamp(36px, 5vw, 56px);
-  letter-spacing: -.025em;
-  color: var(--text);
-  line-height: 1;
-}
-.chapter-title em { font-style: italic; color: var(--accent); font-weight: 400; }
-.chapter-blurb {
-  font-size: 15px;
-  color: var(--text-dim);
-  max-width: 36ch;
-  text-align: right;
-  line-height: 1.5;
-}
-.lab-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-}
-.lab-row {
-  background: var(--bg);
-  padding: 28px 32px;
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transition: background .15s ease;
-  position: relative;
-}
-.lab-row:hover { background: var(--bg-card-hover); }
-.lab-row .lab-id {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: .22em;
-  text-transform: uppercase;
-}
-.lab-row .lab-eq {
-  font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: 26px;
-  letter-spacing: .005em;
-  color: var(--accent);
-  line-height: 1.3;
-}
-.lab-row .lab-eq sub, .lab-row .lab-eq sup { font-size: .6em; line-height: 0; }
-.lab-row .lab-eq sub { vertical-align: -.32em; }
-.lab-row .lab-eq sup { vertical-align:  .5em; }
-.lab-row .lab-name {
-  font-size: 15px;
-  color: var(--text);
-  font-weight: 500;
-}
-.lab-row .lab-blurb {
-  font-size: 13px;
-  color: var(--text-dim);
-  line-height: 1.5;
-}
-@media (max-width: 760px) {
-  .lab-list { grid-template-columns: 1fr; }
-  .chapter-blurb { text-align: left; }
-}
-
 /* Sources section */
 .sources {
   max-width: 70ch;
@@ -1800,10 +1119,6 @@ footer {
 nav.top .links a.active { color: var(--accent); }
 
 /* Generic reset-button helper for some lab pages */
-.btn-reset {
-  margin-top: 14px;
-  width: 100%;
-}
 
 /* ═══════════════════════════════════════════════════════════════
    v0.4 — narrative chapters + embedded demos
@@ -1915,174 +1230,6 @@ nav.top .links a.active { color: var(--accent); }
   padding-left: 24px;
 }
 
-/* Narrative prose: max-width slightly wider than .prose for chapter flow */
-.narrative {
-  max-width: 70ch;
-  margin: 0 auto;
-  font-size: 17.5px;
-  line-height: 1.72;
-  color: var(--text-dim);
-}
-.narrative > p { margin-bottom: 1.4em; }
-.narrative > p:first-of-type::first-letter {
-  font-family: 'Fraunces', serif;
-  font-weight: 300;
-  font-size: 4em;
-  line-height: 1;
-  float: left;
-  margin: 4px 12px -4px 0;
-  color: var(--accent);
-}
-.narrative h2 {
-  font-family: 'Fraunces', serif;
-  font-weight: 300;
-  font-style: italic;
-  font-size: clamp(28px, 3.5vw, 42px);
-  line-height: 1.1;
-  letter-spacing: -.02em;
-  color: var(--text);
-  margin: 90px 0 28px;
-  max-width: 28ch;
-}
-.narrative h2 em { color: var(--accent); }
-.narrative h3 {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 500;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  color: var(--accent);
-  margin: 50px 0 14px;
-}
-.narrative strong { color: var(--text); font-weight: 500; }
-.narrative em { font-style: italic; color: var(--text); }
-.narrative .pullout {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: 26px;
-  line-height: 1.35;
-  color: var(--text);
-  padding: 24px 0 24px 28px;
-  margin: 40px 0;
-  border-left: 2px solid var(--accent);
-}
-.narrative .math {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-size: 26px;
-  text-align: center;
-  color: var(--text);
-  margin: 30px 0;
-}
-.narrative .math sub, .narrative .math sup { font-size: .55em; }
-.narrative .kbd {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .85em;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 2px 8px;
-  border-radius: 2px;
-}
-.narrative .cite {
-  display: inline-block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  vertical-align: super;
-  line-height: 1;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 1px 5px;
-  margin: 0 1px;
-  border-radius: 2px;
-  text-decoration: none;
-  letter-spacing: 0;
-}
-.narrative .cite:hover { background: var(--accent); color: var(--bg); }
-
-/* Embedded demo card */
-.demo {
-  margin: 50px -20px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-strong);
-  border-radius: 4px;
-  overflow: hidden;
-  content-visibility: auto;
-  contain-intrinsic-size: 620px;
-}
-@media (min-width: 900px) {
-  .demo { margin-left: -50px; margin-right: -50px; }
-}
-.demo-head {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-  padding: 16px 22px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-elevated);
-  flex-wrap: wrap;
-}
-.demo-fig {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  letter-spacing: .22em;
-  text-transform: uppercase;
-}
-.demo-title {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  color: var(--text);
-  font-weight: 500;
-  flex: 1;
-}
-.demo-deeper {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  text-decoration: none;
-  border-bottom: 1px dotted var(--text-muted);
-}
-.demo-deeper:hover { color: var(--accent); border-color: var(--accent); }
-.demo-question {
-  padding: 12px 22px;
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: 17px;
-  color: var(--text);
-  border-bottom: 1px solid var(--border);
-  background: var(--accent-soft);
-}
-.demo-body {
-  background: var(--canvas-bg);
-  contain: layout paint style;
-}
-.demo-body-pending {
-  min-height: 320px;
-}
-.demo-body canvas { display: block; width: 100%; }
-.demo-caption {
-  padding: 14px 22px;
-  font-size: 13px;
-  color: var(--text-muted);
-  font-style: italic;
-  line-height: 1.5;
-  border-top: 1px solid var(--border);
-}
-
-/* Demo controls strip (bottom of demo card) */
-.demo-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px 28px;
-  align-items: center;
-  padding: 14px 22px;
-  background: var(--bg-elevated);
-  border-top: 1px solid var(--border);
-}
 .mini-slider {
   display: flex;
   flex-direction: column;
@@ -2126,12 +1273,6 @@ nav.top .links a.active { color: var(--accent); }
   border-radius: 50%;
   border: 2px solid var(--bg-elevated);
 }
-.mini-slider-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  letter-spacing: .04em;
-}
 .mini-toggle {
   background: transparent;
   border: 1px solid var(--border-strong);
@@ -2149,222 +1290,9 @@ nav.top .links a.active { color: var(--accent); }
   color: var(--bg);
   border-color: var(--accent);
 }
-.mini-readout {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-}
-.mini-readout-label {
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: .12em;
-}
-.mini-readout-value {
-  color: var(--accent);
-  font-size: 13px;
-}
-.mini-readout-unit { color: var(--text-muted); font-size: 10px; }
-
-/* Chapter-page nav (between chapters) */
-.chap-page-nav {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  max-width: 70ch;
-  margin: 100px auto 0;
-}
-.chap-page-nav a {
-  background: var(--bg);
-  padding: 36px 28px;
-  text-decoration: none;
-  color: inherit;
-  transition: background .15s ease;
-}
-.chap-page-nav a:hover { background: var(--bg-card-hover); }
-.chap-page-nav .dir {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: .22em;
-  margin-bottom: 10px;
-}
-.chap-page-nav .dir.next { text-align: right; }
-.chap-page-nav .ch-title {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: 22px;
-  color: var(--text);
-}
-.chap-page-nav a.next .ch-title { text-align: right; }
-@media (max-width: 760px) { .chap-page-nav { grid-template-columns: 1fr; } }
-
-/* Sidebar with related labs (appears at bottom of chapter) */
-.related-labs {
-  max-width: 70ch;
-  margin: 80px auto 0;
-  padding-top: 36px;
-  border-top: 1px solid var(--border);
-}
-.related-labs-head {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  letter-spacing: .25em;
-  text-transform: uppercase;
-  margin-bottom: 22px;
-}
-.related-lab-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  padding: 14px 0;
-  border-bottom: 1px dotted var(--border);
-}
-.related-lab-link:last-child { border-bottom: none; }
-.related-lab-link .rl-name {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 500;
-  color: var(--text);
-  font-size: 15px;
-}
-.related-lab-link .rl-eq {
-  font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
-  font-style: italic;
-  color: var(--accent);
-  font-size: 18px;
-  margin-left: 8px;
-}
-.related-lab-link .rl-blurb {
-  color: var(--text-muted);
-  font-size: 13px;
-  margin-top: 4px;
-}
-
 /* ═══════════════════════════════════════════════════════════════
    v0.5 — chapter FAQ section
 ═══════════════════════════════════════════════════════════════ */
-.faq {
-  max-width: 70ch;
-  margin: 100px auto 0;
-  padding-top: 36px;
-  border-top: 1px solid var(--border-strong);
-}
-.faq-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  letter-spacing: .25em;
-  text-transform: uppercase;
-  margin-bottom: 18px;
-  display: flex; align-items: center; gap: 14px;
-}
-.faq-eyebrow::before {
-  content: ''; width: 36px; height: 1px; background: var(--accent);
-}
-.faq-intro {
-  color: var(--text-dim);
-  font-size: 15px;
-  line-height: 1.55;
-  margin-bottom: 28px;
-  font-style: italic;
-  max-width: 55ch;
-}
-.faq-list { border-top: 1px solid var(--border); }
-.faq-item {
-  border-bottom: 1px solid var(--border);
-}
-.faq-item summary {
-  cursor: pointer;
-  list-style: none;
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  padding: 18px 0;
-  transition: color .15s ease;
-  outline: none;
-}
-.faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary:hover .faq-q-text { color: var(--accent); }
-.faq-item summary:focus-visible .faq-q-text {
-  outline: 1px solid var(--accent);
-  outline-offset: 4px;
-}
-.faq-q-marker {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  letter-spacing: .15em;
-  flex-shrink: 0;
-  width: 28px;
-}
-.faq-q-text {
-  flex: 1;
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: 19px;
-  line-height: 1.35;
-  color: var(--text);
-  transition: color .15s ease;
-}
-.faq-q-chevron {
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--text-muted);
-  font-size: 18px;
-  font-weight: 300;
-  width: 18px;
-  text-align: center;
-  transition: transform .2s ease, color .15s ease;
-  flex-shrink: 0;
-}
-.faq-item[open] .faq-q-chevron {
-  transform: rotate(45deg);
-  color: var(--accent);
-}
-.faq-answer {
-  padding: 0 0 22px 42px;
-  color: var(--text-dim);
-  font-size: 15.5px;
-  line-height: 1.65;
-}
-.faq-answer p { margin-bottom: 1em; }
-.faq-answer p:last-child { margin-bottom: 0; }
-.faq-answer strong { color: var(--text); font-weight: 500; }
-.faq-answer em { color: var(--text); font-style: italic; }
-.faq-answer .math {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  text-align: center;
-  font-size: 20px;
-  color: var(--text);
-  margin: 16px 0;
-}
-.faq-answer .cite {
-  display: inline-block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  vertical-align: super;
-  line-height: 1;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 1px 5px;
-  margin: 0 1px;
-  border-radius: 2px;
-  text-decoration: none;
-}
-.faq-answer .cite:hover { background: var(--accent); color: var(--bg); }
-
-@media (max-width: 600px) {
-  .faq-q-text { font-size: 17px; }
-  .faq-answer { padding-left: 28px; font-size: 14.5px; }
-  .faq-q-marker { width: 22px; }
-}
 
 /* ═══════════════════════════════════════════════════════════════
    v0.6 — Formula component + inline numeric typography
@@ -2423,7 +1351,7 @@ nav.top .links a.active { color: var(--accent); }
 }
 
 /* Operators / numerals / units that should stay upright in formulas */
-.formula-content .formula-op,
+
 .formula-content var,
 .formula-content .upright {
   font-style: normal;
@@ -2440,8 +1368,6 @@ nav.top .links a.active { color: var(--accent); }
 
 .formula-block.formula-small { margin: 24px auto; padding: 12px 24px; }
 .formula-block.formula-small .formula-content { font-size: 22px; }
-.formula-block.formula-large { padding: 28px 36px; }
-.formula-block.formula-large .formula-content { font-size: 40px; }
 
 /* Compact inline math — inside paragraphs / FAQ answers */
 .formula-inline {
@@ -2461,23 +1387,11 @@ nav.top .links a.active { color: var(--accent); }
 .formula-inline sup { vertical-align:  0.5em; }
 
 /* When a formula appears inside FAQ answers, scale down */
-.faq-answer .formula-block { margin: 18px 0; max-width: none; }
-.faq-answer .formula-block .formula-content { font-size: 22px; }
 
 @media (max-width: 600px) {
   .formula-content { font-size: 24px; }
   .formula-block { padding: 14px 18px; }
 }
-
-/* MiniReadout fix — sub/sup baseline now that we pass JSX, not HTML strings */
-.mini-readout-value sub,
-.mini-readout-value sup {
-  font-size: 0.7em;
-  line-height: 0;
-  font-family: 'JetBrains Mono', monospace;
-}
-.mini-readout-value sub { vertical-align: -0.35em; }
-.mini-readout-value sup { vertical-align:  0.45em; }
 
 /* Same fix for normal Readout (.ro-value) for any inline JSX numbers */
 .ro-value sub, .ro-value sup {
@@ -2491,181 +1405,6 @@ nav.top .links a.active { color: var(--accent); }
 /* ═══════════════════════════════════════════════════════════════
    v0.7 — compact chapter pills (11 chapters now)
 ═══════════════════════════════════════════════════════════════ */
-.chapter-pills {
-  gap: 14px;
-}
-.chapter-pills a {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  letter-spacing: .12em;
-  min-width: 22px;
-  text-align: center;
-  padding: 2px 0;
-}
-@media (max-width: 900px) {
-  .chapter-pills { gap: 9px; }
-  .chapter-pills a { font-size: 11px; }
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   v0.8 — Case-study section + cards
-═══════════════════════════════════════════════════════════════ */
-.case-studies {
-  max-width: 70ch;
-  margin: 100px auto 0;
-  padding-top: 36px;
-  border-top: 1px solid var(--border-strong);
-}
-.case-studies-head {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  letter-spacing: .25em;
-  text-transform: uppercase;
-  margin-bottom: 18px;
-  display: flex; align-items: center; gap: 14px;
-}
-.case-studies-head::before {
-  content: ''; width: 36px; height: 1px; background: var(--accent);
-}
-.case-studies-intro {
-  color: var(--text-dim);
-  font-size: 15px;
-  line-height: 1.55;
-  margin-bottom: 30px;
-  font-style: italic;
-  max-width: 55ch;
-}
-.case-studies-list {
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
-}
-
-/* Individual case-study card */
-.case-study {
-  background: var(--bg-card);
-  border: 1px solid var(--border-strong);
-  border-radius: 4px;
-  padding: 30px 32px 26px;
-  position: relative;
-  overflow: hidden;
-}
-.case-study::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 3px; height: 100%;
-  background: var(--accent);
-  opacity: .8;
-}
-.case-head { margin-bottom: 20px; }
-.case-tag {
-  display: inline-block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-  padding: 2px 8px;
-  background: var(--accent-soft);
-  border-radius: 2px;
-}
-.case-title {
-  font-family: 'Fraunces', serif;
-  font-weight: 400;
-  font-style: italic;
-  font-size: 26px;
-  line-height: 1.2;
-  letter-spacing: -.015em;
-  color: var(--text);
-  margin: 0 0 8px;
-}
-.case-title em { color: var(--accent); }
-.case-summary {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: 17px;
-  line-height: 1.45;
-  color: var(--text-dim);
-  margin: 0;
-}
-.case-body {
-  font-size: 15.5px;
-  line-height: 1.65;
-  color: var(--text-dim);
-}
-.case-body p { margin-bottom: 1em; }
-.case-body p:last-child { margin-bottom: 0; }
-.case-body strong { color: var(--text); font-weight: 500; }
-.case-body em { color: var(--text); font-style: italic; }
-.case-body .math {
-  font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
-  font-style: italic;
-  font-size: 18px;
-  text-align: center;
-  margin: 14px 0;
-  color: var(--text);
-}
-.case-body .cite {
-  display: inline-block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  vertical-align: super;
-  line-height: 0;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 1px 5px;
-  margin: 0 1px;
-  border-radius: 2px;
-  text-decoration: none;
-}
-.case-body .cite:hover { background: var(--accent); color: var(--bg); }
-.case-body .formula-block {
-  margin: 16px 0;
-  padding: 12px 18px;
-  max-width: none;
-  border-color: var(--border);
-}
-.case-body .formula-block .formula-content { font-size: 22px; }
-
-/* Spec sheet (key numbers, optional) */
-.case-specs {
-  margin: 24px 0 0;
-  padding: 18px 22px;
-  border: 1px solid var(--border);
-  background: var(--bg-elevated);
-  border-radius: 3px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 14px 26px;
-}
-.case-spec-row {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.case-spec-row dt {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: .15em;
-  text-transform: uppercase;
-}
-.case-spec-row dd {
-  margin: 0;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  color: var(--accent);
-  letter-spacing: .02em;
-}
-
-@media (max-width: 600px) {
-  .case-study { padding: 22px 20px; }
-  .case-title { font-size: 22px; }
-}
 
 /* ═══════════════════════════════════════════════════════════════
    v0.9 — Try-it-yourself exercises + glossary popovers
@@ -2826,207 +1565,7 @@ nav.top .links a.active { color: var(--accent); }
    Visually quieter than the title so it doesn't compete.
    ──────────────────────────────────────────────────────────────── */
 
-.chapter-syllabus-card {
-  margin: 28px 0 36px;
-  padding: 20px 22px 22px;
-  background: linear-gradient(180deg,
-    rgba(255, 255, 255, 0.015),
-    rgba(255, 255, 255, 0.005));
-  border: 1px solid var(--border);
-  border-left: 2px solid var(--accent-soft);
-  border-radius: 6px;
-}
-
-.chapter-syllabus-card-head {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
-}
-.chapter-syllabus-card-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-.chapter-syllabus-card-chapter {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11.5px;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-}
-.chapter-syllabus-card-punchline {
-  margin: 4px 0 16px;
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-size: 17px;
-  line-height: 1.5;
-  color: var(--text);
-}
-
-.chapter-syllabus-card-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px 32px;
-  align-items: flex-start;
-  margin-bottom: 14px;
-}
-.syllabus-stat {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.syllabus-stat-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-.syllabus-stat-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
-  color: var(--text);
-}
-
-.chapter-syllabus-card-tracks { display: flex; flex-direction: column; }
-.chapter-syllabus-card-prereqs { margin-bottom: 14px; }
-
-.chapter-syllabus-card-badge-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 8px;
-}
-
-.syllabus-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11.5px;
-  letter-spacing: 0.02em;
-  color: var(--text-dim);
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  white-space: nowrap;
-}
-.syllabus-badge-default { /* base */ }
-.syllabus-badge-teal {
-  color: var(--teal);
-  border-color: rgba(108, 197, 194, 0.28);
-  background: rgba(108, 197, 194, 0.06);
-}
-.syllabus-badge-accent {
-  color: var(--accent);
-  border-color: var(--accent-soft);
-  background: rgba(255, 107, 42, 0.06);
-}
-.syllabus-badge-pink {
-  color: var(--pink);
-  border-color: rgba(255, 59, 110, 0.28);
-  background: rgba(255, 59, 110, 0.06);
-}
-.syllabus-badge-link {
-  text-decoration: none;
-  color: var(--text-dim);
-  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
-}
-.syllabus-badge-link:hover {
-  color: var(--text);
-  border-color: var(--border-strong);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.chapter-syllabus-card-objectives {
-  margin-top: 4px;
-}
-.chapter-syllabus-card-objectives ul {
-  margin: 6px 0 0;
-  padding-left: 20px;
-  list-style: disc;
-  color: var(--text-dim);
-}
-.chapter-syllabus-card-objectives li {
-  font-size: 14.5px;
-  line-height: 1.55;
-  margin-bottom: 4px;
-}
-
-@media (max-width: 600px) {
-  .chapter-syllabus-card { padding: 16px 16px 18px; }
-  .chapter-syllabus-card-punchline { font-size: 15.5px; }
-  .chapter-syllabus-card-stats { gap: 18px 22px; }
-  .chapter-syllabus-card-objectives li { font-size: 13.5px; }
-}
-
 /* ── Mark-as-complete (chapter footer) ── */
-.chap-complete {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin: 32px 0 24px;
-  padding: 18px 22px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-}
-.chap-complete-btn {
-  background: var(--accent);
-  color: var(--bg);
-  border: none;
-  padding: 10px 22px;
-  border-radius: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background .15s ease, opacity .15s ease;
-}
-.chap-complete-btn:hover { background: var(--accent-glow); }
-.chap-complete-btn.is-complete,
-.chap-complete-btn:disabled {
-  background: transparent;
-  color: var(--teal);
-  border: 1px solid var(--teal);
-  cursor: default;
-}
-.chap-complete-link {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: .12em;
-  text-decoration: none;
-}
-.chap-complete-link:hover { color: var(--accent); }
-
-.chap-toast {
-  position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--bg-elevated);
-  border: 1px solid var(--teal);
-  color: var(--teal);
-  padding: 10px 18px;
-  border-radius: 999px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  z-index: 1000;
-  animation: chap-toast-in .25s ease-out;
-  box-shadow: 0 8px 24px rgba(0,0,0,.4);
-}
 @keyframes chap-toast-in {
   from { opacity: 0; transform: translate(-50%, 8px); }
   to   { opacity: 1; transform: translate(-50%, 0); }

@@ -2,6 +2,35 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import { Link } from '@tanstack/react-router';
 
+const DEMO_CARD =
+  'my-[50px] mx-[-20px] min-[900px]:mx-[-50px] bg-bg-card border border-border-strong rounded-3 overflow-hidden [content-visibility:auto] [contain-intrinsic-size:620px]';
+const DEMO_HEAD =
+  'flex items-baseline gap-[16px] py-[16px] px-[22px] border-b border-border bg-bg-elevated flex-wrap';
+const DEMO_FIG =
+  'font-3 text-[10px] text-accent tracking-[.22em] uppercase';
+const DEMO_TITLE =
+  'font-1 text-[14px] text-text font-medium flex-1';
+const DEMO_DEEPER =
+  'font-3 text-[10px] text-text-muted tracking-[.15em] uppercase no-underline border-b border-dotted border-text-muted hover:text-accent hover:border-accent';
+const DEMO_QUESTION =
+  'py-[12px] px-[22px] font-2 italic font-light text-[17px] text-text border-b border-border bg-accent-soft';
+const DEMO_BODY =
+  'bg-canvas-bg [contain:layout_paint_style] [&_canvas]:block [&_canvas]:w-full';
+const DEMO_BODY_PENDING = 'min-h-[320px]';
+const DEMO_CAPTION =
+  'py-[14px] px-[22px] text-[13px] text-text-muted italic leading-[1.5] border-t border-border';
+const DEMO_CONTROLS =
+  'flex flex-wrap gap-y-[18px] gap-x-[28px] items-center py-[14px] px-[22px] bg-bg-elevated border-t border-border';
+const MINI_SLIDER_VALUE =
+  'font-3 text-[11px] text-accent tracking-[.04em]';
+const MINI_READOUT =
+  'inline-flex items-baseline gap-[8px] font-3 text-[11px]';
+const MINI_READOUT_LABEL =
+  'text-text-muted uppercase tracking-[.12em]';
+const MINI_READOUT_VALUE =
+  'text-accent text-[13px] [&_sub]:text-[.7em] [&_sup]:text-[.7em] [&_sub]:leading-none [&_sup]:leading-none [&_sub]:font-3 [&_sup]:font-3 [&_sub]:align-[-.35em] [&_sup]:align-[.45em]';
+const MINI_READOUT_UNIT = 'text-text-muted text-[10px]';
+
 interface DemoProps {
   /** Optional figure number, e.g. "Fig. 1.3" */
   figure?: string;
@@ -49,21 +78,21 @@ export function Demo({ figure, title, question, children, caption, deeperLab }: 
   }, []);
 
   return (
-    <figure ref={figureRef} className="demo">
-      <div className="demo-head">
-        <span className="demo-fig">{figure ?? 'Fig.'}</span>
-        <span className="demo-title">{title}</span>
+    <figure ref={figureRef} className={DEMO_CARD}>
+      <div className={DEMO_HEAD}>
+        <span className={DEMO_FIG}>{figure ?? 'Fig.'}</span>
+        <span className={DEMO_TITLE}>{title}</span>
         {deeperLab && (
-          <Link to="/labs/$slug" params={{ slug: deeperLab.slug }} className="demo-deeper">
+          <Link to="/labs/$slug" params={{ slug: deeperLab.slug }} className={DEMO_DEEPER}>
             {deeperLab.label} →
           </Link>
         )}
       </div>
-      <div className="demo-question">{question}</div>
-      <div className={shouldRenderBody ? 'demo-body' : 'demo-body demo-body-pending'}>
+      <div className={DEMO_QUESTION}>{question}</div>
+      <div className={shouldRenderBody ? DEMO_BODY : `${DEMO_BODY} ${DEMO_BODY_PENDING}`}>
         {shouldRenderBody ? children : null}
       </div>
-      {caption && <figcaption className="demo-caption">{caption}</figcaption>}
+      {caption && <figcaption className={DEMO_CAPTION}>{caption}</figcaption>}
     </figure>
   );
 }
@@ -73,7 +102,7 @@ interface DemoControlsProps {
 }
 /** Bottom strip of a demo card — small controls (slider, toggle) sit here. */
 export function DemoControls({ children }: DemoControlsProps) {
-  return <div className="demo-controls">{children}</div>;
+  return <div className={DEMO_CONTROLS}>{children}</div>;
 }
 
 interface MiniSliderProps {
@@ -101,7 +130,7 @@ export function MiniSlider({ label, value, min, max, step = 0.01, format, onChan
         onChange={e => onChange(parseFloat(e.target.value))}
         style={{ ['--pct' as string]: `${pct}%` }}
       />
-      <span className="mini-slider-value">{format ? format(value) : value.toFixed(2)}</span>
+      <span className={MINI_SLIDER_VALUE}>{format ? format(value) : value.toFixed(2)}</span>
     </label>
   );
 }
@@ -131,10 +160,10 @@ interface MiniReadoutProps {
 }
 export function MiniReadout({ label, value, unit }: MiniReadoutProps) {
   return (
-    <div className="mini-readout">
-      <span className="mini-readout-label">{label}</span>
-      <span className="mini-readout-value">
-        {value}{unit && <span className="mini-readout-unit"> {unit}</span>}
+    <div className={MINI_READOUT}>
+      <span className={MINI_READOUT_LABEL}>{label}</span>
+      <span className={MINI_READOUT_VALUE}>
+        {value}{unit && <span className={MINI_READOUT_UNIT}> {unit}</span>}
       </span>
     </div>
   );
