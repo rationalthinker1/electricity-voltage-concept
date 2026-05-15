@@ -97,13 +97,13 @@ export function SyllabusCard({ chapter }: SyllabusCardProps) {
       )}
 
       {objectives && objectives.length > 0 && (
-        <div className="mt-sm [&_ul]:mt-sm [&_ul]:mb-0 [&_ul]:pl-lg [&_ul]:list-disc [&_ul]:text-text-dim [&_li]:text-5 max-sm:[&_li]:text-4 [&_li]:leading-4 [&_li]:mb-sm">
-          <div className="eyebrow-muted text-1 mb-sm">
+        <div className="mt-sm">
+          <div className="eyebrow-muted text-3 mb-sm">
             After this chapter you will be able to:
           </div>
-          <ul>
+          <ul className="mt-sm mb-0 pl-lg list-disc text-text-dim">
             {objectives.map((o, i) => (
-              <li key={i}>{o}</li>
+              <li key={i} className="text-5 max-sm:text-4 leading-4 mb-sm">{o}</li>
             ))}
           </ul>
         </div>

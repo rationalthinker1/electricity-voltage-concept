@@ -407,8 +407,12 @@ function ChapterRow({
   return (
     <tr>
       <td className="py-md px-lg border-b border-border font-3 text-2 text-text-muted">{chapter.number}</td>
-      <td className="py-md px-lg border-b border-border font-1 text-4 [&_a]:text-text [&_a]:no-underline [&_a]:border-b [&_a]:border-dotted [&_a]:border-transparent [&_a:hover]:border-accent [&_a:hover]:text-accent">
-        <Link to="/textbook/$chapterSlug" params={{ chapterSlug: chapter.slug }}>
+      <td className="py-md px-lg border-b border-border font-1 text-4">
+        <Link
+          to="/textbook/$chapterSlug"
+          params={{ chapterSlug: chapter.slug }}
+          className="text-text no-underline border-b border-dotted border-transparent hover:border-accent hover:text-accent"
+        >
           {chapter.title}
         </Link>
       </td>

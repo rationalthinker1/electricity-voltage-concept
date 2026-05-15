@@ -61,8 +61,8 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-2 py-xl px-3xl flex justify-between items-center border-b border-border bg-[linear-gradient(180deg,var(--nav-bg-start),var(--nav-bg-end))] backdrop-blur-[12px] max-md:py-lg max-md:px-xl max-md:flex-wrap max-md:gap-md">
-      <Link to="/" className="title-display font-light text-7 tracking-1 no-underline [&_span]:text-accent">
-        Field <span>·</span> Theory
+      <Link to="/" className="title-display font-light text-7 tracking-1 no-underline">
+        Field <span className="text-accent">·</span> Theory
       </Link>
       <div className="flex gap-md items-center max-lg:gap-sm max-md:gap-md">
         <div ref={chaptersMenuRef} className="relative">

@@ -80,14 +80,20 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
   }
 
   return (
-    <article className="chapter-page">
+    <article className="mx-auto pt-5xl px-3xl pb-4xl max-w-[1080px]">
       <div className="eyebrow-rule mb-xl">Chapter {chapter.number}</div>
-      <h1 dangerouslySetInnerHTML={{ __html: chapter.title }} />
-      <p className="chap-deck" dangerouslySetInnerHTML={{ __html: chapter.subtitle }} />
+      <h1
+        className="font-2 font-light leading-1 mb-xl max-w-[18ch] text-[clamp(48px,7vw,86px)] tracking-[-.03em] [&_em]:italic [&_em]:text-accent [&_em]:font-normal"
+        dangerouslySetInnerHTML={{ __html: chapter.title }}
+      />
+      <p
+        className="font-2 italic font-light leading-3 max-w-[50ch] pl-xl mb-3xl text-text-dim text-[clamp(22px,2.4vw,28px)] border-l-2 border-accent"
+        dangerouslySetInnerHTML={{ __html: chapter.subtitle }}
+      />
 
       <SyllabusCard chapter={chapter} />
 
-      <div className="chapter-narrative">{children}</div>
+      <div className="mx-auto mt-xl text-6 leading-5 text-text-dim [&>p]:mb-prose-3 [&>p:first-of-type]:first-letter:font-2 [&>p:first-of-type]:first-letter:font-light [&>p:first-of-type]:first-letter:text-[4em] [&>p:first-of-type]:first-letter:leading-none [&>p:first-of-type]:first-letter:float-left [&>p:first-of-type]:first-letter:m-[4px_12px_-4px_0] [&>p:first-of-type]:first-letter:text-accent [&_h2]:font-2 [&_h2]:font-light [&_h2]:italic [&_h2]:text-[clamp(28px,3.5vw,42px)] [&_h2]:leading-1 [&_h2]:tracking-1 [&_h2]:text-text [&_h2]:mt-3xl [&_h2]:mb-2xl [&_h2]:max-w-[28ch] [&_h2_em]:text-accent [&_h3]:font-2 [&_h3]:font-medium [&_h3]:text-4 [&_h3]:uppercase [&_h3]:tracking-4 [&_h3]:text-accent [&_h3]:mt-xl [&_h3]:mb-[0.875rem] [&_strong]:text-text [&_strong]:font-medium [&_em]:italic [&_em]:text-text">{children}</div>
 
       {labs.length > 0 && (
         <aside className="mx-auto pt-2xl">
@@ -134,8 +140,8 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
         <div className="mt-2xl">
           {quizStatus.passed ? (
             <div className="flex items-center justify-between gap-lg py-lg px-lg my-xl card-surface bg-bg-elevated border-l-3 border-l-teal font-1 text-5 text-text">
-              <div className="flex-1 [&_strong]:font-3 [&_strong]:text-teal">
-                Quiz passed (<strong>{Math.round(quizStatus.bestScore * 100)}%</strong>).
+              <div className="flex-1">
+                Quiz passed (<strong className="font-3 text-teal">{Math.round(quizStatus.bestScore * 100)}%</strong>).
                 You&rsquo;ve already met the mastery threshold for this chapter.
               </div>
               <Link

@@ -1,7 +1,6 @@
 node_modules/
 .DS_Store
 *.log
-className_duplicates_report.*
 .vscode/
 
 # Vite + TanStack Router
@@ -11,4 +10,6 @@ src/routeTree.gen.ts
 .tanstack/
 *.tsbuildinfo
 *.mp4
-main_css_single_component_classes.md
+
+# tw-cleanup audit reports — toolkit at ~/.config/claude/tailwind-cleanup/
+tailwind-cleanup-reports/

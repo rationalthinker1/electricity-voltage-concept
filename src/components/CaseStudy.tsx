@@ -22,7 +22,7 @@ export function CaseStudy({ tag, title, summary, children, specs }: CaseStudyPro
   return (
     <article className="bg-bg-card border border-border-strong rounded-3 py-2xl px-2xl pb-xl relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:w-xxs before:h-full before:bg-accent before:opacity-80 max-sm:py-xl max-sm:px-lg">
       <header className="mb-lg">
-        {tag && <span className="inline-block font-3 text-1 text-accent tracking-4 uppercase mb-md py-xxs px-md bg-accent-soft rounded-1">{tag}</span>}
+        {tag && <span className="inline-block font-3 text-6 text-accent tracking-4 uppercase mb-md py-xxs px-md bg-accent-soft rounded-1">{tag}</span>}
         <h3 className="font-2 font-normal italic text-8 max-sm:text-8 leading-2 tracking-1 text-text mt-0 mb-md [&_em]:text-accent">{title}</h3>
         {summary && <p className="font-2 italic font-light text-6 leading-3 text-text-dim m-0">{summary}</p>}
       </header>
@@ -30,9 +30,9 @@ export function CaseStudy({ tag, title, summary, children, specs }: CaseStudyPro
       {specs && specs.length > 0 && (
         <dl className="mt-xl mb-0 py-lg px-xl border border-border bg-bg-elevated rounded-2 grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-y-md gap-x-xl">
           {specs.map((s, i) => (
-            <div className="flex flex-col gap-xs [&_dt]:font-3 [&_dt]:text-1 [&_dt]:text-text-muted [&_dt]:tracking-3 [&_dt]:uppercase [&_dd]:m-0 [&_dd]:font-3 [&_dd]:text-4 [&_dd]:text-accent [&_dd]:tracking-normal" key={i}>
-              <dt>{s.label}</dt>
-              <dd>{s.value}</dd>
+            <div className="flex flex-col gap-xs" key={i}>
+              <dt className="font-3 text-1 text-text-muted tracking-3 uppercase">{s.label}</dt>
+              <dd className="m-0 font-3 text-4 text-accent tracking-normal">{s.value}</dd>
             </div>
           ))}
         </dl>
