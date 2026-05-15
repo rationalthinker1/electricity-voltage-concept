@@ -15,7 +15,7 @@ function Reference() {
       key={lab.slug}
       to="/labs/$slug"
       params={{ slug: lab.slug }}
-      className="bg-bg py-2xl px-2xl no-underline text-inherit flex flex-col gap-md transition-colors relative hover:bg-bg-card-hover"
+      className="nav-item flex flex-col gap-md relative"
     >
       <span className="font-3 text-1 text-text-muted tracking-4 uppercase">Lab {lab.number}</span>
       <span

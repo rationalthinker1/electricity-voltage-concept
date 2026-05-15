@@ -42,7 +42,7 @@ export function Formula({ children, caption, size = 'normal' }: FormulaProps) {
       <div className={`formula-content font-4 [font-style:italic] font-normal leading-4 tracking-normal text-text [font-feature-settings:"ss01","lnum"] [&_sub]:text-[.62em] [&_sub]:italic [&_sub]:leading-none [&_sub]:relative [&_sub]:tracking-normal [&_sub]:align-[-.32em] [&_sup]:text-[.62em] [&_sup]:italic [&_sup]:leading-none [&_sup]:relative [&_sup]:tracking-normal [&_sup]:align-[.55em] [&_var]:not-italic [&_.upright]:not-italic [&_.formula-var]:text-accent [&_.formula-var]:italic max-sm:text-8 ${size === 'small' ? 'text-8' : 'text-8'}`}>
         {children}
       </div>
-      {caption && <div className="formula-caption mt-md font-3 text-1 tracking-4 uppercase text-text-muted">{caption}</div>}
+      {caption && <div className="formula-caption mt-md eyebrow-muted text-1 tracking-4">{caption}</div>}
     </div>
   );
 }
@@ -64,7 +64,7 @@ export function FormulaHTML({ html, caption, size = 'normal' }: FormulaHTMLProps
         className={`formula-content font-4 [font-style:italic] font-normal leading-4 tracking-normal text-text [font-feature-settings:"ss01","lnum"] [&_sub]:text-[.62em] [&_sub]:italic [&_sub]:leading-none [&_sub]:relative [&_sub]:tracking-normal [&_sub]:align-[-.32em] [&_sup]:text-[.62em] [&_sup]:italic [&_sup]:leading-none [&_sup]:relative [&_sup]:tracking-normal [&_sup]:align-[.55em] [&_var]:not-italic [&_.upright]:not-italic [&_.formula-var]:text-accent [&_.formula-var]:italic max-sm:text-8 ${size === 'small' ? 'text-8' : 'text-8'}`}
         dangerouslySetInnerHTML={{ __html: html }}
       />
-      {caption && <div className="formula-caption mt-md font-3 text-1 tracking-4 uppercase text-text-muted">{caption}</div>}
+      {caption && <div className="formula-caption mt-md eyebrow-muted text-1 tracking-4">{caption}</div>}
     </div>
   );
 }

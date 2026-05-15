@@ -27,7 +27,7 @@ export function TryIt({ question, answer, hint, tag }: TryItProps) {
       <div className="mb-lg">
         <span className="font-3 text-1 text-teal tracking-4 uppercase py-xxs px-md bg-teal-soft rounded-1">{tag ?? 'Try it'}</span>
       </div>
-      <div className="font-2 italic font-light text-7 leading-3 text-text mb-md">{question}</div>
+      <div className="title-display font-light text-7 leading-3 mb-md">{question}</div>
       {hint && <div className="text-4 text-text-muted mb-lg italic">{hint}</div>}
       <button
         type="button"

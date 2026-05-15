@@ -92,7 +92,10 @@
   --text-3:  0.75rem;    /* 12px */
   --text-4:  0.8125rem;  /* 13px */
   --text-5:  0.875rem;   /* 14px */
-  --text-6:  0.9375rem;  /* 15px */
+  --text-6:  1.0625rem;  /* 17px — project body default; matches the
+                            17px set on <body> and restores chapter /
+                            lab / case-study prose to its original
+                            reading size. */
   --text-7:  1.125rem;   /* 18px */
   --text-8:  1.5rem;     /* 24px */
   --text-9:  2.25rem;    /* 36px */
@@ -364,18 +367,19 @@ body::before {
   .body-copy {
     @apply font-1 text-6 leading-4 text-text-dim;
   }
-  .eyebrow-rule {
-    @apply font-3 text-2 tracking-4 uppercase mb-lg flex items-center gap-md;
-    color: var(--accent);
-  }
-  .eyebrow-rule::before {
-    content: '';
-    width: 36px;
-    height: 1px;
-    background: var(--accent);
-  }
   .card-surface {
     @apply bg-color-3 border border-border-1 rounded-5;
+  }
+
+  /* Eyebrow with accent rule — short horizontal stripe before an
+     uppercase accent label. Repeats across chapter headers, section
+     headers (Sources, Case studies, FAQ), Hero, and the quiz route.
+     Size-agnostic and margin-agnostic: callers add `text-2` for the
+     small Hero / route variant and `mb-{lg|xl|2xl}` for breathing
+     room. */
+  .eyebrow-rule {
+    @apply flex items-center gap-md font-3 tracking-4 uppercase text-accent
+           before:content-[''] before:w-icon-lg before:h-px before:bg-accent;
   }
 
   /* Eyebrow text — same shape as .eyebrow-muted but on the dim text
@@ -530,15 +534,8 @@ footer {
   border-top: 1px solid var(--border);
 }
 .colophon {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 30px;
-  border-top: 1px solid var(--border);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: .2em;
-  text-transform: uppercase;
+  @apply flex justify-between pt-2xl border-t border-border
+         font-3 text-1 tracking-4 uppercase text-text-muted;
 }
 
 @media (max-width: 760px) {
@@ -555,33 +552,18 @@ footer {
 .reveal.in { opacity: 1; transform: translateY(0); }
 
 /* ─── Slider control panel (used by Slider + several lab pages) ─── */
-.slider-group { margin-bottom: 22px; }
-.slider-group:last-child { margin-bottom: 0; }
+.slider-group { @apply mb-xl last:mb-0; }
 .slider-group .slider-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 8px;
+  @apply flex justify-between items-baseline mb-sm;
 }
 .slider-group .slider-label {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  color: var(--text);
-  font-weight: 500;
+  @apply font-1 text-4 text-text font-medium;
 }
 .slider-group .slider-label .sym {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 400;
-  color: var(--accent);
-  margin-right: 6px;
-  font-size: 16px;
+  @apply font-2 italic font-normal text-accent mr-sm text-5;
 }
 .slider-group .slider-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  color: var(--accent);
-  letter-spacing: .04em;
+  @apply font-3 text-4 text-accent tracking-2;
 }
 
 /* Native range styling. Used by both .slider-group and .mini-slider. */
@@ -655,128 +637,64 @@ select.material-select:focus { outline: none; border-color: var(--accent); }
 
 /* ─── Buttons (.btn used by PredictThenObserve) ─── */
 .btn {
-  background: transparent;
-  border: 1px solid var(--border-strong);
-  color: var(--text-dim);
-  padding: 8px 16px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all .15s ease;
-  border-radius: 2px;
+  @apply bg-transparent border border-border-strong text-text-dim
+         py-sm px-lg font-3 text-2 tracking-3 uppercase
+         cursor-pointer rounded-1 transition-all
+         hover:text-text hover:border-text-dim;
 }
-.btn:hover { color: var(--text); border-color: var(--text-dim); }
 .btn.active {
-  background: var(--accent);
-  color: var(--bg);
-  border-color: var(--accent);
-  font-weight: 500;
+  @apply bg-accent text-bg border-accent font-medium;
 }
 
 /* ─── Book front-cover hero (index, reference) ─── */
 .book-hero {
-  padding: 180px 40px 80px;
-  max-width: 1280px;
-  margin: 0 auto;
+  @apply mx-auto pt-[180px] px-3xl pb-4xl max-w-[1280px];
 }
 .book-hero .imprint {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .25em;
-  margin-bottom: 28px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
+  @apply flex items-center gap-md mb-2xl
+         font-3 text-2 uppercase tracking-4 text-accent;
 }
 .book-hero .imprint::before {
   content: '';
-  width: 40px; height: 1px; background: var(--accent);
+  @apply w-icon-lg bg-accent;
+  height: 1px;
 }
 .book-hero h1 {
-  font-family: 'Fraunces', serif;
-  font-weight: 300;
-  font-size: clamp(56px, 9vw, 124px);
-  line-height: .95;
-  letter-spacing: -.035em;
-  max-width: 14ch;
-  margin-bottom: 36px;
+  @apply font-2 font-light leading-1 mb-2xl max-w-[14ch]
+         text-[clamp(56px,9vw,124px)] tracking-[-.035em];
 }
-.book-hero h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
+.book-hero h1 em { @apply italic text-accent font-normal; }
 .book-hero .lede {
-  font-size: 21px;
-  line-height: 1.55;
-  max-width: 60ch;
-  color: var(--text-dim);
-  font-weight: 300;
+  @apply font-light leading-4 max-w-col text-text-dim text-[21px];
 }
-.book-hero .lede strong { color: var(--text); font-weight: 500; }
+.book-hero .lede strong { @apply text-text font-medium; }
 
 /* Chapter list (TOC container in index, reference) */
 .toc {
-  padding: 80px 40px 140px;
-  max-width: 1280px;
-  margin: 0 auto;
+  @apply mx-auto pt-4xl px-3xl pb-5xl max-w-[1280px];
 }
 
 /* ─── Narrative chapter page (ChapterShell, quiz route) ─── */
 .chapter-page {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 130px 40px 80px;
-}
-.chapter-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  letter-spacing: .25em;
-  text-transform: uppercase;
-  margin-bottom: 24px;
-  display: flex; align-items: center; gap: 14px;
-}
-.chapter-eyebrow::before {
-  content: ''; width: 36px; height: 1px; background: var(--accent);
+  @apply mx-auto pt-5xl px-3xl pb-4xl max-w-[1080px];
 }
 .chapter-page h1 {
-  font-family: 'Fraunces', serif;
-  font-weight: 300;
-  font-size: clamp(48px, 7vw, 86px);
-  line-height: 1;
-  letter-spacing: -.03em;
-  margin-bottom: 26px;
-  max-width: 18ch;
+  @apply font-2 font-light leading-1 mb-xl max-w-[18ch]
+         text-[clamp(48px,7vw,86px)] tracking-[-.03em];
 }
-.chapter-page h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
+.chapter-page h1 em { @apply italic text-accent font-normal; }
 .chapter-page .chap-deck {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: clamp(22px, 2.4vw, 28px);
-  color: var(--text-dim);
-  line-height: 1.4;
-  max-width: 50ch;
-  margin-bottom: 70px;
-  border-left: 2px solid var(--accent);
-  padding-left: 24px;
+  @apply font-2 italic font-light leading-3 max-w-[50ch] pl-xl mb-5xl text-text-dim
+         text-[clamp(22px,2.4vw,28px)] border-l-2 border-accent;
 }
 
 /* ─── Mini slider / toggle (Demo controls + many demo files) ─── */
 .mini-slider {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 160px;
+  @apply flex flex-col gap-xs min-w-[160px];
   flex: 1 1 auto;
 }
 .mini-slider-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: .15em;
+  @apply font-3 text-1 text-text-muted uppercase tracking-3;
 }
 .mini-slider input[type="range"] { height: 18px; }
 .mini-slider input[type="range"]::-webkit-slider-thumb {
@@ -790,21 +708,11 @@ select.material-select:focus { outline: none; border-color: var(--accent); }
   border: 2px solid var(--bg-elevated);
 }
 .mini-toggle {
-  background: transparent;
-  border: 1px solid var(--border-strong);
-  color: var(--text-dim);
-  padding: 6px 12px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 2px;
+  @apply bg-transparent border border-border-strong text-text-dim
+         py-xs px-md font-3 text-1 tracking-3 uppercase cursor-pointer rounded-1;
 }
 .mini-toggle.on {
-  background: var(--accent);
-  color: var(--bg);
-  border-color: var(--accent);
+  @apply bg-accent text-bg border-accent;
 }
 
 /* ─── Mark-as-complete toast keyframe (ChapterShell) ─── */

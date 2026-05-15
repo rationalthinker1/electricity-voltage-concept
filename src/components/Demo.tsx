@@ -59,7 +59,7 @@ export function Demo({ figure, title, question, children, caption, deeperLab }: 
           </Link>
         )}
       </div>
-      <div className="py-lg px-xl font-2 italic font-light text-6 text-text border-b border-border bg-accent-soft">{question}</div>
+      <div className="title-display py-lg px-xl font-light text-6 border-b border-border bg-accent-soft">{question}</div>
       <div className={shouldRenderBody
         ? 'bg-canvas-bg [contain:layout_paint_style] [&_canvas]:block [&_canvas]:w-full'
         : 'bg-canvas-bg [contain:layout_paint_style] [&_canvas]:block [&_canvas]:w-full min-h-panel'}>

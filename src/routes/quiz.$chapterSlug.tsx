@@ -23,7 +23,7 @@ function QuizRoute() {
 
   return (
     <article className="chapter-page">
-      <div className="chapter-eyebrow">Mastery quiz &middot; Chapter {chapter.number}</div>
+      <div className="eyebrow-rule text-2 mb-xl">Mastery quiz &middot; Chapter {chapter.number}</div>
       <h1 dangerouslySetInnerHTML={{ __html: chapter.title }} />
       <p className="chap-deck">
         Answer the questions below to verify chapter mastery. Pass at the configured threshold and the

@@ -13,7 +13,7 @@ export function SourcesList({ ids }: SourcesListProps) {
   if (!ids.length) return null;
   return (
     <div className="reveal in  mb-4xl pt-2xl border-t border-border-strong [&_a]:text-text-dim [&_a]:no-underline [&_a]:border-b [&_a]:border-dotted [&_a]:border-text-muted [&_a]:break-words hover:[&_a]:text-accent hover:[&_a]:border-accent">
-      <div className="font-3 text-accent uppercase tracking-4 mb-xl flex items-center gap-md before:content-[''] before:w-icon-lg before:h-px before:bg-accent">Sources</div>
+      <div className="eyebrow-rule mb-xl">Sources</div>
       <ol className="list-none p-0 [counter-reset:src]">
         {ids.map(id => {
           const src = SOURCES[id];

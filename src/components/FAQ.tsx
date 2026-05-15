@@ -42,7 +42,7 @@ interface FAQProps {
 export function FAQ({ eyebrow = 'Frequently asked', intro, children }: FAQProps) {
   return (
     <section className="opacity-100 max-w-col-lg mx-auto mt-5xl mb-0 pt-2xl border-t border-color-border-strong">
-      <div className="font-3 text-accent uppercase tracking-4 mb-xl flex items-center gap-md before:content-[''] before:w-icon-lg before:h-px before:bg-accent">{eyebrow}</div>
+      <div className="eyebrow-rule mb-xl">{eyebrow}</div>
       {intro && <p className="text-text-dim text-6 leading-4 mb-2xl italic max-w-col">{intro}</p>}
       <div className="border-t border-border py-2 [&_>*+*]:border-t [&_>*+*]:border-border">{children}</div>
     </section>

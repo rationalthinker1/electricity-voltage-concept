@@ -81,7 +81,7 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
 
   return (
     <article className="chapter-page">
-      <div className="font-3 text-accent uppercase tracking-4 mb-xl flex items-center gap-md before:content-[''] before:w-icon-lg before:h-px before:bg-accent">Chapter {chapter.number}</div>
+      <div className="eyebrow-rule mb-xl">Chapter {chapter.number}</div>
       <h1 dangerouslySetInnerHTML={{ __html: chapter.title }} />
       <p className="chap-deck" dangerouslySetInnerHTML={{ __html: chapter.subtitle }} />
 
@@ -91,7 +91,7 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
 
       {labs.length > 0 && (
         <aside className="mx-auto pt-2xl">
-          <div className="font-3 text-accent uppercase tracking-4 mb-xl flex items-center gap-md before:content-[''] before:w-icon-lg before:h-px before:bg-accent">Go deeper · Related equation labs</div>
+          <div className="eyebrow-rule mb-xl">Go deeper · Related equation labs</div>
           {labs.map(l => (
             <Link
               key={l.slug}
@@ -163,25 +163,25 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
 
       <nav className="grid grid-cols-2 max-md:grid-cols-1 gap-px bg-border border border-border max-w-col-lg mx-auto mt-5xl mb-0">
         {prev ? (
-          <Link to="/textbook/$chapterSlug" params={{ chapterSlug: prev.slug }} className="bg-bg py-2xl px-2xl no-underline text-inherit transition-colors hover:bg-bg-card-hover">
-            <div className="font-3 text-1 text-text-muted uppercase tracking-4 mb-md">← Chapter {prev.number}</div>
-            <div className="font-2 italic font-light text-8 text-text">{prev.title}</div>
+          <Link to="/textbook/$chapterSlug" params={{ chapterSlug: prev.slug }} className="nav-item">
+            <div className="eyebrow-muted text-1 tracking-4 mb-md">← Chapter {prev.number}</div>
+            <div className="title-display font-light text-8">{prev.title}</div>
           </Link>
         ) : (
-          <Link to="/" className="bg-bg py-2xl px-2xl no-underline text-inherit transition-colors hover:bg-bg-card-hover">
-            <div className="font-3 text-1 text-text-muted uppercase tracking-4 mb-md">← Back</div>
-            <div className="font-2 italic font-light text-8 text-text">Contents</div>
+          <Link to="/" className="nav-item">
+            <div className="eyebrow-muted text-1 tracking-4 mb-md">← Back</div>
+            <div className="title-display font-light text-8">Contents</div>
           </Link>
         )}
         {next ? (
-          <Link to="/textbook/$chapterSlug" params={{ chapterSlug: next.slug }} className="bg-bg py-2xl px-2xl no-underline text-inherit transition-colors hover:bg-bg-card-hover text-right">
-            <div className="font-3 text-1 text-text-muted uppercase tracking-4 mb-md">Chapter {next.number} →</div>
-            <div className="font-2 italic font-light text-8 text-text">{next.title}</div>
+          <Link to="/textbook/$chapterSlug" params={{ chapterSlug: next.slug }} className="nav-item text-right">
+            <div className="eyebrow-muted text-1 tracking-4 mb-md">Chapter {next.number} →</div>
+            <div className="title-display font-light text-8">{next.title}</div>
           </Link>
         ) : (
-          <Link to="/reference" className="bg-bg py-2xl px-2xl no-underline text-inherit transition-colors hover:bg-bg-card-hover text-right">
-            <div className="font-3 text-1 text-text-muted uppercase tracking-4 mb-md">Appendix →</div>
-            <div className="font-2 italic font-light text-8 text-text">Equation labs</div>
+          <Link to="/reference" className="nav-item text-right">
+            <div className="eyebrow-muted text-1 tracking-4 mb-md">Appendix →</div>
+            <div className="title-display font-light text-8">Equation labs</div>
           </Link>
         )}
       </nav>
