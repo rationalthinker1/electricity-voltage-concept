@@ -30,7 +30,7 @@ export function Banner({
       )}
       role={variant === 'danger' || variant === 'warn' ? 'alert' : 'status'}
     >
-      {icon !== undefined && <span className="banner-icon text-[16px] leading-[1.4] shrink-0" aria-hidden="true">{icon}</span>}
+      {icon !== undefined && <span className="banner-icon text-[16px] leading-[1.4] shrink-0 mt-[2px]" aria-hidden="true">{icon}</span>}
       <div className="flex-1 min-w-0">{children}</div>
       {onDismiss && (
         <button

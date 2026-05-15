@@ -69,8 +69,8 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
           <button
             type="button"
             className={clsx(
-              'nav-pill inline-flex items-center gap-[6px] cursor-pointer bg-transparent border-0',
-              activeChapter && 'nav-pill-active',
+              'font-3 text-[12px] no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors hover:text-color-4 max-[900px]:text-[11px] max-[760px]:text-[10px] inline-flex items-center gap-[6px] cursor-pointer bg-transparent border-0',
+              activeChapter ? 'text-accent' : 'text-text-muted',
             )}
             aria-haspopup="menu"
             aria-expanded={chaptersOpen}
@@ -118,7 +118,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
         </div>
         <Link
           to="/reference"
-          className={clsx('nav-pill-divider', pathname === '/reference' && 'nav-pill-active')}
+          className={clsx('font-3 text-[12px] no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors hover:text-color-4 max-[900px]:text-[11px] max-[760px]:text-[10px] border-l border-border-2 pl-lg ml-[6px]', pathname === '/reference' ? 'text-accent' : 'text-text-muted')}
           title="Equation labs (appendix)"
         >
           Labs
@@ -126,35 +126,35 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
         <Link
           to="/labs/$slug"
           params={{ slug: 'circuit-builder' }}
-          className={clsx('nav-pill', pathname === '/labs/circuit-builder' && 'nav-pill-active')}
+          className={clsx('font-3 text-[12px] no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors hover:text-color-4 max-[900px]:text-[11px] max-[760px]:text-[10px]', pathname === '/labs/circuit-builder' ? 'text-accent' : 'text-text-muted')}
           title="Free-form circuit-builder sandbox"
         >
           Build
         </Link>
         <Link
           to="/map"
-          className={clsx('nav-pill', pathname === '/map' && 'nav-pill-active')}
+          className={clsx('font-3 text-[12px] no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors hover:text-color-4 max-[900px]:text-[11px] max-[760px]:text-[10px]', pathname === '/map' ? 'text-accent' : 'text-text-muted')}
           title="Course map · prerequisite DAG"
         >
           Map
         </Link>
         <Link
           to="/tracks"
-          className={clsx('nav-pill', pathname === '/tracks' && 'nav-pill-active')}
+          className={clsx('font-3 text-[12px] no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors hover:text-color-4 max-[900px]:text-[11px] max-[760px]:text-[10px]', pathname === '/tracks' ? 'text-accent' : 'text-text-muted')}
           title="Preset curriculum tracks"
         >
           Tracks
         </Link>
         <Link
           to="/capstones"
-          className={clsx('nav-pill', pathname.startsWith('/capstone') && 'nav-pill-active')}
+          className={clsx('font-3 text-[12px] no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors hover:text-color-4 max-[900px]:text-[11px] max-[760px]:text-[10px]', pathname.startsWith('/capstone') ? 'text-accent' : 'text-text-muted')}
           title="Capstone integration projects"
         >
           Capstones
         </Link>
         <Link
           to="/me"
-          className={clsx('nav-pill', pathname === '/me' && 'nav-pill-active')}
+          className={clsx('font-3 text-[12px] no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors hover:text-color-4 max-[900px]:text-[11px] max-[760px]:text-[10px]', pathname === '/me' ? 'text-accent' : 'text-text-muted')}
           title="Your reading progress"
         >
           Progress

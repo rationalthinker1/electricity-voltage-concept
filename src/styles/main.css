@@ -217,42 +217,6 @@ body::before {
   /* Containers — every demo / case-study / panel-style card derives from one
      of these three intensity levels. */
 
-  /* Inline chips — mono-uppercase pill labels. Used for chapter tags,
-     specs sheets, statuses, badges. */
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,0.04);
-    border-radius: 999px;
-    padding: 0.125rem 0.625rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-  }
-
-  /* Typography utilities. */
-
-  /* Section separator — a thin horizontal rule with vertical breathing room. */
-
-  /* Inline citation badge — small superscripted accent chip used by Cite. */
-
-  /* Inline keyboard glyph. */
-  .kbd {
-    display: inline-block;
-    padding: 0.05rem 0.4rem;
-    border: 1px solid var(--border-strong);
-    border-bottom-width: 2px;
-    border-radius: 4px;
-    background: var(--bg-elevated);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text);
-  }
-
   /* ═══════════════════════════════════════════════════════════════
      Semantic recipe layer — generalized, theme-aware recipes that
      compose Tailwind utilities via @apply. These are the names
@@ -294,24 +258,7 @@ body::before {
 
   /* — Pills / chips / badges — */
 
-  /* — Nav links (extracted from TopNav: 14-utility string × 7) — */
-  .nav-pill {
-    @apply font-3 text-[12px] text-text-muted no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors;
-  }
-  .nav-pill:hover { color: var(--color-4); }
-  .nav-pill-active { color: var(--accent); }
-  @media (max-width: 900px) { .nav-pill { @apply text-[11px]; } }
-  @media (max-width: 760px) { .nav-pill { @apply text-[10px]; } }
-
-  .nav-pill-divider {
-    @apply font-3 text-[12px] text-text-muted no-underline uppercase tracking-[.12em] min-w-[22px] text-center py-[2px] px-0 transition-colors border-l border-border-2 pl-lg ml-[6px];
-  }
-  .nav-pill-divider:hover { color: var(--color-4); }
-  @media (max-width: 900px) { .nav-pill-divider { @apply text-[11px]; } }
-  @media (max-width: 760px) { .nav-pill-divider { @apply text-[10px]; } }
-
   /* — Banners — */
-  .banner-icon { @apply shrink-0 mt-[2px]; }
 
   /* — Buttons / actions / links — */
 
@@ -325,15 +272,6 @@ body::before {
 }
 
 /* ─── Progress bar ─── */
-.progress {
-  position: fixed; top: 0; left: 0;
-  height: 2px; width: 0%;
-  background: var(--accent);
-  z-index: 999;
-  box-shadow: 0 0 12px var(--accent-glow);
-  transition: width .1s linear;
-}
-
 /* ─── Nav ─── */
 nav.top {
   position: fixed;
@@ -396,59 +334,6 @@ section {
   position: relative;
 }
 
-.wide {
-  max-width: none;
-  padding-left: 0; padding-right: 0;
-}
-
-.hero {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-top: 160px;
-  padding-bottom: 80px;
-  position: relative;
-}
-.hero .eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .25em;
-  margin-bottom: 28px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.hero .eyebrow::before {
-  content: '';
-  width: 36px; height: 1px;
-  background: var(--accent);
-}
-
-.hero h1 {
-  font-family: 'Fraunces', serif;
-  font-weight: 300;
-  font-size: clamp(56px, 9vw, 132px);
-  line-height: .95;
-  letter-spacing: -.035em;
-  max-width: 14ch;
-  margin-bottom: 40px;
-}
-.hero h1 em {
-  font-style: italic;
-  color: var(--accent);
-  font-weight: 400;
-}
-.hero .lede {
-  font-size: 22px;
-  line-height: 1.45;
-  max-width: 60ch;
-  color: var(--text-dim);
-  font-weight: 300;
-}
-.hero .lede strong { color: var(--text); font-weight: 500; }
 @keyframes scrollDown {
   0%, 100% { transform: translateY(0); opacity: .5; }
   50% { transform: translateY(8px); opacity: 1; }
@@ -537,16 +422,6 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
 }
 
-.slider-meta {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 4px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: .1em;
-}
-
 /* ─── Select / dropdown ─── */
 select.material-select {
   width: 100%;
@@ -570,42 +445,6 @@ select.material-select {
 select.material-select:focus { outline: none; border-color: var(--accent); }
 
 /* ─── Output readouts panel ─── */
-.readout {
-  padding: 14px 0;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 14px;
-}
-.readout:last-child { border-bottom: none; }
-.readout .ro-label {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  color: var(--text-dim);
-}
-.readout .ro-label .sym {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  color: var(--teal);
-  font-size: 16px;
-  margin-right: 4px;
-}
-.readout .ro-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
-  color: var(--text);
-  text-align: right;
-  letter-spacing: .02em;
-  white-space: nowrap;
-}
-.readout .ro-value .unit {
-  color: var(--text-muted);
-  font-size: 11px;
-  margin-left: 4px;
-  letter-spacing: .08em;
-}
-
 /* ─── Buttons ─── */
 .btn {
   background: transparent;
@@ -630,30 +469,6 @@ select.material-select:focus { outline: none; border-color: var(--accent); }
 
 /* ─── Equation card grid (legacy / for index) ─── */
 
-/* ─── Stats (used in index hero context) ─── */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--border);
-  margin: 60px 0;
-  border: 1px solid var(--border);
-}
-@media (max-width: 760px) { .stats { grid-template-columns: 1fr; } }
-
-/* ─── Viz card (legacy from original index) ─── */
-
-/* ─── Split layout ─── */
-.split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: start;
-}
-@media (max-width: 900px) {
-  .split { grid-template-columns: 1fr; gap: 50px; }
-}
-
 /* ─── Footer ─── */
 footer {
   padding: 100px 40px 60px;
@@ -661,19 +476,6 @@ footer {
   margin: 0 auto;
   border-top: 1px solid var(--border);
 }
-.refs {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  margin-bottom: 60px;
-}
-.ref { font-size: 13px; line-height: 1.55; }
-.ref a {
-  color: var(--text-dim);
-  text-decoration: none;
-  border-bottom: 1px dotted var(--text-muted);
-}
-.ref a:hover { color: var(--accent); border-color: var(--accent); }
 .colophon {
   display: flex;
   justify-content: space-between;
@@ -685,7 +487,6 @@ footer {
   letter-spacing: .2em;
   text-transform: uppercase;
 }
-@media (max-width: 760px) { .refs { grid-template-columns: 1fr; } }
 
 /* ─── Reveal anim ─── */
 .reveal {
@@ -696,42 +497,6 @@ footer {
 .reveal.in { opacity: 1; transform: translateY(0); }
 
 /* ─── Bottom nav (next/prev page) ─── */
-.page-nav {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  margin-top: 100px;
-}
-.page-nav a {
-  background: var(--bg);
-  padding: 36px 32px;
-  text-decoration: none;
-  color: inherit;
-  transition: background .15s ease;
-}
-.page-nav a:hover { background: var(--bg-card-hover); }
-.page-nav a .dir {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: .22em;
-  margin-bottom: 10px;
-}
-.page-nav a .dir.next { text-align: right; }
-.page-nav a .title {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: 24px;
-  color: var(--text);
-  letter-spacing: -.02em;
-}
-.page-nav a.next .title { text-align: right; }
-@media (max-width: 760px) { .page-nav { grid-template-columns: 1fr; } }
-
 @media (max-width: 760px) {
   section { padding: 90px 24px; }
   footer { padding: 60px 24px 40px; }
@@ -905,14 +670,6 @@ nav.top .links a.active { color: var(--accent); }
    v0.6 — Formula component + inline numeric typography
 ═══════════════════════════════════════════════════════════════ */
 
-/* Same fix for normal Readout (.ro-value) for any inline JSX numbers */
-.ro-value sub, .ro-value sup {
-  font-size: 0.7em;
-  line-height: 0;
-  font-family: 'JetBrains Mono', monospace;
-}
-.ro-value sub { vertical-align: -0.35em; }
-.ro-value sup { vertical-align:  0.45em; }
 
 /* ═══════════════════════════════════════════════════════════════
    v0.7 — compact chapter pills (11 chapters now)
@@ -922,71 +679,6 @@ nav.top .links a.active { color: var(--accent); }
    v0.9 — Try-it-yourself exercises + glossary popovers
 ═══════════════════════════════════════════════════════════════ */
 
-/* Glossary Term — inline dotted-underline with popover */
-.term {
-  position: relative;
-  cursor: help;
-  color: var(--text);
-  border-bottom: 1px dotted var(--accent);
-  padding-bottom: 1px;
-  outline: none;
-  font-style: inherit;
-}
-.term:hover, .term:focus, .term.open {
-  color: var(--accent);
-}
-.term-popover {
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
-  width: max-content;
-  max-width: 320px;
-  padding: 12px 16px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-strong);
-  border-left: 3px solid var(--accent);
-  border-radius: 3px;
-  font-family: 'DM Sans', sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 13.5px;
-  line-height: 1.5;
-  color: var(--text-dim);
-  letter-spacing: 0;
-  z-index: 50;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity .12s ease, visibility .12s ease;
-  pointer-events: none;
-  box-shadow: 0 4px 16px var(--shadow-strong);
-}
-.term.open .term-popover,
-.term:hover .term-popover,
-.term:focus .term-popover {
-  opacity: 1;
-  visibility: visible;
-}
-.term-popover strong { color: var(--text); font-weight: 500; }
-.term-popover em { color: var(--text); font-style: italic; }
-.term-popover::after {
-  /* downward-pointing triangle below the popover */
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0; height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 6px solid var(--bg-card);
-}
-
-@media (max-width: 600px) {
-  .term-popover { max-width: 240px; font-size: 12.5px; }
-  .tryit { padding: 16px 18px; }
-  .tryit-question { font-size: 17px; }
-}
 
 /* ────────────────────────────────────────────────────────────────
    Chapter syllabus card — at-a-glance course-shell metadata.

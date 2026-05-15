@@ -36,7 +36,7 @@ export function Term({ def, children }: TermProps) {
   return (
     <span
       ref={ref}
-      className={`term${open ? ' open' : ''}`}
+      className={`group/term relative cursor-help text-text border-b border-dotted border-accent pb-px outline-none italic-inherit hover:text-accent focus:text-accent ${open ? 'text-accent' : ''}`}
       onClick={() => setOpen(o => !o)}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
@@ -48,7 +48,11 @@ export function Term({ def, children }: TermProps) {
       aria-describedby={open ? id : undefined}
     >
       {children}
-      <span className="term-popover" id={id} role="tooltip">
+      <span
+        className={`absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 w-max max-w-[320px] py-[12px] px-[16px] bg-bg-card border border-border-strong border-l-[3px] border-l-accent rounded-2 font-1 not-italic font-normal text-[13.5px] leading-[1.5] text-text-dim tracking-normal z-50 transition-[opacity,visibility] duration-[120ms] pointer-events-none shadow-[0_4px_16px_var(--shadow-strong)] [&_strong]:text-text [&_strong]:font-medium [&_em]:text-text [&_em]:italic after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0 after:border-l-[6px] after:border-l-transparent after:border-r-[6px] after:border-r-transparent after:border-t-[6px] after:border-t-bg-card max-[600px]:max-w-[240px] max-[600px]:text-[12.5px] ${open ? 'opacity-100 visible' : 'opacity-0 invisible group-hover/term:opacity-100 group-hover/term:visible group-focus/term:opacity-100 group-focus/term:visible'}`}
+        id={id}
+        role="tooltip"
+      >
         {def}
       </span>
     </span>
