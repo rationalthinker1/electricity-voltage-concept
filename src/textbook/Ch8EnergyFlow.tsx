@@ -146,7 +146,7 @@ export default function Ch8EnergyFlow() {
         permeability of free space<Cite id="poynting-1884" in={SOURCES} />, a quantity now known as the{' '}
         <Term def={<><strong className="text-text font-medium">Poynting vector</strong> — the local electromagnetic energy-flux density, <em className="italic text-text">S = (1/μ₀) E × B</em>. SI units W/m². Points in the direction electromagnetic energy is flowing.</>}>Poynting vector</Term>:
       </p>
-      <Formula id="poynting-vector" />
+      <Formula large id="poynting-vector" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">S</strong> (a vector) is the local electromagnetic energy-flux density at a point in space,
         <strong className="text-text font-medium"> E</strong> is the local electric field (in V/m), <strong className="text-text font-medium">B</strong> is the local magnetic field

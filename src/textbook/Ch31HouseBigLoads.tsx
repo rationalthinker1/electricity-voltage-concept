@@ -63,7 +63,7 @@ export default function Ch31HouseBigLoads() {
         resistive loss. The relationships are the same Ohm's-law identities that have appeared in every
         chapter since Chapter 3 — combined here in a single argument.
       </p>
-      <Formula id="power-vi" />
+      <Formula large id="power-vi" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P</strong> is the real power delivered to a resistive load (in watts), <strong className="text-text font-medium">V</strong>{' '}
         is the RMS supply voltage at the appliance terminals (in volts), and <strong className="text-text font-medium">I</strong> is the RMS

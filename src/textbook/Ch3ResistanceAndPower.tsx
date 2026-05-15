@@ -73,7 +73,7 @@ export default function Ch3ResistanceAndPower() {
         Wrap that microscopic law up over a whole wire — a length <strong className="text-text font-medium">L</strong>, a cross-section <strong className="text-text font-medium">A</strong>,
         a uniform field along the axis — and you get the macroscopic version every electrical engineer carries around:
       </p>
-      <Formula large tex="R = \dfrac{L}{\sigma A}" d="ohms-law" />
+      <Formula large tex="R = \dfrac{L}{\sigma A}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V</strong> is the voltage drop end-to-end (in volts), <strong className="text-text font-medium">I</strong> is the current through the wire
         (in amperes), and <strong className="text-text font-medium">R</strong> is the wire's resistance (in ohms, Ω = V/A).

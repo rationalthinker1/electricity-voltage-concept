@@ -63,7 +63,7 @@ export default function Ch17Generators() {
       <p className="mb-prose-3">
         The bedrock physics is <Term def="A time-changing magnetic flux through a closed loop induces an EMF around that loop equal to −dΦ/dt. The minus sign — Lenz's law — ensures that the induced current opposes the change that created it. Source of all electric power generation.">Faraday's law of induction</Term>:
       </p>
-      <Formula id="faraday-law" />
+      <Formula large id="faraday-law" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">ℰ</strong> is the EMF induced around the closed loop (in volts),
         <strong className="text-text font-medium"> Φ</strong> is the magnetic flux through the loop (in webers, equivalently T·m²),

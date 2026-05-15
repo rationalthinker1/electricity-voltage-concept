@@ -380,7 +380,7 @@ export default function GaussLab() {
       </p>
 
       <h3 className="lab-section-h3">Formula</h3>
-      <Formula id="gauss-law" />
+      <Formula large id="gauss-law" />
       <p className="mb-prose-3">
         Variable glossary:
       </p>
@@ -456,7 +456,7 @@ export default function GaussLab() {
       <p className="mb-prose-3">
         The differential form, by the divergence theorem:
       </p>
-      <Formula id="maxwell-gauss-e" />
+      <Formula large id="maxwell-gauss-e" />
       <p className="mb-prose-3">
         Charge density is the source of field divergence. In Maxwell's equations this is the foundational object; Coulomb's law falls out as a
         special case<Cite id="jackson-1999" in={SOURCES} />.
