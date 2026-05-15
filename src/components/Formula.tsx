@@ -39,6 +39,8 @@ interface FormulaProps {
   small?: boolean;
   /** Optional override for the aria-label / plain-text form. */
   ariaLabel?: string;
+  /** If true, the plain-text form is also rendered in a <pre> for easy copy-paste. */
+  printPlainText?: boolean;
 }
 
 function blockSizing(large: boolean | undefined, small: boolean | undefined): string {
@@ -63,21 +65,22 @@ function renderTeX(tex: string, displayMode: boolean): string {
 interface ResolvedFormula {
   tex: string;
   plain: string;
+  plainText: string;
 }
 
 function resolve(id: FormulaId | undefined, tex: string | undefined, ariaLabel: string | undefined): ResolvedFormula | null {
   if (id) {
     const def = FORMULAS[id];
     if (!def) return null;
-    return { tex: def.tex, plain: ariaLabel ?? def.plain };
+    return { tex: def.tex, plain: ariaLabel ?? def.plain, plainText: def.plain };
   }
   if (tex) {
-    return { tex, plain: ariaLabel ?? tex };
+    return { tex, plain: ariaLabel ?? tex, plainText: ariaLabel ?? tex };
   }
   return null;
 }
 
-export function Formula({ id, tex, children, caption, large, small, ariaLabel }: FormulaProps) {
+export function Formula({ id, tex, children, caption, large, small, ariaLabel, printPlainText = false }: FormulaProps) {
   const resolved = resolve(id, tex, ariaLabel);
   const html = useMemo(() => (resolved ? renderTeX(resolved.tex, true) : null), [resolved?.tex]);
 
@@ -87,10 +90,16 @@ export function Formula({ id, tex, children, caption, large, small, ariaLabel }:
       role="math"
       aria-label={resolved?.plain}
     >
-      {html ? (
+      {(!printPlainText && !!html) && (
         <div className="formula-tex" dangerouslySetInnerHTML={{ __html: html }} />
-      ) : (
-        <div className="formula-content">{children}</div>
+      )}
+      {(printPlainText && resolved?.plainText) && (
+        <div className="formula-content">{resolved.plainText}</div>
+      )}
+      {!!children && !printPlainText && (
+        <div className="formula-content">
+          {children}
+        </div>
       )}
       {caption && <div className="formula-caption mt-md eyebrow-muted text-1 tracking-4">{caption}</div>}
     </div>
