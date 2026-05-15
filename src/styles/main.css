@@ -230,7 +230,7 @@ body::before {
      one place (ChapterShell) but extracted because the inline class
      string is too long to read on the element. */
   .chapter-narrative {
-    @apply max-w-[70ch] mx-auto text-[17.5px] leading-[1.72] text-text-dim;
+    @apply mx-auto text-[17.5px] leading-[1.72] text-text-dim mt-[25px];
   }
   .chapter-narrative > p { margin-bottom: 1.4em; }
   .chapter-narrative > p:first-of-type::first-letter {
@@ -250,7 +250,7 @@ body::before {
     line-height: 1.1;
     letter-spacing: -.02em;
     color: var(--text);
-    margin: 90px 0 28px;
+    margin: 50px 0 28px;
     max-width: 28ch;
   }
   .chapter-narrative h2 em { color: var(--accent); }
@@ -314,7 +314,7 @@ body::before {
 /* ─── Page layout primitives ─── */
 
 section {
-  padding: 140px 40px;
+  /* padding: 140px 40px; */
   max-width: 1280px;
   margin: 0 auto;
   position: relative;

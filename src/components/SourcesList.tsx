@@ -12,21 +12,21 @@ interface SourcesListProps {
 export function SourcesList({ ids }: SourcesListProps) {
   if (!ids.length) return null;
   return (
-    <div className="reveal in max-w-[70ch] my-[80px] mb-[60px] pt-[36px] border-t border-border-strong [&_a]:text-text-dim [&_a]:no-underline [&_a]:border-b [&_a]:border-dotted [&_a]:border-text-muted [&_a]:break-words hover:[&_a]:text-accent hover:[&_a]:border-accent">
-      <div className="font-3 text-[11px] text-accent uppercase tracking-[.25em] mb-[26px] flex items-center gap-[14px] before:content-[''] before:w-[36px] before:h-px before:bg-accent">Sources</div>
+    <div className="reveal in  mb-[60px] pt-[36px] border-t border-border-strong [&_a]:text-text-dim [&_a]:no-underline [&_a]:border-b [&_a]:border-dotted [&_a]:border-text-muted [&_a]:break-words hover:[&_a]:text-accent hover:[&_a]:border-accent">
+      <div className="font-3 text-accent uppercase tracking-[.25em] mb-[26px] flex items-center gap-[14px] before:content-[''] before:w-[36px] before:h-px before:bg-accent">Sources</div>
       <ol className="list-none p-0 [counter-reset:src]">
         {ids.map(id => {
           const src = SOURCES[id];
           if (!src) {
             // Defensive: don't crash if a key is missing — surface the bad id.
             return (
-              <li key={id} className="[counter-increment:src] relative py-[12px] pl-[44px] text-[14px] leading-[1.55] text-text-dim border-b border-dotted border-border last:border-b-0 before:content-['['_counter(src)_']'] before:absolute before:left-0 before:top-[12px] before:font-3 before:text-[11px] before:text-accent before:tracking-[.08em]">
+              <li key={id} className="[counter-increment:src] relative py-[12px] pl-[44px] leading-[1.55] text-text-dim border-b border-dotted border-border last:border-b-0 before:content-['['_counter(src)_']'] before:absolute before:left-0 before:top-[12px] before:font-3 before:text-[11px] before:text-accent before:tracking-[.08em]">
                 <span className="text-text font-medium">Missing source: {id}</span>
               </li>
             );
           }
           return (
-            <li key={id} className="[counter-increment:src] relative py-[12px] pl-[44px] text-[14px] leading-[1.55] text-text-dim border-b border-dotted border-border last:border-b-0 before:content-['['_counter(src)_']'] before:absolute before:left-0 before:top-[12px] before:font-3 before:text-[11px] before:text-accent before:tracking-[.08em]">
+            <li key={id} className="[counter-increment:src] relative py-[12px] pl-[44px] leading-[1.55] text-text-dim border-b border-dotted border-border last:border-b-0 before:content-['['_counter(src)_']'] before:absolute before:left-0 before:top-[12px] before:font-3 before:text-[11px] before:text-accent before:tracking-[.08em]">
               <span className="text-text font-medium">{src.title}</span>
               {' — '}
               <span className="text-text-muted italic">{src.author}</span>

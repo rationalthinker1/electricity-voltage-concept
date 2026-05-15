@@ -49,7 +49,7 @@ export function Demo({ figure, title, question, children, caption, deeperLab }: 
   }, []);
 
   return (
-    <figure ref={figureRef} className="my-[50px] mx-[-20px] min-[900px]:mx-[-50px] bg-bg-card border border-border-strong rounded-3 overflow-hidden [content-visibility:auto] [contain-intrinsic-size:620px]">
+    <figure ref={figureRef} className="bg-bg-card border border-border-strong rounded-3 overflow-hidden [content-visibility:auto] [contain-intrinsic-size:620px]">
       <div className="flex items-baseline gap-[16px] py-[16px] px-[22px] border-b border-border bg-bg-elevated flex-wrap">
         <span className="font-3 text-[10px] text-accent tracking-[.22em] uppercase">{figure ?? 'Fig.'}</span>
         <span className="font-1 text-[14px] text-text font-medium flex-1">{title}</span>

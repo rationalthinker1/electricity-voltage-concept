@@ -81,7 +81,7 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
 
   return (
     <article className="chapter-page">
-      <div className="chapter-eyebrow">Chapter {chapter.number}</div>
+      <div className="font-3 text-accent uppercase tracking-[.25em] mb-[26px] flex items-center gap-[14px] before:content-[''] before:w-[36px] before:h-px before:bg-accent">Chapter {chapter.number}</div>
       <h1 dangerouslySetInnerHTML={{ __html: chapter.title }} />
       <p className="chap-deck" dangerouslySetInnerHTML={{ __html: chapter.subtitle }} />
 
@@ -90,8 +90,8 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
       <div className="chapter-narrative">{children}</div>
 
       {labs.length > 0 && (
-        <aside className="max-w-[70ch] mx-auto mt-[80px] mb-0 pt-[36px] border-t border-border">
-          <div className="font-3 text-[11px] text-accent tracking-[.25em] uppercase mb-[22px]">Go deeper · Related equation labs</div>
+        <aside className="mx-auto pt-[36px]">
+          <div className="font-3 text-accent uppercase tracking-[.25em] mb-[26px] flex items-center gap-[14px] before:content-[''] before:w-[36px] before:h-px before:bg-accent">Go deeper · Related equation labs</div>
           {labs.map(l => (
             <Link
               key={l.slug}
@@ -99,15 +99,15 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
               params={{ slug: l.slug }}
               className="block no-underline text-inherit py-[14px] border-b border-dotted border-border last:border-b-0"
             >
-              <span className="font-1 font-medium text-text text-[15px]">{l.title}</span>
+              <span className="font-1 font-medium text-text">{l.title}</span>
               <span className="font-4 italic text-accent text-[18px] ml-[8px]" dangerouslySetInnerHTML={{ __html: l.formula }} />
-              <div className="text-text-muted text-[13px] mt-[4px]">{l.blurb}</div>
+              <div className="text-text-muted mt-[4px]">{l.blurb}</div>
             </Link>
           ))}
         </aside>
       )}
 
-      <div className="max-w-[70ch] mx-auto mt-[80px] mb-0 pt-[36px] border-t border-border">
+      <div className="mx-auto mb-0 pt-[36px]">
         <SourcesList ids={chapter.sources} />
       </div>
 

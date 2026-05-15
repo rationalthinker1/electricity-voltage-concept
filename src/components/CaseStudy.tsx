@@ -55,7 +55,7 @@ interface CaseStudiesProps {
 export function CaseStudies({ intro, children }: CaseStudiesProps) {
   return (
     <section className="max-w-[70ch] mx-auto mt-[100px] mb-0 pt-[36px] border-t border-border-strong">
-      <div className="font-3 text-[11px] text-accent tracking-[.25em] uppercase mb-[18px] flex items-center gap-[14px] before:content-[''] before:w-[36px] before:h-px before:bg-accent">Case studies</div>
+      <div className="font-3 text-accent uppercase tracking-[.25em] mb-[26px] flex items-center gap-[14px] before:content-[''] before:w-[36px] before:h-px before:bg-accent">Case studies</div>
       {intro && <p className="text-text-dim text-[15px] leading-[1.55] mb-[30px] italic max-w-[55ch]">{intro}</p>}
       <div className="flex flex-col gap-[36px]">{children}</div>
     </section>
