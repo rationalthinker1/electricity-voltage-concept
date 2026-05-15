@@ -1,14 +1,9 @@
-/* Tailwind v4 — theme + utilities ONLY (no preflight).
-   We skip the default preflight reset because this project already has a
-   hand-rolled reset and bespoke prose/heading/list styles; running
-   preflight on top would strip default list markers and heading sizes
-   used by existing narrative components. New components can still opt
-   in to utility classes like bg-bg-card, text-accent, font-mono, etc. */
-   @import "tailwindcss";
+/* Tailwind v4 — single import (theme + preflight + utilities). */
+@import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════════════
-   Field · Theory — shared design system
-   Used by index.html and all interactive pages.
+   Field · Theory — design system
+   Used by index.html and every interactive page.
 ═══════════════════════════════════════════════════════════════ */
 
 :root {
@@ -32,8 +27,8 @@
   --nav-bg-start: rgba(10,10,11,.92);
   --nav-bg-end: rgba(10,10,11,.65);
   --canvas-bg: #0d0d10;
-  --color-card-bg: var(--bg-card);
-  --color-card-bg-hover: var(--bg-card-hover);
+  --color-card-bg: var(--bg-card);          /* read by lib/canvasTheme.ts */
+  --color-card-bg-hover: var(--bg-card-hover); /* read by lib/canvasTheme.ts */
   --slider-track: rgba(255,255,255,.12);
   --shadow-strong: rgba(0,0,0,.4);
   --grain-opacity: .04;
@@ -41,15 +36,14 @@
 
   /* Numbered semantic aliases consumed by the recipe layer below and by
      Tailwind utilities (bg-color-3, text-color-4, border-border-1, font-2,
-     rounded-4, px-xl, etc.). These are var() refs to the named tokens
-     above, so light-mode overrides flow through automatically. */
+     rounded-4, px-xl, etc.). var() refs to the named tokens above so
+     light-mode overrides flow through automatically. */
   --color-1: var(--bg);
   --color-2: var(--bg-elevated);
   --color-3: var(--bg-card);
   --color-4: var(--text);
   --color-5: var(--text-dim);
   --color-6: var(--accent);
-
   --border-1: var(--border);
   --border-2: var(--border-strong);
 
@@ -106,10 +100,9 @@
   --grain-opacity: .025;
 }
 
-/* ─── Tailwind v4 @theme — expose existing CSS custom-property tokens as
-   utility classes (bg-bg-card, text-accent, border-border-strong, etc.).
-   These read from the var()-backed tokens above, so utilities automatically
-   honour [data-theme="light"] overrides. ─── */
+/* Tailwind v4 @theme — expose CSS custom properties as utility classes
+   (bg-bg-card, text-accent, border-border-strong, etc.). var()-backed
+   so utilities automatically honour [data-theme="light"] overrides. */
 @theme {
   --color-bg: var(--bg);
   --color-bg-elevated: var(--bg-elevated);
@@ -129,11 +122,10 @@
   --color-border-strong: var(--border-strong);
   --color-canvas-bg: var(--canvas-bg);
 
-  /* Numbered color aliases (bg-color-3, text-color-4, border-color-5) and
-     numbered border aliases (border-border-1, border-border-2). These
-     reference the var()-backed tokens above so [data-theme="light"]
-     overrides flow through. Do NOT move these into `@theme inline` — that
-     would freeze the dark-mode values into the generated utilities. */
+  /* Numbered colour aliases (bg-color-3, text-color-4, border-color-5)
+     and numbered border aliases (border-border-1, border-border-2).
+     Do NOT move these into `@theme inline` — that would freeze the
+     dark-mode values into the generated utilities. */
   --color-color-1: var(--color-1);
   --color-color-2: var(--color-2);
   --color-color-3: var(--color-3);
@@ -150,9 +142,9 @@
 }
 
 /* Theme-invariant scales — same value in dark and light mode, so `inline`
-   is safe and produces cleaner generated CSS. Tailwind generates the
-   matching utility families: spacing-* drives px-*, py-*, gap-*, m-*, w-*,
-   h-*, etc.; radius-* drives rounded-*; font-* drives font-*. */
+   is safe and produces cleaner generated CSS. spacing-* drives px-*,
+   py-*, gap-*, m-*, w-*, h-*; radius-* drives rounded-*; font-* drives
+   font-*. */
 @theme inline {
   --spacing-xs: var(--spacing-xs);
   --spacing-sm: var(--spacing-sm);
@@ -179,7 +171,7 @@
   --font-4: var(--font-4);
 }
 
-/* * { box-sizing: border-box; margin: 0; padding: 0; } */
+/* ─── Document baselines ─── */
 html { scroll-behavior: smooth; }
 
 body {
@@ -206,40 +198,18 @@ body::before {
   mix-blend-mode: overlay;
 }
 
-/* ─── Tailwind component layer — semantic compositions that consume the
-   @theme tokens declared above. Use these in JSX as `className="panel-card"`
-   etc., so future components can be authored with Tailwind utilities + a
-   small vocabulary of project-flavoured shortcuts instead of one-off CSS.
-   The existing CSS classes (cb-*, chapter-*, lab-*, ui-*) are untouched. ─── */
+/* ─── Semantic recipe layer ─── */
 
 @layer components {
-
-  /* Containers — every demo / case-study / panel-style card derives from one
-     of these three intensity levels. */
-
-  /* ═══════════════════════════════════════════════════════════════
-     Semantic recipe layer — generalized, theme-aware recipes that
-     compose Tailwind utilities via @apply. These are the names
-     components should reach for in JSX. Most alias the existing
-     numbered recipes above; new recipes (.nav-pill, .eyebrow-rule,
-     .banner-*, .pill-base, .input-base, etc.) cover repeated visual
-     patterns found across components.
-  ═══════════════════════════════════════════════════════════════ */
-
-  /* — Typography aliases (semantic → numbered scale) — */
   .eyebrow-muted {
     @apply font-3 text-[11px] tracking-[.12em] uppercase text-text-muted;
   }
-
   .title-display {
     @apply font-2 italic m-0 text-color-4;
   }
-
   .body-copy {
     @apply font-1 text-[16px] leading-[1.6] text-color-5;
   }
-
-  /* — Eyebrow aliases (no numeric suffix) — */
   .eyebrow-rule {
     @apply font-3 text-[11px] tracking-[.25em] uppercase mb-[18px] flex items-center gap-[14px];
     color: var(--accent);
@@ -250,83 +220,99 @@ body::before {
     height: 1px;
     background: var(--accent);
   }
-
-  /* — Card / surface aliases — */
   .card-surface {
     @apply bg-color-3 border border-border-1 rounded-5;
   }
 
-  /* — Pills / chips / badges — */
-
-  /* — Banners — */
-
-  /* — Buttons / actions / links — */
-
-  /* — Forms / inputs — */
-
-  /* — Demo / lab structure aliases — */
-
-  /* — Tooltip surface (used by Term popover, etc.) — */
-
-  /* — Color/state swatches (legend dots) — */
-}
-
-/* ─── Progress bar ─── */
-/* ─── Nav ─── */
-nav.top {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 998;
-  padding: 22px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(180deg, var(--nav-bg-start), var(--nav-bg-end));
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-}
-nav.top .mark {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: 20px;
-  letter-spacing: -.02em;
-  color: var(--text);
-  text-decoration: none;
-}
-nav.top .mark span { color: var(--accent); }
-nav.top .links {
-  display: flex;
-  gap: 28px;
-  align-items: center;
-}
-nav.top .links a {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--text-muted);
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: .18em;
-  transition: color .15s ease;
-}
-nav.top .links a:hover { color: var(--text); }
-nav.top .links a.active { color: var(--accent); }
-nav.top .meta {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: .15em;
-}
-
-@media (max-width: 900px) {
-  nav.top { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
-  nav.top .links { gap: 14px; }
-  nav.top .links a { font-size: 10px; letter-spacing: .12em; }
-  nav.top .meta { display: none; }
+  /* Chapter narrative — the long-form prose block inside ChapterShell.
+     Sets the column, drop-cap on the first paragraph, h2 / h3 styling,
+     pullout quote, inline math, kbd, and citation pill. Used in exactly
+     one place (ChapterShell) but extracted because the inline class
+     string is too long to read on the element. */
+  .chapter-narrative {
+    @apply max-w-[70ch] mx-auto text-[17.5px] leading-[1.72] text-text-dim;
+  }
+  .chapter-narrative > p { margin-bottom: 1.4em; }
+  .chapter-narrative > p:first-of-type::first-letter {
+    font-family: var(--font-2);
+    font-weight: 300;
+    font-size: 4em;
+    line-height: 1;
+    float: left;
+    margin: 4px 12px -4px 0;
+    color: var(--accent);
+  }
+  .chapter-narrative h2 {
+    font-family: var(--font-2);
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(28px, 3.5vw, 42px);
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    color: var(--text);
+    margin: 90px 0 28px;
+    max-width: 28ch;
+  }
+  .chapter-narrative h2 em { color: var(--accent); }
+  .chapter-narrative h3 {
+    font-family: var(--font-1);
+    font-weight: 500;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    color: var(--accent);
+    margin: 50px 0 14px;
+  }
+  .chapter-narrative strong { color: var(--text); font-weight: 500; }
+  .chapter-narrative em { font-style: italic; color: var(--text); }
+  .chapter-narrative .pullout {
+    font-family: var(--font-2);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 26px;
+    line-height: 1.35;
+    color: var(--text);
+    padding: 24px 0 24px 28px;
+    margin: 40px 0;
+    border-left: 2px solid var(--accent);
+  }
+  .chapter-narrative .math {
+    font-family: var(--font-2);
+    font-style: italic;
+    font-size: 26px;
+    text-align: center;
+    color: var(--text);
+    margin: 30px 0;
+  }
+  .chapter-narrative .math sub,
+  .chapter-narrative .math sup { font-size: .55em; }
+  .chapter-narrative .kbd {
+    font-family: var(--font-3);
+    font-size: .85em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 2px 8px;
+    border-radius: var(--radius-1);
+  }
+  .chapter-narrative .cite {
+    display: inline-block;
+    font-family: var(--font-3);
+    font-size: 10px;
+    vertical-align: super;
+    line-height: 1;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 1px 5px;
+    margin: 0 1px;
+    border-radius: var(--radius-1);
+    text-decoration: none;
+    letter-spacing: 0;
+  }
+  .chapter-narrative .cite:hover { background: var(--accent); color: var(--bg); }
 }
 
 /* ─── Page layout primitives ─── */
+
 section {
   padding: 140px 40px;
   max-width: 1280px;
@@ -334,18 +320,39 @@ section {
   position: relative;
 }
 
-@keyframes scrollDown {
-  0%, 100% { transform: translateY(0); opacity: .5; }
-  50% { transform: translateY(8px); opacity: 1; }
+footer {
+  padding: 100px 40px 60px;
+  max-width: 1280px;
+  margin: 0 auto;
+  border-top: 1px solid var(--border);
+}
+.colophon {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 30px;
+  border-top: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: .2em;
+  text-transform: uppercase;
 }
 
-/* ─── Section heads ─── */
-
-
-/* ─── Control panel ─── */
-.slider-group {
-  margin-bottom: 22px;
+@media (max-width: 760px) {
+  section { padding: 90px 24px; }
+  footer { padding: 60px 24px 40px; }
 }
+
+/* ─── Reveal anim (used by SourcesList, LabShell, PageNav) ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .9s ease, transform .9s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ─── Slider control panel (used by Slider + several lab pages) ─── */
+.slider-group { margin-bottom: 22px; }
 .slider-group:last-child { margin-bottom: 0; }
 .slider-group .slider-head {
   display: flex;
@@ -374,6 +381,7 @@ section {
   letter-spacing: .04em;
 }
 
+/* Native range styling. Used by both .slider-group and .mini-slider. */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -409,9 +417,7 @@ input[type="range"]::-webkit-slider-thumb {
   box-shadow: 0 0 0 1px var(--accent), 0 0 12px var(--accent-glow);
   transition: transform .12s ease;
 }
-input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 input[type="range"]::-moz-range-thumb {
   width: 14px;
   height: 14px;
@@ -422,7 +428,7 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
 }
 
-/* ─── Select / dropdown ─── */
+/* ─── Material select dropdown (MaterialSelect + PowerSupplyLab) ─── */
 select.material-select {
   width: 100%;
   background: var(--bg);
@@ -444,8 +450,7 @@ select.material-select {
 }
 select.material-select:focus { outline: none; border-color: var(--accent); }
 
-/* ─── Output readouts panel ─── */
-/* ─── Buttons ─── */
+/* ─── Buttons (.btn used by PredictThenObserve) ─── */
 .btn {
   background: transparent;
   border: 1px solid var(--border-strong);
@@ -467,46 +472,7 @@ select.material-select:focus { outline: none; border-color: var(--accent); }
   font-weight: 500;
 }
 
-/* ─── Equation card grid (legacy / for index) ─── */
-
-/* ─── Footer ─── */
-footer {
-  padding: 100px 40px 60px;
-  max-width: 1280px;
-  margin: 0 auto;
-  border-top: 1px solid var(--border);
-}
-.colophon {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 30px;
-  border-top: 1px solid var(--border);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: .2em;
-  text-transform: uppercase;
-}
-
-/* ─── Reveal anim ─── */
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity .9s ease, transform .9s ease;
-}
-.reveal.in { opacity: 1; transform: translateY(0); }
-
-/* ─── Bottom nav (next/prev page) ─── */
-@media (max-width: 760px) {
-  section { padding: 90px 24px; }
-  footer { padding: 60px 24px 40px; }
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   v0.3 — textbook additions
-═══════════════════════════════════════════════════════════════ */
-
-/* Book front-cover hero */
+/* ─── Book front-cover hero (index, reference) ─── */
 .book-hero {
   padding: 180px 40px 80px;
   max-width: 1280px;
@@ -546,22 +512,14 @@ footer {
 }
 .book-hero .lede strong { color: var(--text); font-weight: 500; }
 
-/* Chapter list (TOC) */
+/* Chapter list (TOC container in index, reference) */
 .toc {
   padding: 80px 40px 140px;
   max-width: 1280px;
   margin: 0 auto;
 }
-/* Slightly fix top-nav so chapter pills wrap nicely */
-nav.top .links a.active { color: var(--accent); }
 
-/* Generic reset-button helper for some lab pages */
-
-/* ═══════════════════════════════════════════════════════════════
-   v0.4 — narrative chapters + embedded demos
-═══════════════════════════════════════════════════════════════ */
-
-/* Narrative chapter page */
+/* ─── Narrative chapter page (ChapterShell, quiz route) ─── */
 .chapter-page {
   max-width: 1080px;
   margin: 0 auto;
@@ -602,6 +560,7 @@ nav.top .links a.active { color: var(--accent); }
   padding-left: 24px;
 }
 
+/* ─── Mini slider / toggle (Demo controls + many demo files) ─── */
 .mini-slider {
   display: flex;
   flex-direction: column;
@@ -616,33 +575,15 @@ nav.top .links a.active { color: var(--accent); }
   text-transform: uppercase;
   letter-spacing: .15em;
 }
-.mini-slider input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 18px;
-  background: transparent;
-  cursor: pointer;
-}
-.mini-slider input[type="range"]::-webkit-slider-runnable-track {
-  height: 2px;
-  background: linear-gradient(to right, var(--accent) var(--pct, 0%), var(--slider-track) var(--pct, 0%));
-  border-radius: 1px;
-}
+.mini-slider input[type="range"] { height: 18px; }
 .mini-slider input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
   width: 12px; height: 12px;
-  background: var(--accent);
-  border-radius: 50%;
   margin-top: -5px;
   border: 2px solid var(--bg-elevated);
   box-shadow: 0 0 0 1px var(--accent);
 }
 .mini-slider input[type="range"]::-moz-range-thumb {
   width: 12px; height: 12px;
-  background: var(--accent);
-  border-radius: 50%;
   border: 2px solid var(--bg-elevated);
 }
 .mini-toggle {
@@ -662,31 +603,8 @@ nav.top .links a.active { color: var(--accent); }
   color: var(--bg);
   border-color: var(--accent);
 }
-/* ═══════════════════════════════════════════════════════════════
-   v0.5 — chapter FAQ section
-═══════════════════════════════════════════════════════════════ */
 
-/* ═══════════════════════════════════════════════════════════════
-   v0.6 — Formula component + inline numeric typography
-═══════════════════════════════════════════════════════════════ */
-
-
-/* ═══════════════════════════════════════════════════════════════
-   v0.7 — compact chapter pills (11 chapters now)
-═══════════════════════════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════════════════════════
-   v0.9 — Try-it-yourself exercises + glossary popovers
-═══════════════════════════════════════════════════════════════ */
-
-
-/* ────────────────────────────────────────────────────────────────
-   Chapter syllabus card — at-a-glance course-shell metadata.
-   Sits between the chapter title strip and the narrative prose.
-   Visually quieter than the title so it doesn't compete.
-   ──────────────────────────────────────────────────────────────── */
-
-/* ── Mark-as-complete (chapter footer) ── */
+/* ─── Mark-as-complete toast keyframe (ChapterShell) ─── */
 @keyframes chap-toast-in {
   from { opacity: 0; transform: translate(-50%, 8px); }
   to   { opacity: 1; transform: translate(-50%, 0); }
