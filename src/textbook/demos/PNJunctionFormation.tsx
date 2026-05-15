@@ -71,16 +71,25 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       const xR = 0.5 + dHalf;
 
       // n-side (left) — soft pink wash
-      ctx.fillStyle = 'rgba(255,59,110,0.06)';
+      ctx.save();
+      ctx.globalAlpha = 0.06;
+      ctx.fillStyle = colors.pink;
       ctx.fillRect(padL, padT, plotW * xL, plotH);
       // p-side (right) — soft blue wash
-      ctx.fillStyle = 'rgba(91,174,248,0.06)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.06;
+      ctx.fillStyle = colors.blue;
       ctx.fillRect(padL + plotW * xR, padT, plotW * (1 - xR), plotH);
       // depletion region — neutral
-      ctx.fillStyle = 'rgba(255,255,255,0.04)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.04;
+      ctx.fillStyle = colors.text;
       ctx.fillRect(padL + plotW * xL, padT, plotW * (xR - xL), plotH);
 
       // depletion boundary lines
+      ctx.restore();
       ctx.strokeStyle = colors.borderStrong;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
@@ -164,11 +173,14 @@ export function PNJunctionFormationDemo({ figure }: Props) {
           ctx.arc(cx, cy, 2.6, 0, Math.PI * 2);
           ctx.fill();
         } else {
-          ctx.strokeStyle = 'rgba(91,174,248,0.85)';
+          ctx.save();
+          ctx.globalAlpha = 0.85;
+          ctx.strokeStyle = colors.blue;
           ctx.lineWidth = 1.2;
           ctx.beginPath();
           ctx.arc(cx, cy, 2.6, 0, Math.PI * 2);
           ctx.stroke();
+          ctx.restore();
         }
       }
 

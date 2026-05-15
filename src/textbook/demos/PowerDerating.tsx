@@ -105,7 +105,9 @@ export function PowerDeratingDemo({ figure }: Props) {
       ctx.stroke();
 
       // Shaded "safe" area
-      ctx.fillStyle = 'rgba(108,197,194,0.07)';
+      ctx.save();
+      ctx.globalAlpha = 0.07;
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.beginPath();
       ctx.moveTo(xT(0), yF(0));
       ctx.lineTo(xT(0), yF(1.0));
@@ -118,15 +120,19 @@ export function PowerDeratingDemo({ figure }: Props) {
       const opFrac = P_nom > 0 ? P_actual / P_nom : 0;
       const opX = xT(T_C);
       const opY = yF(Math.min(opFrac, 1.05));
+      ctx.restore();
       ctx.fillStyle = overload ? '#ff3b6e' : '#6cc5c2';
       ctx.beginPath();
       ctx.arc(opX, opY, 6, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.strokeStyle = getCanvasColors().text;
       ctx.lineWidth = 1.2;
       ctx.stroke();
 
       // Knee marker
+      ctx.restore();
       ctx.strokeStyle = getCanvasColors().accent;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();

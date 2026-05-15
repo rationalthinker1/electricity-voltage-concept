@@ -29,6 +29,7 @@ export function DoubleSlitDemo({ figure }: Props) {
   const fringeMm = (lam * L) / d * 1000;
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w: W, h: H } = info;
     let raf = 0;
     function draw() {
@@ -49,7 +50,9 @@ export function DoubleSlitDemo({ figure }: Props) {
       const cy = H / 2;
 
       // Slit baseline
-      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(slitX, padTop); ctx.lineTo(slitX, H - padBot); ctx.stroke();
 
@@ -57,6 +60,7 @@ export function DoubleSlitDemo({ figure }: Props) {
       const halfSlit = 22;
       const slitTop = { x: slitX, y: cy - halfSlit };
       const slitBot = { x: slitX, y: cy + halfSlit };
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(slitX - 3, slitTop.y - 4, 6, 8);
       ctx.fillRect(slitX - 3, slitBot.y - 4, 6, 8);
@@ -66,7 +70,9 @@ export function DoubleSlitDemo({ figure }: Props) {
       ctx.strokeRect(slitX - 3, slitBot.y - 4, 6, 8);
 
       // Screen line
-      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.2;
       ctx.beginPath(); ctx.moveTo(screenX, padTop); ctx.lineTo(screenX, H - padBot); ctx.stroke();
 
@@ -97,6 +103,7 @@ export function DoubleSlitDemo({ figure }: Props) {
       const plotL = screenX + 12;
       const plotR = W - 20;
       const plotW = plotR - plotL;
+      ctx.restore();
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(plotL, padTop); ctx.lineTo(plotL, H - padBot); ctx.stroke();

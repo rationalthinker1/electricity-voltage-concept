@@ -25,6 +25,7 @@ export function LaserCavityDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { pumpOn, photonCount }; }, [pumpOn, photonCount]);
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w: W, h: H } = info;
     let raf = 0;
 
@@ -59,14 +60,22 @@ export function LaserCavityDemo({ figure }: Props) {
       const cy = H / 2;
 
       // Gain-medium tube (faint amber tint)
-      ctx.fillStyle = 'rgba(255,107,42,0.06)';
+      ctx.save();
+      ctx.globalAlpha = 0.06;
+      ctx.fillStyle = colors.accent;
       ctx.fillRect(mirrorL, 40, mirrorR - mirrorL, H - 80);
 
       // Left mirror — solid
-      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.text;
       ctx.fillRect(mirrorL - 6, 35, 6, H - 70);
       // Right mirror — partially transparent (output coupler)
-      ctx.fillStyle = 'rgba(255,255,255,0.45)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.fillStyle = colors.text;
       ctx.fillRect(mirrorR, 35, 6, H - 70);
 
       // Atom positions + state
@@ -139,7 +148,8 @@ export function LaserCavityDemo({ figure }: Props) {
       }
 
       // Output beam exiting right mirror — composite glow
-      ctx.fillStyle = 'rgba(255,107,42,0.15)';
+      ctx.restore();
+      ctx.fillStyle = colors.accentSoft;
       ctx.fillRect(mirrorR + 6, cy - 10, W - mirrorR - 12, 20);
 
       // Labels

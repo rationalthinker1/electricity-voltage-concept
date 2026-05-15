@@ -61,10 +61,13 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
       ctx.fillRect(px, yBot, plateW, 6);
 
       // Plate labels
-      ctx.fillStyle = 'rgba(255,255,255,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.text;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`+ free charge   V = ${V.toFixed(1)} V`, w / 2, yTop - 14);
+      ctx.restore();
       ctx.fillText(`− free charge`, w / 2, yBot + 18);
 
       // Free-charge "+" / "−" tick marks along the plates
@@ -85,8 +88,11 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
       const slabBot = yBot - slabPad;
       if (inserted) {
         // Slab body
-        ctx.fillStyle = 'rgba(108,197,194,0.10)';
+        ctx.save();
+        ctx.globalAlpha = 0.10;
+        ctx.fillStyle = colors.teal;
         ctx.fillRect(px + 12, slabTop, plateW - 24, slabBot - slabTop);
+        ctx.restore();
         ctx.strokeStyle = colors.teal;
         ctx.lineWidth = 1;
         ctx.strokeRect(px + 12, slabTop, plateW - 24, slabBot - slabTop);
@@ -97,17 +103,23 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
 
         // Bound surface charges on the slab faces: top = negative (attracted toward + plate),
         // bottom = positive (attracted toward − plate). They partially cancel free charge.
-        ctx.fillStyle = 'rgba(91,174,248,0.65)';
+        ctx.save();
+        ctx.globalAlpha = 0.65;
+        ctx.fillStyle = colors.blue;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         for (let i = 0; i < ticks; i++) {
           const x = px + (i + 0.5) * (plateW / ticks);
           ctx.fillText('−', x, slabTop + 4);
+        ctx.restore();
         }
-        ctx.fillStyle = 'rgba(255,59,110,0.65)';
+        ctx.save();
+        ctx.globalAlpha = 0.65;
+        ctx.fillStyle = colors.pink;
         for (let i = 0; i < ticks; i++) {
           const x = px + (i + 0.5) * (plateW / ticks);
           ctx.fillText('+', x, slabBot - 0);
+        ctx.restore();
         }
 
         // Bound-charge labels
@@ -165,8 +177,11 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
       for (let i = 0; i < arrowsN; i++) {
         const ax = px + (i + 0.5) * (plateW / arrowsN);
         const yp = yTop + ((phase + i / arrowsN) % 1) * (yBot - yTop);
-        ctx.fillStyle = 'rgba(255,107,42,0.6)';
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.fillStyle = colors.accent;
         ctx.beginPath(); ctx.arc(ax, yp, 1.6, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
       }
 
       // Readout overlay

@@ -62,16 +62,25 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       // Draw a faint "ferrite core" rectangle that gets darker / more solid as k grows
       if (k > 0.45) {
         const coreOpacity = (k - 0.45) / 0.55;
-        ctx.fillStyle = `rgba(108,197,194,${0.10 * coreOpacity})`;
+        ctx.save();
+        ctx.globalAlpha = 0.10 * coreOpacity;
+        ctx.fillStyle = getCanvasColors().teal;
         ctx.fillRect(c1x - 36, cy - 38, c2x - c1x + 72, 76);
-        ctx.strokeStyle = `rgba(108,197,194,${0.45 * coreOpacity})`;
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.45 * coreOpacity;
+        ctx.strokeStyle = getCanvasColors().teal;
         ctx.lineWidth = 1.4;
         ctx.strokeRect(c1x - 36, cy - 38, c2x - c1x + 72, 76);
-        ctx.fillStyle = `rgba(108,197,194,${0.6 * coreOpacity})`;
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.6 * coreOpacity;
+        ctx.fillStyle = getCanvasColors().teal;
         ctx.font = '9px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
         ctx.fillText('shared ferrite core', c1x - 32, cy - 34);
+        ctx.restore();
       }
 
       drawCoil(ctx, c1x, cy, 'C1');
@@ -96,18 +105,24 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       const plotW = w - plotX - 16;
 
       // Axes
-      ctx.strokeStyle = 'rgba(160,158,149,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = getCanvasColors().textDim;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(plotX, plotY); ctx.lineTo(plotX, plotY + plotH);
       ctx.lineTo(plotX + plotW, plotY + plotH);
       ctx.stroke();
+      ctx.restore();
 
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
       ctx.fillText('η', plotX - 4, plotY + 4);
+      ctx.restore();
       ctx.textAlign = 'right';
       ctx.fillText('1', plotX - 4, plotY + plotH * 0.05);
       ctx.fillText('0', plotX - 4, plotY + plotH);
@@ -135,14 +150,17 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       const eta = efficiency(k);
       const mx = plotX + k * plotW;
       const my = plotY + (1 - eta) * plotH;
-      ctx.fillStyle = 'rgba(255,107,42,1)';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.beginPath();
       ctx.arc(mx, my, 4, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = getCanvasColors().text;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText(`η ≈ ${(eta * 100).toFixed(0)}%`, mx + 8, my);
+      ctx.restore();
 
       raf = requestAnimationFrame(draw);
     }
@@ -196,9 +214,12 @@ function drawCoil(ctx: CanvasRenderingContext2D, cx: number, cy: number, label: 
     ctx.ellipse(cx, y, rx, dy * 0.42, 0, 0, Math.PI * 2);
     ctx.stroke();
   }
-  ctx.fillStyle = 'rgba(255,107,42,0.8)';
+  ctx.save();
+  ctx.globalAlpha = 0.8;
+  ctx.fillStyle = getCanvasColors().accent;
   ctx.font = 'bold 10px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(label, cx, cy + colH / 2 + 12);
+  ctx.restore();
 }

@@ -72,7 +72,9 @@ export function RMSOfComplexWaveDemo() {
       const scale = halfH / ymax;
 
       // Plot fundamental dim
-      ctx.strokeStyle = 'rgba(108,197,194,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = colors.teal;
       ctx.setLineDash([3, 4]);
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -88,6 +90,7 @@ export function RMSOfComplexWaveDemo() {
       ctx.setLineDash([]);
 
       // Composite wave
+      ctx.restore();
       ctx.strokeStyle = '#ff6b2a';
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -101,11 +104,14 @@ export function RMSOfComplexWaveDemo() {
       ctx.stroke();
 
       // RMS reference line
-      ctx.strokeStyle = 'rgba(255,59,110,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = colors.pink;
       ctx.setLineDash([4, 4]);
       const yRms = midY - rmsParseval * scale;
       ctx.beginPath(); ctx.moveTo(padX, yRms); ctx.lineTo(w - padX, yRms); ctx.stroke();
       ctx.setLineDash([]);
+      ctx.restore();
       ctx.fillStyle = colors.pink;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';

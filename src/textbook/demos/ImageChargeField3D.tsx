@@ -109,13 +109,16 @@ export function ImageChargeField3DDemo({ figure }: Props) {
       ];
       const corners2D = planeCorners.map(c => project(c, cam, w, h));
       // Translucent fill.
-      ctx.fillStyle = 'rgba(108,197,194,0.05)';
+      ctx.save();
+      ctx.globalAlpha = 0.05;
+      ctx.fillStyle = colors.teal;
       ctx.beginPath();
       ctx.moveTo(corners2D[0]!.x, corners2D[0]!.y);
       for (let i = 1; i < 4; i++) ctx.lineTo(corners2D[i]!.x, corners2D[i]!.y);
       ctx.closePath();
       ctx.fill();
       // Wireframe — border + diagonals.
+      ctx.restore();
       ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -229,12 +232,15 @@ export function ImageChargeField3DDemo({ figure }: Props) {
             // Dashed translucent — to mark "mathematical, not physical".
             ctx.save();
             ctx.setLineDash([4, 4]);
-            ctx.strokeStyle = 'rgba(91,174,248,0.55)';
+            ctx.save();
+            ctx.globalAlpha = 0.55;
+            ctx.strokeStyle = colors.blue;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(pts2[0]!.x, pts2[0]!.y);
             for (let k = 1; k < pts2.length; k++) ctx.lineTo(pts2[k]!.x, pts2[k]!.y);
             ctx.stroke();
+            ctx.restore();
             ctx.restore();
           }
         }
@@ -266,17 +272,23 @@ export function ImageChargeField3DDemo({ figure }: Props) {
         const imgPos = project(v3(0, -d, 0), cam, w, h);
         const imgR = 12 + Math.min(8, q * 1.8);
         ctx.save();
-        ctx.fillStyle = 'rgba(91,174,248,0.22)';
+        ctx.save();
+        ctx.globalAlpha = 0.22;
+        ctx.fillStyle = colors.blue;
         ctx.beginPath();
         ctx.arc(imgPos.x, imgPos.y, imgR, 0, Math.PI * 2);
         ctx.fill();
         ctx.setLineDash([3, 3]);
-        ctx.strokeStyle = 'rgba(91,174,248,0.85)';
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.85;
+        ctx.strokeStyle = colors.blue;
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.arc(imgPos.x, imgPos.y, imgR, 0, Math.PI * 2);
         ctx.stroke();
         ctx.setLineDash([]);
+        ctx.restore();
         ctx.fillStyle = colors.blue;
         ctx.font = 'bold 12px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';

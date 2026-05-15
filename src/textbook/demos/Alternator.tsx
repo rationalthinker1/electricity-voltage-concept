@@ -105,7 +105,7 @@ export function AlternatorDemo({ figure }: Props) {
       // full-wave 3-phase bridge, the output is the supremum across all
       // three phases of |v|. Result: 6 humps per cycle, hovering just
       // below the peak.
-      ctx.strokeStyle = '#ecebe5';
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       for (let i = 0; i <= samples; i++) {

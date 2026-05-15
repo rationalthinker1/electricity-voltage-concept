@@ -78,12 +78,15 @@ export function BandStructureDemo({ figure }: Props) {
       ctx.strokeRect(padL, padT, plotW, plotH);
 
       // y-axis ticks every 1 eV
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
       for (let e = 0; e <= 6; e++) {
         ctx.fillText(`${e} eV`, padL - 6, yOf(e));
+      ctx.restore();
         ctx.strokeStyle = colors.border;
         ctx.beginPath();
         ctx.moveTo(padL, yOf(e));
@@ -99,8 +102,11 @@ export function BandStructureDemo({ figure }: Props) {
       const cbTop = Eg + 0.8;
 
       // VB filled — full
-      ctx.fillStyle = 'rgba(91,174,248,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = colors.blue;
       ctx.fillRect(padL, yOf(vbTop), plotW, yOf(vbBot) - yOf(vbTop));
+      ctx.restore();
 
       // CB filled in proportion to occupancy
       const cbHeight = yOf(cbBot) - yOf(cbTop);
@@ -111,12 +117,15 @@ export function BandStructureDemo({ figure }: Props) {
       ctx.fillRect(padL, cbFillTop, plotW, cbFillH);
 
       // band edges as thin solid lines
-      ctx.strokeStyle = 'rgba(236,235,229,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.moveTo(padL, yOf(vbTop)); ctx.lineTo(padL + plotW, yOf(vbTop));
       ctx.moveTo(padL, yOf(cbBot)); ctx.lineTo(padL + plotW, yOf(cbBot));
       ctx.stroke();
+      ctx.restore();
 
       // gap arrow + label
       const arrowX = padL + 60;

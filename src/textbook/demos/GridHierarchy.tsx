@@ -73,7 +73,9 @@ export function GridHierarchyDemo({ figure }: Props) {
       hitsRef.current = [];
 
       // Wires connecting boxes (drawn first so blocks sit on top)
-      ctx.strokeStyle = 'rgba(255,107,42,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.4;
       for (let i = 0; i < n - 1; i++) {
         const xA = padX + (i + 0.5) * slotW + blockW / 2;
@@ -114,6 +116,7 @@ export function GridHierarchyDemo({ figure }: Props) {
       }
 
       // raf = requestAnimationFrame(draw);  // static is fine; only redraw when selection changes
+      ctx.restore();
     }
 
     // Redraw whenever selection state ref changes; use rAF loop to keep simple.

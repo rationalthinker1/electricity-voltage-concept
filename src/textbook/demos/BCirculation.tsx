@@ -56,11 +56,14 @@ export function BCirculationDemo({ figure }: Props) {
         const R = ringRs[k]!;
         if (R > Math.min(w, h) * 0.48) continue;
         const op = 0.18 + 0.22 * (1 - k / ringRs.length) + I_norm * 0.18;
-        ctx.strokeStyle = `rgba(108,197,194,${Math.min(0.7, op).toFixed(3)})`;
+        ctx.save();
+        ctx.globalAlpha = Math.min(0.7, op);
+        ctx.strokeStyle = colors.teal;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.arc(cx, cy, R, 0, Math.PI * 2);
         ctx.stroke();
+        ctx.restore();
 
         // Tangent arrows around the ring. Right-hand rule: current INTO page
         // (×) → fingers curl clockwise as seen on screen.
@@ -74,13 +77,16 @@ export function BCirculationDemo({ figure }: Props) {
           const tx = -Math.sin(theta);
           const ty = Math.cos(theta);
           const len = 9 + I_norm * 6;
-          ctx.strokeStyle = `rgba(108,197,194,${Math.min(0.95, op + 0.3).toFixed(3)})`;
+          ctx.save();
+          ctx.globalAlpha = Math.min(0.95, op + 0.3);
+          ctx.strokeStyle = colors.teal;
           ctx.fillStyle = ctx.strokeStyle;
           ctx.lineWidth = 1.3;
           ctx.beginPath();
           ctx.moveTo(ax - tx * len * 0.5, ay - ty * len * 0.5);
           ctx.lineTo(ax + tx * len * 0.5, ay + ty * len * 0.5);
           ctx.stroke();
+          ctx.restore();
           // arrowhead
           const hx = ax + tx * len * 0.5;
           const hy = ay + ty * len * 0.5;
@@ -109,12 +115,12 @@ export function BCirculationDemo({ figure }: Props) {
       halo.addColorStop(1, 'rgba(255,107,42,0)');
       ctx.fillStyle = halo;
       ctx.beginPath(); ctx.arc(cx, cy, wireR_px * 3, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#1c1c22';
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.fillStyle = colors.surfaceHover;
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.arc(cx, cy, wireR_px, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       // × glyph (current into page)
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       const k = wireR_px * 0.55;
       ctx.beginPath();
@@ -123,18 +129,24 @@ export function BCirculationDemo({ figure }: Props) {
       ctx.stroke();
 
       // Wire label
-      ctx.fillStyle = 'rgba(160,158,149,.85)';
+      ctx.save();
+      ctx.globalAlpha = .85;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText(`I = ${I.toFixed(1)} A  ⊗  (into page)`, cx, cy + wireR_px * 3 + 6);
+      ctx.restore();
 
       // Top-left labels
       ctx.fillStyle = colors.teal;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('B  (circumferential)', 18, 14);
-      ctx.fillStyle = 'rgba(160,158,149,.7)';
+      ctx.save();
+      ctx.globalAlpha = .7;
+      ctx.fillStyle = colors.textDim;
       ctx.fillText('right-hand rule: thumb along I, fingers curl with B', 18, 30);
+      ctx.restore();
 
       // Bottom: surface B value
       const a_m_ = a_mm * 1e-3;

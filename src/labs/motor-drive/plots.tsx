@@ -13,6 +13,7 @@
 import { useEffect, useRef } from 'react';
 
 import type { MotorParams, ScopeTrace, SimSnapshot } from './types';
+import { getCanvasColors } from '@/lib/canvasTheme';
 
 /* ───────────────────────── PhaseScope ───────────────────────── */
 
@@ -35,11 +36,11 @@ export function PhaseScope({ trace }: PhaseScopeProps) {
     if (!ctx) return;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    ctx.fillStyle = '#0a0a0b';
+    ctx.fillStyle = getCanvasColors().canvasBg;
     ctx.fillRect(0, 0, w, h);
 
     // Grid.
-    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.strokeStyle = getCanvasColors().border;
     ctx.lineWidth = 1;
     for (let g = 1; g < 4; g++) {
       const y = (g / 4) * h;
@@ -48,13 +49,13 @@ export function PhaseScope({ trace }: PhaseScopeProps) {
       ctx.stroke();
     }
     // Zero-current axis.
-    ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+    ctx.strokeStyle = getCanvasColors().borderStrong;
     ctx.beginPath();
     ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2);
     ctx.stroke();
 
     if (trace.t.length < 2) {
-      ctx.fillStyle = '#5b5953';
+      ctx.fillStyle = getCanvasColors().textMuted;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('— no current data yet —', w / 2, h / 2 - 6);
@@ -94,12 +95,12 @@ export function PhaseScope({ trace }: PhaseScopeProps) {
 
     // Labels.
     ctx.font = '9px "JetBrains Mono", monospace';
-    ctx.fillStyle = '#a09e95';
+    ctx.fillStyle = getCanvasColors().textDim;
     ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     ctx.fillText(`±${aMax.toFixed(1)} A    ${(tRange * 1000).toFixed(0)} ms window`, 6, 4);
-    ctx.fillStyle = '#ff6b2a'; ctx.fillText('a', w - 30, 4);
-    ctx.fillStyle = '#5baef8'; ctx.fillText('b', w - 20, 4);
-    ctx.fillStyle = '#6cc5c2'; ctx.fillText('c', w - 10, 4);
+    ctx.fillStyle = getCanvasColors().accent; ctx.fillText('a', w - 30, 4);
+    ctx.fillStyle = getCanvasColors().blue; ctx.fillText('b', w - 20, 4);
+    ctx.fillStyle = getCanvasColors().teal; ctx.fillText('c', w - 10, 4);
   }, [trace]);
 
   return <canvas className="block w-full" ref={ref} style={{ display: 'block', width: '100%' }} />;
@@ -128,7 +129,7 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
     const ctx = c.getContext('2d');
     if (!ctx) return;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = '#0a0a0b';
+    ctx.fillStyle = getCanvasColors().canvasBg;
     ctx.fillRect(0, 0, w, h);
 
     const padL = 36, padR = 12, padT = 12, padB = 28;
@@ -139,7 +140,7 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
     const y = (tau: number) => h - padB - (tau / tauMax) * (h - padT - padB);
 
     // Axes.
-    ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+    ctx.strokeStyle = getCanvasColors().borderStrong;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(padL, padT); ctx.lineTo(padL, h - padB);
@@ -147,7 +148,7 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
     ctx.stroke();
 
     // Axis labels.
-    ctx.fillStyle = '#a09e95';
+    ctx.fillStyle = getCanvasColors().textDim;
     ctx.font = '9px "JetBrains Mono", monospace';
     ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
     ctx.fillText(`${tauMax.toFixed(1)} N·m`, padL - 4, padT + 6);
@@ -215,24 +216,33 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
       const tau = Math.abs(snap.tau_e);
       const px = x(Math.min(omegaMax, om));
       const py = y(Math.min(tauMax, tau));
-      ctx.fillStyle = '#ff6b2a';
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.beginPath();
       ctx.arc(px, py, 4.5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255,107,42,0.4)';
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.arc(px, py, 8, 0, Math.PI * 2);
       ctx.stroke();
+      ctx.restore();
     }
 
     // Legend.
-    ctx.fillStyle = 'rgba(108,197,194,0.85)';
+    ctx.save();
+    ctx.globalAlpha = 0.85;
+    ctx.fillStyle = getCanvasColors().teal;
     ctx.font = '9px "JetBrains Mono", monospace';
     ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     ctx.fillText('— rated envelope', padL + 4, padT + 2);
-    ctx.fillStyle = 'rgba(255,107,42,0.75)';
+    ctx.restore();
+    ctx.save();
+    ctx.globalAlpha = 0.75;
+    ctx.fillStyle = getCanvasColors().accent;
     ctx.fillText('— voltage limit', padL + 4, padT + 13);
+    ctx.restore();
   }, [motor, Vdc, snap, history]);
 
   return <canvas className="block w-full" ref={ref} style={{ display: 'block', width: '100%' }} />;
@@ -259,7 +269,7 @@ export function EfficiencyMap({ map, snap }: EfficiencyMapProps) {
     const ctx = c.getContext('2d');
     if (!ctx) return;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = '#0a0a0b';
+    ctx.fillStyle = getCanvasColors().canvasBg;
     ctx.fillRect(0, 0, w, h);
 
     const padL = 36, padR = 12, padT = 12, padB = 28;
@@ -290,7 +300,7 @@ export function EfficiencyMap({ map, snap }: EfficiencyMapProps) {
     }
 
     // Axes.
-    ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+    ctx.strokeStyle = getCanvasColors().borderStrong;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(padL, padT); ctx.lineTo(padL, h - padB);
@@ -298,7 +308,7 @@ export function EfficiencyMap({ map, snap }: EfficiencyMapProps) {
     ctx.stroke();
 
     ctx.font = '9px "JetBrains Mono", monospace';
-    ctx.fillStyle = '#a09e95';
+    ctx.fillStyle = getCanvasColors().textDim;
     ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
     ctx.fillText(`${map.tauMax.toFixed(1)}`, padL - 4, padT + 6);
     ctx.fillText('0', padL - 4, h - padB);
@@ -318,13 +328,15 @@ export function EfficiencyMap({ map, snap }: EfficiencyMapProps) {
       const tau = Math.min(map.tauMax, Math.abs(snap.tau_e));
       const px = padL + (om / map.omegaMax) * plotW;
       const py = padT + plotH - (tau / map.tauMax) * plotH;
-      ctx.strokeStyle = '#ffffff';
+      ctx.strokeStyle = getCanvasColors().text;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(px, py, 5, 0, Math.PI * 2);
       ctx.stroke();
       // Cross-hairs.
-      ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = getCanvasColors().text;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(px - 9, py); ctx.lineTo(px - 6, py);
@@ -332,15 +344,16 @@ export function EfficiencyMap({ map, snap }: EfficiencyMapProps) {
       ctx.moveTo(px, py - 9); ctx.lineTo(px, py - 6);
       ctx.moveTo(px, py + 6); ctx.lineTo(px, py + 9);
       ctx.stroke();
+      ctx.restore();
       // Numeric eta readout.
-      ctx.fillStyle = '#ecebe5';
+      ctx.fillStyle = getCanvasColors().text;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       ctx.fillText(`η ≈ ${(snap.eta * 100).toFixed(0)}%`, px + 10, py - 8);
     }
 
     // Colourbar legend.
-    ctx.fillStyle = '#a09e95';
+    ctx.fillStyle = getCanvasColors().textDim;
     ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     ctx.fillText('η:', padL + 4, padT + 2);
     for (let i = 0; i < 10; i++) {
@@ -351,7 +364,7 @@ export function EfficiencyMap({ map, snap }: EfficiencyMapProps) {
       ctx.fillStyle = `rgb(${r},${g},${b})`;
       ctx.fillRect(padL + 16 + i * 7, padT + 2, 7, 8);
     }
-    ctx.fillStyle = '#a09e95';
+    ctx.fillStyle = getCanvasColors().textDim;
     ctx.fillText('low', padL + 16, padT + 12);
     ctx.fillText('high', padL + 16 + 9 * 7 - 14, padT + 12);
   }, [map, snap]);

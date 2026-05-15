@@ -104,7 +104,7 @@ export function HBridgeInverterDemo({ figure }: Props) {
       ctx.stroke();
 
       // Filtered output (bottom plot) — analytic m · V_DC · sin(...)
-      ctx.strokeStyle = 'rgba(255,107,42,1.0)';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       for (let i = 0; i <= samples; i++) {
@@ -117,7 +117,9 @@ export function HBridgeInverterDemo({ figure }: Props) {
       ctx.stroke();
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.80)';
+      ctx.save();
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       ctx.fillText('+V_DC',  padL - 4, yTop(+V_DC));
@@ -136,6 +138,7 @@ export function HBridgeInverterDemo({ figure }: Props) {
       ctx.fillText(`${(tWindow * 1000).toFixed(0)} ms`, padL + plotW,  padT + plotH + 4);
 
       raf = requestAnimationFrame(draw);
+      ctx.restore();
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);

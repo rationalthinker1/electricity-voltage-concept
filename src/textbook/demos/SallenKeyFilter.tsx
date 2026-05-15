@@ -86,7 +86,9 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       }
 
       // Decade x ticks
-      ctx.fillStyle = 'rgba(160,158,149,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -102,6 +104,7 @@ export function SallenKeyFilterDemo({ figure }: Props) {
 
       // f0 marker
       const xf0 = plotX + ((Math.log10(f0) - logMin) / (logMax - logMin)) * plotW;
+      ctx.restore();
       ctx.strokeStyle = colors.teal;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
@@ -137,7 +140,9 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       });
 
       // Reference passive RC (slope -20 dB/dec) for comparison
-      ctx.strokeStyle = 'rgba(160,158,149,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.textDim;
       ctx.setLineDash([3, 3]);
       ctx.lineWidth = 1.2;
       ctx.beginPath();
@@ -184,6 +189,7 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       });
 
       // Axis labels
+      ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';

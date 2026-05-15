@@ -71,7 +71,9 @@ export function GridSyncDemo({ figure }: Props) {
       const phi = (phiDeg * Math.PI) / 180;
 
       // Grid trace (white)
-      ctx.strokeStyle = 'rgba(236,235,229,0.85)';
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       for (let i = 0; i <= samples; i++) {
@@ -84,6 +86,7 @@ export function GridSyncDemo({ figure }: Props) {
       ctx.stroke();
 
       // Generator trace (amber)
+      ctx.restore();
       ctx.strokeStyle = ready ? 'rgba(108,197,194,0.95)' : 'rgba(255,107,42,0.9)';
       ctx.lineWidth = 1.6;
       ctx.beginPath();
@@ -123,9 +126,12 @@ export function GridSyncDemo({ figure }: Props) {
       ctx.fillText(ready ? 'READY TO CLOSE' : 'NOT SYNCHRONISED', padL + plotW - 30, padT + 14);
 
       // Legend
-      ctx.fillStyle = 'rgba(236,235,229,0.75)';
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.text;
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       ctx.fillText('grid', padL + 6, padT + 14);
+      ctx.restore();
       ctx.fillStyle = ready ? '#6cc5c2' : '#ff6b2a';
       ctx.fillText('generator', padL + 40, padT + 14);
 

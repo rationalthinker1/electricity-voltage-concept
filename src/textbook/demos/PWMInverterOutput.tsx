@@ -94,7 +94,7 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       ctx.stroke();
 
       // LC-filtered output (analytic sine)
-      ctx.strokeStyle = 'rgba(108,197,194,1.0)';
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       for (let i = 0; i <= samples; i++) {
@@ -106,7 +106,9 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       }
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(160,158,149,0.80)';
+      ctx.save();
+      ctx.globalAlpha = 0.80;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       ctx.fillText('+V_DC', padL - 4, yTime(+V_DC));
@@ -132,9 +134,12 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       const yOfA = (a: number) => yBase - a * (yBase - yPeak);
 
       // Log-frequency grid + decade ticks
+      ctx.restore();
       ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       for (const decade of [10, 100, 1e3, 1e4, 1e5, 1e6]) {
@@ -177,25 +182,32 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       // Filter corner annotation: a typical LC filter chosen at f_sw / 10
       const fCorner = fSw / 10;
       const xC = xOfF(fCorner);
-      ctx.strokeStyle = 'rgba(236,235,229,0.50)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.50;
+      ctx.strokeStyle = colors.text;
       ctx.setLineDash([3, 3]);
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(xC, bot); ctx.lineTo(xC, bot + subH);
       ctx.stroke();
       ctx.setLineDash([]);
+      ctx.restore();
       ctx.fillStyle = colors.text;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(`LC corner f_sw/10 = ${formatHz(fCorner)}`, xC + 3, bot + 4);
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.80)';
+      ctx.save();
+      ctx.globalAlpha = 0.80;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('output spectrum  (60 Hz fundamental + carrier sidelobes)', padL + 4, bot + 4);
 
       raf = requestAnimationFrame(draw);
+      ctx.restore();
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);

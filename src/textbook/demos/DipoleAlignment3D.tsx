@@ -357,18 +357,24 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
             const left = project(v3(-BX - 0.02, y + jY, z + jZ), cam, w, h);
             const right = project(v3( BX + 0.02, y + jY, z + jZ), cam, w, h);
             if (left.depth > 0) {
-              ctx.fillStyle = `rgba(91,174,248,${(0.25 + 0.65 * density).toFixed(3)})`;
+              ctx.save();
+              ctx.globalAlpha = 0.25 + 0.65 * density;
+              ctx.fillStyle = colors.blue;
               ctx.font = `${Math.round(10 + 6 * density)}px "JetBrains Mono", monospace`;
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
               ctx.fillText('−', left.x, left.y);
+              ctx.restore();
             }
             if (right.depth > 0) {
-              ctx.fillStyle = `rgba(255,59,110,${(0.3 + 0.65 * density).toFixed(3)})`;
+              ctx.save();
+              ctx.globalAlpha = 0.3 + 0.65 * density;
+              ctx.fillStyle = colors.pink;
               ctx.font = `${Math.round(10 + 6 * density)}px "JetBrains Mono", monospace`;
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
               ctx.fillText('+', right.x, right.y);
+              ctx.restore();
             }
           }
         }

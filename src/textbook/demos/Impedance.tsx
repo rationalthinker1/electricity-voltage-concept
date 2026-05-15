@@ -110,7 +110,9 @@ export function ImpedanceDemo({ figure }: Props) {
       ctx.stroke();
 
       // Header
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -124,6 +126,7 @@ export function ImpedanceDemo({ figure }: Props) {
       );
 
       raf = requestAnimationFrame(draw);
+      ctx.restore();
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);

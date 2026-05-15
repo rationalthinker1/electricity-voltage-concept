@@ -55,13 +55,16 @@ export function PlateGeometryDemo({ figure }: Props) {
       drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, '#5baef8');
 
       // A-dimension brackets
-      ctx.strokeStyle = 'rgba(160,158,149,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = getCanvasColors().textDim;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(xL, topY - 18); ctx.lineTo(xL + plateW, topY - 18);
       ctx.moveTo(xL, topY - 22); ctx.lineTo(xL, topY - 14);
       ctx.moveTo(xL + plateW, topY - 22); ctx.lineTo(xL + plateW, topY - 14);
       ctx.stroke();
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().text;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
@@ -70,12 +73,15 @@ export function PlateGeometryDemo({ figure }: Props) {
 
       // d-dimension marker on the right
       const xD = xL + plateW + 26;
-      ctx.strokeStyle = 'rgba(160,158,149,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = getCanvasColors().textDim;
       ctx.beginPath();
       ctx.moveTo(xD - 4, topY + plateThick); ctx.lineTo(xD + 4, topY + plateThick);
       ctx.moveTo(xD - 4, botY - plateThick); ctx.lineTo(xD + 4, botY - plateThick);
       ctx.moveTo(xD, topY + plateThick); ctx.lineTo(xD, botY - plateThick);
       ctx.stroke();
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().text;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';

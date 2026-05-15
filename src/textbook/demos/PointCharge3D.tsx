@@ -190,13 +190,16 @@ export function PointCharge3DDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to rotate', 12, 12);
-      ctx.fillStyle = 'rgba(160,158,149,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText(
         `sample sphere r = ${s.rSample.toFixed(2)}   |E| ∝ k|q|/r²`,
         12, 28,
       );
 
       ctx.textAlign = 'right';
+      ctx.restore();
       ctx.fillStyle = s.positive
         ? 'rgba(255,59,110,0.92)'
         : 'rgba(91,174,248,0.92)';

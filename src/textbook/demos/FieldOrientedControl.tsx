@@ -136,7 +136,7 @@ export function FieldOrientedControlDemo({ figure }: Props) {
       ctx.moveTo(x0R, yId); ctx.lineTo(x0R + colW, yId);
       ctx.stroke();
       // i_q (flat) — amber
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2.5;
       ctx.beginPath();
       const yIq = y0 + plotH / 2 - (iqRef / aMax) * (plotH / 2 - 4);

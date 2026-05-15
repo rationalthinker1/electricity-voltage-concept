@@ -30,6 +30,7 @@ export function LiIonIntercalationDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { soc, nAnode, nCathode }; }, [soc, nAnode, nCathode]);
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w: W, h: H } = info;
     let raf = 0;
     let phase = 0;
@@ -57,8 +58,11 @@ export function LiIonIntercalationDemo({ figure }: Props) {
       drawLayers(ctx, cathodeX, topY, anodeW, colH, '#2a1a1a', 'rgba(184,115,51,0.8)', 'LiCoO₂');
 
       // Electrolyte — faint amber wash
-      ctx.fillStyle = 'rgba(255,107,42,0.06)';
+      ctx.save();
+      ctx.globalAlpha = 0.06;
+      ctx.fillStyle = colors.accent;
       ctx.fillRect(electrolyteX, topY, electrolyteW, colH);
+      ctx.restore();
       ctx.strokeStyle = getCanvasColors().border;
       ctx.strokeRect(anodeX, topY, anodeW, colH);
       ctx.strokeRect(cathodeX, topY, anodeW, colH);

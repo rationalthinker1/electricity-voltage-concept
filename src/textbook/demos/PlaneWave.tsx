@@ -52,12 +52,15 @@ export function PlaneWaveDemo({ figure }: Props) {
       ctx.beginPath(); ctx.moveTo(xL, cy); ctx.lineTo(xR, cy); ctx.stroke();
 
       // Arrowhead at +x — "direction of propagation"
-      ctx.fillStyle = 'rgba(255,255,255,0.4)';
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.fillStyle = getCanvasColors().text;
       ctx.beginPath();
       ctx.moveTo(xR, cy);
       ctx.lineTo(xR - 10, cy - 5);
       ctx.lineTo(xR - 10, cy + 5);
       ctx.closePath(); ctx.fill();
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
@@ -89,7 +92,9 @@ export function PlaneWaveDemo({ figure }: Props) {
       }
 
       // Continuous sine curves for E and B (the envelopes)
-      ctx.strokeStyle = 'rgba(255,59,110,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = getCanvasColors().pink;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       for (let i = 0; i <= N * 3; i++) {
@@ -101,6 +106,7 @@ export function PlaneWaveDemo({ figure }: Props) {
       }
       ctx.stroke();
 
+      ctx.restore();
       ctx.strokeStyle = getCanvasColors().teal;
       ctx.beginPath();
       for (let i = 0; i <= N * 3; i++) {

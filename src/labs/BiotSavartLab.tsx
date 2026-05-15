@@ -154,7 +154,7 @@ export default function BiotSavartLab() {
       ctx.fillRect(0, 0, w, h);
 
       // Faint guide grid
-      ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       for (let x = 0; x < w; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
       for (let y = 0; y < h; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
@@ -199,26 +199,32 @@ export default function BiotSavartLab() {
         ctx.stroke();
       }
       // dℓ ticks
-      ctx.fillStyle = 'rgba(255,107,42,0.7)';
+      ctx.save();
+      ctx.globalAlpha = 0.7;
+      ctx.fillStyle = colors.accent;
       for (const c of contribs) {
         ctx.beginPath(); ctx.arc(c.dlx, c.dly, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
       }
       // dB contributions (teal fans)
-      ctx.strokeStyle = 'rgba(108,197,194,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1;
       for (const c of contribs) {
         const vx = c.dirX * c.mag * arrowScale;
         const vy = c.dirY * c.mag * arrowScale;
         ctx.beginPath(); ctx.moveTo(probeX, probeY); ctx.lineTo(probeX + vx, probeY + vy); ctx.stroke();
+      ctx.restore();
       }
       // Total B arrow
       const tVx = sumX * arrowScale;
       const tVy = sumY * arrowScale;
-      ctx.strokeStyle = 'rgba(108,197,194,1)';
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 2.4;
       ctx.beginPath(); ctx.moveTo(probeX, probeY); ctx.lineTo(probeX + tVx, probeY + tVy); ctx.stroke();
       const ang = Math.atan2(tVy, tVx);
-      ctx.fillStyle = 'rgba(108,197,194,1)';
+      ctx.fillStyle = colors.teal;
       ctx.beginPath();
       ctx.moveTo(probeX + tVx, probeY + tVy);
       ctx.lineTo(probeX + tVx - 9 * Math.cos(ang - 0.4), probeY + tVy - 9 * Math.sin(ang - 0.4));
@@ -229,14 +235,14 @@ export default function BiotSavartLab() {
       const dotX = probeX + 28;
       const dotY = probeY - 28;
       ctx.beginPath(); ctx.arc(dotX, dotY, 12, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(108,197,194,1)';
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1.6;
       ctx.stroke();
       if (probeY < segCy) {
-        ctx.fillStyle = 'rgba(108,197,194,1)';
+        ctx.fillStyle = colors.teal;
         ctx.beginPath(); ctx.arc(dotX, dotY, 3, 0, Math.PI * 2); ctx.fill();
       } else {
-        ctx.strokeStyle = 'rgba(108,197,194,1)';
+        ctx.strokeStyle = colors.teal;
         ctx.lineWidth = 1.6;
         ctx.beginPath();
         ctx.moveTo(dotX - 7, dotY - 7); ctx.lineTo(dotX + 7, dotY + 7);
@@ -245,11 +251,17 @@ export default function BiotSavartLab() {
       }
 
       // Segment body
-      ctx.fillStyle = 'rgba(255,59,110,0.18)';
+      ctx.save();
+      ctx.globalAlpha = 0.18;
+      ctx.fillStyle = colors.pink;
       ctx.fillRect(segX1, segCy - 8, lengthPx, 16);
-      ctx.strokeStyle = 'rgba(255,59,110,0.95)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.95;
+      ctx.strokeStyle = colors.pink;
       ctx.lineWidth = 1.6;
       ctx.strokeRect(segX1, segCy - 8, lengthPx, 16);
+      ctx.restore();
       // Arrowhead → current direction
       ctx.fillStyle = colors.pink;
       const arrowSize = 16;
@@ -267,7 +279,7 @@ export default function BiotSavartLab() {
       ctx.fillText(`I = ${I.toFixed(1)} A   L = ${L_mm} mm`, segCx, segCy + 16);
 
       // Probe
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.fillStyle = 'rgba(10,10,11,0.9)';
       ctx.beginPath(); ctx.arc(probeX, probeY, 11, 0, Math.PI * 2);

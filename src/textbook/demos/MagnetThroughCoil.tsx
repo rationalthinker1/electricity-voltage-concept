@@ -131,7 +131,9 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
         const t = i / (loops - 1);
         const lx = coilCx - coilHalfLen + t * 2 * coilHalfLen;
         // ring outline (ellipse seen edge-on)
-        ctx.strokeStyle = 'rgba(255,107,42,0.55)';
+        ctx.save();
+        ctx.globalAlpha = 0.55;
+        ctx.strokeStyle = colors.accent;
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.ellipse(lx, cy, 4, loopHeight / 2, 0, 0, Math.PI * 2);
@@ -146,6 +148,7 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
           ctx.fillText(sym, lx, cy - loopHeight / 2 - 8);
           ctx.fillText(dir > 0 ? '×' : '·', lx, cy + loopHeight / 2 + 8);
         }
+        ctx.restore();
       }
 
       // Coil label
@@ -200,9 +203,12 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       grd.addColorStop(1, '#ff3b6e');
       ctx.fillStyle = grd;
       ctx.fillRect(mx - magW / 2, magY - magH / 2, magW, magH);
-      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.save();
+      ctx.globalAlpha = 0.2;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1;
       ctx.strokeRect(mx - magW / 2, magY - magH / 2, magW, magH);
+      ctx.restore();
       ctx.fillStyle = colors.bg;
       ctx.font = 'bold 14px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -210,7 +216,9 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       ctx.fillText('N', mx + magW / 4, magY);
 
       // Faint field-line cue from N pole pointing rightward
-      ctx.strokeStyle = 'rgba(255,59,110,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = colors.pink;
       ctx.lineWidth = 1;
       for (let k = 0; k < 3; k++) {
         const yoff = (k - 1) * 6;
@@ -221,12 +229,16 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       }
 
       // Drag hint
-      ctx.fillStyle = 'rgba(160,158,149,0.6)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('drag the magnet ↔', 16, 14);
 
       raf = requestAnimationFrame(draw);
+      ctx.restore();
     }
     raf = requestAnimationFrame(draw);
     return () => {

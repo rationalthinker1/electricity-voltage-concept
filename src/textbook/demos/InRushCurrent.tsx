@@ -106,7 +106,9 @@ export function InRushCurrentDemo({ figure }: Props) {
       const yI = (i: number) => (botI + subH / 2) - (Math.max(-1.5, Math.min(1.5, i)) / 1.6) * (subH / 2 - 4);
 
       // Trace V
-      ctx.strokeStyle = 'rgba(160,158,149,0.85)';
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {
@@ -121,7 +123,10 @@ export function InRushCurrentDemo({ figure }: Props) {
       // Trace B (flux)
       const Bsat = B_SAT;
       // Draw saturation band on B plot
-      ctx.fillStyle = 'rgba(255,107,42,0.10)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = colors.accent;
       const ySatTop = yB(Bsat);
       const ySatTopMax = yB(2.4);
       ctx.fillRect(padL, ySatTopMax, plotW, ySatTop - ySatTopMax);
@@ -129,7 +134,8 @@ export function InRushCurrentDemo({ figure }: Props) {
       const ySatBotBot = yB(-2.4);
       ctx.fillRect(padL, ySatBotTop, plotW, ySatBotBot - ySatBotTop);
 
-      ctx.strokeStyle = 'rgba(108,197,194,1.0)';
+ctx.restore();
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {
@@ -142,7 +148,7 @@ export function InRushCurrentDemo({ figure }: Props) {
       ctx.stroke();
 
       // Trace I (magnetising current)
-      ctx.strokeStyle = 'rgba(255,107,42,1.0)';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {

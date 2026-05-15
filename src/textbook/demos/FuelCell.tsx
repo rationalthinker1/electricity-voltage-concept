@@ -41,6 +41,7 @@ export function FuelCellDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { i, V }; }, [i, V]);
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w: W, h: H } = info;
     let raf = 0;
     let phase = 0;
@@ -68,8 +69,11 @@ export function FuelCellDemo({ figure }: Props) {
 
       let x = cellX;
       // H₂ channel
-      ctx.fillStyle = 'rgba(91,174,248,0.10)';
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = colors.blue;
       ctx.fillRect(x, cellY, flowW, cellH);
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().blue;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
@@ -85,9 +89,14 @@ export function FuelCellDemo({ figure }: Props) {
       x += anodeW;
 
       // Membrane (Nafion) — pink-ish wash
-      ctx.fillStyle = 'rgba(255,107,42,0.30)';
+      ctx.save();
+      ctx.globalAlpha = 0.3;
+      ctx.fillStyle = colors.accent;
       ctx.fillRect(x, cellY, membraneW, cellH);
-      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = colors.text;
       ctx.fillText('Nafion', x + membraneW / 2, cellY + 4);
 
       // H⁺ ions crossing membrane (anode → cathode)
@@ -106,6 +115,7 @@ export function FuelCellDemo({ figure }: Props) {
       x += membraneW;
 
       // Cathode catalyst
+      ctx.restore();
       ctx.fillStyle = '#444';
       ctx.fillRect(x, cellY, cathodeW, cellH);
       ctx.fillStyle = getCanvasColors().text;
@@ -116,13 +126,18 @@ export function FuelCellDemo({ figure }: Props) {
       x += cathodeW;
 
       // O₂ channel
-      ctx.fillStyle = 'rgba(255,107,42,0.10)';
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = colors.accent;
       ctx.fillRect(x, cellY, flowW, cellH);
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText('O₂', x + flowW / 2, cellY + 4);
 
       // Reaction labels at bottom
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -135,6 +150,7 @@ export function FuelCellDemo({ figure }: Props) {
       const pY = 30;
       const pW = W - pX - 30;
       const pH = H - 60;
+      ctx.restore();
       ctx.strokeStyle = getCanvasColors().border;
       ctx.strokeRect(pX, pY, pW, pH);
 
@@ -157,7 +173,7 @@ export function FuelCellDemo({ figure }: Props) {
       // Operating point
       const opX = xI(s.i);
       const opY = yV(s.V);
-      ctx.fillStyle = 'rgba(255,59,110,1)';
+      ctx.fillStyle = colors.pink;
       ctx.beginPath();
       ctx.arc(opX, opY, 5, 0, Math.PI * 2);
       ctx.fill();

@@ -39,6 +39,7 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
   const fsplDb = 10 * Math.log10(fspl);
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w: W, h: H } = info;
     let raf = 0;
     function draw() {
@@ -75,12 +76,15 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       }
 
       // Tx antenna
-      ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.moveTo(txX, cy - 22); ctx.lineTo(txX, cy + 22);
       ctx.stroke();
       ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().accent;
       ctx.textAlign = 'center';
       ctx.fillText(`TX · ${Ptmw.toFixed(0)} mW`, txX, cy + 40);

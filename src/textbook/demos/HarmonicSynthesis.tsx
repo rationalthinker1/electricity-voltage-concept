@@ -137,7 +137,7 @@ export function HarmonicSynthesisDemo() {
       }
 
       // Plot partial sum (the synthesized wave)
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
       for (let i = 0; i <= N_samples; i++) {

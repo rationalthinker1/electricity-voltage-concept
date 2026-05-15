@@ -87,7 +87,9 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
       ctx.stroke();
 
       // axis ticks
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -104,6 +106,7 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
       }
 
       // axis titles
+      ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';

@@ -55,7 +55,7 @@ export function EquipotentialsDemo({ figure }: Props) {
         const v = V(x, y);
         for (const L of levels) {
           if (Math.abs(v - L) < Math.abs(L) * 0.05 + 1.5) {
-            ctx.fillStyle = 'rgba(108,197,194,0.18)';
+            ctx.fillStyle = colors.tealSoft;
             ctx.fillRect(x, y, 2, 2);
           }
         }

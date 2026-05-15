@@ -112,7 +112,7 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // Current trace (amber)
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
       for (let i = 0; i < histI.length; i++) {
@@ -158,9 +158,12 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
       lg('#ff6b2a', 'current I = (V − E_back)/R');
 
       // Time axis
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText('time →', padL + plotW / 2, padT + plotH + 6);
+      ctx.restore();
 
       raf = requestAnimationFrame(draw);
     }

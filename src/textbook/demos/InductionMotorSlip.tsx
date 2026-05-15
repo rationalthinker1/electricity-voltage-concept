@@ -130,7 +130,9 @@ export function InductionMotorSlipDemo({ figure }: Props) {
       ctx.beginPath(); ctx.arc(rmx, rmy, 4, 0, Math.PI * 2); ctx.fill();
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('rotating stator field (dashed)', 12, 12);
@@ -140,6 +142,7 @@ export function InductionMotorSlipDemo({ figure }: Props) {
       ctx.fillText(`slip = ${(slip * 100).toFixed(2)}%`, w - 12, 26);
 
       raf = requestAnimationFrame(draw);
+      ctx.restore();
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);

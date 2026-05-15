@@ -27,6 +27,7 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
   const R_rad = 73; // Ω at resonance, half-wave dipole
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w: W, h: H } = info;
     let raf = 0;
     function draw() {
@@ -113,11 +114,14 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.beginPath(); ctx.moveTo(x0, y73); ctx.lineTo(x1, y73); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.save();
+      ctx.globalAlpha = 0.7;
+      ctx.fillStyle = colors.text;
       ctx.textAlign = 'left';
       ctx.fillText('73 Ω', x0 + 4, y73 - 4);
 
       raf = requestAnimationFrame(draw);
+      ctx.restore();
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);

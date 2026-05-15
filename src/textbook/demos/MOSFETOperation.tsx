@@ -67,8 +67,11 @@ export function MOSFETOperationDemo({ figure }: Props) {
       const dW = dR - dL, dH = dB - dT;
 
       // substrate (p-type, blue tint)
-      ctx.fillStyle = 'rgba(91,174,248,0.10)';
+      ctx.save();
+      ctx.globalAlpha = 0.10;
+      ctx.fillStyle = colors.blue;
       ctx.fillRect(dL, dT + dH * 0.4, dW, dH * 0.6);
+      ctx.restore();
       ctx.strokeStyle = colors.border;
       ctx.strokeRect(dL, dT + dH * 0.4, dW, dH * 0.6);
 
@@ -87,12 +90,18 @@ export function MOSFETOperationDemo({ figure }: Props) {
       // oxide (thin pale band above substrate, between source and drain)
       const oxL = srcR + 2, oxR = drnL - 2;
       const oxT = ndT - 8, oxB = ndT;
-      ctx.fillStyle = 'rgba(255,255,255,0.12)';
+      ctx.save();
+      ctx.globalAlpha = 0.12;
+      ctx.fillStyle = colors.text;
       ctx.fillRect(oxL, oxT, oxR - oxL, oxB - oxT);
 
       // gate (above oxide)
-      ctx.fillStyle = 'rgba(255,107,42,0.22)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle = colors.accent;
       ctx.fillRect(oxL, dT + 14, oxR - oxL, oxT - (dT + 14));
+      ctx.restore();
       ctx.strokeStyle = colors.accent;
       ctx.strokeRect(oxL, dT + 14, oxR - oxL, oxT - (dT + 14));
 
@@ -105,7 +114,9 @@ export function MOSFETOperationDemo({ figure }: Props) {
       ctx.fillText('D', (drnL + drnR) / 2, (ndT + ndB) / 2);
       ctx.fillText('G', (oxL + oxR) / 2, dT + 22);
       ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
       ctx.textBaseline = 'top';
       ctx.fillText('oxide', (oxL + oxR) / 2, oxT - 1);
       ctx.fillText('p-substrate (body)', (dL + dR) / 2, dT + dH * 0.85);
@@ -158,6 +169,7 @@ export function MOSFETOperationDemo({ figure }: Props) {
       }
 
       // header on left
+      ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
@@ -187,7 +199,9 @@ export function MOSFETOperationDemo({ figure }: Props) {
       ctx.stroke();
 
       // ticks
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -199,6 +213,7 @@ export function MOSFETOperationDemo({ figure }: Props) {
       ctx.fillText(`${(Imax * 1000).toFixed(0)} mA`, pL - 4, yOf(Imax));
       ctx.fillText('0', pL - 4, yOf(0));
 
+      ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -235,12 +250,15 @@ export function MOSFETOperationDemo({ figure }: Props) {
       const I_op = ID(V_GS, V_DS);
       const opX = xOf(V_DS);
       const opY = yOf(Math.min(Imax, I_op));
-      ctx.strokeStyle = 'rgba(236,235,229,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.text;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(opX, pT); ctx.lineTo(opX, pT + pH);
       ctx.stroke();
       ctx.setLineDash([]);
+      ctx.restore();
       ctx.fillStyle = colors.text;
       ctx.beginPath();
       ctx.arc(opX, opY, 4, 0, Math.PI * 2);

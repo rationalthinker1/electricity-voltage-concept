@@ -94,11 +94,14 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
       const nLines = 5;
       for (let i = 0; i < nLines; i++) {
         const y = cy - plateH / 2 + (i + 0.5) * (plateH / nLines);
-        ctx.strokeStyle = 'rgba(255,59,110,0.7)';
+        ctx.save();
+        ctx.globalAlpha = 0.7;
+        ctx.strokeStyle = colors.pink;
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.moveTo(plate1X + 4, y); ctx.lineTo(plate2X - 6, y);
         ctx.stroke();
+        ctx.restore();
         // arrowhead
         ctx.fillStyle = colors.pink;
         ctx.beginPath();
@@ -113,8 +116,11 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText('E growing', (plate1X + plate2X) / 2, cy + plateH / 2 + 6);
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
       ctx.fillText('∂E/∂t = displacement current', (plate1X + plate2X) / 2, cy + plateH / 2 + 22);
+      ctx.restore();
 
       // Three Amperian loops: around the left wire, around the gap, around the right wire
       // Drawn as ellipses around the cross-section position.

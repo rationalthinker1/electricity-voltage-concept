@@ -107,15 +107,21 @@ export default function OhmsLawLab() {
       grd.addColorStop(1, 'rgba(255,107,42,0.08)');
       ctx.fillStyle = grd;
       roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 14); ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1;
       roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 14); ctx.stroke();
+      ctx.restore();
 
       // Battery terminals
       ctx.fillStyle = colors.pink;
-      ctx.shadowColor = 'rgba(255,59,110,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.shadowColor = colors.pink;
       ctx.shadowBlur = 14;
       ctx.fillRect(wireLeft - 18, top - 6, 4, thickness + 12);
+      ctx.restore();
       ctx.shadowBlur = 0;
       ctx.font = 'bold 18px "JetBrains Mono", monospace';
       ctx.fillStyle = colors.pink;
@@ -124,9 +130,12 @@ export default function OhmsLawLab() {
       ctx.fillText('+', wireLeft - 32, wireCY);
 
       ctx.fillStyle = colors.blue;
-      ctx.shadowColor = 'rgba(91,174,248,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.shadowColor = colors.blue;
       ctx.shadowBlur = 14;
       ctx.fillRect(wireRight + 14, top - 6, 4, thickness + 12);
+      ctx.restore();
       ctx.shadowBlur = 0;
       ctx.fillStyle = colors.blue;
       ctx.fillText('−', wireRight + 32, wireCY);

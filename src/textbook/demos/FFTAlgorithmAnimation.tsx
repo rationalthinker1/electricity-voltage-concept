@@ -40,7 +40,9 @@ export function FFTAlgorithmAnimationDemo() {
       const plotH = h - padT - padB;
 
       // Axes
-      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + plotH);
@@ -54,7 +56,10 @@ export function FFTAlgorithmAnimationDemo() {
       const yOf = (ops: number) => padT + plotH - (Math.log10(Math.max(ops, 1)) / maxOps) * plotH;
 
       // Curves
-      ctx.strokeStyle = 'rgba(91,174,248,0.85)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.strokeStyle = colors.blue;
       ctx.lineWidth = 2;
       ctx.beginPath();
       for (let lN = xMin; lN <= xMax; lN++) {
@@ -63,7 +68,8 @@ export function FFTAlgorithmAnimationDemo() {
         if (lN === xMin) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       }
       ctx.stroke();
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.restore();
+      ctx.strokeStyle = colors.accent;
       ctx.beginPath();
       for (let lN = xMin; lN <= xMax; lN++) {
         const M = 1 << lN;
@@ -73,7 +79,9 @@ export function FFTAlgorithmAnimationDemo() {
       ctx.stroke();
 
       // Selected N marker
-      ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+      ctx.save();
+      ctx.globalAlpha = 0.3;
+      ctx.strokeStyle = colors.text;
       ctx.setLineDash([3, 4]);
       const xN = xOf(logN);
       ctx.beginPath();
@@ -82,7 +90,10 @@ export function FFTAlgorithmAnimationDemo() {
       ctx.setLineDash([]);
 
       // Tick labels
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       for (let lN = xMin; lN <= xMax; lN += 2) {
@@ -94,6 +105,7 @@ export function FFTAlgorithmAnimationDemo() {
       ctx.fillText('10⁷', padL - 3, padT + 8);
 
       // Legend
+      ctx.restore();
       ctx.fillStyle = colors.blue;
       ctx.textAlign = 'left';
       ctx.fillText('naive DFT — N²', padL + 4, padT + 10);
@@ -125,7 +137,9 @@ export function FFTAlgorithmAnimationDemo() {
       }
 
       // Edges: for stage s (1..3), pair index i with i XOR (1 << (stages - s))
-      ctx.strokeStyle = 'rgba(108,197,194,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1;
       for (let s = 1; s <= stages; s++) {
         const step = 1 << (s - 1);
@@ -154,6 +168,7 @@ export function FFTAlgorithmAnimationDemo() {
         }
       }
       // Input / output index labels
+      ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'right';
       for (let i = 0; i < Nbf; i++) {

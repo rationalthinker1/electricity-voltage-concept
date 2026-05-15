@@ -116,17 +116,23 @@ export function RotatingCoilDemo({ figure }: Props) {
       const normLen = 30;
       const projNx = Math.cos(angle) * normLen;
       const projNy = -Math.sin(angle) * normLen * 0.35;
-      ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(coilCx, coilCy);
       ctx.lineTo(coilCx + projNx, coilCy + projNy);
       ctx.stroke();
-      ctx.fillStyle = 'rgba(255,255,255,0.55)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = colors.text;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       ctx.fillText('n̂', coilCx + projNx + 4, coilCy + projNy);
 
+      ctx.restore();
       ctx.fillStyle = colors.teal;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
@@ -167,7 +173,9 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.moveTo(scopeX, scopeCy); ctx.lineTo(scopeX + scopeW, scopeCy); ctx.stroke();
 
       // peak guides
-      ctx.strokeStyle = 'rgba(255,107,42,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = colors.accent;
       ctx.setLineDash([4, 4]);
       const peakY = scopeCy - (scopeH / 2) * 0.9;
       const peakYn = scopeCy + (scopeH / 2) * 0.9;
@@ -195,11 +203,15 @@ export function RotatingCoilDemo({ figure }: Props) {
         });
       }
 
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('EMF(t)', scopeX, 12);
       ctx.textAlign = 'right';
+      ctx.restore();
       ctx.fillStyle = colors.accent;
       ctx.fillText(`peak = ${pretty(peak)} V`, scopeX + scopeW, 12);
 

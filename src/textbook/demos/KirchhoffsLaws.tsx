@@ -59,6 +59,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
   const cacheRef = useRef<StaticCache | null>(null);
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w, h, dpr } = info;
     let raf = 0;
 
@@ -120,7 +121,9 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
 
       // Dynamic overlay: node identifier letters above each junction.
-      ctx.fillStyle = 'rgba(255,255,255,0.8)';
+      ctx.save();
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = colors.text;
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
@@ -154,6 +157,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       ], I1 / maxI);
 
       // Dynamic overlay: live current readouts next to each branch.
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().blue;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
@@ -174,9 +178,12 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         const boxX = 12;
         const boxY = h - 64;
         ctx.fillStyle = 'rgba(255,107,42,0.10)';
-        ctx.strokeStyle = 'rgba(255,107,42,0.6)';
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.strokeStyle = colors.accent;
         ctx.fillRect(boxX, boxY, 230, 50);
         ctx.strokeRect(boxX, boxY, 230, 50);
+        ctx.restore();
         ctx.fillStyle = getCanvasColors().accent;
         ctx.font = 'bold 10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
@@ -198,10 +205,13 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         const boxX = w - 270;
         const boxY = h - 96;
         ctx.fillStyle = 'rgba(108,197,194,0.10)';
-        ctx.strokeStyle = 'rgba(108,197,194,0.6)';
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.strokeStyle = colors.teal;
         ctx.fillRect(boxX, boxY, 258, 82);
         ctx.strokeRect(boxX, boxY, 258, 82);
 
+ctx.restore();
         ctx.fillStyle = getCanvasColors().teal;
         ctx.font = 'bold 10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';

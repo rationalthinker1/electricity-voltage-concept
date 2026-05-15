@@ -121,11 +121,14 @@ function drawSchematic(
 
   // Source label
   const xSrc = margin + 12;
-  ctx.strokeStyle = 'rgba(236,235,229,0.55)';
+  ctx.save();
+  ctx.globalAlpha = 0.55;
+  ctx.strokeStyle = getCanvasColors().text;
   ctx.lineWidth = 1.4;
   ctx.beginPath();
   ctx.arc(xSrc, yWire, 12, 0, Math.PI * 2);
   ctx.stroke();
+  ctx.restore();
   ctx.fillStyle = getCanvasColors().accent;
   ctx.font = 'bold 10px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
@@ -138,13 +141,16 @@ function drawSchematic(
   ctx.fillText(`${Vs.toFixed(2)} V`, xSrc - 8, yWire - 18);
 
   // Wire from source through R_s
-  ctx.strokeStyle = 'rgba(236,235,229,0.55)';
+  ctx.save();
+  ctx.globalAlpha = 0.55;
+  ctx.strokeStyle = getCanvasColors().text;
   ctx.beginPath();
   ctx.moveTo(xSrc + 12, yWire); ctx.lineTo(xSrc + 30, yWire);
   ctx.stroke();
   const xRsLeft = xSrc + 30;
   const xRsRight = xRsLeft + 60;
   // R_s resistor (horizontal box)
+  ctx.restore();
   ctx.strokeStyle = getCanvasColors().pink;
   ctx.strokeRect(xRsLeft, yWire - 7, 60, 14);
   ctx.fillStyle = getCanvasColors().pink;
@@ -153,7 +159,9 @@ function drawSchematic(
   ctx.textBaseline = 'bottom';
   ctx.fillText(`R_s = ${formatR(Rs)}`, xRsLeft + 30, yWire - 10);
 
-  ctx.strokeStyle = 'rgba(236,235,229,0.55)';
+  ctx.save();
+  ctx.globalAlpha = 0.55;
+  ctx.strokeStyle = getCanvasColors().text;
   ctx.beginPath();
   ctx.moveTo(xRsRight, yWire); ctx.lineTo(xRsRight + 30, yWire);
   ctx.stroke();
@@ -201,15 +209,22 @@ function drawSchematic(
   }
 
   // R_L from node to ground
-  ctx.strokeStyle = 'rgba(236,235,229,0.55)';
+  ctx.restore();
+  ctx.save();
+  ctx.globalAlpha = 0.55;
+  ctx.strokeStyle = getCanvasColors().text;
   ctx.lineWidth = 1.4;
   ctx.beginPath();
   ctx.moveTo(xNodeOut, yWire); ctx.lineTo(xNodeOut + 20, yWire);
   ctx.stroke();
   const xRL = xNodeOut + 20;
   // Vertical R_L
-  ctx.strokeStyle = 'rgba(91,174,248,0.9)';
+  ctx.restore();
+  ctx.save();
+  ctx.globalAlpha = 0.9;
+  ctx.strokeStyle = getCanvasColors().blue;
   ctx.strokeRect(xRL - 7, yWire + 4, 14, 60);
+  ctx.restore();
   ctx.fillStyle = getCanvasColors().blue;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
@@ -227,7 +242,9 @@ function drawSchematic(
   ctx.fillText('V_load', xNodeOut, yWire - 8);
 
   // Ground wire connecting source-bottom to R_L bottom
-  ctx.strokeStyle = 'rgba(236,235,229,0.55)';
+  ctx.save();
+  ctx.globalAlpha = 0.55;
+  ctx.strokeStyle = getCanvasColors().text;
   ctx.lineWidth = 1.4;
   ctx.beginPath();
   ctx.moveTo(xSrc, yWire + 12); ctx.lineTo(xSrc, yGnd);
@@ -235,7 +252,10 @@ function drawSchematic(
   ctx.stroke();
 
   // Ground symbol
-  ctx.strokeStyle = 'rgba(160,158,149,0.7)';
+  ctx.restore();
+  ctx.save();
+  ctx.globalAlpha = 0.7;
+  ctx.strokeStyle = getCanvasColors().textDim;
   ctx.beginPath();
   ctx.moveTo(xSrc - 6, yGnd); ctx.lineTo(xSrc + 6, yGnd);
   ctx.moveTo(xSrc - 4, yGnd + 3); ctx.lineTo(xSrc + 4, yGnd + 3);
@@ -243,6 +263,7 @@ function drawSchematic(
   ctx.stroke();
 
   // V_load readout
+  ctx.restore();
   ctx.fillStyle = getCanvasColors().accent;
   ctx.font = 'bold 11px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
@@ -303,13 +324,16 @@ function drawBars(
   ctx.textBaseline = 'top';
   ctx.fillText(bufferOn ? '⟵ live' : '⟵ live', padL + plotW + 4, padT + plotH * 0.5);
 
-  ctx.fillStyle = 'rgba(160,158,149,0.65)';
+  ctx.save();
+  ctx.globalAlpha = 0.65;
+  ctx.fillStyle = getCanvasColors().textDim;
   ctx.font = '8px "JetBrains Mono", monospace';
   ctx.textAlign = 'right';
   ctx.textBaseline = 'middle';
   ctx.fillText(`${vmax.toFixed(2)} V`, padL - 4, yOf(vmax));
   ctx.fillText('0', padL - 4, yOf(0));
 
+  ctx.restore();
   ctx.restore();
 }
 

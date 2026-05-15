@@ -141,10 +141,13 @@ export function BLDCCommutationDemo({ figure }: Props) {
         ctx.beginPath();
         ctx.moveTo(cx, cy); ctx.lineTo(ax, ay); ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = 'rgba(255,255,255,0.65)';
+        ctx.save();
+        ctx.globalAlpha = 0.65;
+        ctx.fillStyle = colors.text;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText('B_stator', ax + 4, ay - 8);
+        ctx.restore();
       }
 
       // Rotor — a bar magnet, N (pink) / S (blue), at angle rotorAng
@@ -156,11 +159,14 @@ export function BLDCCommutationDemo({ figure }: Props) {
       const sxx = cx - rcos * rotR;
       const syy = cy + rsin * rotR;
       // bar
-      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 12;
       ctx.lineCap = 'round';
       ctx.beginPath();
       ctx.moveTo(sxx, syy); ctx.lineTo(nx, ny); ctx.stroke();
+      ctx.restore();
       // N pole
       ctx.fillStyle = colors.pink;
       ctx.beginPath(); ctx.arc(nx, ny, 11, 0, Math.PI * 2); ctx.fill();
@@ -175,10 +181,13 @@ export function BLDCCommutationDemo({ figure }: Props) {
       ctx.lineCap = 'butt';
 
       // Step indicator
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(`step ${idx + 1} / 6`, 12, 12);
+      ctx.restore();
       ctx.textAlign = 'right';
       ctx.fillText(`A=${step.a > 0 ? '+' : step.a < 0 ? '−' : '·'}  B=${step.b > 0 ? '+' : step.b < 0 ? '−' : '·'}  C=${step.c > 0 ? '+' : step.c < 0 ? '−' : '·'}`, w - 12, 12);
 

@@ -94,7 +94,9 @@ export function PoyntingInflowDemo({ figure }: Props) {
       const er = r * ellipseRatio;
 
       // BACK-half B-field ellipses
-      ctx.strokeStyle = 'rgba(108,197,194,0.32)';
+      ctx.save();
+      ctx.globalAlpha = 0.32;
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 1.1;
       const nB = 7;
       for (let i = 0; i < nB; i++) {
@@ -138,6 +140,7 @@ export function PoyntingInflowDemo({ figure }: Props) {
       sideGrd.addColorStop(0, 'rgba(255,107,42,0.14)');
       sideGrd.addColorStop(0.5, 'rgba(255,107,42,0.32)');
       sideGrd.addColorStop(1, 'rgba(255,107,42,0.14)');
+      ctx.restore();
       ctx.fillStyle = sideGrd;
       ctx.beginPath();
       ctx.moveTo(g.wireXL, g.wireCY - r);
@@ -147,7 +150,9 @@ export function PoyntingInflowDemo({ figure }: Props) {
       ctx.ellipse(g.wireXL, g.wireCY, er, r, 0, Math.PI / 2, -Math.PI / 2);
       ctx.closePath(); ctx.fill();
 
-      ctx.strokeStyle = 'rgba(255,107,42,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(g.wireXL, g.wireCY - r);
@@ -171,6 +176,7 @@ export function PoyntingInflowDemo({ figure }: Props) {
 
       // E axial arrows
       const nE = 5;
+      ctx.restore();
       ctx.strokeStyle = getCanvasColors().pink;
       ctx.fillStyle = getCanvasColors().pink;
       ctx.lineWidth = 2;
@@ -230,8 +236,11 @@ export function PoyntingInflowDemo({ figure }: Props) {
       ctx.fillText(`B = ${pretty(out.B)} T`, 18, 46);
 
       ctx.textAlign = 'right';
-      ctx.fillStyle = 'rgba(160,158,149,.85)';
+      ctx.save();
+      ctx.globalAlpha = .85;
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText(`a = ${a_mm.toFixed(2)} mm   L = ${L.toFixed(2)} m`, W - 18, 14);
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText(`P_surf / P_VI = ${out.match.toFixed(3)}`, W - 18, 30);
 

@@ -87,14 +87,20 @@ export function ChargingCurveDemo({ figure }: Props) {
       const xT = (tt: number) => pX + (tt / PLOT_DURATION) * pW;
 
       // Reference lines: V0, 63%, 99%
-      ctx.strokeStyle = 'rgba(255,107,42,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.setLineDash([4, 4]);
       const y0line = yV(V0);
       ctx.beginPath(); ctx.moveTo(pX, y0line); ctx.lineTo(pX + pW, y0line); ctx.stroke();
+      ctx.restore();
 
-      ctx.strokeStyle = 'rgba(108,197,194,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = getCanvasColors().teal;
       const y63 = yV(V0 * (1 - 1 / Math.E));
       ctx.beginPath(); ctx.moveTo(pX, y63); ctx.lineTo(pX + pW, y63); ctx.stroke();
+      ctx.restore();
 
       ctx.strokeStyle = getCanvasColors().borderStrong;
       const y99 = yV(V0 * 0.99);
@@ -102,10 +108,13 @@ export function ChargingCurveDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // τ and 5τ markers
-      ctx.strokeStyle = 'rgba(108,197,194,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.setLineDash([3, 3]);
       const xTau = xT(tauNow);
       if (xTau < pX + pW) { ctx.beginPath(); ctx.moveTo(xTau, pY); ctx.lineTo(xTau, pY + pH); ctx.stroke(); }
+      ctx.restore();
       ctx.strokeStyle = getCanvasColors().borderStrong;
       const x5tau = xT(5 * tauNow);
       if (x5tau < pX + pW) { ctx.beginPath(); ctx.moveTo(x5tau, pY); ctx.lineTo(x5tau, pY + pH); ctx.stroke(); }

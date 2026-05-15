@@ -102,14 +102,19 @@ export function NodalSolverDemo({ figure }: Props) {
         const offCtx = off.getContext('2d');
         if (offCtx) {
           // Node A label + V_A readout sits just above the top rail.
-          offCtx.fillStyle = 'rgba(255,255,255,0.85)';
+          offCtx.save();
+          offCtx.globalAlpha = 0.85;
+          offCtx.fillStyle = getCanvasColors().text;
           offCtx.font = 'bold 12px "JetBrains Mono", monospace';
           offCtx.textAlign = 'left';
           offCtx.textBaseline = 'bottom';
           offCtx.fillText(`A   V_A = ${nodal.V_A.toFixed(3)} V`, xMid + 10, yTop - 6);
 
           // Top-left caption pinned to the corner.
-          offCtx.fillStyle = 'rgba(160,158,149,0.75)';
+          offCtx.restore();
+          offCtx.save();
+          offCtx.globalAlpha = 0.75;
+          offCtx.fillStyle = getCanvasColors().textDim;
           offCtx.font = '10px "JetBrains Mono", monospace';
           offCtx.textAlign = 'left';
           offCtx.textBaseline = 'top';
@@ -117,7 +122,10 @@ export function NodalSolverDemo({ figure }: Props) {
           offCtx.fillText('KCL at A: (V₁−V_A)/R₁ + (V₂−V_A)/R₃ = V_A/R₂', 12, 24);
 
           // Branch-current annotations above R1 / R3 and beside R2.
-          offCtx.fillStyle = 'rgba(91,174,248,0.95)';
+          offCtx.restore();
+          offCtx.save();
+          offCtx.globalAlpha = 0.95;
+          offCtx.fillStyle = getCanvasColors().blue;
           offCtx.font = '10px "JetBrains Mono", monospace';
           offCtx.textAlign = 'center';
           offCtx.textBaseline = 'bottom';
@@ -127,6 +135,7 @@ export function NodalSolverDemo({ figure }: Props) {
           offCtx.textAlign = 'left';
           offCtx.fillText(`I_R₂ = ${fmtA(nodal.I_R2)}`, xMid + 14, h / 2);
           void yBot;
+          offCtx.restore();
         }
         cacheRef.current = { key: cacheKey, canvas: off };
       }

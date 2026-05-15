@@ -65,8 +65,11 @@ export default function AmpereLab() {
       ctx.lineWidth = 1;
       for (const fr of fieldRadii) {
         const op = Math.max(0.05, Math.min(0.35, 0.42 * (loopPx / fr)));
-        ctx.strokeStyle = `rgba(255,107,42,${op})`;
+        ctx.save();
+        ctx.globalAlpha = op;
+        ctx.strokeStyle = colors.accent;
         ctx.beginPath(); ctx.arc(cx, cy, fr, 0, Math.PI * 2); ctx.stroke();
+        ctx.restore();
         // Tangent arrows
         const nArrows = 8;
         for (let i = 0; i < nArrows; i++) {
@@ -76,13 +79,16 @@ export default function AmpereLab() {
           const tx = Math.sin(a);
           const ty = -Math.cos(a);
           const sz = 4;
-          ctx.fillStyle = `rgba(255,107,42,${op * 1.6})`;
+          ctx.save();
+          ctx.globalAlpha = op * 1.6;
+          ctx.fillStyle = colors.accent;
           ctx.beginPath();
           ctx.moveTo(ax + tx * sz, ay + ty * sz);
           ctx.lineTo(ax + tx * (-sz / 2) + (-ty) * sz / 2, ay + ty * (-sz / 2) + (tx) * sz / 2);
           ctx.lineTo(ax + tx * (-sz / 2) - (-ty) * sz / 2, ay + ty * (-sz / 2) - (tx) * sz / 2);
           ctx.closePath();
           ctx.fill();
+          ctx.restore();
         }
       }
 
@@ -92,34 +98,43 @@ export default function AmpereLab() {
       ctx.setLineDash([6, 4]);
       ctx.beginPath(); ctx.arc(cx, cy, loopPx, 0, Math.PI * 2); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = 'rgba(108,197,194,0.04)';
+      ctx.save();
+      ctx.globalAlpha = 0.04;
+      ctx.fillStyle = colors.teal;
       ctx.beginPath(); ctx.arc(cx, cy, loopPx, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
 
       // Moving dℓ dot
       const dlAngle = (phase * 1.4) % (Math.PI * 2);
       const dlx = cx + Math.cos(dlAngle) * loopPx;
       const dly = cy + Math.sin(dlAngle) * loopPx;
-      ctx.strokeStyle = 'rgba(255,107,42,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 3;
       ctx.beginPath(); ctx.arc(cx, cy, loopPx, 0, dlAngle); ctx.stroke();
+      ctx.restore();
       ctx.fillStyle = colors.accent;
-      ctx.shadowColor = 'rgba(255,107,42,0.7)';
+      ctx.save();
+      ctx.globalAlpha = 0.7;
+      ctx.shadowColor = colors.accent;
       ctx.shadowBlur = 10;
       ctx.beginPath(); ctx.arc(dlx, dly, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
       ctx.shadowBlur = 0;
 
       // B vector at dℓ
       const tx = Math.sin(dlAngle);
       const ty = -Math.cos(dlAngle);
       const vlen = 26;
-      ctx.strokeStyle = 'rgba(255,107,42,1)';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(dlx, dly);
       ctx.lineTo(dlx + tx * vlen, dly + ty * vlen);
       ctx.stroke();
       const aang = Math.atan2(ty, tx);
-      ctx.fillStyle = 'rgba(255,107,42,1)';
+      ctx.fillStyle = colors.accent;
       ctx.beginPath();
       ctx.moveTo(dlx + tx * vlen, dly + ty * vlen);
       ctx.lineTo(dlx + tx * vlen - 7 * Math.cos(aang - 0.4), dly + ty * vlen - 7 * Math.sin(aang - 0.4));
@@ -134,11 +149,17 @@ export default function AmpereLab() {
       for (let i = 0; i < nWires; i++) {
         const wx = startX + i * spacing;
         const wy = cy;
-        ctx.fillStyle = 'rgba(255,59,110,0.18)';
+        ctx.save();
+        ctx.globalAlpha = 0.18;
+        ctx.fillStyle = colors.pink;
         ctx.beginPath(); ctx.arc(wx, wy, wireR, 0, Math.PI * 2); ctx.fill();
-        ctx.strokeStyle = 'rgba(255,59,110,0.95)';
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.95;
+        ctx.strokeStyle = colors.pink;
         ctx.lineWidth = 1.4;
         ctx.stroke();
+        ctx.restore();
         const cs = wireR * 0.55;
         ctx.beginPath();
         ctx.moveTo(wx - cs, wy - cs); ctx.lineTo(wx + cs, wy + cs);
@@ -147,12 +168,15 @@ export default function AmpereLab() {
       }
 
       // Loop radius indicator
-      ctx.strokeStyle = 'rgba(108,197,194,0.4)';
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 4]);
       ctx.beginPath();
       ctx.moveTo(cx, cy); ctx.lineTo(cx + loopPx, cy);
       ctx.stroke();
+      ctx.restore();
       ctx.setLineDash([]);
       ctx.fillStyle = colors.teal;
       ctx.font = '10px "JetBrains Mono", monospace';
@@ -175,8 +199,11 @@ export default function AmpereLab() {
       ctx.fillStyle = colors.textDim;
       ctx.fillText(`|B| on loop = ${pretty(Bcirc)} T`, 24, 68);
       ctx.textAlign = 'right';
-      ctx.fillStyle = 'rgba(255,59,110,0.95)';
+      ctx.save();
+      ctx.globalAlpha = 0.95;
+      ctx.fillStyle = colors.pink;
       ctx.fillText(`I_enc = ${(I * nWires).toFixed(1)} A   (${nWires} × ${I.toFixed(1)} A)`, w - 24, 28);
+      ctx.restore();
 
       raf = requestAnimationFrame(draw);
     }

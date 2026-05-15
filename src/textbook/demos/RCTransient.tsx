@@ -143,12 +143,18 @@ export function RCTransientDemo({ figure }: Props) {
           const y = plotY + (i * plotH) / 4;
           sctx.beginPath(); sctx.moveTo(plotX, y); sctx.lineTo(plotX + plotW, y); sctx.stroke();
         }
-        sctx.strokeStyle = 'rgba(255,107,42,0.35)';
+        sctx.save();
+        sctx.globalAlpha = 0.35;
+        sctx.strokeStyle = getCanvasColors().accent;
         sctx.setLineDash([4, 4]);
         sctx.beginPath(); sctx.moveTo(plotX, y0line); sctx.lineTo(plotX + plotW, y0line); sctx.stroke();
-        sctx.strokeStyle = 'rgba(108,197,194,0.35)';
+        sctx.restore();
+        sctx.save();
+        sctx.globalAlpha = 0.35;
+        sctx.strokeStyle = getCanvasColors().teal;
         sctx.beginPath(); sctx.moveTo(plotX, y63); sctx.lineTo(plotX + plotW, y63); sctx.stroke();
         sctx.setLineDash([]);
+        sctx.restore();
         sctx.fillStyle = getCanvasColors().accent;
         sctx.font = '10px "JetBrains Mono", monospace';
         sctx.textAlign = 'right'; sctx.textBaseline = 'bottom';
@@ -214,7 +220,9 @@ export function RCTransientDemo({ figure }: Props) {
       const xTau = xT(tauNow);
 
       // Dynamic overlay: τ vertical marker — its position slides with R*C.
-      ctx.strokeStyle = 'rgba(108,197,194,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.setLineDash([3, 3]);
       if (xTau < plotX + plotW) {
         ctx.beginPath(); ctx.moveTo(xTau, plotY); ctx.lineTo(xTau, plotY + plotH); ctx.stroke();
@@ -237,6 +245,7 @@ export function RCTransientDemo({ figure }: Props) {
       }
 
       // Dynamic overlay: τ-marker label + live V_C readout + (6τ) window legend.
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().teal;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';

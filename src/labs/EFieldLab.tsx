@@ -153,11 +153,14 @@ export default function EFieldLab() {
         ctx.arc(sx, sy, mm, 0, Math.PI * 2);
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = 'rgba(108,197,194,0.45)';
+        ctx.save();
+        ctx.globalAlpha = 0.45;
+        ctx.fillStyle = getCanvasColors().teal;
         ctx.font = '9px JetBrains Mono';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
         ctx.fillText(mm + ' mm', sx + mm + 4, sy);
+        ctx.restore();
       }
 
       // Radial field lines streaming from source
@@ -174,21 +177,27 @@ export default function EFieldLab() {
         }
         if (sgn < 0) path.reverse();
         if (path.length > 2) {
-          ctx.strokeStyle = 'rgba(255,107,42,0.16)';
+          ctx.save();
+          ctx.globalAlpha = 0.16;
+          ctx.strokeStyle = getCanvasColors().accent;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(path[0][0], path[0][1]);
           for (const [x, y] of path) ctx.lineTo(x, y);
           ctx.stroke();
+          ctx.restore();
           const tIdx = Math.floor((phase + i * 13) % path.length);
           const t = path[tIdx];
           if (t) {
             ctx.beginPath();
             ctx.arc(t[0], t[1], 1.6, 0, Math.PI * 2);
             ctx.fillStyle = getCanvasColors().accent;
-            ctx.shadowColor = 'rgba(255,107,42,.6)';
+            ctx.save();
+            ctx.globalAlpha = .6;
+            ctx.shadowColor = getCanvasColors().accent;
             ctx.shadowBlur = 5;
             ctx.fill();
+            ctx.restore();
             ctx.shadowBlur = 0;
           }
         }
@@ -569,7 +578,7 @@ function drawProbe(
   ctx: CanvasRenderingContext2D,
   cx: number, cy: number, label: string,
 ) {
-  ctx.strokeStyle = '#ff6b2a';
+  ctx.strokeStyle = getCanvasColors().accent;
   ctx.lineWidth = 2;
   ctx.fillStyle = 'rgba(10,10,11,.92)';
   ctx.beginPath(); ctx.arc(cx, cy, 10, 0, Math.PI * 2); ctx.fill(); ctx.stroke();

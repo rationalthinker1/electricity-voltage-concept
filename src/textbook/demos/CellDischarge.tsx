@@ -118,7 +118,7 @@ export function CellDischargeDemo({ figure }: Props) {
       // Marker
       const mx = xSOC(s.soc);
       const my = yV(s.V_term);
-      ctx.fillStyle = 'rgba(255,59,110,1)';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.beginPath();
       ctx.arc(mx, my, 5, 0, Math.PI * 2);
       ctx.fill();

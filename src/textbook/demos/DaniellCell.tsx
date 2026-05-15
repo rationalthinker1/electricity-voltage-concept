@@ -105,13 +105,16 @@ export function DaniellCellDemo({ figure }: Props) {
 
       // External wire + load
       const wireY = beakerY - 22;
-      ctx.strokeStyle = 'rgba(236,235,229,0.85)';
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.strokeStyle = getCanvasColors().text;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(leftX + beakerW / 2, beakerY);
       ctx.lineTo(leftX + beakerW / 2, wireY);
       ctx.lineTo(W / 2 - 22, wireY);
       ctx.stroke();
+      ctx.restore();
       ctx.beginPath();
       ctx.moveTo(W / 2 + 22, wireY);
       ctx.lineTo(rightX + beakerW / 2, wireY);
@@ -133,12 +136,15 @@ export function DaniellCellDemo({ figure }: Props) {
         ctx.stroke();
       } else {
         // Open switch tick
-        ctx.strokeStyle = 'rgba(160,158,149,0.6)';
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.strokeStyle = getCanvasColors().textDim;
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.moveTo(W / 2 - 22, wireY);
         ctx.lineTo(W / 2 + 14, wireY - 12);
         ctx.stroke();
+        ctx.restore();
       }
 
       // Electron flow arrows along the wire (left → right externally)

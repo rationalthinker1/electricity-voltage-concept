@@ -87,7 +87,9 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
       const phiRad = (phiDeg * Math.PI) / 180;
       ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1.8;
-      ctx.fillStyle = 'rgba(255,107,42,0.12)';
+      ctx.save();
+      ctx.globalAlpha = 0.12;
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.beginPath();
       const Ns = 360;
       for (let i = 0; i <= Ns; i++) {
@@ -137,6 +139,7 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
       }
 
       // Pattern axis labels
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';

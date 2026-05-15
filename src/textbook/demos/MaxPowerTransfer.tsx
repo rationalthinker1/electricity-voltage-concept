@@ -122,7 +122,9 @@ export function MaxPowerTransferDemo({ figure }: Props) {
 
       // Vertical line at R_L = R_S
       const xPeak = xOf(1);
-      ctx.strokeStyle = 'rgba(255,107,42,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = colors.accent;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(xPeak, padT); ctx.lineTo(xPeak, padT + plotH);
@@ -132,6 +134,7 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       // Current R_L marker (cursor)
       const xCur = xOf(RL / RS);
       const yCur = yOf(P_L);
+      ctx.restore();
       ctx.fillStyle = colors.accent;
       ctx.beginPath(); ctx.arc(xCur, yCur, 5, 0, Math.PI * 2); ctx.fill();
 
@@ -151,8 +154,11 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       for (const r of [0.1, 0.5, 1, 2, 5, 10]) {
         const x = xOf(r);
-        ctx.fillStyle = 'rgba(255,255,255,0.10)';
+        ctx.save();
+        ctx.globalAlpha = 0.10;
+        ctx.fillStyle = colors.text;
         ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + plotH); ctx.stroke();
+        ctx.restore();
         ctx.fillStyle = colors.textDim;
         ctx.fillText(`${r}·R_S`, x, padT + plotH + 4);
       }

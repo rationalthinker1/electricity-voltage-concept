@@ -169,8 +169,11 @@ function drawFieldLines(
       ctx.strokeStyle = `rgba(255,107,42,${0.35 + 0.55 * k})`;
       ctx.setLineDash([]);
     } else {
-      ctx.strokeStyle = 'rgba(160,158,149,0.22)';
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.strokeStyle = getCanvasColors().textDim;
       ctx.setLineDash([3, 4]);
+      ctx.restore();
     }
     ctx.beginPath();
     // Above axis: bulge up; below: bulge down

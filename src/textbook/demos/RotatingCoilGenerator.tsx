@@ -62,10 +62,16 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       ctx.save();
       ctx.beginPath(); ctx.rect(0, 0, splitX, h); ctx.clip();
       // Magnet poles (vertical stripes left=N, right=S)
-      ctx.fillStyle = 'rgba(255,59,110,0.15)';
+      ctx.save();
+      ctx.globalAlpha = 0.15;
+      ctx.fillStyle = colors.pink;
       ctx.fillRect(8, h * 0.18, 26, h * 0.64);
-      ctx.fillStyle = 'rgba(91,174,248,0.15)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.15;
+      ctx.fillStyle = colors.blue;
       ctx.fillRect(splitX - 34, h * 0.18, 26, h * 0.64);
+      ctx.restore();
       ctx.fillStyle = colors.pink;
       ctx.font = 'bold 12px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -73,8 +79,13 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       ctx.fillStyle = colors.blue;
       ctx.fillText('S', splitX - 21, h / 2);
       // Field arrows
-      ctx.strokeStyle = 'rgba(108,197,194,0.25)';
-      ctx.fillStyle = 'rgba(108,197,194,0.25)';
+      ctx.save();
+      ctx.globalAlpha = 0.25;
+      ctx.strokeStyle = colors.teal;
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.25;
+      ctx.fillStyle = colors.teal;
       ctx.lineWidth = 1;
       for (let i = 0; i < 5; i++) {
         const y = h * 0.22 + i * (h * 0.56) / 4;
@@ -94,6 +105,7 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       const coilW = splitX * 0.35;
       const ang = visualOmega * simT;
       const visW = coilW * Math.abs(Math.sin(ang));
+      ctx.restore();
       ctx.strokeStyle = '#ff6b2a';
       ctx.lineWidth = 2;
       ctx.strokeRect(coilCx - visW / 2, coilCy - coilH / 2, visW, coilH);
@@ -136,7 +148,9 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.moveTo(scopeX, scopeCy); ctx.lineTo(scopeX + scopeW, scopeCy); ctx.stroke();
       // Peak guides
-      ctx.strokeStyle = 'rgba(255,107,42,0.3)';
+      ctx.save();
+      ctx.globalAlpha = 0.3;
+      ctx.strokeStyle = colors.accent;
       ctx.setLineDash([4, 4]);
       const py1 = scopeCy - (scopeH / 2) * 0.9;
       const py2 = scopeCy + (scopeH / 2) * 0.9;
@@ -159,6 +173,7 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
         }
         ctx.stroke();
       }
+      ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';

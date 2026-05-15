@@ -28,6 +28,7 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
   }, [ratio]);
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w, h, } = info;
     let raf = 0;
 
@@ -45,7 +46,7 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
       // Source box (tube amp)
       const srcX = padX;
       const srcW = 80, srcH = 50;
-      ctx.fillStyle = '#16161a';
+      ctx.fillStyle = colors.surface;
       ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1.4;
       ctx.fillRect(srcX, cy - srcH / 2, srcW, srcH);
@@ -61,11 +62,16 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
       // Transformer (simplified two-coil box) center
       const trX = w * 0.45;
       const trW = 100, trH = 70;
-      ctx.strokeStyle = 'rgba(160,158,149,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 1.4;
       ctx.strokeRect(trX, cy - trH / 2, trW, trH);
       // Two short vertical bars suggest core
-      ctx.fillStyle = 'rgba(160,158,149,0.16)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.16;
+      ctx.fillStyle = colors.textDim;
       ctx.fillRect(trX + 30, cy - trH / 2 + 6, 8, trH - 12);
       ctx.fillRect(trX + 62, cy - trH / 2 + 6, 8, trH - 12);
       // Primary coil (left bar)
@@ -73,6 +79,7 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
       // Secondary coil (right bar)
       drawCoilCol(ctx, trX + trW - 16, cy - 22, cy + 22, Math.max(2, Math.round(Math.min(14, Math.max(3, Math.round(ratio * 1.4))) / Math.max(ratio, 1) * ratio / ratio + 2)));
       // Labels for N_p / N_s as a ratio
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
@@ -81,7 +88,7 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
       // Load (speaker)
       const ldX = w - padX - 80;
       const ldW = 80, ldH = 50;
-      ctx.fillStyle = '#16161a';
+      ctx.fillStyle = colors.surface;
       ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 1.4;
       ctx.fillRect(ldX, cy - ldH / 2, ldW, ldH);

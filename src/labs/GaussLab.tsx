@@ -122,7 +122,7 @@ export default function GaussLab() {
       ctx.fillRect(0, 0, w, h);
 
       // Faint grid
-      ctx.strokeStyle = 'rgba(255,255,255,0.025)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       for (let x = 0; x < w; x += 40) {
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
@@ -187,12 +187,15 @@ export default function GaussLab() {
       // Draw the rays with tracers
       for (const ray of lineRays) {
         if (ray.path.length < 2) continue;
-        ctx.strokeStyle = 'rgba(255,107,42,0.13)';
+        ctx.save();
+        ctx.globalAlpha = 0.13;
+        ctx.strokeStyle = colors.accent;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(ray.path[0][0], ray.path[0][1]);
         for (const [x, y] of ray.path) ctx.lineTo(x, y);
         ctx.stroke();
+        ctx.restore();
         const tIdx = Math.floor((phase + ray.a * 30) % ray.path.length);
         const t = ray.path[tIdx];
         if (t) {
@@ -204,9 +207,12 @@ export default function GaussLab() {
           ctx.fillStyle = stillInSphere
             ? 'rgba(91,174,248,0.85)'
             : 'rgba(255,107,42,0.95)';
-          ctx.shadowColor = 'rgba(255,107,42,.55)';
+          ctx.save();
+          ctx.globalAlpha = .55;
+          ctx.shadowColor = colors.accent;
           ctx.shadowBlur = 5;
           ctx.fill();
+          ctx.restore();
           ctx.shadowBlur = 0;
         }
       }
@@ -221,9 +227,12 @@ export default function GaussLab() {
       ctx.beginPath(); ctx.arc(cx, cy, R_mm, 0, Math.PI * 2); ctx.fill();
 
       // Center crosshair
-      ctx.strokeStyle = 'rgba(108,197,194,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(cx - 6, cy); ctx.lineTo(cx + 6, cy); ctx.stroke();
+      ctx.restore();
       ctx.beginPath(); ctx.moveTo(cx, cy - 6); ctx.lineTo(cx, cy + 6); ctx.stroke();
 
       // Radius label

@@ -75,7 +75,9 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
       }
 
       // 90° line (stability limit)
-      ctx.strokeStyle = 'rgba(255,59,110,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.pink;
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -84,6 +86,7 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // P(δ) curve. Stable side (δ < 90°) solid; unstable side dashed.
+      ctx.restore();
       ctx.strokeStyle = '#ff6b2a';
       ctx.lineWidth = 2.5;
       ctx.beginPath();
@@ -108,7 +111,9 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // Mechanical input horizontal line
-      ctx.strokeStyle = 'rgba(108,197,194,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(padL, yAt(Math.min(pMech, pMax))); ctx.lineTo(padL + plotW, yAt(Math.min(pMech, pMax)));
@@ -134,6 +139,7 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
       }
 
       // P_max line
+      ctx.restore();
       ctx.fillStyle = colors.accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';

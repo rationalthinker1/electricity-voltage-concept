@@ -60,7 +60,9 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
       drawCoilSeries(ctx, c2x, cy, 'L₂', `${L2mH.toFixed(1)} mH`, aiding ? +1 : -1);
 
       // Connecting wire
-      ctx.strokeStyle = 'rgba(160,158,149,0.5)';
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = getCanvasColors().textDim;
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.moveTo(c1x + 22, cy);
@@ -68,6 +70,7 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
       ctx.stroke();
 
       // M label between
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().teal;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
@@ -90,13 +93,16 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
       );
 
       // Bottom strip: both readings + derived M
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
       ctx.fillText(`L_aid = ${Laid.toFixed(2)} mH`, 12, h - 22);
       ctx.fillText(`L_opp = ${Lopp.toFixed(2)} mH`, 12, h - 8);
       ctx.textAlign = 'right';
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText(`M = (L_aid − L_opp) / 4 = ${((Laid - Lopp) / 4).toFixed(2)} mH`, w - 12, h - 8);
 
@@ -189,7 +195,10 @@ function drawCoilSeries(
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
   ctx.fillText(label, cx, cy - 24);
-  ctx.fillStyle = 'rgba(160,158,149,0.75)';
+  ctx.save();
+  ctx.globalAlpha = 0.75;
+  ctx.fillStyle = getCanvasColors().textDim;
   ctx.font = '9px "JetBrains Mono", monospace';
   ctx.fillText(value, cx, cy - 38);
+  ctx.restore();
 }

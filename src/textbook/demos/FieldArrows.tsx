@@ -12,6 +12,7 @@ import { Num } from '@/components/Num';
 import { drawCharge } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 
+import { getCanvasColors } from '@/lib/canvasTheme';
 interface Props { figure?: string }
 
 export function FieldArrowsDemo({ figure }: Props) {
@@ -22,6 +23,7 @@ export function FieldArrowsDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { qNC, pos, probe }; }, [qNC, pos, probe]);
 
   const setup = useCallback((info: LayeredCanvasInfo<'field' | 'ui'>) => {
+    const colors = getCanvasColors();
     const { contexts, w, h, canvas } = info;
     const fieldCtx = contexts.field;
     const uiCtx = contexts.ui;
@@ -88,7 +90,7 @@ export function FieldArrowsDemo({ figure }: Props) {
       const q = sign * qNC * 1e-9;
       const cx0 = w / 2, cy0 = h / 2;
       // Map: 1 px = 1 mm physical (so canvas ~ 30 cm wide)
-      fieldCtx.fillStyle = '#0d0d10';
+      fieldCtx.fillStyle = colors.canvasBg;
       fieldCtx.fillRect(0, 0, w, h);
 
       // Field arrow grid
@@ -136,11 +138,11 @@ export function FieldArrowsDemo({ figure }: Props) {
       uiCtx.clearRect(0, 0, w, h);
       // Probe
       const px = probe.x * w, py = probe.y * h;
-      uiCtx.strokeStyle = '#ff6b2a';
+      uiCtx.strokeStyle = colors.accent;
       uiCtx.lineWidth = 2;
       uiCtx.fillStyle = 'rgba(10,10,11,.9)';
       uiCtx.beginPath(); uiCtx.arc(px, py, 9, 0, Math.PI * 2); uiCtx.fill(); uiCtx.stroke();
-      uiCtx.fillStyle = '#ff6b2a';
+      uiCtx.fillStyle = colors.accent;
       uiCtx.font = 'bold 10px JetBrains Mono';
       uiCtx.textAlign = 'center';
       uiCtx.textBaseline = 'middle';

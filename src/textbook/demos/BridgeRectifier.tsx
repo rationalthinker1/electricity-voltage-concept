@@ -105,12 +105,15 @@ export function BridgeRectifierDemo({ figure }: Props) {
       ctx.stroke();
 
       // x-axis tick at 0, 1, 2, 3 cycles
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       for (let k = 0; k <= 3; k++) {
         const x = padL + (k / 3) * plotW;
         ctx.fillText(`${(k * 16.67).toFixed(1)} ms`, x, padT + plotH + 4);
+      ctx.restore();
       }
 
       // V_in: sine wave (white)
@@ -138,7 +141,7 @@ export function BridgeRectifierDemo({ figure }: Props) {
       ctx.stroke();
 
       // V_cap: smoothed output (amber)
-      ctx.strokeStyle = 'rgba(255,107,42,1.0)';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.9;
       ctx.beginPath();
       for (let k = 0; k <= sim.N; k++) {
@@ -149,18 +152,24 @@ export function BridgeRectifierDemo({ figure }: Props) {
       ctx.stroke();
 
       // mean line
-      ctx.strokeStyle = 'rgba(255,107,42,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = colors.accent;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.moveTo(padL, yOf(sim.vMean));
       ctx.lineTo(padL + plotW, yOf(sim.vMean));
       ctx.stroke();
+      ctx.restore();
       ctx.setLineDash([]);
 
       // y-axis labels
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       ctx.fillText('0', padL - 4, cy);
+      ctx.restore();
       ctx.fillText(`+${Vp.toFixed(0)} V`, padL - 4, yOf(Vp));
       ctx.fillText(`−${Vp.toFixed(0)} V`, padL - 4, yOf(-Vp));
 
@@ -172,7 +181,7 @@ export function BridgeRectifierDemo({ figure }: Props) {
       ctx.fillStyle = colors.text; ctx.fillText('V_in', lx + 14, padT + 8);
       ctx.fillStyle = colors.teal; ctx.fillRect(lx, padT + 24 - 1, 10, 2);
       ctx.fillStyle = colors.text; ctx.fillText('|V_rect|', lx + 14, padT + 24);
-      ctx.fillStyle = 'rgba(255,107,42,1.0)'; ctx.fillRect(lx, padT + 40 - 1, 10, 2);
+      ctx.fillStyle = colors.accent; ctx.fillRect(lx, padT + 40 - 1, 10, 2);
       ctx.fillStyle = colors.text; ctx.fillText('V_out', lx + 14, padT + 40);
 
       raf = requestAnimationFrame(draw);

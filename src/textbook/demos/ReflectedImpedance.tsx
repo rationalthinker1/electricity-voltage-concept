@@ -241,7 +241,10 @@ function drawCoilTwo(ctx: CanvasRenderingContext2D, cx: number, cy: number, labe
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
   ctx.fillText(label, cx, cy + colH / 2 + 4);
-  ctx.fillStyle = 'rgba(160,158,149,0.75)';
+  ctx.save();
+  ctx.globalAlpha = 0.75;
+  ctx.fillStyle = getCanvasColors().textDim;
   ctx.font = '9px "JetBrains Mono", monospace';
   ctx.fillText(value, cx, cy + colH / 2 + 18);
+  ctx.restore();
 }

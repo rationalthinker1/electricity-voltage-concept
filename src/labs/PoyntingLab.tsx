@@ -133,17 +133,23 @@ export default function PoyntingLab() {
         const tx = cx + Math.sin(p.theta) * innerR * ellipseRatio;
         const ty = g.wireCY - Math.cos(p.theta) * innerR;
 
-        ctx.strokeStyle = `rgba(255,107,42,${alpha})`;
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.strokeStyle = getCanvasColors().accent;
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.moveTo(px, py);
         ctx.lineTo(tx, ty);
         ctx.stroke();
+        ctx.restore();
 
-        ctx.fillStyle = `rgba(255,107,42,${alpha})`;
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = getCanvasColors().accent;
         ctx.beginPath();
         ctx.arc(tx, ty, 1.8, 0, Math.PI * 2);
         ctx.fill();
+        ctx.restore();
       }
 
       // --- Wire cylinder body ---
@@ -161,7 +167,9 @@ export default function PoyntingLab() {
       ctx.closePath();
       ctx.fill();
 
-      ctx.strokeStyle = 'rgba(255,107,42,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(g.wireXL, g.wireCY - r);
@@ -169,11 +177,15 @@ export default function PoyntingLab() {
       ctx.moveTo(g.wireXL, g.wireCY + r);
       ctx.lineTo(g.wireXR, g.wireCY + r);
       ctx.stroke();
+      ctx.restore();
 
-      ctx.strokeStyle = 'rgba(255,107,42,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.beginPath();
       ctx.ellipse(g.wireXL, g.wireCY, er, r, 0, 0, Math.PI * 2);
       ctx.stroke();
+      ctx.restore();
       ctx.beginPath();
       ctx.ellipse(g.wireXR, g.wireCY, er, r, 0, 0, Math.PI * 2);
       ctx.stroke();
@@ -232,9 +244,12 @@ export default function PoyntingLab() {
 
       // Terminals
       ctx.fillStyle = getCanvasColors().pink;
-      ctx.shadowColor = 'rgba(255,59,110,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.shadowColor = getCanvasColors().pink;
       ctx.shadowBlur = 14;
       ctx.fillRect(g.wireXL - 26, g.wireCY - r - 6, 4, 2 * r + 12);
+      ctx.restore();
       ctx.shadowBlur = 0;
       ctx.font = 'bold 18px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
@@ -242,9 +257,12 @@ export default function PoyntingLab() {
       ctx.fillStyle = getCanvasColors().pink;
       ctx.fillText('+', g.wireXL - 40, g.wireCY);
       ctx.fillStyle = getCanvasColors().blue;
-      ctx.shadowColor = 'rgba(91,174,248,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.shadowColor = getCanvasColors().blue;
       ctx.shadowBlur = 14;
       ctx.fillRect(g.wireXR + 22, g.wireCY - r - 6, 4, 2 * r + 12);
+      ctx.restore();
       ctx.shadowBlur = 0;
       ctx.fillStyle = getCanvasColors().blue;
       ctx.fillText('−', g.wireXR + 40, g.wireCY);

@@ -269,15 +269,26 @@ export function PanelBus3DDemo({ figure }: Props) {
       ctx.textAlign = 'left';
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to rotate', 12, 12);
-      ctx.fillStyle = 'rgba(160,158,149,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText(`${s.nBreakers} branch slots, alternating L1 / L2`, 12, 28);
 
       ctx.textAlign = 'right';
-      ctx.fillStyle = 'rgba(255,59,110,0.90)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.90;
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.fillText('L1 bus', W - 12, 12);
-      ctx.fillStyle = 'rgba(91,174,248,0.90)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.90;
+      ctx.fillStyle = getCanvasColors().blue;
       ctx.fillText('L2 bus', W - 12, 28);
-      ctx.fillStyle = 'rgba(108,197,194,0.90)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.90;
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.fillText('neutral · ground · bond', W - 12, 44);
       if (s.show2Pole && twoPolePair) {
         ctx.fillStyle = getCanvasColors().accent;
@@ -285,6 +296,7 @@ export function PanelBus3DDemo({ figure }: Props) {
       }
 
       raf = requestAnimationFrame(draw);
+      ctx.restore();
     }
     raf = requestAnimationFrame(draw);
     return () => {
@@ -515,11 +527,17 @@ function drawMainBreaker(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: num
   // Two phase dots on the handle.
   const dL1 = project(v3(-0.35, MAIN_Y, 0.22 + MAIN_HD), cam, W, H);
   const dL2 = project(v3( 0.35, MAIN_Y, 0.22 + MAIN_HD), cam, W, H);
-  ctx.fillStyle = 'rgba(255,59,110,0.98)';
+  ctx.save();
+  ctx.globalAlpha = 0.98;
+  ctx.fillStyle = getCanvasColors().pink;
   ctx.beginPath(); ctx.arc(dL1.x, dL1.y, 3.2, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = 'rgba(91,174,248,0.98)';
+  ctx.restore();
+  ctx.save();
+  ctx.globalAlpha = 0.98;
+  ctx.fillStyle = getCanvasColors().blue;
   ctx.beginPath(); ctx.arc(dL2.x, dL2.y, 3.2, 0, Math.PI * 2); ctx.fill();
   const lbl = project(v3(0, MAIN_Y - MAIN_HH - 0.04, 0.22 + MAIN_HD), cam, W, H);
+  ctx.restore();
   ctx.fillStyle = getCanvasColors().textDim;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
@@ -538,8 +556,11 @@ function drawNeutralBar(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: numb
   for (let i = 0; i < 14; i++) {
     const x = -NEUTRAL_X_HALF + 0.08 + i * ((NEUTRAL_X_HALF * 2 - 0.16) / 13);
     const tick = project(v3(x, NEUTRAL_Y + 0.04, 0.11), cam, W, H);
-    ctx.fillStyle = 'rgba(108,197,194,0.65)';
+    ctx.save();
+    ctx.globalAlpha = 0.65;
+    ctx.fillStyle = getCanvasColors().teal;
     ctx.beginPath(); ctx.arc(tick.x, tick.y, 1.4, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
   }
   const lbl = project(v3(-NEUTRAL_X_HALF - 0.10, NEUTRAL_Y, 0.11), cam, W, H);
   ctx.fillStyle = getCanvasColors().teal;
@@ -609,7 +630,9 @@ function drawNeutralRoute(
     v3(xBot, NEUTRAL_Y + 0.05, 0.12),
   ];
   const proj = route.map(p => project(p, cam, W, H));
-  ctx.strokeStyle = 'rgba(220,220,210,0.45)';
+  ctx.save();
+  ctx.globalAlpha = 0.45;
+  ctx.strokeStyle = getCanvasColors().text;
   ctx.lineWidth = 1.0;
   ctx.beginPath();
   ctx.moveTo(proj[0]!.x, proj[0]!.y);
@@ -637,6 +660,7 @@ function drawNeutralRoute(
     }
     dist -= lens[i]!;
   }
+  ctx.restore();
 }
 
 /**

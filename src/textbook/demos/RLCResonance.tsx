@@ -76,7 +76,9 @@ export function RLCResonanceDemo({ figure }: Props) {
       }
       // Frequency axis ticks at f0/2, f0, 2f0
       const tickFs = [f0 / 2, f0, 2 * f0];
-      ctx.fillStyle = 'rgba(160,158,149,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -89,6 +91,7 @@ export function RLCResonanceDemo({ figure }: Props) {
 
       // f0 marker (vertical dashed)
       const x0 = plotX + ((Math.log10(f0) - logMin) / (logMax - logMin)) * plotW;
+      ctx.restore();
       ctx.strokeStyle = colors.teal;
       ctx.setLineDash([4, 4]);
       ctx.beginPath(); ctx.moveTo(x0, plotY); ctx.lineTo(x0, plotY + plotH); ctx.stroke();
@@ -119,7 +122,9 @@ export function RLCResonanceDemo({ figure }: Props) {
 
       // Half-power band (|I|² half) — at I = Imax/√2 ≈ 0.707 Imax
       const yHalf = plotY + plotH - 0.707 * plotH * 0.95;
-      ctx.strokeStyle = 'rgba(255,59,110,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.pink;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(plotX, yHalf); ctx.lineTo(plotX + plotW, yHalf);
@@ -127,6 +132,7 @@ export function RLCResonanceDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // Labels
+      ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';

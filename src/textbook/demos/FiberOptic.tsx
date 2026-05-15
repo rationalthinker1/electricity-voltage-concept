@@ -32,6 +32,7 @@ export function FiberOpticDemo({ figure }: Props) {
   const critFromAxis = 90 - critFromNormal;
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w: W, h: H } = info;
     let raf = 0;
     function draw() {
@@ -45,15 +46,23 @@ export function FiberOpticDemo({ figure }: Props) {
       const right = W - 18;
 
       // Cladding (light tint above & below)
-      ctx.fillStyle = 'rgba(91,174,248,0.10)';
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = colors.blue;
       ctx.fillRect(left, top - 30, right - left, 30);
       ctx.fillRect(left, bot, right - left, 30);
       // Core (slightly brighter teal)
-      ctx.fillStyle = 'rgba(108,197,194,0.10)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = colors.teal;
       ctx.fillRect(left, top, right - left, bot - top);
 
       // Walls
-      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(left, top); ctx.lineTo(right, top);
@@ -72,6 +81,7 @@ export function FiberOpticDemo({ figure }: Props) {
       let y = (top + bot) / 2; // start on axis
       let dy = 1; // initial down
       const rayColor = escapes_ ? 'rgba(255,59,110,0.95)' : 'rgba(255,107,42,0.95)';
+      ctx.restore();
       ctx.strokeStyle = rayColor;
       ctx.lineWidth = 1.8;
       ctx.beginPath();

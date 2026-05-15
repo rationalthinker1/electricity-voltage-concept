@@ -43,6 +43,7 @@ export function LeydenJarReplayDemo({ figure }: Props) {
   };
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w: W, h: H } = info;
     let raf = 0;
     let phase = 0;
@@ -64,7 +65,9 @@ export function LeydenJarReplayDemo({ figure }: Props) {
       const yB = cy + jarH / 2;
 
       // Outer foil (left/right sides outside glass)
-      ctx.strokeStyle = 'rgba(160,158,149,0.7)';
+      ctx.save();
+      ctx.globalAlpha = 0.7;
+      ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 5;
       ctx.beginPath();
       ctx.moveTo(xL - 4, yT + 30);
@@ -74,8 +77,11 @@ export function LeydenJarReplayDemo({ figure }: Props) {
       ctx.stroke();
 
       // Glass body
+      ctx.restore();
       ctx.strokeStyle = getCanvasColors().teal;
-      ctx.fillStyle = 'rgba(108,197,194,0.08)';
+      ctx.save();
+      ctx.globalAlpha = 0.08;
+      ctx.fillStyle = colors.teal;
       ctx.lineWidth = 2;
       ctx.beginPath();
       // Body sides
@@ -96,6 +102,7 @@ export function LeydenJarReplayDemo({ figure }: Props) {
 
       // Inner foil — narrow vertical band inside, color reflects charge
       const innerCharge = s.charge;
+      ctx.restore();
       ctx.fillStyle = `rgba(255,59,110,${0.15 + innerCharge * 0.6})`;
       ctx.fillRect(xL + 10, yT + 25, jarW - 20, jarH - 35);
 
@@ -144,7 +151,9 @@ export function LeydenJarReplayDemo({ figure }: Props) {
       // ── The "discharger" person (to the right of the jar)
       const px = W * 0.78;
       const py = cy + 20;
-      ctx.strokeStyle = 'rgba(236,235,229,0.7)';
+      ctx.save();
+      ctx.globalAlpha = 0.7;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.6;
       // head
       ctx.beginPath();
@@ -189,6 +198,7 @@ export function LeydenJarReplayDemo({ figure }: Props) {
       }
 
       // Title text
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';

@@ -53,8 +53,11 @@ export function PatchAntennaDemo({ figure }: Props) {
       // Substrate slab (ground plane outline)
       const subW = splitX * 0.75;
       const subH = H * 0.55;
-      ctx.fillStyle = 'rgba(108,197,194,0.10)';
+      ctx.save();
+      ctx.globalAlpha = 0.10;
+      ctx.fillStyle = getCanvasColors().teal;
       ctx.fillRect(cxL - subW / 2, cyL - subH / 2, subW, subH);
+      ctx.restore();
       ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 1;
       ctx.strokeRect(cxL - subW / 2, cyL - subH / 2, subW, subH);
@@ -70,16 +73,19 @@ export function PatchAntennaDemo({ figure }: Props) {
       const phase = Math.cos(tAnim * 2);
       const arrowLen = Wpatch * 0.55 * phase;
       // Left edge: upward arrow when phase>0
-      ctx.strokeStyle = '#0a0a0b';
+      ctx.strokeStyle = getCanvasColors().canvasBg;
       ctx.fillStyle = getCanvasColors().bg;
       ctx.lineWidth = 2;
       drawArr(ctx, cxL - Lpx / 2, cyL, cxL - Lpx / 2, cyL - arrowLen);
       drawArr(ctx, cxL + Lpx / 2, cyL, cxL + Lpx / 2, cyL + arrowLen);
 
       // Feed point — small dot quarter-way in
-      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = getCanvasColors().text;
       ctx.beginPath(); ctx.arc(cxL - Lpx / 4, cyL, 3, 0, Math.PI * 2); ctx.fill();
       ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'center';
       ctx.fillText('feed', cxL - Lpx / 4, cyL + 14);
@@ -114,7 +120,9 @@ export function PatchAntennaDemo({ figure }: Props) {
       // Pattern: ~cos^n(θ) for the upper half only (broadside, blocked below ground plane).
       // n chosen to give roughly 6 dBi HPBW ≈ 80°.
       ctx.strokeStyle = getCanvasColors().accent;
-      ctx.fillStyle = 'rgba(255,107,42,0.12)';
+      ctx.save();
+      ctx.globalAlpha = 0.12;
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       const Ns = 180;
@@ -136,6 +144,7 @@ export function PatchAntennaDemo({ figure }: Props) {
 
       // Labels
       ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'center';
       ctx.fillText('broadside (zenith)', cxR, cyR - R - 8);

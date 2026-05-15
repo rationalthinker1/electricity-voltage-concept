@@ -76,20 +76,32 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       const magW = R * 0.45;
       const magH = R * 1.35;
       // Left magnet
-      ctx.fillStyle = 'rgba(255,59,110,0.22)';
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle = colors.pink;
       ctx.fillRect(cx - R - magW, cy - magH / 2, magW, magH);
-      ctx.strokeStyle = 'rgba(255,59,110,0.5)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = colors.pink;
       ctx.lineWidth = 1.2;
       ctx.strokeRect(cx - R - magW, cy - magH / 2, magW, magH);
+      ctx.restore();
       ctx.fillStyle = colors.pink;
       ctx.font = 'bold 14px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText('N', cx - R - magW / 2, cy);
       // Right magnet
-      ctx.fillStyle = 'rgba(91,174,248,0.22)';
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle = colors.blue;
       ctx.fillRect(cx + R, cy - magH / 2, magW, magH);
-      ctx.strokeStyle = 'rgba(91,174,248,0.5)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = colors.blue;
       ctx.strokeRect(cx + R, cy - magH / 2, magW, magH);
+      ctx.restore();
       ctx.fillStyle = colors.blue;
       ctx.fillText('S', cx + R + magW / 2, cy);
 
@@ -134,7 +146,7 @@ export function BrushedDCMotorDemo({ figure }: Props) {
         x: cx + p.x * cos - p.y * sin,
         y: cy + p.x * sin + p.y * cos,
       }));
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(corners[0].x, corners[0].y);
@@ -168,7 +180,7 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       // Force on top side (× into page, B → right) is upward; on bottom (· out, B → right) is downward.
       // But after commutation it's always the top end that's labelled ×, so torque is always CCW visually.
       const fLen = Math.max(8, Math.min(36, drive * 30 + 10));
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = colors.accent;
       ctx.fillStyle = colors.accent;
       ctx.lineWidth = 2;
       // top end: arrow upward (in screen)
@@ -208,23 +220,32 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.fillRect(cx - 3, cy - commR - 10, 6, 8);
       ctx.fillRect(cx - 3, cy + commR + 2, 6, 8);
       // Brush leads down to + and − terminals
-      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(cx, cy - commR - 10); ctx.lineTo(cx, cy - commR - 30);
       ctx.moveTo(cx, cy + commR + 10); ctx.lineTo(cx, cy + commR + 30);
       ctx.stroke();
-      ctx.fillStyle = 'rgba(236,235,229,.8)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = .8;
+      ctx.fillStyle = colors.text;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
       ctx.fillText('+', cx + 8, cy - commR - 22);
+      ctx.restore();
       ctx.fillText('−', cx + 8, cy + commR + 22);
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('rotor coil + split-ring commutator', 12, 12);
+      ctx.restore();
       ctx.textAlign = 'right';
       ctx.fillText(`I = ${I.toFixed(2)} A   ω(vis) = ${omega.toFixed(1)} rad/s`, w - 12, 12);
 

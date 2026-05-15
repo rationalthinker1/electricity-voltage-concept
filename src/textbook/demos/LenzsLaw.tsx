@@ -90,9 +90,12 @@ export function LenzsLawDemo({ figure }: Props) {
       ctx.fillRect(cx - magW / 2, magY - magH / 2, magW, magH / 2);
       ctx.fillStyle = colors.pink;
       ctx.fillRect(cx - magW / 2, magY, magW, magH / 2);
-      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.save();
+      ctx.globalAlpha = 0.2;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1;
       ctx.strokeRect(cx - magW / 2, magY - magH / 2, magW, magH);
+      ctx.restore();
       ctx.fillStyle = colors.bg;
       ctx.font = 'bold 11px JetBrains Mono';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';

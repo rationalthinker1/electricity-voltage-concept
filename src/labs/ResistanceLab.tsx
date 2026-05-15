@@ -106,11 +106,14 @@ export default function ResistanceLab() {
       ctx.fillRect(0, 0, w, h);
 
       // Length tick scale above wire
-      ctx.strokeStyle = 'rgba(160,158,149,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = getCanvasColors().textDim;
       ctx.lineWidth = 1;
       const tickY = top - 32;
       ctx.beginPath();
       ctx.moveTo(wireLeft, tickY); ctx.lineTo(wireRight, tickY); ctx.stroke();
+      ctx.restore();
       ctx.beginPath();
       ctx.moveTo(wireLeft, tickY - 5); ctx.lineTo(wireLeft, tickY + 5);
       ctx.moveTo(wireRight, tickY - 5); ctx.lineTo(wireRight, tickY + 5);
@@ -142,10 +145,13 @@ export default function ResistanceLab() {
       const radius = Math.min(14, thickness * 0.45);
       roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, radius);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = getCanvasColors().text;
       ctx.lineWidth = 1;
       roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, radius);
       ctx.stroke();
+      ctx.restore();
 
       // Electrons. Visual drift bias hints at "ease of flow" (log G), not real v_d
       const driftBias = -Math.max(0.05, Math.min(1.8, Math.log10(computed.G + 1) * 0.4 + 0.2));
@@ -549,9 +555,12 @@ function drawAreaGauge(ctx: CanvasRenderingContext2D, cx: number, cy: number, Am
   const tFrac = (Math.log10(A) - Math.log10(0.01)) / (Math.log10(100) - Math.log10(0.01));
   const r = 6 + tFrac * 28;
   ctx.strokeStyle = getCanvasColors().teal;
-  ctx.fillStyle = 'rgba(108,197,194,0.12)';
+  ctx.save();
+  ctx.globalAlpha = 0.12;
+  ctx.fillStyle = getCanvasColors().teal;
   ctx.lineWidth = 1.2;
   ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.restore();
   ctx.strokeStyle = getCanvasColors().teal;
   ctx.beginPath();
   ctx.moveTo(cx - r - 4, cy); ctx.lineTo(cx + r + 4, cy);

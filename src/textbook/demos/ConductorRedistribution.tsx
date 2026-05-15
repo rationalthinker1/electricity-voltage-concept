@@ -98,10 +98,13 @@ export function ConductorRedistributionDemo({ figure }: Props) {
 
       // Render
       for (const c of charges) {
-        ctx.fillStyle = 'rgba(91,174,248,.95)';
+        ctx.save();
+        ctx.globalAlpha = .95;
+        ctx.fillStyle = colors.blue;
         ctx.beginPath();
         ctx.arc(c.x, c.y, 2.4, 0, Math.PI * 2);
         ctx.fill();
+        ctx.restore();
       }
 
       raf = requestAnimationFrame(draw);

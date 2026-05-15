@@ -81,7 +81,7 @@ export function BuckConverterDemo({ figure }: Props) {
       const tTotal = Ncyc * Tsw;
 
       // Sub-plot 1: switch-node voltage (rectangular pulses)
-      ctx.strokeStyle = 'rgba(255,107,42,1.0)';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       const yHi = top + 6;
@@ -100,10 +100,13 @@ export function BuckConverterDemo({ figure }: Props) {
       }
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(160,158,149,0.80)';
+      ctx.save();
+      ctx.globalAlpha = 0.80;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       ctx.fillText('V_in',  padL - 4, yHi);
+      ctx.restore();
       ctx.fillText('0',     padL - 4, yLo);
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(`switch node (D = ${(duty * 100).toFixed(0)} %)`, padL + 4, top + 4);
@@ -117,15 +120,18 @@ export function BuckConverterDemo({ figure }: Props) {
       const iOf = (i: number) => yMin - ((i - 0) / Math.max(Imax * 1.15, 0.1)) * (yMin - yMax);
 
       // Reference: I_out (dashed)
-      ctx.strokeStyle = 'rgba(108,197,194,0.40)';
+      ctx.save();
+      ctx.globalAlpha = 0.40;
+      ctx.strokeStyle = colors.teal;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.moveTo(padL, iOf(Iout));
       ctx.lineTo(padL + plotW, iOf(Iout));
       ctx.stroke();
+      ctx.restore();
       ctx.setLineDash([]);
 
-      ctx.strokeStyle = 'rgba(108,197,194,1.0)';
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       let iL = Imin;
@@ -151,9 +157,12 @@ export function BuckConverterDemo({ figure }: Props) {
       }
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(160,158,149,0.80)';
+      ctx.save();
+      ctx.globalAlpha = 0.80;
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       ctx.fillText(`${Imax.toFixed(2)} A`, padL - 4, iOf(Imax));
+      ctx.restore();
       ctx.fillText(`${Iout.toFixed(2)} A`, padL - 4, iOf(Iout));
       ctx.fillText(`${Imin.toFixed(2)} A`, padL - 4, iOf(Imin));
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
@@ -165,10 +174,13 @@ export function BuckConverterDemo({ figure }: Props) {
       ctx.fillText(`${(tTotal * 1e6).toFixed(0)} µs`, padL + plotW,     padT + plotH + 4);
 
       // Header
-      ctx.fillStyle = 'rgba(160,158,149,0.80)';
+      ctx.save();
+      ctx.globalAlpha = 0.80;
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText(`V_out = D · V_in = ${Vout.toFixed(2)} V`, 4, 4);
+      ctx.restore();
 
       raf = requestAnimationFrame(draw);
     }

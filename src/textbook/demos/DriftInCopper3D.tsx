@@ -97,6 +97,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
   }, [I, T, showArrows, showLattice, computed]);
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w: W, h: H, canvas } = info;
     let raf = 0;
 
@@ -202,13 +203,16 @@ export function DriftInCopper3DDemo({ figure }: Props) {
               glowWidth: 5,
             });
         } else {
-          ctx.strokeStyle = 'rgba(160,158,149,0.14)';
+          ctx.save();
+          ctx.globalAlpha = 0.14;
+          ctx.strokeStyle = colors.textDim;
           ctx.lineWidth = 1;
           ctx.setLineDash([4, 4]);
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y);
           ctx.stroke();
           ctx.setLineDash([]);
+          ctx.restore();
         }
       }
     }
@@ -355,10 +359,13 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to rotate', 12, 12);
-      ctx.fillStyle = 'rgba(160,158,149,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = colors.textDim;
       ctx.fillText('copper · 56 free electrons · thermal & drift scaled for visibility', 12, H - 18);
 
       ctx.textAlign = 'right';
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().teal;
       ctx.fillText('electrons (cyan)', W - 12, 12);
       ctx.fillStyle = getCanvasColors().accent;

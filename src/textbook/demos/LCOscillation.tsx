@@ -46,6 +46,7 @@ export function LCOscillationDemo({ figure }: Props) {
   }, [L, C, omega0, Q0]);
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w, h, } = info;
     let raf = 0;
     stateRef.current.lastT = performance.now();
@@ -169,9 +170,12 @@ export function LCOscillationDemo({ figure }: Props) {
       const x1 = innerX;
       const x2 = innerX + barW + 40;
 
-      ctx.fillStyle = 'rgba(255,255,255,0.04)';
+      ctx.save();
+      ctx.globalAlpha = 0.04;
+      ctx.fillStyle = colors.text;
       ctx.fillRect(x1, barY, barW, barH);
       ctx.fillRect(x2, barY, barW, barH);
+      ctx.restore();
       ctx.strokeStyle = getCanvasColors().border;
       ctx.strokeRect(x1, barY, barW, barH);
       ctx.strokeRect(x2, barY, barW, barH);

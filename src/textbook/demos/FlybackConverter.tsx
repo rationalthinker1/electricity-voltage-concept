@@ -81,7 +81,9 @@ export function FlybackConverterDemo({ figure }: Props) {
       const sX = coreCX + 30;
 
       // Iron/ferrite core
-      ctx.strokeStyle = 'rgba(160,158,149,0.50)';
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 5;
       ctx.beginPath();
       ctx.moveTo(pX, coreTop); ctx.lineTo(pX, coreBot);
@@ -90,7 +92,8 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.moveTo(pX, coreBot); ctx.lineTo(sX, coreBot);
       ctx.stroke();
       // Gap (typical of a flyback)
-      ctx.strokeStyle = '#0d0d10';
+      ctx.restore();
+      ctx.strokeStyle = colors.canvasBg;
       ctx.beginPath();
       ctx.moveTo(pX - 3, (coreTop + coreBot) / 2);
       ctx.lineTo(pX + 3, (coreTop + coreBot) / 2);
@@ -170,24 +173,36 @@ export function FlybackConverterDemo({ figure }: Props) {
       const barX = w - 28;
       const barH = h * 0.6;
       const barTop = (h - barH) / 2;
-      ctx.strokeStyle = 'rgba(160,158,149,0.30)';
+      ctx.save();
+      ctx.globalAlpha = 0.3;
+      ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 1;
       ctx.strokeRect(barX, barTop, 14, barH);
-      ctx.fillStyle = 'rgba(255,107,42,0.65)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.accent;
       const fillH = barH * Math.max(0, Math.min(1, storedFrac));
       ctx.fillRect(barX, barTop + barH - fillH, 14, fillH);
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.fillText('½L·I²', barX + 7, barTop - 2);
 
       // n:1 ratio label
-      ctx.fillStyle = 'rgba(160,158,149,0.70)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.7;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText(`turns ratio n = N_p/N_s`, w / 2, h - 18);
 
       // Isolation barrier (dashed vertical line through the core)
+      ctx.restore();
       ctx.strokeStyle = colors.borderStrong;
       ctx.setLineDash([3, 4]);
       ctx.lineWidth = 1;
@@ -197,13 +212,16 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // I_pk readout above
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(`I_pk = ${Ipk.toFixed(2)} A,  E/cycle = ${(E_stored * 1e6).toFixed(1)} µJ`,
         6, h - 16);
 
       raf = requestAnimationFrame(draw);
+      ctx.restore();
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);

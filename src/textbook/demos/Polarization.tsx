@@ -69,7 +69,9 @@ export function PolarizationDemo({ figure }: Props) {
       }
 
       // Trace the locus of E over one period (the polarization ellipse)
-      ctx.strokeStyle = 'rgba(255,107,42,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       const Nsteps = 80;
@@ -83,7 +85,10 @@ export function PolarizationDemo({ figure }: Props) {
       ctx.stroke();
 
       // Trailing motion path: last quarter-period
-      ctx.strokeStyle = 'rgba(255,107,42,0.75)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
       const TRAIL = 18;
@@ -100,6 +105,7 @@ export function PolarizationDemo({ figure }: Props) {
       const cur = eVec(t);
       const px = cx + cur.yEy * R;
       const py = cy - cur.zEz * R;
+      ctx.restore();
       ctx.strokeStyle = getCanvasColors().pink;
       ctx.fillStyle = getCanvasColors().pink;
       ctx.lineWidth = 2.2;
@@ -118,7 +124,9 @@ export function PolarizationDemo({ figure }: Props) {
       }
 
       // Centre dot (the propagation axis seen end-on)
-      ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = getCanvasColors().text;
       ctx.beginPath(); ctx.arc(cx, cy, 3, 0, Math.PI * 2); ctx.fill();
 
       // Label: state of polarization
@@ -129,6 +137,7 @@ export function PolarizationDemo({ figure }: Props) {
       } else if (Math.abs(dAbs - Math.PI / 2) < 0.05 && Math.abs(Math.abs(phi) - Math.PI / 4) < 0.08) {
         stateLabel = 'circular';
       }
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';

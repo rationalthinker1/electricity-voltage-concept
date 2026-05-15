@@ -101,8 +101,11 @@ export function CoreLossesDemo({ figure }: Props) {
       }
       ctx.stroke();
       // Loop fill — area = energy lost per cycle
-      ctx.fillStyle = 'rgba(255,107,42,0.10)';
+      ctx.save();
+      ctx.globalAlpha = 0.10;
+      ctx.fillStyle = colors.accent;
       ctx.fill();
+      ctx.restore();
 
       // Moving dot at current phase
       const tau = (omega * simT) % (2 * Math.PI);
@@ -132,9 +135,12 @@ export function CoreLossesDemo({ figure }: Props) {
       const ry = rpad;
       const rw = (w - splitX) - 2 * rpad;
       const rh = h - 2 * rpad;
-      ctx.strokeStyle = 'rgba(160,158,149,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 1.4;
       ctx.strokeRect(rx, ry, rw, rh);
+      ctx.restore();
 
       // Flux into the page (centre dots)
       ctx.fillStyle = colors.teal;
@@ -152,11 +158,14 @@ export function CoreLossesDemo({ figure }: Props) {
         const nLam = 8;
         for (let i = 0; i < nLam; i++) {
           const y0 = ry + (i + 0.5) * rh / nLam;
-          ctx.strokeStyle = `rgba(255,107,42,${0.25 + 0.5 * animPhase})`;
+          ctx.save();
+          ctx.globalAlpha = 0.25 + 0.5 * animPhase;
+          ctx.strokeStyle = colors.accent;
           ctx.lineWidth = 1.2;
           ctx.beginPath();
           ctx.rect(rx + 8, y0 - rh / (nLam * 2) + 3, rw - 16, rh / nLam - 6);
           ctx.stroke();
+          ctx.restore();
         }
         // Lamination divider lines
         ctx.strokeStyle = colors.borderStrong;
@@ -171,11 +180,14 @@ export function CoreLossesDemo({ figure }: Props) {
         ctx.fillStyle = colors.teal;
       } else {
         // One big loop spanning the whole cross-section
-        ctx.strokeStyle = `rgba(255,59,110,${0.45 + 0.5 * animPhase})`;
+        ctx.save();
+        ctx.globalAlpha = 0.45 + 0.5 * animPhase;
+        ctx.strokeStyle = colors.pink;
         ctx.lineWidth = 2.4;
         ctx.beginPath();
         ctx.rect(rx + 6, ry + 6, rw - 12, rh - 12);
         ctx.stroke();
+        ctx.restore();
         ctx.fillStyle = colors.pink;
       }
       ctx.font = '10px "JetBrains Mono", monospace';

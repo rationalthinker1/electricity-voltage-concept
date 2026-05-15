@@ -83,13 +83,16 @@ export function NortonTheveninDemo({ figure }: Props) {
         // Bake the panel titles into the cache alongside the schematic.
         const offCtx = off.getContext('2d');
         if (offCtx) {
-          offCtx.fillStyle = 'rgba(160,158,149,0.85)';
+          offCtx.save();
+          offCtx.globalAlpha = 0.85;
+          offCtx.fillStyle = getCanvasColors().textDim;
           offCtx.font = '11px "JetBrains Mono", monospace';
           offCtx.textAlign = 'center';
           offCtx.textBaseline = 'top';
           offCtx.fillText('Original network', colW / 2, 12);
           offCtx.fillText('Thévenin equivalent + load', colW + colW / 2, 12);
           offCtx.fillText('Norton equivalent + load', 2 * colW + colW / 2, 12);
+          offCtx.restore();
         }
         cacheRef.current = { key: cacheKey, canvas: off };
       }

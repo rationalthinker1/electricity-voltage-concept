@@ -85,11 +85,14 @@ export default function InductanceLab() {
       for (let i = 0; i <= visibleTurns; i++) {
         const t = i / visibleTurns;
         const cx = xL + t * (xR - xL);
-        ctx.strokeStyle = 'rgba(255,107,42,0.35)';
+        ctx.save();
+        ctx.globalAlpha = 0.35;
+        ctx.strokeStyle = getCanvasColors().accent;
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.ellipse(cx, cy, er, r_vis, 0, Math.PI, 2 * Math.PI);
         ctx.stroke();
+        ctx.restore();
       }
 
       // Axial B arrows
@@ -178,9 +181,12 @@ export default function InductanceLab() {
       );
 
       ctx.textAlign = 'center';
-      ctx.fillStyle = 'rgba(160,158,149,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText(`(${s.N} turns; ${visibleTurns} shown)`, (xL + xR) / 2, cy + r_vis + 38);
+      ctx.restore();
 
       raf = requestAnimationFrame(draw);
     }

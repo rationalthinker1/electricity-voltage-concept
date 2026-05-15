@@ -72,7 +72,9 @@ export function GridTieInverterDemo({ figure }: Props) {
       const pScale = (plotH / 2 - 8) / (V_PK * Math.max(Ipk, 1));
 
       // Grid V(t): white
-      ctx.strokeStyle = 'rgba(236,235,229,0.80)';
+      ctx.save();
+      ctx.globalAlpha = 0.8;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       for (let i = 0; i <= samples; i++) {
@@ -85,7 +87,8 @@ export function GridTieInverterDemo({ figure }: Props) {
       ctx.stroke();
 
       // Inverter current I(t): amber
-      ctx.strokeStyle = 'rgba(255,107,42,1.0)';
+      ctx.restore();
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.7;
       ctx.beginPath();
       for (let i = 0; i <= samples; i++) {
@@ -98,7 +101,7 @@ export function GridTieInverterDemo({ figure }: Props) {
       ctx.stroke();
 
       // Instantaneous power p(t) = V(t) · I(t) — teal, filled.
-      ctx.fillStyle = 'rgba(108,197,194,0.18)';
+      ctx.fillStyle = colors.tealSoft;
       ctx.beginPath();
       ctx.moveTo(padL, cy);
       for (let i = 0; i <= samples; i++) {
@@ -120,12 +123,15 @@ export function GridTieInverterDemo({ figure }: Props) {
       const lx = padL + plotW + 8;
       ctx.fillStyle = colors.text;
       ctx.fillRect(lx, padT + 8 - 1, 10, 2); ctx.fillText('V_grid',   lx + 14, padT + 8);
-      ctx.fillStyle = 'rgba(255,107,42,1.0)';
+      ctx.fillStyle = colors.accent;
       ctx.fillRect(lx, padT + 24 - 1, 10, 2); ctx.fillText('I_inj',   lx + 14, padT + 24);
-      ctx.fillStyle = 'rgba(108,197,194,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = colors.teal;
       ctx.fillRect(lx, padT + 40 - 2, 10, 4); ctx.fillText('p(t)',    lx + 14, padT + 40);
 
       // Phase / power readout
+      ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';

@@ -191,7 +191,9 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       const bot = plateCorners(yBot).map(c => project(c, cam, W, H));
       for (let i = 0; i < 4; i++) {
         const j = (i + 1) % 4;
-        ctx.fillStyle = 'rgba(255,107,42,0.045)';
+        ctx.save();
+        ctx.globalAlpha = 0.045;
+        ctx.fillStyle = getCanvasColors().accent;
         ctx.beginPath();
         ctx.moveTo(top[i]!.x, top[i]!.y);
         ctx.lineTo(top[j]!.x, top[j]!.y);
@@ -199,9 +201,12 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         ctx.lineTo(bot[i]!.x, bot[i]!.y);
         ctx.closePath();
         ctx.fill();
+        ctx.restore();
       }
       // Faint amber edges connecting the corners (gap volume wireframe).
-      ctx.strokeStyle = 'rgba(255,107,42,0.18)';
+      ctx.save();
+      ctx.globalAlpha = 0.18;
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 3]);
       for (let i = 0; i < 4; i++) {
@@ -396,6 +401,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to orbit', 12, 12);
       ctx.fillStyle = getCanvasColors().pink;

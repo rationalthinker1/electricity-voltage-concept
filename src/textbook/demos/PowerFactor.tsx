@@ -149,7 +149,9 @@ export function PowerFactorDemo({ figure }: Props) {
 
       // Mean-power dashed line
       const yMean = yMid - Preal * yScaleP;
-      ctx.strokeStyle = 'rgba(255,107,42,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = colors.accent;
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1.4;
       ctx.beginPath();
@@ -161,22 +163,29 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
+      ctx.restore();
       ctx.fillStyle = colors.accent;
       ctx.fillText('v(t)', padL + plotW + 4, padT + 10);
       ctx.fillStyle = colors.teal;
       ctx.fillText('i(t)', padL + plotW + 4, padT + 24);
       ctx.fillStyle = colors.pink;
       ctx.fillText('p(t)=v·i', padL + plotW + 4, padT + 38);
-      ctx.fillStyle = 'rgba(255,107,42,0.8)';
+      ctx.save();
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = colors.accent;
       ctx.fillText('⟨p⟩ = P', padL + plotW + 4, yMean);
 
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText('T', xOf(T), padT + plotH + 4);
       ctx.fillText('2T', xOf(tMax), padT + plotH + 4);
 
       // Header
+      ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';

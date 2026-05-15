@@ -103,7 +103,9 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
         const offCtx = off.getContext('2d');
         if (offCtx) {
           // Static text overlays: node labels, R₂ branch-current readout, caption.
-          offCtx.fillStyle = 'rgba(255,255,255,0.8)';
+          offCtx.save();
+          offCtx.globalAlpha = 0.8;
+          offCtx.fillStyle = getCanvasColors().text;
           offCtx.font = 'bold 11px "JetBrains Mono", monospace';
           offCtx.textAlign = 'left';
           offCtx.textBaseline = 'bottom';
@@ -111,17 +113,24 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
           offCtx.textBaseline = 'top';
           offCtx.fillText('B', xMid + 6, yBot + 6);
 
-          offCtx.fillStyle = 'rgba(91,174,248,0.95)';
+          offCtx.restore();
+          offCtx.save();
+          offCtx.globalAlpha = 0.95;
+          offCtx.fillStyle = getCanvasColors().blue;
           offCtx.font = '10px "JetBrains Mono", monospace';
           offCtx.textAlign = 'left';
           offCtx.textBaseline = 'middle';
           offCtx.fillText(`I_R₂ = I₁ − I₂ = ${fmtA(sol.I_R2)}`, xMid + 14, h / 2);
 
-          offCtx.fillStyle = 'rgba(160,158,149,0.7)';
+          offCtx.restore();
+          offCtx.save();
+          offCtx.globalAlpha = 0.7;
+          offCtx.fillStyle = getCanvasColors().textDim;
           offCtx.font = '10px "JetBrains Mono", monospace';
           offCtx.textAlign = 'left';
           offCtx.textBaseline = 'top';
           offCtx.fillText('Two clockwise mesh currents I₁, I₂', 12, 10);
+          offCtx.restore();
         }
         cacheRef.current = { key: cacheKey, canvas: off };
       }

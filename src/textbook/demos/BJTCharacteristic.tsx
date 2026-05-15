@@ -79,12 +79,15 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       ctx.stroke();
 
       // tick labels
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       for (let v = 0; v <= Vmax; v += 2) {
         ctx.fillText(v.toFixed(0), xOf(v), padT + plotH + 4);
+      ctx.restore();
       }
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
@@ -149,11 +152,14 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       const Iop = I_C(V_CE, I_B_pick, beta);
       const opX = xOf(V_CE);
       const opY = yOf(Math.min(Imax, Iop));
-      ctx.strokeStyle = 'rgba(236,235,229,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.text;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(opX, padT); ctx.lineTo(opX, padT + plotH);
       ctx.stroke();
+      ctx.restore();
       ctx.setLineDash([]);
       ctx.fillStyle = colors.text;
       ctx.beginPath();

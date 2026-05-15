@@ -165,8 +165,8 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
 
       // ───── Battery drift arrows (left → right inside the wire) ─────
       if (showBatteryField) {
-        ctx.strokeStyle = 'rgba(255,107,42,.45)';
-        ctx.fillStyle = 'rgba(255,107,42,.45)';
+        ctx.strokeStyle = getCanvasColors().accentGlow;
+        ctx.fillStyle = getCanvasColors().accentGlow;
         ctx.lineWidth = 1;
         for (let xa = wireLeft + 50; xa < wireRight - 50; xa += 90) {
           ctx.beginPath(); ctx.moveTo(xa, wireMidY); ctx.lineTo(xa + 22, wireMidY); ctx.stroke();
@@ -177,10 +177,13 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
           ctx.closePath();
           ctx.fill();
         }
-        ctx.fillStyle = 'rgba(255,107,42,.6)';
+        ctx.save();
+        ctx.globalAlpha = .6;
+        ctx.fillStyle = getCanvasColors().accent;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         ctx.fillText('E_battery', wireLeft + 4, wireBot + 14);
+        ctx.restore();
       }
 
       // ───── Cursor field arrows (only when hovering on canvas) ─────
@@ -352,11 +355,14 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
       }
 
       // ───── Hint text ─────
-      ctx.fillStyle = 'rgba(160,158,149,.7)';
+      ctx.save();
+      ctx.globalAlpha = .7;
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       if (!haveCursor) {
         ctx.fillText('hover the canvas — your cursor is a point charge', wireLeft, h - 14);
+      ctx.restore();
       } else {
         ctx.fillText(
           cursorPos

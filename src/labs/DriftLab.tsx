@@ -130,9 +130,12 @@ export default function DriftLab() {
       grd.addColorStop(1, 'rgba(255,107,42,0.08)');
       ctx.fillStyle = grd;
       roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 14); ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1;
       roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 14); ctx.stroke();
+      ctx.restore();
 
       // Scale bars at top-left
       ctx.fillStyle = colors.textDim;
@@ -143,22 +146,28 @@ export default function DriftLab() {
       ctx.fillText(`drift distance: ${(tracker.realDistance_m * 1000).toFixed(3)} mm`, 16, 28);
 
       // E field arrow
-      ctx.strokeStyle = 'rgba(255,59,110,0.9)';
+      ctx.save();
+      ctx.globalAlpha = 0.9;
+      ctx.strokeStyle = colors.pink;
       ctx.fillStyle = colors.pink;
       ctx.lineWidth = 2;
       const arrLen = 50;
       const arrY = top - 18;
       const arrX = (wireLeft + wireRight) / 2 - arrLen / 2;
       ctx.beginPath(); ctx.moveTo(arrX, arrY); ctx.lineTo(arrX + arrLen, arrY); ctx.stroke();
+      ctx.restore();
       ctx.beginPath();
       ctx.moveTo(arrX + arrLen, arrY);
       ctx.lineTo(arrX + arrLen - 8, arrY - 5);
       ctx.lineTo(arrX + arrLen - 8, arrY + 5);
       ctx.closePath(); ctx.fill();
-      ctx.fillStyle = 'rgba(255,59,110,0.95)';
+      ctx.save();
+      ctx.globalAlpha = 0.95;
+      ctx.fillStyle = colors.pink;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('E', arrX + arrLen + 14, arrY + 4);
+      ctx.restore();
 
       // Electron cloud — VISUAL ONLY drift bias (not the same as the tracker)
       const driftBias = -Math.max(0.02, Math.min(2.0, computed.vd * 1e3));
@@ -178,14 +187,17 @@ export default function DriftLab() {
 
       // Tracker dot — uses REAL v_d
       ctx.fillStyle = colors.accent;
-      ctx.shadowColor = 'rgba(255,107,42,0.7)';
+      ctx.save();
+      ctx.globalAlpha = 0.7;
+      ctx.shadowColor = colors.accent;
       ctx.shadowBlur = 14;
       ctx.beginPath();
       ctx.arc(trackerX, wireCY, 5, 0, Math.PI * 2);
       ctx.fill();
+      ctx.restore();
       ctx.shadowBlur = 0;
       // Trail
-      ctx.strokeStyle = 'rgba(255,107,42,0.45)';
+      ctx.strokeStyle = colors.accentGlow;
       ctx.lineWidth = 1.5;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();

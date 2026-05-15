@@ -326,12 +326,15 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
           // direction on the "above wire" side (canvas −n).
           const cx = pt.x - pt.ty * (r1 + 3);
           const cy = pt.y + pt.tx * (r1 + 3);
-          ctx.fillStyle = `rgba(108,197,194,${(baseAlpha + 0.2).toFixed(3)})`;
+          ctx.save();
+          ctx.globalAlpha = baseAlpha + 0.2;
+          ctx.fillStyle = getCanvasColors().teal;
           ctx.beginPath();
           ctx.moveTo(cx, cy);
           ctx.lineTo(cx - pt.tx * 5 - pt.ty * 3, cy - pt.ty * 5 + pt.tx * 3);
           ctx.lineTo(cx - pt.tx * 5 + pt.ty * 3, cy - pt.ty * 5 - pt.tx * 3);
           ctx.closePath(); ctx.fill();
+          ctx.restore();
         }
       }
 
@@ -375,19 +378,25 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
             const tipX = gx + ux * len;
             const tipY = gy + uy * len;
             const alpha = Math.min(0.7, 0.2 + mag * 0.5);
-            ctx.strokeStyle = `rgba(255,59,110,${alpha.toFixed(3)})`;
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = getCanvasColors().pink;
             ctx.lineWidth = 1.1;
             ctx.beginPath();
             ctx.moveTo(gx - ux * len * 0.4, gy - uy * len * 0.4);
             ctx.lineTo(tipX, tipY);
             ctx.stroke();
-            ctx.fillStyle = `rgba(255,59,110,${alpha.toFixed(3)})`;
+            ctx.restore();
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = getCanvasColors().pink;
             ctx.beginPath();
             ctx.moveTo(tipX, tipY);
             ctx.lineTo(tipX - ux * 4 + uy * 2.5, tipY - uy * 4 - ux * 2.5);
             ctx.lineTo(tipX - ux * 4 - uy * 2.5, tipY - uy * 4 + ux * 2.5);
             ctx.closePath();
             ctx.fill();
+            ctx.restore();
           }
         }
       }
@@ -432,19 +441,25 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
             const tipX = gx + ux * len;
             const tipY = gy + uy * len;
             const alpha = 0.45 + 0.3 * Math.min(1, sMag * 8);
-            ctx.strokeStyle = `rgba(255,107,42,${alpha.toFixed(3)})`;
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = getCanvasColors().accent;
             ctx.lineWidth = 1.4;
             ctx.beginPath();
             ctx.moveTo(gx - ux * len * 0.3, gy - uy * len * 0.3);
             ctx.lineTo(tipX, tipY);
             ctx.stroke();
-            ctx.fillStyle = `rgba(255,107,42,${alpha.toFixed(3)})`;
+            ctx.restore();
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = getCanvasColors().accent;
             ctx.beginPath();
             ctx.moveTo(tipX, tipY);
             ctx.lineTo(tipX - ux * 5 + uy * 3, tipY - uy * 5 - ux * 3);
             ctx.lineTo(tipX - ux * 5 - uy * 3, tipY - uy * 5 + ux * 3);
             ctx.closePath();
             ctx.fill();
+            ctx.restore();
           }
         }
       }
@@ -481,12 +496,15 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
 
       // ----- Bottom annotation: drift hint, only when electrons visible.
       if (s.showElec && isClosed) {
-        ctx.fillStyle = 'rgba(91,174,248,.7)';
+        ctx.save();
+        ctx.globalAlpha = .7;
+        ctx.fillStyle = getCanvasColors().blue;
         ctx.textAlign = 'center';
         ctx.fillText(
           'drift speed of these dots ≈ 10⁻⁴ m/s in real copper — too slow to carry the energy',
           w / 2, h - 16,
         );
+        ctx.restore();
       }
 
       raf = requestAnimationFrame(draw);

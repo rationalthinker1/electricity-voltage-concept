@@ -847,7 +847,7 @@ function TraceCanvas({ series, channel, label, color, symmetric, scale, fixedMin
       }
 
       // Axis line at y=0 if range straddles zero.
-      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.strokeStyle = getCanvasColors().border;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(0, h - 0.5);
@@ -997,7 +997,7 @@ function EffMapPanel({ cfg, sample }: { cfg: BenchConfig; sample: BenchSample | 
       const x = padL + (sf / 1.3) * plotW;
       const y = padT + (1 - (tf + 1.1) / 2.2) * plotH;
       ctx.fillStyle = getCanvasColors().accent;
-      ctx.strokeStyle = '#ecebe5';
+      ctx.strokeStyle = getCanvasColors().text;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(x, y, 5, 0, Math.PI * 2);

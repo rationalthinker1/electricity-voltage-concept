@@ -62,12 +62,17 @@ export function NernstEquationDemo({ figure }: Props) {
       const xLQ = (lq: number) => pX + ((lq - lqMin) / (lqMax - lqMin)) * pW;
 
       // V° dashed line
-      ctx.strokeStyle = 'rgba(255,107,42,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.setLineDash([4, 4]);
       const ystd = yV(V_STD);
       ctx.beginPath(); ctx.moveTo(pX, ystd); ctx.lineTo(pX + pW, ystd); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = 'rgba(255,107,42,0.75)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'bottom';
@@ -75,6 +80,7 @@ export function NernstEquationDemo({ figure }: Props) {
 
       // Nernst line: V = V° − (RT/nF)·lnQ
       const slope = R_GAS * T / (N_ELECTRONS * F_FARADAY);
+      ctx.restore();
       ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 1.8;
       ctx.beginPath();
@@ -91,16 +97,19 @@ export function NernstEquationDemo({ figure }: Props) {
       const lqNow = Math.log(Q);
       const px = xLQ(Math.max(lqMin, Math.min(lqMax, lqNow)));
       const py = yV(Math.max(vMin, Math.min(vMax, s.V)));
-      ctx.fillStyle = 'rgba(255,59,110,1)';
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.beginPath();
       ctx.arc(px, py, 5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255,59,110,0.4)';
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = getCanvasColors().pink;
       ctx.beginPath();
       ctx.arc(px, py, 9, 0, Math.PI * 2);
       ctx.stroke();
 
       // Axes
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';

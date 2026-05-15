@@ -104,12 +104,15 @@ export function AutotransformerDemo({ figure }: Props) {
       const tapY = coilTop + (1 - k) * coilH;
 
       // Vertical core line behind winding
-      ctx.strokeStyle = 'rgba(160,158,149,0.30)';
+      ctx.save();
+      ctx.globalAlpha = 0.30;
+      ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 6;
       ctx.beginPath();
       ctx.moveTo(coilCX, coilTop - 8);
       ctx.lineTo(coilCX, coilBot + 8);
       ctx.stroke();
+      ctx.restore();
 
       // Single winding — full primary length, helical strokes
       const turns = 16;
@@ -142,13 +145,16 @@ export function AutotransformerDemo({ figure }: Props) {
       ctx.lineTo(coilCX + r + 14, tapY + 6);
       ctx.closePath();
       ctx.fill();
-      ctx.strokeStyle = 'rgba(236,235,229,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = colors.text;
       ctx.setLineDash([3, 3]);
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(coilCX + r + 14, tapY);
       ctx.lineTo(w * 0.40, tapY);
       ctx.stroke();
+      ctx.restore();
       ctx.setLineDash([]);
 
       // Primary lead (top)
@@ -186,7 +192,9 @@ export function AutotransformerDemo({ figure }: Props) {
       const pX = w * 0.66;
       const sX = w * 0.86;
       // Core
-      ctx.strokeStyle = 'rgba(160,158,149,0.30)';
+      ctx.save();
+      ctx.globalAlpha = 0.30;
+      ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 6;
       ctx.beginPath();
       ctx.moveTo(pX, coilTop - 8); ctx.lineTo(pX, coilBot + 8);
@@ -194,6 +202,7 @@ export function AutotransformerDemo({ figure }: Props) {
       ctx.moveTo(pX - 2, coilTop - 6); ctx.lineTo(sX + 2, coilTop - 6);
       ctx.moveTo(pX - 2, coilBot + 6); ctx.lineTo(sX + 2, coilBot + 6);
       ctx.stroke();
+      ctx.restore();
 
       // Primary winding (full height)
       const primTurns = 14;
@@ -205,10 +214,13 @@ export function AutotransformerDemo({ figure }: Props) {
         ctx.beginPath();
         ctx.ellipse(pX, y, 11, primDy * 0.45, 0, 0, Math.PI);
         ctx.stroke();
-        ctx.strokeStyle = 'rgba(255,107,42,0.40)';
+        ctx.save();
+        ctx.globalAlpha = 0.40;
+        ctx.strokeStyle = colors.accent;
         ctx.beginPath();
         ctx.ellipse(pX, y, 11, primDy * 0.45, 0, Math.PI, 2 * Math.PI);
         ctx.stroke();
+        ctx.restore();
       }
       // Secondary winding (shorter — k · height — but rendered as full coil
       // of fewer turns)
@@ -223,10 +235,13 @@ export function AutotransformerDemo({ figure }: Props) {
         ctx.beginPath();
         ctx.ellipse(sX, y, 11, secDy * 0.45, 0, 0, Math.PI);
         ctx.stroke();
-        ctx.strokeStyle = 'rgba(108,197,194,0.40)';
+        ctx.save();
+        ctx.globalAlpha = 0.40;
+        ctx.strokeStyle = colors.teal;
         ctx.beginPath();
         ctx.ellipse(sX, y, 11, secDy * 0.45, 0, Math.PI, 2 * Math.PI);
         ctx.stroke();
+        ctx.restore();
       }
 
       ctx.fillStyle = colors.textDim;
@@ -237,10 +252,13 @@ export function AutotransformerDemo({ figure }: Props) {
       ctx.fillText('same V ratio', (pX + sX) / 2, coilBot + 12);
 
       // Drag hint
-      ctx.fillStyle = 'rgba(160,158,149,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('drag tap ↕', 6, 6);
+      ctx.restore();
 
       // Warning ribbon
       ctx.fillStyle = colors.accent;

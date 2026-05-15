@@ -277,7 +277,7 @@ export function BuildACapacitorDemo({ figure }: Props) {
         return mv;
       })();
       const fill = Math.max(0, Math.min(1, Math.abs(s.V) / Math.max(histMaxV, 1e-12)));
-      ctx.fillStyle = 'rgba(255,255,255,0.06)';
+      ctx.fillStyle = getCanvasColors().border;
       ctx.fillRect(pX, barY, pW, barH);
       ctx.fillStyle = getCanvasColors().accent;
       ctx.fillRect(pX, barY, pW * fill, barH);

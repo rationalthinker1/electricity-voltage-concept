@@ -217,7 +217,7 @@ export default function PotentialLab() {
           const v = potentialAt(px / w, py / h);
           for (const L of levels) {
             if (Math.abs(v - L) < Math.abs(L) * 0.04 + 1.5) {
-              ctx.fillStyle = 'rgba(108,197,194,0.18)';
+              ctx.fillStyle = getCanvasColors().tealSoft;
               ctx.fillRect(px, py, 2, 2);
             }
           }
@@ -251,21 +251,27 @@ export default function PotentialLab() {
             if (hit) break;
           }
           if (path.length > 2) {
-            ctx.strokeStyle = 'rgba(255,107,42,0.16)';
+            ctx.save();
+            ctx.globalAlpha = 0.16;
+            ctx.strokeStyle = getCanvasColors().accent;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(path[0][0] * w, path[0][1] * h);
             for (const [px, py] of path) ctx.lineTo(px * w, py * h);
             ctx.stroke();
+            ctx.restore();
             const tIdx = Math.floor((phase + i * 17 + (src === st.q1 ? 0 : 50)) % path.length);
             const t = path[tIdx];
             if (t) {
               ctx.beginPath();
               ctx.arc(t[0] * w, t[1] * h, 1.6, 0, Math.PI * 2);
               ctx.fillStyle = getCanvasColors().accent;
-              ctx.shadowColor = 'rgba(255,107,42,.6)';
+              ctx.save();
+              ctx.globalAlpha = .6;
+              ctx.shadowColor = getCanvasColors().accent;
               ctx.shadowBlur = 5;
               ctx.fill();
+              ctx.restore();
               ctx.shadowBlur = 0;
             }
           }
@@ -276,19 +282,25 @@ export default function PotentialLab() {
       const ax = st.pA.x * w, ay = st.pA.y * h;
       const bx = st.pB.x * w, by = st.pB.y * h;
       ctx.setLineDash([6, 6]);
-      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = getCanvasColors().text;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(ax, ay); ctx.lineTo(bx, by);
       ctx.stroke();
+      ctx.restore();
       ctx.setLineDash([]);
       const angle = Math.atan2(by - ay, bx - ax);
-      ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = getCanvasColors().text;
       ctx.beginPath();
       ctx.moveTo(bx, by);
       ctx.lineTo(bx - 8 * Math.cos(angle - 0.4), by - 8 * Math.sin(angle - 0.4));
       ctx.lineTo(bx - 8 * Math.cos(angle + 0.4), by - 8 * Math.sin(angle + 0.4));
       ctx.fill();
+      ctx.restore();
 
       // Charges
       drawCharge(ctx, { x: st.q1.x * w, y: st.q1.y * h }, {
@@ -675,7 +687,7 @@ function drawProbe(
   ctx: CanvasRenderingContext2D,
   cx: number, cy: number, label: string,
 ) {
-  ctx.strokeStyle = '#ff6b2a';
+  ctx.strokeStyle = getCanvasColors().accent;
   ctx.lineWidth = 2;
   ctx.fillStyle = 'rgba(10,10,11,.9)';
   ctx.beginPath(); ctx.arc(cx, cy, 10, 0, Math.PI * 2); ctx.fill(); ctx.stroke();

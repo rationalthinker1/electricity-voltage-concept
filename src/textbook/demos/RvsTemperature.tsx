@@ -151,7 +151,9 @@ export function RvsTemperatureDemo({ figure }: Props) {
 
       // T cursor
       const cx = xT(T_C);
-      ctx.strokeStyle = 'rgba(255,107,42,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(cx, padT); ctx.lineTo(cx, padT + gH);
@@ -166,6 +168,7 @@ export function RvsTemperatureDemo({ figure }: Props) {
       }
 
       // Title
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';

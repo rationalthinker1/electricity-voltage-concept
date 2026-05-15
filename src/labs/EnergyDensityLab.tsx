@@ -92,19 +92,30 @@ export default function EnergyDensityLab() {
       const x0 = cx - half, y0 = cy - half;
 
       const intensity = Math.max(0.06, Math.min(0.6, Math.log10(uE + 1) * 0.10 + 0.05));
-      ctx.shadowColor = `rgba(255,59,110,${intensity})`;
+      ctx.save();
+      ctx.globalAlpha = intensity;
+      ctx.shadowColor = getCanvasColors().pink;
       ctx.shadowBlur = 28;
-      ctx.fillStyle = `rgba(255,59,110,${intensity * 0.18})`;
+      ctx.save();
+      ctx.globalAlpha = intensity * 0.18;
+      ctx.fillStyle = getCanvasColors().pink;
       roundRect(x0, y0, size, size, 6);
       ctx.fill();
+      ctx.restore();
+      ctx.restore();
       ctx.shadowBlur = 0;
 
-      ctx.strokeStyle = 'rgba(255,59,110,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = getCanvasColors().pink;
       ctx.lineWidth = 1.4;
       roundRect(x0, y0, size, size, 6);
       ctx.stroke();
+      ctx.restore();
 
-      ctx.strokeStyle = 'rgba(255,59,110,0.25)';
+      ctx.save();
+      ctx.globalAlpha = 0.25;
+      ctx.strokeStyle = getCanvasColors().pink;
       ctx.beginPath();
       ctx.moveTo(x0, y0); ctx.lineTo(x0 + 16, y0 - 14);
       ctx.moveTo(x0 + size, y0); ctx.lineTo(x0 + size + 16, y0 - 14);
@@ -112,6 +123,7 @@ export default function EnergyDensityLab() {
       ctx.lineTo(x0 + size, y0 + size);
       ctx.moveTo(x0 + 16, y0 - 14); ctx.lineTo(x0 + size + 16, y0 - 14);
       ctx.stroke();
+      ctx.restore();
 
       const cols = Math.max(3, Math.min(9, Math.round(Math.log10(Math.abs(Eval) + 10) * 1.5)));
       const arrLen = size * 0.18;
@@ -123,11 +135,14 @@ export default function EnergyDensityLab() {
           const cy_arr = baseY + ((phase * 30 + j * (cycleH / cols)) % cycleH);
           const tipY = cy_arr + arrLen / 2;
           const topY = cy_arr - arrLen / 2;
-          ctx.strokeStyle = 'rgba(255,59,110,0.7)';
+          ctx.save();
+          ctx.globalAlpha = 0.7;
+          ctx.strokeStyle = getCanvasColors().pink;
           ctx.lineWidth = 1.2;
           ctx.beginPath();
           ctx.moveTo(px, topY); ctx.lineTo(px, tipY);
           ctx.stroke();
+          ctx.restore();
           ctx.fillStyle = getCanvasColors().pink;
           ctx.beginPath();
           ctx.moveTo(px, tipY);
@@ -154,11 +169,17 @@ export default function EnergyDensityLab() {
       const x0 = cx - half, y0 = cy - half;
 
       const intensity = Math.max(0.06, Math.min(0.6, Math.log10(uB + 1) * 0.10 + 0.05));
-      ctx.shadowColor = `rgba(108,197,194,${intensity})`;
+      ctx.save();
+      ctx.globalAlpha = intensity;
+      ctx.shadowColor = getCanvasColors().teal;
       ctx.shadowBlur = 28;
-      ctx.fillStyle = `rgba(108,197,194,${intensity * 0.18})`;
+      ctx.save();
+      ctx.globalAlpha = intensity * 0.18;
+      ctx.fillStyle = getCanvasColors().teal;
       roundRect(x0, y0, size, size, 6);
       ctx.fill();
+      ctx.restore();
+      ctx.restore();
       ctx.shadowBlur = 0;
 
       ctx.strokeStyle = getCanvasColors().teal;
@@ -166,7 +187,9 @@ export default function EnergyDensityLab() {
       roundRect(x0, y0, size, size, 6);
       ctx.stroke();
 
-      ctx.strokeStyle = 'rgba(108,197,194,0.25)';
+      ctx.save();
+      ctx.globalAlpha = 0.25;
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.beginPath();
       ctx.moveTo(x0, y0); ctx.lineTo(x0 + 16, y0 - 14);
       ctx.moveTo(x0 + size, y0); ctx.lineTo(x0 + size + 16, y0 - 14);
@@ -174,25 +197,32 @@ export default function EnergyDensityLab() {
       ctx.lineTo(x0 + size, y0 + size);
       ctx.moveTo(x0 + 16, y0 - 14); ctx.lineTo(x0 + size + 16, y0 - 14);
       ctx.stroke();
+      ctx.restore();
 
       const rings = 4;
       for (let r = 1; r <= rings; r++) {
         const radius = (r / rings) * (size * 0.42);
         const dots = 10 + r * 4;
         const spin = phase * (0.3 + r * 0.05);
-        ctx.strokeStyle = `rgba(108,197,194,${0.18 + (0.12 * r) / rings})`;
+        ctx.save();
+        ctx.globalAlpha = 0.18 + (0.12 * r) / rings;
+        ctx.strokeStyle = getCanvasColors().teal;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.arc(cx, cy, radius, 0, Math.PI * 2);
         ctx.stroke();
+        ctx.restore();
         for (let i = 0; i < dots; i++) {
           const a = spin + (i / dots) * Math.PI * 2;
           const px = cx + Math.cos(a) * radius;
           const py = cy + Math.sin(a) * radius;
-          ctx.fillStyle = `rgba(108,197,194,${0.4 + (0.5 * r) / rings})`;
+          ctx.save();
+          ctx.globalAlpha = 0.4 + (0.5 * r) / rings;
+          ctx.fillStyle = getCanvasColors().teal;
           ctx.beginPath();
           ctx.arc(px, py, 1.8, 0, Math.PI * 2);
           ctx.fill();
+          ctx.restore();
         }
       }
 
@@ -224,7 +254,7 @@ export default function EnergyDensityLab() {
       const fracE = uE / total;
       const h = 12;
       const x0 = cx - totalW / 2;
-      ctx.fillStyle = 'rgba(255,255,255,0.05)';
+      ctx.fillStyle = getCanvasColors().border;
       roundRect(x0, cy - h / 2, totalW, h, 6);
       ctx.fill();
       ctx.fillStyle = getCanvasColors().pink;
@@ -233,7 +263,9 @@ export default function EnergyDensityLab() {
       ctx.fillStyle = getCanvasColors().teal;
       roundRect(x0 + totalW * fracE, cy - h / 2, totalW * (1 - fracE), h, 6);
       ctx.fill();
-      ctx.fillStyle = 'rgba(160,158,149,0.95)';
+      ctx.save();
+      ctx.globalAlpha = 0.95;
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(
@@ -241,6 +273,7 @@ export default function EnergyDensityLab() {
         cx,
         cy + 24,
       );
+      ctx.restore();
     }
 
     function draw() {

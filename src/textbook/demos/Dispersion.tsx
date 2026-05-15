@@ -40,6 +40,7 @@ export function DispersionDemo({ figure }: Props) {
   const nViolet = A + B / Math.pow(0.420, 2);
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w: W, h: H } = info;
     let raf = 0;
     function draw() {
@@ -58,13 +59,18 @@ export function DispersionDemo({ figure }: Props) {
       const rightBase = { x: cx + halfBase, y: cy };
 
       // Glass body (subtle fill)
-      ctx.fillStyle = 'rgba(108,197,194,0.10)';
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = colors.teal;
       ctx.beginPath();
       ctx.moveTo(apex.x, apex.y);
       ctx.lineTo(leftBase.x, leftBase.y);
       ctx.lineTo(rightBase.x, rightBase.y);
       ctx.closePath(); ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.2;
       ctx.stroke();
 
@@ -154,6 +160,7 @@ export function DispersionDemo({ figure }: Props) {
 
       // Label
       ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'left';
       ctx.fillText(`n(λ) = A + B/λ²`, 12, 18);

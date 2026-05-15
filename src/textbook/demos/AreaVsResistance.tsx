@@ -83,10 +83,13 @@ export function AreaVsResistanceDemo({ figure }: Props) {
       ctx.arc(insetCX, insetCY, insetMaxR + 4, 0, Math.PI * 2);
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(255,107,42,0.22)';
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle = colors.accent;
       ctx.beginPath();
       ctx.arc(insetCX, insetCY, insetR, 0, Math.PI * 2);
       ctx.fill();
+      ctx.restore();
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.2;
       ctx.beginPath();

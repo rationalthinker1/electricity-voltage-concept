@@ -64,7 +64,9 @@ export function DotConventionDemo({ figure }: Props) {
       drawCurrentArrow(ctx, c1x - 70, cy - (i1IntoDot ? coilH / 2 + 14 : -coilH / 2 + -14), c1x - 26, cy - (i1IntoDot ? coilH / 2 - 4 : -coilH / 2 + -4), 'I₁');
 
       // Coupling line between coils
-      ctx.strokeStyle = 'rgba(108,197,194,0.4)';
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1.4;
       ctx.beginPath();
@@ -72,6 +74,7 @@ export function DotConventionDemo({ figure }: Props) {
       ctx.lineTo(c2x - 24, cy);
       ctx.stroke();
       ctx.setLineDash([]);
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().teal;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
@@ -176,13 +179,16 @@ function drawSchematicCoil(
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(label, cx - 5, cy + h / 2 + 16);
-  ctx.fillStyle = 'rgba(160,158,149,0.75)';
+  ctx.save();
+  ctx.globalAlpha = 0.75;
+  ctx.fillStyle = getCanvasColors().textDim;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.fillText(valueLabel, cx - 5, cy);
+  ctx.restore();
 }
 
 function drawDot(ctx: CanvasRenderingContext2D, x: number, y: number) {
-  ctx.fillStyle = 'rgba(255,107,42,1)';
+  ctx.fillStyle = getCanvasColors().accent;
   ctx.beginPath();
   ctx.arc(x, y, 4, 0, Math.PI * 2);
   ctx.fill();

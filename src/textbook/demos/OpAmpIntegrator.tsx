@@ -118,7 +118,9 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       }
 
       // V_in (blue)
-      ctx.strokeStyle = 'rgba(91,174,248,0.85)';
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.strokeStyle = colors.blue;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {
@@ -141,6 +143,7 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       });
 
       // Y labels
+      ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';

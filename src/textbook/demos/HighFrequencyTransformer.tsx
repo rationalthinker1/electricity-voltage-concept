@@ -87,7 +87,9 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
       ctx.fillText(`mass ≈ ${formatMass(M_REF_G * scale)}`, rightCX, cy + refSide / 2 + 38);
 
       // Regime annotations
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('100 W reference', 8, h - 16);
@@ -101,6 +103,7 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
       else if (f < 30e3) tag = 'aircraft 400 Hz / audio';
       else if (f < 200e3) tag = 'modern SMPS / wall-wart';
       else tag = 'GaN / SiC high-density';
+      ctx.restore();
       ctx.fillStyle = colors.accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';

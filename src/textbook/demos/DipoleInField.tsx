@@ -100,13 +100,16 @@ export function DipoleInFieldDemo({ figure }: Props) {
         const tx = Math.cos(d.theta) * len;
         const ty = Math.sin(d.theta) * len;
         // bar
-        ctx.strokeStyle = 'rgba(255,255,255,.30)';
+        ctx.save();
+        ctx.globalAlpha = 0.3;
+        ctx.strokeStyle = colors.text;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(cx - tx, cy - ty);
         ctx.lineTo(cx + tx, cy + ty);
         ctx.stroke();
         // negative end (blue) — at -t
+        ctx.restore();
         ctx.fillStyle = colors.blue;
         ctx.beginPath();
         ctx.arc(cx - tx, cy - ty, 3, 0, Math.PI * 2);

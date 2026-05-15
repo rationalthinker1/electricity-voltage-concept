@@ -160,19 +160,25 @@ export default function LorentzLab() {
         const sign = qSign > 0 ? 1 : -1;
         const fx = sign * (-sim.vy);
         const fy = sign * (sim.vx);
-        ctx.strokeStyle = 'rgba(255,59,110,0.95)';
+        ctx.save();
+        ctx.globalAlpha = 0.95;
+        ctx.strokeStyle = colors.pink;
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(sim.x, sim.y);
         ctx.lineTo(sim.x + fx * flen, sim.y + fy * flen);
         ctx.stroke();
+        ctx.restore();
         const fa = Math.atan2(fy, fx);
-        ctx.fillStyle = 'rgba(255,59,110,0.95)';
+        ctx.save();
+        ctx.globalAlpha = 0.95;
+        ctx.fillStyle = colors.pink;
         ctx.beginPath();
         ctx.moveTo(sim.x + fx * flen, sim.y + fy * flen);
         ctx.lineTo(sim.x + fx * flen - 8 * Math.cos(fa - 0.4), sim.y + fy * flen - 8 * Math.sin(fa - 0.4));
         ctx.lineTo(sim.x + fx * flen - 8 * Math.cos(fa + 0.4), sim.y + fy * flen - 8 * Math.sin(fa + 0.4));
         ctx.closePath(); ctx.fill();
+        ctx.restore();
       }
 
       // Particle

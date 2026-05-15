@@ -267,10 +267,13 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to rotate', 12, 12);
-      ctx.fillStyle = 'rgba(160,158,149,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText(`inner radius a = ${R_INNER.toFixed(2)}   outer b = ${R_OUTER.toFixed(2)}`, 12, 28);
 
       ctx.textAlign = 'right';
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().pink;
       ctx.fillText('E  pink · radial', W - 12, 12);
       ctx.fillStyle = getCanvasColors().teal;
@@ -396,11 +399,14 @@ function drawInnerConductorBody(
     if (back) continue;
     const p1 = project(v3(-X_HALF, y, z), cam, W, H);
     const p2 = project(v3(+X_HALF, y, z), cam, W, H);
-    ctx.strokeStyle = 'rgba(255,107,42,0.22)';
+    ctx.save();
+    ctx.globalAlpha = 0.22;
+    ctx.strokeStyle = getCanvasColors().accent;
     ctx.lineWidth = 1.0;
     ctx.beginPath();
     ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y);
     ctx.stroke();
+    ctx.restore();
   }
 }
 

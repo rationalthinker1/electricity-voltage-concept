@@ -210,7 +210,7 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
         const len = Math.hypot(dx, dy);
         if (len < 2) continue;
         const ux = dx / len, uy = dy / len;
-        ctx.fillStyle = 'rgba(255,107,42,1)';
+        ctx.fillStyle = getCanvasColors().accent;
         ctx.beginPath();
         ctx.moveTo(pb.x, pb.y);
         ctx.lineTo(pb.x - ux * 7 - uy * 3.5, pb.y - uy * 7 + ux * 3.5);
@@ -286,12 +286,18 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       const pThumb = project(thumbTip, cam, W, H);
       if (pWrist.depth <= 0 || pThumb.depth <= 0) return;
       // Translucent palm circle.
-      ctx.fillStyle = 'rgba(236,235,229,0.10)';
-      ctx.strokeStyle = 'rgba(236,235,229,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.10;
+      ctx.fillStyle = getCanvasColors().text;
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = getCanvasColors().text;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.arc(pWrist.x, pWrist.y, 11, 0, Math.PI * 2);
       ctx.fill();
+      ctx.restore();
+      ctx.restore();
       ctx.stroke();
       // Thumb (cream, thicker).
       drawGlowPath(ctx,
@@ -339,12 +345,15 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
             x: r * Math.cos(phi), y: fy, z: r * Math.sin(phi),
           }, cam, W, H));
         }
-        ctx.strokeStyle = 'rgba(236,235,229,0.75)';
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.strokeStyle = getCanvasColors().text;
         ctx.lineWidth = 1.3;
         ctx.beginPath();
         ctx.moveTo(pts[0]!.x, pts[0]!.y);
         for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i]!.x, pts[i]!.y);
         ctx.stroke();
+        ctx.restore();
         // Arrowhead at the finger tip to show the B direction.
         const a = pts[pts.length - 2]!;
         const b = pts[pts.length - 1]!;
@@ -436,17 +445,23 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to rotate', 12, 12);
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText(`r₁ = ${(r1).toFixed(2)}   r₂ = ${(r2).toFixed(2)}   r₃ = ${(r3).toFixed(2)}`, 12, 28);
+      ctx.restore();
 
       ctx.textAlign = 'right';
       ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText(s.reverse ? 'I  amber · current −ŷ' : 'I  amber · current +ŷ', W - 12, 12);
       ctx.fillStyle = getCanvasColors().teal;
       ctx.fillText('B  teal · azimuthal (right-hand rule)', W - 12, 28);
-      ctx.fillStyle = 'rgba(236,235,229,0.70)';
+      ctx.save();
+      ctx.globalAlpha = 0.70;
+      ctx.fillStyle = getCanvasColors().text;
       if (s.showHand) {
         ctx.fillText('thumb = I, fingers curl with B', W - 12, 44);
+      ctx.restore();
       }
 
       raf = requestAnimationFrame(draw);

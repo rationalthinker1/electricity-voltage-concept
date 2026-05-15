@@ -78,13 +78,19 @@ export function RadiationPressureDemo({ figure }: Props) {
       const targetTop = cy - 56;
       const targetBot = cy + 56;
       const targetW = 18;
-      ctx.fillStyle = 'rgba(160,158,149,0.18)';
+      ctx.save();
+      ctx.globalAlpha = 0.18;
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillRect(targetX, targetTop, targetW, targetBot - targetTop);
-      ctx.strokeStyle = 'rgba(160,158,149,0.85)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.strokeStyle = getCanvasColors().textDim;
       ctx.lineWidth = 1.4;
       ctx.strokeRect(targetX, targetTop, targetW, targetBot - targetTop);
       // Force arrow on the target — small, but consistently rightward
       const armLen = 22 + Math.log10(I + 10) * 6;
+      ctx.restore();
       ctx.strokeStyle = getCanvasColors().accent;
       ctx.fillStyle = getCanvasColors().accent;
       ctx.lineWidth = 2;

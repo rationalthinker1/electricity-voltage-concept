@@ -264,7 +264,9 @@ function drawGaussB(
   const pt = project(top, cam, w, h);
   const pb = project(bot, cam, w, h);
   // Stem.
-  ctx.strokeStyle = 'rgba(160,158,149,0.7)';
+  ctx.save();
+  ctx.globalAlpha = 0.7;
+  ctx.strokeStyle = getCanvasColors().textDim;
   ctx.lineWidth = 8;
   ctx.lineCap = 'round';
   ctx.beginPath();
@@ -273,6 +275,7 @@ function drawGaussB(
   ctx.stroke();
   ctx.lineCap = 'butt';
   // N pole label (top, pink).
+  ctx.restore();
   ctx.fillStyle = getCanvasColors().pink;
   ctx.beginPath();
   ctx.arc(pt.x, pt.y, 9, 0, Math.PI * 2);
@@ -356,7 +359,7 @@ function drawFaraday(
   }
   const loop2 = loopPts.map(p => project(p, cam, w, h));
   // Closed loop, copper-amber.
-  ctx.strokeStyle = '#ff6b2a';
+  ctx.strokeStyle = getCanvasColors().accent;
   ctx.lineWidth = 2.4;
   ctx.beginPath();
   ctx.moveTo(loop2[0]!.x, loop2[0]!.y);
@@ -397,11 +400,14 @@ function drawFaraday(
 
   // 4. Tiny legend dot near the loop.
   const labelP = project(v3(R_LOOP + 0.25, 0, 0), cam, w, h);
-  ctx.fillStyle = 'rgba(236,235,229,0.75)';
+  ctx.save();
+  ctx.globalAlpha = 0.75;
+  ctx.fillStyle = getCanvasColors().text;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
   ctx.fillText('induced E', labelP.x + 6, labelP.y);
+  ctx.restore();
 }
 
 /**
@@ -427,7 +433,10 @@ function drawAmpere(
       v3(-PLATE_HALF, yLevel,  PLATE_HALF),
     ];
     const pts = corners.map(p => project(p, cam, w, h));
-    ctx.fillStyle = 'rgba(255,107,42,0.20)';
+    ctx.save();
+    ctx.globalAlpha = 0.20;
+    ctx.fillStyle = getCanvasColors().accent;
+    ctx.restore();
     ctx.strokeStyle = color;
     ctx.lineWidth = 1.6;
     ctx.beginPath();
@@ -453,7 +462,7 @@ function drawAmpere(
   ]) {
     const p1 = project(v3(0, yStart, 0), cam, w, h);
     const p2 = project(v3(0, yEnd, 0), cam, w, h);
-    ctx.strokeStyle = '#ff6b2a';
+    ctx.strokeStyle = getCanvasColors().accent;
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(p1.x, p1.y);
@@ -519,11 +528,14 @@ function drawAmpere(
 
   // 6. Annotation for the gap region.
   const gapLabel = project(v3(PLATE_HALF + 0.2, 0, 0), cam, w, h);
-  ctx.fillStyle = 'rgba(236,235,229,0.75)';
+  ctx.save();
+  ctx.globalAlpha = 0.75;
+  ctx.fillStyle = getCanvasColors().text;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
   ctx.fillText('gap: dE/dt + B-curl', gapLabel.x + 4, gapLabel.y);
+  ctx.restore();
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -607,11 +619,14 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
       }
 
       // Hint + mode label.
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('drag to orbit · same box for all four laws', 12, 12);
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().accent;
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.fillText(MODE_TITLES[s.mode], 12, h - 22);

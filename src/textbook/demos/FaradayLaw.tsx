@@ -143,7 +143,9 @@ export function FaradayLawDemo({ figure }: Props) {
 
       // Centerline
       const cyOsc = oscY + oscH / 2;
-      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.strokeStyle = colors.text;
       ctx.setLineDash([2, 3]);
       ctx.beginPath();
       ctx.moveTo(oscX, cyOsc); ctx.lineTo(oscX + oscW, cyOsc);
@@ -175,6 +177,7 @@ export function FaradayLawDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textBaseline = 'top';
       ctx.textAlign = 'left';
+      ctx.restore();
       ctx.fillStyle = colors.teal;
       ctx.fillText('Φ_B  (teal)', oscX + 10, oscY + 8);
       ctx.fillStyle = colors.accent;

@@ -178,7 +178,9 @@ export function FerromagnetDemo({ figure }: Props) {
 
       // Hysteresis trace
       if (Bhistory.length > 1) {
-        ctx.strokeStyle = 'rgba(255,107,42,0.55)';
+        ctx.save();
+        ctx.globalAlpha = 0.55;
+        ctx.strokeStyle = colors.accent;
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         for (let k = 0; k < Bhistory.length; k++) {
@@ -187,6 +189,7 @@ export function FerromagnetDemo({ figure }: Props) {
           if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
         }
         ctx.stroke();
+        ctx.restore();
       }
 
       // Current operating point

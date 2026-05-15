@@ -226,12 +226,15 @@ export function RotatingMagField3DDemo({ figure }: Props) {
           depth: avgDepth + (yEdge > 0 ? -0.02 : 0.02),
           render: () => {
             if (!ringPts.every(p => p.depth > 0)) return;
-            ctx.strokeStyle = 'rgba(160,158,149,0.45)';
+            ctx.save();
+            ctx.globalAlpha = 0.45;
+            ctx.strokeStyle = colors.textDim;
             ctx.lineWidth = 1.4;
             ctx.beginPath();
             ctx.moveTo(ringPts[0]!.x, ringPts[0]!.y);
             for (let k = 1; k < ringPts.length; k++) ctx.lineTo(ringPts[k]!.x, ringPts[k]!.y);
             ctx.stroke();
+            ctx.restore();
           },
         });
       }
@@ -365,13 +368,16 @@ export function RotatingMagField3DDemo({ figure }: Props) {
           const headW = headLen * 0.6;
           const baseX = p1.x - ux * headLen;
           const baseY = p1.y - uy * headLen;
-          ctx.fillStyle = 'rgba(255,107,42,0.98)';
+          ctx.save();
+          ctx.globalAlpha = 0.98;
+          ctx.fillStyle = colors.accent;
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
           ctx.lineTo(baseX - uy * headW, baseY + ux * headW);
           ctx.lineTo(baseX + uy * headW, baseY - ux * headW);
           ctx.closePath();
           ctx.fill();
+          ctx.restore();
         }
 
         // "B" label at the tip.
@@ -380,7 +386,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
           cam, w, h,
         );
         if (tipLabel.depth > 0) {
-          ctx.fillStyle = 'rgba(255,107,42,1)';
+          ctx.fillStyle = colors.accent;
           ctx.font = 'italic bold 14px "STIX Two Text", serif';
           ctx.textAlign = 'left';
           ctx.textBaseline = 'middle';
@@ -426,11 +432,14 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       ctx.fillStyle = COIL_COLORS[2]!;
       ctx.fillText(`C`, 2, 40);
 
-      ctx.fillStyle = 'rgba(160,158,149,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = colors.textDim;
       ctx.fillText('drag to orbit · animation slowed 20× for visibility', 12, h - 18);
 
       setTick(t => (t + 1) % 1000);
       raf = requestAnimationFrame(draw);
+      ctx.restore();
     }
 
     raf = requestAnimationFrame(draw);

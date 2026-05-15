@@ -108,9 +108,12 @@ export function GaussBLawDemo({ figure }: Props) {
         grd.addColorStop(1, '#ff3b6e');
         ctx.fillStyle = grd;
         ctx.fillRect(sx, cy - magH / 2, magW, magH);
-        ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+        ctx.save();
+        ctx.globalAlpha = 0.2;
+        ctx.strokeStyle = colors.text;
         ctx.lineWidth = 1;
         ctx.strokeRect(sx, cy - magH / 2, magW, magH);
+        ctx.restore();
         ctx.fillStyle = colors.bg;
         ctx.font = 'bold 13px JetBrains Mono';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';

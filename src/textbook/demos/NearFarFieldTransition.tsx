@@ -42,9 +42,14 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
 
       // Concentric reference zone: shaded near-field ring out to r = λ/(2π)
       const rNF = lam / (2 * Math.PI);
-      ctx.fillStyle = 'rgba(255,59,110,0.10)';
+      ctx.save();
+      ctx.globalAlpha = 0.10;
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.beginPath(); ctx.arc(cx, cy, rNF, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = 'rgba(255,59,110,0.45)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = getCanvasColors().pink;
       ctx.lineWidth = 1.5;
       ctx.setLineDash([3, 4]);
       ctx.beginPath(); ctx.arc(cx, cy, rNF, 0, Math.PI * 2); ctx.stroke();
@@ -98,6 +103,7 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
       ctx.putImageData(img, 0, 0);
 
       // Dipole at the origin (two charges)
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().pink;
       ctx.beginPath(); ctx.arc(cx, cy - 6, 4, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = getCanvasColors().blue;

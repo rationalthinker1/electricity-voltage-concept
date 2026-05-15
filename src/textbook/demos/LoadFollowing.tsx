@@ -73,21 +73,29 @@ export function LoadFollowingDemo({ figure }: Props) {
       }
 
       // Baseload band (teal, bottom)
-      ctx.fillStyle = 'rgba(108,197,194,0.20)';
+      ctx.save();
+      ctx.globalAlpha = 0.2;
+      ctx.fillStyle = colors.teal;
       ctx.beginPath();
       ctx.moveTo(padL, yAt(0));
       ctx.lineTo(padL + plotW, yAt(0));
       ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
       ctx.lineTo(padL, yAt(BASELOAD_FRAC));
       ctx.closePath(); ctx.fill();
-      ctx.strokeStyle = 'rgba(108,197,194,0.6)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(padL, yAt(BASELOAD_FRAC)); ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
       ctx.stroke();
 
       // Peaker band: between baseload and load curve, sampled
-      ctx.fillStyle = 'rgba(255,107,42,0.25)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.25;
+      ctx.fillStyle = colors.accent;
       ctx.beginPath();
       const N = 200;
       for (let i = 0; i <= N; i++) {
@@ -103,7 +111,8 @@ export function LoadFollowingDemo({ figure }: Props) {
       ctx.fill();
 
       // Load curve itself
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.restore();
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {
@@ -115,7 +124,9 @@ export function LoadFollowingDemo({ figure }: Props) {
       ctx.stroke();
 
       // Reserve band (dashed line above the load curve)
-      ctx.strokeStyle = 'rgba(255,59,110,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = colors.pink;
       ctx.setLineDash([5, 4]);
       ctx.lineWidth = 1.2;
       ctx.beginPath();
@@ -130,18 +141,24 @@ export function LoadFollowingDemo({ figure }: Props) {
 
       // Time-of-day marker
       const mx = xAt(hour);
-      ctx.strokeStyle = 'rgba(236,235,229,0.7)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.7;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(mx, padT); ctx.lineTo(mx, padT + plotH);
       ctx.stroke();
+      ctx.restore();
       ctx.fillStyle = colors.accent;
       ctx.beginPath();
       ctx.arc(mx, yAt(loadFracAt(hour)), 5, 0, Math.PI * 2);
       ctx.fill();
 
       // Axes labels
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       for (let hr = 0; hr <= 24; hr += 4) {
@@ -169,6 +186,7 @@ export function LoadFollowingDemo({ figure }: Props) {
       lg('rgba(255,59,110,0.7)', 'reserve (dashed)');
 
       raf = requestAnimationFrame(draw);
+      ctx.restore();
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);

@@ -46,6 +46,7 @@ export function LinearRegulatorDemo({ figure }: Props) {
   const cacheRef = useRef<StaticCache | null>(null);
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w, h, dpr } = info;
     let raf = 0;
     let t = 0;
@@ -137,7 +138,9 @@ export function LinearRegulatorDemo({ figure }: Props) {
         drawCircuit(sctx, { elements: flowArrows });
 
         // Footer rule.
-        sctx.fillStyle = 'rgba(160,158,149,0.55)';
+        sctx.save();
+        sctx.globalAlpha = 0.55;
+        sctx.fillStyle = colors.textDim;
         sctx.font = '9px "JetBrains Mono", monospace';
         sctx.textAlign = 'center'; sctx.textBaseline = 'bottom';
         sctx.fillText(
@@ -146,6 +149,7 @@ export function LinearRegulatorDemo({ figure }: Props) {
         );
 
         cacheRef.current = { key: cacheKey, canvas: off };
+        sctx.restore();
       }
       ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
 

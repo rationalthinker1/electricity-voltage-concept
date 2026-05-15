@@ -82,7 +82,7 @@ export function BoostConverterDemo({ figure }: Props) {
 
       // Top sub-plot: switch-node voltage. When SW closed, switch node = 0;
       // when SW open, switch node = V_out (one diode drop above output).
-      ctx.strokeStyle = 'rgba(255,107,42,1.0)';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       const yLo = top + subH - 6;
@@ -101,10 +101,13 @@ export function BoostConverterDemo({ figure }: Props) {
       }
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(160,158,149,0.80)';
+      ctx.save();
+      ctx.globalAlpha = 0.80;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       ctx.fillText(`V_out`, padL - 4, yHi);
+      ctx.restore();
       ctx.fillText(`0`,     padL - 4, yLo);
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText('switch-node voltage', padL + 4, top + 4);
@@ -119,15 +122,18 @@ export function BoostConverterDemo({ figure }: Props) {
       const iOf = (i: number) => yMinBot - (i / Math.max(Imax * 1.15, 0.1)) * (yMinBot - yMaxTop);
 
       // dashed avg
-      ctx.strokeStyle = 'rgba(108,197,194,0.40)';
+      ctx.save();
+      ctx.globalAlpha = 0.40;
+      ctx.strokeStyle = colors.teal;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.moveTo(padL, iOf(Iin_avg));
       ctx.lineTo(padL + plotW, iOf(Iin_avg));
       ctx.stroke();
+      ctx.restore();
       ctx.setLineDash([]);
 
-      ctx.strokeStyle = 'rgba(108,197,194,1.0)';
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1.8;
       ctx.beginPath();
       for (let k = 0; k < Ncyc; k++) {
@@ -141,9 +147,12 @@ export function BoostConverterDemo({ figure }: Props) {
       }
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(160,158,149,0.80)';
+      ctx.save();
+      ctx.globalAlpha = 0.80;
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       ctx.fillText(`${Imax.toFixed(2)} A`,    padL - 4, iOf(Imax));
+      ctx.restore();
       ctx.fillText(`${Iin_avg.toFixed(2)} A`, padL - 4, iOf(Iin_avg));
       ctx.fillText(`${Imin.toFixed(2)} A`,    padL - 4, iOf(Imin));
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
@@ -155,17 +164,23 @@ export function BoostConverterDemo({ figure }: Props) {
       ctx.fillText(`${(tTotal * 1e6).toFixed(0)} µs`, padL + plotW, padT + plotH + 4);
 
       // Header
-      ctx.fillStyle = 'rgba(160,158,149,0.80)';
+      ctx.save();
+      ctx.globalAlpha = 0.80;
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(`V_out = V_in / (1 − D) = ${Vout.toFixed(2)} V    I_out = ${Iout.toFixed(2)} A`, 4, 4);
+      ctx.restore();
 
       // Annotate switch states
-      ctx.fillStyle = 'rgba(255,107,42,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.accent;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       const x_on  = padL + (tOn / 2 / tTotal) * plotW;
       const x_off = padL + ((tOn + (Tsw - tOn) / 2) / tTotal) * plotW;
       ctx.fillText('SW on: L charging', x_on,  top + subH - 16);
+      ctx.restore();
       ctx.fillText('SW off: dump → C',  x_off, top + subH - 16);
 
       raf = requestAnimationFrame(draw);

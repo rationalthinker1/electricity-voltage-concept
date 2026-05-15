@@ -85,7 +85,9 @@ export function SmithChartBasicsDemo({ figure }: Props) {
 
       // Constant-resistance circles: centre (r/(r+1), 0), radius 1/(r+1)
       const rValues = [0.2, 0.5, 1, 2, 5];
-      ctx.strokeStyle = 'rgba(108,197,194,0.30)';
+      ctx.save();
+      ctx.globalAlpha = 0.30;
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1;
       for (const r of rValues) {
         const ccg = r / (r + 1);
@@ -97,7 +99,10 @@ export function SmithChartBasicsDemo({ figure }: Props) {
 
       // Constant-reactance arcs: centre (1, 1/x), radius 1/|x|
       const xValues = [0.2, 0.5, 1, 2, 5];
-      ctx.strokeStyle = 'rgba(255,107,42,0.28)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.28;
+      ctx.strokeStyle = colors.accent;
       for (const x of xValues) {
         // Upper arc (positive x, inductive)
         const cxg = 1;
@@ -110,6 +115,7 @@ export function SmithChartBasicsDemo({ figure }: Props) {
         drawArcClipped(ctx, cx + cxg * radius, cy + cyg_up * radius, rg * radius, cx, cy, radius);
       }
       // Centre cross (Γ = 0 — matched)
+      ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.beginPath();
       ctx.arc(cx, cy, 2, 0, Math.PI * 2);
@@ -130,13 +136,16 @@ export function SmithChartBasicsDemo({ figure }: Props) {
 
       // Z_L marker
       const pZ = gToScreen(Gr, Gi);
-      ctx.fillStyle = 'rgba(255,59,110,1)';
+      ctx.fillStyle = colors.pink;
       ctx.beginPath();
       ctx.arc(pZ.x, pZ.y, 5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+      ctx.save();
+      ctx.globalAlpha = 0.9;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1;
       ctx.stroke();
+      ctx.restore();
       ctx.fillStyle = colors.pink;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
@@ -146,12 +155,15 @@ export function SmithChartBasicsDemo({ figure }: Props) {
       // Quarter-wave transform marker: Γ' = −Γ (180° rotation)
       if (showQwave) {
         const pZin = gToScreen(-Gr, -Gi);
-        ctx.fillStyle = 'rgba(108,197,194,1)';
+        ctx.fillStyle = colors.teal;
         ctx.beginPath();
         ctx.arc(pZin.x, pZin.y, 5, 0, Math.PI * 2);
         ctx.fill();
-        ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+        ctx.save();
+        ctx.globalAlpha = 0.9;
+        ctx.strokeStyle = colors.text;
         ctx.stroke();
+        ctx.restore();
         ctx.fillStyle = colors.teal;
         ctx.fillText('Z_in (λ/4)', pZin.x + 8, pZin.y - 2);
 

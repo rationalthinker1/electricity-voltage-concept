@@ -272,9 +272,12 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       ctx.fillText(`B → ${st.B.toFixed(2)}  (along +x)`, 12, 12);
       ctx.fillStyle = colors.textDim;
       ctx.fillText(`θ = ${((theta % (2 * Math.PI)) * 180 / Math.PI).toFixed(0)}°`, 12, 28);
-      ctx.fillStyle = 'rgba(160,158,149,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = colors.textDim;
       ctx.fillText('drag to orbit', 12, sceneH - 18);
 
+      ctx.restore();
       ctx.restore();   // end scene clip
 
       // ───── Time-series plot (bottom strip) ─────
@@ -335,17 +338,26 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = 'rgba(255,107,42,0.92)';
+      ctx.save();
+      ctx.globalAlpha = 0.92;
+      ctx.fillStyle = colors.accent;
       ctx.fillText('Φ_B(t) = B·A·cos(ωt)', plotLeft + 4, plotY0 + 6);
-      ctx.fillStyle = 'rgba(108,197,194,0.92)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.92;
+      ctx.fillStyle = colors.teal;
       ctx.fillText('ε(t) = −dΦ/dt = B·A·ω·sin(ωt)', plotLeft + 4, plotY0 + 20);
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'right';
       ctx.fillText('time →', plotRight - 4, plotY0 + plotH - 14);
 
       // Force re-renders so MiniReadouts stay alive even if React optimises us out.
       setTick(t => (t + 1) % 1000);
       raf = requestAnimationFrame(draw);
+      ctx.restore();
     }
     raf = requestAnimationFrame(draw);
     return () => {

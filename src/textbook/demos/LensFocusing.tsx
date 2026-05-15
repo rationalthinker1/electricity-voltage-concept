@@ -37,6 +37,7 @@ export function LensFocusingDemo({ figure }: Props) {
   const mag = -dImg / dObj;
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w: W, h: H } = info;
     let raf = 0;
     function draw() {
@@ -77,11 +78,14 @@ export function LensFocusingDemo({ figure }: Props) {
       }
       ctx.stroke();
       // Lens centre marker
-      ctx.fillStyle = 'rgba(108,197,194,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = colors.teal;
       ctx.beginPath(); ctx.arc(lensX, axisY, 2, 0, Math.PI * 2); ctx.fill();
 
       // Focal points on each side
       const fpx = pxPerCm * fAbs;
+      ctx.restore();
       ctx.fillStyle = getCanvasColors().accent;
       function focalDot(x: number) {
         ctx.beginPath(); ctx.arc(x, axisY, 3.5, 0, Math.PI * 2); ctx.fill();
@@ -99,7 +103,9 @@ export function LensFocusingDemo({ figure }: Props) {
       ctx.lineWidth = 1.3;
       for (const dy of rayYs) {
         const yIn = axisY + dy;
-        ctx.strokeStyle = 'rgba(255,107,42,0.35)';
+        ctx.save();
+        ctx.globalAlpha = 0.35;
+        ctx.strokeStyle = colors.accent;
         // incoming horizontal ray
         ctx.beginPath();
         ctx.moveTo(20, yIn); ctx.lineTo(lensX, yIn);
@@ -147,6 +153,7 @@ export function LensFocusingDemo({ figure }: Props) {
           ctx.stroke();
           ctx.setLineDash([]);
         }
+        ctx.restore();
       }
 
       // === Mode 2: object and image (only meaningful in convex case for a real image;

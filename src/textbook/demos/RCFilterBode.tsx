@@ -83,7 +83,9 @@ export function RCFilterBodeDemo({ figure }: Props) {
       }
 
       // x-axis: decade ticks
-      ctx.fillStyle = 'rgba(160,158,149,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -99,6 +101,7 @@ export function RCFilterBodeDemo({ figure }: Props) {
 
       // f_c marker
       const xfc = plotX + ((Math.log10(fc) - logMin) / (logMax - logMin)) * plotW;
+      ctx.restore();
       ctx.strokeStyle = colors.teal;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
@@ -108,7 +111,9 @@ export function RCFilterBodeDemo({ figure }: Props) {
       ctx.setLineDash([]);
       // -3 dB line
       const yM3 = yMag(-3);
-      ctx.strokeStyle = 'rgba(255,59,110,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = colors.pink;
       ctx.setLineDash([2, 4]);
       ctx.beginPath();
       ctx.moveTo(plotX, yM3); ctx.lineTo(plotX + plotW, yM3); ctx.stroke();
@@ -159,6 +164,7 @@ export function RCFilterBodeDemo({ figure }: Props) {
       });
 
       // Y-axis labels
+      ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';

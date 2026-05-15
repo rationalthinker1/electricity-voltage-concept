@@ -28,6 +28,7 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
   const intensity = sinT * sinT;
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w: W, h: H } = info;
     let raf = 0;
     function draw() {
@@ -65,7 +66,7 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
       // Pattern curve: r(θ) = sin²θ where θ measured from the vertical axis
       ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 2;
-      ctx.fillStyle = 'rgba(255,107,42,0.15)';
+      ctx.fillStyle = colors.accentSoft;
       ctx.beginPath();
       const N = 360;
       for (let i = 0; i <= N; i++) {

@@ -90,10 +90,13 @@ export function CyclotronDemo({ figure }: Props) {
           ctx.stroke();
         }
       }
-      ctx.fillStyle = 'rgba(108,197,194,.55)';
+      ctx.save();
+      ctx.globalAlpha = .55;
+      ctx.fillStyle = colors.teal;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText(`B = ${pretty(B, 3)} T  (into page)`, 14, 18);
+      ctx.restore();
 
       // Center the orbit horizontally; the particle was "launched at the left
       // moving right", so the orbit's center is offset by the radius vertically.
@@ -112,10 +115,13 @@ export function CyclotronDemo({ figure }: Props) {
       theta += sign * omegaVis * dt;
 
       // Orbit ring (faint)
-      ctx.strokeStyle = 'rgba(255,107,42,0.30)';
+      ctx.save();
+      ctx.globalAlpha = 0.30;
+      ctx.strokeStyle = colors.accent;
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.arc(cx0, cy0, rPx, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore();
       ctx.setLineDash([]);
 
       // Particle position
@@ -127,12 +133,15 @@ export function CyclotronDemo({ figure }: Props) {
       const ty =  Math.cos(theta) * sign;
 
       // Trail
-      ctx.strokeStyle = 'rgba(255,107,42,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       const trailLen = 1.2;
       ctx.arc(cx0, cy0, rPx, theta - sign * trailLen, theta, sign < 0);
       ctx.stroke();
+      ctx.restore();
 
       // Particle
       const color = positive ? '#ff3b6e' : '#5baef8';
@@ -148,7 +157,7 @@ export function CyclotronDemo({ figure }: Props) {
       ctx.fillText(positive ? '+' : '−', px, py);
 
       // Velocity arrow
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = colors.accent;
       ctx.fillStyle = colors.accent;
       ctx.lineWidth = 1.5;
       const aLen = 22;
@@ -170,12 +179,18 @@ export function CyclotronDemo({ figure }: Props) {
       ctx.fillText('v', hx + tx * 8, hy + ty * 8);
 
       // Real radius label
-      ctx.fillStyle = 'rgba(236,235,229,.85)';
+      ctx.save();
+      ctx.globalAlpha = .85;
+      ctx.fillStyle = colors.text;
       ctx.textAlign = 'right';
       ctx.fillText(`r (real) = ${pretty(r_phys, 2)} m`, w - 14, 18);
-      ctx.fillStyle = 'rgba(160,158,149,.6)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = .6;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.fillText('orbit drawn at log-scaled radius', w - 14, 32);
+      ctx.restore();
 
       raf = requestAnimationFrame(draw);
     }

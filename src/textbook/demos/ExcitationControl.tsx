@@ -87,7 +87,7 @@ export function ExcitationControlDemo({ figure }: Props) {
         // No-load: V_t = E_f = K_F·i_F (linear). Plot V_t vs i_F.
         const yMax = K_F * ifMax;
         const yAt = (v: number) => padT + plotH - (v / yMax) * plotH;
-        ctx.strokeStyle = '#ff6b2a';
+        ctx.strokeStyle = colors.accent;
         ctx.lineWidth = 2;
         ctx.beginPath();
         for (let i = 0; i <= 60; i++) {
@@ -116,7 +116,7 @@ export function ExcitationControlDemo({ figure }: Props) {
         const yMax = 2.0;
         const yAt = (v: number) => padT + plotH - (v / yMax) * plotH;
         // V curve
-        ctx.strokeStyle = '#ff6b2a';
+        ctx.strokeStyle = colors.accent;
         ctx.lineWidth = 2;
         ctx.beginPath();
         let started = false;
@@ -143,7 +143,9 @@ export function ExcitationControlDemo({ figure }: Props) {
         ctx.moveTo(padL, yAt(pRef)); ctx.lineTo(padL + plotW, yAt(pRef));
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = 'rgba(108,197,194,0.8)';
+        ctx.save();
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = colors.teal;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
         ctx.fillText('|I_a| = P at unity PF', padL + 6, yAt(pRef) - 2);
@@ -162,6 +164,7 @@ export function ExcitationControlDemo({ figure }: Props) {
         }
 
         // Y axis label
+        ctx.restore();
         ctx.fillStyle = colors.textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
@@ -171,12 +174,18 @@ export function ExcitationControlDemo({ figure }: Props) {
         ctx.fillText(`loaded V-curve: |I_a| vs I_field at P = ${pRef.toFixed(2)} pu`, padL + 6, padT + 4);
 
         // Region labels
-        ctx.fillStyle = 'rgba(91,174,248,0.75)';
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = colors.blue;
         ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
         ctx.fillText('under-excited (Q < 0)', padL + 8, padT + plotH - 6);
-        ctx.fillStyle = 'rgba(255,59,110,0.75)';
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = colors.pink;
         ctx.textAlign = 'right';
         ctx.fillText('over-excited (Q > 0)', padL + plotW - 8, padT + plotH - 6);
+        ctx.restore();
       }
 
       // X axis ticks

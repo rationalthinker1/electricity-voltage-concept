@@ -46,6 +46,7 @@ export function LeadAcidCellDemo({ figure }: Props) {
   useEffect(() => { stateRef.current = { soc, SG, V_cell }; }, [soc, SG, V_cell]);
 
   const setup = useCallback((info: CanvasInfo) => {
+    const colors = getCanvasColors();
     const { ctx, w: W, h: H } = info;
     let raf = 0;
 
@@ -115,7 +116,9 @@ export function LeadAcidCellDemo({ figure }: Props) {
       ctx.fillText('H₂SO₄(aq)', jarX + 8, jarY + jarH - 16);
 
       // Bottom captions
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText(
@@ -124,6 +127,7 @@ export function LeadAcidCellDemo({ figure }: Props) {
       );
 
       raf = requestAnimationFrame(draw);
+      ctx.restore();
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);

@@ -39,17 +39,25 @@ export function InverseSquareDemo({ figure }: Props) {
     function yOf(F: number) { return padT + ph - (Math.log10(F) - logMinF) / (logMaxF - logMinF) * ph; }
 
     // Grid
-    ctx.strokeStyle = 'rgba(255,255,255,.06)';
+    ctx.save();
+    ctx.globalAlpha = 0.06;
+    ctx.strokeStyle = colors.text;
     ctx.lineWidth = 1;
     for (const r of [1, 2, 5, 10, 20, 50, 100]) {
       ctx.beginPath();
       ctx.moveTo(xOf(r), padT); ctx.lineTo(xOf(r), padT + ph); ctx.stroke();
     }
     // Axes
-    ctx.strokeStyle = 'rgba(255,255,255,.3)';
+    ctx.restore();
+    ctx.save();
+    ctx.globalAlpha = 0.3;
+    ctx.strokeStyle = colors.text;
     ctx.beginPath();
     ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + ph); ctx.lineTo(padL + pw, padT + ph); ctx.stroke();
-    ctx.fillStyle = 'rgba(160,158,149,.85)';
+    ctx.restore();
+    ctx.save();
+    ctx.globalAlpha = 0.85;
+    ctx.fillStyle = colors.textDim;
     ctx.font = '10px "JetBrains Mono", monospace';
     ctx.textAlign = 'center'; ctx.textBaseline = 'top';
     for (const rt of [1, 10, 100]) ctx.fillText(`${rt} cm`, xOf(rt), padT + ph + 6);
@@ -61,7 +69,10 @@ export function InverseSquareDemo({ figure }: Props) {
     }
 
     // Curve F = kq²/r² across r 1–100 cm
-    ctx.strokeStyle = 'rgba(255,107,42,.95)';
+    ctx.restore();
+    ctx.save();
+    ctx.globalAlpha = 0.95;
+    ctx.strokeStyle = colors.accent;
     ctx.lineWidth = 2;
     ctx.beginPath();
     for (let i = 0; i <= 200; i++) {
@@ -75,21 +86,28 @@ export function InverseSquareDemo({ figure }: Props) {
     // Marker for current r
     const mF = (PHYS.k * q * q) / ((rCm * 1e-2) ** 2);
     const mx = xOf(rCm), my = yOf(mF);
-    ctx.strokeStyle = 'rgba(108,197,194,.7)';
+    ctx.restore();
+    ctx.save();
+    ctx.globalAlpha = 0.7;
+    ctx.strokeStyle = colors.teal;
     ctx.setLineDash([4, 4]);
     ctx.beginPath();
     ctx.moveTo(mx, padT); ctx.lineTo(mx, my);
     ctx.moveTo(padL, my); ctx.lineTo(mx, my);
     ctx.stroke();
     ctx.setLineDash([]);
+    ctx.restore();
     ctx.fillStyle = colors.accent;
     ctx.beginPath(); ctx.arc(mx, my, 5, 0, Math.PI * 2); ctx.fill();
 
     // Slope label
-    ctx.fillStyle = 'rgba(108,197,194,.85)';
+    ctx.save();
+    ctx.globalAlpha = 0.85;
+    ctx.fillStyle = colors.teal;
     ctx.font = 'italic 12px Fraunces, serif';
     ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     ctx.fillText('slope = −2  →  F ∝ 1/r²', padL + 12, padT + 6);
+    ctx.restore();
   }, [rCm]);
 
   return (

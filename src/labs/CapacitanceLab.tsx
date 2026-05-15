@@ -92,12 +92,15 @@ export default function CapacitanceLab() {
     }
 
     function drawCapacitorBattery(x: number, y: number, topY: number, botY: number) {
-      ctx.strokeStyle = 'rgba(236,235,229,0.7)';
+      ctx.save();
+      ctx.globalAlpha = 0.7;
+      ctx.strokeStyle = getCanvasColors().text;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       ctx.moveTo(x - 14, y - 12);
       ctx.lineTo(x + 14, y - 12);
       ctx.stroke();
+      ctx.restore();
       ctx.beginPath();
       ctx.moveTo(x - 7, y + 4);
       ctx.lineTo(x + 7, y + 4);
@@ -161,19 +164,25 @@ export default function CapacitanceLab() {
           const cycle = (phase * 80 + i * 7) % usableSpanRaw;
           const y1 = baseY + cycle;
           const y0 = y1 - arrLen;
-          ctx.strokeStyle = 'rgba(255,59,110,0.85)';
+          ctx.save();
+          ctx.globalAlpha = 0.85;
+          ctx.strokeStyle = getCanvasColors().pink;
           ctx.lineWidth = 1.4;
           ctx.beginPath();
           ctx.moveTo(fx, Math.max(baseY, y0));
           ctx.lineTo(fx, y1);
           ctx.stroke();
-          ctx.fillStyle = 'rgba(255,59,110,0.95)';
+          ctx.restore();
+          ctx.save();
+          ctx.globalAlpha = 0.95;
+          ctx.fillStyle = getCanvasColors().pink;
           ctx.beginPath();
           ctx.moveTo(fx, y1);
           ctx.lineTo(fx - 3.5, y1 - 6);
           ctx.lineTo(fx + 3.5, y1 - 6);
           ctx.closePath();
           ctx.fill();
+          ctx.restore();
         }
       }
 
@@ -187,7 +196,9 @@ export default function CapacitanceLab() {
 
       drawCapacitorBattery(xL - 70, cy, topY, botY);
 
-      ctx.strokeStyle = 'rgba(236,235,229,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = getCanvasColors().text;
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.moveTo(xL - 38, topY + plateThick / 2);
@@ -195,6 +206,7 @@ export default function CapacitanceLab() {
       ctx.moveTo(xL - 38, botY - plateThick / 2);
       ctx.lineTo(xL, botY - plateThick / 2);
       ctx.stroke();
+      ctx.restore();
 
       // Labels
       ctx.fillStyle = getCanvasColors().accent;

@@ -94,10 +94,13 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
       ctx.stroke();
 
       // axis labels
-      ctx.fillStyle = 'rgba(160,158,149,0.80)';
+      ctx.save();
+      ctx.globalAlpha = 0.80;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillText('V (volts)', padL + plotW / 2, padT + plotH + 18);
+      ctx.restore();
       ctx.save();
       ctx.translate(14, padT + plotH / 2);
       ctx.rotate(-Math.PI / 2);
@@ -119,10 +122,13 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
       ctx.stroke();
 
       // tick labels
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       for (let v = Math.ceil(Vmin); v <= Math.floor(Vmax); v++) {
         ctx.fillText(v.toFixed(0), xOf(v), yOf(0) + 4);
+      ctx.restore();
       }
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
       ctx.fillText('+100 mA', padL - 4, yOf(0.1));
@@ -152,11 +158,14 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
       });
 
       // operating-point bar
-      ctx.strokeStyle = 'rgba(236,235,229,0.45)';
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.text;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(xOf(V), padT); ctx.lineTo(xOf(V), padT + plotH);
       ctx.stroke();
+      ctx.restore();
       ctx.setLineDash([]);
 
       // legend
@@ -174,9 +183,12 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
       });
 
       // header
-      ctx.fillStyle = 'rgba(160,158,149,0.80)';
+      ctx.save();
+      ctx.globalAlpha = 0.80;
+      ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(`I = Iₛ (exp(V/V_T) − 1)   ·   V_T = kT/q = ${((KB * T) / Q * 1000).toFixed(1)} mV at ${T.toFixed(0)} K`, padL, 4);
+      ctx.restore();
 
       raf = requestAnimationFrame(draw);
     }

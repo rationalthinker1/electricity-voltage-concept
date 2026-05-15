@@ -61,7 +61,9 @@ export function EAxialFieldDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fill();
 
-      ctx.strokeStyle = 'rgba(255,107,42,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(wireXL, wireCY - r);
@@ -71,6 +73,7 @@ export function EAxialFieldDemo({ figure }: Props) {
       ctx.stroke();
 
       // End caps
+      ctx.restore();
       ctx.strokeStyle = colors.accent;
       ctx.beginPath(); ctx.ellipse(wireXL, wireCY, er, r, 0, 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.ellipse(wireXR, wireCY, er, r, 0, 0, Math.PI * 2); ctx.stroke();
@@ -127,13 +130,16 @@ export function EAxialFieldDemo({ figure }: Props) {
       ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.fillText('E  (axial)', (wireXL + wireXR) / 2, wireCY - r - 14);
 
-      ctx.fillStyle = 'rgba(160,158,149,.85)';
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(`V = ${V.toFixed(1)} V`, 18, h - 24);
       ctx.textAlign = 'right';
       ctx.fillText(`L = ${L.toFixed(2)} m`, w - 18, h - 24);
       ctx.textAlign = 'center';
+      ctx.restore();
       ctx.fillStyle = colors.accent;
       ctx.fillText(`E = V / L = ${pretty(E_)} V/m`, w / 2, h - 24);
 

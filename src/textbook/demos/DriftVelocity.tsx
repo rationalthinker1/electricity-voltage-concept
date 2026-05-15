@@ -58,7 +58,9 @@ export function DriftVelocityDemo({ figure }: Props) {
 
       // Wire body — soft amber rounded rectangle
       const r = (wireBot - wireTop) / 2;
-      ctx.fillStyle = 'rgba(255,107,42,.06)';
+      ctx.save();
+      ctx.globalAlpha = 0.06;
+      ctx.fillStyle = colors.accent;
       ctx.beginPath();
       ctx.moveTo(wireLeft + r, wireTop);
       ctx.lineTo(wireRight - r, wireTop);
@@ -67,23 +69,32 @@ export function DriftVelocityDemo({ figure }: Props) {
       ctx.arc(wireLeft + r, wireTop + r, r, Math.PI / 2, -Math.PI / 2);
       ctx.closePath();
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,.10)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1;
       ctx.stroke();
 
       // Battery terminals
+      ctx.restore();
       ctx.fillStyle = colors.pink;
       ctx.fillRect(wireLeft - 10, wireTop + 8, 4, wireBot - wireTop - 16);
       ctx.fillStyle = colors.blue;
       ctx.fillRect(wireRight + 6, wireTop + 8, 4, wireBot - wireTop - 16);
-      ctx.fillStyle = 'rgba(160,158,149,.85)';
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('+', wireLeft - 8, wireTop);
       ctx.fillText('−', wireRight + 8, wireTop);
 
       // Tiny axis arrow showing E direction (left → right)
-      ctx.strokeStyle = 'rgba(255,107,42,.55)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1;
       const axy = (wireTop + wireBot) / 2;
       for (let xa = wireLeft + 60; xa < wireRight - 50; xa += 110) {
@@ -96,7 +107,10 @@ export function DriftVelocityDemo({ figure }: Props) {
         ctx.fillStyle = 'rgba(255,107,42,.55)';
         ctx.fill();
       }
-      ctx.fillStyle = 'rgba(255,107,42,.7)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.7;
+      ctx.fillStyle = colors.accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('E', wireLeft + 4, wireTop - 6);
@@ -106,6 +120,7 @@ export function DriftVelocityDemo({ figure }: Props) {
       const vd_real = I / (n * PHYS.e * stateRef.current.Amm2 * 1e-6);
       const driftBias = Math.max(0.04, Math.min(2.0, vd_real * 6e4));
 
+ctx.restore();
       ctx.fillStyle = colors.blue;
       for (const e of electrons) {
         // Thermal kick
@@ -127,12 +142,15 @@ export function DriftVelocityDemo({ figure }: Props) {
       }
 
       // Caption
-      ctx.fillStyle = 'rgba(160,158,149,.8)';
+      ctx.save();
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('copper · 120 free electrons (visual bias scaled ×60 000 for visibility)', wireLeft, h - 12);
 
       raf = requestAnimationFrame(draw);
+      ctx.restore();
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);

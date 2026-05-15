@@ -100,12 +100,15 @@ export function FourierSpectrumDemo() {
       const tMid = 8 + tH / 2;
       ctx.strokeStyle = colors.border;
       ctx.beginPath(); ctx.moveTo(padX, tMid); ctx.lineTo(w - padX, tMid); ctx.stroke();
-      ctx.fillStyle = 'rgba(160,158,149,0.6)';
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText('time →', w - padX - 4, tMid + 12);
 
-      ctx.strokeStyle = '#ff6b2a';
+ctx.restore();
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
       const samples = 400;

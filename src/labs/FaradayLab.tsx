@@ -90,14 +90,20 @@ export default function FaradayLab() {
 
       if (B > 0.005) {
         const op = Math.min(0.45, 0.12 + B * 0.18);
-        ctx.strokeStyle = `rgba(108,197,194,${op})`;
-        ctx.fillStyle = `rgba(108,197,194,${op})`;
+        ctx.save();
+        ctx.globalAlpha = op;
+        ctx.strokeStyle = colors.teal;
+        ctx.save();
+        ctx.globalAlpha = op;
+        ctx.fillStyle = colors.teal;
         ctx.lineWidth = 1.2;
         const rows = 7;
         for (let i = 0; i < rows; i++) {
           const y = ((i + 0.5) * h) / rows;
           ctx.beginPath();
           ctx.moveTo(20, y); ctx.lineTo(splitX - 20, y); ctx.stroke();
+        ctx.restore();
+        ctx.restore();
           ctx.beginPath();
           ctx.moveTo(splitX - 20, y);
           ctx.lineTo(splitX - 28, y - 5);
@@ -136,7 +142,9 @@ export default function FaradayLab() {
 
       // Turn lines
       const turnsShown = Math.min(20, Math.max(3, Math.floor(N / 25)));
-      ctx.strokeStyle = 'rgba(255,107,42,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1;
       for (let i = 1; i < turnsShown; i++) {
         const t = i / turnsShown;
@@ -144,23 +152,30 @@ export default function FaradayLab() {
         const xRt = xR - persp * 0.3 - t * 4;
         ctx.beginPath();
         ctx.moveTo(xLt, yT); ctx.lineTo(xRt, yT); ctx.stroke();
+      ctx.restore();
       }
 
       // Normal arrow
       const normLen = 36;
       const projNx = Math.cos(angle) * normLen;
       const projNy = -Math.sin(angle) * normLen * 0.35;
-      ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.moveTo(coilCx, coilCy);
       ctx.lineTo(coilCx + projNx, coilCy + projNy);
       ctx.stroke();
-      ctx.fillStyle = 'rgba(255,255,255,0.55)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = colors.text;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       ctx.fillText('n̂', coilCx + projNx + 4, coilCy + projNy);
+      ctx.restore();
 
       ctx.fillStyle = colors.teal;
       ctx.font = '11px "JetBrains Mono", monospace';
@@ -191,7 +206,7 @@ export default function FaradayLab() {
 
       const yScale = Math.max(peak, 0.01);
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       for (let i = 0; i <= 4; i++) {
         const y = scopeCy - scopeH / 2 + (i * scopeH) / 4;
@@ -211,13 +226,16 @@ export default function FaradayLab() {
 
       const peakY = scopeCy - (scopeH / 2) * (peak / yScale) * 0.9;
       const peakYn = scopeCy + (scopeH / 2) * (peak / yScale) * 0.9;
-      ctx.strokeStyle = 'rgba(255,107,42,0.4)';
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.accent;
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(scopeX, peakY); ctx.lineTo(scopeX + scopeW, peakY);
       ctx.moveTo(scopeX, peakYn); ctx.lineTo(scopeX + scopeW, peakYn);
       ctx.stroke();
+      ctx.restore();
       ctx.setLineDash([]);
 
       if (scope.length > 2) {
@@ -246,10 +264,13 @@ export default function FaradayLab() {
       ctx.textAlign = 'right';
       ctx.fillText(`peak = ${pretty(peak)} V`, scopeX + scopeW, 16);
 
-      ctx.fillStyle = 'rgba(255,59,110,0.95)';
+      ctx.save();
+      ctx.globalAlpha = 0.95;
+      ctx.fillStyle = colors.pink;
       ctx.textAlign = 'right';
       ctx.textBaseline = 'bottom';
       ctx.fillText(`now = ${pretty(phiRef.current.emf)} V`, scopeX + scopeW, h - 16);
+      ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'left';
       ctx.fillText(`${SCOPE_DURATION.toFixed(2)} s window`, scopeX, h - 16);

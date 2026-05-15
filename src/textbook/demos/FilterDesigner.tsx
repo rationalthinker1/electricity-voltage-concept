@@ -265,7 +265,9 @@ export function FilterDesignerDemo({ figure }: Props) {
       ctx.strokeStyle = colors.border;
       ctx.beginPath(); ctx.moveTo(inX0,  inMidY); ctx.lineTo(inX1,  inMidY); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(outX0, outMidY); ctx.lineTo(outX1, outMidY); ctx.stroke();
-      ctx.fillStyle = 'rgba(160,158,149,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'bottom';
@@ -282,16 +284,20 @@ export function FilterDesignerDemo({ figure }: Props) {
       const yDb = (db: number) => by + bh - ((db - dBmin) / (dBmax - dBmin)) * bh;
 
       // Gridlines
+      ctx.restore();
       ctx.strokeStyle = colors.border;
       for (let lf = logMin; lf <= logMax; lf++) {
         const f = Math.pow(10, lf);
         const x = xf(f);
         ctx.beginPath(); ctx.moveTo(x, by); ctx.lineTo(x, by + bh); ctx.stroke();
-        ctx.fillStyle = 'rgba(160,158,149,0.55)';
+        ctx.save();
+        ctx.globalAlpha = 0.55;
+        ctx.fillStyle = colors.textDim;
         ctx.font = '9px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
         ctx.fillText(fmtFreq(f), x, by + bh + 2);
+        ctx.restore();
       }
       for (let db = dBmin; db <= dBmax; db += 20) {
         const y = yDb(db);
@@ -306,10 +312,13 @@ export function FilterDesignerDemo({ figure }: Props) {
 
       // Mark the 60 Hz hum and 1 kHz audio
       const xHum = xf(F_HUM);
-      ctx.strokeStyle = 'rgba(255,59,110,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = colors.pink;
       ctx.setLineDash([3, 3]);
       ctx.beginPath(); ctx.moveTo(xHum, by); ctx.lineTo(xHum, by + bh); ctx.stroke();
       const xAudio = xf(F_AUDIO);
+      ctx.restore();
       ctx.strokeStyle = colors.teal;
       ctx.beginPath(); ctx.moveTo(xAudio, by); ctx.lineTo(xAudio, by + bh); ctx.stroke();
       ctx.setLineDash([]);
@@ -344,9 +353,9 @@ export function FilterDesignerDemo({ figure }: Props) {
       const Hhum = transferMagnitude(topology, F_HUM, R, C, L, f0);
       const yAudio = yDb(Math.max(dBmin, Math.min(dBmax, 20 * Math.log10(Math.max(Hkhz, 1e-9)))));
       const yHum   = yDb(Math.max(dBmin, Math.min(dBmax, 20 * Math.log10(Math.max(Hhum, 1e-9)))));
-      ctx.fillStyle = 'rgba(108,197,194,1)';
+      ctx.fillStyle = colors.teal;
       ctx.beginPath(); ctx.arc(xAudio, yAudio, 3.5, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = 'rgba(255,59,110,1)';
+      ctx.fillStyle = colors.pink;
       ctx.beginPath(); ctx.arc(xHum, yHum, 3.5, 0, Math.PI * 2); ctx.fill();
 
       // Tag advancing time so the scope traces appear "live" if we ever want to

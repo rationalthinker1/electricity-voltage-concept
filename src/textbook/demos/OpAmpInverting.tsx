@@ -65,7 +65,9 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       const y0 = yV(0);
       ctx.beginPath(); ctx.moveTo(plotX, y0); ctx.lineTo(plotX + plotW, y0); ctx.stroke();
       // rails
-      ctx.strokeStyle = 'rgba(255,59,110,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = colors.pink;
       ctx.setLineDash([4, 4]);
       const yPos = yV(V_SUP);
       const yNeg = yV(-V_SUP);
@@ -77,7 +79,10 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       const freq = 2.0;
       const N = 400;
       // V_in (blue)
-      ctx.strokeStyle = 'rgba(91,174,248,0.9)';
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.9;
+      ctx.strokeStyle = colors.blue;
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {
@@ -108,6 +113,7 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       });
 
       // Y axis labels
+      ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
