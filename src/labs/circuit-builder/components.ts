@@ -42,8 +42,8 @@ interface DrawCtx {
 /** Set stroke style based on selected/hovered/current. */
 function strokeForState(ctx: CanvasRenderingContext2D, st: DrawCtx) {
   if (st.selected) ctx.strokeStyle = st.colors.accent;
-  else if (st.hovered) ctx.strokeStyle = st.colors.strokeHi;
-  else ctx.strokeStyle = st.colors.stroke;
+  else if (st.hovered) ctx.strokeStyle = st.colors.text;
+  else ctx.strokeStyle = st.colors.textDim;
   ctx.lineWidth = 1.7;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
@@ -116,7 +116,7 @@ function drawResistor(st: DrawCtx) {
   // Leads
   drawLeads(ctx, p0, p1, bodyHalf);
   // Hidden background body for hit-area visibility
-  drawBody(ctx, p0, p1, BODY_HALF, bodyHalf, st.colors.body);
+  drawBody(ctx, p0, p1, BODY_HALF, bodyHalf, st.colors.surface);
   // Zig-zag
   ctx.beginPath();
   const zigCount = 6;
@@ -164,7 +164,7 @@ function drawBattery(st: DrawCtx) {
   ctx.lineTo(posCx - nx * longHalf, posCy - ny * longHalf);
   ctx.stroke();
   // Label "+" and "−"
-  ctx.fillStyle = colors.stroke;
+  ctx.fillStyle = colors.textDim;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.fillText('−', negCx + nx * (shortHalf + 8), negCy + ny * (shortHalf + 8));
@@ -180,7 +180,7 @@ function drawAC(st: DrawCtx) {
   const cx = (p0.x + p1.x) / 2;
   const cy = (p0.y + p1.y) / 2;
   // Circle
-  ctx.fillStyle = colors.body;
+  ctx.fillStyle = colors.surface;
   ctx.beginPath(); ctx.arc(cx, cy, 12, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   // Sine inside
   ctx.strokeStyle = colors.teal;
@@ -260,7 +260,7 @@ function drawDiode(st: DrawCtx) {
   const tipX = cx + ux * 7, tipY = cy + uy * 7;
   const baseLx = cx - ux * 7 + nx * 8, baseLy = cy - uy * 7 + ny * 8;
   const baseRx = cx - ux * 7 - nx * 8, baseRy = cy - uy * 7 - ny * 8;
-  ctx.fillStyle = colors.body;
+  ctx.fillStyle = colors.surface;
   ctx.beginPath();
   ctx.moveTo(tipX, tipY);
   ctx.lineTo(baseLx, baseLy);
@@ -292,7 +292,7 @@ function drawBulb(st: DrawCtx) {
     ctx.beginPath(); ctx.arc(cx, cy, 30, 0, Math.PI * 2); ctx.fill();
   }
   // Circle.
-  ctx.fillStyle = st.colors.body;
+  ctx.fillStyle = st.colors.surface;
   ctx.beginPath(); ctx.arc(cx, cy, 13, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   // X inside (filament).
   ctx.beginPath();
@@ -316,7 +316,7 @@ function drawSwitch(st: DrawCtx, open: boolean) {
   // Two contact dots.
   const lx = cx - ux * 8, ly = cy - uy * 8;
   const rx = cx + ux * 8, ry = cy + uy * 8;
-  ctx.fillStyle = colors.body;
+  ctx.fillStyle = colors.surface;
   ctx.beginPath(); ctx.arc(lx, ly, 2.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   ctx.beginPath(); ctx.arc(rx, ry, 2.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   // Hinge from lx,ly: either straight to rx,ry (closed) or lifted (open).
@@ -368,7 +368,7 @@ export function drawComponent(c: PlacedComponent, st: DrawCtx) {
     const cy = (st.p0.y + st.p1.y) / 2;
     const dy = Math.abs(st.p1.x - st.p0.x) > Math.abs(st.p1.y - st.p0.y) ? 24 : 0;
     const dx = Math.abs(st.p1.x - st.p0.x) > Math.abs(st.p1.y - st.p0.y) ? 0 : 24;
-    st.ctx.fillStyle = st.colors.muted;
+    st.ctx.fillStyle = st.colors.textMuted;
     st.ctx.font = '10px "JetBrains Mono", monospace';
     st.ctx.textAlign = 'center';
     st.ctx.textBaseline = 'middle';

@@ -584,7 +584,7 @@ function Scope({ data }: ScopeProps) {
     ctx.beginPath();
     ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2); ctx.stroke();
     if (data.length < 2) {
-      ctx.fillStyle = colors.muted;
+      ctx.fillStyle = colors.textMuted;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('— no probe data —', w / 2, h / 2 - 6);
@@ -611,7 +611,7 @@ function Scope({ data }: ScopeProps) {
     }
     ctx.stroke();
     // Y range labels.
-    ctx.fillStyle = colors.stroke;
+    ctx.fillStyle = colors.textDim;
     ctx.font = '9px "JetBrains Mono", monospace';
     ctx.textAlign = 'right';
     ctx.fillText(vMax.toFixed(2) + ' V', w - 4, 10);

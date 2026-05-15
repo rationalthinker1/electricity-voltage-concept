@@ -358,7 +358,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
         const b = { x: wr.to.x * GRID_PX,   y: wr.to.y * GRID_PX };
         const isSelected = p.selectedWireId === wr.id;
         const isHovered = ui.hoverWireId === wr.id;
-        ctx.strokeStyle = isSelected ? colors.accent : isHovered ? colors.strokeHi : colors.stroke;
+        ctx.strokeStyle = isSelected ? colors.accent : isHovered ? colors.text : colors.textDim;
         ctx.lineWidth = isSelected ? 2.6 : 1.8;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
@@ -402,7 +402,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
         pinPoints.add(`${wr.from.x},${wr.from.y}`);
         pinPoints.add(`${wr.to.x},${wr.to.y}`);
       }
-      ctx.fillStyle = colors.stroke;
+      ctx.fillStyle = colors.textDim;
       for (const k of pinPoints) {
         const [gx, gy] = k.split(',').map(Number);
         ctx.beginPath();
@@ -467,7 +467,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
       if (p.armed && p.armed !== 'wire' && p.armed !== 'voltmeter' && p.armed !== 'ammeter' && ui.ghost) {
         const gx = ui.ghost.x * GRID_PX;
         const gy = ui.ghost.y * GRID_PX;
-        ctx.strokeStyle = colors.glow;
+        ctx.strokeStyle = colors.accentGlow;
         ctx.lineWidth = 1.2;
         ctx.setLineDash([3, 3]);
         ctx.beginPath();
