@@ -6,6 +6,7 @@
  * appropriate units.
  */
 
+import clsx from 'clsx';
 import type { PlacedComponent } from './types';
 import { kindDisplayName } from './components';
 
@@ -19,9 +20,9 @@ interface InspectorProps {
 export function Inspector({ selected, onChange, onDelete, onRotate }: InspectorProps) {
   if (!selected) {
     return (
-      <div className="cb-inspector">
-        <div className="cb-inspector-title">Inspector</div>
-        <div className="cb-inspector-empty">
+      <div className="flex flex-col gap-md">
+        <div className="font-3 text-1 text-accent uppercase tracking-[.2em]">Inspector</div>
+        <div className="text-2 text-text-muted leading-[1.5]">
           Click a component on the canvas to edit it.
         </div>
       </div>
@@ -29,22 +30,26 @@ export function Inspector({ selected, onChange, onDelete, onRotate }: InspectorP
   }
 
   return (
-    <div className="cb-inspector">
-      <div className="cb-inspector-title">Inspector</div>
-      <div className="cb-inspector-kind">{kindDisplayName(selected.kind)}</div>
+    <div className="flex flex-col gap-md">
+      <div className="font-3 text-1 text-accent uppercase tracking-[.2em]">Inspector</div>
+      <div className="font-2 italic text-[18px] text-text">{kindDisplayName(selected.kind)}</div>
 
       {valueField(selected, onChange)}
 
-      <div className="cb-inspector-actions">
+      <div className="flex gap-sm mt-sm">
         <button
           type="button"
-          className="cb-inspector-btn"
+          className="flex-1 bg-bg-elevated border border-border text-text-dim font-3 text-[11px] py-[6px] px-[10px] rounded-2 cursor-pointer transition-all duration-fast hover:text-text hover:border-text-dim disabled:opacity-40 disabled:cursor-not-allowed"
           onClick={onRotate}
           disabled={selected.kind === 'ground'}
         >
           Rotate
         </button>
-        <button type="button" className="cb-inspector-btn danger" onClick={onDelete}>
+        <button
+          type="button"
+          className="flex-1 bg-bg-elevated border border-border text-text-dim font-3 text-[11px] py-[6px] px-[10px] rounded-2 cursor-pointer transition-all duration-fast hover:text-pink hover:border-pink disabled:opacity-40 disabled:cursor-not-allowed"
+          onClick={onDelete}
+        >
           Delete
         </button>
       </div>
@@ -104,11 +109,14 @@ function valueField(c: PlacedComponent, onChange: (c: PlacedComponent) => void) 
       );
     case 'switch':
       return (
-        <div className="cb-field">
-          <label className="cb-field-label">State</label>
+        <div className="flex flex-col gap-[6px]">
+          <label className="flex justify-between font-3 text-1 text-text-dim uppercase tracking-[.15em]">State</label>
           <button
             type="button"
-            className={'cb-toggle ' + (c.switchOpen ? 'open' : 'closed')}
+            className={clsx(
+              'bg-bg-elevated border font-3 text-2 p-sm rounded-2 cursor-pointer text-center',
+              c.switchOpen ? 'text-pink border-pink' : 'text-teal border-teal',
+            )}
             onClick={() => onChange({ ...c, switchOpen: !c.switchOpen })}
           >
             {c.switchOpen ? 'Open (off)' : 'Closed (on)'}
@@ -117,13 +125,13 @@ function valueField(c: PlacedComponent, onChange: (c: PlacedComponent) => void) 
       );
     case 'diode':
       return (
-        <div className="cb-field cb-field-static">
+        <div className="flex flex-col gap-[6px] text-[11px] text-text-muted leading-[1.5] py-sm">
           V_F = 0.7 V (piecewise-linear)
         </div>
       );
     case 'ground':
       return (
-        <div className="cb-field cb-field-static">
+        <div className="flex flex-col gap-[6px] text-[11px] text-text-muted leading-[1.5] py-sm">
           Reference node. Every circuit needs at least one.
         </div>
       );
@@ -148,14 +156,14 @@ function NumberField({ label, unit, value, min, max, step, log, onChange }: Numb
   const safeVal = log ? Math.log10(Math.max(1e-12, value)) : value;
 
   return (
-    <div className="cb-field">
-      <label className="cb-field-label">
+    <div className="flex flex-col gap-[6px]">
+      <label className="flex justify-between font-3 text-1 text-text-dim uppercase tracking-[.15em]">
         {label}
-        <span className="cb-field-unit">{unit}</span>
+        <span className="text-text-muted">{unit}</span>
       </label>
       <input
         type="number"
-        className="cb-field-input"
+        className="bg-bg-elevated border border-border text-text font-3 text-3 py-[6px] px-sm rounded-1 w-full box-border focus:outline-none focus:border-accent"
         value={value}
         step={log ? 'any' : step}
         onChange={e => {
@@ -165,7 +173,7 @@ function NumberField({ label, unit, value, min, max, step, log, onChange }: Numb
       />
       <input
         type="range"
-        className="cb-field-slider"
+        className="w-full accent-accent"
         min={safeMin}
         max={safeMax}
         step={log ? (safeMax - safeMin) / 100 : step}

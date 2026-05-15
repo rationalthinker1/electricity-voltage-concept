@@ -5,6 +5,7 @@
  */
 
 import { useState } from 'react';
+import clsx from 'clsx';
 import { kindDisplayName, kindTooltip, type TooltipInfo } from './components';
 import type { ComponentKind } from './types';
 
@@ -31,79 +32,104 @@ export function Palette({ armed, onArm }: PaletteProps) {
   const tip = hoverTip ?? (armed ? kindTooltip(armed === 'wire' || armed === 'voltmeter' || armed === 'ammeter' ? armed : armed as ComponentKind) : kindTooltip('cursor'));
 
   return (
-    <div className="cb-palette">
-      <div className="cb-palette-section">
-        <div className="cb-palette-title">Components</div>
-        <div className="cb-palette-grid">
+    <div className="flex flex-col gap-lg">
+      <div className="flex flex-col gap-sm">
+        <div className="font-3 text-1 text-accent uppercase tracking-[.2em]">Components</div>
+        <div className="grid grid-cols-1 gap-[6px]">
           {KINDS.map(k => (
             <button
               key={k}
               type="button"
-              className={'cb-palette-btn' + (armed === k ? ' active' : '')}
+              className={clsx(
+                'flex items-center gap-[10px] bg-bg-elevated border font-1 text-2 py-sm px-[10px] rounded-2 cursor-pointer text-left transition-all duration-fast',
+                armed === k
+                  ? 'bg-accent-soft border-accent text-text'
+                  : 'border-border text-text-dim hover:bg-bg-card-hover hover:text-text hover:border-text-dim',
+              )}
               onClick={() => onArm(armed === k ? null : k)}
               onMouseEnter={() => handleEnter(k)}
               onMouseLeave={handleLeave}
             >
               <CompIcon kind={k} />
-              <span className="cb-palette-label">{kindDisplayName(k)}</span>
+              <span className="flex-1">{kindDisplayName(k)}</span>
             </button>
           ))}
         </div>
       </div>
 
-      <div className="cb-palette-section">
-        <div className="cb-palette-title">Tools</div>
-        <div className="cb-palette-grid">
+      <div className="flex flex-col gap-sm">
+        <div className="font-3 text-1 text-accent uppercase tracking-[.2em]">Tools</div>
+        <div className="grid grid-cols-1 gap-[6px]">
           <button
             type="button"
-            className={'cb-palette-btn' + (armed === null ? ' active' : '')}
+            className={clsx(
+              'flex items-center gap-[10px] bg-bg-elevated border font-1 text-2 py-sm px-[10px] rounded-2 cursor-pointer text-left transition-all duration-fast',
+              armed === null
+                ? 'bg-accent-soft border-accent text-text'
+                : 'border-border text-text-dim hover:bg-bg-card-hover hover:text-text hover:border-text-dim',
+            )}
             onClick={() => onArm(null)}
             onMouseEnter={() => handleEnter('cursor')}
             onMouseLeave={handleLeave}
           >
             <ToolIcon kind="cursor" />
-            <span className="cb-palette-label">Select</span>
+            <span className="flex-1">Select</span>
           </button>
           <button
             type="button"
-            className={'cb-palette-btn' + (armed === 'wire' ? ' active' : '')}
+            className={clsx(
+              'flex items-center gap-[10px] bg-bg-elevated border font-1 text-2 py-sm px-[10px] rounded-2 cursor-pointer text-left transition-all duration-fast',
+              armed === 'wire'
+                ? 'bg-accent-soft border-accent text-text'
+                : 'border-border text-text-dim hover:bg-bg-card-hover hover:text-text hover:border-text-dim',
+            )}
             onClick={() => onArm(armed === 'wire' ? null : 'wire')}
             onMouseEnter={() => handleEnter('wire')}
             onMouseLeave={handleLeave}
           >
             <ToolIcon kind="wire" />
-            <span className="cb-palette-label">Wire</span>
+            <span className="flex-1">Wire</span>
           </button>
           <button
             type="button"
-            className={'cb-palette-btn' + (armed === 'voltmeter' ? ' active' : '')}
+            className={clsx(
+              'flex items-center gap-[10px] bg-bg-elevated border font-1 text-2 py-sm px-[10px] rounded-2 cursor-pointer text-left transition-all duration-fast',
+              armed === 'voltmeter'
+                ? 'bg-accent-soft border-accent text-text'
+                : 'border-border text-text-dim hover:bg-bg-card-hover hover:text-text hover:border-text-dim',
+            )}
             onClick={() => onArm(armed === 'voltmeter' ? null : 'voltmeter')}
             onMouseEnter={() => handleEnter('voltmeter')}
             onMouseLeave={handleLeave}
           >
             <ToolIcon kind="voltmeter" />
-            <span className="cb-palette-label">Voltmeter</span>
+            <span className="flex-1">Voltmeter</span>
           </button>
           <button
             type="button"
-            className={'cb-palette-btn' + (armed === 'ammeter' ? ' active' : '')}
+            className={clsx(
+              'flex items-center gap-[10px] bg-bg-elevated border font-1 text-2 py-sm px-[10px] rounded-2 cursor-pointer text-left transition-all duration-fast',
+              armed === 'ammeter'
+                ? 'bg-accent-soft border-accent text-text'
+                : 'border-border text-text-dim hover:bg-bg-card-hover hover:text-text hover:border-text-dim',
+            )}
             onClick={() => onArm(armed === 'ammeter' ? null : 'ammeter')}
             onMouseEnter={() => handleEnter('ammeter')}
             onMouseLeave={handleLeave}
           >
             <ToolIcon kind="ammeter" />
-            <span className="cb-palette-label">Ammeter</span>
+            <span className="flex-1">Ammeter</span>
           </button>
         </div>
       </div>
 
-      <div className="cb-palette-info">
-        <div className="cb-palette-info-title">{tip.title}</div>
-        <div className="cb-palette-info-desc">{tip.description}</div>
+      <div className="flex flex-col gap-[6px] pt-[10px] border-t border-border min-h-[110px]">
+        <div className="font-3 text-[11px] text-accent font-medium">{tip.title}</div>
+        <div className="text-[11px] text-text-dim leading-[1.45]">{tip.description}</div>
         {tip.formula !== '—' && (
-          <div className="cb-palette-info-formula">{tip.formula}</div>
+          <div className="font-4 italic text-3 text-text leading-1 py-xs px-sm bg-bg-elevated rounded-2 border border-border">{tip.formula}</div>
         )}
-        <div className="cb-palette-info-behavior">{tip.behavior}</div>
+        <div className="text-1 text-text-muted leading-[1.45] italic">{tip.behavior}</div>
       </div>
     </div>
   );
