@@ -25,7 +25,7 @@ export function BadgeShelf() {
       <div className="font-3 text-[12px] text-color-5 tracking-[.04em] [&_strong]:text-color-4 [&_strong]:font-medium">
         <strong>{earnedCount}</strong> of <strong>{BADGES.length}</strong> earned
       </div>
-      <ul className="list-none m-0 p-0 grid grid-cols-4 gap-[12px] max-[720px]:grid-cols-2">
+      <ul className="grid-list grid-cols-4 gap-[12px] max-[720px]:grid-cols-2">
         {items.map(({ b, earned }) => (
           <BadgeTile key={b.id} badge={b} earned={earned} />
         ))}

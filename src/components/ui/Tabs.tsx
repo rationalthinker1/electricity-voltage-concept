@@ -114,7 +114,7 @@ export function Tab({ id, children, disabled }: TabProps) {
       onClick={() => ctx.setActive(id)}
       onKeyDown={onKeyDown}
       className={clsx(
-        'appearance-none bg-transparent border-0 text-color-5 font-3 text-[12px] tracking-[.07em] uppercase py-[10px] px-[14px] cursor-pointer border-b-2 border-transparent -mb-px transition-colors duration-[120ms] ease-in-out hover:not-disabled:text-color-4 disabled:opacity-45 disabled:cursor-not-allowed',
+        'appearance-none bg-transparent border-0 eyebrow-dim text-[12px] tracking-[.07em] py-[10px] px-[14px] cursor-pointer border-b-2 border-transparent -mb-px transition-colors duration-[120ms] ease-in-out hover:not-disabled:text-color-4 disabled:opacity-45 disabled:cursor-not-allowed',
         selected && 'text-accent border-b-accent',
       )}
     >

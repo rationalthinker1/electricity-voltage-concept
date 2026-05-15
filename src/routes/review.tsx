@@ -125,7 +125,7 @@ function ReviewPage() {
       {due.length > 0 ? (
         <section className="mt-[32px]">
           <h2 className="font-2 font-normal text-[22px] mb-[14px] text-color-4">Due now</h2>
-          <ul className="list-none m-0 p-0 grid gap-[12px] grid-cols-2 max-[720px]:grid-cols-1">
+          <ul className="grid-list gap-[12px] grid-cols-2 max-[720px]:grid-cols-1">
             {due.map((r) => (
               <ReviewCard key={r.slug} review={r} now={now} />
             ))}
@@ -136,7 +136,7 @@ function ReviewPage() {
       {upcoming.length > 0 ? (
         <section className="mt-[32px]">
           <h2 className="font-2 font-normal text-[22px] mb-[14px] text-color-4">Upcoming reviews</h2>
-          <ul className="list-none m-0 p-0 grid gap-[12px]">
+          <ul className="grid-list gap-[12px]">
             {upcoming.map((r) => (
               <UpcomingRow key={r.slug} review={r} now={now} />
             ))}
@@ -194,7 +194,7 @@ function UpcomingRow({ review, now }: { review: ReviewSchedule; now: number }) {
   if (!chapter) return null;
   return (
     <li className="grid items-center gap-[12px] py-[10px] px-[14px] bg-bg-card border border-border-1 rounded-5 grid-cols-[60px_1fr_auto_auto] max-[540px]:grid-cols-[60px_1fr] max-[540px]:gap-y-[4px]">
-      <span className="font-3 text-[11px] text-accent tracking-[.06em] uppercase">Ch.{chapter.number}</span>
+      <span className="eyebrow-accent text-[11px] tracking-[.06em]">Ch.{chapter.number}</span>
       <Link
         to="/textbook/$chapterSlug"
         params={{ chapterSlug: chapter.slug }}

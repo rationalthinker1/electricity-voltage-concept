@@ -87,9 +87,9 @@ function CapstonePage() {
   })();
 
   return (
-    <article className="pt-[130px] pb-[80px] px-[40px] max-w-[920px] mx-auto max-[760px]:pt-[120px] max-[760px]:pb-[60px] max-[760px]:px-[18px]">
+    <article className="page-shell pt-[130px] max-w-[920px]">
       <header className="mb-[48px]">
-        <div className="font-3 text-[11px] text-accent uppercase tracking-[.18em] mb-[14px]">Capstone {capstone.number} · Integration project</div>
+        <div className="eyebrow-accent text-[11px] tracking-[.18em] mb-[14px]">Capstone {capstone.number} · Integration project</div>
         <h1 className="title-display font-light text-[48px] leading-[1.08] tracking-[-.02em] mb-[8px] max-[760px]:text-[34px]">{capstone.title}</h1>
         <p className="title-display text-[20px] text-color-5 mb-[20px]"><em>{capstone.subtitle}</em></p>
 

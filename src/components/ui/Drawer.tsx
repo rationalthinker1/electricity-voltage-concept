@@ -66,7 +66,7 @@ export function Drawer({
       >
         <header className="flex items-center justify-between py-[14px] px-[18px] border-b border-border-1 shrink-0">
           <div className="font-2 italic text-[19px] text-color-4">{title}</div>
-          <button type="button" className="appearance-none bg-transparent border-0 text-color-5 text-[24px] leading-none cursor-pointer py-0 px-[6px] hover:text-color-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_var(--accent-soft)]" onClick={onClose} aria-label="Close drawer">×</button>
+          <button type="button" className="icon-btn border-0 text-[24px] py-0 px-[6px]" onClick={onClose} aria-label="Close drawer">×</button>
         </header>
         <div className="p-[18px] overflow-auto flex-1">{children}</div>
       </div>

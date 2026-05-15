@@ -37,7 +37,7 @@ export function Card({
       )}
     >
       {header !== undefined && (
-        <header className="py-[14px] px-[18px] border-b border-border-1 font-3 text-[12px] tracking-[.08em] uppercase text-color-5">
+        <header className="py-[14px] px-[18px] border-b border-border-1 eyebrow-dim text-[12px] tracking-[.08em]">
           {header}
         </header>
       )}

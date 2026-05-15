@@ -200,7 +200,7 @@ function MapPage() {
         <div className="eyebrow-muted tracking-[.18em] mb-[12px]">
           Field · Theory · Course map
         </div>
-        <h1 className="title-display font-light text-[52px] leading-[1.05] tracking-[-.02em] mb-[14px] max-[700px]:text-[36px] [&_em]:italic [&_em]:text-accent [&_em]:font-normal">
+        <h1 className="hero-display max-[700px]:text-[36px]">
           The chapter <em>graph</em>.
         </h1>
         <p className="body-copy max-w-[640px] max-[700px]:text-[15px]">
@@ -318,8 +318,8 @@ function MapPage() {
       </div>
 
       <div className="flex justify-between items-center mt-[28px] pt-[20px] border-t border-border-1">
-        <Link to="/" className="eyebrow-muted text-[12px] no-underline hover:text-accent">← Back to contents</Link>
-        <Link to="/tracks" className="eyebrow-muted text-[12px] no-underline hover:text-accent">Tracks →</Link>
+        <Link to="/" className="eyebrow-muted-link">← Back to contents</Link>
+        <Link to="/tracks" className="eyebrow-muted-link">Tracks →</Link>
       </div>
     </section>
   );

@@ -228,7 +228,7 @@ function QuestionCard({
         status === 'wrong' && '!border-[rgba(255,59,110,.45)]',
       )}
       header={
-        <div className="flex items-center justify-between gap-md font-3 text-[12px] uppercase tracking-[.06em] text-color-5">
+        <div className="flex items-center justify-between gap-md eyebrow-dim text-[12px] tracking-[.06em]">
           <span className="text-color-5">Question {index + 1}</span>
           {graded && (
             <span
@@ -259,7 +259,7 @@ function QuestionCard({
         <div className="mt-[14px] pt-[14px] border-t border-dashed border-border flex flex-col gap-sm">
           {!graded.isCorrect && graded.correctDisplay && (
             <div className="font-1 text-[14px] text-color-4">
-              <span className="font-3 text-[11px] uppercase tracking-[.06em] text-color-5 mr-xs">Correct answer:</span>{' '}
+              <span className="eyebrow-dim text-[11px] tracking-[.06em] mr-xs">Correct answer:</span>{' '}
               <span className="text-teal">{graded.correctDisplay}</span>
             </div>
           )}

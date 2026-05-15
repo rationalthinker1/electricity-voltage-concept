@@ -200,8 +200,8 @@ function TracksPage() {
       </div>
 
       <div className="flex justify-between mt-[36px] pt-[20px] border-t border-border">
-        <Link to="/map" className="eyebrow-muted text-[12px] no-underline hover:text-accent">← Course map</Link>
-        <Link to="/me" className="eyebrow-muted text-[12px] no-underline hover:text-accent">Your progress →</Link>
+        <Link to="/map" className="eyebrow-muted-link">← Course map</Link>
+        <Link to="/me" className="eyebrow-muted-link">Your progress →</Link>
       </div>
     </section>
   );

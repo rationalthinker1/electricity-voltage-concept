@@ -90,7 +90,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
                 <span className="eyebrow-muted tracking-[.18em]">All chapters</span>
                 <span className="font-3 text-[11px] text-text-muted tracking-[.05em] tabular-nums">{CHAPTERS.length} total</span>
               </div>
-              <ul className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-x-xl gap-y-[2px] list-none m-0 p-0">
+              <ul className="grid-list grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-x-xl gap-y-[2px]">
                 {CHAPTERS.map(c => (
                   <li key={c.slug} className="m-0 p-0">
                     <Link

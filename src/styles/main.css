@@ -224,6 +224,55 @@ body::before {
     @apply bg-color-3 border border-border-1 rounded-5;
   }
 
+  /* Eyebrow text — same shape as .eyebrow-muted but on the dim text
+     colour (text-color-5). Size and tracking vary by usage so they
+     stay inline at the call site. */
+  .eyebrow-dim {
+    @apply font-3 uppercase text-color-5;
+  }
+  /* Eyebrow text — brand-accent variant. Pair with text-[…] /
+     tracking-[…] / mb-[…] at the call site. */
+  .eyebrow-accent {
+    @apply font-3 uppercase text-accent;
+  }
+  /* Footer/inline link styled as an eyebrow that turns accent on
+     hover. Same shape as .eyebrow-muted at 12px. Repeats across
+     capstones, map, and tracks. */
+  .eyebrow-muted-link {
+    @apply font-3 text-[12px] tracking-[.12em] uppercase text-text-muted
+           no-underline hover:text-accent;
+  }
+  /* Stripped <ul>/<ol> rendered as a CSS grid. Consumers add
+     grid-cols and gap utilities. */
+  .grid-list {
+    @apply grid list-none m-0 p-0;
+  }
+  /* Bare icon-shaped button — close / dismiss / disclosure. Includes
+     the focus-visible accent ring shared across the UI kit; border,
+     padding, and size stay on the call site. */
+  .icon-btn {
+    @apply appearance-none bg-transparent cursor-pointer leading-none text-color-5
+           hover:text-color-4
+           focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent
+           focus-visible:outline-offset-2
+           focus-visible:shadow-[0_0_0_4px_var(--accent-soft)];
+  }
+  /* Page-shell padding — every top-level route that opens with a hero
+     uses this 40/80 desktop and 18/60 mobile rhythm. Top padding and
+     max-w vary so they stay inline. */
+  .page-shell {
+    @apply mx-auto pb-[80px] px-[40px]
+           max-[760px]:pt-[120px] max-[760px]:pb-[60px] max-[760px]:px-[18px];
+  }
+  /* Hero display title — Fraunces 52px with em accent. Same shape as
+     .title-display but at the route-level "<title>." headers. Pair
+     with a max-[…]:text-[…] responsive shrink. */
+  .hero-display {
+    @apply font-2 italic font-light text-color-4 text-[52px] leading-[1.05] tracking-[-.02em]
+           mt-0 mx-0 mb-[14px]
+           [&_em]:italic [&_em]:text-accent [&_em]:font-normal;
+  }
+
   /* Chapter narrative — the long-form prose block inside ChapterShell.
      Sets the column, drop-cap on the first paragraph, h2 / h3 styling,
      pullout quote, inline math, kbd, and citation pill. Used in exactly

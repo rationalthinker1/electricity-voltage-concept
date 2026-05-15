@@ -35,7 +35,7 @@ export function Banner({
       {onDismiss && (
         <button
           type="button"
-          className="appearance-none bg-transparent border-0 text-color-5 text-[20px] leading-none cursor-pointer py-0 px-[4px] self-start hover:text-color-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_var(--accent-soft)]"
+          className="icon-btn border-0 text-[20px] py-0 px-[4px] self-start"
           onClick={onDismiss}
           aria-label="Dismiss"
         >

@@ -175,10 +175,10 @@ function MePage() {
   const isEmpty = stats.opened === 0;
 
   return (
-    <section className="pt-[140px] pb-[80px] px-[40px] max-w-[1100px] mx-auto max-[760px]:pt-[120px] max-[760px]:pb-[60px] max-[760px]:px-[18px]">
+    <section className="page-shell pt-[140px] max-w-[1100px]">
       <header className="mb-[28px]">
         <div className="eyebrow-muted tracking-[.18em] mb-md">Field · Theory · Your transcript</div>
-        <h1 className="title-display font-light text-[52px] leading-[1.05] tracking-[-.02em] mb-[14px] max-[760px]:text-[36px] [&_em]:italic [&_em]:text-accent [&_em]:font-normal">Where you are in the <em>book</em>.</h1>
+        <h1 className="hero-display max-[760px]:text-[36px]">Where you are in the <em>book</em>.</h1>
         <p className="body-copy text-[15px] max-w-[640px]">
           All progress data lives only in this browser. Open another browser or
           clear site data and you start fresh.
@@ -239,7 +239,7 @@ function MePage() {
           <h2 className={`${SECTION_TITLE} mb-0`}>Reviews due</h2>
           <Link
             to="/review"
-            className="font-3 text-[11px] tracking-[.08em] uppercase text-accent no-underline border-b border-solid border-transparent hover:border-accent"
+            className="eyebrow-accent text-[11px] tracking-[.08em] no-underline border-b border-solid border-transparent hover:border-accent"
           >
             See all reviews
           </Link>
@@ -253,7 +253,7 @@ function MePage() {
             Nothing due right now — {reviewPreview.totalScheduled} review{reviewPreview.totalScheduled === 1 ? '' : 's'} scheduled later.
           </p>
         ) : (
-          <ul className="list-none m-0 p-0 grid gap-[6px]">
+          <ul className="grid-list gap-[6px]">
             {reviewPreview.list.map((r) => {
               const ch = CHAPTERS.find(c => c.slug === r.slug);
               if (!ch) return null;

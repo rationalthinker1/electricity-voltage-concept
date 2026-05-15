@@ -32,11 +32,11 @@ export function Sidebar({
     >
       {(title !== undefined || collapsible) && (
         <header className="flex items-center justify-between gap-sm py-[12px] px-[14px] border-b border-border-1">
-          {title !== undefined && <div className="font-3 text-[11px] tracking-[.1em] uppercase text-color-5">{title}</div>}
+          {title !== undefined && <div className="eyebrow-dim text-[11px] tracking-[.1em]">{title}</div>}
           {collapsible && (
             <button
               type="button"
-              className="appearance-none bg-transparent border border-border-1 rounded-3 text-color-5 cursor-pointer w-[22px] h-[22px] text-[14px] leading-none p-0 hover:text-color-4 hover:border-border-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_var(--accent-soft)]"
+              className="icon-btn border border-border-1 rounded-3 w-[22px] h-[22px] text-[14px] p-0 hover:border-border-2"
               onClick={() => setCollapsed(c => !c)}
               aria-expanded={!collapsed}
               aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
