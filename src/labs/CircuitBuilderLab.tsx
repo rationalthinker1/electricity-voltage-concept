@@ -335,29 +335,34 @@ export default function CircuitBuilderLab() {
   /* ── Render ── */
 
   const labContent = (
-    <div className="cb-shell">
-      <div className="cb-toolbar">
-        <div className="cb-toolbar-group">
-          <span className="cb-toolbar-label">Presets:</span>
+    <div className="flex flex-col gap-lg mt-md">
+      <div className="flex justify-between items-center gap-lg flex-wrap pb-md border-b border-border">
+        <div className="flex items-center gap-sm flex-wrap">
+          <span className="font-3 text-1 text-text-muted uppercase tracking-[.2em] mr-xs">Presets:</span>
           {PRESETS.map(p => (
             <button
               key={p.id}
               type="button"
-              className="cb-preset-btn"
+              className="bg-bg-card text-text-dim border border-border font-3 text-2 py-[6px] px-md rounded-2 cursor-pointer transition-all duration-fast hover:text-text hover:border-text-dim hover:bg-bg-card-hover"
               onClick={() => loadPreset(p.id)}
               title={p.description}
             >{p.name}</button>
           ))}
         </div>
-        <div className="cb-toolbar-group">
+        <div className="flex items-center gap-sm flex-wrap">
           <button
             type="button"
-            className={'cb-toolbar-btn ' + (running ? 'on' : 'off')}
+            className={
+              'border font-3 text-2 py-[6px] px-md rounded-2 cursor-pointer transition-all duration-fast bg-bg-card hover:bg-bg-card-hover ' +
+              (running
+                ? 'text-accent border-accent hover:text-accent hover:border-accent'
+                : 'text-teal border-teal hover:text-teal hover:border-teal')
+            }
             onClick={() => setRunning(r => !r)}
           >{running ? 'Pause' : 'Run'}</button>
           <button
             type="button"
-            className="cb-toolbar-btn"
+            className="bg-bg-card text-text-dim border border-border font-3 text-2 py-[6px] px-md rounded-2 cursor-pointer transition-all duration-fast hover:text-text hover:border-text-dim hover:bg-bg-card-hover"
             onClick={() => {
               resetContext(ctxRef.current);
               setScopeData([]);
@@ -365,18 +370,18 @@ export default function CircuitBuilderLab() {
           >Reset sim</button>
           <button
             type="button"
-            className="cb-toolbar-btn danger"
+            className="bg-bg-card text-text-muted border border-border font-3 text-2 py-[6px] px-md rounded-2 cursor-pointer transition-all duration-fast hover:text-pink hover:border-pink hover:bg-bg-card-hover"
             onClick={clearAll}
           >Clear</button>
         </div>
       </div>
 
-      <div className="cb-body">
-        <aside className="cb-left">
+      <div className="grid grid-cols-[220px_1fr_260px] gap-[20px] items-start max-xl:grid-cols-1">
+        <aside className="bg-bg-card border border-border rounded-3 p-lg">
           <Palette armed={armed} onArm={setArmed} />
         </aside>
 
-        <main className="cb-main">
+        <main className="flex flex-col gap-lg">
           <CanvasEditor
             components={doc.components}
             wires={doc.wires}
@@ -396,58 +401,58 @@ export default function CircuitBuilderLab() {
             nodeMap={nodeMap}
           />
 
-          <div className="cb-bottom">
-            <div className="cb-bottom-row">
-              <div className="cb-bottom-group">
-                <div className="cb-bottom-title">Probes</div>
+          <div className="bg-bg-card border border-border rounded-3 p-lg">
+            <div className="flex gap-xl flex-wrap">
+              <div className="flex-1 min-w-[220px]">
+                <div className="font-3 text-1 text-accent uppercase tracking-[.2em] mb-sm">Probes</div>
                 {readouts.length === 0 && (
-                  <div className="cb-bottom-empty">
+                  <div className="text-2 text-text-muted leading-[1.5]">
                     Drop a Voltmeter on a node or an Ammeter on a component to read it here.
                   </div>
                 )}
                 {readouts.map(r => (
-                  <div key={r.id} className="cb-readout-row">
-                    <span className="cb-readout-label">{r.label}</span>
-                    <span className="cb-readout-value">{r.value}</span>
+                  <div key={r.id} className="flex justify-between gap-md py-[5px] border-b border-dashed border-border text-3 last:border-b-0">
+                    <span className="text-text-dim font-1">{r.label}</span>
+                    <span className="text-text font-3 font-medium">{r.value}</span>
                   </div>
                 ))}
               </div>
-              <div className="cb-bottom-group">
-                <div className="cb-bottom-title">Status</div>
-                <div className="cb-readout-row">
-                  <span className="cb-readout-label">Components / wires</span>
-                  <span className="cb-readout-value">{summary.components} / {summary.wires}</span>
+              <div className="flex-1 min-w-[220px]">
+                <div className="font-3 text-1 text-accent uppercase tracking-[.2em] mb-sm">Status</div>
+                <div className="flex justify-between gap-md py-[5px] border-b border-dashed border-border text-3 last:border-b-0">
+                  <span className="text-text-dim font-1">Components / wires</span>
+                  <span className="text-text font-3 font-medium">{summary.components} / {summary.wires}</span>
                 </div>
-                <div className="cb-readout-row">
-                  <span className="cb-readout-label">Nodes</span>
-                  <span className="cb-readout-value">{summary.nodes}</span>
+                <div className="flex justify-between gap-md py-[5px] border-b border-dashed border-border text-3 last:border-b-0">
+                  <span className="text-text-dim font-1">Nodes</span>
+                  <span className="text-text font-3 font-medium">{summary.nodes}</span>
                 </div>
-                <div className="cb-readout-row">
-                  <span className="cb-readout-label">Ground</span>
-                  <span className="cb-readout-value" style={{ color: summary.hasGround ? 'var(--teal)' : 'var(--pink)' }}>
+                <div className="flex justify-between gap-md py-[5px] border-b border-dashed border-border text-3 last:border-b-0">
+                  <span className="text-text-dim font-1">Ground</span>
+                  <span className="text-text font-3 font-medium" style={{ color: summary.hasGround ? 'var(--teal)' : 'var(--pink)' }}>
                     {summary.hasGround ? 'present' : 'missing'}
                   </span>
                 </div>
-                <div className="cb-readout-row">
-                  <span className="cb-readout-label">Sim time</span>
-                  <span className="cb-readout-value">{eng(summary.t, 3)}s</span>
+                <div className="flex justify-between gap-md py-[5px] border-b border-dashed border-border text-3 last:border-b-0">
+                  <span className="text-text-dim font-1">Sim time</span>
+                  <span className="text-text font-3 font-medium">{eng(summary.t, 3)}s</span>
                 </div>
-                <div className="cb-readout-row">
-                  <span className="cb-readout-label">Solver</span>
-                  <span className="cb-readout-value" style={{ color: summary.ok ? 'var(--teal)' : 'var(--pink)' }}>
+                <div className="flex justify-between gap-md py-[5px] border-b border-dashed border-border text-3 last:border-b-0">
+                  <span className="text-text-dim font-1">Solver</span>
+                  <span className="text-text font-3 font-medium" style={{ color: summary.ok ? 'var(--teal)' : 'var(--pink)' }}>
                     {summary.ok ? 'OK' : 'singular'}
                   </span>
                 </div>
               </div>
-              <div className="cb-bottom-group" style={{ flex: 2 }}>
-                <div className="cb-bottom-title">Scope (first voltmeter)</div>
+              <div className="flex-[2] min-w-[220px]">
+                <div className="font-3 text-1 text-accent uppercase tracking-[.2em] mb-sm">Scope (first voltmeter)</div>
                 <Scope data={scopeData} />
               </div>
             </div>
           </div>
         </main>
 
-        <aside className="cb-right">
+        <aside className="bg-bg-card border border-border rounded-3 p-lg">
           <Inspector
             selected={selected}
             onChange={updateSelected}
@@ -622,35 +627,35 @@ function Scope({ data }: ScopeProps) {
 function PresetInfo({ preset }: { preset: CircuitPreset | null }) {
   if (!preset) return null;
   return (
-    <div className="cb-preset-info">
-      <div className="cb-preset-info-topic">{preset.topic}</div>
-      <div className="cb-preset-info-name">{preset.name}</div>
-      <div className="cb-preset-info-goal">
+    <div className="mt-lg pt-lg border-t border-border flex flex-col gap-[14px] max-h-[520px] overflow-y-auto">
+      <div className="font-3 text-[9px] text-accent uppercase tracking-[.25em]">{preset.topic}</div>
+      <div className="font-2 italic text-[18px] text-text leading-2">{preset.name}</div>
+      <div className="text-3 text-text-dim leading-[1.5] py-sm px-[10px] bg-bg-elevated rounded-2 border border-border">
         <strong>Goal:</strong> {preset.goal}
       </div>
-      <div className="cb-preset-info-section">
-        <div className="cb-preset-info-section-title">Theory</div>
+      <div className="flex flex-col gap-sm">
+        <div className="font-3 text-1 text-teal uppercase tracking-[.15em]">Theory</div>
         {preset.theory.split('\n\n').map((para, i) => (
-          <p key={i} className="cb-preset-info-para">{para}</p>
+          <p key={i} className="text-3 text-text-dim leading-[1.55] m-0">{para}</p>
         ))}
       </div>
-      <div className="cb-preset-info-section">
-        <div className="cb-preset-info-section-title">Formulas</div>
+      <div className="flex flex-col gap-sm">
+        <div className="font-3 text-1 text-teal uppercase tracking-[.15em]">Formulas</div>
         {preset.formulas.map((f, i) => (
-          <div key={i} className="cb-preset-info-formula">{f}</div>
+          <div key={i} className="font-4 italic text-4 text-text leading-[1.5] py-[6px] px-[10px] bg-bg-elevated rounded-2 border border-border">{f}</div>
         ))}
       </div>
-      <div className="cb-preset-info-section">
-        <div className="cb-preset-info-section-title">Calculation</div>
-        <ol className="cb-preset-info-list">
+      <div className="flex flex-col gap-sm">
+        <div className="font-3 text-1 text-teal uppercase tracking-[.15em]">Calculation</div>
+        <ol className="m-0 pl-[18px] text-2 text-text-dim leading-[1.55] [&>li]:mb-[5px] [&>li::marker]:text-accent">
           {preset.steps.map((s, i) => (
             <li key={i}>{s}</li>
           ))}
         </ol>
       </div>
-      <div className="cb-preset-info-section">
-        <div className="cb-preset-info-section-title">Try It</div>
-        <ul className="cb-preset-info-list">
+      <div className="flex flex-col gap-sm">
+        <div className="font-3 text-1 text-teal uppercase tracking-[.15em]">Try It</div>
+        <ul className="m-0 pl-[18px] text-2 text-text-dim leading-[1.55] [&>li]:mb-[5px] [&>li::marker]:text-accent">
           {preset.hints.map((h, i) => (
             <li key={i}>{h}</li>
           ))}
@@ -660,95 +665,11 @@ function PresetInfo({ preset }: { preset: CircuitPreset | null }) {
   );
 }
 
-/* ───────────────────────── Inline CSS ───────────────────────── */
+/* ───────────────────────── Inline CSS (Palette + Inspector children only) ───────────────────────── */
 
+// These rules style classes referenced by ./circuit-builder/Palette.tsx and
+// ./circuit-builder/Inspector.tsx, which we are not modifying in this pass.
 const CSS = `
-.cb-shell {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 12px;
-}
-
-.cb-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-.cb-toolbar-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.cb-toolbar-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  margin-right: 4px;
-}
-.cb-preset-btn, .cb-toolbar-btn {
-  background: var(--bg-card);
-  color: var(--text-dim);
-  border: 1px solid var(--border);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  padding: 6px 12px;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all .15s ease;
-}
-.cb-preset-btn:hover, .cb-toolbar-btn:hover {
-  color: var(--text);
-  border-color: var(--text-dim);
-  background: var(--bg-card-hover);
-}
-.cb-toolbar-btn.on {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-.cb-toolbar-btn.off {
-  color: var(--teal);
-  border-color: var(--teal);
-}
-.cb-toolbar-btn.danger {
-  color: var(--text-muted);
-}
-.cb-toolbar-btn.danger:hover {
-  color: var(--pink);
-  border-color: var(--pink);
-}
-
-.cb-body {
-  display: grid;
-  grid-template-columns: 220px 1fr 260px;
-  gap: 20px;
-  align-items: start;
-}
-@media (max-width: 1100px) {
-  .cb-body {
-    grid-template-columns: 1fr;
-  }
-}
-
-.cb-left, .cb-right {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 16px;
-}
-.cb-main {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
 /* Palette */
 .cb-palette {
   display: flex;
@@ -946,131 +867,4 @@ const CSS = `
 }
 .cb-toggle.open { color: var(--pink); border-color: var(--pink); }
 .cb-toggle.closed { color: var(--teal); border-color: var(--teal); }
-
-/* Bottom panel */
-.cb-bottom {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 16px;
-}
-.cb-bottom-row {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-.cb-bottom-group {
-  flex: 1;
-  min-width: 220px;
-}
-.cb-bottom-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  margin-bottom: 8px;
-}
-.cb-bottom-empty {
-  font-size: 11px;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-.cb-readout-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 5px 0;
-  border-bottom: 1px dashed var(--border);
-  font-size: 12px;
-}
-.cb-readout-row:last-child {
-  border-bottom: none;
-}
-.cb-readout-label {
-  color: var(--text-dim);
-  font-family: 'DM Sans', sans-serif;
-}
-.cb-readout-value {
-  color: var(--text);
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 500;
-}
-
-/* Preset info panel */
-.cb-preset-info {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  max-height: 520px;
-  overflow-y: auto;
-}
-.cb-preset-info-topic {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .25em;
-}
-.cb-preset-info-name {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-size: 18px;
-  color: var(--text);
-  line-height: 1.2;
-}
-.cb-preset-info-goal {
-  font-size: 12px;
-  color: var(--text-dim);
-  line-height: 1.5;
-  padding: 8px 10px;
-  background: var(--bg-elevated);
-  border-radius: 3px;
-  border: 1px solid var(--border);
-}
-.cb-preset-info-section {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.cb-preset-info-section-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--teal);
-  text-transform: uppercase;
-  letter-spacing: .15em;
-}
-.cb-preset-info-para {
-  font-size: 12px;
-  color: var(--text-dim);
-  line-height: 1.55;
-  margin: 0;
-}
-.cb-preset-info-formula {
-  font-family: 'STIX Two Text', serif;
-  font-style: italic;
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.5;
-  padding: 6px 10px;
-  background: var(--bg-elevated);
-  border-radius: 3px;
-  border: 1px solid var(--border);
-}
-.cb-preset-info-list {
-  margin: 0;
-  padding-left: 18px;
-  font-size: 11px;
-  color: var(--text-dim);
-  line-height: 1.55;
-}
-.cb-preset-info-list li {
-  margin-bottom: 5px;
-}
-.cb-preset-info-list li::marker {
-  color: var(--accent);
-}
 `;

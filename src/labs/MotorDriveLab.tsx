@@ -254,39 +254,44 @@ export default function MotorDriveLab() {
   /* ── Render ── */
 
   const labContent = (
-    <div className="md-shell">
-      <div className="md-toolbar">
-        <div className="md-toolbar-group">
-          <span className="md-toolbar-label">Presets:</span>
+    <div className="flex flex-col gap-lg mt-md">
+      <div className="flex justify-between items-center gap-lg flex-wrap pb-md border-b border-border">
+        <div className="flex items-center gap-sm flex-wrap">
+          <span className="font-3 text-1 text-text-muted uppercase tracking-[0.2em] mr-xs">Presets:</span>
           {PRESETS.map(p => (
             <button
               key={p.id}
               type="button"
-              className="md-preset-btn"
+              className="bg-bg-card text-text-dim border border-border font-3 text-2 px-md py-[6px] rounded-[3px] cursor-pointer transition-all duration-fast hover:text-text hover:border-text-dim hover:bg-bg-card-hover"
               onClick={() => loadPreset(p.id)}
               title={p.description}
             >{p.name}</button>
           ))}
         </div>
-        <div className="md-toolbar-group">
+        <div className="flex items-center gap-sm flex-wrap">
           <button
             type="button"
-            className={'md-toolbar-btn ' + (running ? 'on' : 'off')}
+            className={
+              "bg-bg-card border font-3 text-2 px-md py-[6px] rounded-[3px] cursor-pointer transition-all duration-fast hover:bg-bg-card-hover "
+              + (running
+                ? "text-accent border-accent hover:text-text hover:border-text-dim"
+                : "text-teal border-teal hover:text-text hover:border-text-dim")
+            }
             onClick={() => setRunning(r => !r)}
           >{running ? 'Pause' : 'Run'}</button>
           <button
             type="button"
-            className="md-toolbar-btn"
+            className="bg-bg-card text-text-dim border border-border font-3 text-2 px-md py-[6px] rounded-[3px] cursor-pointer transition-all duration-fast hover:text-text hover:border-text-dim hover:bg-bg-card-hover"
             onClick={resetSim}
           >Reset sim</button>
         </div>
       </div>
 
-      <div className="md-body">
-        <aside className="md-left">
-          <div className="md-panel-title">Motor</div>
+      <div className="grid grid-cols-[260px_minmax(0,1fr)_260px] gap-[20px] items-start max-[1200px]:grid-cols-[minmax(0,1fr)]">
+        <aside className="bg-bg-card border border-border rounded-[4px] p-lg flex flex-col gap-[10px] min-w-0">
+          <div className="font-3 text-1 text-accent uppercase tracking-[0.2em] mt-[6px] first:mt-0">Motor</div>
           <select
-            className="md-select"
+            className="bg-bg-elevated border border-border text-text font-1 text-3 px-sm py-[6px] rounded-[3px] w-full cursor-pointer focus:outline-none focus:border-accent"
             value={motor.kind}
             onChange={e => onChangeMotor(e.target.value as MotorKind)}
           >
@@ -303,9 +308,9 @@ export default function MotorDriveLab() {
           <ParamRow label="τ_rated" unit="N·m" value={motor.tau_rated} digits={2} />
           <ParamRow label="ω_rated" unit="rad/s" value={motor.omega_rated} digits={0} />
 
-          <div className="md-panel-title">Controller</div>
+          <div className="font-3 text-1 text-accent uppercase tracking-[0.2em] mt-[6px] first:mt-0">Controller</div>
           <select
-            className="md-select"
+            className="bg-bg-elevated border border-border text-text font-1 text-3 px-sm py-[6px] rounded-[3px] w-full cursor-pointer focus:outline-none focus:border-accent"
             value={controller.kind}
             onChange={e => onChangeController(e.target.value as ControllerKind)}
           >
@@ -314,12 +319,12 @@ export default function MotorDriveLab() {
             ))}
           </select>
           {!compatibility && (
-            <div className="md-warn">Controller doesn't match this motor type — simulation will diverge or stall.</div>
+            <div className="font-1 text-2 text-pink bg-[rgba(255,59,110,0.07)] border border-[rgba(255,59,110,0.25)] rounded-[3px] py-[6px] px-sm leading-[1.4]">Controller doesn't match this motor type — simulation will diverge or stall.</div>
           )}
 
-          <div className="md-panel-title">Load</div>
+          <div className="font-3 text-1 text-accent uppercase tracking-[0.2em] mt-[6px] first:mt-0">Load</div>
           <select
-            className="md-select"
+            className="bg-bg-elevated border border-border text-text font-1 text-3 px-sm py-[6px] rounded-[3px] w-full cursor-pointer focus:outline-none focus:border-accent"
             value={load.kind}
             onChange={e => onChangeLoad(e.target.value as LoadKind)}
           >
@@ -337,13 +342,13 @@ export default function MotorDriveLab() {
           />
         </aside>
 
-        <main className="md-main">
-          <div className="md-plot-row">
+        <main className="flex flex-col gap-lg min-w-0">
+          <div className="grid grid-cols-1 gap-lg">
             <PlotCard title="Phase currents (rolling 40 ms)">
               <PhaseScope trace={trace} />
             </PlotCard>
           </div>
-          <div className="md-plot-row two">
+          <div className="grid grid-cols-2 gap-lg max-[800px]:grid-cols-1">
             <PlotCard title="Torque vs speed">
               <TorqueSpeed motor={motor} Vdc={controller.Vdc} snap={snap} history={history} />
             </PlotCard>
@@ -352,9 +357,9 @@ export default function MotorDriveLab() {
             </PlotCard>
           </div>
 
-          <div className="md-readouts">
-            <div className="md-readout-title">Live readouts</div>
-            <div className="md-readout-grid">
+          <div className="bg-bg-card border border-border rounded-[4px] p-lg">
+            <div className="font-3 text-1 text-accent uppercase tracking-[0.2em] mb-md">Live readouts</div>
+            <div className="grid grid-cols-4 gap-md max-[800px]:grid-cols-2">
               <Readout label="Shaft speed" value={readouts.rpm} unit="RPM" />
               <Readout label="(equivalent)" value={readouts.omega} unit="rad/s" />
               <Readout label="Shaft torque" value={readouts.tau} unit="N·m" />
@@ -367,8 +372,8 @@ export default function MotorDriveLab() {
           </div>
         </main>
 
-        <aside className="md-right">
-          <div className="md-panel-title">Reference</div>
+        <aside className="bg-bg-card border border-border rounded-[4px] p-lg flex flex-col gap-[10px] min-w-0">
+          <div className="font-3 text-1 text-accent uppercase tracking-[0.2em] mt-[6px] first:mt-0">Reference</div>
           <SliderRow
             label="ω_ref (speed)"
             unit="rad/s"
@@ -385,7 +390,7 @@ export default function MotorDriveLab() {
             digits={0}
           />
 
-          <div className="md-panel-title">Bus + switching</div>
+          <div className="font-3 text-1 text-accent uppercase tracking-[0.2em] mt-[6px] first:mt-0">Bus + switching</div>
           <SliderRow
             label="V_dc"
             unit="V"
@@ -403,7 +408,7 @@ export default function MotorDriveLab() {
             onChange={v => setController(prev => ({ ...prev, fsw: v * 1000 }))}
           />
 
-          <div className="md-panel-title">Current loop</div>
+          <div className="font-3 text-1 text-accent uppercase tracking-[0.2em] mt-[6px] first:mt-0">Current loop</div>
           <SliderRow
             label="K_p (current)"
             unit="V/A"
@@ -419,7 +424,7 @@ export default function MotorDriveLab() {
             onChange={v => setController(prev => ({ ...prev, Ki_i: v }))}
           />
 
-          <div className="md-panel-title">Speed loop</div>
+          <div className="font-3 text-1 text-accent uppercase tracking-[0.2em] mt-[6px] first:mt-0">Speed loop</div>
           <SliderRow
             label="K_p (speed)"
             unit="A/(rad/s)"
@@ -436,7 +441,7 @@ export default function MotorDriveLab() {
           />
 
           {snap?.saturated && (
-            <div className="md-warn">Current loop in saturation — controller demand exceeds the i_max envelope.</div>
+            <div className="font-1 text-2 text-pink bg-[rgba(255,59,110,0.07)] border border-[rgba(255,59,110,0.25)] rounded-[3px] py-[6px] px-sm leading-[1.4]">Current loop in saturation — controller demand exceeds the i_max envelope.</div>
           )}
         </aside>
       </div>
@@ -586,16 +591,13 @@ export default function MotorDriveLab() {
   );
 
   return (
-    <>
-      <style>{CSS}</style>
-      <LabShell
-        slug={SLUG}
-        labSubtitle="Motor + Controller + Load Sandbox"
-        labId="motor-drive / V_dq = R i + L di/dt + ω L i + ω ψ"
-        labContent={labContent}
-        prose={prose}
-      />
-    </>
+    <LabShell
+      slug={SLUG}
+      labSubtitle="Motor + Controller + Load Sandbox"
+      labId="motor-drive / V_dq = R i + L di/dt + ω L i + ω ψ"
+      labContent={labContent}
+      prose={prose}
+    />
   );
 }
 
@@ -607,8 +609,8 @@ interface PlotCardProps {
 }
 function PlotCard({ title, children }: PlotCardProps) {
   return (
-    <div className="md-plot-card">
-      <div className="md-plot-title">{title}</div>
+    <div className="bg-bg-card border border-border rounded-[4px] p-md flex flex-col gap-sm">
+      <div className="font-3 text-1 text-accent uppercase tracking-[0.2em]">{title}</div>
       {children}
     </div>
   );
@@ -622,11 +624,16 @@ interface ReadoutProps {
 }
 function Readout({ label, value, unit, highlight }: ReadoutProps) {
   return (
-    <div className={'md-readout-cell' + (highlight ? ' highlight' : '')}>
-      <div className="md-readout-label">{label}</div>
-      <div className="md-readout-value">
+    <div
+      className={
+        'bg-bg-elevated border rounded-[3px] p-[10px] flex flex-col gap-xs '
+        + (highlight ? 'border-accent' : 'border-border')
+      }
+    >
+      <div className="font-1 text-1 text-text-dim uppercase tracking-[0.1em]">{label}</div>
+      <div className={'font-3 text-7 font-medium ' + (highlight ? 'text-accent' : 'text-text')}>
         {value}
-        {unit && <span className="md-readout-unit"> {unit}</span>}
+        {unit && <span className="text-2 text-text-muted"> {unit}</span>}
       </div>
     </div>
   );
@@ -641,10 +648,10 @@ interface ParamRowProps {
 }
 function ParamRow({ label, unit, value, digits, suffix }: ParamRowProps) {
   return (
-    <div className="md-param-row">
-      <span className="md-param-label">{label}</span>
-      <span className="md-param-value">
-        {value.toFixed(digits)}{suffix ? suffix : ''} <span className="md-param-unit">{unit}</span>
+    <div className="flex justify-between items-baseline gap-md text-2 py-[3px] border-b border-dashed border-border last-of-type:border-b-0">
+      <span className="font-1 text-text-dim">{label}</span>
+      <span className="font-3 text-text">
+        {value.toFixed(digits)}{suffix ? suffix : ''} <span className="text-text-muted text-1">{unit}</span>
       </span>
     </div>
   );
@@ -661,17 +668,17 @@ interface SliderRowProps {
 }
 function SliderRow({ label, unit, value, min, max, step, onChange }: SliderRowProps) {
   return (
-    <div className="md-slider-row">
-      <div className="md-slider-head">
-        <span className="md-slider-label">{label}</span>
-        <span className="md-slider-value">
+    <div className="flex flex-col gap-xs">
+      <div className="flex justify-between items-baseline text-2">
+        <span className="font-1 text-text-dim">{label}</span>
+        <span className="font-3 text-text">
           {value.toFixed(step < 1 ? (step < 0.1 ? 3 : 2) : 0)}
-          <span className="md-param-unit"> {unit}</span>
+          <span className="text-text-muted text-1"> {unit}</span>
         </span>
       </div>
       <input
         type="range"
-        className="md-slider"
+        className="w-full accent-accent"
         min={min}
         max={max}
         step={step}
@@ -681,258 +688,3 @@ function SliderRow({ label, unit, value, min, max, step, onChange }: SliderRowPr
     </div>
   );
 }
-
-/* ───────────────────────── Inline CSS ───────────────────────── */
-
-const CSS = `
-.md-shell {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 12px;
-}
-
-.md-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-.md-toolbar-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.md-toolbar-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  margin-right: 4px;
-}
-.md-preset-btn, .md-toolbar-btn {
-  background: var(--bg-card);
-  color: var(--text-dim);
-  border: 1px solid var(--border);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  padding: 6px 12px;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all .15s ease;
-}
-.md-preset-btn:hover, .md-toolbar-btn:hover {
-  color: var(--text);
-  border-color: var(--text-dim);
-  background: var(--bg-card-hover);
-}
-.md-toolbar-btn.on {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-.md-toolbar-btn.off {
-  color: var(--teal);
-  border-color: var(--teal);
-}
-
-.md-body {
-  display: grid;
-  grid-template-columns: 260px minmax(0, 1fr) 260px;
-  gap: 20px;
-  align-items: start;
-}
-@media (max-width: 1200px) {
-  .md-body { grid-template-columns: minmax(0, 1fr); }
-}
-
-.md-left, .md-right {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-width: 0;
-}
-.md-main {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  min-width: 0;
-}
-
-.md-panel-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  margin-top: 6px;
-}
-.md-panel-title:first-child {
-  margin-top: 0;
-}
-
-.md-select {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: 'DM Sans', system-ui, sans-serif;
-  font-size: 12px;
-  padding: 6px 8px;
-  border-radius: 3px;
-  width: 100%;
-  cursor: pointer;
-}
-.md-select:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-
-.md-param-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  font-size: 11px;
-  padding: 3px 0;
-  border-bottom: 1px dashed var(--border);
-}
-.md-param-row:last-of-type { border-bottom: none; }
-.md-param-label {
-  font-family: 'DM Sans', sans-serif;
-  color: var(--text-dim);
-}
-.md-param-value {
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--text);
-}
-.md-param-unit {
-  color: var(--text-muted);
-  font-size: 10px;
-}
-
-.md-slider-row {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.md-slider-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  font-size: 11px;
-}
-.md-slider-label {
-  font-family: 'DM Sans', sans-serif;
-  color: var(--text-dim);
-}
-.md-slider-value {
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--text);
-}
-.md-slider {
-  width: 100%;
-  accent-color: var(--accent);
-}
-
-.md-warn {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px;
-  color: var(--pink);
-  background: rgba(255,59,110,0.07);
-  border: 1px solid rgba(255,59,110,0.25);
-  border-radius: 3px;
-  padding: 6px 8px;
-  line-height: 1.4;
-}
-
-.md-plot-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-}
-.md-plot-row.two {
-  grid-template-columns: 1fr 1fr;
-}
-@media (max-width: 800px) {
-  .md-plot-row.two { grid-template-columns: 1fr; }
-}
-.md-plot-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.md-plot-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-}
-
-.md-readouts {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 16px;
-}
-.md-readout-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  margin-bottom: 12px;
-}
-.md-readout-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-}
-@media (max-width: 800px) {
-  .md-readout-grid { grid-template-columns: repeat(2, 1fr); }
-}
-.md-readout-cell {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.md-readout-cell.highlight {
-  border-color: var(--accent);
-}
-.md-readout-label {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 10px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: .1em;
-}
-.md-readout-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 18px;
-  color: var(--text);
-  font-weight: 500;
-}
-.md-readout-cell.highlight .md-readout-value {
-  color: var(--accent);
-}
-.md-readout-unit {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-`;

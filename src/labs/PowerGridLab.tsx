@@ -393,15 +393,18 @@ export default function PowerGridLab() {
   /* ─────────── Render ─────────── */
 
   const labContent = (
-    <div className="pg-shell">
-      <div className="pg-toolbar">
-        <div className="pg-toolbar-group">
-          <span className="pg-toolbar-label">Scenarios:</span>
+    <div className="flex flex-col gap-lg mt-md">
+      <div className="flex justify-between items-center gap-lg flex-wrap pb-md border-b border-border">
+        <div className="flex items-center gap-sm flex-wrap">
+          <span className="font-3 text-1 text-text-muted uppercase tracking-4 mr-xs">Scenarios:</span>
           {PRESETS.map((p) => (
             <button
               key={p.id}
               type="button"
-              className={'pg-preset-btn' + (p.id === activePresetId ? ' active' : '')}
+              className={
+                'bg-bg-card text-text-dim border border-border font-3 text-2 py-[6px] px-md rounded-2 cursor-pointer transition-all hover:text-text hover:border-text-dim hover:bg-bg-card-hover' +
+                (p.id === activePresetId ? ' !text-accent !border-accent !bg-accent-soft' : '')
+              }
               onClick={() => loadPreset(p.id)}
               title={p.description}
             >
@@ -409,17 +412,23 @@ export default function PowerGridLab() {
             </button>
           ))}
         </div>
-        <div className="pg-toolbar-group">
+        <div className="flex items-center gap-sm flex-wrap">
           <button
             type="button"
-            className={'pg-toolbar-btn ' + (running ? 'on' : 'off')}
+            className={
+              'bg-bg-card text-text-dim border border-border font-3 text-2 py-[6px] px-md rounded-2 cursor-pointer transition-all hover:text-text hover:border-text-dim hover:bg-bg-card-hover disabled:opacity-40 disabled:cursor-not-allowed ' +
+              (running ? '!text-accent !border-accent' : '!text-teal !border-teal')
+            }
             onClick={() => setRunning((r) => !r)}
           >
             {running ? 'Pause' : 'Run'}
           </button>
           <button
             type="button"
-            className={'pg-toolbar-btn ' + (autoDispatch ? 'on' : '')}
+            className={
+              'bg-bg-card text-text-dim border border-border font-3 text-2 py-[6px] px-md rounded-2 cursor-pointer transition-all hover:text-text hover:border-text-dim hover:bg-bg-card-hover disabled:opacity-40 disabled:cursor-not-allowed ' +
+              (autoDispatch ? '!text-accent !border-accent' : '')
+            }
             onClick={() => setAutoDispatch((d) => !d)}
             title="When on, dispatch is reshuffled every step in merit order."
           >
@@ -427,23 +436,31 @@ export default function PowerGridLab() {
           </button>
           <button
             type="button"
-            className="pg-toolbar-btn"
+            className="bg-bg-card text-text-dim border border-border font-3 text-2 py-[6px] px-md rounded-2 cursor-pointer transition-all hover:text-text hover:border-text-dim hover:bg-bg-card-hover disabled:opacity-40 disabled:cursor-not-allowed"
             onClick={dropBatteryAtSelection}
             disabled={!selection || selection.kind !== 'bus'}
             title="Add 100 MW / 200 MWh battery at the selected bus."
           >
             + Battery here
           </button>
-          <button type="button" className="pg-toolbar-btn" onClick={reset}>Reset</button>
+          <button
+            type="button"
+            className="bg-bg-card text-text-dim border border-border font-3 text-2 py-[6px] px-md rounded-2 cursor-pointer transition-all hover:text-text hover:border-text-dim hover:bg-bg-card-hover disabled:opacity-40 disabled:cursor-not-allowed"
+            onClick={reset}
+          >
+            Reset
+          </button>
         </div>
       </div>
 
-      <div className="pg-body">
-        <aside className="pg-left">
+      <div className="grid grid-cols-[220px_1fr_280px] gap-[20px] items-start max-xl:grid-cols-1">
+        <aside
+          className="bg-bg-card border border-border rounded-3 p-lg [&_.pg-palette]:flex [&_.pg-palette]:flex-col [&_.pg-palette]:gap-lg [&_.pg-palette-section]:flex [&_.pg-palette-section]:flex-col [&_.pg-palette-section]:gap-[6px] [&_.pg-palette-title]:font-3 [&_.pg-palette-title]:text-1 [&_.pg-palette-title]:text-accent [&_.pg-palette-title]:uppercase [&_.pg-palette-title]:tracking-4 [&_.pg-palette-title]:mb-[2px] [&_.pg-palette-row]:flex [&_.pg-palette-row]:flex-wrap [&_.pg-palette-row]:gap-xs [&_.pg-palette-pill]:bg-bg-elevated [&_.pg-palette-pill]:border [&_.pg-palette-pill]:border-border [&_.pg-palette-pill]:text-text-dim [&_.pg-palette-pill]:font-3 [&_.pg-palette-pill]:text-1 [&_.pg-palette-pill]:py-xs [&_.pg-palette-pill]:px-sm [&_.pg-palette-pill]:rounded-7 [&_.pg-palette-pill]:cursor-pointer [&_.pg-palette-pill]:transition-all hover:[&_.pg-palette-pill]:text-text hover:[&_.pg-palette-pill]:border-text-dim [&_.pg-palette-pill.active]:!text-accent [&_.pg-palette-pill.active]:!border-accent [&_.pg-palette-pill.active]:!bg-accent-soft [&_.pg-palette-btn]:flex [&_.pg-palette-btn]:items-center [&_.pg-palette-btn]:gap-[10px] [&_.pg-palette-btn]:bg-bg-elevated [&_.pg-palette-btn]:border [&_.pg-palette-btn]:border-border [&_.pg-palette-btn]:text-text-dim [&_.pg-palette-btn]:font-1 [&_.pg-palette-btn]:text-3 [&_.pg-palette-btn]:py-[6px] [&_.pg-palette-btn]:px-[10px] [&_.pg-palette-btn]:rounded-2 [&_.pg-palette-btn]:cursor-pointer [&_.pg-palette-btn]:text-left [&_.pg-palette-btn]:transition-all hover:[&_.pg-palette-btn]:bg-bg-card-hover hover:[&_.pg-palette-btn]:text-text hover:[&_.pg-palette-btn]:border-text-dim [&_.pg-palette-btn.active]:!bg-accent-soft [&_.pg-palette-btn.active]:!border-accent [&_.pg-palette-btn.active]:!text-text [&_.pg-palette-label]:flex-1 [&_.pg-palette-hint]:font-3 [&_.pg-palette-hint]:text-1 [&_.pg-palette-hint]:text-text-muted [&_.pg-palette-hint]:leading-4 [&_.pg-palette-hint]:pt-sm [&_.pg-palette-hint]:border-t [&_.pg-palette-hint]:border-border"
+        >
           <Palette armed={armed} onArm={setArmed} />
         </aside>
 
-        <main className="pg-main">
+        <main className="flex flex-col gap-lg">
           <OneLineCanvas
             doc={doc}
             selection={selection}
@@ -459,10 +476,10 @@ export default function PowerGridLab() {
             onTripGenerator={tripGenerator}
           />
 
-          <div className="pg-bottom">
-            <div className="pg-bottom-row">
-              <div className="pg-bottom-group">
-                <div className="pg-bottom-title">System totals</div>
+          <div className="bg-bg-card border border-border rounded-3 p-lg">
+            <div className="flex gap-xl flex-wrap">
+              <div className="flex-1 min-w-[200px]">
+                <div className="font-3 text-1 text-accent uppercase tracking-4 mb-sm">System totals</div>
                 <Row label="Sim time" value={readouts ? readouts.t.toFixed(1) + ' s' : '—'} />
                 <Row label="Generation" value={readouts ? fmtMW(readouts.genMW) : '—'} />
                 <Row label="Load" value={readouts ? fmtMW(readouts.loadMW) : '—'} />
@@ -476,8 +493,8 @@ export default function PowerGridLab() {
                   warn={!!readouts && Math.abs(readouts.imbalanceMW) > 20}
                 />
               </div>
-              <div className="pg-bottom-group">
-                <div className="pg-bottom-title">Frequency</div>
+              <div className="flex-1 min-w-[200px]">
+                <div className="font-3 text-1 text-accent uppercase tracking-4 mb-sm">Frequency</div>
                 <Row
                   label="System f"
                   value={readouts ? fmtHz(readouts.hz) : '—'}
@@ -493,8 +510,8 @@ export default function PowerGridLab() {
                   warn={!!readouts && readouts.shedFrac > 0.01}
                 />
               </div>
-              <div className="pg-bottom-group">
-                <div className="pg-bottom-title">Market & emissions</div>
+              <div className="flex-1 min-w-[200px]">
+                <div className="font-3 text-1 text-accent uppercase tracking-4 mb-sm">Market & emissions</div>
                 <Row label="LMP" value={readouts ? '$' + readouts.lmp.toFixed(2) + '/MWh' : '—'} />
                 <Row label="CO₂ intensity" value={readouts ? readouts.co2.toFixed(0) + ' kg/MWh' : '—'} />
                 <Row
@@ -503,17 +520,17 @@ export default function PowerGridLab() {
                 />
                 <Row label="Δt step" value={(FREQ_DT * SIM_SPEED).toFixed(2) + ' s'} />
               </div>
-              <div className="pg-bottom-group" style={{ flex: 1.4 }}>
-                <div className="pg-bottom-title">Event log</div>
+              <div className="flex-1 min-w-[200px]" style={{ flex: 1.4 }}>
+                <div className="font-3 text-1 text-accent uppercase tracking-4 mb-sm">Event log</div>
                 {eventLog.length === 0 && (
-                  <div className="pg-bottom-empty">
+                  <div className="text-2 text-text-muted leading-4">
                     Trip a generator (right-click on it) or load a scenario with a schedule to see events here.
                   </div>
                 )}
                 {eventLog.slice().reverse().map((e, i) => (
-                  <div key={i} className="pg-log-row">
-                    <span className="pg-log-t">{e.t.toFixed(1)}s</span>
-                    <span className="pg-log-msg">{e.description}</span>
+                  <div key={i} className="flex gap-[10px] py-[3px] text-2 border-b border-dashed border-border last:border-b-0">
+                    <span className="text-text-muted font-3 flex-[0_0_50px]">{e.t.toFixed(1)}s</span>
+                    <span className="text-text font-1 flex-1">{e.description}</span>
                   </div>
                 ))}
               </div>
@@ -521,7 +538,9 @@ export default function PowerGridLab() {
           </div>
         </main>
 
-        <aside className="pg-right">
+        <aside
+          className="bg-bg-card border border-border rounded-3 p-lg [&_.pg-inspector]:flex [&_.pg-inspector]:flex-col [&_.pg-inspector]:gap-[10px] [&_.pg-inspector-title]:font-3 [&_.pg-inspector-title]:text-1 [&_.pg-inspector-title]:text-accent [&_.pg-inspector-title]:uppercase [&_.pg-inspector-title]:tracking-4 [&_.pg-inspector-kind]:font-2 [&_.pg-inspector-kind]:italic [&_.pg-inspector-kind]:text-7 [&_.pg-inspector-kind]:text-text [&_.pg-inspector-kind]:mb-xs [&_.pg-inspector-empty]:text-3 [&_.pg-inspector-empty]:text-text-muted [&_.pg-inspector-empty]:leading-4 [&_.pg-inspector-actions]:flex [&_.pg-inspector-actions]:gap-sm [&_.pg-inspector-actions]:mt-sm [&_.pg-inspector-btn]:flex-1 [&_.pg-inspector-btn]:bg-bg-elevated [&_.pg-inspector-btn]:border [&_.pg-inspector-btn]:border-border [&_.pg-inspector-btn]:text-text-dim [&_.pg-inspector-btn]:font-3 [&_.pg-inspector-btn]:text-2 [&_.pg-inspector-btn]:py-[6px] [&_.pg-inspector-btn]:px-[10px] [&_.pg-inspector-btn]:rounded-2 [&_.pg-inspector-btn]:cursor-pointer [&_.pg-inspector-btn]:transition-all hover:[&_.pg-inspector-btn]:text-text hover:[&_.pg-inspector-btn]:border-text-dim hover:[&_.pg-inspector-btn.danger]:!text-pink hover:[&_.pg-inspector-btn.danger]:!border-pink [&_.pg-field]:flex [&_.pg-field]:flex-col [&_.pg-field]:gap-[5px] [&_.pg-field-label]:flex [&_.pg-field-label]:justify-between [&_.pg-field-label]:font-3 [&_.pg-field-label]:text-1 [&_.pg-field-label]:text-text-dim [&_.pg-field-label]:uppercase [&_.pg-field-label]:tracking-3 [&_.pg-field-unit]:text-text-muted [&_.pg-field-input]:bg-bg-elevated [&_.pg-field-input]:border [&_.pg-field-input]:border-border [&_.pg-field-input]:text-text [&_.pg-field-input]:font-3 [&_.pg-field-input]:text-4 [&_.pg-field-input]:py-[5px] [&_.pg-field-input]:px-sm [&_.pg-field-input]:rounded-1 [&_.pg-field-input]:w-full [&_.pg-field-input]:box-border focus:[&_.pg-field-input]:outline-none focus:[&_.pg-field-input]:border-accent [&_.pg-field-slider]:w-full [&_.pg-field-slider]:accent-accent [&_.pg-field-static]:font-3 [&_.pg-field-static]:text-2 [&_.pg-field-static]:text-text-muted [&_.pg-field-static]:py-xs [&_.pg-field-static]:px-0 [&_.pg-toggle]:bg-bg-elevated [&_.pg-toggle]:border [&_.pg-toggle]:border-border [&_.pg-toggle]:text-text [&_.pg-toggle]:font-3 [&_.pg-toggle]:text-2 [&_.pg-toggle]:py-[6px] [&_.pg-toggle]:px-[10px] [&_.pg-toggle]:rounded-2 [&_.pg-toggle]:cursor-pointer [&_.pg-toggle]:text-center [&_.pg-toggle]:mt-xs [&_.pg-toggle.open]:!text-pink [&_.pg-toggle.open]:!border-pink [&_.pg-toggle.closed]:!text-teal [&_.pg-toggle.closed]:!border-teal"
+        >
           <Inspector
             doc={doc}
             selection={selection}
@@ -718,16 +737,13 @@ export default function PowerGridLab() {
   );
 
   return (
-    <>
-      <style>{CSS}</style>
-      <LabShell
-        slug={SLUG}
-        labSubtitle="Sandbox · Power System"
-        labId="power-grid / B'θ = P"
-        labContent={labContent}
-        prose={prose}
-      />
-    </>
+    <LabShell
+      slug={SLUG}
+      labSubtitle="Sandbox · Power System"
+      labId="power-grid / B'θ = P"
+      labContent={labContent}
+      prose={prose}
+    />
   );
 }
 
@@ -735,10 +751,10 @@ export default function PowerGridLab() {
 
 function Row({ label, value, warn }: { label: string; value: string; warn?: boolean }) {
   return (
-    <div className="pg-readout-row">
-      <span className="pg-readout-label">{label}</span>
+    <div className="flex justify-between gap-md py-xs border-b border-dashed border-border text-3 last:border-b-0">
+      <span className="text-text-dim font-1">{label}</span>
       <span
-        className="pg-readout-value"
+        className="text-text font-3 font-medium"
         style={warn ? { color: 'var(--pink)' } : undefined}
       >
         {value}
@@ -747,319 +763,3 @@ function Row({ label, value, warn }: { label: string; value: string; warn?: bool
   );
 }
 
-/* ─────────────────────────── Inline CSS ─────────────────────────── */
-
-const CSS = `
-.pg-shell {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 12px;
-}
-
-.pg-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-.pg-toolbar-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.pg-toolbar-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  margin-right: 4px;
-}
-.pg-preset-btn, .pg-toolbar-btn {
-  background: var(--bg-card);
-  color: var(--text-dim);
-  border: 1px solid var(--border);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  padding: 6px 12px;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all .15s ease;
-}
-.pg-preset-btn:hover, .pg-toolbar-btn:hover {
-  color: var(--text);
-  border-color: var(--text-dim);
-  background: var(--bg-card-hover);
-}
-.pg-preset-btn.active {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-.pg-toolbar-btn.on {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-.pg-toolbar-btn.off {
-  color: var(--teal);
-  border-color: var(--teal);
-}
-.pg-toolbar-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.pg-body {
-  display: grid;
-  grid-template-columns: 220px 1fr 280px;
-  gap: 20px;
-  align-items: start;
-}
-@media (max-width: 1100px) {
-  .pg-body { grid-template-columns: 1fr; }
-}
-
-.pg-left, .pg-right {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 16px;
-}
-.pg-main { display: flex; flex-direction: column; gap: 16px; }
-
-.pg-palette {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.pg-palette-section {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.pg-palette-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  margin-bottom: 2px;
-}
-.pg-palette-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-.pg-palette-pill {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  padding: 4px 8px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all .15s ease;
-}
-.pg-palette-pill:hover {
-  color: var(--text);
-  border-color: var(--text-dim);
-}
-.pg-palette-pill.active {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-.pg-palette-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  font-family: 'DM Sans', system-ui, sans-serif;
-  font-size: 12px;
-  padding: 6px 10px;
-  border-radius: 3px;
-  cursor: pointer;
-  text-align: left;
-  transition: all .15s ease;
-}
-.pg-palette-btn:hover {
-  background: var(--bg-card-hover);
-  color: var(--text);
-  border-color: var(--text-dim);
-}
-.pg-palette-btn.active {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--text);
-}
-.pg-palette-label { flex: 1; }
-.pg-palette-hint {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  line-height: 1.5;
-  padding-top: 8px;
-  border-top: 1px solid var(--border);
-}
-
-.pg-inspector { display: flex; flex-direction: column; gap: 10px; }
-.pg-inspector-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-}
-.pg-inspector-kind {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-size: 18px;
-  color: var(--text);
-  margin-bottom: 4px;
-}
-.pg-inspector-empty {
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-.pg-inspector-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-.pg-inspector-btn {
-  flex: 1;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  padding: 6px 10px;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all .15s ease;
-}
-.pg-inspector-btn:hover { color: var(--text); border-color: var(--text-dim); }
-.pg-inspector-btn.danger:hover { color: var(--pink); border-color: var(--pink); }
-
-.pg-field { display: flex; flex-direction: column; gap: 5px; }
-.pg-field-label {
-  display: flex;
-  justify-content: space-between;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: .15em;
-}
-.pg-field-unit { color: var(--text-muted); }
-.pg-field-input {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  padding: 5px 8px;
-  border-radius: 2px;
-  width: 100%;
-  box-sizing: border-box;
-}
-.pg-field-input:focus { outline: none; border-color: var(--accent); }
-.pg-field-slider {
-  width: 100%;
-  accent-color: var(--accent);
-}
-.pg-field-static {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--text-muted);
-  padding: 4px 0;
-}
-.pg-toggle {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  padding: 6px 10px;
-  border-radius: 3px;
-  cursor: pointer;
-  text-align: center;
-  margin-top: 4px;
-}
-.pg-toggle.open  { color: var(--pink); border-color: var(--pink); }
-.pg-toggle.closed { color: var(--teal); border-color: var(--teal); }
-
-.pg-bottom {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 16px;
-}
-.pg-bottom-row {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-.pg-bottom-group {
-  flex: 1;
-  min-width: 200px;
-}
-.pg-bottom-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  margin-bottom: 8px;
-}
-.pg-bottom-empty {
-  font-size: 11px;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-.pg-readout-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 4px 0;
-  border-bottom: 1px dashed var(--border);
-  font-size: 12px;
-}
-.pg-readout-row:last-child { border-bottom: none; }
-.pg-readout-label {
-  color: var(--text-dim);
-  font-family: 'DM Sans', sans-serif;
-}
-.pg-readout-value {
-  color: var(--text);
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 500;
-}
-.pg-log-row {
-  display: flex;
-  gap: 10px;
-  padding: 3px 0;
-  font-size: 11px;
-  border-bottom: 1px dashed var(--border);
-}
-.pg-log-row:last-child { border-bottom: none; }
-.pg-log-t {
-  color: var(--text-muted);
-  font-family: 'JetBrains Mono', monospace;
-  flex: 0 0 50px;
-}
-.pg-log-msg {
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  flex: 1;
-}
-`;
