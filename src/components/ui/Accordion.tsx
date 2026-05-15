@@ -87,7 +87,7 @@ export function AccordionItem({ id, children, className }: AccordionItemProps) {
     <ItemContext.Provider value={value}>
       <div
         className={clsx(
-          'border border-border-1 rounded-5 bg-color-3 overflow-hidden',
+          'border border-border-1 rounded-5 bg-bg-card overflow-hidden',
           open && 'border-border-2',
           className,
         )}
@@ -125,7 +125,7 @@ export function AccordionContent({ children }: { children?: ReactNode }) {
       role="region"
       id={`${item.baseId}-content`}
       aria-labelledby={`${item.baseId}-trigger`}
-      className="py-sm px-lg pb-lg text-text-dim text-6 leading-[1.65] border-t border-border"
+      className="py-sm px-lg pb-lg text-text-dim text-6 leading-5 border-t border-border"
     >
       {children}
     </div>

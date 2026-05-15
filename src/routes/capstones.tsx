@@ -33,12 +33,12 @@ function CapstonesIndex() {
             key={cap.id}
             to="/capstone/$id"
             params={{ id: cap.id }}
-            className="no-underline text-inherit block transition-transform duration-150 ease-out hover:-translate-y-[2px]"
+            className="no-underline text-inherit block transition-transform duration-150 ease-out hover:-translate-y-xxs"
           >
             <Card variant="elevated" accent="accent" className="h-full">
               <div className="eyebrow-accent text-2 tracking-3 mb-md">Capstone {cap.number}</div>
-              <h2 className="title-display text-8 leading-[1.18] mb-md">{cap.title}</h2>
-              <p className="body-copy text-5 leading-[1.5] m-0 mb-lg">{cap.subtitle}</p>
+              <h2 className="title-display text-8 leading-2 mb-md">{cap.title}</h2>
+              <p className="body-copy text-5 leading-4 m-0 mb-lg">{cap.subtitle}</p>
               <div className="flex flex-wrap gap-sm mb-lg">
                 <Badge variant="subtle" size="sm">
                   {cap.requiredChapters.length} chapters

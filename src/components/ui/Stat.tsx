@@ -26,7 +26,7 @@ export function Stat({
       <div className="flex items-baseline gap-xs">
         <span
           className={clsx(
-            'font-3 text-8 font-medium text-text leading-[1.1]',
+            'font-3 text-8 font-medium text-text leading-1',
             accent === 'accent' && 'text-accent',
             accent === 'teal' && 'text-teal',
             accent === 'pink' && 'text-pink',

@@ -57,7 +57,7 @@ export function SyllabusCard({ chapter }: SyllabusCardProps) {
       </header>
 
       {punchline && (
-        <p className="mt-sm mb-lg font-2 italic text-6 max-sm:text-6 leading-[1.5] text-text">{punchline}</p>
+        <p className="mt-sm mb-lg font-2 italic text-6 max-sm:text-6 leading-4 text-text">{punchline}</p>
       )}
 
       <div className="flex flex-wrap gap-y-xl gap-x-xl max-sm:gap-y-lg max-sm:gap-x-xl items-start mb-lg">
@@ -97,7 +97,7 @@ export function SyllabusCard({ chapter }: SyllabusCardProps) {
       )}
 
       {objectives && objectives.length > 0 && (
-        <div className="mt-sm [&_ul]:mt-sm [&_ul]:mb-0 [&_ul]:pl-lg [&_ul]:list-disc [&_ul]:text-text-dim [&_li]:text-5 max-sm:[&_li]:text-4 [&_li]:leading-[1.55] [&_li]:mb-sm">
+        <div className="mt-sm [&_ul]:mt-sm [&_ul]:mb-0 [&_ul]:pl-lg [&_ul]:list-disc [&_ul]:text-text-dim [&_li]:text-5 max-sm:[&_li]:text-4 [&_li]:leading-4 [&_li]:mb-sm">
           <div className="font-3 text-1 tracking-3 uppercase text-text-muted mb-sm">
             After this chapter you will be able to:
           </div>

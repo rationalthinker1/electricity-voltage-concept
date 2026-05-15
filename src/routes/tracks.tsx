@@ -77,7 +77,7 @@ function TrackCard({ track, chapters, progress }: TrackCardProps) {
 
   return (
     <section
-      className="card-surface border-t-[3px] rounded-3 p-xl flex flex-col"
+      className="card-surface border-t-3 rounded-3 p-xl flex flex-col"
       style={{
         ['--path-accent' as string]: accent,
         borderTopColor: 'var(--path-accent)',
@@ -85,11 +85,11 @@ function TrackCard({ track, chapters, progress }: TrackCardProps) {
     >
       <header className="mb-md">
         <div className="title-display text-8 mb-sm">{meta.name}</div>
-        <p className="body-copy text-5 leading-[1.5] m-0">{meta.description}</p>
+        <p className="body-copy text-5 leading-4 m-0">{meta.description}</p>
       </header>
 
       <div className="mb-lg">
-        <div className="w-full h-sm bg-color-2 rounded-pill overflow-hidden border border-border-1">
+        <div className="w-full h-sm bg-bg-elevated rounded-pill overflow-hidden border border-border-1">
           <div
             className="h-full transition-[width] duration-300 ease-in-out bg-[var(--path-accent)]"
             style={{ width: `${pct}%` }}
@@ -104,7 +104,7 @@ function TrackCard({ track, chapters, progress }: TrackCardProps) {
         <Link
           to="/textbook/$chapterSlug"
           params={{ chapterSlug: resumeChapter.slug }}
-          className="flex flex-col gap-xs py-md px-md mb-lg bg-color-2 border border-border-2 border-l-[3px] border-l-[var(--path-accent)] rounded-5 no-underline font-3 text-3 text-text tracking-3 uppercase transition-[background-color,border-color] duration-150 ease-in-out hover:bg-bg-card-hover hover:border-[var(--path-accent)]"
+          className="flex flex-col gap-xs py-md px-md mb-lg bg-bg-elevated border border-border-2 border-l-3 border-l-[var(--path-accent)] rounded-5 no-underline font-3 text-3 text-text tracking-3 uppercase transition-[background-color,border-color] duration-150 ease-in-out hover:bg-bg-card-hover hover:border-[var(--path-accent)]"
         >
           {anyStarted ? 'Resume track →' : 'Start track →'}
           <span className="font-1 text-4 text-text-dim normal-case tracking-normal">
@@ -133,7 +133,7 @@ function TrackCard({ track, chapters, progress }: TrackCardProps) {
                 <Link
                   to="/textbook/$chapterSlug"
                   params={{ chapterSlug: c.slug }}
-                  className="grid grid-cols-[24px_60px_1fr_auto] gap-md items-center py-sm px-md rounded-4 no-underline text-text-dim font-1 text-5 transition-[background-color,color] duration-[120ms] ease-in-out hover:bg-color-2 hover:text-text max-md:grid-cols-[24px_50px_1fr_auto] max-md:gap-sm"
+                  className="grid grid-cols-[24px_60px_1fr_auto] gap-md items-center py-sm px-md rounded-4 no-underline text-text-dim font-1 text-5 transition-[background-color,color] duration-fast ease-in-out hover:bg-bg-elevated hover:text-text max-md:grid-cols-[24px_50px_1fr_auto] max-md:gap-sm"
                 >
                   <span className="font-3 text-5 text-center" style={{ color: statusColor }} aria-hidden="true">{icon}</span>
                   <span className="eyebrow-muted">Ch.{c.number}</span>
@@ -176,7 +176,7 @@ function TracksPage() {
     <section className="pt-5xl pb-4xl px-3xl max-w-page mx-auto max-md:pt-5xl max-md:pb-4xl max-md:px-lg">
       <header className="mb-2xl">
         <div className="eyebrow-muted tracking-4 mb-sm">Field · Theory · Tracks</div>
-        <h1 className="title-display font-light text-10 leading-[1.05] tracking-1 mb-lg max-md:text-9">
+        <h1 className="title-display font-light text-10 leading-1 tracking-1 mb-lg max-md:text-9">
           Three <em className="italic text-accent font-normal">paths</em> through the book.
         </h1>
         <p className="body-copy max-w-page-sm">

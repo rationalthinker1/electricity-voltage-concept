@@ -115,12 +115,33 @@
   --breakpoint-lg: 900px;
   --breakpoint-xl: 1100px;
 
+  /* Line-height scale — 5 unitless values, covers 64+ uses across 18
+     distinct leadings (0.95 to 1.72). leading-1 for display headlines,
+     leading-4 for default body, leading-5 for relaxed reading. */
+  --leading-1: 1.05;  /* display / hero      */
+  --leading-2: 1.2;   /* tight headings      */
+  --leading-3: 1.4;   /* snug body / quotes  */
+  --leading-4: 1.55;  /* default reading     */
+  --leading-5: 1.7;   /* loose reading       */
+
+  /* Transition duration. Single token absorbs 120ms (16×) and 140ms (1×);
+     they're within perceptual noise of each other. */
+  --duration-fast: 120ms;
+
+  /* Z-index ladder — 3 stacking layers. z-1 = floating UI above content
+     (tooltips, popovers). z-2 = overlay backing. z-3 = top-most
+     (modals, toasts). */
+  --z-1: 30;
+  --z-2: 999;
+  --z-3: 1000;
+
   --radius-1: 2px;
   --radius-2: 3px;
   --radius-3: 4px;
   --radius-4: 6px;
   --radius-5: 8px;
   --radius-6: 10px;
+  --radius-7: 12px;
   --radius-pill: 999px;
 
   --shadow-1: 0 4px 16px rgba(0,0,0,0.18);
@@ -262,7 +283,21 @@
   --radius-4: var(--radius-4);
   --radius-5: var(--radius-5);
   --radius-6: var(--radius-6);
+  --radius-7: var(--radius-7);
   --radius-pill: var(--radius-pill);
+
+  --leading-1: var(--leading-1);
+  --leading-2: var(--leading-2);
+  --leading-3: var(--leading-3);
+  --leading-4: var(--leading-4);
+  --leading-5: var(--leading-5);
+
+  --default-transition-duration: var(--duration-fast);
+  --duration-fast: var(--duration-fast);
+
+  --z-1: var(--z-1);
+  --z-2: var(--z-2);
+  --z-3: var(--z-3);
 
   --shadow-1: var(--shadow-1);
   --shadow-2: var(--shadow-2);
@@ -301,6 +336,22 @@ body::before {
   mix-blend-mode: overlay;
 }
 
+/* ─── Border-width extensions ───
+   Tailwind v4 ships border-{1,2,4,8} only. The accent stripes on cards
+   and case studies use 3px; a handful of heavy dividers use 6px. Define
+   each direction as its own utility so `border-l-3`, `border-t-6`, etc.
+   read like the rest of the directional border utilities. */
+@utility border-3   { border-width: 3px; }
+@utility border-t-3 { border-top-width: 3px; }
+@utility border-r-3 { border-right-width: 3px; }
+@utility border-b-3 { border-bottom-width: 3px; }
+@utility border-l-3 { border-left-width: 3px; }
+@utility border-6   { border-width: 6px; }
+@utility border-t-6 { border-top-width: 6px; }
+@utility border-r-6 { border-right-width: 6px; }
+@utility border-b-6 { border-bottom-width: 6px; }
+@utility border-l-6 { border-left-width: 6px; }
+
 /* ─── Semantic recipe layer ─── */
 
 @layer components {
@@ -311,7 +362,7 @@ body::before {
     @apply font-2 italic m-0 text-text;
   }
   .body-copy {
-    @apply font-1 text-6 leading-[1.6] text-text-dim;
+    @apply font-1 text-6 leading-4 text-text-dim;
   }
   .eyebrow-rule {
     @apply font-3 text-2 tracking-4 uppercase mb-lg flex items-center gap-md;
@@ -371,7 +422,7 @@ body::before {
      .title-display but at the route-level "<title>." headers. Pair
      with a max-[…]:text-[…] responsive shrink. */
   .hero-display {
-    @apply font-2 italic font-light text-text text-10 leading-[1.05] tracking-1
+    @apply font-2 italic font-light text-text text-10 leading-1 tracking-1
            mt-0 mx-0 mb-lg
            [&_em]:italic [&_em]:text-accent [&_em]:font-normal;
   }
@@ -382,7 +433,7 @@ body::before {
      one place (ChapterShell) but extracted because the inline class
      string is too long to read on the element. */
   .chapter-narrative {
-    @apply mx-auto text-6 leading-[1.72] text-text-dim mt-xl;
+    @apply mx-auto text-6 leading-5 text-text-dim mt-xl;
   }
   .chapter-narrative > p { margin-bottom: 1.4em; }
   .chapter-narrative > p:first-of-type::first-letter {

@@ -90,10 +90,10 @@ function ReviewPage() {
     <section className="max-w-page mx-auto pt-3xl px-xl pb-4xl">
       <header className="mb-2xl">
         <div className="eyebrow-muted mb-md">Field · Theory · Spaced repetition</div>
-        <h1 className="font-2 font-normal text-[clamp(36px,6vw,56px)] leading-[1.05] mb-lg text-text">
+        <h1 className="font-2 font-normal text-[clamp(36px,6vw,56px)] leading-1 mb-lg text-text">
           Reviews <em className="italic text-accent">due</em>.
         </h1>
-        <p className="body-copy max-w-page-sm leading-[1.55] mb-xl">
+        <p className="body-copy max-w-page-sm leading-4 mb-xl">
           The system surfaces quizzes you previously passed on a 1-day, 3-day,
           1-week, 1-month, and 3-month schedule. Pass a review to advance to
           the next interval; miss one and you reset to day 1.
@@ -160,15 +160,15 @@ function ReviewCard({ review, now }: { review: ReviewSchedule; now: number }) {
   const chapter = getChapter(review.slug as ChapterSlug);
   if (!chapter) return null;
   return (
-    <li className="py-lg px-lg pb-lg bg-bg-card border border-border-2 rounded-[12px] flex flex-col gap-sm">
+    <li className="py-lg px-lg pb-lg bg-bg-card border border-border-2 rounded-7 flex flex-col gap-sm">
       <div className="flex flex-wrap gap-md items-center font-3 text-2 tracking-2">
         <span className="text-accent uppercase">Ch.{chapter.number}</span>
         <span className="text-teal uppercase">{intervalLabel(review.intervalIdx)}</span>
         <span className="text-text-muted ml-auto">{relativeDue(review.nextDueAt, now)}</span>
       </div>
-      <div className="font-2 text-8 leading-[1.15] text-text">{chapter.title}</div>
+      <div className="font-2 text-8 leading-2 text-text">{chapter.title}</div>
       {chapter.subtitle ? (
-        <div className="text-text-dim text-5 leading-[1.45]">{chapter.subtitle}</div>
+        <div className="text-text-dim text-5 leading-3">{chapter.subtitle}</div>
       ) : null}
       <div className="flex gap-md mt-sm">
         <a
@@ -180,7 +180,7 @@ function ReviewCard({ review, now }: { review: ReviewSchedule; now: number }) {
         <Link
           to="/textbook/$chapterSlug"
           params={{ chapterSlug: chapter.slug }}
-          className="inline-flex items-center py-md px-lg bg-transparent text-text-dim border border-border-2 rounded-4 font-3 text-3 tracking-2 no-underline uppercase hover:text-text hover:border-color-5"
+          className="inline-flex items-center py-md px-lg bg-transparent text-text-dim border border-border-2 rounded-4 font-3 text-3 tracking-2 no-underline uppercase hover:text-text hover:border-text-dim"
         >
           Re-read chapter
         </Link>

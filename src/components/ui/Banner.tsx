@@ -21,7 +21,7 @@ export function Banner({
   return (
     <div
       className={clsx(
-        'flex items-start gap-md py-lg px-lg rounded-5 border border-border-2 bg-color-2 text-text text-5 leading-[1.55]',
+        'flex items-start gap-md py-lg px-lg rounded-5 border border-border-2 bg-bg-elevated text-text text-5 leading-4',
         variant === 'info' && 'border-blue/30 bg-blue/10 [&_.banner-icon]:text-blue',
         variant === 'warn' && 'border-accent-glow bg-accent-soft [&_.banner-icon]:text-accent',
         variant === 'success' && 'border-teal/30 bg-teal-soft [&_.banner-icon]:text-teal',
@@ -30,7 +30,7 @@ export function Banner({
       )}
       role={variant === 'danger' || variant === 'warn' ? 'alert' : 'status'}
     >
-      {icon !== undefined && <span className="banner-icon text-6 leading-[1.4] shrink-0 mt-xxs" aria-hidden="true">{icon}</span>}
+      {icon !== undefined && <span className="banner-icon text-6 leading-3 shrink-0 mt-xxs" aria-hidden="true">{icon}</span>}
       <div className="flex-1 min-w-0">{children}</div>
       {onDismiss && (
         <button

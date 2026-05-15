@@ -20,13 +20,13 @@ export function SourcesList({ ids }: SourcesListProps) {
           if (!src) {
             // Defensive: don't crash if a key is missing — surface the bad id.
             return (
-              <li key={id} className="[counter-increment:src] relative py-lg pl-3xl leading-[1.55] text-text-dim border-b border-dotted border-border last:border-b-0 before:content-['['_counter(src)_']'] before:absolute before:left-0 before:top-[12px] before:font-3 before:text-2 before:text-accent before:tracking-3">
+              <li key={id} className="[counter-increment:src] relative py-lg pl-3xl leading-4 text-text-dim border-b border-dotted border-border last:border-b-0 before:content-['['_counter(src)_']'] before:absolute before:left-0 before:top-md before:font-3 before:text-2 before:text-accent before:tracking-3">
                 <span className="text-text font-medium">Missing source: {id}</span>
               </li>
             );
           }
           return (
-            <li key={id} className="[counter-increment:src] relative py-lg pl-3xl leading-[1.55] text-text-dim border-b border-dotted border-border last:border-b-0 before:content-['['_counter(src)_']'] before:absolute before:left-0 before:top-[12px] before:font-3 before:text-2 before:text-accent before:tracking-3">
+            <li key={id} className="[counter-increment:src] relative py-lg pl-3xl leading-4 text-text-dim border-b border-dotted border-border last:border-b-0 before:content-['['_counter(src)_']'] before:absolute before:left-0 before:top-md before:font-3 before:text-2 before:text-accent before:tracking-3">
               <span className="text-text font-medium">{src.title}</span>
               {' — '}
               <span className="text-text-muted italic">{src.author}</span>

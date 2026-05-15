@@ -219,7 +219,7 @@ function MePage() {
                 } as React.CSSProperties}
               >
                 <div className="font-1 text-5 text-text mb-md">{t.name}</div>
-                <div className="w-full h-sm bg-color-2 rounded-pill overflow-hidden border border-border-1">
+                <div className="w-full h-sm bg-bg-elevated rounded-pill overflow-hidden border border-border-1">
                   <div
                     className="h-full transition-[width] duration-300"
                     style={{ width: `${pct}%`, background: 'var(--me-accent)' }}
@@ -300,7 +300,7 @@ function MePage() {
                   <Link
                     to="/textbook/$chapterSlug"
                     params={{ chapterSlug: c.slug }}
-                    className={`grid grid-cols-[60px_1fr_auto_auto] gap-lg items-center py-md px-lg border border-border-1 bg-color-3 rounded-5 no-underline text-text font-1 text-5 transition-colors hover:bg-bg-card-hover max-md:grid-cols-[50px_1fr] max-md:gap-y-sm`}
+                    className={`grid grid-cols-[60px_1fr_auto_auto] gap-lg items-center py-md px-lg border border-border-1 bg-bg-card rounded-5 no-underline text-text font-1 text-5 transition-colors hover:bg-bg-card-hover max-md:grid-cols-[50px_1fr] max-md:gap-y-sm`}
                   >
                     <span className={META}>Ch.{c.number}</span>
                     <span>{c.title}</span>
@@ -325,7 +325,7 @@ function MePage() {
             <select
               value={filter}
               onChange={e => setFilter(e.target.value as FilterStatus)}
-              className="bg-color-3 border border-border-2 text-text py-sm px-md font-3 text-2 rounded-3"
+              className="bg-bg-card border border-border-2 text-text py-sm px-md font-3 text-2 rounded-3"
             >
               <option value="all">all</option>
               <option value="none">not started</option>
@@ -348,7 +348,7 @@ function MePage() {
                   <th
                     key={key}
                     onClick={() => toggleSort(key)}
-                    className="text-left eyebrow-muted text-1 py-md px-lg border-b border-border bg-color-2 cursor-pointer select-none hover:text-accent"
+                    className="text-left eyebrow-muted text-1 py-md px-lg border-b border-border bg-bg-elevated cursor-pointer select-none hover:text-accent"
                   >
                     {label}
                   </th>
@@ -367,7 +367,7 @@ function MePage() {
         </div>
       </section>
 
-      <section className={`mt-4xl p-xl border border-border-1 rounded-6 bg-color-3 text-center`}>
+      <section className={`mt-4xl p-xl border border-border-1 rounded-6 bg-bg-card text-center`}>
         <button
           type="button"
           onClick={handleReset}

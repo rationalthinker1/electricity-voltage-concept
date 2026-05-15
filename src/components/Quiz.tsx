@@ -50,7 +50,7 @@ interface GradeResult {
 
 const ICON_CORRECT = '✓'; // ✓
 const ICON_WRONG = '✗';   // ✗
-const INPUT_CLASS = 'w-full max-w-panel py-md px-lg card-surface bg-color-2 font-3 text-6 text-text transition-[border-color,background] duration-[120ms] ease-in-out focus:outline-none focus:border-accent focus:bg-color-3 disabled:opacity-70 disabled:cursor-not-allowed';
+const INPUT_CLASS = 'w-full max-w-panel py-md px-lg card-surface bg-bg-elevated font-3 text-6 text-text transition-[border-color,background] duration-fast ease-in-out focus:outline-none focus:border-accent focus:bg-bg-card disabled:opacity-70 disabled:cursor-not-allowed';
 
 /* ---------- Grading helpers ---------- */
 
@@ -154,7 +154,7 @@ function QuestionInput({
               key={idx}
               htmlFor={id}
               className={clsx(
-                'flex items-start gap-md py-md px-lg card-surface bg-color-2 cursor-pointer transition-[background,border-color] duration-[120ms] ease-in-out font-1 text-6 text-text leading-[1.5] hover:bg-bg-card-hover hover:border-border-2',
+                'flex items-start gap-md py-md px-lg card-surface bg-bg-elevated cursor-pointer transition-[background,border-color] duration-fast ease-in-out font-1 text-6 text-text leading-4 hover:bg-bg-card-hover hover:border-border-2',
                 checked && 'border-accent bg-accent-soft',
               )}
             >
@@ -248,7 +248,7 @@ function QuestionCard({
         </div>
       }
     >
-      <div className="body-copy leading-[1.55] text-text my-md mb-lg [&_strong]:text-text">{question.prompt}</div>
+      <div className="body-copy leading-4 text-text my-md mb-lg [&_strong]:text-text">{question.prompt}</div>
       <QuestionInput
         question={question}
         value={value}
@@ -263,7 +263,7 @@ function QuestionCard({
               <span className="text-teal">{graded.correctDisplay}</span>
             </div>
           )}
-          <div className="body-copy text-5 leading-[1.55] [&_strong]:text-text">{question.explanation}</div>
+          <div className="body-copy text-5 leading-4 [&_strong]:text-text">{question.explanation}</div>
         </div>
       )}
     </Card>
@@ -390,13 +390,13 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
 
       <div className="flex justify-end gap-md">
         {submitted ? (
-          <button type="button" className="inline-flex items-center gap-sm py-md px-lg rounded-5 font-1 text-5 font-medium border border-accent bg-accent text-bg cursor-pointer transition-[background,border-color,color] duration-[120ms] ease-in-out hover:brightness-110 disabled:opacity-55 disabled:cursor-not-allowed" onClick={handleRetry}>
+          <button type="button" className="inline-flex items-center gap-sm py-md px-lg rounded-5 font-1 text-5 font-medium border border-accent bg-accent text-bg cursor-pointer transition-[background,border-color,color] duration-fast ease-in-out hover:brightness-110 disabled:opacity-55 disabled:cursor-not-allowed" onClick={handleRetry}>
             Retry quiz
           </button>
         ) : (
           <button
             type="button"
-            className="inline-flex items-center gap-sm py-md px-lg rounded-5 font-1 text-5 font-medium border border-accent bg-accent text-bg cursor-pointer transition-[background,border-color,color] duration-[120ms] ease-in-out hover:not-disabled:brightness-110 disabled:opacity-55 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-sm py-md px-lg rounded-5 font-1 text-5 font-medium border border-accent bg-accent text-bg cursor-pointer transition-[background,border-color,color] duration-fast ease-in-out hover:not-disabled:brightness-110 disabled:opacity-55 disabled:cursor-not-allowed"
             onClick={handleSubmit}
             disabled={!allAnswered}
           >

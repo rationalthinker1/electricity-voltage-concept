@@ -165,7 +165,7 @@ export function PredictThenObserve({
           </div>
         }
       >
-        <div className="body-copy leading-[1.55] text-text m-0 mb-lg">{question}</div>
+        <div className="body-copy leading-4 text-text m-0 mb-lg">{question}</div>
         {spec.kind === 'multiple-choice' ? (
           <fieldset className="flex flex-col gap-sm border-0 p-0 m-0 mb-lg">
             <legend className="absolute w-px h-px overflow-hidden [clip:rect(0_0_0_0)]">Choose one</legend>
@@ -175,7 +175,7 @@ export function PredictThenObserve({
                 <label
                   key={opt.id}
                   className={clsx(
-                    'flex items-center gap-md py-md px-md border border-border-1 rounded-2 bg-color-2 cursor-pointer transition-all duration-150 ease-in-out text-text-dim font-1 text-5 leading-[1.45] hover:border-border-2 hover:text-text hover:bg-bg-card-hover',
+                    'flex items-center gap-md py-md px-md border border-border-1 rounded-2 bg-bg-elevated cursor-pointer transition-all duration-150 ease-in-out text-text-dim font-1 text-5 leading-3 hover:border-border-2 hover:text-text hover:bg-bg-card-hover',
                     checked && 'border-accent bg-accent-soft text-text',
                   )}
                 >
@@ -196,7 +196,7 @@ export function PredictThenObserve({
           <div className="flex items-center gap-md m-0 mb-lg">
             <input
               type="text"
-              className="flex-1 min-w-0 bg-color-2 border border-border-2 text-text py-md px-md font-3 text-5 rounded-2 transition-colors duration-150 ease-in-out focus:outline-none focus:border-accent"
+              className="flex-1 min-w-0 bg-bg-elevated border border-border-2 text-text py-md px-md font-3 text-5 rounded-2 transition-colors duration-150 ease-in-out focus:outline-none focus:border-accent"
               value={shortInput}
               onChange={e => setShortInput(e.target.value)}
               placeholder={spec.placeholder ?? 'Your prediction'}
@@ -238,11 +238,11 @@ export function PredictThenObserve({
           </div>
         }
       >
-        <p className="body-copy text-6 leading-[1.55] m-0 mb-lg">
+        <p className="body-copy text-6 leading-4 m-0 mb-lg">
           You guessed: <strong className="text-text font-medium">{displayedAnswer}</strong>
         </p>
         {reveal ? (
-          <div className="body-copy text-5 leading-[1.55] m-0 mb-lg py-md px-lg bg-color-2 border-l-2 border-teal rounded-r-2">
+          <div className="body-copy text-5 leading-4 m-0 mb-lg py-md px-lg bg-bg-elevated border-l-2 border-teal rounded-r-2">
             {reveal(answer)}
           </div>
         ) : null}

@@ -23,13 +23,13 @@ export function Pill({
   'aria-label': ariaLabel,
 }: PillProps) {
   const classes = clsx(
-    'inline-flex items-center gap-sm font-3 text-4 tracking-2 py-sm px-lg rounded-pill border border-border-2 bg-color-2 text-text no-underline',
+    'inline-flex items-center gap-sm font-3 text-4 tracking-2 py-sm px-lg rounded-pill border border-border-2 bg-bg-elevated text-text no-underline',
     variant === 'accent' && 'bg-accent-soft text-accent border-accent-glow',
     variant === 'teal' && 'bg-teal-soft text-teal border-teal/30',
     variant === 'pink' && 'bg-pink/15 text-pink border-pink/30',
     variant === 'blue' && 'bg-blue/15 text-blue border-blue/30',
     variant === 'subtle' && 'bg-transparent text-text-muted border-border-1',
-    interactive && 'cursor-pointer transition-[background-color,border-color,transform] duration-[120ms] ease-in-out hover:bg-bg-card-hover hover:border-border-2 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_var(--accent-soft)]',
+    interactive && 'cursor-pointer transition-[background-color,border-color,transform] duration-fast ease-in-out hover:bg-bg-card-hover hover:border-border-2 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_var(--accent-soft)]',
     className,
   );
 

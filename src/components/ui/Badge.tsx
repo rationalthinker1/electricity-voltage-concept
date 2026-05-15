@@ -20,8 +20,8 @@ export function Badge({
   return (
     <span
       className={clsx(
-        'inline-flex items-center font-3 font-medium tracking-2 rounded-3 border border-border-2 bg-color-2 text-text-dim whitespace-nowrap',
-        size === 'sm' ? 'text-1 py-xxs px-sm leading-[1.4]' : 'text-3 py-xxs px-md leading-[1.4]',
+        'inline-flex items-center font-3 font-medium tracking-2 rounded-3 border border-border-2 bg-bg-elevated text-text-dim whitespace-nowrap',
+        size === 'sm' ? 'text-1 py-xxs px-sm leading-3' : 'text-3 py-xxs px-md leading-3',
         variant === 'accent' && 'bg-accent-soft text-accent border-accent-glow',
         variant === 'teal' && 'bg-teal-soft text-teal border-teal/30',
         variant === 'pink' && 'bg-pink/15 text-pink border-pink/30',

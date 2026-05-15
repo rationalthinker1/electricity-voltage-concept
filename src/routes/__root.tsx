@@ -79,7 +79,7 @@ function RootLayout() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 h-xxs w-0 bg-accent z-[999] shadow-[0_0_12px_var(--accent-glow)] transition-[width] duration-100 ease-linear" id="progress" />
+      <div className="fixed top-0 left-0 h-xxs w-0 bg-accent z-2 shadow-[0_0_12px_var(--accent-glow)] transition-[width] duration-100 ease-linear" id="progress" />
       <TopNav
         themeMode={themeMode}
         resolvedTheme={resolvedTheme}

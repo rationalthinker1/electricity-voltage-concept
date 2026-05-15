@@ -37,7 +37,7 @@ export function BadgeShelf() {
 function BadgeTile({ badge, earned }: { badge: Badge; earned: boolean }) {
   return (
     <li
-      className="group relative flex flex-col items-center gap-sm py-lg px-md pb-md card-surface rounded-6 transition-[transform,border-color,background] duration-[120ms] ease-in-out cursor-default outline-none hover:-translate-y-px hover:border-border-2 hover:bg-bg-card-hover focus-visible:-translate-y-px focus-visible:border-border-2 focus-visible:bg-bg-card-hover"
+      className="group relative flex flex-col items-center gap-sm py-lg px-md pb-md card-surface rounded-6 transition-[transform,border-color,background] duration-fast ease-in-out cursor-default outline-none hover:-translate-y-px hover:border-border-2 hover:bg-bg-card-hover focus-visible:-translate-y-px focus-visible:border-border-2 focus-visible:bg-bg-card-hover"
       tabIndex={0}
       aria-label={`${badge.name}${earned ? ' — earned' : ' — locked'}`}
     >
@@ -54,11 +54,11 @@ function BadgeTile({ badge, earned }: { badge: Badge; earned: boolean }) {
       >
         <span className={clsx('font-4 text-8 leading-none', !earned && 'text-text-muted')}>{badge.icon}</span>
         {!earned && (
-          <span className="absolute -right-[4px] -bottom-[4px] w-lg h-lg grid place-items-center rounded-full bg-bg border border-border-2 text-2 text-text-muted" aria-hidden="true">⌶</span>
+          <span className="absolute -right-xs -bottom-xs w-lg h-lg grid place-items-center rounded-full bg-bg border border-border-2 text-2 text-text-muted" aria-hidden="true">⌶</span>
         )}
       </div>
       <div className="text-center flex flex-col gap-xs">
-        <div className={clsx('font-1 text-4 font-medium text-text leading-[1.2]', !earned && 'text-text-dim')}>{badge.name}</div>
+        <div className={clsx('font-1 text-4 font-medium text-text leading-2', !earned && 'text-text-dim')}>{badge.name}</div>
         <div
           className={clsx(
             'eyebrow-muted text-1 tracking-3',
@@ -70,11 +70,11 @@ function BadgeTile({ badge, earned }: { badge: Badge; earned: boolean }) {
           {badge.rarity}
         </div>
       </div>
-      <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 translate-y-[4px] w-max max-w-panel-sm py-md px-md bg-color-2 border border-border-2 rounded-5 text-3 text-text opacity-0 pointer-events-none transition-[opacity,transform] duration-[140ms] ease-in-out z-[30] text-left shadow-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0" role="tooltip">
+      <div className="absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 translate-y-xs w-max max-w-panel-sm py-md px-md bg-bg-elevated border border-border-2 rounded-5 text-3 text-text opacity-0 pointer-events-none transition-[opacity,transform] duration-fast ease-in-out z-1 text-left shadow-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0" role="tooltip">
         <div className="font-medium mb-xs">{badge.name}</div>
-        <div className="text-text-dim mb-xs leading-[1.45]">{badge.description}</div>
+        <div className="text-text-dim mb-xs leading-3">{badge.description}</div>
         {earned && badge.flavor ? (
-          <div className="title-display leading-[1.45]">{badge.flavor}</div>
+          <div className="title-display leading-3">{badge.flavor}</div>
         ) : null}
         {!earned ? (
           <div className="font-3 text-2 text-text-muted tracking-2">Not yet earned.</div>

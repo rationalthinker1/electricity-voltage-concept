@@ -36,10 +36,10 @@ interface FormulaProps {
 export function Formula({ children, caption, size = 'normal' }: FormulaProps) {
   return (
     <div
-      className={`formula-block mx-auto max-w-col text-center border-t border-b border-border relative before:content-[''] before:absolute before:top-1/2 before:w-sm before:h-px before:bg-accent before:-translate-y-1/2 before:-left-[8px] after:content-[''] after:absolute after:top-1/2 after:w-sm after:h-px after:bg-accent after:-translate-y-1/2 after:-right-[8px] max-sm:py-lg max-sm:px-lg ${size === 'small' ? 'my-xl py-lg px-xl' : size === 'large' ? 'my-2xl py-2xl px-2xl' : 'my-2xl py-lg px-2xl'}`}
+      className={`formula-block mx-auto max-w-col text-center border-t border-b border-border relative before:content-[''] before:absolute before:top-1/2 before:w-sm before:h-px before:bg-accent before:-translate-y-1/2 before:-left-sm after:content-[''] after:absolute after:top-1/2 after:w-sm after:h-px after:bg-accent after:-translate-y-1/2 after:-right-sm max-sm:py-lg max-sm:px-lg ${size === 'small' ? 'my-xl py-lg px-xl' : size === 'large' ? 'my-2xl py-2xl px-2xl' : 'my-2xl py-lg px-2xl'}`}
       role="math"
     >
-      <div className={`formula-content font-4 [font-style:italic] font-normal leading-[1.55] tracking-normal text-text [font-feature-settings:"ss01","lnum"] [&_sub]:text-[.62em] [&_sub]:italic [&_sub]:leading-none [&_sub]:relative [&_sub]:tracking-normal [&_sub]:align-[-.32em] [&_sup]:text-[.62em] [&_sup]:italic [&_sup]:leading-none [&_sup]:relative [&_sup]:tracking-normal [&_sup]:align-[.55em] [&_var]:not-italic [&_.upright]:not-italic [&_.formula-var]:text-accent [&_.formula-var]:italic max-sm:text-8 ${size === 'small' ? 'text-8' : 'text-8'}`}>
+      <div className={`formula-content font-4 [font-style:italic] font-normal leading-4 tracking-normal text-text [font-feature-settings:"ss01","lnum"] [&_sub]:text-[.62em] [&_sub]:italic [&_sub]:leading-none [&_sub]:relative [&_sub]:tracking-normal [&_sub]:align-[-.32em] [&_sup]:text-[.62em] [&_sup]:italic [&_sup]:leading-none [&_sup]:relative [&_sup]:tracking-normal [&_sup]:align-[.55em] [&_var]:not-italic [&_.upright]:not-italic [&_.formula-var]:text-accent [&_.formula-var]:italic max-sm:text-8 ${size === 'small' ? 'text-8' : 'text-8'}`}>
         {children}
       </div>
       {caption && <div className="formula-caption mt-md font-3 text-1 tracking-4 uppercase text-text-muted">{caption}</div>}
@@ -57,11 +57,11 @@ interface FormulaHTMLProps {
 export function FormulaHTML({ html, caption, size = 'normal' }: FormulaHTMLProps) {
   return (
     <div
-      className={`formula-block mx-auto max-w-col text-center border-t border-b border-border relative before:content-[''] before:absolute before:top-1/2 before:w-sm before:h-px before:bg-accent before:-translate-y-1/2 before:-left-[8px] after:content-[''] after:absolute after:top-1/2 after:w-sm after:h-px after:bg-accent after:-translate-y-1/2 after:-right-[8px] max-sm:py-lg max-sm:px-lg ${size === 'small' ? 'my-xl py-lg px-xl' : size === 'large' ? 'my-2xl py-2xl px-2xl' : 'my-2xl py-lg px-2xl'}`}
+      className={`formula-block mx-auto max-w-col text-center border-t border-b border-border relative before:content-[''] before:absolute before:top-1/2 before:w-sm before:h-px before:bg-accent before:-translate-y-1/2 before:-left-sm after:content-[''] after:absolute after:top-1/2 after:w-sm after:h-px after:bg-accent after:-translate-y-1/2 after:-right-sm max-sm:py-lg max-sm:px-lg ${size === 'small' ? 'my-xl py-lg px-xl' : size === 'large' ? 'my-2xl py-2xl px-2xl' : 'my-2xl py-lg px-2xl'}`}
       role="math"
     >
       <div
-        className={`formula-content font-4 [font-style:italic] font-normal leading-[1.55] tracking-normal text-text [font-feature-settings:"ss01","lnum"] [&_sub]:text-[.62em] [&_sub]:italic [&_sub]:leading-none [&_sub]:relative [&_sub]:tracking-normal [&_sub]:align-[-.32em] [&_sup]:text-[.62em] [&_sup]:italic [&_sup]:leading-none [&_sup]:relative [&_sup]:tracking-normal [&_sup]:align-[.55em] [&_var]:not-italic [&_.upright]:not-italic [&_.formula-var]:text-accent [&_.formula-var]:italic max-sm:text-8 ${size === 'small' ? 'text-8' : 'text-8'}`}
+        className={`formula-content font-4 [font-style:italic] font-normal leading-4 tracking-normal text-text [font-feature-settings:"ss01","lnum"] [&_sub]:text-[.62em] [&_sub]:italic [&_sub]:leading-none [&_sub]:relative [&_sub]:tracking-normal [&_sub]:align-[-.32em] [&_sup]:text-[.62em] [&_sup]:italic [&_sup]:leading-none [&_sup]:relative [&_sup]:tracking-normal [&_sup]:align-[.55em] [&_var]:not-italic [&_.upright]:not-italic [&_.formula-var]:text-accent [&_.formula-var]:italic max-sm:text-8 ${size === 'small' ? 'text-8' : 'text-8'}`}
         dangerouslySetInnerHTML={{ __html: html }}
       />
       {caption && <div className="formula-caption mt-md font-3 text-1 tracking-4 uppercase text-text-muted">{caption}</div>}

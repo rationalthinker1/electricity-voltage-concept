@@ -59,7 +59,7 @@ export function Drawer({
     >
       <div
         className={clsx(
-          'fixed bg-color-2 border border-border-2 shadow-3 flex flex-col overflow-hidden',
+          'fixed bg-bg-elevated border border-border-2 shadow-3 flex flex-col overflow-hidden',
           side === 'right' && 'top-0 right-0 bottom-0 w-[min(420px,92vw)] border-l border-l-border-2',
           side === 'bottom' && 'left-0 right-0 bottom-0 max-h-[80vh] border-t border-t-border-2 rounded-t-6',
         )}
@@ -68,7 +68,7 @@ export function Drawer({
           <div className="font-2 italic text-7 text-text">{title}</div>
           <button type="button" className="icon-btn border-0 text-8 py-0 px-sm" onClick={onClose} aria-label="Close drawer">×</button>
         </header>
-        <div className="p-[18px] overflow-auto flex-1">{children}</div>
+        <div className="p-lg overflow-auto flex-1">{children}</div>
       </div>
     </dialog>
   );

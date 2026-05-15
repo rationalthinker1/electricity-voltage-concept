@@ -23,7 +23,7 @@ export function Sidebar({
   return (
     <aside
       className={clsx(
-        'sticky top-0 self-start w-panel-sm max-h-screen overflow-auto bg-color-2 border border-border-1 rounded-6 flex flex-col transition-[width] duration-150 ease-in-out',
+        'sticky top-0 self-start w-panel-sm max-h-screen overflow-auto bg-bg-elevated border border-border-1 rounded-6 flex flex-col transition-[width] duration-150 ease-in-out',
         side === 'right' ? 'border-l-border-2' : 'border-r-border-2',
         collapsed && 'w-3xl overflow-hidden',
         className,

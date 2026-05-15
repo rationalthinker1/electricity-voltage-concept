@@ -222,7 +222,7 @@ function MapPage() {
       </div>
 
       <div
-        className="card-surface rounded-[12px] p-[12px] overflow-auto [-webkit-overflow-scrolling:touch]"
+        className="card-surface rounded-7 p-md overflow-auto [-webkit-overflow-scrolling:touch]"
         role="region"
         aria-label="Chapter prerequisite graph"
       >

@@ -38,9 +38,9 @@ function Home() {
               className="group bg-bg py-3xl px-3xl no-underline text-inherit flex flex-col gap-md transition-colors duration-150 relative min-h-panel hover:bg-bg-card-hover"
             >
               <span className="font-3 text-2 text-accent tracking-4 uppercase">Chapter {c.number}</span>
-              <span className="font-2 font-light text-9 leading-[1.05] tracking-1 text-text">{c.title}</span>
+              <span className="font-2 font-light text-9 leading-1 tracking-1 text-text">{c.title}</span>
               <span className="font-2 italic font-light text-7 text-accent -mt-sm">{c.subtitle}</span>
-              <span className="text-text-dim text-5 leading-[1.55]">{c.blurb}</span>
+              <span className="text-text-dim text-5 leading-4">{c.blurb}</span>
               <span className="font-3 text-1 text-text-muted tracking-4 uppercase mt-auto pt-lg flex items-center gap-sm group-hover:text-accent">Read chapter →</span>
             </Link>
           ))}

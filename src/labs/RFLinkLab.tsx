@@ -288,7 +288,7 @@ export default function RFLinkLab() {
           <button
             key={preset.id}
             type="button"
-            className="eyebrow-muted tracking-3 px-md py-sm rounded-pill border border-border-1 bg-color-3 text-text-dim hover:text-text hover:border-border-2"
+            className="eyebrow-muted tracking-3 px-md py-sm rounded-pill border border-border-1 bg-bg-card text-text-dim hover:text-text hover:border-border-2"
             onClick={() => applyPreset(preset)}
           >
             {preset.label}

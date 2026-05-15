@@ -60,7 +60,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
   }, [chaptersOpen]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[998] py-xl px-3xl flex justify-between items-center border-b border-border bg-[linear-gradient(180deg,var(--nav-bg-start),var(--nav-bg-end))] backdrop-blur-[12px] max-md:py-lg max-md:px-xl max-md:flex-wrap max-md:gap-md">
+    <nav className="fixed top-0 left-0 right-0 z-2 py-xl px-3xl flex justify-between items-center border-b border-border bg-[linear-gradient(180deg,var(--nav-bg-start),var(--nav-bg-end))] backdrop-blur-[12px] max-md:py-lg max-md:px-xl max-md:flex-wrap max-md:gap-md">
       <Link to="/" className="title-display font-light text-7 tracking-1 no-underline [&_span]:text-accent">
         Field <span>·</span> Theory
       </Link>
@@ -84,7 +84,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
             <div
               role="menu"
               aria-label="All chapters"
-              className="fixed top-[72px] left-1/2 -translate-x-1/2 z-[999] w-[min(1100px,calc(100vw-40px))] max-h-[calc(100vh-100px)] overflow-y-auto py-2xl px-2xl rounded-5 border border-border-2 bg-bg-elevated shadow-[0_24px_60px_var(--shadow-strong)]"
+              className="fixed top-4xl left-1/2 -translate-x-1/2 z-2 w-[min(1100px,calc(100vw-40px))] max-h-[calc(100vh-100px)] overflow-y-auto py-2xl px-2xl rounded-5 border border-border-2 bg-bg-elevated shadow-[0_24px_60px_var(--shadow-strong)]"
             >
               <div className="flex items-baseline justify-between mb-xl pb-md border-b border-border">
                 <span className="eyebrow-muted tracking-4">All chapters</span>
@@ -108,7 +108,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
                         'font-3 text-3 text-right tabular-nums',
                         activeChapter === c.slug ? 'text-accent' : 'text-text-muted',
                       )}>{c.number}</span>
-                      <span className="font-1 text-5 leading-[1.35]">{c.title}</span>
+                      <span className="font-1 text-5 leading-3">{c.title}</span>
                     </Link>
                   </li>
                 ))}
@@ -164,7 +164,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
         <div className="meta-1 max-md:hidden">{pageMeta}</div>
         <button
           type="button"
-          className="inline-flex items-center gap-sm min-h-2xl px-md border border-border-2 rounded-pill bg-color-3 eyebrow-muted text-1 leading-none cursor-pointer transition-colors hover:text-text hover:border-accent"
+          className="inline-flex items-center gap-sm min-h-2xl px-md border border-border-2 rounded-pill bg-bg-card eyebrow-muted text-1 leading-none cursor-pointer transition-colors hover:text-text hover:border-accent"
           onClick={onCycleTheme}
           aria-label={`Theme: ${themeMode}. Effective theme: ${resolvedTheme}. Activate to cycle theme mode.`}
           title={`Theme: ${themeMode}`}
@@ -173,7 +173,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
             className={clsx(
               'relative w-lg h-lg border-[1.5px] border-current rounded-pill',
               resolvedTheme === 'light' && 'bg-current shadow-[0_0_0_3px_var(--accent-soft)]',
-              resolvedTheme === 'dark' && "after:content-[''] after:absolute after:-top-[2px] after:left-[5px] after:w-md after:h-md after:rounded-pill after:bg-bg",
+              resolvedTheme === 'dark' && "after:content-[''] after:absolute after:-top-xxs after:left-xs after:w-md after:h-md after:rounded-pill after:bg-bg",
             )}
             aria-hidden="true"
           />

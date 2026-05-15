@@ -127,13 +127,13 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
       </div>
 
       {toast && (
-        <div className="fixed bottom-[28px] left-1/2 -translate-x-1/2 bg-bg-elevated border border-teal text-teal py-md px-lg rounded-pill font-3 text-3 tracking-3 uppercase z-[1000] shadow-2 animate-[chap-toast-in_.25s_ease-out]" role="status" aria-live="polite">{toast}</div>
+        <div className="fixed bottom-2xl left-1/2 -translate-x-1/2 bg-bg-elevated border border-teal text-teal py-md px-lg rounded-pill font-3 text-3 tracking-3 uppercase z-3 shadow-2 animate-[chap-toast-in_.25s_ease-out]" role="status" aria-live="polite">{toast}</div>
       )}
 
       {quiz && (
         <div className="mt-2xl">
           {quizStatus.passed ? (
-            <div className="flex items-center justify-between gap-lg py-lg px-lg my-xl card-surface bg-color-2 border-l-[3px] border-l-teal font-1 text-5 text-text">
+            <div className="flex items-center justify-between gap-lg py-lg px-lg my-xl card-surface bg-bg-elevated border-l-3 border-l-teal font-1 text-5 text-text">
               <div className="flex-1 [&_strong]:font-3 [&_strong]:text-teal">
                 Quiz passed (<strong>{Math.round(quizStatus.bestScore * 100)}%</strong>).
                 You&rsquo;ve already met the mastery threshold for this chapter.

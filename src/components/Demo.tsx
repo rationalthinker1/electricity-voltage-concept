@@ -65,7 +65,7 @@ export function Demo({ figure, title, question, children, caption, deeperLab }: 
         : 'bg-canvas-bg [contain:layout_paint_style] [&_canvas]:block [&_canvas]:w-full min-h-panel'}>
         {shouldRenderBody ? children : null}
       </div>
-      {caption && <figcaption className="py-lg px-xl text-4 text-text-muted italic leading-[1.5] border-t border-border">{caption}</figcaption>}
+      {caption && <figcaption className="py-lg px-xl text-4 text-text-muted italic leading-4 border-t border-border">{caption}</figcaption>}
     </figure>
   );
 }

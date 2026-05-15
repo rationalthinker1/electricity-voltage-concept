@@ -13,8 +13,8 @@ export function Panel({ title, children, variant = 'inputs' }: PanelProps) {
   return (
     <div className={
       variant === 'inputs'
-        ? 'bg-bg-card border border-border rounded-[4px] p-[28px]'
-        : 'bg-bg-card border border-border rounded-[4px] p-[28px] flex flex-col'
+        ? 'bg-bg-card border border-border rounded-3 p-2xl'
+        : 'bg-bg-card border border-border rounded-3 p-2xl flex flex-col'
     }>
       <div className={`font-3 text-1 uppercase tracking-4 mb-xl flex items-center gap-md before:content-[''] before:w-icon before:h-xxs ${titleAccent}`}>{title}</div>
       {children}
@@ -40,7 +40,7 @@ interface LabGridProps {
 export function LabGrid({ canvas, legend, inputs, outputs }: LabGridProps) {
   return (
     <>
-      <div className="bg-color-canvas-bg border border-border rounded-[4px] overflow-hidden relative [&_canvas]:block [&_canvas]:w-full">
+      <div className="bg-color-canvas-bg border border-border rounded-3 overflow-hidden relative [&_canvas]:block [&_canvas]:w-full">
         {canvas}
         {legend && (
           <div className="flex gap-xl flex-wrap py-lg px-xl border-t border-border bg-accent-soft">
