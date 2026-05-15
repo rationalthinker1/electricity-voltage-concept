@@ -563,9 +563,8 @@ function Scope({ data }: ScopeProps) {
     if (!c) return;
     const colors = getCanvasColors();
     const dpr = window.devicePixelRatio || 1;
-    const w = c.parentElement?.clientWidth ?? 320;
+    const w = c.clientWidth || c.parentElement?.clientWidth || 320;
     const h = 80;
-    c.style.width = w + 'px';
     c.style.height = h + 'px';
     c.width = Math.floor(w * dpr);
     c.height = Math.floor(h * dpr);
