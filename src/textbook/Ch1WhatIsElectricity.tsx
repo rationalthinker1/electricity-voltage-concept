@@ -87,7 +87,7 @@ export default function Ch1WhatIsElectricity() {
         <Term def={<><strong className="text-text font-medium">Coulomb's law</strong> — the force between two point charges falls off as the inverse square of their separation: <em className="italic text-text">F = k Q₁Q₂/r²</em>. Like signs repel, unlike attract.</>}>Coulomb's law</Term>{' '}
         <Cite id="coulomb-1785" in={SOURCES} />:
       </p>
-      <Formula id="coulomb-force" />
+      <Formula large id="coulomb-force" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">F</strong> is the magnitude of the force each charge exerts on the other (in newtons),
         <strong className="text-text font-medium"> Q₁</strong> and <strong className="text-text font-medium">Q₂</strong> are the two charges (in coulombs, signed),
@@ -208,7 +208,7 @@ export default function Ch1WhatIsElectricity() {
         physical thing, defined at every point, that tells whatever charge happens to be there what force to feel. The
         symbol is <strong className="text-text font-medium">E</strong>, and its definition is direct:
       </p>
-      <Formula id="electric-field-def" />
+      <Formula large id="electric-field-def" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">E</strong> is the electric-field vector at the point of interest (units: N/C, equivalently V/m),
         <strong className="text-text font-medium"> F</strong> is the force the field exerts on a small <em className="italic text-text">test charge</em> placed at that point, and
@@ -219,7 +219,7 @@ export default function Ch1WhatIsElectricity() {
         With the field framework in hand, Coulomb's law takes a slightly different shape. A point charge
         <strong className="text-text font-medium"> Q</strong> produces a field whose magnitude at distance <strong className="text-text font-medium">r</strong> from it is
       </p>
-      <Formula id="electric-field-point" />
+      <Formula large id="electric-field-point" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">|E|</strong> is the magnitude of the field (N/C), <strong className="text-text font-medium">k</strong> is Coulomb's constant,
         <strong className="text-text font-medium"> Q</strong> is the source charge (signed, in coulombs), and <strong className="text-text font-medium">r</strong> is the distance from

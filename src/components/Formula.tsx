@@ -22,8 +22,6 @@ import { useMemo, type ReactNode } from 'react';
 
 import { FORMULAS, type FormulaId } from '@/lib/formulas';
 
-type FormulaSize = 'normal' | 'small' | 'large';
-
 interface FormulaProps {
   /** Registry id — preferred for named equations. */
   id?: FormulaId;
@@ -33,15 +31,19 @@ interface FormulaProps {
   children?: ReactNode;
   /** Optional small caption under the formula (e.g., source / name). */
   caption?: ReactNode;
-  /** If set, render at a smaller size — useful inside FAQ answers etc. */
-  size?: FormulaSize;
+  /** Render at the default size (applies when neither large nor small is set). */
+  normal?: boolean;
+  /** Render at a larger size. */
+  large?: boolean;
+  /** Render at a smaller size — useful inside FAQ answers etc. */
+  small?: boolean;
   /** Optional override for the aria-label / plain-text form. */
   ariaLabel?: string;
 }
 
-function blockSizing(size: FormulaSize): string {
-  if (size === 'small') return 'my-xl py-lg px-xl';
-  if (size === 'large') return 'my-2xl py-2xl px-2xl';
+function blockSizing(large: boolean | undefined, small: boolean | undefined): string {
+  if (small) return 'my-xl py-lg px-xl';
+  if (large) return 'my-2xl py-lg px-2xl text-8';
   return 'my-2xl py-lg px-2xl';
 }
 
@@ -75,13 +77,13 @@ function resolve(id: FormulaId | undefined, tex: string | undefined, ariaLabel: 
   return null;
 }
 
-export function Formula({ id, tex, children, caption, size = 'normal', ariaLabel }: FormulaProps) {
+export function Formula({ id, tex, children, caption, large, small, ariaLabel }: FormulaProps) {
   const resolved = resolve(id, tex, ariaLabel);
   const html = useMemo(() => (resolved ? renderTeX(resolved.tex, true) : null), [resolved?.tex]);
 
   return (
     <div
-      className={`formula-block mx-auto text-center relative border-t border-b border-border before:content-[''] before:absolute before:top-1/2 before:w-sm before:h-px before:bg-accent before:-translate-y-1/2 before:-left-sm after:content-[''] after:absolute after:top-1/2 after:w-sm after:h-px after:bg-accent after:-translate-y-1/2 after:-right-sm max-sm:py-lg max-sm:px-lg ${blockSizing(size)}`}
+      className={`formula-block mx-auto text-center relative border-t border-b border-border before:content-[''] before:absolute before:top-1/2 before:w-sm before:h-px before:bg-accent before:-translate-y-1/2 before:-left-sm after:content-[''] after:absolute after:top-1/2 after:w-sm after:h-px after:bg-accent after:-translate-y-1/2 after:-right-sm max-sm:py-lg max-sm:px-lg ${blockSizing(large, small)}`}
       role="math"
       aria-label={resolved?.plain}
     >
