@@ -1,10 +1,31 @@
 {
   "name": "field-theory",
-  "version": "0.2.0",
-  "description": "Interactive essay on voltage and energy flow",
   "private": true,
+  "version": "0.3.0",
+  "type": "module",
+  "description": "Field · Theory — an interactive electromagnetism textbook",
   "scripts": {
-    "dev": "npx http-server -p 8080 -c-1 .",
-    "start": "npx http-server -p 8080 -c-1 ."
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tanstack/react-router": "^1.95.0",
+    "@types/katex": "^0.16.8",
+    "clsx": "^2.1.1",
+    "katex": "^0.16.46",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.0",
+    "@tanstack/router-plugin": "^1.95.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
   }
 }

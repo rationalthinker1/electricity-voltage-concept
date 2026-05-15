@@ -1,764 +1,742 @@
-# PROJECT.md — Field · Theory
+# CLAUDE.md — Field · Theory
 
-> A complete record of this project: the why, the physics, the design, the spec, and the status.
-> Read this end-to-end before writing code. It is the single source of truth.
+> A complete record for any future Claude session. The why, the architecture,
+> the conventions, and the rules. Read this end-to-end before editing.
 
 ---
 
 ## 0. TL;DR
 
-An interactive web essay teaching how electricity actually works — voltage as a field property, energy flow via the Poynting vector, and the orders-of-magnitude gap between electron drift and signal propagation. Plain HTML + vanilla JS + CSS, no build step.
+An interactive electromagnetism textbook. **Forty-two chapters** of narrative
+prose with embedded interactive demos (now 100+), plus **sixteen equation labs**
+in an appendix (each restructured to Context / Formula / Intuition / Reasoning /
+Derivation / 10+ worked problems with hidden solutions). Built on React + Vite +
+TypeScript + TanStack Router. The site's core promise: **every numerical or
+historical claim is cited to a real primary source. No AI hallucinations.**
 
 ```
-Built and working:
-  index.html, assets/styles.css, assets/shared.js, pages/potential.html
-
-Needs building (specced below):
-  pages/ohms-law.html  pages/poynting.html  pages/drift.html
+npm install
+npm run dev        # http://localhost:5173
+npm run build      # tsc --noEmit && vite build → dist/
+npm run typecheck
 ```
 
-Open `index.html` directly, or `npx http-server -p 8080 -c-1` from the project root.
-
 ---
 
-## 1. Origin & Vision
+## 1. Origin & mission
 
-### The thesis
+The book opens with a thesis: *most people learn electricity through a
+broken metaphor — water in a pipe — and the real story is stranger and more
+beautiful*. The narrative builds from charge and field (Ch.1) through
+voltage and current (Ch.2) up to the Poynting capstone (Ch.8: "energy flows
+through the field, not the wire") and onward through EM waves, Maxwell's
+synthesis, special relativity, circuit theory, network analysis, semiconductors,
+Fourier analysis, filters/op-amps, materials, optics, antennas, motors,
+generators, magnetically coupled circuits, transformers, rectifiers/inverters,
+and batteries (Ch.26).
 
-Most people learn electricity through a broken metaphor: electrons in a wire are like water in a pipe. The battery is the pump, the wire is the hose, the bulb is the spigot. **This is wrong in nearly every way that matters.**
+Chapters 27–40 are the **house electrician track**: the same physics applied
+to a real residential service, from the grid drop and panel through branch
+circuits, receptacles, big loads, NEC safety, the smart meter, replacements
+and retrofits, outdoor/wet locations, and the grounding electrode system.
+Chapters 41–42 are capstones — an electric-vehicle powertrain (Ch.41) and a
+fiber-optic communication link (Ch.42) — that pull the rest of the book
+together on a single working system.
 
-- Electrons in copper drift at **~0.02 mm/s** under household current — slower than a snail.
-- The lightbulb turns on instantly anyway because the **electromagnetic signal** propagates at ~⅔ the speed of light.
-- **The energy doesn't flow through the wire at all.** It flows through the empty space surrounding the wire, in the form of the electromagnetic field. This is the Poynting vector view — written down by Maxwell and finished by John Henry Poynting in 1884.
-
-The wire isn't carrying the energy. The wire is the destination. Energy pours in through the field on every side and gets absorbed wherever there's resistance.
-
-This is the picture Richard Feynman called "crazy" in his lectures, and then taught anyway, because it's right.
-
-### What this site does
-
-A multi-page interactive essay grounded in actual physics literature (Feynman Vol II Ch. 27; Davis & Kaplan, *Am. J. Phys.* 2011; Morris & Styer, *Am. J. Phys.* 2012). It walks the reader through:
-
-1. **The essay (`index.html`)** — five short sections introducing the ideas, with animated visualizations for each. Voltage as potential difference, the two-speeds paradox (drift vs. signal), the Poynting vector, the wire as field guide, and finally a hub that links to four interactive labs.
-
-2. **Four interactive labs (`pages/*.html`)** — one per fundamental equation. Each page has a full-width force visualization at the top with sliders/inputs that change the variables, live-updating outputs, and a long-form prose deep-dive below that doesn't shy from the math.
-
-### Audience
-
-A technical reader who wants the real picture. Senior dev, physics-curious, comfortable with basic calculus and vector math. Wants to be challenged, not coached. No "as we will see" filler. No watered-down explanations. Use real math, use real numbers.
-
----
-
-## 2. Physics Foundations
-
-The literature backing the site, with the specific facts that show up in the content.
-
-### Source 1 — Feynman Lectures Vol II, Ch. 27 (Field Energy and Field Momentum)
-
-[feynmanlectures.caltech.edu/II_27.html](https://www.feynmanlectures.caltech.edu/II_27.html)
-
-> "Since the wire has resistance, there is an electric field along it, driving the current. Because there is a potential drop along the wire, there is also an electric field just outside the wire, parallel to the surface… The **E** and **B** are at right angles; therefore there is a Poynting vector directed radially inward, as shown in the figure. **There is a flow of energy into the wire all around.** It is, of course, equal to the energy being lost in the wire in the form of heat."
-
-Feynman explicitly frames this as the "crazy" but correct picture: electrons get their energy to generate heat because energy flows in from the surrounding field.
-
-### Source 2 — Davis & Kaplan, *Am. J. Phys.* 79, 2011
-
-[arxiv.org/pdf/1207.2173](https://arxiv.org/pdf/1207.2173)
-
-A full numerical treatment of the Poynting vector around a circular circuit (battery + ring of resistive wire). Confirms that energy flows through every point in space surrounding the circuit, with the net flow into the resistive wire per unit time equaling the power generated by the battery. Three-dimensional, not just an idealized 2D toy.
-
-### Source 3 — Morris & Styer, *Am. J. Phys.* 2012
-
-[isis2.cc.oberlin.edu/physics/dstyer/Electrodynamics/VisualizingZ.pdf](https://isis2.cc.oberlin.edu/physics/dstyer/Electrodynamics/VisualizingZ.pdf)
-
-Practical visualization of Poynting flow in circuits, including the 2D toy-model with infinite parallel rails. Confirms the Poynting flow lines are along equipotentials in the 2D case.
-
-### Key numerical facts the site relies on
-
-| Quantity | Value | Source |
-|---|---|---|
-| Electron drift velocity, 12-gauge Cu wire @ 20 A | ~0.02 mm/s | LibreTexts (OpenStax Univ. Physics II, §9.3) |
-| Signal propagation in copper | ~⅔ c ≈ 2×10⁸ m/s | LibreTexts §9.3 |
-| Time for one electron to traverse 1 m at 0.02 mm/s | ~14 hours | direct calc |
-| Drude collision time τ in copper @ 300K | ~2×10⁻¹⁴ s | standard textbook |
-| Free electron density n_Cu | 8.5×10²⁸ /m³ | standard |
-| Thermal (Fermi) velocity in Cu | ~1.6×10⁶ m/s | quantum mechanics |
-
-### Core equations the site teaches
-
-**Potential / Voltage**
-$$V_{ab} = V_b - V_a = -\int_a^b \mathbf{E} \cdot d\boldsymbol{\ell}$$
-For point charges, the integration gives the familiar $V = kQ/r$. The line integral is path-independent for static fields (E is conservative, ∇×E = 0).
-
-**Microscopic Ohm's law**
-$$\mathbf{J} = \sigma \mathbf{E}$$
-Current density is proportional to field. Conductivity σ in copper is ~6×10⁷ S/m. Drude model gives $\sigma = nq^2\tau/m_e$.
-
-**Poynting vector**
-$$\mathbf{S} = \frac{1}{\mu_0} \mathbf{E} \times \mathbf{B}$$
-Energy flux per unit area, in W/m². For a cylindrical wire of radius $a$, length $L$, carrying current $I$ with voltage drop $V$:
-- $E = V/L$ along the wire's axis (inside and just outside the conductor surface)
-- $B = \mu_0 I / (2\pi a)$ at the surface (Ampère's law)
-- $|S|_{\text{surface}} = EB/\mu_0 = VI / (2\pi a L)$
-- $\oint \mathbf{S} \cdot d\mathbf{A} = |S| \cdot 2\pi a L = VI$ exactly — the Poynting flux integrated over the wire's surface equals the power dissipated. **This is the punchline.**
-
-**Drift velocity**
-$$v_d = \frac{I}{n q A}$$
-For copper at 1 A through 2.5 mm²: $v_d = 1/(8.5{\times}10^{28} \cdot 1.6{\times}10^{-19} \cdot 2.5{\times}10^{-6}) ≈ 2.9{\times}10^{-5}$ m/s ≈ 0.03 mm/s.
-
----
-
-## 3. Design Philosophy
-
-### Aesthetic direction
-
-Editorial scientific publication meets vintage electrical instrument. Like a high-end physics journal designed by someone who loves vacuum tubes and old oscilloscopes. Dark, warm, refined. Not "tech bro dashboard." Not "Khan Academy pastel." Not "generic AI gradient."
+Audience: a technical reader who wants the real picture. Senior-engineer or
+physics-curious. Comfortable with vector calculus, real numbers, and the
+sentence "the inverse-square law is a fact about space being three-dimensional."
+No hand-waving. No filler.
 
 ### Hard rules
 
-- **No frameworks.** Vanilla HTML/CSS/JS. The whole point is that this stays portable, editable, and runnable from `file://`.
-- **No build step.** Save the file, refresh the browser.
-- **No purple gradients on white backgrounds.** No emoji. No "✨".
-- **No system fonts** (Inter, Roboto, Arial). The fonts are intentional.
-- **Real units, real constants, real values.** Visual scaling for sliders is OK; faking the underlying math is not.
+- **No hallucinated science.** Every numerical value and every historical
+  attribution in chapter prose, FAQ answers, case studies, and lab pages
+  must resolve against a real entry in `src/lib/sources.ts`. If a claim
+  can't be sourced, **soften it or remove it** — never invent.
+- **No emoji.** Anywhere. Not in prose, not in code comments, not in
+  commit messages.
+- **No new colors.** The palette is fixed: amber primary, teal secondary,
+  pink/blue reserved for charge polarity. See §4.
+- **Prefer Tailwind utilities over new CSS blocks.** Tailwind v4 is the
+  default styling surface for components. Keep design tokens, theme setup,
+  global element rules, and genuinely shared patterns in
+  `src/styles/main.css`, but do not add one-off component selectors there
+  when the same styling can live as utilities in JSX. No CSS-in-JS, no
+  PostCSS plugins beyond what Vite + Tailwind ship.
 
-### Typography
+---
 
-| Role | Font | Source |
+## 2. Stack
+
+- **React 18** (functional components + hooks; no class components)
+- **TypeScript** strict mode (`noUnusedLocals`, `noUnusedParameters`,
+  `noFallthroughCasesInSwitch` all on)
+- **Vite 5** bundler / dev server
+- **TanStack Router** with the Vite plugin for file-based routing.
+  Routes auto-generate `src/routeTree.gen.ts` — that file is gitignored.
+- **No state library** — `useState`/`useReducer` are sufficient. Canvas
+  animations use refs + `requestAnimationFrame`.
+- **No charting library** — every visualization is hand-drawn on a
+  `<canvas>` to match the typography of the rest of the site.
+
+Fonts: **Fraunces** (display + pullout italic), **DM Sans** (body),
+**JetBrains Mono** (labels, numbers, code), **STIX Two Text** (formulas
+only — AMS-designed math typography).
+
+---
+
+## 3. Project structure
+
+```
+field-theory/
+├── CLAUDE.md                 ← this file
+├── README.md
+├── index.html                ← Vite entry
+├── package.json
+├── vite.config.ts
+├── tsconfig.json
+├── tsconfig.node.json
+└── src/
+    ├── main.tsx              ← bootstrap + RouterProvider
+    ├── routeTree.gen.ts      ← generated by TanStack plugin (gitignored)
+    ├── routes/
+    │   ├── __root.tsx                 ← TopNav + Outlet + progress bar
+    │   ├── index.tsx                  ← /            — chapter TOC (front door)
+    │   ├── textbook.$chapterSlug.tsx  ← /textbook/{slug}
+    │   ├── labs.$slug.tsx             ← /labs/{slug}
+    │   └── reference.tsx              ← /reference   — equation lab TOC (appendix)
+    ├── textbook/
+    │   ├── data/chapters.ts        ← chapter manifest (single source of truth)
+    │   ├── Ch1WhatIsElectricity.tsx ... Ch26ModernBatteries.tsx (26 chapter files)
+    │   └── demos/                  ← 100+ small embedded demo components
+    ├── labs/
+    │   ├── data/manifest.ts        ← equation-lab manifest
+    │   └── CoulombLab.tsx ... PoyntingLab.tsx               (16 lab files)
+    ├── components/                 ← shared building blocks
+    │   ├── ChapterShell.tsx        ← chapter page layout
+    │   ├── LabShell.tsx            ← lab page layout
+    │   ├── LabLayout.tsx           ← LabGrid, Panel, LegendItem
+    │   ├── Hero.tsx                ← equation-lab hero block
+    │   ├── TopNav.tsx              ← sticky nav (26 chapter pills + Labs)
+    │   ├── PageNav.tsx             ← prev/next at end of every lab
+    │   ├── Demo.tsx                ← embedded demo card (chapters)
+    │   │                             also exports DemoControls, MiniSlider,
+    │   │                             MiniToggle, MiniReadout
+    │   ├── Slider.tsx              ← full-size range input (labs)
+    │   ├── Readout.tsx             ← output row (labs)
+    │   ├── MaterialSelect.tsx      ← material dropdown
+    │   ├── AutoResizeCanvas.tsx    ← DPR-aware canvas
+    │   ├── Formula.tsx             ← <Formula>, <FormulaHTML>, <Var>, <InlineMath>
+    │   ├── Num.tsx                 ← <Num value={x}/> — proper JSX with <sup>
+    │   ├── SourcesList.tsx         ← <SourcesList>, <Cite>
+    │   ├── FAQ.tsx                 ← <FAQ>, <FAQItem>
+    │   ├── CaseStudy.tsx           ← <CaseStudies>, <CaseStudy>
+    │   ├── TryIt.tsx               ← <TryIt question=… answer=… /> exercise card
+    │   ├── Term.tsx                ← <Term def="…"> inline glossary popover
+    │   └── Prose.tsx               ← MathBlock, Pullout, Kbd
+    ├── lib/
+    │   ├── physics.ts              ← PHYS (CODATA), MATERIALS, formatters
+    │   ├── sources.ts              ← SOURCES registry — the citation catalog
+    │   └── useAnimationFrame.ts
+    └── styles/main.css             ← all design tokens + components
+```
+
+### Chapter map (current numbering, 26 chapters)
+
+| # | Slug | Title |
 |---|---|---|
-| Display / math | **Fraunces** (variable, italic-capable, 300/400 wt) | Google Fonts |
-| Body | **DM Sans** (300/400/500/600) | Google Fonts |
-| Numbers / labels / monospace | **JetBrains Mono** (300/400/500) | Google Fonts |
+| 1 | `what-is-electricity` | Charge and field |
+| 2 | `voltage-and-current` | Voltage and current |
+| 3 | `resistance-and-power` | Resistance and power |
+| 4 | `how-a-resistor-works` | How a resistor works |
+| 5 | `capacitors` | Capacitors |
+| 6 | `magnetism` | Magnetism |
+| 7 | `induction` | Induction |
+| 8 | `energy-flow` | Where the energy actually flows (Poynting capstone) |
+| 9 | `em-waves` | Electromagnetic waves |
+| 10 | `maxwell` | Maxwell's synthesis |
+| 11 | `relativity` | Relativity and EM |
+| 12 | `circuits-and-ac` | Circuits, AC, and impedance |
+| 13 | `network-analysis` | Network analysis methods (mesh, nodal, Norton, Y-Δ, max-power) |
+| 14 | `semiconductors` | Semiconductors and transistors |
+| 15 | `fourier-harmonics` | Fourier and harmonic analysis |
+| 16 | `filters-op-amps-tlines` | Filters, op-amps, and transmission lines |
+| 17 | `materials` | Materials (ε, μ, polarization, magnetic domains) |
+| 18 | `optics` | Optics from EM |
+| 19 | `antennas` | Antennas and radiation |
+| 20 | `motors` | Motors |
+| 21 | `generators` | Generators and the grid |
+| 22 | `magnetically-coupled-circuits` | Magnetically coupled circuits |
+| 23 | `transformers` | Transformers |
+| 24 | `rectifiers-and-inverters` | Rectifiers and inverters |
+| 25 | `batteries` | How a battery works |
+| 26 | `modern-batteries` | Modern batteries (Li-ion, solid-state, flow) |
 
-The Fraunces italic at light weight is the signature look. It shows up in big display headlines (with `<em>` accenting key words in orange) and in display formulas.
+Renumbers happen periodically as new chapters slot in. The **slug** is the
+stable URL; the chapter number can shift. Always look up by slug in
+`src/textbook/data/chapters.ts`, never hardcode the integer.
 
-### Color tokens
+---
 
-All defined as CSS variables in `assets/styles.css`. Use these. Do not invent new colors.
+## 4. Design system
+
+### Color tokens (in `src/styles/main.css`)
 
 ```css
---bg:           #0a0a0b   /* warm near-black */
+--bg:           #0a0a0b           /* warm near-black */
 --bg-elevated:  #121215
 --bg-card:      #16161a
 --bg-card-hover:#1c1c22
---text:         #ecebe5   /* warm cream */
+--text:         #ecebe5           /* warm cream */
 --text-dim:     #a09e95
 --text-muted:   #5b5953
---accent:       #ff6b2a   /* electric amber — primary */
+--accent:       #ff6b2a           /* amber — primary; the brand */
 --accent-soft:  rgba(255,107,42,.15)
 --accent-glow:  rgba(255,107,42,.45)
---teal:         #6cc5c2   /* magnetic teal — secondary */
---pink:         #ff3b6e   /* positive charge */
---blue:         #5baef8   /* negative charge / electron */
+--teal:         #6cc5c2           /* secondary; magnetic / equipotential */
+--pink:         #ff3b6e           /* positive charge */
+--blue:         #5baef8           /* negative charge / electron */
 --border:       rgba(255,255,255,.07)
 --border-strong:rgba(255,255,255,.14)
 ```
 
-The palette has **one warm primary (amber) and one cool secondary (teal)** by design. Pink and blue are reserved for charge signs / electron color. Don't introduce a fourth or fifth accent.
+Don't introduce a fourth or fifth accent. Vary opacity, line weight, or
+reuse pink/blue where you need additional differentiation.
 
-### Spacing & layout
+### Typography
 
-- Page max-width: 1280px (1480px inside `.lab-inner`)
-- Section padding: 140px top/bottom desktop, 90px mobile
-- Grain texture: SVG noise filter at 4% opacity, applied as a fixed overlay (mix-blend-mode: overlay)
-- Reveal animation on scroll: `.reveal` → fades in + 20px translateY when intersection observed
-
----
-
-## 4. Project Structure
-
-```
-field-theory/
-├── PROJECT.md              ← this file
-├── README.md
-├── package.json            ← npx http-server dev script
-├── .gitignore
-├── index.html              ✅ DONE — main essay + nav hub
-├── assets/
-│   ├── styles.css          ✅ DONE — design system, all components
-│   └── shared.js           ✅ DONE — Field.{PHYS, MATERIALS, bindSlider, …}
-└── pages/
-    ├── potential.html      ✅ DONE — Lab 01 (V = −∫E·dl)
-    ├── ohms-law.html       ❌ BUILD — Lab 02 (J = σE)
-    ├── poynting.html       ❌ BUILD — Lab 03 (S = E×B/μ₀)
-    └── drift.html          ❌ BUILD — Lab 04 (vd = I/(nqA))
-```
-
-### How to run
-
-```bash
-npx http-server -p 8080 -c-1
-# or open index.html directly in a browser — no server needed
-```
-
-No npm install. No package-lock. The `package.json` just provides the convenience script.
-
----
-
-## 5. Shared Assets Reference
-
-### `assets/shared.js` exposes `window.Field`
-
-This is the runtime API every page uses. **Do not redefine constants or rebuild helpers** — use these.
-
-```js
-Field.PHYS = {
-  e:     1.602e-19,            // elementary charge, C
-  k:     8.9875e9,             // Coulomb constant, N·m²/C²
-  mu_0:  4 * Math.PI * 1e-7,   // permeability of free space, T·m/A
-  eps_0: 8.854e-12,            // permittivity of free space, F/m
-  c:     2.998e8,              // speed of light, m/s
-  me:    9.109e-31,            // electron mass, kg
-};
-
-Field.MATERIALS = {
-  // sigma in S/m, n in 1/m³
-  copper:    { name: 'Copper',     sigma: 5.96e7, n: 8.50e28 },
-  silver:    { name: 'Silver',     sigma: 6.30e7, n: 5.86e28 },
-  gold:      { name: 'Gold',       sigma: 4.10e7, n: 5.90e28 },
-  aluminum:  { name: 'Aluminum',   sigma: 3.77e7, n: 6.00e28 },
-  iron:      { name: 'Iron',       sigma: 1.00e7, n: 1.70e29 },
-  tungsten:  { name: 'Tungsten',   sigma: 1.79e7, n: 6.30e28 },
-  nichrome:  { name: 'Nichrome',   sigma: 9.09e5, n: 9.00e28 },
-};
-```
-
-**Formatters:**
-- `Field.sci(n, digits=2)` — scientific notation with HTML `<sup>` exponent
-- `Field.eng(n, digits=3, unit='')` — engineering notation with SI prefix (p, n, µ, m, k, M, G, T)
-- `Field.pretty(n, digits=3)` — auto-pick: fixed for normal ranges, scientific for extremes
-
-**UI helpers:**
-- `Field.bindSlider(id, { format, onChange })` — wires `<input id="X">` to `#{id}-value` label. Auto-paints gradient track. Returns `{ get, set, input }`.
-- `Field.autoResize(canvas, callback)` — handles DPR + window resize. Reads `data-height="N"` from canvas. Calls `callback({ w, h, ctx, dpr })` on resize.
-- `Field.initReveals()` / `Field.initProgress()` — auto-run on DOMContentLoaded.
-
-### Slider binding example
-
-```html
-<div class="slider-group">
-  <div class="slider-head">
-    <span class="slider-label"><span class="sym">V</span>Applied voltage</span>
-    <span class="slider-value" id="v-value">12.0 V</span>
-  </div>
-  <input id="v" type="range" min="0.1" max="120" step="0.1" value="12">
-  <div class="slider-meta"><span>0.1 V</span><span>120 V</span></div>
-</div>
-```
-
-```js
-Field.bindSlider('v', {
-  format: (val) => val.toFixed(1) + ' V',
-  onChange: (val) => { state.V = val; recompute(); },
-});
-```
-
-**Both the `<input id="X">` and the `<span id="X-value">` must exist.** That's how the helper finds the label.
-
-### Readout pattern
-
-Normal readout:
-```html
-<div class="readout">
-  <span class="ro-label"><span class="sym">J</span>Current density</span>
-  <span class="ro-value" id="ro-J">— <span class="unit">A/m²</span></span>
-</div>
-```
-
-Highlighted readout (for the key output of the lab — the "punchline" number):
-```html
-<div class="readout" style="background:var(--accent-soft);margin:8px -28px;padding:14px 28px;border:none">
-  <span class="ro-label" style="color:var(--accent)"><span class="sym" style="color:var(--accent)">I</span>Total current</span>
-  <span class="ro-value" id="ro-I" style="color:var(--accent);font-size:16px">— <span class="unit">A</span></span>
-</div>
-```
-
-Update via JS:
-```js
-document.getElementById('ro-J').innerHTML =
-  `${Field.pretty(J)} <span class="unit">A/m²</span>`;
-```
-
-### Material select pattern
-
-```html
-<select class="material-select" id="mat">
-  <option value="copper">Copper</option>
-  <option value="silver">Silver</option>
-  <option value="gold">Gold</option>
-  <option value="aluminum">Aluminum</option>
-  <option value="iron">Iron</option>
-  <option value="tungsten">Tungsten (filament)</option>
-  <option value="nichrome">Nichrome (heater)</option>
-</select>
-```
-
-```js
-document.getElementById('mat').addEventListener('change', (e) => {
-  state.material = e.target.value;
-  recompute();
-});
-```
-
----
-
-## 6. Page Template
-
-Every lab page follows this exact structure. See `pages/potential.html` for the canonical working example.
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{Lab Name} — Field · Theory</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/styles.css">
-</head>
-<body>
-
-<div class="progress" id="progress"></div>
-
-<nav class="top">
-  <a class="mark" href="../index.html">Field <span>·</span> Theory</a>
-  <div class="links">
-    <a href="potential.html"{active?}>Potential</a>
-    <a href="ohms-law.html"{active?}>Ohm's Law</a>
-    <a href="poynting.html"{active?}>Poynting</a>
-    <a href="drift.html"{active?}>Drift</a>
-  </div>
-  <div class="meta">Lab NN / 04</div>
-</nav>
-
-<!-- 1. Equation hero -->
-<section class="eq-hero">
-  <div class="eq-label">Lab NN — {Equation Name}</div>
-  <h1>{Headline with one em-tagged word in italic amber}</h1>
-  <div class="formula">{The equation in HTML}</div>
-  <p class="deck">{2–3 sentences positioning the topic}</p>
-</section>
-
-<!-- 2. Interactive lab -->
-<div class="lab">
-  <div class="lab-inner">
-    <div class="lab-header">
-      <span class="title">Interactive Lab · {Sub-title}</span>
-      <span class="id">/ {short id slug}</span>
-    </div>
-    <div class="lab-canvas-wrap">
-      <canvas id="lab" data-height="{px}"></canvas>
-      <div class="legend"> {legend items} </div>
-    </div>
-    <div class="lab-grid">
-      <div class="controls-panel">
-        <div class="panel-title">Inputs</div>
-        {slider-group blocks}
-      </div>
-      <div class="readout-panel">
-        <div class="panel-title">Outputs</div>
-        {readout blocks}
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 3. Long-form deep dive -->
-<section>
-  <div class="prose reveal">
-    <h3>The intuition</h3>
-    {prose}
-    <h3>The math, in stages</h3>
-    {prose with <p class="math"> blocks for displayed equations}
-    <h3>{Why this works / the hard part}</h3>
-    {prose}
-    <h4>{Sub-topic}</h4>
-    {prose}
-  </div>
-  <div class="page-nav reveal">
-    <a href="{prev}"><div class="dir">← Prev</div><div class="title">{Prev title}</div></a>
-    <a class="next" href="{next}"><div class="dir next">Next →</div><div class="title">{Next title}</div></a>
-  </div>
-</section>
-
-<footer>
-  <div class="colophon">
-    <span>Field · Theory · Lab NN</span>
-    <span><a href="../index.html">↑ Back to essay</a></span>
-  </div>
-</footer>
-
-<script src="../assets/shared.js"></script>
-<script>
-(function () {
-  // Lab implementation: state, compute(), draw(), slider bindings
-})();
-</script>
-</body>
-</html>
-```
-
-### Prose styling classes
-
-Inside `.prose`:
-- `<h3>` — Fraunces italic section header (~32px)
-- `<h4>` — uppercase amber sub-section header
-- `<p>` — body paragraphs
-- `<p class="math">` — centered display equation, Fraunces italic ~26px
-- `<p class="pullout">` — italic Fraunces with left amber accent bar
-- `<strong>` — color-bumped emphasis
-- `<em>` — italic
-- `<span class="kbd">` — inline mono in amber-soft pill
-
----
-
-## 7. Lab 01 — Potential Difference (DONE, specced for completeness)
-
-**Already built in `pages/potential.html`.** Spec here for reference / regeneration.
-
-### Hero
-
-- Label: `Lab 01 — Potential Difference`
-- Headline: "Voltage is the work you'd do to *move a charge*."
-- Formula: `V_ab = −∫_a^b E · dℓ`
-- Deck: Drag the two charges. Drag the two probes labeled A and B. The voltage between the probes is the line integral of E from one to the other.
-
-### Inputs
-
-| id | label | min | max | step | default | units |
-|---|---|---|---|---|---|---|
-| `q1` | Charge Q₁ | −10 | 10 | 0.1 | +5 | nC |
-| `q2` | Charge Q₂ | −10 | 10 | 0.1 | −5 | nC |
-| `er` | Relative permittivity εᵣ | 1 | 80 | 0.1 | 1 | — |
-
-Plus: two charges (Q₁, Q₂) and two probes (A, B) **draggable on the canvas**.
-
-### Outputs
-
-Internal coordinate convention: canvas pixels, **1 px = 1 mm of physical distance**.
-
-| id | formula | units |
+| Role | Font | Used in |
 |---|---|---|
-| `ro-va` | `V(pA) = Σ k·q_i / r_i / ε_r` | V |
-| `ro-vb` | `V(pB) = Σ k·q_i / r_i / ε_r` | V |
-| `ro-dv` | `ΔV = V_B − V_A` (highlighted) | V |
-| `ro-ea` | `|E|(pA) = |Σ k·q_i / r_i² · r̂|` | V/m |
-| `ro-d` | `d(A,B)` | m |
-| `ro-w` | `W = q·ΔV` with q = 1 C | J |
+| Display headlines, pullouts | **Fraunces** italic | chapter h1, h2, .pullout, .lab-eq |
+| Body | **DM Sans** | all narrative + FAQ + case-study prose |
+| Labels, numerals, code | **JetBrains Mono** | eyebrows, .slider-value, .ro-value, .case-tag |
+| Math / formulas | **STIX Two Text** italic | .formula-content, .eq-hero .formula, .lab-row .lab-eq |
 
-### Visualization
+Loaded from Google Fonts via a single stylesheet link in `index.html`.
 
-`data-height="520"`. On a dark canvas:
-- Equipotential heatmap (subtle pink/blue tint by sign of V) using `Math.tanh(V/200)` to squash range
-- Equipotential contour bands at V ∈ {±20, ±50, ±100, ±200, ±500, ±1000} as teal dots
-- Field lines streaming from each charge outward, animated with tracer dots
-- Two charges as colored discs (Q₁ pink, Q₂ blue), labels show sign + magnitude
-- Two probes A/B as orange rings with letter labels
-- Dashed white line from A to B with arrowhead at B (the integration path)
-- Cursor changes to grab/grabbing when over draggable elements
-- Touch support for mobile
+### CSS style preference
 
-### Deep-dive content
+`src/styles/main.css` should stay small and structural. It owns:
 
-1. **The intuition first** — Altitude analogy. Pullquote: "Voltage is not a property of a place. It is a property of the path between two places."
-2. **The math, said out loud** — E·dℓ dot product, line integral, the minus sign convention.
-3. **Why the path doesn't matter** — Conservative field, curl-free, gradient of a scalar. Hill analogy.
-4. **The hard part: why this is "voltage"** — Battery sets up field in *all* of space. Voltmeter measures the line integral.
-5. **What the εᵣ slider does** (h4) — Dielectric polarization. Water εᵣ ≈ 80.
+- Tailwind import and `@theme` token exposure.
+- Global tokens and light/dark theme variables.
+- Truly global element rules (`body`, prose defaults, shared page shell).
+- Shared patterns that are reused across multiple components or are awkward
+  to express safely with utilities, such as complex descendant selectors,
+  pseudo-elements, keyframes, canvas/prose baselines, or third-party/native
+  control styling.
 
----
+For component work, prefer Tailwind utilities directly in JSX. If a class in
+`main.css` would only be used by one component, put that styling in the
+component with Tailwind utilities instead of adding or expanding a CSS block.
+Use `clsx` for conditional utilities and keep state variants explicit
+(`hover:`, `focus-visible:`, `disabled:`, responsive prefixes, etc.).
 
-## 8. Lab 02 — Microscopic Ohm's Law (TO BUILD)
+Keep CSS selectors in `main.css` only when they are clearly shared or when a
+utility-only version would be brittle or unreadable.
 
-### Hero
+**Reach for existing recipes and standardized scales before reinventing.**
+Before writing a new `className`, scan `src/styles/main.css` for a recipe
+that already matches the shape. Current recipes include `.eyebrow-rule`,
+`.eyebrow-muted` / `-dim` / `-accent` / `-muted-link`, `.title-display`,
+`.hero-display`, `.body-copy`, `.card-surface`, `.icon-btn`, `.grid-list`,
+`.page-shell`, `.chapter-h2` / `.chapter-h3` / `.chapter-intro`,
+`.lab-section-h3`, `.formula-content` / `.formula-inline` / `.formula-hero`.
+If a recipe is close but not exact, layer extra utilities on top
+(`className="eyebrow-rule mb-2xl text-2"`); don't duplicate the recipe
+inline.
 
-- Label: `Lab 02 — Microscopic Ohm's Law`
-- Headline: "Field pushes charge. *Conductivity* is how easy the push is."
-- Formula: `J = σ E`
-- Deck: Inside a conductor, current density J is proportional to the electric field E driving the charges, with conductivity σ as the constant. Apply a voltage, change the material, change the geometry, watch the field/current/resistance fall out at once.
+For utilities, prefer the standardized numbered/named tokens over
+arbitrary values:
 
-### Inputs
+- Sizes: `text-1` … `text-10`, never `text-[17px]`.
+- Spacing: `p-md`, `mb-xl`, `gap-2xl`, plus `prose-1..3` for em-relative
+  prose rhythm and `icon`, `panel`, `page`, `col` for fixed dimensions.
+  Avoid `px-[14px]` etc.
+- Type pairings: `font-1` (body), `font-2` (display), `font-3` (mono),
+  `font-4` (math). `tracking-1..4`. `leading-1..5`.
+- Borders / radii / z / duration: `border-3`, `rounded-5`, `z-2`,
+  `duration-fast`.
+- Colours: `text-text`, `text-text-dim`, `text-accent`, `bg-bg-card`,
+  `border-border-strong`, plus numbered aliases `color-1..6` and
+  `border-border-1/-2`. These honour the `[data-theme="light"]` swap.
 
-| id | label | min | max | step | default | units |
-|---|---|---|---|---|---|---|
-| `mat` | Material (select) | — | — | — | `copper` | — |
-| `v` | Applied voltage V | 0.1 | 120 | 0.1 | 12 | V |
-| `L` | Wire length L | 0.1 | 50 | 0.1 | 1.0 | m |
-| `A` | Cross-section A | 0.1 | 10 | 0.05 | 2.5 | mm² |
+Arbitrary values like `text-[clamp(…)]`, em-relative sub/sup sizes, and
+specific `max-w-[28ch]` measures are fine when no token fits — but the
+common case should land on a token.
 
-### Outputs
+**Inline class strings, don't extract to file-local constants.** Write the
+Tailwind classes directly inside JSX `className="…"`, even if the string is
+long. Do **not** hoist them to a top-of-file constant like:
 
-Convert area: `A_m2 = A_mm2 * 1e-6`.
+```tsx
+// Don't do this — the string lives one place farther from the JSX it
+// describes, and reading the markup now requires a second hop.
+const SYLLABUS_CARD = 'my-[28px] mb-[36px] py-[20px] px-[22px] …';
+return <section className={SYLLABUS_CARD}>…</section>;
+```
 
-| id | label | formula | units |
-|---|---|---|---|
-| `ro-sigma` | Conductivity σ | `Field.MATERIALS[state.mat].sigma` | S/m |
-| `ro-E` | Field in conductor | `E = V / L` | V/m |
-| `ro-J` | Current density | `J = σ * E` | A/m² |
-| `ro-I` | **Total current** (highlighted) | `I = J * A_m2` | A |
-| `ro-R` | Resistance | `R = L / (σ * A_m2)` | Ω |
-| `ro-P` | Power dissipated | `P = V * I` | W |
-| `ro-vd` | Electron drift speed | `vd = I / (n * e * A_m2)` | m/s |
+Inline form is the convention:
 
-### Visualization
+```tsx
+return (
+  <section className="my-[28px] mb-[36px] py-[20px] px-[22px] …">
+    …
+  </section>
+);
+```
 
-`data-height="380"`. Full-width horizontal wire.
+If a class string is so long it noticeably hurts readability, that's a
+signal the pattern is repeated and belongs in `main.css` as a generalised
+recipe — not in a local constant. The two acceptable forms are: inline
+Tailwind on the element (default), or a recipe class in `main.css`
+(when the same combination repeats across components). Local-constant
+class strings hide the styling from the JSX without giving it a real
+home in the design system.
 
-- **Wire body** — rounded rectangle, `wireLeft = 80`, `wireRight = W - 80`. Thickness proportional to `sqrt(A / 2.5) × 80`, clamped to `[30, 180]` px. Vertical gradient fill using `--accent` at 0.08 → 0.16 → 0.08 alpha. 1px stroke at 0.45 alpha.
-- **Battery terminals** — vertical bars 4px wide just outside each end. Left: `--pink` with `+` label. Right: `--blue` with `−` label. Add glow shadow.
-- **E field arrows** — 5–8 along the wire centerline, all pointing left → right. Length scales: `arrowLen = 28 + min(1, log10(E+1)/4) * 16`.
-- **Electrons** — ~200 small `--blue` dots inside the wire bounds. Per frame:
-  ```js
-  e.vx += (Math.random()-0.5)*1.4;
-  e.vy += (Math.random()-0.5)*1.4;
-  e.vx *= 0.85; e.vy *= 0.85;
-  e.vx += driftBias;  // scale vd for visibility
-  ```
-  Set `driftBias = clamp(vd * 100, 0.02, 2.0)`. The math is real; the visual bias is scaled for visibility. Comment this.
-- **Labels** — Material name in uppercase amber centered above wire. Below wire: `V = X.X V` left, `L = X.XX m · A = X.XX mm²` right.
-
-### Deep-dive content
-
-1. **The intuition** — Sled-on-snow analogy. σ = how slick the snow is. Electrons reach a terminal drift speed because they keep colliding with the lattice. *Pullquote*: "Conductivity is a single number that bundles up everything about how charges navigate a material."
-
-2. **The math, in stages** — Walk through V → E → J → I → R:
-   - `E = V/L` (volts per meter, that's literally the unit)
-   - `J = σE` (microscopic Ohm)
-   - `I = JA` (integrate over cross-section)
-   - `R = L/(σA)` (lump it)
-   - `V = IR` (macroscopic Ohm falls out)
-
-3. **Why does this linear relationship even hold?** — Drude model (1900). Electrons in metal as a gas at thermal velocity ~10⁶ m/s. Between collisions (~2×10⁻¹⁴ s in copper), field accelerates them. After each collision, velocity randomizes. Average drift `vd = (qτ/m)·E`. Plug into `J = nqvd`:
-   `σ = nq²τ/m` — the microscopic identity.
-
-4. **The hard part: why power, not energy, is the right thing to track** — Each collision dumps kinetic energy as heat. Rate is `J·E = σE²` per unit volume. Integrated: `P = VI = V²/R = I²R` (Joule heating). Crank V slider, power scales as V². Tungsten glows because σ is low — needs strong E for modest current, all that I²R becomes thermal radiation.
-
-5. **About the material dropdown** (h4) — Silver/copper kings, aluminum decent/cheap, iron ~6× worse than Cu, tungsten worse still (survives at incandescent temps), nichrome intentionally bad (designed for heaters).
-
-### Page nav
-
-- Prev: `potential.html` (Lab 01: Potential)
-- Next: `poynting.html` (Lab 03: Poynting Vector)
+For colour utilities, `@theme` exposes the existing tokens as `bg-bg-card`,
+`text-accent`, `border-border-strong`, etc. These swap automatically when
+`[data-theme="light"]` is set on `<html>`.
 
 ---
 
-## 9. Lab 03 — Poynting Vector (TO BUILD)
+## 5. The sourcing rule (the most important rule)
 
-### Hero
+`src/lib/sources.ts` exports `SOURCES: Record<string, Source>` — a typed
+catalog of every primary or canonical secondary source the textbook cites.
+Each entry: `id`, `title`, `author`, optional `year`, `venue`, `locator`,
+`url`, `note`.
 
-- Label: `Lab 03 — Poynting Vector`
-- Headline: "Energy flows *through space*, not through copper."
-- Formula: `S = (1/μ₀) E × B`
-- Deck: Around a current-carrying wire, E is along the axis and B circles it. Their cross product points radially inward — energy enters the wire from every direction at once. Integrated over the wire's surface, that flux exactly equals VI.
+**Inline citations** in prose use `<Cite id="some-key" in={SOURCES} />`
+where `SOURCES` is the page's local `chapter.sources` array (defined in
+`src/textbook/data/chapters.ts` per chapter) or `BASE_LAB_SOURCES[slug]`
+(per lab, from `src/labs/data/manifest.ts`).
 
-### Inputs
+**Rules:**
+1. Every numerical value, every historical attribution, every quoted line,
+   every order-of-magnitude claim **must** carry a `<Cite />` resolving to
+   a key in the page's sources array.
+2. To use a key in a page, it must be in *both* `SOURCES` *and* the page's
+   `sources: SourceKey[]`. If `<Cite>` can't find the key in the page's
+   array, it renders `[?]` in red as a build-time warning.
+3. To **add** a new source: add an entry to `src/lib/sources.ts` with a
+   real title/author/year/venue/URL — then add the key to the page's
+   `sources` array. Only add sources you can verify actually exist.
+4. **Never invent**: not a paper title, not a year, not an author, not a
+   numerical value. If you can't find a clean source for a claim, either
+   cite a different key already in the registry that backs it closely,
+   or soften the claim (drop the specific number, use "approximately"),
+   or remove it.
 
-| id | label | min | max | step | default | units |
-|---|---|---|---|---|---|---|
-| `I` | Current I | 0.1 | 100 | 0.1 | 5 | A |
-| `V` | Voltage drop V | 0.1 | 48 | 0.1 | 12 | V |
-| `a` | Wire radius a | 0.5 | 5 | 0.05 | 1.5 | mm |
-| `L` | Wire length L | 0.1 | 10 | 0.1 | 1.0 | m |
-
-### Outputs
-
-Convert radius: `a_m = a_mm * 1e-3`. Use `Field.PHYS.mu_0`.
-
-| id | label | formula | units |
-|---|---|---|---|
-| `ro-R` | Implied resistance | `R = V / I` | Ω |
-| `ro-E` | E along axis | `E = V / L` | V/m |
-| `ro-B` | B at wire surface | `B = mu_0 * I / (2π * a_m)` | T |
-| `ro-S` | **\|S\| at surface** (highlighted) | `S = E * B / mu_0` | W/m² |
-| `ro-Asurf` | Lateral surface area | `Asurf = 2π * a_m * L` | m² |
-| `ro-P_surf` | Power = ∮S·dA | `P_surf = S * Asurf` | W |
-| `ro-P_vi` | Power = VI (sanity check) | `P_vi = V * I` | W |
-| `ro-match` | Ratio P_surf / P_vi | should = 1.000 | × |
-
-**The `P_surf / P_vi = 1.000` exact match is the punchline of the entire site.** It demonstrates the Poynting flux integral equals dissipated power, by construction. Style it prominently. When it stays at exactly 1.000 across every slider combo, the reader understands.
-
-### Visualization
-
-`data-height="520"`. Cylindrical wire shown in slight 3D perspective.
-
-Approach:
-- Wire as horizontal cylinder, centered vertically. Slight perspective foreshortening — draw end-caps as ellipses, sides as straight lines connecting top/bottom of ellipses.
-- Wire surface: amber fill at low opacity, darker outline. Subtle glow on the surface to suggest absorbed energy.
-- **E field arrows** — `--pink` arrows along the wire axis (multiple at intervals).
-- **B field circles** — `--teal` ellipses around the wire surface at intervals along its length. Right-hand rule: if current flows +x, B circles counter-clockwise viewed from +x. Add small arrowheads to indicate direction.
-- **S field — the radial inflow** — Small orange arrows or streaming particles starting from outside the wire pointing radially inward, getting absorbed at the surface. **This is the visual centerpiece.** Density of arrows / particle birth rate scales with `|S|`.
-- **Source/sink** — Small + and − terminals at the wire ends (left = source).
-- **Numerical overlay** — Show `|S|` value as a label near one of the inflow arrows so the user connects the visual to the readout.
-
-### Deep-dive content
-
-1. **The intuition** — Energy is stored in the fields, not the conductor. The wire is the destination for energy flowing through space. The Feynman quote: "the field has resistance… [therefore] there is a flow of energy into the wire all around."
-
-2. **Building S from E × B** — Right-hand rule. E along the wire (drives current). B circles the wire (Ampère). Cross product is radial. For a resistive wire with current flowing in the +E direction, S points *inward*.
-
-3. **The integral that closes the loop** — Walk through the algebra:
-   - `E = V/L` along axis
-   - `B = μ₀I/(2πa)` at surface
-   - `|S| = EB/μ₀ = VI/(2πaL)` at surface
-   - `∮S·dA = |S| · 2πaL = VI` exactly
-
-   The energy flowing in through the cylinder's surface per second equals the power dissipated. Energy conservation, by construction.
-
-4. **Davis & Kaplan, 2011** — Full 3D numerical treatment of a circular circuit confirmed: energy flows through all of space surrounding the circuit, net flux into the wire equals power dissipated. The 2D toy model is exact; the 3D real case is exact too.
-
-5. **The superconductor limit** (h4) — As σ → ∞: E inside wire → 0 → S = 0 *inside*. All energy flow stays in the surrounding space, parallel to the wire. Nothing is "in the metal" to lose.
-
-6. **What about AC?** (h4 — optional) — Fields oscillate, S oscillates. Time-averaged S still points into resistive loads. For purely reactive components, time-averaged S = 0 — energy sloshes in and out, no net transfer.
-
-### Page nav
-
-- Prev: `ohms-law.html` (Lab 02)
-- Next: `drift.html` (Lab 04)
+Current registry includes Coulomb 1785, Cavendish 1773, Faraday 1832,
+Maxwell 1865, Hertz 1888, Poynting 1884, Drude 1900, Onnes 1911,
+Einstein 1905, BCS 1957, Williams–Faller–Hill 1971, Davis–Kaplan 2011,
+plus canonical textbooks (Feynman Vol II Chs. 2/13/17/18/21/27,
+Griffiths 4e, Jackson 3e, Purcell–Morin 2013, Ashcroft–Mermin 1976,
+Kittel 2005, Horowitz–Hill 2015), reference data (CODATA 2018, CRC
+Handbook, NIST), LibreTexts/OpenStax cross-references, and several
+case-study-specific entries (USB-PD spec, Catania 2015 electric eel,
+Kanthal datasheet, etc.).
 
 ---
 
-## 10. Lab 04 — Drift Velocity (TO BUILD)
+## 6. The chapter pattern
 
-### Hero
+Each chapter is a single `.tsx` file in `src/textbook/`. The structure:
 
-- Label: `Lab 04 — Drift Velocity`
-- Headline: "Electrons move at the pace of a *glacier*."
-- Formula: `v_d = I / (n q A)`
-- Deck: Current is huge. Electrons are everywhere. The arithmetic forces drift to be tiny. Pick a material, set a current, watch the actual electron drift, find out how many hours an electron needs to walk a single meter.
+```tsx
+import { ChapterShell } from '@/components/ChapterShell';
+import { Cite } from '@/components/SourcesList';
+import { FAQ, FAQItem } from '@/components/FAQ';
+import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
+import { Formula, InlineMath } from '@/components/Formula';
+import { Pullout } from '@/components/Prose';
+import { getChapter } from './data/chapters';
+import { SomeDemo } from './demos/SomeDemo';
+// …
 
-### Inputs
+export default function ChNSomeName() {
+  const chapter = getChapter('some-slug')!;
+  const SOURCES = chapter.sources;
 
-| id | label | min | max | step | default | units |
-|---|---|---|---|---|---|---|
-| `mat` | Material (select) | — | — | — | `copper` | — |
-| `I` | Current I | 0.001 | 100 | 0.001 | 1 | A |
-| `A` | Cross-section A | 0.1 | 10 | 0.05 | 1.0 | mm² |
+  return (
+    <ChapterShell chapter={chapter}>
+      <p>{/* opening hook with a concrete physical example */}</p>
+      <p>{/* second paragraph — set up the chapter's argument */}</p>
 
-Note the wide current range — small currents (mA → nA) make for great drift-velocity demos.
+      <h2>{/* first section heading */}</h2>
+      <p>…</p>
+      <SomeDemo />
+      <p>… <Cite id="some-key" in={SOURCES} /></p>
+      <Formula>F = k Q₁ Q₂ / r²</Formula>
+      <Pullout>{/* one quotable line per chapter */}</Pullout>
 
-### Outputs
+      {/* …more h2 sections with demos, prose, formulas… */}
 
-| id | label | formula | units |
-|---|---|---|---|
-| `ro-n` | Free electron density n | `Field.MATERIALS[mat].n` | 1/m³ |
-| `ro-vd` | **Drift speed** (highlighted) | `vd = I / (n * e * A_m2)` | m/s |
-| `ro-vd_mm` | Drift speed | `vd * 1000` | mm/s |
-| `ro-t1m` | Time to traverse 1 m | `1 / vd` | s → format |
-| `ro-vt` | Thermal velocity (Fermi, Cu) | `1.6e6` constant | m/s |
-| `ro-ratio_t` | Thermal / drift ratio | `vt / vd` | × |
-| `ro-vs` | Signal speed (~⅔ c) | `2e8` constant | m/s |
-| `ro-ratio_s` | Signal / drift ratio | `vs / vd` | × |
+      {/* 3–5 TryIt exercises distributed through the chapter, each
+          placed right after the h2 section whose physics it exercises. */}
+      <TryIt
+        tag="Try 4.2"
+        question={<>Compute …</>}
+        hint="Use the formula from the previous section."
+        answer={<><p>Plug in: …</p><Formula>…</Formula><p>Answer: <strong>…</strong></p></>}
+      />
 
-Format `ro-t1m` intelligently:
-```js
-function formatTime(seconds) {
-  if (seconds < 60) return seconds.toFixed(1) + ' s';
-  if (seconds < 3600) return (seconds/60).toFixed(1) + ' min';
-  if (seconds < 86400) return (seconds/3600).toFixed(1) + ' hr';
-  if (seconds < 86400*365) return (seconds/86400).toFixed(1) + ' days';
-  return (seconds/86400/365).toFixed(1) + ' yr';
+      <CaseStudies intro="Where this physics shows up in working systems.">
+        <CaseStudy tag="Case N.1" title="…" summary="…" specs={[…]}>
+          <p>…</p>
+        </CaseStudy>
+        <CaseStudy tag="Case N.2" title="…" specs={[…]}>
+          <p>…</p>
+        </CaseStudy>
+      </CaseStudies>
+
+      <FAQ>
+        <FAQItem q="…">{/* 2–6 sentence answer with <Cite/> */}</FAQItem>
+        {/* …12+ items per chapter */}
+      </FAQ>
+    </ChapterShell>
+  );
 }
 ```
 
-### Visualization
+`<ChapterShell>` automatically renders the related-labs sidebar and the
+sources list from `chapter.relatedLabs` and `chapter.sources`, plus the
+prev/next chapter nav.
 
-`data-height="380"`. Horizontal wire spanning canvas width.
+### Voice
 
-- Wire rectangle (same general look as Lab 02).
-- ~150 electron dots with strong thermal jitter and slight rightward drift visually scaled from real `vd`.
-- **Tracked electron** in red (different from the blue swarm) — track its real-time x-position cumulatively. Show as overlay: "Tracked electron: moved X mm in Y seconds." Calculation uses the real `vd` (not scaled), so the user sees the actual physics.
-- **Two scale bars** at top: animation time (sec) and physical drift distance (mm), both growing as time passes.
-- **Punchline annotation** in amber overlay: "An electron's commute: X hours per meter" — uses the actual `t1m` output, formatted human-readable.
+Confident, slightly literary, real numbers, no filler, no emoji. The
+canonical opening of Ch.1 ("Rub a balloon on your hair…") is the bar.
+Every chapter has a concrete physical hook in its opening paragraph and
+one `<Pullout>` quote.
 
-### Deep-dive content
+### Formula rule — define every symbol with the formula
 
-1. **The bizarre slowness** — A snail moves ~50× faster than drift in a 20 A copper wire. Yet the bulb turns on instantly. Why?
+**Every `<Formula>` block in chapter prose is immediately followed by a
+"where" paragraph spelling out what each symbol means and what its SI
+units are.** Don't drop a formula and expect the reader to infer
+notation from earlier prose or a `<Term>` popover. The canonical
+pattern from Ch.1:
 
-2. **The math, with numbers** — Worked example with copper at 1 A through 2.5 mm²:
-   - n = 8.5×10²⁸ /m³ (one free electron per atom)
-   - q = 1.6×10⁻¹⁹ C
-   - A = 2.5 mm² = 2.5×10⁻⁶ m²
-   - vd = 1 / (8.5×10²⁸ · 1.6×10⁻¹⁹ · 2.5×10⁻⁶) ≈ 2.9×10⁻⁵ m/s ≈ 0.03 mm/s
-
-3. **Thermal vs. drift — the two velocities** — Inside the same wire, electrons are *also* moving at ~10⁶ m/s due to Fermi-level kinetic energy (quantum mechanical, not classical thermal). Drift is a slight *bias* on top of this enormous random motion. The signal is neither: it's the electromagnetic disturbance propagating at near-c through the surrounding field.
-
-4. **Why the bulb turns on instantly** — The electrons in the filament were already there. The field reaches them at ~c. They start drifting *in place*. Nothing had to travel the length of the wire.
-
-5. **The water-in-pipe analogy fails** (h4) — Water really does flow end to end in a pipe. Electrons don't. Current is more like a long line of marbles: push one in at one end, one falls out the other end immediately, but no single marble traveled the length.
-
-6. **Connection to Ohm's law** (h4) — `vd = (qτ/m)·E`. Drift is linear in E, which is why current is linear in voltage. If electrons could accelerate freely between collisions, current would grow quadratically. The reason it doesn't: τ resets velocity ~50 trillion times per second.
-
-### Page nav
-
-- Prev: `poynting.html` (Lab 03)
-- Next: `../index.html` (Back to essay)
-
----
-
-## 11. Physics Accuracy Checklist
-
-Before considering a lab page done:
-
-- [ ] All formulas use SI units internally
-- [ ] All physical constants come from `Field.PHYS` (don't redefine `e`, `mu_0`, etc.)
-- [ ] All material params come from `Field.MATERIALS` (don't hardcode σ or n inline)
-- [ ] Unit conversions are explicit with comments (`const A_m2 = A_mm2 * 1e-6; // mm² → m²`)
-- [ ] When you crank a slider to extremes, readouts behave sensibly (no NaN, no Infinity, sensible orders of magnitude)
-- [ ] **For Poynting page specifically:** `P_surf / P_vi = 1.000` for every slider combo
-- [ ] **For Ohm's Law page:** at V=12, L=1, A=2.5mm², copper, expect I ≈ 1.8×10⁵ A — wait, that's wrong, σE = 6e7 · 12 = 7.2e8, times A=2.5e-6 = 1800 A. So I=1800A at 12V across 1m of 2.5mm² copper. Sanity: R = L/σA = 1/(6e7 · 2.5e-6) ≈ 6.7 mΩ. V/R = 12/0.0067 ≈ 1790 A. Checks out. (Such a short, thick wire is essentially a short circuit.)
-
-## 12. Common Pitfalls
-
-**Both `<input id="X">` and `<span id="X-value">` must exist for `bindSlider` to work.** Forgetting the value span = the slider just silently fails to update its label.
-
-**Canvas resize:** Always use `Field.autoResize(canvas, callback)`. Don't manually set `canvas.width = canvas.offsetWidth` — that breaks on high-DPR (Retina) screens. The helper handles DPR + window resize.
-
-**Compute every frame vs. on input change:**
-- Cheap stuff (basic algebra) → compute on input change, cache, draw uses cached values.
-- Expensive stuff (per-pixel rendering like the potential heatmap) → has to run every frame.
-
-**Drude model nuance:** When explaining `σ = nq²τ/m_e` in the deep dive, note in passing that the classical thermal picture is an approximation — real electrons in metals follow Fermi-Dirac statistics and the actual velocities involved are quantum (Fermi velocity ~10⁶ m/s), not classical thermal. Don't oversell the classical picture.
-
-**Visual scaling vs. real values:** It's fine to scale visual drift bias up by a factor for visibility (~100× in Lab 02). The readout must always show the real value. Comment the scaling factor in the code where it lives:
-```js
-const driftBias = Math.max(0.02, Math.min(2.0, vd * 100));  // visual only; vd is real
+```tsx
+<Formula>F = k Q₁ Q₂ / r²</Formula>
+<p>
+  where <strong>F</strong> is the magnitude of the force each charge
+  exerts on the other (in newtons), <strong>Q₁</strong> and
+  <strong>Q₂</strong> are the two charges (in coulombs, signed),
+  <strong>r</strong> is the distance between them (in metres), and
+  <strong>k = 8.99×10⁹ N·m²/C²</strong> is Coulomb's constant in SI
+  units<Cite id="codata-2018" in={SOURCES} />.
+</p>
 ```
 
-**Poynting visualization — the most common mistake:** Drawing E inside the wire pointing radially. **E is along the axis.** It has to be — that's what drives the current parallel to the wire. B circles it (Ampère). S = (E × B)/μ₀ is then radial. If your viz has E pointing radially, you've drawn it wrong.
+This applies to formulas in narrative prose. **TryIt answer blocks are
+exempt** — there the formula is a worked substitution with the numeric
+values already in place, so the symbols are explicit in context.
 
-**For touch support in interactive canvases:** call `e.preventDefault()` in touchmove and touchstart handlers to prevent page scroll while dragging.
+Place the formula and its glossary **at or before** the first
+interactive demo that exercises it. The interactive demo can come
+either before the formula (concrete experience first, then formalised)
+or after it; either order is fine, but the symbols in the formula must
+be defined no later than the formula itself appears.
 
-**Don't introduce a fourth color.** If a viz needs more visual differentiation, vary opacity, line weight, or use the existing pink/blue (for charge polarity) and accent/teal. Adding a green or yellow breaks the palette.
+**Multiple forms for foundational quantities.** When a quantity has
+several equivalent definitions — a formal one, an operational one, a
+clean special-case form — show all of them, each with its own
+"where" paragraph. The formal definition is general but abstract; the
+operational form is the one the reader will hold in their head; the
+special-case form is the one they will recognise on a circuit. Ch.2
+voltage is the canonical example:
+
+- Formal: `V_ab = −∫_a^b E·dℓ` (line integral; general)
+- Operational: `V = W/q = ΔU/q` (energy per coulomb)
+- Special case: `V = E·d` (uniform field between parallel plates)
+- Companion: `W = qV` (work to move a charge through V)
+
+Each carries a different piece of intuition. Same applies to power
+(`P = VI` / `P = I²R` / `P = V²/R`), current (`I = dQ/dt` / `I = nqv_dA`),
+resistance (`R = V/I` / `R = ρL/A`), capacitance (`C = Q/V` /
+`C = ε₀ε_r A/d`), EMF (`ε = −dΦ/dt` / `ε = BLv`), and many others.
+
+### Chapter section checklist
+
+Every chapter must include, in this order:
+
+1. **Opening hook** — 1–2 paragraphs with a concrete physical example.
+   First letter gets a drop-cap (auto, via CSS).
+2. **5–7 narrative `<h2>` sections** — each with prose, ≥1 embedded
+   `<XxxDemo />`, and ≥1 `<Formula>` block where appropriate.
+3. **One `<Pullout>` quote** — the chapter's quotable thesis line.
+4. **3–5 `<TryIt>` exercises** — short calculation problems distributed
+   through the narrative, placed right after the relevant h2 section.
+   Hidden-then-reveal answer; uses real numbers from earlier in the
+   chapter. See §13b.
+5. **Glossary terms via `<Term def="…">…</Term>`** — first mention of any
+   technical term gets a dotted-underline + hover/tap popover with a
+   short definition. Aim for ~8–15 tagged terms per chapter. See §13b.
+6. **`<CaseStudies>` block** — ≥2 `<CaseStudy>` cards with real-world
+   examples and a `specs` sheet of 3–6 cited numbers.
+7. **`<FAQ>` block** — ≥12 `<FAQItem>` entries mixing beginner / sharper
+   / misconception-busting questions; answers 2–6 sentences with
+   `<Cite />` for every claim.
+
+Auto-rendered by `<ChapterShell>`: chapter hero, related-labs sidebar,
+sources list, prev/next chapter nav. Don't write those manually.
 
 ---
 
-## 13. Sources
+## 7. The demo pattern
 
-| | URL |
-|---|---|
-| Feynman Lectures Vol II Ch. 27 | https://www.feynmanlectures.caltech.edu/II_27.html |
-| Davis & Kaplan 2011 *Am. J. Phys.* | https://arxiv.org/pdf/1207.2173 |
-| Morris & Styer 2012 *Am. J. Phys.* | https://isis2.cc.oberlin.edu/physics/dstyer/Electrodynamics/VisualizingZ.pdf |
-| LibreTexts on conduction in metals | https://phys.libretexts.org/Bookshelves/University_Physics/University_Physics_(OpenStax)/University_Physics_II_-_Thermodynamics_Electricity_and_Magnetism_(OpenStax)/09:_Current_and_Resistance/9.03:_Model_of_Conduction_in_Metals |
-| Poynting vector — RP Photonics | https://www.rp-photonics.com/poynting_vector.html |
+Each demo is a small component in `src/textbook/demos/{Name}.tsx`. Roughly
+80–250 lines. Pattern (see `src/textbook/demos/TwoCharges.tsx` for the
+canonical example):
+
+```tsx
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, MiniSlider, MiniToggle, MiniReadout } from '@/components/Demo';
+import { Num } from '@/components/Num';
+import { PHYS } from '@/lib/physics';
+
+export function SomeDemo() {
+  const [a, setA] = useState(/*…*/);
+  // stateRef so the canvas draw loop sees the latest state without
+  // re-running the setup function:
+  const stateRef = useRef({ a });
+  useEffect(() => { stateRef.current = { a }; }, [a]);
+
+  const setup = useCallback((info: CanvasInfo) => {
+    const { ctx, w, h, canvas } = info;
+    let raf = 0;
+    function draw() {
+      const { a } = stateRef.current;
+      // … draw …
+      raf = requestAnimationFrame(draw);
+    }
+    raf = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  return (
+    <Demo
+      figure="Fig. N.M"
+      title="…"
+      question="…"
+      caption={<>…</>}
+      deeperLab={{ slug: 'some-lab', label: 'See full lab' }}
+    >
+      <AutoResizeCanvas height={300} setup={setup} />
+      <DemoControls>
+        <MiniSlider label="…" value={a} min={0} max={10} step={0.1}
+          format={v => v.toFixed(1)} onChange={setA} />
+        <MiniReadout label="…" value={<Num value={computed} />} unit="…" />
+      </DemoControls>
+    </Demo>
+  );
+}
+```
+
+**Important: don't pass `pretty(x)` to `MiniReadout`'s `value` prop.**
+`pretty()` returns an HTML string; React renders it as literal text.
+Use `<Num value={x} />` which returns JSX with proper `<sup>` elements.
 
 ---
 
-## 14. Workflow for Claude Code
+## 8. The lab pattern
 
-When opening this project:
+Each equation lab is a `.tsx` file in `src/labs/`. Larger than a demo
+(typically 300–500 lines). Uses `<LabShell>` instead of `<ChapterShell>`,
+with `<Slider>` (full-size) and `<Readout>` (large, with optional
+`highlight` for the punchline output). See `src/labs/CoulombLab.tsx` for
+the canonical example.
 
-1. **Read this whole file first.** It's the spec, the context, and the rules.
-2. **Run it:** `npx http-server -p 8080 -c-1`, open http://localhost:8080
-3. **Open `pages/potential.html` and look at how it's structured** — it's the canonical pattern. The next three pages follow the same shape.
-4. **Build the labs in order:**
-   - `pages/ohms-law.html` (§8 of this doc)
-   - `pages/poynting.html` (§9)
-   - `pages/drift.html` (§10)
-5. **For each:** copy potential.html as a starting skeleton, replace hero / sliders / readouts / canvas-draw / prose per the spec.
-6. **Sanity-check physics:** every page should pass §11 checklist.
-7. **Don't change the design system** (`styles.css`) or shared runtime (`shared.js`) unless you find a real bug. Add new helpers to `shared.js` if needed; don't fork them per page.
+The lab also has its own prose deep-dive and sources block (rendered by
+`LabShell` from `BASE_LAB_SOURCES[slug]` in `src/labs/data/manifest.ts`).
 
-When in doubt: **the working file is the source of truth, this doc is the rationale.** If they ever disagree, fix this doc to match the working file or fix the file to match the doc — but make them agree.
+---
+
+## 9. Conventions
+
+- **State + canvas:** state in `useState`, computed in `useMemo`, canvas
+  setup in `useCallback` with empty deps and a `stateRef` for animation.
+  Return a cleanup function from the setup callback that cancels rAF and
+  removes event listeners.
+- **No `pretty()` in JSX text:** use `<Num value={x}/>`. `pretty()` only
+  for `dangerouslySetInnerHTML` (legacy callers).
+- **Formula blocks:** `<Formula>F = k Q₁ Q₂ / r²</Formula>`, not
+  `<p className="math">`. Use `<InlineMath>…</InlineMath>` for inline.
+- **Inline citations:** `<Cite id="source-key" in={SOURCES} />` where
+  `SOURCES = chapter.sources` (chapters) or
+  `BASE_LAB_SOURCES[slug]` (labs).
+- **Touch support:** all draggable canvases call `e.preventDefault()` in
+  `touchstart`/`touchmove` handlers; pass `{ passive: false }` to
+  `addEventListener` for touch events.
+- **Visual scaling:** for canvas viz, it's OK to scale things (e.g.,
+  drift velocity ×100 for visibility). The readout must always show the
+  real physical value. Comment the scaling factor inline:
+  ```ts
+  const driftBias = clamp(vd * 100, 0.02, 2.0);  // visual only; vd is real
+  ```
+
+---
+
+## 10. Adding new content
+
+### A new chapter
+
+1. Add an entry to `CHAPTERS` in `src/textbook/data/chapters.ts` with a
+   new `ChapterSlug`, `number`, `title`, `subtitle`, `blurb`,
+   `relatedLabs`, and `sources`.
+2. Create `src/textbook/Ch{N}{ShortName}.tsx` following the chapter
+   pattern (§6).
+3. Register the lazy import in `src/routes/textbook.$chapterSlug.tsx`.
+4. The home TOC and TopNav update automatically from `CHAPTERS`.
+
+### A new demo
+
+1. Create `src/textbook/demos/{Name}.tsx` following the demo pattern (§7).
+2. Import and embed it inside the relevant chapter's prose.
+
+### A new equation lab
+
+1. Add an entry to `MANIFEST` in `src/labs/data/manifest.ts`.
+2. Add `BASE_LAB_SOURCES[slug]` entry.
+3. Create `src/labs/{Name}Lab.tsx` following the lab pattern (§8).
+4. Register the lazy import in `src/routes/labs.$slug.tsx`.
+
+### A new source
+
+Add to `src/lib/sources.ts` with a real title, author, year, venue, URL,
+and a `note` explaining what claim it backs. Then add the key to any
+chapter or lab `sources` array that wants to cite it. **Verify it exists**
+— do not invent.
+
+### A new case study
+
+1. Inside the relevant chapter, find the `<CaseStudies>` block (placed
+   between the last narrative `<h2>` section and the `<FAQ>` block).
+2. Add a `<CaseStudy tag="Case N.M" title="…" summary="…" specs={[…]}>`
+   with prose body. Every claim cites a key in the chapter's `sources`.
+
+---
+
+## 11. Running
+
+```bash
+npm install           # once
+npm run dev           # vite at http://localhost:5173, HMR enabled
+npm run build         # tsc --noEmit && vite build → dist/
+npm run preview       # serve the production build
+npm run typecheck     # tsc --noEmit alone
+```
+
+The build runs strict TypeScript and Vite together. Anything that fails
+`tsc --noEmit` will fail the build.
+
+---
+
+## 12. Git workflow notes
+
+- Feature branch: `claude/interactive-web-essay-xXLtt` (the current
+  long-running branch where this textbook lives).
+- Commit messages: imperative subject line, blank line, body paragraphs
+  explaining the change. Trailing
+  `https://claude.ai/code/session_…` link to attribute the session.
+- Don't push to `main` directly. Don't force-push without explicit user
+  consent.
+
+---
+
+## 13. Common pitfalls
+
+- **`<MiniReadout value={pretty(x)} />`** renders `3.20×10<sup>-4</sup>`
+  as literal text. Use `<Num value={x} />` instead.
+- **`<p className="math">…</p>`** is the legacy math style — replace with
+  `<Formula>…</Formula>` for proper STIX typography.
+- **Citing a key not in the chapter's `sources` array** renders `[?]` in
+  red. Add the key to the array (and to `src/lib/sources.ts` if it isn't
+  there yet).
+- **`AutoResizeCanvas` setup re-running on every render** — if the
+  `setup` prop isn't memoized (or if it depends on state directly rather
+  than via `stateRef`), the canvas re-initializes constantly. Wrap setup
+  in `useCallback(…, [])` and read state via `stateRef.current` inside
+  the draw loop.
+- **TanStack Router `<Link>` to `/labs/$slug`** requires the params:
+  `<Link to="/labs/$slug" params={{ slug: 'coulomb' }}>`.
+- **Adding case studies / FAQs in parallel agents:** if more than one
+  agent touches `src/lib/sources.ts` or
+  `src/textbook/data/chapters.ts` at the same time, you'll get merge
+  conflicts. Either serialize or hand each agent disjoint chapters.
+
+---
+
+## 13b. Try-it-yourself exercises and glossary terms
+
+Two newer chapter elements that complement the narrative + demos:
+
+### `<TryIt>` — short exercises
+
+```tsx
+<TryIt
+  tag="Try 4.2"
+  question={<>A 1 µF capacitor holds <strong>100 µC</strong>. What is V?</>}
+  hint="Use Q = CV."
+  answer={
+    <>
+      <p>Direct application of the chapter's formula:</p>
+      <Formula>V = Q/C = 100×10⁻⁶ / 1×10⁻⁶ = 100 V</Formula>
+      <p>Answer: <strong>100 V</strong>.</p>
+    </>
+  }
+/>
+```
+
+Rules:
+- 3–5 per chapter, distributed through the narrative (not bunched at
+  the end).
+- Place immediately after the h2 section whose physics it tests.
+- Question should be solvable in 2–3 lines using a formula from earlier
+  in the chapter.
+- Answer can include `<Formula>`, `<Cite>`, `<strong>`, `<em>`, and
+  short prose explanation.
+
+### `<Term def="…">term</Term>` — glossary popovers
+
+```tsx
+<p>
+  The {' '}
+  <Term def={<><strong>capacitance</strong> — the proportionality between charge stored and applied voltage; <em>Q = CV</em>. SI unit: farad.</>}>capacitance</Term>
+  {' '} of a parallel-plate capacitor is C = ε₀A/d.
+</p>
+```
+
+Rules:
+- Tag the FIRST mention of any non-obvious technical term in the chapter.
+- Definition is a short noun-phrase or one-sentence gloss. Can include
+  `<strong>`, `<em>`, simple math, optionally a tiny `<Cite/>`.
+- Don't double-tag the same term twice in a chapter.
+- Aim for 8–15 tagged terms per chapter (more in introductory chapters,
+  fewer in later ones where vocabulary is established).
+- Examples of terms worth tagging: capacitance, dielectric, permittivity,
+  EMF, magnetic flux, Lenz's law, drift velocity, conductivity,
+  reactance, impedance, Q factor, polarization, susceptibility.
+
+---
+
+## 14. Workflow for a new Claude session
+
+1. **Read this file.** It is the spec.
+2. Run `npm run typecheck` and `npm run build` to confirm the project is
+   in a clean state.
+3. Look at one chapter (`src/textbook/Ch1WhatIsElectricity.tsx`) and one
+   lab (`src/labs/CoulombLab.tsx`) to see the canonical patterns.
+4. When in doubt: the working code is the source of truth; this doc is
+   the rationale. If they disagree, either update the code or update
+   this doc — but make them agree.
+5. **The anti-hallucination rule trumps everything else.** If you're
+   about to write a number or a year or an author name and you don't
+   have a source for it, stop and find one or remove the claim.
+
+That's the whole job.

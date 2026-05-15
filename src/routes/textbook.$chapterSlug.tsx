@@ -1,0 +1,67 @@
+import { createFileRoute, notFound } from '@tanstack/react-router';
+import { lazy, Suspense } from 'react';
+
+import { getChapter } from '@/textbook/data/chapters';
+
+const CHAPTER_MODULES: Record<string, ReturnType<typeof lazy>> = {
+  'what-is-electricity':   lazy(() => import('@/textbook/Ch1WhatIsElectricity')),
+  'voltage-and-current':   lazy(() => import('@/textbook/Ch2VoltageAndCurrent')),
+  'resistance-and-power':  lazy(() => import('@/textbook/Ch3ResistanceAndPower')),
+  'how-a-resistor-works':  lazy(() => import('@/textbook/Ch4HowAResistorWorks')),
+  'capacitors':            lazy(() => import('@/textbook/Ch5Capacitors')),
+  'magnetism':             lazy(() => import('@/textbook/Ch6Magnetism')),
+  'induction':             lazy(() => import('@/textbook/Ch7Induction')),
+  'energy-flow':           lazy(() => import('@/textbook/Ch8EnergyFlow')),
+  'em-waves':              lazy(() => import('@/textbook/Ch9EMWaves')),
+  'maxwell':               lazy(() => import('@/textbook/Ch10Maxwell')),
+  'relativity':            lazy(() => import('@/textbook/Ch11Relativity')),
+  'circuits-and-ac':       lazy(() => import('@/textbook/Ch12CircuitsAndAC')),
+  'network-analysis':      lazy(() => import('@/textbook/Ch13NetworkAnalysis')),
+  'semiconductors':        lazy(() => import('@/textbook/Ch14Semiconductors')),
+  'fourier-harmonics':     lazy(() => import('@/textbook/Ch15FourierHarmonics')),
+  'filters-op-amps-tlines': lazy(() => import('@/textbook/Ch16FiltersOpAmpsTLines')),
+  'materials':             lazy(() => import('@/textbook/Ch17Materials')),
+  'optics':                lazy(() => import('@/textbook/Ch18Optics')),
+  'antennas':              lazy(() => import('@/textbook/Ch19Antennas')),
+  'motors':                lazy(() => import('@/textbook/Ch20Motors')),
+  'generators':            lazy(() => import('@/textbook/Ch21Generators')),
+  'magnetically-coupled-circuits': lazy(() => import('@/textbook/Ch22MagneticallyCoupledCircuits')),
+  'transformers':          lazy(() => import('@/textbook/Ch23Transformers')),
+  'rectifiers-and-inverters': lazy(() => import('@/textbook/Ch24RectifiersAndInverters')),
+  'batteries':             lazy(() => import('@/textbook/Ch25Batteries')),
+  'modern-batteries':      lazy(() => import('@/textbook/Ch26ModernBatteries')),
+  'house-grid-arrives':       lazy(() => import('@/textbook/Ch27HouseGridArrives')),
+  'house-panel':              lazy(() => import('@/textbook/Ch28HousePanel')),
+  'house-branch-circuits':    lazy(() => import('@/textbook/Ch29HouseBranchCircuits')),
+  'house-switches-receptacles': lazy(() => import('@/textbook/Ch30HouseSwitchesReceptacles')),
+  'house-big-loads':          lazy(() => import('@/textbook/Ch31HouseBigLoads')),
+  'house-safety':             lazy(() => import('@/textbook/Ch32HouseSafety')),
+  'house-smart-meter':        lazy(() => import('@/textbook/Ch33HouseSmartMeter')),
+  'house-plug-to-chip':       lazy(() => import('@/textbook/Ch34HousePlugToChip')),
+  'house-replacing-fixtures': lazy(() => import('@/textbook/Ch35HouseReplacingFixtures')),
+  'house-troubleshooting':    lazy(() => import('@/textbook/Ch36HouseTroubleshooting')),
+  'house-new-circuit':        lazy(() => import('@/textbook/Ch37HouseNewCircuit')),
+  'house-smart-retrofits':    lazy(() => import('@/textbook/Ch38HouseSmartRetrofits')),
+  'house-outdoor-wet':        lazy(() => import('@/textbook/Ch39HouseOutdoorWet')),
+  'house-surge-grounding':    lazy(() => import('@/textbook/Ch40HouseSurgeGrounding')),
+  'ev-powertrain':            lazy(() => import('@/textbook/Ch41EVPowertrain')),
+  'fiber-optics':             lazy(() => import('@/textbook/Ch42FiberOptics')),
+};
+
+export const Route = createFileRoute('/textbook/$chapterSlug')({
+  beforeLoad: ({ params }) => {
+    if (!getChapter(params.chapterSlug)) throw notFound();
+  },
+  component: ChapterRoute,
+});
+
+function ChapterRoute() {
+  const { chapterSlug } = Route.useParams();
+  const Chapter = CHAPTER_MODULES[chapterSlug];
+  if (!Chapter) return <div style={{ padding: 80 }}>Chapter not found.</div>;
+  return (
+    <Suspense fallback={<div style={{ padding: 120 }}>Loading…</div>}>
+      <Chapter />
+    </Suspense>
+  );
+}
