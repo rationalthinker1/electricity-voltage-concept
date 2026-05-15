@@ -401,7 +401,7 @@ export default function PotentialLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         Electric potential <strong className="text-text font-medium">V</strong> is the scalar field whose negative gradient is <strong className="text-text font-medium">E</strong>, and whose line integral
         between two points is the work per unit charge that the field does on a positive charge moved between them. It exists because
@@ -414,7 +414,7 @@ export default function PotentialLab() {
         and the convention that V → 0 as r → ∞<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>V<sub>ab</sub> = V<sub>b</sub> − V<sub>a</sub> = −∫<sub>a</sub><sup>b</sup> E · dℓ</MathBlock>
       <MathBlock>V(r) = k Q / (ε<sub>r</sub> r)   (single point charge)</MathBlock>
       <p className="mb-prose-3">
@@ -431,7 +431,7 @@ export default function PotentialLab() {
         <li><strong className="text-text font-medium">ε<sub>r</sub></strong> — relative permittivity of the surrounding medium.</li>
       </ul>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         Forget wires for a second. Imagine standing on a hillside. Pick two points. The <strong className="text-text font-medium">height difference</strong> between them tells you
         how much energy gravity will give you if you walk from the high one to the low one, or take from you if you walk uphill. That's the
@@ -446,7 +446,7 @@ export default function PotentialLab() {
         Voltage is not a property of a place. It is a property of the <em className="italic text-text">path between two places</em> in a field.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Why the minus sign? Because V is defined to be high where positive charges <em className="italic text-text">want to leave</em>. A positive charge gains kinetic
         energy moving from high V to low V. The field does positive work on it; V drops along E. The minus sign keeps the bookkeeping
@@ -469,7 +469,7 @@ export default function PotentialLab() {
         though E is not zero there. A clean illustration that V and E carry different information.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         Start with the electric field <strong className="text-text font-medium">E</strong>. It points in the direction a positive test charge would accelerate — in newtons per
         coulomb. If you walk a tiny distance <strong className="text-text font-medium">dℓ</strong> in the direction of the field, the force on a unit positive charge does work
@@ -507,7 +507,7 @@ export default function PotentialLab() {
         The field points "downhill" on the V landscape, steepest where V changes fastest.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 1.4.1"
@@ -650,7 +650,7 @@ export default function PotentialLab() {
         }
       />
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">What ε<sub>r</sub> does</h3>
+      <h3 className="lab-section-h3">What ε<sub>r</sub> does</h3>
       <p className="mb-prose-3">
         In a dielectric (water, glass, plastic), the molecules polarize in the presence of an external field. Their dipoles align and produce
         a counter-field that reduces the net field everywhere. Both <strong className="text-text font-medium">E</strong> and <strong className="text-text font-medium">V</strong> get divided by

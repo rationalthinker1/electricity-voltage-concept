@@ -37,7 +37,7 @@ export default function Ch15FourierHarmonics() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Strike middle-C on a piano. The string is tuned so that its first mode of vibration is at <strong className="text-text font-medium">261.6 Hz</strong>;
         the soundboard radiates that frequency into the room and the ear hears a single, pure note. Except the string isn't
         actually producing a single frequency. It's producing 261.6 Hz <em className="italic text-text">and</em> 523 Hz <em className="italic text-text">and</em> 785 Hz <em className="italic text-text">and</em>
@@ -60,7 +60,7 @@ export default function Ch15FourierHarmonics() {
         voltage in every circuit. The whole of signal processing rests on that one sentence.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Fourier 1822</h2>
+      <h2 className="chapter-h2">Fourier 1822</h2>
 
       <p className="mb-prose-3">
         Jean-Baptiste Joseph Fourier was a French mathematician working for Napoleon's administration in Grenoble when he
@@ -85,7 +85,7 @@ export default function Ch15FourierHarmonics() {
         some point in its design.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The series formula</h2>
+      <h2 className="chapter-h2">The series formula</h2>
 
       <p className="mb-prose-3">
         Let <strong className="text-text font-medium">f(t)</strong> be periodic with period <strong className="text-text font-medium">T</strong>, so f(t + T) = f(t) for all t. Define the
@@ -201,7 +201,7 @@ export default function Ch15FourierHarmonics() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Harmonic synthesis and the Gibbs overshoot</h2>
+      <h2 className="chapter-h2">Harmonic synthesis and the Gibbs overshoot</h2>
 
       <p className="mb-prose-3">
         A square wave with peak V₀ and period T has Fourier series<Cite id="oppenheim-willsky-1997" in={SOURCES} />:
@@ -306,7 +306,7 @@ export default function Ch15FourierHarmonics() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">RMS and Parseval's theorem</h2>
+      <h2 className="chapter-h2">RMS and Parseval's theorem</h2>
 
       <p className="mb-prose-3">
         For a pure sine of peak V<sub>peak</sub>, the <Term def="Root-mean-square. The square root of the mean of the square of a signal over one period. For a resistor, V_RMS is the DC voltage that delivers the same average power.">RMS value</Term> is V<sub>peak</sub>/√2 ≈ 0.707·V<sub>peak</sub>. That number sits in
@@ -369,7 +369,7 @@ export default function Ch15FourierHarmonics() {
         anything else<Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Harmonics through a linear filter</h2>
+      <h2 className="chapter-h2">Harmonics through a linear filter</h2>
 
       <p className="mb-prose-3">
         Chapter 12 introduced impedance and chapter 16 introduces the transfer function H(jω): the complex ratio of output
@@ -447,7 +447,7 @@ export default function Ch15FourierHarmonics() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Harmonics in real circuits: the grid problem</h2>
+      <h2 className="chapter-h2">Harmonics in real circuits: the grid problem</h2>
 
       <p className="mb-prose-3">
         For most of the 20th century, the loads on the electricity grid were resistive (incandescent lamps, resistive heaters)
@@ -503,7 +503,7 @@ export default function Ch15FourierHarmonics() {
         — the basis of the &ldquo;ferro-resonance&rdquo; failure mode in unloaded distribution transformers.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The Fast Fourier Transform</h2>
+      <h2 className="chapter-h2">The Fast Fourier Transform</h2>
 
       <p className="mb-prose-3">
         Fourier's theorem is about periodic continuous functions. The
@@ -585,7 +585,7 @@ export default function Ch15FourierHarmonics() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
         Every periodic signal decomposes into a sum of sines at integer multiples of one fundamental frequency. Fourier's

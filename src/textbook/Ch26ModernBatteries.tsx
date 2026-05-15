@@ -34,7 +34,7 @@ export default function Ch19ModernBatteries() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Open the hood of a gasoline car built any time in the last hundred and sixty years and you find the same
         chemistry: lead plates in dilute sulphuric acid, six cells stacked to twelve volts, a thick cable to the
         starter motor. Open the back of the phone in your pocket and you find an entirely different chemistry:
@@ -50,7 +50,7 @@ export default function Ch19ModernBatteries() {
         energy, power, and refuelling.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Beyond Volta: the first rechargeable cell</h2>
+      <h2 className="chapter-h2">Beyond Volta: the first rechargeable cell</h2>
 
       <p className="mb-prose-3">
         Volta's pile and its descendants (Daniell, Leclanché, Weston) all had one limitation: once the chemistry ran
@@ -71,7 +71,7 @@ export default function Ch19ModernBatteries() {
         for the specific job of cranking an engine and buffering an alternator<Cite id="bard-faulkner-2001" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Lead-acid</h2>
+      <h2 className="chapter-h2">Lead-acid</h2>
 
       <p className="mb-prose-3">
         The lead-acid cell is unusual among rechargeables in that <em className="italic text-text">both</em> electrodes are made of lead in
@@ -118,7 +118,7 @@ export default function Ch19ModernBatteries() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The lithium-ion revolution</h2>
+      <h2 className="chapter-h2">The lithium-ion revolution</h2>
 
       <p className="mb-prose-3">
         The breakthrough came from three people working in three different decades. Stanley Whittingham, at Exxon
@@ -181,7 +181,7 @@ export default function Ch19ModernBatteries() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The Li-ion chemistry tree</h2>
+      <h2 className="chapter-h2">The Li-ion chemistry tree</h2>
 
       <p className="mb-prose-3">
         Goodenough's LiCoO₂ was the original Li-ion cathode and is still found in consumer electronics (your phone is
@@ -224,7 +224,7 @@ export default function Ch19ModernBatteries() {
         Vehicle range vs. cycle life vs. cost vs. supply-chain risk — there is no universal winner<Cite id="bard-faulkner-2001" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Supercapacitors</h2>
+      <h2 className="chapter-h2">Supercapacitors</h2>
 
       <p className="mb-prose-3">
         Step sideways from chemistry for a moment. A supercapacitor — also called an EDLC (electric double-layer
@@ -282,7 +282,7 @@ export default function Ch19ModernBatteries() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Fuel cells: a battery you keep refilling</h2>
+      <h2 className="chapter-h2">Fuel cells: a battery you keep refilling</h2>
 
       <p className="mb-prose-3">
         Step sideways again. A fuel cell has the same two-electrode architecture as a battery, but the reactants are
@@ -341,7 +341,7 @@ export default function Ch19ModernBatteries() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
         Lead-acid: 1859 chemistry, two lead-based plates in dilute H₂SO₄, ~2 V per cell, low energy density but

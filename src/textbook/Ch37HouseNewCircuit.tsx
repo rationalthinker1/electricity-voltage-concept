@@ -36,7 +36,7 @@ export default function Ch37HouseNewCircuit() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Imagine a 1500 W shop vac in an attached garage. The owner has been plugging it into the nearest existing
         receptacle, but that receptacle is on the same 20 A circuit as the chest freezer, and every time the freezer's
         compressor kicks on while the vac is running the breaker trips. The fix is not a heavier extension cord and not
@@ -56,7 +56,7 @@ export default function Ch37HouseNewCircuit() {
         Ch.29 (branch circuits), and Ch.31 (big 240 V loads); it builds on the vocabulary without re-deriving it.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Step 0: confirm the panel has headroom</h2>
+      <h2 className="chapter-h2">Step 0: confirm the panel has headroom</h2>
 
       <p className="mb-prose-3">
         Before anything is ordered or drilled, the first question is whether the existing service can carry the new
@@ -115,7 +115,7 @@ export default function Ch37HouseNewCircuit() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Step 1: pick the device, the device picks the wire</h2>
+      <h2 className="chapter-h2">Step 1: pick the device, the device picks the wire</h2>
 
       <p className="mb-prose-3">
         With the panel cleared as having headroom, the chain of choices begins at the load and works backward to the
@@ -203,7 +203,7 @@ export default function Ch37HouseNewCircuit() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Step 2: pick the breaker</h2>
+      <h2 className="chapter-h2">Step 2: pick the breaker</h2>
 
       <p className="mb-prose-3">
         Here is the subtle inversion that surprises most first-time DIY installers. The breaker is not picked to match
@@ -242,7 +242,7 @@ export default function Ch37HouseNewCircuit() {
         breaker is whatever stocks the existing panel.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Step 3: pick a path</h2>
+      <h2 className="chapter-h2">Step 3: pick a path</h2>
 
       <p className="mb-prose-3">
         With the device, the wire, and the breaker selected, the next question is purely mechanical: how does the
@@ -273,7 +273,7 @@ export default function Ch37HouseNewCircuit() {
         unbroken cable from panel to box.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Step 4: pick the cable</h2>
+      <h2 className="chapter-h2">Step 4: pick the cable</h2>
 
       <p className="mb-prose-3">
         Three cable types dominate residential interior work, and the choice between them is regional, occupancy-driven,
@@ -310,7 +310,7 @@ export default function Ch37HouseNewCircuit() {
         plastic staples (no bare metal staples digging into the jacket)<Cite id="nec-2023" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Step 5: pick the boxes</h2>
+      <h2 className="chapter-h2">Step 5: pick the boxes</h2>
 
       <p className="mb-prose-3">
         Every connection has to live in a box; every box has to be large enough to hold its contents without crushing
@@ -374,7 +374,7 @@ export default function Ch37HouseNewCircuit() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Step 6: make up the connections</h2>
+      <h2 className="chapter-h2">Step 6: make up the connections</h2>
 
       <p className="mb-prose-3">
         The cable is pulled, the boxes are mounted, the conductors are inside their respective boxes. Now the splices.
@@ -407,7 +407,7 @@ export default function Ch37HouseNewCircuit() {
         leaf, not a node — pull it out and the rest of the circuit stays live<Cite id="ul-498" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Step 7: land at the panel</h2>
+      <h2 className="chapter-h2">Step 7: land at the panel</h2>
 
       <p className="mb-prose-3">
         The cable is fished, the receptacle is wired, the box is dressed. The last operation is the panel landing —

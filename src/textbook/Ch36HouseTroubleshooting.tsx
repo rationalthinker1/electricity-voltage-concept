@@ -33,7 +33,7 @@ export default function Ch36HouseTroubleshooting() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         You plug the toaster in and nothing happens. The element doesn't glow, the timer dial doesn't tick, the
         little red pilot light stays dark. You glance at the microwave on the next counter and the clock face is
         dark too. You walk down to the basement, open the panel, and stare at forty identical black handles. None
@@ -50,7 +50,7 @@ export default function Ch36HouseTroubleshooting() {
         the failure modes makes the readings legible.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Four meters, four jobs</h2>
+      <h2 className="chapter-h2">Four meters, four jobs</h2>
 
       <p className="mb-prose-3">
         The electrical aisle of a hardware store stocks four broad families of voltage-and-current instrument, and
@@ -58,7 +58,7 @@ export default function Ch36HouseTroubleshooting() {
         which is half the troubleshooting skill.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">The non-contact voltage tester</h3>
+      <h3 className="chapter-h3">The non-contact voltage tester</h3>
       <p className="mb-prose-3">
         A {' '}
         <Term def={<><strong className="text-text font-medium">NCVT</strong> (non-contact voltage tester) — a pen-shaped tool that senses the AC electric field around a live conductor through its insulation. Yes/no presence test only; reads on capacitive coupling, not on conduction.</>}>NCVT</Term>{' '}
@@ -78,7 +78,7 @@ export default function Ch36HouseTroubleshooting() {
         first ten seconds of any job, then verify with a contact-based tool. Never trust it alone.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">The two-pole probe</h3>
+      <h3 className="chapter-h3">The two-pole probe</h3>
       <p className="mb-prose-3">
         A {' '}
         <Term def={<><strong className="text-text font-medium">two-pole probe</strong> — a contact voltage tester with two metal tips, internal solenoid or filament load, and a backlit display or LED bar. Examples: Fluke T5, Fluke T6, Wiggy. Loads the circuit enough (mA, not µA) to swamp capacitive leakage; the verify-dead standard.</>}>two-pole probe</Term>{' '}
@@ -96,7 +96,7 @@ export default function Ch36HouseTroubleshooting() {
         NFPA-70E-aligned verify-dead procedure that every working electrician follows<Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">The digital multimeter</h3>
+      <h3 className="chapter-h3">The digital multimeter</h3>
       <p className="mb-prose-3">
         A {' '}
         <Term def={<><strong className="text-text font-medium">DMM</strong> (digital multimeter) — the general-purpose voltmeter / ammeter / ohmmeter / continuity tester. Typical residential-grade units present 10 MΩ input impedance on the volts ranges. Reads anything but is fooled by phantom voltage on floating conductors.</>}>DMM</Term>{' '}
@@ -123,7 +123,7 @@ export default function Ch36HouseTroubleshooting() {
         reading approaches V<sub>source</sub> even though no useful current is available behind that voltage.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">The clamp meter</h3>
+      <h3 className="chapter-h3">The clamp meter</h3>
       <p className="mb-prose-3">
         A {' '}
         <Term def={<><strong className="text-text font-medium">clamp meter</strong> — a current meter with a hinged ferromagnetic (or Hall-effect) jaw that closes around a single conductor. Reads AC current (and on Hall-effect units, DC current) without breaking the circuit. Resolution typically 0.1 A; range 0–600 A AC.</>}>clamp meter</Term>{' '}
@@ -169,7 +169,7 @@ export default function Ch36HouseTroubleshooting() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The phantom-voltage trap, deeply</h2>
+      <h2 className="chapter-h2">The phantom-voltage trap, deeply</h2>
 
       <p className="mb-prose-3">
         It is worth pausing on the phantom-voltage problem because it is the single most common cause of an
@@ -250,7 +250,7 @@ export default function Ch36HouseTroubleshooting() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The dead-outlet diagnostic flowchart</h2>
+      <h2 className="chapter-h2">The dead-outlet diagnostic flowchart</h2>
 
       <p className="mb-prose-3">
         With a two-pole probe (or a DMM with low-Z) in hand and the cover plate off a dead receptacle, the
@@ -261,7 +261,7 @@ export default function Ch36HouseTroubleshooting() {
         the green screw<Cite id="ul-498" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Branch A — L-N reads 120 V</h3>
+      <h3 className="chapter-h3">Branch A — L-N reads 120 V</h3>
       <p className="mb-prose-3">
         The outlet is live. Both hot and neutral are intact all the way to the panel and bonded to the
         transformer secondary. The reason your appliance didn't work is on the appliance's side of the contacts —
@@ -270,7 +270,7 @@ export default function Ch36HouseTroubleshooting() {
         the diagnosis is "user side" or "appliance side", not the wiring.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Branch B — L-N reads 0 V, L-G reads 120 V</h3>
+      <h3 className="chapter-h3">Branch B — L-N reads 0 V, L-G reads 120 V</h3>
       <p className="mb-prose-3">
         Hot is live, but the neutral has gone {' '}
         <Term def={<><strong className="text-text font-medium">open neutral</strong> — a break in the grounded conductor between the receptacle and the panel's neutral bar. The hot conductor remains energised; loads see no voltage because there is no return path. Distinguished from a dead branch by a live L-G reading.</>}>open</Term>{' '}
@@ -283,7 +283,7 @@ export default function Ch36HouseTroubleshooting() {
         white-wire connection.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Branch C — L-N reads 120 V but N-G reads 5–20 V instead of ≈ 0 V</h3>
+      <h3 className="chapter-h3">Branch C — L-N reads 120 V but N-G reads 5–20 V instead of ≈ 0 V</h3>
       <p className="mb-prose-3">
         The outlet is live but the neutral has gained appreciable series resistance back to its bond point at
         the main panel. Normal load current — even a few amps — pushes the neutral wire's local potential up
@@ -296,7 +296,7 @@ export default function Ch36HouseTroubleshooting() {
         downstream starts to heat.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Branch D — all three probes read 0 V</h3>
+      <h3 className="chapter-h3">Branch D — all three probes read 0 V</h3>
       <p className="mb-prose-3">
         The branch is dead — no hot voltage at the outlet. The fault is upstream, in this order of likelihood:
       </p>
@@ -361,7 +361,7 @@ export default function Ch36HouseTroubleshooting() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Tripped breakers and what tripped them</h2>
+      <h2 className="chapter-h2">Tripped breakers and what tripped them</h2>
 
       <p className="mb-prose-3">
         Once the flowchart points back to the panel, the next question is <em className="italic text-text">why</em> the breaker tripped.
@@ -371,7 +371,7 @@ export default function Ch36HouseTroubleshooting() {
         completely different.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Thermal trip</h3>
+      <h3 className="chapter-h3">Thermal trip</h3>
       <p className="mb-prose-3">
         A {' '}
         <Term def={<><strong className="text-text font-medium">thermal trip</strong> — a breaker trip caused by sustained overload heating a bimetallic strip past its release setpoint. Time to trip ranges from seconds at moderate overload to minutes near the rated current. Resets only after the bimetal cools.</>}>thermal trip</Term>{' '}
@@ -404,7 +404,7 @@ export default function Ch36HouseTroubleshooting() {
         that pushes the running current past 80% of rating.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Magnetic trip</h3>
+      <h3 className="chapter-h3">Magnetic trip</h3>
       <p className="mb-prose-3">
         A {' '}
         <Term def={<><strong className="text-text font-medium">magnetic trip</strong> — a breaker trip caused by a short-circuit-magnitude current generating enough flux in the breaker's solenoid coil to slam the trip lever open within milliseconds. Resets immediately because the bimetal never warmed.</>}>magnetic trip</Term>{' '}
@@ -422,7 +422,7 @@ export default function Ch36HouseTroubleshooting() {
         not a try-again event.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">AFCI or GFCI electronic trip</h3>
+      <h3 className="chapter-h3">AFCI or GFCI electronic trip</h3>
       <p className="mb-prose-3">
         An {' '}
         <Term def={<><strong className="text-text font-medium">AFCI</strong> (arc-fault circuit interrupter) — a breaker (or receptacle) with a microcontroller that monitors the current waveform for the broadband-noise signature of an arc and trips when it detects one. Listed under UL 1699.</>}>AFCI</Term>{' '}
@@ -464,7 +464,7 @@ export default function Ch36HouseTroubleshooting() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The clamp meter and what's drawing what</h2>
+      <h2 className="chapter-h2">The clamp meter and what's drawing what</h2>
 
       <p className="mb-prose-3">
         Once a circuit's running again, the next question is usually whether it's drawing what you'd expect.
@@ -520,7 +520,7 @@ export default function Ch36HouseTroubleshooting() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The "dead breaker" failure mode</h2>
+      <h2 className="chapter-h2">The "dead breaker" failure mode</h2>
 
       <p className="mb-prose-3">
         Sometimes the breaker handle reads ON, no LED is blinking, the panel directory says the right circuit,

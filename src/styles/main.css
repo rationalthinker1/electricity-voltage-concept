@@ -453,6 +453,48 @@ body::before {
            [&_sup]:text-[.65em] [&_sup]:leading-none [&_sup]:align-[.5em];
   }
 
+  /* Lab hero formula. Fraunces italic at fluid clamp() size. Descendant
+     sub/sup styling matches .formula-content/.formula-inline; size and
+     align values tuned for the larger clamp() type. */
+  .formula-hero {
+    @apply font-4 italic text-text my-xl text-[clamp(48px,8vw,96px)]
+           [&_sub]:text-[.58em] [&_sub]:leading-none [&_sub]:align-[-.32em]
+           [&_sup]:text-[.58em] [&_sup]:leading-none [&_sup]:align-[.5em];
+  }
+
+  /* Chapter section heading. Every <h2> in a chapter body uses this
+     shape: Fraunces italic at fluid clamp() size, with <em> children
+     accent-tinted. */
+  .chapter-h2 {
+    @apply font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text
+           mt-3xl mb-2xl max-w-[28ch]
+           [&_em]:italic [&_em]:text-accent [&_em]:font-normal;
+  }
+
+  /* Chapter opening paragraph. Every Ch{N}*.tsx renders one of these as
+     its first <p>: a Fraunces drop-cap on the first letter, sized to
+     4em with a small accent-tinted lozenge of margin around it. */
+  .chapter-intro {
+    @apply mb-prose-3
+           first-letter:font-2 first-letter:font-light first-letter:text-[4em]
+           first-letter:leading-none first-letter:float-left
+           first-letter:m-[4px_12px_-4px_0] first-letter:text-accent;
+  }
+
+  /* Lab section heading. Each *Lab.tsx renders six of these — Context,
+     Formula, Intuition, Reasoning, Derivation, Worked problems —
+     as its top-level <h3>. Fraunces italic at text-9. */
+  .lab-section-h3 {
+    @apply font-2 font-normal italic text-9 leading-1 tracking-1 text-text my-4xl mb-xl;
+  }
+
+  /* Chapter sub-section heading. Uppercase accent eyebrow used as <h3>
+     inside chapter narrative to divide an h2 section into named
+     sub-parts (e.g., GFCI, AFCI, Branch A — L-N reads 120 V). */
+  .chapter-h3 {
+    @apply font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem];
+  }
+
 }
 
 /* ─── Page layout primitives ─── */

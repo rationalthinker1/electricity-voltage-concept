@@ -278,7 +278,7 @@ export default function LorentzLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         The Lorentz force is the operational definition of <strong className="text-text font-medium">E</strong> and <strong className="text-text font-medium">B</strong>: they are <em className="italic text-text">defined</em> by the force
         they apply to a probe charge of arbitrary velocity. Every motor, every CRT, every mass spectrometer, every cyclotron, every aurora,
@@ -291,7 +291,7 @@ export default function LorentzLab() {
         include the field generated <em className="italic text-text">by</em> the moving charge (radiation reaction, self-force).
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>F = q E + q v × B</MathBlock>
       <p className="mb-prose-3">Variable glossary:</p>
       <ul>
@@ -305,7 +305,7 @@ export default function LorentzLab() {
       <MathBlock>r = m v / (|q| B),    T = 2π m / (|q| B),    f = |q| B / (2π m)</MathBlock>
       <p className="mb-prose-3">The radius is the <em className="italic text-text">cyclotron radius</em>; T is the <em className="italic text-text">cyclotron period</em>; f the <em className="italic text-text">cyclotron frequency</em>.</p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         Two pieces. The electric term <strong className="text-text font-medium">qE</strong> is the familiar push along the field. The magnetic term <strong className="text-text font-medium">qv × B</strong> is
         always perpendicular to both <strong className="text-text font-medium">v</strong> and <strong className="text-text font-medium">B</strong>. A force perpendicular to motion does no work, so kinetic
@@ -316,7 +316,7 @@ export default function LorentzLab() {
         Magnetism doesn't do work. It only <em className="italic text-text">steers</em>.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Why a cross product? Because the magnetic force must be perpendicular to <strong className="text-text font-medium">v</strong> (else it would do work and B-fields would
         change kinetic energy — which contradicts experiment); and because it must be perpendicular to <strong className="text-text font-medium">B</strong> (else moving along
@@ -330,7 +330,7 @@ export default function LorentzLab() {
         and speed scale linearly with v, and their ratio is the period. This is the famous fact that cyclotrons exploit<Cite id="feynman-II-13" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         For a particle of mass <strong className="text-text font-medium">m</strong> moving at speed <strong className="text-text font-medium">v</strong> perpendicular to <strong className="text-text font-medium">B</strong>, the magnetic force
         is <strong className="text-text font-medium">F = |q|vB</strong> and points centripetally (right-hand rule). Newton's second law for circular motion:
@@ -343,7 +343,7 @@ export default function LorentzLab() {
         <strong className="text-text font-medium"> m<sub>e</sub> ≈ 9.109 × 10⁻³¹ kg</strong>, <strong className="text-text font-medium">m<sub>p</sub> ≈ 1.673 × 10⁻²⁷ kg</strong><Cite id="codata-2018" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 2.3.1"

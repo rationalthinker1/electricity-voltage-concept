@@ -33,7 +33,7 @@ export default function Ch16Motors() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Pry open a cheap cordless drill and you find a brick of copper and steel about the size of a deck of cards.
         Apply 18 volts of lithium-ion DC across two contact strips and it converts <strong className="text-text font-medium">600 W of electrical power</strong>
         into mechanical torque well enough to drive a four-inch lag screw into oak. There are no fluids inside, no
@@ -51,7 +51,7 @@ export default function Ch16Motors() {
         counts are five different answers to the same question.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Force on a wire = torque on a coil</h2>
+      <h2 className="chapter-h2">Force on a wire = torque on a coil</h2>
 
       <p className="mb-prose-3">
         Chapter 6 wrote down the <Term def="The total electromagnetic force on a point charge: F = q(E + v × B). For currents — many charges moving together — the magnetic piece becomes a force per length on the wire.">Lorentz force</Term>
@@ -103,7 +103,7 @@ export default function Ch16Motors() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The brushed DC motor</h2>
+      <h2 className="chapter-h2">The brushed DC motor</h2>
 
       <p className="mb-prose-3">
         The first practical motor solves the sign-of-sin(θ) problem mechanically. Take the single-loop machine above and
@@ -167,7 +167,7 @@ export default function Ch16Motors() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Brushless DC and PMSM</h2>
+      <h2 className="chapter-h2">Brushless DC and PMSM</h2>
 
       <p className="mb-prose-3">
         Invert the topology. Put the permanent magnets on the rotor — typically two, four, or eight pole-pairs of
@@ -225,7 +225,7 @@ export default function Ch16Motors() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The induction motor — Tesla 1888</h2>
+      <h2 className="chapter-h2">The induction motor — Tesla 1888</h2>
 
       <p className="mb-prose-3">
         Now eliminate the connection to the rotor entirely. No brushes, no permanent magnets, no slip rings — just a
@@ -326,7 +326,7 @@ export default function Ch16Motors() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Synchronous and stepper motors</h2>
+      <h2 className="chapter-h2">Synchronous and stepper motors</h2>
 
       <p className="mb-prose-3">
         Two more variants round out the family. The <Term def="An AC motor whose rotor turns exactly at the line-synchronous speed n_s = 120 f / p. Achieves zero slip by giving the rotor its own magnetic field (DC excitation or permanent magnets). Used where precision speed matters.">synchronous motor</Term> looks
@@ -377,7 +377,7 @@ export default function Ch16Motors() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Torque, speed, and matching to a load</h2>
+      <h2 className="chapter-h2">Torque, speed, and matching to a load</h2>
 
       <p className="mb-prose-3">
         A motor's headline rating is its <em className="italic text-text">torque-speed curve</em>: how much torque it produces as a function of how
@@ -441,7 +441,7 @@ export default function Ch16Motors() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
         Force on a current-carrying wire in a magnetic field gives torque on a coil. Brushes mechanically reverse the

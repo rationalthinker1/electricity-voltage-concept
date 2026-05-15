@@ -32,7 +32,7 @@ export default function Ch11Relativity() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Five chapters ago we made a promise. At the end of Chapter&nbsp;4, after teaching the Biot–Savart law, the
         right-hand rule, and the magnetic force on two parallel wires, we claimed that none of it was really a
         separate force. <em className="italic text-text">Magnetism is what electricity looks like when you change{' '}
@@ -46,7 +46,7 @@ export default function Ch11Relativity() {
         the end the two fields will have collapsed into one object.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">A promise from <em className="italic text-accent font-normal">Chapter 4</em></h2>
+      <h2 className="chapter-h2">A promise from <em>Chapter 4</em></h2>
 
       <p className="mb-prose-3">
         The setup. A long straight wire carrying a steady current <strong className="text-text font-medium">I</strong>. Far enough from the ends
@@ -78,7 +78,7 @@ export default function Ch11Relativity() {
         primitive force, postulated, distinct from electricity. Live with it.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The same wire, viewed from a moving <em className="italic text-accent font-normal">train</em></h2>
+      <h2 className="chapter-h2">The same wire, viewed from a moving <em>train</em></h2>
 
       <p className="mb-prose-3">
         Special relativity says: don't live with it. Same physical situation, but switch reference frames. Get
@@ -106,7 +106,7 @@ export default function Ch11Relativity() {
 
       <WireFromMovingFrameDemo />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The numbers work out <em className="italic text-accent font-normal">exactly</em></h2>
+      <h2 className="chapter-h2">The numbers work out <em>exactly</em></h2>
 
       <p className="mb-prose-3">
         This isn't a hand-wave. Purcell &amp; Morin's textbook works through the algebra in Chapter&nbsp;5–6 and
@@ -166,7 +166,7 @@ export default function Ch11Relativity() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">E and B <em className="italic text-accent font-normal">together</em></h2>
+      <h2 className="chapter-h2">E and B <em>together</em></h2>
 
       <p className="mb-prose-3">
         Once you accept that "electric" and "magnetic" are frame-dependent labels on a single underlying object,
@@ -201,7 +201,7 @@ export default function Ch11Relativity() {
 
       <FieldTensorDemo />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What this <em className="italic text-accent font-normal">means</em></h2>
+      <h2 className="chapter-h2">What this <em>means</em></h2>
 
       <p className="mb-prose-3">
         Classical electrodynamics is the consequence of two ingredients. <strong className="text-text font-medium">(1)</strong> Coulomb's law for

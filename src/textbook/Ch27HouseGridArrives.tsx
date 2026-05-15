@@ -33,7 +33,7 @@ export default function Ch27HouseGridArrives() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Walk down a residential street in almost any North-American suburb and look up. At the top of every wooden
         pole runs a small set of bare conductors — usually three of them, sometimes one or two, strung between
         ceramic insulators that hold them a metre or so off the cross-arm. Those are the medium-voltage{' '}
@@ -57,7 +57,7 @@ export default function Ch27HouseGridArrives() {
         this chapter.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The <em className="italic text-accent font-normal">pole-pig</em>: 7,200 V down to 240 V</h2>
+      <h2 className="chapter-h2">The <em>pole-pig</em>: 7,200 V down to 240 V</h2>
 
       <p className="mb-prose-3">
         The barrel on the pole is a{' '}
@@ -100,7 +100,7 @@ export default function Ch27HouseGridArrives() {
         as given and follows where the three wires go.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Why split-<em className="italic text-accent font-normal">phase</em>, not just single-phase?</h2>
+      <h2 className="chapter-h2">Why split-<em>phase</em>, not just single-phase?</h2>
 
       <p className="mb-prose-3">
         Edison's 1882 New York system delivered direct current at 110 V, and the choice of "around 110" was set by
@@ -167,7 +167,7 @@ export default function Ch27HouseGridArrives() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The service drop and the <em className="italic text-accent font-normal">weatherhead</em></h2>
+      <h2 className="chapter-h2">The service drop and the <em>weatherhead</em></h2>
 
       <p className="mb-prose-3">
         From the bottom of the pole-pig, three conductors leave together and arc across the street: two insulated
@@ -220,7 +220,7 @@ export default function Ch27HouseGridArrives() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The meter <em className="italic text-accent font-normal">base</em></h2>
+      <h2 className="chapter-h2">The meter <em>base</em></h2>
 
       <p className="mb-prose-3">
         The three service-drop wires enter the back of a square or rectangular metal enclosure mounted on the
@@ -251,7 +251,7 @@ export default function Ch27HouseGridArrives() {
         the meter and every coulomb that crosses it is counted.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What the meter actually <em className="italic text-accent font-normal">measures</em></h2>
+      <h2 className="chapter-h2">What the meter actually <em>measures</em></h2>
 
       <p className="mb-prose-3">
         Older revenue meters — and most meters installed before about 2005 — are <strong className="text-text font-medium">Ferraris induction
@@ -350,7 +350,7 @@ export default function Ch27HouseGridArrives() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Neutral, ground, and the <em className="italic text-accent font-normal">bonding</em> jumper</h2>
+      <h2 className="chapter-h2">Neutral, ground, and the <em>bonding</em> jumper</h2>
 
       <p className="mb-prose-3">
         Inside the service-entrance equipment — typically at the main breaker of the service panel, sometimes at
@@ -384,7 +384,7 @@ export default function Ch27HouseGridArrives() {
         under normal operation and energized only during faults.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What if the neutral <em className="italic text-accent font-normal">opens</em>?</h2>
+      <h2 className="chapter-h2">What if the neutral <em>opens</em>?</h2>
 
       <p className="mb-prose-3">
         The split-phase architecture has one Achilles' heel, and homeowners discover it the hard way every winter
@@ -453,7 +453,7 @@ export default function Ch27HouseGridArrives() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so <em className="italic text-accent font-normal">far</em></h2>
+      <h2 className="chapter-h2">What we have so <em>far</em></h2>
 
       <p className="mb-prose-3">
         A single phase of the medium-voltage distribution feeder drops down through a pole-pig transformer, which

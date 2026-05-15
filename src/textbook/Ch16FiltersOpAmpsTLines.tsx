@@ -32,7 +32,7 @@ export default function Ch13FiltersOpAmpsTLines() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Chapter 12 reduced Maxwell's equations to a netlist: voltages, currents, impedances, and
         Kirchhoff's two laws. That's enough to analyse a circuit at one frequency, or one moment
         in time. But three more questions follow immediately, and the working analog engineer
@@ -49,7 +49,7 @@ export default function Ch13FiltersOpAmpsTLines() {
         and length be comparable to a wavelength.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Filters</em> and the Bode plot</h2>
+      <h2 className="chapter-h2"><em>Filters</em> and the Bode plot</h2>
 
       <p className="mb-prose-3">
         Impedance turned circuit ODEs into algebra; the next step is to ask not "what is the
@@ -167,7 +167,7 @@ export default function Ch13FiltersOpAmpsTLines() {
         whose individual Bode plots add up (in dB) to the overall response<Cite id="horowitz-hill-2015" in={SOURCES} /><Cite id="oppenheim-willsky-1997" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Active filter topologies</h3>
+      <h3 className="chapter-h3">Active filter topologies</h3>
 
       <p className="mb-prose-3">
         Passive RLC sections do the job up to a point, but inductors are physically big, hard to
@@ -256,7 +256,7 @@ export default function Ch13FiltersOpAmpsTLines() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Op-amps</em>: the ideal amplifier</h2>
+      <h2 className="chapter-h2"><em>Op-amps</em>: the ideal amplifier</h2>
 
       <p className="mb-prose-3">
         The operational amplifier is the single component that revolutionised analog electronics.
@@ -380,7 +380,7 @@ export default function Ch13FiltersOpAmpsTLines() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Transmission lines</em>: when wires get long</h2>
+      <h2 className="chapter-h2"><em>Transmission lines</em>: when wires get long</h2>
 
       <p className="mb-prose-3">
         The lumped picture had a careful caveat: it works when the circuit is small compared to
@@ -465,7 +465,7 @@ export default function Ch13FiltersOpAmpsTLines() {
 
       <StandingWavesOnLineDemo />
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">The Smith chart</h3>
+      <h3 className="chapter-h3">The Smith chart</h3>
 
       <p className="mb-prose-3">
         Sliding Z<sub>L</sub> around and tracking Γ, |Γ|, and the phase by hand gets old fast.
@@ -552,7 +552,7 @@ export default function Ch13FiltersOpAmpsTLines() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
       <p className="mb-prose-3">
         Three sequels to Ch.12. Transfer functions and Bode plots compress a circuit's
         frequency-by-frequency behaviour to two straight-line asymptotes — passband flat, stopband

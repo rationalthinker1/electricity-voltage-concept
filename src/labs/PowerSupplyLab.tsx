@@ -382,7 +382,7 @@ export default function PowerSupplyLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         This is the old-school supply hiding inside thousands of instruments: line AC enters a transformer, the transformer
         sets the safe secondary voltage, the rectifier folds the waveform, the capacitor stores charge between peaks, and the
@@ -395,7 +395,7 @@ export default function PowerSupplyLab() {
         more efficient switched converters, but the accounting begins here<Cite id="mohan-undeland-robbins-2003" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>ΔV ≈ I<sub>load</sub> / (f<sub>ripple</sub> C)</MathBlock>
       <p className="mb-prose-3">
         <strong className="text-text font-medium">ΔV</strong> is the approximate peak-to-peak capacitor ripple in volts, <strong className="text-text font-medium">I<sub>load</sub></strong> is
@@ -416,7 +416,7 @@ export default function PowerSupplyLab() {
         that the heat sink becomes the real circuit.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Load current makes ripple larger because the capacitor is drained faster between recharge peaks. Bigger capacitance
         makes ripple smaller because the same charge removal causes less voltage sag. A bridge rectifier costs two diode drops

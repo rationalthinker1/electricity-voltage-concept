@@ -328,7 +328,7 @@ export default function BiotSavartLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         Biot–Savart describes the magnetic field set up by a <em className="italic text-text">steady</em> current. Pick any infinitesimal piece <strong className="text-text font-medium">dℓ</strong>
         of a wire carrying current <strong className="text-text font-medium">I</strong>; that piece contributes a tiny field <strong className="text-text font-medium">dB</strong> at every point in space.
@@ -341,7 +341,7 @@ export default function BiotSavartLab() {
         Biot–Savart misses. For ordinary DC and slow AC at scales much smaller than a wavelength, it is exact<Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>dB = (μ<sub>0</sub> / 4π) · I dℓ × r̂ / r²</MathBlock>
       <p className="mb-prose-3">Variable glossary:</p>
       <ul>
@@ -357,7 +357,7 @@ export default function BiotSavartLab() {
       <p className="mb-prose-3">And in the long-wire limit L → ∞:</p>
       <MathBlock>B<sub>∞</sub> = μ<sub>0</sub> I / (2π d)</MathBlock>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         Curl the fingers of your right hand from <strong className="text-text font-medium">dℓ</strong> toward <strong className="text-text font-medium">r̂</strong>; your thumb points along <strong className="text-text font-medium">dB</strong>.
         That cross product is what makes magnetic field lines wrap <em className="italic text-text">around</em> the current rather than radiating outward<Cite id="feynman-II-13" in={SOURCES} />.
@@ -368,7 +368,7 @@ export default function BiotSavartLab() {
         Currents do not radiate force outward like charges. They <em className="italic text-text">circulate</em> it.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Every piece earns its place. The <strong className="text-text font-medium">I dℓ</strong> factor is the source strength — more current means more field, linearly. The
         <strong className="text-text font-medium"> 1/r²</strong> is geometric dilution in three dimensions (Coulomb's exponent, Gauss's law). The <strong className="text-text font-medium">× r̂</strong> is what
@@ -384,7 +384,7 @@ export default function BiotSavartLab() {
         (<strong className="text-text font-medium">d ≫ L</strong>) it falls like <strong className="text-text font-medium">1/d²</strong> because a finite stub of current looks like a magnetic dipole.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         Biot and Savart (1820) measured the deflection of a compass needle at varying perpendicular distances from a long straight current
         and fit the data<Cite id="biot-savart-1820" in={SOURCES} />. The modern derivation runs in reverse. Start with a moving point charge:
@@ -399,7 +399,7 @@ export default function BiotSavartLab() {
         <strong className="text-text font-medium"> ∫<sub>−∞</sub><sup>∞</sup> d dx / (x² + d²)<sup>3/2</sup> = 2/d</strong> delivers <strong className="text-text font-medium">|B| = μ<sub>0</sub> I / (2π d)</strong><Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 2.1.1"

@@ -37,7 +37,7 @@ export default function Ch13Materials() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Every demo in this textbook has had a quiet little slider labeled <strong className="text-text font-medium">ε<sub>r</sub></strong> or
         <strong className="text-text font-medium"> μ<sub>r</sub></strong>. Drag one and the field inside the dielectric drops; drag the other and
         the inductance of a coil skyrockets. We have been borrowing those numbers for ten chapters without
@@ -52,7 +52,7 @@ export default function Ch13Materials() {
         molecular dipole — there's no other way to get a number that big.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">A <em className="italic text-accent font-normal">slider</em> you've been using all along</h2>
+      <h2 className="chapter-h2">A <em>slider</em> you've been using all along</h2>
 
       <p className="mb-prose-3">
         In vacuum, Maxwell's equations are written in terms of two universal constants:
@@ -74,7 +74,7 @@ export default function Ch13Materials() {
         <Cite id="griffiths-2017" in={SOURCES} /><Cite id="jackson-1999" in={SOURCES} />. That's the deal.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Polarization: how a material <em className="italic text-accent font-normal">lowers the field</em></h2>
+      <h2 className="chapter-h2">Polarization: how a material <em>lowers the field</em></h2>
 
       <p className="mb-prose-3">
         Take an insulator — glass, plastic, dry wood — and apply an electric field. The free electrons are
@@ -139,7 +139,7 @@ export default function Ch13Materials() {
         where ε<sub>r</sub> comes from — read it directly off the readout as the alignment grows.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Bound charge, free charge, and the dielectric in a capacitor</h2>
+      <h2 className="chapter-h2">Bound charge, free charge, and the dielectric in a capacitor</h2>
 
       <p className="mb-prose-3">
         Here is the cleanest demonstration: put a slab of insulator between the plates of a charged
@@ -233,7 +233,7 @@ export default function Ch13Materials() {
         drops; cool it down and it rises. Same molecule; different thermal scramble.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The conductor as the <em className="italic text-accent font-normal">limiting case</em>: image charges</h2>
+      <h2 className="chapter-h2">The conductor as the <em>limiting case</em>: image charges</h2>
 
       <p className="mb-prose-3">
         Push ε<sub>r</sub> to infinity and the dielectric becomes a conductor. The bound charges that
@@ -266,7 +266,7 @@ export default function Ch13Materials() {
         mirror's worth<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Three kinds of <em className="italic text-accent font-normal">magnetic response</em></h2>
+      <h2 className="chapter-h2">Three kinds of <em>magnetic response</em></h2>
 
       <p className="mb-prose-3">
         Magnetism in matter is messier than electric polarization, because there are three different
@@ -343,7 +343,7 @@ export default function Ch13Materials() {
         still tiny compared to ferromagnets.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Ferromagnets and the <em className="italic text-accent font-normal">hysteresis loop</em></h2>
+      <h2 className="chapter-h2">Ferromagnets and the <em>hysteresis loop</em></h2>
 
       <p className="mb-prose-3">
         Pierre Weiss in 1907 proposed that ferromagnets aren't uniformly magnetized at all — they break up
@@ -431,7 +431,7 @@ export default function Ch13Materials() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The <em className="italic text-accent font-normal">big picture</em>: one number per material per response</h2>
+      <h2 className="chapter-h2">The <em>big picture</em>: one number per material per response</h2>
 
       <p className="mb-prose-3">
         Every microscopic mechanism we've talked about — induced electronic polarization, permanent dipole

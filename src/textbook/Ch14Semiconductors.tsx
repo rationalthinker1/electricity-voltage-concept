@@ -42,7 +42,7 @@ export default function Ch14Semiconductors() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Pull the top off a cheap white LED bulb and the entire light source is
         a fleck of silicon a millimetre across, sitting on a copper slug, with
         a smear of yellow phosphor on top. Look closer at any current
@@ -67,7 +67,7 @@ export default function Ch14Semiconductors() {
         for where the extra energy comes from.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">From conductor to semiconductor</h2>
+      <h2 className="chapter-h2">From conductor to semiconductor</h2>
 
       <p className="mb-prose-3">
         Chapter 4 split the world into conductors (a lot of mobile electrons) and insulators
@@ -166,7 +166,7 @@ export default function Ch14Semiconductors() {
         Pure silicon is a poor conductor; what makes silicon useful is the tiny amount of something else you put in it.
       </Pullout>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The p-n junction</h2>
+      <h2 className="chapter-h2">The p-n junction</h2>
 
       <p className="mb-prose-3">
         Take a piece of n-type silicon and a piece of p-type silicon and bring them into
@@ -293,7 +293,7 @@ export default function Ch14Semiconductors() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Diodes — and their many flavours</h2>
+      <h2 className="chapter-h2">Diodes — and their many flavours</h2>
 
       <p className="mb-prose-3">
         A p-n junction is already a diode: a two-terminal device that conducts in one direction
@@ -330,7 +330,7 @@ export default function Ch14Semiconductors() {
         its depletion region.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The bipolar junction transistor</h2>
+      <h2 className="chapter-h2">The bipolar junction transistor</h2>
 
       <p className="mb-prose-3">
         Stack two p-n junctions back-to-back, sharing a thin middle layer, and you have a
@@ -411,7 +411,7 @@ export default function Ch14Semiconductors() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The field-effect transistor</h2>
+      <h2 className="chapter-h2">The field-effect transistor</h2>
 
       <p className="mb-prose-3">
         The BJT works by injecting carriers across a forward-biased junction. The <Term def={<><strong className="text-text font-medium">field-effect transistor</strong> (FET) — a transistor whose channel conductance between source and drain is modulated by the voltage on an electrically-isolated gate. No current (ideally) flows into the gate.</>}>field-effect transistor</Term>
@@ -529,7 +529,7 @@ export default function Ch14Semiconductors() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Small-signal model and load lines</h2>
+      <h2 className="chapter-h2">Small-signal model and load lines</h2>
 
       <p className="mb-prose-3">
         Real amplifiers operate around a fixed DC bias point — the <Term def={<><strong className="text-text font-medium">operating point</strong> (Q-point) — the DC values of voltages and currents in a circuit when no signal is present. Sets where on the device's nonlinear I-V curve the small-signal swing happens.</>}>operating point</Term>, or Q-point —
@@ -633,7 +633,7 @@ export default function Ch14Semiconductors() {
         output) at a fixed conversion ratio of 1/V<sub>T</sub>.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The common-emitter amplifier</h2>
+      <h2 className="chapter-h2">The common-emitter amplifier</h2>
 
       <p className="mb-prose-3">
         Bringing it together: a single BJT, a base bias network, a collector resistor, an
@@ -698,7 +698,7 @@ export default function Ch14Semiconductors() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
         A semiconductor is a crystal whose conductivity sits between metal and insulator, set

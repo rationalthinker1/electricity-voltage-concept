@@ -318,7 +318,7 @@ export default function EFieldLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         Coulomb's law tells you what happens when two charges meet. That works fine for two charges. But what about ten? Or 10<sup>23</sup>?
         Worse: how does charge 1 even "know" where charge 2 is in order to push on it? Faraday's answer was to invent a new object — the
@@ -332,7 +332,7 @@ export default function EFieldLab() {
         its form is more complex and it carries momentum and energy of its own<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>E = F / q<sub>test</sub>  &nbsp;&nbsp;and&nbsp;&nbsp;  E = k Q / (ε<sub>r</sub> r²)</MathBlock>
       <p className="mb-prose-3">
         Variable glossary:
@@ -347,7 +347,7 @@ export default function EFieldLab() {
         <li><strong className="text-text font-medium">ε<sub>r</sub></strong> — relative permittivity of the medium (dimensionless). 1 in vacuum.</li>
       </ul>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         A charge <em className="italic text-text">fills space with field</em>. Pick any point near a +5 nC speck of charge and ask "if I dropped a tiny positive probe
         here, which way would it fly and how hard?" That arrow, divided by the probe's charge, is <strong className="text-text font-medium">E</strong>. The arrow gets weaker
@@ -363,7 +363,7 @@ export default function EFieldLab() {
         charge feels a force along <strong className="text-text font-medium">E</strong>; a negative test charge feels a force opposite to it.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Why "force per unit charge"? Because Coulomb's law is linear in the test charge: doubling q<sub>test</sub> doubles F. Defining
         <strong className="text-text font-medium"> E = F/q<sub>test</sub></strong> isolates the part of the situation that <em className="italic text-text">doesn't depend on the test charge</em> — i.e. the
@@ -388,7 +388,7 @@ export default function EFieldLab() {
         formula is symmetric in nothing — Q is a property of the source alone, and reversing it reverses the field everywhere.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         Start from Coulomb's law for the force on a test charge q<sub>t</sub> placed at distance r from a source charge Q:
       </p>
@@ -417,7 +417,7 @@ export default function EFieldLab() {
       </p>
       <MathBlock>E<sub>medium</sub> = k Q / (ε<sub>r</sub> r²)</MathBlock>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 1.2.1"
@@ -544,7 +544,7 @@ export default function EFieldLab() {
         }
       />
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Field lines are a visualization</h3>
+      <h3 className="lab-section-h3">Field lines are a visualization</h3>
       <p className="mb-prose-3">
         The streaming orange lines in the visualization above are a representation, not a physical entity. Faraday drew them this way because the
         geometry was clear: density of lines indicates field strength; direction of lines indicates field direction. They begin on positive

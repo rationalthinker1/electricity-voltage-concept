@@ -365,7 +365,7 @@ export default function GaussLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         Gauss's law is one of the four Maxwell equations. It relates the total electric flux through any closed surface to the total electric
         charge enclosed by that surface, with no dependence on the surface's shape, the locations of charges outside the surface, or the
@@ -379,7 +379,7 @@ export default function GaussLab() {
         back on Coulomb's law and superposition<Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>∮ E · dA = Q<sub>enc</sub> / ε₀</MathBlock>
       <p className="mb-prose-3">
         Variable glossary:
@@ -392,7 +392,7 @@ export default function GaussLab() {
         <li><strong className="text-text font-medium">ε₀ = 8.854×10⁻¹² C²/(N·m²)</strong> — vacuum permittivity. The Gauss/Coulomb constant relating units of charge to units of field.</li>
       </ul>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         Coulomb's law is calculation. You hand it a charge configuration; it hands you a vector field, point by laborious point. To get the field
         from a uniformly charged sphere, an infinite line, or a finite disk, you integrate — and the answer is often ugly.
@@ -406,7 +406,7 @@ export default function GaussLab() {
         Coulomb is calculation. Gauss is bookkeeping. When you have symmetry, the bookkeeping is enough — and Coulomb falls right out of it.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Why does flux care only about enclosed charge? Picture each charge as a fountain emitting "field lines" radially. Every line leaving
         a positive charge must escape its surrounding space somehow; every line approaching a negative charge must terminate on it. If a charge
@@ -431,7 +431,7 @@ export default function GaussLab() {
         charge out of the Gaussian sphere — see for yourself.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         Start with the field of a single point charge: <strong className="text-text font-medium">E = kQ/r²</strong>. Wrap an imaginary sphere of radius <strong className="text-text font-medium">r</strong>
         around it, centered on the charge. The field is radial and uniform on that sphere, with magnitude <strong className="text-text font-medium">kQ/r²</strong>. The sphere
@@ -462,7 +462,7 @@ export default function GaussLab() {
         special case<Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 1.3.1"
@@ -608,7 +608,7 @@ export default function GaussLab() {
         }
       />
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">What k is, really</h3>
+      <h3 className="lab-section-h3">What k is, really</h3>
       <p className="mb-prose-3">
         The relation <strong className="text-text font-medium">k = 1/(4π ε₀)</strong> is geometric: the 4π is the solid angle subtended by the whole sky in steradians. SI units
         expose ε₀ because the system was historically organized around magnetism; Gaussian units absorb ε₀ into the definition of charge so

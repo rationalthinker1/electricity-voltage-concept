@@ -38,7 +38,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Lay a phone face-down on a Qi charging pad and the battery icon ticks upward. Nothing touches electrically.
         No spring contact, no exposed pin, no plug. Between the bottom of the phone and the surface of the pad sits
         about three millimetres of plastic, air, and the back-cover glass, and across that gap energy flows at a
@@ -61,7 +61,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         RFID readers will all be the same equation with different numbers.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Self-inductance, from the right <em className="italic text-accent font-normal">angle</em></h2>
+      <h2 className="chapter-h2">Self-inductance, from the right <em>angle</em></h2>
 
       <p className="mb-prose-3">
         A quick refresher, framed so the rest of the chapter slots cleanly on top of it. Take a coil of
@@ -93,7 +93,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         machine; keep it and the books balance to the joule<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Mutual inductance: when a <em className="italic text-accent font-normal">second</em> coil enters the picture</h2>
+      <h2 className="chapter-h2">Mutual inductance: when a <em>second</em> coil enters the picture</h2>
 
       <p className="mb-prose-3">
         Place a second coil near the first. Coil 1 still carries some current <strong className="text-text font-medium">I₁</strong>; the field it
@@ -159,7 +159,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The coupling <em className="italic text-accent font-normal">coefficient</em> k</h2>
+      <h2 className="chapter-h2">The coupling <em>coefficient</em> k</h2>
 
       <p className="mb-prose-3">
         Not every line of flux that coil 1 produces reaches coil 2. Some escape out the sides of coil 1 and return
@@ -221,7 +221,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Two-coil circuit <em className="italic text-accent font-normal">equations</em></h2>
+      <h2 className="chapter-h2">Two-coil circuit <em>equations</em></h2>
 
       <p className="mb-prose-3">
         Now both coils are alive, both carrying currents I₁(t) and I₂(t) that can vary independently in time. What
@@ -247,7 +247,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         drawing the helix of each winding, engineers use a one-symbol shortcut: the dot.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The dot <em className="italic text-accent font-normal">convention</em></h2>
+      <h2 className="chapter-h2">The dot <em>convention</em></h2>
 
       <p className="mb-prose-3">
         Mark one terminal of each coil with a small filled dot. The
@@ -286,7 +286,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         expected 240 V<Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Series and parallel <em className="italic text-accent font-normal">coupled</em> coils</h2>
+      <h2 className="chapter-h2">Series and parallel <em>coupled</em> coils</h2>
 
       <p className="mb-prose-3">
         Connect the two coils in series. Now the same current <strong className="text-text font-medium">I</strong> flows through both — so I₁ = I₂ = I.
@@ -336,7 +336,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Reflected impedance and the T-<em className="italic text-accent font-normal">equivalent</em></h2>
+      <h2 className="chapter-h2">Reflected impedance and the T-<em>equivalent</em></h2>
 
       <p className="mb-prose-3">
         Now wire it up like a transformer: AC source on the primary at angular frequency ω, secondary closed by a
@@ -411,7 +411,7 @@ export default function Ch22MagneticallyCoupledCircuits() {
         a coupled inductor.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so <em className="italic text-accent font-normal">far</em></h2>
+      <h2 className="chapter-h2">What we have so <em>far</em></h2>
 
       <p className="mb-prose-3">
         Self-inductance L is one coil reacting to its own current. Mutual inductance M is one coil reacting to

@@ -38,7 +38,7 @@ export default function Ch4HowAResistorWorks() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Pull a 1 kΩ resistor out of a parts kit and hold it up to the light. It's a small ceramic hot-dog with two wire legs and
         four coloured stripes painted on its side. Costs less than a cent in volume. Does, in some sense, exactly nothing — its
         whole job is to <em className="italic text-text">oppose</em> the flow of current. And yet you cannot build an electronic anything without it: not
@@ -55,7 +55,7 @@ export default function Ch4HowAResistorWorks() {
         <em className="italic text-text"> and</em> the best heat sink on the workbench.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The component, not the concept</h2>
+      <h2 className="chapter-h2">The component, not the concept</h2>
 
       <p className="mb-prose-3">
         In Chapter 3 we wrote down the macroscopic geometry rule<Cite id="griffiths-2017" in={SOURCES} />:
@@ -79,7 +79,7 @@ export default function Ch4HowAResistorWorks() {
         (or the resistivity itself) set up to change in response to something the user controls.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What's inside the body</h2>
+      <h2 className="chapter-h2">What's inside the body</h2>
 
       <p className="mb-prose-3">
         Crack open a five-cent through-hole resistor and you find a ceramic rod about a millimetre across and a centimetre long,
@@ -115,7 +115,7 @@ export default function Ch4HowAResistorWorks() {
         drift 5% over its first year of use and contribute audible hiss to an audio stage.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The colour code, and why values aren't arbitrary</h2>
+      <h2 className="chapter-h2">The colour code, and why values aren't arbitrary</h2>
 
       <p className="mb-prose-3">
         IEC 60062 defines the colour code that lets you read a fixed resistor's value without a meter<Cite id="iec-60062-2016" in={SOURCES} />.
@@ -171,7 +171,7 @@ export default function Ch4HowAResistorWorks() {
         <Cite id="horowitz-hill-2015" in={SOURCES} />. That's why you can buy 47 kΩ and 56 kΩ but not 50 kΩ off the shelf.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Power, heat, and why ratings derate</h2>
+      <h2 className="chapter-h2">Power, heat, and why ratings derate</h2>
 
       <p className="mb-prose-3">
         When current <strong className="text-text font-medium">I</strong> flows through a resistor of value <strong className="text-text font-medium">R</strong>, power is dissipated at the
@@ -241,7 +241,7 @@ export default function Ch4HowAResistorWorks() {
         across several parts.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">R is not constant: temperature coefficient</h2>
+      <h2 className="chapter-h2">R is not constant: temperature coefficient</h2>
 
       <p className="mb-prose-3">
         The resistivity ρ that goes into <em className="italic text-text">R = ρL/A</em> is itself a function of temperature. <Term def="The empirical statement that the resistivity of a metal can be decomposed additively into a temperature-independent impurity/defect term and a temperature-dependent phonon-scattering term: ρ(T) = ρ_residual + ρ_phonon(T).">Matthiessen's rule</Term>, formulated in 1864, observed
@@ -300,7 +300,7 @@ export default function Ch4HowAResistorWorks() {
         barium-titanate variants do the same thing at higher voltages, with sharper trip behaviour.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The variable cousins</h2>
+      <h2 className="chapter-h2">The variable cousins</h2>
 
       <p className="mb-prose-3">
         Every resistor we've discussed has a fixed R set at the factory. But for a great deal of everyday electronics, you want
@@ -330,7 +330,7 @@ export default function Ch4HowAResistorWorks() {
         testing machine on Earth uses one.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The deep cut: Wiedemann–Franz</h2>
+      <h2 className="chapter-h2">The deep cut: Wiedemann–Franz</h2>
 
       <p className="mb-prose-3">
         Here is a thing that turns out to be deep. The metals with the lowest electrical resistivity — copper, silver, gold,
@@ -394,7 +394,7 @@ export default function Ch4HowAResistorWorks() {
         bus bars carry current and remove its dissipation; the same physics is doing both.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
         A real resistor is a ceramic cylinder with a film of carbon, metal, or metal oxide wrapped around it — or, for high

@@ -32,7 +32,7 @@ export default function Ch6Magnetism() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Hans Christian Ørsted was lecturing in Copenhagen in the spring of 1820 with a battery, a wire, and — by
         coincidence or instinct — a compass on the table. He closed the circuit. The needle, which had been pointing
         north, swung sideways. He uncrossed the wires. The needle swung back. He hadn't been looking for a connection
@@ -47,7 +47,7 @@ export default function Ch6Magnetism() {
         no second force here. There is just electricity, viewed from another angle.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">A second kind of <em className="italic text-accent font-normal">force</em></h2>
+      <h2 className="chapter-h2">A second kind of <em>force</em></h2>
 
       <p className="mb-prose-3">
         Lodestones — naturally magnetized chunks of iron-bearing rock — were known in antiquity. Greek and Chinese
@@ -65,7 +65,7 @@ export default function Ch6Magnetism() {
         electron currents that happen to be aligned <Cite id="feynman-II-13" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The field around a <em className="italic text-accent font-normal">wire</em></h2>
+      <h2 className="chapter-h2">The field around a <em>wire</em></h2>
 
       <p className="mb-prose-3">
         For a single, infinitely long, straight wire carrying current <strong className="text-text font-medium">I</strong>, the magnetic field is one of
@@ -116,7 +116,7 @@ export default function Ch6Magnetism() {
         a cylinder of area <strong className="text-text font-medium">2π r L</strong>, so the per-area intensity drops as 1/r, not 1/r². Geometry, again.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Two wires that <em className="italic text-accent font-normal">talk</em></h2>
+      <h2 className="chapter-h2">Two wires that <em>talk</em></h2>
 
       <p className="mb-prose-3">
         Put two parallel wires near each other. Each carries a current. Each makes its own magnetic field. Each
@@ -181,7 +181,7 @@ export default function Ch6Magnetism() {
         magnetic force to do most of the visible long-range work.)
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Force on a moving <em className="italic text-accent font-normal">charge</em></h2>
+      <h2 className="chapter-h2">Force on a moving <em>charge</em></h2>
 
       <p className="mb-prose-3">
         Wires aren't the only things that feel magnetic forces — a single moving charge does too. The <Term def="The force on a charge q moving at velocity v through E and B fields: F = q(E + v × B). The full statement of how electromagnetic fields push charged particles around.">Lorentz force</Term> law, the cleanest statement in all of magnetism, is
@@ -274,7 +274,7 @@ export default function Ch6Magnetism() {
         decades before anyone knew what an electron was.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Solenoid: a <em className="italic text-accent font-normal">controllable</em> magnet</h2>
+      <h2 className="chapter-h2">Solenoid: a <em>controllable</em> magnet</h2>
 
       <p className="mb-prose-3">
         Take a wire, coil it into a tight helix, run a current through it — a <Term def="A long helical coil of wire. When current flows, the turns reinforce each other inside to give a strong, nearly uniform B field along the axis (B = μ₀ n I); outside the field nearly cancels. The simplest practical electromagnet.">solenoid</Term>. Each turn contributes its own magnetic field,
@@ -308,7 +308,7 @@ export default function Ch6Magnetism() {
         changing field, and changing field means an induced voltage. We meet that in Chapter 5.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Magnetism is electricity in a different <em className="italic text-accent font-normal">reference frame</em></h2>
+      <h2 className="chapter-h2">Magnetism is electricity in a different <em>reference frame</em></h2>
 
       <p className="mb-prose-3">
         Here is the deepest and most surprising thing about magnetism: it isn't actually a separate force at all. It's

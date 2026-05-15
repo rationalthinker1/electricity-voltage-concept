@@ -39,7 +39,7 @@ export default function Ch15Antennas() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Stand a vertical wire in your back yard and feed it a sinusoidal current at a few
         megahertz. Nothing visible happens. But across town, anyone with a matching wire and a
         sensitive receiver can hear a faint copy of whatever modulation you put on the current.
@@ -57,7 +57,7 @@ export default function Ch15Antennas() {
         Hertz demonstrated it in 1888<Cite id="hertz-1888" in={SOURCES} />; the rest is engineering.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">A wire that talks</h2>
+      <h2 className="chapter-h2">A wire that talks</h2>
 
       <p className="mb-prose-3">
         Chapter 7 covered induction: change the current in a coil, and the magnetic field
@@ -104,7 +104,7 @@ export default function Ch15Antennas() {
         nearly every more complicated geometry<Cite id="balanis-2016" in={SOURCES} /><Cite id="feynman-II-21" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The dipole pattern</h2>
+      <h2 className="chapter-h2">The dipole pattern</h2>
 
       <p className="mb-prose-3">
         Solve Maxwell's equations for an infinitesimal vertical dipole of length L and peak
@@ -196,7 +196,7 @@ export default function Ch15Antennas() {
         outgoing field<Cite id="balanis-2016" in={SOURCES} /><Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The half-wave dipole</h2>
+      <h2 className="chapter-h2">The half-wave dipole</h2>
 
       <p className="mb-prose-3">
         A "short" dipole (L ≪ λ) has tiny radiation resistance: an L/λ = 0.05 dipole has only
@@ -252,7 +252,7 @@ export default function Ch15Antennas() {
         structure is at resonance for any frequency in the design band.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Arrays and Yagis: multiplying patterns</h2>
+      <h2 className="chapter-h2">Arrays and Yagis: multiplying patterns</h2>
 
       <p className="mb-prose-3">
         Put two driven dipoles next to each other, fed in phase and a distance d apart, and the
@@ -360,7 +360,7 @@ export default function Ch15Antennas() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The Friis equation</h2>
+      <h2 className="chapter-h2">The Friis equation</h2>
 
       <p className="mb-prose-3">
         At the receiver end of a wireless link, the question is: <em className="italic text-text">how much power arrives?</em>
@@ -432,7 +432,7 @@ export default function Ch15Antennas() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Near field vs far field</h2>
+      <h2 className="chapter-h2">Near field vs far field</h2>
 
       <p className="mb-prose-3">
         Friis assumes <strong className="text-text font-medium">d ≫ λ</strong>. Closer to an antenna than that, the simple
@@ -477,7 +477,7 @@ export default function Ch15Antennas() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Patch antennas and the printed-circuit radiator</h2>
+      <h2 className="chapter-h2">Patch antennas and the printed-circuit radiator</h2>
 
       <p className="mb-prose-3">
         A <Term def="A flat rectangular metal patch on a dielectric substrate over a ground plane, fed from below. Resonates as a half-wave standing wave inside the dielectric: L ≈ λ/(2√εᵣ). Radiation is broadside, gain ~6 dBi.">microstrip patch antenna</Term> is the workhorse of everything printed on a circuit board.
@@ -526,7 +526,7 @@ export default function Ch15Antennas() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
         Push a sinusoidal current onto a wire and the wire radiates. A short electric dipole has

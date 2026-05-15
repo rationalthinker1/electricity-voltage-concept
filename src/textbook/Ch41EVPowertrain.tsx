@@ -32,7 +32,7 @@ export default function Ch41EVPowertrain() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         A Model 3 noses into the driveway with 38% on the dashboard at the end of a 120 km
         commute. The driver plugs in the J1772 connector at the side of the
         garage — 240 V single-phase, 48 A from the breaker, an{' '}
@@ -70,7 +70,7 @@ export default function Ch41EVPowertrain() {
         machine sitting under the floor of the car.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stage 1 — The battery pack (Ch.25, Ch.26)</h2>
+      <h2 className="chapter-h2">Stage 1 — The battery pack (Ch.25, Ch.26)</h2>
 
       <p className="mb-prose-3">
         A modern EV pack is a brick of cylindrical or pouch cells wired in a series-parallel
@@ -150,7 +150,7 @@ export default function Ch41EVPowertrain() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stage 2 — The BMS and the contactor</h2>
+      <h2 className="chapter-h2">Stage 2 — The BMS and the contactor</h2>
 
       <p className="mb-prose-3">
         The 4416 cells are not equal. Even cells from the same production lot drift
@@ -206,7 +206,7 @@ export default function Ch41EVPowertrain() {
         car is, electrically, safe to work on.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stage 3 — DC-DC for the 12 V rail</h2>
+      <h2 className="chapter-h2">Stage 3 — DC-DC for the 12 V rail</h2>
 
       <p className="mb-prose-3">
         An EV still has a 12 V battery and a 12 V auxiliary rail. The headlights, the
@@ -258,7 +258,7 @@ export default function Ch41EVPowertrain() {
         from the transformer turns ratio in the converter.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stage 4 — The traction inverter</h2>
+      <h2 className="chapter-h2">Stage 4 — The traction inverter</h2>
 
       <p className="mb-prose-3">
         Here is the big one. The{' '}
@@ -362,7 +362,7 @@ export default function Ch41EVPowertrain() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stage 5 — The traction motor (Ch.20)</h2>
+      <h2 className="chapter-h2">Stage 5 — The traction motor (Ch.20)</h2>
 
       <p className="mb-prose-3">
         The motor itself is a three-phase synchronous machine with permanent magnets in
@@ -463,7 +463,7 @@ export default function Ch41EVPowertrain() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stage 6 — The gearbox</h2>
+      <h2 className="chapter-h2">Stage 6 — The gearbox</h2>
 
       <p className="mb-prose-3">
         Coming off the motor shaft, the next element is a{' '}
@@ -492,7 +492,7 @@ export default function Ch41EVPowertrain() {
         whine you can hear under hard acceleration.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stage 7 — The road</h2>
+      <h2 className="chapter-h2">Stage 7 — The road</h2>
 
       <p className="mb-prose-3">
         At the wheel, the mechanical chain ends and the physics changes to mechanics
@@ -622,7 +622,7 @@ export default function Ch41EVPowertrain() {
         driveway does the work of a power grid in miniature.
       </Pullout>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Why charging is billed in kWh, not litres, not amps, not minutes</h2>
+      <h2 className="chapter-h2">Why charging is billed in kWh, not litres, not amps, not minutes</h2>
 
       <p className="mb-prose-3">
         The single most-confused unit in the EV world is the kilowatt-hour. Drivers
@@ -634,7 +634,7 @@ export default function Ch41EVPowertrain() {
         depends on context the charger can't control.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Energy is conserved; nothing else is</h3>
+      <h3 className="chapter-h3">Energy is conserved; nothing else is</h3>
 
       <p className="mb-prose-3">
         Watts measure the <em className="italic text-text">rate</em> at which energy moves. Joules and watt-hours
@@ -656,7 +656,7 @@ export default function Ch41EVPowertrain() {
         the underlying SI definitions.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Why the other candidates lose</h3>
+      <h3 className="chapter-h3">Why the other candidates lose</h3>
 
       <p className="mb-prose-3">
         <strong className="text-text font-medium">Volts.</strong> Volts measure potential difference, not energy. A
@@ -699,7 +699,7 @@ export default function Ch41EVPowertrain() {
         revision. Energy is the chemistry-invariant currency.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">What charging-station displays actually measure</h3>
+      <h3 className="chapter-h3">What charging-station displays actually measure</h3>
 
       <p className="mb-prose-3">
         A DC-fast charger samples DC bus voltage and DC bus current many times per
@@ -737,7 +737,7 @@ export default function Ch41EVPowertrain() {
         lets the EV slot into the same accounting framework as your refrigerator.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Range and the back-of-envelope</h2>
+      <h2 className="chapter-h2">Range and the back-of-envelope</h2>
 
       <p className="mb-prose-3">
         With the seven stages in hand, you can do the entire range calculation on a

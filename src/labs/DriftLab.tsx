@@ -298,7 +298,7 @@ export default function DriftLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         Drift velocity is the average speed at which free charge carriers move through a conductor when a field is applied. It is not the same
         as the thermal speed (the random motion the carriers always have) and it is wildly different from the signal speed (how fast the
@@ -310,7 +310,7 @@ export default function DriftLab() {
         semiconductors).
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>J = n q v<sub>d</sub>,   v<sub>d</sub> = I / (n q A)</MathBlock>
       <MathBlock>v<sub>d</sub> = μ<sub>e</sub> E,   μ<sub>e</sub> = q τ / m</MathBlock>
       <p className="mb-prose-3">
@@ -321,7 +321,7 @@ export default function DriftLab() {
         <strong className="text-text font-medium"> m</strong> is the carrier's effective mass.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         Picture a marching crowd of <em className="italic text-text">n</em> people per square meter, each carrying a fixed bag of cargo <em className="italic text-text">q</em>, all walking through a
         cross-section <em className="italic text-text">A</em> at average speed <em className="italic text-text">v<sub>d</sub></em>. The rate at which cargo crosses the area is
@@ -334,7 +334,7 @@ export default function DriftLab() {
         and <em className="italic text-text">signal</em> (a hundred million meters per second). They are spread across <strong className="text-text font-medium">fourteen orders of magnitude</strong>.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Why is the formula <strong className="text-text font-medium">multiplicative</strong> rather than additive? Because all four factors contribute independently to how much
         charge crosses a plane per second. Doubling any one of them doubles the current — and the units fall out: (1/m³)·(C)·(m/s)·(m²) = C/s = A.
@@ -352,7 +352,7 @@ export default function DriftLab() {
         downstream nudge of a fraction of a millimeter per second<Cite id="kittel-2005" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         <em className="italic text-text">Geometric step (current from carriers).</em> Consider a slab of conductor with cross-section A perpendicular to the current. In a
         time dt, every carrier within a distance v<sub>d</sub>·dt of the slab crosses it. That swept volume is A·v<sub>d</sub>·dt, containing
@@ -380,7 +380,7 @@ export default function DriftLab() {
         between "getting pushed" and "forgetting you were pushed."
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <p className="mb-prose-3">
         Reference numbers for copper: n ≈ 8.5×10²⁸ /m³<Cite id="ashcroft-mermin-1976" in={SOURCES} />, q = 1.6×10⁻¹⁹ C, Fermi velocity v<sub>F</sub>

@@ -221,7 +221,7 @@ export default function AmpereLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         Ampère's law is the magnetic analog of Gauss's law<Cite id="ampere-1826" in={SOURCES} />. Instead of summing flux through a closed
         <em className="italic text-text"> surface</em>, you integrate <strong className="text-text font-medium">B</strong> along a closed <em className="italic text-text">loop</em>; instead of total enclosed charge, the right-hand side
@@ -235,7 +235,7 @@ export default function AmpereLab() {
         magnetostatic form below assumes steady currents — Maxwell's displacement-current correction (below) handles the general case<Cite id="maxwell-1865" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>∮ B · dℓ = μ<sub>0</sub> I<sub>enc</sub></MathBlock>
       <p className="mb-prose-3">Variable glossary:</p>
       <ul>
@@ -248,7 +248,7 @@ export default function AmpereLab() {
       <p className="mb-prose-3">The full Maxwell–Ampère law adds Maxwell's displacement-current term:</p>
       <MathBlock>∮ B · dℓ = μ<sub>0</sub> I<sub>enc</sub> + μ<sub>0</sub> ε<sub>0</sub> dΦ<sub>E</sub> / dt</MathBlock>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         Think of B as winding around its source current. If you walk once around a closed loop measuring how much <strong className="text-text font-medium">B</strong> points
         along your steps and adding it up, you collect a sum that depends only on how much current threads through the doughnut hole you just
@@ -259,7 +259,7 @@ export default function AmpereLab() {
         There is no magnetic charge. There is only <em className="italic text-text">enclosed current</em> — and the geometry it forces on the field.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         The right-hand side counts net current. Same-sign currents add; opposing currents subtract; pairs of equal-and-opposite currents
         threading the same loop cancel. Push the bounding surface around like a soap bubble across stationary currents; the integer
@@ -272,7 +272,7 @@ export default function AmpereLab() {
         <strong className="text-text font-medium"> ∇ × B = μ<sub>0</sub> J</strong> locally<Cite id="feynman-II-13" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         Direct from Biot–Savart for a long straight wire. We showed there that <strong className="text-text font-medium">|B| = μ<sub>0</sub>I/(2πr)</strong>, tangent to circles
         centred on the wire. Choose an Amperian circle of radius <strong className="text-text font-medium">r</strong>. On every point of that circle, <strong className="text-text font-medium">B · dℓ = |B| dℓ</strong>
@@ -285,7 +285,7 @@ export default function AmpereLab() {
         distribution<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 2.2.1"

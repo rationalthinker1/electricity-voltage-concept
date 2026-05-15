@@ -31,7 +31,7 @@ export default function Ch17Generators() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Stand at the base of Hoover Dam and look up. The concrete face holds back 35 cubic kilometres of Lake Mead;
         the water falls 220 metres through penstocks the diameter of a city bus into the bottom of the canyon, where
         seventeen rotating machines — each about the size of a two-storey house — turn that gravitational potential
@@ -49,7 +49,7 @@ export default function Ch17Generators() {
         continental grid that keeps your refrigerator running.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Run a motor backwards</h2>
+      <h2 className="chapter-h2">Run a motor backwards</h2>
 
       <p className="mb-prose-3">
         We left Chapter 16 with the synchronous motor: a rotor with its own field, locked to a rotating stator field,
@@ -77,7 +77,7 @@ export default function Ch17Generators() {
         the rotor turning. Energy in, work in, work out — strict conservation across the air gap<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The simple alternator</h2>
+      <h2 className="chapter-h2">The simple alternator</h2>
 
       <p className="mb-prose-3">
         Take a single rectangular coil of <em className="italic text-text">N</em> turns and area <em className="italic text-text">A</em>. Rotate it in a uniform magnetic field
@@ -132,7 +132,7 @@ export default function Ch17Generators() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The 3-phase synchronous generator — workhorse of the grid</h2>
+      <h2 className="chapter-h2">The 3-phase synchronous generator — workhorse of the grid</h2>
 
       <p className="mb-prose-3">
         Now scale up. Instead of one stator coil, wind three coils 120° apart around the bore. Each coil sees the
@@ -187,7 +187,7 @@ export default function Ch17Generators() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Excitation, the power angle, and pull-out</h2>
+      <h2 className="chapter-h2">Excitation, the power angle, and pull-out</h2>
 
       <p className="mb-prose-3">
         A synchronous generator has two control knobs and one mechanical input. The mechanical input is whatever the
@@ -265,7 +265,7 @@ export default function Ch17Generators() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The alternator under your car hood</h2>
+      <h2 className="chapter-h2">The alternator under your car hood</h2>
 
       <p className="mb-prose-3">
         Shrink the synchronous generator by four orders of magnitude and you get the alternator on every internal-
@@ -311,7 +311,7 @@ export default function Ch17Generators() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Synchronising to the grid</h2>
+      <h2 className="chapter-h2">Synchronising to the grid</h2>
 
       <p className="mb-prose-3">
         A generator can't just be plugged into a live grid. The grid is a stiff bus held at exactly 60.000 Hz by ten
@@ -347,7 +347,7 @@ export default function Ch17Generators() {
         grid's voltage, so there's never a hard mechanical lock-up to worry about<Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Load following: the grid as a real-time market</h2>
+      <h2 className="chapter-h2">Load following: the grid as a real-time market</h2>
 
       <p className="mb-prose-3">
         Once a generator is on the bus, it has to do its share of the load. And here the grid's defining property
@@ -456,7 +456,7 @@ export default function Ch17Generators() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
         Faraday's <em className="italic text-text">ℰ = − dΦ/dt</em> says that a moving magnet in a coil makes voltage. Wrap that into the

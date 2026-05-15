@@ -32,7 +32,7 @@ export default function Ch28HousePanel() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Open the cover of a residential service panel and the first thing you notice is how few moving parts there are.
         Two vertical copper bars run down the middle. A row of black plastic breakers snaps onto them, one above the
         next. Along each side wall a horizontal copper strip with a line of screw terminals waits to receive small
@@ -52,7 +52,7 @@ export default function Ch28HousePanel() {
         but they are recognisably the same three sentences<Cite id="nec-2023" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Anatomy of the panel</h2>
+      <h2 className="chapter-h2">Anatomy of the panel</h2>
 
       <p className="mb-prose-3">
         At the top of the enclosure, two heavy aluminium or copper conductors come in from the meter base — these are
@@ -94,7 +94,7 @@ export default function Ch28HousePanel() {
         paper in the building when you need to turn off the right circuit at three in the morning.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The bus bars and why phases <em className="italic text-accent font-normal">alternate</em></h2>
+      <h2 className="chapter-h2">The bus bars and why phases <em>alternate</em></h2>
 
       <p className="mb-prose-3">
         Look at a panel from the front with the cover off. The slot stampings on the deadfront — the metal cover with
@@ -169,7 +169,7 @@ export default function Ch28HousePanel() {
 
       <PanelBus3DDemo />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The three breaker species: standard, GFCI, AFCI</h2>
+      <h2 className="chapter-h2">The three breaker species: standard, GFCI, AFCI</h2>
 
       <p className="mb-prose-3">
         From the outside every breaker looks the same — a black plastic case, a single or double switch handle,
@@ -179,7 +179,7 @@ export default function Ch28HousePanel() {
         completely different trip mechanisms.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Standard thermal-magnetic</h3>
+      <h3 className="chapter-h3">Standard thermal-magnetic</h3>
 
       <p className="mb-prose-3">
         The everyday 15 A or 20 A branch breaker is a
@@ -201,7 +201,7 @@ export default function Ch28HousePanel() {
         circuits<Cite id="ul-489" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">GFCI</h3>
+      <h3 className="chapter-h3">GFCI</h3>
 
       <p className="mb-prose-3">
         A {' '}<Term def={<><strong className="text-text font-medium">GFCI</strong> (ground-fault circuit interrupter) — a breaker that compares the current going out on hot with the current returning on neutral and trips when the difference exceeds about 5 mA. Required since NEC 1971 in bathrooms, then progressively in kitchens, garages, outdoors, and any wet location.</>}>GFCI</Term>{' '}
@@ -226,7 +226,7 @@ export default function Ch28HousePanel() {
         body starts to risk fibrillation<Cite id="nec-2023" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">AFCI</h3>
+      <h3 className="chapter-h3">AFCI</h3>
 
       <p className="mb-prose-3">
         An {' '}<Term def={<><strong className="text-text font-medium">AFCI</strong> (arc-fault circuit interrupter) — a breaker that monitors the current waveform on a branch circuit for the high-frequency signature of an electrical arc and trips when it sees one. Listed under UL 1699. Required in most dwelling-unit rooms since NEC 2014.</>}>AFCI</Term>{' '}
@@ -265,7 +265,7 @@ export default function Ch28HousePanel() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The interrupting rating: what happens when there's a dead short</h2>
+      <h2 className="chapter-h2">The interrupting rating: what happens when there's a dead short</h2>
 
       <p className="mb-prose-3">
         A 20 A breaker is not just rated for the 20 A it lets through under normal load. It is also rated for the
@@ -355,7 +355,7 @@ export default function Ch28HousePanel() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Bonding and grounding</h2>
+      <h2 className="chapter-h2">Bonding and grounding</h2>
 
       <p className="mb-prose-3">
         Up to here, neutral and ground have been two different bars that happen to be tied together by one strap.
@@ -398,7 +398,7 @@ export default function Ch28HousePanel() {
         once, at the main disconnect, and never again.
       </Pullout>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Sub-panels and the no-bond rule</h2>
+      <h2 className="chapter-h2">Sub-panels and the no-bond rule</h2>
 
       <p className="mb-prose-3">
         Add a {' '}<Term def={<><strong className="text-text font-medium">sub-panel</strong> — a secondary panel fed from a breaker in the main service panel. Used to extend wiring to a finished basement, detached garage, or large addition. NEC 250.32 requires the neutral bar to float relative to the enclosure at every sub-panel; ground and neutral are bonded only at the main.</>}>sub-panel</Term>{' '}

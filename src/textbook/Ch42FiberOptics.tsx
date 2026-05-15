@@ -25,7 +25,7 @@ export default function Ch42FiberOptics() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Pull the cover off any internet backbone and you find a tube the diameter of a
         human hair. Inside the tube is glass — fused silica, doped to the parts-per-billion
         level, drawn from a preform like taffy. The whole global internet rides on light
@@ -38,7 +38,7 @@ export default function Ch42FiberOptics() {
         This chapter walks the physics from that one trick — <Term def={<><strong className="text-text font-medium">total internal reflection</strong> — when light strikes the boundary between a denser and a less dense medium at a shallow enough angle, it reflects back into the denser medium with no transmitted ray at all. Discovered by Kepler 1611; quantified by Snell.</>}>total internal reflection</Term> — up to the engineering scale: why <strong className="text-text font-medium">1550 nm</strong> beat every other wavelength as the telecom standard, why a fiber the width of a hair carries more bits per second than a 10,000-pair copper trunk, and what a single erbium-doped glass section a few metres long does to keep an undersea cable lit for 8,000 km without a single electronic repeater.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The one trick: total internal reflection</h2>
+      <h2 className="chapter-h2">The one trick: total internal reflection</h2>
       <p className="mb-prose-3">
         Light slows down when it enters glass. The ratio between the speed of light in
         vacuum and the speed in the medium is the medium's <Term def={<><strong className="text-text font-medium">refractive index</strong> <em className="italic text-text">n</em> — the ratio <em className="italic text-text">c / v</em>, where <em className="italic text-text">v</em> is the phase velocity of light in the medium. Pure silica at 1550 nm has <em className="italic text-text">n</em> ≈ 1.444. Higher index means slower light, more bending at an interface.</>}>refractive index</Term> <InlineMath>n</InlineMath>. At an interface between two media, Snell's law links the angles on either side<Cite id="hecht-2017" in={SOURCES} />:
@@ -80,7 +80,7 @@ export default function Ch42FiberOptics() {
         right to within a tenth of a degree.
       </Pullout>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Numerical aperture and the acceptance cone</h2>
+      <h2 className="chapter-h2">Numerical aperture and the acceptance cone</h2>
       <p className="mb-prose-3">
         A fiber doesn't accept light from every angle. Only rays entering the front face
         within a narrow cone get bent enough at the air–core interface to subsequently
@@ -117,7 +117,7 @@ export default function Ch42FiberOptics() {
         </>}
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Single-mode versus multimode: the V parameter</h2>
+      <h2 className="chapter-h2">Single-mode versus multimode: the V parameter</h2>
       <p className="mb-prose-3">
         How small does the core need to be to admit only one transverse mode? The cutoff
         is governed by a single dimensionless number, the <Term def={<><strong className="text-text font-medium">V parameter</strong> — also called the normalized frequency. Combines core radius, wavelength, and NA into one number that controls how many transverse modes a step-index fiber supports. V &lt; 2.405 ⇒ single-mode.</>}>V parameter</Term><Cite id="saleh-teich-2007" in={SOURCES} />:
@@ -149,7 +149,7 @@ export default function Ch42FiberOptics() {
         </>}
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Loss: why 1550 nm won</h2>
+      <h2 className="chapter-h2">Loss: why 1550 nm won</h2>
       <p className="mb-prose-3">
         The other dimension of the problem is attenuation. A real fiber doesn't carry
         light losslessly — it has <Term def={<><strong className="text-text font-medium">attenuation</strong> α — the exponential decay rate of optical power along the fiber, measured in dB/km. Comes from Rayleigh scattering off molecular-scale density fluctuations frozen into the glass when it solidified, plus a small infrared absorption tail from the SiO₂ lattice. Modern single-mode silica at 1550 nm reaches ~0.18 dB/km.</>}>attenuation</Term> from two physical sources: <Term def={<><strong className="text-text font-medium">Rayleigh scattering</strong> — elastic scattering of light off density variations smaller than its wavelength. Scales as 1/λ⁴, so it dominates at short wavelengths and falls dramatically at longer ones. The fundamental floor for fiber loss.</>}>Rayleigh scattering</Term> from molecular-scale density fluctuations frozen into the glass, plus infrared absorption from the SiO₂ lattice. Rayleigh scaling goes as 1/λ⁴, so longer wavelengths bleed less; lattice absorption rises sharply past 1.6 μm. The sweet spot is at <strong className="text-text font-medium">1550 nm</strong>, where modern silica reaches roughly <strong className="text-text font-medium">0.18–0.20 dB/km</strong>. That figure was first demonstrated by NTT in 1979 and remains within a factor of two of the theoretical Rayleigh floor<Cite id="miya-1979" in={SOURCES} />.
@@ -165,7 +165,7 @@ export default function Ch42FiberOptics() {
         metal-ion contamination at the parts-per-million level<Cite id="kao-hockham-1966" in={SOURCES} />. Strip the iron, copper, and hydroxyl down to parts per billion, he said, and silica should reach below 20 dB/km — the threshold that makes long-haul telecom economical. Four years later, Maurer, Keck, and Schultz at Corning demonstrated exactly that<Cite id="kapron-keck-maurer-1970" in={SOURCES} />. Kao got the 2009 Nobel Prize.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">The two standard windows</h3>
+      <h3 className="chapter-h3">The two standard windows</h3>
       <p className="mb-prose-3">
         Two operating wavelengths dominate practical deployments<Cite id="agrawal-2010" in={SOURCES} />:
       </p>
@@ -189,7 +189,7 @@ export default function Ch42FiberOptics() {
         </li>
       </ul>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The link budget</h2>
+      <h2 className="chapter-h2">The link budget</h2>
       <p className="mb-prose-3">
         Once you know the launch power, the fiber loss per kilometre, and the receiver
         sensitivity, the reach of a fiber link reduces to one subtraction.
@@ -222,7 +222,7 @@ export default function Ch42FiberOptics() {
         </>}
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Dispersion: the bandwidth limit</h2>
+      <h2 className="chapter-h2">Dispersion: the bandwidth limit</h2>
       <p className="mb-prose-3">
         Loss caps the <em className="italic text-text">reach</em> of a link; <Term def={<><strong className="text-text font-medium">dispersion</strong> — the pulse-broadening that occurs when different components of a pulse (different transverse modes, or different wavelengths within a pulse) travel at slightly different group velocities and arrive smeared in time. Limits the <em className="italic text-text">bit rate × distance</em> product of a link.</>}>dispersion</Term> caps its <em className="italic text-text">data rate × distance product</em>. There are two dominant kinds in modern fiber<Cite id="agrawal-2010" in={SOURCES} />:
       </p>
@@ -252,7 +252,7 @@ export default function Ch42FiberOptics() {
         receivers compensate it digitally in DSP, after the photodetector.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">WDM, EDFAs, and the petabit pipe</h2>
+      <h2 className="chapter-h2">WDM, EDFAs, and the petabit pipe</h2>
       <p className="mb-prose-3">
         A single 100 G channel running at 1550 nm uses about 50 GHz of optical bandwidth.
         The C-band (1530–1565 nm) is about 4 THz wide — enough room for{' '}

@@ -31,7 +31,7 @@ export default function Ch7Induction() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         For ten years Michael Faraday tried to make a magnet generate a current. He sat strong permanent magnets next to
         copper coils, wired the coils to galvanometers, and watched the needles do nothing. He braided the wires together,
         wound them on iron rings, swapped magnets for electromagnets — still nothing. The galvanometer needle did not move.
@@ -48,7 +48,7 @@ export default function Ch7Induction() {
         evening.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Faraday's <em className="italic text-accent font-normal">discovery</em></h2>
+      <h2 className="chapter-h2">Faraday's <em>discovery</em></h2>
 
       <p className="mb-prose-3">
         The setup that finally worked was a thick iron ring with two coils of insulated copper wire wound on opposite
@@ -68,7 +68,7 @@ export default function Ch7Induction() {
         happens, no matter how strong the field.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The <em className="italic text-accent font-normal">law</em></h2>
+      <h2 className="chapter-h2">The <em>law</em></h2>
 
       <p className="mb-prose-3">
         Faraday's insight took its modern compact form a generation later, in Maxwell's hands. Define the <Term def="The surface integral of B over a bounded surface: Φ_B = ∫∫ B · dA. For a flat loop in a uniform field, Φ = BA cos θ. SI unit is the weber (Wb = T·m²).">magnetic flux</Term>
@@ -108,7 +108,7 @@ export default function Ch7Induction() {
         the loop happens to be. The wire is a probe; the field is what's actually there<Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Move a <em className="italic text-accent font-normal">magnet</em>, get a voltage</h2>
+      <h2 className="chapter-h2">Move a <em>magnet</em>, get a voltage</h2>
 
       <p className="mb-prose-3">
         Before unpacking the minus sign or the geometry, just play with it. The cleanest live demonstration is the one
@@ -147,7 +147,7 @@ export default function Ch7Induction() {
         direction the current flows. The next section is what that minus sign actually means.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The minus sign — <em className="italic text-accent font-normal">Lenz's law</em></h2>
+      <h2 className="chapter-h2">The minus sign — <em>Lenz's law</em></h2>
 
       <p className="mb-prose-3">
         It is tempting to read the minus sign as a bookkeeping detail, an artifact of how someone defined "positive"
@@ -182,7 +182,7 @@ export default function Ch7Induction() {
         The minus sign in Faraday's law is the universe quietly insisting that the books balance<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Spinning a coil = generating <em className="italic text-accent font-normal">AC</em></h2>
+      <h2 className="chapter-h2">Spinning a coil = generating <em>AC</em></h2>
 
       <p className="mb-prose-3">
         The historically pivotal application of induction was not anything Faraday explicitly built. It was the realisation
@@ -250,7 +250,7 @@ export default function Ch7Induction() {
         comes out the electrical end is just <strong className="text-text font-medium">EMF = NBAω sin(ωt)</strong>.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Transformers and the long-distance <em className="italic text-accent font-normal">grid</em></h2>
+      <h2 className="chapter-h2">Transformers and the long-distance <em>grid</em></h2>
 
       <p className="mb-prose-3">
         Faraday's law has a second consequence that is just as load-bearing for modern infrastructure: the <Term def="Two coils linked by a shared magnetic core. The same dΦ/dt threads both, so V₂/V₁ = N₂/N₁ and (lossless limit) I₂/I₁ = N₁/N₂. Step up, step down, or isolate — the device that makes long-distance AC transmission practical.">transformer</Term>.

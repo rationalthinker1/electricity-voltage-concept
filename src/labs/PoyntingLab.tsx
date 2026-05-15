@@ -343,7 +343,7 @@ export default function PoyntingLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         Around every current-carrying wire, around every radiating antenna, around every electromagnetic wave moving through any medium,
         the fields carry energy from place to place. The Poynting vector names that flow. It applies anywhere E and B exist — across
@@ -358,7 +358,7 @@ export default function PoyntingLab() {
         net power crossing that surface<Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>S = (1/µ<sub>0</sub>) E × B</MathBlock>
       <p className="mb-prose-3">
         <strong className="text-text font-medium">S</strong> Poynting vector: a vector field of energy flux density (W/m²). Its direction is the direction energy flows;
@@ -367,7 +367,7 @@ export default function PoyntingLab() {
         For a closed surface, ∮S·dA is the net power flowing out of the enclosed volume.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         Here's the strange fact: <strong className="text-text font-medium">the energy that lights a bulb is not inside the copper wire.</strong> It travels through the
         space surrounding the wire, in the form of the electromagnetic field. The wire is the destination for energy, not the medium of
@@ -386,7 +386,7 @@ export default function PoyntingLab() {
         to thermal motion of the lattice.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Why E × B and not E + B or E · B? Because it has to be a vector (energy flows in a direction), it has to vanish when either E or B
         vanishes (no flow without both fields present), and it has to be perpendicular to both (the only direction picked out by the two
@@ -404,7 +404,7 @@ export default function PoyntingLab() {
         load), the time-averaged S is zero: energy sloshes in and out each cycle with no net transfer<Cite id="feynman-II-27" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         Step one — start from Maxwell. Take the dot product of Ampère's law (∇×B − µ<sub>0</sub>ε<sub>0</sub>∂E/∂t = µ<sub>0</sub>J)
         with E, and Faraday's law (∇×E = −∂B/∂t) with B/µ<sub>0</sub>. Subtract:
@@ -429,7 +429,7 @@ export default function PoyntingLab() {
         S threads through every point of space, and the net flux into a resistive region matches the heat dissipated there.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 4.4.1"

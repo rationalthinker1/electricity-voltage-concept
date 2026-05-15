@@ -35,7 +35,7 @@ export default function Ch18Transformers() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         On a wooden pole at the end of every suburban street in North America hangs a grey cylindrical can about the
         size of a beer keg. Inside it: two coils of enamelled copper wire, a stack of thin sheets of silicon steel,
         and roughly thirty litres of mineral oil. A single high-voltage tap line enters from the cross-arm at the
@@ -55,7 +55,7 @@ export default function Ch18Transformers() {
         one of those conversions is a transformer. This chapter walks through what one of them actually does.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Two coils, one core</h2>
+      <h2 className="chapter-h2">Two coils, one core</h2>
 
       <p className="mb-prose-3">
         Wind a coil of <em className="italic text-text">N<sub>p</sub></em> turns around one leg of a ring-shaped iron core, and a second coil of
@@ -117,7 +117,7 @@ export default function Ch18Transformers() {
         flows in the primary to maintain the flux against the core's finite permeability<Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The ideal transformer and the current ratio</h2>
+      <h2 className="chapter-h2">The ideal transformer and the current ratio</h2>
 
       <p className="mb-prose-3">
         Connect a resistive load <em className="italic text-text">R</em> to the secondary. The secondary now carries a current
@@ -214,7 +214,7 @@ export default function Ch18Transformers() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stanley 1886 and the rise of AC distribution</h2>
+      <h2 className="chapter-h2">Stanley 1886 and the rise of AC distribution</h2>
 
       <p className="mb-prose-3">
         On 20 March 1886, in the village of Great Barrington, Massachusetts, William Stanley Jr. switched on the first
@@ -280,7 +280,7 @@ export default function Ch18Transformers() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Impedance transformation</h2>
+      <h2 className="chapter-h2">Impedance transformation</h2>
 
       <p className="mb-prose-3">
         The voltage and current ratios combine into a useful third law about
@@ -332,7 +332,7 @@ export default function Ch18Transformers() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Autotransformers: one winding instead of two</h2>
+      <h2 className="chapter-h2">Autotransformers: one winding instead of two</h2>
 
       <p className="mb-prose-3">
         Everything so far has assumed two electrically separate windings sharing one core. Rewire the
@@ -361,7 +361,7 @@ export default function Ch18Transformers() {
         autotransformers are never used to step down to a voltage humans might touch.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Real transformer non-idealities</h2>
+      <h2 className="chapter-h2">Real transformer non-idealities</h2>
 
       <p className="mb-prose-3">
         The ideal-transformer story above is exact in a fictional universe where the core has infinite permeability,
@@ -475,7 +475,7 @@ export default function Ch18Transformers() {
         first chapter of every undergraduate power-electronics text.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The grid as a transformer hierarchy</h2>
+      <h2 className="chapter-h2">The grid as a transformer hierarchy</h2>
 
       <p className="mb-prose-3">
         Zoom out to the continent. Electric power leaves the stator terminals of a 1 GW nuclear or thermal generator
@@ -503,7 +503,7 @@ export default function Ch18Transformers() {
         five layers and the number collapses.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The frequency lever — and why your charger is small</h2>
+      <h2 className="chapter-h2">The frequency lever — and why your charger is small</h2>
 
       <p className="mb-prose-3">
         The same one-line transformer equation — <em className="italic text-text">V = 4.44 · f · N · B · A</em> — has a property that the
@@ -526,7 +526,7 @@ export default function Ch18Transformers() {
         you need wide-bandgap semiconductors (SiC, GaN) and very careful magnetics design to stay ahead.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
         A transformer is two coils sharing one magnetic core. Faraday's law applied independently to each coil gives

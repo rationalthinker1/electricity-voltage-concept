@@ -331,7 +331,7 @@ export default function EnergyDensityLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         You could, in principle, write electrostatics without fields at all — Coulomb's law alone, direct action between charges at a distance.
         The math would be uglier but consistent. The fields would just be bookkeeping.
@@ -349,7 +349,7 @@ export default function EnergyDensityLab() {
         you have to integrate dU = E·dD + H·dB more carefully<Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>u<sub>E</sub> = ½ ε<sub>0</sub> E² &nbsp;&emsp; u<sub>B</sub> = B² / (2µ<sub>0</sub>) &nbsp;&emsp; u = u<sub>E</sub> + u<sub>B</sub></MathBlock>
       <p className="mb-prose-3">
         <strong className="text-text font-medium">u<sub>E</sub></strong> electric energy density (J/m³). <strong className="text-text font-medium">u<sub>B</sub></strong> magnetic energy density (J/m³).
@@ -358,7 +358,7 @@ export default function EnergyDensityLab() {
         of u over that region.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         The fields are not bookkeeping devices. They are physical, energetic, mass-equivalent, gravitating <em className="italic text-text">stuff</em>. Every cubic meter
         of space with a field in it carries joules just by virtue of the field being there. The amount per cubic meter is set by the field
@@ -371,7 +371,7 @@ export default function EnergyDensityLab() {
         <em className="italic text-text"> joules per cubic meter</em>.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Why squared? Because the energy needed to <em className="italic text-text">build</em> a field is the integral of dW = E·dD (or H·dB), and in a linear medium
         the relation E = D/ε is linear. Integrating a linear function gives a quadratic. Same reason kinetic energy is ½mv² — work scales
@@ -388,7 +388,7 @@ export default function EnergyDensityLab() {
         u<sub>E</sub> = u<sub>B</sub> at every point — because Maxwell's equations enforce B = E/c.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         Step one — start with a parallel-plate capacitor. Total stored energy is <strong className="text-text font-medium">U = ½CV²</strong>. Substitute the parallel-plate
         relations C = ε<sub>0</sub>A/d and V = Ed:
@@ -413,7 +413,7 @@ export default function EnergyDensityLab() {
         media, time-varying or static, in vacuum or in matter<Cite id="poynting-1884" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 4.3.1"

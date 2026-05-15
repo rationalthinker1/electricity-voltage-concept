@@ -35,7 +35,7 @@ export default function Ch8EnergyFlow() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         We've spent five chapters building toward a single question, and never asking it. A battery sits on the workbench. A
         bulb sits a meter away. They're connected by a length of copper wire. You close the switch, the bulb glows, and the
         battery loses chemical energy at exactly the rate the bulb gains heat and light. <em className="italic text-text">Where, exactly, does that energy
@@ -50,7 +50,7 @@ export default function Ch8EnergyFlow() {
         anyway<Cite id="feynman-II-27" in={SOURCES} />. This last chapter is the proof.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The question almost <em className="italic text-accent font-normal">nobody</em> asks</h2>
+      <h2 className="chapter-h2">The question almost <em>nobody</em> asks</h2>
 
       <p className="mb-prose-3">
         Most of physics education waves at this question and walks past. "Current carries energy from the battery to the
@@ -90,7 +90,7 @@ export default function Ch8EnergyFlow() {
         gives you. The rest of this chapter is the derivation.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Two fields are <em className="italic text-accent font-normal">present</em></h2>
+      <h2 className="chapter-h2">Two fields are <em>present</em></h2>
 
       <p className="mb-prose-3">
         Inside a current-carrying resistive wire there are two electromagnetic fields, both demanded by the equations we've
@@ -136,7 +136,7 @@ export default function Ch8EnergyFlow() {
         about to do an enormous amount of work.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Cross product → <em className="italic text-accent font-normal">radial</em> inflow</h2>
+      <h2 className="chapter-h2">Cross product → <em>radial</em> inflow</h2>
 
       <p className="mb-prose-3">
         Maxwell, in the same 1865 paper that gave the world his complete equations, identified a quantity that bookkept where
@@ -172,7 +172,7 @@ export default function Ch8EnergyFlow() {
         flow of energy into the wire all around.</em>"
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The integral that <em className="italic text-accent font-normal">closes</em> the loop</h2>
+      <h2 className="chapter-h2">The integral that <em>closes</em> the loop</h2>
 
       <p className="mb-prose-3">
         It's one thing to wave at the radial direction; it's another to count the joules. Do the algebra. At the wire's
@@ -295,7 +295,7 @@ export default function Ch8EnergyFlow() {
         The wire is not the medium. The wire is the destination.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Davis &amp; Kaplan and the <em className="italic text-accent font-normal">real</em> circuit</h2>
+      <h2 className="chapter-h2">Davis &amp; Kaplan and the <em>real</em> circuit</h2>
 
       <p className="mb-prose-3">
         The setup we just walked through is a 2D toy: an infinitely long, perfectly straight wire of uniform resistivity. Real
@@ -318,7 +318,7 @@ export default function Ch8EnergyFlow() {
         space, and the wire is just where the field gives it up.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The <em className="italic text-accent font-normal">superconductor</em> limit</h2>
+      <h2 className="chapter-h2">The <em>superconductor</em> limit</h2>
 
       <p className="mb-prose-3">
         One last sanity check, and it's a beautiful one. Push the conductivity to infinity. What happens?
@@ -421,7 +421,7 @@ export default function Ch8EnergyFlow() {
       />
 
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What the textbook was <em className="italic text-accent font-normal">for</em></h2>
+      <h2 className="chapter-h2">What the textbook was <em>for</em></h2>
 
       <p className="mb-prose-3">
         Look back at where we started. Chapter&nbsp;1 opened with a balloon stuck to a wall and asked what charge actually is.

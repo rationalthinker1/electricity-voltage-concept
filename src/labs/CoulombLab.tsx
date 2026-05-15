@@ -288,7 +288,7 @@ export default function CoulombLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         Coulomb's law is the foundational equation of electrostatics: the force between two stationary point charges, in vacuum, at
         whatever separation. Established empirically by Coulomb in 1785 with a torsion balance so delicate it could resolve the twist of a
@@ -304,7 +304,7 @@ export default function CoulombLab() {
         electrodynamics<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>F = k Q₁ Q₂ / (ε<sub>r</sub> r²)</MathBlock>
       <p className="mb-prose-3">
         Variable glossary:
@@ -317,7 +317,7 @@ export default function CoulombLab() {
         <li><strong className="text-text font-medium">ε<sub>r</sub></strong> — relative permittivity of the medium (dimensionless). 1 in vacuum, ≈1.0006 in air, ≈80 in water at room temperature.</li>
       </ul>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         Two static charges. Same sign repel; opposite attract. The strength falls off as the square of distance: double <strong className="text-text font-medium">r</strong>,
         force quarters. Why squared and not linear or cubed? Geometric. The surface area of a sphere scales as <strong className="text-text font-medium">r²</strong>; the
@@ -333,7 +333,7 @@ export default function CoulombLab() {
         ordinary matter is exquisitely charge-neutral: the fractional excess of free charge needed to make a noticeable force is tiny.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Reciprocity (Newton's third law) demands the formula be symmetric in <strong className="text-text font-medium">Q₁</strong> and <strong className="text-text font-medium">Q₂</strong>: each charge feels
         an equal and opposite force from the other. The product <strong className="text-text font-medium">Q₁Q₂</strong> carries the sign convention for free — like signs make
@@ -352,7 +352,7 @@ export default function CoulombLab() {
         force; doubling both quadruples it.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         Coulomb worked from a torsion balance: a horizontal bar suspended by a fine wire, with a charged sphere at one end. A second charged
         sphere brought to a fixed distance produced a twist proportional to the force<Cite id="coulomb-1785" in={SOURCES} />. By varying the
@@ -383,7 +383,7 @@ export default function CoulombLab() {
         of matter, not the weakness of electromagnetism<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 1.1.1"
@@ -523,7 +523,7 @@ export default function CoulombLab() {
         }
       />
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Why ε<sub>r</sub> matters in practice</h3>
+      <h3 className="lab-section-h3">Why ε<sub>r</sub> matters in practice</h3>
       <p className="mb-prose-3">
         In a polarizable medium, bound charges align with the field and produce a counter-field that reduces the net E. The result is to divide
         Coulomb's force by the medium's relative permittivity <strong className="text-text font-medium">ε<sub>r</sub></strong>. Water at room temperature has ε<sub>r</sub> ≈ 80,

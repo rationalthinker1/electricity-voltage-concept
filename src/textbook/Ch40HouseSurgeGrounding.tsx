@@ -28,7 +28,7 @@ export default function Ch40HouseSurgeGrounding() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         A typical residential lightning surge looks like this: ten thousand amperes peak, rising in about eight
         microseconds and falling to half in twenty, riding the service drop into the house from a stroke that hit
         the neighbour's chimney three hundred feet away. By the time it reaches the meter base the front of the
@@ -50,7 +50,7 @@ export default function Ch40HouseSurgeGrounding() {
         This chapter is about how those two structures actually work and why they are both required.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What a lightning surge actually looks like</h2>
+      <h2 className="chapter-h2">What a lightning surge actually looks like</h2>
 
       <p className="mb-prose-3">
         Surge protection has its own waveform vocabulary, calibrated against the way real lightning energy
@@ -134,7 +134,7 @@ export default function Ch40HouseSurgeGrounding() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The grounding electrode system</h2>
+      <h2 className="chapter-h2">The grounding electrode system</h2>
 
       <p className="mb-prose-3">
         Every house served by an overhead or underground utility line is required by NEC Article 250 to have a
@@ -236,7 +236,7 @@ export default function Ch40HouseSurgeGrounding() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Type 1, Type 2, Type 3 SPDs</h2>
+      <h2 className="chapter-h2">Type 1, Type 2, Type 3 SPDs</h2>
 
       <p className="mb-prose-3">
         Surge protective devices come in three categories under UL 1449, distinguished by where they install
@@ -335,7 +335,7 @@ export default function Ch40HouseSurgeGrounding() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Two rods are better than one (transient impedance)</h2>
+      <h2 className="chapter-h2">Two rods are better than one (transient impedance)</h2>
 
       <p className="mb-prose-3">
         NEC permits a single ground rod if it tests at no more than 25 Ω of resistance to earth at 60 Hz — the
@@ -412,7 +412,7 @@ export default function Ch40HouseSurgeGrounding() {
         just gives the SPD somewhere to send the energy.
       </Pullout>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Generator interlock kits</h2>
+      <h2 className="chapter-h2">Generator interlock kits</h2>
 
       <p className="mb-prose-3">
         A residential standby generator — a small unit at 5–10 kW for a portable, a permanent installation at
@@ -451,7 +451,7 @@ export default function Ch40HouseSurgeGrounding() {
         The interlock kit is the customer-side half of that contract.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Isolated grounds and the truth about them</h2>
+      <h2 className="chapter-h2">Isolated grounds and the truth about them</h2>
 
       <p className="mb-prose-3">
         Some equipment — laboratory instrumentation, medical equipment, recording-studio audio gear — ships with

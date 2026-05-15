@@ -371,7 +371,7 @@ export default function RFLinkLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         This lab is a miniature radio system. The transmitter does not simply "send power to an antenna"; it drives a
         transmission line, the line presents the antenna impedance back to the source, and any mismatch reflects energy back
@@ -385,7 +385,7 @@ export default function RFLinkLab() {
         pattern<Cite id="balanis-2016" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>Γ = (Z<sub>ant</sub> − Z₀) / (Z<sub>ant</sub> + Z₀)</MathBlock>
       <p className="mb-prose-3">
         Here <strong className="text-text font-medium">Γ</strong> is the voltage reflection coefficient, <strong className="text-text font-medium">Z<sub>ant</sub></strong> is the antenna impedance
@@ -406,7 +406,7 @@ export default function RFLinkLab() {
         all refusing to be separated.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Try the short-whip preset first. Its radiation resistance is small and its capacitive reactance is large, so the
         mismatch is ugly. Add positive series reactance: you are using an inductor to cancel the antenna's capacitive part.

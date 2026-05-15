@@ -462,7 +462,7 @@ export default function CircuitBuilderLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">An MNA solver in your browser</h3>
+      <h3 className="lab-section-h3">An MNA solver in your browser</h3>
       <p className="mb-prose-3">
         Everything left of this paragraph runs through the same machinery that powers SPICE — Modified Nodal Analysis,
         formulated in its current matrix-stamping form by Ho, Ruehli, and Brennan in 1975<Cite id="ho-ruehli-brennan-1975" in={SOURCES} />.
@@ -476,7 +476,7 @@ export default function CircuitBuilderLab() {
         off-diagonals between them. Stamp every passive component, solve, and you have the operating point.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Voltage sources need an extra unknown</h3>
+      <h3 className="lab-section-h3">Voltage sources need an extra unknown</h3>
       <p className="mb-prose-3">
         A battery between nodes <em className="italic text-text">i</em> and <em className="italic text-text">j</em> isn't a conductance — it commits to a voltage difference no matter what current flows.
         The MNA fix is to add a row and a column for the branch current through that source. The new row says
@@ -489,7 +489,7 @@ export default function CircuitBuilderLab() {
         That is the whole secret.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Capacitors and inductors: companion models</h3>
+      <h3 className="lab-section-h3">Capacitors and inductors: companion models</h3>
       <p className="mb-prose-3">
         At a single instant, a capacitor has whatever voltage it has — and lets through whatever current it pleases.
         The clever idea (trapezoidal rule, Nilsson–Riedel §8) is to discretise the time derivative and treat the cap
@@ -504,7 +504,7 @@ export default function CircuitBuilderLab() {
         Step the time index, restamp, resolve — and the RC and RLC curves come out for free.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Diodes: piecewise-linear Shockley</h3>
+      <h3 className="lab-section-h3">Diodes: piecewise-linear Shockley</h3>
       <p className="mb-prose-3">
         The full Shockley equation <strong className="text-text font-medium">I = I<sub>s</sub>(e<sup>qV/kT</sup> − 1)</strong> is nonlinear and would require Newton–Raphson
         iteration<Cite id="shockley-1949" in={SOURCES} />. We use a textbook simplification: assume the diode is either fully on
@@ -514,7 +514,7 @@ export default function CircuitBuilderLab() {
         every step on the first or second try<Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">AC sources, switches, bulbs</h3>
+      <h3 className="lab-section-h3">AC sources, switches, bulbs</h3>
       <p className="mb-prose-3">
         AC sources are just batteries whose value is recomputed each step as <strong className="text-text font-medium">V(t) = V<sub>pk</sub> sin(2π f t)</strong> —
         time-domain integration is enough; we don't need a separate phasor solver. Switches are resistors that swap between
@@ -522,7 +522,7 @@ export default function CircuitBuilderLab() {
         same dissipation Joule measured in 1841 (Lab 3.4).
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Try it</h3>
+      <h3 className="lab-section-h3">Try it</h3>
       <p className="mb-prose-3">
         Load the <strong className="text-text font-medium">RC Charging</strong> preset and watch the scope trace climb toward 5 V on a 1 ms time constant.
         Load <strong className="text-text font-medium">RLC Resonator</strong> and watch the loop voltage trade between L and C at the resonant frequency

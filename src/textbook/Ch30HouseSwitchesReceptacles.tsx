@@ -28,7 +28,7 @@ export default function Ch30HouseSwitchesReceptacles() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Open a standard duplex receptacle and look at the back. Brass-coloured screws line one side, silver-coloured
         screws line the other, and a single green screw sits at the bottom. Between the top pair of brass screws and
         the bottom pair, a small pre-broken metal tab joins them; the same tab exists on the silver side. Snap that tab
@@ -47,7 +47,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         staircase with two switches work?</em>
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The standard 5-15 duplex receptacle</h2>
+      <h2 className="chapter-h2">The standard 5-15 duplex receptacle</h2>
 
       <p className="mb-prose-3">
         The workhorse of every American home is the{' '}
@@ -146,7 +146,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Decoding NEMA pattern numbers</h2>
+      <h2 className="chapter-h2">Decoding NEMA pattern numbers</h2>
 
       <p className="mb-prose-3">
         Every NEMA configuration is named <strong className="text-text font-medium">X-YYR</strong> for a receptacle or <strong className="text-text font-medium">X-YYP</strong> for a plug,
@@ -192,7 +192,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         Try 30.5.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Daisy-chaining receptacles</h2>
+      <h2 className="chapter-h2">Daisy-chaining receptacles</h2>
 
       <p className="mb-prose-3">
         A typical bedroom branch circuit feeds a string of five or six duplex receptacles, all wired in a single run
@@ -249,7 +249,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Single-pole switches</h2>
+      <h2 className="chapter-h2">Single-pole switches</h2>
 
       <p className="mb-prose-3">
         The simplest mechanical switch in residential wiring is the{' '}
@@ -277,7 +277,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         retrofit doesn't require pulling new cable.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Three-way switches</h2>
+      <h2 className="chapter-h2">Three-way switches</h2>
 
       <p className="mb-prose-3">
         Stand at the bottom of a staircase. Flip the switch by the front door and the upstairs hall light comes on.
@@ -369,7 +369,7 @@ export default function Ch30HouseSwitchesReceptacles() {
         A three-way switch isn't three-way; it's two-way with a third pin to remind you that someone has to win the XOR.
       </Pullout>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Dimmers, phase cutting, and LED compatibility</h2>
+      <h2 className="chapter-h2">Dimmers, phase cutting, and LED compatibility</h2>
 
       <p className="mb-prose-3">
         A wall <Term def={<><strong className="text-text font-medium">dimmer</strong> — a wall switch whose internal solid-state device (typically a triac) chops the AC waveform delivered to the load, varying the load's time-averaged power by varying the fraction of each half-cycle the device conducts.</>}>dimmer</Term>{' '}

@@ -24,7 +24,7 @@ export default function Ch29HouseBranchCircuits() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Imagine a single circuit in a wood-framed house: a length of{' '}
         <Term def={<><strong className="text-text font-medium">14 AWG</strong> — American Wire Gauge 14, a copper conductor with cross-section ≈ 2.08 mm². The standard residential wire for 15 A lighting and general-purpose receptacle circuits.</>}>14 AWG</Term>{' '}
         copper, three duplex receptacles wired in a daisy-chain, the whole run protected by a 15 A breaker in the panel.
@@ -44,7 +44,7 @@ export default function Ch29HouseBranchCircuits() {
         derating for heat, and why your kitchen has its own circuits.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Ampacity: how much current a wire can carry</h2>
+      <h2 className="chapter-h2">Ampacity: how much current a wire can carry</h2>
 
       <p className="mb-prose-3">
         Copper has a finite resistivity. Push current through it and you dissipate <em className="italic text-text">I²R</em> as heat along the whole
@@ -131,7 +131,7 @@ export default function Ch29HouseBranchCircuits() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Romex, THHN, and the cable taxonomy</h2>
+      <h2 className="chapter-h2">Romex, THHN, and the cable taxonomy</h2>
 
       <p className="mb-prose-3">
         Three insulation systems dominate residential and light-commercial wiring, and they are not
@@ -172,7 +172,7 @@ export default function Ch29HouseBranchCircuits() {
         the jackets entering it.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Voltage drop on long runs</h2>
+      <h2 className="chapter-h2">Voltage drop on long runs</h2>
 
       <p className="mb-prose-3">
         NEC sets ampacity to keep the wire's <em className="italic text-text">insulation</em> from cooking, but a wire can be well within its
@@ -233,7 +233,7 @@ export default function Ch29HouseBranchCircuits() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The breaker/wire pairing rule</h2>
+      <h2 className="chapter-h2">The breaker/wire pairing rule</h2>
 
       <p className="mb-prose-3">
         The most important sentence in this chapter: <strong className="text-text font-medium">the breaker rating must never exceed the wire's
@@ -290,7 +290,7 @@ export default function Ch29HouseBranchCircuits() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Aluminium and the old aluminium scare</h2>
+      <h2 className="chapter-h2">Aluminium and the old aluminium scare</h2>
 
       <p className="mb-prose-3">
         Copper is the default for branch circuits, but{' '}
@@ -334,7 +334,7 @@ export default function Ch29HouseBranchCircuits() {
         aluminium branch in an old kitchen is the thing to check.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Why the kitchen gets two 20 A circuits</h2>
+      <h2 className="chapter-h2">Why the kitchen gets two 20 A circuits</h2>
 
       <p className="mb-prose-3">
         NEC Article 210.11(C) requires that every dwelling kitchen be served by <em className="italic text-text">at least two</em>{' '}
@@ -390,7 +390,7 @@ export default function Ch29HouseBranchCircuits() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Continuous loads and the 80 % rule</h2>
+      <h2 className="chapter-h2">Continuous loads and the 80 % rule</h2>
 
       <p className="mb-prose-3">
         NEC Article 100 defines a{' '}
@@ -454,7 +454,7 @@ export default function Ch29HouseBranchCircuits() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Putting it together</h2>
+      <h2 className="chapter-h2">Putting it together</h2>
 
       <p className="mb-prose-3">
         Every branch circuit in the house is the same five decisions made together: pick the load, pick the breaker

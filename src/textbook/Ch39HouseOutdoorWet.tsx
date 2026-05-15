@@ -31,7 +31,7 @@ export default function Ch39HouseOutdoorWet() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         A swimming-pool installer kneels on the deck slab with a spool of #8 solid copper, a crimper, and a list of
         every metal object within a metre and a half of the water: the aluminum ladder, the chrome handrail, the
         diving-board mount, the underwater light's brass forming shell, the steel rebar in the deck slab, the metal
@@ -63,7 +63,7 @@ export default function Ch39HouseOutdoorWet() {
         that one number.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">WR and TR receptacles, and the in-use cover</h2>
+      <h2 className="chapter-h2">WR and TR receptacles, and the in-use cover</h2>
 
       <p className="mb-prose-3">
         A receptacle mounted on the exterior wall of a house lives in a fundamentally different environment from
@@ -136,7 +136,7 @@ export default function Ch39HouseOutdoorWet() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The 1.5 m equipotential bonding grid</h2>
+      <h2 className="chapter-h2">The 1.5 m equipotential bonding grid</h2>
 
       <p className="mb-prose-3">
         NEC Article 680 governs swimming pools, spas, hot tubs, fountains, and similar installations, and its
@@ -238,7 +238,7 @@ export default function Ch39HouseOutdoorWet() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">NEC 210.8 — GFCI required where</h2>
+      <h2 className="chapter-h2">NEC 210.8 — GFCI required where</h2>
 
       <p className="mb-prose-3">
         NEC Article 210.8 is the comprehensive list of locations where the 125 V receptacles must be
@@ -281,7 +281,7 @@ export default function Ch39HouseOutdoorWet() {
         diagnostics differ.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Low-voltage landscape lighting</h2>
+      <h2 className="chapter-h2">Low-voltage landscape lighting</h2>
 
       <p className="mb-prose-3">
         Path lights, deck-step lights, pond-edge accents, and tree uplights in residential landscapes almost never
@@ -322,7 +322,7 @@ export default function Ch39HouseOutdoorWet() {
         12 V is large in a way that the same drop relative to 120 V was not.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Hot tubs and spas: NEC 680 Part IV</h2>
+      <h2 className="chapter-h2">Hot tubs and spas: NEC 680 Part IV</h2>
 
       <p className="mb-prose-3">
         A residential hot tub is electrically a small pool. NEC 680 Part IV (Articles 680.40–680.43) applies all
@@ -388,7 +388,7 @@ export default function Ch39HouseOutdoorWet() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">EV chargers: Level 2 in detail</h2>
+      <h2 className="chapter-h2">EV chargers: Level 2 in detail</h2>
 
       <p className="mb-prose-3">
         Ch.31 introduced the three charging levels and the J1772 / CCS / NACS coupler ecosystem. This section
@@ -535,7 +535,7 @@ export default function Ch39HouseOutdoorWet() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The 200-to-225 A service upgrade</h2>
+      <h2 className="chapter-h2">The 200-to-225 A service upgrade</h2>
 
       <p className="mb-prose-3">
         The cumulative effect of electrification — adding a Level 2 EVSE, a heat pump, an induction range, a

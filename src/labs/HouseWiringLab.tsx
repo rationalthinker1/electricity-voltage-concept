@@ -485,7 +485,7 @@ export default function HouseWiringLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">What this lab integrates</h3>
+      <h3 className="lab-section-h3">What this lab integrates</h3>
       <p className="mb-prose-3">
         The practical track of this textbook — Ch.27 through Ch.40 — covers everything from how 60 Hz power
         reaches the meter through to grounding, surge protection, and the diagnostics a working electrician
@@ -498,7 +498,7 @@ export default function HouseWiringLab() {
         bus.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">How an electrician reads a new house</h3>
+      <h3 className="lab-section-h3">How an electrician reads a new house</h3>
       <p className="mb-prose-3">
         The thought process is well-rehearsed. <strong className="text-text font-medium">Start at the rooms.</strong> Walk the floorplan once and
         list every place that needs power: kitchen counters, bath vanities, bedroom outlets, ceiling lights,
@@ -530,7 +530,7 @@ export default function HouseWiringLab() {
         line item here.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">NEC 220.82 — the optional dwelling-unit calculation</h3>
+      <h3 className="lab-section-h3">NEC 220.82 — the optional dwelling-unit calculation</h3>
       <p className="mb-prose-3">
         The full standard calculation in 220 Part III is heavy. NEC 220.82 offers a simpler shortcut for
         single-family dwellings: total all small-appliance, laundry, and general lighting at 3 VA per square foot
@@ -541,7 +541,7 @@ export default function HouseWiringLab() {
         version of exactly this calculation and shows the result as a percentage of the panel rating.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked example — 1,800 ft² house with EV and heat pump</h3>
+      <h3 className="lab-section-h3">Worked example — 1,800 ft² house with EV and heat pump</h3>
       <p className="mb-prose-3">
         Three bedrooms, two baths, 1,800 ft² conditioned area. General lighting at 3 VA/ft² = 5,400 VA. Two
         kitchen small-appliance circuits at 1,500 VA each = 3,000 VA. Laundry at 1,500 VA. Dishwasher 1,200 W,
@@ -552,7 +552,7 @@ export default function HouseWiringLab() {
         standard 200 A service even with the EV continuously charging.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Try it in the sandbox</h3>
+      <h3 className="lab-section-h3">Try it in the sandbox</h3>
       <TryIt
         tag="Try A.2.1"
         question={<>Load the preset house and toggle the toaster, kettle, and microwave all <strong className="text-text font-medium">on</strong>. Why does Kitchen Counter A trip?</>}
@@ -616,7 +616,7 @@ export default function HouseWiringLab() {
         }
       />
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Where to go next</h3>
+      <h3 className="lab-section-h3">Where to go next</h3>
       <p className="mb-prose-3">
         The sandbox is intentionally not a replacement for an electrician's CAD tool — it leaves out box-fill
         cubic-inch math, the full standard load calculation, neutral-current sizing on multi-wire branches,

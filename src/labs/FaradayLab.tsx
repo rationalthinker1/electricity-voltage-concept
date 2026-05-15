@@ -300,7 +300,7 @@ export default function FaradayLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         Faraday's law says that a <em className="italic text-text">changing</em> magnetic flux through a closed loop induces an electromotive force (EMF) around that loop.
         Static B-fields do no work and induce nothing; only the rate of change matters. The flux can change because <strong className="text-text font-medium">B</strong> changes,
@@ -314,7 +314,7 @@ export default function FaradayLab() {
         empty space — no loop of wire required.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>EMF = − dΦ<sub>B</sub> / dt</MathBlock>
       <p className="mb-prose-3">Variable glossary:</p>
       <ul>
@@ -328,7 +328,7 @@ export default function FaradayLab() {
       <p className="mb-prose-3">For a flat coil of N turns, area A, in a uniform B rotating at angular rate ω:</p>
       <MathBlock>Φ(t) = N B A cos(ω t),    EMF(t) = N B A ω sin(ω t)</MathBlock>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         Think of magnetic flux as a count of B-field lines piercing the loop. Faraday says: change that count and you produce a voltage around
         the rim, with magnitude equal to the rate of change. Three ways to change the count: (a) make the field stronger or weaker, (b) make
@@ -338,7 +338,7 @@ export default function FaradayLab() {
         Magnetism never <em className="italic text-text">moves</em>; only the flux does. Move the flux and electricity falls out.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Why the minus sign? Lenz's law. The induced current drives its own B that opposes the change in flux. Push a north pole toward a
         coil and the induced current creates a north pole back at you — pushing back. If the sign were positive, the induced current would
@@ -352,7 +352,7 @@ export default function FaradayLab() {
         instant of the rotation. The peaks of EMF occur when the loop is edge-on, where Φ = 0 but dΦ/dt is maximum.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         For motional EMF (loop moving through a static B), follow the carriers. A free electron in a moving conductor feels a Lorentz force
         <strong className="text-text font-medium"> qv × B</strong>; integrating that force per unit charge around the loop gives the EMF directly. For a rod of length L moving
@@ -374,7 +374,7 @@ export default function FaradayLab() {
         makes light possible<Cite id="feynman-II-17" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 2.4.1"

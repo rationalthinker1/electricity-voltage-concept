@@ -28,7 +28,7 @@ export default function Ch10Maxwell() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Up to now you've met each law in its own setting. Gauss's law for the electric field appeared in Chapter&nbsp;1,
         the moment we asked how a point charge sprays its influence into a sphere of empty space. The no-monopole rule
         for the magnetic field was implicit in Chapter&nbsp;4, every time we drew B-field circles closing on themselves
@@ -41,7 +41,7 @@ export default function Ch10Maxwell() {
         follow — and the wave equation that drops out when you put them in a blender<Cite id="feynman-II-18" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Four laws on <em className="italic text-accent font-normal">one</em> page</h2>
+      <h2 className="chapter-h2">Four laws on <em>one</em> page</h2>
 
       <p className="mb-prose-3">
         Maxwell published the unified theory in 1865<Cite id="maxwell-1865" in={SOURCES} />. The modern integral form,
@@ -88,7 +88,7 @@ export default function Ch10Maxwell() {
 
       <MaxwellEquations3DDemo />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Gauss's law for <em className="italic text-accent font-normal">E</em></h2>
+      <h2 className="chapter-h2">Gauss's law for <em>E</em></h2>
 
       <p className="mb-prose-3">
         The first equation — <Term def={<><strong className="text-text font-medium">Gauss's law</strong> — the net electric flux through any closed surface equals the enclosed charge divided by ε₀: ∮ E · dA = Q<sub>enc</sub>/ε₀. Equivalent to Coulomb's inverse-square law plus the assumption of spherical symmetry.</>}>Gauss's law</Term> — says: the net electric flux through any closed surface is equal to the charge enclosed inside
@@ -128,7 +128,7 @@ export default function Ch10Maxwell() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Gauss's law for <em className="italic text-accent font-normal">B</em></h2>
+      <h2 className="chapter-h2">Gauss's law for <em>B</em></h2>
 
       <p className="mb-prose-3">
         The second equation looks anemic next to the first — there's no source term on the right. That's the point.
@@ -173,7 +173,7 @@ export default function Ch10Maxwell() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Faraday's law</h2>
+      <h2 className="chapter-h2">Faraday's law</h2>
 
       <p className="mb-prose-3">
         The third equation —{' '}
@@ -222,7 +222,7 @@ export default function Ch10Maxwell() {
         sourced by <em className="italic text-text">two</em> things now: charge density, and changing magnetic flux.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Ampère–Maxwell law</h2>
+      <h2 className="chapter-h2">Ampère–Maxwell law</h2>
 
       <p className="mb-prose-3">
         The fourth equation — the{' '}
@@ -287,7 +287,7 @@ export default function Ch10Maxwell() {
         <Cite id="feynman-II-18" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The four together → <em className="italic text-accent font-normal">light</em></h2>
+      <h2 className="chapter-h2">The four together → <em>light</em></h2>
 
       <p className="mb-prose-3">
         Take the two curl equations, far from any charges or currents — pure vacuum, <InlineMath>ρ = 0, J = 0</InlineMath>:

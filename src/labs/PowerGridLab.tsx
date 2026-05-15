@@ -540,7 +540,7 @@ export default function PowerGridLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">What this lab integrates</h3>
+      <h3 className="lab-section-h3">What this lab integrates</h3>
       <p className="mb-prose-3">
         A working power grid braids together every chapter from the second half of the textbook.
         AC voltage and impedance from Ch. 12. Generators and inertia from Ch. 21. Transformers from
@@ -552,7 +552,7 @@ export default function PowerGridLab() {
         instant of every day<Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">The DC power-flow approximation</h3>
+      <h3 className="lab-section-h3">The DC power-flow approximation</h3>
       <p className="mb-prose-3">
         A real grid carries both real power <em className="italic text-text">P</em> (megawatts that turn motors and heat resistors)
         and reactive power <em className="italic text-text">Q</em> (megavars that keep magnetising flux alive in every transformer
@@ -583,7 +583,7 @@ export default function PowerGridLab() {
         sandbox, it nails the right intuition.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">The swing equation, in detail</h3>
+      <h3 className="lab-section-h3">The swing equation, in detail</h3>
       <p className="mb-prose-3">
         Synchronous machines store kinetic energy in their rotor. A coal turbine spinning at 3600 rpm
         on a 1 GW shaft is keeping somewhere around 5 seconds × 1 GW = 5 GJ alive in its rotor at any
@@ -612,7 +612,7 @@ export default function PowerGridLab() {
         feature evaporates — unless you put it back synthetically.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Primary frequency control: droop</h3>
+      <h3 className="lab-section-h3">Primary frequency control: droop</h3>
       <p className="mb-prose-3">
         Every governor on every steam, gas, or hydro unit is wired with a <strong className="text-text font-medium">droop characteristic</strong>:
         the unit picks up (or sheds) load in proportion to how far frequency has drifted from 60 Hz.
@@ -629,7 +629,7 @@ export default function PowerGridLab() {
         starting to lean on storage for fast-frequency response<Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">The merit-order dispatch and locational marginal price</h3>
+      <h3 className="lab-section-h3">The merit-order dispatch and locational marginal price</h3>
       <p className="mb-prose-3">
         With the <em className="italic text-text">Merit-order dispatch</em> toggle on, the sandbox sorts every online generator
         by its variable cost (in $/MWh) and fills them from cheapest first until total dispatch
@@ -648,7 +648,7 @@ export default function PowerGridLab() {
         running a stripped-down version that captures the same intuition.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Why constant-impedance vs. constant-power loads matter</h3>
+      <h3 className="lab-section-h3">Why constant-impedance vs. constant-power loads matter</h3>
       <p className="mb-prose-3">
         Residential aggregate behaves like a giant constant impedance — incandescent bulbs and
         resistive heaters dominate, so when bus voltage sags, the load shrinks as <strong className="text-text font-medium">P ∝ V²</strong>.
@@ -661,7 +661,7 @@ export default function PowerGridLab() {
         self-corrects on the way down.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Try it — six problems in the sandbox</h3>
+      <h3 className="lab-section-h3">Try it — six problems in the sandbox</h3>
       <p className="mb-prose-3">
         Each of these is solvable in the sandbox. Load the indicated preset and start adjusting.
       </p>

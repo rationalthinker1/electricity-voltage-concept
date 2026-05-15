@@ -43,7 +43,7 @@ export default function Ch14Optics() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Hold a piece of window glass up to a desk lamp and three things happen at once. A faint
         reflection of the room appears on the front face. The light that makes it through emerges
         on the other side bent slightly off its original line. And if you tilt the glass at just
@@ -63,7 +63,7 @@ export default function Ch14Optics() {
         sunbeam — all of them are Maxwell at 10¹⁴ Hz<Cite id="hecht-2017" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The wave hits a wall</h2>
+      <h2 className="chapter-h2">The wave hits a wall</h2>
 
       <p className="mb-prose-3">
         Consider a plane EM wave travelling in vacuum, polarised so that <strong className="text-text font-medium">E</strong>
@@ -95,7 +95,7 @@ export default function Ch14Optics() {
         Snell's law<Cite id="hecht-2017" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Snell's law from continuity</h2>
+      <h2 className="chapter-h2">Snell's law from continuity</h2>
 
       <p className="mb-prose-3">
         Continuity of the tangential <strong className="text-text font-medium">k</strong> across an interface means
@@ -160,7 +160,7 @@ export default function Ch14Optics() {
         anti-reflection coatings and optical waveguides care about this constantly.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Lenses and image formation</h2>
+      <h2 className="chapter-h2">Lenses and image formation</h2>
 
       <p className="mb-prose-3">
         Curve the interface and Snell's law starts doing real work. A <Term def="A piece of transparent material with two refracting surfaces shaped so that parallel rays from one direction converge to (convex) or diverge from (concave) a common focal point. Characterised by a focal length f.">lens</Term> is a slab of glass
@@ -210,7 +210,7 @@ export default function Ch14Optics() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Why a prism splits white light</h2>
+      <h2 className="chapter-h2">Why a prism splits white light</h2>
 
       <p className="mb-prose-3">
         The refractive index n is not a constant. It depends on frequency: n = n(λ). For
@@ -263,7 +263,7 @@ export default function Ch14Optics() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Brewster, Malus, and the polarisation of reflected light</h2>
+      <h2 className="chapter-h2">Brewster, Malus, and the polarisation of reflected light</h2>
 
       <p className="mb-prose-3">
         Solve the boundary conditions in detail for the two independent polarisations — electric
@@ -337,7 +337,7 @@ export default function Ch14Optics() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Thin films and total internal reflection</h2>
+      <h2 className="chapter-h2">Thin films and total internal reflection</h2>
 
       <p className="mb-prose-3">
         At an interface, part of the wave reflects and part transmits. Stack two interfaces close
@@ -404,7 +404,7 @@ export default function Ch14Optics() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Young's experiment: the wave-nature proof</h2>
+      <h2 className="chapter-h2">Young's experiment: the wave-nature proof</h2>
 
       <p className="mb-prose-3">
         By the late 1700s the dominant theory of light was Newton's corpuscular one. Thomas Young
@@ -492,7 +492,7 @@ export default function Ch14Optics() {
         watched it stripe and unstripe across a screen.
       </Pullout>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Lasers: stimulated emission, coherence, and an external mirror</h2>
+      <h2 className="chapter-h2">Lasers: stimulated emission, coherence, and an external mirror</h2>
 
       <p className="mb-prose-3">
         Einstein, in 1917, derived a balance argument for atoms and photons that required, in
@@ -532,7 +532,7 @@ export default function Ch14Optics() {
         light produced exactly this way<Cite id="hecht-2017" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
         Light is the Chapter-9 plane wave. A slab of matter is a region where the EM wave equation

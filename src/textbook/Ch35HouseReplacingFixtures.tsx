@@ -31,7 +31,7 @@ export default function Ch35HouseReplacingFixtures() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         A bedroom outlet has gone loose. Last winter the kid plugged a 1 500 W space heater into it and ran the
         heater on max all February; this winter the plug wobbles when you push a charger in, and on the side of the
         wall plate nearest the slot the cream paint has gone the colour of weak tea. The reader is standing in front
@@ -55,7 +55,7 @@ export default function Ch35HouseReplacingFixtures() {
         failures: verify dead, never trust the old termination, ground the box.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Verify dead. Then verify dead again.</h2>
+      <h2 className="chapter-h2">Verify dead. Then verify dead again.</h2>
 
       <p className="mb-prose-3">
         The single most-skipped step in residential DIY is the second half of a two-step verification ritual that
@@ -138,7 +138,7 @@ export default function Ch35HouseReplacingFixtures() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The anatomy of a duplex receptacle, inside the box</h2>
+      <h2 className="chapter-h2">The anatomy of a duplex receptacle, inside the box</h2>
 
       <p className="mb-prose-3">
         Chapter 30 introduced the duplex receptacle from the front: two parallel slots, a ground hole, a brass
@@ -191,7 +191,7 @@ export default function Ch35HouseReplacingFixtures() {
         damp and wet locations by NEC 406.9<Cite id="nec-2023" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Why backstabs fail</h2>
+      <h2 className="chapter-h2">Why backstabs fail</h2>
 
       <p className="mb-prose-3">
         Push-in backstab terminations exist because they are fast at the factory and almost-fast at the rough-in:
@@ -271,7 +271,7 @@ export default function Ch35HouseReplacingFixtures() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Switch leg vs hot leg: diagnosing what is actually in the box</h2>
+      <h2 className="chapter-h2">Switch leg vs hot leg: diagnosing what is actually in the box</h2>
 
       <p className="mb-prose-3">
         Open a switch box and what you find depends on which side of the loop the switch sits on and what era the
@@ -354,7 +354,7 @@ export default function Ch35HouseReplacingFixtures() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Replacing a single-pole switch, a three-way, and a smart dimmer</h2>
+      <h2 className="chapter-h2">Replacing a single-pole switch, a three-way, and a smart dimmer</h2>
 
       <p className="mb-prose-3">
         The simplest replacement is a single-pole switch. After the verify-dead ritual, unscrew the device, note
@@ -412,7 +412,7 @@ export default function Ch35HouseReplacingFixtures() {
         percent of full output<Cite id="lutron-dimmer-app-note" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Replacing a fixture: paddle fan, recessed can, pendant</h2>
+      <h2 className="chapter-h2">Replacing a fixture: paddle fan, recessed can, pendant</h2>
 
       <p className="mb-prose-3">
         The wiring side of replacing a ceiling fixture is the same as replacing a receptacle — verify dead, transfer
@@ -491,7 +491,7 @@ export default function Ch35HouseReplacingFixtures() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">GFCI replacement and the LINE vs LOAD terminals</h2>
+      <h2 className="chapter-h2">GFCI replacement and the LINE vs LOAD terminals</h2>
 
       <p className="mb-prose-3">
         A GFCI receptacle is mechanically a duplex receptacle with extra electronics inside: a small differential

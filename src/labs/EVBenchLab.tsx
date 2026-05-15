@@ -268,7 +268,7 @@ export default function EVBenchLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">One bench, the whole powertrain</h3>
+      <h3 className="lab-section-h3">One bench, the whole powertrain</h3>
       <p className="mb-prose-3">
         An electric vehicle is the longest causal chain in this textbook. Stored chemical energy in an
         intercalation lattice (Ch.25–26) is decoded by a cell into electrochemical potential; cells stack into
@@ -285,7 +285,7 @@ export default function EVBenchLab() {
         you both, integrated tenth-of-a-second by tenth-of-a-second.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Battery pack — the model</h3>
+      <h3 className="lab-section-h3">Battery pack — the model</h3>
       <p className="mb-prose-3">
         Each cell carries an open-circuit voltage that depends on its state of charge — V_oc(SOC). For NMC and
         NCA the curve slopes monotonically from about 3.0 V at empty to 4.2 V at full, with mild kinks at the
@@ -302,7 +302,7 @@ export default function EVBenchLab() {
         78 kWh — the order of magnitude of a Model 3 Long Range.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Vehicle — the back-of-envelope</h3>
+      <h3 className="lab-section-h3">Vehicle — the back-of-envelope</h3>
       <p className="mb-prose-3">
         Tractive force at the contact patch breaks into four pieces:
       </p>
@@ -317,7 +317,7 @@ export default function EVBenchLab() {
         the cycle to "Constant 100 km/h flat" and read the steady-state consumption directly off the bottom panel.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Motor + inverter — the efficiency map</h3>
+      <h3 className="lab-section-h3">Motor + inverter — the efficiency map</h3>
       <p className="mb-prose-3">
         A permanent-magnet synchronous motor is most efficient in a band of moderate torque and moderate speed.
         At low torque, iron losses and friction dominate the small useful output; at high speed, flux weakening
@@ -327,7 +327,7 @@ export default function EVBenchLab() {
         copper losses, and the peak efficiency of a modern SiC three-phase bridge is ~98 %<Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Charging — why DC fast charging tapers</h3>
+      <h3 className="lab-section-h3">Charging — why DC fast charging tapers</h3>
       <p className="mb-prose-3">
         AC charging is bottlenecked by the on-board charger (OBC). The OBC is an isolated AC-DC converter sized
         for the connector standard it talks to: 1.4 kW for a Level-1 wall outlet (NEMA 5-15 at 12 A), up to
@@ -356,7 +356,7 @@ export default function EVBenchLab() {
         long DC-fast sessions in summer can throttle before the chemistry would.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Five exercises to run in the bench</h3>
+      <h3 className="lab-section-h3">Five exercises to run in the bench</h3>
       <p className="mb-prose-3"><strong className="text-text font-medium">1. Design a 500-km WLTP pack.</strong> Pick NMC + 21700. Set the cycle to WLTC. The pack delivers
       energy E = N_s × N_p × V_cell × Q_cell. Aim for about 75 kWh and a consumption around 150 Wh/km. What
       series-parallel topology gets you 500 km of range? Now read the C-rate at peak power (200 kW): C = I_peak
@@ -388,7 +388,7 @@ export default function EVBenchLab() {
       That last 20 % is the slowest, not because the charger isn't capable, but because the cell chemistry
       cannot accept it.</p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">What's not modelled</h3>
+      <h3 className="lab-section-h3">What's not modelled</h3>
       <p className="mb-prose-3">
         Real packs have cell-to-cell variation that the BMS balances passively (bleed resistors on high cells)
         or actively (DC-DC shuttles); the bench treats every cell as identical. Real motors run field-oriented

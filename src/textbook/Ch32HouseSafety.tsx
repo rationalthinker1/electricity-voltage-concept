@@ -33,7 +33,7 @@ export default function Ch32HouseSafety() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Put a 9 V battery on your tongue and you feel a sharp metallic tingle. Brush a 120 V wall outlet with a dry
         fingertip and you get a slap — painful, sometimes a small burn, almost never fatal. Grip the same 120 V wire
         with a wet hand while standing barefoot on a concrete basement floor and holding a metal pipe with the other
@@ -52,7 +52,7 @@ export default function Ch32HouseSafety() {
         them: the GFCI, the AFCI, the equipotential bond, and the arc-rated suit.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Current is what hurts</h2>
+      <h2 className="chapter-h2">Current is what hurts</h2>
 
       <p className="mb-prose-3">
         Take a 60 Hz sinusoidal current and pass it hand-to-hand through a healthy adult human. As you turn the
@@ -173,7 +173,7 @@ export default function Ch32HouseSafety() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Why the 60 Hz threshold is the lowest</h2>
+      <h2 className="chapter-h2">Why the 60 Hz threshold is the lowest</h2>
 
       <p className="mb-prose-3">
         The current-vs-time ladder above is specific to 50/60 Hz alternating current. That is not a coincidence —
@@ -212,7 +212,7 @@ export default function Ch32HouseSafety() {
         the safety hardware has been working around ever since.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">GFCI and the 5 mA / 25 ms standard</h2>
+      <h2 className="chapter-h2">GFCI and the 5 mA / 25 ms standard</h2>
 
       <p className="mb-prose-3">
         Ch.28 introduced the
@@ -281,7 +281,7 @@ export default function Ch32HouseSafety() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">AFCI and why arcs start fires</h2>
+      <h2 className="chapter-h2">AFCI and why arcs start fires</h2>
 
       <p className="mb-prose-3">
         The
@@ -370,7 +370,7 @@ export default function Ch32HouseSafety() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Why a bird on a single wire is fine, and a squirrel between two wires isn't</h2>
+      <h2 className="chapter-h2">Why a bird on a single wire is fine, and a squirrel between two wires isn't</h2>
 
       <p className="mb-prose-3">
         A pigeon perches on a 138 kV transmission line, unharmed, while a squirrel that bridges the same line to
@@ -418,7 +418,7 @@ export default function Ch32HouseSafety() {
         The pool's grid mat is, in miniature, the same trick as the lineman's bonded bucket.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">PPE and arc-flash energy</h2>
+      <h2 className="chapter-h2">PPE and arc-flash energy</h2>
 
       <p className="mb-prose-3">
         Everything up to this point has been about shock — current crossing a body that has become part of a circuit.

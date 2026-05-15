@@ -31,7 +31,7 @@ export default function Ch2VoltageAndCurrent() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Touch the two terminals of a 9-volt battery to your tongue. There is a sour metallic sting and a faint shock — the
         only direct, sensory measurement of voltage that most people ever make. What you felt was not 9 volts arriving from
         somewhere. It was 9 volts of <em className="italic text-text">difference</em> between the two contacts in your saliva, and current flowing
@@ -43,7 +43,7 @@ export default function Ch2VoltageAndCurrent() {
         to do the algebra and then, more importantly, take the wrong pictures away.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Voltage isn't pressure. It's a <em className="italic text-accent font-normal">difference</em>.</h2>
+      <h2 className="chapter-h2">Voltage isn't pressure. It's a <em>difference</em>.</h2>
 
       <p className="mb-prose-3">
         The standard plumbing analogy says{' '}
@@ -85,7 +85,7 @@ export default function Ch2VoltageAndCurrent() {
         battery is the climber lifting the ball back up. Voltage is the height it lifted to.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Voltage as energy per unit charge</h3>
+      <h3 className="chapter-h3">Voltage as energy per unit charge</h3>
 
       <p className="mb-prose-3">
         The line integral is the formal definition; the way every working engineer holds voltage in their head is
@@ -122,7 +122,7 @@ export default function Ch2VoltageAndCurrent() {
         flowing through the copper at all.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">The cleanest case: a uniform field between two plates</h3>
+      <h3 className="chapter-h3">The cleanest case: a uniform field between two plates</h3>
 
       <p className="mb-prose-3">
         Inside a parallel-plate capacitor with the plates a distance <strong className="text-text font-medium">d</strong> apart, the electric field is
@@ -165,7 +165,7 @@ export default function Ch2VoltageAndCurrent() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What current actually <em className="italic text-accent font-normal">is</em></h2>
+      <h2 className="chapter-h2">What current actually <em>is</em></h2>
 
       <p className="mb-prose-3">
         <Term def={<><strong className="text-text font-medium">Current</strong> — the rate at which charge crosses a surface, <em className="italic text-text">I = dQ/dt</em>. SI unit: ampere (1 A = 1 C/s). A signed scalar pointing the way conventional positive charge would move.</>}>Current</Term>{' '}
@@ -210,7 +210,7 @@ export default function Ch2VoltageAndCurrent() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The astonishing slowness of <em className="italic text-accent font-normal">electrons</em></h2>
+      <h2 className="chapter-h2">The astonishing slowness of <em>electrons</em></h2>
 
       <p className="mb-prose-3">
         In a copper wire, roughly one of each atom's electrons is loose — not bound to any particular nucleus, free to
@@ -302,7 +302,7 @@ export default function Ch2VoltageAndCurrent() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The two speeds in the same wire</h2>
+      <h2 className="chapter-h2">The two speeds in the same wire</h2>
 
       <p className="mb-prose-3">
         Inside a copper wire two completely different things can be said to "move," and they move at speeds that differ
@@ -345,7 +345,7 @@ export default function Ch2VoltageAndCurrent() {
         other. This is the picture that, properly developed, becomes Chapter 6.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What actually lights the <em className="italic text-accent font-normal">bulb</em></h2>
+      <h2 className="chapter-h2">What actually lights the <em>bulb</em></h2>
 
       <p className="mb-prose-3">
         Here is the sequence, in order, when you flip a wall switch and a bulb on the far side of the room comes on:
@@ -388,7 +388,7 @@ export default function Ch2VoltageAndCurrent() {
         get to that one in Chapter 6.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
         Voltage is a difference between two points — the line integral of E along any path between them, with a sign.

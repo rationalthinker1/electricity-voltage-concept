@@ -33,7 +33,7 @@ export default function Ch1WhatIsElectricity() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Rub a balloon on your hair and stick it to a wall. The balloon stays — through paint, through gravity, through your
         fingers tugging at it — held there by something that doesn't touch anything. <strong className="text-text font-medium">That</strong> is electricity in
         its rawest form. Not the neat 60 Hz alternating current in your wall outlet, not the bright sparks of a thundercloud.
@@ -47,7 +47,7 @@ export default function Ch1WhatIsElectricity() {
         resistance all live one floor up. We'll get there. First the floor.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Two kinds of <em className="italic text-accent font-normal">charge</em></h2>
+      <h2 className="chapter-h2">Two kinds of <em>charge</em></h2>
 
       <p className="mb-prose-3">
         The simplest experimental fact in all of electricity: there are two kinds of charge, and they push on each other
@@ -127,7 +127,7 @@ export default function Ch1WhatIsElectricity() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Why exactly the <em className="italic text-accent font-normal">square</em>?</h2>
+      <h2 className="chapter-h2">Why exactly the <em>square</em>?</h2>
 
       <p className="mb-prose-3">
         Coulomb established the inverse-square form in 1785 by hanging a charged ball from a fine quartz fiber
@@ -194,7 +194,7 @@ export default function Ch1WhatIsElectricity() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">From <em className="italic text-accent font-normal">force</em> to <em className="italic text-accent font-normal">field</em></h2>
+      <h2 className="chapter-h2">From <em>force</em> to <em>field</em></h2>
 
       <p className="mb-prose-3">
         Newton hated the way his own gravitational law worked — instantaneous attraction across empty space, with no mechanism.
@@ -273,7 +273,7 @@ export default function Ch1WhatIsElectricity() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Two charges, two patterns</h2>
+      <h2 className="chapter-h2">Two charges, two patterns</h2>
 
       <p className="mb-prose-3">
         Once you have a field, you can ask what the field <em className="italic text-text">looks like</em>. For one isolated charge it's just radial
@@ -309,7 +309,7 @@ export default function Ch1WhatIsElectricity() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Conductors, insulators, and why your hair does that</h2>
+      <h2 className="chapter-h2">Conductors, insulators, and why your hair does that</h2>
 
       <p className="mb-prose-3">
         Materials come in two extreme types from the standpoint of charge mobility, with everything else on a sliding
@@ -337,7 +337,7 @@ export default function Ch1WhatIsElectricity() {
         Chapter&nbsp;2 — sit there happily until something connects the wire to a battery and breaks the equilibrium.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
         Charge is a property of matter. There are two kinds. Same kinds repel; opposites attract. The force between two

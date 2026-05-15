@@ -28,7 +28,7 @@ export default function Ch38HouseSmartRetrofits() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         A reader's hall switch was a single-pole toggle for thirty years. They buy a Lutron Caséta dimmer to
         add a sunset schedule and a phone-app dim slider; they shut off the breaker, unscrew the toggle, and
         pull it out of the wall. Inside the box are exactly two wires — a black and a red — and a bare copper
@@ -46,7 +46,7 @@ export default function Ch38HouseSmartRetrofits() {
         the multi-hub mess most smart houses still live in.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Inside a smart switch</h2>
+      <h2 className="chapter-h2">Inside a smart switch</h2>
 
       <p className="mb-prose-3">
         Pry the faceplate off a modern smart dimmer and you find four functional blocks on a single PCB the
@@ -99,7 +99,7 @@ export default function Ch38HouseSmartRetrofits() {
         becomes interesting.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The four smart-switch ecosystems</h2>
+      <h2 className="chapter-h2">The four smart-switch ecosystems</h2>
 
       <p className="mb-prose-3">
         Strip away the apps and the marketing names and there are essentially four families competing for the
@@ -153,7 +153,7 @@ export default function Ch38HouseSmartRetrofits() {
         <li><strong className="text-text font-medium">Hub dependence:</strong> Caséta requires a Lutron hub. Z-Wave and Zigbee require <em className="italic text-text">some</em> hub. Matter over Thread requires only a Thread Border Router (often built into a speaker or Apple TV) and no per-vendor hub.</li>
       </ul>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">NEC 404.2(C) — a neutral in every switch box</h2>
+      <h2 className="chapter-h2">NEC 404.2(C) — a neutral in every switch box</h2>
 
       <p className="mb-prose-3">
         Pre-2011 residential wiring had a common trick: when a switch controlled a single light at the end of
@@ -186,7 +186,7 @@ export default function Ch38HouseSmartRetrofits() {
         transducer: it must power its radio by faintly conducting the very load it claims to have switched off.
       </Pullout>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The no-neutral dimmer (Lutron's bleeder trick)</h2>
+      <h2 className="chapter-h2">The no-neutral dimmer (Lutron's bleeder trick)</h2>
 
       <p className="mb-prose-3">
         When a smart dimmer is installed in a pre-2011 switch loop with no neutral, the manufacturer's
@@ -251,7 +251,7 @@ export default function Ch38HouseSmartRetrofits() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Three-way smart switches and companion protocols</h2>
+      <h2 className="chapter-h2">Three-way smart switches and companion protocols</h2>
 
       <p className="mb-prose-3">
         A traditional 3-way pair (one bulb, two switches, either switch toggles the light) uses three wires
@@ -294,7 +294,7 @@ export default function Ch38HouseSmartRetrofits() {
         cable. Most readers stop at (b).
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Leading vs trailing edge: choosing the phase-cut for LED loads</h2>
+      <h2 className="chapter-h2">Leading vs trailing edge: choosing the phase-cut for LED loads</h2>
 
       <p className="mb-prose-3">
         Chapter 30 introduced the triac dimmer: a thyristor that gates on partway through each AC half-cycle
@@ -370,7 +370,7 @@ export default function Ch38HouseSmartRetrofits() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What Matter actually changed</h2>
+      <h2 className="chapter-h2">What Matter actually changed</h2>
 
       <p className="mb-prose-3">
         Two years ago, a household running both Apple HomeKit and Amazon Alexa with a few Lutron Caséta

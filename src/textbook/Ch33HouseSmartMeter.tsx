@@ -25,7 +25,7 @@ export default function Ch33HouseSmartMeter() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Look at the LCD on your smart meter for a minute. If you stand still long enough, the display cycles
         through several different readings: kilowatt-hours delivered since the meter was installed, kilowatt-hours
         received from your house back to the grid (if you have rooftop solar), the highest sustained kilowatt draw
@@ -44,7 +44,7 @@ export default function Ch33HouseSmartMeter() {
         meter's accumulators into a number of dollars.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What the meter <em className="italic text-accent font-normal">measures</em> — four quantities, not one</h2>
+      <h2 className="chapter-h2">What the meter <em>measures</em> — four quantities, not one</h2>
 
       <p className="mb-prose-3">
         Every modern revenue meter sits between two pairs of wires — line voltage in, load voltage out, with the
@@ -130,7 +130,7 @@ export default function Ch33HouseSmartMeter() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The induction-disk <em className="italic text-accent font-normal">legacy</em> meter</h2>
+      <h2 className="chapter-h2">The induction-disk <em>legacy</em> meter</h2>
 
       <p className="mb-prose-3">
         Before microcontrollers were cheap enough to put on every house, every revenue meter on every street in
@@ -173,7 +173,7 @@ export default function Ch33HouseSmartMeter() {
         are still installed and operating in North America today.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The solid-state <em className="italic text-accent font-normal">smart</em> meter</h2>
+      <h2 className="chapter-h2">The solid-state <em>smart</em> meter</h2>
 
       <p className="mb-prose-3">
         Since roughly 2005, almost every new and replacement meter installed in North America has been
@@ -245,7 +245,7 @@ export default function Ch33HouseSmartMeter() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The bill itself — tariffs, demand, time-of-use</h2>
+      <h2 className="chapter-h2">The bill itself — tariffs, demand, time-of-use</h2>
 
       <p className="mb-prose-3">
         Residential bills in North America are dominated by a single per-kilowatt-hour charge — a flat rate of
@@ -360,7 +360,7 @@ export default function Ch33HouseSmartMeter() {
         in case the rules change tomorrow.
       </Pullout>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Net metering, feed-in, and <em className="italic text-accent font-normal">bidirectional</em> flow</h2>
+      <h2 className="chapter-h2">Net metering, feed-in, and <em>bidirectional</em> flow</h2>
 
       <p className="mb-prose-3">
         A rooftop PV array changes the meter's life. On a sunny weekday around noon, the panels produce more power
@@ -451,7 +451,7 @@ export default function Ch33HouseSmartMeter() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What the meter does <em className="italic text-accent font-normal">not</em> measure</h2>
+      <h2 className="chapter-h2">What the meter does <em>not</em> measure</h2>
 
       <p className="mb-prose-3">
         The meter measures true energy crossing its terminals. It does not care what happens to that energy on
@@ -488,7 +488,7 @@ export default function Ch33HouseSmartMeter() {
         altogether.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so <em className="italic text-accent font-normal">far</em></h2>
+      <h2 className="chapter-h2">What we have so <em>far</em></h2>
 
       <p className="mb-prose-3">
         The grey box on the side of the house — once a spinning aluminium disk behind a glass dome, now a

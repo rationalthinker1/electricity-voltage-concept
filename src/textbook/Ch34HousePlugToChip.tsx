@@ -26,7 +26,7 @@ export default function Ch34HousePlugToChip() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         A MacBook Pro M3 sits on the desk, drawing roughly thirty watts on average while the
         browser scrolls and the editor compiles. The wall socket it is plugged into delivers
         120 V AC at 60 Hz<Cite id="codata-2018" in={SOURCES} />. Between those two endpoints,
@@ -51,7 +51,7 @@ export default function Ch34HousePlugToChip() {
         six intermediate buses, one electron arriving at a gate.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stage 1: AC mains to a <em className="italic text-accent font-normal">bridge-rectified pulse train</em></h2>
+      <h2 className="chapter-h2">Stage 1: AC mains to a <em>bridge-rectified pulse train</em></h2>
 
       <p className="mb-prose-3">
         The first thing inside the charger is a{' '}
@@ -86,7 +86,7 @@ export default function Ch34HousePlugToChip() {
         the voltage swings from 0 V to 170 V and back twice every line cycle. Stage 2 fixes that.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stage 2: Pulse train to <em className="italic text-accent font-normal">bulk DC</em></h2>
+      <h2 className="chapter-h2">Stage 2: Pulse train to <em>bulk DC</em></h2>
 
       <p className="mb-prose-3">
         Strap a big capacitor across the bridge's output terminals and the picture changes.
@@ -144,7 +144,7 @@ export default function Ch34HousePlugToChip() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stage 3: <em className="italic text-accent font-normal">Chopping</em> the bulk DC at 100 kHz</h2>
+      <h2 className="chapter-h2">Stage 3: <em>Chopping</em> the bulk DC at 100 kHz</h2>
 
       <p className="mb-prose-3">
         Now comes the move that made modern chargers small. The flat 170 V bus from stage 2
@@ -191,7 +191,7 @@ export default function Ch34HousePlugToChip() {
         up.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stage 4: <em className="italic text-accent font-normal">Transformer step-down</em> with galvanic isolation</h2>
+      <h2 className="chapter-h2">Stage 4: <em>Transformer step-down</em> with galvanic isolation</h2>
 
       <p className="mb-prose-3">
         Stage 4 is where the chopped primary current crosses over to the safe side of the
@@ -273,7 +273,7 @@ export default function Ch34HousePlugToChip() {
         manual for those mechanisms.
       </Pullout>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stage 5: Secondary AC to a <em className="italic text-accent font-normal">20 V DC bus</em></h2>
+      <h2 className="chapter-h2">Stage 5: Secondary AC to a <em>20 V DC bus</em></h2>
 
       <p className="mb-prose-3">
         The secondary winding hands off a sequence of high-current, low-voltage pulses at the
@@ -344,7 +344,7 @@ export default function Ch34HousePlugToChip() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stage 6: <em className="italic text-accent font-normal">USB-PD negotiation</em> on the cable</h2>
+      <h2 className="chapter-h2">Stage 6: <em>USB-PD negotiation</em> on the cable</h2>
 
       <p className="mb-prose-3">
         Stage 6 is not a power conversion at all. It is a digital negotiation. Between the
@@ -407,7 +407,7 @@ export default function Ch34HousePlugToChip() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Stage 7: <em className="italic text-accent font-normal">20 V to the chip rails</em></h2>
+      <h2 className="chapter-h2">Stage 7: <em>20 V to the chip rails</em></h2>
 
       <p className="mb-prose-3">
         Stage 7 is the longest and most layered. The 20 V DC that arrived through the USB-C
@@ -484,7 +484,7 @@ export default function Ch34HousePlugToChip() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have built</h2>
+      <h2 className="chapter-h2">What we have built</h2>
       <p className="mb-prose-3">
         Seven stages, six intermediate voltages, and every component you can name from this
         textbook. Stage 1 is four diodes from Ch.14 in the rectifier topology of Ch.24.

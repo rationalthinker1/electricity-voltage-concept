@@ -35,7 +35,7 @@ export default function Ch5Capacitors() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Hold two coins a millimeter apart and connect each to a different terminal of a battery. Charges slosh onto the metal until
         the two faces opposite the gap carry equal and opposite amounts, and the field between them matches the battery's pull.
         You have just built a <Term def="A two-terminal device that stores energy in the electric field between two conductors separated by an insulating gap (the dielectric). Defined by Q = CV.">capacitor</Term> — the simplest device in all of electronics. There are thousands of them inside the
@@ -51,7 +51,7 @@ export default function Ch5Capacitors() {
         switch-on transient in every circuit ever built.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The simplest device in all of electronics</h2>
+      <h2 className="chapter-h2">The simplest device in all of electronics</h2>
 
       <p className="mb-prose-3">
         Two plates. A gap between them. Push positive charge onto one plate by any means at hand — a battery, a friction wheel,
@@ -69,7 +69,7 @@ export default function Ch5Capacitors() {
         principle.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Building one charge at a time</h2>
+      <h2 className="chapter-h2">Building one charge at a time</h2>
 
       <p className="mb-prose-3">
         Start with two neutral plates, separated by a small gap of vacuum. Take exactly one electron from the bottom plate and
@@ -94,7 +94,7 @@ export default function Ch5Capacitors() {
         spacing of the plates and the stuff in between<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">V = Q / C</em>: a linear relationship</h2>
+      <h2 className="chapter-h2"><em>V = Q / C</em>: a linear relationship</h2>
 
       <p className="mb-prose-3">
         Alessandro Volta gave the device its first proper definition in 1782, in a paper to the Royal Society. He observed
@@ -166,7 +166,7 @@ export default function Ch5Capacitors() {
         metallised foils and you can fit a microfarad into a millimeter cube<Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Why the work to add the N<sup>th</sup> charge is q·V(N−1)</h2>
+      <h2 className="chapter-h2">Why the work to add the N<sup>th</sup> charge is q·V(N−1)</h2>
 
       <p className="mb-prose-3">
         Imagine the capacitor at some intermediate state, with charge <strong className="text-text font-medium">q</strong> already on its plates and voltage
@@ -209,7 +209,7 @@ export default function Ch5Capacitors() {
         gives the work back, and why the total energy stored is not <em className="italic text-text">QV</em> but half of <em className="italic text-text">QV</em>.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Where the energy goes</h2>
+      <h2 className="chapter-h2">Where the energy goes</h2>
 
       <p className="mb-prose-3">
         Sum the work from empty to full charge: integrate <strong className="text-text font-medium">v(q)·dq</strong> from 0 to Q, with v = q/C.
@@ -274,7 +274,7 @@ export default function Ch5Capacitors() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Charging through a resistor — the RC curve</h2>
+      <h2 className="chapter-h2">Charging through a resistor — the RC curve</h2>
 
       <p className="mb-prose-3">
         Connect a capacitor in series with a resistor R to a battery of voltage V₀, and close the switch. The result is the canonical <Term def="A capacitor and resistor in series, the simplest first-order linear circuit. Its time response is governed by the time constant τ = RC.">RC circuit</Term>. The capacitor starts
@@ -323,7 +323,7 @@ export default function Ch5Capacitors() {
         sample-and-hold circuit on Earth.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">From Leyden jars to your phone</h2>
+      <h2 className="chapter-h2">From Leyden jars to your phone</h2>
 
       <p className="mb-prose-3">
         The first capacitor — a <Term def="The first practical capacitor (1745–1746). A glass jar lined inside and outside with metal foil, the glass acting as a dielectric between two effective 'plates.' Named after Leiden, where Pieter van Musschenbroek's painful version of it was famous.">Leyden jar</Term> — was an accident. In October 1745, the German cleric Ewald Georg von Kleist tried to draw a spark
@@ -347,7 +347,7 @@ export default function Ch5Capacitors() {
         in Chapter 12.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
         A capacitor is two conductors separated by an insulator. Push charge onto one and induce an equal and opposite charge

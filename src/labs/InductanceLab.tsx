@@ -256,7 +256,7 @@ export default function InductanceLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         An inductor is the mirror of a capacitor. A capacitor stores energy in the electric field between separated charges; an inductor
         stores energy in the magnetic field around moving charges. Real inductors show up everywhere current needs to be smoothed or
@@ -270,7 +270,7 @@ export default function InductanceLab() {
         stops behaving linearly<Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>L = µ<sub>0</sub> N² A / ℓ &nbsp;&emsp; V = − L dI/dt &nbsp;&emsp; U = ½ L I²</MathBlock>
       <p className="mb-prose-3">
         <strong className="text-text font-medium">L</strong> self-inductance (henries). <strong className="text-text font-medium">µ<sub>0</sub></strong> = 4π×10⁻⁷ T·m/A, the permeability of free space<Cite id="codata-2018" in={SOURCES} />.
@@ -278,7 +278,7 @@ export default function InductanceLab() {
         <strong className="text-text font-medium">V</strong> the induced back-EMF when current changes at rate <strong className="text-text font-medium">dI/dt</strong>. <strong className="text-text font-medium">U</strong> stored energy at current I.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         An inductor is a flywheel for electricity. Once a current is flowing through it, the magnetic field surrounding the windings carries
         real, measurable energy — joules per cubic meter of field volume — and that energy can't disappear instantly when you try to interrupt
@@ -290,7 +290,7 @@ export default function InductanceLab() {
         An inductor is a flywheel for electricity. It hates the <em className="italic text-text">new</em> current. It loves the current you already gave it.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Why <strong className="text-text font-medium">N²</strong>, not just N? Doubling the turns does two things: it doubles the magnetic field (B = µ<sub>0</sub>nI scales
         linearly with turn density), and it doubles the number of loops that link that field. The product is N². This quadratic dependence
@@ -305,7 +305,7 @@ export default function InductanceLab() {
         saturation.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         Step one — the field inside. Apply Ampère's law to a rectangular loop straddling the side of an idealized infinite solenoid: one
         leg inside parallel to the axis, one leg outside (where B = 0 for an ideal solenoid), and two short cross-pieces. Only the inside
@@ -332,7 +332,7 @@ export default function InductanceLab() {
         interior volume Aℓ recovers ½LI² exactly. The windings don't store the energy — the magnetic field inside them does<Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 4.2.1"

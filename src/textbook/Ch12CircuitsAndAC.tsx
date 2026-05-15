@@ -32,7 +32,7 @@ export default function Ch12CircuitsAndAC() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         We have spent nine chapters insisting that electricity is a story about <em className="italic text-text">fields</em>:
         E and B filling space, energy flowing through the Poynting vector, signals propagating at c,
         a current-carrying wire is just a relativistically-disguised pile of charge. All of that is
@@ -46,7 +46,7 @@ export default function Ch12CircuitsAndAC() {
         idealizations in physics — and this chapter is about when it's allowed, and what it gives you.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">From <em className="italic text-accent font-normal">fields</em> to schematics</h2>
+      <h2 className="chapter-h2">From <em>fields</em> to schematics</h2>
 
       <p className="mb-prose-3">
         Picture a 1-metre wire connecting a 9-V battery to a small bulb. Chapter 6 tells you
@@ -84,7 +84,7 @@ export default function Ch12CircuitsAndAC() {
         of those two conservation laws and the constitutive relations of three components.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Kirchhoff's <em className="italic text-accent font-normal">two laws</em></h2>
+      <h2 className="chapter-h2">Kirchhoff's <em>two laws</em></h2>
 
       <p className="mb-prose-3">
         Gustav Kirchhoff, then a 21-year-old student at Königsberg, published the two laws in
@@ -128,7 +128,7 @@ export default function Ch12CircuitsAndAC() {
         conservation laws of the underlying field theory.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Voltage <em className="italic text-accent font-normal">dividers</em> and loading</h2>
+      <h2 className="chapter-h2">Voltage <em>dividers</em> and loading</h2>
 
       <p className="mb-prose-3">
         The simplest non-trivial circuit is two resistors in series across a voltage source, with
@@ -188,7 +188,7 @@ export default function Ch12CircuitsAndAC() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What the <em className="italic text-accent font-normal">multimeter</em> actually reads</h2>
+      <h2 className="chapter-h2">What the <em>multimeter</em> actually reads</h2>
 
       <p className="mb-prose-3">
         Every claim in the previous section is something a multimeter on a bench can check. A
@@ -241,7 +241,7 @@ export default function Ch12CircuitsAndAC() {
         by hand. The schematic is doing real predictive work.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The <em className="italic text-accent font-normal">RC</em> time constant</h2>
+      <h2 className="chapter-h2">The <em>RC</em> time constant</h2>
 
       <p className="mb-prose-3">
         Add a capacitor to the mix and the circuit acquires memory. A capacitor stores charge in
@@ -328,7 +328,7 @@ export default function Ch12CircuitsAndAC() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">LC</em> oscillation — the electrical pendulum</h2>
+      <h2 className="chapter-h2"><em>LC</em> oscillation — the electrical pendulum</h2>
 
       <p className="mb-prose-3">
         Replace the resistor with an inductor and the circuit's character changes completely. A
@@ -413,7 +413,7 @@ export default function Ch12CircuitsAndAC() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">RLC</em> and resonance</h2>
+      <h2 className="chapter-h2"><em>RLC</em> and resonance</h2>
 
       <p className="mb-prose-3">
         Now add back the resistor and drive the network with a sinusoidal source V(t) = V₀ cos(ωt).
@@ -508,7 +508,7 @@ export default function Ch12CircuitsAndAC() {
         every quartz watch, every MRI coil, every cell tower.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Impedance</em> — AC's complex resistance</h2>
+      <h2 className="chapter-h2"><em>Impedance</em> — AC's complex resistance</h2>
 
       <p className="mb-prose-3">
         Beautiful as the previous section is, you do not want to solve a second-order ODE every
@@ -597,7 +597,7 @@ export default function Ch12CircuitsAndAC() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">AC <em className="italic text-accent font-normal">power</em> — and why the grid is three-phase</h2>
+      <h2 className="chapter-h2">AC <em>power</em> — and why the grid is three-phase</h2>
 
       <p className="mb-prose-3">
         Multiply V(t) = V<sub>p</sub> cos(ωt) by I(t) = I<sub>p</sub> cos(ωt − φ) and average
@@ -733,7 +733,7 @@ export default function Ch12CircuitsAndAC() {
         three vectors at 120° agreeing to add to zero.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Thévenin</em> and Norton equivalents</h2>
+      <h2 className="chapter-h2"><em>Thévenin</em> and Norton equivalents</h2>
 
       <p className="mb-prose-3">
         The single most useful trick in circuit analysis: any linear two-terminal network — no
@@ -809,7 +809,7 @@ export default function Ch12CircuitsAndAC() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
       <p className="mb-prose-3">
         At wavelengths much larger than the circuit, Maxwell's equations compress to Kirchhoff's
         two laws plus three constitutive relations: V = IR for resistors, V = (1/C) ∫I dt for

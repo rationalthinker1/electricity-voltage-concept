@@ -306,7 +306,7 @@ export default function JouleLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         Joule heating — also called ohmic or resistive dissipation — is the conversion of electrical energy into thermal energy as current
         flows through a resistor. The same physics powers space heaters, toaster ribbons, incandescent filaments, fuses, motor I²R losses,
@@ -319,7 +319,7 @@ export default function JouleLab() {
         dissipate energy<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>P = V I = I² R = V² / R</MathBlock>
       <p className="mb-prose-3">
         Where <strong className="text-text font-medium">P</strong> is power in watts (W), <strong className="text-text font-medium">V</strong> is the voltage across the resistor in volts (V),
@@ -328,7 +328,7 @@ export default function JouleLab() {
         (1 kWh = 3.6×10⁶ J). The microscopic version is <strong className="text-text font-medium">p<sub>v</sub> = J · E = σE²</strong> (power per unit volume, W/m³).
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         Move one coulomb of charge across a voltage drop of <em className="italic text-text">V</em> volts and you've delivered <em className="italic text-text">V</em> joules of electrical energy. Move
         one coulomb per second — that's an ampere — and you've delivered <em className="italic text-text">V</em> joules per second, i.e. <em className="italic text-text">V</em> watts. Power is simply
@@ -340,7 +340,7 @@ export default function JouleLab() {
         The wire doesn't store the energy. The wire intercepts it.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Why three equivalent forms? Because two of three variables (V, I, R) fully determine the third by Ohm's law, so any algebraic
         combination can be re-expressed in terms of any pair. P = VI is the most fundamental: it follows from the <em className="italic text-text">definition</em> of
@@ -358,7 +358,7 @@ export default function JouleLab() {
         resistor can't<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         <em className="italic text-text">Macroscopic, from definitions.</em> Work to move charge dq across a potential difference V is dW = V dq. Differentiate with
         respect to time:
@@ -388,7 +388,7 @@ export default function JouleLab() {
         energy-bookkeeping loop, not the depletion of any reservoir inside the wire.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 3.4.1"

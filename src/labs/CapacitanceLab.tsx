@@ -279,7 +279,7 @@ export default function CapacitanceLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         A capacitor is two conductors separated by an insulator. Push charge onto one, pull an equal charge off the other, and a voltage
         builds across the gap. The thing that makes a capacitor a <em className="italic text-text">capacitor</em> is that this voltage is exactly proportional to
@@ -294,7 +294,7 @@ export default function CapacitanceLab() {
         Above that, the gap arcs and the capacitor is no longer a capacitor.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>C = ε<sub>0</sub> ε<sub>r</sub> A / d &nbsp;&emsp; Q = C V &nbsp;&emsp; U = ½ C V² = Q² / (2C)</MathBlock>
       <p className="mb-prose-3">
         <strong className="text-text font-medium">C</strong> capacitance (farads). <strong className="text-text font-medium">ε<sub>0</sub></strong> = 8.854×10⁻¹² F/m, the permittivity of free space<Cite id="codata-2018" in={SOURCES} />.
@@ -303,7 +303,7 @@ export default function CapacitanceLab() {
         between the plates. <strong className="text-text font-medium">U</strong> stored energy.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         A capacitor doesn't store charge. The plates always have <em className="italic text-text">+Q on one and −Q on the other</em>, the total being zero. What's stored
         is the <em className="italic text-text">separation</em>, and the electric field that fills the gap because of it. Bigger plates hold more separated charge before
@@ -315,7 +315,7 @@ export default function CapacitanceLab() {
         A capacitor doesn't store charge. It stores the <em className="italic text-text">separation</em> — and the field that fills the space because of it.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Why <strong className="text-text font-medium">A</strong> on top, <strong className="text-text font-medium">d</strong> on the bottom, and ε<sub>r</sub> multiplying? <strong className="text-text font-medium">A</strong> on top because
         capacitance scales with how many parallel "slots" the plates offer. <strong className="text-text font-medium">d</strong> on the bottom because a wider gap means a larger
@@ -329,7 +329,7 @@ export default function CapacitanceLab() {
         dominates electrolytic and ceramic designs.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         Step one — the field. Take a Gaussian pillbox straddling the inner face of the top plate. The flux through its top is zero (E = 0 inside
         a conductor at equilibrium); the flux through its bottom is E·A pointing down into the gap. Gauss's law equates that to
@@ -358,7 +358,7 @@ export default function CapacitanceLab() {
         by the gap volume Ad recovers ½CV² exactly. The plates don't hold the energy — the field in the gap does<Cite id="feynman-II-2" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 4.1.1"

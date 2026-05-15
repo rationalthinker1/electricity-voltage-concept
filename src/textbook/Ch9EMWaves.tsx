@@ -34,7 +34,7 @@ export default function Ch9EMWaves() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Chapter&nbsp;6 left us with an unsettling picture. Energy doesn't ride down the wire; it flows through the empty space
         beside the wire, the field carrying it, the copper just absorbing it where it ends. Now take a pair of scissors to the
         last part. <em className="italic text-text">Remove the wire.</em> What stops? Nothing, it turns out. The field still carries energy. The flow just
@@ -49,7 +49,7 @@ export default function Ch9EMWaves() {
         This chapter is what it looks like once it gets to leave the wire behind.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Strip the <em className="italic text-accent font-normal">wire</em></h2>
+      <h2 className="chapter-h2">Strip the <em>wire</em></h2>
 
       <p className="mb-prose-3">
         Ch.6's punchline was that energy travels through the space around a conductor as
@@ -77,7 +77,7 @@ export default function Ch9EMWaves() {
         boundary has to balance. The way nature solves that constraint is to let the field propagate outward.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Maxwell's 1865 <em className="italic text-accent font-normal">prediction</em></h2>
+      <h2 className="chapter-h2">Maxwell's 1865 <em>prediction</em></h2>
 
       <p className="mb-prose-3">
         Chapter&nbsp;8 will collect Maxwell's four equations cleanly on one page. For now we only need two of them, and
@@ -150,7 +150,7 @@ export default function Ch9EMWaves() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What the wave <em className="italic text-accent font-normal">looks like</em></h2>
+      <h2 className="chapter-h2">What the wave <em>looks like</em></h2>
 
       <p className="mb-prose-3">
         The plane-wave solution to ∇²E = (1/c²) ∂²E/∂t² is the simplest possible thing: a sinusoidal disturbance
@@ -223,7 +223,7 @@ export default function Ch9EMWaves() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Polarization</em></h2>
+      <h2 className="chapter-h2"><em>Polarization</em></h2>
 
       <p className="mb-prose-3">
         Once you know <strong className="text-text font-medium">E</strong> is transverse to the propagation direction, the next question is which
@@ -248,7 +248,7 @@ export default function Ch9EMWaves() {
         A wave is what a field does when it has nowhere to go and nothing to push on.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Radiation</em>: where waves come from</h2>
+      <h2 className="chapter-h2"><em>Radiation</em>: where waves come from</h2>
 
       <p className="mb-prose-3">
         A static charge does not radiate — its field is the static Coulomb field, dropping off as 1/r², no waves.
@@ -307,7 +307,7 @@ export default function Ch9EMWaves() {
 
       <WireToAntennaTransition3DDemo />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Energy and <em className="italic text-accent font-normal">momentum</em> in a wave</h2>
+      <h2 className="chapter-h2">Energy and <em>momentum</em> in a wave</h2>
 
       <p className="mb-prose-3">
         The Poynting expression from Ch.6 still applies, with <strong className="text-text font-medium">E</strong> and <strong className="text-text font-medium">B</strong> now the
@@ -385,7 +385,7 @@ export default function Ch9EMWaves() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The <em className="italic text-accent font-normal">spectrum</em></h2>
+      <h2 className="chapter-h2">The <em>spectrum</em></h2>
 
       <p className="mb-prose-3">
         One wave equation, one speed, one structure: all of it is the same physics, distinguished only by wavelength. The

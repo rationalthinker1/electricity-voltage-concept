@@ -29,7 +29,7 @@ export default function Ch13NetworkAnalysis() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Picture a strain gauge bonded to the wing spar of a small aircraft. The gauge
         is one of four resistors in a Wheatstone bridge: deflect the wing by a
         millimetre, the gauge's resistance shifts by a few milliohms, and a tiny
@@ -59,7 +59,7 @@ export default function Ch13NetworkAnalysis() {
         writers who taught the rest of us<Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} /><Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Why <em className="italic text-accent font-normal">Kirchhoff</em> isn't enough on its own</h2>
+      <h2 className="chapter-h2">Why <em>Kirchhoff</em> isn't enough on its own</h2>
 
       <p className="mb-prose-3">
         Consider a network of <InlineMath>B</InlineMath>{' '}
@@ -139,7 +139,7 @@ export default function Ch13NetworkAnalysis() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Mesh-current</em> analysis (Maxwell, 1873)</h2>
+      <h2 className="chapter-h2"><em>Mesh-current</em> analysis (Maxwell, 1873)</h2>
 
       <p className="mb-prose-3">
         Maxwell, in his 1873 <em className="italic text-text">Treatise on Electricity and Magnetism</em>, introduced
@@ -240,7 +240,7 @@ export default function Ch13NetworkAnalysis() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Nodal</em> analysis — the dual view</h2>
+      <h2 className="chapter-h2"><em>Nodal</em> analysis — the dual view</h2>
 
       <p className="mb-prose-3">
         Nodal analysis flips the conceptual axis. Instead of loop currents, pick a
@@ -326,7 +326,7 @@ export default function Ch13NetworkAnalysis() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Superposition</em> — one source at a time</h2>
+      <h2 className="chapter-h2"><em>Superposition</em> — one source at a time</h2>
 
       <p className="mb-prose-3">
         In any linear network driven by several independent sources,{' '}
@@ -404,7 +404,7 @@ export default function Ch13NetworkAnalysis() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Norton's</em> theorem — the current-source twin</h2>
+      <h2 className="chapter-h2"><em>Norton's</em> theorem — the current-source twin</h2>
 
       <p className="mb-prose-3">
         Thévenin's theorem (Ch.12) compresses any linear two-terminal network to a
@@ -529,7 +529,7 @@ export default function Ch13NetworkAnalysis() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Y-Δ</em> transformations (Kennelly, 1899)</h2>
+      <h2 className="chapter-h2"><em>Y-Δ</em> transformations (Kennelly, 1899)</h2>
 
       <p className="mb-prose-3">
         Some networks resist every attempt at series-parallel reduction. The
@@ -646,7 +646,7 @@ export default function Ch13NetworkAnalysis() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Maximum</em> power transfer</h2>
+      <h2 className="chapter-h2"><em>Maximum</em> power transfer</h2>
 
       <p className="mb-prose-3">
         Once any source has been compressed to its Thévenin form (V<sub>Th</sub>,
@@ -792,7 +792,7 @@ export default function Ch13NetworkAnalysis() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What this chapter buys you</h2>
+      <h2 className="chapter-h2">What this chapter buys you</h2>
       <p className="mb-prose-3">
         Mesh and nodal analyses turn Kirchhoff's raw two-law statement into a
         procedural recipe whose output is a small linear system. Superposition

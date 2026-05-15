@@ -261,7 +261,7 @@ export default function ResistanceLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         Every wire has a resistance. The microscopic law <strong className="text-text font-medium">J = σE</strong> is local — it tells you the current density at a single point.
         But circuits are built from finite, shaped pieces of conductor, and an engineer needs a single number characterizing each piece. That
@@ -273,7 +273,7 @@ export default function ResistanceLab() {
         target<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>R = ρ L / A</MathBlock>
       <p className="mb-prose-3">
         Where <strong className="text-text font-medium">R</strong> is resistance in ohms (Ω), <strong className="text-text font-medium">ρ</strong> is the bulk resistivity of the material in Ω·m,
@@ -282,7 +282,7 @@ export default function ResistanceLab() {
         in siemens (S).
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         Resistance is the rendezvous of material and shape. Material brings how slick the medium is (σ, ρ). Geometry brings how many obstacles
         sit in series (L) and how many parallel lanes are available (A). The asymmetry between length and area is the whole reason wires are
@@ -293,7 +293,7 @@ export default function ResistanceLab() {
         Resistance is what conductivity looks like after geometry has had its say.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Why does <strong className="text-text font-medium">L</strong> sit on top? Length is the path the field drives charges over. Double the length and every coulomb travels
         twice as far under the same per-unit-length drag. For a fixed current, that means twice the voltage to push them through — R doubles.
@@ -310,7 +310,7 @@ export default function ResistanceLab() {
         laws<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         Start with a uniform wire of length L, cross-section A, with a battery of voltage V at the ends. In steady state, surface charges
         redistribute so the field inside is uniform and axial:
@@ -340,7 +340,7 @@ export default function ResistanceLab() {
         of the tidiest experimental distinctions between a metal and an insulator<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <p className="mb-prose-3">
         Reference numbers (CRC, room-temperature)<Cite id="crc-resistivity" in={SOURCES} />: ρ<sub>Cu</sub> ≈ 1.68×10⁻⁸ Ω·m,

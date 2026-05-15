@@ -79,7 +79,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: '1.3', slug: 'gauss', chapter: 'ch1',
     title: "Gauss's Law",
-    formula: (<>∮ E · dA = Q<sub className="text-[.58em] leading-none align-[-.32em]">enc</sub> / ε₀</>),
+    formula: (<>∮ E · dA = Q<sub>enc</sub> / ε₀</>),
     blurb: 'Wrap any imaginary surface around any charge. Total flux equals charge inside, divided by ε₀.',
     heroLabel: "Chapter 1 · Lab 1.3 — Gauss's Law",
     heroHeadline: (<>Total flux pays the <em className="italic font-normal text-accent">enclosed charge</em>, nothing else.</>),
@@ -88,7 +88,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: '1.4', slug: 'potential', chapter: 'ch1',
     title: 'Potential Difference',
-    formula: (<>V<sub className="text-[.58em] leading-none align-[-.32em]">ab</sub> = −∫<sub className="text-[.58em] leading-none align-[-.32em]">a</sub><sup className="text-[.58em] leading-none align-[.5em]">b</sup> E · dℓ</>),
+    formula: (<>V<sub>ab</sub> = −∫<sub>a</sub><sup>b</sup> E · dℓ</>),
     blurb: 'Voltage is a line integral. A property of the path between two points in a field.',
     heroLabel: 'Chapter 1 · Lab 1.4 — Potential Difference',
     heroHeadline: (<>Voltage is the work you'd do to <em className="italic font-normal text-accent">move a charge</em>.</>),
@@ -108,7 +108,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: '2.2', slug: 'ampere', chapter: 'ch2',
     title: "Ampère's Law",
-    formula: (<>∮ B · dℓ = μ₀ I<sub className="text-[.58em] leading-none align-[-.32em]">enc</sub></>),
+    formula: (<>∮ B · dℓ = μ₀ I<sub>enc</sub></>),
     blurb: 'The magnetic analog of Gauss. Symmetry collapses the integral.',
     heroLabel: "Chapter 2 · Lab 2.2 — Ampère's Law",
     heroHeadline: (<><em className="italic font-normal text-accent">Symmetry</em> hands you the field for free.</>),
@@ -126,7 +126,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: '2.4', slug: 'faraday', chapter: 'ch2',
     title: "Faraday's Law",
-    formula: (<>EMF = − dΦ<sub className="text-[.58em] leading-none align-[-.32em]">B</sub> / dt</>),
+    formula: (<>EMF = − dΦ<sub>B</sub> / dt</>),
     blurb: 'Changing flux conjures voltage. The basis of every generator and transformer.',
     heroLabel: "Chapter 2 · Lab 2.4 — Faraday's Law",
     heroHeadline: (<>Changing field <em className="italic font-normal text-accent">conjures</em> voltage.</>),
@@ -155,7 +155,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: '3.3', slug: 'drift', chapter: 'ch3',
     title: 'Drift Velocity',
-    formula: (<>v<sub className="text-[.58em] leading-none align-[-.32em]">d</sub> = I / (n q A)</>),
+    formula: (<>v<sub>d</sub> = I / (n q A)</>),
     blurb: 'Electrons crawl while the signal flies. The arithmetic forces drift to be tiny.',
     heroLabel: 'Chapter 3 · Lab 3.3 — Drift Velocity',
     heroHeadline: (<>Electrons move at the pace of a <em className="italic font-normal text-accent">glacier</em>.</>),
@@ -231,7 +231,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: 'A.3', slug: 'motor-drive', chapter: 'ch2',
     title: 'Motor + Drive Sandbox',
-    formula: (<>V<sub className="text-[.58em] leading-none align-[-.32em]">dq</sub> = R i<sub className="text-[.58em] leading-none align-[-.32em]">dq</sub> + L di<sub className="text-[.58em] leading-none align-[-.32em]">dq</sub>/dt + ω L i<sub className="text-[.58em] leading-none align-[-.32em]">dq</sub> + ω ψ</>),
+    formula: (<>V<sub>dq</sub> = R i<sub>dq</sub> + L di<sub>dq</sub>/dt + ω L i<sub>dq</sub> + ω ψ</>),
     blurb: 'Pick a motor, pick a controller, pick a load profile. The sandbox simulates the full electro-mechanical loop: phase currents, torque, speed, efficiency map.',
     heroLabel: 'Appendix · Lab A.3 — Motor + Drive Sandbox',
     heroHeadline: (<>Drive a <em className="italic font-normal text-accent">motor</em>.</>),
@@ -240,7 +240,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: 'A.4', slug: 'ev-bench', chapter: 'ch4',
     title: 'EV / Battery / Charger Bench',
-    formula: (<>P<sub className="text-[.58em] leading-none align-[-.32em]">wheel</sub> = P<sub className="text-[.58em] leading-none align-[-.32em]">battery</sub> × η<sub className="text-[.58em] leading-none align-[-.32em]">inv</sub> × η<sub className="text-[.58em] leading-none align-[-.32em]">motor</sub> × η<sub className="text-[.58em] leading-none align-[-.32em]">gearbox</sub></>),
+    formula: (<>P<sub>wheel</sub> = P<sub>battery</sub> × η<sub>inv</sub> × η<sub>motor</sub> × η<sub>gearbox</sub></>),
     blurb: 'A complete EV powertrain. Battery pack, BMS, onboard charger, EVSE, inverter, traction motor. Pick a drive cycle and watch state-of-charge, temperature, regen, range.',
     heroLabel: 'Appendix · Lab A.4 — EV Bench',
     heroHeadline: (<>Power an <em className="italic font-normal text-accent">EV</em>.</>),
@@ -249,7 +249,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: 'A.5', slug: 'power-grid', chapter: 'ch4',
     title: 'Power Grid Simulator',
-    formula: (<>P<sub className="text-[.58em] leading-none align-[-.32em]">loss</sub> = I² R · n<sub className="text-[.58em] leading-none align-[-.32em]">lines</sub> + Σ generator droop</>),
+    formula: (<>P<sub>loss</sub> = I² R · n<sub>lines</sub> + Σ generator droop</>),
     blurb: 'Build a whole grid: generators, transmission lines, transformers, loads. Trip a generator and watch system frequency dip; add storage and watch it ride through.',
     heroLabel: 'Appendix · Lab A.5 — Power Grid Simulator',
     heroHeadline: (<>Run a <em className="italic font-normal text-accent">grid</em>.</>),
@@ -258,7 +258,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: 'A.6', slug: 'rf-link', chapter: 'ch4',
     title: 'RF Link / Antenna Matching',
-    formula: (<>Γ = (Z<sub className="text-[.58em] leading-none align-[-.32em]">ant</sub> − Z₀) / (Z<sub className="text-[.58em] leading-none align-[-.32em]">ant</sub> + Z₀)</>),
+    formula: (<>Γ = (Z<sub>ant</sub> − Z₀) / (Z<sub>ant</sub> + Z₀)</>),
     blurb: 'Build a complete radio hop: transmitter, coax, matching reactance, antenna gain, path loss, and received power.',
     heroLabel: 'Appendix · Lab A.6 — RF Link',
     heroHeadline: (<>Match an <em className="italic font-normal text-accent">antenna</em>.</>),
@@ -267,7 +267,7 @@ export const MANIFEST: LabManifestEntry[] = [
   {
     number: 'A.7', slug: 'power-supply', chapter: 'ch4',
     title: 'Power Supply Designer',
-    formula: (<>ΔV ≈ I<sub className="text-[.58em] leading-none align-[-.32em]">load</sub> / (f<sub className="text-[.58em] leading-none align-[-.32em]">ripple</sub> C)</>),
+    formula: (<>ΔV ≈ I<sub>load</sub> / (f<sub>ripple</sub> C)</>),
     blurb: 'Design the transformer, rectifier, smoothing capacitor, regulator, and load for a practical AC-to-DC supply.',
     heroLabel: 'Appendix · Lab A.7 — Power Supply Designer',
     heroHeadline: (<>Build a <em className="italic font-normal text-accent">DC rail</em>.</>),

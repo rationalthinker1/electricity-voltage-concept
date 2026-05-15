@@ -34,7 +34,7 @@ export default function Ch31HouseBigLoads() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Open the door of the laundry-room cabinet on a recently-built house and the receptacle behind the dryer
         has four prongs, not three: two angled blades for L1 and L2, a straight blade for the neutral, and a
         round pin for ground. Walk a few metres across the basement to the workshop and the baseboard heater
@@ -54,7 +54,7 @@ export default function Ch31HouseBigLoads() {
         building, and it is the through-line of this chapter.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Why 240 V at all</h2>
+      <h2 className="chapter-h2">Why 240 V at all</h2>
 
       <p className="mb-prose-3">
         Chapter 27 derived the split-phase secondary and Chapter 29 sized 14, 12, and 10 AWG branch wiring for
@@ -128,7 +128,7 @@ export default function Ch31HouseBigLoads() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">L1 and L2 — same source, opposite phase</h2>
+      <h2 className="chapter-h2">L1 and L2 — same source, opposite phase</h2>
 
       <p className="mb-prose-3">
         The two hot conductors arriving at the main panel are not two separate phases. They are the two ends of
@@ -171,7 +171,7 @@ export default function Ch31HouseBigLoads() {
         Ohm's law<Cite id="nec-2023" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Pure 240 V loads (no neutral)</h2>
+      <h2 className="chapter-h2">Pure 240 V loads (no neutral)</h2>
 
       <p className="mb-prose-3">
         A resistive heating element does not care about which hot is which. Connect it between L1 and L2 and
@@ -206,7 +206,7 @@ export default function Ch31HouseBigLoads() {
         the ground bar in the panel just like every other ground wire in the building.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">120/240 V split loads (with neutral)</h2>
+      <h2 className="chapter-h2">120/240 V split loads (with neutral)</h2>
 
       <p className="mb-prose-3">
         Most modern major appliances are not pure-resistive. They have a heating element that lives between L1
@@ -289,7 +289,7 @@ export default function Ch31HouseBigLoads() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The heat pump</h2>
+      <h2 className="chapter-h2">The heat pump</h2>
 
       <p className="mb-prose-3">
         The biggest mechanical load in most new houses is no longer the dryer or the range — it is the heat
@@ -385,7 +385,7 @@ export default function Ch31HouseBigLoads() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">EV charging — level 1, level 2, level 3</h2>
+      <h2 className="chapter-h2">EV charging — level 1, level 2, level 3</h2>
 
       <p className="mb-prose-3">
         Electric-vehicle charging is the residential big-load story of the last decade, and it is the one place
@@ -395,7 +395,7 @@ export default function Ch31HouseBigLoads() {
         between the vehicle and the building<Cite id="sae-j1772" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Level 1: 120 V from a standard outlet</h3>
+      <h3 className="chapter-h3">Level 1: 120 V from a standard outlet</h3>
 
       <p className="mb-prose-3">
         The slowest tier and the universal fallback. A{' '}
@@ -408,7 +408,7 @@ export default function Ch31HouseBigLoads() {
         The cordset is provided with the car; no permanent installation is needed.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Level 2: 240 V dedicated branch</h3>
+      <h3 className="chapter-h3">Level 2: 240 V dedicated branch</h3>
 
       <p className="mb-prose-3">
         The standard residential installation. A{' '}
@@ -461,7 +461,7 @@ export default function Ch31HouseBigLoads() {
         cooling loop.
       </p>
 
-      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Level 3: DC fast charging</h3>
+      <h3 className="chapter-h3">Level 3: DC fast charging</h3>
 
       <p className="mb-prose-3">
         The level-3 tier is not residential and is mentioned here only because the receptacle and the connector
@@ -517,7 +517,7 @@ export default function Ch31HouseBigLoads() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Demand-load calculations and panel sizing</h2>
+      <h2 className="chapter-h2">Demand-load calculations and panel sizing</h2>
 
       <p className="mb-prose-3">
         Add a new heat pump or a new EV charger to an existing house and the question is whether the existing
@@ -582,7 +582,7 @@ export default function Ch31HouseBigLoads() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Putting it together</h2>
+      <h2 className="chapter-h2">Putting it together</h2>
 
       <p className="mb-prose-3">
         The chapter's argument in three sentences. Every appliance in the house that pulls more than a couple

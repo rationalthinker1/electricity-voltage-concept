@@ -445,7 +445,7 @@ export default function MotorDriveLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">What this bench wires together</h3>
+      <h3 className="lab-section-h3">What this bench wires together</h3>
       <p className="mb-prose-3">
         Four chapters meet in this lab. The MOSFETs and IGBTs of <strong className="text-text font-medium">Chapter 14</strong> are the
         switches in the three-phase inverter; <strong className="text-text font-medium">Chapter 16</strong> contributes the cascaded
@@ -464,7 +464,7 @@ export default function MotorDriveLab() {
         equivalent models so the dropdown still tells a coherent story end-to-end<Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">The FOC reading flow, in one paragraph</h3>
+      <h3 className="lab-section-h3">The FOC reading flow, in one paragraph</h3>
       <p className="mb-prose-3">
         A PMSM has three stator phases <em className="italic text-text">a, b, c</em> wound 120° apart in space. Apply a balanced
         three-phase voltage and a field rotates around the rotor. Measure two of the three phase
@@ -491,7 +491,7 @@ export default function MotorDriveLab() {
         other <em className="italic text-text">is</em> the torque.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">The torque-speed envelope, and why it has two regions</h3>
+      <h3 className="lab-section-h3">The torque-speed envelope, and why it has two regions</h3>
       <p className="mb-prose-3">
         Every motor has a curve in the τ-ω plane it cannot leave. Below <em className="italic text-text">base speed</em>{' '}
         <em className="italic text-text">ω_b</em> the limit is thermal: the windings can sustain a continuous current of <em className="italic text-text">I_rated</em>,
@@ -507,7 +507,7 @@ export default function MotorDriveLab() {
         the voltage limit set by the chosen <em className="italic text-text">V_dc</em><Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">The efficiency map</h3>
+      <h3 className="lab-section-h3">The efficiency map</h3>
       <p className="mb-prose-3">
         The η heatmap is a quick analytic estimate, not a re-run of the simulation across the grid.
         For each <em className="italic text-text">(τ, ω)</em> cell, we estimate the dominant loss mechanisms — copper loss <em className="italic text-text">1.5
@@ -519,7 +519,7 @@ export default function MotorDriveLab() {
         The white circle is the bench's current operating point<Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reading the phase-current scope</h3>
+      <h3 className="lab-section-h3">Reading the phase-current scope</h3>
       <p className="mb-prose-3">
         At a steady operating point on a PMSM-FOC drive, the three phase currents are sinusoids 120°
         apart in time, with frequency equal to <em className="italic text-text">p_p · ω_m / (2π)</em> Hz (the electrical
@@ -530,7 +530,7 @@ export default function MotorDriveLab() {
         ragged or non-sinusoidal, the current loop is undertuned.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Five problems to try in the sandbox</h3>
+      <h3 className="lab-section-h3">Five problems to try in the sandbox</h3>
       <ol>
         <li>
           <strong className="text-text font-medium">Tune the PMSM current loop to settle a torque step under 5 ms.</strong> Start from
@@ -568,7 +568,7 @@ export default function MotorDriveLab() {
         </li>
       </ol>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Why this bench is the most demanding integration in the textbook</h3>
+      <h3 className="lab-section-h3">Why this bench is the most demanding integration in the textbook</h3>
       <p className="mb-prose-3">
         Every chapter you've already read shows up here. The semiconductor switches throttle the bus
         (Ch.14). The PI compensators close the same kind of loops as Ch.16's op-amp circuits. The

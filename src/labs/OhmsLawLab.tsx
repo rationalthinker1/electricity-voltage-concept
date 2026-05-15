@@ -249,7 +249,7 @@ export default function OhmsLawLab() {
 
   const prose = (
     <>
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
         Ohm's law — <strong className="text-text font-medium">V = IR</strong> — is the working equation of every battery-powered circuit, every wall outlet, every signal-carrying
         trace on every circuit board. Connect a real piece of conductor to a real voltage source, and the steady-state current that flows is
@@ -260,7 +260,7 @@ export default function OhmsLawLab() {
         timescales where the Drude scattering time itself becomes resolvable<Cite id="drude-1900" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
+      <h3 className="lab-section-h3">Formula</h3>
       <MathBlock>V = I R</MathBlock>
       <p className="mb-prose-3">
         Where <strong className="text-text font-medium">V</strong> is the voltage across a conductor in volts (V), <strong className="text-text font-medium">I</strong> is the current through it in amperes (A), and
@@ -270,7 +270,7 @@ export default function OhmsLawLab() {
         <strong className="text-text font-medium"> A</strong>.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
         Picture a sled being pushed across snow. Push harder and it goes faster — but it doesn't keep accelerating forever, because friction
         bleeds off the gain. After a short startup the sled settles at a steady speed proportional to the push. The push is the electric field.
@@ -282,7 +282,7 @@ export default function OhmsLawLab() {
         how many free charges there are, how heavy they are, how often they crash.
       </Pullout>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
         Why <em className="italic text-text">linear</em>? Because the steady-state drift velocity is set by a balance between two terms each linear in <strong className="text-text font-medium">E</strong>:
         the acceleration <strong className="text-text font-medium">qE/m</strong> over the mean time between collisions <strong className="text-text font-medium">τ</strong>. Double <strong className="text-text font-medium">E</strong> and you double
@@ -295,7 +295,7 @@ export default function OhmsLawLab() {
         per carrier), <em className="italic text-text">τ</em> (mean free time), and <em className="italic text-text">m</em> (effective mass) into one number<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
         Apply a voltage <strong className="text-text font-medium">V</strong> across a wire of length <strong className="text-text font-medium">L</strong>. In steady state surface charges redistribute to make the
         field inside roughly uniform along the axis:
@@ -331,7 +331,7 @@ export default function OhmsLawLab() {
         glow<Cite id="crc-resistivity" in={SOURCES} /> and why nichrome ribbons are the entire product of a toaster<Cite id="kanthal" in={SOURCES} />.
       </p>
 
-      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
+      <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 3.1.1"

@@ -32,7 +32,7 @@ export default function Ch3ResistanceAndPower() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Run a finger along an old incandescent bulb that's been on for a minute and you'll snatch it back. The glass is
         hot. The filament inside is closer to <strong className="text-text font-medium">2800 K</strong> — hot enough that a sliver of its blackbody spectrum spills into the
         visible and the bulb does what it was built to do. Where did all that heat come from? Not from the wall, not directly.
@@ -50,7 +50,7 @@ export default function Ch3ResistanceAndPower() {
         Drude model from Chapter 2 — and one geometric integral.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What <em className="italic text-accent font-normal">resistance</em> is</h2>
+      <h2 className="chapter-h2">What <em>resistance</em> is</h2>
 
       <p className="mb-prose-3">
         The microscopic{' '}
@@ -82,7 +82,7 @@ export default function Ch3ResistanceAndPower() {
         depends on the geometry (through L and A), and that combination is the entire content of the rest of the chapter<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Length adds, area divides</h2>
+      <h2 className="chapter-h2">Length adds, area divides</h2>
 
       <p className="mb-prose-3">
         Take a uniform wire of length <strong className="text-text font-medium">L</strong> and cross-section <strong className="text-text font-medium">A</strong>, with a voltage <strong className="text-text font-medium">V</strong>
@@ -131,7 +131,7 @@ export default function Ch3ResistanceAndPower() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Material is destiny</h2>
+      <h2 className="chapter-h2">Material is destiny</h2>
 
       <p className="mb-prose-3">
         Geometry is half the story. The other half is the prefactor — the resistivity ρ of whatever the wire is made of —
@@ -167,7 +167,7 @@ export default function Ch3ResistanceAndPower() {
         in this chapter is anywhere near as sensitive to a single design choice.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Where the heat comes from</h2>
+      <h2 className="chapter-h2">Where the heat comes from</h2>
 
       <p className="mb-prose-3">
         Drude's collision picture is what makes resistance dissipative rather than reactive. Between collisions, the
@@ -262,7 +262,7 @@ export default function Ch3ResistanceAndPower() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Series and parallel</h2>
+      <h2 className="chapter-h2">Series and parallel</h2>
 
       <p className="mb-prose-3">
         Two resistors in a circuit can be wired two ways. Put them in{' '}
@@ -313,7 +313,7 @@ export default function Ch3ResistanceAndPower() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
         Resistance is geometry times material. Geometry contributes a factor of L/A — long-and-thin resists more, short-and-fat

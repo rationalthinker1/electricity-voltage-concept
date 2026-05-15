@@ -29,7 +29,7 @@ export default function Ch19RectifiersAndInverters() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         Pick up the brick on the cord of your laptop charger. It is heavier than it has any right
         to be — a hundred grams or so of plastic and silicon, taking 120 V at 60 Hz from the wall
         and producing 20 V of clean DC at five amps. Cut it open and you find one of the most
@@ -50,7 +50,7 @@ export default function Ch19RectifiersAndInverters() {
         that makes them work is the subject of this chapter.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The <em className="italic text-accent font-normal">diode</em> — a one-way valve</h2>
+      <h2 className="chapter-h2">The <em>diode</em> — a one-way valve</h2>
 
       <p className="mb-prose-3">
         Every rectifier in the world is built around one component: the{' '}
@@ -109,7 +109,7 @@ export default function Ch19RectifiersAndInverters() {
         Every rectifier in the world is a diode and a clever idea about which way to point it.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Half-wave, full-wave, bridge</em></h2>
+      <h2 className="chapter-h2"><em>Half-wave, full-wave, bridge</em></h2>
 
       <p className="mb-prose-3">
         Put a single diode in series with an AC source and a load. On the positive half-cycle the
@@ -211,7 +211,7 @@ export default function Ch19RectifiersAndInverters() {
         Four diodes and a capacitor: the most ubiquitous circuit on Earth.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Regulating the <em className="italic text-accent font-normal">rough DC</em></h2>
+      <h2 className="chapter-h2">Regulating the <em>rough DC</em></h2>
 
       <p className="mb-prose-3">
         The output of a bridge rectifier is "DC" the way a bumpy dirt road is "flat." Its average
@@ -283,7 +283,7 @@ export default function Ch19RectifiersAndInverters() {
         chopping it.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Switch-mode</em>: buck, boost, flyback</h2>
+      <h2 className="chapter-h2"><em>Switch-mode</em>: buck, boost, flyback</h2>
 
       <p className="mb-prose-3">
         Instead of dropping the excess voltage continuously, switch it on and off. A
@@ -430,7 +430,7 @@ export default function Ch19RectifiersAndInverters() {
         {' '}— extend the same picture into ranges Shockley would have called impossible.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">DC back to AC — the <em className="italic text-accent font-normal">inverter</em></h2>
+      <h2 className="chapter-h2">DC back to AC — the <em>inverter</em></h2>
 
       <p className="mb-prose-3">
         Run the trick backwards. Take a DC source, chop it into a square wave at line frequency,
@@ -501,7 +501,7 @@ export default function Ch19RectifiersAndInverters() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Grid-tie inverters and <em className="italic text-accent font-normal">HVDC</em></h2>
+      <h2 className="chapter-h2">Grid-tie inverters and <em>HVDC</em></h2>
 
       <p className="mb-prose-3">
         A standalone inverter (a UPS, say) drives its own load and sets its own voltage. A
@@ -559,7 +559,7 @@ export default function Ch19RectifiersAndInverters() {
         other. Only the silicon is bigger.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
       <p className="mb-prose-3">
         Every diode is a one-way valve. Four of them in a bridge, plus a capacitor, give you
         cheap pulsating DC. A linear regulator turns that into clean DC by burning the excess as

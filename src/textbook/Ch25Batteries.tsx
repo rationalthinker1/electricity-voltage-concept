@@ -33,7 +33,7 @@ export default function Ch18Batteries() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
+      <p className="chapter-intro">
         In the spring of 1800, a Pavia physics professor named Alessandro Volta packed a wooden crate, paid a courier,
         and shipped to Sir Joseph Banks at the Royal Society in London a description of an apparatus he had built on
         his lab bench. A short stack of discs: zinc, brine-soaked cardboard, copper, repeat, repeat, repeat. Touch the
@@ -51,7 +51,7 @@ export default function Ch18Batteries() {
         voltage sags under load.
       </p>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Volta's pile, 1800</h2>
+      <h2 className="chapter-h2">Volta's pile, 1800</h2>
 
       <p className="mb-prose-3">
         The pile is the simplest battery anyone ever built. Take a disc of zinc, lay a piece of cardboard or felt
@@ -90,7 +90,7 @@ export default function Ch18Batteries() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The half-reaction story</h2>
+      <h2 className="chapter-h2">The half-reaction story</h2>
 
       <p className="mb-prose-3">
         Volta's contact theory was wrong: the voltage doesn't come from the metals touching each other, it comes from
@@ -123,7 +123,7 @@ export default function Ch18Batteries() {
         A battery is two chemical reactions that happen to need each other's electrons.
       </Pullout>
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The Daniell cell</h2>
+      <h2 className="chapter-h2">The Daniell cell</h2>
 
       <p className="mb-prose-3">
         Volta's pile worked but was messy. The brine evaporated. The hydrogen bubbles at the copper surface formed an
@@ -171,7 +171,7 @@ export default function Ch18Batteries() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Standard electrode potentials</h2>
+      <h2 className="chapter-h2">Standard electrode potentials</h2>
 
       <p className="mb-prose-3">
         Every half-reaction has an intrinsic "reaction tendency" that you can measure. By convention, chemists assign
@@ -218,7 +218,7 @@ export default function Ch18Batteries() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The Nernst equation</h2>
+      <h2 className="chapter-h2">The Nernst equation</h2>
 
       <p className="mb-prose-3">
         Standard electrode potentials assume "standard conditions" — every dissolved species at 1 mol/L concentration,
@@ -292,7 +292,7 @@ export default function Ch18Batteries() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Internal resistance and the discharge curve</h2>
+      <h2 className="chapter-h2">Internal resistance and the discharge curve</h2>
 
       <p className="mb-prose-3">
         No real battery is an ideal voltage source. Connect a load and the voltage at the terminals drops below the
@@ -349,7 +349,7 @@ export default function Ch18Batteries() {
         }
       />
 
-      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
         Inside any battery: two electrodes, an electrolyte that conducts ions but not electrons, and two half-reactions
