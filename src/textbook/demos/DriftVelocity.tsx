@@ -104,7 +104,7 @@ export function DriftVelocityDemo({ figure }: Props) {
         ctx.lineTo(xa + 20, axy - 4);
         ctx.lineTo(xa + 20, axy + 4);
         ctx.closePath();
-        ctx.fillStyle = 'rgba(255,107,42,.55)';
+        ctx.fillStyle = colors.accent;
         ctx.fill();
       }
       ctx.restore();

@@ -550,7 +550,7 @@ function drawNeutralBar(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: numb
     ctx, cam, W, H,
     v3(0, NEUTRAL_Y, 0.05),
     NEUTRAL_X_HALF, NEUTRAL_THK / 2, 0.06,
-    { fill: 'rgba(108,197,194,0.18)', stroke: 'rgba(108,197,194,0.85)' },
+    { fill: getCanvasColors().tealSoft, stroke: 'rgba(108,197,194,0.85)' },
   );
   // Small terminal-screw ticks along the front face.
   for (let i = 0; i < 14; i++) {

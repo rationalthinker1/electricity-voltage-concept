@@ -166,7 +166,9 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
 
     // Constant-torque region (flat at tau_rated up to omega_base).
     const omega_base = motor.omega_rated;
-    ctx.strokeStyle = 'rgba(108,197,194,0.45)';
+    ctx.save();
+    ctx.globalAlpha = 0.45;
+    ctx.strokeStyle = getCanvasColors().teal;
     ctx.lineWidth = 1.4;
     ctx.setLineDash([4, 3]);
     ctx.beginPath();
@@ -180,12 +182,15 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
       ctx.lineTo(x(om), y(Math.min(tauMax, P_base / om)));
     }
     ctx.stroke();
+    ctx.restore();
     ctx.setLineDash([]);
 
     // Voltage-limited boundary, very rough: τ_max ∝ (V_dc/√3 − R_s i_s) / (ψ_m ω_e)
     // — sketched as informational only.
     const k = Vdc / (motor.V_rated || Vdc);
-    ctx.strokeStyle = 'rgba(255,107,42,0.55)';
+    ctx.save();
+    ctx.globalAlpha = 0.55;
+    ctx.strokeStyle = getCanvasColors().accent;
     ctx.lineWidth = 1.4;
     ctx.beginPath();
     for (let i = 0; i <= N; i++) {
@@ -195,10 +200,13 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
       else ctx.lineTo(x(om), y(tau_lim));
     }
     ctx.stroke();
+    ctx.restore();
 
     // History trail (faded).
     if (history.length > 1) {
-      ctx.strokeStyle = 'rgba(236,235,229,0.32)';
+      ctx.save();
+      ctx.globalAlpha = 0.32;
+      ctx.strokeStyle = getCanvasColors().text;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       for (let i = 0; i < history.length; i++) {
@@ -208,6 +216,7 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
         if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       }
       ctx.stroke();
+      ctx.restore();
     }
 
     // Operating point.

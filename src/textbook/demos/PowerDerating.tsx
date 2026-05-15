@@ -95,7 +95,7 @@ export function PowerDeratingDemo({ figure }: Props) {
       }
 
       // Derating curve
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(xT(0), yF(1.0));
@@ -121,7 +121,7 @@ export function PowerDeratingDemo({ figure }: Props) {
       const opX = xT(T_C);
       const opY = yF(Math.min(opFrac, 1.05));
       ctx.restore();
-      ctx.fillStyle = overload ? '#ff3b6e' : '#6cc5c2';
+      ctx.fillStyle = overload ? getCanvasColors().pink : getCanvasColors().teal;
       ctx.beginPath();
       ctx.arc(opX, opY, 6, 0, Math.PI * 2);
       ctx.fill();

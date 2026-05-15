@@ -158,7 +158,7 @@ export function PointCharge3DDemo({ figure }: Props) {
       const sign: 1 | -1 = s.positive ? 1 : -1;
 
       // ── Central charge glow + body ────────────────────────────────
-      const chargeColor = s.positive ? '#ff3b6e' : '#5baef8';
+      const chargeColor = s.positive ? getCanvasColors().pink : getCanvasColors().blue;
       const chargeColorGlow = s.positive
         ? 'rgba(255,59,110,0.35)'
         : 'rgba(91,174,248,0.35)';

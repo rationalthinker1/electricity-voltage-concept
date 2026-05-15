@@ -117,7 +117,9 @@ export function BridgeRectifierDemo({ figure }: Props) {
       }
 
       // V_in: sine wave (white)
-      ctx.strokeStyle = 'rgba(236,235,229,0.55)';
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       for (let k = 0; k <= sim.N; k++) {
@@ -128,6 +130,7 @@ export function BridgeRectifierDemo({ figure }: Props) {
         if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       }
       ctx.stroke();
+      ctx.restore();
 
       // |V_rect|: rectified (teal)
       ctx.strokeStyle = colors.teal;

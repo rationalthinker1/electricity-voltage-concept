@@ -189,7 +189,7 @@ function drawGaussE(
     origin.x, origin.y, rad,
   );
   grad.addColorStop(0, q >= 0 ? '#ffb0c4' : '#a8d4f8');
-  grad.addColorStop(1, q >= 0 ? '#ff3b6e' : '#5baef8');
+  grad.addColorStop(1, q >= 0 ? getCanvasColors().pink : getCanvasColors().blue);
   ctx.fillStyle = grad;
   ctx.beginPath();
   ctx.arc(origin.x, origin.y, rad, 0, Math.PI * 2);
@@ -452,8 +452,8 @@ function drawAmpere(
     ctx.textBaseline = 'middle';
     ctx.fillText(label, pts[1]!.x + 12, pts[1]!.y - 8);
   }
-  drawPlate(+GAP_HALF, '+', '#ff3b6e');
-  drawPlate(-GAP_HALF, '−', '#5baef8');
+  drawPlate(+GAP_HALF, '+', getCanvasColors().pink);
+  drawPlate(-GAP_HALF, '−', getCanvasColors().blue);
 
   // 2. Lead wires (vertical, along +y above and below the plates).
   for (const [yStart, yEnd] of [
@@ -798,8 +798,8 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
               padding: '7px 10px',
               fontFamily: '"JetBrains Mono", monospace',
               fontSize: 11,
-              color: mode === m ? '#0a0a0b' : '#a09e95',
-              background: mode === m ? '#ff6b2a' : 'rgba(255,255,255,0.04)',
+              color: mode === m ? getCanvasColors().canvasBg : getCanvasColors().textDim,
+              background: mode === m ? getCanvasColors().accent : 'rgba(255,255,255,0.04)',
               border: mode === m
                 ? '1px solid #ff6b2a'
                 : '1px solid rgba(255,255,255,0.10)',
@@ -818,7 +818,7 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
       <p
         style={{
           fontSize: 12,
-          color: '#a09e95',
+          color: getCanvasColors().textDim,
           margin: '0 0 10px',
           lineHeight: 1.45,
         }}

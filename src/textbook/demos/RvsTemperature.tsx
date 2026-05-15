@@ -53,11 +53,11 @@ const ptcRatio = (T_C: number) => {
 };
 
 const CURVES: Curve[] = [
-  { key: 'copper',   label: 'Copper',       color: '#ff6b2a', ratio: cuRatio },
+  { key: 'copper',   label: 'Copper',       color: getCanvasColors().accent, ratio: cuRatio },
   { key: 'tungsten', label: 'Tungsten',     color: '#ffb84a', ratio: wRatio },
-  { key: 'nichrome', label: 'Nichrome',     color: '#6cc5c2', ratio: nicrRatio },
-  { key: 'ntc',      label: 'NTC therm.',   color: '#5baef8', ratio: ntcRatio },
-  { key: 'ptc',      label: 'PTC polyswitch', color: '#ff3b6e', ratio: ptcRatio },
+  { key: 'nichrome', label: 'Nichrome',     color: getCanvasColors().teal, ratio: nicrRatio },
+  { key: 'ntc',      label: 'NTC therm.',   color: getCanvasColors().blue, ratio: ntcRatio },
+  { key: 'ptc',      label: 'PTC polyswitch', color: getCanvasColors().pink, ratio: ptcRatio },
 ];
 
 export function RvsTemperatureDemo({ figure }: Props) {

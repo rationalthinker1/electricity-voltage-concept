@@ -126,7 +126,9 @@ export default function FaradayLab() {
       ctx.beginPath(); ctx.moveTo(coilCx, 30); ctx.lineTo(coilCx, h - 30); ctx.stroke();
       ctx.setLineDash([]);
 
-      ctx.strokeStyle = `rgba(255,107,42,${0.4 + 0.4 * Math.abs(Math.sin(angle))})`;
+      ctx.save();
+      ctx.globalAlpha = 0.4 + 0.4 * Math.abs(Math.sin(angle));
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2.2;
       ctx.beginPath();
       const xL = coilCx - visW / 2;
@@ -139,6 +141,7 @@ export default function FaradayLab() {
       ctx.lineTo(xL + persp * 0.3, yB);
       ctx.closePath();
       ctx.stroke();
+      ctx.restore();
 
       // Turn lines
       const turnsShown = Math.min(20, Math.max(3, Math.floor(N / 25)));

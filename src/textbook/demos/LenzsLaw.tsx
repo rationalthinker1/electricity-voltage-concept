@@ -103,13 +103,16 @@ export function LenzsLawDemo({ figure }: Props) {
       ctx.fillText('N', cx, magY + magH / 4);
 
       // Magnet's own B-field arrow — pink, pointing down toward loop
-      ctx.strokeStyle = 'rgba(255,59,110,0.6)';
       ctx.fillStyle = colors.pink;
       ctx.lineWidth = 1.4;
       const arrowFromY = magY + magH / 2 + 6;
       const arrowToY = cy - loopRy - 8;
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = colors.pink;
       ctx.beginPath();
       ctx.moveTo(cx, arrowFromY); ctx.lineTo(cx, arrowToY); ctx.stroke();
+      ctx.restore();
       ctx.beginPath();
       ctx.moveTo(cx, arrowToY);
       ctx.lineTo(cx - 5, arrowToY - 7);

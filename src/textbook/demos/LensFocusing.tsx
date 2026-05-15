@@ -146,11 +146,14 @@ export function LensFocusingDemo({ figure }: Props) {
           ctx.stroke();
           // dashed back-extension to virtual focal point
           ctx.setLineDash([3, 4]);
-          ctx.strokeStyle = 'rgba(255,107,42,0.35)';
+          ctx.save();
+          ctx.globalAlpha = 0.35;
+          ctx.strokeStyle = getCanvasColors().accent;
           ctx.beginPath();
           ctx.moveTo(lensX, yIn);
           ctx.lineTo(lensX - fpx, axisY);
           ctx.stroke();
+          ctx.restore();
           ctx.setLineDash([]);
         }
         ctx.restore();

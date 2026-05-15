@@ -302,7 +302,9 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
       if (s.showB && current > 0.01) {
         const Inorm = Math.min(1, Math.log10(current + 1) / 1.4);
         const baseAlpha = 0.18 + 0.45 * Inorm;
-        ctx.strokeStyle = `rgba(108,197,194,${baseAlpha.toFixed(3)})`;
+        ctx.save();
+        ctx.globalAlpha = baseAlpha;
+        ctx.strokeStyle = getCanvasColors().teal;
         ctx.lineWidth = 1.1;
         const samples = 16;
         for (let i = 0; i < samples; i++) {
@@ -316,6 +318,7 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, r1, 0, Math.PI * 2);
           ctx.stroke();
+        ctx.restore();
           ctx.globalAlpha = 0.5;
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, r2, 0, Math.PI * 2);

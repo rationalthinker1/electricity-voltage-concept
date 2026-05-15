@@ -253,8 +253,11 @@ export default function GaussLab() {
       });
 
       // Counter overlay (top-left)
-      ctx.fillStyle = 'rgba(10,10,11,0.88)';
+      ctx.save();
+      ctx.globalAlpha = 0.88;
+      ctx.fillStyle = colors.canvasBg;
       ctx.fillRect(16, 16, 200, 64);
+      ctx.restore();
       ctx.strokeStyle = colors.border;
       ctx.strokeRect(16, 16, 200, 64);
       ctx.font = '10px JetBrains Mono';
@@ -268,8 +271,11 @@ export default function GaussLab() {
       ctx.fillText('NET                ' + (outCount - inCount), 26, 62);
 
       // Status indicator (top-right)
-      ctx.fillStyle = 'rgba(10,10,11,0.88)';
+      ctx.save();
+      ctx.globalAlpha = 0.88;
+      ctx.fillStyle = colors.canvasBg;
       ctx.fillRect(w - 146, 16, 130, 28);
+      ctx.restore();
       ctx.strokeStyle = colors.border;
       ctx.strokeRect(w - 146, 16, 130, 28);
       ctx.fillStyle = inside ? 'rgba(255,107,42,0.95)' : 'rgba(160,158,149,0.85)';

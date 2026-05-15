@@ -82,8 +82,11 @@ export function RLCBandpassDemo({ figure }: Props) {
         const x = plotX + ((lf - logMin) / (logMax - logMin)) * plotW;
         ctx.strokeStyle = colors.border;
         ctx.beginPath(); ctx.moveTo(x, plotY); ctx.lineTo(x, plotY + plotH); ctx.stroke();
-        ctx.fillStyle = 'rgba(160,158,149,0.6)';
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.fillStyle = colors.textDim;
         ctx.fillText(fmtFreq(f), x, plotY + plotH + 4);
+        ctx.restore();
       }
 
       // f_0 marker

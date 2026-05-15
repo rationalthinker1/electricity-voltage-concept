@@ -106,8 +106,12 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.fillText('S', cx + R + magW / 2, cy);
 
       // Field lines (subtle horizontal arrows)
-      ctx.strokeStyle = 'rgba(108,197,194,0.22)';
-      ctx.fillStyle = 'rgba(108,197,194,0.22)';
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.strokeStyle = colors.teal;
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle = colors.teal;
       ctx.lineWidth = 1;
       const rows = 4;
       for (let i = 0; i < rows; i++) {
@@ -116,6 +120,8 @@ export function BrushedDCMotorDemo({ figure }: Props) {
         ctx.moveTo(cx - R + 6, y);
         ctx.lineTo(cx + R - 6, y);
         ctx.stroke();
+      ctx.restore();
+      ctx.restore();
         // arrowhead
         ctx.beginPath();
         ctx.moveTo(cx + R - 6, y);

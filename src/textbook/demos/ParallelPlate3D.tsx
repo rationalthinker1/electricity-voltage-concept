@@ -317,7 +317,9 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         const rimL = rim(yL).map(p => project(p, cam, W, H));
 
         // Translucent side fill (quad strip).
-        ctx.fillStyle = 'rgba(108,197,194,0.10)';
+        ctx.save();
+        ctx.globalAlpha = 0.10;
+        ctx.fillStyle = getCanvasColors().teal;
         for (let i = 0; i < RIM_N; i++) {
           const j = (i + 1) % RIM_N;
           ctx.beginPath();
@@ -375,6 +377,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         const boxX = Math.min(W - boxW - 8, Math.max(8, anchor.x + 18));
         const boxY = Math.min(H - boxH - 8, Math.max(8, anchor.y - boxH - 10));
         // Connector from anchor to box.
+        ctx.restore();
         ctx.strokeStyle = getCanvasColors().teal;
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -382,7 +385,10 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         ctx.lineTo(boxX + 6, boxY + boxH);
         ctx.stroke();
         // Box.
-        ctx.fillStyle = 'rgba(13,13,16,0.92)';
+        ctx.save();
+        ctx.globalAlpha = 0.92;
+        ctx.fillStyle = getCanvasColors().canvasBg;
+        ctx.restore();
         ctx.strokeStyle = getCanvasColors().teal;
         ctx.lineWidth = 1;
         ctx.beginPath();

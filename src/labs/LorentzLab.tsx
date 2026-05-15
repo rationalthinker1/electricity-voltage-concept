@@ -110,7 +110,9 @@ export default function LorentzLab() {
 
       // B field × marks (into page)
       if (B > 0.005) {
-        ctx.strokeStyle = `rgba(108,197,194,${Math.min(0.55, 0.12 + B * 0.45)})`;
+        ctx.save();
+        ctx.globalAlpha = Math.min(0.55, 0.12 + B * 0.45);
+        ctx.strokeStyle = colors.teal;
         ctx.lineWidth = 1;
         const sp = 56;
         const sz = 3;
@@ -120,6 +122,7 @@ export default function LorentzLab() {
             ctx.moveTo(x - sz, y - sz); ctx.lineTo(x + sz, y + sz);
             ctx.moveTo(x + sz, y - sz); ctx.lineTo(x - sz, y + sz);
             ctx.stroke();
+        ctx.restore();
           }
         }
       }

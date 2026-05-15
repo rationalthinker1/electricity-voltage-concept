@@ -51,8 +51,8 @@ export function PlateGeometryDemo({ figure }: Props) {
       const botY = cy + gap / 2 + plateThick / 2;
 
       // Plates
-      drawPlate(ctx, xL, topY, plateW, plateThick, '#ff3b6e');
-      drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, '#5baef8');
+      drawPlate(ctx, xL, topY, plateW, plateThick, getCanvasColors().pink);
+      drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, getCanvasColors().blue);
 
       // A-dimension brackets
       ctx.save();

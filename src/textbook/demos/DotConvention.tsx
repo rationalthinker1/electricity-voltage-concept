@@ -198,13 +198,16 @@ function drawCurrentArrow(
   ctx: CanvasRenderingContext2D,
   x0: number, y0: number, x1: number, y1: number, label: string,
 ) {
-  ctx.strokeStyle = 'rgba(91,174,248,0.9)';
   ctx.fillStyle = getCanvasColors().blue;
   ctx.lineWidth = 1.6;
+  ctx.save();
+  ctx.globalAlpha = 0.9;
+  ctx.strokeStyle = getCanvasColors().blue;
   ctx.beginPath();
   ctx.moveTo(x0, y0);
   ctx.lineTo(x1, y1);
   ctx.stroke();
+  ctx.restore();
   // arrowhead
   const ang = Math.atan2(y1 - y0, x1 - x0);
   const al = 8;

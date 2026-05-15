@@ -105,7 +105,7 @@ export function FuelCellDemo({ figure }: Props) {
         const t = ((phase + j * 0.2) % 1);
         const ix = x + t * membraneW;
         const iy = cellY + cellH * (0.2 + 0.7 * ((j * 0.31) % 1));
-        ctx.fillStyle = 'rgba(255,255,255,0.95)';
+        ctx.fillStyle = colors.text;
         ctx.font = 'bold 9px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';

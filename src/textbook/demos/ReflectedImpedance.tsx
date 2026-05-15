@@ -85,7 +85,7 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       // Source box
       const srcX = 24;
       const srcW = 70, srcH = 60;
-      ctx.fillStyle = '#16161a';
+      ctx.fillStyle = getCanvasColors().surface;
       ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1.4;
       ctx.fillRect(srcX, cy - srcH / 2, srcW, srcH);
@@ -131,7 +131,7 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       // R_L box
       const ldX = c2x + 50;
       const ldW = 70, ldH = 60;
-      ctx.fillStyle = '#16161a';
+      ctx.fillStyle = getCanvasColors().surface;
       ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 1.4;
       ctx.fillRect(ldX, cy - ldH / 2, ldW, ldH);

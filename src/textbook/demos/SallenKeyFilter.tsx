@@ -98,8 +98,11 @@ export function SallenKeyFilterDemo({ figure }: Props) {
         ctx.strokeStyle = colors.border;
         ctx.beginPath(); ctx.moveTo(x, magY0); ctx.lineTo(x, magY0 + magH); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(x, phY0); ctx.lineTo(x, phY0 + phH); ctx.stroke();
-        ctx.fillStyle = 'rgba(160,158,149,0.6)';
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.fillStyle = colors.textDim;
         ctx.fillText(fmtFreqShort(f), x, phY0 + phH + 4);
+        ctx.restore();
       }
 
       // f0 marker

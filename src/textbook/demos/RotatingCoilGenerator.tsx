@@ -106,7 +106,7 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       const ang = visualOmega * simT;
       const visW = coilW * Math.abs(Math.sin(ang));
       ctx.restore();
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.strokeRect(coilCx - visW / 2, coilCy - coilH / 2, visW, coilH);
       // Slip rings (two parallel arcs at the shaft)

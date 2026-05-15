@@ -580,8 +580,11 @@ function drawProbe(
 ) {
   ctx.strokeStyle = getCanvasColors().accent;
   ctx.lineWidth = 2;
-  ctx.fillStyle = 'rgba(10,10,11,.92)';
+  ctx.save();
+  ctx.globalAlpha = .92;
+  ctx.fillStyle = getCanvasColors().canvasBg;
   ctx.beginPath(); ctx.arc(cx, cy, 10, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.restore();
   ctx.fillStyle = getCanvasColors().accent;
   ctx.font = 'bold 11px JetBrains Mono';
   ctx.textAlign = 'center';

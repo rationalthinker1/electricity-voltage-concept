@@ -203,9 +203,11 @@ export default function PotentialLab() {
           const v = potentialAt(px / w, py / h);
           if (Math.abs(v) < 1) continue;
           const t = Math.tanh(v / 200);
-          if (t > 0) ctx.fillStyle = `rgba(255,59,110,${Math.abs(t) * 0.10})`;
-          else        ctx.fillStyle = `rgba(91,174,248,${Math.abs(t) * 0.10})`;
+          ctx.save();
+          ctx.globalAlpha = Math.abs(t) * 0.10;
+          ctx.fillStyle = t > 0 ? getCanvasColors().pink : getCanvasColors().blue;
           ctx.fillRect(px, py, cellSize, cellSize);
+          ctx.restore();
         }
       }
 
@@ -689,8 +691,11 @@ function drawProbe(
 ) {
   ctx.strokeStyle = getCanvasColors().accent;
   ctx.lineWidth = 2;
-  ctx.fillStyle = 'rgba(10,10,11,.9)';
+  ctx.save();
+  ctx.globalAlpha = .9;
+  ctx.fillStyle = getCanvasColors().canvasBg;
   ctx.beginPath(); ctx.arc(cx, cy, 10, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.restore();
   ctx.fillStyle = getCanvasColors().accent;
   ctx.font = 'bold 11px JetBrains Mono';
   ctx.textAlign = 'center';

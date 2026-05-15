@@ -187,7 +187,9 @@ function drawSchematic(
     ctx.fillText('+', xTri + 4, yWire - 9);
     ctx.fillText('−', xTri + 4, yWire + 9);
     // Output wire and feedback
-    ctx.strokeStyle = 'rgba(236,235,229,0.55)';
+    ctx.save();
+    ctx.globalAlpha = 0.55;
+    ctx.strokeStyle = getCanvasColors().text;
     ctx.lineWidth = 1.4;
     ctx.beginPath();
     ctx.moveTo(xTri + 42, yWire); ctx.lineTo(xTri + 70, yWire);
@@ -201,6 +203,7 @@ function drawSchematic(
     ctx.stroke();
     xNodeOut = xTri + 70;
 
+    ctx.restore();
     ctx.fillStyle = getCanvasColors().teal;
     ctx.font = '9px "JetBrains Mono", monospace';
     ctx.textAlign = 'center';

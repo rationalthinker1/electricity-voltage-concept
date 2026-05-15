@@ -135,7 +135,7 @@ export function FaradayLawDemo({ figure }: Props) {
       const oscW = w - oscX - 16;
       const oscY = 16;
       const oscH = h - 32;
-      ctx.fillStyle = '#08080a';
+      ctx.fillStyle = colors.canvasBg;
       ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.fillRect(oscX, oscY, oscW, oscH);

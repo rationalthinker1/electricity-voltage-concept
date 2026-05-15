@@ -142,11 +142,14 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
         // current direction indicators (only when |emf| meaningful)
         if (Math.abs(emf) > 0.05 && i % 2 === 0) {
           const sym = dir > 0 ? '·' : '×';
-          ctx.fillStyle = 'rgba(91,174,248,0.75)';
+          ctx.save();
+          ctx.globalAlpha = 0.75;
+          ctx.fillStyle = colors.blue;
           ctx.font = 'bold 10px JetBrains Mono';
           ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillText(sym, lx, cy - loopHeight / 2 - 8);
           ctx.fillText(dir > 0 ? '×' : '·', lx, cy + loopHeight / 2 + 8);
+          ctx.restore();
         }
         ctx.restore();
       }
@@ -197,10 +200,10 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       const magY = cy;
       // shadow
       const grd = ctx.createLinearGradient(mx - magW / 2, magY, mx + magW / 2, magY);
-      grd.addColorStop(0, '#5baef8');
-      grd.addColorStop(0.5, '#5baef8');
-      grd.addColorStop(0.5, '#ff3b6e');
-      grd.addColorStop(1, '#ff3b6e');
+      grd.addColorStop(0, colors.blue);
+      grd.addColorStop(0.5, colors.blue);
+      grd.addColorStop(0.5, colors.pink);
+      grd.addColorStop(1, colors.pink);
       ctx.fillStyle = grd;
       ctx.fillRect(mx - magW / 2, magY - magH / 2, magW, magH);
       ctx.save();

@@ -33,6 +33,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { getCanvasColors } from '@/lib/canvasTheme';
 import {
   attachOrbit,
   project,
@@ -53,8 +54,12 @@ const COIL_ANGLES = [0, 2 * Math.PI / 3, 4 * Math.PI / 3];
 // Their phase shifts in the standard ABC sequence: 0, -120°, -240°.
 const COIL_PHASES = [0, -2 * Math.PI / 3, -4 * Math.PI / 3];
 const COIL_LABELS = ['A', 'B', 'C'];
-// Color per phase (amber, teal, pink — palette-only).
-const COIL_COLORS = ['#ff6b2a', '#6cc5c2', '#ff3b6e'];
+// Color per phase — resolved per-frame from the canvas theme so the
+// coil tints follow light/dark mode.
+function coilColors() {
+  const c = getCanvasColors();
+  return [c.accent, c.teal, c.pink] as const;
+}
 
 // Choose B_0 so that with I_0 = 10 A the resultant magnitude (3/2)·B_0·(I_0/I_ref)
 // lands at a clean "1.0" of the visual arrow at full slider. Purely visual.
@@ -105,7 +110,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       const inward: Vec3 = { x: -cosA, y: 0, z: -sinA };
       // Tangent unit (for drawing the coil-bump width).
       const tangent: Vec3 = { x: -sinA, y: 0, z: cosA };
-      return { pos, inward, tangent, phase: COIL_PHASES[i]!, color: COIL_COLORS[i]!, label: COIL_LABELS[i]! };
+      return { pos, inward, tangent, phase: COIL_PHASES[i]!, color: coilColors()[i]!, label: COIL_LABELS[i]! };
     });
 
     function drawArrow3D(
@@ -421,15 +426,15 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText(`I_A = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[0]!)).toFixed(2)} A`, 12, 12);
-      ctx.fillStyle = COIL_COLORS[0]!;
+      ctx.fillStyle = coilColors()[0]!;
       ctx.fillText(`A`, 2, 12);
       ctx.fillStyle = colors.textDim;
       ctx.fillText(`I_B = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[1]!)).toFixed(2)} A`, 12, 26);
-      ctx.fillStyle = COIL_COLORS[1]!;
+      ctx.fillStyle = coilColors()[1]!;
       ctx.fillText(`B`, 2, 26);
       ctx.fillStyle = colors.textDim;
       ctx.fillText(`I_C = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[2]!)).toFixed(2)} A`, 12, 40);
-      ctx.fillStyle = COIL_COLORS[2]!;
+      ctx.fillStyle = coilColors()[2]!;
       ctx.fillText(`C`, 2, 40);
 
       ctx.save();

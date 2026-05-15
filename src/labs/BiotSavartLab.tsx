@@ -281,9 +281,12 @@ export default function BiotSavartLab() {
       // Probe
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
-      ctx.fillStyle = 'rgba(10,10,11,0.9)';
+      ctx.save();
+      ctx.globalAlpha = 0.9;
+      ctx.fillStyle = colors.canvasBg;
       ctx.beginPath(); ctx.arc(probeX, probeY, 11, 0, Math.PI * 2);
       ctx.fill(); ctx.stroke();
+      ctx.restore();
       ctx.fillStyle = colors.accent;
       ctx.font = 'bold 10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';

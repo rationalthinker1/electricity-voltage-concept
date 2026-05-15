@@ -140,8 +140,11 @@ export function FieldArrowsDemo({ figure }: Props) {
       const px = probe.x * w, py = probe.y * h;
       uiCtx.strokeStyle = colors.accent;
       uiCtx.lineWidth = 2;
-      uiCtx.fillStyle = 'rgba(10,10,11,.9)';
+      uiCtx.save();
+      uiCtx.globalAlpha = 0.9;
+      uiCtx.fillStyle = colors.canvasBg;
       uiCtx.beginPath(); uiCtx.arc(px, py, 9, 0, Math.PI * 2); uiCtx.fill(); uiCtx.stroke();
+      uiCtx.restore();
       uiCtx.fillStyle = colors.accent;
       uiCtx.font = 'bold 10px JetBrains Mono';
       uiCtx.textAlign = 'center';

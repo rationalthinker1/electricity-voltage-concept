@@ -78,7 +78,9 @@ export function CyclotronDemo({ figure }: Props) {
       ctx.fillRect(0, 0, w, h);
 
       // × marks for B into page.
-      ctx.strokeStyle = 'rgba(108,197,194,0.28)';
+      ctx.save();
+      ctx.globalAlpha = 0.28;
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1;
       const spacing = 38;
       for (let y = spacing / 2; y < h; y += spacing) {
@@ -88,6 +90,7 @@ export function CyclotronDemo({ figure }: Props) {
           ctx.moveTo(x - k, y - k); ctx.lineTo(x + k, y + k);
           ctx.moveTo(x + k, y - k); ctx.lineTo(x - k, y + k);
           ctx.stroke();
+      ctx.restore();
         }
       }
       ctx.save();

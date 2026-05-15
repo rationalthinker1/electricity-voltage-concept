@@ -87,7 +87,7 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
 
       // P(δ) curve. Stable side (δ < 90°) solid; unstable side dashed.
       ctx.restore();
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2.5;
       ctx.beginPath();
       for (let i = 0; i <= 90; i++) {

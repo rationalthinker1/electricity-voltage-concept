@@ -100,7 +100,9 @@ export default function PoyntingLab() {
       const er = r * ellipseRatio;
 
       // --- BACK half of B-field ellipses (behind wire) ---
-      ctx.strokeStyle = 'rgba(108,197,194,0.35)';
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 1.2;
       const nB = 8;
       for (let i = 0; i < nB; i++) {
@@ -109,6 +111,7 @@ export default function PoyntingLab() {
         ctx.beginPath();
         ctx.ellipse(cx, g.wireCY, er * 1.6, r * 1.6, 0, Math.PI, 2 * Math.PI);
         ctx.stroke();
+      ctx.restore();
       }
 
       // --- Inflow particles (drift radially inward) ---
@@ -202,8 +205,12 @@ export default function PoyntingLab() {
 
       // E field arrows (axial)
       const nE = 5;
-      ctx.strokeStyle = 'rgba(255,59,110,0.95)';
-      ctx.fillStyle = 'rgba(255,59,110,0.95)';
+      ctx.save();
+      ctx.globalAlpha = 0.95;
+      ctx.strokeStyle = getCanvasColors().pink;
+      ctx.save();
+      ctx.globalAlpha = 0.95;
+      ctx.fillStyle = getCanvasColors().pink;
       ctx.lineWidth = 2;
       const arrLen = 60;
       for (let i = 0; i < nE; i++) {
@@ -214,6 +221,8 @@ export default function PoyntingLab() {
         ctx.moveTo(cx, cy);
         ctx.lineTo(cx + arrLen, cy);
         ctx.stroke();
+      ctx.restore();
+      ctx.restore();
         ctx.beginPath();
         ctx.moveTo(cx + arrLen, cy);
         ctx.lineTo(cx + arrLen - 8, cy - 5);

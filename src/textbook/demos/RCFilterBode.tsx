@@ -95,8 +95,11 @@ export function RCFilterBodeDemo({ figure }: Props) {
         ctx.strokeStyle = colors.border;
         ctx.beginPath(); ctx.moveTo(x, magY0); ctx.lineTo(x, magY0 + magH); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(x, phaseY0); ctx.lineTo(x, phaseY0 + phaseH); ctx.stroke();
-        ctx.fillStyle = 'rgba(160,158,149,0.6)';
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.fillStyle = colors.textDim;
         ctx.fillText(fmtFreqShort(f), x, phaseY0 + phaseH + 4);
+        ctx.restore();
       }
 
       // f_c marker

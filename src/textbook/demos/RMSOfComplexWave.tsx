@@ -91,7 +91,7 @@ export function RMSOfComplexWaveDemo() {
 
       // Composite wave
       ctx.restore();
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
       for (let i = 0; i <= samples; i++) {

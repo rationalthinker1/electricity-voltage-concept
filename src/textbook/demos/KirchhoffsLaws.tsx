@@ -177,11 +177,14 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
 
         const boxX = 12;
         const boxY = h - 64;
-        ctx.fillStyle = 'rgba(255,107,42,0.10)';
+        ctx.save();
+        ctx.globalAlpha = 0.10;
+        ctx.fillStyle = colors.accent;
+        ctx.fillRect(boxX, boxY, 230, 50);
+        ctx.restore();
         ctx.save();
         ctx.globalAlpha = 0.6;
         ctx.strokeStyle = colors.accent;
-        ctx.fillRect(boxX, boxY, 230, 50);
         ctx.strokeRect(boxX, boxY, 230, 50);
         ctx.restore();
         ctx.fillStyle = getCanvasColors().accent;
@@ -204,11 +207,14 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         // Show both loop equations
         const boxX = w - 270;
         const boxY = h - 96;
-        ctx.fillStyle = 'rgba(108,197,194,0.10)';
+        ctx.save();
+        ctx.globalAlpha = 0.10;
+        ctx.fillStyle = colors.teal;
+        ctx.fillRect(boxX, boxY, 258, 82);
+        ctx.restore();
         ctx.save();
         ctx.globalAlpha = 0.6;
         ctx.strokeStyle = colors.teal;
-        ctx.fillRect(boxX, boxY, 258, 82);
         ctx.strokeRect(boxX, boxY, 258, 82);
 
 ctx.restore();
