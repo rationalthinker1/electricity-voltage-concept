@@ -104,7 +104,7 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
               className="block no-underline text-inherit py-lg border-b border-dotted border-border last:border-b-0"
             >
               <span className="font-1 font-medium text-text">{l.title}</span>
-              <span className="font-4 italic text-accent  ml-md">{l.formula}</span>
+              <span className="font-4 italic text-accent ml-md">{l.formula}</span>
               <div className="text-text-muted mt-sm">{l.blurb}</div>
             </Link>
           ))}

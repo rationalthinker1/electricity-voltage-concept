@@ -39,8 +39,6 @@ interface FormulaProps {
   small?: boolean;
   /** Optional override for the aria-label / plain-text form. */
   ariaLabel?: string;
-  /** If true, the plain-text form is also rendered in a <pre> for easy copy-paste. */
-  printPlainText?: boolean;
 }
 
 function blockSizing(large: boolean | undefined, small: boolean | undefined): string {
@@ -80,7 +78,7 @@ function resolve(id: FormulaId | undefined, tex: string | undefined, ariaLabel: 
   return null;
 }
 
-export function Formula({ id, tex, children, caption, large, small, ariaLabel, printPlainText = false }: FormulaProps) {
+export function Formula({ id, tex, children, caption, large, small, ariaLabel }: FormulaProps) {
   const resolved = resolve(id, tex, ariaLabel);
   const html = useMemo(() => (resolved ? renderTeX(resolved.tex, true) : null), [resolved?.tex]);
 
@@ -90,13 +88,10 @@ export function Formula({ id, tex, children, caption, large, small, ariaLabel, p
       role="math"
       aria-label={resolved?.plain}
     >
-      {(!printPlainText && !!html) && (
+      {(!!html) && (
         <div className="formula-tex" dangerouslySetInnerHTML={{ __html: html }} />
       )}
-      {(printPlainText && resolved?.plainText) && (
-        <div className="formula-content">{resolved.plainText}</div>
-      )}
-      {!!children && !printPlainText && (
+      {!!children && !html && (
         <div className="formula-content">
           {children}
         </div>
