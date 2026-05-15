@@ -29,19 +29,19 @@ function Home() {
       </section>
 
       <div className="toc">
-        <div className="chapter-grid">
+        <div className="grid grid-cols-2 max-[900px]:grid-cols-1 gap-px bg-border border border-border mt-[60px]">
           {CHAPTERS.map(c => (
             <Link
               key={c.slug}
               to="/textbook/$chapterSlug"
               params={{ chapterSlug: c.slug }}
-              className="chapter-card"
+              className="group bg-bg py-[44px] px-[38px] no-underline text-inherit flex flex-col gap-[14px] transition-colors duration-150 relative min-h-[280px] hover:bg-bg-card-hover"
             >
-              <span className="chap-num">Chapter {c.number}</span>
-              <span className="chap-title">{c.title}</span>
-              <span className="chap-subtitle">{c.subtitle}</span>
-              <span className="chap-blurb">{c.blurb}</span>
-              <span className="chap-cta">Read chapter →</span>
+              <span className="font-3 text-[11px] text-accent tracking-[.25em] uppercase">Chapter {c.number}</span>
+              <span className="font-2 font-light text-[38px] leading-[1.05] tracking-[-.02em] text-text">{c.title}</span>
+              <span className="font-2 italic font-light text-[18px] text-accent -mt-[6px]">{c.subtitle}</span>
+              <span className="text-text-dim text-[14px] leading-[1.55]">{c.blurb}</span>
+              <span className="font-3 text-[10px] text-text-muted tracking-[.2em] uppercase mt-auto pt-[18px] flex items-center gap-[8px] group-hover:text-accent">Read chapter →</span>
             </Link>
           ))}
         </div>

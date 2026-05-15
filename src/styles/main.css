@@ -262,24 +262,7 @@ body::before {
      patterns found across components.
   ═══════════════════════════════════════════════════════════════ */
 
-  /* — Layout primitives — */
-  .container-max {
-    @apply max-w-[1480px] mx-auto px-[40px] max-[760px]:px-xl;
-  }
-  .section-reveal {
-    @apply opacity-100;
-  }
-
   /* — Typography aliases (semantic → numbered scale) — */
-  .title-xl {
-    font-family: var(--font-2);
-    font-weight: 300;
-    font-size: clamp(56px, 9vw, 132px);
-    line-height: .95;
-    letter-spacing: -.035em;
-    color: var(--color-4);
-  }
-
   .eyebrow-muted {
     @apply font-3 text-[11px] tracking-[.12em] uppercase text-text-muted;
   }
@@ -291,61 +274,23 @@ body::before {
   .body-copy {
     @apply font-1 text-[16px] leading-[1.6] text-color-5;
   }
-  .text-deck {
-    @apply font-2 italic font-light text-[20px] leading-[1.35] text-color-5 max-w-[60ch];
-  }
-  .text-formula {
-    @apply font-4 italic text-color-4;
-  }
 
-  /* — Eyebrow + intro aliases (no numeric suffix) — */
+  /* — Eyebrow aliases (no numeric suffix) — */
   .eyebrow-rule {
     @apply font-3 text-[11px] tracking-[.25em] uppercase mb-[18px] flex items-center gap-[14px];
-    color: var(--recipe-accent, var(--accent));
+    color: var(--accent);
   }
   .eyebrow-rule::before {
     content: '';
     width: 36px;
     height: 1px;
-    background: var(--recipe-accent, var(--accent));
-  }
-  .intro {
-    @apply text-color-5 text-[15px] leading-[1.55] mb-[28px] italic max-w-[55ch];
+    background: var(--accent);
   }
 
   /* — Card / surface aliases — */
   .card-surface {
     @apply bg-color-3 border border-border-1 rounded-5;
   }
-
-  /* — Lists, dividers, sections — */
-  .list-divided { @apply border-t border-border py-2; }
-  .list-divided > * + * { @apply border-t border-border; }
-
-  /* — Disclosure aliases (no numeric suffix) — */
-  .disclosure-base { @apply border-b border-border; }
-  .disclosure-summary {
-    @apply cursor-pointer flex items-baseline gap-[14px] py-[18px] outline-none;
-    list-style: none;
-  }
-  .disclosure-summary::-webkit-details-marker { display: none; }
-  .disclosure-base:hover .disclosure-title { color: var(--recipe-accent, var(--accent)); }
-  .disclosure-summary:focus-visible .disclosure-title {
-    outline: 1px solid var(--recipe-accent, var(--accent));
-    outline-offset: 4px;
-  }
-  .disclosure-marker {
-    @apply font-3 text-[11px] tracking-[.15em] shrink-0 w-[28px];
-    color: var(--recipe-accent, var(--accent));
-  }
-  .disclosure-title {
-    @apply font-2 italic font-light text-[20px] text-color-4 leading-[1.3] flex-1 min-w-0;
-  }
-  .disclosure-chev {
-    @apply font-3 text-[14px] shrink-0 transition-transform duration-150;
-    color: var(--recipe-accent, var(--accent));
-  }
-  .disclosure-base[open] .disclosure-chev { transform: rotate(45deg); }
 
   /* — Pills / chips / badges — */
 
@@ -511,151 +456,8 @@ section {
 
 /* ─── Section heads ─── */
 
-/* ─── Prose ─── */
-.prose {
-  max-width: 70ch;
-  font-size: 17px;
-  line-height: 1.7;
-  color: var(--text-dim);
-}
-.prose p { margin-bottom: 1.4em; }
-.prose p strong, .prose strong { color: var(--text); font-weight: 500; }
-.prose em { font-style: italic; color: var(--text); }
-.prose h3 {
-  font-family: 'Fraunces', serif;
-  font-weight: 400;
-  font-style: italic;
-  font-size: 32px;
-  line-height: 1.1;
-  margin: 60px 0 24px;
-  color: var(--text);
-  letter-spacing: -.02em;
-}
-.prose .pullout {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: 26px;
-  line-height: 1.3;
-  color: var(--text);
-  padding: 24px 0 24px 28px;
-  margin: 32px 0;
-  border-left: 2px solid var(--accent);
-}
-.prose .math {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-size: 26px;
-  text-align: center;
-  margin: 30px 0;
-  color: var(--text);
-}
-.prose .math sub, .prose .math sup { font-size: .55em; }
-.prose .kbd {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .85em;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 2px 8px;
-  border-radius: 2px;
-}
-
-/* ─── Hero equation banner ─── */
-
-/* ─── Interactive lab ─── */
-.lab {
-  width: 100%;
-  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-elevated) 100%);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 50px 0;
-  position: relative;
-}
-.lab::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 20%, rgba(255,107,42,.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(108,197,194,.03) 0%, transparent 50%);
-  pointer-events: none;
-}
-.lab-inner {
-  max-width: 1480px;
-  margin: 0 auto;
-  padding: 0 40px;
-  position: relative;
-}
-.lab-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
-  flex-wrap: wrap;
-  gap: 12px;
-}
-.lab-header .title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: .22em;
-}
-.lab-header .id {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: .15em;
-}
-
-.lab-canvas-wrap {
-  background: var(--canvas-bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  overflow: hidden;
-  position: relative;
-}
-.lab-canvas-wrap canvas {
-  display: block;
-  width: 100%;
-}
-
-.lab-grid {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 30px;
-  margin-top: 30px;
-}
-@media (max-width: 1100px) {
-  .lab-grid { grid-template-columns: 1fr; }
-}
 
 /* ─── Control panel ─── */
-.controls-panel {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 28px;
-}
-.controls-panel .panel-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .25em;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.controls-panel .panel-title::before {
-  content: '';
-  width: 22px; height: 1px;
-  background: var(--accent);
-}
-
 .slider-group {
   margin-bottom: 22px;
 }
@@ -768,31 +570,6 @@ select.material-select {
 select.material-select:focus { outline: none; border-color: var(--accent); }
 
 /* ─── Output readouts panel ─── */
-.readout-panel {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-}
-.readout-panel .panel-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--teal);
-  text-transform: uppercase;
-  letter-spacing: .25em;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.readout-panel .panel-title::before {
-  content: '';
-  width: 22px; height: 1px;
-  background: var(--teal);
-}
-
 .readout {
   padding: 14px 0;
   border-bottom: 1px solid var(--border);
@@ -828,28 +605,6 @@ select.material-select:focus { outline: none; border-color: var(--accent); }
   margin-left: 4px;
   letter-spacing: .08em;
 }
-
-/* ─── Legend ─── */
-.legend {
-  display: flex;
-  gap: 22px;
-  flex-wrap: wrap;
-  padding: 14px 24px;
-  border-top: 1px solid var(--border);
-  background: var(--accent-soft);
-}
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: .12em;
-}
-.swatch { width: 14px; height: 2px; }
-.swatch.dot { width: 8px; height: 8px; border-radius: 50%; }
 
 /* ─── Buttons ─── */
 .btn {
@@ -979,9 +734,7 @@ footer {
 
 @media (max-width: 760px) {
   section { padding: 90px 24px; }
-  .lab-inner { padding: 0 20px; }
   footer { padding: 60px 24px 40px; }
-  .controls-panel, .readout-panel { padding: 22px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1034,87 +787,6 @@ footer {
   max-width: 1280px;
   margin: 0 auto;
 }
-/* Sources section */
-.sources {
-  max-width: 70ch;
-  margin: 80px 0 60px;
-  padding-top: 36px;
-  border-top: 1px solid var(--border-strong);
-}
-.sources .sources-head {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .25em;
-  margin-bottom: 26px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.sources .sources-head::before {
-  content: '';
-  width: 36px; height: 1px; background: var(--accent);
-}
-.sources ol {
-  list-style: none;
-  counter-reset: src;
-  padding: 0;
-}
-.sources li {
-  counter-increment: src;
-  position: relative;
-  padding: 12px 0 12px 44px;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--text-dim);
-  border-bottom: 1px dotted var(--border);
-}
-.sources li:last-child { border-bottom: none; }
-.sources li::before {
-  content: '[' counter(src) ']';
-  position: absolute;
-  left: 0;
-  top: 12px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  letter-spacing: .08em;
-}
-.sources .src-title { color: var(--text); font-weight: 500; }
-.sources .src-author { color: var(--text-muted); font-style: italic; }
-.sources a {
-  color: var(--text-dim);
-  text-decoration: none;
-  border-bottom: 1px dotted var(--text-muted);
-  word-break: break-word;
-}
-.sources a:hover { color: var(--accent); border-color: var(--accent); }
-.sources .src-note {
-  display: block;
-  margin-top: 4px;
-  font-size: 12px;
-  color: var(--text-muted);
-  font-style: italic;
-}
-
-/* Inline citation pill in prose */
-.prose .cite {
-  display: inline-block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  vertical-align: super;
-  line-height: 1;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 1px 5px;
-  margin: 0 1px;
-  border-radius: 2px;
-  text-decoration: none;
-  letter-spacing: 0;
-}
-.prose .cite:hover { background: var(--accent); color: var(--bg); }
-
 /* Slightly fix top-nav so chapter pills wrap nicely */
 nav.top .links a.active { color: var(--accent); }
 
@@ -1123,71 +795,6 @@ nav.top .links a.active { color: var(--accent); }
 /* ═══════════════════════════════════════════════════════════════
    v0.4 — narrative chapters + embedded demos
 ═══════════════════════════════════════════════════════════════ */
-
-/* Chapter front-door card grid (TOC) */
-.chapter-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  margin-top: 60px;
-}
-@media (max-width: 900px) { .chapter-grid { grid-template-columns: 1fr; } }
-.chapter-card {
-  background: var(--bg);
-  padding: 44px 38px;
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  transition: background .15s ease;
-  position: relative;
-  min-height: 280px;
-}
-.chapter-card:hover { background: var(--bg-card-hover); }
-.chapter-card .chap-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  letter-spacing: .25em;
-  text-transform: uppercase;
-}
-.chapter-card .chap-title {
-  font-family: 'Fraunces', serif;
-  font-weight: 300;
-  font-size: 38px;
-  line-height: 1.05;
-  letter-spacing: -.02em;
-  color: var(--text);
-}
-.chapter-card .chap-subtitle {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: 18px;
-  color: var(--accent);
-  margin-top: -6px;
-}
-.chapter-card .chap-blurb {
-  color: var(--text-dim);
-  font-size: 14px;
-  line-height: 1.55;
-}
-.chapter-card .chap-cta {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  margin-top: auto;
-  padding-top: 18px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.chapter-card:hover .chap-cta { color: var(--accent); }
 
 /* Narrative chapter page */
 .chapter-page {
@@ -1298,101 +905,6 @@ nav.top .links a.active { color: var(--accent); }
    v0.6 — Formula component + inline numeric typography
 ═══════════════════════════════════════════════════════════════ */
 
-/* Block-display formulas. Replaces ad-hoc <p className="math">. */
-.formula-block {
-  margin: 36px auto;
-  padding: 18px 32px;
-  max-width: 56ch;
-  text-align: center;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  position: relative;
-}
-.formula-block::before,
-.formula-block::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: 8px;
-  height: 1px;
-  background: var(--accent);
-  transform: translateY(-50%);
-}
-.formula-block::before { left: -8px; }
-.formula-block::after  { right: -8px; }
-
-.formula-content {
-  /* STIX Two Text — designed by AMS for math/scientific typography.
-     Italic by convention; operators that need upright can use .formula-op
-     or the <var> tag (CSS resets to normal style). */
-  font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: 28px;
-  line-height: 1.55;
-  letter-spacing: .005em;
-  color: var(--text);
-  font-feature-settings: "ss01", "lnum";
-}
-.formula-content sub,
-.formula-content sup {
-  font-size: 0.62em;
-  font-style: italic;
-  line-height: 0;
-  position: relative;
-  letter-spacing: 0;
-}
-.formula-content sub { vertical-align: -0.32em; }
-.formula-content sup { vertical-align:  0.55em; }
-
-.formula-content .formula-var {
-  color: var(--accent);
-  font-style: italic;
-}
-
-/* Operators / numerals / units that should stay upright in formulas */
-
-.formula-content var,
-.formula-content .upright {
-  font-style: normal;
-}
-
-.formula-caption {
-  margin-top: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.formula-block.formula-small { margin: 24px auto; padding: 12px 24px; }
-.formula-block.formula-small .formula-content { font-size: 22px; }
-
-/* Compact inline math — inside paragraphs / FAQ answers */
-.formula-inline {
-  font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
-  font-style: italic;
-  font-size: 1.05em;
-  color: var(--text);
-  white-space: nowrap;
-  font-feature-settings: "lnum";
-}
-.formula-inline var, .formula-inline .upright { font-style: normal; }
-.formula-inline sub, .formula-inline sup {
-  font-size: 0.65em;
-  line-height: 0;
-}
-.formula-inline sub { vertical-align: -0.35em; }
-.formula-inline sup { vertical-align:  0.5em; }
-
-/* When a formula appears inside FAQ answers, scale down */
-
-@media (max-width: 600px) {
-  .formula-content { font-size: 24px; }
-  .formula-block { padding: 14px 18px; }
-}
-
 /* Same fix for normal Readout (.ro-value) for any inline JSX numbers */
 .ro-value sub, .ro-value sup {
   font-size: 0.7em;
@@ -1409,89 +921,6 @@ nav.top .links a.active { color: var(--accent); }
 /* ═══════════════════════════════════════════════════════════════
    v0.9 — Try-it-yourself exercises + glossary popovers
 ═══════════════════════════════════════════════════════════════ */
-
-/* TryIt card — inline exercise with hidden-reveal answer */
-.tryit {
-  margin: 32px 0;
-  padding: 20px 24px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-strong);
-  border-left: 3px solid var(--teal);
-  border-radius: 3px;
-  position: relative;
-}
-.tryit-head { margin-bottom: 12px; }
-.tryit-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--teal);
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  background: var(--teal-soft);
-  border-radius: 2px;
-}
-.tryit-question {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: 19px;
-  line-height: 1.4;
-  color: var(--text);
-  margin-bottom: 8px;
-}
-.tryit-hint {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-  font-style: italic;
-}
-.tryit-reveal {
-  background: transparent;
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  padding: 6px 14px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 2px;
-  transition: all .15s ease;
-  margin-top: 4px;
-}
-.tryit-reveal:hover {
-  background: var(--accent);
-  color: var(--bg);
-}
-.tryit-answer {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px dotted var(--border-strong);
-  font-size: 15px;
-  line-height: 1.65;
-  color: var(--text-dim);
-}
-.tryit-answer strong { color: var(--text); font-weight: 500; }
-.tryit-answer em { color: var(--text); font-style: italic; }
-.tryit-answer p { margin-bottom: 0.9em; }
-.tryit-answer p:last-child { margin-bottom: 0; }
-.tryit-answer .formula-block { margin: 14px 0; padding: 10px 16px; }
-.tryit-answer .formula-block .formula-content { font-size: 20px; }
-.tryit-answer .cite {
-  display: inline-block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  vertical-align: super;
-  line-height: 0;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 1px 5px;
-  margin: 0 1px;
-  border-radius: 2px;
-  text-decoration: none;
-}
-.tryit-answer .cite:hover { background: var(--accent); color: var(--bg); }
 
 /* Glossary Term — inline dotted-underline with popover */
 .term {

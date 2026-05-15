@@ -12,24 +12,24 @@ interface SourcesListProps {
 export function SourcesList({ ids }: SourcesListProps) {
   if (!ids.length) return null;
   return (
-    <div className="sources reveal in">
-      <div className="sources-head">Sources</div>
-      <ol>
+    <div className="reveal in max-w-[70ch] my-[80px] mb-[60px] pt-[36px] border-t border-border-strong [&_a]:text-text-dim [&_a]:no-underline [&_a]:border-b [&_a]:border-dotted [&_a]:border-text-muted [&_a]:break-words hover:[&_a]:text-accent hover:[&_a]:border-accent">
+      <div className="font-3 text-[11px] text-accent uppercase tracking-[.25em] mb-[26px] flex items-center gap-[14px] before:content-[''] before:w-[36px] before:h-px before:bg-accent">Sources</div>
+      <ol className="list-none p-0 [counter-reset:src]">
         {ids.map(id => {
           const src = SOURCES[id];
           if (!src) {
             // Defensive: don't crash if a key is missing — surface the bad id.
             return (
-              <li key={id}>
-                <span className="src-title">Missing source: {id}</span>
+              <li key={id} className="[counter-increment:src] relative py-[12px] pl-[44px] text-[14px] leading-[1.55] text-text-dim border-b border-dotted border-border last:border-b-0 before:content-['['_counter(src)_']'] before:absolute before:left-0 before:top-[12px] before:font-3 before:text-[11px] before:text-accent before:tracking-[.08em]">
+                <span className="text-text font-medium">Missing source: {id}</span>
               </li>
             );
           }
           return (
-            <li key={id}>
-              <span className="src-title">{src.title}</span>
+            <li key={id} className="[counter-increment:src] relative py-[12px] pl-[44px] text-[14px] leading-[1.55] text-text-dim border-b border-dotted border-border last:border-b-0 before:content-['['_counter(src)_']'] before:absolute before:left-0 before:top-[12px] before:font-3 before:text-[11px] before:text-accent before:tracking-[.08em]">
+              <span className="text-text font-medium">{src.title}</span>
               {' — '}
-              <span className="src-author">{src.author}</span>
+              <span className="text-text-muted italic">{src.author}</span>
               {src.year && ` (${src.year})`}
               {src.venue && `, ${src.venue}`}
               {src.locator && `, ${src.locator}`}
@@ -41,7 +41,7 @@ export function SourcesList({ ids }: SourcesListProps) {
                   </a>
                 </>
               )}
-              {src.note && <span className="src-note">{src.note}</span>}
+              {src.note && <span className="block mt-[4px] text-[12px] text-text-muted italic">{src.note}</span>}
             </li>
           );
         })}
@@ -57,7 +57,9 @@ interface CiteProps {
   in: SourceKey[];
 }
 
-/** Inline numbered citation pill — clickable down to the sources list. */
+/** Inline numbered citation pill — clickable down to the sources list.
+ *  Keeps the legacy `cite` className so chapter-narrative descendant
+ *  selectors that target `.cite` keep matching. */
 export function Cite({ id, in: ids }: CiteProps) {
   const idx = ids.indexOf(id);
   if (idx === -1) {
@@ -67,7 +69,7 @@ export function Cite({ id, in: ids }: CiteProps) {
   }
   return (
     <a
-      className="cite"
+      className="cite inline-block font-3 text-[10px] align-super leading-none text-accent bg-accent-soft py-px px-[5px] mx-px rounded-2 no-underline tracking-normal hover:bg-accent hover:text-bg"
       href={`#src-${id}`}
       title={SOURCES[id]?.title ?? id}
     >

@@ -9,9 +9,14 @@ interface PanelProps {
 
 /** Controls or readouts panel. */
 export function Panel({ title, children, variant = 'inputs' }: PanelProps) {
+  const titleAccent = variant === 'inputs' ? 'text-accent before:bg-accent' : 'text-teal before:bg-teal';
   return (
-    <div className={variant === 'inputs' ? 'controls-panel' : 'readout-panel'}>
-      <div className="panel-title">{title}</div>
+    <div className={
+      variant === 'inputs'
+        ? 'bg-bg-card border border-border rounded-[4px] p-[28px]'
+        : 'bg-bg-card border border-border rounded-[4px] p-[28px] flex flex-col'
+    }>
+      <div className={`font-3 text-[10px] uppercase tracking-[.25em] mb-[24px] flex items-center gap-[10px] before:content-[''] before:w-[22px] before:h-[1px] ${titleAccent}`}>{title}</div>
       {children}
     </div>
   );
@@ -35,11 +40,15 @@ interface LabGridProps {
 export function LabGrid({ canvas, legend, inputs, outputs }: LabGridProps) {
   return (
     <>
-      <div className="lab-canvas-wrap">
+      <div className="bg-color-canvas-bg border border-border rounded-[4px] overflow-hidden relative [&_canvas]:block [&_canvas]:w-full">
         {canvas}
-        {legend && <div className="legend">{legend}</div>}
+        {legend && (
+          <div className="flex gap-[22px] flex-wrap py-[14px] px-[24px] border-t border-border bg-accent-soft">
+            {legend}
+          </div>
+        )}
       </div>
-      <div className="lab-grid">
+      <div className="grid grid-cols-[1.4fr_1fr] gap-[30px] mt-[30px] max-[1100px]:grid-cols-1">
         <Panel title="Inputs" variant="inputs">{inputs}</Panel>
         <Panel title="Outputs" variant="outputs">{outputs}</Panel>
       </div>
@@ -55,10 +64,13 @@ interface LegendItemProps {
 }
 export function LegendItem({ swatchColor, dot, children, style }: LegendItemProps) {
   return (
-    <div className="legend-item" style={style}>
+    <div
+      className="flex items-center gap-[8px] font-3 text-[10px] text-color-text-dim uppercase tracking-[.12em]"
+      style={style}
+    >
       {swatchColor && (
         <span
-          className={dot ? 'swatch dot' : 'swatch'}
+          className={dot ? 'w-[8px] h-[8px] rounded-full' : 'w-[14px] h-[2px]'}
           style={{ background: swatchColor }}
         />
       )}
