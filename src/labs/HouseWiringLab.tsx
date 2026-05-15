@@ -272,83 +272,83 @@ export default function HouseWiringLab() {
   /* ───────────── Render ───────────── */
 
   const labContent = (
-    <div className="hw-shell">
-      <div className="hw-toolbar">
-        <div className="hw-toolbar-group">
-          <button type="button" className="hw-btn" onClick={loadPreset}>Load preset</button>
-          <button type="button" className="hw-btn danger" onClick={clearAll}>Clear all</button>
+    <div className="flex flex-col gap-lg mt-md">
+      <div className="flex justify-between items-center gap-lg flex-wrap pb-md border-b border-border">
+        <div className="flex items-center gap-sm flex-wrap">
+          <button type="button" className="bg-bg-card text-text-dim border border-border font-3 text-2 py-[6px] px-md rounded-2 cursor-pointer transition-all hover:text-text hover:border-text-dim hover:bg-bg-card-hover" onClick={loadPreset}>Load preset</button>
+          <button type="button" className="bg-bg-card text-text-dim border border-border font-3 text-2 py-[6px] px-md rounded-2 cursor-pointer transition-all hover:text-pink hover:border-pink hover:bg-bg-card-hover" onClick={clearAll}>Clear all</button>
         </div>
-        <div className="hw-toolbar-group">
-          <span className="hw-toolbar-label">Panel:</span>
+        <div className="flex items-center gap-sm flex-wrap">
+          <span className="font-3 text-1 text-text-muted uppercase tracking-4 mr-xs">Panel:</span>
           {[100, 150, 200, 400].map(a => (
             <button
               key={a}
               type="button"
-              className={'hw-btn small ' + (doc.panelAmps === a ? 'on' : '')}
+              className={'bg-bg-card border font-3 text-1 py-xs px-[9px] rounded-2 cursor-pointer transition-all hover:bg-bg-card-hover ' + (doc.panelAmps === a ? 'text-accent border-accent' : 'text-text-dim border-border hover:text-text hover:border-text-dim')}
               onClick={() => updatePanelAmps(a)}
             >{a} A</button>
           ))}
         </div>
-        <div className="hw-toolbar-group">
+        <div className="flex items-center gap-sm flex-wrap">
           <button
             type="button"
-            className={'hw-btn small ' + (doc.mainBondingJumper ? 'on' : 'off')}
+            className={'bg-bg-card border font-3 text-1 py-xs px-[9px] rounded-2 cursor-pointer transition-all hover:bg-bg-card-hover ' + (doc.mainBondingJumper ? 'text-accent border-accent' : 'text-text-muted border-border hover:text-text hover:border-text-dim')}
             onClick={() => toggleBonding('mainBondingJumper')}
             title="Main bonding jumper at service panel"
           >MBJ: {doc.mainBondingJumper ? 'on' : 'off'}</button>
           <button
             type="button"
-            className={'hw-btn small ' + (doc.subpanelBonded ? 'off' : 'on')}
+            className={'bg-bg-card border font-3 text-1 py-xs px-[9px] rounded-2 cursor-pointer transition-all hover:bg-bg-card-hover ' + (doc.subpanelBonded ? 'text-text-muted border-border hover:text-text hover:border-text-dim' : 'text-accent border-accent')}
             onClick={() => toggleBonding('subpanelBonded')}
             title="Whether neutral and ground are bonded at a subpanel (should be off)"
           >Subpanel N-G: {doc.subpanelBonded ? 'bonded' : 'isolated'}</button>
         </div>
       </div>
 
-      <div className="hw-body">
-        <aside className="hw-left">
-          <div className="hw-pal-section">
-            <div className="hw-pal-title">Devices</div>
+      <div className="grid grid-cols-[220px_1fr_280px] max-[1200px]:grid-cols-1 gap-lg items-start">
+        <aside className="bg-bg-card border border-border rounded-3 p-[14px] max-h-[700px] overflow-y-auto">
+          <div className="flex flex-col gap-[5px] mb-[14px]">
+            <div className="font-3 text-1 text-accent uppercase tracking-4 mb-xs">Devices</div>
             {DEVICE_KINDS.map(k => (
               <button
                 key={k}
                 type="button"
-                className={'hw-pal-btn ' + (armed === k ? 'active' : '')}
+                className={'border font-1 text-3 py-[5px] px-[9px] rounded-2 cursor-pointer text-left transition-all ' + (armed === k ? 'bg-accent-soft text-text border-accent' : 'bg-bg-elevated border-border text-text-dim hover:text-text hover:bg-bg-card-hover hover:border-text-dim')}
                 onClick={() => setArmed(armed === k ? 'select' : k)}
               >{deviceLabel(k)}</button>
             ))}
           </div>
-          <div className="hw-pal-section">
-            <div className="hw-pal-title">Breakers</div>
+          <div className="flex flex-col gap-[5px] mb-[14px]">
+            <div className="font-3 text-1 text-accent uppercase tracking-4 mb-xs">Breakers</div>
             {BREAKER_KINDS.map(k => (
               <button
                 key={k}
                 type="button"
-                className={'hw-pal-btn ' + (armed === k ? 'active' : '')}
+                className={'border font-1 text-3 py-[5px] px-[9px] rounded-2 cursor-pointer text-left transition-all ' + (armed === k ? 'bg-accent-soft text-text border-accent' : 'bg-bg-elevated border-border text-text-dim hover:text-text hover:bg-bg-card-hover hover:border-text-dim')}
                 onClick={() => setArmed(armed === k ? 'select' : k)}
               >{breakerKindLabel(k)}</button>
             ))}
           </div>
-          <div className="hw-pal-section">
-            <div className="hw-pal-title">Cable</div>
+          <div className="flex flex-col gap-[5px] mb-[14px]">
+            <div className="font-3 text-1 text-accent uppercase tracking-4 mb-xs">Cable</div>
             {CABLE_KINDS.map(k => (
               <button
                 key={k}
                 type="button"
-                className={'hw-pal-btn ' + (defaultCableKind === k ? 'active' : '')}
+                className={'border font-1 text-3 py-[5px] px-[9px] rounded-2 cursor-pointer text-left transition-all ' + (defaultCableKind === k ? 'bg-accent-soft text-text border-accent' : 'bg-bg-elevated border-border text-text-dim hover:text-text hover:bg-bg-card-hover hover:border-text-dim')}
                 onClick={() => setDefaultCableKind(k)}
               >NM-B {cableLabel(k)}</button>
             ))}
             <button
               type="button"
-              className={'hw-pal-btn ' + (armed === 'cable-pick' ? 'active' : '')}
+              className={'border font-1 text-3 py-[5px] px-[9px] rounded-2 cursor-pointer text-left transition-all ' + (armed === 'cable-pick' ? 'bg-accent-soft text-text border-accent' : 'bg-bg-elevated border-border text-text-dim hover:text-text hover:bg-bg-card-hover hover:border-text-dim')}
               onClick={() => {
                 if (armed === 'cable-pick') { setArmed('select'); setCableAnchor(null); }
                 else setArmed('cable-pick');
               }}
             >Run cable…</button>
           </div>
-          <div className="hw-pal-hint">
+          <div className="font-3 text-1 text-text-muted leading-[1.45] pt-[10px] border-t border-border">
             {armed === 'cable-pick'
               ? cableAnchor
                 ? 'Click the device this cable feeds.'
@@ -359,7 +359,7 @@ export default function HouseWiringLab() {
           </div>
         </aside>
 
-        <main className="hw-main">
+        <main className="flex flex-col gap-lg">
           <FloorplanCanvas
             doc={doc}
             armed={armed}
@@ -380,9 +380,9 @@ export default function HouseWiringLab() {
           />
 
           {/* Bottom: tally + violations */}
-          <div className="hw-bottom">
-            <div className="hw-bottom-col">
-              <div className="hw-bottom-title">Panel summary</div>
+          <div className="bg-bg-card border border-border rounded-3 p-[14px] grid grid-cols-[1fr_1.2fr_1.4fr] max-[900px]:grid-cols-1 gap-[18px]">
+            <div className="min-w-0">
+              <div className="font-3 text-1 text-accent uppercase tracking-4 mb-sm">Panel summary</div>
               <Row label="Service rating" value={`${doc.panelAmps} A`} />
               <Row
                 label="Calculated demand"
@@ -400,41 +400,49 @@ export default function HouseWiringLab() {
               <Row label="Branches" value={String(doc.breakers.length)} />
               <Row label="Devices" value={String(doc.devices.length)} />
             </div>
-            <div className="hw-bottom-col">
-              <div className="hw-bottom-title">Circuits (live)</div>
-              <div className="hw-circuit-table">
+            <div className="min-w-0">
+              <div className="font-3 text-1 text-accent uppercase tracking-4 mb-sm">Circuits (live)</div>
+              <div className="flex flex-col gap-[2px]">
                 {auditResult.circuits.length === 0 && (
-                  <div className="hw-empty">No breakers placed.</div>
+                  <div className="text-2 text-text-muted leading-5 py-sm">No breakers placed.</div>
                 )}
                 {auditResult.circuits.map(c => (
-                  <div key={c.breakerId} className="hw-circuit-row">
-                    <span className="hw-circuit-label">{c.breakerLabel}</span>
-                    <span className="hw-circuit-value">
+                  <div key={c.breakerId} className="flex justify-between gap-sm py-[3px] border-b border-border border-dashed text-2">
+                    <span className="text-text-dim font-1">{c.breakerLabel}</span>
+                    <span className="text-text font-3 text-2">
                       {c.demandAmps.toFixed(1)}/{c.breakerAmps} A
                       {c.voltageDropPct > 0 && (
                         <> · ΔV {c.voltageDropPct.toFixed(1)}%</>
                       )}
-                      {c.willTrip && <span className="hw-trip"> TRIP</span>}
+                      {c.willTrip && <span className="text-pink font-bold ml-[6px]"> TRIP</span>}
                     </span>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="hw-bottom-col">
-              <div className="hw-bottom-title">
-                Violations <span className="hw-vio-count">{auditResult.violations.length}</span>
+            <div className="min-w-0">
+              <div className="font-3 text-1 text-accent uppercase tracking-4 mb-sm">
+                Violations <span className="text-text bg-accent rounded-pill py-[1px] px-[7px] text-1 ml-[6px]">{auditResult.violations.length}</span>
               </div>
-              <div className="hw-vio-list">
+              <div className="flex flex-col gap-sm max-h-[260px] overflow-y-auto">
                 {auditResult.violations.length === 0 && (
-                  <div className="hw-empty hw-empty-ok">No violations. Inspector smiles.</div>
+                  <div className="text-2 text-teal leading-5 py-sm">No violations. Inspector smiles.</div>
                 )}
                 {auditResult.violations.map(v => (
-                  <div key={v.id} className={'hw-vio ' + v.severity}>
-                    <div className="hw-vio-head">
-                      <span className="hw-vio-code">{v.code}</span>
-                      <span className="hw-vio-title">{v.title}</span>
+                  <div
+                    key={v.id}
+                    className={'border-l-[3px] py-[6px] px-sm bg-bg-elevated rounded-r-2 ' + (
+                      v.severity === 'error' ? 'border-l-pink' :
+                      v.severity === 'warning' ? 'border-l-accent' :
+                      v.severity === 'info' ? 'border-l-teal' :
+                      'border-l-accent'
+                    )}
+                  >
+                    <div className="flex gap-sm items-baseline text-2">
+                      <span className="font-3 text-text-dim text-1 uppercase">{v.code}</span>
+                      <span className="font-1 text-text font-semibold">{v.title}</span>
                     </div>
-                    <div className="hw-vio-detail">{v.detail}</div>
+                    <div className="text-2 text-text-dim leading-5 mt-[3px]">{v.detail}</div>
                   </div>
                 ))}
               </div>
@@ -442,7 +450,7 @@ export default function HouseWiringLab() {
           </div>
         </main>
 
-        <aside className="hw-right">
+        <aside className="bg-bg-card border border-border rounded-3 p-[14px] max-h-[700px] overflow-y-auto">
           {selectedDevice && (
             <DeviceInspector
               key={selectedDevice.id}
@@ -470,9 +478,9 @@ export default function HouseWiringLab() {
             />
           )}
           {!selectedDevice && !selectedBreaker && !selectedCable && (
-            <div className="hw-inspector">
-              <div className="hw-inspector-title">Inspector</div>
-              <div className="hw-inspector-empty">
+            <div className="flex flex-col gap-[10px]">
+              <div className="font-3 text-1 text-accent uppercase tracking-4">Inspector</div>
+              <div className="text-3 text-text-muted leading-5">
                 Click a device, breaker, or cable to edit its properties,
                 attach an appliance, or change conductor size.
               </div>
@@ -629,16 +637,13 @@ export default function HouseWiringLab() {
   );
 
   return (
-    <>
-      <style>{CSS}</style>
-      <LabShell
-        slug={SLUG}
-        labSubtitle="Floorplan editor + live NEC audit"
-        labId="house-wiring / NEC 210 · 220 · 240 · 250 · 300 · 404 · 406"
-        labContent={labContent}
-        prose={prose}
-      />
-    </>
+    <LabShell
+      slug={SLUG}
+      labSubtitle="Floorplan editor + live NEC audit"
+      labId="house-wiring / NEC 210 · 220 · 240 · 250 · 300 · 404 · 406"
+      labContent={labContent}
+      prose={prose}
+    />
   );
 }
 
@@ -662,15 +667,15 @@ function DeviceInspector({
   const appliance = device.applianceId ? doc.appliances.find(a => a.id === device.applianceId) : null;
 
   return (
-    <div className="hw-inspector">
-      <div className="hw-inspector-title">Inspector — Device</div>
-      <div className="hw-inspector-kind">{deviceLabel(device.kind)}</div>
-      <div className="hw-field-static">In {room?.name ?? '(no room)'} at ({device.x}, {device.y})</div>
+    <div className="flex flex-col gap-[10px]">
+      <div className="font-3 text-1 text-accent uppercase tracking-4">Inspector — Device</div>
+      <div className="font-2 italic text-[17px] text-text">{deviceLabel(device.kind)}</div>
+      <div className="text-2 text-text-muted leading-[1.4]">In {room?.name ?? '(no room)'} at ({device.x}, {device.y})</div>
 
-      <div className="hw-field">
-        <label className="hw-field-label">Type</label>
+      <div className="flex flex-col gap-[5px]">
+        <label className="flex justify-between font-3 text-1 text-text-dim uppercase tracking-[0.15em]">Type</label>
         <select
-          className="hw-select"
+          className="bg-bg-elevated border border-border text-text font-3 text-3 py-[5px] px-[7px] rounded-1 w-full box-border focus:outline-none focus:border-accent"
           value={device.kind}
           onChange={e => onUpdate({ ...device, kind: e.target.value as DeviceKind })}
         >
@@ -678,10 +683,10 @@ function DeviceInspector({
         </select>
       </div>
 
-      <div className="hw-field">
-        <label className="hw-field-label">Breaker</label>
+      <div className="flex flex-col gap-[5px]">
+        <label className="flex justify-between font-3 text-1 text-text-dim uppercase tracking-[0.15em]">Breaker</label>
         <select
-          className="hw-select"
+          className="bg-bg-elevated border border-border text-text font-3 text-3 py-[5px] px-[7px] rounded-1 w-full box-border focus:outline-none focus:border-accent"
           value={device.breakerId ?? ''}
           onChange={e => onUpdate({ ...device, breakerId: e.target.value || null })}
         >
@@ -697,10 +702,10 @@ function DeviceInspector({
       {(device.kind === 'receptacle' || device.kind === 'receptacle-gfci' ||
         device.kind === 'receptacle-tr' || device.kind === 'receptacle-wr' ||
         device.kind === 'receptacle-240') && (
-        <div className="hw-field">
-          <label className="hw-field-label">Appliance</label>
+        <div className="flex flex-col gap-[5px]">
+          <label className="flex justify-between font-3 text-1 text-text-dim uppercase tracking-[0.15em]">Appliance</label>
           <select
-            className="hw-select"
+            className="bg-bg-elevated border border-border text-text font-3 text-3 py-[5px] px-[7px] rounded-1 w-full box-border focus:outline-none focus:border-accent"
             value={appliance?.kind ?? ''}
             onChange={e => onSetAppliance(device.id, e.target.value as ApplianceKind | '')}
           >
@@ -713,12 +718,12 @@ function DeviceInspector({
       )}
 
       {appliance && (
-        <div className="hw-appliance-card">
-          <div className="hw-field">
-            <label className="hw-field-label">Nameplate <span className="hw-field-unit">W</span></label>
+        <div className="bg-bg-elevated border border-border rounded-2 p-[10px] flex flex-col gap-sm">
+          <div className="flex flex-col gap-[5px]">
+            <label className="flex justify-between font-3 text-1 text-text-dim uppercase tracking-[0.15em]">Nameplate <span className="text-text-muted">W</span></label>
             <input
               type="number"
-              className="hw-input"
+              className="bg-bg-elevated border border-border text-text font-3 text-3 py-[5px] px-[7px] rounded-1 w-full box-border focus:outline-none focus:border-accent"
               value={appliance.watts}
               min={0}
               step={50}
@@ -728,25 +733,25 @@ function DeviceInspector({
               }}
             />
           </div>
-          <div className="hw-field-row">
+          <div className="flex gap-[6px]">
             <button
               type="button"
-              className={'hw-toggle ' + (appliance.continuous ? 'on' : 'off')}
+              className={'flex-1 bg-bg-elevated border font-3 text-2 py-[6px] px-sm rounded-2 cursor-pointer ' + (appliance.continuous ? 'text-teal border-teal' : 'text-text-muted border-border')}
               onClick={() => onUpdateAppliance(appliance.id, { continuous: !appliance.continuous })}
             >{appliance.continuous ? 'Continuous (×1.25)' : 'Non-continuous'}</button>
           </div>
-          <div className="hw-field-row">
+          <div className="flex gap-[6px]">
             <button
               type="button"
-              className={'hw-toggle ' + (appliance.on ? 'on' : 'off')}
+              className={'flex-1 bg-bg-elevated border font-3 text-2 py-[6px] px-sm rounded-2 cursor-pointer ' + (appliance.on ? 'text-teal border-teal' : 'text-text-muted border-border')}
               onClick={() => onToggleAppliance(appliance.id)}
             >{appliance.on ? 'Currently ON' : 'Currently off'}</button>
           </div>
         </div>
       )}
 
-      <div className="hw-inspector-actions">
-        <button type="button" className="hw-btn danger small" onClick={onDelete}>Delete device</button>
+      <div className="flex gap-sm mt-xs">
+        <button type="button" className="bg-bg-card text-text-dim border border-border font-3 text-1 py-xs px-[9px] rounded-2 cursor-pointer transition-all hover:text-pink hover:border-pink hover:bg-bg-card-hover" onClick={onDelete}>Delete device</button>
       </div>
     </div>
   );
@@ -759,14 +764,14 @@ interface BreakerInspectorProps {
 }
 function BreakerInspector({ breaker, onUpdate, onDelete }: BreakerInspectorProps) {
   return (
-    <div className="hw-inspector">
-      <div className="hw-inspector-title">Inspector — Breaker</div>
-      <div className="hw-inspector-kind">Slot {breaker.slot + 1}</div>
-      <div className="hw-field-static">{breaker.label ?? '(no label)'}</div>
-      <div className="hw-field">
-        <label className="hw-field-label">Kind</label>
+    <div className="flex flex-col gap-[10px]">
+      <div className="font-3 text-1 text-accent uppercase tracking-4">Inspector — Breaker</div>
+      <div className="font-2 italic text-[17px] text-text">Slot {breaker.slot + 1}</div>
+      <div className="text-2 text-text-muted leading-[1.4]">{breaker.label ?? '(no label)'}</div>
+      <div className="flex flex-col gap-[5px]">
+        <label className="flex justify-between font-3 text-1 text-text-dim uppercase tracking-[0.15em]">Kind</label>
         <select
-          className="hw-select"
+          className="bg-bg-elevated border border-border text-text font-3 text-3 py-[5px] px-[7px] rounded-1 w-full box-border focus:outline-none focus:border-accent"
           value={breaker.kind}
           onChange={e => onUpdate(breaker.id, e.target.value as BreakerKind)}
         >
@@ -775,8 +780,8 @@ function BreakerInspector({ breaker, onUpdate, onDelete }: BreakerInspectorProps
           ))}
         </select>
       </div>
-      <div className="hw-inspector-actions">
-        <button type="button" className="hw-btn danger small" onClick={onDelete}>Delete breaker</button>
+      <div className="flex gap-sm mt-xs">
+        <button type="button" className="bg-bg-card text-text-dim border border-border font-3 text-1 py-xs px-[9px] rounded-2 cursor-pointer transition-all hover:text-pink hover:border-pink hover:bg-bg-card-hover" onClick={onDelete}>Delete breaker</button>
       </div>
     </div>
   );
@@ -789,13 +794,13 @@ interface CableInspectorProps {
 }
 function CableInspector({ cable, onUpdate, onDelete }: CableInspectorProps) {
   return (
-    <div className="hw-inspector">
-      <div className="hw-inspector-title">Inspector — Cable</div>
-      <div className="hw-inspector-kind">NM-B {cableLabel(cable.kind)}</div>
-      <div className="hw-field">
-        <label className="hw-field-label">Cable type</label>
+    <div className="flex flex-col gap-[10px]">
+      <div className="font-3 text-1 text-accent uppercase tracking-4">Inspector — Cable</div>
+      <div className="font-2 italic text-[17px] text-text">NM-B {cableLabel(cable.kind)}</div>
+      <div className="flex flex-col gap-[5px]">
+        <label className="flex justify-between font-3 text-1 text-text-dim uppercase tracking-[0.15em]">Cable type</label>
         <select
-          className="hw-select"
+          className="bg-bg-elevated border border-border text-text font-3 text-3 py-[5px] px-[7px] rounded-1 w-full box-border focus:outline-none focus:border-accent"
           value={cable.kind}
           onChange={e => onUpdate(cable.id, { kind: e.target.value as CableKind })}
         >
@@ -804,11 +809,11 @@ function CableInspector({ cable, onUpdate, onDelete }: CableInspectorProps) {
           ))}
         </select>
       </div>
-      <div className="hw-field">
-        <label className="hw-field-label">Length <span className="hw-field-unit">ft</span></label>
+      <div className="flex flex-col gap-[5px]">
+        <label className="flex justify-between font-3 text-1 text-text-dim uppercase tracking-[0.15em]">Length <span className="text-text-muted">ft</span></label>
         <input
           type="number"
-          className="hw-input"
+          className="bg-bg-elevated border border-border text-text font-3 text-3 py-[5px] px-[7px] rounded-1 w-full box-border focus:outline-none focus:border-accent"
           value={cable.lengthFt}
           min={1} step={1}
           onChange={e => {
@@ -817,11 +822,11 @@ function CableInspector({ cable, onUpdate, onDelete }: CableInspectorProps) {
           }}
         />
       </div>
-      <div className="hw-field">
-        <label className="hw-field-label">Studs / joists pierced</label>
+      <div className="flex flex-col gap-[5px]">
+        <label className="flex justify-between font-3 text-1 text-text-dim uppercase tracking-[0.15em]">Studs / joists pierced</label>
         <input
           type="number"
-          className="hw-input"
+          className="bg-bg-elevated border border-border text-text font-3 text-3 py-[5px] px-[7px] rounded-1 w-full box-border focus:outline-none focus:border-accent"
           value={cable.studs}
           min={0} step={1}
           onChange={e => {
@@ -830,8 +835,8 @@ function CableInspector({ cable, onUpdate, onDelete }: CableInspectorProps) {
           }}
         />
       </div>
-      <div className="hw-inspector-actions">
-        <button type="button" className="hw-btn danger small" onClick={onDelete}>Delete cable</button>
+      <div className="flex gap-sm mt-xs">
+        <button type="button" className="bg-bg-card text-text-dim border border-border font-3 text-1 py-xs px-[9px] rounded-2 cursor-pointer transition-all hover:text-pink hover:border-pink hover:bg-bg-card-hover" onClick={onDelete}>Delete cable</button>
       </div>
     </div>
   );
@@ -842,286 +847,10 @@ function CableInspector({ cable, onUpdate, onDelete }: CableInspectorProps) {
 interface RowProps { label: string; value: string; color?: string }
 function Row({ label, value, color }: RowProps) {
   return (
-    <div className="hw-readout-row">
-      <span className="hw-readout-label">{label}</span>
-      <span className="hw-readout-value" style={color ? { color } : undefined}>{value}</span>
+    <div className="flex justify-between gap-md py-xs border-b border-border border-dashed text-3 last:border-b-0">
+      <span className="text-text-dim font-1">{label}</span>
+      <span className="text-text font-3" style={color ? { color } : undefined}>{value}</span>
     </div>
   );
 }
 
-/* ───────────────────────── Inline CSS ───────────────────────── */
-
-const CSS = `
-.hw-shell {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 12px;
-}
-.hw-toolbar {
-  display: flex; justify-content: space-between; align-items: center;
-  gap: 16px; flex-wrap: wrap;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-.hw-toolbar-group {
-  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-}
-.hw-toolbar-label {
-  font-family: 'JetBrains Mono', monospace; font-size: 10px;
-  color: var(--text-muted); text-transform: uppercase; letter-spacing: .2em;
-  margin-right: 4px;
-}
-.hw-btn {
-  background: var(--bg-card);
-  color: var(--text-dim);
-  border: 1px solid var(--border);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  padding: 6px 12px;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all .15s ease;
-}
-.hw-btn:hover {
-  color: var(--text);
-  border-color: var(--text-dim);
-  background: var(--bg-card-hover);
-}
-.hw-btn.small { font-size: 10px; padding: 4px 9px; }
-.hw-btn.on { color: var(--accent); border-color: var(--accent); }
-.hw-btn.off { color: var(--text-muted); border-color: var(--border); }
-.hw-btn.danger:hover {
-  color: var(--pink);
-  border-color: var(--pink);
-}
-
-.hw-body {
-  display: grid;
-  grid-template-columns: 220px 1fr 280px;
-  gap: 16px;
-  align-items: start;
-}
-@media (max-width: 1200px) {
-  .hw-body { grid-template-columns: 1fr; }
-}
-
-.hw-left, .hw-right {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 14px;
-  max-height: 700px;
-  overflow-y: auto;
-}
-.hw-main { display: flex; flex-direction: column; gap: 16px; }
-
-.hw-pal-section { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
-.hw-pal-title {
-  font-family: 'JetBrains Mono', monospace; font-size: 10px;
-  color: var(--accent); text-transform: uppercase; letter-spacing: .2em;
-  margin-bottom: 4px;
-}
-.hw-pal-btn {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  font-family: 'DM Sans', system-ui, sans-serif;
-  font-size: 12px;
-  padding: 5px 9px;
-  border-radius: 3px;
-  cursor: pointer;
-  text-align: left;
-  transition: all .15s ease;
-}
-.hw-pal-btn:hover {
-  color: var(--text);
-  background: var(--bg-card-hover);
-  border-color: var(--text-dim);
-}
-.hw-pal-btn.active {
-  background: var(--accent-soft);
-  color: var(--text);
-  border-color: var(--accent);
-}
-.hw-pal-hint {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  line-height: 1.45;
-  padding-top: 10px;
-  border-top: 1px solid var(--border);
-}
-
-.hw-bottom {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 14px;
-  display: grid;
-  grid-template-columns: 1fr 1.2fr 1.4fr;
-  gap: 18px;
-}
-@media (max-width: 900px) {
-  .hw-bottom { grid-template-columns: 1fr; }
-}
-.hw-bottom-col { min-width: 0; }
-.hw-bottom-title {
-  font-family: 'JetBrains Mono', monospace; font-size: 10px;
-  color: var(--accent); text-transform: uppercase; letter-spacing: .2em;
-  margin-bottom: 8px;
-}
-.hw-vio-count {
-  color: var(--text);
-  background: var(--accent);
-  border-radius: 99px;
-  padding: 1px 7px;
-  font-size: 10px;
-  margin-left: 6px;
-}
-
-.hw-readout-row {
-  display: flex; justify-content: space-between;
-  gap: 12px;
-  padding: 4px 0;
-  border-bottom: 1px dashed var(--border);
-  font-size: 12px;
-}
-.hw-readout-row:last-child { border-bottom: none; }
-.hw-readout-label { color: var(--text-dim); font-family: 'DM Sans', sans-serif; }
-.hw-readout-value { color: var(--text); font-family: 'JetBrains Mono', monospace; }
-
-.hw-circuit-table { display: flex; flex-direction: column; gap: 2px; }
-.hw-circuit-row {
-  display: flex; justify-content: space-between; gap: 8px;
-  padding: 3px 0;
-  border-bottom: 1px dashed var(--border);
-  font-size: 11px;
-}
-.hw-circuit-label { color: var(--text-dim); font-family: 'DM Sans', sans-serif; }
-.hw-circuit-value { color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 11px; }
-.hw-trip {
-  color: var(--pink);
-  font-weight: bold;
-  margin-left: 6px;
-}
-
-.hw-vio-list { display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; }
-.hw-vio {
-  border-left: 3px solid var(--accent);
-  padding: 6px 8px;
-  background: var(--bg-elevated);
-  border-radius: 0 3px 3px 0;
-}
-.hw-vio.error { border-left-color: var(--pink); }
-.hw-vio.warning { border-left-color: var(--accent); }
-.hw-vio.info { border-left-color: var(--teal); }
-.hw-vio-head {
-  display: flex; gap: 8px; align-items: baseline;
-  font-size: 11px;
-}
-.hw-vio-code {
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--text-dim);
-  font-size: 10px;
-  text-transform: uppercase;
-}
-.hw-vio-title {
-  font-family: 'DM Sans', sans-serif;
-  color: var(--text);
-  font-weight: 600;
-}
-.hw-vio-detail {
-  font-size: 11px;
-  color: var(--text-dim);
-  line-height: 1.5;
-  margin-top: 3px;
-}
-.hw-empty {
-  font-size: 11px;
-  color: var(--text-muted);
-  line-height: 1.5;
-  padding: 8px 0;
-}
-.hw-empty-ok { color: var(--teal); }
-
-.hw-inspector {
-  display: flex; flex-direction: column; gap: 10px;
-}
-.hw-inspector-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-}
-.hw-inspector-kind {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-size: 17px;
-  color: var(--text);
-}
-.hw-inspector-empty {
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-.hw-inspector-actions {
-  display: flex; gap: 8px; margin-top: 4px;
-}
-
-.hw-field { display: flex; flex-direction: column; gap: 5px; }
-.hw-field-static {
-  font-size: 11px;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-.hw-field-label {
-  display: flex; justify-content: space-between;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: .15em;
-}
-.hw-field-unit { color: var(--text-muted); }
-.hw-field-row { display: flex; gap: 6px; }
-.hw-input, .hw-select {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  padding: 5px 7px;
-  border-radius: 2px;
-  width: 100%;
-  box-sizing: border-box;
-}
-.hw-input:focus, .hw-select:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-.hw-toggle {
-  flex: 1;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  padding: 6px 8px;
-  border-radius: 3px;
-  cursor: pointer;
-}
-.hw-toggle.on { color: var(--teal); border-color: var(--teal); }
-.hw-toggle.off { color: var(--text-muted); }
-
-.hw-appliance-card {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-`;

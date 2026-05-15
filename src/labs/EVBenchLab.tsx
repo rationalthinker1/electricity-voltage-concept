@@ -216,46 +216,53 @@ export default function EVBenchLab() {
   /* ─── Render ─── */
 
   const labContent = (
-    <div className="ev-shell">
+    <div className="flex flex-col gap-lg mt-md">
       {/* Top toolbar */}
-      <div className="ev-toolbar">
-        <div className="ev-toolbar-group">
+      <div className="flex justify-between items-center gap-lg flex-wrap pb-md border-b border-border">
+        <div className="flex items-center gap-sm flex-wrap">
           <button
             type="button"
-            className={'ev-btn ' + (running ? 'on' : 'primary')}
+            className={'bg-bg-card border font-3 text-2 py-[6px] px-md rounded-2 cursor-pointer transition-all duration-fast hover:bg-bg-card-hover ' + (running ? 'text-teal border-teal hover:text-teal hover:border-teal' : 'text-accent border-accent hover:text-accent hover:border-accent')}
             onClick={() => setRunning(r => !r)}
           >{running ? 'Pause' : 'Drive'}</button>
-          <button type="button" className="ev-btn" onClick={handleReset}>Reset</button>
+          <button
+            type="button"
+            className="bg-bg-card text-text-dim border border-border font-3 text-2 py-[6px] px-md rounded-2 cursor-pointer transition-all duration-fast hover:text-text hover:border-text-dim hover:bg-bg-card-hover"
+            onClick={handleReset}
+          >Reset</button>
         </div>
-        <div className="ev-toolbar-group">
-          <span className="ev-toolbar-label">Plug into:</span>
-          {(['NONE', 'L1', 'L2', 'DCFC'] as ChargerKind[]).map(k => (
-            <button
-              key={k}
-              type="button"
-              className={'ev-btn small ' + (cfg.charger === k ? 'active' : '')}
-              onClick={() => handlePlug(k)}
-            >{plugLabel(k)}</button>
-          ))}
+        <div className="flex items-center gap-sm flex-wrap">
+          <span className="font-3 text-1 text-text-muted uppercase tracking-4 mr-xs">Plug into:</span>
+          {(['NONE', 'L1', 'L2', 'DCFC'] as ChargerKind[]).map(k => {
+            const active = cfg.charger === k;
+            return (
+              <button
+                key={k}
+                type="button"
+                className={'border font-3 text-1 py-[5px] px-[10px] rounded-2 cursor-pointer transition-all duration-fast ' + (active ? 'text-accent border-accent bg-accent-soft hover:text-accent hover:border-accent' : 'bg-bg-card text-text-dim border-border hover:text-text hover:border-text-dim hover:bg-bg-card-hover')}
+                onClick={() => handlePlug(k)}
+              >{plugLabel(k)}</button>
+            );
+          })}
         </div>
       </div>
 
-      <div className="ev-body">
+      <div className="grid grid-cols-[260px_minmax(0,1fr)_260px] gap-lg items-start max-[1200px]:grid-cols-[minmax(0,1fr)]">
         {/* ── Left column: configuration palettes ── */}
-        <aside className="ev-left">
+        <aside className="flex flex-col gap-md min-w-0 w-full">
           <PackPalette cfg={cfg} onChange={setCfg} info={info} />
           <DrivetrainPalette cfg={cfg} onChange={setCfg} />
           <VehiclePalette cfg={cfg} onChange={setCfg} />
         </aside>
 
         {/* ── Centre: live plots + efficiency map ── */}
-        <main className="ev-main">
+        <main className="flex flex-col gap-lg min-w-0 w-full">
           <TracePanel traces={traceRef.current} />
           <EffMapPanel cfg={cfg} sample={sample} />
         </main>
 
         {/* ── Right column: readouts ── */}
-        <aside className="ev-right">
+        <aside className="flex flex-col gap-md min-w-0 w-full">
           <LivePanel sample={sample} cfg={cfg} />
           {cfg.charger === 'NONE'
             ? <DriveSummaryPanel stats={driveStats} />
@@ -404,16 +411,13 @@ export default function EVBenchLab() {
   );
 
   return (
-    <>
-      <style>{CSS}</style>
-      <LabShell
-        slug={SLUG}
-        labSubtitle="EV Powertrain Bench"
-        labId="ev-bench / P_wheel = η·P_battery"
-        labContent={labContent}
-        prose={prose}
-      />
-    </>
+    <LabShell
+      slug={SLUG}
+      labSubtitle="EV Powertrain Bench"
+      labId="ev-bench / P_wheel = η·P_battery"
+      labContent={labContent}
+      prose={prose}
+    />
   );
 }
 
@@ -453,11 +457,11 @@ interface PaletteCommon {
 function PackPalette({ cfg, onChange, info }: PaletteCommon & { info: ReturnType<typeof packInfo> }) {
   const cell = getCell(cfg.pack.chemistry, cfg.pack.format);
   return (
-    <section className="ev-palette">
-      <div className="ev-palette-title">Battery pack</div>
+    <section className="bg-bg-card border border-border rounded-3 p-md">
+      <div className="font-3 text-1 text-accent uppercase tracking-4 mb-[10px]">Battery pack</div>
       <Row label="Chemistry">
         <select
-          className="ev-input"
+          className="w-full bg-bg-elevated text-text border border-border font-3 text-2 py-xs px-[6px] rounded-1 box-border focus:outline-none focus:border-accent"
           value={cfg.pack.chemistry}
           onChange={e => onChange({ ...cfg, pack: { ...cfg.pack, chemistry: e.target.value as Chemistry } })}
         >
@@ -468,7 +472,7 @@ function PackPalette({ cfg, onChange, info }: PaletteCommon & { info: ReturnType
       </Row>
       <Row label="Cell format">
         <select
-          className="ev-input"
+          className="w-full bg-bg-elevated text-text border border-border font-3 text-2 py-xs px-[6px] rounded-1 box-border focus:outline-none focus:border-accent"
           value={cfg.pack.format}
           onChange={e => onChange({ ...cfg, pack: { ...cfg.pack, format: e.target.value as CellFormat } })}
         >
@@ -480,7 +484,7 @@ function PackPalette({ cfg, onChange, info }: PaletteCommon & { info: ReturnType
       <Row label={`Series (${cfg.pack.series})`}>
         <input
           type="range" min={24} max={144} step={1}
-          className="ev-slider"
+          className="w-full accent-accent"
           value={cfg.pack.series}
           onChange={e => onChange({ ...cfg, pack: { ...cfg.pack, series: +e.target.value } })}
         />
@@ -488,12 +492,12 @@ function PackPalette({ cfg, onChange, info }: PaletteCommon & { info: ReturnType
       <Row label={`Parallel (${cfg.pack.parallel})`}>
         <input
           type="range" min={1} max={120} step={1}
-          className="ev-slider"
+          className="w-full accent-accent"
           value={cfg.pack.parallel}
           onChange={e => onChange({ ...cfg, pack: { ...cfg.pack, parallel: +e.target.value } })}
         />
       </Row>
-      <div className="ev-palette-readout">
+      <div className="mt-sm pt-sm border-t border-dashed border-border grid grid-cols-2 gap-x-md gap-y-[3px] font-3 text-1 [&_div]:flex [&_div]:justify-between [&_div]:gap-[6px] [&_span:first-child]:text-text-muted [&_span:last-child]:text-text">
         <div><span>cells</span><span>{cfg.pack.series * cfg.pack.parallel}</span></div>
         <div><span>V<sub>nom</sub></span><span>{fmt(info.vNomPack, 0)} V</span></div>
         <div><span>Q<sub>pack</sub></span><span>{fmt(info.capacityAh, 1)} A·h</span></div>
@@ -509,11 +513,11 @@ function PackPalette({ cfg, onChange, info }: PaletteCommon & { info: ReturnType
 function DrivetrainPalette({ cfg, onChange }: PaletteCommon) {
   const d = cfg.drive;
   return (
-    <section className="ev-palette">
-      <div className="ev-palette-title">Drivetrain</div>
+    <section className="bg-bg-card border border-border rounded-3 p-md">
+      <div className="font-3 text-1 text-accent uppercase tracking-4 mb-[10px]">Drivetrain</div>
       <Row label="Motor">
         <select
-          className="ev-input"
+          className="w-full bg-bg-elevated text-text border border-border font-3 text-2 py-xs px-[6px] rounded-1 box-border focus:outline-none focus:border-accent"
           value={d.motor}
           onChange={e => onChange({ ...cfg, drive: { ...d, motor: e.target.value as MotorKind } })}
         >
@@ -524,7 +528,7 @@ function DrivetrainPalette({ cfg, onChange }: PaletteCommon) {
       <Row label={`Peak torque (${d.peakTorqueNm} N·m)`}>
         <input
           type="range" min={100} max={800} step={10}
-          className="ev-slider"
+          className="w-full accent-accent"
           value={d.peakTorqueNm}
           onChange={e => onChange({ ...cfg, drive: { ...d, peakTorqueNm: +e.target.value } })}
         />
@@ -532,7 +536,7 @@ function DrivetrainPalette({ cfg, onChange }: PaletteCommon) {
       <Row label={`Peak power (${d.peakPowerKW} kW)`}>
         <input
           type="range" min={50} max={500} step={5}
-          className="ev-slider"
+          className="w-full accent-accent"
           value={d.peakPowerKW}
           onChange={e => onChange({ ...cfg, drive: { ...d, peakPowerKW: +e.target.value } })}
         />
@@ -540,7 +544,7 @@ function DrivetrainPalette({ cfg, onChange }: PaletteCommon) {
       <Row label={`Switching f (${d.switchKHz} kHz)`}>
         <input
           type="range" min={4} max={40} step={1}
-          className="ev-slider"
+          className="w-full accent-accent"
           value={d.switchKHz}
           onChange={e => onChange({ ...cfg, drive: { ...d, switchKHz: +e.target.value } })}
         />
@@ -548,7 +552,7 @@ function DrivetrainPalette({ cfg, onChange }: PaletteCommon) {
       <Row label={`Inverter η_peak (${(d.inverterEtaPeak * 100).toFixed(0)} %)`}>
         <input
           type="range" min={0.90} max={0.99} step={0.005}
-          className="ev-slider"
+          className="w-full accent-accent"
           value={d.inverterEtaPeak}
           onChange={e => onChange({ ...cfg, drive: { ...d, inverterEtaPeak: +e.target.value } })}
         />
@@ -556,7 +560,7 @@ function DrivetrainPalette({ cfg, onChange }: PaletteCommon) {
       <Row label={`Gearbox (${d.gearbox.toFixed(2)}:1)`}>
         <input
           type="range" min={5} max={14} step={0.1}
-          className="ev-slider"
+          className="w-full accent-accent"
           value={d.gearbox}
           onChange={e => onChange({ ...cfg, drive: { ...d, gearbox: +e.target.value } })}
         />
@@ -564,14 +568,14 @@ function DrivetrainPalette({ cfg, onChange }: PaletteCommon) {
       <Row label={`Aux DC-DC (${d.auxDcDcW} W)`}>
         <input
           type="range" min={500} max={5000} step={100}
-          className="ev-slider"
+          className="w-full accent-accent"
           value={d.auxDcDcW}
           onChange={e => onChange({ ...cfg, drive: { ...d, auxDcDcW: +e.target.value } })}
         />
       </Row>
       <Row label="OBC input">
         <select
-          className="ev-input"
+          className="w-full bg-bg-elevated text-text border border-border font-3 text-2 py-xs px-[6px] rounded-1 box-border focus:outline-none focus:border-accent"
           value={d.obcInput}
           onChange={e => onChange({ ...cfg, drive: { ...d, obcInput: e.target.value as '240V-1ph' | '400V-3ph' } })}
         >
@@ -582,14 +586,14 @@ function DrivetrainPalette({ cfg, onChange }: PaletteCommon) {
       <Row label={`OBC peak (${d.obcPeakKW.toFixed(1)} kW)`}>
         <input
           type="range" min={3} max={22} step={0.5}
-          className="ev-slider"
+          className="w-full accent-accent"
           value={d.obcPeakKW}
           onChange={e => onChange({ ...cfg, drive: { ...d, obcPeakKW: +e.target.value } })}
         />
       </Row>
       <Row label="DC coupler">
         <select
-          className="ev-input"
+          className="w-full bg-bg-elevated text-text border border-border font-3 text-2 py-xs px-[6px] rounded-1 box-border focus:outline-none focus:border-accent"
           value={d.dcCoupler ?? 'NONE'}
           onChange={e => onChange({ ...cfg, drive: { ...d, dcCoupler: e.target.value === 'NONE' ? null : (e.target.value as 'CCS' | 'NACS') } })}
         >
@@ -605,12 +609,12 @@ function DrivetrainPalette({ cfg, onChange }: PaletteCommon) {
 function VehiclePalette({ cfg, onChange }: PaletteCommon) {
   const v = cfg.vehicle;
   return (
-    <section className="ev-palette">
-      <div className="ev-palette-title">Vehicle</div>
+    <section className="bg-bg-card border border-border rounded-3 p-md">
+      <div className="font-3 text-1 text-accent uppercase tracking-4 mb-[10px]">Vehicle</div>
       <Row label={`Mass (${v.massKg} kg)`}>
         <input
           type="range" min={800} max={3500} step={50}
-          className="ev-slider"
+          className="w-full accent-accent"
           value={v.massKg}
           onChange={e => onChange({ ...cfg, vehicle: { ...v, massKg: +e.target.value } })}
         />
@@ -618,7 +622,7 @@ function VehiclePalette({ cfg, onChange }: PaletteCommon) {
       <Row label={`CdA (${v.CdA.toFixed(2)} m²)`}>
         <input
           type="range" min={0.30} max={1.20} step={0.01}
-          className="ev-slider"
+          className="w-full accent-accent"
           value={v.CdA}
           onChange={e => onChange({ ...cfg, vehicle: { ...v, CdA: +e.target.value } })}
         />
@@ -626,7 +630,7 @@ function VehiclePalette({ cfg, onChange }: PaletteCommon) {
       <Row label={`C_rr (${v.Crr.toFixed(3)})`}>
         <input
           type="range" min={0.006} max={0.020} step={0.001}
-          className="ev-slider"
+          className="w-full accent-accent"
           value={v.Crr}
           onChange={e => onChange({ ...cfg, vehicle: { ...v, Crr: +e.target.value } })}
         />
@@ -634,14 +638,14 @@ function VehiclePalette({ cfg, onChange }: PaletteCommon) {
       <Row label={`Wheel r (${(v.wheelRadius * 100).toFixed(0)} cm)`}>
         <input
           type="range" min={0.25} max={0.40} step={0.01}
-          className="ev-slider"
+          className="w-full accent-accent"
           value={v.wheelRadius}
           onChange={e => onChange({ ...cfg, vehicle: { ...v, wheelRadius: +e.target.value } })}
         />
       </Row>
       <Row label="Drive cycle">
         <select
-          className="ev-input"
+          className="w-full bg-bg-elevated text-text border border-border font-3 text-2 py-xs px-[6px] rounded-1 box-border focus:outline-none focus:border-accent"
           value={v.cycle}
           onChange={e => onChange({ ...cfg, vehicle: { ...v, cycle: e.target.value as DriveCycleId } })}
         >
@@ -656,9 +660,9 @@ function VehiclePalette({ cfg, onChange }: PaletteCommon) {
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="ev-row">
-      <span className="ev-row-label">{label}</span>
-      <div className="ev-row-control">{children}</div>
+    <div className="flex justify-between items-center gap-[10px] py-xs">
+      <span className="font-1 text-2 text-text-dim flex-1">{label}</span>
+      <div className="flex-none w-[130px]">{children}</div>
     </div>
   );
 }
@@ -668,16 +672,16 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 function LivePanel({ sample, cfg }: { sample: BenchSample | null; cfg: BenchConfig }) {
   if (!sample) {
     return (
-      <section className="ev-readout">
-        <div className="ev-readout-title">Live</div>
-        <p className="ev-empty">Press "Drive" to begin the simulation.</p>
+      <section className="bg-bg-card border border-border rounded-3 p-md">
+        <div className="font-3 text-1 text-accent uppercase tracking-4 mb-[10px]">Live</div>
+        <p className="text-text-muted text-2 leading-4">Press "Drive" to begin the simulation.</p>
       </section>
     );
   }
   const ch = CHARGERS[cfg.charger];
   return (
-    <section className="ev-readout">
-      <div className="ev-readout-title">Live · t = {fmtTime(sample.t)}</div>
+    <section className="bg-bg-card border border-border rounded-3 p-md">
+      <div className="font-3 text-1 text-accent uppercase tracking-4 mb-[10px]">Live · t = {fmtTime(sample.t)}</div>
       <ReadRow label="Speed" value={`${fmt(sample.vKph, 1)} km/h`} />
       <ReadRow label="Motor torque" value={`${fmt(sample.motorTorqueNm, 0)} N·m`} />
       <ReadRow label="Battery I" value={`${fmt(sample.iPack, 1)} A`} accent={sample.iPack < 0 ? 'teal' : sample.iPack > 100 ? 'pink' : undefined} />
@@ -694,8 +698,8 @@ function LivePanel({ sample, cfg }: { sample: BenchSample | null; cfg: BenchConf
 
 function DriveSummaryPanel({ stats }: { stats: ReturnType<typeof summarise> }) {
   return (
-    <section className="ev-readout">
-      <div className="ev-readout-title">This drive</div>
+    <section className="bg-bg-card border border-border rounded-3 p-md">
+      <div className="font-3 text-1 text-accent uppercase tracking-4 mb-[10px]">This drive</div>
       <ReadRow label="Distance" value={`${fmt(stats.distanceKm, 2)} km`} />
       <ReadRow label="Energy used" value={`${fmt(stats.energyKWh, 3)} kWh`} />
       <ReadRow label="Consumption" value={`${fmt(stats.whPerKm, 0)} Wh/km`} />
@@ -709,8 +713,8 @@ function ChargeSummaryPanel({ stats, sample }: { stats: ReturnType<typeof charge
   if (!stats || !sample) return null;
   const peakKW = Math.max(0, -sample.pKW);
   return (
-    <section className="ev-readout">
-      <div className="ev-readout-title">This charge</div>
+    <section className="bg-bg-card border border-border rounded-3 p-md">
+      <div className="font-3 text-1 text-accent uppercase tracking-4 mb-[10px]">This charge</div>
       <ReadRow label="Peak charging" value={`${fmt(peakKW, 1)} kW`} />
       <ReadRow label="Time to 80 %" value={fmtTime(stats.timeTo80S)} />
       <ReadRow label="Time to 100 %" value={fmtTime(stats.timeTo100S)} />
@@ -724,10 +728,10 @@ function ChargeSummaryPanel({ stats, sample }: { stats: ReturnType<typeof charge
 
 function ReadRow({ label, value, accent }: { label: string; value: string; accent?: 'teal' | 'pink' }) {
   return (
-    <div className="ev-rd-row">
-      <span className="ev-rd-label">{label}</span>
+    <div className="flex justify-between gap-[10px] py-xs border-b border-dashed border-border text-3 last:border-b-0">
+      <span className="text-text-dim font-1">{label}</span>
       <span
-        className="ev-rd-value"
+        className="text-text font-3 font-medium"
         style={{ color: accent === 'teal' ? 'var(--teal)' : accent === 'pink' ? 'var(--pink)' : undefined }}
       >{value}</span>
     </div>
@@ -760,8 +764,8 @@ interface Traces {
 
 function TracePanel({ traces }: { traces: Traces }) {
   return (
-    <section className="ev-trace">
-      <div className="ev-trace-title">Telemetry · last {TRACE_WINDOW_S}s</div>
+    <section className="bg-bg-card border border-border rounded-3 p-md flex flex-col gap-[6px] w-full min-w-0">
+      <div className="font-3 text-1 text-accent uppercase tracking-4 mb-[10px]">Telemetry · last {TRACE_WINDOW_S}s</div>
       <TraceCanvas series={traces} channel="vKph"           label="Speed (km/h)"      color="#ff6b2a" />
       <TraceCanvas series={traces} channel="motorTorqueNm"  label="Motor τ (N·m)"     color="#6cc5c2" symmetric />
       <TraceCanvas series={traces} channel="iPack"          label="Battery I (A)"     color="#ff3b6e" symmetric />
@@ -1003,7 +1007,7 @@ function EffMapPanel({ cfg, sample }: { cfg: BenchConfig; sample: BenchSample | 
   }, [cfg, sample]);
 
   return (
-    <section className="ev-effmap">
+    <section className="bg-bg-card border border-border rounded-3 p-0 overflow-hidden w-full min-w-0">
       <canvas className="block w-full" ref={ref} style={{ display: 'block', width: '100%' }} />
     </section>
   );
@@ -1027,197 +1031,3 @@ function ramp(u: number): string {
   return `rgb(${r},${g},${b})`;
 }
 
-/* ──────────────────────────── CSS ──────────────────────────── */
-
-const CSS = `
-.ev-shell {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 12px;
-}
-.ev-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-.ev-toolbar-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.ev-toolbar-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  margin-right: 4px;
-}
-.ev-btn {
-  background: var(--bg-card);
-  color: var(--text-dim);
-  border: 1px solid var(--border);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  padding: 6px 12px;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all .15s ease;
-}
-.ev-btn:hover {
-  color: var(--text);
-  border-color: var(--text-dim);
-  background: var(--bg-card-hover);
-}
-.ev-btn.primary {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-.ev-btn.on {
-  color: var(--teal);
-  border-color: var(--teal);
-}
-.ev-btn.active {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-.ev-btn.small {
-  font-size: 10px;
-  padding: 5px 10px;
-}
-
-.ev-body {
-  display: grid;
-  grid-template-columns: 260px minmax(0, 1fr) 260px;
-  gap: 16px;
-  align-items: start;
-}
-@media (max-width: 1200px) {
-  .ev-body { grid-template-columns: minmax(0, 1fr); }
-}
-
-.ev-left, .ev-right {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-width: 0;
-  width: 100%;
-}
-
-.ev-palette, .ev-readout, .ev-trace, .ev-effmap {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 12px;
-}
-.ev-palette-title, .ev-readout-title, .ev-trace-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: .2em;
-  margin-bottom: 10px;
-}
-
-.ev-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  padding: 4px 0;
-}
-.ev-row-label {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px;
-  color: var(--text-dim);
-  flex: 1;
-}
-.ev-row-control {
-  flex: 0 0 auto;
-  width: 130px;
-}
-.ev-input {
-  width: 100%;
-  background: var(--bg-elevated);
-  color: var(--text);
-  border: 1px solid var(--border);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  padding: 4px 6px;
-  border-radius: 2px;
-  box-sizing: border-box;
-}
-.ev-input:focus { outline: none; border-color: var(--accent); }
-.ev-slider {
-  width: 100%;
-  accent-color: var(--accent);
-}
-
-.ev-palette-readout {
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px dashed var(--border);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3px 12px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-}
-.ev-palette-readout div {
-  display: flex;
-  justify-content: space-between;
-  gap: 6px;
-}
-.ev-palette-readout span:first-child { color: var(--text-muted); }
-.ev-palette-readout span:last-child { color: var(--text); }
-
-.ev-rd-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 4px 0;
-  border-bottom: 1px dashed var(--border);
-  font-size: 12px;
-}
-.ev-rd-row:last-child { border-bottom: none; }
-.ev-rd-label {
-  color: var(--text-dim);
-  font-family: 'DM Sans', sans-serif;
-}
-.ev-rd-value {
-  color: var(--text);
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 500;
-}
-.ev-empty {
-  color: var(--text-muted);
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-.ev-main {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  min-width: 0;
-  width: 100%;
-}
-.ev-trace {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 100%;
-}
-.ev-effmap {
-  padding: 0;
-  overflow: hidden;
-  width: 100%;
-}
-`;
