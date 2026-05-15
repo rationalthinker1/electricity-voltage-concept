@@ -32,6 +32,8 @@
   --nav-bg-start: rgba(10,10,11,.92);
   --nav-bg-end: rgba(10,10,11,.65);
   --canvas-bg: #0d0d10;
+  --color-card-bg: var(--bg-card);
+  --color-card-bg-hover: var(--bg-card-hover);
   --slider-track: rgba(255,255,255,.12);
   --shadow-strong: rgba(0,0,0,.4);
   --grain-opacity: .04;
@@ -97,6 +99,8 @@
   --nav-bg-start: rgba(247,245,239,.94);
   --nav-bg-end: rgba(247,245,239,.72);
   --canvas-bg: #121215;
+  --color-card-bg: var(--bg-card);
+  --color-card-bg-hover: var(--bg-card-hover);
   --slider-track: rgba(23,21,17,.18);
   --shadow-strong: rgba(23,21,17,.18);
   --grain-opacity: .025;
@@ -392,6 +396,18 @@ body::before {
     color: var(--text-muted);
   }
 
+  .eyebrow-muted {
+    @apply font-3 text-[11px] tracking-[.12em] uppercase text-text-muted;
+  }
+
+  .title-display {
+    @apply font-2 italic m-0 text-color-4;
+  }
+
+  .body-copy {
+    @apply font-1 text-[16px] leading-[1.6] text-color-5;
+  }
+
   .text-meta {
     @apply font-3 text-[11px] tracking-[.12em] uppercase text-color-5;
   }
@@ -427,6 +443,9 @@ body::before {
   .card-base,
   .card-primary {
     @apply bg-color-3 border border-border-1 rounded-5 p-lg;
+  }
+  .card-surface {
+    @apply bg-color-3 border border-border-1 rounded-5;
   }
   .card-elevated {
     @apply bg-color-2 border border-border-2 rounded-5 p-lg shadow-1;

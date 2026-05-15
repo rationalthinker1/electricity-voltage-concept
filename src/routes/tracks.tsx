@@ -13,7 +13,6 @@ import {
   onProgressChange,
   type ProgressState,
 } from '@/lib/progress';
-import '@/styles/tracks.css';
 
 export const Route = createFileRoute('/tracks')({
   component: TracksPage,
@@ -78,25 +77,25 @@ function TrackCard({ track, chapters, progress }: TrackCardProps) {
 
   return (
     <section
-      className="bg-color-3 border border-border-1 border-t-[3px] rounded-3 p-xl flex flex-col"
+      className="card-surface border-t-[3px] rounded-3 p-xl flex flex-col"
       style={{
-        ['--track-accent' as string]: accent,
-        borderTopColor: 'var(--track-accent)',
+        ['--path-accent' as string]: accent,
+        borderTopColor: 'var(--path-accent)',
       } as React.CSSProperties}
     >
       <header className="mb-md">
-        <div className="font-2 italic text-[24px] text-color-4 mb-[6px]">{meta.name}</div>
-        <p className="font-1 text-[14px] text-color-5 leading-[1.5] m-0">{meta.description}</p>
+        <div className="title-display text-[24px] mb-[6px]">{meta.name}</div>
+        <p className="body-copy text-[14px] leading-[1.5] m-0">{meta.description}</p>
       </header>
 
       <div className="mb-[18px]">
         <div className="w-full h-[6px] bg-color-2 rounded-pill overflow-hidden border border-border-1">
           <div
-            className="h-full transition-[width] duration-300 ease-in-out bg-[var(--track-accent)]"
+            className="h-full transition-[width] duration-300 ease-in-out bg-[var(--path-accent)]"
             style={{ width: `${pct}%` }}
           />
         </div>
-        <div className="font-3 text-[11px] text-text-muted uppercase tracking-[.12em] mt-sm">
+        <div className="eyebrow-muted mt-sm">
           {completed} of {total} chapters complete · {pct}%
         </div>
       </div>
@@ -105,7 +104,7 @@ function TrackCard({ track, chapters, progress }: TrackCardProps) {
         <Link
           to="/textbook/$chapterSlug"
           params={{ chapterSlug: resumeChapter.slug }}
-          className="flex flex-col gap-[4px] py-md px-md mb-[18px] bg-color-2 border border-border-2 border-l-[3px] border-l-[var(--track-accent)] rounded-5 no-underline font-3 text-[12px] text-color-4 tracking-[.12em] uppercase transition-[background-color,border-color] duration-150 ease-in-out hover:bg-bg-card-hover hover:border-[var(--track-accent)]"
+          className="flex flex-col gap-[4px] py-md px-md mb-[18px] bg-color-2 border border-border-2 border-l-[3px] border-l-[var(--path-accent)] rounded-5 no-underline font-3 text-[12px] text-color-4 tracking-[.12em] uppercase transition-[background-color,border-color] duration-150 ease-in-out hover:bg-bg-card-hover hover:border-[var(--path-accent)]"
         >
           {anyStarted ? 'Resume track →' : 'Start track →'}
           <span className="font-1 text-[13px] text-color-5 normal-case tracking-normal">
@@ -125,7 +124,7 @@ function TrackCard({ track, chapters, progress }: TrackCardProps) {
               status === 'in-progress' ? '◐' :
               '○';
             const statusColor =
-              status === 'complete' ? 'var(--track-accent)' :
+              status === 'complete' ? 'var(--path-accent)' :
               status === 'in-progress' ? 'var(--accent)' :
               'var(--text-muted)';
             const titleColor = status === 'complete' ? 'var(--color-4)' : 'inherit';
@@ -137,7 +136,7 @@ function TrackCard({ track, chapters, progress }: TrackCardProps) {
                   className="grid grid-cols-[24px_60px_1fr_auto] gap-[10px] items-center py-sm px-md rounded-4 no-underline text-color-5 font-1 text-[14px] transition-[background-color,color] duration-[120ms] ease-in-out hover:bg-color-2 hover:text-color-4 max-[700px]:grid-cols-[24px_50px_1fr_auto] max-[700px]:gap-[8px]"
                 >
                   <span className="font-3 text-[14px] text-center" style={{ color: statusColor }} aria-hidden="true">{icon}</span>
-                  <span className="font-3 text-[11px] text-text-muted uppercase tracking-[.12em]">Ch.{c.number}</span>
+                  <span className="eyebrow-muted">Ch.{c.number}</span>
                   <span style={{ color: titleColor }}>{c.title}</span>
                   <span className="font-3 text-[10px] text-text-muted tracking-[.08em]">
                     {c.timeToRead ? `${c.timeToRead} min` : '—'}
@@ -176,11 +175,11 @@ function TracksPage() {
   return (
     <section className="pt-[140px] pb-[80px] px-[40px] max-w-[1200px] mx-auto max-[700px]:pt-[120px] max-[700px]:pb-[60px] max-[700px]:px-[18px]">
       <header className="mb-[28px]">
-        <div className="font-3 text-[11px] text-text-muted uppercase tracking-[.18em] mb-sm">Field · Theory · Tracks</div>
-        <h1 className="font-2 italic font-light text-[52px] leading-[1.05] tracking-[-.02em] text-color-4 m-0 mb-[14px] max-[700px]:text-[36px]">
+        <div className="eyebrow-muted tracking-[.18em] mb-sm">Field · Theory · Tracks</div>
+        <h1 className="title-display font-light text-[52px] leading-[1.05] tracking-[-.02em] mb-[14px] max-[700px]:text-[36px]">
           Three <em className="italic text-accent font-normal">paths</em> through the book.
         </h1>
-        <p className="font-1 text-[16px] leading-[1.6] text-color-5 max-w-[680px]">
+        <p className="body-copy max-w-[680px]">
           Each track is a curated subset of the textbook, ordered so prerequisites
           come first. Pick the one that matches what you want to be able to do.
           Your progress is saved locally in this browser.
@@ -201,8 +200,8 @@ function TracksPage() {
       </div>
 
       <div className="flex justify-between mt-[36px] pt-[20px] border-t border-border">
-        <Link to="/map" className="font-3 text-[12px] text-text-muted uppercase tracking-[.12em] no-underline hover:text-accent">← Course map</Link>
-        <Link to="/me" className="font-3 text-[12px] text-text-muted uppercase tracking-[.12em] no-underline hover:text-accent">Your progress →</Link>
+        <Link to="/map" className="eyebrow-muted text-[12px] no-underline hover:text-accent">← Course map</Link>
+        <Link to="/me" className="eyebrow-muted text-[12px] no-underline hover:text-accent">Your progress →</Link>
       </div>
     </section>
   );

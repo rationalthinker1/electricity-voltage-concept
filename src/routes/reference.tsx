@@ -8,7 +8,25 @@ export const Route = createFileRoute('/reference')({
 
 function Reference() {
   const chapters: ChapterId[] = ['ch1', 'ch2', 'ch3', 'ch4'];
-  const sandbox = MANIFEST.find(l => l.slug === 'circuit-builder');
+  const sandboxes = MANIFEST.filter(l => l.number.startsWith('A.'));
+
+  const labRow = (lab: (typeof MANIFEST)[number]) => (
+    <Link
+      key={lab.slug}
+      to="/labs/$slug"
+      params={{ slug: lab.slug }}
+      className="lab-row"
+    >
+      <span className="lab-id">Lab {lab.number}</span>
+      <span
+        className="lab-eq"
+        dangerouslySetInnerHTML={{ __html: lab.formula }}
+      />
+      <span className="lab-name">{lab.title}</span>
+      <span className="lab-blurb">{lab.blurb}</span>
+    </Link>
+  );
+
   return (
     <>
       <section className="book-hero">
@@ -29,34 +47,21 @@ function Reference() {
         </p>
       </section>
 
-      {sandbox && (
+      {sandboxes.length > 0 && (
         <section className="chapter" id="sandbox" style={{ marginBottom: 48 }}>
           <div className="chapter-head">
             <div>
-              <div className="chapter-num">Sandbox</div>
-              <h2 className="chapter-title">Build your own circuit</h2>
+              <div className="chapter-num">System sandboxes</div>
+              <h2 className="chapter-title">Put the chapters together</h2>
             </div>
             <p className="chapter-blurb">
-              The free-form playground. Drop batteries, resistors, capacitors, inductors, diodes,
-              switches, and bulbs on a grid; click pin-to-pin to wire them; press Run. A live
-              Modified Nodal Analysis solver runs every frame. Load a preset to inspect RC charging,
-              an RLC resonator, or a half-wave rectifier — or start from scratch.
+              The free-form playgrounds. Build circuits, wire houses, drive motors, run grids,
+              match antennas, and design power supplies. These are the labs that test whether the
+              isolated equations have become one working model in your head.
             </p>
           </div>
           <div className="lab-list">
-            <Link
-              to="/labs/$slug"
-              params={{ slug: sandbox.slug }}
-              className="lab-row"
-            >
-              <span className="lab-id">Lab {sandbox.number}</span>
-              <span
-                className="lab-eq"
-                dangerouslySetInnerHTML={{ __html: sandbox.formula }}
-              />
-              <span className="lab-name">{sandbox.title}</span>
-              <span className="lab-blurb">{sandbox.blurb}</span>
-            </Link>
+            {sandboxes.map(labRow)}
           </div>
         </section>
       )}
@@ -64,7 +69,7 @@ function Reference() {
       <div className="toc">
         {chapters.map(cid => {
           const meta = CHAPTER_META[cid];
-          const labs = MANIFEST.filter(l => l.chapter === cid && l.slug !== 'circuit-builder');
+          const labs = MANIFEST.filter(l => l.chapter === cid && !l.number.startsWith('A.'));
           return (
             <section className="chapter" id={cid} key={cid}>
               <div className="chapter-head">
@@ -76,22 +81,7 @@ function Reference() {
               </div>
 
               <div className="lab-list">
-                {labs.map(lab => (
-                  <Link
-                    key={lab.slug}
-                    to="/labs/$slug"
-                    params={{ slug: lab.slug }}
-                    className="lab-row"
-                  >
-                    <span className="lab-id">Lab {lab.number}</span>
-                    <span
-                      className="lab-eq"
-                      dangerouslySetInnerHTML={{ __html: lab.formula }}
-                    />
-                    <span className="lab-name">{lab.title}</span>
-                    <span className="lab-blurb">{lab.blurb}</span>
-                  </Link>
-                ))}
+                {labs.map(labRow)}
               </div>
             </section>
           );

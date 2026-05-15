@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
+import clsx from 'clsx';
 
 export interface InlineProps {
   gap?: number | string;
@@ -36,5 +37,5 @@ export function Inline({
     justifyContent: justifyMap[justify],
     ...style,
   };
-  return <div className={['ui-inline', className].filter(Boolean).join(' ')} style={merged}>{children}</div>;
+  return <div className={clsx('min-w-0', className)} style={merged}>{children}</div>;
 }

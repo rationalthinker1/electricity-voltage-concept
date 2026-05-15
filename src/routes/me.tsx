@@ -20,7 +20,6 @@ import {
 } from '@/lib/progress';
 import { BadgeShelf } from '@/components/BadgeShelf';
 import { BADGES } from '@/textbook/data/badges';
-import '@/styles/me.css';
 
 export const Route = createFileRoute('/me')({
   component: MePage,
@@ -57,10 +56,10 @@ function chapterStatus(slug: ChapterSlug, progress: ProgressState): 'none' | 'op
 }
 
 // Reusable inline class fragments
-const META = 'font-3 text-[11px] tracking-[.12em] uppercase text-text-muted';
-const META_SM = 'font-3 text-[10px] tracking-[.12em] uppercase text-text-muted';
-const SECTION_TITLE = 'font-2 italic font-light text-[26px] text-color-4 m-0 mb-md';
-const CARD = 'bg-color-3 border border-border-1';
+const META = 'eyebrow-muted';
+const META_SM = 'eyebrow-muted text-[10px]';
+const SECTION_TITLE = 'title-display font-light text-[26px] mb-md';
+const CARD = 'card-surface';
 const STATUS_PILL = 'font-3 text-[10px] tracking-[.12em] uppercase py-[3px] px-sm rounded-pill border border-border-2 text-text-muted whitespace-nowrap';
 
 function MePage() {
@@ -178,9 +177,9 @@ function MePage() {
   return (
     <section className="pt-[140px] pb-[80px] px-[40px] max-w-[1100px] mx-auto max-[760px]:pt-[120px] max-[760px]:pb-[60px] max-[760px]:px-[18px]">
       <header className="mb-[28px]">
-        <div className="font-3 text-[11px] text-text-muted uppercase tracking-[.18em] mb-md">Field · Theory · Your transcript</div>
-        <h1 className="font-2 italic font-light text-[52px] leading-[1.05] tracking-[-.02em] m-0 mb-[14px] text-color-4 max-[760px]:text-[36px] [&_em]:italic [&_em]:text-accent [&_em]:font-normal">Where you are in the <em>book</em>.</h1>
-        <p className="font-1 text-[15px] text-color-5 leading-[1.6] max-w-[640px]">
+        <div className="eyebrow-muted tracking-[.18em] mb-md">Field · Theory · Your transcript</div>
+        <h1 className="title-display font-light text-[52px] leading-[1.05] tracking-[-.02em] mb-[14px] max-[760px]:text-[36px] [&_em]:italic [&_em]:text-accent [&_em]:font-normal">Where you are in the <em>book</em>.</h1>
+        <p className="body-copy text-[15px] max-w-[640px]">
           All progress data lives only in this browser. Open another browser or
           clear site data and you start fresh.
         </p>
@@ -349,7 +348,7 @@ function MePage() {
                   <th
                     key={key}
                     onClick={() => toggleSort(key)}
-                    className="text-left font-3 text-[10px] text-text-muted uppercase tracking-[.12em] py-md px-[14px] border-b border-border bg-color-2 cursor-pointer select-none hover:text-accent"
+                    className="text-left eyebrow-muted text-[10px] py-md px-[14px] border-b border-border bg-color-2 cursor-pointer select-none hover:text-accent"
                   >
                     {label}
                   </th>
@@ -386,10 +385,10 @@ function MePage() {
 
 function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="bg-color-3 border border-border-1 rounded-6 p-lg">
-      <div className="font-3 text-[11px] text-text-muted uppercase tracking-[.12em] mb-sm">{label}</div>
+    <div className="card-surface rounded-6 p-lg">
+      <div className="eyebrow-muted mb-sm">{label}</div>
       <div className="font-2 text-[42px] font-light text-color-4 leading-none">{value}</div>
-      {sub && <div className="font-3 text-[11px] text-text-muted mt-[4px] tracking-[.12em] uppercase">{sub}</div>}
+      {sub && <div className="eyebrow-muted mt-[4px]">{sub}</div>}
     </div>
   );
 }

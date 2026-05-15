@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
+import clsx from 'clsx';
 
 export interface StackProps {
   gap?: number | string;
@@ -26,5 +27,5 @@ export function Stack({
     alignItems: alignMap[align],
     ...style,
   };
-  return <div className={['ui-stack', className].filter(Boolean).join(' ')} style={merged}>{children}</div>;
+  return <div className={clsx('min-w-0', className)} style={merged}>{children}</div>;
 }

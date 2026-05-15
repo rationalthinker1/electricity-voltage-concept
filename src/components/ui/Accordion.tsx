@@ -7,6 +7,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import clsx from 'clsx';
 
 interface AccordionContextValue {
   openIds: Set<string>;
@@ -53,7 +54,7 @@ export function Accordion({
 
   return (
     <AccordionContext.Provider value={ctx}>
-      <div className={['ui-accordion', className].filter(Boolean).join(' ')}>{children}</div>
+      <div className={clsx('flex flex-col gap-[4px]', className)}>{children}</div>
     </AccordionContext.Provider>
   );
 }
@@ -84,7 +85,13 @@ export function AccordionItem({ id, children, className }: AccordionItemProps) {
   );
   return (
     <ItemContext.Provider value={value}>
-      <div className={['ui-accordion-item', open ? 'ui-accordion-item-open' : '', className].filter(Boolean).join(' ')}>
+      <div
+        className={clsx(
+          'border border-border-1 rounded-5 bg-color-3 overflow-hidden',
+          open && 'border-border-2',
+          className,
+        )}
+      >
         {children}
       </div>
     </ItemContext.Provider>
@@ -97,14 +104,14 @@ export function AccordionTrigger({ children }: { children?: ReactNode }) {
   return (
     <button
       type="button"
-      className="ui-accordion-trigger"
+      className="appearance-none bg-transparent border-0 w-full text-left flex items-center justify-between gap-md py-[12px] px-[16px] cursor-pointer text-color-4 font-[inherit] font-medium hover:bg-bg-card-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_var(--accent-soft)]"
       aria-expanded={item.open}
       aria-controls={`${item.baseId}-content`}
       id={`${item.baseId}-trigger`}
       onClick={item.toggle}
     >
-      <span className="ui-accordion-trigger-label">{children}</span>
-      <span className="ui-accordion-trigger-chev" aria-hidden="true">{item.open ? '−' : '+'}</span>
+      <span className="flex-1">{children}</span>
+      <span className="font-3 text-[18px] text-color-5 leading-none w-[16px] text-center" aria-hidden="true">{item.open ? '−' : '+'}</span>
     </button>
   );
 }
@@ -118,7 +125,7 @@ export function AccordionContent({ children }: { children?: ReactNode }) {
       role="region"
       id={`${item.baseId}-content`}
       aria-labelledby={`${item.baseId}-trigger`}
-      className="ui-accordion-content"
+      className="py-[4px] px-[16px] pb-[16px] text-color-5 text-[15px] leading-[1.65] border-t border-border"
     >
       {children}
     </div>

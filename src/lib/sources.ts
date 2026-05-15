@@ -1435,10 +1435,3 @@ export const SOURCES: Record<string, Source> = {
 };
 
 export type SourceKey = keyof typeof SOURCES;
-
-/** Get a citation's display string (used by inline <Cite/> component). */
-export function citeLabel(key: SourceKey, ids: SourceKey[]): string {
-  const idx = ids.indexOf(key);
-  if (idx === -1) return '?';
-  return String(idx + 1);
-}

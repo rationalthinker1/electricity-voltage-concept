@@ -89,11 +89,11 @@ function ReviewPage() {
   return (
     <section className="max-w-[940px] mx-auto pt-[48px] px-xl pb-[96px]">
       <header className="mb-[36px]">
-        <div className="font-3 text-[11px] tracking-[.12em] uppercase text-text-muted mb-[10px]">Field · Theory · Spaced repetition</div>
+        <div className="eyebrow-muted mb-[10px]">Field · Theory · Spaced repetition</div>
         <h1 className="font-2 font-normal text-[clamp(36px,6vw,56px)] leading-[1.05] mb-[14px] text-color-4">
           Reviews <em className="italic text-accent">due</em>.
         </h1>
-        <p className="text-color-5 text-[16px] max-w-[680px] leading-[1.55] mb-xl">
+        <p className="body-copy max-w-[680px] leading-[1.55] mb-xl">
           The system surfaces quizzes you previously passed on a 1-day, 3-day,
           1-week, 1-month, and 3-month schedule. Pass a review to advance to
           the next interval; miss one and you reset to day 1.
@@ -151,7 +151,7 @@ function SummaryStat({ label, value }: { label: string; value: number | string }
   return (
     <div className="py-[12px] px-[14px] bg-bg-card border border-border-1 rounded-5">
       <div className="font-2 text-[28px] leading-none text-color-4">{value}</div>
-      <div className="font-3 text-[11px] tracking-[.08em] uppercase text-text-muted mt-[6px]">{label}</div>
+      <div className="eyebrow-muted tracking-[.08em] mt-[6px]">{label}</div>
     </div>
   );
 }

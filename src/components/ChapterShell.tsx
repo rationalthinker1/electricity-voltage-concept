@@ -129,17 +129,17 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
       )}
 
       {quiz && (
-        <div className="chapter-quiz-section">
+        <div className="mt-[32px]">
           {quizStatus.passed ? (
-            <div className="quiz-inline-passed">
-              <div className="quiz-inline-passed-body">
+            <div className="flex items-center justify-between gap-lg py-[14px] px-[18px] my-[24px] card-surface bg-color-2 border-l-[3px] border-l-teal font-1 text-[14px] text-color-4">
+              <div className="flex-1 [&_strong]:font-3 [&_strong]:text-teal">
                 Quiz passed (<strong>{Math.round(quizStatus.bestScore * 100)}%</strong>).
                 You&rsquo;ve already met the mastery threshold for this chapter.
               </div>
               <Link
                 to="/quiz/$chapterSlug"
                 params={{ chapterSlug: chapter.slug }}
-                className="quiz-inline-link"
+                className="font-1 text-[13px] text-accent no-underline whitespace-nowrap hover:underline"
               >
                 Retake quiz →
               </Link>

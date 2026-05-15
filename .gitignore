@@ -1,6 +1,7 @@
 node_modules/
 .DS_Store
 *.log
+className_duplicates_report.*
 .vscode/
 
 # Vite + TanStack Router

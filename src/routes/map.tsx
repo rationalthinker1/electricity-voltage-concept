@@ -2,7 +2,6 @@ import { Link, createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 
 import { CHAPTERS, type ChapterEntry, type ChapterSlug } from '@/textbook/data/chapters';
-import '@/styles/map.css';
 
 export const Route = createFileRoute('/map')({
   component: MapPage,
@@ -198,13 +197,13 @@ function MapPage() {
     <section className="pt-[140px] pb-[80px] px-[40px] max-w-[1300px] mx-auto max-[700px]:pt-[120px] max-[700px]:pb-[60px] max-[700px]:px-[18px]">
       <style>{SVG_STYLES}</style>
       <div className="mb-[28px]">
-        <div className="font-3 text-[11px] text-text-muted uppercase tracking-[.18em] mb-[12px]">
+        <div className="eyebrow-muted tracking-[.18em] mb-[12px]">
           Field · Theory · Course map
         </div>
-        <h1 className="font-2 italic font-light text-[52px] leading-[1.05] tracking-[-.02em] text-color-4 m-0 mb-[14px] max-[700px]:text-[36px] [&_em]:italic [&_em]:text-accent [&_em]:font-normal">
+        <h1 className="title-display font-light text-[52px] leading-[1.05] tracking-[-.02em] mb-[14px] max-[700px]:text-[36px] [&_em]:italic [&_em]:text-accent [&_em]:font-normal">
           The chapter <em>graph</em>.
         </h1>
-        <p className="font-1 text-[16px] leading-[1.6] text-color-5 max-w-[640px] max-[700px]:text-[15px]">
+        <p className="body-copy max-w-[640px] max-[700px]:text-[15px]">
           Each chapter sits above its prerequisites. Click a node to open it.
           Hover to highlight the dependency chain.
           {!hasPrereqData && (
@@ -223,7 +222,7 @@ function MapPage() {
       </div>
 
       <div
-        className="bg-color-3 border border-border-1 rounded-[12px] p-[12px] overflow-auto [-webkit-overflow-scrolling:touch]"
+        className="card-surface rounded-[12px] p-[12px] overflow-auto [-webkit-overflow-scrolling:touch]"
         role="region"
         aria-label="Chapter prerequisite graph"
       >
@@ -319,8 +318,8 @@ function MapPage() {
       </div>
 
       <div className="flex justify-between items-center mt-[28px] pt-[20px] border-t border-border-1">
-        <Link to="/" className="font-3 text-[12px] tracking-[.12em] uppercase text-text-muted no-underline hover:text-accent">← Back to contents</Link>
-        <Link to="/tracks" className="font-3 text-[12px] tracking-[.12em] uppercase text-text-muted no-underline hover:text-accent">Tracks →</Link>
+        <Link to="/" className="eyebrow-muted text-[12px] no-underline hover:text-accent">← Back to contents</Link>
+        <Link to="/tracks" className="eyebrow-muted text-[12px] no-underline hover:text-accent">Tracks →</Link>
       </div>
     </section>
   );

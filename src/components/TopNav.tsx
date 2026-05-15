@@ -61,7 +61,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-[998] py-[22px] px-[40px] flex justify-between items-center border-b border-border bg-[linear-gradient(180deg,var(--nav-bg-start),var(--nav-bg-end))] backdrop-blur-[12px] max-[760px]:py-lg max-[760px]:px-xl max-[760px]:flex-wrap max-[760px]:gap-md">
-      <Link to="/" className="font-2 italic font-light text-[20px] tracking-[-.02em] text-color-4 no-underline [&_span]:text-accent">
+      <Link to="/" className="title-display font-light text-[20px] tracking-[-.02em] no-underline [&_span]:text-accent">
         Field <span>·</span> Theory
       </Link>
       <div className="flex gap-[14px] items-center max-[900px]:gap-[9px] max-[760px]:gap-[14px]">
@@ -87,7 +87,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
               className="fixed top-[72px] left-1/2 -translate-x-1/2 z-[999] w-[min(1100px,calc(100vw-40px))] max-h-[calc(100vh-100px)] overflow-y-auto py-[28px] px-[32px] rounded-5 border border-border-2 bg-bg-elevated shadow-[0_24px_60px_var(--shadow-strong)]"
             >
               <div className="flex items-baseline justify-between mb-xl pb-md border-b border-border">
-                <span className="font-3 text-[11px] text-text-muted uppercase tracking-[.18em]">All chapters</span>
+                <span className="eyebrow-muted tracking-[.18em]">All chapters</span>
                 <span className="font-3 text-[11px] text-text-muted tracking-[.05em] tabular-nums">{CHAPTERS.length} total</span>
               </div>
               <ul className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-x-xl gap-y-[2px] list-none m-0 p-0">
@@ -164,7 +164,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
         <div className="meta-1 max-[760px]:hidden">{pageMeta}</div>
         <button
           type="button"
-          className="inline-flex items-center gap-sm min-h-[30px] px-[10px] border border-border-2 rounded-pill bg-color-3 text-text-muted font-3 text-[10px] leading-none tracking-[.12em] uppercase cursor-pointer transition-colors hover:text-color-4 hover:border-accent"
+          className="inline-flex items-center gap-sm min-h-[30px] px-[10px] border border-border-2 rounded-pill bg-color-3 eyebrow-muted text-[10px] leading-none cursor-pointer transition-colors hover:text-color-4 hover:border-accent"
           onClick={onCycleTheme}
           aria-label={`Theme: ${themeMode}. Effective theme: ${resolvedTheme}. Activate to cycle theme mode.`}
           title={`Theme: ${themeMode}`}

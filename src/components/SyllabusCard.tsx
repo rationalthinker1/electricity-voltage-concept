@@ -67,7 +67,7 @@ export function SyllabusCard({ chapter }: SyllabusCardProps) {
         {tracks && tracks.length > 0 && (
           <div className="chapter-syllabus-card-tracks">
             <div className="syllabus-stat-label">Tracks</div>
-            <div className="chapter-syllabus-card-badge-row">
+            <div className="flex flex-wrap gap-[6px]">
               {tracks.map(t => (
                 <Pill key={t} variant={TRACK_TONE[t]}>{TRACKS[t].name}</Pill>
               ))}
@@ -79,7 +79,7 @@ export function SyllabusCard({ chapter }: SyllabusCardProps) {
       {prereqChapters.length > 0 && (
         <div className="chapter-syllabus-card-prereqs">
           <div className="syllabus-stat-label">Prerequisites</div>
-          <div className="chapter-syllabus-card-badge-row">
+          <div className="flex flex-wrap gap-[6px]">
             {prereqChapters.map(c => (
               <Link
                 key={c.slug}

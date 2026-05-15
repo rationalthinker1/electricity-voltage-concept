@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode, type MouseEvent } from 'react';
+import clsx from 'clsx';
 
 export interface DrawerProps {
   open: boolean;
@@ -49,16 +50,25 @@ export function Drawer({
   return (
     <dialog
       ref={dialogRef}
-      className={['ui-drawer', `ui-drawer-${side}`, className].filter(Boolean).join(' ')}
+      className={clsx(
+        'p-0 border-0 bg-transparent text-color-4 max-w-none max-h-none w-full h-full backdrop:bg-black/55 backdrop:backdrop-blur-[2px]',
+        className,
+      )}
       onClick={onBackdropClick}
       aria-label={typeof title === 'string' ? title : 'Drawer'}
     >
-      <div className="ui-drawer-panel">
-        <header className="ui-drawer-header">
-          <div className="ui-drawer-title">{title}</div>
-          <button type="button" className="ui-drawer-close" onClick={onClose} aria-label="Close drawer">×</button>
+      <div
+        className={clsx(
+          'fixed bg-color-2 border border-border-2 shadow-3 flex flex-col overflow-hidden',
+          side === 'right' && 'top-0 right-0 bottom-0 w-[min(420px,92vw)] border-l border-l-border-2',
+          side === 'bottom' && 'left-0 right-0 bottom-0 max-h-[80vh] border-t border-t-border-2 rounded-t-6',
+        )}
+      >
+        <header className="flex items-center justify-between py-[14px] px-[18px] border-b border-border-1 shrink-0">
+          <div className="font-2 italic text-[19px] text-color-4">{title}</div>
+          <button type="button" className="appearance-none bg-transparent border-0 text-color-5 text-[24px] leading-none cursor-pointer py-0 px-[6px] hover:text-color-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_var(--accent-soft)]" onClick={onClose} aria-label="Close drawer">×</button>
         </header>
-        <div className="ui-drawer-body">{children}</div>
+        <div className="p-[18px] overflow-auto flex-1">{children}</div>
       </div>
     </dialog>
   );

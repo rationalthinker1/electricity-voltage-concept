@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import clsx from 'clsx';
 
 export type CardVariant = 'default' | 'elevated' | 'outlined' | 'subtle';
 export type CardAccent = 'accent' | 'teal' | 'pink' | 'blue' | undefined;
@@ -20,14 +21,32 @@ export function Card({
   children,
   className,
 }: CardProps) {
-  const classes = ['ui-card', `ui-card-${variant}`];
-  if (accent) classes.push(`ui-card-accent-${accent}`);
-  if (className) classes.push(className);
   return (
-    <div className={classes.join(' ')}>
-      {header !== undefined && <header className="ui-card-header">{header}</header>}
-      <div className="ui-card-body">{children}</div>
-      {footer !== undefined && <footer className="ui-card-footer">{footer}</footer>}
+    <div
+      className={clsx(
+        'rounded-6 bg-color-3 border border-border-1 overflow-hidden flex flex-col',
+        variant === 'elevated' && 'bg-color-2 border-border-2 shadow-2',
+        variant === 'outlined' && 'bg-transparent border-border-2',
+        variant === 'subtle' && 'bg-transparent border-dashed border-border-1',
+        accent === 'accent' && 'border-l-[3px] border-l-accent',
+        accent === 'teal' && 'border-l-[3px] border-l-teal',
+        accent === 'pink' && 'border-l-[3px] border-l-pink',
+        accent === 'blue' && 'border-l-[3px] border-l-blue',
+        '[&_button:focus-visible]:outline [&_button:focus-visible]:outline-2 [&_button:focus-visible]:outline-accent [&_button:focus-visible]:outline-offset-2 [&_button:focus-visible]:shadow-[0_0_0_4px_var(--accent-soft)]',
+        className,
+      )}
+    >
+      {header !== undefined && (
+        <header className="py-[14px] px-[18px] border-b border-border-1 font-3 text-[12px] tracking-[.08em] uppercase text-color-5">
+          {header}
+        </header>
+      )}
+      <div className="p-[18px] text-color-4">{children}</div>
+      {footer !== undefined && (
+        <footer className="py-[12px] px-[18px] border-t border-border-1 text-[13px] text-text-muted">
+          {footer}
+        </footer>
+      )}
     </div>
   );
 }

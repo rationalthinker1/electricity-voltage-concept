@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import clsx from 'clsx';
 import { Badge, Banner, Card } from './ui';
 
 export type PredictKind = 'multiple-choice' | 'short-answer';
@@ -156,42 +157,46 @@ export function PredictThenObserve({
       <Card
         variant="outlined"
         accent="accent"
-        className="pto-card pto-card-awaiting"
+        className="my-[28px] mb-[18px]"
         header={
-          <div className="pto-header">
+          <div className="flex items-center gap-md flex-wrap">
             <Badge variant="accent" size="sm">Predict first</Badge>
-            <span className="pto-header-hint">Commit to a guess — being wrong is fine.</span>
+            <span className="eyebrow-muted tracking-[.08em]">Commit to a guess — being wrong is fine.</span>
           </div>
         }
       >
-        <div className="pto-question">{question}</div>
+        <div className="body-copy leading-[1.55] text-color-4 m-0 mb-lg">{question}</div>
         {spec.kind === 'multiple-choice' ? (
-          <fieldset className="pto-options">
-            <legend className="pto-legend-sr">Choose one</legend>
+          <fieldset className="flex flex-col gap-sm border-0 p-0 m-0 mb-lg">
+            <legend className="absolute w-px h-px overflow-hidden [clip:rect(0_0_0_0)]">Choose one</legend>
             {spec.options.map(opt => {
               const checked = mcSelected === opt.id;
               return (
                 <label
                   key={opt.id}
-                  className={`pto-option${checked ? ' is-selected' : ''}`}
+                  className={clsx(
+                    'flex items-center gap-md py-[10px] px-md border border-border-1 rounded-2 bg-color-2 cursor-pointer transition-all duration-150 ease-in-out text-color-5 font-1 text-[14.5px] leading-[1.45] hover:border-border-2 hover:text-color-4 hover:bg-bg-card-hover',
+                    checked && 'border-accent bg-accent-soft text-color-4',
+                  )}
                 >
                   <input
+                    className="appearance-none w-[14px] h-[14px] border border-border-2 rounded-full m-0 shrink-0 relative cursor-pointer bg-transparent checked:border-accent checked:after:content-[''] checked:after:absolute checked:after:top-1/2 checked:after:left-1/2 checked:after:-translate-x-1/2 checked:after:-translate-y-1/2 checked:after:w-[6px] checked:after:h-[6px] checked:after:rounded-full checked:after:bg-accent"
                     type="radio"
                     name={`pto-${storageKey}`}
                     value={opt.id}
                     checked={checked}
                     onChange={() => setMcSelected(opt.id)}
                   />
-                  <span className="pto-option-label">{opt.label}</span>
+                  <span className="flex-1 min-w-0">{opt.label}</span>
                 </label>
               );
             })}
           </fieldset>
         ) : (
-          <div className="pto-short">
+          <div className="flex items-center gap-[10px] m-0 mb-lg">
             <input
               type="text"
-              className="pto-short-input"
+              className="flex-1 min-w-0 bg-color-2 border border-border-2 text-color-4 py-[10px] px-md font-3 text-[14px] rounded-2 transition-colors duration-150 ease-in-out focus:outline-none focus:border-accent"
               value={shortInput}
               onChange={e => setShortInput(e.target.value)}
               placeholder={spec.placeholder ?? 'Your prediction'}
@@ -202,13 +207,13 @@ export function PredictThenObserve({
                 }
               }}
             />
-            {spec.unit && <span className="pto-short-unit">{spec.unit}</span>}
+            {spec.unit && <span className="font-3 text-[13px] text-color-5">{spec.unit}</span>}
           </div>
         )}
-        <div className="pto-actions">
+        <div className="flex justify-end gap-[10px]">
           <button
             type="button"
-            className="btn pto-submit"
+            className="btn disabled:opacity-45 disabled:cursor-not-allowed"
             onClick={handleSubmit}
             disabled={
               spec.kind === 'multiple-choice' ? !mcSelected : shortInput.trim().length === 0
@@ -226,19 +231,23 @@ export function PredictThenObserve({
       <Card
         variant="outlined"
         accent="teal"
-        className="pto-card pto-card-just-predicted"
+        className="my-[28px] mb-[18px]"
         header={
-          <div className="pto-header">
+          <div className="flex items-center gap-md flex-wrap">
             <Badge variant="teal" size="sm">Prediction locked in</Badge>
           </div>
         }
       >
-        <p className="pto-confirm">
-          You guessed: <strong className="pto-answer-strong">{displayedAnswer}</strong>
+        <p className="body-copy text-[15.5px] leading-[1.55] m-0 mb-[14px]">
+          You guessed: <strong className="text-color-4 font-medium">{displayedAnswer}</strong>
         </p>
-        {reveal ? <div className="pto-reveal-copy">{reveal(answer)}</div> : null}
-        <div className="pto-actions">
-          <button type="button" className="btn pto-submit" onClick={handleReveal}>
+        {reveal ? (
+          <div className="body-copy text-[14.5px] leading-[1.55] m-0 mb-lg py-md px-[14px] bg-color-2 border-l-2 border-teal rounded-r-2">
+            {reveal(answer)}
+          </div>
+        ) : null}
+        <div className="flex justify-end gap-[10px]">
+          <button type="button" className="btn disabled:opacity-45 disabled:cursor-not-allowed" onClick={handleReveal}>
             Reveal demo
           </button>
         </div>
@@ -251,11 +260,11 @@ export function PredictThenObserve({
     correctness === 'correct' ? 'success' : correctness === 'incorrect' ? 'warn' : 'info';
 
   return (
-    <div className="pto-revealed">
-      <Banner variant={annotationVariant} className="pto-annotation">
-        <span className="pto-annotation-label">Your prediction:</span>{' '}
-        <strong className="pto-answer-strong">{displayedAnswer}</strong>{' '}
-        <span className="pto-annotation-tail">
+    <div className="my-[18px]">
+      <Banner variant={annotationVariant} className="mb-[10px] font-1 text-[13.5px]">
+        <span className="eyebrow-muted tracking-[.08em]">Your prediction:</span>{' '}
+        <strong className="text-color-4 font-medium">{displayedAnswer}</strong>{' '}
+        <span className="text-color-5">
           Try the demo to see if you were right.
         </span>
       </Banner>

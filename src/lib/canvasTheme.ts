@@ -17,6 +17,8 @@ export interface ThemeColors {
   bg: string;
   surface: string;
   surfaceHover: string;
+  cardBg: string;
+  cardBgHover: string;
   text: string;
   textDim: string;
   textMuted: string;
@@ -58,6 +60,8 @@ export function getCanvasColors(): ThemeColors {
     bg: get('--color-bg-elevated', '#121215'),
     surface,
     surfaceHover: get('--color-surface-hover', '#1c1c22'),
+    cardBg: get('--color-card-bg', '#16161a'),
+    cardBgHover: get('--color-card-bg-hover', '#1c1c22'),
     text: get('--color-text', '#ecebe5'),
     textDim,
     textMuted,
