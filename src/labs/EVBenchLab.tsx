@@ -1108,6 +1108,7 @@ const CSS = `
   flex-direction: column;
   gap: 12px;
   min-width: 0;
+  width: 100%;
 }
 
 .ev-palette, .ev-readout, .ev-trace, .ev-effmap {
@@ -1206,14 +1207,17 @@ const CSS = `
   flex-direction: column;
   gap: 16px;
   min-width: 0;
+  width: 100%;
 }
 .ev-trace {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  width: 100%;
 }
 .ev-effmap {
   padding: 0;
   overflow: hidden;
+  width: 100%;
 }
 `;
