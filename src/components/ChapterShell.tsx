@@ -80,7 +80,7 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
   }
 
   return (
-    <article className="mx-auto pt-5xl px-3xl pb-4xl max-w-[1080px]">
+    <article className="page-shell max-w-page">
       <div className="eyebrow-rule mb-xl">Chapter {chapter.number}</div>
       <h1 className="font-2 font-light leading-1 mb-xl max-w-[18ch] text-[clamp(48px,7vw,86px)] tracking-[-.03em]">
         {chapter.title}
@@ -165,7 +165,7 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
         </div>
       )}
 
-      <nav className="grid grid-cols-2 max-md:grid-cols-1 gap-px bg-border border border-border max-w-col-lg mx-auto mt-5xl mb-0">
+      <nav className="card-grid max-w-col-lg mx-auto mt-5xl mb-0">
         {prev ? (
           <Link to="/textbook/$chapterSlug" params={{ chapterSlug: prev.slug }} className="nav-item">
             <div className="eyebrow-muted text-1 tracking-4 mb-md">← Chapter {prev.number}</div>

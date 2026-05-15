@@ -10,7 +10,7 @@ export const Route = createFileRoute('/capstones')({
 
 function CapstonesIndex() {
   return (
-    <section className="page-shell pt-5xl max-w-page">
+    <section className="page-shell max-w-page">
       <header className="mb-2xl">
         <div className="eyebrow-muted tracking-4 mb-lg">Field · Theory · Capstones</div>
         <h1 className="hero-display max-md:text-9">

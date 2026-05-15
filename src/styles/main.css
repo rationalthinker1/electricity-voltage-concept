@@ -416,11 +416,19 @@ body::before {
            focus-visible:shadow-[0_0_0_4px_var(--accent-soft)];
   }
   /* Page-shell padding — every top-level route that opens with a hero
-     uses this 40/80 desktop and 18/60 mobile rhythm. Top padding and
-     max-w vary so they stay inline. */
+     uses this 130/48 desktop and 130/16 mobile rhythm. max-w stays
+     inline so callers can pick page / page-lg / col-lg per route. */
   .page-shell {
-    @apply mx-auto pb-4xl px-3xl
-           max-md:pt-5xl max-md:pb-4xl max-md:px-lg;
+    @apply mx-auto pt-5xl pb-4xl px-3xl
+           max-md:px-lg;
+  }
+
+  /* Hairline-divided card grid — 2 cols on desktop, 1 on mobile, with
+     1px gap rendered as the bg-border colour showing through. Used by
+     chapter related-labs, reference TOC sections, PageNav. Callers add
+     mx-auto / max-w / mt-* / reveal as needed. */
+  .card-grid {
+    @apply grid grid-cols-2 max-md:grid-cols-1 gap-px bg-border border border-border;
   }
   /* Hero display title — Fraunces 52px with em accent. Same shape as
      .title-display but at the route-level "<title>." headers. Pair
@@ -499,8 +507,10 @@ body::before {
 
 /* ─── Page layout primitives ─── */
 
+/* Defensive defaults for bare/inner <section> and <footer> tags that
+   don't carry their own width/centering classes. Component-level
+   classes override these via higher specificity. */
 section {
-  /* padding: 140px 40px; */
   max-width: 1280px;
   margin: 0 auto;
   position: relative;
@@ -518,7 +528,6 @@ footer {
 }
 
 @media (max-width: 760px) {
-  section { padding: 90px 24px; }
   footer { padding: 60px 24px 40px; }
 }
 
@@ -614,39 +623,21 @@ select.material-select {
 }
 select.material-select:focus { outline: none; border-color: var(--accent); }
 
-/* ─── Buttons (.btn used by PredictThenObserve) ─── */
-.btn {
+/* ─── Ghost-pill button primitives ───
+   .btn (PredictThenObserve, DriftLab, LorentzLab) and .mini-toggle
+   (Demo controls) share the same uppercase outlined pill shape — only
+   size, hover, and active-modifier tokens differ. */
+.btn, .mini-toggle {
   @apply bg-transparent border border-border-strong text-text-dim
-         py-sm px-lg font-3 text-2 tracking-3 uppercase
-         cursor-pointer rounded-1 transition-all
+         font-3 tracking-3 uppercase cursor-pointer rounded-1;
+}
+.btn {
+  @apply py-sm px-lg text-2 transition-all
          hover:text-text hover:border-text-dim;
 }
 .btn.active {
   @apply bg-accent text-bg border-accent font-medium;
 }
-
-/* ─── Book front-cover hero (index, reference) ─── */
-.book-hero {
-  @apply mx-auto pt-[180px] px-3xl pb-4xl max-w-[1280px];
-}
-.book-hero .imprint {
-  @apply flex items-center gap-md mb-2xl
-         font-3 text-2 uppercase tracking-4 text-accent;
-}
-.book-hero .imprint::before {
-  content: '';
-  @apply w-icon-lg bg-accent;
-  height: 1px;
-}
-.book-hero h1 {
-  @apply font-2 font-light leading-1 mb-2xl max-w-[14ch]
-         text-[clamp(56px,9vw,124px)] tracking-[-.035em];
-}
-.book-hero h1 em { @apply italic text-accent font-normal; }
-.book-hero .lede {
-  @apply font-light leading-4 max-w-col text-text-dim text-[21px];
-}
-.book-hero .lede strong { @apply text-text font-medium; }
 
 /* Chapter list (TOC container in index, reference) */
 .toc {
@@ -674,8 +665,7 @@ select.material-select:focus { outline: none; border-color: var(--accent); }
   border: 2px solid var(--bg-elevated);
 }
 .mini-toggle {
-  @apply bg-transparent border border-border-strong text-text-dim
-         py-xs px-md font-3 text-1 tracking-3 uppercase cursor-pointer rounded-1;
+  @apply py-xs px-md text-1;
 }
 .mini-toggle.on {
   @apply bg-accent text-bg border-accent;

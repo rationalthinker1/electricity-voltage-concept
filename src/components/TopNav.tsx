@@ -171,7 +171,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
         >
           <span
             className={clsx(
-              'relative w-lg h-lg border-[1.5px] border-current rounded-pill',
+              'relative w-lg h-lg border border-current rounded-pill',
               resolvedTheme === 'light' && 'bg-current shadow-[0_0_0_3px_var(--accent-soft)]',
               resolvedTheme === 'dark' && "after:content-[''] after:absolute after:-top-xxs after:left-xs after:w-md after:h-md after:rounded-pill after:bg-bg",
             )}

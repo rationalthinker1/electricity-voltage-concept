@@ -173,7 +173,7 @@ function TracksPage() {
   const anyTracksPopulated = trackOrder.some(t => chaptersByTrack[t].length > 0);
 
   return (
-    <section className="pt-5xl pb-4xl px-3xl max-w-page mx-auto max-md:pt-5xl max-md:pb-4xl max-md:px-lg">
+    <section className="page-shell max-w-page">
       <header className="mb-2xl">
         <div className="eyebrow-muted tracking-4 mb-sm">Field · Theory · Tracks</div>
         <h1 className="title-display font-light text-10 leading-1 tracking-1 mb-lg max-md:text-9">

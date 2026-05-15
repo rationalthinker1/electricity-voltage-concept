@@ -9,17 +9,17 @@ export const Route = createFileRoute('/')({
 function Home() {
   return (
     <>
-      <section className="book-hero">
-        <div className="imprint">Field · Theory · An interactive textbook · v0.4</div>
-        <h1>
-          The field is the <em>thing</em>.
+      <section className="mx-auto pt-[180px] px-3xl pb-4xl max-w-page-lg">
+        <div className="eyebrow-rule mb-2xl text-2">Field · Theory · An interactive textbook · v0.4</div>
+        <h1 className="font-2 font-light leading-1 mb-2xl max-w-[14ch] text-[clamp(56px,9vw,124px)] tracking-[-.035em]">
+          The field is the <em className="italic text-accent font-normal">thing</em>.
         </h1>
-        <p className="lede">
+        <p className="font-light leading-4 max-w-col text-text-dim text-[21px]">
           Most people learn electricity through a broken metaphor — electrons rushing through a wire like water in a pipe.
           The real story, the one Maxwell wrote down and Poynting finished, is stranger and more beautiful.
-          {' '}<strong>Electrons crawl. Energy sprints. And it doesn't travel inside the wire at all.</strong>
+          {' '}<strong className="text-text font-medium">Electrons crawl. Energy sprints. And it doesn't travel inside the wire at all.</strong>
         </p>
-        <p className="lede" style={{ marginTop: 22 }}>
+        <p className="font-light leading-4 max-w-col text-text-dim text-[21px] mt-xl">
           This is a textbook in six chapters. Each chapter is a long-form essay with embedded interactive demonstrations
           you can play with as you read — small canvases, a few sliders, focused on answering one question. When you want
           the full math, the equation labs in the {' '}
@@ -37,7 +37,7 @@ function Home() {
               params={{ chapterSlug: c.slug }}
               className="group bg-bg py-3xl px-3xl no-underline text-inherit flex flex-col gap-md transition-colors duration-150 relative min-h-panel hover:bg-bg-card-hover"
             >
-              <span className="font-3 text-2 text-accent tracking-4 uppercase">Chapter {c.number}</span>
+              <span className="eyebrow-accent text-2 tracking-4">Chapter {c.number}</span>
               <span className="font-2 font-light text-9 leading-1 tracking-1 text-text">{c.title}</span>
               <span className="font-2 italic font-light text-7 text-accent -mt-sm">{c.subtitle}</span>
               <span className="text-text-dim text-5 leading-4">{c.blurb}</span>

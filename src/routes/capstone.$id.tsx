@@ -87,7 +87,7 @@ function CapstonePage() {
   })();
 
   return (
-    <article className="page-shell pt-5xl max-w-page">
+    <article className="page-shell max-w-page">
       <header className="mb-3xl">
         <div className="eyebrow-accent text-2 tracking-4 mb-lg">Capstone {capstone.number} · Integration project</div>
         <h1 className="title-display font-light text-10 leading-1 tracking-1 mb-md max-md:text-9">{capstone.title}</h1>

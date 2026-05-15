@@ -22,7 +22,7 @@ export function CaseStudy({ tag, title, summary, children, specs }: CaseStudyPro
   return (
     <article className="bg-bg-card border border-border-strong rounded-3 py-2xl px-2xl pb-xl relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:w-xxs before:h-full before:bg-accent before:opacity-80 max-sm:py-xl max-sm:px-lg">
       <header className="mb-lg">
-        {tag && <span className="inline-block font-3 text-6 text-accent tracking-4 uppercase mb-md py-xxs px-md bg-accent-soft rounded-1">{tag}</span>}
+        {tag && <span className="eyebrow-accent inline-block text-6 tracking-4 mb-md py-xxs px-md bg-accent-soft rounded-1">{tag}</span>}
         <h3 className="font-2 font-normal italic text-8 max-sm:text-8 leading-2 tracking-1 text-text mt-0 mb-md">{title}</h3>
         {summary && <p className="font-2 italic font-light text-6 leading-3 text-text-dim m-0">{summary}</p>}
       </header>

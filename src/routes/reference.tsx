@@ -28,16 +28,16 @@ function Reference() {
 
   return (
     <>
-      <section className="book-hero">
-        <div className="imprint">Appendix · Equation labs + sandboxes</div>
-        <h1>The <em>equations</em>, one at a time.</h1>
-        <p className="lede">
+      <section className="mx-auto pt-[180px] px-3xl pb-4xl max-w-page-lg">
+        <div className="eyebrow-rule mb-2xl text-2">Appendix · Equation labs + sandboxes</div>
+        <h1 className="font-2 font-light leading-1 mb-2xl max-w-[14ch] text-[clamp(56px,9vw,124px)] tracking-[-.035em]">The <em className="italic text-accent font-normal">equations</em>, one at a time.</h1>
+        <p className="font-light leading-4 max-w-col text-text-dim text-[21px]">
           Sixteen interactive equation labs plus integrated system sandboxes. Each lab has full sliders,
           live readouts, a visualization, a long-form math walkthrough, and a per-page sources block.
           The sandboxes stitch multiple chapters together: circuits, house wiring, motors, EVs, grids,
           RF links, and power supplies.
         </p>
-        <p className="lede" style={{ marginTop: 22 }}>
+        <p className="font-light leading-4 max-w-col text-text-dim text-[21px] mt-xl">
           Reading the textbook chapters? These are linked from inside each chapter as "Go deeper" pages. You can also
           browse them directly here. {' '}
           <Link to="/" style={{ color: 'var(--accent)', textDecoration: 'none', borderBottom: '1px dotted' }}>
@@ -50,7 +50,7 @@ function Reference() {
         <section className="mb-3xl scroll-mt-4xl" id="sandbox">
           <div className="flex items-baseline justify-between mb-2xl pb-xl border-b border-border-strong gap-xl flex-wrap">
             <div>
-              <div className="font-3 text-2 text-accent uppercase tracking-4">System sandboxes</div>
+              <div className="eyebrow-accent text-2 tracking-4">System sandboxes</div>
               <h2 className="font-2 font-light text-[clamp(36px,5vw,56px)] tracking-1 text-text leading-none">Put the chapters together</h2>
             </div>
             <p className="text-6 text-text-dim max-w-col-sm text-right max-md:text-left leading-4">
@@ -59,7 +59,7 @@ function Reference() {
               isolated equations have become one working model in your head.
             </p>
           </div>
-          <div className="grid grid-cols-2 max-md:grid-cols-1 gap-px bg-border border border-border">
+          <div className="card-grid">
             {sandboxes.map(labRow)}
           </div>
         </section>
@@ -73,13 +73,13 @@ function Reference() {
             <section className="mb-4xl scroll-mt-4xl" id={cid} key={cid}>
               <div className="flex items-baseline justify-between mb-2xl pb-xl border-b border-border-strong gap-xl flex-wrap">
                 <div>
-                  <div className="font-3 text-2 text-accent uppercase tracking-4">{meta.eyebrow}</div>
+                  <div className="eyebrow-accent text-2 tracking-4">{meta.eyebrow}</div>
                   <h2 className="font-2 font-light text-[clamp(36px,5vw,56px)] tracking-1 text-text leading-none">{meta.title}</h2>
                 </div>
                 <p className="text-6 text-text-dim max-w-col-sm text-right max-md:text-left leading-4">{meta.blurb}</p>
               </div>
 
-              <div className="grid grid-cols-2 max-md:grid-cols-1 gap-px bg-border border border-border">
+              <div className="card-grid">
                 {labs.map(labRow)}
               </div>
             </section>

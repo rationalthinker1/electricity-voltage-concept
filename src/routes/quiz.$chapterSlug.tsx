@@ -22,7 +22,7 @@ function QuizRoute() {
   const quiz = getQuiz(slug);
 
   return (
-    <article className="mx-auto pt-5xl px-3xl pb-4xl max-w-[1080px]">
+    <article className="page-shell max-w-page">
       <div className="eyebrow-rule text-2 mb-xl">Mastery quiz &middot; Chapter {chapter.number}</div>
       <h1 className="font-2 font-light leading-1 mb-xl max-w-[18ch] text-[clamp(48px,7vw,86px)] tracking-[-.03em]">
         {chapter.title}

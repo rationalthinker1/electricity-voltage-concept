@@ -228,6 +228,36 @@ Use `clsx` for conditional utilities and keep state variants explicit
 Keep CSS selectors in `main.css` only when they are clearly shared or when a
 utility-only version would be brittle or unreadable.
 
+**Reach for existing recipes and standardized scales before reinventing.**
+Before writing a new `className`, scan `src/styles/main.css` for a recipe
+that already matches the shape. Current recipes include `.eyebrow-rule`,
+`.eyebrow-muted` / `-dim` / `-accent` / `-muted-link`, `.title-display`,
+`.hero-display`, `.body-copy`, `.card-surface`, `.icon-btn`, `.grid-list`,
+`.page-shell`, `.chapter-h2` / `.chapter-h3` / `.chapter-intro`,
+`.lab-section-h3`, `.formula-content` / `.formula-inline` / `.formula-hero`.
+If a recipe is close but not exact, layer extra utilities on top
+(`className="eyebrow-rule mb-2xl text-2"`); don't duplicate the recipe
+inline.
+
+For utilities, prefer the standardized numbered/named tokens over
+arbitrary values:
+
+- Sizes: `text-1` … `text-10`, never `text-[17px]`.
+- Spacing: `p-md`, `mb-xl`, `gap-2xl`, plus `prose-1..3` for em-relative
+  prose rhythm and `icon`, `panel`, `page`, `col` for fixed dimensions.
+  Avoid `px-[14px]` etc.
+- Type pairings: `font-1` (body), `font-2` (display), `font-3` (mono),
+  `font-4` (math). `tracking-1..4`. `leading-1..5`.
+- Borders / radii / z / duration: `border-3`, `rounded-5`, `z-2`,
+  `duration-fast`.
+- Colours: `text-text`, `text-text-dim`, `text-accent`, `bg-bg-card`,
+  `border-border-strong`, plus numbered aliases `color-1..6` and
+  `border-border-1/-2`. These honour the `[data-theme="light"]` swap.
+
+Arbitrary values like `text-[clamp(…)]`, em-relative sub/sup sizes, and
+specific `max-w-[28ch]` measures are fine when no token fits — but the
+common case should land on a token.
+
 **Inline class strings, don't extract to file-local constants.** Write the
 Tailwind classes directly inside JSX `className="…"`, even if the string is
 long. Do **not** hoist them to a top-of-file constant like:

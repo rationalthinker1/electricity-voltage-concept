@@ -51,7 +51,7 @@ export function Demo({ figure, title, question, children, caption, deeperLab }: 
   return (
     <figure ref={figureRef} className="bg-bg-card border border-border-strong rounded-3 overflow-hidden [content-visibility:auto] [contain-intrinsic-size:620px]">
       <div className="flex items-baseline gap-lg py-lg px-xl border-b border-border bg-bg-elevated flex-wrap">
-        <span className="font-3 text-1 text-accent tracking-4 uppercase">{figure ?? 'Fig.'}</span>
+        <span className="eyebrow-accent text-1 tracking-4">{figure ?? 'Fig.'}</span>
         <span className="font-1 text-5 text-text font-medium flex-1">{title}</span>
         {deeperLab && (
           <Link to="/labs/$slug" params={{ slug: deeperLab.slug }} className="font-3 text-1 text-text-muted tracking-3 uppercase no-underline border-b border-dotted border-text-muted hover:text-accent hover:border-accent">

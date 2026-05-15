@@ -194,7 +194,7 @@ function MapPage() {
   }
 
   return (
-    <section className="pt-5xl pb-4xl px-3xl max-w-page-lg mx-auto max-md:pt-5xl max-md:pb-4xl max-md:px-lg">
+    <section className="page-shell max-w-page-lg">
       <style>{SVG_STYLES}</style>
       <div className="mb-2xl">
         <div className="eyebrow-muted tracking-4 mb-lg">

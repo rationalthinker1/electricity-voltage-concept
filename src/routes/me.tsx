@@ -175,7 +175,7 @@ function MePage() {
   const isEmpty = stats.opened === 0;
 
   return (
-    <section className="page-shell pt-5xl max-w-page">
+    <section className="page-shell max-w-page">
       <header className="mb-2xl">
         <div className="eyebrow-muted tracking-4 mb-md">Field · Theory · Your transcript</div>
         <h1 className="hero-display max-md:text-9">Where you are in the <em>book</em>.</h1>

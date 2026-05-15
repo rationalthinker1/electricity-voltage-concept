@@ -9,7 +9,7 @@ interface PageNavProps {
 
 export function PageNav({ prev, next }: PageNavProps) {
   return (
-    <div className="reveal in grid grid-cols-2 max-md:grid-cols-1 gap-px bg-border border border-border mt-5xl">
+    <div className="reveal in card-grid mt-5xl">
       {prev ? (
         <Link to="/labs/$slug" params={{ slug: prev.slug }} className="nav-item">
           <div className="eyebrow-muted text-1 tracking-4 mb-md">← Lab {prev.number}</div>
