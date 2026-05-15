@@ -102,7 +102,7 @@ export const CHAPTERS: ChapterEntry[] = [
     sources: [
       'coulomb-1785', 'cavendish-1773', 'williams-faller-hill-1971',
       'gauss-1813', 'griffiths-2017', 'feynman-II-2', 'codata-2018',
-      'rakov-uman-2003', 'uman-2001',
+      'rakov-uman-2003', 'uman-2001', 'hyperphysics-emag',
     ],
     punchline:
       'Two kinds of charge, an inverse-square law that is really a fact about 3D space, and a field that turns force-at-a-distance into a property of the empty space around a charge.',

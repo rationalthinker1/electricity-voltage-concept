@@ -128,7 +128,7 @@ export function AutoResizeCanvas({ height, setup, ariaLabel }: AutoResizeCanvasP
   }, [height]);
 
   return (
-    <canvas
+    <canvas className="block w-full"
       ref={canvasRef}
       aria-label={ariaLabel}
       style={{ display: 'block', width: '100%' }}

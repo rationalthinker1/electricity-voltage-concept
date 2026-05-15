@@ -160,7 +160,7 @@ export function LayeredCanvas<LayerName extends string = string>({
   return (
     <div style={{ height, position: 'relative', width: '100%' }}>
       {layerList.map(layer => (
-        <canvas
+        <canvas className="block w-full"
           key={layer}
           ref={(node) => {
             if (node) canvasRefs.current.set(layer, node);

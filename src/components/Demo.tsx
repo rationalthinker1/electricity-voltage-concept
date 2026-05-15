@@ -61,8 +61,8 @@ export function Demo({ figure, title, question, children, caption, deeperLab }: 
       </div>
       <div className="title-display py-lg px-xl font-light text-6 border-b border-border bg-accent-soft">{question}</div>
       <div className={shouldRenderBody
-        ? 'bg-canvas-bg [contain:layout_paint_style] [&_canvas]:block [&_canvas]:w-full'
-        : 'bg-canvas-bg [contain:layout_paint_style] [&_canvas]:block [&_canvas]:w-full min-h-panel'}>
+        ? 'bg-canvas-bg [contain:layout_paint_style]'
+        : 'bg-canvas-bg [contain:layout_paint_style] min-h-panel'}>
         {shouldRenderBody ? children : null}
       </div>
       {caption && <figcaption className="py-lg px-xl text-4 text-text-muted italic leading-4 border-t border-border">{caption}</figcaption>}
@@ -135,7 +135,7 @@ export function MiniReadout({ label, value, unit }: MiniReadoutProps) {
   return (
     <div className="inline-flex items-baseline gap-sm font-3 text-2">
       <span className="text-text-muted uppercase tracking-3">{label}</span>
-      <span className="text-accent text-4 [&_sub]:text-[.7em] [&_sup]:text-[.7em] [&_sub]:leading-none [&_sup]:leading-none [&_sub]:font-3 [&_sup]:font-3 [&_sub]:align-[-.35em] [&_sup]:align-[.45em]">
+      <span className="text-accent text-4">
         {value}{unit && <span className="text-text-muted text-1"> {unit}</span>}
       </span>
     </div>

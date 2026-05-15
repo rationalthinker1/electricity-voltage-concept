@@ -23,10 +23,10 @@ export function CaseStudy({ tag, title, summary, children, specs }: CaseStudyPro
     <article className="bg-bg-card border border-border-strong rounded-3 py-2xl px-2xl pb-xl relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:w-xxs before:h-full before:bg-accent before:opacity-80 max-sm:py-xl max-sm:px-lg">
       <header className="mb-lg">
         {tag && <span className="inline-block font-3 text-6 text-accent tracking-4 uppercase mb-md py-xxs px-md bg-accent-soft rounded-1">{tag}</span>}
-        <h3 className="font-2 font-normal italic text-8 max-sm:text-8 leading-2 tracking-1 text-text mt-0 mb-md [&_em]:text-accent">{title}</h3>
+        <h3 className="font-2 font-normal italic text-8 max-sm:text-8 leading-2 tracking-1 text-text mt-0 mb-md">{title}</h3>
         {summary && <p className="font-2 italic font-light text-6 leading-3 text-text-dim m-0">{summary}</p>}
       </header>
-      <div className="text-6 leading-5 text-text-dim [&_p]:mb-prose-2 [&_p:last-child]:mb-0 [&_strong]:text-text [&_strong]:font-medium [&_em]:text-text [&_em]:italic [&_.math]:font-4 [&_.math]:italic [&_.math]:text-7 [&_.math]:text-center [&_.math]:my-lg [&_.math]:text-text [&_.cite]:inline-block [&_.cite]:font-3 [&_.cite]:text-1 [&_.cite]:align-super [&_.cite]:leading-none [&_.cite]:text-accent [&_.cite]:bg-accent-soft [&_.cite]:py-px [&_.cite]:px-sm [&_.cite]:mx-px [&_.cite]:rounded-1 [&_.cite]:no-underline hover:[&_.cite]:bg-accent hover:[&_.cite]:text-bg [&_.formula-block]:my-lg [&_.formula-block]:mx-0 [&_.formula-block]:py-lg [&_.formula-block]:px-lg [&_.formula-block]:max-w-none [&_.formula-block]:border-border [&_.formula-content]:text-8">{children}</div>
+      <div className="text-6 leading-5 text-text-dim [&_.math]:font-4 [&_.math]:italic [&_.math]:text-7 [&_.math]:text-center [&_.math]:my-lg [&_.math]:text-text [&_.formula-block]:my-lg [&_.formula-block]:mx-0 [&_.formula-block]:py-lg [&_.formula-block]:px-lg [&_.formula-block]:max-w-none [&_.formula-block]:border-border">{children}</div>
       {specs && specs.length > 0 && (
         <dl className="mt-xl mb-0 py-lg px-xl border border-border bg-bg-elevated rounded-2 grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-y-md gap-x-xl">
           {specs.map((s, i) => (

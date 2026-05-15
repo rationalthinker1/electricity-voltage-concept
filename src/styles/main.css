@@ -431,6 +431,28 @@ body::before {
            [&_em]:italic [&_em]:text-accent [&_em]:font-normal;
   }
 
+  /* Math typography for <Formula> block. Styles raw sub/sup/var
+     written inline inside formula children. Paired with .formula-inline
+     for sentence-level math. Parent contexts (TryIt, CaseStudy,
+     ChapterShell) override layout via [&_.formula-block]: and
+     [&_.formula-content]: variants. */
+  .formula-content {
+    @apply font-4 italic font-normal leading-4 tracking-normal text-text text-8 max-sm:text-8
+           [font-feature-settings:"ss01","lnum"]
+           [&_sub]:text-[.62em] [&_sub]:italic [&_sub]:leading-none [&_sub]:relative [&_sub]:tracking-normal [&_sub]:align-[-.32em]
+           [&_sup]:text-[.62em] [&_sup]:italic [&_sup]:leading-none [&_sup]:relative [&_sup]:tracking-normal [&_sup]:align-[.55em]
+           [&_var]:not-italic [&_.upright]:not-italic
+           [&_.formula-var]:text-accent [&_.formula-var]:italic;
+  }
+
+  .formula-inline {
+    @apply font-4 italic text-[1.05em] text-text whitespace-nowrap
+           [font-feature-settings:'lnum']
+           [&_var]:not-italic [&_.upright]:not-italic
+           [&_sub]:text-[.65em] [&_sub]:leading-none [&_sub]:align-[-.35em]
+           [&_sup]:text-[.65em] [&_sup]:leading-none [&_sup]:align-[.5em];
+  }
+
 }
 
 /* ─── Page layout primitives ─── */

@@ -1,10 +1,11 @@
-import { useEffect, useId, useRef } from 'react';
+import { useEffect, useId, useRef, type ReactNode } from 'react';
 
 export interface SliderProps {
   /** Label shown as <span class="slider-label"><span class="sym">…</span>…</span> */
   label: string;
-  /** Greek letter / variable shown in amber italic before label */
-  sym: string;
+  /** Greek letter / variable shown in amber italic before label.
+   *  JSX, e.g. `sym={<>ε<sub>r</sub></>}`. */
+  sym: ReactNode;
   /** Current value */
   value: number;
   min: number;
@@ -13,8 +14,8 @@ export interface SliderProps {
   /** Format function for the displayed value (right side of slider head) */
   format: (v: number) => string;
   /** Tick labels at left/right ends of the slider track */
-  metaLeft?: string;
-  metaRight?: string;
+  metaLeft?: ReactNode;
+  metaRight?: ReactNode;
   onChange: (v: number) => void;
 }
 
@@ -40,7 +41,7 @@ export function Slider({
     <div className="slider-group">
       <div className="slider-head">
         <span className="slider-label">
-          <span className="sym" dangerouslySetInnerHTML={{ __html: sym }} />
+          <span className="sym">{sym}</span>
           {label}
         </span>
         <span className="slider-value" id={labelId}>
@@ -59,8 +60,8 @@ export function Slider({
       />
       {(metaLeft || metaRight) && (
         <div className="flex justify-between mt-sm font-3 text-1 text-text-muted tracking-3">
-          <span dangerouslySetInnerHTML={{ __html: metaLeft ?? '' }} />
-          <span dangerouslySetInnerHTML={{ __html: metaRight ?? '' }} />
+          <span>{metaLeft}</span>
+          <span>{metaRight}</span>
         </div>
       )}
     </div>

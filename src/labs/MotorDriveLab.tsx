@@ -445,84 +445,84 @@ export default function MotorDriveLab() {
 
   const prose = (
     <>
-      <h3>What this bench wires together</h3>
-      <p>
-        Four chapters meet in this lab. The MOSFETs and IGBTs of <strong>Chapter 14</strong> are the
-        switches in the three-phase inverter; <strong>Chapter 16</strong> contributes the cascaded
-        proportional-integral compensators that close the current and speed loops; <strong>Chapter
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">What this bench wires together</h3>
+      <p className="mb-prose-3">
+        Four chapters meet in this lab. The MOSFETs and IGBTs of <strong className="text-text font-medium">Chapter 14</strong> are the
+        switches in the three-phase inverter; <strong className="text-text font-medium">Chapter 16</strong> contributes the cascaded
+        proportional-integral compensators that close the current and speed loops; <strong className="text-text font-medium">Chapter
         20</strong> supplies the electromechanical force law that turns those currents into shaft
-        torque<Cite id="griffiths-2017" in={SOURCES} />; and <strong>Chapter 24</strong> shapes the
+        torque<Cite id="griffiths-2017" in={SOURCES} />; and <strong className="text-text font-medium">Chapter 24</strong> shapes the
         H-bridge and three-phase-bridge topologies the controller actually commands. The bench above
         runs the coupled differential equations for all of it at a 25 µs integration step, which is
         fast enough to see a current loop settle, slow enough to keep the math honest.
       </p>
-      <p>
-        The flagship combination is the <strong>permanent-magnet synchronous motor</strong> driven by{' '}
-        <strong>field-oriented control</strong>. Every modern electric vehicle, most industrial
+      <p className="mb-prose-3">
+        The flagship combination is the <strong className="text-text font-medium">permanent-magnet synchronous motor</strong> driven by{' '}
+        <strong className="text-text font-medium">field-oriented control</strong>. Every modern electric vehicle, most industrial
         servomotors, and a growing number of e-bike and drone propulsion drives use this pair. The
         bench implements it in full d-q form; the other four motor/controller pairings use lighter
         equivalent models so the dropdown still tells a coherent story end-to-end<Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
 
-      <h3>The FOC reading flow, in one paragraph</h3>
-      <p>
-        A PMSM has three stator phases <em>a, b, c</em> wound 120° apart in space. Apply a balanced
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">The FOC reading flow, in one paragraph</h3>
+      <p className="mb-prose-3">
+        A PMSM has three stator phases <em className="italic text-text">a, b, c</em> wound 120° apart in space. Apply a balanced
         three-phase voltage and a field rotates around the rotor. Measure two of the three phase
-        currents (the third follows from Kirchhoff's current law). The <strong>Clarke transform</strong>
-        rotates that three-phase reading into a two-axis stationary frame <em>(α, β)</em>; the{' '}
-        <strong>Park transform</strong> then rotates again, this time by the rotor's electrical angle,
-        into the rotor-fixed frame <em>(d, q)</em>. In that frame the surface PMSM's torque equation
+        currents (the third follows from Kirchhoff's current law). The <strong className="text-text font-medium">Clarke transform</strong>
+        rotates that three-phase reading into a two-axis stationary frame <em className="italic text-text">(α, β)</em>; the{' '}
+        <strong className="text-text font-medium">Park transform</strong> then rotates again, this time by the rotor's electrical angle,
+        into the rotor-fixed frame <em className="italic text-text">(d, q)</em>. In that frame the surface PMSM's torque equation
         collapses to
       </p>
       <MathBlock>τ_e = (3/2) p_p ψ_m i_q</MathBlock>
-      <p>
-        which is to say: torque is just <em>one number</em>, <em>i_q</em>, multiplied by motor
-        constants. The controller closes a PI loop on <em>i_q</em> to a torque-reference output; a
-        second PI loop on <em>i_d</em> typically holds it at zero (for a surface PMSM) or drives it
+      <p className="mb-prose-3">
+        which is to say: torque is just <em className="italic text-text">one number</em>, <em className="italic text-text">i_q</em>, multiplied by motor
+        constants. The controller closes a PI loop on <em className="italic text-text">i_q</em> to a torque-reference output; a
+        second PI loop on <em className="italic text-text">i_d</em> typically holds it at zero (for a surface PMSM) or drives it
         negative above base speed to weaken the field and extend the speed envelope. The PI outputs
-        are commanded <em>v_d, v_q</em> values. The <strong>inverse Park</strong> and{' '}
-        <strong>inverse Clarke</strong> transforms turn those back into three-phase voltage commands,
+        are commanded <em className="italic text-text">v_d, v_q</em> values. The <strong className="text-text font-medium">inverse Park</strong> and{' '}
+        <strong className="text-text font-medium">inverse Clarke</strong> transforms turn those back into three-phase voltage commands,
         which space-vector PWM then translates into the gate signals for the six inverter switches.
         From the reader's point of view, a brushless AC machine has been turned into an
         externally-excited DC machine: one knob for torque, one for flux<Cite id="sedra-smith-2014" in={SOURCES} />.
       </p>
       <Pullout>
         Clarke and Park rotate a three-phase mess into two clean numbers. One you hold at zero. The
-        other <em>is</em> the torque.
+        other <em className="italic text-text">is</em> the torque.
       </Pullout>
 
-      <h3>The torque-speed envelope, and why it has two regions</h3>
-      <p>
-        Every motor has a curve in the τ-ω plane it cannot leave. Below <em>base speed</em>{' '}
-        <em>ω_b</em> the limit is thermal: the windings can sustain a continuous current of <em>I_rated</em>,
-        which sets a maximum torque <em>τ_rated</em> independent of speed. This is the
-        <strong> constant-torque region</strong>. Above <em>ω_b</em> the back-EMF
-        <em> ω ψ_m</em> begins to exceed what the inverter can supply at its bus voltage; to push more
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">The torque-speed envelope, and why it has two regions</h3>
+      <p className="mb-prose-3">
+        Every motor has a curve in the τ-ω plane it cannot leave. Below <em className="italic text-text">base speed</em>{' '}
+        <em className="italic text-text">ω_b</em> the limit is thermal: the windings can sustain a continuous current of <em className="italic text-text">I_rated</em>,
+        which sets a maximum torque <em className="italic text-text">τ_rated</em> independent of speed. This is the
+        <strong className="text-text font-medium"> constant-torque region</strong>. Above <em className="italic text-text">ω_b</em> the back-EMF
+        <em className="italic text-text"> ω ψ_m</em> begins to exceed what the inverter can supply at its bus voltage; to push more
         current into the machine the controller would need more volts than it has. The available
-        torque drops as <em>τ ∝ 1/ω</em> — power held roughly constant — giving the{' '}
-        <strong>constant-power region</strong>. A clever trick called <strong>field weakening</strong>{' '}
-        extends the operating range further: drive a negative <em>i_d</em>, deliberately fighting the
-        rotor flux, to lower the effective back-EMF and free up voltage headroom for more <em>i_q</em>{' '}
+        torque drops as <em className="italic text-text">τ ∝ 1/ω</em> — power held roughly constant — giving the{' '}
+        <strong className="text-text font-medium">constant-power region</strong>. A clever trick called <strong className="text-text font-medium">field weakening</strong>{' '}
+        extends the operating range further: drive a negative <em className="italic text-text">i_d</em>, deliberately fighting the
+        rotor flux, to lower the effective back-EMF and free up voltage headroom for more <em className="italic text-text">i_q</em>{' '}
         (more torque). The bench's dashed teal curve shows the rated envelope; the amber curve sketches
-        the voltage limit set by the chosen <em>V_dc</em><Cite id="erickson-maksimovic-2020" in={SOURCES} />.
+        the voltage limit set by the chosen <em className="italic text-text">V_dc</em><Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
 
-      <h3>The efficiency map</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">The efficiency map</h3>
+      <p className="mb-prose-3">
         The η heatmap is a quick analytic estimate, not a re-run of the simulation across the grid.
-        For each <em>(τ, ω)</em> cell, we estimate the dominant loss mechanisms — copper loss <em>1.5
-        R_s i_s²</em>, an iron-loss term that scales with <em>ω_e²</em>, and a viscous-friction term
-        <em> B ω²</em> — then divide mechanical power by the sum of mechanical power and losses. The
+        For each <em className="italic text-text">(τ, ω)</em> cell, we estimate the dominant loss mechanisms — copper loss <em className="italic text-text">1.5
+        R_s i_s²</em>, an iron-loss term that scales with <em className="italic text-text">ω_e²</em>, and a viscous-friction term
+        <em className="italic text-text"> B ω²</em> — then divide mechanical power by the sum of mechanical power and losses. The
         result lines up surprisingly well with measured motor maps for surface PMSMs: a high-efficiency
         plateau in the upper-middle of the envelope, falling off toward stall (where copper losses
         dominate) and toward the top-right corner (where iron and field-weakening losses do the same).
         The white circle is the bench's current operating point<Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <h3>Reading the phase-current scope</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reading the phase-current scope</h3>
+      <p className="mb-prose-3">
         At a steady operating point on a PMSM-FOC drive, the three phase currents are sinusoids 120°
-        apart in time, with frequency equal to <em>p_p · ω_m / (2π)</em> Hz (the electrical
+        apart in time, with frequency equal to <em className="italic text-text">p_p · ω_m / (2π)</em> Hz (the electrical
         frequency). A four-pole-pair motor at 3000 RPM runs at 200 Hz electrical. When you bump the
         speed reference, you'll see two transients overlap: a fast one where the current loop settles
         in milliseconds, and a slower one where the speed loop rides the operating point to its new
@@ -530,46 +530,46 @@ export default function MotorDriveLab() {
         ragged or non-sinusoidal, the current loop is undertuned.
       </p>
 
-      <h3>Five problems to try in the sandbox</h3>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Five problems to try in the sandbox</h3>
       <ol>
         <li>
-          <strong>Tune the PMSM current loop to settle a torque step under 5 ms.</strong> Start from
-          the <em>PMSM at 3000 RPM cruise</em> preset. Pause, ramp <em>K_p (current)</em> from 1 V/A
+          <strong className="text-text font-medium">Tune the PMSM current loop to settle a torque step under 5 ms.</strong> Start from
+          the <em className="italic text-text">PMSM at 3000 RPM cruise</em> preset. Pause, ramp <em className="italic text-text">K_p (current)</em> from 1 V/A
           upward; watch the τ-step response on the operating-point trail. The current loop's
-          closed-loop bandwidth is roughly <em>K_p / L_s</em> rad/s; 5 ms settling needs ~600 rad/s of
-          bandwidth, so for this motor (<em>L_s</em> = 0.9 mH) <em>K_p</em> ≈ 0.5–1.0 V/A and
-          <em> K_i</em> at least <em>K_p R_s / L_s</em> ≈ 45–90 V/(A·s).
+          closed-loop bandwidth is roughly <em className="italic text-text">K_p / L_s</em> rad/s; 5 ms settling needs ~600 rad/s of
+          bandwidth, so for this motor (<em className="italic text-text">L_s</em> = 0.9 mH) <em className="italic text-text">K_p</em> ≈ 0.5–1.0 V/A and
+          <em className="italic text-text"> K_i</em> at least <em className="italic text-text">K_p R_s / L_s</em> ≈ 45–90 V/(A·s).
         </li>
         <li>
-          <strong>Find the induction motor's pull-out torque at slip = 0.15.</strong> Load the{' '}
-          <em>Induction V/f starting transient</em> preset. The Kloss approximation built into the
+          <strong className="text-text font-medium">Find the induction motor's pull-out torque at slip = 0.15.</strong> Load the{' '}
+          <em className="italic text-text">Induction V/f starting transient</em> preset. The Kloss approximation built into the
           simulation puts pull-out at slip ≈ 0.2 and τ_pullout ≈ 2.5×τ_rated; slip = 0.15 will read a
           torque close to but slightly below pull-out. Confirm by watching the τ readout while
-          dragging the ω_ref slider to make <em>(ω_sync − ω_m)/ω_sync</em> ≈ 0.15.
+          dragging the ω_ref slider to make <em className="italic text-text">(ω_sync − ω_m)/ω_sync</em> ≈ 0.15.
         </li>
         <li>
-          <strong>Make a brushed DC motor regenerate.</strong> Pick the brushed-DC + fan preset. Set
-          <em> ω_ref</em> well below the current speed; the speed PI now demands negative <em>i_q</em>,
+          <strong className="text-text font-medium">Make a brushed DC motor regenerate.</strong> Pick the brushed-DC + fan preset. Set
+          <em className="italic text-text"> ω_ref</em> well below the current speed; the speed PI now demands negative <em className="italic text-text">i_q</em>,
           the controller flips the armature voltage, and the bus current goes negative — energy is
           flowing from rotor back to bus. The η readout becomes ambiguous in this regime: mechanical
           power is leaving the shaft, electrical power is entering the bus.
         </li>
         <li>
-          <strong>Stall the stepper.</strong> Pick the stepper preset. Push <em>τ_load</em> upward
+          <strong className="text-text font-medium">Stall the stepper.</strong> Pick the stepper preset. Push <em className="italic text-text">τ_load</em> upward
           until the rotor falls out of step with the commanded angle — you'll see the position error
-          <em> θ_cmd − θ_e</em> grow past π/2 and the torque collapse. Bipolar steppers above their
+          <em className="italic text-text"> θ_cmd − θ_e</em> grow past π/2 and the torque collapse. Bipolar steppers above their
           pull-in torque skip steps catastrophically; the bench shows exactly why.
         </li>
         <li>
-          <strong>Run the PMSM into field-weakening.</strong> From the cruise preset, drag <em>ω_ref</em>
-          above <em>ω_rated</em>. Watch <em>i_d_ref</em> in the d-q readout (the bench prints both
+          <strong className="text-text font-medium">Run the PMSM into field-weakening.</strong> From the cruise preset, drag <em className="italic text-text">ω_ref</em>
+          above <em className="italic text-text">ω_rated</em>. Watch <em className="italic text-text">i_d_ref</em> in the d-q readout (the bench prints both
           axes' references) go negative as the controller borrows flux-axis current to free up voltage
           headroom. The operating point on the τ-ω plot crosses into the constant-power region.
         </li>
       </ol>
 
-      <h3>Why this bench is the most demanding integration in the textbook</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Why this bench is the most demanding integration in the textbook</h3>
+      <p className="mb-prose-3">
         Every chapter you've already read shows up here. The semiconductor switches throttle the bus
         (Ch.14). The PI compensators close the same kind of loops as Ch.16's op-amp circuits. The
         three-phase bridge is exactly the inverter of Ch.24, just clocked at 10 kHz instead of 50 Hz.

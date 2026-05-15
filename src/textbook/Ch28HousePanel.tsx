@@ -32,7 +32,7 @@ export default function Ch28HousePanel() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p>
+      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
         Open the cover of a residential service panel and the first thing you notice is how few moving parts there are.
         Two vertical copper bars run down the middle. A row of black plastic breakers snaps onto them, one above the
         next. Along each side wall a horizontal copper strip with a line of screw terminals waits to receive small
@@ -41,62 +41,62 @@ export default function Ch28HousePanel() {
         switch that turns the whole house off. Out the bottom of every other breaker, a hot wire fans into the
         building.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Three rules govern the whole geometry, and they are worth stating up front because every subsequent paragraph
-        of this chapter is just a consequence of one of them. <strong>Every breaker sits between a hot service
-        conductor and one of the two bus bars.</strong> <strong>Every white wire lands on the neutral bar; every
-        green or bare wire lands on the ground bar.</strong> <strong>The neutral bar and the ground bar are
+        of this chapter is just a consequence of one of them. <strong className="text-text font-medium">Every breaker sits between a hot service
+        conductor and one of the two bus bars.</strong> <strong className="text-text font-medium">Every white wire lands on the neutral bar; every
+        green or bare wire lands on the ground bar.</strong> <strong className="text-text font-medium">The neutral bar and the ground bar are
         connected to each other in exactly one place — at the main disconnect — and never again.</strong> Get those
         right and the panel will fail safely under every fault the building is likely to see; get one of them
         wrong and the failure mode is a fire or a corpse. The NEC's Article 408 spells the rules out in legalese,
         but they are recognisably the same three sentences<Cite id="nec-2023" in={SOURCES} />.
       </p>
 
-      <h2>Anatomy of the panel</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Anatomy of the panel</h2>
 
-      <p>
+      <p className="mb-prose-3">
         At the top of the enclosure, two heavy aluminium or copper conductors come in from the meter base — these are
         the two ungrounded service conductors, usually called L1 and L2, each at 120 V relative to the neutral and
         180° out of phase with each other (Ch.27). They bolt to the two line-side lugs of the
-        {' '}<Term def={<><strong>main disconnect</strong> — the breaker (or fused switch) at the head of the service panel that interrupts both ungrounded conductors at once. For a 200 A residential service it is a two-pole 200 A breaker. NEC 230 requires it to be readily accessible and labelled.</>}>main disconnect</Term>,
+        {' '}<Term def={<><strong className="text-text font-medium">main disconnect</strong> — the breaker (or fused switch) at the head of the service panel that interrupts both ungrounded conductors at once. For a 200 A residential service it is a two-pole 200 A breaker. NEC 230 requires it to be readily accessible and labelled.</>}>main disconnect</Term>,
         a two-pole breaker that, in a typical North-American single-family service, is rated for 100 A, 150 A, or
         200 A<Cite id="nec-2023" in={SOURCES} />. Pull its handle to OFF and the entire panel — every branch
         circuit, every outlet, every appliance — drops out at once. The service-entrance neutral and the bare
         grounding-electrode conductor arrive on separate terminals near the top, the first landing on the neutral
         bar, the second on the ground bar (or, equivalently, on a stud welded to the inside of the steel can).
       </p>
-      <p>
+      <p className="mb-prose-3">
         Below the main, the load side of the disconnect feeds the two
-        {' '}<Term def={<><strong>bus bar</strong> — the long vertical copper or aluminium conductor inside a panel that distributes one phase of the service to a column of breakers. A 200 A residential panel has two bus bars (L1 and L2), each carrying up to 200 A continuous.</>}>bus bars</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">bus bar</strong> — the long vertical copper or aluminium conductor inside a panel that distributes one phase of the service to a column of breakers. A 200 A residential panel has two bus bars (L1 and L2), each carrying up to 200 A continuous.</>}>bus bars</Term>{' '}
         that run vertically down the centre of the can. Each bus bar is a stamped piece of plated copper or
         tin-plated aluminium maybe a centimetre wide, with a row of slotted fingers — the bus stabs — projecting
         sideways at regular intervals. A breaker is just a clip that grabs one of those stabs, makes contact, and
         gives you a screw terminal on its load side to attach the branch-circuit hot wire.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Along each side wall sits a long terminal strip:
-        the {' '}<Term def={<><strong>neutral bar</strong> — the terminal strip in a panel that receives every white (grounded) conductor from every branch circuit. At the main disconnect it is bonded to the panel can by the main bonding jumper; at every sub-panel it must float relative to the can.</>}>neutral bar</Term>,
+        the {' '}<Term def={<><strong className="text-text font-medium">neutral bar</strong> — the terminal strip in a panel that receives every white (grounded) conductor from every branch circuit. At the main disconnect it is bonded to the panel can by the main bonding jumper; at every sub-panel it must float relative to the can.</>}>neutral bar</Term>,
         which receives every white wire from every branch circuit, and the separate
-        {' '}<Term def={<><strong>ground bar</strong> — the terminal strip in a panel that receives every green or bare equipment-grounding conductor from every branch circuit. Always bonded to the panel can. At the main disconnect it shares a connection with the neutral bar through the main bonding jumper; at a sub-panel it does not.</>}>ground bar</Term>,
+        {' '}<Term def={<><strong className="text-text font-medium">ground bar</strong> — the terminal strip in a panel that receives every green or bare equipment-grounding conductor from every branch circuit. Always bonded to the panel can. At the main disconnect it shares a connection with the neutral bar through the main bonding jumper; at a sub-panel it does not.</>}>ground bar</Term>,
         which receives every bare or green equipment-grounding conductor. In the main panel the two bars are
         electrically tied together through a short heavy strap called the
-        {' '}<Term def={<><strong>main bonding jumper</strong> — the conductor (a green screw, a wire, or a metal strap) that connects the neutral bar to the panel enclosure and the ground bar at the service entrance. NEC 250 requires exactly one such bond in the entire premises wiring system, at the first means of disconnect.</>}>main bonding jumper</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">main bonding jumper</strong> — the conductor (a green screw, a wire, or a metal strap) that connects the neutral bar to the panel enclosure and the ground bar at the service entrance. NEC 250 requires exactly one such bond in the entire premises wiring system, at the first means of disconnect.</>}>main bonding jumper</Term>{' '}
         (often just a green-painted screw threaded through the neutral bar into the steel can), and the panel can
         itself is grounded to a copper-clad rod driven into the earth<Cite id="nec-2023" in={SOURCES} />. From that
         single bonding point onward, neutral and ground are kept rigorously separate throughout the rest of the
         building.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Finally, the door of the panel has — or is supposed to have — a printed
-        {' '}<Term def={<><strong>panel directory</strong> — the printed card or label on the inside of the panel door that lists every breaker by slot number and identifies which loads it feeds. NEC 408.4 makes the directory mandatory and requires it to be legible and accurate.</>}>panel directory</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">panel directory</strong> — the printed card or label on the inside of the panel door that lists every breaker by slot number and identifies which loads it feeds. NEC 408.4 makes the directory mandatory and requires it to be legible and accurate.</>}>panel directory</Term>{' '}
         listing each breaker by slot number and the loads it feeds. NEC 408.4 makes that label
         mandatory<Cite id="nec-2023" in={SOURCES} />. An accurate directory is the single most useful piece of
         paper in the building when you need to turn off the right circuit at three in the morning.
       </p>
 
-      <h2>The bus bars and why phases <em>alternate</em></h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The bus bars and why phases <em className="italic text-accent font-normal">alternate</em></h2>
 
-      <p>
+      <p className="mb-prose-3">
         Look at a panel from the front with the cover off. The slot stampings on the deadfront — the metal cover with
         the breaker windows — read 1, 3, 5, 7… down the left column and 2, 4, 6, 8… down the right, but the
         important pattern is the one stamped on the bus itself: L1, L2, L1, L2, L1, L2 as you read straight down a
@@ -107,25 +107,25 @@ export default function Ch28HousePanel() {
         copper plate with offset fingers stamped along its
         length<Cite id="square-d-qo-datasheet" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Now consider a 240 V breaker — a
-        {' '}<Term def={<><strong>two-pole breaker</strong> — a breaker that occupies two adjacent panel slots and grabs one bus stab from each bus (L1 and L2). Internally the two trip mechanisms are tied together so that a fault on either pole opens both. The standard way to feed a 240 V appliance.</>}>two-pole breaker</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">two-pole breaker</strong> — a breaker that occupies two adjacent panel slots and grabs one bus stab from each bus (L1 and L2). Internally the two trip mechanisms are tied together so that a fault on either pole opens both. The standard way to feed a 240 V appliance.</>}>two-pole breaker</Term>{' '}
         with one fat handle that ties two internal trip mechanisms together. It physically spans two adjacent slots
         in the panel. Because adjacent slots see opposite phases, a two-pole breaker automatically taps L1 on one
         side and L2 on the other, giving you both phases of the split-phase service for free<Cite id="nema-ab-1" in={SOURCES} />.
         The voltage between those two stabs is the difference of the two phase voltages,
       </p>
       <Formula>V<sub>LL</sub> = V<sub>L1</sub> − V<sub>L2</sub> = (+120) − (−120) = 240 V</Formula>
-      <p>
-        where <strong>V<sub>LL</sub></strong> is the line-to-line voltage between the two ungrounded bus bars (in
-        volts RMS), <strong>V<sub>L1</sub></strong> is the instantaneous voltage of bus L1 measured with respect to
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">V<sub>LL</sub></strong> is the line-to-line voltage between the two ungrounded bus bars (in
+        volts RMS), <strong className="text-text font-medium">V<sub>L1</sub></strong> is the instantaneous voltage of bus L1 measured with respect to
         the centre-tap neutral (peak ≈ +170 V; RMS ≈ +120 V at the positive crossing), and
-        <strong> V<sub>L2</sub></strong> is the corresponding voltage of bus L2 referenced to the same neutral.
+        <strong className="text-text font-medium"> V<sub>L2</sub></strong> is the corresponding voltage of bus L2 referenced to the same neutral.
         L1 and L2 are exactly 180° out of phase because they come from opposite ends of the centre-tapped secondary
         winding of the utility transformer (Ch.27): when one terminal is at its positive peak the other is at its
         negative peak. The difference is therefore twice 120 V RMS, or 240 V<Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         This is why every two-pole 240 V load in the house — the electric range, the dryer, the heat pump, the EV
         charger — slots into the panel without any neutral required for the high-power half of the appliance.
         The two hots already give it 240 V between them. A neutral is added only if the appliance has a 120 V
@@ -136,7 +136,7 @@ export default function Ch28HousePanel() {
       <TryIt
         tag="Try 28.1"
         question={
-          <>A residential panel has <strong>30 breaker slots</strong> arranged in two columns of 15. How many 240 V
+          <>A residential panel has <strong className="text-text font-medium">30 breaker slots</strong> arranged in two columns of 15. How many 240 V
           double-pole breakers can it hold simultaneously, assuming you fill the panel entirely with two-pole breakers
           and never leave a slot pair unused?</>
         }
@@ -144,20 +144,20 @@ export default function Ch28HousePanel() {
         alternating bus stamping.</>}
         answer={
           <>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               Each two-pole breaker occupies two adjacent vertical slots in one column. A column of 15 slots holds 7
               full pairs with one slot left over; with two columns that is 14 two-pole breakers total, plus two
               orphan slots that can take a single-pole 120 V breaker each — or a single tandem.
             </p>
             <Formula>N<sub>2-pole</sub> = 2 columns × ⌊15 / 2⌋ = 2 × 7 = 14</Formula>
-            <p>
-              Answer: <strong>14 two-pole 240 V breakers</strong>, with two leftover slots for 120 V branch circuits.
+            <p className="mb-prose-1 last:mb-0">
+              Answer: <strong className="text-text font-medium">14 two-pole 240 V breakers</strong>, with two leftover slots for 120 V branch circuits.
             </p>
           </>
         }
       />
 
-      <p>
+      <p className="mb-prose-3">
         The two-column / alternating-phase geometry is much easier to read in 3D
         than in prose. Drag to orbit the cutaway below: L1 (pink) and L2 (blue) bus
         bars run the full height of the enclosure, with alternating stabs poking
@@ -169,9 +169,9 @@ export default function Ch28HousePanel() {
 
       <PanelBus3DDemo />
 
-      <h2>The three breaker species: standard, GFCI, AFCI</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The three breaker species: standard, GFCI, AFCI</h2>
 
-      <p>
+      <p className="mb-prose-3">
         From the outside every breaker looks the same — a black plastic case, a single or double switch handle,
         a current rating stamped on the front. The internals are where they diverge. UL 489 is the listing
         standard that defines what counts as a breaker in North America and what it has to do under fault
@@ -179,46 +179,46 @@ export default function Ch28HousePanel() {
         completely different trip mechanisms.
       </p>
 
-      <h3>Standard thermal-magnetic</h3>
+      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Standard thermal-magnetic</h3>
 
-      <p>
+      <p className="mb-prose-3">
         The everyday 15 A or 20 A branch breaker is a
-        {' '}<Term def={<><strong>thermal-magnetic breaker</strong> — a breaker that combines a bimetallic strip (slow trip under sustained overload) with an electromagnetic solenoid (fast trip under short-circuit current). The standard residential branch-circuit breaker.</>}>thermal-magnetic breaker</Term>.
+        {' '}<Term def={<><strong className="text-text font-medium">thermal-magnetic breaker</strong> — a breaker that combines a bimetallic strip (slow trip under sustained overload) with an electromagnetic solenoid (fast trip under short-circuit current). The standard residential branch-circuit breaker.</>}>thermal-magnetic breaker</Term>.
         Inside it are two parallel trip elements, each protecting against a different failure mode. The thermal
         element is a bimetallic strip carrying the load current; mild overload heats the strip and bends it until
         a latch releases. This trip is deliberately slow — seconds to minutes at 1.5× rated current — because
         motor starts and brief inrush currents legitimately exceed nameplate, and a breaker that nuisance-tripped
         every time a refrigerator started would be uselessly conservative.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The magnetic element is a small solenoid wound around (or in series with) the same conductor; at perhaps
         8× rated current its field is strong enough to yank the latch open in a fraction of a cycle — milliseconds,
         not seconds. This trip handles the dead-short case where the conductor has bridged hot to neutral or hot
         to ground and the only thing limiting the current is the impedance of the wire itself. The
-        {' '}<Term def={<><strong>time-current curve</strong> — the log-log plot of trip time vs current for a breaker. The thermal region is a steep curve at 1.1–6× rated current; the magnetic region is a near-vertical line at 6–12× where the trip happens in well under one AC cycle.</>}>time-current curve</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">time-current curve</strong> — the log-log plot of trip time vs current for a breaker. The thermal region is a steep curve at 1.1–6× rated current; the magnetic region is a near-vertical line at 6–12× where the trip happens in well under one AC cycle.</>}>time-current curve</Term>{' '}
         published in every breaker datasheet plots these two regions on a log-log axis: a sloping thermal section
         on the left for sustained overload and a near-vertical magnetic cliff on the right for short
         circuits<Cite id="ul-489" in={SOURCES} />.
       </p>
 
-      <h3>GFCI</h3>
+      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">GFCI</h3>
 
-      <p>
-        A {' '}<Term def={<><strong>GFCI</strong> (ground-fault circuit interrupter) — a breaker that compares the current going out on hot with the current returning on neutral and trips when the difference exceeds about 5 mA. Required since NEC 1971 in bathrooms, then progressively in kitchens, garages, outdoors, and any wet location.</>}>GFCI</Term>{' '}
+      <p className="mb-prose-3">
+        A {' '}<Term def={<><strong className="text-text font-medium">GFCI</strong> (ground-fault circuit interrupter) — a breaker that compares the current going out on hot with the current returning on neutral and trips when the difference exceeds about 5 mA. Required since NEC 1971 in bathrooms, then progressively in kitchens, garages, outdoors, and any wet location.</>}>GFCI</Term>{' '}
         breaker wraps both the hot and the neutral of the branch circuit through a small differential current
         transformer — a toroidal core with a sensing winding. If the current flowing out on hot exactly equals
         the current returning on neutral, the two opposing magnetic contributions cancel inside the core and the
-        sensing winding sees nothing. If the two currents <em>differ</em> — because some of the outgoing current
+        sensing winding sees nothing. If the two currents <em className="italic text-text">differ</em> — because some of the outgoing current
         has found a path back to ground that doesn't pass through neutral — the imbalance produces a net flux
         in the core, the sensing winding picks it up, and a solid-state trip circuit opens the breaker. The
         condition that triggers the trip is just
       </p>
       <Formula>I<sub>residual</sub> = | I<sub>hot</sub> − I<sub>neutral</sub> | &gt; 5 mA</Formula>
-      <p>
-        where <strong>I<sub>hot</sub></strong> is the current leaving the panel on the ungrounded conductor (in
-        amperes), <strong>I<sub>neutral</sub></strong> is the current returning on the grounded conductor (in
-        amperes), and <strong>I<sub>residual</sub></strong> is the
-        {' '}<Term def={<><strong>residual current</strong> — the difference between current going out on hot and current returning on neutral, equal to whatever fraction has leaked to ground. The quantity a GFCI measures and trips on.</>}>residual current</Term>{' '}
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">I<sub>hot</sub></strong> is the current leaving the panel on the ungrounded conductor (in
+        amperes), <strong className="text-text font-medium">I<sub>neutral</sub></strong> is the current returning on the grounded conductor (in
+        amperes), and <strong className="text-text font-medium">I<sub>residual</sub></strong> is the
+        {' '}<Term def={<><strong className="text-text font-medium">residual current</strong> — the difference between current going out on hot and current returning on neutral, equal to whatever fraction has leaked to ground. The quantity a GFCI measures and trips on.</>}>residual current</Term>{' '}
         that, by Kirchhoff's current law, must be returning through some other path — typically ground, possibly
         through a person. The threshold of 5 mA and the required clearing time of about 25 ms are
         calibrated against the Dalziel current-through-heart curves that Ch.32 will lay out in detail; below
@@ -226,10 +226,10 @@ export default function Ch28HousePanel() {
         body starts to risk fibrillation<Cite id="nec-2023" in={SOURCES} />.
       </p>
 
-      <h3>AFCI</h3>
+      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">AFCI</h3>
 
-      <p>
-        An {' '}<Term def={<><strong>AFCI</strong> (arc-fault circuit interrupter) — a breaker that monitors the current waveform on a branch circuit for the high-frequency signature of an electrical arc and trips when it sees one. Listed under UL 1699. Required in most dwelling-unit rooms since NEC 2014.</>}>AFCI</Term>{' '}
+      <p className="mb-prose-3">
+        An {' '}<Term def={<><strong className="text-text font-medium">AFCI</strong> (arc-fault circuit interrupter) — a breaker that monitors the current waveform on a branch circuit for the high-frequency signature of an electrical arc and trips when it sees one. Listed under UL 1699. Required in most dwelling-unit rooms since NEC 2014.</>}>AFCI</Term>{' '}
         is a breaker with a microcontroller inside. It samples the current waveform on the branch many thousands
         of times per second and looks for the high-frequency signature of an electrical arc — a series arc in a
         damaged extension cord, a parallel arc across a partially shorted insulation gap, the noisy chatter of a
@@ -245,83 +245,83 @@ export default function Ch28HousePanel() {
         tag="Try 28.2"
         question={
           <>A GFCI breaker trips when the residual current exceeds 5 mA. A kitchen appliance is leaking
-          <strong> 4 mA</strong> to ground through damp insulation. Has the breaker tripped? Now a second
-          appliance on the same circuit develops a leak of <strong>3 mA</strong>. Does the breaker trip now?</>
+          <strong className="text-text font-medium"> 4 mA</strong> to ground through damp insulation. Has the breaker tripped? Now a second
+          appliance on the same circuit develops a leak of <strong className="text-text font-medium">3 mA</strong>. Does the breaker trip now?</>
         }
         hint={<>The GFCI sees the sum of all leakage currents on the branch — not each leak individually.</>}
         answer={
           <>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               The GFCI senses the difference between total current out on hot and total current back on neutral;
               that difference is the sum of every leak to ground on the branch.
             </p>
             <Formula>I<sub>residual</sub> = 4 mA + 3 mA = 7 mA &gt; 5 mA</Formula>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               4 mA alone does not trip the breaker; with the second leak the combined residual is 7 mA and the
-              breaker trips. Answer: <strong>no, then yes</strong> — and this is exactly why "nuisance" GFCI
+              breaker trips. Answer: <strong className="text-text font-medium">no, then yes</strong> — and this is exactly why "nuisance" GFCI
               trips often reveal slow accumulating insulation problems before they become serious.
             </p>
           </>
         }
       />
 
-      <h2>The interrupting rating: what happens when there's a dead short</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The interrupting rating: what happens when there's a dead short</h2>
 
-      <p>
+      <p className="mb-prose-3">
         A 20 A breaker is not just rated for the 20 A it lets through under normal load. It is also rated for the
-        much larger current it has to safely <em>interrupt</em> when something goes catastrophically wrong on the
+        much larger current it has to safely <em className="italic text-text">interrupt</em> when something goes catastrophically wrong on the
         load side — a screw driven through a cable, a rodent across two terminals, a tool dropped across the bus
         bars. The relevant spec is the
-        {' '}<Term def={<><strong>AIC (ampere interrupting capacity)</strong> — the maximum short-circuit current a breaker is rated to interrupt without welding closed, arcing externally, or destroying the enclosure. Residential branch breakers are typically 10 kAIC; main service breakers 22 kAIC or higher.</>}>AIC (ampere interrupting capacity)</Term>,
+        {' '}<Term def={<><strong className="text-text font-medium">AIC (ampere interrupting capacity)</strong> — the maximum short-circuit current a breaker is rated to interrupt without welding closed, arcing externally, or destroying the enclosure. Residential branch breakers are typically 10 kAIC; main service breakers 22 kAIC or higher.</>}>AIC (ampere interrupting capacity)</Term>,
         stamped on every UL 489-listed breaker. A standard residential branch breaker is 10 kAIC; the main
         service disconnect is usually 22 kAIC or 25 kAIC depending on the manufacturer<Cite id="ul-489" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Why so high? Because the utility transformer outside the building has a very low source impedance, and a
         bolted short circuit at the panel — hot bus bar shorted directly to neutral bar through zero impedance —
         can pull tens of kilo-amperes for the few milliseconds it takes the breaker to clear. The energy released
         in that brief interval is the
-        {' '}<Term def={<><strong>arc-flash energy</strong> — the electrical energy dissipated in the arc that forms when a breaker opens under fault conditions. Computed as voltage times fault current times clearing time. Quantified by NFPA 70E in cal/cm² at a working distance; drives PPE selection.</>}>arc-flash energy</Term>,
+        {' '}<Term def={<><strong className="text-text font-medium">arc-flash energy</strong> — the electrical energy dissipated in the arc that forms when a breaker opens under fault conditions. Computed as voltage times fault current times clearing time. Quantified by NFPA 70E in cal/cm² at a working distance; drives PPE selection.</>}>arc-flash energy</Term>,
         which to a good approximation is just
       </p>
       <Formula>E<sub>arc</sub> ≈ V × I<sub>fault</sub> × t<sub>clear</sub></Formula>
-      <p>
-        where <strong>E<sub>arc</sub></strong> is the energy released in the fault arc (in joules),
-        <strong> V</strong> is the system voltage across the arc (in volts; 120 V for a single hot-to-neutral
-        fault, 240 V for a hot-to-hot fault), <strong>I<sub>fault</sub></strong> is the peak fault current the
-        utility can deliver into the bolted short (in amperes), and <strong>t<sub>clear</sub></strong> is the
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">E<sub>arc</sub></strong> is the energy released in the fault arc (in joules),
+        <strong className="text-text font-medium"> V</strong> is the system voltage across the arc (in volts; 120 V for a single hot-to-neutral
+        fault, 240 V for a hot-to-hot fault), <strong className="text-text font-medium">I<sub>fault</sub></strong> is the peak fault current the
+        utility can deliver into the bolted short (in amperes), and <strong className="text-text font-medium">t<sub>clear</sub></strong> is the
         time the breaker takes to interrupt the arc (in seconds). For a numerical sense of scale, take V = 120 V,
         I<sub>fault</sub> = 10 kA, t<sub>clear</sub> = 50 ms:
       </p>
       <Formula>E<sub>arc</sub> ≈ 120 × 10 000 × 0.050 = 60 000 J = 60 kJ</Formula>
-      <p>
+      <p className="mb-prose-3">
         Sixty kilojoules dumped into a few cubic centimetres of air in a tenth of a second. That is enough to
         vaporise the local section of bus bar, eject molten copper, and ignite anything within arm's length. It
         is also why NFPA 70E exists as a separate standard from the NEC, why power-system electricians wear arc-rated
         face-shields and 40-cal-rated suits when racking in breakers, and why the AIC rating of the breaker has
         to be at least as large as the worst-case
-        {' '}<Term def={<><strong>available fault current</strong> — the largest short-circuit current the utility transformer and service wiring can deliver to a fault at the panel, before any device interrupts it. Set by transformer KVA, secondary voltage, and impedance. Drives breaker AIC selection.</>}>available fault current</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">available fault current</strong> — the largest short-circuit current the utility transformer and service wiring can deliver to a fault at the panel, before any device interrupts it. Set by transformer KVA, secondary voltage, and impedance. Drives breaker AIC selection.</>}>available fault current</Term>{' '}
         at the panel — otherwise the breaker itself becomes the fuel<Cite id="nec-2023" in={SOURCES} /><Cite id="ul-489" in={SOURCES} />.
       </p>
 
       <TryIt
         tag="Try 28.3"
         question={
-          <>A standard 20 A branch breaker is rated <strong>10 kAIC</strong>. The utility transformer at your
-          property can deliver about <strong>8 kA</strong> of fault current into a bolted short at your panel.
+          <>A standard 20 A branch breaker is rated <strong className="text-text font-medium">10 kAIC</strong>. The utility transformer at your
+          property can deliver about <strong className="text-text font-medium">8 kA</strong> of fault current into a bolted short at your panel.
           Is the breaker correctly sized for its interrupting duty? What if a neighbouring building upgrades
-          to a 75 kVA transformer that can deliver <strong>14 kA</strong> at your service?</>
+          to a 75 kVA transformer that can deliver <strong className="text-text font-medium">14 kA</strong> at your service?</>
         }
         hint={<>The breaker's AIC rating must be greater than or equal to the available fault current at its
         terminals.</>}
         answer={
           <>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               Compare AIC to available fault current. At 8 kA &lt; 10 kAIC, the breaker is fine. At 14 kA &gt;
               10 kAIC, the breaker is undersized and could fail destructively trying to interrupt.
             </p>
-            <p>
-              Answer: <strong>OK at 8 kA</strong>; <strong>not OK at 14 kA</strong>. The fix is either a
+            <p className="mb-prose-1 last:mb-0">
+              Answer: <strong className="text-text font-medium">OK at 8 kA</strong>; <strong className="text-text font-medium">not OK at 14 kA</strong>. The fix is either a
               series-rated combination with an upstream higher-AIC main, or substitution of 22 kAIC branch
               breakers throughout the panel.
             </p>
@@ -332,21 +332,21 @@ export default function Ch28HousePanel() {
       <TryIt
         tag="Try 28.4"
         question={
-          <>An arc fault inside a wall develops <strong>240 V</strong> across the arc gap and draws an average of
-          <strong> 12 A</strong> until the AFCI clears it. What is the instantaneous power dissipated in the arc,
-          and how does it compare to the rated dissipation of a fully-loaded <strong>20 A, 120 V</strong> branch
+          <>An arc fault inside a wall develops <strong className="text-text font-medium">240 V</strong> across the arc gap and draws an average of
+          <strong className="text-text font-medium"> 12 A</strong> until the AFCI clears it. What is the instantaneous power dissipated in the arc,
+          and how does it compare to the rated dissipation of a fully-loaded <strong className="text-text font-medium">20 A, 120 V</strong> branch
           circuit?</>
         }
         hint={<>Arc power is V × I; the branch's rated dissipation is its rated voltage × rated current.</>}
         answer={
           <>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               Arc power and branch rated power:
             </p>
             <Formula>P<sub>arc</sub> = 240 V × 12 A = 2 880 W</Formula>
             <Formula>P<sub>branch</sub> = 120 V × 20 A = 2 400 W</Formula>
-            <p>
-              The arc is dissipating <strong>~2.88 kW in a localised hot spot</strong> — more than the entire
+            <p className="mb-prose-1 last:mb-0">
+              The arc is dissipating <strong className="text-text font-medium">~2.88 kW in a localised hot spot</strong> — more than the entire
               branch's nameplate load, concentrated in a few square millimetres of insulation. The reason AFCIs
               exist: a 12 A arc is not large enough to trip a 20 A thermal-magnetic on overload, but it can
               start a fire inside ten minutes.
@@ -355,23 +355,23 @@ export default function Ch28HousePanel() {
         }
       />
 
-      <h2>Bonding and grounding</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Bonding and grounding</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Up to here, neutral and ground have been two different bars that happen to be tied together by one strap.
         Why two bars at all, if they share a connection? Why not a single bar that does both jobs? The answer is
         the most important rule in the NEC and the entire reason the panel is laid out the way it is.
       </p>
-      <p>
-        The {' '}<Term def={<><strong>grounding electrode</strong> — the conductor that physically connects the panel's ground bar to the earth, typically an 8-foot copper-clad rod driven into the soil outside the building. May also be the buried metallic water service or a Ufer (concrete-encased) electrode. The system reference to actual dirt.</>}>grounding electrode</Term>{' '}
+      <p className="mb-prose-3">
+        The {' '}<Term def={<><strong className="text-text font-medium">grounding electrode</strong> — the conductor that physically connects the panel's ground bar to the earth, typically an 8-foot copper-clad rod driven into the soil outside the building. May also be the buried metallic water service or a Ufer (concrete-encased) electrode. The system reference to actual dirt.</>}>grounding electrode</Term>{' '}
         — usually a copper-clad steel rod driven eight feet into the soil outside the building, or a clamp on the
         buried metallic water service, or a concrete-encased "Ufer" electrode — is the panel's connection to actual
         dirt. The
-        {' '}<Term def={<><strong>grounding-electrode conductor</strong> — the bare or green conductor that runs from the ground rod (or other grounding electrode) into the panel and lands on the ground bar. Sized by NEC Table 250.66 based on the size of the service conductors.</>}>grounding-electrode conductor</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">grounding-electrode conductor</strong> — the bare or green conductor that runs from the ground rod (or other grounding electrode) into the panel and lands on the ground bar. Sized by NEC Table 250.66 based on the size of the service conductors.</>}>grounding-electrode conductor</Term>{' '}
         runs from that rod into the can and lands on the ground bar. NEC Article 250 governs every detail of
         this system<Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Now imagine what happens during a fault. Say a frayed hot wire inside a metal-cased toaster touches the
         chassis. The chassis is connected by the third (green or bare) prong of the cord back to the ground bar
         of the panel. At the panel, the ground bar is bonded to the neutral bar at the main disconnect. The
@@ -381,9 +381,9 @@ export default function Ch28HousePanel() {
         conductor, through the ground bar, through the main bonding jumper, through the neutral bar, through
         the service neutral, back to the transformer centre-tap. That loop carries enough current — hundreds of
         amps, instantly — to trip the breaker in milliseconds and clear the fault. Critically, it does
-        <em> not</em> require any current to flow through the earth or through any person<Cite id="nec-2023" in={SOURCES} />.
+        <em className="italic text-text"> not</em> require any current to flow through the earth or through any person<Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The grounding-electrode connection to dirt is not what trips the breaker. The dirt's resistance is far too
         high — typically 25–100 Ω for a residential ground rod — to sink enough current. What clears the fault is
         the bonded metallic path back to the transformer. The rod's job is different and subtler: it pins the
@@ -398,19 +398,19 @@ export default function Ch28HousePanel() {
         once, at the main disconnect, and never again.
       </Pullout>
 
-      <h2>Sub-panels and the no-bond rule</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Sub-panels and the no-bond rule</h2>
 
-      <p>
-        Add a {' '}<Term def={<><strong>sub-panel</strong> — a secondary panel fed from a breaker in the main service panel. Used to extend wiring to a finished basement, detached garage, or large addition. NEC 250.32 requires the neutral bar to float relative to the enclosure at every sub-panel; ground and neutral are bonded only at the main.</>}>sub-panel</Term>{' '}
+      <p className="mb-prose-3">
+        Add a {' '}<Term def={<><strong className="text-text font-medium">sub-panel</strong> — a secondary panel fed from a breaker in the main service panel. Used to extend wiring to a finished basement, detached garage, or large addition. NEC 250.32 requires the neutral bar to float relative to the enclosure at every sub-panel; ground and neutral are bonded only at the main.</>}>sub-panel</Term>{' '}
         to the house — a smaller load centre in a finished basement, say, fed from a 100 A double-pole breaker in
         the main panel through a four-conductor feeder. The feeder carries two hots (L1 and L2), a neutral, and a
         ground. At the sub-panel the four wires land on their respective terminals: hots to the line side of the
         sub's main lugs, neutral to the sub's neutral bar, ground to the sub's ground bar. And here the rule shifts:
         at the sub-panel, the main bonding jumper between the neutral bar and the enclosure is
-        <em> removed</em><Cite id="nec-2023" in={SOURCES} />. The sub's neutral bar floats relative to its can; only
+        <em className="italic text-text"> removed</em><Cite id="nec-2023" in={SOURCES} />. The sub's neutral bar floats relative to its can; only
         the ground bar is bonded to the enclosure.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Why? Imagine the alternative. If neutral and ground were bonded at both the main and the sub, the
         return current from every branch circuit on the sub would split between two parallel paths back to the
         main: the dedicated neutral feeder conductor, and the equipment-grounding feeder conductor. Some fraction
@@ -422,7 +422,7 @@ export default function Ch28HousePanel() {
         the NEC promises will only carry current during a fault. The whole point of the equipment-grounding system
         — that the bare wire is at zero volts unless something is broken — would quietly fail<Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Floating the sub-panel's neutral keeps every milliamp of return current on the conductor it was assigned to,
         and reserves the ground conductor for the rare day when a hot wire touches a chassis. That is the entire
         reason for the no-bond rule at every sub-panel, and the reason every detached-garage feeder and
@@ -432,25 +432,25 @@ export default function Ch28HousePanel() {
       <TryIt
         tag="Try 28.5"
         question={
-          <>A sub-panel sits 50 m from the main, fed by a 100 A double-pole breaker through <strong>1 AWG
-          aluminium</strong> conductors (resistance ≈ 0.524 Ω per 1000 ft, or about <strong>1.72 mΩ/m</strong>).
+          <>A sub-panel sits 50 m from the main, fed by a 100 A double-pole breaker through <strong className="text-text font-medium">1 AWG
+          aluminium</strong> conductors (resistance ≈ 0.524 Ω per 1000 ft, or about <strong className="text-text font-medium">1.72 mΩ/m</strong>).
           The sub is loaded at 80 A. What is the round-trip voltage drop from the main to the sub on each hot?</>
         }
         hint={<>Voltage drop on one conductor is I × R; the load current flows out one hot and returns through
         the other hot (in a 240 V load) or through the neutral (in a 120 V load). Treat one round-trip leg.</>}
         answer={
           <>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               Conductor resistance for 50 m of 1 AWG aluminium:
             </p>
             <Formula>R = 1.72 mΩ/m × 50 m = 0.086 Ω per conductor</Formula>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               For 240 V loads on the sub the current flows out on one hot and back on the other, so the total drop
               seen by the load is twice this:
             </p>
             <Formula>ΔV = 2 × I × R = 2 × 80 × 0.086 = 13.8 V</Formula>
-            <p>
-              Answer: about <strong>14 V drop at 240 V</strong>, or roughly <strong>5.7%</strong>. NEC informational
+            <p className="mb-prose-1 last:mb-0">
+              Answer: about <strong className="text-text font-medium">14 V drop at 240 V</strong>, or roughly <strong className="text-text font-medium">5.7%</strong>. NEC informational
               note 210.19 suggests keeping branch-circuit drop under 3% and total drop (feeder plus branch) under
               5%; this feeder is already at the limit before any branch drop is added on the far side.
             </p>
@@ -479,14 +479,14 @@ export default function Ch28HousePanel() {
             { label: 'Breaker family', value: <>QO single-pole 10 kAIC, QO-AFI/GFI dual-function variants <Cite id="square-d-qo-datasheet" in={SOURCES} /></> },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Schneider Electric's QO load centre is the panel a North-American electrician is most likely to install
             in a new single-family house: a steel enclosure roughly 14 inches wide by 30 inches tall, hinged door,
             forty single-pole slots arranged in two columns. The main is a 200 A two-pole breaker at the head of
             the column, factory-rated at 22 kAIC; every branch breaker that snaps onto the bus is rated for
             10 kAIC<Cite id="square-d-qo-datasheet" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The QO bus geometry is the canonical alternating-phase pattern of this chapter. Two parallel tin-plated
             copper plates run vertically down the centre; each plate has stamped fingers projecting alternately
             left and right at three-quarter-inch on-centre spacing. A breaker clip grabs one finger, putting the
@@ -494,9 +494,9 @@ export default function Ch28HousePanel() {
             single-moulding plastic body that spans two adjacent slots and grabs one finger from each
             bus<Cite id="square-d-qo-datasheet" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The QO family also includes
-            {' '}<Term def={<><strong>dual-function breaker</strong> — a breaker that combines AFCI and GFCI protection in a single device. Square D's QO-AFI/GFI line is one example. NEC 2023 increasingly defaults to dual-function on circuits that historically required only one or the other.</>}>dual-function breakers</Term>{' '}
+            {' '}<Term def={<><strong className="text-text font-medium">dual-function breaker</strong> — a breaker that combines AFCI and GFCI protection in a single device. Square D's QO-AFI/GFI line is one example. NEC 2023 increasingly defaults to dual-function on circuits that historically required only one or the other.</>}>dual-function breakers</Term>{' '}
             (QO-DF in the catalog) that combine AFCI and GFCI in one breaker — the direction NEC has been moving
             for years as dwelling-unit AFCI and GFCI requirements have grown to overlap on most circuits.
           </p>
@@ -514,24 +514,24 @@ export default function Ch28HousePanel() {
             { label: 'Bus stab geometry', value: <>parallel-finger, distinct from Square D QO <Cite id="eaton-br-datasheet" in={SOURCES} /></> },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Eaton's BR series is one of the two big U.S. residential panel families (the other being Square D QO).
             A 100 A BR sub-panel is a common choice for a finished-basement or detached-garage feed: 20 single-pole
             slots, a 100 A two-pole main set of lugs (not a breaker — the upstream main panel's 100 A breaker is
             the protective device), and a separate neutral bar and ground bar inside the
             enclosure<Cite id="eaton-br-datasheet" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The bus-stab geometry on a BR panel is mechanically different from a Square D QO — the finger shapes
             and spacings are not interchangeable, which is why a Square D QO breaker physically does not fit an
             Eaton BR bus and vice versa. Each manufacturer's breakers are listed under UL 489 only when used in
             the manufacturer's own panel, with one major exception: certain Eaton "classified" CL-series breakers
             are explicitly listed for use in Square D HOM panels<Cite id="eaton-br-datasheet" in={SOURCES} /><Cite id="ul-489" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The installation detail that distinguishes a sub-panel from a main: the BR enclosure ships with a green
             bonding screw that ties the neutral bar to the can. At a sub-panel installation that screw is
-            <em> removed</em>, leaving the neutral bar electrically floating from the enclosure. The ground bar
+            <em className="italic text-text"> removed</em>, leaving the neutral bar electrically floating from the enclosure. The ground bar
             remains bonded to the can; the four-wire feeder from the upstream main brings hot, hot, neutral, and
             ground separately and the no-bond rule is enforced at this end of the run<Cite id="nec-2023" in={SOURCES} />.
           </p>
@@ -548,16 +548,16 @@ export default function Ch28HousePanel() {
             { label: 'Modern listing standard', value: <>UL 489 with thermal endurance cycling <Cite id="ul-489" in={SOURCES} /></> },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Federal Pacific Electric's Stab-Lok panels were installed in millions of North-American homes between
             the late 1950s and the mid-1980s. Their breakers — single-pole and double-pole units that snapped
             onto a bus stab much like a modern QO — were nominally listed to the UL 489 of the era, but field
             reports throughout the 1980s found a disturbing failure mode: under sustained overload, a noticeable
-            fraction of Stab-Lok breakers simply <em>did not trip</em>. The handle stayed in the ON position,
+            fraction of Stab-Lok breakers simply <em className="italic text-text">did not trip</em>. The handle stayed in the ON position,
             current kept flowing, and the wire downstream of the breaker overheated until something — insulation,
             framing lumber, the breaker housing itself — ignited.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The mechanical root cause was a tolerance issue between the breaker handle, the latch, and the bus
             stab geometry: the latch could wear or shift such that the bimetallic strip flexed but failed to
             release the contacts. Modern UL 489 includes mechanical-endurance cycling tests that catch this
@@ -583,7 +583,7 @@ export default function Ch28HousePanel() {
 
         <FAQItem q="What is a 'tandem' or 'thin' breaker, and when is it allowed?">
           <p>
-            A {' '}<Term def={<><strong>tandem breaker</strong> — a single-width breaker housing containing two independent single-pole trip mechanisms that engage the same bus stab. Allowed only in panel slots specifically labelled by the manufacturer to accept tandems.</>}>tandem breaker</Term>{' '}
+            A {' '}<Term def={<><strong className="text-text font-medium">tandem breaker</strong> — a single-width breaker housing containing two independent single-pole trip mechanisms that engage the same bus stab. Allowed only in panel slots specifically labelled by the manufacturer to accept tandems.</>}>tandem breaker</Term>{' '}
             packs two single-pole trip mechanisms into one slot's worth of physical space, letting a 30-slot panel
             host effectively more circuits. They are allowed only in panel slots specifically rejected for them by
             the manufacturer's marking — typically the panel will have a stamping indicating which positions accept
@@ -620,7 +620,7 @@ export default function Ch28HousePanel() {
             Functionally, the service-entrance neutral carries the imbalance current between L1 and L2 back to
             the utility transformer (Ch.27 makes this concrete), while a branch-circuit neutral carries the
             return current of one 120 V load back to the panel. The
-            {' '}<Term def={<><strong>service-entrance neutral</strong> — the grounded service conductor between the utility transformer's centre-tap and the main panel's neutral bar. Carries the difference of L1 and L2 currents. The point where the neutral and ground are bonded together for the entire building.</>}>service-entrance neutral</Term>{' '}
+            {' '}<Term def={<><strong className="text-text font-medium">service-entrance neutral</strong> — the grounded service conductor between the utility transformer's centre-tap and the main panel's neutral bar. Carries the difference of L1 and L2 currents. The point where the neutral and ground are bonded together for the entire building.</>}>service-entrance neutral</Term>{' '}
             is the only neutral conductor in the building that is allowed (and required) to be bonded to ground;
             every branch neutral past the main is rigorously kept separate<Cite id="nec-2023" in={SOURCES} />.
           </p>
@@ -650,10 +650,10 @@ export default function Ch28HousePanel() {
 
         <FAQItem q="What does 'fully-rated' versus 'series-rated' mean for AIC?">
           <p>
-            A {' '}<Term def={<><strong>fully-rated</strong> system — one in which every breaker (main and branches) is individually rated for the full available fault current at its terminals. The conservative, more expensive approach.</>}>fully-rated</Term>{' '}
+            A {' '}<Term def={<><strong className="text-text font-medium">fully-rated</strong> system — one in which every breaker (main and branches) is individually rated for the full available fault current at its terminals. The conservative, more expensive approach.</>}>fully-rated</Term>{' '}
             system uses branch breakers whose individual AIC equals or exceeds the worst-case available fault
             current at the panel. A
-            {' '}<Term def={<><strong>series-rated</strong> system — one in which an upstream higher-AIC breaker (typically the main) is relied on to share the interruption duty of downstream lower-AIC branches during a high-fault event. Allowed only when the specific main+branch combination is tested and listed together.</>}>series-rated</Term>{' '}
+            {' '}<Term def={<><strong className="text-text font-medium">series-rated</strong> system — one in which an upstream higher-AIC breaker (typically the main) is relied on to share the interruption duty of downstream lower-AIC branches during a high-fault event. Allowed only when the specific main+branch combination is tested and listed together.</>}>series-rated</Term>{' '}
             system relies on the upstream main breaker (with a much higher AIC) to clear part of the fault current
             in coordination with the downstream branch, allowing the branches to be rated for less. Series ratings
             are only valid when the specific main+branch combination has been tested together by the manufacturer
@@ -747,7 +747,7 @@ export default function Ch28HousePanel() {
           <p>
             Only obliquely: every current value in this chapter — 5 mA for a GFCI threshold, 10 kA for an
             available fault, 20 A for a kitchen branch — is a count of elementary charges per second through a
-            cross-section, scaled by the CODATA 2018 value of <em>e</em> = 1.602176634×10⁻¹⁹ C exactly
+            cross-section, scaled by the CODATA 2018 value of <em className="italic text-text">e</em> = 1.602176634×10⁻¹⁹ C exactly
             <Cite id="codata-2018" in={SOURCES} />. The chapter would still be coherent without ever quoting the
             number, but every ampere on every label in the panel ultimately reduces to that constant.
           </p>

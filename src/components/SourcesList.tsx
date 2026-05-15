@@ -12,7 +12,7 @@ interface SourcesListProps {
 export function SourcesList({ ids }: SourcesListProps) {
   if (!ids.length) return null;
   return (
-    <div className="reveal in  mb-4xl pt-2xl border-t border-border-strong [&_a]:text-text-dim [&_a]:no-underline [&_a]:border-b [&_a]:border-dotted [&_a]:border-text-muted [&_a]:break-words hover:[&_a]:text-accent hover:[&_a]:border-accent">
+    <div className="reveal in  mb-4xl pt-2xl border-t border-border-strong">
       <div className="eyebrow-rule mb-xl">Sources</div>
       <ol className="list-none p-0 [counter-reset:src]">
         {ids.map(id => {
@@ -36,7 +36,12 @@ export function SourcesList({ ids }: SourcesListProps) {
               {src.url && (
                 <>
                   {'. '}
-                  <a href={src.url} target="_blank" rel="noreferrer noopener">
+                  <a
+                    href={src.url}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="text-text-dim no-underline border-b border-dotted border-text-muted break-words hover:text-accent hover:border-accent"
+                  >
                     {src.url.replace(/^https?:\/\//, '')}
                   </a>
                 </>

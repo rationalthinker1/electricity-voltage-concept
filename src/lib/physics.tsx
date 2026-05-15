@@ -7,6 +7,8 @@
  * Chemistry & Physics (104th ed.) and Ashcroft & Mermin §1.1 for n.
  */
 
+import type { ReactNode } from 'react';
+
 export const PHYS = {
   /** Elementary charge, C. NIST CODATA exact since 2019 SI redefinition. */
   e: 1.602176634e-19,
@@ -63,14 +65,32 @@ export type MaterialKey = keyof typeof MATERIALS;
 
 /* ─── Formatters ─── */
 
-/** Scientific notation with HTML <sup>. Use dangerouslySetInnerHTML or jsx-html-renderer. */
+/** Scientific notation, HTML string version. Use for canvas / plaintext only;
+ *  for JSX prefer sciJsx(). The <sup> tag carries inline classes so consumers
+ *  using dangerouslySetInnerHTML don't need a [&_sup]:… variant. */
 export function sci(n: number, digits = 2): string {
   if (n === 0 || !isFinite(n)) return '0';
   const abs = Math.abs(n);
   if (abs >= 1e-2 && abs < 1e4) return n.toFixed(digits);
   const exp = Math.floor(Math.log10(abs));
   const mantissa = n / Math.pow(10, exp);
-  return `${mantissa.toFixed(digits)}×10<sup>${exp}</sup>`;
+  return `${mantissa.toFixed(digits)}×10<sup class="text-[.7em] leading-none font-3 align-[.45em]">${exp}</sup>`;
+}
+
+/** Scientific notation, JSX version. Returns a fragment that renders as
+ *  proper React JSX (no dangerouslySetInnerHTML required). */
+export function sciJsx(n: number, digits = 2): ReactNode {
+  if (n === 0 || !isFinite(n)) return '0';
+  const abs = Math.abs(n);
+  if (abs >= 1e-2 && abs < 1e4) return n.toFixed(digits);
+  const exp = Math.floor(Math.log10(abs));
+  const mantissa = n / Math.pow(10, exp);
+  return (
+    <>
+      {mantissa.toFixed(digits)}×10
+      <sup className="text-[.7em] leading-none font-3 align-[.45em]">{exp}</sup>
+    </>
+  );
 }
 
 /** Engineering notation with SI prefix. */
@@ -97,6 +117,21 @@ export function pretty(n: number, digits = 3): string {
   if (abs === 0) return '0';
   if (abs >= 1e-3 && abs < 1e6) return n.toFixed(digits);
   return sci(n, digits);
+}
+
+/** JSX twin of pretty(). Use in `<Readout value={prettyJsx(x)} … />` etc. */
+export function prettyJsx(n: number, digits = 3): ReactNode {
+  if (!isFinite(n)) return '—';
+  const abs = Math.abs(n);
+  if (abs === 0) return '0';
+  if (abs >= 1e-3 && abs < 1e6) return n.toFixed(digits);
+  return sciJsx(n, digits);
+}
+
+/** JSX twin of eng(). Identical output to eng() — no <sup>/<sub> ever
+ *  emitted, so this is just a plain string returned as a fragment. */
+export function engJsx(n: number, digits = 3, unit = ''): ReactNode {
+  return eng(n, digits, unit);
 }
 
 /** Format duration in seconds intelligently. */

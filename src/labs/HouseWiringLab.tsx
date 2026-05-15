@@ -485,8 +485,8 @@ export default function HouseWiringLab() {
 
   const prose = (
     <>
-      <h3>What this lab integrates</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">What this lab integrates</h3>
+      <p className="mb-prose-3">
         The practical track of this textbook — Ch.27 through Ch.40 — covers everything from how 60 Hz power
         reaches the meter through to grounding, surge protection, and the diagnostics a working electrician
         uses on a service call. The House Wiring Sandbox is the integration test: every NEC rule the chapters
@@ -498,11 +498,11 @@ export default function HouseWiringLab() {
         bus.
       </p>
 
-      <h3>How an electrician reads a new house</h3>
-      <p>
-        The thought process is well-rehearsed. <strong>Start at the rooms.</strong> Walk the floorplan once and
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">How an electrician reads a new house</h3>
+      <p className="mb-prose-3">
+        The thought process is well-rehearsed. <strong className="text-text font-medium">Start at the rooms.</strong> Walk the floorplan once and
         list every place that needs power: kitchen counters, bath vanities, bedroom outlets, ceiling lights,
-        smoke detectors, the dishwasher, the range, the dryer, the EV charger, the heat pump. <strong>Group
+        smoke detectors, the dishwasher, the range, the dryer, the EV charger, the heat pump. <strong className="text-text font-medium">Group
         them into circuits.</strong> Lighting and general receptacles in dwelling rooms ride on 15 or 20 A
         AFCI-protected branches. The kitchen counter requires two dedicated 20 A small-appliance branches by
         NEC 210.11(C)(1)<Cite id="nec-2023" in={SOURCES} />. The bathroom gets its own 20 A GFCI circuit. The
@@ -510,18 +510,18 @@ export default function HouseWiringLab() {
         tripped kitchen breaker doesn't spoil a weekly grocery run. The 240 V loads — range, dryer, water heater,
         heat pump, EV — each get a double-pole breaker sized to their nameplate.
       </p>
-      <p>
-        <strong>Then size the conductors.</strong> NEC 240.4(D) is the workhorse table: 14 AWG copper to 15 A,
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">Then size the conductors.</strong> NEC 240.4(D) is the workhorse table: 14 AWG copper to 15 A,
         12 AWG to 20 A, 10 AWG to 30 A, 8 AWG to 40 A, 6 AWG to 55 A on NM at the 60 °C column. Read it
         backwards from the breaker rating. Then check voltage drop: the informational note to 210.19(A)(1)
         recommends ≤ 3 % on a branch circuit<Cite id="nec-2023" in={SOURCES} />. The standard formula for a
         single-phase round trip is
       </p>
       <MathBlock>V_drop = 2 · I · ρ · L / A</MathBlock>
-      <p>
-        with <strong>I</strong> the circuit current in amperes, <strong>L</strong> the one-way length in feet,
-        <strong> ρ ≈ 12.9</strong> ohm-circular-mils-per-foot for copper at 75 °C<Cite id="codata-2018" in={SOURCES} />,
-        and <strong>A</strong> the conductor area in circular mils. For a 12 AWG run carrying 16 A at 120 V over
+      <p className="mb-prose-3">
+        with <strong className="text-text font-medium">I</strong> the circuit current in amperes, <strong className="text-text font-medium">L</strong> the one-way length in feet,
+        <strong className="text-text font-medium"> ρ ≈ 12.9</strong> ohm-circular-mils-per-foot for copper at 75 °C<Cite id="codata-2018" in={SOURCES} />,
+        and <strong className="text-text font-medium">A</strong> the conductor area in circular mils. For a 12 AWG run carrying 16 A at 120 V over
         50 ft, the drop is about 3.2 V or 2.6 % — under the limit. Double it for the 100 ft kitchen-island run and
         it climbs to 5 %, which is when most journeymen pull 10 AWG instead.
       </p>
@@ -530,8 +530,8 @@ export default function HouseWiringLab() {
         line item here.
       </Pullout>
 
-      <h3>NEC 220.82 — the optional dwelling-unit calculation</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">NEC 220.82 — the optional dwelling-unit calculation</h3>
+      <p className="mb-prose-3">
         The full standard calculation in 220 Part III is heavy. NEC 220.82 offers a simpler shortcut for
         single-family dwellings: total all small-appliance, laundry, and general lighting at 3 VA per square foot
         plus 1500 VA per small-appliance branch and 1500 VA for the laundry branch; add nameplate watts for
@@ -541,8 +541,8 @@ export default function HouseWiringLab() {
         version of exactly this calculation and shows the result as a percentage of the panel rating.
       </p>
 
-      <h3>Worked example — 1,800 ft² house with EV and heat pump</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked example — 1,800 ft² house with EV and heat pump</h3>
+      <p className="mb-prose-3">
         Three bedrooms, two baths, 1,800 ft² conditioned area. General lighting at 3 VA/ft² = 5,400 VA. Two
         kitchen small-appliance circuits at 1,500 VA each = 3,000 VA. Laundry at 1,500 VA. Dishwasher 1,200 W,
         disposal 900 W, microwave 1,200 W, water heater 4,500 W, range 8,000 W, dryer 5,500 W, heat pump 6,000 W
@@ -552,15 +552,15 @@ export default function HouseWiringLab() {
         standard 200 A service even with the EV continuously charging.
       </p>
 
-      <h3>Try it in the sandbox</h3>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Try it in the sandbox</h3>
       <TryIt
         tag="Try A.2.1"
-        question={<>Load the preset house and toggle the toaster, kettle, and microwave all <strong>on</strong>. Why does Kitchen Counter A trip?</>}
+        question={<>Load the preset house and toggle the toaster, kettle, and microwave all <strong className="text-text font-medium">on</strong>. Why does Kitchen Counter A trip?</>}
         hint="Each is 1500 W on 120 V. The breaker is rated 20 A."
         answer={
           <>
-            <p>The toaster (1,500 W) and microwave (1,200 W) are both wired to Counter A in the preset. At 120 V that draws (1500 + 1200)/120 ≈ 22.5 A on a 20 A breaker — the live-load simulator flags TRIP.</p>
-            <p>The fix in the preset is exactly why NEC 210.11(C)(1) requires <strong>two</strong> small-appliance circuits in the kitchen: spread the toaster and microwave across both 20 A counters and neither trips. Move the microwave to Counter B in the inspector and watch the TRIP flag clear.</p>
+            <p className="mb-prose-3">The toaster (1,500 W) and microwave (1,200 W) are both wired to Counter A in the preset. At 120 V that draws (1500 + 1200)/120 ≈ 22.5 A on a 20 A breaker — the live-load simulator flags TRIP.</p>
+            <p className="mb-prose-3">The fix in the preset is exactly why NEC 210.11(C)(1) requires <strong className="text-text font-medium">two</strong> small-appliance circuits in the kitchen: spread the toaster and microwave across both 20 A counters and neither trips. Move the microwave to Counter B in the inspector and watch the TRIP flag clear.</p>
           </>
         }
       />
@@ -570,7 +570,7 @@ export default function HouseWiringLab() {
         hint="GFCI by location."
         answer={
           <>
-            <p>The audit cites <strong>NEC 210.8(A)(2)</strong>: 125 V, 15/20 A receptacles in garages must be GFCI protected. Two ways to clear it: change the device kind to <em>GFCI receptacle</em>, or change its feeding breaker to a GFCI or DFCI type. Either path satisfies the rule.</p>
+            <p className="mb-prose-3">The audit cites <strong className="text-text font-medium">NEC 210.8(A)(2)</strong>: 125 V, 15/20 A receptacles in garages must be GFCI protected. Two ways to clear it: change the device kind to <em className="italic text-text">GFCI receptacle</em>, or change its feeding breaker to a GFCI or DFCI type. Either path satisfies the rule.</p>
           </>
         }
       />
@@ -580,7 +580,7 @@ export default function HouseWiringLab() {
         hint="V_drop = 2·I·ρ·L/A, ρ ≈ 12.9 Ω·cmil/ft, 6 AWG ≈ 26,240 cmil."
         answer={
           <>
-            <p>Substitute: 2 × 32 × 12.9 × 40 / 26,240 ≈ <strong>1.26 V</strong>, or about 0.5 % of 240 V — well under the 3 % branch-circuit recommendation. The sandbox shows the live result on the EV circuit row.</p>
+            <p className="mb-prose-3">Substitute: 2 × 32 × 12.9 × 40 / 26,240 ≈ <strong className="text-text font-medium">1.26 V</strong>, or about 0.5 % of 240 V — well under the 3 % branch-circuit recommendation. The sandbox shows the live result on the EV circuit row.</p>
           </>
         }
       />
@@ -590,8 +590,8 @@ export default function HouseWiringLab() {
         hint="NEC 240.4 is a conductor-protection rule."
         answer={
           <>
-            <p>The 10 AWG NM cable is rated 30 A at the 60 °C column required for NM. A 50 A breaker no longer protects it from overload — the conductor will overheat before the breaker trips. The audit cites <strong>NEC 240.4(D)</strong>.</p>
-            <p>Fix it either by reverting the breaker or upsizing the cable to 6 AWG.</p>
+            <p className="mb-prose-3">The 10 AWG NM cable is rated 30 A at the 60 °C column required for NM. A 50 A breaker no longer protects it from overload — the conductor will overheat before the breaker trips. The audit cites <strong className="text-text font-medium">NEC 240.4(D)</strong>.</p>
+            <p className="mb-prose-3">Fix it either by reverting the breaker or upsizing the cable to 6 AWG.</p>
           </>
         }
       />
@@ -601,7 +601,7 @@ export default function HouseWiringLab() {
         hint="Think about the path fault current takes back to the source."
         answer={
           <>
-            <p>Without the main bonding jumper, the equipment-grounding system has no low-impedance path back to the utility neutral. A hot-to-chassis fault at any appliance will charge the chassis to line voltage, and the breaker will not see enough current to trip — every metal surface in the building becomes a shock hazard. NEC 250.24(B) makes the MBJ mandatory at exactly one place: the service equipment.</p>
+            <p className="mb-prose-3">Without the main bonding jumper, the equipment-grounding system has no low-impedance path back to the utility neutral. A hot-to-chassis fault at any appliance will charge the chassis to line voltage, and the breaker will not see enough current to trip — every metal surface in the building becomes a shock hazard. NEC 250.24(B) makes the MBJ mandatory at exactly one place: the service equipment.</p>
           </>
         }
       />
@@ -611,17 +611,17 @@ export default function HouseWiringLab() {
         hint="Code references NFPA 72."
         answer={
           <>
-            <p>Modern code requires <em>interconnected</em> smoke alarms on a normally-energised circuit so that one detector trips all of them simultaneously, with a battery backup. Battery-only alarms drift out of service silently when batteries fail. In the sandbox, drop a smoke device in Bedroom 2 and assign it to the bedroom branch; the warning clears.</p>
+            <p className="mb-prose-3">Modern code requires <em className="italic text-text">interconnected</em> smoke alarms on a normally-energised circuit so that one detector trips all of them simultaneously, with a battery backup. Battery-only alarms drift out of service silently when batteries fail. In the sandbox, drop a smoke device in Bedroom 2 and assign it to the bedroom branch; the warning clears.</p>
           </>
         }
       />
 
-      <h3>Where to go next</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Where to go next</h3>
+      <p className="mb-prose-3">
         The sandbox is intentionally not a replacement for an electrician's CAD tool — it leaves out box-fill
         cubic-inch math, the full standard load calculation, neutral-current sizing on multi-wire branches,
         the &gt;100 ft service drop drop calculation, and a hundred other corners of NEC. What it captures is
-        the <em>shape</em> of how the code interacts with a real install: rooms determine GFCI/AFCI; appliances
+        the <em className="italic text-text">shape</em> of how the code interacts with a real install: rooms determine GFCI/AFCI; appliances
         set demand; conductors set ampacity; the panel sets the upper bound. Build a house. Break it. Read what
         the audit says<Cite id="nec-2023" in={SOURCES} />.
       </p>

@@ -15,7 +15,7 @@ import { MathBlock, Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
-import { pretty } from '@/lib/physics';
+import {prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
 const SLUG = 'power-supply';
@@ -50,8 +50,7 @@ const PRESETS: SupplyPreset[] = [
     capUF: 2200,
     loadA: 0.7,
     copperLossPct: 8,
-    regulator: '5V',
-  },
+    regulator: '5V' },
   {
     id: 'relay',
     label: '12 V relay rail',
@@ -63,8 +62,7 @@ const PRESETS: SupplyPreset[] = [
     capUF: 3300,
     loadA: 1.2,
     copperLossPct: 9,
-    regulator: '12V',
-  },
+    regulator: '12V' },
   {
     id: 'ripple',
     label: 'Undersized capacitor',
@@ -76,8 +74,7 @@ const PRESETS: SupplyPreset[] = [
     capUF: 470,
     loadA: 1.5,
     copperLossPct: 10,
-    regulator: '12V',
-  },
+    regulator: '12V' },
   {
     id: 'center',
     label: 'Center-tap full-wave',
@@ -89,8 +86,7 @@ const PRESETS: SupplyPreset[] = [
     capUF: 4700,
     loadA: 1.0,
     copperLossPct: 7,
-    regulator: '12V',
-  },
+    regulator: '12V' },
 ];
 
 function rectifierLabel(kind: RectifierKind) {
@@ -146,8 +142,7 @@ export default function PowerSupplyLab() {
       copperHeat,
       pIn,
       efficiency,
-      ripplePct,
-    };
+      ripplePct };
   }, [cfg]);
 
   const stateRef = useRef({ cfg, computed });
@@ -375,9 +370,9 @@ export default function PowerSupplyLab() {
             <Readout sym="Vmin" label="Capacitor valley" value={`${computed.vMin.toFixed(2)}`} unit="V" />
             <Readout sym="fᵣ" label="Ripple frequency" value={`${computed.rippleHz.toFixed(0)}`} unit="Hz" />
             <Readout sym="η" label="Efficiency" value={`${computed.efficiency.toFixed(1)}`} unit="%" />
-            <Readout sym="Pload" label="Load power" valueHTML={pretty(computed.pLoad)} unit="W" />
-            <Readout sym="Pd" label="Diode heat" valueHTML={pretty(computed.diodeHeat)} unit="W" />
-            <Readout sym="Preg" label="Regulator heat" valueHTML={pretty(computed.regulatorHeat)} unit="W" />
+            <Readout sym="Pload" label="Load power" value={prettyJsx(computed.pLoad)} unit="W" />
+            <Readout sym="Pd" label="Diode heat" value={prettyJsx(computed.diodeHeat)} unit="W" />
+            <Readout sym="Preg" label="Regulator heat" value={prettyJsx(computed.regulatorHeat)} unit="W" />
             <Readout sym="q" label="State" value={computed.inRegulation ? 'In regulation' : 'Dropout'} />
           </>
         }
@@ -387,33 +382,33 @@ export default function PowerSupplyLab() {
 
   const prose = (
     <>
-      <h3>Context</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <p className="mb-prose-3">
         This is the old-school supply hiding inside thousands of instruments: line AC enters a transformer, the transformer
         sets the safe secondary voltage, the rectifier folds the waveform, the capacitor stores charge between peaks, and the
         regulator burns excess voltage into heat. It is simpler than a modern switch-mode converter, which is exactly why it
         makes the physics visible<Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The transformer belongs to Faraday's law and magnetic coupling; the rectifier belongs to semiconductor junctions; the
         capacitor ripple is charge conservation; the heat is Joule's law. Power-electronics texts package the same ideas into
         more efficient switched converters, but the accounting begins here<Cite id="mohan-undeland-robbins-2003" in={SOURCES} />.
       </p>
 
-      <h3>Formula</h3>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
       <MathBlock>ΔV ≈ I<sub>load</sub> / (f<sub>ripple</sub> C)</MathBlock>
-      <p>
-        <strong>ΔV</strong> is the approximate peak-to-peak capacitor ripple in volts, <strong>I<sub>load</sub></strong> is
-        the DC load current in amperes, <strong>f<sub>ripple</sub></strong> is the recharge rate after rectification, and
-        <strong>C</strong> is the reservoir capacitance in farads. Half-wave rectifiers recharge once per line cycle; full-wave
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">ΔV</strong> is the approximate peak-to-peak capacitor ripple in volts, <strong className="text-text font-medium">I<sub>load</sub></strong> is
+        the DC load current in amperes, <strong className="text-text font-medium">f<sub>ripple</sub></strong> is the recharge rate after rectification, and
+        <strong className="text-text font-medium">C</strong> is the reservoir capacitance in farads. Half-wave rectifiers recharge once per line cycle; full-wave
         and bridge rectifiers recharge twice per line cycle.
       </p>
 
       <MathBlock>V<sub>pk</sub> ≈ √2 V<sub>rms</sub> − n V<sub>d</sub></MathBlock>
-      <p>
-        <strong>V<sub>pk</sub></strong> is the capacitor's ideal peak voltage, <strong>V<sub>rms</sub></strong> is the
-        transformer secondary RMS voltage, <strong>n</strong> is the number of conducting diodes in the current path, and
-        <strong>V<sub>d</sub></strong> is the forward drop per diode.
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">V<sub>pk</sub></strong> is the capacitor's ideal peak voltage, <strong className="text-text font-medium">V<sub>rms</sub></strong> is the
+        transformer secondary RMS voltage, <strong className="text-text font-medium">n</strong> is the number of conducting diodes in the current path, and
+        <strong className="text-text font-medium">V<sub>d</sub></strong> is the forward drop per diode.
       </p>
 
       <Pullout>
@@ -421,14 +416,14 @@ export default function PowerSupplyLab() {
         that the heat sink becomes the real circuit.
       </Pullout>
 
-      <h3>Reasoning</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <p className="mb-prose-3">
         Load current makes ripple larger because the capacitor is drained faster between recharge peaks. Bigger capacitance
         makes ripple smaller because the same charge removal causes less voltage sag. A bridge rectifier costs two diode drops
         but uses the whole transformer winding on both half-cycles; a center-tapped full-wave rectifier costs one diode drop
         but needs a split secondary. The regulator only works while the capacitor valley stays above the target plus dropout.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The deliberately bad preset is the lesson: the average DC bus may look high enough, but the valley falls under the
         regulator headroom. That is why real supplies are designed from worst-case line voltage, maximum load, diode heating,
         transformer regulation, and capacitor tolerance rather than from a single pleasant nominal number<Cite id="mclyman-2004" in={SOURCES} />.

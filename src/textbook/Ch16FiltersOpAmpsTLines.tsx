@@ -32,61 +32,61 @@ export default function Ch13FiltersOpAmpsTLines() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p>
+      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
         Chapter 12 reduced Maxwell's equations to a netlist: voltages, currents, impedances, and
         Kirchhoff's two laws. That's enough to analyse a circuit at one frequency, or one moment
         in time. But three more questions follow immediately, and the working analog engineer
-        spends most of their career inside the answers. What does the circuit do across <em>every</em>
+        spends most of their career inside the answers. What does the circuit do across <em className="italic text-text">every</em>
         frequency, not just one (filters and the Bode plot)? How do you build a single component
         whose gain is whatever you want it to be (the op-amp)? And what happens when a wire is
         finally long enough that the signal takes real time to get from one end to the other
         (transmission lines)?
       </p>
-      <p>
+      <p className="mb-prose-3">
         This chapter is three sections, six demos, and the bridge from undergraduate
         circuit theory to the practice of real analog and RF design. The math is the same complex
         impedance machinery as Ch.12 — but now we let frequency be a variable, gain be programmable,
         and length be comparable to a wavelength.
       </p>
 
-      <h2><em>Filters</em> and the Bode plot</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Filters</em> and the Bode plot</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Impedance turned circuit ODEs into algebra; the next step is to ask not "what is the
-        steady-state current at one frequency?" but "what does the circuit do across <em>all</em>
-        frequencies at once?" That is the move from circuit analysis to <strong>signal
+        steady-state current at one frequency?" but "what does the circuit do across <em className="italic text-text">all</em>
+        frequencies at once?" That is the move from circuit analysis to <strong className="text-text font-medium">signal
         processing</strong>, and the bridge is the{' '}
-        <Term def={<><strong>transfer function</strong> — the complex ratio of output to input phasors as a function of frequency: <em>H(jω) = V<sub>out</sub>/V<sub>in</sub></em>. Its magnitude tells you how much amplitude survives at each ω; its argument tells you the phase shift.</>}>transfer function</Term>
+        <Term def={<><strong className="text-text font-medium">transfer function</strong> — the complex ratio of output to input phasors as a function of frequency: <em className="italic text-text">H(jω) = V<sub>out</sub>/V<sub>in</sub></em>. Its magnitude tells you how much amplitude survives at each ω; its argument tells you the phase shift.</>}>transfer function</Term>
         {' '}H(jω) = V<sub>out</sub>(jω) / V<sub>in</sub>(jω).
       </p>
-      <p>
+      <p className="mb-prose-3">
         For an RC low-pass filter — a resistor R driving a capacitor C with V<sub>out</sub> taken
         across the cap — the impedance divider gives
       </p>
       <Formula>
         H(jω) = (1/jωC) / (R + 1/jωC) = 1 / (1 + jωRC)
       </Formula>
-      <p>
-        where <strong>H(jω)</strong> is the complex transfer function (dimensionless ratio
-        of output phasor to input phasor) at angular frequency <strong>ω</strong> (in
-        radians per second), <strong>R</strong> is the series resistance (in ohms),
-        <strong> C</strong> is the shunt capacitance (in farads), and
-        <strong> j = √−1</strong> is the imaginary unit.
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">H(jω)</strong> is the complex transfer function (dimensionless ratio
+        of output phasor to input phasor) at angular frequency <strong className="text-text font-medium">ω</strong> (in
+        radians per second), <strong className="text-text font-medium">R</strong> is the series resistance (in ohms),
+        <strong className="text-text font-medium"> C</strong> is the shunt capacitance (in farads), and
+        <strong className="text-text font-medium"> j = √−1</strong> is the imaginary unit.
       </p>
-      <p>
+      <p className="mb-prose-3">
         whose magnitude is
       </p>
       <Formula>
         |H(jω)| = 1 / √(1 + (ω/ω<sub>c</sub>)<sup>2</sup>),    ω<sub>c</sub> = 1/RC
       </Formula>
-      <p>
-        where <strong>|H(jω)|</strong> is the dimensionless magnitude of the transfer
-        function at angular frequency <strong>ω</strong> (in radians per second), and
-        <strong> ω<sub>c</sub> = 1/RC</strong> is the cutoff angular frequency (also in
-        radians per second), set by the resistance <strong>R</strong> (in ohms) and the
-        capacitance <strong>C</strong> (in farads).
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">|H(jω)|</strong> is the dimensionless magnitude of the transfer
+        function at angular frequency <strong className="text-text font-medium">ω</strong> (in radians per second), and
+        <strong className="text-text font-medium"> ω<sub>c</sub> = 1/RC</strong> is the cutoff angular frequency (also in
+        radians per second), set by the resistance <strong className="text-text font-medium">R</strong> (in ohms) and the
+        capacitance <strong className="text-text font-medium">C</strong> (in farads).
       </p>
-      <p>
+      <p className="mb-prose-3">
         Why does the corner land at exactly ω<sub>c</sub> = 1/RC? It is the frequency where the
         capacitor's impedance |1/jωC| = 1/(ωC) crosses through R — below that crossover the cap
         looks like an open circuit and the divider passes the signal nearly unchanged; above it,
@@ -96,49 +96,49 @@ export default function Ch13FiltersOpAmpsTLines() {
         two are equal, so |H| = 1/√2 (the output divider sees a complex equal-magnitude divider),
         which is exactly the −3 dB power-half point<Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The frequency ω<sub>c</sub> is the{' '}
-        <Term def={<><strong>cutoff frequency</strong> — the frequency at which a filter's magnitude response has dropped to 1/√2 of its passband value (−3 dB). For an RC filter, <em>ω<sub>c</sub> = 1/RC</em>; <em>f<sub>c</sub> = 1/(2πRC)</em>.</>}>cutoff frequency</Term>
+        <Term def={<><strong className="text-text font-medium">cutoff frequency</strong> — the frequency at which a filter's magnitude response has dropped to 1/√2 of its passband value (−3 dB). For an RC filter, <em className="italic text-text">ω<sub>c</sub> = 1/RC</em>; <em className="italic text-text">f<sub>c</sub> = 1/(2πRC)</em>.</>}>cutoff frequency</Term>
         : below it the filter passes the signal almost flat; above it the amplitude drops as 1/ω,
-        which is exactly <strong>−20 dB per decade</strong> on a log-log plot. The output also
+        which is exactly <strong className="text-text font-medium">−20 dB per decade</strong> on a log-log plot. The output also
         lags the input by an angle that grows from 0° (DC) through −45° (at ω = ω<sub>c</sub>) to
         −90° (high ω).
       </p>
-      <p>
+      <p className="mb-prose-3">
         Plot |H| in decibels against frequency on a log axis and the asymptotic shape is two
         straight lines: a flat 0 dB passband, a downward ramp at −20 dB/decade, meeting at
-        ω<sub>c</sub>. That two-line caricature is the <strong>
-          <Term def={<><strong>Bode plot</strong> — a pair of plots of a transfer function on logarithmic frequency axes: <em>|H(jω)|</em> in dB versus log ω (magnitude), and arg <em>H(jω)</em> versus log ω (phase). Named after Hendrik Bode at Bell Labs (1940s).</>}>Bode plot</Term>
+        ω<sub>c</sub>. That two-line caricature is the <strong className="text-text font-medium">
+          <Term def={<><strong className="text-text font-medium">Bode plot</strong> — a pair of plots of a transfer function on logarithmic frequency axes: <em className="italic text-text">|H(jω)|</em> in dB versus log ω (magnitude), and arg <em className="italic text-text">H(jω)</em> versus log ω (phase). Named after Hendrik Bode at Bell Labs (1940s).</>}>Bode plot</Term>
         </strong>: it's how every analog filter is specified and how every working circuit
         designer thinks about frequency response<Cite id="oppenheim-willsky-1997" in={SOURCES} />.
         The actual curve sags 3 dB below the corner at ω<sub>c</sub> — the cutoff is the
-        <strong> −3 dB point</strong>, where output power has dropped by exactly half.
+        <strong className="text-text font-medium"> −3 dB point</strong>, where output power has dropped by exactly half.
       </p>
 
       <RCFilterBodeDemo />
 
-      <p>
+      <p className="mb-prose-3">
         Swap R and C and you get the mirror filter: a high-pass with H(jω) = jωRC/(1+jωRC). Below
         ω<sub>c</sub> the response ramps up at +20 dB/decade; above ω<sub>c</sub> it flattens at
         0 dB. The phase ramps from +90° down to 0° as ω crosses the corner. Same components,
         opposite job.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Add an inductor and you can shape the response further. A series RLC with the output
         taken across R has transfer function
       </p>
       <Formula>
         H(jω) = R / (R + jωL + 1/jωC) = jωRC / (1 − ω<sup>2</sup>LC + jωRC)
       </Formula>
-      <p>
-        where <strong>H(jω)</strong> is the complex (dimensionless) transfer function at
-        angular frequency <strong>ω</strong> (in radians per second), <strong>R</strong> is
-        the series resistance (in ohms), <strong>L</strong> is the inductance (in henries),
-        <strong> C</strong> is the capacitance (in farads), and <strong>j = √−1</strong>.
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">H(jω)</strong> is the complex (dimensionless) transfer function at
+        angular frequency <strong className="text-text font-medium">ω</strong> (in radians per second), <strong className="text-text font-medium">R</strong> is
+        the series resistance (in ohms), <strong className="text-text font-medium">L</strong> is the inductance (in henries),
+        <strong className="text-text font-medium"> C</strong> is the capacitance (in farads), and <strong className="text-text font-medium">j = √−1</strong>.
       </p>
-      <p>
+      <p className="mb-prose-3">
         which peaks at ω<sub>0</sub> = 1/√(LC) and is small everywhere else — a{' '}
-        <strong>band-pass filter</strong>. Its bandwidth (the width of the −3 dB band around
+        <strong className="text-text font-medium">band-pass filter</strong>. Its bandwidth (the width of the −3 dB band around
         ω<sub>0</sub>) is Δω = ω<sub>0</sub>/Q, so the same Q-factor that set the sharpness of the
         resonance peak in Ch.12 also sets the selectivity of this filter. AM and FM
         receivers, FM-radio IF strips, EEG bandpass front-ends — all sit on this transfer function.
@@ -146,7 +146,7 @@ export default function Ch13FiltersOpAmpsTLines() {
 
       <RLCBandpassDemo />
 
-      <p>
+      <p className="mb-prose-3">
         A working filter designer faces a concrete problem: pick R, L, C (or
         equivalently the topology) to scrub the unwanted frequencies and pass
         the wanted ones. The build-it demo below pins a 1 kHz audio tone and
@@ -159,7 +159,7 @@ export default function Ch13FiltersOpAmpsTLines() {
 
       <FilterDesignerDemo />
 
-      <p>
+      <p className="mb-prose-3">
         Higher-order filters are built by stacking simple sections. A Butterworth filter is
         designed for the flattest possible passband; a Chebyshev trades some passband ripple for
         a steeper roll-off; a Bessel preserves phase linearity at the cost of a softer skirt.
@@ -167,17 +167,17 @@ export default function Ch13FiltersOpAmpsTLines() {
         whose individual Bode plots add up (in dB) to the overall response<Cite id="horowitz-hill-2015" in={SOURCES} /><Cite id="oppenheim-willsky-1997" in={SOURCES} />.
       </p>
 
-      <h3>Active filter topologies</h3>
+      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Active filter topologies</h3>
 
-      <p>
+      <p className="mb-prose-3">
         Passive RLC sections do the job up to a point, but inductors are physically big, hard to
         integrate on silicon, and tend to pick up stray magnetic coupling. The standard
         alternative replaces the inductor with an op-amp and a couple of capacitors. The simplest
-        and most-used result is the <strong>Sallen-Key</strong> stage: one op-amp wired as a
+        and most-used result is the <strong className="text-text font-medium">Sallen-Key</strong> stage: one op-amp wired as a
         non-inverting amplifier with two RC sections feeding its (+) input, producing a 2nd-order
         transfer function whose cutoff and quality factor can be chosen independently<Cite id="horowitz-hill-2015" in={SOURCES} /><Cite id="sedra-smith-2014" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         For an equal-component design with R<sub>1</sub> = R<sub>2</sub> = R, C<sub>1</sub> =
         C<sub>2</sub> = C, and a non-inverting gain K = 1 + R<sub>f</sub>/R<sub>g</sub>, the
         transfer function works out to
@@ -185,18 +185,18 @@ export default function Ch13FiltersOpAmpsTLines() {
       <Formula>
         H(jω) = K / (1 − (ω/ω<sub>0</sub>)<sup>2</sup> + j(ω/ω<sub>0</sub>)(3 − K))
       </Formula>
-      <p>
-        where <strong>H(jω)</strong> is the (dimensionless) complex transfer function at
-        angular frequency <strong>ω</strong> (in radians per second),
-        <strong> K = 1 + R<sub>f</sub>/R<sub>g</sub></strong> is the dimensionless
-        non-inverting DC gain set by the feedback divider, <strong>ω<sub>0</sub> =
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">H(jω)</strong> is the (dimensionless) complex transfer function at
+        angular frequency <strong className="text-text font-medium">ω</strong> (in radians per second),
+        <strong className="text-text font-medium"> K = 1 + R<sub>f</sub>/R<sub>g</sub></strong> is the dimensionless
+        non-inverting DC gain set by the feedback divider, <strong className="text-text font-medium">ω<sub>0</sub> =
         1/(RC)</strong> is the cutoff angular frequency (in radians per second) for equal
-        components <strong>R</strong> (in ohms) and <strong>C</strong> (in farads), and
-        <strong> j = √−1</strong>.
+        components <strong className="text-text font-medium">R</strong> (in ohms) and <strong className="text-text font-medium">C</strong> (in farads), and
+        <strong className="text-text font-medium"> j = √−1</strong>.
       </p>
-      <p>
+      <p className="mb-prose-3">
         with corner ω<sub>0</sub> = 1/(RC) and Q = 1/(3 − K). The stopband slope is
-        <strong> −40 dB/decade</strong>, twice as steep as a passive first-order RC; K controls
+        <strong className="text-text font-medium"> −40 dB/decade</strong>, twice as steep as a passive first-order RC; K controls
         the peaking at f<sub>0</sub>. Cascading two such stages with Q = 0.54 and Q = 1.31
         produces a 4th-order Butterworth (maximally flat passband, −80 dB/decade roll-off). Other
         Q pairs give Chebyshev, Bessel, or elliptic responses<Cite id="oppenheim-willsky-1997" in={SOURCES} />.
@@ -204,7 +204,7 @@ export default function Ch13FiltersOpAmpsTLines() {
 
       <SallenKeyFilterDemo />
 
-      <p>
+      <p className="mb-prose-3">
         K = 1 (R<sub>f</sub> = 0, a unity-gain follower) gives Q = 1/2, almost a Butterworth
         single stage. K = 1.586 gives the canonical Butterworth Q = 1/√2. Past K = 3 the
         denominator's imaginary part flips sign and the circuit oscillates — the textbook
@@ -224,9 +224,9 @@ export default function Ch13FiltersOpAmpsTLines() {
         answer={
           <>
             <Formula>R · C = 10<sup>4</sup> · 10<sup>−8</sup> = 10<sup>−4</sup> s</Formula>
-            <Formula>f<sub>0</sub> = 1/(2π · 10<sup>−4</sup>) ≈ <strong>1.59 kHz</strong></Formula>
-            <p>
-              Cutoff frequency <strong>≈ 1.59 kHz</strong> — the same RC time constant as a
+            <Formula>f<sub>0</sub> = 1/(2π · 10<sup>−4</sup>) ≈ <strong className="text-text font-medium">1.59 kHz</strong></Formula>
+            <p className="mb-prose-1 last:mb-0">
+              Cutoff frequency <strong className="text-text font-medium">≈ 1.59 kHz</strong> — the same RC time constant as a
               passive low-pass with those components, but the second-order stage rolls off at
               −40 dB/decade past it instead of −20<Cite id="horowitz-hill-2015" in={SOURCES} /><Cite id="sedra-smith-2014" in={SOURCES} />.
             </p>
@@ -238,8 +238,8 @@ export default function Ch13FiltersOpAmpsTLines() {
         tag="Try 13.1"
         question={
           <>
-            Design a low-pass RC filter with cutoff frequency <strong>1 kHz</strong> using a
-            <strong> 10 nF</strong> capacitor. What value of R do you need?
+            Design a low-pass RC filter with cutoff frequency <strong className="text-text font-medium">1 kHz</strong> using a
+            <strong className="text-text font-medium"> 10 nF</strong> capacitor. What value of R do you need?
           </>
         }
         hint={<>f<sub>c</sub> = 1/(2π R C). Solve for R.</>}
@@ -247,8 +247,8 @@ export default function Ch13FiltersOpAmpsTLines() {
           <>
             <Formula>R = 1 / (2π f<sub>c</sub> C) = 1 / (2π · 10<sup>3</sup> · 10<sup>−8</sup>)</Formula>
             <Formula>R ≈ 15.9 kΩ</Formula>
-            <p>
-              Pick <strong>R ≈ 16 kΩ</strong> (a standard E96 value is 16.2 kΩ, close enough). The
+            <p className="mb-prose-1 last:mb-0">
+              Pick <strong className="text-text font-medium">R ≈ 16 kΩ</strong> (a standard E96 value is 16.2 kΩ, close enough). The
               same filter built from 1.6 kΩ + 100 nF or 159 kΩ + 1 nF has the same f<sub>c</sub> —
               it's the RC product, not the individual values, that sets the cutoff<Cite id="horowitz-hill-2015" in={SOURCES} />.
             </p>
@@ -256,9 +256,9 @@ export default function Ch13FiltersOpAmpsTLines() {
         }
       />
 
-      <h2><em>Op-amps</em>: the ideal amplifier</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Op-amps</em>: the ideal amplifier</h2>
 
-      <p>
+      <p className="mb-prose-3">
         The operational amplifier is the single component that revolutionised analog electronics.
         Conceptually it is the ideal voltage-controlled voltage source: infinite open-loop gain,
         infinite input impedance, zero output impedance. Bob Widlar at Fairchild Semiconductor
@@ -266,68 +266,68 @@ export default function Ch13FiltersOpAmpsTLines() {
         mid-1960s; the LM741, descended from the same line, became the canonical undergraduate
         part and is still in production today<Cite id="widlar-1965" in={SOURCES} /><Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
-      <p>
-        The trick is to wrap the device in <strong>negative feedback</strong> and exploit two
+      <p className="mb-prose-3">
+        The trick is to wrap the device in <strong className="text-text font-medium">negative feedback</strong> and exploit two
         consequences that fall straight out of "infinite gain":
       </p>
       <ul>
         <li>
-          <strong>Virtual short.</strong> Because A<sub>OL</sub> → ∞, even a microvolt of
+          <strong className="text-text font-medium">Virtual short.</strong> Because A<sub>OL</sub> → ∞, even a microvolt of
           differential input would saturate the output. So in negative feedback the loop drives the
           two inputs to the same voltage: V<sub>+</sub> = V<sub>−</sub>. Whatever the (+) input
           is doing, the (−) input is dragged along to match.
         </li>
         <li>
-          <strong>
-            <Term def={<><strong>virtual ground</strong> — in an op-amp inverting topology with the (+) input grounded, the negative feedback drags the (−) input to ~0 V (virtually grounded) while drawing no current. The summing-junction node where every input current must equal the feedback current.</>}>Virtual ground</Term>
+          <strong className="text-text font-medium">
+            <Term def={<><strong className="text-text font-medium">virtual ground</strong> — in an op-amp inverting topology with the (+) input grounded, the negative feedback drags the (−) input to ~0 V (virtually grounded) while drawing no current. The summing-junction node where every input current must equal the feedback current.</>}>Virtual ground</Term>
           </strong> (and no input current). The inputs draw zero current — input impedance is
           infinite. In an inverting topology with V<sub>+</sub> = 0, the virtual-short condition
           forces V<sub>−</sub> = 0 too: the (−) pin sits at ground while drawing no current.
         </li>
       </ul>
-      <p>
+      <p className="mb-prose-3">
         From those two facts every op-amp circuit follows in two lines of algebra<Cite id="sedra-smith-2014" in={SOURCES} />.
-        An <strong>inverting amplifier</strong> with input resistor R<sub>in</sub> and feedback
+        An <strong className="text-text font-medium">inverting amplifier</strong> with input resistor R<sub>in</sub> and feedback
         resistor R<sub>f</sub>: the input current V<sub>in</sub>/R<sub>in</sub> must equal the
         feedback current −V<sub>out</sub>/R<sub>f</sub> (signs because both flow into the virtual
         ground), so
       </p>
       <Formula>V<sub>out</sub> = −(R<sub>f</sub> / R<sub>in</sub>) · V<sub>in</sub></Formula>
-      <p>
-        A <strong>non-inverting amplifier</strong> with R<sub>f</sub> from output to (−) and
+      <p className="mb-prose-3">
+        A <strong className="text-text font-medium">non-inverting amplifier</strong> with R<sub>f</sub> from output to (−) and
         R<sub>g</sub> from (−) to ground: virtual short forces V<sub>−</sub> = V<sub>in</sub>, the
         divider then says V<sub>−</sub> = V<sub>out</sub>·R<sub>g</sub>/(R<sub>f</sub>+R<sub>g</sub>),
         so
       </p>
       <Formula>V<sub>out</sub> = (1 + R<sub>f</sub>/R<sub>g</sub>) · V<sub>in</sub></Formula>
-      <p>
-        A <strong>voltage follower</strong> is the special case R<sub>f</sub> = 0, R<sub>g</sub> = ∞
+      <p className="mb-prose-3">
+        A <strong className="text-text font-medium">voltage follower</strong> is the special case R<sub>f</sub> = 0, R<sub>g</sub> = ∞
         — gain 1, but with the op-amp's enormous input impedance and tiny output impedance, so it
         can drive a heavy load from a source that can barely sneeze. Likewise{' '}
-        <strong>summers</strong> (multiple inputs into the inverting node, each through its own R),
-        <strong> integrators</strong> (R in, C feedback), <strong>differentiators</strong> (C in,
-        R feedback), and <strong>current-to-voltage converters</strong> (a photodiode feeding the
+        <strong className="text-text font-medium">summers</strong> (multiple inputs into the inverting node, each through its own R),
+        <strong className="text-text font-medium"> integrators</strong> (R in, C feedback), <strong className="text-text font-medium">differentiators</strong> (C in,
+        R feedback), and <strong className="text-text font-medium">current-to-voltage converters</strong> (a photodiode feeding the
         inverting node, R<sub>f</sub> setting the transimpedance gain) all follow from the same
         two rules.
       </p>
 
       <OpAmpInvertingDemo />
 
-      <p>
+      <p className="mb-prose-3">
         Push V<sub>in</sub> past the limit where R<sub>f</sub>/R<sub>in</sub> would demand more
         than the supply rails can deliver and the output clips. That's the first of the real
         device's limitations to bite: a real op-amp's output can't exceed its supply voltage
         (typically a volt or two short of it). The full list is short.{' '}
-        <Term def={<><strong>slew rate</strong> — the maximum dV<sub>out</sub>/dt the op-amp can deliver, set by an internal compensation capacitor's charging current. Typical: <em>0.5 V/µs</em> for an LM741, <em>20 V/µs</em> for a modern audio op-amp, <em>2000 V/µs</em> for a fast video op-amp.</>}>Slew rate</Term>
+        <Term def={<><strong className="text-text font-medium">slew rate</strong> — the maximum dV<sub>out</sub>/dt the op-amp can deliver, set by an internal compensation capacitor's charging current. Typical: <em className="italic text-text">0.5 V/µs</em> for an LM741, <em className="italic text-text">20 V/µs</em> for a modern audio op-amp, <em className="italic text-text">2000 V/µs</em> for a fast video op-amp.</>}>Slew rate</Term>
         {' '}caps how fast the output can change (LM741: 0.5 V/µs, fast audio op-amps: ~20 V/µs).
         Gain-bandwidth product limits how high the open-loop gain stays usable (LM741: 1 MHz;
         TL081: 3 MHz; high-speed parts: hundreds of MHz). Input offset voltage adds a small
         spurious DC term at the output. Input bias current means "infinite input impedance" was a
         small lie — typically nA to fA, depending on input stage<Cite id="horowitz-hill-2015" in={SOURCES} /><Cite id="sedra-smith-2014" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Swap the feedback resistor for a capacitor and the inverting amp becomes an
-        <strong> integrator</strong>: the input current V<sub>in</sub>/R now flows onto the
+        <strong className="text-text font-medium"> integrator</strong>: the input current V<sub>in</sub>/R now flows onto the
         feedback cap, building voltage according to V<sub>out</sub> = −(1/RC) ∫ V<sub>in</sub> dt.
         Drive it with a square wave and the output ramps up and down linearly between the rails —
         a triangle wave. Drive it with a sine and the output is a 90°-lagging cosine attenuated by
@@ -337,9 +337,9 @@ export default function Ch13FiltersOpAmpsTLines() {
 
       <OpAmpIntegratorDemo />
 
-      <p>
+      <p className="mb-prose-3">
         The single most undersold topology, though, is the one with no gain at all: the
-        <strong> voltage follower</strong>. R<sub>f</sub> = 0, R<sub>g</sub> = ∞; the output is
+        <strong className="text-text font-medium"> voltage follower</strong>. R<sub>f</sub> = 0, R<sub>g</sub> = ∞; the output is
         wired straight back to the inverting input. Closed-loop gain is exactly 1. The whole
         point is the impedance translation: the (+) input draws picoamps from the source, while
         the output drives whatever load you hand it with the op-amp's tiny open-loop output
@@ -349,7 +349,7 @@ export default function Ch13FiltersOpAmpsTLines() {
 
       <OpAmpFollowerDemo />
 
-      <p>
+      <p className="mb-prose-3">
         Every well-designed measurement front-end has a follower (or its differential-input
         sibling, the instrumentation amplifier) as the very first stage after the sensor — that
         is what the divider sag in §Voltage dividers and loading was anticipating.
@@ -360,7 +360,7 @@ export default function Ch13FiltersOpAmpsTLines() {
         tag="Try 13.2"
         question={
           <>
-            An inverting op-amp has <em>R<sub>f</sub></em> = 100 kΩ, <em>R<sub>in</sub></em> = 10 kΩ,
+            An inverting op-amp has <em className="italic text-text">R<sub>f</sub></em> = 100 kΩ, <em className="italic text-text">R<sub>in</sub></em> = 10 kΩ,
             and supply rails of ±10 V. What is V<sub>out</sub> for V<sub>in</sub> = 0.5 V? What
             happens when V<sub>in</sub> = 2 V?
           </>
@@ -369,68 +369,68 @@ export default function Ch13FiltersOpAmpsTLines() {
         answer={
           <>
             <Formula>Gain = −R<sub>f</sub>/R<sub>in</sub> = −100 kΩ / 10 kΩ = −10</Formula>
-            <p>For V<sub>in</sub> = 0.5 V:</p>
+            <p className="mb-prose-1 last:mb-0">For V<sub>in</sub> = 0.5 V:</p>
             <Formula>V<sub>out</sub> = −10 · 0.5 = −5 V</Formula>
-            <p>That sits comfortably between the rails — linear operation.</p>
-            <p>For V<sub>in</sub> = 2 V the math wants V<sub>out</sub> = −20 V, but the −10 V rail
-            stops it: V<sub>out</sub> clips at <strong>−10 V</strong> (in practice ~−9 V because a
+            <p className="mb-prose-1 last:mb-0">That sits comfortably between the rails — linear operation.</p>
+            <p className="mb-prose-1 last:mb-0">For V<sub>in</sub> = 2 V the math wants V<sub>out</sub> = −20 V, but the −10 V rail
+            stops it: V<sub>out</sub> clips at <strong className="text-text font-medium">−10 V</strong> (in practice ~−9 V because a
             real op-amp can't quite reach its rail)<Cite id="sedra-smith-2014" in={SOURCES} />.
             The output is no longer a faithful copy of the input — it has saturated.</p>
           </>
         }
       />
 
-      <h2><em>Transmission lines</em>: when wires get long</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]"><em className="italic text-accent font-normal">Transmission lines</em>: when wires get long</h2>
 
-      <p>
+      <p className="mb-prose-3">
         The lumped picture had a careful caveat: it works when the circuit is small compared to
         the wavelength of any signal in it. The moment that stops being true — a 30 cm trace at
         1 GHz, a 100 m cable at 10 MHz — you can no longer treat a wire as a single instantaneous
         node. The signal takes real time to get from one end to the other, and during that flight
         the wire behaves as a one-dimensional electromagnetic waveguide<Cite id="pozar-2011" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Every pair of conductors has a per-unit-length inductance L′ and per-unit-length
         capacitance C′. Together they give the line a{' '}
-        <strong>
-          <Term def={<><strong>characteristic impedance</strong> — the ratio of voltage to current in a traveling wave on a lossless transmission line: <em>Z₀ = √(L′/C′)</em>, where L′ and C′ are per-unit-length inductance and capacitance. A purely real number (in ohms), but not a resistor — Z₀ describes wave propagation, not dissipation.</>}>characteristic impedance</Term>
+        <strong className="text-text font-medium">
+          <Term def={<><strong className="text-text font-medium">characteristic impedance</strong> — the ratio of voltage to current in a traveling wave on a lossless transmission line: <em className="italic text-text">Z₀ = √(L′/C′)</em>, where L′ and C′ are per-unit-length inductance and capacitance. A purely real number (in ohms), but not a resistor — Z₀ describes wave propagation, not dissipation.</>}>characteristic impedance</Term>
         </strong>
       </p>
       <Formula>Z<sub>0</sub> = √(L′ / C′)</Formula>
-      <p>
-        where <strong>Z<sub>0</sub></strong> is the characteristic impedance of the line
-        (in ohms), <strong>L′</strong> is the inductance per unit length (in henries per
-        metre), and <strong>C′</strong> is the capacitance per unit length (in farads per
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">Z<sub>0</sub></strong> is the characteristic impedance of the line
+        (in ohms), <strong className="text-text font-medium">L′</strong> is the inductance per unit length (in henries per
+        metre), and <strong className="text-text font-medium">C′</strong> is the capacitance per unit length (in farads per
         metre). Z<sub>0</sub> is purely real for a lossless line but does not dissipate
         energy — it sets the ratio of voltage to current in a wave traveling along the
         line.
       </p>
-      <p>
+      <p className="mb-prose-3">
         and a propagation velocity v = 1/√(L′ C′) which works out to roughly two-thirds of c in a
         plastic-dielectric coax. Z<sub>0</sub> is real (in ohms) but it is not a resistor in the
         dissipative sense — it is the ratio of voltage to current in a wave travelling along the
-        line. The canonical numbers are <strong>50 Ω</strong> for RF coax and most lab equipment,
-        <strong> 75 Ω</strong> for TV and video cable, <strong>100 Ω</strong> differential for
-        digital pairs (USB, Ethernet, PCIe), and the historical <strong>300 Ω</strong> for
+        line. The canonical numbers are <strong className="text-text font-medium">50 Ω</strong> for RF coax and most lab equipment,
+        <strong className="text-text font-medium"> 75 Ω</strong> for TV and video cable, <strong className="text-text font-medium">100 Ω</strong> differential for
+        digital pairs (USB, Ethernet, PCIe), and the historical <strong className="text-text font-medium">300 Ω</strong> for
         twin-lead antenna feedline<Cite id="pozar-2011" in={SOURCES} /><Cite id="johnson-graham-1993" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Terminate the line in a load Z<sub>L</sub> = Z<sub>0</sub> and the wave is absorbed
         completely: all of the power launched into the line ends up dissipated in the load.
         Mismatch the termination and a portion bounces back, with{' '}
-        <strong>
-          <Term def={<><strong>reflection coefficient</strong> — the complex ratio of reflected to incident voltage at a transmission-line termination: <em>Γ = (Z<sub>L</sub> − Z₀)/(Z<sub>L</sub> + Z₀)</em>. <em>Γ = 0</em> for matched, <em>+1</em> for an open, <em>−1</em> for a short.</>}>reflection coefficient</Term>
+        <strong className="text-text font-medium">
+          <Term def={<><strong className="text-text font-medium">reflection coefficient</strong> — the complex ratio of reflected to incident voltage at a transmission-line termination: <em className="italic text-text">Γ = (Z<sub>L</sub> − Z₀)/(Z<sub>L</sub> + Z₀)</em>. <em className="italic text-text">Γ = 0</em> for matched, <em className="italic text-text">+1</em> for an open, <em className="italic text-text">−1</em> for a short.</>}>reflection coefficient</Term>
         </strong>
       </p>
       <Formula>Γ = (Z<sub>L</sub> − Z<sub>0</sub>) / (Z<sub>L</sub> + Z<sub>0</sub>)</Formula>
-      <p>
-        where <strong>Γ</strong> is the dimensionless (in general complex) reflection
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">Γ</strong> is the dimensionless (in general complex) reflection
         coefficient — the ratio of the reflected to the incident voltage phasor at the
-        termination — <strong>Z<sub>L</sub></strong> is the load impedance at the end of
-        the line (in ohms, in general complex), and <strong>Z<sub>0</sub></strong> is the
+        termination — <strong className="text-text font-medium">Z<sub>L</sub></strong> is the load impedance at the end of
+        the line (in ohms, in general complex), and <strong className="text-text font-medium">Z<sub>0</sub></strong> is the
         line's characteristic impedance (in ohms, real for a lossless line).
       </p>
-      <p>
+      <p className="mb-prose-3">
         For a matched load, Γ = 0 (no reflection). For a short (Z<sub>L</sub> = 0), Γ = −1 (full
         inverted reflection — same magnitude, opposite sign). For an open (Z<sub>L</sub> → ∞),
         Γ = +1 (full same-sign reflection). In between, the load gets a fraction (1 − |Γ|²) of
@@ -439,25 +439,25 @@ export default function Ch13FiltersOpAmpsTLines() {
 
       <TransmissionLineReflectionDemo />
 
-      <p>
+      <p className="mb-prose-3">
         When the source drives the line continuously instead of with a single pulse, the
         incident and reflected waves interfere along the line, producing a stationary
         peak-and-null pattern in the voltage envelope. The ratio of the maximum envelope to the
         minimum is the{' '}
-        <strong>
-          <Term def={<><strong>VSWR</strong> — voltage standing-wave ratio: the ratio of the maximum to minimum voltage magnitude along a mismatched transmission line. <em>VSWR = (1 + |Γ|)/(1 − |Γ|)</em>. <em>1:1</em> is perfect match; <em>2:1</em> is mediocre; <em>∞:1</em> is full reflection (short or open).</>}>VSWR</Term>
+        <strong className="text-text font-medium">
+          <Term def={<><strong className="text-text font-medium">VSWR</strong> — voltage standing-wave ratio: the ratio of the maximum to minimum voltage magnitude along a mismatched transmission line. <em className="italic text-text">VSWR = (1 + |Γ|)/(1 − |Γ|)</em>. <em className="italic text-text">1:1</em> is perfect match; <em className="italic text-text">2:1</em> is mediocre; <em className="italic text-text">∞:1</em> is full reflection (short or open).</>}>VSWR</Term>
         </strong>
         {' '}(voltage standing-wave ratio):
       </p>
       <Formula>VSWR = V<sub>max</sub> / V<sub>min</sub> = (1 + |Γ|) / (1 − |Γ|)</Formula>
-      <p>
-        where <strong>VSWR</strong> is the dimensionless voltage standing-wave ratio,
-        <strong> V<sub>max</sub></strong> and <strong>V<sub>min</sub></strong> are the
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">VSWR</strong> is the dimensionless voltage standing-wave ratio,
+        <strong className="text-text font-medium"> V<sub>max</sub></strong> and <strong className="text-text font-medium">V<sub>min</sub></strong> are the
         maximum and minimum voltage envelope magnitudes along the line (in volts), and
-        <strong> |Γ|</strong> is the magnitude of the reflection coefficient (dimensionless,
+        <strong className="text-text font-medium"> |Γ|</strong> is the magnitude of the reflection coefficient (dimensionless,
         between 0 and 1 for a passive load).
       </p>
-      <p>
+      <p className="mb-prose-3">
         A perfectly matched line shows VSWR = 1; a 2:1 mismatch is the practical limit for most
         RF work; ∞:1 (short or open) reflects all the power back to the source — which can
         damage a transmitter that wasn't designed to absorb its own reflected power.
@@ -465,9 +465,9 @@ export default function Ch13FiltersOpAmpsTLines() {
 
       <StandingWavesOnLineDemo />
 
-      <h3>The Smith chart</h3>
+      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">The Smith chart</h3>
 
-      <p>
+      <p className="mb-prose-3">
         Sliding Z<sub>L</sub> around and tracking Γ, |Γ|, and the phase by hand gets old fast.
         Philip Smith, working at Bell Labs in 1939, found that the right way to visualise it is
         to plot Γ directly on the unit disk of the complex plane — and to overlay the disk with
@@ -480,14 +480,14 @@ export default function Ch13FiltersOpAmpsTLines() {
 
       <SmithChartBasicsDemo />
 
-      <p>
+      <p className="mb-prose-3">
         The Smith chart's killer feature is that moving along the line corresponds to rotating
         around the origin. Drop the load Z<sub>L</sub> at the right end of a piece of cable and
         the impedance the generator sees at the left end is the original marker, rotated
         clockwise by 2βℓ = 4π · (ℓ/λ) on the chart. A quarter-wave section
         (ℓ = λ/4) rotates exactly 180° — turning a short into an open, an open into a short, and a
         load Z<sub>L</sub> into Z<sub>in</sub> = Z<sub>0</sub><sup>2</sup>/Z<sub>L</sub>. That
-        last identity is the basis of the <strong>quarter-wave transformer</strong>, the
+        last identity is the basis of the <strong className="text-text font-medium">quarter-wave transformer</strong>, the
         single most popular impedance-matching trick in RF and microwave design<Cite id="pozar-2011" in={SOURCES} />.
       </p>
 
@@ -504,9 +504,9 @@ export default function Ch13FiltersOpAmpsTLines() {
         answer={
           <>
             <Formula>Z<sub>0</sub> = √(Z<sub>in</sub> · Z<sub>L</sub>) = √(200 · 50)</Formula>
-            <Formula>Z<sub>0</sub> = √(10 000) = <strong>100 Ω</strong></Formula>
-            <p>
-              A <strong>100 Ω</strong> quarter-wave line transforms a 50 Ω load into a 200 Ω
+            <Formula>Z<sub>0</sub> = √(10 000) = <strong className="text-text font-medium">100 Ω</strong></Formula>
+            <p className="mb-prose-1 last:mb-0">
+              A <strong className="text-text font-medium">100 Ω</strong> quarter-wave line transforms a 50 Ω load into a 200 Ω
               input. The same arithmetic appears in every antenna feed, every microstrip filter,
               and every monolithic microwave integrated circuit — the geometric mean of the two
               impedances you need to bridge<Cite id="pozar-2011" in={SOURCES} />.
@@ -515,7 +515,7 @@ export default function Ch13FiltersOpAmpsTLines() {
         }
       />
 
-      <p>
+      <p className="mb-prose-3">
         When does a wire "become" a transmission line? The standard rule of thumb is when the
         physical length exceeds about λ/10 or — equivalently for a digital signal — when the
         round-trip propagation delay is more than a fraction of the signal's rise time. At 1 GHz
@@ -542,18 +542,18 @@ export default function Ch13FiltersOpAmpsTLines() {
         answer={
           <>
             <Formula>Γ = (100 − 50)/(100 + 50) = 50/150 = 1/3</Formula>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               The reflected voltage is +1/3 of the incident; |Γ|² = 1/9 of the power bounces back,
-              so the load receives <strong>8/9 ≈ 89%</strong> of the incident power. The standing
-              wave ratio is VSWR = (1 + 1/3)/(1 − 1/3) = <strong>2:1</strong> — borderline
+              so the load receives <strong className="text-text font-medium">8/9 ≈ 89%</strong> of the incident power. The standing
+              wave ratio is VSWR = (1 + 1/3)/(1 − 1/3) = <strong className="text-text font-medium">2:1</strong> — borderline
               acceptable for most RF work<Cite id="pozar-2011" in={SOURCES} />.
             </p>
           </>
         }
       />
 
-      <h2>What we have so far</h2>
-      <p>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
+      <p className="mb-prose-3">
         Three sequels to Ch.12. Transfer functions and Bode plots compress a circuit's
         frequency-by-frequency behaviour to two straight-line asymptotes — passband flat, stopband
         rolling off at a slope set by the order of the filter. Op-amps in negative feedback turn
@@ -579,27 +579,27 @@ export default function Ch13FiltersOpAmpsTLines() {
             { label: 'Max-power coax Z₀ (air)', value: '~30 Ω' },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             For an air-dielectric coaxial cable, the per-unit-length attenuation depends on the
             ratio b/a of outer to inner conductor radii through
             <InlineMath> Z<sub>0</sub> = (η<sub>0</sub>/2π) ln(b/a)</InlineMath>. Minimising
             conductor loss for a fixed outer diameter is a calculus problem with a clean answer:
-            the optimum sits at <strong>Z<sub>0</sub> ≈ 77 Ω</strong>. Maximising the power the
+            the optimum sits at <strong className="text-text font-medium">Z<sub>0</sub> ≈ 77 Ω</strong>. Maximising the power the
             cable can carry before air breakdown lands at a different optimum,
-            <strong> Z<sub>0</sub> ≈ 30 Ω</strong><Cite id="pozar-2011" in={SOURCES} />. Splitting
+            <strong className="text-text font-medium"> Z<sub>0</sub> ≈ 30 Ω</strong><Cite id="pozar-2011" in={SOURCES} />. Splitting
             the difference geometrically — √(77·30) ≈ 48 Ω — rounded up to the nice round
-            <strong> 50 Ω</strong>, gives a single standard that's near-optimal for both.
+            <strong className="text-text font-medium"> 50 Ω</strong>, gives a single standard that's near-optimal for both.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Television cable diverged because it was driven by a different optimisation. Picture
             tubes wanted maximum signal voltage rather than maximum power transfer, and the loss
             minimum for the polyethylene dielectric used in early TV coax landed near
-            <strong> 75 Ω</strong>; the industry settled there and never moved<Cite id="johnson-graham-1993" in={SOURCES} />.
-            Digital pairs (USB, Ethernet, HDMI, PCIe) run at <strong>~100 Ω differential</strong>
+            <strong className="text-text font-medium"> 75 Ω</strong>; the industry settled there and never moved<Cite id="johnson-graham-1993" in={SOURCES} />.
+            Digital pairs (USB, Ethernet, HDMI, PCIe) run at <strong className="text-text font-medium">~100 Ω differential</strong>
             because that impedance is achievable with practical PCB trace geometries while keeping
             the per-pin current draw in a comfortable range for CMOS drivers.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The economic consequence is that an enormous installed base of lab gear — network
             analyzers, spectrum analyzers, RF signal generators, oscilloscope active probes — all
             assume a 50 Ω world. Every SMA, BNC, and N-connector is 50 Ω; every test fixture
@@ -623,7 +623,7 @@ export default function Ch13FiltersOpAmpsTLines() {
             { label: 'Topology', value: 'transimpedance (I-to-V)' },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             A reverse-biased photodiode produces a current proportional to the light falling on it
             — a few nanoamps to a few microamps in indoor lighting. To convert that current into
             a voltage a downstream ADC can sample, you tie it to the inverting input of an op-amp
@@ -632,7 +632,7 @@ export default function Ch13FiltersOpAmpsTLines() {
             its photocurrent flows entirely through R<sub>f</sub><Cite id="horowitz-hill-2015" in={SOURCES} />.
             The output is V<sub>out</sub> = −I<sub>photo</sub> · R<sub>f</sub>.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Pick R<sub>f</sub> = 1 MΩ and 1 nA of photocurrent gives 1 mV — perfectly within an
             ADC's resolution. The op-amp must be a JFET- or CMOS-input type so that the input bias
             current (picoamps, not nanoamps) doesn't drown out the signal<Cite id="sedra-smith-2014" in={SOURCES} />.
@@ -640,7 +640,7 @@ export default function Ch13FiltersOpAmpsTLines() {
             otherwise arises from the photodiode's junction capacitance combined with the feedback
             network — a textbook frequency-compensation problem solved with one passive part.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Every CMOS image sensor in every smartphone is millions of such pixels, each with a
             tiny photodiode and a single-transistor source follower (a near-relative of the
             voltage-follower op-amp). The same transimpedance topology, scaled up, drives every
@@ -697,7 +697,7 @@ export default function Ch13FiltersOpAmpsTLines() {
             energy is just transported from one end to the other. Z<sub>0</sub> sets the voltage
             response to a launched current the same way a resistor does, but the energy goes into
             field momentum rather than heat. Terminate the line with a real resistor R = Z<sub>0</sub>
-            and the wave arrives at a load that <em>does</em> dissipate, looking back identical to
+            and the wave arrives at a load that <em className="italic text-text">does</em> dissipate, looking back identical to
             an infinite line — which is why the wave is fully absorbed and no reflection comes
             back<Cite id="pozar-2011" in={SOURCES} />.
           </p>
@@ -708,7 +708,7 @@ export default function Ch13FiltersOpAmpsTLines() {
             Rule of thumb: when the trace's electrical length is longer than about one-sixth of
             the signal's rise time. For a 1 ns rise-time digital edge in a typical FR-4 PCB
             dielectric (v ≈ 1.5×10<sup>8</sup> m/s), one-sixth of t<sub>r</sub> times v gives
-            roughly <strong>2.5 cm</strong> — past that length, ringing and reflections become
+            roughly <strong className="text-text font-medium">2.5 cm</strong> — past that length, ringing and reflections become
             visible on the bench<Cite id="johnson-graham-1993" in={SOURCES} />. Modern CMOS edges
             are 50–500 ps, which drops the threshold under 1 cm and is why every motherboard's
             high-speed signal lanes (DDR, PCIe, USB 3, HDMI) are routed as carefully impedance-
@@ -731,7 +731,7 @@ export default function Ch13FiltersOpAmpsTLines() {
         <FAQItem q="Why is the LM741 still in production after 50+ years?">
           <p>
             Inertia and pedagogy. The LM741 (1968) was a workhorse general-purpose op-amp — bipolar
-            input, internally compensated, easy to use, single supply — and it became <em>the</em>{' '}
+            input, internally compensated, easy to use, single supply — and it became <em className="italic text-text">the</em>{' '}
             textbook example. Modern parts (TL081, OPA2134, LT1115, ADA4898) outperform it on
             every spec: lower noise, faster slew rate, higher gain-bandwidth, lower offset, lower
             bias current. But existing equipment that just needs "any old op-amp" still spec-calls

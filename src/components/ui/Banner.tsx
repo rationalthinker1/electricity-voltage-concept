@@ -22,15 +22,28 @@ export function Banner({
     <div
       className={clsx(
         'flex items-start gap-md py-lg px-lg rounded-5 border border-border-2 bg-bg-elevated text-text text-5 leading-4',
-        variant === 'info' && 'border-blue/30 bg-blue/10 [&_.banner-icon]:text-blue',
-        variant === 'warn' && 'border-accent-glow bg-accent-soft [&_.banner-icon]:text-accent',
-        variant === 'success' && 'border-teal/30 bg-teal-soft [&_.banner-icon]:text-teal',
-        variant === 'danger' && 'border-pink/30 bg-pink/10 [&_.banner-icon]:text-pink',
+        variant === 'info'    && 'border-blue/30 bg-blue/10',
+        variant === 'warn'    && 'border-accent-glow bg-accent-soft',
+        variant === 'success' && 'border-teal/30 bg-teal-soft',
+        variant === 'danger'  && 'border-pink/30 bg-pink/10',
         className,
       )}
       role={variant === 'danger' || variant === 'warn' ? 'alert' : 'status'}
     >
-      {icon !== undefined && <span className="banner-icon text-6 leading-3 shrink-0 mt-xxs" aria-hidden="true">{icon}</span>}
+      {icon !== undefined && (
+        <span
+          className={clsx(
+            'banner-icon text-6 leading-3 shrink-0 mt-xxs',
+            variant === 'info'    && 'text-blue',
+            variant === 'warn'    && 'text-accent',
+            variant === 'success' && 'text-teal',
+            variant === 'danger'  && 'text-pink',
+          )}
+          aria-hidden="true"
+        >
+          {icon}
+        </span>
+      )}
       <div className="flex-1 min-w-0">{children}</div>
       {onDismiss && (
         <button

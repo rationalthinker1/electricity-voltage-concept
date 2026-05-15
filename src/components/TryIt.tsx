@@ -38,7 +38,7 @@ export function TryIt({ question, answer, hint, tag }: TryItProps) {
         {open ? 'Hide answer ↑' : 'Show answer →'}
       </button>
       {open && (
-        <div className="mt-lg pt-lg border-t border-dotted border-border-strong text-6 leading-5 text-text-dim [&_strong]:text-text [&_strong]:font-medium [&_em]:text-text [&_em]:italic [&_p]:mb-prose-1 [&_p:last-child]:mb-0 [&_.formula-block]:my-lg [&_.formula-block]:py-md [&_.formula-block]:px-lg [&_.formula-content]:text-7 [&_.cite]:inline-block [&_.cite]:font-3 [&_.cite]:text-1 [&_.cite]:align-super [&_.cite]:leading-none [&_.cite]:text-accent [&_.cite]:bg-accent-soft [&_.cite]:py-px [&_.cite]:px-sm [&_.cite]:mx-px [&_.cite]:rounded-2 [&_.cite]:no-underline hover:[&_.cite]:bg-accent hover:[&_.cite]:text-bg">
+        <div className="mt-lg pt-lg border-t border-dotted border-border-strong text-6 leading-5 text-text-dim [&_.formula-block]:my-lg [&_.formula-block]:py-md [&_.formula-block]:px-lg [&_.formula-content]:text-7">
           {answer}
         </div>
       )}

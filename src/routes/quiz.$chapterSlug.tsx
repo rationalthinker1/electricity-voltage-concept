@@ -24,10 +24,9 @@ function QuizRoute() {
   return (
     <article className="mx-auto pt-5xl px-3xl pb-4xl max-w-[1080px]">
       <div className="eyebrow-rule text-2 mb-xl">Mastery quiz &middot; Chapter {chapter.number}</div>
-      <h1
-        className="font-2 font-light leading-1 mb-xl max-w-[18ch] text-[clamp(48px,7vw,86px)] tracking-[-.03em] [&_em]:italic [&_em]:text-accent [&_em]:font-normal"
-        dangerouslySetInnerHTML={{ __html: chapter.title }}
-      />
+      <h1 className="font-2 font-light leading-1 mb-xl max-w-[18ch] text-[clamp(48px,7vw,86px)] tracking-[-.03em]">
+        {chapter.title}
+      </h1>
       <p className="font-2 italic font-light leading-3 max-w-[50ch] pl-xl mb-3xl text-text-dim text-[clamp(22px,2.4vw,28px)] border-l-2 border-accent">
         Answer the questions below to verify chapter mastery. Pass at the configured threshold and the
         chapter is marked complete in your progress.

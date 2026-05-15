@@ -19,7 +19,7 @@ import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
 import { drawCharge } from '@/lib/canvasPrimitives';
-import { PHYS, pretty } from '@/lib/physics';
+import { PHYS, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
 const SLUG = 'gauss';
@@ -313,7 +313,7 @@ export default function GaussLab() {
             onChange={setR_mm}
           />
           <Slider
-            sym="x<sub>Q</sub>" label="Charge position"
+            sym={<>x<sub>Q</sub></>} label="Charge position"
             value={qpos_mm} min={-200} max={200} step={1}
             format={v => (v > 0 ? '+' : '') + v.toFixed(0) + ' mm'}
             metaLeft="−200 mm" metaRight="+200 mm"
@@ -325,12 +325,12 @@ export default function GaussLab() {
         <>
           <Readout
             sym={<>Q<sub>enc</sub></>} label="Enclosed charge"
-            valueHTML={pretty(computed.Qenc)}
+            value={prettyJsx(computed.Qenc)}
             unit="C"
           />
           <Readout
             sym="Φ" label="Total flux"
-            valueHTML={pretty(computed.flux)}
+            value={prettyJsx(computed.flux)}
             unit="V·m"
             highlight
           />
@@ -338,7 +338,7 @@ export default function GaussLab() {
             sym="|E|" label="Field at surface"
             value={
               computed.inside && Math.abs(qpos_mm) < 1
-                ? <span dangerouslySetInnerHTML={{ __html: pretty(computed.Esurf_centered) }} />
+                ? prettyJsx(computed.Esurf_centered)
                 : computed.inside
                   ? <span style={{ color: 'var(--text-muted)' }}>varies over surface</span>
                   : <span style={{ color: 'var(--text-muted)' }}>net flux = 0</span>
@@ -347,7 +347,7 @@ export default function GaussLab() {
           />
           <Readout
             sym="A" label={<>Surface area (4πR²)</>}
-            valueHTML={pretty(computed.A)}
+            value={prettyJsx(computed.A)}
             unit="m²"
           />
           <Readout
@@ -365,254 +365,254 @@ export default function GaussLab() {
 
   const prose = (
     <>
-      <h3>Context</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <p className="mb-prose-3">
         Gauss's law is one of the four Maxwell equations. It relates the total electric flux through any closed surface to the total electric
         charge enclosed by that surface, with no dependence on the surface's shape, the locations of charges outside the surface, or the
         details of how the enclosed charge is distributed<Cite id="gauss-1813" in={SOURCES} /><Cite id="griffiths-2017" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         It applies universally to electric fields, dynamic or static, in vacuum or in matter (with appropriate dressing for bound charges).
-        For computing <strong>E</strong> directly, however, it is only practical when the geometry has enough symmetry to make the flux
+        For computing <strong className="text-text font-medium">E</strong> directly, however, it is only practical when the geometry has enough symmetry to make the flux
         integral trivial: spherical symmetry around a point or a sphere, cylindrical symmetry around a line, or planar symmetry around a
-        sheet. Without symmetry, Gauss's law is still <em>true</em> but gives only the integrated flux, not E pointwise — for that, you fall
+        sheet. Without symmetry, Gauss's law is still <em className="italic text-text">true</em> but gives only the integrated flux, not E pointwise — for that, you fall
         back on Coulomb's law and superposition<Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <h3>Formula</h3>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
       <MathBlock>∮ E · dA = Q<sub>enc</sub> / ε₀</MathBlock>
-      <p>
+      <p className="mb-prose-3">
         Variable glossary:
       </p>
       <ul>
-        <li><strong>∮ ... dA</strong> — closed-surface integral. The "Gaussian surface" is any imagined closed surface in space; it need not coincide with any physical object.</li>
-        <li><strong>E</strong> — the electric field vector at each point of that surface, in V/m.</li>
-        <li><strong>dA</strong> — outward-pointing area element of the surface, in m². The dot product picks the component of <strong>E</strong> perpendicular to the surface.</li>
-        <li><strong>Q<sub>enc</sub></strong> — total electric charge contained inside the surface, in coulombs. Signed; positive and negative enclosed charges cancel.</li>
-        <li><strong>ε₀ = 8.854×10⁻¹² C²/(N·m²)</strong> — vacuum permittivity. The Gauss/Coulomb constant relating units of charge to units of field.</li>
+        <li><strong className="text-text font-medium">∮ ... dA</strong> — closed-surface integral. The "Gaussian surface" is any imagined closed surface in space; it need not coincide with any physical object.</li>
+        <li><strong className="text-text font-medium">E</strong> — the electric field vector at each point of that surface, in V/m.</li>
+        <li><strong className="text-text font-medium">dA</strong> — outward-pointing area element of the surface, in m². The dot product picks the component of <strong className="text-text font-medium">E</strong> perpendicular to the surface.</li>
+        <li><strong className="text-text font-medium">Q<sub>enc</sub></strong> — total electric charge contained inside the surface, in coulombs. Signed; positive and negative enclosed charges cancel.</li>
+        <li><strong className="text-text font-medium">ε₀ = 8.854×10⁻¹² C²/(N·m²)</strong> — vacuum permittivity. The Gauss/Coulomb constant relating units of charge to units of field.</li>
       </ul>
 
-      <h3>Intuition</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <p className="mb-prose-3">
         Coulomb's law is calculation. You hand it a charge configuration; it hands you a vector field, point by laborious point. To get the field
         from a uniformly charged sphere, an infinite line, or a finite disk, you integrate — and the answer is often ugly.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Gauss's law is bookkeeping. You don't ask "what's the field at this point." You ask: "of all the electric flux passing through this
         imagined surface I just drew in space, how much net is there?" The answer depends only on the charge enclosed by that surface, divided
-        by ε₀. The shape doesn't matter. The location of charges outside the surface doesn't matter. Only what is <em>enclosed</em>.
+        by ε₀. The shape doesn't matter. The location of charges outside the surface doesn't matter. Only what is <em className="italic text-text">enclosed</em>.
       </p>
       <Pullout>
         Coulomb is calculation. Gauss is bookkeeping. When you have symmetry, the bookkeeping is enough — and Coulomb falls right out of it.
       </Pullout>
 
-      <h3>Reasoning</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <p className="mb-prose-3">
         Why does flux care only about enclosed charge? Picture each charge as a fountain emitting "field lines" radially. Every line leaving
         a positive charge must escape its surrounding space somehow; every line approaching a negative charge must terminate on it. If a charge
         sits inside your surface, each of its lines crosses the surface an odd number of times (it pokes out, and the geometry of a closed
         surface forces a net of one outward crossing per line). If the charge sits outside, each of its lines either misses the surface entirely
         or pokes in once and pokes out once — net zero<Cite id="feynman-II-2" in={SOURCES} />.
       </p>
-      <p>
-        Why does the surface's shape not matter? Because <strong>E</strong> falls as 1/r² and the surface area through which a fixed solid
+      <p className="mb-prose-3">
+        Why does the surface's shape not matter? Because <strong className="text-text font-medium">E</strong> falls as 1/r² and the surface area through which a fixed solid
         angle is viewed grows as r². The two cancel exactly — the field-area product for any patch depends only on the solid angle subtended,
         not the radial distance. Summing over the whole sky (4π steradians) gives the full enclosed charge in the right units.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Sign convention. The outward normal is the convention; an outward-pointing E·dA contributes positive flux. A positive charge enclosed
         gives positive net flux; a negative charge gives negative flux; a neutral collection (equal + and −) gives zero net flux. The shape of
         the surface affects the flux through individual patches but not the integral.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Limits. If the surface encloses no charge, ∮E·dA = 0 — even if E is nonzero everywhere on the surface (it just enters and leaves
         symmetrically). If you double Q<sub>enc</sub>, you double the total flux. If you slide a charge past the boundary, the flux jumps
         discontinuously from Q/ε₀ to 0 the instant the charge crosses the surface. The lab's flux readout snaps to zero when you drag the
         charge out of the Gaussian sphere — see for yourself.
       </p>
 
-      <h3>Derivation</h3>
-      <p>
-        Start with the field of a single point charge: <strong>E = kQ/r²</strong>. Wrap an imaginary sphere of radius <strong>r</strong>
-        around it, centered on the charge. The field is radial and uniform on that sphere, with magnitude <strong>kQ/r²</strong>. The sphere
-        has area <strong>4πr²</strong>. Multiply them:
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <p className="mb-prose-3">
+        Start with the field of a single point charge: <strong className="text-text font-medium">E = kQ/r²</strong>. Wrap an imaginary sphere of radius <strong className="text-text font-medium">r</strong>
+        around it, centered on the charge. The field is radial and uniform on that sphere, with magnitude <strong className="text-text font-medium">kQ/r²</strong>. The sphere
+        has area <strong className="text-text font-medium">4πr²</strong>. Multiply them:
       </p>
       <MathBlock>∮ E · dA = (kQ/r²) · 4πr² = 4πk Q</MathBlock>
-      <p>
+      <p className="mb-prose-3">
         The radius dropped out: the field falls as 1/r², the area grows as r², the product is independent of r. Define
-        <strong> k = 1/(4π ε₀)</strong>, and the 4π tidies away<Cite id="griffiths-2017" in={SOURCES} />:
+        <strong className="text-text font-medium"> k = 1/(4π ε₀)</strong>, and the 4π tidies away<Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <MathBlock>∮ E · dA = Q / ε₀</MathBlock>
-      <p>
-        The same answer holds for <em>any</em> closed surface enclosing the same charge. Deform the sphere — squish one side in, stretch another out —
-        and the flux through each patch changes, but the <em>total</em> integrated flux is unchanged. Every field line leaving the charge has
-        to escape <em>somewhere</em>; it pokes out of any enclosing surface exactly once in net<Cite id="feynman-II-2" in={SOURCES} />.
+      <p className="mb-prose-3">
+        The same answer holds for <em className="italic text-text">any</em> closed surface enclosing the same charge. Deform the sphere — squish one side in, stretch another out —
+        and the flux through each patch changes, but the <em className="italic text-text">total</em> integrated flux is unchanged. Every field line leaving the charge has
+        to escape <em className="italic text-text">somewhere</em>; it pokes out of any enclosing surface exactly once in net<Cite id="feynman-II-2" in={SOURCES} />.
       </p>
-      <p>
-        Equally, if the charge is <em>outside</em> the surface, every field line that enters must also exit. Net flux: zero. Drag the charge
+      <p className="mb-prose-3">
+        Equally, if the charge is <em className="italic text-text">outside</em> the surface, every field line that enters must also exit. Net flux: zero. Drag the charge
         past the sphere boundary and watch the flux readout collapse. Superposition extends the result to any number of charges: the flux from
         a collection is the sum of the fluxes from each, and only the enclosed pieces contribute.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The differential form, by the divergence theorem:
       </p>
       <MathBlock>∇ · E = ρ / ε₀</MathBlock>
-      <p>
+      <p className="mb-prose-3">
         Charge density is the source of field divergence. In Maxwell's equations this is the foundational object; Coulomb's law falls out as a
         special case<Cite id="jackson-1999" in={SOURCES} />.
       </p>
 
-      <h3>Worked problems</h3>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
 
       <TryIt
         tag="Problem 1.3.1"
-        question={<>A point charge of <strong>+1 nC</strong> sits at the origin. Compute the total electric flux through a sphere of radius <strong>5 cm</strong> centered on the charge.</>}
+        question={<>A point charge of <strong className="text-text font-medium">+1 nC</strong> sits at the origin. Compute the total electric flux through a sphere of radius <strong className="text-text font-medium">5 cm</strong> centered on the charge.</>}
         answer={
           <>
-            <p>The flux through any closed surface enclosing Q is Q/ε₀ — the radius doesn't matter:</p>
+            <p className="mb-prose-3">The flux through any closed surface enclosing Q is Q/ε₀ — the radius doesn't matter:</p>
             <Formula>Φ = Q / ε₀ = (10⁻⁹) / (8.854×10⁻¹²) ≈ 113 V·m</Formula>
-            <p>About <strong>113 V·m</strong>. The same answer for a sphere of radius 1 cm, 1 m, or 1 km — what matters is what's inside.</p>
+            <p className="mb-prose-3">About <strong className="text-text font-medium">113 V·m</strong>. The same answer for a sphere of radius 1 cm, 1 m, or 1 km — what matters is what's inside.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.3.2"
-        question={<>Repeat Problem 1.3.1 with the charge at the origin, but compute the flux through a <strong>cubic surface</strong> of side 10 cm centred on the charge.</>}
+        question={<>Repeat Problem 1.3.1 with the charge at the origin, but compute the flux through a <strong className="text-text font-medium">cubic surface</strong> of side 10 cm centred on the charge.</>}
         answer={
           <>
-            <p>Gauss's law cares only about the enclosed charge, not the surface shape. The charge is still inside, still 1 nC:</p>
+            <p className="mb-prose-3">Gauss's law cares only about the enclosed charge, not the surface shape. The charge is still inside, still 1 nC:</p>
             <Formula>Φ = Q / ε₀ ≈ 113 V·m</Formula>
-            <p>Identical to the spherical case. The trade-off: through a cube, <strong>E·dA</strong> is uneven across the surface — strong through the centres of each face, weak at the corners — but the integral comes out the same<Cite id="griffiths-2017" in={SOURCES} />.</p>
+            <p className="mb-prose-3">Identical to the spherical case. The trade-off: through a cube, <strong className="text-text font-medium">E·dA</strong> is uneven across the surface — strong through the centres of each face, weak at the corners — but the integral comes out the same<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.3.3"
-        question={<>Derive the field outside a uniformly charged solid sphere of radius <strong>R</strong> holding total charge <strong>Q</strong>, at distance <strong>r &gt; R</strong>.</>}
+        question={<>Derive the field outside a uniformly charged solid sphere of radius <strong className="text-text font-medium">R</strong> holding total charge <strong className="text-text font-medium">Q</strong>, at distance <strong className="text-text font-medium">r &gt; R</strong>.</>}
         answer={
           <>
-            <p>Spherical symmetry: E is radial and depends only on r. Wrap a Gaussian sphere of radius r &gt; R around the source. The full charge Q is enclosed:</p>
+            <p className="mb-prose-3">Spherical symmetry: E is radial and depends only on r. Wrap a Gaussian sphere of radius r &gt; R around the source. The full charge Q is enclosed:</p>
             <Formula>∮ E · dA = E · 4πr² = Q / ε₀</Formula>
             <Formula>E = Q / (4π ε₀ r²) = k Q / r²</Formula>
-            <p>Identical to a <em>point charge</em> at the centre. This is the shell theorem: outside, an extended spherically symmetric distribution looks exactly like a point<Cite id="griffiths-2017" in={SOURCES} />.</p>
+            <p className="mb-prose-3">Identical to a <em className="italic text-text">point charge</em> at the centre. This is the shell theorem: outside, an extended spherically symmetric distribution looks exactly like a point<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.3.4"
-        question={<>Inside the same uniformly charged solid sphere (total charge Q, radius R), what is the field at radius <strong>r &lt; R</strong>?</>}
+        question={<>Inside the same uniformly charged solid sphere (total charge Q, radius R), what is the field at radius <strong className="text-text font-medium">r &lt; R</strong>?</>}
         answer={
           <>
-            <p>Only the charge inside radius r contributes. For a uniform volume density ρ, the enclosed charge scales as r³/R³:</p>
+            <p className="mb-prose-3">Only the charge inside radius r contributes. For a uniform volume density ρ, the enclosed charge scales as r³/R³:</p>
             <Formula>Q<sub>enc</sub>(r) = Q · (r³ / R³)</Formula>
             <Formula>E · 4πr² = Q (r³/R³) / ε₀  ⇒  E = (kQ/R³) r</Formula>
-            <p>The interior field grows <em>linearly</em> with r, from zero at the centre to its surface value <strong>kQ/R²</strong> at r = R. This is why the inside of a uniformly charged ball is a simple harmonic potential well — a fact exploited in models of nuclear physics and self-gravitating spheres.</p>
+            <p className="mb-prose-3">The interior field grows <em className="italic text-text">linearly</em> with r, from zero at the centre to its surface value <strong className="text-text font-medium">kQ/R²</strong> at r = R. This is why the inside of a uniformly charged ball is a simple harmonic potential well — a fact exploited in models of nuclear physics and self-gravitating spheres.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.3.5"
-        question={<>Find the field a perpendicular distance <strong>r</strong> from an infinite straight line of charge with linear density <strong>λ</strong> (coulombs per meter).</>}
+        question={<>Find the field a perpendicular distance <strong className="text-text font-medium">r</strong> from an infinite straight line of charge with linear density <strong className="text-text font-medium">λ</strong> (coulombs per meter).</>}
         answer={
           <>
-            <p>Cylindrical symmetry forces E to be radial and to depend only on perpendicular distance r. Wrap a cylindrical Gaussian surface of length L and radius r around the line. The end caps contribute nothing (E is parallel to them). The side wall has area 2πrL, with E uniform on it:</p>
+            <p className="mb-prose-3">Cylindrical symmetry forces E to be radial and to depend only on perpendicular distance r. Wrap a cylindrical Gaussian surface of length L and radius r around the line. The end caps contribute nothing (E is parallel to them). The side wall has area 2πrL, with E uniform on it:</p>
             <Formula>E · 2πrL = (λL) / ε₀</Formula>
             <Formula>E = λ / (2π ε₀ r)</Formula>
-            <p>One line of algebra. The field falls as 1/r (not 1/r²), because the source extends infinitely in one direction — a sphere of radius r intercepts only a thin slice of it. Coulomb's law would have required integrating contributions from an infinite line; Gauss skips the integral<Cite id="jackson-1999" in={SOURCES} />.</p>
+            <p className="mb-prose-3">One line of algebra. The field falls as 1/r (not 1/r²), because the source extends infinitely in one direction — a sphere of radius r intercepts only a thin slice of it. Coulomb's law would have required integrating contributions from an infinite line; Gauss skips the integral<Cite id="jackson-1999" in={SOURCES} />.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.3.6"
-        question={<>Find the field between two infinite parallel sheets with surface charge densities <strong>+σ</strong> and <strong>−σ</strong> (an idealized parallel-plate capacitor).</>}
+        question={<>Find the field between two infinite parallel sheets with surface charge densities <strong className="text-text font-medium">+σ</strong> and <strong className="text-text font-medium">−σ</strong> (an idealized parallel-plate capacitor).</>}
         answer={
           <>
-            <p>Each infinite sheet alone, by Gauss with a pillbox of area A straddling it, produces field σ/(2ε₀) on each side, pointing away (for +σ) or toward (for −σ) the sheet:</p>
+            <p className="mb-prose-3">Each infinite sheet alone, by Gauss with a pillbox of area A straddling it, produces field σ/(2ε₀) on each side, pointing away (for +σ) or toward (for −σ) the sheet:</p>
             <Formula>E<sub>single sheet</sub> = σ / (2ε₀)</Formula>
-            <p>Between two oppositely charged sheets, the contributions add: both fields point from the +σ sheet toward the −σ sheet. Outside the sheets, they cancel:</p>
+            <p className="mb-prose-3">Between two oppositely charged sheets, the contributions add: both fields point from the +σ sheet toward the −σ sheet. Outside the sheets, they cancel:</p>
             <Formula>E<sub>between</sub> = σ/(2ε₀) + σ/(2ε₀) = σ / ε₀</Formula>
             <Formula>E<sub>outside</sub> = σ/(2ε₀) − σ/(2ε₀) = 0</Formula>
-            <p>This is the textbook result: uniform field <strong>σ/ε₀</strong> between the plates, zero outside. The same answer the parallel-plate capacitor lab (4.1) will need.</p>
+            <p className="mb-prose-3">This is the textbook result: uniform field <strong className="text-text font-medium">σ/ε₀</strong> between the plates, zero outside. The same answer the parallel-plate capacitor lab (4.1) will need.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.3.7"
-        question={<>A hollow conducting sphere holds total charge <strong>Q</strong> on its outer surface. Why is the field <strong>inside the cavity</strong> exactly zero?</>}
+        question={<>A hollow conducting sphere holds total charge <strong className="text-text font-medium">Q</strong> on its outer surface. Why is the field <strong className="text-text font-medium">inside the cavity</strong> exactly zero?</>}
         answer={
           <>
-            <p>Wrap a Gaussian surface inside the cavity, anywhere in the empty interior. The enclosed charge is zero:</p>
+            <p className="mb-prose-3">Wrap a Gaussian surface inside the cavity, anywhere in the empty interior. The enclosed charge is zero:</p>
             <Formula>∮ E · dA = 0 / ε₀ = 0</Formula>
-            <p>By spherical symmetry, E inside must be radial and uniform on any concentric Gaussian sphere. The only field satisfying both the symmetry and the zero-flux constraint is <strong>E = 0 everywhere inside the cavity</strong>.</p>
-            <p>This is the Faraday-cage result: a hollow conductor shields its interior from external electric fields, because any external field induces surface charges that exactly cancel it inside. The result is independent of cavity shape, by similar Gauss-law arguments<Cite id="griffiths-2017" in={SOURCES} />.</p>
+            <p className="mb-prose-3">By spherical symmetry, E inside must be radial and uniform on any concentric Gaussian sphere. The only field satisfying both the symmetry and the zero-flux constraint is <strong className="text-text font-medium">E = 0 everywhere inside the cavity</strong>.</p>
+            <p className="mb-prose-3">This is the Faraday-cage result: a hollow conductor shields its interior from external electric fields, because any external field induces surface charges that exactly cancel it inside. The result is independent of cavity shape, by similar Gauss-law arguments<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.3.8"
-        question={<>Compute the total flux through a closed surface that contains a <strong>+1 C</strong> point charge and a <strong>−0.7 C</strong> point charge.</>}
+        question={<>Compute the total flux through a closed surface that contains a <strong className="text-text font-medium">+1 C</strong> point charge and a <strong className="text-text font-medium">−0.7 C</strong> point charge.</>}
         answer={
           <>
-            <p>Gauss's law uses the net enclosed charge:</p>
+            <p className="mb-prose-3">Gauss's law uses the net enclosed charge:</p>
             <Formula>Q<sub>enc</sub> = +1 − 0.7 = +0.3 C</Formula>
             <Formula>Φ = Q<sub>enc</sub> / ε₀ = 0.3 / (8.854×10⁻¹²) ≈ 3.39×10¹⁰ V·m</Formula>
-            <p>About <strong>3.4×10¹⁰ V·m</strong>. The internal arrangement of the two charges doesn't matter; only the algebraic sum does. The field structure inside the surface is wildly nontrivial — there's a dipole-like pattern with field lines running from + to − — but the total escaping flux is fixed.</p>
+            <p className="mb-prose-3">About <strong className="text-text font-medium">3.4×10¹⁰ V·m</strong>. The internal arrangement of the two charges doesn't matter; only the algebraic sum does. The field structure inside the surface is wildly nontrivial — there's a dipole-like pattern with field lines running from + to − — but the total escaping flux is fixed.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.3.9"
-        question={<>Two concentric spherical shells: an inner shell of radius <strong>1 cm</strong> with charge <strong>+5 nC</strong>, and an outer shell of radius <strong>3 cm</strong> with charge <strong>−5 nC</strong>. What is the field at r = 2 cm (between the shells) and r = 5 cm (outside both)?</>}
+        question={<>Two concentric spherical shells: an inner shell of radius <strong className="text-text font-medium">1 cm</strong> with charge <strong className="text-text font-medium">+5 nC</strong>, and an outer shell of radius <strong className="text-text font-medium">3 cm</strong> with charge <strong className="text-text font-medium">−5 nC</strong>. What is the field at r = 2 cm (between the shells) and r = 5 cm (outside both)?</>}
         answer={
           <>
-            <p>At r = 2 cm, between the shells: a Gaussian sphere of radius 2 cm encloses only the inner shell, charge +5 nC:</p>
+            <p className="mb-prose-3">At r = 2 cm, between the shells: a Gaussian sphere of radius 2 cm encloses only the inner shell, charge +5 nC:</p>
             <Formula>E(2 cm) = k Q<sub>enc</sub> / r² = (8.99×10⁹)(5×10⁻⁹) / (0.02)² ≈ 1.12×10⁵ V/m</Formula>
-            <p>About <strong>112 kV/m</strong>, radially outward. At r = 5 cm, outside both shells: net enclosed charge is +5 nC + (−5 nC) = 0:</p>
+            <p className="mb-prose-3">About <strong className="text-text font-medium">112 kV/m</strong>, radially outward. At r = 5 cm, outside both shells: net enclosed charge is +5 nC + (−5 nC) = 0:</p>
             <Formula>E(5 cm) = 0</Formula>
-            <p>Zero field. This is the principle behind coaxial cables — the outer conductor shields the world from the field of the inner conductor when the two carry equal and opposite charge<Cite id="griffiths-2017" in={SOURCES} />.</p>
+            <p className="mb-prose-3">Zero field. This is the principle behind coaxial cables — the outer conductor shields the world from the field of the inner conductor when the two carry equal and opposite charge<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.3.10"
-        question={<>An infinite conducting cylinder of radius <strong>R</strong> carries surface linear-charge density <strong>λ</strong>. Compute E at a perpendicular distance <strong>r &gt; R</strong> from the axis.</>}
+        question={<>An infinite conducting cylinder of radius <strong className="text-text font-medium">R</strong> carries surface linear-charge density <strong className="text-text font-medium">λ</strong>. Compute E at a perpendicular distance <strong className="text-text font-medium">r &gt; R</strong> from the axis.</>}
         answer={
           <>
-            <p>Cylindrical symmetry: E radial, depends only on r. Wrap a Gaussian cylinder of length L, radius r. Total enclosed charge is λL (everything on the conductor's surface inside our cylinder):</p>
+            <p className="mb-prose-3">Cylindrical symmetry: E radial, depends only on r. Wrap a Gaussian cylinder of length L, radius r. Total enclosed charge is λL (everything on the conductor's surface inside our cylinder):</p>
             <Formula>E · 2πrL = (λL) / ε₀</Formula>
             <Formula>E = λ / (2π ε₀ r)</Formula>
-            <p>Identical to the field of an infinite line! Outside the conductor, the cylinder of charge looks like a line. (Inside the conducting material, E is zero — a conductor in electrostatic equilibrium has E = 0 in its bulk.)</p>
+            <p className="mb-prose-3">Identical to the field of an infinite line! Outside the conductor, the cylinder of charge looks like a line. (Inside the conducting material, E is zero — a conductor in electrostatic equilibrium has E = 0 in its bulk.)</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.3.11"
-        question={<>Pillbox derivation: from Gauss's law alone, find the field on each side of an infinite sheet of charge with surface density <strong>σ</strong>.</>}
+        question={<>Pillbox derivation: from Gauss's law alone, find the field on each side of an infinite sheet of charge with surface density <strong className="text-text font-medium">σ</strong>.</>}
         answer={
           <>
-            <p>Symmetry: E points perpendicular to the sheet, with equal magnitude on each side (and opposite directions, away from the sheet for σ &gt; 0). Wrap a cylindrical "pillbox" Gaussian surface of cross-sectional area A straddling the sheet. The side wall contributes nothing (E parallel to it). Each end cap contributes E·A:</p>
+            <p className="mb-prose-3">Symmetry: E points perpendicular to the sheet, with equal magnitude on each side (and opposite directions, away from the sheet for σ &gt; 0). Wrap a cylindrical "pillbox" Gaussian surface of cross-sectional area A straddling the sheet. The side wall contributes nothing (E parallel to it). Each end cap contributes E·A:</p>
             <Formula>∮ E · dA = 2 E A = (σ A) / ε₀</Formula>
             <Formula>E = σ / (2 ε₀)</Formula>
-            <p>The field is <em>independent of distance</em> from the sheet — a consequence of the sheet being infinite. Real finite sheets approximate this only in the near-field regime, where the observer is much closer to the sheet than to its edges<Cite id="feynman-II-2" in={SOURCES} />.</p>
+            <p className="mb-prose-3">The field is <em className="italic text-text">independent of distance</em> from the sheet — a consequence of the sheet being infinite. Real finite sheets approximate this only in the near-field regime, where the observer is much closer to the sheet than to its edges<Cite id="feynman-II-2" in={SOURCES} />.</p>
           </>
         }
       />
 
-      <h3>What k is, really</h3>
-      <p>
-        The relation <strong>k = 1/(4π ε₀)</strong> is geometric: the 4π is the solid angle subtended by the whole sky in steradians. SI units
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">What k is, really</h3>
+      <p className="mb-prose-3">
+        The relation <strong className="text-text font-medium">k = 1/(4π ε₀)</strong> is geometric: the 4π is the solid angle subtended by the whole sky in steradians. SI units
         expose ε₀ because the system was historically organized around magnetism; Gaussian units absorb ε₀ into the definition of charge so
-        Coulomb's law becomes <strong>F = q₁q₂/r²</strong> with no constant<Cite id="jackson-1999" in={SOURCES} />.
+        Coulomb's law becomes <strong className="text-text font-medium">F = q₁q₂/r²</strong> with no constant<Cite id="jackson-1999" in={SOURCES} />.
       </p>
     </>
   );

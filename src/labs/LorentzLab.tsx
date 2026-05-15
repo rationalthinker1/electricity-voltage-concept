@@ -19,7 +19,7 @@ import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
-import { PHYS, pretty } from '@/lib/physics';
+import {PHYS, pretty, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
 const SLUG = 'lorentz';
@@ -263,14 +263,14 @@ export default function LorentzLab() {
       }
       outputs={
         <>
-          <Readout sym="F" label="Magnetic force" valueHTML={pretty(computed.F)} unit="N" highlight />
+          <Readout sym="F" label="Magnetic force" value={prettyJsx(computed.F)} unit="N" highlight />
           <Readout sym="r" label="Cyclotron radius"
-            valueHTML={isFinite(computed.rcyc) ? pretty(computed.rcyc) : '∞'} unit="m" />
+            value={isFinite(computed.rcyc) ? prettyJsx(computed.rcyc) : '∞'} unit="m" />
           <Readout sym="T" label="Cyclotron period"
-            valueHTML={isFinite(computed.T) ? pretty(computed.T) : '∞'} unit="s" />
+            value={isFinite(computed.T) ? prettyJsx(computed.T) : '∞'} unit="s" />
           <Readout sym="f" label="Cyclotron frequency"
-            valueHTML={computed.f > 0 ? pretty(computed.f) : '0'} unit="Hz" />
-          <Readout sym={<>v<sub>∥</sub></>} label="v parallel to B" valueHTML={pretty(computed.vpar)} unit="m/s" />
+            value={computed.f > 0 ? prettyJsx(computed.f) : '0'} unit="Hz" />
+          <Readout sym={<>v<sub>∥</sub></>} label="v parallel to B" value={prettyJsx(computed.vpar)} unit="m/s" />
         </>
       }
     />
@@ -278,82 +278,82 @@ export default function LorentzLab() {
 
   const prose = (
     <>
-      <h3>Context</h3>
-      <p>
-        The Lorentz force is the operational definition of <strong>E</strong> and <strong>B</strong>: they are <em>defined</em> by the force
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <p className="mb-prose-3">
+        The Lorentz force is the operational definition of <strong className="text-text font-medium">E</strong> and <strong className="text-text font-medium">B</strong>: they are <em className="italic text-text">defined</em> by the force
         they apply to a probe charge of arbitrary velocity. Every motor, every CRT, every mass spectrometer, every cyclotron, every aurora,
         every plasma confinement device runs on this single equation<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
-      <p>
-        The non-relativistic form below assumes <strong>v ≪ c</strong>. For ultra-relativistic particles you need the full four-vector form,
+      <p className="mb-prose-3">
+        The non-relativistic form below assumes <strong className="text-text font-medium">v ≪ c</strong>. For ultra-relativistic particles you need the full four-vector form,
         which adds a γ factor on the inertial side (the force formula itself is already relativistically correct); but at the speeds in this
         lab (10⁴–10⁷ m/s), the Newtonian treatment is exact to well under 1%. The equation also assumes the field is given — it doesn't
-        include the field generated <em>by</em> the moving charge (radiation reaction, self-force).
+        include the field generated <em className="italic text-text">by</em> the moving charge (radiation reaction, self-force).
       </p>
 
-      <h3>Formula</h3>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
       <MathBlock>F = q E + q v × B</MathBlock>
-      <p>Variable glossary:</p>
+      <p className="mb-prose-3">Variable glossary:</p>
       <ul>
-        <li><strong>F</strong> — force on the particle, in newtons (N).</li>
-        <li><strong>q</strong> — charge of the particle, in coulombs (C); electron is −e ≈ −1.602×10⁻¹⁹ C.</li>
-        <li><strong>E</strong> — electric field at the particle's location, in V/m (or N/C).</li>
-        <li><strong>v</strong> — velocity of the particle, in m/s.</li>
-        <li><strong>B</strong> — magnetic field at the particle's location, in tesla (T).</li>
+        <li><strong className="text-text font-medium">F</strong> — force on the particle, in newtons (N).</li>
+        <li><strong className="text-text font-medium">q</strong> — charge of the particle, in coulombs (C); electron is −e ≈ −1.602×10⁻¹⁹ C.</li>
+        <li><strong className="text-text font-medium">E</strong> — electric field at the particle's location, in V/m (or N/C).</li>
+        <li><strong className="text-text font-medium">v</strong> — velocity of the particle, in m/s.</li>
+        <li><strong className="text-text font-medium">B</strong> — magnetic field at the particle's location, in tesla (T).</li>
       </ul>
-      <p>For motion perpendicular to B (pitch angle 90°), Newton's second law gives circular motion with</p>
+      <p className="mb-prose-3">For motion perpendicular to B (pitch angle 90°), Newton's second law gives circular motion with</p>
       <MathBlock>r = m v / (|q| B),    T = 2π m / (|q| B),    f = |q| B / (2π m)</MathBlock>
-      <p>The radius is the <em>cyclotron radius</em>; T is the <em>cyclotron period</em>; f the <em>cyclotron frequency</em>.</p>
+      <p className="mb-prose-3">The radius is the <em className="italic text-text">cyclotron radius</em>; T is the <em className="italic text-text">cyclotron period</em>; f the <em className="italic text-text">cyclotron frequency</em>.</p>
 
-      <h3>Intuition</h3>
-      <p>
-        Two pieces. The electric term <strong>qE</strong> is the familiar push along the field. The magnetic term <strong>qv × B</strong> is
-        always perpendicular to both <strong>v</strong> and <strong>B</strong>. A force perpendicular to motion does no work, so kinetic
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <p className="mb-prose-3">
+        Two pieces. The electric term <strong className="text-text font-medium">qE</strong> is the familiar push along the field. The magnetic term <strong className="text-text font-medium">qv × B</strong> is
+        always perpendicular to both <strong className="text-text font-medium">v</strong> and <strong className="text-text font-medium">B</strong>. A force perpendicular to motion does no work, so kinetic
         energy is conserved — only the direction changes. The result is circular motion in the plane perpendicular to B (with any v∥ component
         unchanged: a helix).
       </p>
       <Pullout>
-        Magnetism doesn't do work. It only <em>steers</em>.
+        Magnetism doesn't do work. It only <em className="italic text-text">steers</em>.
       </Pullout>
 
-      <h3>Reasoning</h3>
-      <p>
-        Why a cross product? Because the magnetic force must be perpendicular to <strong>v</strong> (else it would do work and B-fields would
-        change kinetic energy — which contradicts experiment); and because it must be perpendicular to <strong>B</strong> (else moving along
-        a field line would feel a sideways push, which by symmetry it cannot). The unique vector built from <strong>v</strong> and <strong>B</strong>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <p className="mb-prose-3">
+        Why a cross product? Because the magnetic force must be perpendicular to <strong className="text-text font-medium">v</strong> (else it would do work and B-fields would
+        change kinetic energy — which contradicts experiment); and because it must be perpendicular to <strong className="text-text font-medium">B</strong> (else moving along
+        a field line would feel a sideways push, which by symmetry it cannot). The unique vector built from <strong className="text-text font-medium">v</strong> and <strong className="text-text font-medium">B</strong>
         perpendicular to both is the cross product.
       </p>
-      <p>
-        Why the sign? The right-hand rule for <strong>v × B</strong> is set by convention; multiplying by <strong>q</strong> (signed) gives the
+      <p className="mb-prose-3">
+        Why the sign? The right-hand rule for <strong className="text-text font-medium">v × B</strong> is set by convention; multiplying by <strong className="text-text font-medium">q</strong> (signed) gives the
         force direction. Electron and proton orbit the same B in opposite senses — the lab visualization shows that explicitly. Why r ∝ v? Faster
-        particles need a bigger circle to keep the centripetal acceleration constant. Why does T <em>not</em> depend on v? Because both circumference
+        particles need a bigger circle to keep the centripetal acceleration constant. Why does T <em className="italic text-text">not</em> depend on v? Because both circumference
         and speed scale linearly with v, and their ratio is the period. This is the famous fact that cyclotrons exploit<Cite id="feynman-II-13" in={SOURCES} />.
       </p>
 
-      <h3>Derivation</h3>
-      <p>
-        For a particle of mass <strong>m</strong> moving at speed <strong>v</strong> perpendicular to <strong>B</strong>, the magnetic force
-        is <strong>F = |q|vB</strong> and points centripetally (right-hand rule). Newton's second law for circular motion:
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <p className="mb-prose-3">
+        For a particle of mass <strong className="text-text font-medium">m</strong> moving at speed <strong className="text-text font-medium">v</strong> perpendicular to <strong className="text-text font-medium">B</strong>, the magnetic force
+        is <strong className="text-text font-medium">F = |q|vB</strong> and points centripetally (right-hand rule). Newton's second law for circular motion:
       </p>
       <MathBlock>|q| v B = m v² / r  ⇒  r = m v / (|q| B)</MathBlock>
-      <p>Period is circumference divided by speed:</p>
+      <p className="mb-prose-3">Period is circumference divided by speed:</p>
       <MathBlock>T = 2π r / v = 2π m / (|q| B)</MathBlock>
-      <p>
-        Frequency <strong>f = 1/T = |q|B/(2πm)</strong>. The electron and proton masses used here are the CODATA 2018 recommended values:
-        <strong> m<sub>e</sub> ≈ 9.109 × 10⁻³¹ kg</strong>, <strong>m<sub>p</sub> ≈ 1.673 × 10⁻²⁷ kg</strong><Cite id="codata-2018" in={SOURCES} />.
+      <p className="mb-prose-3">
+        Frequency <strong className="text-text font-medium">f = 1/T = |q|B/(2πm)</strong>. The electron and proton masses used here are the CODATA 2018 recommended values:
+        <strong className="text-text font-medium"> m<sub>e</sub> ≈ 9.109 × 10⁻³¹ kg</strong>, <strong className="text-text font-medium">m<sub>p</sub> ≈ 1.673 × 10⁻²⁷ kg</strong><Cite id="codata-2018" in={SOURCES} />.
       </p>
 
-      <h3>Worked problems</h3>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
 
       <TryIt
         tag="Problem 2.3.1"
-        question={<>An electron moving perpendicular to a <strong>B = 1 T</strong> field at <strong>v = 10⁶ m/s</strong>. Find the cyclotron radius.</>}
+        question={<>An electron moving perpendicular to a <strong className="text-text font-medium">B = 1 T</strong> field at <strong className="text-text font-medium">v = 10⁶ m/s</strong>. Find the cyclotron radius.</>}
         hint="r = mv / (|q|B)."
         answer={
           <>
             <Formula>r = m<sub>e</sub> v / (e B) = (9.109×10⁻³¹)(10⁶) / (1.602×10⁻¹⁹ × 1)</Formula>
             <Formula>r ≈ 5.69 × 10⁻⁶ m</Formula>
-            <p>Answer: <strong>~5.7 µm</strong>. A 1 T field is strong enough to bend an electron beam into a micrometre orbit.</p>
+            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~5.7 µm</strong>. A 1 T field is strong enough to bend an electron beam into a micrometre orbit.</p>
           </>
         }
       />
@@ -366,46 +366,46 @@ export default function LorentzLab() {
           <>
             <Formula>f = e B / (2π m<sub>e</sub>) = (1.602×10⁻¹⁹)(1) / (2π × 9.109×10⁻³¹)</Formula>
             <Formula>f ≈ 2.80 × 10¹⁰ Hz = 28 GHz</Formula>
-            <p>Answer: <strong>~28 GHz</strong> — the electron cyclotron frequency in 1 T. ECR plasma sources, EPR spectrometers, and gyrotrons all run at this frequency.</p>
+            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~28 GHz</strong> — the electron cyclotron frequency in 1 T. ECR plasma sources, EPR spectrometers, and gyrotrons all run at this frequency.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.3.3"
-        question={<>A proton moving perpendicular to a <strong>B = 1 mT</strong> field at <strong>v = 10⁵ m/s</strong>. Find the orbit radius.</>}
+        question={<>A proton moving perpendicular to a <strong className="text-text font-medium">B = 1 mT</strong> field at <strong className="text-text font-medium">v = 10⁵ m/s</strong>. Find the orbit radius.</>}
         hint="Same formula, but with proton mass and milli-tesla field."
         answer={
           <>
             <Formula>r = m<sub>p</sub> v / (e B) = (1.673×10⁻²⁷)(10⁵) / (1.602×10⁻¹⁹ × 10⁻³)</Formula>
             <Formula>r ≈ 1.04 m</Formula>
-            <p>Answer: <strong>~1.0 m</strong>. A proton in a weak field traces a metre-scale orbit; ions in solar-wind plasmas at ~1 nT trace orbits hundreds of kilometres across.</p>
+            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~1.0 m</strong>. A proton in a weak field traces a metre-scale orbit; ions in solar-wind plasmas at ~1 nT trace orbits hundreds of kilometres across.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.3.4"
-        question={<>A mass spectrometer accelerates an ion of mass <strong>m</strong> and charge <strong>q</strong> through potential <strong>V</strong>, then injects it perpendicular into a uniform <strong>B</strong>. Show that the orbit radius is <strong>r = √(2mV/q)/B</strong>.</>}
+        question={<>A mass spectrometer accelerates an ion of mass <strong className="text-text font-medium">m</strong> and charge <strong className="text-text font-medium">q</strong> through potential <strong className="text-text font-medium">V</strong>, then injects it perpendicular into a uniform <strong className="text-text font-medium">B</strong>. Show that the orbit radius is <strong className="text-text font-medium">r = √(2mV/q)/B</strong>.</>}
         hint="Energy conservation gives v; then r = mv/(qB)."
         answer={
           <>
-            <p>Energy conservation: qV = ½mv², so v = √(2qV/m).</p>
+            <p className="mb-prose-3">Energy conservation: qV = ½mv², so v = √(2qV/m).</p>
             <Formula>r = m v / (q B) = (m / q B) · √(2 q V / m) = √(2 m V / q) / B</Formula>
-            <p>So heavier isotopes trace bigger circles for the same V and B — which is exactly how a mass spectrometer separates isotopes. Reading r off a photographic plate gives m to four-figure precision.</p>
+            <p className="mb-prose-3">So heavier isotopes trace bigger circles for the same V and B — which is exactly how a mass spectrometer separates isotopes. Reading r off a photographic plate gives m to four-figure precision.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.3.5"
-        question={<>A Wien velocity filter: crossed <strong>E ⊥ B</strong>. Which velocity passes through undeflected?</>}
+        question={<>A Wien velocity filter: crossed <strong className="text-text font-medium">E ⊥ B</strong>. Which velocity passes through undeflected?</>}
         hint="Net force zero: qE = qvB."
         answer={
           <>
-            <p>For the electric force to cancel the magnetic force, the magnitudes must match and the directions must oppose:</p>
+            <p className="mb-prose-3">For the electric force to cancel the magnetic force, the magnitudes must match and the directions must oppose:</p>
             <Formula>q E = q v B  ⇒  v = E / B</Formula>
-            <p>Particles slower than E/B are over-pushed by E; faster particles are over-pushed by qv × B. Only those at v = E/B make it through. With E = 10⁵ V/m and B = 0.01 T, the filtered velocity is 10⁷ m/s.</p>
+            <p className="mb-prose-3">Particles slower than E/B are over-pushed by E; faster particles are over-pushed by qv × B. Only those at v = E/B make it through. With E = 10⁵ V/m and B = 0.01 T, the filtered velocity is 10⁷ m/s.</p>
           </>
         }
       />
@@ -416,79 +416,79 @@ export default function LorentzLab() {
         hint="Work is F · v. Look at F = qv × B."
         answer={
           <>
-            <p>Power delivered is <strong>P = F · v = q(v × B) · v</strong>. The vector (v × B) is by construction perpendicular to v, so its dot product with v is zero. P = 0 for any time, any v, any B. No work is ever done; kinetic energy is conserved; magnetic fields can only change the direction of motion, not the speed. This is what makes cyclotron orbits perfect circles instead of spirals, and why magnetic confinement of plasmas is energetically free.</p>
+            <p className="mb-prose-3">Power delivered is <strong className="text-text font-medium">P = F · v = q(v × B) · v</strong>. The vector (v × B) is by construction perpendicular to v, so its dot product with v is zero. P = 0 for any time, any v, any B. No work is ever done; kinetic energy is conserved; magnetic fields can only change the direction of motion, not the speed. This is what makes cyclotron orbits perfect circles instead of spirals, and why magnetic confinement of plasmas is energetically free.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.3.7"
-        question={<>A straight wire of length <strong>L = 20 cm</strong> carries <strong>I = 3 A</strong> perpendicular to a <strong>B = 0.5 T</strong> field. Find the force on the wire.</>}
+        question={<>A straight wire of length <strong className="text-text font-medium">L = 20 cm</strong> carries <strong className="text-text font-medium">I = 3 A</strong> perpendicular to a <strong className="text-text font-medium">B = 0.5 T</strong> field. Find the force on the wire.</>}
         hint="Each electron in the wire feels qv × B; the macroscopic result is F = IL × B."
         answer={
           <>
-            <p>Each carrier with drift velocity v contributes qv × B. The sum over all carriers in length L is</p>
+            <p className="mb-prose-3">Each carrier with drift velocity v contributes qv × B. The sum over all carriers in length L is</p>
             <Formula>F = I L × B   (magnitudes: F = I L B sin θ)</Formula>
             <Formula>|F| = (3)(0.20)(0.5) = 0.30 N</Formula>
-            <p>Answer: <strong>0.30 N</strong>, perpendicular to both I and B. This is the engine of every electric motor: a current loop in a B field feels a torque.</p>
+            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">0.30 N</strong>, perpendicular to both I and B. This is the engine of every electric motor: a current loop in a B field feels a torque.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.3.8"
-        question={<>Hall effect: a thin strip of width <strong>w</strong> carrying current <strong>I</strong> in a perpendicular <strong>B</strong>. Derive the Hall voltage V<sub>H</sub> in terms of I, B, w, t (strip thickness), and carrier density n.</>}
+        question={<>Hall effect: a thin strip of width <strong className="text-text font-medium">w</strong> carrying current <strong className="text-text font-medium">I</strong> in a perpendicular <strong className="text-text font-medium">B</strong>. Derive the Hall voltage V<sub>H</sub> in terms of I, B, w, t (strip thickness), and carrier density n.</>}
         hint="At steady state, the transverse electric field cancels the transverse Lorentz force on carriers."
         answer={
           <>
-            <p>Carrier drift velocity in terms of current density: J = nqv<sub>d</sub>, and J = I/(wt). So v<sub>d</sub> = I/(nqwt).</p>
-            <p>At steady state, charges have piled up on the edges to produce a transverse E that balances the Lorentz force:</p>
+            <p className="mb-prose-3">Carrier drift velocity in terms of current density: J = nqv<sub>d</sub>, and J = I/(wt). So v<sub>d</sub> = I/(nqwt).</p>
+            <p className="mb-prose-3">At steady state, charges have piled up on the edges to produce a transverse E that balances the Lorentz force:</p>
             <Formula>q E<sub>H</sub> = q v<sub>d</sub> B  ⇒  E<sub>H</sub> = v<sub>d</sub> B = I B / (n q w t)</Formula>
-            <p>The Hall voltage across width w:</p>
+            <p className="mb-prose-3">The Hall voltage across width w:</p>
             <Formula>V<sub>H</sub> = E<sub>H</sub> w = I B / (n q t)</Formula>
-            <p>Notice that w cancels — V<sub>H</sub> depends only on I, B, t, and carrier density. Edwin Hall measured this in 1879 — decades before the electron was identified — to probe what kind of carrier actually moves in a metal<Cite id="hall-1879" in={SOURCES} />.</p>
+            <p className="mb-prose-3">Notice that w cancels — V<sub>H</sub> depends only on I, B, t, and carrier density. Edwin Hall measured this in 1879 — decades before the electron was identified — to probe what kind of carrier actually moves in a metal<Cite id="hall-1879" in={SOURCES} />.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.3.9"
-        question={<>An ion in Earth's magnetic field (<strong>B = 50 µT</strong>) moves at <strong>v = 1000 m/s</strong>, perpendicular to B. If the ion is a singly-ionized oxygen atom (mass ≈ 16 amu), what is the orbit radius?</>}
+        question={<>An ion in Earth's magnetic field (<strong className="text-text font-medium">B = 50 µT</strong>) moves at <strong className="text-text font-medium">v = 1000 m/s</strong>, perpendicular to B. If the ion is a singly-ionized oxygen atom (mass ≈ 16 amu), what is the orbit radius?</>}
         hint="Same r = mv/(qB) formula; 1 amu ≈ 1.66 × 10⁻²⁷ kg."
         answer={
           <>
-            <p>m = 16 × 1.66 × 10⁻²⁷ ≈ 2.66 × 10⁻²⁶ kg.</p>
+            <p className="mb-prose-3">m = 16 × 1.66 × 10⁻²⁷ ≈ 2.66 × 10⁻²⁶ kg.</p>
             <Formula>r = m v / (q B) = (2.66×10⁻²⁶)(10³) / (1.602×10⁻¹⁹ × 5×10⁻⁵)</Formula>
             <Formula>r ≈ 3.32 m</Formula>
-            <p>Answer: <strong>~3.3 m</strong>. Slow ions in Earth's magnetic field trace metres-wide orbits. Solar-wind protons hitting the magnetosphere at 400 km/s have ~50 km orbits in the same field, which is why magnetosphere physics deals with such enormous structures.</p>
+            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~3.3 m</strong>. Slow ions in Earth's magnetic field trace metres-wide orbits. Solar-wind protons hitting the magnetosphere at 400 km/s have ~50 km orbits in the same field, which is why magnetosphere physics deals with such enormous structures.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.3.10"
-        question={<>Cyclotron design: what <strong>B</strong> is needed to keep a 5 MeV proton in a 1 m orbit?</>}
+        question={<>Cyclotron design: what <strong className="text-text font-medium">B</strong> is needed to keep a 5 MeV proton in a 1 m orbit?</>}
         hint="KE = ½mv² gives v; then r = mv/(qB) → B = mv/(qr)."
         answer={
           <>
-            <p>KE = 5 MeV = 5 × 10⁶ × 1.602 × 10⁻¹⁹ ≈ 8.01 × 10⁻¹³ J. (At 5 MeV the proton is still non-relativistic to ~0.5%.)</p>
+            <p className="mb-prose-3">KE = 5 MeV = 5 × 10⁶ × 1.602 × 10⁻¹⁹ ≈ 8.01 × 10⁻¹³ J. (At 5 MeV the proton is still non-relativistic to ~0.5%.)</p>
             <Formula>v = √(2 · KE / m) = √(2 × 8.01×10⁻¹³ / 1.673×10⁻²⁷) ≈ 3.10 × 10⁷ m/s</Formula>
             <Formula>B = m v / (q r) = (1.673×10⁻²⁷)(3.10×10⁷) / (1.602×10⁻¹⁹ × 1) ≈ 0.324 T</Formula>
-            <p>Answer: <strong>~0.32 T</strong>. A modest electromagnet does it. Lawrence's first cyclotron (1932) ran at ~1.3 T to push protons to 1.2 MeV in an 11-inch dee.</p>
+            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~0.32 T</strong>. A modest electromagnet does it. Lawrence's first cyclotron (1932) ran at ~1.3 T to push protons to 1.2 MeV in an 11-inch dee.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.3.11"
-        question={<>A horizontal conducting rod of mass <strong>m = 50 g</strong> and length <strong>L = 30 cm</strong> rests on parallel horizontal rails in a vertical <strong>B = 0.4 T</strong> field. What current <strong>I</strong> would be needed to <em>lift</em> the rod against gravity?</>}
+        question={<>A horizontal conducting rod of mass <strong className="text-text font-medium">m = 50 g</strong> and length <strong className="text-text font-medium">L = 30 cm</strong> rests on parallel horizontal rails in a vertical <strong className="text-text font-medium">B = 0.4 T</strong> field. What current <strong className="text-text font-medium">I</strong> would be needed to <em className="italic text-text">lift</em> the rod against gravity?</>}
         hint="Balance F = ILB against weight mg."
         answer={
           <>
-            <p>The magnetic force on the rod is <strong>F = ILB</strong>, directed perpendicular to both I and B — upward by right-hand rule. For lift:</p>
+            <p className="mb-prose-3">The magnetic force on the rod is <strong className="text-text font-medium">F = ILB</strong>, directed perpendicular to both I and B — upward by right-hand rule. For lift:</p>
             <Formula>I L B = m g</Formula>
             <Formula>I = m g / (L B) = (0.050)(9.81) / (0.30)(0.4) ≈ 4.09 A</Formula>
-            <p>Answer: <strong>~4.1 A</strong>. This is the principle of the rail gun: enough current and the rod doesn't just lift, it accelerates along the rails. The magnetic launch of payloads in the upcoming generation of mass drivers relies on the same equation.</p>
+            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~4.1 A</strong>. This is the principle of the rail gun: enough current and the rod doesn't just lift, it accelerates along the rails. The magnetic launch of payloads in the upcoming generation of mass drivers relies on the same equation.</p>
           </>
         }
       />

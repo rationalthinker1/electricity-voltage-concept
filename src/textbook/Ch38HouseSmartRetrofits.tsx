@@ -28,15 +28,15 @@ export default function Ch38HouseSmartRetrofits() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p>
+      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
         A reader's hall switch was a single-pole toggle for thirty years. They buy a Lutron Caséta dimmer to
         add a sunset schedule and a phone-app dim slider; they shut off the breaker, unscrew the toggle, and
         pull it out of the wall. Inside the box are exactly two wires — a black and a red — and a bare copper
         ground curled against the back. There is no white wire. The dimmer's installation card, in small grey
-        type, says <em>"neutral required for some loads, not required for others."</em> Which is this? Why
+        type, says <em className="italic text-text">"neutral required for some loads, not required for others."</em> Which is this? Why
         was the old switch fine without a neutral and the new one is not?
       </p>
-      <p>
+      <p className="mb-prose-3">
         This is the chapter on smart-switch retrofits. We will open one up and look at the four chips inside;
         survey the four wireless ecosystems competing for the wall box (Caséta, Z-Wave, Zigbee, and Matter
         over Thread); explain why the 2011 National Electrical Code added a clause requiring a neutral
@@ -46,77 +46,77 @@ export default function Ch38HouseSmartRetrofits() {
         the multi-hub mess most smart houses still live in.
       </p>
 
-      <h2>Inside a smart switch</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Inside a smart switch</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Pry the faceplate off a modern smart dimmer and you find four functional blocks on a single PCB the
         size of a credit card. They are the same four blocks whether the switch costs forty dollars or two
         hundred.
       </p>
-      <p>
-        The <strong>radio</strong> is a small surface-mount module — usually a single chip with an integrated
+      <p className="mb-prose-3">
+        The <strong className="text-text font-medium">radio</strong> is a small surface-mount module — usually a single chip with an integrated
         antenna trace etched into the board. Depending on the family, that chip speaks{' '}
-        <Term def={<><strong>Wi-Fi</strong> — IEEE 802.11 wireless networking in the 2.4 and 5 GHz unlicensed bands. Common in smart plugs and bulbs, less common in switches because of high standby current and router-dependence.</>}>Wi-Fi</Term>,{' '}
-        <Term def={<><strong>Zigbee</strong> — a low-power 2.4 GHz mesh networking protocol (IEEE 802.15.4) used by Philips Hue, Amazon Echo, and many smart switches. Faster than Z-Wave but in a more crowded band.</>}>Zigbee</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">Wi-Fi</strong> — IEEE 802.11 wireless networking in the 2.4 and 5 GHz unlicensed bands. Common in smart plugs and bulbs, less common in switches because of high standby current and router-dependence.</>}>Wi-Fi</Term>,{' '}
+        <Term def={<><strong className="text-text font-medium">Zigbee</strong> — a low-power 2.4 GHz mesh networking protocol (IEEE 802.15.4) used by Philips Hue, Amazon Echo, and many smart switches. Faster than Z-Wave but in a more crowded band.</>}>Zigbee</Term>{' '}
         on 2.4 GHz,{' '}
-        <Term def={<><strong>Z-Wave</strong> — a low-power sub-GHz mesh networking protocol (~908 MHz in North America). Longer range than 2.4 GHz mesh and less band congestion, at the cost of lower bandwidth.</>}>Z-Wave</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">Z-Wave</strong> — a low-power sub-GHz mesh networking protocol (~908 MHz in North America). Longer range than 2.4 GHz mesh and less band congestion, at the cost of lower bandwidth.</>}>Z-Wave</Term>{' '}
         on 908 MHz, Lutron's proprietary{' '}
-        <Term def={<><strong>Caséta</strong> — Lutron's proprietary residential smart-lighting ecosystem, using a 434 MHz radio (ClearConnect) for low congestion and long range. Closed protocol; pairs through a Lutron Smart Hub.</>}>Caséta</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">Caséta</strong> — Lutron's proprietary residential smart-lighting ecosystem, using a 434 MHz radio (ClearConnect) for low congestion and long range. Closed protocol; pairs through a Lutron Smart Hub.</>}>Caséta</Term>{' '}
         protocol on 434 MHz, or{' '}
-        <Term def={<><strong>Matter</strong> — a cross-vendor smart-home application protocol (formerly Project CHIP, released 2022). Runs over Thread or Wi-Fi. Lets a single device pair with Apple HomeKit, Google Home, Amazon Alexa, and SmartThings simultaneously.</>}>Matter</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">Matter</strong> — a cross-vendor smart-home application protocol (formerly Project CHIP, released 2022). Runs over Thread or Wi-Fi. Lets a single device pair with Apple HomeKit, Google Home, Amazon Alexa, and SmartThings simultaneously.</>}>Matter</Term>{' '}
         over{' '}
-        <Term def={<><strong>Thread</strong> — a 2.4 GHz IPv6 mesh radio standard (IEEE 802.15.4, same PHY as Zigbee). The transport layer underneath Matter for low-power devices. Self-healing; every mains-powered device is a router.</>}>Thread</Term>.
+        <Term def={<><strong className="text-text font-medium">Thread</strong> — a 2.4 GHz IPv6 mesh radio standard (IEEE 802.15.4, same PHY as Zigbee). The transport layer underneath Matter for low-power devices. Self-healing; every mains-powered device is a router.</>}>Thread</Term>.
         Continuous radio idle draw is on the order of 10–100 mW depending on family and duty cycle<Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
-      <p>
-        The <strong>microcontroller</strong> is a small ARM Cortex-M0 or Cortex-M4 running the radio stack,
+      <p className="mb-prose-3">
+        The <strong className="text-text font-medium">microcontroller</strong> is a small ARM Cortex-M0 or Cortex-M4 running the radio stack,
         the app/cloud connection, and the dim-curve logic. Idle current with the radio receiver gated to its
         wake schedule is around 30 mW; under continuous transmit it briefly peaks at 200–500 mW. Smart
         switches without a neutral are designed against the idle number, not the peak — because the only
         way to run the radio is to keep the supply rail charged between transmit bursts.
       </p>
-      <p>
-        The <strong>switching element</strong> is what actually interrupts (or chops) the AC line current
+      <p className="mb-prose-3">
+        The <strong className="text-text font-medium">switching element</strong> is what actually interrupts (or chops) the AC line current
         flowing to the load. Three options dominate. A{' '}
-        <Term def={<><strong>triac</strong> — a bidirectional thyristor; conducts in both half-cycles of AC once gated, then commutates off at the next zero-crossing. The standard switching element in leading-edge phase-cut dimmers.</>}>triac</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">triac</strong> — a bidirectional thyristor; conducts in both half-cycles of AC once gated, then commutates off at the next zero-crossing. The standard switching element in leading-edge phase-cut dimmers.</>}>triac</Term>{' '}
         is the standard for dimming incandescent and most LED loads — it gates on partway through each AC
         half-cycle and self-commutates at the next zero-crossing. A{' '}
-        <Term def={<><strong>SSR</strong> — solid-state relay; a triac or MOSFET pair with optoisolated control. Silent, no contact bounce, no inrush wear. Used in non-dimming smart switches and high-cycle-count industrial controls.</>}>solid-state relay (SSR)</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">SSR</strong> — solid-state relay; a triac or MOSFET pair with optoisolated control. Silent, no contact bounce, no inrush wear. Used in non-dimming smart switches and high-cycle-count industrial controls.</>}>solid-state relay (SSR)</Term>{' '}
         is the standard for non-dimming switches — silent, no mechanical wear, but always has a small voltage
         drop that becomes thermal load. A{' '}
-        <Term def={<><strong>latching relay</strong> — an electromechanical relay with a bistable armature that only consumes power during the switching pulse, then holds position mechanically. Used in high-current smart switches (20 A appliance, EV-charger control).</>}>latching electromechanical relay</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">latching relay</strong> — an electromechanical relay with a bistable armature that only consumes power during the switching pulse, then holds position mechanically. Used in high-current smart switches (20 A appliance, EV-charger control).</>}>latching electromechanical relay</Term>{' '}
         appears in high-current applications (20 A general-use, water-heater contactors, EV-charger control)
         where the steady-state I²R loss of an SSR would be unacceptable. The latching relay also has a
         thrifty property: it only consumes power for the few milliseconds it takes to flip the armature,
         then sits in its new state with the radio off entirely.
       </p>
-      <p>
-        Finally, the <strong>power-conversion stage</strong> is the part that takes the 120 V AC line and
+      <p className="mb-prose-3">
+        Finally, the <strong className="text-text font-medium">power-conversion stage</strong> is the part that takes the 120 V AC line and
         produces the 3.3 V DC rail that the MCU and radio actually run on. In a switch with neutral, this is
         a tiny isolated flyback or a cheap buck off a half-wave rectifier — a few cents of magnetics and a
-        switching controller chip<Cite id="horowitz-hill-2015" in={SOURCES} />. In a switch <em>without</em>{' '}
+        switching controller chip<Cite id="horowitz-hill-2015" in={SOURCES} />. In a switch <em className="italic text-text">without</em>{' '}
         neutral, this stage has to siphon its energy through the load itself, and that is where the design
         becomes interesting.
       </p>
 
-      <h2>The four smart-switch ecosystems</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The four smart-switch ecosystems</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Strip away the apps and the marketing names and there are essentially four families competing for the
         space behind your wall plate, each defined by its radio.
       </p>
-      <p>
-        <strong>Lutron Caséta</strong> uses a proprietary 434 MHz radio (Lutron call it ClearConnect). The
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">Lutron Caséta</strong> uses a proprietary 434 MHz radio (Lutron call it ClearConnect). The
         434 MHz band in North America is unlicensed but uncrowded — nothing like the 2.4 GHz war zone — so
-        Caséta has a reputation for being the smart-switch family that <em>just works</em>. The penalty is
+        Caséta has a reputation for being the smart-switch family that <em className="italic text-text">just works</em>. The penalty is
         that the protocol is closed: there is no homebrew Caséta firmware, no third-party Caséta dimmer, and
         no way to integrate Caséta with anything that does not go through a Lutron Smart Hub. Caséta uniquely
-        supports a battery-powered <em>Pico</em> remote that lives on a wall plate where a switch would
+        supports a battery-powered <em className="italic text-text">Pico</em> remote that lives on a wall plate where a switch would
         otherwise be — handy for adding a "switch" location to a room without running wire. Caséta also has
         the most mature no-neutral product line<Cite id="lutron-dimmer-app-note" in={SOURCES} />.
       </p>
-      <p>
-        <strong>Z-Wave</strong> uses a sub-GHz mesh on 908 MHz in North America (868 MHz in Europe). Mesh
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">Z-Wave</strong> uses a sub-GHz mesh on 908 MHz in North America (868 MHz in Europe). Mesh
         means every mains-powered Z-Wave device repeats packets for its neighbours, so coverage in a large
         house improves as you add devices. Sub-GHz also penetrates plaster and lath better than 2.4 GHz, and
         the band is far less crowded. Bandwidth is low — measured in tens of kilobits per second — but for
@@ -124,17 +124,17 @@ export default function Ch38HouseSmartRetrofits() {
         compromise); newer ones speak S2 (mandatory since 2017). Z-Wave requires a Z-Wave hub, but the hub
         can be any of a dozen brands (Hubitat, Aeotec, SmartThings, Home Assistant ZWave-JS).
       </p>
-      <p>
-        <strong>Zigbee</strong> also uses a mesh, but on 2.4 GHz (same PHY as Wi-Fi and Bluetooth). It has
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">Zigbee</strong> also uses a mesh, but on 2.4 GHz (same PHY as Wi-Fi and Bluetooth). It has
         more bandwidth than Z-Wave and lower per-device cost, at the price of competing for airtime with
         every Wi-Fi access point and Bluetooth headset in the neighborhood. Zigbee is the protocol behind
         Philips Hue and many of the smart bulbs and switches sold by Amazon and IKEA. Like Z-Wave, it
         requires a hub, though many smart speakers (Echo, Nest Hub Max) include a Zigbee radio.
       </p>
-      <p>
-        <strong>Matter over Thread</strong> is the new entrant. Thread is the mesh radio (2.4 GHz, IEEE
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">Matter over Thread</strong> is the new entrant. Thread is the mesh radio (2.4 GHz, IEEE
         802.15.4, same physical layer as Zigbee but with an{' '}
-        <Term def={<><strong>IPv6 mesh</strong> — a self-organising radio network in which every node has a routable IPv6 address. Thread is the canonical low-power example; Matter uses Thread as one of its transports.</>}>IPv6 mesh</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">IPv6 mesh</strong> — a self-organising radio network in which every node has a routable IPv6 address. Thread is the canonical low-power example; Matter uses Thread as one of its transports.</>}>IPv6 mesh</Term>{' '}
         on top); Matter is the application protocol (released 2022). Matter's promise is that a device
         advertises a single QR-coded credential, and any of HomeKit, Google Home, Alexa, or SmartThings can
         pair to it natively — no per-app hub, no per-app account. Thread devices form a mesh in which every
@@ -143,35 +143,35 @@ export default function Ch38HouseSmartRetrofits() {
         product line.
       </p>
 
-      <p>
+      <p className="mb-prose-3">
         The trade-offs at a glance:
       </p>
       <ul>
-        <li><strong>Range / penetration:</strong> 434 MHz (Caséta) and 908 MHz (Z-Wave) win on going through walls; 2.4 GHz (Zigbee, Thread, Wi-Fi) loses to plaster, mirrors, and microwaves.</li>
-        <li><strong>Bandwidth:</strong> Wi-Fi {'>>'} Thread {'>'} Zigbee {'>'} Z-Wave {'>'} Caséta. For lighting it makes no difference; for cameras it does.</li>
-        <li><strong>Devices per network:</strong> Caséta caps at ~75 per hub; Z-Wave at 232; Zigbee at ~250; Thread is theoretically larger.</li>
-        <li><strong>Hub dependence:</strong> Caséta requires a Lutron hub. Z-Wave and Zigbee require <em>some</em> hub. Matter over Thread requires only a Thread Border Router (often built into a speaker or Apple TV) and no per-vendor hub.</li>
+        <li><strong className="text-text font-medium">Range / penetration:</strong> 434 MHz (Caséta) and 908 MHz (Z-Wave) win on going through walls; 2.4 GHz (Zigbee, Thread, Wi-Fi) loses to plaster, mirrors, and microwaves.</li>
+        <li><strong className="text-text font-medium">Bandwidth:</strong> Wi-Fi {'>>'} Thread {'>'} Zigbee {'>'} Z-Wave {'>'} Caséta. For lighting it makes no difference; for cameras it does.</li>
+        <li><strong className="text-text font-medium">Devices per network:</strong> Caséta caps at ~75 per hub; Z-Wave at 232; Zigbee at ~250; Thread is theoretically larger.</li>
+        <li><strong className="text-text font-medium">Hub dependence:</strong> Caséta requires a Lutron hub. Z-Wave and Zigbee require <em className="italic text-text">some</em> hub. Matter over Thread requires only a Thread Border Router (often built into a speaker or Apple TV) and no per-vendor hub.</li>
       </ul>
 
-      <h2>NEC 404.2(C) — a neutral in every switch box</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">NEC 404.2(C) — a neutral in every switch box</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Pre-2011 residential wiring had a common trick: when a switch controlled a single light at the end of
         a circuit, the electrician would run hot + neutral to the light fixture and then a single two-wire
         cable down to the switch — black going down as the unswitched hot, white coming back up as the
-        switched-hot return. This is called a <em>switch loop</em>. The white in the switch loop is
+        switched-hot return. This is called a <em className="italic text-text">switch loop</em>. The white in the switch loop is
         reidentified with black tape to mark it as a hot conductor. The savings: one less wire, one less hole
         drilled through a stud.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The cost of that savings was invisible for fifty years and obvious in 2011. A switch-loop switch box
         has only two conductors in it: switched hot and unswitched hot. There is no continuous neutral. A
         traditional toggle switch did not care — it only needed to make and break the hot. But a smart
-        switch needs <em>continuous</em> power for its radio and MCU, even when the load is OFF, and the
+        switch needs <em className="italic text-text">continuous</em> power for its radio and MCU, even when the load is OFF, and the
         only honest way to get that continuous power is to connect across hot and neutral.
       </p>
-      <p>
-        The 2011 National Electrical Code added <strong>NEC 404.2(C)</strong>, which requires a neutral
+      <p className="mb-prose-3">
+        The 2011 National Electrical Code added <strong className="text-text font-medium">NEC 404.2(C)</strong>, which requires a neutral
         conductor to be present at every switch location in dwelling units<Cite id="nec-2023" in={SOURCES} />.
         The neutral does not have to be connected to anything — it can sit folded into the back of the box —
         but it must be available so that a smart switch installed later in the building's life has somewhere
@@ -186,45 +186,45 @@ export default function Ch38HouseSmartRetrofits() {
         transducer: it must power its radio by faintly conducting the very load it claims to have switched off.
       </Pullout>
 
-      <h2>The no-neutral dimmer (Lutron's bleeder trick)</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The no-neutral dimmer (Lutron's bleeder trick)</h2>
 
-      <p>
+      <p className="mb-prose-3">
         When a smart dimmer is installed in a pre-2011 switch loop with no neutral, the manufacturer's
         engineers face a hard problem. The MCU and radio need a few hundred milliwatts continuously. There is
         no neutral wire to pull current to. The only conductive path between the switch and the rest of the
-        electrical system runs <em>through the load</em>. So the dimmer steals current through the load —
+        electrical system runs <em className="italic text-text">through the load</em>. So the dimmer steals current through the load —
         a small, continuous trickle called the{' '}
-        <Term def={<><strong>bleeder current</strong> — a small continuous current intentionally drawn through a load by a no-neutral smart switch, to keep its internal power supply alive when the load is nominally off. Becomes visible as a faint glow with low-wattage LED loads.</>}>bleeder current</Term>.
+        <Term def={<><strong className="text-text font-medium">bleeder current</strong> — a small continuous current intentionally drawn through a load by a no-neutral smart switch, to keep its internal power supply alive when the load is nominally off. Becomes visible as a faint glow with low-wattage LED loads.</>}>bleeder current</Term>.
         Modern Lutron Caséta no-neutral dimmers bleed about 25–50 mA in their off state<Cite id="lutron-dimmer-app-note" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The power dissipated by that bleeder is simply line voltage times bleeder current:
       </p>
 
       <Formula>P_bleeder = V_line × I_bleeder</Formula>
-      <p>
-        where <strong>P_bleeder</strong> is the steady-state power that the bleeder pulls from the line (in
-        watts), <strong>V_line</strong> is the RMS line voltage (120 V in North America, 230 V in most of
-        Europe), and <strong>I_bleeder</strong> is the RMS bleeder current the switch draws through the load
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">P_bleeder</strong> is the steady-state power that the bleeder pulls from the line (in
+        watts), <strong className="text-text font-medium">V_line</strong> is the RMS line voltage (120 V in North America, 230 V in most of
+        Europe), and <strong className="text-text font-medium">I_bleeder</strong> is the RMS bleeder current the switch draws through the load
         (in amperes). At I_bleeder = 50 mA on a 120 V line, P_bleeder = 6 W — and that 6 W has to be
         dissipated somewhere. The dimmer itself only keeps a few tenths of a watt for its MCU; the rest is
         burned in the load.
       </p>
-      <p>
+      <p className="mb-prose-3">
         For a 60 W incandescent bulb this is invisible. An incandescent filament needs roughly 90 V across
         it before any visible glow emerges from a cold tungsten coil, and 6 W in a bulb rated for 60 W is a
         10 % current bias — well below the visible-glow threshold. So no-neutral dimming worked perfectly for
         the entire incandescent era.
       </p>
-      <p>
+      <p className="mb-prose-3">
         For a modern 9 W LED bulb it is a disaster. An LED bulb's internal driver is a small AC/DC converter
         followed by a constant-current LED string. Once the converter's input capacitor is charged above the
         LED's forward-voltage threshold (often only 30–50 V on the converter's internal DC rail), the LEDs
         start to glow. A continuous 50 mA × 120 V bleeder is enough to charge the converter and produce a
-        faintly visible ghost glow — what Lutron's app notes call <em>off-state glow</em><Cite id="lutron-dimmer-app-note" in={SOURCES} />. In a dark hallway it looks like the switch is broken.
+        faintly visible ghost glow — what Lutron's app notes call <em className="italic text-text">off-state glow</em><Cite id="lutron-dimmer-app-note" in={SOURCES} />. In a dark hallway it looks like the switch is broken.
       </p>
-      <p>
-        The mitigations are real and ugly. The cleanest is a small <strong>load capacitor</strong> wired in
+      <p className="mb-prose-3">
+        The mitigations are real and ugly. The cleanest is a small <strong className="text-text font-medium">load capacitor</strong> wired in
         parallel with the LED bulb (Lutron sell one under the LUT-MLC name) — an X-rated film capacitor that
         absorbs the bleeder current as a 60 Hz displacement current rather than letting it charge the LED
         driver. The other path is to use LED bulbs whose drivers are designed to tolerate bleed (Philips
@@ -235,14 +235,14 @@ export default function Ch38HouseSmartRetrofits() {
 
       <TryIt
         tag="Try 38.1"
-        question={<>A no-neutral dimmer leaks <strong>60 mA</strong> continuously through the load to power its radio. The load is a single <strong>8 W LED</strong> bulb. What's the steady-state power dissipated in the bulb when the switch is "off"? Will the bulb visibly glow?</>}
+        question={<>A no-neutral dimmer leaks <strong className="text-text font-medium">60 mA</strong> continuously through the load to power its radio. The load is a single <strong className="text-text font-medium">8 W LED</strong> bulb. What's the steady-state power dissipated in the bulb when the switch is "off"? Will the bulb visibly glow?</>}
         hint="Use P = V × I with V_line = 120 V."
         answer={
           <>
-            <p>Direct substitution into the bleeder formula:</p>
+            <p className="mb-prose-1 last:mb-0">Direct substitution into the bleeder formula:</p>
             <Formula>P_bleeder = 120 V × 0.060 A = 7.2 W</Formula>
-            <p>
-              That is <strong>almost the bulb's full-on rating</strong> — 7.2 W of dissipation in an 8 W LED.
+            <p className="mb-prose-1 last:mb-0">
+              That is <strong className="text-text font-medium">almost the bulb's full-on rating</strong> — 7.2 W of dissipation in an 8 W LED.
               The internal converter will charge well past the LED-string forward-voltage threshold and the
               bulb will glow visibly. A load capacitor or a bleed-tolerant bulb is required, or the dimmer
               must be installed with neutral.
@@ -251,26 +251,26 @@ export default function Ch38HouseSmartRetrofits() {
         }
       />
 
-      <h2>Three-way smart switches and companion protocols</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Three-way smart switches and companion protocols</h2>
 
-      <p>
+      <p className="mb-prose-3">
         A traditional 3-way pair (one bulb, two switches, either switch toggles the light) uses three wires
         between the two switch boxes: a pair of{' '}
-        <Term def={<><strong>traveller</strong> — one of two interchangeable wires that connect the swing terminals of a pair of 3-way switches. The combination of traveller states determines which path is hot.</>}>travellers</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">traveller</strong> — one of two interchangeable wires that connect the swing terminals of a pair of 3-way switches. The combination of traveller states determines which path is hot.</>}>travellers</Term>{' '}
         and a common. The switches are SPDT (single-pole double-throw) and the wiring is wonderfully
         symmetric: flipping either switch reverses which traveller carries the hot, and the load sees on/off
         depending on whether both switches agree.
       </p>
-      <p>
+      <p className="mb-prose-3">
         A smart 3-way pair cannot be wired this way, because the wiring is no longer symmetric. One switch is
-        a <strong>primary</strong> (it has the radio, the load relay, and the connection to the load); the
+        a <strong className="text-text font-medium">primary</strong> (it has the radio, the load relay, and the connection to the load); the
         other is a{' '}
-        <Term def={<><strong>companion switch</strong> — in a smart 3-way pair, the secondary switch that signals user input to the primary device. May communicate over a low-voltage wire (Lutron Caséta) or over the radio (Z-Wave, Zigbee).</>}>companion</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">companion switch</strong> — in a smart 3-way pair, the secondary switch that signals user input to the primary device. May communicate over a low-voltage wire (Lutron Caséta) or over the radio (Z-Wave, Zigbee).</>}>companion</Term>{' '}
         that signals user-input back to the primary. There are two physical conventions for how the
         companion talks to the primary.
       </p>
-      <p>
-        <strong>Wired companion.</strong> Lutron Caséta and several Leviton smart 3-way kits use a dedicated
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">Wired companion.</strong> Lutron Caséta and several Leviton smart 3-way kits use a dedicated
         low-voltage signal wire between primary and companion. The companion switch is not really a switch
         at all — it is a button that pulls a 24 V signal wire low to wake the primary. This is reliable and
         latency-free, but requires that one of the existing wires between the two boxes be repurposed as the
@@ -278,14 +278,14 @@ export default function Ch38HouseSmartRetrofits() {
         neutral, the companion gets the leftover traveller for its signal line, and the primary's load
         terminal handles both halves of the switching<Cite id="lutron-dimmer-app-note" in={SOURCES} />.
       </p>
-      <p>
-        <strong>Radio companion.</strong> Z-Wave, Zigbee, and Matter smart 3-way kits skip the signal wire
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">Radio companion.</strong> Z-Wave, Zigbee, and Matter smart 3-way kits skip the signal wire
         entirely. The companion has its own radio and signals state changes wirelessly. The cost: both
-        devices need <em>continuous</em> power — both need a neutral (or both need to bleed). The benefit:
+        devices need <em className="italic text-text">continuous</em> power — both need a neutral (or both need to bleed). The benefit:
         the wiring in the secondary box does not have to carry any signal, and the primary and companion can
         be in different rooms entirely.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Opening a pre-2011 3-way box, the reader will find: two travellers (often red and black), a common
         (usually black, sometimes white reidentified), and frequently no neutral and no ground in the steel
         box. Their options at that point are (a) a Lutron Caséta wired-companion kit, repurposing one
@@ -294,21 +294,21 @@ export default function Ch38HouseSmartRetrofits() {
         cable. Most readers stop at (b).
       </p>
 
-      <h2>Leading vs trailing edge: choosing the phase-cut for LED loads</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Leading vs trailing edge: choosing the phase-cut for LED loads</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Chapter 30 introduced the triac dimmer: a thyristor that gates on partway through each AC half-cycle
         and self-commutates at the next zero-crossing, so the load only sees the late portion of each
         half-cycle. This is called{' '}
-        <Term def={<><strong>leading-edge dimmer</strong> — a phase-cut dimmer (typically triac-based) that cuts the start of each AC half-cycle and lets the late portion through. Inexpensive; works with incandescent and magnetic-ballast loads; can mistreat LED drivers.</>}>leading-edge dimming</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">leading-edge dimmer</strong> — a phase-cut dimmer (typically triac-based) that cuts the start of each AC half-cycle and lets the late portion through. Inexpensive; works with incandescent and magnetic-ballast loads; can mistreat LED drivers.</>}>leading-edge dimming</Term>{' '}
         because the early part of each half-cycle is removed. Triacs are cheap, robust, and have a small
         problem with reactive loads: the chopping creates a fast voltage step at the gate point, which a
-        magnetic inductor wants to <em>continue</em> through, producing audible 120 Hz buzz at low conduction
+        magnetic inductor wants to <em className="italic text-text">continue</em> through, producing audible 120 Hz buzz at low conduction
         angles.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The alternative is{' '}
-        <Term def={<><strong>trailing-edge dimmer</strong> — a phase-cut dimmer (typically MOSFET-based) that cuts the end of each AC half-cycle, letting the early portion through. Gentler on capacitive LED-driver inputs; required by most ELV (electronic low-voltage) transformers.</>}>trailing-edge dimming</Term>:
+        <Term def={<><strong className="text-text font-medium">trailing-edge dimmer</strong> — a phase-cut dimmer (typically MOSFET-based) that cuts the end of each AC half-cycle, letting the early portion through. Gentler on capacitive LED-driver inputs; required by most ELV (electronic low-voltage) transformers.</>}>trailing-edge dimming</Term>:
         the dimmer turns the load on at the zero-crossing and turns it off partway through. This uses a
         MOSFET pair rather than a triac, because a triac cannot be commanded off mid-cycle — once it
         conducts, it conducts until the next current zero. Trailing-edge dimming is gentler on capacitive
@@ -316,36 +316,36 @@ export default function Ch38HouseSmartRetrofits() {
         charge in the early part of the half-cycle and removes power smoothly rather than slamming a
         voltage step at the gate point.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Loads sort themselves by what they want:
       </p>
       <ul>
-        <li><strong>Incandescent and halogen</strong> — both edge types fine; leading-edge is cheaper.</li>
+        <li><strong className="text-text font-medium">Incandescent and halogen</strong> — both edge types fine; leading-edge is cheaper.</li>
         <li>
-          <Term def={<><strong>MLV / ELV</strong> — magnetic low-voltage and electronic low-voltage. MLV (magnetic-ballast transformers, traditional landscape lighting) wants leading-edge dimming. ELV (electronic-ballast supplies and most LED drivers) wants trailing-edge dimming.</>}>MLV (magnetic low-voltage) </Term>{' '}
+          <Term def={<><strong className="text-text font-medium">MLV / ELV</strong> — magnetic low-voltage and electronic low-voltage. MLV (magnetic-ballast transformers, traditional landscape lighting) wants leading-edge dimming. ELV (electronic-ballast supplies and most LED drivers) wants trailing-edge dimming.</>}>MLV (magnetic low-voltage) </Term>{' '}
           — landscape and decorative transformers — leading-edge only.
         </li>
         <li>ELV (electronic low-voltage) and most modern LED drivers — trailing-edge preferred.</li>
         <li>Older LED retrofit bulbs — mixed; consult the dimmer's compatibility list<Cite id="lutron-dimmer-app-note" in={SOURCES} />.</li>
       </ul>
-      <p>
+      <p className="mb-prose-3">
         Get the wrong edge and the failure modes are predictable: visible 120 Hz flicker, a low-end
-        <Term def={<><strong>minimum-trim</strong> — the lowest conduction angle (highest cut fraction) at which a dimmer can drive a given load without flicker or shut-off. Many LED bulbs have minimum-trim well above zero, leaving a "dead zone" at the bottom of the dimmer slider.</>}> minimum-trim</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">minimum-trim</strong> — the lowest conduction angle (highest cut fraction) at which a dimmer can drive a given load without flicker or shut-off. Many LED bulbs have minimum-trim well above zero, leaving a "dead zone" at the bottom of the dimmer slider.</>}> minimum-trim</Term>{' '}
         well above off (so the dimmer will not dim all the way down before snapping off), audible buzz at low
         conduction angles, and in the worst case rapid LED-driver failure as the cap stage chases voltage
         steps that its inductors were not designed for.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The RMS voltage produced by a phase-cut dimmer is straightforward to compute. For a leading-edge cut
         at conduction angle α (the portion of each half-cycle for which the triac is conducting, in radians,
         running from α = π for fully-on down to α = 0 for fully-off):
       </p>
 
       <Formula>V_rms = V_peak × √(α/π − sin(2α)/(2π))</Formula>
-      <p>
-        where <strong>V_rms</strong> is the RMS voltage delivered to the load (in volts), <strong>V_peak</strong>{' '}
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">V_rms</strong> is the RMS voltage delivered to the load (in volts), <strong className="text-text font-medium">V_peak</strong>{' '}
         is the line peak voltage (in volts; 170 V on a 120 V North American line, since V_peak = √2 × V_rms_line),
-        and <strong>α</strong> is the conduction angle in radians, measured from the gate-on point to the
+        and <strong className="text-text font-medium">α</strong> is the conduction angle in radians, measured from the gate-on point to the
         next zero-crossing. The half-power point, α = π/2, evaluates the bracket as 1/2 − sin(π)/(2π) = 1/2 − 0 = 0.5,
         giving V_rms = 170 × √0.5 ≈ 120 V × √0.5 ≈ 85 V. (For very deep dimming, α → 0 and V_rms → 0
         as √α; for fully-on, α = π and V_rms = V_peak/√2 = V_rms_line.) The fundamental physical constants
@@ -354,14 +354,14 @@ export default function Ch38HouseSmartRetrofits() {
 
       <TryIt
         tag="Try 38.2"
-        question={<>A trailing-edge dimmer is driving an LED at <strong>α = 3π/4</strong> conduction angle on a 120 V RMS line. Compute V_rms at the load. What fraction of full power does the LED see?</>}
+        question={<>A trailing-edge dimmer is driving an LED at <strong className="text-text font-medium">α = 3π/4</strong> conduction angle on a 120 V RMS line. Compute V_rms at the load. What fraction of full power does the LED see?</>}
         hint="V_peak = √2 × 120 V ≈ 170 V. Then plug into the bracket: α/π − sin(2α)/(2π)."
         answer={
           <>
-            <p>The bracket evaluates as 3/4 − sin(3π/2)/(2π) = 0.75 − (−1)/(2π) ≈ 0.75 + 0.159 = 0.909.</p>
+            <p className="mb-prose-1 last:mb-0">The bracket evaluates as 3/4 − sin(3π/2)/(2π) = 0.75 − (−1)/(2π) ≈ 0.75 + 0.159 = 0.909.</p>
             <Formula>V_rms = 170 V × √0.909 ≈ 162 V (peak basis) → 162 / √2 ≈ 114 V RMS at the load</Formula>
-            <p>
-              So the load sees about <strong>114 V RMS</strong>, or 114/120 ≈ 95 % of full voltage. Power
+            <p className="mb-prose-1 last:mb-0">
+              So the load sees about <strong className="text-text font-medium">114 V RMS</strong>, or 114/120 ≈ 95 % of full voltage. Power
               scales as the square of voltage at fixed resistance, so an Ohmic load would see ~90 % of full
               power. (An LED driver is not Ohmic, but for a first cut the answer is "almost-full power" —
               the LED is barely dimmed.)
@@ -370,27 +370,27 @@ export default function Ch38HouseSmartRetrofits() {
         }
       />
 
-      <h2>What Matter actually changed</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What Matter actually changed</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Two years ago, a household running both Apple HomeKit and Amazon Alexa with a few Lutron Caséta
         dimmers and a few Z-Wave smart plugs had the following stack: a Lutron Smart Hub talking to Caséta,
         a Hubitat or SmartThings hub talking to Z-Wave, an Echo for Alexa, an Apple TV for HomeKit, and
         third-party "bridge" software (often Homebridge or Home Assistant) translating between them so that
-        a single "scene" — say <em>good morning</em> — could touch every device. The translation layer was
+        a single "scene" — say <em className="italic text-text">good morning</em> — could touch every device. The translation layer was
         always slightly broken; turning off a Caséta dimmer through Alexa took 1–3 seconds while turning it
         off through the Lutron app was instant.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Matter consolidates the application layer. A Matter-over-Thread switch advertises one set of QR-coded
         credentials at pairing time. Any of HomeKit, Google Home, Alexa, or SmartThings can pair to it
-        natively, sharing the device through a feature called <em>multi-admin</em>. The device speaks the
+        natively, sharing the device through a feature called <em className="italic text-text">multi-admin</em>. The device speaks the
         same protocol regardless of which app is talking to it. There is no per-vendor hub on the bridge
         path; there is only a Thread Border Router — a piece of hardware that bridges the Thread mesh to
         Wi-Fi/Ethernet — and most modern Apple TVs, HomePod minis, Nest Hubs, and Echo speakers contain
         one. Cross-vendor latency drops from seconds to tens of milliseconds.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The catch: existing Z-Wave and Caséta devices do not speak Matter, and there is no firmware update
         that will make them. Migration is therefore physical — a Matter device replaces an existing Z-Wave
         device one box at a time — or it is via a hub that bridges (Hubitat, Home Assistant, and SmartThings
@@ -414,30 +414,30 @@ export default function Ch38HouseSmartRetrofits() {
             { label: 'LUT-MLC load capacitor', value: '~$15, mounts in fixture box' },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The reader opens the box and finds exactly two wires: a black and a red, with a bare ground curled
             against the back. There is no neutral. The fixture is an 11 W flush-mount LED. They have three
             paths.
           </p>
-          <p>
-            <strong>(a) Caséta no-neutral + load capacitor (LUT-MLC).</strong> The dimmer installs with the
+          <p className="mb-prose-2 last:mb-0">
+            <strong className="text-text font-medium">(a) Caséta no-neutral + load capacitor (LUT-MLC).</strong> The dimmer installs with the
             black on the line terminal and the red as the switched-hot to the fixture. Without the load
             capacitor, the 4.2 W bleeder will produce a faint ghost glow in the LED. Wire the LUT-MLC in
             parallel with the LED at the fixture box; it shunts the bleeder as 60 Hz displacement current
             and the glow disappears. Cost: ~$80 + $15. Reversible: yes.
           </p>
-          <p>
-            <strong>(b) Caséta Pico battery remote + smart bulb.</strong> Leave the old toggle in place,
+          <p className="mb-prose-2 last:mb-0">
+            <strong className="text-text font-medium">(b) Caséta Pico battery remote + smart bulb.</strong> Leave the old toggle in place,
             switched to always-on. Install a Pico battery remote on the wall using a single-gang plate; the
             Pico contains no mains wiring at all. Replace the LED bulb with a Lutron-compatible smart LED.
             The Pico pairs to the bulb through the Lutron hub. Cost: ~$25 (Pico) + $20 (bulb). Reversible:
             yes. Limitation: if a guest flips the always-on toggle off, the smart bulb loses power.
           </p>
-          <p>
-            <strong>(c) Open the wall, run 14-3-with-ground.</strong> The right long-term answer if multiple
+          <p className="mb-prose-2 last:mb-0">
+            <strong className="text-text font-medium">(c) Open the wall, run 14-3-with-ground.</strong> The right long-term answer if multiple
             rooms have the same problem. Cost: $500–$2000 and a drywall repair. Reversible: no.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Most readers in this situation pick (b). The reader who is committed to a fleet-wide Caséta
             install picks (a). Almost nobody picks (c) for one bedroom<Cite id="lutron-dimmer-app-note" in={SOURCES} />.
           </p>
@@ -455,30 +455,30 @@ export default function Ch38HouseSmartRetrofits() {
             { label: 'Plan', value: 'incremental Z-Wave → Matter, keep Caséta hub in place' },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The household has 14 Z-Wave switches on Hubitat, 6 Caséta dimmers on a Lutron hub, plus HomeKit
             and Google integrations layered on top via Homebridge. Everything works, but adding a device
             takes manual editing in three places.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The good news: with multiple Apple TVs and HomePod minis in the house, the household already has
             Thread Border Routers wired into the network — they just have not been doing anything because no
             device speaks Thread. Step one is to verify the Border Routers are forming a mesh (Home app →
             Home Settings → "Thread network"; should show one active network with multiple routers).
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Step two is incremental replacement. As Z-Wave switches age out or new locations need a switch,
             install Matter-over-Thread switches (Aqara, Eve, Leviton Decora Smart 4th gen, Lutron Diva
             Smart with Matter). Each new Matter device is paired by scanning its QR code into HomeKit,
             Google Home, or Alexa; the device appears in all three through multi-admin.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Step three is to keep the Caséta hub running. Lutron has announced a Matter bridge in the Smart
             Hub firmware that will expose existing Caséta dimmers as Matter devices, removing the need to
             replace working hardware. Until that ships, Caséta sits behind its hub and is bridged through
             HomeKit or Homebridge.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Step four is to retire Hubitat once the last Z-Wave switch has been replaced — likely 3–5 years
             from now. The hub is the bridge of last resort; once nothing depends on it, it powers off.
           </p>
@@ -496,20 +496,20 @@ export default function Ch38HouseSmartRetrofits() {
             { label: 'Fix', value: 'add a mains-powered Z-Wave repeater 2 m from companion' },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Z-Wave wireless companions communicate over the mesh, not over a signal wire. When a companion
             misses commands, the problem is almost always radio: the companion's box is in plaster-and-lath,
             behind a steel stud, near a microwave or a 2.4 GHz Wi-Fi router that desenses the front end, or
             far enough from the primary that the mesh has to route through several hops.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Diagnostic path: the Hubitat or SmartThings hub will show the route the mesh chose for each device
             and the RSSI of the last few transmissions. An RSSI worse than about −80 dBm at the companion's
             radio is enough to cause dropouts. The cheap fix is to add a mains-powered Z-Wave device
             (smart plug, switch, repeater) somewhere on the path — every mains-powered Z-Wave device is a
             mesh router, so a new device improves coverage for everything around it.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The expensive fix is to abandon the wireless companion and pull a low-voltage signal wire to
             convert the pair into a Lutron Caséta wired-companion setup. The intermediate fix is to leave
             the companion as a "scene controller" — its taps are interpreted as scene changes rather than
@@ -521,14 +521,14 @@ export default function Ch38HouseSmartRetrofits() {
 
       <TryIt
         tag="Try 38.3"
-        question={<>A Z-Wave smart switch consumes <strong>30 mW</strong> continuously (radio idle + MCU). Over a 10-year service life, how many kWh does it consume? At $0.15/kWh, what's the energy cost over that life?</>}
+        question={<>A Z-Wave smart switch consumes <strong className="text-text font-medium">30 mW</strong> continuously (radio idle + MCU). Over a 10-year service life, how many kWh does it consume? At $0.15/kWh, what's the energy cost over that life?</>}
         hint="One year is about 8760 hours."
         answer={
           <>
-            <p>Energy is power times time:</p>
+            <p className="mb-prose-1 last:mb-0">Energy is power times time:</p>
             <Formula>E = P × t = 0.030 W × (10 × 8760 h) = 0.030 × 87 600 = 2628 Wh ≈ 2.6 kWh</Formula>
-            <p>
-              Cost over 10 years: 2.6 kWh × $0.15/kWh ≈ <strong>$0.39</strong>. About forty cents over a
+            <p className="mb-prose-1 last:mb-0">
+              Cost over 10 years: 2.6 kWh × $0.15/kWh ≈ <strong className="text-text font-medium">$0.39</strong>. About forty cents over a
               decade — negligible compared to the device cost. Multiply by twenty switches in a typical
               house and it is still under $10/decade. Standby radios are essentially free relative to the
               rest of the household electric load.
@@ -543,18 +543,18 @@ export default function Ch38HouseSmartRetrofits() {
         hint="What does the no-neutral dimmer need to see between its two terminals when the switch is off?"
         answer={
           <>
-            <p>
-              The no-neutral dimmer expects to see <strong>hot on one terminal and the load (returning to
+            <p className="mb-prose-1 last:mb-0">
+              The no-neutral dimmer expects to see <strong className="text-text font-medium">hot on one terminal and the load (returning to
               neutral through the bulb) on the other</strong>. The bleeder current then flows from hot →
               through the dimmer's power supply → through the load → to neutral, keeping the radio alive.
             </p>
-            <p>
-              In a 3-way switch loop, both wires in this box are <em>travellers</em> — neither is a
+            <p className="mb-prose-1 last:mb-0">
+              In a 3-way switch loop, both wires in this box are <em className="italic text-text">travellers</em> — neither is a
               continuous hot to the source, and neither is on the load side of the bulb. Until the reader
               identifies which wire is acting as the source feed and reconfigures the wiring so the dimmer
-              sees a source-hot + load pair, the no-neutral mode <strong>cannot work</strong>.
+              sees a source-hot + load pair, the no-neutral mode <strong className="text-text font-medium">cannot work</strong>.
             </p>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               The practical answer: convert the 3-way into a single-pole circuit by removing the other
               switch from the loop entirely, then install the Caséta no-neutral plus a load capacitor. Or:
               install a Caséta Pico battery remote at this location and a wired Caséta dimmer at the
@@ -570,13 +570,13 @@ export default function Ch38HouseSmartRetrofits() {
         hint="The companion is not a switch in the traditional sense — it is a button that signals over a wire."
         answer={
           <>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               The companion stops working entirely (no taps reach the primary). The primary continues to
               work normally — both from its own physical buttons and from the Lutron hub / phone app — because
               the primary contains the radio, the load relay, and its own power supply, none of which
               depend on the signal wire.
             </p>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               Diagnostic: confirm the primary still responds locally and via app. If yes, the break is in
               the signal wire (or its terminations at the companion). A continuity test from the companion's
               signal-in terminal to the primary's signal-out terminal with the breaker off confirms it. The
@@ -660,7 +660,7 @@ export default function Ch38HouseSmartRetrofits() {
 
         <FAQItem q="Is a smart switch more or less energy-efficient than a regular switch?">
           A smart switch draws 30–100 mW of standby power that a mechanical switch does not. Over a year
-          that is 0.3–0.9 kWh, or 5–15 cents on a typical utility rate. The energy <em>saved</em> depends on
+          that is 0.3–0.9 kWh, or 5–15 cents on a typical utility rate. The energy <em className="italic text-text">saved</em> depends on
           how the switch is used: a schedule that turns off lights an extra hour a day saves several
           kWh/year per fixture, easily an order of magnitude more than the switch's own standby. Net, smart
           switches almost always pay back if they are actually used to schedule loads.
@@ -698,7 +698,7 @@ export default function Ch38HouseSmartRetrofits() {
           In most US jurisdictions, like-for-like replacement of an existing switch with a smart switch is
           a "repair" and does not require a permit, on the principle that you are not modifying the
           permanent wiring of the building. Pulling a new neutral conductor to retrofit smart switches into
-          a pre-2011 switch-loop house <em>is</em> wiring modification and frequently does require a permit.
+          a pre-2011 switch-loop house <em className="italic text-text">is</em> wiring modification and frequently does require a permit.
           The deciding question is whether you are changing the conductors in the wall; check your local
           AHJ before opening drywall<Cite id="nec-2023" in={SOURCES} />.
         </FAQItem>

@@ -40,7 +40,7 @@ interface LabGridProps {
 export function LabGrid({ canvas, legend, inputs, outputs }: LabGridProps) {
   return (
     <>
-      <div className="bg-color-canvas-bg border border-border rounded-3 overflow-hidden relative [&_canvas]:block [&_canvas]:w-full">
+      <div className="bg-color-canvas-bg border border-border rounded-3 overflow-hidden relative">
         {canvas}
         {legend && (
           <div className="flex gap-xl flex-wrap py-lg px-xl border-t border-border bg-accent-soft">

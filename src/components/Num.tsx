@@ -46,7 +46,7 @@ export function Num({ value, digits = 3, sci = false, showSign = false }: NumPro
 
   return (
     <Fragment>
-      {mStr}×10<sup>{exp}</sup>
+      {mStr}×10<sup className="text-[.7em] leading-none font-3 align-[.45em]">{exp}</sup>
     </Fragment>
   );
 }

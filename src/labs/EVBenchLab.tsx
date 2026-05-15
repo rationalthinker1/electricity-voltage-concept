@@ -268,8 +268,8 @@ export default function EVBenchLab() {
 
   const prose = (
     <>
-      <h3>One bench, the whole powertrain</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">One bench, the whole powertrain</h3>
+      <p className="mb-prose-3">
         An electric vehicle is the longest causal chain in this textbook. Stored chemical energy in an
         intercalation lattice (Ch.25–26) is decoded by a cell into electrochemical potential; cells stack into
         a pack at 350 V or 800 V; a contactor and Battery Management System (BMS) gate the high-voltage bus;
@@ -285,8 +285,8 @@ export default function EVBenchLab() {
         you both, integrated tenth-of-a-second by tenth-of-a-second.
       </Pullout>
 
-      <h3>Battery pack — the model</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Battery pack — the model</h3>
+      <p className="mb-prose-3">
         Each cell carries an open-circuit voltage that depends on its state of charge — V_oc(SOC). For NMC and
         NCA the curve slopes monotonically from about 3.0 V at empty to 4.2 V at full, with mild kinks at the
         ends; for LFP the curve is famously flat — within 0.05 V from 20 % to 90 % SOC — which is why a coulomb
@@ -294,7 +294,7 @@ export default function EVBenchLab() {
         small interpolation table shaped by manufacturer datasheets.
       </p>
       <MathBlock>V_term = V_oc(SOC) − I · R_int</MathBlock>
-      <p>
+      <p className="mb-prose-3">
         On top of the OCV sits a series internal resistance R_int — the Thévenin equivalent of bulk ionic
         transport plus the SEI interphase. Discharge current pulls the terminal voltage down by I·R_int. The
         pack composes cells: N_s in series for voltage, N_p in parallel for capacity. A 96s × 46p NMC pack of
@@ -302,12 +302,12 @@ export default function EVBenchLab() {
         78 kWh — the order of magnitude of a Model 3 Long Range.
       </p>
 
-      <h3>Vehicle — the back-of-envelope</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Vehicle — the back-of-envelope</h3>
+      <p className="mb-prose-3">
         Tractive force at the contact patch breaks into four pieces:
       </p>
       <MathBlock>F = m·a + ½ ρ C<sub>d</sub>A · v² + m g C<sub>rr</sub> + m g sin θ</MathBlock>
-      <p>
+      <p className="mb-prose-3">
         inertia, aero drag, rolling friction, and grade. Aero scales with the square of speed; rolling friction
         is roughly constant; grade dominates on a 5 % climb. Multiply by speed to get power, divide by drivetrain
         efficiency (motor × inverter ≈ 0.92 in the cruise band), and you have the DC current the pack must source.
@@ -317,8 +317,8 @@ export default function EVBenchLab() {
         the cycle to "Constant 100 km/h flat" and read the steady-state consumption directly off the bottom panel.
       </p>
 
-      <h3>Motor + inverter — the efficiency map</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Motor + inverter — the efficiency map</h3>
+      <p className="mb-prose-3">
         A permanent-magnet synchronous motor is most efficient in a band of moderate torque and moderate speed.
         At low torque, iron losses and friction dominate the small useful output; at high speed, flux weakening
         forces the controller to inject extra d-axis current, lifting copper losses. The map at right is the
@@ -327,8 +327,8 @@ export default function EVBenchLab() {
         copper losses, and the peak efficiency of a modern SiC three-phase bridge is ~98 %<Cite id="erickson-maksimovic-2020" in={SOURCES} />.
       </p>
 
-      <h3>Charging — why DC fast charging tapers</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Charging — why DC fast charging tapers</h3>
+      <p className="mb-prose-3">
         AC charging is bottlenecked by the on-board charger (OBC). The OBC is an isolated AC-DC converter sized
         for the connector standard it talks to: 1.4 kW for a Level-1 wall outlet (NEMA 5-15 at 12 A), up to
         11.5 kW for Level-2 on a 48 A J1772 cable<Cite id="sae-j1772" in={SOURCES} />, or 22 kW for European
@@ -337,7 +337,7 @@ export default function EVBenchLab() {
         cable's ampacity to the car. Underwriters Laboratories certifies the in-cable Charge Circuit Interrupting
         Device (CCID, the 20 mA ground-fault detector) under UL 2231<Cite id="ul-2231" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         DC fast charging skips the OBC entirely. The off-board charger delivers a regulated DC current directly
         to the pack through the CCS or NACS coupler. Up to about 80 % SOC the limit is current — the pack
         chemistry can absorb 1-3 C of charge current without lithium plating on the anode, so a 78 kWh pack at
@@ -349,47 +349,47 @@ export default function EVBenchLab() {
         crosses 80 %.
       </p>
       <MathBlock>I_CV(t) ≈ (V_target − V_oc(SOC)) / R_pack</MathBlock>
-      <p>
+      <p className="mb-prose-3">
         Pack temperature gates the whole story: above 45 °C the BMS derates the charge current to protect cycle
         life; above 60 °C it pulls the contactor open. The bench's thermal model is a single lumped node — pack
         Joule heating I²R minus a convective term proportional to (T − T_ambient) — but it's enough to see why
         long DC-fast sessions in summer can throttle before the chemistry would.
       </p>
 
-      <h3>Five exercises to run in the bench</h3>
-      <p><strong>1. Design a 500-km WLTP pack.</strong> Pick NMC + 21700. Set the cycle to WLTC. The pack delivers
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Five exercises to run in the bench</h3>
+      <p className="mb-prose-3"><strong className="text-text font-medium">1. Design a 500-km WLTP pack.</strong> Pick NMC + 21700. Set the cycle to WLTC. The pack delivers
       energy E = N_s × N_p × V_cell × Q_cell. Aim for about 75 kWh and a consumption around 150 Wh/km. What
       series-parallel topology gets you 500 km of range? Now read the C-rate at peak power (200 kW): C = I_peak
       / Q_pack. If you went thin and tall (high N_s, low N_p), your C-rate is dangerous; if you went wide and
       short, your pack voltage is low and the inverter currents skyrocket. The 96s × 46p default is a typical
       compromise.</p>
 
-      <p><strong>2. LFP at 100 % DoD vs NMC at 80 % DoD over 1 000 cycles.</strong> LFP's flat OCV and 4 000+
+      <p className="mb-prose-3"><strong className="text-text font-medium">2. LFP at 100 % DoD vs NMC at 80 % DoD over 1 000 cycles.</strong> LFP's flat OCV and 4 000+
       cycle life let you cycle it deep without much capacity loss. NMC at 80 % DoD (charging only to 80 % SOC)
       degrades more slowly than NMC at 100 %, but still faster than LFP. Set up both packs in the bench, run
       a WLTC cycle on each, and compare the energy delivered per kWh of nameplate capacity. (The bench does
       not yet step calendar/cycle aging, but the readout shows you the C-rate, which drives degradation.)</p>
 
-      <p><strong>3. 100 km/h up a 5 % grade.</strong> Pick "100 km/h up 5 % grade" as the cycle. The motor
+      <p className="mb-prose-3"><strong className="text-text font-medium">3. 100 km/h up a 5 % grade.</strong> Pick "100 km/h up 5 % grade" as the cycle. The motor
       power demand jumps from ~18 kW (flat) to ~45 kW (climb). Watch the motor operating point migrate on the
       efficiency map — moderate speed, much higher torque. Does the inverter stay in its peak-efficiency band?
       Does the pack temperature climb?</p>
 
-      <p><strong>4. Regen budget.</strong> Pick the "Hard accel 0-100-0" cycle. Each brake event tries to pump
+      <p className="mb-prose-3"><strong className="text-text font-medium">4. Regen budget.</strong> Pick the "Hard accel 0-100-0" cycle. Each brake event tries to pump
       kinetic energy back into the pack. The bench caps regen at 60 % of peak power — a typical EV constraint
       from cold-pack acceptance, friction-brake blending, and one-pedal-driving tuning. What fraction of the
       kinetic energy each sprint puts in does the regen phase recover? (Hint: read the negative dips in the
       battery-current trace.)</p>
 
-      <p><strong>5. L2 vs DCFC charging time.</strong> Run the pack down to ~20 % SOC. Plug into Level-2 — watch
+      <p className="mb-prose-3"><strong className="text-text font-medium">5. L2 vs DCFC charging time.</strong> Run the pack down to ~20 % SOC. Plug into Level-2 — watch
       the charge power sit near 11 kW indefinitely, all the way to 100 %. Now plug into DCFC — the power leaps
       to 150 kW+, climbs to 200+ kW between 30–60 % SOC depending on chemistry, then tapers. The Level-2
       session takes hours; the DCFC session takes about 25 minutes to 80 % and another 40 minutes to top off.
       That last 20 % is the slowest, not because the charger isn't capable, but because the cell chemistry
       cannot accept it.</p>
 
-      <h3>What's not modelled</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">What's not modelled</h3>
+      <p className="mb-prose-3">
         Real packs have cell-to-cell variation that the BMS balances passively (bleed resistors on high cells)
         or actively (DC-DC shuttles); the bench treats every cell as identical. Real motors run field-oriented
         control with two PI loops on d- and q-axis currents; the bench uses an algebraic efficiency map. Real
@@ -894,7 +894,7 @@ function TraceCanvas({ series, channel, label, color, symmetric, scale, fixedMin
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
   }, [series, channel, label, color, symmetric, scale, fixedMin, fixedMax]);
-  return <canvas ref={ref} style={{ display: 'block', width: '100%' }} />;
+  return <canvas className="block w-full" ref={ref} style={{ display: 'block', width: '100%' }} />;
 }
 
 /* ──────────────────────────── efficiency map ──────────────────────────── */
@@ -1004,7 +1004,7 @@ function EffMapPanel({ cfg, sample }: { cfg: BenchConfig; sample: BenchSample | 
 
   return (
     <section className="ev-effmap">
-      <canvas ref={ref} style={{ display: 'block', width: '100%' }} />
+      <canvas className="block w-full" ref={ref} style={{ display: 'block', width: '100%' }} />
     </section>
   );
 }

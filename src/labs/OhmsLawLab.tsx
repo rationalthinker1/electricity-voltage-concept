@@ -22,7 +22,7 @@ import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
-import { MATERIALS, PHYS, pretty, type MaterialKey } from '@/lib/physics';
+import {MATERIALS, PHYS, type MaterialKey, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
 const SLUG = 'ohms-law';
@@ -81,8 +81,7 @@ export default function OhmsLawLab() {
           x: wireLeft + Math.random() * (wireRight - wireLeft),
           y: top + Math.random() * (bot - top),
           vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-        });
+          vy: (Math.random() - 0.5) * 0.5 });
       }
     }
     seed();
@@ -236,13 +235,13 @@ export default function OhmsLawLab() {
       }
       outputs={
         <>
-          <Readout sym="σ" label="Conductivity" valueHTML={pretty(computed.sigma)} unit="S/m" />
-          <Readout sym="E" label="Field in conductor" valueHTML={pretty(computed.E)} unit="V/m" />
-          <Readout sym="J" label="Current density" valueHTML={pretty(computed.J)} unit="A/m²" />
-          <Readout sym="I" label="Total current" valueHTML={pretty(computed.I)} unit="A" highlight />
-          <Readout sym="R" label="Resistance" valueHTML={pretty(computed.R)} unit="Ω" />
-          <Readout sym="P" label="Power dissipated" valueHTML={pretty(computed.P)} unit="W" />
-          <Readout sym={<>v<sub>d</sub></>} label="Electron drift speed" valueHTML={pretty(computed.vd)} unit="m/s" />
+          <Readout sym="σ" label="Conductivity" value={prettyJsx(computed.sigma)} unit="S/m" />
+          <Readout sym="E" label="Field in conductor" value={prettyJsx(computed.E)} unit="V/m" />
+          <Readout sym="J" label="Current density" value={prettyJsx(computed.J)} unit="A/m²" />
+          <Readout sym="I" label="Total current" value={prettyJsx(computed.I)} unit="A" highlight />
+          <Readout sym="R" label="Resistance" value={prettyJsx(computed.R)} unit="Ω" />
+          <Readout sym="P" label="Power dissipated" value={prettyJsx(computed.P)} unit="W" />
+          <Readout sym={<>v<sub>d</sub></>} label="Electron drift speed" value={prettyJsx(computed.vd)} unit="m/s" />
         </>
       }
     />
@@ -250,89 +249,89 @@ export default function OhmsLawLab() {
 
   const prose = (
     <>
-      <h3>Context</h3>
-      <p>
-        Ohm's law — <strong>V = IR</strong> — is the working equation of every battery-powered circuit, every wall outlet, every signal-carrying
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <p className="mb-prose-3">
+        Ohm's law — <strong className="text-text font-medium">V = IR</strong> — is the working equation of every battery-powered circuit, every wall outlet, every signal-carrying
         trace on every circuit board. Connect a real piece of conductor to a real voltage source, and the steady-state current that flows is
-        proportional to the voltage, with a constant of proportionality called the <em>resistance</em>. The law is valid for ordinary metals at
+        proportional to the voltage, with a constant of proportionality called the <em className="italic text-text">resistance</em>. The law is valid for ordinary metals at
         ordinary temperatures over many orders of magnitude in current density — and breaks down at the extremes: in superconductors (R = 0 below
         a critical temperature), in semiconductors driven near breakdown, in incandescent filaments hot enough that ρ has run away from its cold
         value<Cite id="crc-resistivity" in={SOURCES} />, in lightning channels where the air's behavior is nonlinear, and at the femtosecond
         timescales where the Drude scattering time itself becomes resolvable<Cite id="drude-1900" in={SOURCES} />.
       </p>
 
-      <h3>Formula</h3>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
       <MathBlock>V = I R</MathBlock>
-      <p>
-        Where <strong>V</strong> is the voltage across a conductor in volts (V), <strong>I</strong> is the current through it in amperes (A), and
-        <strong> R</strong> is the resistance in ohms (Ω = V/A). The microscopic counterpart is <strong>J = σE</strong>, with <strong>J</strong>
-        the current density in A/m², <strong>E</strong> the field driving the charges in V/m, and <strong>σ</strong> the conductivity in S/m. The
-        two are related by geometry: <strong>R = L / (σA)</strong> for a uniform wire of length <strong>L</strong> and cross-section
-        <strong> A</strong>.
+      <p className="mb-prose-3">
+        Where <strong className="text-text font-medium">V</strong> is the voltage across a conductor in volts (V), <strong className="text-text font-medium">I</strong> is the current through it in amperes (A), and
+        <strong className="text-text font-medium"> R</strong> is the resistance in ohms (Ω = V/A). The microscopic counterpart is <strong className="text-text font-medium">J = σE</strong>, with <strong className="text-text font-medium">J</strong>
+        the current density in A/m², <strong className="text-text font-medium">E</strong> the field driving the charges in V/m, and <strong className="text-text font-medium">σ</strong> the conductivity in S/m. The
+        two are related by geometry: <strong className="text-text font-medium">R = L / (σA)</strong> for a uniform wire of length <strong className="text-text font-medium">L</strong> and cross-section
+        <strong className="text-text font-medium"> A</strong>.
       </p>
 
-      <h3>Intuition</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <p className="mb-prose-3">
         Picture a sled being pushed across snow. Push harder and it goes faster — but it doesn't keep accelerating forever, because friction
         bleeds off the gain. After a short startup the sled settles at a steady speed proportional to the push. The push is the electric field.
         The sled is an electron. The snow is the metal lattice it keeps colliding with<Cite id="drude-1900" in={SOURCES} />. Steady current under
         constant voltage isn't a mass accelerating forever; it's a drag race in which the drag exactly cancels the drive.
       </p>
       <Pullout>
-        Conductivity is a single number that bundles up <em>everything</em> about how charges navigate a particular material —
+        Conductivity is a single number that bundles up <em className="italic text-text">everything</em> about how charges navigate a particular material —
         how many free charges there are, how heavy they are, how often they crash.
       </Pullout>
 
-      <h3>Reasoning</h3>
-      <p>
-        Why <em>linear</em>? Because the steady-state drift velocity is set by a balance between two terms each linear in <strong>E</strong>:
-        the acceleration <strong>qE/m</strong> over the mean time between collisions <strong>τ</strong>. Double <strong>E</strong> and you double
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <p className="mb-prose-3">
+        Why <em className="italic text-text">linear</em>? Because the steady-state drift velocity is set by a balance between two terms each linear in <strong className="text-text font-medium">E</strong>:
+        the acceleration <strong className="text-text font-medium">qE/m</strong> over the mean time between collisions <strong className="text-text font-medium">τ</strong>. Double <strong className="text-text font-medium">E</strong> and you double
         both the acceleration and the gain per scattering event, giving twice the drift. Linearity is a Drude consequence, not a postulate.
       </p>
-      <p>
-        Why does <strong>R</strong> have the form <strong>L/(σA)</strong>? Length is in the numerator because it's the path the field drives the
+      <p className="mb-prose-3">
+        Why does <strong className="text-text font-medium">R</strong> have the form <strong className="text-text font-medium">L/(σA)</strong>? Length is in the numerator because it's the path the field drives the
         charges over: more obstacles in series. Area is in the denominator because it's the number of parallel lanes available: more side-by-side
-        traffic for the same current density. Material conductivity <strong>σ</strong> bundles up <em>n</em> (carrier density), <em>q</em> (charge
-        per carrier), <em>τ</em> (mean free time), and <em>m</em> (effective mass) into one number<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
+        traffic for the same current density. Material conductivity <strong className="text-text font-medium">σ</strong> bundles up <em className="italic text-text">n</em> (carrier density), <em className="italic text-text">q</em> (charge
+        per carrier), <em className="italic text-text">τ</em> (mean free time), and <em className="italic text-text">m</em> (effective mass) into one number<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
 
-      <h3>Derivation</h3>
-      <p>
-        Apply a voltage <strong>V</strong> across a wire of length <strong>L</strong>. In steady state surface charges redistribute to make the
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <p className="mb-prose-3">
+        Apply a voltage <strong className="text-text font-medium">V</strong> across a wire of length <strong className="text-text font-medium">L</strong>. In steady state surface charges redistribute to make the
         field inside roughly uniform along the axis:
       </p>
       <MathBlock>E = V / L</MathBlock>
-      <p>
-        In the Drude picture, an electron between collisions accelerates with <strong>a = qE/m</strong>, gaining velocity for an average time
-        <strong> τ</strong>, then losing memory of it. The mean drift velocity is:
+      <p className="mb-prose-3">
+        In the Drude picture, an electron between collisions accelerates with <strong className="text-text font-medium">a = qE/m</strong>, gaining velocity for an average time
+        <strong className="text-text font-medium"> τ</strong>, then losing memory of it. The mean drift velocity is:
       </p>
       <MathBlock>v<sub>d</sub> = (q τ / m) E</MathBlock>
-      <p>Current density is charge density times drift:</p>
+      <p className="mb-prose-3">Current density is charge density times drift:</p>
       <MathBlock>J = n q v<sub>d</sub> = (n q² τ / m) E ≡ σ E</MathBlock>
-      <p>
-        Integrate over the cross-section <strong>A</strong>:
+      <p className="mb-prose-3">
+        Integrate over the cross-section <strong className="text-text font-medium">A</strong>:
       </p>
       <MathBlock>I = J A = σ A V / L</MathBlock>
-      <p>
+      <p className="mb-prose-3">
         Rearrange to put V on one side:
       </p>
       <MathBlock>V = (L / σ A) · I = I R,   R = L / (σ A)</MathBlock>
-      <p>
-        Ohm's law isn't a separate postulate. It's what <strong>J = σE</strong> looks like after geometry has had its say<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
+      <p className="mb-prose-3">
+        Ohm's law isn't a separate postulate. It's what <strong className="text-text font-medium">J = σE</strong> looks like after geometry has had its say<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
         Try the defaults — copper, V = 12 V, L = 1 m, A = 2.5 mm². Resistance comes out around 7 mΩ; current crosses 1700 A. That's not a wire,
         that's a short circuit. Real household-scale numbers come from much longer wires or much smaller cross-sections — and from voltages of
         a few volts across kilohm-scale lumped resistors, where the readout sits at milliamps not kiloamps.
       </p>
-      <p>
-        The same algebra gives you power. Each second, <em>I</em> coulombs cross the resistor; each loses <em>V</em> joules to the lattice:
+      <p className="mb-prose-3">
+        The same algebra gives you power. Each second, <em className="italic text-text">I</em> coulombs cross the resistor; each loses <em className="italic text-text">V</em> joules to the lattice:
       </p>
       <MathBlock>P = V I = V² / R = I² R</MathBlock>
-      <p>
-        Doubling <strong>V</strong> doubles <strong>I</strong> but <em>quadruples</em> <strong>P</strong>. That's why tungsten filaments
+      <p className="mb-prose-3">
+        Doubling <strong className="text-text font-medium">V</strong> doubles <strong className="text-text font-medium">I</strong> but <em className="italic text-text">quadruples</em> <strong className="text-text font-medium">P</strong>. That's why tungsten filaments
         glow<Cite id="crc-resistivity" in={SOURCES} /> and why nichrome ribbons are the entire product of a toaster<Cite id="kanthal" in={SOURCES} />.
       </p>
 
-      <h3>Worked problems</h3>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
 
       <TryIt
         tag="Problem 3.1.1"
@@ -341,7 +340,7 @@ export default function OhmsLawLab() {
         answer={
           <>
             <MathBlock>I = V / R = 10 V / 100 Ω = 0.10 A</MathBlock>
-            <p>Answer: <strong>0.10 A = 100 mA</strong>.</p>
+            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">0.10 A = 100 mA</strong>.</p>
           </>
         }
       />
@@ -353,7 +352,7 @@ export default function OhmsLawLab() {
         answer={
           <>
             <MathBlock>R = V / I = 5 V / 0.005 A = 1000 Ω = 1 kΩ</MathBlock>
-            <p>Answer: <strong>R = 1 kΩ</strong>. A very common bench-resistor value, not by accident.</p>
+            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">R = 1 kΩ</strong>. A very common bench-resistor value, not by accident.</p>
           </>
         }
       />
@@ -364,12 +363,12 @@ export default function OhmsLawLab() {
         hint={<>Same current everywhere in a series chain.</>}
         answer={
           <>
-            <p>Resistors in series add:</p>
+            <p className="mb-prose-3">Resistors in series add:</p>
             <MathBlock>R<sub>total</sub> = 1 kΩ + 2 kΩ = 3 kΩ</MathBlock>
             <MathBlock>I = 9 V / 3000 Ω = 3 mA</MathBlock>
             <MathBlock>V<sub>1</sub> = I R<sub>1</sub> = 3 mA · 1 kΩ = 3 V</MathBlock>
             <MathBlock>V<sub>2</sub> = I R<sub>2</sub> = 3 mA · 2 kΩ = 6 V</MathBlock>
-            <p>The drops sum to 9 V — the battery's full EMF — as Kirchhoff requires.</p>
+            <p className="mb-prose-3">The drops sum to 9 V — the battery's full EMF — as Kirchhoff requires.</p>
           </>
         }
       />
@@ -379,10 +378,10 @@ export default function OhmsLawLab() {
         question={<>Two 1 kΩ resistors are placed in parallel across a 12 V supply. What is the equivalent resistance and the total current drawn?</>}
         answer={
           <>
-            <p>Parallel resistors combine by reciprocal sum:</p>
+            <p className="mb-prose-3">Parallel resistors combine by reciprocal sum:</p>
             <MathBlock>1/R<sub>eq</sub> = 1/1000 + 1/1000 = 2/1000   ⇒   R<sub>eq</sub> = 500 Ω</MathBlock>
             <MathBlock>I = V / R<sub>eq</sub> = 12 / 500 = 24 mA</MathBlock>
-            <p>Each 1 kΩ resistor carries half the current (12 mA) — they share the load symmetrically.</p>
+            <p className="mb-prose-3">Each 1 kΩ resistor carries half the current (12 mA) — they share the load symmetrically.</p>
           </>
         }
       />
@@ -395,7 +394,7 @@ export default function OhmsLawLab() {
             <MathBlock>I = 12 V / (10 + 30) Ω = 0.30 A</MathBlock>
             <MathBlock>P<sub>10</sub> = I² R = (0.3)² · 10 = 0.90 W</MathBlock>
             <MathBlock>P<sub>30</sub> = I² R = (0.3)² · 30 = 2.70 W</MathBlock>
-            <p>
+            <p className="mb-prose-3">
               The bigger resistor dissipates three times more power, because the same current flows through both but the larger one drops more
               voltage. Power in a series chain is proportional to R.
             </p>
@@ -410,20 +409,20 @@ export default function OhmsLawLab() {
         answer={
           <>
             <MathBlock>V<sub>out</sub> = 9 · 3 / (2 + 3) = 9 · 3/5 = 5.4 V</MathBlock>
-            <p>Answer: <strong>5.4 V</strong>. Voltage divides between series resistors in proportion to their R values.</p>
+            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">5.4 V</strong>. Voltage divides between series resistors in proportion to their R values.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 3.1.7"
-        question={<>A 10 kΩ potentiometer is wired as a voltage divider on 5 V. The wiper is set to a fraction <em>x</em> of the way from the bottom (0 to 1). Express V<sub>wiper</sub> as a function of <em>x</em>.</>}
+        question={<>A 10 kΩ potentiometer is wired as a voltage divider on 5 V. The wiper is set to a fraction <em className="italic text-text">x</em> of the way from the bottom (0 to 1). Express V<sub>wiper</sub> as a function of <em className="italic text-text">x</em>.</>}
         answer={
           <>
-            <p>The resistance below the wiper is <em>xR</em>, the resistance above is <em>(1−x)R</em>. The total is <em>R</em>:</p>
+            <p className="mb-prose-3">The resistance below the wiper is <em className="italic text-text">xR</em>, the resistance above is <em className="italic text-text">(1−x)R</em>. The total is <em className="italic text-text">R</em>:</p>
             <MathBlock>V<sub>wiper</sub> = 5 · (x R) / R = 5 x V</MathBlock>
-            <p>
-              Answer: a linear pot is a linear divider — <strong>V<sub>wiper</sub> = 5x V</strong>. At <em>x</em> = 0.5, the wiper sits at 2.5 V.
+            <p className="mb-prose-3">
+              Answer: a linear pot is a linear divider — <strong className="text-text font-medium">V<sub>wiper</sub> = 5x V</strong>. At <em className="italic text-text">x</em> = 0.5, the wiper sits at 2.5 V.
               The total resistance value (10 kΩ) drops out entirely; only the ratio matters when the load is light.
             </p>
           </>
@@ -435,10 +434,10 @@ export default function OhmsLawLab() {
         question={<>Two 1 kΩ ± 5% resistors are placed in series. What is the worst-case total resistance, and the relative tolerance of the series combination?</>}
         answer={
           <>
-            <p>Each resistor's value lies in [950, 1050] Ω. Worst-case high is 2100 Ω; worst-case low is 1900 Ω. The nominal sum is 2000 Ω.</p>
+            <p className="mb-prose-3">Each resistor's value lies in [950, 1050] Ω. Worst-case high is 2100 Ω; worst-case low is 1900 Ω. The nominal sum is 2000 Ω.</p>
             <MathBlock>tolerance = ±100 / 2000 = ±5%</MathBlock>
-            <p>
-              Answer: total <strong>2 kΩ ± 5%</strong>. Tolerances of equal-percentage resistors don't add in series — they stay the same percentage. (They <em>do</em> add in absolute Ω terms.) The percentage error of a sum is a weighted average of the individuals' percentage errors.
+            <p className="mb-prose-3">
+              Answer: total <strong className="text-text font-medium">2 kΩ ± 5%</strong>. Tolerances of equal-percentage resistors don't add in series — they stay the same percentage. (They <em className="italic text-text">do</em> add in absolute Ω terms.) The percentage error of a sum is a weighted average of the individuals' percentage errors.
             </p>
           </>
         }
@@ -450,10 +449,10 @@ export default function OhmsLawLab() {
         hint={<>Shunt absorbs the extra 99 mA at the same 0.1 V the movement drops at full scale.</>}
         answer={
           <>
-            <p>At full scale the movement drops V = 1 mA · 100 Ω = 0.1 V. The shunt sees that same 0.1 V and must carry the remaining 99 mA:</p>
+            <p className="mb-prose-3">At full scale the movement drops V = 1 mA · 100 Ω = 0.1 V. The shunt sees that same 0.1 V and must carry the remaining 99 mA:</p>
             <MathBlock>R<sub>shunt</sub> = 0.1 V / 0.099 A ≈ 1.01 Ω</MathBlock>
-            <p>
-              Answer: about <strong>1.0 Ω</strong> in parallel. The shunt's smallness — two orders of magnitude below the movement — is why
+            <p className="mb-prose-3">
+              Answer: about <strong className="text-text font-medium">1.0 Ω</strong> in parallel. The shunt's smallness — two orders of magnitude below the movement — is why
               ammeters insert almost no resistance into a circuit, and why a 1% error in the shunt becomes a 1% error in the reading.
             </p>
           </>
@@ -465,11 +464,11 @@ export default function OhmsLawLab() {
         question={<>A voltmeter with 10 MΩ input impedance measures across the lower leg of a 1 MΩ + 1 MΩ divider on 1 V. What does it read, and by how much does it perturb the divider?</>}
         answer={
           <>
-            <p>Unloaded, the divider sits at 0.500 V. Attaching the voltmeter puts 10 MΩ in parallel with the bottom 1 MΩ:</p>
+            <p className="mb-prose-3">Unloaded, the divider sits at 0.500 V. Attaching the voltmeter puts 10 MΩ in parallel with the bottom 1 MΩ:</p>
             <MathBlock>R<sub>bot</sub><sup>′</sup> = (1 · 10) / (1 + 10) = 10/11 ≈ 0.909 MΩ</MathBlock>
             <MathBlock>V<sub>read</sub> = 1 · 0.909 / (1 + 0.909) ≈ 0.476 V</MathBlock>
-            <p>
-              The reading is about <strong>0.476 V</strong> — roughly 4.8% low. The lesson: a 10× input impedance ratio still costs a few percent.
+            <p className="mb-prose-3">
+              The reading is about <strong className="text-text font-medium">0.476 V</strong> — roughly 4.8% low. The lesson: a 10× input impedance ratio still costs a few percent.
               For precision measurements across a megohm source, you need a 10<sup>9</sup>-ohm-grade meter (an electrometer) or you have to model
               the loading.
             </p>
@@ -485,8 +484,8 @@ export default function OhmsLawLab() {
           <>
             <MathBlock>V<sub>drop</sub> = I R<sub>int</sub> = 100 · 0.01 = 1.0 V</MathBlock>
             <MathBlock>V<sub>term</sub> = 12 − 1 = 11 V</MathBlock>
-            <p>
-              Answer: terminal voltage falls to <strong>~11 V</strong> during cranking. That's why headlights dim when you start the engine —
+            <p className="mb-prose-3">
+              Answer: terminal voltage falls to <strong className="text-text font-medium">~11 V</strong> during cranking. That's why headlights dim when you start the engine —
               the battery's internal R is dropping a real volt under heavy load. A weak battery with R<sub>int</sub> = 0.05 Ω would drop to
               7 V under the same load, and the starter wouldn't crank.
             </p>

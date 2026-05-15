@@ -462,75 +462,75 @@ export default function CircuitBuilderLab() {
 
   const prose = (
     <>
-      <h3>An MNA solver in your browser</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">An MNA solver in your browser</h3>
+      <p className="mb-prose-3">
         Everything left of this paragraph runs through the same machinery that powers SPICE — Modified Nodal Analysis,
         formulated in its current matrix-stamping form by Ho, Ruehli, and Brennan in 1975<Cite id="ho-ruehli-brennan-1975" in={SOURCES} />.
         The trick is to take Kirchhoff's current law<Cite id="kirchhoff-1845" in={SOURCES} /> — sum of currents into every node is zero —
         and write it as a matrix equation
       </p>
       <MathBlock>G · v = i</MathBlock>
-      <p>
-        with one row per node. Each resistor of value <strong>R</strong> contributes a conductance <strong>1/R</strong> to four
-        entries of <strong>G</strong>: <em>+1/R</em> on each diagonal at its two pin nodes, and <em>−1/R</em> on the two
+      <p className="mb-prose-3">
+        with one row per node. Each resistor of value <strong className="text-text font-medium">R</strong> contributes a conductance <strong className="text-text font-medium">1/R</strong> to four
+        entries of <strong className="text-text font-medium">G</strong>: <em className="italic text-text">+1/R</em> on each diagonal at its two pin nodes, and <em className="italic text-text">−1/R</em> on the two
         off-diagonals between them. Stamp every passive component, solve, and you have the operating point.
       </p>
 
-      <h3>Voltage sources need an extra unknown</h3>
-      <p>
-        A battery between nodes <em>i</em> and <em>j</em> isn't a conductance — it commits to a voltage difference no matter what current flows.
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Voltage sources need an extra unknown</h3>
+      <p className="mb-prose-3">
+        A battery between nodes <em className="italic text-text">i</em> and <em className="italic text-text">j</em> isn't a conductance — it commits to a voltage difference no matter what current flows.
         The MNA fix is to add a row and a column for the branch current through that source. The new row says
-        <strong> v<sub>i</sub> − v<sub>j</sub> = V<sub>src</sub></strong>; the new column tells the other rows how that current
+        <strong className="text-text font-medium"> v<sub>i</sub> − v<sub>j</sub> = V<sub>src</sub></strong>; the new column tells the other rows how that current
         enters and leaves the connected nodes. The matrix gets one entry larger per voltage source, which is why the technique is
-        called <em>modified</em> nodal analysis<Cite id="nilsson-riedel-2018" in={SOURCES} />.
+        called <em className="italic text-text">modified</em> nodal analysis<Cite id="nilsson-riedel-2018" in={SOURCES} />.
       </p>
       <Pullout>
         Every passive component is a contribution to G. Every voltage source buys a new row and column.
         That is the whole secret.
       </Pullout>
 
-      <h3>Capacitors and inductors: companion models</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Capacitors and inductors: companion models</h3>
+      <p className="mb-prose-3">
         At a single instant, a capacitor has whatever voltage it has — and lets through whatever current it pleases.
         The clever idea (trapezoidal rule, Nilsson–Riedel §8) is to discretise the time derivative and treat the cap
         as if it were a small resistor in parallel with an ideal current source whose value is set by the state at the
         previous step:
       </p>
       <MathBlock>i<sub>n+1</sub> = (2C/Δt) (v<sub>n+1</sub> − v<sub>n</sub>) − i<sub>n</sub></MathBlock>
-      <p>
-        Rearranged to expose the linear part, the cap contributes a conductance <strong>2C/Δt</strong> and the right-hand side
-        gets a "memory" current of <strong>2C v<sub>n</sub>/Δt + i<sub>n</sub></strong>. Inductors get the dual treatment: an
-        effective resistance <strong>2L/Δt</strong> in series with a voltage source <strong>v<sub>n</sub> + (2L/Δt) i<sub>n</sub></strong>.
+      <p className="mb-prose-3">
+        Rearranged to expose the linear part, the cap contributes a conductance <strong className="text-text font-medium">2C/Δt</strong> and the right-hand side
+        gets a "memory" current of <strong className="text-text font-medium">2C v<sub>n</sub>/Δt + i<sub>n</sub></strong>. Inductors get the dual treatment: an
+        effective resistance <strong className="text-text font-medium">2L/Δt</strong> in series with a voltage source <strong className="text-text font-medium">v<sub>n</sub> + (2L/Δt) i<sub>n</sub></strong>.
         Step the time index, restamp, resolve — and the RC and RLC curves come out for free.
       </p>
 
-      <h3>Diodes: piecewise-linear Shockley</h3>
-      <p>
-        The full Shockley equation <strong>I = I<sub>s</sub>(e<sup>qV/kT</sup> − 1)</strong> is nonlinear and would require Newton–Raphson
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Diodes: piecewise-linear Shockley</h3>
+      <p className="mb-prose-3">
+        The full Shockley equation <strong className="text-text font-medium">I = I<sub>s</sub>(e<sup>qV/kT</sup> − 1)</strong> is nonlinear and would require Newton–Raphson
         iteration<Cite id="shockley-1949" in={SOURCES} />. We use a textbook simplification: assume the diode is either fully on
-        (<strong>V<sub>F</sub> = 0.7 V</strong> drop in series with a tiny 0.05 Ω resistor) or fully off (~1 MΩ).
+        (<strong className="text-text font-medium">V<sub>F</sub> = 0.7 V</strong> drop in series with a tiny 0.05 Ω resistor) or fully off (~1 MΩ).
         Per step we solve assuming the previous state, check whether the answer is consistent (off diodes have V &lt; 0.7 V; on diodes
         carry positive current), and flip up to five times until it stabilises. For the half-wave rectifier preset that converges
         every step on the first or second try<Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
-      <h3>AC sources, switches, bulbs</h3>
-      <p>
-        AC sources are just batteries whose value is recomputed each step as <strong>V(t) = V<sub>pk</sub> sin(2π f t)</strong> —
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">AC sources, switches, bulbs</h3>
+      <p className="mb-prose-3">
+        AC sources are just batteries whose value is recomputed each step as <strong className="text-text font-medium">V(t) = V<sub>pk</sub> sin(2π f t)</strong> —
         time-domain integration is enough; we don't need a separate phasor solver. Switches are resistors that swap between
-        1 mΩ and 1 GΩ depending on state. Bulbs are resistors that glow at intensity proportional to <strong>I²R</strong> — the
+        1 mΩ and 1 GΩ depending on state. Bulbs are resistors that glow at intensity proportional to <strong className="text-text font-medium">I²R</strong> — the
         same dissipation Joule measured in 1841 (Lab 3.4).
       </p>
 
-      <h3>Try it</h3>
-      <p>
-        Load the <strong>RC Charging</strong> preset and watch the scope trace climb toward 5 V on a 1 ms time constant.
-        Load <strong>RLC Resonator</strong> and watch the loop voltage trade between L and C at the resonant frequency
-        <strong> ω = 1/√(LC) ≈ 3.18 kHz</strong>. Load <strong>Half-Wave Rectifier</strong> and see the negative half of the sine
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Try it</h3>
+      <p className="mb-prose-3">
+        Load the <strong className="text-text font-medium">RC Charging</strong> preset and watch the scope trace climb toward 5 V on a 1 ms time constant.
+        Load <strong className="text-text font-medium">RLC Resonator</strong> and watch the loop voltage trade between L and C at the resonant frequency
+        <strong className="text-text font-medium"> ω = 1/√(LC) ≈ 3.18 kHz</strong>. Load <strong className="text-text font-medium">Half-Wave Rectifier</strong> and see the negative half of the sine
         clipped off below the diode's forward drop.
       </p>
-      <p>
-        Then build your own: drop a battery, two resistors, a ground, wire them in a divider, and confirm <strong>V<sub>out</sub> = V<sub>in</sub> · R<sub>2</sub>/(R<sub>1</sub> + R<sub>2</sub>)</strong>.
+      <p className="mb-prose-3">
+        Then build your own: drop a battery, two resistors, a ground, wire them in a divider, and confirm <strong className="text-text font-medium">V<sub>out</sub> = V<sub>in</sub> · R<sub>2</sub>/(R<sub>1</sub> + R<sub>2</sub>)</strong>.
         Every formula in this textbook becomes a circuit you can poke.
       </p>
     </>
@@ -614,7 +614,7 @@ function Scope({ data }: ScopeProps) {
     ctx.textAlign = 'left';
     ctx.fillText(eng(tRange, 2) + 's window', 4, h - 4);
   }, [data]);
-  return <canvas ref={ref} style={{ display: 'block', width: '100%' }} />;
+  return <canvas className="block w-full" ref={ref} style={{ display: 'block', width: '100%' }} />;
 }
 
 /* ───────────────────────── Preset Info subcomponent ───────────────────────── */

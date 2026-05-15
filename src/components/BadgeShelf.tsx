@@ -22,8 +22,8 @@ export function BadgeShelf() {
 
   return (
     <div className="flex flex-col gap-md">
-      <div className="font-3 text-3 text-text-dim tracking-2 [&_strong]:text-text [&_strong]:font-medium">
-        <strong>{earnedCount}</strong> of <strong>{BADGES.length}</strong> earned
+      <div className="font-3 text-3 text-text-dim tracking-2">
+        <strong className="text-text font-medium">{earnedCount}</strong> of <strong className="text-text font-medium">{BADGES.length}</strong> earned
       </div>
       <ul className="grid-list grid-cols-4 gap-md max-md:grid-cols-2">
         {items.map(({ b, earned }) => (

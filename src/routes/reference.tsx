@@ -18,10 +18,9 @@ function Reference() {
       className="nav-item flex flex-col gap-md relative"
     >
       <span className="font-3 text-1 text-text-muted tracking-4 uppercase">Lab {lab.number}</span>
-      <span
-        className="font-4 italic font-normal text-8 tracking-normal text-accent leading-3 [&_sub]:text-[.6em] [&_sup]:text-[.6em] [&_sub]:leading-none [&_sup]:leading-none [&_sub]:align-[-.32em] [&_sup]:align-[.5em]"
-        dangerouslySetInnerHTML={{ __html: lab.formula }}
-      />
+      <span className="font-4 italic font-normal text-8 tracking-normal text-accent leading-3">
+        {lab.formula}
+      </span>
       <span className="text-6 text-text font-medium">{lab.title}</span>
       <span className="text-4 text-text-dim leading-4">{lab.blurb}</span>
     </Link>
@@ -52,7 +51,7 @@ function Reference() {
           <div className="flex items-baseline justify-between mb-2xl pb-xl border-b border-border-strong gap-xl flex-wrap">
             <div>
               <div className="font-3 text-2 text-accent uppercase tracking-4">System sandboxes</div>
-              <h2 className="font-2 font-light text-[clamp(36px,5vw,56px)] tracking-1 text-text leading-none [&_em]:italic [&_em]:text-accent [&_em]:font-normal">Put the chapters together</h2>
+              <h2 className="font-2 font-light text-[clamp(36px,5vw,56px)] tracking-1 text-text leading-none">Put the chapters together</h2>
             </div>
             <p className="text-6 text-text-dim max-w-col-sm text-right max-md:text-left leading-4">
               The free-form playgrounds. Build circuits, wire houses, drive motors, run grids,
@@ -75,7 +74,7 @@ function Reference() {
               <div className="flex items-baseline justify-between mb-2xl pb-xl border-b border-border-strong gap-xl flex-wrap">
                 <div>
                   <div className="font-3 text-2 text-accent uppercase tracking-4">{meta.eyebrow}</div>
-                  <h2 className="font-2 font-light text-[clamp(36px,5vw,56px)] tracking-1 text-text leading-none [&_em]:italic [&_em]:text-accent [&_em]:font-normal">{meta.title}</h2>
+                  <h2 className="font-2 font-light text-[clamp(36px,5vw,56px)] tracking-1 text-text leading-none">{meta.title}</h2>
                 </div>
                 <p className="text-6 text-text-dim max-w-col-sm text-right max-md:text-left leading-4">{meta.blurb}</p>
               </div>

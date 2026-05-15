@@ -31,76 +31,76 @@ export default function Ch2VoltageAndCurrent() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p>
+      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
         Touch the two terminals of a 9-volt battery to your tongue. There is a sour metallic sting and a faint shock — the
         only direct, sensory measurement of voltage that most people ever make. What you felt was not 9 volts arriving from
-        somewhere. It was 9 volts of <em>difference</em> between the two contacts in your saliva, and current flowing
+        somewhere. It was 9 volts of <em className="italic text-text">difference</em> between the two contacts in your saliva, and current flowing
         between them as a result. Voltage is always between two things. Always.
       </p>
-      <p>
+      <p className="mb-prose-3">
         This chapter is about the two quantities every electrician and every wall-outlet label talks about constantly:
         voltage and current. Both have intuitive analogies that get the algebra right and the picture wrong. We're going
         to do the algebra and then, more importantly, take the wrong pictures away.
       </p>
 
-      <h2>Voltage isn't pressure. It's a <em>difference</em>.</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Voltage isn't pressure. It's a <em className="italic text-accent font-normal">difference</em>.</h2>
 
-      <p>
+      <p className="mb-prose-3">
         The standard plumbing analogy says{' '}
-        <Term def={<><strong>voltage</strong> (potential difference) — the work done per unit positive charge to move it between two points: <em>V<sub>ab</sub></em> = −∫<sub>a</sub><sup>b</sup> <em>E·dℓ</em>. SI unit: volt (1 V = 1 J/C). Always defined between two points.</>}>voltage</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">voltage</strong> (potential difference) — the work done per unit positive charge to move it between two points: <em className="italic text-text">V<sub>ab</sub></em> = −∫<sub>a</sub><sup>b</sup> <em className="italic text-text">E·dℓ</em>. SI unit: volt (1 V = 1 J/C). Always defined between two points.</>}>voltage</Term>{' '}
         is like water pressure: a battery pushes electrons through a wire the
         way a pump pushes water through a pipe. The analogy is appealing and gets you about a third of the way before it
-        breaks down. The first thing to fix is the idea that voltage is a property of a single point. It isn't. <strong>Voltage is
+        breaks down. The first thing to fix is the idea that voltage is a property of a single point. It isn't. <strong className="text-text font-medium">Voltage is
         a property of a path between two points.</strong> A point in space can be assigned a potential, but only after you've
         chosen, somewhere off in the distance, a reference. Move the reference and every "voltage" shifts by the same
         amount. The differences are unchanged.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Formally, the potential at a point is defined as a line integral of the electric field from a reference point to
         that point, with a minus sign:
       </p>
       <Formula>V<sub>ab</sub> = V<sub>b</sub> − V<sub>a</sub> = − ∫<sub>a</sub><sup>b</sup> E · dℓ</Formula>
-      <p>
-        where <strong>V<sub>a</sub></strong> and <strong>V<sub>b</sub></strong> are the potentials (in volts, J/C) at
-        the two endpoints, <strong>V<sub>ab</sub></strong> is the potential difference between them,
-        <strong> E</strong> is the electric field vector (in V/m, equivalently N/C),
-        <strong> dℓ</strong> is the infinitesimal vector element of any path from <em>a</em> to <em>b</em> (in metres), and the
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">V<sub>a</sub></strong> and <strong className="text-text font-medium">V<sub>b</sub></strong> are the potentials (in volts, J/C) at
+        the two endpoints, <strong className="text-text font-medium">V<sub>ab</sub></strong> is the potential difference between them,
+        <strong className="text-text font-medium"> E</strong> is the electric field vector (in V/m, equivalently N/C),
+        <strong className="text-text font-medium"> dℓ</strong> is the infinitesimal vector element of any path from <em className="italic text-text">a</em> to <em className="italic text-text">b</em> (in metres), and the
         integral runs along that path.
       </p>
-      <p>
-        The minus sign is convention: walking <em>against</em> the field gains you potential, the way climbing
-        <em>against</em> gravity gains you altitude. For static charges the integral is path-independent <Cite id="feynman-II-2" in={SOURCES} />
-        — the field is conservative, ∇×<strong>E</strong> = 0 — which is what lets you talk about the voltage at a point
+      <p className="mb-prose-3">
+        The minus sign is convention: walking <em className="italic text-text">against</em> the field gains you potential, the way climbing
+        <em className="italic text-text">against</em> gravity gains you altitude. For static charges the integral is path-independent <Cite id="feynman-II-2" in={SOURCES} />
+        — the field is conservative, ∇×<strong className="text-text font-medium">E</strong> = 0 — which is what lets you talk about the voltage at a point
         at all. Drop that property (we will, in Chapter 5) and "voltage" stops meaning what you think it means
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
       <VoltageAsHeightDemo />
 
-      <p>
+      <p className="mb-prose-3">
         The gravitational analogy is exact in all the parts that matter. A ball at the top of a hill has gravitational
-        potential energy <em>mgh</em>; let it roll and that energy converts to kinetic. A positive test charge at the high
-        end of a voltage drop has electrical potential energy <em>qV</em>; let it move and that energy goes into
+        potential energy <em className="italic text-text">mgh</em>; let it roll and that energy converts to kinetic. A positive test charge at the high
+        end of a voltage drop has electrical potential energy <em className="italic text-text">qV</em>; let it move and that energy goes into
         kinetic energy of the charge — which, in a wire full of fixed obstacles, almost immediately becomes heat. The
         battery is the climber lifting the ball back up. Voltage is the height it lifted to.
       </p>
 
-      <h3>Voltage as energy per unit charge</h3>
+      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">Voltage as energy per unit charge</h3>
 
-      <p>
+      <p className="mb-prose-3">
         The line integral is the formal definition; the way every working engineer holds voltage in their head is
         operationally — as the energy it takes (or releases) per coulomb of charge moved from one point to the other.
-        Move a charge <strong>q</strong> against a potential difference <strong>V</strong> and you do work
+        Move a charge <strong className="text-text font-medium">q</strong> against a potential difference <strong className="text-text font-medium">V</strong> and you do work
       </p>
       <Formula>W = q V</Formula>
-      <p>
-        where <strong>W</strong> is the work done on the charge (in joules), <strong>q</strong> is the charge being
-        moved (in coulombs, signed), and <strong>V</strong> is the potential difference between the start and end
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">W</strong> is the work done on the charge (in joules), <strong className="text-text font-medium">q</strong> is the charge being
+        moved (in coulombs, signed), and <strong className="text-text font-medium">V</strong> is the potential difference between the start and end
         points (in volts). Equivalently, rearrange to read voltage off as work-per-charge:
       </p>
       <Formula>V = W / q = ΔU / q</Formula>
-      <p>
-        where <strong>ΔU</strong> is the change in electrical potential energy of the charge (in joules). One volt
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">ΔU</strong> is the change in electrical potential energy of the charge (in joules). One volt
         is one joule per coulomb. That single identity is why "1.5 V" on a battery is a statement about energy: it
         says the cell can deposit 1.5 joules of energy onto every coulomb of charge that flows out one terminal and
         back into the other<Cite id="feynman-II-2" in={SOURCES} />.
@@ -108,40 +108,40 @@ export default function Ch2VoltageAndCurrent() {
 
       <VoltageDrivesFlowDemo />
 
-      <p>
+      <p className="mb-prose-3">
         That operational picture has a knob the reader can already turn. Hook a battery of
-        voltage <em>V</em> across a fixed resistive load and a fixed current flows: in the
-        demo above, <em>I = V/R</em> for <em>R</em> = 10 Ω. Doubling <em>V</em> doubles the
-        current — and, via <em>v<sub>d</sub> = I/(nqA)</em>, doubles the drift speed of the
+        voltage <em className="italic text-text">V</em> across a fixed resistive load and a fixed current flows: in the
+        demo above, <em className="italic text-text">I = V/R</em> for <em className="italic text-text">R</em> = 10 Ω. Doubling <em className="italic text-text">V</em> doubles the
+        current — and, via <em className="italic text-text">v<sub>d</sub> = I/(nqA)</em>, doubles the drift speed of the
         electrons inside the copper. But the drift stays microscopic across the whole slider
         range, never breaking out of tens of micrometres per second. What lifts dramatically
-        is the power <em>P = V·I = V²/R</em>: a quadratic, not a linear, function of voltage.
-        That is the reason the load gets so much brighter when you crank <em>V</em>, and the
+        is the power <em className="italic text-text">P = V·I = V²/R</em>: a quadratic, not a linear, function of voltage.
+        That is the reason the load gets so much brighter when you crank <em className="italic text-text">V</em>, and the
         reason the grid pushes power cross-country at hundreds of kilovolts. Chapter 3 makes
         Ohm's law and power rigorous; Chapter 8 will show that the energy isn't actually
         flowing through the copper at all.
       </p>
 
-      <h3>The cleanest case: a uniform field between two plates</h3>
+      <h3 className="font-2 font-medium text-4 uppercase tracking-4 text-accent mt-xl mb-[0.875rem]">The cleanest case: a uniform field between two plates</h3>
 
-      <p>
-        Inside a parallel-plate capacitor with the plates a distance <strong>d</strong> apart, the electric field is
+      <p className="mb-prose-3">
+        Inside a parallel-plate capacitor with the plates a distance <strong className="text-text font-medium">d</strong> apart, the electric field is
         uniform — same magnitude, same direction at every point in the gap. The line integral collapses to a single
         product. The voltage between the plates is
       </p>
       <Formula>V = E d</Formula>
-      <p>
-        where <strong>V</strong> is the potential difference between the two plates (in volts),
-        <strong> E</strong> is the magnitude of the uniform electric field in the gap (in V/m), and
-        <strong> d</strong> is the gap distance (in metres). Voltage and field, in this geometry, are two ways of
-        saying the same thing. The work to push a charge <strong>q</strong> from one plate to the other is then
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">V</strong> is the potential difference between the two plates (in volts),
+        <strong className="text-text font-medium"> E</strong> is the magnitude of the uniform electric field in the gap (in V/m), and
+        <strong className="text-text font-medium"> d</strong> is the gap distance (in metres). Voltage and field, in this geometry, are two ways of
+        saying the same thing. The work to push a charge <strong className="text-text font-medium">q</strong> from one plate to the other is then
       </p>
       <Formula>W = q V = q E d</Formula>
-      <p>
-        the product of charge, field, and distance — exactly Newton's <em>work = force × distance</em> with
-        <em> F = qE</em> from Ch.1. And for any intermediate height <em>h</em> off the bottom plate, the voltage
-        relative to the bottom is just <em>V(h) = E h</em>: a perfect linear ramp from 0 at the bottom to
-        <em> V<sub>plate</sub></em> at the top. The "electrical landscape" inside a parallel-plate cap is a perfectly
+      <p className="mb-prose-3">
+        the product of charge, field, and distance — exactly Newton's <em className="italic text-text">work = force × distance</em> with
+        <em className="italic text-text"> F = qE</em> from Ch.1. And for any intermediate height <em className="italic text-text">h</em> off the bottom plate, the voltage
+        relative to the bottom is just <em className="italic text-text">V(h) = E h</em>: a perfect linear ramp from 0 at the bottom to
+        <em className="italic text-text"> V<sub>plate</sub></em> at the top. The "electrical landscape" inside a parallel-plate cap is a perfectly
         sloped ski hill, and any charge dropped in slides down it<Cite id="feynman-II-2" in={SOURCES} /><Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
@@ -152,43 +152,43 @@ export default function Ch2VoltageAndCurrent() {
       <TryIt
         tag="Try 2.1"
         question={
-          <>A battery transfers <strong>1 J</strong> of energy to <strong>1 mC</strong> of charge as it moves from one
+          <>A battery transfers <strong className="text-text font-medium">1 J</strong> of energy to <strong className="text-text font-medium">1 mC</strong> of charge as it moves from one
           terminal to the other. What is the potential difference between the terminals?</>
         }
         hint="Voltage is energy per unit charge: V = W/Q."
         answer={
           <>
-            <p>By definition, the voltage between two points is the work per unit charge:</p>
+            <p className="mb-prose-1 last:mb-0">By definition, the voltage between two points is the work per unit charge:</p>
             <Formula>V = W/Q = 1 J / 1×10⁻³ C = 1000 V</Formula>
-            <p>Answer: <strong>1000 V (1 kV)</strong>.</p>
+            <p className="mb-prose-1 last:mb-0">Answer: <strong className="text-text font-medium">1000 V (1 kV)</strong>.</p>
           </>
         }
       />
 
-      <h2>What current actually <em>is</em></h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What current actually <em className="italic text-accent font-normal">is</em></h2>
 
-      <p>
-        <Term def={<><strong>Current</strong> — the rate at which charge crosses a surface, <em>I = dQ/dt</em>. SI unit: ampere (1 A = 1 C/s). A signed scalar pointing the way conventional positive charge would move.</>}>Current</Term>{' '}
+      <p className="mb-prose-3">
+        <Term def={<><strong className="text-text font-medium">Current</strong> — the rate at which charge crosses a surface, <em className="italic text-text">I = dQ/dt</em>. SI unit: ampere (1 A = 1 C/s). A signed scalar pointing the way conventional positive charge would move.</>}>Current</Term>{' '}
         is the flow of charge — coulombs per second, with units called{' '}
-        <Term def={<><strong>ampere</strong> — the SI unit of current; 1 A = 1 coulomb per second ≈ 6.24×10¹⁸ elementary charges per second. Defined since 2019 by fixing the value of <em>e</em>.</>}>amperes</Term>. One amp is one coulomb per
-        second, which works out to about <strong>6.24×10¹⁸ elementary charges per second</strong> moving past a fixed
+        <Term def={<><strong className="text-text font-medium">ampere</strong> — the SI unit of current; 1 A = 1 coulomb per second ≈ 6.24×10¹⁸ elementary charges per second. Defined since 2019 by fixing the value of <em className="italic text-text">e</em>.</>}>amperes</Term>. One amp is one coulomb per
+        second, which works out to about <strong className="text-text font-medium">6.24×10¹⁸ elementary charges per second</strong> moving past a fixed
         cross-section. That is an absurd number of electrons. It will get more absurd in two paragraphs.
       </p>
       <Formula>I = dQ / dt</Formula>
-      <p>
-        where <strong>I</strong> is the current (in amperes, A = C/s), <strong>Q</strong> is the net charge that has
-        crossed a chosen fixed cross-section (in coulombs), and <strong>t</strong> is time (in seconds). The sign of
-        <strong> I</strong> follows the direction of conventional positive-charge flow across that surface.
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">I</strong> is the current (in amperes, A = C/s), <strong className="text-text font-medium">Q</strong> is the net charge that has
+        crossed a chosen fixed cross-section (in coulombs), and <strong className="text-text font-medium">t</strong> is time (in seconds). The sign of
+        <strong className="text-text font-medium"> I</strong> follows the direction of conventional positive-charge flow across that surface.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Current has a direction. By the convention Benjamin Franklin set in 1747 — long before anyone knew electrons
-        existed — current points the direction <em>positive</em> charge would move. In an ordinary copper wire the actual
+        existed — current points the direction <em className="italic text-text">positive</em> charge would move. In an ordinary copper wire the actual
         carriers are electrons, which are negative, and they drift the opposite way from the{' '}
-        <Term def={<><strong>conventional current</strong> — the direction positive charge would move, by Franklin's 1747 sign choice. In metals the actual carriers (electrons) drift the opposite way; the convention is universal anyway.</>}>conventional current</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">conventional current</strong> — the direction positive charge would move, by Franklin's 1747 sign choice. In metals the actual carriers (electrons) drift the opposite way; the convention is universal anyway.</>}>conventional current</Term>{' '}
         arrow <Cite id="griffiths-2017" in={SOURCES} />. Every diagram in every electronics textbook silently asks you to
         carry that inversion in your head. Most people learn to do it without noticing.
       </p>
-      <p>
+      <p className="mb-prose-3">
         With voltage and current in hand, you have the two quantities meters measure. You also have the setup for what
         is, on reflection, one of the strangest facts in classical physics — and the heart of this chapter. The
         electrons in a wire really do move when current flows. They just move much, much more slowly than you'd guess.
@@ -197,50 +197,50 @@ export default function Ch2VoltageAndCurrent() {
       <TryIt
         tag="Try 2.2"
         question={
-          <>A current of <strong>1 A</strong> flows past a fixed cross-section. How many electrons cross that section
+          <>A current of <strong className="text-text font-medium">1 A</strong> flows past a fixed cross-section. How many electrons cross that section
           per second?</>
         }
         hint="One ampere = one coulomb per second; each electron carries e = 1.602×10⁻¹⁹ C."
         answer={
           <>
-            <p>The number per second is just the current divided by the elementary charge <Cite id="codata-2018" in={SOURCES} />:</p>
+            <p className="mb-prose-1 last:mb-0">The number per second is just the current divided by the elementary charge <Cite id="codata-2018" in={SOURCES} />:</p>
             <Formula>N = I/e = 1 / 1.602×10⁻¹⁹ ≈ 6.24×10¹⁸ electrons/s</Formula>
-            <p>Answer: <strong>~6.24×10¹⁸ electrons per second</strong> — six quintillion, every second, for every amp.</p>
+            <p className="mb-prose-1 last:mb-0">Answer: <strong className="text-text font-medium">~6.24×10¹⁸ electrons per second</strong> — six quintillion, every second, for every amp.</p>
           </>
         }
       />
 
-      <h2>The astonishing slowness of <em>electrons</em></h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The astonishing slowness of <em className="italic text-accent font-normal">electrons</em></h2>
 
-      <p>
+      <p className="mb-prose-3">
         In a copper wire, roughly one of each atom's electrons is loose — not bound to any particular nucleus, free to
-        wander. That gives a free-electron density of about <strong>n ≈ 8.5×10²⁸ /m³</strong> <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
+        wander. That gives a free-electron density of about <strong className="text-text font-medium">n ≈ 8.5×10²⁸ /m³</strong> <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
         These electrons are not at rest. They scream around at the{' '}
-        <Term def={<><strong>Fermi velocity</strong> — the speed of electrons at the Fermi surface of a metal, set by quantum degeneracy. For copper, <em>v<sub>F</sub></em> ≈ 1.6×10⁶ m/s — about 0.5% of <em>c</em>.</>}>Fermi velocity</Term>, roughly <strong>1.6×10⁶ m/s</strong>,
-        bouncing off lattice ions every <strong>τ ≈ 2×10⁻¹⁴ s</strong> <Cite id="kittel-2005" in={SOURCES} /><Cite id="libretexts-conduction" in={SOURCES} />.
-        Apply a field and on top of all that random motion they pick up a tiny <em>average</em>{' '}
-        <Term def={<><strong>drift velocity</strong> — the small average velocity of charge carriers superimposed on their random thermal motion when an electric field is applied. <em>v<sub>d</sub> = I/(nqA)</em>. Typically millimeters per second in household wiring.</>}>drift</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">Fermi velocity</strong> — the speed of electrons at the Fermi surface of a metal, set by quantum degeneracy. For copper, <em className="italic text-text">v<sub>F</sub></em> ≈ 1.6×10⁶ m/s — about 0.5% of <em className="italic text-text">c</em>.</>}>Fermi velocity</Term>, roughly <strong className="text-text font-medium">1.6×10⁶ m/s</strong>,
+        bouncing off lattice ions every <strong className="text-text font-medium">τ ≈ 2×10⁻¹⁴ s</strong> <Cite id="kittel-2005" in={SOURCES} /><Cite id="libretexts-conduction" in={SOURCES} />.
+        Apply a field and on top of all that random motion they pick up a tiny <em className="italic text-text">average</em>{' '}
+        <Term def={<><strong className="text-text font-medium">drift velocity</strong> — the small average velocity of charge carriers superimposed on their random thermal motion when an electric field is applied. <em className="italic text-text">v<sub>d</sub> = I/(nqA)</em>. Typically millimeters per second in household wiring.</>}>drift</Term>{' '}
         in the direction opposite the field. That average drift is what current is made of.
       </p>
-      <p>
+      <p className="mb-prose-3">
         In two equations (the{' '}
-        <Term def={<><strong>Drude model</strong> — Paul Drude's 1900 picture of electrons as a classical gas inside a metal, accelerated by <em>E</em> between collisions with lattice ions every <em>τ</em>. Predicts <em>σ = nq²τ/m</em>.</>}>Drude model</Term>) <Cite id="drude-1900" in={SOURCES} />:
+        <Term def={<><strong className="text-text font-medium">Drude model</strong> — Paul Drude's 1900 picture of electrons as a classical gas inside a metal, accelerated by <em className="italic text-text">E</em> between collisions with lattice ions every <em className="italic text-text">τ</em>. Predicts <em className="italic text-text">σ = nq²τ/m</em>.</>}>Drude model</Term>) <Cite id="drude-1900" in={SOURCES} />:
       </p>
       <Formula>v<sub>d</sub> = I / (n q A)</Formula>
-      <p>
-        where <strong>v<sub>d</sub></strong> is the average drift speed of the carriers (in m/s),
-        <strong> I</strong> is the current (in amperes), <strong>n</strong> is the free-carrier number density
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">v<sub>d</sub></strong> is the average drift speed of the carriers (in m/s),
+        <strong className="text-text font-medium"> I</strong> is the current (in amperes), <strong className="text-text font-medium">n</strong> is the free-carrier number density
         (in carriers per m³; ≈ 8.5×10²⁸/m³ for copper <Cite id="ashcroft-mermin-1976" in={SOURCES} />),
-        <strong> q</strong> is the charge per carrier (in coulombs; for electrons, the elementary charge
-        <em>e</em> ≈ 1.602×10⁻¹⁹ C), and <strong>A</strong> is the wire's cross-sectional area (in m²).
+        <strong className="text-text font-medium"> q</strong> is the charge per carrier (in coulombs; for electrons, the elementary charge
+        <em className="italic text-text">e</em> ≈ 1.602×10⁻¹⁹ C), and <strong className="text-text font-medium">A</strong> is the wire's cross-sectional area (in m²).
       </p>
-      <p>
+      <p className="mb-prose-3">
         Plug in numbers. One amp through a 2.5 mm² copper wire:
       </p>
       <Formula>v<sub>d</sub> = 1 / (8.5×10²⁸ · 1.6×10⁻¹⁹ · 2.5×10⁻⁶) ≈ 2.9×10⁻⁵ m/s</Formula>
-      <p>
+      <p className="mb-prose-3">
         Three hundredths of a millimeter per second. A 12-gauge wire carrying 20 A — the kind feeding your kitchen
-        outlet — has a drift velocity of about <strong>0.02 mm/s</strong> <Cite id="libretexts-conduction" in={SOURCES} />.
+        outlet — has a drift velocity of about <strong className="text-text font-medium">0.02 mm/s</strong> <Cite id="libretexts-conduction" in={SOURCES} />.
         A garden snail moves roughly fifty times faster. To traverse a one-meter wire, a single electron needs about
         ten hours. For a forty-foot extension cord at the same current, more than a hundred.
       </p>
@@ -266,18 +266,18 @@ export default function Ch2VoltageAndCurrent() {
         <DriftVelocityDemo />
       </PredictThenObserve>
 
-      <p>
+      <p className="mb-prose-3">
         And yet the lamp at the far end of that extension cord turns on the instant you flip the switch. Whatever is
         getting from the switch to the bulb to make it glow, it is not the electrons that were sitting near the switch.
         They will not arrive for hours.
       </p>
 
-      <p>
-        Before moving on, one demonstration of how directly those drifting electrons respond to <em>any</em> electric
+      <p className="mb-prose-3">
+        Before moving on, one demonstration of how directly those drifting electrons respond to <em className="italic text-text">any</em> electric
         field — not just the battery's. Bring an external charge near the wire and the free electrons inside feel it
         immediately. They pile up, recoil, and redistribute over the conductor's surface until their own field cancels
         the intruder's everywhere in the bulk. That cancellation happens in picoseconds and is the reason an
-        electrostatic conductor has <em>E = 0</em> inside <Cite id="griffiths-2017" in={SOURCES} />. The transient — the
+        electrostatic conductor has <em className="italic text-text">E = 0</em> inside <Cite id="griffiths-2017" in={SOURCES} />. The transient — the
         electrons actually doing the rearranging — is what the next demo lets you watch.
       </p>
 
@@ -286,30 +286,30 @@ export default function Ch2VoltageAndCurrent() {
       <TryIt
         tag="Try 2.3"
         question={
-          <>A <strong>1.5 mm²</strong> copper wire carries <strong>5 A</strong>. Compute the drift velocity, using
-          <em> n</em> ≈ 8.5×10²⁸ /m³ for copper.</>
+          <>A <strong className="text-text font-medium">1.5 mm²</strong> copper wire carries <strong className="text-text font-medium">5 A</strong>. Compute the drift velocity, using
+          <em className="italic text-text"> n</em> ≈ 8.5×10²⁸ /m³ for copper.</>
         }
         hint={<>Plug into v<sub>d</sub> = I/(nqA), using q = e = 1.602×10⁻¹⁹ C and converting mm² to m².</>}
         answer={
           <>
-            <p>With <em>A</em> = 1.5×10⁻⁶ m², and <em>n</em> from Ashcroft &amp; Mermin <Cite id="ashcroft-mermin-1976" in={SOURCES} />:</p>
+            <p className="mb-prose-1 last:mb-0">With <em className="italic text-text">A</em> = 1.5×10⁻⁶ m², and <em className="italic text-text">n</em> from Ashcroft &amp; Mermin <Cite id="ashcroft-mermin-1976" in={SOURCES} />:</p>
             <Formula>v<sub>d</sub> = I/(nqA) = 5 / (8.5×10²⁸ · 1.602×10⁻¹⁹ · 1.5×10⁻⁶) ≈ 2.4×10⁻⁴ m/s</Formula>
-            <p>
-              Answer: about <strong>0.24 mm/s</strong>. At that crawl, a single electron takes roughly 70 minutes to
+            <p className="mb-prose-1 last:mb-0">
+              Answer: about <strong className="text-text font-medium">0.24 mm/s</strong>. At that crawl, a single electron takes roughly 70 minutes to
               traverse a one-meter wire.
             </p>
           </>
         }
       />
 
-      <h2>The two speeds in the same wire</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The two speeds in the same wire</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Inside a copper wire two completely different things can be said to "move," and they move at speeds that differ
         by thirteen orders of magnitude. The electrons themselves drift at millimeters per second. The
-        <em> electromagnetic{' '}
-        <Term def={<><strong>signal propagation</strong> — the speed at which a disturbance in the electromagnetic field around a conductor travels. Set by the wire's geometry and surrounding dielectric, typically ~⅔ <em>c</em> in insulated copper, not by the speed of any electron.</>}>signal</Term></em> — the disturbance in the field that tells charges everywhere along the wire to
-        start drifting — propagates at roughly two-thirds the speed of light, around <strong>2×10⁸ m/s</strong> in
+        <em className="italic text-text"> electromagnetic{' '}
+        <Term def={<><strong className="text-text font-medium">signal propagation</strong> — the speed at which a disturbance in the electromagnetic field around a conductor travels. Set by the wire's geometry and surrounding dielectric, typically ~⅔ <em className="italic text-text">c</em> in insulated copper, not by the speed of any electron.</>}>signal</Term></em> — the disturbance in the field that tells charges everywhere along the wire to
+        start drifting — propagates at roughly two-thirds the speed of light, around <strong className="text-text font-medium">2×10⁸ m/s</strong> in
         typical copper wiring <Cite id="libretexts-conduction" in={SOURCES} />. That ratio is the central
         you-thought-you-understood-this-but-you-didn't moment.
       </p>
@@ -327,30 +327,30 @@ export default function Ch2VoltageAndCurrent() {
         hint="Just divide the two speeds, then divide 0.30 m by each."
         answer={
           <>
-            <p>The ratio of speeds <Cite id="libretexts-conduction" in={SOURCES} />:</p>
+            <p className="mb-prose-1 last:mb-0">The ratio of speeds <Cite id="libretexts-conduction" in={SOURCES} />:</p>
             <Formula>v<sub>signal</sub>/v<sub>drift</sub> ≈ 2×10⁸ / 2.4×10⁻⁴ ≈ 8×10¹¹</Formula>
-            <p>
-              Time for the signal to cross 30 cm: 0.30 / (2×10⁸) = <strong>1.5 ns</strong>. Time for a single drifting
-              electron: 0.30 / (2.4×10⁻⁴) ≈ <strong>1250 s ≈ 21 minutes</strong>. Nearly twelve orders of magnitude
+            <p className="mb-prose-1 last:mb-0">
+              Time for the signal to cross 30 cm: 0.30 / (2×10⁸) = <strong className="text-text font-medium">1.5 ns</strong>. Time for a single drifting
+              electron: 0.30 / (2.4×10⁻⁴) ≈ <strong className="text-text font-medium">1250 s ≈ 21 minutes</strong>. Nearly twelve orders of magnitude
               separate the two.
             </p>
           </>
         }
       />
 
-      <p>
+      <p className="mb-prose-3">
         The signal is not made of electrons. It is the electromagnetic field reconfiguring itself, and that
         reconfiguration travels at near-c through the space around the wire. The electrons respond to the field locally,
         wherever they happen to be sitting. They start drifting in place; nothing has to travel from one end to the
         other. This is the picture that, properly developed, becomes Chapter 6.
       </p>
 
-      <h2>What actually lights the <em>bulb</em></h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What actually lights the <em className="italic text-accent font-normal">bulb</em></h2>
 
-      <p>
+      <p className="mb-prose-3">
         Here is the sequence, in order, when you flip a wall switch and a bulb on the far side of the room comes on:
       </p>
-      <p>
+      <p className="mb-prose-3">
         (1) The switch closes. (2) The electric field that was already present in the wires — held in place by the
         battery or the line voltage — reconfigures around the new geometry, and that reconfiguration propagates outward
         at near the speed of light. (3) Within nanoseconds the field has reached every electron in the bulb's
@@ -379,7 +379,7 @@ export default function Ch2VoltageAndCurrent() {
         <SwitchAndBulbDemo />
       </PredictThenObserve>
 
-      <p>
+      <p className="mb-prose-3">
         Notice what is not in that list. No electron travels from the switch to the bulb. No charge "flows through" the
         wire in any sense that resembles water through a pipe. The electrons in the filament were always there. The
         thing that propagated was the field, which is not made of charges at all — it is a structure in space that
@@ -388,9 +388,9 @@ export default function Ch2VoltageAndCurrent() {
         get to that one in Chapter 6.
       </p>
 
-      <h2>What we have so far</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so far</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Voltage is a difference between two points — the line integral of E along any path between them, with a sign.
         Current is the rate of charge flow past a cross-section, by convention pointing the way positive charges would
         move. The actual carriers in a metal wire are electrons drifting in the opposite direction at a few hundredths
@@ -398,7 +398,7 @@ export default function Ch2VoltageAndCurrent() {
         at a fraction of the speed of light through the field, not through the metal — and it arrives essentially
         instantly while the electrons themselves are still settling in for a long, slow walk.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Three quantities are still missing from this picture: how hard a wire pushes back against current, how that
         pushback turns into heat, and why a long thin wire pushes back more than a short fat one. Those are the
         subject of Chapter 3.
@@ -423,27 +423,27 @@ export default function Ch2VoltageAndCurrent() {
             { label: 'Free-electron density in copper conductors', value: <>~8.5×10<sup>28</sup> /m<sup>3</sup> <Cite id="ashcroft-mermin-1976" in={SOURCES} /></> },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The original USB spec delivered 2.5 W at a fixed 5 V — enough to spin a flash drive,
             not enough to do anything else. Modern USB-C Power Delivery, in its Extended Power
-            Range mode, negotiates up to <strong>48 V at 5 A</strong> for a total of
-            <strong> 240 W</strong> through a cable not much thicker than a shoelace
+            Range mode, negotiates up to <strong className="text-text font-medium">48 V at 5 A</strong> for a total of
+            <strong className="text-text font-medium"> 240 W</strong> through a cable not much thicker than a shoelace
             <Cite id="usb-pd-r3" in={SOURCES} />. That is enough to charge a gaming laptop or run a
             small monitor.
           </p>
-          <p>
-            The trick is the choice of variable. Power is <em>P = VI</em>; double the voltage and
-            you can deliver the same power at half the current. With <em>n ≈ 8.5×10²⁸ /m³</em>
+          <p className="mb-prose-2 last:mb-0">
+            The trick is the choice of variable. Power is <em className="italic text-text">P = VI</em>; double the voltage and
+            you can deliver the same power at half the current. With <em className="italic text-text">n ≈ 8.5×10²⁸ /m³</em>
             free electrons in copper<Cite id="ashcroft-mermin-1976" in={SOURCES} />, the drift
-            speed <strong>v<sub>d</sub> = I/(nqA)</strong> stays in the millimeters-per-second
+            speed <strong className="text-text font-medium">v<sub>d</sub> = I/(nqA)</strong> stays in the millimeters-per-second
             range — the same crawl this chapter just described — even as the conductor moves real
             power. The cable carries the energy through the surrounding field at near-c, while the
             actual electrons in the copper sit there jittering with a vanishingly small bias on
             top<Cite id="libretexts-conduction" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             That same logic forces a piece of hardware: cables rated for ≥5 A must carry an
-            <em> e-marker</em> chip that tells the source what current the conductor and connector
+            <em className="italic text-text"> e-marker</em> chip that tells the source what current the conductor and connector
             can survive<Cite id="usb-pd-r3" in={SOURCES} />. Without it the source refuses to
             negotiate above 3 A. Voltage is still always a difference — between the cable's two
             data pins — but the difference is now used to decide how many amperes the engineering
@@ -462,23 +462,23 @@ export default function Ch2VoltageAndCurrent() {
             { label: 'Mechanism', value: <>electrocytes stacked in series; each contributes ~150 mV <Cite id="catania-2015" in={SOURCES} /></> },
           ]}
         >
-          <p>
-            <em>Electrophorus electricus</em> spends most of its life in murky Amazonian water and
+          <p className="mb-prose-2 last:mb-0">
+            <em className="italic text-text">Electrophorus electricus</em> spends most of its life in murky Amazonian water and
             does most of its hunting with electricity. Lining each side of its body are thousands
-            of flattened cells called <strong>electrocytes</strong>, each of which uses ion pumps
+            of flattened cells called <strong className="text-text font-medium">electrocytes</strong>, each of which uses ion pumps
             to maintain a small potential difference across its membrane. Stacked in series like
             a battery pack, the small potentials add. A direct probe measurement reports peak
-            discharges of about <strong>600 V at ~1 A</strong> during predatory strikes
+            discharges of about <strong className="text-text font-medium">600 V at ~1 A</strong> during predatory strikes
             <Cite id="catania-2015" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The relevant physics is the chapter's first lesson: voltage is a sum of differences
             along a path. One electrocyte across an ion gradient produces maybe a hundred and
             fifty millivolts; thousands in series produce hundreds of volts. The fish doesn't
-            generate more <em>charge</em> than any other animal — it generates a longer
-            <em> stack</em>, summing identical small ΔV terms along the path from head to tail.
+            generate more <em className="italic text-text">charge</em> than any other animal — it generates a longer
+            <em className="italic text-text"> stack</em>, summing identical small ΔV terms along the path from head to tail.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             On the current side, the eel's brief peak of about an ampere into the surrounding
             water is unremarkable as raw current — your house wiring sees twenty times that — but
             it is delivered at hundreds of volts and is enough to stun a fish a body-length away.
@@ -492,11 +492,11 @@ export default function Ch2VoltageAndCurrent() {
       <FAQ intro="Questions readers ask after this chapter — the misconception-busters, the order-of-magnitude sanity checks, and the things nobody quite explains in school.">
         <FAQItem q="If voltage is between two points, what does it mean to say a wire is at 'ground' or 'zero volts'?">
           <p>
-            "Ground" is just the agreed-upon <strong>reference point</strong> from which other voltages are measured. In a
+            "Ground" is just the agreed-upon <strong className="text-text font-medium">reference point</strong> from which other voltages are measured. In a
             household circuit it is literally a rod driven into the soil; in a portable circuit it is the battery's
             negative terminal; in a spacecraft it is the chassis. Calling a point "zero volts" is no different from
             calling sea level "zero altitude" — the choice is human, the differences are physical. Reassign ground and
-            every node's voltage shifts by the same number, but the <em>differences</em>, which are what move charges,
+            every node's voltage shifts by the same number, but the <em className="italic text-text">differences</em>, which are what move charges,
             never change <Cite id="griffiths-2017" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -506,7 +506,7 @@ export default function Ch2VoltageAndCurrent() {
             Chemistry. Each electrochemical cell has a characteristic voltage set by the energy released per electron
             when its two half-reactions run: about 1.5 V for an alkaline zinc–manganese-dioxide cell, 2.0 V for lead-acid,
             3.7 V for lithium-ion. A 9 V battery is six 1.5 V alkaline cells stacked in series, summing to nine.
-            <strong>The number is fundamentally a count of joules per coulomb</strong> the chemistry can deliver — no
+            <strong className="text-text font-medium">The number is fundamentally a count of joules per coulomb</strong> the chemistry can deliver — no
             more, no less — and that ratio is fixed by the molecular orbitals of the reactants, not by anything the
             engineer chose.
           </p>
@@ -514,8 +514,8 @@ export default function Ch2VoltageAndCurrent() {
 
         <FAQItem q="In plain words, what's the actual difference between voltage and current?">
           <p>
-            Voltage is <em>how badly</em> the charges want to move from one point to another — the energy each coulomb
-            would release if it got there. Current is <em>how many</em> of them actually are moving per second past a
+            Voltage is <em className="italic text-text">how badly</em> the charges want to move from one point to another — the energy each coulomb
+            would release if it got there. Current is <em className="italic text-text">how many</em> of them actually are moving per second past a
             given cross-section. A high voltage with no path is like a held breath; a high current is the breath
             already out. The two are linked through whatever is in between them, which in Chapter 3 will turn out to be
             resistance.
@@ -524,7 +524,7 @@ export default function Ch2VoltageAndCurrent() {
 
         <FAQItem q="One ampere is one coulomb per second — but how many electrons is that, really?">
           <p>
-            A coulomb is about <strong>6.24×10¹⁸ elementary charges</strong>, so one ampere is roughly six quintillion
+            A coulomb is about <strong className="text-text font-medium">6.24×10¹⁸ elementary charges</strong>, so one ampere is roughly six quintillion
             electrons crossing a fixed plane every second. The number feels impossible until you remember that a single
             cubic millimeter of copper already contains around 8.5×10¹⁹ free electrons <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
             Compared to the supply, an ampere of flow is a trickle from a reservoir — which is precisely why drift
@@ -535,7 +535,7 @@ export default function Ch2VoltageAndCurrent() {
         <FAQItem q="Why does flipping a switch light a bulb instantly if electrons drift at fractions of a millimeter per second?">
           <p>
             Because the bulb does not wait for any particular electron to arrive. The instant the switch closes, the
-            <strong> electric field</strong> in the wire reconfigures and that reconfiguration travels at roughly
+            <strong className="text-text font-medium"> electric field</strong> in the wire reconfigures and that reconfiguration travels at roughly
             two-thirds the speed of light <Cite id="libretexts-conduction" in={SOURCES} />. The electrons already
             sitting in the filament feel the new field within nanoseconds and begin drifting in place. The energy that
             heats the tungsten comes from those local electrons colliding with the lattice, not from anything that
@@ -547,7 +547,7 @@ export default function Ch2VoltageAndCurrent() {
           <p>
             Almost certainly not. The electrons in the filament were already in the filament when you screwed the bulb
             in. The electrons in the battery's negative terminal will, in a 20 A circuit, drift at about
-            <strong> 0.02 mm/s</strong> <Cite id="libretexts-conduction" in={SOURCES} /> — over a meter of wire, that's a
+            <strong className="text-text font-medium"> 0.02 mm/s</strong> <Cite id="libretexts-conduction" in={SOURCES} /> — over a meter of wire, that's a
             ten-hour walk. The picture of a charge leaving the battery, traveling down the wire, and arriving at the
             load is wrong in nearly every literal sense. Charges everywhere along the loop drift simultaneously the
             moment the field reaches them.
@@ -558,7 +558,7 @@ export default function Ch2VoltageAndCurrent() {
           <p>
             Yes, and barely at all. In a 60 Hz household line carrying a few amps through ordinary house wiring, each
             electron's drift reverses direction 120 times a second, and during each half-cycle it travels on the order of
-            <strong> a few hundred nanometers</strong> — far less than the diameter of a human hair. The same electron
+            <strong className="text-text font-medium"> a few hundred nanometers</strong> — far less than the diameter of a human hair. The same electron
             you started with stays essentially in place, jittering. The energy delivered to your toaster has nothing to
             do with that jitter; it comes through the surrounding electromagnetic field, which we'll meet properly in
             Chapter 6.
@@ -567,10 +567,10 @@ export default function Ch2VoltageAndCurrent() {
 
         <FAQItem q="Then what actually carries the energy from the battery to the bulb?">
           <p>
-            The <strong>electromagnetic field in the space around the wire</strong>. Inside a resistive wire the
+            The <strong className="text-text font-medium">electromagnetic field in the space around the wire</strong>. Inside a resistive wire the
             electric field points along its length and the magnetic field circles it; their cross product, the
-            Poynting vector, points radially <em>inward</em> through the wire's surface and integrates exactly to
-            <em> VI</em>, the dissipated power <Cite id="feynman-II-2" in={SOURCES} />. The wire is the destination,
+            Poynting vector, points radially <em className="italic text-text">inward</em> through the wire's surface and integrates exactly to
+            <em className="italic text-text"> VI</em>, the dissipated power <Cite id="feynman-II-2" in={SOURCES} />. The wire is the destination,
             not the conduit. This sounds like a parlor trick the first time you hear it; Chapter 6 makes it
             rigorous.
           </p>
@@ -578,8 +578,8 @@ export default function Ch2VoltageAndCurrent() {
 
         <FAQItem q="If voltage is energy per charge, why doesn't a 1 V capacitor 'run out' after one charge passes through?">
           <p>
-            Because the capacitor is doing work on <em>every</em> charge that crosses, not on the first one and then
-            quitting. Voltage is an intensive quantity — it describes the energy <em>per</em> coulomb, available to as
+            Because the capacitor is doing work on <em className="italic text-text">every</em> charge that crosses, not on the first one and then
+            quitting. Voltage is an intensive quantity — it describes the energy <em className="italic text-text">per</em> coulomb, available to as
             many coulombs as care to come through. What runs out is whatever maintains the voltage: the chemical
             reservoir in a battery, the stored field in a capacitor, the rotating magnet in a generator. As long as
             those keep the potential difference up, every passing charge gets its share.
@@ -588,11 +588,11 @@ export default function Ch2VoltageAndCurrent() {
 
         <FAQItem q="Does current require a closed loop? Why?">
           <p>
-            For <em>steady</em> current, yes. Charge is conserved, so any charge piling up at the end of an open wire
+            For <em className="italic text-text">steady</em> current, yes. Charge is conserved, so any charge piling up at the end of an open wire
             quickly raises a counter-field that cancels the driving field — the current stops almost immediately. A
             closed loop lets the charges that leave one point be replaced by charges arriving from another, and the
             process continues indefinitely. The exception is briefly: in a capacitor or an antenna, you can have a
-            transient current that is part of a larger loop closed not by wire but by a <em>displacement current</em>,
+            transient current that is part of a larger loop closed not by wire but by a <em className="italic text-text">displacement current</em>,
             i.e. a changing electric field — Maxwell's contribution, also waiting in Chapter 6.
           </p>
         </FAQItem>
@@ -602,7 +602,7 @@ export default function Ch2VoltageAndCurrent() {
             Two different optimization targets. AC is trivial to transform up and down in voltage with a passive iron
             transformer, which lets the grid push a few hundred kilovolts cross-country (low current, low resistive
             loss) and step it down to 120 V at your wall. DC transformers don't exist passively — they require active
-            switching electronics, which only became cheap recently. <strong>Inside</strong> a device, almost every
+            switching electronics, which only became cheap recently. <strong className="text-text font-medium">Inside</strong> a device, almost every
             transistor, sensor, and chip wants a steady, unidirectional voltage; AC would just confuse it. So we ship
             power as AC and convert at the endpoint.
           </p>
@@ -610,12 +610,12 @@ export default function Ch2VoltageAndCurrent() {
 
         <FAQItem q="What is 'grounding' actually doing safety-wise?">
           <p>
-            It is giving fault current somewhere to go that isn't <em>you</em>. If a hot wire inside a metal appliance
+            It is giving fault current somewhere to go that isn't <em className="italic text-text">you</em>. If a hot wire inside a metal appliance
             chassis frays and touches the case, the ground wire offers a near-zero-resistance path back to the panel,
             which sinks enough current to trip the breaker in milliseconds. Without that ground path, the chassis
             would simply sit at line voltage, waiting for the first person to touch it and the floor at the same time
             to complete the circuit through their body. The earth itself is not magical; what matters is that the
-            appliance and your feet are tied to the <em>same</em> reference.
+            appliance and your feet are tied to the <em className="italic text-text">same</em> reference.
           </p>
         </FAQItem>
 
@@ -632,9 +632,9 @@ export default function Ch2VoltageAndCurrent() {
         <FAQItem q="Does the signal in an AC line travel faster than in a DC line?">
           <p>
             No — the propagation speed depends on the wire's geometry and the surrounding dielectric, not on whether
-            the source is steady or oscillating. In ordinary insulated copper it's around <strong>2×10⁸ m/s</strong>
+            the source is steady or oscillating. In ordinary insulated copper it's around <strong className="text-text font-medium">2×10⁸ m/s</strong>
             either way <Cite id="libretexts-conduction" in={SOURCES} />, roughly two-thirds the speed of light in
-            vacuum. What AC does change is the <em>direction</em> the signal carries energy: it reverses every
+            vacuum. What AC does change is the <em className="italic text-text">direction</em> the signal carries energy: it reverses every
             half-cycle, so the time-averaged Poynting flow into a resistor is what matters, not the instantaneous one.
           </p>
         </FAQItem>
@@ -642,9 +642,9 @@ export default function Ch2VoltageAndCurrent() {
         <FAQItem q="If electrons are everywhere in the copper, where does the 'new' current come from when you connect a battery?">
           <p>
             It doesn't come from anywhere — it was already there as random thermal motion. Before you connect the
-            battery, copper's free electrons are zipping around at the Fermi velocity, about <strong>1.6×10⁶ m/s</strong>
+            battery, copper's free electrons are zipping around at the Fermi velocity, about <strong className="text-text font-medium">1.6×10⁶ m/s</strong>
             <Cite id="kittel-2005" in={SOURCES} />, in every direction at once, so their average velocity is zero and no
-            net current flows. The battery's field adds a tiny systematic bias on top of that chaos — a <em>drift</em>
+            net current flows. The battery's field adds a tiny systematic bias on top of that chaos — a <em className="italic text-text">drift</em>
             of order millimeters per second — and that bias, multiplied across 10²⁸ electrons per cubic meter, is what we
             measure as amps <Cite id="drude-1900" in={SOURCES} />.
           </p>

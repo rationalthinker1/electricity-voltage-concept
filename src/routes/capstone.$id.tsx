@@ -93,7 +93,7 @@ function CapstonePage() {
         <h1 className="title-display font-light text-10 leading-1 tracking-1 mb-md max-md:text-9">{capstone.title}</h1>
         <p className="title-display text-7 text-text-dim mb-lg"><em>{capstone.subtitle}</em></p>
 
-        <div className="body-copy leading-5 text-text mb-xl [&_p]:m-0 [&_p]:mb-lg">{capstone.intro}</div>
+        <div className="body-copy leading-5 text-text mb-xl">{capstone.intro}</div>
 
         <div className="flex flex-wrap gap-sm my-lg">
           <Badge variant="accent">≈ {capstone.estimatedMinutes} min</Badge>
@@ -158,10 +158,10 @@ function CapstonePage() {
             <h3 className="title-display font-light text-8 leading-2">{capstone.stretch.title}</h3>
           </div>
           <div className="body-copy text-6 leading-5 text-text">
-            <div className="[&_p]:m-0 [&_p]:mb-lg [&_ul]:my-md [&_ul]:mb-lg [&_ul]:pl-xl [&_ol]:my-md [&_ol]:mb-lg [&_ol]:pl-xl">{capstone.stretch.problem}</div>
+            <div>{capstone.stretch.problem}</div>
             <details className="mt-lg [&_summary::-webkit-details-marker]:hidden">
               <summary className="cursor-pointer font-3 text-3 text-blue uppercase tracking-3 py-md list-none hover:text-accent">Show one approach →</summary>
-              <div className="mt-md py-lg px-lg bg-bg-card rounded-3 [&_p]:m-0 [&_p]:mb-lg [&_ul]:my-md [&_ul]:mb-lg [&_ul]:pl-xl [&_ol]:my-md [&_ol]:mb-lg [&_ol]:pl-xl">{capstone.stretch.solution}</div>
+              <div className="mt-md py-lg px-lg bg-bg-card rounded-3">{capstone.stretch.solution}</div>
             </details>
           </div>
         </Banner>
@@ -240,7 +240,7 @@ function StepCard({ step, index, done, onToggleDone }: StepCardProps) {
             <span>Done</span>
           </label>
         </div>
-        <div className="body-copy text-6 leading-5 text-text [&_p]:m-0 [&_p]:mb-lg [&_ul]:my-md [&_ul]:mb-lg [&_ul]:pl-xl [&_ol]:my-md [&_ol]:mb-lg [&_ol]:pl-xl [&_li]:my-sm">{step.problem}</div>
+        <div className="body-copy text-6 leading-5 text-text">{step.problem}</div>
         {step.hint && !showSolution && (
           <div className="my-lg py-md px-lg bg-bg-elevated border-l-3 border-teal rounded-3 font-1 text-5 text-text-dim flex gap-md items-baseline">
             <span className="font-3 text-1 text-teal uppercase tracking-3">Hint</span>
@@ -256,7 +256,7 @@ function StepCard({ step, index, done, onToggleDone }: StepCardProps) {
           {showSolution ? 'Hide solution ↑' : 'Show solution →'}
         </button>
         {showSolution && (
-          <div className="mt-lg py-lg px-lg bg-bg-elevated border-l-3 border-accent rounded-3 body-copy text-6 leading-5 text-text [&_p]:m-0 [&_p]:mb-lg [&_ul]:my-md [&_ul]:mb-lg [&_ul]:pl-xl [&_ol]:my-md [&_ol]:mb-lg [&_ol]:pl-xl [&_li]:my-sm">{step.solution}</div>
+          <div className="mt-lg py-lg px-lg bg-bg-elevated border-l-3 border-accent rounded-3 body-copy text-6 leading-5 text-text">{step.solution}</div>
         )}
       </Card>
     </li>

@@ -16,7 +16,7 @@ import { MathBlock, Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
-import { PHYS, pretty } from '@/lib/physics';
+import {PHYS, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
 const SLUG = 'rf-link';
@@ -51,8 +51,7 @@ const PRESETS: RFPreset[] = [
     antX: 0,
     matchX: 0,
     txGainDbi: 6,
-    rxGainDbi: 2,
-  },
+    rxGainDbi: 2 },
   {
     id: 'vhf',
     label: 'FM half-wave dipole',
@@ -65,8 +64,7 @@ const PRESETS: RFPreset[] = [
     antX: 8,
     matchX: -8,
     txGainDbi: 2.15,
-    rxGainDbi: 2.15,
-  },
+    rxGainDbi: 2.15 },
   {
     id: 'whip',
     label: '433 MHz short whip',
@@ -79,8 +77,7 @@ const PRESETS: RFPreset[] = [
     antX: -110,
     matchX: 85,
     txGainDbi: -4,
-    rxGainDbi: 0,
-  },
+    rxGainDbi: 0 },
   {
     id: 'yagi',
     label: 'Directional Yagi hop',
@@ -93,8 +90,7 @@ const PRESETS: RFPreset[] = [
     antX: 0,
     matchX: 0,
     txGainDbi: 11,
-    rxGainDbi: 11,
-  },
+    rxGainDbi: 11 },
 ];
 
 function dbmToW(dbm: number) {
@@ -147,8 +143,7 @@ export default function RFLinkLab() {
       fsplDb,
       rxDbm,
       rxW,
-      matchQuality,
-    };
+      matchQuality };
   }, [cfg]);
 
   const stateRef = useRef({ cfg, computed });
@@ -366,7 +361,7 @@ export default function RFLinkLab() {
             <Readout sym="Lₘ" label="Mismatch loss" value={fmtDb(-computed.mismatchLossDb)} />
             <Readout sym="L꜀" label="Cable loss" value={fmtDb(-computed.cableLossDb)} />
             <Readout sym="Lfs" label="Free-space path loss" value={fmtDb(-computed.fsplDb)} />
-            <Readout sym="Pₐ" label="Delivered to antenna" valueHTML={pretty(computed.deliveredW)} unit="W" />
+            <Readout sym="Pₐ" label="Delivered to antenna" value={prettyJsx(computed.deliveredW)} unit="W" />
             <Readout sym="q" label="Match quality" value={computed.matchQuality} />
           </>
         }
@@ -376,33 +371,33 @@ export default function RFLinkLab() {
 
   const prose = (
     <>
-      <h3>Context</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <p className="mb-prose-3">
         This lab is a miniature radio system. The transmitter does not simply "send power to an antenna"; it drives a
         transmission line, the line presents the antenna impedance back to the source, and any mismatch reflects energy back
         toward the transmitter. Transmission-line theory is the same field story from the Poynting chapter, just squeezed into
         coaxial geometry<Cite id="pozar-2011" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Once power leaves the antenna, the receiving end is governed by the Friis transmission equation: gain helps, distance
         hurts, and wavelength sets the scale<Cite id="friis-1946" in={SOURCES} />. Antenna textbooks treat the half-wave
         dipole as the reference creature here: it is not magical, but it gives a clean impedance and a reproducible radiation
         pattern<Cite id="balanis-2016" in={SOURCES} />.
       </p>
 
-      <h3>Formula</h3>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
       <MathBlock>Γ = (Z<sub>ant</sub> − Z₀) / (Z<sub>ant</sub> + Z₀)</MathBlock>
-      <p>
-        Here <strong>Γ</strong> is the voltage reflection coefficient, <strong>Z<sub>ant</sub></strong> is the antenna impedance
-        after any matching reactance, and <strong>Z₀</strong> is the line impedance. The reflected power fraction is
-        <strong>|Γ|²</strong>. A perfect match has Γ = 0; a bad match sends useful transmitter power back down the cable.
+      <p className="mb-prose-3">
+        Here <strong className="text-text font-medium">Γ</strong> is the voltage reflection coefficient, <strong className="text-text font-medium">Z<sub>ant</sub></strong> is the antenna impedance
+        after any matching reactance, and <strong className="text-text font-medium">Z₀</strong> is the line impedance. The reflected power fraction is
+        <strong className="text-text font-medium">|Γ|²</strong>. A perfect match has Γ = 0; a bad match sends useful transmitter power back down the cable.
       </p>
 
       <MathBlock>P<sub>r</sub> = P<sub>t</sub> G<sub>t</sub> G<sub>r</sub> (λ / 4πd)²</MathBlock>
-      <p>
-        This is the Friis free-space link equation. <strong>P<sub>t</sub></strong> is power delivered to the transmitting
-        antenna, <strong>G<sub>t</sub></strong> and <strong>G<sub>r</sub></strong> are antenna gains as linear ratios,
-        <strong>λ</strong> is wavelength, and <strong>d</strong> is separation. The lab displays the same accounting in dB
+      <p className="mb-prose-3">
+        This is the Friis free-space link equation. <strong className="text-text font-medium">P<sub>t</sub></strong> is power delivered to the transmitting
+        antenna, <strong className="text-text font-medium">G<sub>t</sub></strong> and <strong className="text-text font-medium">G<sub>r</sub></strong> are antenna gains as linear ratios,
+        <strong className="text-text font-medium">λ</strong> is wavelength, and <strong className="text-text font-medium">d</strong> is separation. The lab displays the same accounting in dB
         because radio engineers live inside sums of gains and losses.
       </p>
 
@@ -411,8 +406,8 @@ export default function RFLinkLab() {
         all refusing to be separated.
       </Pullout>
 
-      <h3>Reasoning</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <p className="mb-prose-3">
         Try the short-whip preset first. Its radiation resistance is small and its capacitive reactance is large, so the
         mismatch is ugly. Add positive series reactance: you are using an inductor to cancel the antenna's capacitive part.
         The VSWR falls because the line now sees something closer to 50 Ω. Then increase distance and watch the link budget

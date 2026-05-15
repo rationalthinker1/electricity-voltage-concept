@@ -19,7 +19,7 @@ import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
 import { drawCharge } from '@/lib/canvasPrimitives';
-import { PHYS, pretty } from '@/lib/physics';
+import {PHYS, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -88,7 +88,7 @@ export default function PotentialLab() {
   }, [q1NC, q2NC, er, q1, q2, pA, pB, sizePx]);
 
   const setupCanvas = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, } = info;
+    const { ctx, w, h, canvas } = info;
     setSizePx({ W: w, H: h });
     let raf = 0;
     let dragging: 'q1' | 'q2' | 'pA' | 'pB' | null = null;
@@ -296,15 +296,13 @@ export default function PotentialLab() {
         label: 'Q₁',
         radius: 12 + Math.min(8, Math.abs(st.q1NC) * 0.8),
         sign: st.q1NC >= 0 ? '+' : '−',
-        textColor: '#0a0a0b',
-      });
+        textColor: '#0a0a0b' });
       drawCharge(ctx, { x: st.q2.x * w, y: st.q2.y * h }, {
         color: '#5baef8',
         label: 'Q₂',
         radius: 12 + Math.min(8, Math.abs(st.q2NC) * 0.8),
         sign: st.q2NC >= 0 ? '+' : '−',
-        textColor: '#0a0a0b',
-      });
+        textColor: '#0a0a0b' });
 
       // Probes
       drawProbe(ctx, ax, ay, 'A');
@@ -355,7 +353,7 @@ export default function PotentialLab() {
             onChange={setQ2NC}
           />
           <Slider
-            sym="ε<sub>r</sub>" label="Rel. permittivity"
+            sym={<>ε<sub>r</sub></>} label="Rel. permittivity"
             value={er} min={1} max={80} step={0.1}
             format={v => v.toFixed(1)}
             metaLeft="1 (vacuum)" metaRight="80 (water)"
@@ -367,23 +365,23 @@ export default function PotentialLab() {
         <>
           <Readout
             sym={<>V<sub>A</sub></>} label="Potential at A"
-            valueHTML={pretty(computed.VA)}
+            value={prettyJsx(computed.VA)}
             unit="V"
           />
           <Readout
             sym={<>V<sub>B</sub></>} label="Potential at B"
-            valueHTML={pretty(computed.VB)}
+            value={prettyJsx(computed.VB)}
             unit="V"
           />
           <Readout
             sym="ΔV" label="Voltage A → B"
-            valueHTML={pretty(computed.dV)}
+            value={prettyJsx(computed.dV)}
             unit="V"
             highlight
           />
           <Readout
             sym={<>|E|<sub>A</sub></>} label="Field strength at A"
-            valueHTML={pretty(computed.EmagA)}
+            value={prettyJsx(computed.EmagA)}
             unit="V/m"
           />
           <Readout
@@ -393,7 +391,7 @@ export default function PotentialLab() {
           />
           <Readout
             sym="W" label="Work to move +1 C, A → B"
-            valueHTML={pretty(computed.work)}
+            value={prettyJsx(computed.work)}
             unit="J"
           />
         </>
@@ -403,149 +401,149 @@ export default function PotentialLab() {
 
   const prose = (
     <>
-      <h3>Context</h3>
-      <p>
-        Electric potential <strong>V</strong> is the scalar field whose negative gradient is <strong>E</strong>, and whose line integral
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <p className="mb-prose-3">
+        Electric potential <strong className="text-text font-medium">V</strong> is the scalar field whose negative gradient is <strong className="text-text font-medium">E</strong>, and whose line integral
         between two points is the work per unit charge that the field does on a positive charge moved between them. It exists because
-        electrostatic <strong>E</strong> is curl-free — and so can be written as the gradient of a single scalar function<Cite id="feynman-II-2" in={SOURCES} />.
+        electrostatic <strong className="text-text font-medium">E</strong> is curl-free — and so can be written as the gradient of a single scalar function<Cite id="feynman-II-2" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         It applies wherever the field is static (or quasi-static). In dynamic situations — radiation, time-varying B fields inducing E by
         Faraday's law — the curl of E is nonzero, and a single-valued scalar potential alone is no longer enough; you need both V and the
-        vector potential A. The formula <strong>V = kQ/r</strong> in particular assumes a point source in vacuum (or isotropic linear medium),
+        vector potential A. The formula <strong className="text-text font-medium">V = kQ/r</strong> in particular assumes a point source in vacuum (or isotropic linear medium),
         and the convention that V → 0 as r → ∞<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h3>Formula</h3>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
       <MathBlock>V<sub>ab</sub> = V<sub>b</sub> − V<sub>a</sub> = −∫<sub>a</sub><sup>b</sup> E · dℓ</MathBlock>
       <MathBlock>V(r) = k Q / (ε<sub>r</sub> r)   (single point charge)</MathBlock>
-      <p>
+      <p className="mb-prose-3">
         Variable glossary:
       </p>
       <ul>
-        <li><strong>V</strong> — electric potential at a point, in volts. A volt is one joule per coulomb. By convention, V → 0 at infinity for an isolated finite charge distribution.</li>
-        <li><strong>V<sub>ab</sub></strong> — the potential difference (voltage) between two specific points b and a, in volts. This is what a voltmeter reads.</li>
-        <li><strong>E</strong> — electric field along the integration path, in V/m.</li>
-        <li><strong>dℓ</strong> — directed length element along whatever path you take from a to b, in meters.</li>
-        <li><strong>Q</strong> — source point charge, in coulombs (signed).</li>
-        <li><strong>r</strong> — distance from the source to the field point, in meters.</li>
-        <li><strong>k = 1/(4π ε₀) ≈ 8.99×10⁹ N·m²/C²</strong> — Coulomb's constant.</li>
-        <li><strong>ε<sub>r</sub></strong> — relative permittivity of the surrounding medium.</li>
+        <li><strong className="text-text font-medium">V</strong> — electric potential at a point, in volts. A volt is one joule per coulomb. By convention, V → 0 at infinity for an isolated finite charge distribution.</li>
+        <li><strong className="text-text font-medium">V<sub>ab</sub></strong> — the potential difference (voltage) between two specific points b and a, in volts. This is what a voltmeter reads.</li>
+        <li><strong className="text-text font-medium">E</strong> — electric field along the integration path, in V/m.</li>
+        <li><strong className="text-text font-medium">dℓ</strong> — directed length element along whatever path you take from a to b, in meters.</li>
+        <li><strong className="text-text font-medium">Q</strong> — source point charge, in coulombs (signed).</li>
+        <li><strong className="text-text font-medium">r</strong> — distance from the source to the field point, in meters.</li>
+        <li><strong className="text-text font-medium">k = 1/(4π ε₀) ≈ 8.99×10⁹ N·m²/C²</strong> — Coulomb's constant.</li>
+        <li><strong className="text-text font-medium">ε<sub>r</sub></strong> — relative permittivity of the surrounding medium.</li>
       </ul>
 
-      <h3>Intuition</h3>
-      <p>
-        Forget wires for a second. Imagine standing on a hillside. Pick two points. The <strong>height difference</strong> between them tells you
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <p className="mb-prose-3">
+        Forget wires for a second. Imagine standing on a hillside. Pick two points. The <strong className="text-text font-medium">height difference</strong> between them tells you
         how much energy gravity will give you if you walk from the high one to the low one, or take from you if you walk uphill. That's the
         whole idea of potential.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Voltage is the same thing for charge. Pick two points. The voltage between them is the energy the electric field will hand to a unit
-        of positive charge as it moves from one to the other. <strong>A volt is a joule per coulomb.</strong> Move one coulomb between two points
+        of positive charge as it moves from one to the other. <strong className="text-text font-medium">A volt is a joule per coulomb.</strong> Move one coulomb between two points
         that differ by one volt and you've traded one joule of energy with the field<Cite id="libretexts-univ-physics" in={SOURCES} />.
       </p>
       <Pullout>
-        Voltage is not a property of a place. It is a property of the <em>path between two places</em> in a field.
+        Voltage is not a property of a place. It is a property of the <em className="italic text-text">path between two places</em> in a field.
       </Pullout>
 
-      <h3>Reasoning</h3>
-      <p>
-        Why the minus sign? Because V is defined to be high where positive charges <em>want to leave</em>. A positive charge gains kinetic
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <p className="mb-prose-3">
+        Why the minus sign? Because V is defined to be high where positive charges <em className="italic text-text">want to leave</em>. A positive charge gains kinetic
         energy moving from high V to low V. The field does positive work on it; V drops along E. The minus sign keeps the bookkeeping
         straight<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Why is the path irrelevant? Because the electrostatic E is conservative — its curl vanishes. The line integral of a curl-free field
         between two endpoints depends only on the endpoints. The hillside analogy holds literally: elevation change between two cities is
         independent of the route<Cite id="feynman-II-2" in={SOURCES} />.
       </p>
-      <p>
-        Why is V from a point charge <strong>kQ/r</strong> and not <strong>kQ/r²</strong>? Because V is the integral of E, and integrating
+      <p className="mb-prose-3">
+        Why is V from a point charge <strong className="text-text font-medium">kQ/r</strong> and not <strong className="text-text font-medium">kQ/r²</strong>? Because V is the integral of E, and integrating
         1/r² gives −1/r. The factor of r in V vs r² in E is what makes V much easier to compute for multi-charge configurations: it adds as a
         scalar, while E adds as a vector.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Limits. At a point coincident with a point charge (r → 0), V → ∞ — the same idealization-induced singularity as E. At r → ∞, V → 0 (the
         chosen zero of potential). Doubling Q doubles V everywhere. Reversing the sign of Q reverses V everywhere. For two equal opposite
         charges (a dipole), V is positive on the + side, negative on the − side, and exactly zero on the perpendicular bisecting plane — even
         though E is not zero there. A clean illustration that V and E carry different information.
       </p>
 
-      <h3>Derivation</h3>
-      <p>
-        Start with the electric field <strong>E</strong>. It points in the direction a positive test charge would accelerate — in newtons per
-        coulomb. If you walk a tiny distance <strong>dℓ</strong> in the direction of the field, the force on a unit positive charge does work
-        equal to <strong>E · dℓ</strong>. The dot product is the right object here: only the component of <strong>E</strong> along your direction
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <p className="mb-prose-3">
+        Start with the electric field <strong className="text-text font-medium">E</strong>. It points in the direction a positive test charge would accelerate — in newtons per
+        coulomb. If you walk a tiny distance <strong className="text-text font-medium">dℓ</strong> in the direction of the field, the force on a unit positive charge does work
+        equal to <strong className="text-text font-medium">E · dℓ</strong>. The dot product is the right object here: only the component of <strong className="text-text font-medium">E</strong> along your direction
         of motion counts<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Walk from point a to point b and add up E·dℓ along every step. That line integral is the total work the field does on a unit positive
         charge. The voltage from a to b is defined to be the negative of that:
       </p>
       <MathBlock>V<sub>ab</sub> = −∫<sub>a</sub><sup>b</sup> E · dℓ</MathBlock>
-      <p>
-        Path-independence follows from <strong>∇ × E = 0</strong>: by Stokes's theorem the integral of a curl-free field around any closed loop
+      <p className="mb-prose-3">
+        Path-independence follows from <strong className="text-text font-medium">∇ × E = 0</strong>: by Stokes's theorem the integral of a curl-free field around any closed loop
         is zero, so the integral between any two points depends only on the endpoints. This lets us define a single-valued function V(r) by
         anchoring V(∞) = 0:
       </p>
       <MathBlock>V(r) = −∫<sub>∞</sub><sup>r</sup> E · dℓ</MathBlock>
-      <p>
+      <p className="mb-prose-3">
         For a point charge Q at the origin, E = kQ/r² r̂. Take a radial path from infinity inward; dℓ = dr r̂:
       </p>
       <MathBlock>V(r) = −∫<sub>∞</sub><sup>r</sup> (kQ/r'²) dr' = kQ / r</MathBlock>
-      <p>
+      <p className="mb-prose-3">
         For many charges, superposition: E is the vector sum, so V is the scalar sum<Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <MathBlock>V(r) = Σ<sub>i</sub> k Q<sub>i</sub> / |r − r<sub>i</sub>|</MathBlock>
-      <p>
-        That is the formula running under the canvas above. V at any point is the algebraic sum of <strong>kQ₁/r₁</strong> and
-        <strong> kQ₂/r₂</strong>; the coloured bands are loci of constant V.
+      <p className="mb-prose-3">
+        That is the formula running under the canvas above. V at any point is the algebraic sum of <strong className="text-text font-medium">kQ₁/r₁</strong> and
+        <strong className="text-text font-medium"> kQ₂/r₂</strong>; the coloured bands are loci of constant V.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The inverse relation — recovering E from V — is the gradient:
       </p>
       <MathBlock>E = −∇V</MathBlock>
-      <p>
+      <p className="mb-prose-3">
         The field points "downhill" on the V landscape, steepest where V changes fastest.
       </p>
 
-      <h3>Worked problems</h3>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
 
       <TryIt
         tag="Problem 1.4.1"
-        question={<>What is the electric potential <strong>1 cm</strong> from a <strong>+1 nC</strong> point charge in vacuum, taking V = 0 at infinity?</>}
+        question={<>What is the electric potential <strong className="text-text font-medium">1 cm</strong> from a <strong className="text-text font-medium">+1 nC</strong> point charge in vacuum, taking V = 0 at infinity?</>}
         answer={
           <>
-            <p>Direct application of V = kQ/r:</p>
+            <p className="mb-prose-3">Direct application of V = kQ/r:</p>
             <Formula>V = (8.99×10⁹)(10⁻⁹) / (0.01) = 899 V</Formula>
-            <p>About <strong>900 V</strong>. Positive — the potential of a positive charge is positive everywhere (with V → 0 at infinity).</p>
+            <p className="mb-prose-3">About <strong className="text-text font-medium">900 V</strong>. Positive — the potential of a positive charge is positive everywhere (with V → 0 at infinity).</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.4.2"
-        question={<>How much work must you do to bring a <strong>+1 nC</strong> charge from infinity to a point <strong>1 cm</strong> away from a fixed <strong>+5 nC</strong> charge?</>}
+        question={<>How much work must you do to bring a <strong className="text-text font-medium">+1 nC</strong> charge from infinity to a point <strong className="text-text font-medium">1 cm</strong> away from a fixed <strong className="text-text font-medium">+5 nC</strong> charge?</>}
         answer={
           <>
-            <p>Work done against the field is W = q·V, where V is the potential at the destination (since V is defined with V(∞) = 0):</p>
+            <p className="mb-prose-3">Work done against the field is W = q·V, where V is the potential at the destination (since V is defined with V(∞) = 0):</p>
             <Formula>V<sub>destination</sub> = k Q / r = (8.99×10⁹)(5×10⁻⁹) / (0.01) = 4495 V</Formula>
             <Formula>W = q V = (10⁻⁹)(4495) ≈ 4.5×10⁻⁶ J</Formula>
-            <p>About <strong>4.5 µJ</strong>. Both charges are positive, so they repel — you have to push against the field to assemble the configuration. That energy is stored in the system; release the charge and it flies back out, converting V into kinetic energy<Cite id="griffiths-2017" in={SOURCES} />.</p>
+            <p className="mb-prose-3">About <strong className="text-text font-medium">4.5 µJ</strong>. Both charges are positive, so they repel — you have to push against the field to assemble the configuration. That energy is stored in the system; release the charge and it flies back out, converting V into kinetic energy<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.4.3"
-        question={<>Two charges, <strong>+Q</strong> at <strong>x = +d/2</strong> and <strong>−Q</strong> at <strong>x = −d/2</strong>. What is V at the origin, and on the y-axis?</>}
+        question={<>Two charges, <strong className="text-text font-medium">+Q</strong> at <strong className="text-text font-medium">x = +d/2</strong> and <strong className="text-text font-medium">−Q</strong> at <strong className="text-text font-medium">x = −d/2</strong>. What is V at the origin, and on the y-axis?</>}
         answer={
           <>
-            <p>At the origin, both charges are at distance d/2. V is the scalar sum:</p>
+            <p className="mb-prose-3">At the origin, both charges are at distance d/2. V is the scalar sum:</p>
             <Formula>V<sub>origin</sub> = kQ/(d/2) + k(−Q)/(d/2) = 0</Formula>
-            <p>Identically zero. On the y-axis at height y, both charges are at distance r = √((d/2)² + y²) — equal magnitudes, opposite signs:</p>
+            <p className="mb-prose-3">Identically zero. On the y-axis at height y, both charges are at distance r = √((d/2)² + y²) — equal magnitudes, opposite signs:</p>
             <Formula>V(y) = kQ/r + k(−Q)/r = 0</Formula>
-            <p>The <strong>entire perpendicular bisecting plane is at V = 0</strong>. But the field there is <em>not</em> zero — it points from + toward −, parallel to the dipole axis. This is the cleanest demonstration that V and E carry different information: a place can be at zero potential and still have a large field, and vice versa<Cite id="griffiths-2017" in={SOURCES} />.</p>
+            <p className="mb-prose-3">The <strong className="text-text font-medium">entire perpendicular bisecting plane is at V = 0</strong>. But the field there is <em className="italic text-text">not</em> zero — it points from + toward −, parallel to the dipole axis. This is the cleanest demonstration that V and E carry different information: a place can be at zero potential and still have a large field, and vice versa<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
       />
@@ -555,36 +553,36 @@ export default function PotentialLab() {
         question={<>What is the geometric shape of the equipotential surfaces for an isolated point charge?</>}
         answer={
           <>
-            <p>For V = kQ/r, level surfaces are sets where r is constant — that is, <strong>concentric spheres centred on the charge</strong>. Equipotentials never cross, and they are perpendicular to E everywhere (E = −∇V always points along the steepest-descent direction of V, which is perpendicular to level surfaces).</p>
-            <p>In the lab's 2D rendering, equipotential surfaces appear as concentric circles around each charge — at least until two charges' fields interact, at which point the equipotentials warp into more complex shapes that still tile space without intersecting.</p>
+            <p className="mb-prose-3">For V = kQ/r, level surfaces are sets where r is constant — that is, <strong className="text-text font-medium">concentric spheres centred on the charge</strong>. Equipotentials never cross, and they are perpendicular to E everywhere (E = −∇V always points along the steepest-descent direction of V, which is perpendicular to level surfaces).</p>
+            <p className="mb-prose-3">In the lab's 2D rendering, equipotential surfaces appear as concentric circles around each charge — at least until two charges' fields interact, at which point the equipotentials warp into more complex shapes that still tile space without intersecting.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.4.5"
-        question={<>What is the potential difference between two points at <strong>r₁ = 1 cm</strong> and <strong>r₂ = 2 cm</strong> from a <strong>+1 nC</strong> point charge?</>}
+        question={<>What is the potential difference between two points at <strong className="text-text font-medium">r₁ = 1 cm</strong> and <strong className="text-text font-medium">r₂ = 2 cm</strong> from a <strong className="text-text font-medium">+1 nC</strong> point charge?</>}
         answer={
           <>
-            <p>Compute V at each radius and subtract:</p>
+            <p className="mb-prose-3">Compute V at each radius and subtract:</p>
             <Formula>V(1 cm) = (8.99×10⁹)(10⁻⁹)/(0.01) = 899 V</Formula>
             <Formula>V(2 cm) = (8.99×10⁹)(10⁻⁹)/(0.02) = 449.5 V</Formula>
             <Formula>ΔV = V(2 cm) − V(1 cm) = 449.5 − 899 = −449.5 V</Formula>
-            <p>About <strong>−450 V</strong>. Negative, because moving outward in the field of a positive source means going to lower potential. A positive test charge released from r₁ would fall to r₂, gaining 450 J/C of kinetic energy<Cite id="libretexts-univ-physics" in={SOURCES} />.</p>
+            <p className="mb-prose-3">About <strong className="text-text font-medium">−450 V</strong>. Negative, because moving outward in the field of a positive source means going to lower potential. A positive test charge released from r₁ would fall to r₂, gaining 450 J/C of kinetic energy<Cite id="libretexts-univ-physics" in={SOURCES} />.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.4.6"
-        question={<>A conducting sphere of radius <strong>1 cm</strong> holds <strong>+10 nC</strong> uniformly on its surface. What is V at the surface? What is V inside, at the centre?</>}
+        question={<>A conducting sphere of radius <strong className="text-text font-medium">1 cm</strong> holds <strong className="text-text font-medium">+10 nC</strong> uniformly on its surface. What is V at the surface? What is V inside, at the centre?</>}
         answer={
           <>
-            <p>Outside (and at the surface), the sphere acts like a point charge at its centre (shell theorem):</p>
+            <p className="mb-prose-3">Outside (and at the surface), the sphere acts like a point charge at its centre (shell theorem):</p>
             <Formula>V<sub>surface</sub> = k Q / R = (8.99×10⁹)(10⁻⁸) / (0.01) = 8990 V</Formula>
-            <p>About <strong>9000 V</strong>. Inside the conductor, E = 0 in electrostatic equilibrium. Since V is the integral of E, V is constant throughout the conductor — equal to its surface value:</p>
+            <p className="mb-prose-3">About <strong className="text-text font-medium">9000 V</strong>. Inside the conductor, E = 0 in electrostatic equilibrium. Since V is the integral of E, V is constant throughout the conductor — equal to its surface value:</p>
             <Formula>V<sub>centre</sub> = V<sub>surface</sub> ≈ 8990 V</Formula>
-            <p>A conductor is an equipotential body. This is why we can speak of "the voltage of" a wire without specifying where on the wire<Cite id="griffiths-2017" in={SOURCES} />.</p>
+            <p className="mb-prose-3">A conductor is an equipotential body. This is why we can speak of "the voltage of" a wire without specifying where on the wire<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
       />
@@ -594,69 +592,69 @@ export default function PotentialLab() {
         question={<>Why does the dipole's perpendicular bisecting plane have V = 0 but nonzero E? Explain in terms of how V and E relate geometrically.</>}
         answer={
           <>
-            <p>V is a <em>scalar</em>; contributions from + and − charges algebraically cancel when their distances are equal. E is a <em>vector</em>; the two charges' field contributions point in similar directions on the bisecting plane (away from +, toward −, which point the same way) and so they <em>add</em>, not cancel.</p>
-            <p>Quantitatively, E = −∇V is the gradient of V. On the bisector, V = 0 along the plane, but ∇V need not lie in the plane — and indeed ∇V points <em>perpendicular</em> to the plane, along the dipole axis. The field is the rate of change of V <em>across</em> the plane, not the value of V <em>on</em> it<Cite id="feynman-II-2" in={SOURCES} />.</p>
+            <p className="mb-prose-3">V is a <em className="italic text-text">scalar</em>; contributions from + and − charges algebraically cancel when their distances are equal. E is a <em className="italic text-text">vector</em>; the two charges' field contributions point in similar directions on the bisecting plane (away from +, toward −, which point the same way) and so they <em className="italic text-text">add</em>, not cancel.</p>
+            <p className="mb-prose-3">Quantitatively, E = −∇V is the gradient of V. On the bisector, V = 0 along the plane, but ∇V need not lie in the plane — and indeed ∇V points <em className="italic text-text">perpendicular</em> to the plane, along the dipole axis. The field is the rate of change of V <em className="italic text-text">across</em> the plane, not the value of V <em className="italic text-text">on</em> it<Cite id="feynman-II-2" in={SOURCES} />.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.4.8"
-        question={<>An electron is accelerated from rest through a potential difference of <strong>100 V</strong>. What is its final kinetic energy in joules and in electron-volts? What is its final speed?</>}
+        question={<>An electron is accelerated from rest through a potential difference of <strong className="text-text font-medium">100 V</strong>. What is its final kinetic energy in joules and in electron-volts? What is its final speed?</>}
         answer={
           <>
-            <p>Energy gained by a charge q falling through potential ΔV is W = q·ΔV. The electron has charge e = 1.602×10⁻¹⁹ C and gains kinetic energy:</p>
+            <p className="mb-prose-3">Energy gained by a charge q falling through potential ΔV is W = q·ΔV. The electron has charge e = 1.602×10⁻¹⁹ C and gains kinetic energy:</p>
             <Formula>KE = e ΔV = (1.602×10⁻¹⁹)(100) = 1.602×10⁻¹⁷ J</Formula>
-            <p>By the definition of the eV: <strong>KE = 100 eV</strong>. (One electron-volt is the energy an electron acquires falling through 1 V.) Final speed from KE = ½ m v²:</p>
+            <p className="mb-prose-3">By the definition of the eV: <strong className="text-text font-medium">KE = 100 eV</strong>. (One electron-volt is the energy an electron acquires falling through 1 V.) Final speed from KE = ½ m v²:</p>
             <Formula>v = √(2 KE / m<sub>e</sub>) = √(2(1.602×10⁻¹⁷) / (9.109×10⁻³¹))</Formula>
             <Formula>v ≈ √(3.52×10¹³) ≈ 5.93×10⁶ m/s</Formula>
-            <p>About <strong>6,000 km/s</strong>, or 2% of the speed of light. Non-relativistic, but only just — at 1 MV, relativistic corrections become important.</p>
+            <p className="mb-prose-3">About <strong className="text-text font-medium">6,000 km/s</strong>, or 2% of the speed of light. Non-relativistic, but only just — at 1 MV, relativistic corrections become important.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.4.9"
-        question={<>A <strong>+1 nC</strong> charge is held fixed at the origin. A second charge <strong>+1 nC</strong> is released from rest at <strong>r = 1 cm</strong>. What is its kinetic energy when it has flown outward to <strong>r = 10 cm</strong>?</>}
+        question={<>A <strong className="text-text font-medium">+1 nC</strong> charge is held fixed at the origin. A second charge <strong className="text-text font-medium">+1 nC</strong> is released from rest at <strong className="text-text font-medium">r = 1 cm</strong>. What is its kinetic energy when it has flown outward to <strong className="text-text font-medium">r = 10 cm</strong>?</>}
         answer={
           <>
-            <p>Energy conservation: KE gained = drop in potential energy. The potential energy of two charges at separation r is U = kQ₁Q₂/r:</p>
+            <p className="mb-prose-3">Energy conservation: KE gained = drop in potential energy. The potential energy of two charges at separation r is U = kQ₁Q₂/r:</p>
             <Formula>U(1 cm) = (8.99×10⁹)(10⁻⁹)² / (0.01) = 8.99×10⁻⁷ J</Formula>
             <Formula>U(10 cm) = (8.99×10⁹)(10⁻⁹)² / (0.1) = 8.99×10⁻⁸ J</Formula>
             <Formula>KE = U(1 cm) − U(10 cm) ≈ 8.09×10⁻⁷ J</Formula>
-            <p>About <strong>0.8 µJ</strong> of kinetic energy. Almost all of the initial potential energy converts — at infinity, KE would reach the full 8.99×10⁻⁷ J<Cite id="griffiths-2017" in={SOURCES} />.</p>
+            <p className="mb-prose-3">About <strong className="text-text font-medium">0.8 µJ</strong> of kinetic energy. Almost all of the initial potential energy converts — at infinity, KE would reach the full 8.99×10⁻⁷ J<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.4.10"
-        question={<>Find the potential on the axis of a thin uniformly charged ring of radius <strong>R</strong> holding total charge <strong>Q</strong>, at axial distance <strong>z</strong> from the centre.</>}
+        question={<>Find the potential on the axis of a thin uniformly charged ring of radius <strong className="text-text font-medium">R</strong> holding total charge <strong className="text-text font-medium">Q</strong>, at axial distance <strong className="text-text font-medium">z</strong> from the centre.</>}
         answer={
           <>
-            <p>Every element of charge dQ on the ring sits at the same distance r = √(R² + z²) from the axial point. V adds as a scalar; every dQ contributes equally:</p>
+            <p className="mb-prose-3">Every element of charge dQ on the ring sits at the same distance r = √(R² + z²) from the axial point. V adds as a scalar; every dQ contributes equally:</p>
             <Formula>V(z) = ∫ k dQ / r = k Q / √(R² + z²)</Formula>
-            <p>This is the textbook ring-on-axis result. Sanity checks: at z = 0 (centre of the ring), V = kQ/R, finite and nonzero — even though E vanishes there by symmetry. At z ≫ R, V → kQ/z, the point-charge limit. Differentiate to recover the axial field: E<sub>z</sub> = −dV/dz = kQz/(R² + z²)^(3/2)<Cite id="griffiths-2017" in={SOURCES} />.</p>
+            <p className="mb-prose-3">This is the textbook ring-on-axis result. Sanity checks: at z = 0 (centre of the ring), V = kQ/R, finite and nonzero — even though E vanishes there by symmetry. At z ≫ R, V → kQ/z, the point-charge limit. Differentiate to recover the axial field: E<sub>z</sub> = −dV/dz = kQz/(R² + z²)^(3/2)<Cite id="griffiths-2017" in={SOURCES} />.</p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.4.11"
-        question={<>In a circuit, a wall outlet reads <strong>120 V</strong>. What does that mean operationally, in terms of moving a test charge through space?</>}
+        question={<>In a circuit, a wall outlet reads <strong className="text-text font-medium">120 V</strong>. What does that mean operationally, in terms of moving a test charge through space?</>}
         answer={
           <>
-            <p>It means that the electric field between the two outlet terminals is configured such that a positive test charge moved from one terminal (the lower-potential one, the "return") to the other (the higher-potential one, the "hot") would have <strong>120 J</strong> of work done against it per coulomb of charge moved. Equivalently, the field hands 120 J per coulomb to charges flowing from hot to return.</p>
-            <p>That field doesn't live <em>inside</em> the wires; the chemistry of the generator (or, here, the AC grid) maintains a charge separation, and the resulting field fills the space around and within the conductors. A voltmeter integrates E along its leads electronically — the physical content is exactly the line integral the lab draws between probes A and B<Cite id="libretexts-univ-physics" in={SOURCES} />.</p>
+            <p className="mb-prose-3">It means that the electric field between the two outlet terminals is configured such that a positive test charge moved from one terminal (the lower-potential one, the "return") to the other (the higher-potential one, the "hot") would have <strong className="text-text font-medium">120 J</strong> of work done against it per coulomb of charge moved. Equivalently, the field hands 120 J per coulomb to charges flowing from hot to return.</p>
+            <p className="mb-prose-3">That field doesn't live <em className="italic text-text">inside</em> the wires; the chemistry of the generator (or, here, the AC grid) maintains a charge separation, and the resulting field fills the space around and within the conductors. A voltmeter integrates E along its leads electronically — the physical content is exactly the line integral the lab draws between probes A and B<Cite id="libretexts-univ-physics" in={SOURCES} />.</p>
           </>
         }
       />
 
-      <h3>What ε<sub>r</sub> does</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">What ε<sub>r</sub> does</h3>
+      <p className="mb-prose-3">
         In a dielectric (water, glass, plastic), the molecules polarize in the presence of an external field. Their dipoles align and produce
-        a counter-field that reduces the net field everywhere. Both <strong>E</strong> and <strong>V</strong> get divided by
-        <strong> ε<sub>r</sub></strong>, the relative permittivity<Cite id="griffiths-2017" in={SOURCES} />. Slide the permittivity up and watch
+        a counter-field that reduces the net field everywhere. Both <strong className="text-text font-medium">E</strong> and <strong className="text-text font-medium">V</strong> get divided by
+        <strong className="text-text font-medium"> ε<sub>r</sub></strong>, the relative permittivity<Cite id="griffiths-2017" in={SOURCES} />. Slide the permittivity up and watch
         the voltage between A and B drop by the same factor.
       </p>
     </>

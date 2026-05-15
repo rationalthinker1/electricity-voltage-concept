@@ -12,7 +12,7 @@
  *     device on the floorplan to create a cable.
  *   - Otherwise click a device to select it for the inspector.
  *
- * Rendering happens on a single <canvas> tied into AutoResizeCanvas, in
+ * Rendering happens on a single <canvas className="block w-full"> tied into AutoResizeCanvas, in
  * the same pattern as the Circuit Builder editor.
  */
 

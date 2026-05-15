@@ -248,7 +248,7 @@ function QuestionCard({
         </div>
       }
     >
-      <div className="body-copy leading-4 text-text my-md mb-lg [&_strong]:text-text">{question.prompt}</div>
+      <div className="body-copy leading-4 text-text my-md mb-lg">{question.prompt}</div>
       <QuestionInput
         question={question}
         value={value}
@@ -263,7 +263,7 @@ function QuestionCard({
               <span className="text-teal">{graded.correctDisplay}</span>
             </div>
           )}
-          <div className="body-copy text-5 leading-4 [&_strong]:text-text">{question.explanation}</div>
+          <div className="body-copy text-5 leading-4">{question.explanation}</div>
         </div>
       )}
     </Card>
@@ -338,8 +338,8 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
 
       {submitted ? (
         <Banner variant={passed ? 'success' : 'warn'}>
-          <div className="font-1 text-6 text-text [&_strong]:font-3 [&_strong]:font-semibold">
-            You scored <strong>{submitted.numCorrect}/{submitted.numTotal}</strong>{' '}
+          <div className="font-1 text-6 text-text">
+            You scored <strong className="font-3 font-semibold">{submitted.numCorrect}/{submitted.numTotal}</strong>{' '}
             <span className="font-3 text-text-dim text-4">({scorePct}%)</span>.
           </div>
           <div className="font-1 text-4 text-text-dim mt-xxs">
@@ -350,8 +350,8 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
         </Banner>
       ) : status.passed ? (
         <Banner variant="success">
-          <div className="font-1 text-6 text-text [&_strong]:font-3 [&_strong]:font-semibold">
-            Previously passed at <strong>{Math.round(status.bestScore * 100)}%</strong>.{' '}
+          <div className="font-1 text-6 text-text">
+            Previously passed at <strong className="font-3 font-semibold">{Math.round(status.bestScore * 100)}%</strong>.{' '}
             <span className="font-1 text-4 text-text-dim mt-xxs">
               {status.attempts} attempt{status.attempts === 1 ? '' : 's'} so far.
             </span>
@@ -359,15 +359,15 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
         </Banner>
       ) : status.attempts > 0 ? (
         <Banner variant="info">
-          <div className="font-1 text-6 text-text [&_strong]:font-3 [&_strong]:font-semibold">
-            Best score so far: <strong>{Math.round(status.bestScore * 100)}%</strong>{' '}
+          <div className="font-1 text-6 text-text">
+            Best score so far: <strong className="font-3 font-semibold">{Math.round(status.bestScore * 100)}%</strong>{' '}
             across {status.attempts} attempt{status.attempts === 1 ? '' : 's'}.
             You need {passingPct}% to mark this chapter complete.
           </div>
         </Banner>
       ) : (
         <Banner variant="info">
-          <div className="font-1 text-6 text-text [&_strong]:font-3 [&_strong]:font-semibold">
+          <div className="font-1 text-6 text-text">
             Mastery check &middot; {quiz.questions.length} questions.
             Need {passingPct}% to mark this chapter complete.
           </div>

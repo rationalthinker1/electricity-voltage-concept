@@ -21,7 +21,7 @@ import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
 import { drawResistor } from '@/lib/canvasPrimitives';
-import { MATERIALS, pretty, type MaterialKey } from '@/lib/physics';
+import {MATERIALS, pretty, type MaterialKey, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -248,12 +248,12 @@ export default function ResistanceLab() {
       }
       outputs={
         <>
-          <Readout sym="ρ" label="Resistivity" valueHTML={pretty(computed.rho)} unit="Ω·m" />
-          <Readout sym="R" label="Resistance" valueHTML={pretty(computed.R)} unit="Ω" highlight />
-          <Readout sym="G" label="Conductance" valueHTML={pretty(computed.G)} unit="S" />
-          <Readout sym={<>V<sub>1A</sub></>} label="Voltage @ 1 A" valueHTML={pretty(computed.R)} unit="V" />
-          <Readout sym={<>P<sub>1A</sub></>} label="Power @ 1 A" valueHTML={pretty(computed.R)} unit="W" />
-          <Readout sym="≈" label="For scale" valueHTML={comp} />
+          <Readout sym="ρ" label="Resistivity" value={prettyJsx(computed.rho)} unit="Ω·m" />
+          <Readout sym="R" label="Resistance" value={prettyJsx(computed.R)} unit="Ω" highlight />
+          <Readout sym="G" label="Conductance" value={prettyJsx(computed.G)} unit="S" />
+          <Readout sym={<>V<sub>1A</sub></>} label="Voltage @ 1 A" value={prettyJsx(computed.R)} unit="V" />
+          <Readout sym={<>P<sub>1A</sub></>} label="Power @ 1 A" value={prettyJsx(computed.R)} unit="W" />
+          <Readout sym="≈" label="For scale" value={comp} />
         </>
       }
     />
@@ -261,29 +261,29 @@ export default function ResistanceLab() {
 
   const prose = (
     <>
-      <h3>Context</h3>
-      <p>
-        Every wire has a resistance. The microscopic law <strong>J = σE</strong> is local — it tells you the current density at a single point.
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Context</h3>
+      <p className="mb-prose-3">
+        Every wire has a resistance. The microscopic law <strong className="text-text font-medium">J = σE</strong> is local — it tells you the current density at a single point.
         But circuits are built from finite, shaped pieces of conductor, and an engineer needs a single number characterizing each piece. That
-        number is the resistance, and for a uniform straight wire it's set entirely by three quantities: the resistivity <strong>ρ</strong> of
-        the material, the length <strong>L</strong>, and the cross-sectional area <strong>A</strong>. The relation <strong>R = ρL/A</strong>
+        number is the resistance, and for a uniform straight wire it's set entirely by three quantities: the resistivity <strong className="text-text font-medium">ρ</strong> of
+        the material, the length <strong className="text-text font-medium">L</strong>, and the cross-sectional area <strong className="text-text font-medium">A</strong>. The relation <strong className="text-text font-medium">R = ρL/A</strong>
         holds for steady DC current in a uniform, isotropic, ohmic conductor at constant temperature<Cite id="griffiths-2017" in={SOURCES} />.
         It breaks down for non-uniform geometries (use an integral), for anisotropic materials (resistivity is a tensor), at high frequencies
-        (the skin effect concentrates current near the surface, effectively shrinking A), and once heating makes <em>ρ</em> a moving
+        (the skin effect concentrates current near the surface, effectively shrinking A), and once heating makes <em className="italic text-text">ρ</em> a moving
         target<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
 
-      <h3>Formula</h3>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Formula</h3>
       <MathBlock>R = ρ L / A</MathBlock>
-      <p>
-        Where <strong>R</strong> is resistance in ohms (Ω), <strong>ρ</strong> is the bulk resistivity of the material in Ω·m,
-        <strong> L</strong> is the length of the conductor in meters, and <strong>A</strong> is its cross-sectional area in m². Equivalent form
-        with conductivity <strong>σ = 1/ρ</strong> (units S/m): <strong>R = L / (σA)</strong>. Reciprocally, <strong>conductance G = 1/R</strong>
+      <p className="mb-prose-3">
+        Where <strong className="text-text font-medium">R</strong> is resistance in ohms (Ω), <strong className="text-text font-medium">ρ</strong> is the bulk resistivity of the material in Ω·m,
+        <strong className="text-text font-medium"> L</strong> is the length of the conductor in meters, and <strong className="text-text font-medium">A</strong> is its cross-sectional area in m². Equivalent form
+        with conductivity <strong className="text-text font-medium">σ = 1/ρ</strong> (units S/m): <strong className="text-text font-medium">R = L / (σA)</strong>. Reciprocally, <strong className="text-text font-medium">conductance G = 1/R</strong>
         in siemens (S).
       </p>
 
-      <h3>Intuition</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Intuition</h3>
+      <p className="mb-prose-3">
         Resistance is the rendezvous of material and shape. Material brings how slick the medium is (σ, ρ). Geometry brings how many obstacles
         sit in series (L) and how many parallel lanes are available (A). The asymmetry between length and area is the whole reason wires are
         wires: long, thin, and made of copper. Power transmission engineers live on the area side. Heater designers live on the length
@@ -293,56 +293,56 @@ export default function ResistanceLab() {
         Resistance is what conductivity looks like after geometry has had its say.
       </Pullout>
 
-      <h3>Reasoning</h3>
-      <p>
-        Why does <strong>L</strong> sit on top? Length is the path the field drives charges over. Double the length and every coulomb travels
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Reasoning</h3>
+      <p className="mb-prose-3">
+        Why does <strong className="text-text font-medium">L</strong> sit on top? Length is the path the field drives charges over. Double the length and every coulomb travels
         twice as far under the same per-unit-length drag. For a fixed current, that means twice the voltage to push them through — R doubles.
-        A long wire <em>is</em> two short wires in series.
+        A long wire <em className="italic text-text">is</em> two short wires in series.
       </p>
-      <p>
-        Why does <strong>A</strong> sit on the bottom? Area is the number of parallel lanes. Double the cross-section and twice as many
+      <p className="mb-prose-3">
+        Why does <strong className="text-text font-medium">A</strong> sit on the bottom? Area is the number of parallel lanes. Double the cross-section and twice as many
         electrons flow side-by-side, sharing the load. For the same total current, you only need half the current density, and so half the
-        field, and so half the voltage — R halves. A fat wire <em>is</em> two thin wires in parallel.
+        field, and so half the voltage — R halves. A fat wire <em className="italic text-text">is</em> two thin wires in parallel.
       </p>
-      <p>
-        Why the exact power of 1 in both? Because <strong>R</strong> sums linearly in series (length doubles ⇒ R doubles) and combines by
+      <p className="mb-prose-3">
+        Why the exact power of 1 in both? Because <strong className="text-text font-medium">R</strong> sums linearly in series (length doubles ⇒ R doubles) and combines by
         reciprocal sum in parallel (two equal areas in parallel ⇒ R halves). Any other exponent would violate Kirchhoff's circuit
         laws<Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h3>Derivation</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Derivation</h3>
+      <p className="mb-prose-3">
         Start with a uniform wire of length L, cross-section A, with a battery of voltage V at the ends. In steady state, surface charges
         redistribute so the field inside is uniform and axial:
       </p>
       <MathBlock>E = V / L</MathBlock>
-      <p>Microscopic Ohm's law gives current density:</p>
+      <p className="mb-prose-3">Microscopic Ohm's law gives current density:</p>
       <MathBlock>J = σ E = σ V / L</MathBlock>
-      <p>Total current is J integrated over the cross-section. For uniform J, that's just JA:</p>
+      <p className="mb-prose-3">Total current is J integrated over the cross-section. For uniform J, that's just JA:</p>
       <MathBlock>I = J A = σ A V / L</MathBlock>
-      <p>Rearrange for V:</p>
+      <p className="mb-prose-3">Rearrange for V:</p>
       <MathBlock>V = (L / σA) · I = R · I</MathBlock>
-      <p>Substitute ρ = 1/σ:</p>
+      <p className="mb-prose-3">Substitute ρ = 1/σ:</p>
       <MathBlock>R = ρ L / A</MathBlock>
-      <p>
+      <p className="mb-prose-3">
         Series and parallel rules fall out of the same derivation. For two segments end-to-end with the same current, voltages add:
-        <strong> R<sub>series</sub> = R<sub>1</sub> + R<sub>2</sub></strong> — exactly what you'd get by doubling L. For two side-by-side wires
-        with the same voltage, currents add: <strong>1/R<sub>parallel</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub></strong> — exactly what you'd
+        <strong className="text-text font-medium"> R<sub>series</sub> = R<sub>1</sub> + R<sub>2</sub></strong> — exactly what you'd get by doubling L. For two side-by-side wires
+        with the same voltage, currents add: <strong className="text-text font-medium">1/R<sub>parallel</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub></strong> — exactly what you'd
         get by adding the areas.
       </p>
-      <p>
+      <p className="mb-prose-3">
         For temperature dependence (not modelled in the lab), a linear approximation works over modest ranges:
       </p>
       <MathBlock>ρ(T) ≈ ρ<sub>0</sub> · [1 + α (T − T<sub>0</sub>)]</MathBlock>
-      <p>
+      <p className="mb-prose-3">
         with α ≈ 3.9×10⁻³ /K for copper at room temperature<Cite id="crc-resistivity" in={SOURCES} />. In metals α &gt; 0 (more lattice
         vibrations, more scattering); in intrinsic semiconductors α &lt; 0 (thermal activation generates more carriers). The sign of dρ/dT is one
         of the tidiest experimental distinctions between a metal and an insulator<Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
 
-      <h3>Worked problems</h3>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Worked problems</h3>
 
-      <p>
+      <p className="mb-prose-3">
         Reference numbers (CRC, room-temperature)<Cite id="crc-resistivity" in={SOURCES} />: ρ<sub>Cu</sub> ≈ 1.68×10⁻⁸ Ω·m,
         ρ<sub>Al</sub> ≈ 2.65×10⁻⁸ Ω·m, ρ<sub>Fe</sub> ≈ 1.0×10⁻⁷ Ω·m, ρ<sub>W</sub> ≈ 5.6×10⁻⁸ Ω·m, ρ<sub>nichrome</sub> ≈ 1.1×10⁻⁶ Ω·m.
         Temperature coefficient α<sub>Cu</sub> ≈ 3.9×10⁻³ /K.
@@ -354,7 +354,7 @@ export default function ResistanceLab() {
         answer={
           <>
             <MathBlock>R = ρ L / A = (1.68×10⁻⁸) · 1 / (1×10⁻⁶) = 1.68×10⁻² Ω</MathBlock>
-            <p>Answer: <strong>≈ 17 mΩ</strong>. That's about a tenth of an ohm per six meters of millimeter-thick copper.</p>
+            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">≈ 17 mΩ</strong>. That's about a tenth of an ohm per six meters of millimeter-thick copper.</p>
           </>
         }
       />
@@ -365,8 +365,8 @@ export default function ResistanceLab() {
         answer={
           <>
             <MathBlock>R<sub>Al</sub> = (2.65×10⁻⁸) · 1 / (1×10⁻⁶) ≈ 26.5 mΩ</MathBlock>
-            <p>
-              Answer: about <strong>26.5 mΩ</strong> — roughly 58% more resistance than copper. But aluminum is one-third the density. Per
+            <p className="mb-prose-3">
+              Answer: about <strong className="text-text font-medium">26.5 mΩ</strong> — roughly 58% more resistance than copper. But aluminum is one-third the density. Per
               kilogram, aluminum conducts about twice as well as copper, which is why long-distance overhead transmission lines are
               aluminum-cored — they sag less under their own weight.
             </p>
@@ -383,8 +383,8 @@ export default function ResistanceLab() {
             <MathBlock>ΔT = 100 − 20 = 80 K</MathBlock>
             <MathBlock>ρ(100°C) ≈ ρ<sub>0</sub> · (1 + 0.0039 · 80) = ρ<sub>0</sub> · 1.31</MathBlock>
             <MathBlock>R ≈ 17 mΩ · 1.31 ≈ 22 mΩ</MathBlock>
-            <p>
-              Answer: about <strong>22 mΩ</strong>, a 31% increase. Motor windings and transformer copper run hot enough that this matters for
+            <p className="mb-prose-3">
+              Answer: about <strong className="text-text font-medium">22 mΩ</strong>, a 31% increase. Motor windings and transformer copper run hot enough that this matters for
               efficiency calculations.
             </p>
           </>
@@ -396,10 +396,10 @@ export default function ResistanceLab() {
         question={<>AWG 14 copper wire has a cross-section of about 2.08 mm². You run 30 m of it from a panel to a far outlet. What is the round-trip resistance (out and back)?</>}
         answer={
           <>
-            <p>Total wire length is 2 × 30 = 60 m:</p>
+            <p className="mb-prose-3">Total wire length is 2 × 30 = 60 m:</p>
             <MathBlock>R = (1.68×10⁻⁸) · 60 / (2.08×10⁻⁶) ≈ 0.485 Ω</MathBlock>
-            <p>
-              Answer: about <strong>0.49 Ω</strong> round-trip. At 15 A this drops V = I R ≈ 7.3 V — about 6% of 120 V, near the U.S. National
+            <p className="mb-prose-3">
+              Answer: about <strong className="text-text font-medium">0.49 Ω</strong> round-trip. At 15 A this drops V = I R ≈ 7.3 V — about 6% of 120 V, near the U.S. National
               Electrical Code's recommended 3% per branch / 5% total ceiling. That's why long runs go up a gauge.
             </p>
           </>
@@ -412,7 +412,7 @@ export default function ResistanceLab() {
         answer={
           <>
             <MathBlock>R<sub>new</sub>/R<sub>old</sub> = (L<sub>new</sub>/L<sub>old</sub>) · (A<sub>old</sub>/A<sub>new</sub>) = 2 · 2 = 4</MathBlock>
-            <p>Answer: R increases by a factor of <strong>4</strong>. The geometric effects compound multiplicatively, not additively.</p>
+            <p className="mb-prose-3">Answer: R increases by a factor of <strong className="text-text font-medium">4</strong>. The geometric effects compound multiplicatively, not additively.</p>
           </>
         }
       />
@@ -422,10 +422,10 @@ export default function ResistanceLab() {
         question={<>Seawater has ρ ≈ 0.2 Ω·m. Compute the resistance of a 1 m cube of seawater, measured face-to-face.</>}
         answer={
           <>
-            <p>L = 1 m, A = 1 m²:</p>
+            <p className="mb-prose-3">L = 1 m, A = 1 m²:</p>
             <MathBlock>R = (0.2) · 1 / 1 = 0.2 Ω</MathBlock>
-            <p>
-              Answer: <strong>0.2 Ω</strong> per meter-cube — about ten million times more resistive than a copper cube of the same size, but
+            <p className="mb-prose-3">
+              Answer: <strong className="text-text font-medium">0.2 Ω</strong> per meter-cube — about ten million times more resistive than a copper cube of the same size, but
               still vastly less than freshwater (which is ~10⁴ Ω·m or more, depending on impurities). Salt ions carry the current; the salinity
               and temperature set ρ.
             </p>
@@ -438,10 +438,10 @@ export default function ResistanceLab() {
         question={<>A 14 AWG copper branch circuit carries 15 A over a 30 m one-way run. What voltage drops along the round-trip wiring?</>}
         answer={
           <>
-            <p>Using the 0.49 Ω round-trip from Problem 3.2.4:</p>
+            <p className="mb-prose-3">Using the 0.49 Ω round-trip from Problem 3.2.4:</p>
             <MathBlock>V<sub>drop</sub> = I R = 15 A · 0.49 Ω ≈ 7.3 V</MathBlock>
-            <p>
-              Answer: <strong>≈ 7.3 V</strong>, about 6% of the 120 V supply. Lights at the far end will be visibly dimmer; resistive heaters
+            <p className="mb-prose-3">
+              Answer: <strong className="text-text font-medium">≈ 7.3 V</strong>, about 6% of the 120 V supply. Lights at the far end will be visibly dimmer; resistive heaters
               will run noticeably below rated power (since P ∝ V²). Code says to go to 12 AWG.
             </p>
           </>
@@ -453,7 +453,7 @@ export default function ResistanceLab() {
         question={<>In one sentence: why is resistance directly proportional to L?</>}
         answer={
           <>
-            <p>
+            <p className="mb-prose-3">
               Because doubling the length stacks two identical pieces of wire in series, and resistors in series add — equivalently, each
               electron has to push past twice as many lattice ions on its trip from one end to the other, so for the same drift speed (same
               current) you need twice the voltage.
@@ -468,12 +468,12 @@ export default function ResistanceLab() {
         hint={<>L = 10 mm, A = thickness · width.</>}
         answer={
           <>
-            <p>A = (100×10⁻⁹ m) · (10×10⁻³ m) = 1×10⁻⁹ m²</p>
+            <p className="mb-prose-3">A = (100×10⁻⁹ m) · (10×10⁻³ m) = 1×10⁻⁹ m²</p>
             <MathBlock>R = ρ L / A = (2×10⁻⁸) · (10×10⁻³) / (1×10⁻⁹) = 0.2 Ω</MathBlock>
-            <p>
-              Answer: <strong>≈ 0.2 Ω per square</strong>. Notice that the width <em>cancels the length</em> for a square (L/A both scale with
-              the side, but A includes thickness). That cancellation is why thin-film designers quote <em>sheet resistance</em>
-              <strong> R<sub>s</sub> = ρ/t</strong> in Ω/□ (ohms per square): the resistance of any square patch of film, regardless of size, is
+            <p className="mb-prose-3">
+              Answer: <strong className="text-text font-medium">≈ 0.2 Ω per square</strong>. Notice that the width <em className="italic text-text">cancels the length</em> for a square (L/A both scale with
+              the side, but A includes thickness). That cancellation is why thin-film designers quote <em className="italic text-text">sheet resistance</em>
+              <strong className="text-text font-medium"> R<sub>s</sub> = ρ/t</strong> in Ω/□ (ohms per square): the resistance of any square patch of film, regardless of size, is
               just R<sub>s</sub>, and total R for a strip of N squares is N · R<sub>s</sub>.
             </p>
           </>
@@ -485,15 +485,15 @@ export default function ResistanceLab() {
         question={<>Why do precision lab measurements use a four-wire (Kelvin) connection to a resistor, not a two-wire one?</>}
         answer={
           <>
-            <p>
+            <p className="mb-prose-3">
               The wires leading from the meter to the device-under-test are themselves resistors. In a two-wire measurement, the current source
-              and the voltmeter share those leads — so the meter reads <em>R<sub>device</sub> + R<sub>leads</sub></em>. The lead resistance can
+              and the voltmeter share those leads — so the meter reads <em className="italic text-text">R<sub>device</sub> + R<sub>leads</sub></em>. The lead resistance can
               be 0.1 Ω or more, which is fatal when measuring milliohm devices.
             </p>
-            <p>
+            <p className="mb-prose-3">
               In a four-wire measurement, current is forced down a dedicated pair of leads, while a separate pair of voltage-sense leads taps
               directly across the device. The voltage-sense leads carry essentially zero current (a high-impedance meter), so their resistance
-              drops no voltage, so the reading <em>V<sub>sense</sub>/I<sub>force</sub></em> sees only R<sub>device</sub>. Lead resistance is
+              drops no voltage, so the reading <em className="italic text-text">V<sub>sense</sub>/I<sub>force</sub></em> sees only R<sub>device</sub>. Lead resistance is
               cancelled by construction.
             </p>
           </>
@@ -507,8 +507,8 @@ export default function ResistanceLab() {
           <>
             <MathBlock>R = (2.65×10⁻⁸) · 1000 / (1.31×10⁻⁶) ≈ 20.2 Ω</MathBlock>
             <MathBlock>I = V / R = 12 / 20.2 ≈ 0.59 A</MathBlock>
-            <p>
-              Answer: about <strong>20 Ω</strong> and <strong>~0.6 A</strong>. The full 12 V drops along the wire itself — useful as an extended
+            <p className="mb-prose-3">
+              Answer: about <strong className="text-text font-medium">20 Ω</strong> and <strong className="text-text font-medium">~0.6 A</strong>. The full 12 V drops along the wire itself — useful as an extended
               heating element, useless as a transmission line. Real telecom and power lines run at kilovolts precisely so that the I·R drop is
               a small fraction of the line voltage.
             </p>

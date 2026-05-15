@@ -32,98 +32,98 @@ export default function Ch11Relativity() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p>
+      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
         Five chapters ago we made a promise. At the end of Chapter&nbsp;4, after teaching the Biot–Savart law, the
         right-hand rule, and the magnetic force on two parallel wires, we claimed that none of it was really a
-        separate force. <em>Magnetism is what electricity looks like when you change{' '}
-        <Term def={<><strong>reference frame</strong> — a choice of observer (position + state of motion) against which positions, times, and velocities are measured. Inertial frames move uniformly relative to one another; physical laws must take the same form in all of them.</>}>reference frames</Term>.</em> A
+        separate force. <em className="italic text-text">Magnetism is what electricity looks like when you change{' '}
+        <Term def={<><strong className="text-text font-medium">reference frame</strong> — a choice of observer (position + state of motion) against which positions, times, and velocities are measured. Inertial frames move uniformly relative to one another; physical laws must take the same form in all of them.</>}>reference frames</Term>.</em> A
         slogan, no derivation. Now we redeem it.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The argument is built around one thought experiment — a wire carrying a steady current with a small test
         charge sitting next to it. We will compute what happens in two frames, get the same physical answer both
         ways, and watch the label on the force change from "magnetic" to "electric" as we jump between them. By
         the end the two fields will have collapsed into one object.
       </p>
 
-      <h2>A promise from <em>Chapter 4</em></h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">A promise from <em className="italic text-accent font-normal">Chapter 4</em></h2>
 
-      <p>
-        The setup. A long straight wire carrying a steady current <strong>I</strong>. Far enough from the ends
-        that you can treat it as infinite. The wire is <strong>electrically neutral</strong> — the lattice of
+      <p className="mb-prose-3">
+        The setup. A long straight wire carrying a steady current <strong className="text-text font-medium">I</strong>. Far enough from the ends
+        that you can treat it as infinite. The wire is <strong className="text-text font-medium">electrically neutral</strong> — the lattice of
         positive ions and the drifting electrons have equal linear charge densities in the wire's rest frame, so
         the net charge per unit length is zero.
       </p>
-      <p>
-        Place a small positive test charge <strong>q</strong> next to it, also at rest in the lab. What force
-        does it feel? Run through the chapter-4 catalog. The wire is neutral, so <strong>E</strong> from the wire
-        is zero — no electric force. The wire makes a magnetic field <strong>B</strong> that wraps around it
+      <p className="mb-prose-3">
+        Place a small positive test charge <strong className="text-text font-medium">q</strong> next to it, also at rest in the lab. What force
+        does it feel? Run through the chapter-4 catalog. The wire is neutral, so <strong className="text-text font-medium">E</strong> from the wire
+        is zero — no electric force. The wire makes a magnetic field <strong className="text-text font-medium">B</strong> that wraps around it
         according to Ampère, but the magnetic Lorentz force <InlineMath>F = q v × B</InlineMath> requires the
-        test charge to be <em>moving</em>, and ours isn't. <strong>The test charge feels nothing.</strong>
+        test charge to be <em className="italic text-text">moving</em>, and ours isn't. <strong className="text-text font-medium">The test charge feels nothing.</strong>
       </p>
 
       <WireFromRestDemo />
 
-      <p>
+      <p className="mb-prose-3">
         So far so good. Now imagine the test charge had a small velocity along the wire — same direction as the
         current, say. Now <InlineMath>v × B</InlineMath> is nonzero and the test charge experiences a magnetic
         force pulling it toward the wire (or pushing it away — depends on sign conventions; pick one). The
         magnitude follows from chapter 4: <InlineMath>F = q v B = q v · μ₀ I / (2π d)</InlineMath>, with
         <InlineMath> d</InlineMath> the distance to the wire.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Here is the question that should make you pause. The wire was electrically neutral. Where in space did
         this force come from? "It came from B" is not a satisfying answer — B is just bookkeeping for a force.
-        What is the <em>mechanism</em>? Pre-relativistic physics says: there isn't one. Magnetism is just a
+        What is the <em className="italic text-text">mechanism</em>? Pre-relativistic physics says: there isn't one. Magnetism is just a
         primitive force, postulated, distinct from electricity. Live with it.
       </p>
 
-      <h2>The same wire, viewed from a moving <em>train</em></h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The same wire, viewed from a moving <em className="italic text-accent font-normal">train</em></h2>
 
-      <p>
+      <p className="mb-prose-3">
         Special relativity says: don't live with it. Same physical situation, but switch reference frames. Get
         on a small train moving along the wire at exactly the test charge's velocity. In your new frame the test
         charge is at rest. The wire is moving — that is, the ions and the electrons in it are both moving — but
         with different velocities than they had in the lab.
       </p>
-      <p>
+      <p className="mb-prose-3">
         In the lab frame the ions were stationary and the electrons drifted rightward at <InlineMath>v_d</InlineMath>.
         On the train (moving rightward at <InlineMath>v_test</InlineMath>), the ions appear to drift leftward at
         <InlineMath> -v_test</InlineMath>, and the electrons appear to drift at the relativistic difference
         <InlineMath> v_d' = (v_d - v_test) / (1 - v_d · v_test / c²)</InlineMath>. Both speeds are nonzero. The
         positive lattice is now moving and{' '}
-        <Term def={<><strong>length contraction</strong> — in special relativity, an object of proper length <em>L₀</em> measured along its direction of motion appears shortened to <em>L = L₀/γ</em> in any frame in which it moves at speed <em>v</em>.</>}>Lorentz-contracts</Term>; the electrons are moving too and contract by a
-        <em> different</em> amount, because contraction depends on speed
+        <Term def={<><strong className="text-text font-medium">length contraction</strong> — in special relativity, an object of proper length <em className="italic text-text">L₀</em> measured along its direction of motion appears shortened to <em className="italic text-text">L = L₀/γ</em> in any frame in which it moves at speed <em className="italic text-text">v</em>.</>}>Lorentz-contracts</Term>; the electrons are moving too and contract by a
+        <em className="italic text-text"> different</em> amount, because contraction depends on speed
         <Cite id="einstein-1905" in={SOURCES} /><Cite id="purcell-morin-2013" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Two different contractions, same number of ions per ion-rest-frame meter and electrons per
         electron-rest-frame meter, give different linear charge densities of the two species in this new frame.
-        <strong> The wire is no longer electrically neutral.</strong> It carries a net charge per unit length
-        <em> λ'</em>, and the (now-stationary) test charge sees a perfectly ordinary electric force from a
+        <strong className="text-text font-medium"> The wire is no longer electrically neutral.</strong> It carries a net charge per unit length
+        <em className="italic text-text"> λ'</em>, and the (now-stationary) test charge sees a perfectly ordinary electric force from a
         charged line: <InlineMath>F = q · λ' / (2π ε₀ d)</InlineMath>.
       </p>
 
       <WireFromMovingFrameDemo />
 
-      <h2>The numbers work out <em>exactly</em></h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The numbers work out <em className="italic text-accent font-normal">exactly</em></h2>
 
-      <p>
+      <p className="mb-prose-3">
         This isn't a hand-wave. Purcell &amp; Morin's textbook works through the algebra in Chapter&nbsp;5–6 and
         the result lands on the nose <Cite id="purcell-morin-2013" in={SOURCES} />. The two contraction factors
         produce a net linear charge density in the boosted frame whose magnitude, multiplied by the Coulomb
         electric force from an infinite charged line, equals — term for term — the magnetic Lorentz force the
         lab frame predicted from the Biot–Savart formula.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The key identity reads
       </p>
       <Formula>F<sub>magnetic</sub> (lab) = F<sub>electric</sub> (boosted) </Formula>
-      <p>
-        where <strong>F<sub>magnetic</sub>(lab)</strong> is the magnetic Lorentz force the test charge feels in
-        the wire's rest frame (in newtons, given by <em>qv × B</em> with <em>B</em> from Biot–Savart) and
-        <strong> F<sub>electric</sub>(boosted)</strong> is the ordinary Coulomb force the same test charge feels
-        in the frame in which it is momentarily at rest (also in newtons, given by <em>qE</em> from the residual
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">F<sub>magnetic</sub>(lab)</strong> is the magnetic Lorentz force the test charge feels in
+        the wire's rest frame (in newtons, given by <em className="italic text-text">qv × B</em> with <em className="italic text-text">B</em> from Biot–Savart) and
+        <strong className="text-text font-medium"> F<sub>electric</sub>(boosted)</strong> is the ordinary Coulomb force the same test charge feels
+        in the frame in which it is momentarily at rest (also in newtons, given by <em className="italic text-text">qE</em> from the residual
         linear charge density of the now-non-neutral wire). Both are the force on one and the same physical test
         charge; only the label changes with the choice of frame.
         It holds because the entire apparatus of magnetism is the leading-order correction to the Coulomb
@@ -135,11 +135,11 @@ export default function Ch11Relativity() {
       <p className="pullout">
         Magnetism is not a separate force. It is the geometry of moving charge.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The drift velocity in copper is on the order of a millimeter per second — vastly less than c — so the{' '}
-        <Term def={<><strong>gamma factor (γ)</strong> — the Lorentz factor <em>γ = 1/√(1 − v²/c²)</em>. Equal to 1 at rest, diverging at <em>v → c</em>. Controls time dilation, length contraction, and relativistic mass-energy.</>}>γ</Term> ≈ 1 to fifteen decimal places, and the relativistic correction looks ridiculously small. It
-        <em> is</em> ridiculously small per electron. But there are about
-        <strong> 10²³</strong> electrons per cubic centimeter of copper, and the imbalance times that number is
+        <Term def={<><strong className="text-text font-medium">gamma factor (γ)</strong> — the Lorentz factor <em className="italic text-text">γ = 1/√(1 − v²/c²)</em>. Equal to 1 at rest, diverging at <em className="italic text-text">v → c</em>. Controls time dilation, length contraction, and relativistic mass-energy.</>}>γ</Term> ≈ 1 to fifteen decimal places, and the relativistic correction looks ridiculously small. It
+        <em className="italic text-text"> is</em> ridiculously small per electron. But there are about
+        <strong className="text-text font-medium"> 10²³</strong> electrons per cubic centimeter of copper, and the imbalance times that number is
         what gives the wire its measurable magnetic effect. Magnetism is a colossal pile of tiny relativistic
         corrections, summed coherently <Cite id="purcell-morin-2013" in={SOURCES} />.
       </p>
@@ -147,40 +147,40 @@ export default function Ch11Relativity() {
       <TryIt
         tag="Try 11.1"
         question={
-          <>Compute the Lorentz factor γ for an object moving at <em>v</em> = 0.1c, 0.5c, 0.9c, and 0.99c.</>
+          <>Compute the Lorentz factor γ for an object moving at <em className="italic text-text">v</em> = 0.1c, 0.5c, 0.9c, and 0.99c.</>
         }
         hint="γ = 1/√(1 − β²), where β = v/c."
         answer={
           <>
-            <p>Plug each β into the formula:</p>
+            <p className="mb-prose-1 last:mb-0">Plug each β into the formula:</p>
             <Formula>γ(0.1c) = 1/√(1 − 0.01) ≈ 1.0050</Formula>
             <Formula>γ(0.5c) = 1/√(1 − 0.25) ≈ 1.1547</Formula>
             <Formula>γ(0.9c) = 1/√(1 − 0.81) ≈ 2.2942</Formula>
             <Formula>γ(0.99c) = 1/√(1 − 0.9801) ≈ 7.0888</Formula>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               γ stays within a few percent of 1 until well past half the speed of light, then climbs steeply.
-              At 0.99c, time dilation and length contraction are already a factor of <strong>~7</strong>
+              At 0.99c, time dilation and length contraction are already a factor of <strong className="text-text font-medium">~7</strong>
               <Cite id="einstein-1905" in={SOURCES} /><Cite id="jackson-1999" in={SOURCES} />.
             </p>
           </>
         }
       />
 
-      <h2>E and B <em>together</em></h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">E and B <em className="italic text-accent font-normal">together</em></h2>
 
-      <p>
+      <p className="mb-prose-3">
         Once you accept that "electric" and "magnetic" are frame-dependent labels on a single underlying object,
         the next step writes itself. There is one object. Its components are six numbers (the three components of
         E plus the three components of B), arranged in a specific way, and a Lorentz boost mixes those six
         numbers among themselves the way an ordinary rotation mixes the three components of a vector.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The clean way to write it is as a 4×4 antisymmetric matrix, the{' '}
-        <Term def={<><strong>electromagnetic field tensor (F<sup>μν</sup>)</strong> — the rank-2 antisymmetric tensor whose six independent components are the three of <em>E/c</em> and the three of <em>B</em>. Maxwell's equations rewrite as <em>∂<sub>μ</sub>F<sup>μν</sup> = μ₀J<sup>ν</sup></em> and <em>∂<sub>[α</sub>F<sub>μν]</sub> = 0</em>, manifestly Lorentz-covariant.</>}>electromagnetic field tensor</Term>
-        {' '}<em>F<sup>μν</sup></em> <Cite id="jackson-1999" in={SOURCES} /><Cite id="griffiths-2017" in={SOURCES} />.
+        <Term def={<><strong className="text-text font-medium">electromagnetic field tensor (F<sup>μν</sup>)</strong> — the rank-2 antisymmetric tensor whose six independent components are the three of <em className="italic text-text">E/c</em> and the three of <em className="italic text-text">B</em>. Maxwell's equations rewrite as <em className="italic text-text">∂<sub>μ</sub>F<sup>μν</sup> = μ₀J<sup>ν</sup></em> and <em className="italic text-text">∂<sub>[α</sub>F<sub>μν]</sub> = 0</em>, manifestly Lorentz-covariant.</>}>electromagnetic field tensor</Term>
+        {' '}<em className="italic text-text">F<sup>μν</sup></em> <Cite id="jackson-1999" in={SOURCES} /><Cite id="griffiths-2017" in={SOURCES} />.
         Its diagonal is zero (by antisymmetry); the top row contains the three components of E (divided by c);
         the remaining off-diagonal entries are the three components of B. Apply a{' '}
-        <Term def={<><strong>Lorentz transformation</strong> — the linear change of coordinates between two inertial frames in special relativity. Mixes time and space coordinates so that the speed of light is the same in every frame; the matrix <em>Λ<sup>μ</sup><sub>α</sub></em> acts on four-vectors and tensors.</>}>Lorentz transformation</Term>
+        <Term def={<><strong className="text-text font-medium">Lorentz transformation</strong> — the linear change of coordinates between two inertial frames in special relativity. Mixes time and space coordinates so that the speed of light is the same in every frame; the matrix <em className="italic text-text">Λ<sup>μ</sup><sub>α</sub></em> acts on four-vectors and tensors.</>}>Lorentz transformation</Term>
         {' '}<InlineMath>Λ<sup>μ</sup><sub>α</sub></InlineMath> to both indices and the components mix according to
         <InlineMath> F'<sup>μν</sup> = Λ<sup>μ</sup><sub>α</sub> Λ<sup>ν</sup><sub>β</sub> F<sup>αβ</sup></InlineMath>.
         Boost in the x-direction and you reproduce the transformation rules Einstein wrote down in §9 of his 1905
@@ -189,9 +189,9 @@ export default function Ch11Relativity() {
 
       <EBTransformDemo />
 
-      <p>
+      <p className="mb-prose-3">
         The tensor is not just a notational trick. Two{' '}
-        <Term def={<><strong>Lorentz invariant</strong> — a quantity built from four-vectors or tensors that takes the same value in every inertial frame. The spacetime <em>invariant interval</em> <em>s² = c²t² − x² − y² − z²</em> is the canonical example.</>}>Lorentz invariants</Term>
+        <Term def={<><strong className="text-text font-medium">Lorentz invariant</strong> — a quantity built from four-vectors or tensors that takes the same value in every inertial frame. The spacetime <em className="italic text-text">invariant interval</em> <em className="italic text-text">s² = c²t² − x² − y² − z²</em> is the canonical example.</>}>Lorentz invariants</Term>
         {' '}live inside it —
         <InlineMath> F<sub>μν</sub>F<sup>μν</sup> ∝ B² - E²/c²</InlineMath> and the pseudo-scalar
         <InlineMath> ε<sub>μνρσ</sub>F<sup>μν</sup>F<sup>ρσ</sup> ∝ E·B</InlineMath> — which means every observer
@@ -201,29 +201,29 @@ export default function Ch11Relativity() {
 
       <FieldTensorDemo />
 
-      <h2>What this <em>means</em></h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What this <em className="italic text-accent font-normal">means</em></h2>
 
-      <p>
-        Classical electrodynamics is the consequence of two ingredients. <strong>(1)</strong> Coulomb's law for
-        charges at rest. <strong>(2)</strong> Special relativity. You do not need to "discover" magnetism
+      <p className="mb-prose-3">
+        Classical electrodynamics is the consequence of two ingredients. <strong className="text-text font-medium">(1)</strong> Coulomb's law for
+        charges at rest. <strong className="text-text font-medium">(2)</strong> Special relativity. You do not need to "discover" magnetism
         separately and tack it on; it falls out the moment you ask what an electrostatic interaction looks like
         between observers in relative motion. Maxwell's equations are the simplest set of field equations
         compatible with both ingredients, and they were already Lorentz-invariant when Maxwell wrote them down
         in 1865 <Cite id="einstein-1905" in={SOURCES} /><Cite id="jackson-1999" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Maxwell didn't know that. Nobody did. There was nothing else to compare his theory to: Newtonian
         mechanics was Galilean-invariant, optics was a mess, the ether hadn't yet been falsified. It took until
         1905 for Einstein to walk into the Bern patent office, notice that Maxwell's equations were the only
-        Galilean-broken theory of his day, and conclude that it was <em>mechanics</em> that needed adjusting, not
+        Galilean-broken theory of his day, and conclude that it was <em className="italic text-text">mechanics</em> that needed adjusting, not
         electromagnetism. The opening paragraph of "On the Electrodynamics of Moving Bodies" cites a single
         motivating problem: the asymmetry of how textbooks treated a magnet moving past a conductor versus a
         conductor moving past a magnet, even though only the relative motion is observable
         <Cite id="einstein-1905" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Resolving that asymmetry is what produced special relativity. The whole architecture —{' '}
-        <Term def={<><strong>time dilation</strong> — a clock moving at speed <em>v</em> relative to an observer ticks slow by the factor γ: an interval <em>Δτ</em> in the clock's rest frame appears as <em>Δt = γ·Δτ</em> in the observer's frame.</>}>time dilation</Term>,
+        <Term def={<><strong className="text-text font-medium">time dilation</strong> — a clock moving at speed <em className="italic text-text">v</em> relative to an observer ticks slow by the factor γ: an interval <em className="italic text-text">Δτ</em> in the clock's rest frame appears as <em className="italic text-text">Δt = γ·Δτ</em> in the observer's frame.</>}>time dilation</Term>,
         length contraction, mass-energy equivalence, the cosmic speed limit — fell out of insisting that
         electromagnetism look the same in every inertial frame. The book you've been reading has, in this sense,
         been one story all along: charges, fields, and the geometry of spacetime they live in.
@@ -232,15 +232,15 @@ export default function Ch11Relativity() {
       <TryIt
         tag="Try 11.2"
         question={
-          <>A 1-metre rod flies past you lengthwise at <em>v</em> = 0.5c. What length do you measure?</>
+          <>A 1-metre rod flies past you lengthwise at <em className="italic text-text">v</em> = 0.5c. What length do you measure?</>
         }
         hint="Length contraction: L = L₀/γ, in the direction of motion."
         answer={
           <>
-            <p>From Try 11.1, γ(0.5c) ≈ 1.1547.</p>
+            <p className="mb-prose-1 last:mb-0">From Try 11.1, γ(0.5c) ≈ 1.1547.</p>
             <Formula>L = L₀/γ = 1 m / 1.1547 ≈ 0.866 m</Formula>
-            <p>
-              The contracted length is <strong>≈ 0.866 m</strong> — about <em>√(1 − 0.25)</em>. Transverse
+            <p className="mb-prose-1 last:mb-0">
+              The contracted length is <strong className="text-text font-medium">≈ 0.866 m</strong> — about <em className="italic text-text">√(1 − 0.25)</em>. Transverse
               dimensions are unchanged<Cite id="einstein-1905" in={SOURCES} /><Cite id="purcell-morin-2013" in={SOURCES} />.
             </p>
           </>
@@ -251,7 +251,7 @@ export default function Ch11Relativity() {
         tag="Try 11.3"
         question={
           <>
-            GPS satellites orbit at <em>v</em> ≈ 3.87 km/s with a gravitational potential ≈ 5.3×10⁻¹⁰ <em>c²</em>
+            GPS satellites orbit at <em className="italic text-text">v</em> ≈ 3.87 km/s with a gravitational potential ≈ 5.3×10⁻¹⁰ <em className="italic text-text">c²</em>
             shallower than at Earth's surface. Roughly, how much do their clocks gain or lose per day relative
             to the ground?
           </>
@@ -259,11 +259,11 @@ export default function Ch11Relativity() {
         hint={<>SR slow-down: −½(v/c)²·day; GR speed-up: ΔΦ/c² · day.</>}
         answer={
           <>
-            <p>Convert each fraction to microseconds in a day of 86 400 s.</p>
+            <p className="mb-prose-1 last:mb-0">Convert each fraction to microseconds in a day of 86 400 s.</p>
             <Formula>SR: −½(v/c)² ≈ −8.3×10⁻¹¹  →  −7.2 μs/day</Formula>
             <Formula>GR: +ΔΦ/c² ≈ +5.3×10⁻¹⁰  →  +45.7 μs/day</Formula>
-            <p>
-              Net offset: <strong>+38.5 μs/day</strong> (satellite clocks tick fast). Uncorrected,
+            <p className="mb-prose-1 last:mb-0">
+              Net offset: <strong className="text-text font-medium">+38.5 μs/day</strong> (satellite clocks tick fast). Uncorrected,
               that drift would corrupt ranging by ~11.6 km per day; GPS engineers detune the satellite
               oscillators on the ground to compensate<Cite id="ashby-2003" in={SOURCES} /><Cite id="kaplan-hegarty-2017" in={SOURCES} />.
             </p>
@@ -276,16 +276,16 @@ export default function Ch11Relativity() {
         question={
           <>
             At the LHC, 7 TeV protons (rest energy 938 MeV) have γ ≈ 7460. How close is their speed to c?
-            Express <em>v/c</em> as <em>1 − ε</em> and estimate ε.
+            Express <em className="italic text-text">v/c</em> as <em className="italic text-text">1 − ε</em> and estimate ε.
           </>
         }
         hint={<>For large γ, β = √(1 − 1/γ²) ≈ 1 − 1/(2γ²).</>}
         answer={
           <>
-            <p>Expand to leading order:</p>
+            <p className="mb-prose-1 last:mb-0">Expand to leading order:</p>
             <Formula>1 − v/c ≈ 1/(2γ²) = 1/(2·7460²) ≈ 9 × 10⁻⁹</Formula>
-            <p>
-              So <strong>v/c ≈ 1 − 9 × 10⁻⁹</strong>: a 7 TeV proton lags light by under three metres per
+            <p className="mb-prose-1 last:mb-0">
+              So <strong className="text-text font-medium">v/c ≈ 1 − 9 × 10⁻⁹</strong>: a 7 TeV proton lags light by under three metres per
               second around the 26.659 km ring<Cite id="bruning-lhc-2004" in={SOURCES} /><Cite id="jackson-1999" in={SOURCES} />.
             </p>
           </>
@@ -296,22 +296,22 @@ export default function Ch11Relativity() {
         tag="Try 11.5"
         question={
           <>
-            A relativistic electron moves perpendicular to a uniform <em>B</em> = 1 T at <em>v</em> = 0.9c.
-            What is its cyclotron radius? Use the relativistic momentum <em>p = γmv</em>.
+            A relativistic electron moves perpendicular to a uniform <em className="italic text-text">B</em> = 1 T at <em className="italic text-text">v</em> = 0.9c.
+            What is its cyclotron radius? Use the relativistic momentum <em className="italic text-text">p = γmv</em>.
           </>
         }
         hint={<>r = p/(qB) with p = γmv; m<sub>e</sub> = 9.109×10⁻³¹ kg, e = 1.602×10⁻¹⁹ C.</>}
         answer={
           <>
-            <p>From Try 11.1, γ(0.9c) ≈ 2.294. Then</p>
+            <p className="mb-prose-1 last:mb-0">From Try 11.1, γ(0.9c) ≈ 2.294. Then</p>
             <Formula>
               p = γ m<sub>e</sub> v = 2.294 · 9.109×10⁻³¹ · 2.70×10⁸ ≈ 5.64×10⁻²² kg·m/s
             </Formula>
             <Formula>
               r = p / (eB) = 5.64×10⁻²² / (1.602×10⁻¹⁹ · 1) ≈ 3.52×10⁻³ m
             </Formula>
-            <p>
-              Cyclotron radius <strong>≈ 3.5 mm</strong>. The non-relativistic estimate would have given
+            <p className="mb-prose-1 last:mb-0">
+              Cyclotron radius <strong className="text-text font-medium">≈ 3.5 mm</strong>. The non-relativistic estimate would have given
               ~1.5 mm; γ ≈ 2.3 inflates the radius by the same factor<Cite id="jackson-1999" in={SOURCES} /><Cite id="codata-2018" in={SOURCES} />.
             </p>
           </>
@@ -324,7 +324,7 @@ export default function Ch11Relativity() {
         <CaseStudy
           tag="Case 9.1"
           title="GPS — the satellite clocks were tuned for relativity before launch"
-          summary={<em>Special relativity slows them. General relativity speeds them up more. The net offset is 38.6 microseconds a day, and the engineers compensated for it on the ground.</em>}
+          summary={<em className="italic text-text">Special relativity slows them. General relativity speeds them up more. The net offset is 38.6 microseconds a day, and the engineers compensated for it on the ground.</em>}
           specs={[
             { label: 'Satellite orbital velocity', value: '~3.87 km/s' },
             { label: 'Special-relativistic clock slowing', value: '~−7.2 μs/day (kinematic time dilation)' },
@@ -334,24 +334,24 @@ export default function Ch11Relativity() {
             { label: 'Ranging error if uncorrected', value: '~11.6 km per day of drift' },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The GPS satellites carry caesium and rubidium atomic clocks that must keep time to about a nanosecond
-            against the ground network. Special relativity says the clocks should run <em>slow</em> by
-            <InlineMath> ½(v/c)² ≈ 8.3 × 10⁻¹¹</InlineMath> — roughly <strong>−7.2 μs per day</strong> at orbital
-            speeds of 3.87 km/s. General relativity says they should run <em>fast</em> by the gravitational-potential
+            against the ground network. Special relativity says the clocks should run <em className="italic text-text">slow</em> by
+            <InlineMath> ½(v/c)² ≈ 8.3 × 10⁻¹¹</InlineMath> — roughly <strong className="text-text font-medium">−7.2 μs per day</strong> at orbital
+            speeds of 3.87 km/s. General relativity says they should run <em className="italic text-text">fast</em> by the gravitational-potential
             difference <InlineMath>ΔΦ/c²</InlineMath> — at 20,200 km altitude, about
-            <strong> +45.7 μs per day</strong>. The net is <strong>+38.5 μs/day</strong>
+            <strong className="text-text font-medium"> +45.7 μs per day</strong>. The net is <strong className="text-text font-medium">+38.5 μs/day</strong>
             <Cite id="ashby-2003" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Thirty-eight microseconds a day, untreated, would corrupt ranging by about
             <InlineMath> c · Δt ≈ 11.6 km</InlineMath> per day. Within a week, GPS would be useless. The fix was
             baked into the hardware: the satellite oscillators are deliberately tuned to a frequency
-            <strong> below</strong> the nominal 10.23 MHz before launch, so that when the spacecraft reaches
+            <strong className="text-text font-medium"> below</strong> the nominal 10.23 MHz before launch, so that when the spacecraft reaches
             orbital altitude and velocity, the combined SR slowing and GR speed-up bring them onto the ground
             value<Cite id="ashby-2003" in={SOURCES} /><Cite id="kaplan-hegarty-2017" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             That single number, 10.22999999543 MHz, is special and general relativity entering a
             consumer-electronics product specification. Every time your phone's location reads "accurate to
             within 5 m," Einstein has been quietly invoiced. The relativistic shadow of electricity that
@@ -363,7 +363,7 @@ export default function Ch11Relativity() {
         <CaseStudy
           tag="Case 9.2"
           title="The wire-and-test-charge, with actual numbers"
-          summary={<em>Restating §3's derivation with copper, a 1 A current, and γ−1 ≈ 10⁻²⁵. The wire really does look charged from a moving frame; it's just that the per-electron correction is ridiculously small.</em>}
+          summary={<em className="italic text-text">Restating §3's derivation with copper, a 1 A current, and γ−1 ≈ 10⁻²⁵. The wire really does look charged from a moving frame; it's just that the per-electron correction is ridiculously small.</em>}
           specs={[
             { label: 'Wire', value: '12-gauge copper, A ≈ 3.31 mm²' },
             { label: 'Current', value: 'I = 1 A (steady)' },
@@ -373,27 +373,27 @@ export default function Ch11Relativity() {
             { label: 'Net frame-induced λ\' (test v = v_d)', value: '~−n e v_d² A / c² ≈ −5 × 10⁻²⁵ C/m per metre of wire' },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The thought experiment in §1 is exact; let's run the arithmetic. In the lab frame, copper's electron
-            density is <strong>n = 8.50 × 10²⁸ m⁻³</strong>, and at <strong>1 A</strong> through a 12-gauge
-            cross-section the drift velocity is about <strong>2.2 × 10⁻⁵ m/s</strong> — slower than a
+            density is <strong className="text-text font-medium">n = 8.50 × 10²⁸ m⁻³</strong>, and at <strong className="text-text font-medium">1 A</strong> through a 12-gauge
+            cross-section the drift velocity is about <strong className="text-text font-medium">2.2 × 10⁻⁵ m/s</strong> — slower than a
             snail<Cite id="purcell-morin-2013" in={SOURCES} />. The Lorentz factor of that drift is
             <InlineMath> γ − 1 ≈ ½(v_d/c)² ≈ 2.7 × 10⁻²⁵</InlineMath>. Stupendously close to one.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Boost to a frame co-moving with the electrons at <InlineMath>v_d</InlineMath>. The positive lattice
             now drifts backward at <InlineMath>v_d</InlineMath> in that frame; it Lorentz-contracts; its linear
             charge density rises by <InlineMath>γ</InlineMath>. The electrons, now at rest, see their own density
             drop by exactly the inverse factor. The two effects don't cancel — they leave a residual linear
             charge density of order <InlineMath>n e v_d² A / c²</InlineMath>, which works out to about
-            <strong> 5 × 10⁻²⁵ C per metre</strong> of wire<Cite id="purcell-morin-2013" in={SOURCES} />.
+            <strong className="text-text font-medium"> 5 × 10⁻²⁵ C per metre</strong> of wire<Cite id="purcell-morin-2013" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             That number is ludicrous on a per-metre basis — an electron carries
             <InlineMath> e ≈ 1.6 × 10⁻¹⁹ C</InlineMath>, so we are talking about a deficit of
             <InlineMath> ~3 × 10⁻⁶</InlineMath> electrons per metre. And yet, multiplied by the
             <InlineMath> n A ≈ 2.8 × 10²³</InlineMath> conduction electrons per metre, the
-            <em> charge imbalance per electron</em> is of order γ − 1, and the bookkeeping is exact: the Coulomb
+            <em className="italic text-text"> charge imbalance per electron</em> is of order γ − 1, and the bookkeeping is exact: the Coulomb
             force in the boosted frame from this tiny residual λ' is precisely
             <InlineMath> F = q v_d (μ₀ I / 2π d)</InlineMath> — the magnetic Lorentz force you'd compute in the
             lab frame from Biot–Savart<Cite id="feynman-II-13" in={SOURCES} />. Magnetism: an enormous pile of
@@ -404,7 +404,7 @@ export default function Ch11Relativity() {
         <CaseStudy
           tag="Case 9.3"
           title="The LHC — protons close enough to c that γ matters by the gigaelectronvolt"
-          summary={<em>26.659 km circumference, 7 TeV per proton, γ ≈ 7460. Relativistic mass-energy isn't a correction — it's the budget.</em>}
+          summary={<em className="italic text-text">26.659 km circumference, 7 TeV per proton, γ ≈ 7460. Relativistic mass-energy isn't a correction — it's the budget.</em>}
           specs={[
             { label: 'Circumference', value: '26.659 km' },
             { label: 'Beam energy', value: '7 TeV per proton (design)' },
@@ -415,26 +415,26 @@ export default function Ch11Relativity() {
             { label: 'Number of dipole magnets', value: '1232' },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The Large Hadron Collider at CERN is what you get when you take γ seriously as an engineering
-            parameter. The design beam energy is <strong>7 TeV</strong> per proton, against a rest-mass energy of
-            <strong> 938 MeV</strong>, giving <strong>γ ≈ 7460</strong><Cite id="bruning-lhc-2004" in={SOURCES} />.
+            parameter. The design beam energy is <strong className="text-text font-medium">7 TeV</strong> per proton, against a rest-mass energy of
+            <strong className="text-text font-medium"> 938 MeV</strong>, giving <strong className="text-text font-medium">γ ≈ 7460</strong><Cite id="bruning-lhc-2004" in={SOURCES} />.
             At that γ, the protons travel at <InlineMath>1 − 9 × 10⁻⁹</InlineMath> times c: their speed differs
             from light by under three metres per second, but their momentum is 7460 times the non-relativistic
             value, and the bending magnetic field must be sized accordingly.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The relativistic momentum-radius relation is <InlineMath>p = q B ρ</InlineMath>, and at 7 TeV / c the
             momentum that 1232 superconducting dipoles must steer into a 26.659 km ring forces
-            <strong> B = 8.33 T</strong> — at the edge of what NbTi at 1.9 K will do
+            <strong className="text-text font-medium"> B = 8.33 T</strong> — at the edge of what NbTi at 1.9 K will do
             <Cite id="bruning-lhc-2004" in={SOURCES} />. Drop γ to non-relativistic levels and the same momentum
             would imply a velocity above c, which doesn't exist. The four-momentum
             <InlineMath> p<sup>μ</sup> = (E/c, p)</InlineMath>, transforming as a{' '}
-            <Term def={<><strong>four-vector</strong> — an object with four components (one temporal, three spatial) that transforms under Lorentz boosts the way <em>(ct, x, y, z)</em> does. Examples: position <em>x<sup>μ</sup></em>, momentum <em>p<sup>μ</sup> = (E/c, p)</em>, current <em>J<sup>μ</sup> = (cρ, J)</em>, potential <em>A<sup>μ</sup> = (V/c, A)</em>.</>}>four-vector</Term>
+            <Term def={<><strong className="text-text font-medium">four-vector</strong> — an object with four components (one temporal, three spatial) that transforms under Lorentz boosts the way <em className="italic text-text">(ct, x, y, z)</em> does. Examples: position <em className="italic text-text">x<sup>μ</sup></em>, momentum <em className="italic text-text">p<sup>μ</sup> = (E/c, p)</em>, current <em className="italic text-text">J<sup>μ</sup> = (cρ, J)</em>, potential <em className="italic text-text">A<sup>μ</sup> = (V/c, A)</em>.</>}>four-vector</Term>
             {' '}under Lorentz
             boosts, is the bookkeeping that makes the budget work<Cite id="jackson-1999" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Every magnet, every focusing quadrupole, every RF cavity is sized to handle relativistic protons. The
             beam itself, viewed from a co-moving frame, would see a 26 km ring Lorentz-contracted to under four
             metres in the direction of motion — and the dipole's quasi-static magnetic field would, in that
@@ -446,7 +446,7 @@ export default function Ch11Relativity() {
         <CaseStudy
           tag="Case 9.4"
           title="Synchrotron radiation — γ⁴ in your photon budget"
-          summary={<em>Bend a relativistic electron and it radiates a pencil-beam of light, with intensity scaling as the fourth power of γ.</em>}
+          summary={<em className="italic text-text">Bend a relativistic electron and it radiates a pencil-beam of light, with intensity scaling as the fourth power of γ.</em>}
           specs={[
             { label: 'Radiation half-cone angle', value: '~1/γ (radians, in lab frame)' },
             { label: 'Power scaling for circular orbit', value: 'P ∝ γ⁴ / ρ² (Larmor in relativistic form)' },
@@ -456,23 +456,23 @@ export default function Ch11Relativity() {
             { label: 'First derivation', value: 'Schwinger, Phys. Rev. 75, 1912 (1949)' },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             A non-relativistic accelerating charge radiates the dipole pattern of Chapter 7 — broad, sin²θ around
             the acceleration axis. Push the charge to relativistic speed and that pattern, viewed in the lab
-            frame, gets Lorentz-aberrated into a tight cone of half-angle <strong>~1/γ</strong> in the forward
-            direction. The total radiated power picks up an additional factor of <strong>γ⁴</strong> for a
+            frame, gets Lorentz-aberrated into a tight cone of half-angle <strong className="text-text font-medium">~1/γ</strong> in the forward
+            direction. The total radiated power picks up an additional factor of <strong className="text-text font-medium">γ⁴</strong> for a
             circular orbit, which is why electron storage rings make excellent X-ray sources but proton ones
             mostly don't (γ at the same energy scales as 1/m, so protons radiate roughly
             <InlineMath> (m_e/m_p)⁴ ≈ 10⁻¹³</InlineMath> as efficiently)<Cite id="schwinger-1949" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Julian Schwinger worked out the classical theory in 1949<Cite id="schwinger-1949" in={SOURCES} />.
             The angular distribution is the boosted dipole pattern of §5 of Chapter 7 — you can derive it by
             applying a Lorentz transformation to the rest-frame angular distribution, the same kind of
             transformation that turns "magnetic" force into "electric" force in §3 of this chapter. The radiation
             is a direct consequence of the field tensor mixing under boosts.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Practically: every third-generation synchrotron light source — Diamond, the APS, ESRF, the ALS — is a
             ring of GeV-scale electrons whose orbital deflections in bend magnets and insertion devices produce a
             pencil-beam of hard X-rays a billion times brighter than a laboratory rotating-anode source. Without
@@ -486,7 +486,7 @@ export default function Ch11Relativity() {
         <FAQItem q='If magnetism is "relativistic," why is its strength so similar to the electric force at everyday speeds?'>
           <p>
             Because the relevant velocity isn't the drift speed of one electron — it's the collective effect of
-            <strong> all</strong> the moving charges in a wire. The per-electron correction is of order
+            <strong className="text-text font-medium"> all</strong> the moving charges in a wire. The per-electron correction is of order
             <InlineMath> v_d / c ≈ 10⁻¹³</InlineMath>, absurdly tiny. But there are
             <InlineMath> ~10²³</InlineMath> conduction electrons per cubic centimeter of copper, all drifting in
             the same direction. The "tiny correction" multiplied by Avogadro-scale numbers is what you measure as
@@ -634,7 +634,7 @@ export default function Ch11Relativity() {
             <InlineMath> F<sup>μν</sup> = ∂<sup>μ</sup>A<sup>ν</sup> - ∂<sup>ν</sup>A<sup>μ</sup></InlineMath>
             is the curvature of that connection. The mathematical analogy to general relativity, where the
             metric is the connection and the Riemann tensor is the curvature, is exact in form. Both are
-            "geometry" in the modern sense; they differ in <em>which</em> internal space is being curved
+            "geometry" in the modern sense; they differ in <em className="italic text-text">which</em> internal space is being curved
             <Cite id="jackson-1999" in={SOURCES} />.
           </p>
         </FAQItem>

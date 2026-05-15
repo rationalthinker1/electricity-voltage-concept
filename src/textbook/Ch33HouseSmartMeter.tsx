@@ -25,7 +25,7 @@ export default function Ch33HouseSmartMeter() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p>
+      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
         Look at the LCD on your smart meter for a minute. If you stand still long enough, the display cycles
         through several different readings: kilowatt-hours delivered since the meter was installed, kilowatt-hours
         received from your house back to the grid (if you have rooftop solar), the highest sustained kilowatt draw
@@ -34,7 +34,7 @@ export default function Ch33HouseSmartMeter() {
         which appear on your bill — and exactly which ones depends on your tariff and whether you are a household
         or an industrial customer<Cite id="ansi-c12-1-2014" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         This chapter is about what is actually inside that small grey box and how the bill that arrives at the end
         of the month gets built from its readings. We will walk from the physics of the measurement — voltage and
         current sampled a few thousand times per second on each phase and integrated four different ways — through
@@ -44,63 +44,63 @@ export default function Ch33HouseSmartMeter() {
         meter's accumulators into a number of dollars.
       </p>
 
-      <h2>What the meter <em>measures</em> — four quantities, not one</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What the meter <em className="italic text-accent font-normal">measures</em> — four quantities, not one</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Every modern revenue meter sits between two pairs of wires — line voltage in, load voltage out, with the
-        current passing straight through — and samples both the instantaneous voltage <strong>V(t)</strong> across
-        its terminals and the instantaneous current <strong>I(t)</strong> through them at a rate of one to four
+        current passing straight through — and samples both the instantaneous voltage <strong className="text-text font-medium">V(t)</strong> across
+        its terminals and the instantaneous current <strong className="text-text font-medium">I(t)</strong> through them at a rate of one to four
         thousand times per second per phase<Cite id="ansi-c12-20-2015" in={SOURCES} />. From those two sampled
         streams the firmware computes four running integrals in parallel and accumulates each into its own
         register. The first and most important is{' '}
-        <Term def={<><strong>real energy</strong> (kWh) — the time integral of the <em>instantaneous</em> product V(t)·I(t). Equal to the cumulative work done by the source on the load, counted in joules and then converted to the engineering unit of kilowatt-hours (1 kWh = 3.6×10⁶ J). The only one of the four meter quantities that residential customers pay for.</>}>real energy</Term>,
+        <Term def={<><strong className="text-text font-medium">real energy</strong> (kWh) — the time integral of the <em className="italic text-text">instantaneous</em> product V(t)·I(t). Equal to the cumulative work done by the source on the load, counted in joules and then converted to the engineering unit of kilowatt-hours (1 kWh = 3.6×10⁶ J). The only one of the four meter quantities that residential customers pay for.</>}>real energy</Term>,
         in kilowatt-hours, the time integral of instantaneous power:
       </p>
       <Formula>kWh = ∫ V(t) I(t) dt</Formula>
-      <p>
+      <p className="mb-prose-3">
         where the integral on the right runs over the billing period and yields joules (which the meter then
-        divides by 3.6×10⁶ to display kilowatt-hours). <strong>V(t)</strong> is the instantaneous service voltage
-        in volts, <strong>I(t)</strong> is the instantaneous current flowing through the meter in amperes (signed
+        divides by 3.6×10⁶ to display kilowatt-hours). <strong className="text-text font-medium">V(t)</strong> is the instantaneous service voltage
+        in volts, <strong className="text-text font-medium">I(t)</strong> is the instantaneous current flowing through the meter in amperes (signed
         — positive when energy is flowing into the house, negative when it is being exported), and{' '}
-        <strong>t</strong> is time in seconds. The product V(t)·I(t) is the instantaneous real power in watts; its
+        <strong className="text-text font-medium">t</strong> is time in seconds. The product V(t)·I(t) is the instantaneous real power in watts; its
         integral is the cumulative energy delivered<Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The second quantity is the{' '}
-        <Term def={<><strong>apparent energy</strong> (kVAh) — the time integral of the product of RMS voltage and RMS current, with no regard to their phase relationship. Equal to the "envelope" of the VI product. Always greater than or equal to real energy; equality holds only when the load is purely resistive (PF = 1).</>}>apparent energy</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">apparent energy</strong> (kVAh) — the time integral of the product of RMS voltage and RMS current, with no regard to their phase relationship. Equal to the "envelope" of the VI product. Always greater than or equal to real energy; equality holds only when the load is purely resistive (PF = 1).</>}>apparent energy</Term>{' '}
         in kilovolt-ampere-hours, the integral of the product of root-mean-square voltage and current with their
         phase relationship ignored:
       </p>
       <Formula>kVAh = ∫ V<sub>rms</sub> I<sub>rms</sub> dt</Formula>
-      <p>
-        where <strong>V<sub>rms</sub></strong> and <strong>I<sub>rms</sub></strong> are the running RMS values of
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">V<sub>rms</sub></strong> and <strong className="text-text font-medium">I<sub>rms</sub></strong> are the running RMS values of
         the voltage and current waveforms (in volts and amperes), computed over a short averaging window. The
         product is the "envelope" of the VI product — the apparent power the supply has to deliver, regardless of
         whether that power is dissipated or merely sloshes back and forth.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The third quantity is the{' '}
-        <Term def={<><strong>reactive energy</strong> (kVARh) — the cumulative integral of V(t)·I(t-π/2): the part of the VI product that is 90° out of phase. Represents the energy that sloshes into and out of inductors and capacitors each cycle without being dissipated. Industrial customers pay penalties on it; residential ones usually do not.</>}>reactive energy</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">reactive energy</strong> (kVARh) — the cumulative integral of V(t)·I(t-π/2): the part of the VI product that is 90° out of phase. Represents the energy that sloshes into and out of inductors and capacitors each cycle without being dissipated. Industrial customers pay penalties on it; residential ones usually do not.</>}>reactive energy</Term>{' '}
         in kilovolt-ampere-reactive-hours, the integral of voltage against the current shifted by a quarter cycle:
       </p>
       <Formula>kVARh = ∫ V(t) I(t − π/2ω) dt</Formula>
-      <p>
-        where <strong>ω = 2πf</strong> is the angular frequency of the line (377 rad/s in North America), and the
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">ω = 2πf</strong> is the angular frequency of the line (377 rad/s in North America), and the
         quarter-cycle delay isolates the part of the current that is 90° out of phase with the voltage — the part
         that flows into and out of inductors and capacitors each cycle without depositing any net energy. The
         three integrals together obey a Pythagorean relation that recovers the power triangle from{' '}
-        <Term def={<><strong>chapter 12's power triangle</strong> — the right-triangle identity P² + Q² = S², where P is real power, Q is reactive power, and S is apparent power. Each meter integrates each leg over time into its own register, then the triangle holds for the cumulative energies as well: kWh² + kVARh² = kVAh².</>}>chapter 12</Term>:
+        <Term def={<><strong className="text-text font-medium">chapter 12's power triangle</strong> — the right-triangle identity P² + Q² = S², where P is real power, Q is reactive power, and S is apparent power. Each meter integrates each leg over time into its own register, then the triangle holds for the cumulative energies as well: kWh² + kVARh² = kVAh².</>}>chapter 12</Term>:
       </p>
       <Formula>kVA² = kW² + kVAR²</Formula>
-      <p>
-        where <strong>kVA</strong> is apparent power (in kilovolt-amperes), <strong>kW</strong> is real power (in
-        kilowatts — the work-doing component), and <strong>kVAR</strong> is reactive power (in kilovolt-amperes
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">kVA</strong> is apparent power (in kilovolt-amperes), <strong className="text-text font-medium">kW</strong> is real power (in
+        kilowatts — the work-doing component), and <strong className="text-text font-medium">kVAR</strong> is reactive power (in kilovolt-amperes
         reactive — the sloshing component). The same Pythagorean relation holds between the three energies as
         well: kVAh² = kWh² + kVARh²<Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The fourth quantity is{' '}
-        <Term def={<><strong>peak demand</strong> (kW max) — the highest sustained real power averaged over any rolling window (typically 15 minutes) during a billing period. Drives the sizing of the utility's transformers, feeders, and generation: a customer that pulls 50 kW for 15 minutes once a month forces the utility to build infrastructure for 50 kW even though most of the time they pull a tenth of that.</>}>peak demand</Term>,
+        <Term def={<><strong className="text-text font-medium">peak demand</strong> (kW max) — the highest sustained real power averaged over any rolling window (typically 15 minutes) during a billing period. Drives the sizing of the utility's transformers, feeders, and generation: a customer that pulls 50 kW for 15 minutes once a month forces the utility to build infrastructure for 50 kW even though most of the time they pull a tenth of that.</>}>peak demand</Term>,
         in kilowatts, the highest sustained real power averaged over any rolling fifteen-minute window during the
         billing period<Cite id="ansi-c12-1-2014" in={SOURCES} />. Unlike the other three (which are cumulative
         integrals), demand is a maximum: the meter looks at the average power over each fifteen-minute window,
@@ -113,7 +113,7 @@ export default function Ch33HouseSmartMeter() {
         tag="Try 33.1"
         question={
           <>
-            A house averages <strong>30 kWh per day</strong> at a flat <strong>$0.20/kWh</strong> rate. The
+            A house averages <strong className="text-text font-medium">30 kWh per day</strong> at a flat <strong className="text-text font-medium">$0.20/kWh</strong> rate. The
             monthly (30-day) bill from the energy charge alone is what?
           </>
         }
@@ -121,8 +121,8 @@ export default function Ch33HouseSmartMeter() {
         answer={
           <>
             <Formula>kWh<sub>month</sub> = 30 kWh/day × 30 days = 900 kWh</Formula>
-            <Formula>Bill = 900 kWh × $0.20/kWh = <strong>$180</strong></Formula>
-            <p>
+            <Formula>Bill = 900 kWh × $0.20/kWh = <strong className="text-text font-medium">$180</strong></Formula>
+            <p className="mb-prose-1 last:mb-0">
               Right in the middle of the U.S. residential range. Add a small fixed monthly service charge
               ($5–$15 depending on utility) and that is the whole bill on a flat-rate plan<Cite id="ansi-c12-1-2014" in={SOURCES} />.
             </p>
@@ -130,28 +130,28 @@ export default function Ch33HouseSmartMeter() {
         }
       />
 
-      <h2>The induction-disk <em>legacy</em> meter</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The induction-disk <em className="italic text-accent font-normal">legacy</em> meter</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Before microcontrollers were cheap enough to put on every house, every revenue meter on every street in
         North America was the same little glass-domed cylinder with an aluminium disk visibly spinning behind the
         face: the{' '}
-        <Term def={<><strong>induction-disk meter</strong> (Ferraris / Thomson kWh meter) — the original electromechanical revenue meter, in service from the 1890s through the early 2000s. A thin aluminium disk spins between two electromagnets (a voltage coil and a current coil) whose phased fields exert a torque proportional to instantaneous real power. A brake magnet linearises the disk's rotational speed so cumulative revolutions count cumulative energy.</>}>induction-disk meter</Term>.
+        <Term def={<><strong className="text-text font-medium">induction-disk meter</strong> (Ferraris / Thomson kWh meter) — the original electromechanical revenue meter, in service from the 1890s through the early 2000s. A thin aluminium disk spins between two electromagnets (a voltage coil and a current coil) whose phased fields exert a torque proportional to instantaneous real power. A brake magnet linearises the disk's rotational speed so cumulative revolutions count cumulative energy.</>}>induction-disk meter</Term>.
         The mechanism is a small marvel of nineteenth-century electromechanical thinking — a meter that integrates
         V·I·cos(φ) over time using nothing but eddy currents, geometry, and a permanent magnet for braking<Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Two electromagnets drive the disk. The voltage coil is wound with many turns of thin wire and connects
         across the line; its flux through the disk is therefore proportional to the line voltage. The current coil
         is wound with few turns of thick wire and carries the full load current; its flux is proportional to the
         load current. The two fluxes pass through the same aluminium disk but in slightly different positions, and
         their interaction induces eddy currents in the disk. The torque on the disk from the eddy-current /
         magnetic-field interaction is exactly proportional to the time-averaged product{' '}
-        <strong>V·I·cos(φ)</strong> — that is, to the real power crossing the meter — with the cos(φ) appearing
+        <strong className="text-text font-medium">V·I·cos(φ)</strong> — that is, to the real power crossing the meter — with the cos(φ) appearing
         automatically because the two coils are designed to have a 90° phase difference in their flux
         contributions so that purely reactive current contributes zero net torque.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Without anything else, that torque would simply accelerate the disk forever. The trick that converts a
         torque-meter into an integrator is a permanent-magnet eddy-current brake: a horseshoe magnet straddles the
         edge of the disk on the opposite side from the drive coils, and as the disk spins, the magnet's field
@@ -163,7 +163,7 @@ export default function Ch33HouseSmartMeter() {
         fixed gear ratio: typical mechanical meters spin at one revolution per 7.2 watt-hours, so 500 revolutions
         is exactly one kilowatt-hour.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The induction-disk meter has no microcontroller, no ADC, no firmware to update, and no radio to
         compromise. Its accuracy is set by geometry — the spacing of the coils, the temperature stability of the
         brake magnet, the linearity of the eddy-current torque — and is typically maintained at the 0.5 %
@@ -173,22 +173,22 @@ export default function Ch33HouseSmartMeter() {
         are still installed and operating in North America today.
       </p>
 
-      <h2>The solid-state <em>smart</em> meter</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The solid-state <em className="italic text-accent font-normal">smart</em> meter</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Since roughly 2005, almost every new and replacement meter installed in North America has been
         solid-state. Strip the housing off a modern{' '}
-        <Term def={<><strong>smart meter</strong> — a solid-state revenue meter with a microcontroller, an integrating ADC, current transformers (or shunts) on each phase, two-way digital communication (RF mesh, cellular LTE-M, or PLC), and onboard accumulators for kWh, kVAh, kVARh, and peak demand. Replaces both the mechanical Ferraris meter and the monthly meter-reader visit.</>}>smart meter</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">smart meter</strong> — a solid-state revenue meter with a microcontroller, an integrating ADC, current transformers (or shunts) on each phase, two-way digital communication (RF mesh, cellular LTE-M, or PLC), and onboard accumulators for kWh, kVAh, kVARh, and peak demand. Replaces both the mechanical Ferraris meter and the monthly meter-reader visit.</>}>smart meter</Term>{' '}
         and you find a microcontroller, an integrating multi-channel ADC, a precision voltage divider on each line
         terminal, a{' '}
-        <Term def={<><strong>current transformer (CT)</strong> — a transformer whose primary is the load conductor passing once through a toroidal core and whose secondary delivers a scaled-down replica of the primary current into a small burden resistor. Lets a meter measure hundreds of amperes without breaking the service conductor or dissipating the I²R loss that would occur in a shunt.</>}>current transformer</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">current transformer (CT)</strong> — a transformer whose primary is the load conductor passing once through a toroidal core and whose secondary delivers a scaled-down replica of the primary current into a small burden resistor. Lets a meter measure hundreds of amperes without breaking the service conductor or dissipating the I²R loss that would occur in a shunt.</>}>current transformer</Term>{' '}
         (sometimes a precision shunt resistor for smaller services) on each hot leg, an EEPROM for the accumulator
         registers, an LCD driver, and a radio module — typically a sub-GHz mesh radio (the AMI mesh used by the
         utility), occasionally a cellular LTE-M modem, occasionally a ZigBee link for in-home display<Cite id="ansi-c12-20-2015" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The signal-chain is straightforward. The{' '}
-        <Term def={<><strong>voltage divider</strong> — a pair of precision resistors that scales the line voltage down to a level the meter's ADC can sample directly without breakdown. A typical residential meter uses a divider ratio around 1000:1 so that a 240 V line appears as 240 mV at the ADC input.</>}>voltage divider</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">voltage divider</strong> — a pair of precision resistors that scales the line voltage down to a level the meter's ADC can sample directly without breakdown. A typical residential meter uses a divider ratio around 1000:1 so that a 240 V line appears as 240 mV at the ADC input.</>}>voltage divider</Term>{' '}
         scales the 120 V or 240 V line down to a few hundred millivolts; the CT's burden resistor scales the
         100–200 A primary down to a few hundred millivolts as well; both signals enter the ADC as a pair of
         millivolt-level waveforms; the firmware multiplies them sample-by-sample at the 1–4 kHz sampling rate to
@@ -197,10 +197,10 @@ export default function Ch33HouseSmartMeter() {
         Each register is written to non-volatile memory every few seconds so a power outage does not lose the
         running total.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The radio reports back to the utility — usually once every fifteen minutes, sometimes every five minutes
         in newer deployments — through the{' '}
-        <Term def={<><strong>advanced metering infrastructure</strong> (AMI) — the utility's two-way communications network connecting smart meters to the billing back-end. Typically a sub-GHz RF mesh with each meter relaying its neighbours' packets to the nearest "collector," from which packets travel by cellular or fiber to the utility data center.</>}>advanced metering infrastructure</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">advanced metering infrastructure</strong> (AMI) — the utility's two-way communications network connecting smart meters to the billing back-end. Typically a sub-GHz RF mesh with each meter relaying its neighbours' packets to the nearest "collector," from which packets travel by cellular or fiber to the utility data center.</>}>advanced metering infrastructure</Term>{' '}
         (AMI) mesh: each meter relays its neighbours' packets to the nearest "collector" on a pole or rooftop,
         from which the data travels over cellular or fiber back to the utility's billing data center. The mesh is
         designed for the worst-case packet-loss environment of a residential neighbourhood and typically delivers
@@ -209,10 +209,10 @@ export default function Ch33HouseSmartMeter() {
         deployments of the mid-2000s were not encrypted and produced a steady stream of academic-security papers
         showing how the readings could be intercepted, but the standards have since hardened<Cite id="ansi-c12-20-2015" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         ANSI C12.20 defines several{' '}
-        <Term def={<><strong>accuracy class</strong> — the meter's certified worst-case error as a percentage of full-scale reading. Class 0.5 means ±0.5 % of the reported energy under nominal operating conditions over the meter's service life. Class 0.2 is twice as accurate and reserved for industrial / sub-metering. Class 0.1 is laboratory grade.</>}>accuracy classes</Term>{' '}
-        for these meters: <strong>0.1</strong>, <strong>0.2</strong>, and <strong>0.5</strong>, named for the
+        <Term def={<><strong className="text-text font-medium">accuracy class</strong> — the meter's certified worst-case error as a percentage of full-scale reading. Class 0.5 means ±0.5 % of the reported energy under nominal operating conditions over the meter's service life. Class 0.2 is twice as accurate and reserved for industrial / sub-metering. Class 0.1 is laboratory grade.</>}>accuracy classes</Term>{' '}
+        for these meters: <strong className="text-text font-medium">0.1</strong>, <strong className="text-text font-medium">0.2</strong>, and <strong className="text-text font-medium">0.5</strong>, named for the
         worst-case percentage error of the reported energy at nominal operating conditions<Cite id="ansi-c12-20-2015" in={SOURCES} />.
         Residential meters are almost always class 0.5 (±0.5 % over the life of the meter). Industrial and
         sub-metering installations use class 0.2 (±0.2 %). Reference and revenue-tie meters at substations and
@@ -223,7 +223,7 @@ export default function Ch33HouseSmartMeter() {
         tag="Try 33.2"
         question={
           <>
-            A solid-state meter of accuracy class <strong>0.5</strong> reports <strong>850 kWh</strong> over a
+            A solid-state meter of accuracy class <strong className="text-text font-medium">0.5</strong> reports <strong className="text-text font-medium">850 kWh</strong> over a
             billing cycle. What is the maximum delivered energy that could correspond to (worst-case
             under-reading)?
           </>
@@ -231,12 +231,12 @@ export default function Ch33HouseSmartMeter() {
         hint="Class 0.5 means the meter's reading could be off by ±0.5 % of the true value."
         answer={
           <>
-            <p>
-              If the meter is reading <em>low</em> by the full 0.5 % allowance, the true energy is the reported
+            <p className="mb-prose-1 last:mb-0">
+              If the meter is reading <em className="italic text-text">low</em> by the full 0.5 % allowance, the true energy is the reported
               value divided by 0.995:
             </p>
-            <Formula>kWh<sub>true,max</sub> = 850 / 0.995 ≈ <strong>854.3 kWh</strong></Formula>
-            <p>
+            <Formula>kWh<sub>true,max</sub> = 850 / 0.995 ≈ <strong className="text-text font-medium">854.3 kWh</strong></Formula>
+            <p className="mb-prose-1 last:mb-0">
               About 4 kWh of headroom in the customer's favour at this billing total — roughly $0.50 to $1.00
               depending on the rate. Over a million meters and a year of billings, those single-percent margins
               are why the utility cares about accuracy class to two decimal places<Cite id="ansi-c12-20-2015" in={SOURCES} />.
@@ -245,39 +245,39 @@ export default function Ch33HouseSmartMeter() {
         }
       />
 
-      <h2>The bill itself — tariffs, demand, time-of-use</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">The bill itself — tariffs, demand, time-of-use</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Residential bills in North America are dominated by a single per-kilowatt-hour charge — a flat rate of
-        roughly <strong>$0.12 to $0.30</strong> per kWh depending on geography and season, plus a small fixed
+        roughly <strong className="text-text font-medium">$0.12 to $0.30</strong> per kWh depending on geography and season, plus a small fixed
         monthly "service" or "customer" charge of $5 to $15 that covers the meter, the service drop, and the
         billing-system overhead<Cite id="ansi-c12-1-2014" in={SOURCES} />. The meter's real-energy register at
         the end of the billing period minus the register at the start gives the kWh consumed; the utility
         multiplies by the per-kWh rate, adds the fixed charge, and that is the bill. Most of the country's
         residential customers have lived under this structure for a century, and many still do.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Increasingly, however, residential tariffs are{' '}
-        <Term def={<><strong>time-of-use</strong> (TOU) — a tariff structure in which the per-kWh rate varies by hour of the day (and sometimes by day of the week or season). Designed to expose customers to the underlying time-varying cost of generation: cheap off-peak nighttime power, expensive peak-evening power. Enabled by smart meters that report interval data.</>}>time-of-use</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">time-of-use</strong> (TOU) — a tariff structure in which the per-kWh rate varies by hour of the day (and sometimes by day of the week or season). Designed to expose customers to the underlying time-varying cost of generation: cheap off-peak nighttime power, expensive peak-evening power. Enabled by smart meters that report interval data.</>}>time-of-use</Term>{' '}
         (TOU): the per-kWh rate depends on the hour at which the energy was consumed. A typical California PG&E
-        TOU schedule charges about <strong>$0.27/kWh</strong> during peak hours (4 pm to 9 pm, when air
+        TOU schedule charges about <strong className="text-text font-medium">$0.27/kWh</strong> during peak hours (4 pm to 9 pm, when air
         conditioning demand stacks against the evening sunset-and-cooking peak) and about{' '}
-        <strong>$0.13/kWh</strong> off-peak (the rest of the day and all night). The meter's interval data is
+        <strong className="text-text font-medium">$0.13/kWh</strong> off-peak (the rest of the day and all night). The meter's interval data is
         what makes this possible: each fifteen-minute energy reading carries a timestamp, and the billing
         back-end sums the kWh against the rate schedule one interval at a time<Cite id="ansi-c12-1-2014" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Industrial and large-commercial customers see a structurally different bill. In addition to a per-kWh
         energy charge (often itself time-of-use), they pay a{' '}
-        <Term def={<><strong>demand charge</strong> — a per-kilowatt fee applied to the customer's peak 15-minute average real power during the billing period. Typically $10–$30 per kW per month for industrial customers. Reflects the utility's fixed capital cost of transformers, feeders, and generation sized to the customer's peak rather than their average.</>}>demand charge</Term>{' '}
-        of <strong>$10 to $30 per kW</strong> of peak fifteen-minute demand, and often a power-factor penalty:
+        <Term def={<><strong className="text-text font-medium">demand charge</strong> — a per-kilowatt fee applied to the customer's peak 15-minute average real power during the billing period. Typically $10–$30 per kW per month for industrial customers. Reflects the utility's fixed capital cost of transformers, feeders, and generation sized to the customer's peak rather than their average.</>}>demand charge</Term>{' '}
+        of <strong className="text-text font-medium">$10 to $30 per kW</strong> of peak fifteen-minute demand, and often a power-factor penalty:
         a surcharge if the average power factor over the billing period drops below 0.85 or 0.90. The demand
         charge is the customer's contribution to the utility's capital cost — the transformers and feeders that
         had to be built to serve their peak, even if the peak only lasts fifteen minutes a month. The
         power-factor surcharge is the customer's contribution to the I²R loss that their reactive current
         imposes on the utility's wires upstream<Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Residential customers are usually exempted from both demand charges and power-factor penalties because
         their loads are mostly resistive (heat, lights, electronics with power-factor-corrected supplies) and
         because the residential diversity factor — peaks at different times in different houses — averages the
@@ -289,9 +289,9 @@ export default function Ch33HouseSmartMeter() {
         tag="Try 33.3"
         question={
           <>
-            A house's HVAC system draws <strong>5 kW for 6 hours</strong> during peak (4–9 pm) and <strong>1.5 kW
+            A house's HVAC system draws <strong className="text-text font-medium">5 kW for 6 hours</strong> during peak (4–9 pm) and <strong className="text-text font-medium">1.5 kW
             continuous</strong> during the remaining 18 off-peak hours of the day. On a TOU schedule of{' '}
-            <strong>$0.30/kWh peak</strong> and <strong>$0.13/kWh off-peak</strong>, what is the daily bill from
+            <strong className="text-text font-medium">$0.30/kWh peak</strong> and <strong className="text-text font-medium">$0.13/kWh off-peak</strong>, what is the daily bill from
             HVAC alone?
           </>
         }
@@ -302,8 +302,8 @@ export default function Ch33HouseSmartMeter() {
             <Formula>kWh<sub>off</sub> = 1.5 kW × 18 h = 27 kWh</Formula>
             <Formula>Cost<sub>peak</sub> = 30 × $0.30 = $9.00</Formula>
             <Formula>Cost<sub>off</sub> = 27 × $0.13 = $3.51</Formula>
-            <Formula>Daily total = <strong>$12.51</strong></Formula>
-            <p>
+            <Formula>Daily total = <strong className="text-text font-medium">$12.51</strong></Formula>
+            <p className="mb-prose-1 last:mb-0">
               Roughly $375/month from HVAC alone — and notice that the peak window contributes more than twice
               the cost of the off-peak window despite only running a quarter of the hours. Shifting load out of
               the peak window (pre-cooling the house before 4 pm, raising the thermostat between 4 and 9, running
@@ -317,36 +317,36 @@ export default function Ch33HouseSmartMeter() {
         tag="Try 33.4"
         question={
           <>
-            A factory has a <strong>1,000 kVA</strong> service running at <strong>PF = 0.78</strong>, with a peak
-            real-power demand of <strong>780 kW</strong>. The utility charges <strong>$0.10/kWh</strong> plus{' '}
-            <strong>$15/kW</strong> of peak demand plus a <strong>$5/kVAR</strong> penalty on the kVAR drawn
+            A factory has a <strong className="text-text font-medium">1,000 kVA</strong> service running at <strong className="text-text font-medium">PF = 0.78</strong>, with a peak
+            real-power demand of <strong className="text-text font-medium">780 kW</strong>. The utility charges <strong className="text-text font-medium">$0.10/kWh</strong> plus{' '}
+            <strong className="text-text font-medium">$15/kW</strong> of peak demand plus a <strong className="text-text font-medium">$5/kVAR</strong> penalty on the kVAR drawn
             above a PF-threshold of 0.85. Installing a $50,000 power-factor-correction capacitor bank raises
-            the PF to <strong>0.95</strong>. Assume <strong>700 operating hours/month</strong> at full load. How
+            the PF to <strong className="text-text font-medium">0.95</strong>. Assume <strong className="text-text font-medium">700 operating hours/month</strong> at full load. How
             much does the factory save per month, and how long until the capacitor pays for itself?
           </>
         }
         hint="Compute kVAR before and after correction. Then compute the penalty against the 0.85 threshold for each case. Energy and demand charges don't change — only the PF penalty does."
         answer={
           <>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               Before correction, real power is 780 kW and apparent power is 780 / 0.78 = 1000 kVA, so:
             </p>
             <Formula>kVAR<sub>before</sub> = √(1000² − 780²) = √(1,000,000 − 608,400) = √391,600 ≈ 626 kVAR</Formula>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               The penalty threshold of PF = 0.85 at 780 kW real corresponds to:
             </p>
             <Formula>kVAR<sub>threshold</sub> = 780 × tan(acos(0.85)) ≈ 780 × 0.620 ≈ 483 kVAR</Formula>
-            <Formula>Penalty<sub>before</sub> = (626 − 483) × $5 ≈ <strong>$715/month</strong></Formula>
-            <p>
+            <Formula>Penalty<sub>before</sub> = (626 − 483) × $5 ≈ <strong className="text-text font-medium">$715/month</strong></Formula>
+            <p className="mb-prose-1 last:mb-0">
               After correction to PF = 0.95:
             </p>
             <Formula>kVAR<sub>after</sub> = 780 × tan(acos(0.95)) ≈ 780 × 0.329 ≈ 257 kVAR</Formula>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               257 kVAR is below the 483 kVAR threshold, so the penalty drops to zero. The capacitor saves the
-              full <strong>$715/month</strong>. The $50,000 capital cost pays back in:
+              full <strong className="text-text font-medium">$715/month</strong>. The $50,000 capital cost pays back in:
             </p>
-            <Formula>Payback = $50,000 / $715/month ≈ <strong>70 months</strong> ≈ 5.8 years</Formula>
-            <p>
+            <Formula>Payback = $50,000 / $715/month ≈ <strong className="text-text font-medium">70 months</strong> ≈ 5.8 years</Formula>
+            <p className="mb-prose-1 last:mb-0">
               A typical industrial PF-correction payback period<Cite id="grainger-power-systems-2003" in={SOURCES} />.
               The energy charge (700 h × 780 kW × $0.10 = $54,600/month) and demand charge ($15 × 780 = $11,700)
               are unaffected — the capacitor only fixes the reactive draw on the wires upstream.
@@ -360,9 +360,9 @@ export default function Ch33HouseSmartMeter() {
         in case the rules change tomorrow.
       </Pullout>
 
-      <h2>Net metering, feed-in, and <em>bidirectional</em> flow</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Net metering, feed-in, and <em className="italic text-accent font-normal">bidirectional</em> flow</h2>
 
-      <p>
+      <p className="mb-prose-3">
         A rooftop PV array changes the meter's life. On a sunny weekday around noon, the panels produce more power
         than the house consumes, and the surplus flows backward through the meter and onto the service drop. The
         meter — designed from the start as a bidirectional sensor — sees current of the opposite sign and
@@ -372,49 +372,49 @@ export default function Ch33HouseSmartMeter() {
         on a single register — a system that worked perfectly well for the first generation of grid-tied solar
         but is no longer the dominant approach.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Three different tariff structures handle the bidirectional flow. The simplest, and the structure most
         common in the U.S. through the 2010s, is{' '}
-        <Term def={<><strong>net metering</strong> — a tariff in which the customer is billed for the difference between kWh imported and kWh exported, at the prevailing retail rate. Exports effectively earn the same per-kWh as imports cost. Generous to solar customers; criticised for under-pricing the utility's fixed costs.</>}>net metering</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">net metering</strong> — a tariff in which the customer is billed for the difference between kWh imported and kWh exported, at the prevailing retail rate. Exports effectively earn the same per-kWh as imports cost. Generous to solar customers; criticised for under-pricing the utility's fixed costs.</>}>net metering</Term>{' '}
         — the customer pays the difference between energy imported and energy exported at a single retail rate:
       </p>
       <Formula>Bill = R × (kWh<sub>in</sub> − kWh<sub>out</sub>)</Formula>
-      <p>
-        where <strong>R</strong> is the per-kWh retail rate (in $/kWh), <strong>kWh<sub>in</sub></strong> is total
-        energy imported from the grid during the billing period (in kWh), and <strong>kWh<sub>out</sub></strong>{' '}
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">R</strong> is the per-kWh retail rate (in $/kWh), <strong className="text-text font-medium">kWh<sub>in</sub></strong> is total
+        energy imported from the grid during the billing period (in kWh), and <strong className="text-text font-medium">kWh<sub>out</sub></strong>{' '}
         is total energy exported (in kWh). If the customer exports more than they import in a given month, the
         bill goes to zero (or to the fixed charge alone), and the surplus rolls forward as a credit to the next
         month.
       </p>
-      <p>
+      <p className="mb-prose-3">
         A{' '}
-        <Term def={<><strong>feed-in tariff</strong> — a tariff structure in which exported energy is purchased by the utility at a separately set price, usually lower than (but sometimes higher than) the retail rate. Common in Europe; used in the U.S. for utility-scale renewable purchasing but rarer for residential.</>}>feed-in tariff</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">feed-in tariff</strong> — a tariff structure in which exported energy is purchased by the utility at a separately set price, usually lower than (but sometimes higher than) the retail rate. Common in Europe; used in the U.S. for utility-scale renewable purchasing but rarer for residential.</>}>feed-in tariff</Term>{' '}
         separates the two streams: imports are billed at the retail rate, exports are purchased at a different
         (typically lower) wholesale rate, and the bill is computed as the difference of two independent products.
         TOU-aware{' '}
-        <Term def={<><strong>net billing</strong> — a hybrid between net metering and feed-in tariffs: import and export are tracked separately and priced at different rates that themselves vary by time of day. The successor structure to net metering in most U.S. states with high solar penetration.</>}>net billing</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">net billing</strong> — a hybrid between net metering and feed-in tariffs: import and export are tracked separately and priced at different rates that themselves vary by time of day. The successor structure to net metering in most U.S. states with high solar penetration.</>}>net billing</Term>{' '}
         structures apply yet a third pattern: the bill applies different rates to different times of day for both
         imports and exports, so the customer's incentive becomes "consume own generation when retail rates are
         high; export only when wholesale buy-back rates exceed the value of self-consumption":
       </p>
       <Formula>Bill = R<sub>peak</sub> × kWh<sub>peak,in</sub> + R<sub>off</sub> × kWh<sub>off,in</sub> − R<sub>export</sub> × kWh<sub>out</sub></Formula>
-      <p>
-        where <strong>R<sub>peak</sub></strong> and <strong>R<sub>off</sub></strong> are the peak and off-peak
-        per-kWh retail rates (in $/kWh), <strong>kWh<sub>peak,in</sub></strong> and{' '}
-        <strong>kWh<sub>off,in</sub></strong> are the imported energies during each window (in kWh),{' '}
-        <strong>R<sub>export</sub></strong> is the export buy-back rate (in $/kWh, often lower than the off-peak
-        rate), and <strong>kWh<sub>out</sub></strong> is the total exported energy (in kWh). California's
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">R<sub>peak</sub></strong> and <strong className="text-text font-medium">R<sub>off</sub></strong> are the peak and off-peak
+        per-kWh retail rates (in $/kWh), <strong className="text-text font-medium">kWh<sub>peak,in</sub></strong> and{' '}
+        <strong className="text-text font-medium">kWh<sub>off,in</sub></strong> are the imported energies during each window (in kWh),{' '}
+        <strong className="text-text font-medium">R<sub>export</sub></strong> is the export buy-back rate (in $/kWh, often lower than the off-peak
+        rate), and <strong className="text-text font-medium">kWh<sub>out</sub></strong> is the total exported energy (in kWh). California's
         NEM 3.0 (in effect since 2023) is essentially this structure with R<sub>export</sub> set by an
-        avoided-cost calculation that pays only about <strong>$0.05/kWh</strong> for daytime exports, dramatically
-        less than the <strong>$0.27/kWh</strong> retail rate during the evening peak<Cite id="ansi-c12-1-2014" in={SOURCES} />.
+        avoided-cost calculation that pays only about <strong className="text-text font-medium">$0.05/kWh</strong> for daytime exports, dramatically
+        less than the <strong className="text-text font-medium">$0.27/kWh</strong> retail rate during the evening peak<Cite id="ansi-c12-1-2014" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Whatever the tariff, the physical interconnection between the customer's PV inverter and the utility's
         wires is governed by{' '}
-        <Term def={<><strong>IEEE 1547-2018</strong> — the IEEE standard for interconnection of distributed energy resources (DER) with the grid. Specifies anti-islanding, voltage and frequency ride-through, reactive-power capabilities, and the trip/recovery behavior of grid-tied inverters.</>}>IEEE 1547-2018</Term>{' '}
+        <Term def={<><strong className="text-text font-medium">IEEE 1547-2018</strong> — the IEEE standard for interconnection of distributed energy resources (DER) with the grid. Specifies anti-islanding, voltage and frequency ride-through, reactive-power capabilities, and the trip/recovery behavior of grid-tied inverters.</>}>IEEE 1547-2018</Term>{' '}
         in the U.S.<Cite id="ieee-1547-2018" in={SOURCES} />. The standard prescribes three classes of inverter
         behaviour. First,{' '}
-        <Term def={<><strong>anti-islanding</strong> — the inverter's required behaviour on loss of grid connection. The inverter must detect the loss within 2 seconds and cease energising its output terminals; this prevents a backfed PV system from energising a downed service drop that a lineworker believes is dead. Implemented by active probing of the grid's frequency stability.</>}>anti-islanding</Term>:
+        <Term def={<><strong className="text-text font-medium">anti-islanding</strong> — the inverter's required behaviour on loss of grid connection. The inverter must detect the loss within 2 seconds and cease energising its output terminals; this prevents a backfed PV system from energising a downed service drop that a lineworker believes is dead. Implemented by active probing of the grid's frequency stability.</>}>anti-islanding</Term>:
         the inverter must detect a grid outage within 2 seconds and stop energising its output, so a downed
         service-drop wire that a lineworker is repairing cannot be lit up by a customer's PV system. Second,
         voltage and frequency ride-through: the inverter must remain connected through small voltage and
@@ -427,10 +427,10 @@ export default function Ch33HouseSmartMeter() {
         tag="Try 33.5"
         question={
           <>
-            A homeowner with an <strong>8 kW</strong> rooftop PV system generates <strong>35 kWh</strong> on a
-            sunny weekday, of which they consume <strong>25 kWh</strong> directly (while the panels are
-            producing) and export <strong>10 kWh</strong> to the grid. Their evening consumption (after dark) is
-            <strong> 8 kWh</strong>, all imported. Under simple net metering at <strong>$0.15/kWh</strong>, what
+            A homeowner with an <strong className="text-text font-medium">8 kW</strong> rooftop PV system generates <strong className="text-text font-medium">35 kWh</strong> on a
+            sunny weekday, of which they consume <strong className="text-text font-medium">25 kWh</strong> directly (while the panels are
+            producing) and export <strong className="text-text font-medium">10 kWh</strong> to the grid. Their evening consumption (after dark) is
+            <strong className="text-text font-medium"> 8 kWh</strong>, all imported. Under simple net metering at <strong className="text-text font-medium">$0.15/kWh</strong>, what
             is the net charge or credit for the day?
           </>
         }
@@ -439,21 +439,21 @@ export default function Ch33HouseSmartMeter() {
           <>
             <Formula>kWh<sub>in</sub> = 8 kWh (evening import)</Formula>
             <Formula>kWh<sub>out</sub> = 10 kWh (midday export)</Formula>
-            <Formula>Net = (8 − 10) × $0.15 = <strong>−$0.30</strong></Formula>
-            <p>
+            <Formula>Net = (8 − 10) × $0.15 = <strong className="text-text font-medium">−$0.30</strong></Formula>
+            <p className="mb-prose-1 last:mb-0">
               A credit of 30 cents — the homeowner exported 2 kWh more than they imported on net. Under net
               metering, that credit rolls forward against future imports. Under the NEM 3.0 export rate of about
               $0.05/kWh and an import rate of $0.27/kWh evening peak, the same day's flow yields
-              −0.10 × $0.05 + 0.08 × $0.27 ≈ a 1.7 <em>cent</em> charge instead — the structural change that drove
+              −0.10 × $0.05 + 0.08 × $0.27 ≈ a 1.7 <em className="italic text-text">cent</em> charge instead — the structural change that drove
               the controversy around California's 2023 reform<Cite id="ansi-c12-1-2014" in={SOURCES} />.
             </p>
           </>
         }
       />
 
-      <h2>What the meter does <em>not</em> measure</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What the meter does <em className="italic text-accent font-normal">not</em> measure</h2>
 
-      <p>
+      <p className="mb-prose-3">
         The meter measures true energy crossing its terminals. It does not care what happens to that energy on
         either side: not whether the load is a 100 W lamp or a 100 W laptop charger, not whether the imported
         energy comes from the coal plant or the wind farm down the road, not what the customer does with it once
@@ -465,8 +465,8 @@ export default function Ch33HouseSmartMeter() {
         pick out of the 15-minute record, an EV charger steps up a constant kW that lasts hours. Most of the
         residential load — lights, electronics, small kitchen appliances — is statistically indistinguishable.
       </p>
-      <p>
-        What the meter has historically <em>not</em> measured, but increasingly does, is the time resolution.
+      <p className="mb-prose-3">
+        What the meter has historically <em className="italic text-text">not</em> measured, but increasingly does, is the time resolution.
         Older mechanical meters integrated continuously but were read once a month by a human, so the utility's
         only data point was a monthly total. Modern AMI meters report interval data every 5–15 minutes, which
         opens both the demand-charge business model and the load-research function the utility uses to plan
@@ -476,7 +476,7 @@ export default function Ch33HouseSmartMeter() {
         Utility data-handling rules in most jurisdictions restrict the sharing and retention of interval data for
         this reason.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The meter also does not measure what the meter cannot reach. Energy that bypasses the meter — by an
         illegal jumper around the meter base, by a tap upstream of the service entrance, by a current sneak path
         through a buried neutral on a corroded grounding rod — is not registered as a kWh on the customer's bill.
@@ -488,9 +488,9 @@ export default function Ch33HouseSmartMeter() {
         altogether.
       </p>
 
-      <h2>What we have so <em>far</em></h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">What we have so <em className="italic text-accent font-normal">far</em></h2>
 
-      <p>
+      <p className="mb-prose-3">
         The grey box on the side of the house — once a spinning aluminium disk behind a glass dome, now a
         microcontroller behind an LCD — samples voltage and current a few thousand times a second per phase,
         multiplies them four different ways, and accumulates four energies in parallel: real, apparent, reactive,
@@ -517,7 +517,7 @@ export default function Ch33HouseSmartMeter() {
           tag="Case 33.1"
           title="A residential TOU customer in California"
           summary={
-            <em>
+            <em className="italic text-text">
               The same 900 kWh/month house pays $190 on a flat rate and $215 on a peak-heavy TOU schedule — or
               $150 if they shift load to off-peak.
             </em>
@@ -532,7 +532,7 @@ export default function Ch33HouseSmartMeter() {
             { label: 'TOU bill, with load shift', value: <>$150/month after moving laundry, dishwasher, EV to off-peak</> },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             A typical 900 kWh/month suburban California household with a smart meter reports interval data every
             fifteen minutes back to the utility. On the legacy flat-rate plan, the bill is straightforward:
             900 kWh × $0.20/kWh + $10 fixed = $190/month, and the time-of-day at which any particular kWh was
@@ -541,7 +541,7 @@ export default function Ch33HouseSmartMeter() {
             unmodified evening consumption (cooking, AC, TV) lands in the $0.27/kWh peak window, while the rest
             of the day lands in the $0.13/kWh off-peak window, and the mix comes out to about $215/month.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The customer's smart-meter app lets them see their hour-by-hour profile, and the optimisation is
             visible at a glance: peak-hour load is dominated by HVAC, cooking, and the EV charger. Pre-cooling
             the house from 2–4 pm (off-peak) so the AC can ride coast through the peak window, deferring laundry
@@ -550,7 +550,7 @@ export default function Ch33HouseSmartMeter() {
             $0.13), for a TOU bill of about $150/month — a $40/month savings over the unshifted TOU bill, and a
             $40/month savings over the flat rate as well<Cite id="ansi-c12-1-2014" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             That savings is the entire point of the tariff design: the utility wants the customer to make the
             shift, because the same load shift that saves the customer money also relieves the utility's 5–9 pm
             peak — the most expensive hours to serve, when the cheapest generation has gone offline with the
@@ -563,7 +563,7 @@ export default function Ch33HouseSmartMeter() {
           tag="Case 33.2"
           title="An industrial customer paying demand and PF charges"
           summary={
-            <em>
+            <em className="italic text-text">
               A 1 MW factory's bill is two-thirds energy, one-fifth demand, and one percent a power-factor
               penalty that a $50k capacitor bank zeroes out.
             </em>
@@ -579,15 +579,15 @@ export default function Ch33HouseSmartMeter() {
             { label: 'Total bill after $50k capacitor', value: <>~$68,000/month (PF penalty zeroed); payback ≈ 5–6 years</> },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             A 1 MW industrial customer — say, a metal-fabrication shop with a few large induction motors and a
             CNC line — sees a bill that is structurally different from any residential one. The energy charge
             alone (560 MWh × $0.10 = $56,000) is the largest component, but the demand charge ($15 × 800 kW peak
-            = $12,000) is large enough to dominate any decision about <em>when</em> to run heavy loads, and the
+            = $12,000) is large enough to dominate any decision about <em className="italic text-text">when</em> to run heavy loads, and the
             power-factor penalty (a few hundred dollars to a few thousand) is large enough to justify the
             capital cost of correction equipment<Cite id="grainger-power-systems-2003" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Before correction, the factory's PF of 0.78 means the 800 kW real load is drawing 800/0.78 ≈ 1025 kVA
             of apparent power, or about 626 kVAR of reactive current sloshing back and forth between the motor
             windings and the utility's wires. The utility's penalty applies to kVAR above the threshold
@@ -595,7 +595,7 @@ export default function Ch33HouseSmartMeter() {
             the over-threshold reactive draw is about 626 − 495 ≈ 131 kVAR, and at $5/kVAR/month the penalty is
             ~$655/month — a year's worth is approaching $8,000<Cite id="grainger-power-systems-2003" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             A $50,000 power-factor-correction capacitor bank sized to deliver about 400 kVAR of compensation
             brings the PF up to about 0.95, drops the over-threshold reactive draw to zero, and saves the full
             penalty every month — payback in roughly five to six years, well within the equipment's twenty-year
@@ -609,7 +609,7 @@ export default function Ch33HouseSmartMeter() {
           tag="Case 33.3"
           title="Rooftop solar under net metering vs. net billing"
           summary={
-            <em>
+            <em className="italic text-text">
               The same 8 kW PV array yields a credit under 2015-era net metering and a modest bill under 2023-era
               NEM 3.0 net billing — without a single kWh changing.
             </em>
@@ -624,7 +624,7 @@ export default function Ch33HouseSmartMeter() {
             { label: 'Inverter trip behaviour', value: <>anti-islanding ≤ 2 s; voltage/frequency ride-through per IEEE 1547-2018 <Cite id="ieee-1547-2018" in={SOURCES} /></> },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The same 8 kW rooftop array on the same suburban California house produces the same 12,000 kWh per
             year regardless of tariff. The customer self-consumes about 7,000 kWh of that directly (water heater,
             dishwasher, daytime EV charging) and exports the rest. Under the classic net-metering regime that
@@ -633,7 +633,7 @@ export default function Ch33HouseSmartMeter() {
             monthly bill comes out to a small credit ($30–$60/month was a typical figure for a well-sized 8 kW
             system in California)<Cite id="ansi-c12-1-2014" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Under California's NEM 3.0 net-billing regime (in force since April 2023), imports continue to be
             billed at the retail TOU rate (peak $0.27, off-peak $0.13) but exports are credited at an
             avoided-cost figure of about $0.05/kWh — much lower, and the bill flips. The same 12,000 kWh of
@@ -642,7 +642,7 @@ export default function Ch33HouseSmartMeter() {
             which is the whole reason the same period saw a surge in residential battery installations that
             store the midday surplus to use during the evening peak rather than exporting it<Cite id="ansi-c12-1-2014" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The bidirectional smart meter is the instrument that makes either tariff possible: it accumulates
             imported energy and exported energy into separate registers, both with their own timestamps, so the
             billing back-end can apply different rates to different hours and different directions
@@ -665,7 +665,7 @@ export default function Ch33HouseSmartMeter() {
         <FAQItem q="Why does the meter measure four quantities when the bill only charges for one?">
           <p>
             Because residential tariffs charge only on real energy (kWh) but commercial and industrial tariffs
-            charge on real energy <em>plus</em> demand (kW peak) <em>plus</em> reactive penalty (kVARh-derived),
+            charge on real energy <em className="italic text-text">plus</em> demand (kW peak) <em className="italic text-text">plus</em> reactive penalty (kVARh-derived),
             and the meter is built once for all three customer classes. Beyond that, the utility uses the apparent
             and reactive registers internally for load research, capacitor-bank placement, transformer-sizing
             studies, and demand-response programs that may or may not be exposed to the customer's

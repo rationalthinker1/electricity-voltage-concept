@@ -33,7 +33,7 @@ export default function Ch32HouseSafety() {
 
   return (
     <ChapterShell chapter={chapter}>
-      <p>
+      <p className="mb-prose-3 first-letter:font-2 first-letter:font-light first-letter:text-[4em] first-letter:leading-none first-letter:float-left first-letter:m-[4px_12px_-4px_0] first-letter:text-accent">
         Put a 9 V battery on your tongue and you feel a sharp metallic tingle. Brush a 120 V wall outlet with a dry
         fingertip and you get a slap — painful, sometimes a small burn, almost never fatal. Grip the same 120 V wire
         with a wet hand while standing barefoot on a concrete basement floor and holding a metal pipe with the other
@@ -41,7 +41,7 @@ export default function Ch32HouseSafety() {
         this book; three completely different outcomes. The variable that decides which of those things happens is
         not the voltage on the label.
       </p>
-      <p>
+      <p className="mb-prose-3">
         What kills you is current — specifically, milliamperes flowing through the trunk of your body and across the
         electrical pacing of the heart, for some number of milliseconds. Voltage matters only as the thing that
         drives that current through whatever resistance your skin and tissue happen to present at the moment of
@@ -52,76 +52,76 @@ export default function Ch32HouseSafety() {
         them: the GFCI, the AFCI, the equipotential bond, and the arc-rated suit.
       </p>
 
-      <h2>Current is what hurts</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Current is what hurts</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Take a 60 Hz sinusoidal current and pass it hand-to-hand through a healthy adult human. As you turn the
         current up from zero, the body passes through a series of physiological thresholds that are surprisingly
         sharp and surprisingly reproducible across the population. IEC 60479-1 collects them into a small ladder of
         zones; the version below tracks the standard's classification for AC at 50/60 Hz<Cite id="iec-60479-2018" in={SOURCES} />.
       </p>
-      <p>
-        <strong>Below about 1 mA</strong> the current is imperceptible. The nerves carrying touch and pain do not
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">Below about 1 mA</strong> the current is imperceptible. The nerves carrying touch and pain do not
         fire; you have to be told the current is on. This is
-        {' '}<Term def={<><strong>zone AC-1</strong> — IEC 60479-1's lowest-current band for 50/60 Hz AC through the trunk. Up to roughly 0.5 mA; perception not normally felt; no harmful physiological effects.</>}>zone AC-1</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">zone AC-1</strong> — IEC 60479-1's lowest-current band for 50/60 Hz AC through the trunk. Up to roughly 0.5 mA; perception not normally felt; no harmful physiological effects.</>}>zone AC-1</Term>{' '}
         in the IEC notation.
       </p>
-      <p>
-        <strong>1–5 mA</strong> is the perception band. You feel a tingle in the skin under each contact point. It
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">1–5 mA</strong> is the perception band. You feel a tingle in the skin under each contact point. It
         is uncomfortable but you can still let go of the conductor without difficulty. Children, who have smaller
         body mass and proportionally lower contact resistance, sit at the low end of this band; large adults at the
         high end. IEC calls this region
-        {' '}<Term def={<><strong>zone AC-2</strong> — the IEC 60479-1 band for AC currents that are perceptible and possibly painful but produce no harmful physiological effects. Roughly 0.5 mA to the let-go threshold.</>}>zone AC-2</Term>.
+        {' '}<Term def={<><strong className="text-text font-medium">zone AC-2</strong> — the IEC 60479-1 band for AC currents that are perceptible and possibly painful but produce no harmful physiological effects. Roughly 0.5 mA to the let-go threshold.</>}>zone AC-2</Term>.
       </p>
-      <p>
-        <strong>5–10 mA</strong> is the painful-but-survivable band that ends at the let-go threshold. The
-        {' '}<Term def={<><strong>let-go threshold</strong> — the maximum current at which a person gripping a conductor can still voluntarily release it. Roughly 10 mA for an average woman, 16 mA for an average man at 60 Hz; the curve was measured directly by Dalziel.</>}>let-go threshold</Term>{' '}
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">5–10 mA</strong> is the painful-but-survivable band that ends at the let-go threshold. The
+        {' '}<Term def={<><strong className="text-text font-medium">let-go threshold</strong> — the maximum current at which a person gripping a conductor can still voluntarily release it. Roughly 10 mA for an average woman, 16 mA for an average man at 60 Hz; the curve was measured directly by Dalziel.</>}>let-go threshold</Term>{' '}
         is the largest current at which the muscles of the hand can still overpower the involuntary flexor
         contraction that the current itself induces. Dalziel measured this directly on volunteers in the 1950s by
         increasing current until the subject could no longer release a grip on the test electrodes, finding values
         of approximately 10 mA for an average woman and 16 mA for an average man at 60 Hz<Cite id="dalziel-1956" in={SOURCES} />.
         Above that, the involuntary contraction wins.
       </p>
-      <p>
-        <strong>10–25 mA</strong> is the
-        {' '}<Term def={<><strong>tetany</strong> — sustained involuntary contraction of skeletal muscle caused by repetitive electrical stimulation. At 60 Hz the AC waveform stimulates the motor nerves on every half-cycle (120 times a second), faster than the muscle can relax between pulses; the result is a continuous cramp.</>}>tetany</Term>{' '}
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">10–25 mA</strong> is the
+        {' '}<Term def={<><strong className="text-text font-medium">tetany</strong> — sustained involuntary contraction of skeletal muscle caused by repetitive electrical stimulation. At 60 Hz the AC waveform stimulates the motor nerves on every half-cycle (120 times a second), faster than the muscle can relax between pulses; the result is a continuous cramp.</>}>tetany</Term>{' '}
         zone. The muscle of the gripping hand locks in a sustained spasm; you cannot release the conductor by an act
         of will. The diaphragm and intercostal muscles can lock similarly if the current path crosses the chest,
         producing
-        {' '}<Term def={<><strong>respiratory paralysis</strong> — sustained tetanic contraction of the diaphragm and intercostal muscles that prevents breathing while current is flowing. Onset around 20–25 mA at 60 Hz through the chest; reverses on its own when the current is removed unless the exposure has been long enough to cause anoxia.</>}>respiratory paralysis</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">respiratory paralysis</strong> — sustained tetanic contraction of the diaphragm and intercostal muscles that prevents breathing while current is flowing. Onset around 20–25 mA at 60 Hz through the chest; reverses on its own when the current is removed unless the exposure has been long enough to cause anoxia.</>}>respiratory paralysis</Term>{' '}
         — the person cannot breathe until the current stops. If the contact persists for tens of seconds, the
         cumulative anoxia alone can be fatal even without any direct effect on the heart<Cite id="iec-60479-2018" in={SOURCES} />.
       </p>
-      <p>
-        <strong>50–100 mA</strong> is the region where, at exposures of about one second or longer, the heart's
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">50–100 mA</strong> is the region where, at exposures of about one second or longer, the heart's
         electrical pacing desynchronises into
-        {' '}<Term def={<><strong>ventricular fibrillation</strong> — uncoordinated contraction of the ventricular muscle fibres in which the heart twitches rapidly and incoherently rather than pumping. Cardiac output drops to zero; brain anoxia follows within seconds. Reversible only by external defibrillation.</>}>ventricular fibrillation</Term>:
+        {' '}<Term def={<><strong className="text-text font-medium">ventricular fibrillation</strong> — uncoordinated contraction of the ventricular muscle fibres in which the heart twitches rapidly and incoherently rather than pumping. Cardiac output drops to zero; brain anoxia follows within seconds. Reversible only by external defibrillation.</>}>ventricular fibrillation</Term>:
         the ventricular muscle fibres lose their coordinated beat and twitch independently at 200–400 Hz. Cardiac
         output drops effectively to zero; consciousness is lost within seconds and brain death follows within
         minutes unless an external defibrillator can restore the rhythm<Cite id="iec-60479-2018" in={SOURCES} />.
         This is the canonical region the safety literature is most worried about, and the one the 100 mA / 1 s
         rule of thumb refers to<Cite id="dalziel-1956" in={SOURCES} />.
       </p>
-      <p>
-        <strong>100 mA – 1 A</strong>, sustained for a second or longer, makes ventricular fibrillation essentially
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">100 mA – 1 A</strong>, sustained for a second or longer, makes ventricular fibrillation essentially
         certain in a healthy adult. Surface and internal burns become significant; if the contact involves a small
         conductor area the local current density is enough to vaporise tissue at the point of contact<Cite id="iec-60479-2018" in={SOURCES} />.
       </p>
-      <p>
-        <strong>1–5 A</strong> moves out of the fibrillation regime into outright
-        {' '}<Term def={<><strong>cardiac arrest</strong> — complete cessation of the heart's mechanical activity, as distinct from ventricular fibrillation (which is electrical disorganisation). Counter-intuitively, at very large currents the heart is more likely to stop cleanly than to fibrillate; the arrested heart can often be restarted once the current is removed.</>}>cardiac arrest</Term>:
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">1–5 A</strong> moves out of the fibrillation regime into outright
+        {' '}<Term def={<><strong className="text-text font-medium">cardiac arrest</strong> — complete cessation of the heart's mechanical activity, as distinct from ventricular fibrillation (which is electrical disorganisation). Counter-intuitively, at very large currents the heart is more likely to stop cleanly than to fibrillate; the arrested heart can often be restarted once the current is removed.</>}>cardiac arrest</Term>:
         currents this large flood the cardiac muscle so thoroughly that, paradoxically, the heart often stops cleanly
         in a single sustained contraction rather than fibrillating. The arrested heart can sometimes restart on its
         own once the current ceases — the same principle by which a defibrillator deliberately stops a fibrillating
         heart so it can resume in rhythm — but the surrounding tissue burns from this exposure are severe.
       </p>
-      <p>
-        <strong>Above 5 A</strong> tissue heating dominates the picture. Deep thermal burns along the current path,
+      <p className="mb-prose-3">
+        <strong className="text-text font-medium">Above 5 A</strong> tissue heating dominates the picture. Deep thermal burns along the current path,
         including the cooked-meat appearance of muscle around bone where the cross-section is narrowest, are the
         principal injury. Death, if it follows, is usually from the resulting trauma and not from any specific
         electrical effect on the heart<Cite id="iec-60479-2018" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Plot all of that on log-log axes of current versus exposure time and you have the IEC 60479-1 chart that
         every electrical-safety committee in the world uses to set its thresholds. The chart is the actual safety
         standard. Every other number in this chapter — the GFCI's 5 mA, the AFCI's nuisance-rejection band, the
@@ -132,19 +132,19 @@ export default function Ch32HouseSafety() {
         tag="Try 32.1"
         question={
           <>A person grabs a 120 V hot wire with one hand while standing barefoot on wet concrete. Total hand-to-foot
-          body resistance is roughly <strong>2 kΩ</strong>. Estimate the current through them and place it on the
+          body resistance is roughly <strong className="text-text font-medium">2 kΩ</strong>. Estimate the current through them and place it on the
           IEC 60479-1 ladder above. Is this likely fatal at one second of exposure?</>
         }
         hint={<>Ohm's law sets the current; the threshold ladder tells you what zone you land in.</>}
         answer={
           <>
-            <p>Direct division:</p>
+            <p className="mb-prose-1 last:mb-0">Direct division:</p>
             <Formula>I = V / R = 120 V / 2 000 Ω = 60 mA</Formula>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               Sixty milliamperes hand-to-foot for one second sits squarely in the ventricular-fibrillation band
               (50–100 mA, one-second exposure). The IEC zone is AC-4.1, and the outcome is a real risk of fibrillation
               in a healthy adult and near-certainty in an elderly or cardiac-compromised one<Cite id="iec-60479-2018" in={SOURCES} />.
-              Answer: <strong>~60 mA</strong>, <strong>plausibly fatal</strong> if the contact persists.
+              Answer: <strong className="text-text font-medium">~60 mA</strong>, <strong className="text-text font-medium">plausibly fatal</strong> if the contact persists.
             </p>
           </>
         }
@@ -154,28 +154,28 @@ export default function Ch32HouseSafety() {
         tag="Try 32.2"
         question={
           <>The same person, same 120 V contact, but now wearing dry rubber-soled shoes on a dry wooden floor:
-          hand-to-foot resistance is <strong>100 kΩ</strong>. What is the current, and which zone of the
+          hand-to-foot resistance is <strong className="text-text font-medium">100 kΩ</strong>. What is the current, and which zone of the
           IEC 60479-1 ladder?</>
         }
         hint={<>Same V, much larger R.</>}
         answer={
           <>
-            <p>Same arithmetic, fifty times the resistance:</p>
+            <p className="mb-prose-1 last:mb-0">Same arithmetic, fifty times the resistance:</p>
             <Formula>I = V / R = 120 V / 100 000 Ω = 1.2 mA</Formula>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               That is below the let-go threshold and barely above the perception threshold — a noticeable but
               harmless tingle, IEC zone AC-1/AC-2 boundary<Cite id="iec-60479-2018" in={SOURCES} />. The lesson is
               not that 120 V is sometimes safe; it is that the same voltage straddles "tingle" and "fatal"
-              depending on a single decade of variation in the body's resistance to ground. <strong>1.2 mA</strong>,
+              depending on a single decade of variation in the body's resistance to ground. <strong className="text-text font-medium">1.2 mA</strong>,
               not deadly.
             </p>
           </>
         }
       />
 
-      <h2>Why the 60 Hz threshold is the lowest</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Why the 60 Hz threshold is the lowest</h2>
 
-      <p>
+      <p className="mb-prose-3">
         The current-vs-time ladder above is specific to 50/60 Hz alternating current. That is not a coincidence —
         and it is not because the worldwide power grid happened to standardise on those frequencies. The pacing
         cells of the heart's sinoatrial node fire at roughly 1 Hz at rest, driving each ventricular contraction
@@ -186,7 +186,7 @@ export default function Ch32HouseSafety() {
         a refractory state out of step with its neighbours, and the coherent ventricular contraction breaks down
         into fibrillation<Cite id="iec-60479-2018" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Direct current is roughly four times safer for fibrillation thresholds at comparable exposures: IEC 60479-1
         places the DC fibrillation threshold for one-second exposure at several hundred milliamperes rather than
         the 50–100 mA range of 60 Hz AC<Cite id="iec-60479-2018" in={SOURCES} />. DC tetanises the muscles only at
@@ -194,10 +194,10 @@ export default function Ch32HouseSafety() {
         burns at higher levels, and it can still arrest the heart, but it is far harder to desynchronise the
         ventricles with a steady current than with one that hammers them rhythmically.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Frequencies well above 60 Hz are also progressively safer, for a different reason. As frequency climbs into
         the kilohertz range, the
-        {' '}<Term def={<><strong>skin effect</strong> — the tendency for AC current to concentrate near the surface of a conductor as frequency rises. In a human body it confines high-frequency currents to the skin and superficial tissue rather than the chest cavity, sparing the heart.</>}>skin effect</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">skin effect</strong> — the tendency for AC current to concentrate near the surface of a conductor as frequency rises. In a human body it confines high-frequency currents to the skin and superficial tissue rather than the chest cavity, sparing the heart.</>}>skin effect</Term>{' '}
         confines current to a thinner shell at the surface of the body, and at the same time the period of each
         AC cycle becomes shorter than the cardiac muscle's chronaxie — the minimum stimulus duration required to
         trigger a contraction. By the time you reach 10 kHz the heart cannot follow individual cycles at all,
@@ -205,23 +205,23 @@ export default function Ch32HouseSafety() {
         operates at hundreds of kilohertz, exploits exactly this: a current that would kill at 60 Hz becomes a
         useful scalpel at 500 kHz<Cite id="iec-60479-2018" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The North-American 60 Hz residential supply, in other words, happens to sit in the most dangerous
         physiologically-accessible band on the spectrum. The grid was chosen for engineering reasons — transformer
         size, lamp flicker, motor design — and the cardiac vulnerability was an unwelcome accident of biology that
         the safety hardware has been working around ever since.
       </p>
 
-      <h2>GFCI and the 5 mA / 25 ms standard</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">GFCI and the 5 mA / 25 ms standard</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Ch.28 introduced the
-        {' '}<Term def={<><strong>GFCI</strong> (ground-fault circuit interrupter) — a device that compares the current leaving the panel on hot with the current returning on neutral and trips when the difference exceeds about 5 mA. The standard residential personnel-protection device since NEC 1971.</>}>GFCI</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">GFCI</strong> (ground-fault circuit interrupter) — a device that compares the current leaving the panel on hot with the current returning on neutral and trips when the difference exceeds about 5 mA. The standard residential personnel-protection device since NEC 1971.</>}>GFCI</Term>{' '}
         as the differential-current breaker that compares hot and neutral and trips on the imbalance. The threshold
         — 5 mA, with a clearing time of roughly 25 ms — is not a round number chosen by committee. It is a direct
         readout of where the IEC 60479-1 chart sits at that exposure time.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Locate 5 mA on the current axis and 25 ms on the time axis of the IEC curve. The intersection lies inside
         zone AC-1: imperceptible, no reaction, certainly no fibrillation risk<Cite id="iec-60479-2018" in={SOURCES} />.
         Move the operating point to 30 mA × 25 ms — the threshold of a European 30 mA RCD, the same device under
@@ -231,25 +231,25 @@ export default function Ch32HouseSafety() {
         whole product specification — 5 mA, 25 ms — is a deliberate calibration that keeps the contact in zone AC-1
         even with worst-case body resistance.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The current driving that test is fixed by Ohm's law applied to the body itself,
       </p>
       <Formula>I<sub>body</sub> = V<sub>fault</sub> / R<sub>body</sub></Formula>
-      <p>
-        where <strong>I<sub>body</sub></strong> is the current diverted from the normal hot-neutral loop into the
-        body (in amperes), <strong>V<sub>fault</sub></strong> is the voltage that appears across the body when it
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">I<sub>body</sub></strong> is the current diverted from the normal hot-neutral loop into the
+        body (in amperes), <strong className="text-text font-medium">V<sub>fault</sub></strong> is the voltage that appears across the body when it
         becomes part of the fault path (in volts; typically the full line voltage, 120 V or 240 V), and
-        <strong> R<sub>body</sub></strong> is the
-        {' '}<Term def={<><strong>body resistance</strong> — the total electrical resistance from one contact point to another through a human body, including skin contact resistance at each end and internal tissue resistance through the trunk. Skin resistance dominates for dry contact (10–100 kΩ); internal resistance dominates for wet or large-area contact (around 500–1 000 Ω).</>}>body resistance</Term>,
+        <strong className="text-text font-medium"> R<sub>body</sub></strong> is the
+        {' '}<Term def={<><strong className="text-text font-medium">body resistance</strong> — the total electrical resistance from one contact point to another through a human body, including skin contact resistance at each end and internal tissue resistance through the trunk. Skin resistance dominates for dry contact (10–100 kΩ); internal resistance dominates for wet or large-area contact (around 500–1 000 Ω).</>}>body resistance</Term>,
         the sum of the two
-        {' '}<Term def={<><strong>contact resistance</strong> — the resistance localised in the few square millimetres of skin under each electrode or grasped conductor. Drops by one to two orders of magnitude when the skin is wet, abraded, or punctured.</>}>contact resistances</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">contact resistance</strong> — the resistance localised in the few square millimetres of skin under each electrode or grasped conductor. Drops by one to two orders of magnitude when the skin is wet, abraded, or punctured.</>}>contact resistances</Term>{' '}
         at the entry and exit points plus the internal trunk resistance (in ohms). IEC 60479-1 publishes
         distributions for these terms<Cite id="iec-60479-2018" in={SOURCES} />: a hand-to-hand R<sub>body</sub>
         runs from about 1 kΩ (wet, large-area, with broken skin) to over 100 kΩ (dry, fingertip touch, intact
         callused skin). At 120 V wet that is 120 mA — squarely lethal — and at 120 V dry it is 1 mA — barely
         perceptible. The two-decade variation in R is the variation between "shock" and "death."
       </p>
-      <p>
+      <p className="mb-prose-3">
         The GFCI does not measure R<sub>body</sub>. It does not need to. It measures the residual current — the
         amount that has left through the hot wire but is not coming back on the neutral — and trips when that
         amount exceeds 5 mA regardless of why. Anything diverting more than that much current out of the normal
@@ -260,20 +260,20 @@ export default function Ch32HouseSafety() {
       <TryIt
         tag="Try 32.3"
         question={
-          <>A 5 mA leakage to ground through a person's body persists for <strong>25 ms</strong> before a GFCI clears
+          <>A 5 mA leakage to ground through a person's body persists for <strong className="text-text font-medium">25 ms</strong> before a GFCI clears
           it. Where on the IEC 60479-1 chart does that operating point land, and what physiological response do you
           expect?</>
         }
         hint={<>Locate (5 mA, 25 ms) on the current-vs-time grid; read off the zone.</>}
         answer={
           <>
-            <p>
-              The point (5 mA, 25 ms) sits inside <strong>zone AC-1</strong> on the IEC 60479-1 chart. AC-1 is the
+            <p className="mb-prose-1 last:mb-0">
+              The point (5 mA, 25 ms) sits inside <strong className="text-text font-medium">zone AC-1</strong> on the IEC 60479-1 chart. AC-1 is the
               imperceptible region: the person is unlikely even to feel the shock, let alone suffer any harm
               <Cite id="iec-60479-2018" in={SOURCES} />.
             </p>
-            <p>
-              Answer: <strong>zone AC-1</strong>, no reaction expected. The GFCI's specification is calibrated
+            <p className="mb-prose-1 last:mb-0">
+              Answer: <strong className="text-text font-medium">zone AC-1</strong>, no reaction expected. The GFCI's specification is calibrated
               precisely so that a worst-case fault is cleared before the operating point can drift out of AC-1
               into any harmful zone.
             </p>
@@ -281,48 +281,48 @@ export default function Ch32HouseSafety() {
         }
       />
 
-      <h2>AFCI and why arcs start fires</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">AFCI and why arcs start fires</h2>
 
-      <p>
+      <p className="mb-prose-3">
         The
-        {' '}<Term def={<><strong>AFCI</strong> (arc-fault circuit interrupter) — a breaker that listens for the high-frequency, irregular signature of an electrical arc on the branch and trips when it detects one. Required in most dwelling-unit rooms since NEC 2014.</>}>AFCI</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">AFCI</strong> (arc-fault circuit interrupter) — a breaker that listens for the high-frequency, irregular signature of an electrical arc on the branch and trips when it detects one. Required in most dwelling-unit rooms since NEC 2014.</>}>AFCI</Term>{' '}
         addresses a different failure mode. A standard thermal-magnetic breaker watches for sustained overcurrent
         or a sudden dead short; it cannot see a low-energy arc that hides inside an ordinary load current. Yet
         electrical arcs inside walls and behind appliances are the leading cause of residential electrical fires,
         and the NEC has progressively expanded AFCI requirements since NEC 1999 to address them<Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Two distinct arc topologies show up in damaged residential wiring. A
-        {' '}<Term def={<><strong>series arc</strong> — an arc that forms across a break in a single conductor (a partially severed wire, a loose terminal). The current still flows through the arc on its way to the load, so the magnitude is limited by the load's normal impedance and stays well below the breaker's trip threshold.</>}>series arc</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">series arc</strong> — an arc that forms across a break in a single conductor (a partially severed wire, a loose terminal). The current still flows through the arc on its way to the load, so the magnitude is limited by the load's normal impedance and stays well below the breaker's trip threshold.</>}>series arc</Term>{' '}
         forms across a break in a single conductor — a cord nicked under a chair leg, a staple driven into the
         insulation, a loose wire-nut working free behind a wall. The arc carries the load current on its way to
         the appliance, so the RMS magnitude is limited by the load's normal impedance and may sit at only 5–10 A,
         comfortably below a 15 A breaker's trip curve. A
-        {' '}<Term def={<><strong>parallel arc</strong> — an arc that forms between two conductors (hot to neutral, or hot to ground) through degraded insulation. Current is limited only by the source impedance and can spike to tens of amperes, but the arc gap impedance still keeps it below a dead-short value.</>}>parallel arc</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">parallel arc</strong> — an arc that forms between two conductors (hot to neutral, or hot to ground) through degraded insulation. Current is limited only by the source impedance and can spike to tens of amperes, but the arc gap impedance still keeps it below a dead-short value.</>}>parallel arc</Term>{' '}
         forms between two conductors through degraded insulation, between hot and neutral or hot and ground;
         the current is larger but the gap impedance keeps it well short of the magnetic trip threshold of an
         ordinary thermal-magnetic breaker.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Either kind of arc looks irregular on an oscilloscope: peaks of perhaps 30–80 A lasting fractions of a
         millisecond, separated by extinctions where the arc loses ionisation, with broadband noise riding on top
         of the 60 Hz fundamental. The instantaneous power dissipated in the arc gap is well-approximated by
       </p>
       <Formula>P<sub>arc</sub> ≈ V<sub>arc</sub> × I<sub>arc</sub> × δ</Formula>
-      <p>
-        where <strong>P<sub>arc</sub></strong> is the time-averaged power dissipated in the arc gap (in watts),
-        <strong> V<sub>arc</sub></strong> is the voltage drop across the arc itself (in volts; for low-current
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">P<sub>arc</sub></strong> is the time-averaged power dissipated in the arc gap (in watts),
+        <strong className="text-text font-medium"> V<sub>arc</sub></strong> is the voltage drop across the arc itself (in volts; for low-current
         residential arcs typically 30–50 V, set by the physics of the air-gap plasma rather than by the supply
-        voltage), <strong>I<sub>arc</sub></strong> is the current through the arc while it is conducting (in
-        amperes), and <strong>δ</strong> is the
-        {' '}<Term def={<><strong>duty cycle</strong> — the fraction of the AC half-cycle during which the arc is actively conducting, as opposed to extinguished. A series arc that re-strikes once per half-cycle and burns for about half of each half-cycle has δ ≈ 0.5.</>}>duty cycle</Term>{' '}
+        voltage), <strong className="text-text font-medium">I<sub>arc</sub></strong> is the current through the arc while it is conducting (in
+        amperes), and <strong className="text-text font-medium">δ</strong> is the
+        {' '}<Term def={<><strong className="text-text font-medium">duty cycle</strong> — the fraction of the AC half-cycle during which the arc is actively conducting, as opposed to extinguished. A series arc that re-strikes once per half-cycle and burns for about half of each half-cycle has δ ≈ 0.5.</>}>duty cycle</Term>{' '}
         — the fraction of the AC half-cycle that the arc is actually conducting. For V<sub>arc</sub> = 50 V,
         I<sub>arc</sub> = 10 A, δ = 0.5, P<sub>arc</sub> ≈ 250 W of heat concentrated in a few cubic millimetres
         of charred insulation. The arc plasma itself sits at a few thousand kelvin, hot enough to ignite the
         cord jacket immediately and, after that, anything else in the cavity — curtain fabric, blown-in
         cellulose, lath-and-plaster, framing lumber.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Per the National Fire Protection Association's annual fire-loss statistics, electrical-distribution and
         lighting-equipment fires kill several hundred people a year in U.S. homes and cost on the order of a
         billion dollars in direct property loss — a magnitude that NFPA cites as the rationale behind the NEC's
@@ -331,7 +331,7 @@ export default function Ch32HouseSafety() {
         dwelling unit, with limited exceptions for outdoor and bathroom circuits that are already covered by
         GFCI<Cite id="nec-2023" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The AFCI's microcontroller samples the branch current many thousand times per second and runs a
         signature classifier on the waveform: looking for the irregular pulse trains and broadband spectral
         noise of an arc, while rejecting the legitimate switching noise of dimmers, vacuum-cleaner brushes,
@@ -344,25 +344,25 @@ export default function Ch32HouseSafety() {
       <TryIt
         tag="Try 32.4"
         question={
-          <>An arc fault in a damaged extension cord draws an average of <strong>8 A</strong> through an arc gap
-          with a measured drop of <strong>40 V</strong>, with the arc conducting for half of each AC half-cycle
+          <>An arc fault in a damaged extension cord draws an average of <strong className="text-text font-medium">8 A</strong> through an arc gap
+          with a measured drop of <strong className="text-text font-medium">40 V</strong>, with the arc conducting for half of each AC half-cycle
           (δ = 0.5). What is the time-averaged power dissipated in the arc, and is that enough to ignite cellulose
-          insulation, whose autoignition threshold is roughly <strong>50 W/cm²</strong> of contact area for paper-like
+          insulation, whose autoignition threshold is roughly <strong className="text-text font-medium">50 W/cm²</strong> of contact area for paper-like
           materials at piloted ignition?</>
         }
         hint={<>P<sub>arc</sub> = V<sub>arc</sub> × I<sub>arc</sub> × δ. Then compare the resulting power to the
         ignition threshold per square centimetre, given an arc footprint of roughly a few square millimetres.</>}
         answer={
           <>
-            <p>Plug in:</p>
+            <p className="mb-prose-1 last:mb-0">Plug in:</p>
             <Formula>P<sub>arc</sub> = 40 V × 8 A × 0.5 = 160 W</Formula>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               That 160 W is concentrated in the arc footprint, an area of order 0.05 cm² (a few square millimetres).
               The power density at the cord jacket is therefore
             </p>
             <Formula>P<sub>arc</sub> / A ≈ 160 W / 0.05 cm² = 3 200 W/cm²</Formula>
-            <p>
-              — roughly sixty times the piloted-ignition threshold for paper-like cellulose. Answer: <strong>160 W
+            <p className="mb-prose-1 last:mb-0">
+              — roughly sixty times the piloted-ignition threshold for paper-like cellulose. Answer: <strong className="text-text font-medium">160 W
               total, far above ignition threshold</strong>. This is why an AFCI is worth the price even though
               the total branch current never crossed the breaker's nominal 15 A trip.
             </p>
@@ -370,22 +370,22 @@ export default function Ch32HouseSafety() {
         }
       />
 
-      <h2>Why a bird on a single wire is fine, and a squirrel between two wires isn't</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">Why a bird on a single wire is fine, and a squirrel between two wires isn't</h2>
 
-      <p>
+      <p className="mb-prose-3">
         A pigeon perches on a 138 kV transmission line, unharmed, while a squirrel that bridges the same line to
         a grounded crossarm is killed instantly. Both animals touched a conductor at thousands of volts above
         earth potential; only one of them died. The reason is the most useful idea in electrical safety and the
         one most often forgotten: voltage is a difference, not an absolute quantity.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The pigeon sits on a single conductor with both feet. Its entire body floats to whatever potential that
         conductor happens to carry — perhaps eighty thousand volts above local soil at that instant — but every
         cell in its body floats to the same potential. The potential difference between any two points on the
         bird is essentially zero (driven only by the small voltage gradient along the few centimetres of wire
         between its two feet). With no potential difference, Ohm's law gives no current. Nothing happens.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The squirrel that climbs the pole and reaches one paw to the energised conductor while another paw is on
         a grounded steel crossarm has bridged the full 80 kV across its body. With an internal body resistance
         of a few hundred ohms wet — high-voltage exposure always involves wet contact, because the skin breaks
@@ -396,21 +396,21 @@ export default function Ch32HouseSafety() {
         sits at a different potential from that point of metal." Current only flows when two such points are
         bridged by something conductive.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The same logic is what lets utility linemen work
-        {' '}<Term def={<><strong>barehand work</strong> — the practice of bonding a worker to an energised conductor so that the worker sits at line potential and can touch the conductor without current flow. Used on transmission voltages up to 500 kV; the worker is delivered to the line in an insulated bucket truck or helicopter.</>}>barehand</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">barehand work</strong> — the practice of bonding a worker to an energised conductor so that the worker sits at line potential and can touch the conductor without current flow. Used on transmission voltages up to 500 kV; the worker is delivered to the line in an insulated bucket truck or helicopter.</>}>barehand</Term>{' '}
         on energised transmission lines. The lineman approaches the conductor in an insulated bucket truck or
         on an insulated helicopter platform, then explicitly bonds the bucket (and themselves) to the live wire
         through a conductive strap before making contact. From the instant the bond is made, the worker and the
         line are at the same potential; touching the conductor is no different from a bird touching it. The
         truck below them, isolated by the boom's insulator, stays at earth potential — and the
-        {' '}<Term def={<><strong>approach boundary</strong> — the regulatory minimum separation between a worker and an energised conductor, set by line voltage and the dielectric strength of air with a margin. Tabulated in OSHA 29 CFR 1910.269 and in NFPA 70E for transmission, distribution, and substation voltages.</>}>approach-distance</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">approach boundary</strong> — the regulatory minimum separation between a worker and an energised conductor, set by line voltage and the dielectric strength of air with a margin. Tabulated in OSHA 29 CFR 1910.269 and in NFPA 70E for transmission, distribution, and substation voltages.</>}>approach-distance</Term>{' '}
         tables in OSHA 29 CFR 1910.269 specify exactly how much air gap is required between the worker and any
         other point at a different potential during the operation<Cite id="osha-1910-269" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         Inside a house, the same principle drives the
-        {' '}<Term def={<><strong>equipotential bonding</strong> — the deliberate electrical connection of all exposed metal surfaces in a region (around a swimming pool, in a hospital operating room, on a substation grid mat) so that they all sit at the same potential. A person touching two such surfaces sees no voltage difference and no current.</>}>equipotential bonding</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">equipotential bonding</strong> — the deliberate electrical connection of all exposed metal surfaces in a region (around a swimming pool, in a hospital operating room, on a substation grid mat) so that they all sit at the same potential. A person touching two such surfaces sees no voltage difference and no current.</>}>equipotential bonding</Term>{' '}
         of every exposed metal part in a swimming-pool deck: the ladder, the diving-board frame, the pump motor
         housing, the pool's reinforcing steel, and the deck drains are all tied together with a continuous copper
         conductor. If any one of them becomes accidentally energised, all of them rise together — and a swimmer
@@ -418,48 +418,48 @@ export default function Ch32HouseSafety() {
         The pool's grid mat is, in miniature, the same trick as the lineman's bonded bucket.
       </p>
 
-      <h2>PPE and arc-flash energy</h2>
+      <h2 className="font-2 font-light italic text-[clamp(28px,3.5vw,42px)] leading-1 tracking-1 text-text mt-3xl mb-2xl max-w-[28ch]">PPE and arc-flash energy</h2>
 
-      <p>
+      <p className="mb-prose-3">
         Everything up to this point has been about shock — current crossing a body that has become part of a circuit.
         There is a second hazard inside a panel that does not require contact at all. When a bolted short happens
         on a low-impedance bus, the resulting fault arc dumps enormous power into a small volume of air in a few
         milliseconds. The plasma expands explosively (an
-        {' '}<Term def={<><strong>arc blast</strong> — the explosive pressure wave produced by the rapid expansion of vaporised metal and ionised air during a high-current arc fault. Distinct from arc flash, which is the radiative thermal energy of the same event.</>}>arc blast</Term>),
+        {' '}<Term def={<><strong className="text-text font-medium">arc blast</strong> — the explosive pressure wave produced by the rapid expansion of vaporised metal and ionised air during a high-current arc fault. Distinct from arc flash, which is the radiative thermal energy of the same event.</>}>arc blast</Term>),
         radiates a fireball of incandescent gas at several thousand kelvin (the
-        {' '}<Term def={<><strong>arc flash</strong> — the radiative thermal hazard of a high-current fault arc, distinct from arc blast (pressure) and from shock (current through a body). Energy is quantified by NFPA 70E in cal/cm² at a working distance.</>}>arc flash</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">arc flash</strong> — the radiative thermal hazard of a high-current fault arc, distinct from arc blast (pressure) and from shock (current through a body). Energy is quantified by NFPA 70E in cal/cm² at a working distance.</>}>arc flash</Term>{' '}
         itself), and sprays droplets of molten copper and aluminium for a metre or more. A panel-mounted electrician
         standing in front of an open panel during a fault event can suffer third-degree burns through clothing,
         ruptured eardrums, and inhalation injury — without any direct contact with the bus<Cite id="nfpa-70e-2024" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         The radiative-energy hazard is quantified as
-        {' '}<Term def={<><strong>arc-flash incident energy</strong> — the radiant thermal energy per unit area delivered to an observer at a stated working distance during an arc-fault event. Measured in calories per square centimetre (cal/cm²); 1 cal/cm² is the threshold for the onset of a second-degree skin burn.</>}>incident energy</Term>{' '}
+        {' '}<Term def={<><strong className="text-text font-medium">arc-flash incident energy</strong> — the radiant thermal energy per unit area delivered to an observer at a stated working distance during an arc-fault event. Measured in calories per square centimetre (cal/cm²); 1 cal/cm² is the threshold for the onset of a second-degree skin burn.</>}>incident energy</Term>{' '}
         at a stated
-        {' '}<Term def={<><strong>working distance</strong> — the assumed distance from a worker's face and chest to the source of the arc, used to compute incident energy. NFPA 70E defaults to 18 inches (450 mm) for low-voltage panel work.</>}>working distance</Term>,
+        {' '}<Term def={<><strong className="text-text font-medium">working distance</strong> — the assumed distance from a worker's face and chest to the source of the arc, used to compute incident energy. NFPA 70E defaults to 18 inches (450 mm) for low-voltage panel work.</>}>working distance</Term>,
         the same energy units used in food chemistry (1 cal = 4.184 J). For a low-voltage three-phase arc in an
         enclosed panel the simplified Ralph Lee model — the original 1982 calculation — approximates the radiative
         energy at distance d as
       </p>
       <Formula>E<sub>arc</sub> ≈ (V × I<sub>bolted</sub> × t<sub>clear</sub>) / (4π d²)</Formula>
-      <p>
-        where <strong>E<sub>arc</sub></strong> is the incident energy delivered to a surface at distance d during
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">E<sub>arc</sub></strong> is the incident energy delivered to a surface at distance d during
         the arc (in joules per square metre; convert by 1 cal/cm² = 41 840 J/m² to compare with NFPA 70E's
-        tabulated cal/cm²), <strong>V</strong> is the operating voltage across the arc (in volts), <strong>
+        tabulated cal/cm²), <strong className="text-text font-medium">V</strong> is the operating voltage across the arc (in volts), <strong className="text-text font-medium">
         I<sub>bolted</sub></strong> is the available
-        {' '}<Term def={<><strong>bolted short-circuit current</strong> — the current that would flow in the fault if the fault path were a zero-impedance bolt connecting the conductors. Set by the upstream transformer and service impedance; upper-bounds the actual arcing current.</>}>bolted short-circuit current</Term>{' '}
-        the upstream transformer can deliver into a zero-impedance fault (in amperes), <strong>t<sub>clear</sub>
-        </strong> is the time the upstream breaker takes to interrupt the arc (in seconds), <strong>d</strong> is
+        {' '}<Term def={<><strong className="text-text font-medium">bolted short-circuit current</strong> — the current that would flow in the fault if the fault path were a zero-impedance bolt connecting the conductors. Set by the upstream transformer and service impedance; upper-bounds the actual arcing current.</>}>bolted short-circuit current</Term>{' '}
+        the upstream transformer can deliver into a zero-impedance fault (in amperes), <strong className="text-text font-medium">t<sub>clear</sub>
+        </strong> is the time the upstream breaker takes to interrupt the arc (in seconds), <strong className="text-text font-medium">d</strong> is
         the working distance from the arc to the worker's face and torso (in metres; NFPA 70E's default for
-        low-voltage panel work is 450 mm), and <strong>4π d²</strong> is the area of a sphere of radius d at the
+        low-voltage panel work is 450 mm), and <strong className="text-text font-medium">4π d²</strong> is the area of a sphere of radius d at the
         worker's position over which the radiated energy is assumed to spread. The model is conservative — it
         ignores the directionality of an enclosed panel and the spectral content of the arc — but it captures the
         scaling: incident energy goes linearly with voltage, current, and clearing time, and falls as the inverse
         square of working distance<Cite id="nfpa-70e-2024" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         NFPA 70E sorts that energy into
-        {' '}<Term def={<><strong>PPE category</strong> — one of four arc-rated personal-protective-equipment levels in NFPA 70E (CAT 1 through CAT 4), each calibrated to a maximum incident energy. PPE selection is based on the calculated incident energy at the working distance for the task.</>}>PPE categories</Term>:
+        {' '}<Term def={<><strong className="text-text font-medium">PPE category</strong> — one of four arc-rated personal-protective-equipment levels in NFPA 70E (CAT 1 through CAT 4), each calibrated to a maximum incident energy. PPE selection is based on the calculated incident energy at the working distance for the task.</>}>PPE categories</Term>:
         CAT 1 (rated to 4 cal/cm² — long-sleeve arc-rated cotton shirt and trousers, hard hat, safety glasses,
         leather gloves), CAT 2 (8 cal/cm² — adds an arc-rated face-shield and balaclava), CAT 3 (25 cal/cm² — a
         full arc-flash suit with hood), CAT 4 (40 cal/cm² — heavier multi-layer arc suit with a higher-rated
@@ -478,24 +478,24 @@ export default function Ch32HouseSafety() {
       <TryIt
         tag="Try 32.5"
         question={
-          <>A residential panel has an available bolted fault current of <strong>I<sub>bolted</sub> = 8 000 A</strong>{' '}
-          at <strong>V = 240 V</strong>. The upstream main breaker clears in <strong>t<sub>clear</sub> = 0.05 s</strong>.
-          At a working distance of <strong>d = 450 mm</strong>, what is the incident energy in cal/cm², and what
+          <>A residential panel has an available bolted fault current of <strong className="text-text font-medium">I<sub>bolted</sub> = 8 000 A</strong>{' '}
+          at <strong className="text-text font-medium">V = 240 V</strong>. The upstream main breaker clears in <strong className="text-text font-medium">t<sub>clear</sub> = 0.05 s</strong>.
+          At a working distance of <strong className="text-text font-medium">d = 450 mm</strong>, what is the incident energy in cal/cm², and what
           NFPA 70E PPE category does it correspond to? (Recall 1 cal/cm² = 41 840 J/m².)</>
         }
         hint={<>Plug into the Ralph Lee formula above; convert J/m² to cal/cm².</>}
         answer={
           <>
-            <p>The numerator and the spherical-spreading denominator:</p>
+            <p className="mb-prose-1 last:mb-0">The numerator and the spherical-spreading denominator:</p>
             <Formula>V × I<sub>bolted</sub> × t<sub>clear</sub> = 240 × 8 000 × 0.05 = 96 000 J</Formula>
             <Formula>4π d² = 4π × (0.45)² ≈ 2.54 m²</Formula>
-            <p>So the incident energy per unit area is</p>
+            <p className="mb-prose-1 last:mb-0">So the incident energy per unit area is</p>
             <Formula>E ≈ 96 000 / 2.54 ≈ 3.78×10⁴ J/m² ≈ 0.90 cal/cm²</Formula>
-            <p>
+            <p className="mb-prose-1 last:mb-0">
               That sits below NFPA 70E's 1.2 cal/cm² threshold for CAT 1 PPE: in the language of the standard, it
               is below the "no-special-PPE" boundary. Long-sleeve natural-fibre clothing, safety glasses, and
               insulated tools are required, but a full arc-flash suit is not<Cite id="nfpa-70e-2024" in={SOURCES} />.
-              Answer: <strong>≈ 0.9 cal/cm²</strong>, <strong>below CAT 1</strong>. Doubling the clearing time
+              Answer: <strong className="text-text font-medium">≈ 0.9 cal/cm²</strong>, <strong className="text-text font-medium">below CAT 1</strong>. Doubling the clearing time
               would push it into CAT 1; quadrupling the fault current would push it into CAT 2.
             </p>
           </>
@@ -523,14 +523,14 @@ export default function Ch32HouseSafety() {
             { label: 'IEC zone with GFCI', value: <>AC-1 (no reaction) <Cite id="iec-60479-2018" in={SOURCES} /></> },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The scenario every American electrical-safety pamphlet still uses, because the physics is so clean. A
             line-powered hairdryer falls into a filled bathtub with a person in it. The 120 V hot conductor inside
             the dryer's chassis is now bonded through bath-water — a salt-and-mineral electrolyte conductive enough
             to act as a continuous bus — to the body of the person, and from the body through the tub's drain (or
             the standing puddle on the bathroom floor) back to the building's plumbing and so to earth.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Body resistance under those wet, large-contact-area conditions drops to roughly 5 kΩ hand-to-foot — high
             for the body alone, low for any realistic dry contact<Cite id="iec-60479-2018" in={SOURCES} />. At
             120 V across 5 kΩ the body current is 24 mA, which on the IEC 60479-1 chart at exposures of one second
@@ -538,7 +538,7 @@ export default function Ch32HouseSafety() {
             for an elderly or weakened heart<Cite id="iec-60479-2018" in={SOURCES} />. Pre-GFCI, this is the failure
             mode that the U.S. NEC was reacting to when it required GFCI protection in bathrooms starting in 1975.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             With a GFCI on the bathroom branch, the same fault diverts 24 mA out of the hot-neutral loop into the
             person's body — but the imbalance is detected within one and a half AC cycles and the breaker clears
             in roughly 25 ms<Cite id="nec-2023" in={SOURCES} />. The operating point on the IEC chart is then
@@ -560,16 +560,16 @@ export default function Ch32HouseSafety() {
             { label: 'PPE while bonded', value: <>arc-rated clothing, hard hat, insulating gloves <Cite id="nfpa-70e-2024" in={SOURCES} /></> },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             A utility transmission line carries 138 kV three-phase, or about 80 kV from each conductor to local
             earth. Replacing an insulator string or a damper on such a line, the bird-on-a-wire principle taken to
             its industrial conclusion, is done by a lineman wearing a conductive
-            {' '}<Term def={<><strong>conductive suit</strong> — a Faraday-cage garment of metallised cloth that distributes induced currents around the body's surface during barehand work on energised transmission lines. The suit is bonded to the line conductor so the wearer sits at line potential.</>}>conductive suit</Term>{' '}
+            {' '}<Term def={<><strong className="text-text font-medium">conductive suit</strong> — a Faraday-cage garment of metallised cloth that distributes induced currents around the body's surface during barehand work on energised transmission lines. The suit is bonded to the line conductor so the wearer sits at line potential.</>}>conductive suit</Term>{' '}
             of metallised cloth, riding an insulated boom-arm bucket truck or an insulated platform suspended from
             a helicopter, and explicitly bonding the bucket and themselves to the energised conductor with a
             short flexible strap before reaching out to touch the wire<Cite id="osha-1910-269" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             From the moment of bonding, the worker and the conductor sit at exactly the same potential. Current
             through the worker's body is zero. The arrangement holds as long as no part of the worker comes within
             the minimum approach distance of any other point at a different potential — the steel structure
@@ -577,7 +577,7 @@ export default function Ch32HouseSafety() {
             insulator. OSHA 29 CFR 1910.269 publishes those distances in tables indexed by line voltage and altitude
             (corrected for the lower dielectric strength of thinner air at altitude)<Cite id="osha-1910-269" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The technique is used routinely on lines up to 765 kV. Workers have measured the leakage current
             through their conductive suits to the line during transitions — capacitive coupling during the
             approach, before the bonding strap is connected — at a few hundred microamperes, well inside IEC
@@ -598,14 +598,14 @@ export default function Ch32HouseSafety() {
             { label: 'NEC 2023 reference', value: <>Article 210.12 (AFCI for dwelling-unit circuits) <Cite id="nec-2023" in={SOURCES} /></> },
           ]}
         >
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             An older home's attic light fixture is fed by a non-metallic-sheathed cable run over the top edge of a
             joist. A roofer's foot, twenty years after the cable was installed, pinches the cable just hard enough
             to crush one conductor's insulation against the wood. The conductor itself does not break and the
             circuit continues to operate normally for months — the damage is invisible from below and the lamp
             still lights.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             Eventually a small whisker of metal-fatigue cracking creates an intermittent series gap in the
             conductor. The current still flows on its way to the lamp, but now through a small arc that strikes
             and extinguishes many times per AC cycle, each strike depositing a milliJoule or two of heat into the
@@ -613,7 +613,7 @@ export default function Ch32HouseSafety() {
             nominal value — perhaps 0.5 A for a 60 W incandescent — well below the 15 A branch breaker's trip
             threshold. The thermal-magnetic breaker sees a normal load<Cite id="nec-2023" in={SOURCES} />.
           </p>
-          <p>
+          <p className="mb-prose-2 last:mb-0">
             The local heating accumulates and eventually ignites the blown-in cellulose insulation. NFPA fire-loss
             statistics consistently identify electrical-distribution and lighting-equipment as the leading
             cause of fatal residential fires<Cite id="nfpa-70e-2024" in={SOURCES} />, and the failure modes
@@ -714,7 +714,7 @@ export default function Ch32HouseSafety() {
             current from the hot wire through your body to earth, and from there back through the building's
             grounding-electrode system to the bonded neutral at the main panel. The "second wire" of the loop
             is, in that case, the planet. The bird is safe on one wire because both of its feet are on the
-            <em> same</em> wire and it is not in contact with anything else<Cite id="iec-60479-2018" in={SOURCES} /><Cite id="nec-2023" in={SOURCES} />.
+            <em className="italic text-text"> same</em> wire and it is not in contact with anything else<Cite id="iec-60479-2018" in={SOURCES} /><Cite id="nec-2023" in={SOURCES} />.
           </p>
         </FAQItem>
 
@@ -761,7 +761,7 @@ export default function Ch32HouseSafety() {
             earth falls off radially according to the spreading resistance of the rod-to-soil interface. A person
             standing nearby with one foot a metre from the rod and the other foot two metres away has the
             difference of those two soil potentials across their feet — the
-            {' '}<Term def={<><strong>step potential</strong> — the voltage difference between the two feet of a person standing on energised soil during a fault. Set by the spreading resistance of the soil around the grounding electrode and the magnitude of the fault current. Can reach hundreds of volts a metre during a substation fault.</>}>step potential</Term>{' '}
+            {' '}<Term def={<><strong className="text-text font-medium">step potential</strong> — the voltage difference between the two feet of a person standing on energised soil during a fault. Set by the spreading resistance of the soil around the grounding electrode and the magnitude of the fault current. Can reach hundreds of volts a metre during a substation fault.</>}>step potential</Term>{' '}
             — and a current path through the legs. Substation grounding is engineered with grid mats and multiple
             rods to keep step potentials below safe limits even during the largest possible fault. The same
             principle is why you should shuffle, not run, away from a downed power line in your yard<Cite id="osha-1910-269" in={SOURCES} /><Cite id="nec-2023" in={SOURCES} />.

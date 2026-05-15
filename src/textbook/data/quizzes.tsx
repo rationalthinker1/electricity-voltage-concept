@@ -126,7 +126,7 @@ const CH1_QUIZ: ChapterQuiz = {
     {
       id: 'q2',
       type: 'multiple-choice',
-      prompt: <>The electric field <strong>E</strong> at a point in space is defined as:</>,
+      prompt: <>The electric field <strong className="text-text">E</strong> at a point in space is defined as:</>,
       choices: [
         <>The force on a charge at that point.</>,
         <>The force per unit positive test charge at that point.</>,
@@ -136,7 +136,7 @@ const CH1_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          The field is force-per-unit-charge: <strong>E = F/q</strong>. Its SI unit is N/C
+          The field is force-per-unit-charge: <strong className="text-text">E = F/q</strong>. Its SI unit is N/C
           (equivalently V/m). It is defined as a property of <em>space</em>, independent of
           whether a test charge is actually there<Cite id="griffiths-2017" in={CH1_SOURCES} />.
         </>
@@ -213,7 +213,7 @@ const CH1_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          Two point charges of <strong>+1 &micro;C</strong> each sit <strong>1 m</strong> apart in vacuum.
+          Two point charges of <strong className="text-text">+1 &micro;C</strong> each sit <strong className="text-text">1 m</strong> apart in vacuum.
           What is the magnitude of the Coulomb force between them, in newtons?
           (Use k = 8.99&times;10&#8313; N&middot;m&sup2;/C&sup2;.)
         </>
@@ -233,8 +233,8 @@ const CH1_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          A point charge of <strong>+1 nC</strong> sits at the origin. What is the magnitude of the
-          electric field, in N/C, at a distance of <strong>0.1 m</strong>? (Use k = 8.99&times;10&#8313;.)
+          A point charge of <strong className="text-text">+1 nC</strong> sits at the origin. What is the magnitude of the
+          electric field, in N/C, at a distance of <strong className="text-text">0.1 m</strong>? (Use k = 8.99&times;10&#8313;.)
         </>
       ),
       targetValue: 899,
@@ -250,7 +250,7 @@ const CH1_QUIZ: ChapterQuiz = {
     {
       id: 'q9',
       type: 'short-answer',
-      prompt: <>What is the name of the constant <strong>k</strong> in F = k Q&#8321; Q&#8322; / r&sup2;? (One or two words.)</>,
+      prompt: <>What is the name of the constant <strong className="text-text">k</strong> in F = k Q&#8321; Q&#8322; / r&sup2;? (One or two words.)</>,
       acceptedAnswers: [
         "coulomb's constant",
         'coulombs constant',
@@ -273,7 +273,7 @@ const CH1_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['sphere', 'spheres', 'spherical', 'concentric spheres'],
       explanation: (
         <>
-          Equipotential surfaces of a point charge are concentric <strong>spheres</strong> centred
+          Equipotential surfaces of a point charge are concentric <strong className="text-text">spheres</strong> centred
           on the charge — because the potential V(r) = kQ/r depends only on the radial distance
           <Cite id="griffiths-2017" in={CH1_SOURCES} />.
         </>
@@ -332,7 +332,7 @@ const CH27_QUIZ: ChapterQuiz = {
     {
       id: 'q3',
       type: 'multiple-choice',
-      prompt: <>Why is the residential secondary delivered as <strong>split-phase</strong> (two hots 180&deg; apart with a centre-tap neutral) rather than a single 240 V hot and a neutral?</>,
+      prompt: <>Why is the residential secondary delivered as <strong className="text-text">split-phase</strong> (two hots 180&deg; apart with a centre-tap neutral) rather than a single 240 V hot and a neutral?</>,
       choices: [
         <>It halves the total transformer current.</>,
         <>It lets the same service feed both 120 V loads (lights, outlets) and 240 V loads (range, dryer) from the same drop.</>,
@@ -420,8 +420,8 @@ const CH27_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          A copper service drop has a one-way resistance of <strong>0.05 &Omega;</strong> per conductor.
-          With a hot-leg load current of <strong>100 A</strong>, what is the voltage drop along one hot
+          A copper service drop has a one-way resistance of <strong className="text-text">0.05 &Omega;</strong> per conductor.
+          With a hot-leg load current of <strong className="text-text">100 A</strong>, what is the voltage drop along one hot
           conductor, in volts? (V = IR.)
         </>
       ),
@@ -448,7 +448,7 @@ const CH27_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['14-50', 'nema 14-50', '14-50r', 'nema 14-50r'],
       explanation: (
         <>
-          NEMA <strong>14-50</strong> is the four-pin 50 A, 125/250 V outlet (two hots, neutral,
+          NEMA <strong className="text-text">14-50</strong> is the four-pin 50 A, 125/250 V outlet (two hots, neutral,
           ground) used for ranges, RV pedestals, and level-2 EV chargers. The 14-30 is the same
           family at 30 A and is common for electric dryers<Cite id="nec-2023" in={CH27_SOURCES} />.
         </>
@@ -590,7 +590,7 @@ const CH2_QUIZ: ChapterQuiz = {
     {
       id: 'q7',
       type: 'numeric',
-      prompt: <>A battery transfers <strong>0.5 J</strong> to <strong>0.1 C</strong> of charge as it moves between the terminals. What is the potential difference, in volts?</>,
+      prompt: <>A battery transfers <strong className="text-text">0.5 J</strong> to <strong className="text-text">0.1 C</strong> of charge as it moves between the terminals. What is the potential difference, in volts?</>,
       targetValue: 5,
       tolerance: 0.05,
       unit: 'V',
@@ -599,7 +599,7 @@ const CH2_QUIZ: ChapterQuiz = {
     {
       id: 'q8',
       type: 'numeric',
-      prompt: <>A copper wire of cross-section <strong>2.0 mm&sup2;</strong> carries <strong>10 A</strong>. Using n = 8.5&times;10&sup2;&#8312;/m&sup3; and e = 1.602&times;10&#8315;&sup1;&#8313; C, what is the drift velocity, in mm/s?</>,
+      prompt: <>A copper wire of cross-section <strong className="text-text">2.0 mm&sup2;</strong> carries <strong className="text-text">10 A</strong>. Using n = 8.5&times;10&sup2;&#8312;/m&sup3; and e = 1.602&times;10&#8315;&sup1;&#8313; C, what is the drift velocity, in mm/s?</>,
       targetValue: 0.37,
       tolerance: 0.15,
       unit: 'mm/s',
@@ -711,7 +711,7 @@ const CH3_QUIZ: ChapterQuiz = {
     {
       id: 'q7',
       type: 'numeric',
-      prompt: <>A 240 V heater has a resistance of <strong>12 &Omega;</strong>. What power does it dissipate, in watts?</>,
+      prompt: <>A 240 V heater has a resistance of <strong className="text-text">12 &Omega;</strong>. What power does it dissipate, in watts?</>,
       targetValue: 4800,
       tolerance: 0.02,
       unit: 'W',
@@ -1042,7 +1042,7 @@ const CH6_QUIZ: ChapterQuiz = {
     {
       id: 'q7',
       type: 'numeric',
-      prompt: <>A long straight wire carries <strong>20 A</strong>. What is |B| at <strong>10 cm</strong> from the wire, in microteslas?</>,
+      prompt: <>A long straight wire carries <strong className="text-text">20 A</strong>. What is |B| at <strong className="text-text">10 cm</strong> from the wire, in microteslas?</>,
       targetValue: 40,
       tolerance: 0.05,
       unit: '&micro;T',
@@ -1132,7 +1132,7 @@ const CH7_QUIZ: ChapterQuiz = {
     {
       id: 'q7',
       type: 'numeric',
-      prompt: <>A 50-turn coil sees its flux change by <strong>2&times;10&#8315;&sup3; Wb</strong> in <strong>5 ms</strong>. What is |EMF|, in volts?</>,
+      prompt: <>A 50-turn coil sees its flux change by <strong className="text-text">2&times;10&#8315;&sup3; Wb</strong> in <strong className="text-text">5 ms</strong>. What is |EMF|, in volts?</>,
       targetValue: 20,
       tolerance: 0.05,
       unit: 'V',
@@ -1222,7 +1222,7 @@ const CH8_QUIZ: ChapterQuiz = {
     {
       id: 'q7',
       type: 'numeric',
-      prompt: <>A panel absorbs <strong>2 m&sup2;</strong> of solar irradiance at 1000 W/m&sup2;. What power does it intercept, in watts?</>,
+      prompt: <>A panel absorbs <strong className="text-text">2 m&sup2;</strong> of solar irradiance at 1000 W/m&sup2;. What power does it intercept, in watts?</>,
       targetValue: 2000,
       tolerance: 0.02,
       unit: 'W',
@@ -1402,7 +1402,7 @@ const CH10_QUIZ: ChapterQuiz = {
     {
       id: 'q7',
       type: 'numeric',
-      prompt: <>A <strong>2 nC</strong> point charge sits inside a closed surface. What is the electric flux through that surface, in V&middot;m? (&epsilon;&#8320; = 8.854&times;10&#8315;&sup1;&sup2; F/m.)</>,
+      prompt: <>A <strong className="text-text">2 nC</strong> point charge sits inside a closed surface. What is the electric flux through that surface, in V&middot;m? (&epsilon;&#8320; = 8.854&times;10&#8315;&sup1;&sup2; F/m.)</>,
       targetValue: 226,
       tolerance: 0.05,
       unit: 'V&middot;m',
@@ -1411,7 +1411,7 @@ const CH10_QUIZ: ChapterQuiz = {
     {
       id: 'q8',
       type: 'numeric',
-      prompt: <>Flux through a single loop drops from <strong>3&times;10&#8315;&sup3; Wb</strong> to zero in <strong>2 ms</strong>. What is |EMF|, in volts?</>,
+      prompt: <>Flux through a single loop drops from <strong className="text-text">3&times;10&#8315;&sup3; Wb</strong> to zero in <strong className="text-text">2 ms</strong>. What is |EMF|, in volts?</>,
       targetValue: 1.5,
       tolerance: 0.05,
       unit: 'V',
@@ -2029,7 +2029,7 @@ const CH17_QUIZ: ChapterQuiz = {
     {
       id: 'q7',
       type: 'numeric',
-      prompt: <>A vacuum cap of <strong>100 pF</strong> has its gap filled with a dielectric of &epsilon;<sub>r</sub> = 6.7 (mica). What is the new C, in pF?</>,
+      prompt: <>A vacuum cap of <strong className="text-text">100 pF</strong> has its gap filled with a dielectric of &epsilon;<sub>r</sub> = 6.7 (mica). What is the new C, in pF?</>,
       targetValue: 670,
       tolerance: 0.02,
       unit: 'pF',

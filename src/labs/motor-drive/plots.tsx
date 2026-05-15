@@ -102,7 +102,7 @@ export function PhaseScope({ trace }: PhaseScopeProps) {
     ctx.fillStyle = '#6cc5c2'; ctx.fillText('c', w - 10, 4);
   }, [trace]);
 
-  return <canvas ref={ref} style={{ display: 'block', width: '100%' }} />;
+  return <canvas className="block w-full" ref={ref} style={{ display: 'block', width: '100%' }} />;
 }
 
 /* ───────────────────────── TorqueSpeed ───────────────────────── */
@@ -235,7 +235,7 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
     ctx.fillText('— voltage limit', padL + 4, padT + 13);
   }, [motor, Vdc, snap, history]);
 
-  return <canvas ref={ref} style={{ display: 'block', width: '100%' }} />;
+  return <canvas className="block w-full" ref={ref} style={{ display: 'block', width: '100%' }} />;
 }
 
 /* ───────────────────────── EfficiencyMap ───────────────────────── */
@@ -356,5 +356,5 @@ export function EfficiencyMap({ map, snap }: EfficiencyMapProps) {
     ctx.fillText('high', padL + 16 + 9 * 7 - 14, padT + 12);
   }, [map, snap]);
 
-  return <canvas ref={ref} style={{ display: 'block', width: '100%' }} />;
+  return <canvas className="block w-full" ref={ref} style={{ display: 'block', width: '100%' }} />;
 }

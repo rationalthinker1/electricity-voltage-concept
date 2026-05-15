@@ -10,7 +10,7 @@
  *   - right-click a generator to trip / restore it
  *   - drag a bus to reposition
  *
- * Rendering is on the same <canvas> as the other sandbox labs. The
+ * Rendering is on the same <canvas className="block w-full"> as the other sandbox labs. The
  * component tree is React for state.
  */
 

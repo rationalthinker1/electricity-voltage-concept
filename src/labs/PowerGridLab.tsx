@@ -540,42 +540,42 @@ export default function PowerGridLab() {
 
   const prose = (
     <>
-      <h3>What this lab integrates</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">What this lab integrates</h3>
+      <p className="mb-prose-3">
         A working power grid braids together every chapter from the second half of the textbook.
         AC voltage and impedance from Ch. 12. Generators and inertia from Ch. 21. Transformers from
         Ch. 23. Rectifiers and inverters from Ch. 24 — every solar farm and battery in this sandbox
         ties into the grid through a power-electronics interface that has no spinning mass behind it.
         Big loads from Ch. 31. The point of dropping a coal plant, two transmission lines, and a
         residential load on the canvas is to feel how those pieces couple — when one shifts, the
-        others have to move to keep <strong>Σ P_gen = Σ P_load + Σ P_loss</strong> alive at every
+        others have to move to keep <strong className="text-text font-medium">Σ P_gen = Σ P_load + Σ P_loss</strong> alive at every
         instant of every day<Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
 
-      <h3>The DC power-flow approximation</h3>
-      <p>
-        A real grid carries both real power <em>P</em> (megawatts that turn motors and heat resistors)
-        and reactive power <em>Q</em> (megavars that keep magnetising flux alive in every transformer
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">The DC power-flow approximation</h3>
+      <p className="mb-prose-3">
+        A real grid carries both real power <em className="italic text-text">P</em> (megawatts that turn motors and heat resistors)
+        and reactive power <em className="italic text-text">Q</em> (megavars that keep magnetising flux alive in every transformer
         and motor on the network). The full AC power-flow equations couple them through bus voltage
-        magnitudes <em>|V|</em> and angles <em>θ</em> in a nonlinear system that has to be solved by
+        magnitudes <em className="italic text-text">|V|</em> and angles <em className="italic text-text">θ</em> in a nonlinear system that has to be solved by
         Newton-Raphson iteration. For high-voltage transmission, though, three facts conspire to make
         a beautiful linear approximation work shockingly well:
       </p>
       <ol>
-        <li>Line reactance dominates resistance — <strong>X / R ≈ 5</strong> for a 230 kV line,
-          <strong> 10</strong> for a 500 kV line<Cite id="grainger-power-systems-2003" in={SOURCES} />.</li>
+        <li>Line reactance dominates resistance — <strong className="text-text font-medium">X / R ≈ 5</strong> for a 230 kV line,
+          <strong className="text-text font-medium"> 10</strong> for a 500 kV line<Cite id="grainger-power-systems-2003" in={SOURCES} />.</li>
         <li>Bus voltages stay close to 1 pu — operators arrange tap changers and shunt
           capacitors to keep |V| within ±5 %.</li>
         <li>Angle differences across a line are small — typically a few degrees.</li>
       </ol>
-      <p>
-        Combine those and the real-power flow on a line between buses <em>i</em> and <em>j</em>
+      <p className="mb-prose-3">
+        Combine those and the real-power flow on a line between buses <em className="italic text-text">i</em> and <em className="italic text-text">j</em>
         collapses to a single linear term:
       </p>
       <MathBlock>P_ij  ≈  (θ_i − θ_j) / X_ij</MathBlock>
-      <p>
+      <p className="mb-prose-3">
         Apply Kirchhoff's current law<Cite id="kirchhoff-1845" in={SOURCES} /> at every bus and the
-        whole network becomes a sparse linear system <strong>B' θ = P_inj</strong>, where <em>B'</em>
+        whole network becomes a sparse linear system <strong className="text-text font-medium">B' θ = P_inj</strong>, where <em className="italic text-text">B'</em>
         is the susceptance matrix with the slack-bus row removed. We solve it every step with the
         same Gaussian-elimination routine that powers the Circuit Builder lab one slot up
         <Cite id="horowitz-hill-2015" in={SOURCES} />. The DC approximation drops the moment we have
@@ -583,26 +583,26 @@ export default function PowerGridLab() {
         sandbox, it nails the right intuition.
       </p>
 
-      <h3>The swing equation, in detail</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">The swing equation, in detail</h3>
+      <p className="mb-prose-3">
         Synchronous machines store kinetic energy in their rotor. A coal turbine spinning at 3600 rpm
         on a 1 GW shaft is keeping somewhere around 5 seconds × 1 GW = 5 GJ alive in its rotor at any
         instant — and that energy is what holds frequency steady through every flicker of load. The
         swing equation, normalised on rated MVA, comes out as
       </p>
       <MathBlock>2 H · df/dt  =  P_mech − P_elec  −  D · Δf</MathBlock>
-      <p>
-        where <strong>H</strong> is the inertia constant in seconds (it's literally the stored
-        kinetic energy at synchronous speed divided by the machine's MVA rating), <strong>P_mech</strong>
-        is the turbine torque commanded by the governor, <strong>P_elec</strong> is the electrical
-        power leaving the stator, and <strong>D · Δf</strong> is the small load-damping term that
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">H</strong> is the inertia constant in seconds (it's literally the stored
+        kinetic energy at synchronous speed divided by the machine's MVA rating), <strong className="text-text font-medium">P_mech</strong>
+        is the turbine torque commanded by the governor, <strong className="text-text font-medium">P_elec</strong> is the electrical
+        power leaving the stator, and <strong className="text-text font-medium">D · Δf</strong> is the small load-damping term that
         captures how motor loads back off when frequency sags<Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
-      <p>
-        The grid-aggregated <strong>H_sys</strong> is the MVA-weighted average of every spinning
-        machine's H. A grid full of coal and hydro sits at <strong>H_sys ≈ 4–5 s</strong>; a grid
+      <p className="mb-prose-3">
+        The grid-aggregated <strong className="text-text font-medium">H_sys</strong> is the MVA-weighted average of every spinning
+        machine's H. A grid full of coal and hydro sits at <strong className="text-text font-medium">H_sys ≈ 4–5 s</strong>; a grid
         full of inverter-coupled wind and solar — with zero native inertia — sits at
-        <strong> H_sys → 0</strong>. The same generator trip on those two grids produces wildly
+        <strong className="text-text font-medium"> H_sys → 0</strong>. The same generator trip on those two grids produces wildly
         different rate-of-change-of-frequency (ROCOF) values. The high-inertia grid rides through;
         the low-inertia one trips loads on its way down<Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
@@ -612,34 +612,34 @@ export default function PowerGridLab() {
         feature evaporates — unless you put it back synthetically.
       </Pullout>
 
-      <h3>Primary frequency control: droop</h3>
-      <p>
-        Every governor on every steam, gas, or hydro unit is wired with a <strong>droop characteristic</strong>:
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Primary frequency control: droop</h3>
+      <p className="mb-prose-3">
+        Every governor on every steam, gas, or hydro unit is wired with a <strong className="text-text font-medium">droop characteristic</strong>:
         the unit picks up (or sheds) load in proportion to how far frequency has drifted from 60 Hz.
-        A typical setting is <strong>R = 5 %</strong>, which means a 5 % drop in frequency (60 → 57 Hz)
+        A typical setting is <strong className="text-text font-medium">R = 5 %</strong>, which means a 5 % drop in frequency (60 → 57 Hz)
         commands the unit to swing from minimum to maximum dispatch. Mathematically:
       </p>
       <MathBlock>ΔP_gen  =  −(1 / R) · Δf_pu · P_rated</MathBlock>
-      <p>
-        Watch the <strong>Trip</strong> scenario in this sandbox: a 500 MW coal plant trips at
-        <em> t = 4 s</em>. The surviving units feel frequency falling and ramp up — but with
+      <p className="mb-prose-3">
+        Watch the <strong className="text-text font-medium">Trip</strong> scenario in this sandbox: a 500 MW coal plant trips at
+        <em className="italic text-text"> t = 4 s</em>. The surviving units feel frequency falling and ramp up — but with
         H ≈ 5 s, they can't move fast enough to prevent a dip. Add a 100 MW battery at any bus
         (H = 0.1 s, droop = 2 %) and the dip is arrested almost instantly, because the battery's
         inverter can swing from 0 to full output in milliseconds. That's why every modern grid is
         starting to lean on storage for fast-frequency response<Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
 
-      <h3>The merit-order dispatch and locational marginal price</h3>
-      <p>
-        With the <em>Merit-order dispatch</em> toggle on, the sandbox sorts every online generator
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">The merit-order dispatch and locational marginal price</h3>
+      <p className="mb-prose-3">
+        With the <em className="italic text-text">Merit-order dispatch</em> toggle on, the sandbox sorts every online generator
         by its variable cost (in $/MWh) and fills them from cheapest first until total dispatch
-        meets total load plus 3 % for losses. The unit that ends up <em>partially</em> loaded —
+        meets total load plus 3 % for losses. The unit that ends up <em className="italic text-text">partially</em> loaded —
         not zero, not at its cap — is the marginal unit, and its cost is what an economist would
-        call the <strong>locational marginal price</strong> (LMP). Every MWh delivered anywhere on
+        call the <strong className="text-text font-medium">locational marginal price</strong> (LMP). Every MWh delivered anywhere on
         that grid is priced at the marginal unit's cost, regardless of which physical generator
         actually delivered it<Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
-      <p>
+      <p className="mb-prose-3">
         In the 4-bus default scenario, hydro is the cheapest unit at $8/MWh, wind and solar are
         near-zero, and coal at $25/MWh sits between them and the $45/MWh gas peaker. As demand climbs
         through the day, the marginal unit walks rightward through the merit order: hydro → coal →
@@ -648,10 +648,10 @@ export default function PowerGridLab() {
         running a stripped-down version that captures the same intuition.
       </p>
 
-      <h3>Why constant-impedance vs. constant-power loads matter</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Why constant-impedance vs. constant-power loads matter</h3>
+      <p className="mb-prose-3">
         Residential aggregate behaves like a giant constant impedance — incandescent bulbs and
-        resistive heaters dominate, so when bus voltage sags, the load shrinks as <strong>P ∝ V²</strong>.
+        resistive heaters dominate, so when bus voltage sags, the load shrinks as <strong className="text-text font-medium">P ∝ V²</strong>.
         Industrial loads with regulated drives behave like constant power — they pull the same MW
         regardless of voltage, which is why they make voltage-stability harder. Motors fall in
         between, drawing constant current. Build a network where every load is constant-power, sag the
@@ -661,52 +661,52 @@ export default function PowerGridLab() {
         self-corrects on the way down.
       </p>
 
-      <h3>Try it — six problems in the sandbox</h3>
-      <p>
+      <h3 className="font-2 font-normal italic text-9 leading-1 my-4xl mb-xl text-text tracking-1">Try it — six problems in the sandbox</h3>
+      <p className="mb-prose-3">
         Each of these is solvable in the sandbox. Load the indicated preset and start adjusting.
       </p>
       <ol>
         <li>
-          <strong>Marginal price during a ramp.</strong> Load the <em>Afternoon ramp</em> scenario.
+          <strong className="text-text font-medium">Marginal price during a ramp.</strong> Load the <em className="italic text-text">Afternoon ramp</em> scenario.
           Watch the residential load climb from 70 % to 110 % over ~20 sim seconds. At each plateau
           (70, 85, 100, 110 %), read the LMP off the bottom panel. Which generator is marginal at
           each? When does the gas peaker start dispatching?
         </li>
         <li>
-          <strong>Coal trip without storage.</strong> Load the <em>Trip</em> scenario and let it run
+          <strong className="text-text font-medium">Coal trip without storage.</strong> Load the <em className="italic text-text">Trip</em> scenario and let it run
           past t = 4 s. The 500 MW coal unit goes offline. How low does frequency dip? Does UFLS
           trigger (the shed counter starts climbing past 0 %)? At what frequency does the system
           finally restabilise?
         </li>
         <li>
-          <strong>Coal trip with storage.</strong> Reset, then select Bus 1 (North Gen) and click
-          <em> + Battery here</em>. Now run the trip scenario again. How much shallower is the dip?
+          <strong className="text-text font-medium">Coal trip with storage.</strong> Reset, then select Bus 1 (North Gen) and click
+          <em className="italic text-text"> + Battery here</em>. Now run the trip scenario again. How much shallower is the dip?
           What's the maximum ROCOF (df/dt) you observe? Does the battery state of charge change
           much in the first 10 s?
         </li>
         <li>
-          <strong>Build a 1 GW grid where the marginal price is exactly $25/MWh.</strong> Start from
-          the <em>Empty</em> scenario. Drop two 230 kV buses, connect them with one line. Add a
+          <strong className="text-text font-medium">Build a 1 GW grid where the marginal price is exactly $25/MWh.</strong> Start from
+          the <em className="italic text-text">Empty</em> scenario. Drop two 230 kV buses, connect them with one line. Add a
           500 MW coal generator at $25/MWh and a 400 MW hydro at $8/MWh on bus 1, and 700 MW of
           industrial load on bus 2 through a transformer. With merit-order dispatch on, hydro will
           fill to 400 and coal will fill the remaining 300 of headroom. Coal is marginal — the LMP
           is $25/MWh. Now bump residential load to 850 MW. What happens to LMP?
         </li>
         <li>
-          <strong>Locate the duck.</strong> Load the <em>Duck curve</em> scenario. At t = 0, solar
+          <strong className="text-text font-medium">Locate the duck.</strong> Load the <em className="italic text-text">Duck curve</em> scenario. At t = 0, solar
           is at 95 % and net load is low — the famous "belly" of the duck. As the schedule fires
           (t = 6, t = 14), solar fades while residential climbs. What's the steepest ramp rate you
           measure (MW/s) on the gas peaker as the duck's neck rises into the evening?
         </li>
         <li>
-          <strong>Build a low-inertia grid.</strong> Empty the canvas, drop two buses, and stand up
+          <strong className="text-text font-medium">Build a low-inertia grid.</strong> Empty the canvas, drop two buses, and stand up
           800 MW of capacity using only wind, solar, and battery (no coal, no gas, no hydro). With
           all three classes at H ≤ 0.1 s, the aggregated H_sys is near zero. Trip one of the units
           and watch ROCOF. Does the surviving inverter-based generation arrest the dip? At what
           droop setting on the battery (try 0.05, 0.02, 0.01) does the grid survive without UFLS?
         </li>
       </ol>
-      <p>
+      <p className="mb-prose-3">
         Every reading on the bottom panel — frequency, dispatch, voltages, losses, LMP, CO₂ — is
         computed live from the topology you've built. The numbers come from CODATA constants
         baked into the per-unit formulas<Cite id="codata-2018" in={SOURCES} /> and from the

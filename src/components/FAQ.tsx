@@ -12,7 +12,7 @@ interface FAQItemProps {
  */
 export function FAQItem({ q, children }: FAQItemProps) {
   return (
-    <details className="border-b border-border group/d [&[open]_.chev]:rotate-45">
+    <details className="border-b border-border first:border-t group/d [&[open]_.chev]:rotate-45">
       <summary className="cursor-pointer flex items-baseline gap-md py-lg outline-none list-none [&::-webkit-details-marker]:hidden group/s">
         <span className="font-3 text-2 tracking-3 shrink-0 w-2xl text-accent">Q.</span>
         <span className="font-2 italic font-light text-7 text-text leading-3 flex-1 min-w-0 group-hover/d:text-accent group-focus-visible/s:outline group-focus-visible/s:outline-1 group-focus-visible/s:outline-accent group-focus-visible/s:outline-offset-4">{q}</span>
@@ -44,7 +44,7 @@ export function FAQ({ eyebrow = 'Frequently asked', intro, children }: FAQProps)
     <section className="opacity-100 max-w-col-lg mx-auto mt-5xl mb-0 pt-2xl border-t border-color-border-strong">
       <div className="eyebrow-rule mb-xl">{eyebrow}</div>
       {intro && <p className="text-text-dim text-6 leading-4 mb-2xl italic max-w-col">{intro}</p>}
-      <div className="border-t border-border py-2 [&_>*+*]:border-t [&_>*+*]:border-border">{children}</div>
+      <div>{children}</div>
     </section>
   );
 }

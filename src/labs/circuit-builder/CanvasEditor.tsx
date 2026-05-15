@@ -8,7 +8,7 @@
  *   - click a component to select (for the inspector)
  *   - click a placed probe to delete (palette-armed = 'voltmeter'/'ammeter')
  *
- * Rendering happens entirely on the <canvas> for visual consistency with the
+ * Rendering happens entirely on the <canvas className="block w-full"> for visual consistency with the
  * rest of the textbook. The component tree is React for state; the canvas
  * is the view.
  *
