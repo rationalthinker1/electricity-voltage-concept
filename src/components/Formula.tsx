@@ -89,7 +89,7 @@ export function Formula({ id, tex, children, caption, large, small, ariaLabel }:
       aria-label={resolved?.plain}
     >
       {(!!html) && (
-        <div className="formula-tex" dangerouslySetInnerHTML={{ __html: html }} />
+        <div className={`formula-tex ${large? 'text-accent': ''}`} dangerouslySetInnerHTML={{ __html: html }} />
       )}
       {!!children && !html && (
         <div className="formula-content">
@@ -126,7 +126,7 @@ export function InlineMath({ id, tex, children, ariaLabel }: InlineMathProps) {
   if (html) {
     return (
       <span
-        className="formula-inline"
+        className="formula-inline text-base"
         aria-label={resolved!.plain}
         dangerouslySetInnerHTML={{ __html: html }}
       />

@@ -58,7 +58,7 @@ export default function Ch3ResistanceAndPower() {
         from the previous chapter said that inside a conductor, current density is proportional
         to the electric field driving it:
       </p>
-      <Formula tex="\vec{J} = \sigma\vec{E}" />
+      <Formula large tex="\vec{J} = \sigma\vec{E}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">J</strong> is the current density vector (current per unit cross-sectional area, in A/m²),
         <strong className="text-text font-medium"> E</strong> is the local electric field driving the carriers (in V/m), and <strong className="text-text font-medium">σ</strong> is the{' '}
@@ -73,7 +73,7 @@ export default function Ch3ResistanceAndPower() {
         Wrap that microscopic law up over a whole wire — a length <strong className="text-text font-medium">L</strong>, a cross-section <strong className="text-text font-medium">A</strong>,
         a uniform field along the axis — and you get the macroscopic version every electrical engineer carries around:
       </p>
-      <Formula id="ohms-law" />
+      <Formula large tex="R = \dfrac{L}{\sigma A}" d="ohms-law" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V</strong> is the voltage drop end-to-end (in volts), <strong className="text-text font-medium">I</strong> is the current through the wire
         (in amperes), and <strong className="text-text font-medium">R</strong> is the wire's resistance (in ohms, Ω = V/A).
@@ -90,7 +90,7 @@ export default function Ch3ResistanceAndPower() {
         then <strong className="text-text font-medium">J = σE = σV/L</strong>. The total current — which is just <em className="italic text-text">J</em> integrated over the cross-section —
         is <strong className="text-text font-medium">I = JA = σAV/L</strong>. Comparing to <strong className="text-text font-medium">V = IR</strong>:
       </p>
-      <Formula tex="R = \dfrac{L}{\sigma A} = \dfrac{\rho L}{A}" />
+      <Formula large tex="R = \dfrac{L}{\sigma A} = \dfrac{\rho L}{A}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">ρ = 1/σ</strong> is the{' '}
         <Term def={<><strong className="text-text font-medium">resistivity</strong> (ρ) — a material's intrinsic resistance per unit length per unit cross-section: <InlineMath id="resistance-resistivity" />. SI unit: Ω·m. Reciprocal of conductivity. Copper ≈ 1.7×10⁻⁸ Ω·m.</>}>resistivity</Term>. Two clean geometric facts fall out. <strong className="text-text font-medium">Twice the length, twice the
@@ -191,7 +191,7 @@ export default function Ch3ResistanceAndPower() {
       <p className="mb-prose-3">
         Per unit volume, the rate of energy transfer from field to lattice is the dot product <strong className="text-text font-medium">J·E</strong>:
       </p>
-      <Formula tex="p_v = \vec{J}\cdot\vec{E} = \sigma E^2" />
+      <Formula large tex="p_v = \vec{J}\cdot\vec{E} = \sigma E^2" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">p<sub>v</sub></strong> is the power dissipated per unit volume of conductor (in W/m³),
         <strong className="text-text font-medium"> J</strong> is the current density vector (A/m²), <strong className="text-text font-medium">E</strong> is the local electric field (V/m), and
@@ -199,7 +199,7 @@ export default function Ch3ResistanceAndPower() {
         Always positive in a resistor (J and E point the same way). Integrate over the wire's volume <strong className="text-text font-medium">LA</strong>,
         with E = V/L throughout, and the macroscopic power drops out:
       </p>
-      <Formula tex="P = \dfrac{\sigma A V^2}{L} = \dfrac{V^2}{R} = VI = I^2 R" />
+      <Formula large tex="P = \dfrac{\sigma A V^2}{L} = \dfrac{V^2}{R} = VI = I^2 R" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P</strong> is the total power dissipated by the resistor (in watts, W = J/s),
         <strong className="text-text font-medium"> V</strong> is the voltage across it (V), <strong className="text-text font-medium">I</strong> is the current through it (A),
@@ -270,14 +270,14 @@ export default function Ch3ResistanceAndPower() {
         — a single loop, everything
         the same current — and the voltage drops add: <InlineMath tex="V = IR_1 + IR_2 = I(R_1 + R_2)" />. The combined resistance is the sum:
       </p>
-      <Formula tex="R_{\text{series}} = R_1 + R_2" />
+      <Formula large tex="R_{\text{series}} = R_1 + R_2" />
       <p className="mb-prose-3">
         Put them in{' '}
         <Term def={<><strong className="text-text font-medium">parallel</strong> — components connected across the same two nodes so each sees the same voltage; their conductances add (reciprocal resistances): <InlineMath tex="1/R = 1/R_1 + 1/R_2 + \ldots" /></>}><strong className="text-text font-medium">parallel</strong></Term>{' '}
         — two branches at the same voltage <em className="italic text-text">V</em> — and the currents add:
         <InlineMath tex="I = V/R_1 + V/R_2 = V(1/R_1 + 1/R_2)" />, so the reciprocals combine:
       </p>
-      <Formula tex="1 / R_{\text{parallel}} = 1/R_1 + 1/R_2" />
+      <Formula large tex="1 / R_{\text{parallel}} = 1/R_1 + 1/R_2" />
       <p className="mb-prose-3">
         Two equal resistors in parallel give half their value; in general, the parallel combination is always less than
         either branch on its own<Cite id="griffiths-2017" in={SOURCES} />.
