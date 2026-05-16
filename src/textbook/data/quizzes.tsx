@@ -110,10 +110,10 @@ const CH1_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>Coulomb&rsquo;s law gives the magnitude of the force between two point charges. Which expression is correct?</>,
       choices: [
-        <Formula key="a">F = k Q&#8321; Q&#8322; / r</Formula>,
-        <Formula key="b">F = k Q&#8321; Q&#8322; / r&sup2;</Formula>,
-        <Formula key="c">F = k (Q&#8321; + Q&#8322;) / r&sup2;</Formula>,
-        <Formula key="d">F = k Q&#8321; Q&#8322; r&sup2;</Formula>,
+        <Formula plainText key="a">F = k Q&#8321; Q&#8322; / r</Formula>,
+        <Formula plainText key="b">F = k Q&#8321; Q&#8322; / r&sup2;</Formula>,
+        <Formula plainText key="c">F = k (Q&#8321; + Q&#8322;) / r&sup2;</Formula>,
+        <Formula plainText key="d">F = k Q&#8321; Q&#8322; r&sup2;</Formula>,
       ],
       correctIndex: 1,
       explanation: (
@@ -496,7 +496,7 @@ const CH2_QUIZ: ChapterQuiz = {
       correctIndex: 2,
       explanation: (
         <>
-          Voltage is energy per coulomb: <Formula>V = W/q</Formula>. It is always defined between
+          Voltage is energy per coulomb: <Formula plainText>V = W/q</Formula>. It is always defined between
           two points; calling a single node &ldquo;at 5 V&rdquo; only makes sense after a reference
           (ground) is chosen<Cite id="feynman-II-2" in={CH2_SOURCES} />.
         </>
@@ -648,7 +648,7 @@ const CH3_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          Ohm&rsquo;s law: V = IR. Microscopically it follows from <Formula>J = &sigma; E</Formula>, a
+          Ohm&rsquo;s law: V = IR. Microscopically it follows from <Formula plainText>J = &sigma; E</Formula>, a
           linear response of current density to applied field<Cite id="griffiths-2017" in={CH3_SOURCES} />.
         </>
       ),

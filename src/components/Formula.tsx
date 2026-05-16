@@ -39,6 +39,8 @@ interface FormulaProps {
   small?: boolean;
   /** Optional override for the aria-label / plain-text form. */
   ariaLabel?: string;
+  /** If true, the aria-label / plain-text form will be used as the content of the <span>, in addition to the KaTeX rendering. This is useful for formulas that are already very plain (e.g., E=mc^2) and where the KaTeX rendering doesn't add much visual interest. */
+  plainText?: boolean;
 }
 
 function blockSizing(large: boolean | undefined, small: boolean | undefined): string {
@@ -78,9 +80,17 @@ function resolve(id: FormulaId | undefined, tex: string | undefined, ariaLabel: 
   return null;
 }
 
-export function Formula({ id, tex, children, caption, large, small, ariaLabel }: FormulaProps) {
+export function Formula({ id, tex, children, caption, large, small, ariaLabel, plainText = false }: FormulaProps) {
   const resolved = resolve(id, tex, ariaLabel);
   const html = useMemo(() => (resolved ? renderTeX(resolved.tex, true) : null), [resolved?.tex]);
+
+  if(plainText && !!children) {
+    return (
+      <div className={`formula-block`}>
+      {children}
+      </div>
+    );
+  }
 
   return (
     <div
