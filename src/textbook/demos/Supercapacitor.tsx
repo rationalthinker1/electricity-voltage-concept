@@ -11,17 +11,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function SupercapacitorDemo({ figure }: Props) {
   const [C, setC] = useState(1000); // F
-  const [I, setI] = useState(50);   // A
+  const [I, setI] = useState(50); // A
   const [V_max, _setVmax] = useState(2.7);
   const [mode, setMode] = useState<'charge' | 'discharge' | 'idle'>('idle');
   const [V, setV] = useState(0);
@@ -30,8 +30,8 @@ export function SupercapacitorDemo({ figure }: Props) {
     if (mode === 'idle') return;
     const dir = mode === 'charge' ? +1 : -1;
     const id = window.setInterval(() => {
-      setV(v => {
-        const dv = (dir * I / C) * 0.05; // 50 ms tick
+      setV((v) => {
+        const dv = ((dir * I) / C) * 0.05; // 50 ms tick
         const next = v + dv;
         if (next >= V_max) return V_max;
         if (next <= 0) return 0;
@@ -53,7 +53,9 @@ export function SupercapacitorDemo({ figure }: Props) {
   }, [V]);
 
   const stateRef = useRef({ V, V_max });
-  useEffect(() => { stateRef.current = { V, V_max }; }, [V, V_max]);
+  useEffect(() => {
+    stateRef.current = { V, V_max };
+  }, [V, V_max]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H } = info;
@@ -64,8 +66,10 @@ export function SupercapacitorDemo({ figure }: Props) {
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
-      const pX = 40, pY = 22;
-      const pW = W - 56, pH = H - 50;
+      const pX = 40,
+        pY = 22;
+      const pW = W - 56,
+        pH = H - 50;
       ctx.strokeStyle = getCanvasColors().border;
       ctx.strokeRect(pX, pY, pW, pH);
 
@@ -76,7 +80,10 @@ export function SupercapacitorDemo({ figure }: Props) {
       ctx.strokeStyle = 'rgba(255,107,42,0.35)';
       ctx.setLineDash([4, 4]);
       const yvm = yV(s.V_max);
-      ctx.beginPath(); ctx.moveTo(pX, yvm); ctx.lineTo(pX + pW, yvm); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(pX, yvm);
+      ctx.lineTo(pX + pW, yvm);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       // Trace
@@ -92,7 +99,8 @@ export function SupercapacitorDemo({ figure }: Props) {
           const p = trace[i]!;
           const x = pX + ((p.t - tMin) / tSpan) * pW;
           const y = yV(p.v);
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.stroke();
       }
@@ -121,9 +129,10 @@ export function SupercapacitorDemo({ figure }: Props) {
       question="Why does a supercap's voltage fall linearly while a battery's stays flat?"
       caption={
         <>
-          Constant-current charge or discharge gives a linear ramp: <em>dV/dt = ±I / C</em>. A 1000-F cell charged to
-          2.7 V holds <strong>½CV² ≈ 3.6 kJ</strong> — about 1 Wh. Power per mass beats Li-ion by an order of magnitude;
-          energy per mass loses by an order of magnitude. Two complementary devices, not interchangeable.
+          Constant-current charge or discharge gives a linear ramp: <em>dV/dt = ±I / C</em>. A
+          1000-F cell charged to 2.7 V holds <strong>½CV² ≈ 3.6 kJ</strong> — about 1 Wh. Power per
+          mass beats Li-ion by an order of magnitude; energy per mass loses by an order of
+          magnitude. Two complementary devices, not interchangeable.
         </>
       }
     >
@@ -132,26 +141,41 @@ export function SupercapacitorDemo({ figure }: Props) {
         <MiniToggle
           label="Charge"
           checked={mode === 'charge'}
-          onChange={v => setMode(v ? 'charge' : 'idle')}
+          onChange={(v) => setMode(v ? 'charge' : 'idle')}
         />
         <MiniToggle
           label="Discharge"
           checked={mode === 'discharge'}
-          onChange={v => setMode(v ? 'discharge' : 'idle')}
+          onChange={(v) => setMode(v ? 'discharge' : 'idle')}
         />
-        <button type="button" className="mini-toggle" onClick={() => { setV(0); setMode('idle'); traceRef.current = []; tRef.current = 0; }}>
+        <button
+          type="button"
+          className="mini-toggle"
+          onClick={() => {
+            setV(0);
+            setMode('idle');
+            traceRef.current = [];
+            tRef.current = 0;
+          }}
+        >
           Reset
         </button>
         <MiniSlider
           label="C"
-          value={C} min={100} max={3000} step={50}
-          format={v => v.toFixed(0) + ' F'}
+          value={C}
+          min={100}
+          max={3000}
+          step={50}
+          format={(v) => v.toFixed(0) + ' F'}
           onChange={setC}
         />
         <MiniSlider
           label="I"
-          value={I} min={1} max={300} step={1}
-          format={v => v.toFixed(0) + ' A'}
+          value={I}
+          min={1}
+          max={300}
+          step={1}
+          format={(v) => v.toFixed(0) + ' A'}
           onChange={setI}
         />
         <MiniReadout label="V" value={<Num value={V} />} unit="V" />

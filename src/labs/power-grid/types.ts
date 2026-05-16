@@ -23,12 +23,12 @@
 /* ───── Generator types ───── */
 
 export type GeneratorKind =
-  | 'coal'        // Big thermal, slow, high inertia, dirtiest.
-  | 'ccgt'        // Combined-cycle gas, medium inertia, medium cost.
-  | 'hydro'       // Cheap, fast, high inertia.
-  | 'wind'        // Variable, zero fuel cost, no native inertia.
-  | 'solar'       // Variable, daytime, no native inertia.
-  | 'battery';    // Storage; inverter-based. Can inject or absorb.
+  | 'coal' // Big thermal, slow, high inertia, dirtiest.
+  | 'ccgt' // Combined-cycle gas, medium inertia, medium cost.
+  | 'hydro' // Cheap, fast, high inertia.
+  | 'wind' // Variable, zero fuel cost, no native inertia.
+  | 'solar' // Variable, daytime, no native inertia.
+  | 'battery'; // Storage; inverter-based. Can inject or absorb.
 
 export interface Generator {
   id: string;
@@ -56,10 +56,10 @@ export interface Generator {
 /* ───── Load types ───── */
 
 export type LoadKind =
-  | 'residential'  // Constant impedance (V²/R) — load shrinks if V sags.
-  | 'industrial'  // Constant power — draws fixed MW regardless of V.
-  | 'motor'       // Constant current — draws fixed I regardless of V.
-  | 'ev';         // Constant power, scaled by EV-cluster size.
+  | 'residential' // Constant impedance (V²/R) — load shrinks if V sags.
+  | 'industrial' // Constant power — draws fixed MW regardless of V.
+  | 'motor' // Constant current — draws fixed I regardless of V.
+  | 'ev'; // Constant power, scaled by EV-cluster size.
 
 export interface Load {
   id: string;

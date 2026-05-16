@@ -24,33 +24,31 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function MaxPowerTransferDemo({ figure }: Props) {
   const [V, setV] = useState(12);
   const [RS, setRS] = useState(4);
   const [RL, setRL] = useState(4);
   const [ac, setAc] = useState(false);
-  const [XS, setXS] = useState(3);     // source reactance, Ω
+  const [XS, setXS] = useState(3); // source reactance, Ω
   const [conjMatch, setConjMatch] = useState(true);
 
   // In AC mode, the load is R_L + j X_L. Conjugate matching sets X_L = -X_S.
   const XL = ac ? (conjMatch ? -XS : 0) : 0;
   // Impedance magnitude squared of the series sum
   const denom2_real = (RS + RL) * (RS + RL);
-  const denom2 = ac
-    ? (RS + RL) * (RS + RL) + (XS + XL) * (XS + XL)
-    : denom2_real;
+  const denom2 = ac ? (RS + RL) * (RS + RL) + (XS + XL) * (XS + XL) : denom2_real;
   // Real (average) power delivered to R_L
-  const I_mag2 = (V * V) / denom2;        // |V_Th|² / |Z_total|²
+  const I_mag2 = (V * V) / denom2; // |V_Th|² / |Z_total|²
   const P_L = I_mag2 * RL;
   const P_S = I_mag2 * RS;
-  const eta = P_L / (P_L + P_S);          // = R_L / (R_S + R_L)
+  const eta = P_L / (P_L + P_S); // = R_L / (R_S + R_L)
   const P_max = (V * V) / (4 * RS);
 
   const stateRef = useRef({ V, RS, RL, ac, XS, XL, conjMatch, P_L, P_max });
@@ -68,7 +66,10 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 56, padR = 16, padT = 32, padB = 38;
+      const padL = 56,
+        padR = 16,
+        padT = 32,
+        padB = 38;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
@@ -127,7 +128,8 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       ctx.strokeStyle = colors.accent;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
-      ctx.moveTo(xPeak, padT); ctx.lineTo(xPeak, padT + plotH);
+      ctx.moveTo(xPeak, padT);
+      ctx.lineTo(xPeak, padT + plotH);
       ctx.stroke();
       ctx.setLineDash([]);
 
@@ -136,7 +138,9 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       const yCur = yOf(P_L);
       ctx.restore();
       ctx.fillStyle = colors.accent;
-      ctx.beginPath(); ctx.arc(xCur, yCur, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(xCur, yCur, 5, 0, Math.PI * 2);
+      ctx.fill();
 
       // Labels
       ctx.fillStyle = colors.textDim;
@@ -155,9 +159,12 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       for (const r of [0.1, 0.5, 1, 2, 5, 10]) {
         const x = xOf(r);
         ctx.save();
-        ctx.globalAlpha = 0.10;
+        ctx.globalAlpha = 0.1;
         ctx.fillStyle = colors.text;
-        ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + plotH); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, padT);
+        ctx.lineTo(x, padT + plotH);
+        ctx.stroke();
         ctx.restore();
         ctx.fillStyle = colors.textDim;
         ctx.fillText(`${r}·R_S`, x, padT + plotH + 4);
@@ -190,28 +197,58 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 13.6'}
       title="Maximum power transfer — match, don't over-match"
       question="P_L peaks at R_L = R_S. Efficiency at that peak is exactly 50%."
-      caption={<>
-        Slide R<sub>L</sub> through the source's internal resistance. Power delivered
-        to the load peaks at R<sub>L</sub> = R<sub>S</sub> with P<sub>L,max</sub>
-        = V<sub>Th</sub>² / (4 R<sub>S</sub>); the other half of the source's output
-        is wasted inside R<sub>S</sub>. Switch to AC: with Z<sub>S</sub> = R<sub>S</sub>
-        + jX<sub>S</sub>, the conjugate match Z<sub>L</sub> = Z<sub>S</sub><sup>*</sup>
-        recovers the same peak; an unmatched reactance pushes the operating point
-        down the curve.
-      </>}
+      caption={
+        <>
+          Slide R<sub>L</sub> through the source's internal resistance. Power delivered to the load
+          peaks at R<sub>L</sub> = R<sub>S</sub> with P<sub>L,max</sub>= V<sub>Th</sub>² / (4 R
+          <sub>S</sub>); the other half of the source's output is wasted inside R<sub>S</sub>.
+          Switch to AC: with Z<sub>S</sub> = R<sub>S</sub>+ jX<sub>S</sub>, the conjugate match Z
+          <sub>L</sub> = Z<sub>S</sub>
+          <sup>*</sup>
+          recovers the same peak; an unmatched reactance pushes the operating point down the curve.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
-        <MiniSlider label="V_Th" value={V} min={1} max={24} step={0.5}
-          format={v => v.toFixed(1) + ' V'} onChange={setV} />
-        <MiniSlider label="R_S" value={RS} min={0.5} max={20} step={0.5}
-          format={v => v.toFixed(1) + ' Ω'} onChange={setRS} />
-        <MiniSlider label="R_L" value={RL} min={0.2} max={80} step={0.2}
-          format={v => v.toFixed(1) + ' Ω'} onChange={setRL} />
+        <MiniSlider
+          label="V_Th"
+          value={V}
+          min={1}
+          max={24}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
+          onChange={setV}
+        />
+        <MiniSlider
+          label="R_S"
+          value={RS}
+          min={0.5}
+          max={20}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' Ω'}
+          onChange={setRS}
+        />
+        <MiniSlider
+          label="R_L"
+          value={RL}
+          min={0.2}
+          max={80}
+          step={0.2}
+          format={(v) => v.toFixed(1) + ' Ω'}
+          onChange={setRL}
+        />
         <MiniToggle label={ac ? 'AC' : 'DC'} checked={ac} onChange={setAc} />
         {ac && (
-          <MiniSlider label="X_S" value={XS} min={-20} max={20} step={0.5}
-            format={v => v.toFixed(1) + ' Ω'} onChange={setXS} />
+          <MiniSlider
+            label="X_S"
+            value={XS}
+            min={-20}
+            max={20}
+            step={0.5}
+            format={(v) => v.toFixed(1) + ' Ω'}
+            onChange={setXS}
+          />
         )}
         {ac && (
           <MiniToggle

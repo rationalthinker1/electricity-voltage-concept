@@ -10,13 +10,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 
 type Wave = 'sine' | 'square' | 'triangle' | 'sawtooth' | 'half-rect' | 'full-rect';
 
-interface Bar { n: number; amp: number; }
+interface Bar {
+  n: number;
+  amp: number;
+}
 
 /** Coefficients of the trigonometric series for each named waveform, up to
  *  harmonic N. Returns |b_n| or |a_n| (whichever is non-zero), normalised so
@@ -65,23 +66,30 @@ function spectrum(wave: Wave, N: number): Bar[] {
 function timeDomain(wave: Wave, phase: number): number {
   const t = ((phase % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
   switch (wave) {
-    case 'sine':      return Math.sin(t);
-    case 'square':    return t < Math.PI ? 1 : -1;
-    case 'sawtooth':  return 1 - t / Math.PI;
+    case 'sine':
+      return Math.sin(t);
+    case 'square':
+      return t < Math.PI ? 1 : -1;
+    case 'sawtooth':
+      return 1 - t / Math.PI;
     case 'triangle': {
       if (t < Math.PI / 2) return t / (Math.PI / 2);
-      if (t < 3 * Math.PI / 2) return 1 - (t - Math.PI / 2) / (Math.PI / 2);
-      return -1 + (t - 3 * Math.PI / 2) / (Math.PI / 2);
+      if (t < (3 * Math.PI) / 2) return 1 - (t - Math.PI / 2) / (Math.PI / 2);
+      return -1 + (t - (3 * Math.PI) / 2) / (Math.PI / 2);
     }
-    case 'half-rect': return Math.max(0, Math.sin(t));
-    case 'full-rect': return Math.abs(Math.sin(t));
+    case 'half-rect':
+      return Math.max(0, Math.sin(t));
+    case 'full-rect':
+      return Math.abs(Math.sin(t));
   }
 }
 
 export function FourierSpectrumDemo() {
   const [wave, setWave] = useState<Wave>('square');
   const stateRef = useRef({ wave });
-  useEffect(() => { stateRef.current = { wave }; }, [wave]);
+  useEffect(() => {
+    stateRef.current = { wave };
+  }, [wave]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -99,7 +107,10 @@ export function FourierSpectrumDemo() {
       const tH = split - 16;
       const tMid = 8 + tH / 2;
       ctx.strokeStyle = colors.border;
-      ctx.beginPath(); ctx.moveTo(padX, tMid); ctx.lineTo(w - padX, tMid); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(padX, tMid);
+      ctx.lineTo(w - padX, tMid);
+      ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.6;
       ctx.fillStyle = colors.textDim;
@@ -107,7 +118,7 @@ export function FourierSpectrumDemo() {
       ctx.textAlign = 'right';
       ctx.fillText('time →', w - padX - 4, tMid + 12);
 
-ctx.restore();
+      ctx.restore();
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -117,7 +128,8 @@ ctx.restore();
         const x = padX + (i / samples) * (w - 2 * padX);
         const phase = (i / samples) * cycles * 2 * Math.PI;
         const y = tMid - timeDomain(wave, phase) * (tH / 2) * 0.9;
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -125,15 +137,18 @@ ctx.restore();
       const bMid = split + (h - split) - 24;
       const bH = h - split - 32;
       ctx.strokeStyle = colors.border;
-      ctx.beginPath(); ctx.moveTo(padX, bMid); ctx.lineTo(w - padX, bMid); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(padX, bMid);
+      ctx.lineTo(w - padX, bMid);
+      ctx.stroke();
 
       const bars = spectrum(wave, 20);
       const nMax = 20;
       // x position for harmonic n
       const xOf = (n: number) => padX + (n / nMax) * (w - 2 * padX);
       // ampliture scale: normalise so the largest bar is ~90% bH
-      const maxAmp = Math.max(...bars.map(b => b.amp), 0.01);
-      const barW = (w - 2 * padX) / nMax * 0.6;
+      const maxAmp = Math.max(...bars.map((b) => b.amp), 0.01);
+      const barW = ((w - 2 * padX) / nMax) * 0.6;
 
       for (const b of bars) {
         const x = xOf(b.n) - barW / 2;
@@ -170,10 +185,11 @@ ctx.restore();
       question="What harmonics are inside each of these waveforms?"
       caption={
         <>
-          A sine has one bar at f. A square and a sawtooth have peaks at every harmonic (or every odd one), with amplitudes
-          falling as 1/n. A triangle's amplitudes fall as 1/n², so it converges faster and sounds &ldquo;softer&rdquo;. A
-          half- or full-rectified sine — what a diode bridge produces — has a DC term plus only even harmonics: the basis
-          of every linear power supply.
+          A sine has one bar at f. A square and a sawtooth have peaks at every harmonic (or every
+          odd one), with amplitudes falling as 1/n. A triangle's amplitudes fall as 1/n², so it
+          converges faster and sounds &ldquo;softer&rdquo;. A half- or full-rectified sine — what a
+          diode bridge produces — has a DC term plus only even harmonics: the basis of every linear
+          power supply.
         </>
       }
     >
@@ -181,10 +197,26 @@ ctx.restore();
       <DemoControls>
         <MiniToggle label="Sine" checked={wave === 'sine'} onChange={() => setWave('sine')} />
         <MiniToggle label="Square" checked={wave === 'square'} onChange={() => setWave('square')} />
-        <MiniToggle label="Triangle" checked={wave === 'triangle'} onChange={() => setWave('triangle')} />
-        <MiniToggle label="Sawtooth" checked={wave === 'sawtooth'} onChange={() => setWave('sawtooth')} />
-        <MiniToggle label="Half-rect" checked={wave === 'half-rect'} onChange={() => setWave('half-rect')} />
-        <MiniToggle label="Full-rect" checked={wave === 'full-rect'} onChange={() => setWave('full-rect')} />
+        <MiniToggle
+          label="Triangle"
+          checked={wave === 'triangle'}
+          onChange={() => setWave('triangle')}
+        />
+        <MiniToggle
+          label="Sawtooth"
+          checked={wave === 'sawtooth'}
+          onChange={() => setWave('sawtooth')}
+        />
+        <MiniToggle
+          label="Half-rect"
+          checked={wave === 'half-rect'}
+          onChange={() => setWave('half-rect')}
+        />
+        <MiniToggle
+          label="Full-rect"
+          checked={wave === 'full-rect'}
+          onChange={() => setWave('full-rect')}
+        />
       </DemoControls>
     </Demo>
   );

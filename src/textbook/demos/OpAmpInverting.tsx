@@ -14,21 +14,25 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const V_SUP = 10;  // ±10 V rails
+const V_SUP = 10; // ±10 V rails
 
 export function OpAmpInvertingDemo({ figure }: Props) {
-  const [RinK, setRinK] = useState(10);    // kΩ
-  const [RfK, setRfK] = useState(100);     // kΩ
-  const [Vamp, setVamp] = useState(0.5);   // V peak
+  const [RinK, setRinK] = useState(10); // kΩ
+  const [RfK, setRfK] = useState(100); // kΩ
+  const [Vamp, setVamp] = useState(0.5); // V peak
 
   const gain = -(RfK / RinK);
   const Vout_peak = gain * Vamp;
   const railed = Math.abs(Vout_peak) > V_SUP;
 
   const stateRef = useRef({ gain, Vamp });
-  useEffect(() => { stateRef.current = { gain, Vamp }; }, [gain, Vamp]);
+  useEffect(() => {
+    stateRef.current = { gain, Vamp };
+  }, [gain, Vamp]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -42,8 +46,12 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 50, padR = 30, padT = 24, padB = 24;
-      const plotX = padL, plotY = padT;
+      const padL = 50,
+        padR = 30,
+        padT = 24,
+        padB = 24;
+      const plotX = padL,
+        plotY = padT;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
@@ -51,19 +59,24 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       ctx.strokeRect(plotX, plotY, plotW, plotH);
 
       // Voltage axis ±V_SUP
-      const yV = (v: number) =>
-        plotY + plotH / 2 - (v / V_SUP) * (plotH / 2 - 6);
+      const yV = (v: number) => plotY + plotH / 2 - (v / V_SUP) * (plotH / 2 - 6);
 
       // gridlines & rails
       ctx.strokeStyle = colors.border;
       for (let v = -10; v <= 10; v += 2) {
         const y = yV(v);
-        ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
+        ctx.stroke();
       }
       // zero line
       ctx.strokeStyle = colors.borderStrong;
       const y0 = yV(0);
-      ctx.beginPath(); ctx.moveTo(plotX, y0); ctx.lineTo(plotX + plotW, y0); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(plotX, y0);
+      ctx.lineTo(plotX + plotW, y0);
+      ctx.stroke();
       // rails
       ctx.save();
       ctx.globalAlpha = 0.35;
@@ -71,8 +84,14 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       ctx.setLineDash([4, 4]);
       const yPos = yV(V_SUP);
       const yNeg = yV(-V_SUP);
-      ctx.beginPath(); ctx.moveTo(plotX, yPos); ctx.lineTo(plotX + plotW, yPos); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(plotX, yNeg); ctx.lineTo(plotX + plotW, yNeg); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(plotX, yPos);
+      ctx.lineTo(plotX + plotW, yPos);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(plotX, yNeg);
+      ctx.lineTo(plotX + plotW, yNeg);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       // Trace duration: 2 cycles of a 2 Hz sine across the window
@@ -87,18 +106,19 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {
         const u = i / N;
-        const t = u * 2 / freq - tnow * 0;  // static window
+        const t = (u * 2) / freq - tnow * 0; // static window
         const vin = Vamp * Math.sin(2 * Math.PI * freq * t + tnow * 2 * Math.PI * 0.5);
         const x = plotX + u * plotW;
         const y = yV(vin);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
       // V_out (orange), with rail clipping
       const voutPts: { x: number; y: number }[] = [];
       for (let i = 0; i <= N; i++) {
         const u = i / N;
-        const t = u * 2 / freq;
+        const t = (u * 2) / freq;
         const vin = Vamp * Math.sin(2 * Math.PI * freq * t + tnow * 2 * Math.PI * 0.5);
         let vout = gain * vin;
         if (vout > V_SUP) vout = V_SUP;
@@ -140,7 +160,11 @@ export function OpAmpInvertingDemo({ figure }: Props) {
         ctx.fillStyle = colors.pink;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
-        ctx.fillText('RAILED — V_out clipped to ±10 V supply', plotX + plotW / 2, plotY + plotH - 4);
+        ctx.fillText(
+          'RAILED — V_out clipped to ±10 V supply',
+          plotX + plotW / 2,
+          plotY + plotH - 4,
+        );
       }
 
       raf = requestAnimationFrame(draw);
@@ -154,22 +178,44 @@ export function OpAmpInvertingDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 12.9'}
       title="Inverting op-amp"
       question="V_out = −(R_f/R_in)·V_in. Push V_in past the limit and the rails clip."
-      caption={<>
-        Blue: input sinusoid V<sub>in</sub>. Orange: output V<sub>out</sub> = −(R<sub>f</sub>/R<sub>in</sub>)
-        × V<sub>in</sub>, inverted and amplified by the resistor ratio. The dashed lines at ±10 V are
-        the supply rails — once the math wants to push V<sub>out</sub> past either, the real
-        op-amp saturates and the waveform flattens against the rail.
-      </>}
+      caption={
+        <>
+          Blue: input sinusoid V<sub>in</sub>. Orange: output V<sub>out</sub> = −(R<sub>f</sub>/R
+          <sub>in</sub>) × V<sub>in</sub>, inverted and amplified by the resistor ratio. The dashed
+          lines at ±10 V are the supply rails — once the math wants to push V<sub>out</sub> past
+          either, the real op-amp saturates and the waveform flattens against the rail.
+        </>
+      }
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
-        <MiniSlider label="R_in" value={RinK} min={1} max={100} step={1}
-          format={v => v.toFixed(0) + ' kΩ'} onChange={setRinK} />
-        <MiniSlider label="R_f" value={RfK} min={1} max={1000} step={1}
-          format={v => v < 1000 ? v.toFixed(0) + ' kΩ' : (v / 1000).toFixed(1) + ' MΩ'}
-          onChange={setRfK} />
-        <MiniSlider label="V_in peak" value={Vamp} min={0.05} max={5} step={0.05}
-          format={v => v.toFixed(2) + ' V'} onChange={setVamp} />
+        <MiniSlider
+          label="R_in"
+          value={RinK}
+          min={1}
+          max={100}
+          step={1}
+          format={(v) => v.toFixed(0) + ' kΩ'}
+          onChange={setRinK}
+        />
+        <MiniSlider
+          label="R_f"
+          value={RfK}
+          min={1}
+          max={1000}
+          step={1}
+          format={(v) => (v < 1000 ? v.toFixed(0) + ' kΩ' : (v / 1000).toFixed(1) + ' MΩ')}
+          onChange={setRfK}
+        />
+        <MiniSlider
+          label="V_in peak"
+          value={Vamp}
+          min={0.05}
+          max={5}
+          step={0.05}
+          format={(v) => v.toFixed(2) + ' V'}
+          onChange={setVamp}
+        />
         <MiniReadout label="Gain" value={gain.toFixed(2)} unit="V/V" />
         <MiniReadout label="V_out peak" value={Vout_peak.toFixed(2)} unit="V" />
         <MiniReadout label="State" value={railed ? 'railed' : 'linear'} />

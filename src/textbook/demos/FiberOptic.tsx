@@ -12,7 +12,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function FiberOpticDemo({ figure }: Props) {
   // Angle to the fiber axis (not to the normal) — how steeply the ray strikes the wall
@@ -22,7 +24,9 @@ export function FiberOpticDemo({ figure }: Props) {
   const [nClad, setNClad] = useState(1.46);
 
   const stateRef = useRef({ angleAxis, nCore, nClad });
-  useEffect(() => { stateRef.current = { angleAxis, nCore, nClad }; }, [angleAxis, nCore, nClad]);
+  useEffect(() => {
+    stateRef.current = { angleAxis, nCore, nClad };
+  }, [angleAxis, nCore, nClad]);
 
   // Critical angle, measured from the normal to the wall
   // sin θ_c = n_clad / n_core
@@ -65,8 +69,10 @@ export function FiberOpticDemo({ figure }: Props) {
       ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
-      ctx.moveTo(left, top); ctx.lineTo(right, top);
-      ctx.moveTo(left, bot); ctx.lineTo(right, bot);
+      ctx.moveTo(left, top);
+      ctx.lineTo(right, top);
+      ctx.moveTo(left, bot);
+      ctx.lineTo(right, bot);
       ctx.stroke();
 
       // Critical angle (from axis)
@@ -89,7 +95,7 @@ export function FiberOpticDemo({ figure }: Props) {
       let bounces = 0;
       while (x < right && bounces < 100) {
         // Distance until we hit a wall
-        const remainingV = dy > 0 ? (bot - y) : (y - top);
+        const remainingV = dy > 0 ? bot - y : y - top;
         const dx = remainingV / slope;
         let nx = x + dx;
         let ny = dy > 0 ? bot : top;
@@ -111,7 +117,7 @@ export function FiberOpticDemo({ figure }: Props) {
             // Slope after refraction (steepness from normal)
             const slope2 = Math.tan(Math.PI / 2 - th2);
             const escapeY = ny + dy * 25;
-            const escapeX = nx + (escapeY - ny) / dy * 0 + 25 / slope2;
+            const escapeX = nx + ((escapeY - ny) / dy) * 0 + 25 / slope2;
             ctx.stroke();
             ctx.beginPath();
             ctx.moveTo(nx, ny);
@@ -155,21 +161,45 @@ export function FiberOpticDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 14.5'}
       title="A fiber-optic strand traps light"
       question="What's the maximum angle the input ray can make to the axis?"
-      caption={<>
-        The ray bounces along the core by TIR so long as its angle to the wall (measured from the
-        normal) exceeds the critical angle <strong>sin θ_c = n_clad/n_core</strong>. Equivalently,
-        the angle to the fiber's axis must stay <em>below</em> <strong>90° − θ_c</strong>. Real
-        single-mode silica fibers run at ~0.36 numerical aperture — about 10° of acceptance half-angle.
-      </>}
+      caption={
+        <>
+          The ray bounces along the core by TIR so long as its angle to the wall (measured from the
+          normal) exceeds the critical angle <strong>sin θ_c = n_clad/n_core</strong>. Equivalently,
+          the angle to the fiber's axis must stay <em>below</em> <strong>90° − θ_c</strong>. Real
+          single-mode silica fibers run at ~0.36 numerical aperture — about 10° of acceptance
+          half-angle.
+        </>
+      }
     >
       <AutoResizeCanvas height={220} setup={setup} />
       <DemoControls>
-        <MiniSlider label="angle to axis" value={angleAxis} min={0} max={35} step={0.25}
-          format={v => v.toFixed(1) + '°'} onChange={setAngleAxis} />
-        <MiniSlider label="n_core" value={nCore} min={1.40} max={1.60} step={0.005}
-          format={v => v.toFixed(3)} onChange={setNCore} />
-        <MiniSlider label="n_clad" value={nClad} min={1.30} max={1.55} step={0.005}
-          format={v => v.toFixed(3)} onChange={setNClad} />
+        <MiniSlider
+          label="angle to axis"
+          value={angleAxis}
+          min={0}
+          max={35}
+          step={0.25}
+          format={(v) => v.toFixed(1) + '°'}
+          onChange={setAngleAxis}
+        />
+        <MiniSlider
+          label="n_core"
+          value={nCore}
+          min={1.4}
+          max={1.6}
+          step={0.005}
+          format={(v) => v.toFixed(3)}
+          onChange={setNCore}
+        />
+        <MiniSlider
+          label="n_clad"
+          value={nClad}
+          min={1.3}
+          max={1.55}
+          step={0.005}
+          format={(v) => v.toFixed(3)}
+          onChange={setNClad}
+        />
         <MiniReadout
           label="max acceptance"
           value={Number.isFinite(critFromAxis) ? critFromAxis.toFixed(2) : '—'}

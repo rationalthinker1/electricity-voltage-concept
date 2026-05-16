@@ -15,14 +15,18 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function LaserCavityDemo({ figure }: Props) {
   const [pumpOn, setPumpOn] = useState(true);
   const [photonCount, setPhotonCount] = useState(8);
 
   const stateRef = useRef({ pumpOn, photonCount });
-  useEffect(() => { stateRef.current = { pumpOn, photonCount }; }, [pumpOn, photonCount]);
+  useEffect(() => {
+    stateRef.current = { pumpOn, photonCount };
+  }, [pumpOn, photonCount]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const colors = getCanvasColors();
@@ -90,11 +94,15 @@ export function LaserCavityDemo({ figure }: Props) {
         const radius = 3;
         const col = a.excited ? '#ff6b2a' : 'rgba(160,158,149,0.6)';
         ctx.fillStyle = col;
-        ctx.beginPath(); ctx.arc(a.x, a.y, radius, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, radius, 0, Math.PI * 2);
+        ctx.fill();
         if (t - a.flashT < 0.3) {
           ctx.strokeStyle = `rgba(255,107,42,${0.6 - (t - a.flashT) * 2})`;
           ctx.lineWidth = 1.2;
-          ctx.beginPath(); ctx.arc(a.x, a.y, radius + 6, 0, Math.PI * 2); ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(a.x, a.y, radius + 6, 0, Math.PI * 2);
+          ctx.stroke();
         }
       }
 
@@ -111,10 +119,13 @@ export function LaserCavityDemo({ figure }: Props) {
       // Update photons
       for (const ph of photons) {
         ph.x += ph.vx * dt;
-        if (ph.x <= mirrorL) { ph.x = mirrorL; ph.vx = Math.abs(ph.vx); }
+        if (ph.x <= mirrorL) {
+          ph.x = mirrorL;
+          ph.vx = Math.abs(ph.vx);
+        }
         if (ph.x >= mirrorR) {
           // 90% reflect, 10% escape (output beam)
-          if (Math.random() < 0.10) {
+          if (Math.random() < 0.1) {
             // Emit out the right side
             ctx.strokeStyle = getCanvasColors().accent;
             ctx.lineWidth = 2;
@@ -124,7 +135,8 @@ export function LaserCavityDemo({ figure }: Props) {
             ctx.stroke();
             ph.x = mirrorL + 5;
           } else {
-            ph.x = mirrorR; ph.vx = -Math.abs(ph.vx);
+            ph.x = mirrorR;
+            ph.vx = -Math.abs(ph.vx);
           }
         }
         // Stimulated emission: find a nearby excited atom and de-excite it, adding a parallel photon
@@ -175,19 +187,32 @@ export function LaserCavityDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 14.7'}
       title="Inside a laser cavity"
       question="What makes laser light coherent?"
-      caption={<>
-        Two parallel mirrors trap photons in a long round trip; in between, a gain medium of
-        excited atoms (amber dots) gets pumped by an external energy source. A passing photon
-        of the right wavelength <em>stimulates</em> the atom to emit a second photon in the same
-        direction, phase, and polarisation — coherent amplification. One mirror is partially
-        transmitting; the small leakage out that side is the laser beam.
-      </>}
+      caption={
+        <>
+          Two parallel mirrors trap photons in a long round trip; in between, a gain medium of
+          excited atoms (amber dots) gets pumped by an external energy source. A passing photon of
+          the right wavelength <em>stimulates</em> the atom to emit a second photon in the same
+          direction, phase, and polarisation — coherent amplification. One mirror is partially
+          transmitting; the small leakage out that side is the laser beam.
+        </>
+      }
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
-        <MiniToggle label={pumpOn ? 'pump · ON' : 'pump · OFF'} checked={pumpOn} onChange={setPumpOn} />
-        <MiniSlider label="photons in cavity" value={photonCount} min={1} max={30} step={1}
-          format={v => v.toFixed(0)} onChange={v => setPhotonCount(Math.round(v))} />
+        <MiniToggle
+          label={pumpOn ? 'pump · ON' : 'pump · OFF'}
+          checked={pumpOn}
+          onChange={setPumpOn}
+        />
+        <MiniSlider
+          label="photons in cavity"
+          value={photonCount}
+          min={1}
+          max={30}
+          step={1}
+          format={(v) => v.toFixed(0)}
+          onChange={(v) => setPhotonCount(Math.round(v))}
+        />
       </DemoControls>
     </Demo>
   );

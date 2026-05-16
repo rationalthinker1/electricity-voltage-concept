@@ -18,27 +18,29 @@ import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
-import {PHYS, pretty, prettyJsx } from '@/lib/physics';
+import { PHYS, pretty, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
 const SLUG = 'ampere';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
 
 export default function AmpereLab() {
-  const [I, setI] = useState(10);          // A
-  const [r_mm, setR_mm] = useState(100);   // mm — Amperian loop radius
+  const [I, setI] = useState(10); // A
+  const [r_mm, setR_mm] = useState(100); // mm — Amperian loop radius
   const [nWires, setNWires] = useState(1); // count
 
   const stateRef = useRef({ I, r_mm, nWires });
-  useEffect(() => { stateRef.current = { I, r_mm, nWires }; }, [I, r_mm, nWires]);
+  useEffect(() => {
+    stateRef.current = { I, r_mm, nWires };
+  }, [I, r_mm, nWires]);
 
   const computed = useMemo(() => {
     const Ienc = I * nWires;
     const r_m = r_mm * 1e-3;
     const Bcirc = (PHYS.mu_0 * Ienc) / (2 * Math.PI * r_m);
     const Lcirc = 2 * Math.PI * r_m;
-    const circ = Bcirc * Lcirc;          // ∮ B·dℓ
-    const mu0Ienc = PHYS.mu_0 * Ienc;     // μ₀ I_enc
+    const circ = Bcirc * Lcirc; // ∮ B·dℓ
+    const mu0Ienc = PHYS.mu_0 * Ienc; // μ₀ I_enc
     return { Ienc, Bcirc, circ, mu0Ienc, Lcirc };
   }, [I, r_mm, nWires]);
 
@@ -68,7 +70,9 @@ export default function AmpereLab() {
         ctx.save();
         ctx.globalAlpha = op;
         ctx.strokeStyle = colors.accent;
-        ctx.beginPath(); ctx.arc(cx, cy, fr, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx, cy, fr, 0, Math.PI * 2);
+        ctx.stroke();
         ctx.restore();
         // Tangent arrows
         const nArrows = 8;
@@ -84,8 +88,8 @@ export default function AmpereLab() {
           ctx.fillStyle = colors.accent;
           ctx.beginPath();
           ctx.moveTo(ax + tx * sz, ay + ty * sz);
-          ctx.lineTo(ax + tx * (-sz / 2) + (-ty) * sz / 2, ay + ty * (-sz / 2) + (tx) * sz / 2);
-          ctx.lineTo(ax + tx * (-sz / 2) - (-ty) * sz / 2, ay + ty * (-sz / 2) - (tx) * sz / 2);
+          ctx.lineTo(ax + tx * (-sz / 2) + (-ty * sz) / 2, ay + ty * (-sz / 2) + (tx * sz) / 2);
+          ctx.lineTo(ax + tx * (-sz / 2) - (-ty * sz) / 2, ay + ty * (-sz / 2) - (tx * sz) / 2);
           ctx.closePath();
           ctx.fill();
           ctx.restore();
@@ -96,12 +100,16 @@ export default function AmpereLab() {
       ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 2.2;
       ctx.setLineDash([6, 4]);
-      ctx.beginPath(); ctx.arc(cx, cy, loopPx, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, loopPx, 0, Math.PI * 2);
+      ctx.stroke();
       ctx.setLineDash([]);
       ctx.save();
       ctx.globalAlpha = 0.04;
       ctx.fillStyle = colors.teal;
-      ctx.beginPath(); ctx.arc(cx, cy, loopPx, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy, loopPx, 0, Math.PI * 2);
+      ctx.fill();
       ctx.restore();
 
       // Moving dℓ dot
@@ -112,14 +120,18 @@ export default function AmpereLab() {
       ctx.globalAlpha = 0.55;
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.arc(cx, cy, loopPx, 0, dlAngle); ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, loopPx, 0, dlAngle);
+      ctx.stroke();
       ctx.restore();
       ctx.fillStyle = colors.accent;
       ctx.save();
       ctx.globalAlpha = 0.7;
       ctx.shadowColor = colors.accent;
       ctx.shadowBlur = 10;
-      ctx.beginPath(); ctx.arc(dlx, dly, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(dlx, dly, 5, 0, Math.PI * 2);
+      ctx.fill();
       ctx.restore();
       ctx.shadowBlur = 0;
 
@@ -137,22 +149,31 @@ export default function AmpereLab() {
       ctx.fillStyle = colors.accent;
       ctx.beginPath();
       ctx.moveTo(dlx + tx * vlen, dly + ty * vlen);
-      ctx.lineTo(dlx + tx * vlen - 7 * Math.cos(aang - 0.4), dly + ty * vlen - 7 * Math.sin(aang - 0.4));
-      ctx.lineTo(dlx + tx * vlen - 7 * Math.cos(aang + 0.4), dly + ty * vlen - 7 * Math.sin(aang + 0.4));
-      ctx.closePath(); ctx.fill();
+      ctx.lineTo(
+        dlx + tx * vlen - 7 * Math.cos(aang - 0.4),
+        dly + ty * vlen - 7 * Math.sin(aang - 0.4),
+      );
+      ctx.lineTo(
+        dlx + tx * vlen - 7 * Math.cos(aang + 0.4),
+        dly + ty * vlen - 7 * Math.sin(aang + 0.4),
+      );
+      ctx.closePath();
+      ctx.fill();
 
       // Wires ⊗ (into page)
       const wireR = 10;
       const spacing = 26;
       const cols = nWires;
-      const startX = cx - (cols - 1) * spacing / 2;
+      const startX = cx - ((cols - 1) * spacing) / 2;
       for (let i = 0; i < nWires; i++) {
         const wx = startX + i * spacing;
         const wy = cy;
         ctx.save();
         ctx.globalAlpha = 0.18;
         ctx.fillStyle = colors.pink;
-        ctx.beginPath(); ctx.arc(wx, wy, wireR, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(wx, wy, wireR, 0, Math.PI * 2);
+        ctx.fill();
         ctx.restore();
         ctx.save();
         ctx.globalAlpha = 0.95;
@@ -162,8 +183,10 @@ export default function AmpereLab() {
         ctx.restore();
         const cs = wireR * 0.55;
         ctx.beginPath();
-        ctx.moveTo(wx - cs, wy - cs); ctx.lineTo(wx + cs, wy + cs);
-        ctx.moveTo(wx + cs, wy - cs); ctx.lineTo(wx - cs, wy + cs);
+        ctx.moveTo(wx - cs, wy - cs);
+        ctx.lineTo(wx + cs, wy + cs);
+        ctx.moveTo(wx + cs, wy - cs);
+        ctx.lineTo(wx - cs, wy + cs);
         ctx.stroke();
       }
 
@@ -174,7 +197,8 @@ export default function AmpereLab() {
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 4]);
       ctx.beginPath();
-      ctx.moveTo(cx, cy); ctx.lineTo(cx + loopPx, cy);
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + loopPx, cy);
       ctx.stroke();
       ctx.restore();
       ctx.setLineDash([]);
@@ -202,13 +226,19 @@ export default function AmpereLab() {
       ctx.save();
       ctx.globalAlpha = 0.95;
       ctx.fillStyle = colors.pink;
-      ctx.fillText(`I_enc = ${(I * nWires).toFixed(1)} A   (${nWires} × ${I.toFixed(1)} A)`, w - 24, 28);
+      ctx.fillText(
+        `I_enc = ${(I * nWires).toFixed(1)} A   (${nWires} × ${I.toFixed(1)} A)`,
+        w - 24,
+        28,
+      );
       ctx.restore();
 
       raf = requestAnimationFrame(draw);
     }
     raf = requestAnimationFrame(draw);
-    return () => { cancelAnimationFrame(raf); };
+    return () => {
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   const labContent = (
@@ -216,30 +246,89 @@ export default function AmpereLab() {
       canvas={<AutoResizeCanvas height={500} setup={setupCanvas} />}
       legend={
         <>
-          <LegendItem swatchColor="var(--pink)" dot>Wire (current ⊗ into page)</LegendItem>
+          <LegendItem swatchColor="var(--pink)" dot>
+            Wire (current ⊗ into page)
+          </LegendItem>
           <LegendItem swatchColor="var(--teal)">Amperian loop</LegendItem>
           <LegendItem swatchColor="var(--accent)">B-field circles</LegendItem>
-          <LegendItem swatchColor="var(--accent)" dot>dℓ (moving)</LegendItem>
-          <LegendItem style={{ marginLeft: 'auto', color: 'var(--accent)' }}>↳ Watch ∮B·dℓ accumulate</LegendItem>
+          <LegendItem swatchColor="var(--accent)" dot>
+            dℓ (moving)
+          </LegendItem>
+          <LegendItem style={{ marginLeft: 'auto', color: 'var(--accent)' }}>
+            ↳ Watch ∮B·dℓ accumulate
+          </LegendItem>
         </>
       }
       inputs={
         <>
-          <Slider sym="I" label="Current per wire" value={I} min={0.1} max={200} step={0.1}
-            format={v => v.toFixed(1) + ' A'} metaLeft="0.1 A" metaRight="200 A" onChange={setI} />
-          <Slider sym="r" label="Loop radius" value={r_mm} min={1} max={500} step={1}
-            format={v => Math.round(v) + ' mm'} metaLeft="1 mm" metaRight="500 mm" onChange={setR_mm} />
-          <Slider sym="n" label="Wires enclosed" value={nWires} min={1} max={5} step={1}
-            format={v => Math.round(v).toString()} metaLeft="1" metaRight="5"
-            onChange={v => setNWires(Math.round(v))} />
+          <Slider
+            sym="I"
+            label="Current per wire"
+            value={I}
+            min={0.1}
+            max={200}
+            step={0.1}
+            format={(v) => v.toFixed(1) + ' A'}
+            metaLeft="0.1 A"
+            metaRight="200 A"
+            onChange={setI}
+          />
+          <Slider
+            sym="r"
+            label="Loop radius"
+            value={r_mm}
+            min={1}
+            max={500}
+            step={1}
+            format={(v) => Math.round(v) + ' mm'}
+            metaLeft="1 mm"
+            metaRight="500 mm"
+            onChange={setR_mm}
+          />
+          <Slider
+            sym="n"
+            label="Wires enclosed"
+            value={nWires}
+            min={1}
+            max={5}
+            step={1}
+            format={(v) => Math.round(v).toString()}
+            metaLeft="1"
+            metaRight="5"
+            onChange={(v) => setNWires(Math.round(v))}
+          />
         </>
       }
       outputs={
         <>
-          <Readout sym={<>I<sub>enc</sub></>} label="Enclosed current" value={prettyJsx(computed.Ienc)} unit="A" />
+          <Readout
+            sym={
+              <>
+                I<sub>enc</sub>
+              </>
+            }
+            label="Enclosed current"
+            value={prettyJsx(computed.Ienc)}
+            unit="A"
+          />
           <Readout sym="B" label="|B| on loop" value={prettyJsx(computed.Bcirc)} unit="T" />
-          <Readout sym="∮" label="B·dℓ around loop" value={prettyJsx(computed.circ)} unit="T·m" highlight />
-          <Readout sym={<>μ<sub>0</sub>I</>} label="Predicted by Ampère" value={prettyJsx(computed.mu0Ienc)} unit="T·m" />
+          <Readout
+            sym="∮"
+            label="B·dℓ around loop"
+            value={prettyJsx(computed.circ)}
+            unit="T·m"
+            highlight
+          />
+          <Readout
+            sym={
+              <>
+                μ<sub>0</sub>I
+              </>
+            }
+            label="Predicted by Ampère"
+            value={prettyJsx(computed.mu0Ienc)}
+            unit="T·m"
+          />
           <Readout sym="L" label="Loop circumference" value={prettyJsx(computed.Lcirc)} unit="m" />
         </>
       }
@@ -250,217 +339,432 @@ export default function AmpereLab() {
     <>
       <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
-        Ampère's law is the magnetic analog of Gauss's law<Cite id="ampere-1826" in={SOURCES} />. Instead of summing flux through a closed
-        <em className="italic text-text"> surface</em>, you integrate <strong className="text-text font-medium">B</strong> along a closed <em className="italic text-text">loop</em>; instead of total enclosed charge, the right-hand side
-        counts net current piercing any surface bounded by that loop. The statement holds for any steady current and any closed path — bent,
-        squashed, or symmetric.
+        Ampère's law is the magnetic analog of Gauss's law
+        <Cite id="ampere-1826" in={SOURCES} />. Instead of summing flux through a closed
+        <em className="text-text italic"> surface</em>, you integrate{' '}
+        <strong className="text-text font-medium">B</strong> along a closed{' '}
+        <em className="text-text italic">loop</em>; instead of total enclosed charge, the right-hand
+        side counts net current piercing any surface bounded by that loop. The statement holds for
+        any steady current and any closed path — bent, squashed, or symmetric.
       </p>
       <p className="mb-prose-3">
-        It's most useful when the geometry has enough symmetry that <strong className="text-text font-medium">B</strong> can be pulled out of the integral. Long straight wires
-        (circular Amperian loops), infinite solenoids (rectangular loops), and toroids (circles inside the donut) are the canonical cases.
-        For asymmetric geometries the law is still exact but yields a non-trivial line integral; Biot–Savart is usually easier there. The
-        magnetostatic form below assumes steady currents — Maxwell's displacement-current correction (below) handles the general case<Cite id="maxwell-1865" in={SOURCES} />.
+        It's most useful when the geometry has enough symmetry that{' '}
+        <strong className="text-text font-medium">B</strong> can be pulled out of the integral. Long
+        straight wires (circular Amperian loops), infinite solenoids (rectangular loops), and
+        toroids (circles inside the donut) are the canonical cases. For asymmetric geometries the
+        law is still exact but yields a non-trivial line integral; Biot–Savart is usually easier
+        there. The magnetostatic form below assumes steady currents — Maxwell's displacement-current
+        correction (below) handles the general case
+        <Cite id="maxwell-1865" in={SOURCES} />.
       </p>
 
       <h3 className="lab-section-h3">Formula</h3>
       <Formula tex="\oint \vec{B}\cdot d\vec{\ell} = \mu_0 I_{\text{enc}}" />
       <p className="mb-prose-3">Variable glossary:</p>
       <ul>
-        <li><strong className="text-text font-medium">∮</strong> — line integral around a closed Amperian loop.</li>
-        <li><strong className="text-text font-medium">B</strong> — magnetic field, in tesla (T).</li>
-        <li><strong className="text-text font-medium">dℓ</strong> — infinitesimal vector segment along the loop, in m.</li>
-        <li><strong className="text-text font-medium">μ<sub>0</sub></strong> — permeability of free space, ≈ 4π × 10<sup>−7</sup> T·m/A.</li>
-        <li><strong className="text-text font-medium">I<sub>enc</sub></strong> — net current piercing any surface bounded by the loop, in A. Current parallel to the loop's right-hand-rule normal counts as positive.</li>
+        <li>
+          <strong className="text-text font-medium">∮</strong> — line integral around a closed
+          Amperian loop.
+        </li>
+        <li>
+          <strong className="text-text font-medium">B</strong> — magnetic field, in tesla (T).
+        </li>
+        <li>
+          <strong className="text-text font-medium">dℓ</strong> — infinitesimal vector segment along
+          the loop, in m.
+        </li>
+        <li>
+          <strong className="text-text font-medium">
+            μ<sub>0</sub>
+          </strong>{' '}
+          — permeability of free space, ≈ 4π × 10<sup>−7</sup> T·m/A.
+        </li>
+        <li>
+          <strong className="text-text font-medium">
+            I<sub>enc</sub>
+          </strong>{' '}
+          — net current piercing any surface bounded by the loop, in A. Current parallel to the
+          loop's right-hand-rule normal counts as positive.
+        </li>
       </ul>
-      <p className="mb-prose-3">The full Maxwell–Ampère law adds Maxwell's displacement-current term:</p>
+      <p className="mb-prose-3">
+        The full Maxwell–Ampère law adds Maxwell's displacement-current term:
+      </p>
       <Formula tex="\oint \vec{B}\cdot d\vec{\ell} = \mu_0 I_{\text{enc}} + \mu_0\varepsilon_0\,\dfrac{d\Phi_E}{dt}" />
 
       <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
-        Think of B as winding around its source current. If you walk once around a closed loop measuring how much <strong className="text-text font-medium">B</strong> points
-        along your steps and adding it up, you collect a sum that depends only on how much current threads through the doughnut hole you just
-        traced. The shape of your walk doesn't matter — bend the loop, push it sideways, deform it — as long as the same wires still pierce
-        the surface it bounds.
+        Think of B as winding around its source current. If you walk once around a closed loop
+        measuring how much <strong className="text-text font-medium">B</strong> points along your
+        steps and adding it up, you collect a sum that depends only on how much current threads
+        through the doughnut hole you just traced. The shape of your walk doesn't matter — bend the
+        loop, push it sideways, deform it — as long as the same wires still pierce the surface it
+        bounds.
       </p>
       <Pullout>
-        There is no magnetic charge. There is only <em className="italic text-text">enclosed current</em> — and the geometry it forces on the field.
+        There is no magnetic charge. There is only{' '}
+        <em className="text-text italic">enclosed current</em> — and the geometry it forces on the
+        field.
       </Pullout>
 
       <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
-        The right-hand side counts net current. Same-sign currents add; opposing currents subtract; pairs of equal-and-opposite currents
-        threading the same loop cancel. Push the bounding surface around like a soap bubble across stationary currents; the integer
-        count is invariant. The <strong className="text-text font-medium">μ<sub>0</sub></strong> on the right is fixed by the SI definition of the ampere<Cite id="griffiths-2017" in={SOURCES} />.
+        The right-hand side counts net current. Same-sign currents add; opposing currents subtract;
+        pairs of equal-and-opposite currents threading the same loop cancel. Push the bounding
+        surface around like a soap bubble across stationary currents; the integer count is
+        invariant. The{' '}
+        <strong className="text-text font-medium">
+          μ<sub>0</sub>
+        </strong>{' '}
+        on the right is fixed by the SI definition of the ampere
+        <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        Why the line integral on the left? Because magnetic field lines never end — they form closed loops around currents. A line integral
-        around any closed path captures that "circulation" exactly. The mathematical statement equivalent to Ampère in differential form is
-        Stokes' theorem: <InlineMath tex="\oint \vec{B}\cdot d\vec{\ell} = \iint (\nabla\times\vec{B})\cdot d\vec{A} = \mu_0 \iint \vec{J}\cdot d\vec{A} = \mu_0 I_{\text{enc}}" />, giving
-        <InlineMath tex="\nabla\times\vec{B} = \mu_0\vec{J}" /> locally<Cite id="feynman-II-13" in={SOURCES} />.
+        Why the line integral on the left? Because magnetic field lines never end — they form closed
+        loops around currents. A line integral around any closed path captures that "circulation"
+        exactly. The mathematical statement equivalent to Ampère in differential form is Stokes'
+        theorem:{' '}
+        <InlineMath tex="\oint \vec{B}\cdot d\vec{\ell} = \iint (\nabla\times\vec{B})\cdot d\vec{A} = \mu_0 \iint \vec{J}\cdot d\vec{A} = \mu_0 I_{\text{enc}}" />
+        , giving
+        <InlineMath tex="\nabla\times\vec{B} = \mu_0\vec{J}" /> locally
+        <Cite id="feynman-II-13" in={SOURCES} />.
       </p>
 
       <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
-        Direct from Biot–Savart for a long straight wire. We showed there that <strong className="text-text font-medium">|B| = μ<sub>0</sub>I/(2πr)</strong>, tangent to circles
-        centred on the wire. Choose an Amperian circle of radius <strong className="text-text font-medium">r</strong>. On every point of that circle, <strong className="text-text font-medium">B · dℓ = |B| dℓ</strong>
+        Direct from Biot–Savart for a long straight wire. We showed there that{' '}
+        <strong className="text-text font-medium">
+          |B| = μ<sub>0</sub>I/(2πr)
+        </strong>
+        , tangent to circles centred on the wire. Choose an Amperian circle of radius{' '}
+        <strong className="text-text font-medium">r</strong>. On every point of that circle,{' '}
+        <strong className="text-text font-medium">B · dℓ = |B| dℓ</strong>
         (parallel), and <strong className="text-text font-medium">|B|</strong> is constant. So
       </p>
       <Formula tex="\oint \vec{B}\cdot d\vec{\ell} = |\vec{B}|\cdot 2\pi r = \dfrac{\mu_0 I}{2\pi r}\cdot 2\pi r = \mu_0 I" />
       <p className="mb-prose-3">
-        — the Ampère relation, derived from the Biot–Savart field of a straight wire. The general statement (any geometry, any loop) follows
-        from the differential form <strong className="text-text font-medium">∇ × B = μ<sub>0</sub> J</strong>, which is in turn implied by Biot–Savart for any steady current
-        distribution<Cite id="griffiths-2017" in={SOURCES} />.
+        — the Ampère relation, derived from the Biot–Savart field of a straight wire. The general
+        statement (any geometry, any loop) follows from the differential form{' '}
+        <strong className="text-text font-medium">
+          ∇ × B = μ<sub>0</sub> J
+        </strong>
+        , which is in turn implied by Biot–Savart for any steady current distribution
+        <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
       <h3 className="lab-section-h3">Worked problems</h3>
 
       <TryIt
         tag="Problem 2.2.1"
-        question={<>Use Ampère's law to find <strong className="text-text font-medium">B</strong> outside an infinite straight wire carrying current <strong className="text-text font-medium">I = 10 A</strong> at perpendicular distance <strong className="text-text font-medium">r = 5 cm</strong>.</>}
+        question={
+          <>
+            Use Ampère's law to find <strong className="text-text font-medium">B</strong> outside an
+            infinite straight wire carrying current{' '}
+            <strong className="text-text font-medium">I = 10 A</strong> at perpendicular distance{' '}
+            <strong className="text-text font-medium">r = 5 cm</strong>.
+          </>
+        }
         hint="Take a circular Amperian loop of radius r centred on the wire. By symmetry B is tangent and constant on the loop."
         answer={
           <>
-            <p className="mb-prose-3">By cylindrical symmetry, B is tangent to a circle of radius r and has the same magnitude everywhere on it. So</p>
+            <p className="mb-prose-3">
+              By cylindrical symmetry, B is tangent to a circle of radius r and has the same
+              magnitude everywhere on it. So
+            </p>
             <Formula tex="\oint \vec{B}\cdot d\vec{\ell} = |\vec{B}|\cdot 2\pi r = \mu_0 I_{\text{enc}} = \mu_0 I" />
             <Formula tex="|\vec{B}| = \dfrac{\mu_0 I}{2\pi r} = \dfrac{(4\pi\times 10^{-7})(10)}{2\pi\times 0.05} = 4\times 10^{-5}\ \text{T}" />
-            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">40 µT</strong>.</p>
+            <p className="mb-prose-3">
+              Answer: <strong className="text-text font-medium">40 µT</strong>.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.2.2"
-        question={<>Use Ampère's law to derive the field inside a long solenoid with <strong className="text-text font-medium">n</strong> turns per metre carrying current <strong className="text-text font-medium">I</strong>.</>}
+        question={
+          <>
+            Use Ampère's law to derive the field inside a long solenoid with{' '}
+            <strong className="text-text font-medium">n</strong> turns per metre carrying current{' '}
+            <strong className="text-text font-medium">I</strong>.
+          </>
+        }
         hint="Use a rectangular Amperian loop that straddles the solenoid wall. B is axial inside, zero outside."
         answer={
           <>
-            <p className="mb-prose-3">Take a rectangle of length L with one long side inside (parallel to the axis) and the other outside (where B = 0). The two short sides cross between in/out at right angles to B — contributing zero. Inside contributes <strong className="text-text font-medium">BL</strong>. The enclosed current is <strong className="text-text font-medium">I × (nL) = nIL</strong>:</p>
+            <p className="mb-prose-3">
+              Take a rectangle of length L with one long side inside (parallel to the axis) and the
+              other outside (where B = 0). The two short sides cross between in/out at right angles
+              to B — contributing zero. Inside contributes{' '}
+              <strong className="text-text font-medium">BL</strong>. The enclosed current is{' '}
+              <strong className="text-text font-medium">I × (nL) = nIL</strong>:
+            </p>
             <Formula tex="BL = \mu_0 n I L \;\Rightarrow\; B = \mu_0 n I" />
-            <p className="mb-prose-3">Done — uniform field inside, axial, independent of position. The classic result, in one Ampère application.</p>
+            <p className="mb-prose-3">
+              Done — uniform field inside, axial, independent of position. The classic result, in
+              one Ampère application.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.2.3"
-        question={<>A toroid with <strong className="text-text font-medium">N = 500</strong> turns and mean radius <strong className="text-text font-medium">R = 8 cm</strong> carries <strong className="text-text font-medium">I = 2 A</strong>. Find <strong className="text-text font-medium">B</strong> inside, at the mean radius.</>}
+        question={
+          <>
+            A toroid with <strong className="text-text font-medium">N = 500</strong> turns and mean
+            radius <strong className="text-text font-medium">R = 8 cm</strong> carries{' '}
+            <strong className="text-text font-medium">I = 2 A</strong>. Find{' '}
+            <strong className="text-text font-medium">B</strong> inside, at the mean radius.
+          </>
+        }
         hint="Take an Amperian circle of radius R along the toroid's centre line. Each turn is enclosed once."
         answer={
           <>
-            <p className="mb-prose-3">By azimuthal symmetry, B is azimuthal and uniform on a circle of radius R inside the toroid. Each of N turns pierces the surface bounded by that circle once:</p>
+            <p className="mb-prose-3">
+              By azimuthal symmetry, B is azimuthal and uniform on a circle of radius R inside the
+              toroid. Each of N turns pierces the surface bounded by that circle once:
+            </p>
             <Formula tex="\oint \vec{B}\cdot d\vec{\ell} = |\vec{B}|\cdot 2\pi R = \mu_0 N I" />
             <Formula tex="|\vec{B}| = \dfrac{\mu_0 N I}{2\pi R} = \dfrac{(4\pi\times 10^{-7})(500)(2)}{2\pi\times 0.08} \approx 2.50\times 10^{-3}\ \text{T}" />
-            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~2.5 mT</strong>.</p>
+            <p className="mb-prose-3">
+              Answer: <strong className="text-text font-medium">~2.5 mT</strong>.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.2.4"
-        question={<>Two infinite parallel sheets carry surface currents <strong className="text-text font-medium">K = 100 A/m</strong> in opposite directions, separated by gap <strong className="text-text font-medium">d</strong>. Find <strong className="text-text font-medium">B</strong> in the region between them and outside.</>}
+        question={
+          <>
+            Two infinite parallel sheets carry surface currents{' '}
+            <strong className="text-text font-medium">K = 100 A/m</strong> in opposite directions,
+            separated by gap <strong className="text-text font-medium">d</strong>. Find{' '}
+            <strong className="text-text font-medium">B</strong> in the region between them and
+            outside.
+          </>
+        }
         hint="A single sheet produces B = (μ₀K/2) on each side, parallel to the sheet and perpendicular to K. Use superposition."
         answer={
           <>
-            <p className="mb-prose-3">From Ampère applied to a single sheet (rectangular loop straddling it), one sheet gives <strong className="text-text font-medium">B = μ₀K/2</strong> on each side, in opposite directions on the two sides. Two opposing sheets superpose:</p>
+            <p className="mb-prose-3">
+              From Ampère applied to a single sheet (rectangular loop straddling it), one sheet
+              gives <strong className="text-text font-medium">B = μ₀K/2</strong> on each side, in
+              opposite directions on the two sides. Two opposing sheets superpose:
+            </p>
             <Formula tex="B_{\text{between}} = \mu_0 K/2 + \mu_0 K/2 = \mu_0 K" />
             <Formula tex="B_{\text{outside}} = \mu_0 K/2 - \mu_0 K/2 = 0" />
             <Formula tex="|\vec{B}|_{\text{between}} = (4\pi\times 10^{-7})(100) = 1.26\times 10^{-4}\ \text{T}" />
-            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~126 µT</strong> between the sheets, <strong className="text-text font-medium">0</strong> outside. This is how superconducting solenoids approximate a uniform field — the surface currents on the inside walls of the can.</p>
+            <p className="mb-prose-3">
+              Answer: <strong className="text-text font-medium">~126 µT</strong> between the sheets,{' '}
+              <strong className="text-text font-medium">0</strong> outside. This is how
+              superconducting solenoids approximate a uniform field — the surface currents on the
+              inside walls of the can.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.2.5"
-        question={<>A coaxial cable has central conductor radius <strong className="text-text font-medium">a</strong> carrying <strong className="text-text font-medium">+I</strong> (uniform), an outer braid at radius <strong className="text-text font-medium">b &gt; a</strong> carrying <strong className="text-text font-medium">−I</strong> (uniform sheath). Find <strong className="text-text font-medium">B(r)</strong> for r &lt; a, a &lt; r &lt; b, and r &gt; b.</>}
+        question={
+          <>
+            A coaxial cable has central conductor radius{' '}
+            <strong className="text-text font-medium">a</strong> carrying{' '}
+            <strong className="text-text font-medium">+I</strong> (uniform), an outer braid at
+            radius <strong className="text-text font-medium">b &gt; a</strong> carrying{' '}
+            <strong className="text-text font-medium">−I</strong> (uniform sheath). Find{' '}
+            <strong className="text-text font-medium">B(r)</strong> for r &lt; a, a &lt; r &lt; b,
+            and r &gt; b.
+          </>
+        }
         hint="Three regions; circular Amperian loops. Compute I_enc in each region."
         answer={
           <>
-            <p className="mb-prose-3">For uniform current density J in the central conductor, the fraction of I enclosed by radius r &lt; a is (r²/a²).</p>
+            <p className="mb-prose-3">
+              For uniform current density J in the central conductor, the fraction of I enclosed by
+              radius r &lt; a is (r²/a²).
+            </p>
             <Formula tex="r < a:\quad I_{\text{enc}} = I\,(r/a)^2,\quad |\vec{B}| = \dfrac{\mu_0 I r}{2\pi a^2}" />
             <Formula tex="a < r < b:\quad I_{\text{enc}} = I,\quad |\vec{B}| = \dfrac{\mu_0 I}{2\pi r}" />
             <Formula tex="r > b:\quad I_{\text{enc}} = I - I = 0,\quad |\vec{B}| = 0" />
-            <p className="mb-prose-3">The field vanishes outside — the reason coax doesn't radiate at DC. Inside the central conductor B grows linearly with r; in the gap it falls as 1/r; outside the shield, nothing.</p>
+            <p className="mb-prose-3">
+              The field vanishes outside — the reason coax doesn't radiate at DC. Inside the central
+              conductor B grows linearly with r; in the gap it falls as 1/r; outside the shield,
+              nothing.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.2.6"
-        question={<>Conceptual: why is the field <em className="italic text-text">outside</em> a long solenoid essentially zero?</>}
+        question={
+          <>
+            Conceptual: why is the field <em className="text-text italic">outside</em> a long
+            solenoid essentially zero?
+          </>
+        }
         hint="Apply Ampère to a rectangular loop that lies entirely outside, and use the fact that magnetic field lines must close."
         answer={
           <>
-            <p className="mb-prose-3">Any rectangular Amperian loop outside the solenoid encloses zero current (all the wire turns are inside). So ∮B·dℓ = 0 around any such loop. By symmetry, outside the solenoid B must be axial (or zero); if it were a uniform axial field at infinity, the field lines wouldn't close. The only consistent solution is B<sub>outside</sub> ≈ 0 in the limit of an infinite ideal solenoid. For real, finite solenoids, a small fringe field exists but is much weaker than the ~μ₀nI inside.</p>
+            <p className="mb-prose-3">
+              Any rectangular Amperian loop outside the solenoid encloses zero current (all the wire
+              turns are inside). So ∮B·dℓ = 0 around any such loop. By symmetry, outside the
+              solenoid B must be axial (or zero); if it were a uniform axial field at infinity, the
+              field lines wouldn't close. The only consistent solution is B<sub>outside</sub> ≈ 0 in
+              the limit of an infinite ideal solenoid. For real, finite solenoids, a small fringe
+              field exists but is much weaker than the ~μ₀nI inside.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.2.7"
-        question={<>Maxwell's correction: what term is added to Ampère's law for a parallel-plate capacitor charging at <strong className="text-text font-medium">dV/dt = 10⁶ V/s</strong> with plate area <strong className="text-text font-medium">A = 1 cm²</strong> separated by <strong className="text-text font-medium">d = 0.5 mm</strong> of vacuum? Compute the displacement current.</>}
+        question={
+          <>
+            Maxwell's correction: what term is added to Ampère's law for a parallel-plate capacitor
+            charging at <strong className="text-text font-medium">dV/dt = 10⁶ V/s</strong> with
+            plate area <strong className="text-text font-medium">A = 1 cm²</strong> separated by{' '}
+            <strong className="text-text font-medium">d = 0.5 mm</strong> of vacuum? Compute the
+            displacement current.
+          </>
+        }
         hint="Displacement current I_D = ε₀ dΦ_E/dt = ε₀ A dE/dt; and E = V/d."
         answer={
           <>
             <p className="mb-prose-3">The displacement current is:</p>
             <Formula tex="I_D = \varepsilon_0 A\,\dfrac{dE}{dt} = \varepsilon_0 A\,\dfrac{1}{d}\,\dfrac{dV}{dt} = \dfrac{\varepsilon_0 A}{d}\,\dfrac{dV}{dt} = C\,\dfrac{dV}{dt}" />
-            <p className="mb-prose-3">That's just the standard capacitor current — the conduction current that flows in the wires <em className="italic text-text">equals</em> the displacement current through the gap, so the Maxwell–Ampère law is consistent for any Amperian loop, whether the bounding surface passes through the wire or the gap. Plug in numbers:</p>
+            <p className="mb-prose-3">
+              That's just the standard capacitor current — the conduction current that flows in the
+              wires <em className="text-text italic">equals</em> the displacement current through
+              the gap, so the Maxwell–Ampère law is consistent for any Amperian loop, whether the
+              bounding surface passes through the wire or the gap. Plug in numbers:
+            </p>
             <Formula tex="C = \dfrac{\varepsilon_0 A}{d} = \dfrac{(8.85\times 10^{-12})(10^{-4})}{5\times 10^{-4}} = 1.77\times 10^{-12}\ \text{F}" />
             <Formula tex="I_D = C\,\dfrac{dV}{dt} = (1.77\times 10^{-12})(10^{6}) = 1.77\times 10^{-6}\ \text{A}" />
-            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~1.8 µA</strong> — the displacement current matches the wire current.</p>
+            <p className="mb-prose-3">
+              Answer: <strong className="text-text font-medium">~1.8 µA</strong> — the displacement
+              current matches the wire current.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.2.8"
-        question={<>A toroid with <strong className="text-text font-medium">N = 800</strong> turns and mean radius <strong className="text-text font-medium">R = 12 cm</strong> carries <strong className="text-text font-medium">I = 0.75 A</strong>. Find <strong className="text-text font-medium">B</strong> inside on the mean line.</>}
+        question={
+          <>
+            A toroid with <strong className="text-text font-medium">N = 800</strong> turns and mean
+            radius <strong className="text-text font-medium">R = 12 cm</strong> carries{' '}
+            <strong className="text-text font-medium">I = 0.75 A</strong>. Find{' '}
+            <strong className="text-text font-medium">B</strong> inside on the mean line.
+          </>
+        }
         hint="Same Ampère-on-a-circle argument as Problem 2.2.3."
         answer={
           <>
             <Formula tex="|\vec{B}| = \dfrac{\mu_0 N I}{2\pi R} = \dfrac{(4\pi\times 10^{-7})(800)(0.75)}{2\pi\times 0.12} \approx 1.00\times 10^{-3}\ \text{T}" />
-            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~1.0 mT</strong>.</p>
+            <p className="mb-prose-3">
+              Answer: <strong className="text-text font-medium">~1.0 mT</strong>.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.2.9"
-        question={<>A long cylindrical wire of radius <strong className="text-text font-medium">R = 2 mm</strong> carries a uniform current density and total current <strong className="text-text font-medium">I = 5 A</strong>. Find <strong className="text-text font-medium">B</strong> at <strong className="text-text font-medium">r = 1 mm</strong> (inside).</>}
+        question={
+          <>
+            A long cylindrical wire of radius{' '}
+            <strong className="text-text font-medium">R = 2 mm</strong> carries a uniform current
+            density and total current <strong className="text-text font-medium">I = 5 A</strong>.
+            Find <strong className="text-text font-medium">B</strong> at{' '}
+            <strong className="text-text font-medium">r = 1 mm</strong> (inside).
+          </>
+        }
         hint="For r < R, the enclosed current scales as (r/R)²."
         answer={
           <>
-            <p className="mb-prose-3">Fraction enclosed: I<sub>enc</sub> = I (r/R)² = 5 · (0.001/0.002)² = 1.25 A.</p>
+            <p className="mb-prose-3">
+              Fraction enclosed: I<sub>enc</sub> = I (r/R)² = 5 · (0.001/0.002)² = 1.25 A.
+            </p>
             <Formula tex="|\vec{B}| = \dfrac{\mu_0 I_{\text{enc}}}{2\pi r} = \dfrac{(4\pi\times 10^{-7})(1.25)}{2\pi\times 0.001} = 2.5\times 10^{-4}\ \text{T}" />
-            <p className="mb-prose-3">Equivalently, <InlineMath tex="|\vec{B}| = \dfrac{\mu_0 I r}{2\pi R^2} = \dfrac{(4\pi\times 10^{-7})(5)(0.001)}{2\pi\times 4\times 10^{-6}} \approx 2.5\times 10^{-4}\ \text{T}" />.</p>
-            <p className="mb-prose-3">Answer: <strong className="text-text font-medium">~0.25 mT</strong>. Inside the wire, B grows linearly with r from zero at the centre to μ₀I/(2πR) at the surface.</p>
+            <p className="mb-prose-3">
+              Equivalently,{' '}
+              <InlineMath tex="|\vec{B}| = \dfrac{\mu_0 I r}{2\pi R^2} = \dfrac{(4\pi\times 10^{-7})(5)(0.001)}{2\pi\times 4\times 10^{-6}} \approx 2.5\times 10^{-4}\ \text{T}" />
+              .
+            </p>
+            <p className="mb-prose-3">
+              Answer: <strong className="text-text font-medium">~0.25 mT</strong>. Inside the wire,
+              B grows linearly with r from zero at the centre to μ₀I/(2πR) at the surface.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.2.10"
-        question={<>Derive <strong className="text-text font-medium">|B| = μ<sub>0</sub>I/(2πr)</strong> for an infinite straight wire from Ampère's law, with all the symmetry arguments spelled out.</>}
+        question={
+          <>
+            Derive{' '}
+            <strong className="text-text font-medium">
+              |B| = μ<sub>0</sub>I/(2πr)
+            </strong>{' '}
+            for an infinite straight wire from Ampère's law, with all the symmetry arguments spelled
+            out.
+          </>
+        }
         hint="Three claims: B is azimuthal; B depends only on r; choose a coaxial circular loop."
         answer={
           <>
-            <p className="mb-prose-3"><strong className="text-text font-medium">Symmetry 1 (axial):</strong> the system is invariant under rotation about the wire and translation along it. So B can only depend on r (the perpendicular distance), not on z or φ.</p>
-            <p className="mb-prose-3"><strong className="text-text font-medium">Symmetry 2 (mirror):</strong> reflecting the geometry across any plane containing the wire reverses the sense of current flow and reverses any radial or axial B component. The only B component preserved is azimuthal. So <strong className="text-text font-medium">B = B(r) φ̂</strong>.</p>
-            <p className="mb-prose-3"><strong className="text-text font-medium">Apply Ampère</strong> to a circular Amperian loop of radius r coaxial with the wire. B is parallel to dℓ everywhere, |B| is constant:</p>
+            <p className="mb-prose-3">
+              <strong className="text-text font-medium">Symmetry 1 (axial):</strong> the system is
+              invariant under rotation about the wire and translation along it. So B can only depend
+              on r (the perpendicular distance), not on z or φ.
+            </p>
+            <p className="mb-prose-3">
+              <strong className="text-text font-medium">Symmetry 2 (mirror):</strong> reflecting the
+              geometry across any plane containing the wire reverses the sense of current flow and
+              reverses any radial or axial B component. The only B component preserved is azimuthal.
+              So <strong className="text-text font-medium">B = B(r) φ̂</strong>.
+            </p>
+            <p className="mb-prose-3">
+              <strong className="text-text font-medium">Apply Ampère</strong> to a circular Amperian
+              loop of radius r coaxial with the wire. B is parallel to dℓ everywhere, |B| is
+              constant:
+            </p>
             <Formula tex="\oint \vec{B}\cdot d\vec{\ell} = |\vec{B}|\cdot 2\pi r = \mu_0 I" />
             <Formula tex="|\vec{B}| = \dfrac{\mu_0 I}{2\pi r}" />
-            <p className="mb-prose-3">That's the full chain: symmetry → field structure → Ampère → answer.</p>
+            <p className="mb-prose-3">
+              That's the full chain: symmetry → field structure → Ampère → answer.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 2.2.11"
-        question={<>Conceptual: the slider above lets you stack up to five parallel wires. If three carry +I and two carry −I, all threading the Amperian loop, what does <strong className="text-text font-medium">∮ B · dℓ</strong> equal?</>}
+        question={
+          <>
+            Conceptual: the slider above lets you stack up to five parallel wires. If three carry +I
+            and two carry −I, all threading the Amperian loop, what does{' '}
+            <strong className="text-text font-medium">∮ B · dℓ</strong> equal?
+          </>
+        }
         hint="The right-hand side is the net current, with sign."
         answer={
           <>
-            <p className="mb-prose-3">Net enclosed current is <strong className="text-text font-medium">+3I − 2I = +I</strong>. So <strong className="text-text font-medium">∮ B · dℓ = μ₀ I</strong>. Five wires worth of magnetic complexity collapse to one wire's worth as far as the line integral is concerned. The field itself is more complicated (not symmetric anywhere), but the integral around any loop enclosing all five still equals μ₀I.</p>
+            <p className="mb-prose-3">
+              Net enclosed current is{' '}
+              <strong className="text-text font-medium">+3I − 2I = +I</strong>. So{' '}
+              <strong className="text-text font-medium">∮ B · dℓ = μ₀ I</strong>. Five wires worth
+              of magnetic complexity collapse to one wire's worth as far as the line integral is
+              concerned. The field itself is more complicated (not symmetric anywhere), but the
+              integral around any loop enclosing all five still equals μ₀I.
+            </p>
           </>
         }
       />

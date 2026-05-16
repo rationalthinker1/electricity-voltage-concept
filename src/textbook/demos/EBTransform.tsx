@@ -25,19 +25,23 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function EBTransformDemo({ figure }: Props) {
   const [betaPct, setBetaPct] = useState(30);
-  const [Ey, setEy] = useState(1.0e6);    // V/m  (a strong but reasonable capacitor field)
+  const [Ey, setEy] = useState(1.0e6); // V/m  (a strong but reasonable capacitor field)
 
   const stateRef = useRef({ betaPct, Ey });
-  useEffect(() => { stateRef.current = { betaPct, Ey }; }, [betaPct, Ey]);
+  useEffect(() => {
+    stateRef.current = { betaPct, Ey };
+  }, [betaPct, Ey]);
 
   const beta = Math.max(0, Math.min(0.999, betaPct / 100));
   const gamma = 1 / Math.sqrt(1 - beta * beta);
   const Ey_new = gamma * Ey;
-  const Bz_new = -gamma * beta * Ey / PHYS.c;   // tesla
+  const Bz_new = (-gamma * beta * Ey) / PHYS.c; // tesla
   const cB_over_E = Ey_new !== 0 ? Math.abs(PHYS.c * Bz_new) / Math.abs(Ey_new) : 0;
 
   const setup = useCallback((info: CanvasInfo) => {
@@ -60,17 +64,26 @@ export function EBTransformDemo({ figure }: Props) {
       ctx.lineWidth = 1;
       const gs = 36;
       for (let x = gs / 2; x < w; x += gs) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
       }
       for (let y = gs / 2; y < h; y += gs) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
       }
 
       // Two side-by-side "windows": left = rest frame, right = boosted frame
       const midX = w / 2;
       ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(midX, 14); ctx.lineTo(midX, h - 14); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(midX, 14);
+      ctx.lineTo(midX, h - 14);
+      ctx.stroke();
 
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
@@ -83,7 +96,8 @@ export function EBTransformDemo({ figure }: Props) {
         ctx.strokeStyle = colors.pink;
         ctx.fillStyle = colors.pink;
         ctx.lineWidth = 1.5;
-        const cols = 4, rows = 4;
+        const cols = 4,
+          rows = 4;
         const dx = (right - left) / cols;
         const dy = (h - 60) / rows;
         const arrLen = 28 * scale;
@@ -94,13 +108,15 @@ export function EBTransformDemo({ figure }: Props) {
             const yTop = cy - arrLen / 2;
             const yBot = cy + arrLen / 2;
             ctx.beginPath();
-            ctx.moveTo(cx, yBot); ctx.lineTo(cx, yTop);
+            ctx.moveTo(cx, yBot);
+            ctx.lineTo(cx, yTop);
             ctx.stroke();
             ctx.beginPath();
             ctx.moveTo(cx, yTop);
             ctx.lineTo(cx - 4, yTop + 7);
             ctx.lineTo(cx + 4, yTop + 7);
-            ctx.closePath(); ctx.fill();
+            ctx.closePath();
+            ctx.fill();
           }
         }
       }
@@ -112,7 +128,8 @@ export function EBTransformDemo({ figure }: Props) {
         const op = 0.15 + 0.65 * density;
         ctx.strokeStyle = `rgba(108,197,194,${op.toFixed(3)})`;
         ctx.lineWidth = 1.2;
-        const cols = 7, rows = 7;
+        const cols = 7,
+          rows = 7;
         const dx = (right - left) / cols;
         const dy = (h - 50) / rows;
         const k = 3 + 4 * density;
@@ -122,8 +139,10 @@ export function EBTransformDemo({ figure }: Props) {
             const cy = 30 + (j + 0.5) * dy;
             // alternate × and · so the pattern reads "into page B"
             ctx.beginPath();
-            ctx.moveTo(cx - k, cy - k); ctx.lineTo(cx + k, cy + k);
-            ctx.moveTo(cx + k, cy - k); ctx.lineTo(cx - k, cy + k);
+            ctx.moveTo(cx - k, cy - k);
+            ctx.lineTo(cx + k, cy + k);
+            ctx.moveTo(cx + k, cy - k);
+            ctx.lineTo(cx - k, cy + k);
             ctx.stroke();
           }
         }
@@ -157,27 +176,37 @@ export function EBTransformDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 9.3'}
       title="A pure E field becomes E + B when you move"
       question="Start with E only. Boost. What does the new frame measure?"
-      caption={<>
-        Left: a pure electric field <em>E_y</em>, say between the plates of a stationary capacitor.
-        Right: the same situation viewed from a frame moving in the <em>+x</em> direction at speed
-        <em> v = βc</em>. The new frame sees a slightly stronger <em>E_y'</em> = γ·E_y <em>and</em> a
-        magnetic field <em>B_z' = −γβ·E_y/c</em>. Crank β toward 1 and the ratio <em>|c·B'|/|E'|</em>
-        approaches β — the two are of the same order. Whether a field is "electric" or "magnetic" is a
-        question about your reference frame.
-      </>}
+      caption={
+        <>
+          Left: a pure electric field <em>E_y</em>, say between the plates of a stationary
+          capacitor. Right: the same situation viewed from a frame moving in the <em>+x</em>{' '}
+          direction at speed
+          <em> v = βc</em>. The new frame sees a slightly stronger <em>E_y'</em> = γ·E_y{' '}
+          <em>and</em> a magnetic field <em>B_z' = −γβ·E_y/c</em>. Crank β toward 1 and the ratio{' '}
+          <em>|c·B'|/|E'|</em>
+          approaches β — the two are of the same order. Whether a field is "electric" or "magnetic"
+          is a question about your reference frame.
+        </>
+      }
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="β"
-          value={betaPct} min={0} max={99} step={1}
-          format={v => (v / 100).toFixed(2)}
+          value={betaPct}
+          min={0}
+          max={99}
+          step={1}
+          format={(v) => (v / 100).toFixed(2)}
           onChange={setBetaPct}
         />
         <MiniSlider
           label="E_y (rest)"
-          value={Ey} min={1e4} max={1e7} step={1e4}
-          format={v => v.toExponential(1) + ' V/m'}
+          value={Ey}
+          min={1e4}
+          max={1e7}
+          step={1e4}
+          format={(v) => v.toExponential(1) + ' V/m'}
           onChange={setEy}
         />
         <MiniReadout label="γ" value={gamma.toFixed(4)} />

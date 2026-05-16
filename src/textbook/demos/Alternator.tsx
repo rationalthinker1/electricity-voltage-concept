@@ -17,22 +17,26 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const TAU3 = (2 * Math.PI) / 3;
-const POLE_PAIRS = 6;       // typical claw-pole alternator
-const PULLEY_RATIO = 2.5;   // crank → alternator
-const V_REG = 14;           // V regulated output
+const POLE_PAIRS = 6; // typical claw-pole alternator
+const PULLEY_RATIO = 2.5; // crank → alternator
+const V_REG = 14; // V regulated output
 
 export function AlternatorDemo({ figure }: Props) {
   const [engineRpm, setEngineRpm] = useState(2000);
 
   const stateRef = useRef({ engineRpm });
-  useEffect(() => { stateRef.current.engineRpm = engineRpm; }, [engineRpm]);
+  useEffect(() => {
+    stateRef.current.engineRpm = engineRpm;
+  }, [engineRpm]);
 
   const computed = useMemo(() => {
     const altRpm = engineRpm * PULLEY_RATIO;
-    const f = (altRpm / 60) * POLE_PAIRS;   // electrical Hz
+    const f = (altRpm / 60) * POLE_PAIRS; // electrical Hz
     return { altRpm, f };
   }, [engineRpm]);
 
@@ -60,9 +64,11 @@ export function AlternatorDemo({ figure }: Props) {
       ctx.fillRect(0, 0, w, h);
 
       // Two stacked plots
-      const padL = 40, padR = 20;
+      const padL = 40,
+        padR = 20;
       const plotW = w - padL - padR;
-      const topY = 30, midGap = 18;
+      const topY = 30,
+        midGap = 18;
       const plotH = (h - 60 - midGap) / 2;
       const cy1 = topY + plotH / 2;
       const cy2 = topY + plotH + midGap + plotH / 2;
@@ -71,18 +77,20 @@ export function AlternatorDemo({ figure }: Props) {
       ctx.strokeStyle = colors.border;
       ctx.strokeRect(padL, topY, plotW, plotH);
       ctx.beginPath();
-      ctx.moveTo(padL, cy1); ctx.lineTo(padL + plotW, cy1);
+      ctx.moveTo(padL, cy1);
+      ctx.lineTo(padL + plotW, cy1);
       ctx.stroke();
 
       // Bottom: regulated DC + ripple
       ctx.strokeRect(padL, topY + plotH + midGap, plotW, plotH);
       ctx.beginPath();
-      ctx.moveTo(padL, cy2); ctx.lineTo(padL + plotW, cy2);
+      ctx.moveTo(padL, cy2);
+      ctx.lineTo(padL + plotW, cy2);
       ctx.stroke();
 
       const samples = 240;
-      const tWindow = 2 / Math.max(f, 1);  // show 2 cycles
-      const peak = 17;   // ~17 V peak from a 14 V regulated output
+      const tWindow = 2 / Math.max(f, 1); // show 2 cycles
+      const peak = 17; // ~17 V peak from a 14 V regulated output
       const phaseColors = ['#ff3b6e', '#6cc5c2', '#ff6b2a'];
 
       // Draw the three raw phases on the top plot.
@@ -96,7 +104,8 @@ export function AlternatorDemo({ figure }: Props) {
           const v = peak * Math.cos(omega * (simT + tau) + phases[k]);
           const x = padL + (i / samples) * plotW;
           const y = cy1 - (v / peak) * (plotH / 2) * 0.85;
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.stroke();
       }
@@ -118,7 +127,8 @@ export function AlternatorDemo({ figure }: Props) {
         const clamped = Math.min(vout, V_REG);
         const x = padL + (i / samples) * plotW;
         const y = cy2 + (plotH / 2) * 0.85 - (clamped / peak) * (plotH * 0.85);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -127,18 +137,21 @@ export function AlternatorDemo({ figure }: Props) {
       ctx.setLineDash([4, 4]);
       const yReg = cy2 + (plotH / 2) * 0.85 - (V_REG / peak) * (plotH * 0.85);
       ctx.beginPath();
-      ctx.moveTo(padL, yReg); ctx.lineTo(padL + plotW, yReg);
+      ctx.moveTo(padL, yReg);
+      ctx.lineTo(padL + plotW, yReg);
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = colors.teal;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
       ctx.fillText('14 V', padL - 4, yReg);
 
       // Labels
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText('raw 3-phase AC', padL + 4, topY + 4);
       ctx.fillText('rectified + regulated DC', padL + 4, topY + plotH + midGap + 4);
       ctx.textAlign = 'right';
@@ -155,19 +168,24 @@ export function AlternatorDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 17.3'}
       title="The car alternator — AC, then a six-diode bridge"
       question="A car needs DC at 14 V. What's between the engine pulley and the battery?"
-      caption={<>
-        A 3-phase generator (claw-pole rotor, six pole-pairs) feeds a full-wave bridge of six
-        diodes. The output is the maximum of the three rectified phases — six pulses per
-        electrical cycle. A field-current regulator clamps the average to ~14 V; the lead-acid
-        battery and any large capacitors absorb whatever ripple remains.
-      </>}
+      caption={
+        <>
+          A 3-phase generator (claw-pole rotor, six pole-pairs) feeds a full-wave bridge of six
+          diodes. The output is the maximum of the three rectified phases — six pulses per
+          electrical cycle. A field-current regulator clamps the average to ~14 V; the lead-acid
+          battery and any large capacitors absorb whatever ripple remains.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="engine RPM"
-          value={engineRpm} min={600} max={6000} step={50}
-          format={v => v.toFixed(0)}
+          value={engineRpm}
+          min={600}
+          max={6000}
+          step={50}
+          format={(v) => v.toFixed(0)}
           onChange={setEngineRpm}
         />
         <MiniReadout label="alternator RPM" value={<Num value={computed.altRpm} digits={0} />} />

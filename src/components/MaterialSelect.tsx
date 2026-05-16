@@ -14,10 +14,12 @@ export function MaterialSelect({ value, onChange }: MaterialSelectProps) {
     <select
       className="material-select"
       value={value}
-      onChange={e => onChange(e.target.value as MaterialKey)}
+      onChange={(e) => onChange(e.target.value as MaterialKey)}
     >
       {Object.entries(MATERIALS).map(([key, mat]) => (
-        <option key={key} value={key}>{mat.name}</option>
+        <option key={key} value={key}>
+          {mat.name}
+        </option>
       ))}
     </select>
   );

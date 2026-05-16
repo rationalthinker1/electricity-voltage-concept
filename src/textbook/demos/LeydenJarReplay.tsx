@@ -12,14 +12,18 @@ import { Demo, DemoControls } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function LeydenJarReplayDemo({ figure }: Props) {
-  const [charge, setCharge] = useState(0);    // 0..1
-  const [sparkT, setSparkT] = useState(0);    // animation time of the spark
+  const [charge, setCharge] = useState(0); // 0..1
+  const [sparkT, setSparkT] = useState(0); // animation time of the spark
 
   const stateRef = useRef({ charge, sparkT });
-  useEffect(() => { stateRef.current = { charge, sparkT }; }, [charge, sparkT]);
+  useEffect(() => {
+    stateRef.current = { charge, sparkT };
+  }, [charge, sparkT]);
 
   // Decay the spark visual over ~600 ms
   useEffect(() => {
@@ -28,14 +32,17 @@ export function LeydenJarReplayDemo({ figure }: Props) {
     const start = performance.now();
     function step() {
       const dt = (performance.now() - start) / 600;
-      if (dt >= 1) { setSparkT(0); return; }
+      if (dt >= 1) {
+        setSparkT(0);
+        return;
+      }
       raf = requestAnimationFrame(step);
     }
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
   }, [sparkT]);
 
-  const handleCharge = () => setCharge(c => Math.min(1, c + 0.12));
+  const handleCharge = () => setCharge((c) => Math.min(1, c + 0.12));
   const handleDischarge = () => {
     if (stateRef.current.charge < 0.05) return;
     setSparkT(performance.now());
@@ -161,14 +168,19 @@ export function LeydenJarReplayDemo({ figure }: Props) {
       ctx.stroke();
       // body
       ctx.beginPath();
-      ctx.moveTo(px, py - 61); ctx.lineTo(px, py - 10);
+      ctx.moveTo(px, py - 61);
+      ctx.lineTo(px, py - 10);
       // legs
-      ctx.moveTo(px, py - 10); ctx.lineTo(px - 10, py + 18);
-      ctx.moveTo(px, py - 10); ctx.lineTo(px + 10, py + 18);
+      ctx.moveTo(px, py - 10);
+      ctx.lineTo(px - 10, py + 18);
+      ctx.moveTo(px, py - 10);
+      ctx.lineTo(px + 10, py + 18);
       // far arm
-      ctx.moveTo(px, py - 50); ctx.lineTo(px + 18, py - 30);
+      ctx.moveTo(px, py - 50);
+      ctx.lineTo(px + 18, py - 30);
       // near arm reaching toward the ball
-      ctx.moveTo(px, py - 50); ctx.lineTo(px - 50, py - 70);
+      ctx.moveTo(px, py - 50);
+      ctx.lineTo(px - 50, py - 70);
       ctx.stroke();
 
       // Spark from ball to hand if discharging
@@ -177,8 +189,10 @@ export function LeydenJarReplayDemo({ figure }: Props) {
         if (age < 1) {
           const alpha = 1 - age;
           // Zigzag from (cx + 11, yT - 64) to (px - 50, py - 70)
-          const lx = cx + 11, ly = yT - 64;
-          const tx = px - 50, ty = py - 70;
+          const lx = cx + 11,
+            ly = yT - 64;
+          const tx = px - 50,
+            ty = py - 70;
           const sparkPts: { x: number; y: number }[] = [{ x: lx, y: ly }];
           for (let k = 1; k <= 8; k++) {
             const fr = k / 8;
@@ -219,17 +233,22 @@ export function LeydenJarReplayDemo({ figure }: Props) {
       question="What did electricity look like before there were batteries?"
       caption={
         <>
-          A glass cylinder lined with metal foil inside and out is a serviceable parallel-plate capacitor — the glass is the dielectric.
-          Friction-charge the inner foil through the brass terminal and the outer foil pulls equal-and-opposite charge from ground.
-          Touch the terminal and the charge dumps through you in a single bright spark. This was 1745, in Leiden — the first
-          time anyone had stored static electricity for later use.
+          A glass cylinder lined with metal foil inside and out is a serviceable parallel-plate
+          capacitor — the glass is the dielectric. Friction-charge the inner foil through the brass
+          terminal and the outer foil pulls equal-and-opposite charge from ground. Touch the
+          terminal and the charge dumps through you in a single bright spark. This was 1745, in
+          Leiden — the first time anyone had stored static electricity for later use.
         </>
       }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <button type="button" className="mini-toggle on" onClick={handleCharge}>Crank the friction wheel</button>
-        <button type="button" className="mini-toggle" onClick={handleDischarge}>Discharge</button>
+        <button type="button" className="mini-toggle on" onClick={handleCharge}>
+          Crank the friction wheel
+        </button>
+        <button type="button" className="mini-toggle" onClick={handleDischarge}>
+          Discharge
+        </button>
       </DemoControls>
     </Demo>
   );

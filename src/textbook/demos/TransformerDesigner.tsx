@@ -28,14 +28,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 type CoreKey = 'laminated-iron' | 'silicon-steel' | 'ferrite';
 type ShapeKey = 'e-core' | 'toroid';
@@ -64,22 +64,40 @@ interface CoreMaterial {
 // suitable for a design-intuition demo, not a manufacturing datasheet.
 const CORE_MATERIALS: Record<CoreKey, CoreMaterial> = {
   'laminated-iron': {
-    key: 'laminated-iron', name: 'Laminated iron',
-    B_sat: 1.5, mu_r: 1500, k_steinmetz: 6.0, alpha: 1.5, beta: 2.5,
+    key: 'laminated-iron',
+    name: 'Laminated iron',
+    B_sat: 1.5,
+    mu_r: 1500,
+    k_steinmetz: 6.0,
+    alpha: 1.5,
+    beta: 2.5,
     color: '#c9a06b',
-    blurb: 'Cheap. Tolerates high flux (B_sat ≈ 1.5 T). Loud at line frequency; eddy losses explode above a few kilohertz. Used in mains-frequency power transformers up to a few kVA.',
+    blurb:
+      'Cheap. Tolerates high flux (B_sat ≈ 1.5 T). Loud at line frequency; eddy losses explode above a few kilohertz. Used in mains-frequency power transformers up to a few kVA.',
   },
   'silicon-steel': {
-    key: 'silicon-steel', name: 'Silicon steel',
-    B_sat: 1.7, mu_r: 5000, k_steinmetz: 2.0, alpha: 1.5, beta: 2.5,
+    key: 'silicon-steel',
+    name: 'Silicon steel',
+    B_sat: 1.7,
+    mu_r: 5000,
+    k_steinmetz: 2.0,
+    alpha: 1.5,
+    beta: 2.5,
     color: '#b6c0c2',
-    blurb: 'Grain-oriented silicon steel — the standard for utility transformers. Highest B_sat, low-loss at 50/60 Hz. Heavy. Still wasteful above ~1 kHz.',
+    blurb:
+      'Grain-oriented silicon steel — the standard for utility transformers. Highest B_sat, low-loss at 50/60 Hz. Heavy. Still wasteful above ~1 kHz.',
   },
-  'ferrite': {
-    key: 'ferrite', name: 'Ferrite (Mn-Zn)',
-    B_sat: 0.4, mu_r: 2500, k_steinmetz: 0.05, alpha: 1.5, beta: 2.5,
+  ferrite: {
+    key: 'ferrite',
+    name: 'Ferrite (Mn-Zn)',
+    B_sat: 0.4,
+    mu_r: 2500,
+    k_steinmetz: 0.05,
+    alpha: 1.5,
+    beta: 2.5,
     color: '#6b6f78',
-    blurb: 'Sintered ceramic. Saturates at a low 0.4 T but barely loses anything up to hundreds of kilohertz. The core inside every modern SMPS, phone charger, and aircraft 400 Hz transformer.',
+    blurb:
+      'Sintered ceramic. Saturates at a low 0.4 T but barely loses anything up to hundreds of kilohertz. The core inside every modern SMPS, phone charger, and aircraft 400 Hz transformer.',
   },
 };
 
@@ -89,8 +107,8 @@ export function TransformerDesignerDemo({ figure }: Props) {
   // Reader inputs.
   const [Np, setNp] = useState(200);
   const [Ns, setNs] = useState(20);
-  const [f, setF] = useState(60);            // Hz
-  const [Pload, setPload] = useState(50);    // W
+  const [f, setF] = useState(60); // Hz
+  const [Pload, setPload] = useState(50); // W
   const [coreKey, setCoreKey] = useState<CoreKey>('silicon-steel');
   const [shape, setShape] = useState<ShapeKey>('e-core');
 
@@ -100,18 +118,18 @@ export function TransformerDesignerDemo({ figure }: Props) {
   // material rather than physical size. Cross-section A_core ≈ 6 cm²
   // (typical of a small-to-medium mains transformer). Mean magnetic path
   // length l_core ≈ 0.18 m for the E-core; 0.14 m for the toroid.
-  const A_core = 6e-4;                                  // m²
-  const l_core = shape === 'toroid' ? 0.14 : 0.18;      // m
-  const V_core = A_core * l_core;                       // m³
+  const A_core = 6e-4; // m²
+  const l_core = shape === 'toroid' ? 0.14 : 0.18; // m
+  const V_core = A_core * l_core; // m³
 
   // Electrical inputs.
-  const V_p = 120;                                       // V_rms primary
-  const V_s = V_p * (Ns / Np);                           // V_rms ideal secondary
+  const V_p = 120; // V_rms primary
+  const V_s = V_p * (Ns / Np); // V_rms ideal secondary
 
   // Transformer / core equation. B_max in tesla.
   const B_max = V_p / (4.44 * f * Np * A_core);
   const saturating = B_max > mat.B_sat;
-  const sat_frac = Math.min(2.0, B_max / mat.B_sat);     // ≥1 means over-sat
+  const sat_frac = Math.min(2.0, B_max / mat.B_sat); // ≥1 means over-sat
   // Visual flux-fill colour: amber→red as we approach and exceed B_sat.
   const fluxFill = saturating
     ? `rgba(255, 59, 110, ${Math.min(0.85, 0.55 + (sat_frac - 1) * 0.4)})`
@@ -119,17 +137,17 @@ export function TransformerDesignerDemo({ figure }: Props) {
 
   // Primary inductance L_p = μ_0 · μ_r · N_p² · A / l_core.
   // I_mag (RMS) = V_p / (2π f L_p) — the no-load magnetising current.
-  const L_p = PHYS.mu_0 * mat.mu_r * Np * Np * A_core / l_core;
+  const L_p = (PHYS.mu_0 * mat.mu_r * Np * Np * A_core) / l_core;
   const I_mag = V_p / (2 * Math.PI * f * L_p);
 
   // Load currents.
-  const I_s = Pload / Math.max(V_s, 1e-6);               // A
-  const I_p = Pload / V_p;                               // ideal-transformer primary current
+  const I_s = Pload / Math.max(V_s, 1e-6); // A
+  const I_p = Pload / V_p; // ideal-transformer primary current
 
   // Winding resistance — a small linear model. Per-turn resistance
   // r_per_turn ~ 5 mΩ for a 5-cm mean-turn length of small magnet wire.
   // This is a teaching approximation, not a wire-gauge calculation.
-  const r_per_turn = 0.005;                              // Ω / turn
+  const r_per_turn = 0.005; // Ω / turn
   const R_p = r_per_turn * Np;
   const R_s = r_per_turn * Ns;
   const P_copper = I_p * I_p * R_p + I_s * I_s * R_s;
@@ -139,10 +157,7 @@ export function TransformerDesignerDemo({ figure }: Props) {
   // (the model breaks down) — we clip B_max into the Steinmetz term to
   // keep the readout finite, but the saturation warning fires regardless.
   const B_for_loss = Math.min(B_max, mat.B_sat * 1.4);
-  const P_core = mat.k_steinmetz
-    * Math.pow(f, mat.alpha)
-    * Math.pow(B_for_loss, mat.beta)
-    * V_core;
+  const P_core = mat.k_steinmetz * Math.pow(f, mat.alpha) * Math.pow(B_for_loss, mat.beta) * V_core;
 
   const eta = Pload / (Pload + P_copper + P_core);
 
@@ -221,12 +236,21 @@ export function TransformerDesignerDemo({ figure }: Props) {
 
   // Caption: combine the static intro with the material's blurb so the
   // reader sees why their choice matters.
-  const caption = useMemo(() => (
-    <>
-      Pick a core material, set the turns counts and operating frequency,
-      and watch the design land on a sweet spot — or fall off it. <strong>B<sub>max</sub> = V<sub>p</sub>/(4.44·f·N<sub>p</sub>·A)</strong>: too few primary turns at 60 Hz pushes flux past B<sub>sat</sub> and the core saturates; raising frequency lets you shrink turns without saturating, which is exactly why your phone charger runs at 100 kHz. <em>{mat.blurb}</em>
-    </>
-  ), [mat]);
+  const caption = useMemo(
+    () => (
+      <>
+        Pick a core material, set the turns counts and operating frequency, and watch the design
+        land on a sweet spot — or fall off it.{' '}
+        <strong>
+          B<sub>max</sub> = V<sub>p</sub>/(4.44·f·N<sub>p</sub>·A)
+        </strong>
+        : too few primary turns at 60 Hz pushes flux past B<sub>sat</sub> and the core saturates;
+        raising frequency lets you shrink turns without saturating, which is exactly why your phone
+        charger runs at 100 kHz. <em>{mat.blurb}</em>
+      </>
+    ),
+    [mat],
+  );
 
   return (
     <Demo
@@ -238,11 +262,11 @@ export function TransformerDesignerDemo({ figure }: Props) {
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        {CORE_KEYS.map(k => (
+        {CORE_KEYS.map((k) => (
           <button
             key={k}
             type="button"
-            className={`mini-toggle${k === coreKey ? ' on' : ''}`}
+            className={`mini-toggle${k === coreKey ? 'on' : ''}`}
             onClick={() => setCoreKey(k)}
             aria-pressed={k === coreKey}
           >
@@ -252,30 +276,42 @@ export function TransformerDesignerDemo({ figure }: Props) {
         <MiniToggle
           label={shape === 'e-core' ? 'shape: E-core' : 'shape: toroid'}
           checked={shape === 'toroid'}
-          onChange={v => setShape(v ? 'toroid' : 'e-core')}
+          onChange={(v) => setShape(v ? 'toroid' : 'e-core')}
         />
         <MiniSlider
           label="N_p"
-          value={Np} min={10} max={500} step={1}
-          format={v => v.toFixed(0)}
+          value={Np}
+          min={10}
+          max={500}
+          step={1}
+          format={(v) => v.toFixed(0)}
           onChange={setNp}
         />
         <MiniSlider
           label="N_s"
-          value={Ns} min={10} max={500} step={1}
-          format={v => v.toFixed(0)}
+          value={Ns}
+          min={10}
+          max={500}
+          step={1}
+          format={(v) => v.toFixed(0)}
           onChange={setNs}
         />
         <MiniSlider
           label="f"
-          value={f} min={50} max={100000} step={50}
+          value={f}
+          min={50}
+          max={100000}
+          step={50}
           format={fmtFreq}
           onChange={setF}
         />
         <MiniSlider
           label="P_load"
-          value={Pload} min={1} max={100} step={1}
-          format={v => v.toFixed(0) + ' W'}
+          value={Pload}
+          min={1}
+          max={100}
+          step={1}
+          format={(v) => v.toFixed(0) + ' W'}
           onChange={setPload}
         />
         <MiniReadout label="N_p : N_s" value={`${Math.round(Np)} : ${Math.round(Ns)}`} />
@@ -283,7 +319,11 @@ export function TransformerDesignerDemo({ figure }: Props) {
         <MiniReadout
           label="B_max"
           value={
-            <span style={{ color: saturating ? '#ff3b6e' : envelope === 'approaching' ? '#ffcc55' : '#ecebe5' }}>
+            <span
+              style={{
+                color: saturating ? '#ff3b6e' : envelope === 'approaching' ? '#ffcc55' : '#ecebe5',
+              }}
+            >
               {B_max < 0.01 ? B_max.toExponential(2) : B_max.toFixed(2)}
             </span>
           }
@@ -314,9 +354,15 @@ export function TransformerDesignerDemo({ figure }: Props) {
 
 function drawECore(
   ctx: CanvasRenderingContext2D,
-  cx: number, cy: number, W: number, H: number,
-  fluxFill: string, saturating: boolean, ironTint: string,
-  Np: number, Ns: number,
+  cx: number,
+  cy: number,
+  W: number,
+  H: number,
+  fluxFill: string,
+  saturating: boolean,
+  ironTint: string,
+  Np: number,
+  Ns: number,
 ) {
   // E-I core seen from above: a rectangular outer window with a central
   // limb. Two windings sit on the central limb (primary) and one of the
@@ -382,7 +428,7 @@ function drawECore(
 
   // Draw the two windings.
   drawWindingTopDown(ctx, centerLimbX, cy, limb * 0.45, coreH * 0.65, Np, '#ff6b2a', 'PRIMARY');
-  drawWindingTopDown(ctx, rightLimbX,  cy, limb * 0.45, coreH * 0.65, Ns, '#6cc5c2', 'SECONDARY');
+  drawWindingTopDown(ctx, rightLimbX, cy, limb * 0.45, coreH * 0.65, Ns, '#6cc5c2', 'SECONDARY');
 
   // Tint ironTint slightly on the outer rim — pure visual cue for material.
   void ironTint;
@@ -410,9 +456,15 @@ function drawECore(
 
 function drawToroid(
   ctx: CanvasRenderingContext2D,
-  cx: number, cy: number, W: number, H: number,
-  fluxFill: string, saturating: boolean, ironTint: string,
-  Np: number, Ns: number,
+  cx: number,
+  cy: number,
+  W: number,
+  H: number,
+  fluxFill: string,
+  saturating: boolean,
+  ironTint: string,
+  Np: number,
+  Ns: number,
 ) {
   const Router = Math.min(W, H) * 0.34;
   const Rinner = Router * 0.55;
@@ -445,8 +497,32 @@ function drawToroid(
   void ironTint;
 
   // Windings: primary covers the left half, secondary covers the right half.
-  drawToroidalWinding(ctx, cx, cy, Router, Rinner, Math.PI * 0.6, Math.PI * 1.4, Np, '#ff6b2a', 'PRIMARY', 'left');
-  drawToroidalWinding(ctx, cx, cy, Router, Rinner, Math.PI * 1.6, Math.PI * 2.4, Ns, '#6cc5c2', 'SECONDARY', 'right');
+  drawToroidalWinding(
+    ctx,
+    cx,
+    cy,
+    Router,
+    Rinner,
+    Math.PI * 0.6,
+    Math.PI * 1.4,
+    Np,
+    '#ff6b2a',
+    'PRIMARY',
+    'left',
+  );
+  drawToroidalWinding(
+    ctx,
+    cx,
+    cy,
+    Router,
+    Rinner,
+    Math.PI * 1.6,
+    Math.PI * 2.4,
+    Ns,
+    '#6cc5c2',
+    'SECONDARY',
+    'right',
+  );
 
   // Load resistor far right of the toroid.
   const loadX = cx + Router + 56;
@@ -474,9 +550,13 @@ function drawToroid(
  */
 function drawWindingTopDown(
   ctx: CanvasRenderingContext2D,
-  cx: number, cy: number,
-  halfW: number, fullH: number,
-  N: number, color: string, label: string,
+  cx: number,
+  cy: number,
+  halfW: number,
+  fullH: number,
+  N: number,
+  color: string,
+  label: string,
 ) {
   const turns = Math.max(4, Math.min(28, Math.round(N / 12 + 4)));
   const yTop = cy - fullH / 2;
@@ -507,10 +587,15 @@ function drawWindingTopDown(
  */
 function drawToroidalWinding(
   ctx: CanvasRenderingContext2D,
-  cx: number, cy: number,
-  Router: number, Rinner: number,
-  thStart: number, thEnd: number,
-  N: number, color: string, label: string,
+  cx: number,
+  cy: number,
+  Router: number,
+  Rinner: number,
+  thStart: number,
+  thEnd: number,
+  N: number,
+  color: string,
+  label: string,
   side: 'left' | 'right',
 ) {
   const turns = Math.max(4, Math.min(40, Math.round(N / 10 + 4)));
@@ -524,8 +609,8 @@ function drawToroidalWinding(
     // crossing the ring radially.
     const oxOut = cx + Math.cos(th) * (Router + 4);
     const oyOut = cy + Math.sin(th) * (Router + 4);
-    const oxIn  = cx + Math.cos(th) * (Rinner - 4);
-    const oyIn  = cy + Math.sin(th) * (Rinner - 4);
+    const oxIn = cx + Math.cos(th) * (Rinner - 4);
+    const oyIn = cy + Math.sin(th) * (Rinner - 4);
     ctx.beginPath();
     ctx.moveTo(oxOut, oyOut);
     ctx.lineTo(oxIn, oyIn);
@@ -553,13 +638,20 @@ function drawToroidalWinding(
 
 function drawResistorZigzag(
   ctx: CanvasRenderingContext2D,
-  x1: number, y1: number, x2: number, y2: number, color: string,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  color: string,
 ) {
-  const dx = x2 - x1, dy = y2 - y1;
+  const dx = x2 - x1,
+    dy = y2 - y1;
   const len = Math.hypot(dx, dy);
   if (len <= 0) return;
-  const ux = dx / len, uy = dy / len;
-  const nx = -uy, ny = ux;
+  const ux = dx / len,
+    uy = dy / len;
+  const nx = -uy,
+    ny = ux;
   const segments = 6;
   const step = len / segments;
   const amp = 5;

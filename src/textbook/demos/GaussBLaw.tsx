@@ -14,13 +14,17 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function GaussBLawDemo({ figure }: Props) {
   const [hasMagnet, setHasMagnet] = useState(true);
 
   const stateRef = useRef({ hasMagnet });
-  useEffect(() => { stateRef.current = { hasMagnet }; }, [hasMagnet]);
+  useEffect(() => {
+    stateRef.current = { hasMagnet };
+  }, [hasMagnet]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -32,7 +36,8 @@ export function GaussBLawDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const cx = w / 2, cy = h / 2;
+      const cx = w / 2,
+        cy = h / 2;
       const bw = Math.min(w * 0.6, 460);
       const bh = Math.min(h * 0.7, 240);
       const bx = cx - bw / 2;
@@ -40,8 +45,10 @@ export function GaussBLawDemo({ figure }: Props) {
 
       if (hasMagnet) {
         // Bar magnet centred at (cx, cy), N pole on right (pink), S on left (blue)
-        const magW = 110, magH = 28;
-        const nx = cx + magW / 2, sx = cx - magW / 2;
+        const magW = 110,
+          magH = 28;
+        const nx = cx + magW / 2,
+          sx = cx - magW / 2;
 
         // Draw closed field loops: emerging from N (right side), looping over
         // and around to S (left side). Parametric ellipses centred at cx,cy.
@@ -116,7 +123,8 @@ export function GaussBLawDemo({ figure }: Props) {
         ctx.restore();
         ctx.fillStyle = colors.bg;
         ctx.font = 'bold 13px JetBrains Mono';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         ctx.fillText('S', sx + magW / 4, cy);
         ctx.fillText('N', nx - magW / 4, cy);
 
@@ -124,9 +132,10 @@ export function GaussBLawDemo({ figure }: Props) {
         const period = 4000;
         phase = (performance.now() / period) % 1;
         const t = phase;
-        const rx = magW / 2 + 60, ry = 60;
+        const rx = magW / 2 + 60,
+          ry = 60;
         // upper loop
-        const a1 = Math.PI + t * Math.PI;       // π → 2π (N over top to S)
+        const a1 = Math.PI + t * Math.PI; // π → 2π (N over top to S)
         ctx.fillStyle = colors.accent;
         ctx.beginPath();
         ctx.arc(cx + rx * Math.cos(a1), cy + ry * Math.sin(a1), 3.5, 0, Math.PI * 2);
@@ -187,11 +196,14 @@ export function GaussBLawDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 8.2'}
       title="Gauss's law for B"
       question="What goes in must come out — for every B-field line, always."
-      caption={<>
-        Toggle the bar magnet in or out of the box. With the magnet inside, look carefully: every field line that
-        leaves the N pole loops around in space and re-enters at the S pole — and continues through the magnet body
-        back to N. The line never ends. The net flux through any closed surface is therefore zero — no magnetic monopoles.
-      </>}
+      caption={
+        <>
+          Toggle the bar magnet in or out of the box. With the magnet inside, look carefully: every
+          field line that leaves the N pole loops around in space and re-enters at the S pole — and
+          continues through the magnet body back to N. The line never ends. The net flux through any
+          closed surface is therefore zero — no magnetic monopoles.
+        </>
+      }
       deeperLab={{ slug: 'gauss', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />

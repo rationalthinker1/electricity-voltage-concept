@@ -26,18 +26,28 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import {
-  drawCircuit, drawArrow, renderCircuitToCanvas, type CircuitElement,
+  drawCircuit,
+  drawArrow,
+  renderCircuitToCanvas,
+  type CircuitElement,
 } from '@/lib/canvasPrimitives';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-interface Electron { x: number; y: number; vx: number; vy: number }
+interface Electron {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+}
 
 const N_ELECTRONS = 44;
 
 export function CursorEFieldOnWireDemo({ figure }: Props) {
-  const [cursorPos, setCursorPos] = useState(true);          // +/- cursor sign
-  const [qNC, setQNC] = useState(6);                          // cursor charge magnitude in nC
+  const [cursorPos, setCursorPos] = useState(true); // +/- cursor sign
+  const [qNC, setQNC] = useState(6); // cursor charge magnitude in nC
   const [showBatteryField, setShowBatteryField] = useState(true);
 
   const stateRef = useRef({ cursorPos, qNC, showBatteryField });
@@ -66,7 +76,8 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
     const electrons: Electron[] = Array.from({ length: N_ELECTRONS }, () => ({
       x: wireLeft + Math.random() * (wireRight - wireLeft),
       y: wireTop + 3 + Math.random() * (wireBot - wireTop - 6),
-      vx: 0, vy: 0,
+      vx: 0,
+      vy: 0,
     }));
 
     // Mouse / touch handlers — update uiRef.
@@ -78,10 +89,15 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
     }
     function pointerLeave() {
       uiRef.current.hovering = false;
-      uiRef.current.cx = -1; uiRef.current.cy = -1;
+      uiRef.current.cx = -1;
+      uiRef.current.cy = -1;
     }
-    function onMouseMove(e: MouseEvent) { pointerMove(e.clientX, e.clientY); }
-    function onMouseLeave() { pointerLeave(); }
+    function onMouseMove(e: MouseEvent) {
+      pointerMove(e.clientX, e.clientY);
+    }
+    function onMouseLeave() {
+      pointerLeave();
+    }
     function onTouchStart(e: TouchEvent) {
       if (e.touches.length === 0) return;
       e.preventDefault();
@@ -94,7 +110,9 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
       const t = e.touches[0]!;
       pointerMove(t.clientX, t.clientY);
     }
-    function onTouchEnd() { pointerLeave(); }
+    function onTouchEnd() {
+      pointerLeave();
+    }
 
     canvas.addEventListener('mousemove', onMouseMove);
     canvas.addEventListener('mouseleave', onMouseLeave);
@@ -169,7 +187,10 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
         ctx.fillStyle = getCanvasColors().accentGlow;
         ctx.lineWidth = 1;
         for (let xa = wireLeft + 50; xa < wireRight - 50; xa += 90) {
-          ctx.beginPath(); ctx.moveTo(xa, wireMidY); ctx.lineTo(xa + 22, wireMidY); ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(xa, wireMidY);
+          ctx.lineTo(xa + 22, wireMidY);
+          ctx.stroke();
           ctx.beginPath();
           ctx.moveTo(xa + 22, wireMidY);
           ctx.lineTo(xa + 16, wireMidY - 3.5);
@@ -178,7 +199,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
           ctx.fill();
         }
         ctx.save();
-        ctx.globalAlpha = .6;
+        ctx.globalAlpha = 0.6;
         ctx.fillStyle = getCanvasColors().accent;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
@@ -194,7 +215,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
 
       // Drawn-units coupling for the perturbation. Tuned so a 6 nC cursor at
       // ~60 px from the wire moves electrons visibly without flinging them.
-      const Q_SCALE = 18 * (qNC / 10);    // dimensionless strength used in draw
+      const Q_SCALE = 18 * (qNC / 10); // dimensionless strength used in draw
       const cursorQ = cursorSign * Q_SCALE;
 
       if (haveCursor) {
@@ -221,12 +242,17 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
             const sy = py - uy * aLen * 0.5 * Math.sign(mag);
             const ex = px + ux * aLen * 0.5 * Math.sign(mag);
             const ey = py + uy * aLen * 0.5 * Math.sign(mag);
-            drawArrow(ctx, { x: sx, y: sy }, { x: ex, y: ey }, {
-              color: cursorPos ? 'rgba(255,59,110,.55)' : 'rgba(91,174,248,.55)',
-              lineWidth: 1,
-              headLength: 4,
-              headWidth: 3,
-            });
+            drawArrow(
+              ctx,
+              { x: sx, y: sy },
+              { x: ex, y: ey },
+              {
+                color: cursorPos ? 'rgba(255,59,110,.55)' : 'rgba(91,174,248,.55)',
+                lineWidth: 1,
+                headLength: 4,
+                headWidth: 3,
+              },
+            );
           }
         }
 
@@ -252,7 +278,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
         const cursorAboveWire = ui.cy < wireMidY;
         const nearY = cursorAboveWire ? wireTop : wireBot;
         const farY = cursorAboveWire ? wireBot : wireTop;
-        const nearOutwardSign = cursorAboveWire ? -1 : +1;   // outward normal y-direction
+        const nearOutwardSign = cursorAboveWire ? -1 : +1; // outward normal y-direction
 
         const sampleStep = 18;
         for (let xs = wireLeft + 10; xs <= wireRight - 10; xs += sampleStep) {
@@ -263,21 +289,22 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
           const r2 = rx * rx + ry * ry;
           if (r2 < 8 * 8) continue;
           // E_y from cursor at this surface sample (sign-aware).
-          const Ey = (cursorQ * ry) / (r2 * Math.sqrt(r2));   // ∝ q · r̂_y / r²
+          const Ey = (cursorQ * ry) / (r2 * Math.sqrt(r2)); // ∝ q · r̂_y / r²
           // Inward perpendicular component (the part pushing INTO the wire):
           // dot with outward normal direction nearOutwardSign·ĵ gives the
           // outward-pointing E component. Surface charge that the conductor
           // induces opposes the external normal field, so the surface-charge
           // sign on the near surface is OPPOSITE the sign of (E · n̂_out).
           const Eperp = Ey * nearOutwardSign;
-          const sigmaNear = -Eperp;       // induced charge sign at the near surface
-          const sigmaFar = +Eperp;         // and at the far surface (opposite)
+          const sigmaNear = -Eperp; // induced charge sign at the near surface
+          const sigmaFar = +Eperp; // and at the far surface (opposite)
 
           const magNear = Math.min(1.5, Math.abs(sigmaNear) * 1.6);
           if (magNear > 0.08) {
-            ctx.fillStyle = sigmaNear > 0
-              ? `rgba(255,59,110,${Math.min(0.95, 0.25 + magNear * 0.6)})`
-              : `rgba(91,174,248,${Math.min(0.95, 0.25 + magNear * 0.6)})`;
+            ctx.fillStyle =
+              sigmaNear > 0
+                ? `rgba(255,59,110,${Math.min(0.95, 0.25 + magNear * 0.6)})`
+                : `rgba(91,174,248,${Math.min(0.95, 0.25 + magNear * 0.6)})`;
             ctx.font = `bold ${Math.round(9 + magNear * 4)}px "JetBrains Mono", monospace`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -285,9 +312,10 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
           }
           const magFar = Math.min(1.5, Math.abs(sigmaFar) * 1.6);
           if (magFar > 0.08) {
-            ctx.fillStyle = sigmaFar > 0
-              ? `rgba(255,59,110,${Math.min(0.75, 0.18 + magFar * 0.45)})`
-              : `rgba(91,174,248,${Math.min(0.75, 0.18 + magFar * 0.45)})`;
+            ctx.fillStyle =
+              sigmaFar > 0
+                ? `rgba(255,59,110,${Math.min(0.75, 0.18 + magFar * 0.45)})`
+                : `rgba(91,174,248,${Math.min(0.75, 0.18 + magFar * 0.45)})`;
             ctx.font = `bold ${Math.round(8 + magFar * 3)}px "JetBrains Mono", monospace`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -337,7 +365,10 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
         eDot.vy *= 0.72;
         // Cap speeds.
         const sp = Math.hypot(eDot.vx, eDot.vy);
-        if (sp > 3.2) { eDot.vx *= 3.2 / sp; eDot.vy *= 3.2 / sp; }
+        if (sp > 3.2) {
+          eDot.vx *= 3.2 / sp;
+          eDot.vy *= 3.2 / sp;
+        }
 
         eDot.x += eDot.vx;
         eDot.y += eDot.vy;
@@ -346,8 +377,14 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
         // perturbations are visible without electrons disappearing.
         if (eDot.x > wireRight - 3) eDot.x = wireLeft + 3;
         if (eDot.x < wireLeft + 3) eDot.x = wireRight - 3;
-        if (eDot.y < wireTop + 3) { eDot.y = wireTop + 3; eDot.vy = Math.abs(eDot.vy) * 0.3; }
-        if (eDot.y > wireBot - 3) { eDot.y = wireBot - 3; eDot.vy = -Math.abs(eDot.vy) * 0.3; }
+        if (eDot.y < wireTop + 3) {
+          eDot.y = wireTop + 3;
+          eDot.vy = Math.abs(eDot.vy) * 0.3;
+        }
+        if (eDot.y > wireBot - 3) {
+          eDot.y = wireBot - 3;
+          eDot.vy = -Math.abs(eDot.vy) * 0.3;
+        }
 
         ctx.beginPath();
         ctx.arc(eDot.x, eDot.y, 2.0, 0, Math.PI * 2);
@@ -356,19 +393,20 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
 
       // ───── Hint text ─────
       ctx.save();
-      ctx.globalAlpha = .7;
+      ctx.globalAlpha = 0.7;
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       if (!haveCursor) {
         ctx.fillText('hover the canvas — your cursor is a point charge', wireLeft, h - 14);
-      ctx.restore();
+        ctx.restore();
       } else {
         ctx.fillText(
           cursorPos
             ? 'positive cursor: free electrons drift toward it · near surface goes net −'
             : 'negative cursor: free electrons recoil · near surface goes net +',
-          wireLeft, h - 14,
+          wireLeft,
+          h - 14,
         );
       }
 
@@ -392,9 +430,17 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 2.5'}
       title="Your cursor is a charge"
       question="Hover the canvas — your cursor is a small point charge. What happens to the electrons in the wire? Does the wire's surface change?"
-      caption={<>
-        The cursor's field reaches into the wire and pushes on every free electron there. They pile up near a positive cursor, recoil from a negative one, and the wire's surface ends up coated in a thin layer of induced charge — opposite sign on the near face, same sign on the far face. This is the bottom-layer reason an electrostatic conductor has <em>E = 0</em> inside: the free charges have already rearranged to cancel anything you push at them. Same physics as a charged comb picking up paper, capacitive touchscreens, and the inside of a Faraday cage.
-      </>}
+      caption={
+        <>
+          The cursor's field reaches into the wire and pushes on every free electron there. They
+          pile up near a positive cursor, recoil from a negative one, and the wire's surface ends up
+          coated in a thin layer of induced charge — opposite sign on the near face, same sign on
+          the far face. This is the bottom-layer reason an electrostatic conductor has{' '}
+          <em>E = 0</em> inside: the free charges have already rearranged to cancel anything you
+          push at them. Same physics as a charged comb picking up paper, capacitive touchscreens,
+          and the inside of a Faraday cage.
+        </>
+      }
       deeperLab={{ slug: 'potential', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
@@ -406,8 +452,11 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
         />
         <MiniSlider
           label="|q_cursor|"
-          value={qNC} min={0} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' nC'}
+          value={qNC}
+          min={0}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' nC'}
           onChange={setQNC}
         />
         <MiniToggle

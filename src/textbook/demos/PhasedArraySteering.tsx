@@ -14,7 +14,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function PhasedArraySteeringDemo({ figure }: Props) {
   const [N, setN] = useState(8);
@@ -22,7 +24,9 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
   const [phiDeg, setPhiDeg] = useState(60);
 
   const stateRef = useRef({ N, dOverLam, phiDeg });
-  useEffect(() => { stateRef.current = { N, dOverLam, phiDeg }; }, [N, dOverLam, phiDeg]);
+  useEffect(() => {
+    stateRef.current = { N, dOverLam, phiDeg };
+  }, [N, dOverLam, phiDeg]);
 
   // θ_steer = arcsin( (Δφ · λ) / (2π d) ) = arcsin( phi / (2π d/λ) )
   const phiRad = (phiDeg * Math.PI) / 180;
@@ -56,7 +60,9 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
       for (let k = 0; k < N; k++) {
         const yk = cyEl - stripH / 2 + k * dy;
         ctx.fillStyle = getCanvasColors().teal;
-        ctx.beginPath(); ctx.arc(x0, yk, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x0, yk, 4, 0, Math.PI * 2);
+        ctx.fill();
         // Phase label
         ctx.fillStyle = getCanvasColors().textDim;
         ctx.font = '9px "JetBrains Mono", monospace';
@@ -74,12 +80,17 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().border;
       ctx.lineWidth = 1;
       for (let f = 0.25; f <= 1.001; f += 0.25) {
-        ctx.beginPath(); ctx.arc(cx, cy, R * f, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx, cy, R * f, 0, Math.PI * 2);
+        ctx.stroke();
       }
       // Broadside line — horizontal (since array axis is vertical, broadside is horizontal)
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.setLineDash([3, 4]);
-      ctx.beginPath(); ctx.moveTo(cx - R, cy); ctx.lineTo(cx + R, cy); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx - R, cy);
+      ctx.lineTo(cx + R, cy);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       // Compute |AF(θ)| where θ = angle measured from broadside (horizontal in screen).
@@ -100,14 +111,15 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
         if (Math.abs(Math.sin(psi / 2)) < 1e-9) {
           AF = 1;
         } else {
-          AF = Math.abs(Math.sin(N * psi / 2) / (N * Math.sin(psi / 2)));
+          AF = Math.abs(Math.sin((N * psi) / 2) / (N * Math.sin(psi / 2)));
         }
         const rr = AF * R;
         // Screen mapping: array along vertical, broadside to the right.
         // x = cx + rr * cos(theta), y = cy - rr * sin(theta) (theta=0 → right; +θ → up)
         const x = cx + rr * Math.cos(theta);
         const y = cy - rr * Math.sin(theta);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       // close back through origin
       ctx.lineTo(cx, cy);
@@ -130,7 +142,11 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
         ctx.fillStyle = getCanvasColors().teal;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
-        ctx.fillText(`θ_steer = ${(thS * 180 / Math.PI).toFixed(1)}°`, cx + R * Math.cos(thS) + 6, cy - R * Math.sin(thS));
+        ctx.fillText(
+          `θ_steer = ${((thS * 180) / Math.PI).toFixed(1)}°`,
+          cx + R * Math.cos(thS) + 6,
+          cy - R * Math.sin(thS),
+        );
       } else {
         ctx.fillStyle = getCanvasColors().pink;
         ctx.font = '10px "JetBrains Mono", monospace';
@@ -158,25 +174,53 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 15.6'}
       title="Phased array — steer the beam with phase, not gimbals"
       question="What phase shift between elements points the main beam to a given angle?"
-      caption={<>
-        N isotropic elements spaced <strong>d</strong> apart along a line, fed with a progressive
-        phase shift <strong>Δφ</strong> between adjacent elements. The array factor steers its main
-        lobe to <strong>sin θ<sub>steer</sub> = Δφ · λ / (2π d)</strong>. For d = λ/2 the steering
-        range covers a full ±90° hemisphere; pushing d above λ/2 introduces unwanted "grating
-        lobes" on the other side of broadside.
-      </>}
+      caption={
+        <>
+          N isotropic elements spaced <strong>d</strong> apart along a line, fed with a progressive
+          phase shift <strong>Δφ</strong> between adjacent elements. The array factor steers its
+          main lobe to{' '}
+          <strong>
+            sin θ<sub>steer</sub> = Δφ · λ / (2π d)
+          </strong>
+          . For d = λ/2 the steering range covers a full ±90° hemisphere; pushing d above λ/2
+          introduces unwanted "grating lobes" on the other side of broadside.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
-        <MiniSlider label="N" value={N} min={4} max={16} step={1}
-          format={v => v.toFixed(0)} onChange={setN} />
-        <MiniSlider label="d/λ" value={dOverLam} min={0.25} max={1.0} step={0.01}
-          format={v => v.toFixed(2)} onChange={setDOverLam} />
-        <MiniSlider label="Δφ" value={phiDeg} min={-180} max={180} step={1}
-          format={v => v.toFixed(0) + '°'} onChange={setPhiDeg} />
-        <MiniReadout label="θ_steer"
+        <MiniSlider
+          label="N"
+          value={N}
+          min={4}
+          max={16}
+          step={1}
+          format={(v) => v.toFixed(0)}
+          onChange={setN}
+        />
+        <MiniSlider
+          label="d/λ"
+          value={dOverLam}
+          min={0.25}
+          max={1.0}
+          step={0.01}
+          format={(v) => v.toFixed(2)}
+          onChange={setDOverLam}
+        />
+        <MiniSlider
+          label="Δφ"
+          value={phiDeg}
+          min={-180}
+          max={180}
+          step={1}
+          format={(v) => v.toFixed(0) + '°'}
+          onChange={setPhiDeg}
+        />
+        <MiniReadout
+          label="θ_steer"
           value={Number.isFinite(steerDeg) ? steerDeg.toFixed(1) : '—'}
-          unit={Number.isFinite(steerDeg) ? '°' : ''} />
+          unit={Number.isFinite(steerDeg) ? '°' : ''}
+        />
       </DemoControls>
     </Demo>
   );

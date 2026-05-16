@@ -14,7 +14,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const V_CE_SAT = 0.2;
 const V_A = 50;
@@ -30,12 +32,14 @@ function I_C(V_CE: number, I_B: number, beta: number): number {
 // V_CE = V_CC − I_C R_C  ⇒  I_C = (V_CC − V_CE) / R_C
 // Solve I_C(V_CE) = (V_CC − V_CE)/R_C by bisection.
 function findQ(V_CC: number, R_C: number, I_B: number, beta: number) {
-  let lo = 0, hi = V_CC;
+  let lo = 0,
+    hi = V_CC;
   for (let i = 0; i < 40; i++) {
     const m = (lo + hi) / 2;
     const lhs = I_C(m, I_B, beta);
     const rhs = (V_CC - m) / R_C;
-    if (lhs > rhs) lo = m; else hi = m;
+    if (lhs > rhs) lo = m;
+    else hi = m;
   }
   const Vq = (lo + hi) / 2;
   const Iq = (V_CC - Vq) / R_C;
@@ -51,7 +55,9 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
   const { Vq, Iq } = findQ(V_CC, R_C, I_B, beta);
 
   const stateRef = useRef({ V_CC, R_C, I_B });
-  useEffect(() => { stateRef.current = { V_CC, R_C, I_B }; }, [V_CC, R_C, I_B]);
+  useEffect(() => {
+    stateRef.current = { V_CC, R_C, I_B };
+  }, [V_CC, R_C, I_B]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -63,11 +69,15 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 60, padR = 20, padT = 22, padB = 36;
+      const padL = 60,
+        padR = 20,
+        padT = 22,
+        padB = 36;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
-      const Vmin = 0, Vmax = Math.max(15, V_CC * 1.05);
+      const Vmin = 0,
+        Vmax = Math.max(15, V_CC * 1.05);
       const Imax = Math.max(0.015, (V_CC / R_C) * 1.1);
 
       const xOf = (v: number) => padL + ((v - Vmin) / (Vmax - Vmin)) * plotW;
@@ -82,7 +92,8 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
       ctx.beginPath();
       const vStep = Vmax > 20 ? 5 : 2;
       for (let v = 0; v <= Vmax + 1e-9; v += vStep) {
-        ctx.moveTo(xOf(v), padT); ctx.lineTo(xOf(v), padT + plotH);
+        ctx.moveTo(xOf(v), padT);
+        ctx.lineTo(xOf(v), padT + plotH);
       }
       ctx.stroke();
 
@@ -126,14 +137,19 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
           const i = I_C(v, IB, beta);
           const x = xOf(v);
           const y = yOf(Math.min(Imax, i));
-          if (j === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (j === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.stroke();
         ctx.fillStyle = col;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'right';
         ctx.textBaseline = 'middle';
-        ctx.fillText(`I_B = ${(IB * 1e6).toFixed(1)} µA`, padL + plotW - 6, yOf(Math.min(Imax, I_C(Vmax, IB, beta))) - 8);
+        ctx.fillText(
+          `I_B = ${(IB * 1e6).toFixed(1)} µA`,
+          padL + plotW - 6,
+          yOf(Math.min(Imax, I_C(Vmax, IB, beta))) - 8,
+        );
       });
 
       // load line: from (V_CC, 0) to (0, V_CC/R_C)
@@ -152,7 +168,11 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
       ctx.fillText(`V_CC = ${V_CC.toFixed(1)} V`, xOf(V_CC), yOf(0) - 4);
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
-      ctx.fillText(`V_CC/R_C = ${(I_sat * 1000).toFixed(1)} mA`, xOf(0) + 6, yOf(Math.min(Imax, I_sat)));
+      ctx.fillText(
+        `V_CC/R_C = ${(I_sat * 1000).toFixed(1)} mA`,
+        xOf(0) + 6,
+        yOf(Math.min(Imax, I_sat)),
+      );
 
       // Q-point dot
       ctx.fillStyle = colors.text;
@@ -163,13 +183,21 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
-      ctx.fillText(`Q-point  (${Vq.toFixed(2)} V, ${(Iq * 1000).toFixed(2)} mA)`, xOf(Vq) + 8, yOf(Math.min(Imax, Iq)) - 6);
+      ctx.fillText(
+        `Q-point  (${Vq.toFixed(2)} V, ${(Iq * 1000).toFixed(2)} mA)`,
+        xOf(Vq) + 8,
+        yOf(Math.min(Imax, Iq)) - 6,
+      );
 
       // header
       ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText(`V_CC = ${V_CC.toFixed(1)} V   R_C = ${R_C.toFixed(0)} Ω   I_B = ${(I_B * 1e6).toFixed(1)} µA   β = ${beta}`, padL, 6);
+      ctx.fillText(
+        `V_CC = ${V_CC.toFixed(1)} V   R_C = ${R_C.toFixed(0)} Ω   I_B = ${(I_B * 1e6).toFixed(1)} µA   β = ${beta}`,
+        padL,
+        6,
+      );
 
       raf = requestAnimationFrame(draw);
     }
@@ -182,34 +210,46 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 14.5'}
       title="Load-line analysis"
       question="A linear resistor and a non-linear transistor share the same current. Where do they meet?"
-      caption={<>
-        The teal line is the load-line constraint V_CE = V_CC − I_C·R_C — pure Ohm's law for the resistor and the
-        supply. The orange curve is the transistor's I_B trace. Their crossing is the Q-point: the only
-        (V_CE, I_C) that satisfies both. Moving I_B slides Q up and down the load line.
-      </>}
+      caption={
+        <>
+          The teal line is the load-line constraint V_CE = V_CC − I_C·R_C — pure Ohm's law for the
+          resistor and the supply. The orange curve is the transistor's I_B trace. Their crossing is
+          the Q-point: the only (V_CE, I_C) that satisfies both. Moving I_B slides Q up and down the
+          load line.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="V_CC"
-          value={V_CC} min={3} max={20} step={0.5}
-          format={v => v.toFixed(1) + ' V'}
+          value={V_CC}
+          min={3}
+          max={20}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
           onChange={setVCC}
         />
         <MiniSlider
           label="R_C"
-          value={R_C} min={500} max={10000} step={100}
-          format={v => (v / 1000).toFixed(1) + ' kΩ'}
+          value={R_C}
+          min={500}
+          max={10000}
+          step={100}
+          format={(v) => (v / 1000).toFixed(1) + ' kΩ'}
           onChange={setRC}
         />
         <MiniSlider
           label="I_B"
-          value={I_B} min={5e-6} max={60e-6} step={1e-6}
-          format={v => (v * 1e6).toFixed(0) + ' µA'}
+          value={I_B}
+          min={5e-6}
+          max={60e-6}
+          step={1e-6}
+          format={(v) => (v * 1e6).toFixed(0) + ' µA'}
           onChange={setIB}
         />
         <MiniReadout label="V_CE(Q)" value={Vq.toFixed(2)} unit="V" />
-        <MiniReadout label="I_C(Q)"  value={<Num value={Iq} />} unit="A" />
+        <MiniReadout label="I_C(Q)" value={<Num value={Iq} />} unit="A" />
       </DemoControls>
     </Demo>
   );

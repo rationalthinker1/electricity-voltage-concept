@@ -29,13 +29,16 @@ export function Pill({
     variant === 'pink' && 'bg-pink/15 text-pink border-pink/30',
     variant === 'blue' && 'bg-blue/15 text-blue border-blue/30',
     variant === 'subtle' && 'bg-transparent text-text-muted border-border-1',
-    interactive && 'cursor-pointer transition-[background-color,border-color,transform] duration-fast ease-in-out hover:bg-bg-card-hover hover:border-border-2 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_var(--accent-soft)]',
+    interactive &&
+      'cursor-pointer transition-[background-color,border-color,transform] duration-fast ease-in-out hover:bg-bg-card-hover hover:border-border-2 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_var(--accent-soft)]',
     className,
   );
 
   const content = (
     <>
-      {icon !== undefined && <span className="inline-flex text-5 leading-none opacity-80">{icon}</span>}
+      {icon !== undefined && (
+        <span className="text-5 inline-flex leading-none opacity-80">{icon}</span>
+      )}
       <span>{children}</span>
     </>
   );

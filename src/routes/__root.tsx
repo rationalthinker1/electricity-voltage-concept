@@ -33,7 +33,9 @@ function resolveTheme(mode: ThemeMode): ResolvedTheme {
 
 function RootLayout() {
   const [themeMode, setThemeMode] = useState<ThemeMode>(getStoredThemeMode);
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => resolveTheme(getStoredThemeMode()));
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() =>
+    resolveTheme(getStoredThemeMode()),
+  );
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-color-scheme: light)');
@@ -58,9 +60,9 @@ function RootLayout() {
   }, [themeMode]);
 
   function cycleThemeMode() {
-    setThemeMode(current => (
-      current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system'
-    ));
+    setThemeMode((current) =>
+      current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system',
+    );
   }
 
   // Progress bar tracks scroll across all routes.
@@ -79,12 +81,11 @@ function RootLayout() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 h-xxs w-0 bg-accent z-2 shadow-[0_0_12px_var(--accent-glow)] transition-[width] duration-100 ease-linear" id="progress" />
-      <TopNav
-        themeMode={themeMode}
-        resolvedTheme={resolvedTheme}
-        onCycleTheme={cycleThemeMode}
+      <div
+        className="h-xxs bg-accent fixed top-0 left-0 z-2 w-0 shadow-[0_0_12px_var(--accent-glow)] transition-[width] duration-100 ease-linear"
+        id="progress"
       />
+      <TopNav themeMode={themeMode} resolvedTheme={resolvedTheme} onCycleTheme={cycleThemeMode} />
       <Outlet />
     </>
   );

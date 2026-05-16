@@ -28,8 +28,13 @@
  */
 
 import type {
-  ControllerKind, ControllerParams, LoadParams, MotorKind, MotorParams,
-  Preset, SimSnapshot,
+  ControllerKind,
+  ControllerParams,
+  LoadParams,
+  MotorKind,
+  MotorParams,
+  Preset,
+  SimSnapshot,
 } from './types';
 
 /** Integrator step size (s). */
@@ -38,8 +43,8 @@ export const DT = 25e-6;
 /** State the integrator carries between steps. */
 export interface SimState {
   t: number;
-  theta_m: number;       // mechanical angle, rad
-  omega_m: number;       // mechanical speed, rad/s
+  theta_m: number; // mechanical angle, rad
+  omega_m: number; // mechanical speed, rad/s
   i_d: number;
   i_q: number;
   /** PI integrator accumulators (current loop). */
@@ -55,10 +60,16 @@ export interface SimState {
 
 export function makeState(): SimState {
   return {
-    t: 0, theta_m: 0, omega_m: 0,
-    i_d: 0, i_q: 0,
-    e_id_int: 0, e_iq_int: 0, e_w_int: 0,
-    theta_flux: 0, theta_cmd: 0,
+    t: 0,
+    theta_m: 0,
+    omega_m: 0,
+    i_d: 0,
+    i_q: 0,
+    e_id_int: 0,
+    e_iq_int: 0,
+    e_w_int: 0,
+    theta_flux: 0,
+    theta_cmd: 0,
   };
 }
 
@@ -123,13 +134,15 @@ export function clarke(ia: number, ib: number, ic: number): [number, number] {
 
 /** Park transform (α-β → d-q, rotor frame at angle θ_e). */
 export function park(i_alpha: number, i_beta: number, theta_e: number): [number, number] {
-  const c = Math.cos(theta_e), s = Math.sin(theta_e);
+  const c = Math.cos(theta_e),
+    s = Math.sin(theta_e);
   return [c * i_alpha + s * i_beta, -s * i_alpha + c * i_beta];
 }
 
 /** Inverse Park (d-q → α-β). */
 export function invPark(i_d: number, i_q: number, theta_e: number): [number, number] {
-  const c = Math.cos(theta_e), s = Math.sin(theta_e);
+  const c = Math.cos(theta_e),
+    s = Math.sin(theta_e);
   return [c * i_d - s * i_q, s * i_d + c * i_q];
 }
 
@@ -190,7 +203,7 @@ function stepFOC(
   const e_w = ctrl.omega_ref - s.omega_m;
   s.e_w_int = clamp(s.e_w_int + e_w * DT, -200, 200);
   let i_q_ref = ctrl.Kp_w * e_w + ctrl.Ki_w * s.e_w_int;
-  const i_max = I_rated * 1.5;          // 150% current envelope
+  const i_max = I_rated * 1.5; // 150% current envelope
   // Field weakening: above base speed, allow a negative i_d to extend speed.
   const omega_base = motor.omega_rated;
   let i_d_ref = 0;
@@ -222,7 +235,8 @@ function stepFOC(
   const v_mag = Math.hypot(v_d, v_q);
   if (v_mag > v_max) {
     const k = v_max / v_mag;
-    v_d *= k; v_q *= k;
+    v_d *= k;
+    v_q *= k;
   }
 
   // Electrical step (semi-implicit Euler):
@@ -244,11 +258,9 @@ function stepFOC(
   s.t += DT;
 
   // Power flows.
-  const P_e = 1.5 * (v_d * s.i_d + v_q * s.i_q);   // electrical input
-  const P_m = tau_e * s.omega_m;                    // mechanical output
-  const eta = Math.abs(P_e) > 1
-    ? clamp(Math.abs(P_m / P_e), 0, 1)
-    : 0;
+  const P_e = 1.5 * (v_d * s.i_d + v_q * s.i_q); // electrical input
+  const P_m = tau_e * s.omega_m; // mechanical output
+  const eta = Math.abs(P_e) > 1 ? clamp(Math.abs(P_m / P_e), 0, 1) : 0;
   const I_dc = Math.abs(P_e) / Math.max(1, ctrl.Vdc);
 
   // Phase currents from inverse transforms (for display).
@@ -259,13 +271,18 @@ function stepFOC(
   void tau_rated;
 
   return {
-    t: s.t, theta_m: s.theta_m, omega_m: s.omega_m,
-    tau_e, tau_load: tau_L,
+    t: s.t,
+    theta_m: s.theta_m,
+    omega_m: s.omega_m,
+    tau_e,
+    tau_load: tau_L,
     i_abc: [ia, ib, ic],
     i_dq: [s.i_d, s.i_q],
     i_dq_ref: [i_d_ref, i_q_ref],
     v_dq: [v_d, v_q],
-    P_in: P_e, P_out: P_m, eta,
+    P_in: P_e,
+    P_out: P_m,
+    eta,
     I_dc,
     saturated,
   };
@@ -284,7 +301,7 @@ function stepBrushedDC(
   load: LoadParams,
 ): SimSnapshot {
   const { Rs, Ls, psi_m: Kt, B_friction, I_rated } = motor;
-  const Ke = Kt;             // for a DC motor with consistent units, K_t = K_e
+  const Ke = Kt; // for a DC motor with consistent units, K_t = K_e
   const J = totalInertia(motor, load);
 
   // Speed PI → current ref.
@@ -295,7 +312,7 @@ function stepBrushedDC(
   i_ref = clamp(i_ref, -i_max, i_max);
 
   // Current PI → armature voltage.
-  const e_i = i_ref - s.i_q;            // we reuse i_q as the armature current
+  const e_i = i_ref - s.i_q; // we reuse i_q as the armature current
   s.e_iq_int = clamp(s.e_iq_int + e_i * DT, -100, 100);
   const v_emf = Ke * s.omega_m;
   let v_arm = ctrl.Kp_i * e_i + ctrl.Ki_i * s.e_iq_int + v_emf;
@@ -307,7 +324,7 @@ function stepBrushedDC(
 
   const tau_e = Kt * s.i_q;
   const tau_L = loadTorque(load, s.omega_m);
-  s.omega_m += (tau_e - tau_L - B_friction * s.omega_m) / J * DT;
+  s.omega_m += ((tau_e - tau_L - B_friction * s.omega_m) / J) * DT;
   s.theta_m += s.omega_m * DT;
   s.t += DT;
 
@@ -315,11 +332,18 @@ function stepBrushedDC(
   const P_m = tau_e * s.omega_m;
   const eta = Math.abs(P_e) > 1 ? clamp(Math.abs(P_m / P_e), 0, 1) : 0;
   return {
-    t: s.t, theta_m: s.theta_m, omega_m: s.omega_m,
-    tau_e, tau_load: tau_L,
+    t: s.t,
+    theta_m: s.theta_m,
+    omega_m: s.omega_m,
+    tau_e,
+    tau_load: tau_L,
     i_abc: [s.i_q, 0, 0],
-    i_dq: [0, s.i_q], i_dq_ref: [0, i_ref], v_dq: [0, v_arm],
-    P_in: P_e, P_out: P_m, eta,
+    i_dq: [0, s.i_q],
+    i_dq_ref: [0, i_ref],
+    v_dq: [0, v_arm],
+    P_in: P_e,
+    P_out: P_m,
+    eta,
     I_dc: Math.abs(P_e) / Math.max(1, ctrl.Vdc),
     saturated: v_arm === ctrl.Vdc || v_arm === -ctrl.Vdc,
   };
@@ -345,8 +369,12 @@ function stepBLDC(
   const mag = Math.hypot(snap.i_dq[0], snap.i_dq[1]);
   // Six 60° sectors; in each, two phases conduct at ±mag and one is off.
   const pattern: Array<[number, number, number]> = [
-    [+1, -1, 0], [+1, 0, -1], [0, +1, -1],
-    [-1, +1, 0], [-1, 0, +1], [0, -1, +1],
+    [+1, -1, 0],
+    [+1, 0, -1],
+    [0, +1, -1],
+    [-1, +1, 0],
+    [-1, 0, +1],
+    [0, -1, +1],
   ];
   const p = pattern[((sector % 6) + 6) % 6];
   snap.i_abc = [p[0] * mag, p[1] * mag, p[2] * mag];
@@ -369,31 +397,27 @@ function stepInduction(
 ): SimSnapshot {
   const { polePairs: pp, B_friction, tau_rated, omega_rated, V_rated, Tr } = motor;
   const J = totalInertia(motor, load);
-  const omega_sync = ctrl.omega_ref;          // synchronous speed reference, rad/s
+  const omega_sync = ctrl.omega_ref; // synchronous speed reference, rad/s
   const omega_e = omega_sync * pp;
-  const slip = omega_sync !== 0
-    ? (omega_sync - s.omega_m) / omega_sync
-    : 0;
+  const slip = omega_sync !== 0 ? (omega_sync - s.omega_m) / omega_sync : 0;
   // Simplified Kloss formula: τ = 2 τ_max / (s/s_max + s_max/s).
   // Pick s_max ≈ 0.2 by default; pull-out ≈ 2.5× rated torque (typical).
   const s_max = 0.2;
   const tau_pullout = 2.5 * tau_rated;
   const s_eff = Math.abs(slip) < 1e-6 ? 1e-6 : slip;
-  let tau_e = 2 * tau_pullout / (s_eff / s_max + s_max / s_eff);
+  let tau_e = (2 * tau_pullout) / (s_eff / s_max + s_max / s_eff);
   if (slip < 0) tau_e = -tau_e;
 
   // V/f voltage envelope.
   const vboost = ctrl.Vboost ?? 6;
-  const v_phase = vboost + (V_rated - vboost) * Math.abs(omega_sync) / Math.max(1, omega_rated);
+  const v_phase = vboost + ((V_rated - vboost) * Math.abs(omega_sync)) / Math.max(1, omega_rated);
   // For display: 3-phase stator currents at angle θ_e, magnitude ≈ tau/Kt approx.
   const i_mag = Math.abs(tau_e) / (1.5 * motor.psi_m * pp + 0.01);
   s.theta_flux += omega_e * DT;
-  const [ia, ib, ic] = invClarke(
-    ...invPark(0, i_mag, s.theta_flux),
-  );
+  const [ia, ib, ic] = invClarke(...invPark(0, i_mag, s.theta_flux));
 
   const tau_L = loadTorque(load, s.omega_m);
-  s.omega_m += (tau_e - tau_L - B_friction * s.omega_m) / J * DT;
+  s.omega_m += ((tau_e - tau_L - B_friction * s.omega_m) / J) * DT;
   s.theta_m += s.omega_m * DT;
   s.t += DT;
 
@@ -404,12 +428,18 @@ function stepInduction(
 
   void Tr;
   return {
-    t: s.t, theta_m: s.theta_m, omega_m: s.omega_m,
-    tau_e, tau_load: tau_L,
+    t: s.t,
+    theta_m: s.theta_m,
+    omega_m: s.omega_m,
+    tau_e,
+    tau_load: tau_L,
     i_abc: [ia, ib, ic],
-    i_dq: [0, i_mag], i_dq_ref: [0, i_mag],
+    i_dq: [0, i_mag],
+    i_dq_ref: [0, i_mag],
     v_dq: [0, v_phase],
-    P_in: P_e, P_out: P_m, eta,
+    P_in: P_e,
+    P_out: P_m,
+    eta,
     I_dc: Math.abs(P_e) / Math.max(1, ctrl.Vdc),
     saturated: false,
   };
@@ -430,7 +460,7 @@ function stepStepper(
   const J = totalInertia(motor, load);
   const microsteps = ctrl.microsteps ?? 16;
   // Step the commanded electrical angle at a rate proportional to omega_ref.
-  const step_per_sec = ctrl.omega_ref * pp * microsteps / (2 * Math.PI);
+  const step_per_sec = (ctrl.omega_ref * pp * microsteps) / (2 * Math.PI);
   void step_per_sec;
   s.theta_cmd += ctrl.omega_ref * pp * DT;
   const theta_e = pp * s.theta_m;
@@ -442,22 +472,28 @@ function stepStepper(
   const tau_e = 1.5 * pp * psi_m * s.i_q;
 
   const tau_L = loadTorque(load, s.omega_m);
-  s.omega_m += (tau_e - tau_L - B_friction * s.omega_m) / J * DT;
+  s.omega_m += ((tau_e - tau_L - B_friction * s.omega_m) / J) * DT;
   s.theta_m += s.omega_m * DT;
   s.t += DT;
 
   const [i_alpha, i_beta] = invPark(s.i_d, s.i_q, theta_e);
   const [ia, ib, ic] = invClarke(i_alpha, i_beta);
-  const P_e = ctrl.Vdc * Math.abs(i_hold) * 0.3;     // rough estimate
+  const P_e = ctrl.Vdc * Math.abs(i_hold) * 0.3; // rough estimate
   const P_m = tau_e * s.omega_m;
   const eta = Math.abs(P_e) > 1 ? clamp(Math.abs(P_m / P_e), 0, 1) : 0;
   return {
-    t: s.t, theta_m: s.theta_m, omega_m: s.omega_m,
-    tau_e, tau_load: tau_L,
+    t: s.t,
+    theta_m: s.theta_m,
+    omega_m: s.omega_m,
+    tau_e,
+    tau_load: tau_L,
     i_abc: [ia, ib, ic],
-    i_dq: [s.i_d, s.i_q], i_dq_ref: [s.i_d, s.i_q],
+    i_dq: [s.i_d, s.i_q],
+    i_dq_ref: [s.i_d, s.i_q],
     v_dq: [0, 0],
-    P_in: P_e, P_out: P_m, eta,
+    P_in: P_e,
+    P_out: P_m,
+    eta,
     I_dc: Math.abs(P_e) / Math.max(1, ctrl.Vdc),
     saturated: false,
   };
@@ -469,38 +505,73 @@ export function defaultMotor(kind: MotorKind): MotorParams {
   switch (kind) {
     case 'brushed-dc':
       return {
-        kind, Rs: 0.6, Ls: 1.2e-3, psi_m: 0.035, polePairs: 1,
-        J_motor: 5e-4, B_friction: 1e-4,
-        V_rated: 24, I_rated: 12, tau_rated: 0.42,
+        kind,
+        Rs: 0.6,
+        Ls: 1.2e-3,
+        psi_m: 0.035,
+        polePairs: 1,
+        J_motor: 5e-4,
+        B_friction: 1e-4,
+        V_rated: 24,
+        I_rated: 12,
+        tau_rated: 0.42,
         omega_rated: 600,
       };
     case 'bldc':
       return {
-        kind, Rs: 0.18, Ls: 0.6e-3, psi_m: 0.05, polePairs: 4,
-        J_motor: 1.2e-3, B_friction: 3e-4,
-        V_rated: 48, I_rated: 30, tau_rated: 9,
+        kind,
+        Rs: 0.18,
+        Ls: 0.6e-3,
+        psi_m: 0.05,
+        polePairs: 4,
+        J_motor: 1.2e-3,
+        B_friction: 3e-4,
+        V_rated: 48,
+        I_rated: 30,
+        tau_rated: 9,
         omega_rated: 400,
       };
     case 'pmsm':
       return {
-        kind, Rs: 0.08, Ls: 0.9e-3, psi_m: 0.18, polePairs: 4,
-        J_motor: 3e-3, B_friction: 5e-4,
-        V_rated: 400, I_rated: 25, tau_rated: 16,
-        omega_rated: 314,        // ≈ 3000 RPM
+        kind,
+        Rs: 0.08,
+        Ls: 0.9e-3,
+        psi_m: 0.18,
+        polePairs: 4,
+        J_motor: 3e-3,
+        B_friction: 5e-4,
+        V_rated: 400,
+        I_rated: 25,
+        tau_rated: 16,
+        omega_rated: 314, // ≈ 3000 RPM
       };
     case 'induction':
       return {
-        kind, Rs: 0.5, Ls: 1.5e-3, psi_m: 0.4, polePairs: 2,
-        J_motor: 6e-3, B_friction: 8e-4,
-        V_rated: 230, I_rated: 12, tau_rated: 10,
-        omega_rated: 157,        // ≈ 1500 RPM, 2-pole-pair at 50 Hz sync
+        kind,
+        Rs: 0.5,
+        Ls: 1.5e-3,
+        psi_m: 0.4,
+        polePairs: 2,
+        J_motor: 6e-3,
+        B_friction: 8e-4,
+        V_rated: 230,
+        I_rated: 12,
+        tau_rated: 10,
+        omega_rated: 157, // ≈ 1500 RPM, 2-pole-pair at 50 Hz sync
         Tr: 0.15,
       };
     case 'stepper':
       return {
-        kind, Rs: 1.4, Ls: 3e-3, psi_m: 0.025, polePairs: 50,
-        J_motor: 8e-5, B_friction: 5e-5,
-        V_rated: 24, I_rated: 2, tau_rated: 0.4,
+        kind,
+        Rs: 1.4,
+        Ls: 3e-3,
+        psi_m: 0.025,
+        polePairs: 50,
+        J_motor: 8e-5,
+        B_friction: 5e-5,
+        V_rated: 24,
+        I_rated: 2,
+        tau_rated: 0.4,
         omega_rated: 30,
       };
   }
@@ -510,39 +581,64 @@ export function defaultController(kind: ControllerKind): ControllerParams {
   switch (kind) {
     case 'h-bridge-pwm':
       return {
-        kind, Vdc: 24, fsw: 20000,
-        Kp_i: 0.5, Ki_i: 80,
-        Kp_w: 0.3, Ki_w: 4,
-        deadtime: 1e-6, omega_ref: 300,
+        kind,
+        Vdc: 24,
+        fsw: 20000,
+        Kp_i: 0.5,
+        Ki_i: 80,
+        Kp_w: 0.3,
+        Ki_w: 4,
+        deadtime: 1e-6,
+        omega_ref: 300,
       };
     case 'bldc-trapezoid':
       return {
-        kind, Vdc: 48, fsw: 20000,
-        Kp_i: 0.4, Ki_i: 60,
-        Kp_w: 0.5, Ki_w: 6,
-        deadtime: 1e-6, omega_ref: 200,
+        kind,
+        Vdc: 48,
+        fsw: 20000,
+        Kp_i: 0.4,
+        Ki_i: 60,
+        Kp_w: 0.5,
+        Ki_w: 6,
+        deadtime: 1e-6,
+        omega_ref: 200,
       };
     case 'foc':
       return {
-        kind, Vdc: 400, fsw: 10000,
-        Kp_i: 8, Ki_i: 1200,
-        Kp_w: 1.5, Ki_w: 20,
-        deadtime: 2e-6, omega_ref: 200,
+        kind,
+        Vdc: 400,
+        fsw: 10000,
+        Kp_i: 8,
+        Ki_i: 1200,
+        Kp_w: 1.5,
+        Ki_w: 20,
+        deadtime: 2e-6,
+        omega_ref: 200,
       };
     case 'vf-scalar':
       return {
-        kind, Vdc: 540, fsw: 5000,
-        Kp_i: 0, Ki_i: 0,
-        Kp_w: 0, Ki_w: 0,
-        deadtime: 3e-6, omega_ref: 120,
+        kind,
+        Vdc: 540,
+        fsw: 5000,
+        Kp_i: 0,
+        Ki_i: 0,
+        Kp_w: 0,
+        Ki_w: 0,
+        deadtime: 3e-6,
+        omega_ref: 120,
         Vboost: 8,
       };
     case 'microstep':
       return {
-        kind, Vdc: 24, fsw: 30000,
-        Kp_i: 0, Ki_i: 0,
-        Kp_w: 0, Ki_w: 0,
-        deadtime: 0, omega_ref: 6,
+        kind,
+        Vdc: 24,
+        fsw: 30000,
+        Kp_i: 0,
+        Ki_i: 0,
+        Kp_w: 0,
+        Ki_w: 0,
+        deadtime: 0,
+        omega_ref: 6,
         microsteps: 16,
       };
   }
@@ -566,11 +662,16 @@ export function defaultLoad(kind: LoadParams['kind']): LoadParams {
 /** Compatibility — match a controller to a motor type when the dropdown swaps. */
 export function defaultControllerFor(kind: MotorKind): ControllerKind {
   switch (kind) {
-    case 'brushed-dc':  return 'h-bridge-pwm';
-    case 'bldc':        return 'bldc-trapezoid';
-    case 'pmsm':        return 'foc';
-    case 'induction':   return 'vf-scalar';
-    case 'stepper':     return 'microstep';
+    case 'brushed-dc':
+      return 'h-bridge-pwm';
+    case 'bldc':
+      return 'bldc-trapezoid';
+    case 'pmsm':
+      return 'foc';
+    case 'induction':
+      return 'vf-scalar';
+    case 'stepper':
+      return 'microstep';
   }
 }
 
@@ -588,7 +689,8 @@ export const PRESETS: Preset[] = [
   {
     id: 'pmsm-step',
     name: 'PMSM torque-step response',
-    description: 'Run a speed step from 0 to 200 rad/s with a high-inertia load to see the current loop saturate.',
+    description:
+      'Run a speed step from 0 to 200 rad/s with a high-inertia load to see the current loop saturate.',
     motor: defaultMotor('pmsm'),
     controller: { ...defaultController('foc'), omega_ref: 200, Kp_w: 2.5, Ki_w: 35 },
     load: { ...defaultLoad('inertial'), J_load: 30e-3 },
@@ -596,7 +698,8 @@ export const PRESETS: Preset[] = [
   {
     id: 'induction-startup',
     name: 'Induction V/f starting transient',
-    description: 'A 3-phase squirrel-cage motor starting against a constant-torque load on scalar V/f.',
+    description:
+      'A 3-phase squirrel-cage motor starting against a constant-torque load on scalar V/f.',
     motor: defaultMotor('induction'),
     controller: { ...defaultController('vf-scalar'), omega_ref: 150 },
     load: defaultLoad('constant-torque'),
@@ -637,9 +740,7 @@ export function buildEfficiencyMap(
   const omegaMax = motor.omega_rated * 1.8;
   const k_iron = 1e-4;
   const k_mech = motor.B_friction * 1.5;
-  const Kt = motor.kind === 'brushed-dc'
-    ? motor.psi_m
-    : 1.5 * motor.polePairs * motor.psi_m;
+  const Kt = motor.kind === 'brushed-dc' ? motor.psi_m : 1.5 * motor.polePairs * motor.psi_m;
   const data: number[][] = [];
   for (let i = 0; i < nTau; i++) {
     const row: number[] = [];
@@ -649,9 +750,7 @@ export function buildEfficiencyMap(
       const i_s = Math.abs(tau / Math.max(1e-3, Kt));
       const omega_e = motor.polePairs * omega;
       const P_loss =
-        1.5 * motor.Rs * i_s * i_s
-        + k_iron * omega_e * omega_e
-        + k_mech * omega * omega;
+        1.5 * motor.Rs * i_s * i_s + k_iron * omega_e * omega_e + k_mech * omega * omega;
       const P_m = tau * omega;
       const eta = P_m > 1 ? P_m / (P_m + P_loss) : 0;
       row.push(Math.max(0, Math.min(1, eta)));

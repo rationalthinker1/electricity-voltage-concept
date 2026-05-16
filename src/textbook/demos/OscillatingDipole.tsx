@@ -17,7 +17,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawCharge } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function OscillatingDipoleDemo({ figure }: Props) {
   // Angular frequency in "rad / simulation second". Wavelength readout below
@@ -27,12 +29,14 @@ export function OscillatingDipoleDemo({ figure }: Props) {
 
   // Simulation-frame speed of light, in px per simulation second. Kept fixed
   // so the slider only changes ω and λ falls out as c/f.
-  const C_SIM = 110;            // px / s
+  const C_SIM = 110; // px / s
   const f = omega / (2 * Math.PI);
   const lambdaPx = C_SIM / Math.max(1e-6, f);
 
   const stateRef = useRef({ omega });
-  useEffect(() => { stateRef.current = { omega }; }, [omega]);
+  useEffect(() => {
+    stateRef.current = { omega };
+  }, [omega]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H } = info;
@@ -48,7 +52,7 @@ export function OscillatingDipoleDemo({ figure }: Props) {
 
       const cx = W / 2;
       const cy = H / 2;
-      const dipoleHalf = 22;        // half-separation of the two charges, in px
+      const dipoleHalf = 22; // half-separation of the two charges, in px
 
       // ── Radiated E ripples
       // Far-field amplitude ~ sin²θ where θ is measured from the dipole axis (vertical).
@@ -57,7 +61,7 @@ export function OscillatingDipoleDemo({ figure }: Props) {
       const k = om / C_SIM;
       const img = ctx.createImageData(W, H);
       const data = img.data;
-      const step = 2;               // sub-sample for speed
+      const step = 2; // sub-sample for speed
       for (let py = 0; py < H; py += step) {
         for (let px = 0; px < W; px += step) {
           const dx = px - cx;
@@ -94,26 +98,37 @@ export function OscillatingDipoleDemo({ figure }: Props) {
       const yPos = cy - dipoleHalf - disp;
       const yNeg = cy + dipoleHalf - disp;
 
-      drawCharge(ctx, { x: cx, y: yPos }, {
-        color: '#ff3b6e',
-        glow: true,
-        radius: 11,
-        sign: '+',
-        textColor: '#0a0a0b',
-      });
-      drawCharge(ctx, { x: cx, y: yNeg }, {
-        color: '#5baef8',
-        glow: true,
-        radius: 11,
-        sign: '−',
-        textColor: '#0a0a0b',
-      });
+      drawCharge(
+        ctx,
+        { x: cx, y: yPos },
+        {
+          color: '#ff3b6e',
+          glow: true,
+          radius: 11,
+          sign: '+',
+          textColor: '#0a0a0b',
+        },
+      );
+      drawCharge(
+        ctx,
+        { x: cx, y: yNeg },
+        {
+          color: '#5baef8',
+          glow: true,
+          radius: 11,
+          sign: '−',
+          textColor: '#0a0a0b',
+        },
+      );
 
       // Axis indicator (dashed vertical line)
       ctx.setLineDash([4, 6]);
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(cx, 8); ctx.lineTo(cx, H - 8); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx, 8);
+      ctx.lineTo(cx, H - 8);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       // Labels: "axis" and "equator (max radiation)"
@@ -136,21 +151,26 @@ export function OscillatingDipoleDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 7.4'}
       title="An oscillating dipole radiates"
       question="Where do the ripples go — and where do they not go?"
-      caption={<>
-        Two opposite charges wobbling along a vertical axis at frequency ω. The radiated
-        wavefronts spread outward at the simulation's <em>c</em>, but their amplitude follows the
-        far-field pattern <strong>sin²θ</strong> — strongest on the equator (perpendicular to the
-        dipole axis), zero along the axis itself. Crank ω and watch the wavelength shrink as
-        λ = c/f.
-      </>}
+      caption={
+        <>
+          Two opposite charges wobbling along a vertical axis at frequency ω. The radiated
+          wavefronts spread outward at the simulation's <em>c</em>, but their amplitude follows the
+          far-field pattern <strong>sin²θ</strong> — strongest on the equator (perpendicular to the
+          dipole axis), zero along the axis itself. Crank ω and watch the wavelength shrink as λ =
+          c/f.
+        </>
+      }
       deeperLab={{ slug: 'poynting', label: 'See Poynting lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="ω"
-          value={omega} min={0.6} max={8} step={0.05}
-          format={v => v.toFixed(2) + ' rad/s'}
+          value={omega}
+          min={0.6}
+          max={8}
+          step={0.05}
+          format={(v) => v.toFixed(2) + ' rad/s'}
           onChange={setOmega}
         />
         <MiniReadout label="frequency f" value={f.toFixed(2)} unit="Hz" />

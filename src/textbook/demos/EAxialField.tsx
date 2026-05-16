@@ -17,14 +17,18 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { pretty } from '@/lib/physics';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function EAxialFieldDemo({ figure }: Props) {
   const [V, setV] = useState(12);
   const [L, setL] = useState(1.0);
 
   const stateRef = useRef({ V, L });
-  useEffect(() => { stateRef.current = { V, L }; }, [V, L]);
+  useEffect(() => {
+    stateRef.current = { V, L };
+  }, [V, L]);
 
   const E = V / L;
 
@@ -75,8 +79,12 @@ export function EAxialFieldDemo({ figure }: Props) {
       // End caps
       ctx.restore();
       ctx.strokeStyle = colors.accent;
-      ctx.beginPath(); ctx.ellipse(wireXL, wireCY, er, r, 0, 0, Math.PI * 2); ctx.stroke();
-      ctx.beginPath(); ctx.ellipse(wireXR, wireCY, er, r, 0, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(wireXL, wireCY, er, r, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(wireXR, wireCY, er, r, 0, 0, Math.PI * 2);
+      ctx.stroke();
 
       // ── Axial E arrows (pink) inside the wire
       // Use multiple arrows along the wire centerline; arrow length scales with log E.
@@ -107,9 +115,11 @@ export function EAxialFieldDemo({ figure }: Props) {
       ctx.fillStyle = colors.pink;
       const nDots = 5;
       for (let i = 0; i < nDots; i++) {
-        const f = ((i / nDots) + phase) % 1;
+        const f = (i / nDots + phase) % 1;
         const tx = wireXL + 18 + f * (wireXR - wireXL - 36);
-        ctx.beginPath(); ctx.arc(tx, wireCY, 1.6, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(tx, wireCY, 1.6, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       // Terminals — battery hookup
@@ -119,7 +129,8 @@ export function EAxialFieldDemo({ figure }: Props) {
       ctx.fillRect(wireXR + 18, wireCY - r - 4, 4, 2 * r + 8);
       ctx.fillStyle = colors.pink;
       ctx.font = 'bold 14px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText('+', wireXL - 36, wireCY);
       ctx.fillStyle = colors.blue;
       ctx.fillText('−', wireXR + 36, wireCY);
@@ -127,14 +138,16 @@ export function EAxialFieldDemo({ figure }: Props) {
       // Labels
       ctx.fillStyle = colors.pink;
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
       ctx.fillText('E  (axial)', (wireXL + wireXR) / 2, wireCY - r - 14);
 
       ctx.save();
       ctx.globalAlpha = 0.85;
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText(`V = ${V.toFixed(1)} V`, 18, h - 24);
       ctx.textAlign = 'right';
       ctx.fillText(`L = ${L.toFixed(2)} m`, w - 18, h - 24);
@@ -154,25 +167,34 @@ export function EAxialFieldDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 6.2'}
       title="E points along the wire"
       question="Where does the electric field inside a resistive wire actually point?"
-      caption={<>
-        Pink arrows are the electric field <strong>E</strong>. It runs <em>along the wire's axis</em>, not radially — it has to,
-        because that's the field that pushes the drifting charge to maintain the current. Magnitude follows directly from the
-        voltage drop across the length: <em>E = V/L</em>.
-      </>}
+      caption={
+        <>
+          Pink arrows are the electric field <strong>E</strong>. It runs{' '}
+          <em>along the wire's axis</em>, not radially — it has to, because that's the field that
+          pushes the drifting charge to maintain the current. Magnitude follows directly from the
+          voltage drop across the length: <em>E = V/L</em>.
+        </>
+      }
       deeperLab={{ slug: 'ohms-law', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="V"
-          value={V} min={0.1} max={48} step={0.1}
-          format={v => v.toFixed(1) + ' V'}
+          value={V}
+          min={0.1}
+          max={48}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' V'}
           onChange={setV}
         />
         <MiniSlider
           label="L"
-          value={L} min={0.1} max={5} step={0.05}
-          format={v => v.toFixed(2) + ' m'}
+          value={L}
+          min={0.1}
+          max={5}
+          step={0.05}
+          format={(v) => v.toFixed(2) + ' m'}
           onChange={setL}
         />
         <MiniReadout label="E along axis" value={<Num value={E} />} unit="V/m" />

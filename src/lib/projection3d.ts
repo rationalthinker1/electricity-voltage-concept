@@ -23,9 +23,17 @@
  * touch orbiting for free.
  */
 
-export interface Vec3 { x: number; y: number; z: number }
+export interface Vec3 {
+  x: number;
+  y: number;
+  z: number;
+}
 
-export interface Point2D { x: number; y: number; depth: number }
+export interface Point2D {
+  x: number;
+  y: number;
+  depth: number;
+}
 
 export interface OrbitCamera {
   /** Rotation around world +y, radians. */
@@ -84,12 +92,14 @@ export function normalize(a: Vec3): Vec3 {
 export function project(p: Vec3, cam: OrbitCamera, w: number, h: number): Point2D {
   // Rotate world point into camera space.
   // Yaw around y: x' = x cos - z sin; z' = x sin + z cos
-  const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw);
+  const cy = Math.cos(cam.yaw),
+    sy = Math.sin(cam.yaw);
   const x = p.x * cy - p.z * sy;
   let z = p.x * sy + p.z * cy;
   let y = p.y;
   // Pitch around the camera's x-axis: y'' = y cos - z sin; z'' = y sin + z cos
-  const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch);
+  const cp = Math.cos(cam.pitch),
+    sp = Math.sin(cam.pitch);
   const ynew = y * cp - z * sp;
   const znew = y * sp + z * cp;
   y = ynew;
@@ -97,7 +107,7 @@ export function project(p: Vec3, cam: OrbitCamera, w: number, h: number): Point2
   // Translate so camera sits at +cam.distance on its local z axis.
   const depth = cam.distance - z;
   // Perspective divide.
-  const focal = (Math.min(w, h) / 2) / Math.tan(cam.fov / 2);
+  const focal = Math.min(w, h) / 2 / Math.tan(cam.fov / 2);
   const sx = depth > 0 ? (x / depth) * focal : x * focal;
   const sy2 = depth > 0 ? (-y / depth) * focal : -y * focal;
   return { x: w / 2 + sx, y: h / 2 + sy2, depth };
@@ -109,11 +119,14 @@ export function project(p: Vec3, cam: OrbitCamera, w: number, h: number): Point2
  * supplied camera (largest depth first).
  */
 export function depthSortIndices<T extends { anchor: Vec3 }>(
-  items: T[], cam: OrbitCamera, w: number, h: number,
+  items: T[],
+  cam: OrbitCamera,
+  w: number,
+  h: number,
 ): number[] {
   const depths = items.map((it, i) => ({ i, d: project(it.anchor, cam, w, h).depth }));
   depths.sort((a, b) => b.d - a.d);
-  return depths.map(d => d.i);
+  return depths.map((d) => d.i);
 }
 
 /**
@@ -130,17 +143,22 @@ export function depthSortIndices<T extends { anchor: Vec3 }>(
  */
 export function attachOrbit(canvas: HTMLCanvasElement, cam: OrbitCamera): () => void {
   let dragging = false;
-  let lastX = 0, lastY = 0;
+  let lastX = 0,
+    lastY = 0;
   const PITCH_MAX = Math.PI / 2 - 0.05;
 
   function down(x: number, y: number) {
-    dragging = true; lastX = x; lastY = y;
+    dragging = true;
+    lastX = x;
+    lastY = y;
     canvas.style.cursor = 'grabbing';
   }
   function move(x: number, y: number) {
     if (!dragging) return;
-    const dx = x - lastX, dy = y - lastY;
-    lastX = x; lastY = y;
+    const dx = x - lastX,
+      dy = y - lastY;
+    lastX = x;
+    lastY = y;
     cam.yaw += dx * 0.01;
     cam.pitch = Math.max(-PITCH_MAX, Math.min(PITCH_MAX, cam.pitch + dy * 0.01));
   }
@@ -149,9 +167,17 @@ export function attachOrbit(canvas: HTMLCanvasElement, cam: OrbitCamera): () => 
     canvas.style.cursor = 'grab';
   }
 
-  function onMouseDown(e: MouseEvent) { const r = canvas.getBoundingClientRect(); down(e.clientX - r.left, e.clientY - r.top); }
-  function onMouseMove(e: MouseEvent) { const r = canvas.getBoundingClientRect(); move(e.clientX - r.left, e.clientY - r.top); }
-  function onMouseUp() { up(); }
+  function onMouseDown(e: MouseEvent) {
+    const r = canvas.getBoundingClientRect();
+    down(e.clientX - r.left, e.clientY - r.top);
+  }
+  function onMouseMove(e: MouseEvent) {
+    const r = canvas.getBoundingClientRect();
+    move(e.clientX - r.left, e.clientY - r.top);
+  }
+  function onMouseUp() {
+    up();
+  }
 
   function onTouchStart(e: TouchEvent) {
     if (e.touches.length === 0) return;
@@ -165,7 +191,9 @@ export function attachOrbit(canvas: HTMLCanvasElement, cam: OrbitCamera): () => 
     const r = canvas.getBoundingClientRect();
     move(e.touches[0]!.clientX - r.left, e.touches[0]!.clientY - r.top);
   }
-  function onTouchEnd() { up(); }
+  function onTouchEnd() {
+    up();
+  }
 
   canvas.style.cursor = 'grab';
   canvas.addEventListener('mousedown', onMouseDown);

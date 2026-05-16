@@ -20,8 +20,8 @@ interface InspectorProps {
 export function Inspector({ selected, onChange, onDelete, onRotate }: InspectorProps) {
   if (!selected) {
     return (
-      <div className="flex flex-col gap-md">
-        <div className="font-3 text-1 text-accent uppercase tracking-[.2em]">Inspector</div>
+      <div className="gap-md flex flex-col">
+        <div className="font-3 text-1 text-accent tracking-[.2em] uppercase">Inspector</div>
         <div className="text-2 text-text-muted leading-[1.5]">
           Click a component on the canvas to edit it.
         </div>
@@ -30,16 +30,16 @@ export function Inspector({ selected, onChange, onDelete, onRotate }: InspectorP
   }
 
   return (
-    <div className="flex flex-col gap-md">
-      <div className="font-3 text-1 text-accent uppercase tracking-[.2em]">Inspector</div>
-      <div className="font-2 italic text-[18px] text-text">{kindDisplayName(selected.kind)}</div>
+    <div className="gap-md flex flex-col">
+      <div className="font-3 text-1 text-accent tracking-[.2em] uppercase">Inspector</div>
+      <div className="font-2 text-text text-[18px] italic">{kindDisplayName(selected.kind)}</div>
 
       {valueField(selected, onChange)}
 
-      <div className="flex gap-sm mt-sm">
+      <div className="gap-sm mt-sm flex">
         <button
           type="button"
-          className="flex-1 bg-bg-elevated border border-border text-text-dim font-3 text-[11px] py-[6px] px-[10px] rounded-2 cursor-pointer transition-all duration-fast hover:text-text hover:border-text-dim disabled:opacity-40 disabled:cursor-not-allowed"
+          className="bg-bg-elevated border-border text-text-dim font-3 rounded-2 duration-fast hover:text-text hover:border-text-dim flex-1 cursor-pointer border px-[10px] py-[6px] text-[11px] transition-all disabled:cursor-not-allowed disabled:opacity-40"
           onClick={onRotate}
           disabled={selected.kind === 'ground'}
         >
@@ -47,7 +47,7 @@ export function Inspector({ selected, onChange, onDelete, onRotate }: InspectorP
         </button>
         <button
           type="button"
-          className="flex-1 bg-bg-elevated border border-border text-text-dim font-3 text-[11px] py-[6px] px-[10px] rounded-2 cursor-pointer transition-all duration-fast hover:text-pink hover:border-pink disabled:opacity-40 disabled:cursor-not-allowed"
+          className="bg-bg-elevated border-border text-text-dim font-3 rounded-2 duration-fast hover:text-pink hover:border-pink flex-1 cursor-pointer border px-[10px] py-[6px] text-[11px] transition-all disabled:cursor-not-allowed disabled:opacity-40"
           onClick={onDelete}
         >
           Delete
@@ -62,23 +62,36 @@ function valueField(c: PlacedComponent, onChange: (c: PlacedComponent) => void) 
     case 'battery':
       return (
         <NumberField
-          label="Voltage" unit="V"
-          value={c.value} min={-100} max={100} step={0.1}
-          onChange={v => onChange({ ...c, value: v })}
+          label="Voltage"
+          unit="V"
+          value={c.value}
+          min={-100}
+          max={100}
+          step={0.1}
+          onChange={(v) => onChange({ ...c, value: v })}
         />
       );
     case 'ac':
       return (
         <>
           <NumberField
-            label="Peak voltage" unit="V₀"
-            value={c.value} min={0} max={400} step={0.1}
-            onChange={v => onChange({ ...c, value: v })}
+            label="Peak voltage"
+            unit="V₀"
+            value={c.value}
+            min={0}
+            max={400}
+            step={0.1}
+            onChange={(v) => onChange({ ...c, value: v })}
           />
           <NumberField
-            label="Frequency" unit="Hz"
-            value={c.acFreq ?? 60} min={0.1} max={1e6} step={1} log
-            onChange={v => onChange({ ...c, acFreq: v })}
+            label="Frequency"
+            unit="Hz"
+            value={c.acFreq ?? 60}
+            min={0.1}
+            max={1e6}
+            step={1}
+            log
+            onChange={(v) => onChange({ ...c, acFreq: v })}
           />
         </>
       );
@@ -86,35 +99,52 @@ function valueField(c: PlacedComponent, onChange: (c: PlacedComponent) => void) 
     case 'bulb':
       return (
         <NumberField
-          label="Resistance" unit="Ω"
-          value={c.value} min={0.01} max={1e7} step={1} log
-          onChange={v => onChange({ ...c, value: v })}
+          label="Resistance"
+          unit="Ω"
+          value={c.value}
+          min={0.01}
+          max={1e7}
+          step={1}
+          log
+          onChange={(v) => onChange({ ...c, value: v })}
         />
       );
     case 'capacitor':
       return (
         <NumberField
-          label="Capacitance" unit="F"
-          value={c.value} min={1e-12} max={1} step={1e-7} log
-          onChange={v => onChange({ ...c, value: v })}
+          label="Capacitance"
+          unit="F"
+          value={c.value}
+          min={1e-12}
+          max={1}
+          step={1e-7}
+          log
+          onChange={(v) => onChange({ ...c, value: v })}
         />
       );
     case 'inductor':
       return (
         <NumberField
-          label="Inductance" unit="H"
-          value={c.value} min={1e-9} max={10} step={1e-6} log
-          onChange={v => onChange({ ...c, value: v })}
+          label="Inductance"
+          unit="H"
+          value={c.value}
+          min={1e-9}
+          max={10}
+          step={1e-6}
+          log
+          onChange={(v) => onChange({ ...c, value: v })}
         />
       );
     case 'switch':
       return (
         <div className="flex flex-col gap-[6px]">
-          <label className="flex justify-between font-3 text-1 text-text-dim uppercase tracking-[.15em]">State</label>
+          <label className="font-3 text-1 text-text-dim flex justify-between tracking-[.15em] uppercase">
+            State
+          </label>
           <button
             type="button"
             className={clsx(
-              'bg-bg-elevated border font-3 text-2 p-sm rounded-2 cursor-pointer text-center',
+              'bg-bg-elevated font-3 text-2 p-sm rounded-2 cursor-pointer border text-center',
               c.switchOpen ? 'text-pink border-pink' : 'text-teal border-teal',
             )}
             onClick={() => onChange({ ...c, switchOpen: !c.switchOpen })}
@@ -125,13 +155,13 @@ function valueField(c: PlacedComponent, onChange: (c: PlacedComponent) => void) 
       );
     case 'diode':
       return (
-        <div className="flex flex-col gap-[6px] text-[11px] text-text-muted leading-[1.5] py-sm">
+        <div className="text-text-muted py-sm flex flex-col gap-[6px] text-[11px] leading-[1.5]">
           V_F = 0.7 V (piecewise-linear)
         </div>
       );
     case 'ground':
       return (
-        <div className="flex flex-col gap-[6px] text-[11px] text-text-muted leading-[1.5] py-sm">
+        <div className="text-text-muted py-sm flex flex-col gap-[6px] text-[11px] leading-[1.5]">
           Reference node. Every circuit needs at least one.
         </div>
       );
@@ -157,28 +187,28 @@ function NumberField({ label, unit, value, min, max, step, log, onChange }: Numb
 
   return (
     <div className="flex flex-col gap-[6px]">
-      <label className="flex justify-between font-3 text-1 text-text-dim uppercase tracking-[.15em]">
+      <label className="font-3 text-1 text-text-dim flex justify-between tracking-[.15em] uppercase">
         {label}
         <span className="text-text-muted">{unit}</span>
       </label>
       <input
         type="number"
-        className="bg-bg-elevated border border-border text-text font-3 text-3 py-[6px] px-sm rounded-1 w-full box-border focus:outline-none focus:border-accent"
+        className="bg-bg-elevated border-border text-text font-3 text-3 px-sm rounded-1 focus:border-accent box-border w-full border py-[6px] focus:outline-none"
         value={value}
         step={log ? 'any' : step}
-        onChange={e => {
+        onChange={(e) => {
           const v = parseFloat(e.target.value);
           if (isFinite(v)) onChange(v);
         }}
       />
       <input
         type="range"
-        className="w-full accent-accent"
+        className="accent-accent w-full"
         min={safeMin}
         max={safeMax}
         step={log ? (safeMax - safeMin) / 100 : step}
         value={safeVal}
-        onChange={e => {
+        onChange={(e) => {
           const v = parseFloat(e.target.value);
           if (isFinite(v)) onChange(log ? Math.pow(10, v) : v);
         }}

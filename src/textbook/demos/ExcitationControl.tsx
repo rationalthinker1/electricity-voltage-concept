@@ -19,19 +19,23 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const X_S = 1.0;       // pu synchronous reactance
-const V_GRID = 1.0;    // pu grid voltage
-const K_F = 1.0;       // |E_f| per pu field current
+const X_S = 1.0; // pu synchronous reactance
+const V_GRID = 1.0; // pu grid voltage
+const K_F = 1.0; // |E_f| per pu field current
 
 export function ExcitationControlDemo({ figure }: Props) {
-  const [iField, setIField] = useState(1.2);  // pu rotor field current
+  const [iField, setIField] = useState(1.2); // pu rotor field current
   const [loaded, setLoaded] = useState(true);
-  const [pRef, setPRef] = useState(0.6);      // pu real power (when loaded)
+  const [pRef, setPRef] = useState(0.6); // pu real power (when loaded)
 
   const stateRef = useRef({ iField, loaded, pRef });
-  useEffect(() => { stateRef.current = { iField, loaded, pRef }; }, [iField, loaded, pRef]);
+  useEffect(() => {
+    stateRef.current = { iField, loaded, pRef };
+  }, [iField, loaded, pRef]);
 
   // No-load and loaded cases.
   const computed = useMemo(() => {
@@ -47,10 +51,18 @@ export function ExcitationControlDemo({ figure }: Props) {
       return { Ef, Vt: V_GRID, P: pRef, Q: 0, Ia: NaN, deltaDeg: 90, mode: 'pullout' as const };
     }
     const delta = Math.asin(sinDelta);
-    const Q = (V_GRID * Ef / X_S) * Math.cos(delta) - (V_GRID * V_GRID) / X_S;
+    const Q = ((V_GRID * Ef) / X_S) * Math.cos(delta) - (V_GRID * V_GRID) / X_S;
     const S = Math.sqrt(pRef * pRef + Q * Q);
     const Ia = S / V_GRID;
-    return { Ef, Vt: V_GRID, P: pRef, Q, Ia, deltaDeg: (delta * 180) / Math.PI, mode: Q > 0 ? 'over-excited' as const : 'under-excited' as const };
+    return {
+      Ef,
+      Vt: V_GRID,
+      P: pRef,
+      Q,
+      Ia,
+      deltaDeg: (delta * 180) / Math.PI,
+      mode: Q > 0 ? ('over-excited' as const) : ('under-excited' as const),
+    };
   }, [iField, loaded, pRef]);
 
   const setup = useCallback((info: CanvasInfo) => {
@@ -63,7 +75,10 @@ export function ExcitationControlDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 56, padR = 24, padT = 22, padB = 38;
+      const padL = 56,
+        padR = 24,
+        padT = 22,
+        padB = 38;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
@@ -75,12 +90,19 @@ export function ExcitationControlDemo({ figure }: Props) {
       ctx.strokeStyle = colors.border;
       for (let i = 1; i < 5; i++) {
         const x = padL + (i / 5) * plotW;
-        ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + plotH); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, padT);
+        ctx.lineTo(x, padT + plotH);
+        ctx.stroke();
         const y = padT + (i / 5) * plotH;
-        ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + plotW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(padL, y);
+        ctx.lineTo(padL + plotW, y);
+        ctx.stroke();
       }
 
-      const ifMin = 0.4, ifMax = 2.5;
+      const ifMin = 0.4,
+        ifMax = 2.5;
       const xAt = (iF: number) => padL + ((iF - ifMin) / (ifMax - ifMin)) * plotW;
 
       if (!loaded) {
@@ -95,7 +117,8 @@ export function ExcitationControlDemo({ figure }: Props) {
           const Vt = K_F * iF;
           const x = xAt(iF);
           const y = yAt(Vt);
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.stroke();
         // Marker
@@ -106,10 +129,12 @@ export function ExcitationControlDemo({ figure }: Props) {
         // Y axis label
         ctx.fillStyle = colors.textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
         ctx.fillText('|V_t| (pu)', padL - 6, padT + plotH / 2);
         // Title
-        ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
         ctx.fillText('no-load: |V_t| = |E_f| = k_f · I_field', padL + 6, padT + 4);
       } else {
         // Loaded: V curve — |I_a| vs i_F, for fixed P.
@@ -126,11 +151,14 @@ export function ExcitationControlDemo({ figure }: Props) {
           const sinD = (pRef * X_S) / (V_GRID * Ef);
           if (Math.abs(sinD) > 1) continue;
           const d = Math.asin(sinD);
-          const Q = (V_GRID * Ef / X_S) * Math.cos(d) - (V_GRID * V_GRID) / X_S;
+          const Q = ((V_GRID * Ef) / X_S) * Math.cos(d) - (V_GRID * V_GRID) / X_S;
           const Ia = Math.sqrt(pRef * pRef + Q * Q) / V_GRID;
           const x = xAt(iF);
           const y = yAt(Math.min(Ia, yMax));
-          if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
+          if (!started) {
+            ctx.moveTo(x, y);
+            started = true;
+          } else ctx.lineTo(x, y);
         }
         ctx.stroke();
 
@@ -140,14 +168,16 @@ export function ExcitationControlDemo({ figure }: Props) {
         ctx.setLineDash([4, 4]);
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(padL, yAt(pRef)); ctx.lineTo(padL + plotW, yAt(pRef));
+        ctx.moveTo(padL, yAt(pRef));
+        ctx.lineTo(padL + plotW, yAt(pRef));
         ctx.stroke();
         ctx.setLineDash([]);
         ctx.save();
         ctx.globalAlpha = 0.8;
         ctx.fillStyle = colors.teal;
         ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
         ctx.fillText('|I_a| = P at unity PF', padL + 6, yAt(pRef) - 2);
 
         // Marker
@@ -155,7 +185,7 @@ export function ExcitationControlDemo({ figure }: Props) {
         const sinD = (pRef * X_S) / (V_GRID * Ef);
         if (Math.abs(sinD) <= 1) {
           const d = Math.asin(sinD);
-          const Q = (V_GRID * Ef / X_S) * Math.cos(d) - (V_GRID * V_GRID) / X_S;
+          const Q = ((V_GRID * Ef) / X_S) * Math.cos(d) - (V_GRID * V_GRID) / X_S;
           const Ia = Math.sqrt(pRef * pRef + Q * Q) / V_GRID;
           ctx.fillStyle = Q > 0 ? '#ff3b6e' : '#5baef8';
           ctx.beginPath();
@@ -167,17 +197,24 @@ export function ExcitationControlDemo({ figure }: Props) {
         ctx.restore();
         ctx.fillStyle = colors.textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
         ctx.fillText('|I_a| (pu)', padL - 6, padT + plotH / 2);
         // Title
-        ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-        ctx.fillText(`loaded V-curve: |I_a| vs I_field at P = ${pRef.toFixed(2)} pu`, padL + 6, padT + 4);
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(
+          `loaded V-curve: |I_a| vs I_field at P = ${pRef.toFixed(2)} pu`,
+          padL + 6,
+          padT + 4,
+        );
 
         // Region labels
         ctx.save();
         ctx.globalAlpha = 0.75;
         ctx.fillStyle = colors.blue;
-        ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
         ctx.fillText('under-excited (Q < 0)', padL + 8, padT + plotH - 6);
         ctx.restore();
         ctx.save();
@@ -191,7 +228,8 @@ export function ExcitationControlDemo({ figure }: Props) {
       // X axis ticks
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       for (let iF = 0.5; iF <= 2.5; iF += 0.5) {
         ctx.fillText(iF.toFixed(1), xAt(iF), padT + plotH + 4);
       }
@@ -208,27 +246,36 @@ export function ExcitationControlDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 17.6'}
       title="Excitation control: how a generator chooses VARs"
       question="Field current sets terminal voltage at no load — and reactive power at a stiff bus. Why the V?"
-      caption={<>
-        At no load, output voltage scales linearly with rotor field current (the open-circuit characteristic).
-        On the grid, real power is fixed by the prime mover; varying field current swings reactive power instead.
-        Underexcited → generator absorbs Q (lagging). Overexcited → supplies Q (leading). The V curve is armature
-        current at fixed P; its minimum sits at unity power factor.
-      </>}
+      caption={
+        <>
+          At no load, output voltage scales linearly with rotor field current (the open-circuit
+          characteristic). On the grid, real power is fixed by the prime mover; varying field
+          current swings reactive power instead. Underexcited → generator absorbs Q (lagging).
+          Overexcited → supplies Q (leading). The V curve is armature current at fixed P; its
+          minimum sits at unity power factor.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniToggle label={loaded ? 'on grid' : 'no load'} checked={loaded} onChange={setLoaded} />
         <MiniSlider
           label="I_field"
-          value={iField} min={0.4} max={2.4} step={0.02}
-          format={v => v.toFixed(2) + ' pu'}
+          value={iField}
+          min={0.4}
+          max={2.4}
+          step={0.02}
+          format={(v) => v.toFixed(2) + ' pu'}
           onChange={setIField}
         />
         {loaded && (
           <MiniSlider
             label="P real"
-            value={pRef} min={0} max={1.0} step={0.05}
-            format={v => v.toFixed(2) + ' pu'}
+            value={pRef}
+            min={0}
+            max={1.0}
+            step={0.05}
+            format={(v) => v.toFixed(2) + ' pu'}
             onChange={setPRef}
           />
         )}
@@ -240,7 +287,13 @@ export function ExcitationControlDemo({ figure }: Props) {
             <MiniReadout label="Q" value={<Num value={computed.Q} digits={2} />} unit="pu" />
             <MiniReadout
               label="|I_a|"
-              value={Number.isFinite(computed.Ia) ? <Num value={computed.Ia} digits={2} /> : <span>pull-out</span>}
+              value={
+                Number.isFinite(computed.Ia) ? (
+                  <Num value={computed.Ia} digits={2} />
+                ) : (
+                  <span>pull-out</span>
+                )
+              }
               unit={Number.isFinite(computed.Ia) ? 'pu' : undefined}
             />
           </>

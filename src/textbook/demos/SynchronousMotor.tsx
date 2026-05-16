@@ -14,20 +14,24 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const POLES = 2; // 2-pole (one pole-pair): 60 Hz → 3600 RPM
 
 export function SynchronousMotorDemo({ figure }: Props) {
   const [f, setF] = useState(60);
-  const [loadAngleDeg, setLoadAngleDeg] = useState(20);  // δ in degrees
+  const [loadAngleDeg, setLoadAngleDeg] = useState(20); // δ in degrees
 
   const stateRef = useRef({ f, loadAngleDeg });
-  useEffect(() => { stateRef.current = { f, loadAngleDeg }; }, [f, loadAngleDeg]);
+  useEffect(() => {
+    stateRef.current = { f, loadAngleDeg };
+  }, [f, loadAngleDeg]);
 
   const computed = useMemo(() => {
     const n = (120 * f) / POLES;
-    const tau = Math.sin((loadAngleDeg * Math.PI) / 180);  // normalised: τ/τ_max
+    const tau = Math.sin((loadAngleDeg * Math.PI) / 180); // normalised: τ/τ_max
     return { n, tau };
   }, [f, loadAngleDeg]);
 
@@ -51,7 +55,7 @@ export function SynchronousMotorDemo({ figure }: Props) {
       statorAng += omega * scale * dt;
 
       const delta = (loadAngleDeg * Math.PI) / 180;
-      const rotorAng = statorAng - delta;     // rotor lags by load angle δ
+      const rotorAng = statorAng - delta; // rotor lags by load angle δ
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -63,8 +67,12 @@ export function SynchronousMotorDemo({ figure }: Props) {
       // Stator ring
       ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1.2;
-      ctx.beginPath(); ctx.arc(cx, cy, R + 18, 0, Math.PI * 2); ctx.stroke();
-      ctx.beginPath(); ctx.arc(cx, cy, R - 4, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, R + 18, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, R - 4, 0, Math.PI * 2);
+      ctx.stroke();
 
       // Stator field vector (teal, dashed)
       const sFx = cx + Math.cos(statorAng) * R * 0.95;
@@ -75,12 +83,18 @@ export function SynchronousMotorDemo({ figure }: Props) {
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(sSx, sSy); ctx.lineTo(sFx, sFy); ctx.stroke();
+      ctx.moveTo(sSx, sSy);
+      ctx.lineTo(sFx, sFy);
+      ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = colors.teal;
-      ctx.beginPath(); ctx.arc(sFx, sFy, 9, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(sFx, sFy, 9, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = colors.teal;
-      ctx.beginPath(); ctx.arc(sSx, sSy, 9, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(sSx, sSy, 9, 0, Math.PI * 2);
+      ctx.fill();
 
       // Rotor — PM bar magnet at rotorAng (no slip — locked to field)
       const rotR = R * 0.62;
@@ -94,14 +108,21 @@ export function SynchronousMotorDemo({ figure }: Props) {
       ctx.lineWidth = 14;
       ctx.lineCap = 'round';
       ctx.beginPath();
-      ctx.moveTo(sxx, syy); ctx.lineTo(nx, ny); ctx.stroke();
+      ctx.moveTo(sxx, syy);
+      ctx.lineTo(nx, ny);
+      ctx.stroke();
       ctx.fillStyle = colors.pink;
-      ctx.beginPath(); ctx.arc(nx, ny, 12, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(nx, ny, 12, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = colors.blue;
-      ctx.beginPath(); ctx.arc(sxx, syy, 12, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(sxx, syy, 12, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = colors.bg;
       ctx.font = 'bold 11px JetBrains Mono';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText('N', nx, ny);
       ctx.fillText('S', sxx, syy);
       ctx.lineCap = 'butt';
@@ -120,7 +141,8 @@ export function SynchronousMotorDemo({ figure }: Props) {
       // Labels
       ctx.fillStyle = 'rgba(160,158,149,0.75)';
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText('field (dashed) = rotor (locked)', 12, 12);
       ctx.textAlign = 'right';
       const stallWarn = Math.abs(loadAngleDeg) > 80 ? '  ← near pull-out!' : '';
@@ -138,26 +160,35 @@ export function SynchronousMotorDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 16.4'}
       title="Synchronous motor — locked to the line"
       question="If the rotor doesn't slip, how does it produce torque?"
-      caption={<>
-        A wound-rotor or permanent-magnet rotor is dragged around at exactly synchronous speed,
-        with the rotor's N pole trailing the stator's field vector by a small <em>load angle δ</em>.
-        Torque is proportional to <em>sin δ</em> — increase the load, δ increases to match, but if
-        δ exceeds 90° the rotor "slips a pole" and the machine stalls. Used wherever you need
-        a precise, constant speed: clocks, turntables, large industrial drives.
-      </>}
+      caption={
+        <>
+          A wound-rotor or permanent-magnet rotor is dragged around at exactly synchronous speed,
+          with the rotor's N pole trailing the stator's field vector by a small{' '}
+          <em>load angle δ</em>. Torque is proportional to <em>sin δ</em> — increase the load, δ
+          increases to match, but if δ exceeds 90° the rotor "slips a pole" and the machine stalls.
+          Used wherever you need a precise, constant speed: clocks, turntables, large industrial
+          drives.
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="f"
-          value={f} min={20} max={100} step={1}
-          format={v => v.toFixed(0) + ' Hz'}
+          value={f}
+          min={20}
+          max={100}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Hz'}
           onChange={setF}
         />
         <MiniSlider
           label="load angle δ"
-          value={loadAngleDeg} min={0} max={89} step={1}
-          format={v => v.toFixed(0) + '°'}
+          value={loadAngleDeg}
+          min={0}
+          max={89}
+          step={1}
+          format={(v) => v.toFixed(0) + '°'}
           onChange={setLoadAngleDeg}
         />
         <MiniReadout label="speed" value={<Num value={computed.n} digits={0} />} unit="rpm" />

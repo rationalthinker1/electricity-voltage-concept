@@ -15,15 +15,21 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-type FamilyKey = 'carbon-comp' | 'carbon-film' | 'metal-film' | 'metal-oxide' | 'wirewound-nicr' | 'wirewound-manganin';
+type FamilyKey =
+  | 'carbon-comp'
+  | 'carbon-film'
+  | 'metal-film'
+  | 'metal-oxide'
+  | 'wirewound-nicr'
+  | 'wirewound-manganin';
 
 interface Family {
   key: FamilyKey;
@@ -43,15 +49,70 @@ interface Family {
 // though film ρ is usually 1–10× bulk depending on grain structure — this is a
 // physical-intuition demo, not a manufacturing spec sheet).
 const FAMILIES: Record<FamilyKey, Family> = {
-  'carbon-comp':       { key: 'carbon-comp',       label: 'Carbon comp',       rho: 3.5e-5,  tol: 0.10,   color: '#d28b5f', blurb: 'A pressed slug of carbon-graphite powder + binder. Cheap, noisy, ±5–10%, drifts with humidity and age. Mostly obsolete except in pulse-power applications.' },
-  'carbon-film':       { key: 'carbon-film',       label: 'Carbon film',       rho: 4.0e-5,  tol: 0.05,   color: '#b07050', blurb: 'A thin spiral of carbon deposited on a ceramic core, then trimmed. ±2–5%, low cost, slight negative temperature coefficient.' },
-  'metal-film':        { key: 'metal-film',        label: 'Metal film',        rho: 1.4e-6,  tol: 0.001,  color: '#9aafff', blurb: 'A spiral of NiCr or tantalum nitride on a ceramic core. ±0.1–1%, very low noise, low TCR. The default for precision circuits.' },
-  'metal-oxide':       { key: 'metal-oxide',       label: 'Metal oxide',       rho: 5.0e-6,  tol: 0.02,   color: '#c89070', blurb: 'A film of tin-oxide on ceramic. Rugged, high operating temp, high pulse capability. ±2–5%. Common in power-supply primary side.' },
-  'wirewound-nicr':    { key: 'wirewound-nicr',    label: 'Wirewound NiCr',    rho: 1.1e-6,  tol: 0.05,   color: '#6cc5c2', blurb: 'A coil of nichrome wire on a ceramic former. Handles high power (1–25 W+); inductive at high frequency.' },
-  'wirewound-manganin':{ key: 'wirewound-manganin',label: 'Wirewound manganin',rho: 4.8e-7,  tol: 0.0005, color: '#9cd3ff', blurb: 'A coil of Cu-Mn-Ni alloy, engineered for α ≈ 0. Used for precision current shunts and resistance standards.' },
+  'carbon-comp': {
+    key: 'carbon-comp',
+    label: 'Carbon comp',
+    rho: 3.5e-5,
+    tol: 0.1,
+    color: '#d28b5f',
+    blurb:
+      'A pressed slug of carbon-graphite powder + binder. Cheap, noisy, ±5–10%, drifts with humidity and age. Mostly obsolete except in pulse-power applications.',
+  },
+  'carbon-film': {
+    key: 'carbon-film',
+    label: 'Carbon film',
+    rho: 4.0e-5,
+    tol: 0.05,
+    color: '#b07050',
+    blurb:
+      'A thin spiral of carbon deposited on a ceramic core, then trimmed. ±2–5%, low cost, slight negative temperature coefficient.',
+  },
+  'metal-film': {
+    key: 'metal-film',
+    label: 'Metal film',
+    rho: 1.4e-6,
+    tol: 0.001,
+    color: '#9aafff',
+    blurb:
+      'A spiral of NiCr or tantalum nitride on a ceramic core. ±0.1–1%, very low noise, low TCR. The default for precision circuits.',
+  },
+  'metal-oxide': {
+    key: 'metal-oxide',
+    label: 'Metal oxide',
+    rho: 5.0e-6,
+    tol: 0.02,
+    color: '#c89070',
+    blurb:
+      'A film of tin-oxide on ceramic. Rugged, high operating temp, high pulse capability. ±2–5%. Common in power-supply primary side.',
+  },
+  'wirewound-nicr': {
+    key: 'wirewound-nicr',
+    label: 'Wirewound NiCr',
+    rho: 1.1e-6,
+    tol: 0.05,
+    color: '#6cc5c2',
+    blurb:
+      'A coil of nichrome wire on a ceramic former. Handles high power (1–25 W+); inductive at high frequency.',
+  },
+  'wirewound-manganin': {
+    key: 'wirewound-manganin',
+    label: 'Wirewound manganin',
+    rho: 4.8e-7,
+    tol: 0.0005,
+    color: '#9cd3ff',
+    blurb:
+      'A coil of Cu-Mn-Ni alloy, engineered for α ≈ 0. Used for precision current shunts and resistance standards.',
+  },
 };
 
-const FAMILY_KEYS: FamilyKey[] = ['carbon-comp', 'carbon-film', 'metal-film', 'metal-oxide', 'wirewound-nicr', 'wirewound-manganin'];
+const FAMILY_KEYS: FamilyKey[] = [
+  'carbon-comp',
+  'carbon-film',
+  'metal-film',
+  'metal-oxide',
+  'wirewound-nicr',
+  'wirewound-manganin',
+];
 
 export function BuildAResistorDemo({ figure }: Props) {
   const [familyKey, setFamilyKey] = useState<FamilyKey>('metal-film');
@@ -69,7 +130,9 @@ export function BuildAResistorDemo({ figure }: Props) {
   const Rmax = R * (1 + fam.tol);
 
   const stateRef = useRef({ familyKey, Lmm, Amm2 });
-  useEffect(() => { stateRef.current = { familyKey, Lmm, Amm2 }; }, [familyKey, Lmm, Amm2]);
+  useEffect(() => {
+    stateRef.current = { familyKey, Lmm, Amm2 };
+  }, [familyKey, Lmm, Amm2]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H } = info;
@@ -97,8 +160,10 @@ export function BuildAResistorDemo({ figure }: Props) {
       ctx.strokeStyle = 'rgba(200,200,205,0.85)';
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(bodyL - 80, cy); ctx.lineTo(bodyL + 4, cy);
-      ctx.moveTo(bodyL + bodyW - 4, cy); ctx.lineTo(bodyL + bodyW + 80, cy);
+      ctx.moveTo(bodyL - 80, cy);
+      ctx.lineTo(bodyL + 4, cy);
+      ctx.moveTo(bodyL + bodyW - 4, cy);
+      ctx.lineTo(bodyL + bodyW + 80, cy);
       ctx.stroke();
 
       // Body shell (rounded rect, beige for carbon-types, blue for metal-film, etc)
@@ -138,7 +203,15 @@ export function BuildAResistorDemo({ figure }: Props) {
           const x0 = bodyL + 12 + i * pitch;
           // Draw a half-ellipse to suggest a wrap of film around the cylinder
           ctx.beginPath();
-          ctx.ellipse(x0 + pitch * 0.5, subT + subH / 2, pitch * 0.5, subH * 0.45, 0, Math.PI, 2 * Math.PI);
+          ctx.ellipse(
+            x0 + pitch * 0.5,
+            subT + subH / 2,
+            pitch * 0.5,
+            subH * 0.45,
+            0,
+            Math.PI,
+            2 * Math.PI,
+          );
           ctx.stroke();
         }
       } else {
@@ -151,7 +224,13 @@ export function BuildAResistorDemo({ figure }: Props) {
         for (let i = 0; i < turns; i++) {
           const x0 = bodyL + 12 + i * pitch;
           ctx.beginPath();
-          ctx.arc(x0 + pitch * 0.5, subT + subH / 2, Math.min(pitch * 0.55, subH * 0.42), Math.PI, 2 * Math.PI);
+          ctx.arc(
+            x0 + pitch * 0.5,
+            subT + subH / 2,
+            Math.min(pitch * 0.55, subH * 0.42),
+            Math.PI,
+            2 * Math.PI,
+          );
           ctx.stroke();
         }
       }
@@ -188,7 +267,11 @@ export function BuildAResistorDemo({ figure }: Props) {
       ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText(`R = ${fmtOhms(R)}`, W - 12, 10);
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText(`±${(f.tol * 100).toFixed(f.tol < 0.01 ? 2 : 0)}%   ${fmtOhms(Rmin)} … ${fmtOhms(Rmax)}`, W - 12, 24);
+      ctx.fillText(
+        `±${(f.tol * 100).toFixed(f.tol < 0.01 ? 2 : 0)}%   ${fmtOhms(Rmin)} … ${fmtOhms(Rmax)}`,
+        W - 12,
+        24,
+      );
 
       void phase;
       raf = requestAnimationFrame(draw);
@@ -204,21 +287,23 @@ export function BuildAResistorDemo({ figure }: Props) {
       question="What's actually inside the brown hot-dog with two stripes on it?"
       caption={
         <>
-          Pick a material family, a film length, and a cross-section. <strong>R = ρL/A</strong> updates live, and so does the
-          tolerance band: a carbon-comp resistor is <strong>±10%</strong>; a precision metal-film is <strong>±0.1%</strong>. Watch the
-          spiral inside the cutaway tighten as <strong>L</strong> grows, and thicken as <strong>A</strong> grows. Wirewound packages
-          a metal coil instead of a deposited film. <em>{FAMILIES[familyKey].blurb}</em>
+          Pick a material family, a film length, and a cross-section. <strong>R = ρL/A</strong>{' '}
+          updates live, and so does the tolerance band: a carbon-comp resistor is{' '}
+          <strong>±10%</strong>; a precision metal-film is <strong>±0.1%</strong>. Watch the spiral
+          inside the cutaway tighten as <strong>L</strong> grows, and thicken as <strong>A</strong>{' '}
+          grows. Wirewound packages a metal coil instead of a deposited film.{' '}
+          <em>{FAMILIES[familyKey].blurb}</em>
         </>
       }
       deeperLab={{ slug: 'resistance', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
-        {FAMILY_KEYS.map(k => (
+        {FAMILY_KEYS.map((k) => (
           <button
             key={k}
             type="button"
-            className={`mini-toggle${k === familyKey ? ' on' : ''}`}
+            className={`mini-toggle${k === familyKey ? 'on' : ''}`}
             onClick={() => setFamilyKey(k)}
             aria-pressed={k === familyKey}
           >
@@ -227,18 +312,27 @@ export function BuildAResistorDemo({ figure }: Props) {
         ))}
         <MiniSlider
           label="L"
-          value={Lmm} min={5} max={400} step={1}
-          format={v => v.toFixed(0) + ' mm'}
+          value={Lmm}
+          min={5}
+          max={400}
+          step={1}
+          format={(v) => v.toFixed(0) + ' mm'}
           onChange={setLmm}
         />
         <MiniSlider
           label="A"
-          value={Amm2} min={0.005} max={2.5} step={0.005}
-          format={v => v < 0.1 ? v.toFixed(3) + ' mm²' : v.toFixed(2) + ' mm²'}
+          value={Amm2}
+          min={0.005}
+          max={2.5}
+          step={0.005}
+          format={(v) => (v < 0.1 ? v.toFixed(3) + ' mm²' : v.toFixed(2) + ' mm²')}
           onChange={setAmm2}
         />
         <MiniReadout label="R = ρL/A" value={<Num value={R} />} unit="Ω" />
-        <MiniReadout label="Tolerance" value={`±${(fam.tol * 100).toFixed(fam.tol < 0.01 ? 2 : 0)}%`} />
+        <MiniReadout
+          label="Tolerance"
+          value={`±${(fam.tol * 100).toFixed(fam.tol < 0.01 ? 2 : 0)}%`}
+        />
       </DemoControls>
     </Demo>
   );
@@ -250,7 +344,7 @@ function fmtOhms(R: number): string {
   if (!isFinite(R)) return '—';
   if (R >= 1e6) return (R / 1e6).toFixed(2) + ' MΩ';
   if (R >= 1e3) return (R / 1e3).toFixed(2) + ' kΩ';
-  if (R >= 1)   return R.toFixed(2) + ' Ω';
+  if (R >= 1) return R.toFixed(2) + ' Ω';
   if (R >= 1e-3) return (R * 1e3).toFixed(2) + ' mΩ';
   return R.toExponential(2) + ' Ω';
 }
@@ -285,13 +379,21 @@ function decodeFourBand(R: number): string[] {
 
 function roundRect(
   ctx: CanvasRenderingContext2D,
-  x: number, y: number, w: number, h: number, r: number,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
 ) {
   roundRectPath(ctx, x, y, w, h, r);
 }
 function roundRectPath(
   ctx: CanvasRenderingContext2D,
-  x: number, y: number, w: number, h: number, r: number,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
 ) {
   r = Math.min(r, h / 2, w / 2);
   ctx.beginPath();

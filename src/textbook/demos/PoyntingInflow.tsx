@@ -22,7 +22,9 @@ import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 interface InflowParticle {
   theta: number;
@@ -65,7 +67,7 @@ export function PoyntingInflowDemo({ figure }: Props) {
       const wireXL = margin;
       const wireXR = W - margin;
       const wireCY = H * 0.55;
-      const r_px = Math.min(W, H) * 0.10;
+      const r_px = Math.min(W, H) * 0.1;
       const r_px_clamped = Math.max(24, Math.min(60, r_px));
       return { wireXL, wireXR, wireCY, r: r_px_clamped };
     }
@@ -112,7 +114,10 @@ export function PoyntingInflowDemo({ figure }: Props) {
       for (let i = inflow.length - 1; i >= 0; i--) {
         const p = inflow[i]!;
         p.r -= 0.008 + Math.min(0.04, Math.log10(out.S + 10) * 0.005);
-        if (p.r <= 0.02) { inflow.splice(i, 1); continue; }
+        if (p.r <= 0.02) {
+          inflow.splice(i, 1);
+          continue;
+        }
 
         const cx = g.wireXL + p.t * (g.wireXR - g.wireXL);
         const distFromAxis = r + p.r * r * 4;
@@ -130,9 +135,14 @@ export function PoyntingInflowDemo({ figure }: Props) {
 
         ctx.strokeStyle = `rgba(255,107,42,${alpha})`;
         ctx.lineWidth = 1.4;
-        ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(tx, ty); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(px, py);
+        ctx.lineTo(tx, ty);
+        ctx.stroke();
         ctx.fillStyle = `rgba(255,107,42,${alpha})`;
-        ctx.beginPath(); ctx.arc(tx, ty, 1.7, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(tx, ty, 1.7, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       // Wire body
@@ -148,7 +158,8 @@ export function PoyntingInflowDemo({ figure }: Props) {
       ctx.ellipse(g.wireXR, g.wireCY, er, r, 0, -Math.PI / 2, Math.PI / 2);
       ctx.lineTo(g.wireXL, g.wireCY + r);
       ctx.ellipse(g.wireXL, g.wireCY, er, r, 0, Math.PI / 2, -Math.PI / 2);
-      ctx.closePath(); ctx.fill();
+      ctx.closePath();
+      ctx.fill();
 
       ctx.save();
       ctx.globalAlpha = 0.6;
@@ -161,18 +172,40 @@ export function PoyntingInflowDemo({ figure }: Props) {
       ctx.lineTo(g.wireXR, g.wireCY + r);
       ctx.stroke();
 
-      ctx.beginPath(); ctx.ellipse(g.wireXL, g.wireCY, er, r, 0, 0, Math.PI * 2); ctx.stroke();
-      ctx.beginPath(); ctx.ellipse(g.wireXR, g.wireCY, er, r, 0, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(g.wireXL, g.wireCY, er, r, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(g.wireXR, g.wireCY, er, r, 0, 0, Math.PI * 2);
+      ctx.stroke();
 
       // Surface glow
-      drawGlowPath(ctx,
-        [{ x: g.wireXL, y: g.wireCY - r }, { x: g.wireXR, y: g.wireCY - r }],
-        { color: 'rgba(255,107,42,0.4)', lineWidth: 0.5,
-          glowColor: 'rgba(255,107,42,0.35)', glowWidth: 10 });
-      drawGlowPath(ctx,
-        [{ x: g.wireXL, y: g.wireCY + r }, { x: g.wireXR, y: g.wireCY + r }],
-        { color: 'rgba(255,107,42,0.4)', lineWidth: 0.5,
-          glowColor: 'rgba(255,107,42,0.35)', glowWidth: 10 });
+      drawGlowPath(
+        ctx,
+        [
+          { x: g.wireXL, y: g.wireCY - r },
+          { x: g.wireXR, y: g.wireCY - r },
+        ],
+        {
+          color: 'rgba(255,107,42,0.4)',
+          lineWidth: 0.5,
+          glowColor: 'rgba(255,107,42,0.35)',
+          glowWidth: 10,
+        },
+      );
+      drawGlowPath(
+        ctx,
+        [
+          { x: g.wireXL, y: g.wireCY + r },
+          { x: g.wireXR, y: g.wireCY + r },
+        ],
+        {
+          color: 'rgba(255,107,42,0.4)',
+          lineWidth: 0.5,
+          glowColor: 'rgba(255,107,42,0.35)',
+          glowWidth: 10,
+        },
+      );
 
       // E axial arrows
       const nE = 5;
@@ -186,12 +219,15 @@ export function PoyntingInflowDemo({ figure }: Props) {
         const cx = g.wireXL + t * (g.wireXR - g.wireXL) - arrLen / 2;
         const cy = g.wireCY;
         ctx.beginPath();
-        ctx.moveTo(cx, cy); ctx.lineTo(cx + arrLen, cy); ctx.stroke();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + arrLen, cy);
+        ctx.stroke();
         ctx.beginPath();
         ctx.moveTo(cx + arrLen, cy);
         ctx.lineTo(cx + arrLen - 8, cy - 5);
         ctx.lineTo(cx + arrLen - 8, cy + 5);
-        ctx.closePath(); ctx.fill();
+        ctx.closePath();
+        ctx.fill();
       }
 
       // FRONT-half B ellipses with arrowheads
@@ -210,7 +246,8 @@ export function PoyntingInflowDemo({ figure }: Props) {
         ctx.moveTo(ax, ay);
         ctx.lineTo(ax - 6, ay - 4);
         ctx.lineTo(ax - 6, ay + 4);
-        ctx.closePath(); ctx.fill();
+        ctx.closePath();
+        ctx.fill();
       }
 
       // Terminals
@@ -220,14 +257,16 @@ export function PoyntingInflowDemo({ figure }: Props) {
       ctx.fillRect(g.wireXR + 18, g.wireCY - r - 4, 4, 2 * r + 8);
       ctx.fillStyle = getCanvasColors().pink;
       ctx.font = 'bold 14px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText('+', g.wireXL - 36, g.wireCY);
       ctx.fillStyle = getCanvasColors().blue;
       ctx.fillText('−', g.wireXR + 36, g.wireCY);
 
       // Numerics overlay
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().accent;
       ctx.fillText(`|S| = ${pretty(out.S)} W/m²`, 18, 14);
       ctx.fillStyle = getCanvasColors().pink;
@@ -237,7 +276,7 @@ export function PoyntingInflowDemo({ figure }: Props) {
 
       ctx.textAlign = 'right';
       ctx.save();
-      ctx.globalAlpha = .85;
+      ctx.globalAlpha = 0.85;
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText(`a = ${a_mm.toFixed(2)} mm   L = ${L.toFixed(2)} m`, W - 18, 14);
       ctx.restore();
@@ -255,25 +294,35 @@ export function PoyntingInflowDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 6.4'}
       title="∮ S · dA = V I, exactly"
       question="So how much energy actually flows through the wire's surface per second?"
-      caption={<>
-        Pink axial <strong>E</strong> × teal circumferential <strong>B</strong> = amber radial <strong>S</strong>, absorbed at the wire's surface.
-        Integrating <strong>S</strong> over the lateral surface gives <em>VI</em> — exactly. The ratio P<sub>surf</sub>/P<sub>VI</sub>
-        sits at <strong>1.000</strong> for any sliders you choose. That equality is the punchline of the entire chapter.
-      </>}
+      caption={
+        <>
+          Pink axial <strong>E</strong> × teal circumferential <strong>B</strong> = amber radial{' '}
+          <strong>S</strong>, absorbed at the wire's surface. Integrating <strong>S</strong> over
+          the lateral surface gives <em>VI</em> — exactly. The ratio P<sub>surf</sub>/P<sub>VI</sub>
+          sits at <strong>1.000</strong> for any sliders you choose. That equality is the punchline
+          of the entire chapter.
+        </>
+      }
       deeperLab={{ slug: 'poynting', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="I"
-          value={I} min={0.1} max={50} step={0.1}
-          format={v => v.toFixed(1) + ' A'}
+          value={I}
+          min={0.1}
+          max={50}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' A'}
           onChange={setI}
         />
         <MiniSlider
           label="V"
-          value={V} min={0.1} max={48} step={0.1}
-          format={v => v.toFixed(1) + ' V'}
+          value={V}
+          min={0.1}
+          max={48}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' V'}
           onChange={setV}
         />
         <MiniReadout label="|S| at surface" value={<Num value={computed.S} />} unit="W/m²" />

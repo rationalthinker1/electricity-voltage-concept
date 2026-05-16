@@ -20,12 +20,14 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function RLCBandpassDemo({ figure }: Props) {
-  const [R, setR] = useState(10);          // Ω
-  const [Lmh, setLmh] = useState(1);       // mH
-  const [Cnf, setCnf] = useState(10);      // nF
+  const [R, setR] = useState(10); // Ω
+  const [Lmh, setLmh] = useState(1); // mH
+  const [Cnf, setCnf] = useState(10); // nF
 
   const L = Lmh * 1e-3;
   const C = Cnf * 1e-9;
@@ -35,7 +37,9 @@ export function RLCBandpassDemo({ figure }: Props) {
   const bandwidth = f0 / Q;
 
   const stateRef = useRef({ R, L, C, f0, Q });
-  useEffect(() => { stateRef.current = { R, L, C, f0, Q }; }, [R, L, C, f0, Q]);
+  useEffect(() => {
+    stateRef.current = { R, L, C, f0, Q };
+  }, [R, L, C, f0, Q]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -52,8 +56,12 @@ export function RLCBandpassDemo({ figure }: Props) {
       const logMin = logCenter - 2.5;
       const logMax = logCenter + 2.5;
 
-      const padL = 50, padR = 30, padT = 26, padB = 32;
-      const plotX = padL, plotY = padT;
+      const padL = 50,
+        padR = 30,
+        padT = 26,
+        padB = 32;
+      const plotX = padL,
+        plotY = padT;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
@@ -61,13 +69,17 @@ export function RLCBandpassDemo({ figure }: Props) {
       ctx.strokeRect(plotX, plotY, plotW, plotH);
 
       // dB axis: -40 to +5
-      const dBmin = -40, dBmax = 5;
+      const dBmin = -40,
+        dBmax = 5;
       const yDb = (db: number) => plotY + plotH - ((db - dBmin) / (dBmax - dBmin)) * plotH;
 
       ctx.strokeStyle = colors.border;
       for (let db = dBmin; db <= dBmax; db += 10) {
         const y = yDb(db);
-        ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
+        ctx.stroke();
       }
 
       // x decade ticks
@@ -81,7 +93,10 @@ export function RLCBandpassDemo({ figure }: Props) {
         const f = Math.pow(10, lf);
         const x = plotX + ((lf - logMin) / (logMax - logMin)) * plotW;
         ctx.strokeStyle = colors.border;
-        ctx.beginPath(); ctx.moveTo(x, plotY); ctx.lineTo(x, plotY + plotH); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, plotY);
+        ctx.lineTo(x, plotY + plotH);
+        ctx.stroke();
         ctx.save();
         ctx.globalAlpha = 0.6;
         ctx.fillStyle = colors.textDim;
@@ -95,7 +110,9 @@ export function RLCBandpassDemo({ figure }: Props) {
       ctx.strokeStyle = colors.teal;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
-      ctx.moveTo(xf0, plotY); ctx.lineTo(xf0, plotY + plotH); ctx.stroke();
+      ctx.moveTo(xf0, plotY);
+      ctx.lineTo(xf0, plotY + plotH);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       // -3 dB line
@@ -105,7 +122,9 @@ export function RLCBandpassDemo({ figure }: Props) {
       ctx.strokeStyle = colors.pink;
       ctx.setLineDash([2, 4]);
       ctx.beginPath();
-      ctx.moveTo(plotX, yM3); ctx.lineTo(plotX + plotW, yM3); ctx.stroke();
+      ctx.moveTo(plotX, yM3);
+      ctx.lineTo(plotX + plotW, yM3);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       // |H(f)| curve
@@ -162,24 +181,45 @@ export function RLCBandpassDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 12.8'}
       title="Series RLC band-pass"
       question="A bell-curve in frequency space. Make it sharper by lowering R."
-      caption={<>
-        Output taken across the resistor of a series RLC. The transfer function peaks at the
-        resonant frequency f<sub>0</sub> = 1/(2π√(LC)); width of the −3 dB band equals
-        f<sub>0</sub>/Q. Drop R and the peak narrows: that is the same Q-factor selectivity
-        that the previous resonance demo plotted as current amplitude.
-      </>}
+      caption={
+        <>
+          Output taken across the resistor of a series RLC. The transfer function peaks at the
+          resonant frequency f<sub>0</sub> = 1/(2π√(LC)); width of the −3 dB band equals f
+          <sub>0</sub>/Q. Drop R and the peak narrows: that is the same Q-factor selectivity that
+          the previous resonance demo plotted as current amplitude.
+        </>
+      }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>
-        <MiniSlider label="R" value={R} min={0.5} max={200} step={0.5}
-          format={v => v.toFixed(1) + ' Ω'} onChange={setR} />
-        <MiniSlider label="L" value={Lmh} min={0.01} max={10} step={0.01}
-          format={v => v < 1 ? (v * 1000).toFixed(0) + ' µH' : v.toFixed(2) + ' mH'}
-          onChange={setLmh} />
-        <MiniSlider label="C" value={Cnf} min={0.1} max={1000} step={0.1}
-          format={v => v < 1 ? (v * 1000).toFixed(0) + ' pF' : v.toFixed(1) + ' nF'}
-          onChange={setCnf} />
+        <MiniSlider
+          label="R"
+          value={R}
+          min={0.5}
+          max={200}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' Ω'}
+          onChange={setR}
+        />
+        <MiniSlider
+          label="L"
+          value={Lmh}
+          min={0.01}
+          max={10}
+          step={0.01}
+          format={(v) => (v < 1 ? (v * 1000).toFixed(0) + ' µH' : v.toFixed(2) + ' mH')}
+          onChange={setLmh}
+        />
+        <MiniSlider
+          label="C"
+          value={Cnf}
+          min={0.1}
+          max={1000}
+          step={0.1}
+          format={(v) => (v < 1 ? (v * 1000).toFixed(0) + ' pF' : v.toFixed(1) + ' nF')}
+          onChange={setCnf}
+        />
         <MiniReadout label="f₀" value={<Num value={f0} />} unit="Hz" />
         <MiniReadout label="Q" value={Q.toFixed(2)} />
         <MiniReadout label="BW (f₀/Q)" value={<Num value={bandwidth} />} unit="Hz" />

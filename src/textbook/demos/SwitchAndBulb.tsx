@@ -22,9 +22,16 @@ import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 import { drawCircuit, renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-interface PathSeg { x1: number; y1: number; x2: number; y2: number }
+interface PathSeg {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}
 
 /**
  * Manual offscreen-canvas cache for the static schematic.
@@ -35,13 +42,18 @@ interface PathSeg { x1: number; y1: number; x2: number; y2: number }
  * Recompute only when the cache key changes (resize, DPR change, or — for
  * this demo — switch-state / bulb-glow transitions).
  */
-interface StaticCacheEntry { key: string; canvas: HTMLCanvasElement }
+interface StaticCacheEntry {
+  key: string;
+  canvas: HTMLCanvasElement;
+}
 
 export function SwitchAndBulbDemo({ figure }: Props) {
   const [closed, setClosed] = useState(false);
   const [_, setTick] = useState(0);
   const closedRef = useRef(closed);
-  useEffect(() => { closedRef.current = closed; }, [closed]);
+  useEffect(() => {
+    closedRef.current = closed;
+  }, [closed]);
 
   const closedAtRef = useRef<number | null>(null);
   useEffect(() => {
@@ -61,7 +73,7 @@ export function SwitchAndBulbDemo({ figure }: Props) {
 
       // Layout — battery at left, switch in middle-top, bulb at right.
       const margin = 60;
-      const top = h * 0.30;
+      const top = h * 0.3;
       const bot = h * 0.78;
       const batX = margin;
       const bulbX = w - margin;
@@ -80,30 +92,49 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       if (cacheRef.current?.key !== cacheKey) {
         const staticElements: CircuitElement[] = [
           // Dim base loop (one polyline closing back to the start).
-          { kind: 'wire',
+          {
+            kind: 'wire',
             points: [
-              { x: batX, y: top }, { x: bulbX, y: top },
-              { x: bulbX, y: bot }, { x: batX, y: bot },
+              { x: batX, y: top },
+              { x: bulbX, y: top },
+              { x: bulbX, y: bot },
+              { x: batX, y: bot },
             ],
-            color: 'rgba(160,158,149,.25)', lineWidth: 4 },
+            color: 'rgba(160,158,149,.25)',
+            lineWidth: 4,
+          },
           // Battery on the left (vertical), tall enough to touch top + bot rails.
-          { kind: 'battery', at: { x: batX, y: bulbY },
+          {
+            kind: 'battery',
+            at: { x: batX, y: bulbY },
             color: 'rgba(255,255,255,.18)',
-            label: 'battery', labelOffset: { x: 0, y: (bot - top) / 2 + 18 },
+            label: 'battery',
+            labelOffset: { x: 0, y: (bot - top) / 2 + 18 },
             leadLength: (bot - top) / 2,
-            negativeColor: '#ecebe5', negativePlateLength: 16,
+            negativeColor: '#ecebe5',
+            negativePlateLength: 16,
             plateGap: (bot - top) / 2,
-            positiveColor: '#ecebe5', positivePlateLength: 28 },
+            positiveColor: '#ecebe5',
+            positivePlateLength: 28,
+          },
           // Switch on the top rail.
-          { kind: 'switch', at: { x: switchX, y: top },
+          {
+            kind: 'switch',
+            at: { x: switchX, y: top },
             color: isClosed ? '#ff6b2a' : '#ecebe5',
             label: 'switch',
             state: isClosed ? 'closed' : 'open-up',
-            terminalGap: 32 },
+            terminalGap: 32,
+          },
           // Bulb on the right side, glowing when the wave reaches it.
-          { kind: 'bulb', at: { x: bulbX, y: bulbY },
-            radius: 16, brightness: bulbOn ? 1 : 0,
-            label: 'bulb', labelOffset: { x: 0, y: 32 } },
+          {
+            kind: 'bulb',
+            at: { x: bulbX, y: bulbY },
+            radius: 16,
+            brightness: bulbOn ? 1 : 0,
+            label: 'bulb',
+            labelOffset: { x: 0, y: 32 },
+          },
         ];
         cacheRef.current = {
           key: cacheKey,
@@ -115,12 +146,12 @@ export function SwitchAndBulbDemo({ figure }: Props) {
 
       // Loop path, ordered so we can split it into a "dim base" plus an "energised prefix".
       const loop: PathSeg[] = [
-        { x1: batX,    y1: top, x2: switchX, y2: top },  // battery top → switch
-        { x1: switchX, y1: top, x2: bulbX,   y2: top },  // switch → bulb
-        { x1: bulbX,   y1: top, x2: bulbX,   y2: bot },  // down past bulb
-        { x1: bulbX,   y1: bot, x2: batX,    y2: bot },  // return along bottom
+        { x1: batX, y1: top, x2: switchX, y2: top }, // battery top → switch
+        { x1: switchX, y1: top, x2: bulbX, y2: top }, // switch → bulb
+        { x1: bulbX, y1: top, x2: bulbX, y2: bot }, // down past bulb
+        { x1: bulbX, y1: bot, x2: batX, y2: bot }, // return along bottom
       ];
-      const segLens = loop.map(s => Math.hypot(s.x2 - s.x1, s.y2 - s.y1));
+      const segLens = loop.map((s) => Math.hypot(s.x2 - s.x1, s.y2 - s.y1));
       const totalLen = segLens.reduce((a, b) => a + b, 0);
       const fillLen = fillFrac * totalLen;
 
@@ -169,15 +200,17 @@ export function SwitchAndBulbDemo({ figure }: Props) {
         isClosed
           ? 'field propagates at ~⅔ c · reaches bulb in ~5 ns'
           : 'switch open — no field, no current',
-        w / 2, h - 32,
+        w / 2,
+        h - 32,
       );
       ctx.fillStyle = 'rgba(91,174,248,.7)';
       ctx.fillText(
         'an electron starting at the switch would take ~10 hours to reach the bulb',
-        w / 2, h - 14,
+        w / 2,
+        h - 14,
       );
 
-      setTick(t => (t + 1) % 1000);
+      setTick((t) => (t + 1) % 1000);
       raf = requestAnimationFrame(draw);
     }
     raf = requestAnimationFrame(draw);
@@ -189,18 +222,26 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 2.4'}
       title="What actually lights the bulb"
       question="You flip the switch. Why does the bulb come on instantly?"
-      caption={<>
-        Click the switch closed. The amber wave is the electromagnetic field propagating around the loop at roughly two-thirds the speed of light — it reaches the bulb in nanoseconds. The electrons in the filament were already there; they begin drifting in place the moment the field arrives. Nothing had to travel from the switch to the bulb.
-      </>}
+      caption={
+        <>
+          Click the switch closed. The amber wave is the electromagnetic field propagating around
+          the loop at roughly two-thirds the speed of light — it reaches the bulb in nanoseconds.
+          The electrons in the filament were already there; they begin drifting in place the moment
+          the field arrives. Nothing had to travel from the switch to the bulb.
+        </>
+      }
       deeperLab={{ slug: 'drift', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
-        <MiniToggle label={closed ? 'switch CLOSED' : 'switch OPEN'} checked={closed} onChange={setClosed} />
+        <MiniToggle
+          label={closed ? 'switch CLOSED' : 'switch OPEN'}
+          checked={closed}
+          onChange={setClosed}
+        />
         <MiniReadout label="signal travel time" value={closed ? '~5' : '—'} unit="ns" />
         <MiniReadout label="electron travel time" value={closed ? '~10' : '—'} unit="hours" />
       </DemoControls>
     </Demo>
   );
 }
-

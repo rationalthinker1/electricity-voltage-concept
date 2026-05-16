@@ -15,7 +15,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // Visible-light reference wavelengths in nm
 const COLOURS: Array<{ lam: number; rgb: string }> = [
@@ -29,15 +31,17 @@ const COLOURS: Array<{ lam: number; rgb: string }> = [
 
 export function DispersionDemo({ figure }: Props) {
   // Cauchy: n(λ) = A + B/λ²  (λ in µm). Crown glass A≈1.5046 B≈0.00420.
-  const [A, setA] = useState(1.50);
+  const [A, setA] = useState(1.5);
   const [B, setB] = useState(0.0042);
 
   const stateRef = useRef({ A, B });
-  useEffect(() => { stateRef.current = { A, B }; }, [A, B]);
+  useEffect(() => {
+    stateRef.current = { A, B };
+  }, [A, B]);
 
   // For readout: spread of n across visible
-  const nRed = A + B / Math.pow(0.700, 2);
-  const nViolet = A + B / Math.pow(0.420, 2);
+  const nRed = A + B / Math.pow(0.7, 2);
+  const nViolet = A + B / Math.pow(0.42, 2);
 
   const setup = useCallback((info: CanvasInfo) => {
     const colors = getCanvasColors();
@@ -66,7 +70,8 @@ export function DispersionDemo({ figure }: Props) {
       ctx.moveTo(apex.x, apex.y);
       ctx.lineTo(leftBase.x, leftBase.y);
       ctx.lineTo(rightBase.x, rightBase.y);
-      ctx.closePath(); ctx.fill();
+      ctx.closePath();
+      ctx.fill();
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.4;
@@ -79,15 +84,19 @@ export function DispersionDemo({ figure }: Props) {
       const lex = leftBase.x - apex.x;
       const ley = leftBase.y - apex.y;
       const lel = Math.sqrt(lex * lex + ley * ley);
-      const ltx = lex / lel; const lty = ley / lel; // tangent along left edge
-      const lnx = -lty; const lny = ltx;            // outward normal (rotate +90°)
+      const ltx = lex / lel;
+      const lty = ley / lel; // tangent along left edge
+      const lnx = -lty;
+      const lny = ltx; // outward normal (rotate +90°)
 
       // Right-face: apex → rightBase. Outward normal points up-and-right.
       const rex = rightBase.x - apex.x;
       const rey = rightBase.y - apex.y;
       const rel = Math.sqrt(rex * rex + rey * rey);
-      const rtx = rex / rel; const rty = rey / rel;
-      const rnx = rty; const rny = -rtx;
+      const rtx = rex / rel;
+      const rty = rey / rel;
+      const rnx = rty;
+      const rny = -rtx;
 
       // Incoming white ray: horizontal, heading right. Entry point on left face
       // halfway down the edge.
@@ -99,7 +108,8 @@ export function DispersionDemo({ figure }: Props) {
 
       // Angle of incidence at left face (between incoming and inward normal)
       // Inward normal at left face = (-lnx, -lny)
-      const inLnx = -lnx; const inLny = -lny;
+      const inLnx = -lnx;
+      const inLny = -lny;
       // Cos of incidence angle: dot product of -incoming with inward normal
       const cos1L = -(incomingDir.x * inLnx + incomingDir.y * inLny);
       const sin1L = Math.sqrt(Math.max(0, 1 - cos1L * cos1L));
@@ -118,7 +128,8 @@ export function DispersionDemo({ figure }: Props) {
         // Build orthonormal frame at the surface: inward normal (inLnx,inLny) and
         // a tangent perp to the normal in the plane (lty, -ltx) chosen so that
         // the tangential component of the incoming ray is along it.
-        const tx = lty; const ty = -ltx; // some unit tangent
+        const tx = lty;
+        const ty = -ltx; // some unit tangent
         // Tangential component of incoming
         const inTan = incomingDir.x * tx + incomingDir.y * ty;
         const sgn = Math.sign(inTan) || 1;
@@ -144,7 +155,8 @@ export function DispersionDemo({ figure }: Props) {
         if (sinOut > 1) continue; // TIR — skip this colour
         const cosOut = Math.sqrt(Math.max(0, 1 - sinOut * sinOut));
         // Tangent at right face perp to (rnx,rny); preserve sign of tangential
-        const tx2 = -rny; const ty2 = rnx;
+        const tx2 = -rny;
+        const ty2 = rnx;
         const inTan2 = innerDir.x * tx2 + innerDir.y * ty2;
         const sgn2 = Math.sign(inTan2) || 1;
         const outDir = {
@@ -152,7 +164,7 @@ export function DispersionDemo({ figure }: Props) {
           y: sgn2 * sinOut * ty2 + cosOut * rny,
         };
         // Trace out to right edge of canvas
-        const tMax = ((W - 6) - exit.x) / Math.max(1e-6, outDir.x);
+        const tMax = (W - 6 - exit.x) / Math.max(1e-6, outDir.x);
         const endX = exit.x + outDir.x * tMax;
         const endY = exit.y + outDir.y * tMax;
         drawSegment(ctx, exit.x, exit.y, endX, endY, c.rgb, 1.8);
@@ -177,19 +189,35 @@ export function DispersionDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 14.2'}
       title="A prism splits white light"
       question="Why does each colour bend by a different amount?"
-      caption={<>
-        Cauchy's empirical fit <strong>n(λ) ≈ A + B/λ²</strong> lets <em>n</em> grow as λ shrinks.
-        Violet (420 nm) sees a higher refractive index than red (700 nm), so it bends more at each
-        face of the prism. Two refractions later, the white beam has fanned into a spectrum.
-        Crown glass: <strong>A ≈ 1.50, B ≈ 0.004 µm²</strong>.
-      </>}
+      caption={
+        <>
+          Cauchy's empirical fit <strong>n(λ) ≈ A + B/λ²</strong> lets <em>n</em> grow as λ shrinks.
+          Violet (420 nm) sees a higher refractive index than red (700 nm), so it bends more at each
+          face of the prism. Two refractions later, the white beam has fanned into a spectrum. Crown
+          glass: <strong>A ≈ 1.50, B ≈ 0.004 µm²</strong>.
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <MiniSlider label="A" value={A} min={1.40} max={1.80} step={0.005}
-          format={v => v.toFixed(3)} onChange={setA} />
-        <MiniSlider label="B" value={B} min={0.001} max={0.030} step={0.0005}
-          format={v => v.toFixed(4)} onChange={setB} />
+        <MiniSlider
+          label="A"
+          value={A}
+          min={1.4}
+          max={1.8}
+          step={0.005}
+          format={(v) => v.toFixed(3)}
+          onChange={setA}
+        />
+        <MiniSlider
+          label="B"
+          value={B}
+          min={0.001}
+          max={0.03}
+          step={0.0005}
+          format={(v) => v.toFixed(4)}
+          onChange={setB}
+        />
         <MiniReadout label="n(red)" value={nRed.toFixed(4)} />
         <MiniReadout label="n(violet)" value={nViolet.toFixed(4)} />
       </DemoControls>
@@ -199,12 +227,19 @@ export function DispersionDemo({ figure }: Props) {
 
 function drawSegment(
   ctx: CanvasRenderingContext2D,
-  x1: number, y1: number, x2: number, y2: number,
-  color: string, width: number,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  color: string,
+  width: number,
 ) {
   ctx.strokeStyle = color;
   ctx.lineWidth = width;
-  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
 }
 
 function fadedRgba(hex: string, alpha: number): string {
@@ -224,9 +259,9 @@ function lineSegmentIntersect(
 ): { x: number; y: number } | null {
   const sx = b.x - a.x;
   const sy = b.y - a.y;
-  const denom = dir.x * (-sy) + dir.y * sx; // = dir × s (2D cross)
+  const denom = dir.x * -sy + dir.y * sx; // = dir × s (2D cross)
   if (Math.abs(denom) < 1e-9) return null;
-  const t = ((a.x - p.x) * (-sy) + (a.y - p.y) * sx) / denom;
+  const t = ((a.x - p.x) * -sy + (a.y - p.y) * sx) / denom;
   const u = ((a.x - p.x) * dir.y - (a.y - p.y) * dir.x) / denom;
   if (t < 0 || u < 0 || u > 1) return null;
   return { x: p.x + t * dir.x, y: p.y + t * dir.y };

@@ -15,15 +15,19 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const Vpk = 1;
 const TAU3 = (2 * Math.PI) / 3;
 
 export function ThreePhaseDemo({ figure }: Props) {
-  const [f, setF] = useState(60);     // Hz (real grid)
+  const [f, setF] = useState(60); // Hz (real grid)
   const stateRef = useRef({ f });
-  useEffect(() => { stateRef.current.f = f; }, [f]);
+  useEffect(() => {
+    stateRef.current.f = f;
+  }, [f]);
 
   const Vrms = Vpk / Math.sqrt(2);
 
@@ -32,7 +36,7 @@ export function ThreePhaseDemo({ figure }: Props) {
     let raf = 0;
     let simT = 0;
     let lastT = performance.now();
-    const SCOPE_DURATION = 0.05;  // 50 ms window
+    const SCOPE_DURATION = 0.05; // 50 ms window
 
     function draw() {
       const { f } = stateRef.current;
@@ -58,7 +62,9 @@ export function ThreePhaseDemo({ figure }: Props) {
 
       // ── LEFT: scope of three waveforms
       ctx.save();
-      ctx.beginPath(); ctx.rect(0, 0, splitX, h); ctx.clip();
+      ctx.beginPath();
+      ctx.rect(0, 0, splitX, h);
+      ctx.clip();
 
       const plotX = 36;
       const plotW = Math.max(80, splitX - 60);
@@ -72,7 +78,9 @@ export function ThreePhaseDemo({ figure }: Props) {
       // Zero line
       ctx.strokeStyle = colors.borderStrong;
       ctx.beginPath();
-      ctx.moveTo(plotX, cyP); ctx.lineTo(plotX + plotW, cyP); ctx.stroke();
+      ctx.moveTo(plotX, cyP);
+      ctx.lineTo(plotX + plotW, cyP);
+      ctx.stroke();
 
       const xT = (tt: number) => plotX + ((tt - tStart) / SCOPE_DURATION) * plotW;
       const yV = (v: number) => cyP - (v / Vpk) * (plotH / 2) * 0.85;
@@ -81,9 +89,9 @@ export function ThreePhaseDemo({ figure }: Props) {
 
       // Three traces
       const phaseColors = [
-        'rgba(255,59,110,0.95)',  // pink
+        'rgba(255,59,110,0.95)', // pink
         'rgba(108,197,194,0.95)', // teal
-        'rgba(255,107,42,0.95)',  // amber
+        'rgba(255,107,42,0.95)', // amber
       ];
       const offsets = [0, TAU3, 2 * TAU3];
       for (let k = 0; k < 3; k++) {
@@ -94,7 +102,8 @@ export function ThreePhaseDemo({ figure }: Props) {
           const t = tStart + (i / sampleCount) * SCOPE_DURATION;
           const x = xT(t);
           const y = yV(voltageAt(t, offsets[k]));
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.stroke();
       }
@@ -109,7 +118,8 @@ export function ThreePhaseDemo({ figure }: Props) {
         const sumTrace = voltageAt(t, 0) + voltageAt(t, TAU3) + voltageAt(t, 2 * TAU3);
         const x = xT(t);
         const y = yV(sumTrace);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
       ctx.setLineDash([]);
@@ -118,9 +128,12 @@ export function ThreePhaseDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = phaseColors[0]; ctx.fillText('V_a', plotX + 4, plotY + 4);
-      ctx.fillStyle = phaseColors[1]; ctx.fillText('V_b', plotX + 36, plotY + 4);
-      ctx.fillStyle = phaseColors[2]; ctx.fillText('V_c', plotX + 68, plotY + 4);
+      ctx.fillStyle = phaseColors[0];
+      ctx.fillText('V_a', plotX + 4, plotY + 4);
+      ctx.fillStyle = phaseColors[1];
+      ctx.fillText('V_b', plotX + 36, plotY + 4);
+      ctx.fillStyle = phaseColors[2];
+      ctx.fillText('V_c', plotX + 68, plotY + 4);
       ctx.fillStyle = colors.text;
       ctx.fillText('Σ = 0', plotX + 100, plotY + 4);
 
@@ -134,11 +147,16 @@ export function ThreePhaseDemo({ figure }: Props) {
 
       // Divider
       ctx.strokeStyle = colors.border;
-      ctx.beginPath(); ctx.moveTo(splitX, 0); ctx.lineTo(splitX, h); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(splitX, 0);
+      ctx.lineTo(splitX, h);
+      ctx.stroke();
 
       // ── RIGHT: phasor diagram
       ctx.save();
-      ctx.beginPath(); ctx.rect(splitX, 0, w - splitX, h); ctx.clip();
+      ctx.beginPath();
+      ctx.rect(splitX, 0, w - splitX, h);
+      ctx.clip();
 
       const pcx = splitX + (w - splitX) / 2;
       const pcy = h / 2 + 8;
@@ -148,11 +166,14 @@ export function ThreePhaseDemo({ figure }: Props) {
       ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.arc(pcx, pcy, pR, 0, Math.PI * 2); ctx.stroke();
+      ctx.arc(pcx, pcy, pR, 0, Math.PI * 2);
+      ctx.stroke();
       // Axes
       ctx.beginPath();
-      ctx.moveTo(pcx - pR - 4, pcy); ctx.lineTo(pcx + pR + 4, pcy);
-      ctx.moveTo(pcx, pcy - pR - 4); ctx.lineTo(pcx, pcy + pR + 4);
+      ctx.moveTo(pcx - pR - 4, pcy);
+      ctx.lineTo(pcx + pR + 4, pcy);
+      ctx.moveTo(pcx, pcy - pR - 4);
+      ctx.lineTo(pcx, pcy + pR + 4);
       ctx.stroke();
 
       // Three rotating phasors
@@ -165,7 +186,9 @@ export function ThreePhaseDemo({ figure }: Props) {
         ctx.strokeStyle = cols[k];
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(pcx, pcy); ctx.lineTo(ax, ay); ctx.stroke();
+        ctx.moveTo(pcx, pcy);
+        ctx.lineTo(ax, ay);
+        ctx.stroke();
         // arrowhead
         const ang = Math.atan2(ay - pcy, ax - pcx);
         ctx.fillStyle = cols[k];
@@ -173,7 +196,8 @@ export function ThreePhaseDemo({ figure }: Props) {
         ctx.moveTo(ax, ay);
         ctx.lineTo(ax - 8 * Math.cos(ang - 0.4), ay - 8 * Math.sin(ang - 0.4));
         ctx.lineTo(ax - 8 * Math.cos(ang + 0.4), ay - 8 * Math.sin(ang + 0.4));
-        ctx.closePath(); ctx.fill();
+        ctx.closePath();
+        ctx.fill();
         ctx.fillStyle = cols[k];
         ctx.font = 'bold 10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
@@ -202,19 +226,24 @@ export function ThreePhaseDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 10.6'}
       title="Three-phase — why the grid uses three wires"
       question="Three sinusoids, each 120° behind the previous. What's special about that sum?"
-      caption={<>
-        Three voltages 120° apart in phase add to exactly zero at every instant. That means a
-        balanced three-phase delta system needs no neutral return wire — three wires carry
-        all the power. The right panel shows the phasor picture: three vectors of equal length
-        at 120°, summing geometrically to the origin.
-      </>}
+      caption={
+        <>
+          Three voltages 120° apart in phase add to exactly zero at every instant. That means a
+          balanced three-phase delta system needs no neutral return wire — three wires carry all the
+          power. The right panel shows the phasor picture: three vectors of equal length at 120°,
+          summing geometrically to the origin.
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="f"
-          value={f} min={10} max={400} step={1}
-          format={v => v.toFixed(0) + ' Hz'}
+          value={f}
+          min={10}
+          max={400}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Hz'}
           onChange={setF}
         />
         <MiniReadout label="V_pk" value={Vpk.toFixed(2)} unit="V" />

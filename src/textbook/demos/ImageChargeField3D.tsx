@@ -21,17 +21,25 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import {
-  add, attachOrbit, length, normalize, project, scale, sub, v3,
-  type OrbitCamera, type Vec3,
+  add,
+  attachOrbit,
+  length,
+  normalize,
+  project,
+  scale,
+  sub,
+  v3,
+  type OrbitCamera,
+  type Vec3,
 } from '@/lib/projection3d';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 function combinedE(p: Vec3, q: number, d: number): Vec3 {
   // E from real +q at (0,d,0) plus image -q at (0,-d,0).
@@ -42,10 +50,7 @@ function combinedE(p: Vec3, q: number, d: number): Vec3 {
   const l2 = length(r2);
   const safe1 = Math.max(l1, 1e-3);
   const safe2 = Math.max(l2, 1e-3);
-  return add(
-    scale(r1, q / (safe1 * safe1 * safe1)),
-    scale(r2, -q / (safe2 * safe2 * safe2)),
-  );
+  return add(scale(r1, q / (safe1 * safe1 * safe1)), scale(r2, -q / (safe2 * safe2 * safe2)));
 }
 
 /**
@@ -54,7 +59,12 @@ function combinedE(p: Vec3, q: number, d: number): Vec3 {
  * out. `sign` = +1 walks along E (away from +q); -1 walks against it.
  */
 function traceLine(
-  start: Vec3, sign: number, steps: number, dt: number, q: number, d: number,
+  start: Vec3,
+  sign: number,
+  steps: number,
+  dt: number,
+  q: number,
+  d: number,
   stopAtPlane: boolean,
 ): Vec3[] {
   const pts: Vec3[] = [start];
@@ -103,11 +113,11 @@ export function ImageChargeField3DDemo({ figure }: Props) {
       const planeHalf = 3;
       const planeCorners: Vec3[] = [
         v3(-planeHalf, 0, -planeHalf),
-        v3( planeHalf, 0, -planeHalf),
-        v3( planeHalf, 0,  planeHalf),
-        v3(-planeHalf, 0,  planeHalf),
+        v3(planeHalf, 0, -planeHalf),
+        v3(planeHalf, 0, planeHalf),
+        v3(-planeHalf, 0, planeHalf),
       ];
-      const corners2D = planeCorners.map(c => project(c, cam, w, h));
+      const corners2D = planeCorners.map((c) => project(c, cam, w, h));
       // Translucent fill.
       ctx.save();
       ctx.globalAlpha = 0.05;
@@ -130,13 +140,13 @@ export function ImageChargeField3DDemo({ figure }: Props) {
       // Grid lines (every 1 unit) for spatial reference.
       for (let g = -planeHalf + 1; g < planeHalf; g++) {
         const a = project(v3(g, 0, -planeHalf), cam, w, h);
-        const b = project(v3(g, 0,  planeHalf), cam, w, h);
+        const b = project(v3(g, 0, planeHalf), cam, w, h);
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
         ctx.stroke();
         const c = project(v3(-planeHalf, 0, g), cam, w, h);
-        const e = project(v3( planeHalf, 0, g), cam, w, h);
+        const e = project(v3(planeHalf, 0, g), cam, w, h);
         ctx.beginPath();
         ctx.moveTo(c.x, c.y);
         ctx.lineTo(e.x, e.y);
@@ -150,13 +160,13 @@ export function ImageChargeField3DDemo({ figure }: Props) {
         const N = 11; // 11×11 grid inside ±planeHalf (skipping the boundary corners).
         const step = (2 * planeHalf) / (N - 1);
         // Reference σ at r=0 for scaling.
-        const sigmaMax = q * d / (2 * Math.PI * Math.pow(d * d, 1.5));
+        const sigmaMax = (q * d) / (2 * Math.PI * Math.pow(d * d, 1.5));
         for (let i = 0; i < N; i++) {
           for (let j = 0; j < N; j++) {
             const x = -planeHalf + i * step;
             const z = -planeHalf + j * step;
             const r2 = x * x + z * z;
-            const sigma = -q * d / (2 * Math.PI * Math.pow(r2 + d * d, 1.5));
+            const sigma = (-q * d) / (2 * Math.PI * Math.pow(r2 + d * d, 1.5));
             const rel = Math.abs(sigma) / sigmaMax; // 0..1
             const p2 = project(v3(x, 0, z), cam, w, h);
             const rad = 1 + 5 * rel;
@@ -179,11 +189,13 @@ export function ImageChargeField3DDemo({ figure }: Props) {
         for (let j = 0; j < N_LON; j++) {
           const phi = (j / N_LON) * 2 * Math.PI;
           const r0 = 0.18; // start just outside the charge
-          seeds.push(v3(
-            r0 * Math.sin(theta) * Math.cos(phi),
-            d + r0 * Math.cos(theta),
-            r0 * Math.sin(theta) * Math.sin(phi),
-          ));
+          seeds.push(
+            v3(
+              r0 * Math.sin(theta) * Math.cos(phi),
+              d + r0 * Math.cos(theta),
+              r0 * Math.sin(theta) * Math.sin(phi),
+            ),
+          );
         }
       }
 
@@ -192,7 +204,7 @@ export function ImageChargeField3DDemo({ figure }: Props) {
         // terminate on the induced surface charge).
         const lineAbove = traceLine(seed, +1, 220, 0.05, q, d, true);
         if (lineAbove.length > 1) {
-          const pts2 = lineAbove.map(p => project(p, cam, w, h));
+          const pts2 = lineAbove.map((p) => project(p, cam, w, h));
           drawGlowPath(ctx, pts2, {
             color: 'rgba(108,197,194,0.85)',
             lineWidth: 1.2,
@@ -210,11 +222,13 @@ export function ImageChargeField3DDemo({ figure }: Props) {
           for (let j = 0; j < N_LON; j++) {
             const phi = (j / N_LON) * 2 * Math.PI;
             const r0 = 0.18;
-            seedsBelow.push(v3(
-              r0 * Math.sin(theta) * Math.cos(phi),
-              -d + r0 * Math.cos(theta),
-              r0 * Math.sin(theta) * Math.sin(phi),
-            ));
+            seedsBelow.push(
+              v3(
+                r0 * Math.sin(theta) * Math.cos(phi),
+                -d + r0 * Math.cos(theta),
+                r0 * Math.sin(theta) * Math.sin(phi),
+              ),
+            );
           }
         }
         for (const seed of seedsBelow) {
@@ -228,7 +242,7 @@ export function ImageChargeField3DDemo({ figure }: Props) {
             trimmed.push(p);
           }
           if (trimmed.length > 1) {
-            const pts2 = trimmed.map(p => project(p, cam, w, h));
+            const pts2 = trimmed.map((p) => project(p, cam, w, h));
             // Dashed translucent — to mark "mathematical, not physical".
             ctx.save();
             ctx.setLineDash([4, 4]);
@@ -251,8 +265,12 @@ export function ImageChargeField3DDemo({ figure }: Props) {
       const realR = 12 + Math.min(8, q * 1.8);
       ctx.save();
       const grad = ctx.createRadialGradient(
-        realPos.x - realR * 0.3, realPos.y - realR * 0.3, realR * 0.2,
-        realPos.x, realPos.y, realR,
+        realPos.x - realR * 0.3,
+        realPos.y - realR * 0.3,
+        realR * 0.2,
+        realPos.x,
+        realPos.y,
+        realR,
       );
       grad.addColorStop(0, '#ffb0c4');
       grad.addColorStop(1, '#ff3b6e');
@@ -312,7 +330,10 @@ export function ImageChargeField3DDemo({ figure }: Props) {
       raf = requestAnimationFrame(draw);
     }
     raf = requestAnimationFrame(draw);
-    return () => { cancelAnimationFrame(raf); dispose(); };
+    return () => {
+      cancelAnimationFrame(raf);
+      dispose();
+    };
   }, []);
 
   // Analytic total induced charge: ∫σ dA = -q exactly (Griffiths §3.2).
@@ -326,14 +347,12 @@ export function ImageChargeField3DDemo({ figure }: Props) {
       question="A +q sits above a grounded conductor. What does the field above the plane look like?"
       caption={
         <>
-          A positive charge above a grounded metal plane induces a thin film of
-          negative surface charge directly beneath it. The trick: above the
-          plane, the field is identical to what you would get from the real
-          +q paired with a fictitious −q "image" the same distance below — a
-          purely mathematical stand-in for the induced surface charge. The
-          field lines from +q terminate on the plane perpendicularly (they
-          must, because E is normal to a conductor at its surface), and the
-          total induced charge on the plane integrates to exactly −q.
+          A positive charge above a grounded metal plane induces a thin film of negative surface
+          charge directly beneath it. The trick: above the plane, the field is identical to what you
+          would get from the real +q paired with a fictitious −q "image" the same distance below — a
+          purely mathematical stand-in for the induced surface charge. The field lines from +q
+          terminate on the plane perpendicularly (they must, because E is normal to a conductor at
+          its surface), and the total induced charge on the plane integrates to exactly −q.
         </>
       }
     >
@@ -341,23 +360,31 @@ export function ImageChargeField3DDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="charge q"
-          value={q} min={0.5} max={5} step={0.1}
-          format={v => v.toFixed(1)}
+          value={q}
+          min={0.5}
+          max={5}
+          step={0.1}
+          format={(v) => v.toFixed(1)}
           onChange={setQ}
         />
         <MiniSlider
           label="height d"
-          value={d} min={0.5} max={3} step={0.05}
-          format={v => v.toFixed(2)}
+          value={d}
+          min={0.5}
+          max={3}
+          step={0.05}
+          format={(v) => v.toFixed(2)}
           onChange={setD}
         />
         <MiniToggle
           label={showImage ? 'image charge SHOWN' : 'image charge hidden'}
-          checked={showImage} onChange={setShowImage}
+          checked={showImage}
+          onChange={setShowImage}
         />
         <MiniToggle
           label={showSigma ? 'surface σ SHOWN' : 'surface σ hidden'}
-          checked={showSigma} onChange={setShowSigma}
+          checked={showSigma}
+          onChange={setShowSigma}
         />
         <MiniReadout
           label="∫σ dA on the plane"

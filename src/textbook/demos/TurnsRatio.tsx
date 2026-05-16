@@ -12,16 +12,20 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const VP_PEAK = 170;     // 170 V peak ≈ 120 V_rms
-const F_HZ = 60;          // 60 Hz line
+const VP_PEAK = 170; // 170 V peak ≈ 120 V_rms
+const F_HZ = 60; // 60 Hz line
 
 export function TurnsRatioDemo({ figure }: Props) {
-  const [ratio, setRatio] = useState(0.1);    // step-down 10:1 by default
+  const [ratio, setRatio] = useState(0.1); // step-down 10:1 by default
 
   const stateRef = useRef({ ratio });
-  useEffect(() => { stateRef.current.ratio = ratio; }, [ratio]);
+  useEffect(() => {
+    stateRef.current.ratio = ratio;
+  }, [ratio]);
 
   const computed = useMemo(() => {
     const Vs = VP_PEAK * ratio;
@@ -43,8 +47,10 @@ export function TurnsRatioDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 50, padR = 30;
-      const padT = 24, padB = 30;
+      const padL = 50,
+        padR = 30;
+      const padT = 24,
+        padB = 30;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
       const cy = padT + plotH / 2;
@@ -57,27 +63,30 @@ export function TurnsRatioDemo({ figure }: Props) {
       // Zero line
       ctx.strokeStyle = colors.borderStrong;
       ctx.beginPath();
-      ctx.moveTo(padL, cy); ctx.lineTo(padL + plotW, cy);
+      ctx.moveTo(padL, cy);
+      ctx.lineTo(padL + plotW, cy);
       ctx.stroke();
 
       // Y-axis voltage scale: full window = ±200 V
       const yMax = 200;
-      const yScale = (plotH / 2) * 0.92 / yMax;
+      const yScale = ((plotH / 2) * 0.92) / yMax;
 
       // Gridlines at ±100 V, ±50 V
       ctx.strokeStyle = colors.border;
-      [-150, -100, -50, 50, 100, 150].forEach(v => {
+      [-150, -100, -50, 50, 100, 150].forEach((v) => {
         const y = cy - v * yScale;
         ctx.beginPath();
-        ctx.moveTo(padL, y); ctx.lineTo(padL + plotW, y);
+        ctx.moveTo(padL, y);
+        ctx.lineTo(padL + plotW, y);
         ctx.stroke();
       });
 
       // y labels
       ctx.fillStyle = 'rgba(160,158,149,0.6)';
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
-      [-150, 0, 150].forEach(v => {
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      [-150, 0, 150].forEach((v) => {
         const y = cy - v * yScale;
         ctx.fillText((v > 0 ? '+' : '') + v.toFixed(0), padL - 6, y);
       });
@@ -96,7 +105,8 @@ export function TurnsRatioDemo({ figure }: Props) {
         const v = VP_PEAK * Math.sin(omega * (tVis + tau));
         const x = padL + (i / samples) * plotW;
         const y = cy - v * yScale;
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -109,13 +119,15 @@ export function TurnsRatioDemo({ figure }: Props) {
         const v = VP_PEAK * ratio * Math.sin(omega * (tVis + tau));
         const x = padL + (i / samples) * plotW;
         const y = cy - v * yScale;
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
       // Legend
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillStyle = colors.pink;
       ctx.fillText('— V_p (170 V peak)', padL + 8, padT + 6);
       ctx.fillStyle = colors.accent;
@@ -123,7 +135,8 @@ export function TurnsRatioDemo({ figure }: Props) {
 
       // x-axis label
       ctx.fillStyle = 'rgba(160,158,149,0.6)';
-      ctx.textAlign = 'right'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'top';
       ctx.fillText('t (60 Hz · 2 cycles)', padL + plotW, padT + plotH + 4);
 
       raf = requestAnimationFrame(draw);
@@ -137,19 +150,26 @@ export function TurnsRatioDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 18.2'}
       title="Turns ratio sets the voltage scale"
       question="One knob. The secondary scales. The frequency and phase don't."
-      caption={<>
-        Two traces of <em>V(t) = V_peak · sin(ωt)</em>: the primary at fixed 170 V peak, the secondary at
-        <em> n · V_peak</em> where <em>n = N_s/N_p</em>. Slide n from 0.01 (huge step-down) through 1 (1:1
-        isolation) to ~3 (step-up). The waveforms stay perfectly phase-locked — that's what "ideal" means.
-      </>}
+      caption={
+        <>
+          Two traces of <em>V(t) = V_peak · sin(ωt)</em>: the primary at fixed 170 V peak, the
+          secondary at
+          <em> n · V_peak</em> where <em>n = N_s/N_p</em>. Slide n from 0.01 (huge step-down)
+          through 1 (1:1 isolation) to ~3 (step-up). The waveforms stay perfectly phase-locked —
+          that's what "ideal" means.
+        </>
+      }
       deeperLab={{ slug: 'faraday', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={240} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="n = N_s/N_p"
-          value={ratio} min={0.01} max={1.2} step={0.01}
-          format={v => v.toFixed(2)}
+          value={ratio}
+          min={0.01}
+          max={1.2}
+          step={0.01}
+          format={(v) => v.toFixed(2)}
           onChange={setRatio}
         />
         <MiniReadout label="V_s,peak" value={<Num value={computed.Vs} digits={2} />} unit="V" />

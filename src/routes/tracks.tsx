@@ -8,11 +8,7 @@ import {
   type ChapterSlug,
   type TrackId,
 } from '@/textbook/data/chapters';
-import {
-  getProgress,
-  onProgressChange,
-  type ProgressState,
-} from '@/lib/progress';
+import { getProgress, onProgressChange, type ProgressState } from '@/lib/progress';
 
 export const Route = createFileRoute('/tracks')({
   component: TracksPage,
@@ -20,7 +16,7 @@ export const Route = createFileRoute('/tracks')({
 
 /** Order chapters of a track so prereqs always come before dependents. */
 function topoOrder(chapters: ChapterEntry[]): ChapterEntry[] {
-  const inSet = new Set(chapters.map(c => c.slug));
+  const inSet = new Set(chapters.map((c) => c.slug));
   const out: ChapterEntry[] = [];
   const placed = new Set<ChapterSlug>();
   const queue = [...chapters].sort((a, b) => a.number - b.number);
@@ -28,7 +24,7 @@ function topoOrder(chapters: ChapterEntry[]): ChapterEntry[] {
   let guard = chapters.length * chapters.length + 10;
   while (queue.length && guard-- > 0) {
     const next = queue.shift()!;
-    const unmetPrereqs = (next.prereqs ?? []).filter(p => inSet.has(p) && !placed.has(p));
+    const unmetPrereqs = (next.prereqs ?? []).filter((p) => inSet.has(p) && !placed.has(p));
     if (unmetPrereqs.length === 0) {
       out.push(next);
       placed.add(next.slug);
@@ -54,8 +50,10 @@ interface TrackCardProps {
   progress: ProgressState;
 }
 
-function statusOf(slug: ChapterSlug, progress: ProgressState):
-  'not-started' | 'in-progress' | 'complete' {
+function statusOf(
+  slug: ChapterSlug,
+  progress: ProgressState,
+): 'not-started' | 'in-progress' | 'complete' {
   const p = progress.chapters[slug];
   if (!p) return 'not-started';
   if (p.status === 'completed') return 'complete';
@@ -68,30 +66,33 @@ function TrackCard({ track, chapters, progress }: TrackCardProps) {
 
   const ordered = useMemo(() => topoOrder(chapters), [chapters]);
   const total = ordered.length;
-  const completed = ordered.filter(c => statusOf(c.slug, progress) === 'complete').length;
+  const completed = ordered.filter((c) => statusOf(c.slug, progress) === 'complete').length;
   const pct = total ? Math.round((completed / total) * 100) : 0;
 
   // Resume target = first not-yet-completed chapter; otherwise first chapter.
-  const resumeChapter = ordered.find(c => statusOf(c.slug, progress) !== 'complete') ?? ordered[0];
-  const anyStarted = ordered.some(c => statusOf(c.slug, progress) !== 'not-started');
+  const resumeChapter =
+    ordered.find((c) => statusOf(c.slug, progress) !== 'complete') ?? ordered[0];
+  const anyStarted = ordered.some((c) => statusOf(c.slug, progress) !== 'not-started');
 
   return (
     <section
-      className="card-surface border-t-3 rounded-3 p-xl flex flex-col"
-      style={{
-        ['--path-accent' as string]: accent,
-        borderTopColor: 'var(--path-accent)',
-      } as React.CSSProperties}
+      className="card-surface rounded-3 p-xl flex flex-col border-t-3"
+      style={
+        {
+          ['--path-accent' as string]: accent,
+          borderTopColor: 'var(--path-accent)',
+        } as React.CSSProperties
+      }
     >
       <header className="mb-md">
         <div className="title-display text-8 mb-sm">{meta.name}</div>
-        <p className="body-copy text-5 leading-4 m-0">{meta.description}</p>
+        <p className="body-copy text-5 m-0 leading-4">{meta.description}</p>
       </header>
 
       <div className="mb-lg">
-        <div className="w-full h-sm bg-bg-elevated rounded-pill overflow-hidden border border-border-1">
+        <div className="h-sm bg-bg-elevated rounded-pill border-border-1 w-full overflow-hidden border">
           <div
-            className="h-full transition-[width] duration-300 ease-in-out bg-[var(--path-accent)]"
+            className="h-full bg-[var(--path-accent)] transition-[width] duration-300 ease-in-out"
             style={{ width: `${pct}%` }}
           />
         </div>
@@ -104,38 +105,45 @@ function TrackCard({ track, chapters, progress }: TrackCardProps) {
         <Link
           to="/textbook/$chapterSlug"
           params={{ chapterSlug: resumeChapter.slug }}
-          className="flex flex-col gap-xs py-md px-md mb-lg bg-bg-elevated border border-border-2 border-l-3 border-l-[var(--path-accent)] rounded-5 no-underline font-3 text-3 text-text tracking-3 uppercase transition-[background-color,border-color] duration-150 ease-in-out hover:bg-bg-card-hover hover:border-[var(--path-accent)]"
+          className="gap-xs py-md px-md mb-lg bg-bg-elevated border-border-2 rounded-5 font-3 text-3 text-text tracking-3 hover:bg-bg-card-hover flex flex-col border border-l-3 border-l-[var(--path-accent)] uppercase no-underline transition-[background-color,border-color] duration-150 ease-in-out hover:border-[var(--path-accent)]"
         >
           {anyStarted ? 'Resume track →' : 'Start track →'}
-          <span className="font-1 text-4 text-text-dim normal-case tracking-normal">
+          <span className="font-1 text-4 text-text-dim tracking-normal normal-case">
             Ch.{resumeChapter.number} · {resumeChapter.title}
           </span>
         </Link>
       )}
 
       {total === 0 ? (
-        <p className="font-1 text-5 text-text-muted italic">No chapters are assigned to this track yet.</p>
+        <p className="font-1 text-5 text-text-muted italic">
+          No chapters are assigned to this track yet.
+        </p>
       ) : (
-        <ol className="list-none p-0 m-0 flex flex-col gap-xs">
-          {ordered.map(c => {
+        <ol className="gap-xs m-0 flex list-none flex-col p-0">
+          {ordered.map((c) => {
             const status = statusOf(c.slug, progress);
-            const icon =
-              status === 'complete' ? '✓' :
-              status === 'in-progress' ? '◐' :
-              '○';
+            const icon = status === 'complete' ? '✓' : status === 'in-progress' ? '◐' : '○';
             const statusColor =
-              status === 'complete' ? 'var(--path-accent)' :
-              status === 'in-progress' ? 'var(--accent)' :
-              'var(--text-muted)';
+              status === 'complete'
+                ? 'var(--path-accent)'
+                : status === 'in-progress'
+                  ? 'var(--accent)'
+                  : 'var(--text-muted)';
             const titleColor = status === 'complete' ? 'var(--color-4)' : 'inherit';
             return (
               <li key={c.slug}>
                 <Link
                   to="/textbook/$chapterSlug"
                   params={{ chapterSlug: c.slug }}
-                  className="grid grid-cols-[24px_60px_1fr_auto] gap-md items-center py-sm px-md rounded-4 no-underline text-text-dim font-1 text-5 transition-[background-color,color] duration-fast ease-in-out hover:bg-bg-elevated hover:text-text max-md:grid-cols-[24px_50px_1fr_auto] max-md:gap-sm"
+                  className="gap-md py-sm px-md rounded-4 text-text-dim font-1 text-5 duration-fast hover:bg-bg-elevated hover:text-text max-md:gap-sm grid grid-cols-[24px_60px_1fr_auto] items-center no-underline transition-[background-color,color] ease-in-out max-md:grid-cols-[24px_50px_1fr_auto]"
                 >
-                  <span className="font-3 text-5 text-center" style={{ color: statusColor }} aria-hidden="true">{icon}</span>
+                  <span
+                    className="font-3 text-5 text-center"
+                    style={{ color: statusColor }}
+                    aria-hidden="true"
+                  >
+                    {icon}
+                  </span>
                   <span className="eyebrow-muted">Ch.{c.number}</span>
                   <span style={{ color: titleColor }}>{c.title}</span>
                   <span className="font-3 text-1 text-text-muted tracking-3">
@@ -170,38 +178,42 @@ function TracksPage() {
   }, []);
 
   const trackOrder: TrackId[] = ['practical', 'bench', 'rigor'];
-  const anyTracksPopulated = trackOrder.some(t => chaptersByTrack[t].length > 0);
+  const anyTracksPopulated = trackOrder.some((t) => chaptersByTrack[t].length > 0);
 
   return (
     <section className="page-shell max-w-page">
       <header className="mb-2xl">
         <div className="eyebrow-muted tracking-4 mb-sm">Field · Theory · Tracks</div>
-        <h1 className="title-display font-light text-10 leading-1 tracking-1 mb-lg max-md:text-9">
-          Three <em className="italic text-accent font-normal">paths</em> through the book.
+        <h1 className="title-display text-10 tracking-1 mb-lg max-md:text-9 leading-1 font-light">
+          Three <em className="text-accent font-normal italic">paths</em> through the book.
         </h1>
         <p className="body-copy max-w-page-sm">
-          Each track is a curated subset of the textbook, ordered so prerequisites
-          come first. Pick the one that matches what you want to be able to do.
-          Your progress is saved locally in this browser.
+          Each track is a curated subset of the textbook, ordered so prerequisites come first. Pick
+          the one that matches what you want to be able to do. Your progress is saved locally in
+          this browser.
         </p>
       </header>
 
       {!anyTracksPopulated && (
-        <p className="font-1 text-accent italic my-lg">
-          Track assignments are still being populated. The cards below will fill
-          in once the chapter manifest is complete.
+        <p className="font-1 text-accent my-lg italic">
+          Track assignments are still being populated. The cards below will fill in once the chapter
+          manifest is complete.
         </p>
       )}
 
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-lg mt-lg">
-        {trackOrder.map(t => (
+      <div className="gap-lg mt-lg grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))]">
+        {trackOrder.map((t) => (
           <TrackCard key={t} track={t} chapters={chaptersByTrack[t]} progress={progress} />
         ))}
       </div>
 
-      <div className="flex justify-between mt-2xl pt-lg border-t border-border">
-        <Link to="/map" className="eyebrow-muted-link">← Course map</Link>
-        <Link to="/me" className="eyebrow-muted-link">Your progress →</Link>
+      <div className="mt-2xl pt-lg border-border flex justify-between border-t">
+        <Link to="/map" className="eyebrow-muted-link">
+          ← Course map
+        </Link>
+        <Link to="/me" className="eyebrow-muted-link">
+          Your progress →
+        </Link>
       </div>
     </section>
   );

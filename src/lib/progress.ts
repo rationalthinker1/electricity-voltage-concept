@@ -316,7 +316,9 @@ function applyReviewScheduleMutation(
     ? Math.min(existing.intervalIdx + 1, REVIEW_INTERVALS_DAYS.length - 1)
     : existing.intervalIdx;
   const topHit =
-    dueNow && nextIdx === REVIEW_INTERVALS_DAYS.length - 1 && existing.intervalIdx === REVIEW_INTERVALS_DAYS.length - 1;
+    dueNow &&
+    nextIdx === REVIEW_INTERVALS_DAYS.length - 1 &&
+    existing.intervalIdx === REVIEW_INTERVALS_DAYS.length - 1;
   state.reviews[slug] = {
     slug,
     lastReviewedAt: now,

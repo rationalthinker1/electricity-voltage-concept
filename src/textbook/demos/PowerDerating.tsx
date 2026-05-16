@@ -11,13 +11,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // Standard film-resistor derating: 100% to 70 °C, linear to 0 at 155 °C.
 // (Some power and wirewound parts hold flat to 25 °C; we use the conservative
@@ -38,7 +38,9 @@ export function PowerDeratingDemo({ figure }: Props) {
   const [P_actual, setPact] = useState(0.15); // W actually dissipated
 
   const stateRef = useRef({ T_C, P_nom, P_actual });
-  useEffect(() => { stateRef.current = { T_C, P_nom, P_actual }; }, [T_C, P_nom, P_actual]);
+  useEffect(() => {
+    stateRef.current = { T_C, P_nom, P_actual };
+  }, [T_C, P_nom, P_actual]);
 
   const frac = deratingFraction(T_C);
   const P_allow = P_nom * frac;
@@ -70,7 +72,8 @@ export function PowerDeratingDemo({ figure }: Props) {
       ctx.stroke();
 
       // x: T in °C from 0 to 175
-      const tMin = 0, tMax = 175;
+      const tMin = 0,
+        tMax = 175;
       const xT = (t: number) => padL + ((t - tMin) / (tMax - tMin)) * gW;
       const yF = (f: number) => padT + (1 - f) * gH;
 
@@ -81,7 +84,10 @@ export function PowerDeratingDemo({ figure }: Props) {
       for (let t = 0; t <= 175; t += 25) {
         const x = xT(t);
         ctx.strokeStyle = getCanvasColors().border;
-        ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + gH); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, padT);
+        ctx.lineTo(x, padT + gH);
+        ctx.stroke();
         ctx.fillText(`${t}`, x, padT + gH + 14);
       }
       ctx.fillText('Ambient T (°C)', padL + gW / 2, padT + gH + 28);
@@ -90,7 +96,10 @@ export function PowerDeratingDemo({ figure }: Props) {
       for (let f = 0; f <= 1.0001; f += 0.25) {
         const y = yF(f);
         ctx.strokeStyle = getCanvasColors().border;
-        ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + gW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(padL, y);
+        ctx.lineTo(padL + gW, y);
+        ctx.stroke();
         ctx.fillText(`${(f * 100).toFixed(0)}%`, padL - 6, y + 3);
       }
 
@@ -166,9 +175,11 @@ export function PowerDeratingDemo({ figure }: Props) {
       question="Why can't a 1/4 W resistor actually dissipate 1/4 W?"
       caption={
         <>
-          The resistor's rated power is for cool surroundings only. Once the ambient passes the knee — typically <strong>70 °C</strong> for
-          a film resistor — the allowed dissipation derates linearly to <strong>zero</strong> at the maximum body temperature (~155 °C). In
-          a hot enclosure a 1/4 W part is really a 1/8 W part. The blue dot is the current operating point; pink means you are over the limit.
+          The resistor's rated power is for cool surroundings only. Once the ambient passes the knee
+          — typically <strong>70 °C</strong> for a film resistor — the allowed dissipation derates
+          linearly to <strong>zero</strong> at the maximum body temperature (~155 °C). In a hot
+          enclosure a 1/4 W part is really a 1/8 W part. The blue dot is the current operating
+          point; pink means you are over the limit.
         </>
       }
       deeperLab={{ slug: 'joule', label: 'See full lab' }}
@@ -177,20 +188,29 @@ export function PowerDeratingDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="Ambient T"
-          value={T_C} min={20} max={170} step={1}
-          format={v => v.toFixed(0) + ' °C'}
+          value={T_C}
+          min={20}
+          max={170}
+          step={1}
+          format={(v) => v.toFixed(0) + ' °C'}
           onChange={setT}
         />
         <MiniSlider
           label="P rated"
-          value={P_nom} min={0.0625} max={5} step={0.0625}
-          format={v => v < 1 ? `1/${Math.round(1 / v)} W` : v.toFixed(2) + ' W'}
+          value={P_nom}
+          min={0.0625}
+          max={5}
+          step={0.0625}
+          format={(v) => (v < 1 ? `1/${Math.round(1 / v)} W` : v.toFixed(2) + ' W')}
           onChange={setPnom}
         />
         <MiniSlider
           label="P actual"
-          value={P_actual} min={0} max={2} step={0.01}
-          format={v => v.toFixed(2) + ' W'}
+          value={P_actual}
+          min={0}
+          max={2}
+          step={0.01}
+          format={(v) => v.toFixed(2) + ' W'}
           onChange={setPact}
         />
         <MiniReadout label="Allowed" value={<Num value={P_allow} />} unit="W" />

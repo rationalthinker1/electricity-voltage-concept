@@ -14,17 +14,21 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const N_TURNS = 80;
-const A_M2 = 0.02;   // 200 cm² coil area
-const B_T = 0.5;     // T
+const A_M2 = 0.02; // 200 cm² coil area
+const B_T = 0.5; // T
 
 export function RotatingCoilGeneratorDemo({ figure }: Props) {
-  const [omega, setOmega] = useState(80);   // rad/s
+  const [omega, setOmega] = useState(80); // rad/s
 
   const stateRef = useRef({ omega });
-  useEffect(() => { stateRef.current.omega = omega; }, [omega]);
+  useEffect(() => {
+    stateRef.current.omega = omega;
+  }, [omega]);
 
   const computed = useMemo(() => {
     const peak = N_TURNS * B_T * A_M2 * omega;
@@ -60,7 +64,9 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
 
       // LEFT: coil + magnets
       ctx.save();
-      ctx.beginPath(); ctx.rect(0, 0, splitX, h); ctx.clip();
+      ctx.beginPath();
+      ctx.rect(0, 0, splitX, h);
+      ctx.clip();
       // Magnet poles (vertical stripes left=N, right=S)
       ctx.save();
       ctx.globalAlpha = 0.15;
@@ -74,7 +80,8 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       ctx.restore();
       ctx.fillStyle = colors.pink;
       ctx.font = 'bold 12px JetBrains Mono';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText('N', 21, h / 2);
       ctx.fillStyle = colors.blue;
       ctx.fillText('S', splitX - 21, h / 2);
@@ -88,14 +95,17 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       ctx.fillStyle = colors.teal;
       ctx.lineWidth = 1;
       for (let i = 0; i < 5; i++) {
-        const y = h * 0.22 + i * (h * 0.56) / 4;
+        const y = h * 0.22 + (i * (h * 0.56)) / 4;
         ctx.beginPath();
-        ctx.moveTo(38, y); ctx.lineTo(splitX - 40, y); ctx.stroke();
+        ctx.moveTo(38, y);
+        ctx.lineTo(splitX - 40, y);
+        ctx.stroke();
         ctx.beginPath();
         ctx.moveTo(splitX - 40, y);
         ctx.lineTo(splitX - 46, y - 3);
         ctx.lineTo(splitX - 46, y + 3);
-        ctx.closePath(); ctx.fill();
+        ctx.closePath();
+        ctx.fill();
       }
 
       // Coil rectangle rotating
@@ -112,22 +122,32 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       // Slip rings (two parallel arcs at the shaft)
       ctx.strokeStyle = 'rgba(212,160,80,0.85)';
       ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.arc(coilCx, coilCy + coilH / 2 + 14, 6, 0, Math.PI * 2); ctx.stroke();
-      ctx.beginPath(); ctx.arc(coilCx, coilCy + coilH / 2 + 28, 6, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(coilCx, coilCy + coilH / 2 + 14, 6, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(coilCx, coilCy + coilH / 2 + 28, 6, 0, Math.PI * 2);
+      ctx.stroke();
 
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText(`B = ${B_T} T  ·  N = ${N_TURNS}  ·  A = ${(A_M2 * 1e4).toFixed(0)} cm²`, 8, 8);
       ctx.restore();
 
       // Divider
       ctx.strokeStyle = colors.border;
-      ctx.beginPath(); ctx.moveTo(splitX, 0); ctx.lineTo(splitX, h); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(splitX, 0);
+      ctx.lineTo(splitX, h);
+      ctx.stroke();
 
       // RIGHT: oscilloscope
       ctx.save();
-      ctx.beginPath(); ctx.rect(splitX, 0, w - splitX, h); ctx.clip();
+      ctx.beginPath();
+      ctx.rect(splitX, 0, w - splitX, h);
+      ctx.clip();
       const scopeX = splitX + 30;
       const scopeW = w - splitX - 50;
       const scopeCy = h / 2;
@@ -141,12 +161,17 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       ctx.strokeStyle = colors.border;
       for (let i = 0; i <= 4; i++) {
         const y = scopeCy - scopeH / 2 + (i * scopeH) / 4;
-        ctx.beginPath(); ctx.moveTo(scopeX, y); ctx.lineTo(scopeX + scopeW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(scopeX, y);
+        ctx.lineTo(scopeX + scopeW, y);
+        ctx.stroke();
       }
       // Zero line
       ctx.strokeStyle = colors.borderStrong;
       ctx.beginPath();
-      ctx.moveTo(scopeX, scopeCy); ctx.lineTo(scopeX + scopeW, scopeCy); ctx.stroke();
+      ctx.moveTo(scopeX, scopeCy);
+      ctx.lineTo(scopeX + scopeW, scopeCy);
+      ctx.stroke();
       // Peak guides
       ctx.save();
       ctx.globalAlpha = 0.3;
@@ -155,8 +180,10 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       const py1 = scopeCy - (scopeH / 2) * 0.9;
       const py2 = scopeCy + (scopeH / 2) * 0.9;
       ctx.beginPath();
-      ctx.moveTo(scopeX, py1); ctx.lineTo(scopeX + scopeW, py1);
-      ctx.moveTo(scopeX, py2); ctx.lineTo(scopeX + scopeW, py2);
+      ctx.moveTo(scopeX, py1);
+      ctx.lineTo(scopeX + scopeW, py1);
+      ctx.moveTo(scopeX, py2);
+      ctx.lineTo(scopeX + scopeW, py2);
       ctx.stroke();
       ctx.setLineDash([]);
 
@@ -169,14 +196,16 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
           const s = scope[i];
           const x = scopeX + ((s.t - tCut) / SCOPE_DURATION) * scopeW;
           const y = scopeCy - (s.emf / yScale) * (scopeH / 2) * 0.9;
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.stroke();
       }
       ctx.restore();
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText('EMF(t)', scopeX, 12);
       ctx.textAlign = 'right';
       ctx.fillStyle = colors.accent;
@@ -194,19 +223,26 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 17.1'}
       title="Rotating coil = simple alternator"
       question="A coil that goes round and round. What's the voltage between its leads?"
-      caption={<>
-        A coil of <strong>N = {N_TURNS}</strong> turns and area <strong>{(A_M2 * 1e4).toFixed(0)} cm²</strong> rotates
-        in a uniform 0.5 T field. The voltage between its leads is <em>NBAω sin(ωt)</em> — a clean sine wave whose
-        peak amplitude scales with rotation rate. Two slip rings (not a commutator) carry the AC out unchanged.
-      </>}
+      caption={
+        <>
+          A coil of <strong>N = {N_TURNS}</strong> turns and area{' '}
+          <strong>{(A_M2 * 1e4).toFixed(0)} cm²</strong> rotates in a uniform 0.5 T field. The
+          voltage between its leads is <em>NBAω sin(ωt)</em> — a clean sine wave whose peak
+          amplitude scales with rotation rate. Two slip rings (not a commutator) carry the AC out
+          unchanged.
+        </>
+      }
       deeperLab={{ slug: 'faraday', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="ω"
-          value={omega} min={0} max={400} step={1}
-          format={v => Math.round(v) + ' rad/s'}
+          value={omega}
+          min={0}
+          max={400}
+          step={1}
+          format={(v) => Math.round(v) + ' rad/s'}
           onChange={setOmega}
         />
         <MiniReadout label="EMFₚₖ" value={<Num value={computed.peak} digits={2} />} unit="V" />

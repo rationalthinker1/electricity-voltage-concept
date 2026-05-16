@@ -36,10 +36,13 @@ export function Tabs({ value, defaultValue, onChange, children, className }: Tab
   const tabRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
   const orderRef = useRef<string[]>([]);
 
-  const setActive = useCallback((id: string) => {
-    if (value === undefined) setInternal(id);
-    onChange?.(id);
-  }, [value, onChange]);
+  const setActive = useCallback(
+    (id: string) => {
+      if (value === undefined) setInternal(id);
+      onChange?.(id);
+    },
+    [value, onChange],
+  );
 
   const registerTab = useCallback((id: string, el: HTMLButtonElement | null) => {
     if (el) {
@@ -47,37 +50,40 @@ export function Tabs({ value, defaultValue, onChange, children, className }: Tab
       if (!orderRef.current.includes(id)) orderRef.current.push(id);
     } else {
       tabRefs.current.delete(id);
-      orderRef.current = orderRef.current.filter(x => x !== id);
+      orderRef.current = orderRef.current.filter((x) => x !== id);
     }
   }, []);
 
-  const focusByOffset = useCallback((currentId: string, offset: number) => {
-    const order = orderRef.current;
-    const idx = order.indexOf(currentId);
-    if (idx === -1) return;
-    const next = order[(idx + offset + order.length) % order.length];
-    const el = tabRefs.current.get(next);
-    if (el) {
-      el.focus();
-      setActive(next);
-    }
-  }, [setActive]);
+  const focusByOffset = useCallback(
+    (currentId: string, offset: number) => {
+      const order = orderRef.current;
+      const idx = order.indexOf(currentId);
+      if (idx === -1) return;
+      const next = order[(idx + offset + order.length) % order.length];
+      const el = tabRefs.current.get(next);
+      if (el) {
+        el.focus();
+        setActive(next);
+      }
+    },
+    [setActive],
+  );
 
   const ctx = useMemo(
     () => ({ activeId, setActive, baseId, registerTab, focusByOffset }),
-    [activeId, setActive, baseId, registerTab, focusByOffset]
+    [activeId, setActive, baseId, registerTab, focusByOffset],
   );
 
   return (
     <TabsContext.Provider value={ctx}>
-      <div className={clsx('flex flex-col gap-md', className)}>{children}</div>
+      <div className={clsx('gap-md flex flex-col', className)}>{children}</div>
     </TabsContext.Provider>
   );
 }
 
 export function TabList({ children, className }: { children?: ReactNode; className?: string }) {
   return (
-    <div role="tablist" className={clsx('flex gap-xs border-b border-border-1', className)}>
+    <div role="tablist" className={clsx('gap-xs border-border-1 flex border-b', className)}>
       {children}
     </div>
   );
@@ -95,17 +101,26 @@ export function Tab({ id, children, disabled }: TabProps) {
   const selected = ctx.activeId === id;
 
   const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
-    if (e.key === 'ArrowRight') { e.preventDefault(); ctx.focusByOffset(id, 1); }
-    else if (e.key === 'ArrowLeft') { e.preventDefault(); ctx.focusByOffset(id, -1); }
-    else if (e.key === 'Home') { e.preventDefault(); ctx.focusByOffset(id, -9999); }
-    else if (e.key === 'End') { e.preventDefault(); ctx.focusByOffset(id, 9999); }
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      ctx.focusByOffset(id, 1);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      ctx.focusByOffset(id, -1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      ctx.focusByOffset(id, -9999);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      ctx.focusByOffset(id, 9999);
+    }
   };
 
   return (
     <button
       type="button"
       role="tab"
-      ref={el => ctx.registerTab(id, el)}
+      ref={(el) => ctx.registerTab(id, el)}
       id={`${ctx.baseId}-tab-${id}`}
       aria-selected={selected}
       aria-controls={`${ctx.baseId}-panel-${id}`}
@@ -114,7 +129,7 @@ export function Tab({ id, children, disabled }: TabProps) {
       onClick={() => ctx.setActive(id)}
       onKeyDown={onKeyDown}
       className={clsx(
-        'appearance-none bg-transparent border-0 eyebrow-dim text-3 tracking-2 py-md px-lg cursor-pointer border-b-2 border-transparent -mb-px transition-colors duration-fast ease-in-out hover:not-disabled:text-text disabled:opacity-45 disabled:cursor-not-allowed',
+        'eyebrow-dim text-3 tracking-2 py-md px-lg duration-fast hover:not-disabled:text-text -mb-px cursor-pointer appearance-none border-0 border-b-2 border-transparent bg-transparent transition-colors ease-in-out disabled:cursor-not-allowed disabled:opacity-45',
         selected && 'text-accent border-b-accent',
       )}
     >

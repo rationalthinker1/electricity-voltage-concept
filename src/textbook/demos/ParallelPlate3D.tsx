@@ -30,12 +30,11 @@ import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
-import {
-  attachOrbit, project, v3,
-  type OrbitCamera, type Vec3,
-} from '@/lib/projection3d';
+import { attachOrbit, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // Visual world-units scaling.
 //   A is given in cm², d in mm, V in volts. We map A and d to world units
@@ -48,7 +47,8 @@ const GAP_SCALE = 0.12; // world units per mm of physical gap
 function plateHalfWorld(A_cm2: number): number {
   // Plate is square; side = √A. Map by linear interpolation in √A.
   const sideRel = Math.sqrt(A_cm2 / SIZE_REF);
-  const half = SIZE_HALF_MIN + (SIZE_HALF_MAX - SIZE_HALF_MIN) * Math.min(1.4, Math.max(0.3, sideRel));
+  const half =
+    SIZE_HALF_MIN + (SIZE_HALF_MAX - SIZE_HALF_MIN) * Math.min(1.4, Math.max(0.3, sideRel));
   return half;
 }
 
@@ -58,20 +58,20 @@ function gapWorld(d_mm: number): number {
 }
 
 export function ParallelPlate3DDemo({ figure }: Props) {
-  const [A_cm2, setA] = useState(100);   // cm²
-  const [d_mm, setD] = useState(2);      // mm
-  const [V, setV] = useState(9);         // volts
+  const [A_cm2, setA] = useState(100); // cm²
+  const [d_mm, setD] = useState(2); // mm
+  const [V, setV] = useState(9); // volts
   const [showGauss, setShowGauss] = useState(false);
 
   const computed = useMemo(() => {
-    const A_m2 = A_cm2 * 1e-4;            // cm² → m²
-    const d_m = d_mm * 1e-3;              // mm → m
-    const C = PHYS.eps_0 * A_m2 / d_m;    // farads
-    const Q = C * V;                      // coulombs
-    const U = 0.5 * C * V * V;            // joules
-    const E = V / d_m;                    // V/m
-    const sigma = Q / A_m2;               // C/m²  (= ε₀ E)
-    const sigmaA = sigma * A_m2;          // coulombs (= Q_enclosed of the pillbox if pillbox area = A)
+    const A_m2 = A_cm2 * 1e-4; // cm² → m²
+    const d_m = d_mm * 1e-3; // mm → m
+    const C = (PHYS.eps_0 * A_m2) / d_m; // farads
+    const Q = C * V; // coulombs
+    const U = 0.5 * C * V * V; // joules
+    const E = V / d_m; // V/m
+    const sigma = Q / A_m2; // C/m²  (= ε₀ E)
+    const sigmaA = sigma * A_m2; // coulombs (= Q_enclosed of the pillbox if pillbox area = A)
     return { A_m2, d_m, C, Q, U, E, sigma, sigmaA };
   }, [A_cm2, d_mm, V]);
 
@@ -105,13 +105,13 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       // Helpers --------------------------------------------------------
       const plateCorners = (y: number): Vec3[] => [
         v3(-half, y, -half),
-        v3( half, y, -half),
-        v3( half, y,  half),
-        v3(-half, y,  half),
+        v3(half, y, -half),
+        v3(half, y, half),
+        v3(-half, y, half),
       ];
 
       function drawPlateFill(y: number, color: string) {
-        const pts = plateCorners(y).map(c => project(c, cam, W, H));
+        const pts = plateCorners(y).map((c) => project(c, cam, W, H));
         ctx.fillStyle = color;
         ctx.beginPath();
         ctx.moveTo(pts[0]!.x, pts[0]!.y);
@@ -121,7 +121,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       }
 
       function drawPlateOutline(y: number, color: string) {
-        const pts = plateCorners(y).map(c => project(c, cam, W, H));
+        const pts = plateCorners(y).map((c) => project(c, cam, W, H));
         ctx.strokeStyle = color;
         ctx.lineWidth = 1.2;
         ctx.beginPath();
@@ -175,7 +175,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       }
 
       // σ-density relative to a reference. Use sqrt to keep tiny σ visible.
-      const sigmaRef = (PHYS.eps_0 * 24) / (1e-3); // E_ref = 24 V/mm = 24 000 V/m
+      const sigmaRef = (PHYS.eps_0 * 24) / 1e-3; // E_ref = 24 V/mm = 24 000 V/m
       const sigmaRel = Math.sqrt(Math.max(0, s.computed.sigma) / sigmaRef);
 
       if (topIsBack) {
@@ -187,8 +187,8 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       // ─── 2. Translucent amber gap volume ───────────────────────────
       // Render the four side faces, then the two horizontal faces are
       // already represented by the plates themselves.
-      const top = plateCorners(yTop).map(c => project(c, cam, W, H));
-      const bot = plateCorners(yBot).map(c => project(c, cam, W, H));
+      const top = plateCorners(yTop).map((c) => project(c, cam, W, H));
+      const bot = plateCorners(yBot).map((c) => project(c, cam, W, H));
       for (let i = 0; i < 4; i++) {
         const j = (i + 1) % 4;
         ctx.save();
@@ -220,7 +220,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       // ─── 3. E-field arrows on a 4×4 grid across the gap, from top to bot ─
       // Arrow length scales with E (== V/d). Visual cap so the slider feels
       // like it controls *intensity* without breaking layout.
-      const E_ref = 24 / (1e-3); // 24 V over 1 mm
+      const E_ref = 24 / 1e-3; // 24 V over 1 mm
       const Erel = Math.min(1.4, Math.max(0.08, s.computed.E / E_ref));
       const arrowLen = gap * 0.7 * Math.min(1.0, Math.max(0.18, Erel));
       const headLen = 6 + 4 * Math.min(1, Erel);
@@ -238,7 +238,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
           const yB = yA - arrowLen;
           arrows.push({
             from: v3(x, yA, z),
-            to:   v3(x, yB, z),
+            to: v3(x, yB, z),
             anchor: v3(x, (yA + yB) / 2, z),
           });
         }
@@ -266,11 +266,14 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         ctx.stroke();
 
         // Screen-space arrowhead.
-        const dx = p2.x - p1.x, dy = p2.y - p1.y;
+        const dx = p2.x - p1.x,
+          dy = p2.y - p1.y;
         const len = Math.hypot(dx, dy);
         if (len < 3) continue;
-        const ux = dx / len, uy = dy / len;
-        const nx = -uy, ny = ux;
+        const ux = dx / len,
+          uy = dy / len;
+        const nx = -uy,
+          ny = ux;
         ctx.fillStyle = baseColor;
         ctx.beginPath();
         ctx.moveTo(p2.x, p2.y);
@@ -297,9 +300,9 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         // Top cap at y = yTop + capH (just above plate), bottom cap at
         // y = yTop - capH (in the gap, just below plate).
         const pbR = Math.min(0.32, half * 0.28);
-        const capH = Math.min(0.18, gap * 0.30);
+        const capH = Math.min(0.18, gap * 0.3);
         const x0 = -half * 0.45;
-        const z0 = -half * 0.30;
+        const z0 = -half * 0.3;
         const yU = yTop + capH;
         const yL = yTop - capH;
 
@@ -313,12 +316,12 @@ export function ParallelPlate3DDemo({ figure }: Props) {
           }
           return arr;
         };
-        const rimU = rim(yU).map(p => project(p, cam, W, H));
-        const rimL = rim(yL).map(p => project(p, cam, W, H));
+        const rimU = rim(yU).map((p) => project(p, cam, W, H));
+        const rimL = rim(yL).map((p) => project(p, cam, W, H));
 
         // Translucent side fill (quad strip).
         ctx.save();
-        ctx.globalAlpha = 0.10;
+        ctx.globalAlpha = 0.1;
         ctx.fillStyle = getCanvasColors().teal;
         for (let i = 0; i < RIM_N; i++) {
           const j = (i + 1) % RIM_N;
@@ -421,7 +424,10 @@ export function ParallelPlate3DDemo({ figure }: Props) {
     }
 
     raf = requestAnimationFrame(draw);
-    return () => { cancelAnimationFrame(raf); dispose(); };
+    return () => {
+      cancelAnimationFrame(raf);
+      dispose();
+    };
   }, []);
 
   return (
@@ -432,9 +438,9 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       caption={
         <>
           Two square conducting plates separated by a thin vacuum gap. Push charge Q onto the top
-          plate and an equal-and-opposite −Q migrates to the facing surface of the bottom plate.
-          The gap fills with a uniform field <strong>E = σ/ε₀ = V/d</strong> pointing from positive
-          to negative. Toggle the Gauss pillbox to see why the surface integral
+          plate and an equal-and-opposite −Q migrates to the facing surface of the bottom plate. The
+          gap fills with a uniform field <strong>E = σ/ε₀ = V/d</strong> pointing from positive to
+          negative. Toggle the Gauss pillbox to see why the surface integral
           <strong> ∮ D · dA</strong> over any closed surface piercing one plate equals the charge it
           encloses — the operational statement of Gauss's law that underwrites
           <strong> C = ε₀ A / d</strong>.
@@ -445,46 +451,40 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="plate area A"
-          value={A_cm2} min={10} max={500} step={5}
-          format={v => v.toFixed(0) + ' cm²'}
+          value={A_cm2}
+          min={10}
+          max={500}
+          step={5}
+          format={(v) => v.toFixed(0) + ' cm²'}
           onChange={setA}
         />
         <MiniSlider
           label="gap d"
-          value={d_mm} min={1} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' mm'}
+          value={d_mm}
+          min={1}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' mm'}
           onChange={setD}
         />
         <MiniSlider
           label="voltage V"
-          value={V} min={1} max={24} step={0.5}
-          format={v => v.toFixed(1) + ' V'}
+          value={V}
+          min={1}
+          max={24}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
           onChange={setV}
         />
         <MiniToggle
           label={showGauss ? 'Gauss pillbox SHOWN' : 'Gauss pillbox hidden'}
-          checked={showGauss} onChange={setShowGauss}
+          checked={showGauss}
+          onChange={setShowGauss}
         />
-        <MiniReadout
-          label="C = ε₀ A / d"
-          value={<Num value={computed.C * 1e12} />}
-          unit="pF"
-        />
-        <MiniReadout
-          label="Q = C V"
-          value={<Num value={computed.Q * 1e9} />}
-          unit="nC"
-        />
-        <MiniReadout
-          label="U = ½ C V²"
-          value={<Num value={computed.U * 1e9} />}
-          unit="nJ"
-        />
-        <MiniReadout
-          label="E = V / d"
-          value={<Num value={computed.E} />}
-          unit="V/m"
-        />
+        <MiniReadout label="C = ε₀ A / d" value={<Num value={computed.C * 1e12} />} unit="pF" />
+        <MiniReadout label="Q = C V" value={<Num value={computed.Q * 1e9} />} unit="nC" />
+        <MiniReadout label="U = ½ C V²" value={<Num value={computed.U * 1e9} />} unit="nJ" />
+        <MiniReadout label="E = V / d" value={<Num value={computed.E} />} unit="V/m" />
       </DemoControls>
     </Demo>
   );

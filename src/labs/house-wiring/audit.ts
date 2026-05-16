@@ -43,17 +43,17 @@ import type {
 
 /** Breaker rating (amps) keyed by kind. */
 export const BREAKER_AMPS: Record<BreakerKind, number> = {
-  'std-15':  15,
-  'std-20':  20,
+  'std-15': 15,
+  'std-20': 20,
   'afci-15': 15,
   'afci-20': 20,
   'gfci-15': 15,
   'gfci-20': 20,
   'dfci-15': 15,
   'dfci-20': 20,
-  'dp-30':   30,
-  'dp-40':   40,
-  'dp-50':   50,
+  'dp-30': 30,
+  'dp-40': 40,
+  'dp-50': 50,
 };
 
 /** True if this kind provides AFCI protection. */
@@ -76,8 +76,8 @@ export const CABLE_AMPACITY: Record<CableKind, number> = {
   'nm-14-2': 15,
   'nm-12-2': 20,
   'nm-10-3': 30,
-  'nm-8-3':  40,
-  'nm-6-3':  55,   // 60 °C; NEC limits NM to 60 °C column.
+  'nm-8-3': 40,
+  'nm-6-3': 55, // 60 °C; NEC limits NM to 60 °C column.
 };
 
 /** Conductor cross-section in circular mils. */
@@ -85,8 +85,8 @@ export const CABLE_CMIL: Record<CableKind, number> = {
   'nm-14-2': 4110,
   'nm-12-2': 6530,
   'nm-10-3': 10380,
-  'nm-8-3':  16510,
-  'nm-6-3':  26240,
+  'nm-8-3': 16510,
+  'nm-6-3': 26240,
 };
 
 /** AWG label for display. */
@@ -94,8 +94,8 @@ export const CABLE_AWG: Record<CableKind, string> = {
   'nm-14-2': '14',
   'nm-12-2': '12',
   'nm-10-3': '10',
-  'nm-8-3':  '8',
-  'nm-6-3':  '6',
+  'nm-8-3': '8',
+  'nm-6-3': '6',
 };
 
 /** Copper resistivity in ohm·circular-mil per foot, at 75 °C. */
@@ -105,14 +105,25 @@ const RHO_CU_OMCMIL_FT = 12.9;
 
 /** Rooms that require GFCI on 15/20 A receptacles (NEC 210.8(A)). */
 const GFCI_ROOMS: RoomKind[] = [
-  'bath', 'kitchen', 'kitchen-island', 'garage', 'outdoor',
-  'basement', 'laundry',
+  'bath',
+  'kitchen',
+  'kitchen-island',
+  'garage',
+  'outdoor',
+  'basement',
+  'laundry',
 ];
 
 /** Rooms that require AFCI on 15/20 A circuits (NEC 210.12(A)). */
 const AFCI_ROOMS: RoomKind[] = [
-  'kitchen', 'kitchen-island', 'bedroom', 'living', 'dining',
-  'hall', 'closet', 'laundry',
+  'kitchen',
+  'kitchen-island',
+  'bedroom',
+  'living',
+  'dining',
+  'hall',
+  'closet',
+  'laundry',
 ];
 
 /** Perimeter wall length (ft) — the audit's stand-in for "wall space". */
@@ -126,9 +137,9 @@ export function audit(doc: HouseDoc): AuditResult {
   const violations: Violation[] = [];
 
   /* ── Index helpers ── */
-  const roomById = new Map(doc.rooms.map(r => [r.id, r]));
-  const breakerById = new Map(doc.breakers.map(b => [b.id, b]));
-  const applianceById = new Map(doc.appliances.map(a => [a.id, a]));
+  const roomById = new Map(doc.rooms.map((r) => [r.id, r]));
+  const breakerById = new Map(doc.breakers.map((b) => [b.id, b]));
+  const applianceById = new Map(doc.appliances.map((a) => [a.id, a]));
   const cableByDeviceId = new Map<string, Cable>();
   for (const c of doc.cables) cableByDeviceId.set(c.deviceId, c);
   const cableByBreakerId = new Map<string, Cable[]>();
@@ -179,7 +190,7 @@ export function audit(doc: HouseDoc): AuditResult {
   /* ──────────────── 210.12 AFCI in living areas ──────────────── */
   // Flag any non-AFCI 15/20 A breaker that feeds a receptacle/light in an AFCI room.
   for (const b of doc.breakers) {
-    if (is240(b.kind)) continue;             // doesn't apply to 240 V loads
+    if (is240(b.kind)) continue; // doesn't apply to 240 V loads
     if (isAFCI(b.kind)) continue;
     const fed = devicesByBreakerId.get(b.id) ?? [];
     for (const d of fed) {
@@ -199,7 +210,7 @@ export function audit(doc: HouseDoc): AuditResult {
           refDeviceId: d.id,
           refRoomId: room.id,
         });
-        break;   // one finding per breaker is enough
+        break; // one finding per breaker is enough
       }
     }
   }
@@ -208,12 +219,10 @@ export function audit(doc: HouseDoc): AuditResult {
   // Simplified: any room that "needs receptacles per 210.52(A)" should have
   // at least ceil(perimeter / 12) receptacles, since no point on the wall
   // may be more than 6 ft from one.
-  const SPACING_ROOMS: RoomKind[] = [
-    'living', 'dining', 'bedroom', 'hall', 'kitchen', 'laundry',
-  ];
+  const SPACING_ROOMS: RoomKind[] = ['living', 'dining', 'bedroom', 'hall', 'kitchen', 'laundry'];
   for (const r of doc.rooms) {
     if (!SPACING_ROOMS.includes(r.kind)) continue;
-    const receptacles = (devicesByRoomId.get(r.id) ?? []).filter(d => isReceptacle(d.kind));
+    const receptacles = (devicesByRoomId.get(r.id) ?? []).filter((d) => isReceptacle(d.kind));
     const perim = roomPerimeterFt(r);
     const needed = Math.max(2, Math.ceil(perim / 12));
     if (receptacles.length < needed) {
@@ -337,7 +346,9 @@ export function audit(doc: HouseDoc): AuditResult {
     if (d.kind !== 'switch') continue;
     if (!d.breakerId) continue;
     const peers = devicesByBreakerId.get(d.breakerId) ?? [];
-    const hasLoad = peers.some(p => p.id !== d.id && (p.kind === 'light' || isReceptacle(p.kind)));
+    const hasLoad = peers.some(
+      (p) => p.id !== d.id && (p.kind === 'light' || isReceptacle(p.kind)),
+    );
     if (!hasLoad) {
       violations.push({
         id: `neutral-${d.id}`,
@@ -457,12 +468,9 @@ export function audit(doc: HouseDoc): AuditResult {
   let totalApplianceW = 0;
   for (const a of doc.appliances) totalApplianceW += a.watts;
   const houseAreaFt2 = doc.rooms.reduce((s, r) => s + r.w * r.h, 0);
-  const lightingVA = 3 * houseAreaFt2;     // NEC 220.12 3 VA / ft²
+  const lightingVA = 3 * houseAreaFt2; // NEC 220.12 3 VA / ft²
   const grossVA = totalApplianceW + lightingVA;
-  const panelDemandW =
-    grossVA <= 10000
-      ? grossVA
-      : 10000 + 0.4 * (grossVA - 10000);
+  const panelDemandW = grossVA <= 10000 ? grossVA : 10000 + 0.4 * (grossVA - 10000);
   const panelDemandA = panelDemandW / 240;
   const panelUtil = panelDemandA / Math.max(1, doc.panelAmps);
   if (panelUtil > 0.8) {
@@ -496,7 +504,7 @@ export function audit(doc: HouseDoc): AuditResult {
   for (const r of doc.rooms) {
     if (r.kind !== 'bedroom') continue;
     const inRoom = devicesByRoomId.get(r.id) ?? [];
-    const hasSmoke = inRoom.some(d => d.kind === 'smoke');
+    const hasSmoke = inRoom.some((d) => d.kind === 'smoke');
     if (!hasSmoke) {
       violations.push({
         id: `smoke-${r.id}`,
@@ -556,12 +564,16 @@ export function isReceptacle(k: DeviceKind): boolean {
 export function breakerLabel(b: Breaker): string {
   if (b.label) return b.label;
   const a = BREAKER_AMPS[b.kind];
-  const tag = isAFCI(b.kind) && isGFCI(b.kind)
-    ? 'DFCI'
-    : isAFCI(b.kind) ? 'AFCI'
-    : isGFCI(b.kind) ? 'GFCI'
-    : is240(b.kind) ? '2P'
-    : 'STD';
+  const tag =
+    isAFCI(b.kind) && isGFCI(b.kind)
+      ? 'DFCI'
+      : isAFCI(b.kind)
+        ? 'AFCI'
+        : isGFCI(b.kind)
+          ? 'GFCI'
+          : is240(b.kind)
+            ? '2P'
+            : 'STD';
   return `${a} A ${tag} (slot ${b.slot + 1})`;
 }
 
@@ -571,24 +583,36 @@ function labelForRoom(r: Room): string {
 
 /* ───────────── Display utilities ───────────── */
 
-export function applianceDefault(k: Appliance['kind']):
-  Omit<Appliance, 'id' | 'on' | 'label'>
-{
+export function applianceDefault(k: Appliance['kind']): Omit<Appliance, 'id' | 'on' | 'label'> {
   switch (k) {
-    case 'toaster':        return { kind: k, watts: 1500, volts: 120, continuous: false };
-    case 'kettle':         return { kind: k, watts: 1500, volts: 120, continuous: false };
-    case 'microwave':      return { kind: k, watts: 1200, volts: 120, continuous: false };
-    case 'dishwasher':     return { kind: k, watts: 1200, volts: 120, continuous: false };
-    case 'fridge':         return { kind: k, watts:  700, volts: 120, continuous: false };
-    case 'washer':         return { kind: k, watts: 1200, volts: 120, continuous: false };
-    case 'dryer':          return { kind: k, watts: 5500, volts: 240, continuous: false };
-    case 'range':          return { kind: k, watts: 8000, volts: 240, continuous: false };
-    case 'water-heater':   return { kind: k, watts: 4500, volts: 240, continuous: true  };
-    case 'heat-pump':      return { kind: k, watts: 6000, volts: 240, continuous: true  };
-    case 'ev-charger':     return { kind: k, watts: 7680, volts: 240, continuous: true  };  // 32 A continuous
-    case 'general-lights': return { kind: k, watts:  900, volts: 120, continuous: true  };
-    case 'tv':             return { kind: k, watts:  150, volts: 120, continuous: false };
-    case 'computer':       return { kind: k, watts:  300, volts: 120, continuous: false };
+    case 'toaster':
+      return { kind: k, watts: 1500, volts: 120, continuous: false };
+    case 'kettle':
+      return { kind: k, watts: 1500, volts: 120, continuous: false };
+    case 'microwave':
+      return { kind: k, watts: 1200, volts: 120, continuous: false };
+    case 'dishwasher':
+      return { kind: k, watts: 1200, volts: 120, continuous: false };
+    case 'fridge':
+      return { kind: k, watts: 700, volts: 120, continuous: false };
+    case 'washer':
+      return { kind: k, watts: 1200, volts: 120, continuous: false };
+    case 'dryer':
+      return { kind: k, watts: 5500, volts: 240, continuous: false };
+    case 'range':
+      return { kind: k, watts: 8000, volts: 240, continuous: false };
+    case 'water-heater':
+      return { kind: k, watts: 4500, volts: 240, continuous: true };
+    case 'heat-pump':
+      return { kind: k, watts: 6000, volts: 240, continuous: true };
+    case 'ev-charger':
+      return { kind: k, watts: 7680, volts: 240, continuous: true }; // 32 A continuous
+    case 'general-lights':
+      return { kind: k, watts: 900, volts: 120, continuous: true };
+    case 'tv':
+      return { kind: k, watts: 150, volts: 120, continuous: false };
+    case 'computer':
+      return { kind: k, watts: 300, volts: 120, continuous: false };
   }
 }
 

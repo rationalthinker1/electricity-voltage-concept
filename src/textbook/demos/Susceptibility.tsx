@@ -19,33 +19,37 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 interface Bar {
   label: string;
-  chi: number;          // signed susceptibility
+  chi: number; // signed susceptibility
   color: string;
 }
 
 const ELECTRIC: Bar[] = [
-  { label: 'vacuum',        chi: 0,        color: 'rgba(160,158,149,0.6)' },
-  { label: 'air',           chi: 5.4e-4,   color: 'rgba(108,197,194,0.85)' },
-  { label: 'glass',         chi: 5,        color: 'rgba(108,197,194,0.85)' },
-  { label: 'water',         chi: 79,       color: 'rgba(255,107,42,0.85)' },
-  { label: 'BaTiO₃',        chi: 1500,     color: 'rgba(255,59,110,0.85)' },
+  { label: 'vacuum', chi: 0, color: 'rgba(160,158,149,0.6)' },
+  { label: 'air', chi: 5.4e-4, color: 'rgba(108,197,194,0.85)' },
+  { label: 'glass', chi: 5, color: 'rgba(108,197,194,0.85)' },
+  { label: 'water', chi: 79, color: 'rgba(255,107,42,0.85)' },
+  { label: 'BaTiO₃', chi: 1500, color: 'rgba(255,59,110,0.85)' },
 ];
 
 const MAGNETIC: Bar[] = [
-  { label: 'vacuum',        chi: 0,           color: 'rgba(160,158,149,0.6)' },
-  { label: 'copper',        chi: -9.7e-6,     color: 'rgba(91,174,248,0.85)' },
-  { label: 'aluminum',      chi: 2.2e-5,      color: 'rgba(108,197,194,0.85)' },
-  { label: 'iron (soft)',   chi: 5000,        color: 'rgba(255,107,42,0.85)' },
+  { label: 'vacuum', chi: 0, color: 'rgba(160,158,149,0.6)' },
+  { label: 'copper', chi: -9.7e-6, color: 'rgba(91,174,248,0.85)' },
+  { label: 'aluminum', chi: 2.2e-5, color: 'rgba(108,197,194,0.85)' },
+  { label: 'iron (soft)', chi: 5000, color: 'rgba(255,107,42,0.85)' },
 ];
 
 export function SusceptibilityDemo({ figure }: Props) {
   const [log, setLog] = useState(true);
   const stateRef = useRef({ log });
-  useEffect(() => { stateRef.current = { log }; }, [log]);
+  useEffect(() => {
+    stateRef.current = { log };
+  }, [log]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -73,7 +77,7 @@ export function SusceptibilityDemo({ figure }: Props) {
       // Determine scaling
       const absMax = bars.reduce((m, b) => Math.max(m, Math.abs(b.chi)), 0);
       const logMaxExp = absMax > 0 ? Math.ceil(Math.log10(absMax)) : 0;
-      const logMinExp = -7;   // floor for log-axis
+      const logMinExp = -7; // floor for log-axis
       const linMax = absMax || 1;
 
       for (let i = 0; i < bars.length; i++) {
@@ -165,22 +169,20 @@ export function SusceptibilityDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 11.5'}
       title="One number per material, per response"
       question="How big is the response — and how spread out is the range?"
-      caption={<>
-        Two susceptibilities, three orders of magnitude each. Air is so weakly polar that
-        ε<sub>r</sub> ≈ 1.0005 — for almost any engineering purpose, air is "vacuum-like." Water sits
-        at ε<sub>r</sub> ≈ 80 because of its permanent molecular dipoles. A soft-iron core's
-        χₘ ≈ 5000 is what lets it concentrate magnetic flux thousands of times more than
-        the same volume of air, which is the whole point of a transformer or an electromagnet.
-        Copper is feebly diamagnetic — note the small dip below zero.
-      </>}
+      caption={
+        <>
+          Two susceptibilities, three orders of magnitude each. Air is so weakly polar that ε
+          <sub>r</sub> ≈ 1.0005 — for almost any engineering purpose, air is "vacuum-like." Water
+          sits at ε<sub>r</sub> ≈ 80 because of its permanent molecular dipoles. A soft-iron core's
+          χₘ ≈ 5000 is what lets it concentrate magnetic flux thousands of times more than the same
+          volume of air, which is the whole point of a transformer or an electromagnet. Copper is
+          feebly diamagnetic — note the small dip below zero.
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <MiniToggle
-          label={log ? 'log scale' : 'linear scale'}
-          checked={log}
-          onChange={setLog}
-        />
+        <MiniToggle label={log ? 'log scale' : 'linear scale'} checked={log} onChange={setLog} />
       </DemoControls>
     </Demo>
   );

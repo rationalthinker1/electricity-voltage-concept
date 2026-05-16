@@ -106,7 +106,7 @@ export function AutoResizeCanvas({ height, setup, ariaLabel }: AutoResizeCanvasP
     let intersectionObserver: IntersectionObserver | undefined;
     if ('IntersectionObserver' in window) {
       intersectionObserver = new IntersectionObserver(
-        entries => setRunning(entries.some(entry => entry.isIntersecting)),
+        (entries) => setRunning(entries.some((entry) => entry.isIntersecting)),
         { rootMargin: '320px 0px' },
       );
       intersectionObserver.observe(canvas);
@@ -128,7 +128,8 @@ export function AutoResizeCanvas({ height, setup, ariaLabel }: AutoResizeCanvasP
   }, [height]);
 
   return (
-    <canvas className="block w-full"
+    <canvas
+      className="block w-full"
       ref={canvasRef}
       aria-label={ariaLabel}
       style={{ display: 'block', width: '100%' }}

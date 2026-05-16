@@ -27,16 +27,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-interface StaticCacheEntry { key: string; canvas: HTMLCanvasElement }
+interface StaticCacheEntry {
+  key: string;
+  canvas: HTMLCanvasElement;
+}
 
 export function NortonTheveninDemo({ figure }: Props) {
   const [Vs, setVs] = useState(12);
@@ -44,14 +47,14 @@ export function NortonTheveninDemo({ figure }: Props) {
   const [Rp, setRp] = useState(12);
   const [RL, setRL] = useState(8);
 
-  const V_oc = Vs * Rp / (Rs + Rp);
+  const V_oc = (Vs * Rp) / (Rs + Rp);
   const R_Th = (Rs * Rp) / (Rs + Rp);
-  const I_N = V_oc / R_Th;                     // == Vs / Rs (algebraically)
+  const I_N = V_oc / R_Th; // == Vs / Rs (algebraically)
   // Driven by Thévenin
   const I_L_T = V_oc / (R_Th + RL);
   const V_L_T = I_L_T * RL;
   // Driven by Norton (current divider)
-  const I_L_N = I_N * R_Th / (R_Th + RL);
+  const I_L_N = (I_N * R_Th) / (R_Th + RL);
   const V_L_N = I_L_N * RL;
 
   const stateRef = useRef({ V_oc, R_Th, I_N, RL });
@@ -78,7 +81,9 @@ export function NortonTheveninDemo({ figure }: Props) {
         const colW = w / 3;
         const off = renderCircuitToCanvas(
           { elements: buildAllPanels(w, h, colW, V_oc, R_Th, I_N, RL) },
-          w, h, dpr,
+          w,
+          h,
+          dpr,
         );
         // Bake the panel titles into the cache alongside the schematic.
         const offCtx = off.getContext('2d');
@@ -104,8 +109,10 @@ export function NortonTheveninDemo({ figure }: Props) {
       const colW = w / 3;
       ctx.strokeStyle = getCanvasColors().border;
       ctx.beginPath();
-      ctx.moveTo(colW, 8); ctx.lineTo(colW, h - 8);
-      ctx.moveTo(2 * colW, 8); ctx.lineTo(2 * colW, h - 8);
+      ctx.moveTo(colW, 8);
+      ctx.lineTo(colW, h - 8);
+      ctx.moveTo(2 * colW, 8);
+      ctx.lineTo(2 * colW, h - 8);
       ctx.stroke();
 
       ctx.fillStyle = getCanvasColors().accent;
@@ -126,25 +133,55 @@ export function NortonTheveninDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 13.5'}
       title="Thévenin ⇌ Norton — three networks, identical terminal behaviour"
       question="Connect the same load R_L to any of three networks; V_L and I_L agree."
-      caption={<>
-        The original network on the left contains a source, a series resistor, and a
-        bleeder. The middle panel is its Thévenin equivalent: a single voltage source
-        V<sub>Th</sub> = V<sub>oc</sub> in series with R<sub>Th</sub>. The right panel is
-        the Norton equivalent: a current source I<sub>N</sub> = V<sub>Th</sub>/R<sub>Th</sub>
-        in parallel with the same R<sub>N</sub> = R<sub>Th</sub>. From the outside, all
-        three are indistinguishable for any linear load.
-      </>}
+      caption={
+        <>
+          The original network on the left contains a source, a series resistor, and a bleeder. The
+          middle panel is its Thévenin equivalent: a single voltage source V<sub>Th</sub> = V
+          <sub>oc</sub> in series with R<sub>Th</sub>. The right panel is the Norton equivalent: a
+          current source I<sub>N</sub> = V<sub>Th</sub>/R<sub>Th</sub>
+          in parallel with the same R<sub>N</sub> = R<sub>Th</sub>. From the outside, all three are
+          indistinguishable for any linear load.
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <MiniSlider label="V_s" value={Vs} min={1} max={24} step={0.5}
-          format={v => v.toFixed(1) + ' V'} onChange={setVs} />
-        <MiniSlider label="R_s" value={Rs} min={0.5} max={50} step={0.5}
-          format={v => v.toFixed(1) + ' Ω'} onChange={setRs} />
-        <MiniSlider label="R_p" value={Rp} min={0.5} max={100} step={0.5}
-          format={v => v.toFixed(1) + ' Ω'} onChange={setRp} />
-        <MiniSlider label="R_L" value={RL} min={0.5} max={100} step={0.5}
-          format={v => v.toFixed(1) + ' Ω'} onChange={setRL} />
+        <MiniSlider
+          label="V_s"
+          value={Vs}
+          min={1}
+          max={24}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
+          onChange={setVs}
+        />
+        <MiniSlider
+          label="R_s"
+          value={Rs}
+          min={0.5}
+          max={50}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' Ω'}
+          onChange={setRs}
+        />
+        <MiniSlider
+          label="R_p"
+          value={Rp}
+          min={0.5}
+          max={100}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' Ω'}
+          onChange={setRp}
+        />
+        <MiniSlider
+          label="R_L"
+          value={RL}
+          min={0.5}
+          max={100}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' Ω'}
+          onChange={setRL}
+        />
         <MiniReadout label="V_Th = V_oc" value={<Num value={V_oc} digits={3} />} unit="V" />
         <MiniReadout label="R_Th = R_N" value={<Num value={R_Th} digits={3} />} unit="Ω" />
         <MiniReadout label="I_N (short)" value={<Num value={I_N} digits={3} />} unit="A" />
@@ -156,8 +193,13 @@ export function NortonTheveninDemo({ figure }: Props) {
 }
 
 function buildAllPanels(
-  w: number, h: number, colW: number,
-  Voc: number, RTh: number, IN: number, RL: number,
+  w: number,
+  h: number,
+  colW: number,
+  Voc: number,
+  RTh: number,
+  IN: number,
+  RL: number,
 ): CircuitElement[] {
   void w;
   return [
@@ -172,7 +214,8 @@ function translateElements(els: CircuitElement[], x0: number, y0: number): Circu
   const tp = (p: { x: number; y: number }) => ({ x: p.x + x0, y: p.y + y0 });
   return els.map((el): CircuitElement => {
     switch (el.kind) {
-      case 'wire': return { ...el, points: el.points.map(tp) };
+      case 'wire':
+        return { ...el, points: el.points.map(tp) };
       case 'resistor':
       case 'capacitor':
       case 'inductor':
@@ -191,9 +234,7 @@ function translateElements(els: CircuitElement[], x0: number, y0: number): Circu
   });
 }
 
-function buildOriginal(
-  x0: number, y0: number, w: number, h: number,
-): CircuitElement[] {
+function buildOriginal(x0: number, y0: number, w: number, h: number): CircuitElement[] {
   const cy = h / 2;
   const xS = 26;
   const xR1 = 64;
@@ -204,29 +245,101 @@ function buildOriginal(
 
   // Source network: V_s in series with R_s plus bleeder R_p across A–B.
   const elements: CircuitElement[] = [
-    { kind: 'wire', points: [{ x: xS, y: yTop }, { x: xR1 - 18, y: yTop }] },
-    { kind: 'resistor', from: { x: xR1 - 18, y: yTop }, to: { x: xR1 + 18, y: yTop },
-      label: 'R_s', labelOffset: { x: 0, y: -10 } },
-    { kind: 'wire', points: [{ x: xR1 + 18, y: yTop }, { x: xR2, y: yTop }, { x: xR2, y: cy - 18 }] },
-    { kind: 'resistor', from: { x: xR2, y: cy - 18 }, to: { x: xR2, y: cy + 18 },
-      label: 'R_p', labelOffset: { x: 10, y: 0 } },
-    { kind: 'wire', points: [{ x: xR2, y: cy + 18 }, { x: xR2, y: yBot }] },
-    { kind: 'wire', points: [{ x: xR2, y: yTop }, { x: xA, y: yTop }] },
-    { kind: 'wire', points: [{ x: xS, y: yBot }, { x: xA, y: yBot }] },
-    { kind: 'wire', points: [{ x: xS, y: yTop }, { x: xS, y: cy - 14 }] },
-    { kind: 'wire', points: [{ x: xS, y: cy + 14 }, { x: xS, y: yBot }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: xS, y: yTop },
+        { x: xR1 - 18, y: yTop },
+      ],
+    },
+    {
+      kind: 'resistor',
+      from: { x: xR1 - 18, y: yTop },
+      to: { x: xR1 + 18, y: yTop },
+      label: 'R_s',
+      labelOffset: { x: 0, y: -10 },
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR1 + 18, y: yTop },
+        { x: xR2, y: yTop },
+        { x: xR2, y: cy - 18 },
+      ],
+    },
+    {
+      kind: 'resistor',
+      from: { x: xR2, y: cy - 18 },
+      to: { x: xR2, y: cy + 18 },
+      label: 'R_p',
+      labelOffset: { x: 10, y: 0 },
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR2, y: cy + 18 },
+        { x: xR2, y: yBot },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR2, y: yTop },
+        { x: xA, y: yTop },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xS, y: yBot },
+        { x: xA, y: yBot },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xS, y: yTop },
+        { x: xS, y: cy - 14 },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xS, y: cy + 14 },
+        { x: xS, y: yBot },
+      ],
+    },
     { kind: 'battery', at: { x: xS, y: cy }, label: 'V_s', leadLength: 50 },
-    { kind: 'node', at: { x: xA, y: yTop }, radius: 4, color: 'rgba(255,107,42,0.95)',
-      label: 'A', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
-    { kind: 'node', at: { x: xA, y: yBot }, radius: 4, color: 'rgba(255,107,42,0.95)',
-      label: 'B', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
+    {
+      kind: 'node',
+      at: { x: xA, y: yTop },
+      radius: 4,
+      color: 'rgba(255,107,42,0.95)',
+      label: 'A',
+      labelColor: 'rgba(255,255,255,0.9)',
+      labelOffset: { x: 8, y: -2 },
+    },
+    {
+      kind: 'node',
+      at: { x: xA, y: yBot },
+      radius: 4,
+      color: 'rgba(255,107,42,0.95)',
+      label: 'B',
+      labelColor: 'rgba(255,255,255,0.9)',
+      labelOffset: { x: 8, y: -2 },
+    },
   ];
   return translateElements(elements, x0, y0);
 }
 
 function buildThev(
-  x0: number, y0: number, w: number, h: number,
-  Voc: number, RTh: number, RL: number,
+  x0: number,
+  y0: number,
+  w: number,
+  h: number,
+  Voc: number,
+  RTh: number,
+  RL: number,
 ): CircuitElement[] {
   const cy = h / 2;
   const xS = 26;
@@ -237,27 +350,88 @@ function buildThev(
 
   // Thévenin equivalent: V_Th in series with R_Th feeding R_L.
   const elements: CircuitElement[] = [
-    { kind: 'wire', points: [{ x: xS, y: yTop }, { x: xR - 18, y: yTop }] },
-    { kind: 'resistor', from: { x: xR - 18, y: yTop }, to: { x: xR + 18, y: yTop },
-      label: `R_Th=${RTh.toFixed(1)}Ω`, labelOffset: { x: 0, y: -10 } },
-    { kind: 'wire', points: [{ x: xR + 18, y: yTop }, { x: xA, y: yTop }, { x: xA, y: cy - 18 }] },
-    { kind: 'resistor', from: { x: xA, y: cy - 18 }, to: { x: xA, y: cy + 18 },
-      label: `R_L=${RL.toFixed(1)}Ω`, labelOffset: { x: 10, y: 0 } },
-    { kind: 'wire', points: [{ x: xA, y: cy + 18 }, { x: xA, y: yBot }, { x: xS, y: yBot }] },
-    { kind: 'wire', points: [{ x: xS, y: yTop }, { x: xS, y: cy - 14 }] },
-    { kind: 'wire', points: [{ x: xS, y: cy + 14 }, { x: xS, y: yBot }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: xS, y: yTop },
+        { x: xR - 18, y: yTop },
+      ],
+    },
+    {
+      kind: 'resistor',
+      from: { x: xR - 18, y: yTop },
+      to: { x: xR + 18, y: yTop },
+      label: `R_Th=${RTh.toFixed(1)}Ω`,
+      labelOffset: { x: 0, y: -10 },
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR + 18, y: yTop },
+        { x: xA, y: yTop },
+        { x: xA, y: cy - 18 },
+      ],
+    },
+    {
+      kind: 'resistor',
+      from: { x: xA, y: cy - 18 },
+      to: { x: xA, y: cy + 18 },
+      label: `R_L=${RL.toFixed(1)}Ω`,
+      labelOffset: { x: 10, y: 0 },
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xA, y: cy + 18 },
+        { x: xA, y: yBot },
+        { x: xS, y: yBot },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xS, y: yTop },
+        { x: xS, y: cy - 14 },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xS, y: cy + 14 },
+        { x: xS, y: yBot },
+      ],
+    },
     { kind: 'battery', at: { x: xS, y: cy }, label: `V_Th=${Voc.toFixed(2)}V`, leadLength: 50 },
-    { kind: 'node', at: { x: xA, y: yTop }, radius: 4, color: 'rgba(255,107,42,0.95)',
-      label: 'A', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
-    { kind: 'node', at: { x: xA, y: yBot }, radius: 4, color: 'rgba(255,107,42,0.95)',
-      label: 'B', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
+    {
+      kind: 'node',
+      at: { x: xA, y: yTop },
+      radius: 4,
+      color: 'rgba(255,107,42,0.95)',
+      label: 'A',
+      labelColor: 'rgba(255,255,255,0.9)',
+      labelOffset: { x: 8, y: -2 },
+    },
+    {
+      kind: 'node',
+      at: { x: xA, y: yBot },
+      radius: 4,
+      color: 'rgba(255,107,42,0.95)',
+      label: 'B',
+      labelColor: 'rgba(255,255,255,0.9)',
+      labelOffset: { x: 8, y: -2 },
+    },
   ];
   return translateElements(elements, x0, y0);
 }
 
 function buildNort(
-  x0: number, y0: number, w: number, h: number,
-  IN: number, RN: number, RL: number,
+  x0: number,
+  y0: number,
+  w: number,
+  h: number,
+  IN: number,
+  RN: number,
+  RL: number,
 ): CircuitElement[] {
   const cy = h / 2;
   const xS = 36;
@@ -268,22 +442,91 @@ function buildNort(
 
   // Norton equivalent: I_N in parallel with R_N feeding R_L.
   const elements: CircuitElement[] = [
-    { kind: 'wire', points: [{ x: xS, y: yTop }, { x: xS, y: cy - 18 }] },
-    { kind: 'wire', points: [{ x: xS, y: cy + 18 }, { x: xS, y: yBot }] },
-    { kind: 'currentSource', at: { x: xS, y: cy },
-      label: `I_N=${IN.toFixed(2)}A`, labelOffset: { x: -20, y: 0 }, radius: 16 },
-    { kind: 'wire', points: [{ x: xS, y: yTop }, { x: xR, y: yTop }, { x: xR, y: cy - 18 }] },
-    { kind: 'resistor', from: { x: xR, y: cy - 18 }, to: { x: xR, y: cy + 18 },
-      label: `R_N=${RN.toFixed(1)}Ω`, labelOffset: { x: 10, y: 0 } },
-    { kind: 'wire', points: [{ x: xR, y: cy + 18 }, { x: xR, y: yBot }, { x: xS, y: yBot }] },
-    { kind: 'wire', points: [{ x: xR, y: yTop }, { x: xA, y: yTop }, { x: xA, y: cy - 18 }] },
-    { kind: 'resistor', from: { x: xA, y: cy - 18 }, to: { x: xA, y: cy + 18 },
-      label: `R_L=${RL.toFixed(1)}Ω`, labelOffset: { x: 10, y: 0 } },
-    { kind: 'wire', points: [{ x: xA, y: cy + 18 }, { x: xA, y: yBot }, { x: xR, y: yBot }] },
-    { kind: 'node', at: { x: xA, y: yTop }, radius: 4, color: 'rgba(255,107,42,0.95)',
-      label: 'A', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
-    { kind: 'node', at: { x: xA, y: yBot }, radius: 4, color: 'rgba(255,107,42,0.95)',
-      label: 'B', labelColor: 'rgba(255,255,255,0.9)', labelOffset: { x: 8, y: -2 } },
+    {
+      kind: 'wire',
+      points: [
+        { x: xS, y: yTop },
+        { x: xS, y: cy - 18 },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xS, y: cy + 18 },
+        { x: xS, y: yBot },
+      ],
+    },
+    {
+      kind: 'currentSource',
+      at: { x: xS, y: cy },
+      label: `I_N=${IN.toFixed(2)}A`,
+      labelOffset: { x: -20, y: 0 },
+      radius: 16,
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xS, y: yTop },
+        { x: xR, y: yTop },
+        { x: xR, y: cy - 18 },
+      ],
+    },
+    {
+      kind: 'resistor',
+      from: { x: xR, y: cy - 18 },
+      to: { x: xR, y: cy + 18 },
+      label: `R_N=${RN.toFixed(1)}Ω`,
+      labelOffset: { x: 10, y: 0 },
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR, y: cy + 18 },
+        { x: xR, y: yBot },
+        { x: xS, y: yBot },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR, y: yTop },
+        { x: xA, y: yTop },
+        { x: xA, y: cy - 18 },
+      ],
+    },
+    {
+      kind: 'resistor',
+      from: { x: xA, y: cy - 18 },
+      to: { x: xA, y: cy + 18 },
+      label: `R_L=${RL.toFixed(1)}Ω`,
+      labelOffset: { x: 10, y: 0 },
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xA, y: cy + 18 },
+        { x: xA, y: yBot },
+        { x: xR, y: yBot },
+      ],
+    },
+    {
+      kind: 'node',
+      at: { x: xA, y: yTop },
+      radius: 4,
+      color: 'rgba(255,107,42,0.95)',
+      label: 'A',
+      labelColor: 'rgba(255,255,255,0.9)',
+      labelOffset: { x: 8, y: -2 },
+    },
+    {
+      kind: 'node',
+      at: { x: xA, y: yBot },
+      radius: 4,
+      color: 'rgba(255,107,42,0.95)',
+      label: 'B',
+      labelColor: 'rgba(255,255,255,0.9)',
+      labelOffset: { x: 8, y: -2 },
+    },
   ];
   return translateElements(elements, x0, y0);
 }

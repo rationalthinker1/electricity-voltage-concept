@@ -23,7 +23,9 @@ import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 interface InflowParticle {
   theta: number;
@@ -44,8 +46,8 @@ export function SuperconductorLimitDemo({ figure }: Props) {
   // Fixed circuit. In normal mode V is the resistive drop; in supercon mode the
   // axial E inside is zero so we still drive a current with the same external
   // emf, but no voltage is dropped across the (perfect) conductor itself.
-  const I = 5;          // A
-  const V_emf = 12;     // V — the emf supplied externally (kept the same for comparison)
+  const I = 5; // A
+  const V_emf = 12; // V — the emf supplied externally (kept the same for comparison)
   const a_mm = 1.5;
   const L = 1.0;
 
@@ -76,7 +78,7 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       const wireXL = margin;
       const wireXR = W - margin;
       const wireCY = H * 0.55;
-      const r_px = Math.max(24, Math.min(60, Math.min(W, H) * 0.10));
+      const r_px = Math.max(24, Math.min(60, Math.min(W, H) * 0.1));
       return { wireXL, wireXR, wireCY, r: r_px };
     }
 
@@ -125,7 +127,10 @@ export function SuperconductorLimitDemo({ figure }: Props) {
         for (let i = inflow.length - 1; i >= 0; i--) {
           const p = inflow[i]!;
           p.r -= 0.01;
-          if (p.r <= 0.02) { inflow.splice(i, 1); continue; }
+          if (p.r <= 0.02) {
+            inflow.splice(i, 1);
+            continue;
+          }
           const cx = g.wireXL + p.t * (g.wireXR - g.wireXL);
           const distFromAxis = r + p.r * r * 4;
           const xOff = Math.sin(p.theta) * distFromAxis * ellipseRatio;
@@ -139,9 +144,14 @@ export function SuperconductorLimitDemo({ figure }: Props) {
           const ty = g.wireCY - Math.cos(p.theta) * innerR;
           ctx.strokeStyle = `rgba(255,107,42,${alpha})`;
           ctx.lineWidth = 1.4;
-          ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(tx, ty); ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(px, py);
+          ctx.lineTo(tx, ty);
+          ctx.stroke();
           ctx.fillStyle = `rgba(255,107,42,${alpha})`;
-          ctx.beginPath(); ctx.arc(tx, ty, 1.7, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath();
+          ctx.arc(tx, ty, 1.7, 0, Math.PI * 2);
+          ctx.fill();
         }
         // empty the parallel pool so toggling is clean
         parallel.length = 0;
@@ -174,7 +184,8 @@ export function SuperconductorLimitDemo({ figure }: Props) {
           ctx.moveTo(px + 6, py);
           ctx.lineTo(px + 2, py - 3);
           ctx.lineTo(px + 2, py + 3);
-          ctx.closePath(); ctx.fill();
+          ctx.closePath();
+          ctx.fill();
         }
         inflow.length = 0;
       }
@@ -192,7 +203,8 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       ctx.ellipse(g.wireXR, g.wireCY, er, r, 0, -Math.PI / 2, Math.PI / 2);
       ctx.lineTo(g.wireXL, g.wireCY + r);
       ctx.ellipse(g.wireXL, g.wireCY, er, r, 0, Math.PI / 2, -Math.PI / 2);
-      ctx.closePath(); ctx.fill();
+      ctx.closePath();
+      ctx.fill();
 
       ctx.strokeStyle = `rgba(${tint},0.6)`;
       ctx.lineWidth = 1.2;
@@ -202,8 +214,12 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       ctx.moveTo(g.wireXL, g.wireCY + r);
       ctx.lineTo(g.wireXR, g.wireCY + r);
       ctx.stroke();
-      ctx.beginPath(); ctx.ellipse(g.wireXL, g.wireCY, er, r, 0, 0, Math.PI * 2); ctx.stroke();
-      ctx.beginPath(); ctx.ellipse(g.wireXR, g.wireCY, er, r, 0, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(g.wireXL, g.wireCY, er, r, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(g.wireXR, g.wireCY, er, r, 0, 0, Math.PI * 2);
+      ctx.stroke();
 
       // ── E axial arrows — drawn only if non-zero
       if (!s.supercon) {
@@ -217,18 +233,22 @@ export function SuperconductorLimitDemo({ figure }: Props) {
           const cx = g.wireXL + t * (g.wireXR - g.wireXL) - arrLen / 2;
           const cy = g.wireCY;
           ctx.beginPath();
-          ctx.moveTo(cx, cy); ctx.lineTo(cx + arrLen, cy); ctx.stroke();
+          ctx.moveTo(cx, cy);
+          ctx.lineTo(cx + arrLen, cy);
+          ctx.stroke();
           ctx.beginPath();
           ctx.moveTo(cx + arrLen, cy);
           ctx.lineTo(cx + arrLen - 8, cy - 5);
           ctx.lineTo(cx + arrLen - 8, cy + 5);
-          ctx.closePath(); ctx.fill();
+          ctx.closePath();
+          ctx.fill();
         }
       } else {
         // Show "E_inside = 0" label inside the wire
         ctx.fillStyle = getCanvasColors().teal;
         ctx.font = '12px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         ctx.fillText('E_inside = 0', (g.wireXL + g.wireXR) / 2, g.wireCY);
       }
 
@@ -248,12 +268,14 @@ export function SuperconductorLimitDemo({ figure }: Props) {
         ctx.moveTo(ax, ay);
         ctx.lineTo(ax - 6, ay - 4);
         ctx.lineTo(ax - 6, ay + 4);
-        ctx.closePath(); ctx.fill();
+        ctx.closePath();
+        ctx.fill();
       }
 
       // Numerics overlay
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillStyle = s.supercon ? '#6cc5c2' : '#ff6b2a';
       ctx.fillText(s.supercon ? 'Mode: superconductor (σ → ∞)' : 'Mode: normal conductor', 18, 14);
 
@@ -268,9 +290,11 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       ctx.fillStyle = 'rgba(160,158,149,.85)';
       ctx.fillText(`I = ${I.toFixed(1)} A   a = ${a_mm.toFixed(2)} mm`, W - 18, 14);
       ctx.fillStyle = s.supercon ? '#6cc5c2' : '#ff6b2a';
-      ctx.fillText(s.supercon
-        ? 'Energy passes parallel — never absorbed'
-        : 'Energy absorbed at surface = V·I', W - 18, 30);
+      ctx.fillText(
+        s.supercon ? 'Energy passes parallel — never absorbed' : 'Energy absorbed at surface = V·I',
+        W - 18,
+        30,
+      );
 
       raf = requestAnimationFrame(draw);
     }
@@ -283,11 +307,16 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 6.5'}
       title="The superconductor limit"
       question="What changes when σ → ∞?"
-      caption={<>
-        In a normal conductor, the resistive axial <strong>E</strong> inside the wire is what couples the field to the lattice — it's why
-        the inward Poynting flow gets absorbed as heat. In a perfect conductor, <strong>E</strong> inside collapses to zero, so does
-        |<strong>S</strong>| inside, and the field's energy keeps sliding past <em>parallel to the wire</em>, never touching it. <strong>Resistance is the coupling.</strong>
-      </>}
+      caption={
+        <>
+          In a normal conductor, the resistive axial <strong>E</strong> inside the wire is what
+          couples the field to the lattice — it's why the inward Poynting flow gets absorbed as
+          heat. In a perfect conductor, <strong>E</strong> inside collapses to zero, so does |
+          <strong>S</strong>| inside, and the field's energy keeps sliding past{' '}
+          <em>parallel to the wire</em>, never touching it.{' '}
+          <strong>Resistance is the coupling.</strong>
+        </>
+      }
       deeperLab={{ slug: 'poynting', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />

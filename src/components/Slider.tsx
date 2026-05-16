@@ -24,8 +24,16 @@ export interface SliderProps {
  * from min/max/value, like the original vanilla Field.bindSlider helper.
  */
 export function Slider({
-  label, sym, value, min, max, step = 0.01,
-  format, metaLeft, metaRight, onChange,
+  label,
+  sym,
+  value,
+  min,
+  max,
+  step = 0.01,
+  format,
+  metaLeft,
+  metaRight,
+  onChange,
 }: SliderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const labelId = useId();
@@ -55,11 +63,11 @@ export function Slider({
         max={max}
         step={step}
         value={value}
-        onChange={e => onChange(parseFloat(e.target.value))}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
         aria-label={label}
       />
       {(metaLeft || metaRight) && (
-        <div className="flex justify-between mt-sm font-3 text-1 text-text-muted tracking-3">
+        <div className="mt-sm font-3 text-1 text-text-muted tracking-3 flex justify-between">
           <span>{metaLeft}</span>
           <span>{metaRight}</span>
         </div>

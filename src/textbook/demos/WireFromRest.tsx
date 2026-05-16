@@ -24,11 +24,13 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function WireFromRestDemo({ figure }: Props) {
-  const [vd, setVd] = useState(0.6);       // visual drift, 0..1 (unitless)
-  const [q, setQ] = useState(1.0);         // test charge in nC (just for label)
+  const [vd, setVd] = useState(0.6); // visual drift, 0..1 (unitless)
+  const [q, setQ] = useState(1.0); // test charge in nC (just for label)
   const [showIons, setShowIons] = useState(true);
   const [showElectrons, setShowElectrons] = useState(true);
   const [showTest, setShowTest] = useState(true);
@@ -87,12 +89,17 @@ export function WireFromRestDemo({ figure }: Props) {
           halo.addColorStop(0, 'rgba(255,59,110,0.55)');
           halo.addColorStop(1, 'rgba(255,59,110,0)');
           ctx.fillStyle = halo;
-          ctx.beginPath(); ctx.arc(x, y, 12, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath();
+          ctx.arc(x, y, 12, 0, Math.PI * 2);
+          ctx.fill();
           ctx.fillStyle = colors.pink;
-          ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath();
+          ctx.arc(x, y, 5, 0, Math.PI * 2);
+          ctx.fill();
           ctx.fillStyle = colors.bg;
           ctx.font = 'bold 8px "JetBrains Mono", monospace';
-          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
           ctx.fillText('+', x, y);
         }
       }
@@ -102,19 +109,24 @@ export function WireFromRestDemo({ figure }: Props) {
         for (let i = 0; i < N; i++) {
           const base = (i + 0.5) * (wireLen / N);
           // drift visually: add phase, wrap around within wire length
-          const offset = ((base + phase) % wireLen + wireLen) % wireLen;
+          const offset = (((base + phase) % wireLen) + wireLen) % wireLen;
           const x = wireXL + offset;
           const y = wireY + 14;
           const halo = ctx.createRadialGradient(x, y, 0, x, y, 12);
           halo.addColorStop(0, 'rgba(91,174,248,0.55)');
           halo.addColorStop(1, 'rgba(91,174,248,0)');
           ctx.fillStyle = halo;
-          ctx.beginPath(); ctx.arc(x, y, 12, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath();
+          ctx.arc(x, y, 12, 0, Math.PI * 2);
+          ctx.fill();
           ctx.fillStyle = colors.blue;
-          ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath();
+          ctx.arc(x, y, 5, 0, Math.PI * 2);
+          ctx.fill();
           ctx.fillStyle = colors.bg;
           ctx.font = 'bold 9px "JetBrains Mono", monospace';
-          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
           ctx.fillText('−', x, y);
         }
       }
@@ -134,12 +146,17 @@ export function WireFromRestDemo({ figure }: Props) {
         halo.addColorStop(0, 'rgba(255,107,42,0.55)');
         halo.addColorStop(1, 'rgba(255,107,42,0)');
         ctx.fillStyle = halo;
-        ctx.beginPath(); ctx.arc(tx, ty, 22, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(tx, ty, 22, 0, Math.PI * 2);
+        ctx.fill();
         ctx.fillStyle = colors.accent;
-        ctx.beginPath(); ctx.arc(tx, ty, 9, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(tx, ty, 9, 0, Math.PI * 2);
+        ctx.fill();
         ctx.fillStyle = colors.bg;
         ctx.font = 'bold 10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         ctx.fillText('+', tx, ty);
 
         // "v = 0" label
@@ -171,12 +188,14 @@ export function WireFromRestDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 9.1'}
       title="The wire from the lab frame"
       question="A wire carries current. A test charge sits next to it, motionless. Does it feel a force?"
-      caption={<>
-        In the lab frame, equal densities of positive ions and drifting electrons make the wire
-        <em> electrically neutral</em> — no net E field outside the wire. The test charge is at rest, so
-        the magnetic Lorentz force <em>F = q v × B</em> also vanishes. <strong>Zero force.</strong> So far,
-        there's nothing to explain.
-      </>}
+      caption={
+        <>
+          In the lab frame, equal densities of positive ions and drifting electrons make the wire
+          <em> electrically neutral</em> — no net E field outside the wire. The test charge is at
+          rest, so the magnetic Lorentz force <em>F = q v × B</em> also vanishes.{' '}
+          <strong>Zero force.</strong> So far, there's nothing to explain.
+        </>
+      }
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>
@@ -185,14 +204,20 @@ export function WireFromRestDemo({ figure }: Props) {
         <MiniToggle label="test charge" checked={showTest} onChange={setShowTest} />
         <MiniSlider
           label="v_d (visual)"
-          value={vd} min={0.05} max={1.4} step={0.01}
-          format={v => v.toFixed(2) + '×'}
+          value={vd}
+          min={0.05}
+          max={1.4}
+          step={0.01}
+          format={(v) => v.toFixed(2) + '×'}
           onChange={setVd}
         />
         <MiniSlider
           label="q test"
-          value={q} min={0.1} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' nC'}
+          value={q}
+          min={0.1}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' nC'}
           onChange={setQ}
         />
         <MiniReadout label="net linear λ" value={<Num value={0} />} unit="C/m" />

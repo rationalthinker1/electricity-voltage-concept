@@ -16,7 +16,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // Reference comparison: 100 W transformer at 60 Hz vs at the chosen frequency.
 
@@ -24,22 +26,24 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
   const [f, setF] = useState(60);
 
   const stateRef = useRef({ f });
-  useEffect(() => { stateRef.current = { f }; }, [f]);
+  useEffect(() => {
+    stateRef.current = { f };
+  }, [f]);
 
   // Reference: 100 W, 60 Hz, silicon-steel transformer.
   // Pick a reasonable reference core volume: ~120 cm³ for a 100 W 50/60 Hz
   // unit (laminated EI core), and reference mass ~600 g. These are
   // ballpark figures consistent with off-the-shelf catalog data.
   const V_REF_CM3 = 120;
-  const M_REF_G   = 600;
-  const F_REF     = 60;
+  const M_REF_G = 600;
+  const F_REF = 60;
 
   const computed = useMemo(() => {
     // Volume scales as ~1/f (core area ∝ 1/f, window area roughly fixed,
     // overall volume tracks core area for a fixed copper-fill).
     const scale = F_REF / f;
     const Vcm3 = V_REF_CM3 * scale;
-    const Mg   = M_REF_G   * scale;
+    const Mg = M_REF_G * scale;
     return { Vcm3, Mg, scale };
   }, [f]);
 
@@ -55,7 +59,7 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
 
       // Two boxes: left = 60 Hz reference, right = current frequency
       const cy = h * 0.5;
-      const refSide = Math.min(h * 0.55, w * 0.18);   // visual side at 60 Hz reference
+      const refSide = Math.min(h * 0.55, w * 0.18); // visual side at 60 Hz reference
       const scale = F_REF / f;
       // Visual size = cube root of volume ratio (so the box really looks
       // like its volume scales)
@@ -68,13 +72,14 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
       drawIsoCube(ctx, leftCX, cy, refSide, 'rgba(255,107,42,0.85)', 'rgba(255,107,42,0.18)');
       // Current cube (right)
       const accentColor = scale > 1 ? 'rgba(255,107,42,0.95)' : 'rgba(108,197,194,0.95)';
-      const accentFill  = scale > 1 ? 'rgba(255,107,42,0.20)' : 'rgba(108,197,194,0.18)';
+      const accentFill = scale > 1 ? 'rgba(255,107,42,0.20)' : 'rgba(108,197,194,0.18)';
       drawIsoCube(ctx, rightCX, cy, newSide, accentColor, accentFill);
 
       // Labels
       ctx.fillStyle = colors.textDim;
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       ctx.fillText('60 Hz mains (Si steel)', leftCX, 12);
       ctx.fillText(`${formatHz(f)}`, rightCX, 12);
 
@@ -91,7 +96,8 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
       ctx.globalAlpha = 0.65;
       ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText('100 W reference', 8, h - 16);
       ctx.textAlign = 'right';
       ctx.fillText('V ∝ 1/f   (constant V, B_max, N)', w - 8, h - 16);
@@ -106,7 +112,8 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
       ctx.restore();
       ctx.fillStyle = colors.accent;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       ctx.fillText(tag, rightCX, h - 16);
 
       raf = requestAnimationFrame(draw);
@@ -120,28 +127,38 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 18.9'}
       title="Core size shrinks with frequency"
       question="Slide the frequency. For 100 W, how big is the transformer at 60 Hz vs 100 kHz?"
-      caption={<>
-        From V = 4.44 f N B A: hold V, N, and peak flux density B fixed and the required core area A
-        scales as 1/f. Holding the copper window fixed, total core volume tracks the same 1/f scaling.
-        Going from 60 Hz to 100 kHz shrinks a 100 W transformer by a factor of <strong>~1700×</strong>
-        in volume — which is why every wall-wart since the 1990s has been a switching design. Above
-        ~100 kHz the gains slow (winding losses from skin and proximity effects, and core losses from
-        eddy currents within the ferrite material itself, both rise), and below ~50 Hz the core simply
-        gets too big to carry.
-      </>}
+      caption={
+        <>
+          From V = 4.44 f N B A: hold V, N, and peak flux density B fixed and the required core area
+          A scales as 1/f. Holding the copper window fixed, total core volume tracks the same 1/f
+          scaling. Going from 60 Hz to 100 kHz shrinks a 100 W transformer by a factor of{' '}
+          <strong>~1700×</strong>
+          in volume — which is why every wall-wart since the 1990s has been a switching design.
+          Above ~100 kHz the gains slow (winding losses from skin and proximity effects, and core
+          losses from eddy currents within the ferrite material itself, both rise), and below ~50 Hz
+          the core simply gets too big to carry.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="frequency f"
-          value={Math.log10(f)} min={Math.log10(50)} max={Math.log10(1e6)} step={0.01}
-          format={v => formatHz(Math.pow(10, v))}
-          onChange={v => setF(Math.pow(10, v))}
+          value={Math.log10(f)}
+          min={Math.log10(50)}
+          max={Math.log10(1e6)}
+          step={0.01}
+          format={(v) => formatHz(Math.pow(10, v))}
+          onChange={(v) => setF(Math.pow(10, v))}
         />
-        <MiniReadout label="frequency"      value={<Num value={f} digits={1} />} unit="Hz" />
-        <MiniReadout label="core volume"    value={<Num value={computed.Vcm3} digits={2} />} unit="cm³" />
-        <MiniReadout label="core mass"      value={<Num value={computed.Mg}   digits={2} />} unit="g" />
-        <MiniReadout label="vs 60 Hz"       value={<Num value={computed.scale} digits={2} />} unit="×" />
+        <MiniReadout label="frequency" value={<Num value={f} digits={1} />} unit="Hz" />
+        <MiniReadout
+          label="core volume"
+          value={<Num value={computed.Vcm3} digits={2} />}
+          unit="cm³"
+        />
+        <MiniReadout label="core mass" value={<Num value={computed.Mg} digits={2} />} unit="g" />
+        <MiniReadout label="vs 60 Hz" value={<Num value={computed.scale} digits={2} />} unit="×" />
       </DemoControls>
     </Demo>
   );
@@ -149,8 +166,11 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
 
 function drawIsoCube(
   ctx: CanvasRenderingContext2D,
-  cx: number, cy: number, side: number,
-  stroke: string, fill: string,
+  cx: number,
+  cy: number,
+  side: number,
+  stroke: string,
+  fill: string,
 ) {
   // Simple isometric (cabinet projection): depth = 0.5 · side at 30°
   const s = side;
@@ -199,14 +219,14 @@ function formatHz(f: number): string {
 
 function formatVol(v: number): string {
   if (v < 0.1) return (v * 1000).toFixed(1) + ' mm³';
-  if (v < 1)   return v.toFixed(2) + ' cm³';
+  if (v < 1) return v.toFixed(2) + ' cm³';
   if (v >= 1000) return (v / 1000).toFixed(2) + ' dm³';
   return v.toFixed(1) + ' cm³';
 }
 
 function formatMass(m: number): string {
   if (m < 0.1) return (m * 1000).toFixed(1) + ' mg';
-  if (m < 1)   return m.toFixed(2) + ' g';
+  if (m < 1) return m.toFixed(2) + ' g';
   if (m >= 1000) return (m / 1000).toFixed(2) + ' kg';
   return m.toFixed(1) + ' g';
 }

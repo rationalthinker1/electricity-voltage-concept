@@ -14,17 +14,21 @@ import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 import { pretty } from '@/lib/physics';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const N_TURNS = 100;
-const A_M2 = 0.01;  // 100 cm² fixed area for the inline demo
+const A_M2 = 0.01; // 100 cm² fixed area for the inline demo
 
 export function RotatingCoilDemo({ figure }: Props) {
-  const [B, setB] = useState(0.5);        // T
+  const [B, setB] = useState(0.5); // T
   const [omega, setOmega] = useState(60); // rad/s
 
   const stateRef = useRef({ B, omega });
-  useEffect(() => { stateRef.current = { B, omega }; }, [B, omega]);
+  useEffect(() => {
+    stateRef.current = { B, omega };
+  }, [B, omega]);
 
   const computed = useMemo(() => {
     const peak = N_TURNS * B * A_M2 * omega;
@@ -61,7 +65,9 @@ export function RotatingCoilDemo({ figure }: Props) {
 
       // LEFT — coil
       ctx.save();
-      ctx.beginPath(); ctx.rect(0, 0, splitX, h); ctx.clip();
+      ctx.beginPath();
+      ctx.rect(0, 0, splitX, h);
+      ctx.clip();
 
       // B field rows
       if (B > 0.005) {
@@ -73,12 +79,15 @@ export function RotatingCoilDemo({ figure }: Props) {
         for (let i = 0; i < rows; i++) {
           const y = ((i + 0.5) * h) / rows;
           ctx.beginPath();
-          ctx.moveTo(14, y); ctx.lineTo(splitX - 18, y); ctx.stroke();
+          ctx.moveTo(14, y);
+          ctx.lineTo(splitX - 18, y);
+          ctx.stroke();
           ctx.beginPath();
           ctx.moveTo(splitX - 18, y);
           ctx.lineTo(splitX - 24, y - 4);
           ctx.lineTo(splitX - 24, y + 4);
-          ctx.closePath(); ctx.fill();
+          ctx.closePath();
+          ctx.fill();
         }
       }
 
@@ -94,7 +103,10 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.strokeStyle = colors.borderStrong;
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(coilCx, 18); ctx.lineTo(coilCx, h - 18); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(coilCx, 18);
+      ctx.lineTo(coilCx, h - 18);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       // coil rectangle
@@ -129,13 +141,15 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.globalAlpha = 0.55;
       ctx.fillStyle = colors.text;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
       ctx.fillText('n̂', coilCx + projNx + 4, coilCy + projNy);
 
       ctx.restore();
       ctx.fillStyle = colors.teal;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText(`B → ${B.toFixed(2)} T`, 12, 12);
 
       ctx.restore();
@@ -143,11 +157,15 @@ export function RotatingCoilDemo({ figure }: Props) {
       // divider
       ctx.strokeStyle = colors.border;
       ctx.beginPath();
-      ctx.moveTo(splitX, 0); ctx.lineTo(splitX, h); ctx.stroke();
+      ctx.moveTo(splitX, 0);
+      ctx.lineTo(splitX, h);
+      ctx.stroke();
 
       // RIGHT — scope
       ctx.save();
-      ctx.beginPath(); ctx.rect(splitX, 0, w - splitX, h); ctx.clip();
+      ctx.beginPath();
+      ctx.rect(splitX, 0, w - splitX, h);
+      ctx.clip();
 
       const scopeX = splitX + 30;
       const scopeW = w - splitX - 50;
@@ -165,12 +183,17 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.lineWidth = 1;
       for (let i = 0; i <= 4; i++) {
         const y = scopeCy - scopeH / 2 + (i * scopeH) / 4;
-        ctx.beginPath(); ctx.moveTo(scopeX, y); ctx.lineTo(scopeX + scopeW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(scopeX, y);
+        ctx.lineTo(scopeX + scopeW, y);
+        ctx.stroke();
       }
       // zero line
       ctx.strokeStyle = colors.borderStrong;
       ctx.beginPath();
-      ctx.moveTo(scopeX, scopeCy); ctx.lineTo(scopeX + scopeW, scopeCy); ctx.stroke();
+      ctx.moveTo(scopeX, scopeCy);
+      ctx.lineTo(scopeX + scopeW, scopeCy);
+      ctx.stroke();
 
       // peak guides
       ctx.save();
@@ -180,8 +203,10 @@ export function RotatingCoilDemo({ figure }: Props) {
       const peakY = scopeCy - (scopeH / 2) * 0.9;
       const peakYn = scopeCy + (scopeH / 2) * 0.9;
       ctx.beginPath();
-      ctx.moveTo(scopeX, peakY); ctx.lineTo(scopeX + scopeW, peakY);
-      ctx.moveTo(scopeX, peakYn); ctx.lineTo(scopeX + scopeW, peakYn);
+      ctx.moveTo(scopeX, peakY);
+      ctx.lineTo(scopeX + scopeW, peakY);
+      ctx.moveTo(scopeX, peakYn);
+      ctx.lineTo(scopeX + scopeW, peakYn);
       ctx.stroke();
       ctx.setLineDash([]);
 
@@ -208,7 +233,8 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.globalAlpha = 0.75;
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText('EMF(t)', scopeX, 12);
       ctx.textAlign = 'right';
       ctx.restore();
@@ -228,25 +254,34 @@ export function RotatingCoilDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 5.3'}
       title="Spinning a coil = generating AC"
       question="Constant rotation, constant field — why is the output a sine wave?"
-      caption={<>
-        A coil of <strong>N = 100</strong> turns and area <strong>A = 100 cm²</strong> spins inside a uniform horizontal
-        B field. The right pane is a live oscilloscope of <strong>EMF(t)</strong>. The peak amplitude is exactly
-        <strong> NBAω</strong>: scale up any of the four and the trace gets taller.
-      </>}
+      caption={
+        <>
+          A coil of <strong>N = 100</strong> turns and area <strong>A = 100 cm²</strong> spins
+          inside a uniform horizontal B field. The right pane is a live oscilloscope of{' '}
+          <strong>EMF(t)</strong>. The peak amplitude is exactly
+          <strong> NBAω</strong>: scale up any of the four and the trace gets taller.
+        </>
+      }
       deeperLab={{ slug: 'faraday', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="B"
-          value={B} min={0} max={2} step={0.01}
-          format={v => v.toFixed(2) + ' T'}
+          value={B}
+          min={0}
+          max={2}
+          step={0.01}
+          format={(v) => v.toFixed(2) + ' T'}
           onChange={setB}
         />
         <MiniSlider
           label="ω"
-          value={omega} min={0} max={200} step={1}
-          format={v => Math.round(v) + ' rad/s'}
+          value={omega}
+          min={0}
+          max={200}
+          step={1}
+          format={(v) => Math.round(v) + ' rad/s'}
           onChange={setOmega}
         />
         <MiniReadout label="EMFₚₖ = NBAω" value={<Num value={computed.peak} />} unit="V" />

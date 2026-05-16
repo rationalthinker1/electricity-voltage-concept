@@ -15,15 +15,19 @@ import { Num } from '@/components/Num';
 import { drawArrow } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function DielectricBetweenPlatesDemo({ figure }: Props) {
-  const [V, setV] = useState(5);          // applied voltage (V)
-  const [er, setEr] = useState(80);       // relative permittivity (water default)
+  const [V, setV] = useState(5); // applied voltage (V)
+  const [er, setEr] = useState(80); // relative permittivity (water default)
   const [inserted, setInserted] = useState(false);
 
   const stateRef = useRef({ V, er, inserted });
-  useEffect(() => { stateRef.current = { V, er, inserted }; }, [V, er, inserted]);
+  useEffect(() => {
+    stateRef.current = { V, er, inserted };
+  }, [V, er, inserted]);
 
   // Geometry: plate separation d = 4 mm, plate area A = 1 cm² for the readout
   const d_m = 4e-3;
@@ -31,7 +35,7 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
   const erEff = inserted ? er : 1;
   const E_applied = V / d_m;
   const E_inside = E_applied / erEff;
-  const C_vac = PHYS.eps_0 * A_m2 / d_m;
+  const C_vac = (PHYS.eps_0 * A_m2) / d_m;
   const C_eff = C_vac * erEff;
 
   const setup = useCallback((info: CanvasInfo) => {
@@ -89,7 +93,7 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
       if (inserted) {
         // Slab body
         ctx.save();
-        ctx.globalAlpha = 0.10;
+        ctx.globalAlpha = 0.1;
         ctx.fillStyle = colors.teal;
         ctx.fillRect(px + 12, slabTop, plateW - 24, slabBot - slabTop);
         ctx.restore();
@@ -111,7 +115,7 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
         for (let i = 0; i < ticks; i++) {
           const x = px + (i + 0.5) * (plateW / ticks);
           ctx.fillText('−', x, slabTop + 4);
-        ctx.restore();
+          ctx.restore();
         }
         ctx.save();
         ctx.globalAlpha = 0.65;
@@ -119,7 +123,7 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
         for (let i = 0; i < ticks; i++) {
           const x = px + (i + 0.5) * (plateW / ticks);
           ctx.fillText('+', x, slabBot - 0);
-        ctx.restore();
+          ctx.restore();
         }
 
         // Bound-charge labels
@@ -136,9 +140,13 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
             const cx = px + 24 + (i + 0.5) * ((plateW - 48) / cols);
             const cy = slabTop + 22 + (j + 1) * ((slabBot - slabTop - 44) / (rows + 1));
             ctx.fillStyle = colors.blue;
-            ctx.beginPath(); ctx.arc(cx, cy - 4, 1.5, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath();
+            ctx.arc(cx, cy - 4, 1.5, 0, Math.PI * 2);
+            ctx.fill();
             ctx.fillStyle = colors.pink;
-            ctx.beginPath(); ctx.arc(cx, cy + 4, 1.5, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath();
+            ctx.arc(cx, cy + 4, 1.5, 0, Math.PI * 2);
+            ctx.fill();
           }
         }
       }
@@ -152,12 +160,17 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
         const ax = px + (i + 0.5) * (plateW / arrowsN);
 
         const drawFieldArrow = (y0: number, len: number, alpha: number) => {
-          drawArrow(ctx, { x: ax, y: y0 }, { x: ax, y: y0 + len }, {
-            color: `rgba(255,107,42,${alpha.toFixed(3)})`,
-            headLength: 6,
-            headWidth: 3,
-            lineWidth: 1.4,
-          });
+          drawArrow(
+            ctx,
+            { x: ax, y: y0 },
+            { x: ax, y: y0 + len },
+            {
+              color: `rgba(255,107,42,${alpha.toFixed(3)})`,
+              headLength: 6,
+              headWidth: 3,
+              lineWidth: 1.4,
+            },
+          );
         };
 
         // Above the slab — applied field
@@ -180,7 +193,9 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
         ctx.save();
         ctx.globalAlpha = 0.6;
         ctx.fillStyle = colors.accent;
-        ctx.beginPath(); ctx.arc(ax, yp, 1.6, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(ax, yp, 1.6, 0, Math.PI * 2);
+        ctx.fill();
         ctx.restore();
       }
 
@@ -201,27 +216,36 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 11.2'}
       title="Dielectric slab in a parallel-plate capacitor"
       question="What does inserting a dielectric do to the field and the capacitance?"
-      caption={<>
-        With the gap empty, the field between the plates is the full <em>E₀ = V/d</em>.
-        Slide a slab of dielectric in and bound surface charges appear at the slab faces — opposite
-        in sign to the free charge on each plate, by exactly the right amount to drop the field
-        inside the slab to <em>E₀/ε_r</em>. The capacitance jumps by the same factor: <em>C = ε_r · C₀</em>.
-        That is the whole reason a 1 µF ceramic cap is smaller than a 1 µF air-gap cap.
-      </>}
+      caption={
+        <>
+          With the gap empty, the field between the plates is the full <em>E₀ = V/d</em>. Slide a
+          slab of dielectric in and bound surface charges appear at the slab faces — opposite in
+          sign to the free charge on each plate, by exactly the right amount to drop the field
+          inside the slab to <em>E₀/ε_r</em>. The capacitance jumps by the same factor:{' '}
+          <em>C = ε_r · C₀</em>. That is the whole reason a 1 µF ceramic cap is smaller than a 1 µF
+          air-gap cap.
+        </>
+      }
       deeperLab={{ slug: 'capacitance', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="V"
-          value={V} min={0.5} max={20} step={0.1}
-          format={v => v.toFixed(1) + ' V'}
+          value={V}
+          min={0.5}
+          max={20}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' V'}
           onChange={setV}
         />
         <MiniSlider
           label="ε_r"
-          value={er} min={1} max={100} step={0.1}
-          format={v => v.toFixed(1)}
+          value={er}
+          min={1}
+          max={100}
+          step={0.1}
+          format={(v) => v.toFixed(1)}
           onChange={setEr}
         />
         <MiniToggle

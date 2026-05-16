@@ -14,14 +14,18 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
   // L in metres
   const [L, setL] = useState(1.5);
 
   const stateRef = useRef({ L });
-  useEffect(() => { stateRef.current = { L }; }, [L]);
+  useEffect(() => {
+    stateRef.current = { L };
+  }, [L]);
 
   const f0 = PHYS.c / (2 * L);
   const R_rad = 73; // Ω at resonance, half-wave dipole
@@ -38,9 +42,14 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       ctx.fillRect(0, 0, W, H);
 
       // Plot area
-      const padL = 56, padR = 18, padT = 22, padB = 36;
-      const x0 = padL, x1 = W - padR;
-      const y0 = H - padB, y1 = padT;
+      const padL = 56,
+        padR = 18,
+        padT = 22,
+        padB = 36;
+      const x0 = padL,
+        x1 = W - padR;
+      const y0 = H - padB,
+        y1 = padT;
       const plotW = x1 - x0;
       const plotH = y0 - y1;
 
@@ -53,23 +62,31 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(x0, y0); ctx.lineTo(x1, y0);
-      ctx.moveTo(x0, y0); ctx.lineTo(x0, y1);
+      ctx.moveTo(x0, y0);
+      ctx.lineTo(x1, y0);
+      ctx.moveTo(x0, y0);
+      ctx.lineTo(x0, y1);
       ctx.stroke();
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'center';
       for (let i = 0; i <= 5; i++) {
-        const fr = fmin + (fmax - fmin) * i / 5;
+        const fr = fmin + ((fmax - fmin) * i) / 5;
         const x = x0 + (i / 5) * plotW;
-        ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x, y0 + 3); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, y0);
+        ctx.lineTo(x, y0 + 3);
+        ctx.stroke();
         ctx.fillText(formatHz(fr), x, y0 + 14);
       }
       ctx.fillText('frequency f', (x0 + x1) / 2, H - 4);
       ctx.textAlign = 'right';
       for (let v = 0; v <= Zmax; v += 300) {
         const y = y0 - (v / Zmax) * plotH;
-        ctx.beginPath(); ctx.moveTo(x0 - 3, y); ctx.lineTo(x0, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x0 - 3, y);
+        ctx.lineTo(x0, y);
+        ctx.stroke();
         ctx.fillText(String(v), x0 - 6, y + 3);
       }
       ctx.save();
@@ -94,7 +111,8 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
         const Zclip = Math.min(Zmax, Zmag);
         const x = x0 + (i / 300) * plotW;
         const y = y0 - (Zclip / Zmax) * plotH;
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -102,7 +120,10 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       const xRes = x0 + ((f0_ - fmin) / (fmax - fmin)) * plotW;
       ctx.setLineDash([3, 4]);
       ctx.strokeStyle = getCanvasColors().teal;
-      ctx.beginPath(); ctx.moveTo(xRes, y0); ctx.lineTo(xRes, y1); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(xRes, y0);
+      ctx.lineTo(xRes, y1);
+      ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = getCanvasColors().teal;
       ctx.textAlign = 'center';
@@ -112,7 +133,10 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       const y73 = y0 - (73 / Zmax) * plotH;
       ctx.setLineDash([2, 4]);
       ctx.strokeStyle = getCanvasColors().borderStrong;
-      ctx.beginPath(); ctx.moveTo(x0, y73); ctx.lineTo(x1, y73); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x0, y73);
+      ctx.lineTo(x1, y73);
+      ctx.stroke();
       ctx.setLineDash([]);
       ctx.save();
       ctx.globalAlpha = 0.7;
@@ -132,17 +156,26 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 15.2'}
       title="Half-wave dipole — input impedance"
       question="Why does |Z| dip to ~73 Ω at one frequency?"
-      caption={<>
-        Centre-fed dipole of length <strong>L</strong>: input impedance has large reactance off
-        resonance and crosses to a pure real ≈ 73 Ω when <strong>L = λ/2</strong>, i.e. at
-        <strong> f₀ = c/(2L)</strong>. The 73 Ω is <em>radiation resistance</em> — the rate at
-        which energy is sucked out of the circuit and into the far-field, not heat.
-      </>}
+      caption={
+        <>
+          Centre-fed dipole of length <strong>L</strong>: input impedance has large reactance off
+          resonance and crosses to a pure real ≈ 73 Ω when <strong>L = λ/2</strong>, i.e. at
+          <strong> f₀ = c/(2L)</strong>. The 73 Ω is <em>radiation resistance</em> — the rate at
+          which energy is sucked out of the circuit and into the far-field, not heat.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
-        <MiniSlider label="L" value={L} min={0.05} max={5} step={0.01}
-          format={v => v.toFixed(2) + ' m'} onChange={setL} />
+        <MiniSlider
+          label="L"
+          value={L}
+          min={0.05}
+          max={5}
+          step={0.01}
+          format={(v) => v.toFixed(2) + ' m'}
+          onChange={setL}
+        />
         <MiniReadout label="f₀" value={formatHz(f0)} />
         <MiniReadout label="R_rad" value={R_rad.toFixed(0)} unit="Ω" />
       </DemoControls>
@@ -151,7 +184,8 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
 }
 
 function cot(x: number): number {
-  const c = Math.cos(x); const s = Math.sin(x);
+  const c = Math.cos(x);
+  const s = Math.sin(x);
   if (Math.abs(s) < 1e-6) return Math.sign(c) * 1e6;
   return c / s;
 }

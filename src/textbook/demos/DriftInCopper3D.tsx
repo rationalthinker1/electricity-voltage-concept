@@ -35,12 +35,11 @@ import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { MATERIALS, PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
-import {
-  attachOrbit, project, v3,
-  type OrbitCamera, type Vec3,
-} from '@/lib/projection3d';
+import { attachOrbit, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // Wire geometry, world units. Cylinder runs along x; radius is in y-z.
 const X_HALF = 2.2;
@@ -55,15 +54,17 @@ const N_IONS_AZIM = 6;
 // Reference current/temperature used to scale the visual drift bias so
 // the ratio v_th/v_d is preserved across slider sweeps (real ratio is
 // ~10^10, way too extreme to draw). The visual ratio is roughly 80:1.
-const I_REF = 3;          // A
-const T_REF = 300;        // K
-const VIS_THERMAL = 0.045;   // world-units per frame at T_REF (per axis std-dev)
-const VIS_DRIFT = 5.5e-4;    // world-units per frame at I_REF (mean +x step)
+const I_REF = 3; // A
+const T_REF = 300; // K
+const VIS_THERMAL = 0.045; // world-units per frame at T_REF (per axis std-dev)
+const VIS_DRIFT = 5.5e-4; // world-units per frame at I_REF (mean +x step)
 
 interface Electron {
   pos: Vec3;
   // Latest velocity (world-units/frame), used only for short arrow tails.
-  vx: number; vy: number; vz: number;
+  vx: number;
+  vy: number;
+  vz: number;
 }
 
 interface DrawItem {
@@ -85,8 +86,8 @@ export function DriftInCopper3DDemo({ figure }: Props) {
     // Copper, 2.5 mm² (matches DriftVelocityDemo defaults).
     const A_m2 = 2.5e-6;
     const n = MATERIALS.copper.n;
-    const vd = I / (n * PHYS.e * A_m2);                       // m/s
-    const vth = Math.sqrt((3 * PHYS.k_B * T) / PHYS.me);      // m/s
+    const vd = I / (n * PHYS.e * A_m2); // m/s
+    const vth = Math.sqrt((3 * PHYS.k_B * T) / PHYS.me); // m/s
     const ratio = vth / vd;
     return { vd, vth, ratio, A_m2, n };
   }, [I, T]);
@@ -147,9 +148,9 @@ export function DriftInCopper3DDemo({ figure }: Props) {
     };
 
     function drawRim(pts: Vec3[]) {
-      const projected = pts.map(p => project(p, cam, W, H));
+      const projected = pts.map((p) => project(p, cam, W, H));
       const N = projected.length;
-      const depths = projected.map(p => p.depth);
+      const depths = projected.map((p) => p.depth);
       const sorted = [...depths].sort((a, b) => a - b);
       const cutoff = sorted[Math.floor(N / 2)]!;
 
@@ -161,15 +162,15 @@ export function DriftInCopper3DDemo({ figure }: Props) {
           const isFront = depths[i % N]! <= cutoff;
           const include = pass === 'front' ? isFront : !isFront;
           if (include) {
-            if (!drawing) { ctx.moveTo(p.x, p.y); drawing = true; }
-            else ctx.lineTo(p.x, p.y);
+            if (!drawing) {
+              ctx.moveTo(p.x, p.y);
+              drawing = true;
+            } else ctx.lineTo(p.x, p.y);
           } else {
             drawing = false;
           }
         }
-        ctx.strokeStyle = pass === 'front'
-          ? 'rgba(255,107,42,0.75)'
-          : 'rgba(255,107,42,0.22)';
+        ctx.strokeStyle = pass === 'front' ? 'rgba(255,107,42,0.75)' : 'rgba(255,107,42,0.22)';
         ctx.lineWidth = 1.1;
         ctx.setLineDash(pass === 'back' ? [4, 4] : []);
         ctx.stroke();
@@ -194,14 +195,19 @@ export function DriftInCopper3DDemo({ figure }: Props) {
         const p2 = project(v3(+X_HALF, y, z), cam, W, H);
         // Soft amber glow for the front-half generators; dashed grey for back.
         if (!back) {
-          drawGlowPath(ctx,
-            [{ x: p1.x, y: p1.y }, { x: p2.x, y: p2.y }],
+          drawGlowPath(
+            ctx,
+            [
+              { x: p1.x, y: p1.y },
+              { x: p2.x, y: p2.y },
+            ],
             {
               color: 'rgba(255,107,42,0.32)',
               lineWidth: 1.0,
               glowColor: 'rgba(255,107,42,0.10)',
               glowWidth: 5,
-            });
+            },
+          );
         } else {
           ctx.save();
           ctx.globalAlpha = 0.14;
@@ -209,7 +215,8 @@ export function DriftInCopper3DDemo({ figure }: Props) {
           ctx.lineWidth = 1;
           ctx.setLineDash([4, 4]);
           ctx.beginPath();
-          ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y);
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
           ctx.stroke();
           ctx.setLineDash([]);
           ctx.restore();
@@ -231,9 +238,9 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       // Update electrons.
       for (const e of electrons) {
         // Random thermal kick (Gaussian-ish via two uniform sums).
-        const kx = ((Math.random() + Math.random() + Math.random()) - 1.5) * thermalSigma * 2;
-        const ky = ((Math.random() + Math.random() + Math.random()) - 1.5) * thermalSigma * 2;
-        const kz = ((Math.random() + Math.random() + Math.random()) - 1.5) * thermalSigma * 2;
+        const kx = (Math.random() + Math.random() + Math.random() - 1.5) * thermalSigma * 2;
+        const ky = (Math.random() + Math.random() + Math.random() - 1.5) * thermalSigma * 2;
+        const kz = (Math.random() + Math.random() + Math.random() - 1.5) * thermalSigma * 2;
         // Light velocity damping (collisions randomise direction) + drift bias.
         e.vx = e.vx * 0.55 + kx + driftStep;
         e.vy = e.vy * 0.55 + ky;
@@ -251,7 +258,8 @@ export function DriftInCopper3DDemo({ figure }: Props) {
         const rMax = R_WIRE * 0.97;
         if (r2 > rMax * rMax) {
           const r = Math.sqrt(r2);
-          const nx = e.pos.y / r, nz = e.pos.z / r;
+          const nx = e.pos.y / r,
+            nz = e.pos.z / r;
           // Place just inside.
           e.pos.y = nx * rMax * 0.98;
           e.pos.z = nz * rMax * 0.98;
@@ -260,7 +268,8 @@ export function DriftInCopper3DDemo({ figure }: Props) {
           e.vy -= 2 * dotn * nx;
           e.vz -= 2 * dotn * nz;
           // Soft damp on bounce.
-          e.vy *= 0.6; e.vz *= 0.6;
+          e.vy *= 0.6;
+          e.vz *= 0.6;
         }
       }
 
@@ -286,10 +295,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
           // The drift arrow is a short +x segment in world space,
           // scaled longer than the actual visual step so the reader
           // can see direction.
-          const tip = project(
-            v3(e.pos.x + 0.18, e.pos.y, e.pos.z),
-            cam, W, H,
-          );
+          const tip = project(v3(e.pos.x + 0.18, e.pos.y, e.pos.z), cam, W, H);
           arrowTip = tip;
         }
         items.push({ kind: 'electron', depth: p.depth, proj: p, arrowTip });
@@ -302,10 +308,10 @@ export function DriftInCopper3DDemo({ figure }: Props) {
         if (it.kind === 'ion') {
           // Amber ion sphere, depth-faded.
           const t = Math.max(0, Math.min(1, (cam.distance + 1.5 - it.depth) / 3.5));
-          const alpha = 0.30 + 0.45 * t;
+          const alpha = 0.3 + 0.45 * t;
           const radius = 2.4 + 1.6 * t;
           // Soft outer glow + solid inner.
-          ctx.fillStyle = `rgba(255,107,42,${(0.10 * alpha).toFixed(3)})`;
+          ctx.fillStyle = `rgba(255,107,42,${(0.1 * alpha).toFixed(3)})`;
           ctx.beginPath();
           ctx.arc(it.proj.x, it.proj.y, radius * 1.9, 0, Math.PI * 2);
           ctx.fill();
@@ -316,7 +322,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
         } else {
           // Electron — cyan disc with a tiny halo.
           const t = Math.max(0, Math.min(1, (cam.distance + 1.5 - it.depth) / 3.5));
-          const alpha = 0.55 + 0.40 * t;
+          const alpha = 0.55 + 0.4 * t;
           const radius = 1.7 + 1.4 * t;
           ctx.fillStyle = `rgba(91,174,248,${(0.18 * alpha).toFixed(3)})`;
           ctx.beginPath();
@@ -331,16 +337,20 @@ export function DriftInCopper3DDemo({ figure }: Props) {
           if (it.arrowTip && it.arrowTip.depth > 0) {
             const p1 = it.proj;
             const p2 = it.arrowTip;
-            const dx = p2.x - p1.x, dy = p2.y - p1.y;
+            const dx = p2.x - p1.x,
+              dy = p2.y - p1.y;
             const len = Math.hypot(dx, dy);
             if (len > 2) {
-              const ux = dx / len, uy = dy / len;
+              const ux = dx / len,
+                uy = dy / len;
               ctx.strokeStyle = `rgba(255,107,42,${(0.85 * alpha).toFixed(3)})`;
               ctx.lineWidth = 1.1;
               ctx.beginPath();
-              ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y);
+              ctx.moveTo(p1.x, p1.y);
+              ctx.lineTo(p2.x, p2.y);
               ctx.stroke();
-              const head = 4, half = 2.4;
+              const head = 4,
+                half = 2.4;
               ctx.fillStyle = `rgba(255,107,42,${(0.92 * alpha).toFixed(3)})`;
               ctx.beginPath();
               ctx.moveTo(p2.x, p2.y);
@@ -362,7 +372,11 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.55;
       ctx.fillStyle = colors.textDim;
-      ctx.fillText('copper · 56 free electrons · thermal & drift scaled for visibility', 12, H - 18);
+      ctx.fillText(
+        'copper · 56 free electrons · thermal & drift scaled for visibility',
+        12,
+        H - 18,
+      );
 
       ctx.textAlign = 'right';
       ctx.restore();
@@ -390,31 +404,42 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 3.6'}
       title="Drift in copper, in 3D"
       question="Inside the wire: how fast is each electron actually moving?"
-      caption={<>
-        A short length of copper, viewed from any angle. The cyan dots are
-        free electrons. Watch one — it bounces every direction at thermal
-        speeds (<strong>~10⁵ m/s</strong> at room temperature), colliding
-        with the amber ion lattice every <strong>~2×10⁻¹⁴ s</strong>.
-        Underneath the chaos there is a faint, steady bias toward +x —
-        the drift velocity, set by the current. At <strong>I = 3 A</strong> in
-        ordinary house wiring v_d is about <strong>0.1 mm/s</strong>. The
-        ratio between the two — printed live on the right — is roughly
-        <strong> 10¹⁰</strong>. Drag to orbit.
-      </>}
+      caption={
+        <>
+          A short length of copper, viewed from any angle. The cyan dots are free electrons. Watch
+          one — it bounces every direction at thermal speeds (<strong>~10⁵ m/s</strong> at room
+          temperature), colliding with the amber ion lattice every <strong>~2×10⁻¹⁴ s</strong>.
+          Underneath the chaos there is a faint, steady bias toward +x — the drift velocity, set by
+          the current. At <strong>I = 3 A</strong> in ordinary house wiring v_d is about{' '}
+          <strong>0.1 mm/s</strong>. The ratio between the two — printed live on the right — is
+          roughly
+          <strong> 10¹⁰</strong>. Drag to orbit.
+        </>
+      }
       deeperLab={{ slug: 'drift', label: 'See full lab' }}
     >
-      <AutoResizeCanvas height={360} setup={setup} ariaLabel="3D copper wire with drifting electrons" />
+      <AutoResizeCanvas
+        height={360}
+        setup={setup}
+        ariaLabel="3D copper wire with drifting electrons"
+      />
       <DemoControls>
         <MiniSlider
           label="current I"
-          value={I} min={0.1} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' A'}
+          value={I}
+          min={0.1}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' A'}
           onChange={setI}
         />
         <MiniSlider
           label="temperature T"
-          value={T} min={100} max={400} step={5}
-          format={v => v.toFixed(0) + ' K'}
+          value={T}
+          min={100}
+          max={400}
+          step={5}
+          format={(v) => v.toFixed(0) + ' K'}
           onChange={setT}
         />
         <MiniToggle label="drift arrows" checked={showArrows} onChange={setShowArrows} />
@@ -426,4 +451,3 @@ export function DriftInCopper3DDemo({ figure }: Props) {
     </Demo>
   );
 }
-

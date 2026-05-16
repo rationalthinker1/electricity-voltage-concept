@@ -9,16 +9,12 @@ export interface StackProps {
   style?: CSSProperties;
 }
 
-export function Stack({
-  gap = 12,
-  align = 'stretch',
-  children,
-  className,
-  style,
-}: StackProps) {
+export function Stack({ gap = 12, align = 'stretch', children, className, style }: StackProps) {
   const alignMap: Record<string, string> = {
-    'start': 'flex-start', 'end': 'flex-end',
-    'center': 'center', 'stretch': 'stretch',
+    start: 'flex-start',
+    end: 'flex-end',
+    center: 'center',
+    stretch: 'stretch',
   };
   const merged: CSSProperties = {
     display: 'flex',
@@ -27,5 +23,9 @@ export function Stack({
     alignItems: alignMap[align],
     ...style,
   };
-  return <div className={clsx('min-w-0', className)} style={merged}>{children}</div>;
+  return (
+    <div className={clsx('min-w-0', className)} style={merged}>
+      {children}
+    </div>
+  );
 }

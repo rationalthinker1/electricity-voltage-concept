@@ -17,14 +17,18 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function PolarizationDemo({ figure }: Props) {
-  const [phi, setPhi] = useState(0);        // polarization angle, radians
-  const [delta, setDelta] = useState(0);    // y/z phase difference, radians
+  const [phi, setPhi] = useState(0); // polarization angle, radians
+  const [delta, setDelta] = useState(0); // y/z phase difference, radians
 
   const stateRef = useRef({ phi, delta });
-  useEffect(() => { stateRef.current = { phi, delta }; }, [phi, delta]);
+  useEffect(() => {
+    stateRef.current = { phi, delta };
+  }, [phi, delta]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H } = info;
@@ -47,8 +51,14 @@ export function PolarizationDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 5]);
-      ctx.beginPath(); ctx.moveTo(cx - R, cy); ctx.lineTo(cx + R, cy); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(cx, cy - R); ctx.lineTo(cx, cy + R); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx - R, cy);
+      ctx.lineTo(cx + R, cy);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - R);
+      ctx.lineTo(cx, cy + R);
+      ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
@@ -76,11 +86,12 @@ export function PolarizationDemo({ figure }: Props) {
       ctx.beginPath();
       const Nsteps = 80;
       for (let i = 0; i <= Nsteps; i++) {
-        const tau = (i / Nsteps) * (2 * Math.PI / om);
+        const tau = (i / Nsteps) * ((2 * Math.PI) / om);
         const e = eVec(tau);
         const px = cx + e.yEy * R;
         const py = cy - e.zEz * R;
-        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
       }
       ctx.stroke();
 
@@ -97,7 +108,8 @@ export function PolarizationDemo({ figure }: Props) {
         const e = eVec(tau);
         const px = cx + e.yEy * R;
         const py = cy - e.zEz * R;
-        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
       }
       ctx.stroke();
 
@@ -109,32 +121,48 @@ export function PolarizationDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().pink;
       ctx.fillStyle = getCanvasColors().pink;
       ctx.lineWidth = 2.2;
-      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(px, py);
+      ctx.stroke();
       // Arrowhead
-      const dxA = px - cx, dyA = py - cy;
+      const dxA = px - cx,
+        dyA = py - cy;
       const len = Math.sqrt(dxA * dxA + dyA * dyA);
       if (len > 6) {
-        const ux = dxA / len, uy = dyA / len;
+        const ux = dxA / len,
+          uy = dyA / len;
         const HEAD = 8;
         ctx.beginPath();
         ctx.moveTo(px, py);
         ctx.lineTo(px - ux * HEAD - uy * 3, py - uy * HEAD + ux * 3);
         ctx.lineTo(px - ux * HEAD + uy * 3, py - uy * HEAD - ux * 3);
-        ctx.closePath(); ctx.fill();
+        ctx.closePath();
+        ctx.fill();
       }
 
       // Centre dot (the propagation axis seen end-on)
       ctx.save();
       ctx.globalAlpha = 0.5;
       ctx.fillStyle = getCanvasColors().text;
-      ctx.beginPath(); ctx.arc(cx, cy, 3, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+      ctx.fill();
 
       // Label: state of polarization
       let stateLabel = 'elliptical';
-      const dAbs = Math.abs(Math.atan2(Math.sin(delta), Math.cos(delta)));    // [0, π]
-      if (Math.abs(Math.sin(phi)) < 0.05 || Math.abs(Math.cos(phi)) < 0.05 || dAbs < 0.05 || Math.abs(dAbs - Math.PI) < 0.05) {
+      const dAbs = Math.abs(Math.atan2(Math.sin(delta), Math.cos(delta))); // [0, π]
+      if (
+        Math.abs(Math.sin(phi)) < 0.05 ||
+        Math.abs(Math.cos(phi)) < 0.05 ||
+        dAbs < 0.05 ||
+        Math.abs(dAbs - Math.PI) < 0.05
+      ) {
         stateLabel = 'linear';
-      } else if (Math.abs(dAbs - Math.PI / 2) < 0.05 && Math.abs(Math.abs(phi) - Math.PI / 4) < 0.08) {
+      } else if (
+        Math.abs(dAbs - Math.PI / 2) < 0.05 &&
+        Math.abs(Math.abs(phi) - Math.PI / 4) < 0.08
+      ) {
         stateLabel = 'circular';
       }
       ctx.restore();
@@ -156,25 +184,34 @@ export function PolarizationDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 7.3'}
       title="Polarization"
       question="What direction does E point — and is it staying put?"
-      caption={<>
-        Looking down the propagation axis at the tip of <strong>E</strong>. With phase shift δ = 0
-        the vector oscillates back and forth along a line (<em>linear</em> polarization). With δ = π/2
-        and φ = ±45° it sweeps out a circle (<em>circular</em>). Anything in between is
-        <em> elliptical</em>. The wave still travels at c; only the direction of E's wobble changes.
-      </>}
+      caption={
+        <>
+          Looking down the propagation axis at the tip of <strong>E</strong>. With phase shift δ = 0
+          the vector oscillates back and forth along a line (<em>linear</em> polarization). With δ =
+          π/2 and φ = ±45° it sweeps out a circle (<em>circular</em>). Anything in between is
+          <em> elliptical</em>. The wave still travels at c; only the direction of E's wobble
+          changes.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="angle φ"
-          value={phi} min={-Math.PI / 2} max={Math.PI / 2} step={0.01}
-          format={v => ((v * 180) / Math.PI).toFixed(0) + '°'}
+          value={phi}
+          min={-Math.PI / 2}
+          max={Math.PI / 2}
+          step={0.01}
+          format={(v) => ((v * 180) / Math.PI).toFixed(0) + '°'}
           onChange={setPhi}
         />
         <MiniSlider
           label="phase δ"
-          value={delta} min={0} max={Math.PI} step={0.01}
-          format={v => ((v * 180) / Math.PI).toFixed(0) + '°'}
+          value={delta}
+          min={0}
+          max={Math.PI}
+          step={0.01}
+          format={(v) => ((v * 180) / Math.PI).toFixed(0) + '°'}
           onChange={setDelta}
         />
         <MiniReadout label="δ" value={((delta * 180) / Math.PI).toFixed(0)} unit="°" />

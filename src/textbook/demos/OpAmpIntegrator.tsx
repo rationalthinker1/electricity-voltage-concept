@@ -13,22 +13,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 
 type WaveKind = 'square' | 'sine' | 'triangle';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const V_SUP = 8;  // ±8 V output rail
+const V_SUP = 8; // ±8 V output rail
 
 export function OpAmpIntegratorDemo({ figure }: Props) {
-  const [RkOhm, setRkOhm] = useState(10);   // kΩ
-  const [Cnf, setCnf] = useState(100);      // nF
-  const [fHz, setFHz] = useState(200);      // Hz
-  const [VinAmp, setVinAmp] = useState(2);  // V peak
+  const [RkOhm, setRkOhm] = useState(10); // kΩ
+  const [Cnf, setCnf] = useState(100); // nF
+  const [fHz, setFHz] = useState(200); // Hz
+  const [VinAmp, setVinAmp] = useState(2); // V peak
   const [kind, setKind] = useState<WaveKind>('square');
 
   const R = RkOhm * 1e3;
@@ -56,8 +56,12 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 50, padR = 30, padT = 22, padB = 22;
-      const plotX = padL, plotY = padT;
+      const padL = 50,
+        padR = 30,
+        padT = 22,
+        padB = 22;
+      const plotX = padL,
+        plotY = padT;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
@@ -67,35 +71,40 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       // Window holds 2 periods
       const WINDOW = 2.0 / fHz;
       // y axis: -V_SUP..+V_SUP
-      const yV = (v: number) =>
-        plotY + plotH / 2 - (v / V_SUP) * (plotH / 2 - 4);
+      const yV = (v: number) => plotY + plotH / 2 - (v / V_SUP) * (plotH / 2 - 4);
 
       ctx.strokeStyle = colors.border;
       for (let v = -V_SUP; v <= V_SUP; v += 2) {
         const y = yV(v);
-        ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
+        ctx.stroke();
       }
       ctx.strokeStyle = colors.borderStrong;
       const y0 = yV(0);
-      ctx.beginPath(); ctx.moveTo(plotX, y0); ctx.lineTo(plotX + plotW, y0); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(plotX, y0);
+      ctx.lineTo(plotX + plotW, y0);
+      ctx.stroke();
 
       // Build input + integrated output samples
       const N = 600;
-      const phase = tnow * 2 * Math.PI * 0.4;  // slow drift so it animates
+      const phase = tnow * 2 * Math.PI * 0.4; // slow drift so it animates
       // We want a steady-state output, so initialize the integrator from
       // the analytical mean of one full period and let it precondition.
       const inputAt = (t: number) => {
-        const u = (t * fHz) % 1;  // 0..1 phase
+        const u = (t * fHz) % 1; // 0..1 phase
         if (kind === 'square') return VinAmp * (u < 0.5 ? 1 : -1);
         if (kind === 'sine') return VinAmp * Math.sin(2 * Math.PI * u);
         // triangle
-        return VinAmp * (u < 0.5 ? (4 * u - 1) : (3 - 4 * u));
+        return VinAmp * (u < 0.5 ? 4 * u - 1 : 3 - 4 * u);
       };
       const drift = phase / (2 * Math.PI * fHz);
       // Precondition: integrate 4 periods with no display, starting at 0
       let vout = 0;
       const preSteps = 2000;
-      const preDt = (4 / fHz) / preSteps;
+      const preDt = 4 / fHz / preSteps;
       for (let i = 0; i < preSteps; i++) {
         const t = -4 / fHz + i * preDt + drift;
         const vin = inputAt(t);
@@ -126,7 +135,8 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       for (let i = 0; i <= N; i++) {
         const x = plotX + (i / N) * plotW;
         const y = yV(samplesIn[i]);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -175,31 +185,61 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 12.10'}
       title="Op-amp integrator — square in, triangle out"
       question="Replace R_f with a C. The amplifier integrates."
-      caption={<>
-        With R at the input and C in the feedback path, V<sub>out</sub>(t) = −(1/RC) ∫ V<sub>in</sub>
-        dt. A square wave integrates to a triangle. A sine wave integrates to a cosine — same
-        frequency, 90° lag, magnitude scaled by 1/(ωRC). The integrator is the building block of
-        every analog filter, every PID controller, and the first stage of a sigma-delta ADC.
-      </>}
+      caption={
+        <>
+          With R at the input and C in the feedback path, V<sub>out</sub>(t) = −(1/RC) ∫ V
+          <sub>in</sub>
+          dt. A square wave integrates to a triangle. A sine wave integrates to a cosine — same
+          frequency, 90° lag, magnitude scaled by 1/(ωRC). The integrator is the building block of
+          every analog filter, every PID controller, and the first stage of a sigma-delta ADC.
+        </>
+      }
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
-        <MiniToggle label="Square" checked={kind === 'square'}
-          onChange={() => setKind('square')} />
-        <MiniToggle label="Sine" checked={kind === 'sine'}
-          onChange={() => setKind('sine')} />
-        <MiniToggle label="Triangle" checked={kind === 'triangle'}
-          onChange={() => setKind('triangle')} />
-        <MiniSlider label="R" value={RkOhm} min={1} max={100} step={1}
-          format={v => v.toFixed(0) + ' kΩ'} onChange={setRkOhm} />
-        <MiniSlider label="C" value={Cnf} min={1} max={1000} step={1}
-          format={v => v < 1000 ? v.toFixed(0) + ' nF' : (v / 1000).toFixed(2) + ' µF'}
-          onChange={setCnf} />
-        <MiniSlider label="f_in" value={fHz} min={20} max={2000} step={10}
-          format={v => v < 1000 ? v.toFixed(0) + ' Hz' : (v / 1000).toFixed(2) + ' kHz'}
-          onChange={setFHz} />
-        <MiniSlider label="V_in peak" value={VinAmp} min={0.1} max={5} step={0.1}
-          format={v => v.toFixed(1) + ' V'} onChange={setVinAmp} />
+        <MiniToggle label="Square" checked={kind === 'square'} onChange={() => setKind('square')} />
+        <MiniToggle label="Sine" checked={kind === 'sine'} onChange={() => setKind('sine')} />
+        <MiniToggle
+          label="Triangle"
+          checked={kind === 'triangle'}
+          onChange={() => setKind('triangle')}
+        />
+        <MiniSlider
+          label="R"
+          value={RkOhm}
+          min={1}
+          max={100}
+          step={1}
+          format={(v) => v.toFixed(0) + ' kΩ'}
+          onChange={setRkOhm}
+        />
+        <MiniSlider
+          label="C"
+          value={Cnf}
+          min={1}
+          max={1000}
+          step={1}
+          format={(v) => (v < 1000 ? v.toFixed(0) + ' nF' : (v / 1000).toFixed(2) + ' µF')}
+          onChange={setCnf}
+        />
+        <MiniSlider
+          label="f_in"
+          value={fHz}
+          min={20}
+          max={2000}
+          step={10}
+          format={(v) => (v < 1000 ? v.toFixed(0) + ' Hz' : (v / 1000).toFixed(2) + ' kHz')}
+          onChange={setFHz}
+        />
+        <MiniSlider
+          label="V_in peak"
+          value={VinAmp}
+          min={0.1}
+          max={5}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' V'}
+          onChange={setVinAmp}
+        />
         <MiniReadout label="τ = RC" value={fmtT(tau)} />
         <MiniReadout label="1/(ωRC)" value={sineGainMag.toFixed(3)} unit="(sine gain)" />
       </DemoControls>

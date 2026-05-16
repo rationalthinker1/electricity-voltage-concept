@@ -13,7 +13,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function NearFarFieldTransitionDemo({ figure }: Props) {
   // Visual ω in rad/sim-sec — sets the "wavelength" in pixel space
@@ -22,7 +24,9 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
   const lamPx = (2 * Math.PI * C_SIM) / omega;
 
   const stateRef = useRef({ omega });
-  useEffect(() => { stateRef.current = { omega }; }, [omega]);
+  useEffect(() => {
+    stateRef.current = { omega };
+  }, [omega]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H } = info;
@@ -43,16 +47,20 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
       // Concentric reference zone: shaded near-field ring out to r = λ/(2π)
       const rNF = lam / (2 * Math.PI);
       ctx.save();
-      ctx.globalAlpha = 0.10;
+      ctx.globalAlpha = 0.1;
       ctx.fillStyle = getCanvasColors().pink;
-      ctx.beginPath(); ctx.arc(cx, cy, rNF, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy, rNF, 0, Math.PI * 2);
+      ctx.fill();
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.45;
       ctx.strokeStyle = getCanvasColors().pink;
       ctx.lineWidth = 1.5;
       ctx.setLineDash([3, 4]);
-      ctx.beginPath(); ctx.arc(cx, cy, rNF, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, rNF, 0, Math.PI * 2);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       // Far-field circle (annotated) at r = 2 λ for contrast
@@ -60,7 +68,9 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
       if (rFF < Math.min(W, H) / 2) {
         ctx.strokeStyle = getCanvasColors().teal;
         ctx.setLineDash([3, 4]);
-        ctx.beginPath(); ctx.arc(cx, cy, rFF, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx, cy, rFF, 0, Math.PI * 2);
+        ctx.stroke();
         ctx.setLineDash([]);
       }
 
@@ -105,9 +115,13 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
       // Dipole at the origin (two charges)
       ctx.restore();
       ctx.fillStyle = getCanvasColors().pink;
-      ctx.beginPath(); ctx.arc(cx, cy - 6, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy - 6, 4, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = getCanvasColors().blue;
-      ctx.beginPath(); ctx.arc(cx, cy + 6, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy + 6, 4, 0, Math.PI * 2);
+      ctx.fill();
 
       // Labels
       ctx.font = '10px "JetBrains Mono", monospace';
@@ -130,17 +144,26 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 15.5'}
       title="Near field vs far field"
       question="Where does the field stop sloshing back and start propagating?"
-      caption={<>
-        Close to the dipole (inside the pink ring at <strong>r ≈ λ/2π</strong>), the field is
-        dominated by reactive 1/r³ near-zone terms that oscillate in place — no net energy flows
-        outward. Past the transition (teal ring at 2λ), only the 1/r radiative term survives, and
-        the field becomes a true outgoing wave carrying Poynting flux to infinity.
-      </>}
+      caption={
+        <>
+          Close to the dipole (inside the pink ring at <strong>r ≈ λ/2π</strong>), the field is
+          dominated by reactive 1/r³ near-zone terms that oscillate in place — no net energy flows
+          outward. Past the transition (teal ring at 2λ), only the 1/r radiative term survives, and
+          the field becomes a true outgoing wave carrying Poynting flux to infinity.
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <MiniSlider label="ω" value={omega} min={0.8} max={6} step={0.05}
-          format={v => v.toFixed(2) + ' rad/s'} onChange={setOmega} />
+        <MiniSlider
+          label="ω"
+          value={omega}
+          min={0.8}
+          max={6}
+          step={0.05}
+          format={(v) => v.toFixed(2) + ' rad/s'}
+          onChange={setOmega}
+        />
         <MiniReadout label="λ" value={lamPx.toFixed(0)} unit="px" />
         <MiniReadout label="λ/2π" value={(lamPx / (2 * Math.PI)).toFixed(1)} unit="px" />
       </DemoControls>

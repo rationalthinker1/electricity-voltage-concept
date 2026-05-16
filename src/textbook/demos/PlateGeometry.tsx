@@ -8,14 +8,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function PlateGeometryDemo({ figure }: Props) {
   const [A_cm2, setACm2] = useState(100);
@@ -26,7 +26,9 @@ export function PlateGeometryDemo({ figure }: Props) {
   const C = (PHYS.eps_0 * A_m2) / d_m;
 
   const stateRef = useRef({ A_cm2, d_mm });
-  useEffect(() => { stateRef.current = { A_cm2, d_mm }; }, [A_cm2, d_mm]);
+  useEffect(() => {
+    stateRef.current = { A_cm2, d_mm };
+  }, [A_cm2, d_mm]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H } = info;
@@ -60,9 +62,12 @@ export function PlateGeometryDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().textDim;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(xL, topY - 18); ctx.lineTo(xL + plateW, topY - 18);
-      ctx.moveTo(xL, topY - 22); ctx.lineTo(xL, topY - 14);
-      ctx.moveTo(xL + plateW, topY - 22); ctx.lineTo(xL + plateW, topY - 14);
+      ctx.moveTo(xL, topY - 18);
+      ctx.lineTo(xL + plateW, topY - 18);
+      ctx.moveTo(xL, topY - 22);
+      ctx.lineTo(xL, topY - 14);
+      ctx.moveTo(xL + plateW, topY - 22);
+      ctx.lineTo(xL + plateW, topY - 14);
       ctx.stroke();
       ctx.restore();
       ctx.fillStyle = getCanvasColors().text;
@@ -77,9 +82,12 @@ export function PlateGeometryDemo({ figure }: Props) {
       ctx.globalAlpha = 0.6;
       ctx.strokeStyle = getCanvasColors().textDim;
       ctx.beginPath();
-      ctx.moveTo(xD - 4, topY + plateThick); ctx.lineTo(xD + 4, topY + plateThick);
-      ctx.moveTo(xD - 4, botY - plateThick); ctx.lineTo(xD + 4, botY - plateThick);
-      ctx.moveTo(xD, topY + plateThick); ctx.lineTo(xD, botY - plateThick);
+      ctx.moveTo(xD - 4, topY + plateThick);
+      ctx.lineTo(xD + 4, topY + plateThick);
+      ctx.moveTo(xD - 4, botY - plateThick);
+      ctx.lineTo(xD + 4, botY - plateThick);
+      ctx.moveTo(xD, topY + plateThick);
+      ctx.lineTo(xD, botY - plateThick);
       ctx.stroke();
       ctx.restore();
       ctx.fillStyle = getCanvasColors().text;
@@ -107,9 +115,11 @@ export function PlateGeometryDemo({ figure }: Props) {
       question="Why does the shape of the plates set the capacitance?"
       caption={
         <>
-          Capacitance is entirely a property of the geometry (in vacuum): more area, more capacity; less gap, more capacity. Double <strong>A</strong>
-          and <strong>C</strong> doubles. Halve <strong>d</strong> and <strong>C</strong> doubles. Insert an insulator in the gap and
-          the relative permittivity <strong>εᵣ</strong> multiplies on top.
+          Capacitance is entirely a property of the geometry (in vacuum): more area, more capacity;
+          less gap, more capacity. Double <strong>A</strong>
+          and <strong>C</strong> doubles. Halve <strong>d</strong> and <strong>C</strong> doubles.
+          Insert an insulator in the gap and the relative permittivity <strong>εᵣ</strong>{' '}
+          multiplies on top.
         </>
       }
       deeperLab={{ slug: 'capacitance', label: 'See full lab' }}
@@ -118,14 +128,20 @@ export function PlateGeometryDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="A"
-          value={A_cm2} min={10} max={1000} step={5}
-          format={v => v.toFixed(0) + ' cm²'}
+          value={A_cm2}
+          min={10}
+          max={1000}
+          step={5}
+          format={(v) => v.toFixed(0) + ' cm²'}
           onChange={setACm2}
         />
         <MiniSlider
           label="d"
-          value={d_mm} min={0.05} max={10} step={0.05}
-          format={v => v.toFixed(2) + ' mm'}
+          value={d_mm}
+          min={0.05}
+          max={10}
+          step={0.05}
+          format={(v) => v.toFixed(2) + ' mm'}
           onChange={setDMm}
         />
         <MiniReadout label="C = ε₀A/d" value={<Num value={C} />} unit="F" />
@@ -136,7 +152,11 @@ export function PlateGeometryDemo({ figure }: Props) {
 
 function drawPlate(
   ctx: CanvasRenderingContext2D,
-  x: number, y: number, w: number, h: number, color: string,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  color: string,
 ) {
   const grd = ctx.createLinearGradient(x, y, x, y + h);
   grd.addColorStop(0, color);

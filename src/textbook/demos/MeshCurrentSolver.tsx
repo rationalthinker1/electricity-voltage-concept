@@ -25,16 +25,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-interface StaticCacheEntry { key: string; canvas: HTMLCanvasElement }
+interface StaticCacheEntry {
+  key: string;
+  canvas: HTMLCanvasElement;
+}
 
 function solveMesh(V1: number, V2: number, R1: number, R2: number, R3: number) {
   const a11 = R1 + R2;
@@ -47,7 +50,8 @@ function solveMesh(V1: number, V2: number, R1: number, R2: number, R3: number) {
   const I1 = (b1 * a22 - a12 * b2) / det;
   const I2 = (a11 * b2 - b1 * a21) / det;
   return {
-    I1, I2,
+    I1,
+    I2,
     I_R1: I1,
     I_R3: I2,
     I_R2: I1 - I2,
@@ -66,7 +70,12 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
   useEffect(() => {
     stateRef.current = {
       ...stateRef.current,
-      V1, V2, R1, R2, R3, sol,
+      V1,
+      V2,
+      R1,
+      R2,
+      R3,
+      sol,
     };
   }, [V1, V2, R1, R2, R3, sol.I1, sol.I2, sol.I_R1, sol.I_R2, sol.I_R3]);
 
@@ -138,10 +147,28 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
       ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
 
       // Per-frame overlay: rotating arrowhead around each mesh-loop ellipse.
-      drawMeshLoop(ctx, xLeft + 30, yTop + 18, xMid - 30, yBot - 18,
-        'I₁', 'rgba(255,107,42,0.85)', sol.I1, t);
-      drawMeshLoop(ctx, xMid + 30, yTop + 18, xRight - 30, yBot - 18,
-        'I₂', 'rgba(108,197,194,0.85)', sol.I2, t);
+      drawMeshLoop(
+        ctx,
+        xLeft + 30,
+        yTop + 18,
+        xMid - 30,
+        yBot - 18,
+        'I₁',
+        'rgba(255,107,42,0.85)',
+        sol.I1,
+        t,
+      );
+      drawMeshLoop(
+        ctx,
+        xMid + 30,
+        yTop + 18,
+        xRight - 30,
+        yBot - 18,
+        'I₂',
+        'rgba(108,197,194,0.85)',
+        sol.I2,
+        t,
+      );
 
       raf = requestAnimationFrame(draw);
     }
@@ -154,25 +181,61 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 13.1'}
       title="Mesh-current analysis — two loops, one matrix"
       question="Pick mesh currents; the linear system writes itself."
-      caption={<>
-        Two clockwise mesh currents I₁ and I₂ collapse the network to a 2×2 linear
-        system. The middle branch R₂ is shared between the loops; its branch current
-        is I₁ − I₂. For an N-mesh network the system is N×N — far smaller than the
-        branch count.
-      </>}
+      caption={
+        <>
+          Two clockwise mesh currents I₁ and I₂ collapse the network to a 2×2 linear system. The
+          middle branch R₂ is shared between the loops; its branch current is I₁ − I₂. For an N-mesh
+          network the system is N×N — far smaller than the branch count.
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <MiniSlider label="V₁" value={V1} min={0} max={24} step={0.5}
-          format={v => v.toFixed(1) + ' V'} onChange={setV1} />
-        <MiniSlider label="V₂" value={V2} min={0} max={24} step={0.5}
-          format={v => v.toFixed(1) + ' V'} onChange={setV2} />
-        <MiniSlider label="R₁" value={R1} min={1} max={50} step={1}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setR1} />
-        <MiniSlider label="R₂" value={R2} min={1} max={50} step={1}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setR2} />
-        <MiniSlider label="R₃" value={R3} min={1} max={50} step={1}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setR3} />
+        <MiniSlider
+          label="V₁"
+          value={V1}
+          min={0}
+          max={24}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
+          onChange={setV1}
+        />
+        <MiniSlider
+          label="V₂"
+          value={V2}
+          min={0}
+          max={24}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
+          onChange={setV2}
+        />
+        <MiniSlider
+          label="R₁"
+          value={R1}
+          min={1}
+          max={50}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setR1}
+        />
+        <MiniSlider
+          label="R₂"
+          value={R2}
+          min={1}
+          max={50}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setR2}
+        />
+        <MiniSlider
+          label="R₃"
+          value={R3}
+          min={1}
+          max={50}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setR3}
+        />
         <MiniReadout label="Mesh I₁" value={<Num value={sol.I1} digits={3} />} unit="A" />
         <MiniReadout label="Mesh I₂" value={<Num value={sol.I2} digits={3} />} unit="A" />
         <MiniReadout label="I through R₂" value={<Num value={sol.I_R2} digits={3} />} unit="A" />
@@ -182,8 +245,13 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
 }
 
 function buildMeshSchematic(
-  w: number, h: number,
-  V1: number, V2: number, R1: number, R2: number, R3: number,
+  w: number,
+  h: number,
+  V1: number,
+  V2: number,
+  R1: number,
+  R2: number,
+  R3: number,
 ): CircuitElement[] {
   const padX = 60;
   const yTop = h / 2 - 70;
@@ -196,27 +264,106 @@ function buildMeshSchematic(
 
   // Two-mesh network: V1 left, V2 right, R2 the shared middle branch.
   return [
-    { kind: 'wire', points: [{ x: xLeft, y: yTop }, { x: xR1 - 22, y: yTop }] },
-    { kind: 'resistor', from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
-      label: `R1=${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
-    { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: xMid, y: yTop }] },
-    { kind: 'wire', points: [{ x: xMid, y: yTop }, { x: xR3 - 22, y: yTop }] },
-    { kind: 'resistor', from: { x: xR3 - 20, y: yTop }, to: { x: xR3 + 20, y: yTop },
-      label: `R3=${R3.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
-    { kind: 'wire', points: [{ x: xR3 + 22, y: yTop }, { x: xRight, y: yTop }] },
-    { kind: 'wire', points: [{ x: xLeft, y: yBot }, { x: xRight, y: yBot }] },
-    { kind: 'wire', points: [{ x: xLeft, y: yTop }, { x: xLeft, y: h / 2 - 22 }] },
-    { kind: 'wire', points: [{ x: xLeft, y: h / 2 + 22 }, { x: xLeft, y: yBot }] },
-    { kind: 'wire', points: [{ x: xRight, y: yTop }, { x: xRight, y: h / 2 - 22 }] },
-    { kind: 'wire', points: [{ x: xRight, y: h / 2 + 22 }, { x: xRight, y: yBot }] },
-    { kind: 'wire', points: [{ x: xMid, y: yTop }, { x: xMid, y: h / 2 - 22 }] },
-    { kind: 'wire', points: [{ x: xMid, y: h / 2 + 22 }, { x: xMid, y: yBot }] },
-    { kind: 'battery', at: { x: xLeft, y: h / 2 },
-      label: `V₁=${V1.toFixed(1)}V`, leadLength: 22 },
-    { kind: 'battery', at: { x: xRight, y: h / 2 },
-      label: `V₂=${V2.toFixed(1)}V`, leadLength: 22 },
-    { kind: 'resistor', from: { x: xMid, y: h / 2 - 20 }, to: { x: xMid, y: h / 2 + 20 },
-      label: `R2=${R2.toFixed(0)}Ω`, labelOffset: { x: -60, y: 0 } },
+    {
+      kind: 'wire',
+      points: [
+        { x: xLeft, y: yTop },
+        { x: xR1 - 22, y: yTop },
+      ],
+    },
+    {
+      kind: 'resistor',
+      from: { x: xR1 - 20, y: yTop },
+      to: { x: xR1 + 20, y: yTop },
+      label: `R1=${R1.toFixed(0)}Ω`,
+      labelOffset: { x: 0, y: -12 },
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR1 + 22, y: yTop },
+        { x: xMid, y: yTop },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xMid, y: yTop },
+        { x: xR3 - 22, y: yTop },
+      ],
+    },
+    {
+      kind: 'resistor',
+      from: { x: xR3 - 20, y: yTop },
+      to: { x: xR3 + 20, y: yTop },
+      label: `R3=${R3.toFixed(0)}Ω`,
+      labelOffset: { x: 0, y: -12 },
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR3 + 22, y: yTop },
+        { x: xRight, y: yTop },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xLeft, y: yBot },
+        { x: xRight, y: yBot },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xLeft, y: yTop },
+        { x: xLeft, y: h / 2 - 22 },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xLeft, y: h / 2 + 22 },
+        { x: xLeft, y: yBot },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xRight, y: yTop },
+        { x: xRight, y: h / 2 - 22 },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xRight, y: h / 2 + 22 },
+        { x: xRight, y: yBot },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xMid, y: yTop },
+        { x: xMid, y: h / 2 - 22 },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xMid, y: h / 2 + 22 },
+        { x: xMid, y: yBot },
+      ],
+    },
+    { kind: 'battery', at: { x: xLeft, y: h / 2 }, label: `V₁=${V1.toFixed(1)}V`, leadLength: 22 },
+    { kind: 'battery', at: { x: xRight, y: h / 2 }, label: `V₂=${V2.toFixed(1)}V`, leadLength: 22 },
+    {
+      kind: 'resistor',
+      from: { x: xMid, y: h / 2 - 20 },
+      to: { x: xMid, y: h / 2 + 20 },
+      label: `R2=${R2.toFixed(0)}Ω`,
+      labelOffset: { x: -60, y: 0 },
+    },
   ];
 }
 
@@ -228,8 +375,14 @@ function fmtA(I: number): string {
 
 function drawMeshLoop(
   ctx: CanvasRenderingContext2D,
-  x0: number, y0: number, x1: number, y1: number,
-  label: string, color: string, I: number, t: number,
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+  label: string,
+  color: string,
+  I: number,
+  t: number,
 ) {
   const cx = (x0 + x1) / 2;
   const cy = (y0 + y1) / 2;
@@ -253,7 +406,8 @@ function drawMeshLoop(
   const tx = -rx * Math.sin(theta) * dir;
   const ty = ry * Math.cos(theta) * dir;
   const mag = Math.hypot(tx, ty) || 1;
-  const ux = tx / mag, uy = ty / mag;
+  const ux = tx / mag,
+    uy = ty / mag;
   ctx.fillStyle = color;
   ctx.beginPath();
   ctx.moveTo(ax + ux * 8, ay + uy * 8);

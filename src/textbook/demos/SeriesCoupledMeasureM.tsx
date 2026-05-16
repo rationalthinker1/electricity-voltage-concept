@@ -17,7 +17,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function SeriesCoupledMeasureMDemo({ figure }: Props) {
   const [L1mH, setL1mH] = useState(4);
@@ -26,10 +28,12 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
   const [aiding, setAiding] = useState(true);
 
   const stateRef = useRef({ L1mH, L2mH, k, aiding });
-  useEffect(() => { stateRef.current = { L1mH, L2mH, k, aiding }; }, [L1mH, L2mH, k, aiding]);
+  useEffect(() => {
+    stateRef.current = { L1mH, L2mH, k, aiding };
+  }, [L1mH, L2mH, k, aiding]);
 
   const computed = useMemo(() => {
-    const Mh = k * Math.sqrt(L1mH * L2mH);  // mH
+    const Mh = k * Math.sqrt(L1mH * L2mH); // mH
     const Laid = L1mH + L2mH + 2 * Mh;
     const Lopp = L1mH + L2mH - 2 * Mh;
     const Lnow = aiding ? Laid : Lopp;
@@ -38,7 +42,7 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
   }, [L1mH, L2mH, k, aiding]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
@@ -52,7 +56,7 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
 
       // Two coils in series in the schematic — draw them with arrow tags showing winding sense
       const cy = h / 2;
-      const c1x = w * 0.30;
+      const c1x = w * 0.3;
       const c2x = w * 0.62;
 
       drawCoilSeries(ctx, c1x, cy, 'L₁', `${L1mH.toFixed(1)} mH`, +1);
@@ -81,15 +85,13 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
       ctx.font = 'bold 18px "STIX Two Text", "Fraunces", serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
-      ctx.fillText(
-        `L_eq = ${(aiding ? Laid : Lopp).toFixed(2)} mH`,
-        w / 2, 14,
-      );
+      ctx.fillText(`L_eq = ${(aiding ? Laid : Lopp).toFixed(2)} mH`, w / 2, 14);
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText(
         aiding ? 'series aiding:  L₁ + L₂ + 2M' : 'series opposing:  L₁ + L₂ − 2M',
-        w / 2, 38,
+        w / 2,
+        38,
       );
 
       // Bottom strip: both readings + derived M
@@ -119,9 +121,9 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
       question="Two LCR-meter readings, one subtraction — that's it."
       caption={
         <>
-          Series-aiding and series-opposing add 2M and subtract 2M from L₁ + L₂. Subtract the two readings and
-          divide by four; what falls out is the mutual inductance. This is the standard bench measurement, taught
-          in every introductory circuits lab.
+          Series-aiding and series-opposing add 2M and subtract 2M from L₁ + L₂. Subtract the two
+          readings and divide by four; what falls out is the mutual inductance. This is the standard
+          bench measurement, taught in every introductory circuits lab.
         </>
       }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
@@ -130,20 +132,29 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="L₁"
-          value={L1mH} min={1} max={20} step={0.5}
-          format={v => v.toFixed(1) + ' mH'}
+          value={L1mH}
+          min={1}
+          max={20}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' mH'}
           onChange={setL1mH}
         />
         <MiniSlider
           label="L₂"
-          value={L2mH} min={1} max={20} step={0.5}
-          format={v => v.toFixed(1) + ' mH'}
+          value={L2mH}
+          min={1}
+          max={20}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' mH'}
           onChange={setL2mH}
         />
         <MiniSlider
           label="k"
-          value={k} min={0} max={0.99} step={0.01}
-          format={v => v.toFixed(2)}
+          value={k}
+          min={0}
+          max={0.99}
+          step={0.01}
+          format={(v) => v.toFixed(2)}
           onChange={setK}
         />
         <MiniToggle
@@ -151,8 +162,16 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
           checked={aiding}
           onChange={setAiding}
         />
-        <MiniReadout label="L_eq" value={<Num value={computed.Lnow * 1e-3} digits={2} />} unit="H" />
-        <MiniReadout label="M (derived)" value={<Num value={computed.Mfromreadings * 1e-3} digits={2} />} unit="H" />
+        <MiniReadout
+          label="L_eq"
+          value={<Num value={computed.Lnow * 1e-3} digits={2} />}
+          unit="H"
+        />
+        <MiniReadout
+          label="M (derived)"
+          value={<Num value={computed.Mfromreadings * 1e-3} digits={2} />}
+          unit="H"
+        />
       </DemoControls>
     </Demo>
   );
@@ -160,7 +179,11 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
 
 function drawCoilSeries(
   ctx: CanvasRenderingContext2D,
-  cx: number, cy: number, label: string, value: string, sense: number,
+  cx: number,
+  cy: number,
+  label: string,
+  value: string,
+  sense: number,
 ) {
   const loops = 4;
   const span = 44;

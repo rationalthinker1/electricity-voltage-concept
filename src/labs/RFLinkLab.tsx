@@ -16,7 +16,7 @@ import { MathBlock, Pullout } from '@/components/Prose';
 import { Readout } from '@/components/Readout';
 import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
-import {PHYS, prettyJsx } from '@/lib/physics';
+import { PHYS, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 
 const SLUG = 'rf-link';
@@ -51,7 +51,8 @@ const PRESETS: RFPreset[] = [
     antX: 0,
     matchX: 0,
     txGainDbi: 6,
-    rxGainDbi: 2 },
+    rxGainDbi: 2,
+  },
   {
     id: 'vhf',
     label: 'FM half-wave dipole',
@@ -64,7 +65,8 @@ const PRESETS: RFPreset[] = [
     antX: 8,
     matchX: -8,
     txGainDbi: 2.15,
-    rxGainDbi: 2.15 },
+    rxGainDbi: 2.15,
+  },
   {
     id: 'whip',
     label: '433 MHz short whip',
@@ -77,7 +79,8 @@ const PRESETS: RFPreset[] = [
     antX: -110,
     matchX: 85,
     txGainDbi: -4,
-    rxGainDbi: 0 },
+    rxGainDbi: 0,
+  },
   {
     id: 'yagi',
     label: 'Directional Yagi hop',
@@ -90,7 +93,8 @@ const PRESETS: RFPreset[] = [
     antX: 0,
     matchX: 0,
     txGainDbi: 11,
-    rxGainDbi: 11 },
+    rxGainDbi: 11,
+  },
 ];
 
 function dbmToW(dbm: number) {
@@ -119,17 +123,14 @@ export default function RFLinkLab() {
     const vswr = (1 + gammaMag) / (1 - gammaMag);
     const mismatchLossDb = -10 * Math.log10(Math.max(1e-6, 1 - gammaMag * gammaMag));
     const reflectedPct = gammaMag * gammaMag * 100;
-    const cableLossDb = cfg.cableM * cfg.lossDbPer100M / 100;
+    const cableLossDb = (cfg.cableM * cfg.lossDbPer100M) / 100;
     const deliveredDbm = cfg.txDbm - cableLossDb - mismatchLossDb;
     const fsplDb = 20 * Math.log10((4 * Math.PI * Math.max(cfg.distanceM, 0.1)) / lambdaM);
     const rxDbm = deliveredDbm + cfg.txGainDbi + cfg.rxGainDbi - fsplDb;
     const deliveredW = dbmToW(deliveredDbm);
     const rxW = dbmToW(rxDbm);
     const matchQuality =
-      vswr < 1.5 ? 'Excellent' :
-      vswr < 2.5 ? 'Usable' :
-      vswr < 5 ? 'Touchy' :
-      'Bad match';
+      vswr < 1.5 ? 'Excellent' : vswr < 2.5 ? 'Usable' : vswr < 5 ? 'Touchy' : 'Bad match';
     return {
       lambdaM,
       xTotal,
@@ -143,7 +144,8 @@ export default function RFLinkLab() {
       fsplDb,
       rxDbm,
       rxW,
-      matchQuality };
+      matchQuality,
+    };
   }, [cfg]);
 
   const stateRef = useRef({ cfg, computed });
@@ -257,14 +259,26 @@ export default function RFLinkLab() {
       ctx.textAlign = 'center';
       ctx.fillText('RX', rxX, y - 84);
       ctx.fillStyle = colors.textDim;
-      ctx.fillText(`${cfg.distanceM >= 1000 ? (cfg.distanceM / 1000).toFixed(1) + ' km' : cfg.distanceM.toFixed(0) + ' m'}`, (antX + rxX) / 2, y - 108);
+      ctx.fillText(
+        `${cfg.distanceM >= 1000 ? (cfg.distanceM / 1000).toFixed(1) + ' km' : cfg.distanceM.toFixed(0) + ' m'}`,
+        (antX + rxX) / 2,
+        y - 108,
+      );
 
       ctx.fillStyle = colors.textDim;
       ctx.font = '12px JetBrains Mono';
       ctx.textAlign = 'left';
       ctx.fillText(`λ = ${computed.lambdaM.toFixed(3)} m`, 34, h - 58);
-      ctx.fillText(`Z_ant = ${cfg.antR.toFixed(0)} ${computed.xTotal >= 0 ? '+' : '−'} j${Math.abs(computed.xTotal).toFixed(0)} Ω`, 34, h - 36);
-      ctx.fillText(`VSWR ${computed.vswr.toFixed(2)} · reflected ${computed.reflectedPct.toFixed(1)}%`, 34, h - 14);
+      ctx.fillText(
+        `Z_ant = ${cfg.antR.toFixed(0)} ${computed.xTotal >= 0 ? '+' : '−'} j${Math.abs(computed.xTotal).toFixed(0)} Ω`,
+        34,
+        h - 36,
+      );
+      ctx.fillText(
+        `VSWR ${computed.vswr.toFixed(2)} · reflected ${computed.reflectedPct.toFixed(1)}%`,
+        34,
+        h - 14,
+      );
 
       raf = requestAnimationFrame(draw);
     }
@@ -278,12 +292,12 @@ export default function RFLinkLab() {
 
   const labContent = (
     <>
-      <div className="flex flex-wrap gap-sm mb-lg">
-        {PRESETS.map(preset => (
+      <div className="gap-sm mb-lg flex flex-wrap">
+        {PRESETS.map((preset) => (
           <button
             key={preset.id}
             type="button"
-            className="eyebrow-muted tracking-3 px-md py-sm rounded-pill border border-border-1 bg-bg-card text-text-dim hover:text-text hover:border-border-2"
+            className="eyebrow-muted tracking-3 px-md py-sm rounded-pill border-border-1 bg-bg-card text-text-dim hover:text-text hover:border-border-2 border"
             onClick={() => applyPreset(preset)}
           >
             {preset.label}
@@ -303,65 +317,120 @@ export default function RFLinkLab() {
         inputs={
           <>
             <Slider
-              sym="f" label="Frequency"
-              value={cfg.freqMHz} min={30} max={3000} step={1}
-              format={v => `${v.toFixed(0)} MHz`}
-              metaLeft="30 MHz" metaRight="3 GHz"
-              onChange={freqMHz => setCfg(prev => ({ ...prev, freqMHz }))}
+              sym="f"
+              label="Frequency"
+              value={cfg.freqMHz}
+              min={30}
+              max={3000}
+              step={1}
+              format={(v) => `${v.toFixed(0)} MHz`}
+              metaLeft="30 MHz"
+              metaRight="3 GHz"
+              onChange={(freqMHz) => setCfg((prev) => ({ ...prev, freqMHz }))}
             />
             <Slider
-              sym="P" label="Transmitter power"
-              value={cfg.txDbm} min={-10} max={40} step={1}
-              format={v => `${v.toFixed(0)} dBm`}
-              metaLeft="0.1 mW" metaRight="10 W"
-              onChange={txDbm => setCfg(prev => ({ ...prev, txDbm }))}
+              sym="P"
+              label="Transmitter power"
+              value={cfg.txDbm}
+              min={-10}
+              max={40}
+              step={1}
+              format={(v) => `${v.toFixed(0)} dBm`}
+              metaLeft="0.1 mW"
+              metaRight="10 W"
+              onChange={(txDbm) => setCfg((prev) => ({ ...prev, txDbm }))}
             />
             <Slider
-              sym="d" label="Path distance"
-              value={cfg.distanceM} min={1} max={10000} step={1}
-              format={v => v >= 1000 ? `${(v / 1000).toFixed(2)} km` : `${v.toFixed(0)} m`}
-              metaLeft="1 m" metaRight="10 km"
-              onChange={distanceM => setCfg(prev => ({ ...prev, distanceM }))}
+              sym="d"
+              label="Path distance"
+              value={cfg.distanceM}
+              min={1}
+              max={10000}
+              step={1}
+              format={(v) => (v >= 1000 ? `${(v / 1000).toFixed(2)} km` : `${v.toFixed(0)} m`)}
+              metaLeft="1 m"
+              metaRight="10 km"
+              onChange={(distanceM) => setCfg((prev) => ({ ...prev, distanceM }))}
             />
             <Slider
-              sym="ℓ" label="Coax length"
-              value={cfg.cableM} min={0} max={50} step={0.1}
-              format={v => `${v.toFixed(1)} m`}
-              metaLeft="0 m" metaRight="50 m"
-              onChange={cableM => setCfg(prev => ({ ...prev, cableM }))}
+              sym="ℓ"
+              label="Coax length"
+              value={cfg.cableM}
+              min={0}
+              max={50}
+              step={0.1}
+              format={(v) => `${v.toFixed(1)} m`}
+              metaLeft="0 m"
+              metaRight="50 m"
+              onChange={(cableM) => setCfg((prev) => ({ ...prev, cableM }))}
             />
             <Slider
-              sym="R" label="Antenna resistance"
-              value={cfg.antR} min={5} max={150} step={1}
-              format={v => `${v.toFixed(0)} Ω`}
-              metaLeft="5 Ω" metaRight="150 Ω"
-              onChange={antR => setCfg(prev => ({ ...prev, antR }))}
+              sym="R"
+              label="Antenna resistance"
+              value={cfg.antR}
+              min={5}
+              max={150}
+              step={1}
+              format={(v) => `${v.toFixed(0)} Ω`}
+              metaLeft="5 Ω"
+              metaRight="150 Ω"
+              onChange={(antR) => setCfg((prev) => ({ ...prev, antR }))}
             />
             <Slider
-              sym="X" label="Antenna reactance"
-              value={cfg.antX} min={-200} max={200} step={1}
-              format={v => `${v >= 0 ? '+' : ''}${v.toFixed(0)} Ω`}
-              metaLeft="capacitive" metaRight="inductive"
-              onChange={antX => setCfg(prev => ({ ...prev, antX }))}
+              sym="X"
+              label="Antenna reactance"
+              value={cfg.antX}
+              min={-200}
+              max={200}
+              step={1}
+              format={(v) => `${v >= 0 ? '+' : ''}${v.toFixed(0)} Ω`}
+              metaLeft="capacitive"
+              metaRight="inductive"
+              onChange={(antX) => setCfg((prev) => ({ ...prev, antX }))}
             />
             <Slider
-              sym="Xₘ" label="Series matching reactance"
-              value={cfg.matchX} min={-200} max={200} step={1}
-              format={v => `${v >= 0 ? '+' : ''}${v.toFixed(0)} Ω`}
-              metaLeft="series C" metaRight="series L"
-              onChange={matchX => setCfg(prev => ({ ...prev, matchX }))}
+              sym="Xₘ"
+              label="Series matching reactance"
+              value={cfg.matchX}
+              min={-200}
+              max={200}
+              step={1}
+              format={(v) => `${v >= 0 ? '+' : ''}${v.toFixed(0)} Ω`}
+              metaLeft="series C"
+              metaRight="series L"
+              onChange={(matchX) => setCfg((prev) => ({ ...prev, matchX }))}
             />
           </>
         }
         outputs={
           <>
-            <Readout sym="Pᵣ" label="Received power" value={`${computed.rxDbm.toFixed(1)}`} unit="dBm" highlight />
-            <Readout sym="S" label="VSWR" value={computed.vswr > 20 ? '>20' : computed.vswr.toFixed(2)} />
-            <Readout sym="Γ²" label="Reflected power" value={`${computed.reflectedPct.toFixed(1)}`} unit="%" />
+            <Readout
+              sym="Pᵣ"
+              label="Received power"
+              value={`${computed.rxDbm.toFixed(1)}`}
+              unit="dBm"
+              highlight
+            />
+            <Readout
+              sym="S"
+              label="VSWR"
+              value={computed.vswr > 20 ? '>20' : computed.vswr.toFixed(2)}
+            />
+            <Readout
+              sym="Γ²"
+              label="Reflected power"
+              value={`${computed.reflectedPct.toFixed(1)}`}
+              unit="%"
+            />
             <Readout sym="Lₘ" label="Mismatch loss" value={fmtDb(-computed.mismatchLossDb)} />
             <Readout sym="L꜀" label="Cable loss" value={fmtDb(-computed.cableLossDb)} />
             <Readout sym="Lfs" label="Free-space path loss" value={fmtDb(-computed.fsplDb)} />
-            <Readout sym="Pₐ" label="Delivered to antenna" value={prettyJsx(computed.deliveredW)} unit="W" />
+            <Readout
+              sym="Pₐ"
+              label="Delivered to antenna"
+              value={prettyJsx(computed.deliveredW)}
+              unit="W"
+            />
             <Readout sym="q" label="Match quality" value={computed.matchQuality} />
           </>
         }
@@ -373,45 +442,73 @@ export default function RFLinkLab() {
     <>
       <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
-        This lab is a miniature radio system. The transmitter does not simply "send power to an antenna"; it drives a
-        transmission line, the line presents the antenna impedance back to the source, and any mismatch reflects energy back
-        toward the transmitter. Transmission-line theory is the same field story from the Poynting chapter, just squeezed into
-        coaxial geometry<Cite id="pozar-2011" in={SOURCES} />.
+        This lab is a miniature radio system. The transmitter does not simply "send power to an
+        antenna"; it drives a transmission line, the line presents the antenna impedance back to the
+        source, and any mismatch reflects energy back toward the transmitter. Transmission-line
+        theory is the same field story from the Poynting chapter, just squeezed into coaxial
+        geometry
+        <Cite id="pozar-2011" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        Once power leaves the antenna, the receiving end is governed by the Friis transmission equation: gain helps, distance
-        hurts, and wavelength sets the scale<Cite id="friis-1946" in={SOURCES} />. Antenna textbooks treat the half-wave
-        dipole as the reference creature here: it is not magical, but it gives a clean impedance and a reproducible radiation
-        pattern<Cite id="balanis-2016" in={SOURCES} />.
+        Once power leaves the antenna, the receiving end is governed by the Friis transmission
+        equation: gain helps, distance hurts, and wavelength sets the scale
+        <Cite id="friis-1946" in={SOURCES} />. Antenna textbooks treat the half-wave dipole as the
+        reference creature here: it is not magical, but it gives a clean impedance and a
+        reproducible radiation pattern
+        <Cite id="balanis-2016" in={SOURCES} />.
       </p>
 
       <h3 className="lab-section-h3">Formula</h3>
-      <MathBlock>Γ = (Z<sub>ant</sub> − Z₀) / (Z<sub>ant</sub> + Z₀)</MathBlock>
+      <MathBlock>
+        Γ = (Z<sub>ant</sub> − Z₀) / (Z<sub>ant</sub> + Z₀)
+      </MathBlock>
       <p className="mb-prose-3">
-        Here <strong className="text-text font-medium">Γ</strong> is the voltage reflection coefficient, <strong className="text-text font-medium">Z<sub>ant</sub></strong> is the antenna impedance
-        after any matching reactance, and <strong className="text-text font-medium">Z₀</strong> is the line impedance. The reflected power fraction is
-        <strong className="text-text font-medium">|Γ|²</strong>. A perfect match has Γ = 0; a bad match sends useful transmitter power back down the cable.
+        Here <strong className="text-text font-medium">Γ</strong> is the voltage reflection
+        coefficient,{' '}
+        <strong className="text-text font-medium">
+          Z<sub>ant</sub>
+        </strong>{' '}
+        is the antenna impedance after any matching reactance, and{' '}
+        <strong className="text-text font-medium">Z₀</strong> is the line impedance. The reflected
+        power fraction is
+        <strong className="text-text font-medium">|Γ|²</strong>. A perfect match has Γ = 0; a bad
+        match sends useful transmitter power back down the cable.
       </p>
 
-      <MathBlock>P<sub>r</sub> = P<sub>t</sub> G<sub>t</sub> G<sub>r</sub> (λ / 4πd)²</MathBlock>
+      <MathBlock>
+        P<sub>r</sub> = P<sub>t</sub> G<sub>t</sub> G<sub>r</sub> (λ / 4πd)²
+      </MathBlock>
       <p className="mb-prose-3">
-        This is the Friis free-space link equation. <strong className="text-text font-medium">P<sub>t</sub></strong> is power delivered to the transmitting
-        antenna, <strong className="text-text font-medium">G<sub>t</sub></strong> and <strong className="text-text font-medium">G<sub>r</sub></strong> are antenna gains as linear ratios,
-        <strong className="text-text font-medium">λ</strong> is wavelength, and <strong className="text-text font-medium">d</strong> is separation. The lab displays the same accounting in dB
-        because radio engineers live inside sums of gains and losses.
+        This is the Friis free-space link equation.{' '}
+        <strong className="text-text font-medium">
+          P<sub>t</sub>
+        </strong>{' '}
+        is power delivered to the transmitting antenna,{' '}
+        <strong className="text-text font-medium">
+          G<sub>t</sub>
+        </strong>{' '}
+        and{' '}
+        <strong className="text-text font-medium">
+          G<sub>r</sub>
+        </strong>{' '}
+        are antenna gains as linear ratios,
+        <strong className="text-text font-medium">λ</strong> is wavelength, and{' '}
+        <strong className="text-text font-medium">d</strong> is separation. The lab displays the
+        same accounting in dB because radio engineers live inside sums of gains and losses.
       </p>
 
       <Pullout>
-        A radio link is not one idea. It is circuit impedance, wave propagation, antenna geometry, and energy accounting
-        all refusing to be separated.
+        A radio link is not one idea. It is circuit impedance, wave propagation, antenna geometry,
+        and energy accounting all refusing to be separated.
       </Pullout>
 
       <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
-        Try the short-whip preset first. Its radiation resistance is small and its capacitive reactance is large, so the
-        mismatch is ugly. Add positive series reactance: you are using an inductor to cancel the antenna's capacitive part.
-        The VSWR falls because the line now sees something closer to 50 Ω. Then increase distance and watch the link budget
-        lose power with the square of range.
+        Try the short-whip preset first. Its radiation resistance is small and its capacitive
+        reactance is large, so the mismatch is ugly. Add positive series reactance: you are using an
+        inductor to cancel the antenna's capacitive part. The VSWR falls because the line now sees
+        something closer to 50 Ω. Then increase distance and watch the link budget lose power with
+        the square of range.
       </p>
     </>
   );

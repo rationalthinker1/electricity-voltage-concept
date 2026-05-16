@@ -8,9 +8,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { MATERIALS } from '@/lib/physics';
 
@@ -26,7 +24,9 @@ export function AreaVsResistanceDemo({ figure }: Props) {
   const [Amm2, setAmm2] = useState(2.5);
 
   const stateRef = useRef({ Amm2 });
-  useEffect(() => { stateRef.current = { Amm2 }; }, [Amm2]);
+  useEffect(() => {
+    stateRef.current = { Amm2 };
+  }, [Amm2]);
 
   const A_m2 = Amm2 * 1e-6;
   const R = L / (sigma * A_m2);
@@ -43,11 +43,11 @@ export function AreaVsResistanceDemo({ figure }: Props) {
 
       // Wire thickness scales with sqrt(A) so visual width matches diameter
       // of equivalent cylinder. Range 0.1..10 mm² → ~14..120 px.
-      const tFrac = Math.sqrt(Amm2 / 10);  // 0..1
+      const tFrac = Math.sqrt(Amm2 / 10); // 0..1
       const thickness = 14 + tFrac * 90;
 
       const wireLeft = 80;
-      const wireRight = w - 160;        // leave room for inset
+      const wireRight = w - 160; // leave room for inset
       const wireCY = h / 2;
       const top = wireCY - thickness / 2;
       const bot = wireCY + thickness / 2;
@@ -58,11 +58,25 @@ export function AreaVsResistanceDemo({ figure }: Props) {
       grd.addColorStop(0.5, 'rgba(255,107,42,0.18)');
       grd.addColorStop(1, 'rgba(255,107,42,0.08)');
       ctx.fillStyle = grd;
-      roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, Math.min(10, thickness * 0.45));
+      roundRect(
+        ctx,
+        wireLeft,
+        top,
+        wireRight - wireLeft,
+        thickness,
+        Math.min(10, thickness * 0.45),
+      );
       ctx.fill();
       ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 1;
-      roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, Math.min(10, thickness * 0.45));
+      roundRect(
+        ctx,
+        wireLeft,
+        top,
+        wireRight - wireLeft,
+        thickness,
+        Math.min(10, thickness * 0.45),
+      );
       ctx.stroke();
 
       // End caps
@@ -126,8 +140,11 @@ export function AreaVsResistanceDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="A"
-          value={Amm2} min={0.1} max={10} step={0.05}
-          format={v => v.toFixed(2) + ' mm²'}
+          value={Amm2}
+          min={0.1}
+          max={10}
+          step={0.05}
+          format={(v) => v.toFixed(2) + ' mm²'}
           onChange={setAmm2}
         />
         <MiniReadout label="Resistance" value={<Num value={R} />} unit="Ω" />
@@ -136,7 +153,14 @@ export function AreaVsResistanceDemo({ figure }: Props) {
   );
 }
 
-function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+function roundRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
+) {
   r = Math.min(r, h / 2, w / 2);
   ctx.beginPath();
   ctx.moveTo(x + r, y);

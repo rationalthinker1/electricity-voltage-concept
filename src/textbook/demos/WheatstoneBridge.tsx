@@ -28,16 +28,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-interface StaticCache { key: string; canvas: HTMLCanvasElement }
+interface StaticCache {
+  key: string;
+  canvas: HTMLCanvasElement;
+}
 
 export function WheatstoneBridgeDemo({ figure }: Props) {
   const [V, setV] = useState(10);
@@ -46,10 +49,10 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
   const [R3, setR3] = useState(150);
   const [Rx, setRx] = useState(300);
 
-  const V_A = V * R2 / (R1 + R2);
-  const V_B = V * Rx / (R3 + Rx);
-  const dV = V_A - V_B;                          // galvanometer reads this
-  const RxBalance = R2 * R3 / R1;
+  const V_A = (V * R2) / (R1 + R2);
+  const V_B = (V * Rx) / (R3 + Rx);
+  const dV = V_A - V_B; // galvanometer reads this
+  const RxBalance = (R2 * R3) / R1;
   const balanceErr = Math.abs(Rx - RxBalance) / RxBalance;
 
   const stateRef = useRef({ V, R1, R2, R3, Rx, V_A, V_B, dV });
@@ -89,33 +92,104 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
         // Diamond bridge: battery on left rail, four resistors around the diamond, galv across A–B.
         const staticElements: CircuitElement[] = [
           // Left rail (split around battery).
-          { kind: 'wire', points: [{ x: xL, y: yTop }, { x: xL, y: yMid - 22 }] },
-          { kind: 'wire', points: [{ x: xL, y: yMid + 22 }, { x: xL, y: yBot }] },
+          {
+            kind: 'wire',
+            points: [
+              { x: xL, y: yTop },
+              { x: xL, y: yMid - 22 },
+            ],
+          },
+          {
+            kind: 'wire',
+            points: [
+              { x: xL, y: yMid + 22 },
+              { x: xL, y: yBot },
+            ],
+          },
           // Right rail.
-          { kind: 'wire', points: [{ x: xR, y: yTop }, { x: xR, y: yBot }] },
+          {
+            kind: 'wire',
+            points: [
+              { x: xR, y: yTop },
+              { x: xR, y: yBot },
+            ],
+          },
           // Battery on the left rail.
-          { kind: 'battery', at: { x: xL, y: yMid },
-            label: `${V.toFixed(1)} V`, leadLength: 22 },
+          { kind: 'battery', at: { x: xL, y: yMid }, label: `${V.toFixed(1)} V`, leadLength: 22 },
           // Top branch: R1, node A, R2.
-          { kind: 'wire', points: [{ x: xL, y: yTop }, { x: xR1 - 22, y: yTop }] },
-          { kind: 'resistor',
-            from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
-            label: `R1=${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
-          { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: xA, y: yTop }, { x: xR2 - 22, y: yTop }] },
-          { kind: 'resistor',
-            from: { x: xR2 - 20, y: yTop }, to: { x: xR2 + 20, y: yTop },
-            label: `R2=${R2.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
-          { kind: 'wire', points: [{ x: xR2 + 22, y: yTop }, { x: xR, y: yTop }] },
+          {
+            kind: 'wire',
+            points: [
+              { x: xL, y: yTop },
+              { x: xR1 - 22, y: yTop },
+            ],
+          },
+          {
+            kind: 'resistor',
+            from: { x: xR1 - 20, y: yTop },
+            to: { x: xR1 + 20, y: yTop },
+            label: `R1=${R1.toFixed(0)}Ω`,
+            labelOffset: { x: 0, y: -12 },
+          },
+          {
+            kind: 'wire',
+            points: [
+              { x: xR1 + 22, y: yTop },
+              { x: xA, y: yTop },
+              { x: xR2 - 22, y: yTop },
+            ],
+          },
+          {
+            kind: 'resistor',
+            from: { x: xR2 - 20, y: yTop },
+            to: { x: xR2 + 20, y: yTop },
+            label: `R2=${R2.toFixed(0)}Ω`,
+            labelOffset: { x: 0, y: -12 },
+          },
+          {
+            kind: 'wire',
+            points: [
+              { x: xR2 + 22, y: yTop },
+              { x: xR, y: yTop },
+            ],
+          },
           // Bottom branch: R3, node B, Rx.
-          { kind: 'wire', points: [{ x: xL, y: yBot }, { x: xR3 - 22, y: yBot }] },
-          { kind: 'resistor',
-            from: { x: xR3 - 20, y: yBot }, to: { x: xR3 + 20, y: yBot },
-            label: `R3=${R3.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
-          { kind: 'wire', points: [{ x: xR3 + 22, y: yBot }, { x: xB, y: yBot }, { x: xRx - 22, y: yBot }] },
-          { kind: 'resistor',
-            from: { x: xRx - 20, y: yBot }, to: { x: xRx + 20, y: yBot },
-            label: `Rx=${Rx.toFixed(0)}Ω`, labelOffset: { x: 0, y: 20 } },
-          { kind: 'wire', points: [{ x: xRx + 22, y: yBot }, { x: xR, y: yBot }] },
+          {
+            kind: 'wire',
+            points: [
+              { x: xL, y: yBot },
+              { x: xR3 - 22, y: yBot },
+            ],
+          },
+          {
+            kind: 'resistor',
+            from: { x: xR3 - 20, y: yBot },
+            to: { x: xR3 + 20, y: yBot },
+            label: `R3=${R3.toFixed(0)}Ω`,
+            labelOffset: { x: 0, y: -12 },
+          },
+          {
+            kind: 'wire',
+            points: [
+              { x: xR3 + 22, y: yBot },
+              { x: xB, y: yBot },
+              { x: xRx - 22, y: yBot },
+            ],
+          },
+          {
+            kind: 'resistor',
+            from: { x: xRx - 20, y: yBot },
+            to: { x: xRx + 20, y: yBot },
+            label: `Rx=${Rx.toFixed(0)}Ω`,
+            labelOffset: { x: 0, y: 20 },
+          },
+          {
+            kind: 'wire',
+            points: [
+              { x: xRx + 22, y: yBot },
+              { x: xR, y: yBot },
+            ],
+          },
           // Node dots at A and B.
           { kind: 'node', at: { x: xA, y: yTop }, color: 'rgba(255,107,42,0.95)', radius: 4 },
           { kind: 'node', at: { x: xB, y: yBot }, color: 'rgba(255,107,42,0.95)', radius: 4 },
@@ -156,43 +230,89 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 13.3'}
       title="The Wheatstone bridge — balance by inspection"
       question="Drag R_x. The galvanometer crosses zero when R_x R₁ = R₂ R₃."
-      caption={<>
-        Four resistors in a diamond, with a galvanometer across the middle. The bridge
-        balances — needle dead-centre — exactly when R<sub>x</sub>·R₁ = R₂·R₃. There
-        is no way to reduce this network to a single series-parallel combination; you
-        need either mesh / nodal analysis or a Y-Δ transformation. The balance trick
-        is what makes the bridge the most precise resistance comparator ever
-        invented.
-      </>}
+      caption={
+        <>
+          Four resistors in a diamond, with a galvanometer across the middle. The bridge balances —
+          needle dead-centre — exactly when R<sub>x</sub>·R₁ = R₂·R₃. There is no way to reduce this
+          network to a single series-parallel combination; you need either mesh / nodal analysis or
+          a Y-Δ transformation. The balance trick is what makes the bridge the most precise
+          resistance comparator ever invented.
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <MiniSlider label="V" value={V} min={1} max={24} step={0.5}
-          format={v => v.toFixed(1) + ' V'} onChange={setV} />
-        <MiniSlider label="R₁" value={R1} min={10} max={500} step={5}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setR1} />
-        <MiniSlider label="R₂" value={R2} min={10} max={500} step={5}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setR2} />
-        <MiniSlider label="R₃" value={R3} min={10} max={500} step={5}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setR3} />
-        <MiniSlider label="R_x" value={Rx} min={10} max={1000} step={5}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setRx} />
+        <MiniSlider
+          label="V"
+          value={V}
+          min={1}
+          max={24}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
+          onChange={setV}
+        />
+        <MiniSlider
+          label="R₁"
+          value={R1}
+          min={10}
+          max={500}
+          step={5}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setR1}
+        />
+        <MiniSlider
+          label="R₂"
+          value={R2}
+          min={10}
+          max={500}
+          step={5}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setR2}
+        />
+        <MiniSlider
+          label="R₃"
+          value={R3}
+          min={10}
+          max={500}
+          step={5}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setR3}
+        />
+        <MiniSlider
+          label="R_x"
+          value={Rx}
+          min={10}
+          max={1000}
+          step={5}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setRx}
+        />
         <MiniReadout label="V_A − V_B" value={<Num value={dV} digits={3} />} unit="V" />
         <MiniReadout label="R_x at balance" value={<Num value={RxBalance} digits={1} />} unit="Ω" />
-        <MiniReadout label="Imbalance" value={<Num value={balanceErr * 100} digits={1} />} unit="%" />
+        <MiniReadout
+          label="Imbalance"
+          value={<Num value={balanceErr * 100} digits={1} />}
+          unit="%"
+        />
       </DemoControls>
     </Demo>
   );
 }
 
 function drawGalvanometer(
-  ctx: CanvasRenderingContext2D, x: number, y: number, dV: number, V: number,
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  dV: number,
+  V: number,
 ) {
   ctx.save();
   // Outer circle
   ctx.strokeStyle = getCanvasColors().teal;
   ctx.lineWidth = 1.4;
-  ctx.beginPath(); ctx.arc(x, y, 18, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(x, y, 18, 0, Math.PI * 2);
+  ctx.stroke();
 
   // Needle: deflection mapped from full-scale ±V to ±60°
   const fullScale = Math.max(0.05, V * 0.5);

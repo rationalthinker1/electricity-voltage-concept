@@ -15,16 +15,20 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function TwoParallelWiresDemo({ figure }: Props) {
   const [I1, setI1] = useState(10);
   const [I2, setI2] = useState(10);
-  const [dCm, setDCm] = useState(8);    // separation in cm (visual + physical)
+  const [dCm, setDCm] = useState(8); // separation in cm (visual + physical)
   const [parallel, setParallel] = useState(true); // true: same direction (attract)
 
   const stateRef = useRef({ I1, I2, dCm, parallel });
-  useEffect(() => { stateRef.current = { I1, I2, dCm, parallel }; }, [I1, I2, dCm, parallel]);
+  useEffect(() => {
+    stateRef.current = { I1, I2, dCm, parallel };
+  }, [I1, I2, dCm, parallel]);
 
   const d_m = dCm * 1e-2;
   const F_per_L = (PHYS.mu_0 * I1 * I2) / (2 * Math.PI * d_m);
@@ -54,8 +58,8 @@ export function TwoParallelWiresDemo({ figure }: Props) {
       const sign = parallel ? -1 : +1; // attract → wires shift inward (sign=-1)
       const wiggle = Math.sin(dt * 2.2) * drift * 0.4;
 
-      const cx1 = cxMid - (dCm * 5) - sign * (drift + wiggle);
-      const cx2 = cxMid + (dCm * 5) + sign * (drift + wiggle);
+      const cx1 = cxMid - dCm * 5 - sign * (drift + wiggle);
+      const cx2 = cxMid + dCm * 5 + sign * (drift + wiggle);
 
       // Field circles around each wire (faint).
       function fieldCircles(cx: number, cy_: number, I: number, intoPage: boolean) {
@@ -80,7 +84,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
           const ax = cx + R * Math.cos(theta);
           const ay = cy_ + R * Math.sin(theta);
           const tx = -Math.sin(theta) * arrowDir;
-          const ty =  Math.cos(theta) * arrowDir;
+          const ty = Math.cos(theta) * arrowDir;
           const len = 6;
           ctx.strokeStyle = colors.teal;
           ctx.fillStyle = ctx.strokeStyle;
@@ -91,7 +95,8 @@ export function TwoParallelWiresDemo({ figure }: Props) {
           ctx.stroke();
           const hx = ax + tx * len * 0.5;
           const hy = ay + ty * len * 0.5;
-          const nx = -ty, ny = tx;
+          const nx = -ty,
+            ny = tx;
           ctx.beginPath();
           ctx.moveTo(hx, hy);
           ctx.lineTo(hx - tx * 3 + nx * 2.2, hy - ty * 3 + ny * 2.2);
@@ -111,11 +116,16 @@ export function TwoParallelWiresDemo({ figure }: Props) {
         grd.addColorStop(0, 'rgba(255,107,42,0.5)');
         grd.addColorStop(1, 'rgba(255,107,42,0)');
         ctx.fillStyle = grd;
-        ctx.beginPath(); ctx.arc(cx, cy_, wireR * 3, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(cx, cy_, wireR * 3, 0, Math.PI * 2);
+        ctx.fill();
         ctx.fillStyle = '#1c1c22';
         ctx.strokeStyle = '#ff6b2a';
         ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.arc(cx, cy_, wireR, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx, cy_, wireR, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
 
         ctx.strokeStyle = '#ff6b2a';
         ctx.fillStyle = colors.accent;
@@ -123,8 +133,10 @@ export function TwoParallelWiresDemo({ figure }: Props) {
           ctx.lineWidth = 1.8;
           const k = wireR * 0.55;
           ctx.beginPath();
-          ctx.moveTo(cx - k, cy_ - k); ctx.lineTo(cx + k, cy_ + k);
-          ctx.moveTo(cx + k, cy_ - k); ctx.lineTo(cx - k, cy_ + k);
+          ctx.moveTo(cx - k, cy_ - k);
+          ctx.lineTo(cx + k, cy_ + k);
+          ctx.moveTo(cx + k, cy_ - k);
+          ctx.lineTo(cx - k, cy_ + k);
           ctx.stroke();
         } else {
           ctx.beginPath();
@@ -156,12 +168,15 @@ export function TwoParallelWiresDemo({ figure }: Props) {
           const startX = fromX + dxSign * 16;
           const tipX = fromX + dxSign * (16 + arrowLen);
           ctx.beginPath();
-          ctx.moveTo(startX, fromY); ctx.lineTo(tipX, fromY); ctx.stroke();
+          ctx.moveTo(startX, fromY);
+          ctx.lineTo(tipX, fromY);
+          ctx.stroke();
           ctx.beginPath();
           ctx.moveTo(tipX, fromY);
           ctx.lineTo(tipX - dxSign * 7, fromY - 4);
           ctx.lineTo(tipX - dxSign * 7, fromY + 4);
-          ctx.closePath(); ctx.fill();
+          ctx.closePath();
+          ctx.fill();
         }
         drawArr(cx1, cy, +dirSign);
         drawArr(cx2, cy, -dirSign);
@@ -197,11 +212,14 @@ export function TwoParallelWiresDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 4.2'}
       title="Two wires that talk"
       question="Same direction or opposite — do the wires pull or push?"
-      caption={<>
-        Each wire makes a magnetic field; each carries a current that feels the other's field. Same
-        direction → attract. Opposite → repel. The magnitude follows <em>F/L = μ₀ I₁ I₂ / (2π d)</em>.
-        From 1948 to 2019 this was the operational definition of one ampere.
-      </>}
+      caption={
+        <>
+          Each wire makes a magnetic field; each carries a current that feels the other's field.
+          Same direction → attract. Opposite → repel. The magnitude follows{' '}
+          <em>F/L = μ₀ I₁ I₂ / (2π d)</em>. From 1948 to 2019 this was the operational definition of
+          one ampere.
+        </>
+      }
       deeperLab={{ slug: 'ampere', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
@@ -213,20 +231,29 @@ export function TwoParallelWiresDemo({ figure }: Props) {
         />
         <MiniSlider
           label="I₁"
-          value={I1} min={0.1} max={50} step={0.1}
-          format={v => v.toFixed(1) + ' A'}
+          value={I1}
+          min={0.1}
+          max={50}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' A'}
           onChange={setI1}
         />
         <MiniSlider
           label="I₂"
-          value={I2} min={0.1} max={50} step={0.1}
-          format={v => v.toFixed(1) + ' A'}
+          value={I2}
+          min={0.1}
+          max={50}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' A'}
           onChange={setI2}
         />
         <MiniSlider
           label="d"
-          value={dCm} min={1} max={20} step={0.1}
-          format={v => v.toFixed(1) + ' cm'}
+          value={dCm}
+          min={1}
+          max={20}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' cm'}
           onChange={setDCm}
         />
         <MiniReadout

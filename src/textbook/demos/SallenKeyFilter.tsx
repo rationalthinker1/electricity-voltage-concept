@@ -22,12 +22,14 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function SallenKeyFilterDemo({ figure }: Props) {
-  const [Rk, setRk] = useState(10);     // kΩ
-  const [Cnf, setCnf] = useState(10);   // nF
-  const [K, setK] = useState(1.59);     // gain (must stay below 3 for stability)
+  const [Rk, setRk] = useState(10); // kΩ
+  const [Cnf, setCnf] = useState(10); // nF
+  const [K, setK] = useState(1.59); // gain (must stay below 3 for stability)
 
   const R = Rk * 1e3;
   const C = Cnf * 1e-9;
@@ -35,7 +37,9 @@ export function SallenKeyFilterDemo({ figure }: Props) {
   const Q = 1 / Math.max(3 - K, 1e-3);
 
   const stateRef = useRef({ f0, K, Q });
-  useEffect(() => { stateRef.current = { f0, K, Q }; }, [f0, K, Q]);
+  useEffect(() => {
+    stateRef.current = { f0, K, Q };
+  }, [f0, K, Q]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -47,7 +51,10 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 50, padR = 40, padT = 22, padB = 22;
+      const padL = 50,
+        padR = 40,
+        padT = 22,
+        padB = 22;
       const totalH = h - padT - padB - 14;
       const magH = totalH * 0.58;
       const phH = totalH * 0.42;
@@ -60,13 +67,13 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       const logMin = Math.log10(Math.max(f0 / 100, 1));
       const logMax = Math.log10(Math.max(f0 * 100, 100));
 
-      const dBmin = -60, dBmax = 30;
-      const yMag = (db: number) =>
-        magY0 + magH - ((db - dBmin) / (dBmax - dBmin)) * magH;
+      const dBmin = -60,
+        dBmax = 30;
+      const yMag = (db: number) => magY0 + magH - ((db - dBmin) / (dBmax - dBmin)) * magH;
 
-      const phMin = -190, phMax = 10;
-      const yPh = (p: number) =>
-        phY0 + phH - ((p - phMin) / (phMax - phMin)) * phH;
+      const phMin = -190,
+        phMax = 10;
+      const yPh = (p: number) => phY0 + phH - ((p - phMin) / (phMax - phMin)) * phH;
 
       // Frames
       ctx.strokeStyle = colors.border;
@@ -78,11 +85,17 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       ctx.strokeStyle = colors.border;
       for (let db = dBmin; db <= dBmax; db += 20) {
         const y = yMag(db);
-        ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
+        ctx.stroke();
       }
       for (let p = phMin; p <= phMax; p += 45) {
         const y = yPh(p);
-        ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
+        ctx.stroke();
       }
 
       // Decade x ticks
@@ -96,8 +109,14 @@ export function SallenKeyFilterDemo({ figure }: Props) {
         const f = Math.pow(10, lf);
         const x = plotX + ((lf - logMin) / (logMax - logMin)) * plotW;
         ctx.strokeStyle = colors.border;
-        ctx.beginPath(); ctx.moveTo(x, magY0); ctx.lineTo(x, magY0 + magH); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(x, phY0); ctx.lineTo(x, phY0 + phH); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, magY0);
+        ctx.lineTo(x, magY0 + magH);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, phY0);
+        ctx.lineTo(x, phY0 + phH);
+        ctx.stroke();
         ctx.save();
         ctx.globalAlpha = 0.6;
         ctx.fillStyle = colors.textDim;
@@ -111,8 +130,10 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       ctx.strokeStyle = colors.teal;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
-      ctx.moveTo(xf0, magY0); ctx.lineTo(xf0, magY0 + magH);
-      ctx.moveTo(xf0, phY0); ctx.lineTo(xf0, phY0 + phH);
+      ctx.moveTo(xf0, magY0);
+      ctx.lineTo(xf0, magY0 + magH);
+      ctx.moveTo(xf0, phY0);
+      ctx.lineTo(xf0, phY0 + phH);
       ctx.stroke();
       ctx.setLineDash([]);
 
@@ -158,7 +179,8 @@ export function SallenKeyFilterDemo({ figure }: Props) {
         const dB = 20 * Math.log10(Math.max(mag, 1e-6));
         const x = plotX + u * plotW;
         const y = yMag(Math.max(dBmin, Math.min(dBmax, dB)));
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
       ctx.setLineDash([]);
@@ -174,7 +196,7 @@ export function SallenKeyFilterDemo({ figure }: Props) {
         const re = 1 - r * r;
         const im = r * (3 - K);
         // arg(1/(re+j·im)) = -atan2(im, re)
-        let ph = -Math.atan2(im, re) * 180 / Math.PI;
+        let ph = (-Math.atan2(im, re) * 180) / Math.PI;
         // Unwrap toward continuous negative angles past r > 1
         while (ph - lastPhase > 90) ph -= 360;
         while (lastPhase - ph > 90) ph += 360;
@@ -217,7 +239,8 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       ctx.textAlign = 'right';
       ctx.fillText(
         `K = ${K.toFixed(2)},  Q = ${Q.toFixed(2)},  f₀ = ${fmtFreqShort(f0)}`,
-        plotX + plotW - 4, magY0 + 4,
+        plotX + plotW - 4,
+        magY0 + 4,
       );
 
       raf = requestAnimationFrame(draw);
@@ -231,25 +254,46 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 13.0'}
       title="Sallen-Key active low-pass — Q from gain alone"
       question="Push the gain K up from 1 toward 3. Watch the peak at f₀ sharpen — then ring."
-      caption={<>
-        Equal-component Sallen-Key low-pass with R<sub>1</sub> = R<sub>2</sub> = R and
-        C<sub>1</sub> = C<sub>2</sub> = C around one op-amp configured for non-inverting gain
-        K = 1 + R<sub>f</sub>/R<sub>g</sub>. Cutoff f<sub>0</sub> = 1/(2π RC). Quality factor
-        Q = 1/(3 − K). Far above f<sub>0</sub> the magnitude rolls off at −40 dB/decade — twice the
-        slope of the passive RC reference. Cascade two of these (Q = 0.54 and Q = 1.31) and you
-        have a 4th-order Butterworth.
-      </>}
+      caption={
+        <>
+          Equal-component Sallen-Key low-pass with R<sub>1</sub> = R<sub>2</sub> = R and C
+          <sub>1</sub> = C<sub>2</sub> = C around one op-amp configured for non-inverting gain K = 1
+          + R<sub>f</sub>/R<sub>g</sub>. Cutoff f<sub>0</sub> = 1/(2π RC). Quality factor Q = 1/(3 −
+          K). Far above f<sub>0</sub> the magnitude rolls off at −40 dB/decade — twice the slope of
+          the passive RC reference. Cascade two of these (Q = 0.54 and Q = 1.31) and you have a
+          4th-order Butterworth.
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <MiniSlider label="R" value={Rk} min={0.1} max={100} step={0.1}
-          format={v => v < 1 ? (v * 1000).toFixed(0) + ' Ω' : v.toFixed(2) + ' kΩ'}
-          onChange={setRk} />
-        <MiniSlider label="C" value={Cnf} min={1} max={1000} step={1}
-          format={v => v < 1000 ? v.toFixed(0) + ' nF' : (v / 1000).toFixed(2) + ' µF'}
-          onChange={setCnf} />
-        <MiniSlider label="K" value={K} min={1} max={2.95} step={0.01}
-          format={v => v.toFixed(2)} onChange={setK} />
+        <MiniSlider
+          label="R"
+          value={Rk}
+          min={0.1}
+          max={100}
+          step={0.1}
+          format={(v) => (v < 1 ? (v * 1000).toFixed(0) + ' Ω' : v.toFixed(2) + ' kΩ')}
+          onChange={setRk}
+        />
+        <MiniSlider
+          label="C"
+          value={Cnf}
+          min={1}
+          max={1000}
+          step={1}
+          format={(v) => (v < 1000 ? v.toFixed(0) + ' nF' : (v / 1000).toFixed(2) + ' µF')}
+          onChange={setCnf}
+        />
+        <MiniSlider
+          label="K"
+          value={K}
+          min={1}
+          max={2.95}
+          step={0.01}
+          format={(v) => v.toFixed(2)}
+          onChange={setK}
+        />
         <MiniReadout label="f₀ = 1/(2πRC)" value={<Num value={f0} />} unit="Hz" />
         <MiniReadout label="Q = 1/(3−K)" value={Q.toFixed(2)} />
       </DemoControls>

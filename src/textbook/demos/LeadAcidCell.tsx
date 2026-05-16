@@ -12,18 +12,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const SG_FULL = 1.27; // specific gravity of acid when fully charged
-const SG_EMPTY = 1.10;
-const V_FULL = 2.10;  // per cell (Planté chemistry)
-const V_EMPTY = 1.80;
+const SG_EMPTY = 1.1;
+const V_FULL = 2.1; // per cell (Planté chemistry)
+const V_EMPTY = 1.8;
 
 export function LeadAcidCellDemo({ figure }: Props) {
   const [mode, setMode] = useState<'discharge' | 'charge' | 'idle'>('idle');
@@ -37,13 +37,15 @@ export function LeadAcidCellDemo({ figure }: Props) {
     if (mode === 'idle') return;
     const dir = mode === 'discharge' ? -1 : +1;
     const id = window.setInterval(() => {
-      setSoc(s => Math.max(0, Math.min(1, s + dir * 0.01)));
+      setSoc((s) => Math.max(0, Math.min(1, s + dir * 0.01)));
     }, 80);
     return () => window.clearInterval(id);
   }, [mode]);
 
   const stateRef = useRef({ soc, SG, V_cell });
-  useEffect(() => { stateRef.current = { soc, SG, V_cell }; }, [soc, SG, V_cell]);
+  useEffect(() => {
+    stateRef.current = { soc, SG, V_cell };
+  }, [soc, SG, V_cell]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const colors = getCanvasColors();
@@ -56,8 +58,10 @@ export function LeadAcidCellDemo({ figure }: Props) {
       ctx.fillRect(0, 0, W, H);
 
       // Single beaker (jar) with two lead plates inside
-      const jarX = 40, jarY = 30;
-      const jarW = W - 80, jarH = H - 70;
+      const jarX = 40,
+        jarY = 30;
+      const jarW = W - 80,
+        jarH = H - 70;
 
       // Glass
       ctx.strokeStyle = getCanvasColors().borderStrong;
@@ -65,7 +69,7 @@ export function LeadAcidCellDemo({ figure }: Props) {
       ctx.strokeRect(jarX, jarY, jarW, jarH);
 
       // Acid fill — colour scales with SG (more amber when concentrated)
-      const acidAlpha = 0.10 + 0.18 * s.soc;
+      const acidAlpha = 0.1 + 0.18 * s.soc;
       ctx.fillStyle = `rgba(255,107,42,${acidAlpha})`;
       ctx.fillRect(jarX + 2, jarY + 12, jarW - 4, jarH - 14);
 
@@ -121,10 +125,7 @@ export function LeadAcidCellDemo({ figure }: Props) {
       ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText(
-        'discharge:  Pb + PbO₂ + 2 H₂SO₄  →  2 PbSO₄ + 2 H₂O',
-        jarX, jarY + jarH + 10,
-      );
+      ctx.fillText('discharge:  Pb + PbO₂ + 2 H₂SO₄  →  2 PbSO₄ + 2 H₂O', jarX, jarY + jarH + 10);
 
       raf = requestAnimationFrame(draw);
       ctx.restore();
@@ -141,9 +142,11 @@ export function LeadAcidCellDemo({ figure }: Props) {
       caption={
         <>
           On discharge, both Pb and PbO₂ pick up sulphate ions to form
-          <strong> PbSO₄</strong> on the plate surfaces, and the acid loses sulphate (specific gravity drops from
-          <strong> ~1.27</strong> to <strong>~1.10</strong>). Charging drives the reaction backwards. Energy density is
-          modest (~30–40 Wh/kg) but the cell can deliver hundreds of amps for the brief job of cranking an engine.
+          <strong> PbSO₄</strong> on the plate surfaces, and the acid loses sulphate (specific
+          gravity drops from
+          <strong> ~1.27</strong> to <strong>~1.10</strong>). Charging drives the reaction
+          backwards. Energy density is modest (~30–40 Wh/kg) but the cell can deliver hundreds of
+          amps for the brief job of cranking an engine.
         </>
       }
     >
@@ -152,14 +155,21 @@ export function LeadAcidCellDemo({ figure }: Props) {
         <MiniToggle
           label="Discharge"
           checked={mode === 'discharge'}
-          onChange={v => setMode(v ? 'discharge' : 'idle')}
+          onChange={(v) => setMode(v ? 'discharge' : 'idle')}
         />
         <MiniToggle
           label="Charge"
           checked={mode === 'charge'}
-          onChange={v => setMode(v ? 'charge' : 'idle')}
+          onChange={(v) => setMode(v ? 'charge' : 'idle')}
         />
-        <button type="button" className="mini-toggle" onClick={() => { setSoc(1.0); setMode('idle'); }}>
+        <button
+          type="button"
+          className="mini-toggle"
+          onClick={() => {
+            setSoc(1.0);
+            setMode('idle');
+          }}
+        >
           Reset (full)
         </button>
         <MiniReadout label="SOC" value={(soc * 100).toFixed(0) + ' %'} />

@@ -25,29 +25,39 @@ import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitiv
 import { MATERIALS, PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-interface Dot { x: number; phase: number }
+interface Dot {
+  x: number;
+  phase: number;
+}
 
 // Fixed circuit parameters
-const R_OHMS = 10;                     // resistive load
-const A_MM2 = 1.0;                     // wire cross-section, mm²
-const A_M2 = A_MM2 * 1e-6;             // m²
-const N_CU = MATERIALS.copper.n;       // 8.5e28 /m³
-const N_DOTS = 28;                     // drift dots along the wire
+const R_OHMS = 10; // resistive load
+const A_MM2 = 1.0; // wire cross-section, mm²
+const A_M2 = A_MM2 * 1e-6; // m²
+const N_CU = MATERIALS.copper.n; // 8.5e28 /m³
+const N_DOTS = 28; // drift dots along the wire
 
-interface StaticCacheEntry { key: string; canvas: HTMLCanvasElement }
+interface StaticCacheEntry {
+  key: string;
+  canvas: HTMLCanvasElement;
+}
 
 export function VoltageDrivesFlowDemo({ figure }: Props) {
-  const [V, setV] = useState(6);  // volts
+  const [V, setV] = useState(6); // volts
 
   const stateRef = useRef({ V });
-  useEffect(() => { stateRef.current = { V }; }, [V]);
+  useEffect(() => {
+    stateRef.current = { V };
+  }, [V]);
 
   // Real (physical) values for the readouts
-  const I = V / R_OHMS;                             // amperes
-  const vd = I / (N_CU * PHYS.e * A_M2);            // m/s
-  const P = V * I;                                  // watts
+  const I = V / R_OHMS; // amperes
+  const vd = I / (N_CU * PHYS.e * A_M2); // m/s
+  const P = V * I; // watts
 
   const cacheRef = useRef<StaticCacheEntry | null>(null);
   const dotsRef = useRef<Dot[] | null>(null);
@@ -59,11 +69,11 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
 
     // Wire geometry — a single horizontal line, battery on left, bulb on right.
     const margin = 64;
-    const wireY = Math.round(h * 0.50);
+    const wireY = Math.round(h * 0.5);
     const batX = margin;
     const bulbX = w - margin;
-    const wireLeft = batX + 48;       // just right of battery lead
-    const wireRight = bulbX - 28;     // just left of bulb circle
+    const wireLeft = batX + 48; // just right of battery lead
+    const wireRight = bulbX - 28; // just left of bulb circle
     const wireLength = wireRight - wireLeft;
 
     // Initialise drift dots evenly along the wire
@@ -95,35 +105,69 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
         const bulbBright = brightBucket / 12;
         const staticElements: CircuitElement[] = [
           // Top return wire — battery (+) up and over to bulb top.
-          { kind: 'wire',
+          {
+            kind: 'wire',
             points: [
-              { x: batX, y: wireY }, { x: batX, y: wireY - 70 },
-              { x: bulbX, y: wireY - 70 }, { x: bulbX, y: wireY - 16 },
+              { x: batX, y: wireY },
+              { x: batX, y: wireY - 70 },
+              { x: bulbX, y: wireY - 70 },
+              { x: bulbX, y: wireY - 16 },
             ],
-            color: 'rgba(160,158,149,.35)', lineWidth: 2 },
+            color: 'rgba(160,158,149,.35)',
+            lineWidth: 2,
+          },
           // Battery on the left (vertical between top rail and main wire).
-          { kind: 'battery', at: { x: batX, y: wireY - 35 },
+          {
+            kind: 'battery',
+            at: { x: batX, y: wireY - 35 },
             color: 'rgba(255,255,255,.30)',
             label: `${R_OHMS} Ω load · 1 mm² copper`,
             labelOffset: { x: 0, y: 90 },
-            leadLength: 35, plateGap: 8,
-            negativeColor: '#5baef8', negativePlateLength: 14,
-            positiveColor: '#ff3b6e', positivePlateLength: 24 },
+            leadLength: 35,
+            plateGap: 8,
+            negativeColor: '#5baef8',
+            negativePlateLength: 14,
+            positiveColor: '#ff3b6e',
+            positivePlateLength: 24,
+          },
           // The main wire (where drift dots will be drawn).
-          { kind: 'wire',
-            points: [{ x: wireLeft, y: wireY }, { x: wireRight, y: wireY }],
-            color: 'rgba(255,107,42,.55)', lineWidth: 5 },
+          {
+            kind: 'wire',
+            points: [
+              { x: wireLeft, y: wireY },
+              { x: wireRight, y: wireY },
+            ],
+            color: 'rgba(255,107,42,.55)',
+            lineWidth: 5,
+          },
           // Tiny pigtails from battery and bulb to the main wire.
-          { kind: 'wire',
-            points: [{ x: batX, y: wireY }, { x: wireLeft, y: wireY }],
-            color: 'rgba(160,158,149,.45)', lineWidth: 2 },
-          { kind: 'wire',
-            points: [{ x: wireRight, y: wireY }, { x: bulbX, y: wireY }],
-            color: 'rgba(160,158,149,.45)', lineWidth: 2 },
+          {
+            kind: 'wire',
+            points: [
+              { x: batX, y: wireY },
+              { x: wireLeft, y: wireY },
+            ],
+            color: 'rgba(160,158,149,.45)',
+            lineWidth: 2,
+          },
+          {
+            kind: 'wire',
+            points: [
+              { x: wireRight, y: wireY },
+              { x: bulbX, y: wireY },
+            ],
+            color: 'rgba(160,158,149,.45)',
+            lineWidth: 2,
+          },
           // Bulb (the load) on the right.
-          { kind: 'bulb', at: { x: bulbX, y: wireY },
-            radius: 16, brightness: bulbBright,
-            label: 'load', labelOffset: { x: 0, y: 30 } },
+          {
+            kind: 'bulb',
+            at: { x: bulbX, y: wireY },
+            radius: 16,
+            brightness: bulbBright,
+            label: 'load',
+            labelOffset: { x: 0, y: 30 },
+          },
         ];
         cacheRef.current = {
           key: cacheKey,
@@ -139,7 +183,7 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       const Bcols = 4;
       const Bradius = 8 + 18 * Inorm;
       const Bwidth = 0.8 + 2.2 * Inorm;
-      const Balpha = 0.20 + 0.70 * Inorm;
+      const Balpha = 0.2 + 0.7 * Inorm;
       ctx.save();
       ctx.strokeStyle = `rgba(108,197,194,${Balpha.toFixed(3)})`;
       ctx.lineWidth = Bwidth;
@@ -169,7 +213,7 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       // amount per second. Real drift is microscopic; the readout has the
       // truth. Conventional current direction is left→right; electrons drift
       // the opposite way, so the dots (cyan electrons) move right→left.
-      const visSpeed = 90 * Inorm;  // px/s at full slider
+      const visSpeed = 90 * Inorm; // px/s at full slider
       const dots = dotsRef.current!;
       ctx.fillStyle = getCanvasColors().blue;
       for (const d of dots) {
@@ -191,12 +235,16 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       ctx.strokeStyle = `rgba(255,107,42,${(0.45 + 0.5 * Inorm).toFixed(3)})`;
       ctx.fillStyle = `rgba(255,107,42,${(0.45 + 0.5 * Inorm).toFixed(3)})`;
       ctx.lineWidth = 1.4;
-      ctx.beginPath(); ctx.moveTo(ax0, arrowY); ctx.lineTo(ax1, arrowY); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(ax0, arrowY);
+      ctx.lineTo(ax1, arrowY);
+      ctx.stroke();
       ctx.beginPath();
       ctx.moveTo(ax1, arrowY);
       ctx.lineTo(ax1 - 7, arrowY - 4);
       ctx.lineTo(ax1 - 7, arrowY + 4);
-      ctx.closePath(); ctx.fill();
+      ctx.closePath();
+      ctx.fill();
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('I  (conventional)', (ax0 + ax1) / 2, arrowY - 6);
@@ -205,7 +253,7 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       // A small arrow pointing into the bulb labelled with the instantaneous
       // power. Length / opacity scale with P; cap so the arrow stays inside
       // the canvas at high V.
-      const Pmax = (24 * 24) / R_OHMS;           // 57.6 W at V=24
+      const Pmax = (24 * 24) / R_OHMS; // 57.6 W at V=24
       const Pnorm = Math.min(1, (V * I_now) / Pmax);
       const fluxLen = 14 + 28 * Pnorm;
       const fluxAlpha = 0.35 + 0.6 * Pnorm;
@@ -215,12 +263,16 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       ctx.strokeStyle = `rgba(255,204,85,${fluxAlpha.toFixed(3)})`;
       ctx.fillStyle = `rgba(255,204,85,${fluxAlpha.toFixed(3)})`;
       ctx.lineWidth = 1.6;
-      ctx.beginPath(); ctx.moveTo(fx0, fy); ctx.lineTo(fx1, fy); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(fx0, fy);
+      ctx.lineTo(fx1, fy);
+      ctx.stroke();
       ctx.beginPath();
       ctx.moveTo(fx1, fy);
       ctx.lineTo(fx1 - 7, fy - 4);
       ctx.lineTo(fx1 - 7, fy + 4);
-      ctx.closePath(); ctx.fill();
+      ctx.closePath();
+      ctx.fill();
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText(`P = V·I = ${(V * I_now).toFixed(1)} W`, fx1, fy - 6);
@@ -231,7 +283,8 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       ctx.textAlign = 'left';
       ctx.fillText(
         'fixed: R = 10 Ω · A = 1 mm² · n = 8.5×10²⁸/m³ (Cu) · dot motion ≠ to scale',
-        wireLeft, h - 12,
+        wireLeft,
+        h - 12,
       );
 
       raf = requestAnimationFrame(draw);
@@ -245,24 +298,29 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 2.5'}
       title="Crank the voltage"
       question="Crank the voltage from 1 V to 24 V. The electrons go faster — but still less than a millimetre per second. So how does the load get so much brighter?"
-      caption={<>
-        One slider, one wire, one fixed 10 Ω load. Lifting V lifts I in lockstep (Ohm's law,
-        I = V/R) and lifts the electrons' drift velocity by the same factor. But the drift
-        stays in the tens of micrometres per second — visually you cannot tell 6 V from 24 V
-        just by watching the dots. What changes dramatically is the power, P = V·I = V²/R:
-        double V and the load gets four times the energy per second. That quadratic is the
-        whole reason the grid bothers to step voltage <em>up</em> for transmission — and a
-        first hint of the Poynting story in Chapter 8, where the energy turns out to flow
-        through the field around the wire, not down the wire itself.
-      </>}
+      caption={
+        <>
+          One slider, one wire, one fixed 10 Ω load. Lifting V lifts I in lockstep (Ohm's law, I =
+          V/R) and lifts the electrons' drift velocity by the same factor. But the drift stays in
+          the tens of micrometres per second — visually you cannot tell 6 V from 24 V just by
+          watching the dots. What changes dramatically is the power, P = V·I = V²/R: double V and
+          the load gets four times the energy per second. That quadratic is the whole reason the
+          grid bothers to step voltage <em>up</em> for transmission — and a first hint of the
+          Poynting story in Chapter 8, where the energy turns out to flow through the field around
+          the wire, not down the wire itself.
+        </>
+      }
       deeperLab={{ slug: 'drift', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="battery voltage V"
-          value={V} min={0.5} max={24} step={0.1}
-          format={v => v.toFixed(1) + ' V'}
+          value={V}
+          min={0.5}
+          max={24}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' V'}
           onChange={setV}
         />
         <MiniReadout label="current I = V/R" value={I.toFixed(2)} unit="A" />

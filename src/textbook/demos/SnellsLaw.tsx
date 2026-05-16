@@ -13,15 +13,19 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function SnellsLawDemo({ figure }: Props) {
   const [thetaDeg, setThetaDeg] = useState(30);
-  const [n1, setN1] = useState(1.00);
-  const [n2, setN2] = useState(1.50);
+  const [n1, setN1] = useState(1.0);
+  const [n2, setN2] = useState(1.5);
 
   const stateRef = useRef({ thetaDeg, n1, n2 });
-  useEffect(() => { stateRef.current = { thetaDeg, n1, n2 }; }, [thetaDeg, n1, n2]);
+  useEffect(() => {
+    stateRef.current = { thetaDeg, n1, n2 };
+  }, [thetaDeg, n1, n2]);
 
   // Compute outputs for the readout panel
   const theta1 = (thetaDeg * Math.PI) / 180;
@@ -47,7 +51,7 @@ export function SnellsLawDemo({ figure }: Props) {
       const cy = H / 2;
 
       // Shading for the two media — slight tints
-      ctx.fillStyle = 'rgba(91,174,248,0.06)';   // medium 1: blue tint
+      ctx.fillStyle = 'rgba(91,174,248,0.06)'; // medium 1: blue tint
       ctx.fillRect(0, 0, W, cy);
       ctx.fillStyle = 'rgba(108,197,194,0.10)'; // medium 2: teal tint
       ctx.fillRect(0, cy, W, H - cy);
@@ -55,13 +59,19 @@ export function SnellsLawDemo({ figure }: Props) {
       // Interface line
       ctx.strokeStyle = getCanvasColors().textDim;
       ctx.lineWidth = 1.2;
-      ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(W, cy); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, cy);
+      ctx.lineTo(W, cy);
+      ctx.stroke();
 
       // Normal (dashed)
       ctx.setLineDash([4, 5]);
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(cx, 10); ctx.lineTo(cx, H - 10); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx, 10);
+      ctx.lineTo(cx, H - 10);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       const L = Math.min(W, H) * 0.42;
@@ -111,21 +121,45 @@ export function SnellsLawDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 14.1'}
       title="Snell's law — a ray bends at an interface"
       question="When does total internal reflection take over?"
-      caption={<>
-        A ray hits a flat interface between media with refractive indices <strong>n₁</strong> (top)
-        and <strong>n₂</strong> (bottom). The transmitted angle satisfies <strong>n₁ sin θ₁ = n₂ sin θ₂</strong>.
-        When you go from a dense medium to a rare one and exceed the critical angle
-        <strong> sin θ_c = n₂/n₁</strong>, the boundary stops transmitting and the ray reflects.
-      </>}
+      caption={
+        <>
+          A ray hits a flat interface between media with refractive indices <strong>n₁</strong>{' '}
+          (top) and <strong>n₂</strong> (bottom). The transmitted angle satisfies{' '}
+          <strong>n₁ sin θ₁ = n₂ sin θ₂</strong>. When you go from a dense medium to a rare one and
+          exceed the critical angle
+          <strong> sin θ_c = n₂/n₁</strong>, the boundary stops transmitting and the ray reflects.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
-        <MiniSlider label="θ₁" value={thetaDeg} min={0} max={89} step={0.5}
-          format={v => v.toFixed(1) + '°'} onChange={setThetaDeg} />
-        <MiniSlider label="n₁" value={n1} min={1.0} max={2.5} step={0.01}
-          format={v => v.toFixed(2)} onChange={setN1} />
-        <MiniSlider label="n₂" value={n2} min={1.0} max={2.5} step={0.01}
-          format={v => v.toFixed(2)} onChange={setN2} />
+        <MiniSlider
+          label="θ₁"
+          value={thetaDeg}
+          min={0}
+          max={89}
+          step={0.5}
+          format={(v) => v.toFixed(1) + '°'}
+          onChange={setThetaDeg}
+        />
+        <MiniSlider
+          label="n₁"
+          value={n1}
+          min={1.0}
+          max={2.5}
+          step={0.01}
+          format={(v) => v.toFixed(2)}
+          onChange={setN1}
+        />
+        <MiniSlider
+          label="n₂"
+          value={n2}
+          min={1.0}
+          max={2.5}
+          step={0.01}
+          format={(v) => v.toFixed(2)}
+          onChange={setN2}
+        />
         <MiniReadout
           label={tir ? 'state' : 'θ₂'}
           value={tir ? 'TIR' : ((theta2 * 180) / Math.PI).toFixed(2)}
@@ -143,23 +177,34 @@ export function SnellsLawDemo({ figure }: Props) {
 
 function drawRay(
   ctx: CanvasRenderingContext2D,
-  x1: number, y1: number, x2: number, y2: number,
-  color: string, width: number,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  color: string,
+  width: number,
 ) {
   ctx.strokeStyle = color;
   ctx.fillStyle = color;
   ctx.lineWidth = width;
-  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
   // Arrowhead at (x2, y2)
-  const dx = x2 - x1; const dy = y2 - y1;
+  const dx = x2 - x1;
+  const dy = y2 - y1;
   const len = Math.sqrt(dx * dx + dy * dy);
   if (len < 4) return;
-  const ux = dx / len; const uy = dy / len;
-  const px = -uy; const py = ux;
+  const ux = dx / len;
+  const uy = dy / len;
+  const px = -uy;
+  const py = ux;
   const H = 7;
   ctx.beginPath();
   ctx.moveTo(x2, y2);
   ctx.lineTo(x2 - ux * H + px * 3.5, y2 - uy * H + py * 3.5);
   ctx.lineTo(x2 - ux * H - px * 3.5, y2 - uy * H - py * 3.5);
-  ctx.closePath(); ctx.fill();
+  ctx.closePath();
+  ctx.fill();
 }

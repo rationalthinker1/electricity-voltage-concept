@@ -11,18 +11,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function ChargingCurveDemo({ figure }: Props) {
   const V0 = 12;
-  const [R, setR] = useState(1000);  // ohms
+  const [R, setR] = useState(1000); // ohms
   const [Cuf, setCuf] = useState(220); // µF
   const [closed, setClosed] = useState(true);
 
@@ -31,13 +31,18 @@ export function ChargingCurveDemo({ figure }: Props) {
   const t99 = 5 * tau; // ~99.3% in 5τ
 
   const stateRef = useRef({
-    R, C, closed,
+    R,
+    C,
+    closed,
     Vc: 0,
     lastT: performance.now(),
     simT: 0,
     trace: [] as Array<{ t: number; v: number }>,
   });
-  useEffect(() => { stateRef.current.R = R; stateRef.current.C = C; }, [R, C]);
+  useEffect(() => {
+    stateRef.current.R = R;
+    stateRef.current.C = C;
+  }, [R, C]);
   useEffect(() => {
     stateRef.current.closed = closed;
     stateRef.current.simT = 0;
@@ -77,8 +82,10 @@ export function ChargingCurveDemo({ figure }: Props) {
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
-      const pX = 30, pY = 26;
-      const pW = W - 60, pH = H - 60;
+      const pX = 30,
+        pY = 26;
+      const pW = W - 60,
+        pH = H - 60;
       ctx.strokeStyle = getCanvasColors().border;
       ctx.lineWidth = 1;
       ctx.strokeRect(pX, pY, pW, pH);
@@ -92,19 +99,28 @@ export function ChargingCurveDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().accent;
       ctx.setLineDash([4, 4]);
       const y0line = yV(V0);
-      ctx.beginPath(); ctx.moveTo(pX, y0line); ctx.lineTo(pX + pW, y0line); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(pX, y0line);
+      ctx.lineTo(pX + pW, y0line);
+      ctx.stroke();
       ctx.restore();
 
       ctx.save();
       ctx.globalAlpha = 0.35;
       ctx.strokeStyle = getCanvasColors().teal;
       const y63 = yV(V0 * (1 - 1 / Math.E));
-      ctx.beginPath(); ctx.moveTo(pX, y63); ctx.lineTo(pX + pW, y63); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(pX, y63);
+      ctx.lineTo(pX + pW, y63);
+      ctx.stroke();
       ctx.restore();
 
       ctx.strokeStyle = getCanvasColors().borderStrong;
       const y99 = yV(V0 * 0.99);
-      ctx.beginPath(); ctx.moveTo(pX, y99); ctx.lineTo(pX + pW, y99); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(pX, y99);
+      ctx.lineTo(pX + pW, y99);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       // τ and 5τ markers
@@ -113,11 +129,21 @@ export function ChargingCurveDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().teal;
       ctx.setLineDash([3, 3]);
       const xTau = xT(tauNow);
-      if (xTau < pX + pW) { ctx.beginPath(); ctx.moveTo(xTau, pY); ctx.lineTo(xTau, pY + pH); ctx.stroke(); }
+      if (xTau < pX + pW) {
+        ctx.beginPath();
+        ctx.moveTo(xTau, pY);
+        ctx.lineTo(xTau, pY + pH);
+        ctx.stroke();
+      }
       ctx.restore();
       ctx.strokeStyle = getCanvasColors().borderStrong;
       const x5tau = xT(5 * tauNow);
-      if (x5tau < pX + pW) { ctx.beginPath(); ctx.moveTo(x5tau, pY); ctx.lineTo(x5tau, pY + pH); ctx.stroke(); }
+      if (x5tau < pX + pW) {
+        ctx.beginPath();
+        ctx.moveTo(x5tau, pY);
+        ctx.lineTo(x5tau, pY + pH);
+        ctx.stroke();
+      }
       ctx.setLineDash([]);
 
       // Trace
@@ -173,9 +199,11 @@ export function ChargingCurveDemo({ figure }: Props) {
       question="How long does it take a capacitor to charge through a resistor?"
       caption={
         <>
-          Close the switch and the capacitor voltage approaches the battery exponentially. After one time constant
-          <strong> τ = RC</strong> it has reached <strong>63%</strong> of V₀; after five it is past <strong>99%</strong>. Scale
-          R or C and the whole curve stretches or compresses; the shape is invariant.
+          Close the switch and the capacitor voltage approaches the battery exponentially. After one
+          time constant
+          <strong> τ = RC</strong> it has reached <strong>63%</strong> of V₀; after five it is past{' '}
+          <strong>99%</strong>. Scale R or C and the whole curve stretches or compresses; the shape
+          is invariant.
         </>
       }
       deeperLab={{ slug: 'capacitance', label: 'See full lab' }}
@@ -189,14 +217,20 @@ export function ChargingCurveDemo({ figure }: Props) {
         />
         <MiniSlider
           label="R"
-          value={R} min={100} max={10000} step={100}
+          value={R}
+          min={100}
+          max={10000}
+          step={100}
           format={fmtR}
           onChange={setR}
         />
         <MiniSlider
           label="C"
-          value={Cuf} min={1} max={2200} step={1}
-          format={v => v.toFixed(0) + ' µF'}
+          value={Cuf}
+          min={1}
+          max={2200}
+          step={1}
+          format={(v) => v.toFixed(0) + ' µF'}
           onChange={setCuf}
         />
         <MiniReadout label="τ = RC" value={fmtT(tau)} />

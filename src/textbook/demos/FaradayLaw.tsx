@@ -15,15 +15,19 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function FaradayLawDemo({ figure }: Props) {
-  const [B0_mT, setB0_mT] = useState(50);   // peak flux density, mT
-  const [freq, setFreq] = useState(1.2);    // Hz
+  const [B0_mT, setB0_mT] = useState(50); // peak flux density, mT
+  const [freq, setFreq] = useState(1.2); // Hz
   const [area_cm2, setAreaCm2] = useState(40); // loop area, cm²
 
   const stateRef = useRef({ B0_mT, freq, area_cm2 });
-  useEffect(() => { stateRef.current = { B0_mT, freq, area_cm2 }; }, [B0_mT, freq, area_cm2]);
+  useEffect(() => {
+    stateRef.current = { B0_mT, freq, area_cm2 };
+  }, [B0_mT, freq, area_cm2]);
 
   // Live readout — updated from the draw loop
   const emfRef = useRef(0);
@@ -47,8 +51,8 @@ export function FaradayLawDemo({ figure }: Props) {
     function draw(now: number) {
       const t = (now - t0) / 1000;
       const { B0_mT, freq, area_cm2 } = stateRef.current;
-      const B0 = B0_mT * 1e-3;        // T
-      const A = area_cm2 * 1e-4;      // m²
+      const B0 = B0_mT * 1e-3; // T
+      const A = area_cm2 * 1e-4; // m²
       const omega = 2 * Math.PI * freq;
       const phi = B0 * A * Math.sin(omega * t);
       const emf = -B0 * A * omega * Math.cos(omega * t);
@@ -75,13 +79,15 @@ export function FaradayLawDemo({ figure }: Props) {
       const intensity = Math.max(0, Math.abs(B0) / 0.1);
       const sym = phi >= 0 ? '⊗' : '⊙';
       const symCount = Math.round(6 + intensity * 8);
-      ctx.fillStyle = `rgba(108,197,194,${(0.25 + Math.min(0.6, Math.abs(phi) / (B0 * A + 1e-12) * 0.6)).toFixed(2)})`;
+      ctx.fillStyle = `rgba(108,197,194,${(0.25 + Math.min(0.6, (Math.abs(phi) / (B0 * A + 1e-12)) * 0.6)).toFixed(2)})`;
       ctx.font = '14px JetBrains Mono';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       const cols = Math.ceil(Math.sqrt(symCount));
       for (let i = 0; i < symCount; i++) {
-        const cc = i % cols, rr = Math.floor(i / cols);
-        const sx = loopCx - loopR * 0.6 + cc * (loopR * 1.2 / Math.max(1, cols - 1));
+        const cc = i % cols,
+          rr = Math.floor(i / cols);
+        const sx = loopCx - loopR * 0.6 + cc * ((loopR * 1.2) / Math.max(1, cols - 1));
         const sy = loopCy - loopR * 0.5 + rr * (loopR / Math.max(1, cols - 1));
         // skip if outside circle
         if (Math.hypot(sx - loopCx, sy - loopCy) > loopR - 8) continue;
@@ -91,7 +97,9 @@ export function FaradayLawDemo({ figure }: Props) {
       // The wire loop itself
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(loopCx, loopCy, loopR, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(loopCx, loopCy, loopR, 0, Math.PI * 2);
+      ctx.stroke();
 
       // Induced current direction (arrows around the loop). Direction flips
       // with sign of EMF.
@@ -109,13 +117,14 @@ export function FaradayLawDemo({ figure }: Props) {
         ctx.fillStyle = ctx.strokeStyle;
         ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.moveTo(x - tx * L / 2, y - ty * L / 2);
-        ctx.lineTo(x + tx * L / 2, y + ty * L / 2);
+        ctx.moveTo(x - (tx * L) / 2, y - (ty * L) / 2);
+        ctx.lineTo(x + (tx * L) / 2, y + (ty * L) / 2);
         ctx.stroke();
         // arrowhead
-        const hx = x + tx * L / 2;
-        const hy = y + ty * L / 2;
-        const nx = -ty, ny = tx;
+        const hx = x + (tx * L) / 2;
+        const hy = y + (ty * L) / 2;
+        const nx = -ty,
+          ny = tx;
         ctx.beginPath();
         ctx.moveTo(hx, hy);
         ctx.lineTo(hx - tx * 4 + nx * 2.5, hy - ty * 4 + ny * 2.5);
@@ -127,7 +136,8 @@ export function FaradayLawDemo({ figure }: Props) {
       // Labels
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       ctx.fillText(`B(t) = B₀ sin(ωt) through loop`, loopCx, loopCy + loopR + 14);
 
       // Right panel: oscilloscope
@@ -148,7 +158,8 @@ export function FaradayLawDemo({ figure }: Props) {
       ctx.strokeStyle = colors.text;
       ctx.setLineDash([2, 3]);
       ctx.beginPath();
-      ctx.moveTo(oscX, cyOsc); ctx.lineTo(oscX + oscW, cyOsc);
+      ctx.moveTo(oscX, cyOsc);
+      ctx.lineTo(oscX + oscW, cyOsc);
       ctx.stroke();
       ctx.setLineDash([]);
 
@@ -166,12 +177,13 @@ export function FaradayLawDemo({ figure }: Props) {
           const idx = (head + i) % N;
           const x = oscX + (i / (N - 1)) * oscW;
           const y = cyOsc - buf[idx] * scale;
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.stroke();
       }
-      plotTrace(phiBuf, phiScale, 'rgba(108,197,194,0.9)');     // teal: Φ_B
-      plotTrace(emfBuf, emfScale, 'rgba(255,107,42,0.95)');     // amber: EMF
+      plotTrace(phiBuf, phiScale, 'rgba(108,197,194,0.9)'); // teal: Φ_B
+      plotTrace(emfBuf, emfScale, 'rgba(255,107,42,0.95)'); // amber: EMF
 
       // Legend
       ctx.font = '10px "JetBrains Mono", monospace';
@@ -194,31 +206,42 @@ export function FaradayLawDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 8.3'}
       title="Faraday's law"
       question="When B changes through a loop, what appears around the loop?"
-      caption={<>
-        Flux through the loop oscillates sinusoidally; the induced EMF is its negative time derivative — a cosine,
-        90° out of phase. The minus sign is Lenz's law: the induced current direction (arrowheads around the loop)
-        flips to oppose whichever way the flux is changing.
-      </>}
+      caption={
+        <>
+          Flux through the loop oscillates sinusoidally; the induced EMF is its negative time
+          derivative — a cosine, 90° out of phase. The minus sign is Lenz's law: the induced current
+          direction (arrowheads around the loop) flips to oppose whichever way the flux is changing.
+        </>
+      }
       deeperLab={{ slug: 'faraday', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="B₀"
-          value={B0_mT} min={1} max={200} step={1}
-          format={v => v.toFixed(0) + ' mT'}
+          value={B0_mT}
+          min={1}
+          max={200}
+          step={1}
+          format={(v) => v.toFixed(0) + ' mT'}
           onChange={setB0_mT}
         />
         <MiniSlider
           label="freq"
-          value={freq} min={0.1} max={4} step={0.05}
-          format={v => v.toFixed(2) + ' Hz'}
+          value={freq}
+          min={0.1}
+          max={4}
+          step={0.05}
+          format={(v) => v.toFixed(2) + ' Hz'}
           onChange={setFreq}
         />
         <MiniSlider
           label="area"
-          value={area_cm2} min={1} max={200} step={1}
-          format={v => v.toFixed(0) + ' cm²'}
+          value={area_cm2}
+          min={1}
+          max={200}
+          step={1}
+          format={(v) => v.toFixed(0) + ' cm²'}
           onChange={setAreaCm2}
         />
         <MiniReadout label="EMF (instant.)" value={<Num value={emfNow} digits={2} />} unit="V" />

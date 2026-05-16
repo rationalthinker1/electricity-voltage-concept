@@ -20,16 +20,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import {
-  attachOrbit,
-  project,
-  type OrbitCamera,
-  type Vec3,
-} from '@/lib/projection3d';
+import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // Normalised pattern radius r(θ) = sin^n(θ).
 function patternR(theta: number, n: number): number {
@@ -108,9 +105,9 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
     {
       const RAY_THETAS = [
         Math.PI * 0.18,
-        Math.PI * 0.30,
-        Math.PI * 0.50,
-        Math.PI * 0.70,
+        Math.PI * 0.3,
+        Math.PI * 0.5,
+        Math.PI * 0.7,
         Math.PI * 0.82,
       ];
       const RAY_PHIS = [0, Math.PI * 0.5, Math.PI, Math.PI * 1.5];
@@ -166,12 +163,18 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
         const phi = (i / NMER) * 2 * Math.PI;
         const theta = Math.acos(Math.cos(phi));
         const r = patternR(theta, s.n);
-        const p = project({
-          x: r * Math.sin(theta) * Math.sin(phi),  // sign of x follows sin(phi)
-          y: r * Math.cos(theta),
-          z: 0,
-        }, cam, W, H);
-        if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+        const p = project(
+          {
+            x: r * Math.sin(theta) * Math.sin(phi), // sign of x follows sin(phi)
+            y: r * Math.cos(theta),
+            z: 0,
+          },
+          cam,
+          W,
+          H,
+        );
+        if (i === 0) ctx.moveTo(p.x, p.y);
+        else ctx.lineTo(p.x, p.y);
       }
       ctx.stroke();
 
@@ -188,7 +191,14 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
       // Build line-segment list with depth, then draw back-to-front so the
       // brighter front segments paint over the dimmer back ones.
       if (s.showMesh) {
-        interface Seg { x1: number; y1: number; x2: number; y2: number; depth: number; kind: 'lat' | 'lon' }
+        interface Seg {
+          x1: number;
+          y1: number;
+          x2: number;
+          y2: number;
+          depth: number;
+          kind: 'lat' | 'lon';
+        }
         const segs: Seg[] = [];
         // Latitude rings.
         for (let i = 0; i <= NLAT; i++) {
@@ -196,7 +206,10 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
             const a = projected[i]![j]!;
             const b = projected[i]![j + 1]!;
             segs.push({
-              x1: a.x, y1: a.y, x2: b.x, y2: b.y,
+              x1: a.x,
+              y1: a.y,
+              x2: b.x,
+              y2: b.y,
               depth: (a.depth + b.depth) / 2,
               kind: 'lat',
             });
@@ -208,7 +221,10 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
             const a = projected[i]![j]!;
             const b = projected[i + 1]![j]!;
             segs.push({
-              x1: a.x, y1: a.y, x2: b.x, y2: b.y,
+              x1: a.x,
+              y1: a.y,
+              x2: b.x,
+              y2: b.y,
               depth: (a.depth + b.depth) / 2,
               kind: 'lon',
             });
@@ -217,9 +233,10 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
         segs.sort((a, b) => b.depth - a.depth);
         for (const seg of segs) {
           const baseAlpha = seg.kind === 'lat' ? 0.55 : 0.45;
-          const baseColor = seg.kind === 'lat'
-            ? 'rgba(108,197,194,'  // teal
-            : 'rgba(255,107,42,';  // amber
+          const baseColor =
+            seg.kind === 'lat'
+              ? 'rgba(108,197,194,' // teal
+              : 'rgba(255,107,42,'; // amber
           const a = depthAlpha(seg.depth, baseAlpha);
           ctx.strokeStyle = baseColor + a.toFixed(3) + ')';
           ctx.lineWidth = seg.kind === 'lat' ? 1.0 : 1.0;
@@ -264,14 +281,19 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
       const yBot = -0.55;
       const pTop = project({ x: 0, y: yTop, z: 0 }, cam, W, H);
       const pBot = project({ x: 0, y: yBot, z: 0 }, cam, W, H);
-      drawGlowPath(ctx,
-        [{ x: pTop.x, y: pTop.y }, { x: pBot.x, y: pBot.y }],
+      drawGlowPath(
+        ctx,
+        [
+          { x: pTop.x, y: pTop.y },
+          { x: pBot.x, y: pBot.y },
+        ],
         {
           color: 'rgba(236,235,229,0.95)',
           lineWidth: 2.0,
           glowColor: 'rgba(236,235,229,0.18)',
           glowWidth: 8,
-        });
+        },
+      );
 
       // Feedpoint marker — the centre of the dipole.
       const pCen = project({ x: 0, y: 0, z: 0 }, cam, W, H);
@@ -284,7 +306,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
       // pointing up and down from the feedpoint, since current along the
       // dipole produces a vertically-aligned E far-field).
       if (s.showE) {
-        const arrowYs = [0.12, 0.30, -0.12, -0.30];
+        const arrowYs = [0.12, 0.3, -0.12, -0.3];
         for (const ay of arrowYs) {
           const dir = ay > 0 ? 1 : -1;
           const tail = project({ x: 0, y: ay - dir * 0.06, z: 0 }, cam, W, H);
@@ -299,8 +321,10 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
           const dx = tip.x - tail.x;
           const dy = tip.y - tail.y;
           const L = Math.hypot(dx, dy) || 1;
-          const ux = dx / L, uy = dy / L;
-          const nx = -uy, ny = ux;
+          const ux = dx / L,
+            uy = dy / L;
+          const nx = -uy,
+            ny = ux;
           const head = 5;
           const wing = 3;
           ctx.fillStyle = getCanvasColors().pink;
@@ -344,13 +368,15 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 15.1b'}
       title="The dipole pattern, in 3D — a fat donut"
       question="The 2D sin²θ plot is a slice. What does the full pattern look like?"
-      caption={<>
-        Sweep the 2D sin²θ lobe around the dipole axis (the vertical wire) and you get this
-        toroidal surface. Strongest along the equator (broadside to the wire), pinched to zero
-        along the wire's axis. Drag to orbit. The exponent slider sharpens the pattern as the
-        antenna becomes more directive: n=2 is the canonical short dipole; higher n approximates
-        a longer end-fire structure with a narrower main lobe.
-      </>}
+      caption={
+        <>
+          Sweep the 2D sin²θ lobe around the dipole axis (the vertical wire) and you get this
+          toroidal surface. Strongest along the equator (broadside to the wire), pinched to zero
+          along the wire's axis. Drag to orbit. The exponent slider sharpens the pattern as the
+          antenna becomes more directive: n=2 is the canonical short dipole; higher n approximates a
+          longer end-fire structure with a narrower main lobe.
+        </>
+      }
     >
       <AutoResizeCanvas height={360} setup={setup} ariaLabel="3D dipole radiation pattern" />
       <DemoControls>
@@ -360,7 +386,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
           min={1}
           max={4}
           step={0.1}
-          format={v => v.toFixed(1)}
+          format={(v) => v.toFixed(1)}
           onChange={setN}
         />
         <MiniReadout label="HPBW (−3 dB)" value={beamwidth.toFixed(1)} unit="°" />

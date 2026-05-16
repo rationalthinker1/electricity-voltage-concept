@@ -9,13 +9,13 @@ export function Hero({ lab }: HeroProps) {
   return (
     <section className="page-shell max-w-page-lg max-md:px-xl">
       <div className="eyebrow-rule text-2 mb-lg">{lab.heroLabel}</div>
-      <h1 className="font-2 font-light text-[clamp(56px,9vw,132px)] leading-1 tracking-1 text-text max-w-[11ch] mb-2xl">
+      <h1 className="font-2 tracking-1 text-text mb-2xl max-w-[11ch] text-[clamp(56px,9vw,132px)] leading-1 font-light">
         {lab.heroHeadline}
       </h1>
-      <div className="formula-hero">
-        {lab.formula}
-      </div>
-      <p className="font-2 italic font-light text-7 leading-3 text-text-dim max-w-col mt-xl">{lab.deck}</p>
+      <div className="formula-hero">{lab.formula}</div>
+      <p className="font-2 text-7 text-text-dim max-w-col mt-xl leading-3 font-light italic">
+        {lab.deck}
+      </p>
     </section>
   );
 }

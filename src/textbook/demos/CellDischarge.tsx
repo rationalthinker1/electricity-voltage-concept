@@ -9,13 +9,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const Q_CAPACITY = 1.0; // arbitrary unit; charge to "empty"
 
@@ -31,22 +31,22 @@ function V_OC_of_state(soc: number, V_full: number, V_empty: number): number {
 }
 
 export function CellDischargeDemo({ figure }: Props) {
-  const V_full = 1.55;  // V open-circuit at full charge (alkaline-cell flavour)
-  const V_empty = 0.9;  // V open-circuit at empty
+  const V_full = 1.55; // V open-circuit at full charge (alkaline-cell flavour)
+  const V_empty = 0.9; // V open-circuit at empty
   const [R_int, setR_int] = useState(0.3); // Ω
-  const [R_L, setR_L] = useState(5);       // Ω
+  const [R_L, setR_L] = useState(5); // Ω
   const [running, setRunning] = useState(false);
   const [soc, setSoc] = useState(1.0); // state of charge
 
   const V_OC = V_OC_of_state(soc, V_full, V_empty);
   const I = V_OC / (R_int + R_L);
-  const V_term = V_OC * R_L / (R_int + R_L);
+  const V_term = (V_OC * R_L) / (R_int + R_L);
 
   // Integrate charge drawn over time when running
   useEffect(() => {
     if (!running) return;
     const id = window.setInterval(() => {
-      setSoc(prev => {
+      setSoc((prev) => {
         const v = V_OC_of_state(prev, V_full, V_empty);
         const iNow = v / (R_int + R_L);
         const dq = iNow * 0.02; // tick = 20 ms of fast-forward time
@@ -64,8 +64,9 @@ export function CellDischargeDemo({ figure }: Props) {
   }, [soc, V_term]);
 
   const stateRef = useRef({ V_term, V_OC, soc, R_int, R_L });
-  useEffect(() => { stateRef.current = { V_term, V_OC, soc, R_int, R_L }; },
-    [V_term, V_OC, soc, R_int, R_L]);
+  useEffect(() => {
+    stateRef.current = { V_term, V_OC, soc, R_int, R_L };
+  }, [V_term, V_OC, soc, R_int, R_L]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H } = info;
@@ -75,8 +76,10 @@ export function CellDischargeDemo({ figure }: Props) {
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
-      const pX = 36, pY = 22;
-      const pW = W - 60, pH = H - 50;
+      const pX = 36,
+        pY = 22;
+      const pW = W - 60,
+        pH = H - 50;
       ctx.strokeStyle = getCanvasColors().border;
       ctx.strokeRect(pX, pY, pW, pH);
 
@@ -96,7 +99,8 @@ export function CellDischargeDemo({ figure }: Props) {
         const v = V_OC_of_state(s, V_full, V_empty);
         const x = xSOC(s);
         const y = yV(v);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -108,10 +112,11 @@ export function CellDischargeDemo({ figure }: Props) {
       for (let i = 0; i <= 80; i++) {
         const sc = 1 - i / 80;
         const v_oc = V_OC_of_state(sc, V_full, V_empty);
-        const v_term = v_oc * s.R_L / (s.R_int + s.R_L);
+        const v_term = (v_oc * s.R_L) / (s.R_int + s.R_L);
         const x = xSOC(sc);
         const y = yV(v_term);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -155,10 +160,13 @@ export function CellDischargeDemo({ figure }: Props) {
       question="Why does a fresh battery 'feel' stronger than an old one?"
       caption={
         <>
-          A real cell is an open-circuit voltage <strong>V_OC</strong> in series with an internal resistance
-          <strong> R_int</strong>. Under a load R_L the terminal voltage <em>V_term = V_OC · R_L / (R_int + R_L)</em>
-          sags below V_OC by the IR drop across the internal resistance. As the chemistry depletes, V_OC itself falls
-          (slowly through the plateau, then sharply near the knee), and the loaded voltage follows.
+          A real cell is an open-circuit voltage <strong>V_OC</strong> in series with an internal
+          resistance
+          <strong> R_int</strong>. Under a load R_L the terminal voltage{' '}
+          <em>V_term = V_OC · R_L / (R_int + R_L)</em>
+          sags below V_OC by the IR drop across the internal resistance. As the chemistry depletes,
+          V_OC itself falls (slowly through the plateau, then sharply near the knee), and the loaded
+          voltage follows.
         </>
       }
     >
@@ -169,19 +177,33 @@ export function CellDischargeDemo({ figure }: Props) {
           checked={running}
           onChange={setRunning}
         />
-        <button type="button" className="mini-toggle" onClick={() => { setSoc(1.0); setRunning(false); traceRef.current = []; }}>
+        <button
+          type="button"
+          className="mini-toggle"
+          onClick={() => {
+            setSoc(1.0);
+            setRunning(false);
+            traceRef.current = [];
+          }}
+        >
           Reset
         </button>
         <MiniSlider
           label="R_int"
-          value={R_int} min={0.05} max={3} step={0.05}
-          format={v => v.toFixed(2) + ' Ω'}
+          value={R_int}
+          min={0.05}
+          max={3}
+          step={0.05}
+          format={(v) => v.toFixed(2) + ' Ω'}
           onChange={setR_int}
         />
         <MiniSlider
           label="R_load"
-          value={R_L} min={0.5} max={50} step={0.5}
-          format={v => v.toFixed(1) + ' Ω'}
+          value={R_L}
+          min={0.5}
+          max={50}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' Ω'}
           onChange={setR_L}
         />
         <MiniReadout label="V_OC" value={<Num value={V_OC} />} unit="V" />

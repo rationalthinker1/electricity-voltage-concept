@@ -14,14 +14,18 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function GaussELawDemo({ figure }: Props) {
-  const [qNC, setQNC] = useState(5);          // enclosed charge, nC
+  const [qNC, setQNC] = useState(5); // enclosed charge, nC
   const [outside, setOutside] = useState(false); // put charge *outside* the box?
 
   const stateRef = useRef({ qNC, outside });
-  useEffect(() => { stateRef.current = { qNC, outside }; }, [qNC, outside]);
+  useEffect(() => {
+    stateRef.current = { qNC, outside };
+  }, [qNC, outside]);
 
   // Flux ∮E·dA = Q_enc / ε₀ — exact by Gauss. If the charge sits outside the
   // box, by the divergence theorem the enclosed charge is zero, so flux is 0.
@@ -37,7 +41,8 @@ export function GaussELawDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const cx = w / 2, cy = h / 2;
+      const cx = w / 2,
+        cy = h / 2;
       // Box (Gaussian surface) dimensions
       const bw = Math.min(w * 0.48, 360);
       const bh = Math.min(h * 0.6, 200);
@@ -55,12 +60,14 @@ export function GaussELawDemo({ figure }: Props) {
       const step = 28;
       for (let x = step / 2; x < w; x += step) {
         for (let y = step / 2; y < h; y += step) {
-          const dx = x - chargeX, dy = y - chargeY;
+          const dx = x - chargeX,
+            dy = y - chargeY;
           const r = Math.hypot(dx, dy);
           if (r < 14) continue;
-          const ux = dx / r, uy = dy / r;
+          const ux = dx / r,
+            uy = dy / r;
           // length scales with log(|q|/r²); cap for sanity
-          const intensity = Math.log10(mag * 1e3 / (r * r) + 1) * 6;
+          const intensity = Math.log10((mag * 1e3) / (r * r) + 1) * 6;
           const L = Math.max(2, Math.min(14, intensity));
           // Color: pink if positive (out), blue if negative (in)
           const color = sign > 0 ? '255,107,42' : '108,197,194';
@@ -75,7 +82,8 @@ export function GaussELawDemo({ figure }: Props) {
           // small arrowhead
           const hx = x + ux * L * dir * 0.5;
           const hy = y + uy * L * dir * 0.5;
-          const nx = -uy * dir, ny = ux * dir;
+          const nx = -uy * dir,
+            ny = ux * dir;
           ctx.fillStyle = `rgba(${color},0.55)`;
           ctx.beginPath();
           ctx.moveTo(hx, hy);
@@ -105,12 +113,17 @@ export function GaussELawDemo({ figure }: Props) {
       grd.addColorStop(0, cColor);
       grd.addColorStop(1, cColor + '00');
       ctx.fillStyle = grd;
-      ctx.beginPath(); ctx.arc(chargeX, chargeY, cR * 3, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(chargeX, chargeY, cR * 3, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = cColor;
-      ctx.beginPath(); ctx.arc(chargeX, chargeY, cR, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(chargeX, chargeY, cR, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = colors.bg;
       ctx.font = `bold ${cR}px JetBrains Mono`;
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText(qNC >= 0 ? '+' : '−', chargeX, chargeY);
 
       // Label
@@ -137,19 +150,25 @@ export function GaussELawDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 8.1'}
       title="Gauss's law for E"
       question="What does ∮E·dA = Q/ε₀ actually look like?"
-      caption={<>
-        The dashed box is an imaginary closed surface — a Gaussian surface. The total electric flux through it equals
-        the enclosed charge divided by <strong>ε₀</strong>. Slide the charge; flux scales linearly. Move it
-        outside the box and the net flux drops to zero — every field line that enters one side leaves through another.
-      </>}
+      caption={
+        <>
+          The dashed box is an imaginary closed surface — a Gaussian surface. The total electric
+          flux through it equals the enclosed charge divided by <strong>ε₀</strong>. Slide the
+          charge; flux scales linearly. Move it outside the box and the net flux drops to zero —
+          every field line that enters one side leaves through another.
+        </>
+      }
       deeperLab={{ slug: 'gauss', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="Q_enc"
-          value={qNC} min={-10} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' nC'}
+          value={qNC}
+          min={-10}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' nC'}
           onChange={setQNC}
         />
         <MiniToggle

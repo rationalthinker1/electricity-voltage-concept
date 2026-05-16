@@ -18,7 +18,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function DiffractionGratingDemo({ figure }: Props) {
   // N = 10 / 100 / 1000 — index 0 / 1 / 2 on a discrete slider
@@ -27,11 +29,13 @@ export function DiffractionGratingDemo({ figure }: Props) {
   const [linesPerMm, setLinesPerMm] = useState(600);
 
   const stateRef = useRef({ nIdx, lamNm, linesPerMm });
-  useEffect(() => { stateRef.current = { nIdx, lamNm, linesPerMm }; }, [nIdx, lamNm, linesPerMm]);
+  useEffect(() => {
+    stateRef.current = { nIdx, lamNm, linesPerMm };
+  }, [nIdx, lamNm, linesPerMm]);
 
   const Nvals = [10, 100, 1000];
   const lam = lamNm * 1e-9;
-  const dGr = 1e-3 / linesPerMm;          // grating period in metres
+  const dGr = 1e-3 / linesPerMm; // grating period in metres
   const theta1 = Math.asin(Math.min(1, lam / dGr));
   const theta1Deg = (theta1 * 180) / Math.PI;
 
@@ -63,8 +67,10 @@ export function DiffractionGratingDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(x0, yBase); ctx.lineTo(x0 + plotW, yBase);
-      ctx.moveTo(x0 + plotW / 2, y0); ctx.lineTo(x0 + plotW / 2, yBase);
+      ctx.moveTo(x0, yBase);
+      ctx.lineTo(x0 + plotW, yBase);
+      ctx.moveTo(x0 + plotW / 2, y0);
+      ctx.lineTo(x0 + plotW / 2, yBase);
       ctx.stroke();
 
       // Wavelength colour
@@ -77,19 +83,20 @@ export function DiffractionGratingDemo({ figure }: Props) {
       ctx.lineWidth = 1.3;
       ctx.beginPath();
       for (let i = 0; i <= Nsamp; i++) {
-        const s = -1 + 2 * (i / Nsamp);          // sin θ
+        const s = -1 + 2 * (i / Nsamp); // sin θ
         const beta = (Math.PI * d_ * s) / lam_;
         let I: number;
         const sb = Math.sin(beta);
         const sNb = Math.sin(N * beta);
         if (Math.abs(sb) < 1e-9) {
-          I = 1;                                  // principal max
+          I = 1; // principal max
         } else {
           I = (sNb * sNb) / (N * N * sb * sb);
         }
         const xPlot = x0 + (i / Nsamp) * plotW;
         const yPlot = yBase - (I / Imax) * plotH;
-        if (i === 0) ctx.moveTo(xPlot, yPlot); else ctx.lineTo(xPlot, yPlot);
+        if (i === 0) ctx.moveTo(xPlot, yPlot);
+        else ctx.lineTo(xPlot, yPlot);
       }
       ctx.stroke();
 
@@ -102,7 +109,8 @@ export function DiffractionGratingDemo({ figure }: Props) {
         if (Math.abs(s) > 1) continue;
         const xx = x0 + ((s + 1) / 2) * plotW;
         ctx.beginPath();
-        ctx.moveTo(xx, y0); ctx.lineTo(xx, yBase + 4);
+        ctx.moveTo(xx, y0);
+        ctx.lineTo(xx, yBase + 4);
         ctx.stroke();
         ctx.setLineDash([]);
         ctx.fillStyle = getCanvasColors().textDim;
@@ -140,23 +148,46 @@ export function DiffractionGratingDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 14.9'}
       title="Diffraction grating — N slits sharpen the maxima"
       question="Why does a grating make sharper spectral lines than two slits?"
-      caption={<>
-        N equally-spaced slits of spacing <strong>d</strong>, illuminated by light of wavelength
-        <strong> λ</strong>. Principal maxima appear at <strong>sin θ = m λ / d</strong>. The full
-        width at half-maximum of each principal peak shrinks as <strong>1/N</strong>, so increasing
-        N from 10 to 1000 narrows the lines by two orders of magnitude — that's the physics behind
-        every grating spectrometer. The first-order angle for the current λ and d is shown in the
-        readout.
-      </>}
+      caption={
+        <>
+          N equally-spaced slits of spacing <strong>d</strong>, illuminated by light of wavelength
+          <strong> λ</strong>. Principal maxima appear at <strong>sin θ = m λ / d</strong>. The full
+          width at half-maximum of each principal peak shrinks as <strong>1/N</strong>, so
+          increasing N from 10 to 1000 narrows the lines by two orders of magnitude — that's the
+          physics behind every grating spectrometer. The first-order angle for the current λ and d
+          is shown in the readout.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
-        <MiniSlider label="N" value={nIdx} min={0} max={2} step={1}
-          format={v => Nvals[Math.round(v)].toString()} onChange={setNIdx} />
-        <MiniSlider label="λ" value={lamNm} min={400} max={700} step={5}
-          format={v => v.toFixed(0) + ' nm'} onChange={setLamNm} />
-        <MiniSlider label="lines/mm" value={linesPerMm} min={100} max={2000} step={10}
-          format={v => v.toFixed(0)} onChange={setLinesPerMm} />
+        <MiniSlider
+          label="N"
+          value={nIdx}
+          min={0}
+          max={2}
+          step={1}
+          format={(v) => Nvals[Math.round(v)].toString()}
+          onChange={setNIdx}
+        />
+        <MiniSlider
+          label="λ"
+          value={lamNm}
+          min={400}
+          max={700}
+          step={5}
+          format={(v) => v.toFixed(0) + ' nm'}
+          onChange={setLamNm}
+        />
+        <MiniSlider
+          label="lines/mm"
+          value={linesPerMm}
+          min={100}
+          max={2000}
+          step={10}
+          format={(v) => v.toFixed(0)}
+          onChange={setLinesPerMm}
+        />
         <MiniReadout label="θ₁" value={theta1Deg.toFixed(2)} unit="°" />
       </DemoControls>
     </Demo>
@@ -164,12 +195,33 @@ export function DiffractionGratingDemo({ figure }: Props) {
 }
 
 function wavelengthRGB(lam: number): [number, number, number] {
-  let r = 0, g = 0, b = 0;
-  if (lam >= 380 && lam < 440) { r = -(lam - 440) / 60; g = 0; b = 1; }
-  else if (lam < 490) { r = 0; g = (lam - 440) / 50; b = 1; }
-  else if (lam < 510) { r = 0; g = 1; b = -(lam - 510) / 20; }
-  else if (lam < 580) { r = (lam - 510) / 70; g = 1; b = 0; }
-  else if (lam < 645) { r = 1; g = -(lam - 645) / 65; b = 0; }
-  else if (lam <= 740) { r = 1; g = 0; b = 0; }
+  let r = 0,
+    g = 0,
+    b = 0;
+  if (lam >= 380 && lam < 440) {
+    r = -(lam - 440) / 60;
+    g = 0;
+    b = 1;
+  } else if (lam < 490) {
+    r = 0;
+    g = (lam - 440) / 50;
+    b = 1;
+  } else if (lam < 510) {
+    r = 0;
+    g = 1;
+    b = -(lam - 510) / 20;
+  } else if (lam < 580) {
+    r = (lam - 510) / 70;
+    g = 1;
+    b = 0;
+  } else if (lam < 645) {
+    r = 1;
+    g = -(lam - 645) / 65;
+    b = 0;
+  } else if (lam <= 740) {
+    r = 1;
+    g = 0;
+    b = 0;
+  }
   return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }

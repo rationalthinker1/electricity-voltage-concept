@@ -26,7 +26,13 @@ import { drawComponent, GRID_PX } from './components';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { pinCoords, pkey, eng } from './solver';
 import type {
-  ComponentKind, GridPoint, NodeMap, PlacedComponent, Probe, SolverResult, Wire,
+  ComponentKind,
+  GridPoint,
+  NodeMap,
+  PlacedComponent,
+  Probe,
+  SolverResult,
+  Wire,
 } from './types';
 
 const CANVAS_HEIGHT = 600;
@@ -75,7 +81,9 @@ interface UIState {
 export function CanvasEditor(props: CanvasEditorProps) {
   // Refs so the canvas draw loop sees current values without re-running setup.
   const propsRef = useRef(props);
-  useEffect(() => { propsRef.current = props; }, [props]);
+  useEffect(() => {
+    propsRef.current = props;
+  }, [props]);
 
   const uiRef = useRef<UIState>({
     hoverComponentId: null,
@@ -91,7 +99,9 @@ export function CanvasEditor(props: CanvasEditorProps) {
 
   // Force a redraw kick whenever React props change (for static state like selection).
   const rerenderKick = useRef(0);
-  useEffect(() => { rerenderKick.current++; }, [props]);
+  useEffect(() => {
+    rerenderKick.current++;
+  }, [props]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, canvas } = info;
@@ -108,7 +118,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
     }
     function getMouse(e: MouseEvent | TouchEvent): [number, number] {
       const r = canvas.getBoundingClientRect();
-      const t = 'touches' in e ? (e.touches[0] || (e as TouchEvent).changedTouches?.[0]) : e;
+      const t = 'touches' in e ? e.touches[0] || (e as TouchEvent).changedTouches?.[0] : e;
       if (!t) return [-1, -1];
       return [t.clientX - r.left, t.clientY - r.top];
     }
@@ -148,13 +158,13 @@ export function CanvasEditor(props: CanvasEditorProps) {
           const pp = pxFromGrid(p.at);
           if (Math.hypot(mx - pp.x - 14, my - pp.y - 14) < 10) return p;
         } else if (p.kind === 'ammeter' && p.componentId) {
-          const c = components.find(cc => cc.id === p.componentId);
+          const c = components.find((cc) => cc.id === p.componentId);
           if (!c) continue;
           const [p0g, p1g] = pinCoords(c);
           if (!p1g) continue;
           const mid = {
-            x: (p0g.x + p1g.x) * GRID_PX / 2,
-            y: (p0g.y + p1g.y) * GRID_PX / 2,
+            x: ((p0g.x + p1g.x) * GRID_PX) / 2,
+            y: ((p0g.y + p1g.y) * GRID_PX) / 2,
           };
           if (Math.hypot(mx - mid.x - 16, my - mid.y - 16) < 10) return p;
         }
@@ -182,7 +192,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
       if (ui.dragId) {
         // Drag a placed component.
         const newPos = gridFromMouse(mx - (ui.dragOffset?.x ?? 0), my - (ui.dragOffset?.y ?? 0));
-        const c = propsRef.current.components.find(c => c.id === ui.dragId);
+        const c = propsRef.current.components.find((c) => c.id === ui.dragId);
         if (c && (c.x !== newPos.x || c.y !== newPos.y)) {
           ui.dragMoved = true;
           propsRef.current.onMoveComponent(c.id, newPos);
@@ -207,11 +217,11 @@ export function CanvasEditor(props: CanvasEditorProps) {
       } else {
         const c = hitTestComponent(mx, my);
         const probe = c ? null : hitTestProbe(mx, my);
-        const wire = (c || probe) ? null : hitTestWire(mx, my);
+        const wire = c || probe ? null : hitTestWire(mx, my);
         ui.hoverComponentId = c?.id ?? null;
         ui.hoverProbeId = probe?.id ?? null;
         ui.hoverWireId = wire?.id ?? null;
-        canvas.style.cursor = (c || probe || wire) ? 'pointer' : 'default';
+        canvas.style.cursor = c || probe || wire ? 'pointer' : 'default';
       }
     }
 
@@ -313,7 +323,9 @@ export function CanvasEditor(props: CanvasEditorProps) {
         clientY: e.touches[0].clientY,
       } as MouseEvent);
     }
-    function onTouchEnd() { onMouseUp(); }
+    function onTouchEnd() {
+      onMouseUp();
+    }
 
     canvas.addEventListener('mousedown', onMouseDown);
     canvas.addEventListener('mousemove', onMouseMove);
@@ -339,10 +351,16 @@ export function CanvasEditor(props: CanvasEditorProps) {
       ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       for (let x = 0; x < w; x += GRID_PX) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
       }
       for (let y = 0; y < h; y += GRID_PX) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
       }
       // Grid dots at intersections (subtle).
       ctx.fillStyle = colors.border;
@@ -355,7 +373,7 @@ export function CanvasEditor(props: CanvasEditorProps) {
       // Wires.
       for (const wr of p.wires) {
         const a = { x: wr.from.x * GRID_PX, y: wr.from.y * GRID_PX };
-        const b = { x: wr.to.x * GRID_PX,   y: wr.to.y * GRID_PX };
+        const b = { x: wr.to.x * GRID_PX, y: wr.to.y * GRID_PX };
         const isSelected = p.selectedWireId === wr.id;
         const isHovered = ui.hoverWireId === wr.id;
         ctx.strokeStyle = isSelected ? colors.accent : isHovered ? colors.text : colors.textDim;
@@ -381,7 +399,9 @@ export function CanvasEditor(props: CanvasEditorProps) {
           brightness = Math.min(1, P / 0.5);
         }
         drawComponent(c, {
-          ctx, p0, p1,
+          ctx,
+          p0,
+          p1,
           selected: p.selectedId === c.id,
           hovered: ui.hoverComponentId === c.id,
           current: p.solverResult?.componentCurrents.get(c.id) ?? 0,
@@ -414,19 +434,24 @@ export function CanvasEditor(props: CanvasEditorProps) {
       for (const probe of p.probes) {
         if (probe.kind === 'voltmeter' && probe.at) {
           const pp = { x: probe.at.x * GRID_PX, y: probe.at.y * GRID_PX };
-          drawProbeBadge(ctx, pp.x + 14, pp.y + 14, 'V', colors.teal,
-            ui.hoverProbeId === probe.id);
+          drawProbeBadge(ctx, pp.x + 14, pp.y + 14, 'V', colors.teal, ui.hoverProbeId === probe.id);
         } else if (probe.kind === 'ammeter' && probe.componentId) {
-          const c = p.components.find(cc => cc.id === probe.componentId);
+          const c = p.components.find((cc) => cc.id === probe.componentId);
           if (!c) continue;
           const [a, b] = pinCoords(c);
           if (!b) continue;
           const mid = {
-            x: (a.x + b.x) * GRID_PX / 2,
-            y: (a.y + b.y) * GRID_PX / 2,
+            x: ((a.x + b.x) * GRID_PX) / 2,
+            y: ((a.y + b.y) * GRID_PX) / 2,
           };
-          drawProbeBadge(ctx, mid.x + 16, mid.y + 16, 'A', colors.accent,
-            ui.hoverProbeId === probe.id);
+          drawProbeBadge(
+            ctx,
+            mid.x + 16,
+            mid.y + 16,
+            'A',
+            colors.accent,
+            ui.hoverProbeId === probe.id,
+          );
         }
       }
 
@@ -464,7 +489,13 @@ export function CanvasEditor(props: CanvasEditorProps) {
       }
 
       // Ghost placement preview when a component is armed.
-      if (p.armed && p.armed !== 'wire' && p.armed !== 'voltmeter' && p.armed !== 'ammeter' && ui.ghost) {
+      if (
+        p.armed &&
+        p.armed !== 'wire' &&
+        p.armed !== 'voltmeter' &&
+        p.armed !== 'ammeter' &&
+        ui.ghost
+      ) {
         const gx = ui.ghost.x * GRID_PX;
         const gy = ui.ghost.y * GRID_PX;
         ctx.strokeStyle = colors.accentGlow;
@@ -495,25 +526,27 @@ export function CanvasEditor(props: CanvasEditorProps) {
             ctx.save();
             ctx.globalAlpha = 0.9;
             ctx.fillStyle = colors.bg;
-            const padX = 4, w0 = ctx.measureText(text).width + padX * 2;
+            const padX = 4,
+              w0 = ctx.measureText(text).width + padX * 2;
             ctx.fillRect(cx + 12, cy - 8, w0, 16);
             ctx.restore();
             ctx.fillStyle = colors.teal;
             ctx.textAlign = 'left';
             ctx.fillText(text, cx + 12 + padX, cy + 0.5);
           } else if (probe.kind === 'ammeter' && probe.componentId) {
-            const c = p.components.find(cc => cc.id === probe.componentId);
+            const c = p.components.find((cc) => cc.id === probe.componentId);
             if (!c) continue;
             const [a, b] = pinCoords(c);
             if (!b) continue;
             const i = p.solverResult.componentCurrents.get(probe.componentId) ?? 0;
             const text = eng(i, 3) + 'A';
-            const cx = (a.x + b.x) * GRID_PX / 2 + 16;
-            const cy = (a.y + b.y) * GRID_PX / 2 + 16;
+            const cx = ((a.x + b.x) * GRID_PX) / 2 + 16;
+            const cy = ((a.y + b.y) * GRID_PX) / 2 + 16;
             ctx.save();
             ctx.globalAlpha = 0.9;
             ctx.fillStyle = colors.bg;
-            const padX = 4, w0 = ctx.measureText(text).width + padX * 2;
+            const padX = 4,
+              w0 = ctx.measureText(text).width + padX * 2;
             ctx.fillRect(cx + 12, cy - 8, w0, 16);
             ctx.restore();
             ctx.fillStyle = colors.accent;
@@ -546,18 +579,24 @@ export function CanvasEditor(props: CanvasEditorProps) {
 /* ───── Small helpers ───── */
 
 function distToSeg(px: number, py: number, ax: number, ay: number, bx: number, by: number): number {
-  const dx = bx - ax, dy = by - ay;
+  const dx = bx - ax,
+    dy = by - ay;
   const l2 = dx * dx + dy * dy;
   if (l2 === 0) return Math.hypot(px - ax, py - ay);
   let t = ((px - ax) * dx + (py - ay) * dy) / l2;
   t = Math.max(0, Math.min(1, t));
-  const x = ax + t * dx, y = ay + t * dy;
+  const x = ax + t * dx,
+    y = ay + t * dy;
   return Math.hypot(px - x, py - y);
 }
 
 function drawProbeBadge(
   ctx: CanvasRenderingContext2D,
-  cx: number, cy: number, label: string, color: string, hover: boolean,
+  cx: number,
+  cy: number,
+  label: string,
+  color: string,
+  hover: boolean,
 ) {
   const colors = getCanvasColors();
   ctx.fillStyle = colors.bg;

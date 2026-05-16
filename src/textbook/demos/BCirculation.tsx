@@ -18,14 +18,18 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function BCirculationDemo({ figure }: Props) {
   const [I, setI] = useState(10);
   const [a_mm, setAMm] = useState(1.5);
 
   const stateRef = useRef({ I, a_mm });
-  useEffect(() => { stateRef.current = { I, a_mm }; }, [I, a_mm]);
+  useEffect(() => {
+    stateRef.current = { I, a_mm };
+  }, [I, a_mm]);
 
   const a_m = a_mm * 1e-3;
   const Bsurf = (PHYS.mu_0 * Math.abs(I)) / (2 * Math.PI * a_m);
@@ -90,7 +94,8 @@ export function BCirculationDemo({ figure }: Props) {
           // arrowhead
           const hx = ax + tx * len * 0.5;
           const hy = ay + ty * len * 0.5;
-          const nx = -ty, ny = tx;
+          const nx = -ty,
+            ny = tx;
           ctx.beginPath();
           ctx.moveTo(hx, hy);
           ctx.lineTo(hx - tx * 4 + nx * 3, hy - ty * 4 + ny * 3);
@@ -107,43 +112,54 @@ export function BCirculationDemo({ figure }: Props) {
       const tx = cx + tracerR * Math.cos(tracerTheta);
       const ty = cy + tracerR * Math.sin(tracerTheta);
       ctx.fillStyle = colors.teal;
-      ctx.beginPath(); ctx.arc(tx, ty, 2.4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(tx, ty, 2.4, 0, Math.PI * 2);
+      ctx.fill();
 
       // ── Wire (end-on disc) at center
       const halo = ctx.createRadialGradient(cx, cy, 0, cx, cy, wireR_px * 3);
       halo.addColorStop(0, 'rgba(255,107,42,0.45)');
       halo.addColorStop(1, 'rgba(255,107,42,0)');
       ctx.fillStyle = halo;
-      ctx.beginPath(); ctx.arc(cx, cy, wireR_px * 3, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy, wireR_px * 3, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = colors.surfaceHover;
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.arc(cx, cy, wireR_px, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, wireR_px, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
       // × glyph (current into page)
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       const k = wireR_px * 0.55;
       ctx.beginPath();
-      ctx.moveTo(cx - k, cy - k); ctx.lineTo(cx + k, cy + k);
-      ctx.moveTo(cx + k, cy - k); ctx.lineTo(cx - k, cy + k);
+      ctx.moveTo(cx - k, cy - k);
+      ctx.lineTo(cx + k, cy + k);
+      ctx.moveTo(cx + k, cy - k);
+      ctx.lineTo(cx - k, cy + k);
       ctx.stroke();
 
       // Wire label
       ctx.save();
-      ctx.globalAlpha = .85;
+      ctx.globalAlpha = 0.85;
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       ctx.fillText(`I = ${I.toFixed(1)} A  ⊗  (into page)`, cx, cy + wireR_px * 3 + 6);
       ctx.restore();
 
       // Top-left labels
       ctx.fillStyle = colors.teal;
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText('B  (circumferential)', 18, 14);
       ctx.save();
-      ctx.globalAlpha = .7;
+      ctx.globalAlpha = 0.7;
       ctx.fillStyle = colors.textDim;
       ctx.fillText('right-hand rule: thumb along I, fingers curl with B', 18, 30);
       ctx.restore();
@@ -153,7 +169,8 @@ export function BCirculationDemo({ figure }: Props) {
       const B_ = (PHYS.mu_0 * Math.abs(I)) / (2 * Math.PI * a_m_);
       ctx.fillStyle = colors.teal;
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'alphabetic';
       ctx.fillText(`B at surface (r = a) = μ₀ I / (2π a) = ${pretty(B_)} T`, w / 2, h - 12);
 
       raf = requestAnimationFrame(draw);
@@ -167,25 +184,35 @@ export function BCirculationDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 6.3'}
       title="B wraps the wire"
       question="And the magnetic field — which way does that point?"
-      caption={<>
-        End-on view of the same wire (current into the page, ⊗). The teal circles are <strong>B</strong>; tangent arrows show
-        its direction by the right-hand rule. <strong>B</strong> is <em>circumferential</em> — perpendicular at every point to the axial
-        <strong> E</strong>. That perpendicularity is exactly what makes their cross product non-zero, and that cross product is the energy flux.
-      </>}
+      caption={
+        <>
+          End-on view of the same wire (current into the page, ⊗). The teal circles are{' '}
+          <strong>B</strong>; tangent arrows show its direction by the right-hand rule.{' '}
+          <strong>B</strong> is <em>circumferential</em> — perpendicular at every point to the axial
+          <strong> E</strong>. That perpendicularity is exactly what makes their cross product
+          non-zero, and that cross product is the energy flux.
+        </>
+      }
       deeperLab={{ slug: 'biot-savart', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="I"
-          value={I} min={0.1} max={50} step={0.1}
-          format={v => v.toFixed(1) + ' A'}
+          value={I}
+          min={0.1}
+          max={50}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' A'}
           onChange={setI}
         />
         <MiniSlider
           label="a"
-          value={a_mm} min={0.5} max={5} step={0.05}
-          format={v => v.toFixed(2) + ' mm'}
+          value={a_mm}
+          min={0.5}
+          max={5}
+          step={0.05}
+          format={(v) => v.toFixed(2) + ' mm'}
           onChange={setAMm}
         />
         <MiniReadout label="|B| at surface" value={<Num value={Bsurf} />} unit="T" />

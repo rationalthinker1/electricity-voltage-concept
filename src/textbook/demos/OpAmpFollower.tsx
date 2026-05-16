@@ -16,25 +16,25 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function OpAmpFollowerDemo({ figure }: Props) {
-  const [Vs, setVs] = useState(2);            // V
+  const [Vs, setVs] = useState(2); // V
   // Logarithmic resistance sliders (decades)
-  const [logRs, setLogRs] = useState(6);      // R_s = 10^logRs Ω  → 1 MΩ
-  const [logRL, setLogRL] = useState(1.7);    // R_L = 10^logRL Ω → ~50 Ω
+  const [logRs, setLogRs] = useState(6); // R_s = 10^logRs Ω  → 1 MΩ
+  const [logRL, setLogRL] = useState(1.7); // R_L = 10^logRL Ω → ~50 Ω
   const [bufferOn, setBufferOn] = useState(false);
 
   const Rs = Math.pow(10, logRs);
   const RL = Math.pow(10, logRL);
-  const VdirectLoad = Vs * RL / (Rs + RL);
-  const VbufferedLoad = Vs;  // ideal follower
+  const VdirectLoad = (Vs * RL) / (Rs + RL);
+  const VbufferedLoad = Vs; // ideal follower
   const Vshown = bufferOn ? VbufferedLoad : VdirectLoad;
 
   const stateRef = useRef({ Vs, Rs, RL, VdirectLoad, bufferOn });
@@ -43,7 +43,7 @@ export function OpAmpFollowerDemo({ figure }: Props) {
   }, [Vs, Rs, RL, VdirectLoad, bufferOn]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
@@ -67,23 +67,46 @@ export function OpAmpFollowerDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 13.1b'}
       title="Voltage follower — the op-amp's true job"
       question="A 1 MΩ source driving a 50 Ω load: where does the signal go?"
-      caption={<>
-        A high-impedance source (V<sub>s</sub> through R<sub>s</sub>) feeds a low-impedance
-        load R<sub>L</sub>. Direct connection: the load shorts out the source — V<sub>load</sub>
-        ≈ V<sub>s</sub>·R<sub>L</sub>/R<sub>s</sub>, almost nothing. Insert a unity-gain op-amp
-        between them: the op-amp's huge input impedance draws no current from the source, and its
-        tiny output impedance drives the load stiffly. V<sub>load</sub> = V<sub>s</sub>, exactly.
-        The follower has gain 1; its <em>point</em> is impedance translation.
-      </>}
+      caption={
+        <>
+          A high-impedance source (V<sub>s</sub> through R<sub>s</sub>) feeds a low-impedance load R
+          <sub>L</sub>. Direct connection: the load shorts out the source — V<sub>load</sub>≈ V
+          <sub>s</sub>·R<sub>L</sub>/R<sub>s</sub>, almost nothing. Insert a unity-gain op-amp
+          between them: the op-amp's huge input impedance draws no current from the source, and its
+          tiny output impedance drives the load stiffly. V<sub>load</sub> = V<sub>s</sub>, exactly.
+          The follower has gain 1; its <em>point</em> is impedance translation.
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <MiniSlider label="V_s" value={Vs} min={0} max={5} step={0.1}
-          format={v => v.toFixed(2) + ' V'} onChange={setVs} />
-        <MiniSlider label="R_s (log)" value={logRs} min={1} max={9} step={0.1}
-          format={v => fmtRLog(v)} onChange={setLogRs} />
-        <MiniSlider label="R_L (log)" value={logRL} min={1} max={9} step={0.1}
-          format={v => fmtRLog(v)} onChange={setLogRL} />
+        <MiniSlider
+          label="V_s"
+          value={Vs}
+          min={0}
+          max={5}
+          step={0.1}
+          format={(v) => v.toFixed(2) + ' V'}
+          onChange={setVs}
+        />
+        <MiniSlider
+          label="R_s (log)"
+          value={logRs}
+          min={1}
+          max={9}
+          step={0.1}
+          format={(v) => fmtRLog(v)}
+          onChange={setLogRs}
+        />
+        <MiniSlider
+          label="R_L (log)"
+          value={logRL}
+          min={1}
+          max={9}
+          step={0.1}
+          format={(v) => fmtRLog(v)}
+          onChange={setLogRL}
+        />
         <MiniToggle
           label={bufferOn ? 'Buffer: in circuit' : 'No buffer'}
           checked={bufferOn}
@@ -91,7 +114,11 @@ export function OpAmpFollowerDemo({ figure }: Props) {
         />
         <MiniReadout label="R_s" value={<Num value={Rs} />} unit="Ω" />
         <MiniReadout label="R_L" value={<Num value={RL} />} unit="Ω" />
-        <MiniReadout label="V_load (direct)" value={<Num value={VdirectLoad} digits={3} />} unit="V" />
+        <MiniReadout
+          label="V_load (direct)"
+          value={<Num value={VdirectLoad} digits={3} />}
+          unit="V"
+        />
         <MiniReadout label="V_load (live)" value={<Num value={Vshown} digits={3} />} unit="V" />
       </DemoControls>
     </Demo>
@@ -109,8 +136,15 @@ function fmtRLog(v: number): string {
 
 function drawSchematic(
   ctx: CanvasRenderingContext2D,
-  x0: number, y0: number, _w: number, h: number,
-  Vs: number, Rs: number, RL: number, bufferOn: boolean, VdirectLoad: number,
+  x0: number,
+  y0: number,
+  _w: number,
+  h: number,
+  Vs: number,
+  Rs: number,
+  RL: number,
+  bufferOn: boolean,
+  VdirectLoad: number,
 ) {
   ctx.save();
   ctx.translate(x0, y0);
@@ -145,7 +179,8 @@ function drawSchematic(
   ctx.globalAlpha = 0.55;
   ctx.strokeStyle = getCanvasColors().text;
   ctx.beginPath();
-  ctx.moveTo(xSrc + 12, yWire); ctx.lineTo(xSrc + 30, yWire);
+  ctx.moveTo(xSrc + 12, yWire);
+  ctx.lineTo(xSrc + 30, yWire);
   ctx.stroke();
   const xRsLeft = xSrc + 30;
   const xRsRight = xRsLeft + 60;
@@ -163,7 +198,8 @@ function drawSchematic(
   ctx.globalAlpha = 0.55;
   ctx.strokeStyle = getCanvasColors().text;
   ctx.beginPath();
-  ctx.moveTo(xRsRight, yWire); ctx.lineTo(xRsRight + 30, yWire);
+  ctx.moveTo(xRsRight, yWire);
+  ctx.lineTo(xRsRight + 30, yWire);
   ctx.stroke();
 
   // Optional buffer triangle
@@ -192,7 +228,8 @@ function drawSchematic(
     ctx.strokeStyle = getCanvasColors().text;
     ctx.lineWidth = 1.4;
     ctx.beginPath();
-    ctx.moveTo(xTri + 42, yWire); ctx.lineTo(xTri + 70, yWire);
+    ctx.moveTo(xTri + 42, yWire);
+    ctx.lineTo(xTri + 70, yWire);
     // feedback loop: output back to (-) input
     ctx.moveTo(xTri + 42, yWire);
     ctx.lineTo(xTri + 52, yWire);
@@ -218,7 +255,8 @@ function drawSchematic(
   ctx.strokeStyle = getCanvasColors().text;
   ctx.lineWidth = 1.4;
   ctx.beginPath();
-  ctx.moveTo(xNodeOut, yWire); ctx.lineTo(xNodeOut + 20, yWire);
+  ctx.moveTo(xNodeOut, yWire);
+  ctx.lineTo(xNodeOut + 20, yWire);
   ctx.stroke();
   const xRL = xNodeOut + 20;
   // Vertical R_L
@@ -250,8 +288,10 @@ function drawSchematic(
   ctx.strokeStyle = getCanvasColors().text;
   ctx.lineWidth = 1.4;
   ctx.beginPath();
-  ctx.moveTo(xSrc, yWire + 12); ctx.lineTo(xSrc, yGnd);
-  ctx.lineTo(xRL, yGnd); ctx.lineTo(xRL, yWire + 64);
+  ctx.moveTo(xSrc, yWire + 12);
+  ctx.lineTo(xSrc, yGnd);
+  ctx.lineTo(xRL, yGnd);
+  ctx.lineTo(xRL, yWire + 64);
   ctx.stroke();
 
   // Ground symbol
@@ -260,9 +300,12 @@ function drawSchematic(
   ctx.globalAlpha = 0.7;
   ctx.strokeStyle = getCanvasColors().textDim;
   ctx.beginPath();
-  ctx.moveTo(xSrc - 6, yGnd); ctx.lineTo(xSrc + 6, yGnd);
-  ctx.moveTo(xSrc - 4, yGnd + 3); ctx.lineTo(xSrc + 4, yGnd + 3);
-  ctx.moveTo(xSrc - 2, yGnd + 6); ctx.lineTo(xSrc + 2, yGnd + 6);
+  ctx.moveTo(xSrc - 6, yGnd);
+  ctx.lineTo(xSrc + 6, yGnd);
+  ctx.moveTo(xSrc - 4, yGnd + 3);
+  ctx.lineTo(xSrc + 4, yGnd + 3);
+  ctx.moveTo(xSrc - 2, yGnd + 6);
+  ctx.lineTo(xSrc + 2, yGnd + 6);
   ctx.stroke();
 
   // V_load readout
@@ -281,12 +324,19 @@ function drawSchematic(
 
 function drawBars(
   ctx: CanvasRenderingContext2D,
-  x0: number, y0: number, w: number, _h: number,
-  Vs: number, VdirectLoad: number, bufferOn: boolean,
+  x0: number,
+  y0: number,
+  w: number,
+  _h: number,
+  Vs: number,
+  VdirectLoad: number,
+  bufferOn: boolean,
 ) {
   ctx.save();
   ctx.translate(x0, y0);
-  const padL = 60, padR = 40, padT = 14;
+  const padL = 60,
+    padR = 40,
+    padT = 14;
   const plotW = w - padL - padR;
   const plotH = 80;
 

@@ -18,7 +18,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const Q1 = 50;
 const Q2 = 50;
@@ -32,14 +34,19 @@ export function CouplingCoefficientDemo({ figure }: Props) {
   const [k, setK] = useState(0.3);
 
   const stateRef = useRef({ k });
-  useEffect(() => { stateRef.current.k = k; }, [k]);
+  useEffect(() => {
+    stateRef.current.k = k;
+  }, [k]);
 
-  const computed = useMemo(() => ({
-    eta: efficiency(k),
-  }), [k]);
+  const computed = useMemo(
+    () => ({
+      eta: efficiency(k),
+    }),
+    [k],
+  );
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
@@ -63,7 +70,7 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       if (k > 0.45) {
         const coreOpacity = (k - 0.45) / 0.55;
         ctx.save();
-        ctx.globalAlpha = 0.10 * coreOpacity;
+        ctx.globalAlpha = 0.1 * coreOpacity;
         ctx.fillStyle = getCanvasColors().teal;
         ctx.fillRect(c1x - 36, cy - 38, c2x - c1x + 72, 76);
         ctx.restore();
@@ -92,10 +99,13 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
       const regime =
-        k < 0.15 ? 'loose coupling (RFID, antennas)' :
-        k < 0.5  ? 'air-core RF / Qi charger' :
-        k < 0.85 ? 'gapped iron core' :
-        'tightly coupled iron / ferrite';
+        k < 0.15
+          ? 'loose coupling (RFID, antennas)'
+          : k < 0.5
+            ? 'air-core RF / Qi charger'
+            : k < 0.85
+              ? 'gapped iron core'
+              : 'tightly coupled iron / ferrite';
       ctx.fillText(regime, w / 2, topY + topH - 4);
 
       // Bottom half: efficiency curve eta(k) with marker
@@ -110,7 +120,8 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().textDim;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(plotX, plotY); ctx.lineTo(plotX, plotY + plotH);
+      ctx.moveTo(plotX, plotY);
+      ctx.lineTo(plotX, plotY + plotH);
       ctx.lineTo(plotX + plotW, plotY + plotH);
       ctx.stroke();
       ctx.restore();
@@ -175,9 +186,10 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       question="Why does a wireless charger need careful alignment?"
       caption={
         <>
-          With high-Q resonant tuning (here Q ≈ 50 on both sides), you can still hit ~75 % efficiency at k = 0.3.
-          Drop k to 0.05 — a phone misaligned by a few centimetres — and the efficiency collapses below 30 %.
-          Real Qi pads buy back that margin with active alignment hints and tight ferrite-shielded coils.
+          With high-Q resonant tuning (here Q ≈ 50 on both sides), you can still hit ~75 %
+          efficiency at k = 0.3. Drop k to 0.05 — a phone misaligned by a few centimetres — and the
+          efficiency collapses below 30 %. Real Qi pads buy back that margin with active alignment
+          hints and tight ferrite-shielded coils.
         </>
       }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
@@ -186,16 +198,18 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="k"
-          value={k} min={0} max={0.99} step={0.01}
-          format={v => v.toFixed(2)}
+          value={k}
+          min={0}
+          max={0.99}
+          step={0.01}
+          format={(v) => v.toFixed(2)}
           onChange={setK}
         />
         <MiniReadout label="link efficiency" value={(computed.eta * 100).toFixed(0)} unit="%" />
-        <MiniReadout label="regime" value={
-          k < 0.15 ? 'loose' :
-          k < 0.5  ? 'moderate' :
-          k < 0.85 ? 'tight' : 'iron-class'
-        } />
+        <MiniReadout
+          label="regime"
+          value={k < 0.15 ? 'loose' : k < 0.5 ? 'moderate' : k < 0.85 ? 'tight' : 'iron-class'}
+        />
       </DemoControls>
     </Demo>
   );

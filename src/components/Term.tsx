@@ -36,8 +36,8 @@ export function Term({ def, children }: TermProps) {
   return (
     <span
       ref={ref}
-      className={`group/term relative cursor-help text-text border-b border-dotted border-accent pb-px outline-none italic-inherit hover:text-accent focus:text-accent ${open ? 'text-accent' : ''}`}
-      onClick={() => setOpen(o => !o)}
+      className={`group/term text-text border-accent italic-inherit hover:text-accent focus:text-accent relative cursor-help border-b border-dotted pb-px outline-none ${open ? 'text-accent' : ''}`}
+      onClick={() => setOpen((o) => !o)}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
       onFocus={() => setOpen(true)}
@@ -49,7 +49,7 @@ export function Term({ def, children }: TermProps) {
     >
       {children}
       <span
-        className={`absolute bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 w-max max-w-panel py-lg px-lg bg-bg-card border border-border-strong border-l-3 border-l-accent rounded-2 font-1 not-italic font-normal text-4 leading-4 text-text-dim tracking-normal z-50 transition-[opacity,visibility] duration-fast pointer-events-none shadow-[0_4px_16px_var(--shadow-strong)] after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0 after:border-l-6 after:border-l-transparent after:border-r-6 after:border-r-transparent after:border-t-6 after:border-t-bg-card max-sm:max-w-panel-sm max-sm:text-3 ${open ? 'opacity-100 visible' : 'opacity-0 invisible group-hover/term:opacity-100 group-hover/term:visible group-focus/term:opacity-100 group-focus/term:visible'}`}
+        className={`max-w-panel py-lg px-lg bg-bg-card border-border-strong border-l-accent rounded-2 font-1 text-4 text-text-dim duration-fast after:border-t-bg-card max-sm:max-w-panel-sm max-sm:text-3 pointer-events-none absolute bottom-[calc(100%+8px)] left-1/2 z-50 w-max -translate-x-1/2 border border-l-3 leading-4 font-normal tracking-normal not-italic shadow-[0_4px_16px_var(--shadow-strong)] transition-[opacity,visibility] after:absolute after:top-full after:left-1/2 after:h-0 after:w-0 after:-translate-x-1/2 after:border-t-6 after:border-r-6 after:border-l-6 after:border-r-transparent after:border-l-transparent after:content-[''] ${open ? 'visible opacity-100' : 'invisible opacity-0 group-hover/term:visible group-hover/term:opacity-100 group-focus/term:visible group-focus/term:opacity-100'}`}
         id={id}
         role="tooltip"
       >

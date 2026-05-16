@@ -27,7 +27,7 @@ export const PHYS = {
   /** Proton rest mass, kg. CODATA 2018. */
   mp: 1.67262192369e-27,
   /** Gravitational constant, N·m²/kg². CODATA 2018; ~2e-5 relative uncertainty. */
-  G: 6.67430e-11,
+  G: 6.6743e-11,
   /** Stefan–Boltzmann constant, W/(m²·K⁴). Exact in new SI. */
   sigma_SB: 5.670374419e-8,
   /** Boltzmann constant, J/K. Exact in new SI. */
@@ -53,13 +53,13 @@ export interface Material {
  * Nichrome σ ≈ 9.09×10⁵ S/m from manufacturer datasheets (Kanthal A1 / Nichrome 80).
  */
 export const MATERIALS: Record<string, Material> = {
-  copper:   { name: 'Copper',                sigma: 5.96e7, n: 8.50e28, src: 'crc-resistivity' },
-  silver:   { name: 'Silver',                sigma: 6.30e7, n: 5.86e28, src: 'crc-resistivity' },
-  gold:     { name: 'Gold',                  sigma: 4.10e7, n: 5.90e28, src: 'crc-resistivity' },
-  aluminum: { name: 'Aluminum',              sigma: 3.77e7, n: 6.00e28, src: 'crc-resistivity' },
-  iron:     { name: 'Iron',                  sigma: 1.00e7, n: 1.70e29, src: 'crc-resistivity' },
-  tungsten: { name: 'Tungsten (filament)',   sigma: 1.79e7, n: 6.30e28, src: 'crc-resistivity' },
-  nichrome: { name: 'Nichrome (heater)',     sigma: 9.09e5, n: 9.00e28, src: 'kanthal' },
+  copper: { name: 'Copper', sigma: 5.96e7, n: 8.5e28, src: 'crc-resistivity' },
+  silver: { name: 'Silver', sigma: 6.3e7, n: 5.86e28, src: 'crc-resistivity' },
+  gold: { name: 'Gold', sigma: 4.1e7, n: 5.9e28, src: 'crc-resistivity' },
+  aluminum: { name: 'Aluminum', sigma: 3.77e7, n: 6.0e28, src: 'crc-resistivity' },
+  iron: { name: 'Iron', sigma: 1.0e7, n: 1.7e29, src: 'crc-resistivity' },
+  tungsten: { name: 'Tungsten (filament)', sigma: 1.79e7, n: 6.3e28, src: 'crc-resistivity' },
+  nichrome: { name: 'Nichrome (heater)', sigma: 9.09e5, n: 9.0e28, src: 'kanthal' },
 };
 
 export type MaterialKey = keyof typeof MATERIALS;
@@ -89,7 +89,7 @@ export function sciJsx(n: number, digits = 2): ReactNode {
   return (
     <>
       {mantissa.toFixed(digits)}×10
-      <sup className="text-[.7em] leading-none font-3 align-[.45em]">{exp}</sup>
+      <sup className="font-3 align-[.45em] text-[.7em] leading-none">{exp}</sup>
     </>
   );
 }
@@ -98,14 +98,23 @@ export function sciJsx(n: number, digits = 2): ReactNode {
 export function eng(n: number, digits = 3, unit = ''): string {
   if (n === 0 || !isFinite(n)) return `0${unit ? ' ' + unit : ''}`;
   const prefixes: Array<{ exp: number; sym: string }> = [
-    { exp: -12, sym: 'p' }, { exp: -9, sym: 'n' }, { exp: -6, sym: 'µ' },
-    { exp: -3, sym: 'm' },  { exp: 0,  sym: ''  }, { exp: 3,  sym: 'k' },
-    { exp: 6,  sym: 'M' },  { exp: 9,  sym: 'G' }, { exp: 12, sym: 'T' },
+    { exp: -12, sym: 'p' },
+    { exp: -9, sym: 'n' },
+    { exp: -6, sym: 'µ' },
+    { exp: -3, sym: 'm' },
+    { exp: 0, sym: '' },
+    { exp: 3, sym: 'k' },
+    { exp: 6, sym: 'M' },
+    { exp: 9, sym: 'G' },
+    { exp: 12, sym: 'T' },
   ];
   const log = Math.log10(Math.abs(n));
   let chosen = prefixes[4];
   for (let i = prefixes.length - 1; i >= 0; i--) {
-    if (log >= prefixes[i].exp) { chosen = prefixes[i]; break; }
+    if (log >= prefixes[i].exp) {
+      chosen = prefixes[i];
+      break;
+    }
   }
   const val = n / Math.pow(10, chosen.exp);
   return `${val.toFixed(digits)} ${chosen.sym}${unit}`;

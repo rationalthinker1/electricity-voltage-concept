@@ -16,7 +16,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 /** Dipole-axis flux model. x in canvas pixels; returns dimensionless flux. */
 function fluxAt(magnetX: number, coilX: number): number {
@@ -31,7 +33,9 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
   const [N, setN] = useState(40);
 
   const stateRef = useRef({ magnetX, N });
-  useEffect(() => { stateRef.current = { magnetX, N }; }, [magnetX, N]);
+  useEffect(() => {
+    stateRef.current = { magnetX, N };
+  }, [magnetX, N]);
 
   // EMF readout — populated from the draw loop, throttled
   const [emfNow, setEmfNow] = useState(0);
@@ -54,12 +58,15 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       if (!t) return 0;
       return t.clientX - r.left;
     }
-    function magnetPx() { return stateRef.current.magnetX * w; }
+    function magnetPx() {
+      return stateRef.current.magnetX * w;
+    }
 
     function onDown(e: MouseEvent) {
       const mx = getMouseX(e);
       if (Math.abs(mx - magnetPx()) < 50) {
-        dragging = true; canvas.style.cursor = 'grabbing';
+        dragging = true;
+        canvas.style.cursor = 'grabbing';
       }
     }
     function onMove(e: MouseEvent) {
@@ -70,7 +77,10 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
         canvas.style.cursor = Math.abs(mx - magnetPx()) < 50 ? 'grab' : 'default';
       }
     }
-    function onUp() { dragging = false; canvas.style.cursor = 'default'; }
+    function onUp() {
+      dragging = false;
+      canvas.style.cursor = 'default';
+    }
     function onTDown(e: TouchEvent) {
       e.preventDefault();
       const mx = getMouseX(e);
@@ -82,7 +92,9 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       const mx = getMouseX(e);
       setMagnetX(Math.max(0.04, Math.min(0.96, mx / w)));
     }
-    function onTEnd() { dragging = false; }
+    function onTEnd() {
+      dragging = false;
+    }
 
     canvas.addEventListener('mousedown', onDown);
     canvas.addEventListener('mousemove', onMove);
@@ -105,7 +117,7 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       const phi = fluxAt(mx, coilCx);
       const dPhi = phi - lastFlux;
       lastFlux = phi;
-      const emf = -N * (dPhi / dt);  // V (in arbitrary units; visual)
+      const emf = -N * (dPhi / dt); // V (in arbitrary units; visual)
       emfRef.current = emf;
 
       // Background
@@ -121,7 +133,9 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(40, cy); ctx.lineTo(w - 40, cy); ctx.stroke();
+      ctx.moveTo(40, cy);
+      ctx.lineTo(w - 40, cy);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       // Each loop — two small dots (top/bottom) connected by a faint vertical
@@ -146,7 +160,8 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
           ctx.globalAlpha = 0.75;
           ctx.fillStyle = colors.blue;
           ctx.font = 'bold 10px JetBrains Mono';
-          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
           ctx.fillText(sym, lx, cy - loopHeight / 2 - 8);
           ctx.fillText(dir > 0 ? '×' : '·', lx, cy + loopHeight / 2 + 8);
           ctx.restore();
@@ -185,18 +200,24 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       lampGlow.addColorStop(0, `rgba(${lampColor},${0.85 * intensity})`);
       lampGlow.addColorStop(1, `rgba(${lampColor},0)`);
       ctx.fillStyle = lampGlow;
-      ctx.beginPath(); ctx.arc(lampX, lampY, 38, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(lampX, lampY, 38, 0, Math.PI * 2);
+      ctx.fill();
       ctx.strokeStyle = `rgba(${lampColor},${0.3 + 0.7 * intensity})`;
       ctx.lineWidth = 1.6;
       ctx.fillStyle = `rgba(${lampColor},${0.15 + 0.65 * intensity})`;
-      ctx.beginPath(); ctx.arc(lampX, lampY, 12, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(lampX, lampY, 12, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('lamp', lampX, lampY + 26);
 
       // Bar magnet — N (pink) / S (blue) halves
-      const magW = 84, magH = 32;
+      const magW = 84,
+        magH = 32;
       const magY = cy;
       // shadow
       const grd = ctx.createLinearGradient(mx - magW / 2, magY, mx + magW / 2, magY);
@@ -214,7 +235,8 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       ctx.restore();
       ctx.fillStyle = colors.bg;
       ctx.font = 'bold 14px JetBrains Mono';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText('S', mx - magW / 4, magY);
       ctx.fillText('N', mx + magW / 4, magY);
 
@@ -237,7 +259,8 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       ctx.globalAlpha = 0.6;
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText('drag the magnet ↔', 16, 14);
 
       raf = requestAnimationFrame(draw);
@@ -260,19 +283,25 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 5.1'}
       title="Move a magnet, get a voltage"
       question="What is the lamp doing — and why does it flip color when you reverse direction?"
-      caption={<>
-        Drag the bar magnet through the coil. The lamp brightens with <strong>|dΦ/dt|</strong> and changes color with the
-        sign of the induced current. Hold the magnet still and the lamp goes dark — a static magnetic field induces nothing.
-      </>}
+      caption={
+        <>
+          Drag the bar magnet through the coil. The lamp brightens with <strong>|dΦ/dt|</strong> and
+          changes color with the sign of the induced current. Hold the magnet still and the lamp
+          goes dark — a static magnetic field induces nothing.
+        </>
+      }
       deeperLab={{ slug: 'faraday', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="N (turns)"
-          value={N} min={1} max={200} step={1}
-          format={v => Math.round(v).toString()}
-          onChange={v => setN(Math.round(v))}
+          value={N}
+          min={1}
+          max={200}
+          step={1}
+          format={(v) => Math.round(v).toString()}
+          onChange={(v) => setN(Math.round(v))}
         />
         <MiniReadout label="EMF (instant.)" value={<Num value={emfNow} />} unit="V" />
       </DemoControls>

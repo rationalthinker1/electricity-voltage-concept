@@ -21,17 +21,19 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const V_T = 1.0;         // V — threshold voltage
-const k_n = 2e-3;        // A/V² — transconductance parameter
+const V_T = 1.0; // V — threshold voltage
+const k_n = 2e-3; // A/V² — transconductance parameter
 
 function ID(V_GS: number, V_DS: number): number {
   const Vov = V_GS - V_T;
   if (Vov <= 0) return 0;
   if (V_DS < Vov) {
     // triode region
-    return k_n * (Vov * V_DS - V_DS * V_DS / 2);
+    return k_n * (Vov * V_DS - (V_DS * V_DS) / 2);
   }
   // saturation
   return (k_n / 2) * Vov * Vov;
@@ -46,7 +48,9 @@ export function MOSFETOperationDemo({ figure }: Props) {
   const inSat = V_DS >= Vov && Vov > 0;
 
   const stateRef = useRef({ V_GS, V_DS });
-  useEffect(() => { stateRef.current = { V_GS, V_DS }; }, [V_GS, V_DS]);
+  useEffect(() => {
+    stateRef.current = { V_GS, V_DS };
+  }, [V_GS, V_DS]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -63,12 +67,16 @@ export function MOSFETOperationDemo({ figure }: Props) {
       const split = Math.floor(w * 0.5);
 
       // ====== LEFT: device cross-section ======
-      const dL = 18, dR = split - 12, dT = 30, dB = h - 26;
-      const dW = dR - dL, dH = dB - dT;
+      const dL = 18,
+        dR = split - 12,
+        dT = 30,
+        dB = h - 26;
+      const dW = dR - dL,
+        dH = dB - dT;
 
       // substrate (p-type, blue tint)
       ctx.save();
-      ctx.globalAlpha = 0.10;
+      ctx.globalAlpha = 0.1;
       ctx.fillStyle = colors.blue;
       ctx.fillRect(dL, dT + dH * 0.4, dW, dH * 0.6);
       ctx.restore();
@@ -76,8 +84,10 @@ export function MOSFETOperationDemo({ figure }: Props) {
       ctx.strokeRect(dL, dT + dH * 0.4, dW, dH * 0.6);
 
       // source and drain (n+ regions, pink tint)
-      const srcL = dL + 6, srcR = dL + dW * 0.28;
-      const drnL = dL + dW * 0.72, drnR = dR - 6;
+      const srcL = dL + 6,
+        srcR = dL + dW * 0.28;
+      const drnL = dL + dW * 0.72,
+        drnR = dR - 6;
       const ndT = dT + dH * 0.4;
       const ndB = ndT + dH * 0.35;
       ctx.fillStyle = colors.pink;
@@ -88,8 +98,10 @@ export function MOSFETOperationDemo({ figure }: Props) {
       ctx.strokeRect(drnL, ndT, drnR - drnL, ndB - ndT);
 
       // oxide (thin pale band above substrate, between source and drain)
-      const oxL = srcR + 2, oxR = drnL - 2;
-      const oxT = ndT - 8, oxB = ndT;
+      const oxL = srcR + 2,
+        oxR = drnL - 2;
+      const oxT = ndT - 8,
+        oxB = ndT;
       ctx.save();
       ctx.globalAlpha = 0.12;
       ctx.fillStyle = colors.text;
@@ -151,7 +163,8 @@ export function MOSFETOperationDemo({ figure }: Props) {
         ctx.strokeStyle = colors.accent;
         ctx.lineWidth = 1.4;
         ctx.beginPath();
-        ctx.moveTo(oxR - 4, ndT + 2); ctx.lineTo(oxL + 8, ndT + 2);
+        ctx.moveTo(oxR - 4, ndT + 2);
+        ctx.lineTo(oxL + 8, ndT + 2);
         ctx.stroke();
         ctx.fillStyle = colors.accent;
         ctx.beginPath();
@@ -177,10 +190,15 @@ export function MOSFETOperationDemo({ figure }: Props) {
       ctx.fillText(`n-MOSFET (V_T = ${V_T.toFixed(1)} V)`, dL, 8);
 
       // ====== RIGHT: I-V plot ======
-      const pL = split + 50, pR = w - 12, pT = 30, pB = h - 26;
-      const pW = pR - pL, pH = pB - pT;
+      const pL = split + 50,
+        pR = w - 12,
+        pT = 30,
+        pB = h - 26;
+      const pW = pR - pL,
+        pH = pB - pT;
 
-      const Vmin = 0, Vmax = 5;
+      const Vmin = 0,
+        Vmax = 5;
       const Imax = (k_n / 2) * 16; // I_D at Vov = 4 V — full-scale headroom
 
       const xOf = (v: number) => pL + ((v - Vmin) / (Vmax - Vmin)) * pW;
@@ -194,7 +212,8 @@ export function MOSFETOperationDemo({ figure }: Props) {
       ctx.strokeStyle = colors.border;
       ctx.beginPath();
       for (let v = 0; v <= Vmax; v++) {
-        ctx.moveTo(xOf(v), pT); ctx.lineTo(xOf(v), pT + pH);
+        ctx.moveTo(xOf(v), pT);
+        ctx.lineTo(xOf(v), pT + pH);
       }
       ctx.stroke();
 
@@ -234,7 +253,8 @@ export function MOSFETOperationDemo({ figure }: Props) {
           const i = ID(Vgs, v);
           const x = xOf(v);
           const y = yOf(Math.min(Imax, i));
-          if (j === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (j === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.stroke();
 
@@ -255,7 +275,8 @@ export function MOSFETOperationDemo({ figure }: Props) {
       ctx.strokeStyle = colors.text;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
-      ctx.moveTo(opX, pT); ctx.lineTo(opX, pT + pH);
+      ctx.moveTo(opX, pT);
+      ctx.lineTo(opX, pT + pH);
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.restore();
@@ -275,30 +296,41 @@ export function MOSFETOperationDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 14.4'}
       title="The MOSFET — a gate controls the channel"
       question="What is the gate doing — and what's the difference between triode and saturation?"
-      caption={<>
-        Left: device cross-section. Below V_T no channel exists; above V_T an inversion layer forms under the
-        oxide. Right: the resulting I_D-V_DS curves. At small V_DS the device is a voltage-controlled
-        resistor (triode); past V_DS = V_GS − V_T the channel pinches off and I_D saturates at
-        (k<sub>n</sub>/2)(V_GS − V_T)².
-      </>}
+      caption={
+        <>
+          Left: device cross-section. Below V_T no channel exists; above V_T an inversion layer
+          forms under the oxide. Right: the resulting I_D-V_DS curves. At small V_DS the device is a
+          voltage-controlled resistor (triode); past V_DS = V_GS − V_T the channel pinches off and
+          I_D saturates at (k<sub>n</sub>/2)(V_GS − V_T)².
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="V_GS"
-          value={V_GS} min={0} max={4} step={0.02}
-          format={v => v.toFixed(2) + ' V'}
+          value={V_GS}
+          min={0}
+          max={4}
+          step={0.02}
+          format={(v) => v.toFixed(2) + ' V'}
           onChange={setVGS}
         />
         <MiniSlider
           label="V_DS"
-          value={V_DS} min={0} max={5} step={0.02}
-          format={v => v.toFixed(2) + ' V'}
+          value={V_DS}
+          min={0}
+          max={5}
+          step={0.02}
+          format={(v) => v.toFixed(2) + ' V'}
           onChange={setVDS}
         />
         <MiniReadout label="V_OV" value={Vov.toFixed(2)} unit="V" />
-        <MiniReadout label="I_D"  value={<Num value={I_D} />} unit="A" />
-        <MiniReadout label="region" value={Vov <= 0 ? 'cut-off' : inSat ? 'saturation' : 'triode'} />
+        <MiniReadout label="I_D" value={<Num value={I_D} />} unit="A" />
+        <MiniReadout
+          label="region"
+          value={Vov <= 0 ? 'cut-off' : inSat ? 'saturation' : 'triode'}
+        />
       </DemoControls>
     </Demo>
   );

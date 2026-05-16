@@ -20,19 +20,29 @@ interface CaseStudyProps {
  */
 export function CaseStudy({ tag, title, summary, children, specs }: CaseStudyProps) {
   return (
-    <article className="bg-bg-card border border-border-strong rounded-3 py-2xl px-2xl pb-xl relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:w-xxs before:h-full before:bg-accent before:opacity-80 max-sm:py-xl max-sm:px-lg">
+    <article className="bg-bg-card border-border-strong rounded-3 py-2xl px-2xl pb-xl before:w-xxs before:bg-accent max-sm:py-xl max-sm:px-lg relative overflow-hidden border before:absolute before:top-0 before:left-0 before:h-full before:opacity-80 before:content-['']">
       <header className="mb-lg">
-        {tag && <span className="eyebrow-accent inline-block text-6 tracking-4 mb-md py-xxs px-md bg-accent-soft rounded-1">{tag}</span>}
-        <h3 className="font-2 font-normal italic text-8 max-sm:text-8 leading-2 tracking-1 text-text mt-0 mb-md">{title}</h3>
-        {summary && <p className="font-2 italic font-light text-6 leading-3 text-text-dim m-0">{summary}</p>}
+        {tag && (
+          <span className="eyebrow-accent text-6 tracking-4 mb-md py-xxs px-md bg-accent-soft rounded-1 inline-block">
+            {tag}
+          </span>
+        )}
+        <h3 className="font-2 text-8 max-sm:text-8 tracking-1 text-text mb-md mt-0 leading-2 font-normal italic">
+          {title}
+        </h3>
+        {summary && (
+          <p className="font-2 text-6 text-text-dim m-0 leading-3 font-light italic">{summary}</p>
+        )}
       </header>
-      <div className="text-6 leading-5 text-text-dim [&_.math]:font-4 [&_.math]:italic [&_.math]:text-7 [&_.math]:text-center [&_.math]:my-lg [&_.math]:text-text [&_.formula-block]:my-lg [&_.formula-block]:mx-0 [&_.formula-block]:py-lg [&_.formula-block]:px-lg [&_.formula-block]:max-w-none [&_.formula-block]:border-border">{children}</div>
+      <div className="text-6 text-text-dim [&_.math]:font-4 [&_.math]:text-7 [&_.math]:my-lg [&_.math]:text-text [&_.formula-block]:my-lg [&_.formula-block]:py-lg [&_.formula-block]:px-lg [&_.formula-block]:border-border leading-5 [&_.formula-block]:mx-0 [&_.formula-block]:max-w-none [&_.math]:text-center [&_.math]:italic">
+        {children}
+      </div>
       {specs && specs.length > 0 && (
-        <dl className="mt-xl mb-0 py-lg px-xl border border-border bg-bg-elevated rounded-2 grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-y-md gap-x-xl">
+        <dl className="mt-xl py-lg px-xl border-border bg-bg-elevated rounded-2 gap-y-md gap-x-xl mb-0 grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] border">
           {specs.map((s, i) => (
-            <div className="flex flex-col gap-xs" key={i}>
+            <div className="gap-xs flex flex-col" key={i}>
               <dt className="font-3 text-1 text-text-muted tracking-3 uppercase">{s.label}</dt>
-              <dd className="m-0 font-3 text-4 text-accent tracking-normal">{s.value}</dd>
+              <dd className="font-3 text-4 text-accent m-0 tracking-normal">{s.value}</dd>
             </div>
           ))}
         </dl>
@@ -54,10 +64,10 @@ interface CaseStudiesProps {
  */
 export function CaseStudies({ intro, children }: CaseStudiesProps) {
   return (
-    <section className="max-w-col-lg mx-auto mt-5xl mb-0 pt-2xl border-t border-border-strong">
+    <section className="max-w-col-lg mt-5xl pt-2xl border-border-strong mx-auto mb-0 border-t">
       <div className="eyebrow-rule mb-xl">Case studies</div>
-      {intro && <p className="text-text-dim text-6 leading-4 mb-2xl italic max-w-col">{intro}</p>}
-      <div className="flex flex-col gap-xl">{children}</div>
+      {intro && <p className="text-text-dim text-6 mb-2xl max-w-col leading-4 italic">{intro}</p>}
+      <div className="gap-xl flex flex-col">{children}</div>
     </section>
   );
 }

@@ -13,20 +13,24 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 interface Dipole {
   x: number;
   y: number;
-  theta: number;     // current orientation
-  omega: number;     // angular velocity (for inertia/smoothing)
+  theta: number; // current orientation
+  omega: number; // angular velocity (for inertia/smoothing)
 }
 
 export function DipoleInFieldDemo({ figure }: Props) {
   // E in arbitrary units (0 .. 10). 0 means thermal-disorder only.
   const [E, setE] = useState(0);
   const stateRef = useRef({ E });
-  useEffect(() => { stateRef.current = { E }; }, [E]);
+  useEffect(() => {
+    stateRef.current = { E };
+  }, [E]);
   const [align, setAlign] = useState(0);
 
   const setup = useCallback((info: CanvasInfo) => {
@@ -82,8 +86,8 @@ export function DipoleInFieldDemo({ figure }: Props) {
       let cos_sum = 0;
       const N = dipoles.length;
       const damping = 0.86;
-      const torqueStrength = 0.04;       // visual tuning
-      const noise = Math.max(0.08, 0.32 - E * 0.03);  // noise drops as field overwhelms it
+      const torqueStrength = 0.04; // visual tuning
+      const noise = Math.max(0.08, 0.32 - E * 0.03); // noise drops as field overwhelms it
 
       for (const d of dipoles) {
         const torque = -E * Math.sin(d.theta) * torqueStrength + (Math.random() - 0.5) * noise;
@@ -96,7 +100,8 @@ export function DipoleInFieldDemo({ figure }: Props) {
       // Draw dipoles
       const len = Math.min(dx, dy) * 0.32;
       for (const d of dipoles) {
-        const cx = d.x, cy = d.y;
+        const cx = d.x,
+          cy = d.y;
         const tx = Math.cos(d.theta) * len;
         const ty = Math.sin(d.theta) * len;
         // bar
@@ -154,21 +159,26 @@ export function DipoleInFieldDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 11.1'}
       title="Molecular dipoles aligning to an applied field"
       question="What does it physically mean for a material to 'polarize'?"
-      caption={<>
-        Each dumbbell is a model molecule with a small dipole moment (pink end is positive,
-        blue end is negative). With <strong>E = 0</strong> they tumble at random thanks to thermal motion.
-        Crank E up and the torque <em>τ = p × E</em> nudges them into alignment.
-        The number on the canvas is <em>⟨cos θ⟩</em> — the average projection of each dipole onto E. The bulk
-        polarization <strong>P</strong> is just this number times the density of dipoles times the dipole
-        moment per molecule.
-      </>}
+      caption={
+        <>
+          Each dumbbell is a model molecule with a small dipole moment (pink end is positive, blue
+          end is negative). With <strong>E = 0</strong> they tumble at random thanks to thermal
+          motion. Crank E up and the torque <em>τ = p × E</em> nudges them into alignment. The
+          number on the canvas is <em>⟨cos θ⟩</em> — the average projection of each dipole onto E.
+          The bulk polarization <strong>P</strong> is just this number times the density of dipoles
+          times the dipole moment per molecule.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="E"
-          value={E} min={0} max={10} step={0.05}
-          format={v => v.toFixed(2)}
+          value={E}
+          min={0}
+          max={10}
+          step={0.05}
+          format={(v) => v.toFixed(2)}
           onChange={setE}
         />
         <MiniReadout label="⟨cos θ⟩" value={align.toFixed(2)} />

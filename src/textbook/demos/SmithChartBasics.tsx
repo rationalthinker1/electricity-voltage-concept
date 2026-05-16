@@ -15,28 +15,31 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function SmithChartBasicsDemo({ figure }: Props) {
   const Z0 = 50;
-  const [R, setR] = useState(100);     // Ω
-  const [X, setX] = useState(50);      // Ω (can be negative)
+  const [R, setR] = useState(100); // Ω
+  const [X, setX] = useState(50); // Ω (can be negative)
   const [showQwave, setShowQwave] = useState(false);
 
   // z = Z/Z0; Γ = (z−1)/(z+1) with complex arithmetic
-  const zr = R / Z0, zi = X / Z0;
-  const dr = zr + 1, di = zi;
-  const nr = zr - 1, ni = zi;
+  const zr = R / Z0,
+    zi = X / Z0;
+  const dr = zr + 1,
+    di = zi;
+  const nr = zr - 1,
+    ni = zi;
   // (nr + j ni) / (dr + j di) = ((nr·dr + ni·di) + j(ni·dr − nr·di)) / (dr² + di²)
   const denom = dr * dr + di * di;
   const Gr = (nr * dr + ni * di) / denom;
   const Gi = (ni * dr - nr * di) / denom;
   const Gmag = Math.sqrt(Gr * Gr + Gi * Gi);
-  const GangleDeg = Math.atan2(Gi, Gr) * 180 / Math.PI;
+  const GangleDeg = (Math.atan2(Gi, Gr) * 180) / Math.PI;
   const VSWR = Gmag >= 1 - 1e-6 ? Infinity : (1 + Gmag) / (1 - Gmag);
 
   // Quarter-wave transform Z_in = Z_0^2 / Z_L
@@ -74,7 +77,8 @@ export function SmithChartBasicsDemo({ figure }: Props) {
       // Real axis
       ctx.strokeStyle = colors.border;
       ctx.beginPath();
-      ctx.moveTo(cx - radius, cy); ctx.lineTo(cx + radius, cy);
+      ctx.moveTo(cx - radius, cy);
+      ctx.lineTo(cx + radius, cy);
       ctx.stroke();
 
       // Mapping: Γ-plane point (gr, gi) → screen (cx + gr·radius, cy − gi·radius)
@@ -86,7 +90,7 @@ export function SmithChartBasicsDemo({ figure }: Props) {
       // Constant-resistance circles: centre (r/(r+1), 0), radius 1/(r+1)
       const rValues = [0.2, 0.5, 1, 2, 5];
       ctx.save();
-      ctx.globalAlpha = 0.30;
+      ctx.globalAlpha = 0.3;
       ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1;
       for (const r of rValues) {
@@ -171,7 +175,8 @@ export function SmithChartBasicsDemo({ figure }: Props) {
         ctx.strokeStyle = colors.teal;
         ctx.setLineDash([2, 3]);
         ctx.beginPath();
-        ctx.moveTo(pZ.x, pZ.y); ctx.lineTo(pZin.x, pZin.y);
+        ctx.moveTo(pZ.x, pZ.y);
+        ctx.lineTo(pZin.x, pZin.y);
         ctx.stroke();
         ctx.setLineDash([]);
       }
@@ -196,22 +201,38 @@ export function SmithChartBasicsDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 13.4'}
       title="Smith chart — the impedance disk"
       question="Slide Z_L around. The marker tracks Γ on the unit disk; the dashed circle is VSWR."
-      caption={<>
-        The Smith chart is the unit disk of the reflection coefficient Γ = (Z<sub>L</sub> −
-        Z<sub>0</sub>)/(Z<sub>L</sub> + Z<sub>0</sub>) on a Z<sub>0</sub> = 50 Ω system. Teal
-        circles are loci of constant resistance r = R/Z<sub>0</sub>; orange arcs are constant
-        reactance x = X/Z<sub>0</sub>. The centre is the matched load (Γ = 0, VSWR = 1); the rim
-        is total reflection. Toggle "λ/4 transform" to see a quarter-wave line rotate the marker
-        180° through the origin — the trick for matching real loads to real generators with a
-        single piece of cable.
-      </>}
+      caption={
+        <>
+          The Smith chart is the unit disk of the reflection coefficient Γ = (Z<sub>L</sub> − Z
+          <sub>0</sub>)/(Z<sub>L</sub> + Z<sub>0</sub>) on a Z<sub>0</sub> = 50 Ω system. Teal
+          circles are loci of constant resistance r = R/Z<sub>0</sub>; orange arcs are constant
+          reactance x = X/Z<sub>0</sub>. The centre is the matched load (Γ = 0, VSWR = 1); the rim
+          is total reflection. Toggle "λ/4 transform" to see a quarter-wave line rotate the marker
+          180° through the origin — the trick for matching real loads to real generators with a
+          single piece of cable.
+        </>
+      }
     >
       <AutoResizeCanvas height={340} setup={setup} />
       <DemoControls>
-        <MiniSlider label="R" value={R} min={1} max={500} step={1}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setR} />
-        <MiniSlider label="X" value={X} min={-300} max={300} step={1}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setX} />
+        <MiniSlider
+          label="R"
+          value={R}
+          min={1}
+          max={500}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setR}
+        />
+        <MiniSlider
+          label="X"
+          value={X}
+          min={-300}
+          max={300}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setX}
+        />
         <MiniToggle
           label={showQwave ? 'λ/4 transform: on' : 'λ/4 transform: off'}
           checked={showQwave}
@@ -221,13 +242,14 @@ export function SmithChartBasicsDemo({ figure }: Props) {
         <MiniReadout label="∠Γ" value={GangleDeg.toFixed(1)} unit="°" />
         <MiniReadout label="Re Γ" value={Gr.toFixed(3)} />
         <MiniReadout label="Im Γ" value={Gi.toFixed(3)} />
-        <MiniReadout
-          label="VSWR"
-          value={isFinite(VSWR) ? VSWR.toFixed(2) : '∞'}
-        />
+        <MiniReadout label="VSWR" value={isFinite(VSWR) ? VSWR.toFixed(2) : '∞'} />
         <MiniReadout
           label="Z_in (λ/4)"
-          value={<>{Zin_r.toFixed(1)} {Zin_x >= 0 ? '+' : '−'} j{Math.abs(Zin_x).toFixed(1)}</>}
+          value={
+            <>
+              {Zin_r.toFixed(1)} {Zin_x >= 0 ? '+' : '−'} j{Math.abs(Zin_x).toFixed(1)}
+            </>
+          }
           unit="Ω"
         />
       </DemoControls>
@@ -240,8 +262,12 @@ export function SmithChartBasicsDemo({ figure }: Props) {
  * simply set a circular clip, draw, then restore. */
 function drawArcClipped(
   ctx: CanvasRenderingContext2D,
-  ccx: number, ccy: number, cR: number,
-  uCx: number, uCy: number, uR: number,
+  ccx: number,
+  ccy: number,
+  cR: number,
+  uCx: number,
+  uCy: number,
+  uR: number,
 ) {
   ctx.save();
   ctx.beginPath();

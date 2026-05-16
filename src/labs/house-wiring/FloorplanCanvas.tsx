@@ -23,8 +23,15 @@ import { getCanvasColors, type ThemeColors } from '@/lib/canvasTheme';
 
 import { isReceptacle, BREAKER_AMPS } from './audit';
 import type {
-  Breaker, BreakerKind, Cable, CableKind, Device, DeviceKind,
-  HouseDoc, Room, Violation,
+  Breaker,
+  BreakerKind,
+  Cable,
+  CableKind,
+  Device,
+  DeviceKind,
+  HouseDoc,
+  Room,
+  Violation,
 } from './types';
 
 const GRID_PX = 14;
@@ -38,13 +45,7 @@ const CARD_RADIUS = 4;
 const HEADER_H = 34;
 const ROW_H = 22;
 
-export type ArmedTool =
-  | DeviceKind
-  | BreakerKind
-  | CableKind
-  | 'cable-pick'
-  | 'select'
-  | null;
+export type ArmedTool = DeviceKind | BreakerKind | CableKind | 'cable-pick' | 'select' | null;
 
 interface Props {
   doc: HouseDoc;
@@ -71,7 +72,9 @@ interface Props {
 
 export function FloorplanCanvas(props: Props) {
   const propsRef = useRef(props);
-  useEffect(() => { propsRef.current = props; }, [props]);
+  useEffect(() => {
+    propsRef.current = props;
+  }, [props]);
 
   const uiRef = useRef({
     hoverDeviceId: null as string | null,
@@ -91,19 +94,18 @@ export function FloorplanCanvas(props: Props) {
 
     function getMouse(e: MouseEvent | TouchEvent): [number, number] {
       const r = canvas.getBoundingClientRect();
-      const t = 'touches' in e ? (e.touches[0] || e.changedTouches?.[0]) : e;
+      const t = 'touches' in e ? e.touches[0] || e.changedTouches?.[0] : e;
       if (!t) return [-1, -1];
       return [t.clientX - r.left, t.clientY - r.top];
     }
 
     function roomAtPixel(mx: number, my: number): Room | null {
       const { doc } = propsRef.current;
-      const sorted = [...doc.rooms].sort((a, b) => (b.w * b.h) - (a.w * a.h));
+      const sorted = [...doc.rooms].sort((a, b) => b.w * b.h - a.w * a.h);
       for (const r of sorted) {
         const px = r.x * GRID_PX;
         const py = r.y * GRID_PX;
-        if (mx >= px && mx <= px + r.w * GRID_PX &&
-            my >= py && my <= py + r.h * GRID_PX) return r;
+        if (mx >= px && mx <= px + r.w * GRID_PX && my >= py && my <= py + r.h * GRID_PX) return r;
       }
       return null;
     }
@@ -112,7 +114,8 @@ export function FloorplanCanvas(props: Props) {
       const { doc } = propsRef.current;
       for (let i = doc.devices.length - 1; i >= 0; i--) {
         const d = doc.devices[i];
-        const dx = d.x * GRID_PX, dy = d.y * GRID_PX;
+        const dx = d.x * GRID_PX,
+          dy = d.y * GRID_PX;
         if (Math.hypot(mx - dx, my - dy) < 10) return d;
       }
       return null;
@@ -147,8 +150,7 @@ export function FloorplanCanvas(props: Props) {
       ui.hoverBreakerId = br?.id ?? null;
       ui.ghost = gridFromMouse(mx, my);
       canvas.style.cursor =
-        armed && armed !== 'select' ? 'crosshair' :
-        (dev || br || room) ? 'pointer' : 'default';
+        armed && armed !== 'select' ? 'crosshair' : dev || br || room ? 'pointer' : 'default';
     }
 
     function onMouseDown(e: MouseEvent) {
@@ -160,8 +162,14 @@ export function FloorplanCanvas(props: Props) {
       const br = breakerAtPixel(mx, my);
 
       if (armed === 'cable-pick') {
-        if (br) { p.onCableFromBreaker(br.id); return; }
-        if (dev && p.cableAnchor) { p.onCableToDevice(dev.id); return; }
+        if (br) {
+          p.onCableFromBreaker(br.id);
+          return;
+        }
+        if (dev && p.cableAnchor) {
+          p.onCableToDevice(dev.id);
+          return;
+        }
       }
 
       if (armed && isBreakerKind(armed)) {
@@ -177,9 +185,18 @@ export function FloorplanCanvas(props: Props) {
         return;
       }
 
-      if (dev) { p.onPickDevice(dev.id); return; }
-      if (br)  { p.onPickBreaker(br.id); return; }
-      if (room) { p.onPickRoom(room.id, mx / GRID_PX, my / GRID_PX); return; }
+      if (dev) {
+        p.onPickDevice(dev.id);
+        return;
+      }
+      if (br) {
+        p.onPickBreaker(br.id);
+        return;
+      }
+      if (room) {
+        p.onPickRoom(room.id, mx / GRID_PX, my / GRID_PX);
+        return;
+      }
       p.onPickDevice(null);
       p.onPickBreaker(null);
       p.onPickCable(null);
@@ -189,14 +206,18 @@ export function FloorplanCanvas(props: Props) {
     function onTouchStart(e: TouchEvent) {
       e.preventDefault();
       const [mx, my] = getMouse(e);
-      onMouseDown({ clientX: mx + canvas.getBoundingClientRect().left,
-                    clientY: my + canvas.getBoundingClientRect().top } as MouseEvent);
+      onMouseDown({
+        clientX: mx + canvas.getBoundingClientRect().left,
+        clientY: my + canvas.getBoundingClientRect().top,
+      } as MouseEvent);
     }
     function onTouchMove(e: TouchEvent) {
       e.preventDefault();
       const [mx, my] = getMouse(e);
-      onMouseMove({ clientX: mx + canvas.getBoundingClientRect().left,
-                    clientY: my + canvas.getBoundingClientRect().top } as MouseEvent);
+      onMouseMove({
+        clientX: mx + canvas.getBoundingClientRect().left,
+        clientY: my + canvas.getBoundingClientRect().top,
+      } as MouseEvent);
     }
 
     canvas.addEventListener('mousemove', onMouseMove);
@@ -218,16 +239,24 @@ export function FloorplanCanvas(props: Props) {
       ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       for (let x = 0; x < cardX; x += GRID_PX) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
       }
       for (let y = 0; y < h; y += GRID_PX) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(cardX, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(cardX, y);
+        ctx.stroke();
       }
 
       // Rooms.
       for (const r of doc.rooms) {
-        const px = r.x * GRID_PX, py = r.y * GRID_PX;
-        const pw = r.w * GRID_PX, ph = r.h * GRID_PX;
+        const px = r.x * GRID_PX,
+          py = r.y * GRID_PX;
+        const pw = r.w * GRID_PX,
+          ph = r.h * GRID_PX;
         const isHover = ui.hoverRoomId === r.id;
         const fill = roomFillStyle(r, colors);
         ctx.save();
@@ -252,15 +281,15 @@ export function FloorplanCanvas(props: Props) {
 
       // Cables (drawn under devices).
       for (const c of doc.cables) {
-        const br = doc.breakers.find(b => b.id === c.breakerId);
-        const dev = doc.devices.find(d => d.id === c.deviceId);
+        const br = doc.breakers.find((b) => b.id === c.breakerId);
+        const dev = doc.devices.find((d) => d.id === c.deviceId);
         if (!br || !dev) continue;
         const bx = cardX + 4;
         const by = cardY + HEADER_H + 4 + br.slot * ROW_H + ROW_H / 2;
-        const dx = dev.x * GRID_PX, dy = dev.y * GRID_PX;
-        ctx.strokeStyle = p.selectedCableId === c.id
-          ? colors.accent
-          : cableStrokeColor(c.kind, colors);
+        const dx = dev.x * GRID_PX,
+          dy = dev.y * GRID_PX;
+        ctx.strokeStyle =
+          p.selectedCableId === c.id ? colors.accent : cableStrokeColor(c.kind, colors);
         ctx.lineWidth = p.selectedCableId === c.id ? 2.4 : 1.4;
         ctx.beginPath();
         ctx.moveTo(bx, by);
@@ -272,10 +301,11 @@ export function FloorplanCanvas(props: Props) {
 
       // Devices.
       const violatedDevIds = new Set(
-        p.violations.filter(v => v.refDeviceId).map(v => v.refDeviceId!),
+        p.violations.filter((v) => v.refDeviceId).map((v) => v.refDeviceId!),
       );
       for (const d of doc.devices) {
-        const dx = d.x * GRID_PX, dy = d.y * GRID_PX;
+        const dx = d.x * GRID_PX,
+          dy = d.y * GRID_PX;
         const isHover = ui.hoverDeviceId === d.id;
         const isSel = p.selectedDeviceId === d.id;
         const isViolated = violatedDevIds.has(d.id);
@@ -286,7 +316,7 @@ export function FloorplanCanvas(props: Props) {
       drawPanelCard(ctx, cardX, cardY, h, doc, colors);
 
       const violatedBkrIds = new Set(
-        p.violations.filter(v => v.refBreakerId).map(v => v.refBreakerId!),
+        p.violations.filter((v) => v.refBreakerId).map((v) => v.refBreakerId!),
       );
       for (const b of doc.breakers) {
         const py = cardY + HEADER_H + 4 + b.slot * ROW_H;
@@ -294,12 +324,25 @@ export function FloorplanCanvas(props: Props) {
         const isSel = p.selectedBreakerId === b.id;
         const isAnchor = p.cableAnchor?.breakerId === b.id;
         const isViolated = violatedBkrIds.has(b.id);
-        drawBreakerRow(ctx, contentX, py, contentW, ROW_H, b, isSel, isHover, isAnchor, isViolated, colors);
+        drawBreakerRow(
+          ctx,
+          contentX,
+          py,
+          contentW,
+          ROW_H,
+          b,
+          isSel,
+          isHover,
+          isAnchor,
+          isViolated,
+          colors,
+        );
       }
 
       // Ghost crosshair when armed.
       if (p.armed && p.armed !== 'select' && p.armed !== 'cable-pick' && ui.ghost) {
-        const gx = ui.ghost.x * GRID_PX, gy = ui.ghost.y * GRID_PX;
+        const gx = ui.ghost.x * GRID_PX,
+          gy = ui.ghost.y * GRID_PX;
         ctx.strokeStyle = colors.accentGlow;
         ctx.lineWidth = 1;
         ctx.setLineDash([3, 3]);
@@ -311,7 +354,7 @@ export function FloorplanCanvas(props: Props) {
 
       // Cable anchor preview.
       if (p.cableAnchor) {
-        const br = doc.breakers.find(b => b.id === p.cableAnchor!.breakerId);
+        const br = doc.breakers.find((b) => b.id === p.cableAnchor!.breakerId);
         if (br) {
           const bx = cardX + 4;
           const by = cardY + HEADER_H + 4 + br.slot * ROW_H + ROW_H / 2;
@@ -321,7 +364,8 @@ export function FloorplanCanvas(props: Props) {
           ctx.beginPath();
           ctx.moveTo(bx, by);
           if (ui.ghost) {
-            const gx = ui.ghost.x * GRID_PX, gy = ui.ghost.y * GRID_PX;
+            const gx = ui.ghost.x * GRID_PX,
+              gy = ui.ghost.y * GRID_PX;
             ctx.lineTo(bx - 30, by);
             ctx.lineTo(bx - 30, gy);
             ctx.lineTo(gx, gy);
@@ -351,7 +395,9 @@ export function FloorplanCanvas(props: Props) {
 
 function drawPanelCard(
   ctx: CanvasRenderingContext2D,
-  x: number, y: number, h: number,
+  x: number,
+  y: number,
+  h: number,
   doc: HouseDoc,
   colors: ThemeColors,
 ) {
@@ -391,30 +437,39 @@ function drawPanelCard(
 
 function roomFillStyle(r: Room, colors: ThemeColors): { color: string; alpha: number } {
   const base: Record<string, { color: string; alpha: number }> = {
-    kitchen:            { color: colors.teal,   alpha: 0.07 },
-    'kitchen-island':   { color: colors.teal,   alpha: 0.14 },
-    bath:               { color: colors.blue,   alpha: 0.08 },
-    living:             { color: colors.text,   alpha: 0.04 },
-    dining:             { color: colors.text,   alpha: 0.04 },
-    bedroom:            { color: colors.accent, alpha: 0.05 },
-    garage:             { color: colors.text,   alpha: 0.03 },
-    basement:           { color: colors.text,   alpha: 0.03 },
-    laundry:            { color: colors.blue,   alpha: 0.06 },
-    outdoor:            { color: colors.teal,   alpha: 0.04 },
-    hall:               { color: colors.text,   alpha: 0.02 },
-    closet:             { color: colors.text,   alpha: 0.025 },
+    kitchen: { color: colors.teal, alpha: 0.07 },
+    'kitchen-island': { color: colors.teal, alpha: 0.14 },
+    bath: { color: colors.blue, alpha: 0.08 },
+    living: { color: colors.text, alpha: 0.04 },
+    dining: { color: colors.text, alpha: 0.04 },
+    bedroom: { color: colors.accent, alpha: 0.05 },
+    garage: { color: colors.text, alpha: 0.03 },
+    basement: { color: colors.text, alpha: 0.03 },
+    laundry: { color: colors.blue, alpha: 0.06 },
+    outdoor: { color: colors.teal, alpha: 0.04 },
+    hall: { color: colors.text, alpha: 0.02 },
+    closet: { color: colors.text, alpha: 0.025 },
   };
   return base[r.kind] ?? { color: colors.text, alpha: 0.03 };
 }
 
 function drawDevice(
   ctx: CanvasRenderingContext2D,
-  x: number, y: number,
+  x: number,
+  y: number,
   kind: DeviceKind,
-  selected: boolean, hovered: boolean, violated: boolean,
+  selected: boolean,
+  hovered: boolean,
+  violated: boolean,
   colors: ThemeColors,
 ) {
-  const color = selected ? colors.accent : violated ? colors.pink : hovered ? colors.text : colors.textDim;
+  const color = selected
+    ? colors.accent
+    : violated
+      ? colors.pink
+      : hovered
+        ? colors.text
+        : colors.textDim;
   ctx.strokeStyle = color;
   ctx.fillStyle = colors.bg;
   ctx.lineWidth = selected ? 2.2 : 1.4;
@@ -423,10 +478,12 @@ function drawDevice(
     // Toggle-switch schematic symbol.
     ctx.beginPath();
     ctx.arc(x - 5, y, 2, 0, Math.PI * 2);
-    ctx.fill(); ctx.stroke();
+    ctx.fill();
+    ctx.stroke();
     ctx.beginPath();
     ctx.arc(x + 5, y, 2, 0, Math.PI * 2);
-    ctx.fill(); ctx.stroke();
+    ctx.fill();
+    ctx.stroke();
     ctx.beginPath();
     ctx.moveTo(x - 5, y);
     ctx.lineTo(x + 4, y - 6);
@@ -434,48 +491,60 @@ function drawDevice(
   } else if (kind === 'light') {
     ctx.beginPath();
     ctx.arc(x, y, 6, 0, Math.PI * 2);
-    ctx.fill(); ctx.stroke();
+    ctx.fill();
+    ctx.stroke();
     ctx.strokeStyle = color;
     ctx.beginPath();
-    ctx.moveTo(x - 4, y - 4); ctx.lineTo(x + 4, y + 4);
-    ctx.moveTo(x + 4, y - 4); ctx.lineTo(x - 4, y + 4);
+    ctx.moveTo(x - 4, y - 4);
+    ctx.lineTo(x + 4, y + 4);
+    ctx.moveTo(x + 4, y - 4);
+    ctx.lineTo(x - 4, y + 4);
     ctx.stroke();
     // Subtle glow when selected.
     if (selected) {
       ctx.save();
       ctx.globalAlpha = 0.25;
       ctx.fillStyle = colors.accent;
-      ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(x, y, 10, 0, Math.PI * 2);
+      ctx.fill();
       ctx.restore();
     }
   } else if (kind === 'smoke') {
     ctx.beginPath();
     ctx.arc(x, y, 6, 0, Math.PI * 2);
-    ctx.fill(); ctx.stroke();
+    ctx.fill();
+    ctx.stroke();
     ctx.fillStyle = color;
     ctx.font = 'bold 7px "JetBrains Mono", monospace';
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     ctx.fillText('SD', x, y);
   } else if (kind === 'fan') {
     ctx.beginPath();
     ctx.arc(x, y, 6, 0, Math.PI * 2);
-    ctx.fill(); ctx.stroke();
+    ctx.fill();
+    ctx.stroke();
     ctx.fillStyle = color;
     ctx.font = 'bold 7px "JetBrains Mono", monospace';
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     ctx.fillText('F', x, y);
   } else if (isReceptacle(kind)) {
     ctx.beginPath();
     ctx.rect(x - 6, y - 5, 12, 10);
-    ctx.fill(); ctx.stroke();
+    ctx.fill();
+    ctx.stroke();
     ctx.fillStyle = color;
     if (kind === 'receptacle-gfci' || kind === 'receptacle-wr') {
       ctx.font = 'bold 6px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText(kind === 'receptacle-gfci' ? 'G' : 'WR', x, y);
     } else if (kind === 'receptacle-240') {
       ctx.font = 'bold 6px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText('240', x, y);
     } else {
       ctx.fillRect(x - 3, y - 3, 1, 6);
@@ -493,8 +562,15 @@ function drawDevice(
 
 function drawBreakerRow(
   ctx: CanvasRenderingContext2D,
-  x: number, y: number, w: number, h: number,
-  b: Breaker, selected: boolean, hovered: boolean, anchor: boolean, violated: boolean,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  b: Breaker,
+  selected: boolean,
+  hovered: boolean,
+  anchor: boolean,
+  violated: boolean,
   colors: ThemeColors,
 ) {
   const stripColor = breakerStripColor(b.kind, colors);
@@ -565,17 +641,29 @@ function breakerStripColor(k: BreakerKind, colors: ThemeColors): string {
 
 function shortBreakerLabel(b: Breaker): string {
   const aMap: Record<BreakerKind, number> = {
-    'std-15': 15, 'std-20': 20, 'afci-15': 15, 'afci-20': 20,
-    'gfci-15': 15, 'gfci-20': 20, 'dfci-15': 15, 'dfci-20': 20,
-    'dp-30': 30, 'dp-40': 40, 'dp-50': 50,
+    'std-15': 15,
+    'std-20': 20,
+    'afci-15': 15,
+    'afci-20': 20,
+    'gfci-15': 15,
+    'gfci-20': 20,
+    'dfci-15': 15,
+    'dfci-20': 20,
+    'dp-30': 30,
+    'dp-40': 40,
+    'dp-50': 50,
   };
   const a = aMap[b.kind];
   const tag =
-    (b.kind === 'dfci-15' || b.kind === 'dfci-20') ? 'DFCI' :
-    (b.kind === 'afci-15' || b.kind === 'afci-20') ? 'AFCI' :
-    (b.kind === 'gfci-15' || b.kind === 'gfci-20') ? 'GFCI' :
-    (b.kind === 'dp-30' || b.kind === 'dp-40' || b.kind === 'dp-50') ? '2P' :
-    'STD';
+    b.kind === 'dfci-15' || b.kind === 'dfci-20'
+      ? 'DFCI'
+      : b.kind === 'afci-15' || b.kind === 'afci-20'
+        ? 'AFCI'
+        : b.kind === 'gfci-15' || b.kind === 'gfci-20'
+          ? 'GFCI'
+          : b.kind === 'dp-30' || b.kind === 'dp-40' || b.kind === 'dp-50'
+            ? '2P'
+            : 'STD';
   if (b.label) return `${a}A ${tag} ${truncate(b.label, 10)}`;
   return `${a}A ${tag}`;
 }
@@ -588,15 +676,18 @@ function cableStrokeColor(k: CableKind, colors: ThemeColors): string {
   if (k === 'nm-14-2') return withAlpha(colors.textDim, 0.45);
   if (k === 'nm-12-2') return withAlpha(colors.accent, 0.55);
   if (k === 'nm-10-3') return withAlpha(colors.accent, 0.65);
-  if (k === 'nm-8-3')  return withAlpha(colors.teal, 0.65);
-  if (k === 'nm-6-3')  return withAlpha(colors.pink, 0.60);
+  if (k === 'nm-8-3') return withAlpha(colors.teal, 0.65);
+  if (k === 'nm-6-3') return withAlpha(colors.pink, 0.6);
   return withAlpha(colors.textDim, 0.45);
 }
 
 /** Convert any hex / rgb / rgba string to rgba with the given alpha. */
 function withAlpha(color: string, alpha: number): string {
   if (color.startsWith('rgba(')) {
-    return color.replace(/rgba\(([^,]+),\s*([^,]+),\s*([^,]+),\s*[^)]+\)/, `rgba($1,$2,$3,${alpha})`);
+    return color.replace(
+      /rgba\(([^,]+),\s*([^,]+),\s*([^,]+),\s*[^)]+\)/,
+      `rgba($1,$2,$3,${alpha})`,
+    );
   }
   if (color.startsWith('rgb(')) {
     return color.replace(/rgb\(([^)]+)\)/, `rgba($1,${alpha})`);
@@ -614,7 +705,11 @@ function withAlpha(color: string, alpha: number): string {
 /** Draw a rounded rectangle path (does not stroke/fill). */
 function roundRect(
   ctx: CanvasRenderingContext2D,
-  x: number, y: number, w: number, h: number, r: number,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
 ) {
   const rr = Math.min(r, w / 2, h / 2);
   ctx.beginPath();
@@ -632,16 +727,30 @@ function roundRect(
 
 function isDeviceKind(k: string): k is DeviceKind {
   return (
-    k === 'receptacle' || k === 'receptacle-gfci' || k === 'receptacle-tr' ||
-    k === 'receptacle-wr' || k === 'receptacle-240' || k === 'switch' ||
-    k === 'light' || k === 'smoke' || k === 'fan'
+    k === 'receptacle' ||
+    k === 'receptacle-gfci' ||
+    k === 'receptacle-tr' ||
+    k === 'receptacle-wr' ||
+    k === 'receptacle-240' ||
+    k === 'switch' ||
+    k === 'light' ||
+    k === 'smoke' ||
+    k === 'fan'
   );
 }
 function isBreakerKind(k: string): k is BreakerKind {
   return (
-    k === 'std-15' || k === 'std-20' || k === 'afci-15' || k === 'afci-20' ||
-    k === 'gfci-15' || k === 'gfci-20' || k === 'dfci-15' || k === 'dfci-20' ||
-    k === 'dp-30' || k === 'dp-40' || k === 'dp-50'
+    k === 'std-15' ||
+    k === 'std-20' ||
+    k === 'afci-15' ||
+    k === 'afci-20' ||
+    k === 'gfci-15' ||
+    k === 'gfci-20' ||
+    k === 'dfci-15' ||
+    k === 'dfci-20' ||
+    k === 'dp-30' ||
+    k === 'dp-40' ||
+    k === 'dp-50'
   );
 }
 

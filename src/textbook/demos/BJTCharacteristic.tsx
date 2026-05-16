@@ -17,11 +17,13 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const IB_TRACES = [5e-6, 10e-6, 20e-6, 40e-6, 80e-6]; // amps
 const V_CE_SAT = 0.2; // V
-const V_A = 50;       // V — Early voltage
+const V_A = 50; // V — Early voltage
 
 function I_C(V_CE: number, I_B: number, beta: number): number {
   const V = Math.max(0, V_CE);
@@ -41,7 +43,9 @@ export function BJTCharacteristicDemo({ figure }: Props) {
   const I_C_op = I_C(V_CE, I_B_pick, beta);
 
   const stateRef = useRef({ V_CE, beta, I_B_pick });
-  useEffect(() => { stateRef.current = { V_CE, beta, I_B_pick }; }, [V_CE, beta, I_B_pick]);
+  useEffect(() => {
+    stateRef.current = { V_CE, beta, I_B_pick };
+  }, [V_CE, beta, I_B_pick]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -53,11 +57,15 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 60, padR = 20, padT = 20, padB = 36;
+      const padL = 60,
+        padR = 20,
+        padT = 20,
+        padB = 36;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
-      const Vmin = 0, Vmax = 10;
+      const Vmin = 0,
+        Vmax = 10;
       const Imax = 0.012; // 12 mA full-scale
 
       const xOf = (v: number) => padL + ((v - Vmin) / (Vmax - Vmin)) * plotW;
@@ -71,10 +79,12 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       ctx.strokeStyle = colors.border;
       ctx.beginPath();
       for (let v = 0; v <= Vmax; v += 2) {
-        ctx.moveTo(xOf(v), padT); ctx.lineTo(xOf(v), padT + plotH);
+        ctx.moveTo(xOf(v), padT);
+        ctx.lineTo(xOf(v), padT + plotH);
       }
       for (let i = 0; i <= Imax + 1e-9; i += 0.002) {
-        ctx.moveTo(padL, yOf(i)); ctx.lineTo(padL + plotW, yOf(i));
+        ctx.moveTo(padL, yOf(i));
+        ctx.lineTo(padL + plotW, yOf(i));
       }
       ctx.stroke();
 
@@ -87,7 +97,7 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       for (let v = 0; v <= Vmax; v += 2) {
         ctx.fillText(v.toFixed(0), xOf(v), padT + plotH + 4);
-      ctx.restore();
+        ctx.restore();
       }
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
@@ -111,7 +121,8 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       ctx.strokeStyle = colors.border;
       ctx.setLineDash([2, 4]);
       ctx.beginPath();
-      ctx.moveTo(xOf(V_CE_SAT), padT); ctx.lineTo(xOf(V_CE_SAT), padT + plotH);
+      ctx.moveTo(xOf(V_CE_SAT), padT);
+      ctx.lineTo(xOf(V_CE_SAT), padT + plotH);
       ctx.stroke();
       ctx.setLineDash([]);
 
@@ -157,7 +168,8 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       ctx.strokeStyle = colors.text;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
-      ctx.moveTo(opX, padT); ctx.lineTo(opX, padT + plotH);
+      ctx.moveTo(opX, padT);
+      ctx.lineTo(opX, padT + plotH);
       ctx.stroke();
       ctx.restore();
       ctx.setLineDash([]);
@@ -171,7 +183,11 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText(`npn BJT family   β = ${beta.toFixed(0)}   V_A (Early) = ${V_A} V   I_C(op) = ${(Iop * 1000).toFixed(2)} mA`, padL, 6);
+      ctx.fillText(
+        `npn BJT family   β = ${beta.toFixed(0)}   V_A (Early) = ${V_A} V   I_C(op) = ${(Iop * 1000).toFixed(2)} mA`,
+        padL,
+        6,
+      );
 
       raf = requestAnimationFrame(draw);
     }
@@ -184,30 +200,42 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 14.3'}
       title="BJT output characteristics — I_C vs V_CE"
       question="A small base current I_B controls a much larger collector current I_C. How much larger? And how flat is the response?"
-      caption={<>
-        Each trace is one fixed I_B. Below V_CE ≈ 0.2 V the transistor is in <em>saturation</em>; above, it is in the
-        <em> active region</em> where I_C ≈ β·I_B. Slope across the active region is the Early effect, parameterised by
-        V_A — the curves would be perfectly flat if V_A → ∞.
-      </>}
+      caption={
+        <>
+          Each trace is one fixed I_B. Below V_CE ≈ 0.2 V the transistor is in <em>saturation</em>;
+          above, it is in the
+          <em> active region</em> where I_C ≈ β·I_B. Slope across the active region is the Early
+          effect, parameterised by V_A — the curves would be perfectly flat if V_A → ∞.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="V_CE"
-          value={V_CE} min={0} max={10} step={0.05}
-          format={v => v.toFixed(2) + ' V'}
+          value={V_CE}
+          min={0}
+          max={10}
+          step={0.05}
+          format={(v) => v.toFixed(2) + ' V'}
           onChange={setVCE}
         />
         <MiniSlider
           label="β"
-          value={beta} min={20} max={400} step={5}
-          format={v => v.toFixed(0)}
+          value={beta}
+          min={20}
+          max={400}
+          step={5}
+          format={(v) => v.toFixed(0)}
           onChange={setBeta}
         />
         <MiniSlider
           label="I_B"
-          value={I_B_pick} min={5e-6} max={80e-6} step={1e-6}
-          format={v => (v * 1e6).toFixed(0) + ' µA'}
+          value={I_B_pick}
+          min={5e-6}
+          max={80e-6}
+          step={1e-6}
+          format={(v) => (v * 1e6).toFixed(0) + ' µA'}
           onChange={setIBpick}
         />
         <MiniReadout label="I_C" value={<Num value={I_C_op} />} unit="A" />

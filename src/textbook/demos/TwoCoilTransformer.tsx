@@ -16,28 +16,32 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function TwoCoilTransformerDemo({ figure }: Props) {
   const [Np, setNp] = useState(200);
   const [Ns, setNs] = useState(40);
-  const [Vp, setVp] = useState(170);     // peak primary voltage (170 V ≈ 120 V_rms)
+  const [Vp, setVp] = useState(170); // peak primary voltage (170 V ≈ 120 V_rms)
   const [Rload, setRload] = useState(20); // ohms
 
   const stateRef = useRef({ Np, Ns, Vp, Rload });
-  useEffect(() => { stateRef.current = { Np, Ns, Vp, Rload }; }, [Np, Ns, Vp, Rload]);
+  useEffect(() => {
+    stateRef.current = { Np, Ns, Vp, Rload };
+  }, [Np, Ns, Vp, Rload]);
 
   const computed = useMemo(() => {
     const ratio = Ns / Np;
     const Vs = Vp * ratio;
     const Is = Vs / Rload;
-    const Ip = Is * ratio;        // = Is·N_s/N_p
-    const Pload = Vs * Is / 2;    // average power (sinusoid, V_s and I_s in phase)
+    const Ip = Is * ratio; // = Is·N_s/N_p
+    const Pload = (Vs * Is) / 2; // average power (sinusoid, V_s and I_s in phase)
     return { ratio, Vs, Is, Ip, Pload };
   }, [Np, Ns, Vp, Rload]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     const t0 = performance.now();
 
@@ -47,7 +51,7 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       const Vs = Vp * ratio;
       const Is = Vs / Rload;
       const t = (performance.now() - t0) / 1000;
-      const omega = 2 * Math.PI * 1.4;     // 1.4 Hz visual
+      const omega = 2 * Math.PI * 1.4; // 1.4 Hz visual
 
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
@@ -62,16 +66,22 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       ctx.strokeStyle = 'rgba(160,158,149,0.45)';
       ctx.lineWidth = 1.4;
       ctx.strokeRect(coreLeft, coreTop, coreRight - coreLeft, coreBot - coreTop);
-      ctx.strokeRect(coreLeft + coreThick, coreTop + coreThick,
-        (coreRight - coreLeft) - 2 * coreThick, (coreBot - coreTop) - 2 * coreThick);
+      ctx.strokeRect(
+        coreLeft + coreThick,
+        coreTop + coreThick,
+        coreRight - coreLeft - 2 * coreThick,
+        coreBot - coreTop - 2 * coreThick,
+      );
       ctx.strokeStyle = 'rgba(160,158,149,0.18)';
       ctx.lineWidth = 0.6;
       for (let x = coreLeft + 4; x < coreRight - 4; x += 7) {
         ctx.beginPath();
-        ctx.moveTo(x, coreTop + 2); ctx.lineTo(x, coreTop + coreThick - 2);
+        ctx.moveTo(x, coreTop + 2);
+        ctx.lineTo(x, coreTop + coreThick - 2);
         ctx.stroke();
         ctx.beginPath();
-        ctx.moveTo(x, coreBot - coreThick + 2); ctx.lineTo(x, coreBot - 2);
+        ctx.moveTo(x, coreBot - coreThick + 2);
+        ctx.lineTo(x, coreBot - 2);
         ctx.stroke();
       }
 
@@ -97,16 +107,28 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       const speed = 0.25 + intensity * 0.9;
       const ntracers = 16;
       for (let i = 0; i < ntracers; i++) {
-        const u = ((i / ntracers + sign * speed * t) % 1 + 1) % 1;
+        const u = (((i / ntracers + sign * speed * t) % 1) + 1) % 1;
         const s = u * perim;
-        let px = 0, py = 0;
-        if (s < cw) { px = cxL + s; py = cyT; }
-        else if (s < cw + ch) { px = cxR; py = cyT + (s - cw); }
-        else if (s < 2 * cw + ch) { px = cxR - (s - cw - ch); py = cyB; }
-        else { px = cxL; py = cyB - (s - 2 * cw - ch); }
+        let px = 0,
+          py = 0;
+        if (s < cw) {
+          px = cxL + s;
+          py = cyT;
+        } else if (s < cw + ch) {
+          px = cxR;
+          py = cyT + (s - cw);
+        } else if (s < 2 * cw + ch) {
+          px = cxR - (s - cw - ch);
+          py = cyB;
+        } else {
+          px = cxL;
+          py = cyB - (s - 2 * cw - ch);
+        }
         const a = 0.25 + intensity * 0.7;
         ctx.fillStyle = `rgba(108,197,194,${a})`;
-        ctx.beginPath(); ctx.arc(px, py, 2.6, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(px, py, 2.6, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       // AC source on the left
@@ -114,12 +136,15 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       const srcY = cy;
       ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1.4;
-      ctx.beginPath(); ctx.arc(srcX, srcY, 16, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(srcX, srcY, 16, 0, Math.PI * 2);
+      ctx.stroke();
       ctx.beginPath();
       for (let k = -10; k <= 10; k++) {
         const x = srcX + k;
         const y = srcY + Math.sin((k / 10) * Math.PI * 2 + t * 8) * 6;
-        if (k === -10) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (k === -10) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
       ctx.strokeStyle = getCanvasColors().borderStrong;
@@ -145,7 +170,7 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       const zx = loadX - 14;
       ctx.moveTo(zx, loadY - 14);
       for (let k = 0; k < 6; k++) {
-        ctx.lineTo(zx + (k % 2 === 0 ? 14 : 0), loadY - 14 + (k + 1) * 28 / 6);
+        ctx.lineTo(zx + (k % 2 === 0 ? 14 : 0), loadY - 14 + ((k + 1) * 28) / 6);
       }
       ctx.lineTo(zx, loadY + 14);
       ctx.stroke();
@@ -165,7 +190,8 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       // Labels
       ctx.fillStyle = getCanvasColors().accent;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       ctx.fillText(`N_p = ${Np}`, primX, coreBot + 6);
       ctx.fillText(`V_p = ${Vp.toFixed(0)} V`, srcX, srcY + 26);
       ctx.fillStyle = getCanvasColors().teal;
@@ -206,44 +232,64 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 18.1'}
       title="Two coils, one core, a loaded secondary"
       question="Move N_p, N_s, V_p, R_load. Watch where the power goes."
-      caption={<>
-        Both windings link the same flux Φ. Faraday's law on each coil gives
-        <strong> V_p = N_p dΦ/dt</strong> and <strong>V_s = N_s dΦ/dt</strong>, so
-        <strong> V_s/V_p = N_s/N_p</strong>. Power balance (lossless) makes I_p track I_s the other way around:
-        <strong> I_p/I_s = N_s/N_p</strong>. All four sliders are independent inputs; the readouts are derived.
-      </>}
+      caption={
+        <>
+          Both windings link the same flux Φ. Faraday's law on each coil gives
+          <strong> V_p = N_p dΦ/dt</strong> and <strong>V_s = N_s dΦ/dt</strong>, so
+          <strong> V_s/V_p = N_s/N_p</strong>. Power balance (lossless) makes I_p track I_s the
+          other way around:
+          <strong> I_p/I_s = N_s/N_p</strong>. All four sliders are independent inputs; the readouts
+          are derived.
+        </>
+      }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="N_p"
-          value={Np} min={10} max={500} step={1}
-          format={v => Math.round(v).toString()}
-          onChange={v => setNp(Math.max(1, Math.round(v)))}
+          value={Np}
+          min={10}
+          max={500}
+          step={1}
+          format={(v) => Math.round(v).toString()}
+          onChange={(v) => setNp(Math.max(1, Math.round(v)))}
         />
         <MiniSlider
           label="N_s"
-          value={Ns} min={1} max={500} step={1}
-          format={v => Math.round(v).toString()}
-          onChange={v => setNs(Math.max(1, Math.round(v)))}
+          value={Ns}
+          min={1}
+          max={500}
+          step={1}
+          format={(v) => Math.round(v).toString()}
+          onChange={(v) => setNs(Math.max(1, Math.round(v)))}
         />
         <MiniSlider
           label="V_p,peak"
-          value={Vp} min={0} max={400} step={1}
-          format={v => Math.round(v) + ' V'}
+          value={Vp}
+          min={0}
+          max={400}
+          step={1}
+          format={(v) => Math.round(v) + ' V'}
           onChange={setVp}
         />
         <MiniSlider
           label="R_load"
-          value={Rload} min={1} max={200} step={1}
-          format={v => Math.round(v) + ' Ω'}
+          value={Rload}
+          min={1}
+          max={200}
+          step={1}
+          format={(v) => Math.round(v) + ' Ω'}
           onChange={setRload}
         />
         <MiniReadout label="V_s,peak" value={<Num value={computed.Vs} digits={2} />} unit="V" />
         <MiniReadout label="I_s,peak" value={<Num value={computed.Is} digits={2} />} unit="A" />
         <MiniReadout label="I_p,peak" value={<Num value={computed.Ip} digits={3} />} unit="A" />
-        <MiniReadout label="P_load,avg" value={<Num value={computed.Pload} digits={2} />} unit="W" />
+        <MiniReadout
+          label="P_load,avg"
+          value={<Num value={computed.Pload} digits={2} />}
+          unit="W"
+        />
       </DemoControls>
     </Demo>
   );
@@ -251,7 +297,10 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
 
 function drawCoil(
   ctx: CanvasRenderingContext2D,
-  cx: number, cy: number, armHalf: number, halfH: number,
+  cx: number,
+  cy: number,
+  armHalf: number,
+  halfH: number,
   turns: number,
 ) {
   const yTop = cy - halfH;

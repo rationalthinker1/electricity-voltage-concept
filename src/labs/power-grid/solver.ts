@@ -53,7 +53,7 @@ export const FREQ_DAMPING = 1.0;
 /** Under-frequency load-shed threshold in Hz. */
 export const UFLS_THRESHOLD_HZ = 59.3;
 /** Load-shed rate at which load is dropped once UFLS triggers (fraction/sec). */
-export const UFLS_RATE = 0.10;
+export const UFLS_RATE = 0.1;
 /** Time step for frequency integration. */
 export const FREQ_DT = 0.1;
 
@@ -110,7 +110,8 @@ export function buildSusceptance(doc: GridDoc): {
     const i = busIndex.get(fromId);
     const j = busIndex.get(toId);
     if (i === undefined || j === undefined) return;
-    const ri = i - 1, rj = j - 1;
+    const ri = i - 1,
+      rj = j - 1;
     if (ri >= 0) B[ri][ri] += b;
     if (rj >= 0) B[rj][rj] += b;
     if (ri >= 0 && rj >= 0) {
@@ -237,20 +238,24 @@ export function powerFlow(doc: GridDoc, prevV?: Map<string, number>): PowerFlowR
   // captures the dominant intuition: heavily-loaded buses sag below 1.0 pu.
   for (const b of doc.buses) {
     const draw = b.loads.reduce((s, ld) => s + ld.ratedMW * ld.demandScale * ld.pf, 0);
-    const cap = b.generators.reduce(
-      (s, g) => s + (g.tripped ? 0 : g.ratedMW),
-      0,
-    );
+    const cap = b.generators.reduce((s, g) => s + (g.tripped ? 0 : g.ratedMW), 0);
     // Simple bus-level voltage estimate: 1.00 nominal, drop 0.02 pu per 100 % over-draw.
-    const slack = cap > 0 ? (cap - draw) / Math.max(cap, 1) : (draw > 0 ? -1 : 0);
-    const vEst = 1.00 + 0.02 * Math.max(-1, Math.min(0.5, slack));
-    V.set(b.id, clamp(vEst, 0.85, 1.10));
+    const slack = cap > 0 ? (cap - draw) / Math.max(cap, 1) : draw > 0 ? -1 : 0;
+    const vEst = 1.0 + 0.02 * Math.max(-1, Math.min(0.5, slack));
+    V.set(b.id, clamp(vEst, 0.85, 1.1));
   }
 
   // Edge flows + losses.
   const flowMW = new Map<string, number>();
   const lossMW = new Map<string, number>();
-  function edgeFlow(id: string, fromId: string, toId: string, rPu: number, xPu: number, xScale = 1) {
+  function edgeFlow(
+    id: string,
+    fromId: string,
+    toId: string,
+    rPu: number,
+    xPu: number,
+    xScale = 1,
+  ) {
     const xx = Math.max(1e-4, xPu * xScale);
     const dTheta = (theta.get(fromId) ?? 0) - (theta.get(toId) ?? 0);
     const pPu = dTheta / xx;
@@ -265,8 +270,14 @@ export function powerFlow(doc: GridDoc, prevV?: Map<string, number>): PowerFlowR
   }
   for (const tx of doc.transformers) {
     // Transformer R is roughly 0.005 pu per unit X.
-    edgeFlow(tx.id, tx.fromBusId, tx.toBusId, 0.005 * tx.xPu, tx.xPu,
-      S_BASE_MVA / Math.max(1, tx.ratingMVA));
+    edgeFlow(
+      tx.id,
+      tx.fromBusId,
+      tx.toBusId,
+      0.005 * tx.xPu,
+      tx.xPu,
+      S_BASE_MVA / Math.max(1, tx.ratingMVA),
+    );
   }
 
   let totalLossMW = 0;
@@ -329,7 +340,7 @@ export function stepFrequency(
   // In per-unit on S_BASE_MVA.
   const imbalPu = pf.imbalanceMW / S_BASE_MVA;
   const dampPu = FREQ_DAMPING * dFraction;
-  const rocof = (imbalPu - dampPu) / (2 * Hsys) * fNom;
+  const rocof = ((imbalPu - dampPu) / (2 * Hsys)) * fNom;
 
   let nextHz = freq.hz + rocof * FREQ_DT;
   // Clip to a sane physical range.
@@ -424,7 +435,10 @@ export function dispatchMeritOrder(doc: GridDoc): GridDoc {
   // Fill cheapest generators to capacity.
   const dispatchMap = new Map<string, number>();
   for (const { g } of gens) {
-    if (target <= 0) { dispatchMap.set(g.id, 0); continue; }
+    if (target <= 0) {
+      dispatchMap.set(g.id, 0);
+      continue;
+    }
     const fill = Math.min(g.ratedMW, target);
     dispatchMap.set(g.id, fill / Math.max(1, g.ratedMW));
     target -= fill;
@@ -532,21 +546,21 @@ export function fmtHz(hz: number): string {
 export function lineImpedancePerMile(kv: number): { r: number; x: number } {
   // Per-unit on a 100 MVA, kV-base. Numbers reflect typical overhead-line
   // X/R ratios at each voltage class (Grainger & Stevenson, App. A).
-  if (kv >= 230) return { r: 0.00010, x: 0.00080 };
-  if (kv >= 138) return { r: 0.00025, x: 0.00150 };
-  if (kv >= 69)  return { r: 0.00050, x: 0.00250 };
-  if (kv >= 25)  return { r: 0.00200, x: 0.00500 };
-  if (kv >= 12)  return { r: 0.00800, x: 0.01200 };
-  return { r: 0.02000, x: 0.02500 };
+  if (kv >= 230) return { r: 0.0001, x: 0.0008 };
+  if (kv >= 138) return { r: 0.00025, x: 0.0015 };
+  if (kv >= 69) return { r: 0.0005, x: 0.0025 };
+  if (kv >= 25) return { r: 0.002, x: 0.005 };
+  if (kv >= 12) return { r: 0.008, x: 0.012 };
+  return { r: 0.02, x: 0.025 };
 }
 
 /** Default thermal rating in MVA for a single-circuit line at a given kV. */
 export function lineRating(kv: number): number {
   if (kv >= 230) return 600;
   if (kv >= 138) return 300;
-  if (kv >= 69)  return 150;
-  if (kv >= 25)  return 50;
-  if (kv >= 12)  return 20;
+  if (kv >= 69) return 150;
+  if (kv >= 25) return 50;
+  if (kv >= 12) return 20;
   return 5;
 }
 
@@ -564,17 +578,31 @@ export function defaultGenerator(kind: Generator['kind']): Omit<Generator, 'id'>
     case 'solar':
       return { kind, ratedMW: 150, dispatch: 0.3, H: 0, droop: 0, cost: 1, co2: 40 };
     case 'battery':
-      return { kind, ratedMW: 100, dispatch: 0, H: 0.1, droop: 0.02, cost: 30, co2: 0, soc: 0.6, energyMWh: 200 };
+      return {
+        kind,
+        ratedMW: 100,
+        dispatch: 0,
+        H: 0.1,
+        droop: 0.02,
+        cost: 30,
+        co2: 0,
+        soc: 0.6,
+        energyMWh: 200,
+      };
   }
 }
 
 /** Default load parameters for a given kind. */
 export function defaultLoad(kind: Load['kind']): Omit<Load, 'id'> {
   switch (kind) {
-    case 'residential': return { kind, ratedMW: 60, demandScale: 1.0, pf: 0.95 };
-    case 'industrial':  return { kind, ratedMW: 80, demandScale: 1.0, pf: 0.90 };
-    case 'motor':       return { kind, ratedMW: 40, demandScale: 1.0, pf: 0.85 };
-    case 'ev':          return { kind, ratedMW: 30, demandScale: 1.0, pf: 0.99 };
+    case 'residential':
+      return { kind, ratedMW: 60, demandScale: 1.0, pf: 0.95 };
+    case 'industrial':
+      return { kind, ratedMW: 80, demandScale: 1.0, pf: 0.9 };
+    case 'motor':
+      return { kind, ratedMW: 40, demandScale: 1.0, pf: 0.85 };
+    case 'ev':
+      return { kind, ratedMW: 30, demandScale: 1.0, pf: 0.99 };
   }
 }
 

@@ -24,13 +24,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 function yToDelta(Ra: number, Rb: number, Rc: number) {
   const S = Ra * Rb + Rb * Rc + Rc * Ra;
@@ -58,7 +58,7 @@ export function YDeltaTransformDemo({ figure }: Props) {
   }, [Ra, Rb, Rc, delta.R_AB, delta.R_BC, delta.R_CA]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
@@ -77,7 +77,10 @@ export function YDeltaTransformDemo({ figure }: Props) {
 
       // Divider
       ctx.strokeStyle = getCanvasColors().border;
-      ctx.beginPath(); ctx.moveTo(halfW, 8); ctx.lineTo(halfW, h - 8); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(halfW, 8);
+      ctx.lineTo(halfW, h - 8);
+      ctx.stroke();
 
       // Equivalence arrow
       ctx.fillStyle = getCanvasColors().accent;
@@ -97,22 +100,44 @@ export function YDeltaTransformDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 13.4'}
       title="Y ⇌ Δ transformation — three resistors, two shapes, one network"
       question="The Y on the left and the Δ on the right are externally indistinguishable."
-      caption={<>
-        Three resistors arranged as a wye (left) or a delta (right). Kennelly (1899)
-        showed that for the right choice of resistor values, the two networks present
-        identical impedance to anything connected at the three terminals A, B, C.
-        That makes bridge-style networks — un-reducible by series/parallel alone —
-        suddenly tractable.
-      </>}
+      caption={
+        <>
+          Three resistors arranged as a wye (left) or a delta (right). Kennelly (1899) showed that
+          for the right choice of resistor values, the two networks present identical impedance to
+          anything connected at the three terminals A, B, C. That makes bridge-style networks —
+          un-reducible by series/parallel alone — suddenly tractable.
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <MiniSlider label="R_a (Y)" value={Ra} min={1} max={100} step={1}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setRa} />
-        <MiniSlider label="R_b (Y)" value={Rb} min={1} max={100} step={1}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setRb} />
-        <MiniSlider label="R_c (Y)" value={Rc} min={1} max={100} step={1}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setRc} />
+        <MiniSlider
+          label="R_a (Y)"
+          value={Ra}
+          min={1}
+          max={100}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setRa}
+        />
+        <MiniSlider
+          label="R_b (Y)"
+          value={Rb}
+          min={1}
+          max={100}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setRb}
+        />
+        <MiniSlider
+          label="R_c (Y)"
+          value={Rc}
+          min={1}
+          max={100}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setRc}
+        />
         <MiniReadout label="R_AB (Δ side)" value={<Num value={delta.R_AB} digits={2} />} unit="Ω" />
         <MiniReadout label="R_BC (Δ side)" value={<Num value={delta.R_BC} digits={2} />} unit="Ω" />
         <MiniReadout label="R_CA (Δ side)" value={<Num value={delta.R_CA} digits={2} />} unit="Ω" />
@@ -126,8 +151,13 @@ export function YDeltaTransformDemo({ figure }: Props) {
 
 function drawYNetwork(
   ctx: CanvasRenderingContext2D,
-  x0: number, y0: number, w: number, h: number,
-  Ra: number, Rb: number, Rc: number,
+  x0: number,
+  y0: number,
+  w: number,
+  h: number,
+  Ra: number,
+  Rb: number,
+  Rc: number,
 ) {
   ctx.save();
   ctx.translate(x0, y0);
@@ -154,7 +184,9 @@ function drawYNetwork(
 
   // Centre node
   ctx.fillStyle = getCanvasColors().teal;
-  ctx.beginPath(); ctx.arc(N.x, N.y, 3, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath();
+  ctx.arc(N.x, N.y, 3, 0, Math.PI * 2);
+  ctx.fill();
 
   ctx.fillStyle = getCanvasColors().textDim;
   ctx.font = '11px "JetBrains Mono", monospace';
@@ -166,8 +198,13 @@ function drawYNetwork(
 
 function drawDeltaNetwork(
   ctx: CanvasRenderingContext2D,
-  x0: number, y0: number, w: number, h: number,
-  RAB: number, RBC: number, RCA: number,
+  x0: number,
+  y0: number,
+  w: number,
+  h: number,
+  RAB: number,
+  RBC: number,
+  RCA: number,
 ) {
   ctx.save();
   ctx.translate(x0, y0);
@@ -199,7 +236,9 @@ function drawDeltaNetwork(
 
 function drawTerminal(ctx: CanvasRenderingContext2D, p: { x: number; y: number }, label: string) {
   ctx.fillStyle = getCanvasColors().accent;
-  ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
+  ctx.fill();
   ctx.fillStyle = 'rgba(255,255,255,0.9)';
   ctx.font = 'bold 12px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
@@ -209,16 +248,23 @@ function drawTerminal(ctx: CanvasRenderingContext2D, p: { x: number; y: number }
 
 function drawLineResistor(
   ctx: CanvasRenderingContext2D,
-  x0: number, y0: number, x1: number, y1: number, label: string,
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+  label: string,
 ) {
-  const dx = x1 - x0, dy = y1 - y0;
+  const dx = x1 - x0,
+    dy = y1 - y0;
   const len = Math.hypot(dx, dy);
   if (len < 4) return;
-  const ux = dx / len, uy = dy / len;
+  const ux = dx / len,
+    uy = dy / len;
   // Perpendicular for zig-zag
-  const px = -uy, py = ux;
+  const px = -uy,
+    py = ux;
 
-  const start = 22;  // leave a gap for the terminal
+  const start = 22; // leave a gap for the terminal
   const end = len - 22;
   const segs = 6;
   const segLen = (end - start) / segs;

@@ -37,7 +37,9 @@ function lossDbPerKm(lambdaNm: number): number {
 export function FiberAttenuationDemo() {
   const [lambda, setLambda] = useState(1550);
   const stateRef = useRef({ lambda });
-  useEffect(() => { stateRef.current = { lambda }; }, [lambda]);
+  useEffect(() => {
+    stateRef.current = { lambda };
+  }, [lambda]);
 
   const loss = lossDbPerKm(lambda);
   // Link reach at 30 dB budget (1 mW launch, −29 dBm receiver)
@@ -53,15 +55,21 @@ export function FiberAttenuationDemo() {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
-      const padL = 50, padR = 18, padT = 18, padB = 30;
+      const padL = 50,
+        padR = 18,
+        padT = 18,
+        padB = 30;
       const plotW = W - padL - padR;
       const plotH = H - padT - padB;
-      const lamMin = 800, lamMax = 1700;
-      const lossMin = 0.1, lossMax = 5; // log scale dB/km
+      const lamMin = 800,
+        lamMax = 1700;
+      const lossMin = 0.1,
+        lossMax = 5; // log scale dB/km
 
       const xOfLam = (l: number) => padL + ((l - lamMin) / (lamMax - lamMin)) * plotW;
       const yOfLoss = (db: number) => {
-        const t = (Math.log10(db) - Math.log10(lossMin)) / (Math.log10(lossMax) - Math.log10(lossMin));
+        const t =
+          (Math.log10(db) - Math.log10(lossMin)) / (Math.log10(lossMax) - Math.log10(lossMin));
         return padT + (1 - Math.max(0, Math.min(1, t))) * plotH;
       };
 
@@ -73,8 +81,8 @@ export function FiberAttenuationDemo() {
       // Telecom windows — vertical bands at 850 / 1310 / 1550. Theme-aware
       // tints via globalAlpha so the bands follow light/dark mode.
       const windows = [
-        { l: 850,  color: colors.blue,   alpha: 0.10 },
-        { l: 1310, color: colors.teal,   alpha: 0.14 },
+        { l: 850, color: colors.blue, alpha: 0.1 },
+        { l: 1310, color: colors.teal, alpha: 0.14 },
         { l: 1550, color: colors.accent, alpha: 0.15 },
       ];
       for (const w of windows) {
@@ -94,7 +102,8 @@ export function FiberAttenuationDemo() {
         const db = lossDbPerKm(l);
         const x = xOfLam(l);
         const y = yOfLoss(db);
-        if (l === lamMin) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (l === lamMin) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -105,7 +114,8 @@ export function FiberAttenuationDemo() {
       ctx.strokeStyle = colors.accent;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
-      ctx.moveTo(cx, padT); ctx.lineTo(cx, padT + plotH);
+      ctx.moveTo(cx, padT);
+      ctx.lineTo(cx, padT + plotH);
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = colors.accent;
@@ -153,19 +163,28 @@ export function FiberAttenuationDemo() {
       figure="Fig. 42.2"
       title="Silica fiber attenuation across the telecom bands"
       question="Why is 1550 nm the dominant long-haul wavelength?"
-      caption={<>
-        Silica fiber loss falls as <strong>1/λ⁴</strong> (Rayleigh scattering) until the
-        infrared absorption band of the SiO₂ lattice kicks in past 1.6 μm. Modern{' '}
-        <strong>OH⁻-stripped</strong> fibers can use the entire 1260–1625 nm range, but the
-        two operating windows the industry standardised on are <strong>1310 nm</strong>{' '}
-        (zero chromatic dispersion of standard SMF) and <strong>1550 nm</strong>{' '}
-        (minimum loss + the gain band of erbium-doped fiber amplifiers).
-      </>}
+      caption={
+        <>
+          Silica fiber loss falls as <strong>1/λ⁴</strong> (Rayleigh scattering) until the infrared
+          absorption band of the SiO₂ lattice kicks in past 1.6 μm. Modern{' '}
+          <strong>OH⁻-stripped</strong> fibers can use the entire 1260–1625 nm range, but the two
+          operating windows the industry standardised on are <strong>1310 nm</strong> (zero
+          chromatic dispersion of standard SMF) and <strong>1550 nm</strong> (minimum loss + the
+          gain band of erbium-doped fiber amplifiers).
+        </>
+      }
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
-        <MiniSlider label="wavelength" value={lambda} min={800} max={1700} step={1}
-          format={v => `${v.toFixed(0)} nm`} onChange={setLambda} />
+        <MiniSlider
+          label="wavelength"
+          value={lambda}
+          min={800}
+          max={1700}
+          step={1}
+          format={(v) => `${v.toFixed(0)} nm`}
+          onChange={setLambda}
+        />
         <MiniReadout label="loss" value={loss.toFixed(2)} unit="dB/km" />
         <MiniReadout label="reach @ 30 dB budget" value={reachKm.toFixed(0)} unit="km" />
       </DemoControls>

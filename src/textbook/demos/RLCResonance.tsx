@@ -18,12 +18,14 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const V0 = 1;  // 1 V drive amplitude
+const V0 = 1; // 1 V drive amplitude
 
 export function RLCResonanceDemo({ figure }: Props) {
-  const [R, setR] = useState(5);     // Ω
+  const [R, setR] = useState(5); // Ω
   const [Lmh, setLmh] = useState(10); // mH
   const [Cuf, setCuf] = useState(10); // µF
   const L = Lmh * 1e-3;
@@ -34,7 +36,9 @@ export function RLCResonanceDemo({ figure }: Props) {
   const Ipeak = V0 / R;
 
   const stateRef = useRef({ R, L, C, f0, omega0 });
-  useEffect(() => { stateRef.current = { R, L, C, f0, omega0 }; }, [R, L, C, f0, omega0]);
+  useEffect(() => {
+    stateRef.current = { R, L, C, f0, omega0 };
+  }, [R, L, C, f0, omega0]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -72,7 +76,10 @@ export function RLCResonanceDemo({ figure }: Props) {
       ctx.strokeStyle = colors.border;
       for (let i = 1; i < 5; i++) {
         const y = plotY + (i * plotH) / 5;
-        ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
+        ctx.stroke();
       }
       // Frequency axis ticks at f0/2, f0, 2f0
       const tickFs = [f0 / 2, f0, 2 * f0];
@@ -85,7 +92,10 @@ export function RLCResonanceDemo({ figure }: Props) {
       for (const tf of tickFs) {
         const x = plotX + ((Math.log10(tf) - logMin) / (logMax - logMin)) * plotW;
         ctx.strokeStyle = colors.border;
-        ctx.beginPath(); ctx.moveTo(x, plotY); ctx.lineTo(x, plotY + plotH); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, plotY);
+        ctx.lineTo(x, plotY + plotH);
+        ctx.stroke();
         ctx.fillText(fmtFreq(tf), x, plotY + plotH + 4);
       }
 
@@ -94,7 +104,10 @@ export function RLCResonanceDemo({ figure }: Props) {
       ctx.restore();
       ctx.strokeStyle = colors.teal;
       ctx.setLineDash([4, 4]);
-      ctx.beginPath(); ctx.moveTo(x0, plotY); ctx.lineTo(x0, plotY + plotH); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x0, plotY);
+      ctx.lineTo(x0, plotY + plotH);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       // The |I| curve
@@ -127,7 +140,8 @@ export function RLCResonanceDemo({ figure }: Props) {
       ctx.strokeStyle = colors.pink;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
-      ctx.moveTo(plotX, yHalf); ctx.lineTo(plotX + plotW, yHalf);
+      ctx.moveTo(plotX, yHalf);
+      ctx.lineTo(plotX + plotW, yHalf);
       ctx.stroke();
       ctx.setLineDash([]);
 
@@ -169,32 +183,43 @@ export function RLCResonanceDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 10.4'}
       title="Driven RLC — resonance and Q"
       question="Same circuit. Sweep ω. Why does current peak so sharply?"
-      caption={<>
-        A 1-V sinusoidal source drives R, L, and C in series. The current responds with
-        amplitude <strong>|I| = V₀ / |Z(ω)|</strong>, peaking when ωL = 1/(ωC) — i.e. at the
-        resonant frequency <strong>f₀ = 1/(2π√(LC))</strong>. The peak sharpness is set by the
-        quality factor <strong>Q = ω₀L/R</strong>: smaller R, sharper peak, more selective filter.
-      </>}
+      caption={
+        <>
+          A 1-V sinusoidal source drives R, L, and C in series. The current responds with amplitude{' '}
+          <strong>|I| = V₀ / |Z(ω)|</strong>, peaking when ωL = 1/(ωC) — i.e. at the resonant
+          frequency <strong>f₀ = 1/(2π√(LC))</strong>. The peak sharpness is set by the quality
+          factor <strong>Q = ω₀L/R</strong>: smaller R, sharper peak, more selective filter.
+        </>
+      }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="R"
-          value={R} min={0.5} max={50} step={0.5}
-          format={v => v.toFixed(1) + ' Ω'}
+          value={R}
+          min={0.5}
+          max={50}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' Ω'}
           onChange={setR}
         />
         <MiniSlider
           label="L"
-          value={Lmh} min={0.1} max={100} step={0.1}
-          format={v => v.toFixed(1) + ' mH'}
+          value={Lmh}
+          min={0.1}
+          max={100}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' mH'}
           onChange={setLmh}
         />
         <MiniSlider
           label="C"
-          value={Cuf} min={0.1} max={100} step={0.1}
-          format={v => v.toFixed(1) + ' µF'}
+          value={Cuf}
+          min={0.1}
+          max={100}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' µF'}
           onChange={setCuf}
         />
         <MiniReadout label="f₀" value={<Num value={f0} />} unit="Hz" />

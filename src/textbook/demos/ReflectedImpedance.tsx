@@ -20,7 +20,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function ReflectedImpedanceDemo({ figure }: Props) {
   const [omegaKrad, setOmegaKrad] = useState(1000); // krad/s — range 100 - 10000
@@ -30,8 +32,9 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
   const [RLOhm, setRLOhm] = useState(50);
 
   const stateRef = useRef({ omegaKrad, k, L1mH, L2mH, RLOhm });
-  useEffect(() => { stateRef.current = { omegaKrad, k, L1mH, L2mH, RLOhm }; },
-    [omegaKrad, k, L1mH, L2mH, RLOhm]);
+  useEffect(() => {
+    stateRef.current = { omegaKrad, k, L1mH, L2mH, RLOhm };
+  }, [omegaKrad, k, L1mH, L2mH, RLOhm]);
 
   const computed = useMemo(() => {
     const omega = omegaKrad * 1000;
@@ -59,7 +62,7 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
   }, [omegaKrad, k, L1mH, L2mH, RLOhm]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
@@ -84,7 +87,8 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       const cy = h / 2;
       // Source box
       const srcX = 24;
-      const srcW = 70, srcH = 60;
+      const srcW = 70,
+        srcH = 60;
       ctx.fillStyle = getCanvasColors().surface;
       ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1.4;
@@ -111,8 +115,10 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(srcX + srcW, cy - 6); ctx.lineTo(c1x - 22, cy - 6);
-      ctx.moveTo(srcX + srcW, cy + 6); ctx.lineTo(c1x - 22, cy + 6);
+      ctx.moveTo(srcX + srcW, cy - 6);
+      ctx.lineTo(c1x - 22, cy - 6);
+      ctx.moveTo(srcX + srcW, cy + 6);
+      ctx.lineTo(c1x - 22, cy + 6);
       ctx.stroke();
 
       // M arc
@@ -130,7 +136,8 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
 
       // R_L box
       const ldX = c2x + 50;
-      const ldW = 70, ldH = 60;
+      const ldW = 70,
+        ldH = 60;
       ctx.fillStyle = getCanvasColors().surface;
       ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 1.4;
@@ -149,8 +156,10 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(c2x + 22, cy - 6); ctx.lineTo(ldX, cy - 6);
-      ctx.moveTo(c2x + 22, cy + 6); ctx.lineTo(ldX, cy + 6);
+      ctx.moveTo(c2x + 22, cy - 6);
+      ctx.lineTo(ldX, cy - 6);
+      ctx.moveTo(c2x + 22, cy + 6);
+      ctx.lineTo(ldX, cy + 6);
       ctx.stroke();
 
       // Top annotation: Z_in
@@ -160,7 +169,8 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.fillText(
         `|Z_in| = ${mag.toFixed(1)} Ω    Z_in = ${zinRe.toFixed(1)} + j ${zinIm.toFixed(1)} Ω`,
-        w / 2, 6,
+        w / 2,
+        6,
       );
 
       // Reflected ghost-impedance label below
@@ -183,9 +193,10 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       question="What does the source see when the secondary is loaded?"
       caption={
         <>
-          The secondary load and L₂ form a series impedance Z₂. The primary sees its own jωL₁ in series with
-          (ωM)²/Z₂. Short the secondary (R_L → 0) and the reflected piece blows up; open it (R_L → ∞) and the
-          reflected piece vanishes — the primary degenerates back to just its own inductor.
+          The secondary load and L₂ form a series impedance Z₂. The primary sees its own jωL₁ in
+          series with (ωM)²/Z₂. Short the secondary (R_L → 0) and the reflected piece blows up; open
+          it (R_L → ∞) and the reflected piece vanishes — the primary degenerates back to just its
+          own inductor.
         </>
       }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
@@ -194,26 +205,41 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="ω"
-          value={omegaKrad} min={50} max={5000} step={10}
-          format={v => v.toFixed(0) + ' krad/s'}
+          value={omegaKrad}
+          min={50}
+          max={5000}
+          step={10}
+          format={(v) => v.toFixed(0) + ' krad/s'}
           onChange={setOmegaKrad}
         />
         <MiniSlider
           label="k"
-          value={k} min={0} max={0.99} step={0.01}
-          format={v => v.toFixed(2)}
+          value={k}
+          min={0}
+          max={0.99}
+          step={0.01}
+          format={(v) => v.toFixed(2)}
           onChange={setK}
         />
         <MiniSlider
           label="L₁ = L₂"
-          value={L1mH} min={0.1} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' mH'}
-          onChange={v => { setL1mH(v); setL2mH(v); }}
+          value={L1mH}
+          min={0.1}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' mH'}
+          onChange={(v) => {
+            setL1mH(v);
+            setL2mH(v);
+          }}
         />
         <MiniSlider
           label="R_L"
-          value={RLOhm} min={1} max={1000} step={1}
-          format={v => v.toFixed(0) + ' Ω'}
+          value={RLOhm}
+          min={1}
+          max={1000}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
           onChange={setRLOhm}
         />
         <MiniReadout label="|Z_in|" value={<Num value={computed.mag} digits={2} />} unit="Ω" />
@@ -223,7 +249,13 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
   );
 }
 
-function drawCoilTwo(ctx: CanvasRenderingContext2D, cx: number, cy: number, label: string, value: string) {
+function drawCoilTwo(
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  label: string,
+  value: string,
+) {
   const turns = 5;
   const rx = 14;
   const colH = 60;

@@ -10,8 +10,15 @@ import { kindDisplayName, kindTooltip, type TooltipInfo } from './components';
 import type { ComponentKind } from './types';
 
 const KINDS: ComponentKind[] = [
-  'battery', 'ac', 'resistor', 'capacitor', 'inductor',
-  'diode', 'bulb', 'switch', 'ground',
+  'battery',
+  'ac',
+  'resistor',
+  'capacitor',
+  'inductor',
+  'diode',
+  'bulb',
+  'switch',
+  'ground',
 ];
 
 interface PaletteProps {
@@ -23,25 +30,37 @@ export function Palette({ armed, onArm }: PaletteProps) {
   const [hoverTip, setHoverTip] = useState<TooltipInfo | null>(null);
 
   function handleEnter(k: ComponentKind | 'wire' | 'voltmeter' | 'ammeter' | 'cursor') {
-    setHoverTip(kindTooltip(k === 'cursor' ? 'cursor' : k as ComponentKind | 'wire' | 'voltmeter' | 'ammeter'));
+    setHoverTip(
+      kindTooltip(
+        k === 'cursor' ? 'cursor' : (k as ComponentKind | 'wire' | 'voltmeter' | 'ammeter'),
+      ),
+    );
   }
   function handleLeave() {
     setHoverTip(null);
   }
 
-  const tip = hoverTip ?? (armed ? kindTooltip(armed === 'wire' || armed === 'voltmeter' || armed === 'ammeter' ? armed : armed as ComponentKind) : kindTooltip('cursor'));
+  const tip =
+    hoverTip ??
+    (armed
+      ? kindTooltip(
+          armed === 'wire' || armed === 'voltmeter' || armed === 'ammeter'
+            ? armed
+            : (armed as ComponentKind),
+        )
+      : kindTooltip('cursor'));
 
   return (
-    <div className="flex flex-col gap-lg">
-      <div className="flex flex-col gap-sm">
-        <div className="font-3 text-1 text-accent uppercase tracking-[.2em]">Components</div>
+    <div className="gap-lg flex flex-col">
+      <div className="gap-sm flex flex-col">
+        <div className="font-3 text-1 text-accent tracking-[.2em] uppercase">Components</div>
         <div className="grid grid-cols-1 gap-[6px]">
-          {KINDS.map(k => (
+          {KINDS.map((k) => (
             <button
               key={k}
               type="button"
               className={clsx(
-                'flex items-center gap-[10px] bg-bg-elevated border font-1 text-2 py-sm px-[10px] rounded-2 cursor-pointer text-left transition-all duration-fast',
+                'bg-bg-elevated font-1 text-2 py-sm rounded-2 duration-fast flex cursor-pointer items-center gap-[10px] border px-[10px] text-left transition-all',
                 armed === k
                   ? 'bg-accent-soft border-accent text-text'
                   : 'border-border text-text-dim hover:bg-bg-card-hover hover:text-text hover:border-text-dim',
@@ -57,13 +76,13 @@ export function Palette({ armed, onArm }: PaletteProps) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-sm">
-        <div className="font-3 text-1 text-accent uppercase tracking-[.2em]">Tools</div>
+      <div className="gap-sm flex flex-col">
+        <div className="font-3 text-1 text-accent tracking-[.2em] uppercase">Tools</div>
         <div className="grid grid-cols-1 gap-[6px]">
           <button
             type="button"
             className={clsx(
-              'flex items-center gap-[10px] bg-bg-elevated border font-1 text-2 py-sm px-[10px] rounded-2 cursor-pointer text-left transition-all duration-fast',
+              'bg-bg-elevated font-1 text-2 py-sm rounded-2 duration-fast flex cursor-pointer items-center gap-[10px] border px-[10px] text-left transition-all',
               armed === null
                 ? 'bg-accent-soft border-accent text-text'
                 : 'border-border text-text-dim hover:bg-bg-card-hover hover:text-text hover:border-text-dim',
@@ -78,7 +97,7 @@ export function Palette({ armed, onArm }: PaletteProps) {
           <button
             type="button"
             className={clsx(
-              'flex items-center gap-[10px] bg-bg-elevated border font-1 text-2 py-sm px-[10px] rounded-2 cursor-pointer text-left transition-all duration-fast',
+              'bg-bg-elevated font-1 text-2 py-sm rounded-2 duration-fast flex cursor-pointer items-center gap-[10px] border px-[10px] text-left transition-all',
               armed === 'wire'
                 ? 'bg-accent-soft border-accent text-text'
                 : 'border-border text-text-dim hover:bg-bg-card-hover hover:text-text hover:border-text-dim',
@@ -93,7 +112,7 @@ export function Palette({ armed, onArm }: PaletteProps) {
           <button
             type="button"
             className={clsx(
-              'flex items-center gap-[10px] bg-bg-elevated border font-1 text-2 py-sm px-[10px] rounded-2 cursor-pointer text-left transition-all duration-fast',
+              'bg-bg-elevated font-1 text-2 py-sm rounded-2 duration-fast flex cursor-pointer items-center gap-[10px] border px-[10px] text-left transition-all',
               armed === 'voltmeter'
                 ? 'bg-accent-soft border-accent text-text'
                 : 'border-border text-text-dim hover:bg-bg-card-hover hover:text-text hover:border-text-dim',
@@ -108,7 +127,7 @@ export function Palette({ armed, onArm }: PaletteProps) {
           <button
             type="button"
             className={clsx(
-              'flex items-center gap-[10px] bg-bg-elevated border font-1 text-2 py-sm px-[10px] rounded-2 cursor-pointer text-left transition-all duration-fast',
+              'bg-bg-elevated font-1 text-2 py-sm rounded-2 duration-fast flex cursor-pointer items-center gap-[10px] border px-[10px] text-left transition-all',
               armed === 'ammeter'
                 ? 'bg-accent-soft border-accent text-text'
                 : 'border-border text-text-dim hover:bg-bg-card-hover hover:text-text hover:border-text-dim',
@@ -123,11 +142,13 @@ export function Palette({ armed, onArm }: PaletteProps) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-[6px] pt-[10px] border-t border-border min-h-[110px]">
-        <div className="font-3 text-[11px] text-accent font-medium">{tip.title}</div>
-        <div className="text-[11px] text-text-dim leading-[1.45]">{tip.description}</div>
+      <div className="border-border flex min-h-[110px] flex-col gap-[6px] border-t pt-[10px]">
+        <div className="font-3 text-accent text-[11px] font-medium">{tip.title}</div>
+        <div className="text-text-dim text-[11px] leading-[1.45]">{tip.description}</div>
         {tip.formula !== '—' && (
-          <div className="font-4 italic text-3 text-text leading-1 py-xs px-sm bg-bg-elevated rounded-2 border border-border">{tip.formula}</div>
+          <div className="font-4 text-3 text-text py-xs px-sm bg-bg-elevated rounded-2 border-border border leading-1 italic">
+            {tip.formula}
+          </div>
         )}
         <div className="text-1 text-text-muted leading-[1.45] italic">{tip.behavior}</div>
       </div>
@@ -140,10 +161,16 @@ export function Palette({ armed, onArm }: PaletteProps) {
 function CompIcon({ kind }: { kind: ComponentKind }) {
   const stroke = 'var(--color-text-dim)';
   const surface = 'var(--color-surface)';
-  const w = 36, h = 18;
+  const w = 36,
+    h = 18;
   const props = {
-    width: w, height: h, viewBox: `0 0 ${w} ${h}`,
-    fill: 'none', stroke, strokeWidth: 1.4, strokeLinecap: 'round' as const,
+    width: w,
+    height: h,
+    viewBox: `0 0 ${w} ${h}`,
+    fill: 'none',
+    stroke,
+    strokeWidth: 1.4,
+    strokeLinecap: 'round' as const,
   };
   switch (kind) {
     case 'resistor':
@@ -216,18 +243,34 @@ function CompIcon({ kind }: { kind: ComponentKind }) {
 }
 
 function ToolIcon({ kind }: { kind: 'wire' | 'voltmeter' | 'ammeter' | 'cursor' }) {
-  const w = 36, h = 18;
+  const w = 36,
+    h = 18;
   const surface = 'var(--color-surface)';
   if (kind === 'cursor') {
     return (
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-text-dim)" strokeWidth={1.4} strokeLinejoin="round">
+      <svg
+        width={w}
+        height={h}
+        viewBox={`0 0 ${w} ${h}`}
+        fill="none"
+        stroke="var(--color-text-dim)"
+        strokeWidth={1.4}
+        strokeLinejoin="round"
+      >
         <path d="M14 3 L14 15 L17 12 L20 17 L22 16 L19 11 L23 11 Z" fill={surface} />
       </svg>
     );
   }
   if (kind === 'wire') {
     return (
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-text-dim)" strokeWidth={1.4}>
+      <svg
+        width={w}
+        height={h}
+        viewBox={`0 0 ${w} ${h}`}
+        fill="none"
+        stroke="var(--color-text-dim)"
+        strokeWidth={1.4}
+      >
         <path d="M2 14 L14 14 L14 4 L34 4" />
         <circle cx="2" cy="14" r="1.5" fill="var(--color-text-dim)" />
         <circle cx="34" cy="4" r="1.5" fill="var(--color-text-dim)" />
@@ -236,16 +279,50 @@ function ToolIcon({ kind }: { kind: 'wire' | 'voltmeter' | 'ammeter' | 'cursor' 
   }
   if (kind === 'voltmeter') {
     return (
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-teal)" strokeWidth={1.4}>
+      <svg
+        width={w}
+        height={h}
+        viewBox={`0 0 ${w} ${h}`}
+        fill="none"
+        stroke="var(--color-teal)"
+        strokeWidth={1.4}
+      >
         <circle cx="18" cy="9" r="7" />
-        <text x="18" y="12" textAnchor="middle" fontSize="9" fontFamily="JetBrains Mono" fill="var(--color-teal)" stroke="none">V</text>
+        <text
+          x="18"
+          y="12"
+          textAnchor="middle"
+          fontSize="9"
+          fontFamily="JetBrains Mono"
+          fill="var(--color-teal)"
+          stroke="none"
+        >
+          V
+        </text>
       </svg>
     );
   }
   return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-accent)" strokeWidth={1.4}>
+    <svg
+      width={w}
+      height={h}
+      viewBox={`0 0 ${w} ${h}`}
+      fill="none"
+      stroke="var(--color-accent)"
+      strokeWidth={1.4}
+    >
       <circle cx="18" cy="9" r="7" />
-      <text x="18" y="12" textAnchor="middle" fontSize="9" fontFamily="JetBrains Mono" fill="var(--color-accent)" stroke="none">A</text>
+      <text
+        x="18"
+        y="12"
+        textAnchor="middle"
+        fontSize="9"
+        fontFamily="JetBrains Mono"
+        fill="var(--color-accent)"
+        stroke="none"
+      >
+        A
+      </text>
     </svg>
   );
 }

@@ -11,13 +11,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { getCanvasColors } from '@/lib/canvasTheme';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const V_PER_PAIR = 1.10; // V open-circuit per Zn-Cu pair (Daniell-type cell)
+const V_PER_PAIR = 1.1; // V open-circuit per Zn-Cu pair (Daniell-type cell)
 
 export function VoltaicPileDemo({ figure }: Props) {
   const [pairs, setPairs] = useState(6);
@@ -25,7 +25,9 @@ export function VoltaicPileDemo({ figure }: Props) {
   const V = pairs * V_PER_PAIR;
 
   const stateRef = useRef({ pairs, V });
-  useEffect(() => { stateRef.current = { pairs, V }; }, [pairs, V]);
+  useEffect(() => {
+    stateRef.current = { pairs, V };
+  }, [pairs, V]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H } = info;
@@ -159,8 +161,9 @@ export function VoltaicPileDemo({ figure }: Props) {
       caption={
         <>
           Each Zn / Cu pair, separated by brine-soaked cardboard, contributes about
-          <strong> 1.1 V</strong> open-circuit. Stack N pairs and the terminal voltages add. Volta's original Royal-Society
-          pile reached roughly 30 V — enough to electrolyse water and to give the experimenter a memorable shock.
+          <strong> 1.1 V</strong> open-circuit. Stack N pairs and the terminal voltages add. Volta's
+          original Royal-Society pile reached roughly 30 V — enough to electrolyse water and to give
+          the experimenter a memorable shock.
         </>
       }
     >
@@ -168,9 +171,12 @@ export function VoltaicPileDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="N pairs"
-          value={pairs} min={1} max={40} step={1}
-          format={v => v.toFixed(0)}
-          onChange={v => setPairs(Math.round(v))}
+          value={pairs}
+          min={1}
+          max={40}
+          step={1}
+          format={(v) => v.toFixed(0)}
+          onChange={(v) => setPairs(Math.round(v))}
         />
         <MiniReadout label="per-pair V" value={V_PER_PAIR.toFixed(2)} unit="V" />
         <MiniReadout label="V_total" value={V.toFixed(2)} unit="V" />

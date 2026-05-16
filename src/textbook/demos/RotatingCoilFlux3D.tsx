@@ -23,25 +23,22 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import {
-  attachOrbit,
-  project,
-  type OrbitCamera,
-  type Vec3,
-} from '@/lib/projection3d';
+import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // Loop geometry in local (un-rotated) coordinates. The loop lies in the
 // y–z plane initially (normal along +x); after rotating by θ around y,
 // the normal sweeps through the x–z plane.
-const LOOP_W = 1.0;   // half-width along z (so full width = 2)
-const LOOP_H = 0.5;   // half-height along y (so full height = 1)
-const LOOP_AREA = (2 * LOOP_W) * (2 * LOOP_H); // = 2 (normalised units)
+const LOOP_W = 1.0; // half-width along z (so full width = 2)
+const LOOP_H = 0.5; // half-height along y (so full height = 1)
+const LOOP_AREA = 2 * LOOP_W * (2 * LOOP_H); // = 2 (normalised units)
 
 export function RotatingCoilFlux3DDemo({ figure }: Props) {
-  const [omega, setOmega] = useState(1.2);   // rad/s (visual)
-  const [B, setB] = useState(1.0);           // normalised
+  const [omega, setOmega] = useState(1.2); // rad/s (visual)
+  const [B, setB] = useState(1.0); // normalised
   const [showDisc, setShowDisc] = useState(true);
   const [showNormal, setShowNormal] = useState(true);
   const [, setTick] = useState(0);
@@ -55,7 +52,10 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
   }, [omega, B, showDisc, showNormal]);
 
   const camRef = useRef<OrbitCamera>({
-    yaw: 0.6, pitch: 0.25, distance: 6, fov: Math.PI / 4,
+    yaw: 0.6,
+    pitch: 0.25,
+    distance: 6,
+    fov: Math.PI / 4,
   });
 
   // Live readouts (rendered outside the canvas).
@@ -74,13 +74,19 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
     const scope: { t: number; phi: number; emf: number }[] = [];
 
     function rotY(p: Vec3, theta: number): Vec3 {
-      const c = Math.cos(theta), s = Math.sin(theta);
+      const c = Math.cos(theta),
+        s = Math.sin(theta);
       return { x: p.x * c - p.z * s, y: p.y, z: p.x * s + p.z * c };
     }
 
     function drawArrow3D(
-      from: Vec3, to: Vec3, color: string, lineWidth: number,
-      cam: OrbitCamera, cw: number, ch: number,
+      from: Vec3,
+      to: Vec3,
+      color: string,
+      lineWidth: number,
+      cam: OrbitCamera,
+      cw: number,
+      ch: number,
     ) {
       const p0 = project(from, cam, cw, ch);
       const p1 = project(to, cam, cw, ch);
@@ -93,10 +99,12 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       ctx.lineTo(p1.x, p1.y);
       ctx.stroke();
       // Arrow head in 2D screen space.
-      const dx = p1.x - p0.x, dy = p1.y - p0.y;
+      const dx = p1.x - p0.x,
+        dy = p1.y - p0.y;
       const len = Math.hypot(dx, dy);
       if (len < 1e-3) return;
-      const ux = dx / len, uy = dy / len;
+      const ux = dx / len,
+        uy = dy / len;
       const headLen = Math.min(8, len * 0.5);
       const headW = headLen * 0.55;
       const baseX = p1.x - ux * headLen;
@@ -135,7 +143,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const sceneH = h * 0.72;   // top region for the 3D scene
+      const sceneH = h * 0.72; // top region for the 3D scene
       const plotY0 = sceneH;
       const plotH = h - plotY0;
 
@@ -178,34 +186,30 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
         // Fade with depth so far arrows recede.
         const fade = Math.max(0.12, Math.min(0.55, 1 - (ga.depthAvg - 3) * 0.12));
         const alpha = 0.18 + 0.4 * fade * Math.min(1, st.B);
-        drawArrow3D(
-          ga.from, ga.to,
-          `rgba(108,197,194,${alpha.toFixed(3)})`,
-          1,
-          cam, w, sceneH,
-        );
+        drawArrow3D(ga.from, ga.to, `rgba(108,197,194,${alpha.toFixed(3)})`, 1, cam, w, sceneH);
       }
 
       // ───── 2. Translucent flux disc (the loop's face) ─────
       // Four corners of the loop in local coords (y–z plane), normal = +x.
       const localCorners: Vec3[] = [
         { x: 0, y: -LOOP_H, z: -LOOP_W },
-        { x: 0, y: -LOOP_H, z:  LOOP_W },
-        { x: 0, y:  LOOP_H, z:  LOOP_W },
-        { x: 0, y:  LOOP_H, z: -LOOP_W },
+        { x: 0, y: -LOOP_H, z: LOOP_W },
+        { x: 0, y: LOOP_H, z: LOOP_W },
+        { x: 0, y: LOOP_H, z: -LOOP_W },
       ];
-      const cornersWorld = localCorners.map(c => rotY(c, theta));
-      const cornersScreen = cornersWorld.map(c => project(c, cam, w, sceneH));
+      const cornersWorld = localCorners.map((c) => rotY(c, theta));
+      const cornersScreen = cornersWorld.map((c) => project(c, cam, w, sceneH));
 
-      if (st.showDisc && cornersScreen.every(p => p.depth > 0)) {
+      if (st.showDisc && cornersScreen.every((p) => p.depth > 0)) {
         const cosT = Math.cos(theta);
         // Disc alpha tracks |cos θ|: brightest at flux peak, fades to ~0 at θ = π/2.
         const intensity = Math.abs(cosT);
         const alpha = 0.05 + 0.32 * intensity * Math.min(1, st.B);
         // Tint flips: amber when Φ > 0, blue when Φ < 0.
-        const color = cosT >= 0
-          ? `rgba(255,107,42,${alpha.toFixed(3)})`
-          : `rgba(91,174,248,${alpha.toFixed(3)})`;
+        const color =
+          cosT >= 0
+            ? `rgba(255,107,42,${alpha.toFixed(3)})`
+            : `rgba(91,174,248,${alpha.toFixed(3)})`;
         ctx.fillStyle = color;
         ctx.beginPath();
         ctx.moveTo(cornersScreen[0]!.x, cornersScreen[0]!.y);
@@ -219,7 +223,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       // ───── 3. The loop's four edges ─────
       const loopEdgeOpacity = 0.85;
       const edgePts: { x: number; y: number }[] = [
-        ...cornersScreen.map(p => ({ x: p.x, y: p.y })),
+        ...cornersScreen.map((p) => ({ x: p.x, y: p.y })),
         { x: cornersScreen[0]!.x, y: cornersScreen[0]!.y },
       ];
       drawGlowPath(ctx, edgePts, {
@@ -251,10 +255,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
         const nTo: Vec3 = { x: nHat.x * 1.05, y: 0, z: nHat.z * 1.05 };
         drawArrow3D(nFrom, nTo, 'rgba(236,235,229,0.92)', 2, cam, w, sceneH);
         // n̂ label near the arrow tip.
-        const labelP = project(
-          { x: nHat.x * 1.18, y: 0.05, z: nHat.z * 1.18 },
-          cam, w, sceneH,
-        );
+        const labelP = project({ x: nHat.x * 1.18, y: 0.05, z: nHat.z * 1.18 }, cam, w, sceneH);
         if (labelP.depth > 0) {
           ctx.fillStyle = colors.text;
           ctx.font = 'italic 12px "STIX Two Text", serif';
@@ -271,14 +272,14 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.fillText(`B → ${st.B.toFixed(2)}  (along +x)`, 12, 12);
       ctx.fillStyle = colors.textDim;
-      ctx.fillText(`θ = ${((theta % (2 * Math.PI)) * 180 / Math.PI).toFixed(0)}°`, 12, 28);
+      ctx.fillText(`θ = ${(((theta % (2 * Math.PI)) * 180) / Math.PI).toFixed(0)}°`, 12, 28);
       ctx.save();
       ctx.globalAlpha = 0.55;
       ctx.fillStyle = colors.textDim;
       ctx.fillText('drag to orbit', 12, sceneH - 18);
 
       ctx.restore();
-      ctx.restore();   // end scene clip
+      ctx.restore(); // end scene clip
 
       // ───── Time-series plot (bottom strip) ─────
       // Divider line.
@@ -355,7 +356,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       ctx.fillText('time →', plotRight - 4, plotY0 + plotH - 14);
 
       // Force re-renders so MiniReadouts stay alive even if React optimises us out.
-      setTick(t => (t + 1) % 1000);
+      setTick((t) => (t + 1) % 1000);
       raf = requestAnimationFrame(draw);
       ctx.restore();
     }
@@ -371,30 +372,37 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 7.5b'}
       title="The cos(θ) geometry in 3D"
       question="Why does a constant rotation in a constant field produce a sinusoid?"
-      caption={<>
-        Same physics as the 2D animation above, but with the camera free to orbit. Drag the
-        scene to look down the field axis: when the loop's normal n̂ points along B (θ = 0)
-        the disc lights up amber and every field arrow that pierces the loop counts in full;
-        rotate the loop 90° and n̂ is perpendicular to B, the disc fades to nothing, the
-        flux through it goes to zero. The rolling plot below makes the cos(θ) projection
-        and its derivative visible on a shared time axis: Φ_B leads, ε = −dΦ/dt
-        lags by a quarter cycle. That phase shift is the whole reason AC waveforms come out
-        sinusoidal.
-      </>}
+      caption={
+        <>
+          Same physics as the 2D animation above, but with the camera free to orbit. Drag the scene
+          to look down the field axis: when the loop's normal n̂ points along B (θ = 0) the disc
+          lights up amber and every field arrow that pierces the loop counts in full; rotate the
+          loop 90° and n̂ is perpendicular to B, the disc fades to nothing, the flux through it goes
+          to zero. The rolling plot below makes the cos(θ) projection and its derivative visible on
+          a shared time axis: Φ_B leads, ε = −dΦ/dt lags by a quarter cycle. That phase shift is the
+          whole reason AC waveforms come out sinusoidal.
+        </>
+      }
       deeperLab={{ slug: 'faraday', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={420} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="ω"
-          value={omega} min={0.1} max={5} step={0.05}
-          format={v => v.toFixed(2) + ' rad/s'}
+          value={omega}
+          min={0.1}
+          max={5}
+          step={0.05}
+          format={(v) => v.toFixed(2) + ' rad/s'}
           onChange={setOmega}
         />
         <MiniSlider
           label="B"
-          value={B} min={0.1} max={2} step={0.05}
-          format={v => v.toFixed(2)}
+          value={B}
+          min={0.1}
+          max={2}
+          step={0.05}
+          format={(v) => v.toFixed(2)}
           onChange={setB}
         />
         <MiniToggle label="flux disc" checked={showDisc} onChange={setShowDisc} />

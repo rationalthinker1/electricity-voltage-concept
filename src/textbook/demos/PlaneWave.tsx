@@ -12,7 +12,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function PlaneWaveDemo({ figure }: Props) {
   const [omega, setOmega] = useState(2.0);
@@ -23,7 +25,9 @@ export function PlaneWaveDemo({ figure }: Props) {
   const lambdaPx = C_SIM / Math.max(1e-6, f);
 
   const stateRef = useRef({ omega });
-  useEffect(() => { stateRef.current = { omega }; }, [omega]);
+  useEffect(() => {
+    stateRef.current = { omega };
+  }, [omega]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H } = info;
@@ -49,7 +53,10 @@ export function PlaneWaveDemo({ figure }: Props) {
       // Propagation axis (x-axis), drawn as a thick centre line
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(xL, cy); ctx.lineTo(xR, cy); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(xL, cy);
+      ctx.lineTo(xR, cy);
+      ctx.stroke();
 
       // Arrowhead at +x — "direction of propagation"
       ctx.save();
@@ -59,7 +66,8 @@ export function PlaneWaveDemo({ figure }: Props) {
       ctx.moveTo(xR, cy);
       ctx.lineTo(xR - 10, cy - 5);
       ctx.lineTo(xR - 10, cy + 5);
-      ctx.closePath(); ctx.fill();
+      ctx.closePath();
+      ctx.fill();
       ctx.restore();
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
@@ -69,7 +77,7 @@ export function PlaneWaveDemo({ figure }: Props) {
       // Sample positions along x
       const N = 60;
       const Eamp = Math.min(80, H * 0.28);
-      const Bamp = Eamp * 0.55;        // scaled visually; in reality B = E/c, drawn with same length-units only via convention
+      const Bamp = Eamp * 0.55; // scaled visually; in reality B = E/c, drawn with same length-units only via convention
       for (let i = 0; i < N; i++) {
         const u = i / (N - 1);
         const x = xL + u * (xR - xL);
@@ -102,7 +110,8 @@ export function PlaneWaveDemo({ figure }: Props) {
         const x = xL + u * (xR - xL);
         const phase = k * (x - xL) - om * t;
         const y = cy - Math.sin(phase) * Eamp;
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -116,7 +125,8 @@ export function PlaneWaveDemo({ figure }: Props) {
         const m = Math.sin(phase) * Bamp;
         const bx2 = x + m * ZSCALE_X;
         const by2 = cy - m * ZSCALE_Y;
-        if (i === 0) ctx.moveTo(bx2, by2); else ctx.lineTo(bx2, by2);
+        if (i === 0) ctx.moveTo(bx2, by2);
+        else ctx.lineTo(bx2, by2);
       }
       ctx.stroke();
 
@@ -141,21 +151,26 @@ export function PlaneWaveDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 7.2'}
       title="A plane wave, in slow motion"
       question="What's perpendicular to what?"
-      caption={<>
-        A plane wave travelling in <strong>+x</strong>. The pink electric vectors oscillate in
-        <strong> y</strong>; the teal magnetic vectors oscillate in <strong>z</strong> (rendered
-        foreshortened into the page). Both are transverse to the direction of travel, both peak
-        at the same time, and <strong>|B| = |E|/c</strong> — the magnetic part looks "small" because
-        it shares the same field-energy density only after the factor of c is restored.
-      </>}
+      caption={
+        <>
+          A plane wave travelling in <strong>+x</strong>. The pink electric vectors oscillate in
+          <strong> y</strong>; the teal magnetic vectors oscillate in <strong>z</strong> (rendered
+          foreshortened into the page). Both are transverse to the direction of travel, both peak at
+          the same time, and <strong>|B| = |E|/c</strong> — the magnetic part looks "small" because
+          it shares the same field-energy density only after the factor of c is restored.
+        </>
+      }
       deeperLab={{ slug: 'poynting', label: 'See Poynting lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="ω"
-          value={omega} min={0.6} max={6} step={0.05}
-          format={v => v.toFixed(2) + ' rad/s'}
+          value={omega}
+          min={0.6}
+          max={6}
+          step={0.05}
+          format={(v) => v.toFixed(2) + ' rad/s'}
           onChange={setOmega}
         />
         <MiniReadout label="frequency f" value={f.toFixed(2)} unit="Hz" />
@@ -167,14 +182,19 @@ export function PlaneWaveDemo({ figure }: Props) {
 
 function drawVector(
   ctx: CanvasRenderingContext2D,
-  x1: number, y1: number, x2: number, y2: number,
-  color: string, width: number,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  color: string,
+  width: number,
 ) {
   ctx.strokeStyle = color;
   ctx.fillStyle = color;
   ctx.lineWidth = width;
   ctx.beginPath();
-  ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
   ctx.stroke();
   // Arrowhead
   const dx = x2 - x1;
@@ -190,5 +210,6 @@ function drawVector(
   ctx.moveTo(x2, y2);
   ctx.lineTo(x2 - ux * HEAD + px * 3, y2 - uy * HEAD + py * 3);
   ctx.lineTo(x2 - ux * HEAD - px * 3, y2 - uy * HEAD - py * 3);
-  ctx.closePath(); ctx.fill();
+  ctx.closePath();
+  ctx.fill();
 }

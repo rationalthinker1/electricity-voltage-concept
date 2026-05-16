@@ -16,32 +16,36 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // Stylised load curve, normalised: GW relative to a 30 GW system peak.
 // Two-peak "duck curve" -ish residential/commercial pattern.
 function loadFracAt(hour: number): number {
   // 0..24 → fraction of peak (~0.55..1.0)
-  const morning = Math.exp(-Math.pow((hour - 8) / 2.2, 2));   // 8 AM peak
-  const evening = Math.exp(-Math.pow((hour - 19) / 2.4, 2));  // 7 PM peak
+  const morning = Math.exp(-Math.pow((hour - 8) / 2.2, 2)); // 8 AM peak
+  const evening = Math.exp(-Math.pow((hour - 19) / 2.4, 2)); // 7 PM peak
   const nightFloor = 0.55;
   return nightFloor + 0.42 * Math.max(morning * 0.85, evening);
 }
 
 const SYSTEM_PEAK_GW = 30;
-const BASELOAD_FRAC = 0.55;   // baseload covers minimum load
+const BASELOAD_FRAC = 0.55; // baseload covers minimum load
 
 export function LoadFollowingDemo({ figure }: Props) {
   const [hour, setHour] = useState(19);
 
   const stateRef = useRef({ hour });
-  useEffect(() => { stateRef.current.hour = hour; }, [hour]);
+  useEffect(() => {
+    stateRef.current.hour = hour;
+  }, [hour]);
 
   const computed = useMemo(() => {
     const loadGW = loadFracAt(hour) * SYSTEM_PEAK_GW;
     const baseGW = BASELOAD_FRAC * SYSTEM_PEAK_GW;
     const peakerGW = Math.max(0, loadGW - baseGW);
-    const reserveGW = SYSTEM_PEAK_GW * 0.10;  // 10% spinning reserve
+    const reserveGW = SYSTEM_PEAK_GW * 0.1; // 10% spinning reserve
     return { loadGW, baseGW, peakerGW, reserveGW };
   }, [hour]);
 
@@ -55,7 +59,10 @@ export function LoadFollowingDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 48, padR = 24, padT = 24, padB = 38;
+      const padL = 48,
+        padR = 24,
+        padT = 24,
+        padB = 38;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
       const xAt = (hr: number) => padL + (hr / 24) * plotW;
@@ -68,7 +75,8 @@ export function LoadFollowingDemo({ figure }: Props) {
       for (let i = 1; i < 4; i++) {
         const y = padT + (i / 4) * plotH;
         ctx.beginPath();
-        ctx.moveTo(padL, y); ctx.lineTo(padL + plotW, y);
+        ctx.moveTo(padL, y);
+        ctx.lineTo(padL + plotW, y);
         ctx.stroke();
       }
 
@@ -81,14 +89,16 @@ export function LoadFollowingDemo({ figure }: Props) {
       ctx.lineTo(padL + plotW, yAt(0));
       ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
       ctx.lineTo(padL, yAt(BASELOAD_FRAC));
-      ctx.closePath(); ctx.fill();
+      ctx.closePath();
+      ctx.fill();
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.6;
       ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(padL, yAt(BASELOAD_FRAC)); ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
+      ctx.moveTo(padL, yAt(BASELOAD_FRAC));
+      ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
       ctx.stroke();
 
       // Peaker band: between baseload and load curve, sampled
@@ -102,7 +112,8 @@ export function LoadFollowingDemo({ figure }: Props) {
         const hr = (i / N) * 24;
         const x = xAt(hr);
         const y = yAt(loadFracAt(hr));
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       // close along baseload line
       ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
@@ -119,7 +130,8 @@ export function LoadFollowingDemo({ figure }: Props) {
         const hr = (i / N) * 24;
         const x = xAt(hr);
         const y = yAt(loadFracAt(hr));
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -133,8 +145,9 @@ export function LoadFollowingDemo({ figure }: Props) {
       for (let i = 0; i <= N; i++) {
         const hr = (i / N) * 24;
         const x = xAt(hr);
-        const y = yAt(loadFracAt(hr) + 0.10);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        const y = yAt(loadFracAt(hr) + 0.1);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
       ctx.setLineDash([]);
@@ -147,7 +160,8 @@ export function LoadFollowingDemo({ figure }: Props) {
       ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
-      ctx.moveTo(mx, padT); ctx.lineTo(mx, padT + plotH);
+      ctx.moveTo(mx, padT);
+      ctx.lineTo(mx, padT + plotH);
       ctx.stroke();
       ctx.restore();
       ctx.fillStyle = colors.accent;
@@ -160,17 +174,20 @@ export function LoadFollowingDemo({ figure }: Props) {
       ctx.globalAlpha = 0.75;
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       for (let hr = 0; hr <= 24; hr += 4) {
         ctx.fillText(hr.toString().padStart(2, '0') + ':00', xAt(hr), padT + plotH + 6);
       }
-      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
       ctx.fillText('peak', padL - 6, yAt(1));
       ctx.fillText('½', padL - 6, yAt(0.5));
       ctx.fillText('0', padL - 6, yAt(0));
 
       // Legend
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       const legX = padL + 8;
       let legY = padT + 8;
       const lg = (color: string, label: string) => {
@@ -197,25 +214,46 @@ export function LoadFollowingDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 17.5'}
       title="Load following — the grid as a real-time market"
       question="Demand swings ±40 % across a day. Supply has to match it second-by-second. How?"
-      caption={<>
-        Stylised 24-hour residential/commercial load curve, normalised to a 30 GW system peak.
-        Baseload generators (nuclear, coal) run flat at minimum demand; peakers (gas turbines,
-        hydro) cycle to follow the curve; a 10 % spinning-reserve cushion sits idle but
-        synchronised, ready to pick up an unscheduled outage in seconds.
-      </>}
+      caption={
+        <>
+          Stylised 24-hour residential/commercial load curve, normalised to a 30 GW system peak.
+          Baseload generators (nuclear, coal) run flat at minimum demand; peakers (gas turbines,
+          hydro) cycle to follow the curve; a 10 % spinning-reserve cushion sits idle but
+          synchronised, ready to pick up an unscheduled outage in seconds.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="time of day"
-          value={hour} min={0} max={23.99} step={0.25}
-          format={v => `${Math.floor(v).toString().padStart(2, '0')}:${Math.floor((v % 1) * 60).toString().padStart(2, '0')}`}
+          value={hour}
+          min={0}
+          max={23.99}
+          step={0.25}
+          format={(v) =>
+            `${Math.floor(v).toString().padStart(2, '0')}:${Math.floor((v % 1) * 60)
+              .toString()
+              .padStart(2, '0')}`
+          }
           onChange={setHour}
         />
         <MiniReadout label="load" value={<Num value={computed.loadGW} digits={1} />} unit="GW" />
-        <MiniReadout label="baseload" value={<Num value={computed.baseGW} digits={1} />} unit="GW" />
-        <MiniReadout label="peakers" value={<Num value={computed.peakerGW} digits={1} />} unit="GW" />
-        <MiniReadout label="reserve (idle)" value={<Num value={computed.reserveGW} digits={1} />} unit="GW" />
+        <MiniReadout
+          label="baseload"
+          value={<Num value={computed.baseGW} digits={1} />}
+          unit="GW"
+        />
+        <MiniReadout
+          label="peakers"
+          value={<Num value={computed.peakerGW} digits={1} />}
+          unit="GW"
+        />
+        <MiniReadout
+          label="reserve (idle)"
+          value={<Num value={computed.reserveGW} digits={1} />}
+          unit="GW"
+        />
       </DemoControls>
     </Demo>
   );

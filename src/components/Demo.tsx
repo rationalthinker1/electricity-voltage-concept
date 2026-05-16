@@ -36,8 +36,8 @@ export function Demo({ figure, title, question, children, caption, deeperLab }: 
     }
 
     const observer = new IntersectionObserver(
-      entries => {
-        if (entries.some(entry => entry.isIntersecting)) {
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
           setShouldRenderBody(true);
           observer.disconnect();
         }
@@ -49,23 +49,40 @@ export function Demo({ figure, title, question, children, caption, deeperLab }: 
   }, []);
 
   return (
-    <figure ref={figureRef} className="bg-bg-card border border-border-strong rounded-3 overflow-hidden [content-visibility:auto] [contain-intrinsic-size:620px]">
-      <div className="flex items-baseline gap-lg py-lg px-xl border-b border-border bg-bg-elevated flex-wrap">
+    <figure
+      ref={figureRef}
+      className="bg-bg-card border-border-strong rounded-3 overflow-hidden border [contain-intrinsic-size:620px] [content-visibility:auto]"
+    >
+      <div className="gap-lg py-lg px-xl border-border bg-bg-elevated flex flex-wrap items-baseline border-b">
         <span className="eyebrow-accent text-1 tracking-4">{figure ?? 'Fig.'}</span>
-        <span className="font-1 text-5 text-text font-medium flex-1">{title}</span>
+        <span className="font-1 text-5 text-text flex-1 font-medium">{title}</span>
         {deeperLab && (
-          <Link to="/labs/$slug" params={{ slug: deeperLab.slug }} className="font-3 text-1 text-text-muted tracking-3 uppercase no-underline border-b border-dotted border-text-muted hover:text-accent hover:border-accent">
+          <Link
+            to="/labs/$slug"
+            params={{ slug: deeperLab.slug }}
+            className="font-3 text-1 text-text-muted tracking-3 border-text-muted hover:text-accent hover:border-accent border-b border-dotted uppercase no-underline"
+          >
             {deeperLab.label} →
           </Link>
         )}
       </div>
-      <div className="title-display py-lg px-xl font-light text-6 border-b border-border bg-accent-soft">{question}</div>
-      <div className={shouldRenderBody
-        ? 'bg-canvas-bg [contain:layout_paint_style]'
-        : 'bg-canvas-bg [contain:layout_paint_style] min-h-panel'}>
+      <div className="title-display py-lg px-xl text-6 border-border bg-accent-soft border-b font-light">
+        {question}
+      </div>
+      <div
+        className={
+          shouldRenderBody
+            ? 'bg-canvas-bg [contain:layout_paint_style]'
+            : 'bg-canvas-bg min-h-panel [contain:layout_paint_style]'
+        }
+      >
         {shouldRenderBody ? children : null}
       </div>
-      {caption && <figcaption className="py-lg px-xl text-4 text-text-muted italic leading-4 border-t border-border">{caption}</figcaption>}
+      {caption && (
+        <figcaption className="py-lg px-xl text-4 text-text-muted border-border border-t leading-4 italic">
+          {caption}
+        </figcaption>
+      )}
     </figure>
   );
 }
@@ -75,7 +92,11 @@ interface DemoControlsProps {
 }
 /** Bottom strip of a demo card — small controls (slider, toggle) sit here. */
 export function DemoControls({ children }: DemoControlsProps) {
-  return <div className="flex flex-wrap gap-y-lg gap-x-xl items-center py-lg px-xl bg-bg-elevated border-t border-border">{children}</div>;
+  return (
+    <div className="gap-y-lg gap-x-xl py-lg px-xl bg-bg-elevated border-border flex flex-wrap items-center border-t">
+      {children}
+    </div>
+  );
 }
 
 interface MiniSliderProps {
@@ -91,19 +112,31 @@ interface MiniSliderProps {
  * Compact slider sized for inline-demo use. No min/max ticks; just a label
  * and a value, side by side.
  */
-export function MiniSlider({ label, value, min, max, step = 0.01, format, onChange }: MiniSliderProps) {
+export function MiniSlider({
+  label,
+  value,
+  min,
+  max,
+  step = 0.01,
+  format,
+  onChange,
+}: MiniSliderProps) {
   const pct = ((value - min) / (max - min)) * 100;
   return (
     <label className="mini-slider">
       <span className="mini-slider-label">{label}</span>
       <input
         type="range"
-        min={min} max={max} step={step}
+        min={min}
+        max={max}
+        step={step}
         value={value}
-        onChange={e => onChange(parseFloat(e.target.value))}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
         style={{ ['--pct' as string]: `${pct}%` }}
       />
-      <span className="font-3 text-2 text-accent tracking-2">{format ? format(value) : value.toFixed(2)}</span>
+      <span className="font-3 text-2 text-accent tracking-2">
+        {format ? format(value) : value.toFixed(2)}
+      </span>
     </label>
   );
 }
@@ -117,7 +150,7 @@ export function MiniToggle({ label, checked, onChange }: MiniToggleProps) {
   return (
     <button
       type="button"
-      className={`mini-toggle${checked ? ' on' : ''}`}
+      className={`mini-toggle${checked ? 'on' : ''}`}
       onClick={() => onChange(!checked)}
       aria-pressed={checked}
     >
@@ -133,10 +166,11 @@ interface MiniReadoutProps {
 }
 export function MiniReadout({ label, value, unit }: MiniReadoutProps) {
   return (
-    <div className="inline-flex items-baseline gap-sm font-3 text-2">
-      <span className="text-text-muted uppercase tracking-3">{label}</span>
+    <div className="gap-sm font-3 text-2 inline-flex items-baseline">
+      <span className="text-text-muted tracking-3 uppercase">{label}</span>
       <span className="text-accent text-4">
-        {value}{unit && <span className="text-text-muted text-1"> {unit}</span>}
+        {value}
+        {unit && <span className="text-text-muted text-1"> {unit}</span>}
       </span>
     </div>
   );

@@ -16,14 +16,18 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function DotConventionDemo({ figure }: Props) {
-  const [c2DotTop, setC2DotTop] = useState(true);    // dot on C2's top or bottom
-  const [i1IntoDot, setI1IntoDot] = useState(true);  // does I1 enter C1's dotted terminal?
+  const [c2DotTop, setC2DotTop] = useState(true); // dot on C2's top or bottom
+  const [i1IntoDot, setI1IntoDot] = useState(true); // does I1 enter C1's dotted terminal?
 
   const stateRef = useRef({ c2DotTop, i1IntoDot });
-  useEffect(() => { stateRef.current = { c2DotTop, i1IntoDot }; }, [c2DotTop, i1IntoDot]);
+  useEffect(() => {
+    stateRef.current = { c2DotTop, i1IntoDot };
+  }, [c2DotTop, i1IntoDot]);
 
   // The "reference direction" for current in coil 2 is taken as entering at C2's TOP.
   // Mutual term sign = +1 if both currents enter at their respective dots, else -1.
@@ -37,64 +41,75 @@ export function DotConventionDemo({ figure }: Props) {
     return i1AtDot * i2RefAtDot;
   }, [c2DotTop, i1IntoDot]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
-    let raf = 0;
+  const setup = useCallback(
+    (info: CanvasInfo) => {
+      const { ctx, w, h } = info;
+      let raf = 0;
 
-    function draw() {
-      const { c2DotTop, i1IntoDot } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, w, h);
+      function draw() {
+        const { c2DotTop, i1IntoDot } = stateRef.current;
+        ctx.fillStyle = getCanvasColors().bg;
+        ctx.fillRect(0, 0, w, h);
 
-      const cy = h / 2;
-      const c1x = w * 0.30;
-      const c2x = w * 0.70;
-      const coilH = 90;
+        const cy = h / 2;
+        const c1x = w * 0.3;
+        const c2x = w * 0.7;
+        const coilH = 90;
 
-      drawSchematicCoil(ctx, c1x, cy, coilH, 'C1', 'L₁');
-      drawSchematicCoil(ctx, c2x, cy, coilH, 'C2', 'L₂');
+        drawSchematicCoil(ctx, c1x, cy, coilH, 'C1', 'L₁');
+        drawSchematicCoil(ctx, c2x, cy, coilH, 'C2', 'L₂');
 
-      // Dot on C1: fixed at top
-      drawDot(ctx, c1x - 24, cy - coilH / 2 + 6);
-      // Dot on C2: top or bottom depending on toggle
-      if (c2DotTop) drawDot(ctx, c2x + 24, cy - coilH / 2 + 6);
-      else drawDot(ctx, c2x + 24, cy + coilH / 2 - 6);
+        // Dot on C1: fixed at top
+        drawDot(ctx, c1x - 24, cy - coilH / 2 + 6);
+        // Dot on C2: top or bottom depending on toggle
+        if (c2DotTop) drawDot(ctx, c2x + 24, cy - coilH / 2 + 6);
+        else drawDot(ctx, c2x + 24, cy + coilH / 2 - 6);
 
-      // Arrow for I1 — enters at the dot if i1IntoDot, else at the bottom
-      drawCurrentArrow(ctx, c1x - 70, cy - (i1IntoDot ? coilH / 2 + 14 : -coilH / 2 + -14), c1x - 26, cy - (i1IntoDot ? coilH / 2 - 4 : -coilH / 2 + -4), 'I₁');
+        // Arrow for I1 — enters at the dot if i1IntoDot, else at the bottom
+        drawCurrentArrow(
+          ctx,
+          c1x - 70,
+          cy - (i1IntoDot ? coilH / 2 + 14 : -coilH / 2 + -14),
+          c1x - 26,
+          cy - (i1IntoDot ? coilH / 2 - 4 : -coilH / 2 + -4),
+          'I₁',
+        );
 
-      // Coupling line between coils
-      ctx.save();
-      ctx.globalAlpha = 0.4;
-      ctx.strokeStyle = getCanvasColors().teal;
-      ctx.setLineDash([4, 4]);
-      ctx.lineWidth = 1.4;
-      ctx.beginPath();
-      ctx.moveTo(c1x + 24, cy);
-      ctx.lineTo(c2x - 24, cy);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.restore();
-      ctx.fillStyle = getCanvasColors().teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText('M', (c1x + c2x) / 2, cy - 8);
+        // Coupling line between coils
+        ctx.save();
+        ctx.globalAlpha = 0.4;
+        ctx.strokeStyle = getCanvasColors().teal;
+        ctx.setLineDash([4, 4]);
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(c1x + 24, cy);
+        ctx.lineTo(c2x - 24, cy);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+        ctx.fillStyle = getCanvasColors().teal;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('M', (c1x + c2x) / 2, cy - 8);
 
-      // Mutual-term sign label
-      const signLabel = sign > 0
-        ? 'mutual term: + M dI₁/dt   (fluxes ADD — aiding)'
-        : 'mutual term: − M dI₁/dt   (fluxes SUBTRACT — opposing)';
-      ctx.fillStyle = sign > 0 ? 'rgba(255,107,42,0.95)' : 'rgba(91,174,248,0.95)';
-      ctx.font = 'bold 11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(signLabel, w / 2, h - 24);
+        // Mutual-term sign label
+        const signLabel =
+          sign > 0
+            ? 'mutual term: + M dI₁/dt   (fluxes ADD — aiding)'
+            : 'mutual term: − M dI₁/dt   (fluxes SUBTRACT — opposing)';
+        ctx.fillStyle = sign > 0 ? 'rgba(255,107,42,0.95)' : 'rgba(91,174,248,0.95)';
+        ctx.font = 'bold 11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(signLabel, w / 2, h - 24);
 
+        raf = requestAnimationFrame(draw);
+      }
       raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, [sign]);
+      return () => cancelAnimationFrame(raf);
+    },
+    [sign],
+  );
 
   return (
     <Demo
@@ -103,9 +118,10 @@ export function DotConventionDemo({ figure }: Props) {
       question="Two coils carry currents — when does the mutual term add, and when does it subtract?"
       caption={
         <>
-          The dot tells you which way each coil is wound. <em>Rule of thumb:</em> if both currents enter at the
-          dotted terminals, the mutual flux adds to the self-flux (mutual term is +M dI/dt). If one enters at the
-          dot and the other at the non-dot, the mutual flux opposes — minus sign.
+          The dot tells you which way each coil is wound. <em>Rule of thumb:</em> if both currents
+          enter at the dotted terminals, the mutual flux adds to the self-flux (mutual term is +M
+          dI/dt). If one enters at the dot and the other at the non-dot, the mutual flux opposes —
+          minus sign.
         </>
       }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
@@ -122,10 +138,7 @@ export function DotConventionDemo({ figure }: Props) {
           checked={i1IntoDot}
           onChange={setI1IntoDot}
         />
-        <MiniReadout
-          label="mutual sign"
-          value={sign > 0 ? '+ M dI₁/dt' : '− M dI₁/dt'}
-        />
+        <MiniReadout label="mutual sign" value={sign > 0 ? '+ M dI₁/dt' : '− M dI₁/dt'} />
       </DemoControls>
     </Demo>
   );
@@ -133,7 +146,11 @@ export function DotConventionDemo({ figure }: Props) {
 
 function drawSchematicCoil(
   ctx: CanvasRenderingContext2D,
-  cx: number, cy: number, h: number, label: string, valueLabel: string,
+  cx: number,
+  cy: number,
+  h: number,
+  label: string,
+  valueLabel: string,
 ) {
   // Schematic-style: three half-loops on the right side of a vertical wire
   ctx.strokeStyle = getCanvasColors().accent;
@@ -167,10 +184,14 @@ function drawSchematicCoil(
 
   // Connect tops/bottoms with short horizontal stubs
   ctx.beginPath();
-  ctx.moveTo(cx - 50, top); ctx.lineTo(cx - 24, top);
-  ctx.moveTo(cx - 50, bot); ctx.lineTo(cx - 24, bot);
-  ctx.moveTo(cx + 24, top); ctx.lineTo(cx + 50, top);
-  ctx.moveTo(cx + 24, bot); ctx.lineTo(cx + 50, bot);
+  ctx.moveTo(cx - 50, top);
+  ctx.lineTo(cx - 24, top);
+  ctx.moveTo(cx - 50, bot);
+  ctx.lineTo(cx - 24, bot);
+  ctx.moveTo(cx + 24, top);
+  ctx.lineTo(cx + 50, top);
+  ctx.moveTo(cx + 24, bot);
+  ctx.lineTo(cx + 50, bot);
   ctx.stroke();
 
   // Labels
@@ -196,7 +217,11 @@ function drawDot(ctx: CanvasRenderingContext2D, x: number, y: number) {
 
 function drawCurrentArrow(
   ctx: CanvasRenderingContext2D,
-  x0: number, y0: number, x1: number, y1: number, label: string,
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+  label: string,
 ) {
   ctx.fillStyle = getCanvasColors().blue;
   ctx.lineWidth = 1.6;

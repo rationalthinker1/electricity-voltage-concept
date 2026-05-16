@@ -32,8 +32,8 @@ function chapterComplete(slug: ChapterSlug): (p: ProgressState) => boolean {
 }
 
 function trackComplete(track: TrackId): (p: ProgressState) => boolean {
-  const slugs = CHAPTERS.filter(c => (c.tracks ?? []).includes(track)).map(c => c.slug);
-  return (p) => slugs.every(s => p.chapters[s]?.status === 'completed');
+  const slugs = CHAPTERS.filter((c) => (c.tracks ?? []).includes(track)).map((c) => c.slug);
+  return (p) => slugs.every((s) => p.chapters[s]?.status === 'completed');
 }
 
 function quizPassCountAtLeast(n: number, threshold = 0.7): (p: ProgressState) => boolean {
@@ -202,7 +202,8 @@ export const BADGES: Badge[] = [
     id: 'life-saver',
     name: 'Life Saver',
     description: 'Complete Ch.32 — Safety: GFCI, AFCI, grounding.',
-    flavor: 'Most of what an electrician does is keep current away from people. Take this one seriously.',
+    flavor:
+      'Most of what an electrician does is keep current away from people. Take this one seriously.',
     rarity: 'uncommon',
     icon: '☠',
     earned: chapterComplete('house-safety'),

@@ -14,15 +14,19 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function WireBFieldDemo({ figure }: Props) {
-  const [I, setI] = useState(10);              // amps
+  const [I, setI] = useState(10); // amps
   const [intoPage, setIntoPage] = useState(true);
   const [probe, setProbe] = useState({ x: 0.72, y: 0.36 });
 
   const stateRef = useRef({ I, intoPage, probe });
-  useEffect(() => { stateRef.current = { I, intoPage, probe }; }, [I, intoPage, probe]);
+  useEffect(() => {
+    stateRef.current = { I, intoPage, probe };
+  }, [I, intoPage, probe]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, canvas, colors } = info;
@@ -40,7 +44,8 @@ export function WireBFieldDemo({ figure }: Props) {
       const px = stateRef.current.probe.x * w;
       const py = stateRef.current.probe.y * h;
       if (Math.hypot(mx - px, my - py) < 22) {
-        dragging = true; canvas.style.cursor = 'grabbing';
+        dragging = true;
+        canvas.style.cursor = 'grabbing';
       }
     }
     function onMouseMove(e: MouseEvent) {
@@ -56,7 +61,10 @@ export function WireBFieldDemo({ figure }: Props) {
         canvas.style.cursor = Math.hypot(mx - px, my - py) < 22 ? 'grab' : 'default';
       }
     }
-    function onMouseUp() { dragging = false; canvas.style.cursor = 'default'; }
+    function onMouseUp() {
+      dragging = false;
+      canvas.style.cursor = 'default';
+    }
     function onTouchStart(e: TouchEvent) {
       e.preventDefault();
       const [mx, my] = getMouse(e);
@@ -73,7 +81,9 @@ export function WireBFieldDemo({ figure }: Props) {
         y: Math.max(0.08, Math.min(0.92, my / h)),
       });
     }
-    function onTouchEnd() { dragging = false; }
+    function onTouchEnd() {
+      dragging = false;
+    }
 
     canvas.addEventListener('mousedown', onMouseDown);
     canvas.addEventListener('mousemove', onMouseMove);
@@ -87,7 +97,8 @@ export function WireBFieldDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const cx0 = w / 2, cy0 = h / 2;
+      const cx0 = w / 2,
+        cy0 = h / 2;
       // Pixel scale: 1 px = 1 mm. Probe distance in meters → r/1000.
       const PX_PER_M = 1000;
 
@@ -119,7 +130,7 @@ export function WireBFieldDemo({ figure }: Props) {
           // tangent at angle θ is (sin θ, -cos θ) in standard math coords; in
           // screen coords y is flipped, so direction = (-sin θ, cos θ) for CW.
           const tx = -Math.sin(theta) * arrowDir;
-          const ty =  Math.cos(theta) * arrowDir;
+          const ty = Math.cos(theta) * arrowDir;
           const len = 7 + I_norm * 5;
           ctx.strokeStyle = `rgba(108,197,194,${Math.min(0.95, op + 0.25).toFixed(3)})`;
           ctx.fillStyle = ctx.strokeStyle;
@@ -132,7 +143,8 @@ export function WireBFieldDemo({ figure }: Props) {
           const hx = ax + tx * len * 0.5;
           const hy = ay + ty * len * 0.5;
           // perpendicular for head wings
-          const nx = -ty, ny = tx;
+          const nx = -ty,
+            ny = tx;
           ctx.beginPath();
           ctx.moveTo(hx, hy);
           ctx.lineTo(hx - tx * 4 + nx * 3, hy - ty * 4 + ny * 3);
@@ -148,11 +160,16 @@ export function WireBFieldDemo({ figure }: Props) {
       grd.addColorStop(0, 'rgba(255,107,42,0.55)');
       grd.addColorStop(1, 'rgba(255,107,42,0)');
       ctx.fillStyle = grd;
-      ctx.beginPath(); ctx.arc(cx0, cy0, wireR * 3, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx0, cy0, wireR * 3, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = '#1c1c22';
       ctx.strokeStyle = '#ff6b2a';
       ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.arc(cx0, cy0, wireR, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx0, cy0, wireR, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
 
       // × (into page) or • (out of page) glyph.
       ctx.strokeStyle = '#ff6b2a';
@@ -161,8 +178,10 @@ export function WireBFieldDemo({ figure }: Props) {
         ctx.lineWidth = 2;
         const k = wireR * 0.55;
         ctx.beginPath();
-        ctx.moveTo(cx0 - k, cy0 - k); ctx.lineTo(cx0 + k, cy0 + k);
-        ctx.moveTo(cx0 + k, cy0 - k); ctx.lineTo(cx0 - k, cy0 + k);
+        ctx.moveTo(cx0 - k, cy0 - k);
+        ctx.lineTo(cx0 + k, cy0 + k);
+        ctx.moveTo(cx0 + k, cy0 - k);
+        ctx.lineTo(cx0 - k, cy0 + k);
         ctx.stroke();
       } else {
         ctx.beginPath();
@@ -177,8 +196,10 @@ export function WireBFieldDemo({ figure }: Props) {
       ctx.fillText(`I = ${I.toFixed(1)} A ${intoPage ? '⊗' : '⊙'}`, cx0, cy0 + wireR * 3 + 14);
 
       // Probe
-      const px = probe.x * w, py = probe.y * h;
-      const dx = px - cx0, dy = py - cy0;
+      const px = probe.x * w,
+        py = probe.y * h;
+      const dx = px - cx0,
+        dy = py - cy0;
       const r_px = Math.max(2, Math.hypot(dx, dy));
       const r_m = r_px / PX_PER_M;
       const Bprobe = (PHYS.mu_0 * Math.abs(I)) / (2 * Math.PI * r_m);
@@ -187,16 +208,23 @@ export function WireBFieldDemo({ figure }: Props) {
       ctx.strokeStyle = 'rgba(255,107,42,0.35)';
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(cx0, cy0); ctx.lineTo(px, py); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx0, cy0);
+      ctx.lineTo(px, py);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       ctx.fillStyle = 'rgba(10,10,11,.9)';
       ctx.strokeStyle = '#ff6b2a';
       ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(px, py, 9, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(px, py, 9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
       ctx.fillStyle = colors.accent;
       ctx.font = 'bold 10px JetBrains Mono';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText('P', px, py);
 
       // Probe distance label
@@ -233,12 +261,14 @@ export function WireBFieldDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 4.1'}
       title="The field around a current"
       question="What does the magnetic field of a wire actually look like?"
-      caption={<>
-        End-on view of a long straight wire carrying current <strong>I</strong>. Teal circles are
-        the magnetic field <strong>B</strong>; tangent arrows show its direction (right-hand rule —
-        thumb along <strong>I</strong>, fingers curl with <strong>B</strong>). Drag the orange probe;
-        the magnitude follows <em>B = μ₀ I / (2πr)</em>.
-      </>}
+      caption={
+        <>
+          End-on view of a long straight wire carrying current <strong>I</strong>. Teal circles are
+          the magnetic field <strong>B</strong>; tangent arrows show its direction (right-hand rule
+          — thumb along <strong>I</strong>, fingers curl with <strong>B</strong>). Drag the orange
+          probe; the magnitude follows <em>B = μ₀ I / (2πr)</em>.
+        </>
+      }
       deeperLab={{ slug: 'biot-savart', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
@@ -250,8 +280,11 @@ export function WireBFieldDemo({ figure }: Props) {
         />
         <MiniSlider
           label="I"
-          value={I} min={0} max={50} step={0.1}
-          format={v => v.toFixed(1) + ' A'}
+          value={I}
+          min={0}
+          max={50}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' A'}
           onChange={setI}
         />
         <MiniReadout label="|B| at probe" value={<Num value={Bprobe} digits={2} />} unit="T" />

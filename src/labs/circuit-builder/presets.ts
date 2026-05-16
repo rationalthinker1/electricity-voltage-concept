@@ -25,9 +25,9 @@ function ohmsLaw(): CircuitDoc {
   _idn = 0;
   const d = mkDoc();
   d.components.push(
-    { id: id('bat'), kind: 'battery',  x: 4, y: 3, rotation: 0, value: 9 },
-    { id: id('r'),  kind: 'resistor', x: 10, y: 3, rotation: 0, value: 100 },
-    { id: id('gnd'), kind: 'ground',  x: 4, y: 7, rotation: 0, value: 0 },
+    { id: id('bat'), kind: 'battery', x: 4, y: 3, rotation: 0, value: 9 },
+    { id: id('r'), kind: 'resistor', x: 10, y: 3, rotation: 0, value: 100 },
+    { id: id('gnd'), kind: 'ground', x: 4, y: 7, rotation: 0, value: 0 },
   );
   d.wires.push(
     { id: id('w'), from: { x: 6, y: 3 }, to: { x: 10, y: 3 } },
@@ -46,10 +46,10 @@ function parallelResistors(): CircuitDoc {
   _idn = 0;
   const d = mkDoc();
   d.components.push(
-    { id: id('bat'), kind: 'battery',  x: 3, y: 4, rotation: 0, value: 12 },
-    { id: id('r1'), kind: 'resistor',  x: 9, y: 2, rotation: 0, value: 200 },
-    { id: id('r2'), kind: 'resistor',  x: 9, y: 6, rotation: 0, value: 300 },
-    { id: id('gnd'), kind: 'ground',   x: 3, y: 8, rotation: 0, value: 0 },
+    { id: id('bat'), kind: 'battery', x: 3, y: 4, rotation: 0, value: 12 },
+    { id: id('r1'), kind: 'resistor', x: 9, y: 2, rotation: 0, value: 200 },
+    { id: id('r2'), kind: 'resistor', x: 9, y: 6, rotation: 0, value: 300 },
+    { id: id('gnd'), kind: 'ground', x: 3, y: 8, rotation: 0, value: 0 },
   );
   d.wires.push(
     { id: id('w'), from: { x: 5, y: 4 }, to: { x: 7, y: 4 } },
@@ -78,11 +78,11 @@ function seriesParallel(): CircuitDoc {
   _idn = 0;
   const d = mkDoc();
   d.components.push(
-    { id: id('bat'), kind: 'battery',  x: 3, y: 4, rotation: 0, value: 12 },
-    { id: id('rs'), kind: 'resistor',  x: 7, y: 4, rotation: 0, value: 100 },
-    { id: id('r1'), kind: 'resistor',  x: 11, y: 2, rotation: 0, value: 200 },
-    { id: id('r2'), kind: 'resistor',  x: 11, y: 6, rotation: 0, value: 200 },
-    { id: id('gnd'), kind: 'ground',   x: 3, y: 8, rotation: 0, value: 0 },
+    { id: id('bat'), kind: 'battery', x: 3, y: 4, rotation: 0, value: 12 },
+    { id: id('rs'), kind: 'resistor', x: 7, y: 4, rotation: 0, value: 100 },
+    { id: id('r1'), kind: 'resistor', x: 11, y: 2, rotation: 0, value: 200 },
+    { id: id('r2'), kind: 'resistor', x: 11, y: 6, rotation: 0, value: 200 },
+    { id: id('gnd'), kind: 'ground', x: 3, y: 8, rotation: 0, value: 0 },
   );
   d.wires.push(
     { id: id('w'), from: { x: 5, y: 4 }, to: { x: 7, y: 4 } },
@@ -109,11 +109,11 @@ function kvlLoop(): CircuitDoc {
   _idn = 0;
   const d = mkDoc();
   d.components.push(
-    { id: id('bat'), kind: 'battery',  x: 4, y: 3, rotation: 0, value: 12 },
-    { id: id('r1'), kind: 'resistor',  x: 8, y: 3, rotation: 0, value: 100 },
-    { id: id('r2'), kind: 'resistor',  x: 12, y: 3, rotation: 0, value: 200 },
-    { id: id('r3'), kind: 'resistor',  x: 16, y: 3, rotation: 0, value: 300 },
-    { id: id('gnd'), kind: 'ground',   x: 4, y: 7, rotation: 0, value: 0 },
+    { id: id('bat'), kind: 'battery', x: 4, y: 3, rotation: 0, value: 12 },
+    { id: id('r1'), kind: 'resistor', x: 8, y: 3, rotation: 0, value: 100 },
+    { id: id('r2'), kind: 'resistor', x: 12, y: 3, rotation: 0, value: 200 },
+    { id: id('r3'), kind: 'resistor', x: 16, y: 3, rotation: 0, value: 300 },
+    { id: id('gnd'), kind: 'ground', x: 4, y: 7, rotation: 0, value: 0 },
   );
   d.wires.push(
     { id: id('w'), from: { x: 6, y: 3 }, to: { x: 8, y: 3 } },
@@ -139,12 +139,12 @@ function kclNode(): CircuitDoc {
   _idn = 0;
   const d = mkDoc();
   d.components.push(
-    { id: id('bat'), kind: 'battery',  x: 3, y: 4, rotation: 0, value: 12 },
-    { id: id('rs'), kind: 'resistor',  x: 7, y: 4, rotation: 0, value: 100 },
-    { id: id('r1'), kind: 'resistor',  x: 11, y: 2, rotation: 0, value: 200 },
-    { id: id('r2'), kind: 'resistor',  x: 11, y: 6, rotation: 0, value: 300 },
-    { id: id('r3'), kind: 'resistor',  x: 15, y: 4, rotation: 0, value: 600 },
-    { id: id('gnd'), kind: 'ground',   x: 3, y: 8, rotation: 0, value: 0 },
+    { id: id('bat'), kind: 'battery', x: 3, y: 4, rotation: 0, value: 12 },
+    { id: id('rs'), kind: 'resistor', x: 7, y: 4, rotation: 0, value: 100 },
+    { id: id('r1'), kind: 'resistor', x: 11, y: 2, rotation: 0, value: 200 },
+    { id: id('r2'), kind: 'resistor', x: 11, y: 6, rotation: 0, value: 300 },
+    { id: id('r3'), kind: 'resistor', x: 15, y: 4, rotation: 0, value: 600 },
+    { id: id('gnd'), kind: 'ground', x: 3, y: 8, rotation: 0, value: 0 },
   );
   d.wires.push(
     { id: id('w'), from: { x: 5, y: 4 }, to: { x: 7, y: 4 } },
@@ -174,10 +174,10 @@ function voltageDivider(): CircuitDoc {
   _idn = 0;
   const d = mkDoc();
   d.components.push(
-    { id: id('bat'), kind: 'battery',  x: 4, y: 2, rotation: 0, value: 12 },
-    { id: id('r1'), kind: 'resistor',  x: 10, y: 2, rotation: 90, value: 1000 },
-    { id: id('r2'), kind: 'resistor',  x: 10, y: 4, rotation: 90, value: 1000 },
-    { id: id('gnd'), kind: 'ground',   x: 4, y: 6, rotation: 0, value: 0 },
+    { id: id('bat'), kind: 'battery', x: 4, y: 2, rotation: 0, value: 12 },
+    { id: id('r1'), kind: 'resistor', x: 10, y: 2, rotation: 90, value: 1000 },
+    { id: id('r2'), kind: 'resistor', x: 10, y: 4, rotation: 90, value: 1000 },
+    { id: id('gnd'), kind: 'ground', x: 4, y: 6, rotation: 0, value: 0 },
   );
   d.wires.push(
     { id: id('w'), from: { x: 6, y: 2 }, to: { x: 10, y: 2 } },
@@ -195,11 +195,11 @@ function loadedDivider(): CircuitDoc {
   _idn = 0;
   const d = mkDoc();
   d.components.push(
-    { id: id('bat'), kind: 'battery',  x: 4, y: 2, rotation: 0, value: 12 },
-    { id: id('r1'), kind: 'resistor',  x: 10, y: 2, rotation: 90, value: 1000 },
-    { id: id('r2'), kind: 'resistor',  x: 10, y: 4, rotation: 90, value: 1000 },
-    { id: id('rl'), kind: 'resistor',  x: 14, y: 4, rotation: 90, value: 1000 },
-    { id: id('gnd'), kind: 'ground',   x: 4, y: 6, rotation: 0, value: 0 },
+    { id: id('bat'), kind: 'battery', x: 4, y: 2, rotation: 0, value: 12 },
+    { id: id('r1'), kind: 'resistor', x: 10, y: 2, rotation: 90, value: 1000 },
+    { id: id('r2'), kind: 'resistor', x: 10, y: 4, rotation: 90, value: 1000 },
+    { id: id('rl'), kind: 'resistor', x: 14, y: 4, rotation: 90, value: 1000 },
+    { id: id('gnd'), kind: 'ground', x: 4, y: 6, rotation: 0, value: 0 },
   );
   d.wires.push(
     { id: id('w'), from: { x: 6, y: 2 }, to: { x: 10, y: 2 } },
@@ -222,11 +222,11 @@ function rcCharging(): CircuitDoc {
   _idn = 0;
   const d = mkDoc();
   d.components.push(
-    { id: id('bat'), kind: 'battery',   x: 3, y: 3, rotation: 0, value: 5 },
-    { id: id('sw'),  kind: 'switch',    x: 7, y: 3, rotation: 0, value: 0, switchOpen: false },
-    { id: id('r'),   kind: 'resistor',  x: 11, y: 3, rotation: 0, value: 1000 },
-    { id: id('c'),   kind: 'capacitor', x: 13, y: 3, rotation: 90, value: 1e-6 },
-    { id: id('gnd'), kind: 'ground',    x: 3, y: 5, rotation: 0, value: 0 },
+    { id: id('bat'), kind: 'battery', x: 3, y: 3, rotation: 0, value: 5 },
+    { id: id('sw'), kind: 'switch', x: 7, y: 3, rotation: 0, value: 0, switchOpen: false },
+    { id: id('r'), kind: 'resistor', x: 11, y: 3, rotation: 0, value: 1000 },
+    { id: id('c'), kind: 'capacitor', x: 13, y: 3, rotation: 90, value: 1e-6 },
+    { id: id('gnd'), kind: 'ground', x: 3, y: 5, rotation: 0, value: 0 },
   );
   d.wires.push(
     { id: id('w'), from: { x: 5, y: 3 }, to: { x: 7, y: 3 } },
@@ -245,11 +245,11 @@ function rlCircuit(): CircuitDoc {
   _idn = 0;
   const d = mkDoc();
   d.components.push(
-    { id: id('bat'), kind: 'battery',  x: 3, y: 3, rotation: 0, value: 12 },
-    { id: id('sw'),  kind: 'switch',   x: 7, y: 3, rotation: 0, value: 0, switchOpen: false },
-    { id: id('r'),   kind: 'resistor', x: 11, y: 3, rotation: 0, value: 100 },
-    { id: id('l'),   kind: 'inductor', x: 15, y: 3, rotation: 0, value: 10e-3 },
-    { id: id('gnd'), kind: 'ground',   x: 3, y: 7, rotation: 0, value: 0 },
+    { id: id('bat'), kind: 'battery', x: 3, y: 3, rotation: 0, value: 12 },
+    { id: id('sw'), kind: 'switch', x: 7, y: 3, rotation: 0, value: 0, switchOpen: false },
+    { id: id('r'), kind: 'resistor', x: 11, y: 3, rotation: 0, value: 100 },
+    { id: id('l'), kind: 'inductor', x: 15, y: 3, rotation: 0, value: 10e-3 },
+    { id: id('gnd'), kind: 'ground', x: 3, y: 7, rotation: 0, value: 0 },
   );
   d.wires.push(
     { id: id('w'), from: { x: 5, y: 3 }, to: { x: 7, y: 3 } },
@@ -273,10 +273,10 @@ function rcLowpass(): CircuitDoc {
   _idn = 0;
   const d = mkDoc();
   d.components.push(
-    { id: id('ac'),  kind: 'ac',        x: 3, y: 3, rotation: 0, value: 5, acFreq: 100 },
-    { id: id('r'),   kind: 'resistor',  x: 8, y: 3, rotation: 0, value: 1000 },
-    { id: id('c'),   kind: 'capacitor', x: 10, y: 3, rotation: 90, value: 1e-6 },
-    { id: id('gnd'), kind: 'ground',    x: 3, y: 7, rotation: 0, value: 0 },
+    { id: id('ac'), kind: 'ac', x: 3, y: 3, rotation: 0, value: 5, acFreq: 100 },
+    { id: id('r'), kind: 'resistor', x: 8, y: 3, rotation: 0, value: 1000 },
+    { id: id('c'), kind: 'capacitor', x: 10, y: 3, rotation: 90, value: 1e-6 },
+    { id: id('gnd'), kind: 'ground', x: 3, y: 7, rotation: 0, value: 0 },
   );
   d.wires.push(
     { id: id('w'), from: { x: 5, y: 3 }, to: { x: 8, y: 3 } },
@@ -295,11 +295,11 @@ function rlcResonator(): CircuitDoc {
   _idn = 0;
   const d = mkDoc();
   d.components.push(
-    { id: id('ac'),  kind: 'ac',        x: 3, y: 3, rotation: 0, value: 10, acFreq: 500 },
-    { id: id('r'),   kind: 'resistor',  x: 6, y: 3, rotation: 0, value: 10 },
-    { id: id('l'),   kind: 'inductor',  x: 9, y: 3, rotation: 0, value: 10e-3 },
-    { id: id('c'),   kind: 'capacitor', x: 12, y: 3, rotation: 0, value: 10e-6 },
-    { id: id('gnd'), kind: 'ground',    x: 3, y: 5, rotation: 0, value: 0 },
+    { id: id('ac'), kind: 'ac', x: 3, y: 3, rotation: 0, value: 10, acFreq: 500 },
+    { id: id('r'), kind: 'resistor', x: 6, y: 3, rotation: 0, value: 10 },
+    { id: id('l'), kind: 'inductor', x: 9, y: 3, rotation: 0, value: 10e-3 },
+    { id: id('c'), kind: 'capacitor', x: 12, y: 3, rotation: 0, value: 10e-6 },
+    { id: id('gnd'), kind: 'ground', x: 3, y: 5, rotation: 0, value: 0 },
   );
   d.wires.push(
     { id: id('w'), from: { x: 5, y: 3 }, to: { x: 6, y: 3 } },
@@ -320,10 +320,10 @@ function halfWaveRectifier(): CircuitDoc {
   _idn = 0;
   const d = mkDoc();
   d.components.push(
-    { id: id('ac'),  kind: 'ac',       x: 3, y: 3, rotation: 0, value: 10, acFreq: 60 },
-    { id: id('d'),   kind: 'diode',    x: 7, y: 3, rotation: 0, value: 0 },
-    { id: id('r'),   kind: 'resistor', x: 11, y: 3, rotation: 0, value: 100 },
-    { id: id('gnd'), kind: 'ground',   x: 3, y: 6, rotation: 0, value: 0 },
+    { id: id('ac'), kind: 'ac', x: 3, y: 3, rotation: 0, value: 10, acFreq: 60 },
+    { id: id('d'), kind: 'diode', x: 7, y: 3, rotation: 0, value: 0 },
+    { id: id('r'), kind: 'resistor', x: 11, y: 3, rotation: 0, value: 100 },
+    { id: id('gnd'), kind: 'ground', x: 3, y: 6, rotation: 0, value: 0 },
   );
   d.wires.push(
     { id: id('w'), from: { x: 5, y: 3 }, to: { x: 7, y: 3 } },
@@ -343,13 +343,13 @@ function fullWaveBridge(): CircuitDoc {
   _idn = 0;
   const d = mkDoc();
   d.components.push(
-    { id: id('ac'), kind: 'ac',       x: 3, y: 6, rotation: 0, value: 10, acFreq: 60 },
-    { id: id('d1'), kind: 'diode',    x: 9, y: 4, rotation: 0, value: 0 },
-    { id: id('d2'), kind: 'diode',    x: 5, y: 4, rotation: 0, value: 0 },
-    { id: id('d3'), kind: 'diode',    x: 9, y: 8, rotation: 0, value: 0 },
-    { id: id('d4'), kind: 'diode',    x: 5, y: 8, rotation: 0, value: 0 },
-    { id: id('r'),  kind: 'resistor', x: 13, y: 6, rotation: 90, value: 100 },
-    { id: id('gnd'), kind: 'ground',  x: 3, y: 10, rotation: 0, value: 0 },
+    { id: id('ac'), kind: 'ac', x: 3, y: 6, rotation: 0, value: 10, acFreq: 60 },
+    { id: id('d1'), kind: 'diode', x: 9, y: 4, rotation: 0, value: 0 },
+    { id: id('d2'), kind: 'diode', x: 5, y: 4, rotation: 0, value: 0 },
+    { id: id('d3'), kind: 'diode', x: 9, y: 8, rotation: 0, value: 0 },
+    { id: id('d4'), kind: 'diode', x: 5, y: 8, rotation: 0, value: 0 },
+    { id: id('r'), kind: 'resistor', x: 13, y: 6, rotation: 90, value: 100 },
+    { id: id('gnd'), kind: 'ground', x: 3, y: 10, rotation: 0, value: 0 },
   );
   d.wires.push(
     /* AC+ bus to D1 anode and D4 cathode */
@@ -384,9 +384,9 @@ function ledResistor(): CircuitDoc {
   const d = mkDoc();
   d.components.push(
     { id: id('bat'), kind: 'battery', x: 4, y: 3, rotation: 0, value: 9 },
-    { id: id('r'),   kind: 'resistor', x: 9, y: 3, rotation: 0, value: 330 },
-    { id: id('d'),   kind: 'diode',    x: 13, y: 3, rotation: 0, value: 0 },
-    { id: id('gnd'), kind: 'ground',   x: 4, y: 7, rotation: 0, value: 0 },
+    { id: id('r'), kind: 'resistor', x: 9, y: 3, rotation: 0, value: 330 },
+    { id: id('d'), kind: 'diode', x: 13, y: 3, rotation: 0, value: 0 },
+    { id: id('gnd'), kind: 'ground', x: 4, y: 7, rotation: 0, value: 0 },
   );
   d.wires.push(
     { id: id('w'), from: { x: 6, y: 3 }, to: { x: 9, y: 3 } },
@@ -409,12 +409,12 @@ function wheatstoneBridge(): CircuitDoc {
   _idn = 0;
   const d = mkDoc();
   d.components.push(
-    { id: id('bat'), kind: 'battery',  x: 3, y: 4, rotation: 0, value: 12 },
-    { id: id('r1'), kind: 'resistor',  x: 7, y: 2, rotation: 0, value: 1000 },
-    { id: id('r2'), kind: 'resistor',  x: 7, y: 6, rotation: 0, value: 1000 },
-    { id: id('r3'), kind: 'resistor',  x: 11, y: 2, rotation: 0, value: 1000 },
-    { id: id('r4'), kind: 'resistor',  x: 11, y: 6, rotation: 0, value: 2000 },
-    { id: id('gnd'), kind: 'ground',   x: 13, y: 8, rotation: 0, value: 0 },
+    { id: id('bat'), kind: 'battery', x: 3, y: 4, rotation: 0, value: 12 },
+    { id: id('r1'), kind: 'resistor', x: 7, y: 2, rotation: 0, value: 1000 },
+    { id: id('r2'), kind: 'resistor', x: 7, y: 6, rotation: 0, value: 1000 },
+    { id: id('r3'), kind: 'resistor', x: 11, y: 2, rotation: 0, value: 1000 },
+    { id: id('r4'), kind: 'resistor', x: 11, y: 6, rotation: 0, value: 2000 },
+    { id: id('gnd'), kind: 'ground', x: 13, y: 8, rotation: 0, value: 0 },
   );
   d.wires.push(
     { id: id('w'), from: { x: 5, y: 4 }, to: { x: 5, y: 2 } },
@@ -457,7 +457,7 @@ export const PRESETS: CircuitPreset[] = [
     steps: [
       'Identify the only closed loop: battery → resistor → ground → battery.',
       'Apply KVL around the loop: +9 V − V_R = 0, so V_R = 9 V.',
-      'Apply Ohm\'s Law: I = V_R / R = 9 / 100 = 0.090 A.',
+      "Apply Ohm's Law: I = V_R / R = 9 / 100 = 0.090 A.",
       'Check the ammeter probe on the resistor — it should read ≈ 90 mA.',
     ],
     hints: [
@@ -485,7 +485,7 @@ export const PRESETS: CircuitPreset[] = [
     steps: [
       'Both branches connect between the same two nodes: the junction at (7,4) and the return rail.',
       'Voltage across each resistor is identical: 12 V.',
-      'Calculate branch currents independently using Ohm\'s Law.',
+      "Calculate branch currents independently using Ohm's Law.",
       'Sum the branch currents to get the total source current.',
       'Verify with the ammeter probes: 60 mA + 40 mA = 100 mA.',
     ],
@@ -575,7 +575,7 @@ export const PRESETS: CircuitPreset[] = [
     ],
     steps: [
       'Label the unknown node voltage V_n at the junction (9,4).',
-      'Write Ohm\'s Law for each branch in terms of V_n.',
+      "Write Ohm's Law for each branch in terms of V_n.",
       'Write KCL: current in = current out.',
       'Solve the linear equation for V_n.',
       'Back-substitute to find each branch current.',
@@ -615,7 +615,8 @@ export const PRESETS: CircuitPreset[] = [
   {
     id: 'loaded-divider',
     name: 'Loaded Divider',
-    description: 'Same 1 kΩ/1 kΩ divider, but with a 1 kΩ load across the output. V_out sags to 4 V.',
+    description:
+      'Same 1 kΩ/1 kΩ divider, but with a 1 kΩ load across the output. V_out sags to 4 V.',
     doc: loadedDivider(),
     topic: 'Loading Effect',
     goal: 'See why a voltage divider cannot supply significant current without its output collapsing.',
@@ -822,10 +823,10 @@ export const PRESETS: CircuitPreset[] = [
     ],
     steps: [
       'Subtract the LED forward drop from the supply voltage.',
-      'Apply Ohm\'s Law to the resistor: R = V_R / I_desired.',
+      "Apply Ohm's Law to the resistor: R = V_R / I_desired.",
       'Here, 330 Ω gives ~25 mA — a bright but safe LED current.',
       'The ammeter confirms the calculation.',
-      'The voltmeter across the diode reads ~0.7 V (the model\'s forward drop).',
+      "The voltmeter across the diode reads ~0.7 V (the model's forward drop).",
     ],
     hints: [
       'Reduce R to 100 Ω. Current jumps to ~83 mA — the resistor must now be 1 W rated.',
@@ -836,7 +837,8 @@ export const PRESETS: CircuitPreset[] = [
   {
     id: 'wheatstone-bridge',
     name: 'Wheatstone Bridge',
-    description: 'Diamond of 4 resistors. Slightly unbalanced (R4 = 2 kΩ). Meter shows ~2 V difference.',
+    description:
+      'Diamond of 4 resistors. Slightly unbalanced (R4 = 2 kΩ). Meter shows ~2 V difference.',
     doc: wheatstoneBridge(),
     topic: 'Bridge Circuits',
     goal: 'Understand how a bridge measures small resistance changes by detecting voltage differences.',
@@ -867,17 +869,17 @@ export function clonePresetDoc(doc: CircuitDoc): CircuitDoc {
   const fresh = () => `c${Date.now()}-${++n}`;
   const idMap = new Map<string, string>();
   return {
-    components: doc.components.map(c => {
+    components: doc.components.map((c) => {
       const newId = fresh();
       idMap.set(c.id, newId);
       return { ...c, id: newId };
     }),
-    wires: doc.wires.map(w => ({ ...w, id: fresh(), from: { ...w.from }, to: { ...w.to } })),
-    probes: doc.probes.map(p => ({
+    wires: doc.wires.map((w) => ({ ...w, id: fresh(), from: { ...w.from }, to: { ...w.to } })),
+    probes: doc.probes.map((p) => ({
       ...p,
       id: fresh(),
       at: p.at ? { ...p.at } : undefined,
-      componentId: p.componentId ? idMap.get(p.componentId) ?? p.componentId : undefined,
+      componentId: p.componentId ? (idMap.get(p.componentId) ?? p.componentId) : undefined,
     })),
   };
 }

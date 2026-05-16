@@ -21,12 +21,18 @@ export function Inline({
   style,
 }: InlineProps) {
   const justifyMap: Record<string, string> = {
-    'start': 'flex-start', 'end': 'flex-end', 'center': 'center',
-    'space-between': 'space-between', 'space-around': 'space-around',
+    start: 'flex-start',
+    end: 'flex-end',
+    center: 'center',
+    'space-between': 'space-between',
+    'space-around': 'space-around',
   };
   const alignMap: Record<string, string> = {
-    'start': 'flex-start', 'end': 'flex-end',
-    'center': 'center', 'baseline': 'baseline', 'stretch': 'stretch',
+    start: 'flex-start',
+    end: 'flex-end',
+    center: 'center',
+    baseline: 'baseline',
+    stretch: 'stretch',
   };
   const merged: CSSProperties = {
     display: 'flex',
@@ -37,5 +43,9 @@ export function Inline({
     justifyContent: justifyMap[justify],
     ...style,
   };
-  return <div className={clsx('min-w-0', className)} style={merged}>{children}</div>;
+  return (
+    <div className={clsx('min-w-0', className)} style={merged}>
+      {children}
+    </div>
+  );
 }

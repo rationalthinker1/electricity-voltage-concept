@@ -11,18 +11,21 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath, renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 type Mode = 'open' | 'charging' | 'discharging';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-interface StaticCache { key: string; canvas: HTMLCanvasElement }
+interface StaticCache {
+  key: string;
+  canvas: HTMLCanvasElement;
+}
 
 export function RCTransientDemo({ figure }: Props) {
   const V0 = 12;
@@ -34,7 +37,15 @@ export function RCTransientDemo({ figure }: Props) {
   const C = Cuf * 1e-6;
   const tau = R * C;
 
-  const stateRef = useRef({ R, C, mode, Vc: 0, lastT: performance.now(), trace: [] as Array<{t: number; v: number}>, simT: 0 });
+  const stateRef = useRef({
+    R,
+    C,
+    mode,
+    Vc: 0,
+    lastT: performance.now(),
+    trace: [] as Array<{ t: number; v: number }>,
+    simT: 0,
+  });
   useEffect(() => {
     stateRef.current.R = R;
     stateRef.current.C = C;
@@ -117,18 +128,61 @@ export function RCTransientDemo({ figure }: Props) {
       if (cacheRef.current?.key !== cacheKey) {
         // RC loop: battery → switch → resistor → capacitor → back to battery.
         const elements: CircuitElement[] = [
-          { kind: 'wire', points: [{ x: batX, y: yTop }, { x: swX - 14, y: yTop }] },
-          { kind: 'switch', at: { x: swX, y: yTop },
+          {
+            kind: 'wire',
+            points: [
+              { x: batX, y: yTop },
+              { x: swX - 14, y: yTop },
+            ],
+          },
+          {
+            kind: 'switch',
+            at: { x: swX, y: yTop },
             label: st.mode.toUpperCase(),
-            state: st.mode === 'charging' ? 'closed' : st.mode === 'discharging' ? 'open-down' : 'open-up' },
-          { kind: 'wire', points: [{ x: swX + 14, y: yTop }, { x: resX - 22, y: yTop }] },
-          { kind: 'resistor', from: { x: resX - 20, y: yTop }, to: { x: resX + 20, y: yTop },
-            label: fmtR(st.R), labelOffset: { x: 0, y: -10 } },
-          { kind: 'wire', points: [{ x: resX + 22, y: yTop }, { x: capX, y: yTop }] },
-          { kind: 'wire', points: [{ x: capX, y: cy + 14 }, { x: capX, y: yBot }, { x: batX, y: yBot }] },
-          { kind: 'battery', at: { x: batX, y: cy },
-            label: `${V0.toFixed(0)}V`, leadLength: 50,
-            positivePlateLength: 24, negativePlateLength: 14 },
+            state:
+              st.mode === 'charging'
+                ? 'closed'
+                : st.mode === 'discharging'
+                  ? 'open-down'
+                  : 'open-up',
+          },
+          {
+            kind: 'wire',
+            points: [
+              { x: swX + 14, y: yTop },
+              { x: resX - 22, y: yTop },
+            ],
+          },
+          {
+            kind: 'resistor',
+            from: { x: resX - 20, y: yTop },
+            to: { x: resX + 20, y: yTop },
+            label: fmtR(st.R),
+            labelOffset: { x: 0, y: -10 },
+          },
+          {
+            kind: 'wire',
+            points: [
+              { x: resX + 22, y: yTop },
+              { x: capX, y: yTop },
+            ],
+          },
+          {
+            kind: 'wire',
+            points: [
+              { x: capX, y: cy + 14 },
+              { x: capX, y: yBot },
+              { x: batX, y: yBot },
+            ],
+          },
+          {
+            kind: 'battery',
+            at: { x: batX, y: cy },
+            label: `${V0.toFixed(0)}V`,
+            leadLength: 50,
+            positivePlateLength: 24,
+            negativePlateLength: 14,
+          },
         ];
         const off = renderCircuitToCanvas({ elements }, w, h, dpr);
         const sctx = off.getContext('2d')!;
@@ -141,34 +195,48 @@ export function RCTransientDemo({ figure }: Props) {
         sctx.strokeStyle = getCanvasColors().border;
         for (let i = 0; i <= 4; i++) {
           const y = plotY + (i * plotH) / 4;
-          sctx.beginPath(); sctx.moveTo(plotX, y); sctx.lineTo(plotX + plotW, y); sctx.stroke();
+          sctx.beginPath();
+          sctx.moveTo(plotX, y);
+          sctx.lineTo(plotX + plotW, y);
+          sctx.stroke();
         }
         sctx.save();
         sctx.globalAlpha = 0.35;
         sctx.strokeStyle = getCanvasColors().accent;
         sctx.setLineDash([4, 4]);
-        sctx.beginPath(); sctx.moveTo(plotX, y0line); sctx.lineTo(plotX + plotW, y0line); sctx.stroke();
+        sctx.beginPath();
+        sctx.moveTo(plotX, y0line);
+        sctx.lineTo(plotX + plotW, y0line);
+        sctx.stroke();
         sctx.restore();
         sctx.save();
         sctx.globalAlpha = 0.35;
         sctx.strokeStyle = getCanvasColors().teal;
-        sctx.beginPath(); sctx.moveTo(plotX, y63); sctx.lineTo(plotX + plotW, y63); sctx.stroke();
+        sctx.beginPath();
+        sctx.moveTo(plotX, y63);
+        sctx.lineTo(plotX + plotW, y63);
+        sctx.stroke();
         sctx.setLineDash([]);
         sctx.restore();
         sctx.fillStyle = getCanvasColors().accent;
         sctx.font = '10px "JetBrains Mono", monospace';
-        sctx.textAlign = 'right'; sctx.textBaseline = 'bottom';
+        sctx.textAlign = 'right';
+        sctx.textBaseline = 'bottom';
         sctx.fillText(`V₀ = ${V0} V`, plotX + plotW - 4, y0line - 2);
         sctx.fillStyle = getCanvasColors().teal;
         sctx.fillText('63% V₀', plotX + plotW - 4, y63 - 2);
         sctx.fillStyle = getCanvasColors().textDim;
         sctx.font = '10px "JetBrains Mono", monospace';
-        sctx.textAlign = 'left'; sctx.textBaseline = 'top';
+        sctx.textAlign = 'left';
+        sctx.textBaseline = 'top';
         sctx.fillText('V_C(t)', plotX, 8);
 
         // Divider between the two panes (extends across the full height).
         sctx.strokeStyle = getCanvasColors().border;
-        sctx.beginPath(); sctx.moveTo(splitX, 0); sctx.lineTo(splitX, h); sctx.stroke();
+        sctx.beginPath();
+        sctx.moveTo(splitX, 0);
+        sctx.lineTo(splitX, h);
+        sctx.stroke();
 
         cacheRef.current = { key: cacheKey, canvas: off };
       }
@@ -176,7 +244,9 @@ export function RCTransientDemo({ figure }: Props) {
 
       // ── LEFT: schematic dynamic overlays
       ctx.save();
-      ctx.beginPath(); ctx.rect(0, 0, splitX, h); ctx.clip();
+      ctx.beginPath();
+      ctx.rect(0, 0, splitX, h);
+      ctx.clip();
 
       // Dynamic overlay: capacitor plates whose colour brightens as Vc rises.
       drawCapacitorV(ctx, capX, cy, st.Vc, V0);
@@ -186,21 +256,44 @@ export function RCTransientDemo({ figure }: Props) {
       const I = Math.abs(dV) / Math.max(st.R, 1e-9);
       const Iscale = Math.min(1, I / (V0 / Math.max(st.R, 1e-9)));
       if (st.mode === 'charging' && Iscale > 0.005) {
-        drawCurrentDotsPath(ctx, st.simT * 60, [
-          { x: batX, y: yTop }, { x: capX, y: yTop }, { x: capX, y: cy - 16 },
-        ], Iscale);
-        drawCurrentDotsPath(ctx, st.simT * 60, [
-          { x: capX, y: cy + 16 }, { x: capX, y: yBot }, { x: batX, y: yBot },
-        ], Iscale);
+        drawCurrentDotsPath(
+          ctx,
+          st.simT * 60,
+          [
+            { x: batX, y: yTop },
+            { x: capX, y: yTop },
+            { x: capX, y: cy - 16 },
+          ],
+          Iscale,
+        );
+        drawCurrentDotsPath(
+          ctx,
+          st.simT * 60,
+          [
+            { x: capX, y: cy + 16 },
+            { x: capX, y: yBot },
+            { x: batX, y: yBot },
+          ],
+          Iscale,
+        );
       } else if (st.mode === 'discharging' && Iscale > 0.005) {
         // Discharge loops the other way — but with the switch in discharge position
         // we model the cap as discharging through R back to its own other plate.
-        drawCurrentDotsPath(ctx, st.simT * 60, [
-          { x: capX, y: cy - 16 }, { x: capX, y: yTop },
-          { x: resX + 22, y: yTop }, { x: resX - 22, y: yTop },
-          { x: swX, y: yTop }, { x: swX, y: cy + 30 },
-          { x: capX, y: cy + 30 }, { x: capX, y: cy + 16 },
-        ], Iscale);
+        drawCurrentDotsPath(
+          ctx,
+          st.simT * 60,
+          [
+            { x: capX, y: cy - 16 },
+            { x: capX, y: yTop },
+            { x: resX + 22, y: yTop },
+            { x: resX - 22, y: yTop },
+            { x: swX, y: yTop },
+            { x: swX, y: cy + 30 },
+            { x: capX, y: cy + 30 },
+            { x: capX, y: cy + 16 },
+          ],
+          Iscale,
+        );
       }
 
       // Dynamic overlay: live R / C / τ readout in the schematic pane.
@@ -208,13 +301,19 @@ export function RCTransientDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText(`R = ${fmtR(st.R)}   C = ${(st.C * 1e6).toFixed(0)} µF   τ = ${fmtT(tauNow)}`, 10, 8);
+      ctx.fillText(
+        `R = ${fmtR(st.R)}   C = ${(st.C * 1e6).toFixed(0)} µF   τ = ${fmtT(tauNow)}`,
+        10,
+        8,
+      );
 
       ctx.restore();
 
       // ── RIGHT: plot dynamic overlays (τ marker, glow trace, live readouts).
       ctx.save();
-      ctx.beginPath(); ctx.rect(splitX, 0, w - splitX, h); ctx.clip();
+      ctx.beginPath();
+      ctx.rect(splitX, 0, w - splitX, h);
+      ctx.clip();
 
       const xT = (tt: number) => plotX + (tt / PLOT_DURATION) * plotW;
       const xTau = xT(tauNow);
@@ -225,7 +324,10 @@ export function RCTransientDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().teal;
       ctx.setLineDash([3, 3]);
       if (xTau < plotX + plotW) {
-        ctx.beginPath(); ctx.moveTo(xTau, plotY); ctx.lineTo(xTau, plotY + plotH); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(xTau, plotY);
+        ctx.lineTo(xTau, plotY + plotH);
+        ctx.stroke();
       }
       ctx.setLineDash([]);
 
@@ -270,12 +372,14 @@ export function RCTransientDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 10.2'}
       title="The RC transient"
       question="How fast does the capacitor charge? — answer: τ = RC."
-      caption={<>
-        Flip the switch to "charging" and the capacitor voltage rises along an exponential
-        curve that reaches <strong>63%</strong> of V₀ in one time constant
-        τ = RC. Flip to "discharging" and it falls along the mirror curve. Scale R or C and
-        the curve stretches or compresses accordingly.
-      </>}
+      caption={
+        <>
+          Flip the switch to "charging" and the capacitor voltage rises along an exponential curve
+          that reaches <strong>63%</strong> of V₀ in one time constant τ = RC. Flip to "discharging"
+          and it falls along the mirror curve. Scale R or C and the curve stretches or compresses
+          accordingly.
+        </>
+      }
       deeperLab={{ slug: 'capacitance', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={280} setup={setup} />
@@ -292,14 +396,20 @@ export function RCTransientDemo({ figure }: Props) {
         />
         <MiniSlider
           label="R"
-          value={R} min={100} max={10000} step={100}
+          value={R}
+          min={100}
+          max={10000}
+          step={100}
           format={fmtR}
           onChange={setR}
         />
         <MiniSlider
           label="C"
-          value={Cuf} min={1} max={2200} step={1}
-          format={v => v.toFixed(0) + ' µF'}
+          value={Cuf}
+          min={1}
+          max={2200}
+          step={1}
+          format={(v) => v.toFixed(0) + ' µF'}
           onChange={setCuf}
         />
         <MiniReadout label="τ = RC" value={fmtT(tau)} />
@@ -322,7 +432,13 @@ function fmtT(s: number): string {
   return s.toFixed(2) + ' s';
 }
 
-function drawCapacitorV(ctx: CanvasRenderingContext2D, x: number, cy: number, Vc: number, V0: number) {
+function drawCapacitorV(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  cy: number,
+  Vc: number,
+  V0: number,
+) {
   // Two horizontal plates with gap
   const yTop = cy - 8;
   const yBot = cy + 8;
@@ -337,8 +453,10 @@ function drawCapacitorV(ctx: CanvasRenderingContext2D, x: number, cy: number, Vc
   ctx.strokeStyle = `rgba(255,107,42,${alpha})`;
   ctx.lineWidth = 2.5;
   ctx.beginPath();
-  ctx.moveTo(x - 12, yTop); ctx.lineTo(x + 12, yTop);
-  ctx.moveTo(x - 12, yBot); ctx.lineTo(x + 12, yBot);
+  ctx.moveTo(x - 12, yTop);
+  ctx.lineTo(x + 12, yTop);
+  ctx.moveTo(x - 12, yBot);
+  ctx.lineTo(x + 12, yBot);
   ctx.stroke();
   ctx.fillStyle = getCanvasColors().textDim;
   ctx.font = '9px "JetBrains Mono", monospace';
@@ -356,7 +474,8 @@ function drawCurrentDotsPath(
   const segs: Array<{ x0: number; y0: number; x1: number; y1: number; len: number }> = [];
   let total = 0;
   for (let i = 0; i < pts.length - 1; i++) {
-    const a = pts[i]; const b = pts[i + 1];
+    const a = pts[i];
+    const b = pts[i + 1];
     const len = Math.hypot(b.x - a.x, b.y - a.y);
     segs.push({ x0: a.x, y0: a.y, x1: b.x, y1: b.y, len });
     total += len;

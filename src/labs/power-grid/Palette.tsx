@@ -17,18 +17,18 @@ interface Props {
 
 const KV_LEVELS: VoltageLevel[] = [230, 138, 69, 25, 12.47];
 const GEN_KINDS: { kind: GeneratorKind; label: string }[] = [
-  { kind: 'coal',    label: 'Coal' },
-  { kind: 'ccgt',    label: 'CCGT (gas)' },
-  { kind: 'hydro',   label: 'Hydro' },
-  { kind: 'wind',    label: 'Wind' },
-  { kind: 'solar',   label: 'Solar PV' },
+  { kind: 'coal', label: 'Coal' },
+  { kind: 'ccgt', label: 'CCGT (gas)' },
+  { kind: 'hydro', label: 'Hydro' },
+  { kind: 'wind', label: 'Wind' },
+  { kind: 'solar', label: 'Solar PV' },
   { kind: 'battery', label: 'Battery' },
 ];
 const LOAD_KINDS: { kind: LoadKind; label: string }[] = [
   { kind: 'residential', label: 'Residential' },
-  { kind: 'industrial',  label: 'Industrial' },
-  { kind: 'motor',       label: 'Motor cluster' },
-  { kind: 'ev',          label: 'EV charging' },
+  { kind: 'industrial', label: 'Industrial' },
+  { kind: 'motor', label: 'Motor cluster' },
+  { kind: 'ev', label: 'EV charging' },
 ];
 
 export function Palette({ armed, onArm }: Props) {
@@ -96,7 +96,9 @@ export function Palette({ armed, onArm }: Props) {
           <button
             key={kind}
             type="button"
-            className={'pg-palette-btn' + (isArmed({ kind: 'generator', genKind: kind }) ? ' active' : '')}
+            className={
+              'pg-palette-btn' + (isArmed({ kind: 'generator', genKind: kind }) ? ' active' : '')
+            }
             onClick={() => toggle({ kind: 'generator', genKind: kind })}
           >
             <GenGlyph kind={kind} />
@@ -111,7 +113,9 @@ export function Palette({ armed, onArm }: Props) {
           <button
             key={kind}
             type="button"
-            className={'pg-palette-btn' + (isArmed({ kind: 'load', loadKind: kind }) ? ' active' : '')}
+            className={
+              'pg-palette-btn' + (isArmed({ kind: 'load', loadKind: kind }) ? ' active' : '')
+            }
             onClick={() => toggle({ kind: 'load', loadKind: kind })}
           >
             <LoadGlyph />
@@ -120,38 +124,58 @@ export function Palette({ armed, onArm }: Props) {
         ))}
       </div>
 
-      <div className="pg-palette-hint">
-        {hintText(armed)}
-      </div>
+      <div className="pg-palette-hint">{hintText(armed)}</div>
     </div>
   );
 }
 
 function hintText(armed: ArmedTool): string {
   switch (armed.kind) {
-    case 'select': return 'Click any element to inspect. Drag a bus to move it. Right-click a generator to trip it.';
-    case 'bus': return `Click an empty grid spot to drop a ${armed.kv} kV bus.`;
-    case 'line': return 'Click bus A, then bus B. Buses must be at the same kV class.';
-    case 'transformer': return 'Click two buses at different kV classes to connect them.';
-    case 'generator': return 'Click a bus to attach a generator to it.';
-    case 'load': return 'Click a bus to attach a load to it.';
+    case 'select':
+      return 'Click any element to inspect. Drag a bus to move it. Right-click a generator to trip it.';
+    case 'bus':
+      return `Click an empty grid spot to drop a ${armed.kv} kV bus.`;
+    case 'line':
+      return 'Click bus A, then bus B. Buses must be at the same kV class.';
+    case 'transformer':
+      return 'Click two buses at different kV classes to connect them.';
+    case 'generator':
+      return 'Click a bus to attach a generator to it.';
+    case 'load':
+      return 'Click a bus to attach a load to it.';
   }
 }
 
 /* ─────────────────────────── Glyphs ─────────────────────────── */
 
 function Glyph({ kind }: { kind: 'select' | 'line' | 'transformer' }) {
-  const w = 36, h = 18;
+  const w = 36,
+    h = 18;
   if (kind === 'select') {
     return (
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-text-dim)" strokeWidth={1.4} strokeLinejoin="round">
+      <svg
+        width={w}
+        height={h}
+        viewBox={`0 0 ${w} ${h}`}
+        fill="none"
+        stroke="var(--color-text-dim)"
+        strokeWidth={1.4}
+        strokeLinejoin="round"
+      >
         <path d="M14 3 L14 15 L17 12 L20 17 L22 16 L19 11 L23 11 Z" fill="var(--color-bg)" />
       </svg>
     );
   }
   if (kind === 'line') {
     return (
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-text-dim)" strokeWidth={1.4}>
+      <svg
+        width={w}
+        height={h}
+        viewBox={`0 0 ${w} ${h}`}
+        fill="none"
+        stroke="var(--color-text-dim)"
+        strokeWidth={1.4}
+      >
         <path d="M3 9 L33 9" />
         <circle cx="3" cy="9" r="2" fill="var(--color-text-dim)" />
         <circle cx="33" cy="9" r="2" fill="var(--color-text-dim)" />
@@ -159,7 +183,14 @@ function Glyph({ kind }: { kind: 'select' | 'line' | 'transformer' }) {
     );
   }
   return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-text-dim)" strokeWidth={1.4}>
+    <svg
+      width={w}
+      height={h}
+      viewBox={`0 0 ${w} ${h}`}
+      fill="none"
+      stroke="var(--color-text-dim)"
+      strokeWidth={1.4}
+    >
       <path d="M2 9 L13 9 M23 9 L34 9" />
       <circle cx="15" cy="9" r="4" fill="var(--color-bg)" />
       <circle cx="21" cy="9" r="4" fill="var(--color-bg)" />
@@ -169,22 +200,42 @@ function Glyph({ kind }: { kind: 'select' | 'line' | 'transformer' }) {
 
 function GenGlyph({ kind }: { kind: GeneratorKind }) {
   const colorByKind: Record<GeneratorKind, string> = {
-    coal:    'var(--color-text-dim)',
-    ccgt:    'var(--color-accent)',
-    hydro:   'var(--color-blue)',
-    wind:    'var(--color-teal)',
-    solar:   'var(--color-accent)',
+    coal: 'var(--color-text-dim)',
+    ccgt: 'var(--color-accent)',
+    hydro: 'var(--color-blue)',
+    wind: 'var(--color-teal)',
+    solar: 'var(--color-accent)',
     battery: 'var(--color-pink)',
   };
   const labelByKind: Record<GeneratorKind, string> = {
-    coal: 'C', ccgt: 'G', hydro: 'H', wind: 'W', solar: 'S', battery: 'B',
+    coal: 'C',
+    ccgt: 'G',
+    hydro: 'H',
+    wind: 'W',
+    solar: 'S',
+    battery: 'B',
   };
-  const w = 36, h = 18;
+  const w = 36,
+    h = 18;
   return (
     <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none">
-      <circle cx="18" cy="9" r="7" stroke={colorByKind[kind]} strokeWidth={1.4} fill="var(--color-bg)" />
-      <text x="18" y="12" textAnchor="middle" fontSize="9"
-            fontFamily="JetBrains Mono" fontWeight="bold" fill={colorByKind[kind]}>
+      <circle
+        cx="18"
+        cy="9"
+        r="7"
+        stroke={colorByKind[kind]}
+        strokeWidth={1.4}
+        fill="var(--color-bg)"
+      />
+      <text
+        x="18"
+        y="12"
+        textAnchor="middle"
+        fontSize="9"
+        fontFamily="JetBrains Mono"
+        fontWeight="bold"
+        fill={colorByKind[kind]}
+      >
         {labelByKind[kind]}
       </text>
     </svg>
@@ -192,9 +243,17 @@ function GenGlyph({ kind }: { kind: GeneratorKind }) {
 }
 
 function LoadGlyph() {
-  const w = 36, h = 18;
+  const w = 36,
+    h = 18;
   return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none" stroke="var(--color-text-dim)" strokeWidth={1.4}>
+    <svg
+      width={w}
+      height={h}
+      viewBox={`0 0 ${w} ${h}`}
+      fill="none"
+      stroke="var(--color-text-dim)"
+      strokeWidth={1.4}
+    >
       <path d="M11 4 L25 4 L18 15 Z" fill="var(--color-bg)" />
     </svg>
   );

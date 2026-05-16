@@ -14,16 +14,20 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function ThinFilmDemo({ figure }: Props) {
   const [thickNm, setThickNm] = useState(280);
   const [n2, setN2] = useState(1.33); // soap film ≈ water
-  const n1 = 1.00;
+  const n1 = 1.0;
   const n3 = 1.33; // water below
 
   const stateRef = useRef({ thickNm, n2, n1, n3 });
-  useEffect(() => { stateRef.current = { thickNm, n2, n1, n3 }; }, [thickNm, n2, n1, n3]);
+  useEffect(() => {
+    stateRef.current = { thickNm, n2, n1, n3 };
+  }, [thickNm, n2, n1, n3]);
 
   // For readout — first constructive maximum in visible
   // 2 n₂ t = (m + ½) λ when the top interface flips phase (n1 < n2) and
@@ -31,17 +35,18 @@ export function ThinFilmDemo({ figure }: Props) {
   // Soap film in air: only top flips → factor ½ shifts.
   // For air-film-water with n_film < n_water both flip → no net half shift.
   // Use net half-wave shift only when exactly one interface flips:
-  const halfShift = (n1 < n2) !== (n2 < n3);
+  const halfShift = n1 < n2 !== n2 < n3;
   function constructiveLambda(m: number) {
-    return halfShift
-      ? (4 * n2 * thickNm) / (2 * m + 1)
-      : (2 * n2 * thickNm) / m;
+    return halfShift ? (4 * n2 * thickNm) / (2 * m + 1) : (2 * n2 * thickNm) / m;
   }
   // First visible constructive maximum
   let peakLambda = NaN;
   for (let m = 0; m < 8; m++) {
     const lam = constructiveLambda(halfShift ? m : m + 1);
-    if (lam >= 380 && lam <= 740) { peakLambda = lam; break; }
+    if (lam >= 380 && lam <= 740) {
+      peakLambda = lam;
+      break;
+    }
   }
 
   const setup = useCallback((info: CanvasInfo) => {
@@ -59,7 +64,7 @@ export function ThinFilmDemo({ figure }: Props) {
       const stripRight = W - 20;
       const stripW = stripRight - stripLeft;
 
-      const halfFlip = (n1 < n2) !== (n2 < n3);
+      const halfFlip = n1 < n2 !== n2 < n3;
       function reflectance(lamNm: number) {
         const lam = lamNm; // both in nm
         // Phase difference 2π · (2 n₂ t)/λ plus net π if halfFlip.
@@ -106,16 +111,21 @@ export function ThinFilmDemo({ figure }: Props) {
       // Boundary lines
       ctx.strokeStyle = getCanvasColors().textDim;
       ctx.beginPath();
-      ctx.moveTo(stripLeft, sectionY + 40); ctx.lineTo(stripRight, sectionY + 40);
-      ctx.moveTo(stripLeft, sectionY + 40 + filmPxH); ctx.lineTo(stripRight, sectionY + 40 + filmPxH);
+      ctx.moveTo(stripLeft, sectionY + 40);
+      ctx.lineTo(stripRight, sectionY + 40);
+      ctx.moveTo(stripLeft, sectionY + 40 + filmPxH);
+      ctx.lineTo(stripRight, sectionY + 40 + filmPxH);
       ctx.stroke();
 
       // Labels
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'left';
       ctx.fillText(`air · n=${n1.toFixed(2)}`, stripLeft + 6, sectionY + 18);
-      ctx.fillText(`film · n=${n2.toFixed(2)}, t=${thickNm.toFixed(0)} nm`,
-        stripLeft + 6, sectionY + 40 + filmPxH / 2 + 3);
+      ctx.fillText(
+        `film · n=${n2.toFixed(2)}, t=${thickNm.toFixed(0)} nm`,
+        stripLeft + 6,
+        sectionY + 40 + filmPxH / 2 + 3,
+      );
       ctx.fillText(`water · n=${n3.toFixed(2)}`, stripLeft + 6, sectionY + 40 + filmPxH + 18);
 
       // Cartoon rays: incident + two reflections
@@ -156,20 +166,36 @@ export function ThinFilmDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 14.4'}
       title="Soap-bubble colours — thin-film interference"
       question="Why do soap bubbles look iridescent?"
-      caption={<>
-        Reflection off the top and bottom of a thin film interferes. With normal incidence,
-        constructive maxima at <strong>2 n₂ t = (m + ½) λ</strong> when exactly one interface
-        flips phase, or <strong>2 n₂ t = m λ</strong> when both (or neither) do. As you drag the
-        film's thickness, the wavelength of peak reflectance slides through the visible — the
-        same effect that gives soap films their swirling colours and oil slicks their rainbows.
-      </>}
+      caption={
+        <>
+          Reflection off the top and bottom of a thin film interferes. With normal incidence,
+          constructive maxima at <strong>2 n₂ t = (m + ½) λ</strong> when exactly one interface
+          flips phase, or <strong>2 n₂ t = m λ</strong> when both (or neither) do. As you drag the
+          film's thickness, the wavelength of peak reflectance slides through the visible — the same
+          effect that gives soap films their swirling colours and oil slicks their rainbows.
+        </>
+      }
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
-        <MiniSlider label="t" value={thickNm} min={50} max={800} step={5}
-          format={v => v.toFixed(0) + ' nm'} onChange={setThickNm} />
-        <MiniSlider label="n_film" value={n2} min={1.0} max={1.8} step={0.01}
-          format={v => v.toFixed(2)} onChange={setN2} />
+        <MiniSlider
+          label="t"
+          value={thickNm}
+          min={50}
+          max={800}
+          step={5}
+          format={(v) => v.toFixed(0) + ' nm'}
+          onChange={setThickNm}
+        />
+        <MiniSlider
+          label="n_film"
+          value={n2}
+          min={1.0}
+          max={1.8}
+          step={0.01}
+          format={(v) => v.toFixed(2)}
+          onChange={setN2}
+        />
         <MiniReadout
           label="first peak λ"
           value={Number.isFinite(peakLambda) ? peakLambda.toFixed(0) : '—'}
@@ -182,12 +208,33 @@ export function ThinFilmDemo({ figure }: Props) {
 
 // Simple wavelength → sRGB tint for 380–740 nm
 function wavelengthRGB(lam: number): [number, number, number] {
-  let r = 0, g = 0, b = 0;
-  if (lam >= 380 && lam < 440) { r = -(lam - 440) / 60; g = 0; b = 1; }
-  else if (lam < 490) { r = 0; g = (lam - 440) / 50; b = 1; }
-  else if (lam < 510) { r = 0; g = 1; b = -(lam - 510) / 20; }
-  else if (lam < 580) { r = (lam - 510) / 70; g = 1; b = 0; }
-  else if (lam < 645) { r = 1; g = -(lam - 645) / 65; b = 0; }
-  else if (lam <= 740) { r = 1; g = 0; b = 0; }
+  let r = 0,
+    g = 0,
+    b = 0;
+  if (lam >= 380 && lam < 440) {
+    r = -(lam - 440) / 60;
+    g = 0;
+    b = 1;
+  } else if (lam < 490) {
+    r = 0;
+    g = (lam - 440) / 50;
+    b = 1;
+  } else if (lam < 510) {
+    r = 0;
+    g = 1;
+    b = -(lam - 510) / 20;
+  } else if (lam < 580) {
+    r = (lam - 510) / 70;
+    g = 1;
+    b = 0;
+  } else if (lam < 645) {
+    r = 1;
+    g = -(lam - 645) / 65;
+    b = 0;
+  } else if (lam <= 740) {
+    r = 1;
+    g = 0;
+    b = 0;
+  }
   return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }

@@ -16,14 +16,18 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function LenzsLawDemo({ figure }: Props) {
   // Distance from loop, in arbitrary "cm" units (1 = touching loop, large = far)
   const [d, setD] = useState(8);
 
   const stateRef = useRef({ d });
-  useEffect(() => { stateRef.current = { d }; }, [d]);
+  useEffect(() => {
+    stateRef.current = { d };
+  }, [d]);
 
   // Direction sign: +1 = magnet approaching (induced current opposes; CCW from above), −1 = retreating (CW)
   const [direction, setDirection] = useState<0 | 1 | -1>(0);
@@ -84,7 +88,8 @@ export function LenzsLawDemo({ figure }: Props) {
       // Magnet — floating above the loop. Distance d (arbitrary units 1..15)
       // maps to vertical pixels above loop center.
       const magY = cy - 50 - d * 14;
-      const magW = 60, magH = 24;
+      const magW = 60,
+        magH = 24;
       // S on top, N on bottom (so N points at loop)
       ctx.fillStyle = colors.blue;
       ctx.fillRect(cx - magW / 2, magY - magH / 2, magW, magH / 2);
@@ -98,7 +103,8 @@ export function LenzsLawDemo({ figure }: Props) {
       ctx.restore();
       ctx.fillStyle = colors.bg;
       ctx.font = 'bold 11px JetBrains Mono';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText('S', cx, magY - magH / 4);
       ctx.fillText('N', cx, magY + magH / 4);
 
@@ -111,16 +117,20 @@ export function LenzsLawDemo({ figure }: Props) {
       ctx.globalAlpha = 0.6;
       ctx.strokeStyle = colors.pink;
       ctx.beginPath();
-      ctx.moveTo(cx, arrowFromY); ctx.lineTo(cx, arrowToY); ctx.stroke();
+      ctx.moveTo(cx, arrowFromY);
+      ctx.lineTo(cx, arrowToY);
+      ctx.stroke();
       ctx.restore();
       ctx.beginPath();
       ctx.moveTo(cx, arrowToY);
       ctx.lineTo(cx - 5, arrowToY - 7);
       ctx.lineTo(cx + 5, arrowToY - 7);
-      ctx.closePath(); ctx.fill();
+      ctx.closePath();
+      ctx.fill();
       ctx.fillStyle = colors.pink;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
       ctx.fillText('B (magnet)', cx + 10, (arrowFromY + arrowToY) / 2);
 
       // Induced-B arrow (teal) inside the loop. dir = +1 (approaching) → B_ind UP (out of loop, opposing).
@@ -133,21 +143,27 @@ export function LenzsLawDemo({ figure }: Props) {
         if (dir > 0) {
           // arrow inside loop pointing UP (out of plane toward viewer = up-axis)
           ctx.beginPath();
-          ctx.moveTo(cx, cy + 4); ctx.lineTo(cx, cy - 28); ctx.stroke();
+          ctx.moveTo(cx, cy + 4);
+          ctx.lineTo(cx, cy - 28);
+          ctx.stroke();
           ctx.beginPath();
           ctx.moveTo(cx, cy - 28);
           ctx.lineTo(cx - 5, cy - 22);
           ctx.lineTo(cx + 5, cy - 22);
-          ctx.closePath(); ctx.fill();
+          ctx.closePath();
+          ctx.fill();
         } else {
           // arrow inside loop pointing DOWN
           ctx.beginPath();
-          ctx.moveTo(cx, cy - 4); ctx.lineTo(cx, cy + 28); ctx.stroke();
+          ctx.moveTo(cx, cy - 4);
+          ctx.lineTo(cx, cy + 28);
+          ctx.stroke();
           ctx.beginPath();
           ctx.moveTo(cx, cy + 28);
           ctx.lineTo(cx - 5, cy + 22);
           ctx.lineTo(cx + 5, cy + 22);
-          ctx.closePath(); ctx.fill();
+          ctx.closePath();
+          ctx.fill();
         }
         ctx.fillStyle = `rgba(108,197,194,${tealAlpha})`;
         ctx.font = '10px "JetBrains Mono", monospace';
@@ -173,7 +189,7 @@ export function LenzsLawDemo({ figure }: Props) {
           const py = cy + (loopRy + 6) * Math.sin(theta);
           // tangent direction at this point (CCW = +d/dθ)
           const tx = -loopR * Math.sin(theta);
-          const ty = (loopRy) * Math.cos(theta);
+          const ty = loopRy * Math.cos(theta);
           const tlen = Math.hypot(tx, ty) || 1;
           const ux = (tx / tlen) * (ccw ? 1 : -1);
           const uy = (ty / tlen) * (ccw ? 1 : -1);
@@ -185,23 +201,28 @@ export function LenzsLawDemo({ figure }: Props) {
         }
         ctx.fillStyle = `rgba(255,107,42,${arrowAlpha})`;
         ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
         ctx.fillText(`induced current (${ccw ? 'opposes' : 'attracts'})`, cx, cy + loopRy + 18);
       } else {
         ctx.fillStyle = colors.textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
         ctx.fillText('move the magnet to induce a current', cx, cy + loopRy + 18);
       }
 
       // Status pill top-left
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       const status =
-        dir > 0 ? 'magnet approaching · Φ ↑ · current opposes' :
-        dir < 0 ? 'magnet retreating · Φ ↓ · current sustains' :
-        'static · no induction';
+        dir > 0
+          ? 'magnet approaching · Φ ↑ · current opposes'
+          : dir < 0
+            ? 'magnet retreating · Φ ↓ · current sustains'
+            : 'static · no induction';
       ctx.fillText(status, 14, 14);
 
       raf = requestAnimationFrame(draw);
@@ -215,20 +236,26 @@ export function LenzsLawDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 5.2'}
       title="Lenz's law — the induced current always pushes back"
       question="Push the magnet closer. What direction does the induced current flow — and why?"
-      caption={<>
-        Slide the magnet toward the loop or pull it away. The induced current (orange chevrons) always flows the way that
-        creates an internal <strong style={{ color: 'var(--teal)' }}>induced B</strong> opposing the change in flux:
-        repelling the magnet on approach, attracting it on retreat. The work you do moving the magnet is exactly the
-        electrical energy that appears in the loop.
-      </>}
+      caption={
+        <>
+          Slide the magnet toward the loop or pull it away. The induced current (orange chevrons)
+          always flows the way that creates an internal{' '}
+          <strong style={{ color: 'var(--teal)' }}>induced B</strong> opposing the change in flux:
+          repelling the magnet on approach, attracting it on retreat. The work you do moving the
+          magnet is exactly the electrical energy that appears in the loop.
+        </>
+      }
       deeperLab={{ slug: 'faraday', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="distance"
-          value={d} min={1} max={15} step={0.05}
-          format={v => v.toFixed(1) + ' (a.u.)'}
+          value={d}
+          min={1}
+          max={15}
+          step={0.05}
+          format={(v) => v.toFixed(1) + ' (a.u.)'}
           onChange={setD}
         />
         <MiniReadout

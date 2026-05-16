@@ -18,7 +18,9 @@ import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 interface Packet {
   x: number;
@@ -29,18 +31,20 @@ export function RadiationPressureDemo({ figure }: Props) {
   // Intensity in W/m². Default ≈ solar constant.
   const [I, setI] = useState(1361);
 
-  const P = I / PHYS.c;          // pressure for full absorption, Pa
-  const P_refl = 2 * I / PHYS.c; // perfect reflector, for the readout
+  const P = I / PHYS.c; // pressure for full absorption, Pa
+  const P_refl = (2 * I) / PHYS.c; // perfect reflector, for the readout
 
   const stateRef = useRef({ I });
-  useEffect(() => { stateRef.current = { I }; }, [I]);
+  useEffect(() => {
+    stateRef.current = { I };
+  }, [I]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H } = info;
     let raf = 0;
 
     const packets: Packet[] = [];
-    let targetX = W * 0.62;        // target position (visual only)
+    let targetX = W * 0.62; // target position (visual only)
     let spawnAcc = 0;
 
     function draw() {
@@ -102,7 +106,8 @@ export function RadiationPressureDemo({ figure }: Props) {
       ctx.moveTo(targetX + targetW + armLen, cy);
       ctx.lineTo(targetX + targetW + armLen - 8, cy - 5);
       ctx.lineTo(targetX + targetW + armLen - 8, cy + 5);
-      ctx.closePath(); ctx.fill();
+      ctx.closePath();
+      ctx.fill();
 
       // Drift target back if it has wandered far (kept on-screen)
       if (targetX > W - 80) targetX = W * 0.62;
@@ -126,20 +131,26 @@ export function RadiationPressureDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 7.5'}
       title="Radiation pressure"
       question="If light has momentum, what does it push on?"
-      caption={<>
-        A stream of wave-packets travelling rightward into an absorbing target. Each packet
-        carries momentum <strong>p = U/c</strong>; the target absorbs them and the total push per
-        unit area is <strong>P = I/c</strong>. At Earth's solar constant <em>I ≈ 1361 W/m²</em> this
-        is about <strong>4.5 µPa</strong> — real, measured by the Crookes-radiometer descendants,
-        and large enough to drive a solar sail given a few months and a few hundred square metres.
-      </>}
+      caption={
+        <>
+          A stream of wave-packets travelling rightward into an absorbing target. Each packet
+          carries momentum <strong>p = U/c</strong>; the target absorbs them and the total push per
+          unit area is <strong>P = I/c</strong>. At Earth's solar constant <em>I ≈ 1361 W/m²</em>{' '}
+          this is about <strong>4.5 µPa</strong> — real, measured by the Crookes-radiometer
+          descendants, and large enough to drive a solar sail given a few months and a few hundred
+          square metres.
+        </>
+      }
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="intensity I"
-          value={I} min={1} max={1e6} step={1}
-          format={v => v >= 1000 ? (v / 1000).toFixed(1) + ' kW/m²' : v.toFixed(0) + ' W/m²'}
+          value={I}
+          min={1}
+          max={1e6}
+          step={1}
+          format={(v) => (v >= 1000 ? (v / 1000).toFixed(1) + ' kW/m²' : v.toFixed(0) + ' W/m²')}
           onChange={setI}
         />
         <MiniReadout label="absorber pressure P = I/c" value={<Num value={P} />} unit="Pa" />
@@ -149,9 +160,7 @@ export function RadiationPressureDemo({ figure }: Props) {
   );
 }
 
-function drawPacket(
-  ctx: CanvasRenderingContext2D, cx: number, cy: number, amp: number,
-) {
+function drawPacket(ctx: CanvasRenderingContext2D, cx: number, cy: number, amp: number) {
   const W = 22;
   ctx.strokeStyle = `rgba(255,107,42,${0.4 + amp * 0.5})`;
   ctx.lineWidth = 1.5;
@@ -159,7 +168,8 @@ function drawPacket(
   for (let i = -W; i <= W; i++) {
     const env = Math.exp(-(i * i) / 80);
     const y = cy - Math.sin(i * 0.7) * env * 14 * amp;
-    if (i === -W) ctx.moveTo(cx + i, y); else ctx.lineTo(cx + i, y);
+    if (i === -W) ctx.moveTo(cx + i, y);
+    else ctx.lineTo(cx + i, y);
   }
   ctx.stroke();
 }

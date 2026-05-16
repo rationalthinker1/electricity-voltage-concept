@@ -9,13 +9,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 
 type Target = 'square' | 'triangle' | 'sawtooth';
 
-interface Coeff { n: number; amp: number; }
+interface Coeff {
+  n: number;
+  amp: number;
+}
 
 /** Return the analytic Fourier series coefficients (amplitudes of sin(nωt))
  *  for unit-peak versions of each waveform. Each entry is { harmonic n, amp }.
@@ -30,12 +31,12 @@ function coeffs(target: Target, N: number): Coeff[] {
       // (8/π²) Σ (-1)^((n-1)/2) sin(nωt)/n²  for n = 1, 3, 5, ...
       if (n % 2 === 1) {
         const sign = ((n - 1) / 2) % 2 === 0 ? 1 : -1;
-        out.push({ n, amp: (8 / (Math.PI * Math.PI)) * sign / (n * n) });
+        out.push({ n, amp: ((8 / (Math.PI * Math.PI)) * sign) / (n * n) });
       }
     } else {
       // sawtooth: (2/π) Σ (-1)^(n+1) sin(nωt)/n
       const sign = (n + 1) % 2 === 0 ? -1 : 1;
-      out.push({ n, amp: (2 / Math.PI) * sign / n });
+      out.push({ n, amp: ((2 / Math.PI) * sign) / n });
     }
   }
   return out;
@@ -48,8 +49,8 @@ function ideal(target: Target, phase: number): number {
   if (target === 'triangle') {
     // 0 at 0, 1 at π/2, 0 at π, -1 at 3π/2
     if (t < Math.PI / 2) return t / (Math.PI / 2);
-    if (t < 3 * Math.PI / 2) return 1 - (t - Math.PI / 2) / (Math.PI / 2);
-    return -1 + (t - 3 * Math.PI / 2) / (Math.PI / 2);
+    if (t < (3 * Math.PI) / 2) return 1 - (t - Math.PI / 2) / (Math.PI / 2);
+    return -1 + (t - (3 * Math.PI) / 2) / (Math.PI / 2);
   }
   // sawtooth: ramp from +1 at 0 to -1 at 2π (discontinuity wraps)
   return 1 - t / Math.PI;
@@ -61,7 +62,9 @@ export function HarmonicSynthesisDemo() {
   const [showIdeal, setShowIdeal] = useState(true);
 
   const stateRef = useRef({ target, N, showIdeal });
-  useEffect(() => { stateRef.current = { target, N, showIdeal }; }, [target, N, showIdeal]);
+  useEffect(() => {
+    stateRef.current = { target, N, showIdeal };
+  }, [target, N, showIdeal]);
 
   // peak-overshoot for caption: evaluate the partial sum just past a square's
   // discontinuity to get the Gibbs ripple amplitude
@@ -98,16 +101,19 @@ export function HarmonicSynthesisDemo() {
       ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(padX, midY); ctx.lineTo(padX + plotW, midY);
+      ctx.moveTo(padX, midY);
+      ctx.lineTo(padX + plotW, midY);
       ctx.stroke();
       // ±1 reference lines
       ctx.setLineDash([3, 5]);
       ctx.strokeStyle = colors.border;
-      const yPlus = midY - plotH / 2 * 0.85;
-      const yMinus = midY + plotH / 2 * 0.85;
+      const yPlus = midY - (plotH / 2) * 0.85;
+      const yMinus = midY + (plotH / 2) * 0.85;
       ctx.beginPath();
-      ctx.moveTo(padX, yPlus); ctx.lineTo(padX + plotW, yPlus);
-      ctx.moveTo(padX, yMinus); ctx.lineTo(padX + plotW, yMinus);
+      ctx.moveTo(padX, yPlus);
+      ctx.lineTo(padX + plotW, yPlus);
+      ctx.moveTo(padX, yMinus);
+      ctx.lineTo(padX + plotW, yMinus);
       ctx.stroke();
       ctx.setLineDash([]);
 
@@ -131,7 +137,8 @@ export function HarmonicSynthesisDemo() {
           const x = padX + (i / N_samples) * plotW;
           const phase = (i / N_samples) * cycles * 2 * Math.PI;
           const y = midY - ideal(target, phase) * (plotH / 2) * 0.85;
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.stroke();
       }
@@ -146,7 +153,8 @@ export function HarmonicSynthesisDemo() {
         let s = 0;
         for (const c of cs) s += c.amp * Math.sin(c.n * phase);
         const y = midY - s * (plotH / 2) * 0.85;
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -172,30 +180,42 @@ export function HarmonicSynthesisDemo() {
       question="Add sine harmonics one by one — when does the partial sum start to look like the target?"
       caption={
         <>
-          The square and sawtooth need infinitely many harmonics to reach their corners; the partial sum overshoots the
-          discontinuity by ~9% no matter how high N gets. That stubborn overshoot is the Gibbs phenomenon. Triangle waves
-          converge much faster — their coefficients fall as 1/n², not 1/n.
+          The square and sawtooth need infinitely many harmonics to reach their corners; the partial
+          sum overshoots the discontinuity by ~9% no matter how high N gets. That stubborn overshoot
+          is the Gibbs phenomenon. Triangle waves converge much faster — their coefficients fall as
+          1/n², not 1/n.
         </>
       }
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>
-        <MiniToggle label="Square" checked={target === 'square'} onChange={() => setTarget('square')} />
-        <MiniToggle label="Triangle" checked={target === 'triangle'} onChange={() => setTarget('triangle')} />
-        <MiniToggle label="Sawtooth" checked={target === 'sawtooth'} onChange={() => setTarget('sawtooth')} />
+        <MiniToggle
+          label="Square"
+          checked={target === 'square'}
+          onChange={() => setTarget('square')}
+        />
+        <MiniToggle
+          label="Triangle"
+          checked={target === 'triangle'}
+          onChange={() => setTarget('triangle')}
+        />
+        <MiniToggle
+          label="Sawtooth"
+          checked={target === 'sawtooth'}
+          onChange={() => setTarget('sawtooth')}
+        />
         <MiniSlider
           label="N (harmonics)"
-          value={N} min={1} max={30} step={1}
-          format={v => v.toFixed(0)}
-          onChange={v => setN(Math.round(v))}
+          value={N}
+          min={1}
+          max={30}
+          step={1}
+          format={(v) => v.toFixed(0)}
+          onChange={(v) => setN(Math.round(v))}
         />
         <MiniToggle label="Show ideal" checked={showIdeal} onChange={setShowIdeal} />
         {target === 'square' && (
-          <MiniReadout
-            label="Gibbs overshoot"
-            value={gibbsPct.toFixed(1)}
-            unit="%"
-          />
+          <MiniReadout label="Gibbs overshoot" value={gibbsPct.toFixed(1)} unit="%" />
         )}
       </DemoControls>
     </Demo>

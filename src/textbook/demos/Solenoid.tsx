@@ -17,15 +17,19 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function SolenoidDemo({ figure }: Props) {
-  const [N, setN] = useState(50);             // total turns
-  const [I, setI] = useState(2);              // amps
-  const [Lcm, setLcm] = useState(20);         // solenoid length in cm
+  const [N, setN] = useState(50); // total turns
+  const [I, setI] = useState(2); // amps
+  const [Lcm, setLcm] = useState(20); // solenoid length in cm
 
   const stateRef = useRef({ N, I, Lcm });
-  useEffect(() => { stateRef.current = { N, I, Lcm }; }, [N, I, Lcm]);
+  useEffect(() => {
+    stateRef.current = { N, I, Lcm };
+  }, [N, I, Lcm]);
 
   const L_m = Lcm * 1e-2;
   const n = N / L_m;
@@ -50,8 +54,8 @@ export function SolenoidDemo({ figure }: Props) {
       const sxL = (w - sW) / 2;
       const sxR = sxL + sW;
       const cy = h / 2;
-      const ringRy = 60;        // visual ellipse height (y-radius)
-      const ringRx = 12;        // ellipse x-radius (perspective squish)
+      const ringRy = 60; // visual ellipse height (y-radius)
+      const ringRx = 12; // ellipse x-radius (perspective squish)
 
       // Draw N turns evenly spaced. Cap the visual count to avoid clutter.
       const Nvis = Math.min(N, 30);
@@ -148,7 +152,11 @@ export function SolenoidDemo({ figure }: Props) {
       ctx.fillStyle = 'rgba(160,158,149,.85)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
-      ctx.fillText(`L = ${Lcm.toFixed(1)} cm  ·  N = ${N}  ·  n = ${pretty(N / (Lcm * 1e-2), 2)} /m`, w / 2, h - 18);
+      ctx.fillText(
+        `L = ${Lcm.toFixed(1)} cm  ·  N = ${N}  ·  n = ${pretty(N / (Lcm * 1e-2), 2)} /m`,
+        w / 2,
+        h - 18,
+      );
       ctx.fillStyle = colors.teal;
       ctx.fillText(`B (inside) = ${pretty(PHYS.mu_0 * (N / (Lcm * 1e-2)) * I, 3)} T`, w / 2, 24);
 
@@ -163,32 +171,43 @@ export function SolenoidDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 4.4'}
       title="Solenoid: a controllable magnet"
       question="What if you wrap the wire around itself?"
-      caption={<>
-        Inside a long solenoid the field is uniform and axial:
-        <em> B = μ₀ n I</em>, with <em>n = N/L</em> turns per meter. Outside it's nearly zero
-        (the return field threads back through everything else). This is the canonical
-        electromagnet — and the inductor we'll meet in Chapter&nbsp;5.
-      </>}
+      caption={
+        <>
+          Inside a long solenoid the field is uniform and axial:
+          <em> B = μ₀ n I</em>, with <em>n = N/L</em> turns per meter. Outside it's nearly zero (the
+          return field threads back through everything else). This is the canonical electromagnet —
+          and the inductor we'll meet in Chapter&nbsp;5.
+        </>
+      }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="N"
-          value={N} min={5} max={500} step={1}
-          format={v => `${v.toFixed(0)} turns`}
+          value={N}
+          min={5}
+          max={500}
+          step={1}
+          format={(v) => `${v.toFixed(0)} turns`}
           onChange={setN}
         />
         <MiniSlider
           label="I"
-          value={I} min={0.01} max={10} step={0.01}
-          format={v => v.toFixed(2) + ' A'}
+          value={I}
+          min={0.01}
+          max={10}
+          step={0.01}
+          format={(v) => v.toFixed(2) + ' A'}
           onChange={setI}
         />
         <MiniSlider
           label="L"
-          value={Lcm} min={5} max={50} step={0.5}
-          format={v => v.toFixed(1) + ' cm'}
+          value={Lcm}
+          min={5}
+          max={50}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' cm'}
           onChange={setLcm}
         />
         <MiniReadout label="n = N/L" value={<Num value={n} digits={3} />} unit="/m" />

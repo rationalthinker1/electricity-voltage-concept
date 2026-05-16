@@ -39,8 +39,7 @@ let cached: ThemeColors | null = null;
 export function getCanvasColors(): ThemeColors {
   if (cached) return cached;
   const root = getComputedStyle(document.documentElement);
-  const get = (name: string, fallback: string) =>
-    root.getPropertyValue(name).trim() || fallback;
+  const get = (name: string, fallback: string) => root.getPropertyValue(name).trim() || fallback;
 
   cached = {
     bg: get('--color-bg-elevated', '#121215'),
@@ -72,7 +71,7 @@ export function invalidateCanvasColors() {
 
 /* Auto-invalidate when the theme attribute changes. */
 if (typeof window !== 'undefined') {
-  const observer = new MutationObserver(mutations => {
+  const observer = new MutationObserver((mutations) => {
     for (const m of mutations) {
       if (m.attributeName === 'data-theme') {
         cached = null;

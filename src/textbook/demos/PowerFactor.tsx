@@ -18,19 +18,21 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function PowerFactorDemo({ figure }: Props) {
-  const [R, setR] = useState(20);         // Ω
-  const [Lmh, setLmh] = useState(30);     // mH
-  const [f, setF] = useState(60);         // Hz
-  const Vp = 100;                          // V (fixed peak)
+  const [R, setR] = useState(20); // Ω
+  const [Lmh, setLmh] = useState(30); // mH
+  const [f, setF] = useState(60); // Hz
+  const Vp = 100; // V (fixed peak)
 
   const L = Lmh * 1e-3;
   const omega = 2 * Math.PI * f;
   const XL = omega * L;
   const Zmag = Math.sqrt(R * R + XL * XL);
-  const phi = Math.atan2(XL, R);          // rad
+  const phi = Math.atan2(XL, R); // rad
   const Ip = Vp / Zmag;
   const Vrms = Vp / Math.SQRT2;
   const Irms = Ip / Math.SQRT2;
@@ -54,21 +56,24 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 50, padR = 60, padT = 18, padB = 22;
+      const padL = 50,
+        padR = 60,
+        padT = 18,
+        padB = 22;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
       const yMid = padT + plotH / 2;
 
       // Time axis: two full periods
-      const T = 2 * Math.PI / omega;
+      const T = (2 * Math.PI) / omega;
       const tMax = 2 * T;
       const xOf = (t: number) => padL + (t / tMax) * plotW;
 
       // Compute peak instantaneous power for scaling
       const pMax = Vp * Ip; // worst case
-      const yScaleP = (plotH / 2) / Math.max(pMax, 1e-3);
-      const yScaleV = (plotH / 2) / Math.max(Vp, 1e-3);
-      const yScaleI = (plotH / 2) / Math.max(Ip, 1e-3);
+      const yScaleP = plotH / 2 / Math.max(pMax, 1e-3);
+      const yScaleV = plotH / 2 / Math.max(Vp, 1e-3);
+      const yScaleI = plotH / 2 / Math.max(Ip, 1e-3);
 
       // Frame
       ctx.strokeStyle = colors.border;
@@ -76,14 +81,16 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.strokeRect(padL, padT, plotW, plotH);
       // Zero line
       ctx.beginPath();
-      ctx.moveTo(padL, yMid); ctx.lineTo(padL + plotW, yMid);
+      ctx.moveTo(padL, yMid);
+      ctx.lineTo(padL + plotW, yMid);
       ctx.stroke();
 
       // Vertical T marker
       ctx.strokeStyle = colors.border;
       ctx.setLineDash([2, 3]);
       ctx.beginPath();
-      ctx.moveTo(xOf(T), padT); ctx.lineTo(xOf(T), padT + plotH);
+      ctx.moveTo(xOf(T), padT);
+      ctx.lineTo(xOf(T), padT + plotH);
       ctx.stroke();
       ctx.setLineDash([]);
 
@@ -115,7 +122,8 @@ export function PowerFactorDemo({ figure }: Props) {
         const v = Vp * Math.cos(omega * t);
         const x = xOf(t);
         const y = yMid - v * yScaleV;
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -128,7 +136,8 @@ export function PowerFactorDemo({ figure }: Props) {
         const ii = Ip * Math.cos(omega * t - phi);
         const x = xOf(t);
         const y = yMid - ii * yScaleI;
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -143,7 +152,8 @@ export function PowerFactorDemo({ figure }: Props) {
         const p = v * ii;
         const x = xOf(t);
         const y = yMid - p * yScaleP;
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -155,7 +165,8 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1.4;
       ctx.beginPath();
-      ctx.moveTo(padL, yMean); ctx.lineTo(padL + plotW, yMean);
+      ctx.moveTo(padL, yMean);
+      ctx.lineTo(padL + plotW, yMean);
       ctx.stroke();
       ctx.setLineDash([]);
 
@@ -190,7 +201,11 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText(`φ = ${(phi * 180 / Math.PI).toFixed(1)}°,   pf = cos(φ) = ${Math.cos(phi).toFixed(3)}`, padL, 4);
+      ctx.fillText(
+        `φ = ${((phi * 180) / Math.PI).toFixed(1)}°,   pf = cos(φ) = ${Math.cos(phi).toFixed(3)}`,
+        padL,
+        4,
+      );
 
       raf = requestAnimationFrame(draw);
     }
@@ -203,23 +218,46 @@ export function PowerFactorDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 12.5b'}
       title="Power factor — the average of v·i for an R+L load"
       question="Crank L up. The shaded area under p(t) — the energy actually delivered — shrinks."
-      caption={<>
-        Drive a series R+L load with a sine V<sub>p</sub> = 100 V. The current lags by
-        φ = atan(ωL/R); the instantaneous power p(t) = v·i oscillates at <em>twice</em> the line
-        frequency. Its time-average ⟨p⟩ = V<sub>rms</sub> I<sub>rms</sub> cos(φ) is the real
-        power P, marked by the dashed line. At φ = 0 (pure R) the whole product sits above zero —
-        pf = 1. At φ → 90° (pure L), p(t) becomes symmetric about zero, ⟨p⟩ → 0, pf → 0 — the load
-        draws current but delivers no net energy each cycle.
-      </>}
+      caption={
+        <>
+          Drive a series R+L load with a sine V<sub>p</sub> = 100 V. The current lags by φ =
+          atan(ωL/R); the instantaneous power p(t) = v·i oscillates at <em>twice</em> the line
+          frequency. Its time-average ⟨p⟩ = V<sub>rms</sub> I<sub>rms</sub> cos(φ) is the real power
+          P, marked by the dashed line. At φ = 0 (pure R) the whole product sits above zero — pf =
+          1. At φ → 90° (pure L), p(t) becomes symmetric about zero, ⟨p⟩ → 0, pf → 0 — the load
+          draws current but delivers no net energy each cycle.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
-        <MiniSlider label="R" value={R} min={1} max={100} step={1}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setR} />
-        <MiniSlider label="L" value={Lmh} min={0.1} max={200} step={0.1}
-          format={v => v.toFixed(1) + ' mH'} onChange={setLmh} />
-        <MiniSlider label="f" value={f} min={10} max={400} step={1}
-          format={v => v.toFixed(0) + ' Hz'} onChange={setF} />
+        <MiniSlider
+          label="R"
+          value={R}
+          min={1}
+          max={100}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setR}
+        />
+        <MiniSlider
+          label="L"
+          value={Lmh}
+          min={0.1}
+          max={200}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' mH'}
+          onChange={setLmh}
+        />
+        <MiniSlider
+          label="f"
+          value={f}
+          min={10}
+          max={400}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Hz'}
+          onChange={setF}
+        />
         <MiniReadout label="ωL" value={<Num value={XL} />} unit="Ω" />
         <MiniReadout label="|Z|" value={<Num value={Zmag} />} unit="Ω" />
         <MiniReadout label="pf = cos φ" value={pf.toFixed(3)} />

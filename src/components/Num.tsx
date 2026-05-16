@@ -31,22 +31,18 @@ export function Num({ value, digits = 3, sci = false, showSign = false }: NumPro
   const useSci = sci || abs < 1e-3 || abs >= 1e6;
 
   if (!useSci) {
-    const formatted = showSign && value > 0
-      ? '+' + value.toFixed(digits)
-      : value.toFixed(digits);
+    const formatted = showSign && value > 0 ? '+' + value.toFixed(digits) : value.toFixed(digits);
     return <span>{formatted}</span>;
   }
 
   // Scientific notation
   const exp = Math.floor(Math.log10(abs));
   const mantissa = value / Math.pow(10, exp);
-  const mStr = showSign && mantissa > 0
-    ? '+' + mantissa.toFixed(digits)
-    : mantissa.toFixed(digits);
+  const mStr = showSign && mantissa > 0 ? '+' + mantissa.toFixed(digits) : mantissa.toFixed(digits);
 
   return (
     <Fragment>
-      {mStr}×10<sup className="text-[.7em] leading-none font-3 align-[.45em]">{exp}</sup>
+      {mStr}×10<sup className="font-3 align-[.45em] text-[.7em] leading-none">{exp}</sup>
     </Fragment>
   );
 }

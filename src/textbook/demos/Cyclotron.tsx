@@ -16,7 +16,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // Visual scaling: 1 m of physical orbit radius → PX_PER_M screen pixels.
 // The numbers are tiny (electron in B=0.001 T at v=1e6 m/s → r ≈ 5.7 mm,
@@ -24,13 +26,15 @@ interface Props { figure?: string }
 // for the visualization but the readout always shows the real value.
 
 export function CyclotronDemo({ figure }: Props) {
-  const [vLog, setVLog] = useState(6);          // log10(v in m/s) → 10^6 m/s default
-  const [B, setB] = useState(0.005);            // tesla
+  const [vLog, setVLog] = useState(6); // log10(v in m/s) → 10^6 m/s default
+  const [B, setB] = useState(0.005); // tesla
   const [positive, setPositive] = useState(false); // electron default → negative
-  const [proton, setProton] = useState(false);  // false = electron
+  const [proton, setProton] = useState(false); // false = electron
 
   const stateRef = useRef({ vLog, B, positive, proton });
-  useEffect(() => { stateRef.current = { vLog, B, positive, proton }; }, [vLog, B, positive, proton]);
+  useEffect(() => {
+    stateRef.current = { vLog, B, positive, proton };
+  }, [vLog, B, positive, proton]);
 
   // Real values
   const v = Math.pow(10, vLog);
@@ -57,8 +61,8 @@ export function CyclotronDemo({ figure }: Props) {
       const v = Math.pow(10, vLog);
       const m = proton ? PHYS.mp : PHYS.me;
       const q = PHYS.e;
-      const r_phys = (m * v) / (q * B);  // meters
-      const omega = (q * B) / m;         // rad/s
+      const r_phys = (m * v) / (q * B); // meters
+      const omega = (q * B) / m; // rad/s
       // Direction of rotation: for B into page (+z̃ inward, but in screen y-flipped
       // coords B_screen = -ẑ when "into page"; v×B for positive q gives the sign.
       // We use: positive charge in B into page → CCW on screen; negative → CW.
@@ -67,8 +71,10 @@ export function CyclotronDemo({ figure }: Props) {
       // Visual orbit radius — log-scaled so it fits on screen across many orders.
       // r_phys can range from ~10⁻⁹ m to several meters. Map to a pixel radius
       // between ~25 px and (h*0.42) px.
-      const rMin_m = 1e-10, rMax_m = 1e2;
-      const rPxMin = 28, rPxMax = Math.min(w, h) * 0.40;
+      const rMin_m = 1e-10,
+        rMax_m = 1e2;
+      const rPxMin = 28,
+        rPxMax = Math.min(w, h) * 0.4;
       const ll = Math.log10(Math.max(rMin_m, Math.min(rMax_m, r_phys)));
       const t = (ll - Math.log10(rMin_m)) / (Math.log10(rMax_m) - Math.log10(rMin_m));
       const rPx = rPxMin + t * (rPxMax - rPxMin);
@@ -87,14 +93,16 @@ export function CyclotronDemo({ figure }: Props) {
         for (let x = spacing / 2; x < w; x += spacing) {
           const k = 3.5;
           ctx.beginPath();
-          ctx.moveTo(x - k, y - k); ctx.lineTo(x + k, y + k);
-          ctx.moveTo(x + k, y - k); ctx.lineTo(x - k, y + k);
+          ctx.moveTo(x - k, y - k);
+          ctx.lineTo(x + k, y + k);
+          ctx.moveTo(x + k, y - k);
+          ctx.lineTo(x - k, y + k);
           ctx.stroke();
-      ctx.restore();
+          ctx.restore();
         }
       }
       ctx.save();
-      ctx.globalAlpha = .55;
+      ctx.globalAlpha = 0.55;
       ctx.fillStyle = colors.teal;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
@@ -111,7 +119,7 @@ export function CyclotronDemo({ figure }: Props) {
 
       // Advance angle. Visualize at a slowed-down rate, but use real ω so
       // higher B and lower mass spin visibly faster.
-      const visScale = Math.min(1, 5 / (omega + 1e-6)) * Math.min(50, omega) / Math.max(1, omega);
+      const visScale = (Math.min(1, 5 / (omega + 1e-6)) * Math.min(50, omega)) / Math.max(1, omega);
       // Simpler: cap visual angular speed at 4 rad/s, otherwise scale linearly.
       const omegaVis = Math.min(4, Math.log10(omega + 1) * 0.6 + 1.0);
       void visScale;
@@ -119,11 +127,13 @@ export function CyclotronDemo({ figure }: Props) {
 
       // Orbit ring (faint)
       ctx.save();
-      ctx.globalAlpha = 0.30;
+      ctx.globalAlpha = 0.3;
       ctx.strokeStyle = colors.accent;
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.arc(cx0, cy0, rPx, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx0, cy0, rPx, 0, Math.PI * 2);
+      ctx.stroke();
       ctx.restore();
       ctx.setLineDash([]);
 
@@ -133,7 +143,7 @@ export function CyclotronDemo({ figure }: Props) {
 
       // Velocity tangent (for arrow)
       const tx = -Math.sin(theta) * sign;
-      const ty =  Math.cos(theta) * sign;
+      const ty = Math.cos(theta) * sign;
 
       // Trail
       ctx.save();
@@ -149,14 +159,20 @@ export function CyclotronDemo({ figure }: Props) {
       // Particle
       const color = positive ? '#ff3b6e' : '#5baef8';
       const grd = ctx.createRadialGradient(px, py, 0, px, py, 22);
-      grd.addColorStop(0, color); grd.addColorStop(1, color + '00');
+      grd.addColorStop(0, color);
+      grd.addColorStop(1, color + '00');
       ctx.fillStyle = grd;
-      ctx.beginPath(); ctx.arc(px, py, 22, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(px, py, 22, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = color;
-      ctx.beginPath(); ctx.arc(px, py, 7, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(px, py, 7, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = colors.bg;
       ctx.font = 'bold 9px JetBrains Mono';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText(positive ? '+' : '−', px, py);
 
       // Velocity arrow
@@ -169,8 +185,10 @@ export function CyclotronDemo({ figure }: Props) {
       ctx.lineTo(px + tx * aLen, py + ty * aLen);
       ctx.stroke();
       ctx.beginPath();
-      const hx = px + tx * aLen, hy = py + ty * aLen;
-      const nx = -ty, ny = tx;
+      const hx = px + tx * aLen,
+        hy = py + ty * aLen;
+      const nx = -ty,
+        ny = tx;
       ctx.moveTo(hx, hy);
       ctx.lineTo(hx - tx * 5 + nx * 3, hy - ty * 5 + ny * 3);
       ctx.lineTo(hx - tx * 5 - nx * 3, hy - ty * 5 - ny * 3);
@@ -183,13 +201,13 @@ export function CyclotronDemo({ figure }: Props) {
 
       // Real radius label
       ctx.save();
-      ctx.globalAlpha = .85;
+      ctx.globalAlpha = 0.85;
       ctx.fillStyle = colors.text;
       ctx.textAlign = 'right';
       ctx.fillText(`r (real) = ${pretty(r_phys, 2)} m`, w - 14, 18);
       ctx.restore();
       ctx.save();
-      ctx.globalAlpha = .6;
+      ctx.globalAlpha = 0.6;
       ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.fillText('orbit drawn at log-scaled radius', w - 14, 32);
@@ -206,12 +224,16 @@ export function CyclotronDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 4.3'}
       title="Magnetic force only steers"
       question="A charge in a B field never speeds up. So what does it do?"
-      caption={<>
-        Background <strong>×</strong> marks: <strong>B</strong> points into the page. The Lorentz force
-        <em> F = q v × B</em> is perpendicular to <strong>v</strong>, so the particle's speed never
-        changes — only its direction. The orbit radius is <em>r = m v / (qB)</em>; the period
-        <em> T = 2π m / (qB)</em> is independent of speed (the cyclotron principle).
-      </>}
+      caption={
+        <>
+          Background <strong>×</strong> marks: <strong>B</strong> points into the page. The Lorentz
+          force
+          <em> F = q v × B</em> is perpendicular to <strong>v</strong>, so the particle's speed
+          never changes — only its direction. The orbit radius is <em>r = m v / (qB)</em>; the
+          period
+          <em> T = 2π m / (qB)</em> is independent of speed (the cyclotron principle).
+        </>
+      }
       deeperLab={{ slug: 'lorentz', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={340} setup={setup} />
@@ -221,21 +243,23 @@ export function CyclotronDemo({ figure }: Props) {
           checked={positive}
           onChange={setPositive}
         />
-        <MiniToggle
-          label={proton ? 'proton' : 'electron'}
-          checked={proton}
-          onChange={setProton}
-        />
+        <MiniToggle label={proton ? 'proton' : 'electron'} checked={proton} onChange={setProton} />
         <MiniSlider
           label="v (log)"
-          value={vLog} min={3} max={7.4} step={0.05}
-          format={v => `10^${v.toFixed(1)} m/s`}
+          value={vLog}
+          min={3}
+          max={7.4}
+          step={0.05}
+          format={(v) => `10^${v.toFixed(1)} m/s`}
           onChange={setVLog}
         />
         <MiniSlider
           label="B"
-          value={B} min={0.0001} max={1} step={0.0001}
-          format={v => pretty(v, 2) + ' T'}
+          value={B}
+          min={0.0001}
+          max={1}
+          step={0.0001}
+          format={(v) => pretty(v, 2) + ' T'}
           onChange={setB}
         />
         <MiniReadout label="radius" value={<Num value={r_real} digits={3} />} unit="m" />

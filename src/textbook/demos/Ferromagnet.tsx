@@ -14,13 +14,17 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function FerromagnetDemo({ figure }: Props) {
   // External B, -1..+1 (normalized to saturation)
   const [B, setB] = useState(0);
   const stateRef = useRef({ B });
-  useEffect(() => { stateRef.current = { B }; }, [B]);
+  useEffect(() => {
+    stateRef.current = { B };
+  }, [B]);
   const [M, setM] = useState(0);
 
   const setup = useCallback((info: CanvasInfo) => {
@@ -28,7 +32,8 @@ export function FerromagnetDemo({ figure }: Props) {
     let raf = 0;
 
     // Grid of domain cells. Each holds a direction angle.
-    const cols = 18, rows = 6;
+    const cols = 18,
+      rows = 6;
     const top = 30;
     const panelH = Math.floor(h * 0.55);
     const bottomTop = top + panelH + 18;
@@ -159,8 +164,10 @@ export function FerromagnetDemo({ figure }: Props) {
       ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(px0, cy_ax); ctx.lineTo(px1, cy_ax);
-      ctx.moveTo(cx_ax, py0); ctx.lineTo(cx_ax, py1);
+      ctx.moveTo(px0, cy_ax);
+      ctx.lineTo(px1, cy_ax);
+      ctx.moveTo(cx_ax, py0);
+      ctx.lineTo(cx_ax, py1);
       ctx.stroke();
 
       ctx.fillStyle = colors.textDim;
@@ -173,8 +180,12 @@ export function FerromagnetDemo({ figure }: Props) {
       ctx.fillText('−1', px0 - 2, cy_ax + 12);
       ctx.fillText('+1', px1 - 14, cy_ax + 12);
 
-      function xOf(b: number) { return cx_ax + b * (px1 - px0) / 2 * 0.92; }
-      function yOf(m: number) { return cy_ax - m * (py1 - py0) / 2 * 0.92; }
+      function xOf(b: number) {
+        return cx_ax + ((b * (px1 - px0)) / 2) * 0.92;
+      }
+      function yOf(m: number) {
+        return cy_ax - ((m * (py1 - py0)) / 2) * 0.92;
+      }
 
       // Hysteresis trace
       if (Bhistory.length > 1) {
@@ -186,7 +197,8 @@ export function FerromagnetDemo({ figure }: Props) {
         for (let k = 0; k < Bhistory.length; k++) {
           const x = xOf(Bhistory[k]);
           const y = yOf(Mhistory[k]);
-          if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (k === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.stroke();
         ctx.restore();
@@ -221,24 +233,28 @@ export function FerromagnetDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 11.4'}
       title="Ferromagnetic domains and hysteresis"
       question="Why does iron stay magnetized after the field is gone?"
-      caption={<>
-        Each cell is a microscopic <em>domain</em> — a region where exchange coupling
-        has aligned all the spins. Sweep B from negative through zero to positive
-        and back: favorable domains grow, unfavorable ones shrink. Domain walls hang
-        up on impurities and don't unwind cleanly when you reverse B — that's
-        hysteresis, and it's why a transformer's iron core dissipates a little
-        energy on every AC cycle. The leftover magnetization at B = 0 is the
-        <em> remanence</em>; the reverse B needed to wipe it out is the
-        <em> coercivity</em>. Both are zero in an ideal diamagnet or paramagnet.
-      </>}
+      caption={
+        <>
+          Each cell is a microscopic <em>domain</em> — a region where exchange coupling has aligned
+          all the spins. Sweep B from negative through zero to positive and back: favorable domains
+          grow, unfavorable ones shrink. Domain walls hang up on impurities and don't unwind cleanly
+          when you reverse B — that's hysteresis, and it's why a transformer's iron core dissipates
+          a little energy on every AC cycle. The leftover magnetization at B = 0 is the
+          <em> remanence</em>; the reverse B needed to wipe it out is the
+          <em> coercivity</em>. Both are zero in an ideal diamagnet or paramagnet.
+        </>
+      }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={360} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="B"
-          value={B} min={-1} max={1} step={0.01}
-          format={v => v.toFixed(2)}
+          value={B}
+          min={-1}
+          max={1}
+          step={0.01}
+          format={(v) => v.toFixed(2)}
           onChange={setB}
         />
         <MiniReadout label="M" value={M.toFixed(2)} />

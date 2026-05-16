@@ -14,7 +14,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function TorqueSpeedCurveDemo({ figure }: Props) {
   const [showDC, setShowDC] = useState(true);
@@ -38,7 +40,10 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
       ctx.fillRect(0, 0, w, h);
 
       // Plot area
-      const padL = 60, padR = 30, padT = 24, padB = 50;
+      const padL = 60,
+        padR = 30,
+        padT = 24,
+        padB = 50;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
       const plotX = padL;
@@ -48,7 +53,8 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
       ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(plotX, plotY); ctx.lineTo(plotX, plotY + plotH);
+      ctx.moveTo(plotX, plotY);
+      ctx.lineTo(plotX, plotY + plotH);
       ctx.lineTo(plotX + plotW, plotY + plotH);
       ctx.stroke();
 
@@ -56,9 +62,15 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
       ctx.strokeStyle = colors.border;
       for (let i = 1; i <= 4; i++) {
         const x = plotX + (i / 5) * plotW;
-        ctx.beginPath(); ctx.moveTo(x, plotY); ctx.lineTo(x, plotY + plotH); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, plotY);
+        ctx.lineTo(x, plotY + plotH);
+        ctx.stroke();
         const y = plotY + (i / 5) * plotH;
-        ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
+        ctx.stroke();
       }
 
       // Axis labels
@@ -79,10 +91,13 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
       ctx.strokeStyle = 'rgba(108,197,194,0.25)';
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
-      ctx.moveTo(nsX, plotY); ctx.lineTo(nsX, plotY + plotH); ctx.stroke();
+      ctx.moveTo(nsX, plotY);
+      ctx.lineTo(nsX, plotY + plotH);
+      ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = colors.teal;
-      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
       ctx.fillText('n_s', nsX, plotY - 4);
 
       const mapX = (nFrac: number) => plotX + nFrac * plotW;
@@ -96,7 +111,8 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
         ctx.fillRect(legendX, legendY + 4, 18, 2);
         ctx.fillStyle = colors.text;
         ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
         ctx.fillText(label, legendX + 24, legendY + 5);
         legendY += 16;
       }
@@ -114,7 +130,8 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
           const tau = tau0 * (1 - n / n0);
           const x = mapX(n);
           const y = mapY(tau);
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.stroke();
         legendLine(color, 'DC brushed');
@@ -138,7 +155,8 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
           const tau = (2 * tauMax) / (s / sM + sM / Math.max(s, eps));
           const x = mapX(n);
           const y = mapY(tau);
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.stroke();
         legendLine(color, 'induction');
@@ -150,7 +168,8 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
         ctx.strokeStyle = color;
         ctx.lineWidth = 2.5;
         ctx.beginPath();
-        ctx.moveTo(nsX, mapY(0)); ctx.lineTo(nsX, mapY(0.9));
+        ctx.moveTo(nsX, mapY(0));
+        ctx.lineTo(nsX, mapY(0.9));
         ctx.stroke();
         legendLine(color, 'synchronous');
       }
@@ -170,7 +189,8 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
           const tau = tau0 / (1 + Math.pow(n / nP, k));
           const x = mapX(n);
           const y = mapY(tau);
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.stroke();
         legendLine(color, 'stepper');
@@ -187,14 +207,19 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 16.6'}
       title="Torque–speed: four different shapes"
       question="The right motor is the one whose curve crosses your load's curve where you want it to."
-      caption={<>
-        DC brushed motors: torque falls linearly with speed (stalls hardest at zero, free-runs at
-        no load). Induction: peak near synchronous speed, sharp roll-off below it. Synchronous:
-        a vertical line at <em>n<sub>s</sub></em>; speed doesn't change with load, period.
-        Stepper: a roughly flat region followed by a sharp drop above the pull-out frequency.
-        Pick the curve that intersects your load's mechanical impedance at the operating point
-        you want.
-      </>}
+      caption={
+        <>
+          DC brushed motors: torque falls linearly with speed (stalls hardest at zero, free-runs at
+          no load). Induction: peak near synchronous speed, sharp roll-off below it. Synchronous: a
+          vertical line at{' '}
+          <em>
+            n<sub>s</sub>
+          </em>
+          ; speed doesn't change with load, period. Stepper: a roughly flat region followed by a
+          sharp drop above the pull-out frequency. Pick the curve that intersects your load's
+          mechanical impedance at the operating point you want.
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>

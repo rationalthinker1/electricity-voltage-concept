@@ -12,7 +12,7 @@ export function MathBlock({ children }: { children: ReactNode }) {
  *  descendant-selector hook for parent contexts. */
 export function Pullout({ children }: { children: ReactNode }) {
   return (
-    <p className="pullout font-2 italic font-light text-8 leading-3 text-text py-xl pl-2xl pr-0 my-3xl border-l-2 border-accent">
+    <p className="pullout font-2 text-8 text-text py-xl pl-2xl my-3xl border-accent border-l-2 pr-0 leading-3 font-light italic">
       {children}
     </p>
   );
@@ -23,7 +23,7 @@ export function Pullout({ children }: { children: ReactNode }) {
  *  that override sizing via `[&_.kbd]:` rules. */
 export function Kbd({ children }: { children: ReactNode }) {
   return (
-    <span className="kbd inline-block py-xxs px-sm border border-border-strong border-b-2 rounded-3 bg-bg-elevated font-3 text-2 text-text">
+    <span className="kbd py-xxs px-sm border-border-strong rounded-3 bg-bg-elevated font-3 text-2 text-text inline-block border border-b-2">
       {children}
     </span>
   );

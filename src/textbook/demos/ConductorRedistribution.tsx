@@ -10,28 +10,33 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 interface Charge {
-  x: number;     // canvas px
+  x: number; // canvas px
   y: number;
   vx: number;
   vy: number;
-  ix: number;    // initial position (insulator mode pins to this)
+  ix: number; // initial position (insulator mode pins to this)
   iy: number;
 }
 
 export function ConductorRedistributionDemo({ figure }: Props) {
   const [conductor, setConductor] = useState(true);
   const stateRef = useRef({ conductor });
-  useEffect(() => { stateRef.current = { conductor }; }, [conductor]);
+  useEffect(() => {
+    stateRef.current = { conductor };
+  }, [conductor]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
     let raf = 0;
 
     const N = 60;
-    const padX = 80, padY = 40;
+    const padX = 80,
+      padY = 40;
     const charges: Charge[] = [];
     let lastFrame = 0;
     // Initial random cluster in the left third of the box
@@ -61,17 +66,23 @@ export function ConductorRedistributionDemo({ figure }: Props) {
       ctx.fillStyle = conductor ? '#6cc5c2' : 'rgba(160,158,149,.6)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
-      ctx.fillText(conductor ? 'CONDUCTOR  →  charges free to move' : 'INSULATOR  →  charges pinned in place', padX, padY - 12);
+      ctx.fillText(
+        conductor ? 'CONDUCTOR  →  charges free to move' : 'INSULATOR  →  charges pinned in place',
+        padX,
+        padY - 12,
+      );
 
       if (conductor) {
         // Mutually-repel + box-confined → settle on the boundary
         for (let i = 0; i < N; i++) {
           const a = charges[i]!;
-          let fx = 0, fy = 0;
+          let fx = 0,
+            fy = 0;
           for (let j = 0; j < N; j++) {
             if (i === j) continue;
             const b = charges[j]!;
-            const dx = a.x - b.x, dy = a.y - b.y;
+            const dx = a.x - b.x,
+              dy = a.y - b.y;
             const d2 = dx * dx + dy * dy + 12;
             const inv = 60 / d2;
             fx += dx * inv;
@@ -82,10 +93,22 @@ export function ConductorRedistributionDemo({ figure }: Props) {
           a.x += a.vx;
           a.y += a.vy;
           // Confine to box (bounce / clip)
-          if (a.x < padX + 4) { a.x = padX + 4; a.vx = Math.abs(a.vx) * 0.4; }
-          if (a.x > w - padX - 4) { a.x = w - padX - 4; a.vx = -Math.abs(a.vx) * 0.4; }
-          if (a.y < padY + 4) { a.y = padY + 4; a.vy = Math.abs(a.vy) * 0.4; }
-          if (a.y > h - padY - 4) { a.y = h - padY - 4; a.vy = -Math.abs(a.vy) * 0.4; }
+          if (a.x < padX + 4) {
+            a.x = padX + 4;
+            a.vx = Math.abs(a.vx) * 0.4;
+          }
+          if (a.x > w - padX - 4) {
+            a.x = w - padX - 4;
+            a.vx = -Math.abs(a.vx) * 0.4;
+          }
+          if (a.y < padY + 4) {
+            a.y = padY + 4;
+            a.vy = Math.abs(a.vy) * 0.4;
+          }
+          if (a.y > h - padY - 4) {
+            a.y = h - padY - 4;
+            a.vy = -Math.abs(a.vy) * 0.4;
+          }
         }
       } else {
         // Insulator: each charge slowly drifts back to its initial pin location.
@@ -99,7 +122,7 @@ export function ConductorRedistributionDemo({ figure }: Props) {
       // Render
       for (const c of charges) {
         ctx.save();
-        ctx.globalAlpha = .95;
+        ctx.globalAlpha = 0.95;
         ctx.fillStyle = colors.blue;
         ctx.beginPath();
         ctx.arc(c.x, c.y, 2.4, 0, Math.PI * 2);
@@ -118,9 +141,13 @@ export function ConductorRedistributionDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 1.5'}
       title="Conductor vs. insulator"
       question="What's the actual difference between a metal and a plastic?"
-      caption={<>
-        Same charges, same box. Toggle the material. In a conductor every charge can move and they redistribute on the surface — the inside field cancels itself out. In an insulator the charges stay pinned and the field inside is whatever the charges put there.
-      </>}
+      caption={
+        <>
+          Same charges, same box. Toggle the material. In a conductor every charge can move and they
+          redistribute on the surface — the inside field cancels itself out. In an insulator the
+          charges stay pinned and the field inside is whatever the charges put there.
+        </>
+      }
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>

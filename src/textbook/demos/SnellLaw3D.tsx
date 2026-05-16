@@ -26,18 +26,22 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import {
-  attachOrbit, project, v3,
-  type OrbitCamera, type Point2D, type Vec3,
+  attachOrbit,
+  project,
+  v3,
+  type OrbitCamera,
+  type Point2D,
+  type Vec3,
 } from '@/lib/projection3d';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // World scale of the half-plane patch (extent of the interface drawn).
 const PLANE_HALF = 2.4;
@@ -85,7 +89,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
   }, [theta1Deg, n2, showReflected, showPlane, tirMode, computed]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, } = info;
+    const { ctx, w, h, canvas } = info;
     const cam: OrbitCamera = { yaw: 0.55, pitch: 0.28, distance: 7.5, fov: Math.PI / 4 };
     const dispose = attachOrbit(canvas, cam);
     let raf = 0;
@@ -110,25 +114,13 @@ export function SnellLaw3DDemo({ figure }: Props) {
       // The four key points (origin = strike point).
       const O = v3(0, 0, 0);
       // Incident: comes from the n_in side, upper-left in (x, y_flipped).
-      const incidentStart = v3(
-        -RAY_LEN * Math.sin(theta1),
-        flip * RAY_LEN * Math.cos(theta1),
-        0,
-      );
+      const incidentStart = v3(-RAY_LEN * Math.sin(theta1), flip * RAY_LEN * Math.cos(theta1), 0);
       // Reflected: leaves the origin on the same side, mirror-symmetric.
-      const reflectedEnd = v3(
-        RAY_LEN * Math.sin(theta1),
-        flip * RAY_LEN * Math.cos(theta1),
-        0,
-      );
+      const reflectedEnd = v3(RAY_LEN * Math.sin(theta1), flip * RAY_LEN * Math.cos(theta1), 0);
       // Refracted: leaves the origin on the other side (only if no TIR).
       let refractedEnd: Vec3 | null = null;
       if (!totalReflection && theta2 != null) {
-        refractedEnd = v3(
-          RAY_LEN * Math.sin(theta2),
-          -flip * RAY_LEN * Math.cos(theta2),
-          0,
-        );
+        refractedEnd = v3(RAY_LEN * Math.sin(theta2), -flip * RAY_LEN * Math.cos(theta2), 0);
       }
 
       // Normal: full vertical line, both above and below origin.
@@ -146,11 +138,11 @@ export function SnellLaw3DDemo({ figure }: Props) {
       if (s.showPlane) {
         const sheetCorners: Vec3[] = [
           v3(-PLANE_HALF * 0.9, -PLANE_HALF * 0.9, 0),
-          v3( PLANE_HALF * 0.9, -PLANE_HALF * 0.9, 0),
-          v3( PLANE_HALF * 0.9,  PLANE_HALF * 0.9, 0),
-          v3(-PLANE_HALF * 0.9,  PLANE_HALF * 0.9, 0),
+          v3(PLANE_HALF * 0.9, -PLANE_HALF * 0.9, 0),
+          v3(PLANE_HALF * 0.9, PLANE_HALF * 0.9, 0),
+          v3(-PLANE_HALF * 0.9, PLANE_HALF * 0.9, 0),
         ];
-        const c2 = sheetCorners.map(p => project(p, cam, w, h));
+        const c2 = sheetCorners.map((p) => project(p, cam, w, h));
         ctx.fillStyle = 'rgba(255,107,42,0.06)';
         ctx.beginPath();
         ctx.moveTo(c2[0]!.x, c2[0]!.y);
@@ -263,14 +255,12 @@ export function SnellLaw3DDemo({ figure }: Props) {
         ctx.fillText('refracted', w - 12, 44);
       }
       ctx.fillStyle = getCanvasColors().text;
-      ctx.fillText('normal', w - 12, refractedEnd ? 60 : (s.showReflected ? 44 : 28));
+      ctx.fillText('normal', w - 12, refractedEnd ? 60 : s.showReflected ? 44 : 28);
 
       // Medium labels in the corners of the interface.
       ctx.textAlign = 'left';
       ctx.fillStyle = getCanvasColors().text;
-      const labelAbove = s.tirMode
-        ? `n₁ = 1.00 (air)`
-        : `n₁ = 1.00 (air)`;
+      const labelAbove = s.tirMode ? `n₁ = 1.00 (air)` : `n₁ = 1.00 (air)`;
       const labelBelow = `n₂ = ${s.n2.toFixed(2)}`;
       const aboveAnchor = project(v3(-PLANE_HALF * 0.85, 0.9, 0), cam, w, h);
       const belowAnchor = project(v3(-PLANE_HALF * 0.85, -0.9, 0), cam, w, h);
@@ -280,16 +270,15 @@ export function SnellLaw3DDemo({ figure }: Props) {
       raf = requestAnimationFrame(draw);
     }
     raf = requestAnimationFrame(draw);
-    return () => { cancelAnimationFrame(raf); dispose(); };
+    return () => {
+      cancelAnimationFrame(raf);
+      dispose();
+    };
   }, []);
 
   // Readout values.
-  const theta2Display = computed.totalReflection
-    ? null
-    : (computed.theta2! * 180) / Math.PI;
-  const thetaCDisplay = computed.thetaC == null
-    ? null
-    : (computed.thetaC * 180) / Math.PI;
+  const theta2Display = computed.totalReflection ? null : (computed.theta2! * 180) / Math.PI;
+  const thetaCDisplay = computed.thetaC == null ? null : (computed.thetaC * 180) / Math.PI;
 
   return (
     <Demo
@@ -298,16 +287,14 @@ export function SnellLaw3DDemo({ figure }: Props) {
       question="When a ray hits glass at an angle, which way does it bend — and why does the whole geometry lie in one plane?"
       caption={
         <>
-          An incoming ray strikes a horizontal air-glass interface. Snell's law
-          bends the transmitted ray <em>toward</em> the normal because the
-          glass has a larger refractive index. The incident, reflected,
-          refracted, and normal rays all lie in a single plane (the plane of
-          incidence) — a direct consequence of matching the tangential
-          component of <strong>k</strong> across the boundary. Drag to orbit;
-          tilt the camera until you're looking edge-on at that plane and the
-          canonical 2D refraction triangle pops out of the 3D scene. Switch on
-          TIR mode to send the ray the other way: above the critical angle,
-          the boundary becomes a perfect mirror.
+          An incoming ray strikes a horizontal air-glass interface. Snell's law bends the
+          transmitted ray <em>toward</em> the normal because the glass has a larger refractive
+          index. The incident, reflected, refracted, and normal rays all lie in a single plane (the
+          plane of incidence) — a direct consequence of matching the tangential component of{' '}
+          <strong>k</strong> across the boundary. Drag to orbit; tilt the camera until you're
+          looking edge-on at that plane and the canonical 2D refraction triangle pops out of the 3D
+          scene. Switch on TIR mode to send the ray the other way: above the critical angle, the
+          boundary becomes a perfect mirror.
         </>
       }
       deeperLab={{ slug: 'poynting', label: 'Energy flow at boundaries' }}
@@ -316,27 +303,36 @@ export function SnellLaw3DDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label={'incidence θ₁'}
-          value={theta1Deg} min={0} max={89} step={1}
-          format={v => v.toFixed(0) + '°'}
+          value={theta1Deg}
+          min={0}
+          max={89}
+          step={1}
+          format={(v) => v.toFixed(0) + '°'}
           onChange={setTheta1Deg}
         />
         <MiniSlider
           label="index n₂"
-          value={n2} min={1.0} max={2.5} step={0.01}
-          format={v => v.toFixed(2)}
+          value={n2}
+          min={1.0}
+          max={2.5}
+          step={0.01}
+          format={(v) => v.toFixed(2)}
           onChange={setN2}
         />
         <MiniToggle
           label={showReflected ? 'reflected ray ON' : 'reflected ray OFF'}
-          checked={showReflected} onChange={setShowReflected}
+          checked={showReflected}
+          onChange={setShowReflected}
         />
         <MiniToggle
           label={showPlane ? 'plane of incidence ON' : 'plane of incidence OFF'}
-          checked={showPlane} onChange={setShowPlane}
+          checked={showPlane}
+          onChange={setShowPlane}
         />
         <MiniToggle
           label={tirMode ? 'TIR mode (n₂ → air)' : 'normal mode (air → n₂)'}
-          checked={tirMode} onChange={setTirMode}
+          checked={tirMode}
+          onChange={setTirMode}
         />
         <MiniReadout
           label={'refraction θ₂'}
@@ -370,10 +366,7 @@ interface Arrow3DOpts {
   dashed?: boolean;
 }
 
-function drawArrow3D(
-  ctx: CanvasRenderingContext2D,
-  p1: Point2D, p2: Point2D, opts: Arrow3DOpts,
-) {
+function drawArrow3D(ctx: CanvasRenderingContext2D, p1: Point2D, p2: Point2D, opts: Arrow3DOpts) {
   if (p1.depth <= 0 || p2.depth <= 0) return;
   // Glow + line via drawGlowPath.
   drawGlowPath(ctx, [p1, p2], {
@@ -384,11 +377,14 @@ function drawArrow3D(
   });
 
   // Screen-space arrowhead.
-  const dx = p2.x - p1.x, dy = p2.y - p1.y;
+  const dx = p2.x - p1.x,
+    dy = p2.y - p1.y;
   const len = Math.hypot(dx, dy);
   if (len < 4) return;
-  const ux = dx / len, uy = dy / len;
-  const head = 10, half = 5;
+  const ux = dx / len,
+    uy = dy / len;
+  const head = 10,
+    half = 5;
   ctx.fillStyle = opts.color;
   ctx.beginPath();
   ctx.moveTo(p2.x, p2.y);
@@ -402,16 +398,14 @@ function drawArrow3D(
  * Draw the interface (the surface) — a translucent square in the x-z plane
  * with a wireframe grid. Slightly tinted teal to read as "glass-ish".
  */
-function drawInterfacePlane(
-  ctx: CanvasRenderingContext2D, cam: OrbitCamera, w: number, h: number,
-) {
+function drawInterfacePlane(ctx: CanvasRenderingContext2D, cam: OrbitCamera, w: number, h: number) {
   const corners: Vec3[] = [
     v3(-PLANE_HALF, 0, -PLANE_HALF),
-    v3( PLANE_HALF, 0, -PLANE_HALF),
-    v3( PLANE_HALF, 0,  PLANE_HALF),
-    v3(-PLANE_HALF, 0,  PLANE_HALF),
+    v3(PLANE_HALF, 0, -PLANE_HALF),
+    v3(PLANE_HALF, 0, PLANE_HALF),
+    v3(-PLANE_HALF, 0, PLANE_HALF),
   ];
-  const c2 = corners.map(c => project(c, cam, w, h));
+  const c2 = corners.map((c) => project(c, cam, w, h));
   ctx.fillStyle = 'rgba(108,197,194,0.07)';
   ctx.beginPath();
   ctx.moveTo(c2[0]!.x, c2[0]!.y);
@@ -431,11 +425,17 @@ function drawInterfacePlane(
   const step = 0.6;
   for (let g = -PLANE_HALF + step; g < PLANE_HALF - 1e-6; g += step) {
     const a = project(v3(g, 0, -PLANE_HALF), cam, w, h);
-    const b = project(v3(g, 0,  PLANE_HALF), cam, w, h);
-    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    const b = project(v3(g, 0, PLANE_HALF), cam, w, h);
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.stroke();
     const c = project(v3(-PLANE_HALF, 0, g), cam, w, h);
-    const d = project(v3( PLANE_HALF, 0, g), cam, w, h);
-    ctx.beginPath(); ctx.moveTo(c.x, c.y); ctx.lineTo(d.x, d.y); ctx.stroke();
+    const d = project(v3(PLANE_HALF, 0, g), cam, w, h);
+    ctx.beginPath();
+    ctx.moveTo(c.x, c.y);
+    ctx.lineTo(d.x, d.y);
+    ctx.stroke();
   }
 }
 
@@ -446,20 +446,24 @@ function drawInterfacePlane(
  * flip = -1 (TIR mode), the dense medium is the upper half — we mirror.
  */
 function drawMediumVolume(
-  ctx: CanvasRenderingContext2D, cam: OrbitCamera, w: number, h: number,
-  flip: number, n2: number,
+  ctx: CanvasRenderingContext2D,
+  cam: OrbitCamera,
+  w: number,
+  h: number,
+  flip: number,
+  n2: number,
 ) {
   const depth = 0.9;
   const yBot = -flip * depth;
   const corners: Vec3[] = [
     v3(-PLANE_HALF, yBot, -PLANE_HALF),
-    v3( PLANE_HALF, yBot, -PLANE_HALF),
-    v3( PLANE_HALF, yBot,  PLANE_HALF),
-    v3(-PLANE_HALF, yBot,  PLANE_HALF),
+    v3(PLANE_HALF, yBot, -PLANE_HALF),
+    v3(PLANE_HALF, yBot, PLANE_HALF),
+    v3(-PLANE_HALF, yBot, PLANE_HALF),
   ];
-  const c2 = corners.map(c => project(c, cam, w, h));
+  const c2 = corners.map((c) => project(c, cam, w, h));
   // Tint scales gently with n2 — denser glass reads slightly more saturated.
-  const alpha = 0.05 + Math.min(0.10, (n2 - 1.0) * 0.05);
+  const alpha = 0.05 + Math.min(0.1, (n2 - 1.0) * 0.05);
   ctx.fillStyle = `rgba(91,174,248,${alpha.toFixed(3)})`;
   ctx.beginPath();
   ctx.moveTo(c2[0]!.x, c2[0]!.y);
@@ -498,8 +502,14 @@ function drawMediumVolume(
  * to within a pixel, and it always reads as an angle marker.
  */
 function drawAngleArc(
-  ctx: CanvasRenderingContext2D, cam: OrbitCamera, w: number, h: number,
-  arcWorldR: number, ySide: number, theta: number, kind: 'theta1' | 'theta2',
+  ctx: CanvasRenderingContext2D,
+  cam: OrbitCamera,
+  w: number,
+  h: number,
+  arcWorldR: number,
+  ySide: number,
+  theta: number,
+  kind: 'theta1' | 'theta2',
 ) {
   // 3D vertices.
   const O = project(v3(0, 0, 0), cam, w, h);
@@ -513,10 +523,10 @@ function drawAngleArc(
   // toward the refracted ray on the RIGHT (x>0).
   const xSign = kind === 'theta1' ? -1 : +1;
   const rayEnd = project(
-    v3(xSign * arcWorldR * Math.sin(theta),
-       ySide * arcWorldR * Math.cos(theta),
-       0),
-    cam, w, h,
+    v3(xSign * arcWorldR * Math.sin(theta), ySide * arcWorldR * Math.cos(theta), 0),
+    cam,
+    w,
+    h,
   );
   const a1 = Math.atan2(nEnd.y - O.y, nEnd.x - O.x);
   const a2 = Math.atan2(rayEnd.y - O.y, rayEnd.x - O.x);
@@ -528,12 +538,10 @@ function drawAngleArc(
 
   // Always sweep along the short way.
   let da = a2 - a1;
-  while (da >  Math.PI) da -= 2 * Math.PI;
+  while (da > Math.PI) da -= 2 * Math.PI;
   while (da < -Math.PI) da += 2 * Math.PI;
 
-  const colour = kind === 'theta1'
-    ? 'rgba(255,107,42,0.85)'
-    : 'rgba(108,197,194,0.85)';
+  const colour = kind === 'theta1' ? 'rgba(255,107,42,0.85)' : 'rgba(108,197,194,0.85)';
   ctx.strokeStyle = colour;
   ctx.lineWidth = 1.4;
   ctx.beginPath();

@@ -52,23 +52,32 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 type Topology = 'rc-lp' | 'lc-lp' | 'rc-hp' | 'notch' | 'mfb-bp';
 
 const TOPOLOGIES: { key: Topology; label: string }[] = [
-  { key: 'rc-lp',  label: '2nd-order RC low-pass' },
-  { key: 'lc-lp',  label: 'LC low-pass' },
-  { key: 'rc-hp',  label: 'RC high-pass' },
-  { key: 'notch',  label: 'Twin-T notch' },
+  { key: 'rc-lp', label: '2nd-order RC low-pass' },
+  { key: 'lc-lp', label: 'LC low-pass' },
+  { key: 'rc-hp', label: 'RC high-pass' },
+  { key: 'notch', label: 'Twin-T notch' },
   { key: 'mfb-bp', label: 'Multi-feedback band-pass' },
 ];
 
-const F_AUDIO = 1000;   // Hz, the desired signal
-const F_HUM   = 60;     // Hz, the unwanted mains hum
+const F_AUDIO = 1000; // Hz, the desired signal
+const F_HUM = 60; // Hz, the unwanted mains hum
 
 /** Closed-form magnitude response for each topology. f in Hz, returns |H|. */
-function transferMagnitude(topology: Topology, f: number, R: number, C: number, L: number, f0: number): number {
+function transferMagnitude(
+  topology: Topology,
+  f: number,
+  R: number,
+  C: number,
+  L: number,
+  f0: number,
+): number {
   const omega = 2 * Math.PI * f;
   switch (topology) {
     case 'rc-lp': {
@@ -80,7 +89,7 @@ function transferMagnitude(topology: Topology, f: number, R: number, C: number, 
       // Series-L / shunt-C into a 1 kΩ "load" stand-in (so the math is finite)
       const RL = 1000;
       const re = 1 - omega * omega * L * C;
-      const im = omega * L / RL;
+      const im = (omega * L) / RL;
       return 1 / Math.sqrt(re * re + im * im);
     }
     case 'rc-hp': {
@@ -93,7 +102,7 @@ function transferMagnitude(topology: Topology, f: number, R: number, C: number, 
       const r = omega / omega0;
       const oneMinusR2 = 1 - r * r;
       const zeta = 0.5;
-      const denom = Math.sqrt(oneMinusR2 * oneMinusR2 + (2 * zeta * r) * (2 * zeta * r));
+      const denom = Math.sqrt(oneMinusR2 * oneMinusR2 + 2 * zeta * r * (2 * zeta * r));
       return Math.abs(oneMinusR2) / Math.max(denom, 1e-12);
     }
     case 'mfb-bp': {
@@ -109,11 +118,20 @@ function transferMagnitude(topology: Topology, f: number, R: number, C: number, 
 }
 
 /** Cutoff or centre frequency for the chosen topology (Hz). */
-function characteristicFreq(topology: Topology, R: number, C: number, L: number, f0: number): number {
+function characteristicFreq(
+  topology: Topology,
+  R: number,
+  C: number,
+  L: number,
+  f0: number,
+): number {
   switch (topology) {
-    case 'rc-lp': return 1 / (2 * Math.PI * R * C);
-    case 'lc-lp': return 1 / (2 * Math.PI * Math.sqrt(Math.max(L * C, 1e-30)));
-    case 'rc-hp': return 1 / (2 * Math.PI * R * C);
+    case 'rc-lp':
+      return 1 / (2 * Math.PI * R * C);
+    case 'lc-lp':
+      return 1 / (2 * Math.PI * Math.sqrt(Math.max(L * C, 1e-30)));
+    case 'rc-hp':
+      return 1 / (2 * Math.PI * R * C);
     case 'notch':
     case 'mfb-bp':
       return f0;
@@ -122,10 +140,10 @@ function characteristicFreq(topology: Topology, R: number, C: number, L: number,
 
 export function FilterDesignerDemo({ figure }: Props) {
   const [topology, setTopology] = useState<Topology>('rc-lp');
-  const [Rk, setRk] = useState(1.6);    // kΩ
-  const [Cnf, setCnf] = useState(100);  // nF
-  const [Lmh, setLmh] = useState(10);   // mH
-  const [f0, setF0] = useState(60);     // Hz (notch/MFB centre)
+  const [Rk, setRk] = useState(1.6); // kΩ
+  const [Cnf, setCnf] = useState(100); // nF
+  const [Lmh, setLmh] = useState(10); // mH
+  const [f0, setF0] = useState(60); // Hz (notch/MFB centre)
 
   const R = Rk * 1e3;
   const C = Cnf * 1e-9;
@@ -133,10 +151,16 @@ export function FilterDesignerDemo({ figure }: Props) {
 
   // Live derived numbers
   const fc = useMemo(() => characteristicFreq(topology, R, C, L, f0), [topology, R, C, L, f0]);
-  const Haudio = useMemo(() => transferMagnitude(topology, F_AUDIO, R, C, L, f0), [topology, R, C, L, f0]);
-  const Hhum   = useMemo(() => transferMagnitude(topology, F_HUM,   R, C, L, f0), [topology, R, C, L, f0]);
+  const Haudio = useMemo(
+    () => transferMagnitude(topology, F_AUDIO, R, C, L, f0),
+    [topology, R, C, L, f0],
+  );
+  const Hhum = useMemo(
+    () => transferMagnitude(topology, F_HUM, R, C, L, f0),
+    [topology, R, C, L, f0],
+  );
   const insertionLossDb = -20 * Math.log10(Math.max(Haudio, 1e-9));
-  const humAttenDb      = -20 * Math.log10(Math.max(Hhum,   1e-9));
+  const humAttenDb = -20 * Math.log10(Math.max(Hhum, 1e-9));
   // Score: audio-to-hum ratio at the output, in dB
   const scoreDb = 20 * Math.log10(Math.max(Haudio, 1e-9) / Math.max(Hhum, 1e-9));
 
@@ -148,7 +172,7 @@ export function FilterDesignerDemo({ figure }: Props) {
       return (omega0 * L) / RL;
     }
     if (topology === 'mfb-bp') return 5;
-    if (topology === 'notch')  return 0.5; // effective damping inverse
+    if (topology === 'notch') return 0.5; // effective damping inverse
     return NaN;
   }, [topology, fc, L]);
 
@@ -175,9 +199,18 @@ export function FilterDesignerDemo({ figure }: Props) {
       // botH = h - pad * 2 - topH - gap;  // reserved; current layout uses topH only.
       const halfW = Math.floor((w - pad * 2 - gap) / 2);
 
-      const inX0  = pad,           inY0  = pad,             inX1  = pad + halfW,            inY1  = pad + topH;
-      const outX0 = inX1 + gap,    outY0 = pad,             outX1 = outX0 + halfW,          outY1 = pad + topH;
-      const bodeX0 = pad,          bodeY0 = pad + topH + gap, bodeX1 = w - pad,             bodeY1 = h - pad;
+      const inX0 = pad,
+        inY0 = pad,
+        inX1 = pad + halfW,
+        inY1 = pad + topH;
+      const outX0 = inX1 + gap,
+        outY0 = pad,
+        outX1 = outX0 + halfW,
+        outY1 = pad + topH;
+      const bodeX0 = pad,
+        bodeY0 = pad + topH + gap,
+        bodeX1 = w - pad,
+        bodeY1 = h - pad;
 
       // Panel frames
       ctx.strokeStyle = colors.border;
@@ -208,19 +241,21 @@ export function FilterDesignerDemo({ figure }: Props) {
       // are present, so the time-domain output is a sum of four sinusoids each
       // attenuated and phase-shifted by H(jω) at their own ω.
       const componentFreqs = [F_AUDIO, F_HUM, 4300, 7700];
-      const componentAmps  = [1.0, 0.7, 0.08, 0.08];
+      const componentAmps = [1.0, 0.7, 0.08, 0.08];
       const componentPhase = [0, 0, seed, seed * 1.7];
-      const Hcomp = componentFreqs.map(f => transferMagnitude(topology, f, R, C, L, f0));
+      const Hcomp = componentFreqs.map((f) => transferMagnitude(topology, f, R, C, L, f0));
       // For the time-domain plot, magnitude attenuation is what matters visually;
       // we elide the phase delay (would just shift the wave).
 
       // Find the input/output peaks for shared scaling.
-      let inPeak = 0, outPeak = 0;
+      let inPeak = 0,
+        outPeak = 0;
       const inputSamples = new Float32Array(NT + 1);
       const outputSamples = new Float32Array(NT + 1);
       for (let i = 0; i <= NT; i++) {
         const t = (i / NT) * tSpan;
-        let xi = 0, yo = 0;
+        let xi = 0,
+          yo = 0;
         for (let k = 0; k < componentFreqs.length; k++) {
           const fk = componentFreqs[k]!;
           const ak = componentAmps[k]!;
@@ -231,18 +266,20 @@ export function FilterDesignerDemo({ figure }: Props) {
         }
         inputSamples[i] = xi;
         outputSamples[i] = yo;
-        const aIn = Math.abs(xi); if (aIn > inPeak) inPeak = aIn;
-        const aOut = Math.abs(yo); if (aOut > outPeak) outPeak = aOut;
+        const aIn = Math.abs(xi);
+        if (aIn > inPeak) inPeak = aIn;
+        const aOut = Math.abs(yo);
+        if (aOut > outPeak) outPeak = aOut;
       }
-      const scaleIn  = inPeak > 0 ? 1 / inPeak : 1;
+      const scaleIn = inPeak > 0 ? 1 / inPeak : 1;
       const scaleOut = outPeak > 0 ? 1 / outPeak : 1;
 
       const inputPts: { x: number; y: number }[] = [];
       const outputPts: { x: number; y: number }[] = [];
       const inMidY = (inY0 + inY1) / 2;
-      const inAmp  = (inY1 - inY0) * 0.40;
+      const inAmp = (inY1 - inY0) * 0.4;
       const outMidY = (outY0 + outY1) / 2;
-      const outAmp  = (outY1 - outY0) * 0.40;
+      const outAmp = (outY1 - outY0) * 0.4;
       for (let i = 0; i <= NT; i++) {
         const u = i / NT;
         const xi = inputSamples[i]! * scaleIn;
@@ -253,18 +290,26 @@ export function FilterDesignerDemo({ figure }: Props) {
       drawGlowPath(ctx, inputPts, {
         color: 'rgba(255,107,42,0.9)',
         glowColor: 'rgba(255,107,42,0.30)',
-        lineWidth: 1.4, glowWidth: 4,
+        lineWidth: 1.4,
+        glowWidth: 4,
       });
       drawGlowPath(ctx, outputPts, {
         color: 'rgba(108,197,194,0.95)',
         glowColor: 'rgba(108,197,194,0.35)',
-        lineWidth: 1.4, glowWidth: 4,
+        lineWidth: 1.4,
+        glowWidth: 4,
       });
 
       // Centre lines + scale tag in each scope panel
       ctx.strokeStyle = colors.border;
-      ctx.beginPath(); ctx.moveTo(inX0,  inMidY); ctx.lineTo(inX1,  inMidY); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(outX0, outMidY); ctx.lineTo(outX1, outMidY); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(inX0, inMidY);
+      ctx.lineTo(inX1, inMidY);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(outX0, outMidY);
+      ctx.lineTo(outX1, outMidY);
+      ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.55;
       ctx.fillStyle = colors.textDim;
@@ -276,10 +321,14 @@ export function FilterDesignerDemo({ figure }: Props) {
 
       // === Bode plot ===
       // Log-f axis from 10 Hz to 100 kHz; magnitude in dB from -80 to +10.
-      const logMin = 1;   // log10(10 Hz)
-      const logMax = 5;   // log10(100 kHz)
-      const dBmin = -80, dBmax = 10;
-      const bx = bodeX0, by = bodeY0, bw = bodeX1 - bodeX0, bh = bodeY1 - bodeY0;
+      const logMin = 1; // log10(10 Hz)
+      const logMax = 5; // log10(100 kHz)
+      const dBmin = -80,
+        dBmax = 10;
+      const bx = bodeX0,
+        by = bodeY0,
+        bw = bodeX1 - bodeX0,
+        bh = bodeY1 - bodeY0;
       const xf = (f: number) => bx + ((Math.log10(f) - logMin) / (logMax - logMin)) * bw;
       const yDb = (db: number) => by + bh - ((db - dBmin) / (dBmax - dBmin)) * bh;
 
@@ -289,7 +338,10 @@ export function FilterDesignerDemo({ figure }: Props) {
       for (let lf = logMin; lf <= logMax; lf++) {
         const f = Math.pow(10, lf);
         const x = xf(f);
-        ctx.beginPath(); ctx.moveTo(x, by); ctx.lineTo(x, by + bh); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, by);
+        ctx.lineTo(x, by + bh);
+        ctx.stroke();
         ctx.save();
         ctx.globalAlpha = 0.55;
         ctx.fillStyle = colors.textDim;
@@ -302,7 +354,10 @@ export function FilterDesignerDemo({ figure }: Props) {
       for (let db = dBmin; db <= dBmax; db += 20) {
         const y = yDb(db);
         ctx.strokeStyle = colors.border;
-        ctx.beginPath(); ctx.moveTo(bx, y); ctx.lineTo(bx + bw, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(bx, y);
+        ctx.lineTo(bx + bw, y);
+        ctx.stroke();
         ctx.fillStyle = colors.textDim;
         ctx.font = '9px "JetBrains Mono", monospace';
         ctx.textAlign = 'right';
@@ -316,11 +371,17 @@ export function FilterDesignerDemo({ figure }: Props) {
       ctx.globalAlpha = 0.55;
       ctx.strokeStyle = colors.pink;
       ctx.setLineDash([3, 3]);
-      ctx.beginPath(); ctx.moveTo(xHum, by); ctx.lineTo(xHum, by + bh); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(xHum, by);
+      ctx.lineTo(xHum, by + bh);
+      ctx.stroke();
       const xAudio = xf(F_AUDIO);
       ctx.restore();
       ctx.strokeStyle = colors.teal;
-      ctx.beginPath(); ctx.moveTo(xAudio, by); ctx.lineTo(xAudio, by + bh); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(xAudio, by);
+      ctx.lineTo(xAudio, by + bh);
+      ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = colors.pink;
       ctx.font = '9px "JetBrains Mono", monospace';
@@ -345,18 +406,23 @@ export function FilterDesignerDemo({ figure }: Props) {
       drawGlowPath(ctx, curve, {
         color: 'rgba(255,107,42,0.95)',
         glowColor: 'rgba(255,107,42,0.35)',
-        lineWidth: 1.7, glowWidth: 6,
+        lineWidth: 1.7,
+        glowWidth: 6,
       });
 
       // 0 dB and the 1 kHz / 60 Hz markers on the curve
       const Hkhz = transferMagnitude(topology, F_AUDIO, R, C, L, f0);
       const Hhum = transferMagnitude(topology, F_HUM, R, C, L, f0);
       const yAudio = yDb(Math.max(dBmin, Math.min(dBmax, 20 * Math.log10(Math.max(Hkhz, 1e-9)))));
-      const yHum   = yDb(Math.max(dBmin, Math.min(dBmax, 20 * Math.log10(Math.max(Hhum, 1e-9)))));
+      const yHum = yDb(Math.max(dBmin, Math.min(dBmax, 20 * Math.log10(Math.max(Hhum, 1e-9)))));
       ctx.fillStyle = colors.teal;
-      ctx.beginPath(); ctx.arc(xAudio, yAudio, 3.5, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(xAudio, yAudio, 3.5, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = colors.pink;
-      ctx.beginPath(); ctx.arc(xHum, yHum, 3.5, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(xHum, yHum, 3.5, 0, Math.PI * 2);
+      ctx.fill();
 
       // Tag advancing time so the scope traces appear "live" if we ever want to
       // animate; for now `now` is just used to keep React's rAF alive.
@@ -368,13 +434,14 @@ export function FilterDesignerDemo({ figure }: Props) {
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  const scoreLabel = scoreDb >= 40
-    ? 'Excellent — 60 Hz crushed'
-    : scoreDb >= 20
-      ? 'Acceptable — hum reduced'
-      : scoreDb >= 0
-        ? 'Marginal — try a different topology'
-        : 'Filter is amplifying the hum';
+  const scoreLabel =
+    scoreDb >= 40
+      ? 'Excellent — 60 Hz crushed'
+      : scoreDb >= 20
+        ? 'Acceptable — hum reduced'
+        : scoreDb >= 0
+          ? 'Marginal — try a different topology'
+          : 'Filter is amplifying the hum';
 
   const isResonant = topology === 'notch' || topology === 'mfb-bp';
 
@@ -383,14 +450,16 @@ export function FilterDesignerDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 13.3'}
       title="Filter designer — kill the 60 Hz hum"
       question="A 1 kHz tone is buried under 60 Hz mains hum. Pick a topology and component values that pass the tone and reject the hum."
-      caption={<>
-        The orange scope on the left shows the dirty input: a 1 kHz tone, a fat 60 Hz mains
-        ripple, and a hiss of high-frequency noise. The teal scope on the right shows what your
-        filter produces. Below them, the Bode plot is the filter's transfer function magnitude
-        — the orange dot is what survives at 60 Hz, the teal dot at 1 kHz. Push the "audio /
-        hum" score above 40 dB and the hum is essentially gone; the twin-T notch and the LC
-        low-pass both clear that bar with the right values.
-      </>}
+      caption={
+        <>
+          The orange scope on the left shows the dirty input: a 1 kHz tone, a fat 60 Hz mains
+          ripple, and a hiss of high-frequency noise. The teal scope on the right shows what your
+          filter produces. Below them, the Bode plot is the filter's transfer function magnitude —
+          the orange dot is what survives at 60 Hz, the teal dot at 1 kHz. Push the "audio / hum"
+          score above 40 dB and the hum is essentially gone; the twin-T notch and the LC low-pass
+          both clear that bar with the right values.
+        </>
+      }
       deeperLab={{ slug: 'capacitance', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={420} setup={setup} />
@@ -399,31 +468,67 @@ export function FilterDesignerDemo({ figure }: Props) {
           <span className="mini-slider-label">topology</span>
           <select
             value={topology}
-            onChange={e => setTopology(e.target.value as Topology)}
+            onChange={(e) => setTopology(e.target.value as Topology)}
             style={{
-              background: '#1c1c22', color: '#ecebe5', border: '1px solid rgba(255,255,255,0.10)',
-              borderRadius: 4, padding: '2px 8px', fontFamily: '"JetBrains Mono", monospace', fontSize: 12,
+              background: '#1c1c22',
+              color: '#ecebe5',
+              border: '1px solid rgba(255,255,255,0.10)',
+              borderRadius: 4,
+              padding: '2px 8px',
+              fontFamily: '"JetBrains Mono", monospace',
+              fontSize: 12,
             }}
           >
-            {TOPOLOGIES.map(t => <option key={t.key} value={t.key}>{t.label}</option>)}
+            {TOPOLOGIES.map((t) => (
+              <option key={t.key} value={t.key}>
+                {t.label}
+              </option>
+            ))}
           </select>
         </label>
-        <MiniSlider label="R" value={Rk} min={0.01} max={100} step={0.01}
-          format={v => v < 1 ? (v * 1000).toFixed(0) + ' Ω' : v.toFixed(2) + ' kΩ'}
-          onChange={setRk} />
-        <MiniSlider label="C" value={Cnf} min={1} max={100000} step={1}
-          format={v => v < 1000 ? v.toFixed(0) + ' nF' : (v / 1000).toFixed(1) + ' µF'}
-          onChange={setCnf} />
-        <MiniSlider label="L" value={Lmh} min={0.0001} max={100} step={0.0001}
-          format={v => v < 1 ? (v * 1000).toFixed(1) + ' µH' : v.toFixed(2) + ' mH'}
-          onChange={setLmh} />
+        <MiniSlider
+          label="R"
+          value={Rk}
+          min={0.01}
+          max={100}
+          step={0.01}
+          format={(v) => (v < 1 ? (v * 1000).toFixed(0) + ' Ω' : v.toFixed(2) + ' kΩ')}
+          onChange={setRk}
+        />
+        <MiniSlider
+          label="C"
+          value={Cnf}
+          min={1}
+          max={100000}
+          step={1}
+          format={(v) => (v < 1000 ? v.toFixed(0) + ' nF' : (v / 1000).toFixed(1) + ' µF')}
+          onChange={setCnf}
+        />
+        <MiniSlider
+          label="L"
+          value={Lmh}
+          min={0.0001}
+          max={100}
+          step={0.0001}
+          format={(v) => (v < 1 ? (v * 1000).toFixed(1) + ' µH' : v.toFixed(2) + ' mH')}
+          onChange={setLmh}
+        />
         {isResonant && (
-          <MiniSlider label="f₀" value={f0} min={10} max={1000} step={1}
-            format={v => v.toFixed(0) + ' Hz'} onChange={setF0} />
+          <MiniSlider
+            label="f₀"
+            value={f0}
+            min={10}
+            max={1000}
+            step={1}
+            format={(v) => v.toFixed(0) + ' Hz'}
+            onChange={setF0}
+          />
         )}
         <MiniReadout
           label={topology === 'notch' || topology === 'mfb-bp' ? 'centre f₀' : 'cutoff f_c'}
-          value={<Num value={fc} />} unit="Hz" />
+          value={<Num value={fc} />}
+          unit="Hz"
+        />
         <MiniReadout label="loss @ 1 kHz" value={insertionLossDb.toFixed(1)} unit="dB" />
         <MiniReadout label="reject @ 60 Hz" value={humAttenDb.toFixed(1)} unit="dB" />
         {isFinite(Q) && <MiniReadout label="Q" value={Q.toFixed(2)} />}

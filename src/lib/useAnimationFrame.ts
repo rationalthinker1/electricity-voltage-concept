@@ -7,10 +7,7 @@ import { useEffect, useRef } from 'react';
  *
  * Use this for any continuously-animated canvas viz.
  */
-export function useAnimationFrame(
-  callback: (dt: number, elapsed: number) => void,
-  enabled = true,
-) {
+export function useAnimationFrame(callback: (dt: number, elapsed: number) => void, enabled = true) {
   const cbRef = useRef(callback);
   cbRef.current = callback;
 

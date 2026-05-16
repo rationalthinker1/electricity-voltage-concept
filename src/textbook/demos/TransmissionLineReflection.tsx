@@ -22,7 +22,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const Z0 = 50; // Ω
 
@@ -35,7 +37,9 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
   const VSWR = absG >= 1 ? Infinity : (1 + absG) / (1 - absG);
 
   const stateRef = useRef({ Gamma });
-  useEffect(() => { stateRef.current = { Gamma }; }, [Gamma]);
+  useEffect(() => {
+    stateRef.current = { Gamma };
+  }, [Gamma]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -44,30 +48,41 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
 
     function draw() {
       const { Gamma } = stateRef.current;
-      const t = ((performance.now() - t0) / 1000) % 5;  // 5-s loop
+      const t = ((performance.now() - t0) / 1000) % 5; // 5-s loop
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 50, padR = 50, padT = 40, padB = 40;
-      const lineX0 = padL, lineX1 = w - padR;
+      const padL = 50,
+        padR = 50,
+        padT = 40,
+        padB = 40;
+      const lineX0 = padL,
+        lineX1 = w - padR;
       const cy = padT + (h - padT - padB) / 2;
 
       // Line itself (drawn as two horizontal conductors)
       ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 1.8;
       ctx.beginPath();
-      ctx.moveTo(lineX0, cy - 18); ctx.lineTo(lineX1, cy - 18); ctx.stroke();
+      ctx.moveTo(lineX0, cy - 18);
+      ctx.lineTo(lineX1, cy - 18);
+      ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(lineX0, cy + 18); ctx.lineTo(lineX1, cy + 18); ctx.stroke();
+      ctx.moveTo(lineX0, cy + 18);
+      ctx.lineTo(lineX1, cy + 18);
+      ctx.stroke();
 
       // Source on the left (battery-like symbol)
       ctx.strokeStyle = '#ff6b2a';
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(lineX0 - 16, cy - 18); ctx.lineTo(lineX0, cy - 18);
-      ctx.moveTo(lineX0 - 16, cy + 18); ctx.lineTo(lineX0, cy + 18);
-      ctx.moveTo(lineX0 - 16, cy - 22); ctx.lineTo(lineX0 - 16, cy + 22);
+      ctx.moveTo(lineX0 - 16, cy - 18);
+      ctx.lineTo(lineX0, cy - 18);
+      ctx.moveTo(lineX0 - 16, cy + 18);
+      ctx.lineTo(lineX0, cy + 18);
+      ctx.moveTo(lineX0 - 16, cy - 22);
+      ctx.lineTo(lineX0 - 16, cy + 22);
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
@@ -79,16 +94,19 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 2;
       // resistor zigzag vertical
-      const y0r = cy - 14, y1r = cy + 14;
+      const y0r = cy - 14,
+        y1r = cy + 14;
       const stepN = 6;
       ctx.beginPath();
-      ctx.moveTo(lineX1, cy - 18); ctx.lineTo(lineX1, y0r);
+      ctx.moveTo(lineX1, cy - 18);
+      ctx.lineTo(lineX1, y0r);
       for (let i = 0; i < stepN; i++) {
         const y = y0r + ((i + 0.5) / stepN) * (y1r - y0r);
         const x = lineX1 + (i % 2 === 0 ? -6 : 6);
         ctx.lineTo(x, y);
       }
-      ctx.lineTo(lineX1, y1r); ctx.lineTo(lineX1, cy + 18);
+      ctx.lineTo(lineX1, y1r);
+      ctx.lineTo(lineX1, cy + 18);
       ctx.stroke();
       ctx.fillStyle = colors.teal;
       ctx.font = '9px "JetBrains Mono", monospace';
@@ -105,8 +123,7 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       // Pulse position. Period: incident travel 0..1 in time 0..2,
       // reflection travel 0..1 in time 2..4, rest at 4..5.
       const Lx = lineX1 - lineX0;
-      const yPulse = (level: number) =>
-        cy - 24 - 26 * level;  // amplitude 1 maps to 26 px above the conductor
+      const yPulse = (level: number) => cy - 24 - 26 * level; // amplitude 1 maps to 26 px above the conductor
 
       // Helper to draw a Gaussian pulse at center xc with sign s
       const drawPulse = (xc: number, s: number) => {
@@ -115,7 +132,7 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
         const pts: { x: number; y: number }[] = [];
         for (let x = lineX0; x <= lineX1; x += 1) {
           const u = (x - xc) / sigma;
-          const v = s * Math.exp(-u * u / 2);
+          const v = s * Math.exp((-u * u) / 2);
           pts.push({ x, y: yPulse(v) });
         }
         drawGlowPath(ctx, pts, {
@@ -146,8 +163,11 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.fillText('Γ = (Z_L − Z₀)/(Z_L + Z₀)', 10, 8);
       ctx.textAlign = 'right';
-      ctx.fillText(`Γ = ${Gamma.toFixed(3)}    |Γ| = ${Math.abs(Gamma).toFixed(3)}    VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`,
-        w - 10, 8);
+      ctx.fillText(
+        `Γ = ${Gamma.toFixed(3)}    |Γ| = ${Math.abs(Gamma).toFixed(3)}    VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`,
+        w - 10,
+        8,
+      );
 
       raf = requestAnimationFrame(draw);
     }
@@ -160,17 +180,27 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 12.11'}
       title="Transmission-line reflection"
       question="A 50 Ω cable into a mismatched load. Where does the pulse go?"
-      caption={<>
-        A 50 Ω line, a Gaussian pulse launched from the source on the left, a load Z<sub>L</sub>
-        on the right. When Z<sub>L</sub> = Z<sub>0</sub> the pulse is absorbed cleanly (no return).
-        Mismatch the load and a fraction Γ = (Z<sub>L</sub>−Z<sub>0</sub>)/(Z<sub>L</sub>+Z<sub>0</sub>)
-        comes back — same-sign for an open, inverted for a short. The VSWR is just (1+|Γ|)/(1−|Γ|).
-      </>}
+      caption={
+        <>
+          A 50 Ω line, a Gaussian pulse launched from the source on the left, a load Z<sub>L</sub>
+          on the right. When Z<sub>L</sub> = Z<sub>0</sub> the pulse is absorbed cleanly (no
+          return). Mismatch the load and a fraction Γ = (Z<sub>L</sub>−Z<sub>0</sub>)/(Z<sub>L</sub>
+          +Z<sub>0</sub>) comes back — same-sign for an open, inverted for a short. The VSWR is just
+          (1+|Γ|)/(1−|Γ|).
+        </>
+      }
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
-        <MiniSlider label="Z_L" value={ZL} min={0} max={500} step={1}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setZL} />
+        <MiniSlider
+          label="Z_L"
+          value={ZL}
+          min={0}
+          max={500}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setZL}
+        />
         <MiniReadout label="Γ" value={Gamma.toFixed(3)} />
         <MiniReadout label="|Γ|" value={Math.abs(Gamma).toFixed(3)} />
         <MiniReadout label="VSWR" value={VSWR === Infinity ? '∞' : <Num value={VSWR} />} />

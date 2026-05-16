@@ -20,20 +20,25 @@ import { Num } from '@/components/Num';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-interface StaticCache { key: string; canvas: HTMLCanvasElement }
+interface StaticCache {
+  key: string;
+  canvas: HTMLCanvasElement;
+}
 
 const V_OUT = 5.0;
 const V_DROPOUT = 2.0;
 
 export function LinearRegulatorDemo({ figure }: Props) {
-  const [Vin, setVin]   = useState(12);    // V
+  const [Vin, setVin] = useState(12); // V
   const [Iload, setIload] = useState(0.5); // A
 
-  const regulating = (Vin - V_OUT) >= V_DROPOUT;
+  const regulating = Vin - V_OUT >= V_DROPOUT;
   const Vout = regulating ? V_OUT : Math.max(0, Vin - V_DROPOUT);
-  const Pin  = Vin * Iload;
+  const Pin = Vin * Iload;
   const Pout = Vout * Iload;
   const Pdiss = Pin - Pout;
   const eta = Pout / Pin;
@@ -59,14 +64,17 @@ export function LinearRegulatorDemo({ figure }: Props) {
       ctx.fillRect(0, 0, w, h);
 
       // bar geometry
-      const padL = 30, padR = 30, padT = 60, padB = 80;
+      const padL = 30,
+        padR = 30,
+        padT = 60,
+        padB = 80;
       const barH = h - padT - padB;
       const barW = w - padL - padR;
       const yTop = padT;
 
       // input column (left), regulator box (middle), output column (right)
       const inW = barW * 0.18;
-      const regW = barW * 0.30;
+      const regW = barW * 0.3;
       const outW = barW * 0.18;
       const gap = (barW - inW - regW - outW) / 2;
 
@@ -93,7 +101,8 @@ export function LinearRegulatorDemo({ figure }: Props) {
         // P_in header.
         sctx.fillStyle = getCanvasColors().text;
         sctx.font = 'bold 13px "JetBrains Mono", monospace';
-        sctx.textAlign = 'center'; sctx.textBaseline = 'bottom';
+        sctx.textAlign = 'center';
+        sctx.textBaseline = 'bottom';
         sctx.fillText('P_in', xIn + inW / 2, yTop - 22);
 
         // Regulator block.
@@ -104,11 +113,16 @@ export function LinearRegulatorDemo({ figure }: Props) {
         sctx.strokeRect(xReg, yTop, regW, barH);
         sctx.fillStyle = getCanvasColors().text;
         sctx.font = 'bold 12px "DM Sans", sans-serif';
-        sctx.textAlign = 'center'; sctx.textBaseline = 'middle';
+        sctx.textAlign = 'center';
+        sctx.textBaseline = 'middle';
         sctx.fillText('LM7805', xReg + regW / 2, yTop + barH / 2 - 26);
         sctx.font = '10px "DM Sans", sans-serif';
         sctx.fillStyle = regulating ? '#6cc5c2' : '#ff3b6e';
-        sctx.fillText(regulating ? 'regulating' : 'in dropout', xReg + regW / 2, yTop + barH / 2 - 10);
+        sctx.fillText(
+          regulating ? 'regulating' : 'in dropout',
+          xReg + regW / 2,
+          yTop + barH / 2 - 10,
+        );
 
         // "(burned as heat)" caption sits below the wiggle and never moves.
         sctx.font = '10px "JetBrains Mono", monospace';
@@ -118,19 +132,30 @@ export function LinearRegulatorDemo({ figure }: Props) {
         // P_out header.
         sctx.fillStyle = getCanvasColors().text;
         sctx.font = 'bold 13px "JetBrains Mono", monospace';
-        sctx.textAlign = 'center'; sctx.textBaseline = 'bottom';
+        sctx.textAlign = 'center';
+        sctx.textBaseline = 'bottom';
         sctx.fillText('P_out', xOut + outW / 2, yTop - 22);
 
         // Source → regulator → load energy-flow arrows (purely geometric).
         const flowArrows: CircuitElement[] = [
-          { kind: 'arrow',
+          {
+            kind: 'arrow',
             from: { x: xIn + inW + 6, y: yTop + barH / 2 },
-            to:   { x: xReg - 4,      y: yTop + barH / 2 },
-            color: '#ecebe5', lineWidth: 1.4, headLength: 6, headWidth: 4 },
-          { kind: 'arrow',
+            to: { x: xReg - 4, y: yTop + barH / 2 },
+            color: '#ecebe5',
+            lineWidth: 1.4,
+            headLength: 6,
+            headWidth: 4,
+          },
+          {
+            kind: 'arrow',
             from: { x: xReg + regW + 4, y: yTop + barH / 2 },
-            to:   { x: xOut - 6,        y: yTop + barH / 2 },
-            color: '#ecebe5', lineWidth: 1.4, headLength: 6, headWidth: 4 },
+            to: { x: xOut - 6, y: yTop + barH / 2 },
+            color: '#ecebe5',
+            lineWidth: 1.4,
+            headLength: 6,
+            headWidth: 4,
+          },
         ];
         // We already used the offscreen context to draw the static rectangles;
         // route the arrows through the same offscreen ctx so everything bakes into
@@ -142,10 +167,12 @@ export function LinearRegulatorDemo({ figure }: Props) {
         sctx.globalAlpha = 0.55;
         sctx.fillStyle = colors.textDim;
         sctx.font = '9px "JetBrains Mono", monospace';
-        sctx.textAlign = 'center'; sctx.textBaseline = 'bottom';
+        sctx.textAlign = 'center';
+        sctx.textBaseline = 'bottom';
         sctx.fillText(
           'Linear regulator: η = V_out / V_in.  Dropout requires V_in − V_out ≥ ~2 V.',
-          w / 2, h - 8,
+          w / 2,
+          h - 8,
         );
 
         cacheRef.current = { key: cacheKey, canvas: off };
@@ -156,7 +183,8 @@ export function LinearRegulatorDemo({ figure }: Props) {
       // Dynamic overlay: live P_in / Vin numbers under the input column.
       ctx.fillStyle = getCanvasColors().text;
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
       ctx.fillText(`${Pin.toFixed(2)} W`, xIn + inW / 2, yTop - 6);
       ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().textDim;
@@ -167,7 +195,8 @@ export function LinearRegulatorDemo({ figure }: Props) {
       const wig = Math.sin(t * 5) * 3;
       ctx.fillStyle = `rgba(255, ${107 - heatFrac * 80}, ${42 - heatFrac * 30}, ${0.4 + heatFrac * 0.5})`;
       ctx.font = 'bold 12px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText(`P_diss = ${Pdiss.toFixed(2)} W`, xReg + regW / 2, yTop + barH / 2 + 12 + wig);
 
       // Dynamic overlay: output bar height = Pout / Pin fraction.
@@ -178,7 +207,8 @@ export function LinearRegulatorDemo({ figure }: Props) {
       // Dynamic overlay: live P_out / Vout numbers under the output column.
       ctx.fillStyle = getCanvasColors().text;
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
       ctx.fillText(`${Pout.toFixed(2)} W`, xOut + outW / 2, yTop - 6);
       ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().textDim;
@@ -187,7 +217,8 @@ export function LinearRegulatorDemo({ figure }: Props) {
       // Dynamic overlay: efficiency badge.
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       ctx.fillText(`η = P_out / P_in = ${(eta * 100).toFixed(1)} %`, w / 2, 12);
 
       raf = requestAnimationFrame(draw);
@@ -201,30 +232,38 @@ export function LinearRegulatorDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 19.3'}
       title="Linear regulator: V_in − V_out, burned as heat"
       question="At 12 V in and 0.5 A out, how much of the power becomes useful 5 V — and where does the rest go?"
-      caption={<>
-        A linear regulator like the LM7805 is essentially a variable resistor that adjusts itself
-        to keep V<sub>out</sub> = 5 V. Every joule it absorbs above the output voltage shows up as
-        heat in the package — which is why these chips need heatsinks above a few hundred milliamps
-        and lose to switchers above ~50% step-down ratios.
-      </>}
+      caption={
+        <>
+          A linear regulator like the LM7805 is essentially a variable resistor that adjusts itself
+          to keep V<sub>out</sub> = 5 V. Every joule it absorbs above the output voltage shows up as
+          heat in the package — which is why these chips need heatsinks above a few hundred
+          milliamps and lose to switchers above ~50% step-down ratios.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="V_in"
-          value={Vin} min={6} max={24} step={0.1}
-          format={v => v.toFixed(1) + ' V'}
+          value={Vin}
+          min={6}
+          max={24}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' V'}
           onChange={setVin}
         />
         <MiniSlider
           label="I_load"
-          value={Iload} min={0.01} max={1.5} step={0.01}
-          format={v => v >= 1 ? v.toFixed(2) + ' A' : (v * 1000).toFixed(0) + ' mA'}
+          value={Iload}
+          min={0.01}
+          max={1.5}
+          step={0.01}
+          format={(v) => (v >= 1 ? v.toFixed(2) + ' A' : (v * 1000).toFixed(0) + ' mA')}
           onChange={setIload}
         />
-        <MiniReadout label="V_out"  value={<Num value={Vout} />}  unit="V" />
+        <MiniReadout label="V_out" value={<Num value={Vout} />} unit="V" />
         <MiniReadout label="P_diss" value={<Num value={Pdiss} />} unit="W" />
-        <MiniReadout label="η"      value={(eta * 100).toFixed(1)} unit="%" />
+        <MiniReadout label="η" value={(eta * 100).toFixed(1)} unit="%" />
       </DemoControls>
     </Demo>
   );

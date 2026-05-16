@@ -34,14 +34,27 @@ import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitiv
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-interface StaticCacheEntry { key: string; canvas: HTMLCanvasElement }
+interface StaticCacheEntry {
+  key: string;
+  canvas: HTMLCanvasElement;
+}
 
 /** One drifting carrier along the loop polyline. s in [0,1]. */
-interface Carrier { s: number; jitter: number }
+interface Carrier {
+  s: number;
+  jitter: number;
+}
 
-interface Seg { x1: number; y1: number; x2: number; y2: number }
+interface Seg {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}
 
 const R_LOAD = 4; // bulb's effective resistance for the I = V/R readout
 
@@ -77,7 +90,7 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
 
     // ----- Geometry of the loop. Battery left, switch top centre, bulb right.
     const margin = 56;
-    const top = h * 0.30;
+    const top = h * 0.3;
     const bot = h * 0.78;
     const batX = margin;
     const bulbX = w - margin;
@@ -89,12 +102,12 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
     // + terminal → top rail → switch → top rail → bulb → bottom rail →
     // − terminal).
     const loop: Seg[] = [
-      { x1: batX,    y1: top, x2: switchX, y2: top    },
-      { x1: switchX, y1: top, x2: bulbX,   y2: top    },
-      { x1: bulbX,   y1: top, x2: bulbX,   y2: bot    },
-      { x1: bulbX,   y1: bot, x2: batX,    y2: bot    },
+      { x1: batX, y1: top, x2: switchX, y2: top },
+      { x1: switchX, y1: top, x2: bulbX, y2: top },
+      { x1: bulbX, y1: top, x2: bulbX, y2: bot },
+      { x1: bulbX, y1: bot, x2: batX, y2: bot },
     ];
-    const segLens = loop.map(s => Math.hypot(s.x2 - s.x1, s.y2 - s.y1));
+    const segLens = loop.map((s) => Math.hypot(s.x2 - s.x1, s.y2 - s.y1));
     const totalLen = segLens.reduce((a, b) => a + b, 0);
 
     function pointOnLoop(s: number): { x: number; y: number; tx: number; ty: number } {
@@ -105,18 +118,21 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
         const L = segLens[i]!;
         if (dist <= L) {
           const f = dist / L;
-          const dx = seg.x2 - seg.x1, dy = seg.y2 - seg.y1;
+          const dx = seg.x2 - seg.x1,
+            dy = seg.y2 - seg.y1;
           const m = Math.hypot(dx, dy) || 1;
           return {
             x: seg.x1 + dx * f,
             y: seg.y1 + dy * f,
-            tx: dx / m, ty: dy / m,
+            tx: dx / m,
+            ty: dy / m,
           };
         }
         dist -= L;
       }
       const seg = loop[loop.length - 1]!;
-      const dx = seg.x2 - seg.x1, dy = seg.y2 - seg.y1;
+      const dx = seg.x2 - seg.x1,
+        dy = seg.y2 - seg.y1;
       const m = Math.hypot(dx, dy) || 1;
       return { x: seg.x2, y: seg.y2, tx: dx / m, ty: dy / m };
     }
@@ -145,14 +161,16 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
      *  perpendicular distance (positive if (px,py) is on the +n side), the unit
      *  tangent, and the unit normal pointing toward (px,py). */
     function projectOnSeg(seg: Seg, px: number, py: number) {
-      const dx = seg.x2 - seg.x1, dy = seg.y2 - seg.y1;
+      const dx = seg.x2 - seg.x1,
+        dy = seg.y2 - seg.y1;
       const L2 = dx * dx + dy * dy;
       const t = Math.max(0, Math.min(1, ((px - seg.x1) * dx + (py - seg.y1) * dy) / L2));
       const fx = seg.x1 + dx * t;
       const fy = seg.y1 + dy * t;
       const r = Math.hypot(px - fx, py - fy);
       const L = Math.sqrt(L2) || 1;
-      const tx = dx / L, ty = dy / L;
+      const tx = dx / L,
+        ty = dy / L;
       const nx = (px - fx) / (r || 1);
       const ny = (py - fy) / (r || 1);
       return { fx, fy, r, t, tx, ty, nx, ny };
@@ -168,7 +186,8 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
      * correctly inside the plane.
      */
     function fieldB(px: number, py: number, current: number): { bx: number; by: number } {
-      let bx = 0, by = 0;
+      let bx = 0,
+        by = 0;
       for (const seg of loop) {
         const p = projectOnSeg(seg, px, py);
         // Skip degenerate cases: outside the segment's extent, perp distance
@@ -205,16 +224,21 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
     function fieldE(px: number, py: number, voltage: number): { ex: number; ey: number } {
       // Axial component: if the point is within ~6 px of any wire segment,
       // E points along the conventional-current direction inside the wire.
-      let ex = 0, ey = 0;
+      let ex = 0,
+        ey = 0;
       let nearest = Infinity;
       let nearestSeg: Seg | null = null;
       for (const seg of loop) {
         const p = projectOnSeg(seg, px, py);
-        if (p.r < nearest) { nearest = p.r; nearestSeg = seg; }
+        if (p.r < nearest) {
+          nearest = p.r;
+          nearestSeg = seg;
+        }
       }
       if (nearestSeg && nearest < 8) {
         const seg = nearestSeg;
-        const dx = seg.x2 - seg.x1, dy = seg.y2 - seg.y1;
+        const dx = seg.x2 - seg.x1,
+          dy = seg.y2 - seg.y1;
         const L = Math.hypot(dx, dy) || 1;
         // Axial E ∝ V/L inside the conductor.
         const Eaxial = voltage / (totalLen * 0.001 + 1e-9); // in (V / m-ish)
@@ -229,7 +253,10 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
       const plus = { x: batX, y: top };
       const minus = { x: batX, y: bot };
       const kQ = voltage * 0.6;
-      for (const [src, q] of [[plus, +1], [minus, -1]] as const) {
+      for (const [src, q] of [
+        [plus, +1],
+        [minus, -1],
+      ] as const) {
         const dx = px - src.x;
         const dy = py - src.y;
         const r2 = dx * dx + dy * dy + 400;
@@ -244,27 +271,39 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
     function buildBackdrop(isClosed: boolean, bulbBright: number): HTMLCanvasElement {
       const elems: CircuitElement[] = [
         // Loop wire (dim base).
-        { kind: 'wire',
+        {
+          kind: 'wire',
           points: [
-            { x: batX, y: top }, { x: bulbX, y: top },
-            { x: bulbX, y: bot }, { x: batX, y: bot },
+            { x: batX, y: top },
+            { x: bulbX, y: top },
+            { x: bulbX, y: bot },
+            { x: batX, y: bot },
           ],
-          color: 'rgba(160,158,149,.35)', lineWidth: 3.5 },
+          color: 'rgba(160,158,149,.35)',
+          lineWidth: 3.5,
+        },
         // Battery, vertical, on the left.
-        { kind: 'battery', at: { x: batX, y: cyMid },
+        {
+          kind: 'battery',
+          at: { x: batX, y: cyMid },
           color: 'rgba(255,255,255,.18)',
           leadLength: (bot - top) / 2,
-          negativeColor: '#ecebe5', negativePlateLength: 16,
+          negativeColor: '#ecebe5',
+          negativePlateLength: 16,
           plateGap: (bot - top) / 2,
-          positiveColor: '#ecebe5', positivePlateLength: 28 },
+          positiveColor: '#ecebe5',
+          positivePlateLength: 28,
+        },
         // Switch on top rail.
-        { kind: 'switch', at: { x: switchX, y: top },
+        {
+          kind: 'switch',
+          at: { x: switchX, y: top },
           color: isClosed ? '#ff6b2a' : '#ecebe5',
           state: isClosed ? 'closed' : 'open-up',
-          terminalGap: 32 },
+          terminalGap: 32,
+        },
         // Bulb on the right.
-        { kind: 'bulb', at: { x: bulbX, y: cyMid },
-          radius: bulbR, brightness: bulbBright },
+        { kind: 'bulb', at: { x: bulbX, y: cyMid }, radius: bulbR, brightness: bulbBright },
       ];
       const off = renderCircuitToCanvas({ elements: elems }, w, h, dpr);
       const oc = off.getContext('2d');
@@ -318,7 +357,7 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, r1, 0, Math.PI * 2);
           ctx.stroke();
-        ctx.restore();
+          ctx.restore();
           ctx.globalAlpha = 0.5;
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, r2, 0, Math.PI * 2);
@@ -336,7 +375,8 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
           ctx.moveTo(cx, cy);
           ctx.lineTo(cx - pt.tx * 5 - pt.ty * 3, cy - pt.ty * 5 + pt.tx * 3);
           ctx.lineTo(cx - pt.tx * 5 + pt.ty * 3, cy - pt.ty * 5 - pt.tx * 3);
-          ctx.closePath(); ctx.fill();
+          ctx.closePath();
+          ctx.fill();
           ctx.restore();
         }
       }
@@ -370,14 +410,18 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
             let nearWire = false;
             for (const seg of loop) {
               const p = projectOnSeg(seg, gx, gy);
-              if (p.r < 14) { nearWire = true; break; }
+              if (p.r < 14) {
+                nearWire = true;
+                break;
+              }
             }
             if (nearWire) continue;
             const { ex, ey } = fieldE(gx, gy, voltage);
             const mag = Math.hypot(ex, ey);
             if (mag < 0.05) continue;
             const len = Math.min(18, 6 + mag * 14);
-            const ux = ex / mag, uy = ey / mag;
+            const ux = ex / mag,
+              uy = ey / mag;
             const tipX = gx + ux * len;
             const tipY = gy + uy * len;
             const alpha = Math.min(0.7, 0.2 + mag * 0.5);
@@ -435,7 +479,7 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
             const sign = cross >= 0 ? 1 : -1;
             // perp(E) rotated 90° CCW, scaled by |B|.
             const sxFinal = -ey * sign * Bmag;
-            const syFinal =  ex * sign * Bmag;
+            const syFinal = ex * sign * Bmag;
             const sMag = Math.hypot(sxFinal, syFinal);
             if (sMag < 1e-9) continue;
             const ux = sxFinal / sMag;
@@ -494,18 +538,20 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
         isClosed
           ? 'switch closed · three fields present · S = (1/μ₀) E × B'
           : 'switch open · no current · no B · no S',
-        16, 12,
+        16,
+        12,
       );
 
       // ----- Bottom annotation: drift hint, only when electrons visible.
       if (s.showElec && isClosed) {
         ctx.save();
-        ctx.globalAlpha = .7;
+        ctx.globalAlpha = 0.7;
         ctx.fillStyle = getCanvasColors().blue;
         ctx.textAlign = 'center';
         ctx.fillText(
           'drift speed of these dots ≈ 10⁻⁴ m/s in real copper — too slow to carry the energy',
-          w / 2, h - 16,
+          w / 2,
+          h - 16,
         );
         ctx.restore();
       }
@@ -522,28 +568,47 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 8.0'}
       title="Battery, switch, bulb — three fields at once"
       question="Battery → wire → bulb. Where is the energy actually moving — along the wire, alongside it, or through the empty space around it?"
-      caption={<>
-        Close the switch. Yellow dots are the conduction electrons drifting along the copper. Teal circles are the magnetic field
-        curling around the wire (right-hand rule). Pink arrows are the electric field — axial inside the conductor, dipole-style
-        in the surrounding air. The amber arrows are the Poynting vector <strong>S = (1/μ<sub>0</sub>) E × B</strong>, drawn at
-        every grid point where the other two are visible. Look at where the amber arrows point near the bulb, and where they point
-        near the battery. That is where the energy is actually going.
-      </>}
+      caption={
+        <>
+          Close the switch. Yellow dots are the conduction electrons drifting along the copper. Teal
+          circles are the magnetic field curling around the wire (right-hand rule). Pink arrows are
+          the electric field — axial inside the conductor, dipole-style in the surrounding air. The
+          amber arrows are the Poynting vector{' '}
+          <strong>
+            S = (1/μ<sub>0</sub>) E × B
+          </strong>
+          , drawn at every grid point where the other two are visible. Look at where the amber
+          arrows point near the bulb, and where they point near the battery. That is where the
+          energy is actually going.
+        </>
+      }
       deeperLab={{ slug: 'poynting', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={340} setup={setup} />
       <DemoControls>
-        <MiniToggle label={closed ? 'switch CLOSED' : 'switch OPEN'} checked={closed} onChange={setClosed} />
+        <MiniToggle
+          label={closed ? 'switch CLOSED' : 'switch OPEN'}
+          checked={closed}
+          onChange={setClosed}
+        />
         <MiniSlider
-          label="V" value={V} min={1} max={24} step={0.5}
-          format={v => v.toFixed(1) + ' V'}
+          label="V"
+          value={V}
+          min={1}
+          max={24}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
           onChange={setV}
         />
         <MiniToggle label="electrons" checked={showElec} onChange={setShowElec} />
         <MiniToggle label="B field" checked={showB} onChange={setShowB} />
         <MiniToggle label="E field" checked={showE} onChange={setShowE} />
         <MiniReadout label="I = V/R" value={I.toFixed(2)} unit="A" />
-        <MiniReadout label="|B| at wire (1 mm)" value={(computed.Bsurf * 1000).toFixed(2)} unit="mT" />
+        <MiniReadout
+          label="|B| at wire (1 mm)"
+          value={(computed.Bsurf * 1000).toFixed(2)}
+          unit="mT"
+        />
       </DemoControls>
     </Demo>
   );

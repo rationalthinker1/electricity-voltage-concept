@@ -13,13 +13,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 interface Metal {
   key: string;
@@ -38,21 +38,23 @@ const L0 = 2.44e-8; // Sommerfeld Lorenz number, W·Ω·K⁻²
 // Thermal conductivities at 298 K and electrical resistivities at 293 K.
 // (Conductivities = 1/ρ; ρ_Cu = 1.678e-8 Ω·m, etc.)
 const METALS: Metal[] = [
-  { key: 'silver',   name: 'Silver',   sigma: 6.30e7, kappa: 429,  color: '#e8e8e8' },
-  { key: 'copper',   name: 'Copper',   sigma: 5.96e7, kappa: 401,  color: '#ff6b2a' },
-  { key: 'gold',     name: 'Gold',     sigma: 4.10e7, kappa: 318,  color: '#dccd1f' },
-  { key: 'aluminum', name: 'Aluminum', sigma: 3.77e7, kappa: 237,  color: '#a8c0d8' },
-  { key: 'tungsten', name: 'Tungsten', sigma: 1.79e7, kappa: 173,  color: '#ffb84a' },
-  { key: 'iron',     name: 'Iron',     sigma: 1.00e7, kappa: 80.4, color: '#cc6a5a' },
+  { key: 'silver', name: 'Silver', sigma: 6.3e7, kappa: 429, color: '#e8e8e8' },
+  { key: 'copper', name: 'Copper', sigma: 5.96e7, kappa: 401, color: '#ff6b2a' },
+  { key: 'gold', name: 'Gold', sigma: 4.1e7, kappa: 318, color: '#dccd1f' },
+  { key: 'aluminum', name: 'Aluminum', sigma: 3.77e7, kappa: 237, color: '#a8c0d8' },
+  { key: 'tungsten', name: 'Tungsten', sigma: 1.79e7, kappa: 173, color: '#ffb84a' },
+  { key: 'iron', name: 'Iron', sigma: 1.0e7, kappa: 80.4, color: '#cc6a5a' },
 ];
 
 export function WiedemannFranzDemo({ figure }: Props) {
   const [metalKey, setMetalKey] = useState('copper');
 
   const stateRef = useRef({ metalKey });
-  useEffect(() => { stateRef.current = { metalKey }; }, [metalKey]);
+  useEffect(() => {
+    stateRef.current = { metalKey };
+  }, [metalKey]);
 
-  const m = METALS.find(x => x.key === metalKey)!;
+  const m = METALS.find((x) => x.key === metalKey)!;
   const L = m.kappa / (m.sigma * T_K);
 
   const setup = useCallback((info: CanvasInfo) => {
@@ -75,7 +77,8 @@ export function WiedemannFranzDemo({ figure }: Props) {
 
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.beginPath();
-      ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + gH);
+      ctx.moveTo(padL, padT);
+      ctx.lineTo(padL, padT + gH);
       ctx.lineTo(padL + gW, padT + gH);
       ctx.stroke();
 
@@ -104,7 +107,9 @@ export function WiedemannFranzDemo({ figure }: Props) {
 
         // Material label
         ctx.fillStyle = isSel ? '#ff6b2a' : 'rgba(236,235,229,0.75)';
-        ctx.font = isSel ? 'bold 10px "JetBrains Mono", monospace' : '10px "JetBrains Mono", monospace';
+        ctx.font = isSel
+          ? 'bold 10px "JetBrains Mono", monospace'
+          : '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'right';
         ctx.textBaseline = 'middle';
         ctx.fillText(mm.name.toUpperCase(), padL - 10, yMid);
@@ -114,7 +119,11 @@ export function WiedemannFranzDemo({ figure }: Props) {
         ctx.fillStyle = isSel ? '#ff6b2a' : 'rgba(160,158,149,0.7)';
         ctx.textAlign = 'left';
         ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.fillText(`L = ${(L_m * 1e8).toFixed(2)}×10⁻⁸`, padL + Math.max(kappaW, sigmaW) + 6, yMid);
+        ctx.fillText(
+          `L = ${(L_m * 1e8).toFixed(2)}×10⁻⁸`,
+          padL + Math.max(kappaW, sigmaW) + 6,
+          yMid,
+        );
       });
 
       // Headers
@@ -145,22 +154,23 @@ export function WiedemannFranzDemo({ figure }: Props) {
       question="Why are good electrical conductors also good thermal conductors?"
       caption={
         <>
-          For every metal in the list, κ and σ live in the same ratio: <strong>κ / (σT)</strong> ≈ <strong>2.44×10⁻⁸ W·Ω·K⁻²</strong>.
-          The reason is that the same free-electron gas carries both — current is electrons drifting in an E field, heat is electrons
-          carrying kinetic energy down a temperature gradient. The Sommerfeld free-electron model predicts the constant exactly;
-          experiment confirms it across the common metals. (Iron deviates a bit — transition metals have additional scattering
-          channels.)
+          For every metal in the list, κ and σ live in the same ratio: <strong>κ / (σT)</strong> ≈{' '}
+          <strong>2.44×10⁻⁸ W·Ω·K⁻²</strong>. The reason is that the same free-electron gas carries
+          both — current is electrons drifting in an E field, heat is electrons carrying kinetic
+          energy down a temperature gradient. The Sommerfeld free-electron model predicts the
+          constant exactly; experiment confirms it across the common metals. (Iron deviates a bit —
+          transition metals have additional scattering channels.)
         </>
       }
       deeperLab={{ slug: 'drift', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>
-        {METALS.map(mm => (
+        {METALS.map((mm) => (
           <button
             key={mm.key}
             type="button"
-            className={`mini-toggle${mm.key === metalKey ? ' on' : ''}`}
+            className={`mini-toggle${mm.key === metalKey ? 'on' : ''}`}
             onClick={() => setMetalKey(mm.key)}
             aria-pressed={mm.key === metalKey}
           >

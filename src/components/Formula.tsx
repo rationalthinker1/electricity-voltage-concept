@@ -82,7 +82,11 @@ interface ResolvedFormula {
   plainText: string;
 }
 
-function resolve(id: FormulaId | undefined, tex: string | undefined, ariaLabel: string | undefined): ResolvedFormula | null {
+function resolve(
+  id: FormulaId | undefined,
+  tex: string | undefined,
+  ariaLabel: string | undefined,
+): ResolvedFormula | null {
   if (id) {
     const def = FORMULAS[id];
     if (!def) return null;
@@ -94,26 +98,31 @@ function resolve(id: FormulaId | undefined, tex: string | undefined, ariaLabel: 
   return null;
 }
 
-export function Formula({ id, tex, children, caption, size, ariaLabel, plainText = false, className }: FormulaProps) {
+export function Formula({
+  id,
+  tex,
+  children,
+  caption,
+  size,
+  ariaLabel,
+  plainText = false,
+  className,
+}: FormulaProps) {
   const { root, tex: texSlot } = formulaVariants({ size });
   const resolved = resolve(id, tex, ariaLabel);
   const html = useMemo(() => (resolved ? renderTeX(resolved.tex, true) : null), [resolved?.tex]);
 
   if (plainText && !!children) {
-    return (
-      <div className={clsx('formula-block', className)}>
-        {children}
-      </div>
-    );
+    return <div className={clsx('formula-block', className)}>{children}</div>;
   }
 
   return (
     <div
       className={root({
         class: clsx(
-          'formula-block relative mx-auto text-center border-t border-b border-border max-sm:py-lg max-sm:px-lg',
-          "before:content-[''] before:absolute before:top-1/2 before:-left-sm before:h-px before:w-sm before:-translate-y-1/2 before:bg-accent",
-          "after:content-[''] after:absolute after:top-1/2 after:-right-sm after:h-px after:w-sm after:-translate-y-1/2 after:bg-accent",
+          'formula-block border-border max-sm:py-lg max-sm:px-lg relative mx-auto border-t border-b text-center',
+          "before:-left-sm before:bg-accent before:absolute before:top-1/2 before:h-px before:w-sm before:-translate-y-1/2 before:content-['']",
+          "after:-right-sm after:bg-accent after:absolute after:top-1/2 after:h-px after:w-sm after:-translate-y-1/2 after:content-['']",
           className,
         ),
       })}
@@ -121,18 +130,18 @@ export function Formula({ id, tex, children, caption, size, ariaLabel, plainText
       aria-label={resolved?.plain}
     >
       {!!html && (
-        <div className={texSlot({ class: 'formula-tex' })} dangerouslySetInnerHTML={{ __html: html }} />
+        <div
+          className={texSlot({ class: 'formula-tex' })}
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
       )}
-      {!!children && !html && (
-        <div className="formula-content">
-          {children}
-        </div>
+      {!!children && !html && <div className="formula-content">{children}</div>}
+      {caption && (
+        <div className="formula-caption mt-md eyebrow-muted text-1 tracking-4">{caption}</div>
       )}
-      {caption && <div className="formula-caption mt-md eyebrow-muted text-1 tracking-4">{caption}</div>}
     </div>
   );
 }
-
 
 /** Variable accent — slight amber tint to distinguish symbols from operators. */
 export function Var({ children }: { children: ReactNode }) {

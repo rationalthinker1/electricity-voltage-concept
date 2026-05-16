@@ -34,25 +34,22 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
-import {
-  attachOrbit,
-  project,
-  type OrbitCamera,
-  type Vec3,
-} from '@/lib/projection3d';
+import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // Geometry. Stator ring lies in the x-z plane; its axis is +y (vertical).
-const STATOR_R = 1.25;          // radius of stator bore (where the coil faces sit)
-const STATOR_THICK = 0.22;      // half-height of the stator ring along y
-const COIL_HALF_W = 0.22;       // half-width of each coil bump along its tangent
+const STATOR_R = 1.25; // radius of stator bore (where the coil faces sit)
+const STATOR_THICK = 0.22; // half-height of the stator ring along y
+const COIL_HALF_W = 0.22; // half-width of each coil bump along its tangent
 const FIELD_ARROW_SCALE = 1.05; // visual scale of the resultant arrow at centre
 
 // The three coil angular positions (around the y-axis, measured from +x).
-const COIL_ANGLES = [0, 2 * Math.PI / 3, 4 * Math.PI / 3];
+const COIL_ANGLES = [0, (2 * Math.PI) / 3, (4 * Math.PI) / 3];
 // Their phase shifts in the standard ABC sequence: 0, -120°, -240°.
-const COIL_PHASES = [0, -2 * Math.PI / 3, -4 * Math.PI / 3];
+const COIL_PHASES = [0, (-2 * Math.PI) / 3, (-4 * Math.PI) / 3];
 const COIL_LABELS = ['A', 'B', 'C'];
 // Color per phase — resolved per-frame from the canvas theme so the
 // coil tints follow light/dark mode.
@@ -66,14 +63,20 @@ function coilColors() {
 const I_REF = 10;
 
 export function RotatingMagField3DDemo({ figure }: Props) {
-  const [freq, setFreq] = useState(8);          // electrical Hz (visual rate)
-  const [I0, setI0] = useState(6);              // current amplitude, A
+  const [freq, setFreq] = useState(8); // electrical Hz (visual rate)
+  const [I0, setI0] = useState(6); // current amplitude, A
   const [showContribs, setShowContribs] = useState(true);
   const [, setTick] = useState(0);
 
   const stateRef = useRef({
-    freq, I0, showContribs,
-    t: 0, theta: 0, bx: 0, bz: 0, bMag: 0,
+    freq,
+    I0,
+    showContribs,
+    t: 0,
+    theta: 0,
+    bx: 0,
+    bz: 0,
+    bMag: 0,
   });
   useEffect(() => {
     stateRef.current.freq = freq;
@@ -82,11 +85,17 @@ export function RotatingMagField3DDemo({ figure }: Props) {
   }, [freq, I0, showContribs]);
 
   const camRef = useRef<OrbitCamera>({
-    yaw: 0.55, pitch: 0.45, distance: 6.2, fov: Math.PI / 4,
+    yaw: 0.55,
+    pitch: 0.45,
+    distance: 6.2,
+    fov: Math.PI / 4,
   });
 
   const [readouts, setReadouts] = useState({
-    omega: 0, rpm: 0, bMag: 0, angleDeg: 0,
+    omega: 0,
+    rpm: 0,
+    bMag: 0,
+    angleDeg: 0,
   });
   const readoutsTimer = useRef(0);
 
@@ -110,12 +119,25 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       const inward: Vec3 = { x: -cosA, y: 0, z: -sinA };
       // Tangent unit (for drawing the coil-bump width).
       const tangent: Vec3 = { x: -sinA, y: 0, z: cosA };
-      return { pos, inward, tangent, phase: COIL_PHASES[i]!, color: coilColors()[i]!, label: COIL_LABELS[i]! };
+      return {
+        pos,
+        inward,
+        tangent,
+        phase: COIL_PHASES[i]!,
+        color: coilColors()[i]!,
+        label: COIL_LABELS[i]!,
+      };
     });
 
     function drawArrow3D(
-      from: Vec3, to: Vec3, color: string, lineWidth: number,
-      cam: OrbitCamera, cw: number, ch: number, headScale = 1,
+      from: Vec3,
+      to: Vec3,
+      color: string,
+      lineWidth: number,
+      cam: OrbitCamera,
+      cw: number,
+      ch: number,
+      headScale = 1,
     ) {
       const p0 = project(from, cam, cw, ch);
       const p1 = project(to, cam, cw, ch);
@@ -127,10 +149,12 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       ctx.moveTo(p0.x, p0.y);
       ctx.lineTo(p1.x, p1.y);
       ctx.stroke();
-      const dx = p1.x - p0.x, dy = p1.y - p0.y;
+      const dx = p1.x - p0.x,
+        dy = p1.y - p0.y;
       const len = Math.hypot(dx, dy);
       if (len < 1e-3) return;
-      const ux = dx / len, uy = dy / len;
+      const ux = dx / len,
+        uy = dy / len;
       const headLen = Math.min(10 * headScale, len * 0.5);
       const headW = headLen * 0.55;
       const baseX = p1.x - ux * headLen;
@@ -154,14 +178,14 @@ export function RotatingMagField3DDemo({ figure }: Props) {
 
       // ω from electrical frequency. The visual rotation rate uses a slowdown
       // factor so the field is watchable even at 60 Hz.
-      const omegaTrue = 2 * Math.PI * st.freq;          // physical rad/s
-      const visualOmega = omegaTrue * 0.05;             // slow down 20× for visibility
+      const omegaTrue = 2 * Math.PI * st.freq; // physical rad/s
+      const visualOmega = omegaTrue * 0.05; // slow down 20× for visibility
       st.theta = (st.theta + dt * visualOmega) % (2 * Math.PI);
 
       // Compute the three phase currents and their B-contributions at the
       // centre. Currents are normalised by I_REF so the resultant arrow
       // length stays bounded.
-      const currents = coilInfo.map(ci => st.I0 * Math.cos(st.theta + ci.phase) / I_REF);
+      const currents = coilInfo.map((ci) => (st.I0 * Math.cos(st.theta + ci.phase)) / I_REF);
       const contribs = coilInfo.map((ci, i) => ({
         vec: { x: ci.inward.x * currents[i]!, y: 0, z: ci.inward.z * currents[i]! } as Vec3,
         sign: currents[i]!,
@@ -169,13 +193,19 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       }));
 
       // Sum.
-      let bx = 0, bz = 0;
-      for (const c of contribs) { bx += c.vec.x; bz += c.vec.z; }
+      let bx = 0,
+        bz = 0;
+      for (const c of contribs) {
+        bx += c.vec.x;
+        bz += c.vec.z;
+      }
       const bMag = Math.hypot(bx, bz);
-      st.bx = bx; st.bz = bz; st.bMag = bMag;
+      st.bx = bx;
+      st.bz = bz;
+      st.bMag = bMag;
 
-      const angleDeg = (Math.atan2(bz, bx) * 180 / Math.PI + 360) % 360;
-      const rpm = 60 * st.freq;                          // p = 1 ⇒ mech = elec
+      const angleDeg = ((Math.atan2(bz, bx) * 180) / Math.PI + 360) % 360;
+      const rpm = 60 * st.freq; // p = 1 ⇒ mech = elec
 
       readoutsTimer.current = (readoutsTimer.current + 1) % 4;
       if (readoutsTimer.current === 0) {
@@ -191,12 +221,16 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       const FLOOR_R = STATOR_R + 0.45;
       for (let k = 0; k <= 64; k++) {
         const a = (k / 64) * Math.PI * 2;
-        floorPts.push(project(
-          { x: FLOOR_R * Math.cos(a), y: -STATOR_THICK - 0.05, z: FLOOR_R * Math.sin(a) },
-          cam, w, h,
-        ));
+        floorPts.push(
+          project(
+            { x: FLOOR_R * Math.cos(a), y: -STATOR_THICK - 0.05, z: FLOOR_R * Math.sin(a) },
+            cam,
+            w,
+            h,
+          ),
+        );
       }
-      if (floorPts.every(p => p.depth > 0)) {
+      if (floorPts.every((p) => p.depth > 0)) {
         ctx.strokeStyle = colors.border;
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -220,17 +254,16 @@ export function RotatingMagField3DDemo({ figure }: Props) {
         const ringPts: { x: number; y: number; depth: number }[] = [];
         for (let k = 0; k <= RING_SEGMENTS; k++) {
           const a = (k / RING_SEGMENTS) * Math.PI * 2;
-          ringPts.push(project(
-            { x: STATOR_R * Math.cos(a), y: yEdge, z: STATOR_R * Math.sin(a) },
-            cam, w, h,
-          ));
+          ringPts.push(
+            project({ x: STATOR_R * Math.cos(a), y: yEdge, z: STATOR_R * Math.sin(a) }, cam, w, h),
+          );
         }
         const avgDepth = ringPts.reduce((s, p) => s + p.depth, 0) / ringPts.length;
         drawList.push({
           type: 'arc',
           depth: avgDepth + (yEdge > 0 ? -0.02 : 0.02),
           render: () => {
-            if (!ringPts.every(p => p.depth > 0)) return;
+            if (!ringPts.every((p) => p.depth > 0)) return;
             ctx.save();
             ctx.globalAlpha = 0.45;
             ctx.strokeStyle = colors.textDim;
@@ -253,18 +286,34 @@ export function RotatingMagField3DDemo({ figure }: Props) {
         const isPos = I_i >= 0;
         // Four corners of the coil "face" (a rect in the y-tangent plane at the bore radius).
         const corners: Vec3[] = [
-          { x: ci.pos.x + ci.tangent.x * -COIL_HALF_W, y: -STATOR_THICK * 1.1, z: ci.pos.z + ci.tangent.z * -COIL_HALF_W },
-          { x: ci.pos.x + ci.tangent.x *  COIL_HALF_W, y: -STATOR_THICK * 1.1, z: ci.pos.z + ci.tangent.z *  COIL_HALF_W },
-          { x: ci.pos.x + ci.tangent.x *  COIL_HALF_W, y:  STATOR_THICK * 1.1, z: ci.pos.z + ci.tangent.z *  COIL_HALF_W },
-          { x: ci.pos.x + ci.tangent.x * -COIL_HALF_W, y:  STATOR_THICK * 1.1, z: ci.pos.z + ci.tangent.z * -COIL_HALF_W },
+          {
+            x: ci.pos.x + ci.tangent.x * -COIL_HALF_W,
+            y: -STATOR_THICK * 1.1,
+            z: ci.pos.z + ci.tangent.z * -COIL_HALF_W,
+          },
+          {
+            x: ci.pos.x + ci.tangent.x * COIL_HALF_W,
+            y: -STATOR_THICK * 1.1,
+            z: ci.pos.z + ci.tangent.z * COIL_HALF_W,
+          },
+          {
+            x: ci.pos.x + ci.tangent.x * COIL_HALF_W,
+            y: STATOR_THICK * 1.1,
+            z: ci.pos.z + ci.tangent.z * COIL_HALF_W,
+          },
+          {
+            x: ci.pos.x + ci.tangent.x * -COIL_HALF_W,
+            y: STATOR_THICK * 1.1,
+            z: ci.pos.z + ci.tangent.z * -COIL_HALF_W,
+          },
         ];
-        const screen = corners.map(c => project(c, cam, w, h));
+        const screen = corners.map((c) => project(c, cam, w, h));
         const avgDepth = screen.reduce((s, p) => s + p.depth, 0) / screen.length;
         drawList.push({
           type: 'coil',
           depth: avgDepth,
           render: () => {
-            if (!screen.every(p => p.depth > 0)) return;
+            if (!screen.every((p) => p.depth > 0)) return;
             // Fill: tinted by phase color, alpha tracks |I|.
             const tint = ci.color;
             // Convert tint hex to rgb for the rgba fill.
@@ -294,7 +343,9 @@ export function RotatingMagField3DDemo({ figure }: Props) {
             // Label A/B/C just outside the coil face.
             const labelP = project(
               { x: ci.pos.x * 1.22, y: STATOR_THICK * 2.1, z: ci.pos.z * 1.22 },
-              cam, w, h,
+              cam,
+              w,
+              h,
             );
             if (labelP.depth > 0) {
               ctx.fillStyle = ci.color;
@@ -340,11 +391,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
           const r = parseInt(c.color.slice(1, 3), 16);
           const g = parseInt(c.color.slice(3, 5), 16);
           const b = parseInt(c.color.slice(5, 7), 16);
-          drawArrow3D(
-            { x: 0, y: 0, z: 0 }, to,
-            `rgba(${r},${g},${b},0.65)`, 1.5,
-            cam, w, h, 0.85,
-          );
+          drawArrow3D({ x: 0, y: 0, z: 0 }, to, `rgba(${r},${g},${b},0.65)`, 1.5, cam, w, h, 0.85);
         }
       }
 
@@ -358,17 +405,26 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       const p0 = project({ x: 0, y: 0, z: 0 }, cam, w, h);
       const p1 = project(totalTo, cam, w, h);
       if (p0.depth > 0 && p1.depth > 0 && bMag > 1e-3) {
-        drawGlowPath(ctx, [{ x: p0.x, y: p0.y }, { x: p1.x, y: p1.y }], {
-          color: 'rgba(255,107,42,0.98)',
-          lineWidth: 3,
-          glowColor: 'rgba(255,107,42,0.42)',
-          glowWidth: 12,
-        });
+        drawGlowPath(
+          ctx,
+          [
+            { x: p0.x, y: p0.y },
+            { x: p1.x, y: p1.y },
+          ],
+          {
+            color: 'rgba(255,107,42,0.98)',
+            lineWidth: 3,
+            glowColor: 'rgba(255,107,42,0.42)',
+            glowWidth: 12,
+          },
+        );
         // Arrow head in screen space.
-        const dx = p1.x - p0.x, dy = p1.y - p0.y;
+        const dx = p1.x - p0.x,
+          dy = p1.y - p0.y;
         const len = Math.hypot(dx, dy);
         if (len > 1) {
-          const ux = dx / len, uy = dy / len;
+          const ux = dx / len,
+            uy = dy / len;
           const headLen = Math.min(16, len * 0.45);
           const headW = headLen * 0.6;
           const baseX = p1.x - ux * headLen;
@@ -386,10 +442,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
         }
 
         // "B" label at the tip.
-        const tipLabel = project(
-          { x: totalTo.x * 1.18, y: 0.18, z: totalTo.z * 1.18 },
-          cam, w, h,
-        );
+        const tipLabel = project({ x: totalTo.x * 1.18, y: 0.18, z: totalTo.z * 1.18 }, cam, w, h);
         if (tipLabel.depth > 0) {
           ctx.fillStyle = colors.accent;
           ctx.font = 'italic bold 14px "STIX Two Text", serif';
@@ -407,10 +460,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
         y: 0,
         z: rotorLen * Math.sin(st.theta),
       };
-      drawArrow3D(
-        { x: 0, y: 0, z: 0 }, rotorTo,
-        'rgba(236,235,229,0.55)', 2, cam, w, h, 0.7,
-      );
+      drawArrow3D({ x: 0, y: 0, z: 0 }, rotorTo, 'rgba(236,235,229,0.55)', 2, cam, w, h, 0.7);
       // Tiny disc at the rotor's base.
       const baseP = project({ x: 0, y: 0, z: 0 }, cam, w, h);
       if (baseP.depth > 0) {
@@ -442,7 +492,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       ctx.fillStyle = colors.textDim;
       ctx.fillText('drag to orbit · animation slowed 20× for visibility', 12, h - 18);
 
-      setTick(t => (t + 1) % 1000);
+      setTick((t) => (t + 1) % 1000);
       raf = requestAnimationFrame(draw);
       ctx.restore();
     }
@@ -459,37 +509,42 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 20.x'}
       title="The rotating field inside a 3-phase stator"
       question="Three coils, three sinusoids 120° apart in time — how does that add up to a magnet on a turntable?"
-      caption={<>
-        Three stator coil pairs A, B, C sit 120° apart around the bore. Feed them sinusoidal
-        currents 120° apart in phase and each coil's contribution to the field at the centre
-        — a vector pointing along that coil's radial axis, magnitude proportional to its
-        instantaneous current — sums to a single vector of <em>constant</em> magnitude
-        (3/2)B<sub>0</sub> rotating about the bore axis at the electrical angular speed ω.
-        That is the rotating magnetic field Tesla patented in 1888. A passive rotor at the
-        centre feels a torque that drags it along; with p = 1 pole-pair the rotor's
-        synchronous speed in RPM is 60·f. Drag to orbit; toggle "phase contributions" to
-        see the three component vectors that build the resultant.
-      </>}
+      caption={
+        <>
+          Three stator coil pairs A, B, C sit 120° apart around the bore. Feed them sinusoidal
+          currents 120° apart in phase and each coil's contribution to the field at the centre — a
+          vector pointing along that coil's radial axis, magnitude proportional to its instantaneous
+          current — sums to a single vector of <em>constant</em> magnitude (3/2)B<sub>0</sub>{' '}
+          rotating about the bore axis at the electrical angular speed ω. That is the rotating
+          magnetic field Tesla patented in 1888. A passive rotor at the centre feels a torque that
+          drags it along; with p = 1 pole-pair the rotor's synchronous speed in RPM is 60·f. Drag to
+          orbit; toggle "phase contributions" to see the three component vectors that build the
+          resultant.
+        </>
+      }
       deeperLab={{ slug: 'biot-savart', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={420} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="f"
-          value={freq} min={1} max={60} step={1}
-          format={v => v.toFixed(0) + ' Hz'}
+          value={freq}
+          min={1}
+          max={60}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Hz'}
           onChange={setFreq}
         />
         <MiniSlider
           label="I₀"
-          value={I0} min={0} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' A'}
+          value={I0}
+          min={0}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' A'}
           onChange={setI0}
         />
-        <MiniToggle
-          label="phase contributions"
-          checked={showContribs} onChange={setShowContribs}
-        />
+        <MiniToggle label="phase contributions" checked={showContribs} onChange={setShowContribs} />
         <MiniReadout label="ω_sync" value={<Num value={readouts.omega} />} unit="rad/s" />
         <MiniReadout label="RPM (p=1)" value={<Num value={readouts.rpm} />} />
         <MiniReadout label="|B| (norm.)" value={<Num value={readouts.bMag} />} />

@@ -11,23 +11,23 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const V_OCV = 1.0;   // open-circuit volts (theoretical max ~1.23 V; practical ~1.0 V)
+const V_OCV = 1.0; // open-circuit volts (theoretical max ~1.23 V; practical ~1.0 V)
 const I_LIMIT = 1.8; // limiting current density A/cm²
 
 // Phenomenological polarization curve: activation + ohmic + mass-transport.
 function V_of_I(i: number): number {
   const i_clipped = Math.max(0, Math.min(i, I_LIMIT - 0.001));
-  const eta_act = 0.06 * Math.log(1 + i_clipped / 0.01);    // activation
-  const r_ohm = 0.18;                                        // Ω·cm²
-  const eta_ohm = r_ohm * i_clipped;                         // ohmic
+  const eta_act = 0.06 * Math.log(1 + i_clipped / 0.01); // activation
+  const r_ohm = 0.18; // Ω·cm²
+  const eta_ohm = r_ohm * i_clipped; // ohmic
   const eta_mass = -0.05 * Math.log(1 - i_clipped / I_LIMIT); // mass transport (rises steeply near limit)
   return Math.max(0, V_OCV - eta_act - eta_ohm - eta_mass);
 }
@@ -38,7 +38,9 @@ export function FuelCellDemo({ figure }: Props) {
   const P = V * i; // power density W/cm²
 
   const stateRef = useRef({ i, V });
-  useEffect(() => { stateRef.current = { i, V }; }, [i, V]);
+  useEffect(() => {
+    stateRef.current = { i, V };
+  }, [i, V]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const colors = getCanvasColors();
@@ -62,9 +64,9 @@ export function FuelCellDemo({ figure }: Props) {
       const cellY = 40;
       const cellH = H - 80;
 
-      const anodeW = cellW * 0.30;
+      const anodeW = cellW * 0.3;
       const membraneW = cellW * 0.16;
-      const cathodeW = cellW * 0.30;
+      const cathodeW = cellW * 0.3;
       const flowW = (cellW - anodeW - membraneW - cathodeW) / 2;
 
       let x = cellX;
@@ -102,7 +104,7 @@ export function FuelCellDemo({ figure }: Props) {
       // H⁺ ions crossing membrane (anode → cathode)
       const ionCount = Math.max(0, Math.min(8, Math.floor(s.i * 6)));
       for (let j = 0; j < ionCount; j++) {
-        const t = ((phase + j * 0.2) % 1);
+        const t = (phase + j * 0.2) % 1;
         const ix = x + t * membraneW;
         const iy = cellY + cellH * (0.2 + 0.7 * ((j * 0.31) % 1));
         ctx.fillStyle = colors.text;
@@ -166,7 +168,8 @@ export function FuelCellDemo({ figure }: Props) {
         const vv = V_of_I(ii);
         const px = xI(ii);
         const py = yV(vv);
-        if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        if (k === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
       }
       ctx.stroke();
 
@@ -200,10 +203,10 @@ export function FuelCellDemo({ figure }: Props) {
       question="A battery you keep refilling — how does it actually run?"
       caption={
         <>
-          H₂ splits at the anode (<em>H₂ → 2H⁺ + 2e⁻</em>); the electrons go through the external load; the protons
-          cross the Nafion membrane to the cathode where they combine with O₂ to form water. Theoretical open-circuit
-          voltage is 1.23 V; practical cells start at ~1.0 V and drop with current as activation, ohmic, and
-          mass-transport losses stack up.
+          H₂ splits at the anode (<em>H₂ → 2H⁺ + 2e⁻</em>); the electrons go through the external
+          load; the protons cross the Nafion membrane to the cathode where they combine with O₂ to
+          form water. Theoretical open-circuit voltage is 1.23 V; practical cells start at ~1.0 V
+          and drop with current as activation, ohmic, and mass-transport losses stack up.
         </>
       }
     >
@@ -211,8 +214,11 @@ export function FuelCellDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="i"
-          value={i} min={0.01} max={I_LIMIT - 0.05} step={0.01}
-          format={v => v.toFixed(2) + ' A/cm²'}
+          value={i}
+          min={0.01}
+          max={I_LIMIT - 0.05}
+          step={0.01}
+          format={(v) => v.toFixed(2) + ' A/cm²'}
           onChange={setI}
         />
         <MiniReadout label="V_cell" value={<Num value={V} />} unit="V" />

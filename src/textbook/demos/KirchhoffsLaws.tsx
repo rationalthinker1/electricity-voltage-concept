@@ -26,16 +26,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-interface StaticCache { key: string; canvas: HTMLCanvasElement }
+interface StaticCache {
+  key: string;
+  canvas: HTMLCanvasElement;
+}
 
 export function KirchhoffsLawsDemo({ figure }: Props) {
   const [V, setV] = useState(12);
@@ -85,7 +88,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       const nodeA_x = padX + (outX - padX) * 0.55;
       const nodeB_x = nodeA_x;
 
-      const xR1 = padX + (nodeA_x - padX) * 0.30;
+      const xR1 = padX + (nodeA_x - padX) * 0.3;
       const xR3 = nodeA_x + (outX - nodeA_x) * 0.5;
 
       // Cache key invalidates on resize / DPR change and whenever any slider value
@@ -94,22 +97,78 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       if (cacheRef.current?.key !== cacheKey) {
         // Two-loop network: battery on left, R1 + R3 along top rail, R2 down the middle branch.
         const staticElements: CircuitElement[] = [
-          { kind: 'wire', points: [{ x: batX, y: yTop }, { x: xR1 - 22, y: yTop }] },
-          { kind: 'resistor', from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
-            label: `R1=${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
-          { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: nodeA_x, y: yTop }] },
-          { kind: 'wire', points: [{ x: nodeA_x, y: yTop }, { x: xR3 - 22, y: yTop }] },
-          { kind: 'resistor', from: { x: xR3 - 20, y: yTop }, to: { x: xR3 + 20, y: yTop },
-            label: `R3=${R3.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
-          { kind: 'wire', points: [
-            { x: xR3 + 22, y: yTop }, { x: outX, y: yTop },
-            { x: outX, y: yBot }, { x: nodeB_x, y: yBot }, { x: batX, y: yBot },
-          ] },
-          { kind: 'wire', points: [{ x: nodeA_x, y: yTop }, { x: nodeA_x, y: h / 2 - 22 }] },
-          { kind: 'resistor', from: { x: nodeA_x, y: h / 2 - 20 }, to: { x: nodeA_x, y: h / 2 + 20 },
-            label: `R2=${R2.toFixed(0)}Ω`, labelOffset: { x: 12, y: 0 } },
-          { kind: 'wire', points: [{ x: nodeA_x, y: h / 2 + 22 }, { x: nodeA_x, y: yBot }] },
-          { kind: 'battery', at: { x: batX, y: h / 2 }, label: `${V.toFixed(1)} V`, leadLength: 60 },
+          {
+            kind: 'wire',
+            points: [
+              { x: batX, y: yTop },
+              { x: xR1 - 22, y: yTop },
+            ],
+          },
+          {
+            kind: 'resistor',
+            from: { x: xR1 - 20, y: yTop },
+            to: { x: xR1 + 20, y: yTop },
+            label: `R1=${R1.toFixed(0)}Ω`,
+            labelOffset: { x: 0, y: -12 },
+          },
+          {
+            kind: 'wire',
+            points: [
+              { x: xR1 + 22, y: yTop },
+              { x: nodeA_x, y: yTop },
+            ],
+          },
+          {
+            kind: 'wire',
+            points: [
+              { x: nodeA_x, y: yTop },
+              { x: xR3 - 22, y: yTop },
+            ],
+          },
+          {
+            kind: 'resistor',
+            from: { x: xR3 - 20, y: yTop },
+            to: { x: xR3 + 20, y: yTop },
+            label: `R3=${R3.toFixed(0)}Ω`,
+            labelOffset: { x: 0, y: -12 },
+          },
+          {
+            kind: 'wire',
+            points: [
+              { x: xR3 + 22, y: yTop },
+              { x: outX, y: yTop },
+              { x: outX, y: yBot },
+              { x: nodeB_x, y: yBot },
+              { x: batX, y: yBot },
+            ],
+          },
+          {
+            kind: 'wire',
+            points: [
+              { x: nodeA_x, y: yTop },
+              { x: nodeA_x, y: h / 2 - 22 },
+            ],
+          },
+          {
+            kind: 'resistor',
+            from: { x: nodeA_x, y: h / 2 - 20 },
+            to: { x: nodeA_x, y: h / 2 + 20 },
+            label: `R2=${R2.toFixed(0)}Ω`,
+            labelOffset: { x: 12, y: 0 },
+          },
+          {
+            kind: 'wire',
+            points: [
+              { x: nodeA_x, y: h / 2 + 22 },
+              { x: nodeA_x, y: yBot },
+            ],
+          },
+          {
+            kind: 'battery',
+            at: { x: batX, y: h / 2 },
+            label: `${V.toFixed(1)} V`,
+            leadLength: 60,
+          },
           { kind: 'node', at: { x: nodeA_x, y: yTop }, color: 'rgba(255,107,42,0.95)' },
           { kind: 'node', at: { x: nodeB_x, y: yBot }, color: 'rgba(255,107,42,0.95)' },
         ];
@@ -134,27 +193,47 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       // Dynamic overlay: animated current dots crawling along each branch.
       const maxI = Math.max(I1, 1e-9);
       // I1 across the top from battery to A
-      drawCurrentDotsPath(ctx, t, [
-        { x: batX, y: yTop },
-        { x: nodeA_x, y: yTop },
-      ], I1 / maxI);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: batX, y: yTop },
+          { x: nodeA_x, y: yTop },
+        ],
+        I1 / maxI,
+      );
       // I3 from A to right then down and across bottom back to B
-      drawCurrentDotsPath(ctx, t, [
-        { x: nodeA_x, y: yTop },
-        { x: outX, y: yTop },
-        { x: outX, y: yBot },
-        { x: nodeB_x, y: yBot },
-      ], I3 / maxI);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeA_x, y: yTop },
+          { x: outX, y: yTop },
+          { x: outX, y: yBot },
+          { x: nodeB_x, y: yBot },
+        ],
+        I3 / maxI,
+      );
       // I2 down the middle from A to B
-      drawCurrentDotsPath(ctx, t, [
-        { x: nodeA_x, y: yTop },
-        { x: nodeA_x, y: yBot },
-      ], I2 / maxI);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeA_x, y: yTop },
+          { x: nodeA_x, y: yBot },
+        ],
+        I2 / maxI,
+      );
       // I1 back along the bottom from B to battery
-      drawCurrentDotsPath(ctx, t, [
-        { x: nodeB_x, y: yBot },
-        { x: batX, y: yBot },
-      ], I1 / maxI);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeB_x, y: yBot },
+          { x: batX, y: yBot },
+        ],
+        I1 / maxI,
+      );
 
       // Dynamic overlay: live current readouts next to each branch.
       ctx.restore();
@@ -173,12 +252,14 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         // Highlight node A with a ring + show I1 = I2 + I3 box
         ctx.strokeStyle = getCanvasColors().accent;
         ctx.lineWidth = 1.4;
-        ctx.beginPath(); ctx.arc(nodeA_x, yTop, 14, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(nodeA_x, yTop, 14, 0, Math.PI * 2);
+        ctx.stroke();
 
         const boxX = 12;
         const boxY = h - 64;
         ctx.save();
-        ctx.globalAlpha = 0.10;
+        ctx.globalAlpha = 0.1;
         ctx.fillStyle = colors.accent;
         ctx.fillRect(boxX, boxY, 230, 50);
         ctx.restore();
@@ -197,10 +278,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         ctx.fillText(`I₁ = I₂ + I₃`, boxX + 8, boxY + 22);
         ctx.fillStyle = getCanvasColors().textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillText(
-          `${fmtA(I1)} = ${fmtA(I2)} + ${fmtA(I3)} ✓`,
-          boxX + 8, boxY + 36
-        );
+        ctx.fillText(`${fmtA(I1)} = ${fmtA(I2)} + ${fmtA(I3)} ✓`, boxX + 8, boxY + 36);
       }
 
       if (showKVL) {
@@ -208,7 +286,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         const boxX = w - 270;
         const boxY = h - 96;
         ctx.save();
-        ctx.globalAlpha = 0.10;
+        ctx.globalAlpha = 0.1;
         ctx.fillStyle = colors.teal;
         ctx.fillRect(boxX, boxY, 258, 82);
         ctx.restore();
@@ -217,7 +295,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         ctx.strokeStyle = colors.teal;
         ctx.strokeRect(boxX, boxY, 258, 82);
 
-ctx.restore();
+        ctx.restore();
         ctx.fillStyle = getCanvasColors().teal;
         ctx.font = 'bold 10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
@@ -236,11 +314,13 @@ ctx.restore();
         ctx.fillStyle = getCanvasColors().textDim;
         ctx.fillText(
           `${V.toFixed(2)} − ${drop1.toFixed(2)} − ${drop2.toFixed(2)} = ${lhsL.toFixed(3)} ✓`,
-          boxX + 8, boxY + 52
+          boxX + 8,
+          boxY + 52,
         );
         ctx.fillText(
           `${drop2.toFixed(2)} − ${drop3.toFixed(2)} = ${lhsR.toFixed(3)} ✓`,
-          boxX + 8, boxY + 66
+          boxX + 8,
+          boxY + 66,
         );
       }
 
@@ -262,37 +342,51 @@ ctx.restore();
       figure={figure ?? 'Fig. 10.1'}
       title="Kirchhoff's two laws on a two-loop network"
       question="Toggle KCL / KVL — every equation balances, every time."
-      caption={<>
-        One battery, three resistors. The middle branch (R₂) is shared between two loops.
-        Kirchhoff's current law says everything flowing into node A must flow out;
-        Kirchhoff's voltage law says the sum of drops around any closed loop is zero.
-        Together they give three equations in three unknowns — enough to solve any DC circuit.
-      </>}
+      caption={
+        <>
+          One battery, three resistors. The middle branch (R₂) is shared between two loops.
+          Kirchhoff's current law says everything flowing into node A must flow out; Kirchhoff's
+          voltage law says the sum of drops around any closed loop is zero. Together they give three
+          equations in three unknowns — enough to solve any DC circuit.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="V"
-          value={V} min={1} max={48} step={0.5}
-          format={v => v.toFixed(1) + ' V'}
+          value={V}
+          min={1}
+          max={48}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
           onChange={setV}
         />
         <MiniSlider
           label="R₁"
-          value={R1} min={1} max={100} step={1}
-          format={v => v.toFixed(0) + ' Ω'}
+          value={R1}
+          min={1}
+          max={100}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
           onChange={setR1}
         />
         <MiniSlider
           label="R₂"
-          value={R2} min={1} max={100} step={1}
-          format={v => v.toFixed(0) + ' Ω'}
+          value={R2}
+          min={1}
+          max={100}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
           onChange={setR2}
         />
         <MiniSlider
           label="R₃"
-          value={R3} min={1} max={100} step={1}
-          format={v => v.toFixed(0) + ' Ω'}
+          value={R3}
+          min={1}
+          max={100}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
           onChange={setR3}
         />
         <MiniToggle
@@ -328,7 +422,8 @@ function drawCurrentDotsPath(
   const segs: Array<{ x0: number; y0: number; x1: number; y1: number; len: number }> = [];
   let total = 0;
   for (let i = 0; i < pts.length - 1; i++) {
-    const a = pts[i]; const b = pts[i + 1];
+    const a = pts[i];
+    const b = pts[i + 1];
     const len = Math.hypot(b.x - a.x, b.y - a.y);
     segs.push({ x0: a.x, y0: a.y, x1: b.x, y1: b.y, len });
     total += len;

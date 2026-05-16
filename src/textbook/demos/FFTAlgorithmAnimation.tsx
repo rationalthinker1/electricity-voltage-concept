@@ -8,9 +8,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
 export function FFTAlgorithmAnimationDemo() {
   // Power-of-two N from 8 to 4096
@@ -22,7 +20,9 @@ export function FFTAlgorithmAnimationDemo() {
   const speedup = naive / fft;
 
   const stateRef = useRef({ logN });
-  useEffect(() => { stateRef.current = { logN }; }, [logN]);
+  useEffect(() => {
+    stateRef.current = { logN };
+  }, [logN]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -35,7 +35,10 @@ export function FFTAlgorithmAnimationDemo() {
 
       // Left half: log-log style operation count plot for N = 8..4096
       const splitX = w * 0.45;
-      const padL = 38, padR = 14, padT = 18, padB = 28;
+      const padL = 38,
+        padR = 14,
+        padT = 18,
+        padB = 28;
       const plotW = splitX - padL - padR;
       const plotH = h - padT - padB;
 
@@ -45,12 +48,14 @@ export function FFTAlgorithmAnimationDemo() {
       ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + plotH);
+      ctx.moveTo(padL, padT);
+      ctx.lineTo(padL, padT + plotH);
       ctx.lineTo(padL + plotW, padT + plotH);
       ctx.stroke();
 
       // x: logN from 3..12, y: log10(ops)
-      const xMin = 3, xMax = 12;
+      const xMin = 3,
+        xMax = 12;
       const maxOps = Math.log10(4096 * 4096);
       const xOf = (lN: number) => padL + ((lN - xMin) / (xMax - xMin)) * plotW;
       const yOf = (ops: number) => padT + plotH - (Math.log10(Math.max(ops, 1)) / maxOps) * plotH;
@@ -64,8 +69,10 @@ export function FFTAlgorithmAnimationDemo() {
       ctx.beginPath();
       for (let lN = xMin; lN <= xMax; lN++) {
         const M = 1 << lN;
-        const x = xOf(lN), y = yOf(M * M);
-        if (lN === xMin) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        const x = xOf(lN),
+          y = yOf(M * M);
+        if (lN === xMin) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
       ctx.restore();
@@ -73,8 +80,10 @@ export function FFTAlgorithmAnimationDemo() {
       ctx.beginPath();
       for (let lN = xMin; lN <= xMax; lN++) {
         const M = 1 << lN;
-        const x = xOf(lN), y = yOf(M * lN);
-        if (lN === xMin) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        const x = xOf(lN),
+          y = yOf(M * lN);
+        if (lN === xMin) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -85,7 +94,8 @@ export function FFTAlgorithmAnimationDemo() {
       ctx.setLineDash([3, 4]);
       const xN = xOf(logN);
       ctx.beginPath();
-      ctx.moveTo(xN, padT); ctx.lineTo(xN, padT + plotH);
+      ctx.moveTo(xN, padT);
+      ctx.lineTo(xN, padT + plotH);
       ctx.stroke();
       ctx.setLineDash([]);
 
@@ -113,7 +123,8 @@ export function FFTAlgorithmAnimationDemo() {
       ctx.fillText('FFT — N log₂ N', padL + 4, padT + 22);
 
       // Right half: butterfly diagram for N = 8
-      const bx0 = splitX + 30, by0 = padT + 8;
+      const bx0 = splitX + 30,
+        by0 = padT + 8;
       const bw = w - bx0 - 16;
       const bh = h - by0 - padB;
       const stages = 3; // log2(8)
@@ -161,7 +172,7 @@ export function FFTAlgorithmAnimationDemo() {
       // Dots
       for (let s = 0; s <= stages; s++) {
         for (let i = 0; i < Nbf; i++) {
-          ctx.fillStyle = (s === 0 || s === stages) ? '#ff6b2a' : 'rgba(236,235,229,0.9)';
+          ctx.fillStyle = s === 0 || s === stages ? '#ff6b2a' : 'rgba(236,235,229,0.9)';
           ctx.beginPath();
           ctx.arc(nodes[s][i].x, nodes[s][i].y, 3.5, 0, 2 * Math.PI);
           ctx.fill();
@@ -198,10 +209,11 @@ export function FFTAlgorithmAnimationDemo() {
       question="What does Cooley-Tukey buy you in operations?"
       caption={
         <>
-          The naive discrete Fourier transform multiplies an N-vector by an N×N matrix — N² complex multiplies. Cooley
-          and Tukey's recursive decomposition reuses partial sums via the butterfly structure on the right, taking
-          N log₂ N operations instead. For an N = 1024 audio buffer, that's 10 240 multiplies versus 1 048 576 — a
-          factor of ~100. At N = 4096 the speed-up is 340×. Without it, real-time spectral processing would not exist.
+          The naive discrete Fourier transform multiplies an N-vector by an N×N matrix — N² complex
+          multiplies. Cooley and Tukey's recursive decomposition reuses partial sums via the
+          butterfly structure on the right, taking N log₂ N operations instead. For an N = 1024
+          audio buffer, that's 10 240 multiplies versus 1 048 576 — a factor of ~100. At N = 4096
+          the speed-up is 340×. Without it, real-time spectral processing would not exist.
         </>
       }
     >
@@ -209,9 +221,12 @@ export function FFTAlgorithmAnimationDemo() {
       <DemoControls>
         <MiniSlider
           label="log₂ N"
-          value={logN} min={3} max={12} step={1}
-          format={v => v.toFixed(0) + ` (N=${1 << v})`}
-          onChange={v => setLogN(Math.round(v))}
+          value={logN}
+          min={3}
+          max={12}
+          step={1}
+          format={(v) => v.toFixed(0) + ` (N=${1 << v})`}
+          onChange={(v) => setLogN(Math.round(v))}
         />
         <MiniReadout label="naive N²" value={naive.toLocaleString()} />
         <MiniReadout label="FFT N log₂ N" value={fft.toLocaleString()} />

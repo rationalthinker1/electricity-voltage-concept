@@ -23,13 +23,15 @@ function QuizRoute() {
 
   return (
     <article className="page-shell max-w-page">
-      <div className="eyebrow-rule text-2 mb-xl">Mastery quiz &middot; Chapter {chapter.number}</div>
-      <h1 className="font-2 font-light leading-1 mb-xl max-w-[18ch] text-[clamp(48px,7vw,86px)] tracking-[-.03em]">
+      <div className="eyebrow-rule text-2 mb-xl">
+        Mastery quiz &middot; Chapter {chapter.number}
+      </div>
+      <h1 className="font-2 mb-xl max-w-[18ch] text-[clamp(48px,7vw,86px)] leading-1 font-light tracking-[-.03em]">
         {chapter.title}
       </h1>
-      <p className="font-2 italic font-light leading-3 max-w-[50ch] pl-xl mb-3xl text-text-dim text-[clamp(22px,2.4vw,28px)] border-l-2 border-accent">
-        Answer the questions below to verify chapter mastery. Pass at the configured threshold and the
-        chapter is marked complete in your progress.
+      <p className="font-2 pl-xl mb-3xl text-text-dim border-accent max-w-[50ch] border-l-2 text-[clamp(22px,2.4vw,28px)] leading-3 font-light italic">
+        Answer the questions below to verify chapter mastery. Pass at the configured threshold and
+        the chapter is marked complete in your progress.
       </p>
 
       <div style={{ margin: '20px 0' }}>

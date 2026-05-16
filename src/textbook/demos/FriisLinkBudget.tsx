@@ -15,18 +15,21 @@ import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function FriisLinkBudgetDemo({ figure }: Props) {
-  const [Ptmw, setPtmw] = useState(100);  // mW
+  const [Ptmw, setPtmw] = useState(100); // mW
   const [GtDbi, setGtDbi] = useState(5);
   const [GrDbi, setGrDbi] = useState(5);
   const [fMHz, setFmhz] = useState(5000); // MHz
-  const [dM, setDm] = useState(10);       // m
+  const [dM, setDm] = useState(10); // m
 
   const stateRef = useRef({ Ptmw, GtDbi, GrDbi, fMHz, dM });
-  useEffect(() => { stateRef.current = { Ptmw, GtDbi, GrDbi, fMHz, dM }; },
-    [Ptmw, GtDbi, GrDbi, fMHz, dM]);
+  useEffect(() => {
+    stateRef.current = { Ptmw, GtDbi, GrDbi, fMHz, dM };
+  }, [Ptmw, GtDbi, GrDbi, fMHz, dM]);
 
   const Pt = Ptmw * 1e-3;
   const Gt = Math.pow(10, GtDbi / 10);
@@ -64,7 +67,7 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       const ringSpeedPxPerSec = 80;
       const spacing = 60;
       for (let i = 0; i < 8; i++) {
-        const phase = ((t * ringSpeedPxPerSec) + i * spacing) % (rxX - txX);
+        const phase = (t * ringSpeedPxPerSec + i * spacing) % (rxX - txX);
         const r = phase;
         if (r < 5) continue;
         const alpha = Math.max(0, 0.55 - (r / (rxX - txX)) * 0.4);
@@ -81,7 +84,8 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       ctx.strokeStyle = colors.text;
       ctx.lineWidth = 2.5;
       ctx.beginPath();
-      ctx.moveTo(txX, cy - 22); ctx.lineTo(txX, cy + 22);
+      ctx.moveTo(txX, cy - 22);
+      ctx.lineTo(txX, cy + 22);
       ctx.stroke();
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.restore();
@@ -94,7 +98,8 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().teal;
       ctx.lineWidth = 2.5;
       ctx.beginPath();
-      ctx.moveTo(rxX, cy - 22); ctx.lineTo(rxX, cy + 22);
+      ctx.moveTo(rxX, cy - 22);
+      ctx.lineTo(rxX, cy + 22);
       ctx.stroke();
       ctx.fillStyle = getCanvasColors().teal;
       ctx.fillText(`RX`, rxX, cy + 40);
@@ -104,12 +109,16 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
-      ctx.moveTo(txX, cy); ctx.lineTo(rxX, cy);
+      ctx.moveTo(txX, cy);
+      ctx.lineTo(rxX, cy);
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText(`d = ${dM.toFixed(1)} m, f = ${fMHz.toFixed(0)} MHz, λ = ${(PHYS.c / (fMHz * 1e6) * 1000).toFixed(1)} mm`,
-        (txX + rxX) / 2, cy - 14);
+      ctx.fillText(
+        `d = ${dM.toFixed(1)} m, f = ${fMHz.toFixed(0)} MHz, λ = ${((PHYS.c / (fMHz * 1e6)) * 1000).toFixed(1)} mm`,
+        (txX + rxX) / 2,
+        cy - 14,
+      );
 
       // Received power
       ctx.font = 'bold 12px "JetBrains Mono", monospace';
@@ -127,24 +136,61 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 15.4'}
       title="Friis transmission — a link budget"
       question="How much signal arrives at the far end?"
-      caption={<>
-        <strong>P_r = P_t · G_t · G_r · (λ/4πd)²</strong>. Every doubling of distance is 6 dB of
-        free-space path loss, every doubling of frequency adds another 6 dB. Real systems add fade
-        margin, atmospheric loss, and antenna mismatch on top.
-      </>}
+      caption={
+        <>
+          <strong>P_r = P_t · G_t · G_r · (λ/4πd)²</strong>. Every doubling of distance is 6 dB of
+          free-space path loss, every doubling of frequency adds another 6 dB. Real systems add fade
+          margin, atmospheric loss, and antenna mismatch on top.
+        </>
+      }
     >
       <AutoResizeCanvas height={220} setup={setup} />
       <DemoControls>
-        <MiniSlider label="P_t" value={Ptmw} min={0.1} max={1000} step={1}
-          format={v => v.toFixed(0) + ' mW'} onChange={setPtmw} />
-        <MiniSlider label="G_t" value={GtDbi} min={0} max={30} step={0.5}
-          format={v => v.toFixed(1) + ' dBi'} onChange={setGtDbi} />
-        <MiniSlider label="G_r" value={GrDbi} min={0} max={30} step={0.5}
-          format={v => v.toFixed(1) + ' dBi'} onChange={setGrDbi} />
-        <MiniSlider label="f" value={fMHz} min={100} max={30000} step={10}
-          format={v => v.toFixed(0) + ' MHz'} onChange={setFmhz} />
-        <MiniSlider label="d" value={dM} min={1} max={10000} step={1}
-          format={v => v.toFixed(0) + ' m'} onChange={setDm} />
+        <MiniSlider
+          label="P_t"
+          value={Ptmw}
+          min={0.1}
+          max={1000}
+          step={1}
+          format={(v) => v.toFixed(0) + ' mW'}
+          onChange={setPtmw}
+        />
+        <MiniSlider
+          label="G_t"
+          value={GtDbi}
+          min={0}
+          max={30}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' dBi'}
+          onChange={setGtDbi}
+        />
+        <MiniSlider
+          label="G_r"
+          value={GrDbi}
+          min={0}
+          max={30}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' dBi'}
+          onChange={setGrDbi}
+        />
+        <MiniSlider
+          label="f"
+          value={fMHz}
+          min={100}
+          max={30000}
+          step={10}
+          format={(v) => v.toFixed(0) + ' MHz'}
+          onChange={setFmhz}
+        />
+        <MiniSlider
+          label="d"
+          value={dM}
+          min={1}
+          max={10000}
+          step={1}
+          format={(v) => v.toFixed(0) + ' m'}
+          onChange={setDm}
+        />
         <MiniReadout label="P_r" value={<Num value={Pr} />} unit="W" />
         <MiniReadout label="P_r" value={Pr_dBm.toFixed(1)} unit="dBm" />
         <MiniReadout label="FSPL" value={fsplDb.toFixed(1)} unit="dB" />

@@ -37,14 +37,11 @@ import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
-import {
-  attachOrbit,
-  project,
-  type OrbitCamera,
-  type Vec3,
-} from '@/lib/projection3d';
+import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // World geometry. Wire runs from y = -Y_HALF to +Y_HALF along the y-axis.
 const Y_HALF = 1.6;
@@ -59,13 +56,13 @@ interface ArrowSeg {
   from: Vec3;
   to: Vec3;
   anchor: Vec3;
-  scale: number;      // 0..1 visual scale for arrowhead size
+  scale: number; // 0..1 visual scale for arrowhead size
   ringIdx: number;
 }
 
 export function BiotSavartWire3DDemo({ figure }: Props) {
-  const [I, setI] = useState(3);                  // A
-  const [rMid, setRMid] = useState(1.0);          // world units (slider for middle ring)
+  const [I, setI] = useState(3); // A
+  const [rMid, setRMid] = useState(1.0); // world units (slider for middle ring)
   const [showHand, setShowHand] = useState(true);
   const [reverse, setReverse] = useState(false);
 
@@ -104,7 +101,10 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
 
     /** Build one ring's worth of tangent arrows. */
     function buildRingArrows(
-      radius: number, yHeight: number, sign: number, ringIdx: number,
+      radius: number,
+      yHeight: number,
+      sign: number,
+      ringIdx: number,
     ): ArrowSeg[] {
       const arrows: ArrowSeg[] = [];
       // Visual scaling: arrows on the inner ring are physically larger,
@@ -112,9 +112,9 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       // ring radius so the middle ring's arrow length is ~constant as
       // the slider moves (the inner/outer arrows breathe accordingly).
       const refR = stateRef.current.rMid;
-      const bScale = refR / radius;             // 1/r normalised
+      const bScale = refR / radius; // 1/r normalised
       // Tangent chord half-length, in radians.
-      const chord = (2 * Math.PI / ARROWS_PER_RING) * 0.42;
+      const chord = ((2 * Math.PI) / ARROWS_PER_RING) * 0.42;
       for (let i = 0; i < ARROWS_PER_RING; i++) {
         const phi = (i / ARROWS_PER_RING) * Math.PI * 2;
         // Right-hand rule: thumb +y, fingers curl from +x toward +z.
@@ -138,7 +138,9 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
           z: radius * Math.sin(phi),
         };
         arrows.push({
-          from, to, anchor,
+          from,
+          to,
+          anchor,
           scale: Math.max(0.45, Math.min(1.8, bScale)),
           ringIdx,
         });
@@ -163,10 +165,12 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       ctx.lineTo(p2.x, p2.y);
       ctx.stroke();
       // Screen-space arrowhead. Size proportional to a.scale.
-      const dx = p2.x - p1.x, dy = p2.y - p1.y;
+      const dx = p2.x - p1.x,
+        dy = p2.y - p1.y;
       const len = Math.hypot(dx, dy);
       if (len < 2) return;
-      const ux = dx / len, uy = dy / len;
+      const ux = dx / len,
+        uy = dy / len;
       const head = 5 + 3 * a.scale;
       const wing = 2.5 + 1.5 * a.scale;
       ctx.fillStyle = colour;
@@ -184,32 +188,39 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       const pTop = project(top, cam, W, H);
       const pBot = project(bot, cam, W, H);
       // Wire trunk (glow on the conductor body).
-      drawGlowPath(ctx,
-        [{ x: pTop.x, y: pTop.y }, { x: pBot.x, y: pBot.y }],
+      drawGlowPath(
+        ctx,
+        [
+          { x: pTop.x, y: pTop.y },
+          { x: pBot.x, y: pBot.y },
+        ],
         {
           color: 'rgba(255,107,42,0.95)',
           lineWidth: 3.0,
           glowColor: 'rgba(255,107,42,0.28)',
           glowWidth: 10,
-        });
+        },
+      );
 
       // Flowing current arrows: small arrowheads stepping along the wire
       // with a time-varying offset. Direction set by `sign`.
       const N_FLOW = 9;
       const tNow = performance.now() / 1000;
-      const phase = (tNow * 0.7) % 1;            // 0..1 cycle
+      const phase = (tNow * 0.7) % 1; // 0..1 cycle
       for (let i = 0; i < N_FLOW; i++) {
-        const u = ((i + phase) / N_FLOW);         // 0..1
-        const y = -Y_HALF + u * 2 * Y_HALF;       // -Y_HALF .. +Y_HALF
-        const tail: Vec3 = { x: 0, y: y - 0.10 * sign, z: 0 };
-        const tip: Vec3 = { x: 0, y: y + 0.10 * sign, z: 0 };
+        const u = (i + phase) / N_FLOW; // 0..1
+        const y = -Y_HALF + u * 2 * Y_HALF; // -Y_HALF .. +Y_HALF
+        const tail: Vec3 = { x: 0, y: y - 0.1 * sign, z: 0 };
+        const tip: Vec3 = { x: 0, y: y + 0.1 * sign, z: 0 };
         const pa = project(tail, cam, W, H);
         const pb = project(tip, cam, W, H);
         if (pa.depth <= 0 || pb.depth <= 0) continue;
-        const dx = pb.x - pa.x, dy = pb.y - pa.y;
+        const dx = pb.x - pa.x,
+          dy = pb.y - pa.y;
         const len = Math.hypot(dx, dy);
         if (len < 2) continue;
-        const ux = dx / len, uy = dy / len;
+        const ux = dx / len,
+          uy = dy / len;
         ctx.fillStyle = getCanvasColors().accent;
         ctx.beginPath();
         ctx.moveTo(pb.x, pb.y);
@@ -229,16 +240,23 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       const pts: { x: number; y: number; depth: number }[] = [];
       for (let i = 0; i <= N; i++) {
         const phi = (i / N) * Math.PI * 2;
-        pts.push(project({
-          x: radius * Math.cos(phi),
-          y: yHeight,
-          z: radius * Math.sin(phi),
-        }, cam, W, H));
+        pts.push(
+          project(
+            {
+              x: radius * Math.cos(phi),
+              y: yHeight,
+              z: radius * Math.sin(phi),
+            },
+            cam,
+            W,
+            H,
+          ),
+        );
       }
       // Median depth as front/back cutoff.
-      const sorted = [...pts.map(p => p.depth)].sort((a, b) => a - b);
+      const sorted = [...pts.map((p) => p.depth)].sort((a, b) => a - b);
       const cutoff = sorted[Math.floor(pts.length / 2)]!;
-      const baseAlpha = ringIdx === 0 ? 0.40 : ringIdx === 1 ? 0.30 : 0.22;
+      const baseAlpha = ringIdx === 0 ? 0.4 : ringIdx === 1 ? 0.3 : 0.22;
       for (const pass of ['back', 'front'] as const) {
         ctx.beginPath();
         let drawing = false;
@@ -247,15 +265,18 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
           const isFront = p.depth <= cutoff;
           const include = pass === 'front' ? isFront : !isFront;
           if (include) {
-            if (!drawing) { ctx.moveTo(p.x, p.y); drawing = true; }
-            else ctx.lineTo(p.x, p.y);
+            if (!drawing) {
+              ctx.moveTo(p.x, p.y);
+              drawing = true;
+            } else ctx.lineTo(p.x, p.y);
           } else {
             drawing = false;
           }
         }
-        ctx.strokeStyle = pass === 'front'
-          ? `rgba(108,197,194,${baseAlpha.toFixed(3)})`
-          : `rgba(108,197,194,${(baseAlpha * 0.35).toFixed(3)})`;
+        ctx.strokeStyle =
+          pass === 'front'
+            ? `rgba(108,197,194,${baseAlpha.toFixed(3)})`
+            : `rgba(108,197,194,${(baseAlpha * 0.35).toFixed(3)})`;
         ctx.lineWidth = 1.0;
         ctx.setLineDash(pass === 'back' ? [3, 4] : []);
         ctx.stroke();
@@ -272,7 +293,7 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
     function drawHand(sign: number, ringRadius: number, ringY: number) {
       // Anchor the wrist on the +x side of the ring, sitting just outside.
       const wristR = ringRadius * 1.05;
-      const wristPhi = -0.5;        // slightly tilted off the +x axis
+      const wristPhi = -0.5; // slightly tilted off the +x axis
       const wrist: Vec3 = {
         x: wristR * Math.cos(wristPhi),
         y: ringY,
@@ -280,14 +301,16 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       };
       // Thumb: straight up (or down) along ±y from the wrist.
       const thumbTip: Vec3 = {
-        x: wrist.x, y: wrist.y + 0.55 * sign, z: wrist.z,
+        x: wrist.x,
+        y: wrist.y + 0.55 * sign,
+        z: wrist.z,
       };
       const pWrist = project(wrist, cam, W, H);
       const pThumb = project(thumbTip, cam, W, H);
       if (pWrist.depth <= 0 || pThumb.depth <= 0) return;
       // Translucent palm circle.
       ctx.save();
-      ctx.globalAlpha = 0.10;
+      ctx.globalAlpha = 0.1;
       ctx.fillStyle = getCanvasColors().text;
       ctx.save();
       ctx.globalAlpha = 0.55;
@@ -300,19 +323,26 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       ctx.restore();
       ctx.stroke();
       // Thumb (cream, thicker).
-      drawGlowPath(ctx,
-        [{ x: pWrist.x, y: pWrist.y }, { x: pThumb.x, y: pThumb.y }],
+      drawGlowPath(
+        ctx,
+        [
+          { x: pWrist.x, y: pWrist.y },
+          { x: pThumb.x, y: pThumb.y },
+        ],
         {
           color: 'rgba(236,235,229,0.90)',
           lineWidth: 2.4,
           glowColor: 'rgba(236,235,229,0.20)',
           glowWidth: 7,
-        });
+        },
+      );
       // Arrowhead on the thumb to label current direction.
-      const dx = pThumb.x - pWrist.x, dy = pThumb.y - pWrist.y;
+      const dx = pThumb.x - pWrist.x,
+        dy = pThumb.y - pWrist.y;
       const len = Math.hypot(dx, dy);
       if (len > 2) {
-        const ux = dx / len, uy = dy / len;
+        const ux = dx / len,
+          uy = dy / len;
         ctx.fillStyle = getCanvasColors().text;
         ctx.beginPath();
         ctx.moveTo(pThumb.x, pThumb.y);
@@ -326,7 +356,7 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       // world space along ±dφ from wristPhi.
       const fingerCount = 4;
       const fingerSamples = 6;
-      const fingerSpan = 0.85;     // radians of arc each finger traces
+      const fingerSpan = 0.85; // radians of arc each finger traces
       for (let f = 0; f < fingerCount; f++) {
         // Stagger fingers slightly off the wrist height so they don't
         // overlap. Offset along y by a small fraction of the ring height.
@@ -341,9 +371,18 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
           // Slight radial shrink along the finger so it looks like it's
           // wrapping the ring rather than running along it exactly.
           const r = wristR * (1.0 - 0.05 * t);
-          pts.push(project({
-            x: r * Math.cos(phi), y: fy, z: r * Math.sin(phi),
-          }, cam, W, H));
+          pts.push(
+            project(
+              {
+                x: r * Math.cos(phi),
+                y: fy,
+                z: r * Math.sin(phi),
+              },
+              cam,
+              W,
+              H,
+            ),
+          );
         }
         ctx.save();
         ctx.globalAlpha = 0.75;
@@ -357,10 +396,12 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
         // Arrowhead at the finger tip to show the B direction.
         const a = pts[pts.length - 2]!;
         const b = pts[pts.length - 1]!;
-        const fdx = b.x - a.x, fdy = b.y - a.y;
+        const fdx = b.x - a.x,
+          fdy = b.y - a.y;
         const flen = Math.hypot(fdx, fdy);
         if (flen > 1) {
-          const ux = fdx / flen, uy = fdy / flen;
+          const ux = fdx / flen,
+            uy = fdy / flen;
           ctx.fillStyle = getCanvasColors().text;
           ctx.beginPath();
           ctx.moveTo(b.x, b.y);
@@ -409,9 +450,7 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
         allArrows.push(...buildRingArrows(r3, yH, sign, 2));
       }
       // Painter sort: back (large depth) first.
-      const projectedDepths = allArrows.map(a =>
-        project(a.anchor, cam, W, H).depth,
-      );
+      const projectedDepths = allArrows.map((a) => project(a.anchor, cam, W, H).depth);
       const order = allArrows
         .map((_, i) => i)
         .sort((a, b) => projectedDepths[b]! - projectedDepths[a]!);
@@ -426,7 +465,8 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       // Split the sorted arrow list at the camera distance — back arrows
       // drawn before the wire body, front arrows after, so the wire
       // visually occludes far-side arrows correctly.
-      const backIdx: number[] = [], frontIdx: number[] = [];
+      const backIdx: number[] = [],
+        frontIdx: number[] = [];
       for (const i of order) {
         if (projectedDepths[i]! > cam.distance) backIdx.push(i);
         else frontIdx.push(i);
@@ -442,13 +482,14 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
 
       // ── Annotations ────────────────────────────────────────────────
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to rotate', 12, 12);
       ctx.save();
       ctx.globalAlpha = 0.65;
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText(`r₁ = ${(r1).toFixed(2)}   r₂ = ${(r2).toFixed(2)}   r₃ = ${(r3).toFixed(2)}`, 12, 28);
+      ctx.fillText(`r₁ = ${r1.toFixed(2)}   r₂ = ${r2.toFixed(2)}   r₃ = ${r3.toFixed(2)}`, 12, 28);
       ctx.restore();
 
       ctx.textAlign = 'right';
@@ -457,11 +498,11 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       ctx.fillStyle = getCanvasColors().teal;
       ctx.fillText('B  teal · azimuthal (right-hand rule)', W - 12, 28);
       ctx.save();
-      ctx.globalAlpha = 0.70;
+      ctx.globalAlpha = 0.7;
       ctx.fillStyle = getCanvasColors().text;
       if (s.showHand) {
         ctx.fillText('thumb = I, fingers curl with B', W - 12, 44);
-      ctx.restore();
+        ctx.restore();
       }
 
       raf = requestAnimationFrame(draw);
@@ -479,27 +520,48 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 6.x'}
       title="The B-field around a wire, in three dimensions"
       question="Why do magnetic field lines circle a wire instead of pointing at it?"
-      caption={<>
-        A vertical wire carries current <strong>I</strong> upward. At several heights, the magnetic field
-        wraps the wire in concentric circles — inner rings denser, outer rings sparser, because
-        <strong> |B| = μ₀I/(2πr)</strong> falls off as <strong>1/r</strong>. Drag to orbit.
-        The ghost hand encodes the right-hand rule: thumb along the current, fingers curl with
-        <strong> B</strong>. Reverse the current and every arrow on every ring flips at once.
-      </>}
+      caption={
+        <>
+          A vertical wire carries current <strong>I</strong> upward. At several heights, the
+          magnetic field wraps the wire in concentric circles — inner rings denser, outer rings
+          sparser, because
+          <strong> |B| = μ₀I/(2πr)</strong> falls off as <strong>1/r</strong>. Drag to orbit. The
+          ghost hand encodes the right-hand rule: thumb along the current, fingers curl with
+          <strong> B</strong>. Reverse the current and every arrow on every ring flips at once.
+        </>
+      }
       deeperLab={{ slug: 'biot-savart', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={380} setup={setup} ariaLabel="3D B-field around a straight wire" />
       <DemoControls>
         <MiniSlider
-          label="current I" value={I} min={0.1} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' A'} onChange={setI}
+          label="current I"
+          value={I}
+          min={0.1}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' A'}
+          onChange={setI}
         />
         <MiniSlider
-          label="radius r" value={rMid} min={0.3} max={3.0} step={0.05}
-          format={v => v.toFixed(2)} onChange={setRMid}
+          label="radius r"
+          value={rMid}
+          min={0.3}
+          max={3.0}
+          step={0.05}
+          format={(v) => v.toFixed(2)}
+          onChange={setRMid}
         />
-        <MiniToggle label={showHand ? 'right-hand rule on' : 'right-hand rule off'} checked={showHand} onChange={setShowHand} />
-        <MiniToggle label={reverse ? 'current reversed' : 'current forward'} checked={reverse} onChange={setReverse} />
+        <MiniToggle
+          label={showHand ? 'right-hand rule on' : 'right-hand rule off'}
+          checked={showHand}
+          onChange={setShowHand}
+        />
+        <MiniToggle
+          label={reverse ? 'current reversed' : 'current forward'}
+          checked={reverse}
+          onChange={setReverse}
+        />
         <MiniReadout label="|B| at slider r" value={<Num value={computed.B_at_r} />} unit="T" />
         <MiniReadout label="|B| at r = 1 cm" value={<Num value={computed.B_at_1cm} />} unit="T" />
       </DemoControls>

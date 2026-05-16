@@ -28,16 +28,13 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
-import {
-  attachOrbit,
-  project,
-  type OrbitCamera,
-  type Vec3,
-} from '@/lib/projection3d';
+import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const L_METERS = 1.0;            // fixed physical wire length, metres
+const L_METERS = 1.0; // fixed physical wire length, metres
 const NLAT = 18;
 const NLON = 24;
 
@@ -181,7 +178,8 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       for (let i = 0; i <= NEQ; i++) {
         const ph = (i / NEQ) * 2 * Math.PI;
         const p = project({ x: Math.cos(ph), y: 0, z: Math.sin(ph) }, cam, W, H);
-        if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+        if (i === 0) ctx.moveTo(p.x, p.y);
+        else ctx.lineTo(p.x, p.y);
       }
       ctx.stroke();
 
@@ -197,15 +195,26 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
 
       // Radiation pattern wireframe (back-to-front so front lobes paint over).
       if (s.showMesh) {
-        interface Seg { x1: number; y1: number; x2: number; y2: number; depth: number; kind: 'lat' | 'lon' }
+        interface Seg {
+          x1: number;
+          y1: number;
+          x2: number;
+          y2: number;
+          depth: number;
+          kind: 'lat' | 'lon';
+        }
         const segs: Seg[] = [];
         for (let i = 0; i <= NLAT; i++) {
           for (let j = 0; j < NLON; j++) {
             const a = projected[i]![j]!;
             const b = projected[i]![j + 1]!;
             segs.push({
-              x1: a.x, y1: a.y, x2: b.x, y2: b.y,
-              depth: (a.depth + b.depth) / 2, kind: 'lat',
+              x1: a.x,
+              y1: a.y,
+              x2: b.x,
+              y2: b.y,
+              depth: (a.depth + b.depth) / 2,
+              kind: 'lat',
             });
           }
         }
@@ -214,17 +223,19 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
             const a = projected[i]![j]!;
             const b = projected[i + 1]![j]!;
             segs.push({
-              x1: a.x, y1: a.y, x2: b.x, y2: b.y,
-              depth: (a.depth + b.depth) / 2, kind: 'lon',
+              x1: a.x,
+              y1: a.y,
+              x2: b.x,
+              y2: b.y,
+              depth: (a.depth + b.depth) / 2,
+              kind: 'lon',
             });
           }
         }
         segs.sort((a, b) => b.depth - a.depth);
         for (const seg of segs) {
-          const baseAlpha = seg.kind === 'lat' ? 0.55 : 0.40;
-          const baseColor = seg.kind === 'lat'
-            ? 'rgba(108,197,194,'
-            : 'rgba(255,107,42,';
+          const baseAlpha = seg.kind === 'lat' ? 0.55 : 0.4;
+          const baseColor = seg.kind === 'lat' ? 'rgba(108,197,194,' : 'rgba(255,107,42,';
           const a = depthAlpha(seg.depth, baseAlpha);
           ctx.strokeStyle = baseColor + a.toFixed(3) + ')';
           ctx.lineWidth = 1.0;
@@ -241,14 +252,19 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       const yBot = -(L_METERS / 2) * yScale;
       const pTop = project({ x: 0, y: yTop, z: 0 }, cam, W, H);
       const pBot = project({ x: 0, y: yBot, z: 0 }, cam, W, H);
-      drawGlowPath(ctx,
-        [{ x: pTop.x, y: pTop.y }, { x: pBot.x, y: pBot.y }],
+      drawGlowPath(
+        ctx,
+        [
+          { x: pTop.x, y: pTop.y },
+          { x: pBot.x, y: pBot.y },
+        ],
         {
           color: 'rgba(236,235,229,0.95)',
           lineWidth: 2.0,
           glowColor: 'rgba(236,235,229,0.18)',
           glowWidth: 8,
-        });
+        },
+      );
       // Feedpoint marker.
       const pCen = project({ x: 0, y: 0, z: 0 }, cam, W, H);
       ctx.fillStyle = getCanvasColors().accent;
@@ -263,7 +279,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
         const phase = Math.sin((now / 1000) * 2 * Math.PI * 1.2);
         for (let i = 0; i < NARR; i++) {
           // z in metres, evenly spaced along the wire.
-          const z = (-L_METERS / 2) + (L_METERS * i) / (NARR - 1);
+          const z = -L_METERS / 2 + (L_METERS * i) / (NARR - 1);
           const Iraw = currentAt(z, kL) * phase;
           if (Math.abs(Iraw) < 0.03) continue;
           // Arrow length (in world units, x direction). Scaled for visibility.
@@ -275,13 +291,13 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
           const dy = tip.y - tail.y;
           const Llen = Math.hypot(dx, dy);
           if (Llen < 1) continue;
-          const ux = dx / Llen, uy = dy / Llen;
-          const nx = -uy, ny = ux;
+          const ux = dx / Llen,
+            uy = dy / Llen;
+          const nx = -uy,
+            ny = ux;
 
           // Colour: pink for +I, blue for −I (matching charge-polarity palette).
-          const col = Iraw >= 0
-            ? 'rgba(255,59,110,0.85)'
-            : 'rgba(91,174,248,0.85)';
+          const col = Iraw >= 0 ? 'rgba(255,59,110,0.85)' : 'rgba(91,174,248,0.85)';
           ctx.strokeStyle = col;
           ctx.fillStyle = col;
           ctx.lineWidth = 1.4;
@@ -316,7 +332,11 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.fillText(`f = ${formatHz(fHz)}`, 14, 14);
       ctx.fillStyle = getCanvasColors().teal;
-      ctx.fillText(`λ = ${lam >= 1 ? lam.toFixed(2) + ' m' : (lam * 100).toFixed(1) + ' cm'}`, 14, 30);
+      ctx.fillText(
+        `λ = ${lam >= 1 ? lam.toFixed(2) + ' m' : (lam * 100).toFixed(1) + ' cm'}`,
+        14,
+        30,
+      );
       ctx.fillStyle = 'rgba(236,235,229,0.78)';
       ctx.fillText(`L/λ = ${(L_METERS / lam).toFixed(3)}`, 14, 46);
       ctx.fillStyle = 'rgba(160,158,149,0.65)';
@@ -365,7 +385,11 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       ctx.stroke();
       ctx.fillStyle = lamCol;
       ctx.textBaseline = 'top';
-      ctx.fillText(lam > 2 ? `λ = ${lam.toFixed(2)} m (off-scale)` : `λ = ${lam.toFixed(2)} m`, barX0, barY + 14);
+      ctx.fillText(
+        lam > 2 ? `λ = ${lam.toFixed(2)} m (off-scale)` : `λ = ${lam.toFixed(2)} m`,
+        barX0,
+        barY + 14,
+      );
       if (halfWave) {
         ctx.textAlign = 'right';
         ctx.fillStyle = getCanvasColors().accent;
@@ -386,15 +410,18 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 9.x'}
       title="From wire to antenna — a continuous spectrum"
       question="The same metre of wire. Where does the radiation pattern come from?"
-      caption={<>
-        A vertical wire of fixed length <strong>L = 1 m</strong>, fed at the centre by a sinusoidal
-        source. Sweep the frequency. At low <em>f</em> the wavelength dwarfs the wire and nothing
-        radiates — the wire is a single lumped node. As <em>f</em> climbs, λ shrinks toward
-        <strong> 2L</strong>; at λ = 2L (around 150 MHz here) the wire becomes a half-wave dipole
-        and a clean toroidal far-field appears. Push further and the pattern splits — full-wave at
-        λ = L, then multi-lobe beyond. The antenna and the circuit element are the same object at
-        different L/λ. Drag to orbit.
-      </>}
+      caption={
+        <>
+          A vertical wire of fixed length <strong>L = 1 m</strong>, fed at the centre by a
+          sinusoidal source. Sweep the frequency. At low <em>f</em> the wavelength dwarfs the wire
+          and nothing radiates — the wire is a single lumped node. As <em>f</em> climbs, λ shrinks
+          toward
+          <strong> 2L</strong>; at λ = 2L (around 150 MHz here) the wire becomes a half-wave dipole
+          and a clean toroidal far-field appears. Push further and the pattern splits — full-wave at
+          λ = L, then multi-lobe beyond. The antenna and the circuit element are the same object at
+          different L/λ. Drag to orbit.
+        </>
+      }
     >
       <AutoResizeCanvas height={360} setup={setup} ariaLabel="3D wire-to-antenna transition" />
       <DemoControls>
@@ -404,12 +431,16 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
           min={10}
           max={600}
           step={1}
-          format={v => v < 1000 ? v.toFixed(0) + ' MHz' : (v / 1000).toFixed(2) + ' GHz'}
+          format={(v) => (v < 1000 ? v.toFixed(0) + ' MHz' : (v / 1000).toFixed(2) + ' GHz')}
           onChange={setFMHz}
         />
         <MiniToggle label="current arrows" checked={showCurrent} onChange={setShowCurrent} />
         <MiniToggle label="pattern wireframe" checked={showMesh} onChange={setShowMesh} />
-        <MiniReadout label="λ" value={lambda >= 1 ? lambda.toFixed(2) : (lambda * 100).toFixed(1)} unit={lambda >= 1 ? 'm' : 'cm'} />
+        <MiniReadout
+          label="λ"
+          value={lambda >= 1 ? lambda.toFixed(2) : (lambda * 100).toFixed(1)}
+          unit={lambda >= 1 ? 'm' : 'cm'}
+        />
         <MiniReadout label="L/λ" value={LoverLambda.toFixed(3)} />
         <MiniReadout label="regime" value={regime} />
       </DemoControls>

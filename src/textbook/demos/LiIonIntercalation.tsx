@@ -10,11 +10,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { getCanvasColors } from '@/lib/canvasTheme';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const N_LI = 28; // total Li ions in the system
 
@@ -27,7 +27,9 @@ export function LiIonIntercalationDemo({ figure }: Props) {
   const V = 3.0 + 0.9 * soc; // rough OCV from ~3.0 V empty to ~4.0 V full (NMC-ish)
 
   const stateRef = useRef({ soc, nAnode, nCathode });
-  useEffect(() => { stateRef.current = { soc, nAnode, nCathode }; }, [soc, nAnode, nCathode]);
+  useEffect(() => {
+    stateRef.current = { soc, nAnode, nCathode };
+  }, [soc, nAnode, nCathode]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const colors = getCanvasColors();
@@ -89,7 +91,7 @@ export function LiIonIntercalationDemo({ figure }: Props) {
       // In-flight ions: a few that look like they're shuttling
       const shuttling = Math.max(0, Math.min(3, Math.round(Math.abs(0.5 - s.soc) * 6)));
       for (let j = 0; j < shuttling; j++) {
-        const t = ((phase + j * 0.33) % 1);
+        const t = (phase + j * 0.33) % 1;
         // direction depends on discharge (soc decreasing) — here just show motion
         const dir = s.soc < 0.5 ? -1 : +1;
         const xx = electrolyteX + (dir > 0 ? t : 1 - t) * electrolyteW;
@@ -128,9 +130,10 @@ export function LiIonIntercalationDemo({ figure }: Props) {
       question="Why is Li-ion rechargeable when so many older chemistries weren't?"
       caption={
         <>
-          Charging pushes Li⁺ ions out of the LiCoO₂ cathode lattice and into the gaps between graphite layers; discharging
-          reverses the trip. Neither host lattice gets disrupted — the Li⁺ just slides between the layers. That's the
-          intercalation trick that gives Li-ion ~500–2000 cycles before significant fade.
+          Charging pushes Li⁺ ions out of the LiCoO₂ cathode lattice and into the gaps between
+          graphite layers; discharging reverses the trip. Neither host lattice gets disrupted — the
+          Li⁺ just slides between the layers. That's the intercalation trick that gives Li-ion
+          ~500–2000 cycles before significant fade.
         </>
       }
     >
@@ -138,8 +141,11 @@ export function LiIonIntercalationDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="SOC"
-          value={soc} min={0} max={1} step={0.01}
-          format={v => (v * 100).toFixed(0) + ' %'}
+          value={soc}
+          min={0}
+          max={1}
+          step={0.01}
+          format={(v) => (v * 100).toFixed(0) + ' %'}
           onChange={setSoc}
         />
         <MiniReadout label="V_cell (typical)" value={V.toFixed(2)} unit="V" />
@@ -152,8 +158,13 @@ export function LiIonIntercalationDemo({ figure }: Props) {
 
 function drawLayers(
   ctx: CanvasRenderingContext2D,
-  x: number, y: number, w: number, h: number,
-  fillColor: string, strokeColor: string, _label: string,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  fillColor: string,
+  strokeColor: string,
+  _label: string,
 ) {
   const layers = 6;
   const layerH = h / layers;

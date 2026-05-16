@@ -13,18 +13,22 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function YagiArrayFactorDemo({ figure }: Props) {
   const [nDir, setNDir] = useState(3);
 
   const stateRef = useRef({ nDir });
-  useEffect(() => { stateRef.current = { nDir }; }, [nDir]);
+  useEffect(() => {
+    stateRef.current = { nDir };
+  }, [nDir]);
 
   // Approximate gain (dBi) for a Yagi vs director count — empirical fit
   // ≈ 2.15 dBi (lone dipole) + 4 dBi for 1 director, then ~1 dB per added director.
   function gainDbi(n: number) {
-    if (n <= 0) return 4.5;          // dipole + reflector
+    if (n <= 0) return 4.5; // dipole + reflector
     return 7.0 + 1.4 * Math.min(n, 6);
   }
   const Gdbi = gainDbi(nDir);
@@ -69,7 +73,8 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(xRef, cyTop); ctx.lineTo(xDirs.length ? xDirs[xDirs.length - 1] : xDrv, cyTop);
+      ctx.moveTo(xRef, cyTop);
+      ctx.lineTo(xDirs.length ? xDirs[xDirs.length - 1] : xDrv, cyTop);
       ctx.stroke();
 
       // Forward arrow
@@ -79,7 +84,8 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       ctx.moveTo(ax, cyTop);
       ctx.lineTo(ax - 8, cyTop - 4);
       ctx.lineTo(ax - 8, cyTop + 4);
-      ctx.closePath(); ctx.fill();
+      ctx.closePath();
+      ctx.fill();
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = getCanvasColors().accent;
       ctx.textAlign = 'right';
@@ -94,13 +100,17 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().border;
       ctx.lineWidth = 1;
       for (let f = 0.25; f <= 1.001; f += 0.25) {
-        ctx.beginPath(); ctx.arc(cx, cy, R * f, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx, cy, R * f, 0, Math.PI * 2);
+        ctx.stroke();
       }
       // Axes
       ctx.strokeStyle = getCanvasColors().border;
       ctx.beginPath();
-      ctx.moveTo(cx - R, cy); ctx.lineTo(cx + R, cy);
-      ctx.moveTo(cx, cy - R); ctx.lineTo(cx, cy + R);
+      ctx.moveTo(cx - R, cy);
+      ctx.lineTo(cx + R, cy);
+      ctx.moveTo(cx, cy - R);
+      ctx.lineTo(cx, cy + R);
       ctx.stroke();
 
       // Pattern: cos²ⁿ(φ/2) gives a forward-pointing lobe that sharpens with n.
@@ -120,7 +130,8 @@ export function YagiArrayFactorDemo({ figure }: Props) {
         const rN = Math.min(1, r + rb);
         const x = cx + R * rN * Math.cos(phi);
         const y = cy + R * rN * Math.sin(phi);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.closePath();
       ctx.fill();
@@ -143,17 +154,26 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 15.3'}
       title="A Yagi — driven element + parasitics"
       question="What does adding directors do to the radiation pattern?"
-      caption={<>
-        Plan view of a Yagi-Uda antenna: a single driven element, a slightly-longer reflector
-        behind, and one or more slightly-shorter directors in front. The combined pattern is the
-        element pattern multiplied by the array factor — a forward-pointing lobe that sharpens
-        with each director added, at the cost of bandwidth.
-      </>}
+      caption={
+        <>
+          Plan view of a Yagi-Uda antenna: a single driven element, a slightly-longer reflector
+          behind, and one or more slightly-shorter directors in front. The combined pattern is the
+          element pattern multiplied by the array factor — a forward-pointing lobe that sharpens
+          with each director added, at the cost of bandwidth.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
-        <MiniSlider label="directors" value={nDir} min={0} max={6} step={1}
-          format={v => v.toFixed(0)} onChange={v => setNDir(Math.round(v))} />
+        <MiniSlider
+          label="directors"
+          value={nDir}
+          min={0}
+          max={6}
+          step={1}
+          format={(v) => v.toFixed(0)}
+          onChange={(v) => setNDir(Math.round(v))}
+        />
         <MiniReadout label="gain ≈" value={Gdbi.toFixed(1)} unit="dBi" />
       </DemoControls>
     </Demo>

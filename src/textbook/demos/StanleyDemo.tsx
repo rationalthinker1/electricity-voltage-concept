@@ -16,23 +16,27 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const P_LOAD_W = 1e6;             // 1 MW delivered to the town
-const RHO_OHM_PER_KM = 0.1;       // ~ACSR 477 kcmil ≈ 0.1 Ω/km, both conductors
+const P_LOAD_W = 1e6; // 1 MW delivered to the town
+const RHO_OHM_PER_KM = 0.1; // ~ACSR 477 kcmil ≈ 0.1 Ω/km, both conductors
 
 export function StanleyDemo({ figure }: Props) {
   const [distanceKm, setDistanceKm] = useState(100);
-  const [Vline, setVline] = useState(4000);   // line voltage in V
+  const [Vline, setVline] = useState(4000); // line voltage in V
 
   const stateRef = useRef({ distanceKm, Vline });
-  useEffect(() => { stateRef.current = { distanceKm, Vline }; }, [distanceKm, Vline]);
+  useEffect(() => {
+    stateRef.current = { distanceKm, Vline };
+  }, [distanceKm, Vline]);
 
   const computed = useMemo(() => {
-    const R = RHO_OHM_PER_KM * distanceKm;       // total line resistance (both conductors)
-    const I = P_LOAD_W / Vline;                  // line current
-    const Ploss = I * I * R;                     // I²R loss
-    const Pgen = P_LOAD_W + Ploss;               // generator must supply both
+    const R = RHO_OHM_PER_KM * distanceKm; // total line resistance (both conductors)
+    const I = P_LOAD_W / Vline; // line current
+    const Ploss = I * I * R; // I²R loss
+    const Pgen = P_LOAD_W + Ploss; // generator must supply both
     const eff = P_LOAD_W / Pgen;
     return { R, I, Ploss, Pgen, eff };
   }, [distanceKm, Vline]);
@@ -55,7 +59,8 @@ export function StanleyDemo({ figure }: Props) {
 
       const cy = h * 0.45;
       const padX = 30;
-      const blockW = 56, blockH = 40;
+      const blockW = 56,
+        blockH = 40;
       const positions = [
         { label: 'GEN', sub: '500 V', x: padX },
         { label: 'STEP-UP', sub: 'kV', x: padX + (w - 2 * padX - blockW) * 0.27 },
@@ -80,11 +85,15 @@ export function StanleyDemo({ figure }: Props) {
       // Animated current arrows on the line
       const dotCount = 8;
       for (let k = 0; k < dotCount; k++) {
-        const u = ((k / dotCount + t * 0.3) % 1 + 1) % 1;
+        const u = (((k / dotCount + t * 0.3) % 1) + 1) % 1;
         const x = lineX0 + u * (lineX1 - lineX0);
         ctx.fillStyle = lineColor;
-        ctx.beginPath(); ctx.arc(x, cy - 8, 2, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.arc(x, cy + 8, 2, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x, cy - 8, 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x, cy + 8, 2, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       // Heat shimmer if loss is large
@@ -103,7 +112,8 @@ export function StanleyDemo({ figure }: Props) {
         ctx.strokeRect(p.x, cy - blockH / 2, blockW, blockH);
         ctx.fillStyle = colors.accent;
         ctx.font = 'bold 10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         ctx.fillText(p.label, p.x + blockW / 2, cy - 6);
         ctx.fillStyle = colors.textDim;
         ctx.font = '9px "JetBrains Mono", monospace';
@@ -114,17 +124,20 @@ export function StanleyDemo({ figure }: Props) {
       ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       for (let i = 0; i < positions.length - 1; i++) {
-        if (i === 1) continue;          // skip transmission segment (already drawn)
+        if (i === 1) continue; // skip transmission segment (already drawn)
         const a = positions[i].x + blockW;
         const b = positions[i + 1].x;
         ctx.beginPath();
-        ctx.moveTo(a, cy); ctx.lineTo(b, cy); ctx.stroke();
+        ctx.moveTo(a, cy);
+        ctx.lineTo(b, cy);
+        ctx.stroke();
       }
 
       // Labels: V_line above the transmission segment; distance below
       ctx.fillStyle = colors.teal;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
       const lcx = (lineX0 + lineX1) / 2;
       ctx.fillText(`V_line = ${formatVoltage(Vline)}`, lcx, cy - 18);
       ctx.fillText(`I = ${formatCurrent(I)}`, lcx, cy - 32);
@@ -133,7 +146,10 @@ export function StanleyDemo({ figure }: Props) {
       ctx.fillText(`${distanceKm} km · R = ${R.toFixed(1)} Ω`, lcx, cy + 24);
 
       // Efficiency bar
-      const barX = padX, barY = h - 30, barW = w - 2 * padX, barH = 14;
+      const barX = padX,
+        barY = h - 30,
+        barW = w - 2 * padX,
+        barH = 14;
       ctx.fillStyle = 'rgba(255,255,255,0.05)';
       ctx.fillRect(barX, barY, barW, barH);
       ctx.fillStyle = colors.teal;
@@ -142,10 +158,15 @@ export function StanleyDemo({ figure }: Props) {
       ctx.fillRect(barX + barW * eff, barY, barW * (1 - eff), barH);
       ctx.fillStyle = colors.text;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
       ctx.fillText(`delivered: ${(eff * 100).toFixed(1)} %`, barX + 4, barY + barH / 2);
       ctx.textAlign = 'right';
-      ctx.fillText(`lost as heat: ${((1 - eff) * 100).toFixed(1)} %`, barX + barW - 4, barY + barH / 2);
+      ctx.fillText(
+        `lost as heat: ${((1 - eff) * 100).toFixed(1)} %`,
+        barX + barW - 4,
+        barY + barH / 2,
+      );
 
       raf = requestAnimationFrame(draw);
     }
@@ -158,26 +179,36 @@ export function StanleyDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 18.3'}
       title="The Stanley argument — why high voltage wins long distance"
       question="Hold delivered power at 1 MW. Vary the line voltage. Watch the loss."
-      caption={<>
-        For a fixed delivered power P, the line current is I = P/V. The I²R loss in the conductors scales as
-        <em> P² R / V²</em> — quadratic in 1/V. Double the transmission voltage, quarter the loss. This is the
-        single most important fact in 19th-century electrical engineering: it is the reason your power grid is
-        AC and not DC, and the reason the wires above your street carry 12 kV or 25 kV instead of 240 V.
-      </>}
+      caption={
+        <>
+          For a fixed delivered power P, the line current is I = P/V. The I²R loss in the conductors
+          scales as
+          <em> P² R / V²</em> — quadratic in 1/V. Double the transmission voltage, quarter the loss.
+          This is the single most important fact in 19th-century electrical engineering: it is the
+          reason your power grid is AC and not DC, and the reason the wires above your street carry
+          12 kV or 25 kV instead of 240 V.
+        </>
+      }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={240} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="distance"
-          value={distanceKm} min={5} max={500} step={5}
-          format={v => Math.round(v) + ' km'}
+          value={distanceKm}
+          min={5}
+          max={500}
+          step={5}
+          format={(v) => Math.round(v) + ' km'}
           onChange={setDistanceKm}
         />
         <MiniSlider
           label="V_line"
-          value={Vline} min={500} max={500000} step={500}
-          format={v => formatVoltage(v)}
+          value={Vline}
+          min={500}
+          max={500000}
+          step={500}
+          format={(v) => formatVoltage(v)}
           onChange={setVline}
         />
         <MiniReadout label="I_line" value={<Num value={computed.I} digits={2} />} unit="A" />

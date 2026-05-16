@@ -18,16 +18,20 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function LensFocusingDemo({ figure }: Props) {
   // focal length in cm; sign of f is set by lens type
-  const [fAbs, setFAbs] = useState(8);          // |f| in cm
+  const [fAbs, setFAbs] = useState(8); // |f| in cm
   const [convex, setConvex] = useState(true);
-  const [dObj, setDObj] = useState(20);         // object distance in cm
+  const [dObj, setDObj] = useState(20); // object distance in cm
 
   const stateRef = useRef({ fAbs, convex, dObj });
-  useEffect(() => { stateRef.current = { fAbs, convex, dObj }; }, [fAbs, convex, dObj]);
+  useEffect(() => {
+    stateRef.current = { fAbs, convex, dObj };
+  }, [fAbs, convex, dObj]);
 
   // For thin-lens equation: signed focal length. Convex: +f. Concave: -f.
   const f = convex ? fAbs : -fAbs;
@@ -56,7 +60,10 @@ export function LensFocusingDemo({ figure }: Props) {
       // Optical axis
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(20, axisY); ctx.lineTo(W - 20, axisY); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(20, axisY);
+      ctx.lineTo(W - 20, axisY);
+      ctx.stroke();
 
       // Lens shape — a vertical line with tick marks at top/bottom; convex looks like ()
       const lensHalfH = 60;
@@ -81,14 +88,18 @@ export function LensFocusingDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.6;
       ctx.fillStyle = colors.teal;
-      ctx.beginPath(); ctx.arc(lensX, axisY, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(lensX, axisY, 2, 0, Math.PI * 2);
+      ctx.fill();
 
       // Focal points on each side
       const fpx = pxPerCm * fAbs;
       ctx.restore();
       ctx.fillStyle = getCanvasColors().accent;
       function focalDot(x: number) {
-        ctx.beginPath(); ctx.arc(x, axisY, 3.5, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x, axisY, 3.5, 0, Math.PI * 2);
+        ctx.fill();
       }
       focalDot(lensX + fpx);
       focalDot(lensX - fpx);
@@ -108,7 +119,8 @@ export function LensFocusingDemo({ figure }: Props) {
         ctx.strokeStyle = colors.accent;
         // incoming horizontal ray
         ctx.beginPath();
-        ctx.moveTo(20, yIn); ctx.lineTo(lensX, yIn);
+        ctx.moveTo(20, yIn);
+        ctx.lineTo(lensX, yIn);
         ctx.stroke();
 
         // After refraction: thin-lens approximation — ray crossing the lens at height h
@@ -129,7 +141,8 @@ export function LensFocusingDemo({ figure }: Props) {
         if (convex) {
           ctx.strokeStyle = getCanvasColors().accent;
           ctx.beginPath();
-          ctx.moveTo(lensX, yIn); ctx.lineTo(xEnd, yEnd);
+          ctx.moveTo(lensX, yIn);
+          ctx.lineTo(xEnd, yEnd);
           ctx.stroke();
         } else {
           // Concave: outgoing ray diverges. Solid forward ray + dashed virtual extension back to focal point on near side.
@@ -162,19 +175,22 @@ export function LensFocusingDemo({ figure }: Props) {
       // === Mode 2: object and image (only meaningful in convex case for a real image;
       //     we draw the object always, and only show the image arrow if d_i is finite
       //     and not absurd) ===
-      const objHpx = 28;     // object arrow height
+      const objHpx = 28; // object arrow height
       const objX = lensX - pxPerCm * dObj;
       // Object arrow (red, upward)
       ctx.strokeStyle = getCanvasColors().pink;
       ctx.fillStyle = getCanvasColors().pink;
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(objX, axisY); ctx.lineTo(objX, axisY - objHpx); ctx.stroke();
+      ctx.moveTo(objX, axisY);
+      ctx.lineTo(objX, axisY - objHpx);
+      ctx.stroke();
       ctx.beginPath();
       ctx.moveTo(objX, axisY - objHpx);
       ctx.lineTo(objX - 4, axisY - objHpx + 6);
       ctx.lineTo(objX + 4, axisY - objHpx + 6);
-      ctx.closePath(); ctx.fill();
+      ctx.closePath();
+      ctx.fill();
 
       // Image arrow
       const invDi = 1 / f - 1 / dObj;
@@ -182,12 +198,14 @@ export function LensFocusingDemo({ figure }: Props) {
       const m = -di / dObj;
       if (Number.isFinite(di) && Math.abs(di) * pxPerCm < W && Math.abs(m) < 30) {
         const imgX = lensX + pxPerCm * di;
-        const imgHpx = objHpx * m;     // signed; negative m → inverted (downward)
+        const imgHpx = objHpx * m; // signed; negative m → inverted (downward)
         ctx.strokeStyle = getCanvasColors().blue;
         ctx.fillStyle = getCanvasColors().blue;
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(imgX, axisY); ctx.lineTo(imgX, axisY - imgHpx); ctx.stroke();
+        ctx.moveTo(imgX, axisY);
+        ctx.lineTo(imgX, axisY - imgHpx);
+        ctx.stroke();
         // Arrowhead
         const dir = imgHpx < 0 ? 1 : -1;
         const tipY = axisY - imgHpx;
@@ -195,7 +213,8 @@ export function LensFocusingDemo({ figure }: Props) {
         ctx.moveTo(imgX, tipY);
         ctx.lineTo(imgX - 4, tipY + 6 * dir);
         ctx.lineTo(imgX + 4, tipY + 6 * dir);
-        ctx.closePath(); ctx.fill();
+        ctx.closePath();
+        ctx.fill();
 
         // Chief rays from the object tip:
         //   1) parallel to axis → through far focal point (convex) or away from near focal point (concave)
@@ -206,7 +225,10 @@ export function LensFocusingDemo({ figure }: Props) {
 
         // (a) horizontal from tip to lens
         ctx.strokeStyle = getCanvasColors().teal;
-        ctx.beginPath(); ctx.moveTo(tipX, tipY0); ctx.lineTo(lensX, tipY0); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(tipX, tipY0);
+        ctx.lineTo(lensX, tipY0);
+        ctx.stroke();
         // then from lens toward far focal point and beyond to image-tip x
         const farFx = lensX + (convex ? fpx : -fpx);
         const farFy = axisY;
@@ -215,7 +237,10 @@ export function LensFocusingDemo({ figure }: Props) {
         if (Math.abs(a_dx) > 0.5) {
           const tA = (imgX - lensX) / a_dx;
           const yA = tipY0 + a_dy * tA;
-          ctx.beginPath(); ctx.moveTo(lensX, tipY0); ctx.lineTo(imgX, yA); ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(lensX, tipY0);
+          ctx.lineTo(imgX, yA);
+          ctx.stroke();
         }
         // (b) ray through centre, undeviated
         ctx.strokeStyle = getCanvasColors().teal;
@@ -249,21 +274,38 @@ export function LensFocusingDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 14.8'}
       title="Thin-lens focusing — 1/f = 1/d₀ + 1/dᵢ"
       question="Where does the image form, and how big is it?"
-      caption={<>
-        Parallel rays (orange) hit a thin lens and refract once. A <strong>convex</strong> lens
-        bends them toward the far focal point F at distance f; a <strong>concave</strong> lens makes
-        them appear to diverge from the near focal point. With an object (pink arrow) at distance
-        <strong> d₀</strong>, the thin-lens equation <strong>1/f = 1/d₀ + 1/dᵢ</strong> locates the
-        image (blue arrow), and the magnification is <strong>m = −dᵢ/d₀</strong>. Negative m means
-        inverted; |m| &gt; 1 means enlarged.
-      </>}
+      caption={
+        <>
+          Parallel rays (orange) hit a thin lens and refract once. A <strong>convex</strong> lens
+          bends them toward the far focal point F at distance f; a <strong>concave</strong> lens
+          makes them appear to diverge from the near focal point. With an object (pink arrow) at
+          distance
+          <strong> d₀</strong>, the thin-lens equation <strong>1/f = 1/d₀ + 1/dᵢ</strong> locates
+          the image (blue arrow), and the magnification is <strong>m = −dᵢ/d₀</strong>. Negative m
+          means inverted; |m| &gt; 1 means enlarged.
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <MiniSlider label="|f|" value={fAbs} min={3} max={15} step={0.1}
-          format={v => v.toFixed(1) + ' cm'} onChange={setFAbs} />
-        <MiniSlider label="d₀" value={dObj} min={4} max={30} step={0.1}
-          format={v => v.toFixed(1) + ' cm'} onChange={setDObj} />
+        <MiniSlider
+          label="|f|"
+          value={fAbs}
+          min={3}
+          max={15}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' cm'}
+          onChange={setFAbs}
+        />
+        <MiniSlider
+          label="d₀"
+          value={dObj}
+          min={4}
+          max={30}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' cm'}
+          onChange={setDObj}
+        />
         <MiniToggle label={convex ? 'convex' : 'concave'} checked={convex} onChange={setConvex} />
         <MiniReadout label="dᵢ" value={Number.isFinite(dImg) ? dImg.toFixed(2) : '∞'} unit="cm" />
         <MiniReadout label="m" value={Number.isFinite(mag) ? mag.toFixed(2) : '—'} unit="×" />

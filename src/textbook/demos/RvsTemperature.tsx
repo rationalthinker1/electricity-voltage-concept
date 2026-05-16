@@ -10,11 +10,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { getCanvasColors } from '@/lib/canvasTheme';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 interface Curve {
   key: string;
@@ -53,21 +53,27 @@ const ptcRatio = (T_C: number) => {
 };
 
 const CURVES: Curve[] = [
-  { key: 'copper',   label: 'Copper',       color: getCanvasColors().accent, ratio: cuRatio },
-  { key: 'tungsten', label: 'Tungsten',     color: '#ffb84a', ratio: wRatio },
-  { key: 'nichrome', label: 'Nichrome',     color: getCanvasColors().teal, ratio: nicrRatio },
-  { key: 'ntc',      label: 'NTC therm.',   color: getCanvasColors().blue, ratio: ntcRatio },
-  { key: 'ptc',      label: 'PTC polyswitch', color: getCanvasColors().pink, ratio: ptcRatio },
+  { key: 'copper', label: 'Copper', color: getCanvasColors().accent, ratio: cuRatio },
+  { key: 'tungsten', label: 'Tungsten', color: '#ffb84a', ratio: wRatio },
+  { key: 'nichrome', label: 'Nichrome', color: getCanvasColors().teal, ratio: nicrRatio },
+  { key: 'ntc', label: 'NTC therm.', color: getCanvasColors().blue, ratio: ntcRatio },
+  { key: 'ptc', label: 'PTC polyswitch', color: getCanvasColors().pink, ratio: ptcRatio },
 ];
 
 export function RvsTemperatureDemo({ figure }: Props) {
   const [shown, setShown] = useState<Record<string, boolean>>({
-    copper: true, tungsten: true, nichrome: true, ntc: true, ptc: false,
+    copper: true,
+    tungsten: true,
+    nichrome: true,
+    ntc: true,
+    ptc: false,
   });
   const [T_C, setT] = useState(60);
 
   const stateRef = useRef({ shown, T_C });
-  useEffect(() => { stateRef.current = { shown, T_C }; }, [shown, T_C]);
+  useEffect(() => {
+    stateRef.current = { shown, T_C };
+  }, [shown, T_C]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H } = info;
@@ -78,15 +84,21 @@ export function RvsTemperatureDemo({ figure }: Props) {
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, W, H);
 
-      const padL = 56, padR = 18, padT = 26, padB = 32;
+      const padL = 56,
+        padR = 18,
+        padT = 26,
+        padB = 32;
       const gW = W - padL - padR;
       const gH = H - padT - padB;
 
       // T axis: -20 .. 200 °C
-      const tMin = -20, tMax = 200;
+      const tMin = -20,
+        tMax = 200;
       // log-y axis: 0.05 .. 50  (so we can see NTC drop and PTC trip)
-      const yMin = 0.05, yMax = 50;
-      const logYmin = Math.log10(yMin), logYmax = Math.log10(yMax);
+      const yMin = 0.05,
+        yMax = 50;
+      const logYmin = Math.log10(yMin),
+        logYmax = Math.log10(yMax);
       const xT = (t: number) => padL + ((t - tMin) / (tMax - tMin)) * gW;
       const yR = (r: number) => {
         const lr = Math.log10(Math.max(yMin * 0.5, Math.min(yMax * 2, r)));
@@ -109,7 +121,10 @@ export function RvsTemperatureDemo({ figure }: Props) {
       for (let t = -20; t <= 200; t += 40) {
         const x = xT(t);
         ctx.strokeStyle = getCanvasColors().border;
-        ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT + gH); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, padT);
+        ctx.lineTo(x, padT + gH);
+        ctx.stroke();
         ctx.fillText(`${t}`, x, padT + gH + 14);
       }
       ctx.fillText('Temperature (°C)', padL + gW / 2, padT + gH + 26);
@@ -119,7 +134,10 @@ export function RvsTemperatureDemo({ figure }: Props) {
         const v = Math.pow(10, lp);
         const y = yR(v);
         ctx.strokeStyle = getCanvasColors().border;
-        ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + gW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(padL, y);
+        ctx.lineTo(padL + gW, y);
+        ctx.stroke();
         ctx.fillText(`${v < 1 ? v.toFixed(1) : v.toFixed(0)}×`, padL - 6, y + 3);
       }
 
@@ -127,7 +145,8 @@ export function RvsTemperatureDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
-      ctx.moveTo(xT(T_REF), padT); ctx.lineTo(xT(T_REF), padT + gH);
+      ctx.moveTo(xT(T_REF), padT);
+      ctx.lineTo(xT(T_REF), padT + gH);
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = getCanvasColors().textDim;
@@ -156,7 +175,8 @@ export function RvsTemperatureDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().accent;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(cx, padT); ctx.lineTo(cx, padT + gH);
+      ctx.moveTo(cx, padT);
+      ctx.lineTo(cx, padT + gH);
       ctx.stroke();
       // Dots at the cursor for each shown curve
       for (const c of CURVES) {
@@ -164,7 +184,9 @@ export function RvsTemperatureDemo({ figure }: Props) {
         const r = c.ratio(T_C);
         const y = yR(r);
         ctx.fillStyle = c.color;
-        ctx.beginPath(); ctx.arc(cx, y, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(cx, y, 4, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       // Title
@@ -188,8 +210,9 @@ export function RvsTemperatureDemo({ figure }: Props) {
       question="How does each material's resistance change with temperature?"
       caption={
         <>
-          Pure metals (Cu, W) climb with T — phonon scattering rises with thermal vibration amplitude. Nichrome is engineered to be nearly
-          flat. NTC thermistors drop exponentially with T (used as temperature sensors). PTC polyswitches sit near 1× until their trip
+          Pure metals (Cu, W) climb with T — phonon scattering rises with thermal vibration
+          amplitude. Nichrome is engineered to be nearly flat. NTC thermistors drop exponentially
+          with T (used as temperature sensors). PTC polyswitches sit near 1× until their trip
           temperature, then jump by ~1000× — that's the self-protecting current limit.
         </>
       }
@@ -197,27 +220,25 @@ export function RvsTemperatureDemo({ figure }: Props) {
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>
-        {CURVES.map(c => (
+        {CURVES.map((c) => (
           <MiniToggle
             key={c.key}
             label={c.label}
             checked={!!shown[c.key]}
-            onChange={v => setShown(s => ({ ...s, [c.key]: v }))}
+            onChange={(v) => setShown((s) => ({ ...s, [c.key]: v }))}
           />
         ))}
         <MiniSlider
           label="T"
-          value={T_C} min={-20} max={200} step={1}
-          format={v => v.toFixed(0) + ' °C'}
+          value={T_C}
+          min={-20}
+          max={200}
+          step={1}
+          format={(v) => v.toFixed(0) + ' °C'}
           onChange={setT}
         />
-        {CURVES.filter(c => shown[c.key]).map(c => (
-          <MiniReadout
-            key={c.key}
-            label={c.label}
-            value={fmtRatio(c.ratio(T_C))}
-            unit="× R₂₀"
-          />
+        {CURVES.filter((c) => shown[c.key]).map((c) => (
+          <MiniReadout key={c.key} label={c.label} value={fmtRatio(c.ratio(T_C))} unit="× R₂₀" />
         ))}
       </DemoControls>
     </Demo>

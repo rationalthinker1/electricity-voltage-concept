@@ -40,7 +40,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'feynman-II-2': {
     id: 'feynman-II-2',
-    title: 'The Feynman Lectures on Physics, Vol. II, Ch. 2 — Differential Calculus of Vector Fields',
+    title:
+      'The Feynman Lectures on Physics, Vol. II, Ch. 2 — Differential Calculus of Vector Fields',
     author: 'Richard P. Feynman, Robert B. Leighton, Matthew Sands',
     year: 1964,
     venue: 'Caltech / Addison-Wesley',
@@ -110,13 +111,14 @@ export const SOURCES: Record<string, Source> = {
   },
   'crc-resistivity': {
     id: 'crc-resistivity',
-    title: 'CRC Handbook of Chemistry and Physics, 104th ed., "Electrical Resistivity of Pure Metals" at 20 °C',
+    title:
+      'CRC Handbook of Chemistry and Physics, 104th ed., "Electrical Resistivity of Pure Metals" at 20 °C',
     author: 'John R. Rumble (ed.)',
     year: 2023,
     venue: 'CRC Press / Taylor & Francis',
     note: 'Conductivities of Cu, Ag, Au, Al, Fe, W at room temperature.',
   },
-  'kanthal': {
+  kanthal: {
     id: 'kanthal',
     title: 'Nichrome 80 / Kanthal A1 — manufacturer datasheet',
     author: 'Sandvik / Kanthal',
@@ -155,7 +157,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'cavendish-1773': {
     id: 'cavendish-1773',
-    title: 'Henry Cavendish, "Experiments on Electricity" (1771–1781 notes, esp. 1773 null-cavity test), in The Electrical Researches of the Honourable Henry Cavendish',
+    title:
+      'Henry Cavendish, "Experiments on Electricity" (1771–1781 notes, esp. 1773 null-cavity test), in The Electrical Researches of the Honourable Henry Cavendish',
     author: 'James Clerk Maxwell (ed.)',
     year: 1879,
     venue: 'Cambridge University Press',
@@ -163,19 +166,20 @@ export const SOURCES: Record<string, Source> = {
   },
   'williams-faller-hill-1971': {
     id: 'williams-faller-hill-1971',
-    title: "New Experimental Test of Coulomb's Law: A Laboratory Upper Limit on the Photon Rest Mass",
+    title:
+      "New Experimental Test of Coulomb's Law: A Laboratory Upper Limit on the Photon Rest Mass",
     author: 'E. R. Williams, J. E. Faller, H. A. Hill',
     year: 1971,
     venue: 'Physical Review Letters 26, 721',
     url: 'https://doi.org/10.1103/PhysRevLett.26.721',
-    note: "Writing the deviation as 1/r^(2+q), the experiment bounded q = (2.7 ± 3.1)×10⁻¹⁶ — i.e., the exponent is 2 to within ~3×10⁻¹⁶.",
+    note: 'Writing the deviation as 1/r^(2+q), the experiment bounded q = (2.7 ± 3.1)×10⁻¹⁶ — i.e., the exponent is 2 to within ~3×10⁻¹⁶.',
   },
   'coulomb-1785': {
     id: 'coulomb-1785',
-    title: 'Premier mémoire sur l\'électricité et le magnétisme',
+    title: "Premier mémoire sur l'électricité et le magnétisme",
     author: 'Charles-Augustin de Coulomb',
     year: 1785,
-    venue: 'Histoire de l\'Académie Royale des Sciences',
+    venue: "Histoire de l'Académie Royale des Sciences",
     note: 'Original torsion-balance experiment establishing the inverse-square law for electric force.',
   },
   'faraday-1832': {
@@ -194,7 +198,7 @@ export const SOURCES: Record<string, Source> = {
     year: 1865,
     venue: 'Philosophical Transactions of the Royal Society of London 155, 459–512',
     url: 'https://royalsocietypublishing.org/doi/10.1098/rstl.1865.0008',
-    note: 'Introduces displacement current and completes Ampère\'s law, predicting EM waves at speed c.',
+    note: "Introduces displacement current and completes Ampère's law, predicting EM waves at speed c.",
   },
   'poynting-1884': {
     id: 'poynting-1884',
@@ -223,11 +227,12 @@ export const SOURCES: Record<string, Source> = {
   },
   'ampere-1826': {
     id: 'ampere-1826',
-    title: 'Théorie mathématique des phénomènes électrodynamiques uniquement déduite de l\'expérience',
+    title:
+      "Théorie mathématique des phénomènes électrodynamiques uniquement déduite de l'expérience",
     author: 'André-Marie Ampère',
     year: 1826,
     venue: 'Académie des Sciences, Paris',
-    note: 'Force law between current elements; what we now call Ampère\'s circuital law.',
+    note: "Force law between current elements; what we now call Ampère's circuital law.",
   },
   'gauss-1813': {
     id: 'gauss-1813',
@@ -235,7 +240,7 @@ export const SOURCES: Record<string, Source> = {
     author: 'Carl Friedrich Gauss',
     year: 1813,
     venue: 'Commentationes societatis regiae scientiarum Gottingensis recentiores',
-    note: 'Original divergence theorem (Gauss\'s theorem) — later applied to electrostatics.',
+    note: "Original divergence theorem (Gauss's theorem) — later applied to electrostatics.",
   },
   'hall-1879': {
     id: 'hall-1879',
@@ -255,11 +260,13 @@ export const SOURCES: Record<string, Source> = {
   },
   'onnes-1911': {
     id: 'onnes-1911',
-    title: 'Further experiments with liquid helium. C. On the change of electric resistance of pure metals at very low temperatures etc. IV. The resistance of pure mercury at helium temperatures',
+    title:
+      'Further experiments with liquid helium. C. On the change of electric resistance of pure metals at very low temperatures etc. IV. The resistance of pure mercury at helium temperatures',
     author: 'Heike Kamerlingh Onnes',
     year: 1911,
-    venue: 'Communications from the Physical Laboratory of the University of Leiden, No. 120b / 122b',
-    note: 'Discovery of superconductivity: mercury\'s resistance drops abruptly to zero at 4.2 K.',
+    venue:
+      'Communications from the Physical Laboratory of the University of Leiden, No. 120b / 122b',
+    note: "Discovery of superconductivity: mercury's resistance drops abruptly to zero at 4.2 K.",
   },
   'bcs-1957': {
     id: 'bcs-1957',
@@ -276,7 +283,7 @@ export const SOURCES: Record<string, Source> = {
     author: 'Augustus Matthiessen, Charles Vogt',
     year: 1864,
     venue: 'Philosophical Transactions of the Royal Society of London 154, 167–200',
-    note: 'Matthiessen\'s rule: ρ(T) = ρ_residual + ρ_phonon(T); resistivity of pure metals is roughly linear in T above the Debye temperature.',
+    note: "Matthiessen's rule: ρ(T) = ρ_residual + ρ_phonon(T); resistivity of pure metals is roughly linear in T above the Debye temperature.",
   },
   'nec-2017-aluminum': {
     id: 'nec-2017-aluminum',
@@ -332,7 +339,8 @@ export const SOURCES: Record<string, Source> = {
   /* ─── New for Ch7–Ch11 ─── */
   'hertz-1888': {
     id: 'hertz-1888',
-    title: 'Über elektromagnetische Wellen im Lufte und deren Reflexion (On Electromagnetic Waves in Air and Their Reflection)',
+    title:
+      'Über elektromagnetische Wellen im Lufte und deren Reflexion (On Electromagnetic Waves in Air and Their Reflection)',
     author: 'Heinrich Hertz',
     year: 1888,
     venue: 'Annalen der Physik 270 (8), 609–623',
@@ -340,7 +348,7 @@ export const SOURCES: Record<string, Source> = {
   },
   'feynman-II-18': {
     id: 'feynman-II-18',
-    title: "The Feynman Lectures on Physics, Vol. II, Ch. 18 — The Maxwell Equations",
+    title: 'The Feynman Lectures on Physics, Vol. II, Ch. 18 — The Maxwell Equations',
     author: 'Richard P. Feynman, Robert B. Leighton, Matthew Sands',
     year: 1964,
     venue: 'Caltech / Addison-Wesley',
@@ -349,7 +357,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'feynman-II-21': {
     id: 'feynman-II-21',
-    title: 'The Feynman Lectures on Physics, Vol. II, Ch. 21 — Solutions of Maxwell\'s Equations with Currents and Charges',
+    title:
+      "The Feynman Lectures on Physics, Vol. II, Ch. 21 — Solutions of Maxwell's Equations with Currents and Charges",
     author: 'Richard P. Feynman, Robert B. Leighton, Matthew Sands',
     year: 1964,
     venue: 'Caltech / Addison-Wesley',
@@ -371,11 +380,12 @@ export const SOURCES: Record<string, Source> = {
     author: 'Edward M. Purcell, David J. Morin',
     year: 2013,
     venue: 'Cambridge University Press',
-    note: "Treats magnetism as the relativistic consequence of moving charge from the start — the textbook Feynman gestures at in Vol II Ch. 13. Ch. 5–6 derive B from a Lorentz-boosted Coulomb force.",
+    note: 'Treats magnetism as the relativistic consequence of moving charge from the start — the textbook Feynman gestures at in Vol II Ch. 13. Ch. 5–6 derive B from a Lorentz-boosted Coulomb force.',
   },
   'kirchhoff-1845': {
     id: 'kirchhoff-1845',
-    title: 'Über den Durchgang eines elektrischen Stromes durch eine Ebene, insbesondere durch eine kreisförmige (On the passage of an electric current through a plane, in particular a circular one)',
+    title:
+      'Über den Durchgang eines elektrischen Stromes durch eine Ebene, insbesondere durch eine kreisförmige (On the passage of an electric current through a plane, in particular a circular one)',
     author: 'Gustav Kirchhoff',
     year: 1845,
     venue: 'Annalen der Physik 140 (4), 497–514',
@@ -387,7 +397,7 @@ export const SOURCES: Record<string, Source> = {
     author: 'Paul Horowitz, Winfield Hill',
     year: 2015,
     venue: 'Cambridge University Press',
-    note: 'Working engineer\'s reference for practical AC, impedance, op-amps, and signal-handling; cross-checked numerical examples for Ch.10.',
+    note: "Working engineer's reference for practical AC, impedance, op-amps, and signal-handling; cross-checked numerical examples for Ch.10.",
   },
   'nilsson-riedel-2018': {
     id: 'nilsson-riedel-2018',
@@ -415,7 +425,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'clausius-1850': {
     id: 'clausius-1850',
-    title: 'Ueber die Art der Bewegung, welche wir Wärme nennen / Polarization in dielectrics (Clausius–Mossotti work, 1850s)',
+    title:
+      'Ueber die Art der Bewegung, welche wir Wärme nennen / Polarization in dielectrics (Clausius–Mossotti work, 1850s)',
     author: 'Rudolf Clausius (with O. F. Mossotti, 1846)',
     year: 1850,
     venue: 'Annalen der Physik (and later Mossotti, Mem. Soc. Ital. Sci. Modena 1846)',
@@ -431,7 +442,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'weiss-1907': {
     id: 'weiss-1907',
-    title: "L'hypothèse du champ moléculaire et la propriété ferromagnétique (Molecular Field Hypothesis and the Ferromagnetic Property)",
+    title:
+      "L'hypothèse du champ moléculaire et la propriété ferromagnétique (Molecular Field Hypothesis and the Ferromagnetic Property)",
     author: 'Pierre Weiss',
     year: 1907,
     venue: 'Journal de Physique Théorique et Appliquée 6, 661–690',
@@ -474,7 +486,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'catania-2015': {
     id: 'catania-2015',
-    title: 'Electric Eels Concentrate Their Electric Field to Induce Involuntary Fatigue in Struggling Prey',
+    title:
+      'Electric Eels Concentrate Their Electric Field to Induce Involuntary Fatigue in Struggling Prey',
     author: 'Kenneth C. Catania',
     year: 2015,
     venue: 'Current Biology 25 (22), 2889–2898',
@@ -493,7 +506,8 @@ export const SOURCES: Record<string, Source> = {
   /* ─── Ch4 / Ch5 / Ch6 case-study sources ─── */
   'lauterbur-1973': {
     id: 'lauterbur-1973',
-    title: 'Image Formation by Induced Local Interactions: Examples Employing Nuclear Magnetic Resonance',
+    title:
+      'Image Formation by Induced Local Interactions: Examples Employing Nuclear Magnetic Resonance',
     author: 'Paul C. Lauterbur',
     year: 1973,
     venue: 'Nature 242, 190–191',
@@ -503,7 +517,8 @@ export const SOURCES: Record<string, Source> = {
   'bruning-lhc-2004': {
     id: 'bruning-lhc-2004',
     title: 'LHC Design Report, Vol. I: The LHC Main Ring',
-    author: 'O. S. Brüning, P. Collier, P. Lebrun, S. Myers, R. Ostojic, J. Poole, P. Proudlock (eds.)',
+    author:
+      'O. S. Brüning, P. Collier, P. Lebrun, S. Myers, R. Ostojic, J. Poole, P. Proudlock (eds.)',
     year: 2004,
     venue: 'CERN-2004-003',
     url: 'https://cds.cern.ch/record/782076',
@@ -512,11 +527,12 @@ export const SOURCES: Record<string, Source> = {
   'chulliat-wmm-2020': {
     id: 'chulliat-wmm-2020',
     title: 'The US/UK World Magnetic Model for 2020–2025: Technical Report',
-    author: 'A. Chulliat, W. Brown, P. Alken, C. Beggan, M. Nair, G. Cox, A. Woods, S. Macmillan, B. Meyer, M. Paniccia',
+    author:
+      'A. Chulliat, W. Brown, P. Alken, C. Beggan, M. Nair, G. Cox, A. Woods, S. Macmillan, B. Meyer, M. Paniccia',
     year: 2020,
     venue: 'NOAA National Centers for Environmental Information / British Geological Survey',
     url: 'https://www.ncei.noaa.gov/products/world-magnetic-model',
-    note: 'Geomagnetic field model giving total intensity ~25,000–65,000 nT across Earth\'s surface (~0.25–0.65 G).',
+    note: "Geomagnetic field model giving total intensity ~25,000–65,000 nT across Earth's surface (~0.25–0.65 G).",
   },
   'duncan-thompson-1992': {
     id: 'duncan-thompson-1992',
@@ -529,7 +545,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'wpc-qi-1.3': {
     id: 'wpc-qi-1.3',
-    title: 'Qi Wireless Power Transfer System Specification, Volume I, Part 1: General Requirements (v1.3)',
+    title:
+      'Qi Wireless Power Transfer System Specification, Volume I, Part 1: General Requirements (v1.3)',
     author: 'Wireless Power Consortium',
     year: 2021,
     venue: 'WPC',
@@ -538,7 +555,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'lucia-induction-2014': {
     id: 'lucia-induction-2014',
-    title: 'Induction Heating Technology and Its Applications: Past Developments, Current Technology, and Future Challenges',
+    title:
+      'Induction Heating Technology and Its Applications: Past Developments, Current Technology, and Future Challenges',
     author: 'Óscar Lucía, Pascal Maussion, Enrique J. Dede, José M. Burdío',
     year: 2014,
     venue: 'IEEE Transactions on Industrial Electronics 61 (5), 2509–2520',
@@ -575,7 +593,8 @@ export const SOURCES: Record<string, Source> = {
   /* ─── Ch10 / Ch11 case-study sources ─── */
   'ansi-c84-1-2020': {
     id: 'ansi-c84-1-2020',
-    title: 'ANSI C84.1-2020 — American National Standard for Electric Power Systems and Equipment — Voltage Ratings (60 Hz)',
+    title:
+      'ANSI C84.1-2020 — American National Standard for Electric Power Systems and Equipment — Voltage Ratings (60 Hz)',
     author: 'National Electrical Manufacturers Association (NEMA)',
     year: 2020,
     venue: 'NEMA / ANSI',
@@ -611,11 +630,12 @@ export const SOURCES: Record<string, Source> = {
   },
   'norton-1926': {
     id: 'norton-1926',
-    title: 'Design of finite networks for uniform frequency characteristic (technical memorandum TM26-0-1860)',
+    title:
+      'Design of finite networks for uniform frequency characteristic (technical memorandum TM26-0-1860)',
     author: 'Edward Lawry Norton',
     year: 1926,
     venue: 'Bell Telephone Laboratories internal memorandum',
-    note: 'Norton\'s theorem: any linear two-terminal network is equivalent to an ideal current source I_N in parallel with an impedance Z_N. The current-source dual of Thévenin\'s theorem.',
+    note: "Norton's theorem: any linear two-terminal network is equivalent to an ideal current source I_N in parallel with an impedance Z_N. The current-source dual of Thévenin's theorem.",
   },
   'hayt-kemmerly-durbin-2018': {
     id: 'hayt-kemmerly-durbin-2018',
@@ -651,7 +671,7 @@ export const SOURCES: Record<string, Source> = {
     year: 1956,
     venue: 'Nobel Foundation',
     url: 'https://www.nobelprize.org/prizes/physics/1956/shockley/lecture/',
-    note: 'Shockley\'s Nobel lecture surveying the junction transistor, drift-diffusion in semiconductors, and the road from the point-contact device to the practical BJT.',
+    note: "Shockley's Nobel lecture surveying the junction transistor, drift-diffusion in semiconductors, and the road from the point-contact device to the practical BJT.",
   },
   'streetman-banerjee-2015': {
     id: 'streetman-banerjee-2015',
@@ -685,7 +705,7 @@ export const SOURCES: Record<string, Source> = {
     author: 'Ronald N. Bracewell',
     year: 2000,
     venue: 'McGraw-Hill',
-    note: 'Standard graduate-level reference for Fourier transforms in physics and engineering. Source for Parseval\'s theorem, convolution, and the relationship between Fourier series and Fourier transforms.',
+    note: "Standard graduate-level reference for Fourier transforms in physics and engineering. Source for Parseval's theorem, convolution, and the relationship between Fourier series and Fourier transforms.",
   },
   'cooley-tukey-1965': {
     id: 'cooley-tukey-1965',
@@ -718,7 +738,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'ieee-std-3001-2-2017': {
     id: 'ieee-std-3001-2-2017',
-    title: 'IEEE Std 3001.2-2017: Recommended Practice for Evaluating the Electrical Service Requirements of Industrial and Commercial Power Systems',
+    title:
+      'IEEE Std 3001.2-2017: Recommended Practice for Evaluating the Electrical Service Requirements of Industrial and Commercial Power Systems',
     author: 'IEEE',
     year: 2017,
     venue: 'IEEE Power Systems Engineering Committee',
@@ -726,7 +747,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'nema-ab-1': {
     id: 'nema-ab-1',
-    title: 'NEMA AB 1-2017: Molded-Case Circuit Breakers, Molded-Case Switches, and Circuit-Breaker Enclosures',
+    title:
+      'NEMA AB 1-2017: Molded-Case Circuit Breakers, Molded-Case Switches, and Circuit-Breaker Enclosures',
     author: 'National Electrical Manufacturers Association',
     year: 2017,
     venue: 'NEMA, Rosslyn VA',
@@ -742,7 +764,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'ul-489': {
     id: 'ul-489',
-    title: 'UL 489: Standard for Molded-Case Circuit Breakers, Molded-Case Switches, and Circuit-Breaker Enclosures',
+    title:
+      'UL 489: Standard for Molded-Case Circuit Breakers, Molded-Case Switches, and Circuit-Breaker Enclosures',
     author: 'Underwriters Laboratories',
     year: 2024,
     venue: 'UL Solutions',
@@ -766,7 +789,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'ieee-c62-41': {
     id: 'ieee-c62-41',
-    title: 'IEEE C62.41.2: Recommended Practice on Characterization of Surges in Low-Voltage AC Power Circuits',
+    title:
+      'IEEE C62.41.2: Recommended Practice on Characterization of Surges in Low-Voltage AC Power Circuits',
     author: 'IEEE Surge Protective Devices Committee',
     year: 2002,
     venue: 'IEEE Standards Association',
@@ -786,7 +810,7 @@ export const SOURCES: Record<string, Source> = {
     author: 'International Electrotechnical Commission',
     year: 2018,
     venue: 'IEC, Geneva',
-    note: 'The international companion to Dalziel\'s 1956 work — modern current-vs-time threshold curves for perception, let-go, ventricular fibrillation, and burns in humans for both DC and AC at various frequencies.',
+    note: "The international companion to Dalziel's 1956 work — modern current-vs-time threshold curves for perception, let-go, ventricular fibrillation, and burns in humans for both DC and AC at various frequencies.",
   },
   'dalziel-1956': {
     id: 'dalziel-1956',
@@ -807,7 +831,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'sae-j1772': {
     id: 'sae-j1772',
-    title: 'SAE J1772: SAE Surface Vehicle Recommended Practice — SAE Electric Vehicle and Plug-in Hybrid Electric Vehicle Conductive Charge Coupler',
+    title:
+      'SAE J1772: SAE Surface Vehicle Recommended Practice — SAE Electric Vehicle and Plug-in Hybrid Electric Vehicle Conductive Charge Coupler',
     author: 'SAE International',
     year: 2017,
     venue: 'SAE Hybrid Committee',
@@ -815,7 +840,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'iec-62196': {
     id: 'iec-62196',
-    title: 'IEC 62196: Plugs, socket-outlets, vehicle connectors and vehicle inlets — Conductive charging of electric vehicles',
+    title:
+      'IEC 62196: Plugs, socket-outlets, vehicle connectors and vehicle inlets — Conductive charging of electric vehicles',
     author: 'International Electrotechnical Commission',
     year: 2022,
     venue: 'IEC, Geneva',
@@ -823,7 +849,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'ansi-c12-1-2014': {
     id: 'ansi-c12-1-2014',
-    title: 'ANSI C12.1-2014: American National Standard for Electric Meters — Code for Electricity Metering',
+    title:
+      'ANSI C12.1-2014: American National Standard for Electric Meters — Code for Electricity Metering',
     author: 'ANSI / NEMA',
     year: 2014,
     venue: 'NEMA, Rosslyn VA',
@@ -839,7 +866,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'ieee-1547-2018': {
     id: 'ieee-1547-2018',
-    title: 'IEEE Std 1547-2018: Standard for Interconnection and Interoperability of Distributed Energy Resources with Associated Electric Power Systems Interfaces',
+    title:
+      'IEEE Std 1547-2018: Standard for Interconnection and Interoperability of Distributed Energy Resources with Associated Electric Power Systems Interfaces',
     author: 'IEEE',
     year: 2018,
     venue: 'IEEE Power Systems Engineering Committee',
@@ -848,7 +876,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'awg-table-nec': {
     id: 'awg-table-nec',
-    title: 'NEC 2023 Table 310.16: Ampacities of Insulated Conductors Rated up to and Including 2000 Volts',
+    title:
+      'NEC 2023 Table 310.16: Ampacities of Insulated Conductors Rated up to and Including 2000 Volts',
     author: 'National Fire Protection Association',
     year: 2023,
     venue: 'NFPA 70 Article 310',
@@ -890,7 +919,8 @@ export const SOURCES: Record<string, Source> = {
   'baibich-1988': {
     id: 'baibich-1988',
     title: 'Giant Magnetoresistance of (001)Fe/(001)Cr Magnetic Superlattices',
-    author: 'M. N. Baibich, J. M. Broto, A. Fert, F. Nguyen Van Dau, F. Petroff, P. Etienne, G. Creuzet, A. Friederich, J. Chazelas',
+    author:
+      'M. N. Baibich, J. M. Broto, A. Fert, F. Nguyen Van Dau, F. Petroff, P. Etienne, G. Creuzet, A. Friederich, J. Chazelas',
     year: 1988,
     venue: 'Physical Review Letters 61, 2472–2475',
     url: 'https://doi.org/10.1103/PhysRevLett.61.2472',
@@ -898,7 +928,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'binasch-grunberg-1989': {
     id: 'binasch-grunberg-1989',
-    title: 'Enhanced magnetoresistance in layered magnetic structures with antiferromagnetic interlayer exchange',
+    title:
+      'Enhanced magnetoresistance in layered magnetic structures with antiferromagnetic interlayer exchange',
     author: 'G. Binasch, P. Grünberg, F. Saurenbach, W. Zinn',
     year: 1989,
     venue: 'Physical Review B 39, 4828(R)',
@@ -917,7 +948,8 @@ export const SOURCES: Record<string, Source> = {
   /* ─── Ch.7–9 case-study sources ─── */
   'ieee-80211': {
     id: 'ieee-80211',
-    title: 'IEEE Std 802.11-2020: Wireless LAN Medium Access Control (MAC) and Physical Layer (PHY) Specifications',
+    title:
+      'IEEE Std 802.11-2020: Wireless LAN Medium Access Control (MAC) and Physical Layer (PHY) Specifications',
     author: 'IEEE 802.11 Working Group',
     year: 2021,
     venue: 'IEEE Standards Association',
@@ -935,7 +967,8 @@ export const SOURCES: Record<string, Source> = {
   'tsuda-2013-ikaros': {
     id: 'tsuda-2013-ikaros',
     title: 'Achievement of IKAROS — Japanese deep space solar sail demonstration mission',
-    author: "Yuichi Tsuda, Osamu Mori, Ryu Funase, Hirotaka Sawada, Takayuki Yamamoto, Takanao Saiki, Tatsuya Endo, Katsuhide Yonekura, Hirokazu Hoshino, Jun'ichiro Kawaguchi",
+    author:
+      "Yuichi Tsuda, Osamu Mori, Ryu Funase, Hirotaka Sawada, Takayuki Yamamoto, Takanao Saiki, Tatsuya Endo, Katsuhide Yonekura, Hirokazu Hoshino, Jun'ichiro Kawaguchi",
     year: 2013,
     venue: 'Acta Astronautica 82 (2), 183–188',
     url: 'https://doi.org/10.1016/j.actaastro.2012.03.032',
@@ -952,7 +985,8 @@ export const SOURCES: Record<string, Source> = {
   'rappaport-2013-mmwave': {
     id: 'rappaport-2013-mmwave',
     title: 'Millimeter Wave Mobile Communications for 5G Cellular: It Will Work!',
-    author: 'Theodore S. Rappaport, Shu Sun, Rimma Mayzus, Hang Zhao, Yaniv Azar, Kevin Wang, George N. Wong, Jocelyn K. Schulz, Mathew Samimi, Felix Gutierrez',
+    author:
+      'Theodore S. Rappaport, Shu Sun, Rimma Mayzus, Hang Zhao, Yaniv Azar, Kevin Wang, George N. Wong, Jocelyn K. Schulz, Mathew Samimi, Felix Gutierrez',
     year: 2013,
     venue: 'IEEE Access 1, 335–349',
     url: 'https://doi.org/10.1109/ACCESS.2013.2260813',
@@ -976,7 +1010,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'ewen-purcell-1951': {
     id: 'ewen-purcell-1951',
-    title: 'Observation of a Line in the Galactic Radio Spectrum: Radiation from Galactic Hydrogen at 1,420 Mc./sec.',
+    title:
+      'Observation of a Line in the Galactic Radio Spectrum: Radiation from Galactic Hydrogen at 1,420 Mc./sec.',
     author: 'Harold I. Ewen, Edward M. Purcell',
     year: 1951,
     venue: 'Nature 168, 356',
@@ -1041,17 +1076,18 @@ export const SOURCES: Record<string, Source> = {
   },
   'wiedemann-franz-1853': {
     id: 'wiedemann-franz-1853',
-    title: "Über die Wärme-Leitungsfähigkeit der Metalle (On the heat conductivity of metals)",
+    title: 'Über die Wärme-Leitungsfähigkeit der Metalle (On the heat conductivity of metals)',
     author: 'Gustav Wiedemann, Rudolf Franz',
     year: 1853,
     venue: 'Annalen der Physik 165 (8), 497–531',
-    note: "Empirical observation that the ratio of thermal to electrical conductivity κ/σ is the same for all metals at a given temperature; later, Lorenz (1872) found the ratio scales as L₀·T with L₀ ≈ 2.44×10⁻⁸ W·Ω·K⁻². The Wiedemann–Franz law explains why good electrical conductors are good thermal conductors.",
+    note: 'Empirical observation that the ratio of thermal to electrical conductivity κ/σ is the same for all metals at a given temperature; later, Lorenz (1872) found the ratio scales as L₀·T with L₀ ≈ 2.44×10⁻⁸ W·Ω·K⁻². The Wiedemann–Franz law explains why good electrical conductors are good thermal conductors.',
   },
 
   /* ─── Ch.5 Capacitors ─── */
   'leyden-jar-1745': {
     id: 'leyden-jar-1745',
-    title: 'The Leyden jar — independent discovery (E. G. von Kleist, October 1745; Pieter van Musschenbroek, 1746)',
+    title:
+      'The Leyden jar — independent discovery (E. G. von Kleist, October 1745; Pieter van Musschenbroek, 1746)',
     author: 'E. G. von Kleist; Pieter van Musschenbroek',
     year: 1745,
     venue: 'Correspondence and demonstrations to the Royal Society',
@@ -1059,7 +1095,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'volta-1782': {
     id: 'volta-1782',
-    title: 'Del modo di rendere sensibilissima la più debole elettricità sia artificiale sia naturale (On the way of making the weakest electricity sensible, both artificial and natural)',
+    title:
+      'Del modo di rendere sensibilissima la più debole elettricità sia artificiale sia naturale (On the way of making the weakest electricity sensible, both artificial and natural)',
     author: 'Alessandro Volta',
     year: 1782,
     venue: 'Philosophical Transactions of the Royal Society of London 72, 237–280',
@@ -1113,7 +1150,8 @@ export const SOURCES: Record<string, Source> = {
   },
   'brewster-1815': {
     id: 'brewster-1815',
-    title: 'On the laws which regulate the polarisation of light by reflexion from transparent bodies',
+    title:
+      'On the laws which regulate the polarisation of light by reflexion from transparent bodies',
     author: 'David Brewster',
     year: 1815,
     venue: 'Philosophical Transactions of the Royal Society of London 105, 125–159',
@@ -1124,7 +1162,7 @@ export const SOURCES: Record<string, Source> = {
     title: 'Mémoire sur la loi des modifications que la réflexion imprime à la lumière polarisée',
     author: 'Augustin-Jean Fresnel',
     year: 1823,
-    venue: 'Mémoires de l\'Académie des Sciences 11, 393–433',
+    venue: "Mémoires de l'Académie des Sciences 11, 393–433",
     note: 'Fresnel equations giving the reflection and transmission coefficients of an EM wave at a dielectric interface for both polarizations.',
   },
 
@@ -1202,7 +1240,8 @@ export const SOURCES: Record<string, Source> = {
   /* ─── Ch.18 How a battery works ─── */
   'volta-1800-pile': {
     id: 'volta-1800-pile',
-    title: 'On the Electricity excited by the mere Contact of conducting Substances of different kinds',
+    title:
+      'On the Electricity excited by the mere Contact of conducting Substances of different kinds',
     author: 'Alessandro Volta',
     year: 1800,
     venue: 'Philosophical Transactions of the Royal Society of London 90, 403–431',
@@ -1236,10 +1275,11 @@ export const SOURCES: Record<string, Source> = {
   /* ─── Ch.19 Modern batteries ─── */
   'plante-1859': {
     id: 'plante-1859',
-    title: 'Recherches sur l\'électricité (Lead-acid storage cell, presented to the Académie des Sciences, March 1860)',
+    title:
+      "Recherches sur l'électricité (Lead-acid storage cell, presented to the Académie des Sciences, March 1860)",
     author: 'Gaston Planté',
     year: 1859,
-    venue: 'Comptes Rendus de l\'Académie des Sciences 50, 640–642',
+    venue: "Comptes Rendus de l'Académie des Sciences 50, 640–642",
     note: 'Invention of the rechargeable lead-acid battery — two lead plates in dilute sulphuric acid; still the chemistry in every internal-combustion car starter battery.',
   },
   'whittingham-1976': {
@@ -1262,11 +1302,12 @@ export const SOURCES: Record<string, Source> = {
   },
   'yoshino-1985': {
     id: 'yoshino-1985',
-    title: 'Japanese Patent 1989293 — secondary cell based on LiCoO₂ cathode and carbon (graphite) anode',
+    title:
+      'Japanese Patent 1989293 — secondary cell based on LiCoO₂ cathode and carbon (graphite) anode',
     author: 'Akira Yoshino',
     year: 1985,
     venue: 'Asahi Kasei filing; later US 4,668,595 (1987)',
-    note: 'Combined Goodenough\'s LiCoO₂ cathode with a petroleum-coke (carbon) anode — the architecture commercialised by Sony as the first lithium-ion cell in 1991.',
+    note: "Combined Goodenough's LiCoO₂ cathode with a petroleum-coke (carbon) anode — the architecture commercialised by Sony as the first lithium-ion cell in 1991.",
   },
   'larminie-dicks-2003-fuel-cells': {
     id: 'larminie-dicks-2003-fuel-cells',
@@ -1280,10 +1321,12 @@ export const SOURCES: Record<string, Source> = {
   /* ─── Ch.18 Transformers ─── */
   'stanley-1886': {
     id: 'stanley-1886',
-    title: 'Westinghouse Electric Company first commercial AC distribution system, Great Barrington MA',
+    title:
+      'Westinghouse Electric Company first commercial AC distribution system, Great Barrington MA',
     author: 'William Stanley Jr.',
     year: 1886,
-    venue: 'The Electrical World (March 20, 1886); described later in Stanley, "Alternating current distribution," AIEE Transactions 7 (1890), 553–587',
+    venue:
+      'The Electrical World (March 20, 1886); described later in Stanley, "Alternating current distribution," AIEE Transactions 7 (1890), 553–587',
     note: 'First practical step-down transformer in commercial service. 25 store and office building lights powered from a 500 V AC primary stepped down to 100 V — proof of concept for grid-scale AC distribution.',
   },
   'mclyman-2004': {
@@ -1309,7 +1352,8 @@ export const SOURCES: Record<string, Source> = {
     title: 'Instrument for converting alternating electric currents into continuous currents',
     author: 'John Ambrose Fleming',
     year: 1904,
-    venue: 'US Patent 803,684 (filed April 19, 1905; granted November 7, 1905); UK Patent 24,850 (1904)',
+    venue:
+      'US Patent 803,684 (filed April 19, 1905; granted November 7, 1905); UK Patent 24,850 (1904)',
     note: 'The Fleming valve — a thermionic vacuum diode that rectified AC to pulsating DC. The first electronic rectifier.',
   },
   'moll-tanenbaum-goldey-holonyak-1956': {
@@ -1378,7 +1422,7 @@ export const SOURCES: Record<string, Source> = {
     year: 1970,
     venue: 'Applied Physics Letters 17(10), 423–425',
     url: 'https://doi.org/10.1063/1.1653255',
-    note: 'Corning Glass Works demonstration of the first single-mode silica fiber with loss <20 dB/km at 633 nm — Kao\'s threshold — using a titanium-doped core. The result that made long-haul optical telecommunication economically possible.',
+    note: "Corning Glass Works demonstration of the first single-mode silica fiber with loss <20 dB/km at 633 nm — Kao's threshold — using a titanium-doped core. The result that made long-haul optical telecommunication economically possible.",
   },
   'miya-1979': {
     id: 'miya-1979',

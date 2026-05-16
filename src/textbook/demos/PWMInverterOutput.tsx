@@ -20,18 +20,20 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const F_OUT = 60;       // fundamental output, Hz
-const V_DC  = 400;      // DC bus, V
+const F_OUT = 60; // fundamental output, Hz
+const V_DC = 400; // DC bus, V
 
 export function PWMInverterOutputDemo({ figure }: Props) {
-  const [fSw, setFSw] = useState(5000);    // carrier 5 kHz default
-  const [m, setM]     = useState(0.85);    // modulation index
+  const [fSw, setFSw] = useState(5000); // carrier 5 kHz default
+  const [m, setM] = useState(0.85); // modulation index
 
   const computed = useMemo(() => {
     const Vpeak = m * V_DC;
-    const Vrms  = Vpeak / Math.sqrt(2);
+    const Vrms = Vpeak / Math.sqrt(2);
     // First side-band harmonic at f_sw − 2·f_out (approx) is the worst
     // residual after a single-pole LC filter at f_c. For a fixed THD
     // budget the filter inductance scales as 1/f_sw².
@@ -40,7 +42,9 @@ export function PWMInverterOutputDemo({ figure }: Props) {
   }, [fSw, m]);
 
   const stateRef = useRef({ fSw, m });
-  useEffect(() => { stateRef.current = { fSw, m }; }, [fSw, m]);
+  useEffect(() => {
+    stateRef.current = { fSw, m };
+  }, [fSw, m]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -54,7 +58,10 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 50, padR = 16, padT = 18, padB = 28;
+      const padL = 50,
+        padR = 16,
+        padT = 18,
+        padB = 28;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
       const subH = plotH / 2 - 6;
@@ -66,14 +73,15 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       ctx.strokeRect(padL, bot, plotW, subH);
 
       // ─── Top: time-domain PWM + filtered sine ───
-      const tWindow = 2 / F_OUT;       // 2 cycles of 60 Hz
+      const tWindow = 2 / F_OUT; // 2 cycles of 60 Hz
       const samples = 1400;
-      const yTime = (v: number) => (top + subH / 2) - (v / V_DC) * (subH / 2 - 4);
+      const yTime = (v: number) => top + subH / 2 - (v / V_DC) * (subH / 2 - 4);
 
       // Mid-line
       ctx.strokeStyle = colors.border;
       ctx.beginPath();
-      ctx.moveTo(padL, top + subH / 2); ctx.lineTo(padL + plotW, top + subH / 2);
+      ctx.moveTo(padL, top + subH / 2);
+      ctx.lineTo(padL + plotW, top + subH / 2);
       ctx.stroke();
 
       // Raw PWM (pale)
@@ -88,8 +96,14 @@ export function PWMInverterOutputDemo({ figure }: Props) {
         const pwm = ref > carrier ? +V_DC : -V_DC;
         const x = padL + (i / samples) * plotW;
         const y = yTime(pwm);
-        if (i === 0) { ctx.moveTo(x, y); prevY = y; }
-        else { ctx.lineTo(x, prevY); ctx.lineTo(x, y); prevY = y; }
+        if (i === 0) {
+          ctx.moveTo(x, y);
+          prevY = y;
+        } else {
+          ctx.lineTo(x, prevY);
+          ctx.lineTo(x, y);
+          prevY = y;
+        }
       }
       ctx.stroke();
 
@@ -102,21 +116,27 @@ export function PWMInverterOutputDemo({ figure }: Props) {
         const v = m * V_DC * Math.sin(2 * Math.PI * F_OUT * t + phase);
         const x = padL + (i / samples) * plotW;
         const y = yTime(v);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
       ctx.save();
-      ctx.globalAlpha = 0.80;
+      ctx.globalAlpha = 0.8;
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
       ctx.fillText('+V_DC', padL - 4, yTime(+V_DC));
-      ctx.fillText('0',     padL - 4, top + subH / 2);
+      ctx.fillText('0', padL - 4, top + subH / 2);
       ctx.fillText('−V_DC', padL - 4, yTime(-V_DC));
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-      ctx.fillText(`raw PWM (carrier ${(fSw / 1e3).toFixed(1)} kHz)  +  60 Hz filtered`,
-        padL + 4, top + 4);
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(
+        `raw PWM (carrier ${(fSw / 1e3).toFixed(1)} kHz)  +  60 Hz filtered`,
+        padL + 4,
+        top + 4,
+      );
 
       // ─── Bottom: schematic harmonic spectrum (log frequency axis) ───
       // For a single-pole sinusoidal PWM, the dominant harmonics sit at
@@ -127,8 +147,7 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       // Frequencies plotted on log scale from 10 Hz to 1 MHz.
       const fLo = 10;
       const fHi = 1e6;
-      const xOfF = (f: number) =>
-        padL + (Math.log10(f / fLo) / Math.log10(fHi / fLo)) * plotW;
+      const xOfF = (f: number) => padL + (Math.log10(f / fLo) / Math.log10(fHi / fLo)) * plotW;
       const yBase = bot + subH - 6;
       const yPeak = bot + 8;
       const yOfA = (a: number) => yBase - a * (yBase - yPeak);
@@ -141,15 +160,20 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       ctx.globalAlpha = 0.65;
       ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       for (const decade of [10, 100, 1e3, 1e4, 1e5, 1e6]) {
         const xd = xOfF(decade);
         ctx.beginPath();
-        ctx.moveTo(xd, bot); ctx.lineTo(xd, bot + subH);
+        ctx.moveTo(xd, bot);
+        ctx.lineTo(xd, bot + subH);
         ctx.stroke();
-        const label = decade >= 1e6 ? '1 MHz'
-          : decade >= 1e3 ? `${(decade / 1e3).toFixed(0)} kHz`
-          : `${decade.toFixed(0)} Hz`;
+        const label =
+          decade >= 1e6
+            ? '1 MHz'
+            : decade >= 1e3
+              ? `${(decade / 1e3).toFixed(0)} kHz`
+              : `${decade.toFixed(0)} Hz`;
         ctx.fillText(label, xd, bot + subH + 4);
       }
 
@@ -174,36 +198,39 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       // Carrier sidelobes — teal
       stem(fSw - 2 * F_OUT, 0.6 * m, 'rgba(108,197,194,0.95)');
       stem(fSw + 2 * F_OUT, 0.6 * m, 'rgba(108,197,194,0.95)');
-      stem(fSw,             0.15 * m, 'rgba(108,197,194,0.6)');
+      stem(fSw, 0.15 * m, 'rgba(108,197,194,0.6)');
       // Second carrier cluster — fainter
-      stem(2 * fSw - F_OUT, 0.30 * m, 'rgba(108,197,194,0.65)');
-      stem(2 * fSw + F_OUT, 0.30 * m, 'rgba(108,197,194,0.65)');
+      stem(2 * fSw - F_OUT, 0.3 * m, 'rgba(108,197,194,0.65)');
+      stem(2 * fSw + F_OUT, 0.3 * m, 'rgba(108,197,194,0.65)');
 
       // Filter corner annotation: a typical LC filter chosen at f_sw / 10
       const fCorner = fSw / 10;
       const xC = xOfF(fCorner);
       ctx.restore();
       ctx.save();
-      ctx.globalAlpha = 0.50;
+      ctx.globalAlpha = 0.5;
       ctx.strokeStyle = colors.text;
       ctx.setLineDash([3, 3]);
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(xC, bot); ctx.lineTo(xC, bot + subH);
+      ctx.moveTo(xC, bot);
+      ctx.lineTo(xC, bot + subH);
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.restore();
       ctx.fillStyle = colors.text;
       ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText(`LC corner f_sw/10 = ${formatHz(fCorner)}`, xC + 3, bot + 4);
 
       // Labels
       ctx.save();
-      ctx.globalAlpha = 0.80;
+      ctx.globalAlpha = 0.8;
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText('output spectrum  (60 Hz fundamental + carrier sidelobes)', padL + 4, bot + 4);
 
       raf = requestAnimationFrame(draw);
@@ -218,32 +245,44 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 19.9'}
       title="PWM carrier vs filter difficulty"
       question="Push the carrier from 1 kHz to 50 kHz. Where do the harmonics go — and what does that do to the filter?"
-      caption={<>
-        Sinusoidal PWM places the wanted 60 Hz fundamental in the audio band, but the energy from the
-        switching itself piles up in side-bands around the carrier f<sub>sw</sub> (and its multiples).
-        Move the carrier up by 10× and the side-bands move 10× further from the fundamental, so an LC
-        output filter whose corner is set at f<sub>sw</sub>/10 attenuates them by ~ 40 dB more — a
-        smaller inductor and smaller capacitor are both fine. This is why modern inverter silicon
-        (SiC, GaN) is worth its cost: higher allowed f<sub>sw</sub> shrinks every passive in the
-        output filter.
-      </>}
+      caption={
+        <>
+          Sinusoidal PWM places the wanted 60 Hz fundamental in the audio band, but the energy from
+          the switching itself piles up in side-bands around the carrier f<sub>sw</sub> (and its
+          multiples). Move the carrier up by 10× and the side-bands move 10× further from the
+          fundamental, so an LC output filter whose corner is set at f<sub>sw</sub>/10 attenuates
+          them by ~ 40 dB more — a smaller inductor and smaller capacitor are both fine. This is why
+          modern inverter silicon (SiC, GaN) is worth its cost: higher allowed f<sub>sw</sub>{' '}
+          shrinks every passive in the output filter.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="carrier f_sw"
-          value={Math.log10(fSw)} min={Math.log10(1000)} max={Math.log10(50000)} step={0.01}
-          format={v => formatHz(Math.pow(10, v))}
-          onChange={v => setFSw(Math.pow(10, v))}
+          value={Math.log10(fSw)}
+          min={Math.log10(1000)}
+          max={Math.log10(50000)}
+          step={0.01}
+          format={(v) => formatHz(Math.pow(10, v))}
+          onChange={(v) => setFSw(Math.pow(10, v))}
         />
         <MiniSlider
           label="modulation m"
-          value={m} min={0.10} max={1.00} step={0.01}
-          format={v => v.toFixed(2)}
+          value={m}
+          min={0.1}
+          max={1.0}
+          step={0.01}
+          format={(v) => v.toFixed(2)}
           onChange={setM}
         />
-        <MiniReadout label="V_out peak"   value={<Num value={computed.Vpeak} digits={1} />}    unit="V" />
-        <MiniReadout label="V_out rms"    value={<Num value={computed.Vrms}  digits={1} />}    unit="V" />
+        <MiniReadout
+          label="V_out peak"
+          value={<Num value={computed.Vpeak} digits={1} />}
+          unit="V"
+        />
+        <MiniReadout label="V_out rms" value={<Num value={computed.Vrms} digits={1} />} unit="V" />
         <MiniReadout label="first sidelobe" value={formatHz(computed.fSidelobe)} />
       </DemoControls>
     </Demo>

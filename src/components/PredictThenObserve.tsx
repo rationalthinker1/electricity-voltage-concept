@@ -104,13 +104,13 @@ export function PredictThenObserve({
   const labelForId = useCallback(
     (id: string): string => {
       if (spec.kind !== 'multiple-choice') return id;
-      const found = spec.options.find(o => o.id === id);
+      const found = spec.options.find((o) => o.id === id);
       if (!found) return id;
       if (typeof found.label === 'string') return found.label;
       // Non-string ReactNode — fall back to id as a stable display key.
       return id;
     },
-    [spec]
+    [spec],
   );
 
   const correctness = useMemo<'correct' | 'incorrect' | 'unknown'>(() => {
@@ -121,7 +121,7 @@ export function PredictThenObserve({
     }
     if (!spec.acceptedAnswers || spec.acceptedAnswers.length === 0) return 'unknown';
     const norm = answer.trim().toLowerCase();
-    return spec.acceptedAnswers.map(a => a.trim().toLowerCase()).includes(norm)
+    return spec.acceptedAnswers.map((a) => a.trim().toLowerCase()).includes(norm)
       ? 'correct'
       : 'incorrect';
   }, [answer, spec]);
@@ -129,7 +129,7 @@ export function PredictThenObserve({
   const displayedAnswer = useMemo<ReactNode>(() => {
     if (!answer) return null;
     if (spec.kind === 'multiple-choice') {
-      const opt = spec.options.find(o => o.id === answer);
+      const opt = spec.options.find((o) => o.id === answer);
       return opt ? opt.label : labelForId(answer);
     }
     return spec.unit ? `${answer} ${spec.unit}` : answer;
@@ -159,48 +159,54 @@ export function PredictThenObserve({
         accent="accent"
         className="my-2xl mb-lg"
         header={
-          <div className="flex items-center gap-md flex-wrap">
-            <Badge variant="accent" size="sm">Predict first</Badge>
-            <span className="eyebrow-muted tracking-3">Commit to a guess — being wrong is fine.</span>
+          <div className="gap-md flex flex-wrap items-center">
+            <Badge variant="accent" size="sm">
+              Predict first
+            </Badge>
+            <span className="eyebrow-muted tracking-3">
+              Commit to a guess — being wrong is fine.
+            </span>
           </div>
         }
       >
-        <div className="body-copy leading-4 text-text m-0 mb-lg">{question}</div>
+        <div className="body-copy text-text mb-lg m-0 leading-4">{question}</div>
         {spec.kind === 'multiple-choice' ? (
-          <fieldset className="flex flex-col gap-sm border-0 p-0 m-0 mb-lg">
-            <legend className="absolute w-px h-px overflow-hidden [clip:rect(0_0_0_0)]">Choose one</legend>
-            {spec.options.map(opt => {
+          <fieldset className="gap-sm mb-lg m-0 flex flex-col border-0 p-0">
+            <legend className="absolute h-px w-px overflow-hidden [clip:rect(0_0_0_0)]">
+              Choose one
+            </legend>
+            {spec.options.map((opt) => {
               const checked = mcSelected === opt.id;
               return (
                 <label
                   key={opt.id}
                   className={clsx(
-                    'flex items-center gap-md py-md px-md border border-border-1 rounded-2 bg-bg-elevated cursor-pointer transition-all duration-150 ease-in-out text-text-dim font-1 text-5 leading-3 hover:border-border-2 hover:text-text hover:bg-bg-card-hover',
+                    'gap-md py-md px-md border-border-1 rounded-2 bg-bg-elevated text-text-dim font-1 text-5 hover:border-border-2 hover:text-text hover:bg-bg-card-hover flex cursor-pointer items-center border leading-3 transition-all duration-150 ease-in-out',
                     checked && 'border-accent bg-accent-soft text-text',
                   )}
                 >
                   <input
-                    className="appearance-none w-lg h-lg border border-border-2 rounded-full m-0 shrink-0 relative cursor-pointer bg-transparent checked:border-accent checked:after:content-[''] checked:after:absolute checked:after:top-1/2 checked:after:left-1/2 checked:after:-translate-x-1/2 checked:after:-translate-y-1/2 checked:after:w-sm checked:after:h-sm checked:after:rounded-full checked:after:bg-accent"
+                    className="h-lg border-border-2 checked:border-accent checked:after:h-sm checked:after:bg-accent relative m-0 w-lg shrink-0 cursor-pointer appearance-none rounded-full border bg-transparent checked:after:absolute checked:after:top-1/2 checked:after:left-1/2 checked:after:w-sm checked:after:-translate-x-1/2 checked:after:-translate-y-1/2 checked:after:rounded-full checked:after:content-['']"
                     type="radio"
                     name={`pto-${storageKey}`}
                     value={opt.id}
                     checked={checked}
                     onChange={() => setMcSelected(opt.id)}
                   />
-                  <span className="flex-1 min-w-0">{opt.label}</span>
+                  <span className="min-w-0 flex-1">{opt.label}</span>
                 </label>
               );
             })}
           </fieldset>
         ) : (
-          <div className="flex items-center gap-md m-0 mb-lg">
+          <div className="gap-md mb-lg m-0 flex items-center">
             <input
               type="text"
-              className="flex-1 min-w-0 bg-bg-elevated border border-border-2 text-text py-md px-md font-3 text-5 rounded-2 transition-colors duration-150 ease-in-out focus:outline-none focus:border-accent"
+              className="bg-bg-elevated border-border-2 text-text py-md px-md font-3 text-5 rounded-2 focus:border-accent min-w-0 flex-1 border transition-colors duration-150 ease-in-out focus:outline-none"
               value={shortInput}
-              onChange={e => setShortInput(e.target.value)}
+              onChange={(e) => setShortInput(e.target.value)}
               placeholder={spec.placeholder ?? 'Your prediction'}
-              onKeyDown={e => {
+              onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault();
                   handleSubmit();
@@ -210,10 +216,10 @@ export function PredictThenObserve({
             {spec.unit && <span className="font-3 text-4 text-text-dim">{spec.unit}</span>}
           </div>
         )}
-        <div className="flex justify-end gap-md">
+        <div className="gap-md flex justify-end">
           <button
             type="button"
-            className="btn disabled:opacity-45 disabled:cursor-not-allowed"
+            className="btn disabled:cursor-not-allowed disabled:opacity-45"
             onClick={handleSubmit}
             disabled={
               spec.kind === 'multiple-choice' ? !mcSelected : shortInput.trim().length === 0
@@ -233,21 +239,27 @@ export function PredictThenObserve({
         accent="teal"
         className="my-2xl mb-lg"
         header={
-          <div className="flex items-center gap-md flex-wrap">
-            <Badge variant="teal" size="sm">Prediction locked in</Badge>
+          <div className="gap-md flex flex-wrap items-center">
+            <Badge variant="teal" size="sm">
+              Prediction locked in
+            </Badge>
           </div>
         }
       >
-        <p className="body-copy text-6 leading-4 m-0 mb-lg">
+        <p className="body-copy text-6 mb-lg m-0 leading-4">
           You guessed: <strong className="text-text font-medium">{displayedAnswer}</strong>
         </p>
         {reveal ? (
-          <div className="body-copy text-5 leading-4 m-0 mb-lg py-md px-lg bg-bg-elevated border-l-2 border-teal rounded-r-2">
+          <div className="body-copy text-5 mb-lg py-md px-lg bg-bg-elevated border-teal rounded-r-2 m-0 border-l-2 leading-4">
             {reveal(answer)}
           </div>
         ) : null}
-        <div className="flex justify-end gap-md">
-          <button type="button" className="btn disabled:opacity-45 disabled:cursor-not-allowed" onClick={handleReveal}>
+        <div className="gap-md flex justify-end">
+          <button
+            type="button"
+            className="btn disabled:cursor-not-allowed disabled:opacity-45"
+            onClick={handleReveal}
+          >
             Reveal demo
           </button>
         </div>
@@ -262,13 +274,11 @@ export function PredictThenObserve({
   return (
     <div className="my-lg">
       <Banner variant={annotationVariant} className="mb-md font-1 text-4">
-        <div className="body-copy text-5 leading-4 text-text-dim mb-sm">{question}</div>
+        <div className="body-copy text-5 text-text-dim mb-sm leading-4">{question}</div>
         <div>
           <span className="eyebrow-muted tracking-3">Your prediction:</span>{' '}
           <strong className="text-text font-medium">{displayedAnswer}</strong>{' '}
-          <span className="text-text-dim">
-            Try the demo to see if you were right.
-          </span>
+          <span className="text-text-dim">Try the demo to see if you were right.</span>
         </div>
       </Banner>
       {children}

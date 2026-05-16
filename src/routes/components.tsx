@@ -7,8 +7,14 @@ import {
   Pill,
   Stat,
   Banner,
-  Tabs, TabList, Tab, TabPanel,
-  Accordion, AccordionItem, AccordionTrigger, AccordionContent,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanel,
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
   Drawer,
   Sidebar,
   Inline,
@@ -22,13 +28,17 @@ export const Route = createFileRoute('/components')({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section style={{ padding: '32px 0', borderTop: '1px solid var(--border)' }}>
-      <h2 style={{
-        fontFamily: 'Fraunces, serif',
-        fontStyle: 'italic',
-        fontSize: 28,
-        marginBottom: 18,
-        color: 'var(--text)',
-      }}>{title}</h2>
+      <h2
+        style={{
+          fontFamily: 'Fraunces, serif',
+          fontStyle: 'italic',
+          fontSize: 28,
+          marginBottom: 18,
+          color: 'var(--text)',
+        }}
+      >
+        {title}
+      </h2>
       {children}
     </section>
   );
@@ -42,31 +52,43 @@ function ComponentsPage() {
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '40px 24px 80px' }}>
       <header style={{ paddingBottom: 28 }}>
-        <div style={{
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: 11,
-          letterSpacing: '.14em',
-          textTransform: 'uppercase',
-          color: 'var(--text-muted)',
-          marginBottom: 10,
-        }}>
+        <div
+          style={{
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: 11,
+            letterSpacing: '.14em',
+            textTransform: 'uppercase',
+            color: 'var(--text-muted)',
+            marginBottom: 10,
+          }}
+        >
           Internal · QA
         </div>
-        <h1 style={{
-          fontFamily: 'Fraunces, serif',
-          fontStyle: 'italic',
-          fontSize: 44,
-          lineHeight: 1.1,
-          color: 'var(--text)',
-        }}>UI primitives</h1>
+        <h1
+          style={{
+            fontFamily: 'Fraunces, serif',
+            fontStyle: 'italic',
+            fontSize: 44,
+            lineHeight: 1.1,
+            color: 'var(--text)',
+          }}
+        >
+          UI primitives
+        </h1>
         <p style={{ color: 'var(--text-dim)', marginTop: 14, maxWidth: 680 }}>
-          This page renders every UI primitive for regression sanity-checking.
-          It is not linked from main navigation. Visit /components by URL.
+          This page renders every UI primitive for regression sanity-checking. It is not linked from
+          main navigation. Visit /components by URL.
         </p>
       </header>
 
       <Section title="Card">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: 16,
+          }}
+        >
           <Card header="Default">
             <p>A neutral content surface for the most common case.</p>
           </Card>
@@ -107,8 +129,12 @@ function ComponentsPage() {
           <Inline gap={10}>
             <Badge size="sm">SM</Badge>
             <Badge size="md">MD</Badge>
-            <Badge size="sm" variant="accent">v2.0</Badge>
-            <Badge size="md" variant="teal">μ = 1.26×10⁻⁶</Badge>
+            <Badge size="sm" variant="accent">
+              v2.0
+            </Badge>
+            <Badge size="md" variant="teal">
+              μ = 1.26×10⁻⁶
+            </Badge>
           </Inline>
         </div>
       </Section>
@@ -117,22 +143,40 @@ function ComponentsPage() {
         <Inline gap={10}>
           <Pill>Chapter 1</Pill>
           <Pill variant="accent">Capstone</Pill>
-          <Pill variant="teal" icon="∮">Maxwell</Pill>
-          <Pill variant="pink" icon="+">Positive</Pill>
-          <Pill variant="blue" icon="−">Negative</Pill>
+          <Pill variant="teal" icon="∮">
+            Maxwell
+          </Pill>
+          <Pill variant="pink" icon="+">
+            Positive
+          </Pill>
+          <Pill variant="blue" icon="−">
+            Negative
+          </Pill>
           <Pill variant="subtle">Reference</Pill>
         </Inline>
         <div style={{ marginTop: 14 }}>
           <Inline gap={10}>
-            <Pill interactive onClick={() => alert('clicked')}>Clickable</Pill>
-            <Pill interactive variant="accent" icon="→">Go deeper</Pill>
-            <Pill interactive variant="teal">See lab</Pill>
+            <Pill interactive onClick={() => alert('clicked')}>
+              Clickable
+            </Pill>
+            <Pill interactive variant="accent" icon="→">
+              Go deeper
+            </Pill>
+            <Pill interactive variant="teal">
+              See lab
+            </Pill>
           </Inline>
         </div>
       </Section>
 
       <Section title="Stat">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 12 }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
+            gap: 12,
+          }}
+        >
           <Stat label="Voltage" value="12.0" unit="V" />
           <Stat label="Current" value="0.50" unit="A" accent="accent" delta="+5.2%" />
           <Stat label="Resistance" value="24" unit="Ω" accent="teal" />
@@ -145,7 +189,8 @@ function ComponentsPage() {
       <Section title="Banner">
         <Stack gap={12}>
           <Banner variant="info" icon="i">
-            Informational notice. The Drude model gives the right order of magnitude for σ at room temperature.
+            Informational notice. The Drude model gives the right order of magnitude for σ at room
+            temperature.
           </Banner>
           <Banner variant="warn" icon="!">
             Heads-up. Visual scaling is applied — readouts always show the real physical value.
@@ -189,7 +234,9 @@ function ComponentsPage() {
             <Tab id="electric">Electric</Tab>
             <Tab id="magnetic">Magnetic</Tab>
             <Tab id="poynting">Poynting</Tab>
-            <Tab id="disabled" disabled>Disabled</Tab>
+            <Tab id="disabled" disabled>
+              Disabled
+            </Tab>
           </TabList>
           <TabPanel id="electric">
             <p style={{ color: 'var(--text-dim)' }}>
@@ -213,9 +260,24 @@ function ComponentsPage() {
       </Section>
 
       <Section title="Accordion">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24 }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: 24,
+          }}
+        >
           <div>
-            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 10 }}>
+            <div
+              style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                fontSize: 11,
+                letterSpacing: '.1em',
+                textTransform: 'uppercase',
+                color: 'var(--text-muted)',
+                marginBottom: 10,
+              }}
+            >
               Single-open
             </div>
             <Accordion defaultValue={['a']}>
@@ -240,7 +302,16 @@ function ComponentsPage() {
             </Accordion>
           </div>
           <div>
-            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 10 }}>
+            <div
+              style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                fontSize: 11,
+                letterSpacing: '.1em',
+                textTransform: 'uppercase',
+                color: 'var(--text-muted)',
+                marginBottom: 10,
+              }}
+            >
               Multi-open
             </div>
             <Accordion multiple defaultValue={['x', 'y']}>
@@ -272,8 +343,8 @@ function ComponentsPage() {
         </Inline>
         <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title="Drawer · right">
           <p style={{ color: 'var(--text-dim)', lineHeight: 1.65 }}>
-            A right-side drawer rendered with a native &lt;dialog&gt; element using
-            showModal(). Press Escape, click the backdrop, or click × to close.
+            A right-side drawer rendered with a native &lt;dialog&gt; element using showModal().
+            Press Escape, click the backdrop, or click × to close.
           </p>
           <div style={{ marginTop: 14 }}>
             <Stack gap={8}>
@@ -282,7 +353,12 @@ function ComponentsPage() {
             </Stack>
           </div>
         </Drawer>
-        <Drawer open={bottomDrawerOpen} onClose={() => setBottomDrawerOpen(false)} title="Drawer · bottom" side="bottom">
+        <Drawer
+          open={bottomDrawerOpen}
+          onClose={() => setBottomDrawerOpen(false)}
+          title="Drawer · bottom"
+          side="bottom"
+        >
           <p style={{ color: 'var(--text-dim)' }}>
             A bottom drawer. Good for mobile-shaped panels.
           </p>
@@ -290,7 +366,9 @@ function ComponentsPage() {
       </Section>
 
       <Section title="Sidebar">
-        <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 24, alignItems: 'start' }}>
+        <div
+          style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 24, alignItems: 'start' }}
+        >
           <Sidebar title="Navigation" collapsible>
             <Stack gap={6}>
               <Pill variant="subtle">Ch 1 · Charge</Pill>
@@ -333,7 +411,16 @@ function ComponentsPage() {
         </Stack>
       </Section>
 
-      <footer style={{ marginTop: 56, paddingTop: 24, borderTop: '1px solid var(--border)', color: 'var(--text-muted)', fontFamily: 'JetBrains Mono, monospace', fontSize: 12 }}>
+      <footer
+        style={{
+          marginTop: 56,
+          paddingTop: 24,
+          borderTop: '1px solid var(--border)',
+          color: 'var(--text-muted)',
+          fontFamily: 'JetBrains Mono, monospace',
+          fontSize: 12,
+        }}
+      >
         Field · Theory · UI primitives · src/components/ui/*
       </footer>
     </div>

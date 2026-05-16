@@ -11,19 +11,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 type Mode = 'low' | 'high';
 
 export function RCFilterBodeDemo({ figure }: Props) {
-  const [Rk, setRk] = useState(1.6);    // kΩ
-  const [Cnf, setCnf] = useState(100);  // nF
+  const [Rk, setRk] = useState(1.6); // kΩ
+  const [Cnf, setCnf] = useState(100); // nF
   const [mode, setMode] = useState<Mode>('low');
 
   const R = Rk * 1e3;
@@ -31,7 +31,9 @@ export function RCFilterBodeDemo({ figure }: Props) {
   const fc = 1 / (2 * Math.PI * R * C);
 
   const stateRef = useRef({ R, C, fc, mode });
-  useEffect(() => { stateRef.current = { R, C, fc, mode }; }, [R, C, fc, mode]);
+  useEffect(() => {
+    stateRef.current = { R, C, fc, mode };
+  }, [R, C, fc, mode]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -48,7 +50,10 @@ export function RCFilterBodeDemo({ figure }: Props) {
       const logMax = Math.log10(Math.max(fc * 100, 100));
 
       // Two stacked plots: magnitude on top half, phase on bottom half
-      const padL = 50, padR = 40, padT = 24, padB = 24;
+      const padL = 50,
+        padR = 40,
+        padT = 24,
+        padB = 24;
       const totalPlotH = h - padT - padB - 16; // 16 px gap
       const magH = totalPlotH * 0.55;
       const phaseH = totalPlotH * 0.45;
@@ -64,22 +69,30 @@ export function RCFilterBodeDemo({ figure }: Props) {
       ctx.strokeRect(plotX, phaseY0, plotW, phaseH);
 
       // y-axis: magnitude in dB from -40 to +10
-      const dBmin = -40, dBmax = 10;
+      const dBmin = -40,
+        dBmax = 10;
       const yMag = (db: number) => magY0 + magH - ((db - dBmin) / (dBmax - dBmin)) * magH;
 
       // y-axis: phase from -100° to +100°
-      const phMin = -100, phMax = 100;
+      const phMin = -100,
+        phMax = 100;
       const yPh = (p: number) => phaseY0 + phaseH - ((p - phMin) / (phMax - phMin)) * phaseH;
 
       // gridlines
       ctx.strokeStyle = colors.border;
       for (let db = dBmin; db <= dBmax; db += 10) {
         const y = yMag(db);
-        ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
+        ctx.stroke();
       }
       for (let p = phMin; p <= phMax; p += 30) {
         const y = yPh(p);
-        ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
+        ctx.stroke();
       }
 
       // x-axis: decade ticks
@@ -93,8 +106,14 @@ export function RCFilterBodeDemo({ figure }: Props) {
         const f = Math.pow(10, lf);
         const x = plotX + ((lf - logMin) / (logMax - logMin)) * plotW;
         ctx.strokeStyle = colors.border;
-        ctx.beginPath(); ctx.moveTo(x, magY0); ctx.lineTo(x, magY0 + magH); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(x, phaseY0); ctx.lineTo(x, phaseY0 + phaseH); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, magY0);
+        ctx.lineTo(x, magY0 + magH);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, phaseY0);
+        ctx.lineTo(x, phaseY0 + phaseH);
+        ctx.stroke();
         ctx.save();
         ctx.globalAlpha = 0.6;
         ctx.fillStyle = colors.textDim;
@@ -108,9 +127,13 @@ export function RCFilterBodeDemo({ figure }: Props) {
       ctx.strokeStyle = colors.teal;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
-      ctx.moveTo(xfc, magY0); ctx.lineTo(xfc, magY0 + magH); ctx.stroke();
+      ctx.moveTo(xfc, magY0);
+      ctx.lineTo(xfc, magY0 + magH);
+      ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(xfc, phaseY0); ctx.lineTo(xfc, phaseY0 + phaseH); ctx.stroke();
+      ctx.moveTo(xfc, phaseY0);
+      ctx.lineTo(xfc, phaseY0 + phaseH);
+      ctx.stroke();
       ctx.setLineDash([]);
       // -3 dB line
       const yM3 = yMag(-3);
@@ -119,7 +142,9 @@ export function RCFilterBodeDemo({ figure }: Props) {
       ctx.strokeStyle = colors.pink;
       ctx.setLineDash([2, 4]);
       ctx.beginPath();
-      ctx.moveTo(plotX, yM3); ctx.lineTo(plotX + plotW, yM3); ctx.stroke();
+      ctx.moveTo(plotX, yM3);
+      ctx.lineTo(plotX + plotW, yM3);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       // Magnitude curve
@@ -130,9 +155,7 @@ export function RCFilterBodeDemo({ figure }: Props) {
         const lf = logMin + u * (logMax - logMin);
         const f = Math.pow(10, lf);
         const r = f / fc;
-        const Hmag = mode === 'low'
-          ? 1 / Math.sqrt(1 + r * r)
-          : r / Math.sqrt(1 + r * r);
+        const Hmag = mode === 'low' ? 1 / Math.sqrt(1 + r * r) : r / Math.sqrt(1 + r * r);
         const dB = 20 * Math.log10(Math.max(Hmag, 1e-6));
         magPts.push({
           x: plotX + u * plotW,
@@ -154,9 +177,10 @@ export function RCFilterBodeDemo({ figure }: Props) {
         const f = Math.pow(10, lf);
         const r = f / fc;
         // low-pass phase: −atan(r);   high-pass: +90° − atan(r) = atan(1/r)
-        const phaseDeg = mode === 'low'
-          ? -Math.atan(r) * 180 / Math.PI
-          : (Math.PI / 2 - Math.atan(r)) * 180 / Math.PI;
+        const phaseDeg =
+          mode === 'low'
+            ? (-Math.atan(r) * 180) / Math.PI
+            : ((Math.PI / 2 - Math.atan(r)) * 180) / Math.PI;
         phPts.push({ x: plotX + u * plotW, y: yPh(phaseDeg) });
       }
       drawGlowPath(ctx, phPts, {
@@ -190,8 +214,11 @@ export function RCFilterBodeDemo({ figure }: Props) {
 
       ctx.fillStyle = colors.text;
       ctx.textAlign = 'right';
-      ctx.fillText(`${mode === 'low' ? 'low-pass' : 'high-pass'}  f_c = ${fmtFreqShort(fc)}`,
-        plotX + plotW - 4, magY0 + 4);
+      ctx.fillText(
+        `${mode === 'low' ? 'low-pass' : 'high-pass'}  f_c = ${fmtFreqShort(fc)}`,
+        plotX + plotW - 4,
+        magY0 + 4,
+      );
 
       raf = requestAnimationFrame(draw);
     }
@@ -204,13 +231,15 @@ export function RCFilterBodeDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 12.7'}
       title="RC filter — magnitude and phase Bode plots"
       question="Cross the cutoff and the slope hits −20 dB/decade. Why exactly that?"
-      caption={<>
-        Top: magnitude of the transfer function in dB on a log-frequency axis. Below f<sub>c</sub>
-        the filter passes the signal flat; above f<sub>c</sub> it rolls off at <strong>−20
-        dB/decade</strong> (a factor of 10 in frequency drops the output by 10). Bottom: phase
-        ramps from 0° down to −90° as ω crosses ω<sub>c</sub>. The cutoff f<sub>c</sub> =
-        1/(2π RC) is where |H| has fallen by exactly 3 dB.
-      </>}
+      caption={
+        <>
+          Top: magnitude of the transfer function in dB on a log-frequency axis. Below f<sub>c</sub>
+          the filter passes the signal flat; above f<sub>c</sub> it rolls off at{' '}
+          <strong>−20 dB/decade</strong> (a factor of 10 in frequency drops the output by 10).
+          Bottom: phase ramps from 0° down to −90° as ω crosses ω<sub>c</sub>. The cutoff f
+          <sub>c</sub> = 1/(2π RC) is where |H| has fallen by exactly 3 dB.
+        </>
+      }
       deeperLab={{ slug: 'capacitance', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={300} setup={setup} />
@@ -220,12 +249,24 @@ export function RCFilterBodeDemo({ figure }: Props) {
           checked={mode === 'low'}
           onChange={(on) => setMode(on ? 'low' : 'high')}
         />
-        <MiniSlider label="R" value={Rk} min={0.1} max={100} step={0.1}
-          format={v => v < 1 ? (v * 1000).toFixed(0) + ' Ω' : v.toFixed(2) + ' kΩ'}
-          onChange={setRk} />
-        <MiniSlider label="C" value={Cnf} min={1} max={10000} step={1}
-          format={v => v < 1000 ? v.toFixed(0) + ' nF' : (v / 1000).toFixed(2) + ' µF'}
-          onChange={setCnf} />
+        <MiniSlider
+          label="R"
+          value={Rk}
+          min={0.1}
+          max={100}
+          step={0.1}
+          format={(v) => (v < 1 ? (v * 1000).toFixed(0) + ' Ω' : v.toFixed(2) + ' kΩ')}
+          onChange={setRk}
+        />
+        <MiniSlider
+          label="C"
+          value={Cnf}
+          min={1}
+          max={10000}
+          step={1}
+          format={(v) => (v < 1000 ? v.toFixed(0) + ' nF' : (v / 1000).toFixed(2) + ' µF')}
+          onChange={setCnf}
+        />
         <MiniReadout label="f_c = 1/(2πRC)" value={<Num value={fc} />} unit="Hz" />
         <MiniReadout label="ω_c" value={<Num value={2 * Math.PI * fc} />} unit="rad/s" />
       </DemoControls>

@@ -7,9 +7,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { MATERIALS, type MaterialKey } from '@/lib/physics';
 
@@ -20,16 +18,18 @@ interface Props {
 const CHOICES: MaterialKey[] = ['copper', 'aluminum', 'iron', 'tungsten', 'nichrome'];
 
 // Fixed scenario
-const V = 12;          // V
-const L = 1.0;         // m
-const A_mm2 = 2.5;     // mm²
+const V = 12; // V
+const L = 1.0; // m
+const A_mm2 = 2.5; // mm²
 const A_m2 = A_mm2 * 1e-6;
 
 export function MaterialPickerDemo({ figure }: Props) {
   const [mat, setMat] = useState<MaterialKey>('copper');
 
   const stateRef = useRef({ mat });
-  useEffect(() => { stateRef.current = { mat }; }, [mat]);
+  useEffect(() => {
+    stateRef.current = { mat };
+  }, [mat]);
 
   const sigma = MATERIALS[mat]!.sigma;
   const R = L / (sigma * A_m2);
@@ -59,7 +59,7 @@ export function MaterialPickerDemo({ figure }: Props) {
       const rowH = innerH / CHOICES.length;
 
       // Establish log range — pick min & max across the choice set at V/L/A
-      const currents = CHOICES.map(k => {
+      const currents = CHOICES.map((k) => {
         const s = MATERIALS[k]!.sigma;
         return V / (L / (s * A_m2));
       });
@@ -110,9 +110,15 @@ export function MaterialPickerDemo({ figure }: Props) {
 
         // Material label
         ctx.fillStyle = isSel ? '#ff6b2a' : 'rgba(236,235,229,0.75)';
-        ctx.font = isSel ? 'bold 10px "JetBrains Mono", monospace' : '10px "JetBrains Mono", monospace';
+        ctx.font = isSel
+          ? 'bold 10px "JetBrains Mono", monospace'
+          : '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'right';
-        ctx.fillText(m.name.replace(' (filament)', '').replace(' (heater)', '').toUpperCase(), padL - 10, yMid + 3);
+        ctx.fillText(
+          m.name.replace(' (filament)', '').replace(' (heater)', '').toUpperCase(),
+          padL - 10,
+          yMid + 3,
+        );
 
         // Numeric value at end of bar
         ctx.fillStyle = isSel ? '#ff6b2a' : 'rgba(160,158,149,0.85)';
@@ -146,11 +152,11 @@ export function MaterialPickerDemo({ figure }: Props) {
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
-        {CHOICES.map(k => (
+        {CHOICES.map((k) => (
           <button
             key={k}
             type="button"
-            className={`mini-toggle${k === mat ? ' on' : ''}`}
+            className={`mini-toggle${k === mat ? 'on' : ''}`}
             onClick={() => setMat(k)}
             aria-pressed={k === mat}
           >

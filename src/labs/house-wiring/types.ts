@@ -42,15 +42,15 @@ export interface Room {
 /* ───────────────── Devices ───────────────── */
 
 export type DeviceKind =
-  | 'receptacle'         // standard duplex 15/20 A
-  | 'receptacle-gfci'    // GFCI duplex
-  | 'receptacle-tr'      // tamper resistant (modern code default)
-  | 'receptacle-wr'      // weather resistant (outdoor)
-  | 'receptacle-240'     // 30/50 A range/dryer/EV
+  | 'receptacle' // standard duplex 15/20 A
+  | 'receptacle-gfci' // GFCI duplex
+  | 'receptacle-tr' // tamper resistant (modern code default)
+  | 'receptacle-wr' // weather resistant (outdoor)
+  | 'receptacle-240' // 30/50 A range/dryer/EV
   | 'switch'
-  | 'light'              // ceiling/wall fixture
-  | 'smoke'              // smoke detector (120 V interconnected)
-  | 'fan';               // ceiling fan / exhaust fan
+  | 'light' // ceiling/wall fixture
+  | 'smoke' // smoke detector (120 V interconnected)
+  | 'fan'; // ceiling fan / exhaust fan
 
 /** A placed device sitting on the floorplan. */
 export interface Device {
@@ -78,9 +78,9 @@ export type BreakerKind =
   | 'afci-20'
   | 'gfci-15'
   | 'gfci-20'
-  | 'dfci-15'        // dual function AFCI/GFCI (210.8 + 210.12 compliant)
+  | 'dfci-15' // dual function AFCI/GFCI (210.8 + 210.12 compliant)
   | 'dfci-20'
-  | 'dp-30'          // double-pole 240 V
+  | 'dp-30' // double-pole 240 V
   | 'dp-40'
   | 'dp-50';
 
@@ -96,11 +96,11 @@ export interface Breaker {
 /* ───────────────── Cables ───────────────── */
 
 export type CableKind =
-  | 'nm-14-2'   // 14 AWG, 15 A
-  | 'nm-12-2'   // 12 AWG, 20 A
-  | 'nm-10-3'   // 10 AWG, 30 A, 3-conductor (240 V)
-  | 'nm-8-3'    // 8 AWG, 40 A
-  | 'nm-6-3';   // 6 AWG, 50 A (EV / range)
+  | 'nm-14-2' // 14 AWG, 15 A
+  | 'nm-12-2' // 12 AWG, 20 A
+  | 'nm-10-3' // 10 AWG, 30 A, 3-conductor (240 V)
+  | 'nm-8-3' // 8 AWG, 40 A
+  | 'nm-6-3'; // 6 AWG, 50 A (EV / range)
 
 /** A cable run from a breaker to a device. We treat it as a single
  *  abstract length-of-conductor; the floorplan UI draws it as a
@@ -126,11 +126,11 @@ export type ApplianceKind =
   | 'dishwasher'
   | 'fridge'
   | 'washer'
-  | 'dryer'          // 240 V, 30 A
-  | 'range'          // 240 V, 40-50 A
-  | 'water-heater'   // 240 V, 30 A
-  | 'heat-pump'      // 240 V, 30-50 A
-  | 'ev-charger'     // 240 V, 32-48 A continuous
+  | 'dryer' // 240 V, 30 A
+  | 'range' // 240 V, 40-50 A
+  | 'water-heater' // 240 V, 30 A
+  | 'heat-pump' // 240 V, 30-50 A
+  | 'ev-charger' // 240 V, 32-48 A continuous
   | 'general-lights' // a placeholder for the bulk lighting load
   | 'tv'
   | 'computer';

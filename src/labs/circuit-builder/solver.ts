@@ -76,7 +76,9 @@ export function pkey(x: number, y: number): string {
 
 class UnionFind {
   private parent = new Map<string, string>();
-  add(k: string) { if (!this.parent.has(k)) this.parent.set(k, k); }
+  add(k: string) {
+    if (!this.parent.has(k)) this.parent.set(k, k);
+  }
   find(k: string): string {
     this.add(k);
     let cur = k;
@@ -91,10 +93,13 @@ class UnionFind {
     return cur;
   }
   union(a: string, b: string) {
-    const ra = this.find(a), rb = this.find(b);
+    const ra = this.find(a),
+      rb = this.find(b);
     if (ra !== rb) this.parent.set(ra, rb);
   }
-  keys(): IterableIterator<string> { return this.parent.keys(); }
+  keys(): IterableIterator<string> {
+    return this.parent.keys();
+  }
 }
 
 /**
@@ -102,14 +107,24 @@ class UnionFind {
  * Rotation rotates around (x,y) and is one of {0, 90, 180, 270}.
  * Returns null for the second pin of a ground (it has only one).
  */
-export function pinCoords(c: PlacedComponent): [{ x: number; y: number }, { x: number; y: number } | null] {
+export function pinCoords(
+  c: PlacedComponent,
+): [{ x: number; y: number }, { x: number; y: number } | null] {
   const p0 = { x: c.x, y: c.y };
   if (c.kind === 'ground') return [p0, null];
   const d = 2;
-  let dx = d, dy = 0;
-  if (c.rotation === 90) { dx = 0; dy = d; }
-  else if (c.rotation === 180) { dx = -d; dy = 0; }
-  else if (c.rotation === 270) { dx = 0; dy = -d; }
+  let dx = d,
+    dy = 0;
+  if (c.rotation === 90) {
+    dx = 0;
+    dy = d;
+  } else if (c.rotation === 180) {
+    dx = -d;
+    dy = 0;
+  } else if (c.rotation === 270) {
+    dx = 0;
+    dy = -d;
+  }
   return [p0, { x: c.x + dx, y: c.y + dy }];
 }
 
@@ -121,15 +136,21 @@ export function pinCoords(c: PlacedComponent): [{ x: number; y: number }, { x: n
  */
 export function* wirePathPoints(w: Wire): Generator<{ x: number; y: number }> {
   const { from, to } = w;
-  const xStep = from.x === to.x ? 0 : (from.x < to.x ? 1 : -1);
-  const yStep = from.y === to.y ? 0 : (from.y < to.y ? 1 : -1);
+  const xStep = from.x === to.x ? 0 : from.x < to.x ? 1 : -1;
+  const yStep = from.y === to.y ? 0 : from.y < to.y ? 1 : -1;
   // Horizontal sweep at y = from.y.
   let x = from.x;
   yield { x, y: from.y };
-  while (x !== to.x) { x += xStep; yield { x, y: from.y }; }
+  while (x !== to.x) {
+    x += xStep;
+    yield { x, y: from.y };
+  }
   // Vertical sweep at x = to.x, skipping the corner we already yielded.
   let y = from.y;
-  while (y !== to.y) { y += yStep; yield { x: to.x, y }; }
+  while (y !== to.y) {
+    y += yStep;
+    yield { x: to.x, y };
+  }
 }
 
 /** Partition pins + wire endpoints into nodes. */
@@ -194,11 +215,16 @@ export function solveLinear(A: number[][], b: number[]): number[] | null {
     let maxAbs = Math.abs(M[col][col]);
     for (let r = col + 1; r < n; r++) {
       const v = Math.abs(M[r][col]);
-      if (v > maxAbs) { pivot = r; maxAbs = v; }
+      if (v > maxAbs) {
+        pivot = r;
+        maxAbs = v;
+      }
     }
     if (maxAbs < 1e-18) return null;
     if (pivot !== col) {
-      const tmp = M[col]; M[col] = M[pivot]; M[pivot] = tmp;
+      const tmp = M[col];
+      M[col] = M[pivot];
+      M[pivot] = tmp;
     }
     // Eliminate below.
     for (let r = col + 1; r < n; r++) {
@@ -271,14 +297,14 @@ function stampCurrent(b: number[], ni: number, nj: number, i: number) {
 interface SourceBranch {
   ni: number;
   nj: number;
-  v: number;       // source voltage (pin0 - pin1)
+  v: number; // source voltage (pin0 - pin1)
   componentId: string;
   /** Equivalent series resistance for the source branch (0 for ideal). */
   rEq?: number;
 }
 
 interface StepResult {
-  v: number[];          // node voltages, length = node count, [0] = 0
+  v: number[]; // node voltages, length = node count, [0] = 0
   branchCurrents: number[];
   sources: SourceBranch[];
   ok: boolean;
@@ -307,7 +333,7 @@ function buildAndSolve(
     } else if (c.kind === 'inductor') {
       // Companion: Req in series with Veq.
       const L = Math.max(1e-12, c.value);
-      const Req = Math.max(MIN_R, 2 * L / ctx.dt);
+      const Req = Math.max(MIN_R, (2 * L) / ctx.dt);
       const prev = ctx.reactive.get(c.id) ?? { v: 0, i: 0 };
       const Veq = prev.v + Req * prev.i;
       sources.push({ ni, nj, v: Veq, componentId: c.id, rEq: Req });
@@ -436,10 +462,16 @@ export function step(doc: CircuitDoc, nodeMap: NodeMap, ctx: SolverContext): Sol
       if (on) {
         // Should remain on only if forward current is positive.
         const i = (vAnode - vCathode - DIODE_VF) / DIODE_RON;
-        if (i < 0) { diodeStates.set(c.id, false); changed = true; }
+        if (i < 0) {
+          diodeStates.set(c.id, false);
+          changed = true;
+        }
       } else {
         // Should turn on if anode−cathode would exceed V_F at off-resistance.
-        if (vAnode - vCathode > DIODE_VF + 0.001) { diodeStates.set(c.id, true); changed = true; }
+        if (vAnode - vCathode > DIODE_VF + 0.001) {
+          diodeStates.set(c.id, true);
+          changed = true;
+        }
       }
     }
     if (!changed) break;
@@ -462,7 +494,10 @@ export function step(doc: CircuitDoc, nodeMap: NodeMap, ctx: SolverContext): Sol
   }
   for (const c of doc.components) {
     const [p0, p1] = pinCoords(c);
-    if (!p1) { componentCurrents.set(c.id, 0); continue; }
+    if (!p1) {
+      componentCurrents.set(c.id, 0);
+      continue;
+    }
     const ni = nodeMap.index.get(pkey(p0.x, p0.y)) ?? 0;
     const nj = nodeMap.index.get(pkey(p1.x, p1.y)) ?? 0;
     const vi = result.v[ni];
@@ -515,10 +550,12 @@ export function step(doc: CircuitDoc, nodeMap: NodeMap, ctx: SolverContext): Sol
 
 /** Check whether two wires share an endpoint (for highlighting). */
 export function wiresShareEndpoint(a: Wire, b: Wire): boolean {
-  return (a.from.x === b.from.x && a.from.y === b.from.y)
-      || (a.from.x === b.to.x   && a.from.y === b.to.y)
-      || (a.to.x   === b.from.x && a.to.y   === b.from.y)
-      || (a.to.x   === b.to.x   && a.to.y   === b.to.y);
+  return (
+    (a.from.x === b.from.x && a.from.y === b.from.y) ||
+    (a.from.x === b.to.x && a.from.y === b.to.y) ||
+    (a.to.x === b.from.x && a.to.y === b.from.y) ||
+    (a.to.x === b.to.x && a.to.y === b.to.y)
+  );
 }
 
 /**
@@ -529,8 +566,14 @@ export function eng(v: number, sig = 3): string {
   if (Math.abs(v) < 1e-15) return '0';
   const abs = Math.abs(v);
   const prefixes: [number, string][] = [
-    [1e9, 'G'], [1e6, 'M'], [1e3, 'k'],
-    [1, ''], [1e-3, 'm'], [1e-6, 'µ'], [1e-9, 'n'], [1e-12, 'p'],
+    [1e9, 'G'],
+    [1e6, 'M'],
+    [1e3, 'k'],
+    [1, ''],
+    [1e-3, 'm'],
+    [1e-6, 'µ'],
+    [1e-9, 'n'],
+    [1e-12, 'p'],
   ];
   for (const [scale, suf] of prefixes) {
     if (abs >= scale) {

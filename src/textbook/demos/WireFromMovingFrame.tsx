@@ -30,13 +30,17 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function WireFromMovingFrameDemo({ figure }: Props) {
-  const [betaPct, setBetaPct] = useState(40);   // β × 100, 0..95 (visual)
+  const [betaPct, setBetaPct] = useState(40); // β × 100, 0..95 (visual)
 
   const stateRef = useRef({ betaPct });
-  useEffect(() => { stateRef.current = { betaPct }; }, [betaPct]);
+  useEffect(() => {
+    stateRef.current = { betaPct };
+  }, [betaPct]);
 
   // Real β for the readout — we cap below 1.
   const beta = Math.max(0, Math.min(0.99, betaPct / 100));
@@ -69,7 +73,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
   // Net: λ' = λ₀ × (γ_test - γ_e_new).
   // Multiplied by the test charge's speed in the lab, this gives exactly
   // the magnetic-force prediction.
-  const lambda0 = 1e-7;  // 0.1 µC/m — a chosen scale for "λ in lab frame"
+  const lambda0 = 1e-7; // 0.1 µC/m — a chosen scale for "λ in lab frame"
   const lambda_new = lambda0 * (gamma_test - gamma_e_new);
 
   const setup = useCallback((info: CanvasInfo) => {
@@ -94,7 +98,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       // moving ions. In the new frame: ions move left at -β·c, electrons
       // move slightly faster left (since the new-frame electron velocity
       // ≈ -β·c when β >> β_d). We exaggerate the difference for visibility.
-      const visIonSpeed = -b * 80;            // px/s, leftward
+      const visIonSpeed = -b * 80; // px/s, leftward
       const visElecSpeed = visIonSpeed * 1.04; // a touch faster left
 
       phaseIon += visIonSpeed * dt;
@@ -104,7 +108,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       // Real Lorentz factor at β=0.4 is γ ≈ 1.09 — too small to see.
       // Apply a cosmetic exponent to make spacing changes more visible.
       const ionContract = Math.pow(g_test, 1.0);
-      const elecContract = Math.pow(g_test, 1.0) * 0.94;  // small differential
+      const elecContract = Math.pow(g_test, 1.0) * 0.94; // small differential
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -132,8 +136,8 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       ctx.strokeRect(wireXL, wireTop, wireLen, wireH);
 
       // Ions, with contracted spacing — fit more of them in the same window
-      const ionSpacing = (wireLen / N) / ionContract;
-      const elecSpacing = (wireLen / N) / elecContract;
+      const ionSpacing = wireLen / N / ionContract;
+      const elecSpacing = wireLen / N / elecContract;
 
       const ionCount = Math.ceil(wireLen / ionSpacing) + 2;
       const elecCount = Math.ceil(wireLen / elecSpacing) + 2;
@@ -148,12 +152,17 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
         halo.addColorStop(0, 'rgba(255,59,110,0.55)');
         halo.addColorStop(1, 'rgba(255,59,110,0)');
         ctx.fillStyle = halo;
-        ctx.beginPath(); ctx.arc(x, y, 11, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x, y, 11, 0, Math.PI * 2);
+        ctx.fill();
         ctx.fillStyle = colors.pink;
-        ctx.beginPath(); ctx.arc(x, y, 4.5, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+        ctx.fill();
         ctx.fillStyle = colors.bg;
         ctx.font = 'bold 8px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         ctx.fillText('+', x, y);
       }
 
@@ -167,12 +176,17 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
         halo.addColorStop(0, 'rgba(91,174,248,0.55)');
         halo.addColorStop(1, 'rgba(91,174,248,0)');
         ctx.fillStyle = halo;
-        ctx.beginPath(); ctx.arc(x, y, 11, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x, y, 11, 0, Math.PI * 2);
+        ctx.fill();
         ctx.fillStyle = colors.blue;
-        ctx.beginPath(); ctx.arc(x, y, 4.5, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+        ctx.fill();
         ctx.fillStyle = colors.bg;
         ctx.font = 'bold 8px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         ctx.fillText('−', x, y);
       }
 
@@ -183,12 +197,17 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       halo.addColorStop(0, 'rgba(255,107,42,0.55)');
       halo.addColorStop(1, 'rgba(255,107,42,0)');
       ctx.fillStyle = halo;
-      ctx.beginPath(); ctx.arc(tx, ty, 22, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(tx, ty, 22, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = colors.accent;
-      ctx.beginPath(); ctx.arc(tx, ty, 9, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(tx, ty, 9, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = colors.bg;
       ctx.font = 'bold 10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillText('+', tx, ty);
 
       ctx.fillStyle = colors.text;
@@ -198,7 +217,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
 
       // E-field arrow pointing from wire toward (or away from) test charge,
       // depending on sign of λ_new (positive net charge → repels +test).
-      const lam = (gamma_test - 1 / Math.sqrt(1 - 0 * 0)); // simplified for sign
+      const lam = gamma_test - 1 / Math.sqrt(1 - 0 * 0); // simplified for sign
       if (b > 0.02) {
         const arrowLen = Math.min(48, 10 + Math.log10(1 + b * 100) * 22);
         ctx.strokeStyle = colors.accent;
@@ -209,13 +228,15 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
         const ay0 = ty + 26;
         const ay1 = ay0 - arrowLen;
         ctx.beginPath();
-        ctx.moveTo(ax, ay0); ctx.lineTo(ax, ay1);
+        ctx.moveTo(ax, ay0);
+        ctx.lineTo(ax, ay1);
         ctx.stroke();
         ctx.beginPath();
         ctx.moveTo(ax, ay1);
         ctx.lineTo(ax - 5, ay1 + 8);
         ctx.lineTo(ax + 5, ay1 + 8);
-        ctx.closePath(); ctx.fill();
+        ctx.closePath();
+        ctx.fill();
         ctx.font = '11px "JetBrains Mono", monospace';
         ctx.fillStyle = colors.accent;
         ctx.textAlign = 'left';
@@ -227,7 +248,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       ctx.fillStyle = 'rgba(160,158,149,0.75)';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
-      ctx.fillText(`BOOSTED FRAME · v_test = ${(b).toFixed(2)} c → wire has net λ' ≠ 0`, 14, 18);
+      ctx.fillText(`BOOSTED FRAME · v_test = ${b.toFixed(2)} c → wire has net λ' ≠ 0`, 14, 18);
 
       raf = requestAnimationFrame(draw);
     }
@@ -240,27 +261,40 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 9.2'}
       title="Same wire, viewed from the moving frame"
       question="Boost into the test charge's rest frame. Where does the force come from now?"
-      caption={<>
-        In this frame ions and electrons both move, but with <em>different</em> speeds, so they
-        Lorentz-contract by <em>different</em> factors. The two stripes no longer have matching linear
-        densities — the wire has a net charge per unit length <em>λ′</em>. The (now-stationary) test
-        charge sees an honest <strong>electric</strong> force. The number is identical to the magnetic
-        force the lab frame predicted. Same physics, different label.
-      </>}
+      caption={
+        <>
+          In this frame ions and electrons both move, but with <em>different</em> speeds, so they
+          Lorentz-contract by <em>different</em> factors. The two stripes no longer have matching
+          linear densities — the wire has a net charge per unit length <em>λ′</em>. The
+          (now-stationary) test charge sees an honest <strong>electric</strong> force. The number is
+          identical to the magnetic force the lab frame predicted. Same physics, different label.
+        </>
+      }
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="β = v_test / c"
-          value={betaPct} min={0} max={95} step={1}
-          format={v => (v / 100).toFixed(2) + ' c'}
+          value={betaPct}
+          min={0}
+          max={95}
+          step={1}
+          format={(v) => (v / 100).toFixed(2) + ' c'}
           onChange={setBetaPct}
         />
         <MiniReadout label="γ(v_test)" value={gamma_test.toFixed(4)} />
         <MiniReadout label="net λ′" value={<Num value={lambda_new} />} unit="C/m" />
         <MiniReadout
           label="force on test q"
-          value={lambda_new === 0 ? <Num value={0} /> : <>same as <em>F_B</em> in lab</>}
+          value={
+            lambda_new === 0 ? (
+              <Num value={0} />
+            ) : (
+              <>
+                same as <em>F_B</em> in lab
+              </>
+            )
+          }
         />
       </DemoControls>
     </Demo>

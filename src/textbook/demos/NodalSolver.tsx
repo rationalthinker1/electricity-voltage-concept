@@ -20,23 +20,26 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-interface StaticCacheEntry { key: string; canvas: HTMLCanvasElement }
+interface StaticCacheEntry {
+  key: string;
+  canvas: HTMLCanvasElement;
+}
 
 function solveNodal(V1: number, V2: number, R1: number, R2: number, R3: number) {
   const G = 1 / R1 + 1 / R2 + 1 / R3;
   const V_A = (V1 / R1 + V2 / R3) / G;
-  const I_R1 = (V1 - V_A) / R1;          // into A from V1
-  const I_R3 = (V2 - V_A) / R3;          // into A from V2
-  const I_R2 = V_A / R2;                 // out of A through R2
+  const I_R1 = (V1 - V_A) / R1; // into A from V1
+  const I_R3 = (V2 - V_A) / R3; // into A from V2
+  const I_R2 = V_A / R2; // out of A through R2
   return { V_A, I_R1, I_R2, I_R3 };
 }
 
@@ -156,37 +159,83 @@ export function NodalSolverDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 13.2'}
       title="Nodal analysis — one unknown voltage, one equation"
       question="Pick a ground; the unknowns become node voltages."
-      caption={<>
-        Same network as the previous demo. Choose the bottom rail as ground and the
-        only unknown is V<sub>A</sub>. KCL at node A gives a single linear equation —
-        smaller than the 2×2 mesh system. The branch currents recovered nodally agree
-        with the mesh solution to numerical precision (residual below).
-      </>}
+      caption={
+        <>
+          Same network as the previous demo. Choose the bottom rail as ground and the only unknown
+          is V<sub>A</sub>. KCL at node A gives a single linear equation — smaller than the 2×2 mesh
+          system. The branch currents recovered nodally agree with the mesh solution to numerical
+          precision (residual below).
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <MiniSlider label="V₁" value={V1} min={0} max={24} step={0.5}
-          format={v => v.toFixed(1) + ' V'} onChange={setV1} />
-        <MiniSlider label="V₂" value={V2} min={0} max={24} step={0.5}
-          format={v => v.toFixed(1) + ' V'} onChange={setV2} />
-        <MiniSlider label="R₁" value={R1} min={1} max={50} step={1}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setR1} />
-        <MiniSlider label="R₂" value={R2} min={1} max={50} step={1}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setR2} />
-        <MiniSlider label="R₃" value={R3} min={1} max={50} step={1}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setR3} />
+        <MiniSlider
+          label="V₁"
+          value={V1}
+          min={0}
+          max={24}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
+          onChange={setV1}
+        />
+        <MiniSlider
+          label="V₂"
+          value={V2}
+          min={0}
+          max={24}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
+          onChange={setV2}
+        />
+        <MiniSlider
+          label="R₁"
+          value={R1}
+          min={1}
+          max={50}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setR1}
+        />
+        <MiniSlider
+          label="R₂"
+          value={R2}
+          min={1}
+          max={50}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setR2}
+        />
+        <MiniSlider
+          label="R₃"
+          value={R3}
+          min={1}
+          max={50}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setR3}
+        />
         <MiniReadout label="V_A (nodal)" value={<Num value={nodal.V_A} digits={3} />} unit="V" />
         <MiniReadout label="I_R₂ (nodal)" value={<Num value={nodal.I_R2} digits={3} />} unit="A" />
         <MiniReadout label="I_R₂ (mesh)" value={<Num value={mesh.I_R2} digits={3} />} unit="A" />
-        <MiniReadout label="|Δ| residual" value={<Num value={meshSumCheck} digits={2} />} unit="A" />
+        <MiniReadout
+          label="|Δ| residual"
+          value={<Num value={meshSumCheck} digits={2} />}
+          unit="A"
+        />
       </DemoControls>
     </Demo>
   );
 }
 
 function buildNodalSchematic(
-  w: number, h: number,
-  V1: number, V2: number, R1: number, R2: number, R3: number,
+  w: number,
+  h: number,
+  V1: number,
+  V2: number,
+  R1: number,
+  R2: number,
+  R3: number,
 ): CircuitElement[] {
   const padX = 56;
   const yTop = h / 2 - 70;
@@ -199,26 +248,100 @@ function buildNodalSchematic(
 
   // Same topology as the mesh demo; bottom rail = ground, node A is the unknown.
   return [
-    { kind: 'wire', points: [{ x: xLeft, y: yTop }, { x: xR1 - 22, y: yTop }] },
-    { kind: 'resistor', from: { x: xR1 - 20, y: yTop }, to: { x: xR1 + 20, y: yTop },
-      label: `R1=${R1.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
-    { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: xMid, y: yTop }, { x: xR3 - 22, y: yTop }] },
-    { kind: 'resistor', from: { x: xR3 - 20, y: yTop }, to: { x: xR3 + 20, y: yTop },
-      label: `R3=${R3.toFixed(0)}Ω`, labelOffset: { x: 0, y: -12 } },
-    { kind: 'wire', points: [{ x: xR3 + 22, y: yTop }, { x: xRight, y: yTop }] },
-    { kind: 'wire', points: [{ x: xLeft, y: yBot }, { x: xRight, y: yBot }] },
-    { kind: 'wire', points: [{ x: xLeft, y: yTop }, { x: xLeft, y: h / 2 - 22 }] },
-    { kind: 'wire', points: [{ x: xLeft, y: h / 2 + 22 }, { x: xLeft, y: yBot }] },
-    { kind: 'wire', points: [{ x: xRight, y: yTop }, { x: xRight, y: h / 2 - 22 }] },
-    { kind: 'wire', points: [{ x: xRight, y: h / 2 + 22 }, { x: xRight, y: yBot }] },
-    { kind: 'wire', points: [{ x: xMid, y: yTop }, { x: xMid, y: h / 2 - 22 }] },
-    { kind: 'wire', points: [{ x: xMid, y: h / 2 + 22 }, { x: xMid, y: yBot }] },
-    { kind: 'battery', at: { x: xLeft, y: h / 2 },
-      label: `V₁=${V1.toFixed(1)}V`, leadLength: 22 },
-    { kind: 'battery', at: { x: xRight, y: h / 2 },
-      label: `V₂=${V2.toFixed(1)}V`, leadLength: 22 },
-    { kind: 'resistor', from: { x: xMid, y: h / 2 - 20 }, to: { x: xMid, y: h / 2 + 20 },
-      label: `R2=${R2.toFixed(0)}Ω`, labelOffset: { x: -60, y: 0 } },
+    {
+      kind: 'wire',
+      points: [
+        { x: xLeft, y: yTop },
+        { x: xR1 - 22, y: yTop },
+      ],
+    },
+    {
+      kind: 'resistor',
+      from: { x: xR1 - 20, y: yTop },
+      to: { x: xR1 + 20, y: yTop },
+      label: `R1=${R1.toFixed(0)}Ω`,
+      labelOffset: { x: 0, y: -12 },
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR1 + 22, y: yTop },
+        { x: xMid, y: yTop },
+        { x: xR3 - 22, y: yTop },
+      ],
+    },
+    {
+      kind: 'resistor',
+      from: { x: xR3 - 20, y: yTop },
+      to: { x: xR3 + 20, y: yTop },
+      label: `R3=${R3.toFixed(0)}Ω`,
+      labelOffset: { x: 0, y: -12 },
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR3 + 22, y: yTop },
+        { x: xRight, y: yTop },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xLeft, y: yBot },
+        { x: xRight, y: yBot },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xLeft, y: yTop },
+        { x: xLeft, y: h / 2 - 22 },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xLeft, y: h / 2 + 22 },
+        { x: xLeft, y: yBot },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xRight, y: yTop },
+        { x: xRight, y: h / 2 - 22 },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xRight, y: h / 2 + 22 },
+        { x: xRight, y: yBot },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xMid, y: yTop },
+        { x: xMid, y: h / 2 - 22 },
+      ],
+    },
+    {
+      kind: 'wire',
+      points: [
+        { x: xMid, y: h / 2 + 22 },
+        { x: xMid, y: yBot },
+      ],
+    },
+    { kind: 'battery', at: { x: xLeft, y: h / 2 }, label: `V₁=${V1.toFixed(1)}V`, leadLength: 22 },
+    { kind: 'battery', at: { x: xRight, y: h / 2 }, label: `V₂=${V2.toFixed(1)}V`, leadLength: 22 },
+    {
+      kind: 'resistor',
+      from: { x: xMid, y: h / 2 - 20 },
+      to: { x: xMid, y: h / 2 + 20 },
+      label: `R2=${R2.toFixed(0)}Ω`,
+      labelOffset: { x: -60, y: 0 },
+    },
     // Node A dot (amber) and ground glyph at the reference rail.
     { kind: 'node', at: { x: xMid, y: yTop }, radius: 5, color: 'rgba(255,107,42,0.95)' },
     { kind: 'ground', at: { x: xMid, y: yBot }, color: 'rgba(108,197,194,0.85)' },
@@ -230,4 +353,3 @@ function fmtA(I: number): string {
   if (Math.abs(I) >= 1e-3) return (I * 1000).toFixed(1) + ' mA';
   return (I * 1e6).toFixed(0) + ' µA';
 }
-

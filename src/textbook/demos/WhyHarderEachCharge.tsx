@@ -14,14 +14,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // One unit of charge on the plate = 1 nC, just to keep numbers friendly.
 const Q_UNIT = 1e-9;
@@ -29,7 +29,7 @@ const Q_UNIT = 1e-9;
 export function WhyHarderEachChargeDemo({ figure }: Props) {
   // Fixed reference geometry — focus is on N, not on the geometry tradeoff.
   const A_m2 = 100e-4; // 100 cm²
-  const d_m = 1e-3;    // 1 mm
+  const d_m = 1e-3; // 1 mm
   const C = (PHYS.eps_0 * A_m2) / d_m;
 
   const [N, setN] = useState(0);
@@ -41,11 +41,13 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
   // Cumulative work to charge from 0 to N+1 (sum approximation; exact integral
   // for continuum is ½ C V², which we also display so the reader sees both).
   // Sum_{k=0..N} q · k · q / C  =  q²/C · N(N+1)/2
-  const W_so_far = (Q_UNIT * Q_UNIT / C) * (N * (N - 1)) / 2; // work spent up to N
+  const W_so_far = (((Q_UNIT * Q_UNIT) / C) * (N * (N - 1))) / 2; // work spent up to N
   const W_integral = 0.5 * C * V_now * V_now;
 
   const stateRef = useRef({ N, V_now, workForNext });
-  useEffect(() => { stateRef.current = { N, V_now, workForNext }; }, [N, V_now, workForNext]);
+  useEffect(() => {
+    stateRef.current = { N, V_now, workForNext };
+  }, [N, V_now, workForNext]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H } = info;
@@ -167,7 +169,7 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       ctx.strokeRect(tapeX, tapeY, tapeW, tapeH);
 
       // Fill height grows with V/Vmax_visual. Pick a reference of N=200.
-      const Vmax_ref = 200 * Q_UNIT / C;
+      const Vmax_ref = (200 * Q_UNIT) / C;
       const fill = Math.max(0, Math.min(1, Math.abs(s.V_now) / Vmax_ref));
       const fillH = tapeH * fill;
       ctx.fillStyle = 'rgba(255,107,42,0.25)';
@@ -178,7 +180,8 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       for (let i = 1; i <= 4; i++) {
         const y = tapeY + (tapeH * i) / 5;
         ctx.beginPath();
-        ctx.moveTo(tapeX, y); ctx.lineTo(tapeX + 8, y);
+        ctx.moveTo(tapeX, y);
+        ctx.lineTo(tapeX + 8, y);
         ctx.stroke();
       }
 
@@ -201,9 +204,10 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       question="What does the (N+1)ᵗʰ charge actually push against?"
       caption={
         <>
-          The orange test charge climbs the gap against the field already set up by the <strong>N</strong> charges sitting on the
-          top plate. The work to lift it is <strong>q·V</strong>, and <strong>V</strong> grows linearly with N. Slide N up and the bar climbs:
-          the (N+1)ᵗʰ charge pays linearly more in work than the first one did.
+          The orange test charge climbs the gap against the field already set up by the{' '}
+          <strong>N</strong> charges sitting on the top plate. The work to lift it is{' '}
+          <strong>q·V</strong>, and <strong>V</strong> grows linearly with N. Slide N up and the bar
+          climbs: the (N+1)ᵗʰ charge pays linearly more in work than the first one did.
         </>
       }
     >
@@ -211,9 +215,12 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="N (charges already there)"
-          value={N} min={0} max={200} step={1}
-          format={v => v.toFixed(0)}
-          onChange={v => setN(Math.round(v))}
+          value={N}
+          min={0}
+          max={200}
+          step={1}
+          format={(v) => v.toFixed(0)}
+          onChange={(v) => setN(Math.round(v))}
         />
         <MiniReadout label="V now" value={<Num value={V_now} />} unit="V" />
         <MiniReadout label="work for next nC" value={<Num value={workForNext} />} unit="J" />
@@ -226,7 +233,11 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
 
 function drawBar(
   ctx: CanvasRenderingContext2D,
-  x: number, y: number, w: number, h: number, color: string,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  color: string,
 ) {
   const grd = ctx.createLinearGradient(x, y, x, y + h);
   grd.addColorStop(0, color);

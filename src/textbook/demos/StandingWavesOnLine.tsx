@@ -17,7 +17,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const Z0 = 50;
 
@@ -33,7 +35,9 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
   const VSWR = absG >= 1 ? Infinity : Vmax / Vmin;
 
   const stateRef = useRef({ Gamma, wavelengths });
-  useEffect(() => { stateRef.current = { Gamma, wavelengths }; }, [Gamma, wavelengths]);
+  useEffect(() => {
+    stateRef.current = { Gamma, wavelengths };
+  }, [Gamma, wavelengths]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -47,8 +51,12 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 50, padR = 30, padT = 24, padB = 36;
-      const plotX = padL, plotY = padT;
+      const padL = 50,
+        padR = 30,
+        padT = 24,
+        padB = 36;
+      const plotX = padL,
+        plotY = padT;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
@@ -63,10 +71,16 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
       ctx.strokeStyle = colors.border;
       for (let v = -2; v <= 2; v++) {
         const y = yV(v);
-        ctx.beginPath(); ctx.moveTo(plotX, y); ctx.lineTo(plotX + plotW, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
+        ctx.stroke();
       }
       ctx.strokeStyle = colors.borderStrong;
-      ctx.beginPath(); ctx.moveTo(plotX, yV(0)); ctx.lineTo(plotX + plotW, yV(0)); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(plotX, yV(0));
+      ctx.lineTo(plotX + plotW, yV(0));
+      ctx.stroke();
 
       // x is position from source (left) to load (right) measured in wavelengths
       // Load is at x = wavelengths, so β x = 2π x.
@@ -81,8 +95,7 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
         // V = A[ e^{-jβx}·e^{jωt} + Γ e^{+jβx} e^{jωt} ]  → real part:
         // V(x,t) = cos(ωt - 2π x) + Γ cos(ωt + 2π x)
         // We treat Γ as real (resistive load).
-        const v = Math.cos(phase - 2 * Math.PI * x)
-                + Gamma * Math.cos(phase + 2 * Math.PI * x);
+        const v = Math.cos(phase - 2 * Math.PI * x) + Gamma * Math.cos(phase + 2 * Math.PI * x);
         void d;
         vPts.push({ x: plotX + u * plotW, y: yV(v) });
       }
@@ -100,24 +113,22 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
       for (let i = 0; i <= N; i++) {
         const u = i / N;
         const x = u * wavelengths;
-        const mag = Math.sqrt(
-          1 + Gamma * Gamma + 2 * Gamma * Math.cos(2 * 2 * Math.PI * x)
-        );
+        const mag = Math.sqrt(1 + Gamma * Gamma + 2 * Gamma * Math.cos(2 * 2 * Math.PI * x));
         const X = plotX + u * plotW;
         const Y = yV(mag);
-        if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y);
+        if (i === 0) ctx.moveTo(X, Y);
+        else ctx.lineTo(X, Y);
       }
       ctx.stroke();
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {
         const u = i / N;
         const x = u * wavelengths;
-        const mag = Math.sqrt(
-          1 + Gamma * Gamma + 2 * Gamma * Math.cos(2 * 2 * Math.PI * x)
-        );
+        const mag = Math.sqrt(1 + Gamma * Gamma + 2 * Gamma * Math.cos(2 * 2 * Math.PI * x));
         const X = plotX + u * plotW;
         const Y = yV(-mag);
-        if (i === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y);
+        if (i === 0) ctx.moveTo(X, Y);
+        else ctx.lineTo(X, Y);
       }
       ctx.stroke();
 
@@ -148,8 +159,11 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
       ctx.fillText('±|V(x)|  envelope', plotX + 180, plotY + 4);
       ctx.fillStyle = colors.text;
       ctx.textAlign = 'right';
-      ctx.fillText(`VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`,
-        plotX + plotW - 4, plotY + 4);
+      ctx.fillText(
+        `VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`,
+        plotX + plotW - 4,
+        plotY + 4,
+      );
 
       raf = requestAnimationFrame(draw);
     }
@@ -162,20 +176,36 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 12.12'}
       title="Standing waves on a mismatched line"
       question="Mismatch the load and the line's voltage envelope is no longer flat."
-      caption={<>
-        Continuous-wave drive on a 50 Ω line into a real load. For a matched load (Z<sub>L</sub> =
-        50 Ω) the envelope is flat and the wave is a clean traveling sine. Mismatch and the
-        incident and reflected waves interfere — peaks where they add, nulls where they cancel.
-        The peak-to-null ratio is the VSWR; the spacing between adjacent nulls is half a
-        wavelength.
-      </>}
+      caption={
+        <>
+          Continuous-wave drive on a 50 Ω line into a real load. For a matched load (Z<sub>L</sub> =
+          50 Ω) the envelope is flat and the wave is a clean traveling sine. Mismatch and the
+          incident and reflected waves interfere — peaks where they add, nulls where they cancel.
+          The peak-to-null ratio is the VSWR; the spacing between adjacent nulls is half a
+          wavelength.
+        </>
+      }
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
-        <MiniSlider label="Z_L" value={ZL} min={1} max={500} step={1}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setZL} />
-        <MiniSlider label="Line length" value={wavelengths} min={0.5} max={5} step={0.1}
-          format={v => v.toFixed(1) + ' λ'} onChange={setWavelengths} />
+        <MiniSlider
+          label="Z_L"
+          value={ZL}
+          min={1}
+          max={500}
+          step={1}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setZL}
+        />
+        <MiniSlider
+          label="Line length"
+          value={wavelengths}
+          min={0.5}
+          max={5}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' λ'}
+          onChange={setWavelengths}
+        />
         <MiniReadout label="Γ" value={Gamma.toFixed(3)} />
         <MiniReadout label="V_max / V_min" value={VSWR === Infinity ? '∞' : <Num value={VSWR} />} />
         <MiniReadout label="V_max" value={Vmax.toFixed(2)} unit="·A" />

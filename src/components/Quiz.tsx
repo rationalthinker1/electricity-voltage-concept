@@ -1,11 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  type ChangeEvent,
-  type ReactNode,
-} from 'react';
+import { useCallback, useEffect, useMemo, useState, type ChangeEvent, type ReactNode } from 'react';
 import clsx from 'clsx';
 
 import { Card, Banner } from '@/components/ui';
@@ -15,11 +8,7 @@ import {
   type ChapterQuiz,
   type QuizQuestion,
 } from '@/textbook/data/quizzes';
-import {
-  getQuizStatus,
-  onProgressChange,
-  recordQuizAttempt,
-} from '@/lib/progress';
+import { getQuizStatus, onProgressChange, recordQuizAttempt } from '@/lib/progress';
 import type { ChapterSlug } from '@/textbook/data/chapters';
 
 interface QuizProps {
@@ -43,14 +32,15 @@ interface GradedQuestion {
 
 interface GradeResult {
   graded: GradedQuestion[];
-  score: number;      // 0..1
+  score: number; // 0..1
   numCorrect: number;
   numTotal: number;
 }
 
 const ICON_CORRECT = '✓'; // ✓
-const ICON_WRONG = '✗';   // ✗
-const INPUT_CLASS = 'w-full max-w-panel py-md px-lg card-surface bg-bg-elevated font-3 text-6 text-text transition-[border-color,background] duration-fast ease-in-out focus:outline-none focus:border-accent focus:bg-bg-card disabled:opacity-70 disabled:cursor-not-allowed';
+const ICON_WRONG = '✗'; // ✗
+const INPUT_CLASS =
+  'w-full max-w-panel py-md px-lg card-surface bg-bg-elevated font-3 text-6 text-text transition-[border-color,background] duration-fast ease-in-out focus:outline-none focus:border-accent focus:bg-bg-card disabled:opacity-70 disabled:cursor-not-allowed';
 
 /* ---------- Grading helpers ---------- */
 
@@ -83,22 +73,22 @@ function gradeOne(q: QuizQuestion, given: string): GradedQuestion {
       givenDisplay = describeChoice(q, givenIdx);
     }
     isCorrect = givenIdx === q.correctIndex;
-    correctDisplay = q.correctIndex !== undefined
-      ? describeChoice(q, q.correctIndex)
-      : null;
+    correctDisplay = q.correctIndex !== undefined ? describeChoice(q, q.correctIndex) : null;
   } else if (q.type === 'short-answer') {
     if (given !== '') givenDisplay = <span className="font-3">{given}</span>;
     const accepted = (q.acceptedAnswers ?? []).map(normalizeText);
     isCorrect = accepted.includes(normalizeText(given));
-    correctDisplay = q.acceptedAnswers && q.acceptedAnswers[0]
-      ? <span className="font-3 text-teal">{q.acceptedAnswers[0]}</span>
-      : null;
+    correctDisplay =
+      q.acceptedAnswers && q.acceptedAnswers[0] ? (
+        <span className="font-3 text-teal">{q.acceptedAnswers[0]}</span>
+      ) : null;
   } else if (q.type === 'numeric') {
     const parsed = parseNumeric(given);
     if (parsed !== null) {
       givenDisplay = (
         <span className="font-3">
-          {parsed}{q.unit ? ` ${q.unit}` : ''}
+          {parsed}
+          {q.unit ? ` ${q.unit}` : ''}
         </span>
       );
     }
@@ -108,19 +98,21 @@ function gradeOne(q: QuizQuestion, given: string): GradedQuestion {
       const allowed = base === 0 ? tol : base * tol;
       isCorrect = Math.abs(parsed - q.targetValue) <= allowed;
     }
-    correctDisplay = q.targetValue !== undefined ? (
-      <span className="font-3 text-teal">
-        {q.targetValue}{q.unit ? ` ${q.unit}` : ''}
-      </span>
-    ) : null;
+    correctDisplay =
+      q.targetValue !== undefined ? (
+        <span className="font-3 text-teal">
+          {q.targetValue}
+          {q.unit ? ` ${q.unit}` : ''}
+        </span>
+      ) : null;
   }
 
   return { question: q, given, givenDisplay, correctDisplay, isCorrect };
 }
 
 function gradeAll(quiz: ChapterQuiz, answers: AnswerMap): GradeResult {
-  const graded = quiz.questions.map(q => gradeOne(q, answers[q.id] ?? ''));
-  const numCorrect = graded.filter(g => g.isCorrect).length;
+  const graded = quiz.questions.map((q) => gradeOne(q, answers[q.id] ?? ''));
+  const numCorrect = graded.filter((g) => g.isCorrect).length;
   return {
     graded,
     numCorrect,
@@ -145,7 +137,7 @@ function QuestionInput({
   if (question.type === 'multiple-choice' || question.type === 'true-false') {
     const choices = question.choices ?? [];
     return (
-      <div className="flex flex-col gap-sm" role="radiogroup">
+      <div className="gap-sm flex flex-col" role="radiogroup">
         {choices.map((c, idx) => {
           const id = `${question.id}-opt-${idx}`;
           const checked = value === String(idx);
@@ -154,7 +146,7 @@ function QuestionInput({
               key={idx}
               htmlFor={id}
               className={clsx(
-                'flex items-start gap-md py-md px-lg card-surface bg-bg-elevated cursor-pointer transition-[background,border-color] duration-fast ease-in-out font-1 text-6 text-text leading-4 hover:bg-bg-card-hover hover:border-border-2',
+                'gap-md py-md px-lg card-surface bg-bg-elevated duration-fast font-1 text-6 text-text hover:bg-bg-card-hover hover:border-border-2 flex cursor-pointer items-start leading-4 transition-[background,border-color] ease-in-out',
                 checked && 'border-accent bg-accent-soft',
               )}
             >
@@ -168,7 +160,7 @@ function QuestionInput({
                 disabled={disabled}
                 onChange={() => onChange(String(idx))}
               />
-              <span className="flex-1 min-w-0">{c}</span>
+              <span className="min-w-0 flex-1">{c}</span>
             </label>
           );
         })}
@@ -177,7 +169,7 @@ function QuestionInput({
   }
   if (question.type === 'numeric') {
     return (
-      <div className="inline-flex items-center gap-md">
+      <div className="gap-md inline-flex items-center">
         <input
           type="text"
           inputMode="decimal"
@@ -228,19 +220,19 @@ function QuestionCard({
         status === 'wrong' && '!border-pink/45',
       )}
       header={
-        <div className="flex items-center justify-between gap-md eyebrow-dim text-3 tracking-2">
+        <div className="gap-md eyebrow-dim text-3 tracking-2 flex items-center justify-between">
           <span className="text-text-dim">Question {index + 1}</span>
           {graded && (
             <span
               className={clsx(
-                'inline-flex items-center gap-sm font-3 text-3 tracking-2',
+                'gap-sm font-3 text-3 tracking-2 inline-flex items-center',
                 status === 'correct' && 'text-teal',
                 status === 'wrong' && 'text-pink',
               )}
               aria-label={graded.isCorrect ? 'Correct' : 'Incorrect'}
             >
               {graded.isCorrect ? ICON_CORRECT : ICON_WRONG}
-              <span className="normal-case tracking-normal text-3">
+              <span className="text-3 tracking-normal normal-case">
                 {graded.isCorrect ? 'Correct' : 'Incorrect'}
               </span>
             </span>
@@ -248,15 +240,10 @@ function QuestionCard({
         </div>
       }
     >
-      <div className="body-copy leading-4 text-text my-md mb-lg">{question.prompt}</div>
-      <QuestionInput
-        question={question}
-        value={value}
-        disabled={disabled}
-        onChange={onChange}
-      />
+      <div className="body-copy text-text my-md mb-lg leading-4">{question.prompt}</div>
+      <QuestionInput question={question} value={value} disabled={disabled} onChange={onChange} />
       {graded && (
-        <div className="mt-lg pt-lg border-t border-dashed border-border flex flex-col gap-sm">
+        <div className="mt-lg pt-lg border-border gap-sm flex flex-col border-t border-dashed">
           {!graded.isCorrect && graded.correctDisplay && (
             <div className="font-1 text-5 text-text">
               <span className="eyebrow-dim text-2 tracking-2 mr-xs">Correct answer:</span>{' '}
@@ -295,11 +282,11 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
 
   const allAnswered = useMemo(() => {
     if (!quiz) return false;
-    return quiz.questions.every(q => (answers[q.id] ?? '').trim() !== '');
+    return quiz.questions.every((q) => (answers[q.id] ?? '').trim() !== '');
   }, [quiz, answers]);
 
   const handleChange = useCallback((id: string, value: string) => {
-    setAnswers(prev => ({ ...prev, [id]: value }));
+    setAnswers((prev) => ({ ...prev, [id]: value }));
   }, []);
 
   const handleSubmit = useCallback(() => {
@@ -333,25 +320,31 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
   const passed = submitted ? submitted.score >= passingScore : false;
 
   return (
-    <section id={`quiz-${chapterSlug}`} className="flex flex-col gap-lg my-2xl">
+    <section id={`quiz-${chapterSlug}`} className="gap-lg my-2xl flex flex-col">
       {heading && <div className="title-display text-8 mb-sm">{heading}</div>}
 
       {submitted ? (
         <Banner variant={passed ? 'success' : 'warn'}>
           <div className="font-1 text-6 text-text">
-            You scored <strong className="font-3 font-semibold">{submitted.numCorrect}/{submitted.numTotal}</strong>{' '}
+            You scored{' '}
+            <strong className="font-3 font-semibold">
+              {submitted.numCorrect}/{submitted.numTotal}
+            </strong>{' '}
             <span className="font-3 text-text-dim text-4">({scorePct}%)</span>.
           </div>
           <div className="font-1 text-4 text-text-dim mt-xxs">
-            {passed
-              ? <>You passed — this chapter is marked complete. You can retake the quiz any time.</>
-              : <>Need {passingPct}% to mark this chapter complete.</>}
+            {passed ? (
+              <>You passed — this chapter is marked complete. You can retake the quiz any time.</>
+            ) : (
+              <>Need {passingPct}% to mark this chapter complete.</>
+            )}
           </div>
         </Banner>
       ) : status.passed ? (
         <Banner variant="success">
           <div className="font-1 text-6 text-text">
-            Previously passed at <strong className="font-3 font-semibold">{Math.round(status.bestScore * 100)}%</strong>.{' '}
+            Previously passed at{' '}
+            <strong className="font-3 font-semibold">{Math.round(status.bestScore * 100)}%</strong>.{' '}
             <span className="font-1 text-4 text-text-dim mt-xxs">
               {status.attempts} attempt{status.attempts === 1 ? '' : 's'} so far.
             </span>
@@ -360,21 +353,22 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
       ) : status.attempts > 0 ? (
         <Banner variant="info">
           <div className="font-1 text-6 text-text">
-            Best score so far: <strong className="font-3 font-semibold">{Math.round(status.bestScore * 100)}%</strong>{' '}
-            across {status.attempts} attempt{status.attempts === 1 ? '' : 's'}.
-            You need {passingPct}% to mark this chapter complete.
+            Best score so far:{' '}
+            <strong className="font-3 font-semibold">{Math.round(status.bestScore * 100)}%</strong>{' '}
+            across {status.attempts} attempt{status.attempts === 1 ? '' : 's'}. You need{' '}
+            {passingPct}% to mark this chapter complete.
           </div>
         </Banner>
       ) : (
         <Banner variant="info">
           <div className="font-1 text-6 text-text">
-            Mastery check &middot; {quiz.questions.length} questions.
-            Need {passingPct}% to mark this chapter complete.
+            Mastery check &middot; {quiz.questions.length} questions. Need {passingPct}% to mark
+            this chapter complete.
           </div>
         </Banner>
       )}
 
-      <div className="flex flex-col gap-lg">
+      <div className="gap-lg flex flex-col">
         {quiz.questions.map((q, i) => (
           <QuestionCard
             key={q.id}
@@ -388,19 +382,25 @@ export function Quiz({ chapterSlug, heading }: QuizProps) {
         ))}
       </div>
 
-      <div className="flex justify-end gap-md">
+      <div className="gap-md flex justify-end">
         {submitted ? (
-          <button type="button" className="inline-flex items-center gap-sm py-md px-lg rounded-5 font-1 text-5 font-medium border border-accent bg-accent text-bg cursor-pointer transition-[background,border-color,color] duration-fast ease-in-out hover:brightness-110 disabled:opacity-55 disabled:cursor-not-allowed" onClick={handleRetry}>
+          <button
+            type="button"
+            className="gap-sm py-md px-lg rounded-5 font-1 text-5 border-accent bg-accent text-bg duration-fast inline-flex cursor-pointer items-center border font-medium transition-[background,border-color,color] ease-in-out hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-55"
+            onClick={handleRetry}
+          >
             Retry quiz
           </button>
         ) : (
           <button
             type="button"
-            className="inline-flex items-center gap-sm py-md px-lg rounded-5 font-1 text-5 font-medium border border-accent bg-accent text-bg cursor-pointer transition-[background,border-color,color] duration-fast ease-in-out hover:not-disabled:brightness-110 disabled:opacity-55 disabled:cursor-not-allowed"
+            className="gap-sm py-md px-lg rounded-5 font-1 text-5 border-accent bg-accent text-bg duration-fast inline-flex cursor-pointer items-center border font-medium transition-[background,border-color,color] ease-in-out hover:not-disabled:brightness-110 disabled:cursor-not-allowed disabled:opacity-55"
             onClick={handleSubmit}
             disabled={!allAnswered}
           >
-            {allAnswered ? 'Submit quiz' : `Answer all ${quiz.questions.length} questions to submit`}
+            {allAnswered
+              ? 'Submit quiz'
+              : `Answer all ${quiz.questions.length} questions to submit`}
           </button>
         )}
       </div>

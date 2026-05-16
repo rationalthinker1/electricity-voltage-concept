@@ -11,7 +11,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 interface Stage {
   key: string;
@@ -21,20 +23,57 @@ interface Stage {
 }
 
 const STAGES: Stage[] = [
-  { key: 'gen',    label: 'Generator',         voltage: '25 kV',    blurb: 'Stator winding terminal voltage, limited by insulation.' },
-  { key: 'step1',  label: 'Step-up transformer', voltage: '25 → 500 kV', blurb: 'Generator step-up (GSU): raises to transmission voltage at the power plant.' },
-  { key: 'trans',  label: 'Transmission line', voltage: '500 kV',   blurb: 'EHV/UHV overhead line; high V → low I → low I²R losses.' },
-  { key: 'sub1',   label: 'Substation',        voltage: '500 → 138 kV', blurb: 'Bulk substation: HV to regional sub-transmission.' },
-  { key: 'sub2',   label: 'Distribution substation', voltage: '138 → 12.47 kV', blurb: 'Distribution substation: down to the neighbourhood feeder.' },
-  { key: 'pole',   label: 'Pole transformer',  voltage: '12.47 kV → 240 V', blurb: 'The "pole-pig": single-phase tap, 240 V centre-tapped for your house.' },
-  { key: 'house',  label: 'House',             voltage: '240 / 120 V', blurb: 'Split-phase wall outlets in North America.' },
+  {
+    key: 'gen',
+    label: 'Generator',
+    voltage: '25 kV',
+    blurb: 'Stator winding terminal voltage, limited by insulation.',
+  },
+  {
+    key: 'step1',
+    label: 'Step-up transformer',
+    voltage: '25 → 500 kV',
+    blurb: 'Generator step-up (GSU): raises to transmission voltage at the power plant.',
+  },
+  {
+    key: 'trans',
+    label: 'Transmission line',
+    voltage: '500 kV',
+    blurb: 'EHV/UHV overhead line; high V → low I → low I²R losses.',
+  },
+  {
+    key: 'sub1',
+    label: 'Substation',
+    voltage: '500 → 138 kV',
+    blurb: 'Bulk substation: HV to regional sub-transmission.',
+  },
+  {
+    key: 'sub2',
+    label: 'Distribution substation',
+    voltage: '138 → 12.47 kV',
+    blurb: 'Distribution substation: down to the neighbourhood feeder.',
+  },
+  {
+    key: 'pole',
+    label: 'Pole transformer',
+    voltage: '12.47 kV → 240 V',
+    blurb: 'The "pole-pig": single-phase tap, 240 V centre-tapped for your house.',
+  },
+  {
+    key: 'house',
+    label: 'House',
+    voltage: '240 / 120 V',
+    blurb: 'Split-phase wall outlets in North America.',
+  },
 ];
 
 export function GridHierarchyDemo({ figure }: Props) {
   const [selected, setSelected] = useState('gen');
 
   const stateRef = useRef({ selected });
-  useEffect(() => { stateRef.current.selected = selected; }, [selected]);
+  useEffect(() => {
+    stateRef.current.selected = selected;
+  }, [selected]);
 
   // Hit regions for canvas
   const hitsRef = useRef<{ key: string; x: number; y: number; w: number; h: number }[]>([]);
@@ -81,7 +120,9 @@ export function GridHierarchyDemo({ figure }: Props) {
         const xA = padX + (i + 0.5) * slotW + blockW / 2;
         const xB = padX + (i + 1.5) * slotW - blockW / 2;
         ctx.beginPath();
-        ctx.moveTo(xA, cy); ctx.lineTo(xB, cy); ctx.stroke();
+        ctx.moveTo(xA, cy);
+        ctx.lineTo(xB, cy);
+        ctx.stroke();
       }
 
       for (let i = 0; i < n; i++) {
@@ -98,7 +139,8 @@ export function GridHierarchyDemo({ figure }: Props) {
 
         ctx.fillStyle = isSel ? 'rgba(255,107,42,0.95)' : 'rgba(236,235,229,0.85)';
         ctx.font = 'bold 9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         // multi-line label: split on space if long
         const lbl = s.label;
         const words = lbl.split(' ');
@@ -132,19 +174,22 @@ export function GridHierarchyDemo({ figure }: Props) {
     };
   }, []);
 
-  const sel = STAGES.find(s => s.key === selected) ?? STAGES[0];
+  const sel = STAGES.find((s) => s.key === selected) ?? STAGES[0];
 
   return (
     <Demo
       figure={figure ?? 'Fig. 18.6'}
       title="The grid as a stack of transformers"
       question="From power plant to wall outlet: how many transformers, what voltages?"
-      caption={<>
-        Click any stage. Energy leaves a generating station at ~25 kV (stator-insulation limit), gets bumped
-        up to 230–765 kV for cross-country transmission (low loss), and is stepped back down in stages at every
-        substation along the way. The last transformer in the chain — the "pole-pig" on the wooden pole outside
-        your house — drops 12.47 kV single-phase to the 240/120 V split-phase that powers your kitchen.
-      </>}
+      caption={
+        <>
+          Click any stage. Energy leaves a generating station at ~25 kV (stator-insulation limit),
+          gets bumped up to 230–765 kV for cross-country transmission (low loss), and is stepped
+          back down in stages at every substation along the way. The last transformer in the chain —
+          the "pole-pig" on the wooden pole outside your house — drops 12.47 kV single-phase to the
+          240/120 V split-phase that powers your kitchen.
+        </>
+      }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
     >
       <div ref={canvasContainerRef}>
@@ -154,12 +199,14 @@ export function GridHierarchyDemo({ figure }: Props) {
         <MiniReadout label="selected" value={sel.label} />
         <MiniReadout label="voltage" value={sel.voltage} />
       </DemoControls>
-      <p style={{
-        margin: '8px 0 0',
-        fontSize: '0.85rem',
-        color: 'var(--text-dim)',
-        fontStyle: 'italic',
-      }}>
+      <p
+        style={{
+          margin: '8px 0 0',
+          fontSize: '0.85rem',
+          color: 'var(--text-dim)',
+          fontStyle: 'italic',
+        }}
+      >
         {sel.blurb}
       </p>
     </Demo>

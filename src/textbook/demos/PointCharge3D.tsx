@@ -25,12 +25,11 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
-import {
-  attachOrbit, project, v3,
-  type OrbitCamera, type Vec3,
-} from '@/lib/projection3d';
+import { attachOrbit, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 /* ───── Geometry constants ──────────────────────────────────────────── */
 
@@ -69,9 +68,7 @@ interface RadialArrow {
 }
 
 /** Build the sampling-sphere arrow list for a given r, q, sign. */
-function buildArrows(
-  rSphere: number, eVisualLen: number, sign: 1 | -1,
-): RadialArrow[] {
+function buildArrows(rSphere: number, eVisualLen: number, sign: 1 | -1): RadialArrow[] {
   const arrows: RadialArrow[] = [];
   for (let i = 0; i < N_LAT; i++) {
     // theta runs from a small offset away from the poles to avoid
@@ -119,7 +116,7 @@ function buildArrows(
 
 export function PointCharge3DDemo({ figure }: Props) {
   const [positive, setPositive] = useState(true);
-  const [q, setQ] = useState(1.5);            // normalised units
+  const [q, setQ] = useState(1.5); // normalised units
   const [rSample, setRSample] = useState(2.0); // normalised units
 
   // Physics readouts. Pure |E| = k|q|/r²; ratio is the geometric punch.
@@ -159,9 +156,7 @@ export function PointCharge3DDemo({ figure }: Props) {
 
       // ── Central charge glow + body ────────────────────────────────
       const chargeColor = s.positive ? getCanvasColors().pink : getCanvasColors().blue;
-      const chargeColorGlow = s.positive
-        ? 'rgba(255,59,110,0.35)'
-        : 'rgba(91,174,248,0.35)';
+      const chargeColorGlow = s.positive ? 'rgba(255,59,110,0.35)' : 'rgba(91,174,248,0.35)';
 
       // Project the centre and a ring of equator points to draw a glowing
       // silhouette ellipse for the ball.
@@ -177,7 +172,7 @@ export function PointCharge3DDemo({ figure }: Props) {
       const order = arrows
         .map((a, i) => ({ i, d: project(a.anchor, cam, W, H).depth }))
         .sort((a, b) => b.d - a.d)
-        .map(o => o.i);
+        .map((o) => o.i);
 
       for (const idx of order) {
         const a = arrows[idx]!;
@@ -193,20 +188,12 @@ export function PointCharge3DDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.6;
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText(
-        `sample sphere r = ${s.rSample.toFixed(2)}   |E| ∝ k|q|/r²`,
-        12, 28,
-      );
+      ctx.fillText(`sample sphere r = ${s.rSample.toFixed(2)}   |E| ∝ k|q|/r²`, 12, 28);
 
       ctx.textAlign = 'right';
       ctx.restore();
-      ctx.fillStyle = s.positive
-        ? 'rgba(255,59,110,0.92)'
-        : 'rgba(91,174,248,0.92)';
-      ctx.fillText(
-        s.positive ? 'E radial · outward' : 'E radial · inward',
-        W - 12, 12,
-      );
+      ctx.fillStyle = s.positive ? 'rgba(255,59,110,0.92)' : 'rgba(91,174,248,0.92)';
+      ctx.fillText(s.positive ? 'E radial · outward' : 'E radial · inward', W - 12, 12);
 
       raf = requestAnimationFrame(draw);
     }
@@ -223,17 +210,17 @@ export function PointCharge3DDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 1.3'}
       title="A point charge's field in three dimensions"
       question="Why does doubling r quarter the field — not halve it?"
-      caption={<>
-        Drag the sphere to orbit. The arrows show the electric field on a
-        spherical shell of radius <strong>r</strong> around a point charge.
-        Their length tracks <strong>|E| = k|q|/r²</strong> — so when you
-        slide <strong>r</strong> from 1 to 2 the entire spiky shell
-        shrinks by exactly <strong>4×</strong>. That factor of four is the
-        inverse-square law, and the reason it's a four (not a two) is the
-        same reason the surface area of a sphere is <strong>4πr²</strong>:
-        a fixed amount of "flux" spreads over a larger and larger
-        spherical area as r grows.
-      </>}
+      caption={
+        <>
+          Drag the sphere to orbit. The arrows show the electric field on a spherical shell of
+          radius <strong>r</strong> around a point charge. Their length tracks{' '}
+          <strong>|E| = k|q|/r²</strong> — so when you slide <strong>r</strong> from 1 to 2 the
+          entire spiky shell shrinks by exactly <strong>4×</strong>. That factor of four is the
+          inverse-square law, and the reason it's a four (not a two) is the same reason the surface
+          area of a sphere is <strong>4πr²</strong>: a fixed amount of "flux" spreads over a larger
+          and larger spherical area as r grows.
+        </>
+      }
       deeperLab={{ slug: 'e-field', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={360} setup={setup} />
@@ -249,7 +236,7 @@ export function PointCharge3DDemo({ figure }: Props) {
           min={0.5}
           max={5}
           step={0.1}
-          format={v => v.toFixed(1)}
+          format={(v) => v.toFixed(1)}
           onChange={setQ}
         />
         <MiniSlider
@@ -258,19 +245,11 @@ export function PointCharge3DDemo({ figure }: Props) {
           min={0.5}
           max={4}
           step={0.1}
-          format={v => v.toFixed(1)}
+          format={(v) => v.toFixed(1)}
           onChange={setRSample}
         />
-        <MiniReadout
-          label="|E| = k|q|/r²"
-          value={<Num value={computed.Emag} />}
-          unit="(norm.)"
-        />
-        <MiniReadout
-          label="|E(r)| / |E(2r)|"
-          value={computed.ratio.toFixed(2)}
-          unit="×"
-        />
+        <MiniReadout label="|E| = k|q|/r²" value={<Num value={computed.Emag} />} unit="(norm.)" />
+        <MiniReadout label="|E(r)| / |E(2r)|" value={computed.ratio.toFixed(2)} unit="×" />
       </DemoControls>
     </Demo>
   );
@@ -285,12 +264,16 @@ export function PointCharge3DDemo({ figure }: Props) {
  */
 function drawChargeBall(
   ctx: CanvasRenderingContext2D,
-  cam: OrbitCamera, W: number, H: number,
-  color: string, glow: string, signGlyph: '+' | '-',
+  cam: OrbitCamera,
+  W: number,
+  H: number,
+  color: string,
+  glow: string,
+  signGlyph: '+' | '-',
 ) {
   const centre = project(v3(0, 0, 0), cam, W, H);
   // Approximate on-screen radius via the focal length the projection uses.
-  const focal = (Math.min(W, H) / 2) / Math.tan(cam.fov / 2);
+  const focal = Math.min(W, H) / 2 / Math.tan(cam.fov / 2);
   const rPx = (CHARGE_RADIUS / Math.max(0.01, centre.depth)) * focal;
 
   // Glow halo: trace the silhouette circle as a polyline through
@@ -330,7 +313,9 @@ function drawChargeBall(
  */
 function drawSampleSphere(
   ctx: CanvasRenderingContext2D,
-  cam: OrbitCamera, W: number, H: number,
+  cam: OrbitCamera,
+  W: number,
+  H: number,
   r: number,
 ) {
   const N = 60;
@@ -345,8 +330,8 @@ function drawSampleSphere(
   for (const f of planes) {
     const pts: Vec3[] = [];
     for (let i = 0; i <= N; i++) pts.push(f((i / N) * Math.PI * 2));
-    const proj = pts.map(p => project(p, cam, W, H));
-    const depths = proj.map(p => p.depth);
+    const proj = pts.map((p) => project(p, cam, W, H));
+    const depths = proj.map((p) => p.depth);
     const sorted = [...depths].sort((a, b) => a - b);
     const cutoff = sorted[Math.floor(sorted.length / 2)]!;
     for (const pass of ['back', 'front'] as const) {
@@ -357,15 +342,15 @@ function drawSampleSphere(
         const include = pass === 'front' ? isFront : !isFront;
         const p = proj[i]!;
         if (include) {
-          if (!drawing) { ctx.moveTo(p.x, p.y); drawing = true; }
-          else ctx.lineTo(p.x, p.y);
+          if (!drawing) {
+            ctx.moveTo(p.x, p.y);
+            drawing = true;
+          } else ctx.lineTo(p.x, p.y);
         } else {
           drawing = false;
         }
       }
-      ctx.strokeStyle = pass === 'front'
-        ? 'rgba(160,158,149,0.18)'
-        : 'rgba(160,158,149,0.07)';
+      ctx.strokeStyle = pass === 'front' ? 'rgba(160,158,149,0.18)' : 'rgba(160,158,149,0.07)';
       ctx.lineWidth = 1;
       ctx.setLineDash(pass === 'back' ? [4, 4] : []);
       ctx.stroke();
@@ -381,7 +366,9 @@ function drawSampleSphere(
 function drawRadialArrow(
   ctx: CanvasRenderingContext2D,
   a: RadialArrow,
-  cam: OrbitCamera, W: number, H: number,
+  cam: OrbitCamera,
+  W: number,
+  H: number,
   positive: boolean,
 ) {
   const p1 = project(a.from, cam, W, H);
@@ -407,10 +394,12 @@ function drawRadialArrow(
   ctx.stroke();
 
   // 2D screen-space arrowhead at p2.
-  const dx = p2.x - p1.x, dy = p2.y - p1.y;
+  const dx = p2.x - p1.x,
+    dy = p2.y - p1.y;
   const len = Math.hypot(dx, dy);
   if (len < 3) return;
-  const ux = dx / len, uy = dy / len;
+  const ux = dx / len,
+    uy = dy / len;
   const head = 7;
   const half = 3.2;
   ctx.fillStyle = baseColor;

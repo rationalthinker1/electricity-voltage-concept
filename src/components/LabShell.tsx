@@ -30,7 +30,13 @@ interface LabShellProps {
  * and the prose. Single-source-of-truth for layout: change here, all 16 labs update.
  */
 export function LabShell({
-  slug, labContent, labSubtitle, labId, prose, sources, legend,
+  slug,
+  labContent,
+  labSubtitle,
+  labId,
+  prose,
+  sources,
+  legend,
 }: LabShellProps) {
   const lab = getLab(slug);
   if (!lab) {
@@ -43,10 +49,12 @@ export function LabShell({
     <>
       <Hero lab={lab} />
 
-      <div className="w-full bg-[linear-gradient(180deg,var(--bg)_0%,var(--bg-elevated)_100%)] border-t border-b border-border py-3xl relative before:content-[''] before:absolute before:inset-0 before:bg-[radial-gradient(ellipse_at_20%_20%,rgba(255,107,42,.04)_0%,transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(108,197,194,.03)_0%,transparent_50%)] before:pointer-events-none">
-        <div className="max-w-page-lg mx-auto px-3xl max-md:px-lg relative">
-          <div className="flex justify-between items-baseline mb-2xl pb-lg border-b border-border flex-wrap gap-md">
-            <span className="font-3 text-3 text-text-dim uppercase tracking-4">Interactive Lab · {labSubtitle}</span>
+      <div className="border-border py-3xl relative w-full border-t border-b bg-[linear-gradient(180deg,var(--bg)_0%,var(--bg-elevated)_100%)] before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(ellipse_at_20%_20%,rgba(255,107,42,.04)_0%,transparent_50%),radial-gradient(ellipse_at_80%_80%,rgba(108,197,194,.03)_0%,transparent_50%)] before:content-['']">
+        <div className="max-w-page-lg px-3xl max-md:px-lg relative mx-auto">
+          <div className="mb-2xl pb-lg border-border gap-md flex flex-wrap items-baseline justify-between border-b">
+            <span className="font-3 text-3 text-text-dim tracking-4 uppercase">
+              Interactive Lab · {labSubtitle}
+            </span>
             <span className="font-3 text-2 text-text-muted tracking-3">/ {labId}</span>
           </div>
           {legend}
@@ -55,7 +63,9 @@ export function LabShell({
       </div>
 
       <section>
-        <div className="reveal in max-w-col-lg text-6 leading-5 text-text-dim [&_.pullout]:my-2xl [&_.kbd]:font-3 [&_.kbd]:text-[.85em] [&_.kbd]:text-accent [&_.kbd]:bg-accent-soft [&_.kbd]:py-xxs [&_.kbd]:px-md [&_.kbd]:rounded-2">{prose}</div>
+        <div className="reveal in max-w-col-lg text-6 text-text-dim [&_.pullout]:my-2xl [&_.kbd]:font-3 [&_.kbd]:text-accent [&_.kbd]:bg-accent-soft [&_.kbd]:py-xxs [&_.kbd]:px-md [&_.kbd]:rounded-2 leading-5 [&_.kbd]:text-[.85em]">
+          {prose}
+        </div>
 
         <SourcesList ids={sourceKeys} />
 
@@ -66,7 +76,9 @@ export function LabShell({
         <div className="colophon">
           <span>Field · Theory · Lab {lab.number}</span>
           <span>
-            <a href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>↑ Back to contents</a>
+            <a href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
+              ↑ Back to contents
+            </a>
           </span>
         </div>
       </footer>

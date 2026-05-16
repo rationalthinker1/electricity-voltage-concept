@@ -8,15 +8,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const V_OC = 1.10; // V open-circuit
+const V_OC = 1.1; // V open-circuit
 const R_INT = 1.0; // Ω internal resistance (a rough Daniell number)
 
 export function DaniellCellDemo({ figure }: Props) {
@@ -25,20 +25,21 @@ export function DaniellCellDemo({ figure }: Props) {
   const [erosion, setErosion] = useState(0); // 0..1 progress
 
   const I = loaded ? V_OC / (R_INT + R_L) : 0;
-  const V_term = loaded ? V_OC * R_L / (R_INT + R_L) : V_OC;
+  const V_term = loaded ? (V_OC * R_L) / (R_INT + R_L) : V_OC;
 
   // Slowly advance erosion when loaded
   useEffect(() => {
     if (!loaded) return;
     const id = window.setInterval(() => {
-      setErosion(e => Math.min(1, e + I * 0.02));
+      setErosion((e) => Math.min(1, e + I * 0.02));
     }, 80);
     return () => window.clearInterval(id);
   }, [loaded, I]);
 
   const stateRef = useRef({ loaded, V_term, I, erosion });
-  useEffect(() => { stateRef.current = { loaded, V_term, I, erosion }; },
-    [loaded, V_term, I, erosion]);
+  useEffect(() => {
+    stateRef.current = { loaded, V_term, I, erosion };
+  }, [loaded, V_term, I, erosion]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H } = info;
@@ -56,8 +57,8 @@ export function DaniellCellDemo({ figure }: Props) {
       const beakerW = Math.min(160, (W - 80) / 2);
       const beakerH = H - 90;
       const beakerY = 60;
-      const leftX = (W / 2) - beakerW - 12;
-      const rightX = (W / 2) + 12;
+      const leftX = W / 2 - beakerW - 12;
+      const rightX = W / 2 + 12;
 
       drawBeaker(ctx, leftX, beakerY, beakerW, beakerH, 'rgba(91,174,248,0.18)', 'ZnSO₄');
       drawBeaker(ctx, rightX, beakerY, beakerW, beakerH, 'rgba(255,107,42,0.18)', 'CuSO₄');
@@ -126,12 +127,14 @@ export function DaniellCellDemo({ figure }: Props) {
         ctx.strokeStyle = getCanvasColors().accent;
         ctx.lineWidth = 1.6;
         ctx.beginPath();
-        const x0 = W / 2 - 22, x1 = W / 2 + 22;
+        const x0 = W / 2 - 22,
+          x1 = W / 2 + 22;
         const zigs = 6;
         for (let i = 0; i <= zigs; i++) {
-          const x = x0 + (x1 - x0) * i / zigs;
+          const x = x0 + ((x1 - x0) * i) / zigs;
           const y = wireY + (i % 2 === 0 ? -4 : 4);
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
         ctx.stroke();
       } else {
@@ -151,8 +154,8 @@ export function DaniellCellDemo({ figure }: Props) {
       if (s.loaded && s.I > 0.001) {
         const arrowCount = 4;
         for (let i = 0; i < arrowCount; i++) {
-          const frac = ((phase * 0.6 + i / arrowCount) % 1);
-          const xa = (leftX + beakerW / 2) + frac * (rightX + beakerW / 2 - (leftX + beakerW / 2));
+          const frac = (phase * 0.6 + i / arrowCount) % 1;
+          const xa = leftX + beakerW / 2 + frac * (rightX + beakerW / 2 - (leftX + beakerW / 2));
           ctx.fillStyle = getCanvasColors().blue;
           ctx.font = '11px "JetBrains Mono", monospace';
           ctx.textAlign = 'center';
@@ -183,9 +186,10 @@ export function DaniellCellDemo({ figure }: Props) {
       question="What chemistry produces a steady 1.10 V?"
       caption={
         <>
-          Zinc dissolves at the anode (<em>Zn → Zn²⁺ + 2e⁻</em>); copper plates onto the cathode
-          (<em>Cu²⁺ + 2e⁻ → Cu</em>). The electrons travel through the wire; the SO₄²⁻ ions migrate across the porous
-          barrier to balance charge. Open-circuit voltage <strong>≈ 1.10 V</strong> = E°(Cu) − E°(Zn) = +0.34 V − (−0.76 V).
+          Zinc dissolves at the anode (<em>Zn → Zn²⁺ + 2e⁻</em>); copper plates onto the cathode (
+          <em>Cu²⁺ + 2e⁻ → Cu</em>). The electrons travel through the wire; the SO₄²⁻ ions migrate
+          across the porous barrier to balance charge. Open-circuit voltage{' '}
+          <strong>≈ 1.10 V</strong> = E°(Cu) − E°(Zn) = +0.34 V − (−0.76 V).
         </>
       }
     >
@@ -198,8 +202,11 @@ export function DaniellCellDemo({ figure }: Props) {
         />
         <MiniSlider
           label="R_load"
-          value={R_L} min={0.5} max={50} step={0.5}
-          format={v => v.toFixed(1) + ' Ω'}
+          value={R_L}
+          min={0.5}
+          max={50}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' Ω'}
           onChange={setR_L}
         />
         <MiniReadout label="V_term" value={<Num value={V_term} />} unit="V" />
@@ -214,8 +221,12 @@ export function DaniellCellDemo({ figure }: Props) {
 
 function drawBeaker(
   ctx: CanvasRenderingContext2D,
-  x: number, y: number, w: number, h: number,
-  fluidColor: string, label: string,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  fluidColor: string,
+  label: string,
 ) {
   // Glass body
   ctx.strokeStyle = getCanvasColors().borderStrong;

@@ -117,10 +117,7 @@ export function drawResistor(
   for (let i = 0; i < segments; i++) {
     const along = (i + 0.5) * step;
     const normal = i % 2 === 0 ? -amplitude : amplitude;
-    ctx.lineTo(
-      start.x + ux * along + nx * normal,
-      start.y + uy * along + ny * normal,
-    );
+    ctx.lineTo(start.x + ux * along + nx * normal, start.y + uy * along + ny * normal);
   }
   ctx.lineTo(end.x, end.y);
   ctx.stroke();
@@ -241,14 +238,22 @@ export function drawBattery(
   ctx.save();
   ctx.lineCap = 'round';
   if (vertical) {
-    drawWire(ctx, [
-      { x: center.x, y: center.y - leadLength },
-      { x: center.x, y: center.y - plateGap },
-    ], { color: wireColor });
-    drawWire(ctx, [
-      { x: center.x, y: center.y + plateGap },
-      { x: center.x, y: center.y + leadLength },
-    ], { color: wireColor });
+    drawWire(
+      ctx,
+      [
+        { x: center.x, y: center.y - leadLength },
+        { x: center.x, y: center.y - plateGap },
+      ],
+      { color: wireColor },
+    );
+    drawWire(
+      ctx,
+      [
+        { x: center.x, y: center.y + plateGap },
+        { x: center.x, y: center.y + leadLength },
+      ],
+      { color: wireColor },
+    );
     ctx.strokeStyle = positiveColor;
     ctx.lineWidth = 2.5;
     ctx.beginPath();
@@ -261,14 +266,22 @@ export function drawBattery(
     ctx.lineTo(center.x + negativePlateLength / 2, center.y + plateGap);
     ctx.stroke();
   } else {
-    drawWire(ctx, [
-      { x: center.x - leadLength, y: center.y },
-      { x: center.x - plateGap, y: center.y },
-    ], { color: wireColor });
-    drawWire(ctx, [
-      { x: center.x + plateGap, y: center.y },
-      { x: center.x + leadLength, y: center.y },
-    ], { color: wireColor });
+    drawWire(
+      ctx,
+      [
+        { x: center.x - leadLength, y: center.y },
+        { x: center.x - plateGap, y: center.y },
+      ],
+      { color: wireColor },
+    );
+    drawWire(
+      ctx,
+      [
+        { x: center.x + plateGap, y: center.y },
+        { x: center.x + leadLength, y: center.y },
+      ],
+      { color: wireColor },
+    );
     ctx.strokeStyle = positiveColor;
     ctx.lineWidth = 2.5;
     ctx.beginPath();
@@ -415,15 +428,15 @@ export function drawCapacitor(
   const p1x = start.x + ux * (mid - plateGap);
   const p1y = start.y + uy * (mid - plateGap);
   ctx.beginPath();
-  ctx.moveTo(p1x + nx * plateLength / 2, p1y + ny * plateLength / 2);
-  ctx.lineTo(p1x - nx * plateLength / 2, p1y - ny * plateLength / 2);
+  ctx.moveTo(p1x + (nx * plateLength) / 2, p1y + (ny * plateLength) / 2);
+  ctx.lineTo(p1x - (nx * plateLength) / 2, p1y - (ny * plateLength) / 2);
   ctx.stroke();
   // Second plate.
   const p2x = start.x + ux * (mid + plateGap);
   const p2y = start.y + uy * (mid + plateGap);
   ctx.beginPath();
-  ctx.moveTo(p2x + nx * plateLength / 2, p2y + ny * plateLength / 2);
-  ctx.lineTo(p2x - nx * plateLength / 2, p2y - ny * plateLength / 2);
+  ctx.moveTo(p2x + (nx * plateLength) / 2, p2y + (ny * plateLength) / 2);
+  ctx.lineTo(p2x - (nx * plateLength) / 2, p2y - (ny * plateLength) / 2);
   ctx.stroke();
   // Lead out.
   ctx.beginPath();
@@ -482,9 +495,12 @@ export function drawInductor(
     const ey = c0y + uy * step * (i + 1);
     // Bezier arc bowing along normal direction.
     ctx.bezierCurveTo(
-      bx + nx * amplitude, by + ny * amplitude,
-      ex + nx * amplitude, ey + ny * amplitude,
-      ex, ey,
+      bx + nx * amplitude,
+      by + ny * amplitude,
+      ex + nx * amplitude,
+      ey + ny * amplitude,
+      ex,
+      ey,
     );
   }
   // Lead out.
@@ -536,7 +552,7 @@ export function drawBulb(
   ctx.beginPath();
   ctx.moveTo(center.x - radius * 0.55, center.y + radius * 0.28);
   ctx.lineTo(center.x - radius * 0.25, center.y - radius * 0.28);
-  ctx.lineTo(center.x,                   center.y + radius * 0.28);
+  ctx.lineTo(center.x, center.y + radius * 0.28);
   ctx.lineTo(center.x + radius * 0.25, center.y - radius * 0.28);
   ctx.lineTo(center.x + radius * 0.55, center.y + radius * 0.28);
   ctx.stroke();
@@ -567,9 +583,9 @@ export function drawGround(
   ctx.lineWidth = 1.5;
   ctx.lineCap = 'round';
   const dirs = {
-    down:  { ux: 0, uy: 1, nx: 1, ny: 0 },
-    up:    { ux: 0, uy: -1, nx: 1, ny: 0 },
-    left:  { ux: -1, uy: 0, nx: 0, ny: 1 },
+    down: { ux: 0, uy: 1, nx: 1, ny: 0 },
+    up: { ux: 0, uy: -1, nx: 1, ny: 0 },
+    left: { ux: -1, uy: 0, nx: 0, ny: 1 },
     right: { ux: 1, uy: 0, nx: 0, ny: 1 },
   } as const;
   const { ux, uy, nx, ny } = dirs[orientation];
@@ -584,8 +600,8 @@ export function drawGround(
     const cx = at.x + ux * (lead + i * 3);
     const cy = at.y + uy * (lead + i * 3);
     ctx.beginPath();
-    ctx.moveTo(cx + nx * w / 2, cy + ny * w / 2);
-    ctx.lineTo(cx - nx * w / 2, cy - ny * w / 2);
+    ctx.moveTo(cx + (nx * w) / 2, cy + (ny * w) / 2);
+    ctx.lineTo(cx - (nx * w) / 2, cy - (ny * w) / 2);
     ctx.stroke();
   }
   ctx.restore();
@@ -691,9 +707,10 @@ export function drawSwitch(
   const state = options.state ?? 'closed';
   const left = { x: center.x - terminalGap / 2, y: center.y };
   const right = { x: center.x + terminalGap / 2, y: center.y };
-  const bladeEnd = state === 'closed'
-    ? right
-    : { x: right.x - 2, y: center.y + (state === 'open-down' ? 18 : -18) };
+  const bladeEnd =
+    state === 'closed'
+      ? right
+      : { x: right.x - 2, y: center.y + (state === 'open-down' ? 18 : -18) };
 
   ctx.save();
   ctx.strokeStyle = color;

@@ -45,13 +45,15 @@ export function PhaseScope({ trace }: PhaseScopeProps) {
     for (let g = 1; g < 4; g++) {
       const y = (g / 4) * h;
       ctx.beginPath();
-      ctx.moveTo(0, y); ctx.lineTo(w, y);
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
       ctx.stroke();
     }
     // Zero-current axis.
     ctx.strokeStyle = getCanvasColors().borderStrong;
     ctx.beginPath();
-    ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2);
+    ctx.moveTo(0, h / 2);
+    ctx.lineTo(w, h / 2);
     ctx.stroke();
 
     if (trace.t.length < 2) {
@@ -68,9 +70,7 @@ export function PhaseScope({ trace }: PhaseScopeProps) {
     // Auto-scale based on the bigger of |ia|, |ib|, |ic|.
     let aMax = 0.1;
     for (let i = 0; i < trace.ia.length; i++) {
-      const m = Math.max(
-        Math.abs(trace.ia[i]!), Math.abs(trace.ib[i]!), Math.abs(trace.ic[i]!),
-      );
+      const m = Math.max(Math.abs(trace.ia[i]!), Math.abs(trace.ib[i]!), Math.abs(trace.ic[i]!));
       if (m > aMax) aMax = m;
     }
     aMax *= 1.2;
@@ -88,7 +88,8 @@ export function PhaseScope({ trace }: PhaseScopeProps) {
       for (let i = 0; i < arr.length; i++) {
         const x = ((trace.t[i]! - tMin) / tRange) * w;
         const y = h / 2 - (arr[i]! / aMax) * (h / 2 - 6);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
     }
@@ -96,11 +97,15 @@ export function PhaseScope({ trace }: PhaseScopeProps) {
     // Labels.
     ctx.font = '9px "JetBrains Mono", monospace';
     ctx.fillStyle = getCanvasColors().textDim;
-    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
     ctx.fillText(`±${aMax.toFixed(1)} A    ${(tRange * 1000).toFixed(0)} ms window`, 6, 4);
-    ctx.fillStyle = getCanvasColors().accent; ctx.fillText('a', w - 30, 4);
-    ctx.fillStyle = getCanvasColors().blue; ctx.fillText('b', w - 20, 4);
-    ctx.fillStyle = getCanvasColors().teal; ctx.fillText('c', w - 10, 4);
+    ctx.fillStyle = getCanvasColors().accent;
+    ctx.fillText('a', w - 30, 4);
+    ctx.fillStyle = getCanvasColors().blue;
+    ctx.fillText('b', w - 20, 4);
+    ctx.fillStyle = getCanvasColors().teal;
+    ctx.fillText('c', w - 10, 4);
   }, [trace]);
 
   return <canvas className="block w-full" ref={ref} style={{ display: 'block', width: '100%' }} />;
@@ -132,7 +137,10 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
     ctx.fillStyle = getCanvasColors().canvasBg;
     ctx.fillRect(0, 0, w, h);
 
-    const padL = 36, padR = 12, padT = 12, padB = 28;
+    const padL = 36,
+      padR = 12,
+      padT = 12,
+      padB = 28;
     const omegaMax = motor.omega_rated * 1.8;
     const tauMax = motor.tau_rated * 1.4;
 
@@ -143,24 +151,28 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
     ctx.strokeStyle = getCanvasColors().borderStrong;
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(padL, padT); ctx.lineTo(padL, h - padB);
+    ctx.moveTo(padL, padT);
+    ctx.lineTo(padL, h - padB);
     ctx.lineTo(w - padR, h - padB);
     ctx.stroke();
 
     // Axis labels.
     ctx.fillStyle = getCanvasColors().textDim;
     ctx.font = '9px "JetBrains Mono", monospace';
-    ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
     ctx.fillText(`${tauMax.toFixed(1)} N·m`, padL - 4, padT + 6);
     ctx.fillText('0', padL - 4, h - padB);
-    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
     ctx.fillText('ω (rad/s)', (padL + w - padR) / 2, h - padB + 14);
     ctx.fillText('0', padL, h - padB + 4);
     ctx.fillText(`${omegaMax.toFixed(0)}`, w - padR, h - padB + 4);
     ctx.save();
     ctx.translate(10, (padT + h - padB) / 2);
     ctx.rotate(-Math.PI / 2);
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     ctx.fillText('τ (N·m)', 0, 0);
     ctx.restore();
 
@@ -195,7 +207,7 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
     ctx.beginPath();
     for (let i = 0; i <= N; i++) {
       const om = (i / N) * omegaMax;
-      const tau_lim = Math.min(motor.tau_rated * 1.3, k * P_base / Math.max(0.01 * omegaMax, om));
+      const tau_lim = Math.min(motor.tau_rated * 1.3, (k * P_base) / Math.max(0.01 * omegaMax, om));
       if (i === 0) ctx.moveTo(x(om), y(tau_lim));
       else ctx.lineTo(x(om), y(tau_lim));
     }
@@ -213,7 +225,8 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
         const p = history[i]!;
         const px = x(Math.max(0, Math.abs(p.omega)));
         const py = y(Math.max(0, Math.abs(p.tau)));
-        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
       }
       ctx.stroke();
       ctx.restore();
@@ -244,7 +257,8 @@ export function TorqueSpeed({ motor, Vdc, snap, history }: TorqueSpeedProps) {
     ctx.globalAlpha = 0.85;
     ctx.fillStyle = getCanvasColors().teal;
     ctx.font = '9px "JetBrains Mono", monospace';
-    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
     ctx.fillText('— rated envelope', padL + 4, padT + 2);
     ctx.restore();
     ctx.save();
@@ -281,7 +295,10 @@ export function EfficiencyMap({ map, snap }: EfficiencyMapProps) {
     ctx.fillStyle = getCanvasColors().canvasBg;
     ctx.fillRect(0, 0, w, h);
 
-    const padL = 36, padR = 12, padT = 12, padB = 28;
+    const padL = 36,
+      padR = 12,
+      padT = 12,
+      padB = 28;
     const plotW = w - padL - padR;
     const plotH = h - padT - padB;
 
@@ -312,22 +329,26 @@ export function EfficiencyMap({ map, snap }: EfficiencyMapProps) {
     ctx.strokeStyle = getCanvasColors().borderStrong;
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(padL, padT); ctx.lineTo(padL, h - padB);
+    ctx.moveTo(padL, padT);
+    ctx.lineTo(padL, h - padB);
     ctx.lineTo(w - padR, h - padB);
     ctx.stroke();
 
     ctx.font = '9px "JetBrains Mono", monospace';
     ctx.fillStyle = getCanvasColors().textDim;
-    ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
     ctx.fillText(`${map.tauMax.toFixed(1)}`, padL - 4, padT + 6);
     ctx.fillText('0', padL - 4, h - padB);
-    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
     ctx.fillText('ω (rad/s)', (padL + w - padR) / 2, h - padB + 14);
     ctx.fillText(`${map.omegaMax.toFixed(0)}`, w - padR, h - padB + 4);
     ctx.save();
     ctx.translate(10, (padT + h - padB) / 2);
     ctx.rotate(-Math.PI / 2);
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     ctx.fillText('τ (N·m)', 0, 0);
     ctx.restore();
 
@@ -348,22 +369,28 @@ export function EfficiencyMap({ map, snap }: EfficiencyMapProps) {
       ctx.strokeStyle = getCanvasColors().text;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(px - 9, py); ctx.lineTo(px - 6, py);
-      ctx.moveTo(px + 6, py); ctx.lineTo(px + 9, py);
-      ctx.moveTo(px, py - 9); ctx.lineTo(px, py - 6);
-      ctx.moveTo(px, py + 6); ctx.lineTo(px, py + 9);
+      ctx.moveTo(px - 9, py);
+      ctx.lineTo(px - 6, py);
+      ctx.moveTo(px + 6, py);
+      ctx.lineTo(px + 9, py);
+      ctx.moveTo(px, py - 9);
+      ctx.lineTo(px, py - 6);
+      ctx.moveTo(px, py + 6);
+      ctx.lineTo(px, py + 9);
       ctx.stroke();
       ctx.restore();
       // Numeric eta readout.
       ctx.fillStyle = getCanvasColors().text;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
       ctx.fillText(`η ≈ ${(snap.eta * 100).toFixed(0)}%`, px + 10, py - 8);
     }
 
     // Colourbar legend.
     ctx.fillStyle = getCanvasColors().textDim;
-    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
     ctx.fillText('η:', padL + 4, padT + 2);
     for (let i = 0; i < 10; i++) {
       const t = i / 9;

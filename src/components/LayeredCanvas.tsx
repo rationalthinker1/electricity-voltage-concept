@@ -54,7 +54,7 @@ export function LayeredCanvas<LayerName extends string = string>({
 
   useEffect(() => {
     const canvases = layerList
-      .map(layer => [layer, canvasRefs.current.get(layer)] as const)
+      .map((layer) => [layer, canvasRefs.current.get(layer)] as const)
       .filter((entry): entry is readonly [LayerName, HTMLCanvasElement] => Boolean(entry[1]));
     if (canvases.length !== layerList.length) return;
 
@@ -134,7 +134,7 @@ export function LayeredCanvas<LayerName extends string = string>({
     let intersectionObserver: IntersectionObserver | undefined;
     if ('IntersectionObserver' in window) {
       intersectionObserver = new IntersectionObserver(
-        entries => setRunning(entries.some(entry => entry.isIntersecting)),
+        (entries) => setRunning(entries.some((entry) => entry.isIntersecting)),
         { rootMargin: '320px 0px' },
       );
       intersectionObserver.observe(topCanvas);
@@ -159,8 +159,9 @@ export function LayeredCanvas<LayerName extends string = string>({
 
   return (
     <div style={{ height, position: 'relative', width: '100%' }}>
-      {layerList.map(layer => (
-        <canvas className="block w-full"
+      {layerList.map((layer) => (
+        <canvas
+          className="block w-full"
           key={layer}
           ref={(node) => {
             if (node) canvasRefs.current.set(layer, node);

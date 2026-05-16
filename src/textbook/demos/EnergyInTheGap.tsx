@@ -9,14 +9,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function EnergyInTheGapDemo({ figure }: Props) {
   const A_m2 = 100e-4;
@@ -30,7 +30,9 @@ export function EnergyInTheGapDemo({ figure }: Props) {
   const U = 0.5 * C * V * V;
 
   const stateRef = useRef({ V, E, u_E });
-  useEffect(() => { stateRef.current = { V, E, u_E }; }, [V, E, u_E]);
+  useEffect(() => {
+    stateRef.current = { V, E, u_E };
+  }, [V, E, u_E]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H } = info;
@@ -54,7 +56,7 @@ export function EnergyInTheGapDemo({ figure }: Props) {
       const botY = cy + gap / 2 + plateThick / 2;
 
       // Energy haze — opacity scales with log(u_E)
-      const haze = Math.max(0.06, Math.min(0.7, Math.log10(s.u_E + 1) * 0.12 + 0.10));
+      const haze = Math.max(0.06, Math.min(0.7, Math.log10(s.u_E + 1) * 0.12 + 0.1));
       const grd = ctx.createLinearGradient(0, topY + plateThick, 0, botY - plateThick);
       grd.addColorStop(0, `rgba(255,107,42,${haze * 0.45})`);
       grd.addColorStop(0.5, `rgba(255,107,42,${haze})`);
@@ -119,9 +121,13 @@ export function EnergyInTheGapDemo({ figure }: Props) {
       question="If the plates net to zero charge, where's the energy hiding?"
       caption={
         <>
-          The orange haze visualises <strong>u<sub>E</sub> = ½ ε₀ E²</strong> — the energy density of the field. Total stored energy is
-          this density integrated over the gap volume <strong>A·d</strong>, which gives back exactly <strong>½ C V²</strong>. The plates
-          only hold the boundary; the energy is in the field they bracket.
+          The orange haze visualises{' '}
+          <strong>
+            u<sub>E</sub> = ½ ε₀ E²
+          </strong>{' '}
+          — the energy density of the field. Total stored energy is this density integrated over the
+          gap volume <strong>A·d</strong>, which gives back exactly <strong>½ C V²</strong>. The
+          plates only hold the boundary; the energy is in the field they bracket.
         </>
       }
       deeperLab={{ slug: 'energy-density', label: 'See full lab' }}
@@ -130,8 +136,11 @@ export function EnergyInTheGapDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="V"
-          value={V} min={0} max={200} step={1}
-          format={v => v.toFixed(0) + ' V'}
+          value={V}
+          min={0}
+          max={200}
+          step={1}
+          format={(v) => v.toFixed(0) + ' V'}
           onChange={setV}
         />
         <MiniReadout label="U = ½CV²" value={<Num value={U} />} unit="J" />
@@ -143,7 +152,11 @@ export function EnergyInTheGapDemo({ figure }: Props) {
 
 function drawPlate(
   ctx: CanvasRenderingContext2D,
-  x: number, y: number, w: number, h: number, color: string,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  color: string,
 ) {
   const grd = ctx.createLinearGradient(x, y, x, y + h);
   grd.addColorStop(0, color);

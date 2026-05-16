@@ -15,7 +15,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 interface Moment {
   x: number;
@@ -25,9 +27,11 @@ interface Moment {
 }
 
 export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
-  const [B, setB] = useState(2);     // 0..10 in arbitrary units
+  const [B, setB] = useState(2); // 0..10 in arbitrary units
   const stateRef = useRef({ B });
-  useEffect(() => { stateRef.current = { B }; }, [B]);
+  useEffect(() => {
+    stateRef.current = { B };
+  }, [B]);
   const [Mpara, setMpara] = useState(0);
   const [Mdia, setMdia] = useState(0);
 
@@ -40,13 +44,14 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
     const boxW = (w - 3 * pad) / 2;
     const boxH = h - 60;
     const boxes = [
-      { x0: pad,                 y0: 40, w: boxW, h: boxH, kind: 'para' as const },
-      { x0: pad * 2 + boxW,      y0: 40, w: boxW, h: boxH, kind: 'dia'  as const },
+      { x0: pad, y0: 40, w: boxW, h: boxH, kind: 'para' as const },
+      { x0: pad * 2 + boxW, y0: 40, w: boxW, h: boxH, kind: 'dia' as const },
     ];
 
     // Populate each box with a grid of moments
-    const cols = 6, rows = 5;
-    function build(box: typeof boxes[number], kind: 'para' | 'dia'): Moment[] {
+    const cols = 6,
+      rows = 5;
+    function build(box: (typeof boxes)[number], kind: 'para' | 'dia'): Moment[] {
       const arr: Moment[] = [];
       const dx = box.w / (cols + 1);
       const dy = box.h / (rows + 1);
@@ -65,7 +70,13 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
     const para = build(boxes[0], 'para');
     const dia = build(boxes[1], 'dia');
 
-    function update(moments: Moment[], targetAngle: number, B: number, noise: number, strength: number) {
+    function update(
+      moments: Moment[],
+      targetAngle: number,
+      B: number,
+      noise: number,
+      strength: number,
+    ) {
       let cos_sum = 0;
       for (const m of moments) {
         // torque toward targetAngle scales with sin of the deviation
@@ -91,7 +102,8 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
       // head
       const headX = cx + tx / 2;
       const headY = cy + ty / 2;
-      const ux = Math.cos(theta), uy = Math.sin(theta);
+      const ux = Math.cos(theta),
+        uy = Math.sin(theta);
       ctx.beginPath();
       ctx.moveTo(headX, headY);
       ctx.lineTo(headX - ux * 5 - uy * 3, headY - uy * 5 + ux * 3);
@@ -126,7 +138,8 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
         ctx.textAlign = 'left';
         ctx.fillText(
           box.kind === 'para' ? 'PARAMAGNET (permanent moments)' : 'DIAMAGNET (induced moments)',
-          box.x0 + 8, box.y0 - 8,
+          box.x0 + 8,
+          box.y0 - 8,
         );
       }
 
@@ -167,9 +180,9 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
       ctx.restore();
       ctx.fillStyle = colors.accent;
       ctx.textAlign = 'right';
-      ctx.fillText(`M = ${(mPara).toFixed(2)}`, boxes[0].x0 + boxes[0].w - 8, h - 12);
+      ctx.fillText(`M = ${mPara.toFixed(2)}`, boxes[0].x0 + boxes[0].w - 8, h - 12);
       ctx.fillStyle = colors.teal;
-      ctx.fillText(`M = ${(mDia).toFixed(2)}`, boxes[1].x0 + boxes[1].w - 8, h - 12);
+      ctx.fillText(`M = ${mDia.toFixed(2)}`, boxes[1].x0 + boxes[1].w - 8, h - 12);
 
       // Throttle React state updates
       const now = performance.now();
@@ -190,22 +203,28 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 11.3'}
       title="Paramagnet vs diamagnet"
       question="Two boxes, same external field — why do they magnetize in opposite directions?"
-      caption={<>
-        On the left, each molecule has a permanent magnetic moment (one unpaired electron, say). The
-        external <strong>B</strong> torques each one toward alignment; thermal noise scrambles them right
-        back. The net <strong>M</strong> aligns weakly with <strong>B</strong> — paramagnetism. On the right, no
-        permanent moment exists; what little moment appears is the orbital current induced by the
-        applied field, and Lenz's law forces it to oppose <strong>B</strong>. Hence the antiparallel arrows.
-        Every material has some diamagnetic response; paramagnetic response only appears in atoms or
-        molecules with unpaired electrons.
-      </>}
+      caption={
+        <>
+          On the left, each molecule has a permanent magnetic moment (one unpaired electron, say).
+          The external <strong>B</strong> torques each one toward alignment; thermal noise scrambles
+          them right back. The net <strong>M</strong> aligns weakly with <strong>B</strong> —
+          paramagnetism. On the right, no permanent moment exists; what little moment appears is the
+          orbital current induced by the applied field, and Lenz's law forces it to oppose{' '}
+          <strong>B</strong>. Hence the antiparallel arrows. Every material has some diamagnetic
+          response; paramagnetic response only appears in atoms or molecules with unpaired
+          electrons.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="B"
-          value={B} min={0} max={10} step={0.1}
-          format={v => v.toFixed(1)}
+          value={B}
+          min={0}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1)}
           onChange={setB}
         />
         <MiniReadout label="M (para)" value={Mpara.toFixed(2)} />

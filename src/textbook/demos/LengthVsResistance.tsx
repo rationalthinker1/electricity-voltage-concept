@@ -8,9 +8,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { MATERIALS } from '@/lib/physics';
 
@@ -27,7 +25,9 @@ export function LengthVsResistanceDemo({ figure }: Props) {
   const [L, setL] = useState(1.0);
 
   const stateRef = useRef({ L });
-  useEffect(() => { stateRef.current = { L }; }, [L]);
+  useEffect(() => {
+    stateRef.current = { L };
+  }, [L]);
 
   const R = L / (sigma * A_m2);
 
@@ -113,8 +113,11 @@ export function LengthVsResistanceDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="L"
-          value={L} min={0.1} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' m'}
+          value={L}
+          min={0.1}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' m'}
           onChange={setL}
         />
         <MiniReadout label="Resistance" value={<Num value={R} />} unit="Ω" />
@@ -123,7 +126,14 @@ export function LengthVsResistanceDemo({ figure }: Props) {
   );
 }
 
-function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+function roundRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
+) {
   r = Math.min(r, h / 2, w / 2);
   ctx.beginPath();
   ctx.moveTo(x + r, y);

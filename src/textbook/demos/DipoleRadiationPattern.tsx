@@ -14,14 +14,18 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 export function DipoleRadiationPatternDemo({ figure }: Props) {
   // Probe angle (degrees from the dipole axis) — moves the radial readout marker
   const [probeDeg, setProbeDeg] = useState(60);
 
   const stateRef = useRef({ probeDeg });
-  useEffect(() => { stateRef.current = { probeDeg }; }, [probeDeg]);
+  useEffect(() => {
+    stateRef.current = { probeDeg };
+  }, [probeDeg]);
 
   // sin²θ readout at the probe angle
   const sinT = Math.sin((probeDeg * Math.PI) / 180);
@@ -44,13 +48,18 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
       ctx.strokeStyle = getCanvasColors().border;
       ctx.lineWidth = 1;
       for (let f = 0.25; f <= 1.001; f += 0.25) {
-        ctx.beginPath(); ctx.arc(cx, cy, R * f, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx, cy, R * f, 0, Math.PI * 2);
+        ctx.stroke();
       }
 
       // Axis (vertical dashed) — the dipole axis
       ctx.setLineDash([4, 5]);
       ctx.strokeStyle = getCanvasColors().borderStrong;
-      ctx.beginPath(); ctx.moveTo(cx, cy - R - 6); ctx.lineTo(cx, cy + R + 6); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - R - 6);
+      ctx.lineTo(cx, cy + R + 6);
+      ctx.stroke();
       ctx.setLineDash([]);
 
       // Radial spokes every 30°
@@ -77,7 +86,8 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
         // Convert (phi) → screen XY; phi=0 → up; phi=π/2 → right; etc.
         const x = cx + r * Math.sin(phi);
         const y = cy - r * Math.cos(phi);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.closePath();
       ctx.fill();
@@ -97,13 +107,19 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = getCanvasColors().teal;
-      ctx.beginPath(); ctx.arc(pxR, pyR, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(pxR, pyR, 4, 0, Math.PI * 2);
+      ctx.fill();
 
       // Dipole symbol — two charges on the axis
       ctx.fillStyle = getCanvasColors().pink;
-      ctx.beginPath(); ctx.arc(cx, cy - 8, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy - 8, 5, 0, Math.PI * 2);
+      ctx.fill();
       ctx.fillStyle = getCanvasColors().blue;
-      ctx.beginPath(); ctx.arc(cx, cy + 8, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy + 8, 5, 0, Math.PI * 2);
+      ctx.fill();
 
       // Labels
       ctx.font = '10px "JetBrains Mono", monospace';
@@ -126,17 +142,26 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 15.1'}
       title="The dipole pattern — sin²θ"
       question="In which direction does a dipole radiate strongest?"
-      caption={<>
-        Polar plot of the far-field radiated intensity for a short electric dipole oriented along
-        the vertical axis. Strongest perpendicular to the axis ("broadside"), zero along the axis
-        itself. Around it, the 3D pattern is the familiar fat donut. Slide the probe angle to read
-        off the relative intensity at any θ.
-      </>}
+      caption={
+        <>
+          Polar plot of the far-field radiated intensity for a short electric dipole oriented along
+          the vertical axis. Strongest perpendicular to the axis ("broadside"), zero along the axis
+          itself. Around it, the 3D pattern is the familiar fat donut. Slide the probe angle to read
+          off the relative intensity at any θ.
+        </>
+      }
     >
       <AutoResizeCanvas height={320} setup={setup} />
       <DemoControls>
-        <MiniSlider label="θ" value={probeDeg} min={0} max={180} step={1}
-          format={v => v.toFixed(0) + '°'} onChange={setProbeDeg} />
+        <MiniSlider
+          label="θ"
+          value={probeDeg}
+          min={0}
+          max={180}
+          step={1}
+          format={(v) => v.toFixed(0) + '°'}
+          onChange={setProbeDeg}
+        />
         <MiniReadout label="sin²θ" value={intensity.toFixed(3)} />
       </DemoControls>
     </Demo>

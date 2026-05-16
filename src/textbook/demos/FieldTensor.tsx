@@ -29,7 +29,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
 import { PHYS } from '@/lib/physics';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 type StartMode = 'Ex' | 'Ey' | 'mixed';
 
@@ -44,31 +46,39 @@ export function FieldTensorDemo({ figure }: Props) {
   // Starting (rest-frame) E and B in some natural units.
   // We normalize so the largest |E| starts at 1, |B| starts at 0.
   const E0 = 1.0; // arbitrary "natural" units
-  // eslint-disable-next-line prefer-const -- multi-binding; Ex/Ey/Bz reassigned, others stable
-  let Ex = 0, Ey = 0, Ez = 0;
-  // eslint-disable-next-line prefer-const -- multi-binding; Bz reassigned, others stable
-  let Bx = 0, By = 0, Bz = 0;
-  if (mode === 'Ex') { Ex = E0; }
-  else if (mode === 'Ey') { Ey = E0; }
-  else if (mode === 'mixed') { Ex = E0 * 0.6; Ey = E0 * 0.8; Bz = E0 * 0.3 / PHYS.c; }
+  let Ex = 0;
+  let Ey = 0;
+  const Ez = 0;
+  const Bx = 0;
+  const By = 0;
+  let Bz = 0;
+  if (mode === 'Ex') {
+    Ex = E0;
+  } else if (mode === 'Ey') {
+    Ey = E0;
+  } else if (mode === 'mixed') {
+    Ex = E0 * 0.6;
+    Ey = E0 * 0.8;
+    Bz = (E0 * 0.3) / PHYS.c;
+  }
 
   // Boost along +x:
   const Exp = Ex;
   const Eyp = gamma * (Ey - v * Bz);
   const Ezp = gamma * (Ez + v * By);
   const Bxp = Bx;
-  const Byp = gamma * (By + v * Ez / (PHYS.c * PHYS.c));
-  const Bzp = gamma * (Bz - v * Ey / (PHYS.c * PHYS.c));
+  const Byp = gamma * (By + (v * Ez) / (PHYS.c * PHYS.c));
+  const Bzp = gamma * (Bz - (v * Ey) / (PHYS.c * PHYS.c));
 
   // Express F^μν entries in dimensionless form: use E/c (so units cancel) and B in (E0/c) units.
   // We display E_i/c (units of B) and B_i.
   const cell = useMemo(() => {
     // index [row][col]
     const F: number[][] = [
-      [0,        -Exp / PHYS.c, -Eyp / PHYS.c, -Ezp / PHYS.c],
-      [Exp / PHYS.c, 0,         -Bzp,           Byp],
-      [Eyp / PHYS.c, Bzp,        0,            -Bxp],
-      [Ezp / PHYS.c, -Byp,       Bxp,           0],
+      [0, -Exp / PHYS.c, -Eyp / PHYS.c, -Ezp / PHYS.c],
+      [Exp / PHYS.c, 0, -Bzp, Byp],
+      [Eyp / PHYS.c, Bzp, 0, -Bxp],
+      [Ezp / PHYS.c, -Byp, Bxp, 0],
     ];
     return F;
   }, [Exp, Eyp, Ezp, Bxp, Byp, Bzp]);
@@ -79,7 +89,9 @@ export function FieldTensorDemo({ figure }: Props) {
   if (maxAbs === 0) maxAbs = 1;
 
   // Re-render on β / mode change is automatic via state.
-  useEffect(() => { /* no side effects */ }, [betaPct, mode]);
+  useEffect(() => {
+    /* no side effects */
+  }, [betaPct, mode]);
 
   const labels = ['t', 'x', 'y', 'z'];
 
@@ -112,13 +124,20 @@ export function FieldTensorDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 9.4'}
       title="One tensor, six components"
       question="What's the relationship between E and B? They're entries in the same matrix."
-      caption={<>
-        The electromagnetic field tensor <em>F<sup>μν</sup></em> packs all six components of <strong>E</strong> and
-        <strong> B</strong> into one antisymmetric 4×4 matrix. A Lorentz boost reshuffles those components among
-        themselves the way a rotation reshuffles the components of an ordinary vector. Start with a pure
-        <em> E_y</em>, slide β, and watch the off-diagonal "B" entries fill in. There were never two fields. There
-        is one tensor and you've been looking at slices of it.
-      </>}
+      caption={
+        <>
+          The electromagnetic field tensor{' '}
+          <em>
+            F<sup>μν</sup>
+          </em>{' '}
+          packs all six components of <strong>E</strong> and
+          <strong> B</strong> into one antisymmetric 4×4 matrix. A Lorentz boost reshuffles those
+          components among themselves the way a rotation reshuffles the components of an ordinary
+          vector. Start with a pure
+          <em> E_y</em>, slide β, and watch the off-diagonal "B" entries fill in. There were never
+          two fields. There is one tensor and you've been looking at slices of it.
+        </>
+      }
     >
       <div style={{ padding: '18px 24px 0' }}>
         <div
@@ -133,24 +152,45 @@ export function FieldTensorDemo({ figure }: Props) {
           }}
         >
           {/* Top-left corner */}
-          <div style={{ padding: '8px 4px', color: 'rgba(160,158,149,0.6)', textAlign: 'center', fontSize: 11 }}>
+          <div
+            style={{
+              padding: '8px 4px',
+              color: 'rgba(160,158,149,0.6)',
+              textAlign: 'center',
+              fontSize: 11,
+            }}
+          >
             μ ＼ ν
           </div>
           {/* Column headers */}
-          {labels.map(l => (
-            <div key={'col-' + l} style={{
-              padding: '8px 4px', textAlign: 'center', fontSize: 11,
-              color: 'rgba(160,158,149,0.8)',
-            }}>{l}</div>
+          {labels.map((l) => (
+            <div
+              key={'col-' + l}
+              style={{
+                padding: '8px 4px',
+                textAlign: 'center',
+                fontSize: 11,
+                color: 'rgba(160,158,149,0.8)',
+              }}
+            >
+              {l}
+            </div>
           ))}
           {/* Rows */}
           {labels.map((rl, i) => (
             <>
-              <div key={'row-' + rl} style={{
-                padding: '6px 4px', textAlign: 'center', fontSize: 11,
-                color: 'rgba(160,158,149,0.8)',
-                alignSelf: 'center',
-              }}>{rl}</div>
+              <div
+                key={'row-' + rl}
+                style={{
+                  padding: '6px 4px',
+                  textAlign: 'center',
+                  fontSize: 11,
+                  color: 'rgba(160,158,149,0.8)',
+                  alignSelf: 'center',
+                }}
+              >
+                {rl}
+              </div>
               {labels.map((_, j) => {
                 const val = cell[i][j];
                 const abs = Math.abs(val);
@@ -160,8 +200,8 @@ export function FieldTensorDemo({ figure }: Props) {
                 const bg = isZero
                   ? 'rgba(255,255,255,0.02)'
                   : isE
-                    ? `rgba(255,107,42,${(0.05 + 0.30 * tint).toFixed(3)})`
-                    : `rgba(108,197,194,${(0.05 + 0.30 * tint).toFixed(3)})`;
+                    ? `rgba(255,107,42,${(0.05 + 0.3 * tint).toFixed(3)})`
+                    : `rgba(108,197,194,${(0.05 + 0.3 * tint).toFixed(3)})`;
                 const fg = isZero
                   ? 'rgba(160,158,149,0.45)'
                   : isE
@@ -191,26 +231,31 @@ export function FieldTensorDemo({ figure }: Props) {
             </>
           ))}
         </div>
-        <div style={{
-          marginTop: 10,
-          fontSize: 11,
-          color: 'rgba(160,158,149,0.7)',
-          fontFamily: '"JetBrains Mono", monospace',
-        }}>
-          Components shown in natural units (E in units of E₀; B in units of E₀/c). The matrix is antisymmetric:
-          F<sup>μν</sup> = −F<sup>νμ</sup>.
+        <div
+          style={{
+            marginTop: 10,
+            fontSize: 11,
+            color: 'rgba(160,158,149,0.7)',
+            fontFamily: '"JetBrains Mono", monospace',
+          }}
+        >
+          Components shown in natural units (E in units of E₀; B in units of E₀/c). The matrix is
+          antisymmetric: F<sup>μν</sup> = −F<sup>νμ</sup>.
         </div>
       </div>
       <DemoControls>
         <MiniToggle
           label={mode === 'Ex' ? 'start: E_x' : mode === 'Ey' ? 'start: E_y' : 'start: mixed'}
           checked={mode !== 'Ex'}
-          onChange={() => setMode(m => m === 'Ex' ? 'Ey' : m === 'Ey' ? 'mixed' : 'Ex')}
+          onChange={() => setMode((m) => (m === 'Ex' ? 'Ey' : m === 'Ey' ? 'mixed' : 'Ex'))}
         />
         <MiniSlider
           label="β (boost in x)"
-          value={betaPct} min={-95} max={95} step={1}
-          format={v => (v / 100).toFixed(2)}
+          value={betaPct}
+          min={-95}
+          max={95}
+          step={1}
+          format={(v) => (v / 100).toFixed(2)}
           onChange={setBetaPct}
         />
       </DemoControls>

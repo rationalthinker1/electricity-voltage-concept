@@ -24,27 +24,31 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import {
-  attachOrbit, project, v3,
-  type OrbitCamera, type Point2D, type Vec3,
+  attachOrbit,
+  project,
+  v3,
+  type OrbitCamera,
+  type Point2D,
+  type Vec3,
 } from '@/lib/projection3d';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const V_T = 0.7;          // V — threshold voltage (problem brief default)
-const K_N = 2e-3;         // A/V² — transconductance parameter
+const V_T = 0.7; // V — threshold voltage (problem brief default)
+const K_N = 2e-3; // A/V² — transconductance parameter
 
 function drainCurrent(V_GS: number, V_DS: number): number {
   const Vov = V_GS - V_T;
   if (Vov <= 0) return 0;
   if (V_DS < Vov) {
-    return K_N * (Vov * V_DS - V_DS * V_DS / 2);
+    return K_N * (Vov * V_DS - (V_DS * V_DS) / 2);
   }
   return (K_N / 2) * Vov * Vov;
 }
@@ -62,14 +66,16 @@ function regimeLabel(V_GS: number, V_DS: number): 'cutoff' | 'triode' | 'saturat
  * ────────────────────────────────────────────────────────────────────── */
 const SUB = { x0: -2.0, x1: 2.0, y0: -1.0, y1: 0.0, z0: -1.0, z1: 1.0 };
 const SRC = { x0: -1.7, x1: -0.9, y0: -0.25, y1: 0.0, z0: -0.8, z1: 0.8 };
-const DRN = { x0:  0.9, x1:  1.7, y0: -0.25, y1: 0.0, z0: -0.8, z1: 0.8 };
-const OXIDE = { x0: -0.9, x1: 0.9, y0: 0.0, y1: 0.10, z0: -0.8, z1: 0.8 };
-const GATE  = { x0: -0.9, x1: 0.9, y0: 0.10, y1: 0.40, z0: -0.8, z1: 0.8 };
+const DRN = { x0: 0.9, x1: 1.7, y0: -0.25, y1: 0.0, z0: -0.8, z1: 0.8 };
+const OXIDE = { x0: -0.9, x1: 0.9, y0: 0.0, y1: 0.1, z0: -0.8, z1: 0.8 };
+const GATE = { x0: -0.9, x1: 0.9, y0: 0.1, y1: 0.4, z0: -0.8, z1: 0.8 };
 
 // Channel slice: just inside the substrate, directly under the oxide.
 const CHAN_Y = -0.04;
-const CHAN_X0 = -0.9, CHAN_X1 = 0.9;
-const CHAN_Z0 = -0.7, CHAN_Z1 = 0.7;
+const CHAN_X0 = -0.9,
+  CHAN_X1 = 0.9;
+const CHAN_Z0 = -0.7,
+  CHAN_Z1 = 0.7;
 
 interface BoxStyle {
   fill: string;
@@ -80,18 +86,31 @@ interface BoxStyle {
 
 function boxCorners(b: typeof SUB): Vec3[] {
   return [
-    v3(b.x0, b.y0, b.z0), v3(b.x1, b.y0, b.z0),
-    v3(b.x1, b.y0, b.z1), v3(b.x0, b.y0, b.z1),
-    v3(b.x0, b.y1, b.z0), v3(b.x1, b.y1, b.z0),
-    v3(b.x1, b.y1, b.z1), v3(b.x0, b.y1, b.z1),
+    v3(b.x0, b.y0, b.z0),
+    v3(b.x1, b.y0, b.z0),
+    v3(b.x1, b.y0, b.z1),
+    v3(b.x0, b.y0, b.z1),
+    v3(b.x0, b.y1, b.z0),
+    v3(b.x1, b.y1, b.z0),
+    v3(b.x1, b.y1, b.z1),
+    v3(b.x0, b.y1, b.z1),
   ];
 }
 
 // Edge pairs (vertex indices) of a box, in the order produced by boxCorners.
 const BOX_EDGES: Array<[number, number]> = [
-  [0, 1], [1, 2], [2, 3], [3, 0], // bottom
-  [4, 5], [5, 6], [6, 7], [7, 4], // top
-  [0, 4], [1, 5], [2, 6], [3, 7], // verticals
+  [0, 1],
+  [1, 2],
+  [2, 3],
+  [3, 0], // bottom
+  [4, 5],
+  [5, 6],
+  [6, 7],
+  [7, 4], // top
+  [0, 4],
+  [1, 5],
+  [2, 6],
+  [3, 7], // verticals
 ];
 
 // Quad faces; vertex order chosen so that the cross product of adjacent
@@ -117,33 +136,42 @@ function faceNormal(face: [number, number, number, number]): Vec3 {
 }
 
 function drawBox(
-  ctx: CanvasRenderingContext2D, b: typeof SUB, style: BoxStyle,
-  cam: OrbitCamera, w: number, h: number,
+  ctx: CanvasRenderingContext2D,
+  b: typeof SUB,
+  style: BoxStyle,
+  cam: OrbitCamera,
+  w: number,
+  h: number,
 ) {
   const corners = boxCorners(b);
-  const proj: Point2D[] = corners.map(c => project(c, cam, w, h));
-  if (proj.some(p => p.depth <= 0)) return;
+  const proj: Point2D[] = corners.map((c) => project(c, cam, w, h));
+  if (proj.some((p) => p.depth <= 0)) return;
 
   // Translucent fills for the visible (front-facing) faces only.
   const NORMALS: Vec3[] = [
-    v3(0, -1, 0), v3(0, 1, 0),
-    v3(0, 0, -1), v3(0, 0, 1),
-    v3(1, 0, 0), v3(-1, 0, 0),
+    v3(0, -1, 0),
+    v3(0, 1, 0),
+    v3(0, 0, -1),
+    v3(0, 0, 1),
+    v3(1, 0, 0),
+    v3(-1, 0, 0),
   ];
   // Camera forward direction (from origin toward eye): rotate (0,0,1)
   // by -yaw, -pitch. The simplest is to ask: a face is visible if its
   // centre projects in front of all other face centres on that axis;
   // equivalently, the dot of its world normal with the camera-look-vector
   // is positive. Build the look vector from cam orientation.
-  const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw);
-  const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch);
+  const cy = Math.cos(cam.yaw),
+    sy = Math.sin(cam.yaw);
+  const cp = Math.cos(cam.pitch),
+    sp = Math.sin(cam.pitch);
   // Camera position in world space (cam looks toward origin from this point).
   // World→camera: rotate yaw around y, then pitch around x. Camera is at
   // (0, 0, distance) in cam space; transform back:
   const camPos: Vec3 = {
-    x:  cam.distance * cy * sp * 0 + cam.distance * sy * cp,
-    y:  cam.distance * sp,
-    z:  cam.distance * cy * cp,
+    x: cam.distance * cy * sp * 0 + cam.distance * sy * cp,
+    y: cam.distance * sp,
+    z: cam.distance * cy * cp,
   };
   void faceNormal; // suppress unused
 
@@ -154,13 +182,18 @@ function drawBox(
     const c2 = corners[face[2]]!;
     const centre = v3((c0.x + c2.x) / 2, (c0.y + c2.y) / 2, (c0.z + c2.z) / 2);
     // Outward face is visible if (camPos - centre) · n > 0.
-    const dx = camPos.x - centre.x, dy = camPos.y - centre.y, dz = camPos.z - centre.z;
+    const dx = camPos.x - centre.x,
+      dy = camPos.y - centre.y,
+      dz = camPos.z - centre.z;
     const facing = dx * n.x + dy * n.y + dz * n.z;
     if (facing <= 0) continue;
 
     ctx.fillStyle = style.fill;
     ctx.beginPath();
-    const p0 = proj[face[0]]!, p1 = proj[face[1]]!, p2 = proj[face[2]]!, p3 = proj[face[3]]!;
+    const p0 = proj[face[0]]!,
+      p1 = proj[face[1]]!,
+      p2 = proj[face[2]]!,
+      p3 = proj[face[3]]!;
     ctx.moveTo(p0.x, p0.y);
     ctx.lineTo(p1.x, p1.y);
     ctx.lineTo(p2.x, p2.y);
@@ -181,12 +214,14 @@ function drawBox(
   ctx.setLineDash([3, 4]);
   ctx.beginPath();
   // Edges that lie in the back (largest depth) corner pairs.
-  const depths = proj.map(p => p.depth);
+  const depths = proj.map((p) => p.depth);
   for (const [a, c] of BOX_EDGES) {
-    const da = depths[a]!, dc = depths[c]!;
+    const da = depths[a]!,
+      dc = depths[c]!;
     const isBack = (da + dc) / 2 > cam.distance;
     if (!isBack) continue;
-    const pa = proj[a]!, pc = proj[c]!;
+    const pa = proj[a]!,
+      pc = proj[c]!;
     ctx.moveTo(pa.x, pa.y);
     ctx.lineTo(pc.x, pc.y);
   }
@@ -197,10 +232,12 @@ function drawBox(
   ctx.lineWidth = style.edgeWidth;
   ctx.beginPath();
   for (const [a, c] of BOX_EDGES) {
-    const da = depths[a]!, dc = depths[c]!;
+    const da = depths[a]!,
+      dc = depths[c]!;
     const isBack = (da + dc) / 2 > cam.distance;
     if (isBack) continue;
-    const pa = proj[a]!, pc = proj[c]!;
+    const pa = proj[a]!,
+      pc = proj[c]!;
     ctx.moveTo(pa.x, pa.y);
     ctx.lineTo(pc.x, pc.y);
   }
@@ -224,7 +261,9 @@ export function MOSFET3DDemo({ figure }: Props) {
   const Vov = Math.max(0, V_GS - V_T);
 
   const stateRef = useRef({ V_GS, V_DS, showField });
-  useEffect(() => { stateRef.current = { V_GS, V_DS, showField }; }, [V_GS, V_DS, showField]);
+  useEffect(() => {
+    stateRef.current = { V_GS, V_DS, showField };
+  }, [V_GS, V_DS, showField]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H, canvas } = info;
@@ -266,12 +305,19 @@ export function MOSFET3DDemo({ figure }: Props) {
       // wireframes do most of the heavy lifting visually.
 
       // 1. p-substrate (translucent blue).
-      drawBox(ctx, SUB, {
-        fill: 'rgba(91,174,248,0.12)',
-        edge: 'rgba(91,174,248,0.55)',
-        backEdge: 'rgba(91,174,248,0.25)',
-        edgeWidth: 1.1,
-      }, cam, W, H);
+      drawBox(
+        ctx,
+        SUB,
+        {
+          fill: 'rgba(91,174,248,0.12)',
+          edge: 'rgba(91,174,248,0.55)',
+          backEdge: 'rgba(91,174,248,0.25)',
+          edgeWidth: 1.1,
+        },
+        cam,
+        W,
+        H,
+      );
 
       // 2. Inversion layer glow (only when V_GS > V_T). Drawn before
       //    source / drain so the dots can sit on top of it.
@@ -285,8 +331,8 @@ export function MOSFET3DDemo({ figure }: Props) {
           v3(CHAN_X1, CHAN_Y, CHAN_Z0),
           v3(CHAN_X1, CHAN_Y, CHAN_Z1),
           v3(CHAN_X0, CHAN_Y, CHAN_Z1),
-        ].map(p => project(p, cam, W, H));
-        const a = Math.min(0.55, 0.10 + 0.25 * overdrive);
+        ].map((p) => project(p, cam, W, H));
+        const a = Math.min(0.55, 0.1 + 0.25 * overdrive);
         ctx.fillStyle = `rgba(255,107,42,${a.toFixed(3)})`;
         ctx.beginPath();
         ctx.moveTo(cs[0]!.x, cs[0]!.y);
@@ -303,42 +349,70 @@ export function MOSFET3DDemo({ figure }: Props) {
       }
 
       // 3. n+ source (translucent green).
-      drawBox(ctx, SRC, {
-        fill: 'rgba(140,220,150,0.22)',
-        edge: 'rgba(140,220,150,0.85)',
-        backEdge: 'rgba(140,220,150,0.30)',
-        edgeWidth: 1.2,
-      }, cam, W, H);
+      drawBox(
+        ctx,
+        SRC,
+        {
+          fill: 'rgba(140,220,150,0.22)',
+          edge: 'rgba(140,220,150,0.85)',
+          backEdge: 'rgba(140,220,150,0.30)',
+          edgeWidth: 1.2,
+        },
+        cam,
+        W,
+        H,
+      );
       // 4. n+ drain (translucent green).
-      drawBox(ctx, DRN, {
-        fill: 'rgba(140,220,150,0.22)',
-        edge: 'rgba(140,220,150,0.85)',
-        backEdge: 'rgba(140,220,150,0.30)',
-        edgeWidth: 1.2,
-      }, cam, W, H);
+      drawBox(
+        ctx,
+        DRN,
+        {
+          fill: 'rgba(140,220,150,0.22)',
+          edge: 'rgba(140,220,150,0.85)',
+          backEdge: 'rgba(140,220,150,0.30)',
+          edgeWidth: 1.2,
+        },
+        cam,
+        W,
+        H,
+      );
 
       // 5. Gate oxide (thin pale slab, very translucent).
-      drawBox(ctx, OXIDE, {
-        fill: 'rgba(255,255,255,0.10)',
-        edge: 'rgba(255,255,255,0.50)',
-        backEdge: 'rgba(255,255,255,0.18)',
-        edgeWidth: 0.9,
-      }, cam, W, H);
+      drawBox(
+        ctx,
+        OXIDE,
+        {
+          fill: 'rgba(255,255,255,0.10)',
+          edge: 'rgba(255,255,255,0.50)',
+          backEdge: 'rgba(255,255,255,0.18)',
+          edgeWidth: 0.9,
+        },
+        cam,
+        W,
+        H,
+      );
 
       // 6. Gate (gray slab with an amber tint to mark it as the control terminal).
-      drawBox(ctx, GATE, {
-        fill: 'rgba(160,158,149,0.22)',
-        edge: 'rgba(255,107,42,0.80)',
-        backEdge: 'rgba(255,107,42,0.30)',
-        edgeWidth: 1.3,
-      }, cam, W, H);
+      drawBox(
+        ctx,
+        GATE,
+        {
+          fill: 'rgba(160,158,149,0.22)',
+          edge: 'rgba(255,107,42,0.80)',
+          backEdge: 'rgba(255,107,42,0.30)',
+          edgeWidth: 1.3,
+        },
+        cam,
+        W,
+        H,
+      );
 
       // 7. Drift the electron cloud. Each step the dots drift +x at a
       //    velocity proportional to V_DS (saturation caps it: beyond
       //    V_OV the channel pinches and the carriers no longer accelerate
       //    longitudinally inside the conduction part of the channel).
       const driftSpeed = channelOn
-        ? Math.min(s.V_DS, overdrive) * 0.45 + 0.04  // scaled for visibility
+        ? Math.min(s.V_DS, overdrive) * 0.45 + 0.04 // scaled for visibility
         : 0;
       for (const e of electrons) {
         if (channelOn) {
@@ -348,7 +422,8 @@ export function MOSFET3DDemo({ figure }: Props) {
           e.vx += rand(-0.4, 0.4) * dt;
           e.vz += rand(-0.4, 0.4) * dt;
           // Light damping so jitter doesn't blow up.
-          e.vx *= 0.96; e.vz *= 0.96;
+          e.vx *= 0.96;
+          e.vz *= 0.96;
           if (e.z < CHAN_Z0) e.z = CHAN_Z0;
           if (e.z > CHAN_Z1) e.z = CHAN_Z1;
           if (e.x > CHAN_X1) {
@@ -361,11 +436,12 @@ export function MOSFET3DDemo({ figure }: Props) {
 
       if (channelOn) {
         const dotAlpha = Math.min(1, 0.45 + 0.4 * Math.min(1, overdrive / 2));
-        const projected = electrons.map(e => ({
+        const projected = electrons.map((e) => ({
           p: project(v3(e.x, CHAN_Y, e.z), cam, W, H),
         }));
         // Depth-sort dots so far ones draw first.
-        const order = projected.map((_, i) => i)
+        const order = projected
+          .map((_, i) => i)
           .sort((a, b) => projected[b]!.p.depth - projected[a]!.p.depth);
         for (const i of order) {
           const { p } = projected[i]!;
@@ -385,7 +461,8 @@ export function MOSFET3DDemo({ figure }: Props) {
       if (s.showField) {
         // Vertical arrows: a grid across the gate footprint, pointing
         // from the gate down to just above the channel.
-        const NX = 4, NZ = 3;
+        const NX = 4,
+          NZ = 3;
         for (let i = 0; i < NX; i++) {
           for (let j = 0; j < NZ; j++) {
             const t = (i + 0.5) / NX;
@@ -404,10 +481,12 @@ export function MOSFET3DDemo({ figure }: Props) {
             ctx.lineTo(bot.x, bot.y);
             ctx.stroke();
             // Arrowhead in screen space.
-            const dx = bot.x - top.x, dy = bot.y - top.y;
+            const dx = bot.x - top.x,
+              dy = bot.y - top.y;
             const len = Math.hypot(dx, dy);
             if (len > 4) {
-              const ux = dx / len, uy = dy / len;
+              const ux = dx / len,
+                uy = dy / len;
               ctx.fillStyle = `rgba(255,59,110,${(0.55 + 0.35 * k).toFixed(3)})`;
               ctx.beginPath();
               ctx.moveTo(bot.x, bot.y);
@@ -437,10 +516,12 @@ export function MOSFET3DDemo({ figure }: Props) {
             ctx.moveTo(tail.x, tail.y);
             ctx.lineTo(head.x, head.y);
             ctx.stroke();
-            const dx = head.x - tail.x, dy = head.y - tail.y;
+            const dx = head.x - tail.x,
+              dy = head.y - tail.y;
             const len = Math.hypot(dx, dy);
             if (len > 4) {
-              const ux = dx / len, uy = dy / len;
+              const ux = dx / len,
+                uy = dy / len;
               ctx.fillStyle = `rgba(108,197,194,${(0.55 + 0.4 * k).toFixed(3)})`;
               ctx.beginPath();
               ctx.moveTo(head.x, head.y);
@@ -466,8 +547,8 @@ export function MOSFET3DDemo({ figure }: Props) {
       };
       labelAt(v3((SRC.x0 + SRC.x1) / 2, SRC.y1 + 0.05, 0), 'S (n+)', 'rgba(140,220,150,0.95)');
       labelAt(v3((DRN.x0 + DRN.x1) / 2, DRN.y1 + 0.05, 0), 'D (n+)', 'rgba(140,220,150,0.95)');
-      labelAt(v3(0, GATE.y1 + 0.10, 0), 'G (gate)', 'rgba(255,107,42,0.95)');
-      labelAt(v3(0, GATE.y0 - 0.20, OXIDE.z1 + 0.18), 'oxide', 'rgba(236,235,229,0.7)');
+      labelAt(v3(0, GATE.y1 + 0.1, 0), 'G (gate)', 'rgba(255,107,42,0.95)');
+      labelAt(v3(0, GATE.y0 - 0.2, OXIDE.z1 + 0.18), 'oxide', 'rgba(236,235,229,0.7)');
       labelAt(v3(0, SUB.y0 + 0.18, SUB.z1 - 0.05), 'p-substrate (body)', 'rgba(91,174,248,0.9)');
 
       // Top-left help.
@@ -487,7 +568,10 @@ export function MOSFET3DDemo({ figure }: Props) {
     }
 
     raf = requestAnimationFrame(draw);
-    return () => { cancelAnimationFrame(raf); dispose(); };
+    return () => {
+      cancelAnimationFrame(raf);
+      dispose();
+    };
   }, []);
 
   return (
@@ -495,38 +579,47 @@ export function MOSFET3DDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 14.5b'}
       title="Inside the MOSFET — the inversion layer in 3D"
       question="Where, physically, does the channel of the MOSFET sit — and what makes it appear?"
-      caption={<>
-        Drag to rotate. Below threshold (V<sub>GS</sub> &lt; V<sub>T</sub> ≈ 0.7 V) the
-        green source and drain are isolated by a slab of p-type substrate and no current
-        can flow. Push V<sub>GS</sub> past V<sub>T</sub> and the gate field — pink, pointing
-        down through the SiO<sub>2</sub> — pulls electrons up to the surface; an
-        <strong>inversion layer</strong> lights up directly under the oxide, bridging
-        source to drain. Apply V<sub>DS</sub> and those electrons drift from source to
-        drain, carrying the drain current. Toggle the field arrows to see both the vertical
-        (gate-to-channel) and lateral (drain-to-source) components.
-      </>}
+      caption={
+        <>
+          Drag to rotate. Below threshold (V<sub>GS</sub> &lt; V<sub>T</sub> ≈ 0.7 V) the green
+          source and drain are isolated by a slab of p-type substrate and no current can flow. Push
+          V<sub>GS</sub> past V<sub>T</sub> and the gate field — pink, pointing down through the SiO
+          <sub>2</sub> — pulls electrons up to the surface; an
+          <strong>inversion layer</strong> lights up directly under the oxide, bridging source to
+          drain. Apply V<sub>DS</sub> and those electrons drift from source to drain, carrying the
+          drain current. Toggle the field arrows to see both the vertical (gate-to-channel) and
+          lateral (drain-to-source) components.
+        </>
+      }
     >
       <AutoResizeCanvas height={360} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="V_GS"
-          value={V_GS} min={0} max={5} step={0.02}
-          format={v => v.toFixed(2) + ' V'}
+          value={V_GS}
+          min={0}
+          max={5}
+          step={0.02}
+          format={(v) => v.toFixed(2) + ' V'}
           onChange={setVGS}
         />
         <MiniSlider
           label="V_DS"
-          value={V_DS} min={0} max={5} step={0.02}
-          format={v => v.toFixed(2) + ' V'}
+          value={V_DS}
+          min={0}
+          max={5}
+          step={0.02}
+          format={(v) => v.toFixed(2) + ' V'}
           onChange={setVDS}
         />
         <MiniToggle
           label={showField ? 'field lines SHOWN' : 'field lines hidden'}
-          checked={showField} onChange={setShowField}
+          checked={showField}
+          onChange={setShowField}
         />
-        <MiniReadout label="V_T"    value={V_T.toFixed(2)} unit="V" />
-        <MiniReadout label="V_OV"   value={Vov.toFixed(2)} unit="V" />
-        <MiniReadout label="I_D"    value={<Num value={I_D} />} unit="A" />
+        <MiniReadout label="V_T" value={V_T.toFixed(2)} unit="V" />
+        <MiniReadout label="V_OV" value={Vov.toFixed(2)} unit="V" />
+        <MiniReadout label="I_D" value={<Num value={I_D} />} unit="A" />
         <MiniReadout label="regime" value={regime} />
       </DemoControls>
     </Demo>

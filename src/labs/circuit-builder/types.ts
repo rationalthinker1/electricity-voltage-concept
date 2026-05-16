@@ -12,15 +12,15 @@
  */
 
 export type ComponentKind =
-  | 'battery'      // DC voltage source.   value = V (volts)
-  | 'ac'           // AC voltage source.   value = V_pk (volts), acFreq = Hz
-  | 'resistor'    // Ohms.                value = R (Ω)
-  | 'capacitor'   // Farads.              value = C (F)
-  | 'inductor'    // Henries.             value = L (H)
-  | 'diode'       // PWL Shockley.        no value (V_F fixed at 0.7 V)
-  | 'bulb'        // Resistor with glow.  value = R (Ω); brightness ∝ I²R
-  | 'switch'      // Open/closed toggle.  switchOpen flag
-  | 'ground';     // Reference node.      no value, one pin
+  | 'battery' // DC voltage source.   value = V (volts)
+  | 'ac' // AC voltage source.   value = V_pk (volts), acFreq = Hz
+  | 'resistor' // Ohms.                value = R (Ω)
+  | 'capacitor' // Farads.              value = C (F)
+  | 'inductor' // Henries.             value = L (H)
+  | 'diode' // PWL Shockley.        no value (V_F fixed at 0.7 V)
+  | 'bulb' // Resistor with glow.  value = R (Ω); brightness ∝ I²R
+  | 'switch' // Open/closed toggle.  switchOpen flag
+  | 'ground'; // Reference node.      no value, one pin
 
 export type Rotation = 0 | 90 | 180 | 270;
 

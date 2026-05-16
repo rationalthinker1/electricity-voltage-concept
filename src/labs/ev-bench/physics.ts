@@ -58,9 +58,9 @@ import type {
 
 /* ─── Physical constants ─── */
 
-export const G = 9.80665;          // gravity, m/s²
-export const RHO_AIR = 1.225;      // air density at sea level, kg/m³
-export const T_AMBIENT_C = 25;     // ambient, °C
+export const G = 9.80665; // gravity, m/s²
+export const RHO_AIR = 1.225; // air density at sea level, kg/m³
+export const T_AMBIENT_C = 25; // ambient, °C
 export const GASOLINE_KWH_PER_GAL = 33.7; // EPA MPGe conversion (EIA, 2011)
 
 /* ─── Cell library ─── */
@@ -68,10 +68,10 @@ export const GASOLINE_KWH_PER_GAL = 33.7; // EPA MPGe conversion (EIA, 2011)
 export const CELLS: Record<Chemistry, Omit<CellSpec, 'capacityAh' | 'massKg'>> = {
   NMC: {
     label: 'NMC',
-    vNom: 3.70,
-    vEmpty: 3.00,
-    vFull: 4.20,
-    rInt: 0.020,
+    vNom: 3.7,
+    vEmpty: 3.0,
+    vFull: 4.2,
+    rInt: 0.02,
     cp: 950,
     maxDischargeC: 3.0,
     maxChargeC: 1.5,
@@ -80,8 +80,8 @@ export const CELLS: Record<Chemistry, Omit<CellSpec, 'capacityAh' | 'massKg'>> =
   },
   LFP: {
     label: 'LFP',
-    vNom: 3.20,
-    vEmpty: 2.50,
+    vNom: 3.2,
+    vEmpty: 2.5,
     vFull: 3.65,
     rInt: 0.018,
     cp: 950,
@@ -93,8 +93,8 @@ export const CELLS: Record<Chemistry, Omit<CellSpec, 'capacityAh' | 'massKg'>> =
   NCA: {
     label: 'NCA',
     vNom: 3.65,
-    vEmpty: 3.00,
-    vFull: 4.20,
+    vEmpty: 3.0,
+    vFull: 4.2,
     rInt: 0.022,
     cp: 950,
     maxDischargeC: 3.0,
@@ -104,10 +104,10 @@ export const CELLS: Record<Chemistry, Omit<CellSpec, 'capacityAh' | 'massKg'>> =
   },
   LTO: {
     label: 'LTO',
-    vNom: 2.30,
-    vEmpty: 1.50,
-    vFull: 2.80,
-    rInt: 0.030,
+    vNom: 2.3,
+    vEmpty: 1.5,
+    vFull: 2.8,
+    rInt: 0.03,
     cp: 1000,
     maxDischargeC: 10.0,
     maxChargeC: 6.0,
@@ -118,9 +118,9 @@ export const CELLS: Record<Chemistry, Omit<CellSpec, 'capacityAh' | 'massKg'>> =
 
 /** Format-dependent capacity (A·h) and mass (kg) per cell. */
 const CELL_FORMAT: Record<CellFormat, { capacityAh: number; massKg: number; label: string }> = {
-  '21700': { capacityAh: 4.8, massKg: 0.070, label: '21700 cylindrical' },
-  '4680':  { capacityAh: 26.0, massKg: 0.355, label: '4680 cylindrical' },
-  'pouch': { capacityAh: 60.0, massKg: 0.900, label: 'pouch' },
+  '21700': { capacityAh: 4.8, massKg: 0.07, label: '21700 cylindrical' },
+  '4680': { capacityAh: 26.0, massKg: 0.355, label: '4680 cylindrical' },
+  pouch: { capacityAh: 60.0, massKg: 0.9, label: 'pouch' },
 };
 
 export function getCell(chem: Chemistry, format: CellFormat): CellSpec {
@@ -140,15 +140,15 @@ function ocvNMC(soc: number, vEmpty: number, vFull: number): number {
   // Reference points (SOC, V) calibrated to a Panasonic / LG NMC datasheet.
   // Source-of-shape: roughly Linden's Handbook of Batteries, lithium chapter.
   const refs: Array<[number, number]> = [
-    [0.00, 3.00],
-    [0.05, 3.30],
-    [0.10, 3.45],
-    [0.20, 3.55],
-    [0.40, 3.68],
-    [0.60, 3.78],
-    [0.80, 3.92],
-    [0.90, 4.05],
-    [1.00, 4.20],
+    [0.0, 3.0],
+    [0.05, 3.3],
+    [0.1, 3.45],
+    [0.2, 3.55],
+    [0.4, 3.68],
+    [0.6, 3.78],
+    [0.8, 3.92],
+    [0.9, 4.05],
+    [1.0, 4.2],
   ];
   return remap(soc, refs, vEmpty, vFull);
 }
@@ -156,15 +156,15 @@ function ocvNMC(soc: number, vEmpty: number, vFull: number): number {
 /** LFP curve: very flat plateau, steep tails. */
 function ocvLFP(soc: number, vEmpty: number, vFull: number): number {
   const refs: Array<[number, number]> = [
-    [0.00, 2.50],
+    [0.0, 2.5],
     [0.05, 3.05],
-    [0.10, 3.20],
-    [0.20, 3.25],
-    [0.50, 3.28],
-    [0.80, 3.30],
-    [0.90, 3.35],
-    [0.97, 3.50],
-    [1.00, 3.65],
+    [0.1, 3.2],
+    [0.2, 3.25],
+    [0.5, 3.28],
+    [0.8, 3.3],
+    [0.9, 3.35],
+    [0.97, 3.5],
+    [1.0, 3.65],
   ];
   return remap(soc, refs, vEmpty, vFull);
 }
@@ -172,12 +172,12 @@ function ocvLFP(soc: number, vEmpty: number, vFull: number): number {
 /** NCA curve: similar shape to NMC, slightly higher mid-band. */
 function ocvNCA(soc: number, vEmpty: number, vFull: number): number {
   const refs: Array<[number, number]> = [
-    [0.00, 3.00],
-    [0.10, 3.50],
-    [0.30, 3.65],
-    [0.60, 3.75],
+    [0.0, 3.0],
+    [0.1, 3.5],
+    [0.3, 3.65],
+    [0.6, 3.75],
     [0.85, 3.95],
-    [1.00, 4.20],
+    [1.0, 4.2],
   ];
   return remap(soc, refs, vEmpty, vFull);
 }
@@ -185,11 +185,11 @@ function ocvNCA(soc: number, vEmpty: number, vFull: number): number {
 /** LTO curve: low voltage, fairly flat. */
 function ocvLTO(soc: number, vEmpty: number, vFull: number): number {
   const refs: Array<[number, number]> = [
-    [0.00, 1.50],
-    [0.10, 2.10],
-    [0.50, 2.25],
-    [0.90, 2.45],
-    [1.00, 2.80],
+    [0.0, 1.5],
+    [0.1, 2.1],
+    [0.5, 2.25],
+    [0.9, 2.45],
+    [1.0, 2.8],
   ];
   return remap(soc, refs, vEmpty, vFull);
 }
@@ -214,10 +214,14 @@ function remap(x: number, refs: Array<[number, number]>, vMin: number, vMax: num
 
 export function cellOCV(chem: Chemistry, soc: number, cell: CellSpec): number {
   switch (chem) {
-    case 'NMC': return ocvNMC(soc, cell.vEmpty, cell.vFull);
-    case 'LFP': return ocvLFP(soc, cell.vEmpty, cell.vFull);
-    case 'NCA': return ocvNCA(soc, cell.vEmpty, cell.vFull);
-    case 'LTO': return ocvLTO(soc, cell.vEmpty, cell.vFull);
+    case 'NMC':
+      return ocvNMC(soc, cell.vEmpty, cell.vFull);
+    case 'LFP':
+      return ocvLFP(soc, cell.vEmpty, cell.vFull);
+    case 'NCA':
+      return ocvNCA(soc, cell.vEmpty, cell.vFull);
+    case 'LTO':
+      return ocvLTO(soc, cell.vEmpty, cell.vFull);
   }
 }
 
@@ -227,7 +231,7 @@ export interface PackInfo {
   cell: CellSpec;
   cellCount: number;
   vNomPack: number;
-  capacityAh: number;       // pack-level Q
+  capacityAh: number; // pack-level Q
   energyNomKWh: number;
   rPack: number;
   massKg: number;
@@ -245,7 +249,8 @@ export function packInfo(cfg: BenchConfig): PackInfo {
 }
 
 export function packVoltage(soc: number, iPack: number, info: PackInfo, chem: Chemistry): number {
-  const vCell = cellOCV(chem, soc, info.cell) - (iPack / Math.max(1, packParallel(info))) * info.cell.rInt;
+  const vCell =
+    cellOCV(chem, soc, info.cell) - (iPack / Math.max(1, packParallel(info))) * info.cell.rInt;
   return Math.max(0.01, vCell) * packSeries(info);
 }
 
@@ -286,7 +291,13 @@ function buildUDDS(): DriveCycle {
     appendRamp(v, 58 / 3.6, 0, 12);
     appendRamp(v, 0, 0, 60);
   }
-  return { id: 'UDDS', label: 'UDDS (urban)', description: 'EPA Urban Dynamometer Driving Schedule. Heavy stop-and-go, average ~32 km/h, peak ~60 km/h.', vMps: v };
+  return {
+    id: 'UDDS',
+    label: 'UDDS (urban)',
+    description:
+      'EPA Urban Dynamometer Driving Schedule. Heavy stop-and-go, average ~32 km/h, peak ~60 km/h.',
+    vMps: v,
+  };
 }
 
 /** Synthesised HWFET-style highway cycle: 765 s of cruising. */
@@ -298,7 +309,12 @@ function buildHWFET(): DriveCycle {
   appendRamp(v, 88 / 3.6, 96 / 3.6, 200);
   appendRamp(v, 96 / 3.6, 85 / 3.6, 100);
   appendRamp(v, 85 / 3.6, 0, 85);
-  return { id: 'HWFET', label: 'HWFET (highway)', description: 'EPA Highway Fuel Economy Test. Steady cruise, average ~77 km/h, peak ~96 km/h.', vMps: v };
+  return {
+    id: 'HWFET',
+    label: 'HWFET (highway)',
+    description: 'EPA Highway Fuel Economy Test. Steady cruise, average ~77 km/h, peak ~96 km/h.',
+    vMps: v,
+  };
 }
 
 /** Synthesised WLTC-class-3 four-phase cycle: ~1800 s. */
@@ -325,7 +341,13 @@ function buildWLTC(): DriveCycle {
   appendRamp(v, 0, 100 / 3.6, 40);
   appendRamp(v, 100 / 3.6, 131 / 3.6, 200);
   appendRamp(v, 131 / 3.6, 0, 85);
-  return { id: 'WLTC', label: 'WLTC class 3', description: 'Worldwide Harmonized Light Vehicles Test Cycle, four phases low/medium/high/extra-high.', vMps: v };
+  return {
+    id: 'WLTC',
+    label: 'WLTC class 3',
+    description:
+      'Worldwide Harmonized Light Vehicles Test Cycle, four phases low/medium/high/extra-high.',
+    vMps: v,
+  };
 }
 
 /** Constant 100 km/h flat. 600 s. */
@@ -333,7 +355,12 @@ function buildConst100(): DriveCycle {
   const v: number[] = [];
   appendRamp(v, 0, 100 / 3.6, 30);
   for (let i = 0; i < 570; i++) v.push(100 / 3.6);
-  return { id: 'CONST_100', label: 'Constant 100 km/h flat', description: 'Steady highway cruise at 100 km/h.', vMps: v };
+  return {
+    id: 'CONST_100',
+    label: 'Constant 100 km/h flat',
+    description: 'Steady highway cruise at 100 km/h.',
+    vMps: v,
+  };
 }
 
 /** 100 km/h climbing 5 % grade. */
@@ -345,18 +372,29 @@ function buildGrade5(): DriveCycle {
   for (let i = 0; i < v.length; i++) {
     grade.push(i < 30 ? 0 : Math.atan(0.05));
   }
-  return { id: 'GRADE_5', label: '100 km/h up 5 % grade', description: 'Sustained climb. Stress-tests motor continuous rating and pack discharge C-rate.', vMps: v, gradeRad: grade };
+  return {
+    id: 'GRADE_5',
+    label: '100 km/h up 5 % grade',
+    description: 'Sustained climb. Stress-tests motor continuous rating and pack discharge C-rate.',
+    vMps: v,
+    gradeRad: grade,
+  };
 }
 
 /** Hard accel to 100 km/h, brake to 0. Repeat 8x. */
 function buildHardAccel(): DriveCycle {
   const v: number[] = [];
   for (let i = 0; i < 8; i++) {
-    appendRamp(v, 0, 100 / 3.6, 6);       // 0-100 in 6 s
-    appendRamp(v, 100 / 3.6, 0, 5);       // hard brake
-    appendRamp(v, 0, 0, 10);              // rest
+    appendRamp(v, 0, 100 / 3.6, 6); // 0-100 in 6 s
+    appendRamp(v, 100 / 3.6, 0, 5); // hard brake
+    appendRamp(v, 0, 0, 10); // rest
   }
-  return { id: 'HARD_ACCEL', label: 'Hard accel 0-100-0', description: 'Sprint and brake. Stress-tests inverter peak current and regen capability.', vMps: v };
+  return {
+    id: 'HARD_ACCEL',
+    label: 'Hard accel 0-100-0',
+    description: 'Sprint and brake. Stress-tests inverter peak current and regen capability.',
+    vMps: v,
+  };
 }
 
 function appendRamp(v: number[], v0: number, v1: number, seconds: number) {
@@ -393,7 +431,7 @@ export function sampleCycle(c: DriveCycle, t: number): { v: number; a: number; g
   const v0 = c.vMps[i]!;
   const v1 = c.vMps[i + 1] ?? v0;
   const v = v0 + u * (v1 - v0);
-  const a = (v1 - v0); // per-second derivative
+  const a = v1 - v0; // per-second derivative
   const g0 = c.gradeRad?.[i] ?? 0;
   const g1 = c.gradeRad?.[i + 1] ?? g0;
   const grade = g0 + u * (g1 - g0);
@@ -450,9 +488,30 @@ export interface ChargerSpec {
 
 export const CHARGERS: Record<ChargerKind, ChargerSpec> = {
   NONE: { kind: 'NONE', maxKW: 0, wallV: 0, cableA: 0, isDC: false, label: 'unplugged' },
-  L1:   { kind: 'L1', maxKW: 1.4, wallV: 120, cableA: 12, isDC: false, label: 'Level 1 (120 V / 12 A)' },
-  L2:   { kind: 'L2', maxKW: 11.5, wallV: 240, cableA: 48, isDC: false, label: 'Level 2 (240 V / 48 A)' },
-  DCFC: { kind: 'DCFC', maxKW: 350, wallV: 800, cableA: 500, isDC: true, label: 'DC fast (350 kW)' },
+  L1: {
+    kind: 'L1',
+    maxKW: 1.4,
+    wallV: 120,
+    cableA: 12,
+    isDC: false,
+    label: 'Level 1 (120 V / 12 A)',
+  },
+  L2: {
+    kind: 'L2',
+    maxKW: 11.5,
+    wallV: 240,
+    cableA: 48,
+    isDC: false,
+    label: 'Level 2 (240 V / 48 A)',
+  },
+  DCFC: {
+    kind: 'DCFC',
+    maxKW: 350,
+    wallV: 800,
+    cableA: 500,
+    isDC: true,
+    label: 'DC fast (350 kW)',
+  },
 };
 
 /** Returns the charging current draw on the pack, given pack state. */
@@ -469,7 +528,7 @@ export function chargerCurrent(
   const chem = cfg.pack.chemistry;
 
   // Find the SOC at which CV phase starts. NMC/NCA roll over at ~80%, LFP at ~95%.
-  const ccCutoff = chem === 'LFP' ? 0.95 : chem === 'LTO' ? 0.95 : 0.80;
+  const ccCutoff = chem === 'LFP' ? 0.95 : chem === 'LTO' ? 0.95 : 0.8;
 
   // Available source power.
   const maxKW = ch.isDC
@@ -480,9 +539,7 @@ export function chargerCurrent(
   const cRate = info.cell.maxChargeC;
   const maxAByChemistry = cRate * info.capacityAh;
   // Pack thermal derate: above 45 °C, linearly cut to zero by 60 °C.
-  const tempDerate = packTempC > 45
-    ? Math.max(0, 1 - (packTempC - 45) / 15)
-    : 1;
+  const tempDerate = packTempC > 45 ? Math.max(0, 1 - (packTempC - 45) / 15) : 1;
   const maxAByThermal = maxAByChemistry * tempDerate;
 
   // Current the source can push at present pack voltage.
@@ -566,7 +623,7 @@ export function step(
     const cc = chargerCurrent(cfg, info, s.soc, s.packTempC);
     const vPack = packVoltage(s.soc, -cc.iCharge, info, cfg.pack.chemistry);
     // SOC up.
-    const dSoc = (cc.iCharge * dt / 3600) / Math.max(1e-6, info.capacityAh);
+    const dSoc = (cc.iCharge * dt) / 3600 / Math.max(1e-6, info.capacityAh);
     next.soc = Math.min(1, s.soc + dSoc);
 
     // Thermal: heating from I²R; cooling toward ambient.
@@ -604,9 +661,9 @@ export function step(
   // === Driving: sample cycle ===
   const cyc = getCycle(cfg.vehicle.cycle);
   const sample = sampleCycle(cyc, s.t);
-  const v = sample.v;                     // m/s
-  const a = sample.a;                     // m/s² (per-second from cycle gradient)
-  const grade = sample.grade;             // rad
+  const v = sample.v; // m/s
+  const a = sample.a; // m/s² (per-second from cycle gradient)
+  const grade = sample.grade; // rad
 
   // Tractive force at the wheel.
   const fInertia = cfg.vehicle.massKg * a;
@@ -636,7 +693,10 @@ export function step(
 
   // Motor and inverter efficiency.
   const etaMot = pmsmEfficiency(tFrac, sFrac);
-  const etaInv = inverterEfficiency(Math.abs(pMechW) / (cfg.drive.peakPowerKW * 1000), cfg.drive.inverterEtaPeak);
+  const etaInv = inverterEfficiency(
+    Math.abs(pMechW) / (cfg.drive.peakPowerKW * 1000),
+    cfg.drive.inverterEtaPeak,
+  );
 
   // Electrical DC power into / out of the motor controller.
   // Driving: P_elec = P_mech / (eta_mot * eta_inv); regen: P_elec = P_mech * eta_mot * eta_inv
@@ -678,7 +738,7 @@ export function step(
   const vPack = vOC - iPack * R;
 
   // Update SOC, distance, energy.
-  const dSoc = (iPack * dt / 3600) / Math.max(1e-6, info.capacityAh);
+  const dSoc = (iPack * dt) / 3600 / Math.max(1e-6, info.capacityAh);
   next.soc = Math.max(0, Math.min(1, s.soc - dSoc));
   next.distanceM = s.distanceM + v * dt;
   next.energyJ = s.energyJ + iPack * vPack * dt;
@@ -710,7 +770,10 @@ export function step(
 
 /* ─── Run-summary helpers ─── */
 
-export function summarise(state: SimState, info: PackInfo): {
+export function summarise(
+  state: SimState,
+  info: PackInfo,
+): {
   distanceKm: number;
   energyKWh: number;
   whPerKm: number;
@@ -744,11 +807,12 @@ export function chargeSummary(
   const cc = chargerCurrent(cfg, info, state.soc, state.packTempC);
   const aNow = cc.iCharge;
   if (aNow < 0.5) return { timeTo80S: NaN, timeTo100S: NaN, chargeEfficiency: NaN };
-  const ahRemaining80 = Math.max(0, 0.80 - state.soc) * info.capacityAh;
-  const ahRemaining100 = Math.max(0, 1.00 - state.soc) * info.capacityAh;
+  const ahRemaining80 = Math.max(0, 0.8 - state.soc) * info.capacityAh;
+  const ahRemaining100 = Math.max(0, 1.0 - state.soc) * info.capacityAh;
   const timeTo80S = (ahRemaining80 / aNow) * 3600;
   // CV-phase doubles the linear time-estimate for the last 20 % (rule of thumb).
   const timeTo100S = timeTo80S + 2 * ((ahRemaining100 - ahRemaining80) / aNow) * 3600;
-  const chargeEfficiency = state.wallEnergyJ > 1 ? Math.min(0.99, -state.energyJ / state.wallEnergyJ) : NaN;
+  const chargeEfficiency =
+    state.wallEnergyJ > 1 ? Math.min(0.99, -state.energyJ / state.wallEnergyJ) : NaN;
   return { timeTo80S, timeTo100S, chargeEfficiency };
 }

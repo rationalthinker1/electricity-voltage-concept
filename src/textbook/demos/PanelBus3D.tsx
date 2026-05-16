@@ -45,38 +45,44 @@ import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import {
-  attachOrbit, depthSortIndices, project, v3,
-  type OrbitCamera, type Vec3,
+  attachOrbit,
+  depthSortIndices,
+  project,
+  v3,
+  type OrbitCamera,
+  type Vec3,
 } from '@/lib/projection3d';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // World-space geometry. Y is up; the panel sits centred at the origin.
 // Units are arbitrary "world" units chosen so the camera at distance ~7
 // frames the whole thing nicely.
-const CAN_W = 2.4;   // x extent (full width)
-const CAN_H = 3.6;   // y extent (full height)
-const CAN_D = 0.9;   // z extent (depth, front-to-back)
+const CAN_W = 2.4; // x extent (full width)
+const CAN_H = 3.6; // y extent (full height)
+const CAN_D = 0.9; // z extent (depth, front-to-back)
 
 const BUS_X_L1 = -0.45;
 const BUS_X_L2 = +0.45;
-const BUS_W    = 0.10;          // bus-bar width (x)
-const BUS_THK  = 0.06;          // bus-bar thickness (z)
-const BUS_TOP  = +1.40;         // top y of the bus bar (below the main)
-const BUS_BOT  = -1.20;         // bottom y of the bus bar
+const BUS_W = 0.1; // bus-bar width (x)
+const BUS_THK = 0.06; // bus-bar thickness (z)
+const BUS_TOP = +1.4; // top y of the bus bar (below the main)
+const BUS_BOT = -1.2; // bottom y of the bus bar
 
-const SLOT_PITCH = 0.22;        // vertical spacing between adjacent stabs
-const STAB_THK   = 0.045;
+const SLOT_PITCH = 0.22; // vertical spacing between adjacent stabs
+const STAB_THK = 0.045;
 
 const NEUTRAL_Y = -1.45;
 const NEUTRAL_X_HALF = 0.95;
 const NEUTRAL_THK = 0.06;
-const GROUND_Y  = -1.65;
+const GROUND_Y = -1.65;
 const GROUND_X_HALF = 0.55;
 const GROUND_THK = 0.05;
 
 const MAIN_Y = 1.62;
-const MAIN_HW = 0.95;           // half-width of the main breaker block
+const MAIN_HW = 0.95; // half-width of the main breaker block
 const MAIN_HH = 0.14;
 const MAIN_HD = 0.18;
 
@@ -84,13 +90,13 @@ const MAIN_HD = 0.18;
 // identity. Adjacent slots have opposite phases.
 type Phase = 'L1' | 'L2';
 interface Slot {
-  index: number;          // 0 = top
-  y: number;              // world Y
+  index: number; // 0 = top
+  y: number; // world Y
   phase: Phase;
-  busX: number;           // which bus bar the stab grows out of
-  stabFromX: number;      // start x of the stab (on the bus)
-  stabToX: number;        // end x of the stab (into the can, where the breaker clips)
-  breakerCx: number;      // breaker centre x (load side of the stab)
+  busX: number; // which bus bar the stab grows out of
+  stabFromX: number; // start x of the stab (on the bus)
+  stabToX: number; // end x of the stab (into the can, where the breaker clips)
+  breakerCx: number; // breaker centre x (load side of the stab)
 }
 
 function makeSlots(count: number): Slot[] {
@@ -100,14 +106,14 @@ function makeSlots(count: number): Slot[] {
   // which bus they tap, and the stab itself alternates which side it
   // projects toward so the breaker bodies stagger left/right of centre.
   for (let i = 0; i < count; i++) {
-    const y = BUS_TOP - 0.20 - i * SLOT_PITCH;
-    const phase: Phase = (i % 2 === 0) ? 'L1' : 'L2';
+    const y = BUS_TOP - 0.2 - i * SLOT_PITCH;
+    const phase: Phase = i % 2 === 0 ? 'L1' : 'L2';
     // The slot's stab originates on the matching bus and projects toward
     // the centre column, where the breaker seats.
     const busX = phase === 'L1' ? BUS_X_L1 : BUS_X_L2;
     const breakerCx = 0;
     const stabFromX = busX + Math.sign(breakerCx - busX) * (BUS_W / 2);
-    const stabToX   = breakerCx + (busX < 0 ? -1 : 1) * 0.02;
+    const stabToX = breakerCx + (busX < 0 ? -1 : 1) * 0.02;
     slots.push({ index: i, y, phase, busX, stabFromX, stabToX, breakerCx });
   }
   return slots;
@@ -128,9 +134,9 @@ export function PanelBus3DDemo({ figure }: Props) {
     // Split-phase service: each phase is 120 V RMS to neutral and the two
     // are 180° out of phase, so the line-to-line voltage is 240 V.
     const V_L1_N = 120;
-    const V_L2_N = 120;        // magnitude; phase is opposite
+    const V_L2_N = 120; // magnitude; phase is opposite
     const V_L1_L2 = 240;
-    const I_main = 200;        // example 200 A main service
+    const I_main = 200; // example 200 A main service
     // Distribute an example total load equally across visible single-pole
     // breakers, capped at 20 A nameplate per branch.
     const I_per = Math.min(20, I_main / Math.max(1, nBreakers));
@@ -205,7 +211,7 @@ export function PanelBus3DDemo({ figure }: Props) {
 
       // Main breaker (always present, at top).
       items.push({
-        anchor: v3(0, MAIN_Y, 0.10),
+        anchor: v3(0, MAIN_Y, 0.1),
         draw: (c, cm, w, h) => drawMainBreaker(c, cm, w, h),
       });
 
@@ -241,7 +247,7 @@ export function PanelBus3DDemo({ figure }: Props) {
       // Bonding jumper (toggleable).
       if (s.showBond) {
         items.push({
-          anchor: v3(0.70, (NEUTRAL_Y + GROUND_Y) / 2, 0.05),
+          anchor: v3(0.7, (NEUTRAL_Y + GROUND_Y) / 2, 0.05),
           draw: (c, cm, w, h) => drawBondingJumper(c, cm, w, h),
         });
       }
@@ -277,17 +283,17 @@ export function PanelBus3DDemo({ figure }: Props) {
       ctx.textAlign = 'right';
       ctx.restore();
       ctx.save();
-      ctx.globalAlpha = 0.90;
+      ctx.globalAlpha = 0.9;
       ctx.fillStyle = getCanvasColors().pink;
       ctx.fillText('L1 bus', W - 12, 12);
       ctx.restore();
       ctx.save();
-      ctx.globalAlpha = 0.90;
+      ctx.globalAlpha = 0.9;
       ctx.fillStyle = getCanvasColors().blue;
       ctx.fillText('L2 bus', W - 12, 28);
       ctx.restore();
       ctx.save();
-      ctx.globalAlpha = 0.90;
+      ctx.globalAlpha = 0.9;
       ctx.fillStyle = getCanvasColors().teal;
       ctx.fillText('neutral · ground · bond', W - 12, 44);
       if (s.show2Pole && twoPolePair) {
@@ -310,26 +316,45 @@ export function PanelBus3DDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 28.1'}
       title="Inside the panel, in 3D"
       question="A 240 V breaker is two slots wide. Why two slots — what would happen if it spanned two stabs on the same bus?"
-      caption={<>
-        Drag the panel to rotate. The two vertical bus bars are L1 (pink) and L2 (blue); their
-        stamped stabs alternate down the column so that a single-pole breaker clicked into one slot
-        grabs L1 and the one just below it grabs L2. A two-pole 240 V breaker straddles two adjacent
-        slots and therefore <em>automatically</em> taps one of each — which is the whole reason
-        for the alternation. Every white wire lands on the teal neutral bar at the bottom; every
-        bare conductor lands on the separate ground bar below it. The single teal strap between
-        the two is the main bonding jumper, the one place in the building where neutral and ground
-        are tied together.
-      </>}
+      caption={
+        <>
+          Drag the panel to rotate. The two vertical bus bars are L1 (pink) and L2 (blue); their
+          stamped stabs alternate down the column so that a single-pole breaker clicked into one
+          slot grabs L1 and the one just below it grabs L2. A two-pole 240 V breaker straddles two
+          adjacent slots and therefore <em>automatically</em> taps one of each — which is the whole
+          reason for the alternation. Every white wire lands on the teal neutral bar at the bottom;
+          every bare conductor lands on the separate ground bar below it. The single teal strap
+          between the two is the main bonding jumper, the one place in the building where neutral
+          and ground are tied together.
+        </>
+      }
     >
       <AutoResizeCanvas height={420} setup={setup} />
       <DemoControls>
         <MiniSlider
-          label="breakers" value={nBreakers} min={4} max={12} step={1}
-          format={v => v.toFixed(0)} onChange={n => setNBreakers(Math.round(n))}
+          label="breakers"
+          value={nBreakers}
+          min={4}
+          max={12}
+          step={1}
+          format={(v) => v.toFixed(0)}
+          onChange={(n) => setNBreakers(Math.round(n))}
         />
-        <MiniToggle label={show2Pole ? '2-pole 240 V on' : '2-pole 240 V off'} checked={show2Pole} onChange={setShow2Pole} />
-        <MiniToggle label={showNeutral ? 'neutral routing on' : 'neutral routing off'} checked={showNeutral} onChange={setShowNeutral} />
-        <MiniToggle label={showBond ? 'bonding jumper on' : 'bonding jumper off'} checked={showBond} onChange={setShowBond} />
+        <MiniToggle
+          label={show2Pole ? '2-pole 240 V on' : '2-pole 240 V off'}
+          checked={show2Pole}
+          onChange={setShow2Pole}
+        />
+        <MiniToggle
+          label={showNeutral ? 'neutral routing on' : 'neutral routing off'}
+          checked={showNeutral}
+          onChange={setShowNeutral}
+        />
+        <MiniToggle
+          label={showBond ? 'bonding jumper on' : 'bonding jumper off'}
+          checked={showBond}
+          onChange={setShowBond}
+        />
         <MiniReadout label="V_L1-N" value={<Num value={computed.V_L1_N} />} unit="V" />
         <MiniReadout label="V_L2-N" value={<Num value={computed.V_L2_N} />} unit="V" />
         <MiniReadout label="V_L1-L2" value={<Num value={computed.V_L1_L2} />} unit="V" />
@@ -348,16 +373,33 @@ export function PanelBus3DDemo({ figure }: Props) {
 function drawEnclosure(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number) {
   // 12 edges of a rectangular box. Front edges saturated, back edges
   // faint + dashed so the reader can read the depth of the can.
-  const hx = CAN_W / 2, hy = CAN_H / 2, hz = CAN_D / 2;
+  const hx = CAN_W / 2,
+    hy = CAN_H / 2,
+    hz = CAN_D / 2;
   const corners: Vec3[] = [
-    v3(-hx, -hy, -hz), v3( hx, -hy, -hz), v3( hx,  hy, -hz), v3(-hx,  hy, -hz),
-    v3(-hx, -hy,  hz), v3( hx, -hy,  hz), v3( hx,  hy,  hz), v3(-hx,  hy,  hz),
+    v3(-hx, -hy, -hz),
+    v3(hx, -hy, -hz),
+    v3(hx, hy, -hz),
+    v3(-hx, hy, -hz),
+    v3(-hx, -hy, hz),
+    v3(hx, -hy, hz),
+    v3(hx, hy, hz),
+    v3(-hx, hy, hz),
   ];
   // Edge pairs by corner index.
   const edges: [number, number][] = [
-    [0,1],[1,2],[2,3],[3,0],   // back face
-    [4,5],[5,6],[6,7],[7,4],   // front face
-    [0,4],[1,5],[2,6],[3,7],   // sides
+    [0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 0], // back face
+    [4, 5],
+    [5, 6],
+    [6, 7],
+    [7, 4], // front face
+    [0, 4],
+    [1, 5],
+    [2, 6],
+    [3, 7], // sides
   ];
   for (const [a, b] of edges) {
     const pA = project(corners[a]!, cam, W, H);
@@ -377,34 +419,40 @@ function drawEnclosure(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: numbe
 }
 
 function drawBusBar(
-  ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number,
-  cx: number, phase: Phase,
+  ctx: CanvasRenderingContext2D,
+  cam: OrbitCamera,
+  W: number,
+  H: number,
+  cx: number,
+  phase: Phase,
 ) {
   // Solid-ish rectangular prism: filled top/front/right faces drawn as
   // projected quads so the bus reads as a 3D bar rather than a 2D rectangle.
-  const hw = BUS_W / 2, hd = BUS_THK / 2;
-  const yTop = BUS_TOP, yBot = BUS_BOT;
+  const hw = BUS_W / 2,
+    hd = BUS_THK / 2;
+  const yTop = BUS_TOP,
+    yBot = BUS_BOT;
   // 8 corners.
   const c000 = v3(cx - hw, yBot, -hd);
   const c100 = v3(cx + hw, yBot, -hd);
   const c110 = v3(cx + hw, yTop, -hd);
   const c010 = v3(cx - hw, yTop, -hd);
-  const c001 = v3(cx - hw, yBot,  hd);
-  const c101 = v3(cx + hw, yBot,  hd);
-  const c111 = v3(cx + hw, yTop,  hd);
-  const c011 = v3(cx - hw, yTop,  hd);
+  const c001 = v3(cx - hw, yBot, hd);
+  const c101 = v3(cx + hw, yBot, hd);
+  const c111 = v3(cx + hw, yTop, hd);
+  const c011 = v3(cx - hw, yTop, hd);
 
   const baseFill = phase === 'L1' ? 'rgba(255,59,110,0.16)' : 'rgba(91,174,248,0.16)';
   const baseStroke = phase === 'L1' ? 'rgba(255,59,110,0.85)' : 'rgba(91,174,248,0.85)';
 
   // Quads: front face, then the two visible side faces.
   const quads: [Vec3, Vec3, Vec3, Vec3][] = [
-    [c001, c101, c111, c011],   // front (+z)
-    [c101, c100, c110, c111],   // right (+x)
-    [c000, c001, c011, c010],   // left  (-x)
+    [c001, c101, c111, c011], // front (+z)
+    [c101, c100, c110, c111], // right (+x)
+    [c000, c001, c011, c010], // left  (-x)
   ];
   for (const q of quads) {
-    const pts = q.map(p => project(p, cam, W, H));
+    const pts = q.map((p) => project(p, cam, W, H));
     ctx.fillStyle = baseFill;
     ctx.beginPath();
     ctx.moveTo(pts[0]!.x, pts[0]!.y);
@@ -414,8 +462,8 @@ function drawBusBar(
   }
 
   // Glowing front edge along the bar's length — the bus is energised.
-  const pTop = project(v3(cx, yTop,  hd), cam, W, H);
-  const pBot = project(v3(cx, yBot,  hd), cam, W, H);
+  const pTop = project(v3(cx, yTop, hd), cam, W, H);
+  const pBot = project(v3(cx, yBot, hd), cam, W, H);
   drawGlowPath(ctx, [pTop, pBot], {
     color: baseStroke,
     lineWidth: 2.4,
@@ -430,14 +478,19 @@ function drawBusBar(
   ctx.beginPath();
   for (let i = 0; i < outline.length; i++) {
     const p = project(outline[i]!, cam, W, H);
-    if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+    if (i === 0) ctx.moveTo(p.x, p.y);
+    else ctx.lineTo(p.x, p.y);
   }
   ctx.stroke();
 }
 
 function drawStab(
-  ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number,
-  slot: Slot, colour: string,
+  ctx: CanvasRenderingContext2D,
+  cam: OrbitCamera,
+  W: number,
+  H: number,
+  slot: Slot,
+  colour: string,
 ) {
   // A short rectangular bar at slot.y connecting the bus face to the
   // breaker's load-side clip. Drawn as a single filled quad in the x-z
@@ -446,13 +499,8 @@ function drawStab(
   const x0 = slot.stabFromX;
   const x1 = slot.stabToX;
   const y = slot.y;
-  const corners: Vec3[] = [
-    v3(x0, y, -hd),
-    v3(x1, y, -hd),
-    v3(x1, y,  hd),
-    v3(x0, y,  hd),
-  ];
-  const pts = corners.map(p => project(p, cam, W, H));
+  const corners: Vec3[] = [v3(x0, y, -hd), v3(x1, y, -hd), v3(x1, y, hd), v3(x0, y, hd)];
+  const pts = corners.map((p) => project(p, cam, W, H));
   ctx.fillStyle = slot.phase === 'L1' ? 'rgba(255,59,110,0.35)' : 'rgba(91,174,248,0.35)';
   ctx.beginPath();
   ctx.moveTo(pts[0]!.x, pts[0]!.y);
@@ -465,15 +513,20 @@ function drawStab(
 }
 
 function drawSinglePoleBreaker(
-  ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number,
+  ctx: CanvasRenderingContext2D,
+  cam: OrbitCamera,
+  W: number,
+  H: number,
   slot: Slot,
 ) {
   // A small black block centred over the stab, slightly proud of the
   // bus plane (positive z) so it sits in front of the bus rails.
   const cx = slot.breakerCx;
   const cy = slot.y;
-  const hw = 0.18, hh = SLOT_PITCH * 0.42, hd = 0.16;
-  const cz = 0.20;
+  const hw = 0.18,
+    hh = SLOT_PITCH * 0.42,
+    hd = 0.16;
+  const cz = 0.2;
   drawBox(ctx, cam, W, H, v3(cx, cy, cz), hw, hh, hd, {
     fill: 'rgba(28,28,34,0.92)',
     stroke: 'rgba(160,158,149,0.55)',
@@ -488,8 +541,12 @@ function drawSinglePoleBreaker(
 }
 
 function drawTwoPoleBreaker(
-  ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number,
-  a: Slot, b: Slot,
+  ctx: CanvasRenderingContext2D,
+  cam: OrbitCamera,
+  W: number,
+  H: number,
+  a: Slot,
+  b: Slot,
 ) {
   // A taller block spanning slots a and b. The handle face carries one
   // pink dot and one blue dot to make the "one on each phase" point
@@ -526,16 +583,20 @@ function drawMainBreaker(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: num
   });
   // Two phase dots on the handle.
   const dL1 = project(v3(-0.35, MAIN_Y, 0.22 + MAIN_HD), cam, W, H);
-  const dL2 = project(v3( 0.35, MAIN_Y, 0.22 + MAIN_HD), cam, W, H);
+  const dL2 = project(v3(0.35, MAIN_Y, 0.22 + MAIN_HD), cam, W, H);
   ctx.save();
   ctx.globalAlpha = 0.98;
   ctx.fillStyle = getCanvasColors().pink;
-  ctx.beginPath(); ctx.arc(dL1.x, dL1.y, 3.2, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath();
+  ctx.arc(dL1.x, dL1.y, 3.2, 0, Math.PI * 2);
+  ctx.fill();
   ctx.restore();
   ctx.save();
   ctx.globalAlpha = 0.98;
   ctx.fillStyle = getCanvasColors().blue;
-  ctx.beginPath(); ctx.arc(dL2.x, dL2.y, 3.2, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath();
+  ctx.arc(dL2.x, dL2.y, 3.2, 0, Math.PI * 2);
+  ctx.fill();
   const lbl = project(v3(0, MAIN_Y - MAIN_HH - 0.04, 0.22 + MAIN_HD), cam, W, H);
   ctx.restore();
   ctx.fillStyle = getCanvasColors().textDim;
@@ -546,12 +607,10 @@ function drawMainBreaker(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: num
 }
 
 function drawNeutralBar(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number) {
-  drawBox(
-    ctx, cam, W, H,
-    v3(0, NEUTRAL_Y, 0.05),
-    NEUTRAL_X_HALF, NEUTRAL_THK / 2, 0.06,
-    { fill: getCanvasColors().tealSoft, stroke: 'rgba(108,197,194,0.85)' },
-  );
+  drawBox(ctx, cam, W, H, v3(0, NEUTRAL_Y, 0.05), NEUTRAL_X_HALF, NEUTRAL_THK / 2, 0.06, {
+    fill: getCanvasColors().tealSoft,
+    stroke: 'rgba(108,197,194,0.85)',
+  });
   // Small terminal-screw ticks along the front face.
   for (let i = 0; i < 14; i++) {
     const x = -NEUTRAL_X_HALF + 0.08 + i * ((NEUTRAL_X_HALF * 2 - 0.16) / 13);
@@ -559,10 +618,12 @@ function drawNeutralBar(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: numb
     ctx.save();
     ctx.globalAlpha = 0.65;
     ctx.fillStyle = getCanvasColors().teal;
-    ctx.beginPath(); ctx.arc(tick.x, tick.y, 1.4, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath();
+    ctx.arc(tick.x, tick.y, 1.4, 0, Math.PI * 2);
+    ctx.fill();
     ctx.restore();
   }
-  const lbl = project(v3(-NEUTRAL_X_HALF - 0.10, NEUTRAL_Y, 0.11), cam, W, H);
+  const lbl = project(v3(-NEUTRAL_X_HALF - 0.1, NEUTRAL_Y, 0.11), cam, W, H);
   ctx.fillStyle = getCanvasColors().teal;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'right';
@@ -571,19 +632,19 @@ function drawNeutralBar(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: numb
 }
 
 function drawGroundBar(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number) {
-  drawBox(
-    ctx, cam, W, H,
-    v3(0, GROUND_Y, 0.05),
-    GROUND_X_HALF, GROUND_THK / 2, 0.05,
-    { fill: 'rgba(108,197,194,0.10)', stroke: 'rgba(108,197,194,0.55)' },
-  );
+  drawBox(ctx, cam, W, H, v3(0, GROUND_Y, 0.05), GROUND_X_HALF, GROUND_THK / 2, 0.05, {
+    fill: 'rgba(108,197,194,0.10)',
+    stroke: 'rgba(108,197,194,0.55)',
+  });
   for (let i = 0; i < 9; i++) {
     const x = -GROUND_X_HALF + 0.06 + i * ((GROUND_X_HALF * 2 - 0.12) / 8);
-    const tick = project(v3(x, GROUND_Y + 0.03, 0.10), cam, W, H);
+    const tick = project(v3(x, GROUND_Y + 0.03, 0.1), cam, W, H);
     ctx.fillStyle = getCanvasColors().teal;
-    ctx.beginPath(); ctx.arc(tick.x, tick.y, 1.2, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath();
+    ctx.arc(tick.x, tick.y, 1.2, 0, Math.PI * 2);
+    ctx.fill();
   }
-  const lbl = project(v3(-GROUND_X_HALF - 0.10, GROUND_Y, 0.10), cam, W, H);
+  const lbl = project(v3(-GROUND_X_HALF - 0.1, GROUND_Y, 0.1), cam, W, H);
   ctx.fillStyle = getCanvasColors().teal;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'right';
@@ -595,10 +656,10 @@ function drawBondingJumper(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: n
   // A single short strap from the right end of the neutral bar down to the
   // right end of the ground bar. drawGlowPath gives it the same teal halo
   // as the bars themselves, so the eye reads it as "the connection".
-  const p1 = project(v3( NEUTRAL_X_HALF - 0.08, NEUTRAL_Y - NEUTRAL_THK / 2, 0.11), cam, W, H);
-  const p2 = project(v3( NEUTRAL_X_HALF - 0.08, NEUTRAL_Y - 0.10,            0.11), cam, W, H);
-  const p3 = project(v3( GROUND_X_HALF  - 0.05, GROUND_Y  + 0.05,            0.10), cam, W, H);
-  const p4 = project(v3( GROUND_X_HALF  - 0.05, GROUND_Y  + GROUND_THK / 2, 0.10), cam, W, H);
+  const p1 = project(v3(NEUTRAL_X_HALF - 0.08, NEUTRAL_Y - NEUTRAL_THK / 2, 0.11), cam, W, H);
+  const p2 = project(v3(NEUTRAL_X_HALF - 0.08, NEUTRAL_Y - 0.1, 0.11), cam, W, H);
+  const p3 = project(v3(GROUND_X_HALF - 0.05, GROUND_Y + 0.05, 0.1), cam, W, H);
+  const p4 = project(v3(GROUND_X_HALF - 0.05, GROUND_Y + GROUND_THK / 2, 0.1), cam, W, H);
   drawGlowPath(ctx, [p1, p2, p3, p4], {
     color: 'rgba(108,197,194,0.95)',
     lineWidth: 2.2,
@@ -614,22 +675,27 @@ function drawBondingJumper(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: n
 }
 
 function drawNeutralRoute(
-  ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number,
-  slot: Slot, tFlow: number,
+  ctx: CanvasRenderingContext2D,
+  cam: OrbitCamera,
+  W: number,
+  H: number,
+  slot: Slot,
+  tFlow: number,
 ) {
   // A thin white-ish line from the bottom of the breaker down to a
   // terminal on the neutral bar, then small dots flow along it at phase
   // tFlow to suggest the return current.
   const xTop = slot.breakerCx - 0.05;
   const xMid = slot.breakerCx - 0.45;
-  const xBot = -NEUTRAL_X_HALF + 0.1 + ((slot.index + 0.5) / Math.max(1, 12)) * (NEUTRAL_X_HALF * 1.6);
+  const xBot =
+    -NEUTRAL_X_HALF + 0.1 + ((slot.index + 0.5) / Math.max(1, 12)) * (NEUTRAL_X_HALF * 1.6);
   const route: Vec3[] = [
     v3(xTop, slot.y - 0.05, 0.18),
     v3(xMid, slot.y - 0.05, 0.16),
     v3(xMid, NEUTRAL_Y + 0.05, 0.14),
     v3(xBot, NEUTRAL_Y + 0.05, 0.12),
   ];
-  const proj = route.map(p => project(p, cam, W, H));
+  const proj = route.map((p) => project(p, cam, W, H));
   ctx.save();
   ctx.globalAlpha = 0.45;
   ctx.strokeStyle = getCanvasColors().text;
@@ -643,7 +709,8 @@ function drawNeutralRoute(
   const lens: number[] = [];
   for (let i = 1; i < proj.length; i++) {
     const l = Math.hypot(proj[i]!.x - proj[i - 1]!.x, proj[i]!.y - proj[i - 1]!.y);
-    lens.push(l); total += l;
+    lens.push(l);
+    total += l;
   }
   const phase = (tFlow + slot.index * 0.13) % 1;
   let dist = phase * total;
@@ -668,8 +735,14 @@ function drawNeutralRoute(
  * depth. Used for breakers and the neutral / ground bars.
  */
 function drawBox(
-  ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number,
-  centre: Vec3, hw: number, hh: number, hd: number,
+  ctx: CanvasRenderingContext2D,
+  cam: OrbitCamera,
+  W: number,
+  H: number,
+  centre: Vec3,
+  hw: number,
+  hh: number,
+  hd: number,
   style: { fill: string; stroke: string },
 ) {
   const { x: cx, y: cy, z: cz } = centre;
@@ -685,22 +758,27 @@ function drawBox(
   ];
   // Six faces by corner indices.
   const faces: [number, number, number, number][] = [
-    [4, 5, 6, 7],  // front  (+z)
-    [1, 0, 3, 2],  // back   (-z)
-    [5, 1, 2, 6],  // right  (+x)
-    [0, 4, 7, 3],  // left   (-x)
-    [3, 7, 6, 2],  // top    (+y)
-    [0, 1, 5, 4],  // bottom (-y)
+    [4, 5, 6, 7], // front  (+z)
+    [1, 0, 3, 2], // back   (-z)
+    [5, 1, 2, 6], // right  (+x)
+    [0, 4, 7, 3], // left   (-x)
+    [3, 7, 6, 2], // top    (+y)
+    [0, 1, 5, 4], // bottom (-y)
   ];
   // Painter sort by mean depth (largest depth = furthest = drawn first).
-  const projected = c.map(p => project(p, cam, W, H));
-  const faceDepths = faces.map(f => ({
+  const projected = c.map((p) => project(p, cam, W, H));
+  const faceDepths = faces.map((f) => ({
     f,
-    d: (projected[f[0]]!.depth + projected[f[1]]!.depth + projected[f[2]]!.depth + projected[f[3]]!.depth) / 4,
+    d:
+      (projected[f[0]]!.depth +
+        projected[f[1]]!.depth +
+        projected[f[2]]!.depth +
+        projected[f[3]]!.depth) /
+      4,
   }));
   faceDepths.sort((a, b) => b.d - a.d);
   for (const { f } of faceDepths) {
-    const pts = f.map(i => projected[i]!);
+    const pts = f.map((i) => projected[i]!);
     ctx.fillStyle = style.fill;
     ctx.strokeStyle = style.stroke;
     ctx.lineWidth = 1.0;

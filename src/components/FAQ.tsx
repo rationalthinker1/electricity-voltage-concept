@@ -12,13 +12,20 @@ interface FAQItemProps {
  */
 export function FAQItem({ q, children }: FAQItemProps) {
   return (
-    <details className="border-b border-border first:border-t group/d [&[open]_.chev]:rotate-45">
-      <summary className="cursor-pointer flex items-baseline gap-md py-lg outline-none list-none [&::-webkit-details-marker]:hidden group/s">
-        <span className="font-3 text-2 tracking-3 shrink-0 w-2xl text-accent">Q.</span>
-        <span className="font-2 italic font-light text-7 text-text leading-3 flex-1 min-w-0 group-hover/d:text-accent group-focus-visible/s:outline group-focus-visible/s:outline-1 group-focus-visible/s:outline-accent group-focus-visible/s:outline-offset-4">{q}</span>
-        <span className="chev font-3 text-5 shrink-0 transition-transform duration-150 text-accent" aria-hidden>+</span>
+    <details className="border-border group/d border-b first:border-t [&[open]_.chev]:rotate-45">
+      <summary className="gap-md py-lg group/s flex cursor-pointer list-none items-baseline outline-none [&::-webkit-details-marker]:hidden">
+        <span className="font-3 text-2 tracking-3 text-accent w-2xl shrink-0">Q.</span>
+        <span className="font-2 text-7 text-text group-hover/d:text-accent group-focus-visible/s:outline-accent min-w-0 flex-1 leading-3 font-light italic group-focus-visible/s:outline group-focus-visible/s:outline-1 group-focus-visible/s:outline-offset-4">
+          {q}
+        </span>
+        <span
+          className="chev font-3 text-5 text-accent shrink-0 transition-transform duration-150"
+          aria-hidden
+        >
+          +
+        </span>
       </summary>
-      <div className="pb-xl pl-3xl text-color-text-dim text-6 leading-5 max-sm:pl-2xl max-sm:text-5">
+      <div className="pb-xl pl-3xl text-color-text-dim text-6 max-sm:pl-2xl max-sm:text-5 leading-5">
         {children}
       </div>
     </details>
@@ -41,9 +48,9 @@ interface FAQProps {
  */
 export function FAQ({ eyebrow = 'Frequently asked', intro, children }: FAQProps) {
   return (
-    <section className="opacity-100 max-w-col-lg mx-auto mt-5xl mb-0 pt-2xl border-t border-color-border-strong">
+    <section className="max-w-col-lg mt-5xl pt-2xl border-color-border-strong mx-auto mb-0 border-t opacity-100">
       <div className="eyebrow-rule mb-xl">{eyebrow}</div>
-      {intro && <p className="text-text-dim text-6 leading-4 mb-2xl italic max-w-col">{intro}</p>}
+      {intro && <p className="text-text-dim text-6 mb-2xl max-w-col leading-4 italic">{intro}</p>}
       <div>{children}</div>
     </section>
   );

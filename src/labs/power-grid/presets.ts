@@ -46,10 +46,42 @@ function build4Bus(): GridDoc {
   //   Bus 3 ────── line ────── Bus 4          (69 kV)
   //   (load: residential)      (load: industrial + ev)
   //
-  const bus1: Bus = { id: mkId('bus'), x: 6,  y: 4,  kv: 230, generators: [], loads: [], label: 'North Gen' };
-  const bus2: Bus = { id: mkId('bus'), x: 22, y: 4,  kv: 230, generators: [], loads: [], label: 'East Gen' };
-  const bus3: Bus = { id: mkId('bus'), x: 6,  y: 14, kv: 69,  generators: [], loads: [], label: 'North Load' };
-  const bus4: Bus = { id: mkId('bus'), x: 22, y: 14, kv: 69,  generators: [], loads: [], label: 'East Load' };
+  const bus1: Bus = {
+    id: mkId('bus'),
+    x: 6,
+    y: 4,
+    kv: 230,
+    generators: [],
+    loads: [],
+    label: 'North Gen',
+  };
+  const bus2: Bus = {
+    id: mkId('bus'),
+    x: 22,
+    y: 4,
+    kv: 230,
+    generators: [],
+    loads: [],
+    label: 'East Gen',
+  };
+  const bus3: Bus = {
+    id: mkId('bus'),
+    x: 6,
+    y: 14,
+    kv: 69,
+    generators: [],
+    loads: [],
+    label: 'North Load',
+  };
+  const bus4: Bus = {
+    id: mkId('bus'),
+    x: 22,
+    y: 14,
+    kv: 69,
+    generators: [],
+    loads: [],
+    label: 'East Load',
+  };
 
   // Generation.
   bus1.generators.push(
@@ -76,9 +108,11 @@ function build4Bus(): GridDoc {
     const len = 80;
     d.lines.push({
       id: mkId('ln'),
-      fromBusId: bus1.id, toBusId: bus2.id,
+      fromBusId: bus1.id,
+      toBusId: bus2.id,
       lengthMi: len,
-      rPu: z.r * len, xPu: z.x * len,
+      rPu: z.r * len,
+      xPu: z.x * len,
       ratingMVA: lineRating(230),
     });
   }
@@ -88,16 +122,18 @@ function build4Bus(): GridDoc {
     const len = 30;
     d.lines.push({
       id: mkId('ln'),
-      fromBusId: bus3.id, toBusId: bus4.id,
+      fromBusId: bus3.id,
+      toBusId: bus4.id,
       lengthMi: len,
-      rPu: z.r * len, xPu: z.x * len,
+      rPu: z.r * len,
+      xPu: z.x * len,
       ratingMVA: lineRating(69),
     });
   }
   // Transformers (one per side).
   d.transformers.push(
-    { id: mkId('tx'), fromBusId: bus1.id, toBusId: bus3.id, ratingMVA: 500, xPu: 0.10 },
-    { id: mkId('tx'), fromBusId: bus2.id, toBusId: bus4.id, ratingMVA: 500, xPu: 0.10 },
+    { id: mkId('tx'), fromBusId: bus1.id, toBusId: bus3.id, ratingMVA: 500, xPu: 0.1 },
+    { id: mkId('tx'), fromBusId: bus2.id, toBusId: bus4.id, ratingMVA: 500, xPu: 0.1 },
   );
 
   return d;
@@ -140,7 +176,7 @@ const afternoonRampSchedule = [
     description: 'Residential load peaks at 110 %',
     apply: (doc: GridDoc) => {
       for (const b of doc.buses) {
-        for (const ld of b.loads) if (ld.kind === 'residential') ld.demandScale = 1.10;
+        for (const ld of b.loads) if (ld.kind === 'residential') ld.demandScale = 1.1;
       }
     },
   },
@@ -188,10 +224,10 @@ function buildDuckCurve(): GridDoc {
   for (const b of d.buses) {
     for (const g of b.generators) {
       if (g.kind === 'solar') g.dispatch = 0.95;
-      if (g.kind === 'coal') g.dispatch = 0.20;
+      if (g.kind === 'coal') g.dispatch = 0.2;
     }
     for (const ld of b.loads) {
-      if (ld.kind === 'residential') ld.demandScale = 0.50;
+      if (ld.kind === 'residential') ld.demandScale = 0.5;
     }
   }
   return d;
@@ -203,7 +239,7 @@ const duckCurveSchedule = [
     description: 'Sun setting: solar dispatch drops to 50 %',
     apply: (doc: GridDoc) => {
       for (const b of doc.buses) {
-        for (const g of b.generators) if (g.kind === 'solar') g.dispatch = 0.50;
+        for (const g of b.generators) if (g.kind === 'solar') g.dispatch = 0.5;
         for (const ld of b.loads) if (ld.kind === 'residential') ld.demandScale = 0.75;
       }
     },
@@ -233,27 +269,31 @@ export const PRESETS: GridPreset[] = [
   {
     id: '4-bus',
     name: '4-bus',
-    description: 'Two-area, four-bus system. Two generators per area; one residential, one industrial load. The default starting point.',
+    description:
+      'Two-area, four-bus system. Two generators per area; one residential, one industrial load. The default starting point.',
     doc: build4Bus(),
   },
   {
     id: 'afternoon-ramp',
     name: 'Afternoon ramp',
-    description: 'Residential load climbs from 70 % to 110 %. Watch dispatch reshuffle as cheaper baseload tops out and peakers come online.',
+    description:
+      'Residential load climbs from 70 % to 110 %. Watch dispatch reshuffle as cheaper baseload tops out and peakers come online.',
     doc: buildAfternoonRamp(),
     schedule: afternoonRampSchedule,
   },
   {
     id: 'trip',
     name: 'Trip',
-    description: 'A 500 MW coal unit trips at t = 4 s. Watch frequency dip. Drop a battery and try again.',
+    description:
+      'A 500 MW coal unit trips at t = 4 s. Watch frequency dip. Drop a battery and try again.',
     doc: buildTrip(),
     schedule: tripSchedule,
   },
   {
     id: 'duck-curve',
     name: 'Duck curve',
-    description: 'Midday solar drives net load to 30 % of peak. Then solar fades while residential climbs — the steepest evening ramp.',
+    description:
+      'Midday solar drives net load to 30 % of peak. Then solar fades while residential climbs — the steepest evening ramp.',
     doc: buildDuckCurve(),
     schedule: duckCurveSchedule,
   },

@@ -30,19 +30,25 @@ import { PHYS } from '@/lib/physics';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import {
-  attachOrbit, depthSortIndices, project, v3,
-  type OrbitCamera, type Vec3,
+  attachOrbit,
+  depthSortIndices,
+  project,
+  v3,
+  type OrbitCamera,
+  type Vec3,
 } from '@/lib/projection3d';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // Geometry (world units). The cable runs along the x-axis from -X_HALF to +X_HALF.
 const X_HALF = 2.0;
-const R_INNER = 0.20;  // inner conductor radius
-const R_OUTER = 0.65;  // outer braid radius (dielectric fills the gap)
+const R_INNER = 0.2; // inner conductor radius
+const R_OUTER = 0.65; // outer braid radius (dielectric fills the gap)
 
 interface ArrowSpec {
-  anchor: Vec3;        // depth-sort key (midpoint)
+  anchor: Vec3; // depth-sort key (midpoint)
   from: Vec3;
   to: Vec3;
   kind: 'E' | 'B' | 'S';
@@ -54,8 +60,8 @@ interface StaticCache {
 }
 
 export function PoyntingCoax3DDemo({ figure }: Props) {
-  const [I, setI] = useState(3);          // A
-  const [V, setV] = useState(24);         // V
+  const [I, setI] = useState(3); // A
+  const [V, setV] = useState(24); // V
   const [showE, setShowE] = useState(true);
   const [showB, setShowB] = useState(true);
   const [showS, setShowS] = useState(true);
@@ -67,14 +73,15 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
     //   ∫∫ S(r) dA  with S(r) = μ₀ I V / (2π² L r² ln(b/a)) is the local
     // form; integrating between r=a and r=b gives exactly V·I per unit
     // length cancellation. We expose both as a "match" diagnostic.
-    const a = R_INNER, b = R_OUTER;
+    const a = R_INNER,
+      b = R_OUTER;
     const logba = Math.log(b / a);
     // Closed-form: ∫_a^b S(r) · 2π r dr = V I.
     // (Substitute S(r) = V I / (2π r² ln(b/a)) — note this is per length,
     // since E·B/μ₀ at fixed V, I, geometry is already a cross-section
     // intensity in W/m².)
     const S_at_inner = (V * I) / (2 * Math.PI * a * a * logba);
-    const integral = V * I;  // analytic
+    const integral = V * I; // analytic
     const match = integral / (V * I);
     return { P, S_at_inner, integral, match, logba };
   }, [I, V]);
@@ -148,7 +155,8 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
         o.lineWidth = 1;
         o.setLineDash(front ? [] : [4, 4]);
         o.beginPath();
-        o.moveTo(p1.x, p1.y); o.lineTo(p2.x, p2.y);
+        o.moveTo(p1.x, p1.y);
+        o.lineTo(p2.x, p2.y);
         o.stroke();
       }
       o.setLineDash([]);
@@ -185,7 +193,8 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
       // E-field arrows: radial, inside dielectric, on a sparse grid of
       // (x, phi) at a single mid-radius for clarity.
       if (s.showE) {
-        const nx = 5, nphi = 8;
+        const nx = 5,
+          nphi = 8;
         const r_mid = (R_INNER + R_OUTER) / 2;
         for (let i = 0; i < nx; i++) {
           const x = -X_HALF + ((i + 0.5) / nx) * (2 * X_HALF);
@@ -193,11 +202,13 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
             const phi = (j / nphi) * Math.PI * 2;
             const r0 = R_INNER + 0.04;
             const r1 = R_OUTER - 0.04;
-            const cy = Math.cos(phi), sy = Math.sin(phi);
+            const cy = Math.cos(phi),
+              sy = Math.sin(phi);
             const from = v3(x, r0 * cy, r0 * sy);
             const to = v3(x, r1 * cy, r1 * sy);
             arrows.push({
-              from, to,
+              from,
+              to,
               anchor: v3(x, r_mid * cy, r_mid * sy),
               kind: 'E',
             });
@@ -209,9 +220,10 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
       // few axial slices. Each arrow is a short chord representing the
       // local azimuthal direction.
       if (s.showB) {
-        const nx = 4, nphi = 12;
+        const nx = 4,
+          nphi = 12;
         const r_b = (R_INNER + R_OUTER) / 2 + 0.05;
-        const arc = (2 * Math.PI / nphi) * 0.55;  // half-length of chord in radians
+        const arc = ((2 * Math.PI) / nphi) * 0.55; // half-length of chord in radians
         for (let i = 0; i < nx; i++) {
           const x = -X_HALF + ((i + 0.5) / nx) * (2 * X_HALF);
           for (let j = 0; j < nphi; j++) {
@@ -221,7 +233,8 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
             const from = v3(x, r_b * Math.cos(phi0), r_b * Math.sin(phi0));
             const to = v3(x, r_b * Math.cos(phi1), r_b * Math.sin(phi1));
             arrows.push({
-              from, to,
+              from,
+              to,
               anchor: v3(x, r_b * Math.cos(phi), r_b * Math.sin(phi)),
               kind: 'B',
             });
@@ -233,21 +246,24 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
       // (phi, r) grid spanning the cross-section. Length depends on V·I
       // for visual emphasis, but always axial.
       if (s.showS) {
-        const nphi = 8, nr = 2;
+        const nphi = 8,
+          nr = 2;
         const power = Math.min(1.6, Math.max(0.5, 0.6 + 0.05 * Math.log10(s.I * s.V + 1)));
         const baseLen = 0.55 * power;
         for (let j = 0; j < nphi; j++) {
           const phi = (j / nphi) * Math.PI * 2 + Math.PI / nphi;
           for (let k = 0; k < nr; k++) {
-            const r = R_INNER + 0.10 + (k + 0.5) * ((R_OUTER - R_INNER - 0.20) / nr);
-            const cy = Math.cos(phi), sz = Math.sin(phi);
+            const r = R_INNER + 0.1 + (k + 0.5) * ((R_OUTER - R_INNER - 0.2) / nr);
+            const cy = Math.cos(phi),
+              sz = Math.sin(phi);
             const x0 = -baseLen / 2;
             // Stagger axially so multiple streams are visible per slice.
-            const stagger = ((j + k) % 3 - 1) * 0.6;
+            const stagger = (((j + k) % 3) - 1) * 0.6;
             const from = v3(x0 + stagger, r * cy, r * sz);
             const to = v3(x0 + stagger + baseLen, r * cy, r * sz);
             arrows.push({
-              from, to,
+              from,
+              to,
               anchor: v3(stagger, r * cy, r * sz),
               kind: 'S',
             });
@@ -264,13 +280,18 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
 
       // Annotations
       ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to rotate', 12, 12);
       ctx.save();
       ctx.globalAlpha = 0.6;
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText(`inner radius a = ${R_INNER.toFixed(2)}   outer b = ${R_OUTER.toFixed(2)}`, 12, 28);
+      ctx.fillText(
+        `inner radius a = ${R_INNER.toFixed(2)}   outer b = ${R_OUTER.toFixed(2)}`,
+        12,
+        28,
+      );
 
       ctx.textAlign = 'right';
       ctx.restore();
@@ -296,14 +317,20 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 8.6'}
       title="The coax cable — energy lives in the dielectric"
       question="In a coaxial cable, which way does the Poynting vector point — into the copper, or along the cable?"
-      caption={<>
-        Drag the cable to rotate. The pink radial <strong>E</strong> and teal circumferential <strong>B</strong>
-        live in the dielectric between inner conductor and outer braid; their cross product points <em>along</em>
-        the cable — amber arrows streaming from source to load. Integrating <strong>S</strong> over the
-        dielectric cross-section gives <strong>∮ S · dA = V·I</strong> exactly, just as for the resistive wire
-        of the previous demo, but with the energy threading the empty space between the conductors instead of
-        pouring inward into copper.
-      </>}
+      caption={
+        <>
+          Drag the cable to rotate. The pink radial <strong>E</strong> and teal circumferential{' '}
+          <strong>B</strong>
+          live in the dielectric between inner conductor and outer braid; their cross product points{' '}
+          <em>along</em>
+          the cable — amber arrows streaming from source to load. Integrating <strong>
+            S
+          </strong>{' '}
+          over the dielectric cross-section gives <strong>∮ S · dA = V·I</strong> exactly, just as
+          for the resistive wire of the previous demo, but with the energy threading the empty space
+          between the conductors instead of pouring inward into copper.
+        </>
+      }
       deeperLab={{ slug: 'poynting', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={360} setup={setup} />
@@ -312,12 +339,22 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
         <MiniToggle label={showB ? 'B on' : 'B off'} checked={showB} onChange={setShowB} />
         <MiniToggle label={showS ? 'S on' : 'S off'} checked={showS} onChange={setShowS} />
         <MiniSlider
-          label="I" value={I} min={0.1} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' A'} onChange={setI}
+          label="I"
+          value={I}
+          min={0.1}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' A'}
+          onChange={setI}
         />
         <MiniSlider
-          label="V" value={V} min={5} max={100} step={1}
-          format={v => v.toFixed(0) + ' V'} onChange={setV}
+          label="V"
+          value={V}
+          min={5}
+          max={100}
+          step={1}
+          format={(v) => v.toFixed(0) + ' V'}
+          onChange={setV}
         />
         <MiniReadout label="P = V·I" value={<Num value={computed.P} />} unit="W" />
         <MiniReadout label="∮ S · dA" value={<Num value={computed.integral} />} unit="W" />
@@ -344,13 +381,17 @@ interface RimOptions {
  * "Front" is decided by projected depth at each vertex.
  */
 function drawRim(
-  ctx: CanvasRenderingContext2D, pts: Vec3[],
-  cam: OrbitCamera, W: number, H: number, opts: RimOptions,
+  ctx: CanvasRenderingContext2D,
+  pts: Vec3[],
+  cam: OrbitCamera,
+  W: number,
+  H: number,
+  opts: RimOptions,
 ) {
-  const projected = pts.map(p => project(p, cam, W, H));
+  const projected = pts.map((p) => project(p, cam, W, H));
   const N = projected.length;
   // Median depth as the front/back cutoff.
-  const depths = projected.map(p => p.depth);
+  const depths = projected.map((p) => p.depth);
   const sorted = [...depths].sort((a, b) => a - b);
   const cutoff = sorted[Math.floor(N / 2)]!;
 
@@ -363,8 +404,10 @@ function drawRim(
       const isFront = depths[i % N]! <= cutoff;
       const include = pass === 'front' ? isFront : !isFront;
       if (include) {
-        if (!drawing) { ctx.moveTo(p.x, p.y); drawing = true; }
-        else ctx.lineTo(p.x, p.y);
+        if (!drawing) {
+          ctx.moveTo(p.x, p.y);
+          drawing = true;
+        } else ctx.lineTo(p.x, p.y);
       } else {
         drawing = false;
       }
@@ -383,7 +426,10 @@ function drawRim(
  * a handful of axial lines on the visible half.
  */
 function drawInnerConductorBody(
-  ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number,
+  ctx: CanvasRenderingContext2D,
+  cam: OrbitCamera,
+  W: number,
+  H: number,
 ) {
   // Sample a few longitudinal generator lines (front half by projection
   // depth). Stroke them with a soft amber to give the inner conductor
@@ -404,7 +450,8 @@ function drawInnerConductorBody(
     ctx.strokeStyle = getCanvasColors().accent;
     ctx.lineWidth = 1.0;
     ctx.beginPath();
-    ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y);
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
     ctx.stroke();
     ctx.restore();
   }
@@ -415,8 +462,11 @@ function drawInnerConductorBody(
  * Arrowheads are 2D screen-space triangles so they always read.
  */
 function drawArrow(
-  ctx: CanvasRenderingContext2D, a: ArrowSpec,
-  cam: OrbitCamera, W: number, H: number,
+  ctx: CanvasRenderingContext2D,
+  a: ArrowSpec,
+  cam: OrbitCamera,
+  W: number,
+  H: number,
 ) {
   const p1 = project(a.from, cam, W, H);
   const p2 = project(a.to, cam, W, H);
@@ -429,9 +479,15 @@ function drawArrow(
 
   let baseColor: string;
   switch (a.kind) {
-    case 'E': baseColor = `rgba(255,59,110,${(0.85 * fade).toFixed(3)})`; break;
-    case 'B': baseColor = `rgba(108,197,194,${(0.85 * fade).toFixed(3)})`; break;
-    case 'S': baseColor = `rgba(255,107,42,${(0.98 * fade).toFixed(3)})`; break;
+    case 'E':
+      baseColor = `rgba(255,59,110,${(0.85 * fade).toFixed(3)})`;
+      break;
+    case 'B':
+      baseColor = `rgba(108,197,194,${(0.85 * fade).toFixed(3)})`;
+      break;
+    case 'S':
+      baseColor = `rgba(255,107,42,${(0.98 * fade).toFixed(3)})`;
+      break;
   }
 
   if (a.kind === 'S') {
@@ -439,22 +495,25 @@ function drawArrow(
     drawGlowPath(ctx, [p1, p2], {
       color: baseColor,
       lineWidth: 2.0,
-      glowColor: `rgba(255,107,42,${(0.30 * fade).toFixed(3)})`,
+      glowColor: `rgba(255,107,42,${(0.3 * fade).toFixed(3)})`,
       glowWidth: 7,
     });
   } else {
     ctx.strokeStyle = baseColor;
     ctx.lineWidth = a.kind === 'B' ? 1.5 : 1.6;
     ctx.beginPath();
-    ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y);
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
     ctx.stroke();
   }
 
   // Screen-space arrowhead.
-  const dx = p2.x - p1.x, dy = p2.y - p1.y;
+  const dx = p2.x - p1.x,
+    dy = p2.y - p1.y;
   const len = Math.hypot(dx, dy);
   if (len < 4) return;
-  const ux = dx / len, uy = dy / len;
+  const ux = dx / len,
+    uy = dy / len;
   const head = a.kind === 'S' ? 9 : 6;
   const half = a.kind === 'S' ? 4 : 3;
   ctx.fillStyle = baseColor;

@@ -17,9 +17,11 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const L1 = 1e-3;   // 1 mH for both coils
+const L1 = 1e-3; // 1 mH for both coils
 const L2 = 1e-3;
 
 function couplingK(distanceCm: number, tiltDeg: number): number {
@@ -36,7 +38,9 @@ export function MutualInductanceTwoCoilsDemo({ figure }: Props) {
   const [tiltDeg, setTiltDeg] = useState(0);
 
   const stateRef = useRef({ distanceCm, tiltDeg });
-  useEffect(() => { stateRef.current = { distanceCm, tiltDeg }; }, [distanceCm, tiltDeg]);
+  useEffect(() => {
+    stateRef.current = { distanceCm, tiltDeg };
+  }, [distanceCm, tiltDeg]);
 
   const computed = useMemo(() => {
     const k = couplingK(distanceCm, tiltDeg);
@@ -45,7 +49,7 @@ export function MutualInductanceTwoCoilsDemo({ figure }: Props) {
   }, [distanceCm, tiltDeg]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
@@ -74,7 +78,11 @@ export function MutualInductanceTwoCoilsDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
-      ctx.fillText(`k = ${k.toFixed(3)}   |   M ≈ ${(k * Math.sqrt(L1 * L2) * 1e6).toFixed(0)} µH`, 12, h - 8);
+      ctx.fillText(
+        `k = ${k.toFixed(3)}   |   M ≈ ${(k * Math.sqrt(L1 * L2) * 1e6).toFixed(0)} µH`,
+        12,
+        h - 8,
+      );
 
       raf = requestAnimationFrame(draw);
     }
@@ -89,9 +97,9 @@ export function MutualInductanceTwoCoilsDemo({ figure }: Props) {
       question="How much of coil 1's flux actually reaches coil 2?"
       caption={
         <>
-          Move the coils apart and watch the linking flux drop. Tilt coil 2 by 90° and the coupling collapses to
-          zero even at zero distance — orthogonal coils don't share flux. The product L₁L₂ caps M from above; k is
-          just M expressed as a fraction of that cap.
+          Move the coils apart and watch the linking flux drop. Tilt coil 2 by 90° and the coupling
+          collapses to zero even at zero distance — orthogonal coils don't share flux. The product
+          L₁L₂ caps M from above; k is just M expressed as a fraction of that cap.
         </>
       }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
@@ -100,14 +108,20 @@ export function MutualInductanceTwoCoilsDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="separation"
-          value={distanceCm} min={0} max={20} step={0.5}
-          format={v => v.toFixed(1) + ' cm'}
+          value={distanceCm}
+          min={0}
+          max={20}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' cm'}
           onChange={setDistanceCm}
         />
         <MiniSlider
           label="tilt of C2"
-          value={tiltDeg} min={0} max={90} step={1}
-          format={v => v.toFixed(0) + '°'}
+          value={tiltDeg}
+          min={0}
+          max={90}
+          step={1}
+          format={(v) => v.toFixed(0) + '°'}
           onChange={setTiltDeg}
         />
         <MiniReadout label="coupling k" value={computed.k.toFixed(3)} />
@@ -119,7 +133,10 @@ export function MutualInductanceTwoCoilsDemo({ figure }: Props) {
 
 function drawCoil(
   ctx: CanvasRenderingContext2D,
-  cx: number, cy: number, tiltDeg: number, label: string,
+  cx: number,
+  cy: number,
+  tiltDeg: number,
+  label: string,
 ) {
   ctx.save();
   ctx.translate(cx, cy);
@@ -148,8 +165,12 @@ function drawCoil(
 
 function drawFieldLines(
   ctx: CanvasRenderingContext2D,
-  c1x: number, c1y: number, c2x: number, c2y: number,
-  tiltDeg: number, k: number,
+  c1x: number,
+  c1y: number,
+  c2x: number,
+  c2y: number,
+  tiltDeg: number,
+  k: number,
 ) {
   // Draw a handful of teardrop-shaped flux loops emerging from C1's axis.
   // Lines that "thread" C2 are amber and solid; lines that miss are pale dashed.
@@ -164,7 +185,11 @@ function drawFieldLines(
     const arcAmp = Math.max(20, 40 + Math.abs(yOff) * 0.6);
     // Whether this line threads C2 — depends on the tilt and the residual k
     const linkFrac = Math.abs(Math.cos((tiltDeg * Math.PI) / 180));
-    const threads = (Math.abs(yOff) < 14) && (Math.random() < 1) && (k * linkFrac > 0.1) && Math.abs(yOff) < halfH * 0.7;
+    const threads =
+      Math.abs(yOff) < 14 &&
+      Math.random() < 1 &&
+      k * linkFrac > 0.1 &&
+      Math.abs(yOff) < halfH * 0.7;
     if (threads) {
       ctx.strokeStyle = `rgba(255,107,42,${0.35 + 0.55 * k})`;
       ctx.setLineDash([]);

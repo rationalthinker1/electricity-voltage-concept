@@ -23,19 +23,26 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const V_BE = 0.7;
-const V_T = 0.02585;   // V — kT/q at 300 K
+const V_T = 0.02585; // V — kT/q at 300 K
 const beta = 150;
 
-interface Bias { Ic: number; Vce: number; gm: number; Av: number; }
+interface Bias {
+  Ic: number;
+  Vce: number;
+  gm: number;
+  Av: number;
+}
 
 function biasPoint(V_CC: number, R_C: number, R_E: number, R_1: number, R_2: number): Bias {
-  const V_BB = V_CC * R_2 / (R_1 + R_2);
+  const V_BB = (V_CC * R_2) / (R_1 + R_2);
   const R_BB = (R_1 * R_2) / (R_1 + R_2);
   const I_E = Math.max(0, (V_BB - V_BE) / (R_E + R_BB / beta));
-  const I_C = I_E * beta / (beta + 1);
+  const I_C = (I_E * beta) / (beta + 1);
   const V_CE = V_CC - I_C * (R_C + R_E);
   const gm = I_C / V_T;
   const Av = -gm * R_C;
@@ -53,7 +60,9 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
   const { Ic, Vce, gm, Av } = biasPoint(V_CC, R_C, R_E, R_1, R_2);
 
   const stateRef = useRef({ V_CC, R_C, Av, Vce, Vin_mV });
-  useEffect(() => { stateRef.current = { V_CC, R_C, Av, Vce, Vin_mV }; }, [V_CC, R_C, Av, Vce, Vin_mV]);
+  useEffect(() => {
+    stateRef.current = { V_CC, R_C, Av, Vce, Vin_mV };
+  }, [V_CC, R_C, Av, Vce, Vin_mV]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -68,7 +77,10 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 50, padR = 16, padT = 24, padB = 30;
+      const padL = 50,
+        padR = 16,
+        padT = 24,
+        padB = 30;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
@@ -78,7 +90,8 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       // (visual-only) and centred on a baseline; render output around V_CE.
       // The amplitude scaling is annotated.
 
-      const Vmin = 0, Vmax = V_CC;
+      const Vmin = 0,
+        Vmax = V_CC;
       const yOf = (v: number) => padT + plotH - ((v - Vmin) / (Vmax - Vmin)) * plotH;
 
       // axes
@@ -89,8 +102,10 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       ctx.strokeStyle = colors.border;
       ctx.setLineDash([2, 4]);
       ctx.beginPath();
-      ctx.moveTo(padL, yOf(V_CC)); ctx.lineTo(padL + plotW, yOf(V_CC));
-      ctx.moveTo(padL, yOf(Vce)); ctx.lineTo(padL + plotW, yOf(Vce));
+      ctx.moveTo(padL, yOf(V_CC));
+      ctx.lineTo(padL + plotW, yOf(V_CC));
+      ctx.moveTo(padL, yOf(Vce));
+      ctx.lineTo(padL + plotW, yOf(Vce));
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = colors.textDim;
@@ -121,7 +136,8 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
         const v = inputBase + inputAmp * Math.sin(2 * Math.PI * f * ti);
         const x = padL + (i / N) * plotW;
         const y = yOf(Math.max(0, Math.min(V_CC, v)));
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -137,7 +153,8 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
         if (vout < 0.2) vout = 0.2;
         const x = padL + (i / N) * plotW;
         const y = yOf(vout);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
       ctx.stroke();
 
@@ -146,9 +163,17 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillStyle = colors.teal;
-      ctx.fillText(`V_in   amp = ${Vin_mV.toFixed(1)} mV   (shown ×80 for visibility)`, padL + 6, padT + 4);
+      ctx.fillText(
+        `V_in   amp = ${Vin_mV.toFixed(1)} mV   (shown ×80 for visibility)`,
+        padL + 6,
+        padT + 4,
+      );
       ctx.fillStyle = colors.accent;
-      ctx.fillText(`V_out  amp = ${(Math.abs(Av) * Vin_mV).toFixed(1)} mV   A_v = ${Av.toFixed(0)}`, padL + 6, padT + 18);
+      ctx.fillText(
+        `V_out  amp = ${(Math.abs(Av) * Vin_mV).toFixed(1)} mV   A_v = ${Av.toFixed(0)}`,
+        padL + 6,
+        padT + 18,
+      );
 
       raf = requestAnimationFrame(draw);
     }
@@ -161,31 +186,76 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 14.6'}
       title="The common-emitter amplifier"
       question="One transistor and four resistors. What's the small-signal voltage gain?"
-      caption={<>
-        Bias network R<sub>1</sub>/R<sub>2</sub> sets V<sub>BB</sub>, R<sub>E</sub> stabilises the operating point against
-        β-variation, R<sub>C</sub> converts the transistor's current swing into a voltage swing. Gain is
-        A<sub>v</sub> ≈ −g<sub>m</sub> R<sub>C</sub> with g<sub>m</sub> = I<sub>C</sub>/V<sub>T</sub>. Push the input too
-        hard and the output clips against the supply rails.
-      </>}
+      caption={
+        <>
+          Bias network R<sub>1</sub>/R<sub>2</sub> sets V<sub>BB</sub>, R<sub>E</sub> stabilises the
+          operating point against β-variation, R<sub>C</sub> converts the transistor's current swing
+          into a voltage swing. Gain is A<sub>v</sub> ≈ −g<sub>m</sub> R<sub>C</sub> with g
+          <sub>m</sub> = I<sub>C</sub>/V<sub>T</sub>. Push the input too hard and the output clips
+          against the supply rails.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
-        <MiniSlider label="V_CC"  value={V_CC} min={5} max={20} step={0.5}
-          format={v => v.toFixed(1) + ' V'} onChange={setVCC} />
-        <MiniSlider label="R_C"   value={R_C} min={500} max={20000} step={100}
-          format={v => (v / 1000).toFixed(1) + ' kΩ'} onChange={setRC} />
-        <MiniSlider label="R_E"   value={R_E} min={100} max={5000} step={50}
-          format={v => v.toFixed(0) + ' Ω'} onChange={setRE} />
-        <MiniSlider label="R_1"   value={R_1} min={10000} max={200000} step={1000}
-          format={v => (v / 1000).toFixed(0) + ' kΩ'} onChange={setR1} />
-        <MiniSlider label="R_2"   value={R_2} min={2000} max={50000} step={500}
-          format={v => (v / 1000).toFixed(1) + ' kΩ'} onChange={setR2} />
-        <MiniSlider label="V_in"  value={Vin_mV} min={1} max={50} step={1}
-          format={v => v.toFixed(0) + ' mV'} onChange={setVin} />
-        <MiniReadout label="I_C(Q)"  value={<Num value={Ic} />} unit="A" />
+        <MiniSlider
+          label="V_CC"
+          value={V_CC}
+          min={5}
+          max={20}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
+          onChange={setVCC}
+        />
+        <MiniSlider
+          label="R_C"
+          value={R_C}
+          min={500}
+          max={20000}
+          step={100}
+          format={(v) => (v / 1000).toFixed(1) + ' kΩ'}
+          onChange={setRC}
+        />
+        <MiniSlider
+          label="R_E"
+          value={R_E}
+          min={100}
+          max={5000}
+          step={50}
+          format={(v) => v.toFixed(0) + ' Ω'}
+          onChange={setRE}
+        />
+        <MiniSlider
+          label="R_1"
+          value={R_1}
+          min={10000}
+          max={200000}
+          step={1000}
+          format={(v) => (v / 1000).toFixed(0) + ' kΩ'}
+          onChange={setR1}
+        />
+        <MiniSlider
+          label="R_2"
+          value={R_2}
+          min={2000}
+          max={50000}
+          step={500}
+          format={(v) => (v / 1000).toFixed(1) + ' kΩ'}
+          onChange={setR2}
+        />
+        <MiniSlider
+          label="V_in"
+          value={Vin_mV}
+          min={1}
+          max={50}
+          step={1}
+          format={(v) => v.toFixed(0) + ' mV'}
+          onChange={setVin}
+        />
+        <MiniReadout label="I_C(Q)" value={<Num value={Ic} />} unit="A" />
         <MiniReadout label="V_CE(Q)" value={Vce.toFixed(2)} unit="V" />
-        <MiniReadout label="g_m"     value={<Num value={gm} />} unit="S" />
-        <MiniReadout label="A_v"     value={Av.toFixed(1)} />
+        <MiniReadout label="g_m" value={<Num value={gm} />} unit="S" />
+        <MiniReadout label="A_v" value={Av.toFixed(1)} />
       </DemoControls>
     </Demo>
   );

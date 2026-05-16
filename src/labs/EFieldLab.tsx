@@ -18,7 +18,7 @@ import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { TryIt } from '@/components/TryIt';
 import { drawArrow, drawCharge } from '@/lib/canvasPrimitives';
-import {PHYS, prettyJsx } from '@/lib/physics';
+import { PHYS, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -28,12 +28,12 @@ const SOURCES = BASE_LAB_SOURCES[SLUG]!;
 const PX_PER_M = 1000; // 1 px = 1 mm
 
 export default function EFieldLab() {
-  const [qNC, setQNC] = useState(+10);     // source charge, nC
+  const [qNC, setQNC] = useState(+10); // source charge, nC
   const [qTestNC, setQTestNC] = useState(1.0); // test charge, nC
   const [er, setEr] = useState(1.0);
 
   // Normalized [0..1] canvas-coords for source and probe.
-  const [src, setSrc] = useState({ x: 0.50, y: 0.50 });
+  const [src, setSrc] = useState({ x: 0.5, y: 0.5 });
   const [probe, setProbe] = useState({ x: 0.72, y: 0.42 });
 
   // Canvas size in CSS pixels — needed so computed values can convert pixel
@@ -53,7 +53,7 @@ export default function EFieldLab() {
     const q = qNC * 1e-9;
     const Emag = (PHYS.k * q) / (er * r_m * r_m); // signed
     const V = (PHYS.k * q) / (er * r_m);
-    const F = (qTestNC * 1e-9) * Emag;
+    const F = qTestNC * 1e-9 * Emag;
     return { r_m, Emag, V, F, q };
   }, [qNC, qTestNC, er, src, probe, sizePx]);
 
@@ -74,13 +74,23 @@ export default function EFieldLab() {
       const { src, probe } = stateRef.current;
       const d1 = Math.hypot(mx - src.x * w, my - src.y * h);
       const d2 = Math.hypot(mx - probe.x * w, my - probe.y * h);
-      let best: 'src' | 'probe' | null = null, bestD = 24;
-      if (d1 < bestD) { bestD = d1; best = 'src'; }
-      if (d2 < bestD) { best = 'probe'; }
+      let best: 'src' | 'probe' | null = null,
+        bestD = 24;
+      if (d1 < bestD) {
+        bestD = d1;
+        best = 'src';
+      }
+      if (d2 < bestD) {
+        best = 'probe';
+      }
       return best;
     }
-    function clamp01(p: number) { return Math.max(0.04, Math.min(0.96, p)); }
-    function clampY(p: number) { return Math.max(0.08, Math.min(0.92, p)); }
+    function clamp01(p: number) {
+      return Math.max(0.04, Math.min(0.96, p));
+    }
+    function clampY(p: number) {
+      return Math.max(0.08, Math.min(0.92, p));
+    }
 
     function onMouseDown(e: MouseEvent) {
       const [mx, my] = getMouse(e);
@@ -91,12 +101,16 @@ export default function EFieldLab() {
       const [mx, my] = getMouse(e);
       if (dragging) {
         const p = { x: clamp01(mx / w), y: clampY(my / h) };
-        if (dragging === 'src') setSrc(p); else setProbe(p);
+        if (dragging === 'src') setSrc(p);
+        else setProbe(p);
       } else {
         canvas.style.cursor = nearest(mx, my) ? 'grab' : 'default';
       }
     }
-    function onMouseUp() { dragging = null; canvas.style.cursor = 'default'; }
+    function onMouseUp() {
+      dragging = null;
+      canvas.style.cursor = 'default';
+    }
     function onTouchStart(e: TouchEvent) {
       e.preventDefault();
       const [mx, my] = getMouse(e);
@@ -107,9 +121,12 @@ export default function EFieldLab() {
       if (!dragging) return;
       const [mx, my] = getMouse(e);
       const p = { x: clamp01(mx / w), y: clampY(my / h) };
-      if (dragging === 'src') setSrc(p); else setProbe(p);
+      if (dragging === 'src') setSrc(p);
+      else setProbe(p);
     }
-    function onTouchEnd() { dragging = null; }
+    function onTouchEnd() {
+      dragging = null;
+    }
 
     canvas.addEventListener('mousedown', onMouseDown);
     canvas.addEventListener('mousemove', onMouseMove);
@@ -123,7 +140,8 @@ export default function EFieldLab() {
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
-      const sx = src.x * w, sy = src.y * h;
+      const sx = src.x * w,
+        sy = src.y * h;
       const q = qNC * 1e-9;
       const sgn = q >= 0 ? +1 : -1;
 
@@ -131,14 +149,16 @@ export default function EFieldLab() {
       const cellSize = 8;
       for (let py = 0; py < h; py += cellSize) {
         for (let px = 0; px < w; px += cellSize) {
-          const dx = px - sx, dy = py - sy;
+          const dx = px - sx,
+            dy = py - sy;
           const r_m = Math.max(Math.hypot(dx, dy) / PX_PER_M, 0.001);
           const v = (PHYS.k * q) / (er * r_m);
           const t = Math.tanh(v / 200);
           if (Math.abs(t) < 0.02) continue;
-          ctx.fillStyle = t > 0
-            ? `rgba(255,59,110,${Math.abs(t) * 0.10})`
-            : `rgba(91,174,248,${Math.abs(t) * 0.10})`;
+          ctx.fillStyle =
+            t > 0
+              ? `rgba(255,59,110,${Math.abs(t) * 0.1})`
+              : `rgba(91,174,248,${Math.abs(t) * 0.1})`;
           ctx.fillRect(px, py, cellSize, cellSize);
         }
       }
@@ -193,7 +213,7 @@ export default function EFieldLab() {
             ctx.arc(t[0], t[1], 1.6, 0, Math.PI * 2);
             ctx.fillStyle = getCanvasColors().accent;
             ctx.save();
-            ctx.globalAlpha = .6;
+            ctx.globalAlpha = 0.6;
             ctx.shadowColor = getCanvasColors().accent;
             ctx.shadowBlur = 5;
             ctx.fill();
@@ -204,8 +224,10 @@ export default function EFieldLab() {
       }
 
       // Probe arrow showing E direction and (log-scaled) magnitude.
-      const px = probe.x * w, py = probe.y * h;
-      const dxPx = px - sx, dyPx = py - sy;
+      const px = probe.x * w,
+        py = probe.y * h;
+      const dxPx = px - sx,
+        dyPx = py - sy;
       const r_m = Math.max(Math.hypot(dxPx, dyPx) / PX_PER_M, 1e-4);
       const Emag = (PHYS.k * q) / (er * r_m * r_m);
       const absE = Math.abs(Emag);
@@ -215,20 +237,31 @@ export default function EFieldLab() {
         const ux = (dxPx / d) * Math.sign(Emag);
         const uy = (dyPx / d) * Math.sign(Emag);
         const len = 22 + Math.min(140, Math.log10(absE + 1) * 22);
-        drawArrow(ctx, { x: px, y: py }, { x: px + ux * len, y: py + uy * len }, {
-          color: '#ff6b2a',
-          lineWidth: 2.2,
-          headLength: 9 });
+        drawArrow(
+          ctx,
+          { x: px, y: py },
+          { x: px + ux * len, y: py + uy * len },
+          {
+            color: '#ff6b2a',
+            lineWidth: 2.2,
+            headLength: 9,
+          },
+        );
       }
 
       // Source charge
-      drawCharge(ctx, { x: sx, y: sy }, {
-        color: '#ff3b6e',
-        label: 'Q',
-        magnitudeLabel: `= ${Math.abs(qNC).toFixed(1)} nC`,
-        radius: 12 + Math.min(12, Math.abs(qNC) * 0.4),
-        sign: qNC >= 0 ? '+' : '−',
-        textColor: '#0a0a0b' });
+      drawCharge(
+        ctx,
+        { x: sx, y: sy },
+        {
+          color: '#ff3b6e',
+          label: 'Q',
+          magnitudeLabel: `= ${Math.abs(qNC).toFixed(1)} nC`,
+          radius: 12 + Math.min(12, Math.abs(qNC) * 0.4),
+          sign: qNC >= 0 ? '+' : '−',
+          textColor: '#0a0a0b',
+        },
+      );
       // Probe
       drawProbe(ctx, px, py, 'P');
 
@@ -247,48 +280,74 @@ export default function EFieldLab() {
     };
   }, []);
 
-  const dirLabel =
-    computed.q > 0 ? 'radially outward' :
-    computed.q < 0 ? 'radially inward' :
-    '—';
+  const dirLabel = computed.q > 0 ? 'radially outward' : computed.q < 0 ? 'radially inward' : '—';
   const dirColor =
-    computed.q > 0 ? 'var(--pink)' :
-    computed.q < 0 ? 'var(--blue)' :
-    'var(--text-muted)';
+    computed.q > 0 ? 'var(--pink)' : computed.q < 0 ? 'var(--blue)' : 'var(--text-muted)';
 
   const labContent = (
     <LabGrid
       canvas={<AutoResizeCanvas height={500} setup={setupCanvas} />}
       legend={
         <>
-          <LegendItem swatchColor="var(--pink)" dot>Source charge Q</LegendItem>
-          <LegendItem swatchColor="var(--accent)" dot>Probe (test charge)</LegendItem>
+          <LegendItem swatchColor="var(--pink)" dot>
+            Source charge Q
+          </LegendItem>
+          <LegendItem swatchColor="var(--accent)" dot>
+            Probe (test charge)
+          </LegendItem>
           <LegendItem swatchColor="var(--accent)">E field lines</LegendItem>
-          <LegendItem swatchColor="var(--teal)" style={{ opacity: 0.7 }}>Equipotential rings</LegendItem>
-          <LegendItem style={{ marginLeft: 'auto', color: 'var(--accent)' }}>↳ Drag source or probe</LegendItem>
+          <LegendItem swatchColor="var(--teal)" style={{ opacity: 0.7 }}>
+            Equipotential rings
+          </LegendItem>
+          <LegendItem style={{ marginLeft: 'auto', color: 'var(--accent)' }}>
+            ↳ Drag source or probe
+          </LegendItem>
         </>
       }
       inputs={
         <>
           <Slider
-            sym="Q" label="Source charge"
-            value={qNC} min={-50} max={50} step={0.1}
-            format={v => (v >= 0 ? '+' : '') + v.toFixed(1) + ' nC'}
-            metaLeft="−50 nC" metaRight="+50 nC"
+            sym="Q"
+            label="Source charge"
+            value={qNC}
+            min={-50}
+            max={50}
+            step={0.1}
+            format={(v) => (v >= 0 ? '+' : '') + v.toFixed(1) + ' nC'}
+            metaLeft="−50 nC"
+            metaRight="+50 nC"
             onChange={setQNC}
           />
           <Slider
-            sym={<>q<sub>t</sub></>} label="Test charge"
-            value={qTestNC} min={0.1} max={5} step={0.1}
-            format={v => v.toFixed(1) + ' nC'}
-            metaLeft="0.1 nC" metaRight="5 nC"
+            sym={
+              <>
+                q<sub>t</sub>
+              </>
+            }
+            label="Test charge"
+            value={qTestNC}
+            min={0.1}
+            max={5}
+            step={0.1}
+            format={(v) => v.toFixed(1) + ' nC'}
+            metaLeft="0.1 nC"
+            metaRight="5 nC"
             onChange={setQTestNC}
           />
           <Slider
-            sym={<>ε<sub>r</sub></>} label="Rel. permittivity"
-            value={er} min={1} max={80} step={0.1}
-            format={v => v.toFixed(1)}
-            metaLeft="1 (vacuum)" metaRight="80 (water)"
+            sym={
+              <>
+                ε<sub>r</sub>
+              </>
+            }
+            label="Rel. permittivity"
+            value={er}
+            min={1}
+            max={80}
+            step={0.1}
+            format={(v) => v.toFixed(1)}
+            metaLeft="1 (vacuum)"
+            metaRight="80 (water)"
             onChange={setEr}
           />
         </>
@@ -296,30 +355,25 @@ export default function EFieldLab() {
       outputs={
         <>
           <Readout
-            sym="|E|" label="Field at probe"
+            sym="|E|"
+            label="Field at probe"
             value={prettyJsx(Math.abs(computed.Emag))}
             unit="V/m"
             highlight
           />
           <Readout
-            sym="Ê" label="Direction"
+            sym="Ê"
+            label="Direction"
             value={<span style={{ color: dirColor }}>{dirLabel}</span>}
           />
           <Readout
-            sym="F" label="Force on test charge"
+            sym="F"
+            label="Force on test charge"
             value={prettyJsx(Math.abs(computed.F))}
             unit="N"
           />
-          <Readout
-            sym="V" label="Potential at probe"
-            value={prettyJsx(computed.V)}
-            unit="V"
-          />
-          <Readout
-            sym="r" label="Distance from source"
-            value={computed.r_m.toFixed(3)}
-            unit="m"
-          />
+          <Readout sym="V" label="Potential at probe" value={prettyJsx(computed.V)} unit="V" />
+          <Readout sym="r" label="Distance from source" value={computed.r_m.toFixed(3)} unit="m" />
         </>
       }
     />
@@ -329,100 +383,160 @@ export default function EFieldLab() {
     <>
       <h3 className="lab-section-h3">Context</h3>
       <p className="mb-prose-3">
-        Coulomb's law tells you what happens when two charges meet. That works fine for two charges. But what about ten? Or 10<sup>23</sup>?
-        Worse: how does charge 1 even "know" where charge 2 is in order to push on it? Faraday's answer was to invent a new object — the
-        <strong className="text-text font-medium"> electric field</strong> — and have charges talk only to the field at their own location<Cite id="feynman-II-2" in={SOURCES} />.
+        Coulomb's law tells you what happens when two charges meet. That works fine for two charges.
+        But what about ten? Or 10<sup>23</sup>? Worse: how does charge 1 even "know" where charge 2
+        is in order to push on it? Faraday's answer was to invent a new object — the
+        <strong className="text-text font-medium"> electric field</strong> — and have charges talk
+        only to the field at their own location
+        <Cite id="feynman-II-2" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        The field formulation applies whenever there are charges in space. The simple form <strong className="text-text font-medium">E = kQ/r²</strong> for a point charge
-        applies under three conditions: the source is point-like (or distant enough that its extent doesn't matter); the source is static (or
-        moving slowly compared to c so retardation can be ignored); and the surrounding medium is linear and isotropic (so the only correction
-        is to divide by ε<sub>r</sub>). In dynamic situations — jiggling charges, antennas, radiation fields — the field still exists, but
-        its form is more complex and it carries momentum and energy of its own<Cite id="griffiths-2017" in={SOURCES} />.
+        The field formulation applies whenever there are charges in space. The simple form{' '}
+        <strong className="text-text font-medium">E = kQ/r²</strong> for a point charge applies
+        under three conditions: the source is point-like (or distant enough that its extent doesn't
+        matter); the source is static (or moving slowly compared to c so retardation can be
+        ignored); and the surrounding medium is linear and isotropic (so the only correction is to
+        divide by ε<sub>r</sub>). In dynamic situations — jiggling charges, antennas, radiation
+        fields — the field still exists, but its form is more complex and it carries momentum and
+        energy of its own
+        <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
       <h3 className="lab-section-h3">Formula</h3>
       <Formula tex="\vec{E} = \dfrac{\vec{F}}{q_{\text{test}}} \quad\text{and}\quad |\vec{E}| = \dfrac{k\, Q}{\varepsilon_r\, r^2}" />
-      <p className="mb-prose-3">
-        Variable glossary:
-      </p>
+      <p className="mb-prose-3">Variable glossary:</p>
       <ul>
-        <li><strong className="text-text font-medium">E</strong> — electric field magnitude at the probe location, in volts per meter (equivalently, newtons per coulomb). A vector pointing along the direction a positive test charge would feel a force.</li>
-        <li><strong className="text-text font-medium">F</strong> — force on a test charge placed at that point, in newtons.</li>
-        <li><strong className="text-text font-medium">q<sub>test</sub></strong> — the test charge, in coulombs. Taken in the limit q<sub>test</sub> → 0 to avoid disturbing the very field being measured.</li>
-        <li><strong className="text-text font-medium">Q</strong> — the source charge, in coulombs. Signed.</li>
-        <li><strong className="text-text font-medium">r</strong> — distance from the source charge to the probe, in meters.</li>
-        <li><strong className="text-text font-medium">k = 1/(4π ε₀) ≈ 8.99×10⁹ N·m²/C²</strong> — Coulomb's constant<Cite id="codata-2018" in={SOURCES} />.</li>
-        <li><strong className="text-text font-medium">ε<sub>r</sub></strong> — relative permittivity of the medium (dimensionless). 1 in vacuum.</li>
+        <li>
+          <strong className="text-text font-medium">E</strong> — electric field magnitude at the
+          probe location, in volts per meter (equivalently, newtons per coulomb). A vector pointing
+          along the direction a positive test charge would feel a force.
+        </li>
+        <li>
+          <strong className="text-text font-medium">F</strong> — force on a test charge placed at
+          that point, in newtons.
+        </li>
+        <li>
+          <strong className="text-text font-medium">
+            q<sub>test</sub>
+          </strong>{' '}
+          — the test charge, in coulombs. Taken in the limit q<sub>test</sub> → 0 to avoid
+          disturbing the very field being measured.
+        </li>
+        <li>
+          <strong className="text-text font-medium">Q</strong> — the source charge, in coulombs.
+          Signed.
+        </li>
+        <li>
+          <strong className="text-text font-medium">r</strong> — distance from the source charge to
+          the probe, in meters.
+        </li>
+        <li>
+          <strong className="text-text font-medium">k = 1/(4π ε₀) ≈ 8.99×10⁹ N·m²/C²</strong> —
+          Coulomb's constant
+          <Cite id="codata-2018" in={SOURCES} />.
+        </li>
+        <li>
+          <strong className="text-text font-medium">
+            ε<sub>r</sub>
+          </strong>{' '}
+          — relative permittivity of the medium (dimensionless). 1 in vacuum.
+        </li>
       </ul>
 
       <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">
-        A charge <em className="italic text-text">fills space with field</em>. Pick any point near a +5 nC speck of charge and ask "if I dropped a tiny positive probe
-        here, which way would it fly and how hard?" That arrow, divided by the probe's charge, is <strong className="text-text font-medium">E</strong>. The arrow gets weaker
-        with distance, like the brightness of a star — and for exactly the same geometric reason: a sphere of radius <strong className="text-text font-medium">r</strong> has
-        area <strong className="text-text font-medium">4πr²</strong>, so an isotropic outflow dilutes as 1/r².
+        A charge <em className="text-text italic">fills space with field</em>. Pick any point near a
+        +5 nC speck of charge and ask "if I dropped a tiny positive probe here, which way would it
+        fly and how hard?" That arrow, divided by the probe's charge, is{' '}
+        <strong className="text-text font-medium">E</strong>. The arrow gets weaker with distance,
+        like the brightness of a star — and for exactly the same geometric reason: a sphere of
+        radius <strong className="text-text font-medium">r</strong> has area{' '}
+        <strong className="text-text font-medium">4πr²</strong>, so an isotropic outflow dilutes as
+        1/r².
       </p>
       <Pullout>
-        A field assigns a force-per-unit-charge to every point in empty space. The "empty" is wrong; the space is full
-        of <em className="italic text-text">possibilities</em> — a force that would appear the moment any test charge arrived.
+        A field assigns a force-per-unit-charge to every point in empty space. The "empty" is wrong;
+        the space is full of <em className="text-text italic">possibilities</em> — a force that
+        would appear the moment any test charge arrived.
       </Pullout>
       <p className="mb-prose-3">
-        For a positive source charge, <strong className="text-text font-medium">E</strong> points radially outward; for a negative source, radially inward. A positive test
-        charge feels a force along <strong className="text-text font-medium">E</strong>; a negative test charge feels a force opposite to it.
+        For a positive source charge, <strong className="text-text font-medium">E</strong> points
+        radially outward; for a negative source, radially inward. A positive test charge feels a
+        force along <strong className="text-text font-medium">E</strong>; a negative test charge
+        feels a force opposite to it.
       </p>
 
       <h3 className="lab-section-h3">Reasoning</h3>
       <p className="mb-prose-3">
-        Why "force per unit charge"? Because Coulomb's law is linear in the test charge: doubling q<sub>test</sub> doubles F. Defining
-        <strong className="text-text font-medium"> E = F/q<sub>test</sub></strong> isolates the part of the situation that <em className="italic text-text">doesn't depend on the test charge</em> — i.e. the
-        part attributable to the source and the geometry. The field is the source-and-space's contribution to the force; the test charge is what
-        the field acts on.
+        Why "force per unit charge"? Because Coulomb's law is linear in the test charge: doubling q
+        <sub>test</sub> doubles F. Defining
+        <strong className="text-text font-medium">
+          {' '}
+          E = F/q<sub>test</sub>
+        </strong>{' '}
+        isolates the part of the situation that{' '}
+        <em className="text-text italic">doesn't depend on the test charge</em> — i.e. the part
+        attributable to the source and the geometry. The field is the source-and-space's
+        contribution to the force; the test charge is what the field acts on.
       </p>
       <p className="mb-prose-3">
-        Why 1/r² and not some other power? Because the source charge has no preferred direction (spherical symmetry around an isolated point
-        charge), and three-dimensional space dilutes "amount of influence" across spherical shells whose area grows as r². Any other exponent
-        would violate Gauss's law<Cite id="griffiths-2017" in={SOURCES} />.
+        Why 1/r² and not some other power? Because the source charge has no preferred direction
+        (spherical symmetry around an isolated point charge), and three-dimensional space dilutes
+        "amount of influence" across spherical shells whose area grows as r². Any other exponent
+        would violate Gauss's law
+        <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        Sign and direction. The vector form is <strong className="text-text font-medium">E = kQ r̂ / r²</strong>, where <strong className="text-text font-medium">r̂</strong> is the unit vector pointing from
-        source to probe. If Q is positive, <strong className="text-text font-medium">E</strong> points along <strong className="text-text font-medium">r̂</strong> (outward); if negative, opposite to it (inward).
+        Sign and direction. The vector form is{' '}
+        <strong className="text-text font-medium">E = kQ r̂ / r²</strong>, where{' '}
+        <strong className="text-text font-medium">r̂</strong> is the unit vector pointing from source
+        to probe. If Q is positive, <strong className="text-text font-medium">E</strong> points
+        along <strong className="text-text font-medium">r̂</strong> (outward); if negative, opposite
+        to it (inward).
       </p>
       <p className="mb-prose-3">
-        Units check. N/C = (J/m)/C = (V·C/m)/C = V/m<Cite id="hyperphysics-emag" in={SOURCES} />. The duality between "field strength" (N/C)
-        and "potential per length" (V/m) is built into the SI definitions, not coincidence.
+        Units check. N/C = (J/m)/C = (V·C/m)/C = V/m
+        <Cite id="hyperphysics-emag" in={SOURCES} />. The duality between "field strength" (N/C) and
+        "potential per length" (V/m) is built into the SI definitions, not coincidence.
       </p>
       <p className="mb-prose-3">
-        Limits. As r → ∞, E → 0. As r → 0, E → ∞ (the singularity is a hallmark of the point-charge idealization). Q → 0 ⇒ E → 0. The
-        formula is symmetric in nothing — Q is a property of the source alone, and reversing it reverses the field everywhere.
+        Limits. As r → ∞, E → 0. As r → 0, E → ∞ (the singularity is a hallmark of the point-charge
+        idealization). Q → 0 ⇒ E → 0. The formula is symmetric in nothing — Q is a property of the
+        source alone, and reversing it reverses the field everywhere.
       </p>
 
       <h3 className="lab-section-h3">Derivation</h3>
       <p className="mb-prose-3">
-        Start from Coulomb's law for the force on a test charge <InlineMath tex="q_t" /> placed at distance r from a source charge Q:
+        Start from Coulomb's law for the force on a test charge <InlineMath tex="q_t" /> placed at
+        distance r from a source charge Q:
       </p>
       <Formula tex="F = \dfrac{k\, Q\, q_t}{r^2}" />
       <p className="mb-prose-3">
-        Define the field as the force per unit test charge in the limit <InlineMath tex="q_t \to 0" /> (so the test probe doesn't reorganise the source
+        Define the field as the force per unit test charge in the limit{' '}
+        <InlineMath tex="q_t \to 0" /> (so the test probe doesn't reorganise the source
         distribution):
       </p>
       <Formula tex="\vec{E} \equiv \lim_{q_t \to 0} \dfrac{\vec{F}}{q_t} = \dfrac{k\, Q}{r^2}" />
       <p className="mb-prose-3">
-        The factor <InlineMath tex="q_t" /> divides out cleanly because Coulomb's law is linear in it. The vector form follows by carrying along the
-        direction <strong className="text-text font-medium">r̂</strong> from source to probe:
+        The factor <InlineMath tex="q_t" /> divides out cleanly because Coulomb's law is linear in
+        it. The vector form follows by carrying along the direction{' '}
+        <strong className="text-text font-medium">r̂</strong> from source to probe:
       </p>
       <Formula tex="\vec{E}(\vec{r}) = \dfrac{k\, Q\, \hat{r}}{r^2}" />
       <p className="mb-prose-3">
-        For many sources, Coulomb's law is linear in the source charges as well, so the total field is the vector sum:
+        For many sources, Coulomb's law is linear in the source charges as well, so the total field
+        is the vector sum:
       </p>
       <Formula tex="\vec{E}_{\text{total}}(\vec{r}) = \sum_i \dfrac{k\, Q_i\, (\vec{r} - \vec{r}_i)}{|\vec{r} - \vec{r}_i|^3}" />
       <p className="mb-prose-3">
-        Superposition is the entire content of classical electrostatics: pick any charge distribution, sum (or integrate) the per-source
-        contributions, get the field at every point<Cite id="griffiths-2017" in={SOURCES} />.
+        Superposition is the entire content of classical electrostatics: pick any charge
+        distribution, sum (or integrate) the per-source contributions, get the field at every point
+        <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        In a dielectric medium, the source charge polarizes the surrounding molecules, whose induced dipoles produce a counter-field. The
-        net macroscopic field is the original divided by <InlineMath tex="\varepsilon_r" />:
+        In a dielectric medium, the source charge polarizes the surrounding molecules, whose induced
+        dipoles produce a counter-field. The net macroscopic field is the original divided by{' '}
+        <InlineMath tex="\varepsilon_r" />:
       </p>
       <Formula tex="E_{\text{medium}} = \dfrac{k\, Q}{\varepsilon_r\, r^2}" />
 
@@ -430,135 +544,297 @@ export default function EFieldLab() {
 
       <TryIt
         tag="Problem 1.2.1"
-        question={<>What is the field <strong className="text-text font-medium">1 cm</strong> from an isolated <strong className="text-text font-medium">+1 nC</strong> point charge in vacuum?</>}
+        question={
+          <>
+            What is the field <strong className="text-text font-medium">1 cm</strong> from an
+            isolated <strong className="text-text font-medium">+1 nC</strong> point charge in
+            vacuum?
+          </>
+        }
         answer={
           <>
-            <p className="mb-prose-3">Plug into <InlineMath tex="E = kQ/r^2" /> with Q = 10⁻⁹ C, r = 0.01 m:</p>
+            <p className="mb-prose-3">
+              Plug into <InlineMath tex="E = kQ/r^2" /> with Q = 10⁻⁹ C, r = 0.01 m:
+            </p>
             <Formula tex="E = \dfrac{(8.99\times 10^{9})(10^{-9})}{(0.01)^2} = \dfrac{8.99}{10^{-4}} = 8.99\times 10^{4}\ \text{V/m}" />
-            <p className="mb-prose-3">About <strong className="text-text font-medium">90 kV/m</strong>, pointing radially outward. For comparison, fair-weather atmospheric field is ~100 V/m and dielectric breakdown of dry air is around 3 MV/m, so this is a real field but not yet enough to ionize the gap.</p>
+            <p className="mb-prose-3">
+              About <strong className="text-text font-medium">90 kV/m</strong>, pointing radially
+              outward. For comparison, fair-weather atmospheric field is ~100 V/m and dielectric
+              breakdown of dry air is around 3 MV/m, so this is a real field but not yet enough to
+              ionize the gap.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.2.2"
-        question={<>A <strong className="text-text font-medium">+2 µC</strong> test charge is placed at the location from Problem 1.2.1. What is the force on it?</>}
+        question={
+          <>
+            A <strong className="text-text font-medium">+2 µC</strong> test charge is placed at the
+            location from Problem 1.2.1. What is the force on it?
+          </>
+        }
         answer={
           <>
-            <p className="mb-prose-3">Force on a charge in a field is <InlineMath tex="F = qE" />, with the test charge feeling the source's field at its location:</p>
+            <p className="mb-prose-3">
+              Force on a charge in a field is <InlineMath tex="F = qE" />, with the test charge
+              feeling the source's field at its location:
+            </p>
             <Formula tex="F = q_{\text{test}}\, E = (2\times 10^{-6})(8.99\times 10^{4}) \approx 0.180\ \text{N}" />
-            <p className="mb-prose-3">About <strong className="text-text font-medium">180 mN</strong>, directed outward (positive test charge in a radially-outward field). Notice we treat E as an existing property of the point in space, then ask what force any subsequent charge would feel there — this is the point of the field formalism.</p>
+            <p className="mb-prose-3">
+              About <strong className="text-text font-medium">180 mN</strong>, directed outward
+              (positive test charge in a radially-outward field). Notice we treat E as an existing
+              property of the point in space, then ask what force any subsequent charge would feel
+              there — this is the point of the field formalism.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.2.3"
-        question={<>A small pith ball, modelled as a point, carries <strong className="text-text font-medium">+1 nC</strong>. The ball has radius <strong className="text-text font-medium">1 mm</strong>. What is the field <em className="italic text-text">at its surface</em> (just outside)?</>}
+        question={
+          <>
+            A small pith ball, modelled as a point, carries{' '}
+            <strong className="text-text font-medium">+1 nC</strong>. The ball has radius{' '}
+            <strong className="text-text font-medium">1 mm</strong>. What is the field{' '}
+            <em className="text-text italic">at its surface</em> (just outside)?
+          </>
+        }
         answer={
           <>
-            <p className="mb-prose-3">By the shell theorem, the field outside a uniformly charged sphere is the same as if all the charge sat at the centre. So at the surface, r = 1 mm:</p>
+            <p className="mb-prose-3">
+              By the shell theorem, the field outside a uniformly charged sphere is the same as if
+              all the charge sat at the centre. So at the surface, r = 1 mm:
+            </p>
             <Formula tex="E = \dfrac{(8.99\times 10^{9})(10^{-9})}{(10^{-3})^2} = 8.99\times 10^{6}\ \text{V/m}" />
-            <p className="mb-prose-3">About <strong className="text-text font-medium">9 MV/m</strong>. This <em className="italic text-text">exceeds</em> the dielectric breakdown threshold of air (~3 MV/m) — a real 1 nC pith ball at this size would actively leak charge to the surrounding air via corona discharge<Cite id="griffiths-2017" in={SOURCES} />.</p>
+            <p className="mb-prose-3">
+              About <strong className="text-text font-medium">9 MV/m</strong>. This{' '}
+              <em className="text-text italic">exceeds</em> the dielectric breakdown threshold of
+              air (~3 MV/m) — a real 1 nC pith ball at this size would actively leak charge to the
+              surrounding air via corona discharge
+              <Cite id="griffiths-2017" in={SOURCES} />.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.2.4"
-        question={<>Two equal <strong className="text-text font-medium">+1 nC</strong> charges sit on the x-axis at <strong className="text-text font-medium">x = ±1 cm</strong>. What is the field at the midpoint (the origin)?</>}
+        question={
+          <>
+            Two equal <strong className="text-text font-medium">+1 nC</strong> charges sit on the
+            x-axis at <strong className="text-text font-medium">x = ±1 cm</strong>. What is the
+            field at the midpoint (the origin)?
+          </>
+        }
         answer={
           <>
-            <p className="mb-prose-3">By symmetry, the field from the left charge points right (+x) at the origin, and the field from the right charge points left (−x). Equal magnitudes, opposite directions — they cancel:</p>
+            <p className="mb-prose-3">
+              By symmetry, the field from the left charge points right (+x) at the origin, and the
+              field from the right charge points left (−x). Equal magnitudes, opposite directions —
+              they cancel:
+            </p>
             <Formula tex="E_{\text{left}\to\text{origin}} = +\dfrac{(8.99\times 10^{9})(10^{-9})}{(0.01)^2} = +8.99\times 10^{4}\ \text{V/m (along $+x$)}" />
             <Formula tex="E_{\text{right}\to\text{origin}} = -8.99\times 10^{4}\ \text{V/m (along $-x$)}" />
-            <p className="mb-prose-3">Net field at the midpoint: <strong className="text-text font-medium">E = 0</strong>. The potential V there is <em className="italic text-text">not</em> zero, however — both charges contribute positively to V, which adds rather than cancels. This is the cleanest example of the difference between V and E we will revisit in Lab 1.4.</p>
+            <p className="mb-prose-3">
+              Net field at the midpoint: <strong className="text-text font-medium">E = 0</strong>.
+              The potential V there is <em className="text-text italic">not</em> zero, however —
+              both charges contribute positively to V, which adds rather than cancels. This is the
+              cleanest example of the difference between V and E we will revisit in Lab 1.4.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.2.5"
-        question={<>A dipole: <strong className="text-text font-medium">+1 nC</strong> at <strong className="text-text font-medium">x = +0.5 mm</strong> and <strong className="text-text font-medium">−1 nC</strong> at <strong className="text-text font-medium">x = −0.5 mm</strong>. What is the field at <strong className="text-text font-medium">x = 1 cm</strong> on the axis?</>}
+        question={
+          <>
+            A dipole: <strong className="text-text font-medium">+1 nC</strong> at{' '}
+            <strong className="text-text font-medium">x = +0.5 mm</strong> and{' '}
+            <strong className="text-text font-medium">−1 nC</strong> at{' '}
+            <strong className="text-text font-medium">x = −0.5 mm</strong>. What is the field at{' '}
+            <strong className="text-text font-medium">x = 1 cm</strong> on the axis?
+          </>
+        }
         answer={
           <>
-            <p className="mb-prose-3">The +1 nC sits at distance r₊ = 1 cm − 0.5 mm = 9.5 mm from the field point; the −1 nC at r₋ = 1 cm + 0.5 mm = 10.5 mm. Both contributions lie along the +x direction (positive source pushes outward, negative source pulls toward itself):</p>
+            <p className="mb-prose-3">
+              The +1 nC sits at distance r₊ = 1 cm − 0.5 mm = 9.5 mm from the field point; the −1 nC
+              at r₋ = 1 cm + 0.5 mm = 10.5 mm. Both contributions lie along the +x direction
+              (positive source pushes outward, negative source pulls toward itself):
+            </p>
             <Formula tex="E_{+} = \dfrac{(8.99\times 10^{9})(10^{-9})}{(9.5\times 10^{-3})^2} \approx 9.96\times 10^{4}\ \text{V/m}" />
             <Formula tex="E_{-} = -\dfrac{(8.99\times 10^{9})(10^{-9})}{(10.5\times 10^{-3})^2} \approx -8.15\times 10^{4}\ \text{V/m}" />
             <Formula tex="E_{\text{total}} \approx 1.81\times 10^{4}\ \text{V/m, along $+x$}" />
-            <p className="mb-prose-3">About <strong className="text-text font-medium">18 kV/m</strong>. The far-field axial dipole approximation 2kp/r³ (with p = qd = 10⁻¹² C·m) gives 1.80×10⁴ V/m — excellent agreement, since 1 cm ≫ 1 mm.</p>
+            <p className="mb-prose-3">
+              About <strong className="text-text font-medium">18 kV/m</strong>. The far-field axial
+              dipole approximation 2kp/r³ (with p = qd = 10⁻¹² C·m) gives 1.80×10⁴ V/m — excellent
+              agreement, since 1 cm ≫ 1 mm.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.2.6"
-        question={<>Earth's fair-weather atmospheric field is roughly <strong className="text-text font-medium">100 V/m</strong> pointing downward. What is the force on a <strong className="text-text font-medium">1 µC</strong> dust particle, and in which direction?</>}
+        question={
+          <>
+            Earth's fair-weather atmospheric field is roughly{' '}
+            <strong className="text-text font-medium">100 V/m</strong> pointing downward. What is
+            the force on a <strong className="text-text font-medium">1 µC</strong> dust particle,
+            and in which direction?
+          </>
+        }
         answer={
           <>
-            <p className="mb-prose-3"><InlineMath tex="F = qE" />:</p>
+            <p className="mb-prose-3">
+              <InlineMath tex="F = qE" />:
+            </p>
             <Formula tex="F = (10^{-6}\ \text{C})(100\ \text{V/m}) = 10^{-4}\ \text{N} = 0.1\ \text{mN}" />
-            <p className="mb-prose-3">Directed <strong className="text-text font-medium">downward</strong> if the dust is positively charged (force parallel to E). For a 1 µg dust grain, the gravitational force is mg ≈ (10⁻⁹ kg)(9.8) ≈ 10⁻⁸ N — the electric force is 10,000× larger. This is why fair-weather electricity easily transports charged aerosols.</p>
+            <p className="mb-prose-3">
+              Directed <strong className="text-text font-medium">downward</strong> if the dust is
+              positively charged (force parallel to E). For a 1 µg dust grain, the gravitational
+              force is mg ≈ (10⁻⁹ kg)(9.8) ≈ 10⁻⁸ N — the electric force is 10,000× larger. This is
+              why fair-weather electricity easily transports charged aerosols.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.2.7"
-        question={<>Why is the electric field <strong className="text-text font-medium">inside a conductor</strong> exactly zero in electrostatic equilibrium?</>}
+        question={
+          <>
+            Why is the electric field{' '}
+            <strong className="text-text font-medium">inside a conductor</strong> exactly zero in
+            electrostatic equilibrium?
+          </>
+        }
         answer={
           <>
-            <p className="mb-prose-3">A conductor has mobile charges. If there were a nonzero E inside, those charges would feel forces and move. By definition of "electrostatic equilibrium," nothing is moving. Therefore E must equal zero in the bulk<Cite id="griffiths-2017" in={SOURCES} />.</p>
-            <p className="mb-prose-3">The mechanism: any externally-applied field induces surface charges that rearrange until their counter-field exactly cancels the applied one inside. This is the principle behind Faraday cages and is independent of the conductor's shape — only the boundary needs to be conducting.</p>
+            <p className="mb-prose-3">
+              A conductor has mobile charges. If there were a nonzero E inside, those charges would
+              feel forces and move. By definition of "electrostatic equilibrium," nothing is moving.
+              Therefore E must equal zero in the bulk
+              <Cite id="griffiths-2017" in={SOURCES} />.
+            </p>
+            <p className="mb-prose-3">
+              The mechanism: any externally-applied field induces surface charges that rearrange
+              until their counter-field exactly cancels the applied one inside. This is the
+              principle behind Faraday cages and is independent of the conductor's shape — only the
+              boundary needs to be conducting.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.2.8"
-        question={<>Show that <strong className="text-text font-medium">1 V/m</strong> and <strong className="text-text font-medium">1 N/C</strong> are the same unit. What does this tell you about the relationship between field and potential?</>}
+        question={
+          <>
+            Show that <strong className="text-text font-medium">1 V/m</strong> and{' '}
+            <strong className="text-text font-medium">1 N/C</strong> are the same unit. What does
+            this tell you about the relationship between field and potential?
+          </>
+        }
         answer={
           <>
-            <p className="mb-prose-3">Energy: 1 J = 1 N·m. Voltage: 1 V = 1 J/C = 1 N·m/C. Divide by length:</p>
+            <p className="mb-prose-3">
+              Energy: 1 J = 1 N·m. Voltage: 1 V = 1 J/C = 1 N·m/C. Divide by length:
+            </p>
             <Formula tex="1\ \text{V/m} = (1\ \text{N·m/C}) / \text{m} = 1\ \text{N/C}" />
-            <p className="mb-prose-3">The identity reflects that the field is the spatial derivative of the potential: <InlineMath tex="\vec{E} = -\nabla V" />. If V drops by 1 V across 1 m, the field strength is 1 V/m — exactly the force per unit charge that would do the work of moving the charge across that potential drop<Cite id="hyperphysics-emag" in={SOURCES} />.</p>
+            <p className="mb-prose-3">
+              The identity reflects that the field is the spatial derivative of the potential:{' '}
+              <InlineMath tex="\vec{E} = -\nabla V" />. If V drops by 1 V across 1 m, the field
+              strength is 1 V/m — exactly the force per unit charge that would do the work of moving
+              the charge across that potential drop
+              <Cite id="hyperphysics-emag" in={SOURCES} />.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.2.9"
-        question={<>A parallel-plate capacitor with 1 cm² plates holds <strong className="text-text font-medium">+1 nC</strong> on one plate and <strong className="text-text font-medium">−1 nC</strong> on the other. The plates are 1 mm apart. Estimate the field between the plates, using σ/ε₀ where σ is surface charge density.</>}
+        question={
+          <>
+            A parallel-plate capacitor with 1 cm² plates holds{' '}
+            <strong className="text-text font-medium">+1 nC</strong> on one plate and{' '}
+            <strong className="text-text font-medium">−1 nC</strong> on the other. The plates are 1
+            mm apart. Estimate the field between the plates, using σ/ε₀ where σ is surface charge
+            density.
+          </>
+        }
         answer={
           <>
-            <p className="mb-prose-3">Surface charge density <InlineMath tex="\sigma = Q/A = 10^{-9}\ \text{C} / (10^{-4}\ \text{m}^2) = 10^{-5}\ \text{C/m}^2" />. For an ideal parallel-plate capacitor, the field between the plates is uniform:</p>
+            <p className="mb-prose-3">
+              Surface charge density{' '}
+              <InlineMath tex="\sigma = Q/A = 10^{-9}\ \text{C} / (10^{-4}\ \text{m}^2) = 10^{-5}\ \text{C/m}^2" />
+              . For an ideal parallel-plate capacitor, the field between the plates is uniform:
+            </p>
             <Formula tex="E = \sigma / \varepsilon_0 = \dfrac{10^{-5}}{8.854\times 10^{-12}} \approx 1.13\times 10^{6}\ \text{V/m}" />
-            <p className="mb-prose-3">About <strong className="text-text font-medium">1.1 MV/m</strong>. The voltage across the gap is <InlineMath tex="V = E\cdot d = (1.13\times 10^{6})(10^{-3}) \approx 1130\ \text{V}" /> — a substantial potential for very little charge, because the plates are close together. This is the lesson of capacitance, which Lab 4.1 takes up.</p>
+            <p className="mb-prose-3">
+              About <strong className="text-text font-medium">1.1 MV/m</strong>. The voltage across
+              the gap is{' '}
+              <InlineMath tex="V = E\cdot d = (1.13\times 10^{6})(10^{-3}) \approx 1130\ \text{V}" />{' '}
+              — a substantial potential for very little charge, because the plates are close
+              together. This is the lesson of capacitance, which Lab 4.1 takes up.
+            </p>
           </>
         }
       />
 
       <TryIt
         tag="Problem 1.2.10"
-        question={<>Compare the field from a <strong className="text-text font-medium">−5 nC</strong> charge at 3 cm with the field from a <strong className="text-text font-medium">+10 nC</strong> charge at 6 cm. Same point in space, both contributions. Are they parallel? What is the net?</>}
+        question={
+          <>
+            Compare the field from a <strong className="text-text font-medium">−5 nC</strong> charge
+            at 3 cm with the field from a <strong className="text-text font-medium">+10 nC</strong>{' '}
+            charge at 6 cm. Same point in space, both contributions. Are they parallel? What is the
+            net?
+          </>
+        }
         answer={
           <>
             <p className="mb-prose-3">Magnitude from the −5 nC at 3 cm:</p>
             <Formula tex="|E_1| = \dfrac{(8.99\times 10^{9})(5\times 10^{-9})}{(0.03)^2} \approx 4.99\times 10^{4}\ \text{V/m}" />
-            <p className="mb-prose-3">Direction: toward the −5 nC source (radially inward, since the source is negative). Magnitude from the +10 nC at 6 cm:</p>
+            <p className="mb-prose-3">
+              Direction: toward the −5 nC source (radially inward, since the source is negative).
+              Magnitude from the +10 nC at 6 cm:
+            </p>
             <Formula tex="|E_2| = \dfrac{(8.99\times 10^{9})(10\times 10^{-9})}{(0.06)^2} \approx 2.50\times 10^{4}\ \text{V/m}" />
-            <p className="mb-prose-3">Direction: away from the +10 nC source (radially outward). Whether they are parallel depends on the geometry of where the field point sits relative to the two sources. In the special case where the field point and both sources are colinear with the sources on the same side — say, both at +x — the two field contributions point in <em className="italic text-text">opposite</em> directions, since toward-the-negative and away-from-the-positive are opposite. They partly cancel: net E ≈ 4.99×10⁴ − 2.50×10⁴ ≈ 2.49×10⁴ V/m, toward the −5 nC.</p>
-            <p className="mb-prose-3">The point of the exercise: <strong className="text-text font-medium">fields add as vectors</strong>. You can't blindly sum magnitudes<Cite id="griffiths-2017" in={SOURCES} />.</p>
+            <p className="mb-prose-3">
+              Direction: away from the +10 nC source (radially outward). Whether they are parallel
+              depends on the geometry of where the field point sits relative to the two sources. In
+              the special case where the field point and both sources are colinear with the sources
+              on the same side — say, both at +x — the two field contributions point in{' '}
+              <em className="text-text italic">opposite</em> directions, since toward-the-negative
+              and away-from-the-positive are opposite. They partly cancel: net E ≈ 4.99×10⁴ −
+              2.50×10⁴ ≈ 2.49×10⁴ V/m, toward the −5 nC.
+            </p>
+            <p className="mb-prose-3">
+              The point of the exercise:{' '}
+              <strong className="text-text font-medium">fields add as vectors</strong>. You can't
+              blindly sum magnitudes
+              <Cite id="griffiths-2017" in={SOURCES} />.
+            </p>
           </>
         }
       />
 
       <h3 className="lab-section-h3">Field lines are a visualization</h3>
       <p className="mb-prose-3">
-        The streaming orange lines in the visualization above are a representation, not a physical entity. Faraday drew them this way because the
-        geometry was clear: density of lines indicates field strength; direction of lines indicates field direction. They begin on positive
-        charges and end on negative charges (or run off to infinity), and they never cross — two distinct directions for <strong className="text-text font-medium">E</strong> at
-        one point would be meaningless<Cite id="feynman-II-2" in={SOURCES} />. The real field is a continuous vector at every point.
+        The streaming orange lines in the visualization above are a representation, not a physical
+        entity. Faraday drew them this way because the geometry was clear: density of lines
+        indicates field strength; direction of lines indicates field direction. They begin on
+        positive charges and end on negative charges (or run off to infinity), and they never cross
+        — two distinct directions for <strong className="text-text font-medium">E</strong> at one
+        point would be meaningless
+        <Cite id="feynman-II-2" in={SOURCES} />. The real field is a continuous vector at every
+        point.
       </p>
     </>
   );
@@ -574,16 +850,16 @@ export default function EFieldLab() {
   );
 }
 
-function drawProbe(
-  ctx: CanvasRenderingContext2D,
-  cx: number, cy: number, label: string,
-) {
+function drawProbe(ctx: CanvasRenderingContext2D, cx: number, cy: number, label: string) {
   ctx.strokeStyle = getCanvasColors().accent;
   ctx.lineWidth = 2;
   ctx.save();
-  ctx.globalAlpha = .92;
+  ctx.globalAlpha = 0.92;
   ctx.fillStyle = getCanvasColors().canvasBg;
-  ctx.beginPath(); ctx.arc(cx, cy, 10, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(cx, cy, 10, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
   ctx.restore();
   ctx.fillStyle = getCanvasColors().accent;
   ctx.font = 'bold 11px JetBrains Mono';

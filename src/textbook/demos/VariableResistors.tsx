@@ -11,13 +11,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const R_TOTAL = 10000; // 10 kΩ pot
 
@@ -38,7 +38,9 @@ export function VariableResistorsDemo({ figure }: Props) {
   const R_LDR = ldrR(lux);
 
   const stateRef = useRef({ wiper, lux });
-  useEffect(() => { stateRef.current = { wiper, lux }; }, [wiper, lux]);
+  useEffect(() => {
+    stateRef.current = { wiper, lux };
+  }, [wiper, lux]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H, canvas } = info;
@@ -89,8 +91,10 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.strokeStyle = 'rgba(200,200,205,0.7)';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.moveTo(trackL - 8, trackY + 4); ctx.lineTo(trackL - 8, H - 16);
-      ctx.moveTo(trackR + 8, trackY + 4); ctx.lineTo(trackR + 8, H - 16);
+      ctx.moveTo(trackL - 8, trackY + 4);
+      ctx.lineTo(trackL - 8, H - 16);
+      ctx.moveTo(trackR + 8, trackY + 4);
+      ctx.lineTo(trackR + 8, H - 16);
       ctx.stroke();
 
       ctx.fillStyle = getCanvasColors().textDim;
@@ -141,14 +145,18 @@ export function VariableResistorsDemo({ figure }: Props) {
 
       // ──────── Divider ────────
       ctx.strokeStyle = getCanvasColors().border;
-      ctx.beginPath(); ctx.moveTo(splitX, 0); ctx.lineTo(splitX, H); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(splitX, 0);
+      ctx.lineTo(splitX, H);
+      ctx.stroke();
 
       // ──────── RIGHT: LDR ────────
       const ldrCX = (splitX + W) / 2;
       const ldrCY = H / 2;
 
       // LDR symbol: a rectangular package with a zig-zag CdS pattern on top
-      const pW = 80, pH = 50;
+      const pW = 80,
+        pH = 50;
       ctx.fillStyle = 'rgba(200,200,205,0.18)';
       roundRect(ctx, ldrCX - pW / 2, ldrCY - pH / 2, pW, pH, 5);
       ctx.fill();
@@ -169,7 +177,7 @@ export function VariableResistorsDemo({ figure }: Props) {
       const dx = (sRight - sLeft) / segs;
       for (let i = 0; i <= segs; i++) {
         const x = sLeft + i * dx;
-        const y = (i % 2 === 0) ? sTop : sBot;
+        const y = i % 2 === 0 ? sTop : sBot;
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
         if (i < segs) ctx.lineTo(x + dx, y);
@@ -199,8 +207,10 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.strokeStyle = 'rgba(200,200,205,0.7)';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.moveTo(ldrCX - pW / 2 + 12, ldrCY + pH / 2); ctx.lineTo(ldrCX - pW / 2 + 12, H - 16);
-      ctx.moveTo(ldrCX + pW / 2 - 12, ldrCY + pH / 2); ctx.lineTo(ldrCX + pW / 2 - 12, H - 16);
+      ctx.moveTo(ldrCX - pW / 2 + 12, ldrCY + pH / 2);
+      ctx.lineTo(ldrCX - pW / 2 + 12, H - 16);
+      ctx.moveTo(ldrCX + pW / 2 - 12, ldrCY + pH / 2);
+      ctx.lineTo(ldrCX + pW / 2 - 12, H - 16);
       ctx.stroke();
 
       // Lux label
@@ -237,27 +247,44 @@ export function VariableResistorsDemo({ figure }: Props) {
     function onDown(e: MouseEvent) {
       const x = localX(e.clientX);
       const v = pickWiperX(x);
-      if (v !== null) { drag = true; setWiper(v); e.preventDefault(); }
+      if (v !== null) {
+        drag = true;
+        setWiper(v);
+        e.preventDefault();
+      }
     }
     function onMove(e: MouseEvent) {
       if (!drag) return;
       const v = pickWiperX(localX(e.clientX));
       if (v !== null) setWiper(v);
     }
-    function onUp() { drag = false; }
+    function onUp() {
+      drag = false;
+    }
     function onTouchStart(e: TouchEvent) {
-      const t = e.touches[0]; if (!t) return;
+      const t = e.touches[0];
+      if (!t) return;
       const x = localX(t.clientX);
       const v = pickWiperX(x);
-      if (v !== null) { drag = true; setWiper(v); e.preventDefault(); }
+      if (v !== null) {
+        drag = true;
+        setWiper(v);
+        e.preventDefault();
+      }
     }
     function onTouchMove(e: TouchEvent) {
       if (!drag) return;
-      const t = e.touches[0]; if (!t) return;
+      const t = e.touches[0];
+      if (!t) return;
       const v = pickWiperX(localX(t.clientX));
-      if (v !== null) { setWiper(v); e.preventDefault(); }
+      if (v !== null) {
+        setWiper(v);
+        e.preventDefault();
+      }
     }
-    function onTouchEnd() { drag = false; }
+    function onTouchEnd() {
+      drag = false;
+    }
 
     canvas.addEventListener('mousedown', onDown);
     window.addEventListener('mousemove', onMove);
@@ -284,9 +311,11 @@ export function VariableResistorsDemo({ figure }: Props) {
       question="What if R isn't fixed at all?"
       caption={
         <>
-          Drag the wiper on the left potentiometer (or use the slider): the resistive track has terminals A and B, and the slider
-          divides it into <strong>R_AW</strong> + <strong>R_WB</strong> = <strong>R_total</strong>. On the right, a CdS photoresistor's
-          resistance falls from megohms in the dark to a few hundred ohms in bright light — log-scale on illuminance.
+          Drag the wiper on the left potentiometer (or use the slider): the resistive track has
+          terminals A and B, and the slider divides it into <strong>R_AW</strong> +{' '}
+          <strong>R_WB</strong> = <strong>R_total</strong>. On the right, a CdS photoresistor's
+          resistance falls from megohms in the dark to a few hundred ohms in bright light —
+          log-scale on illuminance.
         </>
       }
       deeperLab={{ slug: 'ohms-law', label: 'See full lab' }}
@@ -295,17 +324,23 @@ export function VariableResistorsDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="Wiper"
-          value={wiper} min={0} max={1} step={0.005}
-          format={v => `${(v * 100).toFixed(0)}%`}
+          value={wiper}
+          min={0}
+          max={1}
+          step={0.005}
+          format={(v) => `${(v * 100).toFixed(0)}%`}
           onChange={setWiper}
         />
         <MiniReadout label="R_AW" value={<Num value={R_AW} />} unit="Ω" />
         <MiniReadout label="R_WB" value={<Num value={R_WB} />} unit="Ω" />
         <MiniSlider
           label="Illuminance"
-          value={Math.log10(lux)} min={-1} max={4} step={0.05}
-          format={v => `${Math.pow(10, v).toFixed(Math.pow(10, v) < 10 ? 1 : 0)} lux`}
-          onChange={v => setLux(Math.pow(10, v))}
+          value={Math.log10(lux)}
+          min={-1}
+          max={4}
+          step={0.05}
+          format={(v) => `${Math.pow(10, v).toFixed(Math.pow(10, v) < 10 ? 1 : 0)} lux`}
+          onChange={(v) => setLux(Math.pow(10, v))}
         />
         <MiniReadout label="R_LDR" value={<Num value={R_LDR} />} unit="Ω" />
       </DemoControls>
@@ -323,13 +358,21 @@ function fmtOhms(R: number): string {
 
 function roundRect(
   ctx: CanvasRenderingContext2D,
-  x: number, y: number, w: number, h: number, r: number,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
 ) {
   roundRectPath(ctx, x, y, w, h, r);
 }
 function roundRectPath(
   ctx: CanvasRenderingContext2D,
-  x: number, y: number, w: number, h: number, r: number,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
 ) {
   r = Math.min(r, h / 2, w / 2);
   ctx.beginPath();

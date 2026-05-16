@@ -9,9 +9,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 
@@ -20,14 +18,16 @@ interface Props {
 }
 
 const EMISSIVITY = 0.4;
-const A_SURF = 1e-4;       // m² ≈ 1 cm² of radiating surface
+const A_SURF = 1e-4; // m² ≈ 1 cm² of radiating surface
 
 export function JouleHeatingDemo({ figure }: Props) {
   const [I, setI] = useState(2);
   const [R, setR] = useState(5);
 
   const stateRef = useRef({ I, R });
-  useEffect(() => { stateRef.current = { I, R }; }, [I, R]);
+  useEffect(() => {
+    stateRef.current = { I, R };
+  }, [I, R]);
 
   const P = I * I * R;
   const T_eq = stefanT(P);
@@ -60,22 +60,31 @@ export function JouleHeatingDemo({ figure }: Props) {
       if (visiblePower) {
         const haloR = 50 + col.glow * 80;
         const grd = ctx.createRadialGradient(
-          (wireLeft + wireRight) / 2, wireCY, thickness * 0.6,
-          (wireLeft + wireRight) / 2, wireCY, haloR
+          (wireLeft + wireRight) / 2,
+          wireCY,
+          thickness * 0.6,
+          (wireLeft + wireRight) / 2,
+          wireCY,
+          haloR,
         );
         grd.addColorStop(0, `rgba(${col.r},${col.g},${col.b},${0.12 + 0.22 * col.glow})`);
         grd.addColorStop(1, `rgba(${col.r},${col.g},${col.b},0)`);
         ctx.fillStyle = grd;
-        ctx.fillRect(wireLeft - 200, wireCY - haloR, (wireRight - wireLeft) + 400, haloR * 2);
+        ctx.fillRect(wireLeft - 200, wireCY - haloR, wireRight - wireLeft + 400, haloR * 2);
       }
 
       // Wire body
       const grd = ctx.createLinearGradient(0, top, 0, bot);
       if (visiblePower) {
-        const cr = col.r, cg = col.g, cb = col.b;
-        grd.addColorStop(0,   `rgba(${cr},${cg},${cb},${0.20 + col.glow * 0.5})`);
-        grd.addColorStop(0.5, `rgba(${Math.min(255, cr + 20)},${Math.min(255, cg + 30)},${Math.min(255, cb + 40)},${0.55 + col.glow * 0.45})`);
-        grd.addColorStop(1,   `rgba(${cr},${cg},${cb},${0.20 + col.glow * 0.5})`);
+        const cr = col.r,
+          cg = col.g,
+          cb = col.b;
+        grd.addColorStop(0, `rgba(${cr},${cg},${cb},${0.2 + col.glow * 0.5})`);
+        grd.addColorStop(
+          0.5,
+          `rgba(${Math.min(255, cr + 20)},${Math.min(255, cg + 30)},${Math.min(255, cb + 40)},${0.55 + col.glow * 0.45})`,
+        );
+        grd.addColorStop(1, `rgba(${cr},${cg},${cb},${0.2 + col.glow * 0.5})`);
       } else {
         grd.addColorStop(0, 'rgba(180,180,185,0.10)');
         grd.addColorStop(0.5, 'rgba(180,180,185,0.22)');
@@ -161,7 +170,11 @@ export function JouleHeatingDemo({ figure }: Props) {
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
-      ctx.fillText(`I = ${I.toFixed(2)} A   ·   R = ${R.toFixed(2)} Ω   ·   surface ≈ 1 cm²`, w / 2, bot + 14);
+      ctx.fillText(
+        `I = ${I.toFixed(2)} A   ·   R = ${R.toFixed(2)} Ω   ·   surface ≈ 1 cm²`,
+        w / 2,
+        bot + 14,
+      );
 
       raf = requestAnimationFrame(draw);
     }
@@ -181,14 +194,20 @@ export function JouleHeatingDemo({ figure }: Props) {
       <DemoControls>
         <MiniSlider
           label="I"
-          value={I} min={0} max={10} step={0.05}
-          format={v => v.toFixed(2) + ' A'}
+          value={I}
+          min={0}
+          max={10}
+          step={0.05}
+          format={(v) => v.toFixed(2) + ' A'}
           onChange={setI}
         />
         <MiniSlider
           label="R"
-          value={R} min={0.1} max={100} step={0.1}
-          format={v => v.toFixed(1) + ' Ω'}
+          value={R}
+          min={0.1}
+          max={100}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' Ω'}
           onChange={setR}
         />
         <MiniReadout label="Power" value={<Num value={P} />} unit="W" />
@@ -221,21 +240,36 @@ function tempToColor(T: number) {
   let r: number, g: number, b: number;
   if (t < 0.3) {
     const k = t / 0.3;
-    r = 140 + k * 115; g = 20 + k * 30;  b = 10 + k * 10;
+    r = 140 + k * 115;
+    g = 20 + k * 30;
+    b = 10 + k * 10;
   } else if (t < 0.6) {
     const k = (t - 0.3) / 0.3;
-    r = 255;          g = 50 + k * 130; b = 20 + k * 20;
+    r = 255;
+    g = 50 + k * 130;
+    b = 20 + k * 20;
   } else if (t < 0.85) {
     const k = (t - 0.6) / 0.25;
-    r = 255;          g = 180 + k * 60; b = 40 + k * 100;
+    r = 255;
+    g = 180 + k * 60;
+    b = 40 + k * 100;
   } else {
     const k = (t - 0.85) / 0.15;
-    r = 255;          g = 240 + k * 15; b = 140 + k * 115;
+    r = 255;
+    g = 240 + k * 15;
+    b = 140 + k * 115;
   }
   return { r: r | 0, g: g | 0, b: b | 0, glow: t };
 }
 
-function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+function roundRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
+) {
   r = Math.min(r, h / 2, w / 2);
   ctx.beginPath();
   ctx.moveTo(x + r, y);

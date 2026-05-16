@@ -12,21 +12,27 @@ interface SourcesListProps {
 export function SourcesList({ ids }: SourcesListProps) {
   if (!ids.length) return null;
   return (
-    <div className="reveal in  mb-4xl pt-2xl border-t border-border-strong">
+    <div className="reveal in mb-4xl pt-2xl border-border-strong border-t">
       <div className="eyebrow-rule mb-xl">Sources</div>
       <ol className="list-none p-0 [counter-reset:src]">
-        {ids.map(id => {
+        {ids.map((id) => {
           const src = SOURCES[id];
           if (!src) {
             // Defensive: don't crash if a key is missing — surface the bad id.
             return (
-              <li key={id} className="[counter-increment:src] relative py-lg pl-3xl leading-4 text-text-dim border-b border-dotted border-border last:border-b-0 before:content-['['_counter(src)_']'] before:absolute before:left-0 before:top-md before:font-3 before:text-2 before:text-accent before:tracking-3">
+              <li
+                key={id}
+                className="py-lg pl-3xl text-text-dim border-border before:top-md before:font-3 before:text-2 before:text-accent before:tracking-3 relative border-b border-dotted leading-4 [counter-increment:src] before:absolute before:left-0 before:content-['['_counter(src)_']'] last:border-b-0"
+              >
                 <span className="text-text font-medium">Missing source: {id}</span>
               </li>
             );
           }
           return (
-            <li key={id} className="[counter-increment:src] relative py-lg pl-3xl leading-4 text-text-dim border-b border-dotted border-border last:border-b-0 before:content-['['_counter(src)_']'] before:absolute before:left-0 before:top-md before:font-3 before:text-2 before:text-accent before:tracking-3">
+            <li
+              key={id}
+              className="py-lg pl-3xl text-text-dim border-border before:top-md before:font-3 before:text-2 before:text-accent before:tracking-3 relative border-b border-dotted leading-4 [counter-increment:src] before:absolute before:left-0 before:content-['['_counter(src)_']'] last:border-b-0"
+            >
               <span className="text-text font-medium">{src.title}</span>
               {' — '}
               <span className="text-text-muted italic">{src.author}</span>
@@ -40,13 +46,15 @@ export function SourcesList({ ids }: SourcesListProps) {
                     href={src.url}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="text-text-dim no-underline border-b border-dotted border-text-muted break-words hover:text-accent hover:border-accent"
+                    className="text-text-dim border-text-muted hover:text-accent hover:border-accent border-b border-dotted break-words no-underline"
                   >
                     {src.url.replace(/^https?:\/\//, '')}
                   </a>
                 </>
               )}
-              {src.note && <span className="block mt-sm text-3 text-text-muted italic">{src.note}</span>}
+              {src.note && (
+                <span className="mt-sm text-3 text-text-muted block italic">{src.note}</span>
+              )}
             </li>
           );
         })}
@@ -68,13 +76,12 @@ interface CiteProps {
 export function Cite({ id, in: ids }: CiteProps) {
   const idx = ids.indexOf(id);
   if (idx === -1) {
-     
     console.warn(`[Cite] source ${id} not in page sources array`);
     return <sup style={{ color: 'red' }}>[?]</sup>;
   }
   return (
     <a
-      className="cite inline-block font-3 text-1 align-super leading-none text-accent bg-accent-soft py-px px-sm mx-px rounded-2 no-underline tracking-normal hover:bg-accent hover:text-bg"
+      className="cite font-3 text-1 text-accent bg-accent-soft px-sm rounded-2 hover:bg-accent hover:text-bg mx-px inline-block py-px align-super leading-none tracking-normal no-underline"
       href={`#src-${id}`}
       title={SOURCES[id]?.title ?? id}
     >

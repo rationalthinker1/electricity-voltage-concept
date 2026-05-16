@@ -12,21 +12,14 @@ export interface StatProps {
   className?: string;
 }
 
-export function Stat({
-  label,
-  value,
-  unit,
-  delta,
-  accent,
-  className,
-}: StatProps) {
+export function Stat({ label, value, unit, delta, accent, className }: StatProps) {
   return (
-    <div className={clsx('flex flex-col gap-xs py-lg px-lg card-surface min-w-0', className)}>
+    <div className={clsx('gap-xs py-lg px-lg card-surface flex min-w-0 flex-col', className)}>
       <div className="eyebrow-muted text-1">{label}</div>
-      <div className="flex items-baseline gap-xs">
+      <div className="gap-xs flex items-baseline">
         <span
           className={clsx(
-            'font-3 text-8 font-medium text-text leading-1',
+            'font-3 text-8 text-text leading-1 font-medium',
             accent === 'accent' && 'text-accent',
             accent === 'teal' && 'text-teal',
             accent === 'pink' && 'text-pink',

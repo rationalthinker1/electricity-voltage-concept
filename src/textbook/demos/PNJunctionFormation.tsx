@@ -18,7 +18,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 const V_BI = 0.7; // built-in potential, V
 
@@ -29,7 +31,9 @@ export function PNJunctionFormationDemo({ figure }: Props) {
   const w_rel = Math.max(0.18, Math.sqrt(Math.max(0, V_BI - Vbias) / V_BI));
 
   const stateRef = useRef({ Vbias });
-  useEffect(() => { stateRef.current = { Vbias }; }, [Vbias]);
+  useEffect(() => {
+    stateRef.current = { Vbias };
+  }, [Vbias]);
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
@@ -61,7 +65,10 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 30, padR = 30, padT = 26, padB = 26;
+      const padL = 30,
+        padR = 30,
+        padT = 26,
+        padB = 26;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
@@ -93,15 +100,18 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       ctx.strokeStyle = colors.borderStrong;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
-      ctx.moveTo(padL + plotW * xL, padT); ctx.lineTo(padL + plotW * xL, padT + plotH);
-      ctx.moveTo(padL + plotW * xR, padT); ctx.lineTo(padL + plotW * xR, padT + plotH);
+      ctx.moveTo(padL + plotW * xL, padT);
+      ctx.lineTo(padL + plotW * xL, padT + plotH);
+      ctx.moveTo(padL + plotW * xR, padT);
+      ctx.lineTo(padL + plotW * xR, padT + plotH);
       ctx.stroke();
       ctx.setLineDash([]);
 
       // ionised dopants inside the depletion region: negative acceptor ions on
       // the p-side half, positive donor ions on the n-side half.
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       const nIons = 6;
       for (let i = 0; i < nIons; i++) {
         // p-side of depletion (negative ions)
@@ -126,7 +136,8 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.4;
       ctx.beginPath();
-      ctx.moveTo(arrowR, arrowY); ctx.lineTo(arrowL, arrowY);
+      ctx.moveTo(arrowR, arrowY);
+      ctx.lineTo(arrowL, arrowY);
       ctx.stroke();
       // arrowhead pointing left (from n toward p means actually rightward for
       // the field; but in standard textbook diagrams E_built-in points from the
@@ -199,7 +210,11 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
-      ctx.fillText(`depletion region   (W/W₀ = ${w_rel.toFixed(2)})`, padL + plotW * 0.5, padT + plotH - 16);
+      ctx.fillText(
+        `depletion region   (W/W₀ = ${w_rel.toFixed(2)})`,
+        padL + plotW * 0.5,
+        padT + plotH - 16,
+      );
 
       // header
       ctx.fillStyle = colors.textDim;
@@ -208,7 +223,11 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       let mode = 'zero bias';
       if (Vbias > 0.01) mode = 'forward bias';
       else if (Vbias < -0.01) mode = 'reverse bias';
-      ctx.fillText(`V_applied = ${Vbias.toFixed(2)} V   ·   ${mode}   ·   V_bi = ${V_BI.toFixed(2)} V`, padL, 6);
+      ctx.fillText(
+        `V_applied = ${Vbias.toFixed(2)} V   ·   ${mode}   ·   V_bi = ${V_BI.toFixed(2)} V`,
+        padL,
+        6,
+      );
 
       raf = requestAnimationFrame(draw);
     }
@@ -221,19 +240,28 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 14.2'}
       title="A p-n junction under bias"
       question="What happens to the depletion region when you forward-bias or reverse-bias the junction?"
-      caption={<>
-        Pink dots are electrons (n-type majority); blue circles are holes (p-type majority). The neutral strip
-        between is the depletion region — empty of mobile carriers, populated only by ionised dopants.
-        Forward bias (V {'>'} 0) narrows it; reverse bias (V {'<'} 0) widens it.
-        Width scales as <em>W ∝ √(V<sub>bi</sub> − V)</em>.
-      </>}
+      caption={
+        <>
+          Pink dots are electrons (n-type majority); blue circles are holes (p-type majority). The
+          neutral strip between is the depletion region — empty of mobile carriers, populated only
+          by ionised dopants. Forward bias (V {'>'} 0) narrows it; reverse bias (V {'<'} 0) widens
+          it. Width scales as{' '}
+          <em>
+            W ∝ √(V<sub>bi</sub> − V)
+          </em>
+          .
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="V_applied"
-          value={Vbias} min={-3} max={0.7} step={0.01}
-          format={v => v.toFixed(2) + ' V'}
+          value={Vbias}
+          min={-3}
+          max={0.7}
+          step={0.01}
+          format={(v) => v.toFixed(2) + ' V'}
           onChange={setVbias}
         />
         <MiniReadout label="V_bi" value={V_BI.toFixed(2)} unit="V" />

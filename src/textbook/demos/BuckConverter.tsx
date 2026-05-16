@@ -23,10 +23,12 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
-const F_SW = 100e3;     // 100 kHz switching frequency
-const L = 47e-6;        // 47 µH inductor (typical for ~5 A buck)
+const F_SW = 100e3; // 100 kHz switching frequency
+const L = 47e-6; // 47 µH inductor (typical for ~5 A buck)
 
 export function BuckConverterDemo({ figure }: Props) {
   const [Vin, setVin] = useState(12);
@@ -35,12 +37,12 @@ export function BuckConverterDemo({ figure }: Props) {
 
   const Vout = duty * Vin;
   const Iout = Vout / Rload;
-  const dIL_on  =  (Vin - Vout) / L;     // A/s
-  const dIL_off = -Vout / L;             // A/s
+  const dIL_on = (Vin - Vout) / L; // A/s
+  const dIL_off = -Vout / L; // A/s
   const Tsw = 1 / F_SW;
   const tOn = duty * Tsw;
   const tOff = (1 - duty) * Tsw;
-  const dIL_pp = dIL_on * tOn;           // peak-to-peak ripple
+  const dIL_pp = dIL_on * tOn; // peak-to-peak ripple
   const Pout = Vout * Iout;
   // Assume 92% efficiency (typical sync buck)
   const eta = 0.92;
@@ -61,7 +63,10 @@ export function BuckConverterDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const padL = 50, padR = 20, padT = 18, padB = 32;
+      const padL = 50,
+        padR = 20,
+        padT = 18,
+        padB = 32;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
 
@@ -92,7 +97,10 @@ export function BuckConverterDemo({ figure }: Props) {
         const xOn0 = padL + (tStart / tTotal) * plotW;
         const xOn1 = padL + ((tStart + tOn) / tTotal) * plotW;
         const xOff1 = padL + ((tStart + Tsw) / tTotal) * plotW;
-        if (firstSeg) { ctx.moveTo(xOn0, yLo); firstSeg = false; }
+        if (firstSeg) {
+          ctx.moveTo(xOn0, yLo);
+          firstSeg = false;
+        }
         ctx.lineTo(xOn0, yHi);
         ctx.lineTo(xOn1, yHi);
         ctx.lineTo(xOn1, yLo);
@@ -101,14 +109,16 @@ export function BuckConverterDemo({ figure }: Props) {
       ctx.stroke();
 
       ctx.save();
-      ctx.globalAlpha = 0.80;
+      ctx.globalAlpha = 0.8;
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
-      ctx.fillText('V_in',  padL - 4, yHi);
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('V_in', padL - 4, yHi);
       ctx.restore();
-      ctx.fillText('0',     padL - 4, yLo);
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.fillText('0', padL - 4, yLo);
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText(`switch node (D = ${(duty * 100).toFixed(0)} %)`, padL + 4, top + 4);
 
       // Sub-plot 2: inductor current — saw-tooth around I_avg = I_out
@@ -121,7 +131,7 @@ export function BuckConverterDemo({ figure }: Props) {
 
       // Reference: I_out (dashed)
       ctx.save();
-      ctx.globalAlpha = 0.40;
+      ctx.globalAlpha = 0.4;
       ctx.strokeStyle = colors.teal;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -145,39 +155,42 @@ export function BuckConverterDemo({ figure }: Props) {
         const cyc = Math.floor(t / Tsw);
         // Reset at cyc start
         if (tInCyc === 0) iL = Imin;
-        const dt = (s > 0 ? tTotal / samples : 0);
+        const dt = s > 0 ? tTotal / samples : 0;
         if (tInCyc < tOn) iL = iL + dIL_on * dt;
         else iL = iL + dIL_off * dt;
         // For visibility, clamp & re-seed each cycle to avoid drift
-        const yc = (tInCyc < tOn)
-          ? iOf(Imin + dIL_on * tInCyc)
-          : iOf(Imax + dIL_off * (tInCyc - tOn));
+        const yc =
+          tInCyc < tOn ? iOf(Imin + dIL_on * tInCyc) : iOf(Imax + dIL_off * (tInCyc - tOn));
         const x = padL + ((cyc * Tsw + tInCyc) / tTotal) * plotW;
         ctx.lineTo(x, yc);
       }
       ctx.stroke();
 
       ctx.save();
-      ctx.globalAlpha = 0.80;
+      ctx.globalAlpha = 0.8;
       ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
       ctx.fillText(`${Imax.toFixed(2)} A`, padL - 4, iOf(Imax));
       ctx.restore();
       ctx.fillText(`${Iout.toFixed(2)} A`, padL - 4, iOf(Iout));
       ctx.fillText(`${Imin.toFixed(2)} A`, padL - 4, iOf(Imin));
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText('inductor current  I_L', padL + 4, mid + 4);
 
       // x-axis tick: time
-      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-      ctx.fillText(`0`,                              padL,             padT + plotH + 4);
-      ctx.fillText(`${(tTotal * 1e6).toFixed(0)} µs`, padL + plotW,     padT + plotH + 4);
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText(`0`, padL, padT + plotH + 4);
+      ctx.fillText(`${(tTotal * 1e6).toFixed(0)} µs`, padL + plotW, padT + plotH + 4);
 
       // Header
       ctx.save();
-      ctx.globalAlpha = 0.80;
+      ctx.globalAlpha = 0.8;
       ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText(`V_out = D · V_in = ${Vout.toFixed(2)} V`, 4, 4);
       ctx.restore();
@@ -193,37 +206,48 @@ export function BuckConverterDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 19.4'}
       title="Buck converter: V_out = D · V_in"
       question="Slide the duty cycle. Where does the output voltage land — and what does the inductor current look like?"
-      caption={<>
-        A switch chops V<sub>in</sub> at ~100 kHz with duty cycle D. The inductor averages the
-        chopped waveform (volt-second balance), giving V<sub>out</sub> = D · V<sub>in</sub>.
-        The visible sawtooth is the inductor's ripple current — its peak-to-peak is
-        ΔI<sub>L</sub> = (V<sub>in</sub> − V<sub>out</sub>) · D · T<sub>sw</sub> / L. Efficiencies of 92–98%
-        are routine in modern synchronous buck silicon.
-      </>}
+      caption={
+        <>
+          A switch chops V<sub>in</sub> at ~100 kHz with duty cycle D. The inductor averages the
+          chopped waveform (volt-second balance), giving V<sub>out</sub> = D · V<sub>in</sub>. The
+          visible sawtooth is the inductor's ripple current — its peak-to-peak is ΔI<sub>L</sub> =
+          (V<sub>in</sub> − V<sub>out</sub>) · D · T<sub>sw</sub> / L. Efficiencies of 92–98% are
+          routine in modern synchronous buck silicon.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="V_in"
-          value={Vin} min={5} max={48} step={0.5}
-          format={v => v.toFixed(1) + ' V'}
+          value={Vin}
+          min={5}
+          max={48}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
           onChange={setVin}
         />
         <MiniSlider
           label="duty D"
-          value={duty} min={0.05} max={0.95} step={0.01}
-          format={v => (v * 100).toFixed(0) + ' %'}
+          value={duty}
+          min={0.05}
+          max={0.95}
+          step={0.01}
+          format={(v) => (v * 100).toFixed(0) + ' %'}
           onChange={setDuty}
         />
         <MiniSlider
           label="R_load"
-          value={Rload} min={0.5} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' Ω'}
+          value={Rload}
+          min={0.5}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' Ω'}
           onChange={setRload}
         />
-        <MiniReadout label="V_out"   value={<Num value={Vout} />}    unit="V" />
-        <MiniReadout label="I_out"   value={<Num value={Iout} />}    unit="A" />
-        <MiniReadout label="ΔI_L pp" value={<Num value={dIL_pp} />}  unit="A" />
+        <MiniReadout label="V_out" value={<Num value={Vout} />} unit="V" />
+        <MiniReadout label="I_out" value={<Num value={Iout} />} unit="A" />
+        <MiniReadout label="ΔI_L pp" value={<Num value={dIL_pp} />} unit="A" />
         <MiniReadout label="P_in (η=92%)" value={<Num value={Pin} />} unit="W" />
       </DemoControls>
     </Demo>

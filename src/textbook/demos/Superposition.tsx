@@ -27,13 +27,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import {
-  Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle,
-} from '@/components/Demo';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 interface Currents {
   V_A: number;
@@ -71,12 +71,25 @@ export function SuperpositionDemo({ figure }: Props) {
   const stateRef = useRef({ onlyV1, onlyV2, both, v1on, v2on });
   useEffect(() => {
     stateRef.current = { onlyV1, onlyV2, both, v1on, v2on };
-  }, [onlyV1.V_A, onlyV1.I1, onlyV1.I2, onlyV1.I3,
-      onlyV2.V_A, onlyV2.I1, onlyV2.I2, onlyV2.I3,
-      both.V_A, both.I1, both.I2, both.I3, v1on, v2on]);
+  }, [
+    onlyV1.V_A,
+    onlyV1.I1,
+    onlyV1.I2,
+    onlyV1.I3,
+    onlyV2.V_A,
+    onlyV2.I1,
+    onlyV2.I2,
+    onlyV2.I3,
+    both.V_A,
+    both.I1,
+    both.I2,
+    both.I3,
+    v1on,
+    v2on,
+  ]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
@@ -85,13 +98,17 @@ export function SuperpositionDemo({ figure }: Props) {
       ctx.fillRect(0, 0, w, h);
 
       const colW = w / 3;
-      drawPanel(ctx, 0, 0, colW, h, "V1 only (V2 → short)", onlyV1, 'rgba(255,59,110,0.85)');
-      drawPanel(ctx, colW, 0, colW, h, "V2 only (V1 → short)", onlyV2, 'rgba(91,174,248,0.85)');
+      drawPanel(ctx, 0, 0, colW, h, 'V1 only (V2 → short)', onlyV1, 'rgba(255,59,110,0.85)');
+      drawPanel(ctx, colW, 0, colW, h, 'V2 only (V1 → short)', onlyV2, 'rgba(91,174,248,0.85)');
 
       const label =
-        v1on && v2on ? 'Both on (live)' :
-        v1on ? 'Live: V1 only' :
-        v2on ? 'Live: V2 only' : 'Both off';
+        v1on && v2on
+          ? 'Both on (live)'
+          : v1on
+            ? 'Live: V1 only'
+            : v2on
+              ? 'Live: V2 only'
+              : 'Both off';
       drawPanel(ctx, 2 * colW, 0, colW, h, label, both, 'rgba(255,107,42,0.95)');
 
       // Sum-arrow header
@@ -113,26 +130,64 @@ export function SuperpositionDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 12.7b'}
       title="Superposition — the engine behind Thévenin"
       question="Turn V1 and V2 on independently. The live currents add up exactly."
-      caption={<>
-        A linear three-resistor bridge with two voltage sources. With V<sub>2</sub> shorted, V<sub>1</sub>
-        alone produces some set of branch currents I'. With V<sub>1</sub> shorted, V<sub>2</sub>
-        produces a different set I''. With both alive, every branch current is exactly
-        I' + I'' — the algebraic sum. Superposition is what makes the entire chapter's complex-impedance
-        machinery work, and it is the engine of the Thévenin theorem.
-      </>}
+      caption={
+        <>
+          A linear three-resistor bridge with two voltage sources. With V<sub>2</sub> shorted, V
+          <sub>1</sub>
+          alone produces some set of branch currents I'. With V<sub>1</sub> shorted, V<sub>2</sub>
+          produces a different set I''. With both alive, every branch current is exactly I' + I'' —
+          the algebraic sum. Superposition is what makes the entire chapter's complex-impedance
+          machinery work, and it is the engine of the Thévenin theorem.
+        </>
+      }
     >
       <AutoResizeCanvas height={300} setup={setup} />
       <DemoControls>
-        <MiniSlider label="V₁" value={V1} min={0} max={20} step={0.5}
-          format={v => v.toFixed(1) + ' V'} onChange={setV1} />
-        <MiniSlider label="V₂" value={V2} min={0} max={20} step={0.5}
-          format={v => v.toFixed(1) + ' V'} onChange={setV2} />
-        <MiniSlider label="R₁" value={R1k} min={0.1} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' kΩ'} onChange={setR1k} />
-        <MiniSlider label="R₂" value={R2k} min={0.1} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' kΩ'} onChange={setR2k} />
-        <MiniSlider label="R₃" value={R3k} min={0.1} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' kΩ'} onChange={setR3k} />
+        <MiniSlider
+          label="V₁"
+          value={V1}
+          min={0}
+          max={20}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
+          onChange={setV1}
+        />
+        <MiniSlider
+          label="V₂"
+          value={V2}
+          min={0}
+          max={20}
+          step={0.5}
+          format={(v) => v.toFixed(1) + ' V'}
+          onChange={setV2}
+        />
+        <MiniSlider
+          label="R₁"
+          value={R1k}
+          min={0.1}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' kΩ'}
+          onChange={setR1k}
+        />
+        <MiniSlider
+          label="R₂"
+          value={R2k}
+          min={0.1}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' kΩ'}
+          onChange={setR2k}
+        />
+        <MiniSlider
+          label="R₃"
+          value={R3k}
+          min={0.1}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' kΩ'}
+          onChange={setR3k}
+        />
         <MiniToggle label={v1on ? 'V₁ on' : 'V₁ off'} checked={v1on} onChange={setV1on} />
         <MiniToggle label={v2on ? 'V₂ on' : 'V₂ off'} checked={v2on} onChange={setV2on} />
         <MiniReadout
@@ -154,13 +209,21 @@ export function SuperpositionDemo({ figure }: Props) {
 
 function drawPanel(
   ctx: CanvasRenderingContext2D,
-  x0: number, y0: number, w: number, h: number,
-  title: string, c: Currents, accent: string,
+  x0: number,
+  y0: number,
+  w: number,
+  h: number,
+  title: string,
+  c: Currents,
+  accent: string,
 ) {
   ctx.save();
   ctx.translate(x0, y0);
 
-  const padL = 36, padR = 12, padT = 28, padB = 26;
+  const padL = 36,
+    padR = 12,
+    padT = 28,
+    padB = 26;
   const plotW = w - padL - padR;
   const plotH = h - padT - padB;
 
@@ -183,7 +246,8 @@ function drawPanel(
   // Zero line
   ctx.strokeStyle = getCanvasColors().borderStrong;
   ctx.beginPath();
-  ctx.moveTo(padL, yMid); ctx.lineTo(padL + plotW, yMid);
+  ctx.moveTo(padL, yMid);
+  ctx.lineTo(padL + plotW, yMid);
   ctx.stroke();
 
   // Three vertical bars: I1, I2, I3

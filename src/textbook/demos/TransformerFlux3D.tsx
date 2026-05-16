@@ -38,16 +38,18 @@ import {
   type Vec3,
 } from '@/lib/projection3d';
 
-interface Props { figure?: string }
+interface Props {
+  figure?: string;
+}
 
 // ─── core geometry (world units) ────────────────────────────────────────────
 // Outer rectangle of the iron core, in the x–y plane. The core is a closed
 // magnetic loop with a rectangular "window" cut out of the middle.
-const CORE_OUTER_X = 2.0;   // half-width
-const CORE_OUTER_Y = 1.3;   // half-height
-const LEG_THICK = 0.42;     // thickness of each leg in the x–y plane
-const CORE_DEPTH = 0.36;    // total stack depth along z
-const N_LAMINATIONS = 9;    // number of laminated sheets drawn
+const CORE_OUTER_X = 2.0; // half-width
+const CORE_OUTER_Y = 1.3; // half-height
+const LEG_THICK = 0.42; // thickness of each leg in the x–y plane
+const CORE_DEPTH = 0.36; // total stack depth along z
+const N_LAMINATIONS = 9; // number of laminated sheets drawn
 
 // Position of leg centres (geometric axis of each leg).
 const LEG_LEFT_X = -(CORE_OUTER_X - LEG_THICK / 2);
@@ -59,7 +61,7 @@ const LEG_TOP_Y = +(CORE_OUTER_Y - LEG_THICK / 2);
 // be larger than half the leg's xy cross-section so the helix wraps the
 // leg without intersecting it.
 const WIND_R = 0.42;
-const PRIMARY_HELIX_HEIGHT = 1.5;   // total y-extent of the primary helix
+const PRIMARY_HELIX_HEIGHT = 1.5; // total y-extent of the primary helix
 const SECONDARY_HELIX_HEIGHT = 1.5; // same for the secondary
 
 // Approximate magnetic path length (mean iron loop perimeter).
@@ -74,21 +76,21 @@ const MU_R_IRON = 5000;
 
 // Turns-ratio choices the reader can pick.
 const RATIO_CHOICES: { label: string; np: number; ns: number }[] = [
-  { label: '1:1',  np: 6, ns: 6 },
-  { label: '2:1',  np: 6, ns: 3 },
-  { label: '5:1',  np: 10, ns: 2 },
+  { label: '1:1', np: 6, ns: 6 },
+  { label: '2:1', np: 6, ns: 3 },
+  { label: '5:1', np: 10, ns: 2 },
   { label: '10:1', np: 10, ns: 1 },
 ];
 
-const V_P_RMS = 240;   // shown as the assumed primary voltage
+const V_P_RMS = 240; // shown as the assumed primary voltage
 
 // ─── helper: build the iron rectangular-window cross-section as a polygon ───
 function corePolygonOuter(): { x: number; y: number }[] {
   return [
     { x: -CORE_OUTER_X, y: -CORE_OUTER_Y },
-    { x:  CORE_OUTER_X, y: -CORE_OUTER_Y },
-    { x:  CORE_OUTER_X, y:  CORE_OUTER_Y },
-    { x: -CORE_OUTER_X, y:  CORE_OUTER_Y },
+    { x: CORE_OUTER_X, y: -CORE_OUTER_Y },
+    { x: CORE_OUTER_X, y: CORE_OUTER_Y },
+    { x: -CORE_OUTER_X, y: CORE_OUTER_Y },
   ];
 }
 function corePolygonInner(): { x: number; y: number }[] {
@@ -96,9 +98,9 @@ function corePolygonInner(): { x: number; y: number }[] {
   const iy = CORE_OUTER_Y - LEG_THICK;
   return [
     { x: -ix, y: -iy },
-    { x:  ix, y: -iy },
-    { x:  ix, y:  iy },
-    { x: -ix, y:  iy },
+    { x: ix, y: -iy },
+    { x: ix, y: iy },
+    { x: -ix, y: iy },
   ];
 }
 
@@ -106,12 +108,16 @@ function corePolygonInner(): { x: number; y: number }[] {
 // helix. Axis runs along +y through (legX, *, 0). The helix radius is
 // WIND_R and lies in the x–z plane.
 function helixAroundLeg(
-  legX: number, turns: number, height: number, samplesPerTurn: number, phase: number = 0,
+  legX: number,
+  turns: number,
+  height: number,
+  samplesPerTurn: number,
+  phase: number = 0,
 ): Vec3[] {
   const out: Vec3[] = [];
   const total = turns * samplesPerTurn;
   for (let i = 0; i <= total; i++) {
-    const u = i / total;            // 0..1 along the helix
+    const u = i / total; // 0..1 along the helix
     const theta = u * turns * Math.PI * 2 + phase;
     const y = -height / 2 + u * height;
     const x = legX + WIND_R * Math.cos(theta);
@@ -123,7 +129,7 @@ function helixAroundLeg(
 
 export function TransformerFlux3DDemo({ figure }: Props) {
   const [Ip, setIp] = useState(2.0);
-  const [ratioIdx, setRatioIdx] = useState(1);            // 2:1 default
+  const [ratioIdx, setRatioIdx] = useState(1); // 2:1 default
   const [showLeakage, setShowLeakage] = useState(false);
   const [showFlux, setShowFlux] = useState(true);
   const [showSecCurrent, setShowSecCurrent] = useState(true);
@@ -137,7 +143,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
     const Vs = Vp * (Ns / Np);
     // Φ = μ · N · I · A / ℓ  (Ampere's law for a magnetic circuit)
     const phi = (MU_0 * MU_R_IRON * Np * Ip * CORE_AREA) / PATH_LENGTH;
-    const k = showLeakage ? 0.90 : 0.95;
+    const k = showLeakage ? 0.9 : 0.95;
     return { Vp, Vs, phi, k };
   }, [Ip, Np, Ns, showLeakage]);
 
@@ -173,10 +179,19 @@ export function TransformerFlux3DDemo({ figure }: Props) {
       return segs;
     }
 
-    function drawArrow2D(p1: Point2D, p2: Point2D, color: string, lineWidth: number, glow: boolean) {
+    function drawArrow2D(
+      p1: Point2D,
+      p2: Point2D,
+      color: string,
+      lineWidth: number,
+      glow: boolean,
+    ) {
       if (glow) {
         drawGlowPath(ctx, [p1, p2], {
-          color, lineWidth, glowColor: color.replace(/[\d.]+\)$/, '0.30)'), glowWidth: lineWidth + 5,
+          color,
+          lineWidth,
+          glowColor: color.replace(/[\d.]+\)$/, '0.30)'),
+          glowWidth: lineWidth + 5,
         });
       } else {
         ctx.strokeStyle = color;
@@ -186,10 +201,12 @@ export function TransformerFlux3DDemo({ figure }: Props) {
         ctx.lineTo(p2.x, p2.y);
         ctx.stroke();
       }
-      const dx = p2.x - p1.x, dy = p2.y - p1.y;
+      const dx = p2.x - p1.x,
+        dy = p2.y - p1.y;
       const len = Math.hypot(dx, dy);
       if (len < 3) return;
-      const ux = dx / len, uy = dy / len;
+      const ux = dx / len,
+        uy = dy / len;
       const head = glow ? 8 : 6;
       const half = glow ? 4 : 3;
       ctx.fillStyle = color;
@@ -213,9 +230,9 @@ export function TransformerFlux3DDemo({ figure }: Props) {
       const fade = Math.max(0.18, Math.min(0.85, (cam.distance + 1.5 - depthAvg) / 3.5));
       const outer = corePolygonOuter();
       const inner = corePolygonInner();
-      const outerScreen = outer.map(p => project(v3(p.x, p.y, z), cam, W, H));
-      const innerScreen = inner.map(p => project(v3(p.x, p.y, z), cam, W, H));
-      if (outerScreen.some(p => p.depth <= 0)) return;
+      const outerScreen = outer.map((p) => project(v3(p.x, p.y, z), cam, W, H));
+      const innerScreen = inner.map((p) => project(v3(p.x, p.y, z), cam, W, H));
+      if (outerScreen.some((p) => p.depth <= 0)) return;
 
       // Filled silhouette: outer rect with inner rect punched out (even-odd).
       ctx.save();
@@ -254,7 +271,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
       }
       // Depth-sort by projected depth at origin.
       const lamOrder = zs
-        .map(z => ({ z, d: project(v3(0, 0, z), cam, W, H).depth }))
+        .map((z) => ({ z, d: project(v3(0, 0, z), cam, W, H).depth }))
         .sort((a, b) => b.d - a.d);
       for (const lam of lamOrder) drawLamination(lam.z, lam.d);
 
@@ -299,10 +316,19 @@ export function TransformerFlux3DDemo({ figure }: Props) {
         for (let i = 0; i < segs; i++) {
           const fp = fluxPts[i]!;
           // Local tangent.
-          let tx = 0, ty = 0;
-          if (Math.abs(fp.x - LEG_LEFT_X) < 0.01 && fp.y > LEG_BOT_Y + 0.05 && fp.y < LEG_TOP_Y - 0.05) {
+          let tx = 0,
+            ty = 0;
+          if (
+            Math.abs(fp.x - LEG_LEFT_X) < 0.01 &&
+            fp.y > LEG_BOT_Y + 0.05 &&
+            fp.y < LEG_TOP_Y - 0.05
+          ) {
             ty = 1;
-          } else if (Math.abs(fp.x - LEG_RIGHT_X) < 0.01 && fp.y > LEG_BOT_Y + 0.05 && fp.y < LEG_TOP_Y - 0.05) {
+          } else if (
+            Math.abs(fp.x - LEG_RIGHT_X) < 0.01 &&
+            fp.y > LEG_BOT_Y + 0.05 &&
+            fp.y < LEG_TOP_Y - 0.05
+          ) {
             ty = -1;
           } else if (Math.abs(fp.y - LEG_TOP_Y) < 0.01) {
             tx = 1;
@@ -314,8 +340,8 @@ export function TransformerFlux3DDemo({ figure }: Props) {
           const stationPhase = (i / segs + phaseShift) % 1;
           const twinkle = 0.55 + 0.45 * Math.cos(2 * Math.PI * stationPhase);
           const alpha = (0.45 + 0.5 * intensity) * twinkle;
-          const from = v3(fp.x - tx * arrowLen / 2, fp.y - ty * arrowLen / 2, fp.z);
-          const to = v3(fp.x + tx * arrowLen / 2, fp.y + ty * arrowLen / 2, fp.z);
+          const from = v3(fp.x - (tx * arrowLen) / 2, fp.y - (ty * arrowLen) / 2, fp.z);
+          const to = v3(fp.x + (tx * arrowLen) / 2, fp.y + (ty * arrowLen) / 2, fp.z);
           drawArrow3D(from, to, `rgba(255,107,42,${alpha.toFixed(3)})`, 2.0, true);
         }
 
@@ -342,7 +368,13 @@ export function TransformerFlux3DDemo({ figure }: Props) {
       }
 
       // ── 4) secondary winding (helix around right leg) ──
-      const secondaryPts = helixAroundLeg(LEG_RIGHT_X, st.Ns, SECONDARY_HELIX_HEIGHT, 36, Math.PI / 4);
+      const secondaryPts = helixAroundLeg(
+        LEG_RIGHT_X,
+        st.Ns,
+        SECONDARY_HELIX_HEIGHT,
+        36,
+        Math.PI / 4,
+      );
       for (const segPath of projectPolyline(secondaryPts)) {
         drawGlowPath(ctx, segPath, {
           color: 'rgba(91,174,248,0.92)',
@@ -365,7 +397,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
         // other side."
         const packets = 3;
         for (let k = 0; k < packets; k++) {
-          const base = ((t * 0.18 + k / packets) % 1);
+          const base = (t * 0.18 + k / packets) % 1;
           // Sample a sub-stretch of ~7% of the helix as one packet.
           const lo = Math.max(0, base - 0.035);
           const hi = Math.min(1, base + 0.035);
@@ -387,10 +419,12 @@ export function TransformerFlux3DDemo({ figure }: Props) {
           const ph = project(secondaryPts[headIdx]!, cam, W, H);
           const pt = project(secondaryPts[tailIdx]!, cam, W, H);
           if (ph.depth > 0 && pt.depth > 0) {
-            const dx = ph.x - pt.x, dy = ph.y - pt.y;
+            const dx = ph.x - pt.x,
+              dy = ph.y - pt.y;
             const len = Math.hypot(dx, dy);
             if (len > 2) {
-              const ux = dx / len, uy = dy / len;
+              const ux = dx / len,
+                uy = dy / len;
               ctx.fillStyle = getCanvasColors().accent;
               ctx.beginPath();
               ctx.moveTo(ph.x, ph.y);
@@ -416,8 +450,8 @@ export function TransformerFlux3DDemo({ figure }: Props) {
         // the leg through the air on the side facing AWAY from the core
         // (the "free" side of each winding).
         const leakSpec: { legX: number; outwardX: number }[] = [
-          { legX: LEG_LEFT_X,  outwardX: -1 },   // primary: bows out to the left
-          { legX: LEG_RIGHT_X, outwardX: +1 },   // secondary: bows out to the right
+          { legX: LEG_LEFT_X, outwardX: -1 }, // primary: bows out to the left
+          { legX: LEG_RIGHT_X, outwardX: +1 }, // secondary: bows out to the right
         ];
         for (const ls of leakSpec) {
           const NLEAK = 4;
@@ -429,8 +463,8 @@ export function TransformerFlux3DDemo({ figure }: Props) {
             const arc: Vec3[] = [];
             const ARC_N = 12;
             for (let j = 0; j <= ARC_N; j++) {
-              const s = j / ARC_N;             // 0..1 along arc
-              const theta = Math.PI * s;       // half-circle in x-y plane
+              const s = j / ARC_N; // 0..1 along arc
+              const theta = Math.PI * s; // half-circle in x-y plane
               const arcR = 0.45;
               const ax = ls.legX + ls.outwardX * (WIND_R + 0.05 + arcR * Math.sin(theta));
               const ay = y + arcR * 0.7 * (1 - Math.cos(theta)) - 0.0;
@@ -450,10 +484,12 @@ export function TransformerFlux3DDemo({ figure }: Props) {
               const ph = project(arc[arc.length - 1]!, cam, W, H);
               const pt = project(arc[arc.length - 2]!, cam, W, H);
               if (ph.depth > 0 && pt.depth > 0) {
-                const dx = ph.x - pt.x, dy = ph.y - pt.y;
+                const dx = ph.x - pt.x,
+                  dy = ph.y - pt.y;
                 const len = Math.hypot(dx, dy);
                 if (len > 2) {
-                  const ux = dx / len, uy = dy / len;
+                  const ux = dx / len,
+                    uy = dy / len;
                   ctx.fillStyle = `rgba(108,197,194,${alpha.toFixed(3)})`;
                   ctx.beginPath();
                   ctx.moveTo(ph.x, ph.y);
@@ -511,28 +547,37 @@ export function TransformerFlux3DDemo({ figure }: Props) {
       figure={figure ?? 'Fig. 23.X'}
       title="Shell-form transformer in 3D — the flux path and what escapes it"
       question="Where does the flux actually go, and how much of it never makes it from one coil to the other?"
-      caption={<>
-        Drag the core to rotate. The pink helix on the left leg is the primary, the blue helix on the right
-        leg is the secondary, and amber chevrons inside the iron trace the closed magnetic loop that ties them
-        together. Toggle "leakage" on to see the teal arcs that escape each winding through the air — that
-        small fraction of flux that never reaches the other coil is what makes the coupling coefficient
-        k slightly less than one in a real transformer.
-      </>}
+      caption={
+        <>
+          Drag the core to rotate. The pink helix on the left leg is the primary, the blue helix on
+          the right leg is the secondary, and amber chevrons inside the iron trace the closed
+          magnetic loop that ties them together. Toggle "leakage" on to see the teal arcs that
+          escape each winding through the air — that small fraction of flux that never reaches the
+          other coil is what makes the coupling coefficient k slightly less than one in a real
+          transformer.
+        </>
+      }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
     >
       <AutoResizeCanvas height={420} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="I_p"
-          value={Ip} min={0} max={10} step={0.1}
-          format={v => v.toFixed(1) + ' A'}
+          value={Ip}
+          min={0}
+          max={10}
+          step={0.1}
+          format={(v) => v.toFixed(1) + ' A'}
           onChange={setIp}
         />
         <MiniSlider
           label="ratio N_p:N_s"
-          value={ratioIdx} min={0} max={RATIO_CHOICES.length - 1} step={1}
-          format={v => RATIO_CHOICES[Math.round(v)]!.label}
-          onChange={v => setRatioIdx(Math.round(v))}
+          value={ratioIdx}
+          min={0}
+          max={RATIO_CHOICES.length - 1}
+          step={1}
+          format={(v) => RATIO_CHOICES[Math.round(v)]!.label}
+          onChange={(v) => setRatioIdx(Math.round(v))}
         />
         <MiniToggle label="flux in core" checked={showFlux} onChange={setShowFlux} />
         <MiniToggle label="leakage flux" checked={showLeakage} onChange={setShowLeakage} />

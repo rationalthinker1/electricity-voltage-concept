@@ -34,7 +34,7 @@ function layoutGraph(chapters: ChapterEntry[]): {
   height: number;
 } {
   // Build a depth map using longest-path layering.
-  const bySlug = new Map<ChapterSlug, ChapterEntry>(chapters.map(c => [c.slug, c]));
+  const bySlug = new Map<ChapterSlug, ChapterEntry>(chapters.map((c) => [c.slug, c]));
   const depth = new Map<ChapterSlug, number>();
 
   function depthOf(slug: ChapterSlug, seen: Set<ChapterSlug> = new Set()): number {
@@ -52,7 +52,7 @@ function layoutGraph(chapters: ChapterEntry[]): {
     return d;
   }
 
-  chapters.forEach(c => depthOf(c.slug));
+  chapters.forEach((c) => depthOf(c.slug));
 
   // Group by depth.
   const layers = new Map<number, ChapterEntry[]>();
@@ -64,7 +64,7 @@ function layoutGraph(chapters: ChapterEntry[]): {
   // Sort within each layer by chapter number for stability.
   for (const arr of layers.values()) arr.sort((a, b) => a.number - b.number);
 
-  const maxCols = Math.max(...Array.from(layers.values()).map(a => a.length));
+  const maxCols = Math.max(...Array.from(layers.values()).map((a) => a.length));
   const width = PADDING_X * 2 + maxCols * NODE_W + (maxCols - 1) * COL_GAP;
   const totalLayers = Math.max(...Array.from(layers.keys())) + 1;
   const height = PADDING_Y * 2 + totalLayers * NODE_H + (totalLayers - 1) * ROW_GAP;
@@ -153,7 +153,7 @@ function MapPage() {
   const navigate = useNavigate();
 
   const { nodes, edges, width, height, hasPrereqData } = useMemo(() => {
-    const hasPrereqData = CHAPTERS.some(c => (c.prereqs?.length ?? 0) > 0);
+    const hasPrereqData = CHAPTERS.some((c) => (c.prereqs?.length ?? 0) > 0);
     const layout = layoutGraph(CHAPTERS);
     return { ...layout, hasPrereqData };
   }, []);
@@ -180,8 +180,8 @@ function MapPage() {
   const highlightSet = useMemo(() => {
     if (!hovered) return null;
     const s = new Set<ChapterSlug>([hovered]);
-    prereqsOf.get(hovered)?.forEach(x => s.add(x));
-    dependentsOf.get(hovered)?.forEach(x => s.add(x));
+    prereqsOf.get(hovered)?.forEach((x) => s.add(x));
+    dependentsOf.get(hovered)?.forEach((x) => s.add(x));
     return s;
   }, [hovered, prereqsOf, dependentsOf]);
 
@@ -197,28 +197,30 @@ function MapPage() {
     <section className="page-shell max-w-page-lg">
       <style>{SVG_STYLES}</style>
       <div className="mb-2xl">
-        <div className="eyebrow-muted tracking-4 mb-lg">
-          Field · Theory · Course map
-        </div>
+        <div className="eyebrow-muted tracking-4 mb-lg">Field · Theory · Course map</div>
         <h1 className="hero-display max-md:text-9">
           The chapter <em>graph</em>.
         </h1>
         <p className="body-copy max-w-page-sm max-md:text-6">
-          Each chapter sits above its prerequisites. Click a node to open it.
-          Hover to highlight the dependency chain.
+          Each chapter sits above its prerequisites. Click a node to open it. Hover to highlight the
+          dependency chain.
           {!hasPrereqData && (
             <span className="text-accent italic">
-              {' '}Prerequisite data is still loading — only chapter positions are
-              shown until the manifest is populated.
+              {' '}
+              Prerequisite data is still loading — only chapter positions are shown until the
+              manifest is populated.
             </span>
           )}
         </p>
       </div>
 
-      <div className="flex gap-lg items-center font-3 text-2 text-text-dim uppercase tracking-3 mb-lg flex-wrap">
-        <span className="inline-block w-lg h-lg rounded-3 border border-border-2 align-middle mr-sm ml-lg bg-accent" /> selected
-        <span className="inline-block w-lg h-lg rounded-3 border border-border-2 align-middle mr-sm ml-lg bg-teal" /> prerequisite
-        <span className="inline-block w-lg h-lg rounded-3 border border-border-2 align-middle mr-sm ml-lg bg-pink" /> depends on
+      <div className="gap-lg font-3 text-2 text-text-dim tracking-3 mb-lg flex flex-wrap items-center uppercase">
+        <span className="h-lg rounded-3 border-border-2 mr-sm ml-lg bg-accent inline-block w-lg border align-middle" />{' '}
+        selected
+        <span className="h-lg rounded-3 border-border-2 mr-sm ml-lg bg-teal inline-block w-lg border align-middle" />{' '}
+        prerequisite
+        <span className="h-lg rounded-3 border-border-2 mr-sm ml-lg bg-pink inline-block w-lg border align-middle" />{' '}
+        depends on
       </div>
 
       <div
@@ -227,7 +229,7 @@ function MapPage() {
         aria-label="Chapter prerequisite graph"
       >
         <svg
-          className="block max-w-full h-auto text-text-muted"
+          className="text-text-muted block h-auto max-w-full"
           viewBox={`0 0 ${width} ${height}`}
           width={width}
           height={height}
@@ -266,7 +268,7 @@ function MapPage() {
           </g>
 
           <g className="nodes">
-            {nodes.map(n => {
+            {nodes.map((n) => {
               const slug = n.chapter.slug;
               const active = isHighlighted(slug);
               const isHover = hovered === slug;
@@ -289,7 +291,9 @@ function MapPage() {
                   onMouseLeave={() => setHovered(null)}
                   onFocus={() => setHovered(slug)}
                   onBlur={() => setHovered(null)}
-                  onClick={() => navigate({ to: '/textbook/$chapterSlug', params: { chapterSlug: slug } })}
+                  onClick={() =>
+                    navigate({ to: '/textbook/$chapterSlug', params: { chapterSlug: slug } })
+                  }
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
@@ -297,13 +301,7 @@ function MapPage() {
                     }
                   }}
                 >
-                  <rect
-                    width={NODE_W}
-                    height={NODE_H}
-                    rx={10}
-                    ry={10}
-                    className="map-node-rect"
-                  />
+                  <rect width={NODE_W} height={NODE_H} rx={10} ry={10} className="map-node-rect" />
                   <text x={14} y={22} className="map-node-num">
                     Ch.{n.chapter.number}
                   </text>
@@ -317,9 +315,13 @@ function MapPage() {
         </svg>
       </div>
 
-      <div className="flex justify-between items-center mt-2xl pt-lg border-t border-border-1">
-        <Link to="/" className="eyebrow-muted-link">← Back to contents</Link>
-        <Link to="/tracks" className="eyebrow-muted-link">Tracks →</Link>
+      <div className="mt-2xl pt-lg border-border-1 flex items-center justify-between border-t">
+        <Link to="/" className="eyebrow-muted-link">
+          ← Back to contents
+        </Link>
+        <Link to="/tracks" className="eyebrow-muted-link">
+          Tracks →
+        </Link>
       </div>
     </section>
   );
