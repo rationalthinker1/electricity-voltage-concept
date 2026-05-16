@@ -1,11 +1,36 @@
 import type { ReactNode, MouseEventHandler } from 'react';
 import clsx from 'clsx';
+import { tv, type VariantProps } from 'tailwind-variants';
 
-export type PillVariant = 'default' | 'accent' | 'teal' | 'pink' | 'blue' | 'subtle';
+/**
+ * Pill variant table — colour + interactive dials. Static layout
+ * (inline-flex, gap, font, padding, rounded-pill, border) lives inline
+ * at JSX. `interactive` adds hover/active/focus behaviour and switches
+ * the rendered element from <span> to <button>.
+ */
+const pillVariants = tv({
+  variants: {
+    variant: {
+      default: '',
+      accent: 'bg-accent-soft text-accent border-accent-glow',
+      teal: 'bg-teal-soft text-teal border-teal/30',
+      pink: 'bg-pink/15 text-pink border-pink/30',
+      blue: 'bg-blue/15 text-blue border-blue/30',
+      subtle: 'bg-transparent text-text-muted border-border-1',
+    },
+    interactive: {
+      true: 'cursor-pointer transition-[background-color,border-color,transform] duration-fast ease-in-out hover:bg-bg-card-hover hover:border-border-2 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_var(--accent-soft)]',
+      false: '',
+    },
+  },
+  defaultVariants: { variant: 'default', interactive: false },
+});
 
-export interface PillProps {
-  variant?: PillVariant;
-  interactive?: boolean;
+type PillVariantProps = VariantProps<typeof pillVariants>;
+
+export type PillVariant = NonNullable<PillVariantProps['variant']>;
+
+export interface PillProps extends PillVariantProps {
   icon?: ReactNode;
   children?: ReactNode;
   onClick?: MouseEventHandler<HTMLElement>;
@@ -14,8 +39,8 @@ export interface PillProps {
 }
 
 export function Pill({
-  variant = 'default',
-  interactive = false,
+  variant,
+  interactive,
   icon,
   children,
   onClick,
@@ -24,13 +49,7 @@ export function Pill({
 }: PillProps) {
   const classes = clsx(
     'inline-flex items-center gap-sm font-3 text-4 tracking-2 py-sm px-lg rounded-pill border border-border-2 bg-bg-elevated text-text no-underline',
-    variant === 'accent' && 'bg-accent-soft text-accent border-accent-glow',
-    variant === 'teal' && 'bg-teal-soft text-teal border-teal/30',
-    variant === 'pink' && 'bg-pink/15 text-pink border-pink/30',
-    variant === 'blue' && 'bg-blue/15 text-blue border-blue/30',
-    variant === 'subtle' && 'bg-transparent text-text-muted border-border-1',
-    interactive &&
-      'cursor-pointer transition-[background-color,border-color,transform] duration-fast ease-in-out hover:bg-bg-card-hover hover:border-border-2 active:translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_var(--accent-soft)]',
+    pillVariants({ variant, interactive }),
     className,
   );
 

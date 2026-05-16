@@ -1,5 +1,17 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import clsx from 'clsx';
+import { tv } from 'tailwind-variants';
+
+/** Multiple-choice option label — `checked` swaps colour + border + bg. */
+const optionVariants = tv({
+  variants: {
+    checked: {
+      true: 'border-accent bg-accent-soft text-text',
+      false: '',
+    },
+  },
+  defaultVariants: { checked: false },
+});
 import { Badge, Banner, Card } from './ui';
 
 export type PredictKind = 'multiple-choice' | 'short-answer';
@@ -182,7 +194,7 @@ export function PredictThenObserve({
                   key={opt.id}
                   className={clsx(
                     'gap-md py-md px-md border-border-1 rounded-2 bg-bg-elevated text-text-dim font-1 text-5 hover:border-border-2 hover:text-text hover:bg-bg-card-hover flex cursor-pointer items-center border leading-3 transition-all duration-150 ease-in-out',
-                    checked && 'border-accent bg-accent-soft text-text',
+                    optionVariants({ checked }),
                   )}
                 >
                   <input

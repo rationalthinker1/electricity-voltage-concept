@@ -1,16 +1,29 @@
 import { useEffect, useRef, type ReactNode, type MouseEvent } from 'react';
 import clsx from 'clsx';
+import { tv, type VariantProps } from 'tailwind-variants';
 
-export interface DrawerProps {
+/** Drawer side dial — controls anchor + radius + border edge. */
+const drawerVariants = tv({
+  variants: {
+    side: {
+      right: 'border-l-border-2 top-0 right-0 bottom-0 w-[min(420px,92vw)] border-l',
+      bottom: 'border-t-border-2 rounded-t-6 right-0 bottom-0 left-0 max-h-[80vh] border-t',
+    },
+  },
+  defaultVariants: { side: 'right' },
+});
+
+type DrawerVariantProps = VariantProps<typeof drawerVariants>;
+
+export interface DrawerProps extends DrawerVariantProps {
   open: boolean;
   onClose: () => void;
   title?: ReactNode;
   children?: ReactNode;
-  side?: 'right' | 'bottom';
   className?: string;
 }
 
-export function Drawer({ open, onClose, title, children, side = 'right', className }: DrawerProps) {
+export function Drawer({ open, onClose, title, children, side, className }: DrawerProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -62,10 +75,7 @@ export function Drawer({ open, onClose, title, children, side = 'right', classNa
       <div
         className={clsx(
           'bg-bg-elevated border-border-2 shadow-3 fixed flex flex-col overflow-hidden border',
-          side === 'right' &&
-            'border-l-border-2 top-0 right-0 bottom-0 w-[min(420px,92vw)] border-l',
-          side === 'bottom' &&
-            'border-t-border-2 rounded-t-6 right-0 bottom-0 left-0 max-h-[80vh] border-t',
+          drawerVariants({ side }),
         )}
       >
         <header className="py-lg px-lg border-border-1 flex shrink-0 items-center justify-between border-b">

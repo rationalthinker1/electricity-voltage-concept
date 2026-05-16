@@ -10,6 +10,18 @@ import {
   type ReactNode,
 } from 'react';
 import clsx from 'clsx';
+import { tv } from 'tailwind-variants';
+
+/** Tab trigger — `selected` swaps colour + bottom-border accent. */
+const tabVariants = tv({
+  variants: {
+    selected: {
+      true: 'text-accent border-b-accent',
+      false: '',
+    },
+  },
+  defaultVariants: { selected: false },
+});
 
 interface TabsContextValue {
   activeId: string;
@@ -130,7 +142,7 @@ export function Tab({ id, children, disabled }: TabProps) {
       onKeyDown={onKeyDown}
       className={clsx(
         'eyebrow-dim text-3 tracking-2 py-md px-lg duration-fast hover:not-disabled:text-text -mb-px cursor-pointer appearance-none border-0 border-b-2 border-transparent bg-transparent transition-colors ease-in-out disabled:cursor-not-allowed disabled:opacity-45',
-        selected && 'text-accent border-b-accent',
+        tabVariants({ selected }),
       )}
     >
       {children}

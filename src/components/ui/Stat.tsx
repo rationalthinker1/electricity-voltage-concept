@@ -1,14 +1,31 @@
 import type { ReactNode } from 'react';
 import clsx from 'clsx';
+import { tv, type VariantProps } from 'tailwind-variants';
 
-export type StatAccent = 'accent' | 'teal' | 'pink' | 'blue' | undefined;
+/**
+ * Stat-value accent table. The value text is amber/teal/pink/blue when
+ * `accent` is set, otherwise inherits text-text from the static base.
+ */
+const statValueVariants = tv({
+  variants: {
+    accent: {
+      accent: 'text-accent',
+      teal: 'text-teal',
+      pink: 'text-pink',
+      blue: 'text-blue',
+    },
+  },
+});
 
-export interface StatProps {
+type StatVariantProps = VariantProps<typeof statValueVariants>;
+
+export type StatAccent = NonNullable<StatVariantProps['accent']>;
+
+export interface StatProps extends StatVariantProps {
   label: ReactNode;
   value: ReactNode;
   unit?: ReactNode;
   delta?: ReactNode;
-  accent?: StatAccent;
   className?: string;
 }
 
@@ -20,10 +37,7 @@ export function Stat({ label, value, unit, delta, accent, className }: StatProps
         <span
           className={clsx(
             'font-3 text-8 text-text leading-1 font-medium',
-            accent === 'accent' && 'text-accent',
-            accent === 'teal' && 'text-teal',
-            accent === 'pink' && 'text-pink',
-            accent === 'blue' && 'text-blue',
+            statValueVariants({ accent }),
           )}
         >
           {value}

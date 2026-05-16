@@ -8,6 +8,18 @@ import {
   type ReactNode,
 } from 'react';
 import clsx from 'clsx';
+import { tv } from 'tailwind-variants';
+
+/** Accordion item — `open` strengthens the border. */
+const accordionItemVariants = tv({
+  variants: {
+    open: {
+      true: 'border-border-2',
+      false: '',
+    },
+  },
+  defaultVariants: { open: false },
+});
 
 interface AccordionContextValue {
   openIds: Set<string>;
@@ -91,7 +103,7 @@ export function AccordionItem({ id, children, className }: AccordionItemProps) {
       <div
         className={clsx(
           'border-border-1 rounded-5 bg-bg-card overflow-hidden border',
-          open && 'border-border-2',
+          accordionItemVariants({ open }),
           className,
         )}
       >
