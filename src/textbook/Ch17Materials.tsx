@@ -835,7 +835,7 @@ export default function Ch13Materials() {
             For a dilute or moderately dense collection of polarizable molecules — each with molecular
             polarizability α and number density N — the Clausius–Mossotti relation reads
           </p>
-          <Formula small>(ε<sub>r</sub> − 1)/(ε<sub>r</sub> + 2) = N α / (3 ε₀)</Formula>
+          <Formula size="sm">(ε<sub>r</sub> − 1)/(ε<sub>r</sub> + 2) = N α / (3 ε₀)</Formula>
           <p>
             where <strong className="text-text font-medium">ε<sub>r</sub></strong> is the dimensionless relative permittivity of the
             bulk material, <strong className="text-text font-medium">N</strong> is the number density of polarizable molecules (in

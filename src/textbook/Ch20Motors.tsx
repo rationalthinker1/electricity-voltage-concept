@@ -59,7 +59,7 @@ export default function Ch16Motors() {
         same drift velocity. Sum the per-charge force over a length <em className="italic text-text">L</em> of wire carrying current <em className="italic text-text">I</em> in a
         uniform field <strong className="text-text font-medium">B</strong> and the wire itself feels<Cite id="feynman-II-13" in={SOURCES} />:
       </p>
-      <Formula large id="force-on-wire" />
+      <Formula size="lg" id="force-on-wire" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">F</strong> is the force on the wire segment (in newtons), <strong className="text-text font-medium">I</strong>{' '}
         is the current flowing through it (in amperes), <strong className="text-text font-medium">L</strong> is a vector along the

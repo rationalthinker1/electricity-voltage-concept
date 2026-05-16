@@ -370,7 +370,7 @@ export default function BiotSavartLab() {
       <p className="mb-prose-3">For a finite straight segment of length L, on its perpendicular bisector at distance d:</p>
       <Formula tex="|\vec{B}| = \dfrac{\mu_0 I}{4\pi d}\cdot\dfrac{2L}{\sqrt{L^2 + 4d^2}}" />
       <p className="mb-prose-3">And in the long-wire limit L → ∞:</p>
-      <Formula large id="b-around-wire" />
+      <Formula size="lg" id="b-around-wire" />
 
       <h3 className="lab-section-h3">Intuition</h3>
       <p className="mb-prose-3">

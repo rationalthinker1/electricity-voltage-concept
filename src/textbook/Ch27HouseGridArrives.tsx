@@ -112,7 +112,7 @@ export default function Ch27HouseGridArrives() {
         more, and at 120 V that means tens of amps of current. Power, current, and voltage are tied by the same
         identity every engineering student learns in the second week:
       </p>
-      <Formula large id="power-vi" />
+      <Formula size="lg" id="power-vi" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P</strong> is the real power delivered to the load (in watts), <strong className="text-text font-medium">V</strong> is the RMS
         voltage across the load (in volts), and <strong className="text-text font-medium">I</strong> is the RMS current through it (in amperes), for

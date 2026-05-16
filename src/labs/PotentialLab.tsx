@@ -429,7 +429,7 @@ export default function PotentialLab() {
       </p>
 
       <h3 className="lab-section-h3">Formula</h3>
-      <Formula large id="voltage-line-integral" />
+      <Formula size="lg" id="voltage-line-integral" />
       <Formula tex="V(r) = \dfrac{k\, Q}{\varepsilon_r\, r} \quad\text{(single point charge)}" />
       <p className="mb-prose-3">
         Variable glossary:
@@ -494,7 +494,7 @@ export default function PotentialLab() {
         Walk from point a to point b and add up E·dℓ along every step. That line integral is the total work the field does on a unit positive
         charge. The voltage from a to b is defined to be the negative of that:
       </p>
-      <Formula large id="voltage-line-integral" />
+      <Formula size="lg" id="voltage-line-integral" />
       <p className="mb-prose-3">
         Path-independence follows from <strong className="text-text font-medium">∇ × E = 0</strong>: by Stokes's theorem the integral of a curl-free field around any closed loop
         is zero, so the integral between any two points depends only on the endpoints. This lets us define a single-valued function V(r) by

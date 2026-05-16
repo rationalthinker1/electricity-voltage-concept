@@ -59,7 +59,7 @@ export default function Ch2VoltageAndCurrent() {
         Formally, the potential at a point is defined as a line integral of the electric field from a reference point to
         that point, with a minus sign:
       </p>
-      <Formula large tex="V_{ab} = V_b - V_a = -\int_a^b \vec{E}\cdot d\vec{\ell}" />
+      <Formula size="lg" tex="V_{ab} = V_b - V_a = -\int_a^b \vec{E}\cdot d\vec{\ell}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V<sub>a</sub></strong> and <strong className="text-text font-medium">V<sub>b</sub></strong> are the potentials (in volts, J/C) at
         the two endpoints, <strong className="text-text font-medium">V<sub>ab</sub></strong> is the potential difference between them,
@@ -92,13 +92,13 @@ export default function Ch2VoltageAndCurrent() {
         operationally — as the energy it takes (or releases) per coulomb of charge moved from one point to the other.
         Move a charge <strong className="text-text font-medium">q</strong> against a potential difference <strong className="text-text font-medium">V</strong> and you do work
       </p>
-      <Formula large id="work-charge-voltage" />
+      <Formula size="lg" id="work-charge-voltage" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">W</strong> is the work done on the charge (in joules), <strong className="text-text font-medium">q</strong> is the charge being
         moved (in coulombs, signed), and <strong className="text-text font-medium">V</strong> is the potential difference between the start and end
         points (in volts). Equivalently, rearrange to read voltage off as work-per-charge:
       </p>
-      <Formula large tex="V = \dfrac{W}{q} = \dfrac{\Delta U}{q}" />
+      <Formula size="lg" tex="V = \dfrac{W}{q} = \dfrac{\Delta U}{q}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">ΔU</strong> is the change in electrical potential energy of the charge (in joules). One volt
         is one joule per coulomb. That single identity is why "1.5 V" on a battery is a statement about energy: it
@@ -129,14 +129,14 @@ export default function Ch2VoltageAndCurrent() {
         uniform — same magnitude, same direction at every point in the gap. The line integral collapses to a single
         product. The voltage between the plates is
       </p>
-      <Formula large id="voltage-uniform-field" />
+      <Formula size="lg" id="voltage-uniform-field" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V</strong> is the potential difference between the two plates (in volts),
         <strong className="text-text font-medium"> E</strong> is the magnitude of the uniform electric field in the gap (in V/m), and
         <strong className="text-text font-medium"> d</strong> is the gap distance (in metres). Voltage and field, in this geometry, are two ways of
         saying the same thing. The work to push a charge <strong className="text-text font-medium">q</strong> from one plate to the other is then
       </p>
-      <Formula large tex="W = qV = qEd" />
+      <Formula size="lg" tex="W = qV = qEd" />
       <p className="mb-prose-3">
         the product of charge, field, and distance — exactly Newton's <em className="italic text-text">work = force × distance</em> with
         <InlineMath tex="F = qE" /> from Ch.1. And for any intermediate height <em className="italic text-text">h</em> off the bottom plate, the voltage
@@ -174,7 +174,7 @@ export default function Ch2VoltageAndCurrent() {
         second, which works out to about <strong className="text-text font-medium">6.24×10¹⁸ elementary charges per second</strong> moving past a fixed
         cross-section. That is an absurd number of electrons. It will get more absurd in two paragraphs.
       </p>
-      <Formula large id="current-def" />
+      <Formula size="lg" id="current-def" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">I</strong> is the current (in amperes, A = C/s), <strong className="text-text font-medium">Q</strong> is the net charge that has
         crossed a chosen fixed cross-section (in coulombs), and <strong className="text-text font-medium">t</strong> is time (in seconds). The sign of
@@ -204,7 +204,7 @@ export default function Ch2VoltageAndCurrent() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">The number per second is just the current divided by the elementary charge <Cite id="codata-2018" in={SOURCES} />:</p>
-            <Formula large tex="N = I/e = 1 / (1.602\times 10^{-19}) \approx 6.24\times 10^{18}\ \text{electrons/s}" />
+            <Formula size="lg" tex="N = I/e = 1 / (1.602\times 10^{-19}) \approx 6.24\times 10^{18}\ \text{electrons/s}" />
             <p className="mb-prose-1 last:mb-0">Answer: <strong className="text-text font-medium">~6.24×10¹⁸ electrons per second</strong> — six quintillion, every second, for every amp.</p>
           </>
         }
@@ -226,7 +226,7 @@ export default function Ch2VoltageAndCurrent() {
         In two equations (the{' '}
         <Term def={<><strong className="text-text font-medium">Drude model</strong> — Paul Drude's 1900 picture of electrons as a classical gas inside a metal, accelerated by <em className="italic text-text">E</em> between collisions with lattice ions every <em className="italic text-text">τ</em>. Predicts <InlineMath tex="\sigma = nq^2\tau/m" />.</>}>Drude model</Term>) <Cite id="drude-1900" in={SOURCES} />:
       </p>
-      <Formula large tex="v_d = \dfrac{I}{n\, q\, A}" />
+      <Formula size="lg" tex="v_d = \dfrac{I}{n\, q\, A}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">v<sub>d</sub></strong> is the average drift speed of the carriers (in m/s),
         <strong className="text-text font-medium"> I</strong> is the current (in amperes), <strong className="text-text font-medium">n</strong> is the free-carrier number density
@@ -328,7 +328,7 @@ export default function Ch2VoltageAndCurrent() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">The ratio of speeds <Cite id="libretexts-conduction" in={SOURCES} />:</p>
-            <Formula large tex="v_{\text{signal}}/v_{\text{drift}} \approx 2\times 10^{8} / 2.4\times 10^{-4} \approx 8\times 10^{11}" />
+            <Formula size="lg" tex="v_{\text{signal}}/v_{\text{drift}} \approx 2\times 10^{8} / 2.4\times 10^{-4} \approx 8\times 10^{11}" />
             <p className="mb-prose-1 last:mb-0">
               Time for the signal to cross 30 cm: 0.30 / (2×10⁸) = <strong className="text-text font-medium">1.5 ns</strong>. Time for a single drifting
               electron: 0.30 / (2.4×10⁻⁴) ≈ <strong className="text-text font-medium">1250 s ≈ 21 minutes</strong>. Nearly twelve orders of magnitude

@@ -17,7 +17,7 @@
 import type { ReactNode } from 'react';
 import type { ChapterSlug } from '@/textbook/data/chapters';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { getChapter } from '@/textbook/data/chapters';
 
 export type QuizQuestionType = 'multiple-choice' | 'true-false' | 'short-answer' | 'numeric';
@@ -110,10 +110,10 @@ const CH1_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>Coulomb&rsquo;s law gives the magnitude of the force between two point charges. Which expression is correct?</>,
       choices: [
-        <Formula plainText key="a">F = k Q&#8321; Q&#8322; / r</Formula>,
-        <Formula plainText key="b">F = k Q&#8321; Q&#8322; / r&sup2;</Formula>,
-        <Formula plainText key="c">F = k (Q&#8321; + Q&#8322;) / r&sup2;</Formula>,
-        <Formula plainText key="d">F = k Q&#8321; Q&#8322; r&sup2;</Formula>,
+        <InlineMath tex="F = k Q_1 Q_2 / r" key="a" />,
+        <InlineMath tex="F = k Q_1 Q_2 / r^2" key="b" />,
+        <InlineMath tex="F = k (Q_1 + Q_2) / r^2" key="c" />,
+        <InlineMath tex="F = k Q_1 Q_2 r^2" key="d" />,
       ],
       correctIndex: 1,
       explanation: (

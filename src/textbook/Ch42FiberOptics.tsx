@@ -43,7 +43,7 @@ export default function Ch42FiberOptics() {
         Light slows down when it enters glass. The ratio between the speed of light in
         vacuum and the speed in the medium is the medium's <Term def={<><strong className="text-text font-medium">refractive index</strong> <em className="italic text-text">n</em> — the ratio <em className="italic text-text">c / v</em>, where <em className="italic text-text">v</em> is the phase velocity of light in the medium. Pure silica at 1550 nm has <em className="italic text-text">n</em> ≈ 1.444. Higher index means slower light, more bending at an interface.</>}>refractive index</Term> <InlineMath>n</InlineMath>. At an interface between two media, Snell's law links the angles on either side<Cite id="hecht-2017" in={SOURCES} />:
       </p>
-      <Formula large id="snells-law" />
+      <Formula size="lg" id="snells-law" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">n₁</strong> and <strong className="text-text font-medium">n₂</strong> are the refractive indices of the
         two media, <strong className="text-text font-medium">θ₁</strong> is the angle of the incoming ray to the surface

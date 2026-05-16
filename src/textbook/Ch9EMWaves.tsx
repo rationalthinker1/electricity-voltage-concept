@@ -84,7 +84,7 @@ export default function Ch9EMWaves() {
         the trick that links them. Faraday's law says a changing magnetic field produces an electric field that curls
         around it:
       </p>
-      <Formula large id="maxwell-faraday" />
+      <Formula size="lg" id="maxwell-faraday" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">∇ × E</strong> is the curl of the electric field (a vector measuring how E loops around
         each point, in V/m²), and <strong className="text-text font-medium">∂B/∂t</strong> is the rate of change of the magnetic field at a fixed

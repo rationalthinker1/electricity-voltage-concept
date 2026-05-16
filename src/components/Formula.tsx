@@ -17,12 +17,36 @@
  * Math typography is KaTeX's defaults; styling lives in main.css under the
  * `.formula-tex` and `.formula-content` recipes.
  */
+import clsx from 'clsx';
 import katex from 'katex';
 import { useMemo, type ReactNode } from 'react';
+import { tv, type VariantProps } from 'tailwind-variants';
 
 import { FORMULAS, type FormulaId } from '@/lib/formulas';
 
-interface FormulaProps {
+/**
+ * Variant table — size dial only. Static structural classes (centering,
+ * borders, accent ticks) live inline at the JSX so you can read them on
+ * the element. `lg` also tints the inner tex slot amber.
+ */
+const formulaVariants = tv({
+  slots: {
+    root: '',
+    tex: '',
+  },
+  variants: {
+    size: {
+      sm: { root: 'my-xl py-lg px-xl' },
+      md: { root: 'my-2xl py-lg px-2xl' },
+      lg: { root: 'my-2xl py-lg px-2xl text-8', tex: 'text-accent' },
+    },
+  },
+  defaultVariants: { size: 'md' },
+});
+
+type FormulaVariants = VariantProps<typeof formulaVariants>;
+
+interface FormulaProps extends FormulaVariants {
   /** Registry id — preferred for named equations. */
   id?: FormulaId;
   /** One-off LaTeX source (used when id isn't set). */
@@ -31,22 +55,12 @@ interface FormulaProps {
   children?: ReactNode;
   /** Optional small caption under the formula (e.g., source / name). */
   caption?: ReactNode;
-  /** Render at the default size (applies when neither large nor small is set). */
-  normal?: boolean;
-  /** Render at a larger size. */
-  large?: boolean;
-  /** Render at a smaller size — useful inside FAQ answers etc. */
-  small?: boolean;
   /** Optional override for the aria-label / plain-text form. */
   ariaLabel?: string;
   /** If true, the aria-label / plain-text form will be used as the content of the <span>, in addition to the KaTeX rendering. This is useful for formulas that are already very plain (e.g., E=mc^2) and where the KaTeX rendering doesn't add much visual interest. */
   plainText?: boolean;
-}
-
-function blockSizing(large: boolean | undefined, small: boolean | undefined): string {
-  if (small) return 'my-xl py-lg px-xl';
-  if (large) return 'my-2xl py-lg px-2xl text-8';
-  return 'my-2xl py-lg px-2xl';
+  /** Extra utilities appended to the root container — caller override for margins/padding/etc. */
+  className?: string;
 }
 
 function renderTeX(tex: string, displayMode: boolean): string {
@@ -80,26 +94,34 @@ function resolve(id: FormulaId | undefined, tex: string | undefined, ariaLabel: 
   return null;
 }
 
-export function Formula({ id, tex, children, caption, large, small, ariaLabel, plainText = false }: FormulaProps) {
+export function Formula({ id, tex, children, caption, size, ariaLabel, plainText = false, className }: FormulaProps) {
+  const { root, tex: texSlot } = formulaVariants({ size });
   const resolved = resolve(id, tex, ariaLabel);
   const html = useMemo(() => (resolved ? renderTeX(resolved.tex, true) : null), [resolved?.tex]);
 
-  if(plainText && !!children) {
+  if (plainText && !!children) {
     return (
-      <div className={`formula-block`}>
-      {children}
+      <div className={clsx('formula-block', className)}>
+        {children}
       </div>
     );
   }
 
   return (
     <div
-      className={`formula-block mx-auto text-center relative border-t border-b border-border before:content-[''] before:absolute before:top-1/2 before:w-sm before:h-px before:bg-accent before:-translate-y-1/2 before:-left-sm after:content-[''] after:absolute after:top-1/2 after:w-sm after:h-px after:bg-accent after:-translate-y-1/2 after:-right-sm max-sm:py-lg max-sm:px-lg ${blockSizing(large, small)}`}
+      className={root({
+        class: clsx(
+          'formula-block relative mx-auto text-center border-t border-b border-border max-sm:py-lg max-sm:px-lg',
+          "before:content-[''] before:absolute before:top-1/2 before:-left-sm before:h-px before:w-sm before:-translate-y-1/2 before:bg-accent",
+          "after:content-[''] after:absolute after:top-1/2 after:-right-sm after:h-px after:w-sm after:-translate-y-1/2 after:bg-accent",
+          className,
+        ),
+      })}
       role="math"
       aria-label={resolved?.plain}
     >
-      {(!!html) && (
-        <div className={`formula-tex ${large? 'text-accent': ''}`} dangerouslySetInnerHTML={{ __html: html }} />
+      {!!html && (
+        <div className={texSlot({ class: 'formula-tex' })} dangerouslySetInnerHTML={{ __html: html }} />
       )}
       {!!children && !html && (
         <div className="formula-content">
