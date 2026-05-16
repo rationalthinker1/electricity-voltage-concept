@@ -4,7 +4,14 @@ import { Link } from '@tanstack/react-router';
 import { SourcesList } from './SourcesList';
 import { SyllabusCard } from './SyllabusCard';
 import { Quiz } from './Quiz';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './ui';
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+  NavCard,
+  NavCardGrid,
+} from './ui';
 import { type ChapterEntry, getChapterNeighbors } from '@/textbook/data/chapters';
 import { MANIFEST } from '@/labs/data/manifest';
 import { getQuiz, getPassingScore } from '@/textbook/data/quizzes';
@@ -181,38 +188,34 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
         </div>
       )}
 
-      <nav className="card-grid mt-5xl px-2xl py-xl mx-auto mb-0">
+      <NavCardGrid className="mt-5xl px-2xl py-xl mx-auto mb-0">
         {prev ? (
-          <Link
-            to="/textbook/$chapterSlug"
-            params={{ chapterSlug: prev.slug }}
-            className="nav-item"
-          >
+          <NavCard to="/textbook/$chapterSlug" params={{ chapterSlug: prev.slug }}>
             <div className="eyebrow-muted text-1 tracking-4 mb-md">← Chapter {prev.number}</div>
             <div className="title-display text-8 font-light">{prev.title}</div>
-          </Link>
+          </NavCard>
         ) : (
-          <Link to="/" className="nav-item">
+          <NavCard to="/">
             <div className="eyebrow-muted text-1 tracking-4 mb-md">← Back</div>
             <div className="title-display text-8 font-light">Contents</div>
-          </Link>
+          </NavCard>
         )}
         {next ? (
-          <Link
+          <NavCard
             to="/textbook/$chapterSlug"
             params={{ chapterSlug: next.slug }}
-            className="nav-item text-right"
+            className="text-right"
           >
             <div className="eyebrow-muted text-1 tracking-4 mb-md">Chapter {next.number} →</div>
             <div className="title-display text-8 font-light">{next.title}</div>
-          </Link>
+          </NavCard>
         ) : (
-          <Link to="/reference" className="nav-item text-right">
+          <NavCard to="/reference" className="text-right">
             <div className="eyebrow-muted text-1 tracking-4 mb-md">Appendix →</div>
             <div className="title-display text-8 font-light">Equation labs</div>
-          </Link>
+          </NavCard>
         )}
-      </nav>
+      </NavCardGrid>
     </article>
   );
 }

@@ -339,6 +339,29 @@ body::before {
   mix-blend-mode: overlay;
 }
 
+/* ─── Default element baselines ─────────────────────────────────
+   Tag-level styling that should apply everywhere unless a component
+   explicitly overrides it. Keep this list short — anything that's
+   only used by one or two components should go inline, not here. */
+
+/* Anchor: accent on hover, no underline by default. Component-level
+   styles (e.g. NavCard, .cite, narrative descendant rules) override
+   per-context. */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  color: var(--accent);
+}
+
+/* Paragraph: comfortable reading rhythm. Narrative recipes
+   (.chapter-narrative, .lab-narrative, .case-body) override line-height
+   and margins per context. */
+p {
+  margin: 0;
+}
+
 /* ─── Border-width extensions ───
    Tailwind v4 ships border-{1,2,4,8} only. The accent stripes on cards
    and case studies use 3px; a handful of heavy dividers use 6px. Define
@@ -405,16 +428,6 @@ body::before {
   .grid-list {
     @apply grid list-none m-0 p-0;
   }
-  /* Bare icon-shaped button — close / dismiss / disclosure. Includes
-     the focus-visible accent ring shared across the UI kit; border,
-     padding, and size stay on the call site. */
-  .icon-btn {
-    @apply appearance-none bg-transparent cursor-pointer leading-none text-text-dim
-           hover:text-text
-           focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent
-           focus-visible:outline-offset-2
-           focus-visible:shadow-[0_0_0_4px_var(--accent-soft)];
-  }
   /* Page-shell padding — every top-level route that opens with a hero
      uses this 130/48 desktop and 130/16 mobile rhythm. max-w stays
      inline so callers can pick page / page-lg / col-lg per route. */
@@ -423,13 +436,10 @@ body::before {
            max-md:px-lg;
   }
 
-  /* Hairline-divided card grid — 2 cols on desktop, 1 on mobile, with
-     1px gap rendered as the bg-border colour showing through. Used by
-     chapter related-labs, reference TOC sections, PageNav. Callers add
-     mx-auto / max-w / mt-* / reveal as needed. */
-  .card-grid {
-    @apply grid grid-cols-2 max-md:grid-cols-1 gap-px bg-border border border-border;
-  }
+  /* .icon-btn extracted to <IconButton> in src/components/ui/IconButton.tsx
+     (used 3+ times across Banner, Drawer, Sidebar with divergent sizing).
+     .card-grid extracted to <NavCardGrid> in src/components/ui/NavCard.tsx;
+     .nav-item was a phantom className (never defined here) → <NavCard>. */
   /* Hero display title — Fraunces 52px with em accent. Same shape as
      .title-display but at the route-level "<title>." headers. Pair
      with a max-[…]:text-[…] responsive shrink. */

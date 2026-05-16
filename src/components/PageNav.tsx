@@ -1,6 +1,5 @@
-import { Link } from '@tanstack/react-router';
-
 import type { LabManifestEntry } from '@/labs/data/manifest';
+import { NavCard, NavCardGrid } from '@/components/ui/NavCard';
 
 interface PageNavProps {
   prev: LabManifestEntry | null;
@@ -9,34 +8,34 @@ interface PageNavProps {
 
 export function PageNav({ prev, next }: PageNavProps) {
   return (
-    <div className="reveal in card-grid mt-5xl">
+    <NavCardGrid className="reveal in mt-5xl">
       {prev ? (
-        <Link to="/labs/$slug" params={{ slug: prev.slug }} className="nav-item">
+        <NavCard to="/labs/$slug" params={{ slug: prev.slug }}>
           <div className="eyebrow-muted text-1 tracking-4 mb-md">← Lab {prev.number}</div>
           <div className="title-display text-8 tracking-1 font-light">{prev.title}</div>
-        </Link>
+        </NavCard>
       ) : (
-        <Link to="/" className="nav-item">
+        <NavCard to="/">
           <div className="eyebrow-muted text-1 tracking-4 mb-md">← Back</div>
           <div className="title-display text-8 tracking-1 font-light">Contents</div>
-        </Link>
+        </NavCard>
       )}
 
       {next ? (
-        <Link to="/labs/$slug" params={{ slug: next.slug }} className="nav-item">
+        <NavCard to="/labs/$slug" params={{ slug: next.slug }}>
           <div className="eyebrow-muted text-1 tracking-4 mb-md text-right">
             Lab {next.number} →
           </div>
           <div className="title-display text-8 tracking-1 text-right font-light">{next.title}</div>
-        </Link>
+        </NavCard>
       ) : (
-        <Link to="/" className="nav-item">
+        <NavCard to="/">
           <div className="eyebrow-muted text-1 tracking-4 mb-md text-right">Finish →</div>
           <div className="title-display text-8 tracking-1 text-right font-light">
             Back to contents
           </div>
-        </Link>
+        </NavCard>
       )}
-    </div>
+    </NavCardGrid>
   );
 }

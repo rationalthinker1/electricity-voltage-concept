@@ -2,6 +2,8 @@ import { useEffect, useRef, type ReactNode, type MouseEvent } from 'react';
 import clsx from 'clsx';
 import { tv, type VariantProps } from 'tailwind-variants';
 
+import { IconButton } from './IconButton';
+
 /** Drawer side dial — controls anchor + radius + border edge. */
 const drawerVariants = tv({
   variants: {
@@ -80,14 +82,13 @@ export function Drawer({ open, onClose, title, children, side, className }: Draw
       >
         <header className="py-lg px-lg border-border-1 flex shrink-0 items-center justify-between border-b">
           <div className="font-2 text-7 text-text italic">{title}</div>
-          <button
-            type="button"
-            className="icon-btn text-8 px-sm border-0 py-0"
+          <IconButton
+            className="text-8 px-sm border-0 py-0"
             onClick={onClose}
             aria-label="Close drawer"
           >
             ×
-          </button>
+          </IconButton>
         </header>
         <div className="p-lg flex-1 overflow-auto">{children}</div>
       </div>

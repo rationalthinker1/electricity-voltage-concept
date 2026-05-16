@@ -2,6 +2,8 @@ import type { ReactNode } from 'react';
 import clsx from 'clsx';
 import { tv, type VariantProps } from 'tailwind-variants';
 
+import { IconButton } from './IconButton';
+
 /**
  * Banner variant table — keyed off semantic role. `root` carries the
  * border + bg tint; `icon` carries the matching foreground colour.
@@ -55,14 +57,13 @@ export function Banner({ variant, icon, children, onDismiss, className }: Banner
       )}
       <div className="min-w-0 flex-1">{children}</div>
       {onDismiss && (
-        <button
-          type="button"
-          className="icon-btn text-7 px-sm self-start border-0 py-0"
+        <IconButton
+          className="text-7 px-sm self-start border-0 py-0"
           onClick={onDismiss}
           aria-label="Dismiss"
         >
           ×
-        </button>
+        </IconButton>
       )}
     </div>
   );

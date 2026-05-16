@@ -30,3 +30,9 @@ export type { InlineProps } from './Inline';
 
 export { Stack } from './Stack';
 export type { StackProps } from './Stack';
+
+export { NavCard, NavCardGrid } from './NavCard';
+export type { NavCardGridProps } from './NavCard';
+
+export { IconButton } from './IconButton';
+export type { IconButtonProps } from './IconButton';

@@ -1,6 +1,8 @@
 import { useState, type ReactNode } from 'react';
 import clsx from 'clsx';
 
+import { IconButton } from './IconButton';
+
 export interface SidebarProps {
   title?: ReactNode;
   children?: ReactNode;
@@ -34,15 +36,14 @@ export function Sidebar({
         <header className="gap-sm py-lg px-lg border-border-1 flex items-center justify-between border-b">
           {title !== undefined && <div className="eyebrow-dim text-2 tracking-3">{title}</div>}
           {collapsible && (
-            <button
-              type="button"
-              className="icon-btn border-border-1 rounded-3 w-icon h-icon text-5 hover:border-border-2 border p-0"
+            <IconButton
+              className="border-border-1 rounded-3 w-icon h-icon text-5 hover:border-border-2 border p-0"
               onClick={() => setCollapsed((c) => !c)}
               aria-expanded={!collapsed}
               aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
               {collapsed ? '›' : '‹'}
-            </button>
+            </IconButton>
           )}
         </header>
       )}

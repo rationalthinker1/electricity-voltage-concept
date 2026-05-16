@@ -1,6 +1,7 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
 
 import { CHAPTER_META, MANIFEST, type ChapterId } from '@/labs/data/manifest';
+import { NavCard, NavCardGrid } from '@/components/ui/NavCard';
 
 export const Route = createFileRoute('/reference')({
   component: Reference,
@@ -11,11 +12,11 @@ function Reference() {
   const sandboxes = MANIFEST.filter((l) => l.number.startsWith('A.'));
 
   const labRow = (lab: (typeof MANIFEST)[number]) => (
-    <Link
+    <NavCard
       key={lab.slug}
       to="/labs/$slug"
       params={{ slug: lab.slug }}
-      className="nav-item gap-md relative flex flex-col"
+      className="gap-md relative flex flex-col"
     >
       <span className="font-3 text-1 text-text-muted tracking-4 uppercase">Lab {lab.number}</span>
       <span className="font-4 text-8 text-accent leading-3 font-normal tracking-normal italic">
@@ -23,7 +24,7 @@ function Reference() {
       </span>
       <span className="text-6 text-text font-medium">{lab.title}</span>
       <span className="text-4 text-text-dim leading-4">{lab.blurb}</span>
-    </Link>
+    </NavCard>
   );
 
   return (
@@ -66,7 +67,7 @@ function Reference() {
               equations have become one working model in your head.
             </p>
           </div>
-          <div className="card-grid">{sandboxes.map(labRow)}</div>
+          <NavCardGrid>{sandboxes.map(labRow)}</NavCardGrid>
         </section>
       )}
 
@@ -88,7 +89,7 @@ function Reference() {
                 </p>
               </div>
 
-              <div className="card-grid">{labs.map(labRow)}</div>
+              <NavCardGrid>{labs.map(labRow)}</NavCardGrid>
             </section>
           );
         })}
