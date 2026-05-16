@@ -18,7 +18,7 @@ export function useAnimationFrame(
     if (!enabled) return;
     let raf = 0;
     let last = performance.now();
-    let start = last;
+    const start = last;
     function tick(now: number) {
       const dt = Math.min(60, now - last);
       last = now;

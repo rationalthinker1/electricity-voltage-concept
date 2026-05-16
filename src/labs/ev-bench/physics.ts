@@ -472,7 +472,7 @@ export function chargerCurrent(
   const ccCutoff = chem === 'LFP' ? 0.95 : chem === 'LTO' ? 0.95 : 0.80;
 
   // Available source power.
-  let maxKW = ch.isDC
+  const maxKW = ch.isDC
     ? Math.min(ch.maxKW, (ch.cableA * info.vNomPack) / 1000)
     : Math.min(ch.maxKW, cfg.drive.obcPeakKW);
 

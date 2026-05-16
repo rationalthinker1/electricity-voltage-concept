@@ -40,7 +40,7 @@ export function StanleyDemo({ figure }: Props) {
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
     let raf = 0;
-    let t0 = performance.now();
+    const t0 = performance.now();
 
     function draw() {
       const { distanceKm, Vline } = stateRef.current;

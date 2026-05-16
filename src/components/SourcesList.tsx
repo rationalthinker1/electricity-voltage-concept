@@ -68,7 +68,7 @@ interface CiteProps {
 export function Cite({ id, in: ids }: CiteProps) {
   const idx = ids.indexOf(id);
   if (idx === -1) {
-    // eslint-disable-next-line no-console
+     
     console.warn(`[Cite] source ${id} not in page sources array`);
     return <sup style={{ color: 'red' }}>[?]</sup>;
   }

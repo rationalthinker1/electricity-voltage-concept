@@ -85,7 +85,7 @@ export function project(p: Vec3, cam: OrbitCamera, w: number, h: number): Point2
   // Rotate world point into camera space.
   // Yaw around y: x' = x cos - z sin; z' = x sin + z cos
   const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw);
-  let x = p.x * cy - p.z * sy;
+  const x = p.x * cy - p.z * sy;
   let z = p.x * sy + p.z * cy;
   let y = p.y;
   // Pitch around the camera's x-axis: y'' = y cos - z sin; z'' = y sin + z cos

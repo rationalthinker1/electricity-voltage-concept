@@ -90,7 +90,7 @@ export function BuildACapacitorDemo({ figure }: Props) {
   useEffect(() => {
     historyRef.current = [{ n: 0, V: 0, U: 0 }];
     setClicks(0);
-  }, [A_cm2, d_mm]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [A_cm2, d_mm]);  
 
   const stateRef = useRef({ Q, A_m2, d_m, C, V, U, workForNext });
   useEffect(() => {

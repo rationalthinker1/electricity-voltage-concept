@@ -29,7 +29,7 @@ export function TransformerDemo({ figure }: Props) {
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, } = info;
     let raf = 0;
-    let t0 = performance.now();
+    const t0 = performance.now();
 
     function draw() {
       const { N1, N2, V1 } = stateRef.current;

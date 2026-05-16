@@ -53,7 +53,7 @@ export default function BiotSavartLab() {
     // Snap probe to centre + d above segment, in approximate mm-units.
     const fracOfHeight = Math.min(0.5, (d_mm / 500) * 0.5);
     setProbe({ x: 0.5, y: Math.max(0.05, 0.55 - fracOfHeight) });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [d_mm]);
 
   // Computed physics. We compute against the latest geometry every render —

@@ -44,7 +44,9 @@ export function FieldTensorDemo({ figure }: Props) {
   // Starting (rest-frame) E and B in some natural units.
   // We normalize so the largest |E| starts at 1, |B| starts at 0.
   const E0 = 1.0; // arbitrary "natural" units
+  // eslint-disable-next-line prefer-const -- multi-binding; Ex/Ey/Bz reassigned, others stable
   let Ex = 0, Ey = 0, Ez = 0;
+  // eslint-disable-next-line prefer-const -- multi-binding; Bz reassigned, others stable
   let Bx = 0, By = 0, Bz = 0;
   if (mode === 'Ex') { Ex = E0; }
   else if (mode === 'Ey') { Ey = E0; }

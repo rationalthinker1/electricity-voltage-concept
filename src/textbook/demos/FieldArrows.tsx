@@ -28,6 +28,7 @@ export function FieldArrowsDemo({ figure }: Props) {
     const fieldCtx = contexts.field;
     const uiCtx = contexts.ui;
     let dragging = false;
+    // eslint-disable-next-line prefer-const -- forward declaration; assigned below
     let drawUi: () => void;
     function getMouse(e: MouseEvent | TouchEvent): [number, number] {
       const r = canvas.getBoundingClientRect();

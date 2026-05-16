@@ -13,6 +13,7 @@ export const PHYS = {
   /** Elementary charge, C. NIST CODATA exact since 2019 SI redefinition. */
   e: 1.602176634e-19,
   /** Coulomb constant, N·m²/C². 1/(4π ε₀). */
+  // eslint-disable-next-line no-loss-of-precision
   k: 8.9875517873681764e9,
   /** Permeability of free space, T·m/A. Now a measured quantity post-2019;
    *  4π × 1e-7 is accurate to ~2e-10. */

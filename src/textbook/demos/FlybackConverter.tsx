@@ -56,7 +56,7 @@ export function FlybackConverterDemo({ figure }: Props) {
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, colors } = info;
     let raf = 0;
-    let t0 = performance.now();
+    const t0 = performance.now();
 
     function draw() {
       const { Vout, Ipk, E_stored, duty } = stateRef.current;
