@@ -442,23 +442,45 @@ either before the formula (concrete experience first, then formalised)
 or after it; either order is fine, but the symbols in the formula must
 be defined no later than the formula itself appears.
 
-**Multiple forms for foundational quantities.** When a quantity has
-several equivalent definitions — a formal one, an operational one, a
-clean special-case form — show all of them, each with its own
-"where" paragraph. The formal definition is general but abstract; the
-operational form is the one the reader will hold in their head; the
-special-case form is the one they will recognise on a circuit. Ch.2
-voltage is the canonical example:
+**Multiple forms for foundational quantities — three-tier order.** When
+a quantity has several equivalent definitions, present them in this
+order:
 
-- Formal: `V_ab = −∫_a^b E·dℓ` (line integral; general)
-- Operational: `V = W/q = ΔU/q` (energy per coulomb)
-- Special case: `V = E·d` (uniform field between parallel plates)
-- Companion: `W = qV` (work to move a charge through V)
+1. **Intuition / easiest to grasp** — a metaphor or concrete picture,
+   *no formulas*. The reader gets a mental model before any math. For
+   voltage: "voltage is a difference between two points, like altitude
+   on a hill" + the gravity-hill analogy + a visualization demo.
+2. **Formal** — what the quantity *is* at the level of the underlying
+   field or definition. The general, rigorous statement, even if it's
+   abstract. For voltage: `V_ab = −∫_a^b E·dℓ` (line integral).
+3. **Operational** — how working engineers actually compute and measure
+   the quantity day-to-day. The form the reader will hold in their head
+   when they pick up a multimeter. For voltage: `V = W/q = ΔU/q`
+   (energy per coulomb).
 
-Each carries a different piece of intuition. Same applies to power
-(`P = VI` / `P = I²R` / `P = V²/R`), current (`I = dQ/dt` / `I = nqv_dA`),
-resistance (`R = V/I` / `R = ρL/A`), capacitance (`C = Q/V` /
-`C = ε₀ε_r A/d`), EMF (`ε = −dΦ/dt` / `ε = BLv`), and many others.
+After those three tiers, layer on as many as the chapter needs:
+
+- **Special-case form** — collapses the formal definition into something
+  the reader will recognise on a circuit. Often bridges formal and
+  operational by showing they're the same statement. For voltage:
+  `V = E·d` between parallel plates (uniform field collapses the
+  integral).
+- **Companion identities** — rearrangements that pair naturally with
+  the operational form. For voltage: `W = qV`.
+
+Each tier gets its own h3 or its own paragraph block, with its own
+"where" paragraph for the symbols it introduces. The risk to watch
+for is the intuition tier collapsing into the operational tier — both
+can feel "easy." Reserve the intuition tier for the *non-mathematical*
+picture; the operational tier is where the first compute-with-it
+formula lands.
+
+Same applies to power (`P = VI` / `P = I²R` / `P = V²/R`), current
+(`I = dQ/dt` / `I = nqv_dA`), resistance (`R = V/I` / `R = ρL/A`),
+capacitance (`C = Q/V` / `C = ε₀ε_r A/d`), EMF (`ε = −dΦ/dt` /
+`ε = BLv`), and many others. Not every quantity needs all three tiers
+— some have only two natural forms — but when there *is* an intuitive
+picture distinct from the formal definition, lead with it.
 
 ### Chapter section checklist
 
@@ -563,6 +585,19 @@ The lab also has its own prose deep-dive and sources block (rendered by
   setup in `useCallback` with empty deps and a `stateRef` for animation.
   Return a cleanup function from the setup callback that cancels rAF and
   removes event listeners.
+- **Theme-aware drawing:** canvas draw loops must call `getCanvasColors()`
+  inside the per-frame `draw` function, not just capture `info.colors`
+  once at `setup` time. The cache in `src/lib/canvasTheme.ts` is
+  invalidated by a `MutationObserver` watching `[data-theme]` on the
+  root, so re-reading every frame is essentially free and lets the
+  canvas re-paint in the new palette on the next frame after a
+  light/dark toggle — no remount required. Use the named tokens
+  (`colors.accent`, `colors.blue`, `colors.teal`, `colors.pink`,
+  `colors.text`, `colors.textDim`, `colors.borderStrong`, `colors.bg`,
+  etc.) instead of hardcoded hex or rgba. When you need a translucent
+  variant, derive it from the token at draw time (a small
+  `withAlpha(token, alpha)` helper, or `ctx.globalAlpha`) — never bake
+  in `rgba(255,107,42,…)`.
 - **No `pretty()` in JSX text:** use `<Num value={x}/>`. `pretty()` only
   for `dangerouslySetInnerHTML` (legacy callers).
 - **Formula blocks:** `<Formula>F = k Q₁ Q₂ / r²</Formula>`, not

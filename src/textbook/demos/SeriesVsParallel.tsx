@@ -2,7 +2,10 @@
  * Demo D3.5 — Series vs. parallel
  *
  * Two resistors. Toggle between series (R₁ + R₂) and parallel
- * (1/R = 1/R₁ + 1/R₂). The schematic redraws to match.
+ * (1/R = 1/R₁ + 1/R₂). The schematic redraws to match. A fixed
+ * source voltage drives the loop, so the animated electron flow
+ * actually slows when you crank R up — the same V = IR that the
+ * readout shows.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -11,6 +14,13 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
+
+// Fixed driving voltage and a reference total resistance so the visual
+// flow rate is "1" at the demo's initial configuration (R1 = 10 Ω in
+// series with R2 = 30 Ω → R_tot = 40 Ω → I = 0.3 A). Sliding R away
+// from the reference visibly speeds up or slows down the dot flow.
+const V_FIXED = 12; // V
+const I_REF = V_FIXED / 40; // 0.3 A — used to normalise visual speed
 
 interface Props {
   figure?: string;
@@ -32,6 +42,7 @@ export function SeriesVsParallelDemo({ figure }: Props) {
   }, [R1, R2, series]);
 
   const Rtot = series ? R1 + R2 : (R1 * R2) / (R1 + R2);
+  const Itot = V_FIXED / Rtot;
 
   const cacheRef = useRef<StaticCacheEntry | null>(null);
 
@@ -58,8 +69,10 @@ export function SeriesVsParallelDemo({ figure }: Props) {
       // Output node on right
       const outX = w - padX;
 
-      // Cache key: schematic depends on canvas size, DPR, series-vs-parallel topology, and the resistor labels.
-      const cacheKey = `${w}x${h}@${dpr}|s${series ? 1 : 0}|R1:${R1}|R2:${R2}`;
+      // Cache key: schematic depends on canvas size, DPR, series-vs-parallel topology,
+      // the resistor labels, AND the current theme — wire colour swaps light/dark.
+      const theme = document.documentElement.getAttribute('data-theme') ?? 'dark';
+      const cacheKey = `${w}x${h}@${dpr}|s${series ? 1 : 0}|R1:${R1}|R2:${R2}|t:${theme}`;
       if (cacheRef.current?.key !== cacheKey) {
         cacheRef.current = {
           key: cacheKey,
@@ -74,7 +87,18 @@ export function SeriesVsParallelDemo({ figure }: Props) {
       ctx.textAlign = 'right';
       ctx.fillText('−', batX - 18, cy + 18);
 
+      // Current driven by the fixed source. Speed/density of the dots is
+      // normalised against I_REF so the initial configuration runs at "1×".
+      const RtotNow = series ? R1 + R2 : (R1 * R2) / (R1 + R2);
+      const ItotNow = V_FIXED / RtotNow;
+      const trunkScale = ItotNow / I_REF;
+
       if (series) {
+        // Node-voltage probes along the top wire (Kirchhoff's voltage law).
+        const xR1 = padX + (outX - padX) * 0.3;
+        const xR2 = padX + (outX - padX) * 0.66;
+        const V_afterR1 = V_FIXED - ItotNow * R1; // node between R1 and R2
+
         // Animated current dots — same I through both resistors.
         drawCurrentDotsPath(
           ctx,
@@ -85,8 +109,14 @@ export function SeriesVsParallelDemo({ figure }: Props) {
             { x: outX, y: yBot },
             { x: batX, y: yBot },
           ],
-          1.0,
+          trunkScale,
         );
+
+        drawVoltageProbe(ctx, (batX + (xR1 - 22)) / 2, yTop - 16, V_FIXED);
+        drawVoltageProbe(ctx, (xR1 + xR2) / 2, yTop - 16, V_afterR1);
+        drawVoltageProbe(ctx, (xR2 + 22 + outX) / 2, yTop - 16, 0);
+        drawVoltageProbe(ctx, (batX + outX) / 2, yBot + 18, 0);
+
         ctx.fillStyle = getCanvasColors().textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
@@ -97,10 +127,12 @@ export function SeriesVsParallelDemo({ figure }: Props) {
         const branchY1 = cy - 26;
         const branchY2 = cy + 26;
 
-        // Animated dots — current splits inversely with R
-        const Itot = 1; // unit
-        const I1 = Itot * (R2 / (R1 + R2));
-        const I2 = Itot * (R1 / (R1 + R2));
+        // Trunk carries the full ItotNow; each branch carries V_FIXED / R_k.
+        const I1 = V_FIXED / R1;
+        const I2 = V_FIXED / R2;
+        const branch1Scale = I1 / I_REF;
+        const branch2Scale = I2 / I_REF;
+
         // Trunk current
         drawCurrentDotsPath(
           ctx,
@@ -109,7 +141,7 @@ export function SeriesVsParallelDemo({ figure }: Props) {
             { x: batX, y: yTop },
             { x: nodeL_x, y: yTop },
           ],
-          Itot,
+          trunkScale,
         );
         drawCurrentDotsPath(
           ctx,
@@ -120,7 +152,7 @@ export function SeriesVsParallelDemo({ figure }: Props) {
             { x: outX, y: yBot },
             { x: batX, y: yBot },
           ],
-          Itot,
+          trunkScale,
         );
         // Branch currents
         drawCurrentDotsPath(
@@ -130,7 +162,7 @@ export function SeriesVsParallelDemo({ figure }: Props) {
             { x: nodeL_x, y: branchY1 },
             { x: nodeR_x, y: branchY1 },
           ],
-          I1,
+          branch1Scale,
         );
         drawCurrentDotsPath(
           ctx,
@@ -139,8 +171,13 @@ export function SeriesVsParallelDemo({ figure }: Props) {
             { x: nodeL_x, y: branchY2 },
             { x: nodeR_x, y: branchY2 },
           ],
-          I2,
+          branch2Scale,
         );
+
+        // Voltage probes — both branches see the full V across them.
+        drawVoltageProbe(ctx, (batX + nodeL_x) / 2, yTop - 16, V_FIXED);
+        drawVoltageProbe(ctx, (nodeR_x + outX) / 2, yTop - 16, 0);
+        drawVoltageProbe(ctx, (batX + outX) / 2, yBot + 18, 0);
 
         ctx.fillStyle = getCanvasColors().textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
@@ -188,6 +225,7 @@ export function SeriesVsParallelDemo({ figure }: Props) {
           value={<Num value={Rtot} />}
           unit="Ω"
         />
+        <MiniReadout label={`I = ${V_FIXED} V / R`} value={<Num value={Itot} />} unit="A" />
       </DemoControls>
     </Demo>
   );
@@ -216,8 +254,8 @@ function buildStaticSchematic(
       {
         kind: 'battery',
         at: { x: batX, y: cy },
-        label: '+',
-        labelOffset: { x: -18, y: -10 },
+        label: `+   ${V_FIXED} V`,
+        labelOffset: { x: -22, y: -10 },
         leadLength: 50,
       },
       {
@@ -268,8 +306,8 @@ function buildStaticSchematic(
       {
         kind: 'battery',
         at: { x: batX, y: cy },
-        label: '+',
-        labelOffset: { x: -18, y: -10 },
+        label: `+   ${V_FIXED} V`,
+        labelOffset: { x: -22, y: -10 },
         leadLength: 50,
       },
       {
@@ -346,7 +384,12 @@ function buildStaticSchematic(
       },
     ];
   }
-  return renderCircuitToCanvas({ elements, defaultWireColor: 'rgba(255,255,255,0.65)' }, w, h, dpr);
+  return renderCircuitToCanvas(
+    { elements, defaultWireColor: withAlpha(getCanvasColors().text, 0.65) },
+    w,
+    h,
+    dpr,
+  );
 }
 
 function drawCurrentDotsPath(
@@ -367,10 +410,14 @@ function drawCurrentDotsPath(
   }
   if (total < 1) return;
   const spacing = 26;
-  const speed = 80; // px/sec
+  // Speed scales with current — same V, larger R → smaller I → slower dots.
+  // Clamp the visual to keep motion perceptible across the slider range.
+  const visScale = Math.max(0.05, Math.min(3, Iscale));
+  const speed = 80 * visScale; // px/sec
   const offset = (t * speed) % spacing;
-  const intensity = Math.max(0.2, Math.min(1, Iscale));
-  ctx.fillStyle = `rgba(91,174,248,${0.5 + 0.4 * intensity})`;
+  const intensity = Math.max(0.2, Math.min(1, visScale));
+  const blue = getCanvasColors().blue;
+  ctx.fillStyle = withAlpha(blue, 0.5 + 0.4 * intensity);
   for (let s = -spacing; s < total; s += spacing) {
     const d = s + offset;
     if (d < 0 || d > total) continue;
@@ -388,4 +435,55 @@ function drawCurrentDotsPath(
       acc += sg.len;
     }
   }
+}
+
+function drawVoltageProbe(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  value: number,
+) {
+  const colors = getCanvasColors();
+  const text = `${value.toFixed(2)} V`;
+  ctx.save();
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const m = ctx.measureText(text);
+  const boxW = m.width + 12;
+  const boxH = 16;
+  ctx.fillStyle = withAlpha(colors.bg, 0.85);
+  ctx.fillRect(x - boxW / 2, y - boxH / 2, boxW, boxH);
+  ctx.strokeStyle = withAlpha(colors.accent, 0.55);
+  ctx.lineWidth = 1;
+  ctx.strokeRect(x - boxW / 2, y - boxH / 2, boxW, boxH);
+  ctx.fillStyle = colors.accent;
+  ctx.fillText(text, x, y);
+  ctx.restore();
+}
+
+function withAlpha(color: string, alpha: number): string {
+  if (color.startsWith('#')) {
+    let r: number;
+    let g: number;
+    let b: number;
+    if (color.length === 7) {
+      r = parseInt(color.slice(1, 3), 16);
+      g = parseInt(color.slice(3, 5), 16);
+      b = parseInt(color.slice(5, 7), 16);
+    } else if (color.length === 4) {
+      r = parseInt(color[1]! + color[1]!, 16);
+      g = parseInt(color[2]! + color[2]!, 16);
+      b = parseInt(color[3]! + color[3]!, 16);
+    } else {
+      return color;
+    }
+    return `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
+  }
+  const m = color.match(/rgba?\(([^)]+)\)/);
+  if (m) {
+    const parts = m[1]!.split(',').map((s) => s.trim());
+    return `rgba(${parts[0]},${parts[1]},${parts[2]},${alpha.toFixed(3)})`;
+  }
+  return color;
 }

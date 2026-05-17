@@ -115,7 +115,7 @@ export default function Ch5Capacitors() {
       </p>
 
       <h2 className="chapter-h2">
-        <em>V = Q / C</em>: a linear relationship
+        V = Q / C: a linear relationship
       </h2>
 
       <p className="mb-prose-3">
@@ -129,7 +129,7 @@ export default function Ch5Capacitors() {
         </Term>{' '}
         now, and write it as
       </p>
-      <Formula>Q = C V</Formula>
+      <Formula size="lg" tex="Q = CV" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">Q</strong> is the magnitude of charge on
         each plate (in coulombs; the two plates carry +Q and −Q),
@@ -151,7 +151,7 @@ export default function Ch5Capacitors() {
         <strong className="text-text font-medium"> V = Ed = Qd/(ε₀A)</strong>. Re-arranging
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
-      <Formula>C = ε₀ A / d</Formula>
+      <Formula size="lg" tex="C = \dfrac{\varepsilon_0 A}{d}" />
       <p className="mb-prose-3">
         Capacitance is geometry. More area, more capacity. Less gap, more capacity. (And no
         surprise: a wider plate has more room to spread charge thinly; a smaller gap means a given
@@ -167,9 +167,7 @@ export default function Ch5Capacitors() {
         </Term>
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
-      <Formula>
-        C = ε₀ ε<sub>r</sub> A / d
-      </Formula>
+      <Formula size="lg" tex="C = \dfrac{\varepsilon_0 \varepsilon_r A}{d}" />
 
       <PlateGeometryDemo />
 
@@ -306,10 +304,7 @@ export default function Ch5Capacitors() {
         Sum the work from empty to full charge: integrate{' '}
         <strong className="text-text font-medium">v(q)·dq</strong> from 0 to Q, with v = q/C.
       </p>
-      <Formula>
-        U = ∫<sub>0</sub>
-        <sup>Q</sup> (q / C) dq = Q² / (2C) = ½ C V²
-      </Formula>
+      <Formula size="lg" tex="U = \int_0^Q \dfrac{q}{C}\, dq = \dfrac{Q^2}{2C} = \tfrac{1}{2} C V^2" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">U</strong> is the total energy stored in the
         capacitor (in joules), <strong className="text-text font-medium">Q</strong> is the final
@@ -417,9 +412,7 @@ export default function Ch5Capacitors() {
         plus Q = CV gives a first-order ODE whose solution is the canonical exponential approach
         <Cite id="horowitz-hill-2015" in={SOURCES} />:
       </p>
-      <Formula>
-        V<sub>C</sub>(t) = V<sub>0</sub> (1 − e<sup>−t/RC</sup>)
-      </Formula>
+      <Formula size="lg" tex="V_C(t) = V_0 \left(1 - e^{-t/RC}\right)" />
       <p className="mb-prose-3">
         where{' '}
         <strong className="text-text font-medium">

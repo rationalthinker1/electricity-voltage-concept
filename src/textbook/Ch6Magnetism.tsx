@@ -93,7 +93,7 @@ export default function Ch6Magnetism() {
         cleanest formulas in classical physics. At a perpendicular distance{' '}
         <strong className="text-text font-medium">r</strong> from the wire, the magnitude is
       </p>
-      <Formula>|B| = μ₀ I / (2π r)</Formula>
+      <Formula size="lg" tex="|\vec{B}| = \dfrac{\mu_0 I}{2\pi r}" />
       <p className="mb-prose-3">
         and the direction is tangent to a circle around the wire — wrapping the wire like contour
         lines around a mountain. The{' '}
@@ -175,7 +175,7 @@ export default function Ch6Magnetism() {
         The opposite of charges, and yet — for a deep reason — the same physics.
       </p>
       <p className="mb-prose-3">The force per unit length on either wire works out to</p>
-      <Formula>F / L = μ₀ I₁ I₂ / (2π d)</Formula>
+      <Formula size="lg" tex="\dfrac{F}{L} = \dfrac{\mu_0 I_1 I_2}{2\pi d}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">F</strong> is the magnitude of the force one
         wire exerts on a segment of the other (in newtons),
@@ -273,7 +273,7 @@ export default function Ch6Magnetism() {
         </Term>{' '}
         law, the cleanest statement in all of magnetism, is
       </p>
-      <Formula>F = q ( v × B )</Formula>
+      <Formula size="lg" tex="\vec{F} = q\,(\vec{v} \times \vec{B})" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">F</strong> is the force vector on the
         charged particle (in newtons), <strong className="text-text font-medium">q</strong> is its
@@ -300,7 +300,7 @@ export default function Ch6Magnetism() {
         "constant magnitude" is the recipe for circular motion. A charged particle injected into a
         uniform magnetic field traces out a circle of radius
       </p>
-      <Formula>r = m v / (q B)</Formula>
+      <Formula size="lg" tex="r = \dfrac{m v}{q B}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">r</strong> is the radius of the circular
         orbit (in metres), <strong className="text-text font-medium">m</strong> is the particle's
@@ -311,7 +311,7 @@ export default function Ch6Magnetism() {
         tesla).
       </p>
       <p className="mb-prose-3">It goes around it with period</p>
-      <Formula>T = 2π m / (q B)</Formula>
+      <Formula size="lg" tex="T = \dfrac{2\pi m}{q B}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">T</strong> is the orbital period (in
         seconds) and <em className="text-text italic">m</em>,{' '}
@@ -425,7 +425,7 @@ export default function Ch6Magnetism() {
       <p className="mb-prose-3">
         For a long solenoid (length much greater than radius), the field inside is
       </p>
-      <Formula>B = μ₀ n I</Formula>
+      <Formula size="lg" tex="B = \mu_0 n I" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">B</strong> is the magnetic flux density on
         the solenoid's axis (in tesla),
@@ -847,7 +847,7 @@ export default function Ch6Magnetism() {
             From <strong className="text-text font-medium">r = mv/qB</strong> and{' '}
             <strong className="text-text font-medium">T = 2π r/v</strong>, the speed cancels:
           </p>
-          <Formula>f = qB / (2π m)</Formula>
+          <Formula size="lg" tex="f = \dfrac{q B}{2\pi m}" />
           <p>
             Faster particles trace bigger circles in <em className="text-text italic">exactly</em>{' '}
             the same period <Cite id="feynman-II-13" in={SOURCES} />. That's the magic that made

@@ -30,8 +30,23 @@ interface Props {
 }
 
 interface Dot {
-  x: number;
+  s: number; // arc-length position along the closed loop
   phase: number;
+}
+
+// A directed segment of the closed loop. `dx`/`dy` are the full
+// (un-normalised) direction vector; `nx`/`ny` are the perpendicular unit
+// vector used for the visual bob. `hidden` segments are inside the battery
+// or bulb symbols and are not drawn.
+interface Segment {
+  x0: number;
+  y0: number;
+  dx: number;
+  dy: number;
+  length: number;
+  nx: number;
+  ny: number;
+  hidden: boolean;
 }
 
 // Fixed circuit parameters
@@ -39,7 +54,7 @@ const R_OHMS = 10; // resistive load
 const A_MM2 = 1.0; // wire cross-section, mm²
 const A_M2 = A_MM2 * 1e-6; // m²
 const N_CU = MATERIALS.copper.n; // 8.5e28 /m³
-const N_DOTS = 28; // drift dots along the wire
+const N_DOTS = 56; // drift dots distributed around the whole loop
 
 interface StaticCacheEntry {
   key: string;
@@ -67,19 +82,92 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
     let raf = 0;
     let last = performance.now();
 
-    // Wire geometry — a single horizontal line, battery on left, bulb on right.
-    const margin = 64;
-    const wireY = Math.round(h * 0.5);
-    const batX = margin;
-    const bulbX = w - margin;
-    const wireLeft = batX + 48; // just right of battery lead
-    const wireRight = bulbX - 28; // just left of bulb circle
+    // Wire geometry. Derived top-down: canvas margins → circuit bounding
+    // box → element sizes → element positions. Downstream code (segments,
+    // static schematic, in-frame labels) should reach for these constants
+    // instead of hard-coding offsets. Canvas y=0 is the top of the canvas;
+    // y increases downward.
+
+    // 1. Margins (relative to canvas size, capped so they don't dominate
+    //    on large canvases).
+    const canvasMarginX = Math.min(64, w * 0.15);
+    const canvasMarginY = Math.min(40, h * 0.1);
+
+    const legendLeft = canvasMarginX;
+    const legendRight = w - canvasMarginX;
+    const legendTop = h - canvasMarginY - 60; // leave room for the bottom caption
+    const legendBottom = h - canvasMarginY;
+    const legendPaddingX = 0; // horizontal padding inside the legend strip
+    const legendPaddingY = 10;
+
+    // Derived row/column anchors for the three legend rows. Defined here in
+    // setup so staticElements can position circuit-element labels against
+    // them via labelOffset.
+    const legendCol1X = legendLeft + legendPaddingX;
+    const legendCol2X = legendRight - legendPaddingX;
+    const legendRow1Y = legendTop + legendPaddingY + 10;
+    const legendRow3Y = legendBottom - legendPaddingY + 10;
+    const legendRow2Y = (legendRow1Y + legendRow3Y) / 2;
+
+
+    // 2. Circuit bounding box.
+    const circuitLeft = canvasMarginX;
+    const circuitRight = w - canvasMarginX;
+    const circuitTop = canvasMarginY;
+    const circuitBottom = h - canvasMarginY - 60; // leave room for the bottom caption
+
+    // 3. Element sizes.
+    const bulbR = 16; // bulb radius
+    const batLead = 35; // half-length of the battery symbol along its axis
+    const batStub = 48; // horizontal stub from battery lead to start of main wire
+    const bulbStub = 28; // horizontal stub from end of main wire to bulb edge
+
+    // 4. Element positions on the rectangle.
+    const batX = circuitLeft;
+    const bulbX = circuitRight;
+    const wireY = circuitBottom; // main wire = bottom edge of the rectangle
+    const topY = circuitTop; // top return wire = top edge
+    const batCenterY = (circuitTop + circuitBottom) / 2; // battery vertical centre
+    const wireLeft = batX + batStub; // main wire starts past the battery's right side
+    const wireRight = bulbX - bulbStub; // main wire ends just before the bulb circle
     const wireLength = wireRight - wireLeft;
 
-    // Initialise drift dots evenly along the wire
+    // Build the closed-loop path in electron-flow direction:
+    //  − terminal (top of battery)  → right across top wire
+    //  → down right vertical to top of bulb
+    //  → through bulb (hidden)
+    //  → left along main wire / pigtails
+    //  → up through battery (hidden)
+    //  → back to start.
+    // Conventional current is the reverse, so the on-screen arrow stays L→R.
+    const rawSegs: { x0: number; y0: number; x1: number; y1: number; hidden: boolean }[] = [
+      { x0: batX, y0: topY, x1: bulbX, y1: topY, hidden: false }, // top wire L→R
+      { x0: bulbX, y0: topY, x1: bulbX, y1: wireY - bulbR, hidden: false }, // right vert down
+      { x0: bulbX, y0: wireY - bulbR, x1: bulbX - bulbR, y1: wireY, hidden: true }, // through bulb
+      { x0: bulbX - bulbR, y0: wireY, x1: batX, y1: wireY, hidden: false }, // main wire R→L
+      { x0: batX, y0: wireY, x1: batX, y1: topY, hidden: true }, // through battery
+    ];
+    const segments: Segment[] = rawSegs.map((s) => {
+      const dx = s.x1 - s.x0;
+      const dy = s.y1 - s.y0;
+      const length = Math.hypot(dx, dy);
+      return {
+        x0: s.x0,
+        y0: s.y0,
+        dx,
+        dy,
+        length,
+        nx: -dy / length,
+        ny: dx / length,
+        hidden: s.hidden,
+      };
+    });
+    const totalLen = segments.reduce((sum, s) => sum + s.length, 0);
+
+    // Initialise drift dots evenly around the whole loop.
     if (!dotsRef.current || dotsRef.current.length !== N_DOTS) {
       dotsRef.current = Array.from({ length: N_DOTS }, (_, i) => ({
-        x: wireLeft + (i + 0.5) * (wireLength / N_DOTS),
+        s: (i + 0.5) * (totalLen / N_DOTS),
         phase: Math.random() * Math.PI * 2,
       }));
     }
@@ -104,69 +192,54 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       if (cacheRef.current?.key !== cacheKey) {
         const bulbBright = brightBucket / 12;
         const staticElements: CircuitElement[] = [
-          // Top return wire — battery (+) up and over to bulb top.
+          // The whole loop is one continuous wire (copper, same gauge
+          // everywhere). Drawn as two polylines — top half and bottom half —
+          // so the battery and bulb symbols can sit on top of the verticals
+          // without the wire visibly punching through their bodies.
           {
             kind: 'wire',
             points: [
               { x: batX, y: wireY },
-              { x: batX, y: wireY - 70 },
-              { x: bulbX, y: wireY - 70 },
-              { x: bulbX, y: wireY - 16 },
+              { x: batX, y: topY },
+              { x: bulbX, y: topY },
+              { x: bulbX, y: wireY - bulbR },
             ],
-            color: 'rgba(160,158,149,.35)',
+            color: 'rgba(160,158,149,.45)',
             lineWidth: 2,
           },
-          // Battery on the left (vertical between top rail and main wire).
+          {
+            kind: 'wire',
+            points: [
+              { x: batX, y: wireY },
+              { x: bulbX, y: wireY },
+            ],
+            color: 'rgba(160,158,149,.45)',
+            lineWidth: 2,
+          },
+          // Battery on the left. Label is offset down into row 2 of the
+          // legend strip (centered on batX by the battery renderer).
           {
             kind: 'battery',
-            at: { x: batX, y: wireY - 35 },
+            at: { x: batX, y: batCenterY },
             color: 'rgba(255,255,255,.30)',
             label: `${R_OHMS} Ω load · 1 mm² copper`,
-            labelOffset: { x: 0, y: 90 },
-            leadLength: 35,
+            labelOffset: { x: legendCol1X - batX + 72, y: legendRow2Y - batCenterY },
+            leadLength: batLead,
             plateGap: 8,
             negativeColor: '#5baef8',
             negativePlateLength: 14,
             positiveColor: '#ff3b6e',
             positivePlateLength: 24,
           },
-          // The main wire (where drift dots will be drawn).
-          {
-            kind: 'wire',
-            points: [
-              { x: wireLeft, y: wireY },
-              { x: wireRight, y: wireY },
-            ],
-            color: 'rgba(255,107,42,.55)',
-            lineWidth: 5,
-          },
-          // Tiny pigtails from battery and bulb to the main wire.
-          {
-            kind: 'wire',
-            points: [
-              { x: batX, y: wireY },
-              { x: wireLeft, y: wireY },
-            ],
-            color: 'rgba(160,158,149,.45)',
-            lineWidth: 2,
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: wireRight, y: wireY },
-              { x: bulbX, y: wireY },
-            ],
-            color: 'rgba(160,158,149,.45)',
-            lineWidth: 2,
-          },
-          // Bulb (the load) on the right.
+          // Bulb (the load) on the right. Label is offset down into row 2
+          // of the legend strip, aligned to the right column anchor.
           {
             kind: 'bulb',
             at: { x: bulbX, y: wireY },
-            radius: 16,
+            radius: bulbR,
             brightness: bulbBright,
             label: 'load',
-            labelOffset: { x: 0, y: 30 },
+            labelOffset: { x: legendCol2X - bulbX, y: legendRow2Y - wireY },
           },
         ];
         cacheRef.current = {
@@ -202,29 +275,57 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       }
       ctx.restore();
 
-      // B label (top-left of the figure)
-      ctx.fillStyle = `rgba(108,197,194,${(0.4 + 0.5 * Inorm).toFixed(3)})`;
+      // ── Legend strip — dynamic labels ─────────────────────────────────────
+      // Row 2 (battery spec, "load") is rendered by renderCircuitToCanvas
+      // via labelOffset on the battery and bulb static elements. The two
+      // labels here are the ones that can't ride on a circuit element:
+      // the B-field label has a per-frame cyan opacity, and the disclosure
+      // caption sits in the bottom row by itself.
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
-      ctx.fillText('B  (circles wire; |B| ∝ I)', wireLeft, wireY + 50);
+      // Row 1 — B-field label (cyan, fades with current).
+      ctx.fillStyle = `rgba(108,197,194,${(0.4 + 0.5 * Inorm).toFixed(3)})`;
+      ctx.fillText('B  (circles wire; |B| ∝ I)', legendCol1X, legendRow1Y);
+      // Row 3 — disclosure caption.
+      ctx.fillStyle = 'rgba(160,158,149,.7)';
+      ctx.fillText(
+        'fixed: R = 10 Ω · A = 1 mm² · n = 8.5×10²⁸/m³ (Cu) · dot motion ≠ to scale',
+        legendCol1X,
+        legendRow3Y,
+      );
 
-      // ── Drift dots along the main wire ────────────────────────────────────
-      // Visual speed in px/s — scaled so 1 A moves a dot a clearly-visible
-      // amount per second. Real drift is microscopic; the readout has the
-      // truth. Conventional current direction is left→right; electrons drift
-      // the opposite way, so the dots (cyan electrons) move right→left.
+      // ── Drift dots around the whole loop ──────────────────────────────────
+      // Visual speed in px/s — scaled so the dots are clearly moving at high
+      // current. Real drift is microscopic; the readout has the truth. Each
+      // dot walks forward along the path (segments are already oriented in
+      // the electron-flow direction), so the segment 1 dots travel L→R on
+      // the top wire and segment 4 dots travel R→L on the main wire — both
+      // opposite to the conventional-current arrow.
       const visSpeed = 90 * Inorm; // px/s at full slider
       const dots = dotsRef.current!;
       ctx.fillStyle = getCanvasColors().blue;
       for (const d of dots) {
-        d.x -= visSpeed * dt;
-        if (d.x < wireLeft) d.x += wireLength;
-        if (d.x > wireRight) d.x -= wireLength;
-        // Tiny vertical bob so the line isn't visually dead at I=0.
+        d.s += visSpeed * dt;
+        d.s = ((d.s % totalLen) + totalLen) % totalLen;
         d.phase += dt * 6;
-        const y = wireY + Math.sin(d.phase) * 1.4;
+
+        // Locate the dot's segment and position within it.
+        let rem = d.s;
+        let seg: Segment | undefined;
+        for (const cand of segments) {
+          if (rem <= cand.length) {
+            seg = cand;
+            break;
+          }
+          rem -= cand.length;
+        }
+        if (!seg || seg.hidden) continue;
+        const t = rem / seg.length;
+        const bob = Math.sin(d.phase) * 1.4;
+        const x = seg.x0 + seg.dx * t + seg.nx * bob;
+        const y = seg.y0 + seg.dy * t + seg.ny * bob;
         ctx.beginPath();
-        ctx.arc(d.x, y, 2.2, 0, Math.PI * 2);
+        ctx.arc(x, y, 2.2, 0, Math.PI * 2);
         ctx.fill();
       }
 
@@ -276,16 +377,6 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText(`P = V·I = ${(V * I_now).toFixed(1)} W`, fx1, fy - 6);
-
-      // Bottom-left disclosure caption.
-      ctx.fillStyle = 'rgba(160,158,149,.7)';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(
-        'fixed: R = 10 Ω · A = 1 mm² · n = 8.5×10²⁸/m³ (Cu) · dot motion ≠ to scale',
-        wireLeft,
-        h - 12,
-      );
 
       raf = requestAnimationFrame(draw);
     }

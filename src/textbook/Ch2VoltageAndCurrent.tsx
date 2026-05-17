@@ -75,8 +75,26 @@ export default function Ch2VoltageAndCurrent() {
         The differences are unchanged.
       </p>
       <p className="mb-prose-3">
-        Formally, the potential at a point is defined as a line integral of the electric field from
-        a reference point to that point, with a minus sign:
+        The gravitational analogy is exact in all the parts that matter. A ball at the top of a hill
+        has gravitational potential energy <em className="text-text italic">mgh</em>; let it roll
+        and that energy converts to kinetic. A positive test charge at the high end of a voltage
+        drop has electrical potential energy <em className="text-text italic">qV</em>; let it move
+        and that energy goes into kinetic energy of the charge — which, in a wire full of fixed
+        obstacles, almost immediately becomes heat. The battery is the climber lifting the ball back
+        up. Voltage is the height it lifted to.
+      </p>
+
+      <VoltageAsHeightDemo />
+
+      <h3 className="chapter-h3">The formal definition: a line integral of the field</h3>
+
+      <p className="mb-prose-3">
+        The picture is one thing. To do anything with voltage — predict it from a charge
+        distribution, compute the work a charge will gain crossing a gap, design a battery or a
+        capacitor — you need a definition with sharper edges. The "height" in the analogy is the
+        line integral of the electric field: add up the field's component along any path from{' '}
+        <em className="text-text italic">a</em> to <em className="text-text italic">b</em>, with a
+        minus sign, and you get the potential difference between them.
       </p>
       <Formula size="lg" tex="V_{ab} = V_b - V_a = -\int_a^b \vec{E}\cdot d\vec{\ell}" />
       <p className="mb-prose-3">
@@ -110,26 +128,14 @@ export default function Ch2VoltageAndCurrent() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <VoltageAsHeightDemo />
-
-      <p className="mb-prose-3">
-        The gravitational analogy is exact in all the parts that matter. A ball at the top of a hill
-        has gravitational potential energy <em className="text-text italic">mgh</em>; let it roll
-        and that energy converts to kinetic. A positive test charge at the high end of a voltage
-        drop has electrical potential energy <em className="text-text italic">qV</em>; let it move
-        and that energy goes into kinetic energy of the charge — which, in a wire full of fixed
-        obstacles, almost immediately becomes heat. The battery is the climber lifting the ball back
-        up. Voltage is the height it lifted to.
-      </p>
-
       <h3 className="chapter-h3">Voltage as energy per unit charge</h3>
 
       <p className="mb-prose-3">
-        The line integral is the formal definition; the way every working engineer holds voltage in
-        their head is operationally — as the energy it takes (or releases) per coulomb of charge
-        moved from one point to the other. Move a charge{' '}
-        <strong className="text-text font-medium">q</strong> against a potential difference{' '}
-        <strong className="text-text font-medium">V</strong> and you do work
+        The line integral is exact, but you'll rarely evaluate one. The way every working engineer
+        holds voltage in their head — and the way every multimeter measures it — is operationally:
+        as the energy it takes (or releases) per coulomb of charge moved from one point to the
+        other. Move a charge <strong className="text-text font-medium">q</strong> against a
+        potential difference <strong className="text-text font-medium">V</strong> and you do work
       </p>
       <Formula size="lg" id="work-charge-voltage" />
       <p className="mb-prose-3">
@@ -146,7 +152,8 @@ export default function Ch2VoltageAndCurrent() {
         identity is why "1.5 V" on a battery is a statement about energy: it says the cell can
         deposit 1.5 joules of energy onto every coulomb of charge that flows out one terminal and
         back into the other
-        <Cite id="feynman-II-2" in={SOURCES} />.
+        <Cite id="feynman-II-2" in={SOURCES} />. It is also the same statement as the line integral
+        — just integrated and divided through by the charge.
       </p>
 
       <VoltageDrivesFlowDemo />
@@ -170,10 +177,11 @@ export default function Ch2VoltageAndCurrent() {
       <h3 className="chapter-h3">The cleanest case: a uniform field between two plates</h3>
 
       <p className="mb-prose-3">
-        Inside a parallel-plate capacitor with the plates a distance{' '}
-        <strong className="text-text font-medium">d</strong> apart, the electric field is uniform —
-        same magnitude, same direction at every point in the gap. The line integral collapses to a
-        single product. The voltage between the plates is
+        The line integral and the W/q view are the same statement; the easiest place to see that is
+        when the field is uniform, because the integral collapses to a single product. Inside a
+        parallel-plate capacitor with the plates a distance{' '}
+        <strong className="text-text font-medium">d</strong> apart, the electric field has the same
+        magnitude and direction at every point in the gap. The voltage between the plates is then
       </p>
       <Formula size="lg" id="voltage-uniform-field" />
       <p className="mb-prose-3">

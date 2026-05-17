@@ -66,7 +66,7 @@ export default function Ch4HowAResistorWorks() {
         In Chapter 3 we wrote down the macroscopic geometry rule
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
-      <Formula>R = ρ L / A</Formula>
+      <Formula size="lg" tex="R = \dfrac{\rho L}{A}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">R</strong> is the resistance (in ohms, Ω),{' '}
         <strong className="text-text font-medium">ρ</strong> is the material's resistivity (in Ω·m;
@@ -250,7 +250,7 @@ export default function Ch4HowAResistorWorks() {
         rate
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
-      <Formula>P = I² R = V² / R</Formula>
+      <Formula size="lg" tex="P = I^2 R = \dfrac{V^2}{R}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">P</strong> is the power dissipated as heat
         in the resistor (in watts, W = J/s),
@@ -358,9 +358,7 @@ export default function Ch4HowAResistorWorks() {
         , formulated in 1864, observed that for pure metals the resistivity decomposes additively
         <Cite id="matthiessen-1864" in={SOURCES} />:
       </p>
-      <Formula>
-        ρ(T) = ρ<sub>residual</sub> + ρ<sub>phonon</sub>(T)
-      </Formula>
+      <Formula size="lg" tex="\rho(T) = \rho_{\text{residual}} + \rho_{\text{phonon}}(T)" />
       <p className="mb-prose-3">
         The first term is the temperature-independent scattering off impurities and lattice defects.
         The second comes from scattering off phonons — quantized lattice vibrations whose amplitude
@@ -398,7 +396,7 @@ export default function Ch4HowAResistorWorks() {
         practical range. The Steinhart–Hart relation gives the engineering form
         <Cite id="steinhart-hart-1968" in={SOURCES} />:
       </p>
-      <Formula>1 / T = A + B · ln R + C · (ln R)³</Formula>
+      <Formula size="lg" tex="\dfrac{1}{T} = A + B \ln R + C (\ln R)^3" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">T</strong> is the absolute temperature of
         the thermistor bead (in kelvin),
@@ -512,9 +510,7 @@ export default function Ch4HowAResistorWorks() {
         </Term>
         :
       </p>
-      <Formula>
-        κ / σ = L<sub>0</sub> · T
-      </Formula>
+      <Formula size="lg" tex="\dfrac{\kappa}{\sigma} = L_0 \, T" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">κ</strong> is the thermal conductivity (in
         W/(m·K)), <strong className="text-text font-medium">σ</strong> is the electrical

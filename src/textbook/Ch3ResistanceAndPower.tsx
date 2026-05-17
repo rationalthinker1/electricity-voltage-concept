@@ -23,6 +23,9 @@ import { DriftInCopper3DDemo } from './demos/DriftInCopper3D';
 import { JouleHeatingDemo } from './demos/JouleHeating';
 import { LengthVsResistanceDemo } from './demos/LengthVsResistance';
 import { MaterialPickerDemo } from './demos/MaterialPicker';
+import { MicroscopicOhm3DDemo } from './demos/MicroscopicOhm3D';
+import { OhmsLawTwoViewsDemo } from './demos/OhmsLawTwoViews';
+import { SeriesParallelMixDemo } from './demos/SeriesParallelMix';
 import { SeriesVsParallelDemo } from './demos/SeriesVsParallel';
 import { getChapter } from './data/chapters';
 
@@ -125,6 +128,22 @@ export default function Ch3ResistanceAndPower() {
         ordinary fields
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
+
+      <MicroscopicOhm3DDemo />
+
+      <p className="mb-prose-3">
+        The picture above is what <InlineMath tex="\vec{J} = \sigma\vec{E}" /> looks like inside the
+        wire. The orange arrow is the applied field; the pink arrow is the current density that the
+        field drives, parallel to <em className="text-text italic">E</em> and longer or shorter
+        depending on the material's σ. The cyan electrons drift opposite to the field — that's the
+        sign convention catching us out, because conventional current points with{' '}
+        <em className="text-text italic">E</em>. And the teal rings around the wire are the magnetic
+        field <strong className="text-text font-medium">B</strong> that any current carries with
+        it, perpendicular to the axis and curling by the right-hand rule. Swap nichrome for copper
+        and the same <em className="text-text italic">E</em> produces ~65× more{' '}
+        <em className="text-text italic">J</em> — same equation, different conductor.
+      </p>
+
       <p className="mb-prose-3">
         Wrap that microscopic law up over a whole wire — a length{' '}
         <strong className="text-text font-medium">L</strong>, a cross-section{' '}
@@ -142,6 +161,18 @@ export default function Ch3ResistanceAndPower() {
         material (through σ) and it depends on the geometry (through L and A), and that combination
         is the entire content of the rest of the chapter
         <Cite id="griffiths-2017" in={SOURCES} />.
+      </p>
+
+      <OhmsLawTwoViewsDemo />
+
+      <p className="mb-prose-3">
+        The two panels above pull the same equation in opposite directions. On the left, the
+        resistor sits at a fixed 5 Ω and you choose the current — voltage tracks linearly with slope
+        equal to <em className="text-text italic">R</em>, the cleanest possible statement of{' '}
+        <em className="text-text italic">V = IR</em>. On the right, the source sits at a fixed 20 V
+        and you choose the resistance — current falls along the hyperbola{' '}
+        <InlineMath tex="I = V/R" />. Same law, two intuitions: voltage drives the current upward,
+        resistance restricts it downward.
       </p>
 
       <h2 className="chapter-h2">Length adds, area divides</h2>
@@ -279,6 +310,27 @@ export default function Ch3ResistanceAndPower() {
       </p>
 
       <h2 className="chapter-h2">Where the heat comes from</h2>
+
+      <p className="mb-prose-3">
+        Before chasing the heat into the lattice, do the bookkeeping. Power is the rate at which
+        work is done, <InlineMath tex="P = dW/dt" />. Chapter 2 established the two pieces this
+        rests on: voltage is the work done per coulomb moved through a potential difference,{' '}
+        <InlineMath tex="V = dW/dq" />, and current is the coulombs moved per second,{' '}
+        <InlineMath tex="I = dq/dt" />. The chain rule fuses them:
+      </p>
+      <Formula size="lg" tex="P = \dfrac{dW}{dt} = \dfrac{dW}{dq}\cdot\dfrac{dq}{dt} = V\cdot I" />
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">P</strong> is the instantaneous electrical
+        power delivered to the element (in watts, W = J/s),{' '}
+        <strong className="text-text font-medium">V</strong> is the potential difference across it
+        (V), and <strong className="text-text font-medium">I</strong> is the current through it
+        (A). The units confirm it: joules per coulomb times coulombs per second is joules per
+        second <Cite id="feynman-II-2" in={SOURCES} />. This identity makes no assumption about
+        what the element is — battery, resistor, motor, capacitor, antenna. Whenever charge moves
+        through a potential difference, energy is transferred at the rate{' '}
+        <InlineMath tex="VI" />. The rest of this section is about <em>where that energy goes</em>{' '}
+        in the specific case of a resistor.
+      </p>
 
       <p className="mb-prose-3">
         Drude's collision picture is what makes resistance dissipative rather than reactive. Between
@@ -500,6 +552,18 @@ export default function Ch3ResistanceAndPower() {
       </p>
 
       <SeriesVsParallelDemo />
+
+      <p className="mb-prose-3">
+        Real circuits rarely live at one extreme. A mixed network — a series element feeding a
+        parallel block — already wants both rules at once. The trunk current crosses{' '}
+        <em className="text-text italic">R₁</em> intact, drops by{' '}
+        <InlineMath tex="I\cdot R_1" /> on the way through, and the remaining voltage sits across
+        the parallel pair, which splits the current inversely with resistance. Slide{' '}
+        <em className="text-text italic">R₁</em>, <em className="text-text italic">R₂</em>, and{' '}
+        <em className="text-text italic">R₃</em> below and watch the voltage probes track:
+      </p>
+
+      <SeriesParallelMixDemo />
 
       <p className="mb-prose-3">
         These rules are not arbitrary topology axioms — they are the same geometric{' '}

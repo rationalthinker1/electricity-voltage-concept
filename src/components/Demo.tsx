@@ -150,7 +150,7 @@ export function MiniToggle({ label, checked, onChange }: MiniToggleProps) {
   return (
     <button
       type="button"
-      className={`mini-toggle${checked ? 'on' : ''}`}
+      className={`mini-toggle${checked ? ' on' : ''}`}
       onClick={() => onChange(!checked)}
       aria-pressed={checked}
     >

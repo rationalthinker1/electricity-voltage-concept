@@ -94,9 +94,7 @@ export default function Ch7Induction() {
         </Term>
         through a surface bounded by the loop:
       </p>
-      <Formula>
-        Φ<sub>B</sub> = ∫∫ B · dA
-      </Formula>
+      <Formula size="lg" tex="\Phi_B = \iint \vec{B} \cdot d\vec{A}" />
       <p className="mb-prose-3">
         where{' '}
         <strong className="text-text font-medium">
@@ -125,9 +123,7 @@ export default function Ch7Induction() {
         </Term>
         <Cite id="feynman-II-17" in={SOURCES} />:
       </p>
-      <Formula>
-        EMF = − dΦ<sub>B</sub> / dt
-      </Formula>
+      <Formula size="lg" tex="\text{EMF} = -\dfrac{d\Phi_B}{dt}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">EMF</strong> is the electromotive force
         around the loop (in volts — the line integral
@@ -283,9 +279,9 @@ export default function Ch7Induction() {
         rotating at angular rate <strong className="text-text font-medium">ω</strong> in a uniform
         field <strong className="text-text font-medium">B</strong> is
       </p>
-      <Formula>Φ(t) = N B A cos(ω t)</Formula>
+      <Formula size="lg" tex="\Phi(t) = N B A \cos(\omega t)" />
       <p className="mb-prose-3">and Faraday's law immediately gives</p>
-      <Formula>EMF(t) = − dΦ/dt = N B A ω sin(ω t)</Formula>
+      <Formula size="lg" tex="\text{EMF}(t) = -\dfrac{d\Phi}{dt} = N B A \omega \sin(\omega t)" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">N</strong> is the number of turns in the
         coil, <strong className="text-text font-medium">B</strong> the uniform magnetic field (in
@@ -386,7 +382,7 @@ export default function Ch7Induction() {
         <strong className="text-text font-medium">Φ(t)</strong> threads both of them. Apply
         Faraday's law to each:
       </p>
-      <Formula>V₁ = N₁ · dΦ/dt &nbsp;&nbsp;&nbsp; V₂ = N₂ · dΦ/dt</Formula>
+      <Formula size="lg" tex="V_1 = N_1 \dfrac{d\Phi}{dt} \qquad V_2 = N_2 \dfrac{d\Phi}{dt}" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">V₁</strong> and{' '}
         <strong className="text-text font-medium">V₂</strong> are the (open-circuit) terminal
@@ -397,7 +393,7 @@ export default function Ch7Induction() {
         shared core flux through one turn (in Wb/s = V). Divide and the dΦ/dt cancels exactly,
         leaving the transformer relation:
       </p>
-      <Formula>V₂ / V₁ = N₂ / N₁</Formula>
+      <Formula size="lg" tex="\dfrac{V_2}{V_1} = \dfrac{N_2}{N_1}" />
       <p className="mb-prose-3">
         Whatever AC voltage you put on the primary, you get back an AC voltage on the secondary
         scaled by the turns ratio. Step up: more turns on the secondary than the primary. Step down:
@@ -725,9 +721,7 @@ export default function Ch7Induction() {
             <strong className="text-text font-medium">how many field lines pierce a surface</strong>
             , weighted by how perpendicular they hit it. Formally:
           </p>
-          <Formula>
-            Φ<sub>B</sub> = ∫∫ B · dA
-          </Formula>
+          <Formula size="lg" tex="\Phi_B = \iint \vec{B} \cdot d\vec{A}" />
           <p>
             For a flat loop in a uniform field, that's just{' '}
             <strong className="text-text font-medium">BA cos θ</strong>: field strength times area
