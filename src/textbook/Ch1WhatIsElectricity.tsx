@@ -323,7 +323,22 @@ export default function Ch1WhatIsElectricity() {
       <Formula size="lg" id="electric-field-def" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">E</strong> is the electric-field vector at
-        the point of interest (units: N/C, equivalently V/m),
+        the point of interest (units:{' '}
+        <Term
+          def={
+            <>
+              <strong className="text-text font-medium">N/C = V/m.</strong> The volt is defined as
+              energy per charge, so 1 V ≡ 1 J/C; and from{' '}
+              <em className="text-text italic">work = force × distance</em>, 1 J = 1 N·m.
+              Therefore 1 V/m = (1 J/C)/m = (1 N·m/C)/m ={' '}
+              <strong className="text-text font-medium">1 N/C</strong>. Same unit, two names —
+              one reads E as force per charge, the other as voltage drop per metre.
+            </>
+          }
+        >
+          N/C, equivalently V/m
+        </Term>
+        ),
         <strong className="text-text font-medium"> F</strong> is the force the field exerts on a
         small <em className="text-text italic">test charge</em> placed at that point, and
         <strong className="text-text font-medium">
