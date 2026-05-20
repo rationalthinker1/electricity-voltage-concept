@@ -141,16 +141,16 @@ export default function Ch1WhatIsElectricity() {
         is positive (push apart); opposite signs, F is negative (pull together).
       </p>
       <p className="mb-prose-3">
-        The constant is <em className="text-text italic">enormous</em>. Two coulombs of free charge
+        The constant is <em className="text-text italic">enormous</em>. Two one-coulomb charges
         separated by one meter would push each other apart with about{' '}
         <strong className="text-text font-medium">9 billion newtons</strong> — roughly the weight of
-        three Eiffel Towers.
+        a hundred Eiffel Towers.
       </p>
       <p className="mb-prose-3">
         The reason daily life is full of static and not constant electrocution is that ordinary
         matter is exquisitely charge-neutral. The fractional excess of free charge needed to make a
         noticeable force is tiny. Drag a balloon across your hair and you transfer maybe{' '}
-        <strong className="text-text font-medium">10⁻⁸ coulombs</strong> — a few hundred billion
+        <strong className="text-text font-medium">10⁻⁸ coulombs</strong> — around sixty billion
         excess electrons, sitting on a balloon that contains roughly{' '}
         <strong className="text-text font-medium">10²³</strong> of them. Almost nothing. Enough to
         fight gravity for a few minutes.
@@ -215,8 +215,8 @@ export default function Ch1WhatIsElectricity() {
         Cavendish bounded the deviation from <em className="text-text italic">exactly</em> 2 to
         within ±1/50 with a clever null-cavity experiment in 1773, decades before Coulomb's
         published result <Cite id="cavendish-1773" in={SOURCES} />. Modern measurements have pushed
-        the bound to roughly <strong className="text-text font-medium">±3×10⁻¹⁶</strong> — the
-        exponent is 2 to sixteen decimal places
+        the bound to roughly <strong className="text-text font-medium">±3×10⁻¹⁶</strong> — any
+        deviation from exactly 2 is smaller than three parts in 10¹⁶
         <Cite id="williams-faller-hill-1971" in={SOURCES} />. There are very few{' '}
         <Term
           def={
@@ -323,7 +323,22 @@ export default function Ch1WhatIsElectricity() {
       <Formula size="lg" id="electric-field-def" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">E</strong> is the electric-field vector at
-        the point of interest (units: N/C, equivalently V/m),
+        the point of interest (units:{' '}
+        <Term
+          def={
+            <>
+              <strong className="text-text font-medium">N/C = V/m.</strong> The volt is defined as
+              energy per charge, so 1 V ≡ 1 J/C; and from{' '}
+              <em className="text-text italic">work = force × distance</em>, 1 J = 1 N·m.
+              Therefore 1 V/m = (1 J/C)/m = (1 N·m/C)/m ={' '}
+              <strong className="text-text font-medium">1 N/C</strong>. Same unit, two names —
+              one reads E as force per charge, the other as voltage drop per meter.
+            </>
+          }
+        >
+          N/C, equivalently V/m
+        </Term>
+        ),
         <strong className="text-text font-medium"> F</strong> is the force the field exerts on a
         small <em className="text-text italic">test charge</em> placed at that point, and
         <strong className="text-text font-medium">
@@ -412,7 +427,7 @@ export default function Ch1WhatIsElectricity() {
         }
       />
 
-      <h2 className="chapter-h2">Two charges, two patterns</h2>
+      <h2 className="chapter-h2">Field patterns to carry forward</h2>
 
       <p className="mb-prose-3">
         Once you have a field, you can ask what the field{' '}
@@ -444,6 +459,42 @@ export default function Ch1WhatIsElectricity() {
         invisible mountain whose height is the potential. The electric field always points
         "downhill," perpendicular to the equipotentials. We'll spend Chapter&nbsp;2 on what V means
         and why it's the variable everyone actually measures.
+      </p>
+
+      <p className="mb-prose-3">
+        A third pattern is worth flagging because the rest of the book will lean on it constantly.
+        Take a flat conducting sheet and spread positive charge evenly over it; park a second sheet
+        a short distance away and spread an equal amount of negative charge over that one. Away
+        from the edges, the field between the two plates turns out to be{' '}
+        <em className="text-text italic">uniform</em> — same magnitude, same direction, at every
+        point in the gap — and almost zero outside
+        <Cite id="griffiths-2017" in={SOURCES} />:
+      </p>
+      <Formula size="lg" id="parallel-plate-field" />
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">|E|</strong> is the magnitude of the field
+        between the plates (N/C), <strong className="text-text font-medium">σ</strong> is the
+        magnitude of the surface-charge density on each plate (in C/m²), and{' '}
+        <strong className="text-text font-medium">ε₀ ≈ 8.854×10⁻¹² F/m</strong> is the permittivity
+        of free space <Cite id="codata-2018" in={SOURCES} />. We derive this cleanly with{' '}
+        <Term
+          def={
+            <>
+              <strong className="text-text font-medium">Gauss's law</strong> — the electric flux
+              through any closed surface equals the enclosed charge divided by ε₀:{' '}
+              <InlineMath id="gauss-law" />. Applied to a pillbox straddling one plate, it gives
+              σ/ε₀ on the inside face and ~0 on the outside.
+            </>
+          }
+        >
+          Gauss's law
+        </Term>{' '}
+        in Chapter&nbsp;5 and use it to build the parallel-plate capacitor. For now just notice two
+        things. First, a uniform field is the simplest non-trivial geometry in electrostatics; once
+        you can solve a problem there, you can solve a lot of working circuits. Second, because the
+        field doesn't vary across the gap, the voltage between the plates is just{' '}
+        <strong className="text-text font-medium">V = E·d</strong> — a relationship the next
+        chapter will lean on heavily.
       </p>
 
       <TryIt
@@ -588,31 +639,40 @@ export default function Ch1WhatIsElectricity() {
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            A thundercloud is a slow electrostatic generator. Updrafts and ice–graupel collisions
-            sort charge by mass, lifting positive charge to the anvil and dumping negative charge
-            into a layer a few kilometers above ground. The cloud and the ground become the two
-            plates of a stupendously large, leaky capacitor. The intervening air is an insulator —
-            until the field between the plates reaches roughly the dielectric strength of air,
-            around <strong className="text-text font-medium">3 MV/m</strong> at the channel scale,
-            at which point the air ionizes and a conductive path punches through
-            <Cite id="uman-2001" in={SOURCES} />.
+            Inside a thundercloud, ice does the work of a battery. Strong updrafts loft tiny ice
+            crystals upward through a swarm of heavier ice pellets falling the other way. Each time
+            a light crystal brushes past a heavy pellet, a small amount of charge hops between
+            them. The updraft carries the light, now-positive crystals up to the anvil at the top
+            of the cloud; the heavy, now-negative pellets settle into a layer a few kilometers
+            above the ground<Cite id="rakov-uman-2003" in={SOURCES} />. After millions of those
+            collisions the cloud has a strongly positive top and a strongly negative base.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            What follows is Coulomb's law cashing its check. Cloud-base-to-ground voltages of
-            <strong className="text-text font-medium"> 10⁸–10⁹ V</strong> drive median return-stroke
-            currents around <strong className="text-text font-medium">30 kA</strong>
-            through a channel a few centimeters wide
-            <Cite id="rakov-uman-2003" in={SOURCES} />. The total charge transferred is modest —
-            about <strong className="text-text font-medium">5 C</strong> for a median negative
-            cloud-to-ground flash — but that quantity multiplied by hundreds of millions of volts is
-            a gigajoule of electrostatic energy dumped in milliseconds.
+            That negative base and the ground beneath it are now the two plates of an enormous
+            capacitor — kilometers across, kilometers apart, with humid air as the insulator. As
+            more charge piles into the base, the field between cloud and ground grows. Air can
+            tolerate roughly <strong className="text-text font-medium">3 MV/m</strong> before it
+            gives up; once any path through the air reaches that threshold, electrons get torn off
+            their atoms in a chain reaction and a narrow column of conductive plasma stitches its
+            way from cloud to ground<Cite id="uman-2001" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            Every piece of the picture lives in this chapter. Two kinds of charge, separated by an
-            insulator. A field that grows until it reaches the breakdown threshold of the
-            intervening medium. A conductive path that then carries the discharge between the two
-            stores. Nothing essentially different from a balloon stuck to a wall — only the numbers
-            are different by twenty orders of magnitude.
+            The lightning bolt you see is the instant that channel completes the circuit. With a
+            conductor now bridging the plates, the cloud's stored charge floods through it to
+            ground. The potential difference is
+            <strong className="text-text font-medium"> 10⁸–10⁹ V</strong> and it drives a peak
+            current near <strong className="text-text font-medium">30 kA</strong> through a channel
+            only a few centimeters wide<Cite id="rakov-uman-2003" in={SOURCES} />. Only about
+            <strong className="text-text font-medium"> 5 C</strong> of charge actually moves in a
+            typical flash — a modest amount — but multiplied by a hundred million volts it works
+            out to roughly a gigajoule of stored energy released in milliseconds.
+          </p>
+          <p className="mb-prose-2 last:mb-0">
+            Every piece of that picture lives in this chapter: two kinds of charge, separated by an
+            insulator; a field that grows until it reaches the breakdown threshold of the medium;
+            a conductive path that then carries the discharge between the two stores. Nothing
+            essentially different from a balloon stuck to a wall — only the numbers are different
+            by twenty orders of magnitude.
           </p>
         </CaseStudy>
 
@@ -801,7 +861,7 @@ export default function Ch1WhatIsElectricity() {
             during those nanoseconds the energy is somewhere, and the "somewhere" is the field.
             Treating it as mere bookkeeping works for static problems and fails the moment anything
             moves
-            <Cite id="feynman-II-2" in={SOURCES} />. The Poynting story in Chapter 6 makes this
+            <Cite id="feynman-II-2" in={SOURCES} />. The Poynting story in Chapter 8 makes this
             concrete.
           </p>
         </FAQItem>
@@ -894,7 +954,7 @@ export default function Ch1WhatIsElectricity() {
             involves the magnetic field as well — and the two are linked by special relativity. A
             charge moving past you produces a magnetic field that an observer riding alongside it
             would not see; what looks like a magnetic force in one frame looks like an extra
-            electric force in another. We get to all of that in Chapter 4. For now, "Coulomb's law"
+            electric force in another. We get to all of that in Chapter 11. For now, "Coulomb's law"
             means the electrostatic limit: charges sitting still, or moving slowly enough that
             retardation effects can be ignored.
           </p>
@@ -931,7 +991,7 @@ export default function Ch1WhatIsElectricity() {
             light <InlineMath tex="c = 299{,}792{,}458\ \text{m/s}" />
             <Cite id="codata-2018" in={SOURCES} />. The electrons themselves drift along at
             fractions of a millimeter per second. We pull that apart properly in Chapter 2, and the
-            field-flow picture lands in Chapter 6.
+            field-flow picture lands in Chapter 8.
           </p>
         </FAQItem>
       </FAQ>

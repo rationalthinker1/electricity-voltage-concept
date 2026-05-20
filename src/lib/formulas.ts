@@ -47,6 +47,11 @@ export const FORMULAS = {
     plain: '|E| = kQ/r²',
     name: 'Electric field of a point charge',
   },
+  'parallel-plate-field': {
+    tex: '|\\vec{E}| = \\dfrac{\\sigma}{\\varepsilon_0}',
+    plain: '|E| = σ/ε₀',
+    name: 'Uniform field between two oppositely-charged parallel plates',
+  },
   'force-on-charge': {
     tex: '\\vec{F} = q\\vec{E}',
     plain: 'F = qE',
