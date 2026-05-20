@@ -332,7 +332,7 @@ export default function Ch1WhatIsElectricity() {
               <em className="text-text italic">work = force × distance</em>, 1 J = 1 N·m.
               Therefore 1 V/m = (1 J/C)/m = (1 N·m/C)/m ={' '}
               <strong className="text-text font-medium">1 N/C</strong>. Same unit, two names —
-              one reads E as force per charge, the other as voltage drop per metre.
+              one reads E as force per charge, the other as voltage drop per meter.
             </>
           }
         >
