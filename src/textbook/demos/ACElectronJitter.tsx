@@ -41,6 +41,18 @@ const REFERENCES: { label: string; m: number }[] = [
   { label: 'red blood cell', m: 7e-6 },
 ];
 
+function formatRatio(x: number, ref: number): string {
+  if (!isFinite(x) || !isFinite(ref) || x <= 0 || ref <= 0) return '—';
+  const r = x / ref;
+  if (r >= 1000) return '>1000×';
+  if (r >= 10) return `${Math.round(r)}×`;
+  if (r >= 1) return `${r.toFixed(1)}×`;
+  const inv = 1 / r;
+  if (inv >= 1000) return '<1/1000';
+  if (inv >= 10) return `1/${Math.round(inv)}`;
+  return `1/${inv.toFixed(1)}`;
+}
+
 export function ACElectronJitterDemo({ figure }: Props) {
   const [Irms, setIrms] = useState(5); // amperes RMS
 
@@ -171,9 +183,7 @@ export function ACElectronJitterDemo({ figure }: Props) {
           : refNm < 1000
             ? `${ref.label} (${refNm.toFixed(0)} nm)`
             : `${ref.label} (${(refNm / 1000).toFixed(0)} µm)`;
-        const ratio = x_peak / ref.m;
-        const ratioStr =
-          ratio >= 1 ? `${ratio.toFixed(1)}×` : `1/${(1 / ratio).toFixed(ratio < 0.01 ? 0 : 1)}`;
+        const ratioStr = formatRatio(x_peak, ref.m);
         ctx.fillStyle = colors.textMuted;
         ctx.fillText(label, sx, stripY);
         ctx.fillStyle = colors.accent;
