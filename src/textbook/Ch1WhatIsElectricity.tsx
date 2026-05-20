@@ -427,7 +427,7 @@ export default function Ch1WhatIsElectricity() {
         }
       />
 
-      <h2 className="chapter-h2">Two charges, two patterns</h2>
+      <h2 className="chapter-h2">Field patterns to carry forward</h2>
 
       <p className="mb-prose-3">
         Once you have a field, you can ask what the field{' '}
@@ -459,6 +459,42 @@ export default function Ch1WhatIsElectricity() {
         invisible mountain whose height is the potential. The electric field always points
         "downhill," perpendicular to the equipotentials. We'll spend Chapter&nbsp;2 on what V means
         and why it's the variable everyone actually measures.
+      </p>
+
+      <p className="mb-prose-3">
+        A third pattern is worth flagging because the rest of the book will lean on it constantly.
+        Take a flat conducting sheet and spread positive charge evenly over it; park a second sheet
+        a short distance away and spread an equal amount of negative charge over that one. Away
+        from the edges, the field between the two plates turns out to be{' '}
+        <em className="text-text italic">uniform</em> — same magnitude, same direction, at every
+        point in the gap — and almost zero outside
+        <Cite id="griffiths-2017" in={SOURCES} />:
+      </p>
+      <Formula size="lg" id="parallel-plate-field" />
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">|E|</strong> is the magnitude of the field
+        between the plates (N/C), <strong className="text-text font-medium">σ</strong> is the
+        magnitude of the surface-charge density on each plate (in C/m²), and{' '}
+        <strong className="text-text font-medium">ε₀ ≈ 8.854×10⁻¹² F/m</strong> is the permittivity
+        of free space <Cite id="codata-2018" in={SOURCES} />. We derive this cleanly with{' '}
+        <Term
+          def={
+            <>
+              <strong className="text-text font-medium">Gauss's law</strong> — the electric flux
+              through any closed surface equals the enclosed charge divided by ε₀:{' '}
+              <InlineMath id="gauss-law" />. Applied to a pillbox straddling one plate, it gives
+              σ/ε₀ on the inside face and ~0 on the outside.
+            </>
+          }
+        >
+          Gauss's law
+        </Term>{' '}
+        in Chapter&nbsp;5 and use it to build the parallel-plate capacitor. For now just notice two
+        things. First, a uniform field is the simplest non-trivial geometry in electrostatics; once
+        you can solve a problem there, you can solve a lot of working circuits. Second, because the
+        field doesn't vary across the gap, the voltage between the plates is just{' '}
+        <strong className="text-text font-medium">V = E·d</strong> — a relationship the next
+        chapter will lean on heavily.
       </p>
 
       <TryIt
