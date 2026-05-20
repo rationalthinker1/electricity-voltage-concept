@@ -6,7 +6,7 @@
   "description": "Field · Theory — an interactive electromagnetism textbook",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsr generate && tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
@@ -27,6 +27,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.4",
     "@tailwindcss/vite": "^4.3.0",
+    "@tanstack/router-cli": "^1.167.5",
     "@tanstack/router-plugin": "^1.95.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
