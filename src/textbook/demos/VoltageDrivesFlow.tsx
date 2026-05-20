@@ -19,11 +19,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { MATERIALS, PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -178,16 +179,18 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       const I_now = V / R_OHMS;
       // Normalised current 0..1 across the slider's 0.5..24 V range.
       const Inorm = Math.min(1, Math.abs(I_now) / (24 / R_OHMS));
+      const colors = getCanvasColors();
 
       // Background.
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Build / reuse the static schematic cache. Key includes a coarsened
-      // brightness bucket so the bulb glow refreshes in steps, not per-pixel.
+      // brightness bucket so the bulb glow refreshes in steps, not per-pixel,
+      // and a theme signature so light/dark swap re-bakes.
       const brightness = Math.min(1, (V * I_now) / (24 * (24 / R_OHMS))); // P / Pmax
       const brightBucket = Math.round(brightness * 12);
-      const cacheKey = `${w}x${h}@${dpr}|b${brightBucket}`;
+      const cacheKey = `${w}x${h}@${dpr}|b${brightBucket}|t${colors.text}`;
       if (cacheRef.current?.key !== cacheKey) {
         const bulbBright = brightBucket / 12;
         const staticElements: CircuitElement[] = [
@@ -203,7 +206,7 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
               { x: bulbX, y: topY },
               { x: bulbX, y: wireY - bulbR },
             ],
-            color: 'rgba(160,158,149,.45)',
+            color: withAlpha(colors.textDim, 0.45),
             lineWidth: 2,
           },
           {
@@ -212,7 +215,7 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
               { x: batX, y: wireY },
               { x: bulbX, y: wireY },
             ],
-            color: 'rgba(160,158,149,.45)',
+            color: withAlpha(colors.textDim, 0.45),
             lineWidth: 2,
           },
           // Battery on the left. Label is offset down into row 2 of the
@@ -220,14 +223,14 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
           {
             kind: 'battery',
             at: { x: batX, y: batCenterY },
-            color: 'rgba(255,255,255,.30)',
+            color: withAlpha(colors.text, 0.3),
             label: `${R_OHMS} Ω load · 1 mm² copper`,
             labelOffset: { x: legendCol1X - batX + 72, y: legendRow2Y - batCenterY },
             leadLength: batLead,
             plateGap: 8,
-            negativeColor: '#5baef8',
+            negativeColor: colors.blue,
             negativePlateLength: 14,
-            positiveColor: '#ff3b6e',
+            positiveColor: colors.pink,
             positivePlateLength: 24,
           },
           // Bulb (the load) on the right. Label is offset down into row 2
@@ -257,7 +260,7 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       const Bwidth = 0.8 + 2.2 * Inorm;
       const Balpha = 0.2 + 0.7 * Inorm;
       ctx.save();
-      ctx.strokeStyle = `rgba(108,197,194,${Balpha.toFixed(3)})`;
+      ctx.strokeStyle = withAlpha(colors.teal, Balpha);
       ctx.lineWidth = Bwidth;
       ctx.lineCap = 'round';
       for (let i = 0; i < Bcols; i++) {
@@ -283,10 +286,10 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       // Row 1 — B-field label (cyan, fades with current).
-      ctx.fillStyle = `rgba(108,197,194,${(0.4 + 0.5 * Inorm).toFixed(3)})`;
+      ctx.fillStyle = withAlpha(colors.teal, 0.4 + 0.5 * Inorm);
       ctx.fillText('B  (circles wire; |B| ∝ I)', legendCol1X, legendRow1Y);
       // Row 3 — disclosure caption.
-      ctx.fillStyle = 'rgba(160,158,149,.7)';
+      ctx.fillStyle = withAlpha(colors.textDim, 0.7);
       ctx.fillText(
         'fixed: R = 10 Ω · A = 1 mm² · n = 8.5×10²⁸/m³ (Cu) · dot motion ≠ to scale',
         legendCol1X,
@@ -302,7 +305,7 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       // opposite to the conventional-current arrow.
       const visSpeed = 90 * Inorm; // px/s at full slider
       const dots = dotsRef.current!;
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = colors.blue;
       for (const d of dots) {
         d.s += visSpeed * dt;
         d.s = ((d.s % totalLen) + totalLen) % totalLen;
@@ -332,8 +335,8 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       const arrowY = wireY - 24;
       const ax0 = wireLeft + wireLength * 0.35;
       const ax1 = wireLeft + wireLength * 0.65;
-      ctx.strokeStyle = `rgba(255,107,42,${(0.45 + 0.5 * Inorm).toFixed(3)})`;
-      ctx.fillStyle = `rgba(255,107,42,${(0.45 + 0.5 * Inorm).toFixed(3)})`;
+      ctx.strokeStyle = withAlpha(colors.accent, 0.45 + 0.5 * Inorm);
+      ctx.fillStyle = withAlpha(colors.accent, 0.45 + 0.5 * Inorm);
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.moveTo(ax0, arrowY);
@@ -360,8 +363,10 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       const fx1 = bulbX - 18;
       const fx0 = fx1 - fluxLen;
       const fy = wireY - 36;
-      ctx.strokeStyle = `rgba(255,204,85,${fluxAlpha.toFixed(3)})`;
-      ctx.fillStyle = `rgba(255,204,85,${fluxAlpha.toFixed(3)})`;
+      // Poynting-flux annotation — use the accent token so light/dark swap
+      // keeps the arrow in the chapter's palette.
+      ctx.strokeStyle = withAlpha(colors.accent, fluxAlpha);
+      ctx.fillStyle = withAlpha(colors.accent, fluxAlpha);
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       ctx.moveTo(fx0, fy);
@@ -417,6 +422,28 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
         <MiniReadout label="drift v_d" value={<Num value={vd} />} unit="m/s" />
         <MiniReadout label="power P = V·I" value={P.toFixed(2)} unit="W" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Ohm's law (linear in V)"
+        left={
+          <InlineMath
+            tex={
+              `I \\;=\\; V/R \\;=\\; ` +
+              `${V.toFixed(1)}/${R_OHMS} \\;=\\; ` +
+              `${I.toFixed(2)}\\ \\text{A}`
+            }
+          />
+        }
+        rightLabel="Power (quadratic in V)"
+        right={
+          <InlineMath
+            tex={
+              `P \\;=\\; V^{2}/R \\;=\\; ` +
+              `${V.toFixed(1)}^{2}/${R_OHMS} \\;=\\; ` +
+              `${P.toFixed(2)}\\ \\text{W}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

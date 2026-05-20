@@ -5,12 +5,21 @@
  * with a sign toggle, drawn with a force vector that points the right way.
  * Reader plays with same-sign vs opposite-sign and watches attraction flip.
  */
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawArrow, drawCharge } from '@/lib/canvasPrimitives';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 
 interface Props {
@@ -30,9 +39,21 @@ export function TwoChargesDemo({ figure }: Props) {
   const F = (PHYS.k * q1 * q2) / (r * r); // signed
   const sameSign = Math.sign(q1) === Math.sign(q2);
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h, colors } = info;
+  // stateRef lets the draw loop read the latest state without re-running
+  // setup on every slider tick. Setup now memoises with [] deps; the canvas
+  // is initialised once and re-paints itself every frame.
+  const stateRef = useRef({ q1Pos, q2Pos, magNC, rCm });
+  useEffect(() => {
+    stateRef.current = { q1Pos, q2Pos, magNC, rCm };
+  }, [q1Pos, q2Pos, magNC, rCm]);
+
+  const setup = useCallback((info: CanvasInfo) => {
+    const { ctx, w, h } = info;
+    let raf = 0;
+
+    function draw() {
+      const { q1Pos, q2Pos, magNC, rCm } = stateRef.current;
+      const colors = getCanvasColors();
       const sameSign_ = q1Pos === q2Pos;
       const F_ =
         (PHYS.k * (q1Pos ? 1 : -1) * (q2Pos ? 1 : -1) * (magNC * 1e-9) ** 2) / (rCm * 1e-2) ** 2;
@@ -48,14 +69,14 @@ export function TwoChargesDemo({ figure }: Props) {
 
       // Distance line
       ctx.setLineDash([5, 5]);
-      ctx.strokeStyle = 'rgba(255,255,255,.2)';
+      ctx.strokeStyle = withAlpha(colors.text, 0.2);
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(cx1, cy);
       ctx.lineTo(cx2, cy);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = 'rgba(160,158,149,.85)';
+      ctx.fillStyle = withAlpha(colors.textDim, 0.85);
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`${rCm.toFixed(1)} cm`, cxMid, cy - 12);
@@ -69,7 +90,7 @@ export function TwoChargesDemo({ figure }: Props) {
           { x: cx1 + dir1 * 18, y: cy },
           { x: cx1 + dir1 * arrowLen, y: cy },
           {
-            color: 'rgba(255,107,42,0.95)',
+            color: withAlpha(colors.accent, 0.95),
             lineWidth: 2,
           },
         );
@@ -78,7 +99,7 @@ export function TwoChargesDemo({ figure }: Props) {
           { x: cx2 - dir1 * 18, y: cy },
           { x: cx2 - dir1 * arrowLen, y: cy },
           {
-            color: 'rgba(255,107,42,0.95)',
+            color: withAlpha(colors.accent, 0.95),
             lineWidth: 2,
           },
         );
@@ -89,27 +110,35 @@ export function TwoChargesDemo({ figure }: Props) {
         ctx,
         { x: cx1, y: cy },
         {
-          color: q1Pos ? '#ff3b6e' : '#5baef8',
+          color: q1Pos ? colors.pink : colors.blue,
           label: 'Q₁',
           radius: 12 + Math.min(8, magNC * 0.7),
           sign: q1Pos ? '+' : '−',
-          textColor: '#0a0a0b',
+          textColor: colors.bg,
         },
       );
       drawCharge(
         ctx,
         { x: cx2, y: cy },
         {
-          color: q2Pos ? '#ff3b6e' : '#5baef8',
+          color: q2Pos ? colors.pink : colors.blue,
           label: 'Q₂',
           radius: 12 + Math.min(8, magNC * 0.7),
           sign: q2Pos ? '+' : '−',
-          textColor: '#0a0a0b',
+          textColor: colors.bg,
         },
       );
-    },
-    [q1Pos, q2Pos, magNC, rCm],
-  );
+
+      raf = requestAnimationFrame(draw);
+    }
+    raf = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  // Signed product of charges, in C² — used in the EquationStrip substitution.
+  const q1q2 = q1 * q2; // signed C²
+  const q1q2Abs = Math.abs(q1q2);
+  const q1q2Sign = q1q2 >= 0 ? '+' : '-';
 
   return (
     <Demo
@@ -149,6 +178,21 @@ export function TwoChargesDemo({ figure }: Props) {
           unit="N"
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Coulomb's law"
+        left={<InlineMath tex="F \;=\; \dfrac{k\, Q_1 Q_2}{r^{2}}" />}
+        rightLabel="Live substitution"
+        right={
+          <InlineMath
+            tex={
+              `F \\;=\\; \\dfrac{(8.99\\times 10^{9})` +
+              `(${q1q2Sign}${q1q2Abs.toExponential(2)})}` +
+              `{(${r.toFixed(3)})^{2}} \\;\\approx\\; ` +
+              `${F >= 0 ? '+' : ''}${F.toExponential(2)}\\ \\text{N}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

@@ -122,6 +122,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'rakov-uman-2003',
       'uman-2001',
       'hyperphysics-emag',
+      'libretexts-conduction',
     ],
     punchline:
       'Two kinds of charge, an inverse-square law that is really a fact about 3D space, and a field that turns force-at-a-distance into a property of the empty space around a charge.',
@@ -146,11 +147,13 @@ export const CHAPTERS: ChapterEntry[] = [
     relatedLabs: ['potential', 'drift', 'ohms-law'],
     sources: [
       'feynman-II-2',
+      'feynman-II-27',
       'griffiths-2017',
       'drude-1900',
       'ashcroft-mermin-1976',
       'kittel-2005',
       'libretexts-conduction',
+      'codata-2018',
       'usb-pd-r3',
       'catania-2015',
     ],

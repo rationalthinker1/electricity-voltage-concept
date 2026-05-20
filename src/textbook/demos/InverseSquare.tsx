@@ -4,11 +4,13 @@
  * A graph: F(r) on log-log axes. Slider for r changes a marker on the curve.
  * Reader watches: doubling r quarters F. Slope is exactly −2.
  */
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { getCanvasColors } from '@/lib/canvasTheme';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props {
@@ -23,9 +25,20 @@ export function InverseSquareDemo({ figure }: Props) {
   const r = rCm * 1e-2;
   const F = (PHYS.k * q * q) / (r * r);
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h, colors } = info;
+  // stateRef lets the draw loop see the latest slider value without
+  // re-running setup; setup memoises with [] deps.
+  const stateRef = useRef({ rCm });
+  useEffect(() => {
+    stateRef.current = { rCm };
+  }, [rCm]);
+
+  const setup = useCallback((info: CanvasInfo) => {
+    const { ctx, w, h } = info;
+    let raf = 0;
+
+    function draw() {
+      const { rCm } = stateRef.current;
+      const colors = getCanvasColors();
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
@@ -138,9 +151,12 @@ export function InverseSquareDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.fillText('slope = −2  →  F ∝ 1/r²', padL + 12, padT + 6);
       ctx.restore();
-    },
-    [rCm],
-  );
+
+      raf = requestAnimationFrame(draw);
+    }
+    raf = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   return (
     <Demo
@@ -169,6 +185,20 @@ export function InverseSquareDemo({ figure }: Props) {
         />
         <MiniReadout label="F (1 µC each)" value={<Num value={F} />} unit="N" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Coulomb's law (q₁ = q₂ = 1 µC)"
+        left={<InlineMath tex="F \;=\; \dfrac{k\, q^{2}}{r^{2}}" />}
+        rightLabel="Live substitution at the marker"
+        right={
+          <InlineMath
+            tex={
+              `F \\;=\\; \\dfrac{(8.99\\times 10^{9})(10^{-6})^{2}}` +
+              `{(${r.toFixed(3)})^{2}} \\;\\approx\\; ` +
+              `${F.toExponential(2)}\\ \\text{N}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

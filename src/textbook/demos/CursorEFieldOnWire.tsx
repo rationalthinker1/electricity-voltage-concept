@@ -24,7 +24,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import {
   drawCircuit,
   drawArrow,
@@ -122,6 +122,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
     canvas.addEventListener('touchcancel', onTouchEnd);
 
     function buildStaticCache(): HTMLCanvasElement {
+      const colors = getCanvasColors();
       const r = (wireBot - wireTop) / 2;
       // We can't make the rounded rectangle through drawCircuit alone, so we
       // composite: a separate offscreen canvas for the wire body + then
@@ -133,7 +134,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
       if (!c2) return off;
       c2.setTransform(dpr, 0, 0, dpr, 0, 0);
       // Wire body fill + outline.
-      c2.fillStyle = 'rgba(255,107,42,.06)';
+      c2.fillStyle = withAlpha(colors.accent, 0.06);
       c2.beginPath();
       c2.moveTo(wireLeft + r, wireTop);
       c2.lineTo(wireRight - r, wireTop);
@@ -142,22 +143,22 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
       c2.arc(wireLeft + r, wireTop + r, r, Math.PI / 2, -Math.PI / 2);
       c2.closePath();
       c2.fill();
-      c2.strokeStyle = 'rgba(255,255,255,.10)';
+      c2.strokeStyle = withAlpha(colors.text, 0.1);
       c2.lineWidth = 1;
       c2.stroke();
 
       // Battery terminals as small rectangles, plus labels.
-      c2.fillStyle = '#ff3b6e';
+      c2.fillStyle = colors.pink;
       c2.fillRect(wireLeft - 12, wireTop + 4, 4, wireBot - wireTop - 8);
-      c2.fillStyle = '#5baef8';
+      c2.fillStyle = colors.blue;
       c2.fillRect(wireRight + 8, wireTop + 4, 4, wireBot - wireTop - 8);
-      c2.fillStyle = 'rgba(160,158,149,.85)';
+      c2.fillStyle = withAlpha(colors.textDim, 0.85);
       c2.font = '10px "JetBrains Mono", monospace';
       c2.textAlign = 'center';
       c2.fillText('+', wireLeft - 10, wireTop - 4);
       c2.fillText('−', wireRight + 10, wireTop - 4);
       c2.textAlign = 'left';
-      c2.fillStyle = 'rgba(160,158,149,.7)';
+      c2.fillStyle = withAlpha(colors.textDim, 0.7);
       c2.fillText('battery drives drift  →', wireLeft, wireTop - 14);
 
       // Reuse drawCircuit to draw nothing else — keep the schematic minimal.
@@ -169,13 +170,14 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
 
     function draw() {
       const { cursorPos, qNC, showBatteryField } = stateRef.current;
+      const colors = getCanvasColors();
 
       // Background
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Static schematic cache
-      const key = `${w}x${h}@${dpr}`;
+      // Static schematic cache; re-keyed on theme so light/dark swap re-bakes.
+      const key = `${w}x${h}@${dpr}|t${colors.text}`;
       if (cacheRef.current?.key !== key) {
         cacheRef.current = { key, canvas: buildStaticCache() };
       }
@@ -183,8 +185,8 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
 
       // ───── Battery drift arrows (left → right inside the wire) ─────
       if (showBatteryField) {
-        ctx.strokeStyle = getCanvasColors().accentGlow;
-        ctx.fillStyle = getCanvasColors().accentGlow;
+        ctx.strokeStyle = colors.accentGlow;
+        ctx.fillStyle = colors.accentGlow;
         ctx.lineWidth = 1;
         for (let xa = wireLeft + 50; xa < wireRight - 50; xa += 90) {
           ctx.beginPath();
@@ -200,7 +202,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
         }
         ctx.save();
         ctx.globalAlpha = 0.6;
-        ctx.fillStyle = getCanvasColors().accent;
+        ctx.fillStyle = colors.accent;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         ctx.fillText('E_battery', wireLeft + 4, wireBot + 14);
@@ -211,7 +213,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
       const ui = uiRef.current;
       const haveCursor = ui.hovering && ui.cx >= 0 && ui.cy >= 0;
       const cursorSign = cursorPos ? +1 : -1;
-      const cursorColor = cursorPos ? '#ff3b6e' : '#5baef8';
+      const cursorColor = cursorPos ? colors.pink : colors.blue;
 
       // Drawn-units coupling for the perturbation. Tuned so a 6 nC cursor at
       // ~60 px from the wire moves electrons visibly without flinging them.
@@ -247,7 +249,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
               { x: sx, y: sy },
               { x: ex, y: ey },
               {
-                color: cursorPos ? 'rgba(255,59,110,.55)' : 'rgba(91,174,248,.55)',
+                color: withAlpha(cursorPos ? colors.pink : colors.blue, 0.55),
                 lineWidth: 1,
                 headLength: 4,
                 headWidth: 3,
@@ -261,7 +263,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
         ctx.beginPath();
         ctx.arc(ui.cx, ui.cy, 7, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = getCanvasColors().bg;
+        ctx.fillStyle = colors.bg;
         ctx.font = 'bold 10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -301,10 +303,10 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
 
           const magNear = Math.min(1.5, Math.abs(sigmaNear) * 1.6);
           if (magNear > 0.08) {
-            ctx.fillStyle =
-              sigmaNear > 0
-                ? `rgba(255,59,110,${Math.min(0.95, 0.25 + magNear * 0.6)})`
-                : `rgba(91,174,248,${Math.min(0.95, 0.25 + magNear * 0.6)})`;
+            ctx.fillStyle = withAlpha(
+              sigmaNear > 0 ? colors.pink : colors.blue,
+              Math.min(0.95, 0.25 + magNear * 0.6),
+            );
             ctx.font = `bold ${Math.round(9 + magNear * 4)}px "JetBrains Mono", monospace`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -312,10 +314,10 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
           }
           const magFar = Math.min(1.5, Math.abs(sigmaFar) * 1.6);
           if (magFar > 0.08) {
-            ctx.fillStyle =
-              sigmaFar > 0
-                ? `rgba(255,59,110,${Math.min(0.75, 0.18 + magFar * 0.45)})`
-                : `rgba(91,174,248,${Math.min(0.75, 0.18 + magFar * 0.45)})`;
+            ctx.fillStyle = withAlpha(
+              sigmaFar > 0 ? colors.pink : colors.blue,
+              Math.min(0.75, 0.18 + magFar * 0.45),
+            );
             ctx.font = `bold ${Math.round(8 + magFar * 3)}px "JetBrains Mono", monospace`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -329,7 +331,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
       // cursor's perturbation is the only thing moving the electrons.
       const baseDrift = showBatteryField ? 0.55 : 0.0;
 
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = colors.blue;
       for (const eDot of electrons) {
         // Thermal kick — small, just to keep things alive.
         eDot.vx += (Math.random() - 0.5) * 0.8;
@@ -394,7 +396,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
       // ───── Hint text ─────
       ctx.save();
       ctx.globalAlpha = 0.7;
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       if (!haveCursor) {

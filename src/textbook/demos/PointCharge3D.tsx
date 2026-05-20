@@ -32,7 +32,7 @@ import {
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { attachOrbit, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
 interface Props {
@@ -163,8 +163,9 @@ export function PointCharge3DDemo({ figure }: Props) {
       const sign: 1 | -1 = s.positive ? 1 : -1;
 
       // ── Central charge glow + body ────────────────────────────────
-      const chargeColor = s.positive ? getCanvasColors().pink : getCanvasColors().blue;
-      const chargeColorGlow = s.positive ? 'rgba(255,59,110,0.35)' : 'rgba(91,174,248,0.35)';
+      const colors = getCanvasColors();
+      const chargeColor = s.positive ? colors.pink : colors.blue;
+      const chargeColorGlow = withAlpha(s.positive ? colors.pink : colors.blue, 0.35);
 
       // Project the centre and a ring of equator points to draw a glowing
       // silhouette ellipse for the ball.
@@ -191,16 +192,16 @@ export function PointCharge3DDemo({ figure }: Props) {
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       ctx.fillText('drag to rotate', 12, 12);
       ctx.save();
       ctx.globalAlpha = 0.6;
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       ctx.fillText(`sample sphere r = ${s.rSample.toFixed(2)}   |E| ∝ k|q|/r²`, 12, 28);
 
       ctx.textAlign = 'right';
       ctx.restore();
-      ctx.fillStyle = s.positive ? 'rgba(255,59,110,0.92)' : 'rgba(91,174,248,0.92)';
+      ctx.fillStyle = withAlpha(s.positive ? colors.pink : colors.blue, 0.92);
       ctx.fillText(s.positive ? 'E radial · outward' : 'E radial · inward', W - 12, 12);
 
       raf = requestAnimationFrame(draw);
@@ -220,13 +221,14 @@ export function PointCharge3DDemo({ figure }: Props) {
       question="Why does doubling r quarter the field — not halve it?"
       caption={
         <>
-          Drag the sphere to orbit. The arrows show the electric field on a spherical shell of
-          radius <strong>r</strong> around a point charge. Their length tracks{' '}
-          <strong>|E| = k|q|/r²</strong> — so when you slide <strong>r</strong> from 1 to 2 the
-          entire spiky shell shrinks by exactly <strong>4×</strong>. That factor of four is the
-          inverse-square law, and the reason it's a four (not a two) is the same reason the surface
-          area of a sphere is <strong>4πr²</strong>: a fixed amount of "flux" spreads over a larger
-          and larger spherical area as r grows.
+          The 2D arrows in the previous demo sliced through the radial pattern in one plane; here
+          are ~80 sample arrows on an invisible sphere of radius <strong>r</strong> around the same
+          point charge. Drag to orbit, then slide <strong>r</strong> from 1 to 2 and the entire
+          spiky shell shrinks by exactly <strong>4×</strong> — the ratio readout locks there. That
+          factor of four is the inverse-square law made geometric, and the reason it's a four (not
+          a two) is the same reason the surface area of a sphere is <strong>4πr²</strong>: a fixed
+          amount of "flux" spreads over a larger and larger spherical area as <strong>r</strong>{' '}
+          grows.
         </>
       }
       deeperLab={{ slug: 'e-field', label: 'See full lab' }}
@@ -379,7 +381,7 @@ function drawSampleSphere(
           drawing = false;
         }
       }
-      ctx.strokeStyle = pass === 'front' ? 'rgba(160,158,149,0.18)' : 'rgba(160,158,149,0.07)';
+      ctx.strokeStyle = withAlpha(getCanvasColors().textDim, pass === 'front' ? 0.18 : 0.07);
       ctx.lineWidth = 1;
       ctx.setLineDash(pass === 'back' ? [4, 4] : []);
       ctx.stroke();
@@ -410,9 +412,8 @@ function drawRadialArrow(
   const tDepth = Math.max(0, Math.min(1, (cam.distance + 2 - dMid) / 4.0));
   const fade = 0.32 + 0.62 * tDepth;
 
-  const baseColor = positive
-    ? `rgba(255,59,110,${(0.95 * fade).toFixed(3)})`
-    : `rgba(91,174,248,${(0.95 * fade).toFixed(3)})`;
+  const colors = getCanvasColors();
+  const baseColor = withAlpha(positive ? colors.pink : colors.blue, 0.95 * fade);
 
   ctx.strokeStyle = baseColor;
   ctx.lineWidth = 1.55;

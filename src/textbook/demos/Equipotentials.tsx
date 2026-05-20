@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { drawCharge } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 
 interface Props {
@@ -154,8 +154,8 @@ export function EquipotentialsDemo({ figure }: Props) {
             const v = V(x, y);
             if (Math.abs(v) < 1) continue;
             const t = Math.tanh(v / 200);
-            if (t > 0) ctx.fillStyle = `rgba(255,59,110,${Math.abs(t) * 0.1})`;
-            else ctx.fillStyle = `rgba(91,174,248,${Math.abs(t) * 0.1})`;
+            if (t > 0) ctx.fillStyle = withAlpha(colors.pink, Math.abs(t) * 0.1);
+            else ctx.fillStyle = withAlpha(colors.blue, Math.abs(t) * 0.1);
             ctx.fillRect(x, y, cell, cell);
           }
         }

@@ -18,7 +18,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { MATERIALS, PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
@@ -228,6 +229,19 @@ export function ACElectronJitterDemo({ figure }: Props) {
         <MiniReadout label="peak v" value={<Num value={v_peak} />} unit="m/s" />
         <MiniReadout label="real power" value={P_avg.toFixed(0)} unit="W" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Peak excursion at 60 Hz"
+        left={<InlineMath tex="x_{\text{peak}} \;=\; \dfrac{v_{\text{peak}}}{\omega} \;=\; \dfrac{\sqrt{2}\, I_{\text{rms}}}{n\, q\, A\, \omega}" />}
+        rightLabel="Live substitution (14-AWG Cu)"
+        right={
+          <InlineMath
+            tex={
+              `x_{\\text{peak}} \\;=\\; \\dfrac{${v_peak.toExponential(2)}}{2\\pi\\cdot 60} ` +
+              `\\;\\approx\\; ${(x_peak * 1e9).toFixed(0)}\\ \\text{nm}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }
