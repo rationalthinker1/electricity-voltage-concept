@@ -67,13 +67,64 @@ export default function Ch1WhatIsElectricity() {
 
       <p className="mb-prose-3">
         The simplest experimental fact in all of electricity: there are two kinds of charge, and
-        they push on each other in opposite ways. Same kind: repel. Different kind: attract. We
-        label one positive and one negative — but nothing in nature insists on which gets which
-        name. Benjamin Franklin made the call in 1747 and we've been stuck with it. (It is
-        occasionally annoying. Conventional current flows in the direction{' '}
-        <em className="text-text italic">positive</em> charge would move, but the actual carriers in
-        a metal wire are electrons, which are negative. Every textbook diagram has to carry the
-        inversion in your head.)
+        they push on each other in opposite ways. Same kind: repel. Different kind: attract.
+      </p>
+      <p className="mb-prose-3">
+        What does it actually mean for an object to be{' '}
+        <em className="text-text italic">positively charged</em> or{' '}
+        <em className="text-text italic">negatively charged</em>? Ordinary matter is built out of
+        atoms, each made of a nucleus containing{' '}
+        <Term
+          def={
+            <>
+              <strong className="text-text font-medium">proton</strong> — the positively
+              charged constituent of atomic nuclei, with charge{' '}
+              +<em className="text-text italic">e</em>. Bound inside the nucleus and
+              effectively immobile in everyday chemistry and electronics.
+            </>
+          }
+        >
+          protons
+        </Term>{' '}
+        and neutrons, surrounded by a cloud of{' '}
+        <Term
+          def={
+            <>
+              <strong className="text-text font-medium">electron</strong> — the elementary
+              negatively charged particle of ordinary matter, with charge{' '}
+              −<em className="text-text italic">e</em>. The mobile carrier in metals,
+              semiconductors, and almost every triboelectric process.
+            </>
+          }
+        >
+          electrons
+        </Term>
+        . Each proton carries a single elementary positive charge{' '}
+        <strong className="text-text font-medium">+e</strong>; each electron carries the same
+        magnitude with the opposite sign, <strong className="text-text font-medium">−e</strong>;
+        neutrons carry none. A neutral atom has exactly as many electrons as protons, and the
+        two cancel to zero <Cite id="feynman-II-2" in={SOURCES} />.
+      </p>
+      <p className="mb-prose-3">
+        An object is{' '}
+        <strong className="text-text font-medium">negatively charged</strong> when it carries a{' '}
+        <em className="text-text italic">surplus</em> of electrons — more electrons than protons
+        — and <strong className="text-text font-medium">positively charged</strong> when it
+        carries a <em className="text-text italic">deficit</em>, electrons having been stripped
+        away to leave some protons unbalanced. The positive charges in everyday matter are locked
+        inside nuclei and essentially never move; almost every charge transfer in this book is
+        electrons hopping from one place to another. Rub the balloon across your hair and you
+        peel a thin film of electrons off the hair and onto the rubber: the balloon ends up with
+        a small surplus (negative), your hair with a matching deficit (positive), and the two
+        attract <Cite id="griffiths-2017" in={SOURCES} />.
+      </p>
+      <p className="mb-prose-3">
+        We label one sign positive and the other negative — but nothing in nature insists on
+        which gets which name. Benjamin Franklin made the call in 1747 and we've been stuck with
+        it. (It is occasionally annoying. Conventional current flows in the direction{' '}
+        <em className="text-text italic">positive</em> charge would move, but the actual carriers
+        in a metal wire are electrons, which are negative. Every textbook diagram has to carry
+        the inversion in your head.)
       </p>
 
       <PredictThenObserve
