@@ -89,15 +89,19 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       // ── Layout ──────────────────────────────────────────────────────
       const padX = 24;
       const wallW = 14;
-      const wallTop = 50;
+      const wallTop = 56;
       const wallBot = h - 110; // leave room for the energy bar + caption
       const channelTop = wallTop + 20;
       const channelBot = wallBot - 20;
       const channelMidY = (channelTop + channelBot) / 2;
-      const leftWallX = padX + wallW;
-      const rightWallX = w - padX - wallW;
-      const channelLeft = leftWallX;
-      const channelRight = rightWallX;
+      // Walls sit symmetrically inside the canvas. The wall rectangles
+      // span [leftWallLeft, leftWallRight] and [rightWallLeft, rightWallRight].
+      const leftWallLeft = padX;
+      const leftWallRight = padX + wallW;
+      const rightWallRight = w - padX;
+      const rightWallLeft = w - padX - wallW;
+      const channelLeft = leftWallRight;
+      const channelRight = rightWallLeft;
       const channelLen = channelRight - channelLeft;
 
       // Wall colours by which side is higher V.
@@ -106,65 +110,87 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       const rightColor = leftIsHigh ? colors.teal : colors.accent;
 
       // ── Plates / walls ──────────────────────────────────────────────
-      const drawWall = (x: number, color: string, label: string, Vval: number) => {
+      const drawWall = (
+        xLeft: number,
+        xRight: number,
+        color: string,
+        label: string,
+        Vval: number,
+        labelSide: 'left' | 'right',
+      ) => {
         ctx.fillStyle = color;
         ctx.globalAlpha = 0.18;
-        ctx.fillRect(x - wallW, wallTop, wallW, wallBot - wallTop);
+        ctx.fillRect(xLeft, wallTop, xRight - xLeft, wallBot - wallTop);
         ctx.globalAlpha = 1;
         ctx.strokeStyle = color;
         ctx.lineWidth = 2;
-        ctx.strokeRect(x - wallW, wallTop, wallW, wallBot - wallTop);
-        // Label above wall.
+        ctx.strokeRect(xLeft, wallTop, xRight - xLeft, wallBot - wallTop);
+        // Label anchored on the channel-facing side of the wall so it can
+        // never fall off the canvas. Sits just above the wall.
         ctx.fillStyle = color;
         ctx.font = 'bold 12px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
-        ctx.fillText(`${label} = ${Vval.toFixed(1)} V`, x - wallW / 2, wallTop - 6);
+        if (labelSide === 'left') {
+          ctx.textAlign = 'left';
+          ctx.fillText(`${label} = ${Vval.toFixed(1)} V`, xLeft, wallTop - 6);
+        } else {
+          ctx.textAlign = 'right';
+          ctx.fillText(`${label} = ${Vval.toFixed(1)} V`, xRight, wallTop - 6);
+        }
       };
-      drawWall(leftWallX, leftColor, 'V_a', Va);
-      drawWall(rightWallX, rightColor, 'V_b', Vb);
+      drawWall(leftWallLeft, leftWallRight, leftColor, 'V_a', Va, 'left');
+      drawWall(rightWallLeft, rightWallRight, rightColor, 'V_b', Vb, 'right');
 
       // ── E-field arrows in the gap ───────────────────────────────────
-      // Points high V → low V. Saturation scales with |V_ab|.
+      // Points high V → low V. Opacity scales with |V_ab|. Two clean
+      // rows — one above, one below the charge's midline — so the field
+      // doesn't visually overlap the charge as it crosses.
       const Eabs = Math.abs(Vab_now);
       const Enorm = Math.min(1, Eabs / 12);
-      const eAlpha = 0.15 + 0.55 * Enorm;
+      const eAlpha = 0.2 + 0.6 * Enorm;
       if (Eabs > 0.01) {
         const Ndir = leftIsHigh ? 1 : -1; // arrow direction sign
-        const nArrows = 6;
-        const arrowLen = 30 + 20 * Enorm;
-        for (let i = 0; i < nArrows; i++) {
-          const xMid = channelLeft + ((i + 0.5) / nArrows) * channelLen;
-          const yMid = channelTop + 14 + ((channelBot - channelTop - 28) * i) / Math.max(1, nArrows - 1);
-          // Stagger arrows vertically across the channel.
-          const yJitter = ((i * 47) % 80) - 40;
-          const yA = channelMidY + yJitter * 0.6;
-          drawArrow(
-            ctx,
-            { x: xMid - (Ndir * arrowLen) / 2, y: yA },
-            { x: xMid + (Ndir * arrowLen) / 2, y: yA },
-            {
-              color: `rgba(255,107,42,${eAlpha.toFixed(3)})`,
-              lineWidth: 1.3,
-              headLength: 8,
-              headWidth: 5,
-            },
-          );
-          // Suppress unused warning by referencing yMid.
-          void yMid;
+        const arrowsPerRow = 4;
+        const arrowLen = 36 + 18 * Enorm;
+        const yRow1 = channelMidY - 42;
+        const yRow2 = channelMidY + 42;
+        for (let i = 0; i < arrowsPerRow; i++) {
+          const xMid = channelLeft + ((i + 0.5) / arrowsPerRow) * channelLen;
+          for (const yA of [yRow1, yRow2]) {
+            drawArrow(
+              ctx,
+              { x: xMid - (Ndir * arrowLen) / 2, y: yA },
+              { x: xMid + (Ndir * arrowLen) / 2, y: yA },
+              {
+                color: `rgba(255,107,42,${eAlpha.toFixed(3)})`,
+                lineWidth: 1.4,
+                headLength: 8,
+                headWidth: 5,
+              },
+            );
+          }
         }
-        // "E" label.
+        // "E" label sits between the two arrow rows on the channel-mid line,
+        // out of the way of the moving charge.
         ctx.fillStyle = `rgba(255,107,42,${(eAlpha + 0.2).toFixed(3)})`;
         ctx.font = 'italic 11px "STIX Two Text", serif';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText(`|E| ∝ |V_ab| = ${Eabs.toFixed(1)} V/d`, channelLeft + 6, channelTop + 4);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(
+          `E points high V → low V    (|V_ab| = ${Eabs.toFixed(1)} V drives it)`,
+          (channelLeft + channelRight) / 2,
+          channelTop - 4,
+        );
       } else {
         ctx.fillStyle = colors.textDim;
         ctx.font = 'italic 11px "STIX Two Text", serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('V_a = V_b — no field, no motion', (channelLeft + channelRight) / 2, channelMidY);
+        ctx.fillText(
+          'V_a = V_b — no field, no motion',
+          (channelLeft + channelRight) / 2,
+          channelMidY,
+        );
       }
 
       // ── Physics update ──────────────────────────────────────────────
@@ -228,17 +254,6 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(positive ? '+' : '−', xC, yC + 1);
-
-      // Tiny caption above the charge showing q.
-      ctx.fillStyle = colors.text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(
-        `q = ${qMicro >= 0 ? '+' : ''}${qMicro.toFixed(2)} µC`,
-        xC,
-        yC - radius - 6,
-      );
 
       // ── Energy bar: PE + KE = constant (|qV_ab|) ────────────────────
       const barTop = wallBot + 18;
