@@ -18,9 +18,9 @@
  * The central charge gets a soft glow via drawGlowPath on its silhouette
  * outline.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import {
   Demo,
   DemoControls,
@@ -33,7 +33,10 @@ import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { attachOrbit, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
+import { project, v3, type Vec3 } from '@/lib/projection3d';
+import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -138,32 +141,19 @@ export function PointCharge3DDemo({ figure }: Props) {
     return { Emag, EmagAtDouble, ratio, len };
   }, [q, rSample]);
 
-  const stateRef = useRef({ positive, q, rSample, computed });
-  useEffect(() => {
-    stateRef.current = { positive, q, rSample, computed };
-  }, [positive, q, rSample, computed]);
+  const stateRef = useSimState({ positive, q, rSample, computed });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H, canvas } = info;
-    let raf = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, state, _dt, _simT, scene: OrbitScene) => {
+      const s = state;
+      const sign: 1 | -1 = s.positive ? 1 : -1;
+      const cam = scene.cam;
 
-    const cam: OrbitCamera = {
-      yaw: 0.55,
-      pitch: 0.28,
-      distance: 7.5,
-      fov: Math.PI / 4,
-    };
-    const dispose = attachOrbit(canvas, cam);
-
-    function draw() {
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
-      const s = stateRef.current;
-      const sign: 1 | -1 = s.positive ? 1 : -1;
-
       // ── Central charge glow + body ────────────────────────────────
-      const colors = getCanvasColors();
       const chargeColor = s.positive ? colors.pink : colors.blue;
       const chargeColorGlow = withAlpha(s.positive ? colors.pink : colors.blue, 0.35);
 
@@ -178,10 +168,7 @@ export function PointCharge3DDemo({ figure }: Props) {
       const arrows = buildArrows(s.rSample, s.computed.len, sign);
 
       // Painter sort: largest depth first (deepest = far side).
-      const order = arrows
-        .map((a, i) => ({ i, d: project(a.anchor, cam, W, H).depth }))
-        .sort((a, b) => b.d - a.d)
-        .map((o) => o.i);
+      const order = scene.depthSort(arrows, W, H);
 
       for (const idx of order) {
         const a = arrows[idx]!;
@@ -203,16 +190,13 @@ export function PointCharge3DDemo({ figure }: Props) {
       ctx.restore();
       ctx.fillStyle = withAlpha(s.positive ? colors.pink : colors.blue, 0.92);
       ctx.fillText(s.positive ? 'E radial · outward' : 'E radial · inward', W - 12, 12);
-
-      raf = requestAnimationFrame(draw);
-    }
-
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      dispose();
-    };
-  }, []);
+    },
+    [],
+    (info) => {
+      const scene = createOrbitScene(info.canvas);
+      return { context: scene, cleanup: () => scene.dispose() };
+    },
+  );
 
   return (
     <Demo
@@ -295,7 +279,7 @@ export function PointCharge3DDemo({ figure }: Props) {
  */
 function drawChargeBall(
   ctx: CanvasRenderingContext2D,
-  cam: OrbitCamera,
+  cam: OrbitScene['cam'],
   W: number,
   H: number,
   color: string,
@@ -344,7 +328,7 @@ function drawChargeBall(
  */
 function drawSampleSphere(
   ctx: CanvasRenderingContext2D,
-  cam: OrbitCamera,
+  cam: OrbitScene['cam'],
   W: number,
   H: number,
   r: number,
@@ -397,7 +381,7 @@ function drawSampleSphere(
 function drawRadialArrow(
   ctx: CanvasRenderingContext2D,
   a: RadialArrow,
-  cam: OrbitCamera,
+  cam: OrbitScene['cam'],
   W: number,
   H: number,
   positive: boolean,

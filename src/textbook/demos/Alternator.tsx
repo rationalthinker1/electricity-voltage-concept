@@ -11,11 +11,13 @@
  *
  * Slider: engine RPM (drives generator frequency via belt ratio).
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -29,36 +31,25 @@ const V_REG = 14; // V regulated output
 export function AlternatorDemo({ figure }: Props) {
   const [engineRpm, setEngineRpm] = useState(2000);
 
-  const stateRef = useRef({ engineRpm });
-  useEffect(() => {
-    stateRef.current.engineRpm = engineRpm;
-  }, [engineRpm]);
-
   const computed = useMemo(() => {
     const altRpm = engineRpm * PULLEY_RATIO;
     const f = (altRpm / 60) * POLE_PAIRS; // electrical Hz
     return { altRpm, f };
   }, [engineRpm]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    let simT = 0;
-    let lastT = performance.now();
+  const stateRef = useSimState({ engineRpm, computed });
 
-    function draw() {
-      const { engineRpm } = stateRef.current;
-      const altRpm = engineRpm * PULLEY_RATIO;
-      const f = (altRpm / 60) * POLE_PAIRS;
+  // Custom scaled simulation time persists across frames.
+  const scaledTRef = useRef(0);
+
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state, dt) => {
+      const { f } = state.computed;
       const omega = 2 * Math.PI * f;
-      // Slow visual time for high f
       const slow = f > 60 ? 60 / f : 1;
-
-      const now = performance.now();
-      let dt = (now - lastT) / 1000;
-      lastT = now;
-      if (dt > 0.1) dt = 0.1;
-      simT += dt * slow;
+      scaledTRef.current += dt * slow;
+      const simT = scaledTRef.current;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -156,12 +147,9 @@ export function AlternatorDemo({ figure }: Props) {
       ctx.fillText('rectified + regulated DC', padL + 4, topY + plotH + midGap + 4);
       ctx.textAlign = 'right';
       ctx.fillText(`f_elec = ${f.toFixed(0)} Hz`, padL + plotW - 4, topY + 4);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+  );
 
   return (
     <Demo

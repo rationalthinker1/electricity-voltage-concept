@@ -11,11 +11,15 @@
  * |V·E_f|/X_s, the rotor accelerates past 90°, loses synchronism, and
  * the protective relay trips the unit offline.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawAxes, drawHLine, drawLinePlot, drawVLine, makePlotMappers } from '@/lib/drawPlot';
+import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -29,10 +33,7 @@ const P_MAX = (V_GRID * E_F) / X_S;
 export function PowerAngleDeltaDemo({ figure }: Props) {
   const [pMech, setPMech] = useState(0.6); // demanded mechanical input (pu)
 
-  const stateRef = useRef({ pMech });
-  useEffect(() => {
-    stateRef.current.pMech = pMech;
-  }, [pMech]);
+  const stateRef = useSimState({ pMech });
 
   // Operating point: smallest δ such that P(δ) = pMech (stable side).
   const computed = useMemo(() => {
@@ -45,12 +46,11 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
     return { delta, pullOut: false, P: pMech, marginPU: margin };
   }, [pMech]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-
-    function draw() {
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h }) => {
       const { pMech } = stateRef.current;
+      const colors = getCanvasColors();
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -61,119 +61,85 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
         padB = 38;
       const plotW = w - padL - padR;
       const plotH = h - padT - padB;
-      ctx.strokeStyle = colors.border;
-      ctx.strokeRect(padL, padT, plotW, plotH);
+      const rect = { x: padL, y: padT, w: plotW, h: plotH };
 
       const pMax = Math.max(P_MAX * 1.1, 1.4);
-      const xAt = (d: number) => padL + (d / 180) * plotW;
-      const yAt = (p: number) => padT + plotH - (p / pMax) * plotH;
+      const { xOf, yOf } = makePlotMappers(rect, 0, 180, 0, pMax);
 
-      // Gridlines
-      ctx.strokeStyle = colors.border;
-      for (let d = 30; d < 180; d += 30) {
-        ctx.beginPath();
-        ctx.moveTo(xAt(d), padT);
-        ctx.lineTo(xAt(d), padT + plotH);
-        ctx.stroke();
-      }
-      for (let p = 0.25; p < pMax; p += 0.25) {
-        ctx.beginPath();
-        ctx.moveTo(padL, yAt(p));
-        ctx.lineTo(padL + plotW, yAt(p));
-        ctx.stroke();
-      }
+      // Axes + grid
+      drawAxes(ctx, rect, {
+        xMin: 0,
+        xMax: 180,
+        yMin: 0,
+        yMax: pMax,
+        xTicks: [0, 30, 60, 90, 120, 150, 180],
+        yTicks: [0, 0.25, 0.5, 0.75, 1.0, 1.25],
+        xLabel: 'power angle δ →',
+        yLabel: 'P (pu)',
+      });
 
       // 90° line (stability limit)
-      ctx.save();
-      ctx.globalAlpha = 0.45;
-      ctx.strokeStyle = colors.pink;
-      ctx.setLineDash([4, 4]);
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(xAt(90), padT);
-      ctx.lineTo(xAt(90), padT + plotH);
-      ctx.stroke();
-      ctx.setLineDash([]);
+      drawVLine(ctx, rect, 90, 0, 180, {
+        color: colors.pink,
+        dash: [4, 4],
+        alpha: 0.45,
+      });
 
       // P(δ) curve. Stable side (δ < 90°) solid; unstable side dashed.
-      ctx.restore();
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      for (let i = 0; i <= 90; i++) {
+      const stablePts: Array<{ x: number; y: number }> = [];
+      const unstablePts: Array<{ x: number; y: number }> = [];
+      for (let i = 0; i <= 180; i++) {
         const d = i;
         const p = P_MAX * Math.sin((d * Math.PI) / 180);
-        const x = xAt(d),
-          y = yAt(p);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+        if (d <= 90) stablePts.push({ x: d, y: p });
+        if (d >= 90) unstablePts.push({ x: d, y: p });
       }
-      ctx.stroke();
+      drawLinePlot(ctx, rect, stablePts, 0, 180, 0, pMax, {
+        color: colors.accent,
+        lineWidth: 2.5,
+      });
       // Unstable branch dashed
+      ctx.save();
       ctx.setLineDash([4, 4]);
-      ctx.strokeStyle = colors.accent;
-      ctx.beginPath();
-      for (let i = 90; i <= 180; i++) {
-        const d = i;
-        const p = P_MAX * Math.sin((d * Math.PI) / 180);
-        const x = xAt(d),
-          y = yAt(p);
-        if (i === 90) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      ctx.setLineDash([]);
+      drawLinePlot(ctx, rect, unstablePts, 0, 180, 0, pMax, {
+        color: colors.accent,
+        lineWidth: 2.5,
+      });
+      ctx.restore();
 
       // Mechanical input horizontal line
-      ctx.save();
-      ctx.globalAlpha = 0.6;
-      ctx.strokeStyle = colors.teal;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(padL, yAt(Math.min(pMech, pMax)));
-      ctx.lineTo(padL + plotW, yAt(Math.min(pMech, pMax)));
-      ctx.stroke();
+      drawHLine(ctx, rect, Math.min(pMech, pMax), 0, pMax, {
+        color: colors.teal,
+        lineWidth: 1.5,
+        alpha: 0.6,
+      });
 
       // Operating point
       if (pMech <= P_MAX) {
         const d = (Math.asin(pMech / P_MAX) * 180) / Math.PI;
         ctx.fillStyle = colors.blue;
         ctx.beginPath();
-        ctx.arc(xAt(d), yAt(pMech), 7, 0, Math.PI * 2);
+        ctx.arc(xOf(d), yOf(pMech), 7, 0, Math.PI * 2);
         ctx.fill();
       } else {
         // Pull-out: marker red at the curve peak
         ctx.fillStyle = colors.pink;
         ctx.beginPath();
-        ctx.arc(xAt(90), yAt(P_MAX), 8, 0, Math.PI * 2);
+        ctx.arc(xOf(90), yOf(P_MAX), 8, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = colors.pink;
         ctx.font = 'bold 11px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
-        ctx.fillText('POLE SLIP — TRIP', xAt(90), yAt(P_MAX) - 12);
+        ctx.fillText('POLE SLIP — TRIP', xOf(90), yOf(P_MAX) - 12);
       }
 
-      // P_max line
-      ctx.restore();
+      // P_max label
       ctx.fillStyle = colors.accent;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
-      ctx.fillText(`P_max = V·E_f/X_s = ${P_MAX.toFixed(2)} pu`, padL + 8, yAt(P_MAX) - 8);
-
-      // Axis labels
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      for (let d = 0; d <= 180; d += 30) {
-        ctx.fillText(d.toFixed(0) + '°', xAt(d), padT + plotH + 4);
-      }
-      ctx.fillText('power angle δ →', padL + plotW / 2, padT + plotH + 20);
-
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('P (pu)', padL - 6, padT + plotH / 2);
+      ctx.fillText(`P_max = V·E_f/X_s = ${P_MAX.toFixed(2)} pu`, padL + 8, yOf(P_MAX) - 8);
 
       // Stable / unstable region labels
       ctx.font = '10px "JetBrains Mono", monospace';
@@ -184,12 +150,9 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
       ctx.fillStyle = colors.pink;
       ctx.textAlign = 'right';
       ctx.fillText('unstable: δ > 90°', padL + plotW - 8, padT + plotH - 6);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+  );
 
   return (
     <Demo
@@ -198,35 +161,34 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
       question="If the turbine pushes harder than the grid can absorb, what happens to the rotor?"
       caption={
         <>
-          Steady-state real power vs power angle: <em>P(δ) = (V·E_f / X_s) sin δ</em>, with V = 1,
-          E_f = 1.4, X_s = 1.2 pu here. Increase mechanical input and δ rises along the stable
-          branch (δ &lt; 90°). Past the peak P_max ≈ 1.17 pu the rotor cannot transmit any more
-          power; it accelerates ahead of the grid, slips a pole, and the protection relay trips.
-          This is the swing equation's static limit — the dynamic limit (after a fault) is tighter
-          still.
+          For a round-rotor machine the real power vs rotor angle is a simple sine:{' '}
+          <strong>P(δ) = (|V|·|E_f|/X_s)·sin δ</strong>. The operating point is where the mechanical
+          input line intersects the curve on the left (stable) side. Push past the 90° peak and the
+          rotor loses synchronism — the machine poles slip, frequency wanders, and the protection
+          relay opens the breaker.
         </>
       }
+      deeperLab={{ slug: 'power-grid', label: 'See full lab' }}
     >
-      <AutoResizeCanvas height={300} setup={setup} />
+      <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
         <MiniSlider
-          label="P mech input"
+          label="mech input P"
           value={pMech}
-          min={0}
-          max={1.4}
-          step={0.01}
+          min={0.1}
+          max={1.5}
+          step={0.05}
           format={(v) => v.toFixed(2) + ' pu'}
           onChange={setPMech}
         />
-        <MiniReadout label="P_max" value={<Num value={P_MAX} digits={2} />} unit="pu" />
         <MiniReadout
-          label="δ steady state"
-          value={computed.pullOut ? <span>—</span> : <Num value={computed.delta} digits={1} />}
-          unit={computed.pullOut ? undefined : '°'}
+          label="operating δ"
+          value={<Num value={computed.delta} digits={1} />}
+          unit="°"
         />
         <MiniReadout
-          label="margin to pull-out"
-          value={(computed.marginPU * 100).toFixed(1)}
+          label="stability margin"
+          value={<Num value={computed.marginPU * 100} digits={0} />}
           unit="%"
         />
       </DemoControls>

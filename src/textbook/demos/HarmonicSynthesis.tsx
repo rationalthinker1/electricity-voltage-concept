@@ -6,12 +6,14 @@
  * partial sum is overlaid against the ideal target so the convergence — and
  * the Gibbs overshoot near discontinuities — is visible.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-
-type Target = 'square' | 'triangle' | 'sawtooth';
+import { drawAxes, drawHLine, drawLinePlot } from '@/lib/drawPlot';
+import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Coeff {
   n: number;
@@ -21,7 +23,7 @@ interface Coeff {
 /** Return the analytic Fourier series coefficients (amplitudes of sin(nωt))
  *  for unit-peak versions of each waveform. Each entry is { harmonic n, amp }.
  */
-function coeffs(target: Target, N: number): Coeff[] {
+function coeffs(target: 'square' | 'triangle' | 'sawtooth', N: number): Coeff[] {
   const out: Coeff[] = [];
   for (let n = 1; n <= N; n++) {
     if (target === 'square') {
@@ -43,7 +45,7 @@ function coeffs(target: Target, N: number): Coeff[] {
 }
 
 /** Ideal target waveform value at phase ωt in [0, 2π). Unit peak amplitude. */
-function ideal(target: Target, phase: number): number {
+function ideal(target: 'square' | 'triangle' | 'sawtooth', phase: number): number {
   const t = ((phase % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
   if (target === 'square') return t < Math.PI ? 1 : -1;
   if (target === 'triangle') {
@@ -57,14 +59,11 @@ function ideal(target: Target, phase: number): number {
 }
 
 export function HarmonicSynthesisDemo() {
-  const [target, setTarget] = useState<Target>('square');
+  const [target, setTarget] = useState<'square' | 'triangle' | 'sawtooth'>('square');
   const [N, setN] = useState(7);
   const [showIdeal, setShowIdeal] = useState(true);
 
-  const stateRef = useRef({ target, N, showIdeal });
-  useEffect(() => {
-    stateRef.current = { target, N, showIdeal };
-  }, [target, N, showIdeal]);
+  const stateRef = useSimState({ target, N, showIdeal });
 
   // peak-overshoot for caption: evaluate the partial sum just past a square's
   // discontinuity to get the Gibbs ripple amplitude
@@ -83,11 +82,12 @@ export function HarmonicSynthesisDemo() {
     gibbsPct = (peak - 1) * 100;
   }
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    function draw() {
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h }) => {
       const { target, N, showIdeal } = stateRef.current;
+      const colors = getCanvasColors();
+
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
@@ -95,34 +95,31 @@ export function HarmonicSynthesisDemo() {
       const padY = 24;
       const plotW = w - 2 * padX;
       const plotH = h - 2 * padY;
-      const midY = padY + plotH / 2;
+      const rect = { x: padX, y: padY, w: plotW, h: plotH };
 
-      // axes
-      ctx.strokeStyle = colors.border;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(padX, midY);
-      ctx.lineTo(padX + plotW, midY);
-      ctx.stroke();
+      // Axes: x = 0..4π (2 cycles), y = -1.2 .. 1.2
+      drawAxes(ctx, rect, {
+        xMin: 0,
+        xMax: 4 * Math.PI,
+        yMin: -1.2,
+        yMax: 1.2,
+        xTicks: [],
+        yTicks: [-1, 0, 1],
+      });
+
       // ±1 reference lines
-      ctx.setLineDash([3, 5]);
-      ctx.strokeStyle = colors.border;
-      const yPlus = midY - (plotH / 2) * 0.85;
-      const yMinus = midY + (plotH / 2) * 0.85;
-      ctx.beginPath();
-      ctx.moveTo(padX, yPlus);
-      ctx.lineTo(padX + plotW, yPlus);
-      ctx.moveTo(padX, yMinus);
-      ctx.lineTo(padX + plotW, yMinus);
-      ctx.stroke();
-      ctx.setLineDash([]);
+      drawHLine(ctx, rect, 1, -1.2, 1.2, { color: colors.border, dash: [3, 5], alpha: 0.6 });
+      drawHLine(ctx, rect, -1, -1.2, 1.2, { color: colors.border, dash: [3, 5], alpha: 0.6 });
 
+      // y-axis tick labels manually for ±1 and 0
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
-      ctx.fillText('+1', padX - 6, yPlus + 4);
-      ctx.fillText('−1', padX - 6, yMinus + 4);
-      ctx.fillText('0', padX - 6, midY + 4);
+      ctx.textBaseline = 'middle';
+      const yAt = (v: number) => padY + plotH - ((v + 1.2) / 2.4) * plotH;
+      ctx.fillText('+1', padX - 6, yAt(1));
+      ctx.fillText('−1', padX - 6, yAt(-1));
+      ctx.fillText('0', padX - 6, yAt(0));
 
       const cs = coeffs(target, N);
       const cycles = 2;
@@ -130,70 +127,54 @@ export function HarmonicSynthesisDemo() {
 
       // Plot ideal in dim
       if (showIdeal) {
-        ctx.strokeStyle = colors.teal;
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
+        const idealPts: Array<{ x: number; y: number }> = [];
         for (let i = 0; i <= N_samples; i++) {
-          const x = padX + (i / N_samples) * plotW;
-          const phase = (i / N_samples) * cycles * 2 * Math.PI;
-          const y = midY - ideal(target, phase) * (plotH / 2) * 0.85;
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
+          const x = (i / N_samples) * cycles * 2 * Math.PI;
+          idealPts.push({ x, y: ideal(target, x) });
         }
-        ctx.stroke();
+        ctx.save();
+        ctx.globalAlpha = 0.45;
+        drawLinePlot(ctx, rect, idealPts, 0, 4 * Math.PI, -1.2, 1.2, {
+          color: colors.teal,
+          lineWidth: 1.2,
+        });
+        ctx.restore();
       }
 
       // Plot partial sum (the synthesized wave)
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
+      const sumPts: Array<{ x: number; y: number }> = [];
       for (let i = 0; i <= N_samples; i++) {
-        const x = padX + (i / N_samples) * plotW;
-        const phase = (i / N_samples) * cycles * 2 * Math.PI;
-        let s = 0;
-        for (const c of cs) s += c.amp * Math.sin(c.n * phase);
-        const y = midY - s * (plotH / 2) * 0.85;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+        const x = (i / N_samples) * cycles * 2 * Math.PI;
+        let y = 0;
+        for (const c of cs) y += c.amp * Math.sin(c.n * x);
+        sumPts.push({ x, y });
       }
-      ctx.stroke();
-
-      // Labels
-      ctx.fillStyle = colors.accent;
-      ctx.textAlign = 'left';
-      ctx.fillText(`partial sum, N = ${N}`, padX + 6, padY + 12);
-      if (showIdeal) {
-        ctx.fillStyle = colors.teal;
-        ctx.fillText('ideal target', padX + 6, padY + 26);
-      }
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+      drawLinePlot(ctx, rect, sumPts, 0, 4 * Math.PI, -1.2, 1.2, {
+        color: colors.accent,
+        lineWidth: 2,
+      });
+    },
+    [],
+  );
 
   return (
     <Demo
       figure="Fig. 15.1"
-      title="Harmonic synthesis"
-      question="Add sine harmonics one by one — when does the partial sum start to look like the target?"
+      title="Fourier synthesis — build a wave from sines"
+      question="How many harmonics does it take to look like a square wave?"
       caption={
         <>
-          The square and sawtooth need infinitely many harmonics to reach their corners; the partial
-          sum overshoots the discontinuity by ~9% no matter how high N gets. That stubborn overshoot
-          is the Gibbs phenomenon. Triangle waves converge much faster — their coefficients fall as
-          1/n², not 1/n.
+          The partial sum (amber) converges to the ideal target (teal) as N grows. Near a
+          discontinuity the partial sum overshoots by about 9% of the jump — the{' '}
+          <strong>Gibbs phenomenon</strong>. That overshoot never goes away no matter how many
+          harmonics you add; it just gets narrower. For the square wave the overshoot is roughly{' '}
+          {gibbsPct.toFixed(1)}% with N = {N}.
         </>
       }
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>
-        <MiniToggle
-          label="Square"
-          checked={target === 'square'}
-          onChange={() => setTarget('square')}
-        />
+        <MiniToggle label="Square" checked={target === 'square'} onChange={() => setTarget('square')} />
         <MiniToggle
           label="Triangle"
           checked={target === 'triangle'}
@@ -205,18 +186,20 @@ export function HarmonicSynthesisDemo() {
           onChange={() => setTarget('sawtooth')}
         />
         <MiniSlider
-          label="N (harmonics)"
+          label="harmonics N"
           value={N}
           min={1}
-          max={30}
+          max={40}
           step={1}
           format={(v) => v.toFixed(0)}
-          onChange={(v) => setN(Math.round(v))}
+          onChange={setN}
         />
-        <MiniToggle label="Show ideal" checked={showIdeal} onChange={setShowIdeal} />
-        {target === 'square' && (
-          <MiniReadout label="Gibbs overshoot" value={gibbsPct.toFixed(1)} unit="%" />
-        )}
+        <MiniToggle
+          label="Show ideal"
+          checked={showIdeal}
+          onChange={() => setShowIdeal((p) => !p)}
+        />
+        <MiniReadout label="Gibbs overshoot" value={gibbsPct.toFixed(1)} unit="%" />
       </DemoControls>
     </Demo>
   );

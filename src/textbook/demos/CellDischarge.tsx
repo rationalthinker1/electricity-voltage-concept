@@ -6,12 +6,15 @@
  * As the cell discharges (charge q drawn), V_OC drops, slowly at first then
  * sharply near the end. The reader watches V_term fall on the live trace.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawAxes, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -63,73 +66,70 @@ export function CellDischargeDemo({ figure }: Props) {
     if (traceRef.current.length > 400) traceRef.current.shift();
   }, [soc, V_term]);
 
-  const stateRef = useRef({ V_term, V_OC, soc, R_int, R_L });
-  useEffect(() => {
-    stateRef.current = { V_term, V_OC, soc, R_int, R_L };
-  }, [V_term, V_OC, soc, R_int, R_L]);
+  const stateRef = useSimState({ V_term, V_OC, soc, R_int, R_L });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w: W, h: H }) => {
+      const colors = getCanvasColors();
+      const s = stateRef.current;
 
-    function draw() {
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
       const pX = 36,
         pY = 22;
       const pW = W - 60,
         pH = H - 50;
-      ctx.strokeStyle = getCanvasColors().border;
-      ctx.strokeRect(pX, pY, pW, pH);
+      const rect = { x: pX, y: pY, w: pW, h: pH };
 
       // V axis 0 .. V_full + 0.1
       const vMax = V_full + 0.1;
-      const yV = (v: number) => pY + pH - (v / vMax) * pH;
+      const { xOf, yOf } = makePlotMappers(rect, 0, 1, 0, vMax);
 
-      // x: SOC from 1 (full, left) to 0 (empty, right)
-      const xSOC = (s: number) => pX + (1 - s) * pW;
+      drawAxes(ctx, rect, {
+        xMin: 0,
+        xMax: 1,
+        yMin: 0,
+        yMax: vMax,
+        xTicks: [0, 0.25, 0.5, 0.75, 1],
+        yTicks: [0, 0.5, 1.0, 1.5],
+      });
 
       // Theoretical V_OC curve
-      ctx.strokeStyle = getCanvasColors().teal;
-      ctx.lineWidth = 1.4;
-      ctx.beginPath();
+      const ocPts: Array<{ x: number; y: number }> = [];
       for (let i = 0; i <= 80; i++) {
-        const s = 1 - i / 80;
-        const v = V_OC_of_state(s, V_full, V_empty);
-        const x = xSOC(s);
-        const y = yV(v);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+        const sc = 1 - i / 80;
+        ocPts.push({ x: 1 - sc, y: V_OC_of_state(sc, V_full, V_empty) });
       }
-      ctx.stroke();
+      drawLinePlot(ctx, rect, ocPts, 0, 1, 0, vMax, {
+        color: colors.teal,
+        lineWidth: 1.4,
+      });
 
       // Theoretical V_term under current load
-      ctx.strokeStyle = getCanvasColors().accent;
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
-      const s = stateRef.current;
+      const termPts: Array<{ x: number; y: number }> = [];
       for (let i = 0; i <= 80; i++) {
         const sc = 1 - i / 80;
         const v_oc = V_OC_of_state(sc, V_full, V_empty);
         const v_term = (v_oc * s.R_L) / (s.R_int + s.R_L);
-        const x = xSOC(sc);
-        const y = yV(v_term);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+        termPts.push({ x: 1 - sc, y: v_term });
       }
-      ctx.stroke();
+      drawLinePlot(ctx, rect, termPts, 0, 1, 0, vMax, {
+        color: colors.accent,
+        lineWidth: 1.8,
+      });
 
       // Marker
-      const mx = xSOC(s.soc);
-      const my = yV(s.V_term);
-      ctx.fillStyle = getCanvasColors().pink;
+      const mx = xOf(1 - s.soc);
+      const my = yOf(s.V_term);
+      ctx.fillStyle = colors.pink;
       ctx.beginPath();
       ctx.arc(mx, my, 5, 0, Math.PI * 2);
       ctx.fill();
 
-      // Axes
-      ctx.fillStyle = getCanvasColors().textDim;
+      // Labels
+      ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -140,18 +140,15 @@ export function CellDischargeDemo({ figure }: Props) {
       ctx.textAlign = 'right';
       ctx.fillText('empty', pX + pW, pY + pH + 4);
 
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = colors.teal;
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
       ctx.fillText('V_OC (open)', pX + pW - 4, pY + 4);
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       ctx.fillText('V_term (loaded)', pX + pW - 4, pY + 18);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+  );
 
   return (
     <Demo
@@ -198,18 +195,17 @@ export function CellDischargeDemo({ figure }: Props) {
           onChange={setR_int}
         />
         <MiniSlider
-          label="R_load"
+          label="R_L"
           value={R_L}
-          min={0.5}
+          min={1}
           max={50}
           step={0.5}
           format={(v) => v.toFixed(1) + ' Ω'}
           onChange={setR_L}
         />
-        <MiniReadout label="V_OC" value={<Num value={V_OC} />} unit="V" />
-        <MiniReadout label="V_term" value={<Num value={V_term} />} unit="V" />
-        <MiniReadout label="I" value={<Num value={I} />} unit="A" />
-        <MiniReadout label="SOC" value={(soc * 100).toFixed(0) + ' %'} />
+        <MiniReadout label="V_OC" value={<Num value={V_OC} digits={2} />} unit="V" />
+        <MiniReadout label="V_term" value={<Num value={V_term} digits={2} />} unit="V" />
+        <MiniReadout label="I" value={<Num value={I} digits={3} />} unit="A" />
       </DemoControls>
     </Demo>
   );

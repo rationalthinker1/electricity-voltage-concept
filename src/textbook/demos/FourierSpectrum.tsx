@@ -7,10 +7,14 @@
  * at 2/(πn); half- and full-wave rectified sines have characteristic
  * even-harmonic spectra.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
+import { drawAxes, drawBarChart, drawLinePlot } from '@/lib/drawPlot';
+import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 type Wave = 'sine' | 'square' | 'triangle' | 'sawtooth' | 'half-rect' | 'full-rect';
 
@@ -86,16 +90,14 @@ function timeDomain(wave: Wave, phase: number): number {
 
 export function FourierSpectrumDemo() {
   const [wave, setWave] = useState<Wave>('square');
-  const stateRef = useRef({ wave });
-  useEffect(() => {
-    stateRef.current = { wave };
-  }, [wave]);
+  const stateRef = useSimState({ wave });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    function draw() {
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h }) => {
       const { wave } = stateRef.current;
+      const colors = getCanvasColors();
+
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
@@ -106,6 +108,8 @@ export function FourierSpectrumDemo() {
       // Top: time domain
       const tH = split - 16;
       const tMid = 8 + tH / 2;
+      const tRect = { x: padX, y: 8, w: w - 2 * padX, h: tH };
+
       ctx.strokeStyle = colors.border;
       ctx.beginPath();
       ctx.moveTo(padX, tMid);
@@ -117,66 +121,75 @@ export function FourierSpectrumDemo() {
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText('time →', w - padX - 4, tMid + 12);
-
       ctx.restore();
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
+
       const samples = 400;
       const cycles = 2;
+      const timePts: Array<{ x: number; y: number }> = [];
       for (let i = 0; i <= samples; i++) {
-        const x = padX + (i / samples) * (w - 2 * padX);
-        const phase = (i / samples) * cycles * 2 * Math.PI;
-        const y = tMid - timeDomain(wave, phase) * (tH / 2) * 0.9;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+        const x = (i / samples) * cycles * 2 * Math.PI;
+        timePts.push({ x, y: timeDomain(wave, x) });
       }
-      ctx.stroke();
+      drawLinePlot(ctx, tRect, timePts, 0, cycles * 2 * Math.PI, -1.2, 1.2, {
+        color: colors.accent,
+        lineWidth: 2,
+      });
 
       // Bottom: spectrum bar chart
-      const bMid = split + (h - split) - 24;
-      const bH = h - split - 32;
-      ctx.strokeStyle = colors.border;
-      ctx.beginPath();
-      ctx.moveTo(padX, bMid);
-      ctx.lineTo(w - padX, bMid);
-      ctx.stroke();
-
+      const bRect = { x: padX, y: split + 4, w: w - 2 * padX, h: h - split - 32 };
       const bars = spectrum(wave, 20);
       const nMax = 20;
-      // x position for harmonic n
-      const xOf = (n: number) => padX + (n / nMax) * (w - 2 * padX);
-      // ampliture scale: normalise so the largest bar is ~90% bH
       const maxAmp = Math.max(...bars.map((b) => b.amp), 0.01);
-      const barW = ((w - 2 * padX) / nMax) * 0.6;
 
-      for (const b of bars) {
-        const x = xOf(b.n) - barW / 2;
-        const hPx = (b.amp / maxAmp) * bH * 0.9;
-        ctx.fillStyle = b.n === 0 ? 'rgba(108,197,194,0.85)' : '#ff6b2a';
-        ctx.fillRect(x, bMid - hPx, barW, hPx);
-        if (b.amp / maxAmp > 0.08) {
-          ctx.fillStyle = colors.text;
-          ctx.font = '9px "JetBrains Mono", monospace';
-          ctx.textAlign = 'center';
-          ctx.fillText(b.amp.toFixed(2), x + barW / 2, bMid - hPx - 3);
-        }
-      }
-      // axis labels
+      drawAxes(ctx, bRect, {
+        xMin: 0,
+        xMax: nMax,
+        yMin: 0,
+        yMax: maxAmp * 1.1,
+        xTicks: Array.from({ length: 11 }, (_, i) => i * 2),
+        yTicks: [],
+      });
+
+      // Custom x-axis labels: DC for 0, numbers for rest
       ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       for (let n = 0; n <= nMax; n += 2) {
-        ctx.fillText(n === 0 ? 'DC' : n.toString(), xOf(n), bMid + 12);
+        const x = bRect.x + (n / nMax) * bRect.w;
+        ctx.fillText(n === 0 ? 'DC' : n.toString(), x, bRect.y + bRect.h + 4);
       }
-      ctx.textAlign = 'right';
-      ctx.fillText('amplitude →', w - padX - 4, bMid - bH);
 
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+      // Build bar data for drawBarChart
+      const barData = Array.from({ length: nMax + 1 }, (_, n) => {
+        const b = bars.find((b) => b.n === n);
+        return {
+          value: b?.amp ?? 0,
+          label: b && b.amp / maxAmp > 0.08 ? b.amp.toFixed(2) : undefined,
+        };
+      });
+
+      // Per-bar colors: DC = teal, rest = accent
+      const barColors = Array.from({ length: nMax + 1 }, (_, n) =>
+        n === 0 ? 'rgba(108,197,194,0.85)' : '#ff6b2a',
+      );
+
+      drawBarChart(ctx, bRect, barData, 0, maxAmp * 1.1, {
+        barColors,
+        barWidth: 14,
+        gap: 2,
+        skipZero: true,
+      });
+
+      // Y-axis label
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'top';
+      ctx.fillText('amplitude →', w - padX - 4, bRect.y);
+    },
+    [],
+  );
 
   return (
     <Demo

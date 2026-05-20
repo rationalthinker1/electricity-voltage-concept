@@ -19,13 +19,15 @@
  * echoes Ch.2's `VoltageAsHeight` demo, applied here to a single uniform
  * wire under steady current.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -41,111 +43,17 @@ export function WireVoltageDropDemo({ figure }: Props) {
   // Probe normalised position along the wire, 0 = left terminal, 1 = right.
   const [probeT, setProbeT] = useState(0.5);
 
-  const stateRef = useRef({ I, R, probeT });
-  useEffect(() => {
-    stateRef.current = { I, R, probeT };
-  }, [I, R, probeT]);
+  const stateRef = useSimState({ I, R, probeT });
 
   // Live derived quantities for the readouts and EquationStrip.
   const Vdrop = I * R; // total IR drop end-to-end
   const Vprobe = V0 - I * R * probeT; // potential at the probe
   const Vfrom0 = I * R * probeT; // drop from the left terminal to the probe
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas } = info;
-    let raf = 0;
-
-    let dragging = false;
-
-    function probeXFromT(t: number, wireLeft: number, wireRight: number): number {
-      return wireLeft + t * (wireRight - wireLeft);
-    }
-    function tFromMouse(mx: number, wireLeft: number, wireRight: number): number {
-      const span = wireRight - wireLeft;
-      return Math.max(0, Math.min(1, (mx - wireLeft) / span));
-    }
-
-    function onMouseDown(e: MouseEvent) {
-      const rect = canvas.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
-      const wireLeft = 80;
-      const wireRight = w - 80;
-      const wireCY = h * 0.62;
-      // Only start dragging if the cursor is near the wire row.
-      if (Math.abs(my - wireCY) < 50 && mx >= wireLeft - 10 && mx <= wireRight + 10) {
-        dragging = true;
-        const t = tFromMouse(mx, wireLeft, wireRight);
-        setProbeT(t);
-        stateRef.current.probeT = t;
-        canvas.style.cursor = 'grabbing';
-      }
-    }
-    function onMouseMove(e: MouseEvent) {
-      const rect = canvas.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
-      const wireLeft = 80;
-      const wireRight = w - 80;
-      const wireCY = h * 0.62;
-      if (dragging) {
-        const t = tFromMouse(mx, wireLeft, wireRight);
-        setProbeT(t);
-        stateRef.current.probeT = t;
-      } else {
-        canvas.style.cursor =
-          Math.abs(my - wireCY) < 50 && mx >= wireLeft - 10 && mx <= wireRight + 10
-            ? 'grab'
-            : 'default';
-      }
-    }
-    function onMouseUp() {
-      dragging = false;
-      canvas.style.cursor = 'default';
-    }
-    function onTouchStart(e: TouchEvent) {
-      const t0 = e.touches[0];
-      if (!t0) return;
-      e.preventDefault();
-      const rect = canvas.getBoundingClientRect();
-      const mx = t0.clientX - rect.left;
-      const my = t0.clientY - rect.top;
-      const wireLeft = 80;
-      const wireRight = w - 80;
-      const wireCY = h * 0.62;
-      if (Math.abs(my - wireCY) < 60 && mx >= wireLeft - 20 && mx <= wireRight + 20) {
-        dragging = true;
-        const t = tFromMouse(mx, wireLeft, wireRight);
-        setProbeT(t);
-        stateRef.current.probeT = t;
-      }
-    }
-    function onTouchMove(e: TouchEvent) {
-      if (!dragging) return;
-      const t0 = e.touches[0];
-      if (!t0) return;
-      e.preventDefault();
-      const rect = canvas.getBoundingClientRect();
-      const mx = t0.clientX - rect.left;
-      const wireLeft = 80;
-      const wireRight = w - 80;
-      const t = tFromMouse(mx, wireLeft, wireRight);
-      setProbeT(t);
-      stateRef.current.probeT = t;
-    }
-    function onTouchEnd() {
-      dragging = false;
-    }
-    canvas.addEventListener('mousedown', onMouseDown);
-    canvas.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
-    canvas.addEventListener('touchstart', onTouchStart, { passive: false });
-    canvas.addEventListener('touchmove', onTouchMove, { passive: false });
-    canvas.addEventListener('touchend', onTouchEnd);
-
-    function draw() {
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }) => {
       const { I, R, probeT } = stateRef.current;
-      const colors = getCanvasColors();
       const Vd = I * R; // total drop
       const Vp = V0 - Vd * probeT; // V at probe
 
@@ -247,7 +155,7 @@ export function WireVoltageDropDemo({ figure }: Props) {
       ctx.fillText(`I = ${I.toFixed(2)} A`, (ax0 + ax1) / 2, arrowY - 6);
 
       // ── Probe ─────────────────────────────────────────────────────────
-      const px = probeXFromT(probeT, wireLeft, wireRight);
+      const px = wireLeft + probeT * wireLen;
       // Drop a vertical guide from the probe up to the hill outline at this x.
       const hillY = yOfV(V0 - Vd * probeT);
       ctx.strokeStyle = withAlpha(colors.teal, 0.7);
@@ -288,20 +196,101 @@ export function WireVoltageDropDemo({ figure }: Props) {
         wireRight,
         wireBot + 22,
       );
+    },
+    [],
+    (info) => {
+      const { canvas, w, h } = info;
+      let dragging = false;
 
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      canvas.removeEventListener('mousedown', onMouseDown);
-      canvas.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
-      canvas.removeEventListener('touchstart', onTouchStart);
-      canvas.removeEventListener('touchmove', onTouchMove);
-      canvas.removeEventListener('touchend', onTouchEnd);
-    };
-  }, []);
+      function tFromMouse(mx: number, wireLeft: number, wireRight: number): number {
+        const span = wireRight - wireLeft;
+        return Math.max(0, Math.min(1, (mx - wireLeft) / span));
+      }
+
+      const wireLeft = 80;
+      const wireRight = w - 80;
+      const wireCY = h * 0.62;
+
+      function onMouseDown(e: MouseEvent) {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        if (Math.abs(my - wireCY) < 50 && mx >= wireLeft - 10 && mx <= wireRight + 10) {
+          dragging = true;
+          const t = tFromMouse(mx, wireLeft, wireRight);
+          setProbeT(t);
+          stateRef.current = { ...stateRef.current, probeT: t };
+          canvas.style.cursor = 'grabbing';
+        }
+      }
+      function onMouseMove(e: MouseEvent) {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        if (dragging) {
+          const t = tFromMouse(mx, wireLeft, wireRight);
+          setProbeT(t);
+          stateRef.current = { ...stateRef.current, probeT: t };
+        } else {
+          canvas.style.cursor =
+            Math.abs(my - wireCY) < 50 && mx >= wireLeft - 10 && mx <= wireRight + 10
+              ? 'grab'
+              : 'default';
+        }
+      }
+      function onMouseUp() {
+        dragging = false;
+        canvas.style.cursor = 'default';
+      }
+      function onTouchStart(e: TouchEvent) {
+        const t0 = e.touches[0];
+        if (!t0) return;
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const mx = t0.clientX - rect.left;
+        const my = t0.clientY - rect.top;
+        if (Math.abs(my - wireCY) < 60 && mx >= wireLeft - 20 && mx <= wireRight + 20) {
+          dragging = true;
+          const t = tFromMouse(mx, wireLeft, wireRight);
+          setProbeT(t);
+          stateRef.current = { ...stateRef.current, probeT: t };
+        }
+      }
+      function onTouchMove(e: TouchEvent) {
+        if (!dragging) return;
+        const t0 = e.touches[0];
+        if (!t0) return;
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const mx = t0.clientX - rect.left;
+        const t = tFromMouse(mx, wireLeft, wireRight);
+        setProbeT(t);
+        stateRef.current = { ...stateRef.current, probeT: t };
+      }
+      function onTouchEnd() {
+        dragging = false;
+      }
+
+      canvas.addEventListener('mousedown', onMouseDown);
+      canvas.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+      canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+      canvas.addEventListener('touchmove', onTouchMove, { passive: false });
+      canvas.addEventListener('touchend', onTouchEnd);
+
+      return {
+        context: undefined,
+        cleanup: () => {
+          canvas.removeEventListener('mousedown', onMouseDown);
+          canvas.removeEventListener('mousemove', onMouseMove);
+          window.removeEventListener('mouseup', onMouseUp);
+          canvas.removeEventListener('touchstart', onTouchStart);
+          canvas.removeEventListener('touchmove', onTouchMove);
+          canvas.removeEventListener('touchend', onTouchEnd);
+        },
+      };
+    },
+  );
 
   return (
     <Demo

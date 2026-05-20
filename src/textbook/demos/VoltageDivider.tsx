@@ -10,13 +10,16 @@
  * output reveals "loading" — the signature reason every sensor circuit
  * uses an op-amp buffer.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
+import { fmtResistance } from '@/lib/formatters';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -45,18 +48,13 @@ export function VoltageDividerDemo({ figure }: Props) {
   // Power in lower leg = V_out^2 / R2eff (covers both R2 and load if present)
   const P2eff = (Vout * Vout) / R2eff;
 
-  const stateRef = useRef({ Vin, R1, R2, Vout, loaded, Itotal });
-  useEffect(() => {
-    stateRef.current = { Vin, R1, R2, Vout, loaded, Itotal };
-  }, [Vin, R1, R2, Vout, loaded, Itotal]);
+  const stateRef = useSimState({ Vin, R1, R2, Vout, loaded });
 
-  const cacheRef = useRef<StaticCacheEntry | null>(null);
+  const cacheRef = { current: null as StaticCacheEntry | null };
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, dpr } = info;
-    let raf = 0;
-
-    function draw() {
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, dpr }) => {
       const { Vin, R1, R2, Vout, loaded } = stateRef.current;
 
       ctx.fillStyle = getCanvasColors().bg;
@@ -79,12 +77,9 @@ export function VoltageDividerDemo({ figure }: Props) {
       drawDividerOverlay(ctx, 0, 0, splitX, h, Vin, Vout);
 
       drawBars(ctx, splitX, 0, w - splitX, h, Vin, Vout);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+  );
 
   // Predicted unloaded value for comparison readout
   const VoutUnloaded = (Vin * R2) / (R1 + R2);
@@ -194,7 +189,7 @@ function buildDividerStatic(
       from: { x: xRail, y: yTop + 18 },
       to: { x: xRail, y: yMid - 18 },
       color: 'rgba(255,59,110,0.9)',
-      label: `R₁ = ${formatR(R1)}`,
+      label: `R₁ = ${fmtResistance(R1)}`,
       labelOffset: { x: 16, y: 0 },
     },
     // R2 on the bottom half of the trunk.
@@ -203,7 +198,7 @@ function buildDividerStatic(
       from: { x: xRail, y: yMid + 18 },
       to: { x: xRail, y: yBot - 6 },
       color: 'rgba(108,197,194,0.9)',
-      label: `R₂ = ${formatR(R2)}`,
+      label: `R₂ = ${fmtResistance(R2)}`,
       labelOffset: { x: 16, y: 0 },
     },
     // Tap wire from the trunk midpoint out to the load column.
@@ -375,10 +370,4 @@ function drawBars(
   ctx.fillText('KVL: V_in = V_R₁ + V_out', padL, 6);
 
   ctx.restore();
-}
-
-function formatR(R: number): string {
-  if (R >= 1e6) return (R / 1e6).toFixed(2) + ' MΩ';
-  if (R >= 1e3) return (R / 1e3).toFixed(2) + ' kΩ';
-  return R.toFixed(0) + ' Ω';
 }

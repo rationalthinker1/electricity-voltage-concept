@@ -9,10 +9,14 @@
  * Demonstrates that V_rms = V_peak/√2 holds only for a pure sine; once you
  * stack harmonics the relation breaks.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawAxes, drawHLine, drawLinePlot } from '@/lib/drawPlot';
+import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 export function RMSOfComplexWaveDemo() {
   const [a1] = useState(1); // fundamental fixed at unit peak
@@ -20,10 +24,7 @@ export function RMSOfComplexWaveDemo() {
   const [a3, setA3] = useState(0.3); // 3rd harmonic peak amplitude
   const [a5, setA5] = useState(0); // 5th harmonic peak amplitude
 
-  const stateRef = useRef({ a1, a2, a3, a5 });
-  useEffect(() => {
-    stateRef.current = { a1, a2, a3, a5 };
-  }, [a1, a2, a3, a5]);
+  const stateRef = useSimState({ a1, a2, a3, a5 });
 
   // Parseval: V_rms² = (1/2)·Σ a_n² (no DC term here)
   const rmsParseval = Math.sqrt((a1 * a1 + a2 * a2 + a3 * a3 + a5 * a5) / 2);
@@ -55,86 +56,84 @@ export function RMSOfComplexWaveDemo() {
   const formFactor = meanAbs > 0 ? rmsNum / meanAbs : 0;
   const crestFactor = rmsNum > 0 ? peakNum / rmsNum : 0;
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h, colors } = info;
-      let raf = 0;
-      function draw() {
-        const { a1, a2, a3, a5 } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h }) => {
+      const { a1, a2, a3, a5 } = stateRef.current;
+      const colors = getCanvasColors();
 
-        const padX = 36;
-        const padY = 16;
-        const midY = h / 2;
-        const halfH = ((h - 2 * padY) / 2) * 0.9;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
 
-        ctx.strokeStyle = colors.border;
-        ctx.beginPath();
-        ctx.moveTo(padX, midY);
-        ctx.lineTo(w - padX, midY);
-        ctx.stroke();
+      const padX = 36;
+      const padY = 16;
+      const plotW = w - 2 * padX;
+      const plotH = h - 2 * padY;
+      const rect = { x: padX, y: padY, w: plotW, h: plotH };
 
-        // Scale: max possible peak = 1 + |a2| + |a3| + |a5|
-        const ymax = 1 + Math.abs(a2) + Math.abs(a3) + Math.abs(a5);
-        const scale = halfH / ymax;
+      // Scale: max possible peak = 1 + |a2| + |a3| + |a5|
+      const ymax = 1 + Math.abs(a2) + Math.abs(a3) + Math.abs(a5);
 
-        // Plot fundamental dim
-        ctx.save();
-        ctx.globalAlpha = 0.35;
-        ctx.strokeStyle = colors.teal;
-        ctx.setLineDash([3, 4]);
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        const samples = 500;
-        const cycles = 2;
-        for (let i = 0; i <= samples; i++) {
-          const x = padX + (i / samples) * (w - 2 * padX);
-          const t = (i / samples) * cycles * 2 * Math.PI;
-          const y = midY - a1 * Math.sin(t) * scale;
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-        ctx.setLineDash([]);
+      drawAxes(ctx, rect, {
+        xMin: 0,
+        xMax: 4 * Math.PI,
+        yMin: -ymax,
+        yMax: ymax,
+        xTicks: [],
+        yTicks: [],
+      });
 
-        // Composite wave
-        ctx.restore();
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        for (let i = 0; i <= samples; i++) {
-          const x = padX + (i / samples) * (w - 2 * padX);
-          const t = (i / samples) * cycles * 2 * Math.PI;
-          const y_ =
-            a1 * Math.sin(t) + a2 * Math.sin(2 * t) + a3 * Math.sin(3 * t) + a5 * Math.sin(5 * t);
-          const y = midY - y_ * scale;
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
+      const yAt = (v: number) => padY + plotH - ((v + ymax) / (2 * ymax)) * plotH;
 
-        // RMS reference line
-        ctx.save();
-        ctx.globalAlpha = 0.6;
-        ctx.strokeStyle = colors.pink;
-        ctx.setLineDash([4, 4]);
-        const yRms = midY - rmsParseval * scale;
-        ctx.beginPath();
-        ctx.moveTo(padX, yRms);
-        ctx.lineTo(w - padX, yRms);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.restore();
-        ctx.fillStyle = colors.pink;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.fillText('+V_rms', padX + 2, yRms - 3);
+      // Center axis line
+      ctx.strokeStyle = colors.border;
+      ctx.beginPath();
+      ctx.moveTo(padX, yAt(0));
+      ctx.lineTo(padX + plotW, yAt(0));
+      ctx.stroke();
 
-        raf = requestAnimationFrame(draw);
+      const samples = 500;
+      const cycles = 2;
+
+      // Plot fundamental dim
+      const fundPts: Array<{ x: number; y: number }> = [];
+      for (let i = 0; i <= samples; i++) {
+        const x = (i / samples) * cycles * 2 * Math.PI;
+        fundPts.push({ x, y: a1 * Math.sin(x) });
       }
-      raf = requestAnimationFrame(draw);
-      return () => cancelAnimationFrame(raf);
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.setLineDash([3, 4]);
+      drawLinePlot(ctx, rect, fundPts, 0, 4 * Math.PI, -ymax, ymax, {
+        color: colors.teal,
+        lineWidth: 1,
+      });
+      ctx.setLineDash([]);
+      ctx.restore();
+
+      // Composite wave
+      const compPts: Array<{ x: number; y: number }> = [];
+      for (let i = 0; i <= samples; i++) {
+        const x = (i / samples) * cycles * 2 * Math.PI;
+        const y =
+          a1 * Math.sin(x) + a2 * Math.sin(2 * x) + a3 * Math.sin(3 * x) + a5 * Math.sin(5 * x);
+        compPts.push({ x, y });
+      }
+      drawLinePlot(ctx, rect, compPts, 0, 4 * Math.PI, -ymax, ymax, {
+        color: colors.accent,
+        lineWidth: 2,
+      });
+
+      // RMS reference line
+      drawHLine(ctx, rect, rmsParseval, -ymax, ymax, {
+        color: colors.pink,
+        dash: [4, 4],
+        alpha: 0.6,
+      });
+      ctx.fillStyle = colors.pink;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText('+V_rms', padX + 2, yAt(rmsParseval) - 3);
     },
     [rmsParseval],
   );
@@ -148,47 +147,47 @@ export function RMSOfComplexWaveDemo() {
         <>
           For a pure sine, V_rms = V_peak/√2 ≈ 0.707·V_peak. Add even a small third harmonic and the
           relation breaks — peak and RMS change at different rates. Parseval's theorem gives V_rms =
-          √[(1/2)·Σ a_n²] directly from the harmonic amplitudes; the form factor V_rms/V_avg and
-          crest factor V_peak/V_rms are how a meter or a power spec captures the shape of a
-          non-sinusoidal wave.
+          √((a₁² + a₂² + a₃² + a₅²)/2) no matter what the shape looks like. The numerical sampling
+          (2048 pts/cycle) matches the analytic value to within rounding error.
         </>
       }
     >
       <AutoResizeCanvas height={260} setup={setup} />
       <DemoControls>
         <MiniSlider
-          label="2nd harm a₂"
+          label="a₂"
           value={a2}
           min={0}
-          max={1}
-          step={0.01}
+          max={0.6}
+          step={0.05}
           format={(v) => v.toFixed(2)}
           onChange={setA2}
         />
         <MiniSlider
-          label="3rd harm a₃"
+          label="a₃"
           value={a3}
           min={0}
-          max={1}
-          step={0.01}
+          max={0.6}
+          step={0.05}
           format={(v) => v.toFixed(2)}
           onChange={setA3}
         />
         <MiniSlider
-          label="5th harm a₅"
+          label="a₅"
           value={a5}
           min={0}
-          max={1}
-          step={0.01}
+          max={0.4}
+          step={0.05}
           format={(v) => v.toFixed(2)}
           onChange={setA5}
         />
-        <MiniReadout label="V_peak" value={peakNum.toFixed(3)} />
-        <MiniReadout label="V_pp" value={peakToPeakNum.toFixed(3)} />
-        <MiniReadout label="V_rms (Parseval)" value={rmsParseval.toFixed(3)} />
-        <MiniReadout label="V_avg (|·|)" value={meanAbs.toFixed(3)} />
-        <MiniReadout label="form factor" value={formFactor.toFixed(3)} />
-        <MiniReadout label="crest factor" value={crestFactor.toFixed(3)} />
+        <MiniReadout label="peak" value={peakNum.toFixed(2)} />
+        <MiniReadout label="peak-peak" value={peakToPeakNum.toFixed(2)} />
+        <MiniReadout label="mean |y|" value={meanAbs.toFixed(3)} />
+        <MiniReadout label="RMS (Parseval)" value={rmsParseval.toFixed(3)} />
+        <MiniReadout label="RMS (numeric)" value={rmsNum.toFixed(3)} />
+        <MiniReadout label="form factor" value={formFactor.toFixed(2)} />
+        <MiniReadout label="crest factor" value={crestFactor.toFixed(2)} />
       </DemoControls>
     </Demo>
   );
