@@ -564,6 +564,59 @@ export function SomeDemo() {
 `pretty()` returns an HTML string; React renders it as literal text.
 Use `<Num value={x} />` which returns JSX with proper `<sup>` elements.
 
+### Demos should show the equation(s) they exercise
+
+Every demo should, in general, render the equation(s) it is illustrating
+directly inside the demo card — typeset with `<InlineMath>` (or `<Formula>`
+for a larger block), with the slider values substituted into the live
+numbers so the equation updates as the reader drags. The canonical
+example is `src/textbook/demos/PointCharge3D.tsx`, which uses
+`<EquationStrip>` directly below `<DemoControls>` to show
+
+```
+|E| = k|q|/r²  =  (1)(1.5)/(2.0)²  ≈  0.375
+```
+
+with the right-hand substitution refreshing in step with the sliders.
+
+Use the same shape for new demos:
+
+```tsx
+<EquationStrip
+  leftLabel="What the formula is"
+  left={
+    <InlineMath
+      tex={
+        `V_{ab} \\;=\\; V_b - V_a \\;=\\; ` +
+        `${Vb.toFixed(1)} - ${Va.toFixed(1)} \\;=\\; ` +
+        `${Vab.toFixed(2)}\\ \\text{V}`
+      }
+    />
+  }
+  rightLabel="Companion identity"
+  right={<InlineMath tex={`W = qV_{ab} \\approx ${(W * 1e6).toFixed(2)}\\ \\mu\\text{J}`} />}
+/>
+```
+
+Rules of thumb:
+
+- Use `<EquationStrip>` for the canonical 1–2 equation case (left/right,
+  optionally with a short caption above each). It already lives directly
+  below `<DemoControls>` and stacks on narrow viewports.
+- Keep equations as `<InlineMath tex="…" />` so they typeset in STIX Two
+  and pick up the existing math styling. Don't hand-roll spans of
+  `<sub>`/`<sup>`.
+- Show both the symbolic form **and** the same equation with the current
+  slider values substituted in, so the reader can see the formula
+  "executing." A symbolic-only display loses most of the point.
+- If a demo exercises three or more identities, pick the two that the
+  reader's sliders most directly drive and put those in the
+  `<EquationStrip>`; show the rest as in-canvas labels or `<MiniReadout>`s.
+- Exemptions: pure intuition-pump demos with no formula at all (a
+  gravity-ramp analogy with no SI units, a polarity toggle for the sign
+  of charge) don't need an equation strip — but anything with a numeric
+  readout almost certainly should have one.
+
 ---
 
 ## 8. The lab pattern

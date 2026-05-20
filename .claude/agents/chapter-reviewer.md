@@ -95,6 +95,19 @@ Don't propose demos for concepts that are already adequately conveyed by prose, 
 
 For each proposal, sketch: what the canvas shows, what the sliders/readouts control, and which CLAUDE.md §7 patterns it would follow.
 
+### 6b. In-demo equation displays
+
+Per CLAUDE.md §7 "Demos should show the equation(s) they exercise": every demo that exercises a formula should render that formula directly inside the demo card via `<EquationStrip>` (or, for one-formula demos, an `<InlineMath>` block) with the slider values substituted in so the equation updates live. The canonical reference is `src/textbook/demos/PointCharge3D.tsx`.
+
+For each demo embedded in the chapter:
+
+1. Open the demo file and grep for `EquationStrip` and `InlineMath`.
+2. Confirm the demo renders the equation(s) it is illustrating. The form must be both symbolic and with the current slider values plugged in — symbolic-only displays don't count.
+3. If the demo has numeric `<MiniReadout>`s but no equation display, flag it as missing — propose the `<EquationStrip>` it should add, including the substituted-values form. Use the same `tex={...}` interpolation pattern as `PointCharge3D.tsx`.
+4. Exemptions: pure intuition-pump demos with no formula (e.g. a gravity-ramp analogy with no SI units, a polarity toggle for sign-of-charge) are allowed to skip the strip. Flag the exemption with a one-line justification rather than silently omitting it.
+
+Report each missing equation strip as a separate finding under "In-demo equations." If a demo's equation strip uses incorrect symbols, missing substitutions, or stale numbers, flag those too.
+
 ### 7. Sources rule (the hard rule)
 
 Per CLAUDE.md §5: every numerical or historical claim must cite a key resolving to both `src/lib/sources.ts` and the chapter's `sources` array. Find any claim that's unsourced or sourced to a key not in the chapter's array.
@@ -159,6 +172,9 @@ Return one structured report. Use this skeleton (markdown headings, not numbered
 
 ### Demo proposals
 - {proposed demo}: what it shows, sliders, expected pedagogical payoff.
+
+### In-demo equations
+- {demo file}: missing/incorrect `<EquationStrip>` — what to add (symbolic + value-substituted form).
 
 ### Sourcing
 - L{N}: claim "…" — uncited / cites missing key / etc.

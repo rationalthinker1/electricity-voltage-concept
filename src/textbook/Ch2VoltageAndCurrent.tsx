@@ -22,6 +22,7 @@ import { CursorEFieldOnWireDemo } from './demos/CursorEFieldOnWire';
 import { DriftVelocityDemo } from './demos/DriftVelocity';
 import { SwitchAndBulbDemo } from './demos/SwitchAndBulb';
 import { TwoSpeedsDemo } from './demos/TwoSpeeds';
+import { VabWorkEnergyDemo } from './demos/VabWorkEnergy';
 import { VoltageAsHeightDemo } from './demos/VoltageAsHeight';
 import { VoltageDrivesFlowDemo } from './demos/VoltageDrivesFlow';
 import { getChapter } from './data/chapters';
@@ -155,6 +156,22 @@ export default function Ch2VoltageAndCurrent() {
         back into the other
         <Cite id="feynman-II-2" in={SOURCES} />. It is also the same statement as the line integral
         — just integrated and divided through by the charge.
+      </p>
+
+      <VabWorkEnergyDemo />
+
+      <p className="mb-prose-3">
+        The same three identities — <InlineMath tex="V_{ab} = V_b - V_a" />,{' '}
+        <InlineMath tex="W = qV_{ab}" />, and <InlineMath tex="V = \Delta U/q" /> — are visible on
+        one canvas above. Drag <em className="text-text italic">V<sub>a</sub></em> and{' '}
+        <em className="text-text italic">V<sub>b</sub></em> and only their{' '}
+        <em className="text-text italic">difference</em> matters: slide both up by the same amount
+        and <em className="text-text italic">V<sub>ab</sub></em>,{' '}
+        <em className="text-text italic">W</em>, and <em className="text-text italic">ΔU</em> are
+        unchanged. Flip the sign of <em className="text-text italic">q</em> and the same potential
+        gap flips the bookkeeping — the energy that had to be invested to push a positive charge
+        uphill is the same energy a negative charge of equal magnitude releases falling the other
+        way.
       </p>
 
       <VoltageDrivesFlowDemo />
