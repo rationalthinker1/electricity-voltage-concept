@@ -170,7 +170,7 @@ export function WiedemannFranzDemo({ figure }: Props) {
           <button
             key={mm.key}
             type="button"
-            className={`mini-toggle${mm.key === metalKey ? 'on' : ''}`}
+            className={`mini-toggle${mm.key === metalKey ? ' on' : ''}`}
             onClick={() => setMetalKey(mm.key)}
             aria-pressed={mm.key === metalKey}
           >

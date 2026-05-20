@@ -9,6 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -31,7 +32,7 @@ export function ConductorRedistributionDemo({ figure }: Props) {
   }, [conductor]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     const N = 60;
@@ -53,17 +54,18 @@ export function ConductorRedistributionDemo({ figure }: Props) {
       }
       lastFrame = now;
       const { conductor } = stateRef.current;
+      const colors = getCanvasColors();
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Container box
-      ctx.strokeStyle = conductor ? 'rgba(108,197,194,.7)' : 'rgba(255,255,255,.25)';
+      ctx.strokeStyle = conductor ? withAlpha(colors.teal, 0.7) : withAlpha(colors.text, 0.25);
       ctx.lineWidth = 1.5;
       ctx.setLineDash([3, 3]);
       ctx.strokeRect(padX, padY, w - 2 * padX, h - 2 * padY);
       ctx.setLineDash([]);
-      ctx.fillStyle = conductor ? '#6cc5c2' : 'rgba(160,158,149,.6)';
+      ctx.fillStyle = conductor ? colors.teal : withAlpha(colors.textDim, 0.6);
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText(
@@ -120,14 +122,11 @@ export function ConductorRedistributionDemo({ figure }: Props) {
       }
 
       // Render
+      ctx.fillStyle = withAlpha(colors.blue, 0.95);
       for (const c of charges) {
-        ctx.save();
-        ctx.globalAlpha = 0.95;
-        ctx.fillStyle = colors.blue;
         ctx.beginPath();
         ctx.arc(c.x, c.y, 2.4, 0, Math.PI * 2);
         ctx.fill();
-        ctx.restore();
       }
 
       raf = requestAnimationFrame(draw);

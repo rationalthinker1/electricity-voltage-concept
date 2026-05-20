@@ -16,8 +16,10 @@
 import { useCallback, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { MATERIALS, PHYS, formatTime } from '@/lib/physics';
 
 interface Props {
@@ -38,7 +40,7 @@ export function TwoSpeedsDemo({ figure }: Props) {
   const trackLength_m = 0.2; // 20 cm physical length
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     const padX = 60;
@@ -53,6 +55,7 @@ export function TwoSpeedsDemo({ figure }: Props) {
       if (startRef.current == null) startRef.current = now;
       const elapsedMs = now - startRef.current;
       tickRef.current = elapsedMs / 1000; // seconds (real wallclock)
+      const colors = getCanvasColors();
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -62,14 +65,14 @@ export function TwoSpeedsDemo({ figure }: Props) {
 
       // Track outlines
       function drawTrack(y: number, label: string, color: string) {
-        ctx.strokeStyle = 'rgba(255,255,255,.10)';
+        ctx.strokeStyle = withAlpha(colors.text, 0.1);
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(trackLeft, y);
         ctx.lineTo(trackRight, y);
         ctx.stroke();
         // tick marks at 0 and 200 mm
-        ctx.fillStyle = 'rgba(160,158,149,.8)';
+        ctx.fillStyle = withAlpha(colors.textDim, 0.8);
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         ctx.fillText('0 mm', trackLeft, y + 18);
@@ -79,16 +82,16 @@ export function TwoSpeedsDemo({ figure }: Props) {
         ctx.textAlign = 'left';
         ctx.fillText(label, trackLeft, y - 10);
       }
-      drawTrack(yTop, 'electron drift  (~0.03 mm/s)', '#5baef8');
-      drawTrack(yBot, 'EM signal in wire  (~2×10⁸ m/s)', '#ff6b2a');
+      drawTrack(yTop, 'electron drift  (~0.03 mm/s)', colors.blue);
+      drawTrack(yBot, 'EM signal in wire  (~2×10⁸ m/s)', colors.accent);
 
       // ── Drift dot — uses REAL v_drift, scaled by physical track length.
       // Wallclock seconds × v_drift / trackLength_m → fraction of track covered.
       const driftFrac = (tickRef.current * v_drift) / trackLength_m;
       driftX = trackLeft + Math.min(1, driftFrac) * trackPxLen;
       const dot1 = ctx.createRadialGradient(driftX, yTop, 0, driftX, yTop, 18);
-      dot1.addColorStop(0, '#5baef8');
-      dot1.addColorStop(1, '#5baef800');
+      dot1.addColorStop(0, colors.blue);
+      dot1.addColorStop(1, withAlpha(colors.blue, 0));
       ctx.fillStyle = dot1;
       ctx.beginPath();
       ctx.arc(driftX, yTop, 18, 0, Math.PI * 2);
@@ -105,7 +108,7 @@ export function TwoSpeedsDemo({ figure }: Props) {
       const loopT = (tickRef.current % 1) / 1; // 0 → 1 over 1 second
       const sigX = trackLeft + loopT * trackPxLen;
       // tail
-      ctx.strokeStyle = 'rgba(255,107,42,.4)';
+      ctx.strokeStyle = withAlpha(colors.accent, 0.4);
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(Math.max(trackLeft, sigX - 80), yBot);
@@ -113,8 +116,8 @@ export function TwoSpeedsDemo({ figure }: Props) {
       ctx.stroke();
       // pulse
       const sigGrd = ctx.createRadialGradient(sigX, yBot, 0, sigX, yBot, 22);
-      sigGrd.addColorStop(0, '#ff6b2a');
-      sigGrd.addColorStop(1, '#ff6b2a00');
+      sigGrd.addColorStop(0, colors.accent);
+      sigGrd.addColorStop(1, withAlpha(colors.accent, 0));
       ctx.fillStyle = sigGrd;
       ctx.beginPath();
       ctx.arc(sigX, yBot, 22, 0, Math.PI * 2);
@@ -141,6 +144,11 @@ export function TwoSpeedsDemo({ figure }: Props) {
   const driftDist_mm = elapsed_s * v_drift * 1000;
   // signal makes the trip every (trackLength_m / v_signal) seconds = 1 ns
   const signalTrips = Math.floor(elapsed_s / (trackLength_m / v_signal));
+  // Live ratio of the two physical speeds — pinned by the chosen 1 A / 2.5 mm²
+  // scenario but computed here so the demo's numeric claim stays honest.
+  const speedRatio = v_signal / v_drift; // ≈ 6.8e12 for 1 A / 2.5 mm²
+  const ratioExp = Math.floor(Math.log10(speedRatio));
+  const ratioMantissa = speedRatio / 10 ** ratioExp;
 
   return (
     <Demo
@@ -167,8 +175,34 @@ export function TwoSpeedsDemo({ figure }: Props) {
           unit="mm"
         />
         <MiniReadout label="signal trips" value={<Num value={signalTrips} />} unit="× 20 cm" />
-        <MiniReadout label="signal / drift" value="~10¹³" unit="×" />
+        <MiniReadout
+          label="signal / drift"
+          value={<Num value={speedRatio} />}
+          unit="×"
+        />
       </DemoControls>
+      <EquationStrip
+        leftLabel="The two speeds"
+        left={
+          <InlineMath
+            tex={
+              `v_{\\text{signal}} \\approx 2\\times 10^{8}\\ \\text{m/s}` +
+              `\\quad\\;\\; v_{\\text{drift}} = \\tfrac{I}{nqA} \\approx ` +
+              `${v_drift.toExponential(1)}\\ \\text{m/s}`
+            }
+          />
+        }
+        rightLabel="Ratio (1 A / 2.5 mm² Cu)"
+        right={
+          <InlineMath
+            tex={
+              `\\dfrac{v_{\\text{signal}}}{v_{\\text{drift}}} = ` +
+              `\\dfrac{2\\times 10^{8}}{${v_drift.toExponential(1)}} \\approx ` +
+              `${ratioMantissa.toFixed(1)}\\times 10^{${ratioExp}}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

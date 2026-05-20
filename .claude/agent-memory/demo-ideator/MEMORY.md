@@ -1,0 +1,3 @@
+- [Ch.1 demo coverage and gaps](project_ch1_coverage.md) — inventory of 6 existing demos, identifies parallel-plate and Gauss flux as primary gaps
+- [Visualization patterns that work](feedback_visualization_patterns.md) — stateRef, EquationStrip, log-opacity, LayeredCanvas, depth-fade — reuse these
+- [External sources for demo ideation](reference_external_sources.md) — Feynman II, Griffiths, OpenStax Vol.2, PhET, HyperPhysics, Falstad, 3B1B

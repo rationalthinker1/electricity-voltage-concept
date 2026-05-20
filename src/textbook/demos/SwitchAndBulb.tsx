@@ -10,17 +10,17 @@
  *
  * Two annotations:
  *   "field propagates at ~⅔ c — reaches bulb in ~5 ns"
- *   "an electron at the switch would take ~10 hours to reach the bulb"
+ *   "an electron at the switch would take ~13 hours to reach the bulb"
  *
  * Both numbers are pinned: signal speed from libretexts-conduction;
- * drift transit estimated from v_d ≈ 0.03 mm/s for a typical Cu wire.
+ * drift transit estimated from v_d ≈ 2.9×10⁻⁵ m/s for 2.5 mm² Cu at 1 A.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 import { drawCircuit, renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -68,7 +68,8 @@ export function SwitchAndBulbDemo({ figure }: Props) {
     let raf = 0;
 
     function draw(now: number) {
-      ctx.fillStyle = getCanvasColors().bg;
+      const colors = getCanvasColors();
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Layout — battery at left, switch in middle-top, bulb at right.
@@ -88,7 +89,8 @@ export function SwitchAndBulbDemo({ figure }: Props) {
 
       // Cache key for the static schematic: changes only when w/h/dpr or one
       // of the discrete display states (switch closed, bulb glowing) flips.
-      const cacheKey = `${w}x${h}@${dpr}|c${isClosed ? 1 : 0}|g${bulbOn ? 1 : 0}`;
+      // Also keyed on text colour so light/dark theme swaps re-bake the cache.
+      const cacheKey = `${w}x${h}@${dpr}|c${isClosed ? 1 : 0}|g${bulbOn ? 1 : 0}|t${colors.text}`;
       if (cacheRef.current?.key !== cacheKey) {
         const staticElements: CircuitElement[] = [
           // Dim base loop (one polyline closing back to the start).
@@ -100,28 +102,28 @@ export function SwitchAndBulbDemo({ figure }: Props) {
               { x: bulbX, y: bot },
               { x: batX, y: bot },
             ],
-            color: 'rgba(160,158,149,.25)',
+            color: withAlpha(colors.textDim, 0.25),
             lineWidth: 4,
           },
           // Battery on the left (vertical), tall enough to touch top + bot rails.
           {
             kind: 'battery',
             at: { x: batX, y: bulbY },
-            color: 'rgba(255,255,255,.18)',
+            color: withAlpha(colors.text, 0.18),
             label: 'battery',
             labelOffset: { x: 0, y: (bot - top) / 2 + 18 },
             leadLength: (bot - top) / 2,
-            negativeColor: '#ecebe5',
+            negativeColor: colors.text,
             negativePlateLength: 16,
             plateGap: (bot - top) / 2,
-            positiveColor: '#ecebe5',
+            positiveColor: colors.text,
             positivePlateLength: 28,
           },
           // Switch on the top rail.
           {
             kind: 'switch',
             at: { x: switchX, y: top },
-            color: isClosed ? '#ff6b2a' : '#ecebe5',
+            color: isClosed ? colors.accent : colors.text,
             label: 'switch',
             state: isClosed ? 'closed' : 'open-up',
             terminalGap: 32,
@@ -175,25 +177,25 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       // Energised overlay drawn on top of the cached backdrop.
       if (energised.length > 1) {
         ctx.save();
-        ctx.shadowColor = 'rgba(255,107,42,.6)';
+        ctx.shadowColor = withAlpha(colors.accent, 0.6);
         ctx.shadowBlur = 8;
         drawCircuit(ctx, {
-          elements: [{ kind: 'wire', points: energised, color: '#ff6b2a', lineWidth: 4 }],
+          elements: [{ kind: 'wire', points: energised, color: colors.accent, lineWidth: 4 }],
         });
         ctx.restore();
       }
 
       // Polarity glyphs hugging the battery's two leads.
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = colors.pink;
       ctx.font = 'bold 11px JetBrains Mono';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
       ctx.fillText('+', batX - 18, top);
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = colors.blue;
       ctx.fillText('−', batX - 12, bot);
 
       // Annotations
-      ctx.fillStyle = isClosed ? '#ff6b2a' : 'rgba(160,158,149,.55)';
+      ctx.fillStyle = isClosed ? colors.accent : withAlpha(colors.textDim, 0.55);
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(
@@ -203,9 +205,9 @@ export function SwitchAndBulbDemo({ figure }: Props) {
         w / 2,
         h - 32,
       );
-      ctx.fillStyle = 'rgba(91,174,248,.7)';
+      ctx.fillStyle = withAlpha(colors.blue, 0.7);
       ctx.fillText(
-        'an electron starting at the switch would take ~10 hours to reach the bulb',
+        'an electron starting at the switch would take ~13 hours to reach the bulb',
         w / 2,
         h - 14,
       );
@@ -240,7 +242,7 @@ export function SwitchAndBulbDemo({ figure }: Props) {
           onChange={setClosed}
         />
         <MiniReadout label="signal travel time" value={closed ? '~5' : '—'} unit="ns" />
-        <MiniReadout label="electron travel time" value={closed ? '~10' : '—'} unit="hours" />
+        <MiniReadout label="electron travel time" value={closed ? '~13' : '—'} unit="hours" />
       </DemoControls>
     </Demo>
   );

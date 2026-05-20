@@ -16,6 +16,7 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
+import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { PredictThenObserve } from '@/components/PredictThenObserve';
@@ -23,6 +24,7 @@ import { ConductorRedistributionDemo } from './demos/ConductorRedistribution';
 import { EquipotentialsDemo } from './demos/Equipotentials';
 import { FieldArrowsDemo } from './demos/FieldArrows';
 import { InverseSquareDemo } from './demos/InverseSquare';
+import { ParallelPlateUniformFieldDemo } from './demos/ParallelPlateUniformField';
 import { PointCharge3DDemo } from './demos/PointCharge3D';
 import { TwoChargesDemo } from './demos/TwoCharges';
 import { getChapter } from './data/chapters';
@@ -44,8 +46,8 @@ export default function Ch1WhatIsElectricity() {
             <>
               <strong className="text-text font-medium">charge</strong> — a conserved scalar
               property of matter that produces and responds to electromagnetic fields. Comes in two
-              signs; the elementary unit is <em className="text-text italic">e</em> =
-              1.602176634×10⁻¹⁹ C (exact).
+              signs; the elementary unit is{' '}
+              <InlineMath tex="e = 1.602\,176\,634\times 10^{-19}\ \text{C}" /> (exact).
             </>
           }
         >
@@ -103,7 +105,7 @@ export default function Ch1WhatIsElectricity() {
         <strong className="text-text font-medium">+e</strong>; each electron carries the same
         magnitude with the opposite sign, <strong className="text-text font-medium">−e</strong>;
         neutrons carry none. A neutral atom has exactly as many electrons as protons, and the two
-        cancel to zero <Cite id="feynman-II-2" in={SOURCES} />.
+        cancel to zero <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         An object is <strong className="text-text font-medium">negatively charged</strong> when it
@@ -119,8 +121,8 @@ export default function Ch1WhatIsElectricity() {
       </p>
       <p className="mb-prose-3">
         We label one sign positive and the other negative — but nothing in nature insists on which
-        gets which name. Benjamin Franklin made the call in 1747 and we've been stuck with it. (It
-        is occasionally annoying. Conventional current flows in the direction{' '}
+        gets which name. Benjamin Franklin made the call in the 18th century and we've been stuck
+        with it. (It is occasionally annoying. Conventional current flows in the direction{' '}
         <em className="text-text italic">positive</em> charge would move, but the actual carriers in
         a metal wire are electrons, which are negative. Every textbook diagram has to carry the
         inversion in your head.)
@@ -194,16 +196,20 @@ export default function Ch1WhatIsElectricity() {
         The constant is <em className="text-text italic">enormous</em>. Two one-coulomb charges
         separated by one meter would push each other apart with about{' '}
         <strong className="text-text font-medium">9 billion newtons</strong> — roughly the weight of
-        a hundred Eiffel Towers.
+        a hundred Eiffel Towers. Part of why that number is so large is that the coulomb itself is
+        an enormous unit of charge: one coulomb is the charge of approximately{' '}
+        <strong className="text-text font-medium">6.24×10¹⁸</strong> elementary charges (protons or
+        electrons), since each elementary charge is{' '}
+        <InlineMath tex="e = 1.602\,176\,634\times 10^{-19}\ \text{C}" />, an exact value by the
+        2019 SI redefinition <Cite id="codata-2018" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         The reason daily life is full of static and not constant electrocution is that ordinary
         matter is exquisitely charge-neutral. The fractional excess of free charge needed to make a
-        noticeable force is tiny. Drag a balloon across your hair and you transfer maybe{' '}
-        <strong className="text-text font-medium">10⁻⁸ coulombs</strong> — around sixty billion
-        excess electrons, sitting on a balloon that contains roughly{' '}
-        <strong className="text-text font-medium">10²³</strong> of them. Almost nothing. Enough to
-        fight gravity for a few minutes.
+        noticeable force is tiny. Drag a balloon across your hair and you transfer perhaps a few
+        tens of nanocoulombs <Cite id="hyperphysics-emag" in={SOURCES} /> — a tiny fraction of the
+        roughly 10²³ free electrons already in the rubber. Almost nothing. Enough to fight gravity
+        for a few minutes.
       </p>
 
       <TryIt
@@ -226,8 +232,9 @@ export default function Ch1WhatIsElectricity() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              Plug directly into Coulomb's law with <em className="text-text italic">k</em> =
-              8.99×10⁹ N·m²/C² <Cite id="codata-2018" in={SOURCES} />:
+              Plug directly into Coulomb's law with{' '}
+              <InlineMath tex="k = 8.99\times 10^{9}\ \text{N·m}^2/\text{C}^2" />{' '}
+              <Cite id="codata-2018" in={SOURCES} />:
             </p>
             <Formula tex="F = \dfrac{(8.99\times 10^{9})(5\times 10^{-9})(3\times 10^{-9})}{(0.10)^2} = 1.35\times 10^{-5}\ \text{N}" />
             <p className="mb-prose-1 last:mb-0">
@@ -257,10 +264,21 @@ export default function Ch1WhatIsElectricity() {
         therefore drop as <strong className="text-text font-medium">1/r²</strong>. The exponent
         comes from the dimensionality of space, not from anything special about charge.
       </p>
-      <p className="pullout">
+      <Formula size="lg" tex="F \;\propto\; \dfrac{1}{r^{2}} \;=\; \dfrac{1}{4\pi r^{2}}\cdot 4\pi" />
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">F</strong> is the magnitude of the force
+        (in newtons), <strong className="text-text font-medium">r</strong> is the separation
+        between the two charges (in metres), and the factor{' '}
+        <InlineMath tex="4\pi r^{2}" /> is the surface area of a sphere of radius r (in m²) —
+        making the proportionality literally "force per unit spherical area." Multiply by the
+        product of the two charges <InlineMath tex="Q_1 Q_2" /> (in C²) and by Coulomb's constant{' '}
+        <InlineMath tex="k" /> (in N·m²/C²) and you recover the full Coulomb's law from the
+        previous section.
+      </p>
+      <Pullout>
         The inverse-square law is not a fact about charge. It is a fact about space being
         three-dimensional.
-      </p>
+      </Pullout>
       <p className="mb-prose-3">
         Cavendish bounded the deviation from <em className="text-text italic">exactly</em> 2 to
         within ±1/50 with a clever null-cavity experiment in 1773, decades before Coulomb's
@@ -358,9 +376,9 @@ export default function Ch1WhatIsElectricity() {
           def={
             <>
               <strong className="text-text font-medium">electric field</strong> — a vector quantity{' '}
-              <em className="text-text italic">E</em> defined at every point in space; the force on
-              a small test charge <em className="text-text italic">q</em> at that point is{' '}
-              <em className="text-text italic">F = qE</em>. Units: N/C, equivalently V/m.
+              <InlineMath tex="\vec{E}" /> defined at every point in space; the force on a small
+              test charge <InlineMath tex="q" /> at that point is{' '}
+              <InlineMath tex="\vec{F} = q\vec{E}" />. Units: N/C, equivalently V/m.
             </>
           }
         >
@@ -379,10 +397,9 @@ export default function Ch1WhatIsElectricity() {
             <>
               <strong className="text-text font-medium">N/C = V/m.</strong> The volt is defined as
               energy per charge, so 1 V ≡ 1 J/C; and from{' '}
-              <em className="text-text italic">work = force × distance</em>, 1 J = 1 N·m. Therefore
-              1 V/m = (1 J/C)/m = (1 N·m/C)/m ={' '}
-              <strong className="text-text font-medium">1 N/C</strong>. Same unit, two names — one
-              reads E as force per charge, the other as voltage drop per meter.
+              <InlineMath tex="W = F \cdot d" />, 1 J = 1 N·m. Therefore 1 V/m = (1 J/C)/m = (1
+              N·m/C)/m = <strong className="text-text font-medium">1 N/C</strong>. Same unit, two
+              names — one reads E as force per charge, the other as voltage drop per meter.
             </>
           }
         >
@@ -547,6 +564,16 @@ export default function Ch1WhatIsElectricity() {
         will lean on heavily.
       </p>
 
+      <ParallelPlateUniformFieldDemo />
+
+      <p className="mb-prose-3">
+        Drag the separation slider. The field arrows between the plates stay exactly the same
+        length. The uniform field of an idealised parallel-plate pair depends only on the surface
+        charge density σ — not on the gap. The voltage between the plates does change, because{' '}
+        <InlineMath tex="V = E\,d" /> grows linearly with d, and that is the lever Chapter 2 picks
+        up to define voltage operationally.
+      </p>
+
       <TryIt
         tag="Try 1.4"
         question={
@@ -671,7 +698,7 @@ export default function Ch1WhatIsElectricity() {
               ),
             },
             {
-              label: 'Median charge transferred per flash',
+              label: 'Median charge transferred per lightning bolt',
               value: (
                 <>
                   ~5 C <Cite id="rakov-uman-2003" in={SOURCES} />
@@ -717,8 +744,9 @@ export default function Ch1WhatIsElectricity() {
             only a few centimeters wide
             <Cite id="rakov-uman-2003" in={SOURCES} />. Only about
             <strong className="text-text font-medium"> 5 C</strong> of charge actually moves in a
-            typical flash — a modest amount — but multiplied by a hundred million volts it works out
-            to roughly a gigajoule of stored energy released in milliseconds.
+            typical lightning bolt — a modest amount — but multiplied by a hundred million volts it
+            works out to roughly half a gigajoule of stored energy released in milliseconds
+            <Cite id="rakov-uman-2003" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
             Every piece of that picture lives in this chapter: two kinds of charge, separated by an
@@ -883,7 +911,7 @@ export default function Ch1WhatIsElectricity() {
             </Term>{' '}
             in its clean form reads <InlineMath id="gauss-law" />, with no <InlineMath tex="\pi" />{' '}
             anywhere
-            <Cite id="gauss-1813" in={SOURCES} />. When you specialize that to a point charge and
+            <Cite id="griffiths-2017" in={SOURCES} />. When you specialize that to a point charge and
             integrate over a sphere of radius <InlineMath tex="r" />, the sphere's area{' '}
             <InlineMath tex="4\pi r^2" /> appears in the denominator, leaving Coulomb's law looking
             like <InlineMath tex="F = \dfrac{Q_1 Q_2}{4\pi\varepsilon_0 r^2}" />. The{' '}
@@ -993,11 +1021,10 @@ export default function Ch1WhatIsElectricity() {
             of hair end up with the same sign and repel each other; with their roots anchored, they
             fan outward to maximize separation, exactly like the charges on a conductor heading for
             the surface
-            <Cite id="griffiths-2017" in={SOURCES} />. The total charge transferred is tiny —
-            typically nanocoulombs over the whole head — but with k around{' '}
-            <strong className="text-text font-medium">10¹⁰</strong>
-            and gravity weak, it's enough to win
-            <Cite id="codata-2018" in={SOURCES} />.
+            <Cite id="griffiths-2017" in={SOURCES} />. The total charge transferred is a very small
+            fraction of a microcoulomb <Cite id="hyperphysics-emag" in={SOURCES} /> — but with{' '}
+            <InlineMath tex="k \approx 9\times 10^{9}\ \text{N·m}^2/\text{C}^2" /> and gravity weak,
+            it's enough to win <Cite id="codata-2018" in={SOURCES} />.
           </p>
         </FAQItem>
 
@@ -1040,8 +1067,9 @@ export default function Ch1WhatIsElectricity() {
           <p>
             Close, but not identical, and — crucially — it has very little to do with the speed of
             the electrons. The signal that flips a switch is a disturbance in the electromagnetic
-            field surrounding the wire, propagating at a fraction (often ~⅔) of the vacuum speed of
-            light <InlineMath tex="c = 299{,}792{,}458\ \text{m/s}" />
+            field surrounding the wire, propagating at a fraction (often ~⅔)
+            <Cite id="libretexts-conduction" in={SOURCES} /> of the vacuum speed of light{' '}
+            <InlineMath tex="c = 299{,}792{,}458\ \text{m/s}" />
             <Cite id="codata-2018" in={SOURCES} />. The electrons themselves drift along at
             fractions of a millimeter per second. We pull that apart properly in Chapter 2, and the
             field-flow picture lands in Chapter 8.

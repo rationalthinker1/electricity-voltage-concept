@@ -1,0 +1,3 @@
+- [Citation patterns](feedback_citation_patterns.md) — recurring source-key misuse: feynman-II-2, gauss-1813, codata-2018 scope limits, griffiths-2017 overuse
+- [Unsourced claim types](feedback_unsourced_claim_types.md) — FAQ answers, historical years, inline derived numbers are high-risk areas
+- [Ch.1 audit findings](project_ch1_audit.md) — 7 BLOCKERs + 2 WARNINGs logged 2026-05-20, specific line numbers

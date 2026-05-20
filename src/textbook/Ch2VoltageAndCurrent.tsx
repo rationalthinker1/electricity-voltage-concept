@@ -462,7 +462,7 @@ export default function Ch2VoltageAndCurrent() {
         <strong className="text-text font-medium">0.02 mm/s</strong>{' '}
         <Cite id="libretexts-conduction" in={SOURCES} />. A garden snail moves roughly fifty times
         faster. To traverse a one-meter wire, a single electron needs about thirteen hours. For a
-        forty-foot extension cord at the same current, more than a week.
+        forty-foot extension cord at the same current, the better part of a week.
       </p>
 
       <PredictThenObserve
@@ -964,7 +964,7 @@ export default function Ch2VoltageAndCurrent() {
             </Term>
             , points radially <em className="text-text italic">inward</em> through the wire's
             surface and integrates exactly to
-            <InlineMath tex="VI" />, the dissipated power <Cite id="feynman-II-2" in={SOURCES} />.
+            <InlineMath tex="VI" />, the dissipated power <Cite id="feynman-II-27" in={SOURCES} />.
             The wire is the destination, not the conduit. This sounds like a parlor trick the first
             time you hear it; Chapter 8 makes it rigorous.
           </p>
