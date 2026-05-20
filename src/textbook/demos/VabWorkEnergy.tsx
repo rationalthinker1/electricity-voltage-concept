@@ -301,7 +301,7 @@ export function VabWorkEnergyDemo({ figure }: Props) {
   return (
     <Demo
       figure={figure ?? 'Fig. 2.2'}
-      title="V_ab, W = qV, and ΔU/q — one picture"
+      title="Voltage, work, and energy in one picture"
       question="Move a charge q from point a to point b. How much work? How much energy changes hands?"
       caption={
         <>
