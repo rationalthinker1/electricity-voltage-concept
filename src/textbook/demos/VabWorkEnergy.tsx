@@ -1,18 +1,22 @@
 /**
- * Demo D2.2 — V_ab, W = qV, and V = ΔU/q in one picture
+ * Demo D2.2 — V_ab, W = qV, and ΔU = qV in one parallel-plate accelerator
  *
- * Two horizontal "potential platforms" at heights V_a and V_b on a shared
- * vertical voltage axis. A signed test charge q is animated between the
- * two platforms; as it moves a → b its electrical potential energy changes
- * by ΔU = qV_ab where V_ab = V_b - V_a, and the work done on the charge
- * (by whatever agent moves it) is W = qV_ab. Three sliders (V_a, V_b, q)
- * drive everything; an EquationStrip beneath the controls shows the same
- * three identities with the current numbers substituted in.
+ * Canvas: a horizontal channel between two terminals at V_a (left) and
+ * V_b (right). A uniform E-field fills the gap, pointing from the higher
+ * potential to the lower one. A signed test charge q is released at rest
+ * at the high-PE end and accelerates across the gap under F = qE, hitting
+ * the far wall with kinetic energy KE = qV_ab. As the trip progresses, a
+ * stacked PE / KE bar at the bottom drains potential energy and fills
+ * kinetic energy, both summing to the constant |qV_ab|. The transit time
+ * scales like 1/√(qV_ab), so cranking V or q visibly speeds the charge up.
  *
- * Pedagogical thrust: voltage is always a difference (V_ab), and that
- * single difference is the only thing the energy bookkeeping cares about.
- * Flip the sign of q and the same V_ab now represents released energy
- * (the charge slides downhill on its own) instead of work invested.
+ * Pedagogical thrust: three identities in one moving picture.
+ *   • V_ab = V_b − V_a is the gap voltage label.
+ *   • W = qV_ab is the height of the KE bar at impact.
+ *   • ΔU = qV_ab is the height the PE bar drained from.
+ * Flip the sign of q and the same gap reverses the trip — the charge
+ * starts from the other wall and falls the other way, while the energy
+ * numbers stay positive.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -25,15 +29,21 @@ import {
   MiniSlider,
 } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
+import { drawArrow } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
 }
 
+// Empirical visual constant: maps the dimensionful product |q (in µC) × V_ab|
+// onto a normalised acceleration so a "typical" trip (q ≈ 1 µC, V_ab ≈ 6 V)
+// takes about 2 seconds at d = 1 in canvas-relative units. Pure visual choice.
+const ACCEL_SCALE = 0.085;
+
 export function VabWorkEnergyDemo({ figure }: Props) {
-  const [Va, setVa] = useState(2); // volts
-  const [Vb, setVb] = useState(8); // volts
+  const [Va, setVa] = useState(2); // volts (left plate)
+  const [Vb, setVb] = useState(8); // volts (right plate)
   const [qMicro, setQMicro] = useState(1); // µC, signed
 
   const stateRef = useRef({ Va, Vb, qMicro });
@@ -44,191 +54,164 @@ export function VabWorkEnergyDemo({ figure }: Props) {
   // Real values for readouts and equation strip.
   const q = qMicro * 1e-6; // C
   const Vab = Vb - Va; // V
-  const W = q * Vab; // J — work done ON the charge to move it a → b
-  const dU = W; // J — equal by definition (ΔU = qV_ab)
+  const W = q * Vab; // J — work done by the field on q across the gap (= ΔU loss)
+  const dPE = Math.abs(W); // J — total energy traded; never negative for bar widths
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h } = info;
     let raf = 0;
     let last = performance.now();
-    // Animated parameter t ∈ [0,1]: charge position between platform A (t=0)
-    // and platform B (t=1). Bounces back and forth so the reader can watch
-    // the charge make the trip in both directions.
-    let t = 0;
-    let dir = 1; // +1 going a→b, -1 going b→a
+    // Position fraction along the channel, measured from the START wall
+    // (which end is "start" depends on the sign of q and which V is larger).
+    // s ∈ [0, 1] — 0 = start (full PE, zero KE), 1 = arrival (full KE).
+    let s = 0;
+    let v = 0; // velocity in s-units per second
 
     function draw(now: number) {
       const colors = getCanvasColors();
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
       const { Va, Vb, qMicro } = stateRef.current;
-      const q = qMicro * 1e-6;
-      const Vab = Vb - Va;
+      const Vab_now = Vb - Va;
+      const q_now = qMicro * 1e-6;
+      // Total energy traded across the trip, in µJ for the bar maths.
+      const dPE_uJ = Math.abs(qMicro * Vab_now);
+      // Which wall is the high-PE wall? PE = qV.
+      // qV_a > qV_b ⇔ starts at a (left) and moves rightwards.
+      const PE_a = qMicro * Va;
+      const PE_b = qMicro * Vb;
+      const startsLeft = PE_a > PE_b;
 
+      // ── Background ──────────────────────────────────────────────────
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Layout. Voltage axis runs along the left, vertical, from 0 V at the
-      // bottom to V_MAX at the top. Platforms A and B sit at the y matching
-      // their voltages.
-      const padL = 70;
-      const padR = 70;
-      const padT = 30;
-      const padB = 40;
-      const V_MAX = 12;
-      const axX = padL;
-      const axY0 = h - padB;
-      const axY1 = padT;
-      const yFromV = (V: number) => axY0 + (V / V_MAX) * (axY1 - axY0);
+      // ── Layout ──────────────────────────────────────────────────────
+      const padX = 24;
+      const wallW = 14;
+      const wallTop = 50;
+      const wallBot = h - 110; // leave room for the energy bar + caption
+      const channelTop = wallTop + 20;
+      const channelBot = wallBot - 20;
+      const channelMidY = (channelTop + channelBot) / 2;
+      const leftWallX = padX + wallW;
+      const rightWallX = w - padX - wallW;
+      const channelLeft = leftWallX;
+      const channelRight = rightWallX;
+      const channelLen = channelRight - channelLeft;
 
-      // Voltage axis line.
-      ctx.strokeStyle = colors.borderStrong;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(axX, axY0);
-      ctx.lineTo(axX, axY1);
-      ctx.stroke();
-      // Tick marks every 2 V.
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      for (let V = 0; V <= V_MAX; V += 2) {
-        const y = yFromV(V);
-        ctx.beginPath();
-        ctx.moveTo(axX - 4, y);
-        ctx.lineTo(axX, y);
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.stroke();
-        ctx.fillStyle = colors.textDim;
-        ctx.fillText(`${V}`, axX - 8, y);
-      }
-      // Axis label.
-      ctx.save();
-      ctx.translate(20, (axY0 + axY1) / 2);
-      ctx.rotate(-Math.PI / 2);
-      ctx.textAlign = 'center';
-      ctx.fillStyle = colors.text;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillText('potential V (volts)', 0, 0);
-      ctx.restore();
+      // Wall colours by which side is higher V.
+      const leftIsHigh = Va > Vb;
+      const leftColor = leftIsHigh ? colors.accent : colors.teal;
+      const rightColor = leftIsHigh ? colors.teal : colors.accent;
 
-      // Platforms A and B.
-      const platLeft = axX + 80;
-      const platRight = w - padR;
-      const platMidX = (platLeft + platRight) / 2;
-      const yA = yFromV(Va);
-      const yB = yFromV(Vb);
-
-      const drawPlatform = (
-        y: number,
-        label: string,
-        Vlabel: number,
-        color: string,
-      ) => {
+      // ── Plates / walls ──────────────────────────────────────────────
+      const drawWall = (x: number, color: string, label: string, Vval: number) => {
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.18;
+        ctx.fillRect(x - wallW, wallTop, wallW, wallBot - wallTop);
+        ctx.globalAlpha = 1;
         ctx.strokeStyle = color;
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.moveTo(platLeft, y);
-        ctx.lineTo(platRight, y);
-        ctx.stroke();
-        // Dashed extension back to the V axis so the height reads.
-        ctx.setLineDash([3, 4]);
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(axX, y);
-        ctx.lineTo(platLeft, y);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        // Label.
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x - wallW, wallTop, wallW, wallBot - wallTop);
+        // Label above wall.
         ctx.fillStyle = color;
         ctx.font = 'bold 12px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(`${label}: ${Vlabel.toFixed(1)} V`, platRight + 8, y);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(`${label} = ${Vval.toFixed(1)} V`, x - wallW / 2, wallTop - 6);
       };
-      drawPlatform(yA, 'a', Va, colors.teal);
-      drawPlatform(yB, 'b', Vb, colors.accent);
+      drawWall(leftWallX, leftColor, 'V_a', Va);
+      drawWall(rightWallX, rightColor, 'V_b', Vb);
 
-      // V_ab bracket between the two platforms — drawn on the right side
-      // of the canvas so it doesn't collide with the moving charge.
-      const bracketX = platRight - 30;
-      const yHi = Math.min(yA, yB);
-      const yLo = Math.max(yA, yB);
-      if (Math.abs(yA - yB) > 8) {
-        ctx.strokeStyle = colors.textDim;
-        ctx.lineWidth = 1;
-        ctx.setLineDash([2, 3]);
-        ctx.beginPath();
-        ctx.moveTo(bracketX, yHi);
-        ctx.lineTo(bracketX, yLo);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        // Tiny caps.
-        ctx.beginPath();
-        ctx.moveTo(bracketX - 4, yHi);
-        ctx.lineTo(bracketX + 4, yHi);
-        ctx.moveTo(bracketX - 4, yLo);
-        ctx.lineTo(bracketX + 4, yLo);
-        ctx.stroke();
-        // V_ab label, placed off the bracket.
+      // ── E-field arrows in the gap ───────────────────────────────────
+      // Points high V → low V. Saturation scales with |V_ab|.
+      const Eabs = Math.abs(Vab_now);
+      const Enorm = Math.min(1, Eabs / 12);
+      const eAlpha = 0.15 + 0.55 * Enorm;
+      if (Eabs > 0.01) {
+        const Ndir = leftIsHigh ? 1 : -1; // arrow direction sign
+        const nArrows = 6;
+        const arrowLen = 30 + 20 * Enorm;
+        for (let i = 0; i < nArrows; i++) {
+          const xMid = channelLeft + ((i + 0.5) / nArrows) * channelLen;
+          const yMid = channelTop + 14 + ((channelBot - channelTop - 28) * i) / Math.max(1, nArrows - 1);
+          // Stagger arrows vertically across the channel.
+          const yJitter = ((i * 47) % 80) - 40;
+          const yA = channelMidY + yJitter * 0.6;
+          drawArrow(
+            ctx,
+            { x: xMid - (Ndir * arrowLen) / 2, y: yA },
+            { x: xMid + (Ndir * arrowLen) / 2, y: yA },
+            {
+              color: `rgba(255,107,42,${eAlpha.toFixed(3)})`,
+              lineWidth: 1.3,
+              headLength: 8,
+              headWidth: 5,
+            },
+          );
+          // Suppress unused warning by referencing yMid.
+          void yMid;
+        }
+        // "E" label.
+        ctx.fillStyle = `rgba(255,107,42,${(eAlpha + 0.2).toFixed(3)})`;
+        ctx.font = 'italic 11px "STIX Two Text", serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(`|E| ∝ |V_ab| = ${Eabs.toFixed(1)} V/d`, channelLeft + 6, channelTop + 4);
+      } else {
         ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
+        ctx.font = 'italic 11px "STIX Two Text", serif';
+        ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(
-          `V_ab = ${Vab >= 0 ? '+' : ''}${Vab.toFixed(1)} V`,
-          bracketX - 8,
-          (yHi + yLo) / 2,
-        );
+        ctx.fillText('V_a = V_b — no field, no motion', (channelLeft + channelRight) / 2, channelMidY);
       }
 
-      // Animate t in [0,1]. Faster when the charge has further to travel
-      // visually so the round-trip looks roughly uniform.
-      const tripSeconds = 2.4;
-      t += (dir * dt) / tripSeconds;
-      if (t > 1) {
-        t = 1;
-        dir = -1;
-      } else if (t < 0) {
-        t = 0;
-        dir = 1;
+      // ── Physics update ──────────────────────────────────────────────
+      // Acceleration magnitude scaled for visual transit. dPE_uJ = |q·V_ab|
+      // in µC·V = µJ; treating it as a unitless "energy" and scaling.
+      const a = ACCEL_SCALE * dPE_uJ;
+      if (a > 1e-6 && Math.abs(qMicro) > 1e-3) {
+        v += a * dt;
+        s += v * dt;
+        if (s >= 1) {
+          s = 0;
+          v = 0;
+        }
+      } else {
+        // No field or no charge: rest at the start wall.
+        s = 0;
+        v = 0;
       }
 
-      // Charge position along a smooth arc between A and B.
-      const xC = platMidX + Math.sin(t * Math.PI) * -30; // slight bow to the left
-      const yC = yA + (yB - yA) * t;
-
-      // Direction arrow from a to b (or b to a, matching current animation
-      // direction).
-      const arrowFromY = dir > 0 ? yA : yB;
-      const arrowToY = dir > 0 ? yB : yA;
-      const arrowX = platMidX + 30;
-      ctx.strokeStyle = 'rgba(160,158,149,.5)';
-      ctx.lineWidth = 1.2;
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath();
-      ctx.moveTo(arrowX, arrowFromY);
-      ctx.lineTo(arrowX, arrowToY);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      // Arrowhead at the destination.
-      const head = 5;
-      const sgn = arrowToY > arrowFromY ? 1 : -1;
-      ctx.fillStyle = 'rgba(160,158,149,.7)';
-      ctx.beginPath();
-      ctx.moveTo(arrowX, arrowToY);
-      ctx.lineTo(arrowX - head, arrowToY - sgn * head * 1.6);
-      ctx.lineTo(arrowX + head, arrowToY - sgn * head * 1.6);
-      ctx.closePath();
-      ctx.fill();
-
-      // The charge — colour by sign, size by magnitude.
+      // ── Test charge ─────────────────────────────────────────────────
+      // Map s along the channel in the appropriate direction.
+      const dir = startsLeft ? 1 : -1;
+      const startX = startsLeft ? channelLeft + 12 : channelRight - 12;
+      const xC = startX + dir * s * (channelLen - 24);
+      const yC = channelMidY;
       const positive = qMicro >= 0;
-      const radius = 9 + Math.min(8, Math.abs(qMicro) * 1.2);
+      const radius = 9 + Math.min(7, Math.abs(qMicro) * 1.1);
       const fillCol = positive ? colors.pink : colors.blue;
-      // Soft halo.
+
+      // Comet trail — short streak behind, length scales with current speed.
+      if (v > 0.005) {
+        const trailLen = Math.min(60, v * 80);
+        const tx = xC - dir * trailLen;
+        const grad = ctx.createLinearGradient(tx, yC, xC, yC);
+        const trailRGB = positive ? '255,59,110' : '91,174,248';
+        grad.addColorStop(0, `rgba(${trailRGB},0)`);
+        grad.addColorStop(1, `rgba(${trailRGB},0.55)`);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = radius * 1.4;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(tx, yC);
+        ctx.lineTo(xC, yC);
+        ctx.stroke();
+      }
+
+      // Halo + body.
       const grd = ctx.createRadialGradient(xC, yC, 0, xC, yC, radius * 2.5);
       grd.addColorStop(0, positive ? 'rgba(255,59,110,.55)' : 'rgba(91,174,248,.55)');
       grd.addColorStop(1, positive ? 'rgba(255,59,110,0)' : 'rgba(91,174,248,0)');
@@ -236,53 +219,96 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(xC, yC, radius * 2.5, 0, Math.PI * 2);
       ctx.fill();
-      // Filled body.
       ctx.fillStyle = fillCol;
       ctx.beginPath();
       ctx.arc(xC, yC, radius, 0, Math.PI * 2);
       ctx.fill();
-      // Glyph.
       ctx.fillStyle = colors.bg;
       ctx.font = `bold ${Math.max(11, Math.round(radius))}px "JetBrains Mono", monospace`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(positive ? '+' : '−', xC, yC + 1);
-      // q value caption next to the charge.
+
+      // Tiny caption above the charge showing q.
       ctx.fillStyle = colors.text;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
       ctx.fillText(
         `q = ${qMicro >= 0 ? '+' : ''}${qMicro.toFixed(2)} µC`,
-        xC + radius + 6,
-        yC,
+        xC,
+        yC - radius - 6,
       );
 
-      // Energy ribbon along the bottom — width scales with |W|, colour
-      // says whether work was done ON the charge (positive W, amber) or
-      // released BY the charge (negative W, blue).
-      const W_now = q * Vab;
-      const W_MAX = 12 * 1e-6 * 12; // µC × V at extremes
-      const Wnorm = Math.min(1, Math.abs(W_now) / W_MAX);
-      const ribbonY = h - 14;
-      const ribbonW = (platRight - platLeft) * Wnorm;
-      const ribbonCol = W_now >= 0
-        ? `rgba(255,107,42,${(0.5 + 0.4 * Wnorm).toFixed(3)})`
-        : `rgba(91,174,248,${(0.5 + 0.4 * Wnorm).toFixed(3)})`;
-      ctx.fillStyle = ribbonCol;
-      ctx.fillRect(platLeft, ribbonY - 4, ribbonW, 8);
+      // ── Energy bar: PE + KE = constant (|qV_ab|) ────────────────────
+      const barTop = wallBot + 18;
+      const barH = 22;
+      const barLeft = channelLeft;
+      const barRight = channelRight;
+      const barW = barRight - barLeft;
+
+      // The bar's total width represents |qV_ab|. PE fraction = (1 − s),
+      // KE fraction = s — energy traded smoothly across the trip.
+      const peFrac = 1 - s;
+      const keFrac = s;
+
+      // Background outline (the "total energy" envelope).
       ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
-      ctx.strokeRect(platLeft, ribbonY - 4, platRight - platLeft, 8);
+      ctx.strokeRect(barLeft, barTop, barW, barH);
+
+      // PE segment on the left (teal — drains).
+      const pePx = barW * peFrac;
+      ctx.fillStyle = `rgba(108,197,194,${(0.55 + 0.25 * peFrac).toFixed(3)})`;
+      ctx.fillRect(barLeft, barTop, pePx, barH);
+
+      // KE segment on the right (amber — fills).
+      const kePx = barW * keFrac;
+      ctx.fillStyle = `rgba(255,107,42,${(0.55 + 0.25 * keFrac).toFixed(3)})`;
+      ctx.fillRect(barLeft + pePx, barTop, kePx, barH);
+
+      // Labels on each segment.
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textBaseline = 'middle';
+      const labelY = barTop + barH / 2;
+      // Total-energy caption above the bar.
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(
+        `total energy |qV_ab| = ${dPE_uJ.toFixed(2)} µJ`,
+        barLeft,
+        barTop - 4,
+      );
+      ctx.textBaseline = 'middle';
+
+      const pe_uJ = dPE_uJ * peFrac;
+      const ke_uJ = dPE_uJ * keFrac;
+      // PE label inside its segment if there's room.
+      if (pePx > 60) {
+        ctx.fillStyle = colors.text;
+        ctx.textAlign = 'left';
+        ctx.fillText(`PE  ${pe_uJ.toFixed(2)} µJ`, barLeft + 6, labelY);
+      }
+      if (kePx > 60) {
+        ctx.fillStyle = colors.bg;
+        ctx.textAlign = 'right';
+        ctx.fillText(`KE  ${ke_uJ.toFixed(2)} µJ`, barLeft + barW - 6, labelY);
+      }
+
+      // Sub-caption below the bar.
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       ctx.fillText(
-        W_now >= 0 ? 'W done on charge' : 'energy released by charge',
-        platLeft,
-        ribbonY - 14,
+        'PE drains, KE fills — both sum to |qV_ab| = the trip\'s W = ΔU',
+        (barLeft + barRight) / 2,
+        barTop + barH + 6,
       );
+
+      // Suppress unused warnings on q_now.
+      void q_now;
 
       raf = requestAnimationFrame(draw);
     }
@@ -290,7 +316,7 @@ export function VabWorkEnergyDemo({ figure }: Props) {
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  // Pretty-print the work / energy readouts in µJ when small enough.
+  // Pretty-print the work / energy readouts.
   const fmtJ = (j: number) => {
     const aj = Math.abs(j);
     if (aj < 1e-3) return `${(j * 1e6).toFixed(2)} µJ`;
@@ -302,19 +328,22 @@ export function VabWorkEnergyDemo({ figure }: Props) {
     <Demo
       figure={figure ?? 'Fig. 2.2'}
       title="Voltage, work, and energy in one picture"
-      question="Move a charge q from point a to point b. How much work? How much energy changes hands?"
+      question="Release a charge q in the gap. How fast does it cross, and how much energy does it carry when it arrives?"
       caption={
         <>
-          Set the two potentials and the test charge. The bar at the bottom shows the energy bookkeeping
-          for one a → b trip: amber when work has to be invested in the charge (positive q climbing,
-          or negative q falling), blue when the charge releases energy on its own. The same number,{' '}
-          <em>qV<sub>ab</sub></em>, plays both roles — it is what we mean when we say voltage is
-          energy per unit charge.
+          The two walls sit at <em>V<sub>a</sub></em> and <em>V<sub>b</sub></em>; the field in the
+          gap points from high V to low V, with magnitude tracking{' '}
+          <em>|V<sub>ab</sub>|</em>. A test charge released at rest at the high-PE wall accelerates
+          across under <em>F = qE</em>, arriving with kinetic energy{' '}
+          <em>KE = qV<sub>ab</sub></em>. The bar below shows the trade: potential energy drains, kinetic
+          energy fills, and the total never changes. Flip the sign of <em>q</em> and the same gap
+          launches the charge from the opposite wall in the opposite direction — the energy numbers
+          stay the same.
         </>
       }
       deeperLab={{ slug: 'potential', label: 'See full lab' }}
     >
-      <AutoResizeCanvas height={300} setup={setup} />
+      <AutoResizeCanvas height={340} setup={setup} />
       <DemoControls>
         <MiniSlider
           label="V_a"
@@ -343,9 +372,13 @@ export function VabWorkEnergyDemo({ figure }: Props) {
           format={(v) => (v >= 0 ? '+' : '') + v.toFixed(2) + ' µC'}
           onChange={setQMicro}
         />
-        <MiniReadout label="V_ab = V_b − V_a" value={(Vab >= 0 ? '+' : '') + Vab.toFixed(2)} unit="V" />
+        <MiniReadout
+          label="V_ab = V_b − V_a"
+          value={(Vab >= 0 ? '+' : '') + Vab.toFixed(2)}
+          unit="V"
+        />
         <MiniReadout label="W = q V_ab" value={fmtJ(W)} />
-        <MiniReadout label="ΔU = q V_ab" value={fmtJ(dU)} />
+        <MiniReadout label="|ΔU| traded" value={fmtJ(dPE)} />
       </DemoControls>
       <EquationStrip
         leftLabel="Voltage between the two points"
