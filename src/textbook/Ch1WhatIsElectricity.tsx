@@ -588,31 +588,40 @@ export default function Ch1WhatIsElectricity() {
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            A thundercloud is a slow electrostatic generator. Updrafts and ice–graupel collisions
-            sort charge by mass, lifting positive charge to the anvil and dumping negative charge
-            into a layer a few kilometers above ground. The cloud and the ground become the two
-            plates of a stupendously large, leaky capacitor. The intervening air is an insulator —
-            until the field between the plates reaches roughly the dielectric strength of air,
-            around <strong className="text-text font-medium">3 MV/m</strong> at the channel scale,
-            at which point the air ionizes and a conductive path punches through
-            <Cite id="uman-2001" in={SOURCES} />.
+            Inside a thundercloud, ice does the work of a battery. Strong updrafts loft tiny ice
+            crystals upward through a swarm of heavier ice pellets falling the other way. Each time
+            a light crystal brushes past a heavy pellet, a small amount of charge hops between
+            them. The updraft carries the light, now-positive crystals up to the anvil at the top
+            of the cloud; the heavy, now-negative pellets settle into a layer a few kilometers
+            above the ground<Cite id="rakov-uman-2003" in={SOURCES} />. After millions of those
+            collisions the cloud has a strongly positive top and a strongly negative base.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            What follows is Coulomb's law cashing its check. Cloud-base-to-ground voltages of
-            <strong className="text-text font-medium"> 10⁸–10⁹ V</strong> drive median return-stroke
-            currents around <strong className="text-text font-medium">30 kA</strong>
-            through a channel a few centimeters wide
-            <Cite id="rakov-uman-2003" in={SOURCES} />. The total charge transferred is modest —
-            about <strong className="text-text font-medium">5 C</strong> for a median negative
-            cloud-to-ground flash — but that quantity multiplied by hundreds of millions of volts is
-            a gigajoule of electrostatic energy dumped in milliseconds.
+            That negative base and the ground beneath it are now the two plates of an enormous
+            capacitor — kilometers across, kilometers apart, with humid air as the insulator. As
+            more charge piles into the base, the field between cloud and ground grows. Air can
+            tolerate roughly <strong className="text-text font-medium">3 MV/m</strong> before it
+            gives up; once any path through the air reaches that threshold, electrons get torn off
+            their atoms in a chain reaction and a narrow column of conductive plasma stitches its
+            way from cloud to ground<Cite id="uman-2001" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            Every piece of the picture lives in this chapter. Two kinds of charge, separated by an
-            insulator. A field that grows until it reaches the breakdown threshold of the
-            intervening medium. A conductive path that then carries the discharge between the two
-            stores. Nothing essentially different from a balloon stuck to a wall — only the numbers
-            are different by twenty orders of magnitude.
+            The lightning bolt you see is the instant that channel completes the circuit. With a
+            conductor now bridging the plates, the cloud's stored charge floods through it to
+            ground. The potential difference is
+            <strong className="text-text font-medium"> 10⁸–10⁹ V</strong> and it drives a peak
+            current near <strong className="text-text font-medium">30 kA</strong> through a channel
+            only a few centimeters wide<Cite id="rakov-uman-2003" in={SOURCES} />. Only about
+            <strong className="text-text font-medium"> 5 C</strong> of charge actually moves in a
+            typical flash — a modest amount — but multiplied by a hundred million volts it works
+            out to roughly a gigajoule of stored energy released in milliseconds.
+          </p>
+          <p className="mb-prose-2 last:mb-0">
+            Every piece of that picture lives in this chapter: two kinds of charge, separated by an
+            insulator; a field that grows until it reaches the breakdown threshold of the medium;
+            a conductive path that then carries the discharge between the two stores. Nothing
+            essentially different from a balloon stuck to a wall — only the numbers are different
+            by twenty orders of magnitude.
           </p>
         </CaseStudy>
 
