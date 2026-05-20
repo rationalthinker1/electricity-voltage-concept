@@ -77,10 +77,10 @@ export default function Ch1WhatIsElectricity() {
         <Term
           def={
             <>
-              <strong className="text-text font-medium">proton</strong> — the positively
-              charged constituent of atomic nuclei, with charge{' '}
-              +<em className="text-text italic">e</em>. Bound inside the nucleus and
-              effectively immobile in everyday chemistry and electronics.
+              <strong className="text-text font-medium">proton</strong> — the positively charged
+              constituent of atomic nuclei, with charge +<em className="text-text italic">e</em>.
+              Bound inside the nucleus and effectively immobile in everyday chemistry and
+              electronics.
             </>
           }
         >
@@ -91,9 +91,9 @@ export default function Ch1WhatIsElectricity() {
           def={
             <>
               <strong className="text-text font-medium">electron</strong> — the elementary
-              negatively charged particle of ordinary matter, with charge{' '}
-              −<em className="text-text italic">e</em>. The mobile carrier in metals,
-              semiconductors, and almost every triboelectric process.
+              negatively charged particle of ordinary matter, with charge −
+              <em className="text-text italic">e</em>. The mobile carrier in metals, semiconductors,
+              and almost every triboelectric process.
             </>
           }
         >
@@ -102,29 +102,28 @@ export default function Ch1WhatIsElectricity() {
         . Each proton carries a single elementary positive charge{' '}
         <strong className="text-text font-medium">+e</strong>; each electron carries the same
         magnitude with the opposite sign, <strong className="text-text font-medium">−e</strong>;
-        neutrons carry none. A neutral atom has exactly as many electrons as protons, and the
-        two cancel to zero <Cite id="feynman-II-2" in={SOURCES} />.
+        neutrons carry none. A neutral atom has exactly as many electrons as protons, and the two
+        cancel to zero <Cite id="feynman-II-2" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        An object is{' '}
-        <strong className="text-text font-medium">negatively charged</strong> when it carries a{' '}
-        <em className="text-text italic">surplus</em> of electrons — more electrons than protons
-        — and <strong className="text-text font-medium">positively charged</strong> when it
-        carries a <em className="text-text italic">deficit</em>, electrons having been stripped
-        away to leave some protons unbalanced. The positive charges in everyday matter are locked
-        inside nuclei and essentially never move; almost every charge transfer in this book is
-        electrons hopping from one place to another. Rub the balloon across your hair and you
-        peel a thin film of electrons off the hair and onto the rubber: the balloon ends up with
-        a small surplus (negative), your hair with a matching deficit (positive), and the two
-        attract <Cite id="griffiths-2017" in={SOURCES} />.
+        An object is <strong className="text-text font-medium">negatively charged</strong> when it
+        carries a <em className="text-text italic">surplus</em> of electrons — more electrons than
+        protons — and <strong className="text-text font-medium">positively charged</strong> when it
+        carries a <em className="text-text italic">deficit</em>, electrons having been stripped away
+        to leave some protons unbalanced. The positive charges in everyday matter are locked inside
+        nuclei and essentially never move; almost every charge transfer in this book is electrons
+        hopping from one place to another. Rub the balloon across your hair and you peel a thin film
+        of electrons off the hair and onto the rubber: the balloon ends up with a small surplus
+        (negative), your hair with a matching deficit (positive), and the two attract{' '}
+        <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        We label one sign positive and the other negative — but nothing in nature insists on
-        which gets which name. Benjamin Franklin made the call in 1747 and we've been stuck with
-        it. (It is occasionally annoying. Conventional current flows in the direction{' '}
-        <em className="text-text italic">positive</em> charge would move, but the actual carriers
-        in a metal wire are electrons, which are negative. Every textbook diagram has to carry
-        the inversion in your head.)
+        We label one sign positive and the other negative — but nothing in nature insists on which
+        gets which name. Benjamin Franklin made the call in 1747 and we've been stuck with it. (It
+        is occasionally annoying. Conventional current flows in the direction{' '}
+        <em className="text-text italic">positive</em> charge would move, but the actual carriers in
+        a metal wire are electrons, which are negative. Every textbook diagram has to carry the
+        inversion in your head.)
       </p>
 
       <PredictThenObserve
@@ -380,10 +379,10 @@ export default function Ch1WhatIsElectricity() {
             <>
               <strong className="text-text font-medium">N/C = V/m.</strong> The volt is defined as
               energy per charge, so 1 V ≡ 1 J/C; and from{' '}
-              <em className="text-text italic">work = force × distance</em>, 1 J = 1 N·m.
-              Therefore 1 V/m = (1 J/C)/m = (1 N·m/C)/m ={' '}
-              <strong className="text-text font-medium">1 N/C</strong>. Same unit, two names —
-              one reads E as force per charge, the other as voltage drop per meter.
+              <em className="text-text italic">work = force × distance</em>, 1 J = 1 N·m. Therefore
+              1 V/m = (1 J/C)/m = (1 N·m/C)/m ={' '}
+              <strong className="text-text font-medium">1 N/C</strong>. Same unit, two names — one
+              reads E as force per charge, the other as voltage drop per meter.
             </>
           }
         >
@@ -515,8 +514,8 @@ export default function Ch1WhatIsElectricity() {
       <p className="mb-prose-3">
         A third pattern is worth flagging because the rest of the book will lean on it constantly.
         Take a flat conducting sheet and spread positive charge evenly over it; park a second sheet
-        a short distance away and spread an equal amount of negative charge over that one. Away
-        from the edges, the field between the two plates turns out to be{' '}
+        a short distance away and spread an equal amount of negative charge over that one. Away from
+        the edges, the field between the two plates turns out to be{' '}
         <em className="text-text italic">uniform</em> — same magnitude, same direction, at every
         point in the gap — and almost zero outside
         <Cite id="griffiths-2017" in={SOURCES} />:
@@ -544,8 +543,8 @@ export default function Ch1WhatIsElectricity() {
         things. First, a uniform field is the simplest non-trivial geometry in electrostatics; once
         you can solve a problem there, you can solve a lot of working circuits. Second, because the
         field doesn't vary across the gap, the voltage between the plates is just{' '}
-        <strong className="text-text font-medium">V = E·d</strong> — a relationship the next
-        chapter will lean on heavily.
+        <strong className="text-text font-medium">V = E·d</strong> — a relationship the next chapter
+        will lean on heavily.
       </p>
 
       <TryIt
@@ -692,11 +691,12 @@ export default function Ch1WhatIsElectricity() {
           <p className="mb-prose-2 last:mb-0">
             Inside a thundercloud, ice does the work of a battery. Strong updrafts loft tiny ice
             crystals upward through a swarm of heavier ice pellets falling the other way. Each time
-            a light crystal brushes past a heavy pellet, a small amount of charge hops between
-            them. The updraft carries the light, now-positive crystals up to the anvil at the top
-            of the cloud; the heavy, now-negative pellets settle into a layer a few kilometers
-            above the ground<Cite id="rakov-uman-2003" in={SOURCES} />. After millions of those
-            collisions the cloud has a strongly positive top and a strongly negative base.
+            a light crystal brushes past a heavy pellet, a small amount of charge hops between them.
+            The updraft carries the light, now-positive crystals up to the anvil at the top of the
+            cloud; the heavy, now-negative pellets settle into a layer a few kilometers above the
+            ground
+            <Cite id="rakov-uman-2003" in={SOURCES} />. After millions of those collisions the cloud
+            has a strongly positive top and a strongly negative base.
           </p>
           <p className="mb-prose-2 last:mb-0">
             That negative base and the ground beneath it are now the two plates of an enormous
@@ -705,7 +705,8 @@ export default function Ch1WhatIsElectricity() {
             tolerate roughly <strong className="text-text font-medium">3 MV/m</strong> before it
             gives up; once any path through the air reaches that threshold, electrons get torn off
             their atoms in a chain reaction and a narrow column of conductive plasma stitches its
-            way from cloud to ground<Cite id="uman-2001" in={SOURCES} />.
+            way from cloud to ground
+            <Cite id="uman-2001" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
             The lightning bolt you see is the instant that channel completes the circuit. With a
@@ -713,17 +714,18 @@ export default function Ch1WhatIsElectricity() {
             ground. The potential difference is
             <strong className="text-text font-medium"> 10⁸–10⁹ V</strong> and it drives a peak
             current near <strong className="text-text font-medium">30 kA</strong> through a channel
-            only a few centimeters wide<Cite id="rakov-uman-2003" in={SOURCES} />. Only about
+            only a few centimeters wide
+            <Cite id="rakov-uman-2003" in={SOURCES} />. Only about
             <strong className="text-text font-medium"> 5 C</strong> of charge actually moves in a
-            typical flash — a modest amount — but multiplied by a hundred million volts it works
-            out to roughly a gigajoule of stored energy released in milliseconds.
+            typical flash — a modest amount — but multiplied by a hundred million volts it works out
+            to roughly a gigajoule of stored energy released in milliseconds.
           </p>
           <p className="mb-prose-2 last:mb-0">
             Every piece of that picture lives in this chapter: two kinds of charge, separated by an
-            insulator; a field that grows until it reaches the breakdown threshold of the medium;
-            a conductive path that then carries the discharge between the two stores. Nothing
-            essentially different from a balloon stuck to a wall — only the numbers are different
-            by twenty orders of magnitude.
+            insulator; a field that grows until it reaches the breakdown threshold of the medium; a
+            conductive path that then carries the discharge between the two stores. Nothing
+            essentially different from a balloon stuck to a wall — only the numbers are different by
+            twenty orders of magnitude.
           </p>
         </CaseStudy>
 

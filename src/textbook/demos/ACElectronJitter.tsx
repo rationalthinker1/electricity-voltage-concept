@@ -178,11 +178,12 @@ export function ACElectronJitterDemo({ figure }: Props) {
       let sx = innerLeft + 60;
       for (const ref of REFERENCES) {
         const refNm = ref.m * 1e9;
-        const label = refNm < 1
-          ? `${ref.label} (${refNm.toFixed(2)} nm)`
-          : refNm < 1000
-            ? `${ref.label} (${refNm.toFixed(0)} nm)`
-            : `${ref.label} (${(refNm / 1000).toFixed(0)} µm)`;
+        const label =
+          refNm < 1
+            ? `${ref.label} (${refNm.toFixed(2)} nm)`
+            : refNm < 1000
+              ? `${ref.label} (${refNm.toFixed(0)} nm)`
+              : `${ref.label} (${(refNm / 1000).toFixed(0)} µm)`;
         const ratioStr = formatRatio(x_peak, ref.m);
         ctx.fillStyle = colors.textMuted;
         ctx.fillText(label, sx, stripY);
@@ -205,8 +206,8 @@ export function ACElectronJitterDemo({ figure }: Props) {
       caption={
         <>
           At 5 A through a 14-gauge copper lamp cord, each conduction electron oscillates with a
-          peak displacement of about <strong>650 nm</strong> — comparable to the wavelength of
-          green light, smaller than a single bacterium. Yet the wire delivers
+          peak displacement of about <strong>650 nm</strong> — comparable to the wavelength of green
+          light, smaller than a single bacterium. Yet the wire delivers
           <strong> ~600 W</strong> the whole time. The energy isn't riding the electrons; it's
           flowing through the surrounding field (Chapter 8).
         </>

@@ -109,7 +109,6 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
     const legendRow3Y = legendBottom - legendPaddingY + 10;
     const legendRow2Y = (legendRow1Y + legendRow3Y) / 2;
 
-
     // 2. Circuit bounding box.
     const circuitLeft = canvasMarginX;
     const circuitRight = w - canvasMarginX;

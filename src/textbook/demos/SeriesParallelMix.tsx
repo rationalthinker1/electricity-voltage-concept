@@ -424,12 +424,7 @@ function drawCurrentDotsPath(
 
 /* ─── Voltage probe ────────────────────────────────────────────────────── */
 
-function drawVoltageProbe(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  value: number,
-) {
+function drawVoltageProbe(ctx: CanvasRenderingContext2D, x: number, y: number, value: number) {
   const colors = getCanvasColors();
   const text = `${value.toFixed(2)} V`;
   ctx.save();

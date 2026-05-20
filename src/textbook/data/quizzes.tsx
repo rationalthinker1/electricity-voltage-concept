@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key -- choices are stored as ReactNode[] and rendered inside a keyed <label> by Quiz.tsx; per-element keys here would be meaningless data. */
 /**
  * Per-chapter mastery quizzes.
  *
@@ -123,8 +124,9 @@ const CH1_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          Coulomb&rsquo;s law is an inverse-square law: force falls off as <InlineMath>1/r&sup2;</InlineMath> with distance
-          and scales as the product of the two charges
+          Coulomb&rsquo;s law is an inverse-square law: force falls off as{' '}
+          <InlineMath>1/r&sup2;</InlineMath> with distance and scales as the product of the two
+          charges
           <Cite id="coulomb-1785" in={CH1_SOURCES} />.
         </>
       ),
@@ -157,10 +159,18 @@ const CH1_QUIZ: ChapterQuiz = {
     {
       id: 'q3',
       type: 'multiple-choice',
-      prompt: <>Why does Coulomb&rsquo;s law fall off as <InlineMath>1/r&sup2;</InlineMath> rather than <InlineMath>1/r</InlineMath> or <InlineMath>1/r&sup3;</InlineMath>?</>,
+      prompt: (
+        <>
+          Why does Coulomb&rsquo;s law fall off as <InlineMath>1/r&sup2;</InlineMath> rather than{' '}
+          <InlineMath>1/r</InlineMath> or <InlineMath>1/r&sup3;</InlineMath>?
+        </>
+      ),
       choices: [
         <>Because charges repel proportionally to area.</>,
-        <>Because the surface area of a sphere grows as <InlineMath>r&sup2;</InlineMath> in 3D space.</>,
+        <>
+          Because the surface area of a sphere grows as <InlineMath>r&sup2;</InlineMath> in 3D
+          space.
+        </>,
         <>Because it was measured that way and there is no deeper reason.</>,
         <>Because the speed of light is finite.</>,
       ],
@@ -168,8 +178,8 @@ const CH1_QUIZ: ChapterQuiz = {
       explanation: (
         <>
           The inverse-square law is geometry: field lines from a point charge spread over the
-          surface of a sphere of area <InlineMath>4&pi;r&sup2;</InlineMath>. The flux is conserved, so the density of lines
-          (the field) must drop as <InlineMath>1/r&sup2;</InlineMath>
+          surface of a sphere of area <InlineMath>4&pi;r&sup2;</InlineMath>. The flux is conserved,
+          so the density of lines (the field) must drop as <InlineMath>1/r&sup2;</InlineMath>
           <Cite id="feynman-II-2" in={CH1_SOURCES} />.
         </>
       ),
@@ -240,7 +250,8 @@ const CH1_QUIZ: ChapterQuiz = {
         <>
           Two point charges of <strong className="text-text">+1 &micro;C</strong> each sit{' '}
           <strong className="text-text">1 m</strong> apart in vacuum. What is the magnitude of the
-          Coulomb force between them, in newtons? (Use <InlineMath>k = 8.99&times;10&#8313; N&middot;m&sup2;/C&sup2;</InlineMath>.)
+          Coulomb force between them, in newtons? (Use{' '}
+          <InlineMath>k = 8.99&times;10&#8313; N&middot;m&sup2;/C&sup2;</InlineMath>.)
         </>
       ),
       targetValue: 0.00899,
@@ -248,7 +259,11 @@ const CH1_QUIZ: ChapterQuiz = {
       unit: 'N',
       explanation: (
         <>
-          <InlineMath>F = k Q&#8321;Q&#8322;/r&sup2; = (8.99&times;10&#8313;)(10&#8315;&#8310;)(10&#8315;&#8310;) / 1&sup2; &approx; 8.99&times;10&#8315;&sup3; N &approx; 9 mN</InlineMath>
+          <InlineMath>
+            F = k Q&#8321;Q&#8322;/r&sup2; =
+            (8.99&times;10&#8313;)(10&#8315;&#8310;)(10&#8315;&#8310;) / 1&sup2; &approx;
+            8.99&times;10&#8315;&sup3; N &approx; 9 mN
+          </InlineMath>
           <Cite id="codata-2018" in={CH1_SOURCES} />.
         </>
       ),
@@ -260,7 +275,8 @@ const CH1_QUIZ: ChapterQuiz = {
         <>
           A point charge of <strong className="text-text">+1 nC</strong> sits at the origin. What is
           the magnitude of the electric field, in N/C, at a distance of{' '}
-          <strong className="text-text">0.1 m</strong>? (Use <InlineMath>k = 8.99&times;10&#8313;</InlineMath>.)
+          <strong className="text-text">0.1 m</strong>? (Use{' '}
+          <InlineMath>k = 8.99&times;10&#8313;</InlineMath>.)
         </>
       ),
       targetValue: 899,
@@ -268,8 +284,10 @@ const CH1_QUIZ: ChapterQuiz = {
       unit: 'N/C',
       explanation: (
         <>
-          <InlineMath>E = kQ/r&sup2; = (8.99&times;10&#8313;)(10&#8315;&#8313;)/(0.1)&sup2; = 899 N/C</InlineMath>.
-          Equivalently 899 V/m
+          <InlineMath>
+            E = kQ/r&sup2; = (8.99&times;10&#8313;)(10&#8315;&#8313;)/(0.1)&sup2; = 899 N/C
+          </InlineMath>
+          . Equivalently 899 V/m
           <Cite id="codata-2018" in={CH1_SOURCES} />.
         </>
       ),
@@ -279,7 +297,8 @@ const CH1_QUIZ: ChapterQuiz = {
       type: 'short-answer',
       prompt: (
         <>
-          What is the name of the constant <strong className="text-text">k</strong> in <InlineMath>F = k Q&#8321; Q&#8322; / r&sup2;</InlineMath>? (One or two words.)
+          What is the name of the constant <strong className="text-text">k</strong> in{' '}
+          <InlineMath>F = k Q&#8321; Q&#8322; / r&sup2;</InlineMath>? (One or two words.)
         </>
       ),
       acceptedAnswers: [
@@ -291,7 +310,9 @@ const CH1_QUIZ: ChapterQuiz = {
       ],
       explanation: (
         <>
-          k is <em>Coulomb&rsquo;s constant</em>, with the SI value <InlineMath>k = 8.99&times;10&#8313; N&middot;m&sup2;/C&sup2;</InlineMath>. It is equivalent to <InlineMath>1/(4&pi;&epsilon;&#8320;)</InlineMath>
+          k is <em>Coulomb&rsquo;s constant</em>, with the SI value{' '}
+          <InlineMath>k = 8.99&times;10&#8313; N&middot;m&sup2;/C&sup2;</InlineMath>. It is
+          equivalent to <InlineMath>1/(4&pi;&epsilon;&#8320;)</InlineMath>
           <Cite id="codata-2018" in={CH1_SOURCES} />.
         </>
       ),
@@ -487,9 +508,9 @@ const CH27_QUIZ: ChapterQuiz = {
       unit: 'V',
       explanation: (
         <>
-          <InlineMath>V = IR = (100 A)(0.05 &Omega;) = 5 V</InlineMath>. That is why service-drop conductors are sized fat:
-          at 100 A draw, even 50 m&Omega; of round-trip resistance costs you 5 V on the hot and
-          another 5 V on the neutral return
+          <InlineMath>V = IR = (100 A)(0.05 &Omega;) = 5 V</InlineMath>. That is why service-drop
+          conductors are sized fat: at 100 A draw, even 50 m&Omega; of round-trip resistance costs
+          you 5 V on the hot and another 5 V on the neutral return
           <Cite id="codata-2018" in={CH27_SOURCES} />.
         </>
       ),
@@ -623,7 +644,13 @@ const CH2_QUIZ: ChapterQuiz = {
       correctIndex: 2,
       explanation: (
         <>
-          Plug <InlineMath>v<sub>d</sub> = I/(nqA)</InlineMath> for ordinary currents and copper&rsquo;s <InlineMath>n &asymp; 8.5&times;10&sup2;&#8312;/m&sup3;</InlineMath>: drift comes out in mm/s
+          Plug{' '}
+          <InlineMath>
+            v<sub>d</sub> = I/(nqA)
+          </InlineMath>{' '}
+          for ordinary currents and copper&rsquo;s{' '}
+          <InlineMath>n &asymp; 8.5&times;10&sup2;&#8312;/m&sup3;</InlineMath>: drift comes out in
+          mm/s
           <Cite id="libretexts-conduction" in={CH2_SOURCES} />.
         </>
       ),
@@ -660,9 +687,10 @@ const CH2_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>&nabla;&times;E = 0</InlineMath> for static fields, which is exactly path-independence of
-          <InlineMath>&int;E&middot;d&ell;</InlineMath>. That property is what makes &ldquo;voltage at a point&rdquo;
-          meaningful at all
+          <InlineMath>&nabla;&times;E = 0</InlineMath> for static fields, which is exactly
+          path-independence of
+          <InlineMath>&int;E&middot;d&ell;</InlineMath>. That property is what makes &ldquo;voltage
+          at a point&rdquo; meaningful at all
           <Cite id="griffiths-2017" in={CH2_SOURCES} />.
         </>
       ),
@@ -680,7 +708,11 @@ const CH2_QUIZ: ChapterQuiz = {
       targetValue: 5,
       tolerance: 0.05,
       unit: 'V',
-      explanation: <><InlineMath>V = W/Q = 0.5 J / 0.1 C = 5 V</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>V = W/Q = 0.5 J / 0.1 C = 5 V</InlineMath>.
+        </>
+      ),
     },
     {
       id: 'q8',
@@ -688,8 +720,10 @@ const CH2_QUIZ: ChapterQuiz = {
       prompt: (
         <>
           A copper wire of cross-section <strong className="text-text">2.0 mm&sup2;</strong> carries{' '}
-          <strong className="text-text">10 A</strong>. Using <InlineMath>n = 8.5&times;10&sup2;&#8312;/m&sup3;</InlineMath>
-          and <InlineMath>e = 1.602&times;10&#8315;&sup1;&#8313; C</InlineMath>, what is the drift velocity, in mm/s?
+          <strong className="text-text">10 A</strong>. Using{' '}
+          <InlineMath>n = 8.5&times;10&sup2;&#8312;/m&sup3;</InlineMath>
+          and <InlineMath>e = 1.602&times;10&#8315;&sup1;&#8313; C</InlineMath>, what is the drift
+          velocity, in mm/s?
         </>
       ),
       targetValue: 0.37,
@@ -697,7 +731,11 @@ const CH2_QUIZ: ChapterQuiz = {
       unit: 'mm/s',
       explanation: (
         <>
-          <InlineMath>v<sub>d</sub> = I/(nqA) = 10 / (8.5&times;10&sup2;&#8312; &middot; 1.602&times;10&#8315;&sup1;&#8313; &middot; 2&times;10&#8315;&#8310;) &approx; 3.7&times;10&#8315;&#8308; m/s = 0.37 mm/s</InlineMath>
+          <InlineMath>
+            v<sub>d</sub> = I/(nqA) = 10 / (8.5&times;10&sup2;&#8312; &middot;
+            1.602&times;10&#8315;&sup1;&#8313; &middot; 2&times;10&#8315;&#8310;) &approx;
+            3.7&times;10&#8315;&#8308; m/s = 0.37 mm/s
+          </InlineMath>
           <Cite id="drude-1900" in={CH2_SOURCES} />.
         </>
       ),
@@ -709,8 +747,8 @@ const CH2_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['volt', 'volts', 'the volt'],
       explanation: (
         <>
-          The volt: <InlineMath>1 V = 1 J/C</InlineMath>. A 1.5 V battery is fundamentally a statement about energy per unit
-          charge.
+          The volt: <InlineMath>1 V = 1 J/C</InlineMath>. A 1.5 V battery is fundamentally a
+          statement about energy per unit charge.
         </>
       ),
     },
@@ -726,7 +764,12 @@ const CH2_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['drude model', 'the drude model', 'drude'],
       explanation: (
         <>
-          Paul Drude&rsquo;s 1900 model gives <InlineMath>&sigma; = nq&sup2;&tau;/m</InlineMath> and the linear <InlineMath>v<sub>d</sub> = I/(nqA)</InlineMath> relation
+          Paul Drude&rsquo;s 1900 model gives <InlineMath>&sigma; = nq&sup2;&tau;/m</InlineMath> and
+          the linear{' '}
+          <InlineMath>
+            v<sub>d</sub> = I/(nqA)
+          </InlineMath>{' '}
+          relation
           <Cite id="drude-1900" in={CH2_SOURCES} />.
         </>
       ),
@@ -745,7 +788,12 @@ const CH3_QUIZ: ChapterQuiz = {
       id: 'q1',
       type: 'multiple-choice',
       prompt: <>Ohm&rsquo;s law for an ideal resistor states:</>,
-      choices: [<InlineMath>V = I&sup2; R</InlineMath>, <InlineMath>V = I R</InlineMath>, <InlineMath>V = I / R</InlineMath>, <InlineMath>V = R / I</InlineMath>],
+      choices: [
+        <InlineMath>V = I&sup2; R</InlineMath>,
+        <InlineMath>V = I R</InlineMath>,
+        <InlineMath>V = I / R</InlineMath>,
+        <InlineMath>V = R / I</InlineMath>,
+      ],
       correctIndex: 1,
       explanation: (
         <>
@@ -769,8 +817,8 @@ const CH3_QUIZ: ChapterQuiz = {
       correctIndex: 2,
       explanation: (
         <>
-          <InlineMath>R = &rho;L/A</InlineMath>. Longer wires put more collisions in series; fatter wires offer more parallel
-          lanes for the charge.
+          <InlineMath>R = &rho;L/A</InlineMath>. Longer wires put more collisions in series; fatter
+          wires offer more parallel lanes for the charge.
         </>
       ),
     },
@@ -778,11 +826,17 @@ const CH3_QUIZ: ChapterQuiz = {
       id: 'q3',
       type: 'multiple-choice',
       prompt: <>Which expression is NOT a correct form of dissipated power in a resistor?</>,
-      choices: [<InlineMath>P = VI</InlineMath>, <InlineMath>P = I&sup2; R</InlineMath>, <InlineMath>P = V&sup2; / R</InlineMath>, <InlineMath>P = V / I</InlineMath>],
+      choices: [
+        <InlineMath>P = VI</InlineMath>,
+        <InlineMath>P = I&sup2; R</InlineMath>,
+        <InlineMath>P = V&sup2; / R</InlineMath>,
+        <InlineMath>P = V / I</InlineMath>,
+      ],
       correctIndex: 3,
       explanation: (
         <>
-          <InlineMath>V/I</InlineMath> is resistance, not power. The three Joule-heating forms <InlineMath>P = VI = I&sup2;R = V&sup2;/R</InlineMath>
+          <InlineMath>V/I</InlineMath> is resistance, not power. The three Joule-heating forms{' '}
+          <InlineMath>P = VI = I&sup2;R = V&sup2;/R</InlineMath>
           are all equivalent by Ohm&rsquo;s law
           <Cite id="joule-1841" in={CH3_SOURCES} />.
         </>
@@ -800,8 +854,10 @@ const CH3_QUIZ: ChapterQuiz = {
       correctIndex: 2,
       explanation: (
         <>
-          <InlineMath>R<sub>p</sub> = (10&middot;15)/(10+15) = 6 &Omega;</InlineMath>. Parallel resistance is always less
-          than the smallest component.
+          <InlineMath>
+            R<sub>p</sub> = (10&middot;15)/(10+15) = 6 &Omega;
+          </InlineMath>
+          . Parallel resistance is always less than the smallest component.
         </>
       ),
     },
@@ -832,7 +888,8 @@ const CH3_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          Onnes 1911 observed zero DC resistance in mercury below 4.2 K. With <InlineMath>R = 0</InlineMath>, <InlineMath>P = I&sup2;R = 0</InlineMath>
+          Onnes 1911 observed zero DC resistance in mercury below 4.2 K. With{' '}
+          <InlineMath>R = 0</InlineMath>, <InlineMath>P = I&sup2;R = 0</InlineMath>
           <Cite id="onnes-1911" in={CH3_SOURCES} />
           <Cite id="bcs-1957" in={CH3_SOURCES} />.
         </>
@@ -850,16 +907,22 @@ const CH3_QUIZ: ChapterQuiz = {
       targetValue: 4800,
       tolerance: 0.02,
       unit: 'W',
-      explanation: <><InlineMath>P = V&sup2;/R = 240&sup2;/12 = 57600/12 = 4800 W = 4.8 kW</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>P = V&sup2;/R = 240&sup2;/12 = 57600/12 = 4800 W = 4.8 kW</InlineMath>.
+        </>
+      ),
     },
     {
       id: 'q8',
       type: 'numeric',
       prompt: (
         <>
-          What is the resistance of a 1 m length of copper wire with cross-section 1 mm&sup2;?
-          (<InlineMath>&rho;<sub>Cu</sub> &asymp; 1.72&times;10&#8315;&#8312; &Omega;&middot;m</InlineMath>.) Answer in
-          milliohms.
+          What is the resistance of a 1 m length of copper wire with cross-section 1 mm&sup2;? (
+          <InlineMath>
+            &rho;<sub>Cu</sub> &asymp; 1.72&times;10&#8315;&#8312; &Omega;&middot;m
+          </InlineMath>
+          .) Answer in milliohms.
         </>
       ),
       targetValue: 17.2,
@@ -867,7 +930,10 @@ const CH3_QUIZ: ChapterQuiz = {
       unit: 'm&Omega;',
       explanation: (
         <>
-          <InlineMath>R = &rho;L/A = 1.72&times;10&#8315;&#8312; &middot; 1 / 10&#8315;&#8310; = 0.0172 &Omega; = 17.2 m&Omega;</InlineMath>
+          <InlineMath>
+            R = &rho;L/A = 1.72&times;10&#8315;&#8312; &middot; 1 / 10&#8315;&#8310; = 0.0172
+            &Omega; = 17.2 m&Omega;
+          </InlineMath>
           <Cite id="crc-resistivity" in={CH3_SOURCES} />.
         </>
       ),
@@ -877,8 +943,9 @@ const CH3_QUIZ: ChapterQuiz = {
       type: 'short-answer',
       prompt: (
         <>
-          Resistive dissipation, named for the Englishman who quantified <InlineMath>P &prop; I&sup2;R</InlineMath> in 1841,
-          is called &ldquo;__ heating.&rdquo; (One word.)
+          Resistive dissipation, named for the Englishman who quantified{' '}
+          <InlineMath>P &prop; I&sup2;R</InlineMath> in 1841, is called &ldquo;__ heating.&rdquo;
+          (One word.)
         </>
       ),
       acceptedAnswers: ['joule', 'ohmic', 'resistive'],
@@ -892,9 +959,19 @@ const CH3_QUIZ: ChapterQuiz = {
     {
       id: 'q10',
       type: 'short-answer',
-      prompt: <>What property of a material relates J to E via <InlineMath>J = &sigma;E</InlineMath>? (One word.)</>,
+      prompt: (
+        <>
+          What property of a material relates J to E via <InlineMath>J = &sigma;E</InlineMath>? (One
+          word.)
+        </>
+      ),
       acceptedAnswers: ['conductivity', 'electrical conductivity'],
-      explanation: <><InlineMath>&sigma;</InlineMath> is conductivity (S/m); its reciprocal is the resistivity <InlineMath>&rho;</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>&sigma;</InlineMath> is conductivity (S/m); its reciprocal is the resistivity{' '}
+          <InlineMath>&rho;</InlineMath>.
+        </>
+      ),
     },
   ],
 };
@@ -919,7 +996,8 @@ const CH4_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          Brown=1, Black=0, Red=<InlineMath>&times;10&sup2;</InlineMath>, Gold=&plusmn;5%. <InlineMath>10 &times; 100 = 1000 &Omega; = 1 k&Omega; &plusmn;5%</InlineMath>
+          Brown=1, Black=0, Red=<InlineMath>&times;10&sup2;</InlineMath>, Gold=&plusmn;5%.{' '}
+          <InlineMath>10 &times; 100 = 1000 &Omega; = 1 k&Omega; &plusmn;5%</InlineMath>
           <Cite id="iec-60062-2016" in={CH4_SOURCES} />.
         </>
       ),
@@ -1014,7 +1092,13 @@ const CH4_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>&kappa;/&sigma; = L<sub>0</sub>T</InlineMath> with the Lorenz number <InlineMath>L<sub>0</sub> &approx; 2.44&times;10&#8315;&#8312; W&Omega;/K&sup2;</InlineMath>
+          <InlineMath>
+            &kappa;/&sigma; = L<sub>0</sub>T
+          </InlineMath>{' '}
+          with the Lorenz number{' '}
+          <InlineMath>
+            L<sub>0</sub> &approx; 2.44&times;10&#8315;&#8312; W&Omega;/K&sup2;
+          </InlineMath>
           <Cite id="wiedemann-franz-1853" in={CH4_SOURCES} />.
         </>
       ),
@@ -1033,7 +1117,10 @@ const CH4_QUIZ: ChapterQuiz = {
       unit: '&Omega;',
       explanation: (
         <>
-          <InlineMath>R = (V<sub>src</sub> &minus; V<sub>LED</sub>) / I = 6 / 0.020 = 300 &Omega;</InlineMath>.
+          <InlineMath>
+            R = (V<sub>src</sub> &minus; V<sub>LED</sub>) / I = 6 / 0.020 = 300 &Omega;
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -1044,7 +1131,11 @@ const CH4_QUIZ: ChapterQuiz = {
       targetValue: 125,
       tolerance: 0.05,
       unit: '&Omega;',
-      explanation: <><InlineMath>R = V&sup2;/P = 25/0.2 = 125 &Omega;</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>R = V&sup2;/P = 25/0.2 = 125 &Omega;</InlineMath>.
+        </>
+      ),
     },
     {
       id: 'q9',
@@ -1099,11 +1190,17 @@ const CH5_QUIZ: ChapterQuiz = {
       id: 'q1',
       type: 'multiple-choice',
       prompt: <>The defining relation between stored charge and applied voltage is:</>,
-      choices: [<InlineMath>Q = C/V</InlineMath>, <InlineMath>Q = V/C</InlineMath>, <InlineMath>Q = CV</InlineMath>, <InlineMath>Q = CV&sup2;</InlineMath>],
+      choices: [
+        <InlineMath>Q = C/V</InlineMath>,
+        <InlineMath>Q = V/C</InlineMath>,
+        <InlineMath>Q = CV</InlineMath>,
+        <InlineMath>Q = CV&sup2;</InlineMath>,
+      ],
       correctIndex: 2,
       explanation: (
         <>
-          Capacitance is the proportionality <InlineMath>Q = CV</InlineMath>. SI unit: farad (<InlineMath>F = C/V</InlineMath>)
+          Capacitance is the proportionality <InlineMath>Q = CV</InlineMath>. SI unit: farad (
+          <InlineMath>F = C/V</InlineMath>)
           <Cite id="griffiths-2017" in={CH5_SOURCES} />.
         </>
       ),
@@ -1121,8 +1218,8 @@ const CH5_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>C = &epsilon;&#8320; A/d</InlineMath>. Larger plates store more charge at a given V; thinner gap
-          reduces V at fixed Q<Cite id="feynman-II-2" in={CH5_SOURCES} />.
+          <InlineMath>C = &epsilon;&#8320; A/d</InlineMath>. Larger plates store more charge at a
+          given V; thinner gap reduces V at fixed Q<Cite id="feynman-II-2" in={CH5_SOURCES} />.
         </>
       ),
     },
@@ -1148,7 +1245,10 @@ const CH5_QUIZ: ChapterQuiz = {
       explanation: (
         <>
           Bound charges partially cancel the applied field, allowing more free charge to be stored
-          at the same V. <InlineMath>C = &epsilon;&#8320;&epsilon;<sub>r</sub>A/d</InlineMath>
+          at the same V.{' '}
+          <InlineMath>
+            C = &epsilon;&#8320;&epsilon;<sub>r</sub>A/d
+          </InlineMath>
           <Cite id="griffiths-2017" in={CH5_SOURCES} />.
         </>
       ),
@@ -1157,25 +1257,37 @@ const CH5_QUIZ: ChapterQuiz = {
       id: 'q4',
       type: 'multiple-choice',
       prompt: <>The energy stored in a charged capacitor is:</>,
-      choices: [<InlineMath>U = CV</InlineMath>, <InlineMath>U = QV</InlineMath>, <InlineMath>U = &frac12; CV&sup2;</InlineMath>, <InlineMath>U = &frac12; C/V&sup2;</InlineMath>],
+      choices: [
+        <InlineMath>U = CV</InlineMath>,
+        <InlineMath>U = QV</InlineMath>,
+        <InlineMath>U = &frac12; CV&sup2;</InlineMath>,
+        <InlineMath>U = &frac12; C/V&sup2;</InlineMath>,
+      ],
       correctIndex: 2,
       explanation: (
         <>
-          <InlineMath>U = &frac12;CV&sup2; = Q&sup2;/(2C)</InlineMath>. The &frac12; comes from the work to push successive
-          charges against a rising V.
+          <InlineMath>U = &frac12;CV&sup2; = Q&sup2;/(2C)</InlineMath>. The &frac12; comes from the
+          work to push successive charges against a rising V.
         </>
       ),
     },
     {
       id: 'q5',
       type: 'true-false',
-      prompt: <>The time constant of an RC charging circuit is <InlineMath>&tau; = RC</InlineMath>.</>,
+      prompt: (
+        <>
+          The time constant of an RC charging circuit is <InlineMath>&tau; = RC</InlineMath>.
+        </>
+      ),
       choices: [<>True</>, <>False</>],
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>V<sub>C</sub>(t) = V&#8320;(1 &minus; e&#8315;<sup>t/&tau;</sup>)</InlineMath>, <InlineMath>&tau; = RC</InlineMath>. After
-          ~5&tau; the capacitor reaches ~99% of V&#8320;.
+          <InlineMath>
+            V<sub>C</sub>(t) = V&#8320;(1 &minus; e&#8315;<sup>t/&tau;</sup>)
+          </InlineMath>
+          , <InlineMath>&tau; = RC</InlineMath>. After ~5&tau; the capacitor reaches ~99% of
+          V&#8320;.
         </>
       ),
     },
@@ -1208,7 +1320,12 @@ const CH5_QUIZ: ChapterQuiz = {
       tolerance: 0.05,
       unit: 'J',
       explanation: (
-        <><InlineMath>U = &frac12;CV&sup2; = &frac12;(100&times;10&#8315;&#8310;)(576) = 0.0288 J = 28.8 mJ</InlineMath>.</>
+        <>
+          <InlineMath>
+            U = &frac12;CV&sup2; = &frac12;(100&times;10&#8315;&#8310;)(576) = 0.0288 J = 28.8 mJ
+          </InlineMath>
+          .
+        </>
       ),
     },
     {
@@ -1216,14 +1333,18 @@ const CH5_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          A 10 k&Omega; resistor charges a 10 &micro;F capacitor from a 12 V source. What is <InlineMath>&tau;</InlineMath>,
-          in milliseconds?
+          A 10 k&Omega; resistor charges a 10 &micro;F capacitor from a 12 V source. What is{' '}
+          <InlineMath>&tau;</InlineMath>, in milliseconds?
         </>
       ),
       targetValue: 100,
       tolerance: 0.05,
       unit: 'ms',
-      explanation: <><InlineMath>&tau; = RC = 10&sup4; &middot; 10&#8315;&#8309; = 0.1 s = 100 ms</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>&tau; = RC = 10&sup4; &middot; 10&#8315;&#8309; = 0.1 s = 100 ms</InlineMath>.
+        </>
+      ),
     },
     {
       id: 'q9',
@@ -1232,7 +1353,8 @@ const CH5_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['farad', 'farads', 'the farad'],
       explanation: (
         <>
-          The farad: <InlineMath>1 F = 1 C/V</InlineMath>. Practical caps are pF, nF, &micro;F; a 1 F capacitor is enormous.
+          The farad: <InlineMath>1 F = 1 C/V</InlineMath>. Practical caps are pF, nF, &micro;F; a 1
+          F capacitor is enormous.
         </>
       ),
     },
@@ -1278,7 +1400,8 @@ const CH6_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          From Amp&egrave;re&rsquo;s law: <InlineMath>B(2&pi;r) = &mu;&#8320;I&nbsp;&rArr; B = &mu;&#8320;I/(2&pi;r)</InlineMath>
+          From Amp&egrave;re&rsquo;s law:{' '}
+          <InlineMath>B(2&pi;r) = &mu;&#8320;I&nbsp;&rArr; B = &mu;&#8320;I/(2&pi;r)</InlineMath>
           <Cite id="ampere-1826" in={CH6_SOURCES} />.
         </>
       ),
@@ -1288,16 +1411,20 @@ const CH6_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>The Lorentz force on a charged particle is:</>,
       choices: [
-        <><InlineMath>F = qE</InlineMath> only</>,
+        <>
+          <InlineMath>F = qE</InlineMath> only
+        </>,
         <InlineMath>F = qv&middot;B</InlineMath>,
         <InlineMath>F = q(E + v &times; B)</InlineMath>,
-        <><InlineMath>F = qB</InlineMath> only</>,
+        <>
+          <InlineMath>F = qB</InlineMath> only
+        </>,
       ],
       correctIndex: 2,
       explanation: (
         <>
-          <InlineMath>F = q(E + v &times; B)</InlineMath>. The magnetic part is perpendicular to v and therefore does no
-          work.
+          <InlineMath>F = q(E + v &times; B)</InlineMath>. The magnetic part is perpendicular to v
+          and therefore does no work.
         </>
       ),
     },
@@ -1314,7 +1441,8 @@ const CH6_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          Same-direction currents attract; antiparallel currents repel. <InlineMath>F/L = &mu;&#8320;I&#8321;I&#8322;/(2&pi;d)</InlineMath>
+          Same-direction currents attract; antiparallel currents repel.{' '}
+          <InlineMath>F/L = &mu;&#8320;I&#8321;I&#8322;/(2&pi;d)</InlineMath>
           <Cite id="ampere-1826" in={CH6_SOURCES} />.
         </>
       ),
@@ -1347,8 +1475,8 @@ const CH6_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          No monopole has ever been observed. Gauss&rsquo;s law for B (<InlineMath>&nabla;&middot;B = 0</InlineMath>) encodes
-          that fact
+          No monopole has ever been observed. Gauss&rsquo;s law for B (
+          <InlineMath>&nabla;&middot;B = 0</InlineMath>) encodes that fact
           <Cite id="jackson-1999" in={CH6_SOURCES} />.
         </>
       ),
@@ -1361,7 +1489,10 @@ const CH6_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>F<sub>mag</sub> = qv&times;B</InlineMath> is &perp; to v, so <InlineMath>F&middot;v = 0</InlineMath> and no work is done. B can
+          <InlineMath>
+            F<sub>mag</sub> = qv&times;B
+          </InlineMath>{' '}
+          is &perp; to v, so <InlineMath>F&middot;v = 0</InlineMath> and no work is done. B can
           change direction of motion but not speed.
         </>
       ),
@@ -1380,7 +1511,11 @@ const CH6_QUIZ: ChapterQuiz = {
       unit: '&micro;T',
       explanation: (
         <>
-          <InlineMath>|B| = &mu;&#8320;I/(2&pi;r) = (4&pi;&times;10&#8315;&#8311;)(20)/(2&pi;&middot;0.10) = 40 &micro;T</InlineMath> &mdash; close to Earth&rsquo;s field.
+          <InlineMath>
+            |B| = &mu;&#8320;I/(2&pi;r) = (4&pi;&times;10&#8315;&#8311;)(20)/(2&pi;&middot;0.10) =
+            40 &micro;T
+          </InlineMath>{' '}
+          &mdash; close to Earth&rsquo;s field.
         </>
       ),
     },
@@ -1396,7 +1531,11 @@ const CH6_QUIZ: ChapterQuiz = {
       targetValue: 1.5,
       tolerance: 0.05,
       unit: 'N',
-      explanation: <><InlineMath>F = BIL = (0.5)(3)(1) = 1.5 N</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>F = BIL = (0.5)(3)(1) = 1.5 N</InlineMath>.
+        </>
+      ),
     },
     {
       id: 'q9',
@@ -1405,8 +1544,8 @@ const CH6_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['tesla', 'teslas', 'the tesla', 't'],
       explanation: (
         <>
-          The tesla: <InlineMath>1 T = 1 N/(A&middot;m)</InlineMath>. Earth&rsquo;s surface field is &asymp;25-65 &micro;T
-          &mdash; tesla is a large unit.
+          The tesla: <InlineMath>1 T = 1 N/(A&middot;m)</InlineMath>. Earth&rsquo;s surface field is
+          &asymp;25-65 &micro;T &mdash; tesla is a large unit.
         </>
       ),
     },
@@ -1415,7 +1554,9 @@ const CH6_QUIZ: ChapterQuiz = {
       type: 'short-answer',
       prompt: (
         <>
-          What 1820 law gives the differential B from a current element, <InlineMath>dB = (&mu;&#8320;/4&pi;)(I dL &times; r&#770;)/r&sup2;</InlineMath>? (Two hyphenated names.)
+          What 1820 law gives the differential B from a current element,{' '}
+          <InlineMath>dB = (&mu;&#8320;/4&pi;)(I dL &times; r&#770;)/r&sup2;</InlineMath>? (Two
+          hyphenated names.)
         </>
       ),
       acceptedAnswers: [
@@ -1455,8 +1596,10 @@ const CH7_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>EMF = &minus;d&Phi;<sub>B</sub>/dt</InlineMath>. The minus sign is Lenz&rsquo;s law &mdash; induced EMF
-          opposes the flux change
+          <InlineMath>
+            EMF = &minus;d&Phi;<sub>B</sub>/dt
+          </InlineMath>
+          . The minus sign is Lenz&rsquo;s law &mdash; induced EMF opposes the flux change
           <Cite id="faraday-1832" in={CH7_SOURCES} />.
         </>
       ),
@@ -1496,8 +1639,8 @@ const CH7_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>L = &mu;&#8320;N&sup2;A/&ell;</InlineMath>. The <InlineMath>N&sup2;</InlineMath> comes from each turn linking flux from every
-          other turn
+          <InlineMath>L = &mu;&#8320;N&sup2;A/&ell;</InlineMath>. The{' '}
+          <InlineMath>N&sup2;</InlineMath> comes from each turn linking flux from every other turn
           <Cite id="griffiths-2017" in={CH7_SOURCES} />.
         </>
       ),
@@ -1515,8 +1658,10 @@ const CH7_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>V<sub>L</sub> = L &middot; dI/dt</InlineMath>. The inductor resists changes in current the way a
-          capacitor resists changes in voltage.
+          <InlineMath>
+            V<sub>L</sub> = L &middot; dI/dt
+          </InlineMath>
+          . The inductor resists changes in current the way a capacitor resists changes in voltage.
         </>
       ),
     },
@@ -1533,20 +1678,27 @@ const CH7_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          False. Faraday&rsquo;s law requires <InlineMath>d&Phi;/dt &ne; 0</InlineMath>; DC gives constant flux and zero
-          induced EMF. That is why transformers do not work on DC.
+          False. Faraday&rsquo;s law requires <InlineMath>d&Phi;/dt &ne; 0</InlineMath>; DC gives
+          constant flux and zero induced EMF. That is why transformers do not work on DC.
         </>
       ),
     },
     {
       id: 'q6',
       type: 'true-false',
-      prompt: <>The time constant of an RL series circuit is <InlineMath>&tau; = L/R</InlineMath>.</>,
+      prompt: (
+        <>
+          The time constant of an RL series circuit is <InlineMath>&tau; = L/R</InlineMath>.
+        </>
+      ),
       choices: [<>True</>, <>False</>],
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>I(t) = (V/R)(1 &minus; e&#8315;<sup>t/&tau;</sup>)</InlineMath>, <InlineMath>&tau; = L/R</InlineMath>.
+          <InlineMath>
+            I(t) = (V/R)(1 &minus; e&#8315;<sup>t/&tau;</sup>)
+          </InlineMath>
+          , <InlineMath>&tau; = L/R</InlineMath>.
         </>
       ),
     },
@@ -1565,7 +1717,11 @@ const CH7_QUIZ: ChapterQuiz = {
       unit: 'V',
       explanation: (
         <>
-          <InlineMath>|EMF| = N |&Delta;&Phi;/&Delta;t| = 50 &middot; (2&times;10&#8315;&sup3;/5&times;10&#8315;&sup3;) = 20 V</InlineMath>.
+          <InlineMath>
+            |EMF| = N |&Delta;&Phi;/&Delta;t| = 50 &middot;
+            (2&times;10&#8315;&sup3;/5&times;10&#8315;&sup3;) = 20 V
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -1581,7 +1737,14 @@ const CH7_QUIZ: ChapterQuiz = {
       targetValue: 12,
       tolerance: 0.05,
       unit: 'V',
-      explanation: <><InlineMath>V&#8322; = V&#8321;(N&#8322;/N&#8321;) = 240 &middot; (50/1000) = 12 V</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>
+            V&#8322; = V&#8321;(N&#8322;/N&#8321;) = 240 &middot; (50/1000) = 12 V
+          </InlineMath>
+          .
+        </>
+      ),
     },
     {
       id: 'q9',
@@ -1604,8 +1767,8 @@ const CH7_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['henry', 'henrys', 'henries', 'h', 'the henry'],
       explanation: (
         <>
-          The henry: <InlineMath>1 H = 1 V&middot;s/A</InlineMath>. Named for Joseph Henry, an American contemporary of
-          Faraday.
+          The henry: <InlineMath>1 H = 1 V&middot;s/A</InlineMath>. Named for Joseph Henry, an
+          American contemporary of Faraday.
         </>
       ),
     },
@@ -1632,7 +1795,8 @@ const CH8_QUIZ: ChapterQuiz = {
       correctIndex: 2,
       explanation: (
         <>
-          <InlineMath>S = (1/&mu;&#8320;) E &times; B</InlineMath>, units W/m&sup2;, pointing the way energy flows
+          <InlineMath>S = (1/&mu;&#8320;) E &times; B</InlineMath>, units W/m&sup2;, pointing the
+          way energy flows
           <Cite id="poynting-1884" in={CH8_SOURCES} />.
         </>
       ),
@@ -1661,20 +1825,25 @@ const CH8_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: (
         <>
-          <InlineMath>&oint; S &middot; dA</InlineMath> over a closed surface enclosing a section of resistive wire equals:
+          <InlineMath>&oint; S &middot; dA</InlineMath> over a closed surface enclosing a section of
+          resistive wire equals:
         </>
       ),
       choices: [
-        <><InlineMath>VI</InlineMath> &mdash; the dissipated power.</>,
-        <><InlineMath>QV</InlineMath> &mdash; the stored energy.</>,
+        <>
+          <InlineMath>VI</InlineMath> &mdash; the dissipated power.
+        </>,
+        <>
+          <InlineMath>QV</InlineMath> &mdash; the stored energy.
+        </>,
         <>The current I.</>,
         <>Zero.</>,
       ],
       correctIndex: 0,
       explanation: (
         <>
-          The integral comes out to exactly <InlineMath>VI</InlineMath>. Energy enters through the surrounding field, not
-          through the copper
+          The integral comes out to exactly <InlineMath>VI</InlineMath>. Energy enters through the
+          surrounding field, not through the copper
           <Cite id="poynting-1884" in={CH8_SOURCES} />.
         </>
       ),
@@ -1692,8 +1861,9 @@ const CH8_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>u = &frac12;&epsilon;&#8320;E&sup2; + B&sup2;/(2&mu;&#8320;)</InlineMath>: quadratic in the fields, the
-          same way <InlineMath>&frac12;CV&sup2;</InlineMath> and <InlineMath>&frac12;LI&sup2;</InlineMath> appear for caps and coils
+          <InlineMath>u = &frac12;&epsilon;&#8320;E&sup2; + B&sup2;/(2&mu;&#8320;)</InlineMath>:
+          quadratic in the fields, the same way <InlineMath>&frac12;CV&sup2;</InlineMath> and{' '}
+          <InlineMath>&frac12;LI&sup2;</InlineMath> appear for caps and coils
           <Cite id="griffiths-2017" in={CH8_SOURCES} />.
         </>
       ),
@@ -1730,8 +1900,10 @@ const CH8_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>E<sub>tangential</sub> = 0</InlineMath> means S has no radial inward component, consistent with zero
-          dissipation in the wire.
+          <InlineMath>
+            E<sub>tangential</sub> = 0
+          </InlineMath>{' '}
+          means S has no radial inward component, consistent with zero dissipation in the wire.
         </>
       ),
     },
@@ -1749,7 +1921,9 @@ const CH8_QUIZ: ChapterQuiz = {
       unit: 'W',
       explanation: (
         <>
-          <InlineMath>P = S &times; A = 1000 W/m&sup2; &middot; 2 m&sup2; = 2000 W = 2 kW</InlineMath>
+          <InlineMath>
+            P = S &times; A = 1000 W/m&sup2; &middot; 2 m&sup2; = 2000 W = 2 kW
+          </InlineMath>
           <Cite id="kopp-lean-2011" in={CH8_SOURCES} />.
         </>
       ),
@@ -1759,14 +1933,19 @@ const CH8_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          A wire with <InlineMath>V = 5 V</InlineMath> across it carries <InlineMath>I = 2 A</InlineMath>. By Poynting, the total electromagnetic
-          power entering its surface is, in watts:
+          A wire with <InlineMath>V = 5 V</InlineMath> across it carries{' '}
+          <InlineMath>I = 2 A</InlineMath>. By Poynting, the total electromagnetic power entering
+          its surface is, in watts:
         </>
       ),
       targetValue: 10,
       tolerance: 0.02,
       unit: 'W',
-      explanation: <><InlineMath>&oint; S &middot; dA = VI = 10 W</InlineMath>. Exactly the dissipated power.</>,
+      explanation: (
+        <>
+          <InlineMath>&oint; S &middot; dA = VI = 10 W</InlineMath>. Exactly the dissipated power.
+        </>
+      ),
     },
     {
       id: 'q9',
@@ -1824,7 +2003,9 @@ const CH9_QUIZ: ChapterQuiz = {
       correctIndex: 2,
       explanation: (
         <>
-          <InlineMath>v = 1/&radic;(&mu;&#8320;&epsilon;&#8320;) &approx; 2.998&times;10&#8312; m/s</InlineMath>
+          <InlineMath>
+            v = 1/&radic;(&mu;&#8320;&epsilon;&#8320;) &approx; 2.998&times;10&#8312; m/s
+          </InlineMath>
           <Cite id="maxwell-1865" in={CH9_SOURCES} />.
         </>
       ),
@@ -1833,12 +2014,18 @@ const CH9_QUIZ: ChapterQuiz = {
       id: 'q2',
       type: 'multiple-choice',
       prompt: <>In a plane EM wave in vacuum, the relationship between E and B magnitudes is:</>,
-      choices: [<InlineMath>|E| = |B|</InlineMath>, <InlineMath>|E| = c |B|</InlineMath>, <InlineMath>|E| = |B|/c</InlineMath>, <InlineMath>|E| = c&sup2; |B|</InlineMath>],
+      choices: [
+        <InlineMath>|E| = |B|</InlineMath>,
+        <InlineMath>|E| = c |B|</InlineMath>,
+        <InlineMath>|E| = |B|/c</InlineMath>,
+        <InlineMath>|E| = c&sup2; |B|</InlineMath>,
+      ],
       correctIndex: 1,
       explanation: (
         <>
           <InlineMath>|E| = c|B|</InlineMath>. Numerically B looks small but the energy densities
-          <InlineMath>&frac12;&epsilon;&#8320;E&sup2;</InlineMath> and <InlineMath>B&sup2;/(2&mu;&#8320;)</InlineMath> are equal.
+          <InlineMath>&frac12;&epsilon;&#8320;E&sup2;</InlineMath> and{' '}
+          <InlineMath>B&sup2;/(2&mu;&#8320;)</InlineMath> are equal.
         </>
       ),
     },
@@ -1855,7 +2042,8 @@ const CH9_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>&lt;I&gt; = &frac12;&epsilon;&#8320;cE&#8320;&sup2;</InlineMath>. The &frac12; comes from averaging
+          <InlineMath>&lt;I&gt; = &frac12;&epsilon;&#8320;cE&#8320;&sup2;</InlineMath>. The &frac12;
+          comes from averaging
           <InlineMath>cos&sup2;(&omega;t)</InlineMath>.
         </>
       ),
@@ -1886,8 +2074,8 @@ const CH9_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          Radiation pressure <InlineMath>P = I/c</InlineMath> on an absorbing surface. JAXA&rsquo;s IKAROS solar sail
-          demonstrated this directly
+          Radiation pressure <InlineMath>P = I/c</InlineMath> on an absorbing surface. JAXA&rsquo;s
+          IKAROS solar sail demonstrated this directly
           <Cite id="tsuda-2013-ikaros" in={CH9_SOURCES} />.
         </>
       ),
@@ -1915,7 +2103,8 @@ const CH9_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          What is the wavelength of a 5 GHz Wi-Fi carrier in vacuum, in cm? (<InlineMath>c = 3&times;10&#8312; m/s</InlineMath>.)
+          What is the wavelength of a 5 GHz Wi-Fi carrier in vacuum, in cm? (
+          <InlineMath>c = 3&times;10&#8312; m/s</InlineMath>.)
         </>
       ),
       targetValue: 6,
@@ -1923,7 +2112,9 @@ const CH9_QUIZ: ChapterQuiz = {
       unit: 'cm',
       explanation: (
         <>
-          <InlineMath>&lambda; = c/f = 3&times;10&#8312;/5&times;10&#8313; = 0.06 m = 6 cm</InlineMath>
+          <InlineMath>
+            &lambda; = c/f = 3&times;10&#8312;/5&times;10&#8313; = 0.06 m = 6 cm
+          </InlineMath>
           <Cite id="ieee-80211" in={CH9_SOURCES} />.
         </>
       ),
@@ -1942,7 +2133,10 @@ const CH9_QUIZ: ChapterQuiz = {
       unit: '&micro;Pa',
       explanation: (
         <>
-          <InlineMath>P = I/c = 1361 / 3&times;10&#8312; &approx; 4.54&times;10&#8315;&#8310; Pa = 4.54 &micro;Pa</InlineMath>
+          <InlineMath>
+            P = I/c = 1361 / 3&times;10&#8312; &approx; 4.54&times;10&#8315;&#8310; Pa = 4.54
+            &micro;Pa
+          </InlineMath>
           <Cite id="kopp-lean-2011" in={CH9_SOURCES} />.
         </>
       ),
@@ -2003,14 +2197,23 @@ const CH10_QUIZ: ChapterQuiz = {
       prompt: <>Gauss&rsquo;s law for E in integral form is:</>,
       choices: [
         <InlineMath>&oint; E &middot; dA = 0</InlineMath>,
-        <InlineMath>&oint; E &middot; dA = Q<sub>enc</sub>/&epsilon;&#8320;</InlineMath>,
-        <InlineMath>&oint; E &middot; dA = &mu;&#8320; I<sub>enc</sub></InlineMath>,
-        <InlineMath>&oint; E &middot; dA = &minus;d&Phi;<sub>B</sub>/dt</InlineMath>,
+        <InlineMath>
+          &oint; E &middot; dA = Q<sub>enc</sub>/&epsilon;&#8320;
+        </InlineMath>,
+        <InlineMath>
+          &oint; E &middot; dA = &mu;&#8320; I<sub>enc</sub>
+        </InlineMath>,
+        <InlineMath>
+          &oint; E &middot; dA = &minus;d&Phi;<sub>B</sub>/dt
+        </InlineMath>,
       ],
       correctIndex: 1,
       explanation: (
         <>
-          Flux of E through a closed surface equals <InlineMath>Q<sub>enc</sub>/&epsilon;&#8320;</InlineMath>
+          Flux of E through a closed surface equals{' '}
+          <InlineMath>
+            Q<sub>enc</sub>/&epsilon;&#8320;
+          </InlineMath>
           <Cite id="gauss-1813" in={CH10_SOURCES} />.
         </>
       ),
@@ -2018,7 +2221,11 @@ const CH10_QUIZ: ChapterQuiz = {
     {
       id: 'q2',
       type: 'multiple-choice',
-      prompt: <><InlineMath>&oint; B &middot; dA = 0</InlineMath> expresses:</>,
+      prompt: (
+        <>
+          <InlineMath>&oint; B &middot; dA = 0</InlineMath> expresses:
+        </>
+      ),
       choices: [
         <>B is always zero.</>,
         <>No isolated magnetic monopoles.</>,
@@ -2039,15 +2246,26 @@ const CH10_QUIZ: ChapterQuiz = {
       prompt: <>Maxwell&rsquo;s correction to Amp&egrave;re&rsquo;s law adds:</>,
       choices: [
         <>The conduction current.</>,
-        <>The displacement current <InlineMath>&epsilon;&#8320; d&Phi;<sub>E</sub>/dt</InlineMath>.</>,
-        <>A factor of 2 in front of <InlineMath>&mu;&#8320;</InlineMath>.</>,
+        <>
+          The displacement current{' '}
+          <InlineMath>
+            &epsilon;&#8320; d&Phi;<sub>E</sub>/dt
+          </InlineMath>
+          .
+        </>,
+        <>
+          A factor of 2 in front of <InlineMath>&mu;&#8320;</InlineMath>.
+        </>,
         <>A new charge density.</>,
       ],
       correctIndex: 1,
       explanation: (
         <>
-          The displacement current <InlineMath>&epsilon;&#8320; d&Phi;<sub>E</sub>/dt</InlineMath> closes Amp&egrave;re
-          across capacitor gaps and gives rise to EM waves
+          The displacement current{' '}
+          <InlineMath>
+            &epsilon;&#8320; d&Phi;<sub>E</sub>/dt
+          </InlineMath>{' '}
+          closes Amp&egrave;re across capacitor gaps and gives rise to EM waves
           <Cite id="maxwell-1865" in={CH10_SOURCES} />.
         </>
       ),
@@ -2063,7 +2281,10 @@ const CH10_QUIZ: ChapterQuiz = {
       explanation: (
         <>
           Taking &nabla;&times; of Faraday and substituting Amp&egrave;re-Maxwell yields
-          <InlineMath>&nabla;&sup2;E = &mu;&#8320;&epsilon;&#8320; &part;&sup2;E/&part;t&sup2;</InlineMath>.
+          <InlineMath>
+            &nabla;&sup2;E = &mu;&#8320;&epsilon;&#8320; &part;&sup2;E/&part;t&sup2;
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -2085,8 +2306,8 @@ const CH10_QUIZ: ChapterQuiz = {
       type: 'true-false',
       prompt: (
         <>
-          Charge conservation, <InlineMath>&part;&rho;/&part;t + &nabla;&middot;J = 0</InlineMath>, follows from
-          Maxwell&rsquo;s equations rather than being an extra postulate.
+          Charge conservation, <InlineMath>&part;&rho;/&part;t + &nabla;&middot;J = 0</InlineMath>,
+          follows from Maxwell&rsquo;s equations rather than being an extra postulate.
         </>
       ),
       choices: [<>True</>, <>False</>],
@@ -2104,7 +2325,8 @@ const CH10_QUIZ: ChapterQuiz = {
       prompt: (
         <>
           A <strong className="text-text">2 nC</strong> point charge sits inside a closed surface.
-          What is the electric flux through that surface, in V&middot;m? (<InlineMath>&epsilon;&#8320; = 8.854&times;10&#8315;&sup1;&sup2; F/m</InlineMath>.)
+          What is the electric flux through that surface, in V&middot;m? (
+          <InlineMath>&epsilon;&#8320; = 8.854&times;10&#8315;&sup1;&sup2; F/m</InlineMath>.)
         </>
       ),
       targetValue: 226,
@@ -2112,7 +2334,10 @@ const CH10_QUIZ: ChapterQuiz = {
       unit: 'V&middot;m',
       explanation: (
         <>
-          <InlineMath>&Phi; = Q/&epsilon;&#8320; = 2&times;10&#8315;&#8313;/8.854&times;10&#8315;&sup1;&sup2; &approx; 226 V&middot;m</InlineMath>
+          <InlineMath>
+            &Phi; = Q/&epsilon;&#8320; = 2&times;10&#8315;&#8313;/8.854&times;10&#8315;&sup1;&sup2;
+            &approx; 226 V&middot;m
+          </InlineMath>
           <Cite id="codata-2018" in={CH10_SOURCES} />.
         </>
       ),
@@ -2131,7 +2356,12 @@ const CH10_QUIZ: ChapterQuiz = {
       tolerance: 0.05,
       unit: 'V',
       explanation: (
-        <><InlineMath>|EMF| = |d&Phi;/dt| = 3&times;10&#8315;&sup3;/2&times;10&#8315;&sup3; = 1.5 V</InlineMath>.</>
+        <>
+          <InlineMath>
+            |EMF| = |d&Phi;/dt| = 3&times;10&#8315;&sup3;/2&times;10&#8315;&sup3; = 1.5 V
+          </InlineMath>
+          .
+        </>
       ),
     },
     {
@@ -2190,10 +2420,21 @@ const CH11_QUIZ: ChapterQuiz = {
     {
       id: 'q2',
       type: 'multiple-choice',
-      prompt: <>The Lorentz factor &gamma; at <InlineMath>v = 0.5 c</InlineMath> is approximately:</>,
+      prompt: (
+        <>
+          The Lorentz factor &gamma; at <InlineMath>v = 0.5 c</InlineMath> is approximately:
+        </>
+      ),
       choices: [<>1.00</>, <>1.15</>, <>1.73</>, <>2.00</>],
       correctIndex: 1,
-      explanation: <><InlineMath>&gamma; = 1/&radic;(1 &minus; 0.25) = 1/&radic;0.75 &approx; 1.155</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>
+            &gamma; = 1/&radic;(1 &minus; 0.25) = 1/&radic;0.75 &approx; 1.155
+          </InlineMath>
+          .
+        </>
+      ),
     },
     {
       id: 'q3',
@@ -2208,8 +2449,10 @@ const CH11_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>F<sup>&mu;&nu;</sup></InlineMath> packs E and B into one antisymmetric rank-2 object; Lorentz
-          transforms mix its components
+          <InlineMath>
+            F<sup>&mu;&nu;</sup>
+          </InlineMath>{' '}
+          packs E and B into one antisymmetric rank-2 object; Lorentz transforms mix its components
           <Cite id="jackson-1999" in={CH11_SOURCES} />.
         </>
       ),
@@ -2218,11 +2461,17 @@ const CH11_QUIZ: ChapterQuiz = {
       id: 'q4',
       type: 'multiple-choice',
       prompt: <>Which of the following is a Lorentz invariant of the EM field?</>,
-      choices: [<InlineMath>|E|</InlineMath>, <InlineMath>|B|</InlineMath>, <InlineMath>E &middot; B</InlineMath>, <>Energy density u.</>],
+      choices: [
+        <InlineMath>|E|</InlineMath>,
+        <InlineMath>|B|</InlineMath>,
+        <InlineMath>E &middot; B</InlineMath>,
+        <>Energy density u.</>,
+      ],
       correctIndex: 2,
       explanation: (
         <>
-          The two invariants of F are <InlineMath>E&middot;B</InlineMath> and <InlineMath>E&sup2; &minus; c&sup2;B&sup2;</InlineMath>
+          The two invariants of F are <InlineMath>E&middot;B</InlineMath> and{' '}
+          <InlineMath>E&sup2; &minus; c&sup2;B&sup2;</InlineMath>
           <Cite id="jackson-1999" in={CH11_SOURCES} />.
         </>
       ),
@@ -2258,8 +2507,10 @@ const CH11_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>v/c &sim; 10&#8315;&sup1;&sup1;</InlineMath> per electron, but <InlineMath>n &asymp; 8.5&times;10&sup2;&#8312;/m&sup3;</InlineMath> in copper. The small per-electron effect, multiplied
-          across that density, yields perceptible B<Cite id="feynman-II-13" in={CH11_SOURCES} />.
+          <InlineMath>v/c &sim; 10&#8315;&sup1;&sup1;</InlineMath> per electron, but{' '}
+          <InlineMath>n &asymp; 8.5&times;10&sup2;&#8312;/m&sup3;</InlineMath> in copper. The small
+          per-electron effect, multiplied across that density, yields perceptible B
+          <Cite id="feynman-II-13" in={CH11_SOURCES} />.
         </>
       ),
     },
@@ -2268,22 +2519,38 @@ const CH11_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          A 1 m rod at rest in S moves at <InlineMath>0.6 c</InlineMath> relative to S&prime;. What length does S&prime;
-          measure, in metres?
+          A 1 m rod at rest in S moves at <InlineMath>0.6 c</InlineMath> relative to S&prime;. What
+          length does S&prime; measure, in metres?
         </>
       ),
       targetValue: 0.8,
       tolerance: 0.02,
       unit: 'm',
-      explanation: <><InlineMath>L = L&#8320;/&gamma; = 1 &middot; &radic;(1 &minus; 0.36) = 0.8 m</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>L = L&#8320;/&gamma; = 1 &middot; &radic;(1 &minus; 0.36) = 0.8 m</InlineMath>
+          .
+        </>
+      ),
     },
     {
       id: 'q8',
       type: 'numeric',
-      prompt: <>Compute the Lorentz factor &gamma; at <InlineMath>v = 0.9 c</InlineMath>.</>,
+      prompt: (
+        <>
+          Compute the Lorentz factor &gamma; at <InlineMath>v = 0.9 c</InlineMath>.
+        </>
+      ),
       targetValue: 2.294,
       tolerance: 0.02,
-      explanation: <><InlineMath>&gamma; = 1/&radic;(1 &minus; 0.81) = 1/&radic;0.19 &approx; 2.294</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>
+            &gamma; = 1/&radic;(1 &minus; 0.81) = 1/&radic;0.19 &approx; 2.294
+          </InlineMath>
+          .
+        </>
+      ),
     },
     {
       id: 'q9',
@@ -2319,8 +2586,8 @@ const CH11_QUIZ: ChapterQuiz = {
       ],
       explanation: (
         <>
-          Length contraction: <InlineMath>L = L&#8320;/&gamma;</InlineMath> along the motion direction, from the Lorentz
-          transformation.
+          Length contraction: <InlineMath>L = L&#8320;/&gamma;</InlineMath> along the motion
+          direction, from the Lorentz transformation.
         </>
       ),
     },
@@ -2358,16 +2625,26 @@ const CH12_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>The impedance of an ideal capacitor at angular frequency &omega; is:</>,
       choices: [
-        <InlineMath>Z<sub>C</sub> = &omega; C</InlineMath>,
-        <InlineMath>Z<sub>C</sub> = j&omega;C</InlineMath>,
-        <InlineMath>Z<sub>C</sub> = 1/(j&omega;C)</InlineMath>,
-        <InlineMath>Z<sub>C</sub> = j/&omega;C</InlineMath>,
+        <InlineMath>
+          Z<sub>C</sub> = &omega; C
+        </InlineMath>,
+        <InlineMath>
+          Z<sub>C</sub> = j&omega;C
+        </InlineMath>,
+        <InlineMath>
+          Z<sub>C</sub> = 1/(j&omega;C)
+        </InlineMath>,
+        <InlineMath>
+          Z<sub>C</sub> = j/&omega;C
+        </InlineMath>,
       ],
       correctIndex: 2,
       explanation: (
         <>
-          <InlineMath>Z<sub>C</sub> = 1/(j&omega;C)</InlineMath>; magnitude falls with f, so a capacitor blocks DC and passes
-          AC.
+          <InlineMath>
+            Z<sub>C</sub> = 1/(j&omega;C)
+          </InlineMath>
+          ; magnitude falls with f, so a capacitor blocks DC and passes AC.
         </>
       ),
     },
@@ -2384,8 +2661,11 @@ const CH12_QUIZ: ChapterQuiz = {
       correctIndex: 2,
       explanation: (
         <>
-          <InlineMath>&omega;&#8320; = 1/&radic;(LC)</InlineMath>. At resonance <InlineMath>X<sub>L</sub> = X<sub>C</sub></InlineMath> and the
-          reactive parts cancel.
+          <InlineMath>&omega;&#8320; = 1/&radic;(LC)</InlineMath>. At resonance{' '}
+          <InlineMath>
+            X<sub>L</sub> = X<sub>C</sub>
+          </InlineMath>{' '}
+          and the reactive parts cancel.
         </>
       ),
     },
@@ -2397,8 +2677,10 @@ const CH12_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>V<sub>rms</sub> = V<sub>peak</sub>/&radic;2 &approx; 120 V</InlineMath> &mdash; standard North-American
-          line voltage
+          <InlineMath>
+            V<sub>rms</sub> = V<sub>peak</sub>/&radic;2 &approx; 120 V
+          </InlineMath>{' '}
+          &mdash; standard North-American line voltage
           <Cite id="ansi-c84-1-2020" in={CH12_SOURCES} />.
         </>
       ),
@@ -2408,16 +2690,20 @@ const CH12_QUIZ: ChapterQuiz = {
       type: 'true-false',
       prompt: (
         <>
-          Real power in an AC circuit is <InlineMath>&lt;P&gt; = V<sub>rms</sub> I<sub>rms</sub> cos(&phi;)</InlineMath>,
-          where &phi; is the V-I phase angle.
+          Real power in an AC circuit is{' '}
+          <InlineMath>
+            &lt;P&gt; = V<sub>rms</sub> I<sub>rms</sub> cos(&phi;)
+          </InlineMath>
+          , where &phi; is the V-I phase angle.
         </>
       ),
       choices: [<>True</>, <>False</>],
       correctIndex: 0,
       explanation: (
         <>
-          The <InlineMath>cos(&phi;)</InlineMath> factor is the power factor. Pure reactive loads have <InlineMath>cos(&phi;) = 0</InlineMath>; pure
-          resistive loads have <InlineMath>cos(&phi;) = 1</InlineMath>.
+          The <InlineMath>cos(&phi;)</InlineMath> factor is the power factor. Pure reactive loads
+          have <InlineMath>cos(&phi;) = 0</InlineMath>; pure resistive loads have{' '}
+          <InlineMath>cos(&phi;) = 1</InlineMath>.
         </>
       ),
     },
@@ -2426,28 +2712,41 @@ const CH12_QUIZ: ChapterQuiz = {
       type: 'true-false',
       prompt: (
         <>
-          Connecting a finite load to a voltage divider always reduces <InlineMath>V<sub>out</sub></InlineMath> below its
-          unloaded value.
+          Connecting a finite load to a voltage divider always reduces{' '}
+          <InlineMath>
+            V<sub>out</sub>
+          </InlineMath>{' '}
+          below its unloaded value.
         </>
       ),
       choices: [<>True</>, <>False</>],
       correctIndex: 0,
       explanation: (
         <>
-          The load appears in parallel with <InlineMath>R&#8322;</InlineMath>, dropping the effective lower resistance and
-          therefore the output. This is the loading effect.
+          The load appears in parallel with <InlineMath>R&#8322;</InlineMath>, dropping the
+          effective lower resistance and therefore the output. This is the loading effect.
         </>
       ),
     },
     {
       id: 'q7',
       type: 'numeric',
-      prompt: <>For an RLC with <InlineMath>L = 10 mH</InlineMath> and <InlineMath>C = 10 nF</InlineMath>, what is <InlineMath>f&#8320;</InlineMath>, in kHz?</>,
+      prompt: (
+        <>
+          For an RLC with <InlineMath>L = 10 mH</InlineMath> and <InlineMath>C = 10 nF</InlineMath>,
+          what is <InlineMath>f&#8320;</InlineMath>, in kHz?
+        </>
+      ),
       targetValue: 15.92,
       tolerance: 0.05,
       unit: 'kHz',
       explanation: (
-        <><InlineMath>f&#8320; = 1/(2&pi;&radic;LC) = 1/(2&pi;&middot;10&#8315;&#8309;) &approx; 15.92 kHz</InlineMath>.</>
+        <>
+          <InlineMath>
+            f&#8320; = 1/(2&pi;&radic;LC) = 1/(2&pi;&middot;10&#8315;&#8309;) &approx; 15.92 kHz
+          </InlineMath>
+          .
+        </>
       ),
     },
     {
@@ -2455,8 +2754,16 @@ const CH12_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          A divider has <InlineMath>R&#8321; = 4 k&Omega;</InlineMath>, <InlineMath>R&#8322; = 2 k&Omega;</InlineMath>, <InlineMath>V<sub>in</sub> = 12 V</InlineMath>. What is
-          <InlineMath>V<sub>out</sub></InlineMath>, in volts?
+          A divider has <InlineMath>R&#8321; = 4 k&Omega;</InlineMath>,{' '}
+          <InlineMath>R&#8322; = 2 k&Omega;</InlineMath>,{' '}
+          <InlineMath>
+            V<sub>in</sub> = 12 V
+          </InlineMath>
+          . What is
+          <InlineMath>
+            V<sub>out</sub>
+          </InlineMath>
+          , in volts?
         </>
       ),
       targetValue: 4,
@@ -2464,7 +2771,10 @@ const CH12_QUIZ: ChapterQuiz = {
       unit: 'V',
       explanation: (
         <>
-          <InlineMath>V<sub>out</sub> = V<sub>in</sub> R&#8322;/(R&#8321;+R&#8322;) = 12 &middot; 2/6 = 4 V</InlineMath>.
+          <InlineMath>
+            V<sub>out</sub> = V<sub>in</sub> R&#8322;/(R&#8321;+R&#8322;) = 12 &middot; 2/6 = 4 V
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -2480,8 +2790,8 @@ const CH12_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['power factor', 'powerfactor'],
       explanation: (
         <>
-          Power factor = <InlineMath>cos(&phi;)</InlineMath> = real power / apparent power. Reactive elements drag it below
-          1.
+          Power factor = <InlineMath>cos(&phi;)</InlineMath> = real power / apparent power. Reactive
+          elements drag it below 1.
         </>
       ),
     },
@@ -2586,7 +2896,14 @@ const CH13_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          Norton: <InlineMath>I<sub>N</sub></InlineMath> (short-circuit current) in parallel with <InlineMath>R<sub>N</sub> = R<sub>th</sub></InlineMath>
+          Norton:{' '}
+          <InlineMath>
+            I<sub>N</sub>
+          </InlineMath>{' '}
+          (short-circuit current) in parallel with{' '}
+          <InlineMath>
+            R<sub>N</sub> = R<sub>th</sub>
+          </InlineMath>
           <Cite id="norton-1926" in={CH13_SOURCES} />.
         </>
       ),
@@ -2596,16 +2913,29 @@ const CH13_QUIZ: ChapterQuiz = {
       type: 'true-false',
       prompt: (
         <>
-          For maximum power transfer to a load from a source of internal resistance <InlineMath>R<sub>S</sub></InlineMath>,
-          the load resistance should equal <InlineMath>R<sub>S</sub></InlineMath>.
+          For maximum power transfer to a load from a source of internal resistance{' '}
+          <InlineMath>
+            R<sub>S</sub>
+          </InlineMath>
+          , the load resistance should equal{' '}
+          <InlineMath>
+            R<sub>S</sub>
+          </InlineMath>
+          .
         </>
       ),
       choices: [<>True</>, <>False</>],
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>dP/dR<sub>L</sub> = 0</InlineMath> at <InlineMath>R<sub>L</sub> = R<sub>S</sub></InlineMath>. Efficiency at this match is
-          exactly 50%.
+          <InlineMath>
+            dP/dR<sub>L</sub> = 0
+          </InlineMath>{' '}
+          at{' '}
+          <InlineMath>
+            R<sub>L</sub> = R<sub>S</sub>
+          </InlineMath>
+          . Efficiency at this match is exactly 50%.
         </>
       ),
     },
@@ -2633,7 +2963,15 @@ const CH13_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          A 12 V source with <InlineMath>R<sub>S</sub> = 6 &Omega;</InlineMath> drives a load. For maximum power, what <InlineMath>R<sub>L</sub></InlineMath>, in ohms?
+          A 12 V source with{' '}
+          <InlineMath>
+            R<sub>S</sub> = 6 &Omega;
+          </InlineMath>{' '}
+          drives a load. For maximum power, what{' '}
+          <InlineMath>
+            R<sub>L</sub>
+          </InlineMath>
+          , in ohms?
         </>
       ),
       targetValue: 6,
@@ -2641,7 +2979,14 @@ const CH13_QUIZ: ChapterQuiz = {
       unit: '&Omega;',
       explanation: (
         <>
-          <InlineMath>R<sub>L</sub> = R<sub>S</sub> = 6 &Omega;</InlineMath>. Then <InlineMath>P<sub>L,max</sub> = V<sub>S</sub>&sup2;/(4 R<sub>S</sub>) = 144/24 = 6 W</InlineMath>.
+          <InlineMath>
+            R<sub>L</sub> = R<sub>S</sub> = 6 &Omega;
+          </InlineMath>
+          . Then{' '}
+          <InlineMath>
+            P<sub>L,max</sub> = V<sub>S</sub>&sup2;/(4 R<sub>S</sub>) = 144/24 = 6 W
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -2650,8 +2995,15 @@ const CH13_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          A network has <InlineMath>V<sub>oc</sub> = 10 V</InlineMath>, <InlineMath>I<sub>sc</sub> = 2 A</InlineMath>. What is its Th&eacute;venin
-          resistance, in ohms?
+          A network has{' '}
+          <InlineMath>
+            V<sub>oc</sub> = 10 V
+          </InlineMath>
+          ,{' '}
+          <InlineMath>
+            I<sub>sc</sub> = 2 A
+          </InlineMath>
+          . What is its Th&eacute;venin resistance, in ohms?
         </>
       ),
       targetValue: 5,
@@ -2659,7 +3011,10 @@ const CH13_QUIZ: ChapterQuiz = {
       unit: '&Omega;',
       explanation: (
         <>
-          <InlineMath>R<sub>th</sub> = V<sub>oc</sub>/I<sub>sc</sub> = 10/2 = 5 &Omega;</InlineMath>.
+          <InlineMath>
+            R<sub>th</sub> = V<sub>oc</sub>/I<sub>sc</sub> = 10/2 = 5 &Omega;
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -2726,16 +3081,27 @@ const CH14_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>The Shockley diode equation is:</>,
       choices: [
-        <InlineMath>I = I<sub>s</sub> exp(qV/kT)</InlineMath>,
-        <InlineMath>I = I<sub>s</sub>(exp(qV/nkT) &minus; 1)</InlineMath>,
+        <InlineMath>
+          I = I<sub>s</sub> exp(qV/kT)
+        </InlineMath>,
+        <InlineMath>
+          I = I<sub>s</sub>(exp(qV/nkT) &minus; 1)
+        </InlineMath>,
         <InlineMath>I = V/R</InlineMath>,
-        <InlineMath>I = I<sub>s</sub> qV/kT</InlineMath>,
+        <InlineMath>
+          I = I<sub>s</sub> qV/kT
+        </InlineMath>,
       ],
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>I = I<sub>s</sub>(exp(qV/nkT) &minus; 1)</InlineMath>. The &minus;1 keeps reverse-bias current bounded
-          at <InlineMath>&minus;I<sub>s</sub></InlineMath>
+          <InlineMath>
+            I = I<sub>s</sub>(exp(qV/nkT) &minus; 1)
+          </InlineMath>
+          . The &minus;1 keeps reverse-bias current bounded at{' '}
+          <InlineMath>
+            &minus;I<sub>s</sub>
+          </InlineMath>
           <Cite id="shockley-1949" in={CH14_SOURCES} />.
         </>
       ),
@@ -2745,16 +3111,26 @@ const CH14_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>In a BJT in the active region, &beta; relates:</>,
       choices: [
-        <InlineMath>I<sub>C</sub> = &beta; I<sub>B</sub></InlineMath>,
-        <InlineMath>I<sub>B</sub> = &beta; I<sub>E</sub></InlineMath>,
-        <InlineMath>I<sub>E</sub> = &beta; I<sub>C</sub></InlineMath>,
-        <InlineMath>I<sub>C</sub> = &beta; V<sub>BE</sub></InlineMath>,
+        <InlineMath>
+          I<sub>C</sub> = &beta; I<sub>B</sub>
+        </InlineMath>,
+        <InlineMath>
+          I<sub>B</sub> = &beta; I<sub>E</sub>
+        </InlineMath>,
+        <InlineMath>
+          I<sub>E</sub> = &beta; I<sub>C</sub>
+        </InlineMath>,
+        <InlineMath>
+          I<sub>C</sub> = &beta; V<sub>BE</sub>
+        </InlineMath>,
       ],
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>&beta; = I<sub>C</sub>/I<sub>B</sub></InlineMath>, typically 50-300. A small base current controls a
-          much larger collector current.
+          <InlineMath>
+            &beta; = I<sub>C</sub>/I<sub>B</sub>
+          </InlineMath>
+          , typically 50-300. A small base current controls a much larger collector current.
         </>
       ),
     },
@@ -2763,15 +3139,32 @@ const CH14_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>A MOSFET is in saturation when:</>,
       choices: [
-        <><InlineMath>V<sub>DS</sub> &gt; V<sub>GS</sub> &minus; V<sub>T</sub></InlineMath> and <InlineMath>V<sub>GS</sub> &gt; V<sub>T</sub></InlineMath></>,
-        <InlineMath>V<sub>DS</sub> &lt; V<sub>GS</sub> &minus; V<sub>T</sub></InlineMath>,
-        <InlineMath>V<sub>GS</sub> &lt; V<sub>T</sub></InlineMath>,
-        <InlineMath>V<sub>DS</sub> = 0</InlineMath>,
+        <>
+          <InlineMath>
+            V<sub>DS</sub> &gt; V<sub>GS</sub> &minus; V<sub>T</sub>
+          </InlineMath>{' '}
+          and{' '}
+          <InlineMath>
+            V<sub>GS</sub> &gt; V<sub>T</sub>
+          </InlineMath>
+        </>,
+        <InlineMath>
+          V<sub>DS</sub> &lt; V<sub>GS</sub> &minus; V<sub>T</sub>
+        </InlineMath>,
+        <InlineMath>
+          V<sub>GS</sub> &lt; V<sub>T</sub>
+        </InlineMath>,
+        <InlineMath>
+          V<sub>DS</sub> = 0
+        </InlineMath>,
       ],
       correctIndex: 0,
       explanation: (
         <>
-          Saturation needs the channel pinched at the drain end: <InlineMath>V<sub>DS</sub> &ge; V<sub>OV</sub></InlineMath>{' '}
+          Saturation needs the channel pinched at the drain end:{' '}
+          <InlineMath>
+            V<sub>DS</sub> &ge; V<sub>OV</sub>
+          </InlineMath>{' '}
           with the gate above threshold
           <Cite id="sedra-smith-2014" in={CH14_SOURCES} />.
         </>
@@ -2785,8 +3178,11 @@ const CH14_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          False. The depletion region widens; only the tiny saturation current <InlineMath>I<sub>s</sub></InlineMath> flows
-          until breakdown. That asymmetry is the rectifying action.
+          False. The depletion region widens; only the tiny saturation current{' '}
+          <InlineMath>
+            I<sub>s</sub>
+          </InlineMath>{' '}
+          flows until breakdown. That asymmetry is the rectifying action.
         </>
       ),
     },
@@ -2814,8 +3210,15 @@ const CH14_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          A BJT with <InlineMath>&beta; = 150</InlineMath> has <InlineMath>I<sub>B</sub> = 20 &micro;A</InlineMath>. What is <InlineMath>I<sub>C</sub></InlineMath>, in
-          milliamperes?
+          A BJT with <InlineMath>&beta; = 150</InlineMath> has{' '}
+          <InlineMath>
+            I<sub>B</sub> = 20 &micro;A
+          </InlineMath>
+          . What is{' '}
+          <InlineMath>
+            I<sub>C</sub>
+          </InlineMath>
+          , in milliamperes?
         </>
       ),
       targetValue: 3,
@@ -2823,7 +3226,10 @@ const CH14_QUIZ: ChapterQuiz = {
       unit: 'mA',
       explanation: (
         <>
-          <InlineMath>I<sub>C</sub> = &beta; I<sub>B</sub> = 150 &middot; 20 &micro;A = 3 mA</InlineMath>.
+          <InlineMath>
+            I<sub>C</sub> = &beta; I<sub>B</sub> = 150 &middot; 20 &micro;A = 3 mA
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -2832,8 +3238,19 @@ const CH14_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          A BJT in the active region has <InlineMath>I<sub>C</sub> = 1 mA</InlineMath>. What is its small-signal
-          transconductance <InlineMath>g<sub>m</sub></InlineMath>, in millisiemens? (<InlineMath>V<sub>T</sub> &asymp; 25.85 mV</InlineMath>.)
+          A BJT in the active region has{' '}
+          <InlineMath>
+            I<sub>C</sub> = 1 mA
+          </InlineMath>
+          . What is its small-signal transconductance{' '}
+          <InlineMath>
+            g<sub>m</sub>
+          </InlineMath>
+          , in millisiemens? (
+          <InlineMath>
+            V<sub>T</sub> &asymp; 25.85 mV
+          </InlineMath>
+          .)
         </>
       ),
       targetValue: 38.68,
@@ -2841,7 +3258,9 @@ const CH14_QUIZ: ChapterQuiz = {
       unit: 'mS',
       explanation: (
         <>
-          <InlineMath>g<sub>m</sub> = I<sub>C</sub>/V<sub>T</sub> = 1 mA/25.85 mV &approx; 38.7 mS</InlineMath>
+          <InlineMath>
+            g<sub>m</sub> = I<sub>C</sub>/V<sub>T</sub> = 1 mA/25.85 mV &approx; 38.7 mS
+          </InlineMath>
           <Cite id="razavi-2021" in={CH14_SOURCES} />.
         </>
       ),
@@ -2908,7 +3327,9 @@ const CH15_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>f(t) = a&#8320;/2 + &sum; (a<sub>n</sub> cos n&omega;t + b<sub>n</sub> sin n&omega;t)</InlineMath>
+          <InlineMath>
+            f(t) = a&#8320;/2 + &sum; (a<sub>n</sub> cos n&omega;t + b<sub>n</sub> sin n&omega;t)
+          </InlineMath>
           <Cite id="fourier-1822" in={CH15_SOURCES} />.
         </>
       ),
@@ -2924,7 +3345,11 @@ const CH15_QUIZ: ChapterQuiz = {
         <>All harmonics with equal amplitude.</>,
       ],
       correctIndex: 2,
-      explanation: <>Odd harmonics only, with amplitudes <InlineMath>1/n</InlineMath>: 1, 1/3, 1/5, 1/7, ...</>,
+      explanation: (
+        <>
+          Odd harmonics only, with amplitudes <InlineMath>1/n</InlineMath>: 1, 1/3, 1/5, 1/7, ...
+        </>
+      ),
     },
     {
       id: 'q3',
@@ -2939,21 +3364,33 @@ const CH15_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>&lt;f&sup2;&gt; = &frac12; &sum;(a<sub>n</sub>&sup2; + b<sub>n</sub>&sup2;)</InlineMath>: total power
-          in time = total power summed over harmonics.
+          <InlineMath>
+            &lt;f&sup2;&gt; = &frac12; &sum;(a<sub>n</sub>&sup2; + b<sub>n</sub>&sup2;)
+          </InlineMath>
+          : total power in time = total power summed over harmonics.
         </>
       ),
     },
     {
       id: 'q4',
       type: 'multiple-choice',
-      prompt: <>The Cooley-Tukey FFT reduces the cost of an N-point DFT from <InlineMath>O(N&sup2;)</InlineMath> to:</>,
-      choices: [<InlineMath>O(N)</InlineMath>, <InlineMath>O(N log N)</InlineMath>, <InlineMath>O(N&sup3;/&sup2;)</InlineMath>, <InlineMath>O(2N)</InlineMath>],
+      prompt: (
+        <>
+          The Cooley-Tukey FFT reduces the cost of an N-point DFT from{' '}
+          <InlineMath>O(N&sup2;)</InlineMath> to:
+        </>
+      ),
+      choices: [
+        <InlineMath>O(N)</InlineMath>,
+        <InlineMath>O(N log N)</InlineMath>,
+        <InlineMath>O(N&sup3;/&sup2;)</InlineMath>,
+        <InlineMath>O(2N)</InlineMath>,
+      ],
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>O(N log N)</InlineMath>. For <InlineMath>N = 1024</InlineMath> that&rsquo;s 10240 vs 1048576 &mdash; the speedup that made
-          digital signal processing practical
+          <InlineMath>O(N log N)</InlineMath>. For <InlineMath>N = 1024</InlineMath> that&rsquo;s
+          10240 vs 1048576 &mdash; the speedup that made digital signal processing practical
           <Cite id="cooley-tukey-1965" in={CH15_SOURCES} />.
         </>
       ),
@@ -2999,19 +3436,34 @@ const CH15_QUIZ: ChapterQuiz = {
     {
       id: 'q7',
       type: 'numeric',
-      prompt: <>How many multiplies does a naive 64-point DFT need? (<InlineMath>N&sup2;</InlineMath>.)</>,
+      prompt: (
+        <>
+          How many multiplies does a naive 64-point DFT need? (<InlineMath>N&sup2;</InlineMath>.)
+        </>
+      ),
       targetValue: 4096,
       tolerance: 0.02,
-      explanation: <><InlineMath>64&sup2; = 4096</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>64&sup2; = 4096</InlineMath>.
+        </>
+      ),
     },
     {
       id: 'q8',
       type: 'numeric',
-      prompt: <>How many for the FFT on 64 points (<InlineMath>N log&#8322; N</InlineMath>)?</>,
+      prompt: (
+        <>
+          How many for the FFT on 64 points (<InlineMath>N log&#8322; N</InlineMath>)?
+        </>
+      ),
       targetValue: 384,
       tolerance: 0.05,
       explanation: (
-        <><InlineMath>64 &middot; 6 = 384</InlineMath>. About a 10&times; speedup at this size; vastly more for larger N.</>
+        <>
+          <InlineMath>64 &middot; 6 = 384</InlineMath>. About a 10&times; speedup at this size;
+          vastly more for larger N.
+        </>
       ),
     },
     {
@@ -3040,7 +3492,11 @@ const CH15_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['2', 'two', 'twice', '2x', 'nyquist', 'nyquist rate'],
       explanation: (
         <>
-          Shannon-Nyquist: <InlineMath>f<sub>s</sub> &gt; 2 f<sub>max</sub></InlineMath>. Below that, aliasing.
+          Shannon-Nyquist:{' '}
+          <InlineMath>
+            f<sub>s</sub> &gt; 2 f<sub>max</sub>
+          </InlineMath>
+          . Below that, aliasing.
         </>
       ),
     },
@@ -3059,15 +3515,30 @@ const CH16_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>The corner (&minus;3 dB) frequency of a first-order RC low-pass is:</>,
       choices: [
-        <InlineMath>f<sub>c</sub> = RC</InlineMath>,
-        <InlineMath>f<sub>c</sub> = 1/(RC)</InlineMath>,
-        <InlineMath>f<sub>c</sub> = 1/(2&pi;RC)</InlineMath>,
-        <InlineMath>f<sub>c</sub> = 2&pi;/RC</InlineMath>,
+        <InlineMath>
+          f<sub>c</sub> = RC
+        </InlineMath>,
+        <InlineMath>
+          f<sub>c</sub> = 1/(RC)
+        </InlineMath>,
+        <InlineMath>
+          f<sub>c</sub> = 1/(2&pi;RC)
+        </InlineMath>,
+        <InlineMath>
+          f<sub>c</sub> = 2&pi;/RC
+        </InlineMath>,
       ],
       correctIndex: 2,
       explanation: (
         <>
-          <InlineMath>f<sub>c</sub> = 1/(2&pi;RC)</InlineMath>. At <InlineMath>f<sub>c</sub></InlineMath>, <InlineMath>|H| = 1/&radic;2 = &minus;3 dB</InlineMath>
+          <InlineMath>
+            f<sub>c</sub> = 1/(2&pi;RC)
+          </InlineMath>
+          . At{' '}
+          <InlineMath>
+            f<sub>c</sub>
+          </InlineMath>
+          , <InlineMath>|H| = 1/&radic;2 = &minus;3 dB</InlineMath>
           <Cite id="horowitz-hill-2015" in={CH16_SOURCES} />.
         </>
       ),
@@ -3081,16 +3552,26 @@ const CH16_QUIZ: ChapterQuiz = {
         </>
       ),
       choices: [
-        <InlineMath>+R<sub>f</sub>/R<sub>in</sub></InlineMath>,
-        <InlineMath>&minus;R<sub>f</sub>/R<sub>in</sub></InlineMath>,
-        <InlineMath>R<sub>in</sub>/R<sub>f</sub></InlineMath>,
-        <InlineMath>R<sub>in</sub> &middot; R<sub>f</sub></InlineMath>,
+        <InlineMath>
+          +R<sub>f</sub>/R<sub>in</sub>
+        </InlineMath>,
+        <InlineMath>
+          &minus;R<sub>f</sub>/R<sub>in</sub>
+        </InlineMath>,
+        <InlineMath>
+          R<sub>in</sub>/R<sub>f</sub>
+        </InlineMath>,
+        <InlineMath>
+          R<sub>in</sub> &middot; R<sub>f</sub>
+        </InlineMath>,
       ],
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>V<sub>out</sub>/V<sub>in</sub> = &minus;R<sub>f</sub>/R<sub>in</sub></InlineMath> from the
-          virtual-short approximation
+          <InlineMath>
+            V<sub>out</sub>/V<sub>in</sub> = &minus;R<sub>f</sub>/R<sub>in</sub>
+          </InlineMath>{' '}
+          from the virtual-short approximation
           <Cite id="sedra-smith-2014" in={CH16_SOURCES} />.
         </>
       ),
@@ -3118,15 +3599,26 @@ const CH16_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>The reflection coefficient at a load is:</>,
       choices: [
-        <InlineMath>&Gamma; = Z<sub>L</sub> + Z&#8320;</InlineMath>,
-        <InlineMath>&Gamma; = Z<sub>L</sub>/Z&#8320;</InlineMath>,
-        <InlineMath>&Gamma; = (Z<sub>L</sub> &minus; Z&#8320;)/(Z<sub>L</sub> + Z&#8320;)</InlineMath>,
-        <InlineMath>&Gamma; = Z&#8320; &minus; Z<sub>L</sub></InlineMath>,
+        <InlineMath>
+          &Gamma; = Z<sub>L</sub> + Z&#8320;
+        </InlineMath>,
+        <InlineMath>
+          &Gamma; = Z<sub>L</sub>/Z&#8320;
+        </InlineMath>,
+        <InlineMath>
+          &Gamma; = (Z<sub>L</sub> &minus; Z&#8320;)/(Z<sub>L</sub> + Z&#8320;)
+        </InlineMath>,
+        <InlineMath>
+          &Gamma; = Z&#8320; &minus; Z<sub>L</sub>
+        </InlineMath>,
       ],
       correctIndex: 2,
       explanation: (
         <>
-          <InlineMath>&Gamma; = (Z<sub>L</sub> &minus; Z&#8320;)/(Z<sub>L</sub> + Z&#8320;)</InlineMath>. Matched load:
+          <InlineMath>
+            &Gamma; = (Z<sub>L</sub> &minus; Z&#8320;)/(Z<sub>L</sub> + Z&#8320;)
+          </InlineMath>
+          . Matched load:
           <InlineMath>&Gamma; = 0</InlineMath>, no reflection.
         </>
       ),
@@ -3144,8 +3636,8 @@ const CH16_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>L &lt; &lambda;/10</InlineMath> is the standard rule of thumb. Above that, transmission-line effects
-          (reflections, standing waves) start to matter
+          <InlineMath>L &lt; &lambda;/10</InlineMath> is the standard rule of thumb. Above that,
+          transmission-line effects (reflections, standing waves) start to matter
           <Cite id="johnson-graham-1993" in={CH16_SOURCES} />.
         </>
       ),
@@ -3163,8 +3655,9 @@ const CH16_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          The virtual short: infinite open-loop gain plus finite output forces <InlineMath>V&#8314; = V&#8315;</InlineMath>.
-          That single fact reduces most op-amp circuits to a resistor ratio.
+          The virtual short: infinite open-loop gain plus finite output forces{' '}
+          <InlineMath>V&#8314; = V&#8315;</InlineMath>. That single fact reduces most op-amp
+          circuits to a resistor ratio.
         </>
       ),
     },
@@ -3173,7 +3666,12 @@ const CH16_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          For RC low-pass with <InlineMath>R = 1 k&Omega;</InlineMath> and <InlineMath>C = 100 nF</InlineMath>, what is <InlineMath>f<sub>c</sub></InlineMath>, in kHz?
+          For RC low-pass with <InlineMath>R = 1 k&Omega;</InlineMath> and{' '}
+          <InlineMath>C = 100 nF</InlineMath>, what is{' '}
+          <InlineMath>
+            f<sub>c</sub>
+          </InlineMath>
+          , in kHz?
         </>
       ),
       targetValue: 1.592,
@@ -3181,7 +3679,10 @@ const CH16_QUIZ: ChapterQuiz = {
       unit: 'kHz',
       explanation: (
         <>
-          <InlineMath>f<sub>c</sub> = 1/(2&pi;&middot;10&sup3;&middot;10&#8315;&#8311;) &approx; 1.59 kHz</InlineMath>.
+          <InlineMath>
+            f<sub>c</sub> = 1/(2&pi;&middot;10&sup3;&middot;10&#8315;&#8311;) &approx; 1.59 kHz
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -3190,7 +3691,23 @@ const CH16_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          An inverting amp with <InlineMath>R<sub>in</sub> = 1 k&Omega;</InlineMath>, <InlineMath>R<sub>f</sub> = 47 k&Omega;</InlineMath> sees <InlineMath>V<sub>in</sub> = 50 mV</InlineMath>. What is <InlineMath>V<sub>out</sub></InlineMath>, in volts?
+          An inverting amp with{' '}
+          <InlineMath>
+            R<sub>in</sub> = 1 k&Omega;
+          </InlineMath>
+          ,{' '}
+          <InlineMath>
+            R<sub>f</sub> = 47 k&Omega;
+          </InlineMath>{' '}
+          sees{' '}
+          <InlineMath>
+            V<sub>in</sub> = 50 mV
+          </InlineMath>
+          . What is{' '}
+          <InlineMath>
+            V<sub>out</sub>
+          </InlineMath>
+          , in volts?
         </>
       ),
       targetValue: -2.35,
@@ -3198,7 +3715,10 @@ const CH16_QUIZ: ChapterQuiz = {
       unit: 'V',
       explanation: (
         <>
-          <InlineMath>V<sub>out</sub> = &minus;(47/1)(0.050) = &minus;2.35 V</InlineMath>.
+          <InlineMath>
+            V<sub>out</sub> = &minus;(47/1)(0.050) = &minus;2.35 V
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -3253,16 +3773,26 @@ const CH17_QUIZ: ChapterQuiz = {
         </>
       ),
       choices: [
-        <InlineMath>1/&epsilon;<sub>r</sub></InlineMath>,
-        <InlineMath>&epsilon;<sub>r</sub></InlineMath>,
-        <InlineMath>1 + &epsilon;<sub>r</sub></InlineMath>,
-        <InlineMath>&epsilon;<sub>r</sub>&sup2;</InlineMath>,
+        <InlineMath>
+          1/&epsilon;<sub>r</sub>
+        </InlineMath>,
+        <InlineMath>
+          &epsilon;<sub>r</sub>
+        </InlineMath>,
+        <InlineMath>
+          1 + &epsilon;<sub>r</sub>
+        </InlineMath>,
+        <InlineMath>
+          &epsilon;<sub>r</sub>&sup2;
+        </InlineMath>,
       ],
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>C = &epsilon;<sub>r</sub> &middot; C<sub>vacuum</sub></InlineMath>. Bound charge in the dielectric
-          partially cancels the applied field
+          <InlineMath>
+            C = &epsilon;<sub>r</sub> &middot; C<sub>vacuum</sub>
+          </InlineMath>
+          . Bound charge in the dielectric partially cancels the applied field
           <Cite id="griffiths-2017" in={CH17_SOURCES} />.
         </>
       ),
@@ -3284,8 +3814,15 @@ const CH17_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          Diamagnets weakly oppose an applied field (<InlineMath>&chi;<sub>m</sub> &lt; 0</InlineMath>): copper, water,
-          bismuth. <InlineMath>&mu;<sub>r</sub></InlineMath> is fractionally below 1.
+          Diamagnets weakly oppose an applied field (
+          <InlineMath>
+            &chi;<sub>m</sub> &lt; 0
+          </InlineMath>
+          ): copper, water, bismuth.{' '}
+          <InlineMath>
+            &mu;<sub>r</sub>
+          </InlineMath>{' '}
+          is fractionally below 1.
         </>
       ),
     },
@@ -3294,10 +3831,30 @@ const CH17_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>A ferromagnet has:</>,
       choices: [
-        <><InlineMath>&mu;<sub>r</sub> &approx; 1</InlineMath> always.</>,
-        <><InlineMath>&mu;<sub>r</sub></InlineMath> slightly less than 1.</>,
-        <><InlineMath>&mu;<sub>r</sub> &gt;&gt; 1</InlineMath> with hysteresis below the Curie temperature.</>,
-        <><InlineMath>&mu;<sub>r</sub> = 0</InlineMath>.</>,
+        <>
+          <InlineMath>
+            &mu;<sub>r</sub> &approx; 1
+          </InlineMath>{' '}
+          always.
+        </>,
+        <>
+          <InlineMath>
+            &mu;<sub>r</sub>
+          </InlineMath>{' '}
+          slightly less than 1.
+        </>,
+        <>
+          <InlineMath>
+            &mu;<sub>r</sub> &gt;&gt; 1
+          </InlineMath>{' '}
+          with hysteresis below the Curie temperature.
+        </>,
+        <>
+          <InlineMath>
+            &mu;<sub>r</sub> = 0
+          </InlineMath>
+          .
+        </>,
       ],
       correctIndex: 2,
       explanation: (
@@ -3313,7 +3870,11 @@ const CH17_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: (
         <>
-          The relation <InlineMath>&epsilon;<sub>r</sub> = 1 + &chi;<sub>e</sub></InlineMath> defines:
+          The relation{' '}
+          <InlineMath>
+            &epsilon;<sub>r</sub> = 1 + &chi;<sub>e</sub>
+          </InlineMath>{' '}
+          defines:
         </>
       ),
       choices: [
@@ -3325,7 +3886,18 @@ const CH17_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>&chi;<sub>e</sub></InlineMath> is the electric susceptibility; <InlineMath>&epsilon;<sub>r</sub> = 1 + &chi;<sub>e</sub></InlineMath>, <InlineMath>&mu;<sub>r</sub> = 1 + &chi;<sub>m</sub></InlineMath>.
+          <InlineMath>
+            &chi;<sub>e</sub>
+          </InlineMath>{' '}
+          is the electric susceptibility;{' '}
+          <InlineMath>
+            &epsilon;<sub>r</sub> = 1 + &chi;<sub>e</sub>
+          </InlineMath>
+          ,{' '}
+          <InlineMath>
+            &mu;<sub>r</sub> = 1 + &chi;<sub>m</sub>
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -3339,8 +3911,12 @@ const CH17_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          Above <InlineMath>T<sub>C</sub></InlineMath> thermal agitation overwhelms the exchange coupling, domain alignment
-          is lost, and the material reverts to paramagnetism
+          Above{' '}
+          <InlineMath>
+            T<sub>C</sub>
+          </InlineMath>{' '}
+          thermal agitation overwhelms the exchange coupling, domain alignment is lost, and the
+          material reverts to paramagnetism
           <Cite id="weiss-1907" in={CH17_SOURCES} />.
         </>
       ),
@@ -3350,15 +3926,33 @@ const CH17_QUIZ: ChapterQuiz = {
       type: 'true-false',
       prompt: (
         <>
-          The speed of light in a non-magnetic dielectric is <InlineMath>c/&radic;&epsilon;<sub>r</sub></InlineMath>;
-          equivalently, the refractive index is <InlineMath>n = &radic;(&epsilon;<sub>r</sub> &mu;<sub>r</sub>)</InlineMath>.
+          The speed of light in a non-magnetic dielectric is{' '}
+          <InlineMath>
+            c/&radic;&epsilon;<sub>r</sub>
+          </InlineMath>
+          ; equivalently, the refractive index is{' '}
+          <InlineMath>
+            n = &radic;(&epsilon;<sub>r</sub> &mu;<sub>r</sub>)
+          </InlineMath>
+          .
         </>
       ),
       choices: [<>True</>, <>False</>],
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>v = c/n = c/&radic;(&epsilon;<sub>r</sub>&mu;<sub>r</sub>)</InlineMath>. At optical frequencies <InlineMath>&mu;<sub>r</sub> &asymp; 1</InlineMath> for most materials, so <InlineMath>n &asymp; &radic;&epsilon;<sub>r</sub></InlineMath>.
+          <InlineMath>
+            v = c/n = c/&radic;(&epsilon;<sub>r</sub>&mu;<sub>r</sub>)
+          </InlineMath>
+          . At optical frequencies{' '}
+          <InlineMath>
+            &mu;<sub>r</sub> &asymp; 1
+          </InlineMath>{' '}
+          for most materials, so{' '}
+          <InlineMath>
+            n &asymp; &radic;&epsilon;<sub>r</sub>
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -3368,7 +3962,11 @@ const CH17_QUIZ: ChapterQuiz = {
       prompt: (
         <>
           A vacuum cap of <strong className="text-text">100 pF</strong> has its gap filled with a
-          dielectric of <InlineMath>&epsilon;<sub>r</sub> = 6.7</InlineMath> (mica). What is the new C, in pF?
+          dielectric of{' '}
+          <InlineMath>
+            &epsilon;<sub>r</sub> = 6.7
+          </InlineMath>{' '}
+          (mica). What is the new C, in pF?
         </>
       ),
       targetValue: 670,
@@ -3376,7 +3974,9 @@ const CH17_QUIZ: ChapterQuiz = {
       unit: 'pF',
       explanation: (
         <>
-          <InlineMath>C = &epsilon;<sub>r</sub> &middot; 100 pF = 670 pF</InlineMath>
+          <InlineMath>
+            C = &epsilon;<sub>r</sub> &middot; 100 pF = 670 pF
+          </InlineMath>
           <Cite id="moulson-herbert-2003" in={CH17_SOURCES} />.
         </>
       ),
@@ -3386,15 +3986,21 @@ const CH17_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          An iron core has <InlineMath>&mu;<sub>r</sub> = 5000</InlineMath>. By what factor does it boost the inductance of a
-          coil compared to an air core?
+          An iron core has{' '}
+          <InlineMath>
+            &mu;<sub>r</sub> = 5000
+          </InlineMath>
+          . By what factor does it boost the inductance of a coil compared to an air core?
         </>
       ),
       targetValue: 5000,
       tolerance: 0.02,
       explanation: (
         <>
-          <InlineMath>L = &mu;<sub>r</sub> L&#8320;</InlineMath>. A 2 mH air-cored coil becomes 10 H with this iron.
+          <InlineMath>
+            L = &mu;<sub>r</sub> L&#8320;
+          </InlineMath>
+          . A 2 mH air-cored coil becomes 10 H with this iron.
         </>
       ),
     },
@@ -3427,7 +4033,11 @@ const CH17_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['curie temperature', 'curie point', 'curie-temperature'],
       explanation: (
         <>
-          The Curie temperature <InlineMath>T<sub>C</sub></InlineMath>. Iron&rsquo;s is 1043 K; nickel&rsquo;s is 627 K.
+          The Curie temperature{' '}
+          <InlineMath>
+            T<sub>C</sub>
+          </InlineMath>
+          . Iron&rsquo;s is 1043 K; nickel&rsquo;s is 627 K.
         </>
       ),
     },
@@ -3448,7 +4058,9 @@ const CH18_QUIZ: ChapterQuiz = {
       choices: [
         <InlineMath>n&#8321; sin&theta;&#8321; = n&#8322; sin&theta;&#8322;</InlineMath>,
         <InlineMath>n&#8321; cos&theta;&#8321; = n&#8322; cos&theta;&#8322;</InlineMath>,
-        <InlineMath>n&#8321;&sup2; + n&#8322;&sup2; = sin&theta;&#8321; sin&theta;&#8322;</InlineMath>,
+        <InlineMath>
+          n&#8321;&sup2; + n&#8322;&sup2; = sin&theta;&#8321; sin&theta;&#8322;
+        </InlineMath>,
         <InlineMath>&theta;&#8321; = &theta;&#8322;</InlineMath>,
       ],
       correctIndex: 0,
@@ -3472,8 +4084,10 @@ const CH18_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>tan(&theta;<sub>B</sub>) = n&#8322;/n&#8321;</InlineMath>. At this angle the p-polarized component is
-          zero in the reflected beam
+          <InlineMath>
+            tan(&theta;<sub>B</sub>) = n&#8322;/n&#8321;
+          </InlineMath>
+          . At this angle the p-polarized component is zero in the reflected beam
           <Cite id="brewster-1815" in={CH18_SOURCES} />.
         </>
       ),
@@ -3485,7 +4099,11 @@ const CH18_QUIZ: ChapterQuiz = {
       choices: [
         <>Light going from low-n to high-n medium.</>,
         <>
-          Light going from high-n to low-n medium at an angle greater than <InlineMath>&theta;<sub>c</sub></InlineMath>.
+          Light going from high-n to low-n medium at an angle greater than{' '}
+          <InlineMath>
+            &theta;<sub>c</sub>
+          </InlineMath>
+          .
         </>,
         <>The wavelength to be in the UV.</>,
         <>The surface to be metallic.</>,
@@ -3493,7 +4111,14 @@ const CH18_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>sin&theta;<sub>c</sub> = n&#8322;/n&#8321;</InlineMath> (with <InlineMath>n&#8321; &gt; n&#8322;</InlineMath>). Above <InlineMath>&theta;<sub>c</sub></InlineMath>, no transmitted wave exists. The principle behind fibre optics.
+          <InlineMath>
+            sin&theta;<sub>c</sub> = n&#8322;/n&#8321;
+          </InlineMath>{' '}
+          (with <InlineMath>n&#8321; &gt; n&#8322;</InlineMath>). Above{' '}
+          <InlineMath>
+            &theta;<sub>c</sub>
+          </InlineMath>
+          , no transmitted wave exists. The principle behind fibre optics.
         </>
       ),
     },
@@ -3502,19 +4127,43 @@ const CH18_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: (
         <>
-          A thin-lens object distance <InlineMath>d<sub>o</sub></InlineMath> and image distance <InlineMath>d<sub>i</sub></InlineMath> satisfy:
+          A thin-lens object distance{' '}
+          <InlineMath>
+            d<sub>o</sub>
+          </InlineMath>{' '}
+          and image distance{' '}
+          <InlineMath>
+            d<sub>i</sub>
+          </InlineMath>{' '}
+          satisfy:
         </>
       ),
       choices: [
-        <InlineMath>1/f = 1/d<sub>o</sub> + 1/d<sub>i</sub></InlineMath>,
-        <InlineMath>f = d<sub>o</sub> + d<sub>i</sub></InlineMath>,
-        <InlineMath>f = d<sub>o</sub> d<sub>i</sub></InlineMath>,
-        <InlineMath>1/f = 1/d<sub>o</sub> &minus; 1/d<sub>i</sub></InlineMath>,
+        <InlineMath>
+          1/f = 1/d<sub>o</sub> + 1/d<sub>i</sub>
+        </InlineMath>,
+        <InlineMath>
+          f = d<sub>o</sub> + d<sub>i</sub>
+        </InlineMath>,
+        <InlineMath>
+          f = d<sub>o</sub> d<sub>i</sub>
+        </InlineMath>,
+        <InlineMath>
+          1/f = 1/d<sub>o</sub> &minus; 1/d<sub>i</sub>
+        </InlineMath>,
       ],
       correctIndex: 0,
       explanation: (
         <>
-          The thin-lens equation. With <InlineMath>d<sub>o</sub>&rarr;&infin;</InlineMath> (incoming parallel rays), <InlineMath>d<sub>i</sub> = f</InlineMath> &mdash; the focal plane.
+          The thin-lens equation. With{' '}
+          <InlineMath>
+            d<sub>o</sub>&rarr;&infin;
+          </InlineMath>{' '}
+          (incoming parallel rays),{' '}
+          <InlineMath>
+            d<sub>i</sub> = f
+          </InlineMath>{' '}
+          &mdash; the focal plane.
         </>
       ),
     },
@@ -3531,8 +4180,8 @@ const CH18_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          Frequency is set by the source. <InlineMath>v = c/n</InlineMath> drops, so <InlineMath>&lambda; = v/f</InlineMath> shortens by the same
-          factor.
+          Frequency is set by the source. <InlineMath>v = c/n</InlineMath> drops, so{' '}
+          <InlineMath>&lambda; = v/f</InlineMath> shortens by the same factor.
         </>
       ),
     },
@@ -3560,7 +4209,12 @@ const CH18_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          Critical angle for total internal reflection at water-air (<InlineMath>n&#8321; = 1.33</InlineMath>). Give <InlineMath>&theta;<sub>c</sub></InlineMath> in degrees.
+          Critical angle for total internal reflection at water-air (
+          <InlineMath>n&#8321; = 1.33</InlineMath>). Give{' '}
+          <InlineMath>
+            &theta;<sub>c</sub>
+          </InlineMath>{' '}
+          in degrees.
         </>
       ),
       targetValue: 48.8,
@@ -3568,7 +4222,14 @@ const CH18_QUIZ: ChapterQuiz = {
       unit: '&deg;',
       explanation: (
         <>
-          <InlineMath>sin&theta;<sub>c</sub> = 1.00/1.33 &approx; 0.752</InlineMath>, <InlineMath>&theta;<sub>c</sub> &approx; 48.8&deg;</InlineMath>.
+          <InlineMath>
+            sin&theta;<sub>c</sub> = 1.00/1.33 &approx; 0.752
+          </InlineMath>
+          ,{' '}
+          <InlineMath>
+            &theta;<sub>c</sub> &approx; 48.8&deg;
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -3577,7 +4238,11 @@ const CH18_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          Brewster&rsquo;s angle for an air-glass interface with <InlineMath>n = 1.52</InlineMath>. Give <InlineMath>&theta;<sub>B</sub></InlineMath>{' '}
+          Brewster&rsquo;s angle for an air-glass interface with <InlineMath>n = 1.52</InlineMath>.
+          Give{' '}
+          <InlineMath>
+            &theta;<sub>B</sub>
+          </InlineMath>{' '}
           in degrees.
         </>
       ),
@@ -3586,7 +4251,10 @@ const CH18_QUIZ: ChapterQuiz = {
       unit: '&deg;',
       explanation: (
         <>
-          <InlineMath>&theta;<sub>B</sub> = arctan(1.52) &approx; 56.7&deg;</InlineMath>.
+          <InlineMath>
+            &theta;<sub>B</sub> = arctan(1.52) &approx; 56.7&deg;
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -3602,8 +4270,8 @@ const CH18_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['dispersion', 'chromatic dispersion'],
       explanation: (
         <>
-          Dispersion: <InlineMath>n(&lambda;)</InlineMath> decreases with <InlineMath>&lambda;</InlineMath> in normal materials, so blue refracts more
-          than red.
+          Dispersion: <InlineMath>n(&lambda;)</InlineMath> decreases with{' '}
+          <InlineMath>&lambda;</InlineMath> in normal materials, so blue refracts more than red.
         </>
       ),
     },
@@ -3655,8 +4323,8 @@ const CH19_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>I(&theta;) &prop; sin&sup2;&theta;</InlineMath>: zero along the axis, maximum broadside. No antenna in
-          3D space radiates isotropically
+          <InlineMath>I(&theta;) &prop; sin&sup2;&theta;</InlineMath>: zero along the axis, maximum
+          broadside. No antenna in 3D space radiates isotropically
           <Cite id="balanis-2016" in={CH19_SOURCES} />.
         </>
       ),
@@ -3666,16 +4334,24 @@ const CH19_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>The Friis transmission equation is:</>,
       choices: [
-        <InlineMath>P<sub>r</sub> = P<sub>t</sub> G<sub>t</sub> G<sub>r</sub> (&lambda;/4&pi;d)&sup2;</InlineMath>,
-        <InlineMath>P<sub>r</sub> = P<sub>t</sub> / d</InlineMath>,
-        <InlineMath>P<sub>r</sub> = P<sub>t</sub> G<sub>t</sub> G<sub>r</sub> &lambda;d</InlineMath>,
-        <InlineMath>P<sub>r</sub> = P<sub>t</sub> &middot; 4&pi;d&sup2;</InlineMath>,
+        <InlineMath>
+          P<sub>r</sub> = P<sub>t</sub> G<sub>t</sub> G<sub>r</sub> (&lambda;/4&pi;d)&sup2;
+        </InlineMath>,
+        <InlineMath>
+          P<sub>r</sub> = P<sub>t</sub> / d
+        </InlineMath>,
+        <InlineMath>
+          P<sub>r</sub> = P<sub>t</sub> G<sub>t</sub> G<sub>r</sub> &lambda;d
+        </InlineMath>,
+        <InlineMath>
+          P<sub>r</sub> = P<sub>t</sub> &middot; 4&pi;d&sup2;
+        </InlineMath>,
       ],
       correctIndex: 0,
       explanation: (
         <>
-          The <InlineMath>(&lambda;/4&pi;d)&sup2;</InlineMath> factor captures both inverse-square spreading and the
-          effective aperture
+          The <InlineMath>(&lambda;/4&pi;d)&sup2;</InlineMath> factor captures both inverse-square
+          spreading and the effective aperture
           <Cite id="friis-1946" in={CH19_SOURCES} />.
         </>
       ),
@@ -3684,12 +4360,17 @@ const CH19_QUIZ: ChapterQuiz = {
       id: 'q3',
       type: 'multiple-choice',
       prompt: <>A half-wave dipole resonates when:</>,
-      choices: [<InlineMath>L = &lambda;/2</InlineMath>, <InlineMath>L = &lambda;</InlineMath>, <InlineMath>L = &lambda;/4</InlineMath>, <InlineMath>L = 2&lambda;</InlineMath>],
+      choices: [
+        <InlineMath>L = &lambda;/2</InlineMath>,
+        <InlineMath>L = &lambda;</InlineMath>,
+        <InlineMath>L = &lambda;/4</InlineMath>,
+        <InlineMath>L = 2&lambda;</InlineMath>,
+      ],
       correctIndex: 0,
       explanation: (
         <>
-          A half-wave dipole has <InlineMath>L = &lambda;/2</InlineMath> and presents a real input impedance of approximately
-          73 &Omega; at resonance.
+          A half-wave dipole has <InlineMath>L = &lambda;/2</InlineMath> and presents a real input
+          impedance of approximately 73 &Omega; at resonance.
         </>
       ),
     },
@@ -3706,8 +4387,10 @@ const CH19_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          Adjacent elements driven with <InlineMath>&Delta;&phi;</InlineMath> create constructive interference at angle
-          <InlineMath>sin&theta; = &lambda;&Delta;&phi;/(2&pi;d)</InlineMath>, so changing <InlineMath>&Delta;&phi;</InlineMath> sweeps the beam
+          Adjacent elements driven with <InlineMath>&Delta;&phi;</InlineMath> create constructive
+          interference at angle
+          <InlineMath>sin&theta; = &lambda;&Delta;&phi;/(2&pi;d)</InlineMath>, so changing{' '}
+          <InlineMath>&Delta;&phi;</InlineMath> sweeps the beam
           <Cite id="balanis-2016" in={CH19_SOURCES} />.
         </>
       ),
@@ -3743,8 +4426,8 @@ const CH19_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>r &gt; 2D&sup2;/&lambda;</InlineMath> defines Fraunhofer/far-field, where the field has settled into
-          the <InlineMath>1/r</InlineMath> angular pattern.
+          <InlineMath>r &gt; 2D&sup2;/&lambda;</InlineMath> defines Fraunhofer/far-field, where the
+          field has settled into the <InlineMath>1/r</InlineMath> angular pattern.
         </>
       ),
     },
@@ -3753,28 +4436,38 @@ const CH19_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          What is the half-wave-dipole length for a 2.4 GHz Wi-Fi carrier, in cm? (<InlineMath>c = 3&times;10&#8312; m/s</InlineMath>.)
+          What is the half-wave-dipole length for a 2.4 GHz Wi-Fi carrier, in cm? (
+          <InlineMath>c = 3&times;10&#8312; m/s</InlineMath>.)
         </>
       ),
       targetValue: 6.25,
       tolerance: 0.05,
       unit: 'cm',
-      explanation: <><InlineMath>&lambda; = c/f = 0.125 m</InlineMath>; <InlineMath>L = &lambda;/2 = 6.25 cm</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>&lambda; = c/f = 0.125 m</InlineMath>;{' '}
+          <InlineMath>L = &lambda;/2 = 6.25 cm</InlineMath>.
+        </>
+      ),
     },
     {
       id: 'q8',
       type: 'numeric',
       prompt: (
         <>
-          Compute the relative intensity of a dipole at <InlineMath>&theta; = 60&deg;</InlineMath> vs the broadside maximum
-          (<InlineMath>&theta; = 90&deg;</InlineMath>).
+          Compute the relative intensity of a dipole at <InlineMath>&theta; = 60&deg;</InlineMath>{' '}
+          vs the broadside maximum (<InlineMath>&theta; = 90&deg;</InlineMath>).
         </>
       ),
       targetValue: 0.75,
       tolerance: 0.05,
       explanation: (
         <>
-          <InlineMath>I(60&deg;)/I(90&deg;) = sin&sup2;(60&deg;)/sin&sup2;(90&deg;) = (&radic;3/2)&sup2; = 0.75</InlineMath>.
+          <InlineMath>
+            I(60&deg;)/I(90&deg;) = sin&sup2;(60&deg;)/sin&sup2;(90&deg;) = (&radic;3/2)&sup2; =
+            0.75
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -3835,8 +4528,8 @@ const CH20_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>&tau; = NIAB sin&theta;</InlineMath>, derived from <InlineMath>F = IL &times; B</InlineMath> on each side and summing torque
-          arms.
+          <InlineMath>&tau; = NIAB sin&theta;</InlineMath>, derived from{' '}
+          <InlineMath>F = IL &times; B</InlineMath> on each side and summing torque arms.
         </>
       ),
     },
@@ -3874,7 +4567,14 @@ const CH20_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>E<sub>back</sub> = k<sub>e</sub>&omega;</InlineMath>. The terminal current <InlineMath>I = (V &minus; E<sub>back</sub>)/R</InlineMath> drops as the motor accelerates, which is the self-limiting mechanism.
+          <InlineMath>
+            E<sub>back</sub> = k<sub>e</sub>&omega;
+          </InlineMath>
+          . The terminal current{' '}
+          <InlineMath>
+            I = (V &minus; E<sub>back</sub>)/R
+          </InlineMath>{' '}
+          drops as the motor accelerates, which is the self-limiting mechanism.
         </>
       ),
     },
@@ -3886,7 +4586,9 @@ const CH20_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>n<sub>s</sub> = 120f/p = 120&middot;60/4 = 1800 rpm</InlineMath>
+          <InlineMath>
+            n<sub>s</sub> = 120f/p = 120&middot;60/4 = 1800 rpm
+          </InlineMath>
           <Cite id="fitzgerald-kingsley-umans-2014" in={CH20_SOURCES} />.
         </>
       ),
@@ -3918,8 +4620,8 @@ const CH20_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          Synchronous machines lock to the line frequency (<InlineMath>s = 0</InlineMath>); induction machines need a small
-          slip to develop torque.
+          Synchronous machines lock to the line frequency (<InlineMath>s = 0</InlineMath>);
+          induction machines need a small slip to develop torque.
         </>
       ),
     },
@@ -3937,7 +4639,10 @@ const CH20_QUIZ: ChapterQuiz = {
       unit: 'A',
       explanation: (
         <>
-          <InlineMath>I = (V &minus; E<sub>back</sub>)/R = (12 &minus; 10)/1 = 2 A</InlineMath>.
+          <InlineMath>
+            I = (V &minus; E<sub>back</sub>)/R = (12 &minus; 10)/1 = 2 A
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -3946,8 +4651,11 @@ const CH20_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          An induction motor has <InlineMath>n<sub>s</sub> = 1800 rpm</InlineMath> and operates at 1740 rpm. What is the
-          slip, in percent?
+          An induction motor has{' '}
+          <InlineMath>
+            n<sub>s</sub> = 1800 rpm
+          </InlineMath>{' '}
+          and operates at 1740 rpm. What is the slip, in percent?
         </>
       ),
       targetValue: 3.33,
@@ -3955,7 +4663,10 @@ const CH20_QUIZ: ChapterQuiz = {
       unit: '%',
       explanation: (
         <>
-          <InlineMath>s = (n<sub>s</sub> &minus; n)/n<sub>s</sub> = (1800 &minus; 1740)/1800 &approx; 3.33%</InlineMath>.
+          <InlineMath>
+            s = (n<sub>s</sub> &minus; n)/n<sub>s</sub> = (1800 &minus; 1740)/1800 &approx; 3.33%
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -4007,12 +4718,18 @@ const CH21_QUIZ: ChapterQuiz = {
       id: 'q1',
       type: 'multiple-choice',
       prompt: <>The peak EMF of a coil with N turns, area A, rotating at &omega; in field B is:</>,
-      choices: [<InlineMath>NBA&omega;</InlineMath>, <InlineMath>NBA/&omega;</InlineMath>, <InlineMath>NB/A</InlineMath>, <InlineMath>BA&omega;&sup2;</InlineMath>],
+      choices: [
+        <InlineMath>NBA&omega;</InlineMath>,
+        <InlineMath>NBA/&omega;</InlineMath>,
+        <InlineMath>NB/A</InlineMath>,
+        <InlineMath>BA&omega;&sup2;</InlineMath>,
+      ],
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>&epsilon;(t) = NBA&omega;sin(&omega;t)</InlineMath>, peak <InlineMath>NBA&omega;</InlineMath>. The output is naturally
-          sinusoidal &mdash; that&rsquo;s why AC won the standardization fight
+          <InlineMath>&epsilon;(t) = NBA&omega;sin(&omega;t)</InlineMath>, peak{' '}
+          <InlineMath>NBA&omega;</InlineMath>. The output is naturally sinusoidal &mdash;
+          that&rsquo;s why AC won the standardization fight
           <Cite id="faraday-1832" in={CH21_SOURCES} />.
         </>
       ),
@@ -4056,8 +4773,10 @@ const CH21_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>P = (|V<sub>grid</sub>||E<sub>f</sub>|/X<sub>s</sub>) sin&delta;</InlineMath>. Real-power throughput is
-          set by the load angle; excitation controls Q
+          <InlineMath>
+            P = (|V<sub>grid</sub>||E<sub>f</sub>|/X<sub>s</sub>) sin&delta;
+          </InlineMath>
+          . Real-power throughput is set by the load angle; excitation controls Q
           <Cite id="kundur-1994-power-stability" in={CH21_SOURCES} />.
         </>
       ),
@@ -4095,7 +4814,10 @@ const CH21_QUIZ: ChapterQuiz = {
       explanation: (
         <>
           Mismatch: load &gt; generation pulls energy from the rotating mass, slowing the rotors and
-          dropping f. <InlineMath>df/dt = &minus;&Delta;P/H<sub>sys</sub></InlineMath>
+          dropping f.{' '}
+          <InlineMath>
+            df/dt = &minus;&Delta;P/H<sub>sys</sub>
+          </InlineMath>
           <Cite id="kundur-1994-power-stability" in={CH21_SOURCES} />.
         </>
       ),
@@ -4114,7 +4836,11 @@ const CH21_QUIZ: ChapterQuiz = {
       unit: 'V',
       explanation: (
         <>
-          <InlineMath>&epsilon;<sub>peak</sub> = NBA&omega; = 100 &middot; 0.5 &middot; 0.02 &middot; 377 = 377 V</InlineMath>.
+          <InlineMath>
+            &epsilon;<sub>peak</sub> = NBA&omega; = 100 &middot; 0.5 &middot; 0.02 &middot; 377 =
+            377 V
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -4127,7 +4853,8 @@ const CH21_QUIZ: ChapterQuiz = {
       unit: 'rpm',
       explanation: (
         <>
-          <InlineMath>n = 120 &middot; 60 / 40 = 180 rpm</InlineMath>. Hydro turbines run slow, so generators have many poles
+          <InlineMath>n = 120 &middot; 60 / 40 = 180 rpm</InlineMath>. Hydro turbines run slow, so
+          generators have many poles
           <Cite id="grainger-power-systems-2003" in={CH21_SOURCES} />.
         </>
       ),
@@ -4157,8 +4884,11 @@ const CH21_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['slip'],
       explanation: (
         <>
-          Slip <InlineMath>s = (n<sub>s</sub> &minus; n)/n<sub>s</sub></InlineMath>. Zero for synchronous machines; a few
-          percent for induction machines.
+          Slip{' '}
+          <InlineMath>
+            s = (n<sub>s</sub> &minus; n)/n<sub>s</sub>
+          </InlineMath>
+          . Zero for synchronous machines; a few percent for induction machines.
         </>
       ),
     },
@@ -4202,15 +4932,26 @@ const CH22_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>The coupling coefficient k between two coils is:</>,
       choices: [
-        <InlineMath>k = M / (L<sub>1</sub> L<sub>2</sub>)</InlineMath>,
-        <InlineMath>k = M&sup2; / (L<sub>1</sub> L<sub>2</sub>)</InlineMath>,
-        <InlineMath>k = M / &radic;(L<sub>1</sub> L<sub>2</sub>)</InlineMath>,
-        <InlineMath>k = &radic;M / (L<sub>1</sub> + L<sub>2</sub>)</InlineMath>,
+        <InlineMath>
+          k = M / (L<sub>1</sub> L<sub>2</sub>)
+        </InlineMath>,
+        <InlineMath>
+          k = M&sup2; / (L<sub>1</sub> L<sub>2</sub>)
+        </InlineMath>,
+        <InlineMath>
+          k = M / &radic;(L<sub>1</sub> L<sub>2</sub>)
+        </InlineMath>,
+        <InlineMath>
+          k = &radic;M / (L<sub>1</sub> + L<sub>2</sub>)
+        </InlineMath>,
       ],
       correctIndex: 2,
       explanation: (
         <>
-          <InlineMath>k = M/&radic;(L<sub>1</sub>L<sub>2</sub>)</InlineMath>, with <InlineMath>0 &le; k &le; 1</InlineMath>. <InlineMath>k = 1</InlineMath> is the
+          <InlineMath>
+            k = M/&radic;(L<sub>1</sub>L<sub>2</sub>)
+          </InlineMath>
+          , with <InlineMath>0 &le; k &le; 1</InlineMath>. <InlineMath>k = 1</InlineMath> is the
           perfect-coupling limit, never quite reached in practice.
         </>
       ),
@@ -4220,15 +4961,22 @@ const CH22_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: (
         <>
-          Two ideally coupled coils with <InlineMath>L<sub>1</sub> = L<sub>2</sub> = 4 mH</InlineMath> and <InlineMath>k = 0.5</InlineMath> have M
-          equal to:
+          Two ideally coupled coils with{' '}
+          <InlineMath>
+            L<sub>1</sub> = L<sub>2</sub> = 4 mH
+          </InlineMath>{' '}
+          and <InlineMath>k = 0.5</InlineMath> have M equal to:
         </>
       ),
       choices: [<>1 mH</>, <>2 mH</>, <>4 mH</>, <>8 mH</>],
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>M = k&radic;(L<sub>1</sub>L<sub>2</sub>) = 0.5 &middot; &radic;16 = 0.5 &middot; 4 = 2 mH</InlineMath>.
+          <InlineMath>
+            M = k&radic;(L<sub>1</sub>L<sub>2</sub>) = 0.5 &middot; &radic;16 = 0.5 &middot; 4 = 2
+            mH
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -4241,16 +4989,27 @@ const CH22_QUIZ: ChapterQuiz = {
         </>
       ),
       choices: [
-        <InlineMath>L<sub>eq</sub> = L<sub>1</sub> + L<sub>2</sub> &minus; 2M</InlineMath>,
-        <InlineMath>L<sub>eq</sub> = L<sub>1</sub> + L<sub>2</sub> + 2M</InlineMath>,
-        <InlineMath>L<sub>eq</sub> = L<sub>1</sub> L<sub>2</sub> / (L<sub>1</sub> + L<sub>2</sub>)</InlineMath>,
-        <InlineMath>L<sub>eq</sub> = L<sub>1</sub> + L<sub>2</sub></InlineMath>,
+        <InlineMath>
+          L<sub>eq</sub> = L<sub>1</sub> + L<sub>2</sub> &minus; 2M
+        </InlineMath>,
+        <InlineMath>
+          L<sub>eq</sub> = L<sub>1</sub> + L<sub>2</sub> + 2M
+        </InlineMath>,
+        <InlineMath>
+          L<sub>eq</sub> = L<sub>1</sub> L<sub>2</sub> / (L<sub>1</sub> + L<sub>2</sub>)
+        </InlineMath>,
+        <InlineMath>
+          L<sub>eq</sub> = L<sub>1</sub> + L<sub>2</sub>
+        </InlineMath>,
       ],
       correctIndex: 1,
       explanation: (
         <>
-          Series-aiding: <InlineMath>L<sub>eq</sub> = L<sub>1</sub> + L<sub>2</sub> + 2M</InlineMath>. Series-opposing flips
-          the sign of M.
+          Series-aiding:{' '}
+          <InlineMath>
+            L<sub>eq</sub> = L<sub>1</sub> + L<sub>2</sub> + 2M
+          </InlineMath>
+          . Series-opposing flips the sign of M.
         </>
       ),
     },
@@ -4277,15 +5036,32 @@ const CH22_QUIZ: ChapterQuiz = {
       type: 'true-false',
       prompt: (
         <>
-          The reflected impedance into the primary of a coupled-coil pair driving a load <InlineMath>Z<sub>L</sub></InlineMath> on the secondary is approximately <InlineMath>(&omega;M)&sup2; / Z<sub>L</sub></InlineMath> at high
-          coupling and high frequency.
+          The reflected impedance into the primary of a coupled-coil pair driving a load{' '}
+          <InlineMath>
+            Z<sub>L</sub>
+          </InlineMath>{' '}
+          on the secondary is approximately{' '}
+          <InlineMath>
+            (&omega;M)&sup2; / Z<sub>L</sub>
+          </InlineMath>{' '}
+          at high coupling and high frequency.
         </>
       ),
       choices: [<>True</>, <>False</>],
       correctIndex: 0,
       explanation: (
         <>
-          <InlineMath>Z<sub>refl</sub> = (&omega;M)&sup2;/(j&omega;L<sub>2</sub> + Z<sub>L</sub>)</InlineMath>; for <InlineMath>Z<sub>L</sub></InlineMath> dominating, <InlineMath>Z<sub>refl</sub> &asymp; (&omega;M)&sup2;/Z<sub>L</sub></InlineMath>
+          <InlineMath>
+            Z<sub>refl</sub> = (&omega;M)&sup2;/(j&omega;L<sub>2</sub> + Z<sub>L</sub>)
+          </InlineMath>
+          ; for{' '}
+          <InlineMath>
+            Z<sub>L</sub>
+          </InlineMath>{' '}
+          dominating,{' '}
+          <InlineMath>
+            Z<sub>refl</sub> &asymp; (&omega;M)&sup2;/Z<sub>L</sub>
+          </InlineMath>
           <Cite id="hayt-kemmerly-durbin-2018" in={CH22_SOURCES} />.
         </>
       ),
@@ -4295,7 +5071,18 @@ const CH22_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          <InlineMath>L<sub>1</sub> = 1 mH</InlineMath>, <InlineMath>L<sub>2</sub> = 4 mH</InlineMath>, perfectly coupled (<InlineMath>k = 1</InlineMath>). What is <InlineMath>M<sub>max</sub></InlineMath>, in mH?
+          <InlineMath>
+            L<sub>1</sub> = 1 mH
+          </InlineMath>
+          ,{' '}
+          <InlineMath>
+            L<sub>2</sub> = 4 mH
+          </InlineMath>
+          , perfectly coupled (<InlineMath>k = 1</InlineMath>). What is{' '}
+          <InlineMath>
+            M<sub>max</sub>
+          </InlineMath>
+          , in mH?
         </>
       ),
       targetValue: 2,
@@ -4303,7 +5090,10 @@ const CH22_QUIZ: ChapterQuiz = {
       unit: 'mH',
       explanation: (
         <>
-          <InlineMath>M<sub>max</sub> = &radic;(L<sub>1</sub>L<sub>2</sub>) = &radic;4 = 2 mH</InlineMath>.
+          <InlineMath>
+            M<sub>max</sub> = &radic;(L<sub>1</sub>L<sub>2</sub>) = &radic;4 = 2 mH
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -4312,8 +5102,15 @@ const CH22_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          Two coupled coils have <InlineMath>L<sub>aid</sub> = 19 mH</InlineMath> and <InlineMath>L<sub>opp</sub> = 7 mH</InlineMath> (series tests).
-          What is M, in mH?
+          Two coupled coils have{' '}
+          <InlineMath>
+            L<sub>aid</sub> = 19 mH
+          </InlineMath>{' '}
+          and{' '}
+          <InlineMath>
+            L<sub>opp</sub> = 7 mH
+          </InlineMath>{' '}
+          (series tests). What is M, in mH?
         </>
       ),
       targetValue: 3,
@@ -4321,8 +5118,10 @@ const CH22_QUIZ: ChapterQuiz = {
       unit: 'mH',
       explanation: (
         <>
-          <InlineMath>M = (L<sub>aid</sub> &minus; L<sub>opp</sub>)/4 = (19 &minus; 7)/4 = 3 mH</InlineMath>. Classic
-          two-test method.
+          <InlineMath>
+            M = (L<sub>aid</sub> &minus; L<sub>opp</sub>)/4 = (19 &minus; 7)/4 = 3 mH
+          </InlineMath>
+          . Classic two-test method.
         </>
       ),
     },
@@ -4355,8 +5154,8 @@ const CH22_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['self', 'self-inductance', 'self inductance'],
       explanation: (
         <>
-          Self-inductance L: the proportionality of EMF to its own <InlineMath>dI/dt</InlineMath>. Mutual inductance M is the
-          cross term.
+          Self-inductance L: the proportionality of EMF to its own <InlineMath>dI/dt</InlineMath>.
+          Mutual inductance M is the cross term.
         </>
       ),
     },
@@ -4375,15 +5174,26 @@ const CH23_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>An ideal transformer relates voltages and turns by:</>,
       choices: [
-        <InlineMath>V<sub>s</sub>/V<sub>p</sub> = N<sub>p</sub>/N<sub>s</sub></InlineMath>,
-        <InlineMath>V<sub>s</sub>/V<sub>p</sub> = N<sub>s</sub>/N<sub>p</sub></InlineMath>,
-        <InlineMath>V<sub>s</sub> = V<sub>p</sub> &middot; (N<sub>p</sub> N<sub>s</sub>)</InlineMath>,
-        <InlineMath>V<sub>s</sub> = V<sub>p</sub> &minus; I R</InlineMath>,
+        <InlineMath>
+          V<sub>s</sub>/V<sub>p</sub> = N<sub>p</sub>/N<sub>s</sub>
+        </InlineMath>,
+        <InlineMath>
+          V<sub>s</sub>/V<sub>p</sub> = N<sub>s</sub>/N<sub>p</sub>
+        </InlineMath>,
+        <InlineMath>
+          V<sub>s</sub> = V<sub>p</sub> &middot; (N<sub>p</sub> N<sub>s</sub>)
+        </InlineMath>,
+        <InlineMath>
+          V<sub>s</sub> = V<sub>p</sub> &minus; I R
+        </InlineMath>,
       ],
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>V<sub>s</sub>/V<sub>p</sub> = N<sub>s</sub>/N<sub>p</sub></InlineMath>. Ratios follow directly from <InlineMath>V = N d&Phi;/dt</InlineMath> with a shared flux
+          <InlineMath>
+            V<sub>s</sub>/V<sub>p</sub> = N<sub>s</sub>/N<sub>p</sub>
+          </InlineMath>
+          . Ratios follow directly from <InlineMath>V = N d&Phi;/dt</InlineMath> with a shared flux
           <Cite id="faraday-1832" in={CH23_SOURCES} />.
         </>
       ),
@@ -4393,15 +5203,31 @@ const CH23_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>An ideal transformer&rsquo;s current ratio is:</>,
       choices: [
-        <InlineMath>I<sub>s</sub>/I<sub>p</sub> = N<sub>s</sub>/N<sub>p</sub></InlineMath>,
-        <InlineMath>I<sub>s</sub>/I<sub>p</sub> = N<sub>p</sub>/N<sub>s</sub></InlineMath>,
-        <InlineMath>I<sub>s</sub>/I<sub>p</sub> = 1</InlineMath>,
-        <InlineMath>I<sub>s</sub>/I<sub>p</sub> = (N<sub>p</sub> N<sub>s</sub>)</InlineMath>,
+        <InlineMath>
+          I<sub>s</sub>/I<sub>p</sub> = N<sub>s</sub>/N<sub>p</sub>
+        </InlineMath>,
+        <InlineMath>
+          I<sub>s</sub>/I<sub>p</sub> = N<sub>p</sub>/N<sub>s</sub>
+        </InlineMath>,
+        <InlineMath>
+          I<sub>s</sub>/I<sub>p</sub> = 1
+        </InlineMath>,
+        <InlineMath>
+          I<sub>s</sub>/I<sub>p</sub> = (N<sub>p</sub> N<sub>s</sub>)
+        </InlineMath>,
       ],
       correctIndex: 1,
       explanation: (
         <>
-          Current ratio inverts the voltage ratio: <InlineMath>I<sub>s</sub>/I<sub>p</sub> = N<sub>p</sub>/N<sub>s</sub></InlineMath>. <InlineMath>V<sub>p</sub>I<sub>p</sub> = V<sub>s</sub>I<sub>s</sub></InlineMath> (ideal).
+          Current ratio inverts the voltage ratio:{' '}
+          <InlineMath>
+            I<sub>s</sub>/I<sub>p</sub> = N<sub>p</sub>/N<sub>s</sub>
+          </InlineMath>
+          .{' '}
+          <InlineMath>
+            V<sub>p</sub>I<sub>p</sub> = V<sub>s</sub>I<sub>s</sub>
+          </InlineMath>{' '}
+          (ideal).
         </>
       ),
     },
@@ -4410,20 +5236,34 @@ const CH23_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: (
         <>
-          An impedance <InlineMath>Z<sub>L</sub></InlineMath> on the secondary, referred to the primary side, appears as:
+          An impedance{' '}
+          <InlineMath>
+            Z<sub>L</sub>
+          </InlineMath>{' '}
+          on the secondary, referred to the primary side, appears as:
         </>
       ),
       choices: [
-        <InlineMath>Z<sub>p</sub> = (N<sub>s</sub>/N<sub>p</sub>)&sup2; Z<sub>L</sub></InlineMath>,
-        <InlineMath>Z<sub>p</sub> = (N<sub>p</sub>/N<sub>s</sub>)&sup2; Z<sub>L</sub></InlineMath>,
-        <InlineMath>Z<sub>p</sub> = (N<sub>p</sub>/N<sub>s</sub>) Z<sub>L</sub></InlineMath>,
-        <InlineMath>Z<sub>p</sub> = Z<sub>L</sub></InlineMath>,
+        <InlineMath>
+          Z<sub>p</sub> = (N<sub>s</sub>/N<sub>p</sub>)&sup2; Z<sub>L</sub>
+        </InlineMath>,
+        <InlineMath>
+          Z<sub>p</sub> = (N<sub>p</sub>/N<sub>s</sub>)&sup2; Z<sub>L</sub>
+        </InlineMath>,
+        <InlineMath>
+          Z<sub>p</sub> = (N<sub>p</sub>/N<sub>s</sub>) Z<sub>L</sub>
+        </InlineMath>,
+        <InlineMath>
+          Z<sub>p</sub> = Z<sub>L</sub>
+        </InlineMath>,
       ],
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>Z<sub>p</sub> = (N<sub>p</sub>/N<sub>s</sub>)&sup2; Z<sub>L</sub></InlineMath>. Squared because both V
-          and I scale, and <InlineMath>Z = V/I</InlineMath>
+          <InlineMath>
+            Z<sub>p</sub> = (N<sub>p</sub>/N<sub>s</sub>)&sup2; Z<sub>L</sub>
+          </InlineMath>
+          . Squared because both V and I scale, and <InlineMath>Z = V/I</InlineMath>
           <Cite id="fitzgerald-kingsley-umans-2014" in={CH23_SOURCES} />.
         </>
       ),
@@ -4435,7 +5275,10 @@ const CH23_QUIZ: ChapterQuiz = {
       choices: [
         <>Easier insulation.</>,
         <>
-          <InlineMath>P<sub>loss</sub> &prop; P&sup2;R/V&sup2;</InlineMath>, so higher V means lower I and dramatically lower
+          <InlineMath>
+            P<sub>loss</sub> &prop; P&sup2;R/V&sup2;
+          </InlineMath>
+          , so higher V means lower I and dramatically lower
           <InlineMath>I&sup2;R</InlineMath> losses.
         </>,
         <>Higher V increases mechanical strength.</>,
@@ -4444,7 +5287,8 @@ const CH23_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          For a fixed delivered power, <InlineMath>I = P/V</InlineMath>; resistive loss in transmission is <InlineMath>(P/V)&sup2; R</InlineMath>
+          For a fixed delivered power, <InlineMath>I = P/V</InlineMath>; resistive loss in
+          transmission is <InlineMath>(P/V)&sup2; R</InlineMath>
           <Cite id="grainger-power-systems-2003" in={CH23_SOURCES} />.
         </>
       ),
@@ -4462,7 +5306,12 @@ const CH23_QUIZ: ChapterQuiz = {
       correctIndex: 0,
       explanation: (
         <>
-          Faraday: <InlineMath>V = N d&Phi;/dt</InlineMath>. With DC, <InlineMath>d&Phi;/dt = 0</InlineMath>, so no induced <InlineMath>V<sub>s</sub></InlineMath>.
+          Faraday: <InlineMath>V = N d&Phi;/dt</InlineMath>. With DC,{' '}
+          <InlineMath>d&Phi;/dt = 0</InlineMath>, so no induced{' '}
+          <InlineMath>
+            V<sub>s</sub>
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -4490,14 +5339,20 @@ const CH23_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          A pole transformer steps 12,470 V down to 240 V. What is the turns ratio <InlineMath>N<sub>p</sub>:N<sub>s</sub></InlineMath>?
+          A pole transformer steps 12,470 V down to 240 V. What is the turns ratio{' '}
+          <InlineMath>
+            N<sub>p</sub>:N<sub>s</sub>
+          </InlineMath>
+          ?
         </>
       ),
       targetValue: 52,
       tolerance: 0.05,
       explanation: (
         <>
-          <InlineMath>N<sub>p</sub>/N<sub>s</sub> = V<sub>p</sub>/V<sub>s</sub> = 12470/240 &approx; 52:1</InlineMath>
+          <InlineMath>
+            N<sub>p</sub>/N<sub>s</sub> = V<sub>p</sub>/V<sub>s</sub> = 12470/240 &approx; 52:1
+          </InlineMath>
           <Cite id="grainger-power-systems-2003" in={CH23_SOURCES} />.
         </>
       ),
@@ -4516,8 +5371,10 @@ const CH23_QUIZ: ChapterQuiz = {
       unit: '&Omega;',
       explanation: (
         <>
-          <InlineMath>Z<sub>p</sub> = 10&sup2; &middot; 8 = 800 &Omega;</InlineMath>. Transformers are how vacuum-tube
-          amplifiers were matched to low-impedance speakers.
+          <InlineMath>
+            Z<sub>p</sub> = 10&sup2; &middot; 8 = 800 &Omega;
+          </InlineMath>
+          . Transformers are how vacuum-tube amplifiers were matched to low-impedance speakers.
         </>
       ),
     },
@@ -4583,16 +5440,26 @@ const CH24_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>The output voltage of an ideal buck converter at duty cycle D is:</>,
       choices: [
-        <InlineMath>V<sub>out</sub> = V<sub>in</sub>/D</InlineMath>,
-        <InlineMath>V<sub>out</sub> = D &middot; V<sub>in</sub></InlineMath>,
-        <InlineMath>V<sub>out</sub> = (1 &minus; D) V<sub>in</sub></InlineMath>,
-        <InlineMath>V<sub>out</sub> = V<sub>in</sub>/(1 &minus; D)</InlineMath>,
+        <InlineMath>
+          V<sub>out</sub> = V<sub>in</sub>/D
+        </InlineMath>,
+        <InlineMath>
+          V<sub>out</sub> = D &middot; V<sub>in</sub>
+        </InlineMath>,
+        <InlineMath>
+          V<sub>out</sub> = (1 &minus; D) V<sub>in</sub>
+        </InlineMath>,
+        <InlineMath>
+          V<sub>out</sub> = V<sub>in</sub>/(1 &minus; D)
+        </InlineMath>,
       ],
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>V<sub>out</sub> = D &middot; V<sub>in</sub></InlineMath> (ideal, continuous conduction). 50% duty
-          halves the input voltage
+          <InlineMath>
+            V<sub>out</sub> = D &middot; V<sub>in</sub>
+          </InlineMath>{' '}
+          (ideal, continuous conduction). 50% duty halves the input voltage
           <Cite id="erickson-maksimovic-2020" in={CH24_SOURCES} />.
         </>
       ),
@@ -4602,15 +5469,30 @@ const CH24_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>An ideal boost converter steps up via:</>,
       choices: [
-        <InlineMath>V<sub>out</sub> = D V<sub>in</sub></InlineMath>,
-        <InlineMath>V<sub>out</sub> = V<sub>in</sub>/D</InlineMath>,
-        <InlineMath>V<sub>out</sub> = V<sub>in</sub>/(1 &minus; D)</InlineMath>,
-        <InlineMath>V<sub>out</sub> = V<sub>in</sub> &middot; D&sup2;</InlineMath>,
+        <InlineMath>
+          V<sub>out</sub> = D V<sub>in</sub>
+        </InlineMath>,
+        <InlineMath>
+          V<sub>out</sub> = V<sub>in</sub>/D
+        </InlineMath>,
+        <InlineMath>
+          V<sub>out</sub> = V<sub>in</sub>/(1 &minus; D)
+        </InlineMath>,
+        <InlineMath>
+          V<sub>out</sub> = V<sub>in</sub> &middot; D&sup2;
+        </InlineMath>,
       ],
       correctIndex: 2,
       explanation: (
         <>
-          <InlineMath>V<sub>out</sub> = V<sub>in</sub>/(1 &minus; D)</InlineMath>. At <InlineMath>D = 0.75</InlineMath>, <InlineMath>V<sub>out</sub> = 4&times;V<sub>in</sub></InlineMath>.
+          <InlineMath>
+            V<sub>out</sub> = V<sub>in</sub>/(1 &minus; D)
+          </InlineMath>
+          . At <InlineMath>D = 0.75</InlineMath>,{' '}
+          <InlineMath>
+            V<sub>out</sub> = 4&times;V<sub>in</sub>
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -4620,15 +5502,21 @@ const CH24_QUIZ: ChapterQuiz = {
       prompt: <>Switch-mode supplies replaced linear regulators in most applications because:</>,
       choices: [
         <>They are cheaper and smaller for any output.</>,
-        <>They are dramatically more efficient (no <InlineMath>I&middot;&Delta;V</InlineMath> dissipation).</>,
+        <>
+          They are dramatically more efficient (no <InlineMath>I&middot;&Delta;V</InlineMath>{' '}
+          dissipation).
+        </>,
         <>They generate less EMI.</>,
         <>They don&rsquo;t need a transformer.</>,
       ],
       correctIndex: 1,
       explanation: (
         <>
-          Linear regulators dissipate <InlineMath>(V<sub>in</sub> &minus; V<sub>out</sub>)&middot;I</InlineMath> as heat.
-          SMPS chop the input and use L/C storage, achieving 85-98% efficiency
+          Linear regulators dissipate{' '}
+          <InlineMath>
+            (V<sub>in</sub> &minus; V<sub>out</sub>)&middot;I
+          </InlineMath>{' '}
+          as heat. SMPS chop the input and use L/C storage, achieving 85-98% efficiency
           <Cite id="erickson-maksimovic-2020" in={CH24_SOURCES} />.
         </>
       ),
@@ -4651,15 +5539,23 @@ const CH24_QUIZ: ChapterQuiz = {
       type: 'true-false',
       prompt: (
         <>
-          The ripple voltage on a bridge-rectifier reservoir capacitor goes approximately as <InlineMath>I<sub>load</sub> / (2 f<sub>line</sub> C)</InlineMath>.
+          The ripple voltage on a bridge-rectifier reservoir capacitor goes approximately as{' '}
+          <InlineMath>
+            I<sub>load</sub> / (2 f<sub>line</sub> C)
+          </InlineMath>
+          .
         </>
       ),
       choices: [<>True</>, <>False</>],
       correctIndex: 0,
       explanation: (
         <>
-          For continuous conduction in a full-wave bridge, <InlineMath>&Delta;V &approx; I/(2fC)</InlineMath>. Bigger C,
-          higher <InlineMath>f<sub>line</sub></InlineMath>, or smaller I&rarr;smoother DC.
+          For continuous conduction in a full-wave bridge,{' '}
+          <InlineMath>&Delta;V &approx; I/(2fC)</InlineMath>. Bigger C, higher{' '}
+          <InlineMath>
+            f<sub>line</sub>
+          </InlineMath>
+          , or smaller I&rarr;smoother DC.
         </>
       ),
     },
@@ -4668,8 +5564,16 @@ const CH24_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          A buck converter has <InlineMath>V<sub>in</sub> = 24 V</InlineMath> and runs at <InlineMath>D = 0.30</InlineMath> with 90% efficiency,
-          supplying 5 A on the output. What is <InlineMath>V<sub>out</sub></InlineMath>, in volts?
+          A buck converter has{' '}
+          <InlineMath>
+            V<sub>in</sub> = 24 V
+          </InlineMath>{' '}
+          and runs at <InlineMath>D = 0.30</InlineMath> with 90% efficiency, supplying 5 A on the
+          output. What is{' '}
+          <InlineMath>
+            V<sub>out</sub>
+          </InlineMath>
+          , in volts?
         </>
       ),
       targetValue: 7.2,
@@ -4677,8 +5581,10 @@ const CH24_QUIZ: ChapterQuiz = {
       unit: 'V',
       explanation: (
         <>
-          <InlineMath>V<sub>out</sub> = D V<sub>in</sub> = 0.30 &middot; 24 = 7.2 V</InlineMath> (ideal, before efficiency
-          factor is folded into input current).
+          <InlineMath>
+            V<sub>out</sub> = D V<sub>in</sub> = 0.30 &middot; 24 = 7.2 V
+          </InlineMath>{' '}
+          (ideal, before efficiency factor is folded into input current).
         </>
       ),
     },
@@ -4688,7 +5594,8 @@ const CH24_QUIZ: ChapterQuiz = {
       prompt: (
         <>
           Ripple on a 1000 &micro;F capacitor fed by a full-wave bridge from a 60 Hz line with 1 A
-          load. Approximate ripple, in volts. (<InlineMath>&Delta;V &asymp; I T/C</InlineMath>, <InlineMath>T &asymp; 8.33 ms</InlineMath>
+          load. Approximate ripple, in volts. (<InlineMath>&Delta;V &asymp; I T/C</InlineMath>,{' '}
+          <InlineMath>T &asymp; 8.33 ms</InlineMath>
           half-cycle.)
         </>
       ),
@@ -4697,7 +5604,10 @@ const CH24_QUIZ: ChapterQuiz = {
       unit: 'V',
       explanation: (
         <>
-          <InlineMath>&Delta;V &approx; I T/C = 1 &middot; 8.33&times;10&#8315;&sup3; / 10&#8315;&sup3; = 8.33 V</InlineMath>
+          <InlineMath>
+            &Delta;V &approx; I T/C = 1 &middot; 8.33&times;10&#8315;&sup3; / 10&#8315;&sup3; = 8.33
+            V
+          </InlineMath>
           <Cite id="horowitz-hill-2015" in={CH24_SOURCES} />.
         </>
       ),
@@ -4784,8 +5694,8 @@ const CH25_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>V = V&deg; &minus; (RT/nF) ln Q</InlineMath>. <InlineMath>Q &gt; 1</InlineMath> (products favoured): cell voltage drops below
-          standard
+          <InlineMath>V = V&deg; &minus; (RT/nF) ln Q</InlineMath>.{' '}
+          <InlineMath>Q &gt; 1</InlineMath> (products favoured): cell voltage drops below standard
           <Cite id="nernst-1889" in={CH25_SOURCES} />.
         </>
       ),
@@ -4800,8 +5710,8 @@ const CH25_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>E&deg;(Cu&sup2;&#8314;/Cu) = +0.34 V</InlineMath>. Pairing with Zn&sup2;&#8314;/Zn (&minus;0.76 V)
-          gives the 1.10 V Daniell cell
+          <InlineMath>E&deg;(Cu&sup2;&#8314;/Cu) = +0.34 V</InlineMath>. Pairing with
+          Zn&sup2;&#8314;/Zn (&minus;0.76 V) gives the 1.10 V Daniell cell
           <Cite id="bard-faulkner-2001" in={CH25_SOURCES} />.
         </>
       ),
@@ -4813,7 +5723,11 @@ const CH25_QUIZ: ChapterQuiz = {
       choices: [
         <>Has no effect on operation.</>,
         <>
-          Drops the terminal voltage by <InlineMath>I R<sub>int</sub></InlineMath> under load.
+          Drops the terminal voltage by{' '}
+          <InlineMath>
+            I R<sub>int</sub>
+          </InlineMath>{' '}
+          under load.
         </>,
         <>Increases output current.</>,
         <>Is exactly zero.</>,
@@ -4821,7 +5735,14 @@ const CH25_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>V<sub>term</sub> = V<sub>OC</sub> &minus; I R<sub>int</sub></InlineMath>. Cold weather raises <InlineMath>R<sub>int</sub></InlineMath>, which is why car batteries struggle in winter.
+          <InlineMath>
+            V<sub>term</sub> = V<sub>OC</sub> &minus; I R<sub>int</sub>
+          </InlineMath>
+          . Cold weather raises{' '}
+          <InlineMath>
+            R<sub>int</sub>
+          </InlineMath>
+          , which is why car batteries struggle in winter.
         </>
       ),
     },
@@ -4860,8 +5781,19 @@ const CH25_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          Cell with <InlineMath>V<sub>OC</sub> = 1.5 V</InlineMath> and <InlineMath>R<sub>int</sub> = 0.2 &Omega;</InlineMath> drives a 1 &Omega;
-          load. What is <InlineMath>V<sub>term</sub></InlineMath>, in volts?
+          Cell with{' '}
+          <InlineMath>
+            V<sub>OC</sub> = 1.5 V
+          </InlineMath>{' '}
+          and{' '}
+          <InlineMath>
+            R<sub>int</sub> = 0.2 &Omega;
+          </InlineMath>{' '}
+          drives a 1 &Omega; load. What is{' '}
+          <InlineMath>
+            V<sub>term</sub>
+          </InlineMath>
+          , in volts?
         </>
       ),
       targetValue: 1.25,
@@ -4869,7 +5801,11 @@ const CH25_QUIZ: ChapterQuiz = {
       unit: 'V',
       explanation: (
         <>
-          <InlineMath>V<sub>term</sub> = V<sub>OC</sub> R<sub>L</sub>/(R<sub>L</sub> + R<sub>int</sub>) = 1.5 &middot; 1/1.2 &approx; 1.25 V</InlineMath>.
+          <InlineMath>
+            V<sub>term</sub> = V<sub>OC</sub> R<sub>L</sub>/(R<sub>L</sub> + R<sub>int</sub>) = 1.5
+            &middot; 1/1.2 &approx; 1.25 V
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -4878,7 +5814,15 @@ const CH25_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          Standard EMF of a cell with <InlineMath>E&deg;<sub>cathode</sub> = +0.80 V</InlineMath> and <InlineMath>E&deg;<sub>anode</sub> = &minus;0.76 V</InlineMath>, in volts.
+          Standard EMF of a cell with{' '}
+          <InlineMath>
+            E&deg;<sub>cathode</sub> = +0.80 V
+          </InlineMath>{' '}
+          and{' '}
+          <InlineMath>
+            E&deg;<sub>anode</sub> = &minus;0.76 V
+          </InlineMath>
+          , in volts.
         </>
       ),
       targetValue: 1.56,
@@ -4886,7 +5830,11 @@ const CH25_QUIZ: ChapterQuiz = {
       unit: 'V',
       explanation: (
         <>
-          <InlineMath>E&deg;<sub>cell</sub> = E&deg;<sub>cathode</sub> &minus; E&deg;<sub>anode</sub> = 0.80 &minus; (&minus;0.76) = 1.56 V</InlineMath>.
+          <InlineMath>
+            E&deg;<sub>cell</sub> = E&deg;<sub>cathode</sub> &minus; E&deg;<sub>anode</sub> = 0.80
+            &minus; (&minus;0.76) = 1.56 V
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -4917,8 +5865,8 @@ const CH25_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['ah', 'a·h', 'ampere-hour', 'ampere hour', 'amp-hour', 'amp hour'],
       explanation: (
         <>
-          Ah (ampere-hour) is the conventional capacity unit, <InlineMath>1 Ah = 3600 C</InlineMath>. The strict SI unit is
-          the coulomb.
+          Ah (ampere-hour) is the conventional capacity unit, <InlineMath>1 Ah = 3600 C</InlineMath>
+          . The strict SI unit is the coulomb.
         </>
       ),
     },
@@ -5009,7 +5957,9 @@ const CH26_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>E&deg; &approx; 1.23 V</InlineMath> per cell at 25 &deg;C, set by <InlineMath>&Delta;G/(nF)</InlineMath> for the <InlineMath>H&#8322; + &frac12;O&#8322; &rarr; H&#8322;O</InlineMath> reaction
+          <InlineMath>E&deg; &approx; 1.23 V</InlineMath> per cell at 25 &deg;C, set by{' '}
+          <InlineMath>&Delta;G/(nF)</InlineMath> for the{' '}
+          <InlineMath>H&#8322; + &frac12;O&#8322; &rarr; H&#8322;O</InlineMath> reaction
           <Cite id="larminie-dicks-2003-fuel-cells" in={CH26_SOURCES} />.
         </>
       ),
@@ -5060,7 +6010,11 @@ const CH26_QUIZ: ChapterQuiz = {
       targetValue: 0.72,
       tolerance: 0.02,
       unit: 'kWh',
-      explanation: <><InlineMath>E = V Q = 12 &middot; 60 = 720 Wh = 0.72 kWh</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>E = V Q = 12 &middot; 60 = 720 Wh = 0.72 kWh</InlineMath>.
+        </>
+      ),
     },
     {
       id: 'q8',
@@ -5071,7 +6025,10 @@ const CH26_QUIZ: ChapterQuiz = {
       unit: 'W',
       explanation: (
         <>
-          <InlineMath>V<sub>stack</sub> = 100 &middot; 0.65 = 65 V</InlineMath>; <InlineMath>P = V I = 65 &middot; 200 = 13 kW</InlineMath>.
+          <InlineMath>
+            V<sub>stack</sub> = 100 &middot; 0.65 = 65 V
+          </InlineMath>
+          ; <InlineMath>P = V I = 65 &middot; 200 = 13 kW</InlineMath>.
         </>
       ),
     },
@@ -5087,8 +6044,12 @@ const CH26_QUIZ: ChapterQuiz = {
       acceptedAnswers: ['nmc', 'ncm', 'lnmc'],
       explanation: (
         <>
-          NMC (a.k.a. NCM): <InlineMath>LiNi<sub>x</sub>Mn<sub>y</sub>Co<sub>z</sub>O&#8322;</InlineMath> with varying
-          ratios. LFP (<InlineMath>LiFePO&#8324;</InlineMath>) is the safer, lower-energy alternative.
+          NMC (a.k.a. NCM):{' '}
+          <InlineMath>
+            LiNi<sub>x</sub>Mn<sub>y</sub>Co<sub>z</sub>O&#8322;
+          </InlineMath>{' '}
+          with varying ratios. LFP (<InlineMath>LiFePO&#8324;</InlineMath>) is the safer,
+          lower-energy alternative.
         </>
       ),
     },
@@ -5239,7 +6200,11 @@ const CH28_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          L1 is at +120 V instantaneous and L2 is at &minus;120 V instantaneous. What is <InlineMath>V<sub>L1</sub> &minus; V<sub>L2</sub></InlineMath>, in volts?
+          L1 is at +120 V instantaneous and L2 is at &minus;120 V instantaneous. What is{' '}
+          <InlineMath>
+            V<sub>L1</sub> &minus; V<sub>L2</sub>
+          </InlineMath>
+          , in volts?
         </>
       ),
       targetValue: 240,
@@ -5247,7 +6212,10 @@ const CH28_QUIZ: ChapterQuiz = {
       unit: 'V',
       explanation: (
         <>
-          <InlineMath>V<sub>L1</sub> &minus; V<sub>L2</sub> = 120 &minus; (&minus;120) = 240 V</InlineMath>.
+          <InlineMath>
+            V<sub>L1</sub> &minus; V<sub>L2</sub> = 120 &minus; (&minus;120) = 240 V
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -5256,8 +6224,15 @@ const CH28_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          A GFCI senses <InlineMath>I<sub>hot</sub> = 12.0 A</InlineMath> and <InlineMath>I<sub>neutral</sub> = 11.992 A</InlineMath>. The residual
-          current is, in milliamperes:
+          A GFCI senses{' '}
+          <InlineMath>
+            I<sub>hot</sub> = 12.0 A
+          </InlineMath>{' '}
+          and{' '}
+          <InlineMath>
+            I<sub>neutral</sub> = 11.992 A
+          </InlineMath>
+          . The residual current is, in milliamperes:
         </>
       ),
       targetValue: 8,
@@ -5265,8 +6240,10 @@ const CH28_QUIZ: ChapterQuiz = {
       unit: 'mA',
       explanation: (
         <>
-          <InlineMath>|I<sub>hot</sub> &minus; I<sub>neutral</sub>| = 0.008 A = 8 mA</InlineMath> &mdash; above the 5 mA
-          threshold, so the GFCI trips.
+          <InlineMath>
+            |I<sub>hot</sub> &minus; I<sub>neutral</sub>| = 0.008 A = 8 mA
+          </InlineMath>{' '}
+          &mdash; above the 5 mA threshold, so the GFCI trips.
         </>
       ),
     },
@@ -5373,17 +6350,30 @@ const CH29_QUIZ: ChapterQuiz = {
       type: 'multiple-choice',
       prompt: <>Voltage drop over a long branch circuit is approximately:</>,
       choices: [
-        <InlineMath>&Delta;V = I &middot; R<sub>per metre</sub></InlineMath>,
+        <InlineMath>
+          &Delta;V = I &middot; R<sub>per metre</sub>
+        </InlineMath>,
         <>
-          <InlineMath>&Delta;V = 2 &middot; I &middot; R<sub>per metre</sub> &middot; L</InlineMath> (counting both directions)
+          <InlineMath>
+            &Delta;V = 2 &middot; I &middot; R<sub>per metre</sub> &middot; L
+          </InlineMath>{' '}
+          (counting both directions)
         </>,
-        <InlineMath>&Delta;V = V<sub>line</sub> &middot; L</InlineMath>,
-        <><InlineMath>&Delta;V = 0</InlineMath> for any reasonable run.</>,
+        <InlineMath>
+          &Delta;V = V<sub>line</sub> &middot; L
+        </InlineMath>,
+        <>
+          <InlineMath>&Delta;V = 0</InlineMath> for any reasonable run.
+        </>,
       ],
       correctIndex: 1,
       explanation: (
         <>
-          Voltage drop in single-phase is round-trip: <InlineMath>2 &middot; I &middot; R<sub>/m</sub> &middot; L</InlineMath>. NEC recommends &le;3% on branches and &le;5% combined feeder + branch.
+          Voltage drop in single-phase is round-trip:{' '}
+          <InlineMath>
+            2 &middot; I &middot; R<sub>/m</sub> &middot; L
+          </InlineMath>
+          . NEC recommends &le;3% on branches and &le;5% combined feeder + branch.
         </>
       ),
     },
@@ -5440,7 +6430,10 @@ const CH29_QUIZ: ChapterQuiz = {
       unit: 'V',
       explanation: (
         <>
-          <InlineMath>&Delta;V = 2 I R<sub>/m</sub> L = 2 &middot; 15 &middot; 0.0052 &middot; 30 &approx; 4.7 V</InlineMath>
+          <InlineMath>
+            &Delta;V = 2 I R<sub>/m</sub> L = 2 &middot; 15 &middot; 0.0052 &middot; 30 &approx; 4.7
+            V
+          </InlineMath>
           &mdash; about 4% of 120 V.
         </>
       ),
@@ -5454,8 +6447,8 @@ const CH29_QUIZ: ChapterQuiz = {
       unit: 'A',
       explanation: (
         <>
-          <InlineMath>I = P/V = 3500/120 &approx; 29.2 A</InlineMath>. Too big for a 20 A branch &mdash; this load wants 240
-          V or its own dedicated 30 A circuit.
+          <InlineMath>I = P/V = 3500/120 &approx; 29.2 A</InlineMath>. Too big for a 20 A branch
+          &mdash; this load wants 240 V or its own dedicated 30 A circuit.
         </>
       ),
     },
@@ -5546,8 +6539,9 @@ const CH30_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          The triac waits an adjustable angle <InlineMath>&alpha;</InlineMath> into each half-cycle before conducting. RMS
-          voltage drops as <InlineMath>&alpha;</InlineMath> increases &mdash; classical incandescent dimming.
+          The triac waits an adjustable angle <InlineMath>&alpha;</InlineMath> into each half-cycle
+          before conducting. RMS voltage drops as <InlineMath>&alpha;</InlineMath> increases &mdash;
+          classical incandescent dimming.
         </>
       ),
     },
@@ -5613,7 +6607,11 @@ const CH30_QUIZ: ChapterQuiz = {
       targetValue: 6.72,
       tolerance: 0.05,
       unit: 'A',
-      explanation: <><InlineMath>I = P/V = 800/119 &approx; 6.7 A</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>I = P/V = 800/119 &approx; 6.7 A</InlineMath>.
+        </>
+      ),
     },
     {
       id: 'q8',
@@ -5629,7 +6627,8 @@ const CH30_QUIZ: ChapterQuiz = {
       unit: 'A',
       explanation: (
         <>
-          NEC 80%-rule for continuous loads: <InlineMath>0.80 &middot; 50 = 40 A</InlineMath>, equivalent to 9.6 kW at 240 V
+          NEC 80%-rule for continuous loads: <InlineMath>0.80 &middot; 50 = 40 A</InlineMath>,
+          equivalent to 9.6 kW at 240 V
           <Cite id="nec-2023" in={CH30_SOURCES} />.
         </>
       ),
@@ -5691,15 +6690,21 @@ const CH31_QUIZ: ChapterQuiz = {
       prompt: <>The reason large appliances use 240 V instead of 120 V is:</>,
       choices: [
         <>The motor doesn&rsquo;t work on 120 V.</>,
-        <>For the same power, doubling V halves I, cutting <InlineMath>I&sup2;R</InlineMath> wire losses by 4&times;.</>,
+        <>
+          For the same power, doubling V halves I, cutting <InlineMath>I&sup2;R</InlineMath> wire
+          losses by 4&times;.
+        </>,
         <>240 V is safer.</>,
         <>It&rsquo;s required for grounding.</>,
       ],
       correctIndex: 1,
       explanation: (
         <>
-          <InlineMath>P<sub>loss</sub> &prop; I&sup2; R</InlineMath>; doubling V quarters losses for the same delivered
-          power. That&rsquo;s why ranges, dryers, EVs all use 240 V.
+          <InlineMath>
+            P<sub>loss</sub> &prop; I&sup2; R
+          </InlineMath>
+          ; doubling V quarters losses for the same delivered power. That&rsquo;s why ranges,
+          dryers, EVs all use 240 V.
         </>
       ),
     },
@@ -5801,7 +6806,11 @@ const CH31_QUIZ: ChapterQuiz = {
       targetValue: 20.83,
       tolerance: 0.05,
       unit: 'A',
-      explanation: <><InlineMath>FLA = P/V = 5000/240 &approx; 20.83 A</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>FLA = P/V = 5000/240 &approx; 20.83 A</InlineMath>.
+        </>
+      ),
     },
     {
       id: 'q8',
@@ -5817,7 +6826,8 @@ const CH31_QUIZ: ChapterQuiz = {
       unit: 'A',
       explanation: (
         <>
-          <InlineMath>1.25 &middot; 32 = 40 A</InlineMath>. The wire must support 40 A ampacity; 8 AWG copper suffices
+          <InlineMath>1.25 &middot; 32 = 40 A</InlineMath>. The wire must support 40 A ampacity; 8
+          AWG copper suffices
           <Cite id="nec-2023" in={CH31_SOURCES} />.
         </>
       ),
@@ -5990,7 +7000,8 @@ const CH32_QUIZ: ChapterQuiz = {
       unit: 'mA',
       explanation: (
         <>
-          <InlineMath>I = V/R = 120/2000 = 0.060 A = 60 mA</InlineMath> &mdash; in the ventricular-fibrillation range
+          <InlineMath>I = V/R = 120/2000 = 0.060 A = 60 mA</InlineMath> &mdash; in the
+          ventricular-fibrillation range
           <Cite id="dalziel-1956" in={CH32_SOURCES} />.
         </>
       ),
@@ -6008,8 +7019,8 @@ const CH32_QUIZ: ChapterQuiz = {
       unit: 'mA',
       explanation: (
         <>
-          <InlineMath>I = 120/10&#8309; = 1.2 mA</InlineMath> &mdash; perceptible but not dangerous. Wet skin can drop R by
-          50&times;.
+          <InlineMath>I = 120/10&#8309; = 1.2 mA</InlineMath> &mdash; perceptible but not dangerous.
+          Wet skin can drop R by 50&times;.
         </>
       ),
     },
@@ -6077,8 +7088,8 @@ const CH33_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          Residential customers pay for <InlineMath>kWh = &int;V(t)I(t) dt</InlineMath>. Power factor and reactive energy
-          generally do not appear on the household bill
+          Residential customers pay for <InlineMath>kWh = &int;V(t)I(t) dt</InlineMath>. Power
+          factor and reactive energy generally do not appear on the household bill
           <Cite id="ansi-c12-1-2014" in={CH33_SOURCES} />.
         </>
       ),
@@ -6094,7 +7105,12 @@ const CH33_QUIZ: ChapterQuiz = {
         <InlineMath>S = P/Q</InlineMath>,
       ],
       correctIndex: 1,
-      explanation: <><InlineMath>S&sup2; = P&sup2; + Q&sup2;</InlineMath> (the power triangle). <InlineMath>PF = P/S</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>S&sup2; = P&sup2; + Q&sup2;</InlineMath> (the power triangle).{' '}
+          <InlineMath>PF = P/S</InlineMath>.
+        </>
+      ),
     },
     {
       id: 'q3',
@@ -6147,7 +7163,8 @@ const CH33_QUIZ: ChapterQuiz = {
       explanation: (
         <>
           The aluminium disk rotates between an electromagnet whose torque is proportional to
-          <InlineMath>V&middot;I&middot;cos(&phi;)</InlineMath>. Eddy-current braking sets rotation rate = real power.
+          <InlineMath>V&middot;I&middot;cos(&phi;)</InlineMath>. Eddy-current braking sets rotation
+          rate = real power.
         </>
       ),
     },
@@ -6182,18 +7199,27 @@ const CH33_QUIZ: ChapterQuiz = {
       targetValue: 180,
       tolerance: 0.02,
       unit: '$',
-      explanation: <><InlineMath>30 &middot; 30 &middot; 0.20 = $180</InlineMath>.</>,
+      explanation: (
+        <>
+          <InlineMath>30 &middot; 30 &middot; 0.20 = $180</InlineMath>.
+        </>
+      ),
     },
     {
       id: 'q8',
       type: 'numeric',
-      prompt: <>An industrial load has <InlineMath>P = 780 kW</InlineMath> and <InlineMath>S = 1000 kVA</InlineMath>. What is the power factor?</>,
+      prompt: (
+        <>
+          An industrial load has <InlineMath>P = 780 kW</InlineMath> and{' '}
+          <InlineMath>S = 1000 kVA</InlineMath>. What is the power factor?
+        </>
+      ),
       targetValue: 0.78,
       tolerance: 0.02,
       explanation: (
         <>
-          <InlineMath>PF = P/S = 780/1000 = 0.78</InlineMath>. Utility penalty thresholds typically kick in below 0.85 or
-          0.90.
+          <InlineMath>PF = P/S = 780/1000 = 0.78</InlineMath>. Utility penalty thresholds typically
+          kick in below 0.85 or 0.90.
         </>
       ),
     },
@@ -6203,7 +7229,10 @@ const CH33_QUIZ: ChapterQuiz = {
       prompt: <>What three-letter unit measures real electrical energy on a household bill?</>,
       acceptedAnswers: ['kwh', 'kw-h', 'kilowatt-hour', 'kilowatt hour'],
       explanation: (
-        <>kWh (kilowatt-hour). <InlineMath>1 kWh = 3.6 MJ</InlineMath> &mdash; the standard residential billing unit.</>
+        <>
+          kWh (kilowatt-hour). <InlineMath>1 kWh = 3.6 MJ</InlineMath> &mdash; the standard
+          residential billing unit.
+        </>
       ),
     },
     {
@@ -6247,7 +7276,10 @@ const CH34_QUIZ: ChapterQuiz = {
       explanation: (
         <>
           AC enters via an EMI filter; the bridge rectifier converts to pulsed DC; the bulk cap
-          smooths it to roughly <InlineMath>&radic;2 V<sub>rms</sub> &approx; 170 V DC</InlineMath>
+          smooths it to roughly{' '}
+          <InlineMath>
+            &radic;2 V<sub>rms</sub> &approx; 170 V DC
+          </InlineMath>
           <Cite id="erickson-maksimovic-2020" in={CH34_SOURCES} />.
         </>
       ),
@@ -6291,8 +7323,11 @@ const CH34_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          Universal-input chargers must handle <InlineMath>264 V<sub>rms</sub> &times; &radic;2 = 373 V peak</InlineMath>.
-          400 V or 450 V caps with derating give a comfortable safety margin.
+          Universal-input chargers must handle{' '}
+          <InlineMath>
+            264 V<sub>rms</sub> &times; &radic;2 = 373 V peak
+          </InlineMath>
+          . 400 V or 450 V caps with derating give a comfortable safety margin.
         </>
       ),
     },
@@ -6314,9 +7349,9 @@ const CH34_QUIZ: ChapterQuiz = {
       correctIndex: 1,
       explanation: (
         <>
-          For a given V&middot;s product, <InlineMath>&Phi; = V&middot;t</InlineMath>. At 100 kHz the &lsquo;t&rsquo; is
-          &asymp;1000&times; shorter than at 60 Hz, so the transformer cross-section can be
-          1000&times; smaller
+          For a given V&middot;s product, <InlineMath>&Phi; = V&middot;t</InlineMath>. At 100 kHz
+          the &lsquo;t&rsquo; is &asymp;1000&times; shorter than at 60 Hz, so the transformer
+          cross-section can be 1000&times; smaller
           <Cite id="erickson-maksimovic-2020" in={CH34_SOURCES} />.
         </>
       ),
@@ -6362,7 +7397,11 @@ const CH34_QUIZ: ChapterQuiz = {
       type: 'numeric',
       prompt: (
         <>
-          The peak voltage of a <InlineMath>120 V<sub>rms</sub></InlineMath> sinusoid is, in volts:
+          The peak voltage of a{' '}
+          <InlineMath>
+            120 V<sub>rms</sub>
+          </InlineMath>{' '}
+          sinusoid is, in volts:
         </>
       ),
       targetValue: 169.7,
@@ -6370,7 +7409,10 @@ const CH34_QUIZ: ChapterQuiz = {
       unit: 'V',
       explanation: (
         <>
-          <InlineMath>V<sub>peak</sub> = &radic;2 V<sub>rms</sub> = 1.414 &middot; 120 &approx; 170 V</InlineMath>.
+          <InlineMath>
+            V<sub>peak</sub> = &radic;2 V<sub>rms</sub> = 1.414 &middot; 120 &approx; 170 V
+          </InlineMath>
+          .
         </>
       ),
     },
@@ -6382,7 +7424,10 @@ const CH34_QUIZ: ChapterQuiz = {
       tolerance: 0.02,
       unit: 'W',
       explanation: (
-        <><InlineMath>P = VI = 20 &middot; 3 = 60 W</InlineMath>. The standard 60 W USB-C laptop charger profile.</>
+        <>
+          <InlineMath>P = VI = 20 &middot; 3 = 60 W</InlineMath>. The standard 60 W USB-C laptop
+          charger profile.
+        </>
       ),
     },
     {

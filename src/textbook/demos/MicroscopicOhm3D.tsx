@@ -94,58 +94,61 @@ export function MicroscopicOhm3DDemo({ figure }: Props) {
     stateRef.current = { computed };
   }, [computed]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H, canvas } = info;
-    let raf = 0;
+  const setup = useCallback(
+    (info: CanvasInfo) => {
+      const { ctx, w: W, h: H, canvas } = info;
+      let raf = 0;
 
-    const cam: OrbitCamera = { yaw: 0.55, pitch: 0.22, distance: 7, fov: Math.PI / 4 };
-    const dispose = attachOrbit(canvas, cam);
+      const cam: OrbitCamera = { yaw: 0.55, pitch: 0.22, distance: 7, fov: Math.PI / 4 };
+      const dispose = attachOrbit(canvas, cam);
 
-    // Initialise electrons uniformly inside the cylinder.
-    const electrons: Electron[] = [];
-    for (let i = 0; i < N_ELECTRONS; i++) {
-      const u = Math.random();
-      const phi = Math.random() * Math.PI * 2;
-      const r = R_WIRE * Math.sqrt(u) * 0.95;
-      const x = (Math.random() * 2 - 1) * X_HALF * 0.95;
-      electrons.push({ pos: v3(x, r * Math.cos(phi), r * Math.sin(phi)) });
-    }
-
-    function draw() {
-      const colors = getCanvasColors();
-      const { computed: c } = stateRef.current;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, W, H);
-
-      // Drift step proportional to real J = σE; electrons move in -x
-      // (opposite to conventional current).
-      const driftStep = -VIS_DRIFT_PER_FRAME * (c.J / J_REF);
-      for (const e of electrons) {
-        e.pos.x += driftStep;
-        if (e.pos.x > X_HALF) e.pos.x -= 2 * X_HALF;
-        else if (e.pos.x < -X_HALF) e.pos.x += 2 * X_HALF;
+      // Initialise electrons uniformly inside the cylinder.
+      const electrons: Electron[] = [];
+      for (let i = 0; i < N_ELECTRONS; i++) {
+        const u = Math.random();
+        const phi = Math.random() * Math.PI * 2;
+        const r = R_WIRE * Math.sqrt(u) * 0.95;
+        const x = (Math.random() * 2 - 1) * X_HALF * 0.95;
+        electrons.push({ pos: v3(x, r * Math.cos(phi), r * Math.sin(phi)) });
       }
 
-      // Magnitudes normalised for visual purposes; both are clamped to 1.
-      const Enorm = Math.min(1, c.E / E_MAX_LIN);
-      const Jnorm = Math.min(1, c.J / J_REF);
-      const Inorm = Math.min(1, c.I / I_REF);
+      function draw() {
+        const colors = getCanvasColors();
+        const { computed: c } = stateRef.current;
 
-      drawWireScaffold(ctx, colors, cam, W, H);
-      drawBFieldRings(ctx, colors, cam, W, H, Inorm);
-      drawFieldVectors(ctx, colors, cam, W, H, Enorm, Jnorm);
-      drawElectrons(ctx, colors, cam, W, H, electrons);
-      drawLegend(ctx, colors, W, H, mat.name);
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, W, H);
 
+        // Drift step proportional to real J = σE; electrons move in -x
+        // (opposite to conventional current).
+        const driftStep = -VIS_DRIFT_PER_FRAME * (c.J / J_REF);
+        for (const e of electrons) {
+          e.pos.x += driftStep;
+          if (e.pos.x > X_HALF) e.pos.x -= 2 * X_HALF;
+          else if (e.pos.x < -X_HALF) e.pos.x += 2 * X_HALF;
+        }
+
+        // Magnitudes normalised for visual purposes; both are clamped to 1.
+        const Enorm = Math.min(1, c.E / E_MAX_LIN);
+        const Jnorm = Math.min(1, c.J / J_REF);
+        const Inorm = Math.min(1, c.I / I_REF);
+
+        drawWireScaffold(ctx, colors, cam, W, H);
+        drawBFieldRings(ctx, colors, cam, W, H, Inorm);
+        drawFieldVectors(ctx, colors, cam, W, H, Enorm, Jnorm);
+        drawElectrons(ctx, colors, cam, W, H, electrons);
+        drawLegend(ctx, colors, W, H, mat.name);
+
+        raf = requestAnimationFrame(draw);
+      }
       raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      dispose();
-    };
-  }, [mat.name]);
+      return () => {
+        cancelAnimationFrame(raf);
+        dispose();
+      };
+    },
+    [mat.name],
+  );
 
   return (
     <Demo
@@ -327,10 +330,7 @@ function drawBFieldRings(
           drawing = false;
         }
       }
-      ctx.strokeStyle = withAlpha(
-        colors.teal,
-        pass === 'front' ? baseAlpha : baseAlpha * 0.35,
-      );
+      ctx.strokeStyle = withAlpha(colors.teal, pass === 'front' ? baseAlpha : baseAlpha * 0.35);
       ctx.lineWidth = lineWidth;
       ctx.setLineDash(pass === 'back' ? [3, 3] : []);
       ctx.stroke();
@@ -385,13 +385,7 @@ function drawFieldVectors(
   const eHead = v3(+halfE, 0, 0);
   const pE0 = project(eTail, cam, W, H);
   const pE1 = project(eHead, cam, W, H);
-  drawVectorArrow(
-    ctx,
-    pE0,
-    pE1,
-    withAlpha(colors.accent, 0.55 + 0.4 * Enorm),
-    2 + 1.5 * Enorm,
-  );
+  drawVectorArrow(ctx, pE0, pE1, withAlpha(colors.accent, 0.55 + 0.4 * Enorm), 2 + 1.5 * Enorm);
   // Label "E" near the head.
   const eLabelAnchor = project(v3(halfE + 0.18, 0.18, 0), cam, W, H);
   ctx.fillStyle = withAlpha(colors.accent, 0.85);
@@ -408,13 +402,7 @@ function drawFieldVectors(
   const jHead = v3(+halfJ, yJ, 0);
   const pJ0 = project(jTail, cam, W, H);
   const pJ1 = project(jHead, cam, W, H);
-  drawVectorArrow(
-    ctx,
-    pJ0,
-    pJ1,
-    withAlpha(colors.pink, 0.6 + 0.4 * Jnorm),
-    2 + 1.5 * Jnorm,
-  );
+  drawVectorArrow(ctx, pJ0, pJ1, withAlpha(colors.pink, 0.6 + 0.4 * Jnorm), 2 + 1.5 * Jnorm);
   const jLabelAnchor = project(v3(halfJ + 0.18, yJ + 0.18, 0), cam, W, H);
   ctx.fillStyle = withAlpha(colors.pink, 0.9);
   ctx.font = "italic 13px 'STIX Two Text', serif";

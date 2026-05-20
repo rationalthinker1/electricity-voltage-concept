@@ -14,7 +14,14 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { LayeredCanvas, type LayeredCanvasInfo } from '@/components/LayeredCanvas';
 import { Num } from '@/components/Num';

@@ -163,11 +163,20 @@ export default function Ch2VoltageAndCurrent() {
       <p className="mb-prose-3">
         The same three identities — <InlineMath tex="V_{ab} = V_b - V_a" />,{' '}
         <InlineMath tex="W = qV_{ab}" />, and <InlineMath tex="V = \Delta U/q" /> — are visible on
-        one canvas above. Drag <em className="text-text italic">V<sub>a</sub></em> and{' '}
-        <em className="text-text italic">V<sub>b</sub></em> and only their{' '}
-        <em className="text-text italic">difference</em> matters: slide both up by the same amount
-        and <em className="text-text italic">V<sub>ab</sub></em>,{' '}
-        <em className="text-text italic">W</em>, and <em className="text-text italic">ΔU</em> are
+        one canvas above. Drag{' '}
+        <em className="text-text italic">
+          V<sub>a</sub>
+        </em>{' '}
+        and{' '}
+        <em className="text-text italic">
+          V<sub>b</sub>
+        </em>{' '}
+        and only their <em className="text-text italic">difference</em> matters: slide both up by
+        the same amount and{' '}
+        <em className="text-text italic">
+          V<sub>ab</sub>
+        </em>
+        , <em className="text-text italic">W</em>, and <em className="text-text italic">ΔU</em> are
         unchanged. Flip the sign of <em className="text-text italic">q</em> and the same potential
         gap flips the bookkeeping — the energy that had to be invested to push a positive charge
         uphill is the same energy a negative charge of equal magnitude releases falling the other
@@ -183,9 +192,9 @@ export default function Ch2VoltageAndCurrent() {
           def={
             <>
               <strong className="text-text font-medium">load</strong> — whatever component (or
-              network of components) sits between the source's two terminals and dissipates,
-              stores, or otherwise consumes the delivered power. A lamp, a heater, a motor, an op-amp
-              input stage — all "loads" from the source's point of view.
+              network of components) sits between the source's two terminals and dissipates, stores,
+              or otherwise consumes the delivered power. A lamp, a heater, a motor, an op-amp input
+              stage — all "loads" from the source's point of view.
             </>
           }
         >
@@ -620,15 +629,15 @@ export default function Ch2VoltageAndCurrent() {
       </p>
 
       <p className="mb-prose-3">
-        The argument has one more counterintuitive case worth dwelling on. Most of the wires in
-        your house don't carry DC at all — they carry 60 Hz alternating current, with the driving
-        field reversing direction 120 times a second. An electron in an AC wire therefore doesn't
-        even drift on net. It oscillates back and forth about a fixed lattice site, with a peak
-        excursion you can compute exactly: amplitude{' '}
+        The argument has one more counterintuitive case worth dwelling on. Most of the wires in your
+        house don't carry DC at all — they carry 60 Hz alternating current, with the driving field
+        reversing direction 120 times a second. An electron in an AC wire therefore doesn't even
+        drift on net. It oscillates back and forth about a fixed lattice site, with a peak excursion
+        you can compute exactly: amplitude{' '}
         <InlineMath tex="x_{\text{peak}} = v_{\text{peak}}/\omega" /> where{' '}
         <em className="text-text italic">ω</em> = 2π × 60 rad/s. For a few amps through ordinary
-        14-gauge copper that comes out to a few hundred nanometres — comparable to the wavelength
-        of visible light, smaller than a red blood cell.
+        14-gauge copper that comes out to a few hundred nanometres — comparable to the wavelength of
+        visible light, smaller than a red blood cell.
       </p>
 
       <ACElectronJitterDemo />
@@ -1009,8 +1018,8 @@ export default function Ch2VoltageAndCurrent() {
                   <strong className="text-text font-medium">displacement current</strong> —
                   Maxwell's <InlineMath tex="J_d = \varepsilon_0\, \partial \vec{E}/\partial t" />:
                   a changing electric field acts like a current and closes the loop where there is
-                  no wire (e.g. through the gap of a capacitor). Required for charge conservation
-                  in Ampère's law.
+                  no wire (e.g. through the gap of a capacitor). Required for charge conservation in
+                  Ampère's law.
                 </>
               }
             >
