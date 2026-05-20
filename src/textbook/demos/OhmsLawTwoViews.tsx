@@ -19,7 +19,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
+import { Num } from '@/components/Num';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, type ThemeColors } from '@/lib/canvasTheme';
 
@@ -170,7 +172,7 @@ export function OhmsLawTwoViewsDemo({ figure }: Props) {
           format={(v) => v.toFixed(2) + ' A'}
           onChange={setILeft}
         />
-        <MiniReadout label="V = R·I  (R = 5 Ω)" value={V_left.toFixed(2)} unit="V" />
+        <MiniReadout label="V = R·I  (R = 5 Ω)" value={<Num value={V_left} />} unit="V" />
         <MiniSlider
           label="Panel 2 · resistance R"
           value={R_right}
@@ -180,8 +182,28 @@ export function OhmsLawTwoViewsDemo({ figure }: Props) {
           format={(v) => v.toFixed(1) + ' Ω'}
           onChange={setRRight}
         />
-        <MiniReadout label="I = V/R  (V = 20 V)" value={I_right.toFixed(2)} unit="A" />
+        <MiniReadout label="I = V/R  (V = 20 V)" value={<Num value={I_right} />} unit="A" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Panel 1: voltage tracks current"
+        left={
+          <InlineMath
+            tex={
+              `V \\;=\\; R\\, I \\;=\\; 5\\times ${I_left.toFixed(2)} ` +
+              `\\;=\\; ${V_left.toFixed(2)}\\ \\text{V}`
+            }
+          />
+        }
+        rightLabel="Panel 2: current falls as 1/R"
+        right={
+          <InlineMath
+            tex={
+              `I \\;=\\; V/R \\;=\\; 20/${R_right.toFixed(1)} ` +
+              `\\;\\approx\\; ${I_right.toFixed(2)}\\ \\text{A}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

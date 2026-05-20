@@ -8,8 +8,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { MATERIALS } from '@/lib/physics';
 
 interface Props {
@@ -32,11 +34,12 @@ export function LengthVsResistanceDemo({ figure }: Props) {
   const R = L / (sigma * A_m2);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
       const { L } = stateRef.current;
+      const colors = getCanvasColors();
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -72,9 +75,9 @@ export function LengthVsResistanceDemo({ figure }: Props) {
 
       // Wire body
       const grd = ctx.createLinearGradient(0, top, 0, bot);
-      grd.addColorStop(0, 'rgba(255,107,42,0.08)');
-      grd.addColorStop(0.5, 'rgba(255,107,42,0.18)');
-      grd.addColorStop(1, 'rgba(255,107,42,0.08)');
+      grd.addColorStop(0, withAlpha(colors.accent, 0.08));
+      grd.addColorStop(0.5, withAlpha(colors.accent, 0.18));
+      grd.addColorStop(1, withAlpha(colors.accent, 0.08));
       ctx.fillStyle = grd;
       roundRect(ctx, wireLeft, top, wireLen, thickness, 8);
       ctx.fill();
@@ -122,6 +125,19 @@ export function LengthVsResistanceDemo({ figure }: Props) {
         />
         <MiniReadout label="Resistance" value={<Num value={R} />} unit="Ω" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Geometric resistance"
+        left={<InlineMath tex="R \;=\; \dfrac{\rho L}{A}" />}
+        rightLabel="Live substitution (Cu, A = 2.5 mm²)"
+        right={
+          <InlineMath
+            tex={
+              `R \\;=\\; \\dfrac{1.68\\times 10^{-8} \\times ${L.toFixed(2)}}` +
+              `{2.5\\times 10^{-6}} \\;\\approx\\; ${R.toExponential(2)}\\ \\Omega`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

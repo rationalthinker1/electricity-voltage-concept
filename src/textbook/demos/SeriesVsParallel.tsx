@@ -10,7 +10,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
@@ -227,6 +228,36 @@ export function SeriesVsParallelDemo({ figure }: Props) {
         />
         <MiniReadout label={`I = ${V_FIXED} V / R`} value={<Num value={Itot} />} unit="A" />
       </DemoControls>
+      <EquationStrip
+        leftLabel={series ? 'Series combination' : 'Parallel combination'}
+        left={
+          series ? (
+            <InlineMath
+              tex={
+                `R_{\\text{tot}} \\;=\\; R_1 + R_2 \\;=\\; ` +
+                `${R1.toFixed(0)} + ${R2.toFixed(0)} \\;=\\; ${Rtot.toFixed(2)}\\ \\Omega`
+              }
+            />
+          ) : (
+            <InlineMath
+              tex={
+                `R_{\\text{tot}} \\;=\\; \\dfrac{R_1 R_2}{R_1 + R_2} \\;=\\; ` +
+                `\\dfrac{${R1.toFixed(0)} \\times ${R2.toFixed(0)}}` +
+                `{${R1.toFixed(0)} + ${R2.toFixed(0)}} \\;=\\; ${Rtot.toFixed(2)}\\ \\Omega`
+              }
+            />
+          )
+        }
+        rightLabel="Loop current at V = 12 V"
+        right={
+          <InlineMath
+            tex={
+              `I \\;=\\; V / R_{\\text{tot}} \\;=\\; 12 / ${Rtot.toFixed(2)} ` +
+              `\\;\\approx\\; ${Itot.toFixed(3)}\\ \\text{A}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

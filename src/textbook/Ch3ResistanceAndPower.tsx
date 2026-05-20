@@ -16,6 +16,7 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
+import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { AreaVsResistanceDemo } from './demos/AreaVsResistance';
@@ -27,6 +28,7 @@ import { MicroscopicOhm3DDemo } from './demos/MicroscopicOhm3D';
 import { OhmsLawTwoViewsDemo } from './demos/OhmsLawTwoViews';
 import { SeriesParallelMixDemo } from './demos/SeriesParallelMix';
 import { SeriesVsParallelDemo } from './demos/SeriesVsParallel';
+import { WireVoltageDropDemo } from './demos/WireVoltageDrop';
 import { getChapter } from './data/chapters';
 
 export default function Ch3ResistanceAndPower() {
@@ -38,8 +40,9 @@ export default function Ch3ResistanceAndPower() {
       <p className="chapter-intro">
         Run a finger along an old incandescent bulb that's been on for a minute and you'll snatch it
         back. The glass is hot. The filament inside is closer to{' '}
-        <strong className="text-text font-medium">2800 K</strong> — hot enough that a sliver of its
-        blackbody spectrum spills into the visible and the bulb does what it was built to do. Where
+        <InlineMath tex="2800\ \text{K}" /> <Cite id="coaton-marsden-1997" in={SOURCES} /> — hot
+        enough that a sliver of its blackbody spectrum spills into the visible and the bulb does
+        what it was built to do. Where
         did all that heat come from? Not from the wall, not directly. It came from the lattice of
         tungsten atoms inside the filament absorbing the kinetic energy of electrons that the
         electric field had been accelerating between collisions.{' '}
@@ -122,8 +125,8 @@ export default function Ch3ResistanceAndPower() {
         <strong className="text-text font-medium">E</strong> for an average time{' '}
         <strong className="text-text font-medium">τ</strong> between collisions with ions in the
         lattice, picks up a small drift velocity, then scatters and starts over. Average it out and
-        you get a steady drift proportional to <em className="text-text italic">E</em> — friction
-        with a clean linear law. Modern solid-state physics rewrote the inputs in quantum terms, but
+        you get a steady drift proportional to <InlineMath tex="\vec{E}" /> — friction with a
+        clean linear law. Modern solid-state physics rewrote the inputs in quantum terms, but
         the linear relation between field and current density survives intact for ordinary metals at
         ordinary fields
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
@@ -132,16 +135,16 @@ export default function Ch3ResistanceAndPower() {
       <MicroscopicOhm3DDemo />
 
       <p className="mb-prose-3">
-        The picture above is what <InlineMath tex="\vec{J} = \sigma\vec{E}" /> looks like inside the
-        wire. The orange arrow is the applied field; the pink arrow is the current density that the
-        field drives, parallel to <em className="text-text italic">E</em> and longer or shorter
-        depending on the material's σ. The cyan electrons drift opposite to the field — that's the
-        sign convention catching us out, because conventional current points with{' '}
-        <em className="text-text italic">E</em>. And the teal rings around the wire are the magnetic
-        field <strong className="text-text font-medium">B</strong> that any current carries with it,
-        perpendicular to the axis and curling by the right-hand rule. Swap nichrome for copper and
-        the same <em className="text-text italic">E</em> produces ~65× more{' '}
-        <em className="text-text italic">J</em> — same equation, different conductor.
+        The picture above is what <InlineMath tex="\vec{J} = \sigma\vec{E}" /> looks like inside
+        the wire. The orange arrow is the applied field; the pink arrow is the current density that
+        the field drives, parallel to <InlineMath tex="\vec{E}" /> and longer or shorter depending
+        on the material's σ. The cyan electrons drift opposite to the field — that's the sign
+        convention catching us out, because conventional current points with{' '}
+        <InlineMath tex="\vec{E}" />. And the teal rings around the wire are the magnetic field{' '}
+        <InlineMath tex="\vec{B}" /> that any current carries with it, perpendicular to the axis
+        and curling by the right-hand rule. Swap nichrome for copper and the same{' '}
+        <InlineMath tex="\vec{E}" /> produces ~65× more <InlineMath tex="\vec{J}" /> — same
+        equation, different conductor.
       </p>
 
       <p className="mb-prose-3">
@@ -152,45 +155,64 @@ export default function Ch3ResistanceAndPower() {
       </p>
       <Formula size="lg" tex="R = \dfrac{L}{\sigma A}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">V</strong> is the voltage drop end-to-end
-        (in volts), <strong className="text-text font-medium">I</strong> is the current through the
-        wire (in amperes), and <strong className="text-text font-medium">R</strong> is the wire's
-        resistance (in ohms, Ω = V/A). Voltage drop equals current times resistance.{' '}
+        where <InlineMath tex="R" /> is the wire's resistance (in ohms, Ω = V/A),{' '}
+        <InlineMath tex="L" /> is the length of the wire along the current direction (in metres),{' '}
+        <InlineMath tex="A" /> is the cross-sectional area (in m²), and{' '}
+        <InlineMath tex="\sigma" /> is the material's conductivity (in S/m = (Ω·m)⁻¹). The
+        macroscopic statement that pairs with it is Ohm's law{' '}
+        <InlineMath tex="V = IR" /> — voltage drop end-to-end equals current times resistance, with{' '}
+        <InlineMath tex="V" /> in volts and <InlineMath tex="I" /> in amperes.{' '}
         <em className="text-text italic">Resistance</em> is the global lump that bundles up
         everything the local conductivity does to charges as they cross the wire. It depends on the
         material (through σ) and it depends on the geometry (through L and A), and that combination
         is the entire content of the rest of the chapter
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
+      <Formula size="lg" tex="V = IR" />
+      <p className="mb-prose-3">
+        where <InlineMath tex="V" /> is the potential difference across the resistor (in volts),{' '}
+        <InlineMath tex="I" /> is the current through it (in amperes), and <InlineMath tex="R" />{' '}
+        is the resistance (in ohms). This is the operational form an engineer reaches for. Set any
+        two and the third is fixed.
+      </p>
 
       <OhmsLawTwoViewsDemo />
 
       <p className="mb-prose-3">
         The two panels above pull the same equation in opposite directions. On the left, the
-        resistor sits at a fixed 5 Ω and you choose the current — voltage tracks linearly with slope
-        equal to <em className="text-text italic">R</em>, the cleanest possible statement of{' '}
-        <em className="text-text italic">V = IR</em>. On the right, the source sits at a fixed 20 V
-        and you choose the resistance — current falls along the hyperbola{' '}
-        <InlineMath tex="I = V/R" />. Same law, two intuitions: voltage drives the current upward,
-        resistance restricts it downward.
+        resistor sits at a fixed 5 Ω and you choose the current — voltage tracks linearly with
+        slope equal to <InlineMath tex="R" />, the cleanest possible statement of{' '}
+        <InlineMath tex="V = IR" />. On the right, the source sits at a fixed 20 V and you choose
+        the resistance — current falls along the hyperbola <InlineMath tex="I = V/R" />. Same law,
+        two intuitions: voltage drives the current upward, resistance restricts it downward.
       </p>
+
+      <p className="mb-prose-3">
+        The expression <InlineMath tex="V = IR" /> is a statement about endpoints — total potential
+        drop equals current times total resistance. But the drop doesn't happen at the endpoints.
+        Inside a uniform wire the potential falls smoothly along the length, linearly, from the
+        source value at one terminal to zero at the other. Drag a probe along the wire and the
+        reading walks down that linear ramp.
+      </p>
+
+      <WireVoltageDropDemo />
 
       <h2 className="chapter-h2">Length adds, area divides</h2>
 
       <p className="mb-prose-3">
-        Take a uniform wire of length <strong className="text-text font-medium">L</strong> and
-        cross-section <strong className="text-text font-medium">A</strong>, with a voltage{' '}
-        <strong className="text-text font-medium">V</strong>
-        applied end to end. The field inside is{' '}
-        <strong className="text-text font-medium">E = V/L</strong>, uniform along the axis. The
-        current density is then <strong className="text-text font-medium">J = σE = σV/L</strong>.
-        The total current — which is just <em className="text-text italic">J</em> integrated over
-        the cross-section — is <strong className="text-text font-medium">I = JA = σAV/L</strong>.
-        Comparing to <strong className="text-text font-medium">V = IR</strong>:
+        Take a uniform wire of length <InlineMath tex="L" /> and cross-section{' '}
+        <InlineMath tex="A" />, with a voltage <InlineMath tex="V" /> applied end to end. The field
+        inside is <InlineMath tex="E = V/L" />, uniform along the axis. The current density is
+        then <InlineMath tex="J = \sigma E = \sigma V/L" />. The total current — which is just{' '}
+        <InlineMath tex="J" /> integrated over the cross-section — is{' '}
+        <InlineMath tex="I = JA = \sigma AV/L" />. Comparing to <InlineMath tex="V = IR" />:
       </p>
       <Formula size="lg" tex="R = \dfrac{L}{\sigma A} = \dfrac{\rho L}{A}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">ρ = 1/σ</strong> is the{' '}
+        where <InlineMath tex="R" /> is the resistance (in ohms), <InlineMath tex="L" /> is the
+        wire's length (in metres), <InlineMath tex="A" /> is its cross-sectional area (in m²),{' '}
+        <InlineMath tex="\sigma" /> is the conductivity (in S/m), and{' '}
+        <InlineMath tex="\rho = 1/\sigma" /> is the{' '}
         <Term
           def={
             <>
@@ -203,7 +225,7 @@ export default function Ch3ResistanceAndPower() {
         >
           resistivity
         </Term>
-        . Two clean geometric facts fall out.{' '}
+        {' '}(in Ω·m). Two clean geometric facts fall out.{' '}
         <strong className="text-text font-medium">Twice the length, twice the resistance</strong> —
         because the field has to push each electron through twice as much lattice.{' '}
         <strong className="text-text font-medium">
@@ -248,9 +270,9 @@ export default function Ch3ResistanceAndPower() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              With <em className="text-text italic">A</em> = 2×10⁻⁶ m² and{' '}
-              <em className="text-text italic">σ</em>
-              <sub>Cu</sub> = 5.96×10⁷ S/m <Cite id="crc-resistivity" in={SOURCES} />:
+              With <InlineMath tex="A = 2\times 10^{-6}\ \text{m}^{2}" /> and{' '}
+              <InlineMath tex="\sigma_{\text{Cu}} = 5.96\times 10^{7}\ \text{S/m}" />{' '}
+              <Cite id="crc-resistivity" in={SOURCES} />:
             </p>
             <Formula tex="R = \dfrac{L}{\sigma A} = \dfrac{10}{(5.96\times 10^{7})(2\times 10^{-6})} \approx 0.0839\ \Omega" />
             <p className="mb-prose-1 last:mb-0">
@@ -271,31 +293,32 @@ export default function Ch3ResistanceAndPower() {
         <Cite id="crc-resistivity" in={SOURCES} />. Even confining ourselves to metals, the spread
         is large.
       </p>
-      <p className="pullout">
+      <Pullout>
         Conductivity is a single number that bundles up everything about how charges navigate a
         material.
-      </p>
+      </Pullout>
       <p className="mb-prose-3">
-        Silver is the king at <strong className="text-text font-medium">σ ≈ 6.30×10⁷ S/m</strong>,
-        with copper a hair behind at <strong className="text-text font-medium">5.96×10⁷ S/m</strong>{' '}
-        — the gap is small enough that copper wins on price every time
+        Silver is the king at <InlineMath tex="\sigma \approx 6.30\times 10^{7}\ \text{S/m}" />,
+        with copper a hair behind at <InlineMath tex="5.96\times 10^{7}\ \text{S/m}" /> — the gap
+        is small enough that copper wins on price every time
         <Cite id="crc-resistivity" in={SOURCES} />. Aluminum's conductivity is about{' '}
-        <strong className="text-text font-medium">3.77×10⁷ S/m</strong>, only ~63% of copper's, but
-        aluminum is roughly a third the density of copper. For long-distance power lines, where the
-        conductor's own weight is the dominant engineering constraint, that trade is worth making —
-        almost every overhead transmission line in the world is aluminum.
+        <InlineMath tex="3.77\times 10^{7}\ \text{S/m}" />, only ~63% of copper's
+        <Cite id="crc-resistivity" in={SOURCES} />, but aluminum is roughly a third the density of
+        copper. For long-distance power lines, where the conductor's own weight is the dominant
+        engineering constraint, that trade is worth making — almost every overhead transmission
+        line in the world is aluminum.
       </p>
       <p className="mb-prose-3">
-        Iron drops you to about <strong className="text-text font-medium">1.0×10⁷ S/m</strong>, six
-        times worse than copper. Tungsten (
-        <strong className="text-text font-medium">1.79×10⁷ S/m</strong>) is worse still — but
-        tungsten has the highest melting point of any metal, around{' '}
-        <strong className="text-text font-medium">3700 K</strong>, which is why every incandescent
-        filament for the last century was made of it. And nichrome — an alloy of nickel and chromium
-        — sits at <strong className="text-text font-medium">σ ≈ 9.1×10⁵ S/m</strong>, roughly{' '}
-        <em className="text-text italic">seventy times worse</em> than copper. Nichrome was
-        engineered to be a bad conductor, on purpose, that stays solid and chemically passive at red
-        heat. It is the material in your toaster
+        Tungsten drops you to <InlineMath tex="1.79\times 10^{7}\ \text{S/m}" />, about a third as
+        conductive as copper — but tungsten has the highest melting point of any metal, around{' '}
+        <InlineMath tex="3700\ \text{K}" />, which is why every incandescent filament for the last
+        century was made of it. Iron is worse, at <InlineMath tex="1.0\times 10^{7}\ \text{S/m}" />{' '}
+        — six times worse than copper <Cite id="crc-resistivity" in={SOURCES} />. And nichrome — an
+        alloy of nickel and chromium — sits at{' '}
+        <InlineMath tex="\sigma \approx 9.1\times 10^{5}\ \text{S/m}" />, more than{' '}
+        <em className="text-text italic">sixty times worse</em> than copper. Nichrome was
+        engineered to be a bad conductor, on purpose, that stays solid and chemically passive at
+        red heat. It is the material in your toaster
         <Cite id="kanthal" in={SOURCES} />.
       </p>
 
@@ -325,7 +348,7 @@ export default function Ch3ResistanceAndPower() {
         <strong className="text-text font-medium">V</strong> is the potential difference across it
         (V), and <strong className="text-text font-medium">I</strong> is the current through it (A).
         The units confirm it: joules per coulomb times coulombs per second is joules per second{' '}
-        <Cite id="feynman-II-2" in={SOURCES} />. This identity makes no assumption about what the
+        <Cite id="griffiths-2017" in={SOURCES} />. This identity makes no assumption about what the
         element is — battery, resistor, motor, capacitor, antenna. Whenever charge moves through a
         potential difference, energy is transferred at the rate <InlineMath tex="VI" />. The rest of
         this section is about <em>where that energy goes</em> in the specific case of a resistor.
@@ -334,7 +357,7 @@ export default function Ch3ResistanceAndPower() {
       <p className="mb-prose-3">
         Drude's collision picture is what makes resistance dissipative rather than reactive. Between
         collisions, the field does work on a free electron — the electron picks up kinetic energy at
-        the rate <em className="text-text italic">F</em>·<em className="text-text italic">v</em>. At
+        the rate <InlineMath tex="\vec{F}\cdot\vec{v}" />. At
         the next collision (every ~2×10⁻¹⁴ s in copper) the electron's drift component is randomized
         by interaction with a lattice ion, and that gained kinetic energy is dumped into the lattice
         as a vibrational mode. The lattice warms. The electron starts over
@@ -346,48 +369,52 @@ export default function Ch3ResistanceAndPower() {
 
       <p className="mb-prose-3">
         The 3D view above puts numbers on the picture. The cyan electrons inside the copper bounce
-        at thermal speeds of order <strong className="text-text font-medium">10⁵ m/s</strong> —
-        every direction, mostly cancelling — while the average{' '}
-        <em className="text-text italic">drift</em>
-        toward +x is of order <strong className="text-text font-medium">10⁻⁴ m/s</strong> at a few
-        amps. The ratio v<sub>th</sub>/v<sub>d</sub> is around
-        <strong className="text-text font-medium"> 10¹⁰</strong>: a hurricane of random motion with
-        the faintest steady breeze threaded through it. Yet that breeze is the entire macroscopic
-        current, and the energy each electron loses to the lattice on every collision is the entire
-        macroscopic heat
+        at <Term
+          def={
+            <>
+              <strong className="text-text font-medium">Fermi velocity</strong> — the speed of
+              electrons at the Fermi surface of a metal, set by quantum degeneracy rather than
+              temperature. For copper, <InlineMath tex="v_F \approx 1.6\times 10^{6}\ \text{m/s}" />{' '}
+              — about 0.5% of <InlineMath tex="c" />.
+            </>
+          }
+        >
+          Fermi speeds
+        </Term>{' '}
+        of order <InlineMath tex="10^{6}\ \text{m/s}" /> — every direction, mostly cancelling —
+        while the average <em className="text-text italic">drift</em> toward +x is of order{' '}
+        <InlineMath tex="10^{-4}\ \text{m/s}" /> at a few amps. The ratio{' '}
+        <InlineMath tex="v_F/v_d" /> is around <InlineMath tex="10^{10}" />: a hurricane of
+        quantum-degenerate motion with the faintest steady breeze threaded through it. Yet that
+        breeze is the entire macroscopic current, and the energy each electron loses to the lattice
+        on every collision is the entire macroscopic heat
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
 
       <p className="mb-prose-3">
         Per unit volume, the rate of energy transfer from field to lattice is the dot product{' '}
-        <strong className="text-text font-medium">J·E</strong>:
+        <InlineMath tex="\vec{J}\cdot\vec{E}" />:
       </p>
       <Formula size="lg" tex="p_v = \vec{J}\cdot\vec{E} = \sigma E^2" />
       <p className="mb-prose-3">
-        where{' '}
-        <strong className="text-text font-medium">
-          p<sub>v</sub>
-        </strong>{' '}
-        is the power dissipated per unit volume of conductor (in W/m³),
-        <strong className="text-text font-medium"> J</strong> is the current density vector (A/m²),{' '}
-        <strong className="text-text font-medium">E</strong> is the local electric field (V/m), and
-        <strong className="text-text font-medium"> σ</strong> the conductivity (S/m). The dot
-        product is the rate of work done by the field on the drifting charges. Always positive in a
-        resistor (J and E point the same way). Integrate over the wire's volume{' '}
-        <strong className="text-text font-medium">LA</strong>, with E = V/L throughout, and the
-        macroscopic power drops out:
+        where <InlineMath tex="p_v" /> is the power dissipated per unit volume of conductor (in
+        W/m³), <InlineMath tex="\vec{J}" /> is the current density vector (A/m²),{' '}
+        <InlineMath tex="\vec{E}" /> is the local electric field (V/m), and{' '}
+        <InlineMath tex="\sigma" /> the conductivity (S/m). The dot product is the rate of work
+        done by the field on the drifting charges. Always positive in a resistor ({' '}
+        <InlineMath tex="\vec{J}" /> and <InlineMath tex="\vec{E}" /> point the same way).
+        Integrate over the wire's volume <InlineMath tex="LA" />, with{' '}
+        <InlineMath tex="E = V/L" /> throughout, and the macroscopic power drops out:
       </p>
       <Formula size="lg" tex="P = \dfrac{\sigma A V^2}{L} = \dfrac{V^2}{R} = VI = I^2 R" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">P</strong> is the total power dissipated by
-        the resistor (in watts, W = J/s),
-        <strong className="text-text font-medium"> V</strong> is the voltage across it (V),{' '}
-        <strong className="text-text font-medium">I</strong> is the current through it (A),
-        <strong className="text-text font-medium"> R</strong> is its resistance (Ω), and{' '}
-        <em className="text-text italic">L</em>, <em className="text-text italic">A</em>,{' '}
-        <em className="text-text italic">σ</em> are the geometric and material quantities from
-        above. The four expressions are algebraically identical once{' '}
-        <em className="text-text italic">V = IR</em> is substituted. James Joule established this
+        where <InlineMath tex="P" /> is the total power dissipated by the resistor (in watts,
+        W = J/s), <InlineMath tex="V" /> is the voltage across it (in volts),{' '}
+        <InlineMath tex="I" /> is the current through it (in amperes),{' '}
+        <InlineMath tex="R" /> is its resistance (in ohms), and{' '}
+        <InlineMath tex="L" />, <InlineMath tex="A" />, <InlineMath tex="\sigma" /> are the
+        geometric and material quantities from above. The four expressions are algebraically
+        identical once <InlineMath tex="V = IR" /> is substituted. James Joule established this
         experimentally in 1841 with a calorimeter that became the namesake of the SI unit of energy
         <Cite id="joule-1841" in={SOURCES} />. The phenomenon is called{' '}
         <Term
@@ -406,10 +433,10 @@ export default function Ch3ResistanceAndPower() {
         <Term
           def={
             <>
-              <strong className="text-text font-medium">watt</strong> — the SI unit of power, 1 W =
-              1 J/s. Named after James Watt; <InlineMath id="power-vi" /> in watts when{' '}
-              <em className="text-text italic">V</em> is in volts and{' '}
-              <em className="text-text italic">I</em> in amperes.
+              <strong className="text-text font-medium">watt</strong> — the SI unit of power,{' '}
+              <InlineMath tex="1\,\text{W} = 1\,\text{J/s}" />. Named after James Watt;{' '}
+              <InlineMath id="power-vi" /> in watts when <InlineMath tex="V" /> is in volts and{' '}
+              <InlineMath tex="I" /> in amperes.
             </>
           }
         >
@@ -428,11 +455,9 @@ export default function Ch3ResistanceAndPower() {
         on to white-hot near <strong className="text-text font-medium">3000 K</strong>. The
         equilibrium temperature comes from radiation balance — Stefan–Boltzmann says a hot surface
         radiates power proportional to <strong className="text-text font-medium">T⁴</strong>, so a
-        wire dissipating <em className="text-text italic">P</em> watts over surface area{' '}
-        <em className="text-text italic">
-          A<sub>surf</sub>
-        </em>{' '}
-        with emissivity <em className="text-text italic">ε</em> sits at the temperature that solves
+        wire dissipating <InlineMath tex="P" /> watts over surface area{' '}
+        <InlineMath tex="A_{\text{surf}}" /> with emissivity <InlineMath tex="\varepsilon" /> sits
+        at the temperature that solves{' '}
         <InlineMath tex="P = \varepsilon\sigma_{\text{SB}} A_{\text{surf}} T^4" />. Tungsten's
         hostile combination of low conductivity and very high melting point lets a thin filament
         reach incandescent T without melting; nichrome's lower σ and high oxidation resistance let a
@@ -482,8 +507,7 @@ export default function Ch3ResistanceAndPower() {
             <strong className="text-text font-medium">1 kW</strong> kettle take to raise{' '}
             <strong className="text-text font-medium">0.5 L</strong>
             of water by <strong className="text-text font-medium">80 K</strong>? (Take{' '}
-            <em className="text-text italic">c</em>
-            <sub>water</sub> = 4186 J/(kg·K).)
+            <InlineMath tex="c_{\text{water}} = 4186\ \text{J/(kg·K)}" />.)
           </>
         }
         hint={
@@ -527,6 +551,12 @@ export default function Ch3ResistanceAndPower() {
       </p>
       <Formula size="lg" tex="R_{\text{series}} = R_1 + R_2" />
       <p className="mb-prose-3">
+        where <InlineMath tex="R_{\text{series}}" /> is the equivalent resistance seen by the
+        source (in ohms), and <InlineMath tex="R_1" /> and <InlineMath tex="R_2" /> are the
+        individual resistances on the loop (in ohms). The same current{' '}
+        <InlineMath tex="I" /> passes through both, so their voltage drops simply stack.
+      </p>
+      <p className="mb-prose-3">
         Put them in{' '}
         <Term
           def={
@@ -539,27 +569,27 @@ export default function Ch3ResistanceAndPower() {
         >
           <strong className="text-text font-medium">parallel</strong>
         </Term>{' '}
-        — two branches at the same voltage <em className="text-text italic">V</em> — and the
-        currents add:
+        — two branches at the same voltage <InlineMath tex="V" /> — and the currents add:{' '}
         <InlineMath tex="I = V/R_1 + V/R_2 = V(1/R_1 + 1/R_2)" />, so the reciprocals combine:
       </p>
       <Formula size="lg" tex="1 / R_{\text{parallel}} = 1/R_1 + 1/R_2" />
       <p className="mb-prose-3">
-        Two equal resistors in parallel give half their value; in general, the parallel combination
-        is always less than either branch on its own
+        where <InlineMath tex="R_{\text{parallel}}" /> is the equivalent resistance of the two
+        branches taken together (in ohms), and <InlineMath tex="R_1" />,{' '}
+        <InlineMath tex="R_2" /> are the individual branch resistances (in ohms). Conductances{' '}
+        <InlineMath tex="1/R" /> (in siemens, S = 1/Ω) are what add. Two equal resistors in
+        parallel give half their value; in general, the parallel combination is always less than
+        either branch on its own
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
       <SeriesVsParallelDemo />
 
       <p className="mb-prose-3">
-        Real circuits rarely live at one extreme. A mixed network — a series element feeding a
-        parallel block — already wants both rules at once. The trunk current crosses{' '}
-        <em className="text-text italic">R₁</em> intact, drops by <InlineMath tex="I\cdot R_1" /> on
-        the way through, and the remaining voltage sits across the parallel pair, which splits the
-        current inversely with resistance. Slide <em className="text-text italic">R₁</em>,{' '}
-        <em className="text-text italic">R₂</em>, and <em className="text-text italic">R₃</em> below
-        and watch the voltage probes track:
+        Real circuits rarely live at one extreme. A mixed network already wants both rules at once
+        — a trunk in series with a parallel block, a parallel pair feeding a series load, or
+        several branches running in parallel. The demo below lets you pick the topology and watch
+        the voltage drops and branch currents re-balance themselves.
       </p>
 
       <SeriesParallelMixDemo />
@@ -568,20 +598,16 @@ export default function Ch3ResistanceAndPower() {
         These rules are not arbitrary topology axioms — they are the same geometric{' '}
         <InlineMath tex="R = \rho L/A" /> from earlier in the chapter, looked at from a different
         angle. <em className="text-text italic">A long wire is many short wires in series.</em>{' '}
-        Slice a wire of length <em className="text-text italic">L</em>
-        into <em className="text-text italic">n</em> equal segments; each segment has resistance{' '}
-        <InlineMath tex="\rho(L/n)/A" />, and adding <em className="text-text italic">n</em> of them
-        in series recovers
-        <InlineMath tex="\rho L/A" /> — the original formula.{' '}
-        <em className="text-text italic">A fat wire is many thin wires in parallel.</em> Slice a
-        wire of cross-section <em className="text-text italic">A</em>
-        into <em className="text-text italic">n</em> filaments of cross-section{' '}
-        <InlineMath tex="A/n" />; each filament has resistance{' '}
-        <InlineMath tex="\rho L/(A/n) = n\rho L/A" />, and combining{' '}
-        <em className="text-text italic">n</em>
-        of them in parallel gives <InlineMath tex="\rho L/A" /> again. "Long = series" and "fat =
-        parallel" both recover the geometric law by the rules in this section. The macroscopic and
-        geometric pictures are the same picture.
+        Slice a wire of length <InlineMath tex="L" /> into <InlineMath tex="n" /> equal segments;
+        each segment has resistance <InlineMath tex="\rho(L/n)/A" />, and adding{' '}
+        <InlineMath tex="n" /> of them in series recovers <InlineMath tex="\rho L/A" /> — the
+        original formula. <em className="text-text italic">A fat wire is many thin wires in
+        parallel.</em> Slice a wire of cross-section <InlineMath tex="A" /> into{' '}
+        <InlineMath tex="n" /> filaments of cross-section <InlineMath tex="A/n" />; each filament
+        has resistance <InlineMath tex="\rho L/(A/n) = n\rho L/A" />, and combining{' '}
+        <InlineMath tex="n" /> of them in parallel gives <InlineMath tex="\rho L/A" /> again. "Long
+        = series" and "fat = parallel" both recover the geometric law by the rules in this section.
+        The macroscopic and geometric pictures are the same picture.
       </p>
 
       <TryIt
@@ -613,28 +639,30 @@ export default function Ch3ResistanceAndPower() {
       <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
-        Resistance is geometry times material. Geometry contributes a factor of L/A — long-and-thin
-        resists more, short-and-fat resists less. Material contributes ρ = 1/σ, ranging from
-        copper's 1.7×10⁻⁸ Ω·m up through tungsten and nichrome and out into the insulators. Power
+        Resistance is geometry times material. Geometry contributes a factor of{' '}
+        <InlineMath tex="L/A" /> — long-and-thin resists more, short-and-fat resists less. Material
+        contributes <InlineMath tex="\rho = 1/\sigma" />, ranging from copper's{' '}
+        <InlineMath tex="1.7\times 10^{-8}\ \Omega\cdot\text{m}" /> up through tungsten and
+        nichrome and out into the insulators. Power
         dissipated in a resistor is the rate at which the field does work on charges that
         immediately scatter that energy into lattice vibrations:{' '}
         <InlineMath tex="P = VI = I^2 R = V^2/R" />. Every watt of resistive dissipation is a watt
         of heat.
       </p>
       <p className="mb-prose-3">
-        We've now got the linear, conductive half of electricity firmly in hand: charges in fields,
-        fields in space, currents through resistors, watts becoming heat. In Chapter 4 we let the
-        currents themselves <em className="text-text italic">do</em> something — because moving
-        charge produces a second kind of field, the rotational partner of the electrostatic one, and
-        that is where the rest of nineteenth-century physics opens up.
+        Chapter 4 zooms in from resistance as a physical quantity to the resistor as a physical
+        component — color codes, power ratings, tolerances, and the engineering choices that go
+        into actually building one. Magnetism, the rotational partner of the electrostatic field
+        we've been working with so far, opens up in Chapter 6.
       </p>
 
       <CaseStudies
         intro={
           <>
-            Three places the same <InlineMath tex="P = I^2 R" /> equation gets exploited at
-            radically different design points — once to make heat the product, once to suppress it
-            as waste, and once to push it all the way to zero.
+            Three places this chapter's physics shows up in objects you use or read about every
+            day. The same <InlineMath tex="P = I^2 R" /> equation gets exploited at radically
+            different design points — once to make heat the product, once to suppress it as waste,
+            and once to push it all the way to zero.
           </>
         }
       >
@@ -701,8 +729,8 @@ export default function Ch3ResistanceAndPower() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             The cold-resistance ratio is also why bulbs die specifically the instant they are
-            switched on. At room temperature, <em className="text-text italic">R</em> is roughly a
-            tenth of its operating value, so the inrush current is roughly ten times the
+            switched on. At room temperature, <InlineMath tex="R" /> is roughly a tenth of its
+            operating value, so the inrush current is roughly ten times the
             steady-state operating current until the filament heats up
             <Cite id="coaton-marsden-1997" in={SOURCES} />. The already-thinnest spot melts a hair
             sooner than the rest of the coil, and the lamp opens.
@@ -768,28 +796,27 @@ export default function Ch3ResistanceAndPower() {
             <strong className="text-text font-medium">2 kA</strong>; the loss along the same
             conductor drops by a factor of <InlineMath tex="(500/11)^2 \approx 2000" />
             <Cite id="grainger-power-systems-2003" in={SOURCES} />. That quadratic in{' '}
-            <em className="text-text italic">V</em> is the single biggest reason the grid exists in
-            its current form.
+            <InlineMath tex="V" /> is the single biggest reason the grid exists in its current
+            form.
           </p>
           <p className="mb-prose-2 last:mb-0">
             The conductor choice is the second lever. Outdoor transmission lines are almost always{' '}
             <em className="text-text italic">aluminum</em>, not copper, even though aluminum's
             conductivity is only about{' '}
-            <strong className="text-text font-medium">3.77×10⁷ S/m</strong> — roughly 63% of
-            copper's
+            <InlineMath tex="3.77\times 10^{7}\ \text{S/m}" /> — roughly 63% of copper's
             <Cite id="crc-resistivity" in={SOURCES} />. For a long span suspended in air, the
-            dominant constraint is the conductor's own weight pulling on the towers, and aluminum is
-            roughly one-third the density of copper. The extra cross-section needed to hit the same{' '}
-            <em className="text-text italic">R</em> still comes out lighter and cheaper. Inside your
-            walls, where copper's mechanical and termination properties win, the calculus flips back
+            dominant constraint is the conductor's own weight pulling on the towers, and aluminum
+            is roughly one-third the density of copper. The extra cross-section needed to hit the
+            same <InlineMath tex="R" /> still comes out lighter and cheaper. Inside your walls,
+            where copper's mechanical and termination properties win, the calculus flips back
             <Cite id="nec-2017-aluminum" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
             Every transformer in the chain — generator step-up, regional substation, neighborhood
             pole-top — exists for the same reason. The actual current the wall outlet hands you is
-            set by what your appliance asks of it; everything upstream is the grid choosing voltages
-            so that the line current at each stage is sane against the local{' '}
-            <em className="text-text italic">R</em>.
+            set by what your appliance asks of it; everything upstream is the grid choosing
+            voltages so that the line current at each stage is sane against the local{' '}
+            <InlineMath tex="R" />.
           </p>
         </CaseStudy>
 
@@ -880,12 +907,11 @@ export default function Ch3ResistanceAndPower() {
         <FAQItem q="Why does a thinner wire have higher resistance, even though it's the same material?">
           <p>
             Resistance is <InlineMath id="resistance-resistivity" />: halve the cross-section{' '}
-            <em className="text-text italic">A</em> and you double{' '}
-            <em className="text-text italic">R</em>
+            <InlineMath tex="A" /> and you double <InlineMath tex="R" />
             <Cite id="griffiths-2017" in={SOURCES} />. The microscopic picture is even cleaner —
             think of the wire as a bundle of parallel filaments. A fat wire has many filaments
             carrying current side by side; a thin wire has fewer. With fewer parallel paths, each
-            carrying its share of <em className="text-text italic">I</em>, the current density{' '}
+            carrying its share of <InlineMath tex="I" />, the current density{' '}
             <InlineMath tex="J = I/A" /> climbs, and the field <InlineMath tex="E = J/\sigma" />{' '}
             needed to push it climbs with it. More field over the same length means more voltage
             drop — i.e., more resistance.
@@ -897,25 +923,23 @@ export default function Ch3ResistanceAndPower() {
             Voltage drop is the work per unit charge done{' '}
             <em className="text-text italic">against</em> the lattice friction. Inside a uniform
             wire the field is <InlineMath tex="E = V/L" /> and the same charge has to traverse the
-            whole length, so doubling <em className="text-text italic">L</em> doubles the integrated
-            drop for a fixed <em className="text-text italic">E</em>
-            <Cite id="griffiths-2017" in={SOURCES} />. Equivalently, a long wire is many short wires
-            in series: each segment dissipates its share of <InlineMath tex="I^2 R" />, and the
-            segments add. The formula <InlineMath id="resistance-resistivity" />
-            encodes both views at once.
+            whole length, so doubling <InlineMath tex="L" /> doubles the integrated drop for a
+            fixed <InlineMath tex="E" />
+            <Cite id="griffiths-2017" in={SOURCES} />. Equivalently, a long wire is many short
+            wires in series: each segment dissipates its share of <InlineMath tex="I^2 R" />, and
+            the segments add. The formula <InlineMath id="resistance-resistivity" /> encodes both
+            views at once.
           </p>
         </FAQItem>
 
         <FAQItem q="Why does copper's resistance go UP with temperature, while a semiconductor's goes DOWN?">
           <p>
-            In a metal, the carrier density <em className="text-text italic">n</em> is essentially
-            fixed — every copper atom donates its one conduction electron whether the wire is cold
-            or hot. Heating up just increases lattice vibrations (phonons), which scatter electrons
-            more often, shortening the Drude time <em className="text-text italic">τ</em> and
-            pushing
-            <strong className="text-text font-medium"> ρ</strong> up roughly linearly with{' '}
-            <em className="text-text italic">T</em> above the Debye temperature — a slope quantified
-            by the metal's{' '}
+            In a metal, the carrier density <InlineMath tex="n" /> is essentially fixed — every
+            copper atom donates its one conduction electron whether the wire is cold or hot.
+            Heating up just increases lattice vibrations (phonons), which scatter electrons more
+            often, shortening the Drude time <InlineMath tex="\tau" /> and pushing{' '}
+            <InlineMath tex="\rho" /> up roughly linearly with <InlineMath tex="T" /> above the
+            Debye temperature — a slope quantified by the metal's{' '}
             <Term
               def={
                 <>
@@ -932,12 +956,11 @@ export default function Ch3ResistanceAndPower() {
             </Term>
             <Cite id="matthiessen-1864" in={SOURCES} />
             <Cite id="ashcroft-mermin-1976" in={SOURCES} />. In a semiconductor,{' '}
-            <em className="text-text italic">n</em> itself is temperature-activated: more heat
-            liberates exponentially more carriers across the band gap, and that swamps the increased
-            scattering. <em className="text-text italic">Same equation</em>
+            <InlineMath tex="n" /> itself is temperature-activated: more heat liberates
+            exponentially more carriers across the band gap, and that swamps the increased
+            scattering. <em className="text-text italic">Same equation</em>{' '}
             <InlineMath tex="\sigma = nq^2\tau/m" />, opposite slopes — because in metals only{' '}
-            <em className="text-text italic">τ</em> moves and in semiconductors
-            <em className="text-text italic"> n</em> dominates.
+            <InlineMath tex="\tau" /> moves and in semiconductors <InlineMath tex="n" /> dominates.
           </p>
         </FAQItem>
 
@@ -959,8 +982,7 @@ export default function Ch3ResistanceAndPower() {
             </Term>{' '}
             is a material whose DC resistance vanishes below a critical temperature. Kamerlingh
             Onnes cooled mercury to 4.2 K in 1911 and watched its resistance fall to{' '}
-            <em className="text-text italic">exactly</em>
-            zero
+            <em className="text-text italic">exactly</em> zero
             <Cite id="onnes-1911" in={SOURCES} />. The microscopic explanation came in 1957 from
             Bardeen, Cooper, and Schrieffer: below the critical temperature, electrons bind into{' '}
             <strong className="text-text font-medium">Cooper pairs</strong>
@@ -978,10 +1000,9 @@ export default function Ch3ResistanceAndPower() {
             Both want to dissipate ~1–2 kW at line voltage, but they tune the resistance
             differently. A kettle heats water by direct contact, so its element runs at a few
             hundred kelvin and can be a moderately thick metal sheath — modest{' '}
-            <em className="text-text italic">R</em>, big <em className="text-text italic">I</em>,
-            lots of surface area in contact with water. A toaster needs to{' '}
-            <em className="text-text italic">glow</em> red so it can radiate at ~1000 K, which means
-            the element must reach equilibrium where{' '}
+            <InlineMath tex="R" />, big <InlineMath tex="I" />, lots of surface area in contact
+            with water. A toaster needs to <em className="text-text italic">glow</em> red so it can
+            radiate at ~1000 K, which means the element must reach equilibrium where{' '}
             <InlineMath tex="P = \varepsilon\sigma_{\text{SB}} A_{\text{surf}} T^4" /> balances{' '}
             <InlineMath tex="I^2 R" />. To get there in open air, you go thin and use{' '}
             <strong className="text-text font-medium">nichrome</strong>, whose ρ is ~70× copper's
@@ -997,9 +1018,9 @@ export default function Ch3ResistanceAndPower() {
             conductivity —{' '}
             <InlineMath tex="\sigma_{\text{Ag}} \approx 6.30\times 10^{7}\ \text{S/m}" /> vs.
             <InlineMath tex="\sigma_{\text{Cu}} \approx 5.96\times 10^{7}\ \text{S/m}" />
-            <Cite id="crc-resistivity" in={SOURCES} />. But silver is roughly an order of magnitude
-            more expensive per kilogram, and you'd save only a few percent of{' '}
-            <em className="text-text italic">R</em> by switching. For house wiring, copper is
+            <Cite id="crc-resistivity" in={SOURCES} />. But silver is roughly an order of
+            magnitude more expensive per kilogram, and you'd save only a few percent of{' '}
+            <InlineMath tex="R" /> by switching. For house wiring, copper is
             essentially the same conductor at a fraction of the cost, with the bonus of being
             mechanically friendlier (more ductile, easier to terminate). The 5% gain simply isn't
             worth it.
@@ -1038,12 +1059,12 @@ export default function Ch3ResistanceAndPower() {
 
         <FAQItem q="Why is high-voltage transmission so much more efficient than low-voltage?">
           <p>
-            For a fixed amount of delivered power <em className="text-text italic">P</em>, the line
-            current is <InlineMath tex="I = P/V" />, and the line losses are{' '}
+            For a fixed amount of delivered power <InlineMath tex="P" />, the line current is{' '}
+            <InlineMath tex="I = P/V" />, and the line losses are{' '}
             <InlineMath tex="P_{\text{loss}} = I^2 R = (P/V)^2 R" />
             <Cite id="grainger-power-systems-2003" in={SOURCES} />. Doubling the transmission
-            voltage halves the current and <em className="text-text italic">quarters</em> the loss —
-            the dependence is quadratic. That's why long-distance lines run at hundreds of
+            voltage halves the current and <em className="text-text italic">quarters</em> the loss
+            — the dependence is quadratic. That's why long-distance lines run at hundreds of
             kilovolts, with transformers stepping down to safe domestic voltages right before the
             wires enter your house. The wires themselves don't change; only the operating point on
             the <InlineMath tex="I^2 R" /> curve does.
@@ -1052,10 +1073,10 @@ export default function Ch3ResistanceAndPower() {
 
         <FAQItem q="If P = I²R, why doesn't a 5 V phone charger melt a thin USB cable?">
           <p>
-            Because <em className="text-text italic">I</em> is small. A 5 V × 2 A charger delivers
-            10 W; through a typical USB-A cable of ~0.2 Ω round-trip the dissipated power is{' '}
-            <InlineMath tex="I^2 R = 4 \times 0.2 = 0.8\ \text{W}" /> spread over a meter of cable —
-            easily shed by convection
+            Because <InlineMath tex="I" /> is small. A 5 V × 2 A charger delivers 10 W; through a
+            typical USB-A cable of ~0.2 Ω round-trip the dissipated power is{' '}
+            <InlineMath tex="I^2 R = 4 \times 0.2 = 0.8\ \text{W}" /> spread over a meter of cable
+            — easily shed by convection
             <Cite id="griffiths-2017" in={SOURCES} />. The cable does get faintly warm and you lose
             a tenth of a volt to <InlineMath tex="IR" /> drop. Try it with USB-PD at 100 W / 5 A and
             a too-thin wire and you genuinely can melt the insulation; this is why high-current
@@ -1068,9 +1089,9 @@ export default function Ch3ResistanceAndPower() {
         <FAQItem q='What is "voltage drop"? Does some voltage actually get lost?'>
           <p>
             <strong className="text-text font-medium">Voltage isn't conserved; energy is.</strong>{' '}
-            When current <em className="text-text italic">I</em> passes through a wire of resistance{' '}
-            <em className="text-text italic">R</em>, the potential at the far end is lower than at
-            the near end by <InlineMath tex="IR" /> — that's the &quot;drop&quot;
+            When current <InlineMath tex="I" /> passes through a wire of resistance{' '}
+            <InlineMath tex="R" />, the potential at the far end is lower than at the near end by{' '}
+            <InlineMath tex="IR" /> — that's the &quot;drop&quot;
             <Cite id="griffiths-2017" in={SOURCES} />. The missing potential energy didn't vanish;
             it was converted into heat at the rate <InlineMath tex="I^2 R" /> as electrons scattered
             against the lattice. A long thin extension cord shows this dramatically: plug a vacuum
@@ -1088,24 +1109,21 @@ export default function Ch3ResistanceAndPower() {
             <Term
               def={
                 <>
-                  <strong className="text-text font-medium">Matthiessen's rule</strong> — the total
-                  resistivity of a metal is the sum of independent scattering contributions:{' '}
-                  <em className="text-text italic">ρ</em> = <em className="text-text italic">ρ</em>
-                  <sub>impurity</sub> + <em className="text-text italic">ρ</em>
-                  <sub>phonon</sub>(T) + …. Independent because the scattering rates add.
+                  <strong className="text-text font-medium">Matthiessen's rule</strong> — the
+                  total resistivity of a metal is the sum of independent scattering contributions:{' '}
+                  <InlineMath tex="\rho = \rho_{\text{impurity}} + \rho_{\text{phonon}}(T) + \ldots" />.
+                  Independent because the scattering rates add.
                 </>
               }
             >
               Matthiessen's rule
             </Term>{' '}
             writes the total resistivity as a sum:{' '}
-            <strong className="text-text font-medium">
-              ρ = ρ<sub>residual</sub> + ρ<sub>phonon</sub>(T)
-            </strong>
+            <InlineMath tex="\rho = \rho_{\text{residual}} + \rho_{\text{phonon}}(T)" />
             <Cite id="matthiessen-1864" in={SOURCES} />. The first term comes from impurities,
             vacancies, and grain boundaries; the second from lattice vibrations. Ultra-pure copper
-            near 4 K can have <em className="text-text italic">ρ</em> a thousand times lower than at
-            room temperature, but only a true superconductor reaches exactly zero
+            near 4 K can have <InlineMath tex="\rho" /> a thousand times lower than at room
+            temperature, but only a true superconductor reaches exactly zero
             <Cite id="onnes-1911" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1113,17 +1131,16 @@ export default function Ch3ResistanceAndPower() {
         <FAQItem q="At the atomic level, what's actually causing the resistance?">
           <p>
             Two things, in parallel. Drude's mechanical picture imagines electrons accelerating
-            under <em className="text-text italic">E</em>, then colliding with lattice ions and
-            randomizing their drift component every <em className="text-text italic">τ</em> ≈
-            2×10⁻¹⁴ s
+            under <InlineMath tex="\vec{E}" />, then colliding with lattice ions and randomizing
+            their drift component every{' '}
+            <InlineMath tex="\tau \approx 2\times 10^{-14}\ \text{s}" />
             <Cite id="drude-1900" in={SOURCES} />. The modern Bloch picture replaces the
-            &quot;collisions&quot; with
+            &quot;collisions&quot; with{' '}
             <strong className="text-text font-medium">
-              {' '}
               scattering off deviations from a perfect crystal
             </strong>{' '}
             — phonons (lattice vibrations) plus impurities, defects, and grain boundaries — but the
-            rate equation <em className="text-text italic">σ = nq²τ/m</em> survives nearly intact
+            rate equation <InlineMath tex="\sigma = nq^2\tau/m" /> survives nearly intact
             <Cite id="ashcroft-mermin-1976" in={SOURCES} />. Resistance is the macroscopic stamp of
             these quantum scattering events; the kinetic energy gained between scatterings ends up
             as lattice vibration (heat).
@@ -1133,28 +1150,26 @@ export default function Ch3ResistanceAndPower() {
         <FAQItem q="What's the difference between resistance and impedance?">
           <p>
             <strong className="text-text font-medium">Resistance</strong> is the real, dissipative
-            response of a circuit element to current: <em className="text-text italic">V = IR</em>,
-            and energy goes into heat at the rate <em className="text-text italic">I²R</em>.{' '}
-            <strong className="text-text font-medium">Impedance</strong> generalizes it to AC, where
-            capacitors and inductors also limit current but without dissipating — they store and
-            return energy each cycle. Impedance is the complex quantity{' '}
-            <strong className="text-text font-medium">Z = R + jX</strong>, where the real part{' '}
-            <em className="text-text italic">R</em> is still dissipative and the imaginary part{' '}
-            <em className="text-text italic">X</em> (reactance) is energy-storing
+            response of a circuit element to current: <InlineMath tex="V = IR" />, and energy goes
+            into heat at the rate <InlineMath tex="I^2 R" />.{' '}
+            <strong className="text-text font-medium">Impedance</strong> generalizes it to AC,
+            where capacitors and inductors also limit current but without dissipating — they store
+            and return energy each cycle. Impedance is the complex quantity{' '}
+            <InlineMath tex="Z = R + jX" />, where the real part <InlineMath tex="R" /> is still
+            dissipative and the imaginary part <InlineMath tex="X" /> (reactance) is
+            energy-storing
             <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />. Inside a pure resistor,{' '}
-            <em className="text-text italic">Z = R</em>; everywhere else, AC needs the full complex
-            picture.
+            <InlineMath tex="Z = R" />; everywhere else, AC needs the full complex picture.
           </p>
         </FAQItem>
 
         <FAQItem q="Why does nichrome glow red but copper doesn't, at the same current?">
           <p>
-            For a given current <em className="text-text italic">I</em>, the power dissipated per
-            meter is <strong className="text-text font-medium">I²R/L = I²ρ/A</strong> — it scales
-            directly with resistivity. Nichrome's <em className="text-text italic">ρ</em> is ~70×
-            copper's
-            <Cite id="kanthal" in={SOURCES} />, so the same current dumps ~70× more watts per meter
-            into nichrome than into copper. Copper sheds that modest amount easily by convection at
+            For a given current <InlineMath tex="I" />, the power dissipated per meter is{' '}
+            <InlineMath tex="I^2 R / L = I^2 \rho / A" /> — it scales directly with resistivity.
+            Nichrome's <InlineMath tex="\rho" /> is more than 60× copper's
+            <Cite id="kanthal" in={SOURCES} />, so the same current dumps more than sixty times as
+            many watts per meter into nichrome than into copper. Copper sheds that modest amount easily by convection at
             near-ambient temperature; nichrome cannot, so its temperature climbs until
             Stefan–Boltzmann radiation balances the input — typically into the red-glow band around
             1000 K
@@ -1165,16 +1180,15 @@ export default function Ch3ResistanceAndPower() {
         <FAQItem q="A short circuit causes a fire — but what's actually happening at the wire level?">
           <p>
             A short circuit replaces the intended load (a few ohms, a few amps) with a near-zero
-            resistance path. With <em className="text-text italic">I = V/R</em>, the current rockets
-            to hundreds of amperes within the impedance limit of the supply
+            resistance path. With <InlineMath tex="I = V/R" />, the current rockets to hundreds of
+            amperes within the impedance limit of the supply
             <Cite id="griffiths-2017" in={SOURCES} />. The wire itself still has its small{' '}
-            <em className="text-text italic">R</em>, so the dissipated power{' '}
-            <em className="text-text italic">I²R</em> goes from watts to{' '}
-            <em className="text-text italic">kilowatts</em> per meter — vastly more than convection
-            and conduction can carry away. Insulation reaches its decomposition temperature in
-            milliseconds and ignites. Fuses and breakers exist precisely to interrupt the loop
-            before the wire's
-            <em className="text-text italic"> P = I²R</em> overruns its thermal budget.
+            <InlineMath tex="R" />, so the dissipated power <InlineMath tex="I^2 R" /> goes from
+            watts to <em className="text-text italic">kilowatts</em> per meter — vastly more than
+            convection and conduction can carry away. Insulation reaches its decomposition
+            temperature in milliseconds and ignites. Fuses and breakers exist precisely to
+            interrupt the loop before the wire's <InlineMath tex="P = I^2 R" /> overruns its
+            thermal budget.
           </p>
         </FAQItem>
 
@@ -1185,11 +1199,10 @@ export default function Ch3ResistanceAndPower() {
             <strong className="text-text font-medium">~0.39%/K</strong>
             <Cite id="matthiessen-1864" in={SOURCES} />
             <Cite id="ashcroft-mermin-1976" in={SOURCES} />. A copper winding that's 20 mΩ at room
-            temperature is closer to 28 mΩ at 100 °C. Incandescent tungsten is the extreme case:
+            temperature is closer to 26 mΩ at 100 °C. Incandescent tungsten is the extreme case:
             cold resistance is ~10× lower than operating resistance, which is why bulbs
             overwhelmingly fail at the instant they're switched on — the inrush current is enormous
-            until the filament heats and <em className="text-text italic">R</em> climbs to its
-            steady-state value.
+            until the filament heats and <InlineMath tex="R" /> climbs to its steady-state value.
           </p>
         </FAQItem>
       </FAQ>

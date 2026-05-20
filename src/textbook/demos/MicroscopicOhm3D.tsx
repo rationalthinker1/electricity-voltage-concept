@@ -26,7 +26,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { MATERIALS, type MaterialKey, PHYS } from '@/lib/physics';
@@ -89,66 +90,63 @@ export function MicroscopicOhm3DDemo({ figure }: Props) {
     return { E, sigma, n, J, vd, I };
   }, [logE, mat]);
 
-  const stateRef = useRef({ computed });
+  const stateRef = useRef({ computed, matName: mat.name });
   useEffect(() => {
-    stateRef.current = { computed };
-  }, [computed]);
+    stateRef.current = { computed, matName: mat.name };
+  }, [computed, mat.name]);
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w: W, h: H, canvas } = info;
-      let raf = 0;
+  const setup = useCallback((info: CanvasInfo) => {
+    const { ctx, w: W, h: H, canvas } = info;
+    let raf = 0;
 
-      const cam: OrbitCamera = { yaw: 0.55, pitch: 0.22, distance: 7, fov: Math.PI / 4 };
-      const dispose = attachOrbit(canvas, cam);
+    const cam: OrbitCamera = { yaw: 0.55, pitch: 0.22, distance: 7, fov: Math.PI / 4 };
+    const dispose = attachOrbit(canvas, cam);
 
-      // Initialise electrons uniformly inside the cylinder.
-      const electrons: Electron[] = [];
-      for (let i = 0; i < N_ELECTRONS; i++) {
-        const u = Math.random();
-        const phi = Math.random() * Math.PI * 2;
-        const r = R_WIRE * Math.sqrt(u) * 0.95;
-        const x = (Math.random() * 2 - 1) * X_HALF * 0.95;
-        electrons.push({ pos: v3(x, r * Math.cos(phi), r * Math.sin(phi)) });
+    // Initialise electrons uniformly inside the cylinder.
+    const electrons: Electron[] = [];
+    for (let i = 0; i < N_ELECTRONS; i++) {
+      const u = Math.random();
+      const phi = Math.random() * Math.PI * 2;
+      const r = R_WIRE * Math.sqrt(u) * 0.95;
+      const x = (Math.random() * 2 - 1) * X_HALF * 0.95;
+      electrons.push({ pos: v3(x, r * Math.cos(phi), r * Math.sin(phi)) });
+    }
+
+    function draw() {
+      const colors = getCanvasColors();
+      const { computed: c, matName } = stateRef.current;
+
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // Drift step proportional to real J = σE; electrons move in -x
+      // (opposite to conventional current).
+      const driftStep = -VIS_DRIFT_PER_FRAME * (c.J / J_REF);
+      for (const e of electrons) {
+        e.pos.x += driftStep;
+        if (e.pos.x > X_HALF) e.pos.x -= 2 * X_HALF;
+        else if (e.pos.x < -X_HALF) e.pos.x += 2 * X_HALF;
       }
 
-      function draw() {
-        const colors = getCanvasColors();
-        const { computed: c } = stateRef.current;
+      // Magnitudes normalised for visual purposes; both are clamped to 1.
+      const Enorm = Math.min(1, c.E / E_MAX_LIN);
+      const Jnorm = Math.min(1, c.J / J_REF);
+      const Inorm = Math.min(1, c.I / I_REF);
 
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
+      drawWireScaffold(ctx, colors, cam, W, H);
+      drawBFieldRings(ctx, colors, cam, W, H, Inorm);
+      drawFieldVectors(ctx, colors, cam, W, H, Enorm, Jnorm);
+      drawElectrons(ctx, colors, cam, W, H, electrons);
+      drawLegend(ctx, colors, W, H, matName);
 
-        // Drift step proportional to real J = σE; electrons move in -x
-        // (opposite to conventional current).
-        const driftStep = -VIS_DRIFT_PER_FRAME * (c.J / J_REF);
-        for (const e of electrons) {
-          e.pos.x += driftStep;
-          if (e.pos.x > X_HALF) e.pos.x -= 2 * X_HALF;
-          else if (e.pos.x < -X_HALF) e.pos.x += 2 * X_HALF;
-        }
-
-        // Magnitudes normalised for visual purposes; both are clamped to 1.
-        const Enorm = Math.min(1, c.E / E_MAX_LIN);
-        const Jnorm = Math.min(1, c.J / J_REF);
-        const Inorm = Math.min(1, c.I / I_REF);
-
-        drawWireScaffold(ctx, colors, cam, W, H);
-        drawBFieldRings(ctx, colors, cam, W, H, Inorm);
-        drawFieldVectors(ctx, colors, cam, W, H, Enorm, Jnorm);
-        drawElectrons(ctx, colors, cam, W, H, electrons);
-        drawLegend(ctx, colors, W, H, mat.name);
-
-        raf = requestAnimationFrame(draw);
-      }
       raf = requestAnimationFrame(draw);
-      return () => {
-        cancelAnimationFrame(raf);
-        dispose();
-      };
-    },
-    [mat.name],
-  );
+    }
+    raf = requestAnimationFrame(draw);
+    return () => {
+      cancelAnimationFrame(raf);
+      dispose();
+    };
+  }, []);
 
   return (
     <Demo
@@ -158,14 +156,14 @@ export function MicroscopicOhm3DDemo({ figure }: Props) {
       caption={
         <>
           Inside the cylinder, the orange arrow on the wire axis is the applied electric field{' '}
-          <em className="text-text italic">E</em>; the pink arrow is the current density{' '}
-          <strong>J = σE</strong>, parallel to <em className="text-text italic">E</em> and longer or
-          shorter depending on the material's conductivity. The cyan dots are free electrons; they
-          drift opposite to <em className="text-text italic">E</em> at a speed proportional to{' '}
-          <strong>σE</strong>. Around the wire, the teal rings are the magnetic field{' '}
-          <strong>B</strong>: perpendicular to the wire, curling by the right-hand rule, with
-          magnitude tracking the current. Slide <em className="text-text italic">E</em> up — the
-          electrons speed up, <strong>J</strong> grows in lockstep, and the B-field rings brighten.
+          <InlineMath tex="\vec{E}" />; the pink arrow is the current density{' '}
+          <InlineMath tex="\vec{J} = \sigma\vec{E}" />, parallel to <InlineMath tex="\vec{E}" /> and
+          longer or shorter depending on the material's conductivity. The cyan dots are free
+          electrons; they drift opposite to <InlineMath tex="\vec{E}" /> at a speed proportional to{' '}
+          <InlineMath tex="\sigma E" />. Around the wire, the teal rings are the magnetic field{' '}
+          <InlineMath tex="\vec{B}" />: perpendicular to the wire, curling by the right-hand rule,
+          with magnitude tracking the current. Slide <InlineMath tex="E" /> up — the electrons
+          speed up, <InlineMath tex="\vec{J}" /> grows in lockstep, and the B-field rings brighten.
           Switch material to nichrome and the same field gives ~65× less current — same equation,
           different σ. Drag to orbit.
         </>
@@ -201,6 +199,20 @@ export function MicroscopicOhm3DDemo({ figure }: Props) {
         <MiniReadout label="v_d" value={<Num value={computed.vd} />} unit="m/s" />
         <MiniReadout label="I  (1 mm²)" value={<Num value={computed.I} />} unit="A" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Microscopic Ohm's law"
+        left={<InlineMath tex="\vec{J} \;=\; \sigma\, \vec{E}" />}
+        rightLabel={`Live substitution (${mat.name})`}
+        right={
+          <InlineMath
+            tex={
+              `J \\;=\\; ${computed.sigma.toExponential(2)} \\times ` +
+              `${computed.E.toExponential(2)} \\;\\approx\\; ` +
+              `${computed.J.toExponential(2)}\\ \\text{A/m}^{2}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

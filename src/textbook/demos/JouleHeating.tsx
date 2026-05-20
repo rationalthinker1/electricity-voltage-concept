@@ -9,8 +9,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props {
@@ -33,7 +35,7 @@ export function JouleHeatingDemo({ figure }: Props) {
   const T_eq = stefanT(P);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
     type Shim = { x: number; y: number; life: number; vy: number; wob: number };
     const shimmer: Shim[] = [];
@@ -45,6 +47,7 @@ export function JouleHeatingDemo({ figure }: Props) {
       const T = stefanT(P_);
       const col = tempToColor(T);
       const visiblePower = P_ > 0.05 && T > 600;
+      const colors = getCanvasColors();
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -86,9 +89,9 @@ export function JouleHeatingDemo({ figure }: Props) {
         );
         grd.addColorStop(1, `rgba(${cr},${cg},${cb},${0.2 + col.glow * 0.5})`);
       } else {
-        grd.addColorStop(0, 'rgba(180,180,185,0.10)');
-        grd.addColorStop(0.5, 'rgba(180,180,185,0.22)');
-        grd.addColorStop(1, 'rgba(180,180,185,0.10)');
+        grd.addColorStop(0, withAlpha(colors.textDim, 0.1));
+        grd.addColorStop(0.5, withAlpha(colors.textDim, 0.22));
+        grd.addColorStop(1, withAlpha(colors.textDim, 0.1));
       }
       ctx.fillStyle = grd;
       roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 8);
@@ -158,7 +161,9 @@ export function JouleHeatingDemo({ figure }: Props) {
       ctx.textAlign = 'left';
       ctx.fillText(`P = ${pretty(P_).replace(/<[^>]+>/g, '')} W`, 14, 12);
 
-      ctx.fillStyle = visiblePower ? `rgb(${col.r},${col.g},${col.b})` : 'rgba(160,158,149,0.85)';
+      ctx.fillStyle = visiblePower
+        ? `rgb(${col.r},${col.g},${col.b})`
+        : withAlpha(colors.textDim, 0.85);
       ctx.font = '13px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText(`T ≈ ${T.toFixed(0)} K`, w - 14, 12);
@@ -211,8 +216,21 @@ export function JouleHeatingDemo({ figure }: Props) {
           onChange={setR}
         />
         <MiniReadout label="Power" value={<Num value={P} />} unit="W" />
-        <MiniReadout label="Equilibrium T" value={T_eq.toFixed(0)} unit="K" />
+        <MiniReadout label="Equilibrium T" value={<Num value={T_eq} />} unit="K" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Joule heating"
+        left={<InlineMath tex="P \;=\; I^{2}\, R" />}
+        rightLabel="Live substitution"
+        right={
+          <InlineMath
+            tex={
+              `P \\;=\\; ${I.toFixed(2)}^{2} \\times ${R.toFixed(1)} ` +
+              `\\;\\approx\\; ${P.toExponential(2)}\\ \\text{W}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

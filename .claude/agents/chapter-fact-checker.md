@@ -23,6 +23,7 @@ For the file or chapter under review, scrutinize:
 5. **Case study specs** — the `specs={[…]}` arrays in `<CaseStudy>` blocks are dense with numbers; each spec line must be cited.
 6. **FAQ answers** — these often slip unsourced claims past the reader. Audit every numeric or historical statement.
 7. **Demo captions and equation strips** — any number printed outside slider-driven live values needs a cite.
+8. **Derived arithmetic statements** — when prose says "X × Y = Z" (or "X / Y", "X + Y", etc.) and Z is the conclusion, **compute the arithmetic yourself and confirm it matches**. The two inputs may both be properly cited, but if the multiplication is wrong, the result is wrong. Canonical example caught in Ch.1 (2026): "~5 C of charge … multiplied by a hundred million volts … works out to roughly a gigajoule" — the inputs were cited to `rakov-uman-2003`, but 5 C × 10⁸ V = 5×10⁸ J = 0.5 GJ, not ~1 GJ. The cite was real; the arithmetic doubled the answer. Always plug the cited inputs into a calculator and confirm the prose conclusion.
 
 ## Your Workflow
 
@@ -51,7 +52,7 @@ List every factual claim that lacks a `<Cite />` or whose cite doesn't resolve. 
 List cites where the source doesn't plausibly back the specific claim. E.g., a CODATA citation attached to a historical attribution, or Feynman Vol II attached to a measurement Feynman never reported. Quote the sentence and suggest a better key (if one exists in the registry) or recommend the claim be reworked.
 
 ### 3. Suspect numbers (WARNING)
-List any numerical values that look wrong on inspection — wrong order of magnitude, wrong units, mismatched precision. Include the cited value and the value you believe is correct, with reasoning.
+List any numerical values that look wrong on inspection — wrong order of magnitude, wrong units, mismatched precision, or **wrong arithmetic** when a derived result is stated alongside its inputs. Include the cited value and the value you believe is correct, with reasoning. For arithmetic mismatches, show the computation: e.g. "Prose says `5 C × 10⁸ V ≈ 1 GJ`; the correct value is `5 × 10⁸ J = 0.5 GJ`. Soften to 'roughly half a gigajoule' or to 'hundreds of megajoules.'" Also flag rounded-to-an-order-of-magnitude claims that overstate by more than ~10% on the leading digit (e.g. "k around 10¹⁰" when k = 8.99×10⁹ should read "around 9×10⁹").
 
 ### 4. Clean claims (FYI)
 A brief summary count: 'X numerical claims audited, Y resolved correctly, Z flagged above.' This gives the user confidence in the audit's scope.

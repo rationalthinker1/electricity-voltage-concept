@@ -7,8 +7,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { MATERIALS, type MaterialKey } from '@/lib/physics';
 
 interface Props {
@@ -37,7 +39,7 @@ export function MaterialPickerDemo({ figure }: Props) {
   const P = V * I;
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     function draw() {
@@ -45,6 +47,7 @@ export function MaterialPickerDemo({ figure }: Props) {
       const sigma = MATERIALS[mat]!.sigma;
       const R = L / (sigma * A_m2);
       const I_ = V / R;
+      const colors = getCanvasColors();
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -102,14 +105,14 @@ export function MaterialPickerDemo({ figure }: Props) {
         const yMid = padT + rowH * (i + 0.5);
         const barH = Math.min(22, rowH * 0.55);
         const isSel = k === mat;
-        ctx.fillStyle = isSel ? 'rgba(255,107,42,0.85)' : 'rgba(108,197,194,0.4)';
+        ctx.fillStyle = isSel ? withAlpha(colors.accent, 0.85) : withAlpha(colors.teal, 0.4);
         ctx.fillRect(x0, yMid - barH / 2, Math.max(1, x1 - x0), barH);
-        ctx.strokeStyle = isSel ? 'rgba(255,107,42,1)' : 'rgba(108,197,194,0.65)';
+        ctx.strokeStyle = isSel ? colors.accent : withAlpha(colors.teal, 0.65);
         ctx.lineWidth = 1;
         ctx.strokeRect(x0, yMid - barH / 2, Math.max(1, x1 - x0), barH);
 
         // Material label
-        ctx.fillStyle = isSel ? '#ff6b2a' : 'rgba(236,235,229,0.75)';
+        ctx.fillStyle = isSel ? colors.accent : withAlpha(colors.text, 0.75);
         ctx.font = isSel
           ? 'bold 10px "JetBrains Mono", monospace'
           : '10px "JetBrains Mono", monospace';
@@ -121,7 +124,7 @@ export function MaterialPickerDemo({ figure }: Props) {
         );
 
         // Numeric value at end of bar
-        ctx.fillStyle = isSel ? '#ff6b2a' : 'rgba(160,158,149,0.85)';
+        ctx.fillStyle = isSel ? colors.accent : withAlpha(colors.textDim, 0.85);
         ctx.textAlign = 'left';
         ctx.font = '10px "JetBrains Mono", monospace';
         const txt = formatCurrent(ik);
@@ -166,6 +169,19 @@ export function MaterialPickerDemo({ figure }: Props) {
         <MiniReadout label="Current" value={<Num value={I} />} unit="A" />
         <MiniReadout label="Power" value={<Num value={P} />} unit="W" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Same V, L, A — material varies"
+        left={<InlineMath tex="I \;=\; \dfrac{V \sigma A}{L} \;=\; \dfrac{V}{R}" />}
+        rightLabel={`Live substitution (${MATERIALS[mat]!.name})`}
+        right={
+          <InlineMath
+            tex={
+              `I \\;=\\; \\dfrac{12}{${R.toExponential(2)}} \\;\\approx\\; ` +
+              `${I.toExponential(2)}\\ \\text{A}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

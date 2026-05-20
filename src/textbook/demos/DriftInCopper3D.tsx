@@ -30,11 +30,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { MATERIALS, PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { attachOrbit, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
 interface Props {
@@ -98,7 +99,6 @@ export function DriftInCopper3DDemo({ figure }: Props) {
   }, [I, T, showArrows, showLattice, computed]);
 
   const setup = useCallback((info: CanvasInfo) => {
-    const colors = getCanvasColors();
     const { ctx, w: W, h: H, canvas } = info;
     let raf = 0;
 
@@ -147,7 +147,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       return arr;
     };
 
-    function drawRim(pts: Vec3[]) {
+    function drawRim(pts: Vec3[], colors: ReturnType<typeof getCanvasColors>) {
       const projected = pts.map((p) => project(p, cam, W, H));
       const N = projected.length;
       const depths = projected.map((p) => p.depth);
@@ -170,7 +170,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
             drawing = false;
           }
         }
-        ctx.strokeStyle = pass === 'front' ? 'rgba(255,107,42,0.75)' : 'rgba(255,107,42,0.22)';
+        ctx.strokeStyle = withAlpha(colors.accent, pass === 'front' ? 0.75 : 0.22);
         ctx.lineWidth = 1.1;
         ctx.setLineDash(pass === 'back' ? [4, 4] : []);
         ctx.stroke();
@@ -178,10 +178,10 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       ctx.setLineDash([]);
     }
 
-    function drawWireScaffold() {
+    function drawWireScaffold(colors: ReturnType<typeof getCanvasColors>) {
       // Hoops at several axial slices.
       const xs = [-X_HALF, -X_HALF / 2, 0, X_HALF / 2, X_HALF];
-      for (const x of xs) drawRim(rimPoints(x));
+      for (const x of xs) drawRim(rimPoints(x), colors);
 
       // Axial generators (longitudinal wireframe lines).
       const N_LONG = 12;
@@ -202,9 +202,9 @@ export function DriftInCopper3DDemo({ figure }: Props) {
               { x: p2.x, y: p2.y },
             ],
             {
-              color: 'rgba(255,107,42,0.32)',
+              color: withAlpha(colors.accent, 0.32),
               lineWidth: 1.0,
-              glowColor: 'rgba(255,107,42,0.10)',
+              glowColor: withAlpha(colors.accent, 0.1),
               glowWidth: 5,
             },
           );
@@ -226,7 +226,8 @@ export function DriftInCopper3DDemo({ figure }: Props) {
 
     function draw() {
       const s = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+      const colors = getCanvasColors();
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
       // Visual scale factors. We exaggerate thermal & drift by huge but
@@ -274,7 +275,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       }
 
       // Wire scaffold (back-most layer of structure).
-      drawWireScaffold();
+      drawWireScaffold(colors);
 
       // Build a single depth-sorted draw list of ions + electrons so
       // the lattice peeks through correctly when an electron passes
@@ -311,11 +312,11 @@ export function DriftInCopper3DDemo({ figure }: Props) {
           const alpha = 0.3 + 0.45 * t;
           const radius = 2.4 + 1.6 * t;
           // Soft outer glow + solid inner.
-          ctx.fillStyle = `rgba(255,107,42,${(0.1 * alpha).toFixed(3)})`;
+          ctx.fillStyle = withAlpha(colors.accent, 0.1 * alpha);
           ctx.beginPath();
           ctx.arc(it.proj.x, it.proj.y, radius * 1.9, 0, Math.PI * 2);
           ctx.fill();
-          ctx.fillStyle = `rgba(255,107,42,${alpha.toFixed(3)})`;
+          ctx.fillStyle = withAlpha(colors.accent, alpha);
           ctx.beginPath();
           ctx.arc(it.proj.x, it.proj.y, radius, 0, Math.PI * 2);
           ctx.fill();
@@ -324,11 +325,11 @@ export function DriftInCopper3DDemo({ figure }: Props) {
           const t = Math.max(0, Math.min(1, (cam.distance + 1.5 - it.depth) / 3.5));
           const alpha = 0.55 + 0.4 * t;
           const radius = 1.7 + 1.4 * t;
-          ctx.fillStyle = `rgba(91,174,248,${(0.18 * alpha).toFixed(3)})`;
+          ctx.fillStyle = withAlpha(colors.blue, 0.18 * alpha);
           ctx.beginPath();
           ctx.arc(it.proj.x, it.proj.y, radius * 2.2, 0, Math.PI * 2);
           ctx.fill();
-          ctx.fillStyle = `rgba(108,197,194,${alpha.toFixed(3)})`;
+          ctx.fillStyle = withAlpha(colors.teal, alpha);
           ctx.beginPath();
           ctx.arc(it.proj.x, it.proj.y, radius, 0, Math.PI * 2);
           ctx.fill();
@@ -343,7 +344,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
             if (len > 2) {
               const ux = dx / len,
                 uy = dy / len;
-              ctx.strokeStyle = `rgba(255,107,42,${(0.85 * alpha).toFixed(3)})`;
+              ctx.strokeStyle = withAlpha(colors.accent, 0.85 * alpha);
               ctx.lineWidth = 1.1;
               ctx.beginPath();
               ctx.moveTo(p1.x, p1.y);
@@ -351,7 +352,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
               ctx.stroke();
               const head = 4,
                 half = 2.4;
-              ctx.fillStyle = `rgba(255,107,42,${(0.92 * alpha).toFixed(3)})`;
+              ctx.fillStyle = withAlpha(colors.accent, 0.92 * alpha);
               ctx.beginPath();
               ctx.moveTo(p2.x, p2.y);
               ctx.lineTo(p2.x - ux * head - uy * half, p2.y - uy * head + ux * half);
@@ -367,7 +368,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       ctx.fillText('drag to rotate', 12, 12);
       ctx.save();
       ctx.globalAlpha = 0.55;
@@ -380,12 +381,12 @@ export function DriftInCopper3DDemo({ figure }: Props) {
 
       ctx.textAlign = 'right';
       ctx.restore();
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = colors.teal;
       ctx.fillText('electrons (cyan)', W - 12, 12);
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       ctx.fillText('Cu+ ions (amber)', W - 12, 28);
       if (s.showArrows) {
-        ctx.fillStyle = getCanvasColors().accent;
+        ctx.fillStyle = colors.accent;
         ctx.fillText('drift bias → +x', W - 12, 44);
       }
 
@@ -448,6 +449,26 @@ export function DriftInCopper3DDemo({ figure }: Props) {
         <MiniReadout label="v_th" value={<Num value={computed.vth} />} unit="m/s" />
         <MiniReadout label="v_th / v_d" value={<Num value={computed.ratio} />} unit="×" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Drift velocity"
+        left={
+          <InlineMath
+            tex={
+              `v_d \\;=\\; \\dfrac{I}{n q A} \\;=\\; ` +
+              `${computed.vd.toExponential(2)}\\ \\text{m/s}`
+            }
+          />
+        }
+        rightLabel="Thermal (classical RMS) speed"
+        right={
+          <InlineMath
+            tex={
+              `v_{\\text{th}} \\;=\\; \\sqrt{\\dfrac{3 k_B T}{m_e}} \\;=\\; ` +
+              `${computed.vth.toExponential(2)}\\ \\text{m/s}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }
