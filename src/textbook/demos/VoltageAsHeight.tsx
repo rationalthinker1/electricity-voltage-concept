@@ -11,6 +11,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -30,7 +31,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
   const energyJ = voltage; // q = 1 C
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     // Ball position parameterised along the ramp, t ∈ [0, 1].
@@ -39,6 +40,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
 
     function draw() {
       const { voltage, rolling } = stateRef.current;
+      const colors = getCanvasColors();
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
@@ -58,7 +60,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       const len = Math.hypot(dx, dy);
 
       // Ground line
-      ctx.strokeStyle = 'rgba(160,158,149,.25)';
+      ctx.strokeStyle = withAlpha(colors.textDim, 0.25);
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(0, baseY);
@@ -66,7 +68,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       ctx.stroke();
 
       // Filled hill — soft grey wedge under the ramp
-      ctx.fillStyle = 'rgba(255,255,255,.04)';
+      ctx.fillStyle = withAlpha(colors.text, 0.04);
       ctx.beginPath();
       ctx.moveTo(ax, ay);
       ctx.lineTo(bx, by);
@@ -76,7 +78,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       ctx.fill();
 
       // Ramp line itself, in amber
-      ctx.strokeStyle = 'rgba(255,107,42,.7)';
+      ctx.strokeStyle = withAlpha(colors.accent, 0.7);
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(ax, ay);
@@ -85,14 +87,14 @@ export function VoltageAsHeightDemo({ figure }: Props) {
 
       // Height marker (the "ΔV") — vertical dashed line on the left
       ctx.setLineDash([4, 4]);
-      ctx.strokeStyle = 'rgba(108,197,194,.55)';
+      ctx.strokeStyle = withAlpha(colors.teal, 0.55);
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(ax, ay);
       ctx.lineTo(ax, baseY);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = 'rgba(108,197,194,.85)';
+      ctx.fillStyle = withAlpha(colors.teal, 0.85);
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
@@ -139,7 +141,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
 
       // Trail showing the path so far
       if (t > 0.02) {
-        ctx.strokeStyle = 'rgba(255,59,110,.35)';
+        ctx.strokeStyle = withAlpha(colors.pink, 0.35);
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(ax + nx * -radius, ay + ny * -radius);
@@ -149,8 +151,8 @@ export function VoltageAsHeightDemo({ figure }: Props) {
 
       // Ball — pink "positive test charge"
       const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 2.5);
-      grd.addColorStop(0, '#ff3b6e');
-      grd.addColorStop(1, '#ff3b6e00');
+      grd.addColorStop(0, colors.pink);
+      grd.addColorStop(1, withAlpha(colors.pink, 0));
       ctx.fillStyle = grd;
       ctx.beginPath();
       ctx.arc(cx, cy, radius * 2.5, 0, Math.PI * 2);

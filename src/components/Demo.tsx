@@ -51,7 +51,7 @@ export function Demo({ figure, title, question, children, caption, deeperLab }: 
   return (
     <figure
       ref={figureRef}
-      className="bg-bg-card border-border-strong rounded-3 overflow-hidden border [contain-intrinsic-size:620px] [content-visibility:auto]"
+      className="bg-bg-card border-border-strong rounded-3 mt-6 overflow-hidden border [contain-intrinsic-size:620px] [content-visibility:auto]"
     >
       <div className="gap-lg py-lg px-xl border-border bg-bg-elevated flex flex-wrap items-baseline border-b">
         <span className="eyebrow-accent text-1 tracking-4">{figure ?? 'Fig.'}</span>
@@ -195,16 +195,14 @@ interface EquationStripProps {
  */
 export function EquationStrip({ leftLabel, left, rightLabel, right }: EquationStripProps) {
   return (
-    <div className="py-md px-xl bg-bg-elevated border-border grid grid-cols-1 gap-md border-t sm:grid-cols-2 sm:gap-xl">
+    <div className="py-md px-xl bg-bg-elevated border-border gap-md sm:gap-xl grid grid-cols-1 border-t sm:grid-cols-2">
       <div className="text-center">
         {leftLabel && (
-          <div className="font-3 text-1 text-text-muted tracking-3 mb-1 uppercase">
-            {leftLabel}
-          </div>
+          <div className="font-3 text-1 text-text-muted tracking-3 mb-1 uppercase">{leftLabel}</div>
         )}
         <div className="text-3">{left}</div>
       </div>
-      <div className="text-center sm:border-border-strong sm:border-l sm:pl-xl">
+      <div className="sm:border-border-strong sm:pl-xl text-center sm:border-l">
         {rightLabel && (
           <div className="font-3 text-1 text-text-muted tracking-3 mb-1 uppercase">
             {rightLabel}

@@ -138,9 +138,9 @@ export default function Ch3ResistanceAndPower() {
         depending on the material's σ. The cyan electrons drift opposite to the field — that's the
         sign convention catching us out, because conventional current points with{' '}
         <em className="text-text italic">E</em>. And the teal rings around the wire are the magnetic
-        field <strong className="text-text font-medium">B</strong> that any current carries with
-        it, perpendicular to the axis and curling by the right-hand rule. Swap nichrome for copper
-        and the same <em className="text-text italic">E</em> produces ~65× more{' '}
+        field <strong className="text-text font-medium">B</strong> that any current carries with it,
+        perpendicular to the axis and curling by the right-hand rule. Swap nichrome for copper and
+        the same <em className="text-text italic">E</em> produces ~65× more{' '}
         <em className="text-text italic">J</em> — same equation, different conductor.
       </p>
 
@@ -323,13 +323,12 @@ export default function Ch3ResistanceAndPower() {
         where <strong className="text-text font-medium">P</strong> is the instantaneous electrical
         power delivered to the element (in watts, W = J/s),{' '}
         <strong className="text-text font-medium">V</strong> is the potential difference across it
-        (V), and <strong className="text-text font-medium">I</strong> is the current through it
-        (A). The units confirm it: joules per coulomb times coulombs per second is joules per
-        second <Cite id="feynman-II-2" in={SOURCES} />. This identity makes no assumption about
-        what the element is — battery, resistor, motor, capacitor, antenna. Whenever charge moves
-        through a potential difference, energy is transferred at the rate{' '}
-        <InlineMath tex="VI" />. The rest of this section is about <em>where that energy goes</em>{' '}
-        in the specific case of a resistor.
+        (V), and <strong className="text-text font-medium">I</strong> is the current through it (A).
+        The units confirm it: joules per coulomb times coulombs per second is joules per second{' '}
+        <Cite id="feynman-II-2" in={SOURCES} />. This identity makes no assumption about what the
+        element is — battery, resistor, motor, capacitor, antenna. Whenever charge moves through a
+        potential difference, energy is transferred at the rate <InlineMath tex="VI" />. The rest of
+        this section is about <em>where that energy goes</em> in the specific case of a resistor.
       </p>
 
       <p className="mb-prose-3">
@@ -556,11 +555,11 @@ export default function Ch3ResistanceAndPower() {
       <p className="mb-prose-3">
         Real circuits rarely live at one extreme. A mixed network — a series element feeding a
         parallel block — already wants both rules at once. The trunk current crosses{' '}
-        <em className="text-text italic">R₁</em> intact, drops by{' '}
-        <InlineMath tex="I\cdot R_1" /> on the way through, and the remaining voltage sits across
-        the parallel pair, which splits the current inversely with resistance. Slide{' '}
-        <em className="text-text italic">R₁</em>, <em className="text-text italic">R₂</em>, and{' '}
-        <em className="text-text italic">R₃</em> below and watch the voltage probes track:
+        <em className="text-text italic">R₁</em> intact, drops by <InlineMath tex="I\cdot R_1" /> on
+        the way through, and the remaining voltage sits across the parallel pair, which splits the
+        current inversely with resistance. Slide <em className="text-text italic">R₁</em>,{' '}
+        <em className="text-text italic">R₂</em>, and <em className="text-text italic">R₃</em> below
+        and watch the voltage probes track:
       </p>
 
       <SeriesParallelMixDemo />

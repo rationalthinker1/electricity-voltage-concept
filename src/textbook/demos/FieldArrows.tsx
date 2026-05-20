@@ -14,14 +14,21 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { LayeredCanvas, type LayeredCanvasInfo } from '@/components/LayeredCanvas';
 import { Num } from '@/components/Num';
 import { drawCharge } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 interface Props {
   figure?: string;
 }
@@ -73,7 +80,6 @@ export function FieldArrowsDemo({ figure }: Props) {
 
   const setup = useCallback(
     (info: LayeredCanvasInfo<'field' | 'ui'>) => {
-      const colors = getCanvasColors();
       const { contexts, w, h, canvas } = info;
       const fieldCtx = contexts.field;
       const uiCtx = contexts.ui;
@@ -150,6 +156,7 @@ export function FieldArrowsDemo({ figure }: Props) {
       function drawField() {
         const sign = pos ? +1 : -1;
         const q = sign * qNC * 1e-9;
+        const colors = getCanvasColors();
         const cx0 = w / 2,
           cy0 = h / 2;
         // Map: 1 px = 1 mm physical (so canvas ~ 30 cm wide)
@@ -168,25 +175,40 @@ export function FieldArrowsDemo({ figure }: Props) {
             const r_m = r / 1000; // mm → m
             const Emag = (PHYS.k * Math.abs(q)) / (r_m * r_m);
             // log-mapped arrow length so it stays visible across orders
-            const len = Math.min(20, 5 + Math.log10(Emag + 1) * 1.6);
+            const len = Math.min(24, 7 + Math.log10(Emag + 1) * 1.8);
             const ux = (dx / r) * sign;
             const uy = (dy / r) * sign;
-            fieldCtx.strokeStyle = `rgba(255,107,42,${0.15 + Math.min(0.5, Math.log10(Emag + 1) / 12)})`;
-            fieldCtx.lineWidth = 1;
+            const shaftAlpha = 0.45 + Math.min(0.45, Math.log10(Emag + 1) / 12);
+            const headAlpha = 0.6 + Math.min(0.35, Math.log10(Emag + 1) / 12);
+            // Shaft
+            fieldCtx.strokeStyle = withAlpha(colors.accent, shaftAlpha);
+            fieldCtx.lineWidth = 2.2;
+            fieldCtx.lineCap = 'round';
+            const sx = px - ux * len * 0.3;
+            const sy = py - uy * len * 0.3;
+            const ex = px + ux * len * 0.7;
+            const ey = py + uy * len * 0.7;
             fieldCtx.beginPath();
-            fieldCtx.moveTo(px - ux * len * 0.3, py - uy * len * 0.3);
-            fieldCtx.lineTo(px + ux * len * 0.7, py + uy * len * 0.7);
+            fieldCtx.moveTo(sx, sy);
+            fieldCtx.lineTo(ex, ey);
             fieldCtx.stroke();
-            // small head
-            fieldCtx.fillStyle = `rgba(255,107,42,${0.25 + Math.min(0.6, Math.log10(Emag + 1) / 12)})`;
+            // Filled triangular head at the tip
+            const headLen = 6;
+            const headHalfWidth = 5.2 * (len / 24);
+            const tx = -uy;
+            const ty = ux;
+            fieldCtx.fillStyle = withAlpha(colors.accent, headAlpha);
             fieldCtx.beginPath();
-            fieldCtx.arc(px + ux * len * 0.7, py + uy * len * 0.7, 1.4, 0, Math.PI * 2);
+            fieldCtx.moveTo(ex, ey);
+            fieldCtx.lineTo(ex - ux * headLen + tx * headHalfWidth, ey - uy * headLen + ty * headHalfWidth);
+            fieldCtx.lineTo(ex - ux * headLen - tx * headHalfWidth, ey - uy * headLen - ty * headHalfWidth);
+            fieldCtx.closePath();
             fieldCtx.fill();
           }
         }
 
         // Charge
-        const color = pos ? '#ff3b6e' : '#5baef8';
+        const color = pos ? colors.pink : colors.blue;
         const radius = 14 + Math.min(8, qNC * 0.4);
         drawCharge(
           fieldCtx,
@@ -195,13 +217,14 @@ export function FieldArrowsDemo({ figure }: Props) {
             color,
             radius,
             sign: pos ? '+' : '−',
-            textColor: '#0a0a0b',
+            textColor: colors.bg,
           },
         );
       }
 
       drawUi = function drawProbeLayer() {
         const { probe } = stateRef.current;
+        const colors = getCanvasColors();
         uiCtx.clearRect(0, 0, w, h);
 
         const cx = w / 2;

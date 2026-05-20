@@ -12,8 +12,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { getCanvasColors } from '@/lib/canvasTheme';
 import { MATERIALS, PHYS, formatTime } from '@/lib/physics';
 
 interface Props {
@@ -45,7 +47,7 @@ export function DriftVelocityDemo({ figure }: Props) {
   const t1m = 1 / vd; // seconds to traverse 1 m
 
   const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
+    const { ctx, w, h } = info;
     let raf = 0;
 
     const wireTop = h * 0.32;
@@ -63,6 +65,7 @@ export function DriftVelocityDemo({ figure }: Props) {
 
     function draw() {
       const { I } = stateRef.current;
+      const colors = getCanvasColors();
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
@@ -213,6 +216,20 @@ export function DriftVelocityDemo({ figure }: Props) {
         <MiniReadout label="drift v_d" value={<Num value={vd} />} unit="m/s" />
         <MiniReadout label="time to cross 1 m" value={formatTime(t1m)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Drude formula"
+        left={<InlineMath tex="v_d \;=\; \dfrac{I}{n\, q\, A}" />}
+        rightLabel="Live substitution (Cu, e, A)"
+        right={
+          <InlineMath
+            tex={
+              `v_d \\;=\\; \\dfrac{${I.toFixed(1)}}` +
+              `{(8.5\\times 10^{28})(1.602\\times 10^{-19})(${(Amm2).toFixed(2)}\\times 10^{-6})} ` +
+              `\\;\\approx\\; ${vd.toExponential(2)}\\ \\text{m/s}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

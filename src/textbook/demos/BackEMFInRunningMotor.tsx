@@ -190,7 +190,7 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
       }
       raf = requestAnimationFrame(draw);
       return () => cancelAnimationFrame(raf);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+       
     },
     [restartTick],
   );

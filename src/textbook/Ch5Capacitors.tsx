@@ -114,9 +114,7 @@ export default function Ch5Capacitors() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <h2 className="chapter-h2">
-        V = Q / C: a linear relationship
-      </h2>
+      <h2 className="chapter-h2">V = Q / C: a linear relationship</h2>
 
       <p className="mb-prose-3">
         Alessandro Volta gave the device its first proper definition in 1782, in a paper to the
@@ -304,7 +302,10 @@ export default function Ch5Capacitors() {
         Sum the work from empty to full charge: integrate{' '}
         <strong className="text-text font-medium">v(q)·dq</strong> from 0 to Q, with v = q/C.
       </p>
-      <Formula size="lg" tex="U = \int_0^Q \dfrac{q}{C}\, dq = \dfrac{Q^2}{2C} = \tfrac{1}{2} C V^2" />
+      <Formula
+        size="lg"
+        tex="U = \int_0^Q \dfrac{q}{C}\, dq = \dfrac{Q^2}{2C} = \tfrac{1}{2} C V^2"
+      />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">U</strong> is the total energy stored in the
         capacitor (in joules), <strong className="text-text font-medium">Q</strong> is the final

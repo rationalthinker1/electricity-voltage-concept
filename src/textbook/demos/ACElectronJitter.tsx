@@ -18,7 +18,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { MATERIALS, PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
@@ -178,11 +179,12 @@ export function ACElectronJitterDemo({ figure }: Props) {
       let sx = innerLeft + 60;
       for (const ref of REFERENCES) {
         const refNm = ref.m * 1e9;
-        const label = refNm < 1
-          ? `${ref.label} (${refNm.toFixed(2)} nm)`
-          : refNm < 1000
-            ? `${ref.label} (${refNm.toFixed(0)} nm)`
-            : `${ref.label} (${(refNm / 1000).toFixed(0)} µm)`;
+        const label =
+          refNm < 1
+            ? `${ref.label} (${refNm.toFixed(2)} nm)`
+            : refNm < 1000
+              ? `${ref.label} (${refNm.toFixed(0)} nm)`
+              : `${ref.label} (${(refNm / 1000).toFixed(0)} µm)`;
         const ratioStr = formatRatio(x_peak, ref.m);
         ctx.fillStyle = colors.textMuted;
         ctx.fillText(label, sx, stripY);
@@ -205,8 +207,8 @@ export function ACElectronJitterDemo({ figure }: Props) {
       caption={
         <>
           At 5 A through a 14-gauge copper lamp cord, each conduction electron oscillates with a
-          peak displacement of about <strong>650 nm</strong> — comparable to the wavelength of
-          green light, smaller than a single bacterium. Yet the wire delivers
+          peak displacement of about <strong>650 nm</strong> — comparable to the wavelength of green
+          light, smaller than a single bacterium. Yet the wire delivers
           <strong> ~600 W</strong> the whole time. The energy isn't riding the electrons; it's
           flowing through the surrounding field (Chapter 8).
         </>
@@ -227,6 +229,19 @@ export function ACElectronJitterDemo({ figure }: Props) {
         <MiniReadout label="peak v" value={<Num value={v_peak} />} unit="m/s" />
         <MiniReadout label="real power" value={P_avg.toFixed(0)} unit="W" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Peak excursion at 60 Hz"
+        left={<InlineMath tex="x_{\text{peak}} \;=\; \dfrac{v_{\text{peak}}}{\omega} \;=\; \dfrac{\sqrt{2}\, I_{\text{rms}}}{n\, q\, A\, \omega}" />}
+        rightLabel="Live substitution (14-AWG Cu)"
+        right={
+          <InlineMath
+            tex={
+              `x_{\\text{peak}} \\;=\\; \\dfrac{${v_peak.toExponential(2)}}{2\\pi\\cdot 60} ` +
+              `\\;\\approx\\; ${(x_peak * 1e9).toFixed(0)}\\ \\text{nm}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

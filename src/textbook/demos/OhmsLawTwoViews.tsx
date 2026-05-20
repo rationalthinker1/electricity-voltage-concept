@@ -148,13 +148,13 @@ export function OhmsLawTwoViewsDemo({ figure }: Props) {
       question="Same equation V = IR — but pulled in two directions. Push voltage up, current rises in lockstep. Push resistance up, current falls. Watch both at once."
       caption={
         <>
-          The two panels are the same V = IR seen from opposite ends. In the top scenario the resistor
-          is fixed at 5 Ω and the slider varies the current — voltage tracks linearly, slope R, and
-          the electrons (cyan) flow faster around the loop as you turn it up. In the bottom scenario
-          the source is fixed at 20 V and the slider varies the resistance — current falls as a
-          hyperbola, I = V/R, and the same electrons slow to a crawl as you crank R up. Whether you
-          read it as &quot;voltage drives current&quot; or &quot;resistance restricts current&quot;
-          depends on which knob you imagine having your hand on.
+          The two panels are the same V = IR seen from opposite ends. In the top scenario the
+          resistor is fixed at 5 Ω and the slider varies the current — voltage tracks linearly,
+          slope R, and the electrons (cyan) flow faster around the loop as you turn it up. In the
+          bottom scenario the source is fixed at 20 V and the slider varies the resistance — current
+          falls as a hyperbola, I = V/R, and the same electrons slow to a crawl as you crank R up.
+          Whether you read it as &quot;voltage drives current&quot; or &quot;resistance restricts
+          current&quot; depends on which knob you imagine having your hand on.
         </>
       }
       deeperLab={{ slug: 'resistance', label: 'See full lab' }}
@@ -257,12 +257,7 @@ interface Rect {
   h: number;
 }
 
-function drawPlot(
-  ctx: CanvasRenderingContext2D,
-  colors: ThemeColors,
-  rect: Rect,
-  p: PanelArgs,
-) {
+function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect, p: PanelArgs) {
   // Plot margins inside the rect for axis labels.
   const ml = 28;
   const mr = 10;

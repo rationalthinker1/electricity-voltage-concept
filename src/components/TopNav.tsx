@@ -174,13 +174,16 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
 
   return (
     <nav className="py-xl px-3xl border-border max-md:py-md max-md:px-lg fixed top-0 right-0 left-0 z-2 flex items-center justify-between border-b bg-[linear-gradient(180deg,var(--nav-bg-start),var(--nav-bg-end))] backdrop-blur-[12px]">
-      <Link to="/" className="title-display text-7 max-md:text-5 tracking-1 font-light no-underline">
+      <Link
+        to="/"
+        className="title-display text-7 max-md:text-5 tracking-1 font-light no-underline"
+      >
         Field <span className="text-accent">·</span> Theory
       </Link>
 
       {/* Desktop secondary nav — hidden on mobile, where the hamburger
           drawer below carries the same destinations. */}
-      <div className="gap-md max-lg:gap-sm max-md:hidden flex items-center">
+      <div className="gap-md max-lg:gap-sm flex items-center max-md:hidden">
         <div ref={chaptersMenuRef} className="relative">
           <button
             type="button"
@@ -248,7 +251,10 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
             key={t.to + (t.params?.slug ?? '')}
             to={t.to}
             params={t.params as never}
-            className={desktopPillClass(t.isActive(pathname), i === 0 ? 'border-border-2 pl-lg ml-sm border-l' : undefined)}
+            className={desktopPillClass(
+              t.isActive(pathname),
+              i === 0 ? 'border-border-2 pl-lg ml-sm border-l' : undefined,
+            )}
             title={t.title}
           >
             {t.label}
@@ -257,7 +263,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
       </div>
 
       {/* Desktop meta + theme toggle */}
-      <div className="gap-md max-md:hidden flex items-center justify-end">
+      <div className="gap-md flex items-center justify-end max-md:hidden">
         <div className="meta-1">{pageMeta}</div>
         {themeToggle}
       </div>
@@ -266,13 +272,22 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
       <button
         ref={mobileToggleRef}
         type="button"
-        className="md:hidden text-text-dim hover:text-text border-border-2 rounded-3 h-icon-lg w-icon-lg inline-flex cursor-pointer items-center justify-center border bg-transparent transition-colors"
+        className="text-text-dim hover:text-text border-border-2 rounded-3 h-icon-lg w-icon-lg inline-flex cursor-pointer items-center justify-center border bg-transparent transition-colors md:hidden"
         aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={mobileOpen}
         aria-controls="mobile-nav-menu"
         onClick={() => setMobileOpen((o) => !o)}
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          aria-hidden="true"
+        >
           {mobileOpen ? (
             <>
               <line x1="5" y1="5" x2="19" y2="19" />
@@ -295,9 +310,9 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
           id="mobile-nav-menu"
           role="menu"
           aria-label="Site navigation"
-          className="md:hidden absolute top-full left-0 right-0 z-2 border-b border-border bg-bg-elevated shadow-[0_24px_60px_var(--shadow-strong)] max-h-[calc(100vh-72px)] overflow-y-auto"
+          className="border-border bg-bg-elevated absolute top-full right-0 left-0 z-2 max-h-[calc(100vh-72px)] overflow-y-auto border-b shadow-[0_24px_60px_var(--shadow-strong)] md:hidden"
         >
-          <div className="py-lg px-lg flex flex-col gap-xs">
+          <div className="py-lg px-lg gap-xs flex flex-col">
             <Link
               to="/"
               role="menuitem"
@@ -317,7 +332,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
                 {t.label}
               </Link>
             ))}
-            <div className="mt-md pt-md border-t border-border flex items-center justify-between gap-md">
+            <div className="mt-md pt-md border-border gap-md flex items-center justify-between border-t">
               <span className="font-3 text-2 text-text-muted tracking-3 uppercase">{pageMeta}</span>
               {themeToggle}
             </div>

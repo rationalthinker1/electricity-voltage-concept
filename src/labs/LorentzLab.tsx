@@ -277,7 +277,7 @@ export default function LorentzLab() {
         cancelAnimationFrame(raf);
       };
       // resetTick is read indirectly via stateRef effects — but we want a remount on reset.
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+       
     },
     [resetTick],
   );

@@ -41,7 +41,7 @@ export type NavCardProps = LinkProps & {
 
 export function NavCard({ children, className, ...linkProps }: NavCardProps) {
   return (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- pass through TanStack Router's route-tree-aware generics
+     
     <Link
       {...(linkProps as any)}
       className={clsx(
