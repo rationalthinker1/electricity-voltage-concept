@@ -113,7 +113,88 @@ Run a quick mechanical pass:
 
 These are mechanical; report the file:line for each hit. Don't grep aggressively for stylistic issues — the chapter has a deliberate confident-literary voice, and "is" / "the" repetition can be intentional.
 
-### 9. Conventions and pitfalls (CLAUDE.md §9 + §13)
+### 9. Main-formula sizing
+
+Per the chapter convention, the **main formula(s)** in a chapter — the
+headline equation each h2 section is built around (Coulomb's law, V = W/q,
+F = qE, ε = −dΦ/dt, etc.) — should be rendered at large size:
+
+```tsx
+<Formula size="lg">F = k Q₁ Q₂ / r²</Formula>
+```
+
+Smaller / supporting formulas (rearrangements, intermediate algebra,
+companion identities, TryIt worked steps) should NOT use `size="lg"` —
+they stay at default size.
+
+For each `<Formula>` block in the chapter, decide whether it's a
+"main" formula (the centerpiece of its h2 section, or the formal /
+operational tier of a foundational quantity) or a supporting formula.
+Flag any main formula missing `size="lg"`, and flag any supporting
+formula that has `size="lg"` set unnecessarily.
+
+### 10. Per-demo equation display (LaTeX, live-updating)
+
+Per the Ch.1 convention, **every demo in a chapter should display the
+equation it is exercising**, rendered with the demo's live numeric
+values substituted in. The reference implementation is the `TwoCharges`
+demo in Ch.1: as the user drags charges or moves the slider, the
+Coulomb's-law expression next to the canvas updates with the current
+Q₁, Q₂, r, and resulting F.
+
+For each demo embedded in the chapter:
+
+1. Identify the physics equation the demo exercises.
+2. Verify the demo renders that equation alongside the canvas (typically
+   inside the `<Demo>` body or as a readout row), using the same math
+   typography as the rest of the chapter (`<Formula>` /
+   `<FormulaHTML>` / `<InlineMath>` — STIX Two Text).
+3. Verify the equation's numeric substitutions update live as the
+   sliders / drag interactions change state. A static formula image
+   that does not re-render with state is a finding.
+
+Flag demos that show a canvas + sliders but no displayed equation,
+demos whose equation is rendered as plain text rather than with the
+math typography, and demos whose displayed equation does not update
+when the controls change. For each finding, propose the specific
+expression that should be shown and which state values should
+substitute into it.
+
+### 11. Mobile responsiveness (chapter page + demos)
+
+The chapter page and every embedded demo must remain usable on a
+phone-width viewport (~360–414 px wide). Audit:
+
+- **Demo canvas sizing.** `<AutoResizeCanvas>` widths should be fluid
+  (no fixed `width` pixel values); heights chosen so the canvas
+  doesn't dominate the screen on narrow viewports. Flag canvases
+  with hard-coded widths or aspect ratios that produce a tiny
+  visualisation on mobile.
+- **Demo controls layout.** `<DemoControls>` / `<MiniSlider>` /
+  `<MiniReadout>` rows should wrap (flex-wrap or grid that collapses
+  to a single column on narrow viewports). Flag rows with fixed
+  multi-column grids that overflow on mobile.
+- **Inline equations and "where" paragraphs.** Long inline math
+  strings should be allowed to break / scroll horizontally inside
+  their container, not force the whole page to scroll. Flag any
+  `<Formula>` or `<InlineMath>` wrapped in a fixed-width container.
+- **Touch targets.** Draggable canvas elements must have
+  `touchstart`/`touchmove` handlers with `e.preventDefault()` and
+  `{ passive: false }` (also covered in §9 of CLAUDE.md). Slider
+  thumbs and toggles must be tappable (≥ 32 px hit area).
+- **Case-study `specs` tables and FAQ blocks.** These commonly break
+  on mobile with overflow. Flag fixed-width `<table>` markup or
+  spec rows that don't wrap.
+- **Tailwind responsive prefixes.** If a component uses
+  `grid-cols-2` / `grid-cols-3` without an `sm:` / `md:` prefix and
+  a single-column fallback at the base breakpoint, flag it.
+
+Report findings per element with file:line and the specific class /
+attribute that needs to change. Don't propose pixel-perfect
+breakpoints — propose the smallest change that makes the element
+usable at 375 px.
+
+### 12. Conventions and pitfalls (CLAUDE.md §9 + §13)
 
 Quick scan for the known traps:
 
@@ -123,7 +204,7 @@ Quick scan for the known traps:
 - `TanStack Router <Link>` to `/labs/$slug` without `params={{ slug: '…' }}`.
 - Hard-coded hex/rgba colours in canvas draw loops — should pull from `getCanvasColors()` (called per-frame, not captured at setup) and named tokens.
 
-### 10. Don't propose changes that conflict with hard rules
+### 13. Don't propose changes that conflict with hard rules
 
 CLAUDE.md rules that override everything:
 
@@ -159,6 +240,15 @@ Return one structured report. Use this skeleton (markdown headings, not numbered
 
 ### Demo proposals
 - {proposed demo}: what it shows, sliders, expected pedagogical payoff.
+
+### Main-formula sizing
+- L{N}: `<Formula>` `{tex}` — should be `size="lg"` (main formula of §{section}) / should drop `size="lg"` (supporting).
+
+### Per-demo equation display
+- {DemoName} [file:line]: missing live equation / static expression / wrong typography — propose `<Formula>{tex with state values}</Formula>`.
+
+### Mobile responsiveness
+- L{N}: {element} — {fixed width / non-wrapping grid / missing responsive prefix / touch target}; propose fix.
 
 ### Sourcing
 - L{N}: claim "…" — uncited / cites missing key / etc.
