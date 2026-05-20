@@ -221,13 +221,14 @@ export function PointCharge3DDemo({ figure }: Props) {
       question="Why does doubling r quarter the field — not halve it?"
       caption={
         <>
-          Drag the sphere to orbit. The arrows show the electric field on a spherical shell of
-          radius <strong>r</strong> around a point charge. Their length tracks{' '}
-          <strong>|E| = k|q|/r²</strong> — so when you slide <strong>r</strong> from 1 to 2 the
-          entire spiky shell shrinks by exactly <strong>4×</strong>. That factor of four is the
-          inverse-square law, and the reason it's a four (not a two) is the same reason the surface
-          area of a sphere is <strong>4πr²</strong>: a fixed amount of "flux" spreads over a larger
-          and larger spherical area as r grows.
+          The 2D arrows in the previous demo sliced through the radial pattern in one plane; here
+          are ~80 sample arrows on an invisible sphere of radius <strong>r</strong> around the same
+          point charge. Drag to orbit, then slide <strong>r</strong> from 1 to 2 and the entire
+          spiky shell shrinks by exactly <strong>4×</strong> — the ratio readout locks there. That
+          factor of four is the inverse-square law made geometric, and the reason it's a four (not
+          a two) is the same reason the surface area of a sphere is <strong>4πr²</strong>: a fixed
+          amount of "flux" spreads over a larger and larger spherical area as <strong>r</strong>{' '}
+          grows.
         </>
       }
       deeperLab={{ slug: 'e-field', label: 'See full lab' }}
