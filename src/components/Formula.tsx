@@ -131,7 +131,7 @@ export function Formula({
     >
       {!!html && (
         <div
-          className={texSlot({ class: 'formula-tex' })}
+          className={texSlot({ class: 'formula-tex overflow-x-auto' })}
           dangerouslySetInnerHTML={{ __html: html }}
         />
       )}
