@@ -141,16 +141,16 @@ export default function Ch1WhatIsElectricity() {
         is positive (push apart); opposite signs, F is negative (pull together).
       </p>
       <p className="mb-prose-3">
-        The constant is <em className="text-text italic">enormous</em>. Two coulombs of free charge
+        The constant is <em className="text-text italic">enormous</em>. Two one-coulomb charges
         separated by one meter would push each other apart with about{' '}
         <strong className="text-text font-medium">9 billion newtons</strong> — roughly the weight of
-        three Eiffel Towers.
+        a hundred Eiffel Towers.
       </p>
       <p className="mb-prose-3">
         The reason daily life is full of static and not constant electrocution is that ordinary
         matter is exquisitely charge-neutral. The fractional excess of free charge needed to make a
         noticeable force is tiny. Drag a balloon across your hair and you transfer maybe{' '}
-        <strong className="text-text font-medium">10⁻⁸ coulombs</strong> — a few hundred billion
+        <strong className="text-text font-medium">10⁻⁸ coulombs</strong> — around sixty billion
         excess electrons, sitting on a balloon that contains roughly{' '}
         <strong className="text-text font-medium">10²³</strong> of them. Almost nothing. Enough to
         fight gravity for a few minutes.
@@ -215,8 +215,8 @@ export default function Ch1WhatIsElectricity() {
         Cavendish bounded the deviation from <em className="text-text italic">exactly</em> 2 to
         within ±1/50 with a clever null-cavity experiment in 1773, decades before Coulomb's
         published result <Cite id="cavendish-1773" in={SOURCES} />. Modern measurements have pushed
-        the bound to roughly <strong className="text-text font-medium">±3×10⁻¹⁶</strong> — the
-        exponent is 2 to sixteen decimal places
+        the bound to roughly <strong className="text-text font-medium">±3×10⁻¹⁶</strong> — any
+        deviation from exactly 2 is smaller than three parts in 10¹⁶
         <Cite id="williams-faller-hill-1971" in={SOURCES} />. There are very few{' '}
         <Term
           def={
@@ -825,7 +825,7 @@ export default function Ch1WhatIsElectricity() {
             during those nanoseconds the energy is somewhere, and the "somewhere" is the field.
             Treating it as mere bookkeeping works for static problems and fails the moment anything
             moves
-            <Cite id="feynman-II-2" in={SOURCES} />. The Poynting story in Chapter 6 makes this
+            <Cite id="feynman-II-2" in={SOURCES} />. The Poynting story in Chapter 8 makes this
             concrete.
           </p>
         </FAQItem>
@@ -918,7 +918,7 @@ export default function Ch1WhatIsElectricity() {
             involves the magnetic field as well — and the two are linked by special relativity. A
             charge moving past you produces a magnetic field that an observer riding alongside it
             would not see; what looks like a magnetic force in one frame looks like an extra
-            electric force in another. We get to all of that in Chapter 4. For now, "Coulomb's law"
+            electric force in another. We get to all of that in Chapter 11. For now, "Coulomb's law"
             means the electrostatic limit: charges sitting still, or moving slowly enough that
             retardation effects can be ignored.
           </p>
@@ -955,7 +955,7 @@ export default function Ch1WhatIsElectricity() {
             light <InlineMath tex="c = 299{,}792{,}458\ \text{m/s}" />
             <Cite id="codata-2018" in={SOURCES} />. The electrons themselves drift along at
             fractions of a millimeter per second. We pull that apart properly in Chapter 2, and the
-            field-flow picture lands in Chapter 6.
+            field-flow picture lands in Chapter 8.
           </p>
         </FAQItem>
       </FAQ>
