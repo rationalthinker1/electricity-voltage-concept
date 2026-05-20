@@ -3,10 +3,19 @@
  *
  * Grid of arrows pointing radially out (or in). Length encodes log|E|.
  * A draggable probe shows the field magnitude at that location, in V/m.
+ *
+ * The UI layer also draws a dashed segment from the charge to the probe
+ * with its physical length labelled (1 px = 1 mm physical scale). The
+ * EquationStrip below the controls renders the two equations the demo
+ * embodies, with live values substituted in:
+ *
+ *   |E| = kQ/r²          (field at the probe)
+ *   F   = eE             (force on an electron sitting there)
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { LayeredCanvas, type LayeredCanvasInfo } from '@/components/LayeredCanvas';
 import { Num } from '@/components/Num';
 import { drawCharge } from '@/lib/canvasPrimitives';
@@ -17,14 +26,50 @@ interface Props {
   figure?: string;
 }
 
+/** Format a real number as a TeX scalar — plain decimal for mid-range,
+ *  mantissa × 10^exp otherwise. Three sig figs. */
+function texNum(x: number, sig: number = 3): string {
+  if (!isFinite(x)) return '\\text{—}';
+  if (x === 0) return '0';
+  const abs = Math.abs(x);
+  if (abs >= 0.01 && abs < 10000) {
+    return Number(x.toPrecision(sig)).toString();
+  }
+  const exp = Math.floor(Math.log10(abs));
+  const mantissa = x / Math.pow(10, exp);
+  const mantStr = Number(mantissa.toPrecision(sig)).toString();
+  return `${mantStr}\\times 10^{${exp}}`;
+}
+
+function formatProbeLength(r_mm: number): string {
+  if (r_mm < 100) return `${r_mm.toFixed(0)} mm`;
+  return `${(r_mm / 10).toFixed(1)} cm`;
+}
+
 export function FieldArrowsDemo({ figure }: Props) {
   const [qNC, setQNC] = useState(10);
   const [pos, setPos] = useState(true);
   const [probe, setProbe] = useState({ x: 0.72, y: 0.34 });
+  // Track the *actual* canvas pixel size so the probe-distance readout
+  // and the equation strip use the same r as what's drawn on screen.
+  // (1 px = 1 mm physical, per the demo's mapping.)
+  const [dims, setDims] = useState({ w: 880, h: 300 });
+
   const stateRef = useRef({ qNC, pos, probe });
   useEffect(() => {
     stateRef.current = { qNC, pos, probe };
   }, [qNC, pos, probe]);
+
+  // Live probe-distance + field strength, derived from actual canvas dims.
+  const { r_m, Eprobe } = useMemo(() => {
+    const dx = (probe.x - 0.5) * dims.w;
+    const dy = (probe.y - 0.5) * dims.h;
+    const r_mm = Math.hypot(dx, dy);
+    const rClamped = Math.max(r_mm * 1e-3, 5e-3);
+    const sign = pos ? +1 : -1;
+    const E = (PHYS.k * sign * qNC * 1e-9) / (rClamped * rClamped);
+    return { r_m: rClamped, Eprobe: E };
+  }, [probe, dims, pos, qNC]);
 
   const setup = useCallback(
     (info: LayeredCanvasInfo<'field' | 'ui'>) => {
@@ -32,6 +77,11 @@ export function FieldArrowsDemo({ figure }: Props) {
       const { contexts, w, h, canvas } = info;
       const fieldCtx = contexts.field;
       const uiCtx = contexts.ui;
+
+      // Publish actual canvas dims to React state once per setup so the
+      // r computed above matches what the user sees on screen.
+      setDims({ w, h });
+
       let dragging = false;
       // eslint-disable-next-line prefer-const -- forward declaration; assigned below
       let drawUi: () => void;
@@ -153,9 +203,57 @@ export function FieldArrowsDemo({ figure }: Props) {
       drawUi = function drawProbeLayer() {
         const { probe } = stateRef.current;
         uiCtx.clearRect(0, 0, w, h);
-        // Probe
-        const px = probe.x * w,
-          py = probe.y * h;
+
+        const cx = w / 2;
+        const cy = h / 2;
+        const px = probe.x * w;
+        const py = probe.y * h;
+        const dx = px - cx;
+        const dy = py - cy;
+        const r_mm = Math.hypot(dx, dy);
+
+        // Dashed segment between charge centre and probe.
+        uiCtx.save();
+        uiCtx.strokeStyle = colors.textDim;
+        uiCtx.lineWidth = 1;
+        uiCtx.globalAlpha = 0.65;
+        uiCtx.setLineDash([5, 4]);
+        uiCtx.beginPath();
+        uiCtx.moveTo(cx, cy);
+        uiCtx.lineTo(px, py);
+        uiCtx.stroke();
+        uiCtx.setLineDash([]);
+        uiCtx.restore();
+
+        // Length label at the midpoint, offset perpendicular to the line.
+        if (r_mm > 18) {
+          const mx = (cx + px) / 2;
+          const my = (cy + py) / 2;
+          const angle = Math.atan2(dy, dx);
+          const perp = angle + Math.PI / 2;
+          const offset = 12;
+          const lx = mx + Math.cos(perp) * offset;
+          const ly = my + Math.sin(perp) * offset;
+          const label = `r = ${formatProbeLength(r_mm)}`;
+          uiCtx.font = '10px "JetBrains Mono", monospace';
+          uiCtx.textAlign = 'center';
+          uiCtx.textBaseline = 'middle';
+          const m = uiCtx.measureText(label);
+          const padX = 6;
+          const padY = 3;
+          const boxW = m.width + padX * 2;
+          const boxH = 12 + padY * 2;
+          uiCtx.save();
+          uiCtx.fillStyle = colors.bg;
+          uiCtx.globalAlpha = 0.85;
+          uiCtx.fillRect(lx - boxW / 2, ly - boxH / 2, boxW, boxH);
+          uiCtx.globalAlpha = 1;
+          uiCtx.fillStyle = colors.textDim;
+          uiCtx.fillText(label, lx, ly);
+          uiCtx.restore();
+        }
+
+        // Probe ring
         uiCtx.strokeStyle = colors.accent;
         uiCtx.lineWidth = 2;
         uiCtx.save();
@@ -188,9 +286,17 @@ export function FieldArrowsDemo({ figure }: Props) {
     [qNC, pos],
   );
 
-  // Live readout for the probe
-  // Probe distance from canvas center → mm → m
-  const Eprobe = useEprobe(qNC, pos, probe);
+  // Build the substituted LaTeX for both equations. The constants k and e
+  // are baked in (they're not slider-controlled).
+  const Q_C = (pos ? 1 : -1) * qNC * 1e-9;
+  const F_e = PHYS.e * Eprobe; // force on a single electron at the probe
+  const leftTex =
+    `|\\vec{E}| \\;=\\; \\dfrac{kQ}{r^{2}} \\;=\\; ` +
+    `\\dfrac{(8.99\\!\\times\\!10^{9})(${texNum(Q_C)})}{(${texNum(r_m)})^{2}} ` +
+    `\\;\\approx\\; ${texNum(Eprobe)}\\ \\text{V/m}`;
+  const rightTex =
+    `F \\;=\\; eE \\;=\\; (1.602\\!\\times\\!10^{-19})(${texNum(Eprobe)}) ` +
+    `\\;\\approx\\; ${texNum(F_e)}\\ \\text{N}`;
 
   return (
     <Demo
@@ -220,20 +326,12 @@ export function FieldArrowsDemo({ figure }: Props) {
         />
         <MiniReadout label="|E| at probe" value={<Num value={Eprobe} />} unit="V/m" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Field at the probe"
+        left={<InlineMath tex={leftTex} />}
+        rightLabel="Force on an electron there"
+        right={<InlineMath tex={rightTex} />}
+      />
     </Demo>
   );
-}
-
-function useEprobe(qNC: number, pos: boolean, probe: { x: number; y: number }): number {
-  // We don't have direct access to canvas dims here, so estimate from the
-  // typical canvas aspect (we know height=300 and assume ~880 wide on desktop;
-  // the readout is approximate but stable as you drag).
-  const W = 880,
-    H = 300;
-  const dx = (probe.x - 0.5) * W;
-  const dy = (probe.y - 0.5) * H;
-  const r_mm = Math.hypot(dx, dy);
-  const r_m = Math.max(r_mm * 1e-3, 5e-3);
-  const sign = pos ? +1 : -1;
-  return (PHYS.k * sign * qNC * 1e-9) / (r_m * r_m);
 }

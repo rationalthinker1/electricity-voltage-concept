@@ -175,3 +175,43 @@ export function MiniReadout({ label, value, unit }: MiniReadoutProps) {
     </div>
   );
 }
+
+interface EquationStripProps {
+  /** Caption shown above the left equation. Short — a few words. */
+  leftLabel?: ReactNode;
+  /** The left-hand equation (typically an InlineMath). */
+  left: ReactNode;
+  /** Caption shown above the right equation. */
+  rightLabel?: ReactNode;
+  /** The right-hand equation. */
+  right: ReactNode;
+}
+/**
+ * Two-column equation row, intended to live directly below DemoControls.
+ * Each column shows a short caption and a rendered equation — usually the
+ * symbolic formula immediately followed by its values substituted in.
+ *
+ * Stacks vertically on narrow viewports so the math doesn't overflow.
+ */
+export function EquationStrip({ leftLabel, left, rightLabel, right }: EquationStripProps) {
+  return (
+    <div className="py-md px-xl bg-bg-elevated border-border grid grid-cols-1 gap-md border-t sm:grid-cols-2 sm:gap-xl">
+      <div className="text-center">
+        {leftLabel && (
+          <div className="font-3 text-1 text-text-muted tracking-3 mb-1 uppercase">
+            {leftLabel}
+          </div>
+        )}
+        <div className="text-3">{left}</div>
+      </div>
+      <div className="text-center sm:border-border-strong sm:border-l sm:pl-xl">
+        {rightLabel && (
+          <div className="font-3 text-1 text-text-muted tracking-3 mb-1 uppercase">
+            {rightLabel}
+          </div>
+        )}
+        <div className="text-3">{right}</div>
+      </div>
+    </div>
+  );
+}

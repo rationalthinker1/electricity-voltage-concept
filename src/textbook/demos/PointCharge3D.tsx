@@ -21,7 +21,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
@@ -251,6 +252,27 @@ export function PointCharge3DDemo({ figure }: Props) {
         <MiniReadout label="|E| = k|q|/r²" value={<Num value={computed.Emag} />} unit="(norm.)" />
         <MiniReadout label="|E(r)| / |E(2r)|" value={computed.ratio.toFixed(2)} unit="×" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Field on the sample sphere"
+        left={
+          <InlineMath
+            tex={
+              `|\\vec{E}| \\;=\\; \\dfrac{k|q|}{r^{2}} \\;=\\; ` +
+              `\\dfrac{(1)(${q.toFixed(1)})}{(${rSample.toFixed(1)})^{2}} ` +
+              `\\;\\approx\\; ${computed.Emag.toFixed(3)}\\ \\text{(norm.)}`
+            }
+          />
+        }
+        rightLabel="Doubling r quarters E"
+        right={
+          <InlineMath
+            tex={
+              `\\dfrac{|\\vec{E}(r)|}{|\\vec{E}(2r)|} \\;=\\; ` +
+              `\\left(\\dfrac{2r}{r}\\right)^{\\!2} \\;=\\; 4`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }
