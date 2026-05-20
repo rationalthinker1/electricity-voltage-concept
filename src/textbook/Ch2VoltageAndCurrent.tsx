@@ -17,6 +17,7 @@ import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { PredictThenObserve } from '@/components/PredictThenObserve';
+import { ACElectronJitterDemo } from './demos/ACElectronJitter';
 import { CursorEFieldOnWireDemo } from './demos/CursorEFieldOnWire';
 import { DriftVelocityDemo } from './demos/DriftVelocity';
 import { SwitchAndBulbDemo } from './demos/SwitchAndBulb';
@@ -124,7 +125,7 @@ export default function Ch2VoltageAndCurrent() {
         the integral is path-independent <Cite id="feynman-II-2" in={SOURCES} />
         — the field is conservative, <InlineMath tex="\nabla\times\vec{E} = 0" /> — which is what
         lets you talk about the voltage at a point at all. Drop that property (we will, in Chapter
-        5) and "voltage" stops meaning what you think it means
+        7) and "voltage" stops meaning what you think it means
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
@@ -160,8 +161,20 @@ export default function Ch2VoltageAndCurrent() {
 
       <p className="mb-prose-3">
         That operational picture has a knob the reader can already turn. Hook a battery of voltage{' '}
-        <em className="text-text italic">V</em> across a fixed resistive load and a fixed current
-        flows: in the demo above, <InlineMath tex="I = V/R" /> for{' '}
+        <em className="text-text italic">V</em> across a fixed resistive{' '}
+        <Term
+          def={
+            <>
+              <strong className="text-text font-medium">load</strong> — whatever component (or
+              network of components) sits between the source's two terminals and dissipates,
+              stores, or otherwise consumes the delivered power. A lamp, a heater, a motor, an op-amp
+              input stage — all "loads" from the source's point of view.
+            </>
+          }
+        >
+          load
+        </Term>{' '}
+        and a fixed current flows: in the demo above, <InlineMath tex="I = V/R" /> for{' '}
         <em className="text-text italic">R</em> = 10 Ω. Doubling{' '}
         <em className="text-text italic">V</em> doubles the current — and, via{' '}
         <InlineMath tex="v_d = I/(nqA)" />, doubles the drift speed of the electrons inside the
@@ -246,6 +259,15 @@ export default function Ch2VoltageAndCurrent() {
         What current actually <em>is</em>
       </h2>
 
+      <p className="mb-prose-3">
+        Picture a toll booth on a one-lane bridge. Stand beside it and count the cars passing per
+        minute: that count, with a direction attached, is the natural meaning of{' '}
+        <em className="text-text italic">traffic</em>. Current is exactly the same idea applied to
+        charge — pick any cross-section of a wire (a "toll booth" cutting straight across it) and
+        ask: how many coulombs of charge cross per second, and which way? Voltage said{' '}
+        <em className="text-text italic">how badly</em> the charges want to move; current says{' '}
+        <em className="text-text italic">how many</em> of them actually are.
+      </p>
       <p className="mb-prose-3">
         <Term
           def={
@@ -426,12 +448,13 @@ export default function Ch2VoltageAndCurrent() {
       <p className="mb-prose-3">Plug in numbers. One amp through a 2.5 mm² copper wire:</p>
       <Formula tex="v_d = \dfrac{1}{(8.5\times 10^{28})(1.6\times 10^{-19})(2.5\times 10^{-6})} \approx 2.9\times 10^{-5}\ \text{m/s}" />
       <p className="mb-prose-3">
-        Three hundredths of a millimeter per second. A 12-gauge wire carrying 20 A — the kind
-        feeding your kitchen outlet — has a drift velocity of about{' '}
+        Three hundredths of a millimeter per second. A 12-gauge wire carrying about{' '}
+        <strong className="text-text font-medium">1 A</strong> — roughly what a small bedside lamp
+        draws — has a drift velocity of about{' '}
         <strong className="text-text font-medium">0.02 mm/s</strong>{' '}
         <Cite id="libretexts-conduction" in={SOURCES} />. A garden snail moves roughly fifty times
-        faster. To traverse a one-meter wire, a single electron needs about ten hours. For a
-        forty-foot extension cord at the same current, more than a hundred.
+        faster. To traverse a one-meter wire, a single electron needs about thirteen hours. For a
+        forty-foot extension cord at the same current, more than a week.
       </p>
 
       <PredictThenObserve
@@ -576,7 +599,29 @@ export default function Ch2VoltageAndCurrent() {
         and that reconfiguration travels at near-c through the space around the wire. The electrons
         respond to the field locally, wherever they happen to be sitting. They start drifting in
         place; nothing has to travel from one end to the other. This is the picture that, properly
-        developed, becomes Chapter 6.
+        developed, becomes Chapter 9.
+      </p>
+
+      <p className="mb-prose-3">
+        The argument has one more counterintuitive case worth dwelling on. Most of the wires in
+        your house don't carry DC at all — they carry 60 Hz alternating current, with the driving
+        field reversing direction 120 times a second. An electron in an AC wire therefore doesn't
+        even drift on net. It oscillates back and forth about a fixed lattice site, with a peak
+        excursion you can compute exactly: amplitude{' '}
+        <InlineMath tex="x_{\text{peak}} = v_{\text{peak}}/\omega" /> where{' '}
+        <em className="text-text italic">ω</em> = 2π × 60 rad/s. For a few amps through ordinary
+        14-gauge copper that comes out to a few hundred nanometres — comparable to the wavelength
+        of visible light, smaller than a red blood cell.
+      </p>
+
+      <ACElectronJitterDemo />
+
+      <p className="mb-prose-3">
+        The same electron you started with stays essentially in place. It does not journey anywhere.
+        And yet the wire is delivering hundreds of watts to the lamp at the other end. Whatever is
+        carrying that energy — flowing from the wall outlet to the filament — has even less to do
+        with the motion of any particular electron than the DC story did. Chapter 8 gets to the
+        bottom of where that energy is actually flowing.
       </p>
 
       <h2 className="chapter-h2">
@@ -625,7 +670,7 @@ export default function Ch2VoltageAndCurrent() {
         of charges at all — it is a structure in space that Maxwell taught us to take seriously as a
         physical thing in its own right <Cite id="feynman-II-27" in={SOURCES} />. And the energy
         that becomes heat in the filament: it didn't travel down the inside of the wire either.
-        We'll get to that one in Chapter 6.
+        We'll get to that one in Chapter 8.
       </p>
 
       <h2 className="chapter-h2">What we have so far</h2>
@@ -869,11 +914,11 @@ export default function Ch2VoltageAndCurrent() {
         <FAQItem q="Are the electrons in a battery the same ones that arrive at the bulb?">
           <p>
             Almost certainly not. The electrons in the filament were already in the filament when
-            you screwed the bulb in. The electrons in the battery's negative terminal will, in a 20
-            A circuit, drift at about
-            <strong className="text-text font-medium"> 0.02 mm/s</strong>{' '}
+            you screwed the bulb in. In a typical small-appliance circuit drawing about 1 A through
+            12-gauge wire, the electrons in the battery's negative terminal drift at roughly{' '}
+            <strong className="text-text font-medium">0.02 mm/s</strong>{' '}
             <Cite id="libretexts-conduction" in={SOURCES} /> — over a meter of wire, that's a
-            ten-hour walk. The picture of a charge leaving the battery, traveling down the wire, and
+            half-day walk. The picture of a charge leaving the battery, traveling down the wire, and
             arriving at the load is wrong in nearly every literal sense. Charges everywhere along
             the loop drift simultaneously the moment the field reaches them.
           </p>
@@ -888,7 +933,7 @@ export default function Ch2VoltageAndCurrent() {
             than the diameter of a human hair. The same electron you started with stays essentially
             in place, jittering. The energy delivered to your toaster has nothing to do with that
             jitter; it comes through the surrounding electromagnetic field, which we'll meet
-            properly in Chapter 6.
+            properly in Chapter 8.
           </p>
         </FAQItem>
 
@@ -899,12 +944,24 @@ export default function Ch2VoltageAndCurrent() {
               electromagnetic field in the space around the wire
             </strong>
             . Inside a resistive wire the electric field points along its length and the magnetic
-            field circles it; their cross product, the Poynting vector, points radially{' '}
-            <em className="text-text italic">inward</em> through the wire's surface and integrates
-            exactly to
+            field circles it; their cross product, the{' '}
+            <Term
+              def={
+                <>
+                  <strong className="text-text font-medium">Poynting vector</strong> —{' '}
+                  <InlineMath tex="\vec{S} = \vec{E}\times\vec{B}/\mu_0" />, the directional energy
+                  flux of the electromagnetic field (W/m²). Integrating <em>S</em> over any closed
+                  surface gives the power flowing in through that surface.
+                </>
+              }
+            >
+              Poynting vector
+            </Term>
+            , points radially <em className="text-text italic">inward</em> through the wire's
+            surface and integrates exactly to
             <InlineMath tex="VI" />, the dissipated power <Cite id="feynman-II-2" in={SOURCES} />.
             The wire is the destination, not the conduit. This sounds like a parlor trick the first
-            time you hear it; Chapter 6 makes it rigorous.
+            time you hear it; Chapter 8 makes it rigorous.
           </p>
         </FAQItem>
 
@@ -928,8 +985,21 @@ export default function Ch2VoltageAndCurrent() {
             charges that leave one point be replaced by charges arriving from another, and the
             process continues indefinitely. The exception is briefly: in a capacitor or an antenna,
             you can have a transient current that is part of a larger loop closed not by wire but by
-            a <em className="text-text italic">displacement current</em>, i.e. a changing electric
-            field — Maxwell's contribution, also waiting in Chapter 6.
+            a{' '}
+            <Term
+              def={
+                <>
+                  <strong className="text-text font-medium">displacement current</strong> —
+                  Maxwell's <InlineMath tex="J_d = \varepsilon_0\, \partial \vec{E}/\partial t" />:
+                  a changing electric field acts like a current and closes the loop where there is
+                  no wire (e.g. through the gap of a capacitor). Required for charge conservation
+                  in Ampère's law.
+                </>
+              }
+            >
+              displacement current
+            </Term>
+            , i.e. a changing electric field — Maxwell's contribution, also waiting in Chapter 10.
           </p>
         </FAQItem>
 
