@@ -13,6 +13,14 @@ interface TopNavProps {
   onCycleTheme: () => void;
 }
 
+interface NavTarget {
+  label: string;
+  to: string;
+  params?: Record<string, string>;
+  title: string;
+  isActive: (pathname: string) => boolean;
+}
+
 export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) {
   const router = useRouterState();
   const pathname = router.location.pathname;
@@ -40,10 +48,14 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
   }
 
   const [chaptersOpen, setChaptersOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const chaptersMenuRef = useRef<HTMLDivElement | null>(null);
+  const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+  const mobileToggleRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     setChaptersOpen(false);
+    setMobileOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -64,17 +76,116 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
     };
   }, [chaptersOpen]);
 
+  useEffect(() => {
+    if (!mobileOpen) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setMobileOpen(false);
+    }
+    function onClick(e: MouseEvent) {
+      const t = e.target as Node;
+      const inMenu = mobileMenuRef.current?.contains(t);
+      const inToggle = mobileToggleRef.current?.contains(t);
+      if (!inMenu && !inToggle) setMobileOpen(false);
+    }
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('mousedown', onClick);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('mousedown', onClick);
+    };
+  }, [mobileOpen]);
+
+  // Shared list of secondary nav targets (everything besides the Chapters
+  // dropdown). Rendered as desktop pills below and as a vertical stack
+  // inside the mobile drawer.
+  const navTargets: NavTarget[] = [
+    {
+      label: 'Labs',
+      to: '/reference',
+      title: 'Equation labs (appendix)',
+      isActive: (p) => p === '/reference',
+    },
+    {
+      label: 'Build',
+      to: '/labs/$slug',
+      params: { slug: 'circuit-builder' },
+      title: 'Free-form circuit-builder sandbox',
+      isActive: (p) => p === '/labs/circuit-builder',
+    },
+    {
+      label: 'Map',
+      to: '/map',
+      title: 'Course map · prerequisite DAG',
+      isActive: (p) => p === '/map',
+    },
+    {
+      label: 'Tracks',
+      to: '/tracks',
+      title: 'Preset curriculum tracks',
+      isActive: (p) => p === '/tracks',
+    },
+    {
+      label: 'Capstones',
+      to: '/capstones',
+      title: 'Capstone integration projects',
+      isActive: (p) => p.startsWith('/capstone'),
+    },
+    {
+      label: 'Progress',
+      to: '/me',
+      title: 'Your reading progress',
+      isActive: (p) => p === '/me',
+    },
+  ];
+
+  const desktopPillClass = (active: boolean, extra?: string) =>
+    clsx(
+      'font-3 text-3 tracking-3 min-w-icon py-xxs hover:text-text max-lg:text-2 px-0 text-center uppercase no-underline transition-colors',
+      active ? 'text-accent' : 'text-text-muted',
+      extra,
+    );
+
+  const mobileItemClass = (active: boolean) =>
+    clsx(
+      'font-3 text-3 tracking-3 py-md px-md rounded-3 text-left uppercase no-underline transition-colors',
+      active ? 'text-accent bg-accent-soft' : 'text-text hover:bg-bg-card-hover',
+    );
+
+  const themeToggle = (
+    <button
+      type="button"
+      className="gap-sm min-h-2xl px-md border-border-2 rounded-pill bg-bg-card eyebrow-muted text-1 hover:text-text hover:border-accent inline-flex cursor-pointer items-center border leading-none transition-colors"
+      onClick={onCycleTheme}
+      aria-label={`Theme: ${themeMode}. Effective theme: ${resolvedTheme}. Activate to cycle theme mode.`}
+      title={`Theme: ${themeMode}`}
+    >
+      <span
+        className={clsx(
+          'h-lg rounded-pill relative w-lg border border-current',
+          resolvedTheme === 'light' && 'bg-current shadow-[0_0_0_3px_var(--accent-soft)]',
+          resolvedTheme === 'dark' &&
+            "after:-top-xxs after:left-xs after:h-md after:rounded-pill after:bg-bg after:absolute after:w-md after:content-['']",
+        )}
+        aria-hidden="true"
+      />
+      <span>{themeMode}</span>
+    </button>
+  );
+
   return (
-    <nav className="py-xl px-3xl border-border max-md:py-lg max-md:px-xl max-md:gap-md fixed top-0 right-0 left-0 z-2 flex items-center justify-between border-b bg-[linear-gradient(180deg,var(--nav-bg-start),var(--nav-bg-end))] backdrop-blur-[12px] max-md:flex-wrap">
-      <Link to="/" className="title-display text-7 tracking-1 font-light no-underline">
+    <nav className="py-xl px-3xl border-border max-md:py-md max-md:px-lg fixed top-0 right-0 left-0 z-2 flex items-center justify-between border-b bg-[linear-gradient(180deg,var(--nav-bg-start),var(--nav-bg-end))] backdrop-blur-[12px]">
+      <Link to="/" className="title-display text-7 max-md:text-5 tracking-1 font-light no-underline">
         Field <span className="text-accent">·</span> Theory
       </Link>
-      <div className="gap-md max-lg:gap-sm max-md:gap-md flex items-center">
+
+      {/* Desktop secondary nav — hidden on mobile, where the hamburger
+          drawer below carries the same destinations. */}
+      <div className="gap-md max-lg:gap-sm max-md:hidden flex items-center">
         <div ref={chaptersMenuRef} className="relative">
           <button
             type="button"
             className={clsx(
-              'font-3 text-3 tracking-3 min-w-icon py-xxs hover:text-text max-lg:text-2 max-md:text-1 gap-sm inline-flex cursor-pointer items-center border-0 bg-transparent px-0 text-center uppercase no-underline transition-colors',
+              'font-3 text-3 tracking-3 min-w-icon py-xxs hover:text-text max-lg:text-2 gap-sm inline-flex cursor-pointer items-center border-0 bg-transparent px-0 text-center uppercase no-underline transition-colors',
               activeChapter ? 'text-accent' : 'text-text-muted',
             )}
             aria-haspopup="menu"
@@ -132,89 +243,87 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
             </div>
           )}
         </div>
-        <Link
-          to="/reference"
-          className={clsx(
-            'font-3 text-3 tracking-3 min-w-icon py-xxs hover:text-text max-lg:text-2 max-md:text-1 border-border-2 pl-lg ml-sm border-l px-0 text-center uppercase no-underline transition-colors',
-            pathname === '/reference' ? 'text-accent' : 'text-text-muted',
-          )}
-          title="Equation labs (appendix)"
-        >
-          Labs
-        </Link>
-        <Link
-          to="/labs/$slug"
-          params={{ slug: 'circuit-builder' }}
-          className={clsx(
-            'font-3 text-3 tracking-3 min-w-icon py-xxs hover:text-text max-lg:text-2 max-md:text-1 px-0 text-center uppercase no-underline transition-colors',
-            pathname === '/labs/circuit-builder' ? 'text-accent' : 'text-text-muted',
-          )}
-          title="Free-form circuit-builder sandbox"
-        >
-          Build
-        </Link>
-        <Link
-          to="/map"
-          className={clsx(
-            'font-3 text-3 tracking-3 min-w-icon py-xxs hover:text-text max-lg:text-2 max-md:text-1 px-0 text-center uppercase no-underline transition-colors',
-            pathname === '/map' ? 'text-accent' : 'text-text-muted',
-          )}
-          title="Course map · prerequisite DAG"
-        >
-          Map
-        </Link>
-        <Link
-          to="/tracks"
-          className={clsx(
-            'font-3 text-3 tracking-3 min-w-icon py-xxs hover:text-text max-lg:text-2 max-md:text-1 px-0 text-center uppercase no-underline transition-colors',
-            pathname === '/tracks' ? 'text-accent' : 'text-text-muted',
-          )}
-          title="Preset curriculum tracks"
-        >
-          Tracks
-        </Link>
-        <Link
-          to="/capstones"
-          className={clsx(
-            'font-3 text-3 tracking-3 min-w-icon py-xxs hover:text-text max-lg:text-2 max-md:text-1 px-0 text-center uppercase no-underline transition-colors',
-            pathname.startsWith('/capstone') ? 'text-accent' : 'text-text-muted',
-          )}
-          title="Capstone integration projects"
-        >
-          Capstones
-        </Link>
-        <Link
-          to="/me"
-          className={clsx(
-            'font-3 text-3 tracking-3 min-w-icon py-xxs hover:text-text max-lg:text-2 max-md:text-1 px-0 text-center uppercase no-underline transition-colors',
-            pathname === '/me' ? 'text-accent' : 'text-text-muted',
-          )}
-          title="Your reading progress"
-        >
-          Progress
-        </Link>
+        {navTargets.map((t, i) => (
+          <Link
+            key={t.to + (t.params?.slug ?? '')}
+            to={t.to}
+            params={t.params as never}
+            className={desktopPillClass(t.isActive(pathname), i === 0 ? 'border-border-2 pl-lg ml-sm border-l' : undefined)}
+            title={t.title}
+          >
+            {t.label}
+          </Link>
+        ))}
       </div>
-      <div className="gap-md flex items-center justify-end">
-        <div className="meta-1 max-md:hidden">{pageMeta}</div>
-        <button
-          type="button"
-          className="gap-sm min-h-2xl px-md border-border-2 rounded-pill bg-bg-card eyebrow-muted text-1 hover:text-text hover:border-accent inline-flex cursor-pointer items-center border leading-none transition-colors"
-          onClick={onCycleTheme}
-          aria-label={`Theme: ${themeMode}. Effective theme: ${resolvedTheme}. Activate to cycle theme mode.`}
-          title={`Theme: ${themeMode}`}
-        >
-          <span
-            className={clsx(
-              'h-lg rounded-pill relative w-lg border border-current',
-              resolvedTheme === 'light' && 'bg-current shadow-[0_0_0_3px_var(--accent-soft)]',
-              resolvedTheme === 'dark' &&
-                "after:-top-xxs after:left-xs after:h-md after:rounded-pill after:bg-bg after:absolute after:w-md after:content-['']",
-            )}
-            aria-hidden="true"
-          />
-          <span>{themeMode}</span>
-        </button>
+
+      {/* Desktop meta + theme toggle */}
+      <div className="gap-md max-md:hidden flex items-center justify-end">
+        <div className="meta-1">{pageMeta}</div>
+        {themeToggle}
       </div>
+
+      {/* Mobile hamburger toggle */}
+      <button
+        ref={mobileToggleRef}
+        type="button"
+        className="md:hidden text-text-dim hover:text-text border-border-2 rounded-3 h-icon-lg w-icon-lg inline-flex cursor-pointer items-center justify-center border bg-transparent transition-colors"
+        aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+        aria-expanded={mobileOpen}
+        aria-controls="mobile-nav-menu"
+        onClick={() => setMobileOpen((o) => !o)}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+          {mobileOpen ? (
+            <>
+              <line x1="5" y1="5" x2="19" y2="19" />
+              <line x1="19" y1="5" x2="5" y2="19" />
+            </>
+          ) : (
+            <>
+              <line x1="4" y1="7" x2="20" y2="7" />
+              <line x1="4" y1="12" x2="20" y2="12" />
+              <line x1="4" y1="17" x2="20" y2="17" />
+            </>
+          )}
+        </svg>
+      </button>
+
+      {/* Mobile drawer — anchored to the fixed nav via top-full. */}
+      {mobileOpen && (
+        <div
+          ref={mobileMenuRef}
+          id="mobile-nav-menu"
+          role="menu"
+          aria-label="Site navigation"
+          className="md:hidden absolute top-full left-0 right-0 z-2 border-b border-border bg-bg-elevated shadow-[0_24px_60px_var(--shadow-strong)] max-h-[calc(100vh-72px)] overflow-y-auto"
+        >
+          <div className="py-lg px-lg flex flex-col gap-xs">
+            <Link
+              to="/"
+              role="menuitem"
+              className={mobileItemClass(!!activeChapter || pathname === '/')}
+            >
+              Chapters
+            </Link>
+            {navTargets.map((t) => (
+              <Link
+                key={t.to + (t.params?.slug ?? '')}
+                to={t.to}
+                params={t.params as never}
+                role="menuitem"
+                className={mobileItemClass(t.isActive(pathname))}
+                title={t.title}
+              >
+                {t.label}
+              </Link>
+            ))}
+            <div className="mt-md pt-md border-t border-border flex items-center justify-between gap-md">
+              <span className="font-3 text-2 text-text-muted tracking-3 uppercase">{pageMeta}</span>
+              {themeToggle}
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
