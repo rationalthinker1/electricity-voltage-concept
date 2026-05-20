@@ -360,14 +360,16 @@ export function VabWorkEnergyDemo({ figure }: Props) {
         }
         rightLabel="Work and energy across the trip"
         right={
-          <InlineMath
-            tex={
-              `W \\;=\\; q\\,V_{ab} \\;=\\; \\Delta U \\;=\\; ` +
-              `(${qMicro >= 0 ? '+' : ''}${qMicro.toFixed(2)}\\times 10^{-6})` +
-              `(${Vab >= 0 ? '+' : ''}${Vab.toFixed(2)}) ` +
-              `\\;\\approx\\; ${(W * 1e6).toFixed(2)}\\ \\mu\\text{J}`
-            }
-          />
+          <div className="flex flex-col items-center gap-1">
+            <InlineMath tex={`W \\;=\\; q\\,V_{ab} \\;=\\; \\Delta U`} />
+            <InlineMath
+              tex={
+                `=\\; (${qMicro >= 0 ? '+' : ''}${qMicro.toFixed(2)}\\times 10^{-6})` +
+                `(${Vab >= 0 ? '+' : ''}${Vab.toFixed(2)}) ` +
+                `\\;\\approx\\; ${(W * 1e6).toFixed(2)}\\ \\mu\\text{J}`
+              }
+            />
+          </div>
         }
       />
     </Demo>
