@@ -63,24 +63,24 @@ export default function Ch20Motors() {
         </Term>
         on a moving charge: <InlineMath id="lorentz-force" />. A current is moving charge — many of
         them, at the same drift velocity. Sum the per-charge force over a length{' '}
-        <em className="text-text italic">L</em> of wire carrying current{' '}
-        <em className="text-text italic">I</em> in a uniform field{' '}
-        <strong className="text-text font-medium">B</strong> and the wire itself feels
+        <InlineMath tex="L" /> of wire carrying current{' '}
+        <InlineMath tex="I" /> in a uniform field{' '}
+        <InlineMath tex="B" /> and the wire itself feels
         <Cite id="feynman-II-13" in={SOURCES} />:
       </p>
       <Formula size="lg" id="force-on-wire" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">F</strong> is the force on the wire segment
-        (in newtons), <strong className="text-text font-medium">I</strong> is the current flowing
-        through it (in amperes), <strong className="text-text font-medium">L</strong> is a vector
+        where <InlineMath tex="F" /> is the force on the wire segment
+        (in newtons), <InlineMath tex="I" /> is the current flowing
+        through it (in amperes), <InlineMath tex="L" /> is a vector
         along the wire of length equal to the segment (in metres) pointing in the direction of
-        conventional current, and <strong className="text-text font-medium">B</strong> is the
+        conventional current, and <InlineMath tex="B" /> is the
         magnetic field at the wire's location (in tesla).
       </p>
       <p className="mb-prose-3">
-        Bend the wire into a closed rectangular loop of <em className="text-text italic">N</em>{' '}
-        turns and area <em className="text-text italic">A</em>, place it in{' '}
-        <strong className="text-text font-medium">B</strong>, and the two long sides experience
+        Bend the wire into a closed rectangular loop of <InlineMath tex="N" />{' '}
+        turns and area <InlineMath tex="A" />, place it in{' '}
+        <InlineMath tex="B" />, and the two long sides experience
         equal-and-opposite forces displaced from the loop's central axis. Those forces don't cancel
         — they form a couple. The resulting{' '}
         <Term def="The rotational analog of force. Torque about an axis is force times the perpendicular distance from the axis. SI unit: N·m.">
@@ -91,19 +91,19 @@ export default function Ch20Motors() {
       </p>
       <Formula tex="\tau = N I A B \sin\theta" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">τ</strong> is the magnitude of the torque on
+        where <InlineMath tex="\tau" /> is the magnitude of the torque on
         the loop (in N·m),
-        <strong className="text-text font-medium"> N</strong> is the number of turns in the coil
+        <InlineMath tex="N" /> is the number of turns in the coil
         (dimensionless integer),
-        <strong className="text-text font-medium"> I</strong> is the current in the coil (in
-        amperes), <strong className="text-text font-medium">A</strong> is the area enclosed by one
-        turn (in m²), <strong className="text-text font-medium">B</strong> is the magnetic field
-        magnitude (in tesla), and <strong className="text-text font-medium">θ</strong> is the angle
+        <InlineMath tex="I" /> is the current in the coil (in
+        amperes), <InlineMath tex="A" /> is the area enclosed by one
+        turn (in m²), <InlineMath tex="B" /> is the magnetic field
+        magnitude (in tesla), and <InlineMath tex="\theta" /> is the angle
         between the loop's surface normal and the field (in radians). Maximum torque when the loop's
-        plane is parallel to <strong className="text-text font-medium">B</strong> (θ = 90°); zero
+        plane is parallel to <InlineMath tex="B" /> (θ = 90°); zero
         when the plane is perpendicular (θ = 0). That single formula is every electric motor in one
         line. Everything that follows is engineering: how to keep θ in the region where{' '}
-        <em className="text-text italic">sin(θ)</em> is positive, so the torque drives the rotor
+        <InlineMath tex="\sin(\theta)" /> is positive, so the torque drives the rotor
         forward instead of bouncing back and forth across one position.
       </p>
 
@@ -111,10 +111,10 @@ export default function Ch20Motors() {
         tag="Try 20.1"
         question={
           <>
-            A rectangular coil has <strong className="text-text font-medium">N = 100</strong> turns,
-            area <strong className="text-text font-medium">A = 30 cm²</strong>, sits in a field of{' '}
-            <strong className="text-text font-medium">B = 0.3 T</strong>, and carries{' '}
-            <strong className="text-text font-medium">I = 2 A</strong>. What is the maximum torque?
+            A rectangular coil has <InlineMath tex="N = 100" /> turns,
+            area <InlineMath tex="A = 30\,\text{cm}^{2}" />, sits in a field of{' '}
+            <InlineMath tex="B = 0.3\,\text{T}" />, and carries{' '}
+            <InlineMath tex="I = 2\,\text{A}" />. What is the maximum torque?
           </>
         }
         hint={
@@ -158,7 +158,7 @@ export default function Ch20Motors() {
         </Term>
         against the rings from outside the spinning rotor. Every half-rotation, the brushes break
         contact with one segment and make contact with the other, reversing the direction of current
-        in the coil. The trigonometry flips with it: <em className="text-text italic">sin(θ)</em>{' '}
+        in the coil. The trigonometry flips with it: <InlineMath tex="\sin(\theta)" />{' '}
         reverses sign, the current reverses sign, the product stays positive. Net torque always
         drives the rotor forward
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
@@ -194,7 +194,7 @@ export default function Ch20Motors() {
         <InlineMath tex="I = V/R" /> — an inrush current several times the rated running value. As
         the rotor spins up, back-EMF rises in proportion to speed (
         <InlineMath tex="E_{\text{back}} = k_e\, \omega" />
-        ), the net voltage across <em className="text-text italic">R</em>
+        ), the net voltage across <InlineMath tex="R" />
         falls, and the current drops to whatever value is required to balance the load torque. The
         settling time is set by the mechanical inertia, not the electrical time constant: that is
         why inrush current is brief but ferocious
@@ -207,12 +207,10 @@ export default function Ch20Motors() {
         tag="Try 20.2"
         question={
           <>
-            A <strong className="text-text font-medium">12 V</strong> brushed DC motor has winding
-            resistance <strong className="text-text font-medium">R = 1 Ω</strong> and back-EMF
+            A <InlineMath tex="12\,\text{V}" /> brushed DC motor has winding
+            resistance <InlineMath tex="R = 1\,\Omega" /> and back-EMF
             constant{' '}
-            <strong className="text-text font-medium">
-              k<sub>e</sub> = 0.1 V·s/rad
-            </strong>
+            <InlineMath tex="k_e = 0.1\,\text{V·s/rad}" />
             . What is the starting current at stall? What is the steady-state current at{' '}
             <InlineMath tex="\omega = 100\ \text{rad/s}" /> with negligible load?
           </>
@@ -371,12 +369,10 @@ export default function Ch20Motors() {
       <Formula tex="n_s = 120\, f / p \quad (\text{RPM})" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          n<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="n_s" />{' '}
         is the synchronous (stator-field) rotational speed in revolutions per minute,{' '}
-        <strong className="text-text font-medium">f</strong> is the AC line frequency (in Hz), and
-        <strong className="text-text font-medium"> p</strong> is the total pole count of the machine
+        <InlineMath tex="f" /> is the AC line frequency (in Hz), and
+        <InlineMath tex="p" /> is the total pole count of the machine
         (a dimensionless even integer: 2, 4, 6, …). The factor of 120 packages the 60 s/min
         conversion with the two-poles-per-pole-pair convention. At 60 Hz a 4-pole machine spins its
         stator field at 1800 RPM; an 8-pole machine at 900 RPM. The rotor, sitting inside this
@@ -423,13 +419,11 @@ export default function Ch20Motors() {
       </p>
       <Formula tex="s = (n_s - n) / n_s" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">s</strong> is the dimensionless slip (a pure
+        where <InlineMath tex="s" /> is the dimensionless slip (a pure
         ratio, often quoted as a percentage),{' '}
-        <strong className="text-text font-medium">
-          n<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="n_s" />{' '}
         is the synchronous speed of the rotating stator field (in RPM, from the formula above), and{' '}
-        <strong className="text-text font-medium">n</strong> is the actual mechanical rotation speed
+        <InlineMath tex="n" /> is the actual mechanical rotation speed
         of the rotor (in RPM).
       </p>
       <p className="mb-prose-3">

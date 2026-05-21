@@ -476,17 +476,12 @@ export default function Ch13NetworkAnalysis() {
         <InlineMath> y = a x₁ + b x₂</InlineMath> for some network-dependent constants{' '}
         <em className="text-text italic">a</em>, <em className="text-text italic">b</em>, then
         setting
-        <InlineMath> x₂ = 0</InlineMath> gives <em className="text-text italic">y</em>
-        <sub>1</sub>= <em className="text-text italic">a x₁</em>, setting{' '}
-        <InlineMath>x₁ = 0</InlineMath> gives
-        <em className="text-text italic"> y</em>
-        <sub>2</sub> = <em className="text-text italic">b x₂</em>, and the two responses add to the
+        <InlineMath tex="x_2 = 0" /> gives <InlineMath tex="y_1 = a x_1" />, setting{' '}
+        <InlineMath tex="x_1 = 0" /> gives
+        <InlineMath tex="y_2 = b x_2" />, and the two responses add to the
         original. The whole trick is that no nonlinear term — no
-        <em className="text-text italic"> x₁ x₂</em>, no <InlineMath>x₁²</InlineMath>, no{' '}
-        <em className="text-text italic">e</em>
-        <sup>
-          <em className="text-text italic">x₁</em>
-        </sup>
+        <InlineMath tex="x_1 x_2" />, no <InlineMath tex="x_1^{2}" />, no{' '}
+        <InlineMath tex="e^{x_1}" />
         — appears anywhere in the constitutive equations. The moment one does (a diode's exponential{' '}
         <em className="text-text italic">I-V</em>, a transistor's saturation nonlinearity, a
         transformer's hysteresis loop), the cross-terms couple the sources and superposition fails:
@@ -823,10 +818,7 @@ export default function Ch13NetworkAnalysis() {
           R<sub>a</sub> + R<sub>b</sub>
         </em>{' '}
         (a series chain through the interior node); the Δ presents
-        <em className="text-text italic">
-          {' '}
-          R<sub>AB</sub>
-        </em>{' '}
+        <InlineMath tex="R_{AB}" />{' '}
         in parallel with
         <em className="text-text italic">
           {' '}
@@ -944,18 +936,11 @@ export default function Ch13NetworkAnalysis() {
         </em>{' '}
         (an open circuit) the voltage is large but the current is zero: again no power. Somewhere
         between those extremes{' '}
-        <em className="text-text italic">
-          P<sub>L</sub>
-        </em>{' '}
+        <InlineMath tex="P_L" />{' '}
         peaks. The numerator is linear in
-        <em className="text-text italic">
-          {' '}
-          R<sub>L</sub>
-        </em>{' '}
+        <InlineMath tex="R_L" />{' '}
         and pulls the curve up; the denominator is quadratic in{' '}
-        <em className="text-text italic">
-          R<sub>L</sub>
-        </em>{' '}
+        <InlineMath tex="R_L" />{' '}
         and pulls it back down at large
         <em className="text-text italic">
           {' '}

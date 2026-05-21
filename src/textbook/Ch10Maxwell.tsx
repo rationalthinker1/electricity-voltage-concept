@@ -221,7 +221,7 @@ export default function Ch10Maxwell() {
             </Formula>
             <p className="mb-prose-1 last:mb-0">
               ≈ <strong className="text-text font-medium">1.13×10⁵ V·m</strong>, with{' '}
-              <em className="text-text italic">ε₀</em> = 8.854×10⁻¹² F/m
+              <InlineMath tex="\varepsilon_0" /> = 8.854×10⁻¹² F/m
               <Cite id="codata-2018" in={SOURCES} />. The shape of the surface — sphere, cube, ugly
               potato — is irrelevant. Only the enclosed charge counts.
             </p>
@@ -426,9 +426,7 @@ export default function Ch10Maxwell() {
           def={
             <>
               <strong className="text-text font-medium">displacement current</strong> — the term{' '}
-              <em className="text-text italic">
-                J<sub>D</sub> = ε₀ ∂E/∂t
-              </em>{' '}
+              <InlineMath tex="J_D = \varepsilon_0\,\partial E/\partial t" />{' '}
               that Maxwell added to Ampère's law in 1865. Not an actual flow of charge, but a
               changing electric flux that sources B exactly as a real current would. Without it,
               charge conservation fails in time-varying situations.
@@ -454,9 +452,7 @@ export default function Ch10Maxwell() {
             <strong className="text-text font-medium">1 GV/(m·s)</strong>
             (i.e. <strong className="text-text font-medium">10⁹ V/m per second</strong>). What is
             the displacement-current density{' '}
-            <em className="text-text italic">
-              J<sub>D</sub>
-            </em>{' '}
+            <InlineMath tex="J_D" />{' '}
             there?
           </>
         }
@@ -464,7 +460,7 @@ export default function Ch10Maxwell() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              Plug in <em className="text-text italic">ε₀</em> = 8.854×10⁻¹² F/m
+              Plug in <InlineMath tex="\varepsilon_0" /> = 8.854×10⁻¹² F/m
               <Cite id="codata-2018" in={SOURCES} />:
             </p>
             <Formula>
@@ -581,9 +577,9 @@ export default function Ch10Maxwell() {
           <>
             <p className="mb-prose-1 last:mb-0">
               Use CODATA values
-              <Cite id="codata-2018" in={SOURCES} />: <em className="text-text italic">μ₀</em> =
+              <Cite id="codata-2018" in={SOURCES} />: <InlineMath tex="\mu_0" /> =
               1.25664×10⁻⁶ T·m/A,
-              <em className="text-text italic"> ε₀</em> = 8.8542×10⁻¹² F/m. Then
+              <InlineMath tex="\varepsilon_0" /> = 8.8542×10⁻¹² F/m. Then
             </p>
             <Formula>μ₀ ε₀ = 1.25664×10⁻⁶ × 8.8542×10⁻¹² ≈ 1.1127×10⁻¹⁷ s²/m²</Formula>
             <Formula>c = 1 / √(1.1127×10⁻¹⁷) ≈ 2.998×10⁸ m/s</Formula>
@@ -899,9 +895,7 @@ export default function Ch10Maxwell() {
         <FAQItem q="What would change if we did find one?">
           <p>
             The second equation would gain a source term:{' '}
-            <strong className="text-text font-medium">
-              ∮B·dA = μ₀ Q<sub>m,enc</sub>
-            </strong>
+            <InlineMath tex="\oint B\cdot dA = \mu_0 Q_{m,\text{enc}}" />
             , and Faraday's law would gain a "magnetic current" term symmetric to the
             conduction-current term in Ampère–Maxwell. The theory becomes perfectly symmetric under
             the duality E ↔ cB. Nothing else has to change. The practical consequence: a brand-new
@@ -1012,9 +1006,9 @@ export default function Ch10Maxwell() {
             Yes — it's a direct consequence of Gauss's law for E plus the assumption of spherical
             symmetry around a point source. Draw a sphere of radius r centered on the charge; by
             symmetry E is radial and constant on the sphere; the integral{' '}
-            <strong className="text-text font-medium">∮E·dA = E·4πr²</strong> equals{' '}
-            <strong className="text-text font-medium">Q/ε₀</strong>; solve for
-            <strong className="text-text font-medium"> E = Q/(4πε₀ r²)</strong>; multiply by a test
+            <InlineMath tex="\oint E\cdot dA = E\cdot 4\pi r^{2}" /> equals{' '}
+            <InlineMath tex="Q/\varepsilon_0" />; solve for{' '}
+            <InlineMath tex="E = Q/(4\pi\varepsilon_0 r^{2})" />; multiply by a test
             charge q to get the force. Coulomb's 1785 inverse-square law falls out of the more
             general law without further assumption
             <Cite id="griffiths-2017" in={SOURCES} />.
@@ -1025,22 +1019,14 @@ export default function Ch10Maxwell() {
           <p>
             With four-vectors, four becomes two; with differential forms or fully covariant tensor
             notation, two becomes one. Defining the electromagnetic field tensor{' '}
-            <strong className="text-text font-medium">
-              F<sup>μν</sup>
-            </strong>
-            , Maxwell's equations collapse to{' '}
-            <strong className="text-text font-medium">
-              ∂<sub>μ</sub>F<sup>μν</sup> = μ₀ J<sup>ν</sup>
-            </strong>{' '}
-            (the two source equations) and
-            <strong className="text-text font-medium">
-              {' '}
-              ∂<sub>[α</sub>F<sub>βγ]</sub> = 0
-            </strong>{' '}
+            <InlineMath tex="F^{\mu\nu}" />, Maxwell's equations collapse to{' '}
+            <InlineMath tex="\partial_{\mu}F^{\mu\nu} = \mu_0 J^{\nu}" />{' '}
+            (the two source equations) and{' '}
+            <InlineMath tex="\partial_{[\alpha}F_{\beta\gamma]} = 0" />{' '}
             (the two source-free equations, an algebraic Bianchi identity). In the language of
             differential forms, the second pair becomes{' '}
-            <strong className="text-text font-medium">dF = 0</strong> and the first{' '}
-            <strong className="text-text font-medium">d⋆F = J</strong>. None of this changes the
+            <InlineMath tex="dF = 0" /> and the first{' '}
+            <InlineMath tex="d{\star}F = J" />. None of this changes the
             physics, but it makes the relativistic structure of electromagnetism manifest — and it's
             the form that generalizes cleanly to curved spacetime
             <Cite id="jackson-1999" in={SOURCES} />.
@@ -1050,9 +1036,7 @@ export default function Ch10Maxwell() {
         <FAQItem q="How does QED relate to these — is QED just Maxwell + quantization?">
           <p>
             Close, but with a twist. Quantum electrodynamics promotes the classical field{' '}
-            <strong className="text-text font-medium">
-              F<sup>μν</sup>
-            </strong>
+            <InlineMath tex="F^{\mu\nu}" />{' '}
             to a quantum operator, treats the photon as the quantum of the field, and replaces
             classical charged sources with quantized matter fields (electrons, positrons). The
             result is one of the most precisely-tested theories in all of science — the electron's

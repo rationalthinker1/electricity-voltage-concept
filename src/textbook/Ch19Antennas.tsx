@@ -18,7 +18,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -72,7 +72,7 @@ export default function Ch15Antennas() {
       <p className="mb-prose-3">
         That radiation carries energy. By Poynting (Chapter 8), the time-averaged outward flux from
         an accelerating charge is{' '}
-        <strong className="text-text font-medium">⟨S⟩ = (1/2) ε₀ c |E|²</strong>. Integrate over a
+        <InlineMath tex="\langle S\rangle = \tfrac{1}{2}\varepsilon_0 c |E|^{2}" />. Integrate over a
         sphere far from the source and you get the total radiated power, which (for a non-
         relativistic charge) is the Larmor formula:
       </p>
@@ -81,15 +81,13 @@ export default function Ch15Antennas() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          P<sub>rad</sub>
-        </strong>{' '}
+        <InlineMath tex="P_{\text{rad}}" />{' '}
         is the total time-averaged radiated power (in watts),
-        <strong className="text-text font-medium"> q</strong> is the charge (in coulombs),{' '}
-        <strong className="text-text font-medium">a</strong> is the magnitude of the charge's
+        <InlineMath tex="q" /> is the charge (in coulombs),{' '}
+        <InlineMath tex="a" /> is the magnitude of the charge's
         acceleration (in m/s²),{' '}
-        <strong className="text-text font-medium">ε₀ ≈ 8.854×10⁻¹² F/m</strong> is the permittivity
-        of free space, and <strong className="text-text font-medium">c ≈ 2.998×10⁸ m/s</strong> is
+        <InlineMath tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" /> is the permittivity
+        of free space, and <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is
         the speed of light.
       </p>
       <p className="mb-prose-3">
@@ -142,20 +140,18 @@ export default function Ch15Antennas() {
         E(r, θ) ∝ (I<sub>0</sub> L ω / c) · sin θ · cos(kr − ωt) / r
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">E(r, θ)</strong> is the magnitude of the
+        where <InlineMath tex="E(r,\theta)" /> is the magnitude of the
         radiated electric field (in V/m) at radial distance{' '}
-        <strong className="text-text font-medium">r</strong> (in metres) and polar angle{' '}
-        <strong className="text-text font-medium">θ</strong> measured from the dipole axis (in
+        <InlineMath tex="r" /> (in metres) and polar angle{' '}
+        <InlineMath tex="\theta" /> measured from the dipole axis (in
         radians),{' '}
-        <strong className="text-text font-medium">
-          I<sub>0</sub>
-        </strong>{' '}
+        <InlineMath tex="I_0" />{' '}
         is the peak current in the wire (in amperes),{' '}
-        <strong className="text-text font-medium">L</strong> is the dipole length (in metres),
-        <strong className="text-text font-medium"> ω = 2πf</strong> is the angular frequency (in
-        rad/s), <strong className="text-text font-medium">k = ω/c</strong> is the free-space
+        <InlineMath tex="L" /> is the dipole length (in metres),{' '}
+        <InlineMath tex="\omega = 2\pi f" /> is the angular frequency (in
+        rad/s), <InlineMath tex="k = \omega/c" /> is the free-space
         wavenumber (in m⁻¹), and{' '}
-        <strong className="text-text font-medium">c ≈ 2.998×10⁸ m/s</strong> is the speed of light.
+        <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light.
       </p>
       <p className="mb-prose-3">
         Two important features of that formula. (1) The 1/r dependence — far enough away, the field
@@ -229,33 +225,25 @@ export default function Ch15Antennas() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          P<sub>rad</sub>
-        </strong>{' '}
-        is the total time-averaged radiated power (in watts),
-        <strong className="text-text font-medium"> η₀</strong> is the impedance of free space (in
-        ohms; defined below),
-        <strong className="text-text font-medium"> L</strong> is the dipole's physical length (in
-        metres), <strong className="text-text font-medium">λ</strong> is the free-space wavelength
+        <InlineMath tex="P_{\text{rad}}" />{' '}
+        is the total time-averaged radiated power (in watts),{' '}
+        <InlineMath tex="\eta_0" /> is the impedance of free space (in
+        ohms; defined below),{' '}
+        <InlineMath tex="L" /> is the dipole's physical length (in
+        metres), <InlineMath tex="\lambda" /> is the free-space wavelength
         of the radiation (in metres), and{' '}
-        <strong className="text-text font-medium">
-          I<sub>0</sub>
-        </strong>{' '}
+        <InlineMath tex="I_0" />{' '}
         is the peak current at the feedpoint (in amperes).
       </p>
       <p className="mb-prose-3">
-        with <strong className="text-text font-medium">η₀ = √(μ₀/ε₀) ≈ 377 Ω</strong> the{' '}
+        with <InlineMath tex="\eta_0 = \sqrt{\mu_0/\varepsilon_0} \approx 377\,\Omega" /> the{' '}
         <Term def="η₀ = √(μ₀/ε₀) ≈ 377 Ω. The ratio |E|/|H| in a plane EM wave travelling in vacuum, with units of impedance. Sets the link between radiation pressure, Poynting flux, and antenna impedances.">
           impedance of free space
         </Term>
         . Pull out the I₀² and you have{' '}
-        <strong className="text-text font-medium">
-          P = ½ R<sub>rad</sub> I₀²
-        </strong>{' '}
+        <InlineMath tex="P = \tfrac{1}{2}R_{\text{rad}}I_0^{2}" />{' '}
         with{' '}
-        <strong className="text-text font-medium">
-          R<sub>rad</sub> = (2π η₀/3)(L/λ)²
-        </strong>
+        <InlineMath tex="R_{\text{rad}} = (2\pi\eta_0/3)(L/\lambda)^{2}" />
         .{' '}
         <Term def="The fictitious resistance that, in series with the antenna's reactance, accounts for the energy lost to radiation. Not heat — just energy converted to outgoing EM waves. For a short dipole R_rad = (2π η₀/3)(L/λ)²; for a half-wave dipole, ≈73 Ω.">
           Radiation resistance
@@ -282,12 +270,10 @@ export default function Ch15Antennas() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          f<sub>0</sub>
-        </strong>{' '}
+        <InlineMath tex="f_0" />{' '}
         is the fundamental resonant frequency of the dipole (in Hz),{' '}
-        <strong className="text-text font-medium">c ≈ 2.998×10⁸ m/s</strong> is the speed of light,
-        and <strong className="text-text font-medium">L</strong> is the total physical length of the
+        <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light,
+        and <InlineMath tex="L" /> is the total physical length of the
         dipole wire (in metres) — half a wavelength at resonance.
       </p>
       <p className="mb-prose-3">
@@ -358,19 +344,13 @@ export default function Ch15Antennas() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          F<sub>total</sub>(θ, φ)
-        </strong>{' '}
+        <InlineMath tex="F_{\text{total}}(\theta,\phi)" />{' '}
         is the dimensionless total radiation pattern of the array at polar angle{' '}
-        <strong className="text-text font-medium">θ</strong> and azimuthal angle{' '}
-        <strong className="text-text font-medium">φ</strong> (both in radians),{' '}
-        <strong className="text-text font-medium">
-          F<sub>element</sub>
-        </strong>{' '}
+        <InlineMath tex="\theta" /> and azimuthal angle{' '}
+        <InlineMath tex="\phi" /> (both in radians),{' '}
+        <InlineMath tex="F_{\text{element}}" />{' '}
         is the pattern of a single radiating element in isolation, and{' '}
-        <strong className="text-text font-medium">
-          F<sub>array</sub>
-        </strong>{' '}
+        <InlineMath tex="F_{\text{array}}" />{' '}
         is the array factor — the geometric interference pattern that the array of N elements would
         produce if every element were an isotropic point source.
       </p>
@@ -424,14 +404,12 @@ export default function Ch15Antennas() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          θ<sub>steer</sub>
-        </strong>{' '}
+        <InlineMath tex="\theta_{\text{steer}}" />{' '}
         is the angle the main beam makes with broadside (in radians),{' '}
-        <strong className="text-text font-medium">Δφ</strong> is the progressive phase shift applied
-        between adjacent elements (in radians), <strong className="text-text font-medium">λ</strong>{' '}
-        is the free-space wavelength (in metres), and
-        <strong className="text-text font-medium"> d</strong> is the spacing between adjacent
+        <InlineMath tex="\Delta\phi" /> is the progressive phase shift applied
+        between adjacent elements (in radians), <InlineMath tex="\lambda" />{' '}
+        is the free-space wavelength (in metres), and{' '}
+        <InlineMath tex="d" /> is the spacing between adjacent
         elements (in metres).
       </p>
       <p className="mb-prose-3">

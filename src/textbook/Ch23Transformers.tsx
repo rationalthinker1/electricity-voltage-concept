@@ -63,14 +63,9 @@ export default function Ch18Transformers() {
 
       <p className="mb-prose-3">
         Wind a coil of{' '}
-        <em className="text-text italic">
-          N<sub>p</sub>
-        </em>{' '}
-        turns around one leg of a ring-shaped iron core, and a second coil of
-        <em className="text-text italic">
-          {' '}
-          N<sub>s</sub>
-        </em>{' '}
+        <InlineMath tex="N_p" />{' '}
+        turns around one leg of a ring-shaped iron core, and a second coil of{' '}
+        <InlineMath tex="N_s" />{' '}
         turns around another leg of the same ring. Drive the first coil — the
         <Term
           def={
@@ -84,18 +79,14 @@ export default function Ch18Transformers() {
           primary
         </Term>{' '}
         — with an AC voltage source{' '}
-        <em className="text-text italic">
-          V<sub>p</sub>(t)
-        </em>
+        <InlineMath tex="V_p(t)" />
         . Current flows in the primary; that current creates an alternating magnetic field; the iron
         core funnels essentially all of that magnetic flux into the
         <em className="text-text italic"> secondary</em> leg, where it threads the second coil. By
         Faraday's law of induction, each turn of the secondary sees an EMF equal to{' '}
-        <em className="text-text italic">−dΦ/dt</em>, the time rate of change of flux through it.
+        <InlineMath tex="-d\Phi/dt" />, the time rate of change of flux through it.
         Add the EMFs of all{' '}
-        <em className="text-text italic">
-          N<sub>s</sub>
-        </em>{' '}
+        <InlineMath tex="N_s" />{' '}
         turns and you get the
         <Term
           def={
@@ -116,16 +107,11 @@ export default function Ch18Transformers() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>s</sub>(t)
-        </strong>{' '}
-        is the instantaneous secondary terminal voltage (in volts),
-        <strong className="text-text font-medium">
-          {' '}
-          N<sub>s</sub>
-        </strong>{' '}
-        is the number of turns on the secondary winding (dimensionless), and
-        <strong className="text-text font-medium"> dΦ/dt</strong> is the time rate of change of the
+        <InlineMath tex="V_s(t)" />{' '}
+        is the instantaneous secondary terminal voltage (in volts),{' '}
+        <InlineMath tex="N_s" />{' '}
+        is the number of turns on the secondary winding (dimensionless), and{' '}
+        <InlineMath tex="d\Phi/dt" /> is the time rate of change of the
         magnetic flux threading each turn of the core (in webers per second, equivalently volts).
       </p>
       <p className="mb-prose-3">
@@ -139,20 +125,15 @@ export default function Ch18Transformers() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>p</sub>(t)
-        </strong>{' '}
-        is the instantaneous primary terminal voltage (in volts),
-        <strong className="text-text font-medium">
-          {' '}
-          N<sub>p</sub>
-        </strong>{' '}
-        is the number of turns on the primary winding (dimensionless), and
-        <strong className="text-text font-medium"> dΦ/dt</strong> is the same shared core flux (in
+        <InlineMath tex="V_p(t)" />{' '}
+        is the instantaneous primary terminal voltage (in volts),{' '}
+        <InlineMath tex="N_p" />{' '}
+        is the number of turns on the primary winding (dimensionless), and{' '}
+        <InlineMath tex="d\Phi/dt" /> is the same shared core flux (in
         webers per second) that threads both windings.
       </p>
       <p className="mb-prose-3">
-        Divide the two equations and the <em className="text-text italic">dΦ/dt</em> cancels. What
+        Divide the two equations and the <InlineMath tex="d\Phi/dt" /> cancels. What
         survives is the most famous one-liner in electrical engineering:
       </p>
       <Formula>
@@ -160,23 +141,14 @@ export default function Ch18Transformers() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>p</sub>
-        </strong>{' '}
+        <InlineMath tex="V_p" />{' '}
         and{' '}
-        <strong className="text-text font-medium">
-          V<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="V_s" />{' '}
         are the primary and secondary terminal voltages (in volts, RMS or peak — the ratio holds
-        either way), and
-        <strong className="text-text font-medium">
-          {' '}
-          N<sub>p</sub>
-        </strong>{' '}
+        either way), and{' '}
+        <InlineMath tex="N_p" />{' '}
         and{' '}
-        <strong className="text-text font-medium">
-          N<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="N_s" />{' '}
         are the corresponding turn counts (dimensionless integers). The whole expression is a pure
         ratio with no units.
       </p>
@@ -218,12 +190,9 @@ export default function Ch18Transformers() {
       <h2 className="chapter-h2">The ideal transformer and the current ratio</h2>
 
       <p className="mb-prose-3">
-        Connect a resistive load <em className="text-text italic">R</em> to the secondary. The
-        secondary now carries a current
-        <em className="text-text italic">
-          {' '}
-          I<sub>s</sub> = V<sub>s</sub>/R
-        </em>
+        Connect a resistive load <InlineMath tex="R" /> to the secondary. The
+        secondary now carries a current{' '}
+        <InlineMath tex="I_s = V_s/R" />
         . That current also creates magnetic flux in the core — and by Lenz's law it opposes the
         primary's flux. To maintain the same core flux (which the primary's applied voltage
         demands), the primary must draw additional current to cancel the secondary's contribution.
@@ -248,29 +217,19 @@ export default function Ch18Transformers() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>p</sub>
-        </strong>
+        <InlineMath tex="V_p" />
         ,{' '}
-        <strong className="text-text font-medium">
-          V<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="V_s" />{' '}
         are the primary and secondary terminal voltages (in volts) and{' '}
-        <strong className="text-text font-medium">
-          I<sub>p</sub>
-        </strong>
+        <InlineMath tex="I_p" />
         ,{' '}
-        <strong className="text-text font-medium">
-          I<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="I_s" />{' '}
         are the corresponding winding currents (in amperes). Both sides have units of watts: real
         power into the primary equals real power delivered by the secondary in the ideal limit.
       </p>
       <p className="mb-prose-3">
         Combine that with{' '}
-        <em className="text-text italic">
-          V<sub>s</sub>/V<sub>p</sub> = N<sub>s</sub>/N<sub>p</sub>
-        </em>{' '}
+        <InlineMath tex="V_s/V_p = N_s/N_p" />{' '}
         and the current ratio falls out as the <em className="text-text italic">inverse</em> of the
         turns ratio:
       </p>
@@ -279,21 +238,13 @@ export default function Ch18Transformers() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          I<sub>p</sub>
-        </strong>{' '}
+        <InlineMath tex="I_p" />{' '}
         and{' '}
-        <strong className="text-text font-medium">
-          I<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="I_s" />{' '}
         are the primary and secondary winding currents (in amperes), and{' '}
-        <strong className="text-text font-medium">
-          N<sub>p</sub>
-        </strong>
+        <InlineMath tex="N_p" />
         ,{' '}
-        <strong className="text-text font-medium">
-          N<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="N_s" />{' '}
         are the turn counts (dimensionless). The current ratio is the reciprocal of the voltage
         ratio: whichever side has more turns carries less current.
       </p>
@@ -463,29 +414,25 @@ export default function Ch18Transformers() {
 
       <p className="mb-prose-3">
         The reason is brutal arithmetic. The power dissipated in a transmission line of resistance{' '}
-        <em className="text-text italic">R</em>
-        carrying current <em className="text-text italic">I</em> is{' '}
-        <em className="text-text italic">
-          P<sub>loss</sub> = I²R
-        </em>
-        . To deliver power <em className="text-text italic">P</em> at voltage
-        <em className="text-text italic"> V</em>, the line carries current{' '}
-        <em className="text-text italic">I = P/V</em>. So the loss is:
+        <InlineMath tex="R" />
+        carrying current <InlineMath tex="I" /> is{' '}
+        <InlineMath tex="P_{\text{loss}} = I^{2}R" />
+        . To deliver power <InlineMath tex="P" /> at voltage{' '}
+        <InlineMath tex="V" />, the line carries current{' '}
+        <InlineMath tex="I = P/V" />. So the loss is:
       </p>
       <Formula>
         P<sub>loss</sub> = (P / V)² · R = P² R / V²
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          P<sub>loss</sub>
-        </strong>{' '}
-        is the I²R power dissipated in the line (in watts),
-        <strong className="text-text font-medium"> P</strong> is the real power being delivered to
-        the far end (in watts),
-        <strong className="text-text font-medium"> V</strong> is the line voltage at which that
-        power is sent (in volts), and
-        <strong className="text-text font-medium"> R</strong> is the total resistance of the
+        <InlineMath tex="P_{\text{loss}}" />{' '}
+        is the I²R power dissipated in the line (in watts),{' '}
+        <InlineMath tex="P" /> is the real power being delivered to
+        the far end (in watts),{' '}
+        <InlineMath tex="V" /> is the line voltage at which that
+        power is sent (in volts), and{' '}
+        <InlineMath tex="R" /> is the total resistance of the
         transmission line (in ohms).
       </p>
       <p className="mb-prose-3">
@@ -581,19 +528,11 @@ export default function Ch18Transformers() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          Z<sub>p</sub>
-        </strong>{' '}
-        is the impedance seen looking into the primary terminals (in ohms),
-        <strong className="text-text font-medium">
-          {' '}
-          Z<sub>L</sub>
-        </strong>{' '}
-        is the actual load impedance connected to the secondary (in ohms), and
-        <strong className="text-text font-medium">
-          {' '}
-          N<sub>p</sub>/N<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="Z_p" />{' '}
+        is the impedance seen looking into the primary terminals (in ohms),{' '}
+        <InlineMath tex="Z_L" />{' '}
+        is the actual load impedance connected to the secondary (in ohms), and{' '}
+        <InlineMath tex="N_p/N_s" />{' '}
         is the primary-to-secondary turns ratio (dimensionless). Both impedances may be complex; the
         multiplication is on the complex value.
       </p>
@@ -652,12 +591,10 @@ export default function Ch18Transformers() {
       <p className="mb-prose-3">
         Everything so far has assumed two electrically separate windings sharing one core. Rewire
         the same iron: a single continuous winding with a <em className="text-text italic">tap</em>{' '}
-        brought out at a fraction <em className="text-text italic">k</em> of the way down. Feed the
+        brought out at a fraction <InlineMath tex="k" /> of the way down. Feed the
         full winding from the source; take the load off the portion between the tap and the bottom.
         The voltage ratio is still the turns ratio —{' '}
-        <em className="text-text italic">
-          V<sub>s</sub>/V<sub>p</sub> = k
-        </em>{' '}
+        <InlineMath tex="V_s/V_p = k" />{' '}
         — but now the bottom section of the winding is shared between the two circuits. That sharing
         is the
         <Term
@@ -675,11 +612,8 @@ export default function Ch18Transformers() {
           autotransformer
         </Term>
         's whole point: the shared portion carries only the{' '}
-        <em className="text-text italic">difference</em> current
-        <em className="text-text italic">
-          {' '}
-          I<sub>s</sub> − I<sub>p</sub> = (1 − k) I<sub>s</sub>
-        </em>
+        <em className="text-text italic">difference</em> current{' '}
+        <InlineMath tex="I_s - I_p = (1-k)\,I_s" />
         , so it can be wound from much lighter wire. The total copper required falls by a factor of
         (1 − k) relative to a two-winding design of the same rating
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
@@ -939,10 +873,10 @@ export default function Ch18Transformers() {
 
       <p className="mb-prose-3">
         The same one-line transformer equation —{' '}
-        <em className="text-text italic">V = 4.44 · f · N · B · A</em> — has a property that the
+        <InlineMath tex="V = 4.44 \cdot f \cdot N \cdot B \cdot A" /> — has a property that the
         designers of every power supply since the 1970s have exploited mercilessly. Hold the
         voltage, the turn count, and the peak flux density fixed and the required core cross-section{' '}
-        <em className="text-text italic">A</em> falls inversely with frequency. Run a 100 W
+        <InlineMath tex="A" /> falls inversely with frequency. Run a 100 W
         transformer at 60 Hz and it needs roughly 120 cm³ of silicon steel. Run the same 100 W
         transformer at 100 kHz and the equivalent ferrite core is about 1700 times smaller — a few
         cubic centimetres, weighing five grams instead of six hundred

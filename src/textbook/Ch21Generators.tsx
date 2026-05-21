@@ -76,16 +76,16 @@ export default function Ch21Generators() {
       </p>
       <Formula size="lg" id="faraday-law" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">ℰ</strong> is the EMF induced around the
+        where <InlineMath tex="\mathcal{E}" /> is the EMF induced around the
         closed loop (in volts),
-        <strong className="text-text font-medium"> Φ</strong> is the magnetic flux through the loop
-        (in webers, equivalently T·m²), and <strong className="text-text font-medium">t</strong> is
+        <InlineMath tex="\Phi" /> is the magnetic flux through the loop
+        (in webers, equivalently T·m²), and <InlineMath tex="t" /> is
         time (in seconds). The minus sign — Lenz's law — gives the direction: the induced current
         opposes the change in flux.
       </p>
       <p className="mb-prose-3">
-        For a coil of <em className="text-text italic">N</em> turns linking flux{' '}
-        <em className="text-text italic">Φ</em>, the EMF is <InlineMath tex="-N\, d\Phi/dt" />. The
+        For a coil of <InlineMath tex="N" /> turns linking flux{' '}
+        <InlineMath tex="\Phi" />, the EMF is <InlineMath tex="-N\, d\Phi/dt" />. The
         minus sign — Lenz's law — says the induced current flows in the direction that opposes the
         change in flux that created it. In a generator, that opposition is exactly what produces the
         mechanical resistance you have to push against to keep the rotor turning. Energy in, work
@@ -96,31 +96,31 @@ export default function Ch21Generators() {
       <h2 className="chapter-h2">The simple alternator</h2>
 
       <p className="mb-prose-3">
-        Take a single rectangular coil of <em className="text-text italic">N</em> turns and area{' '}
-        <em className="text-text italic">A</em>. Rotate it in a uniform magnetic field of magnitude{' '}
-        <em className="text-text italic">B</em> at angular speed{' '}
-        <em className="text-text italic">ω</em>. The flux through the coil at angle{' '}
+        Take a single rectangular coil of <InlineMath tex="N" /> turns and area{' '}
+        <InlineMath tex="A" />. Rotate it in a uniform magnetic field of magnitude{' '}
+        <InlineMath tex="B" /> at angular speed{' '}
+        <InlineMath tex="\omega" />. The flux through the coil at angle{' '}
         <InlineMath tex="\theta = \omega t" /> is
         <InlineMath tex="\Phi(t) = BA \cos(\omega t)" />. The induced EMF is the time derivative
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula tex="\varepsilon(t) = -N \cdot d\Phi/dt = N B A \omega \sin(\omega t)" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">ℰ(t)</strong> is the instantaneous EMF at
+        where <InlineMath tex="\mathcal{E}(t)" /> is the instantaneous EMF at
         the coil's terminals (in volts),
-        <strong className="text-text font-medium"> N</strong> is the number of turns in the coil
+        <InlineMath tex="N" /> is the number of turns in the coil
         (dimensionless integer),
-        <strong className="text-text font-medium"> B</strong> is the uniform magnetic field
-        magnitude (in tesla), <strong className="text-text font-medium">A</strong> is the area
-        enclosed by one turn (in m²), <strong className="text-text font-medium">ω = 2πf</strong> is
+        <InlineMath tex="B" /> is the uniform magnetic field
+        magnitude (in tesla), <InlineMath tex="A" /> is the area
+        enclosed by one turn (in m²), <InlineMath tex="\omega = 2\pi f" /> is
         the angular speed of rotation (in rad/s), and{' '}
-        <strong className="text-text font-medium">t</strong> is time (in seconds).
+        <InlineMath tex="t" /> is time (in seconds).
       </p>
       <p className="mb-prose-3">
         A clean sinusoid. Peak amplitude is <InlineMath tex="NBA\omega" />; frequency is{' '}
-        <InlineMath tex="\omega / 2\pi" />. Scale up <em className="text-text italic">N</em>,
-        <em className="text-text italic"> B</em>, <em className="text-text italic">A</em>, or{' '}
-        <em className="text-text italic">ω</em> and the output voltage goes up linearly with each.
+        <InlineMath tex="\omega / 2\pi" />. Scale up <InlineMath tex="N" />,
+        <InlineMath tex="B" />, <InlineMath tex="A" />, or{' '}
+        <InlineMath tex="\omega" /> and the output voltage goes up linearly with each.
         The simplest possible generator — sometimes called a single-phase{' '}
         <Term def="A generator whose output is alternating current; the rotor's field is taken out through slip rings (continuous rings, not the split commutator of a DC machine). The car-alternator usage is historical; modern automotive alternators are 3-phase machines.">
           alternator
@@ -134,7 +134,7 @@ export default function Ch21Generators() {
       <p className="mb-prose-3">
         Connect a resistive load across the coil's leads and current flows:{' '}
         <InlineMath tex="I = \varepsilon/R" />. Now the current-carrying coil sits in the same field{' '}
-        <strong className="text-text font-medium">B</strong>, so the wire experiences{' '}
+        <InlineMath tex="B" />, so the wire experiences{' '}
         <InlineMath id="force-on-wire" />: a force on each long side, opposing the rotation. The
         mechanical torque you must apply to keep the rotor spinning is exactly
         <InlineMath tex="P_{\text{elec}} / \omega" />, where <InlineMath tex="P_{\text{elec}}" /> is
@@ -205,10 +205,10 @@ export default function Ch21Generators() {
       </p>
       <Formula tex="f = (n \cdot p) / 120 \quad (n\ \text{in RPM},\ p = \text{pole count})" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">f</strong> is the electrical output
-        frequency (in Hz), <strong className="text-text font-medium">n</strong> is the rotor's
+        where <InlineMath tex="f" /> is the electrical output
+        frequency (in Hz), <InlineMath tex="n" /> is the rotor's
         mechanical rotation speed (in revolutions per minute), and{' '}
-        <strong className="text-text font-medium">p</strong> is the machine's total pole count (a
+        <InlineMath tex="p" /> is the machine's total pole count (a
         dimensionless even integer). This is the inverse of the synchronous-speed formula from the
         motors chapter.
       </p>
@@ -278,36 +278,29 @@ export default function Ch21Generators() {
       </p>
       <Formula tex="P = \dfrac{|V_{\text{grid}}| \cdot |E_f|}{X_s} \cdot \sin\delta" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">P</strong> is the real (active) power
+        where <InlineMath tex="P" /> is the real (active) power
         delivered to the grid (in watts, or in per-unit on the machine's MVA base),{' '}
-        <strong className="text-text font-medium">
-          |V<sub>grid</sub>|
-        </strong>{' '}
-        is the magnitude of the grid voltage phasor at the terminals (in volts, or per-unit),
-        <strong className="text-text font-medium">
-          {' '}
-          |E<sub>f</sub>|
-        </strong>{' '}
+        <InlineMath tex="|V_{\text{grid}}|" />{' '}
+        is the magnitude of the grid voltage phasor at the terminals (in volts, or per-unit),{' '}
+        <InlineMath tex="|E_f|" />{' '}
         is the magnitude of the internal EMF set by the rotor's field current (in volts, or
         per-unit),{' '}
-        <strong className="text-text font-medium">
-          X<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="X_s" />{' '}
         is the synchronous reactance (in ohms, or per-unit; typically 1–2 pu), and{' '}
-        <strong className="text-text font-medium">δ</strong> is the load angle — the steady-state
+        <InlineMath tex="\delta" /> is the load angle — the steady-state
         phase lead of the rotor flux ahead of the grid voltage phasor (in radians).
       </p>
       <p className="mb-prose-3">The reactive power at the terminal is</p>
       <Formula tex="Q = \dfrac{|V_{\text{grid}}| \cdot |E_f|}{X_s} \cdot \cos\delta - \dfrac{|V_{\text{grid}}|^2}{X_s}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">Q</strong> is the reactive power delivered
+        where <InlineMath tex="Q" /> is the reactive power delivered
         by the generator (in VAR, or per-unit; positive means the machine sources VARs to the grid),
         and the remaining symbols carry the same meanings as in the real-power equation above.
       </p>
       <p className="mb-prose-3">
         Increase mechanical input and the rotor pulls ahead of the grid —{' '}
-        <InlineMath tex="\delta" /> grows until <em className="text-text italic">P</em> matches.
-        Increase field current and <em className="text-text italic">Q</em> grows: an over-excited
+        <InlineMath tex="\delta" /> grows until <InlineMath tex="P" /> matches.
+        Increase field current and <InlineMath tex="Q" /> grows: an over-excited
         generator supplies reactive power to the grid (acts like a capacitor); under-excited, it
         absorbs reactive power (acts like an inductor). The "V curves" familiar to power engineers —
         armature current vs field current at constant real power — fall out of these two equations
@@ -340,19 +333,11 @@ export default function Ch21Generators() {
         question={
           <>
             A <strong className="text-text font-medium">600 MW</strong> synchronous generator has{' '}
-            <strong className="text-text font-medium">
-              X<sub>s</sub> = 1.5 pu
-            </strong>
-            ,{' '}
-            <strong className="text-text font-medium">
-              |V<sub>grid</sub>| = 1 pu
-            </strong>
-            ,{' '}
-            <strong className="text-text font-medium">
-              |E<sub>f</sub>| = 1.4 pu
-            </strong>
-            . What is the steady-state power angle <em className="text-text italic">δ</em> when it
-            delivers <strong className="text-text font-medium">500 MW</strong> at rated voltage?
+            <InlineMath tex="X_s = 1.5\ \text{pu}" />,{' '}
+            <InlineMath tex="|V_{\text{grid}}| = 1\ \text{pu}" />,{' '}
+            <InlineMath tex="|E_f| = 1.4\ \text{pu}" />. What is the steady-state power angle{' '}
+            <InlineMath tex="\delta" /> when it delivers{' '}
+            <strong className="text-text font-medium">500 MW</strong> at rated voltage?
           </>
         }
         hint={
@@ -600,11 +585,12 @@ export default function Ch21Generators() {
       <p className="mb-prose-3">
         How fast that initial frequency excursion proceeds depends entirely on how much rotational
         kinetic energy is actually spinning on the grid. The aggregate dynamics are captured by the{' '}
-        <em className="text-text italic">swing equation</em>: 2H · df/dt = ΔP/P<sub>base</sub>,
-        where <em className="text-text italic">H</em> is the system inertia constant (the kinetic
+        <em className="text-text italic">swing equation</em>:{' '}
+        <InlineMath tex="2H \cdot df/dt = \Delta P/P_{\text{base}}" />,
+        where <InlineMath tex="H" /> is the system inertia constant (the kinetic
         energy stored in all synchronous machines, divided by the system MVA base, with units of
         seconds). A grid dominated by large synchronous machines (coal, hydro, nuclear) has{' '}
-        <em className="text-text italic">H</em> in the 4–6 s range; a grid dominated by inverter-
+        <InlineMath tex="H" /> in the 4–6 s range; a grid dominated by inverter-
         based renewables can drop below 2 s, and the same disturbance produces a frequency excursion
         two or three times as steep
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
@@ -629,10 +615,10 @@ export default function Ch21Generators() {
         question={
           <>
             A grid with total rotational inertia{' '}
-            <strong className="text-text font-medium">H = 4 s</strong> instantly loses{' '}
+            <InlineMath tex="H = 4\ \text{s}" /> instantly loses{' '}
             <strong className="text-text font-medium">500 MW</strong> of generation out of a{' '}
             <strong className="text-text font-medium">10 GW</strong> total load. What is the initial
-            rate of frequency decline <em className="text-text italic">df/dt</em>?
+            rate of frequency decline <InlineMath tex="df/dt" />?
           </>
         }
         hint="Swing equation: 2H · (df/dt)/f_nom = −ΔP/P_base. Solve for df/dt at f_nom = 60 Hz."
@@ -652,8 +638,8 @@ export default function Ch21Generators() {
             <p className="mb-prose-1 last:mb-0">
               That's a steep but recoverable RoCoF for a typical Western Interconnection — governors
               begin responding within a second and arrest the fall well before any under-frequency
-              load-shedding scheme kicks in. Halve
-              <em className="text-text italic"> H</em> to 2 s (an inverter-heavy grid) and the same
+              load-shedding scheme kicks in. Halve{' '}
+              <InlineMath tex="H" /> to 2 s (an inverter-heavy grid) and the same
               outage produces −0.75 Hz/s — at the edge of what conventional protection relays can
               ride through
               <Cite id="kundur-1994-power-stability" in={SOURCES} />.

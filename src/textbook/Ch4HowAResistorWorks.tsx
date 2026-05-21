@@ -531,7 +531,7 @@ export default function Ch4HowAResistorWorks() {
         question={
           <>
             Use the Wiedemann–Franz law to predict the ratio{' '}
-            <strong className="text-text font-medium">κ/σ</strong> for copper at room temperature (T
+            <InlineMath tex="\kappa/\sigma" /> for copper at room temperature (T
             = 300 K). Take L₀ = 2.44×10⁻⁸ W·Ω·K⁻².
           </>
         }
@@ -558,7 +558,7 @@ export default function Ch4HowAResistorWorks() {
         The physics is one sentence. In a metal, the same gas of free electrons carries both the
         electrical current (drifting in an applied E field) and the heat current (diffusing down a
         temperature gradient). Both transport coefficients are proportional to{' '}
-        <strong className="text-text font-medium">n·τ/m</strong>, where n is the electron density, τ
+        <InlineMath tex="n\tau/m" />, where n is the electron density, τ
         is the mean time between scattering events, and m is the electron mass. The ratio cancels
         the electron-system properties and leaves only fundamental constants times T
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />. The same charge carriers, doing two jobs in
@@ -646,7 +646,7 @@ export default function Ch4HowAResistorWorks() {
             circuit? You put a small precision resistor in series — say{' '}
             <strong className="text-text font-medium">1 mΩ</strong> — and measure the voltage across
             it. At 100 A the drop is 100 mV, easily read with a precision differential amplifier and
-            an ADC. <strong className="text-text font-medium">P = I² R = 10 W</strong>
+            an ADC. <InlineMath tex="P = I^{2}R = 10\,\text{W}" />
             is the heat the shunt has to dump, which is why such parts are built as thick metal
             strips in surface-mount packages with large copper tabs for heatsinking
             <Cite id="vishay-csm-shunt" in={SOURCES} />.
@@ -823,10 +823,7 @@ export default function Ch4HowAResistorWorks() {
             that scale with the current flowing through it. A sputtered metal film is a single
             continuous polycrystalline layer with no such granular contacts, and its noise is
             essentially just Johnson–Nyquist (thermal) noise at the
-            <strong className="text-text font-medium">
-              {' '}
-              √(4 k<sub>B</sub> T R Δf){' '}
-            </strong>{' '}
+            <InlineMath tex="\sqrt{4k_B T R\,\Delta f}" />{' '}
             floor
             <Cite id="horowitz-hill-2015" in={SOURCES} />. For audio and instrumentation circuits
             the difference matters; for a current-limiting resistor in an LED indicator it does not.
@@ -890,10 +887,7 @@ export default function Ch4HowAResistorWorks() {
             resistor sets a voltage ratio. In an LED current-limit, the same kind of fixed resistor
             sits in series with the LED to drop the difference between the supply voltage and the
             LED's forward voltage, while limiting current via Ohm's law:
-            <strong className="text-text font-medium">
-              {' '}
-              R = (V<sub>supply</sub> − V<sub>LED</sub>) / I<sub>LED</sub>
-            </strong>
+            <InlineMath tex="R = (V_{\text{supply}} - V_{\text{LED}}) / I_{\text{LED}}" />
             . For a 5 V supply, a red LED at ~2.0 V forward, and a target 20 mA, R = 150 Ω; the
             resistor dissipates I²R = 60 mW, comfortable for a 1/4 W part
             <Cite id="horowitz-hill-2015" in={SOURCES} />. Nothing about the resistor itself knows
@@ -987,11 +981,7 @@ export default function Ch4HowAResistorWorks() {
             A pot is two resistors in series whose junction is the wiper. Apply V_in across the two
             end terminals (A and B): current I = V_in / R_total flows through the whole track. The
             voltage from the wiper W to terminal B is
-            <strong className="text-text font-medium">
-              {' '}
-              V<sub>WB</sub> = I · R<sub>WB</sub> = V<sub>in</sub> · (R<sub>WB</sub> / R
-              <sub>total</sub>)
-            </strong>
+            <InlineMath tex="V_{WB} = I \cdot R_{WB} = V_{\text{in}} \cdot (R_{WB}/R_{\text{total}})" />
             . As the wiper slides from B toward A, that ratio sweeps from 0 to 1. So a 10 kΩ pot
             wired as a voltage divider produces any output voltage between 0 and V_in continuously,
             with the same loading characteristics as a 10 kΩ source impedance
@@ -1050,22 +1040,14 @@ export default function Ch4HowAResistorWorks() {
           <p>
             Because in a metal, both currents — charge and heat — are carried by the same gas of
             free conduction electrons. Electrical conductivity σ scales as{' '}
-            <strong className="text-text font-medium">n·e²·τ/m</strong> (Drude); thermal
-            conductivity κ scales as
-            <strong className="text-text font-medium">
-              {' '}
-              n·k<sub>B</sub>²·T·τ/m
-            </strong>{' '}
-            (up to a factor of π²/3 in the Sommerfeld theory). The ratio
-            <strong className="text-text font-medium"> κ/σ</strong> cancels n and τ, leaving{' '}
-            <strong className="text-text font-medium">
-              L<sub>0</sub>·T
-            </strong>{' '}
-            with
-            <strong className="text-text font-medium">
-              {' '}
-              L<sub>0</sub> = (π²/3)(k<sub>B</sub>/e)² ≈ 2.44×10⁻⁸ W·Ω·K⁻²
-            </strong>{' '}
+            <InlineMath tex="ne^{2}\tau/m" /> (Drude); thermal
+            conductivity κ scales as{' '}
+            <InlineMath tex="nk_{B}^{2}T\tau/m" />{' '}
+            (up to a factor of π²/3 in the Sommerfeld theory). The ratio{' '}
+            <InlineMath tex="\kappa/\sigma" /> cancels n and τ, leaving{' '}
+            <InlineMath tex="L_{0} \cdot T" />{' '}
+            with{' '}
+            <InlineMath tex="L_{0} = (\pi^{2}/3)(k_{B}/e)^{2} \approx 2.44\times 10^{-8}\,\text{W}{\cdot}\Omega{\cdot}\text{K}^{-2}" />{' '}
             — the Wiedemann–Franz law
             <Cite id="wiedemann-franz-1853" in={SOURCES} />
             <Cite id="ashcroft-mermin-1976" in={SOURCES} />. So choosing the best electrical

@@ -40,14 +40,9 @@ export default function Ch13Materials() {
     <ChapterShell chapter={chapter}>
       <p className="chapter-intro">
         Every demo in this textbook has had a quiet little slider labeled{' '}
-        <strong className="text-text font-medium">
-          ε<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="\varepsilon_r" />{' '}
         or
-        <strong className="text-text font-medium">
-          {' '}
-          μ<sub>r</sub>
-        </strong>
+        <InlineMath tex="\mu_r" />
         . Drag one and the field inside the dielectric drops; drag the other and the inductance of a
         coil skyrockets. We have been borrowing those numbers for ten chapters without ever saying
         where they come from. This chapter opens the box.
@@ -68,7 +63,7 @@ export default function Ch13Materials() {
 
       <p className="mb-prose-3">
         In vacuum, Maxwell's equations are written in terms of two universal constants:
-        <strong className="text-text font-medium"> ε₀</strong> (the{' '}
+        <InlineMath tex="\varepsilon_0" /> (the{' '}
         <Term
           def={
             <>
@@ -89,7 +84,7 @@ export default function Ch13Materials() {
         >
           permittivity
         </Term>{' '}
-        of free space) and <strong className="text-text font-medium">μ₀</strong> (the{' '}
+        of free space) and <InlineMath tex="\mu_0" /> (the{' '}
         <Term
           def={
             <>
@@ -114,13 +109,9 @@ export default function Ch13Materials() {
         ). Together they fix the speed of light: <InlineMath>c = 1/√(ε₀ μ₀)</InlineMath>
         <Cite id="codata-2018" in={SOURCES} />. Once you put matter into the picture, every formula
         that contained ε₀ keeps working if you just replace ε₀ with{' '}
-        <strong className="text-text font-medium">
-          ε = ε₀ ε<sub>r</sub>
-        </strong>
+        <InlineMath tex="\varepsilon = \varepsilon_0 \varepsilon_r" />
         , and every formula that contained μ₀ keeps working if you replace μ₀ with{' '}
-        <strong className="text-text font-medium">
-          μ = μ₀ μ<sub>r</sub>
-        </strong>
+        <InlineMath tex="\mu = \mu_0 \mu_r" />
         .
       </p>
       <p className="mb-prose-3">
@@ -173,7 +164,7 @@ export default function Ch13Materials() {
           </Term>
         </strong>
         , written
-        <strong className="text-text font-medium"> P</strong>. Per unit volume, it's the number
+        <InlineMath tex="P" />. Per unit volume, it's the number
         density of dipoles times the average dipole moment per molecule. Inside the body of the
         material, neighboring dipoles cancel each other's bound charges — each "+" end of one
         molecule sits next to the "−" end of the next. What survives is a thin layer of{' '}
@@ -183,7 +174,7 @@ export default function Ch13Materials() {
 
       <p className="mb-prose-3">
         Those bound surface charges are negative on the side facing the applied{' '}
-        <strong className="text-text font-medium">E</strong> and positive on the far side —
+        <InlineMath tex="E" /> and positive on the far side —
         precisely the orientation needed to set up an internal field that
         <em className="text-text italic"> opposes</em> the applied one. The net field inside the
         material is the applied field minus the polarization's contribution:
@@ -193,36 +184,24 @@ export default function Ch13Materials() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          E<sub>inside</sub>
-        </strong>{' '}
+        <InlineMath tex="E_{\text{inside}}" />{' '}
         is the macroscopic electric field within the dielectric (in V/m),{' '}
-        <strong className="text-text font-medium">
-          E<sub>applied</sub>
-        </strong>{' '}
+        <InlineMath tex="E_{\text{applied}}" />{' '}
         is the external field that would be present without the material (in V/m),{' '}
-        <strong className="text-text font-medium">P</strong> is the polarization — the volume
+        <InlineMath tex="P" /> is the polarization — the volume
         density of dipole moment (in C/m²),{' '}
-        <strong className="text-text font-medium">ε₀ ≈ 8.854×10⁻¹² F/m</strong> is the permittivity
+        <InlineMath tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" /> is the permittivity
         of free space, and{' '}
-        <strong className="text-text font-medium">
-          ε<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="\varepsilon_r" />{' '}
         is the dimensionless relative permittivity of the material.
       </p>
       <p className="mb-prose-3">
         with{' '}
-        <strong className="text-text font-medium">
-          ε<sub>r</sub> = 1 + χ<sub>e</sub>
-        </strong>
+        <InlineMath tex="\varepsilon_r = 1 + \chi_e" />
         , where{' '}
-        <strong className="text-text font-medium">
-          χ<sub>e</sub>
-        </strong>{' '}
+        <InlineMath tex="\chi_e" />{' '}
         is the dimensionless electric susceptibility (linking{' '}
-        <em className="text-text italic">
-          P = ε₀ χ<sub>e</sub> E
-        </em>
+        <InlineMath tex="P = \varepsilon_0 \chi_e E" />
         ). The electric{' '}
         <Term
           def={
@@ -265,12 +244,10 @@ export default function Ch13Materials() {
 
       <p className="mb-prose-3">
         Drag the block to rotate it. At{' '}
-        <strong className="text-text font-medium">
-          E<sub>ext</sub> = 0
-        </strong>{' '}
+        <InlineMath tex="E_{\text{ext}} = 0" />{' '}
         the dipoles tumble isotropically — the mean of <em className="text-text italic">cos θ</em>{' '}
         over the population is zero, and so is the bulk{' '}
-        <strong className="text-text font-medium">P</strong>. Crank up the field and the
+        <InlineMath tex="P" />. Crank up the field and the
         deterministic torque begins to outrun the thermal kick; the equilibrium alignment is the
         Langevin function <em className="text-text italic">L(pE/kT) = coth(pE/kT) − kT/pE</em>,
         linear at small drive and saturating to 1 at large drive
@@ -297,26 +274,21 @@ export default function Ch13Materials() {
         Two things happen at once. The bound charge that appears on the dielectric's faces partially
         cancels the free charge on the plates — so the field inside the gap drops by exactly ε
         <sub>r</sub>. And because the voltage across the capacitor is the integral of{' '}
-        <strong className="text-text font-medium">E</strong> across the gap, the voltage drops too —
+        <InlineMath tex="E" /> across the gap, the voltage drops too —
         meaning the same plate charge now corresponds to a{' '}
         <em className="text-text italic">lower</em> voltage. Same definition{' '}
-        <strong className="text-text font-medium">C = Q/V</strong>, smaller V, so C goes up by the
+        <InlineMath tex="C = Q/V" />, smaller V, so C goes up by the
         factor ε<sub>r</sub>:
       </p>
       <Formula>
         C = ε<sub>r</sub> · C<sub>vacuum</sub>
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">C</strong> is the capacitance with the
-        dielectric in place (in farads),
-        <strong className="text-text font-medium">
-          {' '}
-          C<sub>vacuum</sub>
-        </strong>{' '}
+        where <InlineMath tex="C" /> is the capacitance with the
+        dielectric in place (in farads),{' '}
+        <InlineMath tex="C_{\text{vacuum}}" />{' '}
         is the capacitance of the same geometry with a vacuum gap (in farads), and{' '}
-        <strong className="text-text font-medium">
-          ε<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="\varepsilon_r" />{' '}
         is the dimensionless relative permittivity of the dielectric filling the gap.
       </p>
 
@@ -453,10 +425,10 @@ export default function Ch13Materials() {
         That boundary condition has a beautiful consequence for the field of a point charge sitting
         above a grounded metal plane. The induced surface charge on the plane redistributes itself
         in exactly the pattern that, above the plane, the total field looks identical to two point
-        charges in vacuum: the real <strong className="text-text font-medium">+q</strong> at height{' '}
-        <em className="text-text italic">d</em>, plus a fictitious mirror{' '}
-        <strong className="text-text font-medium">−q</strong> at depth{' '}
-        <em className="text-text italic">d</em> below the plane. The mirror is not a real charge —
+        charges in vacuum: the real <InlineMath tex="+q" /> at height{' '}
+        <InlineMath tex="d" />, plus a fictitious mirror{' '}
+        <InlineMath tex="-q" /> at depth{' '}
+        <InlineMath tex="d" /> below the plane. The mirror is not a real charge —
         it is a mathematical stand-in for the induced surface charge — but the field it produces
         above the plane is the right one, because both configurations satisfy the same boundary
         condition (potential = 0 on the plane) and the same source equation (∇·E = ρ/ε₀ from the
@@ -469,7 +441,7 @@ export default function Ch13Materials() {
 
       <p className="mb-prose-3">
         Drag the scene to orbit. Every field line leaving{' '}
-        <strong className="text-text font-medium">+q</strong> terminates somewhere on the plane,
+        <InlineMath tex="+q" /> terminates somewhere on the plane,
         hitting it perpendicularly — and the induced surface-charge density σ peaks directly beneath
         the charge and falls off as <InlineMath>σ(r) = −qd/(2π(r²+d²)^(3/2))</InlineMath>. Integrate
         σ over the whole plane and you recover exactly −q: every field line that started on the real
@@ -507,10 +479,10 @@ export default function Ch13Materials() {
           </Term>
           .
         </strong>{' '}
-        Apply <strong className="text-text font-medium">B</strong> to any material — water, glass,
+        Apply <InlineMath tex="B" /> to any material — water, glass,
         copper, your own body. The change in flux through every electron orbit induces a tiny
         circulating current, and by Lenz's law that current opposes the applied{' '}
-        <strong className="text-text font-medium">B</strong>. The result is a feeble negative
+        <InlineMath tex="B" />. The result is a feeble negative
         magnetization. Every material has this; it's a property of the electrons' orbital response,
         not of any permanent moment <Cite id="griffiths-2017" in={SOURCES} />. χ<sub>m</sub> is on
         the order of −10⁻⁵ — small enough that you only notice it in clean laboratory measurements.
@@ -538,8 +510,8 @@ export default function Ch13Materials() {
           .
         </strong>{' '}
         Atoms or molecules with an unpaired electron carry a permanent magnetic moment. In zero
-        field they tumble randomly; in an applied field they weakly align with
-        <strong className="text-text font-medium"> B</strong>, fighting thermal noise. Langevin
+        field they tumble randomly; in an applied field they weakly align with{' '}
+        <InlineMath tex="B" />, fighting thermal noise. Langevin
         worked out the equilibrium theory in 1905 — the magnetization follows the same Langevin
         function as for electric dipoles
         <Cite id="langevin-1905" in={SOURCES} />, and in the weak-field, room-temperature limit it
@@ -576,7 +548,7 @@ export default function Ch13Materials() {
         entire macroscopic regions ("domains") align spontaneously, even with no applied field{' '}
         <Cite id="weiss-1907" in={SOURCES} />
         <Cite id="kittel-2005" in={SOURCES} />. Apply a weak external{' '}
-        <strong className="text-text font-medium">B</strong> and the favorably-aligned domains grow
+        <InlineMath tex="B" /> and the favorably-aligned domains grow
         at the expense of others. χ<sub>m</sub> can reach 5000 in soft iron and 10⁶ in mu-metal.
         This is the regime where you can feel the force with your fingers.
       </p>

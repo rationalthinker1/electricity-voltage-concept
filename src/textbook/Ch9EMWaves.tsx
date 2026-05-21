@@ -128,7 +128,7 @@ export default function Ch9EMWaves() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              Use <em className="text-text italic">λ = c/f</em>
+              Use <InlineMath tex="\lambda = c/f" />
               <Cite id="codata-2018" in={SOURCES} />:
             </p>
             <Formula tex="\\lambda = (2.998\\times 10^{8}\\ \\text{m/s}) / (2.4\\times 10^{9}\\ \\text{Hz}) \\approx 0.125\\ \\text{m}" />
@@ -224,7 +224,7 @@ export default function Ch9EMWaves() {
             <>
               <strong className="text-text font-medium">refractive index</strong> — the
               dimensionless factor by which a medium slows light,{' '}
-              <em className="text-text italic">n = c/v = √(εᵣμᵣ)</em>. Air ≈ 1.0003, water ≈ 1.33,
+              <InlineMath tex="n = c/v = \sqrt{\varepsilon_r \mu_r}" />. Air ≈ 1.0003, water ≈ 1.33,
               glass ≈ 1.5, diamond ≈ 2.4.
             </>
           }
@@ -253,8 +253,8 @@ export default function Ch9EMWaves() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              From <em className="text-text italic">v = c/n</em> with{' '}
-              <em className="text-text italic">c</em> = 2.998×10⁸ m/s
+              From <InlineMath tex="v = c/n" /> with{' '}
+              <InlineMath tex="c" /> = 2.998×10⁸ m/s
               <Cite id="codata-2018" in={SOURCES} />:
             </p>
             <Formula tex="v = (2.998\\times 10^{8}) / 1.5 = 1.999\\times 10^{8}\\ \\text{m/s}" />
@@ -275,7 +275,7 @@ export default function Ch9EMWaves() {
       <p className="mb-prose-3">
         The plane-wave solution to ∇²E = (1/c²) ∂²E/∂t² is the simplest possible thing: a sinusoidal
         disturbance travelling in one direction. Write it in coordinates, with the wave moving in{' '}
-        <strong className="text-text font-medium">+x</strong>:
+        <InlineMath tex="+x" />:
       </p>
       <Formula tex="\\vec{E}(x, t) = E_0 \\sin(k x - \\omega t)\\,\\hat{y}" />
       <p className="mb-prose-3">
@@ -389,7 +389,7 @@ export default function Ch9EMWaves() {
           def={
             <>
               <strong className="text-text font-medium">polarization</strong> — the direction of
-              oscillation of the <em className="text-text italic">E</em>-field in a transverse wave.
+              oscillation of the <InlineMath tex="E" />-field in a transverse wave.
               Linear: E oscillates along a fixed line. Circular: E rotates at the wave frequency.
               Elliptical: anything in between.
             </>
@@ -441,7 +441,7 @@ export default function Ch9EMWaves() {
               <strong className="text-text font-medium">oscillating dipole</strong> — two opposite
               charges whose separation varies sinusoidally in time, or equivalently a sinusoidal
               current on a short antenna. The canonical radiating source; its far-field intensity
-              goes as <em className="text-text italic">sin²θ / r²</em>.
+              goes as <InlineMath tex="\sin^{2}\theta / r^{2}" />.
             </>
           }
         >
@@ -492,18 +492,18 @@ export default function Ch9EMWaves() {
         time.
       </p>
       <p className="mb-prose-3">
-        At low <em className="text-text italic">f</em> the wire has effectively the same voltage at
+        At low <InlineMath tex="f" /> the wire has effectively the same voltage at
         every point — a single circuit node, no far field. Climb past{' '}
         <InlineMath>f = c/(2L)</InlineMath> and a standing-wave current pattern sets up along the
         wire; the canonical centre-fed pattern factor
       </p>
       <Formula>F(θ) = ( cos(kL cosθ / 2) − cos(kL/2) ) / sinθ</Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">F(θ)</strong> is the normalized radiation
+        where <InlineMath tex="F(\theta)" /> is the normalized radiation
         pattern (dimensionless),
-        <strong className="text-text font-medium"> k</strong> is the wavenumber (in rad/m),{' '}
-        <strong className="text-text font-medium">L</strong> is the total wire length (in m), and{' '}
-        <strong className="text-text font-medium">θ</strong> is the polar angle measured from the
+        <InlineMath tex="k" /> is the wavenumber (in rad/m),{' '}
+        <InlineMath tex="L" /> is the total wire length (in m), and{' '}
+        <InlineMath tex="\theta" /> is the polar angle measured from the
         wire axis (in rad). The expression develops a single fat toroidal lobe broadside to the
         conductor (the half-wave dipole). Push higher and the lobe splits — at{' '}
         <InlineMath>L = λ</InlineMath> the current reverses sign on the two halves of the wire and
@@ -520,39 +520,39 @@ export default function Ch9EMWaves() {
 
       <p className="mb-prose-3">
         The Poynting expression from Ch.8 still applies, with{' '}
-        <strong className="text-text font-medium">E</strong> and{' '}
-        <strong className="text-text font-medium">B</strong> now the oscillating wave fields. For a
+        <InlineMath tex="E" /> and{' '}
+        <InlineMath tex="B" /> now the oscillating wave fields. For a
         plane wave with <InlineMath>|B| = |E|/c</InlineMath>:
       </p>
       <Formula>|S| = (1/μ₀) |E × B| = (1/μ₀) E² / c = ε₀ c E²</Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">|S|</strong> is the magnitude of the Poynting
+        where <InlineMath tex="|S|" /> is the magnitude of the Poynting
         vector (in W/m²),
-        <strong className="text-text font-medium"> μ₀ = 4π×10⁻⁷ T·m/A</strong> is the vacuum
+        <InlineMath tex="\mu_0 = 4\pi\times 10^{-7}\,\text{T·m/A}" /> is the vacuum
         permeability,
-        <strong className="text-text font-medium"> E</strong> is the electric-field amplitude (in
+        <InlineMath tex="E" /> is the electric-field amplitude (in
         V/m),
-        <strong className="text-text font-medium"> B</strong> is the magnetic-field amplitude (in
+        <InlineMath tex="B" /> is the magnetic-field amplitude (in
         T),
-        <strong className="text-text font-medium"> ε₀ = 8.854×10⁻¹² F/m</strong> is the vacuum
+        <InlineMath tex="\varepsilon_0 = 8.854\times 10^{-12}\,\text{F/m}" /> is the vacuum
         permittivity, and
-        <strong className="text-text font-medium"> c ≈ 2.998×10⁸ m/s</strong> is the speed of light
+        <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light
         in vacuum. (Using <InlineMath>1/(μ₀ c) = ε₀ c</InlineMath>, which follows from{' '}
         <InlineMath>c² = 1/(μ₀ ε₀)</InlineMath>.) The instantaneous flux oscillates at twice the
         wave frequency; the time-averaged intensity is
       </p>
       <Formula>⟨I⟩ = ½ ε₀ c E₀²</Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">⟨I⟩</strong> is the time-averaged intensity
+        where <InlineMath tex="\langle I\rangle" /> is the time-averaged intensity
         (in W/m²),
-        <strong className="text-text font-medium"> ε₀ = 8.854×10⁻¹² F/m</strong> is the vacuum
+        <InlineMath tex="\varepsilon_0 = 8.854\times 10^{-12}\,\text{F/m}" /> is the vacuum
         permittivity,
-        <strong className="text-text font-medium"> c ≈ 2.998×10⁸ m/s</strong> is the speed of light
+        <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light
         in vacuum, and
-        <strong className="text-text font-medium"> E₀</strong> is the wave's peak electric-field
+        <InlineMath tex="E_0" /> is the wave's peak electric-field
         amplitude (in V/m)
         <Cite id="griffiths-2017" in={SOURCES} />. Sunlight at Earth's distance delivers{' '}
-        <strong className="text-text font-medium">⟨I⟩ ≈ 1361 W/m²</strong>
+        <InlineMath tex="\langle I\rangle \approx 1361\,\text{W/m}^{2}" />
         <Cite id="kopp-lean-2011" in={SOURCES} /> — the solar constant, the quantity every
         solar-panel calculation starts from.
       </p>
@@ -567,8 +567,8 @@ export default function Ch9EMWaves() {
             <>
               <strong className="text-text font-medium">radiation pressure</strong> — the force per
               unit area exerted by an EM wave on an absorbing or reflecting surface.{' '}
-              <em className="text-text italic">P = I/c</em> for full absorption,{' '}
-              <em className="text-text italic">P = 2I/c</em> for full reflection. SI units Pa
+              <InlineMath tex="P = I/c" /> for full absorption,{' '}
+              <InlineMath tex="P = 2I/c" /> for full reflection. SI units Pa
               (N/m²).
             </>
           }
@@ -579,11 +579,11 @@ export default function Ch9EMWaves() {
       </p>
       <Formula>P = I / c (absorbing surface)</Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">P</strong> is the radiation pressure on the
+        where <InlineMath tex="P" /> is the radiation pressure on the
         surface (in pascals, N/m²),
-        <strong className="text-text font-medium"> I</strong> is the time-averaged intensity of the
+        <InlineMath tex="I" /> is the time-averaged intensity of the
         incident wave (in W/m²), and
-        <strong className="text-text font-medium"> c ≈ 2.998×10⁸ m/s</strong> is the speed of light
+        <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light
         <Cite id="codata-2018" in={SOURCES} />. For a perfectly reflecting surface the momentum
         reverses, doubling the kick: P = 2I/c. Solar sunlight on a black absorber: 1361 / 3×10⁸ ≈{' '}
         <strong className="text-text font-medium">4.5×10⁻⁶ Pa</strong>. About four-and-a-half
@@ -633,8 +633,8 @@ export default function Ch9EMWaves() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              Convert the distance: <em className="text-text italic">d</em> = 3.84×10⁸ m. Then with{' '}
-              <em className="text-text italic">c</em> = 2.998×10⁸ m/s
+              Convert the distance: <InlineMath tex="d" /> = 3.84×10⁸ m. Then with{' '}
+              <InlineMath tex="c" /> = 2.998×10⁸ m/s
               <Cite id="codata-2018" in={SOURCES} />:
             </p>
             <Formula>Δt = (3.84×10⁸) / (2.998×10⁸) ≈ 1.28 s</Formula>
@@ -722,7 +722,7 @@ export default function Ch9EMWaves() {
             . Liquid water has rotational transitions in the far infrared, several orders of
             magnitude above 2.45 GHz. The oven heats by
             <em className="text-text italic"> dielectric loss</em>: the oscillating{' '}
-            <strong className="text-text font-medium">E</strong>-field drags the permanent dipole
+            <InlineMath tex="E" />-field drags the permanent dipole
             moments of H₂O molecules back and forth against viscous friction with their neighbours.
             The complex permittivity
             <InlineMath> εᵣ = ε' − i ε''</InlineMath> has a broad{' '}
@@ -813,7 +813,7 @@ export default function Ch9EMWaves() {
           <p className="mb-prose-2 last:mb-0">
             <strong className="text-text font-medium">IKAROS</strong> — Interplanetary Kite-craft
             Accelerated by Radiation Of the Sun — was JAXA's June 2010 demonstration that Maxwell's{' '}
-            <strong className="text-text font-medium">P = I/c</strong> works in deep space
+            <InlineMath tex="P = I/c" /> works in deep space
             <Cite id="tsuda-2013-ikaros" in={SOURCES} />. After separation from the Akatsuki Venus
             orbiter, IKAROS unfurled a 20-metre-square polyimide sail by centrifugal-spin deployment
             and used the resulting radiation pressure as its only thrust during the Venus-flyby
@@ -877,9 +877,9 @@ export default function Ch9EMWaves() {
               def={
                 <>
                   <strong className="text-text font-medium">photon</strong> — the quantum of the
-                  electromagnetic field. A wave of frequency <em className="text-text italic">f</em>{' '}
+                  electromagnetic field. A wave of frequency <InlineMath tex="f" />{' '}
                   exchanges energy with matter in discrete packets of{' '}
-                  <em className="text-text italic">E = h f = ℏω</em>. The classical wave description
+                  <InlineMath tex="E = hf = \hbar\omega" />. The classical wave description
                   and the photon description are different scales of the same field.
                 </>
               }
@@ -927,8 +927,8 @@ export default function Ch9EMWaves() {
           <p>
             It means they are solutions of the same equation — Maxwell's wave equation — with
             different wavelengths. The structure is identical: a transverse oscillation of{' '}
-            <strong className="text-text font-medium">E</strong> and{' '}
-            <strong className="text-text font-medium">B</strong> in phase, propagating at c, with
+            <InlineMath tex="E" /> and{' '}
+            <InlineMath tex="B" /> in phase, propagating at c, with
             |B| = |E|/c. The differences are entirely about λ and how matter responds at that λ
             (eyes can be built to detect 500 nm but not 30 cm; aluminium reflects 30 cm but mostly
             transmits 10 nm X-rays). The wave itself is one physical object
@@ -956,12 +956,12 @@ export default function Ch9EMWaves() {
             Maxwell's equations forbid it in vacuum. Take the divergence of E for a vacuum plane
             wave: Gauss's law says <InlineMath>∇·E = 0</InlineMath>, and for a wave of the form
             <InlineMath> E₀ sin(k·x − ω t)</InlineMath> this forces{' '}
-            <strong className="text-text font-medium">E</strong> to be perpendicular to
-            <strong className="text-text font-medium"> k</strong>. The same argument forces{' '}
-            <strong className="text-text font-medium">B</strong> perpendicular to{' '}
-            <strong className="text-text font-medium">k</strong>. A longitudinal mode would have{' '}
-            <strong className="text-text font-medium">E</strong> parallel to{' '}
-            <strong className="text-text font-medium">k</strong>, which Gauss's law won't allow
+            <InlineMath tex="E" /> to be perpendicular to
+            <InlineMath tex="k" />. The same argument forces{' '}
+            <InlineMath tex="B" /> perpendicular to{' '}
+            <InlineMath tex="k" />. A longitudinal mode would have{' '}
+            <InlineMath tex="E" /> parallel to{' '}
+            <InlineMath tex="k" />, which Gauss's law won't allow
             unless there's charge density driving it — and in vacuum there isn't. Sound is different
             because it's a compression wave in a real medium with bulk modulus; longitudinal modes
             carry the pressure variation. EM has no medium and no bulk modulus, so transverse is the
@@ -977,10 +977,10 @@ export default function Ch9EMWaves() {
             ½ε₀E² and B²/(2μ₀) terms come out equal). In a real sense the wave is one object — the
             electromagnetic field — with two faces. The distinction between "the E part" and "the B
             part" only matters when you ask how the wave interacts with matter: charges respond
-            directly to <strong className="text-text font-medium">E</strong>, currents respond to{' '}
-            <strong className="text-text font-medium">B</strong>. Chapter 11 makes the unification
-            explicit: <strong className="text-text font-medium">E</strong> and{' '}
-            <strong className="text-text font-medium">B</strong> are different components of a
+            directly to <InlineMath tex="E" />, currents respond to{' '}
+            <InlineMath tex="B" />. Chapter 11 makes the unification
+            explicit: <InlineMath tex="E" /> and{' '}
+            <InlineMath tex="B" /> are different components of a
             single rank-2 tensor that mixes them under a Lorentz boost
             <Cite id="jackson-1999" in={SOURCES} />.
           </p>
@@ -995,8 +995,8 @@ export default function Ch9EMWaves() {
             once you put the numbers in: both contribute equally to the wave's total energy. And the
             wave only satisfies Maxwell's equations if both are present. Try to set up an EM wave
             with only an oscillating
-            <strong className="text-text font-medium"> E</strong> and no{' '}
-            <strong className="text-text font-medium">B</strong>, and the equations will refuse —
+            <InlineMath tex="E" /> and no{' '}
+            <InlineMath tex="B" />, and the equations will refuse —
             Ampère's law immediately generates the missing B
             <Cite id="griffiths-2017" in={SOURCES} />.
           </p>
@@ -1039,8 +1039,8 @@ export default function Ch9EMWaves() {
             Morley looked for the Earth's motion through this medium by comparing the travel time of
             light along perpendicular paths, and found no difference at any orientation or time of
             year. Einstein's 1905 paper resolved the situation by dropping the aether entirely:{' '}
-            <strong className="text-text font-medium">E</strong> and
-            <strong className="text-text font-medium"> B</strong> are fields in their own right, and
+            <InlineMath tex="E" /> and
+            <InlineMath tex="B" /> are fields in their own right, and
             their wave equation holds in vacuum exactly because their propagation speed is a
             fundamental constant, not a property of any underlying material
             <Cite id="einstein-1905" in={SOURCES} />
@@ -1080,12 +1080,12 @@ export default function Ch9EMWaves() {
           <p>
             A linear polarizer is a sheet of long, aligned molecules — typically iodine-doped
             polyvinyl alcohol — that conduct along their length. The{' '}
-            <strong className="text-text font-medium">E</strong>-component of the incident wave
+            <InlineMath tex="E" />-component of the incident wave
             parallel to the molecules drives a current along them, which dissipates that component
             as heat. The
-            <strong className="text-text font-medium"> E</strong>-component perpendicular to the
+            <InlineMath tex="E" />-component perpendicular to the
             molecules finds nothing to drive and passes through. What emerges has its{' '}
-            <strong className="text-text font-medium">E</strong> oscillating along the one allowed
+            <InlineMath tex="E" /> oscillating along the one allowed
             axis only — linearly polarized along the filter's "transmission axis." Two such filters
             at 90° to each other block essentially all the light; at 45° they pass cos²(45°) = ½ of
             the polarized component (Malus's law)
@@ -1125,7 +1125,7 @@ export default function Ch9EMWaves() {
           <p>
             A mirror doesn't absorb the wave; it sends it back. The free electrons in the metal
             surface oscillate in response to the incoming{' '}
-            <strong className="text-text font-medium">E</strong>-field and re-radiate a wave with
+            <InlineMath tex="E" />-field and re-radiate a wave with
             the opposite normal component of momentum. Energy is conserved (the reflected wave
             carries it away); momentum changes sign, and the difference shows up as a pressure on
             the mirror — twice as much, in fact, as on a black absorber of the same intensity (P =
