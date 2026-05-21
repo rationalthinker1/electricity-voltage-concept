@@ -20,6 +20,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -163,29 +164,20 @@ export function BridgeRectifierDemo({ figure }: Props) {
       ctx.setLineDash([]);
       ctx.save();
       ctx.globalAlpha = 0.65;
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('0', padL - 4, cy);
+      drawLabel(ctx, { text: '0', x: padL - 4, y: cy, align: 'right', baseline: 'middle' });
       ctx.restore();
-      ctx.fillText(`+${Vp.toFixed(0)} V`, padL - 4, yOf(Vp));
-      ctx.fillText(`−${Vp.toFixed(0)} V`, padL - 4, yOf(-Vp));
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
+      drawLabel(ctx, { text: `+${Vp.toFixed(0)} V`, x: padL - 4, y: yOf(Vp) });
+      drawLabel(ctx, { text: `−${Vp.toFixed(0)} V`, x: padL - 4, y: yOf(-Vp) });
       const lx = padL + plotW + 8;
       ctx.fillStyle = colors.text;
       ctx.fillRect(lx, padT + 8 - 1, 10, 2);
-      ctx.fillStyle = colors.text;
-      ctx.fillText('V_in', lx + 14, padT + 8);
+      drawLabel(ctx, { text: 'V_in', x: lx + 14, y: padT + 8, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
       ctx.fillStyle = colors.teal;
       ctx.fillRect(lx, padT + 24 - 1, 10, 2);
-      ctx.fillStyle = colors.text;
-      ctx.fillText('|V_rect|', lx + 14, padT + 24);
+      drawLabel(ctx, { text: '|V_rect|', x: lx + 14, y: padT + 24, color: colors.text });
       ctx.fillStyle = colors.accent;
       ctx.fillRect(lx, padT + 40 - 1, 10, 2);
-      ctx.fillStyle = colors.text;
-      ctx.fillText('V_out', lx + 14, padT + 40);
+      drawLabel(ctx, { text: 'V_out', x: lx + 14, y: padT + 40, color: colors.text });
       ctx0.phase = phase;
     },
     [],

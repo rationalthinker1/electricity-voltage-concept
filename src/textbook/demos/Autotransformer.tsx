@@ -18,6 +18,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -168,20 +169,10 @@ export function AutotransformerDemo({ figure }: Props) {
       ctx.stroke();
 
       // Labels
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`V_p = ${Vp.toFixed(0)} V`, coilCX + r + 18, coilTop + (tapY - coilTop) / 2);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText(`V_s = ${(Vp * k).toFixed(0)} V`, coilCX + r + 18, tapY + (coilBot - tapY) / 2);
-
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('autotransformer', coilCX, coilTop - 12);
-      ctx.textBaseline = 'top';
-      ctx.fillText(`tap k = ${k.toFixed(2)}`, coilCX, coilBot + 12);
+      drawLabel(ctx, { text: `V_p = ${Vp.toFixed(0)} V`, x: coilCX + r + 18, y: coilTop + (tapY - coilTop) / 2, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, { text: `V_s = ${(Vp * k).toFixed(0)} V`, x: coilCX + r + 18, y: tapY + (coilBot - tapY) / 2, color: colors.teal });
+      drawLabel(ctx, { text: 'autotransformer', x: coilCX, y: coilTop - 12, align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: `tap k = ${k.toFixed(2)}`, x: coilCX, y: coilBot + 12, baseline: 'top' });
 
       // Divider
       ctx.strokeStyle = colors.border;
@@ -250,29 +241,17 @@ export function AutotransformerDemo({ figure }: Props) {
         ctx.stroke();
         ctx.restore();
       }
-
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('isolated 2-winding', (pX + sX) / 2, coilTop - 12);
-      ctx.textBaseline = 'top';
-      ctx.fillText('same V ratio', (pX + sX) / 2, coilBot + 12);
+      drawLabel(ctx, { text: 'isolated 2-winding', x: (pX + sX) / 2, y: coilTop - 12, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: 'same V ratio', x: (pX + sX) / 2, y: coilBot + 12, baseline: 'top' });
 
       // Drag hint
       ctx.save();
       ctx.globalAlpha = 0.55;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('drag tap ↕', 6, 6);
+      drawLabel(ctx, { text: 'drag tap ↕', x: 6, y: 6, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.restore();
 
       // Warning ribbon
-      ctx.fillStyle = colors.accent;
-      ctx.textAlign = 'center';
-      ctx.fillText('no galvanic isolation', coilCX, 6);
+      drawLabel(ctx, { text: 'no galvanic isolation', x: coilCX, y: 6, color: colors.accent, align: 'center' });
 
       raf = requestAnimationFrame(draw);
     }

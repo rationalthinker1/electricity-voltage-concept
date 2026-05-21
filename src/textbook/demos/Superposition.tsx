@@ -99,12 +99,8 @@ export function SuperpositionDemo({ figure }: Props) {
               ? 'Live: V2 only'
               : 'Both off';
       drawPanel(ctx, 2 * colW, 0, colW, h, label, both, withAlpha(colors.accent, 0.95));
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('+', colW, 4);
-      ctx.fillText('=', 2 * colW, 4);
+      drawLabel(ctx, { text: '+', x: colW, y: 4, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: '=', x: 2 * colW, y: 4 });
     },
     [],
   );
@@ -213,10 +209,7 @@ function drawPanel(
 
   // Title
   ctx.fillStyle = getCanvasColors().textDim;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText(title, w / 2, 8);
+  drawLabel(ctx, { text: title, x: w / 2, y: 8, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
   // Frame
   ctx.strokeStyle = getCanvasColors().border;
@@ -261,12 +254,9 @@ function drawPanel(
 
   // Scale ticks
   ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.65);
-  ctx.font = '8px "JetBrains Mono", monospace';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(`+${(Imax * 1000).toFixed(2)} mA`, padL - 4, yOf(Imax));
-  ctx.fillText('0', padL - 4, yMid);
-  ctx.fillText(`−${(Imax * 1000).toFixed(2)} mA`, padL - 4, yOf(-Imax));
+  drawLabel(ctx, { text: `+${(Imax * 1000).toFixed(2)} mA`, x: padL - 4, y: yOf(Imax), size: 8, font: '8px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+  drawLabel(ctx, { text: '0', x: padL - 4, y: yMid });
+  drawLabel(ctx, { text: `−${(Imax * 1000).toFixed(2)} mA`, x: padL - 4, y: yOf(-Imax) });
 
   // V_A annotation
   drawLabel(ctx, {

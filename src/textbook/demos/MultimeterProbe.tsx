@@ -510,12 +510,9 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
 
         // Dynamic overlay: ribbon at the top echoing which TP each probe touches.
         ctx.fillStyle = getCanvasColors().pink;
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'top';
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillText(`Red(+): ${st.red}`, w - 12, 10);
+        drawLabel(ctx, { text: `Red(+): ${st.red}`, x: w - 12, y: 10, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
         ctx.fillStyle = getCanvasColors().blue;
-        ctx.fillText(`Black(−): ${st.black}`, w - 12, 24);
+        drawLabel(ctx, { text: `Black(−): ${st.black}`, x: w - 12, y: 24 });
 
         raf = requestAnimationFrame(draw);
       }

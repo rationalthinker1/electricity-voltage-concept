@@ -79,7 +79,7 @@ export function PowerDeratingDemo({ figure }: Props) {
         ctx.stroke();
         ctx.fillText(`${t}`, x, padT + gH + 14);
       }
-      ctx.fillText('Ambient T (°C)', padL + gW / 2, padT + gH + 28);
+      drawLabel(ctx, { text: 'Ambient T (°C)', x: padL + gW / 2, y: padT + gH + 28 });
       ctx.textAlign = 'right';
       for (let f = 0; f <= 1.0001; f += 0.25) {
         const y = yF(f);
@@ -129,10 +129,8 @@ export function PowerDeratingDemo({ figure }: Props) {
       ctx.lineTo(xT(T_KNEE), padT + gH);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText(`Knee at ${T_KNEE} °C`, xT(T_KNEE) + 4, padT + 10);
-      ctx.fillText(`Zero at ${T_ZERO} °C`, xT(T_ZERO) - 60, padT + 24);
+      drawLabel(ctx, { text: `Knee at ${T_KNEE} °C`, x: xT(T_KNEE) + 4, y: padT + 10 });
+      drawLabel(ctx, { text: `Zero at ${T_ZERO} °C`, x: xT(T_ZERO) - 60, y: padT + 24 });
       drawLabel(ctx, {
         x: padL,
         y: 8,

@@ -85,11 +85,8 @@ export function DriftVelocityDemo({ figure }: Props) {
       ctx.fillRect(wireRight + 6, wireTop + 8, 4, wireBot - wireTop - 16);
       ctx.save();
       ctx.globalAlpha = 0.85;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText('+', wireLeft - 8, wireTop);
-      ctx.fillText('−', wireRight + 8, wireTop);
+      drawLabel(ctx, { text: '+', x: wireLeft - 8, y: wireTop, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: '−', x: wireRight + 8, y: wireTop });
 
       // Tiny axis arrow showing E direction
       ctx.restore();

@@ -14,6 +14,7 @@ import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -141,11 +142,7 @@ export function InverseSquareDemo({ figure }: Props) {
       // Slope label
       ctx.save();
       ctx.globalAlpha = 0.85;
-      ctx.fillStyle = colors.teal;
-      ctx.font = 'italic 12px Fraunces, serif';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('slope = −2  →  F ∝ 1/r²', padL + 12, padT + 6);
+      drawLabel(ctx, { text: 'slope = −2  →  F ∝ 1/r²', x: padL + 12, y: padT + 6, color: colors.teal, font: 'italic 12px Fraunces, serif', baseline: 'top' });
       ctx.restore();
     },
     [],

@@ -84,10 +84,6 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       }
       drawCoil(ctx, c1x, cy, 'C1');
       drawCoil(ctx, c2x, cy, 'C2');
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
       const regime =
         k < 0.15
           ? 'loose coupling (RFID, antennas)'
@@ -96,7 +92,7 @@ export function CouplingCoefficientDemo({ figure }: Props) {
             : k < 0.85
               ? 'gapped iron core'
               : 'tightly coupled iron / ferrite';
-      ctx.fillText(regime, w / 2, topY + topH - 4);
+      drawLabel(ctx, { text: regime, x: w / 2, y: topY + topH - 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       const plotY = topY + topH + 14;
       const plotH = h - plotY - 14;
       const plotX = 56;
@@ -113,20 +109,13 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.65;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('η', plotX - 4, plotY + 4);
+      drawLabel(ctx, { text: 'η', x: plotX - 4, y: plotY + 4, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       ctx.restore();
-      ctx.textAlign = 'right';
-      ctx.fillText('1', plotX - 4, plotY + plotH * 0.05);
-      ctx.fillText('0', plotX - 4, plotY + plotH);
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('0', plotX, plotY + plotH + 4);
-      ctx.fillText('1', plotX + plotW, plotY + plotH + 4);
-      ctx.fillText('k', plotX + plotW / 2, plotY + plotH + 4);
+      drawLabel(ctx, { text: '1', x: plotX - 4, y: plotY + plotH * 0.05, align: 'right' });
+      drawLabel(ctx, { text: '0', x: plotX - 4, y: plotY + plotH });
+      drawLabel(ctx, { text: '0', x: plotX, y: plotY + plotH + 4, align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: '1', x: plotX + plotW, y: plotY + plotH + 4 });
+      drawLabel(ctx, { text: 'k', x: plotX + plotW / 2, y: plotY + plotH + 4 });
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.6;
       ctx.beginPath();

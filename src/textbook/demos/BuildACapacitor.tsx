@@ -17,11 +17,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -121,8 +124,8 @@ export function BuildACapacitorDemo({ figure }: Props) {
       const topY = cy - gapPx / 2 - plateThick / 2;
       const botY = cy + gapPx / 2 + plateThick / 2;
       const topPos = s.Q > 0;
-      const colTop = topPos ? '#ff3b6e' : '#5baef8';
-      const colBot = topPos ? '#5baef8' : '#ff3b6e';
+      const colTop = topPos ? colors.pink : colors.blue;
+      const colBot = topPos ? colors.blue : colors.pink;
       const symTop = topPos ? '+' : '−';
       const symBot = topPos ? '−' : '+';
       if (Math.abs(s.Q) > 0) {
@@ -130,9 +133,9 @@ export function BuildACapacitorDemo({ figure }: Props) {
         const uE = 0.5 * PHYS.eps_0 * E * E;
         const haze = Math.max(0.05, Math.min(0.5, Math.log10(uE + 1) * 0.1 + 0.1));
         const grd = ctx.createLinearGradient(0, topY + plateThick, 0, botY - plateThick);
-        grd.addColorStop(0, `rgba(255,107,42,${haze * 0.4})`);
-        grd.addColorStop(0.5, `rgba(255,107,42,${haze})`);
-        grd.addColorStop(1, `rgba(255,107,42,${haze * 0.4})`);
+        grd.addColorStop(0, withAlpha(colors.accent, haze * 0.4));
+        grd.addColorStop(0.5, withAlpha(colors.accent, haze));
+        grd.addColorStop(1, withAlpha(colors.accent, haze * 0.4));
         ctx.fillStyle = grd;
         ctx.fillRect(xL, topY + plateThick, plateW, botY - topY - plateThick * 2);
       }
@@ -168,12 +171,8 @@ export function BuildACapacitorDemo({ figure }: Props) {
       drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, colBot);
       drawChargeDots(ctx, xL, topY - 9, plateW, drawDotsCount, symTop, colTop);
       drawChargeDots(ctx, xL, botY + plateThick + 9, plateW, drawDotsCount, symBot, colBot);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`N = ${clicks}`, 12, 10);
-      ctx.fillText(`Q_top = ${(s.Q * 1e9).toFixed(1)} nC`, 12, 24);
+      drawLabel(ctx, { text: `N = ${clicks}`, x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `Q_top = ${(s.Q * 1e9).toFixed(1)} nC`, x: 12, y: 24 });
       ctx.restore();
       ctx.strokeStyle = colors.border;
       ctx.beginPath();
@@ -191,11 +190,7 @@ export function BuildACapacitorDemo({ figure }: Props) {
       ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.strokeRect(pX, gY, pW, gH);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('V (line)  ·  U (curve)  vs  N', pX, gY - 4);
+      drawLabel(ctx, { text: 'V (line)  ·  U (curve)  vs  N', x: pX, y: gY - 4, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'bottom' });
       const hist = historyRef.current;
       if (hist.length > 1) {
         let maxV = 1e-12,
@@ -237,11 +232,7 @@ export function BuildACapacitorDemo({ figure }: Props) {
       }
       const barY = gY + gH + 24;
       const barH = 12;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('Work to add the next charge  ∝  V', pX, barY - 4);
+      drawLabel(ctx, { text: 'Work to add the next charge  ∝  V', x: pX, y: barY - 4, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'bottom' });
       const histMaxV = (() => {
         let mv = 1e-12;
         for (const p of historyRef.current) if (Math.abs(p.V) > mv) mv = Math.abs(p.V);
@@ -252,12 +243,8 @@ export function BuildACapacitorDemo({ figure }: Props) {
       ctx.fillRect(pX, barY, pW, barH);
       ctx.fillStyle = colors.accent;
       ctx.fillRect(pX, barY, pW * fill, barH);
-      ctx.fillStyle = colors.text;
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`${(s.workForNext * 1e9).toFixed(3)} nJ`, pX + pW, barY + barH + 4);
-      ctx.textAlign = 'left';
-      ctx.fillText('next click', pX, barY + barH + 4);
+      drawLabel(ctx, { text: `${(s.workForNext * 1e9).toFixed(3)} nJ`, x: pX + pW, y: barY + barH + 4, color: colors.text, align: 'right', baseline: 'top' });
+      drawLabel(ctx, { text: 'next click', x: pX, y: barY + barH + 4 });
       ctx.restore();
       ctx0.phase = phase;
     },
@@ -314,6 +301,25 @@ export function BuildACapacitorDemo({ figure }: Props) {
         <MiniReadout label="V = Q/C" value={<Num value={V} />} unit="V" />
         <MiniReadout label="U = ½CV²" value={<Num value={U} />} unit="J" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Voltage from charge"
+        left={
+          <InlineMath
+            tex={
+              `V \\;=\\; Q/C \\;=\\; ${(Q * 1e9).toFixed(2)}\\ \\text{nC}\\,/\\,${(C * 1e12).toFixed(1)}\\ \\text{pF} ` +
+              `\\;=\\; ${V.toFixed(2)}\\ \\text{V}`
+            }
+          />
+        }
+        rightLabel="Stored energy"
+        right={
+          <InlineMath
+            tex={
+              `U \\;=\\; \\tfrac{1}{2}CV^2 \\;=\\; ${(U * 1e9).toFixed(2)}\\ \\text{nJ}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

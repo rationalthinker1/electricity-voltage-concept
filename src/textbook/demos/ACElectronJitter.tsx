@@ -109,11 +109,8 @@ export function ACElectronJitterDemo({ figure }: Props) {
       ctx.lineTo(cx + ampPx, cy + 28);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
       ctx.globalAlpha = 0.85;
-      ctx.fillText(`±${(x_peak * 1e9).toFixed(0)} nm`, cx + ampPx + 4, cy - 32);
+      drawLabel(ctx, { text: `±${(x_peak * 1e9).toFixed(0)} nm`, x: cx + ampPx + 4, y: cy - 32, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center' });
       ctx.restore();
 
       // Current electron position. simTime is accumulated since loop start.
@@ -129,18 +126,9 @@ export function ACElectronJitterDemo({ figure }: Props) {
       ctx.strokeStyle = colors.bg;
       ctx.lineWidth = 2;
       ctx.stroke();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('−', electronX, cy + 1);
-      ctx.textBaseline = 'alphabetic';
-
+      drawLabel(ctx, { text: '−', x: electronX, y: cy + 1, color: colors.bg, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       // Scale-bar tickmarks
       ctx.strokeStyle = colors.textDim;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
       for (const tick of [-1000, -500, 0, 500, 1000]) {
         const tx = cx + tick * pxPerNm;
         if (tx < innerLeft || tx > innerRight) continue;
@@ -150,15 +138,11 @@ export function ACElectronJitterDemo({ figure }: Props) {
         ctx.stroke();
         ctx.fillText(`${tick}`, tx, cy + 44);
       }
-      ctx.fillText('position (nm)', cx, cy + 60);
+      drawLabel(ctx, { text: 'position (nm)', x: cx, y: cy + 60, font: '10px "JetBrains Mono", monospace', align: 'center' });
 
       // Header callouts
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('60 Hz AC · 14-AWG copper · one electron', innerLeft, 22);
-      ctx.textAlign = 'right';
-      ctx.fillText(`shown at 1/${TIME_SLOWDOWN} real speed`, innerRight, 22);
+      drawLabel(ctx, { text: '60 Hz AC · 14-AWG copper · one electron', x: innerLeft, y: 22, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: `shown at 1/${TIME_SLOWDOWN} real speed`, x: innerRight, y: 22, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center' });
 
       // Reference strip
       const stripY = 56;

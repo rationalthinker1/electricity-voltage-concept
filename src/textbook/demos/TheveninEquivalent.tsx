@@ -22,6 +22,7 @@ import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtResistance } from '@/lib/formatters';
 import { useCircuitCache } from '@/lib/useCircuitCache';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -106,11 +107,8 @@ export function TheveninEquivalentDemo({ figure }: Props) {
         ctx.stroke();
 
         ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.85);
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('Original network', splitX / 2, 6);
-        ctx.fillText('Thévenin equivalent', splitX + splitX / 2, 6);
+        drawLabel(ctx, { text: 'Original network', x: splitX / 2, y: 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+        drawLabel(ctx, { text: 'Thévenin equivalent', x: splitX + splitX / 2, y: 6 });
 
         drawLoadReadouts(ctx, 0, 22, splitX, h - 22, st);
         drawLoadReadouts(ctx, splitX, 22, splitX, h - 22, st);
@@ -409,10 +407,7 @@ function drawLoadReadouts(
   const cy = y0 + h / 2;
   const xLoad = x0 + w - 40;
   ctx.fillStyle = getCanvasColors().teal;
-  ctx.font = 'bold 10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(`V_L = ${st.Vload.toFixed(2)} V`, xLoad + 12, cy - 8);
+  drawLabel(ctx, { text: `V_L = ${st.Vload.toFixed(2)} V`, x: xLoad + 12, y: cy - 8, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'middle' });
   ctx.fillStyle = getCanvasColors().blue;
-  ctx.fillText(`I_L = ${(st.Iload * 1000).toFixed(1)} mA`, xLoad + 12, cy + 8);
+  drawLabel(ctx, { text: `I_L = ${(st.Iload * 1000).toFixed(1)} mA`, x: xLoad + 12, y: cy + 8 });
 }

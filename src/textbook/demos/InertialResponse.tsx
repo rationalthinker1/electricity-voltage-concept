@@ -19,6 +19,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -109,16 +110,14 @@ export function InertialResponseDemo({ figure }: Props) {
       ctx.save();
       ctx.translate(16, padT + plotH / 2);
       ctx.rotate(-Math.PI / 2);
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('frequency (Hz) →', 0, 0);
+      drawLabel(ctx, { text: 'frequency (Hz) →', x: 0, y: 0, align: 'center', baseline: 'middle' });
       ctx.restore();
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       for (let t = 0; t <= SIM_DURATION; t += 5) {
         ctx.fillText(t.toFixed(0), xAt(t), padT + plotH + 4);
       }
-      ctx.fillText('time after trip (s) →', padL + plotW / 2, padT + plotH + 20);
+      drawLabel(ctx, { text: 'time after trip (s) →', x: padL + plotW / 2, y: padT + plotH + 20 });
       function plotTrace(trace: Trace, color: string) {
         ctx.strokeStyle = color;
         ctx.lineWidth = 2;
@@ -140,8 +139,7 @@ export function InertialResponseDemo({ figure }: Props) {
       const lg = (color: string, label: string) => {
         ctx.fillStyle = color;
         ctx.fillRect(legX, legY + 4, 14, 3);
-        ctx.fillStyle = colors.text;
-        ctx.fillText(label, legX + 20, legY + 1);
+        drawLabel(ctx, { text: label, x: legX + 20, y: legY + 1, color: colors.text });
         legY += 14;
       };
       if (showHigh) lg('#6cc5c2', 'high inertia, H = 5 s (synchronous-rich)');

@@ -14,6 +14,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -165,16 +166,12 @@ export function LaserCavityDemo({ figure }: Props) {
       ctx.fillRect(mirrorR + 6, cy - 10, W - mirrorR - 12, 20);
 
       // Labels
-      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.textAlign = 'center';
-      ctx.fillText('100% mirror', mirrorL, 28);
-      ctx.fillText('output coupler', mirrorR, 28);
-      ctx.textAlign = 'left';
-      ctx.fillText('gain medium', mirrorL + 8, H - 8);
+      drawLabel(ctx, { text: '100% mirror', x: mirrorL, y: 28, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: 'output coupler', x: mirrorR, y: 28 });
+      drawLabel(ctx, { text: 'gain medium', x: mirrorL + 8, y: H - 8 });
       ctx.fillStyle = getCanvasColors().accent;
-      ctx.textAlign = 'right';
-      ctx.fillText('coherent output →', W - 8, cy - 14);
+      drawLabel(ctx, { text: 'coherent output →', x: W - 8, y: cy - 14, align: 'right' });
 
       raf = requestAnimationFrame(draw);
     }

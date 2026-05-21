@@ -19,6 +19,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -88,11 +89,8 @@ export function LensFocusingDemo({ figure }: Props) {
       }
       focalDot(lensX + fpx);
       focalDot(lensX - fpx);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.accent;
-      ctx.textAlign = 'center';
-      ctx.fillText('F', lensX + fpx, axisY + 16);
-      ctx.fillText('F', lensX - fpx, axisY + 16);
+      drawLabel(ctx, { text: 'F', x: lensX + fpx, y: axisY + 16, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: 'F', x: lensX - fpx, y: axisY + 16 });
       const rayYs = [-30, 0, 30];
       ctx.lineWidth = 1.3;
       for (const dy of rayYs) {
@@ -228,14 +226,10 @@ export function LensFocusingDemo({ figure }: Props) {
         ctx.lineTo(imgX, yB);
         ctx.stroke();
       }
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText(`f = ${convex ? '+' : '−'}${fAbs.toFixed(1)} cm`, 12, 18);
-      ctx.fillText(`d₀ = ${dObj.toFixed(1)} cm`, 12, 34);
+      drawLabel(ctx, { text: `f = ${convex ? '+' : '−'}${fAbs.toFixed(1)} cm`, x: 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `d₀ = ${dObj.toFixed(1)} cm`, x: 12, y: 34 });
       ctx.fillStyle = convex ? withAlpha(colors.teal, 0.9) : withAlpha(colors.accent, 0.9);
-      ctx.textAlign = 'right';
-      ctx.fillText(convex ? 'convex' : 'concave', W - 12, 18);
+      drawLabel(ctx, { text: convex ? 'convex' : 'concave', x: W - 12, y: 18, align: 'right' });
     },
     [],
   );

@@ -16,6 +16,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -152,14 +153,9 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
         ctx.stroke();
 
         // Axis labels
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('I → V/R', padL - 6, yI(V_SUPPLY / R_WIND));
-        ctx.fillText('0', padL - 6, yI(0));
-        ctx.textAlign = 'left';
-        ctx.fillText('E_back → V', padL + plotW + 6, yE(V_SUPPLY));
+        drawLabel(ctx, { text: 'I → V/R', x: padL - 6, y: yI(V_SUPPLY / R_WIND), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+        drawLabel(ctx, { text: '0', x: padL - 6, y: yI(0) });
+        drawLabel(ctx, { text: 'E_back → V', x: padL + plotW + 6, y: yE(V_SUPPLY) });
 
         // Legend
         ctx.textAlign = 'left';
@@ -169,8 +165,7 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
         const lg = (color: string, label: string) => {
           ctx.fillStyle = color;
           ctx.fillRect(legX, legY + 4, 14, 3);
-          ctx.fillStyle = colors.text;
-          ctx.fillText(label, legX + 20, legY + 1);
+          drawLabel(ctx, { text: label, x: legX + 20, y: legY + 1, color: colors.text });
           legY += 14;
         };
         lg(withAlpha(colors.teal, 0.55), 'V_applied (constant)');
@@ -180,10 +175,7 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
         // Time axis
         ctx.save();
         ctx.globalAlpha = 0.65;
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('time →', padL + plotW / 2, padT + plotH + 6);
+        drawLabel(ctx, { text: 'time →', x: padL + plotW / 2, y: padT + plotH + 6, align: 'center', baseline: 'top' });
         ctx.restore();
 
         raf = requestAnimationFrame(draw);

@@ -19,6 +19,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -90,12 +91,8 @@ export function InductionMotorSlipDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(sSx, sSy, 9, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 10px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('N', sFx, sFy);
-      ctx.fillText('S', sSx, sSy);
+      drawLabel(ctx, { text: 'N', x: sFx, y: sFy, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: 'S', x: sSx, y: sSy });
       const bars = 12;
       const rBar = R * 0.55;
       for (let i = 0; i < bars; i++) {
@@ -127,15 +124,10 @@ export function InductionMotorSlipDemo({ figure }: Props) {
       ctx.fill();
       ctx.save();
       ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('rotating stator field (dashed)', 12, 12);
-      ctx.fillText('squirrel-cage rotor', 12, 26);
-      ctx.textAlign = 'right';
-      ctx.fillText(`load = ${(load * 100).toFixed(0)}%`, w - 12, 12);
-      ctx.fillText(`slip = ${(slip * 100).toFixed(2)}%`, w - 12, 26);
+      drawLabel(ctx, { text: 'rotating stator field (dashed)', x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'squirrel-cage rotor', x: 12, y: 26 });
+      drawLabel(ctx, { text: `load = ${(load * 100).toFixed(0)}%`, x: w - 12, y: 12, align: 'right' });
+      drawLabel(ctx, { text: `slip = ${(slip * 100).toFixed(2)}%`, x: w - 12, y: 26 });
       ctx.restore();
       ctx0.statorAng = statorAng;
       ctx0.rotorAng = rotorAng;

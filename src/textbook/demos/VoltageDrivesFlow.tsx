@@ -24,6 +24,7 @@ import { MATERIALS, PHYS } from '@/lib/physics';
 import { useCircuitCache } from '@/lib/useCircuitCache';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -248,16 +249,10 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       ctx.restore();
 
       // Legend strip
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
       ctx.fillStyle = withAlpha(colors.teal, 0.4 + 0.5 * Inorm);
-      ctx.fillText('B  (circles wire; |B| ∝ I)', legendCol1X, legendRow1Y);
+      drawLabel(ctx, { text: 'B  (circles wire; |B| ∝ I)', x: legendCol1X, y: legendRow1Y, font: '10px "JetBrains Mono", monospace' });
       ctx.fillStyle = withAlpha(colors.textDim, 0.7);
-      ctx.fillText(
-        'fixed: R = 10 Ω · A = 1 mm² · n = 8.5×10²⁸/m³ (Cu) · dot motion ≠ to scale',
-        legendCol1X,
-        legendRow3Y,
-      );
+      drawLabel(ctx, { text: 'fixed: R = 10 Ω · A = 1 mm² · n = 8.5×10²⁸/m³ (Cu) · dot motion ≠ to scale', x: legendCol1X, y: legendRow3Y });
 
       // Drift dots
       const visSpeed = 90 * Inorm;
@@ -303,9 +298,7 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       ctx.lineTo(ax1 - 7, arrowY + 4);
       ctx.closePath();
       ctx.fill();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText('I  (conventional)', (ax0 + ax1) / 2, arrowY - 6);
+      drawLabel(ctx, { text: 'I  (conventional)', x: (ax0 + ax1) / 2, y: arrowY - 6, font: '10px "JetBrains Mono", monospace', align: 'center' });
 
       // Poynting-flux annotation
       const Pmax = (24 * 24) / R_OHMS;
@@ -328,9 +321,7 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       ctx.lineTo(fx1 - 7, fy + 4);
       ctx.closePath();
       ctx.fill();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.fillText(`P = V·I = ${(s.V * I_now).toFixed(1)} W`, fx1, fy - 6);
+      drawLabel(ctx, { text: `P = V·I = ${(s.V * I_now).toFixed(1)} W`, x: fx1, y: fy - 6, font: '10px "JetBrains Mono", monospace', align: 'right' });
     },
     [],
     () => ({

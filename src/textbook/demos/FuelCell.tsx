@@ -64,16 +64,11 @@ export function FuelCellDemo({ figure }: Props) {
       ctx.fillStyle = colors.blue;
       ctx.fillRect(x, cellY, flowW, cellH);
       ctx.restore();
-      ctx.fillStyle = colors.blue;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('H₂', x + flowW / 2, cellY + 4);
+      drawLabel(ctx, { text: 'H₂', x: x + flowW / 2, y: cellY + 4, color: colors.blue, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       x += flowW;
       ctx.fillStyle = '#444';
       ctx.fillRect(x, cellY, anodeW, cellH);
-      ctx.fillStyle = colors.text;
-      ctx.fillText('anode', x + anodeW / 2, cellY + 4);
+      drawLabel(ctx, { text: 'anode', x: x + anodeW / 2, y: cellY + 4, color: colors.text });
       x += anodeW;
       ctx.save();
       ctx.globalAlpha = 0.3;
@@ -82,8 +77,7 @@ export function FuelCellDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.85;
-      ctx.fillStyle = colors.text;
-      ctx.fillText('Nafion', x + membraneW / 2, cellY + 4);
+      drawLabel(ctx, { text: 'Nafion', x: x + membraneW / 2, y: cellY + 4, color: colors.text });
       const ionCount = Math.max(0, Math.min(8, Math.floor(s.i * 6)));
       for (let j = 0; j < ionCount; j++) {
         const t = (phase + j * 0.2) % 1;
@@ -104,28 +98,18 @@ export function FuelCellDemo({ figure }: Props) {
       ctx.restore();
       ctx.fillStyle = '#444';
       ctx.fillRect(x, cellY, cathodeW, cellH);
-      ctx.fillStyle = colors.text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('cathode', x + cathodeW / 2, cellY + 4);
+      drawLabel(ctx, { text: 'cathode', x: x + cathodeW / 2, y: cellY + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       x += cathodeW;
       ctx.save();
       ctx.globalAlpha = 0.1;
       ctx.fillStyle = colors.accent;
       ctx.fillRect(x, cellY, flowW, cellH);
       ctx.restore();
-      ctx.fillStyle = colors.accent;
-      ctx.fillText('O₂', x + flowW / 2, cellY + 4);
+      drawLabel(ctx, { text: 'O₂', x: x + flowW / 2, y: cellY + 4, color: colors.accent });
       ctx.save();
       ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('H₂ → 2H⁺ + 2e⁻', cellX, cellY + cellH + 6);
-      ctx.textAlign = 'right';
-      ctx.fillText('½O₂ + 2H⁺ + 2e⁻ → H₂O', cellX + cellW, cellY + cellH + 6);
+      drawLabel(ctx, { text: 'H₂ → 2H⁺ + 2e⁻', x: cellX, y: cellY + cellH + 6, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: '½O₂ + 2H⁺ + 2e⁻ → H₂O', x: cellX + cellW, y: cellY + cellH + 6, align: 'right' });
       const pX = splitX + 16;
       const pY = 30;
       const pW = W - pX - 30;
@@ -160,14 +144,8 @@ export function FuelCellDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(opX, opY, 5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('V (V)', pX, 4);
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'top';
-      ctx.fillText('i (A/cm²)', pX + pW, pY + pH + 4);
+      drawLabel(ctx, { text: 'V (V)', x: pX, y: 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'i (A/cm²)', x: pX + pW, y: pY + pH + 4, align: 'right', baseline: 'top' });
       ctx0.phase = phase;
     },
     [],

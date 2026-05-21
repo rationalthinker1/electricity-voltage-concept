@@ -34,6 +34,7 @@ import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { depthSortIndices, project, v3, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -395,21 +396,11 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
       }
 
       // ── Annotations ────────────────────────────────────────────────
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText('drag to rotate', 12, 12);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText('E_ext  teal · along +x', 12, 28);
-      ctx.fillStyle = 'rgba(240,200,80,0.85)';
-      ctx.fillText('dielectric block', 12, 44);
-
-      ctx.textAlign = 'right';
-      ctx.fillStyle = colors.accent;
-      ctx.fillText('p  aligned dipole', w - 12, 12);
-      ctx.fillStyle = 'rgba(200,195,170,0.75)';
-      ctx.fillText('p  scrambled (thermal)', w - 12, 28);
+      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'E_ext  teal · along +x', x: 12, y: 28, color: colors.teal });
+      drawLabel(ctx, { text: 'dielectric block', x: 12, y: 44, color: 'rgba(240,200,80,0.85)' });
+      drawLabel(ctx, { text: 'p  aligned dipole', x: w - 12, y: 12, color: colors.accent, align: 'right' });
+      drawLabel(ctx, { text: 'p  scrambled (thermal)', x: w - 12, y: 28, color: 'rgba(200,195,170,0.75)' });
 
       raf = requestAnimationFrame(draw);
     }

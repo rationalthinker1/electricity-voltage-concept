@@ -16,6 +16,7 @@ import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -86,21 +87,12 @@ export function LeadAcidCellDemo({ figure }: Props) {
           ctx.fill();
         }
       }
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('Pb', negX + plateW / 2, plateY - 2);
-      ctx.fillText('PbO₂', posX + plateW / 2, plateY - 2);
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('H₂SO₄(aq)', jarX + 8, jarY + jarH - 16);
+      drawLabel(ctx, { text: 'Pb', x: negX + plateW / 2, y: plateY - 2, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: 'PbO₂', x: posX + plateW / 2, y: plateY - 2 });
+      drawLabel(ctx, { text: 'H₂SO₄(aq)', x: jarX + 8, y: jarY + jarH - 16, baseline: 'top' });
       ctx.save();
       ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('discharge:  Pb + PbO₂ + 2 H₂SO₄  →  2 PbSO₄ + 2 H₂O', jarX, jarY + jarH + 10);
+      drawLabel(ctx, { text: 'discharge:  Pb + PbO₂ + 2 H₂SO₄  →  2 PbSO₄ + 2 H₂O', x: jarX, y: jarY + jarH + 10, baseline: 'top' });
       ctx.restore();
     },
     [],

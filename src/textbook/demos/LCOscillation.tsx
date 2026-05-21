@@ -126,14 +126,7 @@ export function LCOscillationDemo({ figure }: Props) {
         ctx.lineTo(cx + plateW / 2, yT + plateGap / 2);
         ctx.stroke();
         ctx.fillStyle = getCanvasColors().accent;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(
-          `C  ${QSign}${Math.abs((Q / st.Q0) * V0).toFixed(2)}V`,
-          cx + plateW / 2 + 6,
-          yT,
-        );
+        drawLabel(ctx, { text: `C  ${QSign}${Math.abs((Q / st.Q0) * V0).toFixed(2)}V`, x: cx + plateW / 2 + 6, y: yT, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
 
         // Inductor (right middle)
         drawInductorV(ctx, xR, cy, st.L);
@@ -158,15 +151,9 @@ export function LCOscillationDemo({ figure }: Props) {
 
         // Labels
         ctx.fillStyle = getCanvasColors().textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText(`L = ${Lmh.toFixed(1)} mH    C = ${Cuf.toFixed(0)} µF`, 10, 8);
-        ctx.textAlign = 'right';
-        ctx.fillText(`f₀ = ${fmtFrequency(f0)}`, splitX - 10, 8);
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(`I → ${fmtCurrent(I)}`, 10, h - 6);
+        drawLabel(ctx, { text: `L = ${Lmh.toFixed(1)} mH    C = ${Cuf.toFixed(0)} µF`, x: 10, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+        drawLabel(ctx, { text: `f₀ = ${fmtFrequency(f0)}`, x: splitX - 10, y: 8, align: 'right' });
+        drawLabel(ctx, { text: `I → ${fmtCurrent(I)}`, x: 10, y: h - 6, baseline: 'bottom' });
 
         ctx.restore();
 
@@ -213,15 +200,11 @@ export function LCOscillationDemo({ figure }: Props) {
         ctx.fillRect(x2, barY + barH - hL, barW, hL);
 
         ctx.fillStyle = getCanvasColors().text;
-        ctx.font = 'bold 11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('U_C', x1 + barW / 2, barY + barH + 6);
-        ctx.fillText('U_L', x2 + barW / 2, barY + barH + 6);
+        drawLabel(ctx, { text: 'U_C', x: x1 + barW / 2, y: barY + barH + 6, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+        drawLabel(ctx, { text: 'U_L', x: x2 + barW / 2, y: barY + barH + 6 });
         ctx.fillStyle = getCanvasColors().textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillText(`${(fracC * 100).toFixed(0)}%`, x1 + barW / 2, barY + barH + 22);
-        ctx.fillText(`${(fracL * 100).toFixed(0)}%`, x2 + barW / 2, barY + barH + 22);
+        drawLabel(ctx, { text: `${(fracC * 100).toFixed(0)}%`, x: x1 + barW / 2, y: barY + barH + 22, font: '10px "JetBrains Mono", monospace' });
+        drawLabel(ctx, { text: `${(fracL * 100).toFixed(0)}%`, x: x2 + barW / 2, y: barY + barH + 22 });
 
         drawLabel(ctx, {
           x: innerX,

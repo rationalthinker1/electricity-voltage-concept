@@ -144,14 +144,9 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
       }
 
       // ── Annotations ────────────────────────────────────────────────────
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'alphabetic';
       // Plate labels (small + and − on the outside ends).
-      ctx.fillStyle = colors.pink;
-      ctx.textAlign = 'left';
-      ctx.fillText('+ plate (σ > 0)', padX, yTop - plateThickness - 6);
-      ctx.fillStyle = colors.blue;
-      ctx.fillText('− plate (σ < 0)', padX, yBot + plateThickness + 14);
+      drawLabel(ctx, { text: '+ plate (σ > 0)', x: padX, y: yTop - plateThickness - 6, color: colors.pink, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: '− plate (σ < 0)', x: padX, y: yBot + plateThickness + 14, color: colors.blue });
 
       // Separation indicator — a dashed bracket at the right edge.
       ctx.save();
@@ -169,9 +164,7 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
       ctx.lineTo(bracketX + 14, yBot);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`d = ${dMm.toFixed(0)} mm`, bracketX + 18, (yTop + yBot) / 2);
+      drawLabel(ctx, { text: `d = ${dMm.toFixed(0)} mm`, x: bracketX + 18, y: (yTop + yBot) / 2, baseline: 'middle' });
       ctx.restore();
 
       // Disclosure caption — what's fixed vs what's varying.

@@ -22,6 +22,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -108,19 +109,12 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       ctx.lineTo(padL + plotW, yOf(Vce));
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`V_CC = ${V_CC.toFixed(1)} V`, padL - 4, yOf(V_CC));
-      ctx.fillText(`Q: V_CE = ${Vce.toFixed(2)} V`, padL - 4, yOf(Vce));
-      ctx.fillText('0', padL - 4, yOf(0));
+      drawLabel(ctx, { text: `V_CC = ${V_CC.toFixed(1)} V`, x: padL - 4, y: yOf(V_CC), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: `Q: V_CE = ${Vce.toFixed(2)} V`, x: padL - 4, y: yOf(Vce) });
+      drawLabel(ctx, { text: '0', x: padL - 4, y: yOf(0) });
 
       // x-axis title
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('time', padL + plotW / 2, padT + plotH + 16);
+      drawLabel(ctx, { text: 'time', x: padL + plotW / 2, y: padT + plotH + 16, align: 'center', baseline: 'top' });
 
       // input waveform: small sine, plotted on a fixed sub-band 0..0.8 V,
       // centred at 0.4 V. (Visual-only — labelled below.)
@@ -159,21 +153,8 @@ export function CommonEmitterAmpDemo({ figure }: Props) {
       ctx.stroke();
 
       // legend
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillStyle = colors.teal;
-      ctx.fillText(
-        `V_in   amp = ${Vin_mV.toFixed(1)} mV   (shown ×80 for visibility)`,
-        padL + 6,
-        padT + 4,
-      );
-      ctx.fillStyle = colors.accent;
-      ctx.fillText(
-        `V_out  amp = ${(Math.abs(Av) * Vin_mV).toFixed(1)} mV   A_v = ${Av.toFixed(0)}`,
-        padL + 6,
-        padT + 18,
-      );
+      drawLabel(ctx, { text: `V_in   amp = ${Vin_mV.toFixed(1)} mV   (shown ×80 for visibility)`, x: padL + 6, y: padT + 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `V_out  amp = ${(Math.abs(Av) * Vin_mV).toFixed(1)} mV   A_v = ${Av.toFixed(0)}`, x: padL + 6, y: padT + 18, color: colors.accent });
 
       raf = requestAnimationFrame(draw);
     }

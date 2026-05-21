@@ -226,17 +226,11 @@ export function RCTransientDemo({ figure }: Props) {
         ctx.setLineDash([]);
         ctx.restore();
         ctx.fillStyle = getCanvasColors().accent;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(`V₀ = ${V0} V`, plotX + plotW - 4, y0line - 2);
+        drawLabel(ctx, { text: `V₀ = ${V0} V`, x: plotX + plotW - 4, y: y0line - 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
         ctx.fillStyle = getCanvasColors().teal;
-        ctx.fillText('63% V₀', plotX + plotW - 4, y63 - 2);
+        drawLabel(ctx, { text: '63% V₀', x: plotX + plotW - 4, y: y63 - 2 });
         ctx.fillStyle = getCanvasColors().textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('V_C(t)', plotX, 8);
+        drawLabel(ctx, { text: 'V_C(t)', x: plotX, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
 
         // Divider between the two panes.
         ctx.strokeStyle = getCanvasColors().border;
@@ -301,14 +295,7 @@ export function RCTransientDemo({ figure }: Props) {
 
         // Dynamic overlay: live R / C / τ readout in the schematic pane.
         ctx.fillStyle = getCanvasColors().textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText(
-          `R = ${fmtResistance(st.R)}   C = ${(st.C * 1e6).toFixed(0)} µF   τ = ${fmtTime(tauNow)}`,
-          10,
-          8,
-        );
+        drawLabel(ctx, { text: `R = ${fmtResistance(st.R)}   C = ${(st.C * 1e6).toFixed(0)} µF   τ = ${fmtTime(tauNow)}`, x: 10, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
 
         ctx.restore();
 
@@ -352,16 +339,10 @@ export function RCTransientDemo({ figure }: Props) {
         // Dynamic overlay: τ-marker label + live V_C readout + (6τ) window legend.
         ctx.restore();
         ctx.fillStyle = getCanvasColors().teal;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText(`τ = ${fmtTime(tauNow)}`, Math.min(xTau + 4, plotX + plotW - 80), plotY + 4);
+        drawLabel(ctx, { text: `τ = ${fmtTime(tauNow)}`, x: Math.min(xTau + 4, plotX + plotW - 80), y: plotY + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
         ctx.fillStyle = getCanvasColors().textDim;
-        ctx.textAlign = 'right';
-        ctx.fillText(`V_C = ${st.Vc.toFixed(2)} V`, plotX + plotW, 8);
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(`window: ${fmtTime(PLOT_DURATION)} (6τ)`, plotX + plotW / 2, h - 6);
+        drawLabel(ctx, { text: `V_C = ${st.Vc.toFixed(2)} V`, x: plotX + plotW, y: 8, align: 'right' });
+        drawLabel(ctx, { text: `window: ${fmtTime(PLOT_DURATION)} (6τ)`, x: plotX + plotW / 2, y: h - 6, align: 'center', baseline: 'bottom' });
 
         ctx.restore();
         raf = requestAnimationFrame(draw);

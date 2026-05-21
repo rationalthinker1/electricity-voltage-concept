@@ -97,22 +97,11 @@ export function ThreePhaseDemo({ figure }: Props) {
       }
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillStyle = phaseColors[0];
-      ctx.fillText('V_a', plotX + 4, plotY + 4);
-      ctx.fillStyle = phaseColors[1];
-      ctx.fillText('V_b', plotX + 36, plotY + 4);
-      ctx.fillStyle = phaseColors[2];
-      ctx.fillText('V_c', plotX + 68, plotY + 4);
-      ctx.fillStyle = colors.text;
-      ctx.fillText('Σ = 0', plotX + 100, plotY + 4);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`${f.toFixed(0)} Hz — 120° apart`, plotX + plotW / 2, h - 14);
+      drawLabel(ctx, { text: 'V_a', x: plotX + 4, y: plotY + 4, color: phaseColors[0], font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'V_b', x: plotX + 36, y: plotY + 4, color: phaseColors[1] });
+      drawLabel(ctx, { text: 'V_c', x: plotX + 68, y: plotY + 4, color: phaseColors[2] });
+      drawLabel(ctx, { text: 'Σ = 0', x: plotX + 100, y: plotY + 4, color: colors.text });
+      drawLabel(ctx, { text: `${f.toFixed(0)} Hz — 120° apart`, x: plotX + plotW / 2, y: h - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       ctx.restore();
       ctx.strokeStyle = colors.border;
       ctx.beginPath();
@@ -168,13 +157,8 @@ export function ThreePhaseDemo({ figure }: Props) {
           weight: 'bold',
         });
       }
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('phasors at 120°', pcx, 10);
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`Σ vectors → 0`, pcx, h - 8);
+      drawLabel(ctx, { text: 'phasors at 120°', x: pcx, y: 10, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: `Σ vectors → 0`, x: pcx, y: h - 8, baseline: 'bottom' });
       ctx.restore();
       ctx0.simT = simT;
       ctx0.SCOPE_DURATION = SCOPE_DURATION;

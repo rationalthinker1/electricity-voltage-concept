@@ -32,6 +32,7 @@ import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { depthSortIndices, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 import { useCanvasCache } from '@/lib/useCanvasCache';
 import { useOrbitScene } from '@/lib/useOrbitScene';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -268,28 +269,21 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
         }
 
         // Annotations
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
         ctx.fillStyle = getCanvasColors().textDim;
-        ctx.fillText('drag to rotate', 12, 12);
+        drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
         ctx.save();
         ctx.globalAlpha = 0.6;
         ctx.fillStyle = getCanvasColors().textDim;
-        ctx.fillText(
-          `inner radius a = ${R_INNER.toFixed(2)}   outer b = ${R_OUTER.toFixed(2)}`,
-          12,
-          28,
-        );
+        drawLabel(ctx, { text: `inner radius a = ${R_INNER.toFixed(2)}   outer b = ${R_OUTER.toFixed(2)}`, x: 12, y: 28 });
 
         ctx.textAlign = 'right';
         ctx.restore();
         ctx.fillStyle = getCanvasColors().pink;
-        ctx.fillText('E  pink · radial', W - 12, 12);
+        drawLabel(ctx, { text: 'E  pink · radial', x: W - 12, y: 12 });
         ctx.fillStyle = getCanvasColors().teal;
-        ctx.fillText('B  teal · circumferential', W - 12, 28);
+        drawLabel(ctx, { text: 'B  teal · circumferential', x: W - 12, y: 28 });
         ctx.fillStyle = getCanvasColors().accent;
-        ctx.fillText('S = E × B / μ₀ · axial', W - 12, 44);
+        drawLabel(ctx, { text: 'S = E × B / μ₀ · axial', x: W - 12, y: 44 });
 
         raf = requestAnimationFrame(draw);
       }

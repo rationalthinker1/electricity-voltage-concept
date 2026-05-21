@@ -47,14 +47,8 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
       ctx.lineWidth = 1.4;
       ctx.fillRect(srcX, cy - srcH / 2, srcW, srcH);
       ctx.strokeRect(srcX, cy - srcH / 2, srcW, srcH);
-      ctx.fillStyle = colors.accent;
-      ctx.font = 'bold 10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('TUBE AMP', srcX + srcW / 2, cy - 8);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.fillText('~5 kΩ plate', srcX + srcW / 2, cy + 8);
+      drawLabel(ctx, { text: 'TUBE AMP', x: srcX + srcW / 2, y: cy - 8, color: colors.accent, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: '~5 kΩ plate', x: srcX + srcW / 2, y: cy + 8, size: 9, font: '9px "JetBrains Mono", monospace' });
       const trX = w * 0.45;
       const trW = 100,
         trH = 70;
@@ -91,11 +85,7 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
         ),
       );
       ctx.restore();
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`N_p : N_s = ${ratio.toFixed(0)} : 1`, trX + trW / 2, cy + trH / 2 + 4);
+      drawLabel(ctx, { text: `N_p : N_s = ${ratio.toFixed(0)} : 1`, x: trX + trW / 2, y: cy + trH / 2 + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       const ldX = w - padX - 80;
       const ldW = 80,
         ldH = 50;
@@ -104,14 +94,8 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
       ctx.lineWidth = 1.4;
       ctx.fillRect(ldX, cy - ldH / 2, ldW, ldH);
       ctx.strokeRect(ldX, cy - ldH / 2, ldW, ldH);
-      ctx.fillStyle = colors.teal;
-      ctx.font = 'bold 10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('SPEAKER', ldX + ldW / 2, cy - 8);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.fillText('8 Ω', ldX + ldW / 2, cy + 8);
+      drawLabel(ctx, { text: 'SPEAKER', x: ldX + ldW / 2, y: cy - 8, color: colors.teal, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: '8 Ω', x: ldX + ldW / 2, y: cy + 8, size: 9, font: '9px "JetBrains Mono", monospace' });
       ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -124,13 +108,8 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
       ctx.moveTo(trX + trW, cy + 6);
       ctx.lineTo(ldX, cy + 6);
       ctx.stroke();
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`looking in: Z_p = ${formatZ(Zp)}`, (srcX + srcW + trX) / 2, cy - 16);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText(`secondary: Z_s = 8 Ω`, (trX + trW + ldX) / 2, cy - 16);
+      drawLabel(ctx, { text: `looking in: Z_p = ${formatZ(Zp)}`, x: (srcX + srcW + trX) / 2, y: cy - 16, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: `secondary: Z_s = 8 Ω`, x: (trX + trW + ldX) / 2, y: cy - 16, color: colors.teal });
       const target = 5000;
       const ratioDiff = Math.abs(Math.log10(Math.max(Zp, 1) / target));
       const match = Math.max(0, 1 - ratioDiff * 2);

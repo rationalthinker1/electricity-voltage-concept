@@ -47,6 +47,7 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -361,29 +362,17 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       }
 
       // Annotations.
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText('drag to rotate', 12, 12);
+      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.save();
       ctx.globalAlpha = 0.55;
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText(
-        'copper · 56 free electrons · thermal & drift scaled for visibility',
-        12,
-        H - 18,
-      );
+      drawLabel(ctx, { text: 'copper · 56 free electrons · thermal & drift scaled for visibility', x: 12, y: H - 18 });
 
       ctx.textAlign = 'right';
       ctx.restore();
-      ctx.fillStyle = colors.teal;
-      ctx.fillText('electrons (cyan)', W - 12, 12);
-      ctx.fillStyle = colors.accent;
-      ctx.fillText('Cu+ ions (amber)', W - 12, 28);
+      drawLabel(ctx, { text: 'electrons (cyan)', x: W - 12, y: 12, color: colors.teal });
+      drawLabel(ctx, { text: 'Cu+ ions (amber)', x: W - 12, y: 28, color: colors.accent });
       if (s.showArrows) {
-        ctx.fillStyle = colors.accent;
-        ctx.fillText('drift bias → +x', W - 12, 44);
+        drawLabel(ctx, { text: 'drift bias → +x', x: W - 12, y: 44, color: colors.accent });
       }
     },
     [],

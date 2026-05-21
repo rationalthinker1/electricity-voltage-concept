@@ -117,7 +117,7 @@ export function RvsTemperatureDemo({ figure }: Props) {
         ctx.stroke();
         ctx.fillText(`${t}`, x, padT + gH + 14);
       }
-      ctx.fillText('Temperature (°C)', padL + gW / 2, padT + gH + 26);
+      drawLabel(ctx, { text: 'Temperature (°C)', x: padL + gW / 2, y: padT + gH + 26 });
       ctx.textAlign = 'right';
       for (let lp = -1; lp <= 1; lp++) {
         const v = Math.pow(10, lp);
@@ -136,9 +136,7 @@ export function RvsTemperatureDemo({ figure }: Props) {
       ctx.lineTo(xT(T_REF), padT + gH);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText('20 °C ref', xT(T_REF) + 4, padT + 10);
+      drawLabel(ctx, { text: '20 °C ref', x: xT(T_REF) + 4, y: padT + 10 });
       for (const c of CURVES) {
         if (!shown[c.key]) continue;
         ctx.strokeStyle = c.color;

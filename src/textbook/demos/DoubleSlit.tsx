@@ -12,6 +12,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -118,13 +119,10 @@ export function DoubleSlitDemo({ figure }: Props) {
       ctx.moveTo(slitBot.x, slitBot.y);
       ctx.lineTo(screenX, cy);
       ctx.stroke();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.fillText('slits', slitX, padTop - 8);
-      ctx.fillText('screen', screenX, padTop - 8);
-      ctx.fillText('I(y)', (plotL + plotR) / 2, H - 8);
-      ctx.fillText(`fringe Δy = ${(fringe * 1000).toFixed(2)} mm`, screenX + 4, H - padBot + 18);
+      drawLabel(ctx, { text: 'slits', x: slitX, y: padTop - 8, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: 'screen', x: screenX, y: padTop - 8 });
+      drawLabel(ctx, { text: 'I(y)', x: (plotL + plotR) / 2, y: H - 8 });
+      drawLabel(ctx, { text: `fringe Δy = ${(fringe * 1000).toFixed(2)} mm`, x: screenX + 4, y: H - padBot + 18 });
     },
     [],
   );

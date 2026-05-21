@@ -288,16 +288,12 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       if (!haveCursor) {
-        ctx.fillText('hover the canvas — your cursor is a point charge', wireLeft, h - 14);
+        drawLabel(ctx, { text: 'hover the canvas — your cursor is a point charge', x: wireLeft, y: h - 14 });
         ctx.restore();
       } else {
-        ctx.fillText(
-          s.cursorPos
-            ? 'positive cursor: free electrons drift toward it · near surface goes net −'
-            : 'negative cursor: free electrons recoil · near surface goes net +',
-          wireLeft,
-          h - 14,
-        );
+        drawLabel(ctx, { text: s.cursorPos
+                      ? 'positive cursor: free electrons drift toward it · near surface goes net −'
+                      : 'negative cursor: free electrons recoil · near surface goes net +', x: wireLeft, y: h - 14 });
       }
     },
     [],

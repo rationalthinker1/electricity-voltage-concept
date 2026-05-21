@@ -14,6 +14,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -61,7 +62,7 @@ export function BrewsterAngleDemo({ figure }: Props) {
         ctx.stroke();
         ctx.fillText(String(d), x, y0 + 14);
       }
-      ctx.fillText('angle of incidence θ (°)', (x0 + x1) / 2, H - 4);
+      drawLabel(ctx, { text: 'angle of incidence θ (°)', x: (x0 + x1) / 2, y: H - 4 });
       ctx.textAlign = 'right';
       for (let v = 0; v <= 1.01; v += 0.25) {
         const y = y0 - v * plotH;
@@ -74,8 +75,7 @@ export function BrewsterAngleDemo({ figure }: Props) {
       ctx.save();
       ctx.translate(14, (y0 + y1) / 2);
       ctx.rotate(-Math.PI / 2);
-      ctx.textAlign = 'center';
-      ctx.fillText('reflectance R', 0, 0);
+      drawLabel(ctx, { text: 'reflectance R', x: 0, y: 0, align: 'center' });
       ctx.restore();
       function fresnel(thDeg: number) {
         const th = (thDeg * Math.PI) / 180;
@@ -121,16 +121,9 @@ export function BrewsterAngleDemo({ figure }: Props) {
       ctx.lineTo(bx, y1);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.accent;
-      ctx.font = 'bold 11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(`θ_B = ${brDeg.toFixed(2)}°`, bx, y1 - 4);
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.pink;
-      ctx.textAlign = 'left';
-      ctx.fillText('R_s · ⊥ to plane', x1 - 130, y1 + 14);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText('R_p · ∥ to plane', x1 - 130, y1 + 28);
+      drawLabel(ctx, { text: `θ_B = ${brDeg.toFixed(2)}°`, x: bx, y: y1 - 4, color: colors.accent, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: 'R_s · ⊥ to plane', x: x1 - 130, y: y1 + 14, color: colors.pink, size: 11, font: '11px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: 'R_p · ∥ to plane', x: x1 - 130, y: y1 + 28, color: colors.teal });
     },
     [],
   );

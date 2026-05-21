@@ -17,6 +17,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -50,12 +51,8 @@ export function PolarizationDemo({ figure }: Props) {
       ctx.lineTo(cx, cy + R);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('y', cx + R + 6, cy + 4);
-      ctx.textAlign = 'center';
-      ctx.fillText('z', cx, cy - R - 6);
+      drawLabel(ctx, { text: 'y', x: cx + R + 6, y: cy + 4, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: 'z', x: cx, y: cy - R - 6, align: 'center' });
       function eVec(time: number) {
         const yEy = Math.cos(phi) * Math.cos(om * time);
         const zEz = Math.sin(phi) * Math.cos(om * time - delta);
@@ -139,12 +136,8 @@ export function PolarizationDemo({ figure }: Props) {
         stateLabel = 'circular';
       }
       ctx.restore();
-      ctx.fillStyle = colors.accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(`polarization: ${stateLabel}`, 14, 22);
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText('view: looking down the propagation axis →', 14, 38);
+      drawLabel(ctx, { text: `polarization: ${stateLabel}`, x: 14, y: 22, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: 'view: looking down the propagation axis →', x: 14, y: 38 });
     },
     [],
   );

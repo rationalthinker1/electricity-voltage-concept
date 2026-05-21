@@ -25,6 +25,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -101,16 +102,10 @@ export function BoostConverterDemo({ figure }: Props) {
       ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`V_out`, padL - 4, yHi);
+      drawLabel(ctx, { text: `V_out`, x: padL - 4, y: yHi, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       ctx.restore();
-      ctx.fillText(`0`, padL - 4, yLo);
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('switch-node voltage', padL + 4, top + 4);
+      drawLabel(ctx, { text: `0`, x: padL - 4, y: yLo });
+      drawLabel(ctx, { text: 'switch-node voltage', x: padL + 4, y: top + 4, baseline: 'top' });
       const Iin_avg = stateRef.current.Iin_ideal;
       const Imax = Iin_avg + dIL_pp / 2;
       const Imin = Math.max(0, Iin_avg - dIL_pp / 2);
@@ -142,42 +137,24 @@ export function BoostConverterDemo({ figure }: Props) {
       ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`${Imax.toFixed(2)} A`, padL - 4, iOf(Imax));
+      drawLabel(ctx, { text: `${Imax.toFixed(2)} A`, x: padL - 4, y: iOf(Imax), align: 'right', baseline: 'middle' });
       ctx.restore();
-      ctx.fillText(`${Iin_avg.toFixed(2)} A`, padL - 4, iOf(Iin_avg));
-      ctx.fillText(`${Imin.toFixed(2)} A`, padL - 4, iOf(Imin));
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('inductor current I_L  (= input current)', padL + 4, mid + 4);
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('0', padL, padT + plotH + 4);
-      ctx.fillText(`${(tTotal * 1e6).toFixed(0)} µs`, padL + plotW, padT + plotH + 4);
+      drawLabel(ctx, { text: `${Iin_avg.toFixed(2)} A`, x: padL - 4, y: iOf(Iin_avg) });
+      drawLabel(ctx, { text: `${Imin.toFixed(2)} A`, x: padL - 4, y: iOf(Imin) });
+      drawLabel(ctx, { text: 'inductor current I_L  (= input current)', x: padL + 4, y: mid + 4, baseline: 'top' });
+      drawLabel(ctx, { text: '0', x: padL, y: padT + plotH + 4, align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: `${(tTotal * 1e6).toFixed(0)} µs`, x: padL + plotW, y: padT + plotH + 4 });
       ctx.save();
       ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        `V_out = V_in / (1 − D) = ${Vout.toFixed(2)} V    I_out = ${Iout.toFixed(2)} A`,
-        4,
-        4,
-      );
+      drawLabel(ctx, { text: `V_out = V_in / (1 − D) = ${Vout.toFixed(2)} V    I_out = ${Iout.toFixed(2)} A`, x: 4, y: 4, baseline: 'top' });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.65;
-      ctx.fillStyle = colors.accent;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
       const x_on = padL + (tOn / 2 / tTotal) * plotW;
       const x_off = padL + ((tOn + (Tsw - tOn) / 2) / tTotal) * plotW;
-      ctx.fillText('SW on: L charging', x_on, top + subH - 16);
+      drawLabel(ctx, { text: 'SW on: L charging', x: x_on, y: top + subH - 16, color: colors.accent, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       ctx.restore();
-      ctx.fillText('SW off: dump → C', x_off, top + subH - 16);
+      drawLabel(ctx, { text: 'SW off: dump → C', x: x_off, y: top + subH - 16 });
     },
     [],
   );

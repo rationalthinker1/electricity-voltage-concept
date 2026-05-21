@@ -55,12 +55,9 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
       ctx.fillRect(px, yBot, plateW, 6);
       ctx.save();
       ctx.globalAlpha = 0.65;
-      ctx.fillStyle = colors.text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(`+ free charge   V = ${V.toFixed(1)} V`, w / 2, yTop - 14);
+      drawLabel(ctx, { text: `+ free charge   V = ${V.toFixed(1)} V`, x: w / 2, y: yTop - 14, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center' });
       ctx.restore();
-      ctx.fillText(`− free charge`, w / 2, yBot + 18);
+      drawLabel(ctx, { text: `− free charge`, x: w / 2, y: yBot + 18 });
       const ticks = 12;
       ctx.fillStyle = colors.bg;
       ctx.font = '11px "JetBrains Mono", monospace';
@@ -83,10 +80,7 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
         ctx.strokeStyle = colors.teal;
         ctx.lineWidth = 1;
         ctx.strokeRect(px + 12, slabTop, plateW - 24, slabBot - slabTop);
-        ctx.fillStyle = colors.teal;
-        ctx.textAlign = 'left';
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillText(`dielectric  ε_r = ${er.toFixed(1)}`, px + 18, slabTop + 14);
+        drawLabel(ctx, { text: `dielectric  ε_r = ${er.toFixed(1)}`, x: px + 18, y: slabTop + 14, color: colors.teal, font: '10px "JetBrains Mono", monospace' });
 
         // Bound surface charges on the slab faces: top = negative (attracted toward + plate),
         // bottom = positive (attracted toward − plate). They partially cancel free charge.
@@ -110,10 +104,8 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
         }
 
         // Bound-charge labels
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'left';
-        ctx.fillText('bound − on top face', px + 18, slabTop + 28);
-        ctx.fillText('bound + on bottom face', px + 18, slabBot - 14);
+        drawLabel(ctx, { text: 'bound − on top face', x: px + 18, y: slabTop + 28 });
+        drawLabel(ctx, { text: 'bound + on bottom face', x: px + 18, y: slabBot - 14 });
 
         // Tiny aligned dipoles inside the slab — purely decorative
         const cols = 10;

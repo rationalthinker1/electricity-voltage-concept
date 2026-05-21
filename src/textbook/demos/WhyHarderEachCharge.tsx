@@ -14,7 +14,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
@@ -64,8 +65,8 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       const xL = cx - plateW / 2;
       const topY = cy - gap / 2;
       const botY = cy + gap / 2;
-      drawBar(ctx, xL, topY - plateThick, plateW, plateThick, '#ff3b6e');
-      drawBar(ctx, xL, botY, plateW, plateThick, '#5baef8');
+      drawBar(ctx, xL, topY - plateThick, plateW, plateThick, colors.pink);
+      drawBar(ctx, xL, botY, plateW, plateThick, colors.blue);
       const drawN = Math.min(40, s.N);
       ctx.fillStyle = colors.pink;
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
@@ -114,23 +115,10 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(wX, wY, 6, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+q', wX, wY);
-      ctx.fillStyle = colors.accent;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('push', wX + 12, (topY + botY) / 2);
-      ctx.fillStyle = colors.pink;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('top plate (+)', xL - 6, topY - 2);
-      ctx.fillStyle = colors.blue;
-      ctx.fillText('bottom plate (−)', xL - 6, botY + 2);
+      drawLabel(ctx, { text: '+q', x: wX, y: wY, color: colors.bg, weight: 'bold', size: 9, font: 'bold 9px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: 'push', x: wX + 12, y: (topY + botY) / 2, color: colors.accent, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, { text: 'top plate (+)', x: xL - 6, y: topY - 2, color: colors.pink, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: 'bottom plate (−)', x: xL - 6, y: botY + 2, color: colors.blue, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       const tapeX = W * 0.74;
       const tapeY = 30;
       const tapeW = Math.min(W - tapeX - 24, 120);
@@ -202,6 +190,19 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
         <MiniReadout label="Σ work so far" value={<Num value={W_so_far} />} unit="J" />
         <MiniReadout label="½CV² (continuum)" value={<Num value={W_integral} />} unit="J" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Work to add δq"
+        left={<InlineMath tex="\delta W \;=\; q\,V \;=\; q\,\dfrac{N q}{C}" />}
+        rightLabel="With current N"
+        right={
+          <InlineMath
+            tex={
+              `\\delta W \\;=\\; (1\\ \\text{nC})\\,(${V_now.toFixed(2)}\\ \\text{V}) ` +
+              `\\;=\\; ${(workForNext * 1e9).toFixed(2)}\\ \\text{nJ}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

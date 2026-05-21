@@ -178,10 +178,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
       ctx.restore();
       // Label "n̂" near the top of the normal.
       ctx.fillStyle = getCanvasColors().text;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('n̂', nTopP.x + 6, nTopP.y - 2);
+      drawLabel(ctx, { text: 'n̂', x: nTopP.x + 6, y: nTopP.y - 2, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'middle' });
 
       // ─── 5. Angle arcs at the origin ───
       // Tiny 2D arcs drawn in screen space, on the side of each ray.
@@ -241,35 +238,29 @@ export function SnellLaw3DDemo({ figure }: Props) {
       }
 
       // ─── 7. Labels and legend ───
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText('drag to orbit · look along z to see the 2D triangle', 12, 12);
-
-      ctx.textAlign = 'right';
+      drawLabel(ctx, { text: 'drag to orbit · look along z to see the 2D triangle', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = getCanvasColors().accent;
-      ctx.fillText('incident', w - 12, 12);
+      drawLabel(ctx, { text: 'incident', x: w - 12, y: 12, align: 'right' });
       if (s.showReflected) {
         ctx.fillStyle = getCanvasColors().pink;
-        ctx.fillText('reflected', w - 12, 28);
+        drawLabel(ctx, { text: 'reflected', x: w - 12, y: 28 });
       }
       if (refractedEnd) {
         ctx.fillStyle = getCanvasColors().teal;
-        ctx.fillText('refracted', w - 12, 44);
+        drawLabel(ctx, { text: 'refracted', x: w - 12, y: 44 });
       }
       ctx.fillStyle = getCanvasColors().text;
-      ctx.fillText('normal', w - 12, refractedEnd ? 60 : s.showReflected ? 44 : 28);
+      drawLabel(ctx, { text: 'normal', x: w - 12, y: refractedEnd ? 60 : s.showReflected ? 44 : 28 });
 
       // Medium labels in the corners of the interface.
-      ctx.textAlign = 'left';
       ctx.fillStyle = getCanvasColors().text;
       const labelAbove = s.tirMode ? `n₁ = 1.00 (air)` : `n₁ = 1.00 (air)`;
       const labelBelow = `n₂ = ${s.n2.toFixed(2)}`;
       const aboveAnchor = project(v3(-PLANE_HALF * 0.85, 0.9, 0), cam, w, h);
       const belowAnchor = project(v3(-PLANE_HALF * 0.85, -0.9, 0), cam, w, h);
-      ctx.fillText(labelAbove, aboveAnchor.x, aboveAnchor.y);
-      ctx.fillText(labelBelow, belowAnchor.x, belowAnchor.y);
+      drawLabel(ctx, { text: labelAbove, x: aboveAnchor.x, y: aboveAnchor.y });
+      drawLabel(ctx, { text: labelBelow, x: belowAnchor.x, y: belowAnchor.y });
 
       raf = requestAnimationFrame(draw);
     }

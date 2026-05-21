@@ -14,6 +14,7 @@ import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
 import { pretty } from '@/lib/physics';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -140,18 +141,10 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.55;
-      ctx.fillStyle = colors.text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('n̂', coilCx + projNx + 4, coilCy + projNy);
+      drawLabel(ctx, { text: 'n̂', x: coilCx + projNx + 4, y: coilCy + projNy, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
 
       ctx.restore();
-      ctx.fillStyle = colors.teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`B → ${B.toFixed(2)} T`, 12, 12);
+      drawLabel(ctx, { text: `B → ${B.toFixed(2)} T`, x: 12, y: 12, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
 
       ctx.restore();
 
@@ -232,15 +225,10 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('EMF(t)', scopeX, 12);
+      drawLabel(ctx, { text: 'EMF(t)', x: scopeX, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.textAlign = 'right';
       ctx.restore();
-      ctx.fillStyle = colors.accent;
-      ctx.fillText(`peak = ${pretty(peak)} V`, scopeX + scopeW, 12);
+      drawLabel(ctx, { text: `peak = ${pretty(peak)} V`, x: scopeX + scopeW, y: 12, color: colors.accent });
 
       ctx.restore();
 

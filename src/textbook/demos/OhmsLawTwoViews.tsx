@@ -79,14 +79,8 @@ export function OhmsLawTwoViewsDemo({ figure }: Props) {
       ctx.fillRect(0, 0, w, h);
 
       // Headline at top of canvas.
-      ctx.fillStyle = colors.text;
-      ctx.font = '600 14px "DM Sans", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText("Ohm's law", w / 2, 6);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = "italic 13px 'STIX Two Text', serif";
-      ctx.fillText('V = I × R', w / 2, 26);
+      drawLabel(ctx, { text: "Ohm's law", x: w / 2, y: 6, color: colors.text, font: '600 14px "DM Sans", sans-serif', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: 'V = I × R', x: w / 2, y: 26, font: "italic 13px 'STIX Two Text', serif" });
 
       // Split canvas into two stacked sub-panels.
       const topY = 50;
@@ -304,16 +298,9 @@ function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect
     ctx.lineTo(px, y);
     ctx.stroke();
   }
-
-  ctx.fillStyle = colors.textDim;
-  ctx.font = "italic 11px 'STIX Two Text', serif";
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
   const yLabel = p.mode === 'V-of-I' ? 'V' : 'R';
-  ctx.fillText(yLabel, px - 6, py + 4);
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'top';
-  ctx.fillText('I', px + pw - 8, py + ph + 6);
+  drawLabel(ctx, { text: yLabel, x: px - 6, y: py + 4, font: "italic 11px 'STIX Two Text', serif", align: 'right', baseline: 'middle' });
+  drawLabel(ctx, { text: 'I', x: px + pw - 8, y: py + ph + 6, baseline: 'top' });
 
   const xMax = I_MAX;
   const yMax = p.mode === 'V-of-I' ? V_MAX : R_AXIS_MAX;
@@ -358,17 +345,10 @@ function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect
   ctx.lineTo(px, dot.y);
   ctx.stroke();
   ctx.setLineDash([]);
-
-  ctx.fillStyle = colors.text;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
   const yText =
     p.mode === 'V-of-I' ? `${dotYx.toFixed(1)}V` : `${Math.min(dotYx, yMax).toFixed(1)}Ω`;
-  ctx.fillText(yText, px - 4, dot.y);
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText(`${dotIx.toFixed(2)}A`, dot.x, py + ph + 6);
+  drawLabel(ctx, { text: yText, x: px - 4, y: dot.y, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+  drawLabel(ctx, { text: `${dotIx.toFixed(2)}A`, x: dot.x, y: py + ph + 6, align: 'center', baseline: 'top' });
 
   ctx.fillStyle = colors.bg;
   ctx.strokeStyle = traceColor;

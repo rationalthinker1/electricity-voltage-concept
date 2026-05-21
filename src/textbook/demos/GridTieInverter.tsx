@@ -120,21 +120,15 @@ export function GridTieInverterDemo({ figure }: Props) {
       ctx.lineTo(padL + plotW, cy);
       ctx.closePath();
       ctx.fill();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
       const lx = padL + plotW + 8;
-      ctx.fillStyle = colors.text;
       ctx.fillRect(lx, padT + 8 - 1, 10, 2);
-      ctx.fillText('V_grid', lx + 14, padT + 8);
-      ctx.fillStyle = colors.accent;
+      drawLabel(ctx, { text: 'V_grid', x: lx + 14, y: padT + 8, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
       ctx.fillRect(lx, padT + 24 - 1, 10, 2);
-      ctx.fillText('I_inj', lx + 14, padT + 24);
+      drawLabel(ctx, { text: 'I_inj', x: lx + 14, y: padT + 24, color: colors.accent });
       ctx.save();
       ctx.globalAlpha = 0.6;
-      ctx.fillStyle = colors.teal;
       ctx.fillRect(lx, padT + 40 - 2, 10, 4);
-      ctx.fillText('p(t)', lx + 14, padT + 40);
+      drawLabel(ctx, { text: 'p(t)', x: lx + 14, y: padT + 40, color: colors.teal });
       ctx.restore();
       drawLabel(ctx, {
         x: padL + plotW / 2,

@@ -13,6 +13,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -56,10 +57,7 @@ export function PlaneWaveDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fill();
       ctx.restore();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('x · direction of propagation', xR - 200, cy + 16);
+      drawLabel(ctx, { text: 'x · direction of propagation', x: xR - 200, y: cy + 16, font: '10px "JetBrains Mono", monospace' });
       const N = 60;
       const Eamp = Math.min(80, H * 0.28);
       const Bamp = Eamp * 0.55;
@@ -111,14 +109,9 @@ export function PlaneWaveDemo({ figure }: Props) {
         else ctx.lineTo(bx2, by2);
       }
       ctx.stroke();
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.pink;
-      ctx.textAlign = 'left';
-      ctx.fillText('E (y)', 14, 22);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText('B (z)', 14, 38);
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText('in phase · |B| = |E|/c', 14, 54);
+      drawLabel(ctx, { text: 'E (y)', x: 14, y: 22, color: colors.pink, size: 11, font: '11px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: 'B (z)', x: 14, y: 38, color: colors.teal });
+      drawLabel(ctx, { text: 'in phase · |B| = |E|/c', x: 14, y: 54 });
     },
     [],
   );

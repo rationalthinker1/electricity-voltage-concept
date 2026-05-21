@@ -19,6 +19,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 /** Approximate silica fiber attenuation in dB/km vs wavelength λ (nm).
  *  Tuned to reproduce the canonical 0.20 dB/km @ 1550 nm and 0.35 dB/km @ 1310 nm
@@ -115,19 +116,13 @@ export function FiberAttenuationDemo() {
       for (const db of [0.1, 0.2, 0.5, 1, 2, 5]) {
         ctx.fillText(`${db}`, padL - 6, yOfLoss(db) + 3);
       }
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('λ (nm)', padL, H - 6);
+      drawLabel(ctx, { text: 'λ (nm)', x: padL, y: H - 6, font: '10px "JetBrains Mono", monospace' });
       ctx.save();
       ctx.translate(12, padT + plotH / 2);
       ctx.rotate(-Math.PI / 2);
-      ctx.textAlign = 'center';
-      ctx.fillText('loss (dB/km, log)', 0, 0);
+      drawLabel(ctx, { text: 'loss (dB/km, log)', x: 0, y: 0, align: 'center' });
       ctx.restore();
-      ctx.fillStyle = colors.textMuted;
-      ctx.textAlign = 'center';
-      ctx.fillText('OH⁻', xOfLam(1383), yOfLoss(2.0) - 6);
+      drawLabel(ctx, { text: 'OH⁻', x: xOfLam(1383), y: yOfLoss(2.0) - 6, color: colors.textMuted, align: 'center' });
     },
     [],
   );

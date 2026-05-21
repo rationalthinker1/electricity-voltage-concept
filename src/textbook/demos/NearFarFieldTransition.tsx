@@ -13,6 +13,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -106,14 +107,9 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(cx, cy + 6, 4, 0, Math.PI * 2);
       ctx.fill();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.pink;
-      ctx.textAlign = 'left';
-      ctx.fillText(`near-field r ≲ λ/2π = ${rNF.toFixed(0)} px`, 12, 18);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText(`far-field r ≫ λ/2π`, 12, 32);
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText(`λ = ${lam.toFixed(0)} px`, 12, 46);
+      drawLabel(ctx, { text: `near-field r ≲ λ/2π = ${rNF.toFixed(0)} px`, x: 12, y: 18, color: colors.pink, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `far-field r ≫ λ/2π`, x: 12, y: 32, color: colors.teal });
+      drawLabel(ctx, { text: `λ = ${lam.toFixed(0)} px`, x: 12, y: 46 });
     },
     [],
   );

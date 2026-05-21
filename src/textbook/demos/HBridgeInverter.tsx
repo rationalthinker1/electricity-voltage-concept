@@ -20,6 +20,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -115,24 +116,16 @@ export function HBridgeInverterDemo({ figure }: Props) {
       ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+V_DC', padL - 4, yTop(+V_DC));
-      ctx.fillText('0', padL - 4, top + subH / 2);
-      ctx.fillText('−V_DC', padL - 4, yTop(-V_DC));
-      ctx.fillText(`+${(m * V_DC).toFixed(0)} V`, padL - 4, yMid(+m * V_DC));
-      ctx.fillText('0', padL - 4, mid + subH / 2);
-      ctx.fillText(`−${(m * V_DC).toFixed(0)} V`, padL - 4, yMid(-m * V_DC));
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`bipolar PWM (carrier ${F_SW} Hz)`, padL + 4, top + 4);
-      ctx.fillText(`LC-filtered output  (${F_OUT} Hz sine)`, padL + 4, mid + 4);
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('0', padL, padT + plotH + 4);
-      ctx.fillText(`${(tWindow * 1000).toFixed(0)} ms`, padL + plotW, padT + plotH + 4);
+      drawLabel(ctx, { text: '+V_DC', x: padL - 4, y: yTop(+V_DC), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '0', x: padL - 4, y: top + subH / 2 });
+      drawLabel(ctx, { text: '−V_DC', x: padL - 4, y: yTop(-V_DC) });
+      drawLabel(ctx, { text: `+${(m * V_DC).toFixed(0)} V`, x: padL - 4, y: yMid(+m * V_DC) });
+      drawLabel(ctx, { text: '0', x: padL - 4, y: mid + subH / 2 });
+      drawLabel(ctx, { text: `−${(m * V_DC).toFixed(0)} V`, x: padL - 4, y: yMid(-m * V_DC) });
+      drawLabel(ctx, { text: `bipolar PWM (carrier ${F_SW} Hz)`, x: padL + 4, y: top + 4, baseline: 'top' });
+      drawLabel(ctx, { text: `LC-filtered output  (${F_OUT} Hz sine)`, x: padL + 4, y: mid + 4 });
+      drawLabel(ctx, { text: '0', x: padL, y: padT + plotH + 4, align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: `${(tWindow * 1000).toFixed(0)} ms`, x: padL + plotW, y: padT + plotH + 4 });
       ctx.restore();
       ctx0.phase = phase;
     },

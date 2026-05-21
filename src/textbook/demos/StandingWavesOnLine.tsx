@@ -19,6 +19,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -114,34 +115,15 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
         else ctx.lineTo(X, Y);
       }
       ctx.stroke();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+2', plotX - 4, yV(2));
-      ctx.fillText('0', plotX - 4, yV(0));
-      ctx.fillText('-2', plotX - 4, yV(-2));
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('source', plotX, plotY + plotH + 4);
-      ctx.textAlign = 'right';
-      ctx.fillText('load', plotX + plotW, plotY + plotH + 4);
-      ctx.textAlign = 'center';
-      ctx.fillText('position along line (λ)', plotX + plotW / 2, plotY + plotH + 18);
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('V(x,t)  (instantaneous)', plotX + 4, plotY + 4);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText('±|V(x)|  envelope', plotX + 180, plotY + 4);
-      ctx.fillStyle = colors.text;
-      ctx.textAlign = 'right';
-      ctx.fillText(
-        `VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`,
-        plotX + plotW - 4,
-        plotY + 4,
-      );
+      drawLabel(ctx, { text: '+2', x: plotX - 4, y: yV(2), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '0', x: plotX - 4, y: yV(0) });
+      drawLabel(ctx, { text: '-2', x: plotX - 4, y: yV(-2) });
+      drawLabel(ctx, { text: 'source', x: plotX, y: plotY + plotH + 4, baseline: 'top' });
+      drawLabel(ctx, { text: 'load', x: plotX + plotW, y: plotY + plotH + 4, align: 'right' });
+      drawLabel(ctx, { text: 'position along line (λ)', x: plotX + plotW / 2, y: plotY + plotH + 18, align: 'center' });
+      drawLabel(ctx, { text: 'V(x,t)  (instantaneous)', x: plotX + 4, y: plotY + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: '±|V(x)|  envelope', x: plotX + 180, y: plotY + 4, color: colors.teal });
+      drawLabel(ctx, { text: `VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`, x: plotX + plotW - 4, y: plotY + 4, color: colors.text, align: 'right' });
     },
     [],
   );

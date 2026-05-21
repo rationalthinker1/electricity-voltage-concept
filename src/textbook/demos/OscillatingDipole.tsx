@@ -17,6 +17,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawCharge } from '@/lib/canvasPrimitives';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -112,13 +113,8 @@ export function OscillatingDipoleDemo({ figure }: Props) {
       ctx.lineTo(cx, H - 8);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.fillText('axis · zero radiation', cx, 18);
-      ctx.textAlign = 'left';
-      ctx.fillStyle = colors.accent;
-      ctx.fillText('equator · max radiation →', 14, cy + 4);
+      drawLabel(ctx, { text: 'axis · zero radiation', x: cx, y: 18, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: 'equator · max radiation →', x: 14, y: cy + 4, color: colors.accent });
     },
     [],
   );

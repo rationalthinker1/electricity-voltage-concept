@@ -99,22 +99,16 @@ export function MOSFETOperationDemo({ figure }: Props) {
       ctx.restore();
       ctx.strokeStyle = colors.accent;
       ctx.strokeRect(oxL, dT + 14, oxR - oxL, oxT - (dT + 14));
-      ctx.fillStyle = colors.textDim;
-      ctx.font = 'bold 10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('S', (srcL + srcR) / 2, (ndT + ndB) / 2);
-      ctx.fillText('D', (drnL + drnR) / 2, (ndT + ndB) / 2);
-      ctx.fillText('G', (oxL + oxR) / 2, dT + 22);
+      drawLabel(ctx, { text: 'S', x: (srcL + srcR) / 2, y: (ndT + ndB) / 2, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: 'D', x: (drnL + drnR) / 2, y: (ndT + ndB) / 2 });
+      drawLabel(ctx, { text: 'G', x: (oxL + oxR) / 2, y: dT + 22 });
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.save();
       ctx.globalAlpha = 0.65;
-      ctx.fillStyle = colors.textDim;
-      ctx.textBaseline = 'top';
-      ctx.fillText('oxide', (oxL + oxR) / 2, oxT - 1);
-      ctx.fillText('p-substrate (body)', (dL + dR) / 2, dT + dH * 0.85);
-      ctx.fillText('n+', (srcL + srcR) / 2, ndB - 12);
-      ctx.fillText('n+', (drnL + drnR) / 2, ndB - 12);
+      drawLabel(ctx, { text: 'oxide', x: (oxL + oxR) / 2, y: oxT - 1, baseline: 'top' });
+      drawLabel(ctx, { text: 'p-substrate (body)', x: (dL + dR) / 2, y: dT + dH * 0.85 });
+      drawLabel(ctx, { text: 'n+', x: (srcL + srcR) / 2, y: ndB - 12 });
+      drawLabel(ctx, { text: 'n+', x: (drnL + drnR) / 2, y: ndB - 12 });
       if (Vov > 0) {
         // density ∝ Vov
         const channelAlpha = Math.min(0.85, 0.15 + 0.7 * (Vov / 4));
@@ -161,11 +155,7 @@ export function MOSFETOperationDemo({ figure }: Props) {
         });
       }
       ctx.restore();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`n-MOSFET (V_T = ${V_T.toFixed(1)} V)`, dL, 8);
+      drawLabel(ctx, { text: `n-MOSFET (V_T = ${V_T.toFixed(1)} V)`, x: dL, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       const pL = split + 50,
         pR = w - 12,
         pT = 30,
@@ -195,15 +185,10 @@ export function MOSFETOperationDemo({ figure }: Props) {
       for (let v = 0; v <= Vmax; v++) {
         ctx.fillText(v.toFixed(0), xOf(v), pT + pH + 4);
       }
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`${(Imax * 1000).toFixed(0)} mA`, pL - 4, yOf(Imax));
-      ctx.fillText('0', pL - 4, yOf(0));
+      drawLabel(ctx, { text: `${(Imax * 1000).toFixed(0)} mA`, x: pL - 4, y: yOf(Imax), align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '0', x: pL - 4, y: yOf(0) });
       ctx.restore();
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('V_DS (volts)', pL + pW / 2, pT + pH + 18);
+      drawLabel(ctx, { text: 'V_DS (volts)', x: pL + pW / 2, y: pT + pH + 18, align: 'center', baseline: 'top' });
       const traces = [1.5, 2.0, 2.5, 3.0];
       traces.forEach((Vgs, k) => {
         const t = k / (traces.length - 1);

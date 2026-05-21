@@ -24,6 +24,7 @@ import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -74,11 +75,7 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       ctx.moveTo(lineX0 - 16, cy - 22);
       ctx.lineTo(lineX0 - 16, cy + 22);
       ctx.stroke();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('source', lineX0 - 22, cy);
+      drawLabel(ctx, { text: 'source', x: lineX0 - 22, y: cy, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 2;
       const y0r = cy - 14,
@@ -95,16 +92,8 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       ctx.lineTo(lineX1, y1r);
       ctx.lineTo(lineX1, cy + 18);
       ctx.stroke();
-      ctx.fillStyle = colors.teal;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`Z_L = ${ZL >= 1e5 ? '∞' : ZL.toFixed(0) + ' Ω'}`, lineX1 + 8, cy);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`Z₀ = ${Z0} Ω`, (lineX0 + lineX1) / 2, cy + 28);
+      drawLabel(ctx, { text: `Z_L = ${ZL >= 1e5 ? '∞' : ZL.toFixed(0) + ' Ω'}`, x: lineX1 + 8, y: cy, color: colors.teal, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, { text: `Z₀ = ${Z0} Ω`, x: (lineX0 + lineX1) / 2, y: cy + 28, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       const Lx = lineX1 - lineX0;
       const yPulse = (level: number) => cy - 24 - 26 * level;
       const drawPulse = (xc: number, s: number) => {
@@ -135,17 +124,8 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       } else {
         // brief pause then loop
       }
-      ctx.fillStyle = colors.text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('Γ = (Z_L − Z₀)/(Z_L + Z₀)', 10, 8);
-      ctx.textAlign = 'right';
-      ctx.fillText(
-        `Γ = ${Gamma.toFixed(3)}    |Γ| = ${Math.abs(Gamma).toFixed(3)}    VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`,
-        w - 10,
-        8,
-      );
+      drawLabel(ctx, { text: 'Γ = (Z_L − Z₀)/(Z_L + Z₀)', x: 10, y: 8, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `Γ = ${Gamma.toFixed(3)}    |Γ| = ${Math.abs(Gamma).toFixed(3)}    VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`, x: w - 10, y: 8, align: 'right' });
     },
     [],
   );

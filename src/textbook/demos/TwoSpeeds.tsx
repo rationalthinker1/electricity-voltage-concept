@@ -20,6 +20,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { MATERIALS, PHYS, formatTime } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -62,14 +63,9 @@ export function TwoSpeedsDemo({ figure }: Props) {
         ctx.lineTo(trackRight, y);
         ctx.stroke();
         ctx.fillStyle = withAlpha(colors.textDim, 0.8);
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.fillText('0 mm', trackLeft, y + 18);
-        ctx.textAlign = 'right';
-        ctx.fillText('200 mm', trackRight, y + 18);
-        ctx.fillStyle = color;
-        ctx.textAlign = 'left';
-        ctx.fillText(label, trackLeft, y - 10);
+        drawLabel(ctx, { text: '0 mm', x: trackLeft, y: y + 18, font: '10px "JetBrains Mono", monospace' });
+        drawLabel(ctx, { text: '200 mm', x: trackRight, y: y + 18, align: 'right' });
+        drawLabel(ctx, { text: label, x: trackLeft, y: y - 10, color: color });
       }
       drawTrack(yTop, 'electron drift  (~0.03 mm/s)', colors.blue);
       drawTrack(yBot, 'EM signal in wire  (~2×10⁸ m/s)', colors.accent);

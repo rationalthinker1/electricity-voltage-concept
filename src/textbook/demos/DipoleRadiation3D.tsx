@@ -24,6 +24,7 @@ import { project, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { drawLabel, drawCaption } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -339,20 +340,14 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
 
       // Axis labels at the dipole tips.
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('axis · θ=0', pTop.x, pTop.y - 6);
-      ctx.textBaseline = 'top';
-      ctx.fillText('axis · θ=π', pBot.x, pBot.y + 6);
+      drawLabel(ctx, { text: 'axis · θ=0', x: pTop.x, y: pTop.y - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: 'axis · θ=π', x: pBot.x, y: pBot.y + 6, baseline: 'top' });
 
       // Top-left overlay.
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().accent;
-      ctx.fillText(`r(θ) = sin^${s.n.toFixed(1)} θ`, 14, 14);
+      drawCaption(ctx, { text: `r(θ) = sin^${s.n.toFixed(1)} θ`, x: 14, y: 14 });
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText('drag to orbit', 14, 30);
+      drawLabel(ctx, { text: 'drag to orbit', x: 14, y: 30 });
 
       raf = requestAnimationFrame(draw);
     }

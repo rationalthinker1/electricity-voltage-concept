@@ -75,11 +75,15 @@ echo "=== 10. codemod-annotationBox.mjs (info panels) ==="
 node scripts/codemod-annotationBox.mjs ${DRY_FLAG} || true
 
 echo ""
-echo "=== 11. centralize-formatters.mjs (local fmt* → @/lib/formatters) ==="
+echo "=== 11. codemod-fillText-catchall.mjs (function-level style inference) ==="
+node scripts/codemod-fillText-catchall.mjs ${WRITE_FLAG} || true
+
+echo ""
+echo "=== 12. centralize-formatters.mjs (local fmt* → @/lib/formatters) ==="
 node scripts/centralize-formatters.mjs ${WRITE_FLAG} || true
 
 echo ""
-echo "=== 12. codemod-strip-unused-auto.mjs (auto remove unused imports) ==="
+echo "=== 13. codemod-strip-unused-auto.mjs (auto remove unused imports) ==="
 node scripts/codemod-strip-unused-auto.mjs ${DRY_FLAG} || true
 
 # ─── Type-check only the demo files ──────────────────────────────────────────

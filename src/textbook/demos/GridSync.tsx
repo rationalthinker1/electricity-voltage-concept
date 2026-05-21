@@ -17,6 +17,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawAxes, drawHLine, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -122,31 +123,15 @@ export function GridSyncDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(padL + plotW - 18, padT + 14, 7, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = ready ? '#6cc5c2' : '#ff3b6e';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(ready ? 'READY TO CLOSE' : 'NOT SYNCHRONISED', padL + plotW - 30, padT + 14);
+      drawLabel(ctx, { text: ready ? 'READY TO CLOSE' : 'NOT SYNCHRONISED', x: padL + plotW - 30, y: padT + 14, color: ready ? '#6cc5c2' : '#ff3b6e', font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       ctx.save();
       ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.text;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('grid', padL + 6, padT + 14);
+      drawLabel(ctx, { text: 'grid', x: padL + 6, y: padT + 14, color: colors.text, baseline: 'middle' });
       ctx.restore();
-      ctx.fillStyle = ready ? '#6cc5c2' : '#ff6b2a';
-      ctx.fillText('generator', padL + 40, padT + 14);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
+      drawLabel(ctx, { text: 'generator', x: padL + 40, y: padT + 14, color: ready ? '#6cc5c2' : '#ff6b2a' });
       const dPhi = Math.abs(phiDeg) % 360;
       const dPhiMin = Math.min(dPhi, 360 - dPhi);
-      ctx.fillText(
-        `Δf = ${(fGen - F_GRID).toFixed(2)} Hz   ·   Δφ = ${dPhiMin.toFixed(0)}°   ·   ΔV = ${((vGen - V_GRID) * 100).toFixed(1)}%`,
-        padL + plotW / 2,
-        padT + plotH + 26,
-      );
+      drawLabel(ctx, { text: `Δf = ${(fGen - F_GRID).toFixed(2)} Hz   ·   Δφ = ${dPhiMin.toFixed(0)}°   ·   ΔV = ${((vGen - V_GRID) * 100).toFixed(1)}%`, x: padL + plotW / 2, y: padT + plotH + 26, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       ctx0.simT = simT;
     },
     [],

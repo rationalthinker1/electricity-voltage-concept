@@ -15,6 +15,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -78,14 +79,9 @@ export function ThinFilmDemo({ figure }: Props) {
       ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.strokeRect(stripLeft, stripTop, stripW, stripH);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'right';
-      ctx.fillText('R(λ)', stripLeft - 6, stripTop + 18);
-      ctx.textAlign = 'left';
-      ctx.fillText('380 nm', stripLeft, stripTop + stripH + 12);
-      ctx.textAlign = 'right';
-      ctx.fillText('740 nm', stripRight, stripTop + stripH + 12);
+      drawLabel(ctx, { text: 'R(λ)', x: stripLeft - 6, y: stripTop + 18, font: '10px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, { text: '380 nm', x: stripLeft, y: stripTop + stripH + 12 });
+      drawLabel(ctx, { text: '740 nm', x: stripRight, y: stripTop + stripH + 12, align: 'right' });
       const sectionY = 110;
       const sectionH = 130;
       ctx.fillStyle = withAlpha(colors.blue, 0.1);
@@ -102,15 +98,9 @@ export function ThinFilmDemo({ figure }: Props) {
       ctx.moveTo(stripLeft, sectionY + 40 + filmPxH);
       ctx.lineTo(stripRight, sectionY + 40 + filmPxH);
       ctx.stroke();
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText(`air · n=${n1.toFixed(2)}`, stripLeft + 6, sectionY + 18);
-      ctx.fillText(
-        `film · n=${n2.toFixed(2)}, t=${thickNm.toFixed(0)} nm`,
-        stripLeft + 6,
-        sectionY + 40 + filmPxH / 2 + 3,
-      );
-      ctx.fillText(`water · n=${n3.toFixed(2)}`, stripLeft + 6, sectionY + 40 + filmPxH + 18);
+      drawLabel(ctx, { text: `air · n=${n1.toFixed(2)}`, x: stripLeft + 6, y: sectionY + 18 });
+      drawLabel(ctx, { text: `film · n=${n2.toFixed(2)}, t=${thickNm.toFixed(0)} nm`, x: stripLeft + 6, y: sectionY + 40 + filmPxH / 2 + 3 });
+      drawLabel(ctx, { text: `water · n=${n3.toFixed(2)}`, x: stripLeft + 6, y: sectionY + 40 + filmPxH + 18 });
       const rx0 = stripLeft + 70;
       ctx.strokeStyle = 'rgba(255,255,255,0.85)';
       ctx.lineWidth = 1.4;

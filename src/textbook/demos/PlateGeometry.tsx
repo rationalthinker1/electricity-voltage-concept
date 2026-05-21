@@ -8,7 +8,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { drawLabel } from '@/lib/canvasLayout';
@@ -138,6 +139,20 @@ export function PlateGeometryDemo({ figure }: Props) {
         />
         <MiniReadout label="C = ε₀A/d" value={<Num value={C} />} unit="F" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Geometry rule"
+        left={<InlineMath tex="C \;=\; \dfrac{\varepsilon_0 A}{d}" />}
+        rightLabel="With current sliders"
+        right={
+          <InlineMath
+            tex={
+              `C \\;=\\; \\dfrac{(8.854\\times10^{-12})\\,(${A_cm2.toFixed(0)}\\times10^{-4})}` +
+              `{${(d_mm * 1e-3).toExponential(1)}} ` +
+              `\\;\\approx\\; ${(C * 1e12).toFixed(1)}\\ \\text{pF}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

@@ -455,11 +455,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
         // "B" label at the tip.
         const tipLabel = project({ x: totalTo.x * 1.18, y: 0.18, z: totalTo.z * 1.18 }, cam, w, h);
         if (tipLabel.depth > 0) {
-          ctx.fillStyle = colors.accent;
-          ctx.font = 'italic bold 14px "STIX Two Text", serif';
-          ctx.textAlign = 'left';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('B', tipLabel.x, tipLabel.y);
+          drawLabel(ctx, { text: 'B', x: tipLabel.x, y: tipLabel.y, color: colors.accent, font: 'italic bold 14px "STIX Two Text", serif', baseline: 'middle' });
         }
       }
 
@@ -482,26 +478,19 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       }
 
       // ───── HUD labels ─────
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`I_A = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[0]!)).toFixed(2)} A`, 12, 12);
+      drawLabel(ctx, { text: `I_A = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[0]!)).toFixed(2)} A`, x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = coilColors()[0]!;
-      ctx.fillText(`A`, 2, 12);
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText(`I_B = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[1]!)).toFixed(2)} A`, 12, 26);
+      drawLabel(ctx, { text: `A`, x: 2, y: 12 });
+      drawLabel(ctx, { text: `I_B = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[1]!)).toFixed(2)} A`, x: 12, y: 26 });
       ctx.fillStyle = coilColors()[1]!;
-      ctx.fillText(`B`, 2, 26);
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText(`I_C = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[2]!)).toFixed(2)} A`, 12, 40);
+      drawLabel(ctx, { text: `B`, x: 2, y: 26 });
+      drawLabel(ctx, { text: `I_C = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[2]!)).toFixed(2)} A`, x: 12, y: 40 });
       ctx.fillStyle = coilColors()[2]!;
-      ctx.fillText(`C`, 2, 40);
+      drawLabel(ctx, { text: `C`, x: 2, y: 40 });
 
       ctx.save();
       ctx.globalAlpha = 0.55;
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText('drag to orbit · animation slowed 20× for visibility', 12, h - 18);
+      drawLabel(ctx, { text: 'drag to orbit · animation slowed 20× for visibility', x: 12, y: h - 18 });
 
       setTick((t) => (t + 1) % 1000);
       raf = requestAnimationFrame(draw);

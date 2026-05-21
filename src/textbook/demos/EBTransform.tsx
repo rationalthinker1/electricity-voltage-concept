@@ -26,6 +26,7 @@ import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -74,11 +75,8 @@ export function EBTransformDemo({ figure }: Props) {
       ctx.moveTo(midX, 14);
       ctx.lineTo(midX, h - 14);
       ctx.stroke();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText('REST FRAME · pure E_y', midX / 2, 18);
-      ctx.fillText(`BOOSTED FRAME · β = ${b.toFixed(2)} →`, midX + midX / 2, 18);
+      drawLabel(ctx, { text: 'REST FRAME · pure E_y', x: midX / 2, y: 18, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: `BOOSTED FRAME · β = ${b.toFixed(2)} →`, x: midX + midX / 2, y: 18 });
       function drawE(left: number, right: number, scale: number) {
         ctx.strokeStyle = colors.pink;
         ctx.fillStyle = colors.pink;
@@ -136,12 +134,8 @@ export function EBTransformDemo({ figure }: Props) {
       if (induced > 0.01) {
         drawB(midX + 12, w - 24, induced);
       }
-      ctx.fillStyle = colors.teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText("B_z'  (induced, into page)", midX + 18, h - 18);
-      ctx.fillStyle = colors.pink;
-      ctx.fillText("E_y'  = γ·E_y", midX + 18, h - 34);
+      drawLabel(ctx, { text: "B_z'  (induced, into page)", x: midX + 18, y: h - 18, color: colors.teal, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: "E_y'  = γ·E_y", x: midX + 18, y: h - 34, color: colors.pink });
     },
     [],
   );

@@ -32,6 +32,7 @@ import { Num } from '@/components/Num';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useCircuitCache } from '@/lib/useCircuitCache';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -84,12 +85,9 @@ export function NortonTheveninDemo({ figure }: Props) {
         ctx.save();
         ctx.globalAlpha = 0.85;
         ctx.fillStyle = getCanvasColors().textDim;
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('Original network', colW / 2, 12);
-        ctx.fillText('Thévenin equivalent + load', colW + colW / 2, 12);
-        ctx.fillText('Norton equivalent + load', 2 * colW + colW / 2, 12);
+        drawLabel(ctx, { text: 'Original network', x: colW / 2, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+        drawLabel(ctx, { text: 'Thévenin equivalent + load', x: colW + colW / 2, y: 12 });
+        drawLabel(ctx, { text: 'Norton equivalent + load', x: 2 * colW + colW / 2, y: 12 });
         ctx.restore();
         ctx.strokeStyle = getCanvasColors().border;
         ctx.beginPath();
@@ -100,11 +98,8 @@ export function NortonTheveninDemo({ figure }: Props) {
         ctx.stroke();
 
         ctx.fillStyle = getCanvasColors().accent;
-        ctx.font = 'bold 14px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('⇌', colW, h * 0.45);
-        ctx.fillText('⇌', 2 * colW, h * 0.45);
+        drawLabel(ctx, { text: '⇌', x: colW, y: h * 0.45, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+        drawLabel(ctx, { text: '⇌', x: 2 * colW, y: h * 0.45 });
 
         raf = requestAnimationFrame(draw);
       }

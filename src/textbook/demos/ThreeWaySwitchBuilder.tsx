@@ -586,13 +586,10 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
         // Footer hint.
         ctx.save();
         ctx.fillStyle = withAlpha(colors.textDim, 0.65);
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
         const hint = st.inProgressFrom
           ? `wiring from ${TERMINAL_LABEL[st.inProgressFrom]} — click another terminal to complete (or empty space to cancel)`
           : 'click a terminal to start a wire · click a wire to delete · click a switch body to toggle';
-        ctx.fillText(hint, w / 2, h - 6);
+        drawLabel(ctx, { text: hint, x: w / 2, y: h - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
         ctx.restore();
 
         raf = requestAnimationFrame(draw);

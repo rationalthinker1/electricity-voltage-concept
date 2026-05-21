@@ -17,6 +17,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -149,11 +150,7 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fillStyle = colors.accent;
       ctx.fill();
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('E_built-in', (arrowL + arrowR) / 2, arrowY - 8);
+      drawLabel(ctx, { text: 'E_built-in', x: (arrowL + arrowR) / 2, y: arrowY - 8, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
 
       // carrier dots — drift slightly with bias.
       // Forward bias: carriers cross the junction (left→right for electrons,
@@ -196,25 +193,11 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       }
 
       // labels
-      ctx.fillStyle = colors.pink;
-      ctx.font = 'bold 11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('n-type', padL + 6, padT + 4);
-      ctx.fillStyle = colors.blue;
-      ctx.textAlign = 'right';
-      ctx.fillText('p-type', padL + plotW - 6, padT + 4);
+      drawLabel(ctx, { text: 'n-type', x: padL + 6, y: padT + 4, color: colors.pink, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'p-type', x: padL + plotW - 6, y: padT + 4, color: colors.blue, align: 'right' });
 
       // depletion region label
-      ctx.fillStyle = colors.text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        `depletion region   (W/W₀ = ${w_rel.toFixed(2)})`,
-        padL + plotW * 0.5,
-        padT + plotH - 16,
-      );
+      drawLabel(ctx, { text: `depletion region   (W/W₀ = ${w_rel.toFixed(2)})`, x: padL + plotW * 0.5, y: padT + plotH - 16, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
       // header
       ctx.fillStyle = colors.textDim;
@@ -223,11 +206,7 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       let mode = 'zero bias';
       if (Vbias > 0.01) mode = 'forward bias';
       else if (Vbias < -0.01) mode = 'reverse bias';
-      ctx.fillText(
-        `V_applied = ${Vbias.toFixed(2)} V   ·   ${mode}   ·   V_bi = ${V_BI.toFixed(2)} V`,
-        padL,
-        6,
-      );
+      drawLabel(ctx, { text: `V_applied = ${Vbias.toFixed(2)} V   ·   ${mode}   ·   V_bi = ${V_BI.toFixed(2)} V`, x: padL, y: 6 });
 
       raf = requestAnimationFrame(draw);
     }

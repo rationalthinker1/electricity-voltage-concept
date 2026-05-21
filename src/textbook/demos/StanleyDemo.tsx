@@ -124,16 +124,10 @@ export function StanleyDemo({ figure }: Props) {
         ctx.lineTo(b, cy);
         ctx.stroke();
       }
-      ctx.fillStyle = colors.teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
       const lcx = (lineX0 + lineX1) / 2;
-      ctx.fillText(`V_line = ${formatVoltage(Vline)}`, lcx, cy - 18);
-      ctx.fillText(`I = ${formatCurrent(I)}`, lcx, cy - 32);
-      ctx.fillStyle = colors.textDim;
-      ctx.textBaseline = 'top';
-      ctx.fillText(`${distanceKm} km · R = ${R.toFixed(1)} Ω`, lcx, cy + 24);
+      drawLabel(ctx, { text: `V_line = ${formatVoltage(Vline)}`, x: lcx, y: cy - 18, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: `I = ${formatCurrent(I)}`, x: lcx, y: cy - 32 });
+      drawLabel(ctx, { text: `${distanceKm} km · R = ${R.toFixed(1)} Ω`, x: lcx, y: cy + 24, baseline: 'top' });
       const barX = padX,
         barY = h - 30,
         barW = w - 2 * padX,
@@ -144,17 +138,8 @@ export function StanleyDemo({ figure }: Props) {
       ctx.fillRect(barX, barY, barW * eff, barH);
       ctx.fillStyle = withAlpha(colors.accent, 0.55);
       ctx.fillRect(barX + barW * eff, barY, barW * (1 - eff), barH);
-      ctx.fillStyle = colors.text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`delivered: ${(eff * 100).toFixed(1)} %`, barX + 4, barY + barH / 2);
-      ctx.textAlign = 'right';
-      ctx.fillText(
-        `lost as heat: ${((1 - eff) * 100).toFixed(1)} %`,
-        barX + barW - 4,
-        barY + barH / 2,
-      );
+      drawLabel(ctx, { text: `delivered: ${(eff * 100).toFixed(1)} %`, x: barX + 4, y: barY + barH / 2, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, { text: `lost as heat: ${((1 - eff) * 100).toFixed(1)} %`, x: barX + barW - 4, y: barY + barH / 2, align: 'right' });
     },
     [],
   );

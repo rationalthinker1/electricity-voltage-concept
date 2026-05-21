@@ -14,6 +14,7 @@ import { drawAxes, drawHLine, drawLinePlot } from '@/lib/drawPlot';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Coeff {
   n: number;
@@ -112,14 +113,10 @@ export function HarmonicSynthesisDemo() {
       drawHLine(ctx, rect, -1, -1.2, 1.2, { color: colors.border, dash: [3, 5], alpha: 0.6 });
 
       // y-axis tick labels manually for ±1 and 0
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
       const yAt = (v: number) => padY + plotH - ((v + 1.2) / 2.4) * plotH;
-      ctx.fillText('+1', padX - 6, yAt(1));
-      ctx.fillText('−1', padX - 6, yAt(-1));
-      ctx.fillText('0', padX - 6, yAt(0));
+      drawLabel(ctx, { text: '+1', x: padX - 6, y: yAt(1), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '−1', x: padX - 6, y: yAt(-1) });
+      drawLabel(ctx, { text: '0', x: padX - 6, y: yAt(0) });
 
       const cs = coeffs(target, N);
       const cycles = 2;

@@ -148,16 +148,11 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
       ctx.moveTo(opX, opY - 12);
       ctx.lineTo(opX, opY + 12);
       ctx.stroke();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('speed (per unit) →', padL + plotW / 2, padT + plotH + 18);
+      drawLabel(ctx, { text: 'speed (per unit) →', x: padL + plotW / 2, y: padT + plotH + 18, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       ctx.save();
       ctx.translate(16, padT + plotH / 2);
       ctx.rotate(-Math.PI / 2);
-      ctx.textBaseline = 'middle';
-      ctx.fillText('torque (per unit) →', 0, 0);
+      drawLabel(ctx, { text: 'torque (per unit) →', x: 0, y: 0, baseline: 'middle' });
       ctx.restore();
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -184,14 +179,10 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
       }
       ctx.strokeStyle = colors.borderStrong;
       ctx.strokeRect(cbX, padT, cbW, cbH);
-      ctx.fillStyle = colors.text;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillText('η = 0.95', cbX + cbW + 4, padT + 2);
-      ctx.fillText('0.80', cbX + cbW + 4, padT + cbH * 0.4);
-      ctx.fillText('0.60', cbX + cbW + 4, padT + cbH * 0.75);
-      ctx.fillText('0.40', cbX + cbW + 4, padT + cbH - 2);
+      drawLabel(ctx, { text: 'η = 0.95', x: cbX + cbW + 4, y: padT + 2, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, { text: '0.80', x: cbX + cbW + 4, y: padT + cbH * 0.4 });
+      drawLabel(ctx, { text: '0.60', x: cbX + cbW + 4, y: padT + cbH * 0.75 });
+      drawLabel(ctx, { text: '0.40', x: cbX + cbW + 4, y: padT + cbH - 2 });
       drawLabel(ctx, {
         x: padL + 6,
         y: padT + 4,

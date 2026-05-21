@@ -101,12 +101,8 @@ export function LenzsLawDemo({ figure }: Props) {
       ctx.lineWidth = 1;
       ctx.strokeRect(cx - magW / 2, magY - magH / 2, magW, magH);
       ctx.restore();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 11px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('S', cx, magY - magH / 4);
-      ctx.fillText('N', cx, magY + magH / 4);
+      drawLabel(ctx, { text: 'S', x: cx, y: magY - magH / 4, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: 'N', x: cx, y: magY + magH / 4 });
 
       // Magnet's own B-field arrow — pink, pointing down toward loop
       ctx.fillStyle = colors.pink;
@@ -127,11 +123,7 @@ export function LenzsLawDemo({ figure }: Props) {
       ctx.lineTo(cx + 5, arrowToY - 7);
       ctx.closePath();
       ctx.fill();
-      ctx.fillStyle = colors.pink;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('B (magnet)', cx + 10, (arrowFromY + arrowToY) / 2);
+      drawLabel(ctx, { text: 'B (magnet)', x: cx + 10, y: (arrowFromY + arrowToY) / 2, color: colors.pink, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
 
       // Induced-B arrow (teal) inside the loop. dir = +1 (approaching) → B_ind UP (out of loop, opposing).
       // dir = −1 (retreating) → B_ind DOWN (into loop, supporting fading flux).
@@ -221,17 +213,13 @@ export function LenzsLawDemo({ figure }: Props) {
       }
 
       // Status pill top-left
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       const status =
         dir > 0
           ? 'magnet approaching · Φ ↑ · current opposes'
           : dir < 0
             ? 'magnet retreating · Φ ↓ · current sustains'
             : 'static · no induction';
-      ctx.fillText(status, 14, 14);
+      drawLabel(ctx, { text: status, x: 14, y: 14, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
 
       raf = requestAnimationFrame(draw);
     }

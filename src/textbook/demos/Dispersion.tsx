@@ -15,6 +15,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -146,10 +147,8 @@ export function DispersionDemo({ figure }: Props) {
       }
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.restore();
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText(`n(λ) = A + B/λ²`, 12, 18);
-      ctx.fillText(`A = ${A.toFixed(2)}, B = ${B.toFixed(4)} µm²`, 12, 32);
+      drawLabel(ctx, { text: `n(λ) = A + B/λ²`, x: 12, y: 18 });
+      drawLabel(ctx, { text: `A = ${A.toFixed(2)}, B = ${B.toFixed(4)} µm²`, x: 12, y: 32 });
     },
     [],
   );

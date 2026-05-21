@@ -13,6 +13,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -78,13 +79,8 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       ctx.fillStyle = colors.blue;
       ctx.fillRect(splitX - 34, h * 0.18, 26, h * 0.64);
       ctx.restore();
-      ctx.fillStyle = colors.pink;
-      ctx.font = 'bold 12px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('N', 21, h / 2);
-      ctx.fillStyle = colors.blue;
-      ctx.fillText('S', splitX - 21, h / 2);
+      drawLabel(ctx, { text: 'N', x: 21, y: h / 2, color: colors.pink, weight: 'bold', size: 12, font: '12px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: 'S', x: splitX - 21, y: h / 2, color: colors.blue });
       // Field arrows
       ctx.save();
       ctx.globalAlpha = 0.25;
@@ -128,12 +124,7 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(coilCx, coilCy + coilH / 2 + 28, 6, 0, Math.PI * 2);
       ctx.stroke();
-
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`B = ${B_T} T  ·  N = ${N_TURNS}  ·  A = ${(A_M2 * 1e4).toFixed(0)} cm²`, 8, 8);
+      drawLabel(ctx, { text: `B = ${B_T} T  ·  N = ${N_TURNS}  ·  A = ${(A_M2 * 1e4).toFixed(0)} cm²`, x: 8, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.restore();
 
       // Divider
@@ -202,14 +193,8 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
         ctx.stroke();
       }
       ctx.restore();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('EMF(t)', scopeX, 12);
-      ctx.textAlign = 'right';
-      ctx.fillStyle = colors.accent;
-      ctx.fillText(`peak = ${peak.toFixed(1)} V`, scopeX + scopeW, 12);
+      drawLabel(ctx, { text: 'EMF(t)', x: scopeX, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `peak = ${peak.toFixed(1)} V`, x: scopeX + scopeW, y: 12, color: colors.accent, align: 'right' });
       ctx.restore();
 
       raf = requestAnimationFrame(draw);

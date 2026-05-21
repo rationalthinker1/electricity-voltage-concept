@@ -79,21 +79,13 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
       ctx.fillRect(battX - 8, cy - 18, 4, 36);
       ctx.fillStyle = colors.blue;
       ctx.fillRect(battX - 16, cy - 10, 4, 20);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('battery', battX - 10, cy + 22);
+      drawLabel(ctx, { text: 'battery', x: battX - 10, y: cy + 22, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       const plateH = 80;
       ctx.fillStyle = colors.accent;
       ctx.fillRect(plate1X - 3, cy - plateH / 2, 4, plateH);
       ctx.fillRect(plate2X, cy - plateH / 2, 4, plateH);
-      ctx.fillStyle = colors.pink;
-      ctx.font = 'bold 14px JetBrains Mono';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+', plate1X - 18, cy - plateH / 2 - 14);
-      ctx.fillStyle = colors.blue;
-      ctx.fillText('−', plate2X + 18, cy - plateH / 2 - 14);
+      drawLabel(ctx, { text: '+', x: plate1X - 18, y: cy - plateH / 2 - 14, color: colors.pink, weight: 'bold', size: 14, font: '14px "JetBrains Mono"', baseline: 'middle' });
+      drawLabel(ctx, { text: '−', x: plate2X + 18, y: cy - plateH / 2 - 14, color: colors.blue, weight: 'bold', size: 14, font: '14px "JetBrains Mono"', baseline: 'middle' });
       const nLines = 5;
       for (let i = 0; i < nLines; i++) {
         const y = cy - plateH / 2 + (i + 0.5) * (plateH / nLines);
@@ -115,15 +107,10 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
         ctx.closePath();
         ctx.fill();
       }
-      ctx.fillStyle = colors.pink;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('E growing', (plate1X + plate2X) / 2, cy + plateH / 2 + 6);
+      drawLabel(ctx, { text: 'E growing', x: (plate1X + plate2X) / 2, y: cy + plateH / 2 + 6, color: colors.pink, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       ctx.save();
       ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText('∂E/∂t = displacement current', (plate1X + plate2X) / 2, cy + plateH / 2 + 22);
+      drawLabel(ctx, { text: '∂E/∂t = displacement current', x: (plate1X + plate2X) / 2, y: cy + plateH / 2 + 22, align: 'center', baseline: 'top' });
       ctx.restore();
       const loopY_off = 0;
       const radiusPx = Math.min(60, Math.max(18, r_mm * 4));

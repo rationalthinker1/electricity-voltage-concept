@@ -14,6 +14,7 @@ import { Num } from '@/components/Num';
 import { drawAxes, drawHLine, drawLinePlot } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -93,17 +94,10 @@ export function TurnsRatioDemo({ figure }: Props) {
       });
       const plotW = rect.w;
       const plotH = rect.h;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillStyle = colors.pink;
-      ctx.fillText('— V_p (170 V peak)', padL + 8, padT + 6);
-      ctx.fillStyle = colors.accent;
-      ctx.fillText(`— V_s = n · V_p`, padL + 8, padT + 22);
+      drawLabel(ctx, { text: '— V_p (170 V peak)', x: padL + 8, y: padT + 6, color: colors.pink, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `— V_s = n · V_p`, x: padL + 8, y: padT + 22, color: colors.accent });
       ctx.fillStyle = withAlpha(colors.textDim, 0.6);
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'top';
-      ctx.fillText('t (60 Hz · 2 cycles)', padL + plotW, padT + plotH + 4);
+      drawLabel(ctx, { text: 't (60 Hz · 2 cycles)', x: padL + plotW, y: padT + plotH + 4, align: 'right', baseline: 'top' });
     },
     [],
   );

@@ -39,6 +39,7 @@ import { PHYS } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { project, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -482,27 +483,22 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       }
 
       // ── Annotations ────────────────────────────────────────────────
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText('drag to rotate', 12, 12);
+      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.save();
       ctx.globalAlpha = 0.65;
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText(`r₁ = ${r1.toFixed(2)}   r₂ = ${r2.toFixed(2)}   r₃ = ${r3.toFixed(2)}`, 12, 28);
+      drawLabel(ctx, { text: `r₁ = ${r1.toFixed(2)}   r₂ = ${r2.toFixed(2)}   r₃ = ${r3.toFixed(2)}`, x: 12, y: 28 });
       ctx.restore();
-
-      ctx.textAlign = 'right';
       ctx.fillStyle = getCanvasColors().accent;
-      ctx.fillText(s.reverse ? 'I  amber · current −ŷ' : 'I  amber · current +ŷ', W - 12, 12);
+      drawLabel(ctx, { text: s.reverse ? 'I  amber · current −ŷ' : 'I  amber · current +ŷ', x: W - 12, y: 12, align: 'right' });
       ctx.fillStyle = getCanvasColors().teal;
-      ctx.fillText('B  teal · azimuthal (right-hand rule)', W - 12, 28);
+      drawLabel(ctx, { text: 'B  teal · azimuthal (right-hand rule)', x: W - 12, y: 28 });
       ctx.save();
       ctx.globalAlpha = 0.7;
       ctx.fillStyle = getCanvasColors().text;
       if (s.showHand) {
-        ctx.fillText('thumb = I, fingers curl with B', W - 12, 44);
+        drawLabel(ctx, { text: 'thumb = I, fingers curl with B', x: W - 12, y: 44 });
         ctx.restore();
       }
 

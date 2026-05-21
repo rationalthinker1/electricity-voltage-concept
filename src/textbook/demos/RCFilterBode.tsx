@@ -18,6 +18,7 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { fmtFreqShort } from '@/lib/formatters';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -166,30 +167,15 @@ export function RCFilterBodeDemo({ figure }: Props) {
         glowWidth: 5,
       });
       ctx.restore();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('0 dB', plotX - 4, yMag(0));
-      ctx.fillText('-20', plotX - 4, yMag(-20));
-      ctx.fillText('-40', plotX - 4, yMag(-40));
-      ctx.fillText('0°', plotX - 4, yPh(0));
-      ctx.fillText('-90°', plotX - 4, yPh(-90));
-      ctx.fillText('+90°', plotX - 4, yPh(90));
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('|H(jω)|  [dB]', plotX + 4, magY0 + 4);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText('arg H(jω)  [deg]', plotX + 4, phaseY0 + 4);
-      ctx.fillStyle = colors.text;
-      ctx.textAlign = 'right';
-      ctx.fillText(
-        `${mode === 'low' ? 'low-pass' : 'high-pass'}  f_c = ${fmtFreqShort(fc)}`,
-        plotX + plotW - 4,
-        magY0 + 4,
-      );
+      drawLabel(ctx, { text: '0 dB', x: plotX - 4, y: yMag(0), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '-20', x: plotX - 4, y: yMag(-20) });
+      drawLabel(ctx, { text: '-40', x: plotX - 4, y: yMag(-40) });
+      drawLabel(ctx, { text: '0°', x: plotX - 4, y: yPh(0) });
+      drawLabel(ctx, { text: '-90°', x: plotX - 4, y: yPh(-90) });
+      drawLabel(ctx, { text: '+90°', x: plotX - 4, y: yPh(90) });
+      drawLabel(ctx, { text: '|H(jω)|  [dB]', x: plotX + 4, y: magY0 + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'arg H(jω)  [deg]', x: plotX + 4, y: phaseY0 + 4, color: colors.teal });
+      drawLabel(ctx, { text: `${mode === 'low' ? 'low-pass' : 'high-pass'}  f_c = ${fmtFreqShort(fc)}`, x: plotX + plotW - 4, y: magY0 + 4, color: colors.text, align: 'right' });
     },
     [],
   );

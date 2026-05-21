@@ -104,10 +104,7 @@ export function THDAndDistortionDemo() {
       ctx.lineTo(w - padX, yDn);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('time domain', padX, padY + 8);
+      drawLabel(ctx, { text: 'time domain', x: padX, y: padY + 8, size: 9, font: '9px "JetBrains Mono", monospace' });
       const bMid = padY + halfH + halfH * 0.95 + 4;
       const bH = halfH * 0.85;
       ctx.strokeStyle = colors.border;
@@ -142,9 +139,7 @@ export function THDAndDistortionDemo() {
       for (let n = 1; n <= nMax; n += 2) {
         ctx.fillText(n.toString() + 'f', xOf(n), bMid + 12);
       }
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText('spectrum', padX, padY + halfH + 14);
+      drawLabel(ctx, { text: 'spectrum', x: padX, y: padY + halfH + 14 });
     },
     [],
   );

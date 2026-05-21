@@ -62,16 +62,11 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
         ctx.lineTo(plotX + plotW, y);
         ctx.stroke();
       }
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('speed →', plotX + plotW / 2, plotY + plotH + 18);
+      drawLabel(ctx, { text: 'speed →', x: plotX + plotW / 2, y: plotY + plotH + 18, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       ctx.save();
       ctx.translate(20, plotY + plotH / 2);
       ctx.rotate(-Math.PI / 2);
-      ctx.textBaseline = 'middle';
-      ctx.fillText('torque →', 0, 0);
+      drawLabel(ctx, { text: 'torque →', x: 0, y: 0, baseline: 'middle' });
       ctx.restore();
       const nsX = plotX + 0.85 * plotW;
       ctx.strokeStyle = withAlpha(colors.teal, 0.25);
@@ -81,10 +76,7 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
       ctx.lineTo(nsX, plotY + plotH);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.teal;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('n_s', nsX, plotY - 4);
+      drawLabel(ctx, { text: 'n_s', x: nsX, y: plotY - 4, color: colors.teal, align: 'center', baseline: 'bottom' });
       const mapX = (nFrac: number) => plotX + nFrac * plotW;
       const mapY = (tFrac: number) => plotY + plotH - tFrac * plotH;
       let legendY = plotY + 8;

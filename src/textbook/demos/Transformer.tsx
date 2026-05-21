@@ -16,6 +16,7 @@ import { drawHalo } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -186,17 +187,11 @@ export function TransformerDemo({ figure }: Props) {
       ctx.lineTo(secX + 22, loadY + 8);
       ctx.lineTo(loadX - 14, loadY + 8);
       ctx.stroke();
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`N₁ = ${N1}`, primX, coreBot + 6);
-      ctx.fillText(`V₁ = ${V1.toFixed(0)} V`, srcX, srcY + 26);
-      ctx.fillText(`N₂ = ${N2}`, secX, coreBot + 6);
-      ctx.fillText(`V₂ = ${V2.toFixed(1)} V`, loadX, loadY + 26);
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.fillText('iron core · shared Φ', (coreLeft + coreRight) / 2, coreTop - 14);
+      drawLabel(ctx, { text: `N₁ = ${N1}`, x: primX, y: coreBot + 6, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: `V₁ = ${V1.toFixed(0)} V`, x: srcX, y: srcY + 26 });
+      drawLabel(ctx, { text: `N₂ = ${N2}`, x: secX, y: coreBot + 6 });
+      drawLabel(ctx, { text: `V₂ = ${V2.toFixed(1)} V`, x: loadX, y: loadY + 26 });
+      drawLabel(ctx, { text: 'iron core · shared Φ', x: (coreLeft + coreRight) / 2, y: coreTop - 14, align: 'center' });
     },
     [],
   );

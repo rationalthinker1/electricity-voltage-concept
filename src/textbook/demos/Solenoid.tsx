@@ -19,6 +19,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS, pretty } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -135,15 +136,8 @@ export function SolenoidDemo({ figure }: Props) {
         ctx.stroke();
       }
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(
-        `L = ${Lcm.toFixed(1)} cm  ·  N = ${N}  ·  n = ${pretty(N / (Lcm * 1e-2), 2)} /m`,
-        w / 2,
-        h - 18,
-      );
-      ctx.fillStyle = colors.teal;
-      ctx.fillText(`B (inside) = ${pretty(PHYS.mu_0 * (N / (Lcm * 1e-2)) * I, 3)} T`, w / 2, 24);
+      drawLabel(ctx, { text: `L = ${Lcm.toFixed(1)} cm  ·  N = ${N}  ·  n = ${pretty(N / (Lcm * 1e-2), 2)} /m`, x: w / 2, y: h - 18, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: `B (inside) = ${pretty(PHYS.mu_0 * (N / (Lcm * 1e-2)) * I, 3)} T`, x: w / 2, y: 24, color: colors.teal });
       ctx0.t0 = t0;
     },
     [],

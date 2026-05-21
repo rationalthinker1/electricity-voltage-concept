@@ -17,6 +17,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 export function FiberLinkBudgetDemo() {
   const [launchDbm, setLaunchDbm] = useState(0); // dBm launched at TX
@@ -58,10 +59,7 @@ export function FiberLinkBudgetDemo() {
       ctx.lineTo(padL + plotW, yRx);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.pink;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(`Rx sens ${rxSens.toFixed(0)} dBm`, padL + 6, yRx - 4);
+      drawLabel(ctx, { text: `Rx sens ${rxSens.toFixed(0)} dBm`, x: padL + 6, y: yRx - 4, color: colors.pink, font: '10px "JetBrains Mono", monospace' });
       const pAtZero = launchDbm - extraLoss;
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.8;
@@ -84,9 +82,7 @@ export function FiberLinkBudgetDemo() {
         ctx.lineTo(xR, padT + plotH);
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = colors.teal;
-        ctx.textAlign = 'center';
-        ctx.fillText(`reach ${reach.toFixed(0)} km`, xR, padT + 12);
+        drawLabel(ctx, { text: `reach ${reach.toFixed(0)} km`, x: xR, y: padT + 12, color: colors.teal, align: 'center' });
       }
       ctx.fillStyle = colors.textMuted;
       ctx.textAlign = 'center';
@@ -97,14 +93,11 @@ export function FiberLinkBudgetDemo() {
       for (const db of [0, -10, -20, -30]) {
         ctx.fillText(`${db}`, padL - 6, yOfDbm(db) + 3);
       }
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText('distance (km)', padL, H - 6);
+      drawLabel(ctx, { text: 'distance (km)', x: padL, y: H - 6 });
       ctx.save();
       ctx.translate(12, padT + plotH / 2);
       ctx.rotate(-Math.PI / 2);
-      ctx.textAlign = 'center';
-      ctx.fillText('power (dBm)', 0, 0);
+      drawLabel(ctx, { text: 'power (dBm)', x: 0, y: 0, align: 'center' });
       ctx.restore();
     },
     [],

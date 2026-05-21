@@ -18,6 +18,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -103,11 +104,7 @@ export function FieldOrientedControlDemo({ figure }: Props) {
         }
         ctx.stroke();
       }
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('stator: i_a, i_b, i_c   (3-phase)', x0L + 6, y0 + 4);
+      drawLabel(ctx, { text: 'stator: i_a, i_b, i_c   (3-phase)', x: x0L + 6, y: y0 + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       const x0R = padL + colW + gap;
       ctx.strokeStyle = colors.border;
       ctx.strokeRect(x0R, y0, colW, plotH);
@@ -138,16 +135,9 @@ export function FieldOrientedControlDemo({ figure }: Props) {
       ctx.moveTo(x0R, yIq);
       ctx.lineTo(x0R + colW, yIq);
       ctx.stroke();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('rotor-aligned: i_d, i_q   (d-q frame)', x0R + 6, y0 + 4);
-      ctx.fillStyle = colors.accent;
-      ctx.textAlign = 'right';
-      ctx.fillText(`i_q = ${iqRef.toFixed(1)} A  (torque)`, x0R + colW - 6, yIq - 12);
-      ctx.fillStyle = colors.pink;
-      ctx.fillText(`i_d = ${idRef.toFixed(1)} A  (flux)`, x0R + colW - 6, yId + 4);
+      drawLabel(ctx, { text: 'rotor-aligned: i_d, i_q   (d-q frame)', x: x0R + 6, y: y0 + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `i_q = ${iqRef.toFixed(1)} A  (torque)`, x: x0R + colW - 6, y: yIq - 12, color: colors.accent, align: 'right' });
+      drawLabel(ctx, { text: `i_d = ${idRef.toFixed(1)} A  (flux)`, x: x0R + colW - 6, y: yId + 4, color: colors.pink });
       ctx0.t0 = t0;
     },
     [],

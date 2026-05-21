@@ -26,6 +26,7 @@ import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtCurrent } from '@/lib/formatters';
 import { useCircuitCache } from '@/lib/useCircuitCache';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -104,33 +105,22 @@ export function NodalSolverDemo({ figure }: Props) {
         ctx.save();
         ctx.globalAlpha = 0.85;
         ctx.fillStyle = getCanvasColors().text;
-        ctx.font = 'bold 12px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(`A   V_A = ${nodal.V_A.toFixed(3)} V`, xMid + 10, yTop - 6);
+        drawLabel(ctx, { text: `A   V_A = ${nodal.V_A.toFixed(3)} V`, x: xMid + 10, y: yTop - 6, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', baseline: 'bottom' });
         ctx.restore();
 
         ctx.save();
         ctx.globalAlpha = 0.75;
         ctx.fillStyle = getCanvasColors().textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('Bottom rail = reference (V = 0)', 12, 10);
-        ctx.fillText('KCL at A: (V₁−V_A)/R₁ + (V₂−V_A)/R₃ = V_A/R₂', 12, 24);
+        drawLabel(ctx, { text: 'Bottom rail = reference (V = 0)', x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+        drawLabel(ctx, { text: 'KCL at A: (V₁−V_A)/R₁ + (V₂−V_A)/R₃ = V_A/R₂', x: 12, y: 24 });
         ctx.restore();
 
         ctx.save();
         ctx.globalAlpha = 0.95;
         ctx.fillStyle = getCanvasColors().blue;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(`I_R₁ = ${fmtCurrent(nodal.I_R1)}`, (xLeft + xMid) / 2, yTop - 14);
-        ctx.fillText(`I_R₃ = ${fmtCurrent(nodal.I_R3)}`, (xMid + xRight) / 2, yTop - 14);
-        ctx.textBaseline = 'middle';
-        ctx.textAlign = 'left';
-        ctx.fillText(`I_R₂ = ${fmtCurrent(nodal.I_R2)}`, xMid + 14, h / 2);
+        drawLabel(ctx, { text: `I_R₁ = ${fmtCurrent(nodal.I_R1)}`, x: (xLeft + xMid) / 2, y: yTop - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+        drawLabel(ctx, { text: `I_R₃ = ${fmtCurrent(nodal.I_R3)}`, x: (xMid + xRight) / 2, y: yTop - 14 });
+        drawLabel(ctx, { text: `I_R₂ = ${fmtCurrent(nodal.I_R2)}`, x: xMid + 14, y: h / 2, baseline: 'middle' });
         ctx.restore();
 
         raf = requestAnimationFrame(draw);

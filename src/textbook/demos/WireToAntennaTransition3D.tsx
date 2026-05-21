@@ -30,6 +30,7 @@ import { PHYS } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { project, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -321,29 +322,18 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
 
       // Wire-tip labels.
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('+L/2', pTop.x, pTop.y - 6);
-      ctx.textBaseline = 'top';
-      ctx.fillText('−L/2', pBot.x, pBot.y + 6);
+      drawLabel(ctx, { text: '+L/2', x: pTop.x, y: pTop.y - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: '−L/2', x: pBot.x, y: pBot.y + 6, baseline: 'top' });
 
       // Top-left readout overlay.
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillText(`f = ${formatHz(fHz)}`, 14, 14);
+      drawLabel(ctx, { text: `f = ${formatHz(fHz)}`, x: 14, y: 14, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = getCanvasColors().teal;
-      ctx.fillText(
-        `λ = ${lam >= 1 ? lam.toFixed(2) + ' m' : (lam * 100).toFixed(1) + ' cm'}`,
-        14,
-        30,
-      );
+      drawLabel(ctx, { text: `λ = ${lam >= 1 ? lam.toFixed(2) + ' m' : (lam * 100).toFixed(1) + ' cm'}`, x: 14, y: 30 });
       ctx.fillStyle = withAlpha(getCanvasColors().text, 0.78);
-      ctx.fillText(`L/λ = ${(L_METERS / lam).toFixed(3)}`, 14, 46);
+      drawLabel(ctx, { text: `L/λ = ${(L_METERS / lam).toFixed(3)}`, x: 14, y: 46 });
       ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.65);
-      ctx.fillText('drag to orbit', 14, H - 18);
+      drawLabel(ctx, { text: 'drag to orbit', x: 14, y: H - 18 });
 
       // Bottom scale bar — L vs λ on a common axis. Highlight when L = λ/2.
       const barY = H - 28;
@@ -364,10 +354,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       ctx.lineTo(barX0 + wirePix, barY);
       ctx.stroke();
       ctx.fillStyle = getCanvasColors().text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('L = 1 m', barX0, barY - 4);
+      drawLabel(ctx, { text: 'L = 1 m', x: barX0, y: barY - 4, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
 
       // λ bar (teal; highlights amber near half-wave).
       const halfWave = LoverLambda > 0.45 && LoverLambda < 0.6;
@@ -388,17 +375,10 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       ctx.moveTo(barX0 + halfLamPix, barY + 6);
       ctx.lineTo(barX0 + halfLamPix, barY + 14);
       ctx.stroke();
-      ctx.fillStyle = lamCol;
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        lam > 2 ? `λ = ${lam.toFixed(2)} m (off-scale)` : `λ = ${lam.toFixed(2)} m`,
-        barX0,
-        barY + 14,
-      );
+      drawLabel(ctx, { text: lam > 2 ? `λ = ${lam.toFixed(2)} m (off-scale)` : `λ = ${lam.toFixed(2)} m`, x: barX0, y: barY + 14, color: lamCol, baseline: 'top' });
       if (halfWave) {
-        ctx.textAlign = 'right';
         ctx.fillStyle = getCanvasColors().accent;
-        ctx.fillText('half-wave resonance', barX1, barY - 18);
+        drawLabel(ctx, { text: 'half-wave resonance', x: barX1, y: barY - 18, align: 'right' });
       }
 
       raf = requestAnimationFrame(draw);

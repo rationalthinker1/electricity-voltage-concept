@@ -26,6 +26,7 @@ import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 import { useOrbitScene } from '@/lib/useOrbitScene';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -258,26 +259,16 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
         // n̂ label near the arrow tip.
         const labelP = project({ x: nHat.x * 1.18, y: 0.05, z: nHat.z * 1.18 }, cam, w, sceneH);
         if (labelP.depth > 0) {
-          ctx.fillStyle = colors.text;
-          ctx.font = 'italic 12px "STIX Two Text", serif';
-          ctx.textAlign = 'left';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('n̂', labelP.x, labelP.y);
+          drawLabel(ctx, { text: 'n̂', x: labelP.x, y: labelP.y, color: colors.text, font: 'italic 12px "STIX Two Text", serif', baseline: 'middle' });
         }
       }
 
       // B-field label, top-left.
-      ctx.fillStyle = colors.teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`B → ${st.B.toFixed(2)}  (along +x)`, 12, 12);
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText(`θ = ${(((theta % (2 * Math.PI)) * 180) / Math.PI).toFixed(0)}°`, 12, 28);
+      drawLabel(ctx, { text: `B → ${st.B.toFixed(2)}  (along +x)`, x: 12, y: 12, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `θ = ${(((theta % (2 * Math.PI)) * 180) / Math.PI).toFixed(0)}°`, x: 12, y: 28 });
       ctx.save();
       ctx.globalAlpha = 0.55;
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText('drag to orbit', 12, sceneH - 18);
+      drawLabel(ctx, { text: 'drag to orbit', x: 12, y: sceneH - 18 });
 
       ctx.restore();
       ctx.restore(); // end scene clip
@@ -342,19 +333,15 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.save();
       ctx.globalAlpha = 0.92;
-      ctx.fillStyle = colors.accent;
-      ctx.fillText('Φ_B(t) = B·A·cos(ωt)', plotLeft + 4, plotY0 + 6);
+      drawLabel(ctx, { text: 'Φ_B(t) = B·A·cos(ωt)', x: plotLeft + 4, y: plotY0 + 6, color: colors.accent });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.92;
-      ctx.fillStyle = colors.teal;
-      ctx.fillText('ε(t) = −dΦ/dt = B·A·ω·sin(ωt)', plotLeft + 4, plotY0 + 20);
+      drawLabel(ctx, { text: 'ε(t) = −dΦ/dt = B·A·ω·sin(ωt)', x: plotLeft + 4, y: plotY0 + 20, color: colors.teal });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.65;
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'right';
-      ctx.fillText('time →', plotRight - 4, plotY0 + plotH - 14);
+      drawLabel(ctx, { text: 'time →', x: plotRight - 4, y: plotY0 + plotH - 14, align: 'right' });
 
       // Force re-renders so MiniReadouts stay alive even if React optimises us out.
       setTick((t) => (t + 1) % 1000);

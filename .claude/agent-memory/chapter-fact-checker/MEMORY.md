@@ -2,3 +2,4 @@
 - [Unsourced claim types](feedback_unsourced_claim_types.md) — FAQ answers, historical years, inline derived numbers are high-risk areas
 - [Ch.1 audit findings](project_ch1_audit.md) — 7 BLOCKERs + 2 WARNINGs logged 2026-05-20, specific line numbers
 - [Ch.3 audit findings](project_ch3_audit.md) — 4 BLOCKERs + 4 WARNINGs logged 2026-05-20; key issues: feynman-II-2 not in sources array, iron/tungsten ordering inverted, thermal-speed vs Fermi-velocity inconsistency
+- [Ch.5 audit findings](project_ch5_audit.md) — 7 BLOCKERs + 2 WARNINGs logged 2026-05-21; feynman-II-2 misaligned for field-energy claims (correct: feynman-II-27); multiple Case Study spec lines unsourced; supercap 10x vs 25x energy ratio inconsistency

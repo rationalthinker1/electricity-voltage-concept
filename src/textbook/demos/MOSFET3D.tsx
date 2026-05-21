@@ -30,6 +30,7 @@ import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { project, v3, type OrbitCamera, type Point2D, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -534,15 +535,10 @@ export function MOSFET3DDemo({ figure }: Props) {
       }
 
       // 9. Labels.
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'top';
-
       const labelAt = (world: Vec3, text: string, color: string) => {
         const p = project(world, cam, W, H);
         if (p.depth <= 0) return;
-        ctx.fillStyle = color;
-        ctx.textAlign = 'center';
-        ctx.fillText(text, p.x, p.y);
+        drawLabel(ctx, { text: text, x: p.x, y: p.y, color: color, align: 'center' });
       };
       labelAt(v3((SRC.x0 + SRC.x1) / 2, SRC.y1 + 0.05, 0), 'S (n+)', 'rgba(140,220,150,0.95)');
       labelAt(v3((DRN.x0 + DRN.x1) / 2, DRN.y1 + 0.05, 0), 'D (n+)', 'rgba(140,220,150,0.95)');
@@ -560,18 +556,16 @@ export function MOSFET3DDemo({ figure }: Props) {
 
       // Top-left help.
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText('drag to rotate', 12, 12);
+      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
 
       // Bottom-right status banner — regime + channel-on/off.
-      ctx.textAlign = 'right';
       const status = channelOn
         ? `channel ON · V_OV = ${overdrive.toFixed(2)} V`
         : `channel OFF · below V_T = ${V_T.toFixed(2)} V`;
       ctx.fillStyle = channelOn
         ? withAlpha(getCanvasColors().accent, 0.95)
         : withAlpha(getCanvasColors().textDim, 0.7);
-      ctx.fillText(status, W - 12, 12);
+      drawLabel(ctx, { text: status, x: W - 12, y: 12, align: 'right' });
 
       raf = requestAnimationFrame(draw);
     }

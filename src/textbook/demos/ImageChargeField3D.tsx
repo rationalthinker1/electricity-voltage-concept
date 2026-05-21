@@ -275,11 +275,7 @@ export function ImageChargeField3DDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(realPos.x, realPos.y, realR, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 12px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+', realPos.x, realPos.y);
+      drawLabel(ctx, { text: '+', x: realPos.x, y: realPos.y, color: colors.bg, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       ctx.restore();
 
       // 5. Image -q sphere at (0, -d, 0) — dashed outline, translucent fill.

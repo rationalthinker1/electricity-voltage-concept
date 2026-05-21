@@ -25,13 +25,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { project, v3, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -138,9 +140,9 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       }
 
       // Sparse 6×6 grid of σ-marks on a plate. `sign` decides + or −,
-      // `colorRgb` is the marker fill colour, and `sigmaRel` (0..1) scales
-      // the symbol size.
-      function drawSigmaMarks(y: number, sign: '+' | '−', colorRgb: string, sigmaRel: number) {
+      // `color` is the marker fill colour (a theme-token string), and
+      // `sigmaRel` (0..1) scales the symbol size.
+      function drawSigmaMarks(y: number, sign: '+' | '−', color: string, sigmaRel: number) {
         const N = 6;
         // Marks placed at cell centres of a 6×6 grid inside the plate.
         const step = (2 * half) / N;
@@ -162,11 +164,11 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         for (const c of cells) {
           if (c.p.depth <= 0) continue;
           // Subtle "stamp" disc behind the symbol for readability.
-          ctx.fillStyle = `rgba(${colorRgb},0.18)`;
+          ctx.fillStyle = withAlpha(color, 0.18);
           ctx.beginPath();
           ctx.arc(c.p.x, c.p.y, baseSize * 0.7, 0, Math.PI * 2);
           ctx.fill();
-          ctx.fillStyle = `rgba(${colorRgb},0.95)`;
+          ctx.fillStyle = withAlpha(color, 0.95);
           ctx.fillText(sign, c.p.x, c.p.y + 1);
         }
       }
@@ -185,9 +187,9 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       const sigmaRel = Math.sqrt(Math.max(0, s.computed.sigma) / sigmaRef);
 
       if (topIsBack) {
-        drawSigmaMarks(yTop, '+', '255,59,110', sigmaRel);
+        drawSigmaMarks(yTop, '+', getCanvasColors().pink, sigmaRel);
       } else {
-        drawSigmaMarks(yBot, '−', '91,174,248', sigmaRel);
+        drawSigmaMarks(yBot, '−', getCanvasColors().blue, sigmaRel);
       }
 
       // ─── 2. Translucent amber gap volume ───────────────────────────
@@ -261,7 +263,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         const dMid = (p1.depth + p2.depth) / 2;
         const tDepth = Math.max(0, Math.min(1, (cam.distance + 1.5 - dMid) / 3.5));
         const fade = 0.32 + 0.55 * tDepth;
-        const baseColor = `rgba(255,107,42,${(0.92 * fade).toFixed(3)})`;
+        const baseColor = withAlpha(getCanvasColors().accent, 0.92 * fade);
 
         // Body.
         ctx.strokeStyle = baseColor;
@@ -293,11 +295,11 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       if (topIsBack) {
         drawPlateFill(yBot, withAlpha(getCanvasColors().blue, 0.1));
         drawPlateOutline(yBot, withAlpha(getCanvasColors().blue, 0.65));
-        drawSigmaMarks(yBot, '−', '91,174,248', sigmaRel);
+        drawSigmaMarks(yBot, '−', getCanvasColors().blue, sigmaRel);
       } else {
         drawPlateFill(yTop, withAlpha(getCanvasColors().pink, 0.1));
         drawPlateOutline(yTop, withAlpha(getCanvasColors().pink, 0.65));
-        drawSigmaMarks(yTop, '+', '255,59,110', sigmaRel);
+        drawSigmaMarks(yTop, '+', getCanvasColors().pink, sigmaRel);
       }
 
       // ─── 5. Gauss pillbox (on top of everything) ────────────────────
@@ -418,13 +420,13 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.restore();
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText('drag to orbit', 12, 12);
+      drawLabel(ctx, { text: 'drag to orbit', x: 12, y: 12 });
       ctx.fillStyle = getCanvasColors().pink;
-      ctx.fillText('+ plate', 12, H - 42);
+      drawLabel(ctx, { text: '+ plate', x: 12, y: H - 42 });
       ctx.fillStyle = getCanvasColors().blue;
-      ctx.fillText('− plate', 12, H - 28);
+      drawLabel(ctx, { text: '− plate', x: 12, y: H - 28 });
       ctx.fillStyle = getCanvasColors().accent;
-      ctx.fillText('E-field in the gap', 12, H - 14);
+      drawLabel(ctx, { text: 'E-field in the gap', x: 12, y: H - 14 });
 
       raf = requestAnimationFrame(draw);
     }
@@ -492,6 +494,27 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         <MiniReadout label="U = ½ C V²" value={<Num value={computed.U * 1e9} />} unit="nJ" />
         <MiniReadout label="E = V / d" value={<Num value={computed.E} />} unit="V/m" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Geometry rule"
+        left={
+          <InlineMath
+            tex={
+              `C \\;=\\; \\dfrac{\\varepsilon_0 A}{d} ` +
+              `\\;\\approx\\; ${(computed.C * 1e12).toFixed(1)}\\ \\text{pF}`
+            }
+          />
+        }
+        rightLabel="Field in the gap"
+        right={
+          <InlineMath
+            tex={
+              `E \\;=\\; \\dfrac{V}{d} \\;=\\; ` +
+              `\\dfrac{${V.toFixed(1)}\\ \\text{V}}{${(d_mm).toFixed(2)}\\times10^{-3}\\ \\text{m}} ` +
+              `\\;=\\; ${(computed.E / 1000).toFixed(1)}\\ \\text{kV/m}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

@@ -23,6 +23,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -151,29 +152,17 @@ export function InRushCurrentDemo({ figure }: Props) {
         else ctx.lineTo(x, y);
       }
       ctx.stroke();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+V', padL - 4, yV(1));
-      ctx.fillText('0', padL - 4, topV + subH / 2);
-      ctx.fillText('+B_sat', padL - 4, yB(Bsat));
-      ctx.fillText('−B_sat', padL - 4, yB(-Bsat));
-      ctx.fillText('clip', padL - 4, yI(1.4));
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        `primary voltage  V_p(t) = sin(ωt + θ),  θ = ${thetaDeg.toFixed(0)}°`,
-        padL + 4,
-        topV + 4,
-      );
-      ctx.fillText('core flux  Φ(t)  (asymmetric if θ ≠ 90°)', padL + 4, midB + 4);
-      ctx.fillText('magnetising current  I_mag(t)', padL + 4, botI + 4);
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('0', padL, padT + plotH + 4);
-      ctx.fillText('3 cycles', padL + plotW / 2, padT + plotH + 4);
-      ctx.fillText(`${((nCyc / 60) * 1000).toFixed(0)} ms`, padL + plotW, padT + plotH + 4);
+      drawLabel(ctx, { text: '+V', x: padL - 4, y: yV(1), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '0', x: padL - 4, y: topV + subH / 2 });
+      drawLabel(ctx, { text: '+B_sat', x: padL - 4, y: yB(Bsat) });
+      drawLabel(ctx, { text: '−B_sat', x: padL - 4, y: yB(-Bsat) });
+      drawLabel(ctx, { text: 'clip', x: padL - 4, y: yI(1.4) });
+      drawLabel(ctx, { text: `primary voltage  V_p(t) = sin(ωt + θ),  θ = ${thetaDeg.toFixed(0)}°`, x: padL + 4, y: topV + 4, baseline: 'top' });
+      drawLabel(ctx, { text: 'core flux  Φ(t)  (asymmetric if θ ≠ 90°)', x: padL + 4, y: midB + 4 });
+      drawLabel(ctx, { text: 'magnetising current  I_mag(t)', x: padL + 4, y: botI + 4 });
+      drawLabel(ctx, { text: '0', x: padL, y: padT + plotH + 4, align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: '3 cycles', x: padL + plotW / 2, y: padT + plotH + 4 });
+      drawLabel(ctx, { text: `${((nCyc / 60) * 1000).toFixed(0)} ms`, x: padL + plotW, y: padT + plotH + 4 });
     },
     [],
   );

@@ -115,12 +115,8 @@ export function GaussBLawDemo({ figure }: Props) {
         ctx.lineWidth = 1;
         ctx.strokeRect(sx, cy - magH / 2, magW, magH);
         ctx.restore();
-        ctx.fillStyle = colors.bg;
-        ctx.font = 'bold 13px JetBrains Mono';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('S', sx + magW / 4, cy);
-        ctx.fillText('N', nx - magW / 4, cy);
+        drawLabel(ctx, { text: 'S', x: sx + magW / 4, y: cy, color: colors.bg, weight: 'bold', size: 13, font: '13px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+        drawLabel(ctx, { text: 'N', x: nx - magW / 4, y: cy });
 
         // Animated dots travelling along one loop, showing closure
         const period = 4000;
@@ -172,13 +168,8 @@ export function GaussBLawDemo({ figure }: Props) {
       ctx.lineWidth = 1.6;
       ctx.strokeRect(bx, by, bw, bh);
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('Gaussian surface', bx + 8, by - 16);
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText('∮B·dA = 0  (always)', 14, 14);
+      drawLabel(ctx, { text: 'Gaussian surface', x: bx + 8, y: by - 16, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: '∮B·dA = 0  (always)', x: 14, y: 14 });
       ctx0.phase = phase;
     },
     [],

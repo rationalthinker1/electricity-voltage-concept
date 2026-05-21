@@ -80,13 +80,9 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       // Rotated y-axis label — drawAxes' yLabel sits a fixed distance from
       // the frame which is too close in this layout; keep this manual.
       ctx.save();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.translate(14, padT + rect.h / 2);
       ctx.rotate(-Math.PI / 2);
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('I_C (mA)', 0, 0);
+      drawLabel(ctx, { text: 'I_C (mA)', x: 0, y: 0, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       ctx.restore();
       // V_CE_SAT marker (dashed vertical)
       drawVLine(ctx, rect, V_CE_SAT, Vmin, Vmax, {

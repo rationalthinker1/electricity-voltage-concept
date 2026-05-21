@@ -110,30 +110,20 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.8;
       ctx.fillStyle = getCanvasColors().text;
-      ctx.font = 'bold 11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('A', xMid + 6, yTop - 4);
-      ctx.textBaseline = 'top';
-      ctx.fillText('B', xMid + 6, yBot + 6);
+      drawLabel(ctx, { text: 'A', x: xMid + 6, y: yTop - 4, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'bottom' });
+      drawLabel(ctx, { text: 'B', x: xMid + 6, y: yBot + 6, baseline: 'top' });
       ctx.restore();
 
       ctx.save();
       ctx.globalAlpha = 0.95;
       ctx.fillStyle = getCanvasColors().blue;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`I_R₂ = I₁ − I₂ = ${fmtCurrent(sol.I_R2)}`, xMid + 14, h / 2);
+      drawLabel(ctx, { text: `I_R₂ = I₁ − I₂ = ${fmtCurrent(sol.I_R2)}`, x: xMid + 14, y: h / 2, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
       ctx.restore();
 
       ctx.save();
       ctx.globalAlpha = 0.7;
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('Two clockwise mesh currents I₁, I₂', 12, 10);
+      drawLabel(ctx, { text: 'Two clockwise mesh currents I₁, I₂', x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.restore();
 
       // Per-frame overlay: rotating arrowhead around each mesh-loop ellipse.

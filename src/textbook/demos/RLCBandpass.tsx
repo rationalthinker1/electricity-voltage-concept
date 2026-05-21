@@ -23,6 +23,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { fmtFreqShort } from '@/lib/formatters';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -132,21 +133,11 @@ export function RLCBandpassDemo({ figure }: Props) {
         lineWidth: 1.8,
       });
       ctx.restore();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('0 dB', plotX - 4, yDb(0));
-      ctx.fillText('-20', plotX - 4, yDb(-20));
-      ctx.fillText('-40', plotX - 4, yDb(-40));
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`|H(f)|  band-pass`, plotX + 4, plotY + 4);
-      ctx.fillStyle = colors.teal;
-      ctx.textAlign = 'right';
-      ctx.fillText(`f₀ = ${fmtFreqShort(f0)}   Q = ${Q.toFixed(1)}`, plotX + plotW - 4, plotY + 4);
+      drawLabel(ctx, { text: '0 dB', x: plotX - 4, y: yDb(0), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '-20', x: plotX - 4, y: yDb(-20) });
+      drawLabel(ctx, { text: '-40', x: plotX - 4, y: yDb(-40) });
+      drawLabel(ctx, { text: `|H(f)|  band-pass`, x: plotX + 4, y: plotY + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `f₀ = ${fmtFreqShort(f0)}   Q = ${Q.toFixed(1)}`, x: plotX + plotW - 4, y: plotY + 4, color: colors.teal, align: 'right' });
     },
     [],
   );

@@ -19,6 +19,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -63,14 +64,8 @@ export function CoreLossesDemo({ figure }: Props) {
       ctx.moveTo(cxL, pad);
       ctx.lineTo(cxL, pad + plotH);
       ctx.stroke();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('B', cxL + 4, pad + 2);
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('H', pad + plotW - 4, cyL - 4);
+      drawLabel(ctx, { text: 'B', x: cxL + 4, y: pad + 2, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'H', x: pad + plotW - 4, y: cyL - 4, align: 'right', baseline: 'bottom' });
       const omega = 2.0;
       const Hmax = drive;
       const Bmax = 1.0;
@@ -108,12 +103,8 @@ export function CoreLossesDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(dx, dy, 4, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('B-H hysteresis loop', pad + 4, pad + 4);
-      ctx.fillText('area = energy/cycle/m³', pad + 4, pad + 18);
+      drawLabel(ctx, { text: 'B-H hysteresis loop', x: pad + 4, y: pad + 4, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'area = energy/cycle/m³', x: pad + 4, y: pad + 18 });
       ctx.restore();
       ctx.strokeStyle = colors.border;
       ctx.beginPath();
@@ -183,12 +174,8 @@ export function CoreLossesDemo({ figure }: Props) {
         ctx.restore();
         ctx.fillStyle = colors.pink;
       }
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(laminated ? 'LAMINATED (50 thin layers)' : 'SOLID CORE', rx + 4, ry - 16);
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText('eddy-current loops in cross-section', rx + 4, h - 18);
+      drawLabel(ctx, { text: laminated ? 'LAMINATED (50 thin layers)' : 'SOLID CORE', x: rx + 4, y: ry - 16, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'eddy-current loops in cross-section', x: rx + 4, y: h - 18 });
       ctx.restore();
       ctx0.simT = simT;
     },

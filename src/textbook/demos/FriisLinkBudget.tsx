@@ -78,19 +78,16 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       ctx.stroke();
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.restore();
-      ctx.fillStyle = colors.accent;
-      ctx.textAlign = 'center';
-      ctx.fillText(`TX · ${Ptmw.toFixed(0)} mW`, txX, cy + 40);
-      ctx.fillText(`G_t = ${GtDbi.toFixed(1)} dBi`, txX, cy + 54);
+      drawLabel(ctx, { text: `TX · ${Ptmw.toFixed(0)} mW`, x: txX, y: cy + 40, color: colors.accent, align: 'center' });
+      drawLabel(ctx, { text: `G_t = ${GtDbi.toFixed(1)} dBi`, x: txX, y: cy + 54 });
       ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.moveTo(rxX, cy - 22);
       ctx.lineTo(rxX, cy + 22);
       ctx.stroke();
-      ctx.fillStyle = colors.teal;
-      ctx.fillText(`RX`, rxX, cy + 40);
-      ctx.fillText(`G_r = ${GrDbi.toFixed(1)} dBi`, rxX, cy + 54);
+      drawLabel(ctx, { text: `RX`, x: rxX, y: cy + 40, color: colors.teal });
+      drawLabel(ctx, { text: `G_r = ${GrDbi.toFixed(1)} dBi`, x: rxX, y: cy + 54 });
       ctx.strokeStyle = colors.borderStrong;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -98,12 +95,7 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       ctx.lineTo(rxX, cy);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText(
-        `d = ${dM.toFixed(1)} m, f = ${fMHz.toFixed(0)} MHz, λ = ${((PHYS.c / (fMHz * 1e6)) * 1000).toFixed(1)} mm`,
-        (txX + rxX) / 2,
-        cy - 14,
-      );
+      drawLabel(ctx, { text: `d = ${dM.toFixed(1)} m, f = ${fMHz.toFixed(0)} MHz, λ = ${((PHYS.c / (fMHz * 1e6)) * 1000).toFixed(1)} mm`, x: (txX + rxX) / 2, y: cy - 14 });
       drawLabel(ctx, {
         x: (txX + rxX) / 2,
         y: 22,

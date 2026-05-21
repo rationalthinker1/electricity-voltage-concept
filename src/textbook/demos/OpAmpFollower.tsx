@@ -156,15 +156,10 @@ function drawSchematic(
   ctx.stroke();
   ctx.restore();
   ctx.fillStyle = getCanvasColors().accent;
-  ctx.font = 'bold 10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('V_s', xSrc, yWire);
+  drawLabel(ctx, { text: 'V_s', x: xSrc, y: yWire, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
 
   ctx.fillStyle = getCanvasColors().accent;
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(`${Vs.toFixed(2)} V`, xSrc - 8, yWire - 18);
+  drawLabel(ctx, { text: `${Vs.toFixed(2)} V`, x: xSrc - 8, y: yWire - 18, baseline: 'bottom' });
 
   // Wire from source through R_s
   ctx.save();
@@ -181,10 +176,7 @@ function drawSchematic(
   ctx.strokeStyle = getCanvasColors().pink;
   ctx.strokeRect(xRsLeft, yWire - 7, 60, 14);
   ctx.fillStyle = getCanvasColors().pink;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(`R_s = ${formatR(Rs)}`, xRsLeft + 30, yWire - 10);
+  drawLabel(ctx, { text: `R_s = ${formatR(Rs)}`, x: xRsLeft + 30, y: yWire - 10, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
 
   ctx.save();
   ctx.globalAlpha = 0.55;
@@ -209,11 +201,8 @@ function drawSchematic(
     ctx.stroke();
     // + / − markings
     ctx.fillStyle = getCanvasColors().teal;
-    ctx.font = '9px "JetBrains Mono", monospace';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('+', xTri + 4, yWire - 9);
-    ctx.fillText('−', xTri + 4, yWire + 9);
+    drawLabel(ctx, { text: '+', x: xTri + 4, y: yWire - 9, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'middle' });
+    drawLabel(ctx, { text: '−', x: xTri + 4, y: yWire + 9 });
     // Output wire and feedback
     ctx.save();
     ctx.globalAlpha = 0.55;
@@ -263,20 +252,14 @@ function drawSchematic(
   ctx.strokeRect(xRL - 7, yWire + 4, 14, 60);
   ctx.restore();
   ctx.fillStyle = getCanvasColors().blue;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(`R_L = ${formatR(RL)}`, xRL + 10, yWire + 34);
+  drawLabel(ctx, { text: `R_L = ${formatR(RL)}`, x: xRL + 10, y: yWire + 34, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
 
   // Probe dot at load node + V_load label
   ctx.fillStyle = getCanvasColors().accent;
   ctx.beginPath();
   ctx.arc(xNodeOut, yWire, 4, 0, Math.PI * 2);
   ctx.fill();
-  ctx.font = 'bold 10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText('V_load', xNodeOut, yWire - 8);
+  drawLabel(ctx, { text: 'V_load', x: xNodeOut, y: yWire - 8, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
 
   // Ground wire connecting source-bottom to R_L bottom
   ctx.save();
@@ -307,11 +290,8 @@ function drawSchematic(
   // V_load readout
   ctx.restore();
   ctx.fillStyle = getCanvasColors().accent;
-  ctx.font = 'bold 11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
   const vLive = bufferOn ? Vs : VdirectLoad;
-  ctx.fillText(`= ${vLive.toFixed(3)} V`, xNodeOut + 12, yWire - 20);
+  drawLabel(ctx, { text: `= ${vLive.toFixed(3)} V`, x: xNodeOut + 12, y: yWire - 20, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'middle' });
 
   ctx.restore();
 }
@@ -370,19 +350,13 @@ function drawBars(
   ctx.fillStyle = bufferOn
     ? withAlpha(getCanvasColors().teal, 0.95)
     : withAlpha(getCanvasColors().pink, 0.95);
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'top';
-  ctx.fillText(bufferOn ? '⟵ live' : '⟵ live', padL + plotW + 4, padT + plotH * 0.5);
+  drawLabel(ctx, { text: bufferOn ? '⟵ live' : '⟵ live', x: padL + plotW + 4, y: padT + plotH * 0.5, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
 
   ctx.save();
   ctx.globalAlpha = 0.65;
   ctx.fillStyle = getCanvasColors().textDim;
-  ctx.font = '8px "JetBrains Mono", monospace';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(`${vmax.toFixed(2)} V`, padL - 4, yOf(vmax));
-  ctx.fillText('0', padL - 4, yOf(0));
+  drawLabel(ctx, { text: `${vmax.toFixed(2)} V`, x: padL - 4, y: yOf(vmax), size: 8, font: '8px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+  drawLabel(ctx, { text: '0', x: padL - 4, y: yOf(0) });
 
   ctx.restore();
   ctx.restore();

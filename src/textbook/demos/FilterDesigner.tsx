@@ -223,14 +223,9 @@ export function FilterDesignerDemo({ figure }: Props) {
       ctx.strokeRect(bodeX0, bodeY0, bodeX1 - bodeX0, bodeY1 - bodeY0);
 
       // Labels
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('noisy input  1 kHz tone + 60 Hz hum', inX0 + 6, inY0 + 4);
-      ctx.fillText('filtered output', outX0 + 6, outY0 + 4);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText('|H(f)|  [dB]', bodeX0 + 6, bodeY0 + 4);
+      drawLabel(ctx, { text: 'noisy input  1 kHz tone + 60 Hz hum', x: inX0 + 6, y: inY0 + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'filtered output', x: outX0 + 6, y: outY0 + 4 });
+      drawLabel(ctx, { text: '|H(f)|  [dB]', x: bodeX0 + 6, y: bodeY0 + 4, color: colors.teal });
 
       // === Time-domain plots ===
       // 50 ms of signal; horizontal axis = time, vertical = amplitude.
@@ -315,12 +310,8 @@ export function FilterDesignerDemo({ figure }: Props) {
       ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.55;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`peak ≈ ${inPeak.toFixed(2)}`, inX1 - 6, inY1 - 4);
-      ctx.fillText(`peak ≈ ${outPeak.toFixed(3)}`, outX1 - 6, outY1 - 4);
+      drawLabel(ctx, { text: `peak ≈ ${inPeak.toFixed(2)}`, x: inX1 - 6, y: inY1 - 4, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
+      drawLabel(ctx, { text: `peak ≈ ${outPeak.toFixed(3)}`, x: outX1 - 6, y: outY1 - 4 });
 
       // === Bode plot ===
       // Log-f axis from 10 Hz to 100 kHz; magnitude in dB from -80 to +10.
@@ -394,13 +385,8 @@ export function FilterDesignerDemo({ figure }: Props) {
       ctx.lineTo(xAudio, by + bh);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.pink;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('60 Hz hum', xHum + 3, by + 16);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText('1 kHz audio', xAudio + 3, by + 16);
+      drawLabel(ctx, { text: '60 Hz hum', x: xHum + 3, y: by + 16, color: colors.pink, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: '1 kHz audio', x: xAudio + 3, y: by + 16, color: colors.teal });
 
       // |H(f)| curve
       const Nb = 240;

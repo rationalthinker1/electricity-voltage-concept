@@ -21,6 +21,7 @@ import { pathRoundRect } from '@/lib/canvasPrimitives';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { fmtResistance, fmtResistivity } from '@/lib/formatters';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -233,23 +234,12 @@ export function BuildAResistorDemo({ figure }: Props) {
           ctx.fillRect(startX + i * (stripeW + gap), stripeT, stripeW, stripeH);
         });
       }
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(f.label.toUpperCase(), 12, 10);
-      ctx.fillText(`ρ = ${fmtResistivity(f.rho)} Ω·m`, 12, 24);
-      ctx.fillText(`L = ${Lmm.toFixed(0)} mm`, 12, 38);
-      ctx.fillText(`A = ${Amm2.toFixed(3)} mm²`, 12, 52);
-      ctx.textAlign = 'right';
-      ctx.fillStyle = colors.accent;
-      ctx.fillText(`R = ${fmtResistance(R)}`, W - 12, 10);
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText(
-        `±${(f.tol * 100).toFixed(f.tol < 0.01 ? 2 : 0)}%   ${fmtResistance(Rmin)} … ${fmtResistance(Rmax)}`,
-        W - 12,
-        24,
-      );
+      drawLabel(ctx, { text: f.label.toUpperCase(), x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `ρ = ${fmtResistivity(f.rho)} Ω·m`, x: 12, y: 24 });
+      drawLabel(ctx, { text: `L = ${Lmm.toFixed(0)} mm`, x: 12, y: 38 });
+      drawLabel(ctx, { text: `A = ${Amm2.toFixed(3)} mm²`, x: 12, y: 52 });
+      drawLabel(ctx, { text: `R = ${fmtResistance(R)}`, x: W - 12, y: 10, color: colors.accent, align: 'right' });
+      drawLabel(ctx, { text: `±${(f.tol * 100).toFixed(f.tol < 0.01 ? 2 : 0)}%   ${fmtResistance(Rmin)} … ${fmtResistance(Rmax)}`, x: W - 12, y: 24 });
       void phase;
       ctx0.phase = phase;
     },

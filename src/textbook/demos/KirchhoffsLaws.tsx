@@ -184,13 +184,8 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         // Dynamic overlay: node identifier letters above each junction.
         ctx.save();
         ctx.globalAlpha = 0.8;
-        ctx.fillStyle = colors.text;
-        ctx.font = 'bold 11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('A', nodeA_x + 6, yTop - 4);
-        ctx.textBaseline = 'top';
-        ctx.fillText('B', nodeB_x + 6, yBot + 6);
+        drawLabel(ctx, { text: 'A', x: nodeA_x + 6, y: yTop - 4, color: colors.text, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'bottom' });
+        drawLabel(ctx, { text: 'B', x: nodeB_x + 6, y: yBot + 6, baseline: 'top' });
 
         // Dynamic overlay: animated current dots crawling along each branch.
         const maxI = Math.max(I1, 1e-9);
@@ -240,14 +235,9 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         // Dynamic overlay: live current readouts next to each branch.
         ctx.restore();
         ctx.fillStyle = getCanvasColors().blue;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(`I₁ = ${fmtCurrent(I1)}`, (batX + nodeA_x) / 2, yTop - 8);
-        ctx.fillText(`I₃ = ${fmtCurrent(I3)}`, (nodeA_x + outX) / 2, yTop - 8);
-        ctx.textBaseline = 'middle';
-        ctx.textAlign = 'left';
-        ctx.fillText(`I₂ = ${fmtCurrent(I2)}`, nodeA_x + 26, h / 2);
+        drawLabel(ctx, { text: `I₁ = ${fmtCurrent(I1)}`, x: (batX + nodeA_x) / 2, y: yTop - 8, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+        drawLabel(ctx, { text: `I₃ = ${fmtCurrent(I3)}`, x: (nodeA_x + outX) / 2, y: yTop - 8 });
+        drawLabel(ctx, { text: `I₂ = ${fmtCurrent(I2)}`, x: nodeA_x + 26, y: h / 2, baseline: 'middle' });
 
         // Dynamic overlay: KCL / KVL annotation boxes (toggled by the controls).
         if (showKCL) {
@@ -271,10 +261,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
           ctx.strokeRect(boxX, boxY, 230, 50);
           ctx.restore();
           ctx.fillStyle = getCanvasColors().accent;
-          ctx.font = 'bold 10px "JetBrains Mono", monospace';
-          ctx.textAlign = 'left';
-          ctx.textBaseline = 'top';
-          ctx.fillText('KCL at node A:', boxX + 8, boxY + 6);
+          drawLabel(ctx, { text: 'KCL at node A:', x: boxX + 8, y: boxY + 6, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'top' });
           drawLabel(ctx, {
             x: boxX + 8,
             y: boxY + 22,
@@ -306,14 +293,10 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
 
           ctx.restore();
           ctx.fillStyle = getCanvasColors().teal;
-          ctx.font = 'bold 10px "JetBrains Mono", monospace';
-          ctx.textAlign = 'left';
-          ctx.textBaseline = 'top';
-          ctx.fillText('KVL loops (sum of drops = 0):', boxX + 8, boxY + 6);
+          drawLabel(ctx, { text: 'KVL loops (sum of drops = 0):', x: boxX + 8, y: boxY + 6, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'top' });
           ctx.fillStyle = getCanvasColors().text;
-          ctx.font = '10px "JetBrains Mono", monospace';
-          ctx.fillText(`Left:  V − I₁R₁ − I₂R₂ = 0`, boxX + 8, boxY + 22);
-          ctx.fillText(`Right: I₂R₂ − I₃R₃ = 0`, boxX + 8, boxY + 36);
+          drawLabel(ctx, { text: `Left:  V − I₁R₁ − I₂R₂ = 0`, x: boxX + 8, y: boxY + 22, font: '10px "JetBrains Mono", monospace' });
+          drawLabel(ctx, { text: `Right: I₂R₂ − I₃R₃ = 0`, x: boxX + 8, y: boxY + 36 });
 
           const drop1 = I1 * R1;
           const drop2 = I2 * R2;
@@ -321,16 +304,8 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
           const lhsL = V - drop1 - drop2;
           const lhsR = drop2 - drop3;
           ctx.fillStyle = getCanvasColors().textDim;
-          ctx.fillText(
-            `${V.toFixed(2)} − ${drop1.toFixed(2)} − ${drop2.toFixed(2)} = ${lhsL.toFixed(3)} ✓`,
-            boxX + 8,
-            boxY + 52,
-          );
-          ctx.fillText(
-            `${drop2.toFixed(2)} − ${drop3.toFixed(2)} = ${lhsR.toFixed(3)} ✓`,
-            boxX + 8,
-            boxY + 66,
-          );
+          drawLabel(ctx, { text: `${V.toFixed(2)} − ${drop1.toFixed(2)} − ${drop2.toFixed(2)} = ${lhsL.toFixed(3)} ✓`, x: boxX + 8, y: boxY + 52 });
+          drawLabel(ctx, { text: `${drop2.toFixed(2)} − ${drop3.toFixed(2)} = ${lhsR.toFixed(3)} ✓`, x: boxX + 8, y: boxY + 66 });
         }
 
         // Dynamic overlay: top-corner caption text.

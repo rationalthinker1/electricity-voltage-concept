@@ -17,6 +17,7 @@ import { Num } from '@/components/Num';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -168,19 +169,12 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       ctx.lineTo(secX + 22, loadY + 14);
       ctx.lineTo(loadX - 14, loadY + 14);
       ctx.stroke();
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`N_p = ${Np}`, primX, coreBot + 6);
-      ctx.fillText(`V_p = ${Vp.toFixed(0)} V`, srcX, srcY + 26);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText(`N_s = ${Ns}`, secX, coreBot + 6);
-      ctx.fillText(`V_s = ${Vs.toFixed(1)} V`, loadX, loadY + 26);
-      ctx.fillText(`R = ${Rload.toFixed(0)} Ω`, loadX, loadY + 40);
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.fillText('iron core · shared Φ(t)', (coreLeft + coreRight) / 2, coreTop - 14);
+      drawLabel(ctx, { text: `N_p = ${Np}`, x: primX, y: coreBot + 6, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: `V_p = ${Vp.toFixed(0)} V`, x: srcX, y: srcY + 26 });
+      drawLabel(ctx, { text: `N_s = ${Ns}`, x: secX, y: coreBot + 6, color: colors.teal });
+      drawLabel(ctx, { text: `V_s = ${Vs.toFixed(1)} V`, x: loadX, y: loadY + 26 });
+      drawLabel(ctx, { text: `R = ${Rload.toFixed(0)} Ω`, x: loadX, y: loadY + 40 });
+      drawLabel(ctx, { text: 'iron core · shared Φ(t)', x: (coreLeft + coreRight) / 2, y: coreTop - 14, align: 'center' });
       const isInt = Math.min(1, Math.abs(Is) / 8);
       const isCol = `rgba(255,107,42,${0.3 + 0.7 * isInt})`;
       ctx.strokeStyle = isCol;

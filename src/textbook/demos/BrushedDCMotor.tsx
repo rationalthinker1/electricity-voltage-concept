@@ -18,6 +18,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -72,11 +73,7 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.lineWidth = 1.2;
       ctx.strokeRect(cx - R - magW, cy - magH / 2, magW, magH);
       ctx.restore();
-      ctx.fillStyle = colors.pink;
-      ctx.font = 'bold 14px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('N', cx - R - magW / 2, cy);
+      drawLabel(ctx, { text: 'N', x: cx - R - magW / 2, y: cy, color: colors.pink, weight: 'bold', size: 14, font: '14px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       ctx.save();
       ctx.globalAlpha = 0.22;
       ctx.fillStyle = colors.blue;
@@ -87,8 +84,7 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.strokeStyle = colors.blue;
       ctx.strokeRect(cx + R, cy - magH / 2, magW, magH);
       ctx.restore();
-      ctx.fillStyle = colors.blue;
-      ctx.fillText('S', cx + R + magW / 2, cy);
+      drawLabel(ctx, { text: 'S', x: cx + R + magW / 2, y: cy, color: colors.blue });
       ctx.save();
       ctx.globalAlpha = 0.22;
       ctx.strokeStyle = colors.teal;
@@ -148,17 +144,12 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(topEnd.x, topEnd.y, 7, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 10px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('×', topEnd.x, topEnd.y);
+      drawLabel(ctx, { text: '×', x: topEnd.x, y: topEnd.y, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       ctx.fillStyle = colors.blue;
       ctx.beginPath();
       ctx.arc(botEnd.x, botEnd.y, 7, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
-      ctx.fillText('·', botEnd.x, botEnd.y);
+      drawLabel(ctx, { text: '·', x: botEnd.x, y: botEnd.y, color: colors.bg });
       const fLen = Math.max(8, Math.min(36, drive * 30 + 10));
       ctx.strokeStyle = colors.accent;
       ctx.fillStyle = colors.accent;
@@ -208,23 +199,14 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+', cx + 8, cy - commR - 22);
+      drawLabel(ctx, { text: '+', x: cx + 8, y: cy - commR - 22, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
       ctx.restore();
-      ctx.fillText('−', cx + 8, cy + commR + 22);
+      drawLabel(ctx, { text: '−', x: cx + 8, y: cy + commR + 22 });
       ctx.save();
       ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('rotor coil + split-ring commutator', 12, 12);
+      drawLabel(ctx, { text: 'rotor coil + split-ring commutator', x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.restore();
-      ctx.textAlign = 'right';
-      ctx.fillText(`I = ${I.toFixed(2)} A   ω(vis) = ${omega.toFixed(1)} rad/s`, w - 12, 12);
+      drawLabel(ctx, { text: `I = ${I.toFixed(2)} A   ω(vis) = ${omega.toFixed(1)} rad/s`, x: w - 12, y: 12, align: 'right' });
       ctx0.theta = theta;
       ctx0.omega = omega;
     },

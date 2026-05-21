@@ -147,24 +147,17 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       ctx.restore();
-      ctx.fillStyle = colors.accent;
-      ctx.fillText('v(t)', padL + plotW + 4, padT + 10);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText('i(t)', padL + plotW + 4, padT + 24);
-      ctx.fillStyle = colors.pink;
-      ctx.fillText('p(t)=v·i', padL + plotW + 4, padT + 38);
+      drawLabel(ctx, { text: 'v(t)', x: padL + plotW + 4, y: padT + 10, color: colors.accent });
+      drawLabel(ctx, { text: 'i(t)', x: padL + plotW + 4, y: padT + 24, color: colors.teal });
+      drawLabel(ctx, { text: 'p(t)=v·i', x: padL + plotW + 4, y: padT + 38, color: colors.pink });
       ctx.save();
       ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.accent;
-      ctx.fillText('⟨p⟩ = P', padL + plotW + 4, yMean);
+      drawLabel(ctx, { text: '⟨p⟩ = P', x: padL + plotW + 4, y: yMean, color: colors.accent });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.65;
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('T', xOf(T), padT + plotH + 4);
-      ctx.fillText('2T', xOf(tMax), padT + plotH + 4);
+      drawLabel(ctx, { text: 'T', x: xOf(T), y: padT + plotH + 4, align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: '2T', x: xOf(tMax), y: padT + plotH + 4 });
       ctx.restore();
       drawLabel(ctx, {
         x: padL,

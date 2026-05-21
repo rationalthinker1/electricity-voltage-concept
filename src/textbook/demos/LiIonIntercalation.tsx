@@ -100,17 +100,10 @@ export function LiIonIntercalationDemo({ figure }: Props) {
           weight: 'bold',
         });
       }
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('anode (graphite)', anodeX + anodeW / 2, topY - 4);
-      ctx.fillText('cathode (LiCoO₂)', cathodeX + anodeW / 2, topY - 4);
-      ctx.textBaseline = 'top';
-      ctx.fillText('electrolyte', electrolyteX + electrolyteW / 2, botY + 4);
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText(`SOC = ${(s.soc * 100).toFixed(0)} %`, 10, 10);
+      drawLabel(ctx, { text: 'anode (graphite)', x: anodeX + anodeW / 2, y: topY - 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: 'cathode (LiCoO₂)', x: cathodeX + anodeW / 2, y: topY - 4 });
+      drawLabel(ctx, { text: 'electrolyte', x: electrolyteX + electrolyteW / 2, y: botY + 4, baseline: 'top' });
+      drawLabel(ctx, { text: `SOC = ${(s.soc * 100).toFixed(0)} %`, x: 10, y: 10 });
       ctx0.phase = phase;
     },
     [],

@@ -15,6 +15,7 @@ import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -88,18 +89,11 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = withAlpha(colors.teal, 0.85);
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`ΔV = ${V.toFixed(1)} V`, ax - 10, (ay + baseY) / 2);
+      drawLabel(ctx, { text: `ΔV = ${V.toFixed(1)} V`, x: ax - 10, y: (ay + baseY) / 2, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
 
       // A and B labels
-      ctx.fillStyle = colors.accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('A (high V)', ax, ay - 14);
-      ctx.fillText('B (low V)', bx, by - 14);
+      drawLabel(ctx, { text: 'A (high V)', x: ax, y: ay - 14, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: 'B (low V)', x: bx, y: by - 14 });
 
       // Update ball physics
       const slope = dy / Math.max(len, 1);
@@ -153,11 +147,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 12px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+', cx, cy);
+      drawLabel(ctx, { text: '+', x: cx, y: cy, color: colors.bg, weight: 'bold', size: 12, font: '12px "JetBrains Mono"', align: 'center', baseline: 'middle' });
     },
     [],
     () => ({ context: { t: 0, v: 0 } }),

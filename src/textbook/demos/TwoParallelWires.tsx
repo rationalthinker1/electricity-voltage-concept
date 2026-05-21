@@ -18,6 +18,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -132,10 +133,8 @@ export function TwoParallelWiresDemo({ figure }: Props) {
         }
 
         ctx.fillStyle = withAlpha(colors.textDim, 0.9);
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(label, cx, cy_ - wireR - 10);
-        ctx.fillText(`${I.toFixed(1)} A ${intoPage ? '⊗' : '⊙'}`, cx, cy_ + wireR + 22);
+        drawLabel(ctx, { text: label, x: cx, y: cy_ - wireR - 10, font: '10px "JetBrains Mono", monospace', align: 'center' });
+        drawLabel(ctx, { text: `${I.toFixed(1)} A ${intoPage ? '⊗' : '⊙'}`, x: cx, y: cy_ + wireR + 22 });
       }
       drawWire(cx1, cy, true, 'I₁', I1);
       drawWire(cx2, cy, parallel, 'I₂', I2);
@@ -173,9 +172,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(`d = ${dCm.toFixed(1)} cm`, (cx1 + cx2) / 2, cy + 76);
+      drawLabel(ctx, { text: `d = ${dCm.toFixed(1)} cm`, x: (cx1 + cx2) / 2, y: cy + 76, font: '10px "JetBrains Mono", monospace', align: 'center' });
       ctx.fillStyle = parallel ? withAlpha(colors.accent, 0.9) : withAlpha(colors.pink, 0.9);
       ctx.font = '11px "DM Sans", sans-serif';
       ctx.fillText(parallel ? 'parallel currents → attract' : 'antiparallel → repel', w / 2, 22);

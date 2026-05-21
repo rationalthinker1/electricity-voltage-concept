@@ -83,10 +83,7 @@ export function CyclotronDemo({ figure }: Props) {
       }
       ctx.save();
       ctx.globalAlpha = 0.55;
-      ctx.fillStyle = colors.teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(`B = ${pretty(B, 3)} T  (into page)`, 14, 18);
+      drawLabel(ctx, { text: `B = ${pretty(B, 3)} T  (into page)`, x: 14, y: 18, color: colors.teal, font: '10px "JetBrains Mono", monospace' });
       ctx.restore();
       const cx0 = w / 2;
       const cy0 = h / 2 + sign * 0;
@@ -130,13 +127,8 @@ export function CyclotronDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(px, py, 7, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 9px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(positive ? '+' : '−', px, py);
+      drawLabel(ctx, { text: positive ? '+' : '−', x: px, y: py, color: colors.bg, weight: 'bold', size: 9, font: '9px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       ctx.strokeStyle = colors.accent;
-      ctx.fillStyle = colors.accent;
       ctx.lineWidth = 1.5;
       const aLen = 22;
       ctx.beginPath();
@@ -153,15 +145,10 @@ export function CyclotronDemo({ figure }: Props) {
       ctx.lineTo(hx - tx * 5 - nx * 3, hy - ty * 5 - ny * 3);
       ctx.closePath();
       ctx.fill();
-      ctx.textBaseline = 'alphabetic';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText('v', hx + tx * 8, hy + ty * 8);
+      drawLabel(ctx, { text: 'v', x: hx + tx * 8, y: hy + ty * 8, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center' });
       ctx.save();
       ctx.globalAlpha = 0.85;
-      ctx.fillStyle = colors.text;
-      ctx.textAlign = 'right';
-      ctx.fillText(`r (real) = ${pretty(r_phys, 2)} m`, w - 14, 18);
+      drawLabel(ctx, { text: `r (real) = ${pretty(r_phys, 2)} m`, x: w - 14, y: 18, color: colors.text, align: 'right' });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.6;

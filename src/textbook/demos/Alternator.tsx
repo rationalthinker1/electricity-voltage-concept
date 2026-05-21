@@ -18,6 +18,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -132,21 +133,12 @@ export function AlternatorDemo({ figure }: Props) {
       ctx.lineTo(padL + plotW, yReg);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('14 V', padL - 4, yReg);
+      drawLabel(ctx, { text: '14 V', x: padL - 4, y: yReg, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
 
       // Labels
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('raw 3-phase AC', padL + 4, topY + 4);
-      ctx.fillText('rectified + regulated DC', padL + 4, topY + plotH + midGap + 4);
-      ctx.textAlign = 'right';
-      ctx.fillText(`f_elec = ${f.toFixed(0)} Hz`, padL + plotW - 4, topY + 4);
+      drawLabel(ctx, { text: 'raw 3-phase AC', x: padL + 4, y: topY + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'rectified + regulated DC', x: padL + 4, y: topY + plotH + midGap + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `f_elec = ${f.toFixed(0)} Hz`, x: padL + plotW - 4, y: topY + 4, align: 'right' });
     },
     [],
   );

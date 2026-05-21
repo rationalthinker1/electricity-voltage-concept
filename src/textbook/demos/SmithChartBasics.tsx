@@ -18,6 +18,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -103,14 +104,10 @@ export function SmithChartBasicsDemo({ figure }: Props) {
         drawArcClipped(ctx, cx + cxg * radius, cy + cyg_up * radius, rg * radius, cx, cy, radius);
       }
       ctx.restore();
-      ctx.fillStyle = colors.textDim;
       ctx.beginPath();
       ctx.arc(cx, cy, 2, 0, Math.PI * 2);
       ctx.fill();
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('Γ = 0  (matched, Z = 50Ω)', cx + 4, cy + 4);
+      drawLabel(ctx, { text: 'Γ = 0  (matched, Z = 50Ω)', x: cx + 4, y: cy + 4, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.strokeStyle = colors.accent;
       ctx.setLineDash([3, 3]);
       ctx.lineWidth = 1.1;
@@ -129,11 +126,7 @@ export function SmithChartBasicsDemo({ figure }: Props) {
       ctx.lineWidth = 1;
       ctx.stroke();
       ctx.restore();
-      ctx.fillStyle = colors.pink;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('Z_L', pZ.x + 8, pZ.y - 2);
+      drawLabel(ctx, { text: 'Z_L', x: pZ.x + 8, y: pZ.y - 2, color: colors.pink, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
       if (showQwave) {
         const pZin = gToScreen(-Gr, -Gi);
         ctx.fillStyle = colors.teal;
@@ -145,8 +138,7 @@ export function SmithChartBasicsDemo({ figure }: Props) {
         ctx.strokeStyle = colors.text;
         ctx.stroke();
         ctx.restore();
-        ctx.fillStyle = colors.teal;
-        ctx.fillText('Z_in (λ/4)', pZin.x + 8, pZin.y - 2);
+        drawLabel(ctx, { text: 'Z_in (λ/4)', x: pZin.x + 8, y: pZin.y - 2, color: colors.teal });
 
         // Connect through origin
         ctx.strokeStyle = colors.teal;
@@ -157,13 +149,8 @@ export function SmithChartBasicsDemo({ figure }: Props) {
         ctx.stroke();
         ctx.setLineDash([]);
       }
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('open  Γ=+1', cx + radius - 4, cy - 10);
-      ctx.textAlign = 'left';
-      ctx.fillText('short  Γ=−1', cx - radius + 4, cy - 10);
+      drawLabel(ctx, { text: 'open  Γ=+1', x: cx + radius - 4, y: cy - 10, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: 'short  Γ=−1', x: cx - radius + 4, y: cy - 10 });
     },
     [],
   );

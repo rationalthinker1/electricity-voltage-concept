@@ -164,27 +164,14 @@ export function BLDCCommutationDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(sxx, syy, 11, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 11px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('N', nx, ny);
-      ctx.fillText('S', sxx, syy);
+      drawLabel(ctx, { text: 'N', x: nx, y: ny, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: 'S', x: sxx, y: syy });
       ctx.lineCap = 'butt';
       ctx.save();
       ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`step ${idx + 1} / 6`, 12, 12);
+      drawLabel(ctx, { text: `step ${idx + 1} / 6`, x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.restore();
-      ctx.textAlign = 'right';
-      ctx.fillText(
-        `A=${step.a > 0 ? '+' : step.a < 0 ? '−' : '·'}  B=${step.b > 0 ? '+' : step.b < 0 ? '−' : '·'}  C=${step.c > 0 ? '+' : step.c < 0 ? '−' : '·'}`,
-        w - 12,
-        12,
-      );
+      drawLabel(ctx, { text: `A=${step.a > 0 ? '+' : step.a < 0 ? '−' : '·'}  B=${step.b > 0 ? '+' : step.b < 0 ? '−' : '·'}  C=${step.c > 0 ? '+' : step.c < 0 ? '−' : '·'}`, x: w - 12, y: 12, align: 'right' });
       ctx0.phase = phase;
       ctx0.rotorAng = rotorAng;
     },

@@ -331,13 +331,8 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
 
         // Polarity glyphs — used to bake into the offscreen canvas; pulled
         // out to per-frame ctx so the cache stays a plain CircuitSpec.
-        ctx.fillStyle = '#ff3b6e';
-        ctx.font = 'bold 12px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('+', batX - 18, top);
-        ctx.fillStyle = '#5baef8';
-        ctx.fillText('−', batX - 12, bot);
+        drawLabel(ctx, { text: '+', x: batX - 18, y: top, color: '#ff3b6e', weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+        drawLabel(ctx, { text: '−', x: batX - 12, y: bot, color: '#5baef8' });
 
         // ----- B-field circles around the wire (sample points along the loop).
         if (s.showB && current > 0.01) {
@@ -548,12 +543,7 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
           ctx.save();
           ctx.globalAlpha = 0.7;
           ctx.fillStyle = getCanvasColors().blue;
-          ctx.textAlign = 'center';
-          ctx.fillText(
-            'drift speed of these dots ≈ 10⁻⁴ m/s in real copper — too slow to carry the energy',
-            w / 2,
-            h - 16,
-          );
+          drawLabel(ctx, { text: 'drift speed of these dots ≈ 10⁻⁴ m/s in real copper — too slow to carry the energy', x: w / 2, y: h - 16, align: 'center' });
           ctx.restore();
         }
 

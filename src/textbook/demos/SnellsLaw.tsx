@@ -87,16 +87,11 @@ export function SnellsLawDemo({ figure }: Props) {
         const ty = cy + L * Math.cos(th2);
         drawRay(ctx, cx, cy, tx, ty, withAlpha(colors.teal, 0.95), 2.2);
       }
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText(`n₁ = ${n1.toFixed(2)}`, 12, 18);
-      ctx.fillText(`n₂ = ${n2.toFixed(2)}`, 12, H - 8);
-      ctx.fillStyle = colors.accent;
-      ctx.fillText(`θ₁ = ${thetaDeg.toFixed(1)}°`, cx + 8, cy - 30);
+      drawLabel(ctx, { text: `n₁ = ${n1.toFixed(2)}`, x: 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `n₂ = ${n2.toFixed(2)}`, x: 12, y: H - 8 });
+      drawLabel(ctx, { text: `θ₁ = ${thetaDeg.toFixed(1)}°`, x: cx + 8, y: cy - 30, color: colors.accent });
       if (!totalIntRefl) {
-        ctx.fillStyle = colors.teal;
-        ctx.fillText(`θ₂ = ${((th2 * 180) / Math.PI).toFixed(1)}°`, cx + 8, cy + 36);
+        drawLabel(ctx, { text: `θ₂ = ${((th2 * 180) / Math.PI).toFixed(1)}°`, x: cx + 8, y: cy + 36, color: colors.teal });
       }
     },
     [],

@@ -79,11 +79,7 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(cx, cy, 22, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 14px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('O', cx, cy);
+      drawLabel(ctx, { text: 'O', x: cx, y: cy, color: colors.bg, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       for (const [hx, hy] of [
         [h1x, h1y],
         [h2x, h2y],
@@ -119,22 +115,11 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
       ctx.lineTo(pTipX - ux * 9 + uy * 4, pTipY - uy * 9 - ux * 4);
       ctx.closePath();
       ctx.fill();
-      ctx.fillStyle = colors.accent;
-      ctx.font = 'italic 12px "Fraunces", serif';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('p', pTipX + 8, pTipY);
-      ctx.textBaseline = 'alphabetic';
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(`T = ${T.toFixed(0)} K`, 14, h - 16);
-      ctx.textAlign = 'right';
-      ctx.fillText(`θ = ${((theta * 180) / Math.PI).toFixed(0)}°`, w - 14, h - 16);
+      drawLabel(ctx, { text: 'p', x: pTipX + 8, y: pTipY, color: colors.accent, font: 'italic 12px "Fraunces", serif', baseline: 'middle' });
+      drawLabel(ctx, { text: `T = ${T.toFixed(0)} K`, x: 14, y: h - 16, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `θ = ${((theta * 180) / Math.PI).toFixed(0)}°`, x: w - 14, y: h - 16, align: 'right' });
       if (E_on) {
-        ctx.fillStyle = colors.accent;
-        ctx.textAlign = 'left';
-        ctx.fillText('E (external) →', 14, 18);
+        drawLabel(ctx, { text: 'E (external) →', x: 14, y: 18, color: colors.accent });
       }
       ctx0.theta = theta;
       ctx0.omega = omega;

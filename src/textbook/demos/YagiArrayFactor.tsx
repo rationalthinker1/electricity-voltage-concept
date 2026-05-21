@@ -79,10 +79,7 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       ctx.lineTo(ax - 8, cyTop + 4);
       ctx.closePath();
       ctx.fill();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.accent;
-      ctx.textAlign = 'right';
-      ctx.fillText('forward →', ax - 12, cyTop - 6);
+      drawLabel(ctx, { text: 'forward →', x: ax - 12, y: cyTop - 6, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'right' });
       const cx = (split + W) / 2;
       const cy = H / 2;
       const R = Math.min((W - split) * 0.42, H * 0.42);
@@ -121,11 +118,8 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fill();
       ctx.stroke();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.fillText('forward (+x)', cx + R + 12, cy + 4);
-      ctx.fillText('back (−x)', cx - R - 12, cy + 4);
+      drawLabel(ctx, { text: 'forward (+x)', x: cx + R + 12, y: cy + 4, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: 'back (−x)', x: cx - R - 12, y: cy + 4 });
     },
     [],
   );

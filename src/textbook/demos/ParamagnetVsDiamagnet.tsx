@@ -156,10 +156,7 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
       // Big external-B arrow at top
       ctx.save();
       ctx.globalAlpha = 0.65;
-      ctx.fillStyle = colors.text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(`B (external) →`, 16, 22);
+      drawLabel(ctx, { text: `B (external) →`, x: 16, y: 22, color: colors.text, font: '10px "JetBrains Mono", monospace' });
       const Bw = Math.min(140, 30 + B * 11);
       ctx.restore();
       ctx.strokeStyle = colors.textDim;
@@ -180,11 +177,8 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
 
       // Labels showing net M magnitude on each box
       ctx.restore();
-      ctx.fillStyle = colors.accent;
-      ctx.textAlign = 'right';
-      ctx.fillText(`M = ${mPara.toFixed(2)}`, boxes[0].x0 + boxes[0].w - 8, h - 12);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText(`M = ${mDia.toFixed(2)}`, boxes[1].x0 + boxes[1].w - 8, h - 12);
+      drawLabel(ctx, { text: `M = ${mPara.toFixed(2)}`, x: boxes[0].x0 + boxes[0].w - 8, y: h - 12, color: colors.accent, align: 'right' });
+      drawLabel(ctx, { text: `M = ${mDia.toFixed(2)}`, x: boxes[1].x0 + boxes[1].w - 8, y: h - 12, color: colors.teal });
 
       // Throttle React state updates
       const now = performance.now();

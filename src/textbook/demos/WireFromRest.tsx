@@ -149,11 +149,7 @@ export function WireFromRestDemo({ figure }: Props) {
         ctx.beginPath();
         ctx.arc(tx, ty, 9, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = colors.bg;
-        ctx.font = 'bold 10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('+', tx, ty);
+        drawLabel(ctx, { text: '+', x: tx, y: ty, color: colors.bg, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
 
         // "v = 0" label
         drawLabel(ctx, {

@@ -20,6 +20,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -115,15 +116,9 @@ export function ExcitationControlDemo({ figure }: Props) {
         ctx.arc(xAt(iField), yAt(K_F * iField), 6, 0, Math.PI * 2);
         ctx.fill();
         // Y axis label
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('|V_t| (pu)', padL - 6, padT + plotH / 2);
+        drawLabel(ctx, { text: '|V_t| (pu)', x: padL - 6, y: padT + plotH / 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
         // Title
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('no-load: |V_t| = |E_f| = k_f · I_field', padL + 6, padT + 4);
+        drawLabel(ctx, { text: 'no-load: |V_t| = |E_f| = k_f · I_field', x: padL + 6, y: padT + 4, baseline: 'top' });
       } else {
         // Loaded: V curve — |I_a| vs i_F, for fixed P.
         const yMax = 2.0;
@@ -162,11 +157,7 @@ export function ExcitationControlDemo({ figure }: Props) {
         ctx.setLineDash([]);
         ctx.save();
         ctx.globalAlpha = 0.8;
-        ctx.fillStyle = colors.teal;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('|I_a| = P at unity PF', padL + 6, yAt(pRef) - 2);
+        drawLabel(ctx, { text: '|I_a| = P at unity PF', x: padL + 6, y: yAt(pRef) - 2, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
 
         // Marker
         const Ef = K_F * iField;
@@ -183,33 +174,18 @@ export function ExcitationControlDemo({ figure }: Props) {
 
         // Y axis label
         ctx.restore();
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('|I_a| (pu)', padL - 6, padT + plotH / 2);
+        drawLabel(ctx, { text: '|I_a| (pu)', x: padL - 6, y: padT + plotH / 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
         // Title
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText(
-          `loaded V-curve: |I_a| vs I_field at P = ${pRef.toFixed(2)} pu`,
-          padL + 6,
-          padT + 4,
-        );
+        drawLabel(ctx, { text: `loaded V-curve: |I_a| vs I_field at P = ${pRef.toFixed(2)} pu`, x: padL + 6, y: padT + 4, baseline: 'top' });
 
         // Region labels
         ctx.save();
         ctx.globalAlpha = 0.75;
-        ctx.fillStyle = colors.blue;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('under-excited (Q < 0)', padL + 8, padT + plotH - 6);
+        drawLabel(ctx, { text: 'under-excited (Q < 0)', x: padL + 8, y: padT + plotH - 6, color: colors.blue, baseline: 'bottom' });
         ctx.restore();
         ctx.save();
         ctx.globalAlpha = 0.75;
-        ctx.fillStyle = colors.pink;
-        ctx.textAlign = 'right';
-        ctx.fillText('over-excited (Q > 0)', padL + plotW - 8, padT + plotH - 6);
+        drawLabel(ctx, { text: 'over-excited (Q > 0)', x: padL + plotW - 8, y: padT + plotH - 6, color: colors.pink, align: 'right' });
         ctx.restore();
       }
       ctx.fillStyle = colors.textDim;
@@ -219,7 +195,7 @@ export function ExcitationControlDemo({ figure }: Props) {
       for (let iF = 0.5; iF <= 2.5; iF += 0.5) {
         ctx.fillText(iF.toFixed(1), xAt(iF), padT + plotH + 4);
       }
-      ctx.fillText('I_field (pu) →', padL + plotW / 2, padT + plotH + 20);
+      drawLabel(ctx, { text: 'I_field (pu) →', x: padL + plotW / 2, y: padT + plotH + 20 });
     },
     [],
   );

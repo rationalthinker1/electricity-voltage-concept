@@ -17,6 +17,7 @@ import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useCircuitCache } from '@/lib/useCircuitCache';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -183,31 +184,16 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       }
 
       // Polarity glyphs
-      ctx.fillStyle = colors.pink;
-      ctx.font = 'bold 11px JetBrains Mono';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+', batX - 18, top);
-      ctx.fillStyle = colors.blue;
-      ctx.fillText('−', batX - 12, bot);
+      drawLabel(ctx, { text: '+', x: batX - 18, y: top, color: colors.pink, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '−', x: batX - 12, y: bot, color: colors.blue });
 
       // Annotations
       ctx.fillStyle = s.closed ? colors.accent : withAlpha(colors.textDim, 0.55);
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(
-        s.closed
-          ? 'field propagates at ~⅔ c · reaches bulb in ~5 ns'
-          : 'switch open — no field, no current',
-        w / 2,
-        h - 32,
-      );
+      drawLabel(ctx, { text: s.closed
+                  ? 'field propagates at ~⅔ c · reaches bulb in ~5 ns'
+                  : 'switch open — no field, no current', x: w / 2, y: h - 32, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center' });
       ctx.fillStyle = withAlpha(colors.blue, 0.7);
-      ctx.fillText(
-        'an electron starting at the switch would take ~13 hours to reach the bulb',
-        w / 2,
-        h - 14,
-      );
+      drawLabel(ctx, { text: 'an electron starting at the switch would take ~13 hours to reach the bulb', x: w / 2, y: h - 14 });
     },
     [],
     () => ({ context: { closedAtSimTime: null } }),

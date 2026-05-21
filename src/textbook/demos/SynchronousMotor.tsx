@@ -15,6 +15,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -99,31 +100,20 @@ export function SynchronousMotorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(sxx, syy, 12, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 11px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('N', nx, ny);
-      ctx.fillText('S', sxx, syy);
+      drawLabel(ctx, { text: 'N', x: nx, y: ny, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: 'S', x: sxx, y: syy });
       ctx.lineCap = 'butt';
       ctx.strokeStyle = withAlpha(colors.accent, 0.55);
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(cx, cy, 30, -statorAng, -rotorAng, statorAng < rotorAng);
       ctx.stroke();
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('δ', cx + 36, cy + 4);
+      drawLabel(ctx, { text: 'δ', x: cx + 36, y: cy + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace' });
       ctx.fillStyle = withAlpha(colors.textDim, 0.75);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('field (dashed) = rotor (locked)', 12, 12);
-      ctx.textAlign = 'right';
+      drawLabel(ctx, { text: 'field (dashed) = rotor (locked)', x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       const stallWarn = Math.abs(loadAngleDeg) > 80 ? '  ← near pull-out!' : '';
       ctx.fillStyle = Math.abs(loadAngleDeg) > 80 ? '#ff6b2a' : withAlpha(colors.textDim, 0.75);
-      ctx.fillText(`δ = ${loadAngleDeg.toFixed(0)}°${stallWarn}`, w - 12, 12);
+      drawLabel(ctx, { text: `δ = ${loadAngleDeg.toFixed(0)}°${stallWarn}`, x: w - 12, y: 12, align: 'right' });
       ctx0.statorAng = statorAng;
     },
     [],

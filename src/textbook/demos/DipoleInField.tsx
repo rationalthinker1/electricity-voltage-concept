@@ -12,6 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -127,12 +128,8 @@ export function DipoleInFieldDemo({ figure }: Props) {
       }
 
       // Overlay alignment text
-      ctx.fillStyle = colors.accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(`⟨cos θ⟩ = ${meanCos.toFixed(2)}`, 12, 18);
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText(`E (applied) →`, w - 110, 18);
+      drawLabel(ctx, { text: `⟨cos θ⟩ = ${meanCos.toFixed(2)}`, x: 12, y: 18, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `E (applied) →`, x: w - 110, y: 18 });
 
       // Throttle React state updates to ~5 Hz
       setAlignThrottled(meanCos);

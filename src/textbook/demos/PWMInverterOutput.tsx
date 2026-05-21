@@ -108,20 +108,10 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+V_DC', padL - 4, yTime(+V_DC));
-      ctx.fillText('0', padL - 4, top + subH / 2);
-      ctx.fillText('−V_DC', padL - 4, yTime(-V_DC));
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        `raw PWM (carrier ${(fSw / 1e3).toFixed(1)} kHz)  +  60 Hz filtered`,
-        padL + 4,
-        top + 4,
-      );
+      drawLabel(ctx, { text: '+V_DC', x: padL - 4, y: yTime(+V_DC), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '0', x: padL - 4, y: top + subH / 2 });
+      drawLabel(ctx, { text: '−V_DC', x: padL - 4, y: yTime(-V_DC) });
+      drawLabel(ctx, { text: `raw PWM (carrier ${(fSw / 1e3).toFixed(1)} kHz)  +  60 Hz filtered`, x: padL + 4, y: top + 4, baseline: 'top' });
       const fLo = 10;
       const fHi = 1e6;
       const xOfF = (f: number) => padL + (Math.log10(f / fLo) / Math.log10(fHi / fLo)) * plotW;

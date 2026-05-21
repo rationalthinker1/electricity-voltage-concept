@@ -16,6 +16,7 @@ import { drawHalo } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -88,11 +89,7 @@ export function GaussELawDemo({ figure }: Props) {
       ctx.lineWidth = 1.6;
       ctx.strokeRect(bx, by, bw, bh);
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('Gaussian surface', bx + 8, by - 16);
+      drawLabel(ctx, { text: 'Gaussian surface', x: bx + 8, y: by - 16, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       const cR = 10 + Math.min(8, Math.abs(qNC) * 0.6);
       const cColor = qNC >= 0 ? '#ff3b6e' : '#5baef8';
       drawHalo(ctx, {
@@ -107,22 +104,10 @@ export function GaussELawDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(chargeX, chargeY, cR, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
       ctx.font = `bold ${cR}px JetBrains Mono`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(qNC >= 0 ? '+' : '−', chargeX, chargeY);
-      ctx.fillStyle = colors.text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        outside ? 'Q outside → no net flux' : `Q_enc = ${qNC.toFixed(1)} nC inside`,
-        chargeX,
-        chargeY + cR + 10,
-      );
-      ctx.textAlign = 'left';
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText('∮E·dA = Q_enc / ε₀', 14, 14);
+      drawLabel(ctx, { text: qNC >= 0 ? '+' : '−', x: chargeX, y: chargeY, color: colors.bg, align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: outside ? 'Q outside → no net flux' : `Q_enc = ${qNC.toFixed(1)} nC inside`, x: chargeX, y: chargeY + cR + 10, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: '∮E·dA = Q_enc / ε₀', x: 14, y: 14 });
     },
     [],
   );

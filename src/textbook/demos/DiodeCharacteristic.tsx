@@ -20,6 +20,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -116,17 +117,12 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
       ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('V (volts)', padL + plotW / 2, padT + plotH + 18);
+      drawLabel(ctx, { text: 'V (volts)', x: padL + plotW / 2, y: padT + plotH + 18, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       ctx.restore();
       ctx.save();
       ctx.translate(14, padT + plotH / 2);
       ctx.rotate(-Math.PI / 2);
-      ctx.textBaseline = 'middle';
-      ctx.fillText('I (amps)', 0, 0);
+      drawLabel(ctx, { text: 'I (amps)', x: 0, y: 0, baseline: 'middle' });
       ctx.restore();
       ctx.strokeStyle = colors.border;
       ctx.beginPath();
@@ -150,11 +146,9 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
         ctx.fillText(v.toFixed(0), xOf(v), yOf(0) + 4);
         ctx.restore();
       }
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+100 mA', padL - 4, yOf(0.1));
-      ctx.fillText('+50 mA', padL - 4, yOf(0.05));
-      ctx.fillText('−50 mA', padL - 4, yOf(-0.05));
+      drawLabel(ctx, { text: '+100 mA', x: padL - 4, y: yOf(0.1), align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '+50 mA', x: padL - 4, y: yOf(0.05) });
+      drawLabel(ctx, { text: '−50 mA', x: padL - 4, y: yOf(-0.05) });
       (Object.keys(FAMILIES) as DiodeKind[]).forEach((kind) => {
         const { color } = FAMILIES[kind];
         ctx.strokeStyle = color;
@@ -196,20 +190,12 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
         const { color, label } = FAMILIES[kind];
         ctx.fillStyle = color;
         ctx.fillRect(legendX, lY + 3, 10, 2);
-        ctx.fillStyle = colors.text;
-        ctx.fillText(label, legendX + 16, lY);
+        drawLabel(ctx, { text: label, x: legendX + 16, y: lY, color: colors.text });
         lY += 14;
       });
       ctx.save();
       ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        `I = Iₛ (exp(V/V_T) − 1)   ·   V_T = kT/q = ${(((KB * T) / Q) * 1000).toFixed(1)} mV at ${T.toFixed(0)} K`,
-        padL,
-        4,
-      );
+      drawLabel(ctx, { text: `I = Iₛ (exp(V/V_T) − 1)   ·   V_T = kT/q = ${(((KB * T) / Q) * 1000).toFixed(1)} mV at ${T.toFixed(0)} K`, x: padL, y: 4, baseline: 'top' });
       ctx.restore();
     },
     [],

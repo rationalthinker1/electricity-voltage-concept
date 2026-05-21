@@ -120,18 +120,10 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.moveTo(pX - 6, coreBot - 10);
       ctx.lineTo(pCX, coreBot - 10);
       ctx.stroke();
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('V_in', pCX - 2, (coreTop + coreBot) / 2);
+      drawLabel(ctx, { text: 'V_in', x: pCX - 2, y: (coreTop + coreBot) / 2, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       ctx.fillStyle = onPhase ? withAlpha(colors.accent, 0.95) : withAlpha(colors.textDim, 0.45);
       ctx.fillRect(pCX + 4, coreBot - 16, 14, 12);
-      ctx.fillStyle = colors.bg;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(onPhase ? 'ON' : 'off', pCX + 11, coreBot - 10);
+      drawLabel(ctx, { text: onPhase ? 'ON' : 'off', x: pCX + 11, y: coreBot - 10, color: colors.bg, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       const sCX = sX + 60;
       ctx.strokeStyle = colors.borderStrong;
       ctx.beginPath();
@@ -154,24 +146,12 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.moveTo(sCX, dY - 5);
       ctx.lineTo(sCX, dY + 5);
       ctx.stroke();
-      ctx.fillStyle = colors.teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`V_out = ${Vout.toFixed(1)} V`, sCX + 6, (coreTop + coreBot) / 2);
+      drawLabel(ctx, { text: `V_out = ${Vout.toFixed(1)} V`, x: sCX + 6, y: (coreTop + coreBot) / 2, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
       ctx.fillStyle = onPhase ? withAlpha(colors.accent, 0.95) : 'rgba(255,255,255,0.10)';
       drawArrowDown(ctx, pX - 18, coreTop + 30, 14);
       ctx.fillStyle = !onPhase ? withAlpha(colors.teal, 0.95) : 'rgba(255,255,255,0.10)';
       drawArrowUp(ctx, sX + 18, coreBot - 30, 14);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        onPhase ? 'ON  —  storing energy in L_p' : 'OFF  —  dumping into C_out',
-        w / 2,
-        6,
-      );
+      drawLabel(ctx, { text: onPhase ? 'ON  —  storing energy in L_p' : 'OFF  —  dumping into C_out', x: w / 2, y: 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       const barX = w - 28;
       const barH = h * 0.6;
       const barTop = (h - barH) / 2;
@@ -189,11 +169,7 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('½L·I²', barX + 7, barTop - 2);
+      drawLabel(ctx, { text: '½L·I²', x: barX + 7, y: barTop - 2, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.7;

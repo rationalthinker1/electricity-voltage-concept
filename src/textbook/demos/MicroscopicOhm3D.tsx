@@ -34,6 +34,7 @@ import { useSimState } from '@/lib/useSimState';
 import { MATERIALS, type MaterialKey, PHYS } from '@/lib/physics';
 import { project, v3, type OrbitCamera, type Point2D, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -372,10 +373,7 @@ function drawBFieldRings(
   // wire body.
   const labelAt = project(v3(0, R_RING * 1.15, 0), cam, W, H);
   ctx.fillStyle = withAlpha(colors.teal, 0.45 + 0.5 * Inorm);
-  ctx.font = "italic 13px 'STIX Two Text', serif";
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText('B', labelAt.x, labelAt.y - 4);
+  drawLabel(ctx, { text: 'B', x: labelAt.x, y: labelAt.y - 4, font: "italic 13px 'STIX Two Text', serif", align: 'center', baseline: 'bottom' });
 }
 
 function drawFieldVectors(
@@ -399,10 +397,7 @@ function drawFieldVectors(
   // Label "E" near the head.
   const eLabelAnchor = project(v3(halfE + 0.18, 0.18, 0), cam, W, H);
   ctx.fillStyle = withAlpha(colors.accent, 0.85);
-  ctx.font = "italic 13px 'STIX Two Text', serif";
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('E', eLabelAnchor.x, eLabelAnchor.y);
+  drawLabel(ctx, { text: 'E', x: eLabelAnchor.x, y: eLabelAnchor.y, font: "italic 13px 'STIX Two Text', serif", baseline: 'middle' });
 
   // J vector — same axis but offset above the wire so the two arrows are
   // distinguishable. Length scales with Jnorm.
@@ -415,10 +410,7 @@ function drawFieldVectors(
   drawVectorArrow(ctx, pJ0, pJ1, withAlpha(colors.pink, 0.6 + 0.4 * Jnorm), 2 + 1.5 * Jnorm);
   const jLabelAnchor = project(v3(halfJ + 0.18, yJ + 0.18, 0), cam, W, H);
   ctx.fillStyle = withAlpha(colors.pink, 0.9);
-  ctx.font = "italic 13px 'STIX Two Text', serif";
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('J = σE', jLabelAnchor.x, jLabelAnchor.y);
+  drawLabel(ctx, { text: 'J = σE', x: jLabelAnchor.x, y: jLabelAnchor.y, font: "italic 13px 'STIX Two Text', serif", baseline: 'middle' });
 }
 
 function drawElectrons(
@@ -455,26 +447,16 @@ function drawLegend(
   H: number,
   matName: string,
 ) {
-  ctx.font = '11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'top';
-  ctx.fillStyle = colors.textDim;
-  ctx.fillText('drag to rotate', 12, 12);
-
-  ctx.textAlign = 'right';
+  drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
   ctx.fillStyle = withAlpha(colors.accent, 0.95);
-  ctx.fillText('E   applied field', W - 12, 12);
+  drawLabel(ctx, { text: 'E   applied field', x: W - 12, y: 12, align: 'right' });
   ctx.fillStyle = withAlpha(colors.pink, 0.95);
-  ctx.fillText('J = σE   current density', W - 12, 28);
+  drawLabel(ctx, { text: 'J = σE   current density', x: W - 12, y: 28 });
   ctx.fillStyle = withAlpha(colors.teal, 0.95);
-  ctx.fillText('B   magnetic field', W - 12, 44);
+  drawLabel(ctx, { text: 'B   magnetic field', x: W - 12, y: 44 });
   ctx.fillStyle = withAlpha(colors.blue, 0.95);
-  ctx.fillText('electrons (drift)', W - 12, 60);
-
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'bottom';
-  ctx.fillStyle = colors.textDim;
-  ctx.fillText(`${matName} · 1 mm² cross-section · arrows scaled, vectors real`, 12, H - 12);
+  drawLabel(ctx, { text: 'electrons (drift)', x: W - 12, y: 60 });
+  drawLabel(ctx, { text: `${matName} · 1 mm² cross-section · arrows scaled, vectors real`, x: 12, y: H - 12, baseline: 'bottom' });
 }
 
 /* ─── Vector / arrowhead primitives ────────────────────────────────────── */

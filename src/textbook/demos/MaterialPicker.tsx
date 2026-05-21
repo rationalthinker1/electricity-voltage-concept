@@ -88,7 +88,7 @@ export function MaterialPickerDemo({ figure }: Props) {
         const label = d >= 0 ? `10^${d}` : `10⁻${-d}`;
         ctx.fillText(label.replace('10^', '10').replace('^', ''), x, h - padB + 14);
       }
-      ctx.fillText('current (A, log scale)', padL + innerW / 2, h - padB + 26);
+      drawLabel(ctx, { text: 'current (A, log scale)', x: padL + innerW / 2, y: h - padB + 26 });
 
       CHOICES.forEach((k, i) => {
         const m = MATERIALS[k]!;
@@ -106,21 +106,13 @@ export function MaterialPickerDemo({ figure }: Props) {
         ctx.strokeRect(x0, yMid - barH / 2, Math.max(1, x1 - x0), barH);
 
         ctx.fillStyle = isSel ? colors.accent : withAlpha(colors.text, 0.75);
-        ctx.font = isSel
-          ? 'bold 10px "JetBrains Mono", monospace'
-          : '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.fillText(
-          m.name.replace(' (filament)', '').replace(' (heater)', '').toUpperCase(),
-          padL - 10,
-          yMid + 3,
-        );
+        drawLabel(ctx, { text: m.name.replace(' (filament)', '').replace(' (heater)', '').toUpperCase(), x: padL - 10, y: yMid + 3, font: isSel
+                    ? 'bold 10px "JetBrains Mono", monospace'
+                    : '10px "JetBrains Mono", monospace', align: 'right' });
 
         ctx.fillStyle = isSel ? colors.accent : withAlpha(colors.textDim, 0.85);
-        ctx.textAlign = 'left';
-        ctx.font = '10px "JetBrains Mono", monospace';
         const txt = formatCurrent(ik);
-        ctx.fillText(txt, Math.min(w - padR - 60, x1 + 6), yMid + 3);
+        drawLabel(ctx, { text: txt, x: Math.min(w - padR - 60, x1 + 6), y: yMid + 3, font: '10px "JetBrains Mono", monospace' });
       });
 
       drawLabel(ctx, {

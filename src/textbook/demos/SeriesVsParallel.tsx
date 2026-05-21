@@ -445,9 +445,6 @@ function drawVoltageProbe(ctx: CanvasRenderingContext2D, x: number, y: number, v
   const colors = getCanvasColors();
   const text = `${value.toFixed(2)} V`;
   ctx.save();
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
   const m = ctx.measureText(text);
   const boxW = m.width + 12;
   const boxH = 16;
@@ -456,7 +453,6 @@ function drawVoltageProbe(ctx: CanvasRenderingContext2D, x: number, y: number, v
   ctx.strokeStyle = withAlpha(colors.accent, 0.55);
   ctx.lineWidth = 1;
   ctx.strokeRect(x - boxW / 2, y - boxH / 2, boxW, boxH);
-  ctx.fillStyle = colors.accent;
-  ctx.fillText(text, x, y);
+  drawLabel(ctx, { text: text, x: x, y: y, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
   ctx.restore();
 }

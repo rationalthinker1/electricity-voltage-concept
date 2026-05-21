@@ -106,11 +106,9 @@ export function VabWorkEnergyDemo({ figure }: Props) {
         ctx.font = 'bold 12px "JetBrains Mono", monospace';
         ctx.textBaseline = 'bottom';
         if (labelSide === 'left') {
-          ctx.textAlign = 'left';
-          ctx.fillText(`${label} = ${Vval.toFixed(1)} V`, xLeft, wallTop - 6);
+          drawLabel(ctx, { text: `${label} = ${Vval.toFixed(1)} V`, x: xLeft, y: wallTop - 6 });
         } else {
-          ctx.textAlign = 'right';
-          ctx.fillText(`${label} = ${Vval.toFixed(1)} V`, xRight, wallTop - 6);
+          drawLabel(ctx, { text: `${label} = ${Vval.toFixed(1)} V`, x: xRight, y: wallTop - 6, align: 'right' });
         }
       };
       drawWall(leftWallLeft, leftWallRight, leftColor, 'V_a', Va_, 'left');
@@ -143,24 +141,9 @@ export function VabWorkEnergyDemo({ figure }: Props) {
           }
         }
         ctx.fillStyle = `rgba(255,107,42,${(eAlpha + 0.2).toFixed(3)})`;
-        ctx.font = 'italic 11px "STIX Two Text", serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(
-          `E points high V → low V    (|V_ab| = ${Eabs.toFixed(1)} V drives it)`,
-          (channelLeft + channelRight) / 2,
-          channelTop - 4,
-        );
+        drawLabel(ctx, { text: `E points high V → low V    (|V_ab| = ${Eabs.toFixed(1)} V drives it)`, x: (channelLeft + channelRight) / 2, y: channelTop - 4, font: 'italic 11px "STIX Two Text", serif', align: 'center', baseline: 'bottom' });
       } else {
-        ctx.fillStyle = colors.textDim;
-        ctx.font = 'italic 11px "STIX Two Text", serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(
-          'V_a = V_b — no field, no motion',
-          (channelLeft + channelRight) / 2,
-          channelMidY,
-        );
+        drawLabel(ctx, { text: 'V_a = V_b — no field, no motion', x: (channelLeft + channelRight) / 2, y: channelMidY, font: 'italic 11px "STIX Two Text", serif', align: 'center', baseline: 'middle' });
       }
 
       // Physics update
@@ -216,11 +199,8 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(xC, yC, radius, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
       ctx.font = `bold ${Math.max(11, Math.round(radius))}px "JetBrains Mono", monospace`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(positive ? '+' : '−', xC, yC + 1);
+      drawLabel(ctx, { text: positive ? '+' : '−', x: xC, y: yC + 1, color: colors.bg, align: 'center', baseline: 'middle' });
 
       // Energy bar: PE + KE = constant
       const barTop = wallBot + 18;
@@ -243,27 +223,18 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       const kePx = barW * keFrac;
       ctx.fillStyle = `rgba(255,107,42,${(0.55 + 0.25 * keFrac).toFixed(3)})`;
       ctx.fillRect(barLeft + pePx, barTop, kePx, barH);
-
-      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textBaseline = 'middle';
       const labelY = barTop + barH / 2;
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`total energy |qV_ab| = ${dPE_uJ.toFixed(2)} µJ`, barLeft, barTop - 4);
+      drawLabel(ctx, { text: `total energy |qV_ab| = ${dPE_uJ.toFixed(2)} µJ`, x: barLeft, y: barTop - 4, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
       ctx.textBaseline = 'middle';
 
       const pe_uJ = dPE_uJ * peFrac;
       const ke_uJ = dPE_uJ * keFrac;
       if (pePx > 60) {
-        ctx.fillStyle = colors.text;
-        ctx.textAlign = 'left';
-        ctx.fillText(`PE  ${pe_uJ.toFixed(2)} µJ`, barLeft + 6, labelY);
+        drawLabel(ctx, { text: `PE  ${pe_uJ.toFixed(2)} µJ`, x: barLeft + 6, y: labelY, color: colors.text });
       }
       if (kePx > 60) {
-        ctx.fillStyle = colors.bg;
-        ctx.textAlign = 'right';
-        ctx.fillText(`KE  ${ke_uJ.toFixed(2)} µJ`, barLeft + barW - 6, labelY);
+        drawLabel(ctx, { text: `KE  ${ke_uJ.toFixed(2)} µJ`, x: barLeft + barW - 6, y: labelY, color: colors.bg, align: 'right' });
       }
 
       drawLabel(ctx, {

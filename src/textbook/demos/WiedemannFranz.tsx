@@ -98,12 +98,9 @@ export function WiedemannFranzDemo({ figure }: Props) {
 
         // Material label
         ctx.fillStyle = isSel ? '#ff6b2a' : withAlpha(colors.text, 0.75);
-        ctx.font = isSel
-          ? 'bold 10px "JetBrains Mono", monospace'
-          : '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(mm.name.toUpperCase(), padL - 10, yMid);
+        drawLabel(ctx, { text: mm.name.toUpperCase(), x: padL - 10, y: yMid, font: isSel
+                    ? 'bold 10px "JetBrains Mono", monospace'
+                    : '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
 
         // Per-metal Lorenz value
         const L_m = mm.kappa / (mm.sigma * T_K);

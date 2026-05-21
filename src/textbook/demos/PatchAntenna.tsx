@@ -19,6 +19,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -76,16 +77,10 @@ export function PatchAntennaDemo({ figure }: Props) {
       ctx.fill();
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.restore();
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.fillText('feed', cxL - Lpx / 4, cyL + 14);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText(`L = ${Lmm.toFixed(1)} mm`, 12, 18);
-      ctx.fillText(`εᵣ = ${eps.toFixed(2)}`, 12, 32);
-      ctx.textAlign = 'center';
-      ctx.fillText('patch (top view)', cxL, H - 12);
+      drawLabel(ctx, { text: 'feed', x: cxL - Lpx / 4, y: cyL + 14, align: 'center' });
+      drawLabel(ctx, { text: `L = ${Lmm.toFixed(1)} mm`, x: 12, y: 18, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `εᵣ = ${eps.toFixed(2)}`, x: 12, y: 32 });
+      drawLabel(ctx, { text: 'patch (top view)', x: cxL, y: H - 12, align: 'center' });
       const cxR = splitX + (W - splitX) / 2;
       const cyR = H / 2;
       const R = Math.min((W - splitX) * 0.4, H * 0.4);
@@ -127,12 +122,9 @@ export function PatchAntennaDemo({ figure }: Props) {
       ctx.stroke();
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.restore();
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.fillText('broadside (zenith)', cxR, cyR - R - 8);
-      ctx.fillText('ground plane', cxR, cyR + 14);
-      ctx.textAlign = 'right';
-      ctx.fillText(`f₀ ≈ ${f0GHz.toFixed(2)} GHz`, W - 12, 18);
+      drawLabel(ctx, { text: 'broadside (zenith)', x: cxR, y: cyR - R - 8, align: 'center' });
+      drawLabel(ctx, { text: 'ground plane', x: cxR, y: cyR + 14 });
+      drawLabel(ctx, { text: `f₀ ≈ ${f0GHz.toFixed(2)} GHz`, x: W - 12, y: 18, align: 'right' });
       ctx0.tAnim = tAnim;
     },
     [],

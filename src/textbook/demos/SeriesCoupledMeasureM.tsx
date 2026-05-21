@@ -63,34 +63,20 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
       ctx.lineTo(c2x - 22, cy);
       ctx.stroke();
       ctx.restore();
-      ctx.fillStyle = colors.teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(`M = ${Mh.toFixed(2)} mH`, (c1x + c2x) / 2, cy + 24);
+      drawLabel(ctx, { text: `M = ${Mh.toFixed(2)} mH`, x: (c1x + c2x) / 2, y: cy + 24, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center' });
       ctx.fillStyle = aiding ? withAlpha(colors.accent, 0.95) : withAlpha(colors.blue, 0.95);
       ctx.font = 'bold 18px "STIX Two Text", "Fraunces", serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText(`L_eq = ${(aiding ? Laid : Lopp).toFixed(2)} mH`, w / 2, 14);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillText(
-        aiding ? 'series aiding:  L₁ + L₂ + 2M' : 'series opposing:  L₁ + L₂ − 2M',
-        w / 2,
-        38,
-      );
+      drawLabel(ctx, { text: aiding ? 'series aiding:  L₁ + L₂ + 2M' : 'series opposing:  L₁ + L₂ − 2M', x: w / 2, y: 38, font: '10px "JetBrains Mono", monospace' });
       ctx.save();
       ctx.globalAlpha = 0.65;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`L_aid = ${Laid.toFixed(2)} mH`, 12, h - 22);
-      ctx.fillText(`L_opp = ${Lopp.toFixed(2)} mH`, 12, h - 8);
+      drawLabel(ctx, { text: `L_aid = ${Laid.toFixed(2)} mH`, x: 12, y: h - 22, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
+      drawLabel(ctx, { text: `L_opp = ${Lopp.toFixed(2)} mH`, x: 12, y: h - 8 });
       ctx.textAlign = 'right';
       ctx.restore();
-      ctx.fillStyle = colors.accent;
-      ctx.fillText(`M = (L_aid − L_opp) / 4 = ${((Laid - Lopp) / 4).toFixed(2)} mH`, w - 12, h - 8);
+      drawLabel(ctx, { text: `M = (L_aid − L_opp) / 4 = ${((Laid - Lopp) / 4).toFixed(2)} mH`, x: w - 12, y: h - 8, color: colors.accent });
     },
     [],
   );

@@ -238,8 +238,5 @@ function drawCurrentArrow(
   ctx.lineTo(x1 - al * Math.cos(ang + 0.4), y1 - al * Math.sin(ang + 0.4));
   ctx.closePath();
   ctx.fill();
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(label, x0 - 4, y0);
+  drawLabel(ctx, { text: label, x: x0 - 4, y: y0, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
 }

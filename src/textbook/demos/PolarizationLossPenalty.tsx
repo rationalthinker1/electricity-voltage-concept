@@ -90,10 +90,7 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
       ctx.lineTo(wcx + 4, cy - E + 6 * dir);
       ctx.closePath();
       ctx.fill();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.fillText('E-field (vertical)', wcx, cy + Rmid + 14);
+      drawLabel(ctx, { text: 'E-field (vertical)', x: wcx, y: cy + Rmid + 14, font: '10px "JetBrains Mono", monospace', align: 'center' });
       ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -114,13 +111,9 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
       ctx.moveTo(rxCx, cy);
       ctx.lineTo(rxCx + projAmp * ux, cy + projAmp * uy);
       ctx.stroke();
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText(`P_r / P_r,max = cos²(α) = ${frac.toFixed(3)}`, 12, 18);
-      ctx.textAlign = 'right';
+      drawLabel(ctx, { text: `P_r / P_r,max = cos²(α) = ${frac.toFixed(3)}`, x: 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace' });
       const lossLabel = Number.isFinite(lossDb) ? `loss = ${lossDb.toFixed(2)} dB` : 'loss = ∞';
-      ctx.fillText(lossLabel, W - 12, 18);
+      drawLabel(ctx, { text: lossLabel, x: W - 12, y: 18, align: 'right' });
       ctx0.tAnim = tAnim;
     },
     [],

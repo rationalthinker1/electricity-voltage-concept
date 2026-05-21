@@ -29,6 +29,7 @@ import { pathRoundRect } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -103,11 +104,8 @@ export function WireVoltageDropDemo({ figure }: Props) {
 
       // V-axis ticks at 0 V and V₀ on the left edge.
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`${V0} V`, wireLeft - 8, yOfV(V0));
-      ctx.fillText('0 V', wireLeft - 8, hillBaseY);
+      drawLabel(ctx, { text: `${V0} V`, x: wireLeft - 8, y: yOfV(V0), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '0 V', x: wireLeft - 8, y: hillBaseY });
 
       // ── Wire body (bottom row) ─────────────────────────────────────────
       // Gradient along the wire matches the hill: pink (+) on the left,
@@ -125,13 +123,8 @@ export function WireVoltageDropDemo({ figure }: Props) {
       ctx.stroke();
 
       // Terminal markers (+ on left, − on right).
-      ctx.font = 'bold 12px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = colors.pink;
-      ctx.fillText('+', wireLeft - 18, wireCY);
-      ctx.fillStyle = colors.blue;
-      ctx.fillText('−', wireRight + 18, wireCY);
+      drawLabel(ctx, { text: '+', x: wireLeft - 18, y: wireCY, color: colors.pink, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: '−', x: wireRight + 18, y: wireCY, color: colors.blue });
 
       // Current-direction arrow above the wire (conventional current +→−).
       const arrowY = wireTop - 18;
@@ -150,10 +143,7 @@ export function WireVoltageDropDemo({ figure }: Props) {
       ctx.lineTo(ax1 - 7, arrowY + 4);
       ctx.closePath();
       ctx.fill();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'alphabetic';
-      ctx.fillText(`I = ${I.toFixed(2)} A`, (ax0 + ax1) / 2, arrowY - 6);
+      drawLabel(ctx, { text: `I = ${I.toFixed(2)} A`, x: (ax0 + ax1) / 2, y: arrowY - 6, font: '10px "JetBrains Mono", monospace', align: 'center' });
 
       // ── Probe ─────────────────────────────────────────────────────────
       const px = wireLeft + probeT * wireLen;
@@ -173,30 +163,14 @@ export function WireVoltageDropDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(px, wireCY, 9, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('P', px, wireCY + 1);
-      ctx.textBaseline = 'alphabetic';
-
+      drawLabel(ctx, { text: 'P', x: px, y: wireCY + 1, color: colors.bg, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       // V-at-probe readout, attached to the hill crossing point.
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(`V(P) ≈ ${Vp.toFixed(2)} V`, px, hillY - 10);
+      drawLabel(ctx, { text: `V(P) ≈ ${Vp.toFixed(2)} V`, x: px, y: hillY - 10, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center' });
 
       // ── Bottom caption / position label ───────────────────────────────
       ctx.fillStyle = withAlpha(colors.textDim, 0.8);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('drag the probe along the wire', wireLeft, wireBot + 22);
-      ctx.textAlign = 'right';
-      ctx.fillText(
-        `position: ${(probeT * 100).toFixed(0)}% of wire length`,
-        wireRight,
-        wireBot + 22,
-      );
+      drawLabel(ctx, { text: 'drag the probe along the wire', x: wireLeft, y: wireBot + 22, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `position: ${(probeT * 100).toFixed(0)}% of wire length`, x: wireRight, y: wireBot + 22, align: 'right' });
     },
     [],
     (info) => {

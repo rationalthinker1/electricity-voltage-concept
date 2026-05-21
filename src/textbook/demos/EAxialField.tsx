@@ -19,6 +19,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { pretty } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -110,31 +111,16 @@ export function EAxialFieldDemo({ figure }: Props) {
       ctx.fillRect(wireXL - 22, wireCY - r - 4, 4, 2 * r + 8);
       ctx.fillStyle = colors.blue;
       ctx.fillRect(wireXR + 18, wireCY - r - 4, 4, 2 * r + 8);
-      ctx.fillStyle = colors.pink;
-      ctx.font = 'bold 14px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+', wireXL - 36, wireCY);
-      ctx.fillStyle = colors.blue;
-      ctx.fillText('−', wireXR + 36, wireCY);
-      ctx.fillStyle = colors.pink;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('E  (axial)', (wireXL + wireXR) / 2, wireCY - r - 14);
+      drawLabel(ctx, { text: '+', x: wireXL - 36, y: wireCY, color: colors.pink, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: '−', x: wireXR + 36, y: wireCY, color: colors.blue });
+      drawLabel(ctx, { text: 'E  (axial)', x: (wireXL + wireXR) / 2, y: wireCY - r - 14, color: colors.pink, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       ctx.save();
       ctx.globalAlpha = 0.85;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`V = ${V.toFixed(1)} V`, 18, h - 24);
-      ctx.textAlign = 'right';
-      ctx.fillText(`L = ${L.toFixed(2)} m`, w - 18, h - 24);
+      drawLabel(ctx, { text: `V = ${V.toFixed(1)} V`, x: 18, y: h - 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `L = ${L.toFixed(2)} m`, x: w - 18, y: h - 24, align: 'right' });
       ctx.textAlign = 'center';
       ctx.restore();
-      ctx.fillStyle = colors.accent;
-      ctx.fillText(`E = V / L = ${pretty(E_)} V/m`, w / 2, h - 24);
+      drawLabel(ctx, { text: `E = V / L = ${pretty(E_)} V/m`, x: w / 2, y: h - 24, color: colors.accent });
       ctx0.phase = phase;
     },
     [],

@@ -16,6 +16,7 @@ import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -93,15 +94,9 @@ export function SupercapacitorDemo({ figure }: Props) {
         }
         ctx.stroke();
       }
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('V(t)', pX, 6);
-      ctx.textAlign = 'right';
-      ctx.fillText(`V_max = ${s.V_max.toFixed(2)} V`, pX + pW - 4, yvm - 4);
-      ctx.textAlign = 'right';
-      ctx.fillText(`V = ${s.V.toFixed(2)} V`, pX + pW, pY + pH + 4);
+      drawLabel(ctx, { text: 'V(t)', x: pX, y: 6, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `V_max = ${s.V_max.toFixed(2)} V`, x: pX + pW - 4, y: yvm - 4, align: 'right' });
+      drawLabel(ctx, { text: `V = ${s.V.toFixed(2)} V`, x: pX + pW, y: pY + pH + 4, align: 'right' });
     },
     [],
   );

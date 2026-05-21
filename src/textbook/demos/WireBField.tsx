@@ -15,6 +15,7 @@ import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS, pretty } from '@/lib/physics';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -194,9 +195,7 @@ export function WireBFieldDemo({ figure }: Props) {
 
       // Wire label
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(`I = ${I.toFixed(1)} A ${intoPage ? '⊗' : '⊙'}`, cx0, cy0 + wireR * 3 + 14);
+      drawLabel(ctx, { text: `I = ${I.toFixed(1)} A ${intoPage ? '⊗' : '⊙'}`, x: cx0, y: cy0 + wireR * 3 + 14, font: '10px "JetBrains Mono", monospace', align: 'center' });
 
       // Probe
       const px = probe.x * w,
@@ -224,19 +223,12 @@ export function WireBFieldDemo({ figure }: Props) {
       ctx.arc(px, py, 9, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
-      ctx.fillStyle = colors.accent;
-      ctx.font = 'bold 10px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('P', px, py);
+      drawLabel(ctx, { text: 'P', x: px, y: py, color: colors.accent, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
 
       // Probe distance label
       ctx.fillStyle = withAlpha(colors.text, 0.85);
-      ctx.textBaseline = 'alphabetic';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillText(`r = ${(r_m * 1000).toFixed(0)} mm`, px, py - 16);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText(`|B| = ${pretty(Bprobe, 2)} T`, px, py + 22);
+      drawLabel(ctx, { text: `r = ${(r_m * 1000).toFixed(0)} mm`, x: px, y: py - 16, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `|B| = ${pretty(Bprobe, 2)} T`, x: px, y: py + 22, color: colors.teal });
 
       raf = requestAnimationFrame(draw);
     }

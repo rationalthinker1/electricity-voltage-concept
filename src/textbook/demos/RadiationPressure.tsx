@@ -17,6 +17,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -113,12 +114,10 @@ export function RadiationPressureDemo({ figure }: Props) {
       if (targetX > W - 80) targetX = W * 0.62;
 
       // Labels
-      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = getCanvasColors().accent;
-      ctx.textAlign = 'left';
-      ctx.fillText('absorbing target · feels P = I/c', targetX - 80, targetTop - 8);
+      drawLabel(ctx, { text: 'absorbing target · feels P = I/c', x: targetX - 80, y: targetTop - 8, font: '10px "JetBrains Mono", monospace' });
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText('EM wave packets →', xL, 22);
+      drawLabel(ctx, { text: 'EM wave packets →', x: xL, y: 22 });
 
       raf = requestAnimationFrame(draw);
     }

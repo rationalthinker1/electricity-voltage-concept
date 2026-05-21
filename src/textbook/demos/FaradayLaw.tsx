@@ -14,6 +14,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -134,11 +135,7 @@ export function FaradayLawDemo({ figure }: Props) {
       }
 
       // Labels
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`B(t) = B₀ sin(ωt) through loop`, loopCx, loopCy + loopR + 14);
+      drawLabel(ctx, { text: `B(t) = B₀ sin(ωt) through loop`, x: loopCx, y: loopCy + loopR + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
       // Right panel: oscilloscope
       const oscX = leftW + 16;
@@ -190,10 +187,8 @@ export function FaradayLawDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.textAlign = 'left';
       ctx.restore();
-      ctx.fillStyle = colors.teal;
-      ctx.fillText('Φ_B  (teal)', oscX + 10, oscY + 8);
-      ctx.fillStyle = colors.accent;
-      ctx.fillText('EMF = −dΦ/dt  (amber)', oscX + 10, oscY + 22);
+      drawLabel(ctx, { text: 'Φ_B  (teal)', x: oscX + 10, y: oscY + 8, color: colors.teal });
+      drawLabel(ctx, { text: 'EMF = −dΦ/dt  (amber)', x: oscX + 10, y: oscY + 22, color: colors.accent });
 
       raf = requestAnimationFrame(draw);
     }

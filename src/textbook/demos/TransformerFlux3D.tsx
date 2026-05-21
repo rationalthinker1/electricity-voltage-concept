@@ -349,10 +349,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
         const lp = project(v3(0, LEG_TOP_Y + 0.25, 0), cam, W, H);
         if (lp.depth > 0) {
           ctx.fillStyle = getCanvasColors().accent;
-          ctx.font = 'italic 12px "STIX Two Text", serif';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('Φ (core)', lp.x, lp.y);
+          drawLabel(ctx, { text: 'Φ (core)', x: lp.x, y: lp.y, font: 'italic 12px "STIX Two Text", serif', align: 'center', baseline: 'middle' });
         }
       }
 
@@ -509,30 +506,22 @@ export function TransformerFlux3DDemo({ figure }: Props) {
         const lp = project(v3(LEG_LEFT_X - 0.95, 0, 0), cam, W, H);
         if (lp.depth > 0) {
           ctx.fillStyle = withAlpha(getCanvasColors().teal, 0.82);
-          ctx.font = 'italic 11px "STIX Two Text", serif';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('Φ_leak', lp.x, lp.y);
+          drawLabel(ctx, { text: 'Φ_leak', x: lp.x, y: lp.y, font: 'italic 11px "STIX Two Text", serif', align: 'center', baseline: 'middle' });
         }
       }
 
       // ── labels (corner annotations) ──
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText('drag to rotate', 12, 12);
+      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.6);
-      ctx.fillText('laminated iron core', 12, 28);
-
-      ctx.textAlign = 'right';
+      drawLabel(ctx, { text: 'laminated iron core', x: 12, y: 28 });
       ctx.fillStyle = getCanvasColors().pink;
-      ctx.fillText(`primary  N_p = ${st.Np}`, W - 12, 12);
+      drawLabel(ctx, { text: `primary  N_p = ${st.Np}`, x: W - 12, y: 12, align: 'right' });
       ctx.fillStyle = getCanvasColors().blue;
-      ctx.fillText(`secondary  N_s = ${st.Ns}`, W - 12, 28);
+      drawLabel(ctx, { text: `secondary  N_s = ${st.Ns}`, x: W - 12, y: 28 });
       if (st.showFlux) {
         ctx.fillStyle = getCanvasColors().accent;
-        ctx.fillText('Φ through iron', W - 12, 44);
+        drawLabel(ctx, { text: 'Φ through iron', x: W - 12, y: 44 });
       }
 
       raf = requestAnimationFrame(draw);

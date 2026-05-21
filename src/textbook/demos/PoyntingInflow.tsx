@@ -21,6 +21,7 @@ import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -256,32 +257,26 @@ export function PoyntingInflowDemo({ figure }: Props) {
       ctx.fillStyle = getCanvasColors().blue;
       ctx.fillRect(g.wireXR + 18, g.wireCY - r - 4, 4, 2 * r + 8);
       ctx.fillStyle = getCanvasColors().pink;
-      ctx.font = 'bold 14px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+', g.wireXL - 36, g.wireCY);
+      drawLabel(ctx, { text: '+', x: g.wireXL - 36, y: g.wireCY, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       ctx.fillStyle = getCanvasColors().blue;
-      ctx.fillText('−', g.wireXR + 36, g.wireCY);
+      drawLabel(ctx, { text: '−', x: g.wireXR + 36, y: g.wireCY });
 
       // Numerics overlay
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().accent;
-      ctx.fillText(`|S| = ${pretty(out.S)} W/m²`, 18, 14);
+      drawLabel(ctx, { text: `|S| = ${pretty(out.S)} W/m²`, x: 18, y: 14, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = getCanvasColors().pink;
-      ctx.fillText(`E = ${pretty(out.E)} V/m`, 18, 30);
+      drawLabel(ctx, { text: `E = ${pretty(out.E)} V/m`, x: 18, y: 30 });
       ctx.fillStyle = getCanvasColors().teal;
-      ctx.fillText(`B = ${pretty(out.B)} T`, 18, 46);
+      drawLabel(ctx, { text: `B = ${pretty(out.B)} T`, x: 18, y: 46 });
 
       ctx.textAlign = 'right';
       ctx.save();
       ctx.globalAlpha = 0.85;
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText(`a = ${a_mm.toFixed(2)} mm   L = ${L.toFixed(2)} m`, W - 18, 14);
+      drawLabel(ctx, { text: `a = ${a_mm.toFixed(2)} mm   L = ${L.toFixed(2)} m`, x: W - 18, y: 14 });
       ctx.restore();
       ctx.fillStyle = getCanvasColors().accent;
-      ctx.fillText(`P_surf / P_VI = ${out.match.toFixed(3)}`, W - 18, 30);
+      drawLabel(ctx, { text: `P_surf / P_VI = ${out.match.toFixed(3)}`, x: W - 18, y: 30 });
 
       raf = requestAnimationFrame(draw);
     }

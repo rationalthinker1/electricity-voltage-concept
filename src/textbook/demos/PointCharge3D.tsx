@@ -37,6 +37,7 @@ import { project, v3, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -176,20 +177,15 @@ export function PointCharge3DDemo({ figure }: Props) {
       }
 
       // ── Annotations ───────────────────────────────────────────────
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText('drag to rotate', 12, 12);
+      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.save();
       ctx.globalAlpha = 0.6;
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText(`sample sphere r = ${s.rSample.toFixed(2)}   |E| ∝ k|q|/r²`, 12, 28);
+      drawLabel(ctx, { text: `sample sphere r = ${s.rSample.toFixed(2)}   |E| ∝ k|q|/r²`, x: 12, y: 28 });
 
       ctx.textAlign = 'right';
       ctx.restore();
       ctx.fillStyle = withAlpha(s.positive ? colors.pink : colors.blue, 0.92);
-      ctx.fillText(s.positive ? 'E radial · outward' : 'E radial · inward', W - 12, 12);
+      drawLabel(ctx, { text: s.positive ? 'E radial · outward' : 'E radial · inward', x: W - 12, y: 12 });
     },
     [],
     (info) => {
@@ -316,9 +312,7 @@ function drawChargeBall(
   // Glyph.
   ctx.fillStyle = getCanvasColors().bg;
   ctx.font = `bold ${Math.max(10, Math.round(rPx * 1.0))}px "JetBrains Mono", monospace`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(signGlyph, centre.x, centre.y + 1);
+  drawLabel(ctx, { text: signGlyph, x: centre.x, y: centre.y + 1, align: 'center', baseline: 'middle' });
 }
 
 /**

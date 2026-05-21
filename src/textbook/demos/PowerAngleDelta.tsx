@@ -145,21 +145,11 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
       }
 
       // P_max label
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`P_max = V·E_f/X_s = ${P_MAX.toFixed(2)} pu`, padL + 8, yOf(P_MAX) - 8);
+      drawLabel(ctx, { text: `P_max = V·E_f/X_s = ${P_MAX.toFixed(2)} pu`, x: padL + 8, y: yOf(P_MAX) - 8, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
 
       // Stable / unstable region labels
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.teal;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('stable: δ < 90°', padL + 8, padT + plotH - 6);
-      ctx.fillStyle = colors.pink;
-      ctx.textAlign = 'right';
-      ctx.fillText('unstable: δ > 90°', padL + plotW - 8, padT + plotH - 6);
+      drawLabel(ctx, { text: 'stable: δ < 90°', x: padL + 8, y: padT + plotH - 6, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
+      drawLabel(ctx, { text: 'unstable: δ > 90°', x: padL + plotW - 8, y: padT + plotH - 6, color: colors.pink, align: 'right' });
     },
     [],
   );

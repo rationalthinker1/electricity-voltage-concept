@@ -14,6 +14,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { PHYS } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -67,7 +68,7 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
         ctx.stroke();
         ctx.fillText(formatHz(fr), x, y0 + 14);
       }
-      ctx.fillText('frequency f', (x0 + x1) / 2, H - 4);
+      drawLabel(ctx, { text: 'frequency f', x: (x0 + x1) / 2, y: H - 4 });
       ctx.textAlign = 'right';
       for (let v = 0; v <= Zmax; v += 300) {
         const y = y0 - (v / Zmax) * plotH;
@@ -80,8 +81,7 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       ctx.save();
       ctx.translate(14, (y0 + y1) / 2);
       ctx.rotate(-Math.PI / 2);
-      ctx.textAlign = 'center';
-      ctx.fillText('|Z|  (Ω)', 0, 0);
+      drawLabel(ctx, { text: '|Z|  (Ω)', x: 0, y: 0, align: 'center' });
       ctx.restore();
       const Z0 = 600;
       ctx.strokeStyle = colors.accent;
@@ -108,9 +108,7 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       ctx.lineTo(xRes, y1);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = colors.teal;
-      ctx.textAlign = 'center';
-      ctx.fillText(`f₀ = ${formatHz(f0_)}`, xRes, y1 - 4);
+      drawLabel(ctx, { text: `f₀ = ${formatHz(f0_)}`, x: xRes, y: y1 - 4, color: colors.teal, align: 'center' });
       const y73 = y0 - (73 / Zmax) * plotH;
       ctx.setLineDash([2, 4]);
       ctx.strokeStyle = colors.borderStrong;
@@ -121,9 +119,7 @@ export function HalfWaveDipoleResonanceDemo({ figure }: Props) {
       ctx.setLineDash([]);
       ctx.save();
       ctx.globalAlpha = 0.7;
-      ctx.fillStyle = colors.text;
-      ctx.textAlign = 'left';
-      ctx.fillText('73 Ω', x0 + 4, y73 - 4);
+      drawLabel(ctx, { text: '73 Ω', x: x0 + 4, y: y73 - 4, color: colors.text });
       ctx.restore();
     },
     [],

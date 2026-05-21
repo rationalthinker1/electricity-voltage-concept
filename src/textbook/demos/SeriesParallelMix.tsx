@@ -209,10 +209,7 @@ export function SeriesParallelMixDemo({ figure }: Props) {
 
       // Battery '−' overlay (the renderer doesn't include the polarity glyph
       // beside the bottom lead).
-      ctx.fillStyle = colors.blue;
-      ctx.font = 'bold 12px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.fillText('−', batX - 18, cy + 18);
+      drawLabel(ctx, { text: '−', x: batX - 18, y: cy + 18, color: colors.blue, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'right' });
 
       // Current animation paths + voltage probes are topology-specific.
       const live = computeNetwork(topology, R1, R2, R3);
@@ -226,11 +223,8 @@ export function SeriesParallelMixDemo({ figure }: Props) {
       });
 
       // Helper text at the bottom.
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
       const labelTopology = TOPOLOGIES.find((tp) => tp.id === topology)?.label ?? topology;
-      ctx.fillText(`${labelTopology} — Kirchhoff in action`, w / 2, h - 14);
+      drawLabel(ctx, { text: `${labelTopology} — Kirchhoff in action`, x: w / 2, y: h - 14, font: '10px "JetBrains Mono", monospace', align: 'center' });
     },
     [],
   );
@@ -958,14 +952,11 @@ function drawProbesAndLabels(
       drawVoltageProbe(ctx, (nodeB + L.outX) / 2, L.yTop - 16, 0);
       const colors = getCanvasColors();
       ctx.save();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
       ctx.fillStyle = withAlpha(colors.blue, 0.95);
-      ctx.fillText(`I₂ = ${net.branches[0]!.value.toFixed(2)} A`, xR23, L.yTop + 14);
-      ctx.fillText(`I₃ = ${net.branches[1]!.value.toFixed(2)} A`, xR23, branchY + 14);
+      drawLabel(ctx, { text: `I₂ = ${net.branches[0]!.value.toFixed(2)} A`, x: xR23, y: L.yTop + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: `I₃ = ${net.branches[1]!.value.toFixed(2)} A`, x: xR23, y: branchY + 14 });
       ctx.fillStyle = withAlpha(colors.accent, 0.85);
-      ctx.fillText(`I = ${net.Itot.toFixed(2)} A`, (L.batX + nodeA) / 2, L.yTop + 14);
+      drawLabel(ctx, { text: `I = ${net.Itot.toFixed(2)} A`, x: (L.batX + nodeA) / 2, y: L.yTop + 14 });
       ctx.restore();
       break;
     }
@@ -979,14 +970,11 @@ function drawProbesAndLabels(
       drawVoltageProbe(ctx, (xR3 + 22 + L.outX) / 2, L.yTop - 16, 0);
       const colors = getCanvasColors();
       ctx.save();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
       ctx.fillStyle = withAlpha(colors.blue, 0.95);
-      ctx.fillText(`I₁ = ${net.branches[0]!.value.toFixed(2)} A`, xR12, L.yTop + 14);
-      ctx.fillText(`I₂ = ${net.branches[1]!.value.toFixed(2)} A`, xR12, branchY + 14);
+      drawLabel(ctx, { text: `I₁ = ${net.branches[0]!.value.toFixed(2)} A`, x: xR12, y: L.yTop + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: `I₂ = ${net.branches[1]!.value.toFixed(2)} A`, x: xR12, y: branchY + 14 });
       ctx.fillStyle = withAlpha(colors.accent, 0.85);
-      ctx.fillText(`I = ${net.Itot.toFixed(2)} A`, (nodeB + xR3) / 2, L.yTop + 14);
+      drawLabel(ctx, { text: `I = ${net.Itot.toFixed(2)} A`, x: (nodeB + xR3) / 2, y: L.yTop + 14 });
       ctx.restore();
       break;
     }
@@ -1017,15 +1005,12 @@ function drawProbesAndLabels(
       const yR3 = L.yTop + 76;
       const colors = getCanvasColors();
       ctx.save();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
       ctx.fillStyle = withAlpha(colors.blue, 0.95);
-      ctx.fillText(`I₁ = ${net.branches[0]!.value.toFixed(2)} A`, xR1, L.yTop + 14);
-      ctx.fillText(`I₂ = ${net.branches[1]!.value.toFixed(2)} A`, xR1, yR2 + 14);
-      ctx.fillText(`I₃ = ${net.branches[2]!.value.toFixed(2)} A`, xR1, yR3 + 14);
+      drawLabel(ctx, { text: `I₁ = ${net.branches[0]!.value.toFixed(2)} A`, x: xR1, y: L.yTop + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: `I₂ = ${net.branches[1]!.value.toFixed(2)} A`, x: xR1, y: yR2 + 14 });
+      drawLabel(ctx, { text: `I₃ = ${net.branches[2]!.value.toFixed(2)} A`, x: xR1, y: yR3 + 14 });
       ctx.fillStyle = withAlpha(colors.accent, 0.85);
-      ctx.fillText(`I = ${net.Itot.toFixed(2)} A`, (L.batX + nodeA) / 2, L.yTop + 14);
+      drawLabel(ctx, { text: `I = ${net.Itot.toFixed(2)} A`, x: (L.batX + nodeA) / 2, y: L.yTop + 14 });
       ctx.restore();
       break;
     }
@@ -1081,9 +1066,6 @@ function drawVoltageProbe(ctx: CanvasRenderingContext2D, x: number, y: number, v
   const colors = getCanvasColors();
   const text = `${value.toFixed(2)} V`;
   ctx.save();
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
   const m = ctx.measureText(text);
   const boxW = m.width + 12;
   const boxH = 16;
@@ -1092,7 +1074,6 @@ function drawVoltageProbe(ctx: CanvasRenderingContext2D, x: number, y: number, v
   ctx.strokeStyle = withAlpha(colors.accent, 0.55);
   ctx.lineWidth = 1;
   ctx.strokeRect(x - boxW / 2, y - boxH / 2, boxW, boxH);
-  ctx.fillStyle = colors.accent;
-  ctx.fillText(text, x, y);
+  drawLabel(ctx, { text: text, x: x, y: y, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
   ctx.restore();
 }

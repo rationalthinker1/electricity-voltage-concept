@@ -273,35 +273,32 @@ export function PanelBus3DDemo({ figure }: Props) {
       for (const idx of order) items[idx]!.draw(ctx, cam, W, H);
 
       // Annotations
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'top';
-      ctx.textAlign = 'left';
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText('drag to rotate', 12, 12);
+      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.save();
       ctx.globalAlpha = 0.55;
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText(`${s.nBreakers} branch slots, alternating L1 / L2`, 12, 28);
+      drawLabel(ctx, { text: `${s.nBreakers} branch slots, alternating L1 / L2`, x: 12, y: 28 });
 
       ctx.textAlign = 'right';
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.9;
       ctx.fillStyle = getCanvasColors().pink;
-      ctx.fillText('L1 bus', W - 12, 12);
+      drawLabel(ctx, { text: 'L1 bus', x: W - 12, y: 12 });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.9;
       ctx.fillStyle = getCanvasColors().blue;
-      ctx.fillText('L2 bus', W - 12, 28);
+      drawLabel(ctx, { text: 'L2 bus', x: W - 12, y: 28 });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.9;
       ctx.fillStyle = getCanvasColors().teal;
-      ctx.fillText('neutral · ground · bond', W - 12, 44);
+      drawLabel(ctx, { text: 'neutral · ground · bond', x: W - 12, y: 44 });
       if (s.show2Pole && twoPolePair) {
         ctx.fillStyle = getCanvasColors().accent;
-        ctx.fillText('2-pole 240 V breaker spans L1 + L2', W - 12, 60);
+        drawLabel(ctx, { text: '2-pole 240 V breaker spans L1 + L2', x: W - 12, y: 60 });
       }
 
       raf = requestAnimationFrame(draw);

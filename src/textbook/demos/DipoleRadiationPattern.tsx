@@ -14,6 +14,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -102,14 +103,10 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(cx, cy + 8, 5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.fillText('axis · 0', cx, cy - R - 12);
-      ctx.fillText('axis · π', cx, cy + R + 18);
-      ctx.textAlign = 'left';
-      ctx.fillText('equator', cx + R + 4, cy + 4);
-      ctx.fillText('|E|² ∝ sin²θ', 12, 18);
+      drawLabel(ctx, { text: 'axis · 0', x: cx, y: cy - R - 12, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: 'axis · π', x: cx, y: cy + R + 18 });
+      drawLabel(ctx, { text: 'equator', x: cx + R + 4, y: cy + 4 });
+      drawLabel(ctx, { text: '|E|² ∝ sin²θ', x: 12, y: 18 });
     },
     [],
   );

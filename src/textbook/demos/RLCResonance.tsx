@@ -127,16 +127,9 @@ export function RLCResonanceDemo({ figure }: Props) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.restore();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('|I(f)| / Imax', plotX, 8);
-      ctx.fillStyle = colors.teal;
-      ctx.textAlign = 'right';
-      ctx.fillText(`f₀ = ${fmtFrequency(f0)}`, plotX + plotW, 8);
-      ctx.fillStyle = colors.pink;
-      ctx.fillText('−3 dB (½ power)', plotX + plotW, plotY + plotH * 0.18);
+      drawLabel(ctx, { text: '|I(f)| / Imax', x: plotX, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `f₀ = ${fmtFrequency(f0)}`, x: plotX + plotW, y: 8, color: colors.teal, align: 'right' });
+      drawLabel(ctx, { text: '−3 dB (½ power)', x: plotX + plotW, y: plotY + plotH * 0.18, color: colors.pink });
       const Qnow = (2 * Math.PI * f0 * L) / R;
       drawLabel(ctx, {
         x: x0,

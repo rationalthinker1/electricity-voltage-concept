@@ -14,6 +14,7 @@ import { drawHalo } from '@/lib/canvasPrimitives';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
   figure?: string;
@@ -140,20 +141,11 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(sxx, syy, 10, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 10px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('N', nx, ny);
-      ctx.fillText('S', sxx, syy);
+      drawLabel(ctx, { text: 'N', x: nx, y: ny, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: 'S', x: sxx, y: syy });
       ctx.lineCap = 'butt';
-
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('rotor (PM or DC-excited)', 8, 8);
-      ctx.fillText('3 stator coils @ 120°', 8, 22);
+      drawLabel(ctx, { text: 'rotor (PM or DC-excited)', x: 8, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: '3 stator coils @ 120°', x: 8, y: 22 });
       ctx.restore();
 
       // Divider
@@ -196,16 +188,10 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
         }
         ctx.stroke();
       }
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = phaseColors[0];
-      ctx.fillText('V_A', scopeX + 4, scopeY + 12);
-      ctx.fillStyle = phaseColors[1];
-      ctx.fillText('V_B', scopeX + 38, scopeY + 12);
-      ctx.fillStyle = phaseColors[2];
-      ctx.fillText('V_C', scopeX + 72, scopeY + 12);
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'right';
-      ctx.fillText(`${f.toFixed(0)} Hz`, scopeX + scopeW - 4, scopeY + 12);
+      drawLabel(ctx, { text: 'V_A', x: scopeX + 4, y: scopeY + 12, color: phaseColors[0], font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: 'V_B', x: scopeX + 38, y: scopeY + 12, color: phaseColors[1] });
+      drawLabel(ctx, { text: 'V_C', x: scopeX + 72, y: scopeY + 12, color: phaseColors[2] });
+      drawLabel(ctx, { text: `${f.toFixed(0)} Hz`, x: scopeX + scopeW - 4, y: scopeY + 12, align: 'right' });
       ctx.restore();
 
       raf = requestAnimationFrame(draw);
