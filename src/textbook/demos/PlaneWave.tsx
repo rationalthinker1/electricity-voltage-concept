@@ -10,7 +10,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -87,7 +87,7 @@ export function PlaneWaveDemo({ figure }: Props) {
         // E vector: along +y (screen vertical). Tail on axis, tip displaced.
         const eY = -sinp * Eamp;
         if (i % 2 === 0) {
-          drawVector(ctx, x, cy, x, cy + eY, 'rgba(255,59,110,0.85)', 1.8);
+          drawVector(ctx, x, cy, x, cy + eY, withAlpha(getCanvasColors().pink, 0.85), 1.8);
         }
         // B vector: along +z (foreshortened into screen). Tail on axis, tip
         // shifted by (cos25°, sin25°) so it visually points back-and-up.
@@ -95,7 +95,7 @@ export function PlaneWaveDemo({ figure }: Props) {
         const bx2 = x + bMag * ZSCALE_X;
         const by2 = cy - bMag * ZSCALE_Y;
         if (i % 2 === 0) {
-          drawVector(ctx, x, cy, bx2, by2, 'rgba(108,197,194,0.85)', 1.8);
+          drawVector(ctx, x, cy, bx2, by2, withAlpha(getCanvasColors().teal, 0.85), 1.8);
         }
       }
 

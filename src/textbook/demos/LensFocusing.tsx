@@ -16,7 +16,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -259,7 +259,7 @@ export function LensFocusingDemo({ figure }: Props) {
       ctx.textAlign = 'left';
       ctx.fillText(`f = ${convex ? '+' : '−'}${fAbs.toFixed(1)} cm`, 12, 18);
       ctx.fillText(`d₀ = ${dObj.toFixed(1)} cm`, 12, 34);
-      ctx.fillStyle = convex ? 'rgba(108,197,194,0.9)' : 'rgba(255,107,42,0.9)';
+      ctx.fillStyle = convex ? withAlpha(colors.teal, 0.9) : withAlpha(colors.accent, 0.9);
       ctx.textAlign = 'right';
       ctx.fillText(convex ? 'convex' : 'concave', W - 12, 18);
 

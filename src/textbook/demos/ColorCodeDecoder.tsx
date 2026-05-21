@@ -6,7 +6,7 @@
  * and tolerance %. A toggle flips between 4-band and 5-band modes.
  */
 import { useState } from 'react';
-
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
 
 interface Props {
@@ -160,7 +160,7 @@ function BandRow({ label, value, options, onChange }: BandRowProps) {
       <span
         style={{
           font: '10px "JetBrains Mono", monospace',
-          color: 'rgba(160,158,149,0.85)',
+          color: withAlpha(getCanvasColors().textDim, 0.85),
           minWidth: 150,
         }}
       >

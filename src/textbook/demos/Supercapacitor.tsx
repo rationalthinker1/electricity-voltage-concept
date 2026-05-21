@@ -13,7 +13,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -77,7 +77,7 @@ export function SupercapacitorDemo({ figure }: Props) {
       const yV = (v: number) => pY + pH - (v / s.V_max) * pH;
 
       // V_max line
-      ctx.strokeStyle = 'rgba(255,107,42,0.35)';
+      ctx.strokeStyle = withAlpha(getCanvasColors().accent, 0.35);
       ctx.setLineDash([4, 4]);
       const yvm = yV(s.V_max);
       ctx.beginPath();

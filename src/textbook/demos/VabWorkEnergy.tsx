@@ -24,8 +24,8 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
-import { drawArrow } from '@/lib/canvasPrimitives';
-
+import { drawArrow, drawHalo } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -204,13 +204,14 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       }
 
       // Halo + body
-      const grd = ctx.createRadialGradient(xC, yC, 0, xC, yC, radius * 2.5);
-      grd.addColorStop(0, positive ? 'rgba(255,59,110,.55)' : 'rgba(91,174,248,.55)');
-      grd.addColorStop(1, positive ? 'rgba(255,59,110,0)' : 'rgba(91,174,248,0)');
-      ctx.fillStyle = grd;
-      ctx.beginPath();
-      ctx.arc(xC, yC, radius * 2.5, 0, Math.PI * 2);
-      ctx.fill();
+      drawHalo(ctx, {
+        x: xC,
+        y: yC,
+        radius: radius * 2.5,
+        color: positive ? withAlpha(colors.pink, 0.55) : withAlpha(colors.blue, 0.55),
+        alpha: 1,
+        extent: 1,
+      });
       ctx.fillStyle = fillCol;
       ctx.beginPath();
       ctx.arc(xC, yC, radius, 0, Math.PI * 2);

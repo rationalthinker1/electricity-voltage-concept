@@ -12,7 +12,7 @@
  * scope plots show I(t), V_applied (constant), back-EMF(t) approach steady.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -173,7 +173,7 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
           ctx.fillText(label, legX + 20, legY + 1);
           legY += 14;
         };
-        lg('rgba(108,197,194,0.55)', 'V_applied (constant)');
+        lg(withAlpha(colors.teal, 0.55), 'V_applied (constant)');
         lg('#5baef8', 'back-EMF = k_e ω');
         lg('#ff6b2a', 'current I = (V − E_back)/R');
 

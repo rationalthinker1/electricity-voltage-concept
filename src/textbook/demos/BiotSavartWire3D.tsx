@@ -36,7 +36,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
 interface Props {
@@ -195,9 +195,9 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
           { x: pBot.x, y: pBot.y },
         ],
         {
-          color: 'rgba(255,107,42,0.95)',
+          color: withAlpha(getCanvasColors().accent, 0.95),
           lineWidth: 3.0,
-          glowColor: 'rgba(255,107,42,0.28)',
+          glowColor: withAlpha(getCanvasColors().accent, 0.28),
           glowWidth: 10,
         },
       );
@@ -330,9 +330,9 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
           { x: pThumb.x, y: pThumb.y },
         ],
         {
-          color: 'rgba(236,235,229,0.90)',
+          color: withAlpha(getCanvasColors().text, 0.9),
           lineWidth: 2.4,
-          glowColor: 'rgba(236,235,229,0.20)',
+          glowColor: withAlpha(getCanvasColors().text, 0.2),
           glowWidth: 7,
         },
       );

@@ -11,7 +11,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -61,8 +61,24 @@ export function DaniellCellDemo({ figure }: Props) {
       const leftX = W / 2 - beakerW - 12;
       const rightX = W / 2 + 12;
 
-      drawBeaker(ctx, leftX, beakerY, beakerW, beakerH, 'rgba(91,174,248,0.18)', 'ZnSO₄');
-      drawBeaker(ctx, rightX, beakerY, beakerW, beakerH, 'rgba(255,107,42,0.18)', 'CuSO₄');
+      drawBeaker(
+        ctx,
+        leftX,
+        beakerY,
+        beakerW,
+        beakerH,
+        withAlpha(getCanvasColors().blue, 0.18),
+        'ZnSO₄',
+      );
+      drawBeaker(
+        ctx,
+        rightX,
+        beakerY,
+        beakerW,
+        beakerH,
+        withAlpha(getCanvasColors().accent, 0.18),
+        'CuSO₄',
+      );
 
       // Porous separator (vertical bar between)
       ctx.fillStyle = getCanvasColors().textDim;

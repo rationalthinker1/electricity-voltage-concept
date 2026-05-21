@@ -22,7 +22,7 @@ import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS, pretty } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -111,7 +111,7 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       const er = r * ellipseRatio;
 
       // BACK-half B-field ellipses (always shown — Ampère doesn't care about σ)
-      ctx.strokeStyle = 'rgba(108,197,194,0.32)';
+      ctx.strokeStyle = withAlpha(getCanvasColors().teal, 0.32);
       ctx.lineWidth = 1.1;
       const nB = 7;
       for (let i = 0; i < nB; i++) {
@@ -292,7 +292,7 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       ctx.fillText(`|S|_inside = ${pretty(s.S_in)} W/m²`, 18, 62);
 
       ctx.textAlign = 'right';
-      ctx.fillStyle = 'rgba(160,158,149,.85)';
+      ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.85);
       ctx.fillText(`I = ${I.toFixed(1)} A   a = ${a_mm.toFixed(2)} mm`, W - 18, 14);
       ctx.fillStyle = s.supercon ? '#6cc5c2' : '#ff6b2a';
       ctx.fillText(

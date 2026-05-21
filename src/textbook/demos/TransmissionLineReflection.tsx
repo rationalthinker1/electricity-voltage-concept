@@ -21,6 +21,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -136,8 +137,8 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
           pts.push({ x, y: yPulse(v) });
         }
         drawGlowPath(ctx, pts, {
-          color: s > 0 ? 'rgba(255,107,42,0.95)' : 'rgba(91,174,248,0.95)',
-          glowColor: s > 0 ? 'rgba(255,107,42,0.35)' : 'rgba(91,174,248,0.35)',
+          color: s > 0 ? withAlpha(colors.accent, 0.95) : withAlpha(colors.blue, 0.95),
+          glowColor: s > 0 ? withAlpha(colors.accent, 0.35) : withAlpha(colors.blue, 0.35),
           lineWidth: 1.8,
         });
       };

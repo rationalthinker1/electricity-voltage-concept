@@ -25,6 +25,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import {
   add,
   attachOrbit,
@@ -207,10 +208,10 @@ export function ImageChargeField3DDemo({ figure }: Props) {
         if (lineAbove.length > 1) {
           const pts2 = lineAbove.map((p) => project(p, cam, w, h));
           drawGlowPath(ctx, pts2, {
-            color: 'rgba(108,197,194,0.85)',
+            color: withAlpha(colors.teal, 0.85),
             lineWidth: 1.2,
             glowWidth: 3.5,
-            glowColor: 'rgba(108,197,194,0.18)',
+            glowColor: withAlpha(colors.teal, 0.18),
           });
         }
       }
@@ -308,11 +309,16 @@ export function ImageChargeField3DDemo({ figure }: Props) {
         ctx.stroke();
         ctx.setLineDash([]);
         ctx.restore();
-        ctx.fillStyle = colors.blue;
-        ctx.font = 'bold 12px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('−', imgPos.x, imgPos.y);
+        drawLabel(ctx, {
+          x: imgPos.x,
+          y: imgPos.y,
+          text: '−',
+          color: colors.blue,
+          size: 12,
+          align: 'center',
+          baseline: 'middle',
+          weight: 'bold',
+        });
         drawLabel(ctx, {
           x: imgPos.x,
           y: imgPos.y + imgR + 12,
@@ -324,10 +330,13 @@ export function ImageChargeField3DDemo({ figure }: Props) {
       }
 
       // 6. Labels.
-      ctx.fillStyle = colors.text;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('grounded conducting plane (y = 0)', 14, h - 14);
+      drawLabel(ctx, {
+        x: 14,
+        y: h - 14,
+        text: 'grounded conducting plane (y = 0)',
+        color: colors.text,
+        size: 11,
+      });
       drawLabel(ctx, {
         x: 14,
         y: 18,

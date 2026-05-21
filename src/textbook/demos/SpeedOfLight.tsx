@@ -16,7 +16,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -57,9 +57,9 @@ export function SpeedOfLightDemo({ figure }: Props) {
 
       // Reference (vacuum) lane
       const yA = H * 0.32;
-      drawLane(ctx, xL, xR, yA, 'vacuum · v = c', 'rgba(160,158,149,0.85)');
+      drawLane(ctx, xL, xR, yA, 'vacuum · v = c', withAlpha(getCanvasColors().textDim, 0.85));
       const xRef = xL + ((C_PX_S * t) % lineLen);
-      drawPulse(ctx, xRef, yA, 'rgba(255,107,42,0.85)');
+      drawPulse(ctx, xRef, yA, withAlpha(getCanvasColors().accent, 0.85));
 
       // Comparison lane (in medium)
       const yB = H * 0.7;
@@ -69,10 +69,10 @@ export function SpeedOfLightDemo({ figure }: Props) {
         xR,
         yB,
         `medium · v = c / √(εᵣ μᵣ) = c / ${Math.sqrt(er * mr).toFixed(2)}`,
-        'rgba(160,158,149,0.85)',
+        withAlpha(getCanvasColors().textDim, 0.85),
       );
       const xMed = xL + ((C_PX_S * ratio * t) % lineLen);
-      drawPulse(ctx, xMed, yB, 'rgba(108,197,194,0.85)');
+      drawPulse(ctx, xMed, yB, withAlpha(getCanvasColors().teal, 0.85));
 
       // Vertical guide showing how much the medium pulse has lagged the reference
       ctx.strokeStyle = getCanvasColors().borderStrong;

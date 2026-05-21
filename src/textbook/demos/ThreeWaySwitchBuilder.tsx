@@ -33,6 +33,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, drawGlowPath, type CircuitElement } from '@/lib/canvasPrimitives';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 type TerminalId =
   | 'power-hot'
@@ -418,7 +419,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
           {
             kind: 'battery',
             at: { x: L['power-hot'].x, y: (L['power-hot'].y + L['power-neutral'].y) / 2 },
-            color: 'rgba(236,235,229,.7)',
+            color: withAlpha(colors.text, 0.7),
             label: '120 V',
             labelOffset: { x: -22, y: 0 },
             leadLength: (L['power-neutral'].y - L['power-hot'].y) / 2,
@@ -442,7 +443,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
               { x: L['bulb-hot'].x, y: L['bulb-hot'].y },
               { x: L['bulb-hot'].x, y: (L['bulb-hot'].y + L['bulb-neutral'].y) / 2 - 16 },
             ],
-            color: 'rgba(236,235,229,.45)',
+            color: withAlpha(colors.text, 0.45),
             lineWidth: 2,
           },
           {
@@ -451,7 +452,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
               { x: L['bulb-neutral'].x, y: (L['bulb-hot'].y + L['bulb-neutral'].y) / 2 + 16 },
               { x: L['bulb-neutral'].x, y: L['bulb-neutral'].y },
             ],
-            color: 'rgba(236,235,229,.45)',
+            color: withAlpha(colors.text, 0.45),
             lineWidth: 2,
           },
         ];
@@ -467,7 +468,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
 
           // Box outline around the switch.
           ctx.save();
-          ctx.strokeStyle = 'rgba(160,158,149,.35)';
+          ctx.strokeStyle = withAlpha(colors.textDim, 0.35);
           ctx.lineWidth = 1;
           const boxL = Math.min(t1.x, t2.x, com.x) - 14;
           const boxR = Math.max(t1.x, t2.x, com.x) + 14;
@@ -478,7 +479,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
             x: (boxL + boxR) / 2,
             y: boxT - 4,
             text: sw.toUpperCase(),
-            color: 'rgba(160,158,149,.7)',
+            color: withAlpha(colors.textDim, 0.7),
             size: 9,
             align: 'center',
             baseline: 'bottom',
@@ -505,20 +506,20 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
           if (isBad) {
             drawGlowPath(ctx, [a, b], {
               color: '#ff3b6e',
-              glowColor: 'rgba(255,59,110,.35)',
+              glowColor: withAlpha(colors.pink, 0.35),
               lineWidth: 2.4,
               glowWidth: 7,
             });
           } else if (st.bulbLit) {
             drawGlowPath(ctx, [a, b], {
               color: '#ff6b2a',
-              glowColor: 'rgba(255,107,42,.32)',
+              glowColor: withAlpha(colors.accent, 0.32),
               lineWidth: 2.2,
               glowWidth: 6,
             });
           } else {
             ctx.save();
-            ctx.strokeStyle = 'rgba(236,235,229,.6)';
+            ctx.strokeStyle = withAlpha(colors.text, 0.6);
             ctx.lineWidth = 2;
             ctx.lineCap = 'round';
             ctx.beginPath();
@@ -533,7 +534,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
         if (st.inProgressFrom && st.pointer) {
           const a = L[st.inProgressFrom];
           ctx.save();
-          ctx.strokeStyle = 'rgba(255,107,42,.55)';
+          ctx.strokeStyle = withAlpha(colors.accent, 0.55);
           ctx.lineWidth = 1.8;
           ctx.setLineDash([4, 4]);
           ctx.beginPath();
@@ -553,7 +554,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
           const isHot = t === 'power-hot' || t === 'bulb-hot';
           const isNeu = t === 'power-neutral' || t === 'bulb-neutral';
           ctx.save();
-          let fill = 'rgba(236,235,229,.8)';
+          let fill = withAlpha(colors.text, 0.8);
           if (isHot && (isPower || isBulb)) fill = '#ff3b6e';
           else if (isNeu && (isPower || isBulb)) fill = '#5baef8';
           else if (isSwitchTerminal(t)) fill = '#ecebe5';
@@ -562,7 +563,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
             ctx.strokeStyle = '#ff6b2a';
             ctx.lineWidth = 2;
           } else if (isHover) {
-            ctx.strokeStyle = 'rgba(255,107,42,.65)';
+            ctx.strokeStyle = withAlpha(colors.accent, 0.65);
             ctx.lineWidth = 1.5;
           } else {
             ctx.strokeStyle = 'rgba(0,0,0,.35)';
@@ -573,7 +574,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
           ctx.fill();
           ctx.stroke();
           // Label below terminals (above for the top row).
-          ctx.fillStyle = 'rgba(160,158,149,.85)';
+          ctx.fillStyle = withAlpha(colors.textDim, 0.85);
           ctx.font = '9px "JetBrains Mono", monospace';
           ctx.textAlign = 'center';
           ctx.textBaseline = p.y < h / 2 ? 'bottom' : 'top';
@@ -584,7 +585,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
 
         // Footer hint.
         ctx.save();
-        ctx.fillStyle = 'rgba(160,158,149,.65)';
+        ctx.fillStyle = withAlpha(colors.textDim, 0.65);
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
@@ -645,7 +646,7 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
             listStyle: 'square',
             fontSize: 12,
             color: '#ff3b6e',
-            background: 'rgba(255,59,110,.06)',
+            background: withAlpha(getCanvasColors().pink, 0.06),
             border: '1px solid rgba(255,59,110,.25)',
             borderRadius: 4,
           }}

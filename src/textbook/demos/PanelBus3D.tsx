@@ -44,7 +44,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import {
   attachOrbit,
   depthSortIndices,
@@ -203,7 +203,10 @@ export function PanelBus3DDemo({ figure }: Props) {
 
       // Stabs.
       for (const slot of slots) {
-        const colour = slot.phase === 'L1' ? 'rgba(255,59,110,0.85)' : 'rgba(91,174,248,0.85)';
+        const colour =
+          slot.phase === 'L1'
+            ? withAlpha(getCanvasColors().pink, 0.85)
+            : withAlpha(getCanvasColors().blue, 0.85);
         items.push({
           anchor: v3((slot.stabFromX + slot.stabToX) / 2, slot.y, 0.01),
           draw: (c, cm, w, h) => drawStab(c, cm, w, h, slot, colour),
@@ -408,7 +411,9 @@ function drawEnclosure(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: numbe
     // "Front" if midpoint is closer to the camera than the mean depth.
     const dMid = (pA.depth + pB.depth) / 2;
     const front = dMid < cam.distance;
-    ctx.strokeStyle = front ? 'rgba(160,158,149,0.55)' : 'rgba(160,158,149,0.18)';
+    ctx.strokeStyle = front
+      ? withAlpha(getCanvasColors().textDim, 0.55)
+      : withAlpha(getCanvasColors().textDim, 0.18);
     ctx.lineWidth = front ? 1.2 : 1.0;
     ctx.setLineDash(front ? [] : [4, 4]);
     ctx.beginPath();
@@ -443,8 +448,14 @@ function drawBusBar(
   const c111 = v3(cx + hw, yTop, hd);
   const c011 = v3(cx - hw, yTop, hd);
 
-  const baseFill = phase === 'L1' ? 'rgba(255,59,110,0.16)' : 'rgba(91,174,248,0.16)';
-  const baseStroke = phase === 'L1' ? 'rgba(255,59,110,0.85)' : 'rgba(91,174,248,0.85)';
+  const baseFill =
+    phase === 'L1'
+      ? withAlpha(getCanvasColors().pink, 0.16)
+      : withAlpha(getCanvasColors().blue, 0.16);
+  const baseStroke =
+    phase === 'L1'
+      ? withAlpha(getCanvasColors().pink, 0.85)
+      : withAlpha(getCanvasColors().blue, 0.85);
 
   // Quads: front face, then the two visible side faces.
   const quads: [Vec3, Vec3, Vec3, Vec3][] = [
@@ -468,7 +479,10 @@ function drawBusBar(
   drawGlowPath(ctx, [pTop, pBot], {
     color: baseStroke,
     lineWidth: 2.4,
-    glowColor: phase === 'L1' ? 'rgba(255,59,110,0.28)' : 'rgba(91,174,248,0.28)',
+    glowColor:
+      phase === 'L1'
+        ? withAlpha(getCanvasColors().pink, 0.28)
+        : withAlpha(getCanvasColors().blue, 0.28),
     glowWidth: 9,
   });
 
@@ -502,7 +516,10 @@ function drawStab(
   const y = slot.y;
   const corners: Vec3[] = [v3(x0, y, -hd), v3(x1, y, -hd), v3(x1, y, hd), v3(x0, y, hd)];
   const pts = corners.map((p) => project(p, cam, W, H));
-  ctx.fillStyle = slot.phase === 'L1' ? 'rgba(255,59,110,0.35)' : 'rgba(91,174,248,0.35)';
+  ctx.fillStyle =
+    slot.phase === 'L1'
+      ? withAlpha(getCanvasColors().pink, 0.35)
+      : withAlpha(getCanvasColors().blue, 0.35);
   ctx.beginPath();
   ctx.moveTo(pts[0]!.x, pts[0]!.y);
   for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i]!.x, pts[i]!.y);
@@ -529,13 +546,16 @@ function drawSinglePoleBreaker(
     hd = 0.16;
   const cz = 0.2;
   drawBox(ctx, cam, W, H, v3(cx, cy, cz), hw, hh, hd, {
-    fill: 'rgba(28,28,34,0.92)',
-    stroke: 'rgba(160,158,149,0.55)',
+    fill: withAlpha(getCanvasColors().cardBgHover, 0.92),
+    stroke: withAlpha(getCanvasColors().textDim, 0.55),
   });
   // Phase-tinted dot on the handle face so the reader can tell which
   // bus this breaker grabs.
   const dot = project(v3(cx, cy, cz + hd), cam, W, H);
-  ctx.fillStyle = slot.phase === 'L1' ? 'rgba(255,59,110,0.95)' : 'rgba(91,174,248,0.95)';
+  ctx.fillStyle =
+    slot.phase === 'L1'
+      ? withAlpha(getCanvasColors().pink, 0.95)
+      : withAlpha(getCanvasColors().blue, 0.95);
   ctx.beginPath();
   ctx.arc(dot.x, dot.y, 3.0, 0, Math.PI * 2);
   ctx.fill();
@@ -557,12 +577,15 @@ function drawTwoPoleBreaker(
   const cz = 0.22;
   drawBox(ctx, cam, W, H, v3(0, cy, cz), 0.22, half, 0.17, {
     fill: 'rgba(40,28,18,0.96)',
-    stroke: 'rgba(255,107,42,0.85)',
+    stroke: withAlpha(getCanvasColors().accent, 0.85),
   });
   // Two phase dots, vertically aligned with the two slots they grab.
   for (const slot of [a, b]) {
     const dot = project(v3(slot.breakerCx, slot.y, cz + 0.17), cam, W, H);
-    ctx.fillStyle = slot.phase === 'L1' ? 'rgba(255,59,110,0.98)' : 'rgba(91,174,248,0.98)';
+    ctx.fillStyle =
+      slot.phase === 'L1'
+        ? withAlpha(getCanvasColors().pink, 0.98)
+        : withAlpha(getCanvasColors().blue, 0.98);
     ctx.beginPath();
     ctx.arc(dot.x, dot.y, 3.2, 0, Math.PI * 2);
     ctx.fill();
@@ -583,7 +606,7 @@ function drawMainBreaker(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: num
   // The main disconnect — a wide 2-pole block at the head of the column.
   drawBox(ctx, cam, W, H, v3(0, MAIN_Y, 0.22), MAIN_HW, MAIN_HH, MAIN_HD, {
     fill: 'rgba(20,20,24,0.96)',
-    stroke: 'rgba(160,158,149,0.75)',
+    stroke: withAlpha(getCanvasColors().textDim, 0.75),
   });
   // Two phase dots on the handle.
   const dL1 = project(v3(-0.35, MAIN_Y, 0.22 + MAIN_HD), cam, W, H);
@@ -616,7 +639,7 @@ function drawMainBreaker(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: num
 function drawNeutralBar(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number) {
   drawBox(ctx, cam, W, H, v3(0, NEUTRAL_Y, 0.05), NEUTRAL_X_HALF, NEUTRAL_THK / 2, 0.06, {
     fill: getCanvasColors().tealSoft,
-    stroke: 'rgba(108,197,194,0.85)',
+    stroke: withAlpha(getCanvasColors().teal, 0.85),
   });
   // Small terminal-screw ticks along the front face.
   for (let i = 0; i < 14; i++) {
@@ -643,8 +666,8 @@ function drawNeutralBar(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: numb
 
 function drawGroundBar(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number) {
   drawBox(ctx, cam, W, H, v3(0, GROUND_Y, 0.05), GROUND_X_HALF, GROUND_THK / 2, 0.05, {
-    fill: 'rgba(108,197,194,0.10)',
-    stroke: 'rgba(108,197,194,0.55)',
+    fill: withAlpha(getCanvasColors().teal, 0.1),
+    stroke: withAlpha(getCanvasColors().teal, 0.55),
   });
   for (let i = 0; i < 9; i++) {
     const x = -GROUND_X_HALF + 0.06 + i * ((GROUND_X_HALF * 2 - 0.12) / 8);
@@ -674,9 +697,9 @@ function drawBondingJumper(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: n
   const p3 = project(v3(GROUND_X_HALF - 0.05, GROUND_Y + 0.05, 0.1), cam, W, H);
   const p4 = project(v3(GROUND_X_HALF - 0.05, GROUND_Y + GROUND_THK / 2, 0.1), cam, W, H);
   drawGlowPath(ctx, [p1, p2, p3, p4], {
-    color: 'rgba(108,197,194,0.95)',
+    color: withAlpha(getCanvasColors().teal, 0.95),
     lineWidth: 2.2,
-    glowColor: 'rgba(108,197,194,0.32)',
+    glowColor: withAlpha(getCanvasColors().teal, 0.32),
     glowWidth: 8,
   });
   const lbl = project(v3(NEUTRAL_X_HALF - 0.04, (NEUTRAL_Y + GROUND_Y) / 2, 0.11), cam, W, H);

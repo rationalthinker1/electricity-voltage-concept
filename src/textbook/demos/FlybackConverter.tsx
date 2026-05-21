@@ -20,6 +20,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -108,8 +109,24 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.stroke();
 
       // Primary winding (left of left leg)
-      drawWinding(ctx, pX - 6, coreTop + 10, coreBot - 10, 12, 'rgba(255,107,42,0.95)', 'left');
-      drawWinding(ctx, sX + 6, coreTop + 10, coreBot - 10, 6, 'rgba(108,197,194,0.95)', 'right');
+      drawWinding(
+        ctx,
+        pX - 6,
+        coreTop + 10,
+        coreBot - 10,
+        12,
+        withAlpha(colors.accent, 0.95),
+        'left',
+      );
+      drawWinding(
+        ctx,
+        sX + 6,
+        coreTop + 10,
+        coreBot - 10,
+        6,
+        withAlpha(colors.teal, 0.95),
+        'right',
+      );
 
       // Primary side: switch + V_in below
       const pCX = pX - 60;
@@ -130,7 +147,7 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.fillText('V_in', pCX - 2, (coreTop + coreBot) / 2);
 
       // SW indicator on primary line
-      ctx.fillStyle = onPhase ? 'rgba(255,107,42,0.95)' : 'rgba(160,158,149,0.45)';
+      ctx.fillStyle = onPhase ? withAlpha(colors.accent, 0.95) : withAlpha(colors.textDim, 0.45);
       ctx.fillRect(pCX + 4, coreBot - 16, 14, 12);
       ctx.fillStyle = colors.bg;
       ctx.font = '9px "JetBrains Mono", monospace';
@@ -150,7 +167,7 @@ export function FlybackConverterDemo({ figure }: Props) {
 
       // Diode (triangle + bar)
       const dY = coreTop + 10;
-      const dCol = onPhase ? 'rgba(160,158,149,0.35)' : 'rgba(108,197,194,0.95)';
+      const dCol = onPhase ? withAlpha(colors.textDim, 0.35) : withAlpha(colors.teal, 0.95);
       ctx.fillStyle = dCol;
       ctx.beginPath();
       ctx.moveTo(sCX - 8, dY - 5);
@@ -172,10 +189,10 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.fillText(`V_out = ${Vout.toFixed(1)} V`, sCX + 6, (coreTop + coreBot) / 2);
 
       // Arrows showing energy flow direction
-      ctx.fillStyle = onPhase ? 'rgba(255,107,42,0.95)' : 'rgba(255,255,255,0.10)';
+      ctx.fillStyle = onPhase ? withAlpha(colors.accent, 0.95) : 'rgba(255,255,255,0.10)';
       // Primary arrow (downward — energy in)
       drawArrowDown(ctx, pX - 18, coreTop + 30, 14);
-      ctx.fillStyle = !onPhase ? 'rgba(108,197,194,0.95)' : 'rgba(255,255,255,0.10)';
+      ctx.fillStyle = !onPhase ? withAlpha(colors.teal, 0.95) : 'rgba(255,255,255,0.10)';
       // Secondary arrow (upward — energy out)
       drawArrowUp(ctx, sX + 18, coreBot - 30, 14);
 
@@ -218,11 +235,14 @@ export function FlybackConverterDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.7;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`turns ratio n = N_p/N_s`, w / 2, h - 18);
+      drawLabel(ctx, {
+        x: w / 2,
+        y: h - 18,
+        text: `turns ratio n = N_p/N_s`,
+        color: colors.textDim,
+        align: 'center',
+        baseline: 'top',
+      });
 
       // Isolation barrier (dashed vertical line through the core)
       ctx.restore();

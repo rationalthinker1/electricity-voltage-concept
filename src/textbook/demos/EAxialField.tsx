@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { withAlpha } from '@/lib/canvasTheme';
 import { pretty } from '@/lib/physics';
 
 interface Props {
@@ -52,9 +53,9 @@ export function EAxialFieldDemo({ figure }: Props) {
 
       // ── Wire body (cylinder in slight perspective)
       const sideGrd = ctx.createLinearGradient(0, wireCY - r, 0, wireCY + r);
-      sideGrd.addColorStop(0, 'rgba(255,107,42,0.10)');
-      sideGrd.addColorStop(0.5, 'rgba(255,107,42,0.28)');
-      sideGrd.addColorStop(1, 'rgba(255,107,42,0.10)');
+      sideGrd.addColorStop(0, withAlpha(colors.accent, 0.1));
+      sideGrd.addColorStop(0.5, withAlpha(colors.accent, 0.28));
+      sideGrd.addColorStop(1, withAlpha(colors.accent, 0.1));
       ctx.fillStyle = sideGrd;
       ctx.beginPath();
       ctx.moveTo(wireXL, wireCY - r);

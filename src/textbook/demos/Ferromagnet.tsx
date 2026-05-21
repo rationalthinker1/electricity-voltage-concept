@@ -11,6 +11,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -122,7 +123,7 @@ export function FerromagnetDemo({ figure }: Props) {
           const d = dir[j * cols + i];
           const cx = i * cellW + cellW / 2;
           const cy = top + j * cellH + cellH / 2;
-          const color = d > 0 ? 'rgba(255,107,42,0.80)' : 'rgba(91,174,248,0.80)';
+          const color = d > 0 ? withAlpha(colors.accent, 0.8) : withAlpha(colors.blue, 0.8);
           const len = Math.min(cellW, cellH) * 0.36;
           ctx.strokeStyle = color;
           ctx.fillStyle = color;

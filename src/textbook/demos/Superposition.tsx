@@ -30,7 +30,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -99,8 +99,26 @@ export function SuperpositionDemo({ figure }: Props) {
       ctx.fillRect(0, 0, w, h);
 
       const colW = w / 3;
-      drawPanel(ctx, 0, 0, colW, h, 'V1 only (V2 → short)', onlyV1, 'rgba(255,59,110,0.85)');
-      drawPanel(ctx, colW, 0, colW, h, 'V2 only (V1 → short)', onlyV2, 'rgba(91,174,248,0.85)');
+      drawPanel(
+        ctx,
+        0,
+        0,
+        colW,
+        h,
+        'V1 only (V2 → short)',
+        onlyV1,
+        withAlpha(getCanvasColors().pink, 0.85),
+      );
+      drawPanel(
+        ctx,
+        colW,
+        0,
+        colW,
+        h,
+        'V2 only (V1 → short)',
+        onlyV2,
+        withAlpha(getCanvasColors().blue, 0.85),
+      );
 
       const label =
         v1on && v2on
@@ -110,7 +128,7 @@ export function SuperpositionDemo({ figure }: Props) {
             : v2on
               ? 'Live: V2 only'
               : 'Both off';
-      drawPanel(ctx, 2 * colW, 0, colW, h, label, both, 'rgba(255,107,42,0.95)');
+      drawPanel(ctx, 2 * colW, 0, colW, h, label, both, withAlpha(getCanvasColors().accent, 0.95));
 
       // Sum-arrow header
       ctx.fillStyle = getCanvasColors().textDim;
@@ -277,7 +295,7 @@ function drawPanel(
   }
 
   // Scale ticks
-  ctx.fillStyle = 'rgba(160,158,149,0.65)';
+  ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.65);
   ctx.font = '8px "JetBrains Mono", monospace';
   ctx.textAlign = 'right';
   ctx.textBaseline = 'middle';

@@ -27,7 +27,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import {
   attachOrbit,
   project,
@@ -309,9 +309,9 @@ export function MOSFET3DDemo({ figure }: Props) {
         ctx,
         SUB,
         {
-          fill: 'rgba(91,174,248,0.12)',
-          edge: 'rgba(91,174,248,0.55)',
-          backEdge: 'rgba(91,174,248,0.25)',
+          fill: withAlpha(getCanvasColors().blue, 0.12),
+          edge: withAlpha(getCanvasColors().blue, 0.55),
+          backEdge: withAlpha(getCanvasColors().blue, 0.25),
           edgeWidth: 1.1,
         },
         cam,
@@ -397,9 +397,9 @@ export function MOSFET3DDemo({ figure }: Props) {
         ctx,
         GATE,
         {
-          fill: 'rgba(160,158,149,0.22)',
-          edge: 'rgba(255,107,42,0.80)',
-          backEdge: 'rgba(255,107,42,0.30)',
+          fill: withAlpha(getCanvasColors().textDim, 0.22),
+          edge: withAlpha(getCanvasColors().accent, 0.8),
+          backEdge: withAlpha(getCanvasColors().accent, 0.3),
           edgeWidth: 1.3,
         },
         cam,
@@ -547,9 +547,17 @@ export function MOSFET3DDemo({ figure }: Props) {
       };
       labelAt(v3((SRC.x0 + SRC.x1) / 2, SRC.y1 + 0.05, 0), 'S (n+)', 'rgba(140,220,150,0.95)');
       labelAt(v3((DRN.x0 + DRN.x1) / 2, DRN.y1 + 0.05, 0), 'D (n+)', 'rgba(140,220,150,0.95)');
-      labelAt(v3(0, GATE.y1 + 0.1, 0), 'G (gate)', 'rgba(255,107,42,0.95)');
-      labelAt(v3(0, GATE.y0 - 0.2, OXIDE.z1 + 0.18), 'oxide', 'rgba(236,235,229,0.7)');
-      labelAt(v3(0, SUB.y0 + 0.18, SUB.z1 - 0.05), 'p-substrate (body)', 'rgba(91,174,248,0.9)');
+      labelAt(v3(0, GATE.y1 + 0.1, 0), 'G (gate)', withAlpha(getCanvasColors().accent, 0.95));
+      labelAt(
+        v3(0, GATE.y0 - 0.2, OXIDE.z1 + 0.18),
+        'oxide',
+        withAlpha(getCanvasColors().text, 0.7),
+      );
+      labelAt(
+        v3(0, SUB.y0 + 0.18, SUB.z1 - 0.05),
+        'p-substrate (body)',
+        withAlpha(getCanvasColors().blue, 0.9),
+      );
 
       // Top-left help.
       ctx.fillStyle = getCanvasColors().textDim;
@@ -561,7 +569,9 @@ export function MOSFET3DDemo({ figure }: Props) {
       const status = channelOn
         ? `channel ON · V_OV = ${overdrive.toFixed(2)} V`
         : `channel OFF · below V_T = ${V_T.toFixed(2)} V`;
-      ctx.fillStyle = channelOn ? 'rgba(255,107,42,0.95)' : 'rgba(160,158,149,0.7)';
+      ctx.fillStyle = channelOn
+        ? withAlpha(getCanvasColors().accent, 0.95)
+        : withAlpha(getCanvasColors().textDim, 0.7);
       ctx.fillText(status, W - 12, 12);
 
       raf = requestAnimationFrame(draw);

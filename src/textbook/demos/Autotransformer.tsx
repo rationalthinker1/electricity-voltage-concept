@@ -14,7 +14,7 @@
  * Caveat: no galvanic isolation. The same conductor carries both circuits.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -126,12 +126,12 @@ export function AutotransformerDemo({ figure }: Props) {
         const y = coilTop + (i + 0.5) * dy;
         // Color upper section (above tap) differently from lower (below tap)
         const isLower = y >= tapY;
-        ctx.strokeStyle = isLower ? 'rgba(108,197,194,0.95)' : 'rgba(255,107,42,0.95)';
+        ctx.strokeStyle = isLower ? withAlpha(colors.teal, 0.95) : withAlpha(colors.accent, 0.95);
         ctx.lineWidth = 1.8;
         ctx.beginPath();
         ctx.ellipse(coilCX, y, r, dy * 0.45, 0, 0, Math.PI);
         ctx.stroke();
-        ctx.strokeStyle = isLower ? 'rgba(108,197,194,0.40)' : 'rgba(255,107,42,0.40)';
+        ctx.strokeStyle = isLower ? withAlpha(colors.teal, 0.4) : withAlpha(colors.accent, 0.4);
         ctx.beginPath();
         ctx.ellipse(coilCX, y, r, dy * 0.45, 0, Math.PI, 2 * Math.PI);
         ctx.stroke();

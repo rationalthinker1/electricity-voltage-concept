@@ -20,6 +20,8 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { drawHalo } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -70,9 +72,9 @@ export function WireFromRestDemo({ figure }: Props) {
 
       // ─── Wire body
       const grd = ctx.createLinearGradient(0, wireTop, 0, wireBot);
-      grd.addColorStop(0, 'rgba(255,107,42,0.06)');
-      grd.addColorStop(0.5, 'rgba(255,107,42,0.16)');
-      grd.addColorStop(1, 'rgba(255,107,42,0.06)');
+      grd.addColorStop(0, withAlpha(colors.accent, 0.06));
+      grd.addColorStop(0.5, withAlpha(colors.accent, 0.16));
+      grd.addColorStop(1, withAlpha(colors.accent, 0.06));
       ctx.fillStyle = grd;
       ctx.fillRect(wireXL, wireTop, wireLen, wireH);
       ctx.strokeStyle = colors.accent;
@@ -85,13 +87,14 @@ export function WireFromRestDemo({ figure }: Props) {
           const x = wireXL + (i + 0.5) * (wireLen / N);
           const y = wireY - 14;
           ctx.fillStyle = colors.pink;
-          const halo = ctx.createRadialGradient(x, y, 0, x, y, 12);
-          halo.addColorStop(0, 'rgba(255,59,110,0.55)');
-          halo.addColorStop(1, 'rgba(255,59,110,0)');
-          ctx.fillStyle = halo;
-          ctx.beginPath();
-          ctx.arc(x, y, 12, 0, Math.PI * 2);
-          ctx.fill();
+          drawHalo(ctx, {
+            x: x,
+            y: y,
+            radius: 12,
+            color: colors.pink,
+            alpha: 0.55,
+            extent: 1,
+          });
           ctx.fillStyle = colors.pink;
           ctx.beginPath();
           ctx.arc(x, y, 5, 0, Math.PI * 2);
@@ -117,13 +120,14 @@ export function WireFromRestDemo({ figure }: Props) {
           const offset = (((base + phase) % wireLen) + wireLen) % wireLen;
           const x = wireXL + offset;
           const y = wireY + 14;
-          const halo = ctx.createRadialGradient(x, y, 0, x, y, 12);
-          halo.addColorStop(0, 'rgba(91,174,248,0.55)');
-          halo.addColorStop(1, 'rgba(91,174,248,0)');
-          ctx.fillStyle = halo;
-          ctx.beginPath();
-          ctx.arc(x, y, 12, 0, Math.PI * 2);
-          ctx.fill();
+          drawHalo(ctx, {
+            x: x,
+            y: y,
+            radius: 12,
+            color: colors.blue,
+            alpha: 0.55,
+            extent: 1,
+          });
           ctx.fillStyle = colors.blue;
           ctx.beginPath();
           ctx.arc(x, y, 5, 0, Math.PI * 2);
@@ -142,23 +146,27 @@ export function WireFromRestDemo({ figure }: Props) {
       }
 
       // ─── Current direction label
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.fillText('I →   (electrons drift, ions fixed)', wireXR, wireBot + 18);
+      drawLabel(ctx, {
+        x: wireXR,
+        y: wireBot + 18,
+        text: 'I →   (electrons drift, ions fixed)',
+        color: colors.accent,
+        align: 'right',
+      });
 
       // ─── Test charge — at rest above the wire
       if (s.showTest) {
         const tx = w * 0.5;
         const ty = h * 0.22;
         // halo
-        const halo = ctx.createRadialGradient(tx, ty, 0, tx, ty, 22);
-        halo.addColorStop(0, 'rgba(255,107,42,0.55)');
-        halo.addColorStop(1, 'rgba(255,107,42,0)');
-        ctx.fillStyle = halo;
-        ctx.beginPath();
-        ctx.arc(tx, ty, 22, 0, Math.PI * 2);
-        ctx.fill();
+        drawHalo(ctx, {
+          x: tx,
+          y: ty,
+          radius: 22,
+          color: colors.accent,
+          alpha: 0.55,
+          extent: 1,
+        });
         ctx.fillStyle = colors.accent;
         ctx.beginPath();
         ctx.arc(tx, ty, 9, 0, Math.PI * 2);
@@ -170,10 +178,12 @@ export function WireFromRestDemo({ figure }: Props) {
         ctx.fillText('+', tx, ty);
 
         // "v = 0" label
-        ctx.fillStyle = colors.text;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textBaseline = 'alphabetic';
-        ctx.fillText('test charge   v = 0', tx, ty - 26);
+        drawLabel(ctx, {
+          x: tx,
+          y: ty - 26,
+          text: 'test charge   v = 0',
+          color: colors.text,
+        });
 
         // "F = 0" marker (no arrow)
         drawLabel(ctx, {
@@ -190,7 +200,7 @@ export function WireFromRestDemo({ figure }: Props) {
         x: 14,
         y: 18,
         text: 'LAB FRAME · wire neutral, test charge at rest',
-        color: 'rgba(160,158,149,0.75)',
+        color: withAlpha(colors.textDim, 0.75),
       });
 
       raf = requestAnimationFrame(draw);

@@ -272,11 +272,15 @@ function drawCoilTwo(
     ctx.ellipse(cx, y, rx, dy * 0.42, 0, 0, Math.PI * 2);
     ctx.stroke();
   }
-  ctx.fillStyle = getCanvasColors().accent;
-  ctx.font = 'bold 10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText(label, cx, cy + colH / 2 + 4);
+  drawLabel(ctx, {
+    x: cx,
+    y: cy + colH / 2 + 4,
+    text: label,
+    color: getCanvasColors().accent,
+    align: 'center',
+    baseline: 'top',
+    weight: 'bold',
+  });
   ctx.save();
   ctx.globalAlpha = 0.75;
   drawLabel(ctx, {

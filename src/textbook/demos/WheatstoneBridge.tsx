@@ -32,7 +32,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -192,8 +192,18 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
             ],
           },
           // Node dots at A and B.
-          { kind: 'node', at: { x: xA, y: yTop }, color: 'rgba(255,107,42,0.95)', radius: 4 },
-          { kind: 'node', at: { x: xB, y: yBot }, color: 'rgba(255,107,42,0.95)', radius: 4 },
+          {
+            kind: 'node',
+            at: { x: xA, y: yTop },
+            color: withAlpha(getCanvasColors().accent, 0.95),
+            radius: 4,
+          },
+          {
+            kind: 'node',
+            at: { x: xB, y: yBot },
+            color: withAlpha(getCanvasColors().accent, 0.95),
+            radius: 4,
+          },
         ];
         cacheRef.current = {
           key: cacheKey,
@@ -218,7 +228,7 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
         x: 12,
         y: 10,
         text: 'Wheatstone bridge — not reducible by series/parallel rules',
-        color: 'rgba(160,158,149,0.75)',
+        color: withAlpha(getCanvasColors().textDim, 0.75),
         baseline: 'top',
       });
 
@@ -322,7 +332,7 @@ function drawGalvanometer(
   const norm = Math.max(-1, Math.min(1, dV / fullScale));
   const ang = -Math.PI / 2 + norm * (Math.PI / 3);
   const isBalanced = Math.abs(dV) < V * 0.005;
-  ctx.strokeStyle = isBalanced ? '#ff6b2a' : 'rgba(236,235,229,0.95)';
+  ctx.strokeStyle = isBalanced ? '#ff6b2a' : withAlpha(getCanvasColors().text, 0.95);
   ctx.lineWidth = 1.8;
   ctx.beginPath();
   ctx.moveTo(x, y + 4);

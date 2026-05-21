@@ -23,7 +23,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -343,8 +343,13 @@ function buildNodalSchematic(
       labelOffset: { x: -60, y: 0 },
     },
     // Node A dot (amber) and ground glyph at the reference rail.
-    { kind: 'node', at: { x: xMid, y: yTop }, radius: 5, color: 'rgba(255,107,42,0.95)' },
-    { kind: 'ground', at: { x: xMid, y: yBot }, color: 'rgba(108,197,194,0.85)' },
+    {
+      kind: 'node',
+      at: { x: xMid, y: yTop },
+      radius: 5,
+      color: withAlpha(getCanvasColors().accent, 0.95),
+    },
+    { kind: 'ground', at: { x: xMid, y: yBot }, color: withAlpha(getCanvasColors().teal, 0.85) },
   ];
 }
 

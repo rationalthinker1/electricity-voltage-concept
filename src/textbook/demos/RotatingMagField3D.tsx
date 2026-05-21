@@ -34,7 +34,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
 interface Props {
@@ -423,9 +423,9 @@ export function RotatingMagField3DDemo({ figure }: Props) {
             { x: p1.x, y: p1.y },
           ],
           {
-            color: 'rgba(255,107,42,0.98)',
+            color: withAlpha(colors.accent, 0.98),
             lineWidth: 3,
-            glowColor: 'rgba(255,107,42,0.42)',
+            glowColor: withAlpha(colors.accent, 0.42),
             glowWidth: 12,
           },
         );
@@ -471,7 +471,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
         y: 0,
         z: rotorLen * Math.sin(st.theta),
       };
-      drawArrow3D({ x: 0, y: 0, z: 0 }, rotorTo, 'rgba(236,235,229,0.55)', 2, cam, w, h, 0.7);
+      drawArrow3D({ x: 0, y: 0, z: 0 }, rotorTo, withAlpha(colors.text, 0.55), 2, cam, w, h, 0.7);
       // Tiny disc at the rotor's base.
       const baseP = project({ x: 0, y: 0, z: 0 }, cam, w, h);
       if (baseP.depth > 0) {

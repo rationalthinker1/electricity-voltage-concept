@@ -14,7 +14,7 @@
  * point and the readout shows the live current.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -38,20 +38,26 @@ const FAMILIES: Record<
     color: string;
   }
 > = {
-  si: { label: 'Silicon (1N4148)', Is: 1e-9, n: 1.0, Vz: 50, color: 'rgba(255,107,42,0.95)' },
+  si: {
+    label: 'Silicon (1N4148)',
+    Is: 1e-9,
+    n: 1.0,
+    Vz: 50,
+    color: withAlpha(getCanvasColors().accent, 0.95),
+  },
   schottky: {
     label: 'Schottky (1N5817)',
     Is: 1e-5,
     n: 1.0,
     Vz: 20,
-    color: 'rgba(108,197,194,0.95)',
+    color: withAlpha(getCanvasColors().teal, 0.95),
   },
   zener: {
     label: 'Zener (1N4733A, 5.1 V)',
     Is: 1e-9,
     n: 1.0,
     Vz: 5.1,
-    color: 'rgba(91,174,248,0.95)',
+    color: withAlpha(getCanvasColors().blue, 0.95),
   },
 };
 

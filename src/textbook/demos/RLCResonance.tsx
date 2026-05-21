@@ -17,6 +17,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { Num } from '@/components/Num';
 
 interface Props {
@@ -128,9 +129,9 @@ export function RLCResonanceDemo({ figure }: Props) {
         });
       }
       drawGlowPath(ctx, curvePts, {
-        color: 'rgba(255,107,42,0.95)',
+        color: withAlpha(colors.accent, 0.95),
         lineWidth: 1.8,
-        glowColor: 'rgba(255,107,42,0.4)',
+        glowColor: withAlpha(colors.accent, 0.4),
         glowWidth: 7,
       });
 
@@ -161,11 +162,16 @@ export function RLCResonanceDemo({ figure }: Props) {
 
       // Q factor annotation near peak
       const Qnow = (2 * Math.PI * f0 * L) / R;
-      ctx.fillStyle = colors.text;
-      ctx.font = 'bold 11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`Q ≈ ${Qnow.toFixed(2)}`, x0, plotY + plotH - 0.95 * plotH - 4);
+      drawLabel(ctx, {
+        x: x0,
+        y: plotY + plotH - 0.95 * plotH - 4,
+        text: `Q ≈ ${Qnow.toFixed(2)}`,
+        color: colors.text,
+        size: 11,
+        align: 'center',
+        baseline: 'bottom',
+        weight: 'bold',
+      });
 
       drawLabel(ctx, {
         x: plotX + plotW / 2,

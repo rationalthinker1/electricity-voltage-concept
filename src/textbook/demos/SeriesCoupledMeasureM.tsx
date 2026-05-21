@@ -16,7 +16,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -82,7 +82,9 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
       ctx.fillText(`M = ${Mh.toFixed(2)} mH`, (c1x + c2x) / 2, cy + 24);
 
       // Big readout: L_eq right now
-      ctx.fillStyle = aiding ? 'rgba(255,107,42,0.95)' : 'rgba(91,174,248,0.95)';
+      ctx.fillStyle = aiding
+        ? withAlpha(getCanvasColors().accent, 0.95)
+        : withAlpha(getCanvasColors().blue, 0.95);
       ctx.font = 'bold 18px "STIX Two Text", "Fraunces", serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -214,11 +216,16 @@ function drawCoilSeries(
   ctx.stroke();
 
   // Labels
-  ctx.fillStyle = getCanvasColors().accent;
-  ctx.font = 'bold 11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText(label, cx, cy - 24);
+  drawLabel(ctx, {
+    x: cx,
+    y: cy - 24,
+    text: label,
+    color: getCanvasColors().accent,
+    size: 11,
+    align: 'center',
+    baseline: 'top',
+    weight: 'bold',
+  });
   ctx.save();
   ctx.globalAlpha = 0.75;
   drawLabel(ctx, {

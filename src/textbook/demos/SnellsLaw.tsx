@@ -12,7 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -52,9 +52,9 @@ export function SnellsLawDemo({ figure }: Props) {
       const cy = H / 2;
 
       // Shading for the two media — slight tints
-      ctx.fillStyle = 'rgba(91,174,248,0.06)'; // medium 1: blue tint
+      ctx.fillStyle = withAlpha(getCanvasColors().blue, 0.06); // medium 1: blue tint
       ctx.fillRect(0, 0, W, cy);
-      ctx.fillStyle = 'rgba(108,197,194,0.10)'; // medium 2: teal tint
+      ctx.fillStyle = withAlpha(getCanvasColors().teal, 0.1); // medium 2: teal tint
       ctx.fillRect(0, cy, W, H - cy);
 
       // Interface line
@@ -80,13 +80,13 @@ export function SnellsLawDemo({ figure }: Props) {
       // Incident ray: from upper-left toward interface point (cx, cy)
       const ix = cx - L * Math.sin(th1);
       const iy = cy - L * Math.cos(th1);
-      drawRay(ctx, ix, iy, cx, cy, 'rgba(255,107,42,0.9)', 2.2);
+      drawRay(ctx, ix, iy, cx, cy, withAlpha(getCanvasColors().accent, 0.9), 2.2);
 
       if (totalIntRefl) {
         // Reflected ray inside medium 1 (mirror about the normal)
         const rx = cx + L * Math.sin(th1);
         const ry = cy - L * Math.cos(th1);
-        drawRay(ctx, cx, cy, rx, ry, 'rgba(255,59,110,0.9)', 2.2);
+        drawRay(ctx, cx, cy, rx, ry, withAlpha(getCanvasColors().pink, 0.9), 2.2);
         drawLabel(ctx, {
           x: cx,
           y: H - 16,
@@ -100,7 +100,7 @@ export function SnellsLawDemo({ figure }: Props) {
         // Refracted ray in medium 2
         const tx = cx + L * Math.sin(th2);
         const ty = cy + L * Math.cos(th2);
-        drawRay(ctx, cx, cy, tx, ty, 'rgba(108,197,194,0.95)', 2.2);
+        drawRay(ctx, cx, cy, tx, ty, withAlpha(getCanvasColors().teal, 0.95), 2.2);
       }
 
       // Labels

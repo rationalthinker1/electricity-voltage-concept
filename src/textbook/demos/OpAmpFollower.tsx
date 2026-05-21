@@ -19,7 +19,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -354,9 +354,9 @@ function drawBars(
 
   // Three bars: V_s, V_load no-buffer, V_load with buffer
   const bars: { label: string; val: number; color: string }[] = [
-    { label: 'V_s (source)', val: Vs, color: 'rgba(255,107,42,0.85)' },
-    { label: 'V_load (direct)', val: VdirectLoad, color: 'rgba(255,59,110,0.85)' },
-    { label: 'V_load (buffered)', val: Vs, color: 'rgba(108,197,194,0.85)' },
+    { label: 'V_s (source)', val: Vs, color: withAlpha(getCanvasColors().accent, 0.85) },
+    { label: 'V_load (direct)', val: VdirectLoad, color: withAlpha(getCanvasColors().pink, 0.85) },
+    { label: 'V_load (buffered)', val: Vs, color: withAlpha(getCanvasColors().teal, 0.85) },
   ];
   const barW = Math.min(46, plotW / 5);
   for (let i = 0; i < bars.length; i++) {
@@ -376,7 +376,9 @@ function drawBars(
   }
 
   // Highlight which is the live case
-  ctx.fillStyle = bufferOn ? 'rgba(108,197,194,0.95)' : 'rgba(255,59,110,0.95)';
+  ctx.fillStyle = bufferOn
+    ? withAlpha(getCanvasColors().teal, 0.95)
+    : withAlpha(getCanvasColors().pink, 0.95);
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';

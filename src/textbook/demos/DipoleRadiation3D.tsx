@@ -22,7 +22,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -288,9 +288,9 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
           { x: pBot.x, y: pBot.y },
         ],
         {
-          color: 'rgba(236,235,229,0.95)',
+          color: withAlpha(getCanvasColors().text, 0.95),
           lineWidth: 2.0,
-          glowColor: 'rgba(236,235,229,0.18)',
+          glowColor: withAlpha(getCanvasColors().text, 0.18),
           glowWidth: 8,
         },
       );

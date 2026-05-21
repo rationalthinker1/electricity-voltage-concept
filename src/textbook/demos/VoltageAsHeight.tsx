@@ -11,6 +11,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -140,13 +141,14 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       }
 
       // Ball glow + body
-      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 2.5);
-      grd.addColorStop(0, colors.pink);
-      grd.addColorStop(1, withAlpha(colors.pink, 0));
-      ctx.fillStyle = grd;
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius * 2.5, 0, Math.PI * 2);
-      ctx.fill();
+      drawHalo(ctx, {
+        x: cx,
+        y: cy,
+        radius: radius * 2.5,
+        color: colors.pink,
+        alpha: 1,
+        extent: 1,
+      });
       ctx.fillStyle = colors.pink;
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);

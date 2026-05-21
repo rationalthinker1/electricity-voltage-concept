@@ -12,6 +12,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -114,12 +115,12 @@ export function BLDCCommutationDemo({ figure }: Props) {
         let stroke = 'rgba(255,255,255,0.25)';
         let glyph = '∅';
         if (p.drive === 1) {
-          fill = 'rgba(255,107,42,0.45)';
-          stroke = 'rgba(255,107,42,0.9)';
+          fill = withAlpha(colors.accent, 0.45);
+          stroke = withAlpha(colors.accent, 0.9);
           glyph = '+';
         } else if (p.drive === -1) {
-          fill = 'rgba(91,174,248,0.45)';
-          stroke = 'rgba(91,174,248,0.9)';
+          fill = withAlpha(colors.blue, 0.45);
+          stroke = withAlpha(colors.blue, 0.9);
           glyph = '−';
         }
         ctx.fillStyle = fill;

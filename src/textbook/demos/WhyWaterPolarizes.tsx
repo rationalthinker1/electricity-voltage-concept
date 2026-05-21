@@ -10,6 +10,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 
@@ -44,14 +45,14 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
 
       // Background field arrows (faint, horizontal)
       if (E_on) {
-        ctx.strokeStyle = 'rgba(255,107,42,0.20)';
+        ctx.strokeStyle = withAlpha(colors.accent, 0.2);
         ctx.lineWidth = 1;
         for (let y = 26; y < h; y += 40) {
           ctx.beginPath();
           ctx.moveTo(20, y);
           ctx.lineTo(w - 20, y);
           ctx.stroke();
-          ctx.fillStyle = 'rgba(255,107,42,0.40)';
+          ctx.fillStyle = withAlpha(colors.accent, 0.4);
           ctx.beginPath();
           ctx.moveTo(w - 20, y);
           ctx.lineTo(w - 28, y - 4);

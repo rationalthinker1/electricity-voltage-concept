@@ -9,7 +9,7 @@
  * and stalls — demonstrate by ramping δ past 90°.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -128,7 +128,7 @@ export function SynchronousMotorDemo({ figure }: Props) {
       ctx.lineCap = 'butt';
 
       // Load-angle arc — between stator field and rotor N pole
-      ctx.strokeStyle = 'rgba(255,107,42,0.55)';
+      ctx.strokeStyle = withAlpha(colors.accent, 0.55);
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(cx, cy, 30, -statorAng, -rotorAng, statorAng < rotorAng);
@@ -139,14 +139,14 @@ export function SynchronousMotorDemo({ figure }: Props) {
       ctx.fillText('δ', cx + 36, cy + 4);
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
+      ctx.fillStyle = withAlpha(colors.textDim, 0.75);
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText('field (dashed) = rotor (locked)', 12, 12);
       ctx.textAlign = 'right';
       const stallWarn = Math.abs(loadAngleDeg) > 80 ? '  ← near pull-out!' : '';
-      ctx.fillStyle = Math.abs(loadAngleDeg) > 80 ? '#ff6b2a' : 'rgba(160,158,149,0.75)';
+      ctx.fillStyle = Math.abs(loadAngleDeg) > 80 ? '#ff6b2a' : withAlpha(colors.textDim, 0.75);
       ctx.fillText(`δ = ${loadAngleDeg.toFixed(0)}°${stallWarn}`, w - 12, 12);
 
       raf = requestAnimationFrame(draw);

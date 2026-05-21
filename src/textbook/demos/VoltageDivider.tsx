@@ -17,7 +17,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtResistance } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -189,7 +189,7 @@ function buildDividerStatic(
       kind: 'resistor',
       from: { x: xRail, y: yTop + 18 },
       to: { x: xRail, y: yMid - 18 },
-      color: 'rgba(255,59,110,0.9)',
+      color: withAlpha(getCanvasColors().pink, 0.9),
       label: `R₁ = ${fmtResistance(R1)}`,
       labelOffset: { x: 16, y: 0 },
     },
@@ -198,7 +198,7 @@ function buildDividerStatic(
       kind: 'resistor',
       from: { x: xRail, y: yMid + 18 },
       to: { x: xRail, y: yBot - 6 },
-      color: 'rgba(108,197,194,0.9)',
+      color: withAlpha(getCanvasColors().teal, 0.9),
       label: `R₂ = ${fmtResistance(R2)}`,
       labelOffset: { x: 16, y: 0 },
     },
@@ -211,7 +211,12 @@ function buildDividerStatic(
       ],
     },
     // Output probe dot at the load column.
-    { kind: 'node', at: { x: xLoad, y: yTap }, color: 'rgba(255,107,42,0.95)', radius: 4 },
+    {
+      kind: 'node',
+      at: { x: xLoad, y: yTap },
+      color: withAlpha(getCanvasColors().accent, 0.95),
+      radius: 4,
+    },
     // Ground symbol at the bottom of the trunk.
     { kind: 'ground', at: { x: xRail, y: yBot }, leadLength: 0, size: 12 },
   ];
@@ -237,14 +242,14 @@ function buildDividerStatic(
         kind: 'resistor',
         from: { x: xLoad, y: yTap + 24 },
         to: { x: xLoad, y: yBot - 6 },
-        color: 'rgba(91,174,248,0.9)',
+        color: withAlpha(getCanvasColors().blue, 0.9),
         label: 'R_L = 10 kΩ',
         labelOffset: { x: 16, y: 0 },
       },
     );
   }
   const off = renderCircuitToCanvas(
-    { elements, defaultWireColor: 'rgba(236,235,229,0.55)', defaultWireWidth: 1.4 },
+    { elements, defaultWireColor: withAlpha(getCanvasColors().text, 0.55), defaultWireWidth: 1.4 },
     w,
     h,
     dpr,
@@ -255,12 +260,12 @@ function buildDividerStatic(
   if (oc) {
     oc.save();
     oc.setTransform(dpr, 0, 0, dpr, 0, 0);
-    oc.strokeStyle = 'rgba(236,235,229,0.55)';
+    oc.strokeStyle = withAlpha(getCanvasColors().text, 0.55);
     oc.lineWidth = 1.4;
     oc.beginPath();
     oc.arc(xSrc, (yTop + yBot) / 2, 12, 0, Math.PI * 2);
     oc.stroke();
-    oc.fillStyle = 'rgba(255,107,42,0.9)';
+    oc.fillStyle = withAlpha(getCanvasColors().accent, 0.9);
     oc.font = 'bold 10px "JetBrains Mono", monospace';
     oc.textAlign = 'center';
     oc.textBaseline = 'middle';
@@ -325,7 +330,7 @@ function drawBars(
   ctx.strokeRect(padL, padT, plotW, plotH);
 
   // Tick: V_in line
-  ctx.fillStyle = 'rgba(160,158,149,0.6)';
+  ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.6);
   ctx.font = '9px "JetBrains Mono", monospace';
   ctx.textAlign = 'right';
   ctx.textBaseline = 'middle';

@@ -35,7 +35,7 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import {
   add,
   attachOrbit,
@@ -131,7 +131,9 @@ function drawCube(ctx: CanvasRenderingContext2D, cam: OrbitCamera, w: number, h:
     const pb = project(b, cam, w, h);
     // Estimate "back" by sum-of-depths heuristic.
     const back = pa.depth + pb.depth > 2 * cam.distance;
-    ctx.strokeStyle = back ? 'rgba(160,158,149,0.18)' : 'rgba(160,158,149,0.5)';
+    ctx.strokeStyle = back
+      ? withAlpha(getCanvasColors().textDim, 0.18)
+      : withAlpha(getCanvasColors().textDim, 0.5);
     ctx.lineWidth = 1;
     ctx.setLineDash(back ? [4, 4] : []);
     ctx.beginPath();
@@ -248,10 +250,10 @@ function drawGaussE(
       if (line.length > 1) {
         const pts2 = line.map((p) => project(p, cam, w, h));
         drawGlowPath(ctx, pts2, {
-          color: 'rgba(255,107,42,0.72)',
+          color: withAlpha(getCanvasColors().accent, 0.72),
           lineWidth: 1.2,
           glowWidth: 3.2,
-          glowColor: 'rgba(255,107,42,0.14)',
+          glowColor: withAlpha(getCanvasColors().accent, 0.14),
         });
       }
     }
@@ -282,7 +284,7 @@ function drawGaussE(
     const arrowLen = 0.45 * (q >= 0 ? 1 : -1) * Math.tanh(Math.abs(q) / 3);
     const from = c;
     const to = add(c, scale(n, arrowLen));
-    drawArrow3D(ctx, from, to, cam, w, h, 'rgba(255,107,42,0.95)', 2.2, 9);
+    drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().accent, 0.95), 2.2, 9);
   }
 }
 
@@ -352,10 +354,10 @@ function drawGaussB(
       if (loop.length > 1) {
         const pts2 = loop.map((p) => project(p, cam, w, h));
         drawGlowPath(ctx, pts2, {
-          color: 'rgba(108,197,194,0.78)',
+          color: withAlpha(getCanvasColors().teal, 0.78),
           lineWidth: 1.2,
           glowWidth: 3.2,
-          glowColor: 'rgba(108,197,194,0.16)',
+          glowColor: withAlpha(getCanvasColors().teal, 0.16),
         });
         // Draw a few arrowheads along the loop to show direction.
         for (const t of [0.25, 0.5, 0.75]) {
@@ -434,7 +436,7 @@ function drawFaraday(
   for (const [x, z] of positions) {
     const from = v3(x, (-arrowLen / 2) * Bdir, z);
     const to = v3(x, (arrowLen / 2) * Bdir, z);
-    drawArrow3D(ctx, from, to, cam, w, h, 'rgba(108,197,194,0.9)', 1.8, 7);
+    drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().teal, 0.9), 1.8, 7);
   }
 
   // 3. Induced E circulation — a ring of arrows tangent to the loop.
@@ -448,7 +450,7 @@ function drawFaraday(
     const a1 = a0 + (Bdir > 0 ? -1 : +1) * ((2 * Math.PI) / N_E) * 0.5;
     const from = v3(R_E * Math.cos(a0), 0, R_E * Math.sin(a0));
     const to = v3(R_E * Math.cos(a1), 0, R_E * Math.sin(a1));
-    drawArrow3D(ctx, from, to, cam, w, h, 'rgba(255,59,110,0.95)', 2.0, 8);
+    drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().pink, 0.95), 2.0, 8);
   }
 
   // 4. Tiny legend dot near the loop.
@@ -543,7 +545,7 @@ function drawAmpere(
       const dy = sign > 0 ? -0.18 : -0.18;
       const from = v3(0, yA, 0);
       const to = v3(0, yA + dy, 0);
-      drawArrow3D(ctx, from, to, cam, w, h, 'rgba(255,107,42,0.95)', 2.0, 8);
+      drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().accent, 0.95), 2.0, 8);
     }
   }
 
@@ -565,7 +567,7 @@ function drawAmpere(
   for (const [x, z] of eGrid) {
     const from = v3(x, GAP_HALF * 0.6 * -Esign, z);
     const to = v3(x, GAP_HALF * 0.6 * -Esign + Esign * Elen, z);
-    drawArrow3D(ctx, from, to, cam, w, h, 'rgba(255,59,110,0.95)', 1.8, 7);
+    drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().pink, 0.95), 1.8, 7);
   }
 
   // 5. B-curl rings around the gap. Two rings at different y inside the gap
@@ -699,11 +701,13 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
       // Hint + mode label.
       ctx.save();
       ctx.globalAlpha = 0.65;
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('drag to orbit · same box for all four laws', 12, 12);
+      drawLabel(ctx, {
+        x: 12,
+        y: 12,
+        text: 'drag to orbit · same box for all four laws',
+        color: getCanvasColors().textDim,
+        baseline: 'top',
+      });
       ctx.restore();
       drawLabel(ctx, {
         x: 12,

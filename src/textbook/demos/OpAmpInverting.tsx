@@ -13,6 +13,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -126,9 +127,9 @@ export function OpAmpInvertingDemo({ figure }: Props) {
         voutPts.push({ x: plotX + u * plotW, y: yV(vout) });
       }
       drawGlowPath(ctx, voutPts, {
-        color: 'rgba(255,107,42,0.95)',
+        color: withAlpha(colors.accent, 0.95),
         lineWidth: 1.8,
-        glowColor: 'rgba(255,107,42,0.35)',
+        glowColor: withAlpha(colors.accent, 0.35),
         glowWidth: 5,
       });
 

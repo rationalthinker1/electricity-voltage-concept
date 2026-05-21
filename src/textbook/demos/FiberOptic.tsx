@@ -11,7 +11,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -87,7 +87,7 @@ export function FiberOpticDemo({ figure }: Props) {
       let x = left;
       let y = (top + bot) / 2; // start on axis
       let dy = 1; // initial down
-      const rayColor = escapes_ ? 'rgba(255,59,110,0.95)' : 'rgba(255,107,42,0.95)';
+      const rayColor = escapes_ ? withAlpha(colors.pink, 0.95) : withAlpha(colors.accent, 0.95);
       ctx.restore();
       ctx.strokeStyle = rayColor;
       ctx.lineWidth = 1.8;

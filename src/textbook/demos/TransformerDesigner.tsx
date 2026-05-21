@@ -32,7 +32,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -220,15 +220,20 @@ export function TransformerDesignerDemo({ figure }: Props) {
 
       // Top-right warning
       if (saturating) {
-        ctx.textAlign = 'right';
-        ctx.fillStyle = getCanvasColors().pink;
-        ctx.font = 'bold 11px "JetBrains Mono", monospace';
-        ctx.fillText('CORE SATURATING', W - 12, 10);
+        drawLabel(ctx, {
+          x: W - 12,
+          y: 10,
+          text: 'CORE SATURATING',
+          color: getCanvasColors().pink,
+          size: 11,
+          align: 'right',
+          weight: 'bold',
+        });
         drawLabel(ctx, {
           x: W - 12,
           y: 24,
           text: 'μ collapses → huge I_mag → heat',
-          color: 'rgba(255,59,110,0.8)',
+          color: withAlpha(getCanvasColors().pink, 0.8),
         });
       }
 

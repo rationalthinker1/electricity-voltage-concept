@@ -19,6 +19,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 
 interface Props {
@@ -29,10 +30,14 @@ type MatKind = 'si' | 'ge' | 'gaas' | 'diamond';
 
 // Bandgap energies in eV — from CRC Handbook / Streetman & Banerjee Ch.3.
 const MATERIALS: Record<MatKind, { label: string; Eg: number; color: string }> = {
-  si: { label: 'Silicon (Si)', Eg: 1.12, color: 'rgba(255,107,42,0.95)' },
-  ge: { label: 'Germanium (Ge)', Eg: 0.67, color: 'rgba(108,197,194,0.95)' },
-  gaas: { label: 'Gallium arsenide (GaAs)', Eg: 1.42, color: 'rgba(255,59,110,0.95)' },
-  diamond: { label: 'Diamond (C)', Eg: 5.5, color: 'rgba(91,174,248,0.95)' },
+  si: { label: 'Silicon (Si)', Eg: 1.12, color: withAlpha(getCanvasColors().accent, 0.95) },
+  ge: { label: 'Germanium (Ge)', Eg: 0.67, color: withAlpha(getCanvasColors().teal, 0.95) },
+  gaas: {
+    label: 'Gallium arsenide (GaAs)',
+    Eg: 1.42,
+    color: withAlpha(getCanvasColors().pink, 0.95),
+  },
+  diamond: { label: 'Diamond (C)', Eg: 5.5, color: withAlpha(getCanvasColors().blue, 0.95) },
 };
 
 const EV = 1.602176634e-19; // J per eV — matches PHYS.e

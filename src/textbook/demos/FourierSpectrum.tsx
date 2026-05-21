@@ -13,7 +13,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawAxes, drawBarChart, drawLinePlot } from '@/lib/drawPlot';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -118,10 +118,14 @@ export function FourierSpectrumDemo() {
       ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.6;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.fillText('time →', w - padX - 4, tMid + 12);
+      drawLabel(ctx, {
+        x: w - padX - 4,
+        y: tMid + 12,
+        text: 'time →',
+        color: colors.textDim,
+        size: 9,
+        align: 'right',
+      });
       ctx.restore();
 
       const samples = 400;
@@ -172,7 +176,7 @@ export function FourierSpectrumDemo() {
 
       // Per-bar colors: DC = teal, rest = accent
       const barColors = Array.from({ length: nMax + 1 }, (_, n) =>
-        n === 0 ? 'rgba(108,197,194,0.85)' : '#ff6b2a',
+        n === 0 ? withAlpha(colors.teal, 0.85) : '#ff6b2a',
       );
 
       drawBarChart(ctx, bRect, barData, 0, maxAmp * 1.1, {

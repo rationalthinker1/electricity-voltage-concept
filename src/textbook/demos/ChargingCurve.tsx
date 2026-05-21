@@ -14,7 +14,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -154,8 +154,8 @@ export function ChargingCurveDemo({ figure }: Props) {
           pts.push({ x: xT(p.t - tCut), y: yV(p.v) });
         }
         drawGlowPath(ctx, pts, {
-          color: 'rgba(255,59,110,0.95)',
-          glowColor: 'rgba(255,59,110,0.35)',
+          color: withAlpha(getCanvasColors().pink, 0.95),
+          glowColor: withAlpha(getCanvasColors().pink, 0.35),
           lineWidth: 1.8,
         });
       }

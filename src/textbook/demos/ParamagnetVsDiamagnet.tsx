@@ -12,6 +12,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -138,17 +139,18 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
           y: box.y0 - 8,
           text:
             box.kind === 'para' ? 'PARAMAGNET (permanent moments)' : 'DIAMAGNET (induced moments)',
-          color: box.kind === 'para' ? 'rgba(255,107,42,0.85)' : 'rgba(108,197,194,0.85)',
+          color:
+            box.kind === 'para' ? withAlpha(colors.accent, 0.85) : withAlpha(colors.teal, 0.85),
           size: 11,
         });
       }
 
       // Draw moments
       for (const m of para) {
-        arrow(m.x, m.y, m.theta, 16, 'rgba(255,107,42,0.85)');
+        arrow(m.x, m.y, m.theta, 16, withAlpha(colors.accent, 0.85));
       }
       for (const m of dia) {
-        arrow(m.x, m.y, m.theta, 11, 'rgba(108,197,194,0.85)');
+        arrow(m.x, m.y, m.theta, 11, withAlpha(colors.teal, 0.85));
       }
 
       // Big external-B arrow at top

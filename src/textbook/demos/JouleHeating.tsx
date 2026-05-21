@@ -170,9 +170,12 @@ export function JouleHeatingDemo({ figure }: Props) {
       ctx.font = '13px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText(`T ≈ ${T.toFixed(0)} K`, w - 14, 12);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillText(describeGlow(T, P_), w - 14, 30);
+      drawLabel(ctx, {
+        x: w - 14,
+        y: 30,
+        text: describeGlow(T, P_),
+        color: colors.textDim,
+      });
 
       drawLabel(ctx, {
         x: w / 2,

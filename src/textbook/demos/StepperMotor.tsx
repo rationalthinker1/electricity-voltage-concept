@@ -8,6 +8,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -72,8 +73,8 @@ export function StepperMotorDemo({ figure }: Props) {
         // Which pair is energized depends on phase = steps mod 4
         const phase = ((stateRef.current.steps % 4) + 4) % 4;
         const energized = i % 4 === phase;
-        ctx.fillStyle = energized ? 'rgba(255,107,42,0.5)' : 'rgba(255,255,255,0.10)';
-        ctx.strokeStyle = energized ? 'rgba(255,107,42,0.9)' : 'rgba(255,255,255,0.3)';
+        ctx.fillStyle = energized ? withAlpha(colors.accent, 0.5) : 'rgba(255,255,255,0.10)';
+        ctx.strokeStyle = energized ? withAlpha(colors.accent, 0.9) : 'rgba(255,255,255,0.3)';
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.arc(px, py, 14, 0, Math.PI * 2);
@@ -122,7 +123,7 @@ export function StepperMotorDemo({ figure }: Props) {
         x: 12,
         y: 12,
         text: 'hybrid stepper · 200 steps/rev (1.8°/step)',
-        color: 'rgba(160,158,149,0.75)',
+        color: withAlpha(colors.textDim, 0.75),
         baseline: 'top',
       });
 

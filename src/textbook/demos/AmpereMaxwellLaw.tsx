@@ -21,6 +21,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawWire } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 
 interface Props {
@@ -69,7 +70,7 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
           { x: plate1X, y: cy },
         ],
         {
-          color: 'rgba(255,107,42,0.8)',
+          color: withAlpha(colors.accent, 0.8),
           lineWidth: 3,
         },
       );
@@ -80,7 +81,7 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
           { x: endX, y: cy },
         ],
         {
-          color: 'rgba(255,107,42,0.8)',
+          color: withAlpha(colors.accent, 0.8),
           lineWidth: 3,
         },
       );
@@ -164,7 +165,7 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
       for (const p of positions) {
         // Two ellipses (top + bottom) — a side-view "ring" around the wire / gap
         ctx.strokeStyle =
-          p.kind === 'displacement' ? 'rgba(108,197,194,0.95)' : 'rgba(108,197,194,0.7)';
+          p.kind === 'displacement' ? withAlpha(colors.teal, 0.95) : withAlpha(colors.teal, 0.7);
         ctx.lineWidth = 1.4;
         ctx.setLineDash(p.kind === 'displacement' ? [4, 3] : []);
         ctx.beginPath();
@@ -210,7 +211,10 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
           x: p.x,
           y: cy - radiusPx * 0.32 - 10,
           text: p.label,
-          color: p.kind === 'displacement' ? 'rgba(108,197,194,0.95)' : 'rgba(160,158,149,0.85)',
+          color:
+            p.kind === 'displacement'
+              ? withAlpha(colors.teal, 0.95)
+              : withAlpha(colors.textDim, 0.85),
           align: 'center',
           baseline: 'bottom',
         });

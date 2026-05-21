@@ -12,6 +12,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { drawHalo } from '@/lib/canvasPrimitives';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -196,13 +197,14 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       // Indicator lamp — color depends on current direction; brightness on |emf|
       const intensity = Math.min(1, Math.abs(emf) / 8);
       const lampColor = dir > 0 ? '255,107,42' : '108,197,194';
-      const lampGlow = ctx.createRadialGradient(lampX, lampY, 0, lampX, lampY, 38);
-      lampGlow.addColorStop(0, `rgba(${lampColor},${0.85 * intensity})`);
-      lampGlow.addColorStop(1, `rgba(${lampColor},0)`);
-      ctx.fillStyle = lampGlow;
-      ctx.beginPath();
-      ctx.arc(lampX, lampY, 38, 0, Math.PI * 2);
-      ctx.fill();
+      drawHalo(ctx, {
+        x: lampX,
+        y: lampY,
+        radius: 38,
+        color: `rgba(${lampColor},${0.85 * intensity})`,
+        alpha: 1,
+        extent: 1,
+      });
       ctx.strokeStyle = `rgba(${lampColor},${0.3 + 0.7 * intensity})`;
       ctx.lineWidth = 1.6;
       ctx.fillStyle = `rgba(${lampColor},${0.15 + 0.65 * intensity})`;

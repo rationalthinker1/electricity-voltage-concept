@@ -11,7 +11,7 @@
  * shown as a red flash.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -96,7 +96,7 @@ export function GridSyncDemo({ figure }: Props) {
 
       // Generator trace (amber)
       ctx.restore();
-      ctx.strokeStyle = ready ? 'rgba(108,197,194,0.95)' : 'rgba(255,107,42,0.9)';
+      ctx.strokeStyle = ready ? withAlpha(colors.teal, 0.95) : withAlpha(colors.accent, 0.9);
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       for (let i = 0; i <= samples; i++) {
@@ -131,7 +131,7 @@ export function GridSyncDemo({ figure }: Props) {
       ctx.fill();
 
       // Indicator badge
-      ctx.fillStyle = ready ? 'rgba(108,197,194,0.85)' : 'rgba(255,59,110,0.85)';
+      ctx.fillStyle = ready ? withAlpha(colors.teal, 0.85) : withAlpha(colors.pink, 0.85);
       ctx.beginPath();
       ctx.arc(padL + plotW - 18, padT + 14, 7, 0, Math.PI * 2);
       ctx.fill();

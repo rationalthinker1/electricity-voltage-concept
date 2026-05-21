@@ -28,7 +28,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import {
   attachOrbit,
   depthSortIndices,
@@ -126,8 +126,8 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
       const xs = [-X_HALF, -X_HALF / 2, 0, X_HALF / 2, X_HALF];
       for (const x of xs) {
         drawRim(o, rimPoints(R_OUTER, x), cam, W, H, {
-          frontColor: 'rgba(160,158,149,0.55)',
-          backColor: 'rgba(160,158,149,0.18)',
+          frontColor: withAlpha(getCanvasColors().textDim, 0.55),
+          backColor: withAlpha(getCanvasColors().textDim, 0.18),
           lineWidth: 1.0,
           backDash: [4, 4],
         });
@@ -135,8 +135,8 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
       // Inner conductor rims (more saturated).
       for (const x of [-X_HALF, 0, X_HALF]) {
         drawRim(o, rimPoints(R_INNER, x), cam, W, H, {
-          frontColor: 'rgba(255,107,42,0.85)',
-          backColor: 'rgba(255,107,42,0.35)',
+          frontColor: withAlpha(getCanvasColors().accent, 0.85),
+          backColor: withAlpha(getCanvasColors().accent, 0.35),
           lineWidth: 1.2,
           backDash: [4, 4],
         });
@@ -151,7 +151,9 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
         const front = z >= 0;
         const p1 = project(v3(-X_HALF, y, z), cam, W, H);
         const p2 = project(v3(+X_HALF, y, z), cam, W, H);
-        o.strokeStyle = front ? 'rgba(160,158,149,0.45)' : 'rgba(160,158,149,0.14)';
+        o.strokeStyle = front
+          ? withAlpha(getCanvasColors().textDim, 0.45)
+          : withAlpha(getCanvasColors().textDim, 0.14);
         o.lineWidth = 1;
         o.setLineDash(front ? [] : [4, 4]);
         o.beginPath();

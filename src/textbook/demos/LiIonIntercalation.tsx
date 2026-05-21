@@ -10,7 +10,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
 interface Props {
@@ -55,7 +55,16 @@ export function LiIonIntercalationDemo({ figure }: Props) {
       const colH = botY - topY;
 
       // Anode (graphite) — horizontal layered slabs
-      drawLayers(ctx, anodeX, topY, anodeW, colH, '#3a3a3a', 'rgba(160,158,149,0.7)', 'graphite');
+      drawLayers(
+        ctx,
+        anodeX,
+        topY,
+        anodeW,
+        colH,
+        '#3a3a3a',
+        withAlpha(colors.textDim, 0.7),
+        'graphite',
+      );
 
       // Cathode (LiCoO₂ / NMC) — layered slabs different colour
       drawLayers(ctx, cathodeX, topY, anodeW, colH, '#2a1a1a', 'rgba(184,115,51,0.8)', 'LiCoO₂');

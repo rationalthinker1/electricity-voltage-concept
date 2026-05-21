@@ -498,11 +498,15 @@ function drawCircuitMini(
   ctx.lineTo(ax1 - 7, arrowY + 4);
   ctx.closePath();
   ctx.fill();
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillStyle = withAlpha(colors.accent, arrowAlpha);
-  ctx.fillText('I  (conventional)', (ax0 + ax1) / 2, arrowY - 4);
+  drawLabel(ctx, {
+    x: (ax0 + ax1) / 2,
+    y: arrowY - 4,
+    text: 'I  (conventional)',
+    color: withAlpha(colors.accent, arrowAlpha),
+    size: 9,
+    align: 'center',
+    baseline: 'bottom',
+  });
 
   drawLabel(ctx, {
     x: cx,

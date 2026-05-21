@@ -52,6 +52,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -289,14 +290,14 @@ export function FilterDesignerDemo({ figure }: Props) {
         outputPts.push({ x: outX0 + u * (outX1 - outX0), y: outMidY - yo * outAmp });
       }
       drawGlowPath(ctx, inputPts, {
-        color: 'rgba(255,107,42,0.9)',
-        glowColor: 'rgba(255,107,42,0.30)',
+        color: withAlpha(colors.accent, 0.9),
+        glowColor: withAlpha(colors.accent, 0.3),
         lineWidth: 1.4,
         glowWidth: 4,
       });
       drawGlowPath(ctx, outputPts, {
-        color: 'rgba(108,197,194,0.95)',
-        glowColor: 'rgba(108,197,194,0.35)',
+        color: withAlpha(colors.teal, 0.95),
+        glowColor: withAlpha(colors.teal, 0.35),
         lineWidth: 1.4,
         glowWidth: 4,
       });
@@ -413,8 +414,8 @@ export function FilterDesignerDemo({ figure }: Props) {
         curve.push({ x: xf(f), y: yy });
       }
       drawGlowPath(ctx, curve, {
-        color: 'rgba(255,107,42,0.95)',
-        glowColor: 'rgba(255,107,42,0.35)',
+        color: withAlpha(colors.accent, 0.95),
+        glowColor: withAlpha(colors.accent, 0.35),
         lineWidth: 1.7,
         glowWidth: 6,
       });

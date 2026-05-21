@@ -10,7 +10,7 @@
  * glance; sign matches Lenz (the induced current opposes the change).
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -182,8 +182,8 @@ export function FaradayLawDemo({ figure }: Props) {
         }
         ctx.stroke();
       }
-      plotTrace(phiBuf, phiScale, 'rgba(108,197,194,0.9)'); // teal: Φ_B
-      plotTrace(emfBuf, emfScale, 'rgba(255,107,42,0.95)'); // amber: EMF
+      plotTrace(phiBuf, phiScale, withAlpha(colors.teal, 0.9)); // teal: Φ_B
+      plotTrace(emfBuf, emfScale, withAlpha(colors.accent, 0.95)); // amber: EMF
 
       // Legend
       ctx.font = '10px "JetBrains Mono", monospace';

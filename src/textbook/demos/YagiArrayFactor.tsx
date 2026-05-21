@@ -12,7 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -56,7 +56,9 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       for (let k = 0; k < nDir; k++) xDirs.push(baseX + (2 + k) * spacing);
 
       function drawElement(x: number, len: number, label: string, accent: boolean) {
-        ctx.strokeStyle = accent ? 'rgba(255,107,42,0.95)' : 'rgba(160,158,149,0.85)';
+        ctx.strokeStyle = accent
+          ? withAlpha(getCanvasColors().accent, 0.95)
+          : withAlpha(getCanvasColors().textDim, 0.85);
         ctx.lineWidth = accent ? 2.5 : 1.8;
         ctx.beginPath();
         ctx.moveTo(x, cyTop - len / 2);
@@ -122,7 +124,7 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       // φ measured from the forward direction (+x).
       const sharp = 1.5 + nDir * 0.9;
       ctx.strokeStyle = getCanvasColors().accent;
-      ctx.fillStyle = 'rgba(255,107,42,0.18)';
+      ctx.fillStyle = withAlpha(getCanvasColors().accent, 0.18);
       ctx.lineWidth = 2;
       ctx.beginPath();
       const N = 360;

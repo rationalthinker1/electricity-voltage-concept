@@ -30,7 +30,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import {
   attachOrbit,
   project,
@@ -144,7 +144,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
           v3(-PLANE_HALF * 0.9, PLANE_HALF * 0.9, 0),
         ];
         const c2 = sheetCorners.map((p) => project(p, cam, w, h));
-        ctx.fillStyle = 'rgba(255,107,42,0.06)';
+        ctx.fillStyle = withAlpha(getCanvasColors().accent, 0.06);
         ctx.beginPath();
         ctx.moveTo(c2[0]!.x, c2[0]!.y);
         for (let i = 1; i < 4; i++) ctx.lineTo(c2[i]!.x, c2[i]!.y);
@@ -170,7 +170,7 @@ export function SnellLaw3DDemo({ figure }: Props) {
       // Dashed grey; small ticks at top and bottom.
       ctx.save();
       ctx.setLineDash([5, 5]);
-      ctx.strokeStyle = 'rgba(236,235,229,0.55)';
+      ctx.strokeStyle = withAlpha(getCanvasColors().text, 0.55);
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(nTopP.x, nTopP.y);
@@ -196,8 +196,8 @@ export function SnellLaw3DDemo({ figure }: Props) {
       const inP1 = project(incidentStart, cam, w, h);
       const inP2 = project(O, cam, w, h);
       drawArrow3D(ctx, inP1, inP2, {
-        color: 'rgba(255,107,42,0.95)',
-        glow: 'rgba(255,107,42,0.30)',
+        color: withAlpha(getCanvasColors().accent, 0.95),
+        glow: withAlpha(getCanvasColors().accent, 0.3),
         width: 2.2,
         glowWidth: 8,
       });
@@ -207,8 +207,8 @@ export function SnellLaw3DDemo({ figure }: Props) {
         const refP1 = project(O, cam, w, h);
         const refP2 = project(reflectedEnd, cam, w, h);
         drawArrow3D(ctx, refP1, refP2, {
-          color: 'rgba(255,59,110,0.92)',
-          glow: 'rgba(255,59,110,0.22)',
+          color: withAlpha(getCanvasColors().pink, 0.92),
+          glow: withAlpha(getCanvasColors().pink, 0.22),
           width: 1.8,
           glowWidth: 6,
           dashed: totalReflection ? false : false,
@@ -220,8 +220,8 @@ export function SnellLaw3DDemo({ figure }: Props) {
         const trP1 = project(O, cam, w, h);
         const trP2 = project(refractedEnd, cam, w, h);
         drawArrow3D(ctx, trP1, trP2, {
-          color: 'rgba(108,197,194,0.95)',
-          glow: 'rgba(108,197,194,0.25)',
+          color: withAlpha(getCanvasColors().teal, 0.95),
+          glow: withAlpha(getCanvasColors().teal, 0.25),
           width: 2.0,
           glowWidth: 7,
         });
@@ -411,7 +411,7 @@ function drawInterfacePlane(ctx: CanvasRenderingContext2D, cam: OrbitCamera, w: 
     v3(-PLANE_HALF, 0, PLANE_HALF),
   ];
   const c2 = corners.map((c) => project(c, cam, w, h));
-  ctx.fillStyle = 'rgba(108,197,194,0.07)';
+  ctx.fillStyle = withAlpha(getCanvasColors().teal, 0.07);
   ctx.beginPath();
   ctx.moveTo(c2[0]!.x, c2[0]!.y);
   for (let i = 1; i < 4; i++) ctx.lineTo(c2[i]!.x, c2[i]!.y);
@@ -546,7 +546,10 @@ function drawAngleArc(
   while (da > Math.PI) da -= 2 * Math.PI;
   while (da < -Math.PI) da += 2 * Math.PI;
 
-  const colour = kind === 'theta1' ? 'rgba(255,107,42,0.85)' : 'rgba(108,197,194,0.85)';
+  const colour =
+    kind === 'theta1'
+      ? withAlpha(getCanvasColors().accent, 0.85)
+      : withAlpha(getCanvasColors().teal, 0.85);
   ctx.strokeStyle = colour;
   ctx.lineWidth = 1.4;
   ctx.beginPath();

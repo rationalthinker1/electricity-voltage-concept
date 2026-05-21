@@ -44,7 +44,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface StaticCache {
   key: string;
@@ -476,7 +476,13 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
               plateGap: 4,
               positivePlateLength: 24,
             },
-            { kind: 'ground', at: p_gnd, color: 'rgba(160,158,149,0.85)', size: 20, leadLength: 4 },
+            {
+              kind: 'ground',
+              at: p_gnd,
+              color: withAlpha(getCanvasColors().textDim, 0.85),
+              size: 20,
+              leadLength: 4,
+            },
           ];
           const off = renderCircuitToCanvas(
             { elements, defaultWireColor: 'rgba(255,255,255,0.55)', defaultWireWidth: 1.5 },
@@ -575,7 +581,7 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
         style={{
           marginTop: 12,
           padding: '14px 16px',
-          background: 'rgba(255,107,42,0.06)',
+          background: withAlpha(getCanvasColors().accent, 0.06),
           border: '1px solid rgba(255,107,42,0.35)',
           borderRadius: 8,
           display: 'grid',
@@ -588,7 +594,7 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
           style={{
             fontFamily: '"JetBrains Mono", monospace',
             fontSize: 11,
-            color: 'rgba(160,158,149,0.85)',
+            color: withAlpha(getCanvasColors().textDim, 0.85),
             letterSpacing: '0.04em',
             textTransform: 'uppercase',
           }}

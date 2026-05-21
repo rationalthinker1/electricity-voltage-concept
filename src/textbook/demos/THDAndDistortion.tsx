@@ -9,6 +9,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -71,7 +72,7 @@ export function THDAndDistortionDemo() {
         ctx.lineTo(w - padX, tMid);
         ctx.stroke();
         // Reference: unclipped sine
-        ctx.strokeStyle = 'rgba(108,197,194,0.4)';
+        ctx.strokeStyle = withAlpha(colors.teal, 0.4);
         ctx.setLineDash([3, 4]);
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -102,7 +103,7 @@ export function THDAndDistortionDemo() {
         }
         ctx.stroke();
         // Clip level markers
-        ctx.strokeStyle = 'rgba(255,107,42,0.3)';
+        ctx.strokeStyle = withAlpha(colors.accent, 0.3);
         ctx.setLineDash([2, 4]);
         const yUp = tMid - Aclip * (halfH / 2) * 0.9;
         const yDn = tMid + Aclip * (halfH / 2) * 0.9;
@@ -136,7 +137,7 @@ export function THDAndDistortionDemo() {
           const amp = Math.abs(coeffs[n - 1]);
           const x = xOf(n) - barW / 2;
           const hPx = (amp / maxAmp) * bH * 0.9;
-          ctx.fillStyle = n === 1 ? 'rgba(108,197,194,0.85)' : '#ff6b2a';
+          ctx.fillStyle = n === 1 ? withAlpha(colors.teal, 0.85) : '#ff6b2a';
           ctx.fillRect(x, bMid - hPx, barW, hPx);
           if (amp / maxAmp > 0.06) {
             drawLabel(ctx, {

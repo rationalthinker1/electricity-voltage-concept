@@ -16,6 +16,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -194,14 +195,14 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       }
 
       // Fundamental — amber
-      stem(F_OUT, m, 'rgba(255,107,42,1.0)');
+      stem(F_OUT, m, withAlpha(colors.accent, 1.0));
       // Carrier sidelobes — teal
-      stem(fSw - 2 * F_OUT, 0.6 * m, 'rgba(108,197,194,0.95)');
-      stem(fSw + 2 * F_OUT, 0.6 * m, 'rgba(108,197,194,0.95)');
-      stem(fSw, 0.15 * m, 'rgba(108,197,194,0.6)');
+      stem(fSw - 2 * F_OUT, 0.6 * m, withAlpha(colors.teal, 0.95));
+      stem(fSw + 2 * F_OUT, 0.6 * m, withAlpha(colors.teal, 0.95));
+      stem(fSw, 0.15 * m, withAlpha(colors.teal, 0.6));
       // Second carrier cluster — fainter
-      stem(2 * fSw - F_OUT, 0.3 * m, 'rgba(108,197,194,0.65)');
-      stem(2 * fSw + F_OUT, 0.3 * m, 'rgba(108,197,194,0.65)');
+      stem(2 * fSw - F_OUT, 0.3 * m, withAlpha(colors.teal, 0.65));
+      stem(2 * fSw + F_OUT, 0.3 * m, withAlpha(colors.teal, 0.65));
 
       // Filter corner annotation: a typical LC filter chosen at f_sw / 10
       const fCorner = fSw / 10;
@@ -218,11 +219,14 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.restore();
-      ctx.fillStyle = colors.text;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`LC corner f_sw/10 = ${formatHz(fCorner)}`, xC + 3, bot + 4);
+      drawLabel(ctx, {
+        x: xC + 3,
+        y: bot + 4,
+        text: `LC corner f_sw/10 = ${formatHz(fCorner)}`,
+        color: colors.text,
+        size: 9,
+        baseline: 'top',
+      });
 
       // Labels
       ctx.save();

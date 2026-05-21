@@ -27,7 +27,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
 interface Props {
@@ -259,9 +259,9 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
           { x: pBot.x, y: pBot.y },
         ],
         {
-          color: 'rgba(236,235,229,0.95)',
+          color: withAlpha(getCanvasColors().text, 0.95),
           lineWidth: 2.0,
-          glowColor: 'rgba(236,235,229,0.18)',
+          glowColor: withAlpha(getCanvasColors().text, 0.18),
           glowWidth: 8,
         },
       );
@@ -297,7 +297,10 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
             ny = ux;
 
           // Colour: pink for +I, blue for −I (matching charge-polarity palette).
-          const col = Iraw >= 0 ? 'rgba(255,59,110,0.85)' : 'rgba(91,174,248,0.85)';
+          const col =
+            Iraw >= 0
+              ? withAlpha(getCanvasColors().pink, 0.85)
+              : withAlpha(getCanvasColors().blue, 0.85);
           ctx.strokeStyle = col;
           ctx.fillStyle = col;
           ctx.lineWidth = 1.4;
@@ -337,9 +340,9 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
         14,
         30,
       );
-      ctx.fillStyle = 'rgba(236,235,229,0.78)';
+      ctx.fillStyle = withAlpha(getCanvasColors().text, 0.78);
       ctx.fillText(`L/λ = ${(L_METERS / lam).toFixed(3)}`, 14, 46);
-      ctx.fillStyle = 'rgba(160,158,149,0.65)';
+      ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.65);
       ctx.fillText('drag to orbit', 14, H - 18);
 
       // Bottom scale bar — L vs λ on a common axis. Highlight when L = λ/2.
@@ -354,7 +357,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       const lamPix = Math.min(barW, lam * ppm);
 
       // Wire bar (always white, fixed length).
-      ctx.strokeStyle = 'rgba(236,235,229,0.85)';
+      ctx.strokeStyle = withAlpha(getCanvasColors().text, 0.85);
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(barX0, barY);
@@ -368,7 +371,9 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
 
       // λ bar (teal; highlights amber near half-wave).
       const halfWave = LoverLambda > 0.45 && LoverLambda < 0.6;
-      const lamCol = halfWave ? 'rgba(255,107,42,0.95)' : 'rgba(108,197,194,0.85)';
+      const lamCol = halfWave
+        ? withAlpha(getCanvasColors().accent, 0.95)
+        : withAlpha(getCanvasColors().teal, 0.85);
       ctx.strokeStyle = lamCol;
       ctx.lineWidth = halfWave ? 3 : 2;
       ctx.beginPath();

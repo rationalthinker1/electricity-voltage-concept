@@ -22,7 +22,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -131,7 +131,7 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
                 ctx,
                 { x: cx, y: cy },
                 { x: cx + r * Math.cos(ang), y: cy - r * Math.sin(ang) },
-                { color: 'rgba(255,107,42,0.95)', lineWidth: 2 },
+                { color: withAlpha(getCanvasColors().accent, 0.95), lineWidth: 2 },
               );
             } else {
               const a = (t1Deg * Math.PI) / 180;
@@ -142,7 +142,7 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
                 ctx,
                 { x: cx - amp * phase * Math.cos(a), y: cy + amp * phase * Math.sin(a) },
                 { x: cx + amp * phase * Math.cos(a), y: cy - amp * phase * Math.sin(a) },
-                { color: 'rgba(255,107,42,0.95)', lineWidth: 2 },
+                { color: withAlpha(getCanvasColors().accent, 0.95), lineWidth: 2 },
               );
             }
           },
@@ -163,7 +163,7 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
                 ctx,
                 { x: cx - amp * phase * Math.cos(a), y: cy + amp * phase * Math.sin(a) },
                 { x: cx + amp * phase * Math.cos(a), y: cy - amp * phase * Math.sin(a) },
-                { color: 'rgba(108,197,194,0.95)', lineWidth: 2 },
+                { color: withAlpha(getCanvasColors().teal, 0.95), lineWidth: 2 },
               );
             }
           },

@@ -30,7 +30,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -170,8 +170,8 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
             label: `${V.toFixed(1)} V`,
             leadLength: 60,
           },
-          { kind: 'node', at: { x: nodeA_x, y: yTop }, color: 'rgba(255,107,42,0.95)' },
-          { kind: 'node', at: { x: nodeB_x, y: yBot }, color: 'rgba(255,107,42,0.95)' },
+          { kind: 'node', at: { x: nodeA_x, y: yTop }, color: withAlpha(colors.accent, 0.95) },
+          { kind: 'node', at: { x: nodeB_x, y: yBot }, color: withAlpha(colors.accent, 0.95) },
         ];
         cacheRef.current = {
           key: cacheKey,
@@ -274,9 +274,13 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
         ctx.fillText('KCL at node A:', boxX + 8, boxY + 6);
-        ctx.fillStyle = getCanvasColors().text;
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.fillText(`I₁ = I₂ + I₃`, boxX + 8, boxY + 22);
+        drawLabel(ctx, {
+          x: boxX + 8,
+          y: boxY + 22,
+          text: `I₁ = I₂ + I₃`,
+          color: getCanvasColors().text,
+          size: 11,
+        });
         drawLabel(ctx, {
           x: boxX + 8,
           y: boxY + 36,

@@ -29,7 +29,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { attachOrbit, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
 interface Props {
@@ -167,11 +167,11 @@ export function ParallelPlate3DDemo({ figure }: Props) {
 
       // ─── 1. Back plate (fill + outline + σ-marks) ───────────────────
       if (topIsBack) {
-        drawPlateFill(yTop, 'rgba(255,59,110,0.10)');
-        drawPlateOutline(yTop, 'rgba(255,59,110,0.55)');
+        drawPlateFill(yTop, withAlpha(getCanvasColors().pink, 0.1));
+        drawPlateOutline(yTop, withAlpha(getCanvasColors().pink, 0.55));
       } else {
-        drawPlateFill(yBot, 'rgba(91,174,248,0.10)');
-        drawPlateOutline(yBot, 'rgba(91,174,248,0.55)');
+        drawPlateFill(yBot, withAlpha(getCanvasColors().blue, 0.1));
+        drawPlateOutline(yBot, withAlpha(getCanvasColors().blue, 0.55));
       }
 
       // σ-density relative to a reference. Use sqrt to keep tiny σ visible.
@@ -285,12 +285,12 @@ export function ParallelPlate3DDemo({ figure }: Props) {
 
       // ─── 4. Front plate (fill + outline + σ-marks) ──────────────────
       if (topIsBack) {
-        drawPlateFill(yBot, 'rgba(91,174,248,0.10)');
-        drawPlateOutline(yBot, 'rgba(91,174,248,0.65)');
+        drawPlateFill(yBot, withAlpha(getCanvasColors().blue, 0.1));
+        drawPlateOutline(yBot, withAlpha(getCanvasColors().blue, 0.65));
         drawSigmaMarks(yBot, '−', '91,174,248', sigmaRel);
       } else {
-        drawPlateFill(yTop, 'rgba(255,59,110,0.10)');
-        drawPlateOutline(yTop, 'rgba(255,59,110,0.65)');
+        drawPlateFill(yTop, withAlpha(getCanvasColors().pink, 0.1));
+        drawPlateOutline(yTop, withAlpha(getCanvasColors().pink, 0.65));
         drawSigmaMarks(yTop, '+', '255,59,110', sigmaRel);
       }
 
@@ -336,23 +336,23 @@ export function ParallelPlate3DDemo({ figure }: Props) {
 
         // Glow-outline the two rims and a couple of side generators.
         drawGlowPath(ctx, [...rimU, rimU[0]!], {
-          color: 'rgba(108,197,194,0.95)',
+          color: withAlpha(getCanvasColors().teal, 0.95),
           lineWidth: 1.4,
-          glowColor: 'rgba(108,197,194,0.30)',
+          glowColor: withAlpha(getCanvasColors().teal, 0.3),
           glowWidth: 5,
         });
         drawGlowPath(ctx, [...rimL, rimL[0]!], {
-          color: 'rgba(108,197,194,0.95)',
+          color: withAlpha(getCanvasColors().teal, 0.95),
           lineWidth: 1.4,
-          glowColor: 'rgba(108,197,194,0.30)',
+          glowColor: withAlpha(getCanvasColors().teal, 0.3),
           glowWidth: 5,
         });
         // Two generator lines (front & back) for shape readability.
         for (const k of [0, Math.floor(RIM_N / 2)]) {
           drawGlowPath(ctx, [rimU[k]!, rimL[k]!], {
-            color: 'rgba(108,197,194,0.85)',
+            color: withAlpha(getCanvasColors().teal, 0.85),
             lineWidth: 1.2,
-            glowColor: 'rgba(108,197,194,0.20)',
+            glowColor: withAlpha(getCanvasColors().teal, 0.2),
             glowWidth: 4,
           });
         }

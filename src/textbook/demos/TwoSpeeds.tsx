@@ -15,6 +15,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { MATERIALS, PHYS, formatTime } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -76,13 +77,14 @@ export function TwoSpeedsDemo({ figure }: Props) {
       // Drift dot — uses REAL v_drift, scaled by physical track length
       const driftFrac = (simTime * v_drift) / trackLength_m;
       const driftX = trackLeft + Math.min(1, driftFrac) * trackPxLen;
-      const dot1 = ctx.createRadialGradient(driftX, yTop, 0, driftX, yTop, 18);
-      dot1.addColorStop(0, colors.blue);
-      dot1.addColorStop(1, withAlpha(colors.blue, 0));
-      ctx.fillStyle = dot1;
-      ctx.beginPath();
-      ctx.arc(driftX, yTop, 18, 0, Math.PI * 2);
-      ctx.fill();
+      drawHalo(ctx, {
+        x: driftX,
+        y: yTop,
+        radius: 18,
+        color: colors.blue,
+        alpha: 1,
+        extent: 1,
+      });
       ctx.fillStyle = colors.blue;
       ctx.beginPath();
       ctx.arc(driftX, yTop, 5, 0, Math.PI * 2);
@@ -97,13 +99,14 @@ export function TwoSpeedsDemo({ figure }: Props) {
       ctx.moveTo(Math.max(trackLeft, sigX - 80), yBot);
       ctx.lineTo(sigX, yBot);
       ctx.stroke();
-      const sigGrd = ctx.createRadialGradient(sigX, yBot, 0, sigX, yBot, 22);
-      sigGrd.addColorStop(0, colors.accent);
-      sigGrd.addColorStop(1, withAlpha(colors.accent, 0));
-      ctx.fillStyle = sigGrd;
-      ctx.beginPath();
-      ctx.arc(sigX, yBot, 22, 0, Math.PI * 2);
-      ctx.fill();
+      drawHalo(ctx, {
+        x: sigX,
+        y: yBot,
+        radius: 22,
+        color: colors.accent,
+        alpha: 1,
+        extent: 1,
+      });
       ctx.fillStyle = colors.accent;
       ctx.beginPath();
       ctx.arc(sigX, yBot, 6, 0, Math.PI * 2);

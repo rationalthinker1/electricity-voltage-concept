@@ -19,7 +19,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -123,7 +123,12 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
     function buildStaticBackdrop(): HTMLCanvasElement {
       // Static schematic backdrop: loop wire + battery primitive, plus polarity glyphs and bulb glass/filament.
       const schematic: CircuitElement[] = [
-        { kind: 'wire', points: wirePath, color: 'rgba(255,107,42,0.55)', lineWidth: 3.5 },
+        {
+          kind: 'wire',
+          points: wirePath,
+          color: withAlpha(getCanvasColors().accent, 0.55),
+          lineWidth: 3.5,
+        },
         {
           kind: 'battery',
           at: { x: batteryX, y: (cyTop + cyBot) / 2 },

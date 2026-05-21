@@ -12,6 +12,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
+import { withAlpha } from '@/lib/canvasTheme';
 import { pretty } from '@/lib/physics';
 
 interface Props {
@@ -221,9 +222,9 @@ export function RotatingCoilDemo({ figure }: Props) {
           });
         }
         drawGlowPath(ctx, tracePts, {
-          color: 'rgba(255,59,110,0.95)',
+          color: withAlpha(colors.pink, 0.95),
           lineWidth: 1.6,
-          glowColor: 'rgba(255,59,110,0.4)',
+          glowColor: withAlpha(colors.pink, 0.4),
           glowWidth: 6,
         });
       }

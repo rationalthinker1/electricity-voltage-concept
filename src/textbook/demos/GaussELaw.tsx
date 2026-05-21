@@ -12,6 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawHalo } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 
 interface Props {
@@ -109,13 +110,14 @@ export function GaussELawDemo({ figure }: Props) {
       // Charge glyph
       const cR = 10 + Math.min(8, Math.abs(qNC) * 0.6);
       const cColor = qNC >= 0 ? '#ff3b6e' : '#5baef8';
-      const grd = ctx.createRadialGradient(chargeX, chargeY, 0, chargeX, chargeY, cR * 3);
-      grd.addColorStop(0, cColor);
-      grd.addColorStop(1, cColor + '00');
-      ctx.fillStyle = grd;
-      ctx.beginPath();
-      ctx.arc(chargeX, chargeY, cR * 3, 0, Math.PI * 2);
-      ctx.fill();
+      drawHalo(ctx, {
+        x: chargeX,
+        y: chargeY,
+        radius: cR * 3,
+        color: cColor,
+        alpha: 1,
+        extent: 1,
+      });
       ctx.fillStyle = cColor;
       ctx.beginPath();
       ctx.arc(chargeX, chargeY, cR, 0, Math.PI * 2);

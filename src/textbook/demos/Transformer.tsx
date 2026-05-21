@@ -12,7 +12,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { drawHalo } from '@/lib/canvasPrimitives';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -50,8 +51,8 @@ export function TransformerDemo({ figure }: Props) {
       const coreThick = 18;
 
       // Iron core shape
-      ctx.fillStyle = 'rgba(160,158,149,0.10)';
-      ctx.strokeStyle = 'rgba(160,158,149,0.45)';
+      ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.1);
+      ctx.strokeStyle = withAlpha(getCanvasColors().textDim, 0.45);
       ctx.lineWidth = 1.4;
       // Outer rect
       ctx.beginPath();
@@ -67,7 +68,7 @@ export function TransformerDemo({ figure }: Props) {
       );
       ctx.stroke();
       // Hatching to suggest laminated iron
-      ctx.strokeStyle = 'rgba(160,158,149,0.18)';
+      ctx.strokeStyle = withAlpha(getCanvasColors().textDim, 0.18);
       ctx.lineWidth = 0.6;
       for (let x = coreLeft + 4; x < coreRight - 4; x += 7) {
         // top bar
@@ -184,13 +185,14 @@ export function TransformerDemo({ figure }: Props) {
       const loadX = coreRight + 50;
       const loadY = primCenterY;
       const lampIntensity = Math.min(1, Math.abs(V2) / 240);
-      const lampGlow = ctx.createRadialGradient(loadX, loadY, 0, loadX, loadY, 32);
-      lampGlow.addColorStop(0, `rgba(255,107,42,${0.7 * lampIntensity})`);
-      lampGlow.addColorStop(1, 'rgba(255,107,42,0)');
-      ctx.fillStyle = lampGlow;
-      ctx.beginPath();
-      ctx.arc(loadX, loadY, 32, 0, Math.PI * 2);
-      ctx.fill();
+      drawHalo(ctx, {
+        x: loadX,
+        y: loadY,
+        radius: 32,
+        color: `rgba(255,107,42,${0.7 * lampIntensity})`,
+        alpha: 1,
+        extent: 1,
+      });
       ctx.strokeStyle = `rgba(255,107,42,${0.45 + 0.5 * lampIntensity})`;
       ctx.fillStyle = `rgba(255,107,42,${0.15 + 0.55 * lampIntensity})`;
       ctx.lineWidth = 1.4;
@@ -304,7 +306,7 @@ function drawCoil(
   for (let i = 0; i < turns; i++) {
     const y = yTop + (i + 0.5) * dy;
     // back half (behind the core arm)
-    ctx.strokeStyle = 'rgba(255,107,42,0.4)';
+    ctx.strokeStyle = withAlpha(getCanvasColors().accent, 0.4);
     ctx.beginPath();
     ctx.ellipse(cx, y, armHalf + 3, r, 0, Math.PI, 2 * Math.PI);
     ctx.stroke();
@@ -315,7 +317,7 @@ function drawCoil(
     ctx.stroke();
   }
   // outer connection line on chosen side
-  ctx.strokeStyle = 'rgba(255,107,42,0.55)';
+  ctx.strokeStyle = withAlpha(getCanvasColors().accent, 0.55);
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(cx + offset, yTop);

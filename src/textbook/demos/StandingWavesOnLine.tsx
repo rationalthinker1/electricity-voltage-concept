@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { Num } from '@/components/Num';
 
 interface Props {
@@ -100,14 +101,14 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
         vPts.push({ x: plotX + u * plotW, y: yV(v) });
       }
       drawGlowPath(ctx, vPts, {
-        color: 'rgba(255,107,42,0.95)',
+        color: withAlpha(colors.accent, 0.95),
         lineWidth: 1.6,
-        glowColor: 'rgba(255,107,42,0.35)',
+        glowColor: withAlpha(colors.accent, 0.35),
         glowWidth: 5,
       });
 
       // Envelope ±|V(x)|
-      ctx.strokeStyle = 'rgba(108,197,194,0.75)';
+      ctx.strokeStyle = withAlpha(colors.teal, 0.75);
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       for (let i = 0; i <= N; i++) {

@@ -13,6 +13,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawHalo } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 
 interface Props {
@@ -112,13 +114,14 @@ export function TwoParallelWiresDemo({ figure }: Props) {
       // Wire discs
       function drawWire(cx: number, cy_: number, intoPage: boolean, label: string, I: number) {
         const wireR = 11;
-        const grd = ctx.createRadialGradient(cx, cy_, 0, cx, cy_, wireR * 3);
-        grd.addColorStop(0, 'rgba(255,107,42,0.5)');
-        grd.addColorStop(1, 'rgba(255,107,42,0)');
-        ctx.fillStyle = grd;
-        ctx.beginPath();
-        ctx.arc(cx, cy_, wireR * 3, 0, Math.PI * 2);
-        ctx.fill();
+        drawHalo(ctx, {
+          x: cx,
+          y: cy_,
+          radius: wireR * 3,
+          color: colors.accent,
+          alpha: 0.5,
+          extent: 1,
+        });
         ctx.fillStyle = '#1c1c22';
         ctx.strokeStyle = '#ff6b2a';
         ctx.lineWidth = 1.5;
@@ -144,7 +147,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
           ctx.fill();
         }
 
-        ctx.fillStyle = 'rgba(160,158,149,.9)';
+        ctx.fillStyle = withAlpha(colors.textDim, 0.9);
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText(label, cx, cy_ - wireR - 10);
@@ -160,7 +163,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
       if (Fmag > 1e-12) {
         const arrowLen = Math.min(60, 18 + Math.log10(Fmag * 1e6 + 1) * 8);
         const dirSign = parallel ? +1 : -1; // +1 attractive (toward each other)
-        ctx.strokeStyle = parallel ? 'rgba(255,107,42,0.95)' : 'rgba(255,59,110,0.95)';
+        ctx.strokeStyle = parallel ? withAlpha(colors.accent, 0.95) : withAlpha(colors.pink, 0.95);
         ctx.fillStyle = ctx.strokeStyle;
         ctx.lineWidth = 2;
         // Arrow on wire 1 (points right if attractive, left if repulsive)
@@ -191,13 +194,13 @@ export function TwoParallelWiresDemo({ figure }: Props) {
       ctx.lineTo(cx2, cy + 60);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = 'rgba(160,158,149,.85)';
+      ctx.fillStyle = withAlpha(colors.textDim, 0.85);
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`d = ${dCm.toFixed(1)} cm`, (cx1 + cx2) / 2, cy + 76);
 
       // Attract / repel label
-      ctx.fillStyle = parallel ? 'rgba(255,107,42,0.9)' : 'rgba(255,59,110,0.9)';
+      ctx.fillStyle = parallel ? withAlpha(colors.accent, 0.9) : withAlpha(colors.pink, 0.9);
       ctx.font = '11px "DM Sans", sans-serif';
       ctx.fillText(parallel ? 'parallel currents → attract' : 'antiparallel → repel', w / 2, 22);
 

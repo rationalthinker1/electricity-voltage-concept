@@ -9,6 +9,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -95,7 +96,7 @@ export function SquareThroughLPFDemo() {
           1,
           (mx, my, half) => {
             // Plot the gain curve from 0..N_HARMONICS f0
-            ctx.strokeStyle = 'rgba(108,197,194,0.8)';
+            ctx.strokeStyle = withAlpha(colors.teal, 0.8);
             ctx.lineWidth = 1.5;
             ctx.beginPath();
             for (let i = 0; i <= samples; i++) {

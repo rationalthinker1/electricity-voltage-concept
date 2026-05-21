@@ -30,7 +30,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -314,7 +314,7 @@ function buildOriginal(x0: number, y0: number, w: number, h: number): CircuitEle
       kind: 'node',
       at: { x: xA, y: yTop },
       radius: 4,
-      color: 'rgba(255,107,42,0.95)',
+      color: withAlpha(getCanvasColors().accent, 0.95),
       label: 'A',
       labelColor: 'rgba(255,255,255,0.9)',
       labelOffset: { x: 8, y: -2 },
@@ -323,7 +323,7 @@ function buildOriginal(x0: number, y0: number, w: number, h: number): CircuitEle
       kind: 'node',
       at: { x: xA, y: yBot },
       radius: 4,
-      color: 'rgba(255,107,42,0.95)',
+      color: withAlpha(getCanvasColors().accent, 0.95),
       label: 'B',
       labelColor: 'rgba(255,255,255,0.9)',
       labelOffset: { x: 8, y: -2 },
@@ -406,7 +406,7 @@ function buildThev(
       kind: 'node',
       at: { x: xA, y: yTop },
       radius: 4,
-      color: 'rgba(255,107,42,0.95)',
+      color: withAlpha(getCanvasColors().accent, 0.95),
       label: 'A',
       labelColor: 'rgba(255,255,255,0.9)',
       labelOffset: { x: 8, y: -2 },
@@ -415,7 +415,7 @@ function buildThev(
       kind: 'node',
       at: { x: xA, y: yBot },
       radius: 4,
-      color: 'rgba(255,107,42,0.95)',
+      color: withAlpha(getCanvasColors().accent, 0.95),
       label: 'B',
       labelColor: 'rgba(255,255,255,0.9)',
       labelOffset: { x: 8, y: -2 },
@@ -513,7 +513,7 @@ function buildNort(
       kind: 'node',
       at: { x: xA, y: yTop },
       radius: 4,
-      color: 'rgba(255,107,42,0.95)',
+      color: withAlpha(getCanvasColors().accent, 0.95),
       label: 'A',
       labelColor: 'rgba(255,255,255,0.9)',
       labelOffset: { x: 8, y: -2 },
@@ -522,7 +522,7 @@ function buildNort(
       kind: 'node',
       at: { x: xA, y: yBot },
       radius: 4,
-      color: 'rgba(255,107,42,0.95)',
+      color: withAlpha(getCanvasColors().accent, 0.95),
       label: 'B',
       labelColor: 'rgba(255,255,255,0.9)',
       labelOffset: { x: 8, y: -2 },

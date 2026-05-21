@@ -12,6 +12,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -201,9 +202,9 @@ export function LoadFollowingDemo({ figure }: Props) {
         });
         legY += 14;
       };
-      lg('rgba(108,197,194,0.6)', 'baseload');
-      lg('rgba(255,107,42,0.7)', 'peakers');
-      lg('rgba(255,59,110,0.7)', 'reserve (dashed)');
+      lg(withAlpha(colors.teal, 0.6), 'baseload');
+      lg(withAlpha(colors.accent, 0.7), 'peakers');
+      lg(withAlpha(colors.pink, 0.7), 'reserve (dashed)');
 
       raf = requestAnimationFrame(draw);
       ctx.restore();

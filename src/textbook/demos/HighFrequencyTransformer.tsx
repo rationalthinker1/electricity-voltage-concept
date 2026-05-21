@@ -12,6 +12,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -69,10 +70,17 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
       const rightCX = w * 0.72;
 
       // Reference cube (left)
-      drawIsoCube(ctx, leftCX, cy, refSide, 'rgba(255,107,42,0.85)', 'rgba(255,107,42,0.18)');
+      drawIsoCube(
+        ctx,
+        leftCX,
+        cy,
+        refSide,
+        withAlpha(colors.accent, 0.85),
+        withAlpha(colors.accent, 0.18),
+      );
       // Current cube (right)
-      const accentColor = scale > 1 ? 'rgba(255,107,42,0.95)' : 'rgba(108,197,194,0.95)';
-      const accentFill = scale > 1 ? 'rgba(255,107,42,0.20)' : 'rgba(108,197,194,0.18)';
+      const accentColor = scale > 1 ? withAlpha(colors.accent, 0.95) : withAlpha(colors.teal, 0.95);
+      const accentFill = scale > 1 ? withAlpha(colors.accent, 0.2) : withAlpha(colors.teal, 0.18);
       drawIsoCube(ctx, rightCX, cy, newSide, accentColor, accentFill);
 
       // Labels

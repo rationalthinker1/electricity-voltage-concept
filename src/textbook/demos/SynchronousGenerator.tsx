@@ -10,7 +10,7 @@
  * coil positions drawn around it. Right: three-trace oscilloscope.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawHalo } from '@/lib/canvasPrimitives';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -91,19 +91,18 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
         const sy = cy - Math.sin(a) * R;
         // glow proportional to |drive|
         const v = Math.abs(drives[k]);
-        const grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, 28);
-        grd.addColorStop(
-          0,
-          phaseColors[k] +
+        drawHalo(ctx, {
+          x: sx,
+          y: sy,
+          radius: 28,
+          color:
+            phaseColors[k] +
             Math.floor(v * 180)
               .toString(16)
               .padStart(2, '0'),
-        );
-        grd.addColorStop(1, phaseColors[k] + '00');
-        ctx.fillStyle = grd;
-        ctx.beginPath();
-        ctx.arc(sx, sy, 28, 0, Math.PI * 2);
-        ctx.fill();
+          alpha: 1,
+          extent: 1,
+        });
         ctx.strokeStyle = phaseColors[k];
         ctx.lineWidth = 1.5;
         ctx.beginPath();

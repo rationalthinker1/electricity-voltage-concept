@@ -15,7 +15,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath, renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 type Mode = 'open' | 'charging' | 'discharging';
 
@@ -340,8 +340,8 @@ export function RCTransientDemo({ figure }: Props) {
           tracePts[i] = { x: xT(p.t - tCut), y: yV(p.v) };
         }
         drawGlowPath(ctx, tracePts, {
-          color: 'rgba(255,59,110,0.95)',
-          glowColor: 'rgba(255,59,110,0.35)',
+          color: withAlpha(getCanvasColors().pink, 0.95),
+          glowColor: withAlpha(getCanvasColors().pink, 0.35),
           lineWidth: 1.8,
           glowWidth: 6,
         });

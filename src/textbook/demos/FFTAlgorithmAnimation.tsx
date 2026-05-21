@@ -7,6 +7,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -175,7 +176,7 @@ export function FFTAlgorithmAnimationDemo() {
       // Dots
       for (let s = 0; s <= stages; s++) {
         for (let i = 0; i < Nbf; i++) {
-          ctx.fillStyle = s === 0 || s === stages ? '#ff6b2a' : 'rgba(236,235,229,0.9)';
+          ctx.fillStyle = s === 0 || s === stages ? '#ff6b2a' : withAlpha(colors.text, 0.9);
           ctx.beginPath();
           ctx.arc(nodes[s][i].x, nodes[s][i].y, 3.5, 0, 2 * Math.PI);
           ctx.fill();

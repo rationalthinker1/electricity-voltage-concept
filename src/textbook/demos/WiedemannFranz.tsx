@@ -16,7 +16,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -98,16 +98,20 @@ export function WiedemannFranzDemo({ figure }: Props) {
 
         // κ bar (top half of row)
         const kappaW = (mm.kappa / maxK) * gW;
-        ctx.fillStyle = isSel ? 'rgba(255,107,42,0.85)' : 'rgba(255,107,42,0.30)';
+        ctx.fillStyle = isSel
+          ? withAlpha(getCanvasColors().accent, 0.85)
+          : withAlpha(getCanvasColors().accent, 0.3);
         ctx.fillRect(padL, y + 6, kappaW, rowH / 2 - 8);
 
         // σ bar (bottom half of row)
         const sigmaW = (mm.sigma / maxS) * gW;
-        ctx.fillStyle = isSel ? 'rgba(108,197,194,0.85)' : 'rgba(108,197,194,0.30)';
+        ctx.fillStyle = isSel
+          ? withAlpha(getCanvasColors().teal, 0.85)
+          : withAlpha(getCanvasColors().teal, 0.3);
         ctx.fillRect(padL, y + rowH / 2 + 2, sigmaW, rowH / 2 - 8);
 
         // Material label
-        ctx.fillStyle = isSel ? '#ff6b2a' : 'rgba(236,235,229,0.75)';
+        ctx.fillStyle = isSel ? '#ff6b2a' : withAlpha(getCanvasColors().text, 0.75);
         ctx.font = isSel
           ? 'bold 10px "JetBrains Mono", monospace'
           : '10px "JetBrains Mono", monospace';
@@ -121,7 +125,7 @@ export function WiedemannFranzDemo({ figure }: Props) {
           x: padL + Math.max(kappaW, sigmaW) + 6,
           y: yMid,
           text: `L = ${(L_m * 1e8).toFixed(2)}×10⁻⁸`,
-          color: isSel ? '#ff6b2a' : 'rgba(160,158,149,0.7)',
+          color: isSel ? '#ff6b2a' : withAlpha(getCanvasColors().textDim, 0.7),
           size: 9,
         });
       });

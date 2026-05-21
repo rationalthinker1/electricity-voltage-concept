@@ -15,6 +15,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
+import { drawHalo } from '@/lib/canvasPrimitives';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props {
@@ -159,13 +160,14 @@ export function CyclotronDemo({ figure }: Props) {
 
       // Particle
       const color = positive ? '#ff3b6e' : '#5baef8';
-      const grd = ctx.createRadialGradient(px, py, 0, px, py, 22);
-      grd.addColorStop(0, color);
-      grd.addColorStop(1, color + '00');
-      ctx.fillStyle = grd;
-      ctx.beginPath();
-      ctx.arc(px, py, 22, 0, Math.PI * 2);
-      ctx.fill();
+      drawHalo(ctx, {
+        x: px,
+        y: py,
+        radius: 22,
+        color: color,
+        alpha: 1,
+        extent: 1,
+      });
       ctx.fillStyle = color;
       ctx.beginPath();
       ctx.arc(px, py, 7, 0, Math.PI * 2);

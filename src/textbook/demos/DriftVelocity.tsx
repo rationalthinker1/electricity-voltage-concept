@@ -114,10 +114,12 @@ export function DriftVelocityDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.7;
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('E', wireLeft + 4, wireTop - 6);
+      drawLabel(ctx, {
+        x: wireLeft + 4,
+        y: wireTop - 6,
+        text: 'E',
+        color: colors.accent,
+      });
 
       // Visual drift bias — amplified for visibility
       const vd_real = s.I / (n * PHYS.e * s.Amm2 * 1e-6);

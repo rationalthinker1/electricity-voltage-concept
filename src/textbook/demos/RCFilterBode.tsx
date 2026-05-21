@@ -13,6 +13,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { Num } from '@/components/Num';
 
 interface Props {
@@ -163,9 +164,9 @@ export function RCFilterBodeDemo({ figure }: Props) {
         });
       }
       drawGlowPath(ctx, magPts, {
-        color: 'rgba(255,107,42,0.95)',
+        color: withAlpha(colors.accent, 0.95),
         lineWidth: 1.8,
-        glowColor: 'rgba(255,107,42,0.4)',
+        glowColor: withAlpha(colors.accent, 0.4),
         glowWidth: 7,
       });
 
@@ -184,9 +185,9 @@ export function RCFilterBodeDemo({ figure }: Props) {
         phPts.push({ x: plotX + u * plotW, y: yPh(phaseDeg) });
       }
       drawGlowPath(ctx, phPts, {
-        color: 'rgba(108,197,194,0.95)',
+        color: withAlpha(colors.teal, 0.95),
         lineWidth: 1.6,
-        glowColor: 'rgba(108,197,194,0.35)',
+        glowColor: withAlpha(colors.teal, 0.35),
         glowWidth: 5,
       });
 

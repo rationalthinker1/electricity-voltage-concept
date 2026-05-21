@@ -11,6 +11,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 
@@ -88,7 +89,7 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
 
       // Synchronous speed marker (normalised n_s = 0.85)
       const nsX = plotX + 0.85 * plotW;
-      ctx.strokeStyle = 'rgba(108,197,194,0.25)';
+      ctx.strokeStyle = withAlpha(colors.teal, 0.25);
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.moveTo(nsX, plotY);

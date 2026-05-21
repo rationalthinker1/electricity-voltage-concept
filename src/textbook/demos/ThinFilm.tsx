@@ -12,7 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -99,13 +99,13 @@ export function ThinFilmDemo({ figure }: Props) {
       // Cross-section illustration below: air / film / water sandwich
       const sectionY = 110;
       const sectionH = 130;
-      ctx.fillStyle = 'rgba(91,174,248,0.10)';
+      ctx.fillStyle = withAlpha(getCanvasColors().blue, 0.1);
       ctx.fillRect(stripLeft, sectionY, stripW, 40); // air
       // Film thickness proportional to thickNm
       const filmPxH = Math.max(6, Math.min(40, thickNm / 12));
       ctx.fillStyle = 'rgba(255,255,255,0.18)';
       ctx.fillRect(stripLeft, sectionY + 40, stripW, filmPxH);
-      ctx.fillStyle = 'rgba(108,197,194,0.18)';
+      ctx.fillStyle = withAlpha(getCanvasColors().teal, 0.18);
       ctx.fillRect(stripLeft, sectionY + 40 + filmPxH, stripW, sectionH - 40 - filmPxH);
 
       // Boundary lines
@@ -143,7 +143,7 @@ export function ThinFilmDemo({ figure }: Props) {
       ctx.lineTo(rx0 + 18, sectionY + 8);
       ctx.stroke();
       // Transmitted ray going down + reflection from bottom
-      ctx.strokeStyle = 'rgba(160,158,149,0.6)';
+      ctx.strokeStyle = withAlpha(getCanvasColors().textDim, 0.6);
       ctx.beginPath();
       ctx.moveTo(rx0, sectionY + 40);
       ctx.lineTo(rx0 + 8, sectionY + 40 + filmPxH);

@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props {
@@ -128,7 +129,7 @@ export function SolenoidDemo({ figure }: Props) {
           ctx.moveTo(x2, yy);
           ctx.lineTo(x1, yy);
           ctx.stroke();
-          ctx.fillStyle = 'rgba(108,197,194,0.30)';
+          ctx.fillStyle = withAlpha(colors.teal, 0.3);
           ctx.beginPath();
           ctx.moveTo(x1, yy);
           ctx.lineTo(x1 + 5, yy - 2.5);
@@ -149,7 +150,7 @@ export function SolenoidDemo({ figure }: Props) {
       }
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,.85)';
+      ctx.fillStyle = withAlpha(colors.textDim, 0.85);
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(

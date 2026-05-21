@@ -17,6 +17,8 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
+import { drawHalo } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props {
@@ -118,13 +120,14 @@ export function BCirculationDemo({ figure }: Props) {
       ctx.fill();
 
       // ── Wire (end-on disc) at center
-      const halo = ctx.createRadialGradient(cx, cy, 0, cx, cy, wireR_px * 3);
-      halo.addColorStop(0, 'rgba(255,107,42,0.45)');
-      halo.addColorStop(1, 'rgba(255,107,42,0)');
-      ctx.fillStyle = halo;
-      ctx.beginPath();
-      ctx.arc(cx, cy, wireR_px * 3, 0, Math.PI * 2);
-      ctx.fill();
+      drawHalo(ctx, {
+        x: cx,
+        y: cy,
+        radius: wireR_px * 3,
+        color: colors.accent,
+        alpha: 0.45,
+        extent: 1,
+      });
       ctx.fillStyle = colors.surfaceHover;
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.5;

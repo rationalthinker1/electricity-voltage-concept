@@ -27,6 +27,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 
 interface Props {
@@ -148,14 +149,14 @@ export function FieldTensorDemo({ figure }: Props) {
             gap: '4px',
             fontFamily: '"JetBrains Mono", monospace',
             fontSize: 13,
-            color: 'rgba(236,235,229,0.9)',
+            color: withAlpha(getCanvasColors().text, 0.9),
           }}
         >
           {/* Top-left corner */}
           <div
             style={{
               padding: '8px 4px',
-              color: 'rgba(160,158,149,0.6)',
+              color: withAlpha(getCanvasColors().textDim, 0.6),
               textAlign: 'center',
               fontSize: 11,
             }}
@@ -170,7 +171,7 @@ export function FieldTensorDemo({ figure }: Props) {
                 padding: '8px 4px',
                 textAlign: 'center',
                 fontSize: 11,
-                color: 'rgba(160,158,149,0.8)',
+                color: withAlpha(getCanvasColors().textDim, 0.8),
               }}
             >
               {l}
@@ -185,7 +186,7 @@ export function FieldTensorDemo({ figure }: Props) {
                   padding: '6px 4px',
                   textAlign: 'center',
                   fontSize: 11,
-                  color: 'rgba(160,158,149,0.8)',
+                  color: withAlpha(getCanvasColors().textDim, 0.8),
                   alignSelf: 'center',
                 }}
               >
@@ -203,7 +204,7 @@ export function FieldTensorDemo({ figure }: Props) {
                     ? `rgba(255,107,42,${(0.05 + 0.3 * tint).toFixed(3)})`
                     : `rgba(108,197,194,${(0.05 + 0.3 * tint).toFixed(3)})`;
                 const fg = isZero
-                  ? 'rgba(160,158,149,0.45)'
+                  ? withAlpha(getCanvasColors().textDim, 0.45)
                   : isE
                     ? `rgba(255,107,42,${(0.55 + 0.45 * tint).toFixed(3)})`
                     : `rgba(108,197,194,${(0.55 + 0.45 * tint).toFixed(3)})`;
@@ -222,7 +223,7 @@ export function FieldTensorDemo({ figure }: Props) {
                     <div style={{ fontSize: 11, color: fg, marginBottom: 4 }}>
                       {compLabel(i, j)}
                     </div>
-                    <div style={{ fontSize: 13, color: 'rgba(236,235,229,0.92)' }}>
+                    <div style={{ fontSize: 13, color: withAlpha(getCanvasColors().text, 0.92) }}>
                       {isZero ? '0' : val.toFixed(3)}
                     </div>
                   </div>
@@ -235,7 +236,7 @@ export function FieldTensorDemo({ figure }: Props) {
           style={{
             marginTop: 10,
             fontSize: 11,
-            color: 'rgba(160,158,149,0.7)',
+            color: withAlpha(getCanvasColors().textDim, 0.7),
             fontFamily: '"JetBrains Mono", monospace',
           }}
         >

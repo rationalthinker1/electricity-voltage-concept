@@ -23,6 +23,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
 interface Props {
@@ -229,7 +230,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       drawGlowPath(ctx, edgePts, {
         color: `rgba(255,107,42,${loopEdgeOpacity})`,
         lineWidth: 2,
-        glowColor: 'rgba(255,107,42,0.28)',
+        glowColor: withAlpha(colors.accent, 0.28),
         glowWidth: 7,
       });
 
@@ -253,7 +254,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
         const nHat: Vec3 = { x: Math.cos(theta), y: 0, z: Math.sin(theta) };
         const nFrom: Vec3 = { x: 0, y: 0, z: 0 };
         const nTo: Vec3 = { x: nHat.x * 1.05, y: 0, z: nHat.z * 1.05 };
-        drawArrow3D(nFrom, nTo, 'rgba(236,235,229,0.92)', 2, cam, w, sceneH);
+        drawArrow3D(nFrom, nTo, withAlpha(colors.text, 0.92), 2, cam, w, sceneH);
         // n̂ label near the arrow tip.
         const labelP = project({ x: nHat.x * 1.18, y: 0.05, z: nHat.z * 1.18 }, cam, w, sceneH);
         if (labelP.depth > 0) {
@@ -320,17 +321,17 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
 
       if (phiPts.length > 2) {
         drawGlowPath(ctx, phiPts, {
-          color: 'rgba(255,107,42,0.92)',
+          color: withAlpha(colors.accent, 0.92),
           lineWidth: 1.6,
-          glowColor: 'rgba(255,107,42,0.32)',
+          glowColor: withAlpha(colors.accent, 0.32),
           glowWidth: 5,
         });
       }
       if (emfPts.length > 2) {
         drawGlowPath(ctx, emfPts, {
-          color: 'rgba(108,197,194,0.92)',
+          color: withAlpha(colors.teal, 0.92),
           lineWidth: 1.6,
-          glowColor: 'rgba(108,197,194,0.30)',
+          glowColor: withAlpha(colors.teal, 0.3),
           glowWidth: 5,
         });
       }

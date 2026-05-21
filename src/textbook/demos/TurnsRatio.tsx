@@ -7,7 +7,7 @@
  * while phase stays locked.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -82,7 +82,7 @@ export function TurnsRatioDemo({ figure }: Props) {
       });
 
       // y labels
-      ctx.fillStyle = 'rgba(160,158,149,0.6)';
+      ctx.fillStyle = withAlpha(colors.textDim, 0.6);
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
@@ -134,7 +134,7 @@ export function TurnsRatioDemo({ figure }: Props) {
       ctx.fillText(`— V_s = n · V_p`, padL + 8, padT + 22);
 
       // x-axis label
-      ctx.fillStyle = 'rgba(160,158,149,0.6)';
+      ctx.fillStyle = withAlpha(colors.textDim, 0.6);
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
       ctx.fillText('t (60 Hz · 2 cycles)', padL + plotW, padT + plotH + 4);

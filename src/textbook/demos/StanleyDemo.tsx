@@ -12,6 +12,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -110,11 +111,15 @@ export function StanleyDemo({ figure }: Props) {
         ctx.lineWidth = 1.4;
         ctx.fillRect(p.x, cy - blockH / 2, blockW, blockH);
         ctx.strokeRect(p.x, cy - blockH / 2, blockW, blockH);
-        ctx.fillStyle = colors.accent;
-        ctx.font = 'bold 10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(p.label, p.x + blockW / 2, cy - 6);
+        drawLabel(ctx, {
+          x: p.x + blockW / 2,
+          y: cy - 6,
+          text: p.label,
+          color: colors.accent,
+          align: 'center',
+          baseline: 'middle',
+          weight: 'bold',
+        });
         drawLabel(ctx, {
           x: p.x + blockW / 2,
           y: cy + 8,
@@ -158,7 +163,7 @@ export function StanleyDemo({ figure }: Props) {
       ctx.fillRect(barX, barY, barW, barH);
       ctx.fillStyle = colors.teal;
       ctx.fillRect(barX, barY, barW * eff, barH);
-      ctx.fillStyle = 'rgba(255,107,42,0.55)';
+      ctx.fillStyle = withAlpha(colors.accent, 0.55);
       ctx.fillRect(barX + barW * eff, barY, barW * (1 - eff), barH);
       ctx.fillStyle = colors.text;
       ctx.font = '10px "JetBrains Mono", monospace';

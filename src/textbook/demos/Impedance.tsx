@@ -9,7 +9,7 @@
  * |Z| = magnitude; arg(Z) = phase shift between V and I.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -90,14 +90,22 @@ export function ImpedanceDemo({ figure }: Props) {
         p3y = p2y + XC * scale; // down = -imag
 
       // R vector (pink)
-      drawVector(ctx, p0x, p0y, p1x, p1y, 'rgba(255,59,110,0.95)', `R = ${R.toFixed(1)} Ω`);
+      drawVector(ctx, p0x, p0y, p1x, p1y, withAlpha(colors.pink, 0.95), `R = ${R.toFixed(1)} Ω`);
       // jωL vector (teal, upward)
-      drawVector(ctx, p1x, p1y, p2x, p2y, 'rgba(108,197,194,0.95)', `jωL = ${XL.toFixed(1)} Ω`);
+      drawVector(ctx, p1x, p1y, p2x, p2y, withAlpha(colors.teal, 0.95), `jωL = ${XL.toFixed(1)} Ω`);
       // 1/(jωC) vector (blue, downward)
-      drawVector(ctx, p2x, p2y, p3x, p3y, 'rgba(91,174,248,0.95)', `1/(jωC) = ${XC.toFixed(1)} Ω`);
+      drawVector(
+        ctx,
+        p2x,
+        p2y,
+        p3x,
+        p3y,
+        withAlpha(colors.blue, 0.95),
+        `1/(jωC) = ${XC.toFixed(1)} Ω`,
+      );
 
       // Resultant Z from origin to p3
-      drawVector(ctx, p0x, p0y, p3x, p3y, 'rgba(255,107,42,0.95)', '', 2.2);
+      drawVector(ctx, p0x, p0y, p3x, p3y, withAlpha(colors.accent, 0.95), '', 2.2);
 
       // Magnitude / phase annotation
       ctx.fillStyle = colors.accent;

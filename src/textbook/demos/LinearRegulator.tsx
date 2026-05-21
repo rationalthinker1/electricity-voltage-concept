@@ -19,7 +19,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -107,9 +107,9 @@ export function LinearRegulatorDemo({ figure }: Props) {
         sctx.fillText('P_in', xIn + inW / 2, yTop - 22);
 
         // Regulator block.
-        sctx.fillStyle = regulating ? 'rgba(108,197,194,0.20)' : 'rgba(255,59,110,0.25)';
+        sctx.fillStyle = regulating ? withAlpha(colors.teal, 0.2) : withAlpha(colors.pink, 0.25);
         sctx.fillRect(xReg, yTop, regW, barH);
-        sctx.strokeStyle = regulating ? 'rgba(108,197,194,0.85)' : 'rgba(255,59,110,0.85)';
+        sctx.strokeStyle = regulating ? withAlpha(colors.teal, 0.85) : withAlpha(colors.pink, 0.85);
         sctx.lineWidth = 1.5;
         sctx.strokeRect(xReg, yTop, regW, barH);
         sctx.fillStyle = getCanvasColors().text;

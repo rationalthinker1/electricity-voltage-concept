@@ -14,7 +14,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -63,7 +63,7 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       const coreThick = 18;
 
       // Iron core: rectangular toroid, hatched to suggest laminations
-      ctx.strokeStyle = 'rgba(160,158,149,0.45)';
+      ctx.strokeStyle = withAlpha(getCanvasColors().textDim, 0.45);
       ctx.lineWidth = 1.4;
       ctx.strokeRect(coreLeft, coreTop, coreRight - coreLeft, coreBot - coreTop);
       ctx.strokeRect(
@@ -72,7 +72,7 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
         coreRight - coreLeft - 2 * coreThick,
         coreBot - coreTop - 2 * coreThick,
       );
-      ctx.strokeStyle = 'rgba(160,158,149,0.18)';
+      ctx.strokeStyle = withAlpha(getCanvasColors().textDim, 0.18);
       ctx.lineWidth = 0.6;
       for (let x = coreLeft + 4; x < coreRight - 4; x += 7) {
         ctx.beginPath();
@@ -309,7 +309,7 @@ function drawCoil(
   const r = dy * 0.42;
   for (let i = 0; i < turns; i++) {
     const y = yTop + (i + 0.5) * dy;
-    ctx.strokeStyle = 'rgba(255,107,42,0.4)';
+    ctx.strokeStyle = withAlpha(getCanvasColors().accent, 0.4);
     ctx.lineWidth = 1.6;
     ctx.beginPath();
     ctx.ellipse(cx, y, armHalf + 3, r, 0, Math.PI, 2 * Math.PI);

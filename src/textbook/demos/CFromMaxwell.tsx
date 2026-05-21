@@ -7,6 +7,7 @@
  */
 import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 
 interface Props {
@@ -41,32 +42,32 @@ export function CFromMaxwellDemo({ figure }: Props) {
           borderRadius: 4,
           fontFamily: '"JetBrains Mono", monospace',
           fontSize: 13,
-          color: 'rgba(236,235,229,0.9)',
+          color: withAlpha(getCanvasColors().text, 0.9),
           lineHeight: 1.9,
         }}
       >
-        <div style={{ color: 'rgba(160,158,149,0.85)' }}>
+        <div style={{ color: withAlpha(getCanvasColors().textDim, 0.85) }}>
           ε₀ ={' '}
           <span style={{ color: '#ff6b2a' }}>
             <Num value={PHYS.eps_0} digits={4} />
           </span>{' '}
           F/m
         </div>
-        <div style={{ color: 'rgba(160,158,149,0.85)' }}>
+        <div style={{ color: withAlpha(getCanvasColors().textDim, 0.85) }}>
           μ₀ ={' '}
           <span style={{ color: '#ff6b2a' }}>
             <Num value={PHYS.mu_0} digits={4} />
           </span>{' '}
           T·m/A
         </div>
-        <div style={{ marginTop: 12, color: 'rgba(160,158,149,0.85)' }}>
+        <div style={{ marginTop: 12, color: withAlpha(getCanvasColors().textDim, 0.85) }}>
           1/√(ε₀ μ₀) ={' '}
           <span style={{ color: '#ff6b2a', fontWeight: 500 }}>
             {cPredicted.toLocaleString('en-US', { maximumFractionDigits: 1 })}
           </span>{' '}
           m/s
         </div>
-        <div style={{ color: 'rgba(160,158,149,0.85)' }}>
+        <div style={{ color: withAlpha(getCanvasColors().textDim, 0.85) }}>
           c (1983 SI, exact) ={' '}
           <span style={{ color: '#6cc5c2', fontWeight: 500 }}>
             {cMeasured.toLocaleString('en-US')}
@@ -78,7 +79,7 @@ export function CFromMaxwellDemo({ figure }: Props) {
             marginTop: 14,
             paddingTop: 12,
             borderTop: '1px dashed rgba(255,255,255,0.12)',
-            color: 'rgba(236,235,229,0.75)',
+            color: withAlpha(getCanvasColors().text, 0.75),
           }}
         >
           fractional difference:{' '}

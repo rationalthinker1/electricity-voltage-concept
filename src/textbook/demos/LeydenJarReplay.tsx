@@ -11,7 +11,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -133,7 +133,7 @@ export function LeydenJarReplayDemo({ figure }: Props) {
         const r = 14 + 10 * innerCharge + Math.sin(phase * 6) * 1.5;
         const grd = ctx.createRadialGradient(cx, yT - 64, 8, cx, yT - 64, r);
         grd.addColorStop(0, `rgba(255,107,42,${0.3 * innerCharge})`);
-        grd.addColorStop(1, 'rgba(255,107,42,0)');
+        grd.addColorStop(1, withAlpha(colors.accent, 0));
         ctx.fillStyle = grd;
         ctx.beginPath();
         ctx.arc(cx, yT - 64, r, 0, Math.PI * 2);

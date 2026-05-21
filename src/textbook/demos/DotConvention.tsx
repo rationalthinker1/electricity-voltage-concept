@@ -15,7 +15,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -88,10 +88,13 @@ export function DotConventionDemo({ figure }: Props) {
         ctx.stroke();
         ctx.setLineDash([]);
         ctx.restore();
-        ctx.fillStyle = getCanvasColors().teal;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('M', (c1x + c2x) / 2, cy - 8);
+        drawLabel(ctx, {
+          x: (c1x + c2x) / 2,
+          y: cy - 8,
+          text: 'M',
+          color: getCanvasColors().teal,
+          align: 'center',
+        });
 
         // Mutual-term sign label
         const signLabel =
@@ -102,7 +105,10 @@ export function DotConventionDemo({ figure }: Props) {
           x: w / 2,
           y: h - 24,
           text: signLabel,
-          color: sign > 0 ? 'rgba(255,107,42,0.95)' : 'rgba(91,174,248,0.95)',
+          color:
+            sign > 0
+              ? withAlpha(getCanvasColors().accent, 0.95)
+              : withAlpha(getCanvasColors().blue, 0.95),
           size: 11,
           align: 'center',
           baseline: 'top',
@@ -201,11 +207,16 @@ function drawSchematicCoil(
   ctx.stroke();
 
   // Labels
-  ctx.fillStyle = getCanvasColors().accent;
-  ctx.font = 'bold 11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(label, cx - 5, cy + h / 2 + 16);
+  drawLabel(ctx, {
+    x: cx - 5,
+    y: cy + h / 2 + 16,
+    text: label,
+    color: getCanvasColors().accent,
+    size: 11,
+    align: 'center',
+    baseline: 'middle',
+    weight: 'bold',
+  });
   ctx.save();
   ctx.globalAlpha = 0.75;
   drawLabel(ctx, {

@@ -18,7 +18,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -100,13 +100,13 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
         const fx = xL + 18 + ((plateW - 36) * (i + 0.5)) / Nfield;
         const cycle = (phase * 80 + i * 13) % usable;
         const y1 = topY + 8 + cycle;
-        ctx.strokeStyle = 'rgba(255,59,110,0.7)';
+        ctx.strokeStyle = withAlpha(getCanvasColors().pink, 0.7);
         ctx.lineWidth = 1.2;
         ctx.beginPath();
         ctx.moveTo(fx, y1 - arrLen);
         ctx.lineTo(fx, y1);
         ctx.stroke();
-        ctx.fillStyle = 'rgba(255,59,110,0.8)';
+        ctx.fillStyle = withAlpha(getCanvasColors().pink, 0.8);
         ctx.beginPath();
         ctx.moveTo(fx, y1);
         ctx.lineTo(fx - 3, y1 - 5);
@@ -159,11 +159,13 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       const tapeW = Math.min(W - tapeX - 24, 120);
       const tapeH = H - 60;
 
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('Effort ∝ V', tapeX, tapeY - 4);
+      drawLabel(ctx, {
+        x: tapeX,
+        y: tapeY - 4,
+        text: 'Effort ∝ V',
+        color: getCanvasColors().textDim,
+        baseline: 'bottom',
+      });
 
       ctx.strokeStyle = getCanvasColors().border;
       ctx.lineWidth = 1;
@@ -173,7 +175,7 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       const Vmax_ref = (200 * Q_UNIT) / C;
       const fill = Math.max(0, Math.min(1, Math.abs(s.V_now) / Vmax_ref));
       const fillH = tapeH * fill;
-      ctx.fillStyle = 'rgba(255,107,42,0.25)';
+      ctx.fillStyle = withAlpha(getCanvasColors().accent, 0.25);
       ctx.fillRect(tapeX, tapeY + tapeH - fillH, tapeW, fillH);
 
       // Tick lines

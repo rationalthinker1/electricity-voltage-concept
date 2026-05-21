@@ -15,7 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -73,8 +73,13 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
             align: 'center',
           });
         }
-        dipole(colW * 0.5, 0, 'rgba(255,107,42,0.95)', 'TX (vertical)');
-        dipole(colW * 2.5, alphaDeg, 'rgba(108,197,194,0.95)', `RX (α = ${alphaDeg}°)`);
+        dipole(colW * 0.5, 0, withAlpha(getCanvasColors().accent, 0.95), 'TX (vertical)');
+        dipole(
+          colW * 2.5,
+          alphaDeg,
+          withAlpha(getCanvasColors().teal, 0.95),
+          `RX (α = ${alphaDeg}°)`,
+        );
 
         // Propagating wave between them — show E-vector oscillating vertically as it crosses the middle column.
         const wcx = colW * 1.5;

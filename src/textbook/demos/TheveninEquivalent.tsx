@@ -19,7 +19,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -86,7 +86,7 @@ export function TheveninEquivalentDemo({ figure }: Props) {
           offCtx.lineTo(splitX, h - 14);
           offCtx.stroke();
 
-          offCtx.fillStyle = 'rgba(160,158,149,0.85)';
+          offCtx.fillStyle = withAlpha(getCanvasColors().textDim, 0.85);
           offCtx.font = '10px "JetBrains Mono", monospace';
           offCtx.textAlign = 'center';
           offCtx.textBaseline = 'top';

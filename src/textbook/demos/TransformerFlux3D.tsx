@@ -29,7 +29,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import {
   attachOrbit,
   project,
@@ -361,9 +361,9 @@ export function TransformerFlux3DDemo({ figure }: Props) {
       const primaryPts = helixAroundLeg(LEG_LEFT_X, st.Np, PRIMARY_HELIX_HEIGHT, 36);
       for (const segPath of projectPolyline(primaryPts)) {
         drawGlowPath(ctx, segPath, {
-          color: 'rgba(255,59,110,0.92)',
+          color: withAlpha(getCanvasColors().pink, 0.92),
           lineWidth: 1.7,
-          glowColor: 'rgba(255,59,110,0.28)',
+          glowColor: withAlpha(getCanvasColors().pink, 0.28),
           glowWidth: 5,
         });
       }
@@ -378,9 +378,9 @@ export function TransformerFlux3DDemo({ figure }: Props) {
       );
       for (const segPath of projectPolyline(secondaryPts)) {
         drawGlowPath(ctx, segPath, {
-          color: 'rgba(91,174,248,0.92)',
+          color: withAlpha(getCanvasColors().blue, 0.92),
           lineWidth: 1.7,
-          glowColor: 'rgba(91,174,248,0.28)',
+          glowColor: withAlpha(getCanvasColors().blue, 0.28),
           glowWidth: 5,
         });
       }
@@ -410,7 +410,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
             drawGlowPath(ctx, segPath, {
               color: `rgba(255,107,42,${(0.85).toFixed(3)})`,
               lineWidth: 2.4,
-              glowColor: 'rgba(255,107,42,0.45)',
+              glowColor: withAlpha(getCanvasColors().accent, 0.45),
               glowWidth: 8,
             });
           }
@@ -479,7 +479,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
               drawGlowPath(ctx, segPath, {
                 color: `rgba(108,197,194,${alpha.toFixed(3)})`,
                 lineWidth: 1.4,
-                glowColor: 'rgba(108,197,194,0.22)',
+                glowColor: withAlpha(getCanvasColors().teal, 0.22),
                 glowWidth: 4,
               });
             }
@@ -509,7 +509,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
         // "leakage" label.
         const lp = project(v3(LEG_LEFT_X - 0.95, 0, 0), cam, W, H);
         if (lp.depth > 0) {
-          ctx.fillStyle = 'rgba(108,197,194,0.82)';
+          ctx.fillStyle = withAlpha(getCanvasColors().teal, 0.82);
           ctx.font = 'italic 11px "STIX Two Text", serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
@@ -523,7 +523,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.fillText('drag to rotate', 12, 12);
-      ctx.fillStyle = 'rgba(160,158,149,0.6)';
+      ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.6);
       ctx.fillText('laminated iron core', 12, 28);
 
       ctx.textAlign = 'right';

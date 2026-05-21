@@ -15,7 +15,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel, drawLabeledValue } from '@/lib/canvasLayout';
 import { pathRoundRect } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -73,7 +73,7 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.beginPath();
       pathRoundRect(ctx, trackL + 1, trackY - trackH / 2 + 1, trackR - trackL - 2, trackH - 2, 3);
       ctx.clip();
-      ctx.strokeStyle = 'rgba(255,107,42,0.22)';
+      ctx.strokeStyle = withAlpha(getCanvasColors().accent, 0.22);
       ctx.lineWidth = 1;
       for (let x = trackL - 20; x < trackR + 20; x += 6) {
         ctx.beginPath();

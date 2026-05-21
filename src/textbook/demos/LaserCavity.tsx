@@ -13,7 +13,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -92,7 +92,7 @@ export function LaserCavityDemo({ figure }: Props) {
           a.flashT = t;
         }
         const radius = 3;
-        const col = a.excited ? '#ff6b2a' : 'rgba(160,158,149,0.6)';
+        const col = a.excited ? '#ff6b2a' : withAlpha(colors.textDim, 0.6);
         ctx.fillStyle = col;
         ctx.beginPath();
         ctx.arc(a.x, a.y, radius, 0, Math.PI * 2);

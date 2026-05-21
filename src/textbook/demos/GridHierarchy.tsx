@@ -8,6 +8,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
 
@@ -132,12 +133,12 @@ export function GridHierarchyDemo({ figure }: Props) {
         const by = cy - blockH / 2;
         const isSel = s.key === selected;
         ctx.fillStyle = isSel ? '#1c1c22' : '#16161a';
-        ctx.strokeStyle = isSel ? 'rgba(255,107,42,0.95)' : 'rgba(160,158,149,0.5)';
+        ctx.strokeStyle = isSel ? withAlpha(colors.accent, 0.95) : withAlpha(colors.textDim, 0.5);
         ctx.lineWidth = isSel ? 2 : 1.2;
         ctx.fillRect(bx, by, blockW, blockH);
         ctx.strokeRect(bx, by, blockW, blockH);
 
-        ctx.fillStyle = isSel ? 'rgba(255,107,42,0.95)' : 'rgba(236,235,229,0.85)';
+        ctx.fillStyle = isSel ? withAlpha(colors.accent, 0.95) : withAlpha(colors.text, 0.85);
         ctx.font = 'bold 9px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';

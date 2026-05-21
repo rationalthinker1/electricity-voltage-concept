@@ -10,6 +10,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -127,7 +128,7 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
       const traces = [0.5 * I_B, I_B, 1.5 * I_B];
       traces.forEach((IB, k) => {
         const lit = k === 1;
-        const col = lit ? 'rgba(255,107,42,0.95)' : 'rgba(255,107,42,0.4)';
+        const col = lit ? withAlpha(colors.accent, 0.95) : withAlpha(colors.accent, 0.4);
         ctx.strokeStyle = col;
         ctx.lineWidth = lit ? 2.0 : 1.2;
         ctx.beginPath();

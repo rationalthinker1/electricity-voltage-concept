@@ -12,6 +12,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -89,9 +90,9 @@ export function ThreePhaseDemo({ figure }: Props) {
 
       // Three traces
       const phaseColors = [
-        'rgba(255,59,110,0.95)', // pink
-        'rgba(108,197,194,0.95)', // teal
-        'rgba(255,107,42,0.95)', // amber
+        withAlpha(colors.pink, 0.95), // pink
+        withAlpha(colors.teal, 0.95), // teal
+        withAlpha(colors.accent, 0.95), // amber
       ];
       const offsets = [0, TAU3, 2 * TAU3];
       for (let k = 0; k < 3; k++) {
@@ -109,7 +110,7 @@ export function ThreePhaseDemo({ figure }: Props) {
       }
 
       // Sum trace (should hug zero)
-      ctx.strokeStyle = 'rgba(236,235,229,0.95)';
+      ctx.strokeStyle = withAlpha(colors.text, 0.95);
       ctx.setLineDash([3, 3]);
       ctx.lineWidth = 1.4;
       ctx.beginPath();

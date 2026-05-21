@@ -29,7 +29,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -155,7 +155,7 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
         xMid - 30,
         yBot - 18,
         'I₁',
-        'rgba(255,107,42,0.85)',
+        withAlpha(getCanvasColors().accent, 0.85),
         sol.I1,
         t,
       );
@@ -166,7 +166,7 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
         xRight - 30,
         yBot - 18,
         'I₂',
-        'rgba(108,197,194,0.85)',
+        withAlpha(getCanvasColors().teal, 0.85),
         sol.I2,
         t,
       );

@@ -12,6 +12,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawHalo } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props {
@@ -156,13 +158,14 @@ export function WireBFieldDemo({ figure }: Props) {
 
       // Wire end-on (filled disc).
       const wireR = 12;
-      const grd = ctx.createRadialGradient(cx0, cy0, 0, cx0, cy0, wireR * 3);
-      grd.addColorStop(0, 'rgba(255,107,42,0.55)');
-      grd.addColorStop(1, 'rgba(255,107,42,0)');
-      ctx.fillStyle = grd;
-      ctx.beginPath();
-      ctx.arc(cx0, cy0, wireR * 3, 0, Math.PI * 2);
-      ctx.fill();
+      drawHalo(ctx, {
+        x: cx0,
+        y: cy0,
+        radius: wireR * 3,
+        color: colors.accent,
+        alpha: 0.55,
+        extent: 1,
+      });
       ctx.fillStyle = '#1c1c22';
       ctx.strokeStyle = '#ff6b2a';
       ctx.lineWidth = 1.5;
@@ -190,7 +193,7 @@ export function WireBFieldDemo({ figure }: Props) {
       }
 
       // Wire label
-      ctx.fillStyle = 'rgba(160,158,149,.85)';
+      ctx.fillStyle = withAlpha(colors.textDim, 0.85);
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(`I = ${I.toFixed(1)} A ${intoPage ? '⊗' : '⊙'}`, cx0, cy0 + wireR * 3 + 14);
@@ -205,7 +208,7 @@ export function WireBFieldDemo({ figure }: Props) {
       const Bprobe = (PHYS.mu_0 * Math.abs(I)) / (2 * Math.PI * r_m);
 
       // Radial line from wire to probe
-      ctx.strokeStyle = 'rgba(255,107,42,0.35)';
+      ctx.strokeStyle = withAlpha(colors.accent, 0.35);
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -228,7 +231,7 @@ export function WireBFieldDemo({ figure }: Props) {
       ctx.fillText('P', px, py);
 
       // Probe distance label
-      ctx.fillStyle = 'rgba(236,235,229,.85)';
+      ctx.fillStyle = withAlpha(colors.text, 0.85);
       ctx.textBaseline = 'alphabetic';
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText(`r = ${(r_m * 1000).toFixed(0)} mm`, px, py - 16);

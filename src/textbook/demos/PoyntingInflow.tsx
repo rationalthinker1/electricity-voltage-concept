@@ -20,7 +20,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -147,9 +147,9 @@ export function PoyntingInflowDemo({ figure }: Props) {
 
       // Wire body
       const sideGrd = ctx.createLinearGradient(0, g.wireCY - r, 0, g.wireCY + r);
-      sideGrd.addColorStop(0, 'rgba(255,107,42,0.14)');
-      sideGrd.addColorStop(0.5, 'rgba(255,107,42,0.32)');
-      sideGrd.addColorStop(1, 'rgba(255,107,42,0.14)');
+      sideGrd.addColorStop(0, withAlpha(getCanvasColors().accent, 0.14));
+      sideGrd.addColorStop(0.5, withAlpha(getCanvasColors().accent, 0.32));
+      sideGrd.addColorStop(1, withAlpha(getCanvasColors().accent, 0.14));
       ctx.restore();
       ctx.fillStyle = sideGrd;
       ctx.beginPath();
@@ -187,9 +187,9 @@ export function PoyntingInflowDemo({ figure }: Props) {
           { x: g.wireXR, y: g.wireCY - r },
         ],
         {
-          color: 'rgba(255,107,42,0.4)',
+          color: withAlpha(getCanvasColors().accent, 0.4),
           lineWidth: 0.5,
-          glowColor: 'rgba(255,107,42,0.35)',
+          glowColor: withAlpha(getCanvasColors().accent, 0.35),
           glowWidth: 10,
         },
       );
@@ -200,9 +200,9 @@ export function PoyntingInflowDemo({ figure }: Props) {
           { x: g.wireXR, y: g.wireCY + r },
         ],
         {
-          color: 'rgba(255,107,42,0.4)',
+          color: withAlpha(getCanvasColors().accent, 0.4),
           lineWidth: 0.5,
-          glowColor: 'rgba(255,107,42,0.35)',
+          glowColor: withAlpha(getCanvasColors().accent, 0.35),
           glowWidth: 10,
         },
       );

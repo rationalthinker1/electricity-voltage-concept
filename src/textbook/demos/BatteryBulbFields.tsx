@@ -33,7 +33,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -280,7 +280,7 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
             { x: bulbX, y: bot },
             { x: batX, y: bot },
           ],
-          color: 'rgba(160,158,149,.35)',
+          color: withAlpha(getCanvasColors().textDim, 0.35),
           lineWidth: 3.5,
         },
         // Battery, vertical, on the left.
@@ -537,7 +537,7 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
         text: isClosed
           ? 'switch closed · three fields present · S = (1/μ₀) E × B'
           : 'switch open · no current · no B · no S',
-        color: isClosed ? '#ff6b2a' : 'rgba(160,158,149,.65)',
+        color: isClosed ? '#ff6b2a' : withAlpha(getCanvasColors().textDim, 0.65),
         size: 11,
         baseline: 'top',
       });

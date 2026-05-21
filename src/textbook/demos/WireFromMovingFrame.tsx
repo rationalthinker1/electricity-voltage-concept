@@ -26,6 +26,8 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { drawHalo } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -148,13 +150,14 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
         const off = ((raw % wireLen) + wireLen) % wireLen;
         const x = wireXL + off;
         const y = wireY - 14;
-        const halo = ctx.createRadialGradient(x, y, 0, x, y, 11);
-        halo.addColorStop(0, 'rgba(255,59,110,0.55)');
-        halo.addColorStop(1, 'rgba(255,59,110,0)');
-        ctx.fillStyle = halo;
-        ctx.beginPath();
-        ctx.arc(x, y, 11, 0, Math.PI * 2);
-        ctx.fill();
+        drawHalo(ctx, {
+          x: x,
+          y: y,
+          radius: 11,
+          color: colors.pink,
+          alpha: 0.55,
+          extent: 1,
+        });
         ctx.fillStyle = colors.pink;
         ctx.beginPath();
         ctx.arc(x, y, 4.5, 0, Math.PI * 2);
@@ -177,13 +180,14 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
         const off = ((raw % wireLen) + wireLen) % wireLen;
         const x = wireXL + off;
         const y = wireY + 14;
-        const halo = ctx.createRadialGradient(x, y, 0, x, y, 11);
-        halo.addColorStop(0, 'rgba(91,174,248,0.55)');
-        halo.addColorStop(1, 'rgba(91,174,248,0)');
-        ctx.fillStyle = halo;
-        ctx.beginPath();
-        ctx.arc(x, y, 11, 0, Math.PI * 2);
-        ctx.fill();
+        drawHalo(ctx, {
+          x: x,
+          y: y,
+          radius: 11,
+          color: colors.blue,
+          alpha: 0.55,
+          extent: 1,
+        });
         ctx.fillStyle = colors.blue;
         ctx.beginPath();
         ctx.arc(x, y, 4.5, 0, Math.PI * 2);
@@ -203,13 +207,14 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       // Test charge — at rest in this frame
       const tx = w * 0.5;
       const ty = h * 0.22;
-      const halo = ctx.createRadialGradient(tx, ty, 0, tx, ty, 22);
-      halo.addColorStop(0, 'rgba(255,107,42,0.55)');
-      halo.addColorStop(1, 'rgba(255,107,42,0)');
-      ctx.fillStyle = halo;
-      ctx.beginPath();
-      ctx.arc(tx, ty, 22, 0, Math.PI * 2);
-      ctx.fill();
+      drawHalo(ctx, {
+        x: tx,
+        y: ty,
+        radius: 22,
+        color: colors.accent,
+        alpha: 0.55,
+        extent: 1,
+      });
       ctx.fillStyle = colors.accent;
       ctx.beginPath();
       ctx.arc(tx, ty, 9, 0, Math.PI * 2);
@@ -220,10 +225,12 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       ctx.textBaseline = 'middle';
       ctx.fillText('+', tx, ty);
 
-      ctx.fillStyle = colors.text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'alphabetic';
-      ctx.fillText("test charge   v' = 0", tx, ty - 26);
+      drawLabel(ctx, {
+        x: tx,
+        y: ty - 26,
+        text: "test charge   v' = 0",
+        color: colors.text,
+      });
 
       // E-field arrow pointing from wire toward (or away from) test charge,
       // depending on sign of λ_new (positive net charge → repels +test).
@@ -262,7 +269,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
         x: 14,
         y: 18,
         text: `BOOSTED FRAME · v_test = ${b.toFixed(2)} c → wire has net λ' ≠ 0`,
-        color: 'rgba(160,158,149,0.75)',
+        color: withAlpha(colors.textDim, 0.75),
       });
 
       raf = requestAnimationFrame(draw);

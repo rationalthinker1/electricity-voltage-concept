@@ -19,6 +19,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -145,8 +146,8 @@ export function RLCBandpassDemo({ figure }: Props) {
         curvePts.push({ x, y });
       }
       drawGlowPath(ctx, curvePts, {
-        color: 'rgba(255,107,42,0.95)',
-        glowColor: 'rgba(255,107,42,0.35)',
+        color: withAlpha(colors.accent, 0.95),
+        glowColor: withAlpha(colors.accent, 0.35),
         lineWidth: 1.8,
       });
 

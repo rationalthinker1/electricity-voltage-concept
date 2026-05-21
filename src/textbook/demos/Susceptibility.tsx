@@ -16,6 +16,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 
@@ -30,18 +31,18 @@ interface Bar {
 }
 
 const ELECTRIC: Bar[] = [
-  { label: 'vacuum', chi: 0, color: 'rgba(160,158,149,0.6)' },
-  { label: 'air', chi: 5.4e-4, color: 'rgba(108,197,194,0.85)' },
-  { label: 'glass', chi: 5, color: 'rgba(108,197,194,0.85)' },
-  { label: 'water', chi: 79, color: 'rgba(255,107,42,0.85)' },
-  { label: 'BaTiO₃', chi: 1500, color: 'rgba(255,59,110,0.85)' },
+  { label: 'vacuum', chi: 0, color: withAlpha(getCanvasColors().textDim, 0.6) },
+  { label: 'air', chi: 5.4e-4, color: withAlpha(getCanvasColors().teal, 0.85) },
+  { label: 'glass', chi: 5, color: withAlpha(getCanvasColors().teal, 0.85) },
+  { label: 'water', chi: 79, color: withAlpha(getCanvasColors().accent, 0.85) },
+  { label: 'BaTiO₃', chi: 1500, color: withAlpha(getCanvasColors().pink, 0.85) },
 ];
 
 const MAGNETIC: Bar[] = [
-  { label: 'vacuum', chi: 0, color: 'rgba(160,158,149,0.6)' },
-  { label: 'copper', chi: -9.7e-6, color: 'rgba(91,174,248,0.85)' },
-  { label: 'aluminum', chi: 2.2e-5, color: 'rgba(108,197,194,0.85)' },
-  { label: 'iron (soft)', chi: 5000, color: 'rgba(255,107,42,0.85)' },
+  { label: 'vacuum', chi: 0, color: withAlpha(getCanvasColors().textDim, 0.6) },
+  { label: 'copper', chi: -9.7e-6, color: withAlpha(getCanvasColors().blue, 0.85) },
+  { label: 'aluminum', chi: 2.2e-5, color: withAlpha(getCanvasColors().teal, 0.85) },
+  { label: 'iron (soft)', chi: 5000, color: withAlpha(getCanvasColors().accent, 0.85) },
 ];
 
 export function SusceptibilityDemo({ figure }: Props) {
@@ -120,7 +121,7 @@ export function SusceptibilityDemo({ figure }: Props) {
 
       // Log-scale axis ticks on the left side
       if (log) {
-        ctx.fillStyle = 'rgba(160,158,149,0.55)';
+        ctx.fillStyle = withAlpha(colors.textDim, 0.55);
         ctx.font = '9px "JetBrains Mono", monospace';
         ctx.textAlign = 'right';
         for (let e = logMinExp; e <= logMaxExp; e++) {
