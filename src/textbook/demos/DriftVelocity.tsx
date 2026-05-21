@@ -9,14 +9,16 @@
  * Sliders: current I (0.1–20 A) and cross-section A (0.5–4 mm²).
  * Material is fixed to copper (n from MATERIALS.copper).
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
+
 import { MATERIALS, PHYS, formatTime } from '@/lib/physics';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -35,41 +37,27 @@ export function DriftVelocityDemo({ figure }: Props) {
   const [I, setI] = useState(1); // amperes
   const [Amm2, setAmm2] = useState(2.5); // cross-section in mm²
 
-  const stateRef = useRef({ I, Amm2 });
-  useEffect(() => {
-    stateRef.current = { I, Amm2 };
-  }, [I, Amm2]);
-
   // Real drift velocity, m/s
   const A_m2 = Amm2 * 1e-6;
   const n = MATERIALS.copper.n;
   const vd = I / (n * PHYS.e * A_m2);
   const t1m = 1 / vd; // seconds to traverse 1 m
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
+  const stateRef = useSimState({ I, Amm2 });
 
-    const wireTop = h * 0.32;
-    const wireBot = h * 0.78;
-    const wireLeft = 50;
-    const wireRight = w - 50;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime, electrons) => {
+      const s = stateRef.current;
+      const wireTop = h * 0.32;
+      const wireBot = h * 0.78;
+      const wireLeft = 50;
+      const wireRight = w - 50;
 
-    // Initialise electrons uniformly inside the wire bounds
-    const electrons: Electron[] = Array.from({ length: N_ELECTRONS }, () => ({
-      x: wireLeft + Math.random() * (wireRight - wireLeft),
-      y: wireTop + Math.random() * (wireBot - wireTop),
-      vx: 0,
-      vy: 0,
-    }));
-
-    function draw() {
-      const { I } = stateRef.current;
-      const colors = getCanvasColors();
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Wire body — soft amber rounded rectangle
+      // Wire body
       const r = (wireBot - wireTop) / 2;
       ctx.save();
       ctx.globalAlpha = 0.06;
@@ -103,7 +91,7 @@ export function DriftVelocityDemo({ figure }: Props) {
       ctx.fillText('+', wireLeft - 8, wireTop);
       ctx.fillText('−', wireRight + 8, wireTop);
 
-      // Tiny axis arrow showing E direction (left → right)
+      // Tiny axis arrow showing E direction
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.55;
@@ -131,9 +119,8 @@ export function DriftVelocityDemo({ figure }: Props) {
       ctx.textAlign = 'left';
       ctx.fillText('E', wireLeft + 4, wireTop - 6);
 
-      // Visual drift bias — amplified for visibility (real v_d is way too
-      // slow to render — ~3×10⁻⁵ m/s). The readout shows the real number.
-      const vd_real = I / (n * PHYS.e * stateRef.current.Amm2 * 1e-6);
+      // Visual drift bias — amplified for visibility
+      const vd_real = s.I / (n * PHYS.e * s.Amm2 * 1e-6);
       const driftBias = Math.max(0.04, Math.min(2.0, vd_real * 6e4));
 
       ctx.restore();
@@ -148,7 +135,7 @@ export function DriftVelocityDemo({ figure }: Props) {
         e.x += e.vx;
         e.y += e.vy;
 
-        // Wrap horizontally so electrons don't deplete
+        // Wrap horizontally
         if (e.x > wireRight - 4) e.x = wireLeft + 4;
         if (e.x < wireLeft + 4) e.x = wireRight - 4;
         if (e.y < wireTop + 3) e.y = wireTop + 3;
@@ -170,13 +157,24 @@ export function DriftVelocityDemo({ figure }: Props) {
         wireLeft,
         h - 12,
       );
-
-      raf = requestAnimationFrame(draw);
       ctx.restore();
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    () => {
+      // Electron positions depend on canvas size, so init once per setup
+      const wireTop = 260 * 0.32; // approximate, will be recalculated in draw
+      const wireBot = 260 * 0.78;
+      const wireLeft = 50;
+      const wireRight = 880 - 50; // approximate
+      const electrons: Electron[] = Array.from({ length: N_ELECTRONS }, () => ({
+        x: wireLeft + Math.random() * (wireRight - wireLeft),
+        y: wireTop + Math.random() * (wireBot - wireTop),
+        vx: 0,
+        vy: 0,
+      }));
+      return { context: electrons };
+    },
+  );
 
   return (
     <Demo

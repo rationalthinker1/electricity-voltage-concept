@@ -8,26 +8,23 @@
  * The drift dot creeps so slowly that in any reasonable session it
  * barely moves. The signal pulse traverses the same length in 1 ns
  * of physical time and visually loops several times per second.
- *
- * Real values come from MATERIALS.copper.n (drift) and a fixed
- * c_signal ≈ 2×10⁸ m/s (≈ ⅔ c, the speed in a typical copper wire's
- * surrounding field; libretexts-conduction).
  */
-import { useCallback, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
 import { MATERIALS, PHYS, formatTime } from '@/lib/physics';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
 }
 
 export function TwoSpeedsDemo({ figure }: Props) {
-  const startRef = useRef<number | null>(null);
   const [tick, setTick] = useState(0);
   const tickRef = useRef(0);
 
@@ -35,27 +32,19 @@ export function TwoSpeedsDemo({ figure }: Props) {
   const I = 1;
   const A_m2 = 2.5e-6;
   const n = MATERIALS.copper.n;
-  const v_drift = I / (n * PHYS.e * A_m2); // ≈ 2.94×10⁻⁵ m/s
-  const v_signal = 2.0e8; // ≈ ⅔ c, libretexts-conduction
-  const trackLength_m = 0.2; // 20 cm physical length
+  const v_drift = I / (n * PHYS.e * A_m2);
+  const v_signal = 2.0e8;
+  const trackLength_m = 0.2;
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
+  const stateRef = useSimState({});
 
-    const padX = 60;
-    const trackLeft = padX;
-    const trackRight = w - padX;
-    const trackPxLen = trackRight - trackLeft;
-
-    // Drift dot starts at left
-    let driftX = trackLeft;
-
-    function draw(now: number) {
-      if (startRef.current == null) startRef.current = now;
-      const elapsedMs = now - startRef.current;
-      tickRef.current = elapsedMs / 1000; // seconds (real wallclock)
-      const colors = getCanvasColors();
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, simTime) => {
+      const padX = 60;
+      const trackLeft = padX;
+      const trackRight = w - padX;
+      const trackPxLen = trackRight - trackLeft;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -71,7 +60,6 @@ export function TwoSpeedsDemo({ figure }: Props) {
         ctx.moveTo(trackLeft, y);
         ctx.lineTo(trackRight, y);
         ctx.stroke();
-        // tick marks at 0 and 200 mm
         ctx.fillStyle = withAlpha(colors.textDim, 0.8);
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
@@ -85,10 +73,9 @@ export function TwoSpeedsDemo({ figure }: Props) {
       drawTrack(yTop, 'electron drift  (~0.03 mm/s)', colors.blue);
       drawTrack(yBot, 'EM signal in wire  (~2×10⁸ m/s)', colors.accent);
 
-      // ── Drift dot — uses REAL v_drift, scaled by physical track length.
-      // Wallclock seconds × v_drift / trackLength_m → fraction of track covered.
-      const driftFrac = (tickRef.current * v_drift) / trackLength_m;
-      driftX = trackLeft + Math.min(1, driftFrac) * trackPxLen;
+      // Drift dot — uses REAL v_drift, scaled by physical track length
+      const driftFrac = (simTime * v_drift) / trackLength_m;
+      const driftX = trackLeft + Math.min(1, driftFrac) * trackPxLen;
       const dot1 = ctx.createRadialGradient(driftX, yTop, 0, driftX, yTop, 18);
       dot1.addColorStop(0, colors.blue);
       dot1.addColorStop(1, withAlpha(colors.blue, 0));
@@ -101,20 +88,15 @@ export function TwoSpeedsDemo({ figure }: Props) {
       ctx.arc(driftX, yTop, 5, 0, Math.PI * 2);
       ctx.fill();
 
-      // ── Signal pulse — would cross 200 mm in trackLength_m / v_signal = 1 ns.
-      // We can't show 1 ns visually; instead, loop the pulse once per second of
-      // wallclock and label "in this same second, the signal made the trip
-      // 10⁹ × (1 ns)⁻¹ × 1 s = 10⁹ times" (we round to a clean 10⁹).
-      const loopT = (tickRef.current % 1) / 1; // 0 → 1 over 1 second
+      // Signal pulse — loops once per second of wallclock
+      const loopT = simTime % 1;
       const sigX = trackLeft + loopT * trackPxLen;
-      // tail
       ctx.strokeStyle = withAlpha(colors.accent, 0.4);
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(Math.max(trackLeft, sigX - 80), yBot);
       ctx.lineTo(sigX, yBot);
       ctx.stroke();
-      // pulse
       const sigGrd = ctx.createRadialGradient(sigX, yBot, 0, sigX, yBot, 22);
       sigGrd.addColorStop(0, colors.accent);
       sigGrd.addColorStop(1, withAlpha(colors.accent, 0));
@@ -128,25 +110,20 @@ export function TwoSpeedsDemo({ figure }: Props) {
       ctx.fill();
 
       // Re-render React-side readouts ~5×/s
-      if (Math.floor(tickRef.current * 5) !== Math.floor((tickRef.current - 0.05) * 5)) {
+      tickRef.current = simTime;
+      if (Math.floor(simTime * 5) !== Math.floor((simTime - 0.05) * 5)) {
         setTick((t) => t + 1);
       }
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+  );
 
   // Readouts. tick keeps them updating.
   void tick;
   const elapsed_s = tickRef.current;
   const driftDist_mm = elapsed_s * v_drift * 1000;
-  // signal makes the trip every (trackLength_m / v_signal) seconds = 1 ns
   const signalTrips = Math.floor(elapsed_s / (trackLength_m / v_signal));
-  // Live ratio of the two physical speeds — pinned by the chosen 1 A / 2.5 mm²
-  // scenario but computed here so the demo's numeric claim stays honest.
-  const speedRatio = v_signal / v_drift; // ≈ 6.8e12 for 1 A / 2.5 mm²
+  const speedRatio = v_signal / v_drift;
   const ratioExp = Math.floor(Math.log10(speedRatio));
   const ratioMantissa = speedRatio / 10 ** ratioExp;
 

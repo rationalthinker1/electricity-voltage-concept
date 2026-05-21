@@ -18,9 +18,9 @@
  * starts from the other wall and falls the other way, while the energy
  * numbers stay positive.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import {
   Demo,
   DemoControls,
@@ -30,7 +30,9 @@ import {
 } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { drawArrow } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -46,56 +48,36 @@ export function VabWorkEnergyDemo({ figure }: Props) {
   const [Vb, setVb] = useState(8); // volts (right plate)
   const [qMicro, setQMicro] = useState(1); // µC, signed
 
-  const stateRef = useRef({ Va, Vb, qMicro });
-  useEffect(() => {
-    stateRef.current = { Va, Vb, qMicro };
-  }, [Va, Vb, qMicro]);
-
   // Real values for readouts and equation strip.
   const q = qMicro * 1e-6; // C
   const Vab = Vb - Va; // V
-  const W = q * Vab; // J — work done by the field on q across the gap (= ΔU loss)
-  const dPE = Math.abs(W); // J — total energy traded; never negative for bar widths
+  const W = q * Vab; // J
+  const dPE = Math.abs(W); // J
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
-    let last = performance.now();
-    // Position fraction along the channel, measured from the START wall
-    // (which end is "start" depends on the sign of q and which V is larger).
-    // s ∈ [0, 1] — 0 = start (full PE, zero KE), 1 = arrival (full KE).
-    let s = 0;
-    let v = 0; // velocity in s-units per second
+  const stateRef = useSimState({ Va, Vb, qMicro });
 
-    function draw(now: number) {
-      const colors = getCanvasColors();
-      const dt = Math.min(0.05, (now - last) / 1000);
-      last = now;
-      const { Va, Vb, qMicro } = stateRef.current;
-      const Vab_now = Vb - Va;
-      const q_now = qMicro * 1e-6;
-      // Total energy traded across the trip, in µJ for the bar maths.
-      const dPE_uJ = Math.abs(qMicro * Vab_now);
-      // Which wall is the high-PE wall? PE = qV.
-      // qV_a > qV_b ⇔ starts at a (left) and moves rightwards.
-      const PE_a = qMicro * Va;
-      const PE_b = qMicro * Vb;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, _state, dt, _simTime, phys) => {
+      const s = stateRef.current;
+      const { Va: Va_, Vb: Vb_, qMicro: qM } = s;
+      const Vab_now = Vb_ - Va_;
+      const dPE_uJ = Math.abs(qM * Vab_now);
+      const PE_a = qM * Va_;
+      const PE_b = qM * Vb_;
       const startsLeft = PE_a > PE_b;
 
-      // ── Background ──────────────────────────────────────────────────
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      // ── Layout ──────────────────────────────────────────────────────
+      // Layout
       const padX = 24;
       const wallW = 14;
       const wallTop = 56;
-      const wallBot = h - 110; // leave room for the energy bar + caption
+      const wallBot = h - 110;
       const channelTop = wallTop + 20;
       const channelBot = wallBot - 20;
       const channelMidY = (channelTop + channelBot) / 2;
-      // Walls sit symmetrically inside the canvas. The wall rectangles
-      // span [leftWallLeft, leftWallRight] and [rightWallLeft, rightWallRight].
       const leftWallLeft = padX;
       const leftWallRight = padX + wallW;
       const rightWallRight = w - padX;
@@ -104,12 +86,12 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       const channelRight = rightWallLeft;
       const channelLen = channelRight - channelLeft;
 
-      // Wall colours by which side is higher V.
-      const leftIsHigh = Va > Vb;
+      // Wall colours
+      const leftIsHigh = Va_ > Vb_;
       const leftColor = leftIsHigh ? colors.accent : colors.teal;
       const rightColor = leftIsHigh ? colors.teal : colors.accent;
 
-      // ── Plates / walls ──────────────────────────────────────────────
+      // Draw walls
       const drawWall = (
         xLeft: number,
         xRight: number,
@@ -125,8 +107,6 @@ export function VabWorkEnergyDemo({ figure }: Props) {
         ctx.strokeStyle = color;
         ctx.lineWidth = 2;
         ctx.strokeRect(xLeft, wallTop, xRight - xLeft, wallBot - wallTop);
-        // Label anchored on the channel-facing side of the wall so it can
-        // never fall off the canvas. Sits just above the wall.
         ctx.fillStyle = color;
         ctx.font = 'bold 12px "JetBrains Mono", monospace';
         ctx.textBaseline = 'bottom';
@@ -138,18 +118,15 @@ export function VabWorkEnergyDemo({ figure }: Props) {
           ctx.fillText(`${label} = ${Vval.toFixed(1)} V`, xRight, wallTop - 6);
         }
       };
-      drawWall(leftWallLeft, leftWallRight, leftColor, 'V_a', Va, 'left');
-      drawWall(rightWallLeft, rightWallRight, rightColor, 'V_b', Vb, 'right');
+      drawWall(leftWallLeft, leftWallRight, leftColor, 'V_a', Va_, 'left');
+      drawWall(rightWallLeft, rightWallRight, rightColor, 'V_b', Vb_, 'right');
 
-      // ── E-field arrows in the gap ───────────────────────────────────
-      // Points high V → low V. Opacity scales with |V_ab|. Two clean
-      // rows — one above, one below the charge's midline — so the field
-      // doesn't visually overlap the charge as it crosses.
+      // E-field arrows in the gap
       const Eabs = Math.abs(Vab_now);
       const Enorm = Math.min(1, Eabs / 12);
       const eAlpha = 0.2 + 0.6 * Enorm;
       if (Eabs > 0.01) {
-        const Ndir = leftIsHigh ? 1 : -1; // arrow direction sign
+        const Ndir = leftIsHigh ? 1 : -1;
         const arrowsPerRow = 4;
         const arrowLen = 36 + 18 * Enorm;
         const yRow1 = channelMidY - 42;
@@ -170,8 +147,6 @@ export function VabWorkEnergyDemo({ figure }: Props) {
             );
           }
         }
-        // "E" label sits between the two arrow rows on the channel-mid line,
-        // out of the way of the moving charge.
         ctx.fillStyle = `rgba(255,107,42,${(eAlpha + 0.2).toFixed(3)})`;
         ctx.font = 'italic 11px "STIX Two Text", serif';
         ctx.textAlign = 'center';
@@ -193,36 +168,32 @@ export function VabWorkEnergyDemo({ figure }: Props) {
         );
       }
 
-      // ── Physics update ──────────────────────────────────────────────
-      // Acceleration magnitude scaled for visual transit. dPE_uJ = |q·V_ab|
-      // in µC·V = µJ; treating it as a unitless "energy" and scaling.
+      // Physics update
       const a = ACCEL_SCALE * dPE_uJ;
-      if (a > 1e-6 && Math.abs(qMicro) > 1e-3) {
-        v += a * dt;
-        s += v * dt;
-        if (s >= 1) {
-          s = 0;
-          v = 0;
+      if (a > 1e-6 && Math.abs(qM) > 1e-3) {
+        phys.v += a * dt;
+        phys.s += phys.v * dt;
+        if (phys.s >= 1) {
+          phys.s = 0;
+          phys.v = 0;
         }
       } else {
-        // No field or no charge: rest at the start wall.
-        s = 0;
-        v = 0;
+        phys.s = 0;
+        phys.v = 0;
       }
 
-      // ── Test charge ─────────────────────────────────────────────────
-      // Map s along the channel in the appropriate direction.
+      // Test charge
       const dir = startsLeft ? 1 : -1;
       const startX = startsLeft ? channelLeft + 12 : channelRight - 12;
-      const xC = startX + dir * s * (channelLen - 24);
+      const xC = startX + dir * phys.s * (channelLen - 24);
       const yC = channelMidY;
-      const positive = qMicro >= 0;
-      const radius = 9 + Math.min(7, Math.abs(qMicro) * 1.1);
+      const positive = qM >= 0;
+      const radius = 9 + Math.min(7, Math.abs(qM) * 1.1);
       const fillCol = positive ? colors.pink : colors.blue;
 
-      // Comet trail — short streak behind, length scales with current speed.
-      if (v > 0.005) {
-        const trailLen = Math.min(60, v * 80);
+      // Comet trail
+      if (phys.v > 0.005) {
+        const trailLen = Math.min(60, phys.v * 80);
         const tx = xC - dir * trailLen;
         const grad = ctx.createLinearGradient(tx, yC, xC, yC);
         const trailRGB = positive ? '255,59,110' : '91,174,248';
@@ -237,7 +208,7 @@ export function VabWorkEnergyDemo({ figure }: Props) {
         ctx.stroke();
       }
 
-      // Halo + body.
+      // Halo + body
       const grd = ctx.createRadialGradient(xC, yC, 0, xC, yC, radius * 2.5);
       grd.addColorStop(0, positive ? 'rgba(255,59,110,.55)' : 'rgba(91,174,248,.55)');
       grd.addColorStop(1, positive ? 'rgba(255,59,110,0)' : 'rgba(91,174,248,0)');
@@ -255,38 +226,31 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       ctx.textBaseline = 'middle';
       ctx.fillText(positive ? '+' : '−', xC, yC + 1);
 
-      // ── Energy bar: PE + KE = constant (|qV_ab|) ────────────────────
+      // Energy bar: PE + KE = constant
       const barTop = wallBot + 18;
       const barH = 22;
       const barLeft = channelLeft;
       const barRight = channelRight;
       const barW = barRight - barLeft;
 
-      // The bar's total width represents |qV_ab|. PE fraction = (1 − s),
-      // KE fraction = s — energy traded smoothly across the trip.
-      const peFrac = 1 - s;
-      const keFrac = s;
+      const peFrac = 1 - phys.s;
+      const keFrac = phys.s;
 
-      // Background outline (the "total energy" envelope).
       ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.strokeRect(barLeft, barTop, barW, barH);
 
-      // PE segment on the left (teal — drains).
       const pePx = barW * peFrac;
       ctx.fillStyle = `rgba(108,197,194,${(0.55 + 0.25 * peFrac).toFixed(3)})`;
       ctx.fillRect(barLeft, barTop, pePx, barH);
 
-      // KE segment on the right (amber — fills).
       const kePx = barW * keFrac;
       ctx.fillStyle = `rgba(255,107,42,${(0.55 + 0.25 * keFrac).toFixed(3)})`;
       ctx.fillRect(barLeft + pePx, barTop, kePx, barH);
 
-      // Labels on each segment.
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textBaseline = 'middle';
       const labelY = barTop + barH / 2;
-      // Total-energy caption above the bar.
       ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
@@ -299,7 +263,6 @@ export function VabWorkEnergyDemo({ figure }: Props) {
 
       const pe_uJ = dPE_uJ * peFrac;
       const ke_uJ = dPE_uJ * keFrac;
-      // PE label inside its segment if there's room.
       if (pePx > 60) {
         ctx.fillStyle = colors.text;
         ctx.textAlign = 'left';
@@ -311,25 +274,19 @@ export function VabWorkEnergyDemo({ figure }: Props) {
         ctx.fillText(`KE  ${ke_uJ.toFixed(2)} µJ`, barLeft + barW - 6, labelY);
       }
 
-      // Sub-caption below the bar.
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText(
-        'PE drains, KE fills — both sum to |qV_ab| = the trip\'s W = ΔU',
+        "PE drains, KE fills — both sum to |qV_ab| = the trip's W = ΔU",
         (barLeft + barRight) / 2,
         barTop + barH + 6,
       );
-
-      // Suppress unused warnings on q_now.
-      void q_now;
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    () => ({ context: { s: 0, v: 0 } }),
+  );
 
   // Pretty-print the work / energy readouts.
   const fmtJ = (j: number) => {

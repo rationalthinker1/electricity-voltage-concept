@@ -915,6 +915,85 @@ export function drawGlowPath(
   ctx.restore();
 }
 
+/* ───────────────────────────────────────────────────────────────────────────
+ *  pathRoundRect — rounded-rect path polyfill matching the rest of this file.
+ *
+ *  `CanvasRenderingContext2D.roundRect` is shipped in modern Chrome/Safari/
+ *  Firefox but several demos in the repo were already shipping a hand-rolled
+ *  copy. Centralising it here means one definition, one place to fix.
+ *
+ *  Calls `ctx.beginPath()` itself (matching the convention of the other
+ *  helpers in this file). The caller then chooses `ctx.fill()` /
+ *  `ctx.stroke()` / both. The path is geometrically closed by the final
+ *  quadraticCurveTo returning to the starting point, so a stroked rect
+ *  draws as expected without an explicit `closePath()`.
+ * ─────────────────────────────────────────────────────────────────────── */
+
+export function pathRoundRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
+): void {
+  const rad = Math.max(0, Math.min(r, Math.min(w, h) / 2));
+  ctx.beginPath();
+  ctx.moveTo(x + rad, y);
+  ctx.lineTo(x + w - rad, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + rad);
+  ctx.lineTo(x + w, y + h - rad);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - rad, y + h);
+  ctx.lineTo(x + rad, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - rad);
+  ctx.lineTo(x, y + rad);
+  ctx.quadraticCurveTo(x, y, x + rad, y);
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ *  drawHalo — sign-agnostic radial-gradient halo around a point.
+ *
+ *  The glow ring used by `drawCharge` is locked to the +/- sign convention.
+ *  Many demos want the same gradient without the dot in the middle: a
+ *  current-injection pulse, a hover indicator, a "what's energised" hint.
+ *  This is that, factored out.
+ * ─────────────────────────────────────────────────────────────────────── */
+
+interface HaloOptions {
+  /** Centre x. */
+  x: number;
+  /** Centre y. */
+  y: number;
+  /** Inner radius — where the colour is saturated. */
+  radius: number;
+  /** Gradient colour at the centre. Required (no theme default — too varied). */
+  color: string;
+  /** Opacity at the centre. Default 0.2. */
+  alpha?: number;
+  /** Outer radius as a multiplier of `radius`. Default 2.2. */
+  extent?: number;
+}
+
+export function drawHalo(
+  ctx: CanvasRenderingContext2D,
+  opts: HaloOptions,
+): void {
+  const extent = opts.extent ?? 2.2;
+  const alpha = opts.alpha ?? 0.2;
+  const outerR = opts.radius * extent;
+  const grad = ctx.createRadialGradient(opts.x, opts.y, 0, opts.x, opts.y, outerR);
+  grad.addColorStop(0, opts.color);
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(opts.x, opts.y, outerR, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
 /**
  * Best-effort opacity adjustment for an arbitrary CSS colour string.
  * Recognises #rrggbb, #rrggbbaa, rgb(...), rgba(...), and hsl(...)/hsla(...).

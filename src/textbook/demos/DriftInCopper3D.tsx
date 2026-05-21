@@ -27,15 +27,17 @@
  * Geometry & projection share src/lib/projection3d.ts with the Phase-5
  * 3D demos (PoyntingCoax3D, WireToAntennaTransition3D).
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { MATERIALS, PHYS } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 import { attachOrbit, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 
 interface Props {
@@ -76,6 +78,106 @@ interface DrawItem {
   arrowTip?: { x: number; y: number; depth: number };
 }
 
+function rimPoints(xAxial: number): Vec3[] {
+  const RIM_N = 48;
+  const arr: Vec3[] = [];
+  for (let i = 0; i < RIM_N; i++) {
+    const phi = (i / RIM_N) * Math.PI * 2;
+    arr.push(v3(xAxial, R_WIRE * Math.cos(phi), R_WIRE * Math.sin(phi)));
+  }
+  return arr;
+}
+
+function drawRim(
+  pts: Vec3[],
+  cam: OrbitCamera,
+  ctx: CanvasRenderingContext2D,
+  W: number,
+  H: number,
+  colors: ReturnType<typeof getCanvasColors>,
+) {
+  const projected = pts.map((p) => project(p, cam, W, H));
+  const N = projected.length;
+  const depths = projected.map((p) => p.depth);
+  const sorted = [...depths].sort((a, b) => a - b);
+  const cutoff = sorted[Math.floor(N / 2)]!;
+
+  for (const pass of ['back', 'front'] as const) {
+    ctx.beginPath();
+    let drawing = false;
+    for (let i = 0; i <= N; i++) {
+      const p = projected[i % N]!;
+      const isFront = depths[i % N]! <= cutoff;
+      const include = pass === 'front' ? isFront : !isFront;
+      if (include) {
+        if (!drawing) {
+          ctx.moveTo(p.x, p.y);
+          drawing = true;
+        } else ctx.lineTo(p.x, p.y);
+      } else {
+        drawing = false;
+      }
+    }
+    ctx.strokeStyle = withAlpha(colors.accent, pass === 'front' ? 0.75 : 0.22);
+    ctx.lineWidth = 1.1;
+    ctx.setLineDash(pass === 'back' ? [4, 4] : []);
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
+}
+
+function drawWireScaffold(
+  cam: OrbitCamera,
+  ctx: CanvasRenderingContext2D,
+  W: number,
+  H: number,
+  colors: ReturnType<typeof getCanvasColors>,
+) {
+  // Hoops at several axial slices.
+  const xs = [-X_HALF, -X_HALF / 2, 0, X_HALF / 2, X_HALF];
+  for (const x of xs) drawRim(rimPoints(x), cam, ctx, W, H, colors);
+
+  // Axial generators (longitudinal wireframe lines).
+  const N_LONG = 12;
+  for (let i = 0; i < N_LONG; i++) {
+    const phi = (i / N_LONG) * Math.PI * 2;
+    const y = R_WIRE * Math.cos(phi);
+    const z = R_WIRE * Math.sin(phi);
+    const mid = project(v3(0, y, z), cam, W, H);
+    const back = mid.depth > cam.distance;
+    const p1 = project(v3(-X_HALF, y, z), cam, W, H);
+    const p2 = project(v3(+X_HALF, y, z), cam, W, H);
+    // Soft amber glow for the front-half generators; dashed grey for back.
+    if (!back) {
+      drawGlowPath(
+        ctx,
+        [
+          { x: p1.x, y: p1.y },
+          { x: p2.x, y: p2.y },
+        ],
+        {
+          color: withAlpha(colors.accent, 0.32),
+          lineWidth: 1.0,
+          glowColor: withAlpha(colors.accent, 0.1),
+          glowWidth: 5,
+        },
+      );
+    } else {
+      ctx.save();
+      ctx.globalAlpha = 0.14;
+      ctx.strokeStyle = colors.textDim;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+    }
+  }
+}
+
 export function DriftInCopper3DDemo({ figure }: Props) {
   const [I, setI] = useState(3);
   const [T, setT] = useState(300);
@@ -93,140 +195,26 @@ export function DriftInCopper3DDemo({ figure }: Props) {
     return { vd, vth, ratio, A_m2, n };
   }, [I, T]);
 
-  const stateRef = useRef({ I, T, showArrows, showLattice, computed });
-  useEffect(() => {
-    stateRef.current = { I, T, showArrows, showLattice, computed };
-  }, [I, T, showArrows, showLattice, computed]);
+  interface SimState {
+    I: number;
+    T: number;
+    showArrows: boolean;
+    showLattice: boolean;
+  }
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H, canvas } = info;
-    let raf = 0;
+  interface SimContext {
+    cam: OrbitCamera;
+    electrons: Electron[];
+    ions: Vec3[];
+  }
 
-    const cam: OrbitCamera = { yaw: 0.55, pitch: 0.22, distance: 6.5, fov: Math.PI / 4 };
-    const dispose = attachOrbit(canvas, cam);
+  const stateRef = useSimState<SimState>({ I, T, showArrows, showLattice });
 
-    // Initialise electrons uniformly inside the cylinder.
-    function randInCylinder(): Vec3 {
-      // Uniform-in-area cross-section: r = R·√u; uniform x along ±X_HALF.
-      const u = Math.random();
-      const phi = Math.random() * Math.PI * 2;
-      const r = R_WIRE * Math.sqrt(u) * 0.96;
-      const x = (Math.random() * 2 - 1) * X_HALF * 0.96;
-      return v3(x, r * Math.cos(phi), r * Math.sin(phi));
-    }
-    const electrons: Electron[] = Array.from({ length: N_ELECTRONS }, () => {
-      const p = randInCylinder();
-      return { pos: p, vx: 0, vy: 0, vz: 0 };
-    });
-
-    // Pre-baked static ion lattice positions (don't move).
-    const ions: Vec3[] = [];
-    for (let i = 0; i < N_IONS_AXIAL; i++) {
-      const x = -X_HALF + ((i + 0.5) / N_IONS_AXIAL) * (2 * X_HALF);
-      // Centre ion on axis.
-      ions.push(v3(x, 0, 0));
-      for (let k = 1; k <= N_IONS_RADIAL; k++) {
-        const r = (k / N_IONS_RADIAL) * R_WIRE * 0.78;
-        for (let j = 0; j < N_IONS_AZIM; j++) {
-          // Stagger azimuth between rings for visual variety.
-          const phi = (j / N_IONS_AZIM) * Math.PI * 2 + (k * Math.PI) / N_IONS_AZIM;
-          ions.push(v3(x, r * Math.cos(phi), r * Math.sin(phi)));
-        }
-      }
-    }
-
-    // Pre-projected rim points for the wire cylinder (rebuilt each frame
-    // because cheap, and camera moves).
-    const RIM_N = 48;
-    const rimPoints = (xAxial: number): Vec3[] => {
-      const arr: Vec3[] = [];
-      for (let i = 0; i < RIM_N; i++) {
-        const phi = (i / RIM_N) * Math.PI * 2;
-        arr.push(v3(xAxial, R_WIRE * Math.cos(phi), R_WIRE * Math.sin(phi)));
-      }
-      return arr;
-    };
-
-    function drawRim(pts: Vec3[], colors: ReturnType<typeof getCanvasColors>) {
-      const projected = pts.map((p) => project(p, cam, W, H));
-      const N = projected.length;
-      const depths = projected.map((p) => p.depth);
-      const sorted = [...depths].sort((a, b) => a - b);
-      const cutoff = sorted[Math.floor(N / 2)]!;
-
-      for (const pass of ['back', 'front'] as const) {
-        ctx.beginPath();
-        let drawing = false;
-        for (let i = 0; i <= N; i++) {
-          const p = projected[i % N]!;
-          const isFront = depths[i % N]! <= cutoff;
-          const include = pass === 'front' ? isFront : !isFront;
-          if (include) {
-            if (!drawing) {
-              ctx.moveTo(p.x, p.y);
-              drawing = true;
-            } else ctx.lineTo(p.x, p.y);
-          } else {
-            drawing = false;
-          }
-        }
-        ctx.strokeStyle = withAlpha(colors.accent, pass === 'front' ? 0.75 : 0.22);
-        ctx.lineWidth = 1.1;
-        ctx.setLineDash(pass === 'back' ? [4, 4] : []);
-        ctx.stroke();
-      }
-      ctx.setLineDash([]);
-    }
-
-    function drawWireScaffold(colors: ReturnType<typeof getCanvasColors>) {
-      // Hoops at several axial slices.
-      const xs = [-X_HALF, -X_HALF / 2, 0, X_HALF / 2, X_HALF];
-      for (const x of xs) drawRim(rimPoints(x), colors);
-
-      // Axial generators (longitudinal wireframe lines).
-      const N_LONG = 12;
-      for (let i = 0; i < N_LONG; i++) {
-        const phi = (i / N_LONG) * Math.PI * 2;
-        const y = R_WIRE * Math.cos(phi);
-        const z = R_WIRE * Math.sin(phi);
-        const mid = project(v3(0, y, z), cam, W, H);
-        const back = mid.depth > cam.distance;
-        const p1 = project(v3(-X_HALF, y, z), cam, W, H);
-        const p2 = project(v3(+X_HALF, y, z), cam, W, H);
-        // Soft amber glow for the front-half generators; dashed grey for back.
-        if (!back) {
-          drawGlowPath(
-            ctx,
-            [
-              { x: p1.x, y: p1.y },
-              { x: p2.x, y: p2.y },
-            ],
-            {
-              color: withAlpha(colors.accent, 0.32),
-              lineWidth: 1.0,
-              glowColor: withAlpha(colors.accent, 0.1),
-              glowWidth: 5,
-            },
-          );
-        } else {
-          ctx.save();
-          ctx.globalAlpha = 0.14;
-          ctx.strokeStyle = colors.textDim;
-          ctx.lineWidth = 1;
-          ctx.setLineDash([4, 4]);
-          ctx.beginPath();
-          ctx.moveTo(p1.x, p1.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.stroke();
-          ctx.setLineDash([]);
-          ctx.restore();
-        }
-      }
-    }
-
-    function draw() {
+  const setup = useSimLoop<SimState, SimContext>(
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, c) => {
       const s = stateRef.current;
-      const colors = getCanvasColors();
+
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
@@ -237,7 +225,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       const driftStep = VIS_DRIFT * (s.I / I_REF);
 
       // Update electrons.
-      for (const e of electrons) {
+      for (const e of c.electrons) {
         // Random thermal kick (Gaussian-ish via two uniform sums).
         const kx = (Math.random() + Math.random() + Math.random() - 1.5) * thermalSigma * 2;
         const ky = (Math.random() + Math.random() + Math.random() - 1.5) * thermalSigma * 2;
@@ -275,28 +263,28 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       }
 
       // Wire scaffold (back-most layer of structure).
-      drawWireScaffold(colors);
+      drawWireScaffold(c.cam, ctx, W, H, colors);
 
       // Build a single depth-sorted draw list of ions + electrons so
       // the lattice peeks through correctly when an electron passes
       // in front of an ion.
       const items: DrawItem[] = [];
       if (s.showLattice) {
-        for (const ion of ions) {
-          const p = project(ion, cam, W, H);
+        for (const ion of c.ions) {
+          const p = project(ion, c.cam, W, H);
           if (p.depth <= 0) continue;
           items.push({ kind: 'ion', depth: p.depth, proj: p });
         }
       }
-      for (const e of electrons) {
-        const p = project(e.pos, cam, W, H);
+      for (const e of c.electrons) {
+        const p = project(e.pos, c.cam, W, H);
         if (p.depth <= 0) continue;
         let arrowTip: DrawItem['arrowTip'];
         if (s.showArrows) {
           // The drift arrow is a short +x segment in world space,
           // scaled longer than the actual visual step so the reader
           // can see direction.
-          const tip = project(v3(e.pos.x + 0.18, e.pos.y, e.pos.z), cam, W, H);
+          const tip = project(v3(e.pos.x + 0.18, e.pos.y, e.pos.z), c.cam, W, H);
           arrowTip = tip;
         }
         items.push({ kind: 'electron', depth: p.depth, proj: p, arrowTip });
@@ -308,7 +296,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       for (const it of items) {
         if (it.kind === 'ion') {
           // Amber ion sphere, depth-faded.
-          const t = Math.max(0, Math.min(1, (cam.distance + 1.5 - it.depth) / 3.5));
+          const t = Math.max(0, Math.min(1, (c.cam.distance + 1.5 - it.depth) / 3.5));
           const alpha = 0.3 + 0.45 * t;
           const radius = 2.4 + 1.6 * t;
           // Soft outer glow + solid inner.
@@ -322,7 +310,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
           ctx.fill();
         } else {
           // Electron — cyan disc with a tiny halo.
-          const t = Math.max(0, Math.min(1, (cam.distance + 1.5 - it.depth) / 3.5));
+          const t = Math.max(0, Math.min(1, (c.cam.distance + 1.5 - it.depth) / 3.5));
           const alpha = 0.55 + 0.4 * t;
           const radius = 1.7 + 1.4 * t;
           ctx.fillStyle = withAlpha(colors.blue, 0.18 * alpha);
@@ -389,16 +377,47 @@ export function DriftInCopper3DDemo({ figure }: Props) {
         ctx.fillStyle = colors.accent;
         ctx.fillText('drift bias → +x', W - 12, 44);
       }
+    },
+    [],
+    (info) => {
+      const { canvas } = info;
 
-      raf = requestAnimationFrame(draw);
-    }
+      const cam: OrbitCamera = { yaw: 0.55, pitch: 0.22, distance: 6.5, fov: Math.PI / 4 };
+      const dispose = attachOrbit(canvas, cam);
 
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      dispose();
-    };
-  }, []);
+      // Initialise electrons uniformly inside the cylinder.
+      function randInCylinder(): Vec3 {
+        // Uniform-in-area cross-section: r = R·√u; uniform x along ±X_HALF.
+        const u = Math.random();
+        const phi = Math.random() * Math.PI * 2;
+        const r = R_WIRE * Math.sqrt(u) * 0.96;
+        const x = (Math.random() * 2 - 1) * X_HALF * 0.96;
+        return v3(x, r * Math.cos(phi), r * Math.sin(phi));
+      }
+      const electrons: Electron[] = Array.from({ length: N_ELECTRONS }, () => {
+        const p = randInCylinder();
+        return { pos: p, vx: 0, vy: 0, vz: 0 };
+      });
+
+      // Pre-baked static ion lattice positions (don't move).
+      const ions: Vec3[] = [];
+      for (let i = 0; i < N_IONS_AXIAL; i++) {
+        const x = -X_HALF + ((i + 0.5) / N_IONS_AXIAL) * (2 * X_HALF);
+        // Centre ion on axis.
+        ions.push(v3(x, 0, 0));
+        for (let k = 1; k <= N_IONS_RADIAL; k++) {
+          const r = (k / N_IONS_RADIAL) * R_WIRE * 0.78;
+          for (let j = 0; j < N_IONS_AZIM; j++) {
+            // Stagger azimuth between rings for visual variety.
+            const phi = (j / N_IONS_AZIM) * Math.PI * 2 + (k * Math.PI) / N_IONS_AZIM;
+            ions.push(v3(x, r * Math.cos(phi), r * Math.sin(phi)));
+          }
+        }
+      }
+
+      return { context: { cam, electrons, ions }, cleanup: dispose };
+    },
+  );
 
   return (
     <Demo

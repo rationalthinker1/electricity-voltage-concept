@@ -23,13 +23,14 @@
  * Drag to orbit. Theme colours re-read per-frame so a light/dark toggle
  * re-paints the diagram in place.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 import { MATERIALS, type MaterialKey, PHYS } from '@/lib/physics';
 import {
   attachOrbit,
@@ -90,63 +91,66 @@ export function MicroscopicOhm3DDemo({ figure }: Props) {
     return { E, sigma, n, J, vd, I };
   }, [logE, mat]);
 
-  const stateRef = useRef({ computed, matName: mat.name });
-  useEffect(() => {
-    stateRef.current = { computed, matName: mat.name };
-  }, [computed, mat.name]);
+  interface SimState {
+    computed: { E: number; sigma: number; n: number; J: number; vd: number; I: number };
+    matName: string;
+  }
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H, canvas } = info;
-    let raf = 0;
+  interface SimContext {
+    cam: OrbitCamera;
+    electrons: Electron[];
+  }
 
-    const cam: OrbitCamera = { yaw: 0.55, pitch: 0.22, distance: 7, fov: Math.PI / 4 };
-    const dispose = attachOrbit(canvas, cam);
+  const stateRef = useSimState<SimState>({ computed, matName: mat.name });
 
-    // Initialise electrons uniformly inside the cylinder.
-    const electrons: Electron[] = [];
-    for (let i = 0; i < N_ELECTRONS; i++) {
-      const u = Math.random();
-      const phi = Math.random() * Math.PI * 2;
-      const r = R_WIRE * Math.sqrt(u) * 0.95;
-      const x = (Math.random() * 2 - 1) * X_HALF * 0.95;
-      electrons.push({ pos: v3(x, r * Math.cos(phi), r * Math.sin(phi)) });
-    }
-
-    function draw() {
-      const colors = getCanvasColors();
-      const { computed: c, matName } = stateRef.current;
+  const setup = useSimLoop<SimState, SimContext>(
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, c) => {
+      const { computed: comp, matName } = stateRef.current;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
       // Drift step proportional to real J = σE; electrons move in -x
       // (opposite to conventional current).
-      const driftStep = -VIS_DRIFT_PER_FRAME * (c.J / J_REF);
-      for (const e of electrons) {
+      const driftStep = -VIS_DRIFT_PER_FRAME * (comp.J / J_REF);
+      for (const e of c.electrons) {
         e.pos.x += driftStep;
         if (e.pos.x > X_HALF) e.pos.x -= 2 * X_HALF;
         else if (e.pos.x < -X_HALF) e.pos.x += 2 * X_HALF;
       }
 
       // Magnitudes normalised for visual purposes; both are clamped to 1.
-      const Enorm = Math.min(1, c.E / E_MAX_LIN);
-      const Jnorm = Math.min(1, c.J / J_REF);
-      const Inorm = Math.min(1, c.I / I_REF);
+      const Enorm = Math.min(1, comp.E / E_MAX_LIN);
+      const Jnorm = Math.min(1, comp.J / J_REF);
+      const Inorm = Math.min(1, comp.I / I_REF);
 
-      drawWireScaffold(ctx, colors, cam, W, H);
-      drawBFieldRings(ctx, colors, cam, W, H, Inorm);
-      drawFieldVectors(ctx, colors, cam, W, H, Enorm, Jnorm);
-      drawElectrons(ctx, colors, cam, W, H, electrons);
+      drawWireScaffold(ctx, colors, c.cam, W, H);
+      drawBFieldRings(ctx, colors, c.cam, W, H, Inorm);
+      drawFieldVectors(ctx, colors, c.cam, W, H, Enorm, Jnorm);
+      drawElectrons(ctx, colors, c.cam, W, H, c.electrons);
       drawLegend(ctx, colors, W, H, matName);
+    },
+    [],
+    (info) => {
+      const { canvas } = info;
 
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      dispose();
-    };
-  }, []);
+      const cam: OrbitCamera = { yaw: 0.55, pitch: 0.22, distance: 7, fov: Math.PI / 4 };
+      const dispose = attachOrbit(canvas, cam);
+
+      // Initialise electrons uniformly inside the cylinder.
+      const electrons: Electron[] = [];
+      for (let i = 0; i < N_ELECTRONS; i++) {
+        const u = Math.random();
+        const phi = Math.random() * Math.PI * 2;
+        const r = R_WIRE * Math.sqrt(u) * 0.95;
+        const x = (Math.random() * 2 - 1) * X_HALF * 0.95;
+        electrons.push({ pos: v3(x, r * Math.cos(phi), r * Math.sin(phi)) });
+      }
+
+      return { context: { cam, electrons }, cleanup: dispose };
+    },
+  );
 
   return (
     <Demo

@@ -275,12 +275,10 @@ export default function Ch1WhatIsElectricity() {
         three-dimensional.
       </Pullout>
       <p className="mb-prose-3">
-        Cavendish bounded the deviation from <em className="text-text italic">exactly</em> 2 to
-        within ±1/50 with a clever null-cavity experiment in 1773, decades before Coulomb's
-        published result <Cite id="cavendish-1773" in={SOURCES} />. Modern measurements have pushed
-        the bound to roughly <InlineMath tex="\pm 3\times 10^{-16}" /> — any deviation from exactly
-        2 is smaller than three parts in 10¹⁶
-        <Cite id="williams-faller-hill-1971" in={SOURCES} />. There are very few{' '}
+        The Coulomb-and-geometry story leaves one experimental question open: is the exponent
+        really exactly two? Modern null-cavity measurements have pushed the bound to roughly{' '}
+        <InlineMath tex="\pm 3\times 10^{-16}" /> — any deviation from exactly 2 is smaller than
+        three parts in 10¹⁶ <Cite id="williams-faller-hill-1971" in={SOURCES} />. There are very few{' '}
         <Term
           def={
             <>

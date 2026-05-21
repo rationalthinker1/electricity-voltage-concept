@@ -6,48 +6,50 @@
  * over a fixed ~1 cm² surface area for the demo. Color ramp matches
  * the JouleLab convention (cold gray → cherry red → orange → white-hot).
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { pathRoundRect } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS, pretty } from '@/lib/physics';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
 }
 
 const EMISSIVITY = 0.4;
-const A_SURF = 1e-4; // m² ≈ 1 cm² of radiating surface
+const A_SURF = 1e-4;
+
+interface Shim {
+  x: number;
+  y: number;
+  life: number;
+  vy: number;
+  wob: number;
+}
 
 export function JouleHeatingDemo({ figure }: Props) {
   const [I, setI] = useState(2);
   const [R, setR] = useState(5);
 
-  const stateRef = useRef({ I, R });
-  useEffect(() => {
-    stateRef.current = { I, R };
-  }, [I, R]);
-
   const P = I * I * R;
   const T_eq = stefanT(P);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
-    type Shim = { x: number; y: number; life: number; vy: number; wob: number };
-    const shimmer: Shim[] = [];
-    const N_SHIM = 50;
+  const stateRef = useSimState({ I, R });
 
-    function draw() {
-      const { I, R } = stateRef.current;
-      const P_ = I * I * R;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime, shimmer: Shim[]) => {
+      const s = stateRef.current;
+      const P_ = s.I * s.I * s.R;
       const T = stefanT(P_);
       const col = tempToColor(T);
       const visiblePower = P_ > 0.05 && T > 600;
-      const colors = getCanvasColors();
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -94,7 +96,7 @@ export function JouleHeatingDemo({ figure }: Props) {
         grd.addColorStop(1, withAlpha(colors.textDim, 0.1));
       }
       ctx.fillStyle = grd;
-      roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 8);
+      pathRoundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 8);
       ctx.fill();
 
       if (visiblePower) {
@@ -102,13 +104,13 @@ export function JouleHeatingDemo({ figure }: Props) {
         ctx.shadowColor = `rgba(${col.r},${col.g},${col.b},0.7)`;
         ctx.shadowBlur = 16 + col.glow * 22;
         ctx.lineWidth = 1.2;
-        roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 8);
+        pathRoundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 8);
         ctx.stroke();
         ctx.shadowBlur = 0;
       } else {
         ctx.strokeStyle = colors.borderStrong;
         ctx.lineWidth = 1;
-        roundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 8);
+        pathRoundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, 8);
         ctx.stroke();
       }
 
@@ -118,10 +120,10 @@ export function JouleHeatingDemo({ figure }: Props) {
       ctx.fillStyle = colors.blue;
       ctx.fillRect(wireRight + 8, top - 4, 4, thickness + 8);
 
-      // Heat shimmer above the wire
+      // Heat shimmer
       if (visiblePower) {
         if (shimmer.length === 0) {
-          for (let i = 0; i < N_SHIM; i++) {
+          for (let i = 0; i < 50; i++) {
             shimmer.push({
               x: wireLeft + Math.random() * (wireRight - wireLeft),
               y: top - Math.random() * 6,
@@ -132,22 +134,22 @@ export function JouleHeatingDemo({ figure }: Props) {
           }
         }
         const intensity = Math.min(1, col.glow * 1.5);
-        for (const s of shimmer) {
-          s.life -= 0.008;
-          s.y += s.vy;
-          s.wob += 0.12;
-          if (s.life <= 0 || s.y < top - 80) {
-            s.life = 1;
-            s.x = wireLeft + Math.random() * (wireRight - wireLeft);
-            s.y = top - Math.random() * 4;
-            s.vy = -0.3 - Math.random() * 0.5;
-            s.wob = Math.random() * Math.PI * 2;
+        for (const sh of shimmer) {
+          sh.life -= 0.008;
+          sh.y += sh.vy;
+          sh.wob += 0.12;
+          if (sh.life <= 0 || sh.y < top - 80) {
+            sh.life = 1;
+            sh.x = wireLeft + Math.random() * (wireRight - wireLeft);
+            sh.y = top - Math.random() * 4;
+            sh.vy = -0.3 - Math.random() * 0.5;
+            sh.wob = Math.random() * Math.PI * 2;
           }
-          const sx = s.x + Math.sin(s.wob) * 4;
-          const alpha = s.life * 0.45 * intensity;
+          const sx = sh.x + Math.sin(sh.wob) * 4;
+          const alpha = sh.life * 0.45 * intensity;
           ctx.fillStyle = `rgba(${col.r},${col.g},${col.b},${alpha})`;
           ctx.beginPath();
-          ctx.arc(sx, s.y, 1.2 + 1.4 * intensity, 0, Math.PI * 2);
+          ctx.arc(sx, sh.y, 1.2 + 1.4 * intensity, 0, Math.PI * 2);
           ctx.fill();
         }
       } else {
@@ -171,21 +173,18 @@ export function JouleHeatingDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText(describeGlow(T, P_), w - 14, 30);
 
-      // Bottom: I, R labels
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(
-        `I = ${I.toFixed(2)} A   ·   R = ${R.toFixed(2)} Ω   ·   surface ≈ 1 cm²`,
+        `I = ${s.I.toFixed(2)} A   ·   R = ${s.R.toFixed(2)} Ω   ·   surface ≈ 1 cm²`,
         w / 2,
         bot + 14,
       );
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    () => ({ context: [] as Shim[] }),
+  );
 
   return (
     <Demo
@@ -237,7 +236,6 @@ export function JouleHeatingDemo({ figure }: Props) {
 
 function stefanT(P: number): number {
   const T4 = P / (EMISSIVITY * PHYS.sigma_SB * A_SURF);
-  // 300 K floor so cold wire reads room T
   return Math.pow(Math.max(T4, Math.pow(300, 4)), 0.25);
 }
 
@@ -278,26 +276,4 @@ function tempToColor(T: number) {
     b = 140 + k * 115;
   }
   return { r: r | 0, g: g | 0, b: b | 0, glow: t };
-}
-
-function roundRect(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number,
-) {
-  r = Math.min(r, h / 2, w / 2);
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
 }

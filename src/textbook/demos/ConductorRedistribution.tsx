@@ -5,11 +5,13 @@
  * and the inside field cancels. In an insulator, they stay where they're put.
  * Toggle and watch.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -26,55 +28,35 @@ interface Charge {
 
 export function ConductorRedistributionDemo({ figure }: Props) {
   const [conductor, setConductor] = useState(true);
-  const stateRef = useRef({ conductor });
-  useEffect(() => {
-    stateRef.current = { conductor };
-  }, [conductor]);
+  const stateRef = useSimState({ conductor });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
-
-    const N = 60;
-    const padX = 80,
-      padY = 40;
-    const charges: Charge[] = [];
-    let lastFrame = 0;
-    // Initial random cluster in the left third of the box
-    for (let i = 0; i < N; i++) {
-      const ix = padX + Math.random() * (w * 0.3 - padX);
-      const iy = padY + Math.random() * (h - 2 * padY);
-      charges.push({ x: ix, y: iy, vx: 0, vy: 0, ix, iy });
-    }
-
-    function draw(now = performance.now()) {
-      if (now - lastFrame < 1000 / 30) {
-        raf = requestAnimationFrame(draw);
-        return;
-      }
-      lastFrame = now;
-      const { conductor } = stateRef.current;
-      const colors = getCanvasColors();
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime, charges: Charge[]) => {
+      const s = stateRef.current;
+      const N = charges.length;
+      const padX = 80,
+        padY = 40;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Container box
-      ctx.strokeStyle = conductor ? withAlpha(colors.teal, 0.7) : withAlpha(colors.text, 0.25);
+      ctx.strokeStyle = s.conductor ? withAlpha(colors.teal, 0.7) : withAlpha(colors.text, 0.25);
       ctx.lineWidth = 1.5;
       ctx.setLineDash([3, 3]);
       ctx.strokeRect(padX, padY, w - 2 * padX, h - 2 * padY);
       ctx.setLineDash([]);
-      ctx.fillStyle = conductor ? colors.teal : withAlpha(colors.textDim, 0.6);
+      ctx.fillStyle = s.conductor ? colors.teal : withAlpha(colors.textDim, 0.6);
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText(
-        conductor ? 'CONDUCTOR  →  charges free to move' : 'INSULATOR  →  charges pinned in place',
+        s.conductor ? 'CONDUCTOR  →  charges free to move' : 'INSULATOR  →  charges pinned in place',
         padX,
         padY - 12,
       );
 
-      if (conductor) {
+      if (s.conductor) {
         // Mutually-repel + box-confined → settle on the boundary
         for (let i = 0; i < N; i++) {
           const a = charges[i]!;
@@ -128,12 +110,23 @@ export function ConductorRedistributionDemo({ figure }: Props) {
         ctx.arc(c.x, c.y, 2.4, 0, Math.PI * 2);
         ctx.fill();
       }
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    (info) => {
+      const { w, h } = info;
+      const N = 60;
+      const padX = 80,
+        padY = 40;
+      const charges: Charge[] = [];
+      // Initial random cluster in the left third of the box
+      for (let i = 0; i < N; i++) {
+        const ix = padX + Math.random() * (w * 0.3 - padX);
+        const iy = padY + Math.random() * (h - 2 * padY);
+        charges.push({ x: ix, y: iy, vx: 0, vy: 0, ix, iy });
+      }
+      return { context: charges };
+    },
+  );
 
   return (
     <Demo

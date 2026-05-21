@@ -9,6 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -213,12 +214,20 @@ export function LeydenJarReplayDemo({ figure }: Props) {
 
       // Title text
       ctx.restore();
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('Leyden jar  ·  Pieter van Musschenbroek, 1746', 14, 12);
-      ctx.fillText(`charge: ${(s.charge * 100).toFixed(0)}%`, 14, 28);
+      drawLabel(ctx, {
+        x: 14,
+        y: 12,
+        text: 'Leyden jar  ·  Pieter van Musschenbroek, 1746',
+        color: getCanvasColors().textDim,
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        x: 14,
+        y: 28,
+        text: `charge: ${(s.charge * 100).toFixed(0)}%`,
+        color: getCanvasColors().textDim,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }

@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -127,19 +128,32 @@ export function WiedemannFranzDemo({ figure }: Props) {
       });
 
       // Headers
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('κ — thermal conductivity (W/m·K)', padL, 8);
-      ctx.fillStyle = getCanvasColors().teal;
-      ctx.fillText('σ — electrical conductivity (S/m)', padL, 22);
+      drawLabel(ctx, {
+        x: padL,
+        y: 8,
+        text: 'κ — thermal conductivity (W/m·K)',
+        color: getCanvasColors().accent,
+        size: 9,
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        x: padL,
+        y: 22,
+        text: 'σ — electrical conductivity (S/m)',
+        color: getCanvasColors().teal,
+        size: 9,
+        baseline: 'top',
+      });
 
       // Headline: average Lorenz across the metals
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.fillText(`L₀ = 2.44×10⁻⁸ W·Ω·K⁻²`, W - 12, 8);
+      drawLabel(ctx, {
+        x: W - 12,
+        y: 8,
+        text: `L₀ = 2.44×10⁻⁸ W·Ω·K⁻²`,
+        color: getCanvasColors().accent,
+        align: 'right',
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }

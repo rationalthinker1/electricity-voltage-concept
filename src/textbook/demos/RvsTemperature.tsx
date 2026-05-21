@@ -9,6 +9,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 
@@ -191,11 +192,13 @@ export function RvsTemperatureDemo({ figure }: Props) {
 
       // Title
       ctx.restore();
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('R(T) / R(20 °C)   — log scale', padL, 8);
+      drawLabel(ctx, {
+        x: padL,
+        y: 8,
+        text: 'R(T) / R(20 °C)   — log scale',
+        color: getCanvasColors().accent,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }

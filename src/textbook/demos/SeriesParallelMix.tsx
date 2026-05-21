@@ -17,14 +17,16 @@
  * them is the cleanest way to feel "any linear network reduces to those two
  * rules" before Chapter 13 builds mesh/nodal analysis on top.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -172,22 +174,25 @@ export function SeriesParallelMixDemo({ figure }: Props) {
   const network = useMemo(() => computeNetwork(topology, R1, R2, R3), [topology, R1, R2, R3]);
   const { Rtot, Itot } = network;
 
-  const stateRef = useRef({ topology, R1, R2, R3, t: 0 });
-  useEffect(() => {
-    stateRef.current = { ...stateRef.current, topology, R1, R2, R3 };
-  }, [topology, R1, R2, R3]);
+  interface SimState {
+    topology: TopologyId;
+    R1: number;
+    R2: number;
+    R3: number;
+  }
 
-  const cacheRef = useRef<StaticCacheEntry | null>(null);
+  interface SimContext {
+    cache: StaticCacheEntry | null;
+  }
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, dpr } = info;
-    let raf = 0;
+  const stateRef = useSimState<SimState>({ topology, R1, R2, R3 });
 
-    function draw() {
-      const st = stateRef.current;
-      st.t += 0.016;
-      const { topology, R1, R2, R3, t } = st;
-      const colors = getCanvasColors();
+  const setup = useSimLoop<SimState, SimContext>(
+    stateRef,
+    ({ ctx, w, h, dpr, colors }, _state, _dt, simTime, c) => {
+      const s = stateRef.current;
+      const { topology, R1, R2, R3 } = s;
+      const t = simTime;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -202,13 +207,13 @@ export function SeriesParallelMixDemo({ figure }: Props) {
       // Static schematic — cached on topology, geometry, resistances, theme.
       const theme = document.documentElement.getAttribute('data-theme') ?? 'dark';
       const cacheKey = `${topology}|${w}x${h}@${dpr}|R1:${R1}|R2:${R2}|R3:${R3}|t:${theme}`;
-      if (cacheRef.current?.key !== cacheKey) {
-        cacheRef.current = {
+      if (c.cache?.key !== cacheKey) {
+        c.cache = {
           key: cacheKey,
           canvas: buildSchematic(topology, w, h, R1, R2, R3, dpr, { batX, outX, cy, yTop, yBot }),
         };
       }
-      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+      ctx.drawImage(c.cache.canvas, 0, 0, w, h);
 
       // Battery '−' overlay (the renderer doesn't include the polarity glyph
       // beside the bottom lead).
@@ -235,12 +240,10 @@ export function SeriesParallelMixDemo({ figure }: Props) {
       const labelTopology =
         TOPOLOGIES.find((tp) => tp.id === topology)?.label ?? topology;
       ctx.fillText(`${labelTopology} — Kirchhoff in action`, w / 2, h - 14);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    () => ({ context: { cache: null as StaticCacheEntry | null } }),
+  );
 
   // EquationStrip content for the chosen topology.
   const topologyMeta = TOPOLOGIES.find((tp) => tp.id === topology)!;

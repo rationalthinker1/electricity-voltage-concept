@@ -7,21 +7,19 @@
  * actually slows when you crank R up — the same V = IR that the
  * readout shows.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
-// Fixed driving voltage and a reference total resistance so the visual
-// flow rate is "1" at the demo's initial configuration (R1 = 10 Ω in
-// series with R2 = 30 Ω → R_tot = 40 Ω → I = 0.3 A). Sliding R away
-// from the reference visibly speeds up or slows down the dot flow.
-const V_FIXED = 12; // V
-const I_REF = V_FIXED / 40; // 0.3 A — used to normalise visual speed
+const V_FIXED = 12;
+const I_REF = V_FIXED / 40;
 
 interface Props {
   figure?: string;
@@ -32,31 +30,34 @@ interface StaticCacheEntry {
   canvas: HTMLCanvasElement;
 }
 
+interface SimState {
+  R1: number;
+  R2: number;
+  series: boolean;
+}
+
+interface SimContext {
+  cache: StaticCacheEntry | null;
+}
+
 export function SeriesVsParallelDemo({ figure }: Props) {
   const [R1, setR1] = useState(10);
   const [R2, setR2] = useState(30);
   const [series, setSeries] = useState(true);
 
-  const stateRef = useRef({ R1, R2, series, t: 0 });
-  useEffect(() => {
-    stateRef.current = { ...stateRef.current, R1, R2, series };
-  }, [R1, R2, series]);
-
   const Rtot = series ? R1 + R2 : (R1 * R2) / (R1 + R2);
   const Itot = V_FIXED / Rtot;
 
-  const cacheRef = useRef<StaticCacheEntry | null>(null);
+  const stateRef = useSimState({ R1, R2, series });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, dpr } = info;
-    let raf = 0;
+  const setup = useSimLoop<SimState, SimContext>(
+    stateRef,
+    ({ ctx, w, h, colors, dpr }, _state, _dt, simTime, c) => {
+      const s = stateRef.current;
+      const { R1, R2, series } = s;
+      const t = simTime;
 
-    function draw() {
-      const st = stateRef.current;
-      st.t += 0.016;
-      const { R1, R2, series, t } = st;
-
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       const cx = w / 2;
@@ -64,43 +65,33 @@ export function SeriesVsParallelDemo({ figure }: Props) {
       const padX = 60;
       const yTop = cy - 50;
       const yBot = cy + 50;
-
-      // Battery on left
       const batX = padX;
-      // Output node on right
       const outX = w - padX;
 
-      // Cache key: schematic depends on canvas size, DPR, series-vs-parallel topology,
-      // the resistor labels, AND the current theme — wire colour swaps light/dark.
       const theme = document.documentElement.getAttribute('data-theme') ?? 'dark';
       const cacheKey = `${w}x${h}@${dpr}|s${series ? 1 : 0}|R1:${R1}|R2:${R2}|t:${theme}`;
-      if (cacheRef.current?.key !== cacheKey) {
-        cacheRef.current = {
+      if (!c.cache || c.cache.key !== cacheKey) {
+        c.cache = {
           key: cacheKey,
           canvas: buildStaticSchematic(w, h, series, R1, R2, dpr),
         };
       }
-      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+      ctx.drawImage(c.cache.canvas, 0, 0, w, h);
 
-      // Per-frame overlay: animated current dots + helper text + battery '−' glyph.
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = colors.blue;
       ctx.font = 'bold 12px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.fillText('−', batX - 18, cy + 18);
 
-      // Current driven by the fixed source. Speed/density of the dots is
-      // normalised against I_REF so the initial configuration runs at "1×".
       const RtotNow = series ? R1 + R2 : (R1 * R2) / (R1 + R2);
       const ItotNow = V_FIXED / RtotNow;
       const trunkScale = ItotNow / I_REF;
 
       if (series) {
-        // Node-voltage probes along the top wire (Kirchhoff's voltage law).
         const xR1 = padX + (outX - padX) * 0.3;
         const xR2 = padX + (outX - padX) * 0.66;
-        const V_afterR1 = V_FIXED - ItotNow * R1; // node between R1 and R2
+        const V_afterR1 = V_FIXED - ItotNow * R1;
 
-        // Animated current dots — same I through both resistors.
         drawCurrentDotsPath(
           ctx,
           t,
@@ -118,7 +109,7 @@ export function SeriesVsParallelDemo({ figure }: Props) {
         drawVoltageProbe(ctx, (xR2 + 22 + outX) / 2, yTop - 16, 0);
         drawVoltageProbe(ctx, (batX + outX) / 2, yBot + 18, 0);
 
-        ctx.fillStyle = getCanvasColors().textDim;
+        ctx.fillStyle = colors.textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText('same current through both — voltages add', cx, h - 14);
@@ -128,13 +119,11 @@ export function SeriesVsParallelDemo({ figure }: Props) {
         const branchY1 = cy - 26;
         const branchY2 = cy + 26;
 
-        // Trunk carries the full ItotNow; each branch carries V_FIXED / R_k.
         const I1 = V_FIXED / R1;
         const I2 = V_FIXED / R2;
         const branch1Scale = I1 / I_REF;
         const branch2Scale = I2 / I_REF;
 
-        // Trunk current
         drawCurrentDotsPath(
           ctx,
           t,
@@ -155,7 +144,6 @@ export function SeriesVsParallelDemo({ figure }: Props) {
           ],
           trunkScale,
         );
-        // Branch currents
         drawCurrentDotsPath(
           ctx,
           t,
@@ -175,22 +163,19 @@ export function SeriesVsParallelDemo({ figure }: Props) {
           branch2Scale,
         );
 
-        // Voltage probes — both branches see the full V across them.
         drawVoltageProbe(ctx, (batX + nodeL_x) / 2, yTop - 16, V_FIXED);
         drawVoltageProbe(ctx, (nodeR_x + outX) / 2, yTop - 16, 0);
         drawVoltageProbe(ctx, (batX + outX) / 2, yBot + 18, 0);
 
-        ctx.fillStyle = getCanvasColors().textDim;
+        ctx.fillStyle = colors.textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText('same voltage across both — currents add', cx, h - 14);
       }
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    () => ({ context: { cache: null } }),
+  );
 
   return (
     <Demo
@@ -429,7 +414,6 @@ function drawCurrentDotsPath(
   pts: Array<{ x: number; y: number }>,
   Iscale: number,
 ) {
-  // Walk along piecewise linear path; emit dots at intervals along it.
   const segs: Array<{ x0: number; y0: number; x1: number; y1: number; len: number }> = [];
   let total = 0;
   for (let i = 0; i < pts.length - 1; i++) {
@@ -441,10 +425,8 @@ function drawCurrentDotsPath(
   }
   if (total < 1) return;
   const spacing = 26;
-  // Speed scales with current — same V, larger R → smaller I → slower dots.
-  // Clamp the visual to keep motion perceptible across the slider range.
   const visScale = Math.max(0.05, Math.min(3, Iscale));
-  const speed = 80 * visScale; // px/sec
+  const speed = 80 * visScale;
   const offset = (t * speed) % spacing;
   const intensity = Math.max(0.2, Math.min(1, visScale));
   const blue = getCanvasColors().blue;
@@ -486,30 +468,4 @@ function drawVoltageProbe(ctx: CanvasRenderingContext2D, x: number, y: number, v
   ctx.fillStyle = colors.accent;
   ctx.fillText(text, x, y);
   ctx.restore();
-}
-
-function withAlpha(color: string, alpha: number): string {
-  if (color.startsWith('#')) {
-    let r: number;
-    let g: number;
-    let b: number;
-    if (color.length === 7) {
-      r = parseInt(color.slice(1, 3), 16);
-      g = parseInt(color.slice(3, 5), 16);
-      b = parseInt(color.slice(5, 7), 16);
-    } else if (color.length === 4) {
-      r = parseInt(color[1]! + color[1]!, 16);
-      g = parseInt(color[2]! + color[2]!, 16);
-      b = parseInt(color[3]! + color[3]!, 16);
-    } else {
-      return color;
-    }
-    return `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
-  }
-  const m = color.match(/rgba?\(([^)]+)\)/);
-  if (m) {
-    const parts = m[1]!.split(',').map((s) => s.trim());
-    return `rgba(${parts[0]},${parts[1]},${parts[2]},${alpha.toFixed(3)})`;
-  }
-  return color;
 }

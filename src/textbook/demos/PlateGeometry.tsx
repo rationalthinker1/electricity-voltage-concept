@@ -11,6 +11,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -70,11 +71,14 @@ export function PlateGeometryDemo({ figure }: Props) {
       ctx.lineTo(xL + plateW, topY - 14);
       ctx.stroke();
       ctx.restore();
-      ctx.fillStyle = getCanvasColors().text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`A = ${s.A_cm2.toFixed(0)} cm²`, cx, topY - 24);
+      drawLabel(ctx, {
+        x: cx,
+        y: topY - 24,
+        text: `A = ${s.A_cm2.toFixed(0)} cm²`,
+        color: getCanvasColors().text,
+        align: 'center',
+        baseline: 'bottom',
+      });
 
       // d-dimension marker on the right
       const xD = xL + plateW + 26;
@@ -90,17 +94,22 @@ export function PlateGeometryDemo({ figure }: Props) {
       ctx.lineTo(xD, botY - plateThick);
       ctx.stroke();
       ctx.restore();
-      ctx.fillStyle = getCanvasColors().text;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`d = ${s.d_mm.toFixed(2)} mm`, xD + 10, cy);
+      drawLabel(ctx, {
+        x: xD + 10,
+        y: cy,
+        text: `d = ${s.d_mm.toFixed(2)} mm`,
+        color: getCanvasColors().text,
+        baseline: 'middle',
+      });
 
-      // C label
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`C = ε₀ A / d`, 14, 12);
+      drawLabel(ctx, {
+        x: 14,
+        y: 12,
+        text: `C = ε₀ A / d`,
+        color: getCanvasColors().accent,
+        size: 11,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }

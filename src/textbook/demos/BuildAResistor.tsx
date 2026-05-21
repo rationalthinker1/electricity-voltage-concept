@@ -17,6 +17,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { pathRoundRect } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -168,7 +169,7 @@ export function BuildAResistorDemo({ figure }: Props) {
 
       // Body shell (rounded rect, beige for carbon-types, blue for metal-film, etc)
       const shellColor = isWirewound ? 'rgba(220,220,220,0.18)' : 'rgba(190,160,140,0.22)';
-      roundRect(ctx, bodyL, bodyT, bodyW, bodyH, 18);
+      pathRoundRect(ctx, bodyL, bodyT, bodyW, bodyH, 18);
       ctx.fillStyle = shellColor;
       ctx.fill();
       ctx.strokeStyle = getCanvasColors().borderStrong;
@@ -180,14 +181,14 @@ export function BuildAResistorDemo({ figure }: Props) {
       const cutH = bodyH / 2 + 12;
       ctx.save();
       ctx.beginPath();
-      roundRectPath(ctx, bodyL + 6, cutT, bodyW - 12, cutH, 8);
+      pathRoundRect(ctx, bodyL + 6, cutT, bodyW - 12, cutH, 8);
       ctx.clip();
 
       // Ceramic substrate (gray cylinder cross-section)
       const subH = cutH * 0.55;
       const subT = cutT + (cutH - subH) / 2;
       ctx.fillStyle = 'rgba(230,225,210,0.22)';
-      roundRect(ctx, bodyL + 12, subT, bodyW - 24, subH, 4);
+      pathRoundRect(ctx, bodyL + 12, subT, bodyW - 24, subH, 4);
       ctx.fill();
 
       if (!isWirewound) {
@@ -375,36 +376,4 @@ function decodeFourBand(R: number): string[] {
   // multiplier band index = exp - 1 (since two digits already account for ×10^1)
   const multIdx = Math.min(9, Math.max(0, exp - 1));
   return [COLOR[d1]!, COLOR[d2]!, COLOR[multIdx]!, '#caa84a'];
-}
-
-function roundRect(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number,
-) {
-  roundRectPath(ctx, x, y, w, h, r);
-}
-function roundRectPath(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number,
-) {
-  r = Math.min(r, h / 2, w / 2);
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
 }

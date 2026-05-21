@@ -16,14 +16,16 @@
  * Sources for the model: Griffiths §2.5 (Gauss pillbox derivation),
  * Feynman II §5-5, OpenStax Vol. 2 Ch. 5 ("infinite plane / parallel plate").
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -44,18 +46,14 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
   const E_Vm = sigma_SI / PHYS.eps_0; // V/m
   const V = E_Vm * d_m; // volts
 
-  const stateRef = useRef({ d_mm, sigma_nC_cm2 });
-  useEffect(() => {
-    stateRef.current = { d_mm, sigma_nC_cm2 };
-  }, [d_mm, sigma_nC_cm2]);
+  const stateRef = useSimState({ d_mm, sigma_nC_cm2 });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }) => {
+      const s = stateRef.current;
+      const { d_mm: dMm, sigma_nC_cm2: sigma } = s;
 
-    function draw() {
-      const { d_mm, sigma_nC_cm2 } = stateRef.current;
-      const colors = getCanvasColors();
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
@@ -66,7 +64,7 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
       const plateWidth = w - 2 * padX;
       const cyMid = h * 0.52;
       // d_mm maps linearly to pixel gap. 1 mm → ~1.8 px in this layout.
-      const gapPx = (d_mm / 150) * (h * 0.62);
+      const gapPx = (dMm / 150) * (h * 0.62);
       const yTop = cyMid - gapPx / 2;
       const yBot = cyMid + gapPx / 2;
 
@@ -94,7 +92,7 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
       // The arrow length is set by σ (drag the σ slider to lengthen them);
       // separation d does NOT affect arrow length. This is the surprise.
       // We cap visually so a saturated σ doesn't outgrow the gap.
-      const sigmaNorm = sigma_nC_cm2 / 0.2; // 0..1 across the slider range
+      const sigmaNorm = sigma / 0.2; // 0..1 across the slider range
       const arrowLen = Math.max(8, Math.min(gapPx * 0.7, 14 + sigmaNorm * 56));
       const arrowAlpha = 0.4 + 0.55 * sigmaNorm;
       ctx.strokeStyle = withAlpha(colors.accent, arrowAlpha);
@@ -136,7 +134,7 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
           const cpx = xEdge + side * 22;
           const cpy = sy;
           const ex = xEdge + side * 18;
-          const ey = sy + dy * 0.4 + (side * 6);
+          const ey = sy + dy * 0.4 + side * 6;
           ctx.beginPath();
           ctx.moveTo(sx, sy);
           ctx.quadraticCurveTo(cpx, cpy, ex, ey);
@@ -172,7 +170,7 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
       ctx.setLineDash([]);
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
-      ctx.fillText(`d = ${d_mm.toFixed(0)} mm`, bracketX + 18, (yTop + yBot) / 2);
+      ctx.fillText(`d = ${dMm.toFixed(0)} mm`, bracketX + 18, (yTop + yBot) / 2);
       ctx.restore();
 
       // Disclosure caption — what's fixed vs what's varying.
@@ -187,12 +185,9 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
         h - 14,
       );
       ctx.restore();
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+  );
 
   return (
     <Demo

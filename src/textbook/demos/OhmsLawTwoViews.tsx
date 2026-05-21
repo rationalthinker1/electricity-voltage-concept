@@ -16,14 +16,16 @@
  * driving current increases. Theme colours are re-read every frame, so
  * a light/dark toggle switches the diagram in place.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors, type ThemeColors } from '@/lib/canvasTheme';
+import { type ThemeColors, withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 // Top panel: fixed R, vary I, V follows.
 const R_FIXED = 5; // Ω
@@ -51,6 +53,11 @@ interface LoopGeom {
   perimeter: number;
 }
 
+interface SimContext {
+  top: number[];
+  bottom: number[];
+}
+
 export function OhmsLawTwoViewsDemo({ figure }: Props) {
   const [I_left, setILeft] = useState(2.5); // A — drives top panel
   const [R_right, setRRight] = useState(15); // Ω — drives bottom panel
@@ -59,30 +66,13 @@ export function OhmsLawTwoViewsDemo({ figure }: Props) {
   const V_left = R_FIXED * I_left;
   const I_right = V_FIXED / R_right;
 
-  const stateRef = useRef({ I_left, R_right });
-  useEffect(() => {
-    stateRef.current = { I_left, R_right };
-  }, [I_left, R_right]);
+  const stateRef = useSimState({ I_left, R_right });
 
-  // Each electron is parameterised by arc-length s along its loop's
-  // perimeter. We keep two separate phase arrays so the two panels run
-  // independently. Refs persist across frames; the values are recomputed
-  // (only the geometry-dependent perimeter) at the start of each draw.
-  const electronsRef = useRef<{ top: number[]; bottom: number[] }>({
-    top: Array.from({ length: N_ELECTRONS }, (_, i) => i / N_ELECTRONS),
-    bottom: Array.from({ length: N_ELECTRONS }, (_, i) => i / N_ELECTRONS),
-  });
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
-    let last = performance.now();
-
-    function draw(now: number) {
-      const dt = Math.min(0.05, (now - last) / 1000);
-      last = now;
-      const { I_left, R_right } = stateRef.current;
-      const colors = getCanvasColors();
+  const setup = useSimLoop<{ I_left: number; R_right: number }, SimContext>(
+    stateRef,
+    ({ ctx, w, h, colors }, _state, dt, _simTime, electrons) => {
+      const s = stateRef.current;
+      const { I_left, R_right } = s;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -115,7 +105,7 @@ export function OhmsLawTwoViewsDemo({ figure }: Props) {
           R: R_FIXED,
           V: R_FIXED * I_left,
         },
-        electronsRef.current.top,
+        electrons.top,
         dt,
       );
       drawPanel(
@@ -133,15 +123,18 @@ export function OhmsLawTwoViewsDemo({ figure }: Props) {
           R: R_right,
           V: V_FIXED,
         },
-        electronsRef.current.bottom,
+        electrons.bottom,
         dt,
       );
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    () => ({
+      context: {
+        top: Array.from({ length: N_ELECTRONS }, (_, i) => i / N_ELECTRONS),
+        bottom: Array.from({ length: N_ELECTRONS }, (_, i) => i / N_ELECTRONS),
+      },
+    }),
+  );
 
   return (
     <Demo
@@ -235,7 +228,6 @@ function drawPanel(
   ctx.font = '600 13px "DM Sans", sans-serif';
   ctx.textAlign = 'center';
   const accentColor = p.mode === 'V-of-I' ? colors.blue : colors.teal;
-  // Draw the title with one word highlighted.
   const parts = p.title.split(/(\s+)/);
   const widths = parts.map((s) => ctx.measureText(s).width);
   const totalW = widths.reduce((a, b) => a + b, 0);
@@ -280,7 +272,6 @@ interface Rect {
 }
 
 function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect, p: PanelArgs) {
-  // Plot margins inside the rect for axis labels.
   const ml = 28;
   const mr = 10;
   const mt = 8;
@@ -290,7 +281,6 @@ function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect
   const pw = rect.w - ml - mr;
   const ph = rect.h - mt - mb;
 
-  // Axes.
   ctx.strokeStyle = colors.borderStrong;
   ctx.lineWidth = 1;
   ctx.beginPath();
@@ -299,7 +289,6 @@ function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect
   ctx.lineTo(px + pw, py + ph);
   ctx.stroke();
 
-  // Axis tick marks.
   ctx.strokeStyle = colors.border;
   ctx.lineWidth = 1;
   for (let i = 1; i <= 3; i++) {
@@ -315,7 +304,6 @@ function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect
     ctx.stroke();
   }
 
-  // Axis labels.
   ctx.fillStyle = colors.textDim;
   ctx.font = "italic 11px 'STIX Two Text', serif";
   ctx.textAlign = 'right';
@@ -326,7 +314,6 @@ function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect
   ctx.textBaseline = 'top';
   ctx.fillText('I', px + pw - 8, py + ph + 6);
 
-  // Trace + dot.
   const xMax = I_MAX;
   const yMax = p.mode === 'V-of-I' ? V_MAX : R_AXIS_MAX;
   const toPx = (Ival: number, yval: number) => ({
@@ -339,13 +326,11 @@ function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect
   ctx.lineWidth = 2;
   ctx.beginPath();
   if (p.mode === 'V-of-I') {
-    // Line V = R·I from origin out to I_MAX.
     const a = toPx(0, 0);
     const b = toPx(xMax, R_FIXED * xMax);
     ctx.moveTo(a.x, a.y);
     ctx.lineTo(b.x, b.y);
   } else {
-    // Hyperbola R = V/I sampled across the plotted I range.
     const Imin = V_FIXED / R_AXIS_MAX;
     const N = 80;
     for (let i = 0; i <= N; i++) {
@@ -358,12 +343,10 @@ function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect
   }
   ctx.stroke();
 
-  // The live dot.
   const dotIx = p.I;
   const dotYx = p.mode === 'V-of-I' ? p.V : p.R;
   const dot = toPx(dotIx, Math.min(dotYx, yMax));
 
-  // Dashed guide lines from dot to each axis.
   ctx.strokeStyle = colors.border;
   ctx.setLineDash([3, 3]);
   ctx.lineWidth = 1;
@@ -375,7 +358,6 @@ function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect
   ctx.stroke();
   ctx.setLineDash([]);
 
-  // Tick labels for the live values.
   ctx.fillStyle = colors.text;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'right';
@@ -387,7 +369,6 @@ function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect
   ctx.textBaseline = 'top';
   ctx.fillText(`${dotIx.toFixed(2)}A`, dot.x, py + ph + 6);
 
-  // Dot.
   ctx.fillStyle = colors.bg;
   ctx.strokeStyle = traceColor;
   ctx.lineWidth = 2;
@@ -408,9 +389,6 @@ function drawCircuitMini(
   electrons: number[],
   dt: number,
 ) {
-  // Rectangular loop centred in rect. Battery on the left side, resistor on
-  // the right side; conventional current flows clockwise (electrons go the
-  // other way).
   const margin = 12;
   const x0 = rect.x + margin;
   const y0 = rect.y + margin + 4;
@@ -419,15 +397,11 @@ function drawCircuitMini(
   const cx = (x0 + x1) / 2;
   const cy = (y0 + y1) / 2;
 
-  // Brightness of the loop tracks the current relative to I_MAX, so both
-  // panels feel "alive" the same way.
   const Inorm = Math.min(1, Math.max(0, p.I / I_MAX));
   const loopAlpha = 0.3 + 0.55 * Inorm;
   const wireColor = withAlpha(colors.accent, loopAlpha);
 
   const elements: CircuitElement[] = [
-    // Loop wires — top half and bottom half, broken by the battery on the
-    // left and the resistor on the right.
     {
       kind: 'wire',
       points: [
@@ -450,7 +424,6 @@ function drawCircuitMini(
       color: wireColor,
       lineWidth: 1.8,
     },
-    // Battery (vertical) on the left.
     {
       kind: 'battery',
       at: { x: x0, y: cy },
@@ -465,7 +438,6 @@ function drawCircuitMini(
       label: `${p.V.toFixed(1)} V`,
       labelOffset: { x: -22, y: 0 },
     },
-    // Resistor (vertical) on the right.
     {
       kind: 'resistor',
       from: { x: x1, y: cy - 22 },
@@ -482,11 +454,6 @@ function drawCircuitMini(
 
   drawCircuit(ctx, { elements });
 
-  // ── Electron drift ─────────────────────────────────────────────────────
-  // Loop perimeter, walked clockwise starting at the top-right of the
-  // battery's positive terminal. We treat it as a closed rectangle for
-  // parametrisation; component breaks are handled by hiding the dot when
-  // its position falls inside a component zone.
   const loop: LoopGeom = {
     x0,
     y0,
@@ -495,13 +462,8 @@ function drawCircuitMini(
     cy,
     perimeter: 2 * (x1 - x0 + y1 - y0),
   };
-  const compHalf = 22; // half-height of the battery / resistor break
+  const compHalf = 22;
 
-  // Visual electron speed in px/s, signed: electrons move opposite to
-  // conventional current, so we increment s in the direction of the
-  // conventional clockwise lap but use a negative effective velocity when
-  // we want the cyan dots to drift counter-clockwise. Concretely we draw
-  // them as moving counter-clockwise around the loop (negative ds/dt).
   const speed = ELECTRON_BASE_SPEED * Inorm;
 
   for (let i = 0; i < electrons.length; i++) {
@@ -510,7 +472,6 @@ function drawCircuitMini(
 
   for (const phase of electrons) {
     const pt = pointOnLoop(loop, phase * loop.perimeter);
-    // Skip drawing if the dot is inside a component zone.
     if (Math.abs(pt.x - loop.x0) < 0.5 && Math.abs(pt.y - loop.cy) < compHalf) continue;
     if (Math.abs(pt.x - loop.x1) < 0.5 && Math.abs(pt.y - loop.cy) < compHalf) continue;
     ctx.fillStyle = colors.blue;
@@ -519,7 +480,6 @@ function drawCircuitMini(
     ctx.fill();
   }
 
-  // Conventional-current arrow centred on the top wire.
   const arrowY = y0 - 8;
   const ax0 = x0 + (x1 - x0) * 0.4;
   const ax1 = x0 + (x1 - x0) * 0.6;
@@ -543,7 +503,6 @@ function drawCircuitMini(
   ctx.fillStyle = withAlpha(colors.accent, arrowAlpha);
   ctx.fillText('I  (conventional)', (ax0 + ax1) / 2, arrowY - 4);
 
-  // A small "I = …" tag below the loop so the panel reads end-to-end.
   ctx.fillStyle = colors.textDim;
   ctx.font = '10px "JetBrains Mono", monospace';
   ctx.textAlign = 'center';
@@ -564,10 +523,6 @@ interface Point {
   y: number;
 }
 
-/**
- * Return the (x, y) at arc-length `s` along a rectangular loop, walked
- * clockwise starting from the top-left corner.
- */
 function pointOnLoop(loop: LoopGeom, s: number): Point {
   const { x0, y0, x1, y1 } = loop;
   const top = x1 - x0;
@@ -583,34 +538,4 @@ function pointOnLoop(loop: LoopGeom, s: number): Point {
   if (t < bottom) return { x: x1 - t, y: y1 };
   t -= bottom;
   return { x: x0, y: y1 - t };
-}
-
-/**
- * Convert a hex (#rrggbb / #rgb) or rgb()/rgba() colour string to an rgba
- * string with the supplied alpha. Anything else is returned unchanged.
- */
-function withAlpha(color: string, alpha: number): string {
-  if (color.startsWith('#')) {
-    let r: number;
-    let g: number;
-    let b: number;
-    if (color.length === 7) {
-      r = parseInt(color.slice(1, 3), 16);
-      g = parseInt(color.slice(3, 5), 16);
-      b = parseInt(color.slice(5, 7), 16);
-    } else if (color.length === 4) {
-      r = parseInt(color[1]! + color[1]!, 16);
-      g = parseInt(color[2]! + color[2]!, 16);
-      b = parseInt(color[3]! + color[3]!, 16);
-    } else {
-      return color;
-    }
-    return `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
-  }
-  const m = color.match(/rgba?\(([^)]+)\)/);
-  if (m) {
-    const parts = m[1]!.split(',').map((s) => s.trim());
-    return `rgba(${parts[0]},${parts[1]},${parts[2]},${alpha.toFixed(3)})`;
-  }
-  return color;
 }

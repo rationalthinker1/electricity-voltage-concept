@@ -13,6 +13,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -155,12 +156,13 @@ export function PowerDeratingDemo({ figure }: Props) {
       ctx.fillText(`Knee at ${T_KNEE} °C`, xT(T_KNEE) + 4, padT + 10);
       ctx.fillText(`Zero at ${T_ZERO} °C`, xT(T_ZERO) - 60, padT + 24);
 
-      // Title
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('ALLOWED DISSIPATION  vs  AMBIENT', padL, 8);
+      drawLabel(ctx, {
+        x: padL,
+        y: 8,
+        text: 'ALLOWED DISSIPATION  vs  AMBIENT',
+        color: getCanvasColors().accent,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }

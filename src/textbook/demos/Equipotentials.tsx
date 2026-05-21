@@ -4,13 +4,14 @@
  * Heatmap + equipotential rings. Toggle between dipole (+,−) and like-pair (+,+).
  * Drag either charge with mouse or touch to reshape the field in real time.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { drawCharge } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -26,10 +27,7 @@ export function EquipotentialsDemo({ figure }: Props) {
   const [q1Frac, setQ1Frac] = useState({ x: 0.35, y: 0.5 });
   const [q2Frac, setQ2Frac] = useState({ x: 0.65, y: 0.5 });
 
-  const stateRef = useRef({ dipole, q1Frac, q2Frac });
-  useEffect(() => {
-    stateRef.current = { dipole, q1Frac, q2Frac };
-  }, [dipole, q1Frac, q2Frac]);
+  const stateRef = useSimState({ dipole, q1Frac, q2Frac });
 
   const setup = useCallback(
     (info: CanvasInfo) => {
@@ -222,6 +220,7 @@ export function EquipotentialsDemo({ figure }: Props) {
         canvas.style.touchAction = '';
       };
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [dipole],
   );
 

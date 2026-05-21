@@ -13,6 +13,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel, drawLabeledValue } from '@/lib/canvasLayout';
+import { pathRoundRect } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -61,7 +63,7 @@ export function VariableResistorsDemo({ figure }: Props) {
 
       // Track body
       ctx.fillStyle = 'rgba(190,160,140,0.32)';
-      roundRect(ctx, trackL, trackY - trackH / 2, trackR - trackL, trackH, 4);
+      pathRoundRect(ctx, trackL, trackY - trackH / 2, trackR - trackL, trackH, 4);
       ctx.fill();
       ctx.strokeStyle = getCanvasColors().borderStrong;
       ctx.stroke();
@@ -69,7 +71,7 @@ export function VariableResistorsDemo({ figure }: Props) {
       // Resistive material texture (faint diagonal hatches)
       ctx.save();
       ctx.beginPath();
-      roundRectPath(ctx, trackL + 1, trackY - trackH / 2 + 1, trackR - trackL - 2, trackH - 2, 3);
+      pathRoundRect(ctx, trackL + 1, trackY - trackH / 2 + 1, trackR - trackL - 2, trackH - 2, 3);
       ctx.clip();
       ctx.strokeStyle = 'rgba(255,107,42,0.22)';
       ctx.lineWidth = 1;
@@ -127,21 +129,39 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.fillText('W (wiper)', wiperX, trackY - 42);
 
       // R_AW / R_WB labels
-      ctx.fillStyle = getCanvasColors().blue;
-      ctx.textAlign = 'left';
-      ctx.fillText(`R_AW`, trackL, trackY + 28);
-      ctx.fillText(fmtOhms(R_TOTAL * (1 - wiper)), trackL, trackY + 42);
-      ctx.fillStyle = getCanvasColors().pink;
-      ctx.textAlign = 'right';
-      ctx.fillText(`R_WB`, trackR, trackY + 28);
-      ctx.fillText(fmtOhms(R_TOTAL * wiper), trackR, trackY + 42);
+      drawLabeledValue(ctx, {
+        x: trackL,
+        y: trackY + 28,
+        label: 'R_AW',
+        value: fmtOhms(R_TOTAL * (1 - wiper)),
+        labelColor: getCanvasColors().blue,
+        valueColor: getCanvasColors().blue,
+        align: 'left',
+        labelSize: 10,
+        valueSize: 10,
+        gap: 14,
+      });
+      drawLabeledValue(ctx, {
+        x: trackR,
+        y: trackY + 28,
+        label: 'R_WB',
+        value: fmtOhms(R_TOTAL * wiper),
+        labelColor: getCanvasColors().pink,
+        valueColor: getCanvasColors().pink,
+        align: 'right',
+        labelSize: 10,
+        valueSize: 10,
+        gap: 14,
+      });
 
       // Title
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`POTENTIOMETER — R_total = ${(R_TOTAL / 1e3).toFixed(0)} kΩ`, trackL, 8);
+      drawLabel(ctx, {
+        x: trackL,
+        y: 8,
+        text: `POTENTIOMETER — R_total = ${(R_TOTAL / 1e3).toFixed(0)} kΩ`,
+        color: getCanvasColors().accent,
+        baseline: 'top',
+      });
 
       // ──────── Divider ────────
       ctx.strokeStyle = getCanvasColors().border;
@@ -158,7 +178,7 @@ export function VariableResistorsDemo({ figure }: Props) {
       const pW = 80,
         pH = 50;
       ctx.fillStyle = 'rgba(200,200,205,0.18)';
-      roundRect(ctx, ldrCX - pW / 2, ldrCY - pH / 2, pW, pH, 5);
+      pathRoundRect(ctx, ldrCX - pW / 2, ldrCY - pH / 2, pW, pH, 5);
       ctx.fill();
       ctx.strokeStyle = 'rgba(255,255,255,0.22)';
       ctx.stroke();
@@ -221,11 +241,13 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.fillText(`R = ${fmtOhms(R_LDR)}`, ldrCX, ldrCY + pH / 2 + 22);
 
       // Title
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('PHOTORESISTOR (CdS)', splitX + 12, 8);
+      drawLabel(ctx, {
+        x: splitX + 12,
+        y: 8,
+        text: 'PHOTORESISTOR (CdS)',
+        color: getCanvasColors().accent,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }
@@ -354,36 +376,4 @@ function fmtOhms(R: number): string {
   if (R >= 1e3) return (R / 1e3).toFixed(2) + ' kΩ';
   if (R >= 1) return R.toFixed(0) + ' Ω';
   return R.toFixed(2) + ' Ω';
-}
-
-function roundRect(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number,
-) {
-  roundRectPath(ctx, x, y, w, h, r);
-}
-function roundRectPath(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number,
-) {
-  r = Math.min(r, h / 2, w / 2);
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
 }

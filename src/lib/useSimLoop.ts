@@ -3,7 +3,7 @@ import { useCallback, useRef } from 'react';
 import type { CanvasInfo } from '@/components/AutoResizeCanvas';
 
 export interface SimLoopInitFn<C> {
-  (info: CanvasInfo): { context: C; cleanup: () => void };
+  (info: CanvasInfo): { context: C; cleanup?: () => void };
 }
 
 export interface SimLoopDrawFn<T, C = void> {

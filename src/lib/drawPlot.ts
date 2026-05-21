@@ -47,6 +47,18 @@ export interface ReferenceLineOptions {
   lineWidth?: number;
   dash?: number[];
   alpha?: number;
+  /** Optional annotation drawn alongside the line (e.g. "τ", "63%", "V₀"). */
+  label?: string;
+  /**
+   * Where the label sits along the line. For hLine: 'start' = left edge,
+   * 'end' = right edge (default), 'center' = midpoint. For vLine: 'start'
+   * = top, 'end' = bottom (default), 'center' = midpoint.
+   */
+  labelAlign?: 'start' | 'end' | 'center';
+  /** Label colour. Defaults to the line colour. */
+  labelColor?: string;
+  /** Label font size in px. Default 9. */
+  labelSize?: number;
 }
 
 /**
@@ -189,10 +201,11 @@ export function drawHLine(
   opts: ReferenceLineOptions = {},
 ) {
   const colors = getCanvasColors();
+  const lineColor = opts.color ?? colors.accent;
   const y = rect.y + rect.h - ((yValue - yMin) / (yMax - yMin)) * rect.h;
   ctx.save();
   ctx.globalAlpha = opts.alpha ?? 0.45;
-  ctx.strokeStyle = opts.color ?? colors.accent;
+  ctx.strokeStyle = lineColor;
   ctx.lineWidth = opts.lineWidth ?? 1;
   if (opts.dash) ctx.setLineDash(opts.dash);
   ctx.beginPath();
@@ -200,6 +213,17 @@ export function drawHLine(
   ctx.lineTo(rect.x + rect.w, y);
   ctx.stroke();
   if (opts.dash) ctx.setLineDash([]);
+  if (opts.label) {
+    const align = opts.labelAlign ?? 'end';
+    const labelX =
+      align === 'start' ? rect.x + 4 : align === 'center' ? rect.x + rect.w / 2 : rect.x + rect.w - 4;
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = opts.labelColor ?? lineColor;
+    ctx.font = `${opts.labelSize ?? 9}px "JetBrains Mono", monospace`;
+    ctx.textAlign = align === 'start' ? 'left' : align === 'center' ? 'center' : 'right';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(opts.label, labelX, y - 2);
+  }
   ctx.restore();
 }
 
@@ -215,10 +239,11 @@ export function drawVLine(
   opts: ReferenceLineOptions = {},
 ) {
   const colors = getCanvasColors();
+  const lineColor = opts.color ?? colors.accent;
   const x = rect.x + ((xValue - xMin) / (xMax - xMin)) * rect.w;
   ctx.save();
   ctx.globalAlpha = opts.alpha ?? 0.45;
-  ctx.strokeStyle = opts.color ?? colors.accent;
+  ctx.strokeStyle = lineColor;
   ctx.lineWidth = opts.lineWidth ?? 1;
   if (opts.dash) ctx.setLineDash(opts.dash);
   ctx.beginPath();
@@ -226,6 +251,17 @@ export function drawVLine(
   ctx.lineTo(x, rect.y + rect.h);
   ctx.stroke();
   if (opts.dash) ctx.setLineDash([]);
+  if (opts.label) {
+    const align = opts.labelAlign ?? 'end';
+    const labelY =
+      align === 'start' ? rect.y + 4 : align === 'center' ? rect.y + rect.h / 2 : rect.y + rect.h - 4;
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = opts.labelColor ?? lineColor;
+    ctx.font = `${opts.labelSize ?? 9}px "JetBrains Mono", monospace`;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = align === 'start' ? 'top' : align === 'center' ? 'middle' : 'bottom';
+    ctx.fillText(opts.label, x + 4, labelY);
+  }
   ctx.restore();
 }
 

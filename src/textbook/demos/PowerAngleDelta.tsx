@@ -98,7 +98,11 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
         color: colors.accent,
         lineWidth: 2.5,
       });
-      // Unstable branch dashed
+      drawLinePlot(ctx, rect, unstablePts, 0, 180, 0, pMax, {
+        color: colors.accent,
+        lineWidth: 2.5,
+      });
+      // Unstable branch dashed overlay
       ctx.save();
       ctx.setLineDash([4, 4]);
       drawLinePlot(ctx, rect, unstablePts, 0, 180, 0, pMax, {

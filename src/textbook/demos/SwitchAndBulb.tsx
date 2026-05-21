@@ -7,20 +7,15 @@
  * Reader toggles the switch closed. An amber wave starts at the battery
  * and propagates around the loop in ~5 frames, reaching the bulb almost
  * instantly. The bulb begins glowing the moment the field arrives.
- *
- * Two annotations:
- *   "field propagates at ~⅔ c — reaches bulb in ~5 ns"
- *   "an electron at the switch would take ~13 hours to reach the bulb"
- *
- * Both numbers are pinned: signal speed from libretexts-conduction;
- * drift transit estimated from v_d ≈ 2.9×10⁻⁵ m/s for 2.5 mm² Cu at 1 A.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 import { drawCircuit, renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -33,46 +28,35 @@ interface PathSeg {
   y2: number;
 }
 
-/**
- * Manual offscreen-canvas cache for the static schematic.
- *
- * Per MDN's canvas optimisation guide, the cheapest way to drop per-frame
- * cost on a mostly-static drawing is to bake it once into an offscreen
- * HTMLCanvasElement, then drawImage that onto the visible canvas each tick.
- * Recompute only when the cache key changes (resize, DPR change, or — for
- * this demo — switch-state / bulb-glow transitions).
- */
 interface StaticCacheEntry {
   key: string;
   canvas: HTMLCanvasElement;
 }
 
+interface SimState {
+  closed: boolean;
+}
+
+interface SimContext {
+  cache: StaticCacheEntry | null;
+  closedAtSimTime: number | null;
+}
+
 export function SwitchAndBulbDemo({ figure }: Props) {
   const [closed, setClosed] = useState(false);
   const [_, setTick] = useState(0);
-  const closedRef = useRef(closed);
-  useEffect(() => {
-    closedRef.current = closed;
-  }, [closed]);
 
-  const closedAtRef = useRef<number | null>(null);
-  useEffect(() => {
-    if (closed) closedAtRef.current = performance.now();
-    else closedAtRef.current = null;
-  }, [closed]);
+  const stateRef = useSimState({ closed });
 
-  const cacheRef = useRef<StaticCacheEntry | null>(null);
+  const setup = useSimLoop<SimState, SimContext>(
+    stateRef,
+    ({ ctx, w, h, colors, dpr }, _state, _dt, simTime, ctx_) => {
+      const s = stateRef.current;
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, dpr } = info;
-    let raf = 0;
-
-    function draw(now: number) {
-      const colors = getCanvasColors();
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Layout — battery at left, switch in middle-top, bulb at right.
+      // Layout
       const margin = 60;
       const top = h * 0.3;
       const bot = h * 0.78;
@@ -81,19 +65,21 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       const switchX = (batX + bulbX) / 2;
       const bulbY = (top + bot) / 2;
 
-      const isClosed = closedRef.current;
-      const sinceClose = closedAtRef.current != null ? (now - closedAtRef.current) / 1000 : 0;
-      // Visual: wave fills the loop in ~0.4 s of wallclock. In reality, ~5 ns.
-      const fillFrac = isClosed ? Math.min(1, sinceClose / 0.4) : 0;
-      const bulbOn = isClosed && fillFrac >= 1;
+      // Track when switch was closed (in simTime)
+      if (s.closed && ctx_.closedAtSimTime === null) {
+        ctx_.closedAtSimTime = simTime;
+      }
+      if (!s.closed) {
+        ctx_.closedAtSimTime = null;
+      }
+      const sinceClose = ctx_.closedAtSimTime != null ? simTime - ctx_.closedAtSimTime : 0;
+      const fillFrac = s.closed ? Math.min(1, sinceClose / 0.4) : 0;
+      const bulbOn = s.closed && fillFrac >= 1;
 
-      // Cache key for the static schematic: changes only when w/h/dpr or one
-      // of the discrete display states (switch closed, bulb glowing) flips.
-      // Also keyed on text colour so light/dark theme swaps re-bake the cache.
-      const cacheKey = `${w}x${h}@${dpr}|c${isClosed ? 1 : 0}|g${bulbOn ? 1 : 0}|t${colors.text}`;
-      if (cacheRef.current?.key !== cacheKey) {
+      // Static schematic cache
+      const cacheKey = `${w}x${h}@${dpr}|c${s.closed ? 1 : 0}|g${bulbOn ? 1 : 0}|t${colors.text}`;
+      if (!ctx_.cache || ctx_.cache.key !== cacheKey) {
         const staticElements: CircuitElement[] = [
-          // Dim base loop (one polyline closing back to the start).
           {
             kind: 'wire',
             points: [
@@ -105,7 +91,6 @@ export function SwitchAndBulbDemo({ figure }: Props) {
             color: withAlpha(colors.textDim, 0.25),
             lineWidth: 4,
           },
-          // Battery on the left (vertical), tall enough to touch top + bot rails.
           {
             kind: 'battery',
             at: { x: batX, y: bulbY },
@@ -119,16 +104,14 @@ export function SwitchAndBulbDemo({ figure }: Props) {
             positiveColor: colors.text,
             positivePlateLength: 28,
           },
-          // Switch on the top rail.
           {
             kind: 'switch',
             at: { x: switchX, y: top },
-            color: isClosed ? colors.accent : colors.text,
+            color: s.closed ? colors.accent : colors.text,
             label: 'switch',
-            state: isClosed ? 'closed' : 'open-up',
+            state: s.closed ? 'closed' : 'open-up',
             terminalGap: 32,
           },
-          // Bulb on the right side, glowing when the wave reaches it.
           {
             kind: 'bulb',
             at: { x: bulbX, y: bulbY },
@@ -138,43 +121,40 @@ export function SwitchAndBulbDemo({ figure }: Props) {
             labelOffset: { x: 0, y: 32 },
           },
         ];
-        cacheRef.current = {
+        ctx_.cache = {
           key: cacheKey,
           canvas: renderCircuitToCanvas({ elements: staticElements }, w, h, dpr),
         };
       }
-      // One drawImage replaces ~12 strokes/fills per frame.
-      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+      ctx.drawImage(ctx_.cache.canvas, 0, 0, w, h);
 
-      // Loop path, ordered so we can split it into a "dim base" plus an "energised prefix".
+      // Energised overlay
       const loop: PathSeg[] = [
-        { x1: batX, y1: top, x2: switchX, y2: top }, // battery top → switch
-        { x1: switchX, y1: top, x2: bulbX, y2: top }, // switch → bulb
-        { x1: bulbX, y1: top, x2: bulbX, y2: bot }, // down past bulb
-        { x1: bulbX, y1: bot, x2: batX, y2: bot }, // return along bottom
+        { x1: batX, y1: top, x2: switchX, y2: top },
+        { x1: switchX, y1: top, x2: bulbX, y2: top },
+        { x1: bulbX, y1: top, x2: bulbX, y2: bot },
+        { x1: bulbX, y1: bot, x2: batX, y2: bot },
       ];
-      const segLens = loop.map((s) => Math.hypot(s.x2 - s.x1, s.y2 - s.y1));
+      const segLens = loop.map((s_) => Math.hypot(s_.x2 - s_.x1, s_.y2 - s_.y1));
       const totalLen = segLens.reduce((a, b) => a + b, 0);
       const fillLen = fillFrac * totalLen;
 
-      // Energised polyline = the prefix of the loop covered by fillLen.
       const energised: { x: number; y: number }[] = [];
       if (fillLen > 0) {
         energised.push({ x: loop[0]!.x1, y: loop[0]!.y1 });
         let remaining = fillLen;
         for (let i = 0; i < loop.length && remaining > 0; i++) {
-          const s = loop[i]!;
+          const seg = loop[i]!;
           const L = segLens[i]!;
           const take = Math.min(remaining, L);
           energised.push({
-            x: s.x1 + (s.x2 - s.x1) * (take / L),
-            y: s.y1 + (s.y2 - s.y1) * (take / L),
+            x: seg.x1 + (seg.x2 - seg.x1) * (take / L),
+            y: seg.y1 + (seg.y2 - seg.y1) * (take / L),
           });
           remaining -= take;
         }
       }
 
-      // Energised overlay drawn on top of the cached backdrop.
       if (energised.length > 1) {
         ctx.save();
         ctx.shadowColor = withAlpha(colors.accent, 0.6);
@@ -185,7 +165,7 @@ export function SwitchAndBulbDemo({ figure }: Props) {
         ctx.restore();
       }
 
-      // Polarity glyphs hugging the battery's two leads.
+      // Polarity glyphs
       ctx.fillStyle = colors.pink;
       ctx.font = 'bold 11px JetBrains Mono';
       ctx.textAlign = 'right';
@@ -195,11 +175,11 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       ctx.fillText('−', batX - 12, bot);
 
       // Annotations
-      ctx.fillStyle = isClosed ? colors.accent : withAlpha(colors.textDim, 0.55);
+      ctx.fillStyle = s.closed ? colors.accent : withAlpha(colors.textDim, 0.55);
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(
-        isClosed
+        s.closed
           ? 'field propagates at ~⅔ c · reaches bulb in ~5 ns'
           : 'switch open — no field, no current',
         w / 2,
@@ -213,11 +193,10 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       );
 
       setTick((t) => (t + 1) % 1000);
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    () => ({ context: { cache: null, closedAtSimTime: null } }),
+  );
 
   return (
     <Demo

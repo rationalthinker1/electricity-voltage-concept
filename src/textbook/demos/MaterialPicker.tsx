@@ -4,14 +4,17 @@
  * At fixed V, L, A, swap the material and watch I (and P) collapse by
  * orders of magnitude. Copper carries ~1788 A; nichrome carries ~27 mA.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { drawLabel } from '@/lib/canvasLayout';
+import { withAlpha } from '@/lib/canvasTheme';
 import { MATERIALS, type MaterialKey } from '@/lib/physics';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -19,35 +22,29 @@ interface Props {
 
 const CHOICES: MaterialKey[] = ['copper', 'aluminum', 'iron', 'tungsten', 'nichrome'];
 
-// Fixed scenario
-const V = 12; // V
-const L = 1.0; // m
-const A_mm2 = 2.5; // mm²
+const V = 12;
+const L = 1.0;
+const A_mm2 = 2.5;
 const A_m2 = A_mm2 * 1e-6;
 
 export function MaterialPickerDemo({ figure }: Props) {
   const [mat, setMat] = useState<MaterialKey>('copper');
-
-  const stateRef = useRef({ mat });
-  useEffect(() => {
-    stateRef.current = { mat };
-  }, [mat]);
 
   const sigma = MATERIALS[mat]!.sigma;
   const R = L / (sigma * A_m2);
   const I = V / R;
   const P = V * I;
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
+  const stateRef = useSimState({ mat });
 
-    function draw() {
-      const { mat } = stateRef.current;
-      const sigma = MATERIALS[mat]!.sigma;
-      const R = L / (sigma * A_m2);
-      const I_ = V / R;
-      const colors = getCanvasColors();
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }) => {
+      const s = stateRef.current;
+      const mat_ = s.mat;
+      const sigma_ = MATERIALS[mat_]!.sigma;
+      const R_ = L / (sigma_ * A_m2);
+      const I_ = V / R_;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -61,16 +58,14 @@ export function MaterialPickerDemo({ figure }: Props) {
       const innerH = h - padT - padB;
       const rowH = innerH / CHOICES.length;
 
-      // Establish log range — pick min & max across the choice set at V/L/A
       const currents = CHOICES.map((k) => {
-        const s = MATERIALS[k]!.sigma;
-        return V / (L / (s * A_m2));
+        const s_ = MATERIALS[k]!.sigma;
+        return V / (L / (s_ * A_m2));
       });
       const logMax = Math.log10(Math.max(...currents)) + 0.5;
       const logMin = Math.log10(Math.min(...currents)) - 0.5;
       const logRange = logMax - logMin;
 
-      // Axis baseline
       ctx.strokeStyle = colors.border;
       ctx.beginPath();
       ctx.moveTo(padL, padT);
@@ -78,7 +73,6 @@ export function MaterialPickerDemo({ figure }: Props) {
       ctx.lineTo(w - padR, h - padB);
       ctx.stroke();
 
-      // Decade gridlines
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillStyle = colors.textDim;
@@ -98,20 +92,19 @@ export function MaterialPickerDemo({ figure }: Props) {
 
       CHOICES.forEach((k, i) => {
         const m = MATERIALS[k]!;
-        const s = m.sigma;
-        const ik = V / (L / (s * A_m2));
+        const s_ = m.sigma;
+        const ik = V / (L / (s_ * A_m2));
         const x0 = padL;
         const x1 = padL + ((Math.log10(ik) - logMin) / logRange) * innerW;
         const yMid = padT + rowH * (i + 0.5);
         const barH = Math.min(22, rowH * 0.55);
-        const isSel = k === mat;
+        const isSel = k === mat_;
         ctx.fillStyle = isSel ? withAlpha(colors.accent, 0.85) : withAlpha(colors.teal, 0.4);
         ctx.fillRect(x0, yMid - barH / 2, Math.max(1, x1 - x0), barH);
         ctx.strokeStyle = isSel ? colors.accent : withAlpha(colors.teal, 0.65);
         ctx.lineWidth = 1;
         ctx.strokeRect(x0, yMid - barH / 2, Math.max(1, x1 - x0), barH);
 
-        // Material label
         ctx.fillStyle = isSel ? colors.accent : withAlpha(colors.text, 0.75);
         ctx.font = isSel
           ? 'bold 10px "JetBrains Mono", monospace'
@@ -123,7 +116,6 @@ export function MaterialPickerDemo({ figure }: Props) {
           yMid + 3,
         );
 
-        // Numeric value at end of bar
         ctx.fillStyle = isSel ? colors.accent : withAlpha(colors.textDim, 0.85);
         ctx.textAlign = 'left';
         ctx.font = '10px "JetBrains Mono", monospace';
@@ -131,19 +123,17 @@ export function MaterialPickerDemo({ figure }: Props) {
         ctx.fillText(txt, Math.min(w - padR - 60, x1 + 6), yMid + 3);
       });
 
-      // Header
-      ctx.fillStyle = colors.accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(`V = ${V} V   ·   L = ${L} m   ·   A = ${A_mm2} mm²`, 10, 16);
-      // Suppress unused-var warning by referencing I_
+      drawLabel(ctx, {
+        x: 10,
+        y: 16,
+        text: `V = ${V} V   ·   L = ${L} m   ·   A = ${A_mm2} mm²`,
+        color: colors.accent,
+        size: 11,
+      });
       void I_;
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+  );
 
   return (
     <Demo
@@ -171,7 +161,7 @@ export function MaterialPickerDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Same V, L, A — material varies"
-        left={<InlineMath tex="I \;=\; \dfrac{V \sigma A}{L} \;=\; \dfrac{V}{R}" />}
+        left={<InlineMath tex="I \;=\; \dfrac{V \\sigma A}{L} \;=\; \dfrac{V}{R}" />}
         rightLabel={`Live substitution (${MATERIALS[mat]!.name})`}
         right={
           <InlineMath

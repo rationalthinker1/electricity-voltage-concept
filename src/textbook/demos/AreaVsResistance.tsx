@@ -5,90 +5,70 @@
  * the area is half the resistance. Visualization: wire thickness changes,
  * with a small inset showing the cross-section as a circle.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { drawEyebrowStats, drawLabeledValue } from '@/lib/canvasLayout';
+import { pathRoundRect } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { MATERIALS } from '@/lib/physics';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
 }
 
 export function AreaVsResistanceDemo({ figure }: Props) {
-  // Fixed length, fixed material — only A varies.
   const L = 1.0; // m
   const sigma = MATERIALS.copper!.sigma;
 
   const [Amm2, setAmm2] = useState(2.5);
 
-  const stateRef = useRef({ Amm2 });
-  useEffect(() => {
-    stateRef.current = { Amm2 };
-  }, [Amm2]);
-
   const A_m2 = Amm2 * 1e-6;
   const R = L / (sigma * A_m2);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
+  const stateRef = useSimState({ Amm2 });
 
-    function draw() {
-      const { Amm2 } = stateRef.current;
-      const colors = getCanvasColors();
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }) => {
+      const s = stateRef.current;
+      const { Amm2: A } = s;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Wire thickness scales with sqrt(A) so visual width matches diameter
-      // of equivalent cylinder. Range 0.1..10 mm² → ~14..120 px.
-      const tFrac = Math.sqrt(Amm2 / 10); // 0..1
+      const tFrac = Math.sqrt(A / 10);
       const thickness = 14 + tFrac * 90;
 
       const wireLeft = 80;
-      const wireRight = w - 160; // leave room for inset
+      const wireRight = w - 160;
       const wireCY = h / 2;
       const top = wireCY - thickness / 2;
       const bot = wireCY + thickness / 2;
 
-      // Wire body
       const grd = ctx.createLinearGradient(0, top, 0, bot);
       grd.addColorStop(0, withAlpha(colors.accent, 0.08));
       grd.addColorStop(0.5, withAlpha(colors.accent, 0.18));
       grd.addColorStop(1, withAlpha(colors.accent, 0.08));
       ctx.fillStyle = grd;
-      roundRect(
-        ctx,
-        wireLeft,
-        top,
-        wireRight - wireLeft,
-        thickness,
-        Math.min(10, thickness * 0.45),
-      );
+      pathRoundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, Math.min(10, thickness * 0.45));
       ctx.fill();
       ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 1;
-      roundRect(
-        ctx,
-        wireLeft,
-        top,
-        wireRight - wireLeft,
-        thickness,
-        Math.min(10, thickness * 0.45),
-      );
+      pathRoundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, Math.min(10, thickness * 0.45));
       ctx.stroke();
 
-      // End caps
       ctx.fillStyle = colors.pink;
       ctx.fillRect(wireLeft - 10, top - 4, 4, thickness + 8);
       ctx.fillStyle = colors.blue;
       ctx.fillRect(wireRight + 6, top - 4, 4, thickness + 8);
 
-      // Cross-section inset (right side)
+      // Cross-section inset
       const insetCX = w - 70;
       const insetCY = h / 2;
       const insetMaxR = Math.min(46, h / 2 - 30);
@@ -113,23 +93,25 @@ export function AreaVsResistanceDemo({ figure }: Props) {
       ctx.arc(insetCX, insetCY, insetR, 0, Math.PI * 2);
       ctx.stroke();
 
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText('cross-section', insetCX, insetCY + insetMaxR + 18);
-      ctx.fillText(`${Amm2.toFixed(2)} mm²`, insetCX, insetCY + insetMaxR + 30);
+      drawLabeledValue(ctx, {
+        x: insetCX,
+        y: insetCY + insetMaxR + 18,
+        label: 'cross-section',
+        value: A.toFixed(2),
+        unit: 'mm²',
+        align: 'center',
+      });
 
-      // Label
-      ctx.fillStyle = colors.accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(`COPPER  ·  L = ${L.toFixed(1)} m`, wireLeft, 18);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+      drawEyebrowStats(ctx, {
+        x: wireLeft,
+        y: 18,
+        parts: ['Copper', `L = ${L.toFixed(1)} m`],
+        color: colors.accent,
+        size: 11,
+      });
+    },
+    [],
+  );
 
   return (
     <Demo
@@ -154,7 +136,7 @@ export function AreaVsResistanceDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Geometric resistance"
-        left={<InlineMath tex="R \;=\; \dfrac{\rho L}{A}" />}
+        left={<InlineMath tex="R \;=\; \dfrac{\\rho L}{A}" />}
         rightLabel="Live substitution (Cu, L = 1 m)"
         right={
           <InlineMath
@@ -167,26 +149,4 @@ export function AreaVsResistanceDemo({ figure }: Props) {
       />
     </Demo>
   );
-}
-
-function roundRect(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number,
-) {
-  r = Math.min(r, h / 2, w / 2);
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
 }

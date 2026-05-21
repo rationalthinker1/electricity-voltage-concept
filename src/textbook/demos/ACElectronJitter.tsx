@@ -15,14 +15,16 @@
  * Time is shown at 1/60 wall-clock-to-real so the 60 Hz oscillation
  * looks like 1 Hz on screen.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { MATERIALS, PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
+
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -31,12 +33,12 @@ interface Props {
 const F_GRID = 60; // Hz
 const OMEGA = 2 * Math.PI * F_GRID;
 const V_RMS = 120; // standard US line voltage
-const A_WIRE = 2.08e-6; // 14 AWG, m² — typical lamp cord
+const A_WIRE = 2.08e-6; // 14 AWG, m²
 const TIME_SLOWDOWN = 60; // display 1 Hz instead of 60 Hz
 
 // Reference lengths (m) used in the scale strip.
 const REFERENCES: { label: string; m: number }[] = [
-  { label: 'Cu atom spacing', m: 0.256e-9 }, // nearest-neighbour distance in fcc copper
+  { label: 'Cu atom spacing', m: 0.256e-9 },
   { label: 'transistor gate', m: 5e-9 },
   { label: 'visible-light λ', m: 550e-9 },
   { label: 'red blood cell', m: 7e-6 },
@@ -66,25 +68,18 @@ export function ACElectronJitterDemo({ figure }: Props) {
     return { v_peak, x_peak, P_avg };
   }, [Irms, n]);
 
-  const stateRef = useRef({ x_peak });
-  useEffect(() => {
-    stateRef.current = { x_peak };
-  }, [x_peak]);
+  const stateRef = useSimState({ x_peak });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
-    const startTime = performance.now();
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, simTime) => {
+      const s = stateRef.current;
+      const { x_peak } = s;
 
-    function draw() {
-      const colors = getCanvasColors();
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      const { x_peak } = stateRef.current;
-
-      // Visible window: ±1500 nm horizontal, regardless of current. The
-      // electron's trace stays well inside this range up to ~15 A.
+      // Visible window: ±1500 nm horizontal
       const windowNm = 1500;
       const cx = w / 2;
       const cy = h * 0.52;
@@ -92,7 +87,7 @@ export function ACElectronJitterDemo({ figure }: Props) {
       const innerRight = w - 60;
       const pxPerNm = (innerRight - innerLeft) / 2 / windowNm;
 
-      // Centre baseline — the electron's mean position (zero on the scale).
+      // Centre baseline
       ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -100,7 +95,7 @@ export function ACElectronJitterDemo({ figure }: Props) {
       ctx.lineTo(innerRight, cy);
       ctx.stroke();
 
-      // Peak-amplitude markers (the envelope of the oscillation).
+      // Peak-amplitude markers
       const ampPx = x_peak * 1e9 * pxPerNm;
       ctx.save();
       ctx.strokeStyle = colors.accent;
@@ -120,15 +115,12 @@ export function ACElectronJitterDemo({ figure }: Props) {
       ctx.fillText(`±${(x_peak * 1e9).toFixed(0)} nm`, cx + ampPx + 4, cy - 32);
       ctx.restore();
 
-      // Current electron position. Time is slowed by TIME_SLOWDOWN so a
-      // 60 Hz oscillation animates at 1 Hz on-screen.
-      const tWall = (performance.now() - startTime) / 1000;
-      const tReal = tWall / TIME_SLOWDOWN;
+      // Current electron position. simTime is accumulated since loop start.
+      const tReal = simTime / TIME_SLOWDOWN;
       const xReal = x_peak * Math.sin(OMEGA * tReal);
       const electronX = cx + xReal * 1e9 * pxPerNm;
 
-      // The electron — pinkish-blue disk with "−" inside, matching the
-      // electron icon used elsewhere in the chapter.
+      // Electron disk
       ctx.beginPath();
       ctx.fillStyle = colors.blue;
       ctx.arc(electronX, cy, 9, 0, Math.PI * 2);
@@ -143,7 +135,7 @@ export function ACElectronJitterDemo({ figure }: Props) {
       ctx.fillText('−', electronX, cy + 1);
       ctx.textBaseline = 'alphabetic';
 
-      // Scale-bar tickmarks: ±500 nm and ±1000 nm.
+      // Scale-bar tickmarks
       ctx.strokeStyle = colors.textDim;
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
@@ -159,8 +151,7 @@ export function ACElectronJitterDemo({ figure }: Props) {
       }
       ctx.fillText('position (nm)', cx, cy + 60);
 
-      // Header callouts — "60 Hz AC, 14-AWG copper" and the time
-      // dilation note.
+      // Header callouts
       ctx.fillStyle = colors.textDim;
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
@@ -168,9 +159,7 @@ export function ACElectronJitterDemo({ figure }: Props) {
       ctx.textAlign = 'right';
       ctx.fillText(`shown at 1/${TIME_SLOWDOWN} real speed`, innerRight, 22);
 
-      // Reference strip across the top: how the peak swing compares to
-      // a handful of familiar lengths (log-scale conceptually, labelled
-      // with the real values).
+      // Reference strip
       const stripY = 56;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = colors.textMuted;
@@ -192,12 +181,9 @@ export function ACElectronJitterDemo({ figure }: Props) {
         ctx.fillText(ratioStr, sx, stripY + 14);
         sx += ctx.measureText(label).width + 22;
       }
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+  );
 
   return (
     <Demo

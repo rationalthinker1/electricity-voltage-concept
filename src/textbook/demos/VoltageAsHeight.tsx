@@ -7,54 +7,46 @@
  * direct). A toggle releases / parks the ball, and a slider sets the
  * slope. Pure intuition pump — no physical units pretending to be SI.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
 }
 
 export function VoltageAsHeightDemo({ figure }: Props) {
-  const [voltage, setVoltage] = useState(6); // "V" — drives the slope
+  const [voltage, setVoltage] = useState(6);
   const [rolling, setRolling] = useState(true);
-
-  const stateRef = useRef({ voltage, rolling });
-  useEffect(() => {
-    stateRef.current = { voltage, rolling };
-  }, [voltage, rolling]);
 
   // Energy a 1-coulomb test charge would gain rolling top → bottom:
   // W = q·ΔV. With q = 1 C and ΔV = voltage, W = voltage joules.
-  const energyJ = voltage; // q = 1 C
+  const energyJ = voltage;
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
+  const stateRef = useSimState({ voltage, rolling });
 
-    // Ball position parameterised along the ramp, t ∈ [0, 1].
-    let t = 0;
-    let v = 0; // along-ramp velocity, "demo units"
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime, ball) => {
+      const s = stateRef.current;
+      const { voltage: V, rolling } = s;
 
-    function draw() {
-      const { voltage, rolling } = stateRef.current;
-      const colors = getCanvasColors();
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Ramp endpoints. Higher voltage → steeper slope. Both ends fixed
-      // horizontally; the left end rises from baseline by an amount that
-      // scales with voltage.
+      // Ramp endpoints. Higher voltage → steeper slope.
       const padX = 70;
       const baseY = h - 60;
       const maxRise = h - 110;
-      const rise = (voltage / 12) * maxRise; // visual mapping only
+      const rise = (V / 12) * maxRise;
       const ax = padX,
-        ay = baseY - rise; // top of ramp (point A)
+        ay = baseY - rise;
       const bx = w - padX,
-        by = baseY; // bottom of ramp (point B)
+        by = baseY;
       const dx = bx - ax,
         dy = by - ay;
       const len = Math.hypot(dx, dy);
@@ -67,7 +59,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       ctx.lineTo(w, baseY);
       ctx.stroke();
 
-      // Filled hill — soft grey wedge under the ramp
+      // Filled hill
       ctx.fillStyle = withAlpha(colors.text, 0.04);
       ctx.beginPath();
       ctx.moveTo(ax, ay);
@@ -77,7 +69,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fill();
 
-      // Ramp line itself, in amber
+      // Ramp line
       ctx.strokeStyle = withAlpha(colors.accent, 0.7);
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -85,7 +77,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       ctx.lineTo(bx, by);
       ctx.stroke();
 
-      // Height marker (the "ΔV") — vertical dashed line on the left
+      // Height marker (the "ΔV")
       ctx.setLineDash([4, 4]);
       ctx.strokeStyle = withAlpha(colors.teal, 0.55);
       ctx.lineWidth = 1;
@@ -98,7 +90,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-      ctx.fillText(`ΔV = ${voltage.toFixed(1)} V`, ax - 10, (ay + baseY) / 2);
+      ctx.fillText(`ΔV = ${V.toFixed(1)} V`, ax - 10, (ay + baseY) / 2);
 
       // A and B labels
       ctx.fillStyle = colors.accent;
@@ -108,39 +100,37 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       ctx.fillText('A (high V)', ax, ay - 14);
       ctx.fillText('B (low V)', bx, by - 14);
 
-      // Update ball physics. The "acceleration" along the ramp is just
-      // the slope sin(θ), which we map directly from voltage. Pure
-      // intuition pump — no SI units pretending to be real.
-      const slope = dy / Math.max(len, 1); // sin(θ) ≥ 0 since dy ≥ 0
-      const accel = slope * 0.0015; // demo-unit acceleration
+      // Update ball physics
+      const slope = dy / Math.max(len, 1);
+      const accel = slope * 0.0015;
       if (rolling) {
-        v += accel;
-        v *= 0.998; // a touch of damping so it doesn't fly off-screen
-        t += v;
+        ball.v += accel;
+        ball.v *= 0.998;
+        ball.t += ball.v;
       } else {
-        t = 0;
-        v = 0;
+        ball.t = 0;
+        ball.v = 0;
       }
-      if (t > 1) {
-        t = 0;
-        v = 0;
+      if (ball.t > 1) {
+        ball.t = 0;
+        ball.v = 0;
       }
-      if (t < 0) {
-        t = 0;
-        v = 0;
+      if (ball.t < 0) {
+        ball.t = 0;
+        ball.v = 0;
       }
 
-      // Ball position along ramp. Lift by ball-radius perpendicular to slope.
-      const bxs = ax + dx * t;
-      const bys = ay + dy * t;
+      // Ball position along ramp
+      const bxs = ax + dx * ball.t;
+      const bys = ay + dy * ball.t;
       const nx = -dy / Math.max(len, 1);
       const ny = dx / Math.max(len, 1);
       const radius = 11;
       const cx = bxs + nx * -radius;
       const cy = bys + ny * -radius;
 
-      // Trail showing the path so far
-      if (t > 0.02) {
+      // Trail
+      if (ball.t > 0.02) {
         ctx.strokeStyle = withAlpha(colors.pink, 0.35);
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -149,7 +139,7 @@ export function VoltageAsHeightDemo({ figure }: Props) {
         ctx.stroke();
       }
 
-      // Ball — pink "positive test charge"
+      // Ball glow + body
       const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 2.5);
       grd.addColorStop(0, colors.pink);
       grd.addColorStop(1, withAlpha(colors.pink, 0));
@@ -166,12 +156,10 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('+', cx, cy);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    () => ({ context: { t: 0, v: 0 } }),
+  );
 
   return (
     <Demo

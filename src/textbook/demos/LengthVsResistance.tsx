@@ -5,51 +5,47 @@
  * R = ρL/A grows linearly. The visualization is a horizontal wire whose
  * drawn length changes with L; tick marks every meter give scale.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { drawEyebrowStats } from '@/lib/canvasLayout';
+import { pathRoundRect } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { MATERIALS } from '@/lib/physics';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
 }
 
 export function LengthVsResistanceDemo({ figure }: Props) {
-  // Fixed cross-section, fixed material — only L varies.
   const A_mm2 = 2.5;
   const A_m2 = A_mm2 * 1e-6;
   const sigma = MATERIALS.copper!.sigma;
 
   const [L, setL] = useState(1.0);
 
-  const stateRef = useRef({ L });
-  useEffect(() => {
-    stateRef.current = { L };
-  }, [L]);
-
   const R = L / (sigma * A_m2);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
+  const stateRef = useSimState({ L });
 
-    function draw() {
-      const { L } = stateRef.current;
-      const colors = getCanvasColors();
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }) => {
+      const s = stateRef.current;
+      const { L: L_ } = s;
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Layout: full canvas spans 10 m of physical scale; wire occupies
-      // (L / 10) of that span, centered. Always at least 30 px wide.
       const marginX = 60;
       const usableW = w - marginX * 2;
       const pxPerM = usableW / 10;
-      const wireLen = Math.max(30, L * pxPerM);
+      const wireLen = Math.max(30, L_ * pxPerM);
       const wireCY = h / 2;
       const wireLeft = (w - wireLen) / 2;
       const wireRight = wireLeft + wireLen;
@@ -62,9 +58,9 @@ export function LengthVsResistanceDemo({ figure }: Props) {
       ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
-      const nTicks = Math.floor(L) + 1;
+      const nTicks = Math.floor(L_) + 1;
       for (let i = 0; i <= nTicks; i++) {
-        const m = Math.min(i, L);
+        const m = Math.min(i, L_);
         const x = wireLeft + m * pxPerM;
         ctx.beginPath();
         ctx.moveTo(x, bot + 8);
@@ -79,11 +75,11 @@ export function LengthVsResistanceDemo({ figure }: Props) {
       grd.addColorStop(0.5, withAlpha(colors.accent, 0.18));
       grd.addColorStop(1, withAlpha(colors.accent, 0.08));
       ctx.fillStyle = grd;
-      roundRect(ctx, wireLeft, top, wireLen, thickness, 8);
+      pathRoundRect(ctx, wireLeft, top, wireLen, thickness, 8);
       ctx.fill();
       ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 1;
-      roundRect(ctx, wireLeft, top, wireLen, thickness, 8);
+      pathRoundRect(ctx, wireLeft, top, wireLen, thickness, 8);
       ctx.stroke();
 
       // End caps
@@ -92,17 +88,17 @@ export function LengthVsResistanceDemo({ figure }: Props) {
       ctx.fillStyle = colors.blue;
       ctx.fillRect(wireRight + 6, top - 4, 4, thickness + 8);
 
-      // Label
-      ctx.fillStyle = colors.accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(`COPPER  ·  A = ${A_mm2.toFixed(1)} mm²`, w / 2, top - 14);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+      drawEyebrowStats(ctx, {
+        x: w / 2,
+        y: top - 14,
+        parts: ['Copper', `A = ${A_mm2.toFixed(1)} mm²`],
+        color: colors.accent,
+        size: 11,
+        align: 'center',
+      });
+    },
+    [],
+  );
 
   return (
     <Demo
@@ -127,7 +123,7 @@ export function LengthVsResistanceDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Geometric resistance"
-        left={<InlineMath tex="R \;=\; \dfrac{\rho L}{A}" />}
+        left={<InlineMath tex="R \;=\; \dfrac{\\rho L}{A}" />}
         rightLabel="Live substitution (Cu, A = 2.5 mm²)"
         right={
           <InlineMath
@@ -140,26 +136,4 @@ export function LengthVsResistanceDemo({ figure }: Props) {
       />
     </Demo>
   );
-}
-
-function roundRect(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number,
-) {
-  r = Math.min(r, h / 2, w / 2);
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
 }

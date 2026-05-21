@@ -4,14 +4,16 @@
  * A graph: F(r) on log-log axes. Slider for r changes a marker on the curve.
  * Reader watches: doubling r quarters F. Slope is exactly −2.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { getCanvasColors } from '@/lib/canvasTheme';
+
 import { PHYS, pretty } from '@/lib/physics';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -25,20 +27,14 @@ export function InverseSquareDemo({ figure }: Props) {
   const r = rCm * 1e-2;
   const F = (PHYS.k * q * q) / (r * r);
 
-  // stateRef lets the draw loop see the latest slider value without
-  // re-running setup; setup memoises with [] deps.
-  const stateRef = useRef({ rCm });
-  useEffect(() => {
-    stateRef.current = { rCm };
-  }, [rCm]);
+  const stateRef = useSimState({ rCm });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }) => {
+      const s = stateRef.current;
+      const rCm = s.rCm;
 
-    function draw() {
-      const { rCm } = stateRef.current;
-      const colors = getCanvasColors();
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
@@ -56,14 +52,14 @@ export function InverseSquareDemo({ figure }: Props) {
       const logMinF = Math.log10(minF),
         logMaxF = Math.log10(maxF);
 
-      function xOf(rCm: number) {
+      function xOf(rCm_: number) {
         return (
           padL +
-          ((Math.log10(rCm) - Math.log10(minRcm)) / (Math.log10(maxRcm) - Math.log10(minRcm))) * pw
+          ((Math.log10(rCm_) - Math.log10(minRcm)) / (Math.log10(maxRcm) - Math.log10(minRcm))) * pw
         );
       }
-      function yOf(F: number) {
-        return padT + ph - ((Math.log10(F) - logMinF) / (logMaxF - logMinF)) * ph;
+      function yOf(F_: number) {
+        return padT + ph - ((Math.log10(F_) - logMinF) / (logMaxF - logMinF)) * ph;
       }
 
       // Grid
@@ -71,10 +67,10 @@ export function InverseSquareDemo({ figure }: Props) {
       ctx.globalAlpha = 0.06;
       ctx.strokeStyle = colors.text;
       ctx.lineWidth = 1;
-      for (const r of [1, 2, 5, 10, 20, 50, 100]) {
+      for (const r_ of [1, 2, 5, 10, 20, 50, 100]) {
         ctx.beginPath();
-        ctx.moveTo(xOf(r), padT);
-        ctx.lineTo(xOf(r), padT + ph);
+        ctx.moveTo(xOf(r_), padT);
+        ctx.lineTo(xOf(r_), padT + ph);
         ctx.stroke();
       }
       // Axes
@@ -151,12 +147,9 @@ export function InverseSquareDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.fillText('slope = −2  →  F ∝ 1/r²', padL + 12, padT + 6);
       ctx.restore();
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+  );
 
   return (
     <Demo

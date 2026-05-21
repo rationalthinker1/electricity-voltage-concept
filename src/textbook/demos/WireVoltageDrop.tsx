@@ -25,6 +25,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { pathRoundRect } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -116,11 +117,11 @@ export function WireVoltageDropDemo({ figure }: Props) {
       wireGrad.addColorStop(0.5, withAlpha(colors.accent, 0.4));
       wireGrad.addColorStop(1, withAlpha(colors.blue, 0.7));
       ctx.fillStyle = wireGrad;
-      roundRect(ctx, wireLeft, wireTop, wireLen, wireThickness, 8);
+      pathRoundRect(ctx, wireLeft, wireTop, wireLen, wireThickness, 8);
       ctx.fill();
       ctx.strokeStyle = withAlpha(colors.textDim, 0.5);
       ctx.lineWidth = 1;
-      roundRect(ctx, wireLeft, wireTop, wireLen, wireThickness, 8);
+      pathRoundRect(ctx, wireLeft, wireTop, wireLen, wireThickness, 8);
       ctx.stroke();
 
       // Terminal markers (+ on left, − on right).
@@ -349,26 +350,4 @@ export function WireVoltageDropDemo({ figure }: Props) {
       />
     </Demo>
   );
-}
-
-function roundRect(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number,
-) {
-  r = Math.min(r, h / 2, w / 2);
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
 }

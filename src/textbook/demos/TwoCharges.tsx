@@ -5,9 +5,9 @@
  * with a sign toggle, drawn with a force vector that points the right way.
  * Reader plays with same-sign vs opposite-sign and watches attraction flip.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import {
   Demo,
   DemoControls,
@@ -19,8 +19,10 @@ import {
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawArrow, drawCharge } from '@/lib/canvasPrimitives';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -39,24 +41,17 @@ export function TwoChargesDemo({ figure }: Props) {
   const F = (PHYS.k * q1 * q2) / (r * r); // signed
   const sameSign = Math.sign(q1) === Math.sign(q2);
 
-  // stateRef lets the draw loop read the latest state without re-running
-  // setup on every slider tick. Setup now memoises with [] deps; the canvas
-  // is initialised once and re-paints itself every frame.
-  const stateRef = useRef({ q1Pos, q2Pos, magNC, rCm });
-  useEffect(() => {
-    stateRef.current = { q1Pos, q2Pos, magNC, rCm };
-  }, [q1Pos, q2Pos, magNC, rCm]);
+  const stateRef = useSimState({ q1Pos, q2Pos, magNC, rCm });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
-
-    function draw() {
-      const { q1Pos, q2Pos, magNC, rCm } = stateRef.current;
-      const colors = getCanvasColors();
-      const sameSign_ = q1Pos === q2Pos;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }) => {
+      const s = stateRef.current;
+      const sameSign_ = s.q1Pos === s.q2Pos;
       const F_ =
-        (PHYS.k * (q1Pos ? 1 : -1) * (q2Pos ? 1 : -1) * (magNC * 1e-9) ** 2) / (rCm * 1e-2) ** 2;
+        (PHYS.k * (s.q1Pos ? 1 : -1) * (s.q2Pos ? 1 : -1) * (s.magNC * 1e-9) ** 2) /
+        (s.rCm * 1e-2) ** 2;
+
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
@@ -64,8 +59,8 @@ export function TwoChargesDemo({ figure }: Props) {
       const cmPerPx = 30 / w;
       const cy = h / 2;
       const cxMid = w / 2;
-      const cx1 = cxMid - rCm / 2 / cmPerPx;
-      const cx2 = cxMid + rCm / 2 / cmPerPx;
+      const cx1 = cxMid - s.rCm / 2 / cmPerPx;
+      const cx2 = cxMid + s.rCm / 2 / cmPerPx;
 
       // Distance line
       ctx.setLineDash([5, 5]);
@@ -79,7 +74,7 @@ export function TwoChargesDemo({ figure }: Props) {
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
-      ctx.fillText(`${rCm.toFixed(1)} cm`, cxMid, cy - 12);
+      ctx.fillText(`${s.rCm.toFixed(1)} cm`, cxMid, cy - 12);
 
       // Force arrows on each charge
       const arrowLen = Math.min(110, 24 + Math.log10(Math.abs(F_) + 1) * 13);
@@ -110,10 +105,10 @@ export function TwoChargesDemo({ figure }: Props) {
         ctx,
         { x: cx1, y: cy },
         {
-          color: q1Pos ? colors.pink : colors.blue,
+          color: s.q1Pos ? colors.pink : colors.blue,
           label: 'Q₁',
-          radius: 12 + Math.min(8, magNC * 0.7),
-          sign: q1Pos ? '+' : '−',
+          radius: 12 + Math.min(8, s.magNC * 0.7),
+          sign: s.q1Pos ? '+' : '−',
           textColor: colors.bg,
         },
       );
@@ -121,19 +116,16 @@ export function TwoChargesDemo({ figure }: Props) {
         ctx,
         { x: cx2, y: cy },
         {
-          color: q2Pos ? colors.pink : colors.blue,
+          color: s.q2Pos ? colors.pink : colors.blue,
           label: 'Q₂',
-          radius: 12 + Math.min(8, magNC * 0.7),
-          sign: q2Pos ? '+' : '−',
+          radius: 12 + Math.min(8, s.magNC * 0.7),
+          sign: s.q2Pos ? '+' : '−',
           textColor: colors.bg,
         },
       );
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+  );
 
   // Signed product of charges, in C² — used in the EquationStrip substitution.
   const q1q2 = q1 * q2; // signed C²
