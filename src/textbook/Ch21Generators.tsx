@@ -651,7 +651,7 @@ export default function Ch21Generators() {
       <h2 className="chapter-h2">What we have so far</h2>
 
       <p className="mb-prose-3">
-        Faraday's <em className="text-text italic">ℰ = − dΦ/dt</em> says that a moving magnet in a
+        Faraday's <InlineMath tex="\mathcal{E} = -d\Phi/dt" /> says that a moving magnet in a
         coil makes voltage. Wrap that into the rotational geometry of the motors chapter, drive the rotor
         mechanically instead of electrically, and you get a generator — the inverse of every machine
         in the last chapter. Three stator windings 120° apart give you the three-phase AC that the
@@ -753,10 +753,7 @@ export default function Ch21Generators() {
             have been uprated twice — original 1936 stators in many cases, replaced rotors and
             windings — and now produce roughly 2 GW peak. Each unit has a Francis turbine spinning
             at 180 RPM and an alternator with 40 poles producing 60 Hz at the synchronous speed{' '}
-            <em className="text-text italic">
-              n<sub>s</sub> = 120·60/40 = 180 RPM
-            </em>
-            . The slow rotation accommodates the high static head from Lake Mead without cavitating
+            <InlineMath tex="n_s = 120\cdot 60/40 = 180\ \text{RPM}" />. The slow rotation accommodates the high static head from Lake Mead without cavitating
             the runner
             <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
@@ -855,8 +852,8 @@ export default function Ch21Generators() {
         >
           <p className="mb-prose-2 last:mb-0">
             Every Tier-III or higher data center has multiple of these — typically{' '}
-            <em className="text-text italic">N+1</em> or <em className="text-text italic">2N</em>
-            redundancy on the standby generation. The unit is a turbocharged V16 diesel engine
+            <InlineMath tex="N{+}1" /> or <InlineMath tex="2N" />
+            {' '}redundancy on the standby generation. The unit is a turbocharged V16 diesel engine
             direct-coupled to a 4-pole synchronous generator. At 60 Hz the rotor turns at 1800 RPM,
             well within the diesel's optimal torque range. The engine is constantly trickle-warmed
             (block heater + glow plugs) so it can start under load within a few seconds; the voltage
@@ -924,7 +921,7 @@ export default function Ch21Generators() {
         <FAQItem q="Why does spinning a generator faster make more voltage but the same frequency relationship?">
           <p>
             Both go up together — that's the point. EMF peak ∝ ω (Faraday's law as{' '}
-            <em className="text-text italic">NBAω</em>), and frequency ∝ ω (the same rotation
+            <InlineMath tex="NBA\omega" />), and frequency ∝ ω (the same rotation
             produces the sinusoid). So a generator at twice the shaft speed produces twice the
             voltage at twice the frequency. To stay synchronised to a fixed-frequency grid, the
             shaft speed must be fixed at synchronous speed — you can't trade off shaft speed against

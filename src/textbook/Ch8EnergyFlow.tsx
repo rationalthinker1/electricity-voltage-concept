@@ -1163,14 +1163,14 @@ export default function Ch8EnergyFlow() {
         <FAQItem q="In a long transmission line, where is the energy actually flowing — inside the wires or in the gap between them?">
           <p>
             Overwhelmingly in the gap. For a coaxial cable carrying DC at voltage{' '}
-            <strong className="text-text font-medium">V</strong> and current{' '}
-            <strong className="text-text font-medium">I</strong>, the Poynting flux integrated over
+            <InlineMath tex="V" /> and current{' '}
+            <InlineMath tex="I" />, the Poynting flux integrated over
             any cross-section of the dielectric between inner and outer conductors equals{' '}
             <InlineMath tex="VI" /> exactly
             <Cite id="jackson-1999" in={SOURCES} />. The conductors carry essentially no energy
             along their interior — for an ideal superconducting line, zero. At AC the same statement
             holds with
-            <strong className="text-text font-medium"> S</strong> oscillating, and at radio
+            <InlineMath tex="S" /> oscillating, and at radio
             frequencies the skin effect pushes current to the surface, making it even more accurate
             to say that the signal travels in the surrounding dielectric while the metal just guides
             it
@@ -1183,7 +1183,7 @@ export default function Ch8EnergyFlow() {
             Not in the strict DC limit — the displacement term{' '}
             <InlineMath tex="\\varepsilon_0 \\,\\partial \\vec{E}/\\partial t" /> is zero, so
             Ampère's law reduces to its pre-Maxwell form and the{' '}
-            <strong className="text-text font-medium">B</strong>-field around the wire is given by
+            <InlineMath tex="B" />-field around the wire is given by
             the enclosed conduction current alone
             <Cite id="maxwell-1865" in={SOURCES} />. But the displacement current is what makes the
             Poynting picture self-consistent the moment anything time-varies: in a charging

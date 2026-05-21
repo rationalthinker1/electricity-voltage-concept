@@ -244,9 +244,9 @@ export default function Ch22MagneticallyCoupledCircuits() {
         tag="Try 22.1"
         question={
           <>
-            Two coils have <strong className="text-text font-medium">L₁ = 4 mH</strong>,{' '}
-            <strong className="text-text font-medium">L₂ = 9 mH</strong>, and a coupling coefficient{' '}
-            <strong className="text-text font-medium">k = 0.5</strong>. Find M.
+            Two coils have <InlineMath tex="L_1 = 4\,\text{mH}" />,{' '}
+            <InlineMath tex="L_2 = 9\,\text{mH}" />, and a coupling coefficient{' '}
+            <InlineMath tex="k = 0.5" />. Find M.
           </>
         }
         hint="M = k · √(L₁ L₂)."
@@ -346,8 +346,8 @@ export default function Ch22MagneticallyCoupledCircuits() {
         tag="Try 22.2"
         question={
           <>
-            Two coils have <strong className="text-text font-medium">L₁ = 1 mH</strong> and{' '}
-            <strong className="text-text font-medium">L₂ = 4 mH</strong>, wound so that k = 1
+            Two coils have <InlineMath tex="L_1 = 1\,\text{mH}" /> and{' '}
+            <InlineMath tex="L_2 = 4\,\text{mH}" />, wound so that k = 1
             (perfectly coupled — a hypothetical ideal). What is M?
           </>
         }
@@ -527,9 +527,9 @@ export default function Ch22MagneticallyCoupledCircuits() {
         tag="Try 22.3"
         question={
           <>
-            Two coils with <strong className="text-text font-medium">L₁ = 4 mH</strong>,{' '}
-            <strong className="text-text font-medium">L₂ = 9 mH</strong>,{' '}
-            <strong className="text-text font-medium">M = 3 mH</strong> are connected in series.
+            Two coils with <InlineMath tex="L_1 = 4\,\text{mH}" />,{' '}
+            <InlineMath tex="L_2 = 9\,\text{mH}" />,{' '}
+            <InlineMath tex="M = 3\,\text{mH}" /> are connected in series.
             Find L<sub>eq</sub> in both the aiding and opposing configurations, then verify that M =
             (L<sub>aid</sub> − L<sub>opp</sub>) / 4.
           </>
@@ -628,12 +628,10 @@ export default function Ch22MagneticallyCoupledCircuits() {
         tag="Try 22.4"
         question={
           <>
-            A coupled pair runs at <strong className="text-text font-medium">ω = 10⁶ rad/s</strong>{' '}
-            with <strong className="text-text font-medium">M = 1 mH</strong>. The secondary is
+            A coupled pair runs at <InlineMath tex="\omega = 10^{6}\,\text{rad/s}" />{' '}
+            with <InlineMath tex="M = 1\,\text{mH}" />. The secondary is
             closed by a pure resistive load{' '}
-            <strong className="text-text font-medium">
-              Z<sub>L</sub> = 50 Ω
-            </strong>
+            <InlineMath tex="Z_L = 50\,\Omega" />
             , and L₂ is small enough that ωL₂ ≪ 50 Ω. Estimate the reflected impedance seen at the
             primary.
           </>

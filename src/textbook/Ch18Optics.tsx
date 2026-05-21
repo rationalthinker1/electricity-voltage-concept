@@ -424,10 +424,7 @@ export default function Ch14Optics() {
         first and you get Étienne-Louis Malus's 1809 law: light of intensity I<sub>0</sub> linearly
         polarised at angle θ<sub>1</sub>
         passes through an analyser oriented at θ<sub>2</sub> with intensity
-        <strong className="text-text font-medium">
-          {' '}
-          I = I<sub>0</sub> cos²(θ<sub>2</sub> − θ<sub>1</sub>)
-        </strong>
+        {' '}<InlineMath tex="I = I_0 \cos^2(\theta_2 - \theta_1)" />
         . Cross the two axes (90° apart) and the field has no component along the analyser — nothing
         gets through. Add a
         <Term def="A birefringent plate whose thickness is chosen so that the two orthogonal polarisation components emerge with a 90° relative phase shift. Converts linear polarisation at ±45° to its axes into circular polarisation, and vice versa.">
@@ -468,10 +465,10 @@ export default function Ch14Optics() {
         At an interface, part of the wave reflects and part transmits. Stack two interfaces close
         together — a thin film between two media — and the two reflected waves{' '}
         <em className="text-text italic">interfere</em>. For normal incidence on a film of thickness{' '}
-        <strong className="text-text font-medium">t</strong> and refractive index{' '}
-        <strong className="text-text font-medium">n</strong>, the path-length difference between the
+        <InlineMath tex="t" /> and refractive index{' '}
+        <InlineMath tex="n" />, the path-length difference between the
         wave that reflected off the top surface and the one that reflected off the bottom is{' '}
-        <strong className="text-text font-medium">2 n t</strong>. Account for the π phase shift
+        <InlineMath tex="2nt" />. Account for the π phase shift
         acquired at each "low → high" reflection, and the condition for constructive interference
         becomes
         <Cite id="hecht-2017" in={SOURCES} />
@@ -482,11 +479,11 @@ export default function Ch14Optics() {
         2 n t = m λ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (zero or two inverting reflections)
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">n</strong> is the dimensionless refractive
-        index of the film,
-        <strong className="text-text font-medium"> t</strong> is the film thickness (in metres),{' '}
-        <strong className="text-text font-medium">λ</strong> is the vacuum wavelength of the light
-        (in metres), and <strong className="text-text font-medium">m</strong> is a non-negative
+        where <InlineMath tex="n" /> is the dimensionless refractive
+        index of the film,{' '}
+        <InlineMath tex="t" /> is the film thickness (in metres),{' '}
+        <InlineMath tex="\lambda" /> is the vacuum wavelength of the light
+        (in metres), and <InlineMath tex="m" /> is a non-negative
         integer labelling the interference order (m = 0, 1, 2, …).
       </p>
       <p className="mb-prose-3">
@@ -568,33 +565,29 @@ export default function Ch14Optics() {
         <Cite id="young-1804" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        For slit separation <strong className="text-text font-medium">d</strong> and screen distance{' '}
-        <strong className="text-text font-medium">L ≫ d</strong>, the path-length difference to a
+        For slit separation <InlineMath tex="d" /> and screen distance{' '}
+        <InlineMath tex="L \gg d" />, the path-length difference to a
         point at lateral position y on the screen is approximately d·sin θ ≈ d·y/L. Constructive
         interference happens at:
       </p>
       <Formula>sin θ = m λ / d, &nbsp; m = 0, ±1, ±2, …</Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">θ</strong> is the angle from the central
-        axis to a bright fringe (in radians),
-        <strong className="text-text font-medium"> m</strong> is the integer order of the fringe (m
+        where <InlineMath tex="\theta" /> is the angle from the central
+        axis to a bright fringe (in radians),{' '}
+        <InlineMath tex="m" /> is the integer order of the fringe (m
         = 0 is the central maximum, ±1 the first order, etc.),{' '}
-        <strong className="text-text font-medium">λ</strong> is the light's vacuum wavelength (in
-        metres), and <strong className="text-text font-medium">d</strong> is the slit separation (in
+        <InlineMath tex="\lambda" /> is the light's vacuum wavelength (in
+        metres), and <InlineMath tex="d" /> is the slit separation (in
         metres).
       </p>
       <p className="mb-prose-3">
         and on the screen the bright fringes sit at{' '}
-        <strong className="text-text font-medium">
-          y<sub>m</sub> ≈ m λ L / d
-        </strong>
+        <InlineMath tex="y_m \approx m\lambda L / d" />
         , where{' '}
-        <strong className="text-text font-medium">
-          y<sub>m</sub>
-        </strong>{' '}
+        <InlineMath tex="y_m" />{' '}
         is the lateral position of the mth fringe on the screen (in metres) and{' '}
-        <strong className="text-text font-medium">L</strong> is the slit-to-screen distance (in
-        metres). Fringe spacing <strong className="text-text font-medium">Δy = λ L / d</strong>. For
+        <InlineMath tex="L" /> is the slit-to-screen distance (in
+        metres). Fringe spacing <InlineMath tex="\Delta y = \lambda L / d" />. For
         550-nm light, slits 50 µm apart and a screen 500 mm away, the fringes are about 5 mm apart
         and easily visible by eye. The same physics underlies every diffraction-pattern measurement,
         every grating spectrometer, every laser-speckle experiment, and every interferometric
@@ -632,11 +625,11 @@ export default function Ch14Optics() {
       <p className="mb-prose-3">
         Take Young's two slits and multiply them: N equally-spaced slits with spacing d. Each pair
         contributes its own two-beam interference, and the N partial-amplitudes sum to the N-slit
-        pattern <em className="text-text italic">|sin(Nβ)/(N sinβ)|²</em> where β = π d sinθ / λ.
+        pattern <InlineMath tex="|\sin(N\beta)/(N\sin\beta)|^{2}" /> where β = π d sinθ / λ.
         The principal maxima sit at the same angles as the double-slit (
-        <strong className="text-text font-medium">sin θ = m λ / d</strong>), but every peak now has
+        <InlineMath tex="\sin\theta = m\lambda/d" />), but every peak now has
         a full-width-at-half-maximum that scales as{' '}
-        <strong className="text-text font-medium">1/N</strong>. That's what makes a{' '}
+        <InlineMath tex="1/N" />. That's what makes a{' '}
         <Term def="An optical element with many regularly-spaced grooves (typically 300–2400 lines/mm). Diffracts incident light into a wavelength-dependent set of orders, and is the dispersive element in nearly every modern spectrometer.">
           diffraction grating
         </Term>{' '}
@@ -736,9 +729,9 @@ export default function Ch14Optics() {
 
       <p className="mb-prose-3">
         Light is the Chapter-9 plane wave. A slab of matter is a region where the EM wave equation
-        runs slower by a factor of <em className="text-text italic">n</em>. Boundary conditions on{' '}
-        <strong className="text-text font-medium">E</strong> and
-        <strong className="text-text font-medium"> B</strong> hand you Snell's law in one line,
+        runs slower by a factor of <InlineMath tex="n" />. Boundary conditions on{' '}
+        <InlineMath tex="E" /> and{' '}
+        <InlineMath tex="B" /> hand you Snell's law in one line,
         Fresnel's reflection formulae in ten, Brewster's polarisation zero in a paragraph, total
         internal reflection from the same algebra you used for Snell, and thin-film colours from
         two-beam interference. Young's double slit was the experiment that turned "wave or
@@ -991,7 +984,7 @@ export default function Ch14Optics() {
           <p>
             In classical electrodynamics, light is a continuous EM wave with energy density
             (ε₀/2)|E|². Quantum electrodynamics adds that the wave's energy comes in quanta of
-            <strong className="text-text font-medium"> ℏω</strong>; each quantum is a photon. For
+            {' '}<InlineMath tex="\hbar\omega" />; each quantum is a photon. For
             the optics of this chapter — reflection, refraction, polarisation, interference, thin
             films, lasers — the classical wave picture suffices, because every observable is an
             intensity (proportional to |E|²) averaged over many photons. Photons matter when

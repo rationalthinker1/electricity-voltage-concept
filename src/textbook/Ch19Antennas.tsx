@@ -495,26 +495,17 @@ export default function Ch15Antennas() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          P<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="P_r" />{' '}
         is the power delivered to the matched receive antenna (in watts),{' '}
-        <strong className="text-text font-medium">
-          P<sub>t</sub>
-        </strong>{' '}
-        is the transmitted power (in watts),
-        <strong className="text-text font-medium">
-          {' '}
-          G<sub>t</sub>
-        </strong>{' '}
+        <InlineMath tex="P_t" />{' '}
+        is the transmitted power (in watts),{' '}
+        <InlineMath tex="G_t" />{' '}
         and{' '}
-        <strong className="text-text font-medium">
-          G<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="G_r" />{' '}
         are the dimensionless transmit and receive antenna gains relative to isotropic (often quoted
-        in dBi),
-        <strong className="text-text font-medium"> λ</strong> is the operating wavelength (in
-        metres), and <strong className="text-text font-medium">d</strong> is the line-of-sight
+        in dBi),{' '}
+        <InlineMath tex="\lambda" /> is the operating wavelength (in
+        metres), and <InlineMath tex="d" /> is the line-of-sight
         distance between the antennas (in metres).
       </p>
       <p className="mb-prose-3">
@@ -550,7 +541,7 @@ export default function Ch15Antennas() {
         <Term def="The factor cos²α by which received power drops when transmitter and receiver linear polarisations are misaligned by angle α. The antenna analogue of Malus's law in optics — a dipole only couples to the E-field component along its axis.">
           polarisation-loss factor
         </Term>{' '}
-        of <strong className="text-text font-medium">cos²α</strong>, where α is the angle between
+        of <InlineMath tex="\cos^{2}\alpha" />, where α is the angle between
         the two linear polarisation axes. Same Malus's law as optics: an antenna is a polarisation
         filter that only couples to the E-field component along its own axis. A 45° mismatch costs 3
         dB; a 90° mismatch is a full null on paper and 20–40 dB of suppression in practice
@@ -595,7 +586,7 @@ export default function Ch15Antennas() {
       <h2 className="chapter-h2">Near field vs far field</h2>
 
       <p className="mb-prose-3">
-        Friis assumes <strong className="text-text font-medium">d ≫ λ</strong>. Closer to an antenna
+        Friis assumes <InlineMath tex="d \gg \lambda" />. Closer to an antenna
         than that, the simple 1/r far-field picture doesn't apply. The radiation field of any
         oscillating source has three components: a 1/r³ "near zone" piece that looks essentially
         like a quasi-static dipole, a 1/r² intermediate piece, and a 1/r "radiation zone" piece. The
@@ -606,7 +597,7 @@ export default function Ch15Antennas() {
       </p>
       <p className="mb-prose-3">
         The boundary between these regions is at{' '}
-        <strong className="text-text font-medium">r ≈ λ/(2π)</strong>. Inside that radius, the field
+        <InlineMath tex="r \approx \lambda/(2\pi)" />. Inside that radius, the field
         structure is dominated by the reactive near-zone terms. Outside, the radiation zone takes
         over and the field looks locally like a plane EM wave with |E|/|H| = η₀.
       </p>
@@ -615,12 +606,9 @@ export default function Ch15Antennas() {
 
       <p className="mb-prose-3">
         For large aperture antennas (a parabolic dish, a phased array), there's an additional
-        "Fraunhofer / Fresnel" distance set by the antenna's physical size:
-        <strong className="text-text font-medium">
-          {' '}
-          r<sub>far</sub> ≈ 2 D²/λ
-        </strong>
-        , where D is the largest aperture dimension. For a 70-m DSN dish at 8.4 GHz this works out
+        "Fraunhofer / Fresnel" distance set by the antenna's physical size:{' '}
+        <InlineMath tex="r_{\text{far}} \approx 2D^{2}/\lambda" />,
+        where D is the largest aperture dimension. For a 70-m DSN dish at 8.4 GHz this works out
         to ≈ 2.7 km — meaning the diffraction pattern over which the dish's gain pattern is properly
         defined doesn't start until you're several kilometres downstream of the antenna. For nearby
         satellites or aircraft, the antenna is effectively in its own near field
@@ -670,22 +658,15 @@ export default function Ch15Antennas() {
         L ≈ λ / (2 √ε<sub>r</sub>) &nbsp;⇔&nbsp; f<sub>0</sub> ≈ c / (2 L √ε<sub>r</sub>)
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">L</strong> is the physical length of the
+        where <InlineMath tex="L" /> is the physical length of the
         patch in the resonant direction (in metres),{' '}
-        <strong className="text-text font-medium">
-          λ = c/f<sub>0</sub>
-        </strong>{' '}
+        <InlineMath tex="\lambda = c/f_0" />{' '}
         is the free-space wavelength at the resonant frequency (in metres),{' '}
-        <strong className="text-text font-medium">
-          f<sub>0</sub>
-        </strong>{' '}
+        <InlineMath tex="f_0" />{' '}
         is the design resonant frequency (in Hz),{' '}
-        <strong className="text-text font-medium">c ≈ 2.998×10⁸ m/s</strong> is the speed of light,
-        and
-        <strong className="text-text font-medium">
-          {' '}
-          ε<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light,
+        and{' '}
+        <InlineMath tex="\varepsilon_r" />{' '}
         is the dimensionless relative permittivity of the dielectric substrate beneath the patch.
       </p>
       <p className="mb-prose-3">
@@ -961,8 +942,8 @@ export default function Ch15Antennas() {
             <em className="text-text italic">isotropic radiator</em> (a hypothetical antenna that
             emits equally in all directions, total solid angle 4π steradians). dBd is gain
             referenced to a <em className="text-text italic">half-wave dipole</em>. Since the
-            half-wave dipole itself has gain ≈2.15 dBi over isotropic, the conversion is simply
-            <strong className="text-text font-medium"> dBi = dBd + 2.15</strong>
+            half-wave dipole itself has gain ≈2.15 dBi over isotropic, the conversion is simply{' '}
+            <InlineMath tex="\text{dBi} = \text{dBd} + 2.15" />{' '}
             <Cite id="balanis-2016" in={SOURCES} />. A "10 dBi" antenna and a "7.85 dBd" antenna are
             the same thing. Manufacturers' marketing prefers dBi (the larger number), engineering
             practice often uses dBd (the smaller, more intuitive number for hams). Always check
@@ -1072,9 +1053,7 @@ export default function Ch15Antennas() {
           <p>
             Two factors that look like they're "of d" combine into the (λ/4πd)². The transmitter's
             radiated intensity at distance d falls as{' '}
-            <strong className="text-text font-medium">
-              I = P<sub>t</sub>G<sub>t</sub>/(4πd²)
-            </strong>
+            <InlineMath tex="I = P_t G_t / (4\pi d^{2})" />{' '}
             (power per unit area on the sphere). The receiver's{' '}
             <em className="text-text italic">effective aperture</em> — the area-equivalent of its
             sensitivity — is A<sub>eff</sub> = G<sub>r</sub> λ²/(4π). Power captured is P

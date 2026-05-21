@@ -122,14 +122,12 @@ export default function Ch40HouseSurgeGrounding() {
       <Formula tex="V_{\text{drop}} = L \times dI/dt" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>drop</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{drop}}" />{' '}
         is the inductive voltage that appears across a length of conductor during a current
-        transient (in volts), <strong className="text-text font-medium">L</strong> is the
+        transient (in volts), <InlineMath tex="L" /> is the
         self-inductance of that conductor segment (in henries; a typical 30 ft overhead service drop
-        is roughly 5 µH), and
-        <strong className="text-text font-medium"> dI/dt</strong> is the rate of change of current
+        is roughly 5 µH), and{' '}
+        <InlineMath tex="dI/dt" /> is the rate of change of current
         through it (in A/s). For L = 5 µH and a current ramping from zero to 10 kA in 8 µs (dI/dt =
         1.25×10⁹ A/s), V<sub>drop</sub> ≈ 6.25 kV — that voltage appears across the inductance of
         the service drop itself, on top of whatever the line was already carrying
@@ -196,9 +194,9 @@ export default function Ch40HouseSurgeGrounding() {
         question={
           <>
             A 10 kA surge with an 8 µs rise time encounters a single ground rod whose 60 Hz
-            resistance is
-            <strong className="text-text font-medium"> R = 25 Ω</strong> and whose self-inductance
-            is <strong className="text-text font-medium">L = 6 µH</strong>. Compute the resistive
+            resistance is{' '}
+            <InlineMath tex="R = 25\ \Omega" /> and whose self-inductance
+            is <InlineMath tex="L = 6\ \mu\text{H}" />. Compute the resistive
             voltage drop (I × R at peak) and the inductive voltage drop (L × dI/dt during the rising
             edge). Which dominates?
           </>
@@ -384,17 +382,11 @@ export default function Ch40HouseSurgeGrounding() {
       <Formula tex="R_{\text{GES,total}} = \dfrac{1}{1/R_1 + 1/R_2}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          R<sub>GES total</sub>
-        </strong>{' '}
+        <InlineMath tex="R_{\text{GES,total}}" />{' '}
         is the combined 60 Hz resistance of the two rods seen from the panel (in ohms), and{' '}
-        <strong className="text-text font-medium">
-          R<sub>1</sub>
-        </strong>
+        <InlineMath tex="R_1" />
         ,{' '}
-        <strong className="text-text font-medium">
-          R<sub>2</sub>
-        </strong>{' '}
+        <InlineMath tex="R_2" />{' '}
         are the individual rod-to-earth resistances measured separately (in ohms). For two 25 Ω rods
         this gives 12.5 Ω, which is well inside NEC 250.56's compliance band. NEC 250.53(A)(3)
         specifies a minimum 6 ft separation between supplementary rods so that the
@@ -553,21 +545,15 @@ export default function Ch40HouseSurgeGrounding() {
       <Formula tex="V_{\text{let-through}} = V_{\text{clamp}} + L_{\text{lead}} \times dI/dt" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>let-through</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{let-through}}" />{' '}
         is the voltage the downstream equipment actually sees during the surge (in volts),{' '}
-        <strong className="text-text font-medium">
-          V<sub>clamp</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{clamp}}" />{' '}
         is the SPD's intrinsic clamping voltage — the voltage across the MOV stack when it is
         conducting the surge (in volts; typically the SPD's VPR-rated quantity),{' '}
-        <strong className="text-text font-medium">
-          L<sub>lead</sub>
-        </strong>{' '}
+        <InlineMath tex="L_{\text{lead}}" />{' '}
         is the total self-inductance of the lead wires connecting the SPD to the panel bus and to
         ground (in henries; a rule of thumb is 25 nH/inch for straight #6 AWG wire), and{' '}
-        <strong className="text-text font-medium">dI/dt</strong> is the rate of change of surge
+        <InlineMath tex="dI/dt" /> is the rate of change of surge
         current through those leads (in A/s). Twelve inches of #6 wire (about 300 nH) at dI/dt = 10⁹
         A/s adds 300 V of additional let-through
         <Cite id="ul-1449" in={SOURCES} />. The first rule of SPD installation is therefore: keep
@@ -584,7 +570,7 @@ export default function Ch40HouseSurgeGrounding() {
             panel bus and ground bar total{' '}
             <strong className="text-text font-medium">12 inches</strong> (300 nH of inductance).
             During the surge, the current through the SPD has a rate of rise of{' '}
-            <strong className="text-text font-medium">dI/dt = 10⁹ A/s</strong> (1 kA/µs). What is
+            <InlineMath tex="dI/dt = 10^{9}\ \text{A/s}" /> (1 kA/µs). What is
             the additional let-through from lead inductance, and what is the total worst-case
             voltage at the protected load?
           </>

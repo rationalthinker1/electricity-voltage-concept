@@ -401,7 +401,7 @@ export default function Ch18Transformers() {
         The answer Stanley proved in the field, and Westinghouse (employing Tesla on the motor side)
         commercialised in the years that followed, was: use AC, transform up to high voltage for the
         transmission line, transform back down at the load. Edison's competing DC system couldn't
-        transform — DC produces no <em className="text-text italic">dΦ/dt</em>, so no induced
+        transform — DC produces no <InlineMath tex="d\Phi/dt" />, so no induced
         secondary voltage — and was therefore limited to whatever voltage the end-user's bulbs could
         tolerate. At 110 V, Edison needed a generating station every mile or so just to keep wire
         losses manageable
@@ -453,9 +453,9 @@ export default function Ch18Transformers() {
           <>
             Deliver <strong className="text-text font-medium">1 MW</strong> over a{' '}
             <strong className="text-text font-medium">100 km</strong> transmission line whose total
-            resistance is <strong className="text-text font-medium">R = 10 Ω</strong>. Compare the
-            I²R loss at <strong className="text-text font-medium">V = 4 kV</strong> (Stanley's era)
-            to that at <strong className="text-text font-medium">V = 400 kV</strong> (modern HV
+            resistance is <InlineMath tex="R = 10\,\Omega" />. Compare the
+            I²R loss at <InlineMath tex="V = 4\,\text{kV}" /> (Stanley's era)
+            to that at <InlineMath tex="V = 400\,\text{kV}" /> (modern HV
             transmission).
           </>
         }
@@ -478,7 +478,7 @@ export default function Ch18Transformers() {
             </Formula>
             <p className="mb-prose-1 last:mb-0">
               A ten-thousand-fold reduction in loss for a hundred-fold increase in voltage — exactly
-              the <em className="text-text italic">V²</em>
+              the <InlineMath tex="V^{2}" />
               scaling. This is the single most important fact in long-distance electric power
               engineering
               <Cite id="grainger-power-systems-2003" in={SOURCES} />.
@@ -504,23 +504,14 @@ export default function Ch18Transformers() {
           impedance
         </Term>
         . Put a load{' '}
-        <em className="text-text italic">
-          Z<sub>L</sub>
-        </em>{' '}
+        <InlineMath tex="Z_L" />{' '}
         on the secondary. From the primary's point of view, the transformer plus load together draw
         a current{' '}
-        <em className="text-text italic">
-          I<sub>p</sub> = (N<sub>s</sub>/N<sub>p</sub>) · I<sub>s</sub>
-        </em>{' '}
+        <InlineMath tex="I_p = (N_s/N_p) \cdot I_s" />{' '}
         at a voltage{' '}
-        <em className="text-text italic">
-          V<sub>p</sub> = (N<sub>p</sub>/N<sub>s</sub>) · V<sub>s</sub>
-        </em>
-        . The ratio
-        <em className="text-text italic">
-          {' '}
-          V<sub>p</sub>/I<sub>p</sub>
-        </em>{' '}
+        <InlineMath tex="V_p = (N_p/N_s) \cdot V_s" />
+        . The ratio{' '}
+        <InlineMath tex="V_p/I_p" />{' '}
         — the impedance seen looking into the primary — is therefore:
       </p>
       <Formula>
@@ -565,7 +556,7 @@ export default function Ch18Transformers() {
           <>
             An <strong className="text-text font-medium">8 Ω</strong> speaker is connected to a
             transformer with turns ratio{' '}
-            <strong className="text-text font-medium">N_p/N_s = 20</strong>. What impedance does the
+            <InlineMath tex="N_p/N_s = 20" />. What impedance does the
             primary side see?
           </>
         }
@@ -647,7 +638,7 @@ export default function Ch18Transformers() {
       <p className="mb-prose-3">
         <strong className="text-text font-medium">Copper losses</strong> are the simplest: each
         winding has a finite resistance R<sub>cu</sub>, and the current flowing through it
-        dissipates <em className="text-text italic">I²R</em> as heat. This is the dominant loss in a
+        dissipates <InlineMath tex="I^{2}R" /> as heat. This is the dominant loss in a
         transformer operating near its rated load; sizing the wire (and therefore the window area in
         the core) trades against material cost.
       </p>
@@ -686,10 +677,7 @@ export default function Ch18Transformers() {
           : the B-H curve of a ferromagnetic material encloses a finite area; each AC cycle, an
           energy proportional to that area is dissipated per unit volume of core as the magnetic
           domains rearrange themselves. Steinmetz characterised this experimentally in 1893 as{' '}
-          <em className="text-text italic">
-            P<sub>h</sub> ∝ f · B<sub>peak</sub>
-            <sup>1.6</sup>
-          </em>
+          <InlineMath tex="P_h \propto f \cdot B_{\text{peak}}^{1.6}" />{' '}
           for typical electrical steels
           <Cite id="steinmetz-1893" in={SOURCES} />.
         </li>
@@ -762,13 +750,9 @@ export default function Ch18Transformers() {
           <>
             A 4 kVA transformer at <strong className="text-text font-medium">60 Hz</strong> is wound
             with{' '}
-            <strong className="text-text font-medium">
-              N<sub>p</sub> = 200
-            </strong>{' '}
+            <InlineMath tex="N_p = 200" />{' '}
             turns and runs at{' '}
-            <strong className="text-text font-medium">
-              B<sub>max</sub> = 1.5 T
-            </strong>{' '}
+            <InlineMath tex="B_{\max} = 1.5\,\text{T}" />{' '}
             for a primary V<sub>rms</sub> = 240 V. What core cross-section A<sub>core</sub> does it
             need? (Use V = 4.44 · f · N · B · A.)
           </>
@@ -902,9 +886,7 @@ export default function Ch18Transformers() {
       <p className="mb-prose-3">
         A transformer is two coils sharing one magnetic core. Faraday's law applied independently to
         each coil gives a voltage ratio equal to the turns ratio:{' '}
-        <em className="text-text italic">
-          V<sub>s</sub>/V<sub>p</sub> = N<sub>s</sub>/N<sub>p</sub>
-        </em>
+        <InlineMath tex="V_s/V_p = N_s/N_p" />
         . Power balance (in the ideal limit) gives the inverse current ratio. Combine and an
         impedance on one side looks like the same impedance times the squared turns ratio on the
         other. Real cores add hysteresis, eddy currents, leakage inductance, magnetizing current,
@@ -1117,9 +1099,7 @@ export default function Ch18Transformers() {
             A vacuum-tube power stage wants to drive a load in the kilohm range to extract usable
             power from the tube's high plate impedance. A loudspeaker is 4–16 Ω. The output
             transformer between them performs the impedance match:{' '}
-            <em className="text-text italic">
-              Z<sub>p</sub> = (N<sub>p</sub>/N<sub>s</sub>)² Z<sub>s</sub>
-            </em>
+            <InlineMath tex="Z_p = (N_p/N_s)^{2} Z_s" />
             , so a 25:1 transformer turns an 8 Ω speaker into a 5 kΩ load as seen at the tube's
             plate. Without it, the speaker would draw essentially no power from the tube — almost
             all of the available energy would dissipate in the tube's own internal resistance
@@ -1170,10 +1150,8 @@ export default function Ch18Transformers() {
         <FAQItem q="Why doesn't a transformer work on DC?">
           <p>
             Because the secondary's induced EMF is{' '}
-            <em className="text-text italic">
-              −N<sub>s</sub> dΦ/dt
-            </em>
-            . Steady DC produces a steady flux, so <em className="text-text italic">dΦ/dt = 0</em>{' '}
+            <InlineMath tex="-N_s\, d\Phi/dt" />
+            . Steady DC produces a steady flux, so <InlineMath tex="d\Phi/dt = 0" />{' '}
             and the secondary EMF is zero. Worse, with no induced EMF on the primary to balance the
             applied voltage, the primary draws whatever current its DC resistance allows — usually
             large enough to burn the winding out. The transformer is a strictly-AC device; DC
@@ -1266,7 +1244,7 @@ export default function Ch18Transformers() {
           <p>
             Yes — that's exactly how a flyback converter works, and how the high-voltage transformer
             in an old CRT television produced 25 kV from a 100 V switching pulse. The primary is fed
-            a square-wave or pulse voltage; <em className="text-text italic">dΦ/dt</em> is large
+            a square-wave or pulse voltage; <InlineMath tex="d\Phi/dt" /> is large
             during each transition, so the secondary delivers proportionally large voltage spikes.
             The catch is that the average flux can't grow without bound, so the core must reset
             between pulses (either by alternating polarity, as in a push-pull driver, or by a
@@ -1307,9 +1285,7 @@ export default function Ch18Transformers() {
           <p>
             Because their cores and copper windings are sized for the volt-second capacity they have
             to handle at 60 Hz. The required core cross-section scales as{' '}
-            <em className="text-text italic">
-              V<sub>p</sub>/(N<sub>p</sub> · f · B<sub>sat</sub>)
-            </em>
+            <InlineMath tex="V_p/(N_p \cdot f \cdot B_{\text{sat}})" />
             ; at 60 Hz with a few-hundred-turn primary at distribution voltage and a saturation
             field around 1.5 T for silicon steel, you end up with a core of tens to hundreds of
             cubic decimetres. Add the copper to carry tens to thousands of amps, the oil to insulate
@@ -1353,9 +1329,7 @@ export default function Ch18Transformers() {
             Because iron saturates. Above roughly 1.5–1.8 T (for grain-oriented silicon steel), the
             differential permeability of the core collapses toward that of air; the magnetising
             current spikes up, hysteresis losses balloon (Steinmetz's{' '}
-            <em className="text-text italic">
-              B<sup>1.6</sup>
-            </em>{' '}
+            <InlineMath tex="B^{1.6}" />{' '}
             exponent compounds), and the transformer becomes a nuisance. Designers pick the
             operating peak flux density at ~1.5 T as a sweet spot between core volume (smaller is
             better) and core loss + magnetising current (lower is better). High-frequency ferrite
