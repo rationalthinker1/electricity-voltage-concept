@@ -557,15 +557,11 @@ export default function Ch41EVPowertrain() {
         tag="Try 41.2"
         question={
           <>
-            A PMSM has pole-pair count <strong className="text-text font-medium">p = 4</strong>,
+            A PMSM has pole-pair count <InlineMath tex="p = 4" />,
             permanent-magnet flux linkage{' '}
-            <strong className="text-text font-medium">
-              ψ<sub>PM</sub> = 0.08 Wb
-            </strong>
+            <InlineMath tex="\psi_{\text{PM}} = 0.08\ \text{Wb}" />
             , and the inverter is commanding{' '}
-            <strong className="text-text font-medium">
-              i<sub>q</sub> = 200 A
-            </strong>
+            <InlineMath tex="i_q = 200\ \text{A}" />
             . What torque does the motor produce?
           </>
         }
@@ -715,11 +711,9 @@ export default function Ch41EVPowertrain() {
         question={
           <>
             A traction motor has back-EMF constant{' '}
-            <strong className="text-text font-medium">
-              ψ<sub>PM</sub> = 0.08 Wb
-            </strong>{' '}
-            and <strong className="text-text font-medium">p = 4</strong> pole pairs. From a{' '}
-            <strong className="text-text font-medium">350 V</strong> DC bus, at what mechanical
+            <InlineMath tex="\psi_{\text{PM}} = 0.08\ \text{Wb}" />{' '}
+            and <InlineMath tex="p = 4" /> pole pairs. From a{' '}
+            <InlineMath tex="350\ \text{V}" /> DC bus, at what mechanical
             speed does the inverter first saturate (i.e., what is the base speed)?
           </>
         }
@@ -948,14 +942,10 @@ export default function Ch41EVPowertrain() {
         question={
           <>
             For a passenger EV with rolling-resistance coefficient{' '}
-            <strong className="text-text font-medium">
-              C<sub>rr</sub> = 0.008
-            </strong>
+            <InlineMath tex="C_{rr} = 0.008" />
             , drag area{' '}
-            <strong className="text-text font-medium">
-              C<sub>d</sub>·A = 0.6 m²
-            </strong>
-            , mass <strong className="text-text font-medium">m = 2000 kg</strong>, at what speed
+            <InlineMath tex="C_d \cdot A = 0.6\ \text{m}^{2}" />
+            , mass <InlineMath tex="m = 2000\ \text{kg}" />, at what speed
             does aerodynamic drag equal rolling friction?
           </>
         }
@@ -1142,11 +1132,9 @@ export default function Ch41EVPowertrain() {
         tag="Try 41.5"
         question={
           <>
-            A Level-2 EVSE delivers <strong className="text-text font-medium">11.5 kW</strong> AC to
+            A Level-2 EVSE delivers <InlineMath tex="11.5\ \text{kW}" /> AC to
             the car. The onboard charger is{' '}
-            <strong className="text-text font-medium">
-              η<sub>OBC</sub> = 92%
-            </strong>
+            <InlineMath tex="\eta_{\text{OBC}} = 92\%" />
             . How long does it take to charge a 75 kWh pack from 20% to 80%?
           </>
         }
@@ -1178,7 +1166,7 @@ export default function Ch41EVPowertrain() {
             <strong className="text-text font-medium">100 km/h to 50 km/h</strong> using
             regenerative braking that recaptures{' '}
             <strong className="text-text font-medium">70%</strong> of the kinetic-energy change.
-            Vehicle mass <strong className="text-text font-medium">m = 2000 kg</strong>. How many
+            Vehicle mass <InlineMath tex="m = 2000\ \text{kg}" />. How many
             watt-hours go back into the pack?
           </>
         }
