@@ -55,23 +55,31 @@ echo "=== 5. codemod-drawLabel-shared.mjs (shared text preambles) ==="
 node scripts/codemod-drawLabel-shared.mjs ${DRY_FLAG} || true
 
 echo ""
-echo "=== 6. codemod-drawCaption.mjs (top captions) ==="
+echo "=== 6. codemod-drawLabel-aggressive.mjs (separated preambles) ==="
+node scripts/codemod-drawLabel-aggressive.mjs ${DRY_FLAG} || true
+
+echo ""
+echo "=== 7. codemod-drawCaption.mjs (top captions) ==="
 node scripts/codemod-drawCaption.mjs ${DRY_FLAG} || true
 
 echo ""
-echo "=== 7. codemod-drawCurrentDots.mjs (deduplicate current dots) ==="
+echo "=== 8. codemod-useSimState.mjs (useRef+useEffect bridges) ==="
+node scripts/codemod-useSimState.mjs ${WRITE_FLAG} || true
+
+echo ""
+echo "=== 9. codemod-drawCurrentDots.mjs (deduplicate current dots) ==="
 node scripts/codemod-drawCurrentDots.mjs ${WRITE_FLAG} || true
 
 echo ""
-echo "=== 8. codemod-annotationBox.mjs (info panels) ==="
+echo "=== 10. codemod-annotationBox.mjs (info panels) ==="
 node scripts/codemod-annotationBox.mjs ${DRY_FLAG} || true
 
 echo ""
-echo "=== 9. centralize-formatters.mjs (local fmt* → @/lib/formatters) ==="
+echo "=== 11. centralize-formatters.mjs (local fmt* → @/lib/formatters) ==="
 node scripts/centralize-formatters.mjs ${WRITE_FLAG} || true
 
 echo ""
-echo "=== 10. codemod-strip-unused-auto.mjs (auto remove unused imports) ==="
+echo "=== 12. codemod-strip-unused-auto.mjs (auto remove unused imports) ==="
 node scripts/codemod-strip-unused-auto.mjs ${DRY_FLAG} || true
 
 # ─── Type-check only the demo files ──────────────────────────────────────────
