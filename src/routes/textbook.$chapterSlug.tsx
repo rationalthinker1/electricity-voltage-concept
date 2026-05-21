@@ -1,7 +1,7 @@
-import { createFileRoute, notFound } from '@tanstack/react-router';
+import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { lazy, Suspense } from 'react';
 
-import { getChapter } from '@/textbook/data/chapters';
+import { CHAPTERS, getChapter } from '@/textbook/data/chapters';
 
 const CHAPTER_MODULES: Record<string, ReturnType<typeof lazy>> = {
   'what-is-electricity': lazy(() => import('@/textbook/Ch1WhatIsElectricity')),
@@ -50,6 +50,21 @@ const CHAPTER_MODULES: Record<string, ReturnType<typeof lazy>> = {
 
 export const Route = createFileRoute('/textbook/$chapterSlug')({
   beforeLoad: ({ params }) => {
+    // Numeric URLs like /textbook/1 redirect to the canonical slug URL.
+    // Slugs are stable; chapter numbers can drift, so the slug stays
+    // the source of truth.
+    if (/^\d+$/.test(params.chapterSlug)) {
+      const n = Number(params.chapterSlug);
+      const byNumber = CHAPTERS.find((c) => c.number === n);
+      if (byNumber) {
+        throw redirect({
+          to: '/textbook/$chapterSlug',
+          params: { chapterSlug: byNumber.slug },
+          replace: true,
+        });
+      }
+      throw notFound();
+    }
     if (!getChapter(params.chapterSlug)) throw notFound();
   },
   component: ChapterRoute,
