@@ -65,7 +65,6 @@ export function CoreLossesDemo({ figure }: Props) {
       ctx.lineTo(cxL, pad + plotH);
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: 'B', x: cxL + 4, y: pad + 2, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: 'H', x: pad + plotW - 4, y: cyL - 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
       const omega = 2.0;
@@ -106,9 +105,6 @@ export function CoreLossesDemo({ figure }: Props) {
       ctx.arc(dx, dy, 4, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'B-H hysteresis loop', x: pad + 4, y: pad + 4, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: 'area = energy/cycle/m³', x: pad + 4, y: pad + 18, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.restore();
@@ -180,9 +176,6 @@ export function CoreLossesDemo({ figure }: Props) {
         ctx.restore();
         ctx.fillStyle = colors.pink;
       }
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: laminated ? 'LAMINATED (50 thin layers)' : 'SOLID CORE', x: rx + 4, y: ry - 16, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: 'eddy-current loops in cross-section', x: rx + 4, y: h - 18, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.restore();

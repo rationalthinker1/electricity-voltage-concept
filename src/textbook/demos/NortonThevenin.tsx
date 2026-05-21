@@ -85,9 +85,6 @@ export function NortonTheveninDemo({ figure }: Props) {
         ctx.save();
         ctx.globalAlpha = 0.85;
         ctx.fillStyle = getCanvasColors().textDim;
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
         drawLabel(ctx, { text: 'Original network', x: colW / 2, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
         drawLabel(ctx, { text: 'Thévenin equivalent + load', x: colW + colW / 2, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
         drawLabel(ctx, { text: 'Norton equivalent + load', x: 2 * colW + colW / 2, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
@@ -101,9 +98,6 @@ export function NortonTheveninDemo({ figure }: Props) {
         ctx.stroke();
 
         ctx.fillStyle = getCanvasColors().accent;
-        ctx.font = 'bold 14px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
         drawLabel(ctx, { text: '⇌', x: colW, y: h * 0.45, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
         drawLabel(ctx, { text: '⇌', x: 2 * colW, y: h * 0.45, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
 

@@ -79,9 +79,6 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
       ctx.fillStyle = colors.blue;
       ctx.fillRect(splitX - 34, h * 0.18, 26, h * 0.64);
       ctx.restore();
-      ctx.font = 'bold 12px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: 'N', x: 21, y: h / 2, color: colors.pink, weight: 'bold', size: 12, font: '12px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       drawLabel(ctx, { text: 'S', x: splitX - 21, y: h / 2, color: colors.blue, weight: 'bold', size: 12, font: '12px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       // Field arrows
@@ -196,8 +193,6 @@ export function RotatingCoilGeneratorDemo({ figure }: Props) {
         ctx.stroke();
       }
       ctx.restore();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'EMF(t)', x: scopeX, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: `peak = ${peak.toFixed(1)} V`, x: scopeX + scopeW, y: 12, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       ctx.restore();

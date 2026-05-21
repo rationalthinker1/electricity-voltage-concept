@@ -184,16 +184,11 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       }
 
       // Polarity glyphs
-      ctx.font = 'bold 11px JetBrains Mono';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: '+', x: batX - 18, y: top, color: colors.pink, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'right', baseline: 'middle' });
       drawLabel(ctx, { text: '−', x: batX - 12, y: bot, color: colors.blue, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'right', baseline: 'middle' });
 
       // Annotations
       ctx.fillStyle = s.closed ? colors.accent : withAlpha(colors.textDim, 0.55);
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: s.closed
                   ? 'field propagates at ~⅔ c · reaches bulb in ~5 ns'
                   : 'switch open — no field, no current', x: w / 2, y: h - 32, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });

@@ -104,9 +104,6 @@ export function WireVoltageDropDemo({ figure }: Props) {
 
       // V-axis ticks at 0 V and V₀ on the left edge.
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: `${V0} V`, x: wireLeft - 8, y: yOfV(V0), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       drawLabel(ctx, { text: '0 V', x: wireLeft - 8, y: hillBaseY, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
 
@@ -126,9 +123,6 @@ export function WireVoltageDropDemo({ figure }: Props) {
       ctx.stroke();
 
       // Terminal markers (+ on left, − on right).
-      ctx.font = 'bold 12px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: '+', x: wireLeft - 18, y: wireCY, color: colors.pink, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       drawLabel(ctx, { text: '−', x: wireRight + 18, y: wireCY, color: colors.blue, weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
 
@@ -170,14 +164,11 @@ export function WireVoltageDropDemo({ figure }: Props) {
       ctx.arc(px, wireCY, 9, 0, Math.PI * 2);
       ctx.fill();
       drawLabel(ctx, { text: 'P', x: px, y: wireCY + 1, color: colors.bg, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-      ctx.textBaseline = 'alphabetic';
-
       // V-at-probe readout, attached to the hill crossing point.
       drawLabel(ctx, { text: `V(P) ≈ ${Vp.toFixed(2)} V`, x: px, y: hillY - 10, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center' });
 
       // ── Bottom caption / position label ───────────────────────────────
       ctx.fillStyle = withAlpha(colors.textDim, 0.8);
-      ctx.font = '10px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: 'drag the probe along the wire', x: wireLeft, y: wireBot + 22, font: '10px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: `position: ${(probeT * 100).toFixed(0)}% of wire length`, x: wireRight, y: wireBot + 22, font: '10px "JetBrains Mono", monospace', align: 'right' });
     },

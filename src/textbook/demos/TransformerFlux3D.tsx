@@ -511,15 +511,10 @@ export function TransformerFlux3DDemo({ figure }: Props) {
       }
 
       // ── labels (corner annotations) ──
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().textDim;
       drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.6);
       drawLabel(ctx, { text: 'laminated iron core', x: 12, y: 28, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-
-      ctx.textAlign = 'right';
       ctx.fillStyle = getCanvasColors().pink;
       drawLabel(ctx, { text: `primary  N_p = ${st.Np}`, x: W - 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       ctx.fillStyle = getCanvasColors().blue;

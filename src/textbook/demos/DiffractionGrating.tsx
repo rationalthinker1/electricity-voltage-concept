@@ -108,9 +108,7 @@ export function DiffractionGratingDemo({ figure }: Props) {
         ctx.setLineDash([3, 4]);
       }
       ctx.setLineDash([]);
-      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
       drawLabel(ctx, { text: `N = ${N}`, x: padL + 4, y: padTop + 12, font: '10px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: `λ = ${lamNm.toFixed(0)} nm`, x: padL + 4, y: padTop + 26, font: '10px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: `d = 1/${linesPerMm} mm`, x: padL + 4, y: padTop + 40, font: '10px "JetBrains Mono", monospace' });

@@ -145,10 +145,8 @@ export function DispersionDemo({ figure }: Props) {
         const endY = exit.y + outDir.y * tMax;
         drawSegment(ctx, exit.x, exit.y, endX, endY, c.rgb, 1.8);
       }
-      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.restore();
       ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
       drawLabel(ctx, { text: `n(λ) = A + B/λ²`, x: 12, y: 18 });
       drawLabel(ctx, { text: `A = ${A.toFixed(2)}, B = ${B.toFixed(4)} µm²`, x: 12, y: 32 });
     },

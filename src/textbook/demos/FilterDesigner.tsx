@@ -224,9 +224,6 @@ export function FilterDesignerDemo({ figure }: Props) {
 
       // Labels
       ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'noisy input  1 kHz tone + 60 Hz hum', x: inX0 + 6, y: inY0 + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: 'filtered output', x: outX0 + 6, y: outY0 + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: '|H(f)|  [dB]', x: bodeX0 + 6, y: bodeY0 + 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
@@ -315,9 +312,6 @@ export function FilterDesignerDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.55;
       ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'bottom';
       drawLabel(ctx, { text: `peak ≈ ${inPeak.toFixed(2)}`, x: inX1 - 6, y: inY1 - 4, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
       drawLabel(ctx, { text: `peak ≈ ${outPeak.toFixed(3)}`, x: outX1 - 6, y: outY1 - 4, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
 
@@ -393,9 +387,6 @@ export function FilterDesignerDemo({ figure }: Props) {
       ctx.lineTo(xAudio, by + bh);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: '60 Hz hum', x: xHum + 3, y: by + 16, color: colors.pink, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: '1 kHz audio', x: xAudio + 3, y: by + 16, color: colors.teal, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
 

@@ -366,8 +366,6 @@ export function DriftInCopper3DDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.55;
       drawLabel(ctx, { text: 'copper · 56 free electrons · thermal & drift scaled for visibility', x: 12, y: H - 18 });
-
-      ctx.textAlign = 'right';
       ctx.restore();
       drawLabel(ctx, { text: 'electrons (cyan)', x: W - 12, y: 12, color: colors.teal });
       drawLabel(ctx, { text: 'Cu+ ions (amber)', x: W - 12, y: 28, color: colors.accent });

@@ -169,10 +169,6 @@ export function TwoCoilTransformerDemo({ figure }: Props) {
       ctx.lineTo(secX + 22, loadY + 14);
       ctx.lineTo(loadX - 14, loadY + 14);
       ctx.stroke();
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `N_p = ${Np}`, x: primX, y: coreBot + 6, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       drawLabel(ctx, { text: `V_p = ${Vp.toFixed(0)} V`, x: srcX, y: srcY + 26, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       ctx.fillStyle = colors.teal;

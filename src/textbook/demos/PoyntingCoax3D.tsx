@@ -275,8 +275,6 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
         ctx.globalAlpha = 0.6;
         ctx.fillStyle = getCanvasColors().textDim;
         drawLabel(ctx, { text: `inner radius a = ${R_INNER.toFixed(2)}   outer b = ${R_OUTER.toFixed(2)}`, x: 12, y: 28 });
-
-        ctx.textAlign = 'right';
         ctx.restore();
         ctx.fillStyle = getCanvasColors().pink;
         drawLabel(ctx, { text: 'E  pink · radial', x: W - 12, y: 12 });

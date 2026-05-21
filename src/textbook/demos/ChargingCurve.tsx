@@ -164,9 +164,6 @@ export function ChargingCurveDemo({ figure }: Props) {
 
       // Labels
       ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'bottom';
       drawLabel(ctx, { text: `V₀ = ${V0} V`, x: pX + pW - 4, y: y0line - 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
       ctx.fillStyle = getCanvasColors().teal;
       drawLabel(ctx, { text: '63% V₀  (after 1τ)', x: pX + pW - 4, y: y63 - 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
@@ -177,7 +174,6 @@ export function ChargingCurveDemo({ figure }: Props) {
       drawLabel(ctx, { text: `τ = RC`, x: Math.min(xTau + 4, pX + pW - 60), y: pY + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
 
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'V_C(t)', x: pX, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: `V_C = ${s.Vc.toFixed(2)} V`, x: pX + pW, y: 8, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       drawLabel(ctx, { text: `window: ${fmtTime(PLOT_DURATION)} (6τ)`, x: pX + pW / 2, y: H - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });

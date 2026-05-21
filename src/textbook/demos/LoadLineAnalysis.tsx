@@ -132,14 +132,12 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
         { color: colors.teal, lineWidth: 1.8 },
       );
       ctx.fillStyle = colors.teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: `V_CC = ${V_CC.toFixed(1)} V`, x: xOf(V_CC), y: yOf(0) - 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       drawLabel(ctx, { text: `V_CC/R_C = ${(I_sat * 1000).toFixed(1)} mA`, x: xOf(0) + 6, y: yOf(Math.min(Imax, I_sat)), color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
       ctx.fillStyle = colors.text;
       ctx.beginPath();
       ctx.arc(xOf(Vq), yOf(Math.min(Imax, Iq)), 5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.font = '10px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: `Q-point  (${Vq.toFixed(2)} V, ${(Iq * 1000).toFixed(2)} mA)`, x: xOf(Vq) + 8, y: yOf(Math.min(Imax, Iq)) - 6, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
       drawLabel(ctx, { text: `V_CC = ${V_CC.toFixed(1)} V   R_C = ${R_C.toFixed(0)} Ω   I_B = ${(I_B * 1e6).toFixed(1)} µA   β = ${beta}`, x: padL, y: 6, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
     },

@@ -249,8 +249,6 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       ctx.restore();
 
       // Legend strip
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
       ctx.fillStyle = withAlpha(colors.teal, 0.4 + 0.5 * Inorm);
       drawLabel(ctx, { text: 'B  (circles wire; |B| ∝ I)', x: legendCol1X, y: legendRow1Y, font: '10px "JetBrains Mono", monospace' });
       ctx.fillStyle = withAlpha(colors.textDim, 0.7);

@@ -471,6 +471,39 @@ for (const filePath of files) {
       m.ftExpr.replaceWithText(m.replacement);
       fileMigrations++;
     }
+
+    // ── Phase 4: remove dead shared setters ────────────────────────────
+    // If a block no longer has ANY fillText calls (converted or skipped),
+    // any remaining ctx.font / fillStyle / textAlign / textBaseline
+    // setters in that block are dead code.
+    if (WRITE_MODE) {
+      for (const [block, fts] of byBlock) {
+        const stmts = block.getStatements();
+
+        // Check if any fillText calls remain anywhere in this block
+        // (including nested if/for blocks)
+        const remainingFillTexts = block.getDescendantsOfKind(SyntaxKind.CallExpression)
+          .filter(ce => {
+            const callee = ce.getExpression();
+            if (callee.getKind() !== SyntaxKind.PropertyAccessExpression) return false;
+            return callee.getExpression().getText() === 'ctx' && callee.getName() === 'fillText';
+          });
+
+        if (remainingFillTexts.length > 0) continue;
+
+        // No fillText calls remain — all style setters in this block are dead
+        const deadProps = ['fillStyle', 'font', 'textAlign', 'textBaseline'];
+        for (let j = stmts.length - 1; j >= 0; j--) {
+          const s = stmts[j];
+          for (const prop of deadProps) {
+            if (isCtxPropAssignment(s, prop)) {
+              s.remove();
+              break;
+            }
+          }
+        }
+      }
+    }
   }
 
   if (fileMigrations > 0 || fileSkipped > 0) {

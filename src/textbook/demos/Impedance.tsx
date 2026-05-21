@@ -57,9 +57,7 @@ export function ImpedanceDemo({ figure }: Props) {
       ctx.lineTo(cx, h - 20);
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: 'Re (Ω)', x: w - 50, y: cy - 10, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: '+jX (Ω)', x: cx + 38, y: 22, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       drawLabel(ctx, { text: '−jX (Ω)', x: cx + 38, y: h - 22, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       const p0x = cx,
@@ -82,8 +80,6 @@ export function ImpedanceDemo({ figure }: Props) {
         `1/(jωC) = ${XC.toFixed(1)} Ω`,
       );
       drawVector(ctx, p0x, p0y, p3x, p3y, withAlpha(colors.accent, 0.95), '', 2.2);
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
       const midX = (p0x + p3x) / 2 + 8;
       const midY = (p0y + p3y) / 2;
       drawLabel(ctx, { text: `|Z| = ${Zmag.toFixed(2)} Ω`, x: midX, y: midY, color: colors.accent, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'middle' });
@@ -97,8 +93,6 @@ export function ImpedanceDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.75;
       ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `Z = R + j(ωL − 1/ωC)`, x: 10, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: phi > 0.01
                   ? 'inductive (V leads I)'

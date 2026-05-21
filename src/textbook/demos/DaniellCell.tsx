@@ -57,7 +57,6 @@ export function DaniellCellDemo({ figure }: Props) {
       drawBeaker(ctx, rightX, beakerY, beakerW, beakerH, withAlpha(colors.accent, 0.18), 'CuSO₄');
       ctx.fillStyle = colors.textDim;
       ctx.fillRect(W / 2 - 6, beakerY + 20, 12, beakerH - 30);
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'porous', x: W / 2, y: beakerY + beakerH - 8, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       const znRodWBase = 16;
       const znRodW = znRodWBase * (1 - 0.5 * s.erosion);
@@ -139,8 +138,6 @@ export function DaniellCellDemo({ figure }: Props) {
         }
       }
       ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'anode: Zn → Zn²⁺ + 2e⁻', x: 10, y: H - 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: 'cathode: Cu²⁺ + 2e⁻ → Cu', x: W - 10, y: H - 24, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       ctx0.phase = phase;

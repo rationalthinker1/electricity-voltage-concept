@@ -535,9 +535,6 @@ export function MOSFET3DDemo({ figure }: Props) {
       }
 
       // 9. Labels.
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'top';
-
       const labelAt = (world: Vec3, text: string, color: string) => {
         const p = project(world, cam, W, H);
         if (p.depth <= 0) return;

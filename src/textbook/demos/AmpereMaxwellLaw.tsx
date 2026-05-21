@@ -79,14 +79,11 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
       ctx.fillRect(battX - 8, cy - 18, 4, 36);
       ctx.fillStyle = colors.blue;
       ctx.fillRect(battX - 16, cy - 10, 4, 20);
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: 'battery', x: battX - 10, y: cy + 22, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       const plateH = 80;
       ctx.fillStyle = colors.accent;
       ctx.fillRect(plate1X - 3, cy - plateH / 2, 4, plateH);
       ctx.fillRect(plate2X, cy - plateH / 2, 4, plateH);
-      ctx.font = 'bold 14px JetBrains Mono';
-      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: '+', x: plate1X - 18, y: cy - plateH / 2 - 14, color: colors.pink, weight: 'bold', size: 14, font: '14px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       drawLabel(ctx, { text: '−', x: plate2X + 18, y: cy - plateH / 2 - 14, color: colors.blue, weight: 'bold', size: 14, font: '14px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       const nLines = 5;

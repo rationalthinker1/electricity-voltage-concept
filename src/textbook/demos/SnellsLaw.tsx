@@ -87,9 +87,7 @@ export function SnellsLawDemo({ figure }: Props) {
         const ty = cy + L * Math.cos(th2);
         drawRay(ctx, cx, cy, tx, ty, withAlpha(colors.teal, 0.95), 2.2);
       }
-      ctx.font = '11px "JetBrains Mono", monospace';
       ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
       drawLabel(ctx, { text: `n₁ = ${n1.toFixed(2)}`, x: 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: `n₂ = ${n2.toFixed(2)}`, x: 12, y: H - 8, size: 11, font: '11px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: `θ₁ = ${thetaDeg.toFixed(1)}°`, x: cx + 8, y: cy - 30, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace' });

@@ -76,8 +76,6 @@ export function EBTransformDemo({ figure }: Props) {
       ctx.lineTo(midX, h - 14);
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: 'REST FRAME · pure E_y', x: midX / 2, y: 18, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabel(ctx, { text: `BOOSTED FRAME · β = ${b.toFixed(2)} →`, x: midX + midX / 2, y: 18, font: '10px "JetBrains Mono", monospace', align: 'center' });
       function drawE(left: number, right: number, scale: number) {
@@ -137,8 +135,6 @@ export function EBTransformDemo({ figure }: Props) {
       if (induced > 0.01) {
         drawB(midX + 12, w - 24, induced);
       }
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
       drawLabel(ctx, { text: "B_z'  (induced, into page)", x: midX + 18, y: h - 18, color: colors.teal, font: '10px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: "E_y'  = γ·E_y", x: midX + 18, y: h - 34, color: colors.pink, font: '10px "JetBrains Mono", monospace' });
     },

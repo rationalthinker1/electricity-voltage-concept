@@ -151,8 +151,6 @@ export function LCOscillationDemo({ figure }: Props) {
 
         // Labels
         ctx.fillStyle = getCanvasColors().textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textBaseline = 'top';
         drawLabel(ctx, { text: `L = ${Lmh.toFixed(1)} mH    C = ${Cuf.toFixed(0)} µF`, x: 10, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
         drawLabel(ctx, { text: `f₀ = ${fmtFrequency(f0)}`, x: splitX - 10, y: 8, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
         drawLabel(ctx, { text: `I → ${fmtCurrent(I)}`, x: 10, y: h - 6, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
@@ -202,13 +200,9 @@ export function LCOscillationDemo({ figure }: Props) {
         ctx.fillRect(x2, barY + barH - hL, barW, hL);
 
         ctx.fillStyle = getCanvasColors().text;
-        ctx.font = 'bold 11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
         drawLabel(ctx, { text: 'U_C', x: x1 + barW / 2, y: barY + barH + 6, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
         drawLabel(ctx, { text: 'U_L', x: x2 + barW / 2, y: barY + barH + 6, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
         ctx.fillStyle = getCanvasColors().textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
         drawLabel(ctx, { text: `${(fracC * 100).toFixed(0)}%`, x: x1 + barW / 2, y: barY + barH + 22, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
         drawLabel(ctx, { text: `${(fracL * 100).toFixed(0)}%`, x: x2 + barW / 2, y: barY + barH + 22, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 

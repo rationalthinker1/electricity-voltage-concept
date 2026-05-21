@@ -133,8 +133,6 @@ export function TwoParallelWiresDemo({ figure }: Props) {
         }
 
         ctx.fillStyle = withAlpha(colors.textDim, 0.9);
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
         drawLabel(ctx, { text: label, x: cx, y: cy_ - wireR - 10, font: '10px "JetBrains Mono", monospace', align: 'center' });
         drawLabel(ctx, { text: `${I.toFixed(1)} A ${intoPage ? '⊗' : '⊙'}`, x: cx, y: cy_ + wireR + 22, font: '10px "JetBrains Mono", monospace', align: 'center' });
       }

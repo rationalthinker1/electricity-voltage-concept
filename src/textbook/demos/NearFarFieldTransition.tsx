@@ -107,8 +107,6 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(cx, cy + 6, 4, 0, Math.PI * 2);
       ctx.fill();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
       drawLabel(ctx, { text: `near-field r ≲ λ/2π = ${rNF.toFixed(0)} px`, x: 12, y: 18, color: colors.pink, font: '10px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: `far-field r ≫ λ/2π`, x: 12, y: 32, color: colors.teal, font: '10px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: `λ = ${lam.toFixed(0)} px`, x: 12, y: 46, font: '10px "JetBrains Mono", monospace' });

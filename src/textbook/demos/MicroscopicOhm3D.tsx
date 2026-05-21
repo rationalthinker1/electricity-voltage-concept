@@ -447,11 +447,7 @@ function drawLegend(
   H: number,
   matName: string,
 ) {
-  ctx.font = '11px "JetBrains Mono", monospace';
-  ctx.textBaseline = 'top';
   drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-
-  ctx.textAlign = 'right';
   ctx.fillStyle = withAlpha(colors.accent, 0.95);
   drawLabel(ctx, { text: 'E   applied field', x: W - 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
   ctx.fillStyle = withAlpha(colors.pink, 0.95);

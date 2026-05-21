@@ -63,7 +63,6 @@ export function TwoSpeedsDemo({ figure }: Props) {
         ctx.lineTo(trackRight, y);
         ctx.stroke();
         ctx.fillStyle = withAlpha(colors.textDim, 0.8);
-        ctx.font = '10px "JetBrains Mono", monospace';
         drawLabel(ctx, { text: '0 mm', x: trackLeft, y: y + 18, font: '10px "JetBrains Mono", monospace' });
         drawLabel(ctx, { text: '200 mm', x: trackRight, y: y + 18, font: '10px "JetBrains Mono", monospace', align: 'right' });
         drawLabel(ctx, { text: label, x: trackLeft, y: y - 10, color: color, font: '10px "JetBrains Mono", monospace' });

@@ -264,9 +264,6 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       }
 
       // B-field label, top-left.
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `B → ${st.B.toFixed(2)}  (along +x)`, x: 12, y: 12, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: `θ = ${(((theta % (2 * Math.PI)) * 180) / Math.PI).toFixed(0)}°`, x: 12, y: 28, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.save();
@@ -331,9 +328,6 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       }
 
       // Plot legend.
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       ctx.save();
       ctx.globalAlpha = 0.92;
       drawLabel(ctx, { text: 'Φ_B(t) = B·A·cos(ωt)', x: plotLeft + 4, y: plotY0 + 6, color: colors.accent });

@@ -148,8 +148,6 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
       drawLabel(ctx, { text: `P_max = V·E_f/X_s = ${P_MAX.toFixed(2)} pu`, x: padL + 8, y: yOf(P_MAX) - 8, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
 
       // Stable / unstable region labels
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'bottom';
       drawLabel(ctx, { text: 'stable: δ < 90°', x: padL + 8, y: padT + plotH - 6, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
       drawLabel(ctx, { text: 'unstable: δ > 90°', x: padL + plotW - 8, y: padT + plotH - 6, color: colors.pink, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
     },

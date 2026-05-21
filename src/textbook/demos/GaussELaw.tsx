@@ -104,11 +104,7 @@ export function GaussELawDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(chargeX, chargeY, cR, 0, Math.PI * 2);
       ctx.fill();
-      ctx.font = `bold ${cR}px JetBrains Mono`;
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: qNC >= 0 ? '+' : '−', x: chargeX, y: chargeY, color: colors.bg, align: 'center', baseline: 'middle' });
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: outside ? 'Q outside → no net flux' : `Q_enc = ${qNC.toFixed(1)} nC inside`, x: chargeX, y: chargeY + cR + 10, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       drawLabel(ctx, { text: '∮E·dA = Q_enc / ε₀', x: 14, y: 14, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
     },

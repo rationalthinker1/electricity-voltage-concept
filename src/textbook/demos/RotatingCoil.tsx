@@ -226,7 +226,6 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.75;
       drawLabel(ctx, { text: 'EMF(t)', x: scopeX, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      ctx.textAlign = 'right';
       ctx.restore();
       drawLabel(ctx, { text: `peak = ${pretty(peak)} V`, x: scopeX + scopeW, y: 12, color: colors.accent });
 

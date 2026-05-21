@@ -97,9 +97,6 @@ export function ThreePhaseDemo({ figure }: Props) {
       }
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'V_a', x: plotX + 4, y: plotY + 4, color: phaseColors[0], font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: 'V_b', x: plotX + 36, y: plotY + 4, color: phaseColors[1], font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: 'V_c', x: plotX + 68, y: plotY + 4, color: phaseColors[2], font: '10px "JetBrains Mono", monospace', baseline: 'top' });
@@ -161,8 +158,6 @@ export function ThreePhaseDemo({ figure }: Props) {
         });
       }
       ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: 'phasors at 120°', x: pcx, y: 10, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       drawLabel(ctx, { text: `Σ vectors → 0`, x: pcx, y: h - 8, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       ctx.restore();

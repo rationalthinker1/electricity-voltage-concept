@@ -78,14 +78,10 @@ export function EnergyInTheGapDemo({ figure }: Props) {
       }
       drawPlate(ctx, xL, topY, plateW, plateThick, '#ff3b6e');
       drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, '#5baef8');
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'u_E = ½ ε₀ E²', x: 14, y: 12, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: `E = ${(s.E / 1000).toFixed(1)} kV/m`, x: 14, y: 28, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: `u_E = ${s.u_E.toExponential(2)} J/m³`, x: 14, y: 42, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      ctx.textAlign = 'right';
       drawLabel(ctx, { text: '← the energy lives here', x: W - 14, y: cy - 6, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       drawLabel(ctx, { text: 'not in the plates', x: W - 14, y: cy + 8, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       ctx0.phase = phase;

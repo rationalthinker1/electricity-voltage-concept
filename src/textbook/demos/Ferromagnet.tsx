@@ -169,8 +169,6 @@ export function FerromagnetDemo({ figure }: Props) {
       ctx.stroke();
 
       ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
       drawLabel(ctx, { text: 'M', x: cx_ax + 4, y: py0 + 10, font: '10px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: 'B', x: px1 - 14, y: cy_ax - 4, font: '10px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: '+1', x: cx_ax + 4, y: py0 + 12, font: '10px "JetBrains Mono", monospace' });

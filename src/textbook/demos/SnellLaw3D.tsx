@@ -238,8 +238,6 @@ export function SnellLaw3DDemo({ figure }: Props) {
       }
 
       // ─── 7. Labels and legend ───
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().textDim;
       drawLabel(ctx, { text: 'drag to orbit · look along z to see the 2D triangle', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = getCanvasColors().accent;
@@ -256,7 +254,6 @@ export function SnellLaw3DDemo({ figure }: Props) {
       drawLabel(ctx, { text: 'normal', x: w - 12, y: refractedEnd ? 60 : s.showReflected ? 44 : 28 });
 
       // Medium labels in the corners of the interface.
-      ctx.textAlign = 'left';
       ctx.fillStyle = getCanvasColors().text;
       const labelAbove = s.tirMode ? `n₁ = 1.00 (air)` : `n₁ = 1.00 (air)`;
       const labelBelow = `n₂ = ${s.n2.toFixed(2)}`;

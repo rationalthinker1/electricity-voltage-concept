@@ -111,9 +111,6 @@ export function NodalSolverDemo({ figure }: Props) {
         ctx.save();
         ctx.globalAlpha = 0.75;
         ctx.fillStyle = getCanvasColors().textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
         drawLabel(ctx, { text: 'Bottom rail = reference (V = 0)', x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
         drawLabel(ctx, { text: 'KCL at A: (V₁−V_A)/R₁ + (V₂−V_A)/R₃ = V_A/R₂', x: 12, y: 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
         ctx.restore();
@@ -121,9 +118,6 @@ export function NodalSolverDemo({ figure }: Props) {
         ctx.save();
         ctx.globalAlpha = 0.95;
         ctx.fillStyle = getCanvasColors().blue;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
         drawLabel(ctx, { text: `I_R₁ = ${fmtCurrent(nodal.I_R1)}`, x: (xLeft + xMid) / 2, y: yTop - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
         drawLabel(ctx, { text: `I_R₃ = ${fmtCurrent(nodal.I_R3)}`, x: (xMid + xRight) / 2, y: yTop - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
         drawLabel(ctx, { text: `I_R₂ = ${fmtCurrent(nodal.I_R2)}`, x: xMid + 14, y: h / 2, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });

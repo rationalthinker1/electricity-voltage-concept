@@ -75,12 +75,9 @@ export function PatchAntennaDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(cxL - Lpx / 4, cyL, 3, 0, Math.PI * 2);
       ctx.fill();
-      ctx.font = '9px "JetBrains Mono", monospace';
       ctx.restore();
       drawLabel(ctx, { text: 'feed', x: cxL - Lpx / 4, y: cyL + 14, align: 'center' });
-      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
       drawLabel(ctx, { text: `L = ${Lmm.toFixed(1)} mm`, x: 12, y: 18, font: '10px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: `εᵣ = ${eps.toFixed(2)}`, x: 12, y: 32, font: '10px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: 'patch (top view)', x: cxL, y: H - 12, font: '10px "JetBrains Mono", monospace', align: 'center' });
@@ -123,10 +120,8 @@ export function PatchAntennaDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fill();
       ctx.stroke();
-      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.restore();
       ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: 'broadside (zenith)', x: cxR, y: cyR - R - 8, align: 'center' });
       drawLabel(ctx, { text: 'ground plane', x: cxR, y: cyR + 14, align: 'center' });
       drawLabel(ctx, { text: `f₀ ≈ ${f0GHz.toFixed(2)} GHz`, x: W - 12, y: 18, align: 'right' });

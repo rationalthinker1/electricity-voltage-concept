@@ -134,15 +134,9 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
       });
       ctx.restore();
       ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: '+8 V', x: plotX - 4, y: yV(V_SUP), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       drawLabel(ctx, { text: '0', x: plotX - 4, y: y0, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       drawLabel(ctx, { text: '-8 V', x: plotX - 4, y: yV(-V_SUP), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `V_in (${kind})`, x: plotX + 4, y: plotY + 4, color: colors.blue, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: 'V_out = -(1/RC)∫V_in dt', x: plotX + 100, y: plotY + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: `τ = RC = ${fmtTime(tau)}`, x: plotX + plotW - 4, y: plotY + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });

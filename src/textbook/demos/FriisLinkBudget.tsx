@@ -76,10 +76,7 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       ctx.moveTo(txX, cy - 22);
       ctx.lineTo(txX, cy + 22);
       ctx.stroke();
-      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.restore();
-      ctx.fillStyle = colors.accent;
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: `TX · ${Ptmw.toFixed(0)} mW`, x: txX, y: cy + 40, color: colors.accent, align: 'center' });
       drawLabel(ctx, { text: `G_t = ${GtDbi.toFixed(1)} dBi`, x: txX, y: cy + 54, color: colors.accent, align: 'center' });
       ctx.strokeStyle = colors.teal;

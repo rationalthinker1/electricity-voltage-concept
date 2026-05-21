@@ -813,6 +813,36 @@ The lab also has its own prose deep-dive and sources block (rendered by
   ```ts
   const driftBias = clamp(vd * 100, 0.02, 2.0);  // visual only; vd is real
   ```
+- **Static-bake caching:** when a demo overlays a static backdrop
+  (schematic, plates, cylinder rims) and animates only a thin layer of
+  arrows/markers on top, hoist the backdrop into `useCircuitCache`
+  (CircuitSpec bakes) or `useCanvasCache` (raw-ctx bakes) at component
+  scope. Both hooks key on `(w, h, dpr)` automatically; React-state deps
+  go in the second argument; orbit-camera-style intra-frame keys go in
+  the optional `frameKey` arg to `useCanvasCache`. Don't hand-roll the
+  `cacheRef = useRef<{key, canvas}>(null); if (cacheRef.current?.key !==
+  cacheKey) { … }` shape — see `src/lib/useCircuitCache.ts` and
+  `src/lib/useCanvasCache.ts`, and the §7 sub-section above.
+- **3D orbit cameras:** demos that use `attachOrbit` from `projection3d`
+  should go through `createOrbitScene(canvas, overrides?)` (setup-scope)
+  or `useOrbitScene(initial?)` (component-scope, returns `camRef`). Pick
+  the latter when a `useCanvasCache` build closure needs to read the
+  camera state. See `src/lib/useOrbitScene.ts`.
+- **`drawLabel` defaults to left-align:** when calling `drawLabel` with
+  a position relative to a left-of-shape anchor (`x: xL - 6`), pass
+  `align: 'right'` explicitly or the text will start at that anchor and
+  run *into* the shape. Match the alignment + baseline of any companion
+  label (e.g. a "top plate" / "bottom plate" pair) so they sit symmetrically.
+- **Use centralised formatters:** value formatting for SI quantities
+  goes through `src/lib/formatters.ts`. Don't write a per-demo
+  `function fmtFreq` / `fmtOhms` / `fmtA` — import `fmtFrequency`,
+  `fmtResistance`, `fmtCurrent`, `fmtVoltage`, `fmtCapacitance`,
+  `fmtInductance`, `fmtPower`, `fmtEnergy`, `fmtTime`, `fmtPercent`,
+  `fmtSI(v, unit)`, or `fmtSIPrecision(v, unit, sigfigs)` instead.
+  For short canvas tick labels (no unit suffix) use `fmtFreqShort`.
+  Demo-specific formatters that exist: `fmtResistivity`, `fmtRatio`,
+  `fmtTolerance`, `fmtDb`, `fmtClockTime` (wall-clock h/m/s, distinct
+  from SI-prefix `fmtTime`), `fmtFloat`.
 
 ---
 

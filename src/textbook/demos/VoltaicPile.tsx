@@ -58,9 +58,6 @@ export function VoltaicPileDemo({ figure }: Props) {
       }
       if (N > 0) {
         ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
         drawLabel(ctx, { text: 'Cu (bottom)', x: cx - pileW / 2 - 8, y: baseY - layerH * 1.5, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
         drawLabel(ctx, { text: 'Zn (top)', x: cx - pileW / 2 - 8, y: baseY - layers * layerH + layerH * 1.5, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       }
@@ -120,9 +117,6 @@ export function VoltaicPileDemo({ figure }: Props) {
         });
       }
       ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `${N} Zn-Cu pairs`, x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: `open-circuit V ≈ ${s.V.toFixed(2)} V`, x: 12, y: 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx0.phase = phase;

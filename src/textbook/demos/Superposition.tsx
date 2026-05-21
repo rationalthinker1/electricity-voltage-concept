@@ -100,9 +100,6 @@ export function SuperpositionDemo({ figure }: Props) {
               : 'Both off';
       drawPanel(ctx, 2 * colW, 0, colW, h, label, both, withAlpha(colors.accent, 0.95));
       ctx.fillStyle = colors.textDim;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: '+', x: colW, y: 4, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       drawLabel(ctx, { text: '=', x: 2 * colW, y: 4, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
     },

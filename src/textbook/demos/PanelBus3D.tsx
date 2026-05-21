@@ -279,8 +279,6 @@ export function PanelBus3DDemo({ figure }: Props) {
       ctx.globalAlpha = 0.55;
       ctx.fillStyle = getCanvasColors().textDim;
       drawLabel(ctx, { text: `${s.nBreakers} branch slots, alternating L1 / L2`, x: 12, y: 28 });
-
-      ctx.textAlign = 'right';
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.9;

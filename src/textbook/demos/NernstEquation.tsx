@@ -97,8 +97,6 @@ export function NernstEquationDemo({ figure }: Props) {
       ctx.stroke();
       ctx.restore();
       ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'V (cell potential)', x: pX, y: 6, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: 'ln Q', x: pX + pW, y: pY + pH + 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       drawLabel(ctx, { text: `T = ${T.toFixed(0)} K`, x: pX, y: pY + pH + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });

@@ -181,8 +181,6 @@ export function PointCharge3DDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.6;
       drawLabel(ctx, { text: `sample sphere r = ${s.rSample.toFixed(2)}   |E| ∝ k|q|/r²`, x: 12, y: 28 });
-
-      ctx.textAlign = 'right';
       ctx.restore();
       ctx.fillStyle = withAlpha(s.positive ? colors.pink : colors.blue, 0.92);
       drawLabel(ctx, { text: s.positive ? 'E radial · outward' : 'E radial · inward', x: W - 12, y: 12 });
@@ -311,7 +309,6 @@ function drawChargeBall(
   ctx.fill();
   // Glyph.
   ctx.fillStyle = getCanvasColors().bg;
-  ctx.font = `bold ${Math.max(10, Math.round(rPx * 1.0))}px "JetBrains Mono", monospace`;
   drawLabel(ctx, { text: signGlyph, x: centre.x, y: centre.y + 1, align: 'center', baseline: 'middle' });
 }
 

@@ -100,10 +100,6 @@ export function SynchronousMotorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(sxx, syy, 12, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 11px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: 'N', x: nx, y: ny, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       drawLabel(ctx, { text: 'S', x: sxx, y: syy, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       ctx.lineCap = 'butt';
@@ -114,8 +110,6 @@ export function SynchronousMotorDemo({ figure }: Props) {
       ctx.stroke();
       drawLabel(ctx, { text: 'δ', x: cx + 36, y: cy + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
       ctx.fillStyle = withAlpha(colors.textDim, 0.75);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'field (dashed) = rotor (locked)', x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       const stallWarn = Math.abs(loadAngleDeg) > 80 ? '  ← near pull-out!' : '';
       ctx.fillStyle = Math.abs(loadAngleDeg) > 80 ? '#ff6b2a' : withAlpha(colors.textDim, 0.75);

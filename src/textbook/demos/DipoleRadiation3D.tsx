@@ -340,14 +340,10 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
 
       // Axis labels at the dipole tips.
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: 'axis · θ=0', x: pTop.x, y: pTop.y - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       drawLabel(ctx, { text: 'axis · θ=π', x: pBot.x, y: pBot.y + 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
       // Top-left overlay.
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().accent;
       drawLabel(ctx, { text: `r(θ) = sin^${s.n.toFixed(1)} θ`, x: 14, y: 14, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = getCanvasColors().textDim;

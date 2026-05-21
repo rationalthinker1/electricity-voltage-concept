@@ -114,9 +114,6 @@ export function HarmonicSynthesisDemo() {
 
       // y-axis tick labels manually for ±1 and 0
       ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
       const yAt = (v: number) => padY + plotH - ((v + 1.2) / 2.4) * plotH;
       drawLabel(ctx, { text: '+1', x: padX - 6, y: yAt(1), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       drawLabel(ctx, { text: '−1', x: padX - 6, y: yAt(-1), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });

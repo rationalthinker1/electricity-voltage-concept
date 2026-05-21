@@ -322,16 +322,11 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
 
       // Wire-tip labels.
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: '+L/2', x: pTop.x, y: pTop.y - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       drawLabel(ctx, { text: '−L/2', x: pBot.x, y: pBot.y + 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
       // Top-left readout overlay.
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: `f = ${formatHz(fHz)}`, x: 14, y: 14, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = getCanvasColors().teal;
       drawLabel(ctx, { text: `λ = ${lam >= 1 ? lam.toFixed(2) + ' m' : (lam * 100).toFixed(1) + ' cm'}`, x: 14, y: 30, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
@@ -359,8 +354,6 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       ctx.lineTo(barX0 + wirePix, barY);
       ctx.stroke();
       ctx.fillStyle = getCanvasColors().text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
       drawLabel(ctx, { text: 'L = 1 m', x: barX0, y: barY - 4, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
 
       // λ bar (teal; highlights amber near half-wave).

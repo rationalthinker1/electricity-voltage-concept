@@ -137,9 +137,6 @@ export function AlternatorDemo({ figure }: Props) {
 
       // Labels
       ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'raw 3-phase AC', x: padL + 4, y: topY + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: 'rectified + regulated DC', x: padL + 4, y: topY + plotH + midGap + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: `f_elec = ${f.toFixed(0)} Hz`, x: padL + plotW - 4, y: topY + 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });

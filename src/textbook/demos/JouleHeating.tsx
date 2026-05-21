@@ -158,7 +158,6 @@ export function JouleHeatingDemo({ figure }: Props) {
       }
 
       // Overlays
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `P = ${pretty(P_).replace(/<[^>]+>/g, '')} W`, x: 14, y: 12, color: colors.accent, size: 13, font: '13px "JetBrains Mono", monospace', baseline: 'top' });
 
       ctx.fillStyle = visiblePower

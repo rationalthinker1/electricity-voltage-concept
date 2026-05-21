@@ -478,9 +478,6 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       }
 
       // ───── HUD labels ─────
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `I_A = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[0]!)).toFixed(2)} A`, x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = coilColors()[0]!;
       drawLabel(ctx, { text: `A`, x: 2, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });

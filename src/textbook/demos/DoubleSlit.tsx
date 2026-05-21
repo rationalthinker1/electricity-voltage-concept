@@ -119,9 +119,7 @@ export function DoubleSlitDemo({ figure }: Props) {
       ctx.moveTo(slitBot.x, slitBot.y);
       ctx.lineTo(screenX, cy);
       ctx.stroke();
-      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: 'slits', x: slitX, y: padTop - 8, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabel(ctx, { text: 'screen', x: screenX, y: padTop - 8, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabel(ctx, { text: 'I(y)', x: (plotL + plotR) / 2, y: H - 8, font: '10px "JetBrains Mono", monospace', align: 'center' });

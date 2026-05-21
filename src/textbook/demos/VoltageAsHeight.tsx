@@ -93,9 +93,6 @@ export function VoltageAsHeightDemo({ figure }: Props) {
 
       // A and B labels
       ctx.fillStyle = colors.accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
       drawLabel(ctx, { text: 'A (high V)', x: ax, y: ay - 14, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       drawLabel(ctx, { text: 'B (low V)', x: bx, y: by - 14, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
 

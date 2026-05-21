@@ -170,9 +170,6 @@ export function BuildACapacitorDemo({ figure }: Props) {
       drawChargeDots(ctx, xL, topY - 9, plateW, drawDotsCount, symTop, colTop);
       drawChargeDots(ctx, xL, botY + plateThick + 9, plateW, drawDotsCount, symBot, colBot);
       ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `N = ${clicks}`, x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: `Q_top = ${(s.Q * 1e9).toFixed(1)} nC`, x: 12, y: 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.restore();
@@ -234,7 +231,6 @@ export function BuildACapacitorDemo({ figure }: Props) {
       }
       const barY = gY + gH + 24;
       const barH = 12;
-      ctx.font = '9px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: 'Work to add the next charge  ∝  V', x: pX, y: barY - 4, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'bottom' });
       const histMaxV = (() => {
         let mv = 1e-12;
@@ -246,8 +242,6 @@ export function BuildACapacitorDemo({ figure }: Props) {
       ctx.fillRect(pX, barY, pW, barH);
       ctx.fillStyle = colors.accent;
       ctx.fillRect(pX, barY, pW * fill, barH);
-      ctx.fillStyle = colors.text;
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `${(s.workForNext * 1e9).toFixed(3)} nJ`, x: pX + pW, y: barY + barH + 4, color: colors.text, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       drawLabel(ctx, { text: 'next click', x: pX, y: barY + barH + 4, color: colors.text, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.restore();

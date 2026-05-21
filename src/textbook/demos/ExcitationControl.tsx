@@ -117,7 +117,6 @@ export function ExcitationControlDemo({ figure }: Props) {
         ctx.fill();
         // Y axis label
         ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
         drawLabel(ctx, { text: '|V_t| (pu)', x: padL - 6, y: padT + plotH / 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
         // Title
         drawLabel(ctx, { text: 'no-load: |V_t| = |E_f| = k_f · I_field', x: padL + 6, y: padT + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
@@ -177,7 +176,6 @@ export function ExcitationControlDemo({ figure }: Props) {
         // Y axis label
         ctx.restore();
         ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
         drawLabel(ctx, { text: '|I_a| (pu)', x: padL - 6, y: padT + plotH / 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
         // Title
         drawLabel(ctx, { text: `loaded V-curve: |I_a| vs I_field at P = ${pRef.toFixed(2)} pu`, x: padL + 6, y: padT + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });

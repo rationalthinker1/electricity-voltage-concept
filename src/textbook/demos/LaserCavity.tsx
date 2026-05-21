@@ -166,9 +166,7 @@ export function LaserCavityDemo({ figure }: Props) {
       ctx.fillRect(mirrorR + 6, cy - 10, W - mirrorR - 12, 20);
 
       // Labels
-      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = getCanvasColors().textDim;
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: '100% mirror', x: mirrorL, y: 28, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabel(ctx, { text: 'output coupler', x: mirrorR, y: 28, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabel(ctx, { text: 'gain medium', x: mirrorL + 8, y: H - 8, font: '10px "JetBrains Mono", monospace' });

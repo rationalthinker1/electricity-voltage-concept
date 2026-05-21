@@ -322,9 +322,6 @@ function drawGaussB(
   ctx.arc(pt.x, pt.y, 9, 0, Math.PI * 2);
   ctx.fill();
   ctx.fillStyle = getCanvasColors().bg;
-  ctx.font = 'bold 11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
   drawLabel(ctx, { text: 'N', x: pt.x, y: pt.y, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
   // S pole label (bottom, blue).
   ctx.fillStyle = getCanvasColors().blue;

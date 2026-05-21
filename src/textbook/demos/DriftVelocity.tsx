@@ -86,8 +86,6 @@ export function DriftVelocityDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.85;
       ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: '+', x: wireLeft - 8, y: wireTop, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabel(ctx, { text: '−', x: wireRight + 8, y: wireTop, font: '10px "JetBrains Mono", monospace', align: 'center' });
 
@@ -126,7 +124,6 @@ export function DriftVelocityDemo({ figure }: Props) {
       const driftBias = Math.max(0.04, Math.min(2.0, vd_real * 6e4));
 
       ctx.restore();
-      ctx.fillStyle = colors.blue;
       for (const e of electrons) {
         // Thermal kick
         e.vx += (Math.random() - 0.5) * 1.4;

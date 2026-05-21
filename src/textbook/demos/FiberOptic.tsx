@@ -129,9 +129,7 @@ export function FiberOpticDemo({ figure }: Props) {
         bounces++;
       }
       ctx.stroke();
-      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
       drawLabel(ctx, { text: `core · n=${nCore.toFixed(3)}`, x: left + 4, y: (top + bot) / 2 + 3, font: '10px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: `cladding · n=${nClad.toFixed(3)}`, x: left + 4, y: top - 12, font: '10px "JetBrains Mono", monospace' });
       if (!escapes_) {

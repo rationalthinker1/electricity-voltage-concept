@@ -89,9 +89,7 @@ export function LensFocusingDemo({ figure }: Props) {
       }
       focalDot(lensX + fpx);
       focalDot(lensX - fpx);
-      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = colors.accent;
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: 'F', x: lensX + fpx, y: axisY + 16, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabel(ctx, { text: 'F', x: lensX - fpx, y: axisY + 16, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center' });
       const rayYs = [-30, 0, 30];
@@ -229,9 +227,7 @@ export function LensFocusingDemo({ figure }: Props) {
         ctx.lineTo(imgX, yB);
         ctx.stroke();
       }
-      ctx.font = '11px "JetBrains Mono", monospace';
       ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
       drawLabel(ctx, { text: `f = ${convex ? '+' : '−'}${fAbs.toFixed(1)} cm`, x: 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: `d₀ = ${dObj.toFixed(1)} cm`, x: 12, y: 34, size: 11, font: '11px "JetBrains Mono", monospace' });
       ctx.fillStyle = convex ? withAlpha(colors.teal, 0.9) : withAlpha(colors.accent, 0.9);

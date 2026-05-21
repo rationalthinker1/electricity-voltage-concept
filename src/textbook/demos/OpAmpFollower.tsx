@@ -156,7 +156,6 @@ function drawSchematic(
   ctx.stroke();
   ctx.restore();
   ctx.fillStyle = getCanvasColors().accent;
-  ctx.font = 'bold 10px "JetBrains Mono", monospace';
   drawLabel(ctx, { text: 'V_s', x: xSrc, y: yWire, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
 
   ctx.fillStyle = getCanvasColors().accent;
@@ -202,9 +201,6 @@ function drawSchematic(
     ctx.stroke();
     // + / − markings
     ctx.fillStyle = getCanvasColors().teal;
-    ctx.font = '9px "JetBrains Mono", monospace';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'middle';
     drawLabel(ctx, { text: '+', x: xTri + 4, y: yWire - 9, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'middle' });
     drawLabel(ctx, { text: '−', x: xTri + 4, y: yWire + 9, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'middle' });
     // Output wire and feedback

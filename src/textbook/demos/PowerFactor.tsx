@@ -143,9 +143,6 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.lineTo(padL + plotW, yMean);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
       ctx.restore();
       drawLabel(ctx, { text: 'v(t)', x: padL + plotW + 4, y: padT + 10, color: colors.accent });
       drawLabel(ctx, { text: 'i(t)', x: padL + plotW + 4, y: padT + 24, color: colors.teal });
@@ -157,8 +154,6 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.65;
       ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'T', x: xOf(T), y: padT + plotH + 4, align: 'center', baseline: 'top' });
       drawLabel(ctx, { text: '2T', x: xOf(tMax), y: padT + plotH + 4, align: 'center', baseline: 'top' });
       ctx.restore();

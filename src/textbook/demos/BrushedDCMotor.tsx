@@ -144,9 +144,6 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(topEnd.x, topEnd.y, 7, 0, Math.PI * 2);
       ctx.fill();
-      ctx.font = 'bold 10px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: '×', x: topEnd.x, y: topEnd.y, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       ctx.fillStyle = colors.blue;
       ctx.beginPath();

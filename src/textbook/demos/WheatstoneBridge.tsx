@@ -211,9 +211,6 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
         drawGalvanometer(ctx, xA, yMid, dV, V);
 
         // Dynamic overlay: live node potentials and chapter header.
-        ctx.fillStyle = 'rgba(255,255,255,0.85)';
-        ctx.font = 'bold 11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
         drawLabel(ctx, { text: `A   ${V_A.toFixed(3)} V`, x: xA + 8, y: yTop - 6, color: 'rgba(255,255,255,0.85)', weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'bottom' });
         drawLabel(ctx, { text: `B   ${V_B.toFixed(3)} V`, x: xB + 8, y: yBot + 6, color: 'rgba(255,255,255,0.85)', weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'top' });
 

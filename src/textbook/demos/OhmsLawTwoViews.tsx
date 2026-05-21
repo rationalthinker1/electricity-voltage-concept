@@ -79,8 +79,6 @@ export function OhmsLawTwoViewsDemo({ figure }: Props) {
       ctx.fillRect(0, 0, w, h);
 
       // Headline at top of canvas.
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: "Ohm's law", x: w / 2, y: 6, color: colors.text, font: '600 14px "DM Sans", sans-serif', align: 'center', baseline: 'top' });
       drawLabel(ctx, { text: 'V = I × R', x: w / 2, y: 26, font: "italic 13px 'STIX Two Text', serif", align: 'center', baseline: 'top' });
 
@@ -302,7 +300,6 @@ function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect
   }
 
   ctx.fillStyle = colors.textDim;
-  ctx.font = "italic 11px 'STIX Two Text', serif";
   const yLabel = p.mode === 'V-of-I' ? 'V' : 'R';
   drawLabel(ctx, { text: yLabel, x: px - 6, y: py + 4, font: "italic 11px 'STIX Two Text', serif", align: 'right', baseline: 'middle' });
   drawLabel(ctx, { text: 'I', x: px + pw - 8, y: py + ph + 6, font: "italic 11px 'STIX Two Text', serif", baseline: 'top' });
@@ -352,7 +349,6 @@ function drawPlot(ctx: CanvasRenderingContext2D, colors: ThemeColors, rect: Rect
   ctx.setLineDash([]);
 
   ctx.fillStyle = colors.text;
-  ctx.font = '10px "JetBrains Mono", monospace';
   const yText =
     p.mode === 'V-of-I' ? `${dotYx.toFixed(1)}V` : `${Math.min(dotYx, yMax).toFixed(1)}Ω`;
   drawLabel(ctx, { text: yText, x: px - 4, y: dot.y, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });

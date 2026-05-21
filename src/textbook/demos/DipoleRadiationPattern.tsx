@@ -103,12 +103,9 @@ export function DipoleRadiationPatternDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(cx, cy + 8, 5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
       drawLabel(ctx, { text: 'axis · 0', x: cx, y: cy - R - 12, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabel(ctx, { text: 'axis · π', x: cx, y: cy + R + 18, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      ctx.textAlign = 'left';
       drawLabel(ctx, { text: 'equator', x: cx + R + 4, y: cy + 4, font: '10px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: '|E|² ∝ sin²θ', x: 12, y: 18, font: '10px "JetBrains Mono", monospace' });
     },

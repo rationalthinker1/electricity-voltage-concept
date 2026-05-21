@@ -150,8 +150,6 @@ export function LoadFollowingDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(xAt(hour), yAt(loadFracAt(hour)), 5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       const legX = padL + 8;
       let legY = padT + 8;
       const lg = (color: string, label: string) => {

@@ -77,10 +77,6 @@ export function WiedemannFranzDemo({ figure }: Props) {
       ctx.stroke();
       const maxK = 450;
       const maxS = 7e7;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       METALS.forEach((mm, i) => {
         const y = padT + rowH * i;
         const yMid = y + rowH / 2;

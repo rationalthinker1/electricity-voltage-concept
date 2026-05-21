@@ -113,7 +113,6 @@ export function OscillatingDipoleDemo({ figure }: Props) {
       ctx.lineTo(cx, H - 8);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.font = '10px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: 'axis · zero radiation', x: cx, y: 18, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabel(ctx, { text: 'equator · max radiation →', x: 14, y: cy + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace' });
     },

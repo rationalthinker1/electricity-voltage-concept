@@ -116,19 +116,12 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
       }
       ctx.stroke();
       ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: '+2', x: plotX - 4, y: yV(2), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       drawLabel(ctx, { text: '0', x: plotX - 4, y: yV(0), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       drawLabel(ctx, { text: '-2', x: plotX - 4, y: yV(-2), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'source', x: plotX, y: plotY + plotH + 4, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: 'load', x: plotX + plotW, y: plotY + plotH + 4, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       drawLabel(ctx, { text: 'position along line (λ)', x: plotX + plotW / 2, y: plotY + plotH + 18, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'V(x,t)  (instantaneous)', x: plotX + 4, y: plotY + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: '±|V(x)|  envelope', x: plotX + 180, y: plotY + 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: `VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`, x: plotX + plotW - 4, y: plotY + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });

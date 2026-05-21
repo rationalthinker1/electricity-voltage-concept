@@ -88,9 +88,6 @@ export function LeadAcidCellDemo({ figure }: Props) {
         }
       }
       ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
       drawLabel(ctx, { text: 'Pb', x: negX + plateW / 2, y: plateY - 2, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       drawLabel(ctx, { text: 'PbO₂', x: posX + plateW / 2, y: plateY - 2, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       drawLabel(ctx, { text: 'H₂SO₄(aq)', x: jarX + 8, y: jarY + jarH - 16, font: '10px "JetBrains Mono", monospace', baseline: 'top' });

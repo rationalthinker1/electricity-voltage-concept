@@ -103,8 +103,6 @@ export function VabWorkEnergyDemo({ figure }: Props) {
         ctx.lineWidth = 2;
         ctx.strokeRect(xLeft, wallTop, xRight - xLeft, wallBot - wallTop);
         ctx.fillStyle = color;
-        ctx.font = 'bold 12px "JetBrains Mono", monospace';
-        ctx.textBaseline = 'bottom';
         if (labelSide === 'left') {
           drawLabel(ctx, { text: `${label} = ${Vval.toFixed(1)} V`, x: xLeft, y: wallTop - 6 });
         } else {
@@ -199,7 +197,6 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(xC, yC, radius, 0, Math.PI * 2);
       ctx.fill();
-      ctx.font = `bold ${Math.max(11, Math.round(radius))}px "JetBrains Mono", monospace`;
       drawLabel(ctx, { text: positive ? '+' : '−', x: xC, y: yC + 1, color: colors.bg, align: 'center', baseline: 'middle' });
 
       // Energy bar: PE + KE = constant
@@ -223,11 +220,8 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       const kePx = barW * keFrac;
       ctx.fillStyle = `rgba(255,107,42,${(0.55 + 0.25 * keFrac).toFixed(3)})`;
       ctx.fillRect(barLeft + pePx, barTop, kePx, barH);
-      ctx.textBaseline = 'middle';
       const labelY = barTop + barH / 2;
       drawLabel(ctx, { text: `total energy |qV_ab| = ${dPE_uJ.toFixed(2)} µJ`, x: barLeft, y: barTop - 4, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
-      ctx.textBaseline = 'middle';
-
       const pe_uJ = dPE_uJ * peFrac;
       const ke_uJ = dPE_uJ * keFrac;
       if (pePx > 60) {
