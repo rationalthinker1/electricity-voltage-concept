@@ -168,9 +168,9 @@ export default function Ch19RectifiersAndInverters() {
         falls about 2 mV per kelvin — a fact worth knowing because it is how every silicon-based
         thermometer works.
       </p>
-      <p className="pullout">
+      <Pullout>
         Every rectifier in the world is a diode and a clever idea about which way to point it.
-      </p>
+      </Pullout>
 
       <h2 className="chapter-h2">
         <em>Half-wave, full-wave, bridge</em>
@@ -350,7 +350,7 @@ export default function Ch19RectifiersAndInverters() {
         }
       />
 
-      <p className="pullout">Four diodes and a capacitor: the most ubiquitous circuit on Earth.</p>
+      <Pullout>Four diodes and a capacitor: the most ubiquitous circuit on Earth.</Pullout>
 
       <h2 className="chapter-h2">
         Regulating the <em>rough DC</em>

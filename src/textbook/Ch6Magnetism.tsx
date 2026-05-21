@@ -18,6 +18,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
+import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { BiotSavartWire3DDemo } from './demos/BiotSavartWire3D';
@@ -296,7 +297,7 @@ export default function Ch6Magnetism() {
         <strong className="text-text font-medium">F = qE</strong> is parallel to{' '}
         <strong className="text-text font-medium">E</strong> and does plenty of work.
       </p>
-      <p className="pullout">Magnetism doesn't do work. It only steers.</p>
+      <Pullout>Magnetism doesn't do work. It only steers.</Pullout>
       <p className="mb-prose-3">
         Second, "perpendicular to <strong className="text-text font-medium">v</strong>" plus
         "constant magnitude" is the recipe for circular motion. A charged particle injected into a

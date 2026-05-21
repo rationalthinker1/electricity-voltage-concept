@@ -17,6 +17,7 @@ import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { PredictThenObserve } from '@/components/PredictThenObserve';
+import { Pullout } from '@/components/Prose';
 import { ACElectronJitterDemo } from './demos/ACElectronJitter';
 import { CursorEFieldOnWireDemo } from './demos/CursorEFieldOnWire';
 import { DriftVelocityDemo } from './demos/DriftVelocity';
@@ -234,9 +235,9 @@ export default function Ch2VoltageAndCurrent() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <p className="pullout">
+      <Pullout>
         Voltage is not a property of a place. It is a property of the path between two places.
-      </p>
+      </Pullout>
 
       <TryIt
         tag="Try 2.1"

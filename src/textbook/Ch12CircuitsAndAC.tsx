@@ -13,6 +13,7 @@ import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { PredictThenObserve } from '@/components/PredictThenObserve';
+import { Pullout } from '@/components/Prose';
 import { KirchhoffsLawsDemo } from './demos/KirchhoffsLaws';
 import { MultimeterProbeDemo } from './demos/MultimeterProbe';
 import { RCTransientDemo } from './demos/RCTransient';
@@ -77,10 +78,10 @@ export default function Ch12CircuitsAndAC() {
         <em className="text-text italic">antenna</em>, not a wire
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
-      <p className="pullout">
+      <Pullout>
         The schematic is not a different physics from Chapters 1–6. It is the limit those chapters
         take when wavelengths are huge compared to the wires.
-      </p>
+      </Pullout>
       <p className="mb-prose-3">
         Inside that limit, the entire apparatus of Maxwell collapses to a handful of operational
         rules. Charge conservation becomes a rule at every node. Energy conservation becomes a rule
@@ -688,10 +689,10 @@ export default function Ch12CircuitsAndAC() {
         feeds it to the demodulator. Modern silicon-tuned receivers do the same thing in principle —
         they just synthesize the LC behavior digitally.
       </p>
-      <p className="pullout">
+      <Pullout>
         Every radio is a tunable RLC circuit waiting for the frequency it agrees with. So is every
         quartz watch, every MRI coil, every cell tower.
-      </p>
+      </Pullout>
 
       <h2 className="chapter-h2">
         <em>Impedance</em> — AC's complex resistance

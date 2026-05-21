@@ -18,6 +18,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Formula, InlineMath } from '@/components/Formula';
+import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -319,10 +320,10 @@ export default function Ch13Materials() {
         is the dimensionless relative permittivity of the dielectric filling the gap.
       </p>
 
-      <p className="pullout">
+      <Pullout>
         ε<sub>r</sub> is the price of admission for a field into a material — the bigger the number,
         the more of the field gets bought off by bound charge before it reaches the other side.
-      </p>
+      </Pullout>
 
       <TryIt
         tag="Try 13.1"

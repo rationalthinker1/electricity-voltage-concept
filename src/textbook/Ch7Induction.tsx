@@ -18,6 +18,7 @@ import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { Pullout } from '@/components/Prose';
 import { EddyCurrentTubeDemo } from './demos/EddyCurrentTube';
 import { LenzsLawDemo } from './demos/LenzsLaw';
 import { MagnetThroughCoilDemo } from './demos/MagnetThroughCoil';
@@ -256,10 +257,10 @@ export default function Ch7Induction() {
 
       <EddyCurrentTubeDemo />
 
-      <p className="pullout">
+      <Pullout>
         Magnetism never <em className="text-text italic">moves</em>; only the flux does. Move the
         flux and electricity falls out — paid for in mechanical work, every joule.
-      </p>
+      </Pullout>
       <p className="mb-prose-3">
         If the sign were the other way — if the induced current attracted the approaching magnet
         instead of repelling it — the magnet would accelerate as it approached, accelerate again as

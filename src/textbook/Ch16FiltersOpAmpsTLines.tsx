@@ -14,6 +14,7 @@ import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { Pullout } from '@/components/Prose';
 import { RCFilterBodeDemo } from './demos/RCFilterBode';
 import { RLCBandpassDemo } from './demos/RLCBandpass';
 import { FilterDesignerDemo } from './demos/FilterDesigner';
@@ -733,10 +734,10 @@ export default function Ch13FiltersOpAmpsTLines() {
         modern motherboard is engineered as a controlled-impedance trace, terminated to absorb its
         own reflections.
       </p>
-      <p className="pullout">
+      <Pullout>
         A wire is just a wire — until it isn't. The crossover is set by the ratio of length to
         wavelength, and modern silicon crossed it some time around 1990.
-      </p>
+      </Pullout>
 
       <TryIt
         tag="Try 13.3"
