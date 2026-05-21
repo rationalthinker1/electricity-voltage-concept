@@ -18,7 +18,6 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawHalo } from '@/lib/canvasPrimitives';
-import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props {
