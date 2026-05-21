@@ -49,6 +49,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
 
   const [chaptersOpen, setChaptersOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileChaptersOpen, setMobileChaptersOpen] = useState(false);
   const chaptersMenuRef = useRef<HTMLDivElement | null>(null);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const mobileToggleRef = useRef<HTMLButtonElement | null>(null);
@@ -56,6 +57,7 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
   useEffect(() => {
     setChaptersOpen(false);
     setMobileOpen(false);
+    setMobileChaptersOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -313,13 +315,61 @@ export function TopNav({ themeMode, resolvedTheme, onCycleTheme }: TopNavProps) 
           className="border-border bg-bg-elevated absolute top-full right-0 left-0 z-2 max-h-[calc(100vh-72px)] overflow-y-auto border-b shadow-[0_24px_60px_var(--shadow-strong)] md:hidden"
         >
           <div className="py-lg px-lg gap-xs flex flex-col">
-            <Link
-              to="/"
-              role="menuitem"
-              className={mobileItemClass(!!activeChapter || pathname === '/')}
+            <button
+              type="button"
+              className={clsx(
+                mobileItemClass(!!activeChapter),
+                'gap-sm flex w-full cursor-pointer items-center justify-between border-0 bg-transparent',
+              )}
+              aria-expanded={mobileChaptersOpen}
+              aria-controls="mobile-chapters-list"
+              onClick={() => setMobileChaptersOpen((o) => !o)}
             >
-              Chapters
-            </Link>
+              <span>Chapters</span>
+              <span
+                aria-hidden="true"
+                className={clsx(
+                  'inline-block transition-transform',
+                  mobileChaptersOpen && 'rotate-180',
+                )}
+              >
+                ▾
+              </span>
+            </button>
+            {mobileChaptersOpen && (
+              <ul
+                id="mobile-chapters-list"
+                className="grid-list mx-md gap-xxs border-border-2 border-l pl-md mb-sm max-h-[55vh] overflow-y-auto"
+                role="menu"
+                aria-label="All chapters"
+              >
+                {CHAPTERS.map((c) => (
+                  <li key={c.slug} className="m-0 p-0">
+                    <Link
+                      to="/textbook/$chapterSlug"
+                      params={{ chapterSlug: c.slug }}
+                      role="menuitem"
+                      className={clsx(
+                        'gap-md py-sm px-sm rounded-3 grid grid-cols-[28px_1fr] items-baseline no-underline transition-colors',
+                        activeChapter === c.slug
+                          ? 'text-accent bg-accent-soft'
+                          : 'text-text hover:bg-bg-card-hover',
+                      )}
+                    >
+                      <span
+                        className={clsx(
+                          'font-3 text-2 text-right tabular-nums',
+                          activeChapter === c.slug ? 'text-accent' : 'text-text-muted',
+                        )}
+                      >
+                        {c.number}
+                      </span>
+                      <span className="font-1 text-4 leading-3">{c.title}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
             {navTargets.map((t) => (
               <Link
                 key={t.to + (t.params?.slug ?? '')}

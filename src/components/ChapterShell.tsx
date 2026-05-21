@@ -188,7 +188,60 @@ export function ChapterShell({ chapter, children }: ChapterShellProps) {
         </div>
       )}
 
-      <NavCardGrid className="mt-5xl px-2xl py-xl mx-auto mb-0">
+      <nav
+        className="mt-4xl gap-md flex items-stretch justify-between"
+        aria-label="Chapter navigation"
+      >
+        {prev ? (
+          <Link
+            to="/textbook/$chapterSlug"
+            params={{ chapterSlug: prev.slug }}
+            className="bg-bg-card hover:bg-bg-card-hover border-border-2 hover:border-accent text-text gap-xxs py-md px-lg rounded-5 max-sm:px-md flex flex-1 flex-col items-start border no-underline transition-colors"
+            aria-label={`Previous: Chapter ${prev.number} — ${prev.title}`}
+          >
+            <span className="eyebrow-muted text-1 tracking-4">← Previous</span>
+            <span className="font-1 text-4 text-text font-medium leading-3">
+              <span className="text-text-muted tabular-nums">Ch. {prev.number}</span> ·{' '}
+              {prev.title}
+            </span>
+          </Link>
+        ) : (
+          <Link
+            to="/"
+            className="bg-bg-card hover:bg-bg-card-hover border-border-2 hover:border-accent text-text gap-xxs py-md px-lg rounded-5 max-sm:px-md flex flex-1 flex-col items-start border no-underline transition-colors"
+            aria-label="Back to contents"
+          >
+            <span className="eyebrow-muted text-1 tracking-4">← Back</span>
+            <span className="font-1 text-4 text-text font-medium leading-3">Contents</span>
+          </Link>
+        )}
+        {next ? (
+          <Link
+            to="/textbook/$chapterSlug"
+            params={{ chapterSlug: next.slug }}
+            className="bg-accent hover:bg-accent-glow text-bg gap-xxs py-md px-lg rounded-5 max-sm:px-md flex flex-1 flex-col items-end border border-transparent no-underline transition-colors"
+            aria-label={`Next: Chapter ${next.number} — ${next.title}`}
+          >
+            <span className="font-3 text-1 tracking-4 text-bg/75 uppercase">Next →</span>
+            <span className="font-1 text-4 text-bg text-right font-medium leading-3">
+              <span className="tabular-nums">Ch. {next.number}</span> · {next.title}
+            </span>
+          </Link>
+        ) : (
+          <Link
+            to="/reference"
+            className="bg-accent hover:bg-accent-glow text-bg gap-xxs py-md px-lg rounded-5 max-sm:px-md flex flex-1 flex-col items-end border border-transparent no-underline transition-colors"
+            aria-label="Appendix: equation labs"
+          >
+            <span className="font-3 text-1 tracking-4 text-bg/75 uppercase">Appendix →</span>
+            <span className="font-1 text-4 text-bg text-right font-medium leading-3">
+              Equation labs
+            </span>
+          </Link>
+        )}
+      </nav>
+
+      <NavCardGrid className="mt-xl px-2xl py-xl mx-auto mb-0">
         {prev ? (
           <NavCard to="/textbook/$chapterSlug" params={{ chapterSlug: prev.slug }}>
             <div className="eyebrow-muted text-1 tracking-4 mb-md">← Chapter {prev.number}</div>
