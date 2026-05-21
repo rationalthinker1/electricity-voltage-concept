@@ -1,5 +1,5 @@
 /**
- * Demo D9.3 — How E and B transform under a Lorentz boost
+ * Demo D11.3 — How E and B transform under a Lorentz boost
  *
  * Start with a pure E_y field (e.g. between the plates of a capacitor at
  * rest). Boost the observer with velocity β in the +x direction. In the
@@ -21,9 +21,11 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { PHYS } from '@/lib/physics';
+import { withAlpha } from '@/lib/canvasTheme';
+import { PHYS, sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -109,7 +111,7 @@ export function EBTransformDemo({ figure }: Props) {
       function drawB(left: number, right: number, strength: number) {
         const density = Math.min(1, strength);
         const op = 0.15 + 0.65 * density;
-        ctx.strokeStyle = `rgba(108,197,194,${op.toFixed(3)})`;
+        ctx.strokeStyle = withAlpha(colors.teal, op);
         ctx.lineWidth = 1.2;
         const cols = 7,
           rows = 7;
@@ -143,7 +145,7 @@ export function EBTransformDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 9.3'}
+      figure={figure ?? 'Fig. 11.3'}
       title="A pure E field becomes E + B when you move"
       question="Start with E only. Boost. What does the new frame measure?"
       caption={
@@ -184,6 +186,27 @@ export function EBTransformDemo({ figure }: Props) {
         <MiniReadout label="B_z'" value={<Num value={Bz_new} />} unit="T" />
         <MiniReadout label="|cB'/E'|" value={cB_over_E.toFixed(3)} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Boosted E_y picks up γ"
+        left={
+          <InlineMath
+            tex={
+              `E_{y}' \\;=\\; \\gamma\\,E_{y} \\;=\\; ` +
+              `${gamma.toFixed(3)} \\cdot ${sciTeX(Ey, 1)} \\;\\approx\\; ` +
+              `${sciTeX(Ey_new, 2)}\\ \\text{V/m}`
+            }
+          />
+        }
+        rightLabel="Induced B_z' from a pure E_y"
+        right={
+          <InlineMath
+            tex={
+              `B_{z}' \\;=\\; -\\dfrac{\\gamma\\beta\\,E_{y}}{c} \\;\\approx\\; ` +
+              `${sciTeX(Bz_new, 2)}\\ \\text{T}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

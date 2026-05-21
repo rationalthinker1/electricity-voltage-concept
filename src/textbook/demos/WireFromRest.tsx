@@ -1,5 +1,5 @@
 /**
- * Demo D9.1 — A current-carrying wire seen from the lab frame
+ * Demo D11.1 — A current-carrying wire seen from the lab frame
  *
  * Top-down view. A long horizontal wire shown as a strip down the middle.
  * Two interleaved rows of charges along the wire:
@@ -183,7 +183,7 @@ export function WireFromRestDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 9.1'}
+      figure={figure ?? 'Fig. 11.1'}
       title="The wire from the lab frame"
       question="A wire carries current. A test charge sits next to it, motionless. Does it feel a force?"
       caption={

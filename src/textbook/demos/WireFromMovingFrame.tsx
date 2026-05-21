@@ -1,5 +1,5 @@
 /**
- * Demo D9.2 — Same wire, boosted into the test-charge frame
+ * Demo D11.2 — Same wire, boosted into the test-charge frame
  *
  * Same physical setup as WireFromRest, now viewed from a frame moving with
  * the (formerly motionless) test charge. In the new frame:
@@ -25,12 +25,15 @@
  * stripe to a different density, and a tiny excess net charge appears.
  */
 import { useState } from 'react';
+
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
+import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { Num } from '@/components/Num';
+import { sciTeX } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -103,9 +106,9 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       const wireLen = wireXR - wireXL;
       const wireGrd = ctx.createLinearGradient(0, wireTop, 0, wireBot);
       const tintPink = Math.min(0.3, b * 0.45);
-      wireGrd.addColorStop(0, `rgba(255,59,110,${(tintPink * 0.6).toFixed(3)})`);
-      wireGrd.addColorStop(0.5, `rgba(255,59,110,${tintPink.toFixed(3)})`);
-      wireGrd.addColorStop(1, `rgba(255,59,110,${(tintPink * 0.6).toFixed(3)})`);
+      wireGrd.addColorStop(0, withAlpha(colors.pink, tintPink * 0.6));
+      wireGrd.addColorStop(0.5, withAlpha(colors.pink, tintPink));
+      wireGrd.addColorStop(1, withAlpha(colors.pink, tintPink * 0.6));
       ctx.fillStyle = wireGrd;
       ctx.fillRect(wireXL, wireTop, wireLen, wireH);
       ctx.strokeStyle = colors.accent;
@@ -237,7 +240,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 9.2'}
+      figure={figure ?? 'Fig. 11.2'}
       title="Same wire, viewed from the moving frame"
       question="Boost into the test charge's rest frame. Where does the force come from now?"
       caption={
@@ -276,6 +279,27 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
           }
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="γ in the test-charge frame"
+        left={
+          <InlineMath
+            tex={
+              `\\gamma_{\\text{test}} \\;=\\; \\dfrac{1}{\\sqrt{1-\\beta^{2}}} \\;=\\; ` +
+              `\\dfrac{1}{\\sqrt{1-${beta.toFixed(2)}^{2}}} \\;\\approx\\; ` +
+              `${gamma_test.toFixed(4)}`
+            }
+          />
+        }
+        rightLabel="Residual line charge in the boosted frame"
+        right={
+          <InlineMath
+            tex={
+              `\\lambda' \\;=\\; \\lambda_{0}\\,(\\gamma_{\\text{test}} - \\gamma_{e}') ` +
+              `\\;\\approx\\; ${sciTeX(lambda_new, 2)}\\ \\text{C/m}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

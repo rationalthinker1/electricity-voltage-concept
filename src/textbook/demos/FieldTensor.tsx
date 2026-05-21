@@ -1,5 +1,5 @@
 /**
- * Demo D9.4 — The electromagnetic field tensor F^μν
+ * Demo D11.4 — The electromagnetic field tensor F^μν
  *
  * Display the antisymmetric 4×4 matrix
  *
@@ -24,10 +24,9 @@
  * The point is purely structural: as β changes, the components
  * redistribute among themselves — they're one tensor, not two vectors.
  */
-import { useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 
 import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 
 interface Props {
@@ -120,9 +119,39 @@ export function FieldTensorDemo({ figure }: Props) {
     return (i === 0 && j !== 0) || (j === 0 && i !== 0);
   }
 
+  /**
+   * Resolve a tensor cell's background and foreground colour from the
+   * chosen role + magnitude. Opacity math and the choice of theme tokens
+   * live in one place so the matrix is easy to tweak without hunting
+   * through inline `color-mix` strings.
+   */
+  function tintedCellColors({
+    tint,
+    isE,
+    isZero,
+  }: {
+    tint: number;
+    isE: boolean;
+    isZero: boolean;
+  }): { bg: string; fg: string } {
+    if (isZero) {
+      return {
+        bg: 'color-mix(in srgb, var(--color-text) 2%, transparent)',
+        fg: 'color-mix(in srgb, var(--color-text-dim) 45%, transparent)',
+      };
+    }
+    const token = isE ? 'var(--color-accent)' : 'var(--color-teal)';
+    const bgPct = ((0.05 + 0.3 * tint) * 100).toFixed(1);
+    const fgPct = ((0.55 + 0.45 * tint) * 100).toFixed(1);
+    return {
+      bg: `color-mix(in srgb, ${token} ${bgPct}%, transparent)`,
+      fg: `color-mix(in srgb, ${token} ${fgPct}%, transparent)`,
+    };
+  }
+
   return (
     <Demo
-      figure={figure ?? 'Fig. 9.4'}
+      figure={figure ?? 'Fig. 11.4'}
       title="One tensor, six components"
       question="What's the relationship between E and B? They're entries in the same matrix."
       caption={
@@ -140,106 +169,50 @@ export function FieldTensorDemo({ figure }: Props) {
         </>
       }
     >
-      <div style={{ padding: '18px 24px 0' }}>
+      <div className="font-3 text-text px-2xl pt-lg text-2">
         <div
+          className="gap-xs grid"
           style={{
-            display: 'grid',
             gridTemplateColumns: 'auto repeat(4, 1fr)',
             gridTemplateRows: 'auto repeat(4, 1fr)',
-            gap: '4px',
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: 13,
-            color: withAlpha(getCanvasColors().text, 0.9),
           }}
         >
           {/* Top-left corner */}
-          <div
-            style={{
-              padding: '8px 4px',
-              color: withAlpha(getCanvasColors().textDim, 0.6),
-              textAlign: 'center',
-              fontSize: 11,
-            }}
-          >
-            μ ＼ ν
-          </div>
+          <div className="text-text-muted text-1 px-xs py-sm text-center">μ ＼ ν</div>
           {/* Column headers */}
           {labels.map((l) => (
-            <div
-              key={'col-' + l}
-              style={{
-                padding: '8px 4px',
-                textAlign: 'center',
-                fontSize: 11,
-                color: withAlpha(getCanvasColors().textDim, 0.8),
-              }}
-            >
+            <div key={'col-' + l} className="text-text-dim text-1 px-xs py-sm text-center">
+
               {l}
             </div>
           ))}
           {/* Rows */}
           {labels.map((rl, i) => (
-            <>
-              <div
-                key={'row-' + rl}
-                style={{
-                  padding: '6px 4px',
-                  textAlign: 'center',
-                  fontSize: 11,
-                  color: withAlpha(getCanvasColors().textDim, 0.8),
-                  alignSelf: 'center',
-                }}
-              >
-                {rl}
-              </div>
+            <Fragment key={'row-' + rl}>
+              <div className="text-text-dim text-1 px-xs py-xs self-center text-center">{rl}</div>
               {labels.map((_, j) => {
                 const val = cell[i][j];
-                const abs = Math.abs(val);
-                const tint = abs / maxAbs;
+                const tint = Math.abs(val) / maxAbs;
                 const isE = isEComponent(i, j);
                 const isZero = i === j;
-                const bg = isZero
-                  ? 'rgba(255,255,255,0.02)'
-                  : isE
-                    ? `rgba(255,107,42,${(0.05 + 0.3 * tint).toFixed(3)})`
-                    : `rgba(108,197,194,${(0.05 + 0.3 * tint).toFixed(3)})`;
-                const fg = isZero
-                  ? withAlpha(getCanvasColors().textDim, 0.45)
-                  : isE
-                    ? `rgba(255,107,42,${(0.55 + 0.45 * tint).toFixed(3)})`
-                    : `rgba(108,197,194,${(0.55 + 0.45 * tint).toFixed(3)})`;
+                const { bg, fg } = tintedCellColors({ tint, isE, isZero });
                 return (
                   <div
                     key={`${i}-${j}`}
-                    style={{
-                      padding: '14px 6px 12px',
-                      textAlign: 'center',
-                      background: bg,
-                      borderRadius: 4,
-                      border: '1px solid rgba(255,255,255,0.05)',
-                      transition: 'background-color 120ms linear',
-                    }}
+                    className="border-border rounded-3 px-xs pt-md pb-sm text-center transition-[background-color] duration-fast"
+                    style={{ background: bg }}
                   >
-                    <div style={{ fontSize: 11, color: fg, marginBottom: 4 }}>
+                    <div className="text-1 mb-xs" style={{ color: fg }}>
                       {compLabel(i, j)}
                     </div>
-                    <div style={{ fontSize: 13, color: withAlpha(getCanvasColors().text, 0.92) }}>
-                      {isZero ? '0' : val.toFixed(3)}
-                    </div>
+                    <div className="text-text text-2">{isZero ? '0' : val.toFixed(3)}</div>
                   </div>
                 );
               })}
-            </>
+            </Fragment>
           ))}
         </div>
-        <div
-          style={{
-            marginTop: 10,
-            fontSize: 11,
-            color: withAlpha(getCanvasColors().textDim, 0.7),
-            fontFamily: '"JetBrains Mono", monospace',
-          }}
-        >
+        <div className="font-3 text-text-muted text-1 mt-md">
           Components shown in natural units (E in units of E₀; B in units of E₀/c). The matrix is
           antisymmetric: F<sup>μν</sup> = −F<sup>νμ</sup>.
         </div>

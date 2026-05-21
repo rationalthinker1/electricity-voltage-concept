@@ -191,24 +191,32 @@ interface EquationStripProps {
  * Each column shows a short caption and a rendered equation — usually the
  * symbolic formula immediately followed by its values substituted in.
  *
- * Stacks vertically on narrow viewports so the math doesn't overflow.
+ * Auto-stacks when the two equations would otherwise be squeezed: the grid
+ * uses `auto-fit` with a minimum column width, so columns collapse to one
+ * line whenever the strip can't comfortably fit both side by side.
+ * Each cell has `min-w-0` and lets its inner equation scroll horizontally
+ * if a single equation is wider than its cell, so the strip never blows
+ * out the parent card. A container query on the strip itself paints a
+ * vertical divider between the two equations only while they're sitting
+ * side by side; once they stack, the divider disappears so it doesn't
+ * read as a stray horizontal-row decoration.
  */
 export function EquationStrip({ leftLabel, left, rightLabel, right }: EquationStripProps) {
   return (
-    <div className="py-md px-xl bg-bg-elevated border-border gap-md sm:gap-xl grid grid-cols-1 border-t sm:grid-cols-2">
-      <div className="text-center">
+    <div className="@container py-md px-xl bg-bg-elevated border-border gap-md sm:gap-xl grid grid-cols-[repeat(auto-fit,minmax(min(100%,22rem),1fr))] border-t">
+      <div className="min-w-0 text-center">
         {leftLabel && (
           <div className="font-3 text-1 text-text-muted tracking-3 mb-1 uppercase">{leftLabel}</div>
         )}
-        <div className="text-3">{left}</div>
+        <div className="text-3 overflow-x-auto">{left}</div>
       </div>
-      <div className="sm:border-border-strong sm:pl-xl text-center sm:border-l">
+      <div className="min-w-0 text-center @[44rem]:border-border-strong @[44rem]:pl-xl @[44rem]:border-l">
         {rightLabel && (
           <div className="font-3 text-1 text-text-muted tracking-3 mb-1 uppercase">
             {rightLabel}
           </div>
         )}
-        <div className="text-3">{right}</div>
+        <div className="text-3 overflow-x-auto">{right}</div>
       </div>
     </div>
   );
