@@ -17,6 +17,7 @@
  *   • Drawing *text or an overlay on top*         → here
  */
 
+import { pathRoundRect } from './canvasPrimitives';
 import { getCanvasColors } from './canvasTheme';
 
 const DEFAULT_FONT_FAMILY = '"JetBrains Mono", monospace';
@@ -50,6 +51,99 @@ export function drawLabel(ctx: CanvasRenderingContext2D, opts: LabelOptions): vo
   ctx.textAlign = opts.align ?? 'left';
   ctx.textBaseline = opts.baseline ?? 'alphabetic';
   ctx.fillText(opts.text, opts.x, opts.y);
+  ctx.restore();
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ *  drawCaption — top-edge canvas caption.
+ *
+ *  Thin wrapper around drawLabel that pins the semantic intent: a short
+ *  line of helper text sitting at the top of the canvas (baseline 'top',
+ *  align 'left', default 10 px). Demos use this for "drag to orbit",
+ *  "hold length fixed", figure subtitles, etc.
+ *
+ *  Default colour is `colors.textDim` (not withAlpha) because many
+ *  captions are meant to be fully readable; callers can pass
+ *  `withAlpha(colors.textDim, 0.75)` when they explicitly want it muted.
+ * ─────────────────────────────────────────────────────────────────────── */
+
+interface CaptionOptions {
+  x: number;
+  y: number;
+  text: string;
+  color?: string;
+  size?: number;
+  align?: CanvasTextAlign;
+}
+
+export function drawCaption(ctx: CanvasRenderingContext2D, opts: CaptionOptions): void {
+  const colors = getCanvasColors();
+  drawLabel(ctx, {
+    x: opts.x,
+    y: opts.y,
+    text: opts.text,
+    color: opts.color ?? colors.textDim,
+    size: opts.size ?? 10,
+    align: opts.align ?? 'left',
+    baseline: 'top',
+  });
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ *  drawAnnotationBox — semi-transparent info panel with fill + stroke.
+ *
+ *  Replaces the recurring 10-statement pattern in KCL/KVL overlays:
+ *    ctx.save(); ctx.globalAlpha = 0.1; ctx.fillStyle = colors.accent;
+ *    ctx.fillRect(x, y, w, h); ctx.restore();
+ *    ctx.save(); ctx.globalAlpha = 0.6; ctx.strokeStyle = colors.accent;
+ *    ctx.strokeRect(x, y, w, h); ctx.restore();
+ * ─────────────────────────────────────────────────────────────────────── */
+
+interface AnnotationBoxOptions {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  fillColor?: string;
+  fillAlpha?: number;
+  strokeColor?: string;
+  strokeAlpha?: number;
+  radius?: number;
+}
+
+export function drawAnnotationBox(ctx: CanvasRenderingContext2D, opts: AnnotationBoxOptions): void {
+  const colors = getCanvasColors();
+  const x = opts.x;
+  const y = opts.y;
+  const w = opts.w;
+  const h = opts.h;
+  const fillColor = opts.fillColor ?? colors.accent;
+  const fillAlpha = opts.fillAlpha ?? 0.1;
+  const strokeColor = opts.strokeColor ?? colors.accent;
+  const strokeAlpha = opts.strokeAlpha ?? 0.6;
+  const radius = opts.radius ?? 0;
+
+  ctx.save();
+  ctx.globalAlpha = fillAlpha;
+  ctx.fillStyle = fillColor;
+  if (radius > 0) {
+    pathRoundRect(ctx, x, y, w, h, radius);
+    ctx.fill();
+  } else {
+    ctx.fillRect(x, y, w, h);
+  }
+  ctx.restore();
+
+  ctx.save();
+  ctx.globalAlpha = strokeAlpha;
+  ctx.strokeStyle = strokeColor;
+  ctx.lineWidth = 1.4;
+  if (radius > 0) {
+    pathRoundRect(ctx, x, y, w, h, radius);
+    ctx.stroke();
+  } else {
+    ctx.strokeRect(x, y, w, h);
+  }
   ctx.restore();
 }
 

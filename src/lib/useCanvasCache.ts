@@ -47,11 +47,24 @@ export type CanvasCacheBuilder = (
  * Returns a stable getter to call inside the draw loop. The getter rebuilds
  * the offscreen canvas whenever (w, h, dpr) or any entry in `deps` changes;
  * otherwise it returns the cached canvas in O(1).
+ *
+ * Optional `frameKey` argument
+ * ────────────────────────────
+ * For caches whose validity depends on a value that's mutated inside the
+ * rAF loop (NOT React state) — typically an orbit-camera angle quantized
+ * to coarse buckets — pass a stringly-typed extra key on each call:
+ *
+ *   getStatic(w, h, dpr, `y${yawQ}|p${pitQ}`);
+ *
+ * The bake re-runs whenever that string changes. Use sparingly: the only
+ * legitimate case is when the cache invariant truly lives outside React.
+ * For React-derivable invariants prefer `deps`, which is checked once per
+ * render instead of once per tick.
  */
 export function useCanvasCache(
   draw: CanvasCacheBuilder,
   deps: ReadonlyArray<unknown>,
-): (w: number, h: number, dpr: number) => HTMLCanvasElement | null {
+): (w: number, h: number, dpr: number, frameKey?: string) => HTMLCanvasElement | null {
   const cacheRef = useRef<{ key: string; canvas: HTMLCanvasElement } | null>(null);
   const drawRef = useRef(draw);
   drawRef.current = draw;
@@ -67,9 +80,9 @@ export function useCanvasCache(
   }
 
   return useMemo(
-    () => (w: number, h: number, dpr: number) => {
+    () => (w: number, h: number, dpr: number, frameKey?: string) => {
       if (w <= 0 || h <= 0) return null;
-      const key = `${w}x${h}@${dpr}`;
+      const key = frameKey ? `${w}x${h}@${dpr}|${frameKey}` : `${w}x${h}@${dpr}`;
       if (cacheRef.current?.key !== key) {
         const off = document.createElement('canvas');
         off.width = Math.max(1, Math.floor(w * dpr));

@@ -37,9 +37,23 @@ import {
   type OrbitCamera,
   type Vec3,
 } from '@/lib/projection3d';
+import { useCanvasCache } from '@/lib/useCanvasCache';
 
 interface Props {
   figure?: string;
+}
+
+// Pre-built rim points (parametric circles in y-z, at fixed x). Pure
+// function of (radius, x) — module-scope so both the static-cache builder
+// and the per-frame draw can reach it.
+const RIM_N = 48;
+function rimPoints(radius: number, x: number): Vec3[] {
+  const arr: Vec3[] = [];
+  for (let i = 0; i < RIM_N; i++) {
+    const phi = (i / RIM_N) * Math.PI * 2;
+    arr.push(v3(x, radius * Math.cos(phi), radius * Math.sin(phi)));
+  }
+  return arr;
 }
 
 // Geometry (world units). The cable runs along the x-axis from -X_HALF to +X_HALF.
@@ -54,17 +68,76 @@ interface ArrowSpec {
   kind: 'E' | 'B' | 'S';
 }
 
-interface StaticCache {
-  key: string;
-  canvas: HTMLCanvasElement;
-}
-
 export function PoyntingCoax3DDemo({ figure }: Props) {
   const [I, setI] = useState(3); // A
   const [V, setV] = useState(24); // V
   const [showE, setShowE] = useState(true);
   const [showB, setShowB] = useState(true);
   const [showS, setShowS] = useState(true);
+
+  // Orbit camera lives in a ref — mutated by attachOrbit on every drag,
+  // never via React state. useCanvasCache reads camRef.current at bake
+  // time and the per-frame setup passes the quantized angles as the
+  // hook's `frameKey` so the cache invalidates when the camera moves
+  // past a ~0.04 rad threshold.
+  const camRef = useRef<OrbitCamera>({
+    yaw: 0.6,
+    pitch: 0.25,
+    distance: 6.5,
+    fov: Math.PI / 4,
+  });
+
+  const getStatic = useCanvasCache(
+    (octx, sw, sh, _dpr) => {
+      const cam = camRef.current;
+      octx.clearRect(0, 0, sw, sh);
+
+      // Outer braid rims (front + back, at both ends + a few middle hoops).
+      const xs = [-X_HALF, -X_HALF / 2, 0, X_HALF / 2, X_HALF];
+      for (const x of xs) {
+        drawRim(octx, rimPoints(R_OUTER, x), cam, sw, sh, {
+          frontColor: withAlpha(getCanvasColors().textDim, 0.55),
+          backColor: withAlpha(getCanvasColors().textDim, 0.18),
+          lineWidth: 1.0,
+          backDash: [4, 4],
+        });
+      }
+      // Inner conductor rims (more saturated).
+      for (const x of [-X_HALF, 0, X_HALF]) {
+        drawRim(octx, rimPoints(R_INNER, x), cam, sw, sh, {
+          frontColor: withAlpha(getCanvasColors().accent, 0.85),
+          backColor: withAlpha(getCanvasColors().accent, 0.35),
+          lineWidth: 1.2,
+          backDash: [4, 4],
+        });
+      }
+
+      // Axial wireframe lines along the outer braid (8 longitudinal lines).
+      const N_LONG = 8;
+      for (let i = 0; i < N_LONG; i++) {
+        const phi = (i / N_LONG) * Math.PI * 2;
+        const y = R_OUTER * Math.cos(phi);
+        const z = R_OUTER * Math.sin(phi);
+        const front = z >= 0;
+        const p1 = project(v3(-X_HALF, y, z), cam, sw, sh);
+        const p2 = project(v3(+X_HALF, y, z), cam, sw, sh);
+        octx.strokeStyle = front
+          ? withAlpha(getCanvasColors().textDim, 0.45)
+          : withAlpha(getCanvasColors().textDim, 0.14);
+        octx.lineWidth = 1;
+        octx.setLineDash(front ? [] : [4, 4]);
+        octx.beginPath();
+        octx.moveTo(p1.x, p1.y);
+        octx.lineTo(p2.x, p2.y);
+        octx.stroke();
+      }
+      octx.setLineDash([]);
+
+      // Inner conductor body — tinted band drawn as filled silhouette.
+      drawInnerConductorBody(octx, cam, sw, sh);
+    },
+    [],
+  );
 
   const computed = useMemo(() => {
     // Power delivered.
@@ -95,90 +168,8 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
     const { ctx, w: W, h: H, dpr, canvas } = info;
     let raf = 0;
 
-    const cam: OrbitCamera = { yaw: 0.6, pitch: 0.25, distance: 6.5, fov: Math.PI / 4 };
+    const cam = camRef.current;
     const dispose = attachOrbit(canvas, cam);
-
-    const cache: { entry: StaticCache | null } = { entry: null };
-
-    // Pre-built rim points (parametric circles in y-z, at fixed x).
-    const RIM_N = 48;
-    const rimPoints = (radius: number, x: number): Vec3[] => {
-      const arr: Vec3[] = [];
-      for (let i = 0; i < RIM_N; i++) {
-        const phi = (i / RIM_N) * Math.PI * 2;
-        arr.push(v3(x, radius * Math.cos(phi), radius * Math.sin(phi)));
-      }
-      return arr;
-    };
-
-    // Render the static scaffolding (rims, axial wireframe, axes) into
-    // an offscreen canvas. Camera-orientation-sensitive, so we re-bake
-    // when the camera moves more than ~0.02 rad.
-    function bakeStatic(): HTMLCanvasElement {
-      const off = document.createElement('canvas');
-      off.width = Math.max(1, Math.floor(W * dpr));
-      off.height = Math.max(1, Math.floor(H * dpr));
-      const o = off.getContext('2d')!;
-      o.scale(dpr, dpr);
-      o.clearRect(0, 0, W, H);
-
-      // Outer braid rims (front + back, at both ends + a few middle hoops).
-      const xs = [-X_HALF, -X_HALF / 2, 0, X_HALF / 2, X_HALF];
-      for (const x of xs) {
-        drawRim(o, rimPoints(R_OUTER, x), cam, W, H, {
-          frontColor: withAlpha(getCanvasColors().textDim, 0.55),
-          backColor: withAlpha(getCanvasColors().textDim, 0.18),
-          lineWidth: 1.0,
-          backDash: [4, 4],
-        });
-      }
-      // Inner conductor rims (more saturated).
-      for (const x of [-X_HALF, 0, X_HALF]) {
-        drawRim(o, rimPoints(R_INNER, x), cam, W, H, {
-          frontColor: withAlpha(getCanvasColors().accent, 0.85),
-          backColor: withAlpha(getCanvasColors().accent, 0.35),
-          lineWidth: 1.2,
-          backDash: [4, 4],
-        });
-      }
-
-      // Axial wireframe lines along the outer braid (8 longitudinal lines).
-      const N_LONG = 8;
-      for (let i = 0; i < N_LONG; i++) {
-        const phi = (i / N_LONG) * Math.PI * 2;
-        const y = R_OUTER * Math.cos(phi);
-        const z = R_OUTER * Math.sin(phi);
-        const front = z >= 0;
-        const p1 = project(v3(-X_HALF, y, z), cam, W, H);
-        const p2 = project(v3(+X_HALF, y, z), cam, W, H);
-        o.strokeStyle = front
-          ? withAlpha(getCanvasColors().textDim, 0.45)
-          : withAlpha(getCanvasColors().textDim, 0.14);
-        o.lineWidth = 1;
-        o.setLineDash(front ? [] : [4, 4]);
-        o.beginPath();
-        o.moveTo(p1.x, p1.y);
-        o.lineTo(p2.x, p2.y);
-        o.stroke();
-      }
-      o.setLineDash([]);
-
-      // Inner conductor body — a tinted band drawn as filled silhouette
-      // (two long edges, projected through cam, capped with rim ellipses).
-      drawInnerConductorBody(o, cam, W, H);
-
-      return off;
-    }
-
-    function getStatic(): HTMLCanvasElement {
-      const yawQ = Math.round(cam.yaw / 0.04) * 0.04;
-      const pitQ = Math.round(cam.pitch / 0.04) * 0.04;
-      const key = `${W}x${H}@${dpr}|y${yawQ.toFixed(2)}|p${pitQ.toFixed(2)}`;
-      if (cache.entry?.key !== key) {
-        cache.entry = { key, canvas: bakeStatic() };
-      }
-      return cache.entry.canvas;
-    }
 
     function draw() {
       ctx.fillStyle = getCanvasColors().bg;
@@ -187,7 +178,12 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
       const s = stateRef.current;
 
       // Background scaffolding (cached).
-      ctx.drawImage(getStatic(), 0, 0, W, H);
+      // Background scaffolding (cached). Camera angles quantized to 0.04 rad
+      // buckets become the cache key; small nudges share a bake.
+      const yawQ = Math.round(cam.yaw / 0.04) * 0.04;
+      const pitQ = Math.round(cam.pitch / 0.04) * 0.04;
+      const off = getStatic(W, H, dpr, `y${yawQ.toFixed(2)}|p${pitQ.toFixed(2)}`);
+      if (off) ctx.drawImage(off, 0, 0, W, H);
 
       // ── Build the dynamic arrow list ─────────────────────────────────
       const arrows: ArrowSpec[] = [];
@@ -312,7 +308,7 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
       cancelAnimationFrame(raf);
       dispose();
     };
-  }, []);
+  }, [getStatic]);
 
   return (
     <Demo

@@ -996,6 +996,80 @@ export function drawHalo(ctx: CanvasRenderingContext2D, opts: HaloOptions): void
  * Recognises #rrggbb, #rrggbbaa, rgb(...), rgba(...), and hsl(...)/hsla(...).
  * For anything else it returns the colour unchanged.
  */
+/* ───────────────────────────────────────────────────────────────────────────
+ *  drawCurrentDots — animated current-flow dots along a polyline.
+ *
+ *  Centralises the ~40-line `drawCurrentDotsPath` helper that was duplicated
+ *  across five+ circuit demos. All parameters that varied between the copies
+ *  are exposed as options; sensible defaults keep the call site short.
+ * ─────────────────────────────────────────────────────────────────────── */
+
+export interface CurrentDotsOptions {
+  /** Simulation time in seconds. */
+  t: number;
+  /** Current scale factor (0–1+). */
+  Iscale: number;
+  /** Pixel spacing between dots. Default 26. */
+  spacing?: number;
+  /** Speed factor (pixels per second). Default 60. */
+  speed?: number;
+  /** Base dot colour. Default `colors.blue`. */
+  color?: string;
+  /** Minimum intensity before dots are suppressed. Default 0.15. */
+  minIntensity?: number;
+}
+
+export function drawCurrentDots(
+  ctx: CanvasRenderingContext2D,
+  pts: Array<{ x: number; y: number }>,
+  options: CurrentDotsOptions,
+): void {
+  const colors = getCanvasColors();
+  const spacing = options.spacing ?? 26;
+  const speed = options.speed ?? 60;
+  const minIntensity = options.minIntensity ?? 0.15;
+  const baseColor = options.color ?? colors.blue;
+
+  const segs: Array<{ x0: number; y0: number; x1: number; y1: number; len: number }> = [];
+  let total = 0;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i]!;
+    const b = pts[i + 1]!;
+    const len = Math.hypot(b.x - a.x, b.y - a.y);
+    segs.push({ x0: a.x, y0: a.y, x1: b.x, y1: b.y, len });
+    total += len;
+  }
+  if (total < 1) return;
+
+  const intensity = Math.max(minIntensity, Math.min(1, options.Iscale));
+  if (intensity < 0.02) return;
+
+  const offset = ((options.t * speed) / 60) % spacing;
+
+  ctx.save();
+  ctx.fillStyle = baseColor;
+  ctx.globalAlpha = 0.35 + 0.5 * intensity;
+
+  for (let s = -spacing; s < total; s += spacing) {
+    const d = s + offset;
+    if (d < 0 || d > total) continue;
+    let acc = 0;
+    for (const sg of segs) {
+      if (d <= acc + sg.len) {
+        const f = (d - acc) / sg.len;
+        const x = sg.x0 + (sg.x1 - sg.x0) * f;
+        const y = sg.y0 + (sg.y1 - sg.y0) * f;
+        ctx.beginPath();
+        ctx.arc(x, y, 1.6 + 1.4 * intensity, 0, Math.PI * 2);
+        ctx.fill();
+        break;
+      }
+      acc += sg.len;
+    }
+  }
+  ctx.restore();
+}
+
 function translucent(color: string, alpha: number): string {
   // #rrggbb or #rrggbbaa
   if (color.startsWith('#')) {

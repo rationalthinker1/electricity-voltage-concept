@@ -43,14 +43,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
-import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtResistance, fmtVoltage, fmtCurrent } from "@/lib/formatters";
-
-interface StaticCache {
-  key: string;
-  canvas: HTMLCanvasElement;
-}
+import { useCanvasCache } from '@/lib/useCanvasCache';
 
 type Mode = 'V_DC' | 'V_AC' | 'I_DC' | 'R';
 
@@ -236,7 +232,121 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
     }
   }, [redProbe, blackProbe, mode]);
 
-  const cacheRef = useRef<StaticCache | null>(null);
+  // Static schematic — depends only on canvas size since every component
+  // value is a module-level constant. Mixes CircuitElement rendering with
+  // raw-ctx work (header label, capacitor symbol, TP dots + labels), so
+  // useCanvasCache + drawCircuit fits cleanly.
+  const getStatic = useCanvasCache(
+    (octx, sw, sh, _dpr) => {
+      const projectAt = (tp: TP) => ({ x: tp.x * sw, y: tp.y * sh });
+      const p_bat = projectAt(TPS[0]);
+      const p1 = projectAt(TPS[1]);
+      const p2 = projectAt(TPS[2]);
+      const p3 = projectAt(TPS[3]);
+      const p4 = projectAt(TPS[4]);
+      const p5 = projectAt(TPS[5]);
+      const p6 = projectAt(TPS[6]);
+      const p_gnd = projectAt(TPS[7]);
+      const r1cx = (p_bat.x + p1.x - 24) / 2;
+      const r2cy = (p1.y + p3.y) / 2;
+      const r3cy = (p3.y + p5.y) / 2;
+      const r4cy = (p4.y + p6.y) / 2;
+      const capCy = (p2.y + p4.y) / 2;
+
+      const elements: CircuitElement[] = [
+        { kind: 'wire', points: [p_bat, { x: p_bat.x, y: p1.y }, { x: p1.x - 24, y: p1.y }] },
+        {
+          kind: 'resistor',
+          from: { x: r1cx - 20, y: p1.y },
+          to: { x: r1cx + 20, y: p1.y },
+          amplitude: 6,
+          label: `R₁ = ${R1} Ω`,
+          labelOffset: { x: 0, y: -10 },
+        },
+        { kind: 'wire', points: [{ x: r1cx + 20, y: p1.y }, p1] },
+        { kind: 'wire', points: [p1, p2] },
+        { kind: 'wire', points: [p1, { x: p1.x, y: r2cy - 20 }] },
+        {
+          kind: 'resistor',
+          from: { x: p1.x, y: r2cy - 20 },
+          to: { x: p1.x, y: r2cy + 20 },
+          amplitude: 6,
+          label: `R₂ = ${R2} Ω`,
+          labelOffset: { x: 12, y: 0 },
+        },
+        { kind: 'wire', points: [{ x: p1.x, y: r2cy + 20 }, p3] },
+        { kind: 'wire', points: [p2, { x: p2.x, y: capCy - 14 }] },
+        { kind: 'wire', points: [{ x: p2.x, y: capCy + 14 }, p4] },
+        { kind: 'wire', points: [p3, { x: p3.x, y: r3cy - 20 }] },
+        {
+          kind: 'resistor',
+          from: { x: p3.x, y: r3cy - 20 },
+          to: { x: p3.x, y: r3cy + 20 },
+          amplitude: 6,
+          label: `R₃ = ${R3} Ω`,
+          labelOffset: { x: 12, y: 0 },
+        },
+        { kind: 'wire', points: [{ x: p3.x, y: r3cy + 20 }, p5] },
+        { kind: 'wire', points: [p4, { x: p4.x, y: r4cy - 20 }] },
+        {
+          kind: 'resistor',
+          from: { x: p4.x, y: r4cy - 20 },
+          to: { x: p4.x, y: r4cy + 20 },
+          amplitude: 6,
+          label: `R₄ = ${R4} Ω`,
+          labelOffset: { x: 12, y: 0 },
+        },
+        { kind: 'wire', points: [{ x: p4.x, y: r4cy + 20 }, p6] },
+        { kind: 'wire', points: [p5, p6] },
+        { kind: 'wire', points: [p5, { x: p_gnd.x, y: p5.y }, p_gnd] },
+        {
+          kind: 'battery',
+          at: { x: p_bat.x, y: p_bat.y - 24 },
+          label: `${V_BATT.toFixed(0)} V`,
+          labelOffset: { x: 28, y: 0 },
+          leadLength: 14,
+          negativePlateLength: 14,
+          plateGap: 4,
+          positivePlateLength: 24,
+        },
+        {
+          kind: 'ground',
+          at: p_gnd,
+          color: withAlpha(getCanvasColors().textDim, 0.85),
+          size: 20,
+          leadLength: 4,
+        },
+      ];
+      drawCircuit(octx, {
+        elements,
+        defaultWireColor: 'rgba(255,255,255,0.55)',
+        defaultWireWidth: 1.5,
+      });
+
+      // Header, standalone capacitor symbol, TP dots + labels.
+      octx.fillStyle = getCanvasColors().textDim;
+      octx.font = '10px "JetBrains Mono", monospace';
+      octx.textAlign = 'left';
+      octx.textBaseline = 'top';
+      octx.fillText('Six-node bench network — drag the probes to any TP', 12, 10);
+      drawCapacitorV(octx, p2.x, capCy, 'C', `${(C_VAL * 1e6).toFixed(0)} µF`);
+      for (const tp of TPS) {
+        const p = projectAt(tp);
+        octx.fillStyle = getCanvasColors().accent;
+        octx.beginPath();
+        octx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+        octx.fill();
+        octx.fillStyle = getCanvasColors().text;
+        octx.font = 'bold 10px "JetBrains Mono", monospace';
+        const onLeftSide = tp.x < 0.5;
+        octx.textAlign = onLeftSide ? 'right' : 'left';
+        octx.textBaseline = 'middle';
+        const dx = onLeftSide ? -8 : 8;
+        octx.fillText(tp.label, p.x + dx, p.y);
+      }
+    },
+    [],
+  );
 
   /* ── Drawing ─────────────────────────────────────────────────────── */
   const setup = useCallback(
@@ -376,125 +486,15 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
         ctx.fillStyle = getCanvasColors().bg;
         ctx.fillRect(0, 0, w, h);
 
-        // Resolve node positions
+        // Resolve node positions (only the ones used by per-frame overlays).
         const p_bat = projectTP(TPS[0], w, h);
         const p1 = projectTP(TPS[1], w, h);
-        const p2 = projectTP(TPS[2], w, h);
         const p3 = projectTP(TPS[3], w, h);
-        const p4 = projectTP(TPS[4], w, h);
         const p5 = projectTP(TPS[5], w, h);
-        const p6 = projectTP(TPS[6], w, h);
         const p_gnd = projectTP(TPS[7], w, h);
 
-        const r1cx = (p_bat.x + p1.x - 24) / 2;
-        const r2cy = (p1.y + p3.y) / 2;
-        const r3cy = (p3.y + p5.y) / 2;
-        const r4cy = (p4.y + p6.y) / 2;
-        const capCy = (p2.y + p4.y) / 2;
-
-        // Cache key invalidates only on resize / DPR change — the schematic uses
-        // module-level constants for V_BATT / R1..R4 / C_VAL so no slider state
-        // affects the static layer.
-        const cacheKey = `${w}x${h}@${dpr}`;
-        if (cacheRef.current?.key !== cacheKey) {
-          // Six-node bench network: battery → R1 → TP1=TP2 rail; left branch R2 then R3 to GND; right branch C then R4 to bottom rail.
-          const elements: CircuitElement[] = [
-            { kind: 'wire', points: [p_bat, { x: p_bat.x, y: p1.y }, { x: p1.x - 24, y: p1.y }] },
-            {
-              kind: 'resistor',
-              from: { x: r1cx - 20, y: p1.y },
-              to: { x: r1cx + 20, y: p1.y },
-              amplitude: 6,
-              label: `R₁ = ${R1} Ω`,
-              labelOffset: { x: 0, y: -10 },
-            },
-            { kind: 'wire', points: [{ x: r1cx + 20, y: p1.y }, p1] },
-            { kind: 'wire', points: [p1, p2] },
-            { kind: 'wire', points: [p1, { x: p1.x, y: r2cy - 20 }] },
-            {
-              kind: 'resistor',
-              from: { x: p1.x, y: r2cy - 20 },
-              to: { x: p1.x, y: r2cy + 20 },
-              amplitude: 6,
-              label: `R₂ = ${R2} Ω`,
-              labelOffset: { x: 12, y: 0 },
-            },
-            { kind: 'wire', points: [{ x: p1.x, y: r2cy + 20 }, p3] },
-            { kind: 'wire', points: [p2, { x: p2.x, y: capCy - 14 }] },
-            { kind: 'wire', points: [{ x: p2.x, y: capCy + 14 }, p4] },
-            { kind: 'wire', points: [p3, { x: p3.x, y: r3cy - 20 }] },
-            {
-              kind: 'resistor',
-              from: { x: p3.x, y: r3cy - 20 },
-              to: { x: p3.x, y: r3cy + 20 },
-              amplitude: 6,
-              label: `R₃ = ${R3} Ω`,
-              labelOffset: { x: 12, y: 0 },
-            },
-            { kind: 'wire', points: [{ x: p3.x, y: r3cy + 20 }, p5] },
-            { kind: 'wire', points: [p4, { x: p4.x, y: r4cy - 20 }] },
-            {
-              kind: 'resistor',
-              from: { x: p4.x, y: r4cy - 20 },
-              to: { x: p4.x, y: r4cy + 20 },
-              amplitude: 6,
-              label: `R₄ = ${R4} Ω`,
-              labelOffset: { x: 12, y: 0 },
-            },
-            { kind: 'wire', points: [{ x: p4.x, y: r4cy + 20 }, p6] },
-            { kind: 'wire', points: [p5, p6] },
-            { kind: 'wire', points: [p5, { x: p_gnd.x, y: p5.y }, p_gnd] },
-            {
-              kind: 'battery',
-              at: { x: p_bat.x, y: p_bat.y - 24 },
-              label: `${V_BATT.toFixed(0)} V`,
-              labelOffset: { x: 28, y: 0 },
-              leadLength: 14,
-              negativePlateLength: 14,
-              plateGap: 4,
-              positivePlateLength: 24,
-            },
-            {
-              kind: 'ground',
-              at: p_gnd,
-              color: withAlpha(getCanvasColors().textDim, 0.85),
-              size: 20,
-              leadLength: 4,
-            },
-          ];
-          const off = renderCircuitToCanvas(
-            { elements, defaultWireColor: 'rgba(255,255,255,0.55)', defaultWireWidth: 1.5 },
-            w,
-            h,
-            dpr,
-          );
-          // Bake the header label, the standalone capacitor symbol, and the TP dots
-          // + labels into the same offscreen image so a single drawImage replaces
-          // many strokes/fills per frame.
-          const sctx = off.getContext('2d')!;
-          sctx.fillStyle = getCanvasColors().textDim;
-          sctx.font = '10px "JetBrains Mono", monospace';
-          sctx.textAlign = 'left';
-          sctx.textBaseline = 'top';
-          sctx.fillText('Six-node bench network — drag the probes to any TP', 12, 10);
-          drawCapacitorV(sctx, p2.x, capCy, 'C', `${(C_VAL * 1e6).toFixed(0)} µF`);
-          for (const tp of TPS) {
-            const p = projectTP(tp, w, h);
-            sctx.fillStyle = getCanvasColors().accent;
-            sctx.beginPath();
-            sctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-            sctx.fill();
-            sctx.fillStyle = getCanvasColors().text;
-            sctx.font = 'bold 10px "JetBrains Mono", monospace';
-            const onLeftSide = tp.x < 0.5;
-            sctx.textAlign = onLeftSide ? 'right' : 'left';
-            sctx.textBaseline = 'middle';
-            const dx = onLeftSide ? -8 : 8;
-            sctx.fillText(tp.label, p.x + dx, p.y);
-          }
-          cacheRef.current = { key: cacheKey, canvas: off };
-        }
-        ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+        const off = getStatic(w, h, dpr);
+        if (off) ctx.drawImage(off, 0, 0, w, h);
 
         // Dynamic overlay: animated current dots crawling along the main R1–R2–R3 path.
         const Imax = I_main;
@@ -534,7 +534,7 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
         window.removeEventListener('touchend', onTouchEnd);
       };
     },
-    [TPS],
+    [getStatic],
   );
 
   return (
