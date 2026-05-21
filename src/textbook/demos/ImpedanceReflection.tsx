@@ -12,6 +12,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -22,161 +25,132 @@ const Z_LOAD = 8; // Ω (speaker)
 export function ImpedanceReflectionDemo({ figure }: Props) {
   const [ratio, setRatio] = useState(20); // N_p / N_s
 
-  const stateRef = useRef({ ratio });
-  useEffect(() => {
-    stateRef.current.ratio = ratio;
-  }, [ratio]);
-
+  const stateRef = useSimState({ ratio });
   const computed = useMemo(() => {
     const Zp = ratio * ratio * Z_LOAD;
     return { Zp };
   }, [ratio]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const colors = getCanvasColors();
-    const { ctx, w, h } = info;
-    let raf = 0;
-
-    function draw() {
-      const { ratio } = stateRef.current;
-      const Zp = ratio * ratio * Z_LOAD;
-
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, w, h);
-
-      // Layout: source box on left, transformer in middle, load on right.
-      const cy = h / 2;
-      const padX = 24;
-
-      // Source box (tube amp)
-      const srcX = padX;
-      const srcW = 80,
-        srcH = 50;
-      ctx.fillStyle = colors.surface;
-      ctx.strokeStyle = getCanvasColors().accent;
-      ctx.lineWidth = 1.4;
-      ctx.fillRect(srcX, cy - srcH / 2, srcW, srcH);
-      ctx.strokeRect(srcX, cy - srcH / 2, srcW, srcH);
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = 'bold 10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('TUBE AMP', srcX + srcW / 2, cy - 8);
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.fillText('~5 kΩ plate', srcX + srcW / 2, cy + 8);
-
-      // Transformer (simplified two-coil box) center
-      const trX = w * 0.45;
-      const trW = 100,
-        trH = 70;
-      ctx.save();
-      ctx.globalAlpha = 0.45;
-      ctx.strokeStyle = colors.textDim;
-      ctx.lineWidth = 1.4;
-      ctx.strokeRect(trX, cy - trH / 2, trW, trH);
-      // Two short vertical bars suggest core
-      ctx.restore();
-      ctx.save();
-      ctx.globalAlpha = 0.16;
-      ctx.fillStyle = colors.textDim;
-      ctx.fillRect(trX + 30, cy - trH / 2 + 6, 8, trH - 12);
-      ctx.fillRect(trX + 62, cy - trH / 2 + 6, 8, trH - 12);
-      // Primary coil (left bar)
-      drawCoilCol(
-        ctx,
-        trX + 16,
-        cy - 22,
-        cy + 22,
-        Math.min(14, Math.max(3, Math.round(ratio * 1.4))),
-      );
-      // Secondary coil (right bar)
-      drawCoilCol(
-        ctx,
-        trX + trW - 16,
-        cy - 22,
-        cy + 22,
-        Math.max(
-          2,
-          Math.round(
-            ((Math.min(14, Math.max(3, Math.round(ratio * 1.4))) / Math.max(ratio, 1)) * ratio) /
-              ratio +
-              2,
-          ),
-        ),
-      );
-      // Labels for N_p / N_s as a ratio
-      ctx.restore();
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`N_p : N_s = ${ratio.toFixed(0)} : 1`, trX + trW / 2, cy + trH / 2 + 4);
-
-      // Load (speaker)
-      const ldX = w - padX - 80;
-      const ldW = 80,
-        ldH = 50;
-      ctx.fillStyle = colors.surface;
-      ctx.strokeStyle = getCanvasColors().teal;
-      ctx.lineWidth = 1.4;
-      ctx.fillRect(ldX, cy - ldH / 2, ldW, ldH);
-      ctx.strokeRect(ldX, cy - ldH / 2, ldW, ldH);
-      ctx.fillStyle = getCanvasColors().teal;
-      ctx.font = 'bold 10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('SPEAKER', ldX + ldW / 2, cy - 8);
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.fillText('8 Ω', ldX + ldW / 2, cy + 8);
-
-      // Wires
-      ctx.strokeStyle = getCanvasColors().borderStrong;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(srcX + srcW, cy - 6);
-      ctx.lineTo(trX, cy - 6);
-      ctx.moveTo(srcX + srcW, cy + 6);
-      ctx.lineTo(trX, cy + 6);
-      ctx.moveTo(trX + trW, cy - 6);
-      ctx.lineTo(ldX, cy - 6);
-      ctx.moveTo(trX + trW, cy + 6);
-      ctx.lineTo(ldX, cy + 6);
-      ctx.stroke();
-
-      // Z arrows / annotations
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`looking in: Z_p = ${formatZ(Zp)}`, (srcX + srcW + trX) / 2, cy - 16);
-      ctx.fillStyle = getCanvasColors().teal;
-      ctx.fillText(`secondary: Z_s = 8 Ω`, (trX + trW + ldX) / 2, cy - 16);
-
-      // Match indicator: how close to ~5 kΩ source impedance?
-      const target = 5000;
-      const ratioDiff = Math.abs(Math.log10(Math.max(Zp, 1) / target));
-      const match = Math.max(0, 1 - ratioDiff * 2); // 1.0 = perfect, 0 at 100× off
-      drawLabel(ctx, {
-        x: 12,
-        y: h - 18,
-        text:
-          match > 0.8
-            ? 'matched to a 5 kΩ source'
-            : Zp < target
-              ? 'still too low for a tube plate'
-              : 'now too high for a tube plate',
-        color: `rgba(108,197,194,${0.3 + 0.7 * match})`,
-        size: 9,
-        baseline: 'top',
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const { ratio } = stateRef.current;
+        const Zp = ratio * ratio * Z_LOAD;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const cy = h / 2;
+        const padX = 24;
+        const srcX = padX;
+        const srcW = 80,
+                srcH = 50;
+        ctx.fillStyle = colors.surface;
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.4;
+        ctx.fillRect(srcX, cy - srcH / 2, srcW, srcH);
+        ctx.strokeRect(srcX, cy - srcH / 2, srcW, srcH);
+        ctx.fillStyle = colors.accent;
+        ctx.font = 'bold 10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('TUBE AMP', srcX + srcW / 2, cy - 8);
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.fillText('~5 kΩ plate', srcX + srcW / 2, cy + 8);
+        const trX = w * 0.45;
+        const trW = 100,
+                trH = 70;
+        ctx.save();
+        ctx.globalAlpha = 0.45;
+        ctx.strokeStyle = colors.textDim;
+        ctx.lineWidth = 1.4;
+        ctx.strokeRect(trX, cy - trH / 2, trW, trH);
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.16;
+        ctx.fillStyle = colors.textDim;
+        ctx.fillRect(trX + 30, cy - trH / 2 + 6, 8, trH - 12);
+        ctx.fillRect(trX + 62, cy - trH / 2 + 6, 8, trH - 12);
+        drawCoilCol(
+                ctx,
+                trX + 16,
+                cy - 22,
+                cy + 22,
+                Math.min(14, Math.max(3, Math.round(ratio * 1.4))),
+              );
+        drawCoilCol(
+                ctx,
+                trX + trW - 16,
+                cy - 22,
+                cy + 22,
+                Math.max(
+                  2,
+                  Math.round(
+                    ((Math.min(14, Math.max(3, Math.round(ratio * 1.4))) / Math.max(ratio, 1)) * ratio) /
+                      ratio +
+                      2,
+                  ),
+                ),
+              );
+        ctx.restore();
+        ctx.fillStyle = colors.accent;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(`N_p : N_s = ${ratio.toFixed(0)} : 1`, trX + trW / 2, cy + trH / 2 + 4);
+        const ldX = w - padX - 80;
+        const ldW = 80,
+                ldH = 50;
+        ctx.fillStyle = colors.surface;
+        ctx.strokeStyle = colors.teal;
+        ctx.lineWidth = 1.4;
+        ctx.fillRect(ldX, cy - ldH / 2, ldW, ldH);
+        ctx.strokeRect(ldX, cy - ldH / 2, ldW, ldH);
+        ctx.fillStyle = colors.teal;
+        ctx.font = 'bold 10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('SPEAKER', ldX + ldW / 2, cy - 8);
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.fillText('8 Ω', ldX + ldW / 2, cy + 8);
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(srcX + srcW, cy - 6);
+        ctx.lineTo(trX, cy - 6);
+        ctx.moveTo(srcX + srcW, cy + 6);
+        ctx.lineTo(trX, cy + 6);
+        ctx.moveTo(trX + trW, cy - 6);
+        ctx.lineTo(ldX, cy - 6);
+        ctx.moveTo(trX + trW, cy + 6);
+        ctx.lineTo(ldX, cy + 6);
+        ctx.stroke();
+        ctx.fillStyle = colors.accent;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(`looking in: Z_p = ${formatZ(Zp)}`, (srcX + srcW + trX) / 2, cy - 16);
+        ctx.fillStyle = colors.teal;
+        ctx.fillText(`secondary: Z_s = 8 Ω`, (trX + trW + ldX) / 2, cy - 16);
+        const target = 5000;
+        const ratioDiff = Math.abs(Math.log10(Math.max(Zp, 1) / target));
+        const match = Math.max(0, 1 - ratioDiff * 2);
+        drawLabel(ctx, {
+                x: 12,
+                y: h - 18,
+                text:
+                  match > 0.8
+                    ? 'matched to a 5 kΩ source'
+                    : Zp < target
+                      ? 'still too low for a tube plate'
+                      : 'now too high for a tube plate',
+                color: `rgba(108,197,194,${0.3 + 0.7 * match})`,
+                size: 9,
+                baseline: 'top',
+              });
+      },
+      [],
+    );
 
   return (
     <Demo

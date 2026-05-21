@@ -16,6 +16,9 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -28,11 +31,7 @@ export function StanleyDemo({ figure }: Props) {
   const [distanceKm, setDistanceKm] = useState(100);
   const [Vline, setVline] = useState(4000); // line voltage in V
 
-  const stateRef = useRef({ distanceKm, Vline });
-  useEffect(() => {
-    stateRef.current = { distanceKm, Vline };
-  }, [distanceKm, Vline]);
-
+  const stateRef = useSimState({ distanceKm, Vline });
   const computed = useMemo(() => {
     const R = RHO_OHM_PER_KM * distanceKm; // total line resistance (both conductors)
     const I = P_LOAD_W / Vline; // line current
@@ -42,146 +41,124 @@ export function StanleyDemo({ figure }: Props) {
     return { R, I, Ploss, Pgen, eff };
   }, [distanceKm, Vline]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    const t0 = performance.now();
-
-    function draw() {
-      const { distanceKm, Vline } = stateRef.current;
-      const t = (performance.now() - t0) / 1000;
-      const R = RHO_OHM_PER_KM * distanceKm;
-      const I = P_LOAD_W / Vline;
-      const Ploss = I * I * R;
-      const eff = P_LOAD_W / (P_LOAD_W + Ploss);
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const cy = h * 0.45;
-      const padX = 30;
-      const blockW = 56,
-        blockH = 40;
-      const positions = [
-        { label: 'GEN', sub: '500 V', x: padX },
-        { label: 'STEP-UP', sub: 'kV', x: padX + (w - 2 * padX - blockW) * 0.27 },
-        { label: 'STEP-DOWN', sub: 'V', x: padX + (w - 2 * padX - blockW) * 0.73 },
-        { label: 'LOAD', sub: '1 MW', x: w - padX - blockW },
-      ];
-
-      // Transmission line between idx 1 and idx 2
-      const lineX0 = positions[1].x + blockW;
-      const lineX1 = positions[2].x;
-      // Heat colour proportional to loss fraction (1 - eff), clamped
-      const hot = Math.min(1, (1 - eff) * 4);
-      const lineColor = `rgba(${255}, ${107 - hot * 60}, ${42 - hot * 30}, ${0.5 + hot * 0.45})`;
-      ctx.strokeStyle = lineColor;
-      ctx.lineWidth = 2 + hot * 2;
-      ctx.beginPath();
-      ctx.moveTo(lineX0, cy - 8);
-      ctx.lineTo(lineX1, cy - 8);
-      ctx.moveTo(lineX0, cy + 8);
-      ctx.lineTo(lineX1, cy + 8);
-      ctx.stroke();
-      // Animated current arrows on the line
-      const dotCount = 8;
-      for (let k = 0; k < dotCount; k++) {
-        const u = (((k / dotCount + t * 0.3) % 1) + 1) % 1;
-        const x = lineX0 + u * (lineX1 - lineX0);
-        ctx.fillStyle = lineColor;
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, simTime) => {
+        const { distanceKm, Vline } = stateRef.current;
+        const t = simTime;
+        const R = RHO_OHM_PER_KM * distanceKm;
+        const I = P_LOAD_W / Vline;
+        const Ploss = I * I * R;
+        const eff = P_LOAD_W / (P_LOAD_W + Ploss);
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const cy = h * 0.45;
+        const padX = 30;
+        const blockW = 56,
+                blockH = 40;
+        const positions = [
+                { label: 'GEN', sub: '500 V', x: padX },
+                { label: 'STEP-UP', sub: 'kV', x: padX + (w - 2 * padX - blockW) * 0.27 },
+                { label: 'STEP-DOWN', sub: 'V', x: padX + (w - 2 * padX - blockW) * 0.73 },
+                { label: 'LOAD', sub: '1 MW', x: w - padX - blockW },
+              ];
+        const lineX0 = positions[1].x + blockW;
+        const lineX1 = positions[2].x;
+        const hot = Math.min(1, (1 - eff) * 4);
+        const lineColor = `rgba(${255}, ${107 - hot * 60}, ${42 - hot * 30}, ${0.5 + hot * 0.45})`;
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 2 + hot * 2;
         ctx.beginPath();
-        ctx.arc(x, cy - 8, 2, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(x, cy + 8, 2, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      // Heat shimmer if loss is large
-      if (hot > 0.3) {
-        ctx.fillStyle = `rgba(255,107,42,${0.06 * hot})`;
-        ctx.fillRect(lineX0, cy - 20, lineX1 - lineX0, 40);
-      }
-
-      // Draw blocks on top
-      for (let i = 0; i < positions.length; i++) {
-        const p = positions[i];
-        ctx.fillStyle = '#16161a';
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 1.4;
-        ctx.fillRect(p.x, cy - blockH / 2, blockW, blockH);
-        ctx.strokeRect(p.x, cy - blockH / 2, blockW, blockH);
-        drawLabel(ctx, {
-          x: p.x + blockW / 2,
-          y: cy - 6,
-          text: p.label,
-          color: colors.accent,
-          align: 'center',
-          baseline: 'middle',
-          weight: 'bold',
-        });
-        drawLabel(ctx, {
-          x: p.x + blockW / 2,
-          y: cy + 8,
-          text: p.sub,
-          color: colors.textDim,
-          size: 9,
-        });
-      }
-
-      // Short wires between non-transmission blocks
-      ctx.strokeStyle = colors.borderStrong;
-      ctx.lineWidth = 1;
-      for (let i = 0; i < positions.length - 1; i++) {
-        if (i === 1) continue; // skip transmission segment (already drawn)
-        const a = positions[i].x + blockW;
-        const b = positions[i + 1].x;
-        ctx.beginPath();
-        ctx.moveTo(a, cy);
-        ctx.lineTo(b, cy);
+        ctx.moveTo(lineX0, cy - 8);
+        ctx.lineTo(lineX1, cy - 8);
+        ctx.moveTo(lineX0, cy + 8);
+        ctx.lineTo(lineX1, cy + 8);
         ctx.stroke();
-      }
-
-      // Labels: V_line above the transmission segment; distance below
-      ctx.fillStyle = colors.teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      const lcx = (lineX0 + lineX1) / 2;
-      ctx.fillText(`V_line = ${formatVoltage(Vline)}`, lcx, cy - 18);
-      ctx.fillText(`I = ${formatCurrent(I)}`, lcx, cy - 32);
-      ctx.fillStyle = colors.textDim;
-      ctx.textBaseline = 'top';
-      ctx.fillText(`${distanceKm} km · R = ${R.toFixed(1)} Ω`, lcx, cy + 24);
-
-      // Efficiency bar
-      const barX = padX,
-        barY = h - 30,
-        barW = w - 2 * padX,
-        barH = 14;
-      ctx.fillStyle = 'rgba(255,255,255,0.05)';
-      ctx.fillRect(barX, barY, barW, barH);
-      ctx.fillStyle = colors.teal;
-      ctx.fillRect(barX, barY, barW * eff, barH);
-      ctx.fillStyle = withAlpha(colors.accent, 0.55);
-      ctx.fillRect(barX + barW * eff, barY, barW * (1 - eff), barH);
-      ctx.fillStyle = colors.text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`delivered: ${(eff * 100).toFixed(1)} %`, barX + 4, barY + barH / 2);
-      ctx.textAlign = 'right';
-      ctx.fillText(
-        `lost as heat: ${((1 - eff) * 100).toFixed(1)} %`,
-        barX + barW - 4,
-        barY + barH / 2,
-      );
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        const dotCount = 8;
+        for (let k = 0; k < dotCount; k++) {
+                const u = (((k / dotCount + t * 0.3) % 1) + 1) % 1;
+                const x = lineX0 + u * (lineX1 - lineX0);
+                ctx.fillStyle = lineColor;
+                ctx.beginPath();
+                ctx.arc(x, cy - 8, 2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(x, cy + 8, 2, 0, Math.PI * 2);
+                ctx.fill();
+              }
+        if (hot > 0.3) {
+                ctx.fillStyle = `rgba(255,107,42,${0.06 * hot})`;
+                ctx.fillRect(lineX0, cy - 20, lineX1 - lineX0, 40);
+              }
+        for (let i = 0; i < positions.length; i++) {
+                const p = positions[i];
+                ctx.fillStyle = '#16161a';
+                ctx.strokeStyle = colors.accent;
+                ctx.lineWidth = 1.4;
+                ctx.fillRect(p.x, cy - blockH / 2, blockW, blockH);
+                ctx.strokeRect(p.x, cy - blockH / 2, blockW, blockH);
+                drawLabel(ctx, {
+                  x: p.x + blockW / 2,
+                  y: cy - 6,
+                  text: p.label,
+                  color: colors.accent,
+                  align: 'center',
+                  baseline: 'middle',
+                  weight: 'bold',
+                });
+                drawLabel(ctx, {
+                  x: p.x + blockW / 2,
+                  y: cy + 8,
+                  text: p.sub,
+                  color: colors.textDim,
+                  size: 9,
+                });
+              }
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.lineWidth = 1;
+        for (let i = 0; i < positions.length - 1; i++) {
+                if (i === 1) continue; // skip transmission segment (already drawn)
+                const a = positions[i].x + blockW;
+                const b = positions[i + 1].x;
+                ctx.beginPath();
+                ctx.moveTo(a, cy);
+                ctx.lineTo(b, cy);
+                ctx.stroke();
+              }
+        ctx.fillStyle = colors.teal;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        const lcx = (lineX0 + lineX1) / 2;
+        ctx.fillText(`V_line = ${formatVoltage(Vline)}`, lcx, cy - 18);
+        ctx.fillText(`I = ${formatCurrent(I)}`, lcx, cy - 32);
+        ctx.fillStyle = colors.textDim;
+        ctx.textBaseline = 'top';
+        ctx.fillText(`${distanceKm} km · R = ${R.toFixed(1)} Ω`, lcx, cy + 24);
+        const barX = padX,
+                barY = h - 30,
+                barW = w - 2 * padX,
+                barH = 14;
+        ctx.fillStyle = 'rgba(255,255,255,0.05)';
+        ctx.fillRect(barX, barY, barW, barH);
+        ctx.fillStyle = colors.teal;
+        ctx.fillRect(barX, barY, barW * eff, barH);
+        ctx.fillStyle = withAlpha(colors.accent, 0.55);
+        ctx.fillRect(barX + barW * eff, barY, barW * (1 - eff), barH);
+        ctx.fillStyle = colors.text;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`delivered: ${(eff * 100).toFixed(1)} %`, barX + 4, barY + barH / 2);
+        ctx.textAlign = 'right';
+        ctx.fillText(
+                `lost as heat: ${((1 - eff) * 100).toFixed(1)} %`,
+                barX + barW - 4,
+                barY + barH / 2,
+              );
+      },
+      [],
+    );
 
   return (
     <Demo

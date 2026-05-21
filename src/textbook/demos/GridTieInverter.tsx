@@ -19,6 +19,9 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -40,127 +43,106 @@ export function GridTieInverterDemo({ figure }: Props) {
   const S = Vrms * Irms;
   const pf = Math.cos(theta);
 
-  const stateRef = useRef({ Ipk, thetaDeg, P, Q });
-  useEffect(() => {
-    stateRef.current = { Ipk, thetaDeg, P, Q };
-  }, [Ipk, thetaDeg, P, Q]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    let phase = 0;
-
-    function draw() {
-      const { Ipk, thetaDeg } = stateRef.current;
-      const theta = (thetaDeg * Math.PI) / 180;
-      phase += 0.012;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const padL = 50,
-        padR = 80,
-        padT = 18,
-        padB = 28;
-      const plotW = w - padL - padR;
-      const plotH = h - padT - padB;
-      const cy = padT + plotH / 2;
-
-      ctx.strokeStyle = colors.border;
-      ctx.strokeRect(padL, padT, plotW, plotH);
-      ctx.beginPath();
-      ctx.moveTo(padL, cy);
-      ctx.lineTo(padL + plotW, cy);
-      ctx.stroke();
-
-      const tWindow = 2 / F_GRID;
-      const samples = 600;
-      const vScale = (plotH / 2 - 8) / V_PK;
-      const iScale = (plotH / 2 - 8) / Math.max(Ipk, 1);
-      const pScale = (plotH / 2 - 8) / (V_PK * Math.max(Ipk, 1));
-
-      // Grid V(t): white
-      ctx.save();
-      ctx.globalAlpha = 0.8;
-      ctx.strokeStyle = colors.text;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      for (let i = 0; i <= samples; i++) {
-        const t = (i / samples) * tWindow;
-        const v = V_PK * Math.cos(2 * Math.PI * F_GRID * t + phase);
-        const x = padL + (i / samples) * plotW;
-        const y = cy - v * vScale;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Inverter current I(t): amber
-      ctx.restore();
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 1.7;
-      ctx.beginPath();
-      for (let i = 0; i <= samples; i++) {
-        const t = (i / samples) * tWindow;
-        const ii = Ipk * Math.cos(2 * Math.PI * F_GRID * t + phase - theta);
-        const x = padL + (i / samples) * plotW;
-        const y = cy - ii * iScale;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Instantaneous power p(t) = V(t) · I(t) — teal, filled.
-      ctx.fillStyle = colors.tealSoft;
-      ctx.beginPath();
-      ctx.moveTo(padL, cy);
-      for (let i = 0; i <= samples; i++) {
-        const t = (i / samples) * tWindow;
-        const v = V_PK * Math.cos(2 * Math.PI * F_GRID * t + phase);
-        const ii = Ipk * Math.cos(2 * Math.PI * F_GRID * t + phase - theta);
-        const p = v * ii;
-        const x = padL + (i / samples) * plotW;
-        const y = cy - p * pScale;
-        ctx.lineTo(x, y);
-      }
-      ctx.lineTo(padL + plotW, cy);
-      ctx.closePath();
-      ctx.fill();
-
-      // Legend
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      const lx = padL + plotW + 8;
-      ctx.fillStyle = colors.text;
-      ctx.fillRect(lx, padT + 8 - 1, 10, 2);
-      ctx.fillText('V_grid', lx + 14, padT + 8);
-      ctx.fillStyle = colors.accent;
-      ctx.fillRect(lx, padT + 24 - 1, 10, 2);
-      ctx.fillText('I_inj', lx + 14, padT + 24);
-      ctx.save();
-      ctx.globalAlpha = 0.6;
-      ctx.fillStyle = colors.teal;
-      ctx.fillRect(lx, padT + 40 - 2, 10, 4);
-      ctx.fillText('p(t)', lx + 14, padT + 40);
-
-      // Phase / power readout
-      ctx.restore();
-      drawLabel(ctx, {
-        x: padL + plotW / 2,
-        y: padT + plotH + 6,
-        text: `θ = ${thetaDeg.toFixed(0)}°   ·   cos θ = ${Math.cos(theta).toFixed(2)}`,
-        color: colors.textDim,
-        size: 11,
-        align: 'center',
-        baseline: 'top',
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const stateRef = useSimState({ Ipk, thetaDeg, P, Q });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
+        let phase = ctx0.phase;
+        const { Ipk, thetaDeg } = stateRef.current;
+        const theta = (thetaDeg * Math.PI) / 180;
+        phase += 0.012;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const padL = 50,
+                padR = 80,
+                padT = 18,
+                padB = 28;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+        const cy = padT + plotH / 2;
+        ctx.strokeStyle = colors.border;
+        ctx.strokeRect(padL, padT, plotW, plotH);
+        ctx.beginPath();
+        ctx.moveTo(padL, cy);
+        ctx.lineTo(padL + plotW, cy);
+        ctx.stroke();
+        const tWindow = 2 / F_GRID;
+        const samples = 600;
+        const vScale = (plotH / 2 - 8) / V_PK;
+        const iScale = (plotH / 2 - 8) / Math.max(Ipk, 1);
+        const pScale = (plotH / 2 - 8) / (V_PK * Math.max(Ipk, 1));
+        ctx.save();
+        ctx.globalAlpha = 0.8;
+        ctx.strokeStyle = colors.text;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        for (let i = 0; i <= samples; i++) {
+                const t = (i / samples) * tWindow;
+                const v = V_PK * Math.cos(2 * Math.PI * F_GRID * t + phase);
+                const x = padL + (i / samples) * plotW;
+                const y = cy - v * vScale;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        ctx.restore();
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.7;
+        ctx.beginPath();
+        for (let i = 0; i <= samples; i++) {
+                const t = (i / samples) * tWindow;
+                const ii = Ipk * Math.cos(2 * Math.PI * F_GRID * t + phase - theta);
+                const x = padL + (i / samples) * plotW;
+                const y = cy - ii * iScale;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        ctx.fillStyle = colors.tealSoft;
+        ctx.beginPath();
+        ctx.moveTo(padL, cy);
+        for (let i = 0; i <= samples; i++) {
+                const t = (i / samples) * tWindow;
+                const v = V_PK * Math.cos(2 * Math.PI * F_GRID * t + phase);
+                const ii = Ipk * Math.cos(2 * Math.PI * F_GRID * t + phase - theta);
+                const p = v * ii;
+                const x = padL + (i / samples) * plotW;
+                const y = cy - p * pScale;
+                ctx.lineTo(x, y);
+              }
+        ctx.lineTo(padL + plotW, cy);
+        ctx.closePath();
+        ctx.fill();
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        const lx = padL + plotW + 8;
+        ctx.fillStyle = colors.text;
+        ctx.fillRect(lx, padT + 8 - 1, 10, 2);
+        ctx.fillText('V_grid', lx + 14, padT + 8);
+        ctx.fillStyle = colors.accent;
+        ctx.fillRect(lx, padT + 24 - 1, 10, 2);
+        ctx.fillText('I_inj', lx + 14, padT + 24);
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.fillStyle = colors.teal;
+        ctx.fillRect(lx, padT + 40 - 2, 10, 4);
+        ctx.fillText('p(t)', lx + 14, padT + 40);
+        ctx.restore();
+        drawLabel(ctx, {
+                x: padL + plotW / 2,
+                y: padT + plotH + 6,
+                text: `θ = ${thetaDeg.toFixed(0)}°   ·   cos θ = ${Math.cos(theta).toFixed(2)}`,
+                color: colors.textDim,
+                size: 11,
+                align: 'center',
+                baseline: 'top',
+              });
+        ctx0.phase = phase;
+      },
+      [],
+      () => ({ context: { phase: 0 } }),
+    );
 
   return (
     <Demo

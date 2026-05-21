@@ -17,6 +17,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -30,11 +33,7 @@ export function InductionMotorSlipDemo({ figure }: Props) {
   // linear part of the torque/slip curve before pull-out.
   const [load, setLoad] = useState(0.5);
 
-  const stateRef = useRef({ f, load });
-  useEffect(() => {
-    stateRef.current = { f, load };
-  }, [f, load]);
-
+  const stateRef = useSimState({ f, load });
   const computed = useMemo(() => {
     // Synchronous speed (RPM): n_s = 120 f / p
     const n_s = (120 * f) / POLES;
@@ -46,131 +45,105 @@ export function InductionMotorSlipDemo({ figure }: Props) {
     return { n_s, n, s };
   }, [f, load]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    let lastT = performance.now();
-    let statorAng = 0; // rotating-field angle
-    let rotorAng = 0;
-
-    function draw() {
-      const now = performance.now();
-      let dt = (now - lastT) / 1000;
-      lastT = now;
-      if (dt > 0.1) dt = 0.1;
-
-      const { f, load } = stateRef.current;
-      // Synchronous angular speed of the field. For pole-pair count p/2,
-      // mechanical synchronous ω_s = 2π f / (p/2) = 4π f / p.
-      const omega_s = (4 * Math.PI * f) / POLES;
-      const slip = load * 0.05;
-      const omega_rotor = omega_s * (1 - slip);
-
-      // Cap the visualised speed so it doesn't blur.
-      const visCap = 3.0;
-      const scale = omega_s > visCap ? visCap / omega_s : 1;
-      statorAng += omega_s * scale * dt;
-      rotorAng += omega_rotor * scale * dt;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const cx = w / 2;
-      const cy = h / 2;
-      const R = Math.min(w, h) * 0.36;
-
-      // Stator: ring with N and S poles indicated by the rotating field.
-      ctx.strokeStyle = colors.border;
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.arc(cx, cy, R + 18, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(cx, cy, R - 4, 0, Math.PI * 2);
-      ctx.stroke();
-
-      // Rotating stator-field vector (the "ghost magnet")
-      const sFx = cx + Math.cos(statorAng) * R * 0.95;
-      const sFy = cy - Math.sin(statorAng) * R * 0.95;
-      const sSx = cx - Math.cos(statorAng) * R * 0.95;
-      const sSy = cy + Math.sin(statorAng) * R * 0.95;
-      ctx.strokeStyle = colors.teal;
-      ctx.setLineDash([4, 4]);
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(sSx, sSy);
-      ctx.lineTo(sFx, sFy);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle = colors.teal;
-      ctx.beginPath();
-      ctx.arc(sFx, sFy, 9, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = colors.teal;
-      ctx.beginPath();
-      ctx.arc(sSx, sSy, 9, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = colors.bg;
-      ctx.font = 'bold 10px JetBrains Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('N', sFx, sFy);
-      ctx.fillText('S', sSx, sSy);
-
-      // Squirrel-cage rotor: 12 vertical conductive bars on a cylinder
-      const bars = 12;
-      const rBar = R * 0.55;
-      for (let i = 0; i < bars; i++) {
-        const a = rotorAng + (i / bars) * Math.PI * 2;
-        const bx = cx + Math.cos(a) * rBar;
-        const by = cy - Math.sin(a) * rBar;
-        // Induced current strength depends on slip — brighter at higher slip
-        const intensity = Math.min(1, slip * 25 + 0.15);
-        ctx.fillStyle = `rgba(255,107,42,${0.4 + 0.5 * intensity})`;
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
+        let statorAng = ctx0.statorAng;
+        let rotorAng = ctx0.rotorAng;
+        const { f, load } = stateRef.current;
+        const omega_s = (4 * Math.PI * f) / POLES;
+        const slip = load * 0.05;
+        const omega_rotor = omega_s * (1 - slip);
+        const visCap = 3.0;
+        const scale = omega_s > visCap ? visCap / omega_s : 1;
+        statorAng += omega_s * scale * dt;
+        rotorAng += omega_rotor * scale * dt;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const cx = w / 2;
+        const cy = h / 2;
+        const R = Math.min(w, h) * 0.36;
+        ctx.strokeStyle = colors.border;
+        ctx.lineWidth = 1.2;
         ctx.beginPath();
-        ctx.arc(bx, by, 5, 0, Math.PI * 2);
+        ctx.arc(cx, cy, R + 18, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx, cy, R - 4, 0, Math.PI * 2);
+        ctx.stroke();
+        const sFx = cx + Math.cos(statorAng) * R * 0.95;
+        const sFy = cy - Math.sin(statorAng) * R * 0.95;
+        const sSx = cx - Math.cos(statorAng) * R * 0.95;
+        const sSy = cy + Math.sin(statorAng) * R * 0.95;
+        ctx.strokeStyle = colors.teal;
+        ctx.setLineDash([4, 4]);
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(sSx, sSy);
+        ctx.lineTo(sFx, sFy);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = colors.teal;
+        ctx.beginPath();
+        ctx.arc(sFx, sFy, 9, 0, Math.PI * 2);
         ctx.fill();
-      }
-      // End ring (the shorting ring of the squirrel cage)
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.arc(cx, cy, rBar, 0, Math.PI * 2);
-      ctx.stroke();
-      // Rotor body hint
-      ctx.strokeStyle = colors.border;
-      ctx.beginPath();
-      ctx.arc(cx, cy, rBar - 16, 0, Math.PI * 2);
-      ctx.stroke();
-
-      // Rotor reference marker (so the user sees rotor speed vs stator)
-      const refA = rotorAng;
-      const rmx = cx + Math.cos(refA) * (rBar - 10);
-      const rmy = cy - Math.sin(refA) * (rBar - 10);
-      ctx.fillStyle = colors.accent;
-      ctx.beginPath();
-      ctx.arc(rmx, rmy, 4, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Labels
-      ctx.save();
-      ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('rotating stator field (dashed)', 12, 12);
-      ctx.fillText('squirrel-cage rotor', 12, 26);
-      ctx.textAlign = 'right';
-      ctx.fillText(`load = ${(load * 100).toFixed(0)}%`, w - 12, 12);
-      ctx.fillText(`slip = ${(slip * 100).toFixed(2)}%`, w - 12, 26);
-
-      raf = requestAnimationFrame(draw);
-      ctx.restore();
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        ctx.fillStyle = colors.teal;
+        ctx.beginPath();
+        ctx.arc(sSx, sSy, 9, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = colors.bg;
+        ctx.font = 'bold 10px JetBrains Mono';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('N', sFx, sFy);
+        ctx.fillText('S', sSx, sSy);
+        const bars = 12;
+        const rBar = R * 0.55;
+        for (let i = 0; i < bars; i++) {
+                const a = rotorAng + (i / bars) * Math.PI * 2;
+                const bx = cx + Math.cos(a) * rBar;
+                const by = cy - Math.sin(a) * rBar;
+                // Induced current strength depends on slip — brighter at higher slip
+                const intensity = Math.min(1, slip * 25 + 0.15);
+                ctx.fillStyle = `rgba(255,107,42,${0.4 + 0.5 * intensity})`;
+                ctx.beginPath();
+                ctx.arc(bx, by, 5, 0, Math.PI * 2);
+                ctx.fill();
+              }
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(cx, cy, rBar, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.strokeStyle = colors.border;
+        ctx.beginPath();
+        ctx.arc(cx, cy, rBar - 16, 0, Math.PI * 2);
+        ctx.stroke();
+        const refA = rotorAng;
+        const rmx = cx + Math.cos(refA) * (rBar - 10);
+        const rmy = cy - Math.sin(refA) * (rBar - 10);
+        ctx.fillStyle = colors.accent;
+        ctx.beginPath();
+        ctx.arc(rmx, rmy, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('rotating stator field (dashed)', 12, 12);
+        ctx.fillText('squirrel-cage rotor', 12, 26);
+        ctx.textAlign = 'right';
+        ctx.fillText(`load = ${(load * 100).toFixed(0)}%`, w - 12, 12);
+        ctx.fillText(`slip = ${(slip * 100).toFixed(2)}%`, w - 12, 26);
+        ctx.restore();
+        ctx0.statorAng = statorAng;
+        ctx0.rotorAng = rotorAng;
+      },
+      [],
+      () => ({ context: { statorAng: 0, rotorAng: 0 } }),
+    );
 
   return (
     <Demo

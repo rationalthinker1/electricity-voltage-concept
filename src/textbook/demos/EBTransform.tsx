@@ -24,6 +24,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -33,143 +36,116 @@ export function EBTransformDemo({ figure }: Props) {
   const [betaPct, setBetaPct] = useState(30);
   const [Ey, setEy] = useState(1.0e6); // V/m  (a strong but reasonable capacitor field)
 
-  const stateRef = useRef({ betaPct, Ey });
-  useEffect(() => {
-    stateRef.current = { betaPct, Ey };
-  }, [betaPct, Ey]);
-
+  const stateRef = useSimState({ betaPct, Ey });
   const beta = Math.max(0, Math.min(0.999, betaPct / 100));
   const gamma = 1 / Math.sqrt(1 - beta * beta);
   const Ey_new = gamma * Ey;
   const Bz_new = (-gamma * beta * Ey) / PHYS.c; // tesla
   const cB_over_E = Ey_new !== 0 ? Math.abs(PHYS.c * Bz_new) / Math.abs(Ey_new) : 0;
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-
-    function draw() {
-      const s = stateRef.current;
-      const b = Math.max(0, Math.min(0.999, s.betaPct / 100));
-      const g = 1 / Math.sqrt(1 - b * b);
-      // Strength of induced B relative to E (in cB/E units).
-      const induced = g * b; // |cB'|/|E_y| = γβ when starting from pure E_y
-      void g;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      // Background grid
-      ctx.strokeStyle = colors.border;
-      ctx.lineWidth = 1;
-      const gs = 36;
-      for (let x = gs / 2; x < w; x += gs) {
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const s = stateRef.current;
+        const b = Math.max(0, Math.min(0.999, s.betaPct / 100));
+        const g = 1 / Math.sqrt(1 - b * b);
+        const induced = g * b;
+        void g;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        ctx.strokeStyle = colors.border;
+        ctx.lineWidth = 1;
+        const gs = 36;
+        for (let x = gs / 2; x < w; x += gs) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, h);
+                ctx.stroke();
+              }
+        for (let y = gs / 2; y < h; y += gs) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(w, y);
+                ctx.stroke();
+              }
+        const midX = w / 2;
+        ctx.strokeStyle = colors.border;
+        ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, h);
+        ctx.moveTo(midX, 14);
+        ctx.lineTo(midX, h - 14);
         ctx.stroke();
-      }
-      for (let y = gs / 2; y < h; y += gs) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(w, y);
-        ctx.stroke();
-      }
-
-      // Two side-by-side "windows": left = rest frame, right = boosted frame
-      const midX = w / 2;
-      ctx.strokeStyle = colors.border;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(midX, 14);
-      ctx.lineTo(midX, h - 14);
-      ctx.stroke();
-
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText('REST FRAME · pure E_y', midX / 2, 18);
-      ctx.fillText(`BOOSTED FRAME · β = ${b.toFixed(2)} →`, midX + midX / 2, 18);
-
-      // Helper: draw a grid of upward pink arrows representing E_y
-      function drawE(left: number, right: number, scale: number) {
-        ctx.strokeStyle = colors.pink;
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('REST FRAME · pure E_y', midX / 2, 18);
+        ctx.fillText(`BOOSTED FRAME · β = ${b.toFixed(2)} →`, midX + midX / 2, 18);
+        function drawE(left: number, right: number, scale: number) {
+                ctx.strokeStyle = colors.pink;
+                ctx.fillStyle = colors.pink;
+                ctx.lineWidth = 1.5;
+                const cols = 4,
+                  rows = 4;
+                const dx = (right - left) / cols;
+                const dy = (h - 60) / rows;
+                const arrLen = 28 * scale;
+                for (let i = 0; i < cols; i++) {
+                  for (let j = 0; j < rows; j++) {
+                    const cx = left + (i + 0.5) * dx;
+                    const cy = 36 + (j + 0.5) * dy;
+                    const yTop = cy - arrLen / 2;
+                    const yBot = cy + arrLen / 2;
+                    ctx.beginPath();
+                    ctx.moveTo(cx, yBot);
+                    ctx.lineTo(cx, yTop);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(cx, yTop);
+                    ctx.lineTo(cx - 4, yTop + 7);
+                    ctx.lineTo(cx + 4, yTop + 7);
+                    ctx.closePath();
+                    ctx.fill();
+                  }
+                }
+              }
+        function drawB(left: number, right: number, strength: number) {
+                const density = Math.min(1, strength);
+                const op = 0.15 + 0.65 * density;
+                ctx.strokeStyle = `rgba(108,197,194,${op.toFixed(3)})`;
+                ctx.lineWidth = 1.2;
+                const cols = 7,
+                  rows = 7;
+                const dx = (right - left) / cols;
+                const dy = (h - 50) / rows;
+                const k = 3 + 4 * density;
+                for (let i = 0; i < cols; i++) {
+                  for (let j = 0; j < rows; j++) {
+                    const cx = left + (i + 0.5) * dx;
+                    const cy = 30 + (j + 0.5) * dy;
+                    // alternate × and · so the pattern reads "into page B"
+                    ctx.beginPath();
+                    ctx.moveTo(cx - k, cy - k);
+                    ctx.lineTo(cx + k, cy + k);
+                    ctx.moveTo(cx + k, cy - k);
+                    ctx.lineTo(cx - k, cy + k);
+                    ctx.stroke();
+                  }
+                }
+              }
+        drawE(24, midX - 12, 1);
+        drawE(midX + 12, w - 24, Math.min(1.5, g));
+        if (induced > 0.01) {
+                drawB(midX + 12, w - 24, induced);
+              }
+        ctx.fillStyle = colors.teal;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText("B_z'  (induced, into page)", midX + 18, h - 18);
         ctx.fillStyle = colors.pink;
-        ctx.lineWidth = 1.5;
-        const cols = 4,
-          rows = 4;
-        const dx = (right - left) / cols;
-        const dy = (h - 60) / rows;
-        const arrLen = 28 * scale;
-        for (let i = 0; i < cols; i++) {
-          for (let j = 0; j < rows; j++) {
-            const cx = left + (i + 0.5) * dx;
-            const cy = 36 + (j + 0.5) * dy;
-            const yTop = cy - arrLen / 2;
-            const yBot = cy + arrLen / 2;
-            ctx.beginPath();
-            ctx.moveTo(cx, yBot);
-            ctx.lineTo(cx, yTop);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(cx, yTop);
-            ctx.lineTo(cx - 4, yTop + 7);
-            ctx.lineTo(cx + 4, yTop + 7);
-            ctx.closePath();
-            ctx.fill();
-          }
-        }
-      }
-
-      // Helper: B_z represented as scatter of × (into page) marks. Density and
-      // size scale with |induced|.
-      function drawB(left: number, right: number, strength: number) {
-        const density = Math.min(1, strength);
-        const op = 0.15 + 0.65 * density;
-        ctx.strokeStyle = `rgba(108,197,194,${op.toFixed(3)})`;
-        ctx.lineWidth = 1.2;
-        const cols = 7,
-          rows = 7;
-        const dx = (right - left) / cols;
-        const dy = (h - 50) / rows;
-        const k = 3 + 4 * density;
-        for (let i = 0; i < cols; i++) {
-          for (let j = 0; j < rows; j++) {
-            const cx = left + (i + 0.5) * dx;
-            const cy = 30 + (j + 0.5) * dy;
-            // alternate × and · so the pattern reads "into page B"
-            ctx.beginPath();
-            ctx.moveTo(cx - k, cy - k);
-            ctx.lineTo(cx + k, cy + k);
-            ctx.moveTo(cx + k, cy - k);
-            ctx.lineTo(cx - k, cy + k);
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Left pane: rest frame — only E_y
-      drawE(24, midX - 12, 1);
-
-      // Right pane: boosted frame — slightly stronger E_y (γ·E_y) and induced B_z
-      drawE(midX + 12, w - 24, Math.min(1.5, g));
-      if (induced > 0.01) {
-        drawB(midX + 12, w - 24, induced);
-      }
-
-      // Caption on right pane
-      ctx.fillStyle = colors.teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText("B_z'  (induced, into page)", midX + 18, h - 18);
-      ctx.fillStyle = colors.pink;
-      ctx.fillText("E_y'  = γ·E_y", midX + 18, h - 34);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        ctx.fillText("E_y'  = γ·E_y", midX + 18, h - 34);
+      },
+      [],
+    );
 
   return (
     <Demo

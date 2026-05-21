@@ -21,6 +21,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -61,152 +64,120 @@ export function InRushCurrentDemo({ figure }: Props) {
   }
   const Iratio = Math.abs(Ipeak) / 0.02; // vs steady-state magnetising
 
-  const stateRef = useRef({ thetaDeg });
-  useEffect(() => {
-    stateRef.current = { thetaDeg };
-  }, [thetaDeg]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-
-    function draw() {
-      const { thetaDeg } = stateRef.current;
-      const theta = (thetaDeg * Math.PI) / 180;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const padL = 50,
-        padR = 16,
-        padT = 18,
-        padB = 28;
-      const plotW = w - padL - padR;
-      const plotH = h - padT - padB;
-      const subH = plotH / 3 - 6;
-      const topV = padT;
-      const midB = padT + subH + 8;
-      const botI = padT + 2 * (subH + 8);
-
-      ctx.strokeStyle = colors.border;
-      ctx.strokeRect(padL, topV, plotW, subH);
-      ctx.strokeRect(padL, midB, plotW, subH);
-      ctx.strokeRect(padL, botI, plotW, subH);
-
-      // Mid-lines
-      ctx.beginPath();
-      ctx.moveTo(padL, topV + subH / 2);
-      ctx.lineTo(padL + plotW, topV + subH / 2);
-      ctx.moveTo(padL, midB + subH / 2);
-      ctx.lineTo(padL + plotW, midB + subH / 2);
-      ctx.moveTo(padL, botI + subH / 2);
-      ctx.lineTo(padL + plotW, botI + subH / 2);
-      ctx.stroke();
-
-      const N = 800;
-      // Show 3 line cycles
-      const nCyc = 3;
-      const phiMax = nCyc * 2 * Math.PI;
-
-      // Y mappers
-      const yV = (v: number) => topV + subH / 2 - (v / 1.2) * (subH / 2 - 4);
-      // B: range ~[-2.2, 2.2] worst case
-      const yB = (b: number) => midB + subH / 2 - (b / 2.4) * (subH / 2 - 4);
-      // I: dynamic — clamp to ~[-1.5, 1.5] (saturated peaks visible)
-      const yI = (i: number) =>
-        botI + subH / 2 - (Math.max(-1.5, Math.min(1.5, i)) / 1.6) * (subH / 2 - 4);
-
-      // Trace V
-      ctx.save();
-      ctx.globalAlpha = 0.85;
-      ctx.strokeStyle = colors.textDim;
-      ctx.lineWidth = 1.4;
-      ctx.beginPath();
-      for (let i = 0; i <= N; i++) {
-        const phi = (i / N) * phiMax;
-        const v = Math.sin(phi + theta);
-        const x = padL + (i / N) * plotW;
-        const y = yV(v);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Trace B (flux)
-      const Bsat = B_SAT;
-      // Draw saturation band on B plot
-      ctx.restore();
-      ctx.save();
-      ctx.globalAlpha = 0.1;
-      ctx.fillStyle = colors.accent;
-      const ySatTop = yB(Bsat);
-      const ySatTopMax = yB(2.4);
-      ctx.fillRect(padL, ySatTopMax, plotW, ySatTop - ySatTopMax);
-      const ySatBotTop = yB(-Bsat);
-      const ySatBotBot = yB(-2.4);
-      ctx.fillRect(padL, ySatBotTop, plotW, ySatBotBot - ySatBotTop);
-
-      ctx.restore();
-      ctx.strokeStyle = colors.teal;
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      for (let i = 0; i <= N; i++) {
-        const phi = (i / N) * phiMax;
-        const B = -Math.cos(phi + theta) + Math.cos(theta);
-        const x = padL + (i / N) * plotW;
-        const y = yB(B);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Trace I (magnetising current)
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      for (let i = 0; i <= N; i++) {
-        const phi = (i / N) * phiMax;
-        const B = -Math.cos(phi + theta) + Math.cos(theta);
-        const I = magCurrent(B);
-        const x = padL + (i / N) * plotW;
-        const y = yI(I);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Labels
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+V', padL - 4, yV(1));
-      ctx.fillText('0', padL - 4, topV + subH / 2);
-      ctx.fillText('+B_sat', padL - 4, yB(Bsat));
-      ctx.fillText('−B_sat', padL - 4, yB(-Bsat));
-      ctx.fillText('clip', padL - 4, yI(1.4));
-
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        `primary voltage  V_p(t) = sin(ωt + θ),  θ = ${thetaDeg.toFixed(0)}°`,
-        padL + 4,
-        topV + 4,
-      );
-      ctx.fillText('core flux  Φ(t)  (asymmetric if θ ≠ 90°)', padL + 4, midB + 4);
-      ctx.fillText('magnetising current  I_mag(t)', padL + 4, botI + 4);
-
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('0', padL, padT + plotH + 4);
-      ctx.fillText('3 cycles', padL + plotW / 2, padT + plotH + 4);
-      ctx.fillText(`${((nCyc / 60) * 1000).toFixed(0)} ms`, padL + plotW, padT + plotH + 4);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const stateRef = useSimState({ thetaDeg });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const { thetaDeg } = stateRef.current;
+        const theta = (thetaDeg * Math.PI) / 180;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const padL = 50,
+                padR = 16,
+                padT = 18,
+                padB = 28;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+        const subH = plotH / 3 - 6;
+        const topV = padT;
+        const midB = padT + subH + 8;
+        const botI = padT + 2 * (subH + 8);
+        ctx.strokeStyle = colors.border;
+        ctx.strokeRect(padL, topV, plotW, subH);
+        ctx.strokeRect(padL, midB, plotW, subH);
+        ctx.strokeRect(padL, botI, plotW, subH);
+        ctx.beginPath();
+        ctx.moveTo(padL, topV + subH / 2);
+        ctx.lineTo(padL + plotW, topV + subH / 2);
+        ctx.moveTo(padL, midB + subH / 2);
+        ctx.lineTo(padL + plotW, midB + subH / 2);
+        ctx.moveTo(padL, botI + subH / 2);
+        ctx.lineTo(padL + plotW, botI + subH / 2);
+        ctx.stroke();
+        const N = 800;
+        const nCyc = 3;
+        const phiMax = nCyc * 2 * Math.PI;
+        const yV = (v: number) => topV + subH / 2 - (v / 1.2) * (subH / 2 - 4);
+        const yB = (b: number) => midB + subH / 2 - (b / 2.4) * (subH / 2 - 4);
+        const yI = (i: number) =>
+                botI + subH / 2 - (Math.max(-1.5, Math.min(1.5, i)) / 1.6) * (subH / 2 - 4);
+        ctx.save();
+        ctx.globalAlpha = 0.85;
+        ctx.strokeStyle = colors.textDim;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        for (let i = 0; i <= N; i++) {
+                const phi = (i / N) * phiMax;
+                const v = Math.sin(phi + theta);
+                const x = padL + (i / N) * plotW;
+                const y = yV(v);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        const Bsat = B_SAT;
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.1;
+        ctx.fillStyle = colors.accent;
+        const ySatTop = yB(Bsat);
+        const ySatTopMax = yB(2.4);
+        ctx.fillRect(padL, ySatTopMax, plotW, ySatTop - ySatTopMax);
+        const ySatBotTop = yB(-Bsat);
+        const ySatBotBot = yB(-2.4);
+        ctx.fillRect(padL, ySatBotTop, plotW, ySatBotBot - ySatBotTop);
+        ctx.restore();
+        ctx.strokeStyle = colors.teal;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        for (let i = 0; i <= N; i++) {
+                const phi = (i / N) * phiMax;
+                const B = -Math.cos(phi + theta) + Math.cos(theta);
+                const x = padL + (i / N) * plotW;
+                const y = yB(B);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        for (let i = 0; i <= N; i++) {
+                const phi = (i / N) * phiMax;
+                const B = -Math.cos(phi + theta) + Math.cos(theta);
+                const I = magCurrent(B);
+                const x = padL + (i / N) * plotW;
+                const y = yI(I);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('+V', padL - 4, yV(1));
+        ctx.fillText('0', padL - 4, topV + subH / 2);
+        ctx.fillText('+B_sat', padL - 4, yB(Bsat));
+        ctx.fillText('−B_sat', padL - 4, yB(-Bsat));
+        ctx.fillText('clip', padL - 4, yI(1.4));
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(
+                `primary voltage  V_p(t) = sin(ωt + θ),  θ = ${thetaDeg.toFixed(0)}°`,
+                padL + 4,
+                topV + 4,
+              );
+        ctx.fillText('core flux  Φ(t)  (asymmetric if θ ≠ 90°)', padL + 4, midB + 4);
+        ctx.fillText('magnetising current  I_mag(t)', padL + 4, botI + 4);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('0', padL, padT + plotH + 4);
+        ctx.fillText('3 cycles', padL + plotW / 2, padT + plotH + 4);
+        ctx.fillText(`${((nCyc / 60) * 1000).toFixed(0)} ms`, padL + plotW, padT + plotH + 4);
+      },
+      [],
+    );
 
   return (
     <Demo

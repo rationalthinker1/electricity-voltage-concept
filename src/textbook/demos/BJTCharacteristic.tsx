@@ -11,11 +11,14 @@
  * Reader sliders: β and V_CE. A live readout shows I_C at the chosen
  * operating point on the I_B trace nearest the user's slider value.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -42,159 +45,129 @@ export function BJTCharacteristicDemo({ figure }: Props) {
 
   const I_C_op = I_C(V_CE, I_B_pick, beta);
 
-  const stateRef = useRef({ V_CE, beta, I_B_pick });
-  useEffect(() => {
-    stateRef.current = { V_CE, beta, I_B_pick };
-  }, [V_CE, beta, I_B_pick]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-
-    function draw() {
-      const { V_CE, beta, I_B_pick } = stateRef.current;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const padL = 60,
-        padR = 20,
-        padT = 20,
-        padB = 36;
-      const plotW = w - padL - padR;
-      const plotH = h - padT - padB;
-
-      const Vmin = 0,
-        Vmax = 10;
-      const Imax = 0.012; // 12 mA full-scale
-
-      const xOf = (v: number) => padL + ((v - Vmin) / (Vmax - Vmin)) * plotW;
-      const yOf = (i: number) => padT + plotH - (i / Imax) * plotH;
-
-      // frame
-      ctx.strokeStyle = colors.border;
-      ctx.strokeRect(padL, padT, plotW, plotH);
-
-      // gridlines
-      ctx.strokeStyle = colors.border;
-      ctx.beginPath();
-      for (let v = 0; v <= Vmax; v += 2) {
-        ctx.moveTo(xOf(v), padT);
-        ctx.lineTo(xOf(v), padT + plotH);
-      }
-      for (let i = 0; i <= Imax + 1e-9; i += 0.002) {
-        ctx.moveTo(padL, yOf(i));
-        ctx.lineTo(padL + plotW, yOf(i));
-      }
-      ctx.stroke();
-
-      // tick labels
-      ctx.save();
-      ctx.globalAlpha = 0.65;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      for (let v = 0; v <= Vmax; v += 2) {
-        ctx.fillText(v.toFixed(0), xOf(v), padT + plotH + 4);
-        ctx.restore();
-      }
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      for (let i = 0; i <= Imax + 1e-9; i += 0.002) {
-        ctx.fillText(`${(i * 1000).toFixed(0)} mA`, padL - 4, yOf(i));
-      }
-
-      // axis titles
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('V_CE (volts)', padL + plotW / 2, padT + plotH + 18);
-      ctx.save();
-      ctx.translate(14, padT + plotH / 2);
-      ctx.rotate(-Math.PI / 2);
-      ctx.textBaseline = 'middle';
-      ctx.fillText('I_C (mA)', 0, 0);
-      ctx.restore();
-
-      // V_CE_sat boundary
-      ctx.strokeStyle = colors.border;
-      ctx.setLineDash([2, 4]);
-      ctx.beginPath();
-      ctx.moveTo(xOf(V_CE_SAT), padT);
-      ctx.lineTo(xOf(V_CE_SAT), padT + plotH);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // curves
-      const colorFor = (k: number) => {
-        const t = k / (IB_TRACES.length - 1);
-        const r = Math.round(255 - 100 * t);
-        const g = Math.round(107 + 30 * t);
-        const b = Math.round(42 + 80 * t);
-        return `rgba(${r},${g},${b},0.95)`;
-      };
-
-      IB_TRACES.forEach((IB, k) => {
-        ctx.strokeStyle = colorFor(k);
-        ctx.lineWidth = IB === I_B_pick ? 2.2 : 1.3;
+  const stateRef = useSimState({ V_CE, beta, I_B_pick });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const { V_CE, beta, I_B_pick } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const padL = 60,
+                padR = 20,
+                padT = 20,
+                padB = 36;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+        const Vmin = 0,
+                Vmax = 10;
+        const Imax = 0.012;
+        const xOf = (v: number) => padL + ((v - Vmin) / (Vmax - Vmin)) * plotW;
+        const yOf = (i: number) => padT + plotH - (i / Imax) * plotH;
+        ctx.strokeStyle = colors.border;
+        ctx.strokeRect(padL, padT, plotW, plotH);
+        ctx.strokeStyle = colors.border;
         ctx.beginPath();
-        const N = 240;
-        for (let j = 0; j <= N; j++) {
-          const v = Vmin + (j / N) * (Vmax - Vmin);
-          const i = I_C(v, IB, beta);
-          const x = xOf(v);
-          const y = yOf(Math.min(Imax, i));
-          if (j === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
+        for (let v = 0; v <= Vmax; v += 2) {
+                ctx.moveTo(xOf(v), padT);
+                ctx.lineTo(xOf(v), padT + plotH);
+              }
+        for (let i = 0; i <= Imax + 1e-9; i += 0.002) {
+                ctx.moveTo(padL, yOf(i));
+                ctx.lineTo(padL + plotW, yOf(i));
+              }
         ctx.stroke();
-
-        // I_B label at right end
-        const yEnd = yOf(Math.min(Imax, I_C(Vmax, IB, beta)));
+        ctx.save();
+        ctx.globalAlpha = 0.65;
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        for (let v = 0; v <= Vmax; v += 2) {
+                ctx.fillText(v.toFixed(0), xOf(v), padT + plotH + 4);
+                ctx.restore();
+              }
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        for (let i = 0; i <= Imax + 1e-9; i += 0.002) {
+                ctx.fillText(`${(i * 1000).toFixed(0)} mA`, padL - 4, yOf(i));
+              }
+        ctx.fillStyle = colors.textDim;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('V_CE (volts)', padL + plotW / 2, padT + plotH + 18);
+        ctx.save();
+        ctx.translate(14, padT + plotH / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.textBaseline = 'middle';
+        ctx.fillText('I_C (mA)', 0, 0);
+        ctx.restore();
+        ctx.strokeStyle = colors.border;
+        ctx.setLineDash([2, 4]);
+        ctx.beginPath();
+        ctx.moveTo(xOf(V_CE_SAT), padT);
+        ctx.lineTo(xOf(V_CE_SAT), padT + plotH);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        const colorFor = (k: number) => {
+                const t = k / (IB_TRACES.length - 1);
+                const r = Math.round(255 - 100 * t);
+                const g = Math.round(107 + 30 * t);
+                const b = Math.round(42 + 80 * t);
+                return `rgba(${r},${g},${b},0.95)`;
+              };
+        IB_TRACES.forEach((IB, k) => {
+                ctx.strokeStyle = colorFor(k);
+                ctx.lineWidth = IB === I_B_pick ? 2.2 : 1.3;
+                ctx.beginPath();
+                const N = 240;
+                for (let j = 0; j <= N; j++) {
+                  const v = Vmin + (j / N) * (Vmax - Vmin);
+                  const i = I_C(v, IB, beta);
+                  const x = xOf(v);
+                  const y = yOf(Math.min(Imax, i));
+                  if (j === 0) ctx.moveTo(x, y);
+                  else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+        
+                // I_B label at right end
+                const yEnd = yOf(Math.min(Imax, I_C(Vmax, IB, beta)));
+                drawLabel(ctx, {
+                  x: padL + plotW - 6,
+                  y: yEnd - 8,
+                  text: `I_B = ${(IB * 1e6).toFixed(0)} µA`,
+                  color: colorFor(k),
+                  align: 'right',
+                  baseline: 'middle',
+                });
+              });
+        const Iop = I_C(V_CE, I_B_pick, beta);
+        const opX = xOf(V_CE);
+        const opY = yOf(Math.min(Imax, Iop));
+        ctx.save();
+        ctx.globalAlpha = 0.45;
+        ctx.strokeStyle = colors.text;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(opX, padT);
+        ctx.lineTo(opX, padT + plotH);
+        ctx.stroke();
+        ctx.restore();
+        ctx.setLineDash([]);
+        ctx.fillStyle = colors.text;
+        ctx.beginPath();
+        ctx.arc(opX, opY, 4, 0, Math.PI * 2);
+        ctx.fill();
         drawLabel(ctx, {
-          x: padL + plotW - 6,
-          y: yEnd - 8,
-          text: `I_B = ${(IB * 1e6).toFixed(0)} µA`,
-          color: colorFor(k),
-          align: 'right',
-          baseline: 'middle',
-        });
-      });
-
-      // operating point: where V_CE slider crosses the picked I_B curve
-      const Iop = I_C(V_CE, I_B_pick, beta);
-      const opX = xOf(V_CE);
-      const opY = yOf(Math.min(Imax, Iop));
-      ctx.save();
-      ctx.globalAlpha = 0.45;
-      ctx.strokeStyle = colors.text;
-      ctx.setLineDash([3, 3]);
-      ctx.beginPath();
-      ctx.moveTo(opX, padT);
-      ctx.lineTo(opX, padT + plotH);
-      ctx.stroke();
-      ctx.restore();
-      ctx.setLineDash([]);
-      ctx.fillStyle = colors.text;
-      ctx.beginPath();
-      ctx.arc(opX, opY, 4, 0, Math.PI * 2);
-      ctx.fill();
-
-      // header
-      drawLabel(ctx, {
-        x: padL,
-        y: 6,
-        text: `npn BJT family   β = ${beta.toFixed(0)}   V_A (Early) = ${V_A} V   I_C(op) = ${(Iop * 1000).toFixed(2)} mA`,
-        color: colors.textDim,
-        baseline: 'top',
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+                x: padL,
+                y: 6,
+                text: `npn BJT family   β = ${beta.toFixed(0)}   V_A (Early) = ${V_A} V   I_C(op) = ${(Iop * 1000).toFixed(2)} mA`,
+                color: colors.textDim,
+                baseline: 'top',
+              });
+      },
+      [],
+    );
 
   return (
     <Demo

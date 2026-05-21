@@ -18,11 +18,14 @@
  * Volt-second balance: V_in · D = (V_out − V_in) · (1 − D)
  * → V_out = V_in / (1 − D).
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -55,160 +58,130 @@ export function BoostConverterDemo({ figure }: Props) {
     return { Vout, Iout, Iin, Iin_ideal, Tsw, tOn, tOff, dIL_on, dIL_off, dIL_pp, Vripple, Pout };
   }, [Vin, duty, Rload]);
 
-  const stateRef = useRef(computed);
-  useEffect(() => {
-    stateRef.current = computed;
-  }, [computed]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-
-    function draw() {
-      const { Vout, Iout, Tsw, tOn, dIL_pp } = stateRef.current;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const padL = 50,
-        padR = 20,
-        padT = 18,
-        padB = 28;
-      const plotW = w - padL - padR;
-      const plotH = h - padT - padB;
-      const subH = plotH / 2 - 6;
-      const top = padT;
-      const mid = padT + subH + 12;
-
-      ctx.strokeStyle = colors.border;
-      ctx.strokeRect(padL, top, plotW, subH);
-      ctx.strokeRect(padL, mid, plotW, subH);
-
-      const Ncyc = 4;
-      const tTotal = Ncyc * Tsw;
-
-      // Top sub-plot: switch-node voltage. When SW closed, switch node = 0;
-      // when SW open, switch node = V_out (one diode drop above output).
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      const yLo = top + subH - 6;
-      const yHi = top + 6;
-      let first = true;
-      for (let k = 0; k < Ncyc; k++) {
-        const ts = k * Tsw;
-        const x0 = padL + (ts / tTotal) * plotW;
-        const x1 = padL + ((ts + tOn) / tTotal) * plotW;
-        const x2 = padL + ((ts + Tsw) / tTotal) * plotW;
-        if (first) {
-          ctx.moveTo(x0, yLo);
-          first = false;
-        }
-        ctx.lineTo(x0, yLo); // closed → low
-        ctx.lineTo(x1, yLo);
-        ctx.lineTo(x1, yHi); // opens → switch node jumps to V_out
-        ctx.lineTo(x2, yHi);
-      }
-      ctx.stroke();
-
-      ctx.save();
-      ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`V_out`, padL - 4, yHi);
-      ctx.restore();
-      ctx.fillText(`0`, padL - 4, yLo);
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('switch-node voltage', padL + 4, top + 4);
-
-      // Bottom sub-plot: inductor current — triangular ramp
-      // Average is the input current. ΔI_L pp = (V_in / L) · t_on
-      const Iin_avg = stateRef.current.Iin_ideal;
-      const Imax = Iin_avg + dIL_pp / 2;
-      const Imin = Math.max(0, Iin_avg - dIL_pp / 2);
-      const yMaxTop = mid + 6;
-      const yMinBot = mid + subH - 6;
-      const iOf = (i: number) => yMinBot - (i / Math.max(Imax * 1.15, 0.1)) * (yMinBot - yMaxTop);
-
-      // dashed avg
-      ctx.save();
-      ctx.globalAlpha = 0.4;
-      ctx.strokeStyle = colors.teal;
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath();
-      ctx.moveTo(padL, iOf(Iin_avg));
-      ctx.lineTo(padL + plotW, iOf(Iin_avg));
-      ctx.stroke();
-      ctx.restore();
-      ctx.setLineDash([]);
-
-      ctx.strokeStyle = colors.teal;
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
-      for (let k = 0; k < Ncyc; k++) {
-        const ts = k * Tsw;
-        const x0 = padL + (ts / tTotal) * plotW;
-        const x1 = padL + ((ts + tOn) / tTotal) * plotW;
-        const x2 = padL + ((ts + Tsw) / tTotal) * plotW;
-        if (k === 0) ctx.moveTo(x0, iOf(Imin));
-        ctx.lineTo(x1, iOf(Imax));
-        ctx.lineTo(x2, iOf(Imin));
-      }
-      ctx.stroke();
-
-      ctx.save();
-      ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`${Imax.toFixed(2)} A`, padL - 4, iOf(Imax));
-      ctx.restore();
-      ctx.fillText(`${Iin_avg.toFixed(2)} A`, padL - 4, iOf(Iin_avg));
-      ctx.fillText(`${Imin.toFixed(2)} A`, padL - 4, iOf(Imin));
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('inductor current I_L  (= input current)', padL + 4, mid + 4);
-
-      // x-axis
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('0', padL, padT + plotH + 4);
-      ctx.fillText(`${(tTotal * 1e6).toFixed(0)} µs`, padL + plotW, padT + plotH + 4);
-
-      // Header
-      ctx.save();
-      ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        `V_out = V_in / (1 − D) = ${Vout.toFixed(2)} V    I_out = ${Iout.toFixed(2)} A`,
-        4,
-        4,
-      );
-      ctx.restore();
-
-      // Annotate switch states
-      ctx.save();
-      ctx.globalAlpha = 0.65;
-      ctx.fillStyle = colors.accent;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      const x_on = padL + (tOn / 2 / tTotal) * plotW;
-      const x_off = padL + ((tOn + (Tsw - tOn) / 2) / tTotal) * plotW;
-      ctx.fillText('SW on: L charging', x_on, top + subH - 16);
-      ctx.restore();
-      ctx.fillText('SW off: dump → C', x_off, top + subH - 16);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const stateRef = useSimState(computed);
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const { Vout, Iout, Tsw, tOn, dIL_pp } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const padL = 50,
+                padR = 20,
+                padT = 18,
+                padB = 28;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+        const subH = plotH / 2 - 6;
+        const top = padT;
+        const mid = padT + subH + 12;
+        ctx.strokeStyle = colors.border;
+        ctx.strokeRect(padL, top, plotW, subH);
+        ctx.strokeRect(padL, mid, plotW, subH);
+        const Ncyc = 4;
+        const tTotal = Ncyc * Tsw;
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        const yLo = top + subH - 6;
+        const yHi = top + 6;
+        let first = true;
+        for (let k = 0; k < Ncyc; k++) {
+                const ts = k * Tsw;
+                const x0 = padL + (ts / tTotal) * plotW;
+                const x1 = padL + ((ts + tOn) / tTotal) * plotW;
+                const x2 = padL + ((ts + Tsw) / tTotal) * plotW;
+                if (first) {
+                  ctx.moveTo(x0, yLo);
+                  first = false;
+                }
+                ctx.lineTo(x0, yLo); // closed → low
+                ctx.lineTo(x1, yLo);
+                ctx.lineTo(x1, yHi); // opens → switch node jumps to V_out
+                ctx.lineTo(x2, yHi);
+              }
+        ctx.stroke();
+        ctx.save();
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`V_out`, padL - 4, yHi);
+        ctx.restore();
+        ctx.fillText(`0`, padL - 4, yLo);
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('switch-node voltage', padL + 4, top + 4);
+        const Iin_avg = stateRef.current.Iin_ideal;
+        const Imax = Iin_avg + dIL_pp / 2;
+        const Imin = Math.max(0, Iin_avg - dIL_pp / 2);
+        const yMaxTop = mid + 6;
+        const yMinBot = mid + subH - 6;
+        const iOf = (i: number) => yMinBot - (i / Math.max(Imax * 1.15, 0.1)) * (yMinBot - yMaxTop);
+        ctx.save();
+        ctx.globalAlpha = 0.4;
+        ctx.strokeStyle = colors.teal;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(padL, iOf(Iin_avg));
+        ctx.lineTo(padL + plotW, iOf(Iin_avg));
+        ctx.stroke();
+        ctx.restore();
+        ctx.setLineDash([]);
+        ctx.strokeStyle = colors.teal;
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        for (let k = 0; k < Ncyc; k++) {
+                const ts = k * Tsw;
+                const x0 = padL + (ts / tTotal) * plotW;
+                const x1 = padL + ((ts + tOn) / tTotal) * plotW;
+                const x2 = padL + ((ts + Tsw) / tTotal) * plotW;
+                if (k === 0) ctx.moveTo(x0, iOf(Imin));
+                ctx.lineTo(x1, iOf(Imax));
+                ctx.lineTo(x2, iOf(Imin));
+              }
+        ctx.stroke();
+        ctx.save();
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = colors.textDim;
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`${Imax.toFixed(2)} A`, padL - 4, iOf(Imax));
+        ctx.restore();
+        ctx.fillText(`${Iin_avg.toFixed(2)} A`, padL - 4, iOf(Iin_avg));
+        ctx.fillText(`${Imin.toFixed(2)} A`, padL - 4, iOf(Imin));
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('inductor current I_L  (= input current)', padL + 4, mid + 4);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('0', padL, padT + plotH + 4);
+        ctx.fillText(`${(tTotal * 1e6).toFixed(0)} µs`, padL + plotW, padT + plotH + 4);
+        ctx.save();
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = colors.textDim;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(
+                `V_out = V_in / (1 − D) = ${Vout.toFixed(2)} V    I_out = ${Iout.toFixed(2)} A`,
+                4,
+                4,
+              );
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.65;
+        ctx.fillStyle = colors.accent;
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        const x_on = padL + (tOn / 2 / tTotal) * plotW;
+        const x_off = padL + ((tOn + (Tsw - tOn) / 2) / tTotal) * plotW;
+        ctx.fillText('SW on: L charging', x_on, top + subH - 16);
+        ctx.restore();
+        ctx.fillText('SW off: dump → C', x_off, top + subH - 16);
+      },
+      [],
+    );
 
   return (
     <Demo

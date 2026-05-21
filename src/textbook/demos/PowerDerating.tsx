@@ -15,6 +15,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -38,137 +41,110 @@ export function PowerDeratingDemo({ figure }: Props) {
   const [P_nom, setPnom] = useState(0.25); // W (1/4 W default)
   const [P_actual, setPact] = useState(0.15); // W actually dissipated
 
-  const stateRef = useRef({ T_C, P_nom, P_actual });
-  useEffect(() => {
-    stateRef.current = { T_C, P_nom, P_actual };
-  }, [T_C, P_nom, P_actual]);
-
+  const stateRef = useSimState({ T_C, P_nom, P_actual });
   const frac = deratingFraction(T_C);
   const P_allow = P_nom * frac;
   const overload = P_actual > P_allow;
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
-
-    function draw() {
-      const { T_C, P_nom, P_actual } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, W, H);
-
-      const padL = 50;
-      const padR = 24;
-      const padT = 26;
-      const padB = 36;
-      const gW = W - padL - padR;
-      const gH = H - padT - padB;
-
-      // Axes
-      ctx.strokeStyle = getCanvasColors().borderStrong;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(padL, padT);
-      ctx.lineTo(padL, padT + gH);
-      ctx.lineTo(padL + gW, padT + gH);
-      ctx.stroke();
-
-      // x: T in °C from 0 to 175
-      const tMin = 0,
-        tMax = 175;
-      const xT = (t: number) => padL + ((t - tMin) / (tMax - tMin)) * gW;
-      const yF = (f: number) => padT + (1 - f) * gH;
-
-      // Gridlines / labels
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      for (let t = 0; t <= 175; t += 25) {
-        const x = xT(t);
-        ctx.strokeStyle = getCanvasColors().border;
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+        const { T_C, P_nom, P_actual } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, W, H);
+        const padL = 50;
+        const padR = 24;
+        const padT = 26;
+        const padB = 36;
+        const gW = W - padL - padR;
+        const gH = H - padT - padB;
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(x, padT);
-        ctx.lineTo(x, padT + gH);
+        ctx.moveTo(padL, padT);
+        ctx.lineTo(padL, padT + gH);
+        ctx.lineTo(padL + gW, padT + gH);
         ctx.stroke();
-        ctx.fillText(`${t}`, x, padT + gH + 14);
-      }
-      ctx.fillText('Ambient T (°C)', padL + gW / 2, padT + gH + 28);
-
-      ctx.textAlign = 'right';
-      for (let f = 0; f <= 1.0001; f += 0.25) {
-        const y = yF(f);
-        ctx.strokeStyle = getCanvasColors().border;
+        const tMin = 0,
+                tMax = 175;
+        const xT = (t: number) => padL + ((t - tMin) / (tMax - tMin)) * gW;
+        const yF = (f: number) => padT + (1 - f) * gH;
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        for (let t = 0; t <= 175; t += 25) {
+                const x = xT(t);
+                ctx.strokeStyle = colors.border;
+                ctx.beginPath();
+                ctx.moveTo(x, padT);
+                ctx.lineTo(x, padT + gH);
+                ctx.stroke();
+                ctx.fillText(`${t}`, x, padT + gH + 14);
+              }
+        ctx.fillText('Ambient T (°C)', padL + gW / 2, padT + gH + 28);
+        ctx.textAlign = 'right';
+        for (let f = 0; f <= 1.0001; f += 0.25) {
+                const y = yF(f);
+                ctx.strokeStyle = colors.border;
+                ctx.beginPath();
+                ctx.moveTo(padL, y);
+                ctx.lineTo(padL + gW, y);
+                ctx.stroke();
+                ctx.fillText(`${(f * 100).toFixed(0)}%`, padL - 6, y + 3);
+              }
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(padL, y);
-        ctx.lineTo(padL + gW, y);
+        ctx.moveTo(xT(0), yF(1.0));
+        ctx.lineTo(xT(T_KNEE), yF(1.0));
+        ctx.lineTo(xT(T_ZERO), yF(0));
+        ctx.lineTo(xT(175), yF(0));
         ctx.stroke();
-        ctx.fillText(`${(f * 100).toFixed(0)}%`, padL - 6, y + 3);
-      }
-
-      // Derating curve
-      ctx.strokeStyle = getCanvasColors().accent;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(xT(0), yF(1.0));
-      ctx.lineTo(xT(T_KNEE), yF(1.0));
-      ctx.lineTo(xT(T_ZERO), yF(0));
-      ctx.lineTo(xT(175), yF(0));
-      ctx.stroke();
-
-      // Shaded "safe" area
-      ctx.save();
-      ctx.globalAlpha = 0.07;
-      ctx.fillStyle = getCanvasColors().teal;
-      ctx.beginPath();
-      ctx.moveTo(xT(0), yF(0));
-      ctx.lineTo(xT(0), yF(1.0));
-      ctx.lineTo(xT(T_KNEE), yF(1.0));
-      ctx.lineTo(xT(T_ZERO), yF(0));
-      ctx.closePath();
-      ctx.fill();
-
-      // Current operating point: (T_C, P_actual / P_nom)
-      const opFrac = P_nom > 0 ? P_actual / P_nom : 0;
-      const opX = xT(T_C);
-      const opY = yF(Math.min(opFrac, 1.05));
-      ctx.restore();
-      ctx.fillStyle = overload ? getCanvasColors().pink : getCanvasColors().teal;
-      ctx.beginPath();
-      ctx.arc(opX, opY, 6, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.save();
-      ctx.globalAlpha = 0.85;
-      ctx.strokeStyle = getCanvasColors().text;
-      ctx.lineWidth = 1.2;
-      ctx.stroke();
-
-      // Knee marker
-      ctx.restore();
-      ctx.strokeStyle = getCanvasColors().accent;
-      ctx.setLineDash([3, 3]);
-      ctx.beginPath();
-      ctx.moveTo(xT(T_KNEE), padT);
-      ctx.lineTo(xT(T_KNEE), padT + gH);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText(`Knee at ${T_KNEE} °C`, xT(T_KNEE) + 4, padT + 10);
-      ctx.fillText(`Zero at ${T_ZERO} °C`, xT(T_ZERO) - 60, padT + 24);
-
-      drawLabel(ctx, {
-        x: padL,
-        y: 8,
-        text: 'ALLOWED DISSIPATION  vs  AMBIENT',
-        color: getCanvasColors().accent,
-        baseline: 'top',
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        ctx.save();
+        ctx.globalAlpha = 0.07;
+        ctx.fillStyle = colors.teal;
+        ctx.beginPath();
+        ctx.moveTo(xT(0), yF(0));
+        ctx.lineTo(xT(0), yF(1.0));
+        ctx.lineTo(xT(T_KNEE), yF(1.0));
+        ctx.lineTo(xT(T_ZERO), yF(0));
+        ctx.closePath();
+        ctx.fill();
+        const opFrac = P_nom > 0 ? P_actual / P_nom : 0;
+        const opX = xT(T_C);
+        const opY = yF(Math.min(opFrac, 1.05));
+        ctx.restore();
+        ctx.fillStyle = overload ? colors.pink : colors.teal;
+        ctx.beginPath();
+        ctx.arc(opX, opY, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.save();
+        ctx.globalAlpha = 0.85;
+        ctx.strokeStyle = colors.text;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+        ctx.restore();
+        ctx.strokeStyle = colors.accent;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(xT(T_KNEE), padT);
+        ctx.lineTo(xT(T_KNEE), padT + gH);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = colors.textDim;
+        ctx.textAlign = 'left';
+        ctx.fillText(`Knee at ${T_KNEE} °C`, xT(T_KNEE) + 4, padT + 10);
+        ctx.fillText(`Zero at ${T_ZERO} °C`, xT(T_ZERO) - 60, padT + 24);
+        drawLabel(ctx, {
+                x: padL,
+                y: 8,
+                text: 'ALLOWED DISSIPATION  vs  AMBIENT',
+                color: colors.accent,
+                baseline: 'top',
+              });
+      },
+      [],
+    );
 
   return (
     <Demo

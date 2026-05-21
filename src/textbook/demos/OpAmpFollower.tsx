@@ -20,6 +20,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -38,30 +41,19 @@ export function OpAmpFollowerDemo({ figure }: Props) {
   const VbufferedLoad = Vs; // ideal follower
   const Vshown = bufferOn ? VbufferedLoad : VdirectLoad;
 
-  const stateRef = useRef({ Vs, Rs, RL, VdirectLoad, bufferOn });
-  useEffect(() => {
-    stateRef.current = { Vs, Rs, RL, VdirectLoad, bufferOn };
-  }, [Vs, Rs, RL, VdirectLoad, bufferOn]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
-
-    function draw() {
-      const { Vs, Rs, RL, VdirectLoad, bufferOn } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, w, h);
-
-      // Top half: schematic. Bottom half: voltage bar chart.
-      const splitY = Math.floor(h * 0.62);
-      drawSchematic(ctx, 0, 0, w, splitY, Vs, Rs, RL, bufferOn, VdirectLoad);
-      drawBars(ctx, 0, splitY, w, h - splitY, Vs, VdirectLoad, bufferOn);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const stateRef = useSimState({ Vs, Rs, RL, VdirectLoad, bufferOn });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const { Vs, Rs, RL, VdirectLoad, bufferOn } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const splitY = Math.floor(h * 0.62);
+        drawSchematic(ctx, 0, 0, w, splitY, Vs, Rs, RL, bufferOn, VdirectLoad);
+        drawBars(ctx, 0, splitY, w, h - splitY, Vs, VdirectLoad, bufferOn);
+      },
+      [],
+    );
 
   return (
     <Demo

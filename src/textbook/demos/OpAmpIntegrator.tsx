@@ -16,6 +16,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 type WaveKind = 'square' | 'sine' | 'triangle';
 
@@ -39,147 +42,116 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
   const omega = 2 * Math.PI * fHz;
   const sineGainMag = 1 / (omega * tau);
 
-  const stateRef = useRef({ R, C, fHz, VinAmp, kind });
-  useEffect(() => {
-    stateRef.current = { R, C, fHz, VinAmp, kind };
-  }, [R, C, fHz, VinAmp, kind]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    const t0 = performance.now();
-
-    function draw() {
-      const { R, C, fHz, VinAmp, kind } = stateRef.current;
-      const tau = R * C;
-      const tnow = (performance.now() - t0) / 1000;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const padL = 50,
-        padR = 30,
-        padT = 22,
-        padB = 22;
-      const plotX = padL,
-        plotY = padT;
-      const plotW = w - padL - padR;
-      const plotH = h - padT - padB;
-
-      ctx.strokeStyle = colors.border;
-      ctx.strokeRect(plotX, plotY, plotW, plotH);
-
-      // Window holds 2 periods
-      const WINDOW = 2.0 / fHz;
-      // y axis: -V_SUP..+V_SUP
-      const yV = (v: number) => plotY + plotH / 2 - (v / V_SUP) * (plotH / 2 - 4);
-
-      ctx.strokeStyle = colors.border;
-      for (let v = -V_SUP; v <= V_SUP; v += 2) {
-        const y = yV(v);
+  const stateRef = useSimState({ R, C, fHz, VinAmp, kind });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, simTime) => {
+        const { R, C, fHz, VinAmp, kind } = stateRef.current;
+        const tau = R * C;
+        const tnow = simTime;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const padL = 50,
+                padR = 30,
+                padT = 22,
+                padB = 22;
+        const plotX = padL,
+                plotY = padT;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+        ctx.strokeStyle = colors.border;
+        ctx.strokeRect(plotX, plotY, plotW, plotH);
+        const WINDOW = 2.0 / fHz;
+        const yV = (v: number) => plotY + plotH / 2 - (v / V_SUP) * (plotH / 2 - 4);
+        ctx.strokeStyle = colors.border;
+        for (let v = -V_SUP; v <= V_SUP; v += 2) {
+                const y = yV(v);
+                ctx.beginPath();
+                ctx.moveTo(plotX, y);
+                ctx.lineTo(plotX + plotW, y);
+                ctx.stroke();
+              }
+        ctx.strokeStyle = colors.borderStrong;
+        const y0 = yV(0);
         ctx.beginPath();
-        ctx.moveTo(plotX, y);
-        ctx.lineTo(plotX + plotW, y);
+        ctx.moveTo(plotX, y0);
+        ctx.lineTo(plotX + plotW, y0);
         ctx.stroke();
-      }
-      ctx.strokeStyle = colors.borderStrong;
-      const y0 = yV(0);
-      ctx.beginPath();
-      ctx.moveTo(plotX, y0);
-      ctx.lineTo(plotX + plotW, y0);
-      ctx.stroke();
-
-      // Build input + integrated output samples
-      const N = 600;
-      const phase = tnow * 2 * Math.PI * 0.4; // slow drift so it animates
-      // We want a steady-state output, so initialize the integrator from
-      // the analytical mean of one full period and let it precondition.
-      const inputAt = (t: number) => {
-        const u = (t * fHz) % 1; // 0..1 phase
-        if (kind === 'square') return VinAmp * (u < 0.5 ? 1 : -1);
-        if (kind === 'sine') return VinAmp * Math.sin(2 * Math.PI * u);
-        // triangle
-        return VinAmp * (u < 0.5 ? 4 * u - 1 : 3 - 4 * u);
-      };
-      const drift = phase / (2 * Math.PI * fHz);
-      // Precondition: integrate 4 periods with no display, starting at 0
-      let vout = 0;
-      const preSteps = 2000;
-      const preDt = 4 / fHz / preSteps;
-      for (let i = 0; i < preSteps; i++) {
-        const t = -4 / fHz + i * preDt + drift;
-        const vin = inputAt(t);
-        vout += -(vin / tau) * preDt;
-        if (vout > V_SUP) vout = V_SUP;
-        else if (vout < -V_SUP) vout = -V_SUP;
-      }
-      // Now sample two periods for display
-      const samplesIn: number[] = [];
-      const samplesOut: number[] = [];
-      const dt = WINDOW / N;
-      for (let i = 0; i <= N; i++) {
-        const t = i * dt + drift;
-        const vin = inputAt(t);
-        samplesIn.push(vin);
-        vout += -(vin / tau) * dt;
-        if (vout > V_SUP) vout = V_SUP;
-        else if (vout < -V_SUP) vout = -V_SUP;
-        samplesOut.push(vout);
-      }
-
-      // V_in (blue)
-      ctx.save();
-      ctx.globalAlpha = 0.85;
-      ctx.strokeStyle = colors.blue;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      for (let i = 0; i <= N; i++) {
-        const x = plotX + (i / N) * plotW;
-        const y = yV(samplesIn[i]);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // V_out (orange)
-      const voutPts: { x: number; y: number }[] = [];
-      for (let i = 0; i <= N; i++) {
-        voutPts.push({ x: plotX + (i / N) * plotW, y: yV(samplesOut[i]) });
-      }
-      drawGlowPath(ctx, voutPts, {
-        color: withAlpha(colors.accent, 0.95),
-        lineWidth: 1.8,
-        glowColor: withAlpha(colors.accent, 0.35),
-        glowWidth: 5,
-      });
-
-      // Y labels
-      ctx.restore();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+8 V', plotX - 4, yV(V_SUP));
-      ctx.fillText('0', plotX - 4, y0);
-      ctx.fillText('-8 V', plotX - 4, yV(-V_SUP));
-
-      // Header
-      ctx.fillStyle = colors.blue;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`V_in (${kind})`, plotX + 4, plotY + 4);
-      ctx.fillStyle = colors.accent;
-      ctx.fillText('V_out = -(1/RC)∫V_in dt', plotX + 100, plotY + 4);
-      ctx.fillStyle = colors.text;
-      ctx.textAlign = 'right';
-      ctx.fillText(`τ = RC = ${fmtT(tau)}`, plotX + plotW - 4, plotY + 4);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        const N = 600;
+        const phase = tnow * 2 * Math.PI * 0.4;
+        const inputAt = (t: number) => {
+                const u = (t * fHz) % 1; // 0..1 phase
+                if (kind === 'square') return VinAmp * (u < 0.5 ? 1 : -1);
+                if (kind === 'sine') return VinAmp * Math.sin(2 * Math.PI * u);
+                // triangle
+                return VinAmp * (u < 0.5 ? 4 * u - 1 : 3 - 4 * u);
+              };
+        const drift = phase / (2 * Math.PI * fHz);
+        let vout = 0;
+        const preSteps = 2000;
+        const preDt = 4 / fHz / preSteps;
+        for (let i = 0; i < preSteps; i++) {
+                const t = -4 / fHz + i * preDt + drift;
+                const vin = inputAt(t);
+                vout += -(vin / tau) * preDt;
+                if (vout > V_SUP) vout = V_SUP;
+                else if (vout < -V_SUP) vout = -V_SUP;
+              }
+        const samplesIn: number[] = [];
+        const samplesOut: number[] = [];
+        const dt = WINDOW / N;
+        for (let i = 0; i <= N; i++) {
+                const t = i * dt + drift;
+                const vin = inputAt(t);
+                samplesIn.push(vin);
+                vout += -(vin / tau) * dt;
+                if (vout > V_SUP) vout = V_SUP;
+                else if (vout < -V_SUP) vout = -V_SUP;
+                samplesOut.push(vout);
+              }
+        ctx.save();
+        ctx.globalAlpha = 0.85;
+        ctx.strokeStyle = colors.blue;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        for (let i = 0; i <= N; i++) {
+                const x = plotX + (i / N) * plotW;
+                const y = yV(samplesIn[i]);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        const voutPts: { x: number; y: number }[] = [];
+        for (let i = 0; i <= N; i++) {
+                voutPts.push({ x: plotX + (i / N) * plotW, y: yV(samplesOut[i]) });
+              }
+        drawGlowPath(ctx, voutPts, {
+                color: withAlpha(colors.accent, 0.95),
+                lineWidth: 1.8,
+                glowColor: withAlpha(colors.accent, 0.35),
+                glowWidth: 5,
+              });
+        ctx.restore();
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('+8 V', plotX - 4, yV(V_SUP));
+        ctx.fillText('0', plotX - 4, y0);
+        ctx.fillText('-8 V', plotX - 4, yV(-V_SUP));
+        ctx.fillStyle = colors.blue;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(`V_in (${kind})`, plotX + 4, plotY + 4);
+        ctx.fillStyle = colors.accent;
+        ctx.fillText('V_out = -(1/RC)∫V_in dt', plotX + 100, plotY + 4);
+        ctx.fillStyle = colors.text;
+        ctx.textAlign = 'right';
+        ctx.fillText(`τ = RC = ${fmtT(tau)}`, plotX + plotW - 4, plotY + 4);
+      },
+      [],
+    );
 
   return (
     <Demo

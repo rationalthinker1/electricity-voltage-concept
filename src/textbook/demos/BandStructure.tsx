@@ -13,14 +13,17 @@
  * a density proportional to that occupation factor, drawn as a faint
  * orange band at the top.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -58,139 +61,104 @@ export function BandStructureDemo({ figure }: Props) {
   const occ = useMemo(() => occupancy(Eg, T), [Eg, T]);
   const kT_meV = ((PHYS.k_B * T) / EV) * 1000;
 
-  const stateRef = useRef({ mat, T });
-  useEffect(() => {
-    stateRef.current = { mat, T };
-  }, [mat, T]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-
-    function draw() {
-      const { mat, T } = stateRef.current;
-      const { Eg, color } = MATERIALS[mat];
-      const occ = occupancy(Eg, T);
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const padL = 70,
-        padR = 30,
-        padT = 28,
-        padB = 30;
-      const plotW = w - padL - padR;
-      const plotH = h - padT - padB;
-
-      // y-axis covers 0..6 eV; map energy → y.
-      const Emax = 6.5;
-      const yOf = (e: number) => padT + plotH * (1 - e / Emax);
-
-      // axis
-      ctx.strokeStyle = colors.border;
-      ctx.strokeRect(padL, padT, plotW, plotH);
-
-      // y-axis ticks every 1 eV
-      ctx.save();
-      ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      for (let e = 0; e <= 6; e++) {
-        ctx.fillText(`${e} eV`, padL - 6, yOf(e));
-        ctx.restore();
+  const stateRef = useSimState({ mat, T });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const { mat, T } = stateRef.current;
+        const { Eg, color } = MATERIALS[mat];
+        const occ = occupancy(Eg, T);
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const padL = 70,
+                padR = 30,
+                padT = 28,
+                padB = 30;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+        const Emax = 6.5;
+        const yOf = (e: number) => padT + plotH * (1 - e / Emax);
         ctx.strokeStyle = colors.border;
+        ctx.strokeRect(padL, padT, plotW, plotH);
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        for (let e = 0; e <= 6; e++) {
+                ctx.fillText(`${e} eV`, padL - 6, yOf(e));
+                ctx.restore();
+                ctx.strokeStyle = colors.border;
+                ctx.beginPath();
+                ctx.moveTo(padL, yOf(e));
+                ctx.lineTo(padL + plotW, yOf(e));
+                ctx.stroke();
+              }
+        const vbTop = 0;
+        const vbBot = -0.8;
+        const cbBot = Eg;
+        const cbTop = Eg + 0.8;
+        ctx.save();
+        ctx.globalAlpha = 0.55;
+        ctx.fillStyle = colors.blue;
+        ctx.fillRect(padL, yOf(vbTop), plotW, yOf(vbBot) - yOf(vbTop));
+        ctx.restore();
+        const cbHeight = yOf(cbBot) - yOf(cbTop);
+        const cbFillH = Math.min(cbHeight, cbHeight * Math.sqrt(occ) * 4);
+        const cbFillTop = yOf(cbBot) - cbFillH;
+        ctx.fillStyle = color.replace('0.95', String(Math.min(0.85, 0.05 + 6 * Math.sqrt(occ))));
+        ctx.fillRect(padL, cbFillTop, plotW, cbFillH);
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.strokeStyle = colors.text;
+        ctx.lineWidth = 1.4;
         ctx.beginPath();
-        ctx.moveTo(padL, yOf(e));
-        ctx.lineTo(padL + plotW, yOf(e));
+        ctx.moveTo(padL, yOf(vbTop));
+        ctx.lineTo(padL + plotW, yOf(vbTop));
+        ctx.moveTo(padL, yOf(cbBot));
+        ctx.lineTo(padL + plotW, yOf(cbBot));
         ctx.stroke();
-      }
-
-      // Valence band: a filled slab from 0 to E_v ≡ 0 (we put VB top at 0).
-      // We'll show the VB as a filled slab from y(−0.7) up to y(0).
-      const vbTop = 0;
-      const vbBot = -0.8;
-      const cbBot = Eg;
-      const cbTop = Eg + 0.8;
-
-      // VB filled — full
-      ctx.save();
-      ctx.globalAlpha = 0.55;
-      ctx.fillStyle = colors.blue;
-      ctx.fillRect(padL, yOf(vbTop), plotW, yOf(vbBot) - yOf(vbTop));
-      ctx.restore();
-
-      // CB filled in proportion to occupancy
-      const cbHeight = yOf(cbBot) - yOf(cbTop);
-      // Use sqrt(occ) for visibility — pure exp dies below printable opacity.
-      const cbFillH = Math.min(cbHeight, cbHeight * Math.sqrt(occ) * 4);
-      const cbFillTop = yOf(cbBot) - cbFillH;
-      ctx.fillStyle = color.replace('0.95', String(Math.min(0.85, 0.05 + 6 * Math.sqrt(occ))));
-      ctx.fillRect(padL, cbFillTop, plotW, cbFillH);
-
-      // band edges as thin solid lines
-      ctx.save();
-      ctx.globalAlpha = 0.6;
-      ctx.strokeStyle = colors.text;
-      ctx.lineWidth = 1.4;
-      ctx.beginPath();
-      ctx.moveTo(padL, yOf(vbTop));
-      ctx.lineTo(padL + plotW, yOf(vbTop));
-      ctx.moveTo(padL, yOf(cbBot));
-      ctx.lineTo(padL + plotW, yOf(cbBot));
-      ctx.stroke();
-      ctx.restore();
-
-      // gap arrow + label
-      const arrowX = padL + 60;
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.moveTo(arrowX, yOf(vbTop));
-      ctx.lineTo(arrowX, yOf(cbBot));
-      ctx.stroke();
-      // arrowheads
-      ctx.beginPath();
-      ctx.moveTo(arrowX, yOf(vbTop));
-      ctx.lineTo(arrowX - 4, yOf(vbTop) - 6);
-      ctx.lineTo(arrowX + 4, yOf(vbTop) - 6);
-      ctx.closePath();
-      ctx.fillStyle = color;
-      ctx.fill();
-      ctx.beginPath();
-      ctx.moveTo(arrowX, yOf(cbBot));
-      ctx.lineTo(arrowX - 4, yOf(cbBot) + 6);
-      ctx.lineTo(arrowX + 4, yOf(cbBot) + 6);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.fillStyle = colors.text;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`E_g = ${Eg.toFixed(2)} eV`, arrowX + 10, (yOf(vbTop) + yOf(cbBot)) / 2);
-
-      // band labels
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText('valence band (full)', padL + plotW - 150, yOf(-0.4));
-      ctx.fillText('conduction band', padL + plotW - 150, yOf(cbBot + 0.4));
-
-      // header
-      drawLabel(ctx, {
-        x: padL,
-        y: 6,
-        text: `${MATERIALS[mat].label}   T = ${T.toFixed(0)} K   kT = ${(((PHYS.k_B * T) / EV) * 1000).toFixed(1)} meV   exp(−E_g/2kT) ≈ ${occ.toExponential(2)}`,
-        color: colors.textDim,
-        baseline: 'top',
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        ctx.restore();
+        const arrowX = padL + 60;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(arrowX, yOf(vbTop));
+        ctx.lineTo(arrowX, yOf(cbBot));
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(arrowX, yOf(vbTop));
+        ctx.lineTo(arrowX - 4, yOf(vbTop) - 6);
+        ctx.lineTo(arrowX + 4, yOf(vbTop) - 6);
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(arrowX, yOf(cbBot));
+        ctx.lineTo(arrowX - 4, yOf(cbBot) + 6);
+        ctx.lineTo(arrowX + 4, yOf(cbBot) + 6);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = colors.text;
+        ctx.font = '11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`E_g = ${Eg.toFixed(2)} eV`, arrowX + 10, (yOf(vbTop) + yOf(cbBot)) / 2);
+        ctx.fillStyle = colors.textDim;
+        ctx.textAlign = 'left';
+        ctx.fillText('valence band (full)', padL + plotW - 150, yOf(-0.4));
+        ctx.fillText('conduction band', padL + plotW - 150, yOf(cbBot + 0.4));
+        drawLabel(ctx, {
+                x: padL,
+                y: 6,
+                text: `${MATERIALS[mat].label}   T = ${T.toFixed(0)} K   kT = ${(((PHYS.k_B * T) / EV) * 1000).toFixed(1)} meV   exp(−E_g/2kT) ≈ ${occ.toExponential(2)}`,
+                color: colors.textDim,
+                baseline: 'top',
+              });
+      },
+      [],
+    );
 
   return (
     <Demo

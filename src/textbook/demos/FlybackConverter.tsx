@@ -24,6 +24,9 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -53,226 +56,179 @@ export function FlybackConverterDemo({ figure }: Props) {
     return { Vout, Iout, Ipk, E_stored, Pout, Tsw, tOn };
   }, [Vin, duty, turnsN]);
 
-  const stateRef = useRef({ ...computed, duty });
-  useEffect(() => {
-    stateRef.current = { ...computed, duty };
-  }, [computed, duty]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    const t0 = performance.now();
-
-    function draw() {
-      const { Vout, Ipk, E_stored, duty } = stateRef.current;
-      const t = (performance.now() - t0) / 1000;
-      // Visual cycle ~1 Hz (the real one is 100 kHz; this is purely
-      // for animation).
-      const phi = (t * 1.0) % 1;
-      const onPhase = phi < duty;
-      // Linear ramp of stored energy during on; linear release during off
-      let storedFrac: number;
-      if (onPhase) storedFrac = phi / duty;
-      else storedFrac = 1 - (phi - duty) / Math.max(1 - duty, 0.01);
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      // Transformer in the middle
-      const coreCX = w * 0.5;
-      const coreTop = h * 0.22;
-      const coreBot = h * 0.78;
-      const pX = coreCX - 30;
-      const sX = coreCX + 30;
-
-      // Iron/ferrite core
-      ctx.save();
-      ctx.globalAlpha = 0.5;
-      ctx.strokeStyle = colors.textDim;
-      ctx.lineWidth = 5;
-      ctx.beginPath();
-      ctx.moveTo(pX, coreTop);
-      ctx.lineTo(pX, coreBot);
-      ctx.moveTo(sX, coreTop);
-      ctx.lineTo(sX, coreBot);
-      ctx.moveTo(pX, coreTop);
-      ctx.lineTo(sX, coreTop);
-      ctx.moveTo(pX, coreBot);
-      ctx.lineTo(sX, coreBot);
-      ctx.stroke();
-      // Gap (typical of a flyback)
-      ctx.restore();
-      ctx.strokeStyle = colors.canvasBg;
-      ctx.beginPath();
-      ctx.moveTo(pX - 3, (coreTop + coreBot) / 2);
-      ctx.lineTo(pX + 3, (coreTop + coreBot) / 2);
-      ctx.stroke();
-
-      // Primary winding (left of left leg)
-      drawWinding(
-        ctx,
-        pX - 6,
-        coreTop + 10,
-        coreBot - 10,
-        12,
-        withAlpha(colors.accent, 0.95),
-        'left',
-      );
-      drawWinding(
-        ctx,
-        sX + 6,
-        coreTop + 10,
-        coreBot - 10,
-        6,
-        withAlpha(colors.teal, 0.95),
-        'right',
-      );
-
-      // Primary side: switch + V_in below
-      const pCX = pX - 60;
-      ctx.strokeStyle = colors.borderStrong;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(pX - 6, coreTop + 10);
-      ctx.lineTo(pCX, coreTop + 10);
-      ctx.moveTo(pX - 6, coreBot - 10);
-      ctx.lineTo(pCX, coreBot - 10);
-      ctx.stroke();
-
-      // V_in label
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('V_in', pCX - 2, (coreTop + coreBot) / 2);
-
-      // SW indicator on primary line
-      ctx.fillStyle = onPhase ? withAlpha(colors.accent, 0.95) : withAlpha(colors.textDim, 0.45);
-      ctx.fillRect(pCX + 4, coreBot - 16, 14, 12);
-      ctx.fillStyle = colors.bg;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(onPhase ? 'ON' : 'off', pCX + 11, coreBot - 10);
-
-      // Secondary side: diode + cap + load
-      const sCX = sX + 60;
-      ctx.strokeStyle = colors.borderStrong;
-      ctx.beginPath();
-      ctx.moveTo(sX + 6, coreTop + 10);
-      ctx.lineTo(sCX, coreTop + 10);
-      ctx.moveTo(sX + 6, coreBot - 10);
-      ctx.lineTo(sCX, coreBot - 10);
-      ctx.stroke();
-
-      // Diode (triangle + bar)
-      const dY = coreTop + 10;
-      const dCol = onPhase ? withAlpha(colors.textDim, 0.35) : withAlpha(colors.teal, 0.95);
-      ctx.fillStyle = dCol;
-      ctx.beginPath();
-      ctx.moveTo(sCX - 8, dY - 5);
-      ctx.lineTo(sCX - 8, dY + 5);
-      ctx.lineTo(sCX, dY);
-      ctx.closePath();
-      ctx.fill();
-      ctx.strokeStyle = dCol;
-      ctx.beginPath();
-      ctx.moveTo(sCX, dY - 5);
-      ctx.lineTo(sCX, dY + 5);
-      ctx.stroke();
-
-      // V_out label
-      ctx.fillStyle = colors.teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`V_out = ${Vout.toFixed(1)} V`, sCX + 6, (coreTop + coreBot) / 2);
-
-      // Arrows showing energy flow direction
-      ctx.fillStyle = onPhase ? withAlpha(colors.accent, 0.95) : 'rgba(255,255,255,0.10)';
-      // Primary arrow (downward — energy in)
-      drawArrowDown(ctx, pX - 18, coreTop + 30, 14);
-      ctx.fillStyle = !onPhase ? withAlpha(colors.teal, 0.95) : 'rgba(255,255,255,0.10)';
-      // Secondary arrow (upward — energy out)
-      drawArrowUp(ctx, sX + 18, coreBot - 30, 14);
-
-      // Phase label
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        onPhase ? 'ON  —  storing energy in L_p' : 'OFF  —  dumping into C_out',
-        w / 2,
-        6,
-      );
-
-      // Stored energy bar (right side)
-      const barX = w - 28;
-      const barH = h * 0.6;
-      const barTop = (h - barH) / 2;
-      ctx.save();
-      ctx.globalAlpha = 0.3;
-      ctx.strokeStyle = colors.textDim;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(barX, barTop, 14, barH);
-      ctx.restore();
-      ctx.save();
-      ctx.globalAlpha = 0.65;
-      ctx.fillStyle = colors.accent;
-      const fillH = barH * Math.max(0, Math.min(1, storedFrac));
-      ctx.fillRect(barX, barTop + barH - fillH, 14, fillH);
-      ctx.restore();
-      ctx.save();
-      ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('½L·I²', barX + 7, barTop - 2);
-
-      // n:1 ratio label
-      ctx.restore();
-      ctx.save();
-      ctx.globalAlpha = 0.7;
-      drawLabel(ctx, {
-        x: w / 2,
-        y: h - 18,
-        text: `turns ratio n = N_p/N_s`,
-        color: colors.textDim,
-        align: 'center',
-        baseline: 'top',
-      });
-
-      // Isolation barrier (dashed vertical line through the core)
-      ctx.restore();
-      ctx.strokeStyle = colors.borderStrong;
-      ctx.setLineDash([3, 4]);
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(coreCX, 22);
-      ctx.lineTo(coreCX, h - 26);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // I_pk readout above
-      ctx.save();
-      ctx.globalAlpha = 0.65;
-      drawLabel(ctx, {
-        x: 6,
-        y: h - 16,
-        text: `I_pk = ${Ipk.toFixed(2)} A,  E/cycle = ${(E_stored * 1e6).toFixed(1)} µJ`,
-        color: colors.textDim,
-        size: 9,
-        baseline: 'top',
-      });
-
-      raf = requestAnimationFrame(draw);
-      ctx.restore();
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const stateRef = useSimState({ ...computed, duty });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, simTime) => {
+        const { Vout, Ipk, E_stored, duty } = stateRef.current;
+        const t = simTime;
+        const phi = (t * 1.0) % 1;
+        const onPhase = phi < duty;
+        let storedFrac: number;
+        if (onPhase) storedFrac = phi / duty;
+              else storedFrac = 1 - (phi - duty) / Math.max(1 - duty, 0.01);
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const coreCX = w * 0.5;
+        const coreTop = h * 0.22;
+        const coreBot = h * 0.78;
+        const pX = coreCX - 30;
+        const sX = coreCX + 30;
+        ctx.save();
+        ctx.globalAlpha = 0.5;
+        ctx.strokeStyle = colors.textDim;
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(pX, coreTop);
+        ctx.lineTo(pX, coreBot);
+        ctx.moveTo(sX, coreTop);
+        ctx.lineTo(sX, coreBot);
+        ctx.moveTo(pX, coreTop);
+        ctx.lineTo(sX, coreTop);
+        ctx.moveTo(pX, coreBot);
+        ctx.lineTo(sX, coreBot);
+        ctx.stroke();
+        ctx.restore();
+        ctx.strokeStyle = colors.canvasBg;
+        ctx.beginPath();
+        ctx.moveTo(pX - 3, (coreTop + coreBot) / 2);
+        ctx.lineTo(pX + 3, (coreTop + coreBot) / 2);
+        ctx.stroke();
+        drawWinding(
+                ctx,
+                pX - 6,
+                coreTop + 10,
+                coreBot - 10,
+                12,
+                withAlpha(colors.accent, 0.95),
+                'left',
+              );
+        drawWinding(
+                ctx,
+                sX + 6,
+                coreTop + 10,
+                coreBot - 10,
+                6,
+                withAlpha(colors.teal, 0.95),
+                'right',
+              );
+        const pCX = pX - 60;
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(pX - 6, coreTop + 10);
+        ctx.lineTo(pCX, coreTop + 10);
+        ctx.moveTo(pX - 6, coreBot - 10);
+        ctx.lineTo(pCX, coreBot - 10);
+        ctx.stroke();
+        ctx.fillStyle = colors.accent;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('V_in', pCX - 2, (coreTop + coreBot) / 2);
+        ctx.fillStyle = onPhase ? withAlpha(colors.accent, 0.95) : withAlpha(colors.textDim, 0.45);
+        ctx.fillRect(pCX + 4, coreBot - 16, 14, 12);
+        ctx.fillStyle = colors.bg;
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(onPhase ? 'ON' : 'off', pCX + 11, coreBot - 10);
+        const sCX = sX + 60;
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.beginPath();
+        ctx.moveTo(sX + 6, coreTop + 10);
+        ctx.lineTo(sCX, coreTop + 10);
+        ctx.moveTo(sX + 6, coreBot - 10);
+        ctx.lineTo(sCX, coreBot - 10);
+        ctx.stroke();
+        const dY = coreTop + 10;
+        const dCol = onPhase ? withAlpha(colors.textDim, 0.35) : withAlpha(colors.teal, 0.95);
+        ctx.fillStyle = dCol;
+        ctx.beginPath();
+        ctx.moveTo(sCX - 8, dY - 5);
+        ctx.lineTo(sCX - 8, dY + 5);
+        ctx.lineTo(sCX, dY);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = dCol;
+        ctx.beginPath();
+        ctx.moveTo(sCX, dY - 5);
+        ctx.lineTo(sCX, dY + 5);
+        ctx.stroke();
+        ctx.fillStyle = colors.teal;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`V_out = ${Vout.toFixed(1)} V`, sCX + 6, (coreTop + coreBot) / 2);
+        ctx.fillStyle = onPhase ? withAlpha(colors.accent, 0.95) : 'rgba(255,255,255,0.10)';
+        drawArrowDown(ctx, pX - 18, coreTop + 30, 14);
+        ctx.fillStyle = !onPhase ? withAlpha(colors.teal, 0.95) : 'rgba(255,255,255,0.10)';
+        drawArrowUp(ctx, sX + 18, coreBot - 30, 14);
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(
+                onPhase ? 'ON  —  storing energy in L_p' : 'OFF  —  dumping into C_out',
+                w / 2,
+                6,
+              );
+        const barX = w - 28;
+        const barH = h * 0.6;
+        const barTop = (h - barH) / 2;
+        ctx.save();
+        ctx.globalAlpha = 0.3;
+        ctx.strokeStyle = colors.textDim;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(barX, barTop, 14, barH);
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.65;
+        ctx.fillStyle = colors.accent;
+        const fillH = barH * Math.max(0, Math.min(1, storedFrac));
+        ctx.fillRect(barX, barTop + barH - fillH, 14, fillH);
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('½L·I²', barX + 7, barTop - 2);
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.7;
+        drawLabel(ctx, {
+                x: w / 2,
+                y: h - 18,
+                text: `turns ratio n = N_p/N_s`,
+                color: colors.textDim,
+                align: 'center',
+                baseline: 'top',
+              });
+        ctx.restore();
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.setLineDash([3, 4]);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(coreCX, 22);
+        ctx.lineTo(coreCX, h - 26);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.save();
+        ctx.globalAlpha = 0.65;
+        drawLabel(ctx, {
+                x: 6,
+                y: h - 16,
+                text: `I_pk = ${Ipk.toFixed(2)} A,  E/cycle = ${(E_stored * 1e6).toFixed(1)} µJ`,
+                color: colors.textDim,
+                size: 9,
+                baseline: 'top',
+              });
+        ctx.restore();
+      },
+      [],
+    );
 
   return (
     <Demo

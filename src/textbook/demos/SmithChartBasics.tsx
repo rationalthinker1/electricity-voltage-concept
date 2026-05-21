@@ -16,6 +16,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -47,154 +50,124 @@ export function SmithChartBasicsDemo({ figure }: Props) {
   const Zin_r = ZLmagSq > 0 ? (Z0 * Z0 * R) / ZLmagSq : 0;
   const Zin_x = ZLmagSq > 0 ? -(Z0 * Z0 * X) / ZLmagSq : 0;
 
-  const stateRef = useRef({ R, X, Gr, Gi, Gmag, showQwave });
-  useEffect(() => {
-    stateRef.current = { R, X, Gr, Gi, Gmag, showQwave };
-  }, [R, X, Gr, Gi, Gmag, showQwave]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-
-    function draw() {
-      const { Gr, Gi, Gmag, showQwave } = stateRef.current;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const margin = 18;
-      const radius = Math.min(w, h) / 2 - margin;
-      const cx = w / 2;
-      const cy = h / 2;
-
-      // Outer unit circle |Γ| = 1
-      ctx.strokeStyle = colors.borderStrong;
-      ctx.lineWidth = 1.3;
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.stroke();
-
-      // Real axis
-      ctx.strokeStyle = colors.border;
-      ctx.beginPath();
-      ctx.moveTo(cx - radius, cy);
-      ctx.lineTo(cx + radius, cy);
-      ctx.stroke();
-
-      // Mapping: Γ-plane point (gr, gi) → screen (cx + gr·radius, cy − gi·radius)
-      const gToScreen = (gr: number, gi: number) => ({
-        x: cx + gr * radius,
-        y: cy - gi * radius,
-      });
-
-      // Constant-resistance circles: centre (r/(r+1), 0), radius 1/(r+1)
-      const rValues = [0.2, 0.5, 1, 2, 5];
-      ctx.save();
-      ctx.globalAlpha = 0.3;
-      ctx.strokeStyle = colors.teal;
-      ctx.lineWidth = 1;
-      for (const r of rValues) {
-        const ccg = r / (r + 1);
-        const rcg = 1 / (r + 1);
+  const stateRef = useSimState({ R, X, Gr, Gi, Gmag, showQwave });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const { Gr, Gi, Gmag, showQwave } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const margin = 18;
+        const radius = Math.min(w, h) / 2 - margin;
+        const cx = w / 2;
+        const cy = h / 2;
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.lineWidth = 1.3;
         ctx.beginPath();
-        ctx.arc(cx + ccg * radius, cy, rcg * radius, 0, Math.PI * 2);
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
         ctx.stroke();
-      }
-
-      // Constant-reactance arcs: centre (1, 1/x), radius 1/|x|
-      const xValues = [0.2, 0.5, 1, 2, 5];
-      ctx.restore();
-      ctx.save();
-      ctx.globalAlpha = 0.28;
-      ctx.strokeStyle = colors.accent;
-      for (const x of xValues) {
-        // Upper arc (positive x, inductive)
-        const cxg = 1;
-        const cyg_up = 1 / x;
-        const rg = 1 / x;
-        // Arc clipped to |Γ| ≤ 1: simpler to draw full circle and rely on
-        // canvas clipping by drawing only where inside the unit disk.
-        drawArcClipped(ctx, cx + cxg * radius, cy - cyg_up * radius, rg * radius, cx, cy, radius);
-        // Lower arc (negative x, capacitive)
-        drawArcClipped(ctx, cx + cxg * radius, cy + cyg_up * radius, rg * radius, cx, cy, radius);
-      }
-      // Centre cross (Γ = 0 — matched)
-      ctx.restore();
-      ctx.fillStyle = colors.textDim;
-      ctx.beginPath();
-      ctx.arc(cx, cy, 2, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('Γ = 0  (matched, Z = 50Ω)', cx + 4, cy + 4);
-
-      // |Γ| = const circle (VSWR circle)
-      ctx.strokeStyle = colors.accent;
-      ctx.setLineDash([3, 3]);
-      ctx.lineWidth = 1.1;
-      ctx.beginPath();
-      ctx.arc(cx, cy, Math.min(Gmag, 1) * radius, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // Z_L marker
-      const pZ = gToScreen(Gr, Gi);
-      ctx.fillStyle = colors.pink;
-      ctx.beginPath();
-      ctx.arc(pZ.x, pZ.y, 5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.save();
-      ctx.globalAlpha = 0.9;
-      ctx.strokeStyle = colors.text;
-      ctx.lineWidth = 1;
-      ctx.stroke();
-      ctx.restore();
-      ctx.fillStyle = colors.pink;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('Z_L', pZ.x + 8, pZ.y - 2);
-
-      // Quarter-wave transform marker: Γ' = −Γ (180° rotation)
-      if (showQwave) {
-        const pZin = gToScreen(-Gr, -Gi);
-        ctx.fillStyle = colors.teal;
+        ctx.strokeStyle = colors.border;
         ctx.beginPath();
-        ctx.arc(pZin.x, pZin.y, 5, 0, Math.PI * 2);
+        ctx.moveTo(cx - radius, cy);
+        ctx.lineTo(cx + radius, cy);
+        ctx.stroke();
+        const gToScreen = (gr: number, gi: number) => ({
+                x: cx + gr * radius,
+                y: cy - gi * radius,
+              });
+        const rValues = [0.2, 0.5, 1, 2, 5];
+        ctx.save();
+        ctx.globalAlpha = 0.3;
+        ctx.strokeStyle = colors.teal;
+        ctx.lineWidth = 1;
+        for (const r of rValues) {
+                const ccg = r / (r + 1);
+                const rcg = 1 / (r + 1);
+                ctx.beginPath();
+                ctx.arc(cx + ccg * radius, cy, rcg * radius, 0, Math.PI * 2);
+                ctx.stroke();
+              }
+        const xValues = [0.2, 0.5, 1, 2, 5];
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.28;
+        ctx.strokeStyle = colors.accent;
+        for (const x of xValues) {
+                // Upper arc (positive x, inductive)
+                const cxg = 1;
+                const cyg_up = 1 / x;
+                const rg = 1 / x;
+                // Arc clipped to |Γ| ≤ 1: simpler to draw full circle and rely on
+                // canvas clipping by drawing only where inside the unit disk.
+                drawArcClipped(ctx, cx + cxg * radius, cy - cyg_up * radius, rg * radius, cx, cy, radius);
+                // Lower arc (negative x, capacitive)
+                drawArcClipped(ctx, cx + cxg * radius, cy + cyg_up * radius, rg * radius, cx, cy, radius);
+              }
+        ctx.restore();
+        ctx.fillStyle = colors.textDim;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('Γ = 0  (matched, Z = 50Ω)', cx + 4, cy + 4);
+        ctx.strokeStyle = colors.accent;
+        ctx.setLineDash([3, 3]);
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.arc(cx, cy, Math.min(Gmag, 1) * radius, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        const pZ = gToScreen(Gr, Gi);
+        ctx.fillStyle = colors.pink;
+        ctx.beginPath();
+        ctx.arc(pZ.x, pZ.y, 5, 0, Math.PI * 2);
         ctx.fill();
         ctx.save();
         ctx.globalAlpha = 0.9;
         ctx.strokeStyle = colors.text;
+        ctx.lineWidth = 1;
         ctx.stroke();
         ctx.restore();
-        ctx.fillStyle = colors.teal;
-        ctx.fillText('Z_in (λ/4)', pZin.x + 8, pZin.y - 2);
-
-        // Connect through origin
-        ctx.strokeStyle = colors.teal;
-        ctx.setLineDash([2, 3]);
-        ctx.beginPath();
-        ctx.moveTo(pZ.x, pZ.y);
-        ctx.lineTo(pZin.x, pZin.y);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      }
-
-      // Edge labels
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('open  Γ=+1', cx + radius - 4, cy - 10);
-      ctx.textAlign = 'left';
-      ctx.fillText('short  Γ=−1', cx - radius + 4, cy - 10);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        ctx.fillStyle = colors.pink;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('Z_L', pZ.x + 8, pZ.y - 2);
+        if (showQwave) {
+                const pZin = gToScreen(-Gr, -Gi);
+                ctx.fillStyle = colors.teal;
+                ctx.beginPath();
+                ctx.arc(pZin.x, pZin.y, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.save();
+                ctx.globalAlpha = 0.9;
+                ctx.strokeStyle = colors.text;
+                ctx.stroke();
+                ctx.restore();
+                ctx.fillStyle = colors.teal;
+                ctx.fillText('Z_in (λ/4)', pZin.x + 8, pZin.y - 2);
+        
+                // Connect through origin
+                ctx.strokeStyle = colors.teal;
+                ctx.setLineDash([2, 3]);
+                ctx.beginPath();
+                ctx.moveTo(pZ.x, pZ.y);
+                ctx.lineTo(pZin.x, pZin.y);
+                ctx.stroke();
+                ctx.setLineDash([]);
+              }
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('open  Γ=+1', cx + radius - 4, cy - 10);
+        ctx.textAlign = 'left';
+        ctx.fillText('short  Γ=−1', cx - radius + 4, cy - 10);
+      },
+      [],
+    );
 
   return (
     <Demo

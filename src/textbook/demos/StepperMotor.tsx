@@ -12,6 +12,9 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -25,11 +28,7 @@ export function StepperMotorDemo({ figure }: Props) {
   const [auto, setAuto] = useState(false);
   const [rateHz, setRateHz] = useState(8);
 
-  const stateRef = useRef({ steps, auto, rateHz });
-  useEffect(() => {
-    stateRef.current = { steps, auto, rateHz };
-  }, [steps, auto, rateHz]);
-
+  const stateRef = useSimState({ steps, auto, rateHz });
   // Auto-stepping loop
   useEffect(() => {
     if (!auto) return;
@@ -39,99 +38,81 @@ export function StepperMotorDemo({ figure }: Props) {
     return () => window.clearInterval(id);
   }, [auto, rateHz]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    // Smoothed rotor angle (so step transitions look like a quick jump)
-    let curAng = 0;
-
-    function draw() {
-      const { steps } = stateRef.current;
-      const target = (steps * STEP_DEG * Math.PI) / 180;
-      // Snap toward target quickly — discrete look
-      const diff = target - curAng;
-      curAng += diff * 0.4;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const cx = w / 2;
-      const cy = h / 2;
-      const R = Math.min(w, h) * 0.36;
-
-      // Stator: 8 evenly-spaced poles (typical hybrid stepper)
-      ctx.strokeStyle = colors.border;
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.arc(cx, cy, R + 14, 0, Math.PI * 2);
-      ctx.stroke();
-
-      for (let i = 0; i < 8; i++) {
-        const a = (i / 8) * Math.PI * 2;
-        const px = cx + Math.cos(a) * R;
-        const py = cy + Math.sin(a) * R;
-        // Which pair is energized depends on phase = steps mod 4
-        const phase = ((stateRef.current.steps % 4) + 4) % 4;
-        const energized = i % 4 === phase;
-        ctx.fillStyle = energized ? withAlpha(colors.accent, 0.5) : 'rgba(255,255,255,0.10)';
-        ctx.strokeStyle = energized ? withAlpha(colors.accent, 0.9) : 'rgba(255,255,255,0.3)';
-        ctx.lineWidth = 1.5;
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
+        let curAng = ctx0.curAng;
+        const { steps } = stateRef.current;
+        const target = (steps * STEP_DEG * Math.PI) / 180;
+        const diff = target - curAng;
+        curAng += diff * 0.4;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const cx = w / 2;
+        const cy = h / 2;
+        const R = Math.min(w, h) * 0.36;
+        ctx.strokeStyle = colors.border;
+        ctx.lineWidth = 1.2;
         ctx.beginPath();
-        ctx.arc(px, py, 14, 0, Math.PI * 2);
+        ctx.arc(cx, cy, R + 14, 0, Math.PI * 2);
+        ctx.stroke();
+        for (let i = 0; i < 8; i++) {
+                const a = (i / 8) * Math.PI * 2;
+                const px = cx + Math.cos(a) * R;
+                const py = cy + Math.sin(a) * R;
+                // Which pair is energized depends on phase = steps mod 4
+                const phase = ((stateRef.current.steps % 4) + 4) % 4;
+                const energized = i % 4 === phase;
+                ctx.fillStyle = energized ? withAlpha(colors.accent, 0.5) : 'rgba(255,255,255,0.10)';
+                ctx.strokeStyle = energized ? withAlpha(colors.accent, 0.9) : 'rgba(255,255,255,0.3)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.arc(px, py, 14, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+              }
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R * 0.6, 0, Math.PI * 2);
+        ctx.stroke();
+        const teeth = 50;
+        for (let i = 0; i < teeth; i++) {
+                const a = curAng + (i / teeth) * Math.PI * 2;
+                const x1 = cx + Math.cos(a) * R * 0.6;
+                const y1 = cy + Math.sin(a) * R * 0.6;
+                const x2 = cx + Math.cos(a) * R * 0.66;
+                const y2 = cy + Math.sin(a) * R * 0.66;
+                ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+              }
+        const mkA = curAng;
+        const mkX = cx + Math.cos(mkA) * R * 0.66;
+        const mkY = cy + Math.sin(mkA) * R * 0.66;
+        ctx.fillStyle = colors.pink;
+        ctx.beginPath();
+        ctx.arc(mkX, mkY, 6, 0, Math.PI * 2);
         ctx.fill();
-        ctx.stroke();
-      }
-
-      // Rotor — toothed disc with a marker tooth
-      ctx.strokeStyle = colors.borderStrong;
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.arc(cx, cy, R * 0.6, 0, Math.PI * 2);
-      ctx.stroke();
-      // Teeth — 50 small teeth (gives 200 fine positions with 4-phase commutation)
-      const teeth = 50;
-      for (let i = 0; i < teeth; i++) {
-        const a = curAng + (i / teeth) * Math.PI * 2;
-        const x1 = cx + Math.cos(a) * R * 0.6;
-        const y1 = cy + Math.sin(a) * R * 0.6;
-        const x2 = cx + Math.cos(a) * R * 0.66;
-        const y2 = cy + Math.sin(a) * R * 0.66;
-        ctx.strokeStyle = 'rgba(255,255,255,0.4)';
-        ctx.lineWidth = 1;
+        ctx.fillStyle = 'rgba(255,255,255,0.10)';
         ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
-      }
-      // Marker tooth (pink) so the reader sees rotation
-      const mkA = curAng;
-      const mkX = cx + Math.cos(mkA) * R * 0.66;
-      const mkY = cy + Math.sin(mkA) * R * 0.66;
-      ctx.fillStyle = colors.pink;
-      ctx.beginPath();
-      ctx.arc(mkX, mkY, 6, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Center hub
-      ctx.fillStyle = 'rgba(255,255,255,0.10)';
-      ctx.beginPath();
-      ctx.arc(cx, cy, 8, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Labels
-      drawLabel(ctx, {
-        x: 12,
-        y: 12,
-        text: 'hybrid stepper · 200 steps/rev (1.8°/step)',
-        color: withAlpha(colors.textDim, 0.75),
-        baseline: 'top',
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+        ctx.fill();
+        drawLabel(ctx, {
+                x: 12,
+                y: 12,
+                text: 'hybrid stepper · 200 steps/rev (1.8°/step)',
+                color: withAlpha(colors.textDim, 0.75),
+                baseline: 'top',
+              });
+        ctx0.curAng = curAng;
+      },
+      [],
+      () => ({ context: { curAng: 0 } }),
+    );
 
   const totalDeg = steps * STEP_DEG;
   const revs = steps / STEPS_PER_REV;

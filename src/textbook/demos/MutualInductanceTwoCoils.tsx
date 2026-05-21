@@ -17,6 +17,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -38,56 +41,36 @@ export function MutualInductanceTwoCoilsDemo({ figure }: Props) {
   const [distanceCm, setDistanceCm] = useState(4);
   const [tiltDeg, setTiltDeg] = useState(0);
 
-  const stateRef = useRef({ distanceCm, tiltDeg });
-  useEffect(() => {
-    stateRef.current = { distanceCm, tiltDeg };
-  }, [distanceCm, tiltDeg]);
-
+  const stateRef = useSimState({ distanceCm, tiltDeg });
   const computed = useMemo(() => {
     const k = couplingK(distanceCm, tiltDeg);
     const M = k * Math.sqrt(L1 * L2); // henries
     return { k, M };
   }, [distanceCm, tiltDeg]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
-
-    function draw() {
-      const { distanceCm, tiltDeg } = stateRef.current;
-      const k = couplingK(distanceCm, tiltDeg);
-
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, w, h);
-
-      // Coil 1 on the left, coil 2 on the right.
-      const cy = h / 2;
-      const c1x = w * 0.32;
-      // Map: 0 cm -> coil edges touching (~ c1x + 80), 20 cm -> ~ c1x + 280
-      const c2x = c1x + 70 + distanceCm * 9;
-
-      // Field lines from coil 1
-      drawFieldLines(ctx, c1x, cy, c2x, cy, tiltDeg, k);
-
-      // Coil 1 (vertical, fixed)
-      drawCoil(ctx, c1x, cy, 0, 'C1');
-      // Coil 2 (tilted by tiltDeg about its own center)
-      drawCoil(ctx, c2x, cy, tiltDeg, 'C2');
-
-      // Readout strip at the bottom: how many lines thread C2
-      drawLabel(ctx, {
-        x: 12,
-        y: h - 8,
-        text: `k = ${k.toFixed(3)}   |   M ≈ ${(k * Math.sqrt(L1 * L2) * 1e6).toFixed(0)} µH`,
-        color: getCanvasColors().textDim,
-        baseline: 'bottom',
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const { distanceCm, tiltDeg } = stateRef.current;
+        const k = couplingK(distanceCm, tiltDeg);
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const cy = h / 2;
+        const c1x = w * 0.32;
+        const c2x = c1x + 70 + distanceCm * 9;
+        drawFieldLines(ctx, c1x, cy, c2x, cy, tiltDeg, k);
+        drawCoil(ctx, c1x, cy, 0, 'C1');
+        drawCoil(ctx, c2x, cy, tiltDeg, 'C2');
+        drawLabel(ctx, {
+                x: 12,
+                y: h - 8,
+                text: `k = ${k.toFixed(3)}   |   M ≈ ${(k * Math.sqrt(L1 * L2) * 1e6).toFixed(0)} µH`,
+                color: colors.textDim,
+                baseline: 'bottom',
+              });
+      },
+      [],
+    );
 
   return (
     <Demo

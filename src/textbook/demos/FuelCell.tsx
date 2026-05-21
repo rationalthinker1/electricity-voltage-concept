@@ -15,6 +15,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -38,169 +41,132 @@ export function FuelCellDemo({ figure }: Props) {
   const V = V_of_I(i);
   const P = V * i; // power density W/cm²
 
-  const stateRef = useRef({ i, V });
-  useEffect(() => {
-    stateRef.current = { i, V };
-  }, [i, V]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const colors = getCanvasColors();
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
-    let phase = 0;
-
-    function draw() {
-      const s = stateRef.current;
-      phase += 0.04;
-
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, W, H);
-
-      // Left half: cell schematic
-      const splitX = W * 0.45;
-
-      // Layout: H₂ inlet (left), anode, membrane, cathode, O₂ inlet (right of cell)
-      const cellX = 30;
-      const cellW = splitX - 50;
-      const cellY = 40;
-      const cellH = H - 80;
-
-      const anodeW = cellW * 0.3;
-      const membraneW = cellW * 0.16;
-      const cathodeW = cellW * 0.3;
-      const flowW = (cellW - anodeW - membraneW - cathodeW) / 2;
-
-      let x = cellX;
-      // H₂ channel
-      ctx.save();
-      ctx.globalAlpha = 0.1;
-      ctx.fillStyle = colors.blue;
-      ctx.fillRect(x, cellY, flowW, cellH);
-      ctx.restore();
-      ctx.fillStyle = getCanvasColors().blue;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('H₂', x + flowW / 2, cellY + 4);
-      x += flowW;
-
-      // Anode catalyst
-      ctx.fillStyle = '#444';
-      ctx.fillRect(x, cellY, anodeW, cellH);
-      ctx.fillStyle = getCanvasColors().text;
-      ctx.fillText('anode', x + anodeW / 2, cellY + 4);
-      x += anodeW;
-
-      // Membrane (Nafion) — pink-ish wash
-      ctx.save();
-      ctx.globalAlpha = 0.3;
-      ctx.fillStyle = colors.accent;
-      ctx.fillRect(x, cellY, membraneW, cellH);
-      ctx.restore();
-      ctx.save();
-      ctx.globalAlpha = 0.85;
-      ctx.fillStyle = colors.text;
-      ctx.fillText('Nafion', x + membraneW / 2, cellY + 4);
-
-      // H⁺ ions crossing membrane (anode → cathode)
-      const ionCount = Math.max(0, Math.min(8, Math.floor(s.i * 6)));
-      for (let j = 0; j < ionCount; j++) {
-        const t = (phase + j * 0.2) % 1;
-        const ix = x + t * membraneW;
-        const iy = cellY + cellH * (0.2 + 0.7 * ((j * 0.31) % 1));
-        drawLabel(ctx, {
-          x: ix,
-          y: iy,
-          text: 'H⁺',
-          color: colors.text,
-          size: 9,
-          align: 'center',
-          baseline: 'middle',
-          weight: 'bold',
-        });
-      }
-
-      x += membraneW;
-
-      // Cathode catalyst
-      ctx.restore();
-      ctx.fillStyle = '#444';
-      ctx.fillRect(x, cellY, cathodeW, cellH);
-      ctx.fillStyle = getCanvasColors().text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('cathode', x + cathodeW / 2, cellY + 4);
-      x += cathodeW;
-
-      // O₂ channel
-      ctx.save();
-      ctx.globalAlpha = 0.1;
-      ctx.fillStyle = colors.accent;
-      ctx.fillRect(x, cellY, flowW, cellH);
-      ctx.restore();
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.fillText('O₂', x + flowW / 2, cellY + 4);
-
-      // Reaction labels at bottom
-      ctx.save();
-      ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('H₂ → 2H⁺ + 2e⁻', cellX, cellY + cellH + 6);
-      ctx.textAlign = 'right';
-      ctx.fillText('½O₂ + 2H⁺ + 2e⁻ → H₂O', cellX + cellW, cellY + cellH + 6);
-
-      // Right half: polarization curve V vs i
-      const pX = splitX + 16;
-      const pY = 30;
-      const pW = W - pX - 30;
-      const pH = H - 60;
-      ctx.restore();
-      ctx.strokeStyle = getCanvasColors().border;
-      ctx.strokeRect(pX, pY, pW, pH);
-
-      const xI = (ii: number) => pX + (ii / I_LIMIT) * pW;
-      const yV = (vv: number) => pY + pH - (vv / V_OCV) * pH;
-
-      // Polarization curve
-      ctx.strokeStyle = getCanvasColors().teal;
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
-      for (let k = 0; k <= 80; k++) {
-        const ii = (k / 80) * (I_LIMIT - 0.01);
-        const vv = V_of_I(ii);
-        const px = xI(ii);
-        const py = yV(vv);
-        if (k === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
-      }
-      ctx.stroke();
-
-      // Operating point
-      const opX = xI(s.i);
-      const opY = yV(s.V);
-      ctx.fillStyle = colors.pink;
-      ctx.beginPath();
-      ctx.arc(opX, opY, 5, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('V (V)', pX, 4);
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'top';
-      ctx.fillText('i (A/cm²)', pX + pW, pY + pH + 4);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const stateRef = useSimState({ i, V });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
+        let phase = ctx0.phase;
+        const s = stateRef.current;
+        phase += 0.04;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, W, H);
+        const splitX = W * 0.45;
+        const cellX = 30;
+        const cellW = splitX - 50;
+        const cellY = 40;
+        const cellH = H - 80;
+        const anodeW = cellW * 0.3;
+        const membraneW = cellW * 0.16;
+        const cathodeW = cellW * 0.3;
+        const flowW = (cellW - anodeW - membraneW - cathodeW) / 2;
+        let x = cellX;
+        ctx.save();
+        ctx.globalAlpha = 0.1;
+        ctx.fillStyle = colors.blue;
+        ctx.fillRect(x, cellY, flowW, cellH);
+        ctx.restore();
+        ctx.fillStyle = colors.blue;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('H₂', x + flowW / 2, cellY + 4);
+        x += flowW;
+        ctx.fillStyle = '#444';
+        ctx.fillRect(x, cellY, anodeW, cellH);
+        ctx.fillStyle = colors.text;
+        ctx.fillText('anode', x + anodeW / 2, cellY + 4);
+        x += anodeW;
+        ctx.save();
+        ctx.globalAlpha = 0.3;
+        ctx.fillStyle = colors.accent;
+        ctx.fillRect(x, cellY, membraneW, cellH);
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.85;
+        ctx.fillStyle = colors.text;
+        ctx.fillText('Nafion', x + membraneW / 2, cellY + 4);
+        const ionCount = Math.max(0, Math.min(8, Math.floor(s.i * 6)));
+        for (let j = 0; j < ionCount; j++) {
+                const t = (phase + j * 0.2) % 1;
+                const ix = x + t * membraneW;
+                const iy = cellY + cellH * (0.2 + 0.7 * ((j * 0.31) % 1));
+                drawLabel(ctx, {
+                  x: ix,
+                  y: iy,
+                  text: 'H⁺',
+                  color: colors.text,
+                  size: 9,
+                  align: 'center',
+                  baseline: 'middle',
+                  weight: 'bold',
+                });
+              }
+        x += membraneW;
+        ctx.restore();
+        ctx.fillStyle = '#444';
+        ctx.fillRect(x, cellY, cathodeW, cellH);
+        ctx.fillStyle = colors.text;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('cathode', x + cathodeW / 2, cellY + 4);
+        x += cathodeW;
+        ctx.save();
+        ctx.globalAlpha = 0.1;
+        ctx.fillStyle = colors.accent;
+        ctx.fillRect(x, cellY, flowW, cellH);
+        ctx.restore();
+        ctx.fillStyle = colors.accent;
+        ctx.fillText('O₂', x + flowW / 2, cellY + 4);
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('H₂ → 2H⁺ + 2e⁻', cellX, cellY + cellH + 6);
+        ctx.textAlign = 'right';
+        ctx.fillText('½O₂ + 2H⁺ + 2e⁻ → H₂O', cellX + cellW, cellY + cellH + 6);
+        const pX = splitX + 16;
+        const pY = 30;
+        const pW = W - pX - 30;
+        const pH = H - 60;
+        ctx.restore();
+        ctx.strokeStyle = colors.border;
+        ctx.strokeRect(pX, pY, pW, pH);
+        const xI = (ii: number) => pX + (ii / I_LIMIT) * pW;
+        const yV = (vv: number) => pY + pH - (vv / V_OCV) * pH;
+        ctx.strokeStyle = colors.teal;
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        for (let k = 0; k <= 80; k++) {
+                const ii = (k / 80) * (I_LIMIT - 0.01);
+                const vv = V_of_I(ii);
+                const px = xI(ii);
+                const py = yV(vv);
+                if (k === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+              }
+        ctx.stroke();
+        const opX = xI(s.i);
+        const opY = yV(s.V);
+        ctx.fillStyle = colors.pink;
+        ctx.beginPath();
+        ctx.arc(opX, opY, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('V (V)', pX, 4);
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'top';
+        ctx.fillText('i (A/cm²)', pX + pW, pY + pH + 4);
+        ctx0.phase = phase;
+      },
+      [],
+      () => ({ context: { phase: 0 } }),
+    );
 
   return (
     <Demo

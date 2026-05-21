@@ -17,6 +17,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -28,11 +31,7 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
   const [k, setK] = useState(0.5);
   const [aiding, setAiding] = useState(true);
 
-  const stateRef = useRef({ L1mH, L2mH, k, aiding });
-  useEffect(() => {
-    stateRef.current = { L1mH, L2mH, k, aiding };
-  }, [L1mH, L2mH, k, aiding]);
-
+  const stateRef = useSimState({ L1mH, L2mH, k, aiding });
   const computed = useMemo(() => {
     const Mh = k * Math.sqrt(L1mH * L2mH); // mH
     const Laid = L1mH + L2mH + 2 * Mh;
@@ -42,80 +41,62 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
     return { Mh, Laid, Lopp, Lnow, Mfromreadings };
   }, [L1mH, L2mH, k, aiding]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
-
-    function draw() {
-      const { L1mH, L2mH, k, aiding } = stateRef.current;
-      const Mh = k * Math.sqrt(L1mH * L2mH);
-      const Laid = L1mH + L2mH + 2 * Mh;
-      const Lopp = L1mH + L2mH - 2 * Mh;
-
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, w, h);
-
-      // Two coils in series in the schematic — draw them with arrow tags showing winding sense
-      const cy = h / 2;
-      const c1x = w * 0.3;
-      const c2x = w * 0.62;
-
-      drawCoilSeries(ctx, c1x, cy, 'L₁', `${L1mH.toFixed(1)} mH`, +1);
-      // Aiding: same sense; Opposing: flip the second coil's wind direction
-      drawCoilSeries(ctx, c2x, cy, 'L₂', `${L2mH.toFixed(1)} mH`, aiding ? +1 : -1);
-
-      // Connecting wire
-      ctx.save();
-      ctx.globalAlpha = 0.5;
-      ctx.strokeStyle = getCanvasColors().textDim;
-      ctx.lineWidth = 1.4;
-      ctx.beginPath();
-      ctx.moveTo(c1x + 22, cy);
-      ctx.lineTo(c2x - 22, cy);
-      ctx.stroke();
-
-      // M label between
-      ctx.restore();
-      ctx.fillStyle = getCanvasColors().teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(`M = ${Mh.toFixed(2)} mH`, (c1x + c2x) / 2, cy + 24);
-
-      // Big readout: L_eq right now
-      ctx.fillStyle = aiding
-        ? withAlpha(getCanvasColors().accent, 0.95)
-        : withAlpha(getCanvasColors().blue, 0.95);
-      ctx.font = 'bold 18px "STIX Two Text", "Fraunces", serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`L_eq = ${(aiding ? Laid : Lopp).toFixed(2)} mH`, w / 2, 14);
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillText(
-        aiding ? 'series aiding:  L₁ + L₂ + 2M' : 'series opposing:  L₁ + L₂ − 2M',
-        w / 2,
-        38,
-      );
-
-      // Bottom strip: both readings + derived M
-      ctx.save();
-      ctx.globalAlpha = 0.65;
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`L_aid = ${Laid.toFixed(2)} mH`, 12, h - 22);
-      ctx.fillText(`L_opp = ${Lopp.toFixed(2)} mH`, 12, h - 8);
-      ctx.textAlign = 'right';
-      ctx.restore();
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.fillText(`M = (L_aid − L_opp) / 4 = ${((Laid - Lopp) / 4).toFixed(2)} mH`, w - 12, h - 8);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const { L1mH, L2mH, k, aiding } = stateRef.current;
+        const Mh = k * Math.sqrt(L1mH * L2mH);
+        const Laid = L1mH + L2mH + 2 * Mh;
+        const Lopp = L1mH + L2mH - 2 * Mh;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const cy = h / 2;
+        const c1x = w * 0.3;
+        const c2x = w * 0.62;
+        drawCoilSeries(ctx, c1x, cy, 'L₁', `${L1mH.toFixed(1)} mH`, +1);
+        drawCoilSeries(ctx, c2x, cy, 'L₂', `${L2mH.toFixed(1)} mH`, aiding ? +1 : -1);
+        ctx.save();
+        ctx.globalAlpha = 0.5;
+        ctx.strokeStyle = colors.textDim;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(c1x + 22, cy);
+        ctx.lineTo(c2x - 22, cy);
+        ctx.stroke();
+        ctx.restore();
+        ctx.fillStyle = colors.teal;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(`M = ${Mh.toFixed(2)} mH`, (c1x + c2x) / 2, cy + 24);
+        ctx.fillStyle = aiding
+                ? withAlpha(colors.accent, 0.95)
+                : withAlpha(colors.blue, 0.95);
+        ctx.font = 'bold 18px "STIX Two Text", "Fraunces", serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(`L_eq = ${(aiding ? Laid : Lopp).toFixed(2)} mH`, w / 2, 14);
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillText(
+                aiding ? 'series aiding:  L₁ + L₂ + 2M' : 'series opposing:  L₁ + L₂ − 2M',
+                w / 2,
+                38,
+              );
+        ctx.save();
+        ctx.globalAlpha = 0.65;
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(`L_aid = ${Laid.toFixed(2)} mH`, 12, h - 22);
+        ctx.fillText(`L_opp = ${Lopp.toFixed(2)} mH`, 12, h - 8);
+        ctx.textAlign = 'right';
+        ctx.restore();
+        ctx.fillStyle = colors.accent;
+        ctx.fillText(`M = (L_aid − L_opp) / 4 = ${((Laid - Lopp) / 4).toFixed(2)} mH`, w - 12, h - 8);
+      },
+      [],
+    );
 
   return (
     <Demo

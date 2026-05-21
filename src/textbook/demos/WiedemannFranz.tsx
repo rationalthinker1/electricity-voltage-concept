@@ -17,6 +17,9 @@ import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -50,119 +53,100 @@ const METALS: Metal[] = [
 export function WiedemannFranzDemo({ figure }: Props) {
   const [metalKey, setMetalKey] = useState('copper');
 
-  const stateRef = useRef({ metalKey });
-  useEffect(() => {
-    stateRef.current = { metalKey };
-  }, [metalKey]);
-
+  const stateRef = useSimState({ metalKey });
   const m = METALS.find((x) => x.key === metalKey)!;
   const L = m.kappa / (m.sigma * T_K);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
-
-    function draw() {
-      const { metalKey } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, W, H);
-
-      // Two-axis bar chart: for each metal plot κ (left axis) and σ (right axis)
-      const padL = 100;
-      const padR = 24;
-      const padT = 38;
-      const padB = 40;
-      const gW = W - padL - padR;
-      const gH = H - padT - padB;
-      const rowH = gH / METALS.length;
-
-      ctx.strokeStyle = getCanvasColors().borderStrong;
-      ctx.beginPath();
-      ctx.moveTo(padL, padT);
-      ctx.lineTo(padL, padT + gH);
-      ctx.lineTo(padL + gW, padT + gH);
-      ctx.stroke();
-
-      const maxK = 450;
-      const maxS = 7e7;
-
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-
-      METALS.forEach((mm, i) => {
-        const y = padT + rowH * i;
-        const yMid = y + rowH / 2;
-        const isSel = mm.key === metalKey;
-
-        // κ bar (top half of row)
-        const kappaW = (mm.kappa / maxK) * gW;
-        ctx.fillStyle = isSel
-          ? withAlpha(getCanvasColors().accent, 0.85)
-          : withAlpha(getCanvasColors().accent, 0.3);
-        ctx.fillRect(padL, y + 6, kappaW, rowH / 2 - 8);
-
-        // σ bar (bottom half of row)
-        const sigmaW = (mm.sigma / maxS) * gW;
-        ctx.fillStyle = isSel
-          ? withAlpha(getCanvasColors().teal, 0.85)
-          : withAlpha(getCanvasColors().teal, 0.3);
-        ctx.fillRect(padL, y + rowH / 2 + 2, sigmaW, rowH / 2 - 8);
-
-        // Material label
-        ctx.fillStyle = isSel ? '#ff6b2a' : withAlpha(getCanvasColors().text, 0.75);
-        ctx.font = isSel
-          ? 'bold 10px "JetBrains Mono", monospace'
-          : '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(mm.name.toUpperCase(), padL - 10, yMid);
-
-        // Per-metal Lorenz value
-        const L_m = mm.kappa / (mm.sigma * T_K);
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+        const { metalKey } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, W, H);
+        const padL = 100;
+        const padR = 24;
+        const padT = 38;
+        const padB = 40;
+        const gW = W - padL - padR;
+        const gH = H - padT - padB;
+        const rowH = gH / METALS.length;
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.beginPath();
+        ctx.moveTo(padL, padT);
+        ctx.lineTo(padL, padT + gH);
+        ctx.lineTo(padL + gW, padT + gH);
+        ctx.stroke();
+        const maxK = 450;
+        const maxS = 7e7;
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.fillStyle = colors.textDim;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        METALS.forEach((mm, i) => {
+                const y = padT + rowH * i;
+                const yMid = y + rowH / 2;
+                const isSel = mm.key === metalKey;
+        
+                // κ bar (top half of row)
+                const kappaW = (mm.kappa / maxK) * gW;
+                ctx.fillStyle = isSel
+                  ? withAlpha(colors.accent, 0.85)
+                  : withAlpha(colors.accent, 0.3);
+                ctx.fillRect(padL, y + 6, kappaW, rowH / 2 - 8);
+        
+                // σ bar (bottom half of row)
+                const sigmaW = (mm.sigma / maxS) * gW;
+                ctx.fillStyle = isSel
+                  ? withAlpha(colors.teal, 0.85)
+                  : withAlpha(colors.teal, 0.3);
+                ctx.fillRect(padL, y + rowH / 2 + 2, sigmaW, rowH / 2 - 8);
+        
+                // Material label
+                ctx.fillStyle = isSel ? '#ff6b2a' : withAlpha(colors.text, 0.75);
+                ctx.font = isSel
+                  ? 'bold 10px "JetBrains Mono", monospace'
+                  : '10px "JetBrains Mono", monospace';
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(mm.name.toUpperCase(), padL - 10, yMid);
+        
+                // Per-metal Lorenz value
+                const L_m = mm.kappa / (mm.sigma * T_K);
+                drawLabel(ctx, {
+                  x: padL + Math.max(kappaW, sigmaW) + 6,
+                  y: yMid,
+                  text: `L = ${(L_m * 1e8).toFixed(2)}×10⁻⁸`,
+                  color: isSel ? '#ff6b2a' : withAlpha(colors.textDim, 0.7),
+                  size: 9,
+                });
+              });
         drawLabel(ctx, {
-          x: padL + Math.max(kappaW, sigmaW) + 6,
-          y: yMid,
-          text: `L = ${(L_m * 1e8).toFixed(2)}×10⁻⁸`,
-          color: isSel ? '#ff6b2a' : withAlpha(getCanvasColors().textDim, 0.7),
-          size: 9,
-        });
-      });
-
-      // Headers
-      drawLabel(ctx, {
-        x: padL,
-        y: 8,
-        text: 'κ — thermal conductivity (W/m·K)',
-        color: getCanvasColors().accent,
-        size: 9,
-        baseline: 'top',
-      });
-      drawLabel(ctx, {
-        x: padL,
-        y: 22,
-        text: 'σ — electrical conductivity (S/m)',
-        color: getCanvasColors().teal,
-        size: 9,
-        baseline: 'top',
-      });
-
-      // Headline: average Lorenz across the metals
-      drawLabel(ctx, {
-        x: W - 12,
-        y: 8,
-        text: `L₀ = 2.44×10⁻⁸ W·Ω·K⁻²`,
-        color: getCanvasColors().accent,
-        align: 'right',
-        baseline: 'top',
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+                x: padL,
+                y: 8,
+                text: 'κ — thermal conductivity (W/m·K)',
+                color: colors.accent,
+                size: 9,
+                baseline: 'top',
+              });
+        drawLabel(ctx, {
+                x: padL,
+                y: 22,
+                text: 'σ — electrical conductivity (S/m)',
+                color: colors.teal,
+                size: 9,
+                baseline: 'top',
+              });
+        drawLabel(ctx, {
+                x: W - 12,
+                y: 8,
+                text: `L₀ = 2.44×10⁻⁸ W·Ω·K⁻²`,
+                color: colors.accent,
+                align: 'right',
+                baseline: 'top',
+              });
+      },
+      [],
+    );
 
   return (
     <Demo

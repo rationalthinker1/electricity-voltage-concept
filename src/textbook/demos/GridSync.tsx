@@ -14,6 +14,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -27,11 +30,7 @@ export function GridSyncDemo({ figure }: Props) {
   const [phiDeg, setPhiDeg] = useState(30);
   const [vGen, setVGen] = useState(1.0);
 
-  const stateRef = useRef({ fGen, phiDeg, vGen });
-  useEffect(() => {
-    stateRef.current = { fGen, phiDeg, vGen };
-  }, [fGen, phiDeg, vGen]);
-
+  const stateRef = useSimState({ fGen, phiDeg, vGen });
   const ready = useMemo(() => {
     const dF = Math.abs(fGen - F_GRID);
     const dPhi = Math.abs(phiDeg) % 360;
@@ -41,135 +40,110 @@ export function GridSyncDemo({ figure }: Props) {
     return dF < 0.2 && dPhiMin < 10 && dV < 0.05;
   }, [fGen, phiDeg, vGen]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    let simT = 0;
-    let lastT = performance.now();
-
-    function draw() {
-      const { fGen, phiDeg, vGen } = stateRef.current;
-      const now = performance.now();
-      let dt = (now - lastT) / 1000;
-      lastT = now;
-      if (dt > 0.1) dt = 0.1;
-      // slow real-time playback so we can see ~60 Hz
-      simT += dt * 0.06;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const padL = 50,
-        padR = 30,
-        padT = 30,
-        padB = 40;
-      const plotW = w - padL - padR;
-      const plotH = h - padT - padB;
-      const cy = padT + plotH / 2;
-
-      ctx.strokeStyle = colors.border;
-      ctx.strokeRect(padL, padT, plotW, plotH);
-      ctx.beginPath();
-      ctx.moveTo(padL, cy);
-      ctx.lineTo(padL + plotW, cy);
-      ctx.stroke();
-
-      const tWindow = 0.05; // 50 ms window
-      const samples = 320;
-      const phi = (phiDeg * Math.PI) / 180;
-
-      // Grid trace (white)
-      ctx.save();
-      ctx.globalAlpha = 0.85;
-      ctx.strokeStyle = colors.text;
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      for (let i = 0; i <= samples; i++) {
-        const t = simT + (i / samples) * tWindow;
-        const v = V_GRID * Math.cos(2 * Math.PI * F_GRID * t);
-        const x = padL + (i / samples) * plotW;
-        const y = cy - (v / Math.max(V_GRID, vGen)) * (plotH / 2) * 0.85;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Generator trace (amber)
-      ctx.restore();
-      ctx.strokeStyle = ready ? withAlpha(colors.teal, 0.95) : withAlpha(colors.accent, 0.9);
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      for (let i = 0; i <= samples; i++) {
-        const t = simT + (i / samples) * tWindow;
-        const v = vGen * Math.cos(2 * Math.PI * fGen * t + phi);
-        const x = padL + (i / samples) * plotW;
-        const y = cy - (v / Math.max(V_GRID, vGen)) * (plotH / 2) * 0.85;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Difference (red, shaded)
-      ctx.fillStyle = colors.pink;
-      ctx.beginPath();
-      let started = false;
-      for (let i = 0; i <= samples; i++) {
-        const t = simT + (i / samples) * tWindow;
-        const vG = V_GRID * Math.cos(2 * Math.PI * F_GRID * t);
-        const vGen2 = vGen * Math.cos(2 * Math.PI * fGen * t + phi);
-        const diff = vG - vGen2;
-        const x = padL + (i / samples) * plotW;
-        const yDiff = cy - (diff / Math.max(V_GRID, vGen)) * (plotH / 2) * 0.85;
-        if (!started) {
-          ctx.moveTo(x, cy);
-          started = true;
-        }
-        ctx.lineTo(x, yDiff);
-      }
-      ctx.lineTo(padL + plotW, cy);
-      ctx.closePath();
-      ctx.fill();
-
-      // Indicator badge
-      ctx.fillStyle = ready ? withAlpha(colors.teal, 0.85) : withAlpha(colors.pink, 0.85);
-      ctx.beginPath();
-      ctx.arc(padL + plotW - 18, padT + 14, 7, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = ready ? '#6cc5c2' : '#ff3b6e';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(ready ? 'READY TO CLOSE' : 'NOT SYNCHRONISED', padL + plotW - 30, padT + 14);
-
-      // Legend
-      ctx.save();
-      ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.text;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('grid', padL + 6, padT + 14);
-      ctx.restore();
-      ctx.fillStyle = ready ? '#6cc5c2' : '#ff6b2a';
-      ctx.fillText('generator', padL + 40, padT + 14);
-
-      // Δf, Δφ, ΔV readout near bottom
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      const dPhi = Math.abs(phiDeg) % 360;
-      const dPhiMin = Math.min(dPhi, 360 - dPhi);
-      ctx.fillText(
-        `Δf = ${(fGen - F_GRID).toFixed(2)} Hz   ·   Δφ = ${dPhiMin.toFixed(0)}°   ·   ΔV = ${((vGen - V_GRID) * 100).toFixed(1)}%`,
-        padL + plotW / 2,
-        padT + plotH + 26,
-      );
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
+        let simT = ctx0.simT;
+        const { fGen, phiDeg, vGen } = stateRef.current;
+        simT += dt * 0.06;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const padL = 50,
+                padR = 30,
+                padT = 30,
+                padB = 40;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+        const cy = padT + plotH / 2;
+        ctx.strokeStyle = colors.border;
+        ctx.strokeRect(padL, padT, plotW, plotH);
+        ctx.beginPath();
+        ctx.moveTo(padL, cy);
+        ctx.lineTo(padL + plotW, cy);
+        ctx.stroke();
+        const tWindow = 0.05;
+        const samples = 320;
+        const phi = (phiDeg * Math.PI) / 180;
+        ctx.save();
+        ctx.globalAlpha = 0.85;
+        ctx.strokeStyle = colors.text;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        for (let i = 0; i <= samples; i++) {
+                const t = simT + (i / samples) * tWindow;
+                const v = V_GRID * Math.cos(2 * Math.PI * F_GRID * t);
+                const x = padL + (i / samples) * plotW;
+                const y = cy - (v / Math.max(V_GRID, vGen)) * (plotH / 2) * 0.85;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        ctx.restore();
+        ctx.strokeStyle = ready ? withAlpha(colors.teal, 0.95) : withAlpha(colors.accent, 0.9);
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        for (let i = 0; i <= samples; i++) {
+                const t = simT + (i / samples) * tWindow;
+                const v = vGen * Math.cos(2 * Math.PI * fGen * t + phi);
+                const x = padL + (i / samples) * plotW;
+                const y = cy - (v / Math.max(V_GRID, vGen)) * (plotH / 2) * 0.85;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        ctx.fillStyle = colors.pink;
+        ctx.beginPath();
+        let started = false;
+        for (let i = 0; i <= samples; i++) {
+                const t = simT + (i / samples) * tWindow;
+                const vG = V_GRID * Math.cos(2 * Math.PI * F_GRID * t);
+                const vGen2 = vGen * Math.cos(2 * Math.PI * fGen * t + phi);
+                const diff = vG - vGen2;
+                const x = padL + (i / samples) * plotW;
+                const yDiff = cy - (diff / Math.max(V_GRID, vGen)) * (plotH / 2) * 0.85;
+                if (!started) {
+                  ctx.moveTo(x, cy);
+                  started = true;
+                }
+                ctx.lineTo(x, yDiff);
+              }
+        ctx.lineTo(padL + plotW, cy);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = ready ? withAlpha(colors.teal, 0.85) : withAlpha(colors.pink, 0.85);
+        ctx.beginPath();
+        ctx.arc(padL + plotW - 18, padT + 14, 7, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = ready ? '#6cc5c2' : '#ff3b6e';
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(ready ? 'READY TO CLOSE' : 'NOT SYNCHRONISED', padL + plotW - 30, padT + 14);
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = colors.text;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('grid', padL + 6, padT + 14);
+        ctx.restore();
+        ctx.fillStyle = ready ? '#6cc5c2' : '#ff6b2a';
+        ctx.fillText('generator', padL + 40, padT + 14);
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        const dPhi = Math.abs(phiDeg) % 360;
+        const dPhiMin = Math.min(dPhi, 360 - dPhi);
+        ctx.fillText(
+                `Δf = ${(fGen - F_GRID).toFixed(2)} Hz   ·   Δφ = ${dPhiMin.toFixed(0)}°   ·   ΔV = ${((vGen - V_GRID) * 100).toFixed(1)}%`,
+                padL + plotW / 2,
+                padT + plotH + 26,
+              );
+        ctx0.simT = simT;
+      },
+      [],
+      () => ({ context: { simT: 0 } }),
+    );
 
   return (
     <Demo

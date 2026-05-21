@@ -14,6 +14,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -24,214 +27,180 @@ export function TransformerDemo({ figure }: Props) {
   const [N2, setN2] = useState(20);
   const [V1, setV1] = useState(120);
 
-  const stateRef = useRef({ N1, N2, V1 });
-  useEffect(() => {
-    stateRef.current = { N1, N2, V1 };
-  }, [N1, N2, V1]);
-
+  const stateRef = useSimState({ N1, N2, V1 });
   const V2 = useMemo(() => V1 * (N2 / N1), [V1, N2, N1]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
-    const t0 = performance.now();
-
-    function draw() {
-      const { N1, N2, V1 } = stateRef.current;
-      const t = (performance.now() - t0) / 1000;
-
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, w, h);
-
-      // Geometry: iron core as a rounded rectangle in the middle
-      const coreLeft = w * 0.18;
-      const coreRight = w * 0.82;
-      const coreTop = h * 0.22;
-      const coreBot = h * 0.78;
-      const coreThick = 18;
-
-      // Iron core shape
-      ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.1);
-      ctx.strokeStyle = withAlpha(getCanvasColors().textDim, 0.45);
-      ctx.lineWidth = 1.4;
-      // Outer rect
-      ctx.beginPath();
-      ctx.rect(coreLeft, coreTop, coreRight - coreLeft, coreBot - coreTop);
-      ctx.stroke();
-      // Inner cutout
-      ctx.beginPath();
-      ctx.rect(
-        coreLeft + coreThick,
-        coreTop + coreThick,
-        coreRight - coreLeft - 2 * coreThick,
-        coreBot - coreTop - 2 * coreThick,
-      );
-      ctx.stroke();
-      // Hatching to suggest laminated iron
-      ctx.strokeStyle = withAlpha(getCanvasColors().textDim, 0.18);
-      ctx.lineWidth = 0.6;
-      for (let x = coreLeft + 4; x < coreRight - 4; x += 7) {
-        // top bar
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, simTime) => {
+        const { N1, N2, V1 } = stateRef.current;
+        const t = simTime;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const coreLeft = w * 0.18;
+        const coreRight = w * 0.82;
+        const coreTop = h * 0.22;
+        const coreBot = h * 0.78;
+        const coreThick = 18;
+        ctx.fillStyle = withAlpha(colors.textDim, 0.1);
+        ctx.strokeStyle = withAlpha(colors.textDim, 0.45);
+        ctx.lineWidth = 1.4;
         ctx.beginPath();
-        ctx.moveTo(x, coreTop + 2);
-        ctx.lineTo(x, coreTop + coreThick - 2);
+        ctx.rect(coreLeft, coreTop, coreRight - coreLeft, coreBot - coreTop);
         ctx.stroke();
-        // bottom bar
         ctx.beginPath();
-        ctx.moveTo(x, coreBot - coreThick + 2);
-        ctx.lineTo(x, coreBot - 2);
+        ctx.rect(
+                coreLeft + coreThick,
+                coreTop + coreThick,
+                coreRight - coreLeft - 2 * coreThick,
+                coreBot - coreTop - 2 * coreThick,
+              );
         ctx.stroke();
-      }
-
-      // Primary coil — wraps the LEFT vertical arm of the core
-      const primX = coreLeft;
-      const primCenterY = (coreTop + coreBot) / 2;
-      const primHalfH = (coreBot - coreTop - 2 * coreThick) * 0.4;
-      drawCoil(
-        ctx,
-        primX,
-        primCenterY,
-        coreThick,
-        primHalfH,
-        Math.min(18, Math.max(4, Math.round(N1 / 12))),
-        'left',
-      );
-
-      // Secondary coil — wraps the RIGHT vertical arm of the core
-      const secX = coreRight;
-      drawCoil(
-        ctx,
-        secX,
-        primCenterY,
-        coreThick,
-        primHalfH,
-        Math.min(18, Math.max(4, Math.round(N2 / 12))),
-        'right',
-      );
-
-      // Animated flux tracers traveling counter-clockwise around the core
-      const intensity = Math.min(1, Math.abs(V1) / 240);
-      const speed = 0.25 + intensity * 0.9;
-      const ntracers = 14;
-      // Build path lengths along the centerline of the core
-      const cw = coreRight - coreLeft - coreThick;
-      const ch = coreBot - coreTop - coreThick;
-      const perim = 2 * (cw + ch);
-      const cxL = coreLeft + coreThick / 2;
-      const cxR = coreRight - coreThick / 2;
-      const cyT = coreTop + coreThick / 2;
-      const cyB = coreBot - coreThick / 2;
-      for (let i = 0; i < ntracers; i++) {
-        const u = (((i / ntracers + speed * t) % 1) + 1) % 1;
-        const s = u * perim;
-        let px = 0,
-          py = 0;
-        if (s < cw) {
-          // top edge L→R
-          px = cxL + s;
-          py = cyT;
-        } else if (s < cw + ch) {
-          // right edge T→B
-          px = cxR;
-          py = cyT + (s - cw);
-        } else if (s < 2 * cw + ch) {
-          // bottom edge R→L
-          px = cxR - (s - cw - ch);
-          py = cyB;
-        } else {
-          // left edge B→T
-          px = cxL;
-          py = cyB - (s - 2 * cw - ch);
-        }
-        const a = 0.25 + intensity * 0.7;
-        ctx.fillStyle = `rgba(108,197,194,${a})`;
+        ctx.strokeStyle = withAlpha(colors.textDim, 0.18);
+        ctx.lineWidth = 0.6;
+        for (let x = coreLeft + 4; x < coreRight - 4; x += 7) {
+                // top bar
+                ctx.beginPath();
+                ctx.moveTo(x, coreTop + 2);
+                ctx.lineTo(x, coreTop + coreThick - 2);
+                ctx.stroke();
+                // bottom bar
+                ctx.beginPath();
+                ctx.moveTo(x, coreBot - coreThick + 2);
+                ctx.lineTo(x, coreBot - 2);
+                ctx.stroke();
+              }
+        const primX = coreLeft;
+        const primCenterY = (coreTop + coreBot) / 2;
+        const primHalfH = (coreBot - coreTop - 2 * coreThick) * 0.4;
+        drawCoil(
+                ctx,
+                primX,
+                primCenterY,
+                coreThick,
+                primHalfH,
+                Math.min(18, Math.max(4, Math.round(N1 / 12))),
+                'left',
+              );
+        const secX = coreRight;
+        drawCoil(
+                ctx,
+                secX,
+                primCenterY,
+                coreThick,
+                primHalfH,
+                Math.min(18, Math.max(4, Math.round(N2 / 12))),
+                'right',
+              );
+        const intensity = Math.min(1, Math.abs(V1) / 240);
+        const speed = 0.25 + intensity * 0.9;
+        const ntracers = 14;
+        const cw = coreRight - coreLeft - coreThick;
+        const ch = coreBot - coreTop - coreThick;
+        const perim = 2 * (cw + ch);
+        const cxL = coreLeft + coreThick / 2;
+        const cxR = coreRight - coreThick / 2;
+        const cyT = coreTop + coreThick / 2;
+        const cyB = coreBot - coreThick / 2;
+        for (let i = 0; i < ntracers; i++) {
+                const u = (((i / ntracers + speed * t) % 1) + 1) % 1;
+                const s = u * perim;
+                let px = 0,
+                  py = 0;
+                if (s < cw) {
+                  // top edge L→R
+                  px = cxL + s;
+                  py = cyT;
+                } else if (s < cw + ch) {
+                  // right edge T→B
+                  px = cxR;
+                  py = cyT + (s - cw);
+                } else if (s < 2 * cw + ch) {
+                  // bottom edge R→L
+                  px = cxR - (s - cw - ch);
+                  py = cyB;
+                } else {
+                  // left edge B→T
+                  px = cxL;
+                  py = cyB - (s - 2 * cw - ch);
+                }
+                const a = 0.25 + intensity * 0.7;
+                ctx.fillStyle = `rgba(108,197,194,${a})`;
+                ctx.beginPath();
+                ctx.arc(px, py, 2.6, 0, Math.PI * 2);
+                ctx.fill();
+              }
+        const srcX = coreLeft - 50;
+        const srcY = primCenterY;
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.4;
         ctx.beginPath();
-        ctx.arc(px, py, 2.6, 0, Math.PI * 2);
+        ctx.arc(srcX, srcY, 16, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        for (let k = -10; k <= 10; k++) {
+                const x = srcX + k;
+                const y = srcY + Math.sin((k / 10) * Math.PI * 2 + t * 8) * 6;
+                if (k === -10) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(srcX + 16, srcY - 8);
+        ctx.lineTo(primX - 22, srcY - 8);
+        ctx.lineTo(primX - 22, primCenterY - primHalfH);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(srcX + 16, srcY + 8);
+        ctx.lineTo(primX - 22, srcY + 8);
+        ctx.lineTo(primX - 22, primCenterY + primHalfH);
+        ctx.stroke();
+        const loadX = coreRight + 50;
+        const loadY = primCenterY;
+        const lampIntensity = Math.min(1, Math.abs(V2) / 240);
+        drawHalo(ctx, {
+                x: loadX,
+                y: loadY,
+                radius: 32,
+                color: `rgba(255,107,42,${0.7 * lampIntensity})`,
+                alpha: 1,
+                extent: 1,
+              });
+        ctx.strokeStyle = `rgba(255,107,42,${0.45 + 0.5 * lampIntensity})`;
+        ctx.fillStyle = `rgba(255,107,42,${0.15 + 0.55 * lampIntensity})`;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.arc(loadX, loadY, 12, 0, Math.PI * 2);
         ctx.fill();
-      }
-
-      // AC source — circle with sine-wave squiggle, on the far left
-      const srcX = coreLeft - 50;
-      const srcY = primCenterY;
-      ctx.strokeStyle = getCanvasColors().accent;
-      ctx.lineWidth = 1.4;
-      ctx.beginPath();
-      ctx.arc(srcX, srcY, 16, 0, Math.PI * 2);
-      ctx.stroke();
-      // sine inside the circle
-      ctx.beginPath();
-      for (let k = -10; k <= 10; k++) {
-        const x = srcX + k;
-        const y = srcY + Math.sin((k / 10) * Math.PI * 2 + t * 8) * 6;
-        if (k === -10) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      // Wires from source to primary coil top/bottom
-      ctx.strokeStyle = getCanvasColors().borderStrong;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(srcX + 16, srcY - 8);
-      ctx.lineTo(primX - 22, srcY - 8);
-      ctx.lineTo(primX - 22, primCenterY - primHalfH);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(srcX + 16, srcY + 8);
-      ctx.lineTo(primX - 22, srcY + 8);
-      ctx.lineTo(primX - 22, primCenterY + primHalfH);
-      ctx.stroke();
-
-      // Load lamp on right
-      const loadX = coreRight + 50;
-      const loadY = primCenterY;
-      const lampIntensity = Math.min(1, Math.abs(V2) / 240);
-      drawHalo(ctx, {
-        x: loadX,
-        y: loadY,
-        radius: 32,
-        color: `rgba(255,107,42,${0.7 * lampIntensity})`,
-        alpha: 1,
-        extent: 1,
-      });
-      ctx.strokeStyle = `rgba(255,107,42,${0.45 + 0.5 * lampIntensity})`;
-      ctx.fillStyle = `rgba(255,107,42,${0.15 + 0.55 * lampIntensity})`;
-      ctx.lineWidth = 1.4;
-      ctx.beginPath();
-      ctx.arc(loadX, loadY, 12, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-      ctx.strokeStyle = getCanvasColors().borderStrong;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(secX + 22, primCenterY - primHalfH);
-      ctx.lineTo(secX + 22, loadY - 8);
-      ctx.lineTo(loadX - 14, loadY - 8);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(secX + 22, primCenterY + primHalfH);
-      ctx.lineTo(secX + 22, loadY + 8);
-      ctx.lineTo(loadX - 14, loadY + 8);
-      ctx.stroke();
-
-      // Labels
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`N₁ = ${N1}`, primX, coreBot + 6);
-      ctx.fillText(`V₁ = ${V1.toFixed(0)} V`, srcX, srcY + 26);
-      ctx.fillText(`N₂ = ${N2}`, secX, coreBot + 6);
-      ctx.fillText(`V₂ = ${V2.toFixed(1)} V`, loadX, loadY + 26);
-
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.textAlign = 'center';
-      ctx.fillText('iron core · shared Φ', (coreLeft + coreRight) / 2, coreTop - 14);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        ctx.stroke();
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(secX + 22, primCenterY - primHalfH);
+        ctx.lineTo(secX + 22, loadY - 8);
+        ctx.lineTo(loadX - 14, loadY - 8);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(secX + 22, primCenterY + primHalfH);
+        ctx.lineTo(secX + 22, loadY + 8);
+        ctx.lineTo(loadX - 14, loadY + 8);
+        ctx.stroke();
+        ctx.fillStyle = colors.accent;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(`N₁ = ${N1}`, primX, coreBot + 6);
+        ctx.fillText(`V₁ = ${V1.toFixed(0)} V`, srcX, srcY + 26);
+        ctx.fillText(`N₂ = ${N2}`, secX, coreBot + 6);
+        ctx.fillText(`V₂ = ${V2.toFixed(1)} V`, loadX, loadY + 26);
+        ctx.fillStyle = colors.textDim;
+        ctx.textAlign = 'center';
+        ctx.fillText('iron core · shared Φ', (coreLeft + coreRight) / 2, coreTop - 14);
+      },
+      [],
+    );
 
   return (
     <Demo

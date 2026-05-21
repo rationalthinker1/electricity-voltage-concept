@@ -16,6 +16,9 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -37,11 +40,7 @@ const BASELOAD_FRAC = 0.55; // baseload covers minimum load
 export function LoadFollowingDemo({ figure }: Props) {
   const [hour, setHour] = useState(19);
 
-  const stateRef = useRef({ hour });
-  useEffect(() => {
-    stateRef.current.hour = hour;
-  }, [hour]);
-
+  const stateRef = useSimState({ hour });
   const computed = useMemo(() => {
     const loadGW = loadFracAt(hour) * SYSTEM_PEAK_GW;
     const baseGW = BASELOAD_FRAC * SYSTEM_PEAK_GW;
@@ -50,168 +49,143 @@ export function LoadFollowingDemo({ figure }: Props) {
     return { loadGW, baseGW, peakerGW, reserveGW };
   }, [hour]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-
-    function draw() {
-      const { hour } = stateRef.current;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const padL = 48,
-        padR = 24,
-        padT = 24,
-        padB = 38;
-      const plotW = w - padL - padR;
-      const plotH = h - padT - padB;
-      const xAt = (hr: number) => padL + (hr / 24) * plotW;
-      const yAt = (frac: number) => padT + plotH - frac * plotH;
-
-      // Frame
-      ctx.strokeStyle = colors.border;
-      ctx.strokeRect(padL, padT, plotW, plotH);
-      // Horizontal gridlines at 0.25, 0.5, 0.75
-      for (let i = 1; i < 4; i++) {
-        const y = padT + (i / 4) * plotH;
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const { hour } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const padL = 48,
+                padR = 24,
+                padT = 24,
+                padB = 38;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+        const xAt = (hr: number) => padL + (hr / 24) * plotW;
+        const yAt = (frac: number) => padT + plotH - frac * plotH;
+        ctx.strokeStyle = colors.border;
+        ctx.strokeRect(padL, padT, plotW, plotH);
+        for (let i = 1; i < 4; i++) {
+                const y = padT + (i / 4) * plotH;
+                ctx.beginPath();
+                ctx.moveTo(padL, y);
+                ctx.lineTo(padL + plotW, y);
+                ctx.stroke();
+              }
+        ctx.save();
+        ctx.globalAlpha = 0.2;
+        ctx.fillStyle = colors.teal;
         ctx.beginPath();
-        ctx.moveTo(padL, y);
-        ctx.lineTo(padL + plotW, y);
+        ctx.moveTo(padL, yAt(0));
+        ctx.lineTo(padL + plotW, yAt(0));
+        ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
+        ctx.lineTo(padL, yAt(BASELOAD_FRAC));
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.strokeStyle = colors.teal;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padL, yAt(BASELOAD_FRAC));
+        ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
         ctx.stroke();
-      }
-
-      // Baseload band (teal, bottom)
-      ctx.save();
-      ctx.globalAlpha = 0.2;
-      ctx.fillStyle = colors.teal;
-      ctx.beginPath();
-      ctx.moveTo(padL, yAt(0));
-      ctx.lineTo(padL + plotW, yAt(0));
-      ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
-      ctx.lineTo(padL, yAt(BASELOAD_FRAC));
-      ctx.closePath();
-      ctx.fill();
-      ctx.restore();
-      ctx.save();
-      ctx.globalAlpha = 0.6;
-      ctx.strokeStyle = colors.teal;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(padL, yAt(BASELOAD_FRAC));
-      ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
-      ctx.stroke();
-
-      // Peaker band: between baseload and load curve, sampled
-      ctx.restore();
-      ctx.save();
-      ctx.globalAlpha = 0.25;
-      ctx.fillStyle = colors.accent;
-      ctx.beginPath();
-      const N = 200;
-      for (let i = 0; i <= N; i++) {
-        const hr = (i / N) * 24;
-        const x = xAt(hr);
-        const y = yAt(loadFracAt(hr));
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      // close along baseload line
-      ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
-      ctx.lineTo(padL, yAt(BASELOAD_FRAC));
-      ctx.closePath();
-      ctx.fill();
-
-      // Load curve itself
-      ctx.restore();
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
-      for (let i = 0; i <= N; i++) {
-        const hr = (i / N) * 24;
-        const x = xAt(hr);
-        const y = yAt(loadFracAt(hr));
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Reserve band (dashed line above the load curve)
-      ctx.save();
-      ctx.globalAlpha = 0.55;
-      ctx.strokeStyle = colors.pink;
-      ctx.setLineDash([5, 4]);
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      for (let i = 0; i <= N; i++) {
-        const hr = (i / N) * 24;
-        const x = xAt(hr);
-        const y = yAt(loadFracAt(hr) + 0.1);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // Time-of-day marker
-      const mx = xAt(hour);
-      ctx.restore();
-      ctx.save();
-      ctx.globalAlpha = 0.7;
-      ctx.strokeStyle = colors.text;
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.moveTo(mx, padT);
-      ctx.lineTo(mx, padT + plotH);
-      ctx.stroke();
-      ctx.restore();
-      ctx.fillStyle = colors.accent;
-      ctx.beginPath();
-      ctx.arc(mx, yAt(loadFracAt(hour)), 5, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Axes labels
-      ctx.save();
-      ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      for (let hr = 0; hr <= 24; hr += 4) {
-        ctx.fillText(hr.toString().padStart(2, '0') + ':00', xAt(hr), padT + plotH + 6);
-      }
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('peak', padL - 6, yAt(1));
-      ctx.fillText('½', padL - 6, yAt(0.5));
-      ctx.fillText('0', padL - 6, yAt(0));
-
-      // Legend
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      const legX = padL + 8;
-      let legY = padT + 8;
-      const lg = (color: string, label: string) => {
-        ctx.fillStyle = color;
-        ctx.fillRect(legX, legY + 4, 14, 4);
-        drawLabel(ctx, {
-          x: legX + 20,
-          y: legY + 2,
-          text: label,
-          color: colors.text,
-        });
-        legY += 14;
-      };
-      lg(withAlpha(colors.teal, 0.6), 'baseload');
-      lg(withAlpha(colors.accent, 0.7), 'peakers');
-      lg(withAlpha(colors.pink, 0.7), 'reserve (dashed)');
-
-      raf = requestAnimationFrame(draw);
-      ctx.restore();
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.25;
+        ctx.fillStyle = colors.accent;
+        ctx.beginPath();
+        const N = 200;
+        for (let i = 0; i <= N; i++) {
+                const hr = (i / N) * 24;
+                const x = xAt(hr);
+                const y = yAt(loadFracAt(hr));
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
+        ctx.lineTo(padL, yAt(BASELOAD_FRAC));
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        for (let i = 0; i <= N; i++) {
+                const hr = (i / N) * 24;
+                const x = xAt(hr);
+                const y = yAt(loadFracAt(hr));
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        ctx.save();
+        ctx.globalAlpha = 0.55;
+        ctx.strokeStyle = colors.pink;
+        ctx.setLineDash([5, 4]);
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        for (let i = 0; i <= N; i++) {
+                const hr = (i / N) * 24;
+                const x = xAt(hr);
+                const y = yAt(loadFracAt(hr) + 0.1);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        ctx.setLineDash([]);
+        const mx = xAt(hour);
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.7;
+        ctx.strokeStyle = colors.text;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(mx, padT);
+        ctx.lineTo(mx, padT + plotH);
+        ctx.stroke();
+        ctx.restore();
+        ctx.fillStyle = colors.accent;
+        ctx.beginPath();
+        ctx.arc(mx, yAt(loadFracAt(hour)), 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        for (let hr = 0; hr <= 24; hr += 4) {
+                ctx.fillText(hr.toString().padStart(2, '0') + ':00', xAt(hr), padT + plotH + 6);
+              }
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('peak', padL - 6, yAt(1));
+        ctx.fillText('½', padL - 6, yAt(0.5));
+        ctx.fillText('0', padL - 6, yAt(0));
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        const legX = padL + 8;
+        let legY = padT + 8;
+        const lg = (color: string, label: string) => {
+                ctx.fillStyle = color;
+                ctx.fillRect(legX, legY + 4, 14, 4);
+                drawLabel(ctx, {
+                  x: legX + 20,
+                  y: legY + 2,
+                  text: label,
+                  color: colors.text,
+                });
+                legY += 14;
+              };
+        lg(withAlpha(colors.teal, 0.6), 'baseload');
+        lg(withAlpha(colors.accent, 0.7), 'peakers');
+        lg(withAlpha(colors.pink, 0.7), 'reserve (dashed)');
+        ctx.restore();
+      },
+      [],
+    );
 
   return (
     <Demo

@@ -26,6 +26,9 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -51,150 +54,118 @@ export function MaxPowerTransferDemo({ figure }: Props) {
   const eta = P_L / (P_L + P_S); // = R_L / (R_S + R_L)
   const P_max = (V * V) / (4 * RS);
 
-  const stateRef = useRef({ V, RS, RL, ac, XS, XL, conjMatch, P_L, P_max });
-  useEffect(() => {
-    stateRef.current = { V, RS, RL, ac, XS, XL, conjMatch, P_L, P_max };
-  }, [V, RS, RL, ac, XS, XL, conjMatch, P_L, P_max]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-
-    function draw() {
-      const { V, RS, RL, ac, XS, XL, P_L, P_max } = stateRef.current;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const padL = 56,
-        padR = 16,
-        padT = 32,
-        padB = 38;
-      const plotW = w - padL - padR;
-      const plotH = h - padT - padB;
-
-      // Axes
-      ctx.strokeStyle = colors.borderStrong;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(padL, padT, plotW, plotH);
-
-      // X-axis: log of R_L / R_S, from 1/20 to 20
-      const lo = Math.log(1 / 20);
-      const hi = Math.log(20);
-      const xOf = (r: number) => padL + ((Math.log(r) - lo) / (hi - lo)) * plotW;
-      const yOf = (p: number) => padT + plotH - (p / (P_max * 1.05)) * plotH;
-      const yOfEta = (e: number) => padT + plotH - e * plotH;
-
-      // P_L(R_L) curve
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      const N = 200;
-      for (let i = 0; i <= N; i++) {
-        const r = Math.exp(lo + (hi - lo) * (i / N));
-        const RL_i = r * RS;
-        const den2 = ac
-          ? (RS + RL_i) * (RS + RL_i) + (XS + XL) * (XS + XL)
-          : (RS + RL_i) * (RS + RL_i);
-        const p = (V * V * RL_i) / den2;
-        const x = padL + (i / N) * plotW;
-        const y = yOf(p);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Efficiency curve η = R_L / (R_S + R_L) (only real-part bookkeeping;
-      // shape is the same for the AC conjugate-matched case at each R_L)
-      ctx.strokeStyle = colors.teal;
-      ctx.lineWidth = 1.4;
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath();
-      for (let i = 0; i <= N; i++) {
-        const r = Math.exp(lo + (hi - lo) * (i / N));
-        const eta_i = r / (1 + r);
-        const x = padL + (i / N) * plotW;
-        const y = yOfEta(eta_i);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // Vertical line at R_L = R_S
-      const xPeak = xOf(1);
-      ctx.save();
-      ctx.globalAlpha = 0.55;
-      ctx.strokeStyle = colors.accent;
-      ctx.setLineDash([3, 3]);
-      ctx.beginPath();
-      ctx.moveTo(xPeak, padT);
-      ctx.lineTo(xPeak, padT + plotH);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // Current R_L marker (cursor)
-      const xCur = xOf(RL / RS);
-      const yCur = yOf(P_L);
-      ctx.restore();
-      ctx.fillStyle = colors.accent;
-      ctx.beginPath();
-      ctx.arc(xCur, yCur, 5, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Labels
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('P_L  (W)  — amber', 12, 12);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText('η  — teal dashed', 12, 26);
-
-      // x-axis ticks
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      for (const r of [0.1, 0.5, 1, 2, 5, 10]) {
-        const x = xOf(r);
-        ctx.save();
-        ctx.globalAlpha = 0.1;
-        ctx.fillStyle = colors.text;
+  const stateRef = useSimState({ V, RS, RL, ac, XS, XL, conjMatch, P_L, P_max });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const { V, RS, RL, ac, XS, XL, P_L, P_max } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const padL = 56,
+                padR = 16,
+                padT = 32,
+                padB = 38;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(padL, padT, plotW, plotH);
+        const lo = Math.log(1 / 20);
+        const hi = Math.log(20);
+        const xOf = (r: number) => padL + ((Math.log(r) - lo) / (hi - lo)) * plotW;
+        const yOf = (p: number) => padT + plotH - (p / (P_max * 1.05)) * plotH;
+        const yOfEta = (e: number) => padT + plotH - e * plotH;
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.6;
         ctx.beginPath();
-        ctx.moveTo(x, padT);
-        ctx.lineTo(x, padT + plotH);
+        const N = 200;
+        for (let i = 0; i <= N; i++) {
+                const r = Math.exp(lo + (hi - lo) * (i / N));
+                const RL_i = r * RS;
+                const den2 = ac
+                  ? (RS + RL_i) * (RS + RL_i) + (XS + XL) * (XS + XL)
+                  : (RS + RL_i) * (RS + RL_i);
+                const p = (V * V * RL_i) / den2;
+                const x = padL + (i / N) * plotW;
+                const y = yOf(p);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
         ctx.stroke();
+        ctx.strokeStyle = colors.teal;
+        ctx.lineWidth = 1.4;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        for (let i = 0; i <= N; i++) {
+                const r = Math.exp(lo + (hi - lo) * (i / N));
+                const eta_i = r / (1 + r);
+                const x = padL + (i / N) * plotW;
+                const y = yOfEta(eta_i);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        ctx.setLineDash([]);
+        const xPeak = xOf(1);
+        ctx.save();
+        ctx.globalAlpha = 0.55;
+        ctx.strokeStyle = colors.accent;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(xPeak, padT);
+        ctx.lineTo(xPeak, padT + plotH);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        const xCur = xOf(RL / RS);
+        const yCur = yOf(P_L);
         ctx.restore();
+        ctx.fillStyle = colors.accent;
+        ctx.beginPath();
+        ctx.arc(xCur, yCur, 5, 0, Math.PI * 2);
+        ctx.fill();
         ctx.fillStyle = colors.textDim;
-        ctx.fillText(`${r}·R_S`, x, padT + plotH + 4);
-      }
-
-      // y-axis tick: P_max
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`P_max = ${P_max.toFixed(2)} W`, padL - 4, yOf(P_max));
-      ctx.fillText('0', padL - 4, padT + plotH);
-      ctx.fillText('1', padL - 4, padT);
-
-      // Peak label
-      drawLabel(ctx, {
-        x: xPeak,
-        y: padT - 6,
-        text: 'R_L = R_S  →  η = 50 %',
-        color: colors.accent,
-        align: 'center',
-        baseline: 'bottom',
-        weight: 'bold',
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('P_L  (W)  — amber', 12, 12);
+        ctx.fillStyle = colors.teal;
+        ctx.fillText('η  — teal dashed', 12, 26);
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        for (const r of [0.1, 0.5, 1, 2, 5, 10]) {
+                const x = xOf(r);
+                ctx.save();
+                ctx.globalAlpha = 0.1;
+                ctx.fillStyle = colors.text;
+                ctx.beginPath();
+                ctx.moveTo(x, padT);
+                ctx.lineTo(x, padT + plotH);
+                ctx.stroke();
+                ctx.restore();
+                ctx.fillStyle = colors.textDim;
+                ctx.fillText(`${r}·R_S`, x, padT + plotH + 4);
+              }
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`P_max = ${P_max.toFixed(2)} W`, padL - 4, yOf(P_max));
+        ctx.fillText('0', padL - 4, padT + plotH);
+        ctx.fillText('1', padL - 4, padT);
+        drawLabel(ctx, {
+                x: xPeak,
+                y: padT - 6,
+                text: 'R_L = R_S  →  η = 50 %',
+                color: colors.accent,
+                align: 'center',
+                baseline: 'bottom',
+                weight: 'bold',
+              });
+      },
+      [],
+    );
 
   return (
     <Demo

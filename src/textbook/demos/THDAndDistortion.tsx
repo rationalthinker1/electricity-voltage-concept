@@ -12,6 +12,9 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 const N_HARMONICS = 11;
 const N_INT = 1024; // samples per cycle for numerical integration
@@ -35,11 +38,7 @@ function clippedSineCoeffs(Aclip: number): number[] {
 
 export function THDAndDistortionDemo() {
   const [Aclip, setAclip] = useState(0.7);
-  const stateRef = useRef({ Aclip });
-  useEffect(() => {
-    stateRef.current = { Aclip };
-  }, [Aclip]);
-
+  const stateRef = useSimState({ Aclip });
   // Coefficients + THD recomputed on slider change
   const { coeffs, thdPct } = useMemo(() => {
     const c = clippedSineCoeffs(Aclip);
@@ -51,27 +50,21 @@ export function THDAndDistortionDemo() {
     return { coeffs: c, thdPct: thd * 100 };
   }, [Aclip]);
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h, colors } = info;
-      let raf = 0;
-      function draw() {
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
         const { Aclip } = stateRef.current;
         ctx.fillStyle = colors.bg;
         ctx.fillRect(0, 0, w, h);
-
         const padX = 36;
         const padY = 14;
         const halfH = (h - 2 * padY) / 2;
-
-        // Top: time-domain clipped sine
         const tMid = padY + halfH / 2 + 4;
         ctx.strokeStyle = colors.border;
         ctx.beginPath();
         ctx.moveTo(padX, tMid);
         ctx.lineTo(w - padX, tMid);
         ctx.stroke();
-        // Reference: unclipped sine
         ctx.strokeStyle = withAlpha(colors.teal, 0.4);
         ctx.setLineDash([3, 4]);
         ctx.lineWidth = 1;
@@ -79,30 +72,28 @@ export function THDAndDistortionDemo() {
         const samples = 400;
         const cycles = 2;
         for (let i = 0; i <= samples; i++) {
-          const x = padX + (i / samples) * (w - 2 * padX);
-          const phase = (i / samples) * cycles * 2 * Math.PI;
-          const y = tMid - Math.sin(phase) * (halfH / 2) * 0.9;
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
+                  const x = padX + (i / samples) * (w - 2 * padX);
+                  const phase = (i / samples) * cycles * 2 * Math.PI;
+                  const y = tMid - Math.sin(phase) * (halfH / 2) * 0.9;
+                  if (i === 0) ctx.moveTo(x, y);
+                  else ctx.lineTo(x, y);
+                }
         ctx.stroke();
         ctx.setLineDash([]);
-        // Clipped
         ctx.strokeStyle = '#ff6b2a';
         ctx.lineWidth = 2;
         ctx.beginPath();
         for (let i = 0; i <= samples; i++) {
-          const x = padX + (i / samples) * (w - 2 * padX);
-          const phase = (i / samples) * cycles * 2 * Math.PI;
-          let s = Math.sin(phase);
-          if (s > Aclip) s = Aclip;
-          if (s < -Aclip) s = -Aclip;
-          const y = tMid - s * (halfH / 2) * 0.9;
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
+                  const x = padX + (i / samples) * (w - 2 * padX);
+                  const phase = (i / samples) * cycles * 2 * Math.PI;
+                  let s = Math.sin(phase);
+                  if (s > Aclip) s = Aclip;
+                  if (s < -Aclip) s = -Aclip;
+                  const y = tMid - s * (halfH / 2) * 0.9;
+                  if (i === 0) ctx.moveTo(x, y);
+                  else ctx.lineTo(x, y);
+                }
         ctx.stroke();
-        // Clip level markers
         ctx.strokeStyle = withAlpha(colors.accent, 0.3);
         ctx.setLineDash([2, 4]);
         const yUp = tMid - Aclip * (halfH / 2) * 0.9;
@@ -118,8 +109,6 @@ export function THDAndDistortionDemo() {
         ctx.font = '9px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         ctx.fillText('time domain', padX, padY + 8);
-
-        // Bottom: spectrum
         const bMid = padY + halfH + halfH * 0.95 + 4;
         const bH = halfH * 0.85;
         ctx.strokeStyle = colors.border;
@@ -127,46 +116,39 @@ export function THDAndDistortionDemo() {
         ctx.moveTo(padX, bMid);
         ctx.lineTo(w - padX, bMid);
         ctx.stroke();
-
         const maxAmp = Math.max(...coeffs.map((c) => Math.abs(c)), 0.01);
         const nMax = N_HARMONICS;
         const xOf = (n: number) => padX + (n / nMax) * (w - 2 * padX);
         const barW = ((w - 2 * padX) / nMax) * 0.55;
-
         for (let n = 1; n <= nMax; n++) {
-          const amp = Math.abs(coeffs[n - 1]);
-          const x = xOf(n) - barW / 2;
-          const hPx = (amp / maxAmp) * bH * 0.9;
-          ctx.fillStyle = n === 1 ? withAlpha(colors.teal, 0.85) : '#ff6b2a';
-          ctx.fillRect(x, bMid - hPx, barW, hPx);
-          if (amp / maxAmp > 0.06) {
-            drawLabel(ctx, {
-              x: x + barW / 2,
-              y: bMid - hPx - 3,
-              text: amp.toFixed(2),
-              color: colors.text,
-              size: 9,
-              align: 'center',
-            });
-          }
-        }
+                  const amp = Math.abs(coeffs[n - 1]);
+                  const x = xOf(n) - barW / 2;
+                  const hPx = (amp / maxAmp) * bH * 0.9;
+                  ctx.fillStyle = n === 1 ? withAlpha(colors.teal, 0.85) : '#ff6b2a';
+                  ctx.fillRect(x, bMid - hPx, barW, hPx);
+                  if (amp / maxAmp > 0.06) {
+                    drawLabel(ctx, {
+                      x: x + barW / 2,
+                      y: bMid - hPx - 3,
+                      text: amp.toFixed(2),
+                      color: colors.text,
+                      size: 9,
+                      align: 'center',
+                    });
+                  }
+                }
         ctx.fillStyle = colors.textDim;
         ctx.font = '9px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         for (let n = 1; n <= nMax; n += 2) {
-          ctx.fillText(n.toString() + 'f', xOf(n), bMid + 12);
-        }
+                  ctx.fillText(n.toString() + 'f', xOf(n), bMid + 12);
+                }
         ctx.fillStyle = colors.textDim;
         ctx.textAlign = 'left';
         ctx.fillText('spectrum', padX, padY + halfH + 14);
-
-        raf = requestAnimationFrame(draw);
-      }
-      raf = requestAnimationFrame(draw);
-      return () => cancelAnimationFrame(raf);
-    },
-    [coeffs],
-  );
+      },
+      [],
+    );
 
   return (
     <Demo

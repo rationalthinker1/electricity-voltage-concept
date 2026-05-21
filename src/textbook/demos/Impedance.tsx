@@ -13,6 +13,9 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -33,125 +36,93 @@ export function ImpedanceDemo({ figure }: Props) {
   const Zmag = Math.sqrt(R * R + Xnet * Xnet);
   const phi = Math.atan2(Xnet, R); // radians
 
-  const stateRef = useRef({ R, XL, XC, Zmag, phi });
-  useEffect(() => {
-    stateRef.current = { R, XL, XC, Zmag, phi };
-  }, [R, XL, XC, Zmag, phi]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-
-    function draw() {
-      const { R, XL, XC, Zmag, phi } = stateRef.current;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const cx = w / 2;
-      const cy = h / 2;
-      // Auto-scale axes so we always see the vectors
-      const span = Math.max(Math.abs(R), Math.abs(XL), Math.abs(XC), Zmag, 1) * 1.25;
-      const half = Math.min(w, h) / 2 - 30;
-      const scale = half / span;
-
-      // Axes
-      ctx.strokeStyle = colors.borderStrong;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(20, cy);
-      ctx.lineTo(w - 20, cy);
-      ctx.moveTo(cx, 20);
-      ctx.lineTo(cx, h - 20);
-      ctx.stroke();
-
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('Re (Ω)', w - 50, cy - 10);
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('+jX (Ω)', cx + 38, 22);
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('−jX (Ω)', cx + 38, h - 22);
-
-      // Head-to-tail: start at origin
-      //   step 1: R along +real
-      //   step 2: +XL along +imag
-      //   step 3: -XC along -imag (i.e. shift by XC down)
-      const p0x = cx,
-        p0y = cy;
-      const p1x = cx + R * scale,
-        p1y = cy;
-      const p2x = p1x,
-        p2y = p1y - XL * scale; // y is flipped: up = +imag
-      const p3x = p2x,
-        p3y = p2y + XC * scale; // down = -imag
-
-      // R vector (pink)
-      drawVector(ctx, p0x, p0y, p1x, p1y, withAlpha(colors.pink, 0.95), `R = ${R.toFixed(1)} Ω`);
-      // jωL vector (teal, upward)
-      drawVector(ctx, p1x, p1y, p2x, p2y, withAlpha(colors.teal, 0.95), `jωL = ${XL.toFixed(1)} Ω`);
-      // 1/(jωC) vector (blue, downward)
-      drawVector(
-        ctx,
-        p2x,
-        p2y,
-        p3x,
-        p3y,
-        withAlpha(colors.blue, 0.95),
-        `1/(jωC) = ${XC.toFixed(1)} Ω`,
-      );
-
-      // Resultant Z from origin to p3
-      drawVector(ctx, p0x, p0y, p3x, p3y, withAlpha(colors.accent, 0.95), '', 2.2);
-
-      // Magnitude / phase annotation
-      ctx.fillStyle = colors.accent;
-      ctx.font = 'bold 11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      const midX = (p0x + p3x) / 2 + 8;
-      const midY = (p0y + p3y) / 2;
-      ctx.fillText(`|Z| = ${Zmag.toFixed(2)} Ω`, midX, midY);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.text;
-      ctx.fillText(`φ = ${((phi * 180) / Math.PI).toFixed(1)}°`, midX, midY + 14);
-
-      // Phase arc from real axis to Z
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      const arcR = 26;
-      ctx.arc(cx, cy, arcR, 0, -phi, phi > 0);
-      ctx.stroke();
-
-      // Header
-      ctx.save();
-      ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`Z = R + j(ωL − 1/ωC)`, 10, 8);
-      ctx.textAlign = 'right';
-      ctx.fillText(
-        phi > 0.01
-          ? 'inductive (V leads I)'
-          : phi < -0.01
-            ? 'capacitive (I leads V)'
-            : 'resistive (V, I in phase)',
-        w - 10,
-        8,
-      );
-
-      raf = requestAnimationFrame(draw);
-      ctx.restore();
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const stateRef = useSimState({ R, XL, XC, Zmag, phi });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const { R, XL, XC, Zmag, phi } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const cx = w / 2;
+        const cy = h / 2;
+        const span = Math.max(Math.abs(R), Math.abs(XL), Math.abs(XC), Zmag, 1) * 1.25;
+        const half = Math.min(w, h) / 2 - 30;
+        const scale = half / span;
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(20, cy);
+        ctx.lineTo(w - 20, cy);
+        ctx.moveTo(cx, 20);
+        ctx.lineTo(cx, h - 20);
+        ctx.stroke();
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('Re (Ω)', w - 50, cy - 10);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('+jX (Ω)', cx + 38, 22);
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('−jX (Ω)', cx + 38, h - 22);
+        const p0x = cx,
+                p0y = cy;
+        const p1x = cx + R * scale,
+                p1y = cy;
+        const p2x = p1x,
+                p2y = p1y - XL * scale;
+        const p3x = p2x,
+                p3y = p2y + XC * scale;
+        drawVector(ctx, p0x, p0y, p1x, p1y, withAlpha(colors.pink, 0.95), `R = ${R.toFixed(1)} Ω`);
+        drawVector(ctx, p1x, p1y, p2x, p2y, withAlpha(colors.teal, 0.95), `jωL = ${XL.toFixed(1)} Ω`);
+        drawVector(
+                ctx,
+                p2x,
+                p2y,
+                p3x,
+                p3y,
+                withAlpha(colors.blue, 0.95),
+                `1/(jωC) = ${XC.toFixed(1)} Ω`,
+              );
+        drawVector(ctx, p0x, p0y, p3x, p3y, withAlpha(colors.accent, 0.95), '', 2.2);
+        ctx.fillStyle = colors.accent;
+        ctx.font = 'bold 11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        const midX = (p0x + p3x) / 2 + 8;
+        const midY = (p0y + p3y) / 2;
+        ctx.fillText(`|Z| = ${Zmag.toFixed(2)} Ω`, midX, midY);
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillStyle = colors.text;
+        ctx.fillText(`φ = ${((phi * 180) / Math.PI).toFixed(1)}°`, midX, midY + 14);
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        const arcR = 26;
+        ctx.arc(cx, cy, arcR, 0, -phi, phi > 0);
+        ctx.stroke();
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(`Z = R + j(ωL − 1/ωC)`, 10, 8);
+        ctx.textAlign = 'right';
+        ctx.fillText(
+                phi > 0.01
+                  ? 'inductive (V leads I)'
+                  : phi < -0.01
+                    ? 'capacitive (I leads V)'
+                    : 'resistive (V, I in phase)',
+                w - 10,
+                8,
+              );
+        ctx.restore();
+      },
+      [],
+    );
 
   return (
     <Demo

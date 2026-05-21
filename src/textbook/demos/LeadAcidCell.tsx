@@ -15,6 +15,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -42,97 +45,68 @@ export function LeadAcidCellDemo({ figure }: Props) {
     return () => window.clearInterval(id);
   }, [mode]);
 
-  const stateRef = useRef({ soc, SG, V_cell });
-  useEffect(() => {
-    stateRef.current = { soc, SG, V_cell };
-  }, [soc, SG, V_cell]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const colors = getCanvasColors();
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
-
-    function draw() {
-      const s = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, W, H);
-
-      // Single beaker (jar) with two lead plates inside
-      const jarX = 40,
-        jarY = 30;
-      const jarW = W - 80,
-        jarH = H - 70;
-
-      // Glass
-      ctx.strokeStyle = getCanvasColors().borderStrong;
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(jarX, jarY, jarW, jarH);
-
-      // Acid fill — colour scales with SG (more amber when concentrated)
-      const acidAlpha = 0.1 + 0.18 * s.soc;
-      ctx.fillStyle = `rgba(255,107,42,${acidAlpha})`;
-      ctx.fillRect(jarX + 2, jarY + 12, jarW - 4, jarH - 14);
-
-      // Two lead plates, each occupying ~1/3 of jar width
-      const plateW = 36;
-      const gap = 30;
-      const negX = jarX + jarW / 2 - gap / 2 - plateW;
-      const posX = jarX + jarW / 2 + gap / 2;
-      const plateY = jarY + 14;
-      const plateH = jarH - 22;
-
-      // Pb (negative, anode on discharge) plate
-      ctx.fillStyle = '#7d8082';
-      ctx.fillRect(negX, plateY, plateW, plateH);
-      // PbO₂ (positive cathode on discharge) plate — darker
-      ctx.fillStyle = '#3e3232';
-      ctx.fillRect(posX, plateY, plateW, plateH);
-
-      // PbSO₄ crystals build up on both plates as SOC ↓
-      const dischargeFrac = 1 - s.soc;
-      if (dischargeFrac > 0.02) {
-        ctx.fillStyle = `rgba(236,235,229,${0.3 + 0.5 * dischargeFrac})`;
-        const nodCount = Math.floor(dischargeFrac * 60);
-        for (let i = 0; i < nodCount; i++) {
-          // Use deterministic-ish pattern from i for stability
-          const seed = (i * 2654435761) >>> 0;
-          const r1 = (seed & 0xffff) / 0xffff;
-          const r2 = ((seed >>> 16) & 0xffff) / 0xffff;
-          const py = plateY + 6 + r1 * (plateH - 12);
-          ctx.beginPath();
-          ctx.arc(negX + 4 + r2 * (plateW - 8), py, 1.6, 0, Math.PI * 2);
-          ctx.arc(posX + 4 + r2 * (plateW - 8), py, 1.6, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-
-      // Plate labels
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('Pb', negX + plateW / 2, plateY - 2);
-      ctx.fillText('PbO₂', posX + plateW / 2, plateY - 2);
-
-      // Acid label
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('H₂SO₄(aq)', jarX + 8, jarY + jarH - 16);
-
-      // Bottom captions
-      ctx.save();
-      ctx.globalAlpha = 0.75;
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('discharge:  Pb + PbO₂ + 2 H₂SO₄  →  2 PbSO₄ + 2 H₂O', jarX, jarY + jarH + 10);
-
-      raf = requestAnimationFrame(draw);
-      ctx.restore();
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const stateRef = useSimState({ soc, SG, V_cell });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+        const s = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, W, H);
+        const jarX = 40,
+                jarY = 30;
+        const jarW = W - 80,
+                jarH = H - 70;
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(jarX, jarY, jarW, jarH);
+        const acidAlpha = 0.1 + 0.18 * s.soc;
+        ctx.fillStyle = `rgba(255,107,42,${acidAlpha})`;
+        ctx.fillRect(jarX + 2, jarY + 12, jarW - 4, jarH - 14);
+        const plateW = 36;
+        const gap = 30;
+        const negX = jarX + jarW / 2 - gap / 2 - plateW;
+        const posX = jarX + jarW / 2 + gap / 2;
+        const plateY = jarY + 14;
+        const plateH = jarH - 22;
+        ctx.fillStyle = '#7d8082';
+        ctx.fillRect(negX, plateY, plateW, plateH);
+        ctx.fillStyle = '#3e3232';
+        ctx.fillRect(posX, plateY, plateW, plateH);
+        const dischargeFrac = 1 - s.soc;
+        if (dischargeFrac > 0.02) {
+                ctx.fillStyle = `rgba(236,235,229,${0.3 + 0.5 * dischargeFrac})`;
+                const nodCount = Math.floor(dischargeFrac * 60);
+                for (let i = 0; i < nodCount; i++) {
+                  // Use deterministic-ish pattern from i for stability
+                  const seed = (i * 2654435761) >>> 0;
+                  const r1 = (seed & 0xffff) / 0xffff;
+                  const r2 = ((seed >>> 16) & 0xffff) / 0xffff;
+                  const py = plateY + 6 + r1 * (plateH - 12);
+                  ctx.beginPath();
+                  ctx.arc(negX + 4 + r2 * (plateW - 8), py, 1.6, 0, Math.PI * 2);
+                  ctx.arc(posX + 4 + r2 * (plateW - 8), py, 1.6, 0, Math.PI * 2);
+                  ctx.fill();
+                }
+              }
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('Pb', negX + plateW / 2, plateY - 2);
+        ctx.fillText('PbO₂', posX + plateW / 2, plateY - 2);
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('H₂SO₄(aq)', jarX + 8, jarY + jarH - 16);
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = colors.textDim;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('discharge:  Pb + PbO₂ + 2 H₂SO₄  →  2 PbSO₄ + 2 H₂O', jarX, jarY + jarH + 10);
+        ctx.restore();
+      },
+      [],
+    );
 
   return (
     <Demo

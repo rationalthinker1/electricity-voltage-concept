@@ -19,6 +19,9 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -45,163 +48,130 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
   const W_so_far = (((Q_UNIT * Q_UNIT) / C) * (N * (N - 1))) / 2; // work spent up to N
   const W_integral = 0.5 * C * V_now * V_now;
 
-  const stateRef = useRef({ N, V_now, workForNext });
-  useEffect(() => {
-    stateRef.current = { N, V_now, workForNext };
-  }, [N, V_now, workForNext]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
-    let phase = 0;
-
-    function draw() {
-      const s = stateRef.current;
-      phase += 0.012;
-
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, W, H);
-
-      // Two pads
-      const plateW = Math.min(W * 0.45, 280);
-      const cx = W * 0.32;
-      const cy = H / 2;
-      const gap = 130;
-      const plateThick = 6;
-      const xL = cx - plateW / 2;
-      const topY = cy - gap / 2;
-      const botY = cy + gap / 2;
-
-      // Top plate already has N unit charges
-      drawBar(ctx, xL, topY - plateThick, plateW, plateThick, '#ff3b6e');
-      drawBar(ctx, xL, botY, plateW, plateThick, '#5baef8');
-
-      // Render N existing charges on top plate
-      const drawN = Math.min(40, s.N);
-      ctx.fillStyle = getCanvasColors().pink;
-      ctx.font = 'bold 11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      for (let i = 0; i < drawN; i++) {
-        const x = xL + 10 + ((plateW - 20) * (i + 0.5)) / Math.max(drawN, 1);
-        ctx.fillText('+', x, topY - plateThick - 8);
-      }
-      ctx.fillStyle = getCanvasColors().blue;
-      for (let i = 0; i < drawN; i++) {
-        const x = xL + 10 + ((plateW - 20) * (i + 0.5)) / Math.max(drawN, 1);
-        ctx.fillText('−', x, botY + plateThick + 8);
-      }
-
-      // Field arrows in the gap (count grows with N)
-      const usable = botY - topY - 16;
-      const Nfield = Math.max(2, Math.min(16, Math.round(Math.log10(s.N + 1) * 7) + 1));
-      const arrLen = 16;
-      for (let i = 0; i < Nfield; i++) {
-        const fx = xL + 18 + ((plateW - 36) * (i + 0.5)) / Nfield;
-        const cycle = (phase * 80 + i * 13) % usable;
-        const y1 = topY + 8 + cycle;
-        ctx.strokeStyle = withAlpha(getCanvasColors().pink, 0.7);
-        ctx.lineWidth = 1.2;
+  const stateRef = useSimState({ N, V_now, workForNext });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
+        let phase = ctx0.phase;
+        const s = stateRef.current;
+        phase += 0.012;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, W, H);
+        const plateW = Math.min(W * 0.45, 280);
+        const cx = W * 0.32;
+        const cy = H / 2;
+        const gap = 130;
+        const plateThick = 6;
+        const xL = cx - plateW / 2;
+        const topY = cy - gap / 2;
+        const botY = cy + gap / 2;
+        drawBar(ctx, xL, topY - plateThick, plateW, plateThick, '#ff3b6e');
+        drawBar(ctx, xL, botY, plateW, plateThick, '#5baef8');
+        const drawN = Math.min(40, s.N);
+        ctx.fillStyle = colors.pink;
+        ctx.font = 'bold 11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        for (let i = 0; i < drawN; i++) {
+                const x = xL + 10 + ((plateW - 20) * (i + 0.5)) / Math.max(drawN, 1);
+                ctx.fillText('+', x, topY - plateThick - 8);
+              }
+        ctx.fillStyle = colors.blue;
+        for (let i = 0; i < drawN; i++) {
+                const x = xL + 10 + ((plateW - 20) * (i + 0.5)) / Math.max(drawN, 1);
+                ctx.fillText('−', x, botY + plateThick + 8);
+              }
+        const usable = botY - topY - 16;
+        const Nfield = Math.max(2, Math.min(16, Math.round(Math.log10(s.N + 1) * 7) + 1));
+        const arrLen = 16;
+        for (let i = 0; i < Nfield; i++) {
+                const fx = xL + 18 + ((plateW - 36) * (i + 0.5)) / Nfield;
+                const cycle = (phase * 80 + i * 13) % usable;
+                const y1 = topY + 8 + cycle;
+                ctx.strokeStyle = withAlpha(colors.pink, 0.7);
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.moveTo(fx, y1 - arrLen);
+                ctx.lineTo(fx, y1);
+                ctx.stroke();
+                ctx.fillStyle = withAlpha(colors.pink, 0.8);
+                ctx.beginPath();
+                ctx.moveTo(fx, y1);
+                ctx.lineTo(fx - 3, y1 - 5);
+                ctx.lineTo(fx + 3, y1 - 5);
+                ctx.closePath();
+                ctx.fill();
+              }
+        const climbPhase = (phase * 0.6) % 1;
+        const wY = botY - climbPhase * (botY - topY);
+        const wX = cx + plateW / 2 + 28;
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.moveTo(fx, y1 - arrLen);
-        ctx.lineTo(fx, y1);
+        ctx.moveTo(wX, botY);
+        ctx.lineTo(wX, wY);
         ctx.stroke();
-        ctx.fillStyle = withAlpha(getCanvasColors().pink, 0.8);
+        ctx.fillStyle = colors.accent;
         ctx.beginPath();
-        ctx.moveTo(fx, y1);
-        ctx.lineTo(fx - 3, y1 - 5);
-        ctx.lineTo(fx + 3, y1 - 5);
-        ctx.closePath();
+        ctx.arc(wX, wY, 6, 0, Math.PI * 2);
         ctx.fill();
-      }
-
-      // The "worker": animated test charge climbing from bottom plate to top.
-      const climbPhase = (phase * 0.6) % 1;
-      const wY = botY - climbPhase * (botY - topY);
-      const wX = cx + plateW / 2 + 28;
-      // Climb arrow
-      ctx.strokeStyle = getCanvasColors().accent;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(wX, botY);
-      ctx.lineTo(wX, wY);
-      ctx.stroke();
-      // Test charge dot
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.beginPath();
-      ctx.arc(wX, wY, 6, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.font = 'bold 9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+q', wX, wY);
-
-      // Effort label next to climber
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('push', wX + 12, (topY + botY) / 2);
-
-      // Plate labels
-      ctx.fillStyle = getCanvasColors().pink;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('top plate (+)', xL - 6, topY - 2);
-      ctx.fillStyle = getCanvasColors().blue;
-      ctx.fillText('bottom plate (−)', xL - 6, botY + 2);
-
-      // ── Work-tape gauge on the right
-      const tapeX = W * 0.74;
-      const tapeY = 30;
-      const tapeW = Math.min(W - tapeX - 24, 120);
-      const tapeH = H - 60;
-
-      drawLabel(ctx, {
-        x: tapeX,
-        y: tapeY - 4,
-        text: 'Effort ∝ V',
-        color: getCanvasColors().textDim,
-        baseline: 'bottom',
-      });
-
-      ctx.strokeStyle = getCanvasColors().border;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(tapeX, tapeY, tapeW, tapeH);
-
-      // Fill height grows with V/Vmax_visual. Pick a reference of N=200.
-      const Vmax_ref = (200 * Q_UNIT) / C;
-      const fill = Math.max(0, Math.min(1, Math.abs(s.V_now) / Vmax_ref));
-      const fillH = tapeH * fill;
-      ctx.fillStyle = withAlpha(getCanvasColors().accent, 0.25);
-      ctx.fillRect(tapeX, tapeY + tapeH - fillH, tapeW, fillH);
-
-      // Tick lines
-      ctx.strokeStyle = getCanvasColors().border;
-      for (let i = 1; i <= 4; i++) {
-        const y = tapeY + (tapeH * i) / 5;
-        ctx.beginPath();
-        ctx.moveTo(tapeX, y);
-        ctx.lineTo(tapeX + 8, y);
-        ctx.stroke();
-      }
-
-      drawLabel(ctx, {
-        x: tapeX + tapeW / 2,
-        y: tapeY + tapeH + 14,
-        text: `V = ${s.V_now.toFixed(2)} V`,
-        color: getCanvasColors().accent,
-        align: 'center',
-        baseline: 'middle',
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        ctx.fillStyle = colors.bg;
+        ctx.font = 'bold 9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('+q', wX, wY);
+        ctx.fillStyle = colors.accent;
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('push', wX + 12, (topY + botY) / 2);
+        ctx.fillStyle = colors.pink;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('top plate (+)', xL - 6, topY - 2);
+        ctx.fillStyle = colors.blue;
+        ctx.fillText('bottom plate (−)', xL - 6, botY + 2);
+        const tapeX = W * 0.74;
+        const tapeY = 30;
+        const tapeW = Math.min(W - tapeX - 24, 120);
+        const tapeH = H - 60;
+        drawLabel(ctx, {
+                x: tapeX,
+                y: tapeY - 4,
+                text: 'Effort ∝ V',
+                color: colors.textDim,
+                baseline: 'bottom',
+              });
+        ctx.strokeStyle = colors.border;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(tapeX, tapeY, tapeW, tapeH);
+        const Vmax_ref = (200 * Q_UNIT) / C;
+        const fill = Math.max(0, Math.min(1, Math.abs(s.V_now) / Vmax_ref));
+        const fillH = tapeH * fill;
+        ctx.fillStyle = withAlpha(colors.accent, 0.25);
+        ctx.fillRect(tapeX, tapeY + tapeH - fillH, tapeW, fillH);
+        ctx.strokeStyle = colors.border;
+        for (let i = 1; i <= 4; i++) {
+                const y = tapeY + (tapeH * i) / 5;
+                ctx.beginPath();
+                ctx.moveTo(tapeX, y);
+                ctx.lineTo(tapeX + 8, y);
+                ctx.stroke();
+              }
+        drawLabel(ctx, {
+                x: tapeX + tapeW / 2,
+                y: tapeY + tapeH + 14,
+                text: `V = ${s.V_now.toFixed(2)} V`,
+                color: colors.accent,
+                align: 'center',
+                baseline: 'middle',
+              });
+        ctx0.phase = phase;
+      },
+      [],
+      () => ({ context: { phase: 0 } }),
+    );
 
   return (
     <Demo

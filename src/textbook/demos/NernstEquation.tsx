@@ -11,6 +11,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -33,43 +36,28 @@ export function NernstEquationDemo({ figure }: Props) {
   const Q = Zn / Cu;
   const V = V_STD - ((R_GAS * T) / (N_ELECTRONS * F_FARADAY)) * Math.log(Q);
 
-  const stateRef = useRef({ V, V_STD });
-  useEffect(() => {
-    stateRef.current = { V, V_STD };
-  }, [V]);
-
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w: W, h: H } = info;
-      let raf = 0;
-
-      function draw() {
+  const stateRef = useSimState({ V, V_STD });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
         const s = stateRef.current;
-        ctx.fillStyle = getCanvasColors().bg;
+        ctx.fillStyle = colors.bg;
         ctx.fillRect(0, 0, W, H);
-
-        // Plot V vs ln(Q) for current T, with marker
         const pX = 36,
-          pY = 26;
+                  pY = 26;
         const pW = W - 60,
-          pH = H - 60;
-        ctx.strokeStyle = getCanvasColors().border;
+                  pH = H - 60;
+        ctx.strokeStyle = colors.border;
         ctx.strokeRect(pX, pY, pW, pH);
-
-        // V range: V° ± 0.4 V (covers our Q sweep)
         const vMin = V_STD - 0.4;
         const vMax = V_STD + 0.4;
         const yV = (v: number) => pY + pH - ((v - vMin) / (vMax - vMin)) * pH;
-
-        // x = ln(Q), Q range from 1e-6 to 1e6 → ln from -13.8 to +13.8
         const lqMin = -14;
         const lqMax = 14;
         const xLQ = (lq: number) => pX + ((lq - lqMin) / (lqMax - lqMin)) * pW;
-
-        // V° dashed line
         ctx.save();
         ctx.globalAlpha = 0.35;
-        ctx.strokeStyle = getCanvasColors().accent;
+        ctx.strokeStyle = colors.accent;
         ctx.setLineDash([4, 4]);
         const ystd = yV(V_STD);
         ctx.beginPath();
@@ -80,46 +68,40 @@ export function NernstEquationDemo({ figure }: Props) {
         ctx.restore();
         ctx.save();
         ctx.globalAlpha = 0.75;
-        ctx.fillStyle = getCanvasColors().accent;
+        ctx.fillStyle = colors.accent;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'right';
         ctx.textBaseline = 'bottom';
         ctx.fillText('V° = 1.10 V', pX + pW - 4, ystd - 2);
-
-        // Nernst line: V = V° − (RT/nF)·lnQ
         const slope = (R_GAS * T) / (N_ELECTRONS * F_FARADAY);
         ctx.restore();
-        ctx.strokeStyle = getCanvasColors().teal;
+        ctx.strokeStyle = colors.teal;
         ctx.lineWidth = 1.8;
         ctx.beginPath();
         for (let i = 0; i <= 80; i++) {
-          const lq = lqMin + (i / 80) * (lqMax - lqMin);
-          const v = V_STD - slope * lq;
-          const x = xLQ(lq);
-          const y = yV(v);
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
+                  const lq = lqMin + (i / 80) * (lqMax - lqMin);
+                  const v = V_STD - slope * lq;
+                  const x = xLQ(lq);
+                  const y = yV(v);
+                  if (i === 0) ctx.moveTo(x, y);
+                  else ctx.lineTo(x, y);
+                }
         ctx.stroke();
-
-        // Current point
         const lqNow = Math.log(Q);
         const px = xLQ(Math.max(lqMin, Math.min(lqMax, lqNow)));
         const py = yV(Math.max(vMin, Math.min(vMax, s.V)));
-        ctx.fillStyle = getCanvasColors().pink;
+        ctx.fillStyle = colors.pink;
         ctx.beginPath();
         ctx.arc(px, py, 5, 0, Math.PI * 2);
         ctx.fill();
         ctx.save();
         ctx.globalAlpha = 0.4;
-        ctx.strokeStyle = getCanvasColors().pink;
+        ctx.strokeStyle = colors.pink;
         ctx.beginPath();
         ctx.arc(px, py, 9, 0, Math.PI * 2);
         ctx.stroke();
-
-        // Axes
         ctx.restore();
-        ctx.fillStyle = getCanvasColors().textDim;
+        ctx.fillStyle = colors.textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
@@ -128,14 +110,9 @@ export function NernstEquationDemo({ figure }: Props) {
         ctx.fillText('ln Q', pX + pW, pY + pH + 4);
         ctx.textAlign = 'left';
         ctx.fillText(`T = ${T.toFixed(0)} K`, pX, pY + pH + 4);
-
-        raf = requestAnimationFrame(draw);
-      }
-      raf = requestAnimationFrame(draw);
-      return () => cancelAnimationFrame(raf);
-    },
-    [T],
-  );
+      },
+      [],
+    );
 
   return (
     <Demo

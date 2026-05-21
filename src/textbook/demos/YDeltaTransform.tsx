@@ -28,6 +28,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -53,53 +56,34 @@ export function YDeltaTransformDemo({ figure }: Props) {
   const RAB_D = (delta.R_AB * (delta.R_BC + delta.R_CA)) / (delta.R_AB + delta.R_BC + delta.R_CA);
   const residual = Math.abs(RAB_Y - RAB_D);
 
-  const stateRef = useRef({ Ra, Rb, Rc, delta });
-  useEffect(() => {
-    stateRef.current = { Ra, Rb, Rc, delta };
-  }, [Ra, Rb, Rc, delta.R_AB, delta.R_BC, delta.R_CA]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
-
-    function draw() {
-      const { Ra, Rb, Rc, delta } = stateRef.current;
-
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, w, h);
-
-      // Two panels side by side
-      const halfW = w / 2;
-
-      // Y on the left
-      drawYNetwork(ctx, 0, 0, halfW, h, Ra, Rb, Rc);
-      // Δ on the right
-      drawDeltaNetwork(ctx, halfW, 0, halfW, h, delta.R_AB, delta.R_BC, delta.R_CA);
-
-      // Divider
-      ctx.strokeStyle = getCanvasColors().border;
-      ctx.beginPath();
-      ctx.moveTo(halfW, 8);
-      ctx.lineTo(halfW, h - 8);
-      ctx.stroke();
-
-      // Equivalence arrow
-      drawLabel(ctx, {
-        x: halfW,
-        y: h / 2,
-        text: '⇌',
-        color: getCanvasColors().accent,
-        size: 14,
-        align: 'center',
-        baseline: 'middle',
-        weight: 'bold',
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const stateRef = useSimState({ Ra, Rb, Rc, delta });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const { Ra, Rb, Rc, delta } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const halfW = w / 2;
+        drawYNetwork(ctx, 0, 0, halfW, h, Ra, Rb, Rc);
+        drawDeltaNetwork(ctx, halfW, 0, halfW, h, delta.R_AB, delta.R_BC, delta.R_CA);
+        ctx.strokeStyle = colors.border;
+        ctx.beginPath();
+        ctx.moveTo(halfW, 8);
+        ctx.lineTo(halfW, h - 8);
+        ctx.stroke();
+        drawLabel(ctx, {
+                x: halfW,
+                y: h / 2,
+                text: '⇌',
+                color: colors.accent,
+                size: 14,
+                align: 'center',
+                baseline: 'middle',
+                weight: 'bold',
+              });
+      },
+      [],
+    );
 
   return (
     <Demo

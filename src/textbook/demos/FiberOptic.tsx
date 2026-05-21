@@ -12,6 +12,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -24,11 +27,7 @@ export function FiberOpticDemo({ figure }: Props) {
   const [nCore, setNCore] = useState(1.48);
   const [nClad, setNClad] = useState(1.46);
 
-  const stateRef = useRef({ angleAxis, nCore, nClad });
-  useEffect(() => {
-    stateRef.current = { angleAxis, nCore, nClad };
-  }, [angleAxis, nCore, nClad]);
-
+  const stateRef = useSimState({ angleAxis, nCore, nClad });
   // Critical angle, measured from the normal to the wall
   // sin θ_c = n_clad / n_core
   const sinCrit = nClad / nCore;
@@ -36,131 +35,114 @@ export function FiberOpticDemo({ figure }: Props) {
   // Equivalent angle from the axis: 90° − critFromNormal
   const critFromAxis = 90 - critFromNormal;
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const colors = getCanvasColors();
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
-    function draw() {
-      const { angleAxis, nCore, nClad } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, W, H);
-
-      const top = H / 2 - 50;
-      const bot = H / 2 + 50;
-      const left = 30;
-      const right = W - 18;
-
-      // Cladding (light tint above & below)
-      ctx.save();
-      ctx.globalAlpha = 0.1;
-      ctx.fillStyle = colors.blue;
-      ctx.fillRect(left, top - 30, right - left, 30);
-      ctx.fillRect(left, bot, right - left, 30);
-      // Core (slightly brighter teal)
-      ctx.restore();
-      ctx.save();
-      ctx.globalAlpha = 0.1;
-      ctx.fillStyle = colors.teal;
-      ctx.fillRect(left, top, right - left, bot - top);
-
-      // Walls
-      ctx.restore();
-      ctx.save();
-      ctx.globalAlpha = 0.4;
-      ctx.strokeStyle = colors.text;
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.moveTo(left, top);
-      ctx.lineTo(right, top);
-      ctx.moveTo(left, bot);
-      ctx.lineTo(right, bot);
-      ctx.stroke();
-
-      // Critical angle (from axis)
-      const sinCrit_ = nClad / nCore;
-      const critFromAxis_ = 90 - Math.asin(Math.min(1, sinCrit_)) * (180 / Math.PI);
-      const escapes_ = angleAxis > critFromAxis_;
-
-      // Bouncing ray (zig-zag) — direction angle from axis, alternating sign on each bounce
-      const a = (angleAxis * Math.PI) / 180;
-      const slope = Math.tan(a);
-      let x = left;
-      let y = (top + bot) / 2; // start on axis
-      let dy = 1; // initial down
-      const rayColor = escapes_ ? withAlpha(colors.pink, 0.95) : withAlpha(colors.accent, 0.95);
-      ctx.restore();
-      ctx.strokeStyle = rayColor;
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-      let bounces = 0;
-      while (x < right && bounces < 100) {
-        // Distance until we hit a wall
-        const remainingV = dy > 0 ? bot - y : y - top;
-        const dx = remainingV / slope;
-        let nx = x + dx;
-        let ny = dy > 0 ? bot : top;
-        if (nx > right) {
-          const dxx = right - x;
-          ny = y + dy * dxx * slope;
-          nx = right;
-          ctx.lineTo(nx, ny);
-          break;
-        }
-        ctx.lineTo(nx, ny);
-        if (escapes_) {
-          // Refract into cladding and stop
-          // Outgoing angle from normal in cladding
-          const sin1 = Math.cos(a); // sin θ_normal = cos θ_axis
-          const sin2 = (nCore / nClad) * sin1;
-          if (Math.abs(sin2) <= 1) {
-            const th2 = Math.asin(sin2);
-            // Slope after refraction (steepness from normal)
-            const slope2 = Math.tan(Math.PI / 2 - th2);
-            const escapeY = ny + dy * 25;
-            const escapeX = nx + ((escapeY - ny) / dy) * 0 + 25 / slope2;
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(nx, ny);
-            ctx.lineTo(escapeX, escapeY);
-            ctx.stroke();
-            drawLabel(ctx, {
-              x: W / 2,
-              y: H - 14,
-              text: 'LIGHT ESCAPES',
-              color: getCanvasColors().pink,
-              size: 11,
-              align: 'center',
-              weight: 'bold',
-            });
-          }
-          return;
-        }
-        // Otherwise reflect
-        x = nx;
-        y = ny;
-        dy = -dy;
-        bounces++;
-      }
-      ctx.stroke();
-
-      // Labels
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.textAlign = 'left';
-      ctx.fillText(`core · n=${nCore.toFixed(3)}`, left + 4, (top + bot) / 2 + 3);
-      ctx.fillText(`cladding · n=${nClad.toFixed(3)}`, left + 4, top - 12);
-      if (!escapes_) {
-        ctx.fillStyle = getCanvasColors().teal;
-        ctx.textAlign = 'right';
-        ctx.fillText('total internal reflection', right - 6, top - 12);
-      }
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+        const { angleAxis, nCore, nClad } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, W, H);
+        const top = H / 2 - 50;
+        const bot = H / 2 + 50;
+        const left = 30;
+        const right = W - 18;
+        ctx.save();
+        ctx.globalAlpha = 0.1;
+        ctx.fillStyle = colors.blue;
+        ctx.fillRect(left, top - 30, right - left, 30);
+        ctx.fillRect(left, bot, right - left, 30);
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.1;
+        ctx.fillStyle = colors.teal;
+        ctx.fillRect(left, top, right - left, bot - top);
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.4;
+        ctx.strokeStyle = colors.text;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(left, top);
+        ctx.lineTo(right, top);
+        ctx.moveTo(left, bot);
+        ctx.lineTo(right, bot);
+        ctx.stroke();
+        const sinCrit_ = nClad / nCore;
+        const critFromAxis_ = 90 - Math.asin(Math.min(1, sinCrit_)) * (180 / Math.PI);
+        const escapes_ = angleAxis > critFromAxis_;
+        const a = (angleAxis * Math.PI) / 180;
+        const slope = Math.tan(a);
+        let x = left;
+        let y = (top + bot) / 2;
+        let dy = 1;
+        const rayColor = escapes_ ? withAlpha(colors.pink, 0.95) : withAlpha(colors.accent, 0.95);
+        ctx.restore();
+        ctx.strokeStyle = rayColor;
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        let bounces = 0;
+        while (x < right && bounces < 100) {
+                // Distance until we hit a wall
+                const remainingV = dy > 0 ? bot - y : y - top;
+                const dx = remainingV / slope;
+                let nx = x + dx;
+                let ny = dy > 0 ? bot : top;
+                if (nx > right) {
+                  const dxx = right - x;
+                  ny = y + dy * dxx * slope;
+                  nx = right;
+                  ctx.lineTo(nx, ny);
+                  break;
+                }
+                ctx.lineTo(nx, ny);
+                if (escapes_) {
+                  // Refract into cladding and stop
+                  // Outgoing angle from normal in cladding
+                  const sin1 = Math.cos(a); // sin θ_normal = cos θ_axis
+                  const sin2 = (nCore / nClad) * sin1;
+                  if (Math.abs(sin2) <= 1) {
+                    const th2 = Math.asin(sin2);
+                    // Slope after refraction (steepness from normal)
+                    const slope2 = Math.tan(Math.PI / 2 - th2);
+                    const escapeY = ny + dy * 25;
+                    const escapeX = nx + ((escapeY - ny) / dy) * 0 + 25 / slope2;
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(nx, ny);
+                    ctx.lineTo(escapeX, escapeY);
+                    ctx.stroke();
+                    drawLabel(ctx, {
+                      x: W / 2,
+                      y: H - 14,
+                      text: 'LIGHT ESCAPES',
+                      color: colors.pink,
+                      size: 11,
+                      align: 'center',
+                      weight: 'bold',
+                    });
+                  }
+                  return;
+                }
+                // Otherwise reflect
+                x = nx;
+                y = ny;
+                dy = -dy;
+                bounces++;
+              }
+        ctx.stroke();
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillStyle = colors.textDim;
+        ctx.textAlign = 'left';
+        ctx.fillText(`core · n=${nCore.toFixed(3)}`, left + 4, (top + bot) / 2 + 3);
+        ctx.fillText(`cladding · n=${nClad.toFixed(3)}`, left + 4, top - 12);
+        if (!escapes_) {
+                ctx.fillStyle = colors.teal;
+                ctx.textAlign = 'right';
+                ctx.fillText('total internal reflection', right - 6, top - 12);
+              }
+      },
+      [],
+    );
 
   return (
     <Demo

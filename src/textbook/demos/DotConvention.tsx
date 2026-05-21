@@ -16,6 +16,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -25,11 +28,7 @@ export function DotConventionDemo({ figure }: Props) {
   const [c2DotTop, setC2DotTop] = useState(true); // dot on C2's top or bottom
   const [i1IntoDot, setI1IntoDot] = useState(true); // does I1 enter C1's dotted terminal?
 
-  const stateRef = useRef({ c2DotTop, i1IntoDot });
-  useEffect(() => {
-    stateRef.current = { c2DotTop, i1IntoDot };
-  }, [c2DotTop, i1IntoDot]);
-
+  const stateRef = useSimState({ c2DotTop, i1IntoDot });
   // The "reference direction" for current in coil 2 is taken as entering at C2's TOP.
   // Mutual term sign = +1 if both currents enter at their respective dots, else -1.
   const sign = useMemo(() => {
@@ -42,44 +41,32 @@ export function DotConventionDemo({ figure }: Props) {
     return i1AtDot * i2RefAtDot;
   }, [c2DotTop, i1IntoDot]);
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h } = info;
-      let raf = 0;
-
-      function draw() {
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
         const { c2DotTop, i1IntoDot } = stateRef.current;
-        ctx.fillStyle = getCanvasColors().bg;
+        ctx.fillStyle = colors.bg;
         ctx.fillRect(0, 0, w, h);
-
         const cy = h / 2;
         const c1x = w * 0.3;
         const c2x = w * 0.7;
         const coilH = 90;
-
         drawSchematicCoil(ctx, c1x, cy, coilH, 'C1', 'L₁');
         drawSchematicCoil(ctx, c2x, cy, coilH, 'C2', 'L₂');
-
-        // Dot on C1: fixed at top
         drawDot(ctx, c1x - 24, cy - coilH / 2 + 6);
-        // Dot on C2: top or bottom depending on toggle
         if (c2DotTop) drawDot(ctx, c2x + 24, cy - coilH / 2 + 6);
-        else drawDot(ctx, c2x + 24, cy + coilH / 2 - 6);
-
-        // Arrow for I1 — enters at the dot if i1IntoDot, else at the bottom
+                else drawDot(ctx, c2x + 24, cy + coilH / 2 - 6);
         drawCurrentArrow(
-          ctx,
-          c1x - 70,
-          cy - (i1IntoDot ? coilH / 2 + 14 : -coilH / 2 + -14),
-          c1x - 26,
-          cy - (i1IntoDot ? coilH / 2 - 4 : -coilH / 2 + -4),
-          'I₁',
-        );
-
-        // Coupling line between coils
+                  ctx,
+                  c1x - 70,
+                  cy - (i1IntoDot ? coilH / 2 + 14 : -coilH / 2 + -14),
+                  c1x - 26,
+                  cy - (i1IntoDot ? coilH / 2 - 4 : -coilH / 2 + -4),
+                  'I₁',
+                );
         ctx.save();
         ctx.globalAlpha = 0.4;
-        ctx.strokeStyle = getCanvasColors().teal;
+        ctx.strokeStyle = colors.teal;
         ctx.setLineDash([4, 4]);
         ctx.lineWidth = 1.4;
         ctx.beginPath();
@@ -89,39 +76,32 @@ export function DotConventionDemo({ figure }: Props) {
         ctx.setLineDash([]);
         ctx.restore();
         drawLabel(ctx, {
-          x: (c1x + c2x) / 2,
-          y: cy - 8,
-          text: 'M',
-          color: getCanvasColors().teal,
-          align: 'center',
-        });
-
-        // Mutual-term sign label
+                  x: (c1x + c2x) / 2,
+                  y: cy - 8,
+                  text: 'M',
+                  color: colors.teal,
+                  align: 'center',
+                });
         const signLabel =
-          sign > 0
-            ? 'mutual term: + M dI₁/dt   (fluxes ADD — aiding)'
-            : 'mutual term: − M dI₁/dt   (fluxes SUBTRACT — opposing)';
+                  sign > 0
+                    ? 'mutual term: + M dI₁/dt   (fluxes ADD — aiding)'
+                    : 'mutual term: − M dI₁/dt   (fluxes SUBTRACT — opposing)';
         drawLabel(ctx, {
-          x: w / 2,
-          y: h - 24,
-          text: signLabel,
-          color:
-            sign > 0
-              ? withAlpha(getCanvasColors().accent, 0.95)
-              : withAlpha(getCanvasColors().blue, 0.95),
-          size: 11,
-          align: 'center',
-          baseline: 'top',
-          weight: 'bold',
-        });
-
-        raf = requestAnimationFrame(draw);
-      }
-      raf = requestAnimationFrame(draw);
-      return () => cancelAnimationFrame(raf);
-    },
-    [sign],
-  );
+                  x: w / 2,
+                  y: h - 24,
+                  text: signLabel,
+                  color:
+                    sign > 0
+                      ? withAlpha(colors.accent, 0.95)
+                      : withAlpha(colors.blue, 0.95),
+                  size: 11,
+                  align: 'center',
+                  baseline: 'top',
+                  weight: 'bold',
+                });
+      },
+      [],
+    );
 
   return (
     <Demo

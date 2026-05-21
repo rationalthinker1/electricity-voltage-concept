@@ -11,14 +11,17 @@
  * cross product E × B come out *radial* — and that radial cross product
  * is the Poynting vector.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { PHYS, pretty } from '@/lib/physics';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -28,162 +31,136 @@ export function BCirculationDemo({ figure }: Props) {
   const [I, setI] = useState(10);
   const [a_mm, setAMm] = useState(1.5);
 
-  const stateRef = useRef({ I, a_mm });
-  useEffect(() => {
-    stateRef.current = { I, a_mm };
-  }, [I, a_mm]);
-
+  const stateRef = useSimState({ I, a_mm });
   const a_m = a_mm * 1e-3;
   const Bsurf = (PHYS.mu_0 * Math.abs(I)) / (2 * Math.PI * a_m);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    let phase = 0;
-
-    function draw() {
-      const { I, a_mm } = stateRef.current;
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const cx = w / 2;
-      const cy = h / 2;
-
-      // Wire radius in pixels — scales gently with a_mm so it's visible.
-      // Treat a = 1.5 mm as ~14 px on screen.
-      const wireR_px = Math.max(8, Math.min(28, 14 * (a_mm / 1.5)));
-
-      // Outer rings — a few concentric circles around the wire.
-      const ringRs = [wireR_px + 25, wireR_px + 55, wireR_px + 95, wireR_px + 140, wireR_px + 195];
-      const I_norm = Math.max(0, Math.min(1, Math.abs(I) / 50));
-      phase += 0.012;
-
-      for (let k = 0; k < ringRs.length; k++) {
-        const R = ringRs[k]!;
-        if (R > Math.min(w, h) * 0.48) continue;
-        const op = 0.18 + 0.22 * (1 - k / ringRs.length) + I_norm * 0.18;
-        ctx.save();
-        ctx.globalAlpha = Math.min(0.7, op);
-        ctx.strokeStyle = colors.teal;
-        ctx.lineWidth = 1;
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
+        let phase = ctx0.phase;
+        const { I, a_mm } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const cx = w / 2;
+        const cy = h / 2;
+        const wireR_px = Math.max(8, Math.min(28, 14 * (a_mm / 1.5)));
+        const ringRs = [wireR_px + 25, wireR_px + 55, wireR_px + 95, wireR_px + 140, wireR_px + 195];
+        const I_norm = Math.max(0, Math.min(1, Math.abs(I) / 50));
+        phase += 0.012;
+        for (let k = 0; k < ringRs.length; k++) {
+                const R = ringRs[k]!;
+                if (R > Math.min(w, h) * 0.48) continue;
+                const op = 0.18 + 0.22 * (1 - k / ringRs.length) + I_norm * 0.18;
+                ctx.save();
+                ctx.globalAlpha = Math.min(0.7, op);
+                ctx.strokeStyle = colors.teal;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.arc(cx, cy, R, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.restore();
+        
+                // Tangent arrows around the ring. Right-hand rule: current INTO page
+                // (×) → fingers curl clockwise as seen on screen.
+                const nArrows = Math.max(4, Math.floor(R / 22));
+                for (let i = 0; i < nArrows; i++) {
+                  const theta = (i / nArrows) * Math.PI * 2;
+                  const ax = cx + R * Math.cos(theta);
+                  const ay = cy + R * Math.sin(theta);
+                  // CW tangent in screen coords: derivative of (cos θ, sin θ) is (−sin θ, cos θ);
+                  // for CW (current into page) we want the negative of this in screen space.
+                  const tx = -Math.sin(theta);
+                  const ty = Math.cos(theta);
+                  const len = 9 + I_norm * 6;
+                  ctx.save();
+                  ctx.globalAlpha = Math.min(0.95, op + 0.3);
+                  ctx.strokeStyle = colors.teal;
+                  ctx.fillStyle = ctx.strokeStyle;
+                  ctx.lineWidth = 1.3;
+                  ctx.beginPath();
+                  ctx.moveTo(ax - tx * len * 0.5, ay - ty * len * 0.5);
+                  ctx.lineTo(ax + tx * len * 0.5, ay + ty * len * 0.5);
+                  ctx.stroke();
+                  ctx.restore();
+                  // arrowhead
+                  const hx = ax + tx * len * 0.5;
+                  const hy = ay + ty * len * 0.5;
+                  const nx = -ty,
+                    ny = tx;
+                  ctx.beginPath();
+                  ctx.moveTo(hx, hy);
+                  ctx.lineTo(hx - tx * 4 + nx * 3, hy - ty * 4 + ny * 3);
+                  ctx.lineTo(hx - tx * 4 - nx * 3, hy - ty * 4 - ny * 3);
+                  ctx.closePath();
+                  ctx.fill();
+                }
+              }
+        const tracerR = ringRs[1]!;
+        const tracerTheta = phase * Math.PI * 2;
+        const tx = cx + tracerR * Math.cos(tracerTheta);
+        const ty = cy + tracerR * Math.sin(tracerTheta);
+        ctx.fillStyle = colors.teal;
         ctx.beginPath();
-        ctx.arc(cx, cy, R, 0, Math.PI * 2);
+        ctx.arc(tx, ty, 2.4, 0, Math.PI * 2);
+        ctx.fill();
+        drawHalo(ctx, {
+                x: cx,
+                y: cy,
+                radius: wireR_px * 3,
+                color: colors.accent,
+                alpha: 0.45,
+                extent: 1,
+              });
+        ctx.fillStyle = colors.surfaceHover;
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(cx, cy, wireR_px, 0, Math.PI * 2);
+        ctx.fill();
         ctx.stroke();
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 2;
+        const k = wireR_px * 0.55;
+        ctx.beginPath();
+        ctx.moveTo(cx - k, cy - k);
+        ctx.lineTo(cx + k, cy + k);
+        ctx.moveTo(cx + k, cy - k);
+        ctx.lineTo(cx - k, cy + k);
+        ctx.stroke();
+        ctx.save();
+        ctx.globalAlpha = 0.85;
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(`I = ${I.toFixed(1)} A  ⊗  (into page)`, cx, cy + wireR_px * 3 + 6);
         ctx.restore();
-
-        // Tangent arrows around the ring. Right-hand rule: current INTO page
-        // (×) → fingers curl clockwise as seen on screen.
-        const nArrows = Math.max(4, Math.floor(R / 22));
-        for (let i = 0; i < nArrows; i++) {
-          const theta = (i / nArrows) * Math.PI * 2;
-          const ax = cx + R * Math.cos(theta);
-          const ay = cy + R * Math.sin(theta);
-          // CW tangent in screen coords: derivative of (cos θ, sin θ) is (−sin θ, cos θ);
-          // for CW (current into page) we want the negative of this in screen space.
-          const tx = -Math.sin(theta);
-          const ty = Math.cos(theta);
-          const len = 9 + I_norm * 6;
-          ctx.save();
-          ctx.globalAlpha = Math.min(0.95, op + 0.3);
-          ctx.strokeStyle = colors.teal;
-          ctx.fillStyle = ctx.strokeStyle;
-          ctx.lineWidth = 1.3;
-          ctx.beginPath();
-          ctx.moveTo(ax - tx * len * 0.5, ay - ty * len * 0.5);
-          ctx.lineTo(ax + tx * len * 0.5, ay + ty * len * 0.5);
-          ctx.stroke();
-          ctx.restore();
-          // arrowhead
-          const hx = ax + tx * len * 0.5;
-          const hy = ay + ty * len * 0.5;
-          const nx = -ty,
-            ny = tx;
-          ctx.beginPath();
-          ctx.moveTo(hx, hy);
-          ctx.lineTo(hx - tx * 4 + nx * 3, hy - ty * 4 + ny * 3);
-          ctx.lineTo(hx - tx * 4 - nx * 3, hy - ty * 4 - ny * 3);
-          ctx.closePath();
-          ctx.fill();
-        }
-      }
-
-      // Animated tracer dot circling at one of the radii to suggest the field
-      // direction (CW for current into page).
-      const tracerR = ringRs[1]!;
-      const tracerTheta = phase * Math.PI * 2;
-      const tx = cx + tracerR * Math.cos(tracerTheta);
-      const ty = cy + tracerR * Math.sin(tracerTheta);
-      ctx.fillStyle = colors.teal;
-      ctx.beginPath();
-      ctx.arc(tx, ty, 2.4, 0, Math.PI * 2);
-      ctx.fill();
-
-      // ── Wire (end-on disc) at center
-      drawHalo(ctx, {
-        x: cx,
-        y: cy,
-        radius: wireR_px * 3,
-        color: colors.accent,
-        alpha: 0.45,
-        extent: 1,
-      });
-      ctx.fillStyle = colors.surfaceHover;
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.arc(cx, cy, wireR_px, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-      // × glyph (current into page)
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 2;
-      const k = wireR_px * 0.55;
-      ctx.beginPath();
-      ctx.moveTo(cx - k, cy - k);
-      ctx.lineTo(cx + k, cy + k);
-      ctx.moveTo(cx + k, cy - k);
-      ctx.lineTo(cx - k, cy + k);
-      ctx.stroke();
-
-      // Wire label
-      ctx.save();
-      ctx.globalAlpha = 0.85;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`I = ${I.toFixed(1)} A  ⊗  (into page)`, cx, cy + wireR_px * 3 + 6);
-      ctx.restore();
-
-      // Top-left labels
-      ctx.fillStyle = colors.teal;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('B  (circumferential)', 18, 14);
-      ctx.save();
-      ctx.globalAlpha = 0.7;
-      ctx.fillStyle = colors.textDim;
-      ctx.fillText('right-hand rule: thumb along I, fingers curl with B', 18, 30);
-      ctx.restore();
-
-      // Bottom: surface B value
-      const a_m_ = a_mm * 1e-3;
-      const B_ = (PHYS.mu_0 * Math.abs(I)) / (2 * Math.PI * a_m_);
-      drawLabel(ctx, {
-        x: w / 2,
-        y: h - 12,
-        text: `B at surface (r = a) = μ₀ I / (2π a) = ${pretty(B_)} T`,
-        color: colors.teal,
-        size: 11,
-        align: 'center',
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        ctx.fillStyle = colors.teal;
+        ctx.font = '11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('B  (circumferential)', 18, 14);
+        ctx.save();
+        ctx.globalAlpha = 0.7;
+        ctx.fillStyle = colors.textDim;
+        ctx.fillText('right-hand rule: thumb along I, fingers curl with B', 18, 30);
+        ctx.restore();
+        const a_m_ = a_mm * 1e-3;
+        const B_ = (PHYS.mu_0 * Math.abs(I)) / (2 * Math.PI * a_m_);
+        drawLabel(ctx, {
+                x: w / 2,
+                y: h - 12,
+                text: `B at surface (r = a) = μ₀ I / (2π a) = ${pretty(B_)} T`,
+                color: colors.teal,
+                size: 11,
+                align: 'center',
+              });
+        ctx0.phase = phase;
+      },
+      [],
+      () => ({ context: { phase: 0 } }),
+    );
 
   return (
     <Demo

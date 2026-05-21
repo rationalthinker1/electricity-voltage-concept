@@ -18,6 +18,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 /** Approximate silica fiber attenuation in dB/km vs wavelength λ (nm).
  *  Tuned to reproduce the canonical 0.20 dB/km @ 1550 nm and 0.35 dB/km @ 1310 nm
@@ -36,127 +39,100 @@ function lossDbPerKm(lambdaNm: number): number {
 
 export function FiberAttenuationDemo() {
   const [lambda, setLambda] = useState(1550);
-  const stateRef = useRef({ lambda });
-  useEffect(() => {
-    stateRef.current = { lambda };
-  }, [lambda]);
-
+  const stateRef = useSimState({ lambda });
   const loss = lossDbPerKm(lambda);
   // Link reach at 30 dB budget (1 mW launch, −29 dBm receiver)
   const reachKm = 30 / loss;
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
-
-    function draw() {
-      const { lambda } = stateRef.current;
-      const colors = getCanvasColors();
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, W, H);
-
-      const padL = 50,
-        padR = 18,
-        padT = 18,
-        padB = 30;
-      const plotW = W - padL - padR;
-      const plotH = H - padT - padB;
-      const lamMin = 800,
-        lamMax = 1700;
-      const lossMin = 0.1,
-        lossMax = 5; // log scale dB/km
-
-      const xOfLam = (l: number) => padL + ((l - lamMin) / (lamMax - lamMin)) * plotW;
-      const yOfLoss = (db: number) => {
-        const t =
-          (Math.log10(db) - Math.log10(lossMin)) / (Math.log10(lossMax) - Math.log10(lossMin));
-        return padT + (1 - Math.max(0, Math.min(1, t))) * plotH;
-      };
-
-      // Axis frame
-      ctx.strokeStyle = colors.border;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(padL, padT, plotW, plotH);
-
-      // Telecom windows — vertical bands at 850 / 1310 / 1550. Theme-aware
-      // tints via globalAlpha so the bands follow light/dark mode.
-      const windows = [
-        { l: 850, color: colors.blue, alpha: 0.1 },
-        { l: 1310, color: colors.teal, alpha: 0.14 },
-        { l: 1550, color: colors.accent, alpha: 0.15 },
-      ];
-      for (const w of windows) {
-        const cx = xOfLam(w.l);
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+        const { lambda } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, W, H);
+        const padL = 50,
+                padR = 18,
+                padT = 18,
+                padB = 30;
+        const plotW = W - padL - padR;
+        const plotH = H - padT - padB;
+        const lamMin = 800,
+                lamMax = 1700;
+        const lossMin = 0.1,
+                lossMax = 5;
+        const xOfLam = (l: number) => padL + ((l - lamMin) / (lamMax - lamMin)) * plotW;
+        const yOfLoss = (db: number) => {
+                const t =
+                  (Math.log10(db) - Math.log10(lossMin)) / (Math.log10(lossMax) - Math.log10(lossMin));
+                return padT + (1 - Math.max(0, Math.min(1, t))) * plotH;
+              };
+        ctx.strokeStyle = colors.border;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(padL, padT, plotW, plotH);
+        const windows = [
+                { l: 850, color: colors.blue, alpha: 0.1 },
+                { l: 1310, color: colors.teal, alpha: 0.14 },
+                { l: 1550, color: colors.accent, alpha: 0.15 },
+              ];
+        for (const w of windows) {
+                const cx = xOfLam(w.l);
+                ctx.save();
+                ctx.globalAlpha = w.alpha;
+                ctx.fillStyle = w.color;
+                ctx.fillRect(cx - 14, padT, 28, plotH);
+                ctx.restore();
+              }
+        ctx.strokeStyle = colors.text;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        for (let l = lamMin; l <= lamMax; l += 2) {
+                const db = lossDbPerKm(l);
+                const x = xOfLam(l);
+                const y = yOfLoss(db);
+                if (l === lamMin) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        const curLoss = lossDbPerKm(lambda);
+        const cx = xOfLam(lambda);
+        const cy = yOfLoss(curLoss);
+        ctx.strokeStyle = colors.accent;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(cx, padT);
+        ctx.lineTo(cx, padT + plotH);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = colors.accent;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = colors.textMuted;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        for (const l of [850, 1000, 1310, 1383, 1550, 1700]) {
+                ctx.fillText(`${l}`, xOfLam(l), padT + plotH + 14);
+              }
+        ctx.textAlign = 'right';
+        for (const db of [0.1, 0.2, 0.5, 1, 2, 5]) {
+                ctx.fillText(`${db}`, padL - 6, yOfLoss(db) + 3);
+              }
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText('λ (nm)', padL, H - 6);
         ctx.save();
-        ctx.globalAlpha = w.alpha;
-        ctx.fillStyle = w.color;
-        ctx.fillRect(cx - 14, padT, 28, plotH);
+        ctx.translate(12, padT + plotH / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.textAlign = 'center';
+        ctx.fillText('loss (dB/km, log)', 0, 0);
         ctx.restore();
-      }
-
-      // Loss curve
-      ctx.strokeStyle = colors.text;
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      for (let l = lamMin; l <= lamMax; l += 2) {
-        const db = lossDbPerKm(l);
-        const x = xOfLam(l);
-        const y = yOfLoss(db);
-        if (l === lamMin) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Cursor — vertical line + dot at current λ
-      const curLoss = lossDbPerKm(lambda);
-      const cx = xOfLam(lambda);
-      const cy = yOfLoss(curLoss);
-      ctx.strokeStyle = colors.accent;
-      ctx.setLineDash([3, 3]);
-      ctx.beginPath();
-      ctx.moveTo(cx, padT);
-      ctx.lineTo(cx, padT + plotH);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle = colors.accent;
-      ctx.beginPath();
-      ctx.arc(cx, cy, 4, 0, Math.PI * 2);
-      ctx.fill();
-
-      // X tick labels
-      ctx.fillStyle = colors.textMuted;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      for (const l of [850, 1000, 1310, 1383, 1550, 1700]) {
-        ctx.fillText(`${l}`, xOfLam(l), padT + plotH + 14);
-      }
-      // Y tick labels (log)
-      ctx.textAlign = 'right';
-      for (const db of [0.1, 0.2, 0.5, 1, 2, 5]) {
-        ctx.fillText(`${db}`, padL - 6, yOfLoss(db) + 3);
-      }
-      // Axis titles
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('λ (nm)', padL, H - 6);
-      ctx.save();
-      ctx.translate(12, padT + plotH / 2);
-      ctx.rotate(-Math.PI / 2);
-      ctx.textAlign = 'center';
-      ctx.fillText('loss (dB/km, log)', 0, 0);
-      ctx.restore();
-
-      // OH⁻ peak label
-      ctx.fillStyle = colors.textMuted;
-      ctx.textAlign = 'center';
-      ctx.fillText('OH⁻', xOfLam(1383), yOfLoss(2.0) - 6);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        ctx.fillStyle = colors.textMuted;
+        ctx.textAlign = 'center';
+        ctx.fillText('OH⁻', xOfLam(1383), yOfLoss(2.0) - 6);
+      },
+      [],
+    );
 
   return (
     <Demo

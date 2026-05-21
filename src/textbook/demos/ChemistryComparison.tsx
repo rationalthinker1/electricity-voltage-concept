@@ -12,6 +12,9 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -112,70 +115,55 @@ export function ChemistryComparisonDemo({ figure }: Props) {
   const [metric, setMetric] = useState<MetricKey>('energy_kg');
   const spec = METRICS.find((m) => m.key === metric)!;
 
-  const stateRef = useRef({ metric, spec });
-  useEffect(() => {
-    stateRef.current = { metric, spec };
-  }, [metric, spec]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
-
-    function draw() {
-      const s = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, W, H);
-
-      const pX = 56,
-        pY = 24;
-      const pW = W - 72,
-        pH = H - 64;
-      ctx.strokeStyle = getCanvasColors().border;
-      ctx.strokeRect(pX, pY, pW, pH);
-
-      const values = CHEMS.map((c) => c.data[s.metric]);
-      const vMax = Math.max(...values) * 1.1;
-
-      const N = CHEMS.length;
-      const barW = (pW / N) * 0.6;
-      const slot = pW / N;
-
-      for (let i = 0; i < N; i++) {
-        const c = CHEMS[i];
-        const v = c.data[s.metric];
-        const x = pX + slot * i + slot / 2 - barW / 2;
-        const barH = (v / vMax) * pH;
-        const y = pY + pH - barH;
-        ctx.fillStyle = c.color;
-        ctx.fillRect(x, y, barW, barH);
-
-        // value label on top
-        ctx.fillStyle = getCanvasColors().text;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(s.spec.format(v), x + barW / 2, y - 2);
-
-        // x label
-        ctx.fillStyle = getCanvasColors().textDim;
-        ctx.textBaseline = 'top';
-        ctx.fillText(c.name, x + barW / 2, pY + pH + 4);
-      }
-
-      // Metric label
-      drawLabel(ctx, {
-        x: pX,
-        y: 6,
-        text: `${s.spec.label}  (${s.spec.unit})`,
-        color: getCanvasColors().textDim,
-        baseline: 'top',
-      });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const stateRef = useSimState({ metric, spec });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+        const s = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, W, H);
+        const pX = 56,
+                pY = 24;
+        const pW = W - 72,
+                pH = H - 64;
+        ctx.strokeStyle = colors.border;
+        ctx.strokeRect(pX, pY, pW, pH);
+        const values = CHEMS.map((c) => c.data[s.metric]);
+        const vMax = Math.max(...values) * 1.1;
+        const N = CHEMS.length;
+        const barW = (pW / N) * 0.6;
+        const slot = pW / N;
+        for (let i = 0; i < N; i++) {
+                const c = CHEMS[i];
+                const v = c.data[s.metric];
+                const x = pX + slot * i + slot / 2 - barW / 2;
+                const barH = (v / vMax) * pH;
+                const y = pY + pH - barH;
+                ctx.fillStyle = c.color;
+                ctx.fillRect(x, y, barW, barH);
+        
+                // value label on top
+                ctx.fillStyle = colors.text;
+                ctx.font = '10px "JetBrains Mono", monospace';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText(s.spec.format(v), x + barW / 2, y - 2);
+        
+                // x label
+                ctx.fillStyle = colors.textDim;
+                ctx.textBaseline = 'top';
+                ctx.fillText(c.name, x + barW / 2, pY + pH + 4);
+              }
+        drawLabel(ctx, {
+                x: pX,
+                y: 6,
+                text: `${s.spec.label}  (${s.spec.unit})`,
+                color: colors.textDim,
+                baseline: 'top',
+              });
+      },
+      [],
+    );
 
   return (
     <Demo

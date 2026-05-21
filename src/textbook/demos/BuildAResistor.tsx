@@ -19,6 +19,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { pathRoundRect } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -130,156 +133,130 @@ export function BuildAResistorDemo({ figure }: Props) {
   const Rmin = R * (1 - fam.tol);
   const Rmax = R * (1 + fam.tol);
 
-  const stateRef = useRef({ familyKey, Lmm, Amm2 });
-  useEffect(() => {
-    stateRef.current = { familyKey, Lmm, Amm2 };
-  }, [familyKey, Lmm, Amm2]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
-    let phase = 0;
-
-    function draw() {
-      const { familyKey, Lmm, Amm2 } = stateRef.current;
-      const f = FAMILIES[familyKey];
-      phase += 0.012;
-
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, W, H);
-
-      // Layout
-      const bodyW = Math.min(W * 0.72, 460);
-      const bodyH = Math.min(H * 0.48, 110);
-      const cx = W / 2;
-      const cy = H / 2;
-      const bodyL = cx - bodyW / 2;
-      const bodyT = cy - bodyH / 2;
-      const isWirewound = familyKey.startsWith('wirewound');
-
-      // Axial leads
-      ctx.strokeStyle = 'rgba(200,200,205,0.85)';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(bodyL - 80, cy);
-      ctx.lineTo(bodyL + 4, cy);
-      ctx.moveTo(bodyL + bodyW - 4, cy);
-      ctx.lineTo(bodyL + bodyW + 80, cy);
-      ctx.stroke();
-
-      // Body shell (rounded rect, beige for carbon-types, blue for metal-film, etc)
-      const shellColor = isWirewound ? 'rgba(220,220,220,0.18)' : 'rgba(190,160,140,0.22)';
-      pathRoundRect(ctx, bodyL, bodyT, bodyW, bodyH, 18);
-      ctx.fillStyle = shellColor;
-      ctx.fill();
-      ctx.strokeStyle = getCanvasColors().borderStrong;
-      ctx.lineWidth = 1;
-      ctx.stroke();
-
-      // Cutaway region (lower portion) — exposes the spiral / wire winding
-      const cutT = cy - 6;
-      const cutH = bodyH / 2 + 12;
-      ctx.save();
-      ctx.beginPath();
-      pathRoundRect(ctx, bodyL + 6, cutT, bodyW - 12, cutH, 8);
-      ctx.clip();
-
-      // Ceramic substrate (gray cylinder cross-section)
-      const subH = cutH * 0.55;
-      const subT = cutT + (cutH - subH) / 2;
-      ctx.fillStyle = 'rgba(230,225,210,0.22)';
-      pathRoundRect(ctx, bodyL + 12, subT, bodyW - 24, subH, 4);
-      ctx.fill();
-
-      if (!isWirewound) {
-        // Helical/spiral cut on the film: draw L_film / pitch turns.
-        // Visual spiral count: scale with L (longer spiral = more turns shown).
-        const turns = Math.max(2, Math.min(28, Math.round(Lmm / 8)));
-        // Film thickness scales with sqrt(A_film)
-        const filmThick = Math.max(0.8, Math.min(6, 0.8 + Math.sqrt(Amm2 / 0.5) * 4.0));
-        ctx.strokeStyle = f.color;
-        ctx.lineWidth = filmThick;
-        const pitch = (bodyW - 24) / turns;
-        for (let i = 0; i < turns; i++) {
-          const x0 = bodyL + 12 + i * pitch;
-          // Draw a half-ellipse to suggest a wrap of film around the cylinder
-          ctx.beginPath();
-          ctx.ellipse(
-            x0 + pitch * 0.5,
-            subT + subH / 2,
-            pitch * 0.5,
-            subH * 0.45,
-            0,
-            Math.PI,
-            2 * Math.PI,
-          );
-          ctx.stroke();
-        }
-      } else {
-        // Wirewound: thicker round wire helix
-        const turns = Math.max(3, Math.min(36, Math.round(Lmm / 5)));
-        const wireThick = Math.max(1.5, Math.min(7, 1.0 + Math.sqrt(Amm2 / 0.5) * 5.0));
-        ctx.strokeStyle = f.color;
-        ctx.lineWidth = wireThick;
-        const pitch = (bodyW - 24) / turns;
-        for (let i = 0; i < turns; i++) {
-          const x0 = bodyL + 12 + i * pitch;
-          ctx.beginPath();
-          ctx.arc(
-            x0 + pitch * 0.5,
-            subT + subH / 2,
-            Math.min(pitch * 0.55, subH * 0.42),
-            Math.PI,
-            2 * Math.PI,
-          );
-          ctx.stroke();
-        }
-      }
-      ctx.restore();
-
-      // Four-band stripe markings on the upper half of the body (for fixed-value
-      // resistors only — wirewounds usually have printed value).
-      if (!isWirewound) {
-        // We pick a "nearest preferred value" decoded from R for display.
-        const bands = decodeFourBand(R);
-        const stripeW = 8;
-        const gap = 6;
-        const startX = bodyL + bodyW * 0.18;
-        const stripeT = bodyT + 6;
-        const stripeH = bodyH / 2 - 14;
-        bands.forEach((c, i) => {
-          ctx.fillStyle = c;
-          ctx.fillRect(startX + i * (stripeW + gap), stripeT, stripeW, stripeH);
-        });
-      }
-
-      // Labels
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(f.label.toUpperCase(), 12, 10);
-      ctx.fillText(`ρ = ${fmtRho(f.rho)} Ω·m`, 12, 24);
-      ctx.fillText(`L = ${Lmm.toFixed(0)} mm`, 12, 38);
-      ctx.fillText(`A = ${Amm2.toFixed(3)} mm²`, 12, 52);
-
-      // Tolerance band on the right
-      ctx.textAlign = 'right';
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.fillText(`R = ${fmtOhms(R)}`, W - 12, 10);
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText(
-        `±${(f.tol * 100).toFixed(f.tol < 0.01 ? 2 : 0)}%   ${fmtOhms(Rmin)} … ${fmtOhms(Rmax)}`,
-        W - 12,
-        24,
-      );
-
-      void phase;
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const stateRef = useSimState({ familyKey, Lmm, Amm2 });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
+        let phase = ctx0.phase;
+        const { familyKey, Lmm, Amm2 } = stateRef.current;
+        const f = FAMILIES[familyKey];
+        phase += 0.012;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, W, H);
+        const bodyW = Math.min(W * 0.72, 460);
+        const bodyH = Math.min(H * 0.48, 110);
+        const cx = W / 2;
+        const cy = H / 2;
+        const bodyL = cx - bodyW / 2;
+        const bodyT = cy - bodyH / 2;
+        const isWirewound = familyKey.startsWith('wirewound');
+        ctx.strokeStyle = 'rgba(200,200,205,0.85)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(bodyL - 80, cy);
+        ctx.lineTo(bodyL + 4, cy);
+        ctx.moveTo(bodyL + bodyW - 4, cy);
+        ctx.lineTo(bodyL + bodyW + 80, cy);
+        ctx.stroke();
+        const shellColor = isWirewound ? 'rgba(220,220,220,0.18)' : 'rgba(190,160,140,0.22)';
+        pathRoundRect(ctx, bodyL, bodyT, bodyW, bodyH, 18);
+        ctx.fillStyle = shellColor;
+        ctx.fill();
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        const cutT = cy - 6;
+        const cutH = bodyH / 2 + 12;
+        ctx.save();
+        ctx.beginPath();
+        pathRoundRect(ctx, bodyL + 6, cutT, bodyW - 12, cutH, 8);
+        ctx.clip();
+        const subH = cutH * 0.55;
+        const subT = cutT + (cutH - subH) / 2;
+        ctx.fillStyle = 'rgba(230,225,210,0.22)';
+        pathRoundRect(ctx, bodyL + 12, subT, bodyW - 24, subH, 4);
+        ctx.fill();
+        if (!isWirewound) {
+                // Helical/spiral cut on the film: draw L_film / pitch turns.
+                // Visual spiral count: scale with L (longer spiral = more turns shown).
+                const turns = Math.max(2, Math.min(28, Math.round(Lmm / 8)));
+                // Film thickness scales with sqrt(A_film)
+                const filmThick = Math.max(0.8, Math.min(6, 0.8 + Math.sqrt(Amm2 / 0.5) * 4.0));
+                ctx.strokeStyle = f.color;
+                ctx.lineWidth = filmThick;
+                const pitch = (bodyW - 24) / turns;
+                for (let i = 0; i < turns; i++) {
+                  const x0 = bodyL + 12 + i * pitch;
+                  // Draw a half-ellipse to suggest a wrap of film around the cylinder
+                  ctx.beginPath();
+                  ctx.ellipse(
+                    x0 + pitch * 0.5,
+                    subT + subH / 2,
+                    pitch * 0.5,
+                    subH * 0.45,
+                    0,
+                    Math.PI,
+                    2 * Math.PI,
+                  );
+                  ctx.stroke();
+                }
+              } else {
+                // Wirewound: thicker round wire helix
+                const turns = Math.max(3, Math.min(36, Math.round(Lmm / 5)));
+                const wireThick = Math.max(1.5, Math.min(7, 1.0 + Math.sqrt(Amm2 / 0.5) * 5.0));
+                ctx.strokeStyle = f.color;
+                ctx.lineWidth = wireThick;
+                const pitch = (bodyW - 24) / turns;
+                for (let i = 0; i < turns; i++) {
+                  const x0 = bodyL + 12 + i * pitch;
+                  ctx.beginPath();
+                  ctx.arc(
+                    x0 + pitch * 0.5,
+                    subT + subH / 2,
+                    Math.min(pitch * 0.55, subH * 0.42),
+                    Math.PI,
+                    2 * Math.PI,
+                  );
+                  ctx.stroke();
+                }
+              }
+        ctx.restore();
+        if (!isWirewound) {
+                // We pick a "nearest preferred value" decoded from R for display.
+                const bands = decodeFourBand(R);
+                const stripeW = 8;
+                const gap = 6;
+                const startX = bodyL + bodyW * 0.18;
+                const stripeT = bodyT + 6;
+                const stripeH = bodyH / 2 - 14;
+                bands.forEach((c, i) => {
+                  ctx.fillStyle = c;
+                  ctx.fillRect(startX + i * (stripeW + gap), stripeT, stripeW, stripeH);
+                });
+              }
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(f.label.toUpperCase(), 12, 10);
+        ctx.fillText(`ρ = ${fmtRho(f.rho)} Ω·m`, 12, 24);
+        ctx.fillText(`L = ${Lmm.toFixed(0)} mm`, 12, 38);
+        ctx.fillText(`A = ${Amm2.toFixed(3)} mm²`, 12, 52);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = colors.accent;
+        ctx.fillText(`R = ${fmtOhms(R)}`, W - 12, 10);
+        ctx.fillStyle = colors.textDim;
+        ctx.fillText(
+                `±${(f.tol * 100).toFixed(f.tol < 0.01 ? 2 : 0)}%   ${fmtOhms(Rmin)} … ${fmtOhms(Rmax)}`,
+                W - 12,
+                24,
+              );
+        void phase;
+        ctx0.phase = phase;
+      },
+      [],
+      () => ({ context: { phase: 0 } }),
+    );
 
   return (
     <Demo

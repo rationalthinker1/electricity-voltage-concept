@@ -17,6 +17,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -35,142 +38,114 @@ export function StandingWavesOnLineDemo({ figure }: Props) {
   const Vmin = Math.max(1 - absG, 1e-6);
   const VSWR = absG >= 1 ? Infinity : Vmax / Vmin;
 
-  const stateRef = useRef({ Gamma, wavelengths });
-  useEffect(() => {
-    stateRef.current = { Gamma, wavelengths };
-  }, [Gamma, wavelengths]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    const t0 = performance.now();
-
-    function draw() {
-      const { Gamma, wavelengths } = stateRef.current;
-      const phase = ((performance.now() - t0) / 1000) * 2 * Math.PI * 0.8;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const padL = 50,
-        padR = 30,
-        padT = 24,
-        padB = 36;
-      const plotX = padL,
-        plotY = padT;
-      const plotW = w - padL - padR;
-      const plotH = h - padT - padB;
-
-      ctx.strokeStyle = colors.border;
-      ctx.strokeRect(plotX, plotY, plotW, plotH);
-
-      // y axis ±2.2
-      const yMax = 2.2;
-      const yV = (v: number) => plotY + plotH / 2 - (v / yMax) * (plotH / 2 - 4);
-
-      // gridlines
-      ctx.strokeStyle = colors.border;
-      for (let v = -2; v <= 2; v++) {
-        const y = yV(v);
+  const stateRef = useSimState({ Gamma, wavelengths });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, simTime) => {
+        const { Gamma, wavelengths } = stateRef.current;
+        const phase = (simTime) * 2 * Math.PI * 0.8;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const padL = 50,
+                padR = 30,
+                padT = 24,
+                padB = 36;
+        const plotX = padL,
+                plotY = padT;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+        ctx.strokeStyle = colors.border;
+        ctx.strokeRect(plotX, plotY, plotW, plotH);
+        const yMax = 2.2;
+        const yV = (v: number) => plotY + plotH / 2 - (v / yMax) * (plotH / 2 - 4);
+        ctx.strokeStyle = colors.border;
+        for (let v = -2; v <= 2; v++) {
+                const y = yV(v);
+                ctx.beginPath();
+                ctx.moveTo(plotX, y);
+                ctx.lineTo(plotX + plotW, y);
+                ctx.stroke();
+              }
+        ctx.strokeStyle = colors.borderStrong;
         ctx.beginPath();
-        ctx.moveTo(plotX, y);
-        ctx.lineTo(plotX + plotW, y);
+        ctx.moveTo(plotX, yV(0));
+        ctx.lineTo(plotX + plotW, yV(0));
         ctx.stroke();
-      }
-      ctx.strokeStyle = colors.borderStrong;
-      ctx.beginPath();
-      ctx.moveTo(plotX, yV(0));
-      ctx.lineTo(plotX + plotW, yV(0));
-      ctx.stroke();
-
-      // x is position from source (left) to load (right) measured in wavelengths
-      // Load is at x = wavelengths, so β x = 2π x.
-      const N = 400;
-      // Instantaneous V(x,t) trace — sine that "stands" with moving phase
-      const vPts: { x: number; y: number }[] = [];
-      for (let i = 0; i <= N; i++) {
-        const u = i / N;
-        const x = u * wavelengths;
-        // Position measured from load: d = wavelengths - x (load at d=0)
-        const d = wavelengths - x;
-        // V = A[ e^{-jβx}·e^{jωt} + Γ e^{+jβx} e^{jωt} ]  → real part:
-        // V(x,t) = cos(ωt - 2π x) + Γ cos(ωt + 2π x)
-        // We treat Γ as real (resistive load).
-        const v = Math.cos(phase - 2 * Math.PI * x) + Gamma * Math.cos(phase + 2 * Math.PI * x);
-        void d;
-        vPts.push({ x: plotX + u * plotW, y: yV(v) });
-      }
-      drawGlowPath(ctx, vPts, {
-        color: withAlpha(colors.accent, 0.95),
-        lineWidth: 1.6,
-        glowColor: withAlpha(colors.accent, 0.35),
-        glowWidth: 5,
-      });
-
-      // Envelope ±|V(x)|
-      ctx.strokeStyle = withAlpha(colors.teal, 0.75);
-      ctx.lineWidth = 1.4;
-      ctx.beginPath();
-      for (let i = 0; i <= N; i++) {
-        const u = i / N;
-        const x = u * wavelengths;
-        const mag = Math.sqrt(1 + Gamma * Gamma + 2 * Gamma * Math.cos(2 * 2 * Math.PI * x));
-        const X = plotX + u * plotW;
-        const Y = yV(mag);
-        if (i === 0) ctx.moveTo(X, Y);
-        else ctx.lineTo(X, Y);
-      }
-      ctx.stroke();
-      ctx.beginPath();
-      for (let i = 0; i <= N; i++) {
-        const u = i / N;
-        const x = u * wavelengths;
-        const mag = Math.sqrt(1 + Gamma * Gamma + 2 * Gamma * Math.cos(2 * 2 * Math.PI * x));
-        const X = plotX + u * plotW;
-        const Y = yV(-mag);
-        if (i === 0) ctx.moveTo(X, Y);
-        else ctx.lineTo(X, Y);
-      }
-      ctx.stroke();
-
-      // Axis labels
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+2', plotX - 4, yV(2));
-      ctx.fillText('0', plotX - 4, yV(0));
-      ctx.fillText('-2', plotX - 4, yV(-2));
-
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('source', plotX, plotY + plotH + 4);
-      ctx.textAlign = 'right';
-      ctx.fillText('load', plotX + plotW, plotY + plotH + 4);
-      ctx.textAlign = 'center';
-      ctx.fillText('position along line (λ)', plotX + plotW / 2, plotY + plotH + 18);
-
-      // Header
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('V(x,t)  (instantaneous)', plotX + 4, plotY + 4);
-      ctx.fillStyle = colors.teal;
-      ctx.fillText('±|V(x)|  envelope', plotX + 180, plotY + 4);
-      ctx.fillStyle = colors.text;
-      ctx.textAlign = 'right';
-      ctx.fillText(
-        `VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`,
-        plotX + plotW - 4,
-        plotY + 4,
-      );
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+        const N = 400;
+        const vPts: { x: number; y: number }[] = [];
+        for (let i = 0; i <= N; i++) {
+                const u = i / N;
+                const x = u * wavelengths;
+                // Position measured from load: d = wavelengths - x (load at d=0)
+                const d = wavelengths - x;
+                // V = A[ e^{-jβx}·e^{jωt} + Γ e^{+jβx} e^{jωt} ]  → real part:
+                // V(x,t) = cos(ωt - 2π x) + Γ cos(ωt + 2π x)
+                // We treat Γ as real (resistive load).
+                const v = Math.cos(phase - 2 * Math.PI * x) + Gamma * Math.cos(phase + 2 * Math.PI * x);
+                void d;
+                vPts.push({ x: plotX + u * plotW, y: yV(v) });
+              }
+        drawGlowPath(ctx, vPts, {
+                color: withAlpha(colors.accent, 0.95),
+                lineWidth: 1.6,
+                glowColor: withAlpha(colors.accent, 0.35),
+                glowWidth: 5,
+              });
+        ctx.strokeStyle = withAlpha(colors.teal, 0.75);
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        for (let i = 0; i <= N; i++) {
+                const u = i / N;
+                const x = u * wavelengths;
+                const mag = Math.sqrt(1 + Gamma * Gamma + 2 * Gamma * Math.cos(2 * 2 * Math.PI * x));
+                const X = plotX + u * plotW;
+                const Y = yV(mag);
+                if (i === 0) ctx.moveTo(X, Y);
+                else ctx.lineTo(X, Y);
+              }
+        ctx.stroke();
+        ctx.beginPath();
+        for (let i = 0; i <= N; i++) {
+                const u = i / N;
+                const x = u * wavelengths;
+                const mag = Math.sqrt(1 + Gamma * Gamma + 2 * Gamma * Math.cos(2 * 2 * Math.PI * x));
+                const X = plotX + u * plotW;
+                const Y = yV(-mag);
+                if (i === 0) ctx.moveTo(X, Y);
+                else ctx.lineTo(X, Y);
+              }
+        ctx.stroke();
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('+2', plotX - 4, yV(2));
+        ctx.fillText('0', plotX - 4, yV(0));
+        ctx.fillText('-2', plotX - 4, yV(-2));
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('source', plotX, plotY + plotH + 4);
+        ctx.textAlign = 'right';
+        ctx.fillText('load', plotX + plotW, plotY + plotH + 4);
+        ctx.textAlign = 'center';
+        ctx.fillText('position along line (λ)', plotX + plotW / 2, plotY + plotH + 18);
+        ctx.fillStyle = colors.accent;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('V(x,t)  (instantaneous)', plotX + 4, plotY + 4);
+        ctx.fillStyle = colors.teal;
+        ctx.fillText('±|V(x)|  envelope', plotX + 180, plotY + 4);
+        ctx.fillStyle = colors.text;
+        ctx.textAlign = 'right';
+        ctx.fillText(
+                `VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`,
+                plotX + plotW - 4,
+                plotY + 4,
+              );
+      },
+      [],
+    );
 
   return (
     <Demo

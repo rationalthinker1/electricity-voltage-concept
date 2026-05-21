@@ -31,6 +31,9 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -69,80 +72,52 @@ export function SuperpositionDemo({ figure }: Props) {
   const onlyV1 = solve(V1, 0, R1, R2, R3);
   const onlyV2 = solve(0, V2, R1, R2, R3);
 
-  const stateRef = useRef({ onlyV1, onlyV2, both, v1on, v2on });
-  useEffect(() => {
-    stateRef.current = { onlyV1, onlyV2, both, v1on, v2on };
-  }, [
-    onlyV1.V_A,
-    onlyV1.I1,
-    onlyV1.I2,
-    onlyV1.I3,
-    onlyV2.V_A,
-    onlyV2.I1,
-    onlyV2.I2,
-    onlyV2.I3,
-    both.V_A,
-    both.I1,
-    both.I2,
-    both.I3,
-    v1on,
-    v2on,
-  ]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h } = info;
-    let raf = 0;
-
-    function draw() {
-      const { onlyV1, onlyV2, both, v1on, v2on } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const colW = w / 3;
-      drawPanel(
-        ctx,
-        0,
-        0,
-        colW,
-        h,
-        'V1 only (V2 → short)',
-        onlyV1,
-        withAlpha(getCanvasColors().pink, 0.85),
-      );
-      drawPanel(
-        ctx,
-        colW,
-        0,
-        colW,
-        h,
-        'V2 only (V1 → short)',
-        onlyV2,
-        withAlpha(getCanvasColors().blue, 0.85),
-      );
-
-      const label =
-        v1on && v2on
-          ? 'Both on (live)'
-          : v1on
-            ? 'Live: V1 only'
-            : v2on
-              ? 'Live: V2 only'
-              : 'Both off';
-      drawPanel(ctx, 2 * colW, 0, colW, h, label, both, withAlpha(getCanvasColors().accent, 0.95));
-
-      // Sum-arrow header
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('+', colW, 4);
-      ctx.fillText('=', 2 * colW, 4);
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const stateRef = useSimState({ onlyV1, onlyV2, both, v1on, v2on });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+        const { onlyV1, onlyV2, both, v1on, v2on } = stateRef.current;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const colW = w / 3;
+        drawPanel(
+                ctx,
+                0,
+                0,
+                colW,
+                h,
+                'V1 only (V2 → short)',
+                onlyV1,
+                withAlpha(colors.pink, 0.85),
+              );
+        drawPanel(
+                ctx,
+                colW,
+                0,
+                colW,
+                h,
+                'V2 only (V1 → short)',
+                onlyV2,
+                withAlpha(colors.blue, 0.85),
+              );
+        const label =
+                v1on && v2on
+                  ? 'Both on (live)'
+                  : v1on
+                    ? 'Live: V1 only'
+                    : v2on
+                      ? 'Live: V2 only'
+                      : 'Both off';
+        drawPanel(ctx, 2 * colW, 0, colW, h, label, both, withAlpha(colors.accent, 0.95));
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('+', colW, 4);
+        ctx.fillText('=', 2 * colW, 4);
+      },
+      [],
+    );
 
   return (
     <Demo

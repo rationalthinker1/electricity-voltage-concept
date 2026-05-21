@@ -18,6 +18,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
 
 interface Props {
   figure?: string;
@@ -33,136 +36,110 @@ export function HBridgeInverterDemo({ figure }: Props) {
   const Vout_peak = m * V_DC;
   const Vout_rms = Vout_peak / Math.sqrt(2);
 
-  const stateRef = useRef({ m });
-  useEffect(() => {
-    stateRef.current = { m };
-  }, [m]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    let phase = 0;
-
-    function draw() {
-      const { m } = stateRef.current;
-      phase += 0.012;
-
-      ctx.fillStyle = colors.bg;
-      ctx.fillRect(0, 0, w, h);
-
-      const padL = 50,
-        padR = 20,
-        padT = 18,
-        padB = 28;
-      const plotW = w - padL - padR;
-      const plotH = h - padT - padB;
-      const subH = plotH / 2 - 4;
-      const top = padT;
-      const mid = padT + subH + 8;
-
-      // frames
-      ctx.strokeStyle = colors.border;
-      ctx.strokeRect(padL, top, plotW, subH);
-      ctx.strokeRect(padL, mid, plotW, subH);
-
-      // mid-lines (V = 0)
-      ctx.beginPath();
-      ctx.moveTo(padL, top + subH / 2);
-      ctx.lineTo(padL + plotW, top + subH / 2);
-      ctx.moveTo(padL, mid + subH / 2);
-      ctx.lineTo(padL + plotW, mid + subH / 2);
-      ctx.stroke();
-
-      // Window: 2 line cycles
-      const tWindow = 2 / F_OUT; // s
-      const samples = 1200;
-
-      const yTop = (v: number) => top + subH / 2 - (v / V_DC) * (subH / 2 - 4);
-      const yMid = (v: number) => mid + subH / 2 - (v / V_DC) * (subH / 2 - 4);
-
-      // Sine reference (visible on bottom plot, dashed)
-      ctx.strokeStyle = colors.teal;
-      ctx.lineWidth = 1.1;
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath();
-      for (let i = 0; i <= samples; i++) {
-        const t = (i / samples) * tWindow;
-        const ref = m * Math.sin(2 * Math.PI * F_OUT * t + phase);
-        const x = padL + (i / samples) * plotW;
-        const y = yMid(ref * V_DC);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // PWM output (top plot)
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 1.1;
-      ctx.beginPath();
-      let prevY = yTop(V_DC);
-      for (let i = 0; i <= samples; i++) {
-        const t = (i / samples) * tWindow;
-        const ref = m * Math.sin(2 * Math.PI * F_OUT * t + phase);
-        const carrier = 2 * ((F_SW * t) % 1) - 1; // −1..+1
-        const pwm = ref > carrier ? +V_DC : -V_DC;
-        const x = padL + (i / samples) * plotW;
-        const y = yTop(pwm);
-        if (i === 0) {
-          ctx.moveTo(x, y);
-          prevY = y;
-        } else {
-          ctx.lineTo(x, prevY);
-          ctx.lineTo(x, y);
-          prevY = y;
-        }
-      }
-      ctx.stroke();
-
-      // Filtered output (bottom plot) — analytic m · V_DC · sin(...)
-      ctx.strokeStyle = colors.accent;
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
-      for (let i = 0; i <= samples; i++) {
-        const t = (i / samples) * tWindow;
-        const v = m * V_DC * Math.sin(2 * Math.PI * F_OUT * t + phase);
-        const x = padL + (i / samples) * plotW;
-        const y = yMid(v);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Labels
-      ctx.save();
-      ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('+V_DC', padL - 4, yTop(+V_DC));
-      ctx.fillText('0', padL - 4, top + subH / 2);
-      ctx.fillText('−V_DC', padL - 4, yTop(-V_DC));
-      ctx.fillText(`+${(m * V_DC).toFixed(0)} V`, padL - 4, yMid(+m * V_DC));
-      ctx.fillText('0', padL - 4, mid + subH / 2);
-      ctx.fillText(`−${(m * V_DC).toFixed(0)} V`, padL - 4, yMid(-m * V_DC));
-
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`bipolar PWM (carrier ${F_SW} Hz)`, padL + 4, top + 4);
-      ctx.fillText(`LC-filtered output  (${F_OUT} Hz sine)`, padL + 4, mid + 4);
-
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('0', padL, padT + plotH + 4);
-      ctx.fillText(`${(tWindow * 1000).toFixed(0)} ms`, padL + plotW, padT + plotH + 4);
-
-      raf = requestAnimationFrame(draw);
-      ctx.restore();
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const stateRef = useSimState({ m });
+  const setup = useSimLoop(
+      stateRef,
+      ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
+        let phase = ctx0.phase;
+        const { m } = stateRef.current;
+        phase += 0.012;
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, w, h);
+        const padL = 50,
+                padR = 20,
+                padT = 18,
+                padB = 28;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+        const subH = plotH / 2 - 4;
+        const top = padT;
+        const mid = padT + subH + 8;
+        ctx.strokeStyle = colors.border;
+        ctx.strokeRect(padL, top, plotW, subH);
+        ctx.strokeRect(padL, mid, plotW, subH);
+        ctx.beginPath();
+        ctx.moveTo(padL, top + subH / 2);
+        ctx.lineTo(padL + plotW, top + subH / 2);
+        ctx.moveTo(padL, mid + subH / 2);
+        ctx.lineTo(padL + plotW, mid + subH / 2);
+        ctx.stroke();
+        const tWindow = 2 / F_OUT;
+        const samples = 1200;
+        const yTop = (v: number) => top + subH / 2 - (v / V_DC) * (subH / 2 - 4);
+        const yMid = (v: number) => mid + subH / 2 - (v / V_DC) * (subH / 2 - 4);
+        ctx.strokeStyle = colors.teal;
+        ctx.lineWidth = 1.1;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        for (let i = 0; i <= samples; i++) {
+                const t = (i / samples) * tWindow;
+                const ref = m * Math.sin(2 * Math.PI * F_OUT * t + phase);
+                const x = padL + (i / samples) * plotW;
+                const y = yMid(ref * V_DC);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        let prevY = yTop(V_DC);
+        for (let i = 0; i <= samples; i++) {
+                const t = (i / samples) * tWindow;
+                const ref = m * Math.sin(2 * Math.PI * F_OUT * t + phase);
+                const carrier = 2 * ((F_SW * t) % 1) - 1; // −1..+1
+                const pwm = ref > carrier ? +V_DC : -V_DC;
+                const x = padL + (i / samples) * plotW;
+                const y = yTop(pwm);
+                if (i === 0) {
+                  ctx.moveTo(x, y);
+                  prevY = y;
+                } else {
+                  ctx.lineTo(x, prevY);
+                  ctx.lineTo(x, y);
+                  prevY = y;
+                }
+              }
+        ctx.stroke();
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        for (let i = 0; i <= samples; i++) {
+                const t = (i / samples) * tWindow;
+                const v = m * V_DC * Math.sin(2 * Math.PI * F_OUT * t + phase);
+                const x = padL + (i / samples) * plotW;
+                const y = yMid(v);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+        ctx.stroke();
+        ctx.save();
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('+V_DC', padL - 4, yTop(+V_DC));
+        ctx.fillText('0', padL - 4, top + subH / 2);
+        ctx.fillText('−V_DC', padL - 4, yTop(-V_DC));
+        ctx.fillText(`+${(m * V_DC).toFixed(0)} V`, padL - 4, yMid(+m * V_DC));
+        ctx.fillText('0', padL - 4, mid + subH / 2);
+        ctx.fillText(`−${(m * V_DC).toFixed(0)} V`, padL - 4, yMid(-m * V_DC));
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(`bipolar PWM (carrier ${F_SW} Hz)`, padL + 4, top + 4);
+        ctx.fillText(`LC-filtered output  (${F_OUT} Hz sine)`, padL + 4, mid + 4);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('0', padL, padT + plotH + 4);
+        ctx.fillText(`${(tWindow * 1000).toFixed(0)} ms`, padL + plotW, padT + plotH + 4);
+        ctx.restore();
+        ctx0.phase = phase;
+      },
+      [],
+      () => ({ context: { phase: 0 } }),
+    );
 
   return (
     <Demo
