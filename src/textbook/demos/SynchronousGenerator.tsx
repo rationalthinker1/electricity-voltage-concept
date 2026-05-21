@@ -9,11 +9,14 @@
  * Left: stator cross-section with rotating rotor magnet, three stator
  * coil positions drawn around it. Right: three-trace oscilloscope.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { drawHalo } from '@/lib/canvasPrimitives';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+import { withAlpha } from '@/lib/canvasTheme';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
@@ -23,41 +26,37 @@ interface Props {
 const Vpk = 1;
 const TAU3 = (2 * Math.PI) / 3;
 
+interface ScopeSample {
+  t: number;
+  a: number;
+  b: number;
+  c: number;
+}
+
 export function SynchronousGeneratorDemo({ figure }: Props) {
   const [f, setF] = useState(60); // line frequency (Hz)
 
-  const stateRef = useRef({ f });
-  useEffect(() => {
-    stateRef.current.f = f;
-  }, [f]);
+  const stateRef = useSimState({ f });
   const Vrms = Vpk / Math.sqrt(2);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    let simT = 0;
-    let lastT = performance.now();
-    const scope: { t: number; a: number; b: number; c: number }[] = [];
-    const SCOPE_DURATION = 0.06;
-
-    function draw() {
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
       const { f } = stateRef.current;
-      const now = performance.now();
-      let dt = (now - lastT) / 1000;
-      lastT = now;
-      if (dt > 0.1) dt = 0.1;
       // slow visual time at high f so we can see waves
       const slow = f > 60 ? 60 / f : 1;
-      simT += dt * slow;
+      ctx0.simT += dt * slow;
+      const simT = ctx0.simT;
 
       const omega = 2 * Math.PI * f;
       const phase = omega * simT;
       const va = Vpk * Math.cos(phase);
       const vb = Vpk * Math.cos(phase - TAU3);
       const vc = Vpk * Math.cos(phase - 2 * TAU3);
-      scope.push({ t: simT, a: va, b: vb, c: vc });
+      const SCOPE_DURATION = 0.06;
+      ctx0.scope.push({ t: simT, a: va, b: vb, c: vc });
       const tCut = simT - SCOPE_DURATION;
-      while (scope.length && scope[0].t < tCut) scope.shift();
+      while (ctx0.scope.length && ctx0.scope[0].t < tCut) ctx0.scope.shift();
 
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
@@ -81,7 +80,7 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
       ctx.stroke();
 
       // Three stator coil positions at 120° apart
-      const phaseColors = ['#ff3b6e', '#6cc5c2', '#ff6b2a'];
+      const phaseColors = [colors.pink, colors.teal, colors.accent];
       const labels = ['A', 'B', 'C'];
       const baseAngles = [Math.PI / 2, Math.PI / 2 - TAU3, Math.PI / 2 - 2 * TAU3];
       // Each coil's instantaneous induced voltage is cos(phase - k·120°)
@@ -96,11 +95,7 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
           x: sx,
           y: sy,
           radius: 28,
-          color:
-            phaseColors[k] +
-            Math.floor(v * 180)
-              .toString(16)
-              .padStart(2, '0'),
+          color: withAlpha(phaseColors[k], Math.min(1, v)),
           alpha: 1,
           extent: 1,
         });
@@ -187,8 +182,8 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
         ctx.strokeStyle = phaseColors[k];
         ctx.lineWidth = 1.6;
         ctx.beginPath();
-        for (let i = 0; i < scope.length; i++) {
-          const p = scope[i];
+        for (let i = 0; i < ctx0.scope.length; i++) {
+          const p = ctx0.scope[i];
           const x = scopeX + ((p.t - tCut) / SCOPE_DURATION) * scopeW;
           const yv = p[traces[k]];
           const y = cyS - (yv / Vpk) * (scopeH / 2) * 0.85;
@@ -203,16 +198,14 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
       drawLabel(ctx, { text: 'V_C', x: scopeX + 72, y: scopeY + 12, color: phaseColors[2], font: '10px "JetBrains Mono", monospace' });
       drawLabel(ctx, { text: `${f.toFixed(0)} Hz`, x: scopeX + scopeW - 4, y: scopeY + 12, font: '10px "JetBrains Mono", monospace', align: 'right' });
       ctx.restore();
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    () => ({ context: { simT: 0, scope: [] as ScopeSample[] } }),
+  );
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.2'}
+      figure={figure ?? 'Fig. 21.2'}
       title="Three-phase synchronous generator"
       question="One rotor, three coils, 120° apart. What appears on each pair of leads?"
       caption={

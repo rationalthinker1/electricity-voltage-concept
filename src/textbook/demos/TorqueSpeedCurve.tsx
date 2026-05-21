@@ -94,7 +94,7 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
         legendY += 16;
       }
       if (showDC) {
-        const color = '#ff6b2a';
+        const color = colors.accent;
         ctx.strokeStyle = color;
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -112,7 +112,7 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
         legendLine(color, 'DC brushed');
       }
       if (showInd) {
-        const color = '#5baef8';
+        const color = colors.blue;
         ctx.strokeStyle = color;
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -133,7 +133,7 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
         legendLine(color, 'induction');
       }
       if (showSync) {
-        const color = '#6cc5c2';
+        const color = colors.teal;
         ctx.strokeStyle = color;
         ctx.lineWidth = 2.5;
         ctx.beginPath();
@@ -143,7 +143,7 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
         legendLine(color, 'synchronous');
       }
       if (showStep) {
-        const color = '#ff3b6e';
+        const color = colors.pink;
         ctx.strokeStyle = color;
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -167,7 +167,7 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.6'}
+      figure={figure ?? 'Fig. 20.6'}
       title="Torque–speed: four different shapes"
       question="The right motor is the one whose curve crosses your load's curve where you want it to."
       caption={

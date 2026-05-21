@@ -1,7 +1,7 @@
 /**
- * Chapter 17 — Generators and the grid
+ * Chapter 21 — Generators and the grid
  *
- * The inverse of Chapter 16. Spin one of those rotating machines
+ * The inverse of the motors chapter. Spin one of those rotating machines
  * mechanically and you get EMF on its windings. Same topology, scaled
  * up: every dam, every gas turbine, every car alternator, every wind
  * turbine is a generator of this kind. Then how 10 000 of them tie
@@ -25,22 +25,23 @@ import { LoadFollowingDemo } from './demos/LoadFollowing';
 import { InertialResponseDemo } from './demos/InertialResponse';
 import { getChapter } from './data/chapters';
 
-export default function Ch17Generators() {
+export default function Ch21Generators() {
   const chapter = getChapter('generators')!;
   const SOURCES = chapter.sources;
 
   return (
     <ChapterShell chapter={chapter}>
       <p className="chapter-intro">
-        Stand at the base of Hoover Dam and look up. The concrete face holds back 35 cubic
-        kilometres of Lake Mead; the water falls 220 metres through penstocks the diameter of a city
-        bus into the bottom of the canyon, where seventeen rotating machines — each about the size
-        of a two-storey house — turn that gravitational potential energy into roughly two gigawatts
-        of electrical output. The same year you visit, that current will light a kitchen in Los
-        Angeles 400 km away. Every one of those seventeen machines is the same device you met in
-        Chapter 16 (the brushed DC motor, the synchronous AC motor), reversed: instead of consuming
-        current to make torque, you supply torque to make current. Run a motor backwards and you
-        have a generator.
+        Stand at the base of Hoover Dam and look up. The concrete face holds back the full pool of
+        Lake Mead; the water falls roughly 180 metres of hydraulic head through penstocks the
+        diameter of a city bus into the bottom of the canyon, where seventeen rotating machines —
+        each about the size of a two-storey house — turn that gravitational potential energy into
+        on the order of two gigawatts of electrical output that lights kitchens hundreds of
+        kilometres away
+        <Cite id="grainger-power-systems-2003" in={SOURCES} />. Every one of those seventeen
+        machines is the same device you met in the motors chapter (the brushed DC motor, the
+        synchronous AC motor), reversed: instead of consuming current to make torque, you supply
+        torque to make current. Run a motor backwards and you have a generator.
       </p>
       <p className="mb-prose-3">
         Michael Faraday discovered this in 1831 by sliding a bar magnet through a coil of wire and
@@ -56,7 +57,7 @@ export default function Ch17Generators() {
       <h2 className="chapter-h2">Run a motor backwards</h2>
 
       <p className="mb-prose-3">
-        We left Chapter 16 with the synchronous motor: a rotor with its own field, locked to a
+        We left the motors chapter with the synchronous motor: a rotor with its own field, locked to a
         rotating stator field, spinning at exactly <InlineMath tex="n_s = 120\, f / p" />. The
         rotor's field induces a sinusoidal flux through each stator coil, but a moment of thought
         reveals that the cause-and-effect relationship was a matter of choice. The stator's rotating
@@ -184,7 +185,7 @@ export default function Ch17Generators() {
         Now scale up. Instead of one stator coil, wind three coils 120° apart around the bore. Each
         coil sees the same rotating rotor flux, but offset by 120° of mechanical (or electrical)
         angle from its neighbours. The three terminal voltages are three sinusoids 120° apart in
-        phase — exactly the three-phase AC that we met in Chapter 16 and that every utility
+        phase — exactly the three-phase AC that we met in the motors chapter and that every utility
         transmission line carries
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
@@ -208,8 +209,8 @@ export default function Ch17Generators() {
         frequency (in Hz), <strong className="text-text font-medium">n</strong> is the rotor's
         mechanical rotation speed (in revolutions per minute), and{' '}
         <strong className="text-text font-medium">p</strong> is the machine's total pole count (a
-        dimensionless even integer). This is the inverse of the synchronous-speed formula from
-        Chapter 16.
+        dimensionless even integer). This is the inverse of the synchronous-speed formula from the
+        motors chapter.
       </p>
       <p className="mb-prose-3">
         At 3600 RPM with 2 poles, <InlineMath tex="f = 60\ \text{Hz}" /> — the North American grid
@@ -384,16 +385,16 @@ export default function Ch17Generators() {
       <h2 className="chapter-h2">The alternator under your car hood</h2>
 
       <p className="mb-prose-3">
-        Shrink the synchronous generator by four orders of magnitude and you get the alternator on
-        every internal- combustion engine. The rotor is a{' '}
+        Shrink the synchronous generator by five or six orders of magnitude and you get the
+        alternator on every internal-combustion engine. The rotor is a{' '}
         <Term def="A multi-pole rotor with interlocking 'claws' from each end, formed from pressed steel and energised by a single DC field coil in the centre. Cheap to mass-produce; standard in automotive alternators.">
           claw-pole
         </Term>{' '}
         design — typically 6 pole-pairs of interlocking sheet-steel fingers, energised by a single
         DC field coil running between them. The stator carries three windings. Mechanical speed is
         set by the engine via a belt: idle ≈ 750 RPM crank → ~1900 RPM alternator (2.5:1 pulley
-        ratio); highway cruise ≈ 2000 RPM crank → ~5000 RPM alternator. With 6 pole-pairs that's 300
-        Hz electrical at idle, 500 Hz at cruise
+        ratio); highway cruise ≈ 2000 RPM crank → ~5000 RPM alternator. With 6 pole-pairs that's
+        roughly 190 Hz electrical at idle, 500 Hz at cruise
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -409,8 +410,9 @@ export default function Ch17Generators() {
       <p className="mb-prose-3">
         The rectified output is the <em className="text-text italic">maximum</em> of the three
         phases' rectified envelopes at each instant — six humps per electrical cycle. Ripple is
-        naturally small (peak-to-valley ~14 % of average for a 3-phase bridge), and the lead-acid
-        battery sitting across the bus filters whatever remains. The whole assembly — generator,
+        naturally small (peak-to-valley ~14 % of peak, equivalently ~8 % of the DC average for a
+        3-phase full-wave bridge), and the lead-acid battery sitting across the bus filters
+        whatever remains. The whole assembly — generator,
         rectifier bridge, regulator, brushes on the rotor's two slip rings — fits in a package the
         size of a pineapple and lives bolted to the side of the engine block for the life of the car
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
@@ -504,11 +506,11 @@ export default function Ch17Generators() {
       <p className="mb-prose-3">
         Once a generator is on the bus, it has to do its share of the load. And here the grid's
         defining property becomes the controlling constraint:{' '}
-        <em className="text-text italic">electric energy cannot, at grid scale, be stored.</em>{' '}
-        (Pumped hydro stores a few hours' worth at a steep round-trip efficiency hit. Battery
-        storage is growing but is still &lt;0.1 % of installed grid capacity globally.) Generation
-        must match load second-by-second, all the way down to the microsecond at which a kitchen
-        toaster engages somewhere
+        <em className="text-text italic">electric energy cannot, at grid scale, be stored cheaply.</em>{' '}
+        Pumped hydro stores a few hours' worth at a steep round-trip efficiency hit, and
+        utility-scale battery storage is growing rapidly but is still a small fraction of installed
+        grid capacity. Generation must match load second-by-second, all the way down to the
+        microsecond at which a kitchen toaster engages somewhere
         <Cite id="kundur-1994-power-stability" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -664,7 +666,7 @@ export default function Ch17Generators() {
 
       <p className="mb-prose-3">
         Faraday's <em className="text-text italic">ℰ = − dΦ/dt</em> says that a moving magnet in a
-        coil makes voltage. Wrap that into the rotational geometry of Chapter 16, drive the rotor
+        coil makes voltage. Wrap that into the rotational geometry of the motors chapter, drive the rotor
         mechanically instead of electrically, and you get a generator — the inverse of every machine
         in the last chapter. Three stator windings 120° apart give you the three-phase AC that the
         whole continental grid runs on. Shrink the same topology, add a 6-diode bridge, and you have
@@ -778,9 +780,10 @@ export default function Ch17Generators() {
             and provides voltage support and spinning reserve to the Phoenix, Las Vegas, and Los
             Angeles load centres. The whole installation illustrates a property of hydro that
             thermal plants lack: nearly the entire kinetic energy of the water converts to
-            electricity, with synchronous-generator efficiencies above 0.97 and overall
-            water-to-wire efficiency around 0.90
-            <Cite id="grainger-power-systems-2003" in={SOURCES} />.
+            electricity, with large synchronous machines hitting efficiencies in the high nineties
+            and overall water-to-wire conversion typically around 0.85–0.90 for installations of
+            this class
+            <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
         </CaseStudy>
 
@@ -803,7 +806,13 @@ export default function Ch17Generators() {
             { label: 'Grid interface', value: <>full-power back-to-back inverter</> },
             {
               label: 'Typical rating',
-              value: <>2–4 MW for on-shore; 8–15 MW for current off-shore designs</>,
+              value: (
+                <>
+                  a few MW for on-shore; modern off-shore designs reach into the double-digit MW
+                  range{' '}
+                  <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
+                </>
+              ),
             },
           ]}
         >
@@ -917,7 +926,7 @@ export default function Ch17Generators() {
             Geometry. A coil rotating in a fixed field naturally produces a sinusoidal voltage — the
             time derivative of a cosine flux is a sine EMF. To get steady DC out of the same machine
             you have to either commutate mechanically (brushes + commutator, with all the wear
-            problems of Chapter 16's brushed motor) or commutate electronically with a diode
+            problems of the motors chapter's brushed motor) or commutate electronically with a diode
             rectifier downstream. For utility transmission, AC has the additional huge advantage
             that it can be transformed up to high voltage for transmission and back down to
             safe-handling voltage for delivery — something that's only become practical for DC in
@@ -957,7 +966,8 @@ export default function Ch17Generators() {
         <FAQItem q="Why do inverter-based renewables 'lack inertia,' and why does the grid care?">
           <p>
             Synchronous generators store kinetic energy in their rotors — a 600 MW unit at 1800 RPM
-            stores tens of megajoules in its spinning mass. When grid load suddenly exceeds
+            stores on the order of a few gigajoules in its spinning mass. When grid load suddenly
+            exceeds
             generation, that stored kinetic energy converts to electrical output for the first
             second or two, smoothing the frequency dip while governors respond. Inverter-based
             renewables (wind, solar) have no equivalent stored kinetic energy on the grid side — the
@@ -987,11 +997,13 @@ export default function Ch17Generators() {
             The terminal-voltage difference is twice the peak phase voltage (roughly 2√2 × V_rms).
             The only impedance limiting the resulting circulating current is the sum of the
             generator's transient reactance and the grid's source impedance — typically a few
-            percent of rated impedance. So the transient current is roughly 20–50 times rated, and
-            it lasts long enough (cycles to seconds) to mechanically deform the stator winding's
-            end-turns and to jerk the rotor's shaft hard enough to potentially shear the coupling.
-            This is why every modern synchronisation system has a hardwired sync-check relay that
-            vetoes any breaker close attempt that fails its window
+            percent of rated impedance. So the transient current is many times the machine's rated
+            current
+            <Cite id="kundur-1994-power-stability" in={SOURCES} />, and it lasts long enough
+            (cycles to seconds) to mechanically deform the stator winding's end-turns and to jerk
+            the rotor's shaft hard enough to potentially shear the coupling. This is why every
+            modern synchronisation system has a hardwired sync-check relay that vetoes any breaker
+            close attempt that fails its window
             <Cite id="kundur-1994-power-stability" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1057,11 +1069,11 @@ export default function Ch17Generators() {
             Energy time-shifting. At off-peak times (say 3 AM) when generation exceeds demand,
             surplus electrical energy runs the hydro units in reverse — pumping water from a lower
             reservoir up to a higher one. At peak times the water runs back down through the same
-            units now operated as generators. Round-trip efficiency is about 75–85 %, which sounds
-            poor compared to a battery (~90–95 %), but pumped hydro is the only storage technology
-            that scales economically into the gigawatt-hour range. It's effectively the only
-            large-scale grid-storage technology in service today, providing a few hours of
-            peak-shaving for many continental grids
+            units now operated as generators. Round-trip efficiency is somewhat lower than a
+            battery's, but pumped hydro is one of the few storage technologies that scales
+            economically into the gigawatt-hour range and historically the only one with
+            significant deployed capacity, providing a few hours of peak-shaving for many
+            continental grids
             <Cite id="grainger-power-systems-2003" in={SOURCES} />.
           </p>
         </FAQItem>

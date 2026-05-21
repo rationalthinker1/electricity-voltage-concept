@@ -85,7 +85,7 @@ export function SynchronousMotorDemo({ figure }: Props) {
       const ny = cy - rsin * rotR;
       const sxx = cx - rcos * rotR;
       const syy = cy + rsin * rotR;
-      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.strokeStyle = withAlpha(colors.text, 0.4);
       ctx.lineWidth = 14;
       ctx.lineCap = 'round';
       ctx.beginPath();
@@ -112,7 +112,7 @@ export function SynchronousMotorDemo({ figure }: Props) {
       ctx.fillStyle = withAlpha(colors.textDim, 0.75);
       drawLabel(ctx, { text: 'field (dashed) = rotor (locked)', x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       const stallWarn = Math.abs(loadAngleDeg) > 80 ? '  ← near pull-out!' : '';
-      ctx.fillStyle = Math.abs(loadAngleDeg) > 80 ? '#ff6b2a' : withAlpha(colors.textDim, 0.75);
+      ctx.fillStyle = Math.abs(loadAngleDeg) > 80 ? colors.accent : withAlpha(colors.textDim, 0.75);
       drawLabel(ctx, { text: `δ = ${loadAngleDeg.toFixed(0)}°${stallWarn}`, x: w - 12, y: 12, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       ctx0.statorAng = statorAng;
     },
@@ -122,7 +122,7 @@ export function SynchronousMotorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.4'}
+      figure={figure ?? 'Fig. 20.4'}
       title="Synchronous motor — locked to the line"
       question="If the rotor doesn't slip, how does it produce torque?"
       caption={

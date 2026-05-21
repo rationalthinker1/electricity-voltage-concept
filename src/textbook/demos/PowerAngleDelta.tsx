@@ -156,7 +156,7 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.8'}
+      figure={figure ?? 'Fig. 21.8'}
       title="Power-angle curve and the pull-out limit"
       question="If the turbine pushes harder than the grid can absorb, what happens to the rotor?"
       caption={
