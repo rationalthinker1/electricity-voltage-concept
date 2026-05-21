@@ -907,13 +907,11 @@ export default function Ch41EVPowertrain() {
       <Formula tex="F_{\text{climb}} = m \times g \times \sin(\theta)" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          F<sub>climb</sub>
-        </strong>{' '}
+        <InlineMath tex="F_{\text{climb}}" />{' '}
         is the climbing component of weight along the road surface in newtons,{' '}
-        <strong className="text-text font-medium">m</strong> and{' '}
-        <strong className="text-text font-medium">g</strong> are as before, and{' '}
-        <strong className="text-text font-medium">θ</strong> is the road grade angle (in radians or
+        <InlineMath tex="m" /> and{' '}
+        <InlineMath tex="g" /> are as before, and{' '}
+        <InlineMath tex="\theta" /> is the road grade angle (in radians or
         degrees). On a 6% grade (θ ≈ 3.4°), sin θ ≈ 0.06, so a 2000 kg car has
         <InlineMath tex="F_{\text{climb}} \approx 1180\ \text{N}" /> — about seven times the rolling
         friction and four times the highway aero drag. Hills dominate flat-road physics quickly.
@@ -922,11 +920,9 @@ export default function Ch41EVPowertrain() {
       <Formula tex="F_a = m \times a" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          F<sub>a</sub>
-        </strong>{' '}
-        is the inertial force in newtons, <strong className="text-text font-medium">m</strong> is
-        vehicle mass in kilograms, and <strong className="text-text font-medium">a</strong> is
+        <InlineMath tex="F_a" />{' '}
+        is the inertial force in newtons, <InlineMath tex="m" /> is
+        vehicle mass in kilograms, and <InlineMath tex="a" /> is
         instantaneous acceleration in m/s². A 0.5g launch on a 2000 kg car needs
         <InlineMath tex="2000 \times 4.9 = 9800\ \text{N}" /> of tractive force — about 35 times the
         highway aero drag. That is why peak-acceleration current is the sizing constraint on every
@@ -936,11 +932,9 @@ export default function Ch41EVPowertrain() {
       <Formula tex="P_{\text{wheel}} = (F_{\text{roll}} + F_{\text{drag}} + F_{\text{climb}} + F_a) \times v" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          P<sub>wheel</sub>
-        </strong>{' '}
+        <InlineMath tex="P_{\text{wheel}}" />{' '}
         is mechanical power delivered at the contact patch in watts, the four F terms are the
-        resistive forces in newtons, and <strong className="text-text font-medium">v</strong> is
+        resistive forces in newtons, and <InlineMath tex="v" /> is
         vehicle speed in m/s. For a Model 3 cruising flat at 110 km/h (30.6 m/s), F<sub>roll</sub> +
         F<sub>drag</sub> ≈ 160 + 290 ≈ 450 N, and{' '}
         <InlineMath tex="P_{\text{wheel}} \approx 450 \times 30.6 \approx 13.8\ \text{kW}" />. That
@@ -1017,8 +1011,8 @@ export default function Ch41EVPowertrain() {
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">kWh</strong> is one kilowatt-hour (a
         kilowatt held for an hour), <strong className="text-text font-medium">J</strong> is one
-        joule (one watt-second), and the factor
-        <strong className="text-text font-medium"> 3.6 × 10⁶</strong> comes from 1000 W × 3600 s.
+        joule (one watt-second), and the factor{' '}
+        <InlineMath tex="3.6 \times 10^{6}" /> comes from 1000 W × 3600 s.
         The unit is large enough that household bills land in two- and three-digit ranges instead of
         seven- and eight-digit ones. Cite <Cite id="codata-2018" in={SOURCES} /> for the underlying
         SI definitions.
@@ -1074,20 +1068,14 @@ export default function Ch41EVPowertrain() {
       <Formula tex="E_{\text{delivered}} = \int_0^T V_{\text{dc}}(t) \times I_{\text{dc}}(t)\, dt" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          E<sub>delivered</sub>
-        </strong>{' '}
+        <InlineMath tex="E_{\text{delivered}}" />{' '}
         is the energy that flowed across the coupler during the session (in joules; divide by
         3.6×10⁶ for kWh),{' '}
-        <strong className="text-text font-medium">
-          V<sub>dc</sub>(t)
-        </strong>{' '}
+        <InlineMath tex="V_{\text{dc}}(t)" />{' '}
         is the instantaneous DC bus voltage (volts),{' '}
-        <strong className="text-text font-medium">
-          I<sub>dc</sub>(t)
-        </strong>{' '}
+        <InlineMath tex="I_{\text{dc}}(t)" />{' '}
         is the instantaneous DC bus current (amperes), and{' '}
-        <strong className="text-text font-medium">T</strong> is the session duration (seconds). The
+        <InlineMath tex="T" /> is the session duration (seconds). The
         integration is done in real time by the charger's metering circuit — typically certified to
         ±0.5% per accuracy class 0.5 of OIML R 46, the same class used for residential utility
         meters.
@@ -1117,22 +1105,14 @@ export default function Ch41EVPowertrain() {
       <Formula tex="t_{\text{cruise}} = E_{\text{pack}} \times \eta_{\text{drive}} / P_{\text{wheel}}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          t<sub>cruise</sub>
-        </strong>{' '}
+        <InlineMath tex="t_{\text{cruise}}" />{' '}
         is the cruise time at constant speed in hours,{' '}
-        <strong className="text-text font-medium">
-          E<sub>pack</sub>
-        </strong>{' '}
+        <InlineMath tex="E_{\text{pack}}" />{' '}
         is pack energy in kWh,{' '}
-        <strong className="text-text font-medium">
-          η<sub>drive</sub>
-        </strong>{' '}
+        <InlineMath tex="\eta_{\text{drive}}" />{' '}
         is the dimensionless overall plug-to-wheel efficiency (cell out × inverter × motor ×
         gearbox, about 0.88 for a modern PMSM-driven EV at constant cruise), and{' '}
-        <strong className="text-text font-medium">
-          P<sub>wheel</sub>
-        </strong>{' '}
+        <InlineMath tex="P_{\text{wheel}}" />{' '}
         is mechanical power demand at the wheels in kW. Plugging in the Model 3 numbers from §Stage
         7:
       </p>

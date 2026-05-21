@@ -1356,10 +1356,10 @@ export default function Ch32HouseSafety() {
           <p>
             Only obliquely: every milliampere threshold on the IEC 60479-1 chart — 1 mA, 5 mA, 10
             mA, 100 mA — is a count of elementary charges per second crossing a section of body
-            tissue, scaled by the CODATA 2018 value of the elementary charge, e = 1.602176634×10⁻¹⁹
-            C exactly
-            <Cite id="codata-2018" in={SOURCES} />. A 5 mA GFCI threshold is, in fundamental units,
-            5×10⁻³ / 1.602×10⁻¹⁹ ≈ 3×10¹⁶ charges per second crossing the cardiac muscle. The
+            tissue, scaled by the CODATA 2018 value of the elementary charge,{' '}
+            <InlineMath tex="e = 1.602176634\times 10^{-19}\,\text{C}" /> exactly
+            <Cite id="codata-2018" in={SOURCES} />. A 5 mA GFCI threshold is, in fundamental units,{' '}
+            <InlineMath tex="5\times 10^{-3} / 1.602\times 10^{-19} \approx 3\times 10^{16}" /> charges per second crossing the cardiac muscle. The
             numbers in the safety chart and the numbers on the breaker label ultimately reduce to
             the same constant.
           </p>
