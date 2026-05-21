@@ -280,7 +280,7 @@ export function BuildAResistorDemo({ figure }: Props) {
           <button
             key={k}
             type="button"
-            className={`mini-toggle${k === familyKey ? 'on' : ''}`}
+            className={`mini-toggle${k === familyKey ? ' on' : ''}`}
             onClick={() => setFamilyKey(k)}
             aria-pressed={k === familyKey}
           >

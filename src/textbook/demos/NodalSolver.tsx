@@ -22,17 +22,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtCurrent } from "@/lib/formatters";
+import { useCircuitCache } from '@/lib/useCircuitCache';
 
 interface Props {
   figure?: string;
-}
-
-interface StaticCacheEntry {
-  key: string;
-  canvas: HTMLCanvasElement;
 }
 
 function solveNodal(V1: number, V2: number, R1: number, R2: number, R3: number) {
@@ -74,83 +70,73 @@ export function NodalSolverDemo({ figure }: Props) {
     stateRef.current = { V1, V2, R1, R2, R3, nodal };
   }, [V1, V2, R1, R2, R3, nodal.V_A, nodal.I_R1, nodal.I_R2, nodal.I_R3]);
 
-  const cacheRef = useRef<StaticCacheEntry | null>(null);
+  // Static schematic. Re-bakes on slider change or resize.
+  const getStaticSchematic = useCircuitCache(
+    (sw, sh, _dpr) => ({
+      elements: buildNodalSchematic(sw, sh, V1, V2, R1, R2, R3) as CircuitElement[],
+    }),
+    [V1, V2, R1, R2, R3],
+  );
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, dpr } = info;
     let raf = 0;
 
     function draw() {
-      const { V1, V2, R1, R2, R3, nodal } = stateRef.current;
+      const { nodal } = stateRef.current;
 
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Cache key: invalidates on resize/DPR or any slider movement. Nothing
-      // animates per-frame in this demo, so the whole schematic + readouts
-      // can live in the offscreen canvas.
-      const cacheKey =
-        `${w}x${h}@${dpr}|${V1.toFixed(2)}|${V2.toFixed(2)}` +
-        `|${R1.toFixed(0)}|${R2.toFixed(0)}|${R3.toFixed(0)}` +
-        `|${nodal.V_A.toFixed(4)}|${nodal.I_R1.toFixed(6)}|${nodal.I_R2.toFixed(6)}|${nodal.I_R3.toFixed(6)}`;
-      if (cacheRef.current?.key !== cacheKey) {
-        const padX = 56;
-        const yTop = h / 2 - 70;
-        const yBot = h / 2 + 70;
-        const xLeft = padX;
-        const xRight = w - padX;
-        const xMid = (xLeft + xRight) / 2;
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
-        const elements = buildNodalSchematic(w, h, V1, V2, R1, R2, R3);
-        const off = renderCircuitToCanvas({ elements }, w, h, dpr);
-        const offCtx = off.getContext('2d');
-        if (offCtx) {
-          // Node A label + V_A readout sits just above the top rail.
-          offCtx.save();
-          offCtx.globalAlpha = 0.85;
-          offCtx.fillStyle = getCanvasColors().text;
-          offCtx.font = 'bold 12px "JetBrains Mono", monospace';
-          offCtx.textAlign = 'left';
-          offCtx.textBaseline = 'bottom';
-          offCtx.fillText(`A   V_A = ${nodal.V_A.toFixed(3)} V`, xMid + 10, yTop - 6);
+      // Per-frame text overlay (node labels, current readouts, KCL caption).
+      // Used to be baked into the offscreen canvas; pulled out so the cache
+      // is a plain CircuitSpec. Costs a dozen ctx calls — negligible.
+      const padX = 56;
+      const yTop = h / 2 - 70;
+      const xLeft = padX;
+      const xRight = w - padX;
+      const xMid = (xLeft + xRight) / 2;
 
-          // Top-left caption pinned to the corner.
-          offCtx.restore();
-          offCtx.save();
-          offCtx.globalAlpha = 0.75;
-          offCtx.fillStyle = getCanvasColors().textDim;
-          offCtx.font = '10px "JetBrains Mono", monospace';
-          offCtx.textAlign = 'left';
-          offCtx.textBaseline = 'top';
-          offCtx.fillText('Bottom rail = reference (V = 0)', 12, 10);
-          offCtx.fillText('KCL at A: (V₁−V_A)/R₁ + (V₂−V_A)/R₃ = V_A/R₂', 12, 24);
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = getCanvasColors().text;
+      ctx.font = 'bold 12px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(`A   V_A = ${nodal.V_A.toFixed(3)} V`, xMid + 10, yTop - 6);
+      ctx.restore();
 
-          // Branch-current annotations above R1 / R3 and beside R2.
-          offCtx.restore();
-          offCtx.save();
-          offCtx.globalAlpha = 0.95;
-          offCtx.fillStyle = getCanvasColors().blue;
-          offCtx.font = '10px "JetBrains Mono", monospace';
-          offCtx.textAlign = 'center';
-          offCtx.textBaseline = 'bottom';
-          offCtx.fillText(`I_R₁ = ${fmtCurrent(nodal.I_R1)}`, (xLeft + xMid) / 2, yTop - 14);
-          offCtx.fillText(`I_R₃ = ${fmtCurrent(nodal.I_R3)}`, (xMid + xRight) / 2, yTop - 14);
-          offCtx.textBaseline = 'middle';
-          offCtx.textAlign = 'left';
-          offCtx.fillText(`I_R₂ = ${fmtCurrent(nodal.I_R2)}`, xMid + 14, h / 2);
-          void yBot;
-          offCtx.restore();
-        }
-        cacheRef.current = { key: cacheKey, canvas: off };
-      }
-      // Single blit replaces the entire schematic + text overlay each frame.
-      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('Bottom rail = reference (V = 0)', 12, 10);
+      ctx.fillText('KCL at A: (V₁−V_A)/R₁ + (V₂−V_A)/R₃ = V_A/R₂', 12, 24);
+      ctx.restore();
+
+      ctx.save();
+      ctx.globalAlpha = 0.95;
+      ctx.fillStyle = getCanvasColors().blue;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(`I_R₁ = ${fmtCurrent(nodal.I_R1)}`, (xLeft + xMid) / 2, yTop - 14);
+      ctx.fillText(`I_R₃ = ${fmtCurrent(nodal.I_R3)}`, (xMid + xRight) / 2, yTop - 14);
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'left';
+      ctx.fillText(`I_R₂ = ${fmtCurrent(nodal.I_R2)}`, xMid + 14, h / 2);
+      ctx.restore();
 
       raf = requestAnimationFrame(draw);
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [getStaticSchematic]);
 
   // Sanity-check the two methods agree.
   const meshSumCheck = Math.abs(nodal.I_R2 - mesh.I_R2);

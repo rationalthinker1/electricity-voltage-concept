@@ -18,17 +18,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtResistance } from "@/lib/formatters";
+import { useCircuitCache } from '@/lib/useCircuitCache';
 
 interface Props {
   figure?: string;
-}
-
-interface StaticCacheEntry {
-  key: string;
-  canvas: HTMLCanvasElement;
 }
 
 export function TheveninEquivalentDemo({ figure }: Props) {
@@ -51,7 +47,21 @@ export function TheveninEquivalentDemo({ figure }: Props) {
     stateRef.current = { Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload };
   }, [Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload]);
 
-  const cacheRef = useRef<StaticCacheEntry | null>(null);
+  // Static schematic backdrop — re-bakes when any slider value (and therefore
+  // any component label) changes, or when the canvas resizes.
+  const getStaticSchematic = useCircuitCache(
+    (sw, sh, _dpr) => ({
+      elements: [
+        ...buildOriginalElements(0, 22, sw / 2, sh - 22, {
+          Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload,
+        }),
+        ...buildTheveninElements(sw / 2, 22, sw / 2, sh - 22, {
+          Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload,
+        }),
+      ] as CircuitElement[],
+    }),
+    [Vs, R1, R2, Is, RL, Vth, Rth, Vload, Iload],
+  );
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, dpr } = info;
@@ -65,48 +75,34 @@ export function TheveninEquivalentDemo({ figure }: Props) {
 
       const splitX = w / 2;
 
-      // Cache key: invalidates on resize/DPR or any slider movement
-      // (all parameters feed component labels or load-readout text).
-      const cacheKey =
-        `${w}x${h}@${dpr}|${st.Vs.toFixed(3)}|${st.R1.toFixed(2)}|${st.R2.toFixed(2)}` +
-        `|${st.Is.toFixed(6)}|${st.RL.toFixed(2)}|${st.Vth.toFixed(4)}|${st.Rth.toFixed(4)}` +
-        `|${st.Vload.toFixed(4)}|${st.Iload.toFixed(6)}`;
-      if (cacheRef.current?.key !== cacheKey) {
-        const elements: CircuitElement[] = [
-          ...buildOriginalElements(0, 22, splitX, h - 22, st),
-          ...buildTheveninElements(splitX, 22, splitX, h - 22, st),
-        ];
-        const off = renderCircuitToCanvas({ elements }, w, h, dpr);
-        const offCtx = off.getContext('2d');
-        if (offCtx) {
-          // Panel titles, dividing line, and load-side V_L/I_L readouts —
-          // all functions of (w,h,sliders) so they belong in the cache.
-          offCtx.strokeStyle = 'rgba(255,255,255,0.10)';
-          offCtx.beginPath();
-          offCtx.moveTo(splitX, 14);
-          offCtx.lineTo(splitX, h - 14);
-          offCtx.stroke();
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
-          offCtx.fillStyle = withAlpha(getCanvasColors().textDim, 0.85);
-          offCtx.font = '10px "JetBrains Mono", monospace';
-          offCtx.textAlign = 'center';
-          offCtx.textBaseline = 'top';
-          offCtx.fillText('Original network', splitX / 2, 6);
-          offCtx.fillText('Thévenin equivalent', splitX + splitX / 2, 6);
+      // Panel titles + dividing line + load-side readouts. Used to be baked
+      // into the offscreen canvas after renderCircuitToCanvas; now drawn
+      // per-frame so the cache can stay a plain CircuitSpec. The cost is a
+      // handful of ctx calls, negligible next to the cache blit it replaces.
+      ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+      ctx.beginPath();
+      ctx.moveTo(splitX, 14);
+      ctx.lineTo(splitX, h - 14);
+      ctx.stroke();
 
-          drawLoadReadouts(offCtx, 0, 22, splitX, h - 22, st);
-          drawLoadReadouts(offCtx, splitX, 22, splitX, h - 22, st);
-        }
-        cacheRef.current = { key: cacheKey, canvas: off };
-      }
-      // Single blit replaces ~30 strokes/fills per frame.
-      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+      ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.85);
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('Original network', splitX / 2, 6);
+      ctx.fillText('Thévenin equivalent', splitX + splitX / 2, 6);
+
+      drawLoadReadouts(ctx, 0, 22, splitX, h - 22, st);
+      drawLoadReadouts(ctx, splitX, 22, splitX, h - 22, st);
 
       raf = requestAnimationFrame(draw);
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [getStaticSchematic]);
 
   return (
     <Demo

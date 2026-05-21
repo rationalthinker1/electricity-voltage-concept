@@ -18,16 +18,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
-import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useCanvasCache } from '@/lib/useCanvasCache';
 
 interface Props {
   figure?: string;
-}
-
-interface StaticCacheEntry {
-  key: string;
-  canvas: HTMLCanvasElement;
 }
 
 interface Carrier {
@@ -51,7 +47,93 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
     stateRef.current = { realPicture };
   }, [realPicture]);
 
-  const cacheRef = useRef<StaticCacheEntry | null>(null);
+  // Static backdrop: loop wire + battery + polarity glyphs + bulb glass /
+  // glow / filament squiggle. Doesn't fit useCircuitCache because the bulb's
+  // radial gradient + 60-point filament polyline aren't expressible as
+  // CircuitElement[]. Stays static across all React state — no deps.
+  const getStatic = useCanvasCache(
+    (octx, sw, sh, _dpr) => {
+      const batteryX = 90;
+      const bulbX = sw - 100;
+      const cyTop = sh * 0.32;
+      const cyBot = sh * 0.78;
+      const bulbR = 30;
+      const path: Array<[number, number]> = [
+        [batteryX + 18, cyTop],
+        [bulbX - bulbR, cyTop],
+        [bulbX, cyTop],
+        [bulbX, cyBot],
+        [bulbX - bulbR, cyBot],
+        [batteryX + 18, cyBot],
+      ];
+      const wirePath = path.map(([x, y]) => ({ x, y }));
+
+      const schematic: CircuitElement[] = [
+        {
+          kind: 'wire',
+          points: wirePath,
+          color: withAlpha(getCanvasColors().accent, 0.55),
+          lineWidth: 3.5,
+        },
+        {
+          kind: 'battery',
+          at: { x: batteryX, y: (cyTop + cyBot) / 2 },
+          color: 'rgba(255,255,255,0)',
+          label: 'battery',
+          labelOffset: { x: 0, y: 0 },
+          leadLength: (cyBot - cyTop) / 2,
+          negativeColor: '#ecebe5',
+          negativePlateLength: 20,
+          plateGap: (cyBot - cyTop) / 2,
+          positiveColor: '#ecebe5',
+          positivePlateLength: 36,
+        },
+      ];
+      drawCircuit(octx, { elements: schematic });
+
+      // Battery polarity glyphs.
+      octx.fillStyle = '#ff3b6e';
+      octx.font = 'bold 16px "JetBrains Mono", monospace';
+      octx.textAlign = 'center';
+      octx.textBaseline = 'middle';
+      octx.fillText('+', batteryX - 30, cyTop);
+      octx.fillStyle = '#5baef8';
+      octx.fillText('−', batteryX - 30, cyBot);
+
+      // Bulb (glow halo, glass envelope, filament squiggle, label).
+      const cy = (cyTop + cyBot) / 2;
+      const glow = octx.createRadialGradient(bulbX, cy, 0, bulbX, cy, bulbR * 2.6);
+      glow.addColorStop(0, 'rgba(255,200,120,0.35)');
+      glow.addColorStop(1, 'rgba(255,200,120,0)');
+      octx.fillStyle = glow;
+      octx.beginPath();
+      octx.arc(bulbX, cy, bulbR * 2.6, 0, Math.PI * 2);
+      octx.fill();
+      octx.strokeStyle = 'rgba(255,200,120,0.85)';
+      octx.lineWidth = 1.5;
+      octx.beginPath();
+      octx.arc(bulbX, cy, bulbR, 0, Math.PI * 2);
+      octx.stroke();
+      octx.strokeStyle = 'rgba(255,200,120,0.95)';
+      octx.lineWidth = 1.8;
+      octx.beginPath();
+      const turns = 6;
+      for (let i = 0; i <= 60; i++) {
+        const f = i / 60;
+        const yy = cyTop + 8 + (cyBot - cyTop - 16) * f;
+        const xx = bulbX + Math.sin(f * turns * Math.PI) * 8;
+        if (i === 0) octx.moveTo(xx, yy);
+        else octx.lineTo(xx, yy);
+      }
+      octx.stroke();
+      octx.fillStyle = 'rgba(255,200,120,0.85)';
+      octx.font = '10px "JetBrains Mono", monospace';
+      octx.textAlign = 'center';
+      octx.textBaseline = 'top';
+      octx.fillText('bulb', bulbX, cy + bulbR + 8);
+    },
+    [],
+  );
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, dpr } = info;
@@ -75,7 +157,6 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
       [bulbX - bulbR, cyBot], // out the bulb bottom
       [batteryX + 18, cyBot], // bottom wire back
     ];
-    const wirePath = path.map(([x, y]) => ({ x, y }));
     // Cumulative arc lengths
     const segLen: number[] = [];
     let totalLen = 0;
@@ -120,88 +201,13 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
       }
     }
 
-    function buildStaticBackdrop(): HTMLCanvasElement {
-      // Static schematic backdrop: loop wire + battery primitive, plus polarity glyphs and bulb glass/filament.
-      const schematic: CircuitElement[] = [
-        {
-          kind: 'wire',
-          points: wirePath,
-          color: withAlpha(getCanvasColors().accent, 0.55),
-          lineWidth: 3.5,
-        },
-        {
-          kind: 'battery',
-          at: { x: batteryX, y: (cyTop + cyBot) / 2 },
-          color: 'rgba(255,255,255,0)',
-          label: 'battery',
-          labelOffset: { x: 0, y: 0 },
-          leadLength: (cyBot - cyTop) / 2,
-          negativeColor: '#ecebe5',
-          negativePlateLength: 20,
-          plateGap: (cyBot - cyTop) / 2,
-          positiveColor: '#ecebe5',
-          positivePlateLength: 36,
-        },
-      ];
-      const off = renderCircuitToCanvas({ elements: schematic }, w, h, dpr);
-      const oc = off.getContext('2d');
-      if (!oc) return off;
-      oc.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      // Battery polarity glyphs.
-      oc.fillStyle = '#ff3b6e';
-      oc.font = 'bold 16px "JetBrains Mono", monospace';
-      oc.textAlign = 'center';
-      oc.textBaseline = 'middle';
-      oc.fillText('+', batteryX - 30, cyTop);
-      oc.fillStyle = '#5baef8';
-      oc.fillText('−', batteryX - 30, cyBot);
-
-      // Bulb (glow halo, glass envelope, filament squiggle, label).
-      const cy = (cyTop + cyBot) / 2;
-      const glow = oc.createRadialGradient(bulbX, cy, 0, bulbX, cy, bulbR * 2.6);
-      glow.addColorStop(0, 'rgba(255,200,120,0.35)');
-      glow.addColorStop(1, 'rgba(255,200,120,0)');
-      oc.fillStyle = glow;
-      oc.beginPath();
-      oc.arc(bulbX, cy, bulbR * 2.6, 0, Math.PI * 2);
-      oc.fill();
-      oc.strokeStyle = 'rgba(255,200,120,0.85)';
-      oc.lineWidth = 1.5;
-      oc.beginPath();
-      oc.arc(bulbX, cy, bulbR, 0, Math.PI * 2);
-      oc.stroke();
-      oc.strokeStyle = 'rgba(255,200,120,0.95)';
-      oc.lineWidth = 1.8;
-      oc.beginPath();
-      const turns = 6;
-      for (let i = 0; i <= 60; i++) {
-        const f = i / 60;
-        const yy = cyTop + 8 + (cyBot - cyTop - 16) * f;
-        const xx = bulbX + Math.sin(f * turns * Math.PI) * 8;
-        if (i === 0) oc.moveTo(xx, yy);
-        else oc.lineTo(xx, yy);
-      }
-      oc.stroke();
-      oc.fillStyle = 'rgba(255,200,120,0.85)';
-      oc.font = '10px "JetBrains Mono", monospace';
-      oc.textAlign = 'center';
-      oc.textBaseline = 'top';
-      oc.fillText('bulb', bulbX, cy + bulbR + 8);
-      return off;
-    }
-
     function draw() {
       const { realPicture } = stateRef.current;
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Cache key: backdrop geometry is fixed; key on canvas size + DPR only.
-      const cacheKey = `${w}x${h}@${dpr}`;
-      if (cacheRef.current?.key !== cacheKey) {
-        cacheRef.current = { key: cacheKey, canvas: buildStaticBackdrop() };
-      }
-      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+      const off = getStatic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
       // Per-frame overlay: header label whose color and text toggle with the picture mode.
       drawLabel(ctx, {
@@ -270,7 +276,7 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [getStatic]);
 
   return (
     <Demo

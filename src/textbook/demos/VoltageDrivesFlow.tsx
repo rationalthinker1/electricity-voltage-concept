@@ -18,9 +18,10 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { type CircuitElement } from '@/lib/canvasPrimitives';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { MATERIALS, PHYS } from '@/lib/physics';
-import { withAlpha } from '@/lib/canvasTheme';
+import { useCircuitCache } from '@/lib/useCircuitCache';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -51,17 +52,11 @@ const A_M2 = A_MM2 * 1e-6;
 const N_CU = MATERIALS.copper.n;
 const N_DOTS = 56;
 
-interface StaticCacheEntry {
-  key: string;
-  canvas: HTMLCanvasElement;
-}
-
 interface SimState {
   V: number;
 }
 
 interface SimContext {
-  cache: StaticCacheEntry | null;
   dots: Dot[];
   segments: Segment[];
   totalLen: number;
@@ -77,6 +72,87 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
 
   const stateRef = useSimState({ V });
 
+  // Brightness is bucketed to 13 distinct values so the cache rebuilds at most
+  // 13 times as V sweeps. Compute the bucket here from React state so it can
+  // serve as a dep for useCircuitCache.
+  const brightBucket = Math.round(Math.min(1, (V * V) / 576) * 12);
+
+  // Static schematic. Rebakes when brightness bucket changes or canvas resizes.
+  const getStaticSchematic = useCircuitCache(
+    (sw, sh, _dpr) => {
+      const bulbBright = brightBucket / 12;
+      const canvasMarginX = Math.min(64, sw * 0.15);
+      const canvasMarginY = Math.min(40, sh * 0.1);
+      const legendLeft = canvasMarginX;
+      const legendRight = sw - canvasMarginX;
+      const legendTop = sh - canvasMarginY - 60;
+      const legendBottom = sh - canvasMarginY;
+      const legendPaddingY = 10;
+      const legendCol1X = legendLeft;
+      const legendCol2X = legendRight;
+      const legendRow1Y = legendTop + legendPaddingY + 10;
+      const legendRow3Y = legendBottom - legendPaddingY + 10;
+      const legendRow2Y = (legendRow1Y + legendRow3Y) / 2;
+      const circuitLeft = canvasMarginX;
+      const circuitRight = sw - canvasMarginX;
+      const circuitTop = canvasMarginY;
+      const circuitBottom = sh - canvasMarginY - 60;
+      const bulbR = 16;
+      const batLead = 35;
+      const batX = circuitLeft;
+      const bulbX = circuitRight;
+      const wireY = circuitBottom;
+      const topY = circuitTop;
+      const batCenterY = (circuitTop + circuitBottom) / 2;
+      const c = getCanvasColors();
+      const elements: CircuitElement[] = [
+        {
+          kind: 'wire',
+          points: [
+            { x: batX, y: wireY },
+            { x: batX, y: topY },
+            { x: bulbX, y: topY },
+            { x: bulbX, y: wireY - bulbR },
+          ],
+          color: withAlpha(c.textDim, 0.45),
+          lineWidth: 2,
+        },
+        {
+          kind: 'wire',
+          points: [
+            { x: batX, y: wireY },
+            { x: bulbX, y: wireY },
+          ],
+          color: withAlpha(c.textDim, 0.45),
+          lineWidth: 2,
+        },
+        {
+          kind: 'battery',
+          at: { x: batX, y: batCenterY },
+          color: withAlpha(c.text, 0.3),
+          label: `${R_OHMS} Ω load · 1 mm² copper`,
+          labelOffset: { x: legendCol1X - batX + 72, y: legendRow2Y - batCenterY },
+          leadLength: batLead,
+          plateGap: 8,
+          negativeColor: c.blue,
+          negativePlateLength: 14,
+          positiveColor: c.pink,
+          positivePlateLength: 24,
+        },
+        {
+          kind: 'bulb',
+          at: { x: bulbX, y: wireY },
+          radius: bulbR,
+          brightness: bulbBright,
+          label: 'load',
+          labelOffset: { x: legendCol2X - bulbX, y: legendRow2Y - wireY },
+        },
+      ];
+      return { elements };
+    },
+    [brightBucket],
+  );
+
   const setup = useSimLoop<SimState, SimContext>(
     stateRef,
     ({ ctx, w, h, colors, dpr }, _state, dt, _simTime, c) => {
@@ -91,29 +167,23 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       const canvasMarginX = Math.min(64, w * 0.15);
       const canvasMarginY = Math.min(40, h * 0.1);
       const legendLeft = canvasMarginX;
-      const legendRight = w - canvasMarginX;
       const legendTop = h - canvasMarginY - 60;
       const legendBottom = h - canvasMarginY;
-      const legendPaddingX = 0;
       const legendPaddingY = 10;
-      const legendCol1X = legendLeft + legendPaddingX;
-      const legendCol2X = legendRight - legendPaddingX;
+      const legendCol1X = legendLeft;
       const legendRow1Y = legendTop + legendPaddingY + 10;
       const legendRow3Y = legendBottom - legendPaddingY + 10;
-      const legendRow2Y = (legendRow1Y + legendRow3Y) / 2;
       const circuitLeft = canvasMarginX;
       const circuitRight = w - canvasMarginX;
       const circuitTop = canvasMarginY;
       const circuitBottom = h - canvasMarginY - 60;
       const bulbR = 16;
-      const batLead = 35;
       const batStub = 48;
       const bulbStub = 28;
       const batX = circuitLeft;
       const bulbX = circuitRight;
       const wireY = circuitBottom;
       const topY = circuitTop;
-      const batCenterY = (circuitTop + circuitBottom) / 2;
       const wireLeft = batX + batStub;
       const wireRight = bulbX - bulbStub;
       const wireLength = wireRight - wireLeft;
@@ -153,61 +223,9 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
         }
       }
 
-      // Static schematic cache
-      const brightness = Math.min(1, (s.V * I_now) / (24 * (24 / R_OHMS)));
-      const brightBucket = Math.round(brightness * 12);
-      const cacheKey = `${w}x${h}@${dpr}|b${brightBucket}|t${colors.text}`;
-      if (!c.cache || c.cache.key !== cacheKey) {
-        const bulbBright = brightBucket / 12;
-        const staticElements: CircuitElement[] = [
-          {
-            kind: 'wire',
-            points: [
-              { x: batX, y: wireY },
-              { x: batX, y: topY },
-              { x: bulbX, y: topY },
-              { x: bulbX, y: wireY - bulbR },
-            ],
-            color: withAlpha(colors.textDim, 0.45),
-            lineWidth: 2,
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: batX, y: wireY },
-              { x: bulbX, y: wireY },
-            ],
-            color: withAlpha(colors.textDim, 0.45),
-            lineWidth: 2,
-          },
-          {
-            kind: 'battery',
-            at: { x: batX, y: batCenterY },
-            color: withAlpha(colors.text, 0.3),
-            label: `${R_OHMS} Ω load · 1 mm² copper`,
-            labelOffset: { x: legendCol1X - batX + 72, y: legendRow2Y - batCenterY },
-            leadLength: batLead,
-            plateGap: 8,
-            negativeColor: colors.blue,
-            negativePlateLength: 14,
-            positiveColor: colors.pink,
-            positivePlateLength: 24,
-          },
-          {
-            kind: 'bulb',
-            at: { x: bulbX, y: wireY },
-            radius: bulbR,
-            brightness: bulbBright,
-            label: 'load',
-            labelOffset: { x: legendCol2X - bulbX, y: legendRow2Y - wireY },
-          },
-        ];
-        c.cache = {
-          key: cacheKey,
-          canvas: renderCircuitToCanvas({ elements: staticElements }, w, h, dpr),
-        };
-      }
-      ctx.drawImage(c.cache.canvas, 0, 0, w, h);
+      // Static schematic — bake lives in useCircuitCache at component scope.
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
       // Magnetic-field curls
       const Bcols = 4;
@@ -317,7 +335,6 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
     [],
     () => ({
       context: {
-        cache: null,
         dots: [],
         segments: [],
         totalLen: 0,

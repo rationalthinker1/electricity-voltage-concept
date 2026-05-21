@@ -14,7 +14,8 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { drawGlowPath, renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { drawGlowPath, type CircuitElement } from '@/lib/canvasPrimitives';
+import { useCircuitCache } from '@/lib/useCircuitCache';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtResistance, fmtTime } from "@/lib/formatters";
 
@@ -22,11 +23,6 @@ type Mode = 'open' | 'charging' | 'discharging';
 
 interface Props {
   figure?: string;
-}
-
-interface StaticCache {
-  key: string;
-  canvas: HTMLCanvasElement;
 }
 
 export function RCTransientDemo({ figure }: Props) {
@@ -68,7 +64,55 @@ export function RCTransientDemo({ figure }: Props) {
     return () => window.clearInterval(id);
   }, []);
 
-  const cacheRef = useRef<StaticCache | null>(null);
+  // Static schematic — rebakes when the switch state (mode) or the resistor
+  // label value (R) changes, or when the canvas resizes.
+  const getStaticSchematic = useCircuitCache(
+    (sw, sh, _dpr) => {
+      const splitX = Math.min(sw * 0.42, 320);
+      const cy = sh / 2;
+      const padX = 30;
+      const innerW = splitX - 2 * padX;
+      const batX = padX + 10;
+      const swX = padX + innerW * 0.35;
+      const resX = padX + innerW * 0.55;
+      const capX = padX + innerW * 0.85;
+      const yTop = cy - 50;
+      const yBot = cy + 50;
+      const elements: CircuitElement[] = [
+        { kind: 'wire', points: [{ x: batX, y: yTop }, { x: swX - 14, y: yTop }] },
+        {
+          kind: 'switch',
+          at: { x: swX, y: yTop },
+          label: mode.toUpperCase(),
+          state:
+            mode === 'charging' ? 'closed' : mode === 'discharging' ? 'open-down' : 'open-up',
+        },
+        { kind: 'wire', points: [{ x: swX + 14, y: yTop }, { x: resX - 22, y: yTop }] },
+        {
+          kind: 'resistor',
+          from: { x: resX - 20, y: yTop },
+          to: { x: resX + 20, y: yTop },
+          label: fmtResistance(R),
+          labelOffset: { x: 0, y: -10 },
+        },
+        { kind: 'wire', points: [{ x: resX + 22, y: yTop }, { x: capX, y: yTop }] },
+        {
+          kind: 'wire',
+          points: [{ x: capX, y: cy + 14 }, { x: capX, y: yBot }, { x: batX, y: yBot }],
+        },
+        {
+          kind: 'battery',
+          at: { x: batX, y: cy },
+          label: `${V0.toFixed(0)}V`,
+          leadLength: 50,
+          positivePlateLength: 24,
+          negativePlateLength: 14,
+        },
+      ];
+      return { elements };
+    },
+    [mode, R],
+  );
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, dpr } = info;
@@ -124,125 +168,60 @@ export function RCTransientDemo({ figure }: Props) {
       const y0line = yV(V0);
       const y63 = yV(V0 * (1 - 1 / Math.E));
 
-      // Cache key invalidates on resize / DPR change and whenever the switch
-      // state (mode) or the resistor label value (R) changes.
-      const cacheKey = `${w}x${h}@${dpr}|m${st.mode}|R${st.R}`;
-      if (cacheRef.current?.key !== cacheKey) {
-        // RC loop: battery → switch → resistor → capacitor → back to battery.
-        const elements: CircuitElement[] = [
-          {
-            kind: 'wire',
-            points: [
-              { x: batX, y: yTop },
-              { x: swX - 14, y: yTop },
-            ],
-          },
-          {
-            kind: 'switch',
-            at: { x: swX, y: yTop },
-            label: st.mode.toUpperCase(),
-            state:
-              st.mode === 'charging'
-                ? 'closed'
-                : st.mode === 'discharging'
-                  ? 'open-down'
-                  : 'open-up',
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: swX + 14, y: yTop },
-              { x: resX - 22, y: yTop },
-            ],
-          },
-          {
-            kind: 'resistor',
-            from: { x: resX - 20, y: yTop },
-            to: { x: resX + 20, y: yTop },
-            label: fmtResistance(st.R),
-            labelOffset: { x: 0, y: -10 },
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: resX + 22, y: yTop },
-              { x: capX, y: yTop },
-            ],
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: capX, y: cy + 14 },
-              { x: capX, y: yBot },
-              { x: batX, y: yBot },
-            ],
-          },
-          {
-            kind: 'battery',
-            at: { x: batX, y: cy },
-            label: `${V0.toFixed(0)}V`,
-            leadLength: 50,
-            positivePlateLength: 24,
-            negativePlateLength: 14,
-          },
-        ];
-        const off = renderCircuitToCanvas({ elements }, w, h, dpr);
-        const sctx = off.getContext('2d')!;
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
-        // Bake the static plot frame + grid + V0 + 63% lines + their labels into
-        // the same offscreen image alongside the schematic.
-        sctx.strokeStyle = getCanvasColors().border;
-        sctx.lineWidth = 1;
-        sctx.strokeRect(plotX, plotY, plotW, plotH);
-        sctx.strokeStyle = getCanvasColors().border;
-        for (let i = 0; i <= 4; i++) {
-          const y = plotY + (i * plotH) / 4;
-          sctx.beginPath();
-          sctx.moveTo(plotX, y);
-          sctx.lineTo(plotX + plotW, y);
-          sctx.stroke();
-        }
-        sctx.save();
-        sctx.globalAlpha = 0.35;
-        sctx.strokeStyle = getCanvasColors().accent;
-        sctx.setLineDash([4, 4]);
-        sctx.beginPath();
-        sctx.moveTo(plotX, y0line);
-        sctx.lineTo(plotX + plotW, y0line);
-        sctx.stroke();
-        sctx.restore();
-        sctx.save();
-        sctx.globalAlpha = 0.35;
-        sctx.strokeStyle = getCanvasColors().teal;
-        sctx.beginPath();
-        sctx.moveTo(plotX, y63);
-        sctx.lineTo(plotX + plotW, y63);
-        sctx.stroke();
-        sctx.setLineDash([]);
-        sctx.restore();
-        sctx.fillStyle = getCanvasColors().accent;
-        sctx.font = '10px "JetBrains Mono", monospace';
-        sctx.textAlign = 'right';
-        sctx.textBaseline = 'bottom';
-        sctx.fillText(`V₀ = ${V0} V`, plotX + plotW - 4, y0line - 2);
-        sctx.fillStyle = getCanvasColors().teal;
-        sctx.fillText('63% V₀', plotX + plotW - 4, y63 - 2);
-        sctx.fillStyle = getCanvasColors().textDim;
-        sctx.font = '10px "JetBrains Mono", monospace';
-        sctx.textAlign = 'left';
-        sctx.textBaseline = 'top';
-        sctx.fillText('V_C(t)', plotX, 8);
-
-        // Divider between the two panes (extends across the full height).
-        sctx.strokeStyle = getCanvasColors().border;
-        sctx.beginPath();
-        sctx.moveTo(splitX, 0);
-        sctx.lineTo(splitX, h);
-        sctx.stroke();
-
-        cacheRef.current = { key: cacheKey, canvas: off };
+      // Plot frame + grid + V0 + 63% reference lines + their labels — used to
+      // be baked into the same offscreen canvas as the schematic; pulled into
+      // per-frame ctx calls so the cache is a plain CircuitSpec. Cost is
+      // ~12 draw calls, negligible.
+      ctx.strokeStyle = getCanvasColors().border;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(plotX, plotY, plotW, plotH);
+      for (let i = 0; i <= 4; i++) {
+        const y = plotY + (i * plotH) / 4;
+        ctx.beginPath();
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
+        ctx.stroke();
       }
-      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = getCanvasColors().accent;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(plotX, y0line);
+      ctx.lineTo(plotX + plotW, y0line);
+      ctx.stroke();
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.beginPath();
+      ctx.moveTo(plotX, y63);
+      ctx.lineTo(plotX + plotW, y63);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+      ctx.fillStyle = getCanvasColors().accent;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(`V₀ = ${V0} V`, plotX + plotW - 4, y0line - 2);
+      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillText('63% V₀', plotX + plotW - 4, y63 - 2);
+      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('V_C(t)', plotX, 8);
+
+      // Divider between the two panes.
+      ctx.strokeStyle = getCanvasColors().border;
+      ctx.beginPath();
+      ctx.moveTo(splitX, 0);
+      ctx.lineTo(splitX, h);
+      ctx.stroke();
 
       // ── LEFT: schematic dynamic overlays
       ctx.save();
@@ -367,7 +346,7 @@ export function RCTransientDemo({ figure }: Props) {
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [getStaticSchematic]);
 
   return (
     <Demo

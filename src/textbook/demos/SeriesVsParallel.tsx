@@ -21,8 +21,9 @@ import {
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useCircuitCache } from '@/lib/useCircuitCache';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -31,21 +32,6 @@ const I_REF = V_FIXED / 40;
 
 interface Props {
   figure?: string;
-}
-
-interface StaticCacheEntry {
-  key: string;
-  canvas: HTMLCanvasElement;
-}
-
-interface SimState {
-  R1: number;
-  R2: number;
-  series: boolean;
-}
-
-interface SimContext {
-  cache: StaticCacheEntry | null;
 }
 
 export function SeriesVsParallelDemo({ figure }: Props) {
@@ -58,9 +44,15 @@ export function SeriesVsParallelDemo({ figure }: Props) {
 
   const stateRef = useSimState({ R1, R2, series });
 
-  const setup = useSimLoop<SimState, SimContext>(
+  // Static schematic. Rebakes when topology or resistor labels change.
+  const getStaticSchematic = useCircuitCache(
+    (sw, sh, _dpr) => buildSeriesParallelSpec(sw, sh, series, R1, R2),
+    [series, R1, R2],
+  );
+
+  const setup = useSimLoop(
     stateRef,
-    ({ ctx, w, h, colors, dpr }, _state, _dt, simTime, c) => {
+    ({ ctx, w, h, colors, dpr }, _state, _dt, simTime) => {
       const s = stateRef.current;
       const { R1, R2, series } = s;
       const t = simTime;
@@ -76,15 +68,8 @@ export function SeriesVsParallelDemo({ figure }: Props) {
       const batX = padX;
       const outX = w - padX;
 
-      const theme = document.documentElement.getAttribute('data-theme') ?? 'dark';
-      const cacheKey = `${w}x${h}@${dpr}|s${series ? 1 : 0}|R1:${R1}|R2:${R2}|t:${theme}`;
-      if (!c.cache || c.cache.key !== cacheKey) {
-        c.cache = {
-          key: cacheKey,
-          canvas: buildStaticSchematic(w, h, series, R1, R2, dpr),
-        };
-      }
-      ctx.drawImage(c.cache.canvas, 0, 0, w, h);
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
       drawLabel(ctx, {
         x: batX - 18,
@@ -193,7 +178,6 @@ export function SeriesVsParallelDemo({ figure }: Props) {
       }
     },
     [],
-    () => ({ context: { cache: null } }),
   );
 
   return (
@@ -266,14 +250,7 @@ export function SeriesVsParallelDemo({ figure }: Props) {
   );
 }
 
-function buildStaticSchematic(
-  w: number,
-  h: number,
-  series: boolean,
-  R1: number,
-  R2: number,
-  dpr: number,
-): HTMLCanvasElement {
+function buildSeriesParallelSpec(w: number, h: number, series: boolean, R1: number, R2: number) {
   const cy = h / 2;
   const padX = 60;
   const yTop = cy - 50;
@@ -419,12 +396,7 @@ function buildStaticSchematic(
       },
     ];
   }
-  return renderCircuitToCanvas(
-    { elements, defaultWireColor: withAlpha(getCanvasColors().text, 0.65) },
-    w,
-    h,
-    dpr,
-  );
+  return { elements, defaultWireColor: withAlpha(getCanvasColors().text, 0.65) };
 }
 
 function drawCurrentDotsPath(

@@ -8,12 +8,13 @@
  * and propagates around the loop in ~5 frames, reaching the bulb almost
  * instantly. The bulb begins glowing the moment the field arrives.
  */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
-import { drawCircuit, renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
-import { withAlpha } from '@/lib/canvasTheme';
+import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useCircuitCache } from '@/lib/useCircuitCache';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -28,25 +29,90 @@ interface PathSeg {
   y2: number;
 }
 
-interface StaticCacheEntry {
-  key: string;
-  canvas: HTMLCanvasElement;
-}
-
 interface SimState {
   closed: boolean;
 }
 
 interface SimContext {
-  cache: StaticCacheEntry | null;
   closedAtSimTime: number | null;
 }
 
+const FILL_DURATION = 0.4; // seconds for the energised wave to traverse the loop
+
 export function SwitchAndBulbDemo({ figure }: Props) {
   const [closed, setClosed] = useState(false);
-  const [_, setTick] = useState(0);
+  // bulbOn is React state so it can drive a useCircuitCache dep. It flips on
+  // 400 ms after the switch closes (matching the energised-wave traversal in
+  // the per-frame overlay) and snaps off the moment the switch opens.
+  const [bulbOn, setBulbOn] = useState(false);
+
+  useEffect(() => {
+    if (!closed) {
+      setBulbOn(false);
+      return;
+    }
+    const id = window.setTimeout(() => setBulbOn(true), FILL_DURATION * 1000);
+    return () => window.clearTimeout(id);
+  }, [closed]);
 
   const stateRef = useSimState({ closed });
+
+  const getStatic = useCircuitCache(
+    (sw, sh, _dpr) => {
+      const colors = getCanvasColors();
+      const margin = 60;
+      const top = sh * 0.3;
+      const bot = sh * 0.78;
+      const batX = margin;
+      const bulbX = sw - margin;
+      const switchX = (batX + bulbX) / 2;
+      const bulbY = (top + bot) / 2;
+      const elements: CircuitElement[] = [
+        {
+          kind: 'wire',
+          points: [
+            { x: batX, y: top },
+            { x: bulbX, y: top },
+            { x: bulbX, y: bot },
+            { x: batX, y: bot },
+          ],
+          color: withAlpha(colors.textDim, 0.25),
+          lineWidth: 4,
+        },
+        {
+          kind: 'battery',
+          at: { x: batX, y: bulbY },
+          color: withAlpha(colors.text, 0.18),
+          label: 'battery',
+          labelOffset: { x: 0, y: (bot - top) / 2 + 18 },
+          leadLength: (bot - top) / 2,
+          negativeColor: colors.text,
+          negativePlateLength: 16,
+          plateGap: (bot - top) / 2,
+          positiveColor: colors.text,
+          positivePlateLength: 28,
+        },
+        {
+          kind: 'switch',
+          at: { x: switchX, y: top },
+          color: closed ? colors.accent : colors.text,
+          label: 'switch',
+          state: closed ? 'closed' : 'open-up',
+          terminalGap: 32,
+        },
+        {
+          kind: 'bulb',
+          at: { x: bulbX, y: bulbY },
+          radius: 16,
+          brightness: bulbOn ? 1 : 0,
+          label: 'bulb',
+          labelOffset: { x: 0, y: 32 },
+        },
+      ];
+      return { elements };
+    },
+    [closed, bulbOn],
+  );
 
   const setup = useSimLoop<SimState, SimContext>(
     stateRef,
@@ -63,9 +129,10 @@ export function SwitchAndBulbDemo({ figure }: Props) {
       const batX = margin;
       const bulbX = w - margin;
       const switchX = (batX + bulbX) / 2;
-      const bulbY = (top + bot) / 2;
 
-      // Track when switch was closed (in simTime)
+      // Track when switch was closed (in simTime) — drives the energised
+      // wave's per-frame `fillFrac`. Independent of the React-state bulbOn
+      // flip; the two stay within a frame of each other in practice.
       if (s.closed && ctx_.closedAtSimTime === null) {
         ctx_.closedAtSimTime = simTime;
       }
@@ -73,60 +140,10 @@ export function SwitchAndBulbDemo({ figure }: Props) {
         ctx_.closedAtSimTime = null;
       }
       const sinceClose = ctx_.closedAtSimTime != null ? simTime - ctx_.closedAtSimTime : 0;
-      const fillFrac = s.closed ? Math.min(1, sinceClose / 0.4) : 0;
-      const bulbOn = s.closed && fillFrac >= 1;
+      const fillFrac = s.closed ? Math.min(1, sinceClose / FILL_DURATION) : 0;
 
-      // Static schematic cache
-      const cacheKey = `${w}x${h}@${dpr}|c${s.closed ? 1 : 0}|g${bulbOn ? 1 : 0}|t${colors.text}`;
-      if (!ctx_.cache || ctx_.cache.key !== cacheKey) {
-        const staticElements: CircuitElement[] = [
-          {
-            kind: 'wire',
-            points: [
-              { x: batX, y: top },
-              { x: bulbX, y: top },
-              { x: bulbX, y: bot },
-              { x: batX, y: bot },
-            ],
-            color: withAlpha(colors.textDim, 0.25),
-            lineWidth: 4,
-          },
-          {
-            kind: 'battery',
-            at: { x: batX, y: bulbY },
-            color: withAlpha(colors.text, 0.18),
-            label: 'battery',
-            labelOffset: { x: 0, y: (bot - top) / 2 + 18 },
-            leadLength: (bot - top) / 2,
-            negativeColor: colors.text,
-            negativePlateLength: 16,
-            plateGap: (bot - top) / 2,
-            positiveColor: colors.text,
-            positivePlateLength: 28,
-          },
-          {
-            kind: 'switch',
-            at: { x: switchX, y: top },
-            color: s.closed ? colors.accent : colors.text,
-            label: 'switch',
-            state: s.closed ? 'closed' : 'open-up',
-            terminalGap: 32,
-          },
-          {
-            kind: 'bulb',
-            at: { x: bulbX, y: bulbY },
-            radius: 16,
-            brightness: bulbOn ? 1 : 0,
-            label: 'bulb',
-            labelOffset: { x: 0, y: 32 },
-          },
-        ];
-        ctx_.cache = {
-          key: cacheKey,
-          canvas: renderCircuitToCanvas({ elements: staticElements }, w, h, dpr),
-        };
-      }
-      ctx.drawImage(ctx_.cache.canvas, 0, 0, w, h);
+      const off = getStatic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
       // Energised overlay
       const loop: PathSeg[] = [
@@ -192,10 +209,9 @@ export function SwitchAndBulbDemo({ figure }: Props) {
         h - 14,
       );
 
-      setTick((t) => (t + 1) % 1000);
     },
     [],
-    () => ({ context: { cache: null, closedAtSimTime: null } }),
+    () => ({ context: { closedAtSimTime: null } }),
   );
 
   return (

@@ -12,8 +12,9 @@ import { useState } from 'react';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
-import { withAlpha } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { drawArrow } from '@/lib/canvasPrimitives';
+import { useCanvasCache } from '@/lib/useCanvasCache';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -38,7 +39,6 @@ interface SimState {
 
 interface SimContext {
   electrons: Electron[];
-  cache: { key: string; canvas: HTMLCanvasElement } | null;
   ui: { cx: number; cy: number; hovering: boolean };
 }
 
@@ -48,6 +48,50 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
   const [showBatteryField, setShowBatteryField] = useState(true);
 
   const stateRef = useSimState({ cursorPos, qNC, showBatteryField });
+
+  // Static wire pill + polarity terminals + glyphs. The bake is raw ctx
+  // drawing (rounded-pill shape via lineTo + arc) so it uses useCanvasCache,
+  // the sibling of useCircuitCache for non-CircuitSpec bakes.
+  const getStatic = useCanvasCache(
+    (octx, sw, sh, _dpr) => {
+      const colors = getCanvasColors();
+      const margin = 70;
+      const wireTop = sh * 0.42;
+      const wireBot = sh * 0.66;
+      const wireLeft = margin;
+      const wireRight = sw - margin;
+      const r = (wireBot - wireTop) / 2;
+
+      // Wire pill (rounded-end rectangle).
+      octx.fillStyle = withAlpha(colors.accent, 0.06);
+      octx.beginPath();
+      octx.moveTo(wireLeft + r, wireTop);
+      octx.lineTo(wireRight - r, wireTop);
+      octx.arc(wireRight - r, wireTop + r, r, -Math.PI / 2, Math.PI / 2);
+      octx.lineTo(wireLeft + r, wireBot);
+      octx.arc(wireLeft + r, wireTop + r, r, Math.PI / 2, -Math.PI / 2);
+      octx.closePath();
+      octx.fill();
+      octx.strokeStyle = withAlpha(colors.text, 0.1);
+      octx.lineWidth = 1;
+      octx.stroke();
+
+      // Polarity terminals + glyphs + caption.
+      octx.fillStyle = colors.pink;
+      octx.fillRect(wireLeft - 12, wireTop + 4, 4, wireBot - wireTop - 8);
+      octx.fillStyle = colors.blue;
+      octx.fillRect(wireRight + 8, wireTop + 4, 4, wireBot - wireTop - 8);
+      octx.fillStyle = withAlpha(colors.textDim, 0.85);
+      octx.font = '10px "JetBrains Mono", monospace';
+      octx.textAlign = 'center';
+      octx.fillText('+', wireLeft - 10, wireTop - 4);
+      octx.fillText('−', wireRight + 10, wireTop - 4);
+      octx.textAlign = 'left';
+      octx.fillStyle = withAlpha(colors.textDim, 0.7);
+      octx.fillText('battery drives drift  →', wireLeft, wireTop - 14);
+    },
+    [],
+  );
 
   const setup = useSimLoop<SimState, SimContext>(
     stateRef,
@@ -63,45 +107,9 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Static schematic cache
-      const key = `${w}x${h}@${dpr}|t${colors.text}`;
-      if (c.cache?.key !== key) {
-        const off = document.createElement('canvas');
-        off.width = Math.max(1, Math.floor(w * dpr));
-        off.height = Math.max(1, Math.floor(h * dpr));
-        const c2 = off.getContext('2d');
-        if (c2) {
-          c2.setTransform(dpr, 0, 0, dpr, 0, 0);
-          const r = (wireBot - wireTop) / 2;
-          c2.fillStyle = withAlpha(colors.accent, 0.06);
-          c2.beginPath();
-          c2.moveTo(wireLeft + r, wireTop);
-          c2.lineTo(wireRight - r, wireTop);
-          c2.arc(wireRight - r, wireTop + r, r, -Math.PI / 2, Math.PI / 2);
-          c2.lineTo(wireLeft + r, wireBot);
-          c2.arc(wireLeft + r, wireTop + r, r, Math.PI / 2, -Math.PI / 2);
-          c2.closePath();
-          c2.fill();
-          c2.strokeStyle = withAlpha(colors.text, 0.1);
-          c2.lineWidth = 1;
-          c2.stroke();
-
-          c2.fillStyle = colors.pink;
-          c2.fillRect(wireLeft - 12, wireTop + 4, 4, wireBot - wireTop - 8);
-          c2.fillStyle = colors.blue;
-          c2.fillRect(wireRight + 8, wireTop + 4, 4, wireBot - wireTop - 8);
-          c2.fillStyle = withAlpha(colors.textDim, 0.85);
-          c2.font = '10px "JetBrains Mono", monospace';
-          c2.textAlign = 'center';
-          c2.fillText('+', wireLeft - 10, wireTop - 4);
-          c2.fillText('−', wireRight + 10, wireTop - 4);
-          c2.textAlign = 'left';
-          c2.fillStyle = withAlpha(colors.textDim, 0.7);
-          c2.fillText('battery drives drift  →', wireLeft, wireTop - 14);
-        }
-        c.cache = { key, canvas: off };
-      }
-      ctx.drawImage(c.cache.canvas, 0, 0, w, h);
+      // Static wire pill + polarity terminals — cached at component scope.
+      const off = getStatic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
       // Battery drift arrows
       if (s.showBatteryField) {
@@ -354,7 +362,7 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
       canvas.addEventListener('touchcancel', onTouchEnd);
 
       return {
-        context: { electrons, cache: null, ui },
+        context: { electrons, ui },
         cleanup: () => {
           canvas.removeEventListener('mousemove', onMouseMove);
           canvas.removeEventListener('mouseleave', onMouseLeave);

@@ -262,7 +262,7 @@ export function TransformerDesignerDemo({ figure }: Props) {
           <button
             key={k}
             type="button"
-            className={`mini-toggle${k === coreKey ? 'on' : ''}`}
+            className={`mini-toggle${k === coreKey ? ' on' : ''}`}
             onClick={() => setCoreKey(k)}
             aria-pressed={k === coreKey}
           >

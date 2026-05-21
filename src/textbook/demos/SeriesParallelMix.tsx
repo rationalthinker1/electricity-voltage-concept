@@ -24,7 +24,8 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/co
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { type CircuitElement } from '@/lib/canvasPrimitives';
+import { useCircuitCache } from '@/lib/useCircuitCache';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -33,10 +34,6 @@ interface Props {
   figure?: string;
 }
 
-interface StaticCacheEntry {
-  key: string;
-  canvas: HTMLCanvasElement;
-}
 
 const V_FIXED = 12; // V — source voltage
 // Visual scaling reference. The trunk current at the default config (R1=8,
@@ -175,22 +172,25 @@ export function SeriesParallelMixDemo({ figure }: Props) {
   const network = useMemo(() => computeNetwork(topology, R1, R2, R3), [topology, R1, R2, R3]);
   const { Rtot, Itot } = network;
 
-  interface SimState {
-    topology: TopologyId;
-    R1: number;
-    R2: number;
-    R3: number;
-  }
+  const stateRef = useSimState({ topology, R1, R2, R3 });
 
-  interface SimContext {
-    cache: StaticCacheEntry | null;
-  }
+  // Static schematic — rebakes when topology, resistors, or canvas size change.
+  const getStaticSchematic = useCircuitCache(
+    (sw, sh, _dpr) => {
+      const padX = 60;
+      const batX = padX;
+      const outX = sw - padX;
+      const cy = sh / 2;
+      const yTop = cy - 50;
+      const yBot = cy + 50;
+      return buildSchematicSpec(topology, R1, R2, R3, { batX, outX, cy, yTop, yBot });
+    },
+    [topology, R1, R2, R3],
+  );
 
-  const stateRef = useSimState<SimState>({ topology, R1, R2, R3 });
-
-  const setup = useSimLoop<SimState, SimContext>(
+  const setup = useSimLoop(
     stateRef,
-    ({ ctx, w, h, dpr, colors }, _state, _dt, simTime, c) => {
+    ({ ctx, w, h, dpr, colors }, _state, _dt, simTime) => {
       const s = stateRef.current;
       const { topology, R1, R2, R3 } = s;
       const t = simTime;
@@ -205,16 +205,8 @@ export function SeriesParallelMixDemo({ figure }: Props) {
       const yTop = cy - 50;
       const yBot = cy + 50;
 
-      // Static schematic — cached on topology, geometry, resistances, theme.
-      const theme = document.documentElement.getAttribute('data-theme') ?? 'dark';
-      const cacheKey = `${topology}|${w}x${h}@${dpr}|R1:${R1}|R2:${R2}|R3:${R3}|t:${theme}`;
-      if (c.cache?.key !== cacheKey) {
-        c.cache = {
-          key: cacheKey,
-          canvas: buildSchematic(topology, w, h, R1, R2, R3, dpr, { batX, outX, cy, yTop, yBot }),
-        };
-      }
-      ctx.drawImage(c.cache.canvas, 0, 0, w, h);
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
       // Battery '−' overlay (the renderer doesn't include the polarity glyph
       // beside the bottom lead).
@@ -242,7 +234,6 @@ export function SeriesParallelMixDemo({ figure }: Props) {
       ctx.fillText(`${labelTopology} — Kirchhoff in action`, w / 2, h - 14);
     },
     [],
-    () => ({ context: { cache: null as StaticCacheEntry | null } }),
   );
 
   // EquationStrip content for the chosen topology.
@@ -297,7 +288,7 @@ export function SeriesParallelMixDemo({ figure }: Props) {
           <button
             key={tp.id}
             type="button"
-            className={`mini-toggle${topology === tp.id ? 'on' : ''}`}
+            className={`mini-toggle${topology === tp.id ? ' on' : ''}`}
             onClick={() => setTopology(tp.id)}
             aria-pressed={topology === tp.id}
           >
@@ -360,16 +351,13 @@ interface FrameLayout {
   yBot: number;
 }
 
-function buildSchematic(
+function buildSchematicSpec(
   topology: TopologyId,
-  w: number,
-  h: number,
   R1: number,
   R2: number,
   R3: number,
-  dpr: number,
   L: FrameLayout,
-): HTMLCanvasElement {
+) {
   let elements: CircuitElement[];
   switch (topology) {
     case 'series-parallel':
@@ -385,12 +373,7 @@ function buildSchematic(
       elements = buildThreeParallel(R1, R2, R3, L);
       break;
   }
-  return renderCircuitToCanvas(
-    { elements, defaultWireColor: withAlpha(getCanvasColors().text, 0.65) },
-    w,
-    h,
-    dpr,
-  );
+  return { elements, defaultWireColor: withAlpha(getCanvasColors().text, 0.65) };
 }
 
 function batteryElement(L: FrameLayout): CircuitElement {

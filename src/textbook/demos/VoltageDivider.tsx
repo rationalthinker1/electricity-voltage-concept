@@ -16,19 +16,15 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { fmtResistance } from '@/lib/formatters';
+import { useCircuitCache } from '@/lib/useCircuitCache';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
-}
-
-interface StaticCacheEntry {
-  key: string;
-  canvas: HTMLCanvasElement;
 }
 
 export function VoltageDividerDemo({ figure }: Props) {
@@ -51,12 +47,17 @@ export function VoltageDividerDemo({ figure }: Props) {
 
   const stateRef = useSimState({ Vin, R1, R2, Vout, loaded });
 
-  const cacheRef = { current: null as StaticCacheEntry | null };
+  // Static schematic backdrop. Rebakes when (R1, R2, loaded) change OR when
+  // the canvas size changes; otherwise every frame is a single drawImage.
+  const getStaticSchematic = useCircuitCache(
+    (sw, sh, _dpr) => buildDividerSpec(sw, sh, R1, R2, loaded),
+    [R1, R2, loaded],
+  );
 
   const setup = useSimLoop(
     stateRef,
     ({ ctx, w, h, dpr }) => {
-      const { Vin, R1, R2, Vout, loaded } = stateRef.current;
+      const { Vin, Vout } = stateRef.current;
 
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
@@ -64,15 +65,8 @@ export function VoltageDividerDemo({ figure }: Props) {
       // Layout: schematic on the left half, bar chart on the right half
       const splitX = Math.floor(w * 0.55);
 
-      // Cache key: schematic geometry depends on canvas size, DPR, the loaded toggle (adds a branch), and the resistor-value labels.
-      const cacheKey = `${w}x${h}@${dpr}|l${loaded ? 1 : 0}|R1:${R1}|R2:${R2}`;
-      if (cacheRef.current?.key !== cacheKey) {
-        cacheRef.current = {
-          key: cacheKey,
-          canvas: buildDividerStatic(splitX, h, R1, R2, loaded, dpr),
-        };
-      }
-      ctx.drawImage(cacheRef.current.canvas, 0, 0, splitX, h);
+      const off = getStaticSchematic(splitX, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, splitX, h);
 
       // Per-frame overlay: V source glyph + V_in / V_out numeric readouts that change with the slider.
       drawDividerOverlay(ctx, 0, 0, splitX, h, Vin, Vout);
@@ -163,14 +157,7 @@ function dividerGeometry(w: number, h: number) {
   };
 }
 
-function buildDividerStatic(
-  w: number,
-  h: number,
-  R1: number,
-  R2: number,
-  loaded: boolean,
-  dpr: number,
-): HTMLCanvasElement {
+function buildDividerSpec(w: number, h: number, R1: number, R2: number, loaded: boolean) {
   const { xRail, xLoad, xSrc, yTop, yMid, yBot, yTap } = dividerGeometry(w, h);
 
   const elements: CircuitElement[] = [
@@ -248,31 +235,11 @@ function buildDividerStatic(
       },
     );
   }
-  const off = renderCircuitToCanvas(
-    { elements, defaultWireColor: withAlpha(getCanvasColors().text, 0.55), defaultWireWidth: 1.4 },
-    w,
-    h,
-    dpr,
-  );
-
-  // Bake the V-source ring glyph into the static cache as well — it never changes per frame.
-  const oc = off.getContext('2d');
-  if (oc) {
-    oc.save();
-    oc.setTransform(dpr, 0, 0, dpr, 0, 0);
-    oc.strokeStyle = withAlpha(getCanvasColors().text, 0.55);
-    oc.lineWidth = 1.4;
-    oc.beginPath();
-    oc.arc(xSrc, (yTop + yBot) / 2, 12, 0, Math.PI * 2);
-    oc.stroke();
-    oc.fillStyle = withAlpha(getCanvasColors().accent, 0.9);
-    oc.font = 'bold 10px "JetBrains Mono", monospace';
-    oc.textAlign = 'center';
-    oc.textBaseline = 'middle';
-    oc.fillText('V', xSrc, (yTop + yBot) / 2);
-    oc.restore();
-  }
-  return off;
+  return {
+    elements,
+    defaultWireColor: withAlpha(getCanvasColors().text, 0.55),
+    defaultWireWidth: 1.4,
+  };
 }
 
 function drawDividerOverlay(
@@ -286,7 +253,21 @@ function drawDividerOverlay(
 ) {
   ctx.save();
   ctx.translate(x0, y0);
-  const { xSrc, xLoad, yTop, yTap } = dividerGeometry(w, h);
+  const { xSrc, xLoad, yTop, yBot, yTap } = dividerGeometry(w, h);
+
+  // V-source ring glyph. Used to be baked into the static cache by writing
+  // directly to the offscreen canvas; now it lives in the per-frame overlay
+  // (3 ctx calls — negligible) so the cache can be a plain CircuitSpec.
+  ctx.strokeStyle = withAlpha(getCanvasColors().text, 0.55);
+  ctx.lineWidth = 1.4;
+  ctx.beginPath();
+  ctx.arc(xSrc, (yTop + yBot) / 2, 12, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.fillStyle = withAlpha(getCanvasColors().accent, 0.9);
+  ctx.font = 'bold 10px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('V', xSrc, (yTop + yBot) / 2);
 
   // Per-frame value labels.
   ctx.font = 'bold 10px "JetBrains Mono", monospace';

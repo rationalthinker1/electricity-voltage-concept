@@ -31,17 +31,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
-import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useCircuitCache } from '@/lib/useCircuitCache';
 
 interface Props {
   figure?: string;
-}
-
-interface StaticCacheEntry {
-  key: string;
-  canvas: HTMLCanvasElement;
 }
 
 /** One drifting carrier along the loop polyline. s in [0,1]. */
@@ -74,8 +70,61 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
     stateRef.current = { closed, V, I, showE, showB, showElec };
   }, [closed, V, I, showE, showB, showElec]);
 
-  const cacheRef = useRef<StaticCacheEntry | null>(null);
   const carriersRef = useRef<Carrier[] | null>(null);
+
+  // Bulb brightness depends on current = V/R_LOAD (when closed); bucket it
+  // to 13 levels so cache rebakes are bounded as V scrubs across its range.
+  const brightnessBucket = closed ? Math.round(Math.min(1, I / 6) * 12) : 0;
+
+  // Static schematic backdrop. Rebakes on closed-flip or brightness step or
+  // canvas resize.
+  const getStatic = useCircuitCache(
+    (sw, sh, _dpr) => {
+      const margin = 56;
+      const top = sh * 0.3;
+      const bot = sh * 0.78;
+      const batX = margin;
+      const bulbX = sw - margin;
+      const switchX = (batX + bulbX) / 2;
+      const cyMid = (top + bot) / 2;
+      const bulbR = 16;
+      const bulbBright = brightnessBucket / 12;
+      const elements: CircuitElement[] = [
+        {
+          kind: 'wire',
+          points: [
+            { x: batX, y: top },
+            { x: bulbX, y: top },
+            { x: bulbX, y: bot },
+            { x: batX, y: bot },
+          ],
+          color: withAlpha(getCanvasColors().textDim, 0.35),
+          lineWidth: 3.5,
+        },
+        {
+          kind: 'battery',
+          at: { x: batX, y: cyMid },
+          color: 'rgba(255,255,255,.18)',
+          leadLength: (bot - top) / 2,
+          negativeColor: '#ecebe5',
+          negativePlateLength: 16,
+          plateGap: (bot - top) / 2,
+          positiveColor: '#ecebe5',
+          positivePlateLength: 28,
+        },
+        {
+          kind: 'switch',
+          at: { x: switchX, y: top },
+          color: closed ? '#ff6b2a' : '#ecebe5',
+          state: closed ? 'closed' : 'open-up',
+          terminalGap: 32,
+        },
+        { kind: 'bulb', at: { x: bulbX, y: cyMid }, radius: bulbR, brightness: bulbBright },
+      ];
+      return { elements };
+    },
+    [closed, brightnessBucket],
+  );
 
   // Pre-computed B at a fixed-radius sample inside the wire (μ₀ I / 2π a),
   // just for the readout. Used as a numerical anchor, not for drawing.
@@ -96,8 +145,6 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
     const batX = margin;
     const bulbX = w - margin;
     const switchX = (batX + bulbX) / 2;
-    const cyMid = (top + bot) / 2;
-    const bulbR = 16;
 
     // Loop polyline, ordered for carrier drift (conventional current:
     // + terminal → top rail → switch → top rail → bulb → bottom rail →
@@ -269,74 +316,27 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
       return { ex, ey };
     }
 
-    function buildBackdrop(isClosed: boolean, bulbBright: number): HTMLCanvasElement {
-      const elems: CircuitElement[] = [
-        // Loop wire (dim base).
-        {
-          kind: 'wire',
-          points: [
-            { x: batX, y: top },
-            { x: bulbX, y: top },
-            { x: bulbX, y: bot },
-            { x: batX, y: bot },
-          ],
-          color: withAlpha(getCanvasColors().textDim, 0.35),
-          lineWidth: 3.5,
-        },
-        // Battery, vertical, on the left.
-        {
-          kind: 'battery',
-          at: { x: batX, y: cyMid },
-          color: 'rgba(255,255,255,.18)',
-          leadLength: (bot - top) / 2,
-          negativeColor: '#ecebe5',
-          negativePlateLength: 16,
-          plateGap: (bot - top) / 2,
-          positiveColor: '#ecebe5',
-          positivePlateLength: 28,
-        },
-        // Switch on top rail.
-        {
-          kind: 'switch',
-          at: { x: switchX, y: top },
-          color: isClosed ? '#ff6b2a' : '#ecebe5',
-          state: isClosed ? 'closed' : 'open-up',
-          terminalGap: 32,
-        },
-        // Bulb on the right.
-        { kind: 'bulb', at: { x: bulbX, y: cyMid }, radius: bulbR, brightness: bulbBright },
-      ];
-      const off = renderCircuitToCanvas({ elements: elems }, w, h, dpr);
-      const oc = off.getContext('2d');
-      if (oc) {
-        oc.setTransform(dpr, 0, 0, dpr, 0, 0);
-        // Polarity glyphs.
-        oc.fillStyle = '#ff3b6e';
-        oc.font = 'bold 12px "JetBrains Mono", monospace';
-        oc.textAlign = 'right';
-        oc.textBaseline = 'middle';
-        oc.fillText('+', batX - 18, top);
-        oc.fillStyle = '#5baef8';
-        oc.fillText('−', batX - 12, bot);
-      }
-      return off;
-    }
-
     function draw() {
       const s = stateRef.current;
       const isClosed = s.closed;
       const current = s.I;
       const voltage = s.V;
-      const brightness = isClosed ? Math.min(1, current / 6) : 0;
 
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
-      const cacheKey = `${w}x${h}@${dpr}|c${isClosed ? 1 : 0}|b${brightness.toFixed(2)}`;
-      if (cacheRef.current?.key !== cacheKey) {
-        cacheRef.current = { key: cacheKey, canvas: buildBackdrop(isClosed, brightness) };
-      }
-      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+      const off = getStatic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
+
+      // Polarity glyphs — used to bake into the offscreen canvas; pulled
+      // out to per-frame ctx so the cache stays a plain CircuitSpec.
+      ctx.fillStyle = '#ff3b6e';
+      ctx.font = 'bold 12px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('+', batX - 18, top);
+      ctx.fillStyle = '#5baef8';
+      ctx.fillText('−', batX - 12, bot);
 
       // ----- B-field circles around the wire (sample points along the loop).
       if (s.showB && current > 0.01) {
@@ -561,7 +561,7 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
 
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [getStatic]);
 
   return (
     <Demo

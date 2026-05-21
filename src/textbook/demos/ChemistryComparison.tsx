@@ -184,7 +184,7 @@ export function ChemistryComparisonDemo({ figure }: Props) {
           <button
             key={m.key}
             type="button"
-            className={`mini-toggle${metric === m.key ? 'on' : ''}`}
+            className={`mini-toggle${metric === m.key ? ' on' : ''}`}
             onClick={() => setMetric(m.key)}
           >
             {m.label}

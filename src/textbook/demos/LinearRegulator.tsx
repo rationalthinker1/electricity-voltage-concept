@@ -20,14 +20,10 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useCanvasCache } from '@/lib/useCanvasCache';
 
 interface Props {
   figure?: string;
-}
-
-interface StaticCache {
-  key: string;
-  canvas: HTMLCanvasElement;
 }
 
 const V_OUT = 5.0;
@@ -49,16 +45,114 @@ export function LinearRegulatorDemo({ figure }: Props) {
     stateRef.current = { Vin, Iload, regulating, Vout, Pin, Pout, Pdiss, eta };
   }, [Vin, Iload, regulating, Vout, Pin, Pout, Pdiss, eta]);
 
-  const cacheRef = useRef<StaticCache | null>(null);
+  // Static layer (input bar, regulator block, headers, flow arrows, footer)
+  // rebakes only when `regulating` flips (swaps the regulator block colour)
+  // or the canvas resizes. The bake is raw fillRect/fillText — not a circuit
+  // diagram — so useCanvasCache fits, not useCircuitCache.
+  const getStatic = useCanvasCache(
+    (octx, sw, sh, _dpr) => {
+      const colors = getCanvasColors();
+      const padL = 30,
+        padR = 30,
+        padT = 60,
+        padB = 80;
+      const barH = sh - padT - padB;
+      const barW = sw - padL - padR;
+      const yTop = padT;
+      const inW = barW * 0.18;
+      const regW = barW * 0.3;
+      const outW = barW * 0.18;
+      const gap = (barW - inW - regW - outW) / 2;
+      const xIn = padL;
+      const xReg = padL + inW + gap;
+      const xOut = padL + inW + gap + regW + gap;
+
+      // Input bar.
+      octx.fillStyle = colors.accent;
+      octx.fillRect(xIn, yTop, inW, barH);
+      octx.fillStyle = colors.text;
+      octx.font = 'bold 13px "JetBrains Mono", monospace';
+      octx.textAlign = 'center';
+      octx.textBaseline = 'bottom';
+      octx.fillText('P_in', xIn + inW / 2, yTop - 22);
+
+      // Regulator block.
+      octx.fillStyle = regulating ? withAlpha(colors.teal, 0.2) : withAlpha(colors.pink, 0.25);
+      octx.fillRect(xReg, yTop, regW, barH);
+      octx.strokeStyle = regulating ? withAlpha(colors.teal, 0.85) : withAlpha(colors.pink, 0.85);
+      octx.lineWidth = 1.5;
+      octx.strokeRect(xReg, yTop, regW, barH);
+      octx.fillStyle = colors.text;
+      octx.font = 'bold 12px "DM Sans", sans-serif';
+      octx.textAlign = 'center';
+      octx.textBaseline = 'middle';
+      octx.fillText('LM7805', xReg + regW / 2, yTop + barH / 2 - 26);
+      octx.font = '10px "DM Sans", sans-serif';
+      octx.fillStyle = regulating ? '#6cc5c2' : '#ff3b6e';
+      octx.fillText(
+        regulating ? 'regulating' : 'in dropout',
+        xReg + regW / 2,
+        yTop + barH / 2 - 10,
+      );
+
+      octx.font = '10px "JetBrains Mono", monospace';
+      octx.fillStyle = colors.textDim;
+      octx.fillText('(burned as heat)', xReg + regW / 2, yTop + barH / 2 + 30);
+
+      // P_out header.
+      octx.fillStyle = colors.text;
+      octx.font = 'bold 13px "JetBrains Mono", monospace';
+      octx.textAlign = 'center';
+      octx.textBaseline = 'bottom';
+      octx.fillText('P_out', xOut + outW / 2, yTop - 22);
+
+      // Flow arrows (source → regulator → load).
+      const flowArrows: CircuitElement[] = [
+        {
+          kind: 'arrow',
+          from: { x: xIn + inW + 6, y: yTop + barH / 2 },
+          to: { x: xReg - 4, y: yTop + barH / 2 },
+          color: '#ecebe5',
+          lineWidth: 1.4,
+          headLength: 6,
+          headWidth: 4,
+        },
+        {
+          kind: 'arrow',
+          from: { x: xReg + regW + 4, y: yTop + barH / 2 },
+          to: { x: xOut - 6, y: yTop + barH / 2 },
+          color: '#ecebe5',
+          lineWidth: 1.4,
+          headLength: 6,
+          headWidth: 4,
+        },
+      ];
+      drawCircuit(octx, { elements: flowArrows });
+
+      // Footer caption.
+      octx.save();
+      octx.globalAlpha = 0.55;
+      octx.fillStyle = colors.textDim;
+      octx.font = '9px "JetBrains Mono", monospace';
+      octx.textAlign = 'center';
+      octx.textBaseline = 'bottom';
+      octx.fillText(
+        'Linear regulator: η = V_out / V_in.  Dropout requires V_in − V_out ≥ ~2 V.',
+        sw / 2,
+        sh - 8,
+      );
+      octx.restore();
+    },
+    [regulating],
+  );
 
   const setup = useCallback((info: CanvasInfo) => {
-    const colors = getCanvasColors();
     const { ctx, w, h, dpr } = info;
     let raf = 0;
     let t = 0;
 
     function draw() {
-      const { Vin, Vout, Pin, Pout, Pdiss, eta, regulating } = stateRef.current;
+      const { Vin, Vout, Pin, Pout, Pdiss, eta } = stateRef.current;
       t += 1 / 60;
 
       ctx.fillStyle = getCanvasColors().bg;
@@ -85,101 +179,8 @@ export function LinearRegulatorDemo({ figure }: Props) {
 
       // Cache key invalidates on resize / DPR change and whenever the regulating
       // flag flips (which swaps the regulator block fill + stroke colour).
-      const cacheKey = `${w}x${h}@${dpr}|r${regulating ? 1 : 0}`;
-      if (cacheRef.current?.key !== cacheKey) {
-        // The static layer is everything whose geometry & colour does not depend
-        // on slider numbers: full P_in bar fill, regulator block fill/outline,
-        // chip name + state badge, the two flow arrows, header axis labels, footer.
-        const off = document.createElement('canvas');
-        off.width = Math.max(1, Math.floor(w * dpr));
-        off.height = Math.max(1, Math.floor(h * dpr));
-        const sctx = off.getContext('2d')!;
-        sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-        // Input bar (full P_in column).
-        sctx.fillStyle = getCanvasColors().accent;
-        sctx.fillRect(xIn, yTop, inW, barH);
-        // P_in header.
-        sctx.fillStyle = getCanvasColors().text;
-        sctx.font = 'bold 13px "JetBrains Mono", monospace';
-        sctx.textAlign = 'center';
-        sctx.textBaseline = 'bottom';
-        sctx.fillText('P_in', xIn + inW / 2, yTop - 22);
-
-        // Regulator block.
-        sctx.fillStyle = regulating ? withAlpha(colors.teal, 0.2) : withAlpha(colors.pink, 0.25);
-        sctx.fillRect(xReg, yTop, regW, barH);
-        sctx.strokeStyle = regulating ? withAlpha(colors.teal, 0.85) : withAlpha(colors.pink, 0.85);
-        sctx.lineWidth = 1.5;
-        sctx.strokeRect(xReg, yTop, regW, barH);
-        sctx.fillStyle = getCanvasColors().text;
-        sctx.font = 'bold 12px "DM Sans", sans-serif';
-        sctx.textAlign = 'center';
-        sctx.textBaseline = 'middle';
-        sctx.fillText('LM7805', xReg + regW / 2, yTop + barH / 2 - 26);
-        sctx.font = '10px "DM Sans", sans-serif';
-        sctx.fillStyle = regulating ? '#6cc5c2' : '#ff3b6e';
-        sctx.fillText(
-          regulating ? 'regulating' : 'in dropout',
-          xReg + regW / 2,
-          yTop + barH / 2 - 10,
-        );
-
-        // "(burned as heat)" caption sits below the wiggle and never moves.
-        sctx.font = '10px "JetBrains Mono", monospace';
-        sctx.fillStyle = getCanvasColors().textDim;
-        sctx.fillText('(burned as heat)', xReg + regW / 2, yTop + barH / 2 + 30);
-
-        // P_out header.
-        sctx.fillStyle = getCanvasColors().text;
-        sctx.font = 'bold 13px "JetBrains Mono", monospace';
-        sctx.textAlign = 'center';
-        sctx.textBaseline = 'bottom';
-        sctx.fillText('P_out', xOut + outW / 2, yTop - 22);
-
-        // Source → regulator → load energy-flow arrows (purely geometric).
-        const flowArrows: CircuitElement[] = [
-          {
-            kind: 'arrow',
-            from: { x: xIn + inW + 6, y: yTop + barH / 2 },
-            to: { x: xReg - 4, y: yTop + barH / 2 },
-            color: '#ecebe5',
-            lineWidth: 1.4,
-            headLength: 6,
-            headWidth: 4,
-          },
-          {
-            kind: 'arrow',
-            from: { x: xReg + regW + 4, y: yTop + barH / 2 },
-            to: { x: xOut - 6, y: yTop + barH / 2 },
-            color: '#ecebe5',
-            lineWidth: 1.4,
-            headLength: 6,
-            headWidth: 4,
-          },
-        ];
-        // We already used the offscreen context to draw the static rectangles;
-        // route the arrows through the same offscreen ctx so everything bakes into
-        // a single image we can drawImage in one call per frame.
-        drawCircuit(sctx, { elements: flowArrows });
-
-        // Footer rule.
-        sctx.save();
-        sctx.globalAlpha = 0.55;
-        sctx.fillStyle = colors.textDim;
-        sctx.font = '9px "JetBrains Mono", monospace';
-        sctx.textAlign = 'center';
-        sctx.textBaseline = 'bottom';
-        sctx.fillText(
-          'Linear regulator: η = V_out / V_in.  Dropout requires V_in − V_out ≥ ~2 V.',
-          w / 2,
-          h - 8,
-        );
-
-        cacheRef.current = { key: cacheKey, canvas: off };
-        sctx.restore();
-      }
-      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+      const off = getStatic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
       // Dynamic overlay: live P_in / Vin numbers under the input column.
       ctx.fillStyle = getCanvasColors().text;
@@ -230,7 +231,7 @@ export function LinearRegulatorDemo({ figure }: Props) {
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [getStatic]);
 
   return (
     <Demo

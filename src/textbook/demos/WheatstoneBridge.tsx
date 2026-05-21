@@ -31,16 +31,12 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useCircuitCache } from '@/lib/useCircuitCache';
 
 interface Props {
   figure?: string;
-}
-
-interface StaticCache {
-  key: string;
-  canvas: HTMLCanvasElement;
 }
 
 export function WheatstoneBridgeDemo({ figure }: Props) {
@@ -61,14 +57,97 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
     stateRef.current = { V, R1, R2, R3, Rx, V_A, V_B, dV };
   }, [V, R1, R2, R3, Rx, V_A, V_B, dV]);
 
-  const cacheRef = useRef<StaticCache | null>(null);
+  const getStaticSchematic = useCircuitCache(
+    (sw, sh, _dpr) => {
+      const padX = 60;
+      const xL = padX;
+      const xR = sw - padX;
+      const xA = (xL + xR) * 0.42;
+      const xB = (xL + xR) * 0.42;
+      const yTop = sh * 0.28;
+      const yBot = sh * 0.72;
+      const yMid = (yTop + yBot) / 2;
+      const xR1 = (xL + xA) / 2;
+      const xR2 = (xA + xR) / 2;
+      const xR3 = (xL + xB) / 2;
+      const xRx = (xB + xR) / 2;
+      const elements: CircuitElement[] = [
+        { kind: 'wire', points: [{ x: xL, y: yTop }, { x: xL, y: yMid - 22 }] },
+        { kind: 'wire', points: [{ x: xL, y: yMid + 22 }, { x: xL, y: yBot }] },
+        { kind: 'wire', points: [{ x: xR, y: yTop }, { x: xR, y: yBot }] },
+        { kind: 'battery', at: { x: xL, y: yMid }, label: `${V.toFixed(1)} V`, leadLength: 22 },
+        { kind: 'wire', points: [{ x: xL, y: yTop }, { x: xR1 - 22, y: yTop }] },
+        {
+          kind: 'resistor',
+          from: { x: xR1 - 20, y: yTop },
+          to: { x: xR1 + 20, y: yTop },
+          label: `R1=${R1.toFixed(0)}Ω`,
+          labelOffset: { x: 0, y: -12 },
+        },
+        {
+          kind: 'wire',
+          points: [
+            { x: xR1 + 22, y: yTop },
+            { x: xA, y: yTop },
+            { x: xR2 - 22, y: yTop },
+          ],
+        },
+        {
+          kind: 'resistor',
+          from: { x: xR2 - 20, y: yTop },
+          to: { x: xR2 + 20, y: yTop },
+          label: `R2=${R2.toFixed(0)}Ω`,
+          labelOffset: { x: 0, y: -12 },
+        },
+        { kind: 'wire', points: [{ x: xR2 + 22, y: yTop }, { x: xR, y: yTop }] },
+        { kind: 'wire', points: [{ x: xL, y: yBot }, { x: xR3 - 22, y: yBot }] },
+        {
+          kind: 'resistor',
+          from: { x: xR3 - 20, y: yBot },
+          to: { x: xR3 + 20, y: yBot },
+          label: `R3=${R3.toFixed(0)}Ω`,
+          labelOffset: { x: 0, y: -12 },
+        },
+        {
+          kind: 'wire',
+          points: [
+            { x: xR3 + 22, y: yBot },
+            { x: xB, y: yBot },
+            { x: xRx - 22, y: yBot },
+          ],
+        },
+        {
+          kind: 'resistor',
+          from: { x: xRx - 20, y: yBot },
+          to: { x: xRx + 20, y: yBot },
+          label: `Rx=${Rx.toFixed(0)}Ω`,
+          labelOffset: { x: 0, y: 20 },
+        },
+        { kind: 'wire', points: [{ x: xRx + 22, y: yBot }, { x: xR, y: yBot }] },
+        {
+          kind: 'node',
+          at: { x: xA, y: yTop },
+          color: withAlpha(getCanvasColors().accent, 0.95),
+          radius: 4,
+        },
+        {
+          kind: 'node',
+          at: { x: xB, y: yBot },
+          color: withAlpha(getCanvasColors().accent, 0.95),
+          radius: 4,
+        },
+      ];
+      return { elements };
+    },
+    [V, R1, R2, R3, Rx],
+  );
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, dpr } = info;
     let raf = 0;
 
     function draw() {
-      const { V, R1, R2, R3, Rx, V_A, V_B, dV } = stateRef.current;
+      const { V, V_A, V_B, dV } = stateRef.current;
 
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
@@ -81,136 +160,9 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
       const yTop = h * 0.28;
       const yBot = h * 0.72;
       const yMid = (yTop + yBot) / 2;
-      const xR1 = (xL + xA) / 2;
-      const xR2 = (xA + xR) / 2;
-      const xR3 = (xL + xB) / 2;
-      const xRx = (xB + xR) / 2;
 
-      // Cache key invalidates on resize / DPR change and whenever any slider that
-      // changes the rendered schematic labels (V, R1, R2, R3, Rx) moves.
-      const cacheKey = `${w}x${h}@${dpr}|V${V}|R1${R1}|R2${R2}|R3${R3}|Rx${Rx}`;
-      if (cacheRef.current?.key !== cacheKey) {
-        // Diamond bridge: battery on left rail, four resistors around the diamond, galv across A–B.
-        const staticElements: CircuitElement[] = [
-          // Left rail (split around battery).
-          {
-            kind: 'wire',
-            points: [
-              { x: xL, y: yTop },
-              { x: xL, y: yMid - 22 },
-            ],
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: xL, y: yMid + 22 },
-              { x: xL, y: yBot },
-            ],
-          },
-          // Right rail.
-          {
-            kind: 'wire',
-            points: [
-              { x: xR, y: yTop },
-              { x: xR, y: yBot },
-            ],
-          },
-          // Battery on the left rail.
-          { kind: 'battery', at: { x: xL, y: yMid }, label: `${V.toFixed(1)} V`, leadLength: 22 },
-          // Top branch: R1, node A, R2.
-          {
-            kind: 'wire',
-            points: [
-              { x: xL, y: yTop },
-              { x: xR1 - 22, y: yTop },
-            ],
-          },
-          {
-            kind: 'resistor',
-            from: { x: xR1 - 20, y: yTop },
-            to: { x: xR1 + 20, y: yTop },
-            label: `R1=${R1.toFixed(0)}Ω`,
-            labelOffset: { x: 0, y: -12 },
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: xR1 + 22, y: yTop },
-              { x: xA, y: yTop },
-              { x: xR2 - 22, y: yTop },
-            ],
-          },
-          {
-            kind: 'resistor',
-            from: { x: xR2 - 20, y: yTop },
-            to: { x: xR2 + 20, y: yTop },
-            label: `R2=${R2.toFixed(0)}Ω`,
-            labelOffset: { x: 0, y: -12 },
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: xR2 + 22, y: yTop },
-              { x: xR, y: yTop },
-            ],
-          },
-          // Bottom branch: R3, node B, Rx.
-          {
-            kind: 'wire',
-            points: [
-              { x: xL, y: yBot },
-              { x: xR3 - 22, y: yBot },
-            ],
-          },
-          {
-            kind: 'resistor',
-            from: { x: xR3 - 20, y: yBot },
-            to: { x: xR3 + 20, y: yBot },
-            label: `R3=${R3.toFixed(0)}Ω`,
-            labelOffset: { x: 0, y: -12 },
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: xR3 + 22, y: yBot },
-              { x: xB, y: yBot },
-              { x: xRx - 22, y: yBot },
-            ],
-          },
-          {
-            kind: 'resistor',
-            from: { x: xRx - 20, y: yBot },
-            to: { x: xRx + 20, y: yBot },
-            label: `Rx=${Rx.toFixed(0)}Ω`,
-            labelOffset: { x: 0, y: 20 },
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: xRx + 22, y: yBot },
-              { x: xR, y: yBot },
-            ],
-          },
-          // Node dots at A and B.
-          {
-            kind: 'node',
-            at: { x: xA, y: yTop },
-            color: withAlpha(getCanvasColors().accent, 0.95),
-            radius: 4,
-          },
-          {
-            kind: 'node',
-            at: { x: xB, y: yBot },
-            color: withAlpha(getCanvasColors().accent, 0.95),
-            radius: 4,
-          },
-        ];
-        cacheRef.current = {
-          key: cacheKey,
-          canvas: renderCircuitToCanvas({ elements: staticElements }, w, h, dpr),
-        };
-      }
-      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
       // Dynamic overlay: galvanometer needle deflects with the live imbalance dV.
       drawGalvanometer(ctx, xA, yMid, dV, V);
@@ -236,7 +188,7 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [getStaticSchematic]);
 
   return (
     <Demo

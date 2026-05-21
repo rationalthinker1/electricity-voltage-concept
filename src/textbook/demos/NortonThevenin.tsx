@@ -29,16 +29,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
-import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useCircuitCache } from '@/lib/useCircuitCache';
 
 interface Props {
   figure?: string;
-}
-
-interface StaticCacheEntry {
-  key: string;
-  canvas: HTMLCanvasElement;
 }
 
 export function NortonTheveninDemo({ figure }: Props) {
@@ -62,51 +58,38 @@ export function NortonTheveninDemo({ figure }: Props) {
     stateRef.current = { V_oc, R_Th, I_N, RL };
   }, [V_oc, R_Th, I_N, RL]);
 
-  const cacheRef = useRef<StaticCacheEntry | null>(null);
+  const getStaticSchematic = useCircuitCache(
+    (sw, sh, _dpr) => ({
+      elements: buildAllPanels(sw, sh, sw / 3, V_oc, R_Th, I_N, RL) as CircuitElement[],
+    }),
+    [V_oc, R_Th, I_N, RL],
+  );
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, dpr } = info;
     let raf = 0;
 
     function draw() {
-      const { V_oc, R_Th, I_N, RL } = stateRef.current;
-
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Cache key: invalidates on resize/DPR change or any slider movement
-      // (every parameter feeds either label text or panel geometry).
-      const cacheKey = `${w}x${h}@${dpr}|${V_oc.toFixed(4)}|${R_Th.toFixed(4)}|${I_N.toFixed(4)}|${RL.toFixed(4)}`;
-      if (cacheRef.current?.key !== cacheKey) {
-        const colW = w / 3;
-        const off = renderCircuitToCanvas(
-          { elements: buildAllPanels(w, h, colW, V_oc, R_Th, I_N, RL) },
-          w,
-          h,
-          dpr,
-        );
-        // Bake the panel titles into the cache alongside the schematic.
-        const offCtx = off.getContext('2d');
-        if (offCtx) {
-          offCtx.save();
-          offCtx.globalAlpha = 0.85;
-          offCtx.fillStyle = getCanvasColors().textDim;
-          offCtx.font = '11px "JetBrains Mono", monospace';
-          offCtx.textAlign = 'center';
-          offCtx.textBaseline = 'top';
-          offCtx.fillText('Original network', colW / 2, 12);
-          offCtx.fillText('Thévenin equivalent + load', colW + colW / 2, 12);
-          offCtx.fillText('Norton equivalent + load', 2 * colW + colW / 2, 12);
-          offCtx.restore();
-        }
-        cacheRef.current = { key: cacheKey, canvas: off };
-      }
-      // Blit the cached schematic in one drawImage call.
-      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
-      // Per-frame overlay: the panel-divider strokes and the ⇌ glyphs sit
-      // on top of the cached schematic so they're crisp at any zoom.
+      // Per-frame overlay: panel titles (used to bake into the cache),
+      // panel-divider strokes, and the ⇌ glyphs.
       const colW = w / 3;
+
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('Original network', colW / 2, 12);
+      ctx.fillText('Thévenin equivalent + load', colW + colW / 2, 12);
+      ctx.fillText('Norton equivalent + load', 2 * colW + colW / 2, 12);
+      ctx.restore();
       ctx.strokeStyle = getCanvasColors().border;
       ctx.beginPath();
       ctx.moveTo(colW, 8);
@@ -126,7 +109,7 @@ export function NortonTheveninDemo({ figure }: Props) {
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [getStaticSchematic]);
 
   return (
     <Demo

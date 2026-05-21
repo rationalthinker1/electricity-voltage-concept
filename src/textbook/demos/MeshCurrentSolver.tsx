@@ -28,16 +28,12 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useCircuitCache } from '@/lib/useCircuitCache';
 
 interface Props {
   figure?: string;
-}
-
-interface StaticCacheEntry {
-  key: string;
-  canvas: HTMLCanvasElement;
 }
 
 function solveMesh(V1: number, V2: number, R1: number, R2: number, R3: number) {
@@ -80,7 +76,12 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
     };
   }, [V1, V2, R1, R2, R3, sol.I1, sol.I2, sol.I_R1, sol.I_R2, sol.I_R3]);
 
-  const cacheRef = useRef<StaticCacheEntry | null>(null);
+  const getStaticSchematic = useCircuitCache(
+    (sw, sh, _dpr) => ({
+      elements: buildMeshSchematic(sw, sh, V1, V2, R1, R2, R3) as CircuitElement[],
+    }),
+    [V1, V2, R1, R2, R3],
+  );
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, dpr } = info;
@@ -89,7 +90,7 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
     function draw() {
       const st = stateRef.current;
       st.t += 0.016;
-      const { V1, V2, R1, R2, R3, sol, t } = st;
+      const { sol, t } = st;
 
       ctx.fillStyle = getCanvasColors().bg;
       ctx.fillRect(0, 0, w, h);
@@ -101,51 +102,38 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
       const xRight = w - padX;
       const xMid = (xLeft + xRight) / 2;
 
-      // Cache key: invalidates on resize/DPR change or any slider movement.
-      // Mesh-loop arrows are drawn live on top — they animate with t.
-      const cacheKey =
-        `${w}x${h}@${dpr}|${V1.toFixed(2)}|${V2.toFixed(2)}` +
-        `|${R1.toFixed(0)}|${R2.toFixed(0)}|${R3.toFixed(0)}` +
-        `|${sol.I_R2.toFixed(6)}`;
-      if (cacheRef.current?.key !== cacheKey) {
-        const elements = buildMeshSchematic(w, h, V1, V2, R1, R2, R3);
-        const off = renderCircuitToCanvas({ elements }, w, h, dpr);
-        const offCtx = off.getContext('2d');
-        if (offCtx) {
-          // Static text overlays: node labels, R₂ branch-current readout, caption.
-          offCtx.save();
-          offCtx.globalAlpha = 0.8;
-          offCtx.fillStyle = getCanvasColors().text;
-          offCtx.font = 'bold 11px "JetBrains Mono", monospace';
-          offCtx.textAlign = 'left';
-          offCtx.textBaseline = 'bottom';
-          offCtx.fillText('A', xMid + 6, yTop - 4);
-          offCtx.textBaseline = 'top';
-          offCtx.fillText('B', xMid + 6, yBot + 6);
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
-          offCtx.restore();
-          offCtx.save();
-          offCtx.globalAlpha = 0.95;
-          offCtx.fillStyle = getCanvasColors().blue;
-          offCtx.font = '10px "JetBrains Mono", monospace';
-          offCtx.textAlign = 'left';
-          offCtx.textBaseline = 'middle';
-          offCtx.fillText(`I_R₂ = I₁ − I₂ = ${fmtA(sol.I_R2)}`, xMid + 14, h / 2);
+      // Per-frame text overlay: node labels, R₂ readout, caption. Cheap.
+      ctx.save();
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = getCanvasColors().text;
+      ctx.font = 'bold 11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('A', xMid + 6, yTop - 4);
+      ctx.textBaseline = 'top';
+      ctx.fillText('B', xMid + 6, yBot + 6);
+      ctx.restore();
 
-          offCtx.restore();
-          offCtx.save();
-          offCtx.globalAlpha = 0.7;
-          offCtx.fillStyle = getCanvasColors().textDim;
-          offCtx.font = '10px "JetBrains Mono", monospace';
-          offCtx.textAlign = 'left';
-          offCtx.textBaseline = 'top';
-          offCtx.fillText('Two clockwise mesh currents I₁, I₂', 12, 10);
-          offCtx.restore();
-        }
-        cacheRef.current = { key: cacheKey, canvas: off };
-      }
-      // Blit cached schematic in one drawImage; live mesh-loop arrows on top.
-      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+      ctx.save();
+      ctx.globalAlpha = 0.95;
+      ctx.fillStyle = getCanvasColors().blue;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`I_R₂ = I₁ − I₂ = ${fmtA(sol.I_R2)}`, xMid + 14, h / 2);
+      ctx.restore();
+
+      ctx.save();
+      ctx.globalAlpha = 0.7;
+      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('Two clockwise mesh currents I₁, I₂', 12, 10);
+      ctx.restore();
 
       // Per-frame overlay: rotating arrowhead around each mesh-loop ellipse.
       drawMeshLoop(

@@ -29,16 +29,12 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
-import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
+import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useCircuitCache } from '@/lib/useCircuitCache';
 
 interface Props {
   figure?: string;
-}
-
-interface StaticCache {
-  key: string;
-  canvas: HTMLCanvasElement;
 }
 
 export function KirchhoffsLawsDemo({ figure }: Props) {
@@ -60,7 +56,68 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
   const I2 = VAB / R2;
   const I3 = VAB / R3;
 
-  const cacheRef = useRef<StaticCache | null>(null);
+  const colors = getCanvasColors();
+  const getStaticSchematic = useCircuitCache(
+    (sw, sh, _dpr) => {
+      const padX = 60;
+      const yTop = sh / 2 - 60;
+      const yBot = sh / 2 + 60;
+      const batX = padX;
+      const outX = sw - padX;
+      const nodeA_x = padX + (outX - padX) * 0.55;
+      const nodeB_x = nodeA_x;
+      const xR1 = padX + (nodeA_x - padX) * 0.3;
+      const xR3 = nodeA_x + (outX - nodeA_x) * 0.5;
+      const elements: CircuitElement[] = [
+        { kind: 'wire', points: [{ x: batX, y: yTop }, { x: xR1 - 22, y: yTop }] },
+        {
+          kind: 'resistor',
+          from: { x: xR1 - 20, y: yTop },
+          to: { x: xR1 + 20, y: yTop },
+          label: `R1=${R1.toFixed(0)}Ω`,
+          labelOffset: { x: 0, y: -12 },
+        },
+        { kind: 'wire', points: [{ x: xR1 + 22, y: yTop }, { x: nodeA_x, y: yTop }] },
+        { kind: 'wire', points: [{ x: nodeA_x, y: yTop }, { x: xR3 - 22, y: yTop }] },
+        {
+          kind: 'resistor',
+          from: { x: xR3 - 20, y: yTop },
+          to: { x: xR3 + 20, y: yTop },
+          label: `R3=${R3.toFixed(0)}Ω`,
+          labelOffset: { x: 0, y: -12 },
+        },
+        {
+          kind: 'wire',
+          points: [
+            { x: xR3 + 22, y: yTop },
+            { x: outX, y: yTop },
+            { x: outX, y: yBot },
+            { x: nodeB_x, y: yBot },
+            { x: batX, y: yBot },
+          ],
+        },
+        { kind: 'wire', points: [{ x: nodeA_x, y: yTop }, { x: nodeA_x, y: sh / 2 - 22 }] },
+        {
+          kind: 'resistor',
+          from: { x: nodeA_x, y: sh / 2 - 20 },
+          to: { x: nodeA_x, y: sh / 2 + 20 },
+          label: `R2=${R2.toFixed(0)}Ω`,
+          labelOffset: { x: 12, y: 0 },
+        },
+        { kind: 'wire', points: [{ x: nodeA_x, y: sh / 2 + 22 }, { x: nodeA_x, y: yBot }] },
+        {
+          kind: 'battery',
+          at: { x: batX, y: sh / 2 },
+          label: `${V.toFixed(1)} V`,
+          leadLength: 60,
+        },
+        { kind: 'node', at: { x: nodeA_x, y: yTop }, color: withAlpha(colors.accent, 0.95) },
+        { kind: 'node', at: { x: nodeB_x, y: yBot }, color: withAlpha(colors.accent, 0.95) },
+      ];
+      return { elements };
+    },
+    [V, R1, R2, R3, colors.accent],
+  );
 
   const setup = useCallback((info: CanvasInfo) => {
     const colors = getCanvasColors();
@@ -89,96 +146,8 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       const nodeA_x = padX + (outX - padX) * 0.55;
       const nodeB_x = nodeA_x;
 
-      const xR1 = padX + (nodeA_x - padX) * 0.3;
-      const xR3 = nodeA_x + (outX - nodeA_x) * 0.5;
-
-      // Cache key invalidates on resize / DPR change and whenever any slider value
-      // that affects a rendered component label moves (V, R1, R2, R3).
-      const cacheKey = `${w}x${h}@${dpr}|V${V}|R1${R1}|R2${R2}|R3${R3}`;
-      if (cacheRef.current?.key !== cacheKey) {
-        // Two-loop network: battery on left, R1 + R3 along top rail, R2 down the middle branch.
-        const staticElements: CircuitElement[] = [
-          {
-            kind: 'wire',
-            points: [
-              { x: batX, y: yTop },
-              { x: xR1 - 22, y: yTop },
-            ],
-          },
-          {
-            kind: 'resistor',
-            from: { x: xR1 - 20, y: yTop },
-            to: { x: xR1 + 20, y: yTop },
-            label: `R1=${R1.toFixed(0)}Ω`,
-            labelOffset: { x: 0, y: -12 },
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: xR1 + 22, y: yTop },
-              { x: nodeA_x, y: yTop },
-            ],
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: nodeA_x, y: yTop },
-              { x: xR3 - 22, y: yTop },
-            ],
-          },
-          {
-            kind: 'resistor',
-            from: { x: xR3 - 20, y: yTop },
-            to: { x: xR3 + 20, y: yTop },
-            label: `R3=${R3.toFixed(0)}Ω`,
-            labelOffset: { x: 0, y: -12 },
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: xR3 + 22, y: yTop },
-              { x: outX, y: yTop },
-              { x: outX, y: yBot },
-              { x: nodeB_x, y: yBot },
-              { x: batX, y: yBot },
-            ],
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: nodeA_x, y: yTop },
-              { x: nodeA_x, y: h / 2 - 22 },
-            ],
-          },
-          {
-            kind: 'resistor',
-            from: { x: nodeA_x, y: h / 2 - 20 },
-            to: { x: nodeA_x, y: h / 2 + 20 },
-            label: `R2=${R2.toFixed(0)}Ω`,
-            labelOffset: { x: 12, y: 0 },
-          },
-          {
-            kind: 'wire',
-            points: [
-              { x: nodeA_x, y: h / 2 + 22 },
-              { x: nodeA_x, y: yBot },
-            ],
-          },
-          {
-            kind: 'battery',
-            at: { x: batX, y: h / 2 },
-            label: `${V.toFixed(1)} V`,
-            leadLength: 60,
-          },
-          { kind: 'node', at: { x: nodeA_x, y: yTop }, color: withAlpha(colors.accent, 0.95) },
-          { kind: 'node', at: { x: nodeB_x, y: yBot }, color: withAlpha(colors.accent, 0.95) },
-        ];
-        cacheRef.current = {
-          key: cacheKey,
-          canvas: renderCircuitToCanvas({ elements: staticElements }, w, h, dpr),
-        };
-      }
-      ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
+      const off = getStaticSchematic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
 
       // Dynamic overlay: node identifier letters above each junction.
       ctx.save();
@@ -345,7 +314,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
     }
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [getStaticSchematic]);
 
   return (
     <Demo
