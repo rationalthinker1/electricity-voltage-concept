@@ -22,7 +22,7 @@
  *   matching sets X_L = -X_S automatically and recovers the same peak.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -180,11 +180,15 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       ctx.fillText('1', padL - 4, padT);
 
       // Peak label
-      ctx.fillStyle = colors.accent;
-      ctx.font = 'bold 10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('R_L = R_S  →  η = 50 %', xPeak, padT - 6);
+      drawLabel(ctx, {
+        x: xPeak,
+        y: padT - 6,
+        text: 'R_L = R_S  →  η = 50 %',
+        color: colors.accent,
+        align: 'center',
+        baseline: 'bottom',
+        weight: 'bold',
+      });
 
       raf = requestAnimationFrame(draw);
     }

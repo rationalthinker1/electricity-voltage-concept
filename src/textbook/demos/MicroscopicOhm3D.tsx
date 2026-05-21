@@ -166,10 +166,10 @@ export function MicroscopicOhm3DDemo({ figure }: Props) {
           electrons; they drift opposite to <InlineMath tex="\vec{E}" /> at a speed proportional to{' '}
           <InlineMath tex="\sigma E" />. Around the wire, the teal rings are the magnetic field{' '}
           <InlineMath tex="\vec{B}" />: perpendicular to the wire, curling by the right-hand rule,
-          with magnitude tracking the current. Slide <InlineMath tex="E" /> up — the electrons
-          speed up, <InlineMath tex="\vec{J}" /> grows in lockstep, and the B-field rings brighten.
-          Switch material to nichrome and the same field gives ~65× less current — same equation,
-          different σ. Drag to orbit.
+          with magnitude tracking the current. Slide <InlineMath tex="E" /> up — the electrons speed
+          up, <InlineMath tex="\vec{J}" /> grows in lockstep, and the B-field rings brighten. Switch
+          material to nichrome and the same field gives ~65× less current — same equation, different
+          σ. Drag to orbit.
         </>
       }
       deeperLab={{ slug: 'resistance', label: 'See full lab' }}

@@ -20,6 +20,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS, pretty } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -245,11 +246,15 @@ export function SuperconductorLimitDemo({ figure }: Props) {
         }
       } else {
         // Show "E_inside = 0" label inside the wire
-        ctx.fillStyle = getCanvasColors().teal;
-        ctx.font = '12px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('E_inside = 0', (g.wireXL + g.wireXR) / 2, g.wireCY);
+        drawLabel(ctx, {
+          x: (g.wireXL + g.wireXR) / 2,
+          y: g.wireCY,
+          text: 'E_inside = 0',
+          color: getCanvasColors().teal,
+          size: 12,
+          align: 'center',
+          baseline: 'middle',
+        });
       }
 
       // FRONT-half B ellipses

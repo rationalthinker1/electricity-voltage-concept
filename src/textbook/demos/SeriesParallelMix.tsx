@@ -23,6 +23,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -237,8 +238,7 @@ export function SeriesParallelMixDemo({ figure }: Props) {
       ctx.fillStyle = colors.textDim;
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
-      const labelTopology =
-        TOPOLOGIES.find((tp) => tp.id === topology)?.label ?? topology;
+      const labelTopology = TOPOLOGIES.find((tp) => tp.id === topology)?.label ?? topology;
       ctx.fillText(`${labelTopology} — Kirchhoff in action`, w / 2, h - 14);
     },
     [],
@@ -282,11 +282,11 @@ export function SeriesParallelMixDemo({ figure }: Props) {
       question="Where does the 12 V go, and how does the current split?"
       caption={
         <>
-          A first taste of network analysis. Pick a topology with the buttons below: a trunk
-          feeding a parallel pair, a parallel pair feeding a series load, three in series, or three
-          in parallel. The same two rules — series sum, parallel reciprocal sum — solve each one,
-          and the voltage probes and branch-current labels redraw to match. The faster-flowing
-          branch is always the one with the lower resistance.
+          A first taste of network analysis. Pick a topology with the buttons below: a trunk feeding
+          a parallel pair, a parallel pair feeding a series load, three in series, or three in
+          parallel. The same two rules — series sum, parallel reciprocal sum — solve each one, and
+          the voltage probes and branch-current labels redraw to match. The faster-flowing branch is
+          always the one with the lower resistance.
         </>
       }
       deeperLab={{ slug: 'resistance', label: 'See full lab' }}
@@ -297,7 +297,7 @@ export function SeriesParallelMixDemo({ figure }: Props) {
           <button
             key={tp.id}
             type="button"
-            className={`mini-toggle${topology === tp.id ? ' on' : ''}`}
+            className={`mini-toggle${topology === tp.id ? 'on' : ''}`}
             onClick={() => setTopology(tp.id)}
             aria-pressed={topology === tp.id}
           >
@@ -411,7 +411,13 @@ function buildSeriesParallel(R1: number, R2: number, R3: number, L: FrameLayout)
   const branchY = L.yTop + 38;
   return [
     batteryElement(L),
-    { kind: 'wire', points: [{ x: L.batX, y: L.yTop }, { x: xR1 - 22, y: L.yTop }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: L.batX, y: L.yTop },
+        { x: xR1 - 22, y: L.yTop },
+      ],
+    },
     {
       kind: 'resistor',
       from: { x: xR1 - 20, y: L.yTop },
@@ -419,9 +425,21 @@ function buildSeriesParallel(R1: number, R2: number, R3: number, L: FrameLayout)
       label: `R1 = ${R1.toFixed(0)}Ω`,
       labelOffset: { x: 0, y: -16 },
     },
-    { kind: 'wire', points: [{ x: xR1 + 22, y: L.yTop }, { x: nodeA, y: L.yTop }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR1 + 22, y: L.yTop },
+        { x: nodeA, y: L.yTop },
+      ],
+    },
     // R2 along top branch.
-    { kind: 'wire', points: [{ x: nodeA, y: L.yTop }, { x: xR23 - 22, y: L.yTop }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: nodeA, y: L.yTop },
+        { x: xR23 - 22, y: L.yTop },
+      ],
+    },
     {
       kind: 'resistor',
       from: { x: xR23 - 20, y: L.yTop },
@@ -429,7 +447,13 @@ function buildSeriesParallel(R1: number, R2: number, R3: number, L: FrameLayout)
       label: `R2 = ${R2.toFixed(0)}Ω`,
       labelOffset: { x: 0, y: -16 },
     },
-    { kind: 'wire', points: [{ x: xR23 + 22, y: L.yTop }, { x: nodeB, y: L.yTop }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR23 + 22, y: L.yTop },
+        { x: nodeB, y: L.yTop },
+      ],
+    },
     // R3 along lower branch.
     {
       kind: 'wire',
@@ -478,9 +502,21 @@ function buildParallelSeries(R1: number, R2: number, R3: number, L: FrameLayout)
   const xR3 = L.batX + (L.outX - L.batX) * 0.82;
   return [
     batteryElement(L),
-    { kind: 'wire', points: [{ x: L.batX, y: L.yTop }, { x: nodeA, y: L.yTop }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: L.batX, y: L.yTop },
+        { x: nodeA, y: L.yTop },
+      ],
+    },
     // R1 along top branch.
-    { kind: 'wire', points: [{ x: nodeA, y: L.yTop }, { x: xR12 - 22, y: L.yTop }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: nodeA, y: L.yTop },
+        { x: xR12 - 22, y: L.yTop },
+      ],
+    },
     {
       kind: 'resistor',
       from: { x: xR12 - 20, y: L.yTop },
@@ -488,7 +524,13 @@ function buildParallelSeries(R1: number, R2: number, R3: number, L: FrameLayout)
       label: `R1 = ${R1.toFixed(0)}Ω`,
       labelOffset: { x: 0, y: -16 },
     },
-    { kind: 'wire', points: [{ x: xR12 + 22, y: L.yTop }, { x: nodeB, y: L.yTop }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR12 + 22, y: L.yTop },
+        { x: nodeB, y: L.yTop },
+      ],
+    },
     // R2 along lower branch.
     {
       kind: 'wire',
@@ -514,7 +556,13 @@ function buildParallelSeries(R1: number, R2: number, R3: number, L: FrameLayout)
       ],
     },
     // Trunk after the parallel block → R3.
-    { kind: 'wire', points: [{ x: nodeB, y: L.yTop }, { x: xR3 - 22, y: L.yTop }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: nodeB, y: L.yTop },
+        { x: xR3 - 22, y: L.yTop },
+      ],
+    },
     {
       kind: 'resistor',
       from: { x: xR3 - 20, y: L.yTop },
@@ -542,7 +590,13 @@ function buildThreeSeries(R1: number, R2: number, R3: number, L: FrameLayout): C
   const xR3 = L.batX + (L.outX - L.batX) * 0.78;
   return [
     batteryElement(L),
-    { kind: 'wire', points: [{ x: L.batX, y: L.yTop }, { x: xR1 - 22, y: L.yTop }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: L.batX, y: L.yTop },
+        { x: xR1 - 22, y: L.yTop },
+      ],
+    },
     {
       kind: 'resistor',
       from: { x: xR1 - 20, y: L.yTop },
@@ -550,7 +604,13 @@ function buildThreeSeries(R1: number, R2: number, R3: number, L: FrameLayout): C
       label: `R1 = ${R1.toFixed(0)}Ω`,
       labelOffset: { x: 0, y: -16 },
     },
-    { kind: 'wire', points: [{ x: xR1 + 22, y: L.yTop }, { x: xR2 - 22, y: L.yTop }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR1 + 22, y: L.yTop },
+        { x: xR2 - 22, y: L.yTop },
+      ],
+    },
     {
       kind: 'resistor',
       from: { x: xR2 - 20, y: L.yTop },
@@ -558,7 +618,13 @@ function buildThreeSeries(R1: number, R2: number, R3: number, L: FrameLayout): C
       label: `R2 = ${R2.toFixed(0)}Ω`,
       labelOffset: { x: 0, y: -16 },
     },
-    { kind: 'wire', points: [{ x: xR2 + 22, y: L.yTop }, { x: xR3 - 22, y: L.yTop }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR2 + 22, y: L.yTop },
+        { x: xR3 - 22, y: L.yTop },
+      ],
+    },
     {
       kind: 'resistor',
       from: { x: xR3 - 20, y: L.yTop },
@@ -586,9 +652,21 @@ function buildThreeParallel(R1: number, R2: number, R3: number, L: FrameLayout):
   const yR3 = L.yTop + 76;
   return [
     batteryElement(L),
-    { kind: 'wire', points: [{ x: L.batX, y: L.yTop }, { x: nodeA, y: L.yTop }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: L.batX, y: L.yTop },
+        { x: nodeA, y: L.yTop },
+      ],
+    },
     // R1 along top branch.
-    { kind: 'wire', points: [{ x: nodeA, y: L.yTop }, { x: xR1 - 22, y: L.yTop }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: nodeA, y: L.yTop },
+        { x: xR1 - 22, y: L.yTop },
+      ],
+    },
     {
       kind: 'resistor',
       from: { x: xR1 - 20, y: L.yTop },
@@ -596,7 +674,13 @@ function buildThreeParallel(R1: number, R2: number, R3: number, L: FrameLayout):
       label: `R1 = ${R1.toFixed(0)}Ω`,
       labelOffset: { x: 0, y: -16 },
     },
-    { kind: 'wire', points: [{ x: xR1 + 22, y: L.yTop }, { x: nodeB, y: L.yTop }] },
+    {
+      kind: 'wire',
+      points: [
+        { x: xR1 + 22, y: L.yTop },
+        { x: nodeB, y: L.yTop },
+      ],
+    },
     // R2 along middle branch.
     {
       kind: 'wire',
@@ -679,29 +763,49 @@ function drawAnimatedFlow(
       const branchY = L.yTop + 38;
       void xR1;
       // Trunk to nodeA.
-      drawCurrentDotsPath(ctx, t, [
-        { x: L.batX, y: L.yTop },
-        { x: nodeA, y: L.yTop },
-      ], trunkScale);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: L.batX, y: L.yTop },
+          { x: nodeA, y: L.yTop },
+        ],
+        trunkScale,
+      );
       // Top branch (R2).
-      drawCurrentDotsPath(ctx, t, [
-        { x: nodeA, y: L.yTop },
-        { x: nodeB, y: L.yTop },
-      ], perElement.I2 / I_REF);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeA, y: L.yTop },
+          { x: nodeB, y: L.yTop },
+        ],
+        perElement.I2 / I_REF,
+      );
       // Lower branch (R3).
-      drawCurrentDotsPath(ctx, t, [
-        { x: nodeA, y: L.yTop },
-        { x: nodeA, y: branchY },
-        { x: nodeB, y: branchY },
-        { x: nodeB, y: L.yTop },
-      ], perElement.I3 / I_REF);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeA, y: L.yTop },
+          { x: nodeA, y: branchY },
+          { x: nodeB, y: branchY },
+          { x: nodeB, y: L.yTop },
+        ],
+        perElement.I3 / I_REF,
+      );
       // Trunk from nodeB → battery −.
-      drawCurrentDotsPath(ctx, t, [
-        { x: nodeB, y: L.yTop },
-        { x: L.outX, y: L.yTop },
-        { x: L.outX, y: L.yBot },
-        { x: L.batX, y: L.yBot },
-      ], trunkScale);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeB, y: L.yTop },
+          { x: L.outX, y: L.yTop },
+          { x: L.outX, y: L.yBot },
+          { x: L.batX, y: L.yBot },
+        ],
+        trunkScale,
+      );
       break;
     }
     case 'parallel-series': {
@@ -711,39 +815,64 @@ function drawAnimatedFlow(
       const branchY = L.yTop + 38;
       void xR3;
       // Trunk to nodeA.
-      drawCurrentDotsPath(ctx, t, [
-        { x: L.batX, y: L.yTop },
-        { x: nodeA, y: L.yTop },
-      ], trunkScale);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: L.batX, y: L.yTop },
+          { x: nodeA, y: L.yTop },
+        ],
+        trunkScale,
+      );
       // R1 top branch.
-      drawCurrentDotsPath(ctx, t, [
-        { x: nodeA, y: L.yTop },
-        { x: nodeB, y: L.yTop },
-      ], perElement.I1 / I_REF);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeA, y: L.yTop },
+          { x: nodeB, y: L.yTop },
+        ],
+        perElement.I1 / I_REF,
+      );
       // R2 lower branch.
-      drawCurrentDotsPath(ctx, t, [
-        { x: nodeA, y: L.yTop },
-        { x: nodeA, y: branchY },
-        { x: nodeB, y: branchY },
-        { x: nodeB, y: L.yTop },
-      ], perElement.I2 / I_REF);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeA, y: L.yTop },
+          { x: nodeA, y: branchY },
+          { x: nodeB, y: branchY },
+          { x: nodeB, y: L.yTop },
+        ],
+        perElement.I2 / I_REF,
+      );
       // Trunk through R3 → battery −.
-      drawCurrentDotsPath(ctx, t, [
-        { x: nodeB, y: L.yTop },
-        { x: L.outX, y: L.yTop },
-        { x: L.outX, y: L.yBot },
-        { x: L.batX, y: L.yBot },
-      ], trunkScale);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeB, y: L.yTop },
+          { x: L.outX, y: L.yTop },
+          { x: L.outX, y: L.yBot },
+          { x: L.batX, y: L.yBot },
+        ],
+        trunkScale,
+      );
       break;
     }
     case 'three-series': {
       // One single loop — animate it as a continuous polyline.
-      drawCurrentDotsPath(ctx, t, [
-        { x: L.batX, y: L.yTop },
-        { x: L.outX, y: L.yTop },
-        { x: L.outX, y: L.yBot },
-        { x: L.batX, y: L.yBot },
-      ], trunkScale);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: L.batX, y: L.yTop },
+          { x: L.outX, y: L.yTop },
+          { x: L.outX, y: L.yBot },
+          { x: L.batX, y: L.yBot },
+        ],
+        trunkScale,
+      );
       break;
     }
     case 'three-parallel': {
@@ -752,36 +881,61 @@ function drawAnimatedFlow(
       const yR2 = L.yTop + 38;
       const yR3 = L.yTop + 76;
       // Trunk pre-split.
-      drawCurrentDotsPath(ctx, t, [
-        { x: L.batX, y: L.yTop },
-        { x: nodeA, y: L.yTop },
-      ], trunkScale);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: L.batX, y: L.yTop },
+          { x: nodeA, y: L.yTop },
+        ],
+        trunkScale,
+      );
       // R1 top branch.
-      drawCurrentDotsPath(ctx, t, [
-        { x: nodeA, y: L.yTop },
-        { x: nodeB, y: L.yTop },
-      ], perElement.I1 / I_REF);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeA, y: L.yTop },
+          { x: nodeB, y: L.yTop },
+        ],
+        perElement.I1 / I_REF,
+      );
       // R2 middle branch.
-      drawCurrentDotsPath(ctx, t, [
-        { x: nodeA, y: L.yTop },
-        { x: nodeA, y: yR2 },
-        { x: nodeB, y: yR2 },
-        { x: nodeB, y: L.yTop },
-      ], perElement.I2 / I_REF);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeA, y: L.yTop },
+          { x: nodeA, y: yR2 },
+          { x: nodeB, y: yR2 },
+          { x: nodeB, y: L.yTop },
+        ],
+        perElement.I2 / I_REF,
+      );
       // R3 lower branch.
-      drawCurrentDotsPath(ctx, t, [
-        { x: nodeA, y: L.yTop },
-        { x: nodeA, y: yR3 },
-        { x: nodeB, y: yR3 },
-        { x: nodeB, y: L.yTop },
-      ], perElement.I3 / I_REF);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeA, y: L.yTop },
+          { x: nodeA, y: yR3 },
+          { x: nodeB, y: yR3 },
+          { x: nodeB, y: L.yTop },
+        ],
+        perElement.I3 / I_REF,
+      );
       // Trunk post-merge.
-      drawCurrentDotsPath(ctx, t, [
-        { x: nodeB, y: L.yTop },
-        { x: L.outX, y: L.yTop },
-        { x: L.outX, y: L.yBot },
-        { x: L.batX, y: L.yBot },
-      ], trunkScale);
+      drawCurrentDotsPath(
+        ctx,
+        t,
+        [
+          { x: nodeB, y: L.yTop },
+          { x: L.outX, y: L.yTop },
+          { x: L.outX, y: L.yBot },
+          { x: L.batX, y: L.yBot },
+        ],
+        trunkScale,
+      );
       break;
     }
   }
@@ -802,7 +956,12 @@ function drawProbesAndLabels(
   void R2;
   void R3;
   // Source and ground probes — always present.
-  drawVoltageProbe(ctx, (L.batX + (L.batX + (L.outX - L.batX) * 0.2 - 22)) / 2, L.yTop - 16, V_FIXED);
+  drawVoltageProbe(
+    ctx,
+    (L.batX + (L.batX + (L.outX - L.batX) * 0.2 - 22)) / 2,
+    L.yTop - 16,
+    V_FIXED,
+  );
   drawVoltageProbe(ctx, (L.outX + L.batX) / 2, L.yBot + 18, 0);
 
   // Topology-specific probes for the interior nodes.
@@ -857,11 +1016,14 @@ function drawProbesAndLabels(
       drawVoltageProbe(ctx, (xR2 + 22 + xR3 - 22) / 2, L.yTop - 16, net.nodes[1]?.value ?? 0);
       const colors = getCanvasColors();
       ctx.save();
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = withAlpha(colors.accent, 0.85);
-      ctx.fillText(`I = ${net.Itot.toFixed(2)} A`, (L.batX + xR1) / 2, L.yTop + 14);
+      drawLabel(ctx, {
+        x: (L.batX + xR1) / 2,
+        y: L.yTop + 14,
+        text: `I = ${net.Itot.toFixed(2)} A`,
+        color: withAlpha(colors.accent, 0.85),
+        align: 'center',
+        baseline: 'middle',
+      });
       ctx.restore();
       break;
     }

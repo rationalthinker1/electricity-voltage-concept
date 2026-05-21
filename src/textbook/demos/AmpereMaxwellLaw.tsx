@@ -19,6 +19,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawWire } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 
@@ -205,20 +206,25 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
         }
 
         // Label
-        ctx.fillStyle =
-          p.kind === 'displacement' ? 'rgba(108,197,194,0.95)' : 'rgba(160,158,149,0.85)';
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(p.label, p.x, cy - radiusPx * 0.32 - 10);
+        drawLabel(ctx, {
+          x: p.x,
+          y: cy - radiusPx * 0.32 - 10,
+          text: p.label,
+          color: p.kind === 'displacement' ? 'rgba(108,197,194,0.95)' : 'rgba(160,158,149,0.85)',
+          align: 'center',
+          baseline: 'bottom',
+        });
       }
 
       // I label and current direction near wires
-      ctx.fillStyle = colors.accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`I = ${I.toFixed(2)} A →`, battX + 30, cy + 18);
+      drawLabel(ctx, {
+        x: battX + 30,
+        y: cy + 18,
+        text: `I = ${I.toFixed(2)} A →`,
+        color: colors.accent,
+        size: 11,
+        baseline: 'middle',
+      });
 
       raf = requestAnimationFrame(draw);
     }

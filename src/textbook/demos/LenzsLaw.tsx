@@ -12,7 +12,7 @@
  * time, so the lamp is dark when you stop moving.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -165,10 +165,12 @@ export function LenzsLawDemo({ figure }: Props) {
           ctx.closePath();
           ctx.fill();
         }
-        ctx.fillStyle = `rgba(108,197,194,${tealAlpha})`;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.fillText('B (induced)', cx + 12, cy);
+        drawLabel(ctx, {
+          x: cx + 12,
+          y: cy,
+          text: 'B (induced)',
+          color: `rgba(108,197,194,${tealAlpha})`,
+        });
       }
 
       // Induced current direction — circular arrow around the loop
@@ -199,17 +201,23 @@ export function LenzsLawDemo({ figure }: Props) {
           ctx.lineTo(px - ux * 5 + uy * 3, py - uy * 5 - ux * 3);
           ctx.stroke();
         }
-        ctx.fillStyle = `rgba(255,107,42,${arrowAlpha})`;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText(`induced current (${ccw ? 'opposes' : 'attracts'})`, cx, cy + loopRy + 18);
+        drawLabel(ctx, {
+          x: cx,
+          y: cy + loopRy + 18,
+          text: `induced current (${ccw ? 'opposes' : 'attracts'})`,
+          color: `rgba(255,107,42,${arrowAlpha})`,
+          align: 'center',
+          baseline: 'top',
+        });
       } else {
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('move the magnet to induce a current', cx, cy + loopRy + 18);
+        drawLabel(ctx, {
+          x: cx,
+          y: cy + loopRy + 18,
+          text: 'move the magnet to induce a current',
+          color: colors.textDim,
+          align: 'center',
+          baseline: 'top',
+        });
       }
 
       // Status pill top-left

@@ -13,6 +13,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath, renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -458,11 +459,14 @@ function drawCapacitorV(
   ctx.moveTo(x - 12, yBot);
   ctx.lineTo(x + 12, yBot);
   ctx.stroke();
-  ctx.fillStyle = getCanvasColors().textDim;
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('C', x + 16, cy);
+  drawLabel(ctx, {
+    x: x + 16,
+    y: cy,
+    text: 'C',
+    color: getCanvasColors().textDim,
+    size: 9,
+    baseline: 'middle',
+  });
 }
 
 function drawCurrentDotsPath(

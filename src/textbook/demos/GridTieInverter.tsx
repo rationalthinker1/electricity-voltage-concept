@@ -15,7 +15,7 @@
  * inverter's chosen current-phase angle, set by the firmware).
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -146,15 +146,15 @@ export function GridTieInverterDemo({ figure }: Props) {
 
       // Phase / power readout
       ctx.restore();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        `θ = ${thetaDeg.toFixed(0)}°   ·   cos θ = ${Math.cos(theta).toFixed(2)}`,
-        padL + plotW / 2,
-        padT + plotH + 6,
-      );
+      drawLabel(ctx, {
+        x: padL + plotW / 2,
+        y: padT + plotH + 6,
+        text: `θ = ${thetaDeg.toFixed(0)}°   ·   cos θ = ${Math.cos(theta).toFixed(2)}`,
+        color: colors.textDim,
+        size: 11,
+        align: 'center',
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }

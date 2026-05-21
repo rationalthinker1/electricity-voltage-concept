@@ -277,7 +277,6 @@ export default function LorentzLab() {
         cancelAnimationFrame(raf);
       };
       // resetTick is read indirectly via stateRef effects — but we want a remount on reset.
-       
     },
     [resetTick],
   );

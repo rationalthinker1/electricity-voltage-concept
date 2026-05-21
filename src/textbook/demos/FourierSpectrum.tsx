@@ -11,6 +11,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawAxes, drawBarChart, drawLinePlot } from '@/lib/drawPlot';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -182,11 +183,15 @@ export function FourierSpectrumDemo() {
       });
 
       // Y-axis label
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'top';
-      ctx.fillText('amplitude →', w - padX - 4, bRect.y);
+      drawLabel(ctx, {
+        x: w - padX - 4,
+        y: bRect.y,
+        text: 'amplitude →',
+        color: colors.textDim,
+        size: 9,
+        align: 'right',
+        baseline: 'top',
+      });
     },
     [],
   );

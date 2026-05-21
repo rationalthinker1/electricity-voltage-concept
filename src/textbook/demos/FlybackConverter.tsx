@@ -19,7 +19,7 @@
  * energy in the core's magnetising inductance.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -238,15 +238,14 @@ export function FlybackConverterDemo({ figure }: Props) {
       // I_pk readout above
       ctx.save();
       ctx.globalAlpha = 0.65;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        `I_pk = ${Ipk.toFixed(2)} A,  E/cycle = ${(E_stored * 1e6).toFixed(1)} µJ`,
-        6,
-        h - 16,
-      );
+      drawLabel(ctx, {
+        x: 6,
+        y: h - 16,
+        text: `I_pk = ${Ipk.toFixed(2)} A,  E/cycle = ${(E_stored * 1e6).toFixed(1)} µJ`,
+        color: colors.textDim,
+        size: 9,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
       ctx.restore();

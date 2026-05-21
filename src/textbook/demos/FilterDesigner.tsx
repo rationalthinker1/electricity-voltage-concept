@@ -50,6 +50,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 
 interface Props {
@@ -344,11 +345,15 @@ export function FilterDesignerDemo({ figure }: Props) {
         ctx.stroke();
         ctx.save();
         ctx.globalAlpha = 0.55;
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText(fmtFreq(f), x, by + bh + 2);
+        drawLabel(ctx, {
+          x: x,
+          y: by + bh + 2,
+          text: fmtFreq(f),
+          color: colors.textDim,
+          size: 9,
+          align: 'center',
+          baseline: 'top',
+        });
         ctx.restore();
       }
       for (let db = dBmin; db <= dBmax; db += 20) {
@@ -358,11 +363,15 @@ export function FilterDesignerDemo({ figure }: Props) {
         ctx.moveTo(bx, y);
         ctx.lineTo(bx + bw, y);
         ctx.stroke();
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(`${db}`, bx - 4, y);
+        drawLabel(ctx, {
+          x: bx - 4,
+          y: y,
+          text: `${db}`,
+          color: colors.textDim,
+          size: 9,
+          align: 'right',
+          baseline: 'middle',
+        });
       }
 
       // Mark the 60 Hz hum and 1 kHz audio

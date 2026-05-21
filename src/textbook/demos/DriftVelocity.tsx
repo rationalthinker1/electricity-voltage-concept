@@ -15,7 +15,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { MATERIALS, PHYS, formatTime } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -149,14 +149,12 @@ export function DriftVelocityDemo({ figure }: Props) {
       // Caption
       ctx.save();
       ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(
-        'copper · 120 free electrons (visual bias scaled ×60 000 for visibility)',
-        wireLeft,
-        h - 12,
-      );
+      drawLabel(ctx, {
+        x: wireLeft,
+        y: h - 12,
+        text: 'copper · 120 free electrons (visual bias scaled ×60 000 for visibility)',
+        color: colors.textDim,
+      });
       ctx.restore();
     },
     [],
@@ -222,7 +220,7 @@ export function DriftVelocityDemo({ figure }: Props) {
           <InlineMath
             tex={
               `v_d \\;=\\; \\dfrac{${I.toFixed(1)}}` +
-              `{(8.5\\times 10^{28})(1.602\\times 10^{-19})(${(Amm2).toFixed(2)}\\times 10^{-6})} ` +
+              `{(8.5\\times 10^{28})(1.602\\times 10^{-19})(${Amm2.toFixed(2)}\\times 10^{-6})} ` +
               `\\;\\approx\\; ${vd.toExponential(2)}\\ \\text{m/s}`
             }
           />

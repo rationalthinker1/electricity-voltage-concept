@@ -21,14 +21,9 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import {
-  Demo,
-  DemoControls,
-  EquationStrip,
-  MiniReadout,
-  MiniSlider,
-} from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow } from '@/lib/canvasPrimitives';
 
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -254,11 +249,7 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       ctx.fillStyle = colors.textDim;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
-      ctx.fillText(
-        `total energy |qV_ab| = ${dPE_uJ.toFixed(2)} µJ`,
-        barLeft,
-        barTop - 4,
-      );
+      ctx.fillText(`total energy |qV_ab| = ${dPE_uJ.toFixed(2)} µJ`, barLeft, barTop - 4);
       ctx.textBaseline = 'middle';
 
       const pe_uJ = dPE_uJ * peFrac;
@@ -274,15 +265,14 @@ export function VabWorkEnergyDemo({ figure }: Props) {
         ctx.fillText(`KE  ${ke_uJ.toFixed(2)} µJ`, barLeft + barW - 6, labelY);
       }
 
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        "PE drains, KE fills — both sum to |qV_ab| = the trip's W = ΔU",
-        (barLeft + barRight) / 2,
-        barTop + barH + 6,
-      );
+      drawLabel(ctx, {
+        x: (barLeft + barRight) / 2,
+        y: barTop + barH + 6,
+        text: "PE drains, KE fills — both sum to |qV_ab| = the trip's W = ΔU",
+        color: colors.textDim,
+        align: 'center',
+        baseline: 'top',
+      });
     },
     [],
     () => ({ context: { s: 0, v: 0 } }),
@@ -303,14 +293,26 @@ export function VabWorkEnergyDemo({ figure }: Props) {
       question="Release a charge q in the gap. How fast does it cross, and how much energy does it carry when it arrives?"
       caption={
         <>
-          The two walls sit at <em>V<sub>a</sub></em> and <em>V<sub>b</sub></em>; the field in the
-          gap points from high V to low V, with magnitude tracking{' '}
-          <em>|V<sub>ab</sub>|</em>. A test charge released at rest at the high-PE wall accelerates
-          across under <em>F = qE</em>, arriving with kinetic energy{' '}
-          <em>KE = qV<sub>ab</sub></em>. The bar below shows the trade: potential energy drains, kinetic
-          energy fills, and the total never changes. Flip the sign of <em>q</em> and the same gap
-          launches the charge from the opposite wall in the opposite direction — the energy numbers
-          stay the same.
+          The two walls sit at{' '}
+          <em>
+            V<sub>a</sub>
+          </em>{' '}
+          and{' '}
+          <em>
+            V<sub>b</sub>
+          </em>
+          ; the field in the gap points from high V to low V, with magnitude tracking{' '}
+          <em>
+            |V<sub>ab</sub>|
+          </em>
+          . A test charge released at rest at the high-PE wall accelerates across under{' '}
+          <em>F = qE</em>, arriving with kinetic energy{' '}
+          <em>
+            KE = qV<sub>ab</sub>
+          </em>
+          . The bar below shows the trade: potential energy drains, kinetic energy fills, and the
+          total never changes. Flip the sign of <em>q</em> and the same gap launches the charge from
+          the opposite wall in the opposite direction — the energy numbers stay the same.
         </>
       }
       deeperLab={{ slug: 'potential', label: 'See full lab' }}

@@ -15,7 +15,7 @@
  *   vacuum 0, copper −9.7×10⁻⁶, aluminum +2.2×10⁻⁵, iron ~5000 (soft-iron μ_r ~5000+).
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 
@@ -62,10 +62,13 @@ export function SusceptibilityDemo({ figure }: Props) {
       const usableH = baseY - top;
       const slot = panelW / bars.length;
 
-      ctx.fillStyle = colors.accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(title, x0 + 4, top - 14);
+      drawLabel(ctx, {
+        x: x0 + 4,
+        y: top - 14,
+        text: title,
+        color: colors.accent,
+        size: 11,
+      });
 
       // Axis baseline
       ctx.strokeStyle = colors.borderStrong;

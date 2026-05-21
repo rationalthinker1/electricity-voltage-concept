@@ -16,7 +16,7 @@
  * V_T = 1 V (n-channel enhancement). See Sedra & Smith §5.2.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -174,11 +174,14 @@ export function MOSFETOperationDemo({ figure }: Props) {
         ctx.closePath();
         ctx.fill();
       } else if (Vov === 0) {
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('no channel', (oxL + oxR) / 2, ndT + 2);
+        drawLabel(ctx, {
+          x: (oxL + oxR) / 2,
+          y: ndT + 2,
+          text: 'no channel',
+          color: colors.textDim,
+          align: 'center',
+          baseline: 'middle',
+        });
       }
 
       // header on left
@@ -259,11 +262,14 @@ export function MOSFETOperationDemo({ figure }: Props) {
         ctx.stroke();
 
         const yEnd = yOf(Math.min(Imax, ID(Vgs, Vmax)));
-        ctx.fillStyle = col;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(`V_GS = ${Vgs.toFixed(1)} V`, pL + pW - 6, yEnd - 8);
+        drawLabel(ctx, {
+          x: pL + pW - 6,
+          y: yEnd - 8,
+          text: `V_GS = ${Vgs.toFixed(1)} V`,
+          color: col,
+          align: 'right',
+          baseline: 'middle',
+        });
       });
 
       // operating point

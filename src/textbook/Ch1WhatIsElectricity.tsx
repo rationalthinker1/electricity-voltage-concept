@@ -101,9 +101,9 @@ export default function Ch1WhatIsElectricity() {
         >
           electrons
         </Term>
-        . Each proton carries a single elementary positive charge{' '}
-        <InlineMath tex="+e" />; each electron carries the same magnitude with the opposite sign,{' '}
-        <InlineMath tex="-e" />; neutrons carry none. A neutral atom has exactly as many electrons as protons, and the two
+        . Each proton carries a single elementary positive charge <InlineMath tex="+e" />; each
+        electron carries the same magnitude with the opposite sign, <InlineMath tex="-e" />;
+        neutrons carry none. A neutral atom has exactly as many electrons as protons, and the two
         cancel to zero <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -195,9 +195,8 @@ export default function Ch1WhatIsElectricity() {
         a hundred Eiffel Towers. Part of why that number is so large is that the coulomb itself is
         an enormous unit of charge: one coulomb is the charge of approximately{' '}
         <InlineMath tex="6.24\times 10^{18}" /> elementary charges (protons or electrons), since
-        each elementary charge is{' '}
-        <InlineMath tex="e = 1.602\,176\,634\times 10^{-19}\ \text{C}" />, an exact value by the
-        2019 SI redefinition <Cite id="codata-2018" in={SOURCES} />.
+        each elementary charge is <InlineMath tex="e = 1.602\,176\,634\times 10^{-19}\ \text{C}" />,
+        an exact value by the 2019 SI redefinition <Cite id="codata-2018" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         The reason daily life is full of static and not constant electrocution is that ordinary
@@ -259,24 +258,26 @@ export default function Ch1WhatIsElectricity() {
         <InlineMath tex="1/r^{2}" />. The exponent comes from the dimensionality of space, not from
         anything special about charge.
       </p>
-      <Formula size="lg" tex="F \;\propto\; \dfrac{1}{r^{2}} \;=\; \dfrac{1}{4\pi r^{2}}\cdot 4\pi" />
+      <Formula
+        size="lg"
+        tex="F \;\propto\; \dfrac{1}{r^{2}} \;=\; \dfrac{1}{4\pi r^{2}}\cdot 4\pi"
+      />
       <p className="mb-prose-3">
         where <InlineMath tex="F" /> is the magnitude of the force (in newtons),{' '}
-        <InlineMath tex="r" /> is the separation between the two charges (in metres), and the
-        factor <InlineMath tex="4\pi r^{2}" /> is the surface area of a sphere of radius{' '}
-        <InlineMath tex="r" /> (in m²) —
-        making the proportionality literally "force per unit spherical area." Multiply by the
-        product of the two charges <InlineMath tex="Q_1 Q_2" /> (in C²) and by Coulomb's constant{' '}
-        <InlineMath tex="k" /> (in N·m²/C²) and you recover the full Coulomb's law from the
-        previous section.
+        <InlineMath tex="r" /> is the separation between the two charges (in metres), and the factor{' '}
+        <InlineMath tex="4\pi r^{2}" /> is the surface area of a sphere of radius{' '}
+        <InlineMath tex="r" /> (in m²) — making the proportionality literally "force per unit
+        spherical area." Multiply by the product of the two charges <InlineMath tex="Q_1 Q_2" /> (in
+        C²) and by Coulomb's constant <InlineMath tex="k" /> (in N·m²/C²) and you recover the full
+        Coulomb's law from the previous section.
       </p>
       <Pullout>
         The inverse-square law is not a fact about charge. It is a fact about space being
         three-dimensional.
       </Pullout>
       <p className="mb-prose-3">
-        The Coulomb-and-geometry story leaves one experimental question open: is the exponent
-        really exactly two? Modern null-cavity measurements have pushed the bound to roughly{' '}
+        The Coulomb-and-geometry story leaves one experimental question open: is the exponent really
+        exactly two? Modern null-cavity measurements have pushed the bound to roughly{' '}
         <InlineMath tex="\pm 3\times 10^{-16}" /> — any deviation from exactly 2 is smaller than
         three parts in 10¹⁶ <Cite id="williams-faller-hill-1971" in={SOURCES} />. There are very few{' '}
         <Term
@@ -343,8 +344,8 @@ export default function Ch1WhatIsElectricity() {
             </p>
             <Formula tex="\dfrac{F_e}{F_g} = \dfrac{k\, e^2}{G\, m_p^{2}} \approx 1.24\times 10^{36}" />
             <p className="mb-prose-1 last:mb-0">
-              The electric force between two protons is about{' '}
-              <InlineMath tex="10^{36}" /> times stronger than the gravitational force. Gravity is utterly negligible at atomic scales.
+              The electric force between two protons is about <InlineMath tex="10^{36}" /> times
+              stronger than the gravitational force. Gravity is utterly negligible at atomic scales.
             </p>
           </>
         }
@@ -415,9 +416,9 @@ export default function Ch1WhatIsElectricity() {
         (signed, in coulombs), and <InlineMath tex="r" /> is the distance from the source charge to
         the point where the field is being evaluated (in metres). The direction is radially outward
         from <InlineMath tex="Q" /> (if <InlineMath tex="Q" /> is positive) or inward (if{' '}
-        <InlineMath tex="Q" /> is negative). Bring any other charge <InlineMath tex="q" /> into
-        that field and the force on it is <InlineMath id="force-on-charge" /> — the new charge
-        doesn't talk to the old one, it talks only to the field at its own location
+        <InlineMath tex="Q" /> is negative). Bring any other charge <InlineMath tex="q" /> into that
+        field and the force on it is <InlineMath id="force-on-charge" /> — the new charge doesn't
+        talk to the old one, it talks only to the field at its own location
         <Cite id="feynman-II-2" in={SOURCES} />.
       </p>
 
@@ -441,8 +442,8 @@ export default function Ch1WhatIsElectricity() {
         question={
           <>
             A <strong className="text-text font-medium">+10 nC</strong> point charge sits at the
-            origin. What is the magnitude of <InlineMath tex="\vec{E}" /> at a point 5 cm away,
-            and what force would an electron feel there?
+            origin. What is the magnitude of <InlineMath tex="\vec{E}" /> at a point 5 cm away, and
+            what force would an electron feel there?
           </>
         }
         hint={
@@ -477,10 +478,10 @@ export default function Ch1WhatIsElectricity() {
         Once you have a field, you can ask what the field{' '}
         <em className="text-text italic">looks like</em>. For one isolated charge it's just radial
         arrows, getting weaker by <InlineMath tex="1/r^{2}" />. For two charges, the patterns are
-        more interesting. Two
-        opposite charges nearby produce a <strong className="text-text font-medium">dipole</strong>{' '}
-        field — field lines bowing from the positive to the negative. Two like charges produce a
-        field with a "saddle" between them where everything cancels.
+        more interesting. Two opposite charges nearby produce a{' '}
+        <strong className="text-text font-medium">dipole</strong> field — field lines bowing from
+        the positive to the negative. Two like charges produce a field with a "saddle" between them
+        where everything cancels.
       </p>
 
       <EquipotentialsDemo />
@@ -499,11 +500,10 @@ export default function Ch1WhatIsElectricity() {
         >
           equipotential lines
         </Term>{' '}
-        — sets of points all at the same electrostatic potential <InlineMath tex="V" />. They're
-        the contour lines of an invisible mountain whose height is the potential. The electric
-        field always points "downhill," perpendicular to the equipotentials. We'll spend
-        Chapter&nbsp;2 on what <InlineMath tex="V" /> means and why it's the variable everyone
-        actually measures.
+        — sets of points all at the same electrostatic potential <InlineMath tex="V" />. They're the
+        contour lines of an invisible mountain whose height is the potential. The electric field
+        always points "downhill," perpendicular to the equipotentials. We'll spend Chapter&nbsp;2 on
+        what <InlineMath tex="V" /> means and why it's the variable everyone actually measures.
       </p>
 
       <p className="mb-prose-3">
@@ -517,12 +517,11 @@ export default function Ch1WhatIsElectricity() {
       </p>
       <Formula size="lg" id="parallel-plate-field" />
       <p className="mb-prose-3">
-        where <InlineMath tex="|\vec{E}|" /> is the magnitude of the field between the plates
-        (N/C), <InlineMath tex="\sigma" /> is the magnitude of the surface-charge density on each
-        plate (in C/m²), and{' '}
-        <InlineMath tex="\varepsilon_{0} \approx 8.854\times 10^{-12}\ \text{F/m}" /> is the
-        permittivity of free space <Cite id="codata-2018" in={SOURCES} />. We derive this cleanly
-        with{' '}
+        where <InlineMath tex="|\vec{E}|" /> is the magnitude of the field between the plates (N/C),{' '}
+        <InlineMath tex="\sigma" /> is the magnitude of the surface-charge density on each plate (in
+        C/m²), and <InlineMath tex="\varepsilon_{0} \approx 8.854\times 10^{-12}\ \text{F/m}" /> is
+        the permittivity of free space <Cite id="codata-2018" in={SOURCES} />. We derive this
+        cleanly with{' '}
         <Term
           def={
             <>
@@ -798,10 +797,10 @@ export default function Ch1WhatIsElectricity() {
             This is the Faraday-cage theorem, and it is the same theorem Cavendish exploited
             backwards in 1773. He charged a hollow conducting sphere and looked for any charge
             induced on a second sphere placed inside it. He found none, and the absence let him
-            bound the inverse-square exponent to within about{' '}
-            <InlineMath tex="1/50" /> of exactly 2 <Cite id="cavendish-1773" in={SOURCES} />.
-            Williams, Faller, and Hill repeated the experiment with concentric icosahedra in 1971
-            and sharpened the bound to <InlineMath tex="\sim 3\times 10^{-16}" />
+            bound the inverse-square exponent to within about <InlineMath tex="1/50" /> of exactly 2{' '}
+            <Cite id="cavendish-1773" in={SOURCES} />. Williams, Faller, and Hill repeated the
+            experiment with concentric icosahedra in 1971 and sharpened the bound to{' '}
+            <InlineMath tex="\sim 3\times 10^{-16}" />
             <Cite id="williams-faller-hill-1971" in={SOURCES} />. If the exponent weren't exactly 2,
             the field inside a closed conductor wouldn't exactly cancel, and the car-in-storm story
             would not be as clean as it is.
@@ -831,12 +830,13 @@ export default function Ch1WhatIsElectricity() {
         <FAQItem q="Why are there exactly two kinds of charge and not three, or seven?">
           <p>
             Nobody knows a deeper reason. Empirically, every charged particle ever observed carries
-            an integer multiple of <InlineMath tex="e" />, and the sign comes in two flavors. The two-sign structure falls out of the mathematics of U(1)
-            gauge symmetry in the Standard Model, but that just restates the fact at a higher level
-            — it doesn't explain <em className="text-text italic">why</em> the universe chose U(1).
-            For everything in this chapter, the relevant statement is the experimental one: like
-            repels, unlike attracts, and the algebra of opposites lets ordinary matter be neutral to
-            staggering precision
+            an integer multiple of <InlineMath tex="e" />, and the sign comes in two flavors. The
+            two-sign structure falls out of the mathematics of U(1) gauge symmetry in the Standard
+            Model, but that just restates the fact at a higher level — it doesn't explain{' '}
+            <em className="text-text italic">why</em> the universe chose U(1). For everything in
+            this chapter, the relevant statement is the experimental one: like repels, unlike
+            attracts, and the algebra of opposites lets ordinary matter be neutral to staggering
+            precision
             <Cite id="griffiths-2017" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -896,8 +896,8 @@ export default function Ch1WhatIsElectricity() {
             </Term>{' '}
             in its clean form reads <InlineMath id="gauss-law" />, with no <InlineMath tex="\pi" />{' '}
             anywhere
-            <Cite id="griffiths-2017" in={SOURCES} />. When you specialize that to a point charge and
-            integrate over a sphere of radius <InlineMath tex="r" />, the sphere's area{' '}
+            <Cite id="griffiths-2017" in={SOURCES} />. When you specialize that to a point charge
+            and integrate over a sphere of radius <InlineMath tex="r" />, the sphere's area{' '}
             <InlineMath tex="4\pi r^2" /> appears in the denominator, leaving Coulomb's law looking
             like <InlineMath tex="F = \dfrac{Q_1 Q_2}{4\pi\varepsilon_0 r^2}" />. The{' '}
             <InlineMath tex="4\pi" /> is where you choose to hide the geometry: in Coulomb's law, or
@@ -937,8 +937,8 @@ export default function Ch1WhatIsElectricity() {
             It has been checked to extraordinary precision. Cavendish in 1773 used a charged hollow
             sphere and showed that no charge appears on an inner sphere placed inside it — a result
             that requires the exponent to be 2 to within about <InlineMath tex="1/50" /> by his
-            analysis <Cite id="cavendish-1773" in={SOURCES} />. Williams, Faller, and Hill in 1971 sharpened
-            the technique with concentric icosahedra and bounded any deviation{' '}
+            analysis <Cite id="cavendish-1773" in={SOURCES} />. Williams, Faller, and Hill in 1971
+            sharpened the technique with concentric icosahedra and bounded any deviation{' '}
             <InlineMath tex="q" /> in the form <InlineMath tex="1/r^{2+q}" /> to{' '}
             <InlineMath tex="q = (2.7 \pm 3.1)\times 10^{-16}" />
             <Cite id="williams-faller-hill-1971" in={SOURCES} />. If the photon has a rest mass at
@@ -949,13 +949,13 @@ export default function Ch1WhatIsElectricity() {
 
         <FAQItem q="What's the difference between the electric field E and the potential V?">
           <p>
-            <InlineMath tex="\vec{E}" /> is a vector at every point: it tells you the force per
-            unit charge and which way that force points. <InlineMath tex="V" /> is a scalar at
-            every point: it tells you the potential energy per unit charge that a test charge would
-            have if it sat
-            there. They carry the same information for a static field — E is the negative gradient
-            of V — but V is easier to add up (no vectors) and is what voltmeters actually measure.
-            Equipotentials are level sets of V, and E always points perpendicular to them, downhill
+            <InlineMath tex="\vec{E}" /> is a vector at every point: it tells you the force per unit
+            charge and which way that force points. <InlineMath tex="V" /> is a scalar at every
+            point: it tells you the potential energy per unit charge that a test charge would have
+            if it sat there. They carry the same information for a static field — E is the negative
+            gradient of V — but V is easier to add up (no vectors) and is what voltmeters actually
+            measure. Equipotentials are level sets of V, and E always points perpendicular to them,
+            downhill
             <Cite id="feynman-II-2" in={SOURCES} />. We unpack V in Chapter 2.
           </p>
         </FAQItem>

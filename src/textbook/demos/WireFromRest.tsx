@@ -19,7 +19,7 @@
  * because v_test = 0.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -96,11 +96,16 @@ export function WireFromRestDemo({ figure }: Props) {
           ctx.beginPath();
           ctx.arc(x, y, 5, 0, Math.PI * 2);
           ctx.fill();
-          ctx.fillStyle = colors.bg;
-          ctx.font = 'bold 8px "JetBrains Mono", monospace';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('+', x, y);
+          drawLabel(ctx, {
+            x: x,
+            y: y,
+            text: '+',
+            color: colors.bg,
+            size: 8,
+            align: 'center',
+            baseline: 'middle',
+            weight: 'bold',
+          });
         }
       }
 
@@ -123,11 +128,16 @@ export function WireFromRestDemo({ figure }: Props) {
           ctx.beginPath();
           ctx.arc(x, y, 5, 0, Math.PI * 2);
           ctx.fill();
-          ctx.fillStyle = colors.bg;
-          ctx.font = 'bold 9px "JetBrains Mono", monospace';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('−', x, y);
+          drawLabel(ctx, {
+            x: x,
+            y: y,
+            text: '−',
+            color: colors.bg,
+            size: 9,
+            align: 'center',
+            baseline: 'middle',
+            weight: 'bold',
+          });
         }
       }
 
@@ -166,16 +176,22 @@ export function WireFromRestDemo({ figure }: Props) {
         ctx.fillText('test charge   v = 0', tx, ty - 26);
 
         // "F = 0" marker (no arrow)
-        ctx.fillStyle = colors.teal;
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.fillText('F = q v × B = 0', tx, ty + 36);
+        drawLabel(ctx, {
+          x: tx,
+          y: ty + 36,
+          text: 'F = q v × B = 0',
+          color: colors.teal,
+          size: 11,
+        });
       }
 
       // ─── Frame label
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('LAB FRAME · wire neutral, test charge at rest', 14, 18);
+      drawLabel(ctx, {
+        x: 14,
+        y: 18,
+        text: 'LAB FRAME · wire neutral, test charge at rest',
+        color: 'rgba(160,158,149,0.75)',
+      });
 
       raf = requestAnimationFrame(draw);
     }

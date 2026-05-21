@@ -10,6 +10,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -123,10 +124,15 @@ export function FiberOpticDemo({ figure }: Props) {
             ctx.moveTo(nx, ny);
             ctx.lineTo(escapeX, escapeY);
             ctx.stroke();
-            ctx.fillStyle = getCanvasColors().pink;
-            ctx.font = 'bold 11px "JetBrains Mono", monospace';
-            ctx.textAlign = 'center';
-            ctx.fillText('LIGHT ESCAPES', W / 2, H - 14);
+            drawLabel(ctx, {
+              x: W / 2,
+              y: H - 14,
+              text: 'LIGHT ESCAPES',
+              color: getCanvasColors().pink,
+              size: 11,
+              align: 'center',
+              weight: 'bold',
+            });
           }
           return;
         }

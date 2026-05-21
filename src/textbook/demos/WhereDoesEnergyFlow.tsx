@@ -17,6 +17,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -198,17 +199,16 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
       ctx.drawImage(cacheRef.current.canvas, 0, 0, w, h);
 
       // Per-frame overlay: header label whose color and text toggle with the picture mode.
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillStyle = realPicture ? '#ff6b2a' : '#a09e95';
-      ctx.fillText(
-        realPicture
+      drawLabel(ctx, {
+        x: 18,
+        y: 14,
+        text: realPicture
           ? 'Real picture — energy flows through the field, into the bulb from outside'
           : 'Old picture — electrons stream along the wire, carrying energy',
-        18,
-        14,
-      );
+        color: realPicture ? '#ff6b2a' : '#a09e95',
+        size: 11,
+        baseline: 'top',
+      });
 
       if (!realPicture) {
         // Old picture: carriers drifting along the loop.

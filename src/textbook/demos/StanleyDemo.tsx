@@ -11,7 +11,7 @@
  * use?"). The takeaway: I = P/V, so doubling V quarters the loss.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -115,9 +115,13 @@ export function StanleyDemo({ figure }: Props) {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(p.label, p.x + blockW / 2, cy - 6);
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.fillText(p.sub, p.x + blockW / 2, cy + 8);
+        drawLabel(ctx, {
+          x: p.x + blockW / 2,
+          y: cy + 8,
+          text: p.sub,
+          color: colors.textDim,
+          size: 9,
+        });
       }
 
       // Short wires between non-transmission blocks

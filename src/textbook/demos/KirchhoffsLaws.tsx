@@ -28,6 +28,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -276,9 +277,12 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         ctx.fillStyle = getCanvasColors().text;
         ctx.font = '11px "JetBrains Mono", monospace';
         ctx.fillText(`I₁ = I₂ + I₃`, boxX + 8, boxY + 22);
-        ctx.fillStyle = getCanvasColors().textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillText(`${fmtA(I1)} = ${fmtA(I2)} + ${fmtA(I3)} ✓`, boxX + 8, boxY + 36);
+        drawLabel(ctx, {
+          x: boxX + 8,
+          y: boxY + 36,
+          text: `${fmtA(I1)} = ${fmtA(I2)} + ${fmtA(I3)} ✓`,
+          color: getCanvasColors().textDim,
+        });
       }
 
       if (showKVL) {
@@ -325,11 +329,13 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       }
 
       // Dynamic overlay: top-corner caption text.
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('Two-loop network: R₁ in series with (R₂ ∥ R₃)', 12, 10);
+      drawLabel(ctx, {
+        x: 12,
+        y: 10,
+        text: 'Two-loop network: R₁ in series with (R₂ ∥ R₃)',
+        color: getCanvasColors().textDim,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }

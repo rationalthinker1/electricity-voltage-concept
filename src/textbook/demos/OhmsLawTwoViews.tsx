@@ -22,6 +22,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 import { type ThemeColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -503,11 +504,14 @@ function drawCircuitMini(
   ctx.fillStyle = withAlpha(colors.accent, arrowAlpha);
   ctx.fillText('I  (conventional)', (ax0 + ax1) / 2, arrowY - 4);
 
-  ctx.fillStyle = colors.textDim;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(`I = ${p.I.toFixed(2)} A`, cx, y1 + 14);
+  drawLabel(ctx, {
+    x: cx,
+    y: y1 + 14,
+    text: `I = ${p.I.toFixed(2)} A`,
+    color: colors.textDim,
+    align: 'center',
+    baseline: 'bottom',
+  });
 }
 
 /* ── helpers ───────────────────────────────────────────────────────────── */

@@ -974,10 +974,7 @@ interface HaloOptions {
   extent?: number;
 }
 
-export function drawHalo(
-  ctx: CanvasRenderingContext2D,
-  opts: HaloOptions,
-): void {
+export function drawHalo(ctx: CanvasRenderingContext2D, opts: HaloOptions): void {
   const extent = opts.extent ?? 2.2;
   const alpha = opts.alpha ?? 0.2;
   const outerR = opts.radius * extent;

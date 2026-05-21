@@ -174,7 +174,11 @@ export function HarmonicSynthesisDemo() {
     >
       <AutoResizeCanvas height={280} setup={setup} />
       <DemoControls>
-        <MiniToggle label="Square" checked={target === 'square'} onChange={() => setTarget('square')} />
+        <MiniToggle
+          label="Square"
+          checked={target === 'square'}
+          onChange={() => setTarget('square')}
+        />
         <MiniToggle
           label="Triangle"
           checked={target === 'triangle'}

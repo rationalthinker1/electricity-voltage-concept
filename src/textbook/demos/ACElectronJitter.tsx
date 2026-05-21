@@ -21,6 +21,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { MATERIALS, PHYS } from '@/lib/physics';
 
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -161,10 +162,12 @@ export function ACElectronJitterDemo({ figure }: Props) {
 
       // Reference strip
       const stripY = 56;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillStyle = colors.textMuted;
-      ctx.textAlign = 'left';
-      ctx.fillText('for scale:', innerLeft, stripY);
+      drawLabel(ctx, {
+        x: innerLeft,
+        y: stripY,
+        text: 'for scale:',
+        color: colors.textMuted,
+      });
       let sx = innerLeft + 60;
       for (const ref of REFERENCES) {
         const refNm = ref.m * 1e9;
@@ -217,7 +220,9 @@ export function ACElectronJitterDemo({ figure }: Props) {
       </DemoControls>
       <EquationStrip
         leftLabel="Peak excursion at 60 Hz"
-        left={<InlineMath tex="x_{\text{peak}} \;=\; \dfrac{v_{\text{peak}}}{\omega} \;=\; \dfrac{\sqrt{2}\, I_{\text{rms}}}{n\, q\, A\, \omega}" />}
+        left={
+          <InlineMath tex="x_{\text{peak}} \;=\; \dfrac{v_{\text{peak}}}{\omega} \;=\; \dfrac{\sqrt{2}\, I_{\text{rms}}}{n\, q\, A\, \omega}" />
+        }
         rightLabel="Live substitution (14-AWG Cu)"
         right={
           <InlineMath

@@ -18,6 +18,7 @@ import {
 } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow, drawCharge } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
@@ -71,10 +72,13 @@ export function TwoChargesDemo({ figure }: Props) {
       ctx.lineTo(cx2, cy);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = withAlpha(colors.textDim, 0.85);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(`${s.rCm.toFixed(1)} cm`, cxMid, cy - 12);
+      drawLabel(ctx, {
+        x: cxMid,
+        y: cy - 12,
+        text: `${s.rCm.toFixed(1)} cm`,
+        color: withAlpha(colors.textDim, 0.85),
+        align: 'center',
+      });
 
       // Force arrows on each charge
       const arrowLen = Math.min(110, 24 + Math.log10(Math.abs(F_) + 1) * 13);

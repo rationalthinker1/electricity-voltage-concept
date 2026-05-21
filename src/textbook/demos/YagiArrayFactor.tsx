@@ -11,6 +11,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -61,10 +62,14 @@ export function YagiArrayFactorDemo({ figure }: Props) {
         ctx.moveTo(x, cyTop - len / 2);
         ctx.lineTo(x, cyTop + len / 2);
         ctx.stroke();
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.fillStyle = getCanvasColors().textDim;
-        ctx.textAlign = 'center';
-        ctx.fillText(label, x, cyTop + len / 2 + 12);
+        drawLabel(ctx, {
+          x: x,
+          y: cyTop + len / 2 + 12,
+          text: label,
+          color: getCanvasColors().textDim,
+          size: 9,
+          align: 'center',
+        });
       }
       drawElement(xRef, 78, 'refl', false);
       drawElement(xDrv, 70, 'driven', true);

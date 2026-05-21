@@ -58,8 +58,9 @@ export default function Ch2VoltageAndCurrent() {
             <>
               <strong className="text-text font-medium">voltage</strong> (potential difference) —
               the work done per unit positive charge to move it between two points:{' '}
-              <InlineMath id="voltage-line-integral" />. SI unit: volt
-              (<InlineMath tex="1\ \text{V} = 1\ \text{J/C}" />). Always defined between two points.
+              <InlineMath id="voltage-line-integral" />. SI unit: volt (
+              <InlineMath tex="1\ \text{V} = 1\ \text{J/C}" />
+              ). Always defined between two points.
             </>
           }
         >
@@ -78,12 +79,12 @@ export default function Ch2VoltageAndCurrent() {
       </p>
       <p className="mb-prose-3">
         The gravitational analogy is exact in all the parts that matter. A ball at the top of a hill
-        has gravitational potential energy <InlineMath tex="mgh" />; let it roll
-        and that energy converts to kinetic. A positive test charge at the high end of a voltage
-        drop has electrical potential energy <InlineMath tex="qV" />; let it move
-        and that energy goes into kinetic energy of the charge — which, in a wire full of fixed
-        obstacles, almost immediately becomes heat. The battery is the climber lifting the ball back
-        up. Voltage is the height it lifted to.
+        has gravitational potential energy <InlineMath tex="mgh" />; let it roll and that energy
+        converts to kinetic. A positive test charge at the high end of a voltage drop has electrical
+        potential energy <InlineMath tex="qV" />; let it move and that energy goes into kinetic
+        energy of the charge — which, in a wire full of fixed obstacles, almost immediately becomes
+        heat. The battery is the climber lifting the ball back up. Voltage is the height it lifted
+        to.
       </p>
 
       <VoltageAsHeightDemo />
@@ -95,8 +96,8 @@ export default function Ch2VoltageAndCurrent() {
         distribution, compute the work a charge will gain crossing a gap, design a battery or a
         capacitor — you need a definition with sharper edges. The "height" in the analogy is the
         line integral of the electric field: add up the field's component along any path from{' '}
-        <InlineMath tex="a" /> to <InlineMath tex="b" />, with a
-        minus sign, and you get the potential difference between them.
+        <InlineMath tex="a" /> to <InlineMath tex="b" />, with a minus sign, and you get the
+        potential difference between them.
       </p>
       <Formula size="lg" tex="V_{ab} = V_b - V_a = -\int_a^b \vec{E}\cdot d\vec{\ell}" />
       <p className="mb-prose-3">
@@ -116,8 +117,8 @@ export default function Ch2VoltageAndCurrent() {
         <strong className="text-text font-medium"> E</strong> is the electric field vector (in V/m,
         equivalently N/C),
         <strong className="text-text font-medium"> dℓ</strong> is the infinitesimal vector element
-        of any path from <InlineMath tex="a" /> to{' '}
-        <InlineMath tex="b" /> (in metres), and the integral runs along that path.
+        of any path from <InlineMath tex="a" /> to <InlineMath tex="b" /> (in metres), and the
+        integral runs along that path.
       </p>
       <p className="mb-prose-3">
         The minus sign is convention: walking <em className="text-text italic">against</em> the
@@ -166,10 +167,9 @@ export default function Ch2VoltageAndCurrent() {
         one canvas above. Drag <InlineMath tex="V_a" /> and <InlineMath tex="V_b" /> and only their{' '}
         <em className="text-text italic">difference</em> matters: slide both up by the same amount
         and <InlineMath tex="V_{ab}" />, <InlineMath tex="W" />, and <InlineMath tex="\Delta U" />{' '}
-        are unchanged. Flip the sign of <InlineMath tex="q" /> and the same potential
-        gap flips the bookkeeping — the energy that had to be invested to push a positive charge
-        uphill is the same energy a negative charge of equal magnitude releases falling the other
-        way.
+        are unchanged. Flip the sign of <InlineMath tex="q" /> and the same potential gap flips the
+        bookkeeping — the energy that had to be invested to push a positive charge uphill is the
+        same energy a negative charge of equal magnitude releases falling the other way.
       </p>
 
       <VoltageDrivesFlowDemo />
@@ -190,16 +190,15 @@ export default function Ch2VoltageAndCurrent() {
           load
         </Term>{' '}
         and a fixed current flows: in the demo above, <InlineMath tex="I = V/R" /> for{' '}
-        <InlineMath tex="R = 10\ \text{Ω}" />. Doubling <InlineMath tex="V" /> doubles the current
-        — and, via{' '}
-        <InlineMath tex="v_d = I/(nqA)" />, doubles the drift speed of the electrons inside the
-        copper. But the drift stays microscopic across the whole slider range, never breaking out of
-        tens of micrometres per second. What lifts dramatically is the power{' '}
+        <InlineMath tex="R = 10\ \text{Ω}" />. Doubling <InlineMath tex="V" /> doubles the current —
+        and, via <InlineMath tex="v_d = I/(nqA)" />, doubles the drift speed of the electrons inside
+        the copper. But the drift stays microscopic across the whole slider range, never breaking
+        out of tens of micrometres per second. What lifts dramatically is the power{' '}
         <InlineMath tex="P = V\cdot I = V^2/R" />: a quadratic, not a linear, function of voltage.
-        That is the reason the load gets so much brighter when you crank{' '}
-        <InlineMath tex="V" />, and the reason the grid pushes power cross-country
-        at hundreds of kilovolts. Chapter 3 makes Ohm's law and power rigorous; Chapter 8 will show
-        that the energy isn't actually flowing through the copper at all.
+        That is the reason the load gets so much brighter when you crank <InlineMath tex="V" />, and
+        the reason the grid pushes power cross-country at hundreds of kilovolts. Chapter 3 makes
+        Ohm's law and power rigorous; Chapter 8 will show that the energy isn't actually flowing
+        through the copper at all.
       </p>
 
       <h3 className="chapter-h3">The cleanest case: a uniform field between two plates</h3>
@@ -230,8 +229,7 @@ export default function Ch2VoltageAndCurrent() {
         <InlineMath tex="h" /> off the bottom plate, the voltage relative to the bottom is just{' '}
         <InlineMath tex="V(h) = Eh" />: a perfect linear ramp from 0 at the bottom to{' '}
         <InlineMath tex="V_{\text{plate}}" /> at the top. The "electrical landscape" inside a
-        parallel-plate cap is a perfectly sloped ski
-        hill, and any charge dropped in slides down it
+        parallel-plate cap is a perfectly sloped ski hill, and any charge dropped in slides down it
         <Cite id="feynman-II-2" in={SOURCES} />
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
@@ -285,9 +283,9 @@ export default function Ch2VoltageAndCurrent() {
           def={
             <>
               <strong className="text-text font-medium">Current</strong> — the rate at which charge
-              crosses a surface, <InlineMath id="current-def" />. SI unit: ampere
-              (<InlineMath tex="1\ \text{A} = 1\ \text{C/s}" />). A signed scalar pointing the way
-              conventional positive charge would move.
+              crosses a surface, <InlineMath id="current-def" />. SI unit: ampere (
+              <InlineMath tex="1\ \text{A} = 1\ \text{C/s}" />
+              ). A signed scalar pointing the way conventional positive charge would move.
             </>
           }
         >
@@ -298,8 +296,8 @@ export default function Ch2VoltageAndCurrent() {
           def={
             <>
               <strong className="text-text font-medium">ampere</strong> — the SI unit of current;{' '}
-              <InlineMath tex="1\ \text{A} = 1\ \text{C/s} \approx 6.24\times 10^{18}\ \text{charges/s}" />.
-              Defined since 2019 by fixing the value of <InlineMath tex="e" />.
+              <InlineMath tex="1\ \text{A} = 1\ \text{C/s} \approx 6.24\times 10^{18}\ \text{charges/s}" />
+              . Defined since 2019 by fixing the value of <InlineMath tex="e" />.
             </>
           }
         >
@@ -592,8 +590,8 @@ export default function Ch2VoltageAndCurrent() {
               Time for the signal to cross 30 cm:{' '}
               <InlineMath tex="0.30 / (2\times 10^{8}) = 1.5\ \text{ns}" />. Time for a single
               drifting electron:{' '}
-              <InlineMath tex="0.30 / (2.4\times 10^{-4}) \approx 1250\ \text{s} \approx 21\ \text{min}" />.
-              Nearly twelve orders of magnitude separate the two.
+              <InlineMath tex="0.30 / (2.4\times 10^{-4}) \approx 1250\ \text{s} \approx 21\ \text{min}" />
+              . Nearly twelve orders of magnitude separate the two.
             </p>
           </>
         }

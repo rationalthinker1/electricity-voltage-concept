@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { fmtResistance } from '@/lib/formatters';
@@ -363,11 +364,13 @@ function drawBars(
   ctx.fillText(`${Vout.toFixed(3)} V`, xB + barW / 2, r2Top - 2);
 
   // Title
-  ctx.fillStyle = getCanvasColors().textDim;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'top';
-  ctx.fillText('KVL: V_in = V_R₁ + V_out', padL, 6);
+  drawLabel(ctx, {
+    x: padL,
+    y: 6,
+    text: 'KVL: V_in = V_R₁ + V_out',
+    color: getCanvasColors().textDim,
+    baseline: 'top',
+  });
 
   ctx.restore();
 }

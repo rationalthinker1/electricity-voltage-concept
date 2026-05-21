@@ -10,6 +10,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -162,11 +163,13 @@ export function ChemistryComparisonDemo({ figure }: Props) {
       }
 
       // Metric label
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`${s.spec.label}  (${s.spec.unit})`, pX, 6);
+      drawLabel(ctx, {
+        x: pX,
+        y: 6,
+        text: `${s.spec.label}  (${s.spec.unit})`,
+        color: getCanvasColors().textDim,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }
@@ -194,7 +197,7 @@ export function ChemistryComparisonDemo({ figure }: Props) {
           <button
             key={m.key}
             type="button"
-            className={`mini-toggle${metric === m.key ? ' on' : ''}`}
+            className={`mini-toggle${metric === m.key ? 'on' : ''}`}
             onClick={() => setMetric(m.key)}
           >
             {m.label}

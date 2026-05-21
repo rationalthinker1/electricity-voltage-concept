@@ -20,6 +20,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -86,10 +87,13 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
           // E-vector(s)
           drawE(cx, cy);
           // Title
-          ctx.font = '10px "JetBrains Mono", monospace';
-          ctx.fillStyle = getCanvasColors().textDim;
-          ctx.textAlign = 'center';
-          ctx.fillText(title, cx, cy + Rwheel + 22);
+          drawLabel(ctx, {
+            x: cx,
+            y: cy + Rwheel + 22,
+            text: title,
+            color: getCanvasColors().textDim,
+            align: 'center',
+          });
         }
 
         // (1) Unpolarised: draw 8 random-orientation arrows

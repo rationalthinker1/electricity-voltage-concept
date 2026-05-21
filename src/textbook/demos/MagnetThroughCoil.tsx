@@ -11,7 +11,7 @@
  * dΦ/dt is what matters here, not its absolute calibration.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -257,11 +257,13 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.6;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('drag the magnet ↔', 16, 14);
+      drawLabel(ctx, {
+        x: 16,
+        y: 14,
+        text: 'drag the magnet ↔',
+        color: colors.textDim,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
       ctx.restore();

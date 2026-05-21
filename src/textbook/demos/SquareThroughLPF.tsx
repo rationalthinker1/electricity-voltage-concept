@@ -8,7 +8,7 @@
  * its high-frequency bars.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -60,10 +60,13 @@ export function SquareThroughLPFDemo() {
           ctx.lineTo(w - padX, mid);
           ctx.stroke();
           plot(padX, mid, panelH / 2);
-          ctx.fillStyle = colors.textDim;
-          ctx.font = '9px "JetBrains Mono", monospace';
-          ctx.textAlign = 'left';
-          ctx.fillText(label, padX, top + 10);
+          drawLabel(ctx, {
+            x: padX,
+            y: top + 10,
+            text: label,
+            color: colors.textDim,
+            size: 9,
+          });
         }
 
         // Input: square wave (sum of odd harmonics)

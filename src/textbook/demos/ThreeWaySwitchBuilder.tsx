@@ -31,6 +31,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, drawGlowPath, type CircuitElement } from '@/lib/canvasPrimitives';
 
 type TerminalId =
@@ -473,11 +474,15 @@ export function ThreeWaySwitchBuilderDemo({ figure }: Props) {
           const boxT = Math.min(t1.y, t2.y, com.y) - 14;
           const boxB = Math.max(t1.y, t2.y, com.y) + 14;
           ctx.strokeRect(boxL, boxT, boxR - boxL, boxB - boxT);
-          ctx.fillStyle = 'rgba(160,158,149,.7)';
-          ctx.font = '9px "JetBrains Mono", monospace';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'bottom';
-          ctx.fillText(sw.toUpperCase(), (boxL + boxR) / 2, boxT - 4);
+          drawLabel(ctx, {
+            x: (boxL + boxR) / 2,
+            y: boxT - 4,
+            text: sw.toUpperCase(),
+            color: 'rgba(160,158,149,.7)',
+            size: 9,
+            align: 'center',
+            baseline: 'bottom',
+          });
           ctx.restore();
 
           // Blade — the internal SPDT contact from common to active traveller.

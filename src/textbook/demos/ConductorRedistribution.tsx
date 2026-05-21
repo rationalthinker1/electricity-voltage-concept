@@ -9,6 +9,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -47,14 +48,14 @@ export function ConductorRedistributionDemo({ figure }: Props) {
       ctx.setLineDash([3, 3]);
       ctx.strokeRect(padX, padY, w - 2 * padX, h - 2 * padY);
       ctx.setLineDash([]);
-      ctx.fillStyle = s.conductor ? colors.teal : withAlpha(colors.textDim, 0.6);
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(
-        s.conductor ? 'CONDUCTOR  →  charges free to move' : 'INSULATOR  →  charges pinned in place',
-        padX,
-        padY - 12,
-      );
+      drawLabel(ctx, {
+        x: padX,
+        y: padY - 12,
+        text: s.conductor
+          ? 'CONDUCTOR  →  charges free to move'
+          : 'INSULATOR  →  charges pinned in place',
+        color: s.conductor ? colors.teal : withAlpha(colors.textDim, 0.6),
+      });
 
       if (s.conductor) {
         // Mutually-repel + box-confined → settle on the boundary

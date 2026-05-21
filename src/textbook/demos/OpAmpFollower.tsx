@@ -18,6 +18,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -241,11 +242,15 @@ function drawSchematic(
     xNodeOut = xTri + 70;
 
     ctx.restore();
-    ctx.fillStyle = getCanvasColors().teal;
-    ctx.font = '9px "JetBrains Mono", monospace';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'bottom';
-    ctx.fillText('unity follower', xTri + 21, yWire - triH / 2 - 4);
+    drawLabel(ctx, {
+      x: xTri + 21,
+      y: yWire - triH / 2 - 4,
+      text: 'unity follower',
+      color: getCanvasColors().teal,
+      size: 9,
+      align: 'center',
+      baseline: 'bottom',
+    });
   }
 
   // R_L from node to ground

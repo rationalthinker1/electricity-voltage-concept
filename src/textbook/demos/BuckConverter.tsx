@@ -18,7 +18,7 @@
  * pulses. Slider: D, V_in, R_load.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -188,11 +188,13 @@ export function BuckConverterDemo({ figure }: Props) {
       // Header
       ctx.save();
       ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillText(`V_out = D · V_in = ${Vout.toFixed(2)} V`, 4, 4);
+      drawLabel(ctx, {
+        x: 4,
+        y: 4,
+        text: `V_out = D · V_in = ${Vout.toFixed(2)} V`,
+        color: colors.textDim,
+        baseline: 'top',
+      });
       ctx.restore();
 
       raf = requestAnimationFrame(draw);

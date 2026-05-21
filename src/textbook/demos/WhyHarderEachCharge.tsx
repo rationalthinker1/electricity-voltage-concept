@@ -16,6 +16,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -185,11 +186,14 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
         ctx.stroke();
       }
 
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`V = ${s.V_now.toFixed(2)} V`, tapeX + tapeW / 2, tapeY + tapeH + 14);
+      drawLabel(ctx, {
+        x: tapeX + tapeW / 2,
+        y: tapeY + tapeH + 14,
+        text: `V = ${s.V_now.toFixed(2)} V`,
+        color: getCanvasColors().accent,
+        align: 'center',
+        baseline: 'middle',
+      });
 
       raf = requestAnimationFrame(draw);
     }

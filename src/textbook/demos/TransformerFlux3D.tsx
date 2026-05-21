@@ -27,6 +27,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import {
@@ -436,11 +437,14 @@ export function TransformerFlux3DDemo({ figure }: Props) {
           }
         }
         // Scale-by-magnitude annotation in a corner.
-        ctx.fillStyle = getCanvasColors().accent;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'top';
-        ctx.fillText(`I_s = ${(st.Ip * ratioMag).toFixed(2)} A`, W - 12, 60);
+        drawLabel(ctx, {
+          x: W - 12,
+          y: 60,
+          text: `I_s = ${(st.Ip * ratioMag).toFixed(2)} A`,
+          color: getCanvasColors().accent,
+          align: 'right',
+          baseline: 'top',
+        });
       }
 
       // ── 6) leakage flux (small arrows escaping into air around each winding) ──

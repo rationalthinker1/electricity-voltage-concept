@@ -41,7 +41,6 @@ export type NavCardProps = LinkProps & {
 
 export function NavCard({ children, className, ...linkProps }: NavCardProps) {
   return (
-     
     <Link
       {...(linkProps as any)}
       className={clsx(

@@ -7,7 +7,7 @@
  * the panel below.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
 
@@ -150,9 +150,13 @@ export function GridHierarchyDemo({ figure }: Props) {
         } else {
           ctx.fillText(lbl, cx, by + 18);
         }
-        ctx.fillStyle = colors.teal;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.fillText(s.voltage, cx, by + blockH - 12);
+        drawLabel(ctx, {
+          x: cx,
+          y: by + blockH - 12,
+          text: s.voltage,
+          color: colors.teal,
+          size: 9,
+        });
 
         hitsRef.current.push({ key: s.key, x: bx, y: by, w: blockW, h: blockH });
       }

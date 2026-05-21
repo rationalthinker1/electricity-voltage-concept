@@ -190,7 +190,6 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
       }
       raf = requestAnimationFrame(draw);
       return () => cancelAnimationFrame(raf);
-       
     },
     [restartTick],
   );

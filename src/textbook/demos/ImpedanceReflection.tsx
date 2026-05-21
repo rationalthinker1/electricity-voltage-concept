@@ -10,6 +10,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -157,19 +158,19 @@ export function ImpedanceReflectionDemo({ figure }: Props) {
       const target = 5000;
       const ratioDiff = Math.abs(Math.log10(Math.max(Zp, 1) / target));
       const match = Math.max(0, 1 - ratioDiff * 2); // 1.0 = perfect, 0 at 100× off
-      ctx.fillStyle = `rgba(108,197,194,${0.3 + 0.7 * match})`;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        match > 0.8
-          ? 'matched to a 5 kΩ source'
-          : Zp < target
-            ? 'still too low for a tube plate'
-            : 'now too high for a tube plate',
-        12,
-        h - 18,
-      );
+      drawLabel(ctx, {
+        x: 12,
+        y: h - 18,
+        text:
+          match > 0.8
+            ? 'matched to a 5 kΩ source'
+            : Zp < target
+              ? 'still too low for a tube plate'
+              : 'now too high for a tube plate',
+        color: `rgba(108,197,194,${0.3 + 0.7 * match})`,
+        size: 9,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }

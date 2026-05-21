@@ -8,7 +8,7 @@
  * percentage.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -139,10 +139,14 @@ export function THDAndDistortionDemo() {
           ctx.fillStyle = n === 1 ? 'rgba(108,197,194,0.85)' : '#ff6b2a';
           ctx.fillRect(x, bMid - hPx, barW, hPx);
           if (amp / maxAmp > 0.06) {
-            ctx.fillStyle = colors.text;
-            ctx.font = '9px "JetBrains Mono", monospace';
-            ctx.textAlign = 'center';
-            ctx.fillText(amp.toFixed(2), x + barW / 2, bMid - hPx - 3);
+            drawLabel(ctx, {
+              x: x + barW / 2,
+              y: bMid - hPx - 3,
+              text: amp.toFixed(2),
+              color: colors.text,
+              size: 9,
+              align: 'center',
+            });
           }
         }
         ctx.fillStyle = colors.textDim;

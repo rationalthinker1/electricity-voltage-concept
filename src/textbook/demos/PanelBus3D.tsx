@@ -42,6 +42,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import {
@@ -568,11 +569,14 @@ function drawTwoPoleBreaker(
   }
   // "240 V" label, projected screen-space, near the top of the breaker.
   const lbl = project(v3(0, cy + half + 0.06, cz + 0.17), cam, W, H);
-  ctx.fillStyle = getCanvasColors().accent;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText('240 V', lbl.x, lbl.y);
+  drawLabel(ctx, {
+    x: lbl.x,
+    y: lbl.y,
+    text: '240 V',
+    color: getCanvasColors().accent,
+    align: 'center',
+    baseline: 'bottom',
+  });
 }
 
 function drawMainBreaker(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number) {
@@ -599,11 +603,14 @@ function drawMainBreaker(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: num
   ctx.fill();
   const lbl = project(v3(0, MAIN_Y - MAIN_HH - 0.04, 0.22 + MAIN_HD), cam, W, H);
   ctx.restore();
-  ctx.fillStyle = getCanvasColors().textDim;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText('MAIN  200 A', lbl.x, lbl.y);
+  drawLabel(ctx, {
+    x: lbl.x,
+    y: lbl.y,
+    text: 'MAIN  200 A',
+    color: getCanvasColors().textDim,
+    align: 'center',
+    baseline: 'top',
+  });
 }
 
 function drawNeutralBar(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number) {
@@ -624,11 +631,14 @@ function drawNeutralBar(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: numb
     ctx.restore();
   }
   const lbl = project(v3(-NEUTRAL_X_HALF - 0.1, NEUTRAL_Y, 0.11), cam, W, H);
-  ctx.fillStyle = getCanvasColors().teal;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('NEUTRAL', lbl.x, lbl.y);
+  drawLabel(ctx, {
+    x: lbl.x,
+    y: lbl.y,
+    text: 'NEUTRAL',
+    color: getCanvasColors().teal,
+    align: 'right',
+    baseline: 'middle',
+  });
 }
 
 function drawGroundBar(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number) {
@@ -645,11 +655,14 @@ function drawGroundBar(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: numbe
     ctx.fill();
   }
   const lbl = project(v3(-GROUND_X_HALF - 0.1, GROUND_Y, 0.1), cam, W, H);
-  ctx.fillStyle = getCanvasColors().teal;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('GROUND', lbl.x, lbl.y);
+  drawLabel(ctx, {
+    x: lbl.x,
+    y: lbl.y,
+    text: 'GROUND',
+    color: getCanvasColors().teal,
+    align: 'right',
+    baseline: 'middle',
+  });
 }
 
 function drawBondingJumper(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: number, H: number) {
@@ -667,11 +680,14 @@ function drawBondingJumper(ctx: CanvasRenderingContext2D, cam: OrbitCamera, W: n
     glowWidth: 8,
   });
   const lbl = project(v3(NEUTRAL_X_HALF - 0.04, (NEUTRAL_Y + GROUND_Y) / 2, 0.11), cam, W, H);
-  ctx.fillStyle = getCanvasColors().teal;
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('bond', lbl.x, lbl.y);
+  drawLabel(ctx, {
+    x: lbl.x,
+    y: lbl.y,
+    text: 'bond',
+    color: getCanvasColors().teal,
+    size: 9,
+    baseline: 'middle',
+  });
 }
 
 function drawNeutralRoute(

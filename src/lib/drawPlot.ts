@@ -91,11 +91,7 @@ export function makePlotMappers(
  * When xTicks or yTicks are arrays, grid lines and labels are placed at
  * exactly those data-space positions (clipped to the visible range).
  */
-export function drawAxes(
-  ctx: CanvasRenderingContext2D,
-  rect: PlotRect,
-  opts: AxisOptions,
-) {
+export function drawAxes(ctx: CanvasRenderingContext2D, rect: PlotRect, opts: AxisOptions) {
   const colors = getCanvasColors();
   const axisColor = opts.axisColor ?? colors.border;
   const gridColor = opts.gridColor ?? withAlpha(colors.textMuted, 0.25);
@@ -115,13 +111,15 @@ export function drawAxes(
   const yTickCount = typeof opts.yTicks === 'number' ? opts.yTicks : 5;
   const xTickArray = Array.isArray(opts.xTicks)
     ? opts.xTicks.filter((v) => v >= opts.xMin && v <= opts.xMax)
-    : Array.from({ length: xTickCount + 1 }, (_, i) =>
-        opts.xMin + (i / xTickCount) * (opts.xMax - opts.xMin),
+    : Array.from(
+        { length: xTickCount + 1 },
+        (_, i) => opts.xMin + (i / xTickCount) * (opts.xMax - opts.xMin),
       );
   const yTickArray = Array.isArray(opts.yTicks)
     ? opts.yTicks.filter((v) => v >= opts.yMin && v <= opts.yMax)
-    : Array.from({ length: yTickCount + 1 }, (_, i) =>
-        opts.yMin + (i / yTickCount) * (opts.yMax - opts.yMin),
+    : Array.from(
+        { length: yTickCount + 1 },
+        (_, i) => opts.yMin + (i / yTickCount) * (opts.yMax - opts.yMin),
       );
 
   // Grid lines
@@ -216,7 +214,11 @@ export function drawHLine(
   if (opts.label) {
     const align = opts.labelAlign ?? 'end';
     const labelX =
-      align === 'start' ? rect.x + 4 : align === 'center' ? rect.x + rect.w / 2 : rect.x + rect.w - 4;
+      align === 'start'
+        ? rect.x + 4
+        : align === 'center'
+          ? rect.x + rect.w / 2
+          : rect.x + rect.w - 4;
     ctx.globalAlpha = 1;
     ctx.fillStyle = opts.labelColor ?? lineColor;
     ctx.font = `${opts.labelSize ?? 9}px "JetBrains Mono", monospace`;
@@ -254,7 +256,11 @@ export function drawVLine(
   if (opts.label) {
     const align = opts.labelAlign ?? 'end';
     const labelY =
-      align === 'start' ? rect.y + 4 : align === 'center' ? rect.y + rect.h / 2 : rect.y + rect.h - 4;
+      align === 'start'
+        ? rect.y + 4
+        : align === 'center'
+          ? rect.y + rect.h / 2
+          : rect.y + rect.h - 4;
     ctx.globalAlpha = 1;
     ctx.fillStyle = opts.labelColor ?? lineColor;
     ctx.font = `${opts.labelSize ?? 9}px "JetBrains Mono", monospace`;
@@ -351,10 +357,7 @@ export function drawBarChart(
   const barColors = opts.barColors;
   const gap = opts.gap ?? 4;
   const totalGap = gap * (bars.length + 1);
-  const barW = Math.min(
-    opts.barWidth ?? 48,
-    (rect.w - totalGap) / bars.length,
-  );
+  const barW = Math.min(opts.barWidth ?? 48, (rect.w - totalGap) / bars.length);
   const totalBarW = barW * bars.length + gap * (bars.length - 1);
   const startX = rect.x + (rect.w - totalBarW) / 2;
 

@@ -17,6 +17,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -221,11 +222,13 @@ export function LCOscillationDemo({ figure }: Props) {
         ctx.fillText(`${(fracC * 100).toFixed(0)}%`, x1 + barW / 2, barY + barH + 22);
         ctx.fillText(`${(fracL * 100).toFixed(0)}%`, x2 + barW / 2, barY + barH + 22);
 
-        ctx.fillStyle = getCanvasColors().textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('Energy shuttles between C and L', innerX, 8);
+        drawLabel(ctx, {
+          x: innerX,
+          y: 8,
+          text: 'Energy shuttles between C and L',
+          color: getCanvasColors().textDim,
+          baseline: 'top',
+        });
 
         ctx.restore();
 
@@ -312,11 +315,13 @@ function drawInductorV(ctx: CanvasRenderingContext2D, x: number, cy: number, L: 
     ctx.arc(x, yLoop, loopH / 2, -Math.PI / 2, Math.PI / 2, false);
     ctx.stroke();
   }
-  ctx.fillStyle = getCanvasColors().teal;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(`L`, x + 16, cy);
+  drawLabel(ctx, {
+    x: x + 16,
+    y: cy,
+    text: `L`,
+    color: getCanvasColors().teal,
+    baseline: 'middle',
+  });
   void L;
 }
 

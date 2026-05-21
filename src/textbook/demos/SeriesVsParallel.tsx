@@ -10,9 +10,17 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -78,10 +86,15 @@ export function SeriesVsParallelDemo({ figure }: Props) {
       }
       ctx.drawImage(c.cache.canvas, 0, 0, w, h);
 
-      ctx.fillStyle = colors.blue;
-      ctx.font = 'bold 12px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.fillText('−', batX - 18, cy + 18);
+      drawLabel(ctx, {
+        x: batX - 18,
+        y: cy + 18,
+        text: '−',
+        color: colors.blue,
+        size: 12,
+        align: 'right',
+        weight: 'bold',
+      });
 
       const RtotNow = series ? R1 + R2 : (R1 * R2) / (R1 + R2);
       const ItotNow = V_FIXED / RtotNow;
@@ -109,10 +122,13 @@ export function SeriesVsParallelDemo({ figure }: Props) {
         drawVoltageProbe(ctx, (xR2 + 22 + outX) / 2, yTop - 16, 0);
         drawVoltageProbe(ctx, (batX + outX) / 2, yBot + 18, 0);
 
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('same current through both — voltages add', cx, h - 14);
+        drawLabel(ctx, {
+          x: cx,
+          y: h - 14,
+          text: 'same current through both — voltages add',
+          color: colors.textDim,
+          align: 'center',
+        });
       } else {
         const nodeL_x = padX + (outX - padX) * 0.28;
         const nodeR_x = padX + (outX - padX) * 0.72;
@@ -167,10 +183,13 @@ export function SeriesVsParallelDemo({ figure }: Props) {
         drawVoltageProbe(ctx, (nodeR_x + outX) / 2, yTop - 16, 0);
         drawVoltageProbe(ctx, (batX + outX) / 2, yBot + 18, 0);
 
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('same voltage across both — currents add', cx, h - 14);
+        drawLabel(ctx, {
+          x: cx,
+          y: h - 14,
+          text: 'same voltage across both — currents add',
+          color: colors.textDim,
+          align: 'center',
+        });
       }
     },
     [],

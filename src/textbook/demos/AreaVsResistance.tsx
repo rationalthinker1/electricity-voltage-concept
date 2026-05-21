@@ -56,11 +56,25 @@ export function AreaVsResistanceDemo({ figure }: Props) {
       grd.addColorStop(0.5, withAlpha(colors.accent, 0.18));
       grd.addColorStop(1, withAlpha(colors.accent, 0.08));
       ctx.fillStyle = grd;
-      pathRoundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, Math.min(10, thickness * 0.45));
+      pathRoundRect(
+        ctx,
+        wireLeft,
+        top,
+        wireRight - wireLeft,
+        thickness,
+        Math.min(10, thickness * 0.45),
+      );
       ctx.fill();
       ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 1;
-      pathRoundRect(ctx, wireLeft, top, wireRight - wireLeft, thickness, Math.min(10, thickness * 0.45));
+      pathRoundRect(
+        ctx,
+        wireLeft,
+        top,
+        wireRight - wireLeft,
+        thickness,
+        Math.min(10, thickness * 0.45),
+      );
       ctx.stroke();
 
       ctx.fillStyle = colors.pink;

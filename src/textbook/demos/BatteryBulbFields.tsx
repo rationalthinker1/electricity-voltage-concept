@@ -30,6 +30,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
@@ -530,17 +531,16 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
       }
 
       // ----- Header label.
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillStyle = isClosed ? '#ff6b2a' : 'rgba(160,158,149,.65)';
-      ctx.fillText(
-        isClosed
+      drawLabel(ctx, {
+        x: 16,
+        y: 12,
+        text: isClosed
           ? 'switch closed · three fields present · S = (1/μ₀) E × B'
           : 'switch open · no current · no B · no S',
-        16,
-        12,
-      );
+        color: isClosed ? '#ff6b2a' : 'rgba(160,158,149,.65)',
+        size: 11,
+        baseline: 'top',
+      });
 
       // ----- Bottom annotation: drift hint, only when electrons visible.
       if (s.showElec && isClosed) {

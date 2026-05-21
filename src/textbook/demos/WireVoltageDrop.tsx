@@ -301,12 +301,12 @@ export function WireVoltageDropDemo({ figure }: Props) {
       caption={
         <>
           A uniform resistive wire with potential <strong>V₀ = 12 V</strong> at the left terminal
-          and <strong>0 V</strong> at the right. The shaded hill above the wire is the
-          electrostatic potential <strong>V(x)</strong> — a perfectly linear ramp from{' '}
-          <strong>V₀</strong> down to zero. Drag the probe to the midpoint and the reading is
-          exactly half the total drop. The "voltage drop across a resistor" isn't a jump at the
-          ends — it's a smooth potential gradient along the whole length, and the missing potential
-          energy radiates as Joule heat at the rate <strong>I²R</strong> per unit length.
+          and <strong>0 V</strong> at the right. The shaded hill above the wire is the electrostatic
+          potential <strong>V(x)</strong> — a perfectly linear ramp from <strong>V₀</strong> down to
+          zero. Drag the probe to the midpoint and the reading is exactly half the total drop. The
+          "voltage drop across a resistor" isn't a jump at the ends — it's a smooth potential
+          gradient along the whole length, and the missing potential energy radiates as Joule heat
+          at the rate <strong>I²R</strong> per unit length.
         </>
       }
       deeperLab={{ slug: 'ohms-law', label: 'See full lab' }}

@@ -10,7 +10,7 @@
  * Bottom panel: M vs B curve. The current operating point is marked.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -211,10 +211,13 @@ export function FerromagnetDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(opX, opY, 5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colors.teal;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(`(B, M) = (${B.toFixed(2)}, ${M.toFixed(2)})`, px0, py1 - 4);
+      drawLabel(ctx, {
+        x: px0,
+        y: py1 - 4,
+        text: `(B, M) = (${B.toFixed(2)}, ${M.toFixed(2)})`,
+        color: colors.teal,
+        size: 11,
+      });
 
       const nowSet = performance.now();
       if (nowSet - lastSet > 250) {

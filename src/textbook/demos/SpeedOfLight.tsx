@@ -14,6 +14,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -149,10 +150,12 @@ function drawLane(
   ctx.moveTo(xL, y);
   ctx.lineTo(xR, y);
   ctx.stroke();
-  ctx.fillStyle = color;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.fillText(label, xL, y - 10);
+  drawLabel(ctx, {
+    x: xL,
+    y: y - 10,
+    text: label,
+    color: color,
+  });
 }
 
 function drawPulse(ctx: CanvasRenderingContext2D, cx: number, cy: number, color: string) {

@@ -11,7 +11,7 @@
  * frequency, RPM (for an example 4-pole rotor).
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -153,10 +153,13 @@ export function BLDCCommutationDemo({ figure }: Props) {
         ctx.setLineDash([]);
         ctx.save();
         ctx.globalAlpha = 0.65;
-        ctx.fillStyle = colors.text;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('B_stator', ax + 4, ay - 8);
+        drawLabel(ctx, {
+          x: ax + 4,
+          y: ay - 8,
+          text: 'B_stator',
+          color: colors.text,
+          align: 'center',
+        });
         ctx.restore();
       }
 

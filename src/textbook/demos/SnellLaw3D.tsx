@@ -28,6 +28,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import {
@@ -229,11 +230,15 @@ export function SnellLaw3DDemo({ figure }: Props) {
         // in the lower medium.
         const tagAnchor = v3(0.5, -flip * 0.5, 0);
         const t2 = project(tagAnchor, cam, w, h);
-        ctx.fillStyle = getCanvasColors().accent;
-        ctx.font = 'bold 11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('TIR — no transmitted ray', t2.x, t2.y);
+        drawLabel(ctx, {
+          x: t2.x,
+          y: t2.y,
+          text: 'TIR — no transmitted ray',
+          color: getCanvasColors().accent,
+          size: 11,
+          baseline: 'middle',
+          weight: 'bold',
+        });
       }
 
       // ─── 7. Labels and legend ───
@@ -553,9 +558,12 @@ function drawAngleArc(
   const labR = r + 12;
   const lx = O.x + labR * Math.cos(aMid);
   const ly = O.y + labR * Math.sin(aMid);
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillStyle = colour;
-  ctx.fillText(kind === 'theta1' ? 'θ₁' : 'θ₂', lx, ly);
+  drawLabel(ctx, {
+    x: lx,
+    y: ly,
+    text: kind === 'theta1' ? 'θ₁' : 'θ₂',
+    color: colour,
+    align: 'center',
+    baseline: 'middle',
+  });
 }

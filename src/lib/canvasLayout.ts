@@ -41,14 +41,12 @@ interface LabelOptions {
  *   fillStyle = …; font = …; textAlign = …; textBaseline = …; fillText(…)
  * preamble that appears ~250 times across the demos.
  */
-export function drawLabel(
-  ctx: CanvasRenderingContext2D,
-  opts: LabelOptions,
-): void {
+export function drawLabel(ctx: CanvasRenderingContext2D, opts: LabelOptions): void {
   ctx.save();
   ctx.fillStyle = opts.color ?? getCanvasColors().textDim;
   ctx.font =
-    opts.font ?? `${opts.weight === 'bold' ? 'bold ' : ''}${opts.size ?? 10}px ${DEFAULT_FONT_FAMILY}`;
+    opts.font ??
+    `${opts.weight === 'bold' ? 'bold ' : ''}${opts.size ?? 10}px ${DEFAULT_FONT_FAMILY}`;
   ctx.textAlign = opts.align ?? 'left';
   ctx.textBaseline = opts.baseline ?? 'alphabetic';
   ctx.fillText(opts.text, opts.x, opts.y);
@@ -91,10 +89,7 @@ interface LabeledValueOptions {
  *
  * `(x, y)` is the *label baseline*; the value line sits `gap` pixels below.
  */
-export function drawLabeledValue(
-  ctx: CanvasRenderingContext2D,
-  opts: LabeledValueOptions,
-): void {
+export function drawLabeledValue(ctx: CanvasRenderingContext2D, opts: LabeledValueOptions): void {
   const colors = getCanvasColors();
   const labelSize = opts.labelSize ?? 9;
   const valueSize = opts.valueSize ?? 10;
@@ -141,10 +136,7 @@ interface EyebrowStatsOptions {
  * first part is upper-cased by default (matches the visual hierarchy of
  * the chapter eyebrows above the chart title).
  */
-export function drawEyebrowStats(
-  ctx: CanvasRenderingContext2D,
-  opts: EyebrowStatsOptions,
-): void {
+export function drawEyebrowStats(ctx: CanvasRenderingContext2D, opts: EyebrowStatsOptions): void {
   const colors = getCanvasColors();
   const separator = opts.separator ?? '  ·  ';
   const parts = opts.parts.slice();
@@ -199,10 +191,7 @@ interface LegendOptions {
  * coloured by `entry.color`. Useful when the chart already encodes the
  * mapping through line colour alone.
  */
-export function drawLegend(
-  ctx: CanvasRenderingContext2D,
-  opts: LegendOptions,
-): void {
+export function drawLegend(ctx: CanvasRenderingContext2D, opts: LegendOptions): void {
   const colors = getCanvasColors();
   const rowHeight = opts.rowHeight ?? 14;
   const swatchSize = opts.swatchSize ?? 14;

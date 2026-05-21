@@ -1,6 +1,12 @@
 import { useRef } from 'react';
 
-import { attachOrbit, depthSortIndices, project, type OrbitCamera, type Vec3 } from './projection3d';
+import {
+  attachOrbit,
+  depthSortIndices,
+  project,
+  type OrbitCamera,
+  type Vec3,
+} from './projection3d';
 
 export interface OrbitScene {
   /** The live camera object. Mutated by attachOrbit and read by your draw loop. */

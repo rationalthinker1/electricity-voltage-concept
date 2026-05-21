@@ -11,7 +11,7 @@
  * fraction met by peakers.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -193,9 +193,12 @@ export function LoadFollowingDemo({ figure }: Props) {
       const lg = (color: string, label: string) => {
         ctx.fillStyle = color;
         ctx.fillRect(legX, legY + 4, 14, 4);
-        ctx.fillStyle = colors.text;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillText(label, legX + 20, legY + 2);
+        drawLabel(ctx, {
+          x: legX + 20,
+          y: legY + 2,
+          text: label,
+          color: colors.text,
+        });
         legY += 14;
       };
       lg('rgba(108,197,194,0.6)', 'baseload');

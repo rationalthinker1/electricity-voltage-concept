@@ -25,7 +25,7 @@
  * stripe to a different density, and a tiny excess net charge appears.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -159,11 +159,16 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
         ctx.beginPath();
         ctx.arc(x, y, 4.5, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = colors.bg;
-        ctx.font = 'bold 8px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('+', x, y);
+        drawLabel(ctx, {
+          x: x,
+          y: y,
+          text: '+',
+          color: colors.bg,
+          size: 8,
+          align: 'center',
+          baseline: 'middle',
+          weight: 'bold',
+        });
       }
 
       // Electrons (blue, moving slightly faster left)
@@ -183,11 +188,16 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
         ctx.beginPath();
         ctx.arc(x, y, 4.5, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = colors.bg;
-        ctx.font = 'bold 8px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('−', x, y);
+        drawLabel(ctx, {
+          x: x,
+          y: y,
+          text: '−',
+          color: colors.bg,
+          size: 8,
+          align: 'center',
+          baseline: 'middle',
+          weight: 'bold',
+        });
       }
 
       // Test charge — at rest in this frame
@@ -237,18 +247,23 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
         ctx.lineTo(ax + 5, ay1 + 8);
         ctx.closePath();
         ctx.fill();
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.accent;
-        ctx.textAlign = 'left';
-        ctx.fillText('F = q E', ax + 14, ay0 - arrowLen / 2);
+        drawLabel(ctx, {
+          x: ax + 14,
+          y: ay0 - arrowLen / 2,
+          text: 'F = q E',
+          color: colors.accent,
+          size: 11,
+        });
         void lam;
       }
 
       // Frame label
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(`BOOSTED FRAME · v_test = ${b.toFixed(2)} c → wire has net λ' ≠ 0`, 14, 18);
+      drawLabel(ctx, {
+        x: 14,
+        y: 18,
+        text: `BOOSTED FRAME · v_test = ${b.toFixed(2)} c → wire has net λ' ≠ 0`,
+        color: 'rgba(160,158,149,0.75)',
+      });
 
       raf = requestAnimationFrame(draw);
     }

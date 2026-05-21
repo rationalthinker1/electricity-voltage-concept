@@ -10,7 +10,7 @@
  * the entire point.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
 
@@ -163,11 +163,15 @@ export function GaussBLawDemo({ figure }: Props) {
           ctx.closePath();
           ctx.fill();
         }
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('uniform B — same lines in, same lines out', cx, by - 20);
+        drawLabel(ctx, {
+          x: cx,
+          y: by - 20,
+          text: 'uniform B — same lines in, same lines out',
+          color: colors.textDim,
+          size: 11,
+          align: 'center',
+          baseline: 'middle',
+        });
       }
 
       // The Gaussian box

@@ -16,6 +16,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -82,11 +83,14 @@ export function CouplingCoefficientDemo({ figure }: Props) {
         ctx.restore();
         ctx.save();
         ctx.globalAlpha = 0.6 * coreOpacity;
-        ctx.fillStyle = getCanvasColors().teal;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('shared ferrite core', c1x - 32, cy - 34);
+        drawLabel(ctx, {
+          x: c1x - 32,
+          y: cy - 34,
+          text: 'shared ferrite core',
+          color: getCanvasColors().teal,
+          size: 9,
+          baseline: 'top',
+        });
         ctx.restore();
       }
 
@@ -167,10 +171,12 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       ctx.fill();
       ctx.save();
       ctx.globalAlpha = 0.85;
-      ctx.fillStyle = getCanvasColors().text;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(`η ≈ ${(eta * 100).toFixed(0)}%`, mx + 8, my);
+      drawLabel(ctx, {
+        x: mx + 8,
+        y: my,
+        text: `η ≈ ${(eta * 100).toFixed(0)}%`,
+        color: getCanvasColors().text,
+      });
       ctx.restore();
 
       raf = requestAnimationFrame(draw);
@@ -230,10 +236,14 @@ function drawCoil(ctx: CanvasRenderingContext2D, cx: number, cy: number, label: 
   }
   ctx.save();
   ctx.globalAlpha = 0.8;
-  ctx.fillStyle = getCanvasColors().accent;
-  ctx.font = 'bold 10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(label, cx, cy + colH / 2 + 12);
+  drawLabel(ctx, {
+    x: cx,
+    y: cy + colH / 2 + 12,
+    text: label,
+    color: getCanvasColors().accent,
+    align: 'center',
+    baseline: 'middle',
+    weight: 'bold',
+  });
   ctx.restore();
 }

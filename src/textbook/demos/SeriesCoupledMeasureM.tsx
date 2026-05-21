@@ -15,6 +15,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -220,8 +221,12 @@ function drawCoilSeries(
   ctx.fillText(label, cx, cy - 24);
   ctx.save();
   ctx.globalAlpha = 0.75;
-  ctx.fillStyle = getCanvasColors().textDim;
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.fillText(value, cx, cy - 38);
+  drawLabel(ctx, {
+    x: cx,
+    y: cy - 38,
+    text: value,
+    color: getCanvasColors().textDim,
+    size: 9,
+  });
   ctx.restore();
 }

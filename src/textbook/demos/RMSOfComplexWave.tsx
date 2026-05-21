@@ -13,6 +13,7 @@ import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawAxes, drawHLine, drawLinePlot } from '@/lib/drawPlot';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -130,10 +131,13 @@ export function RMSOfComplexWaveDemo() {
         dash: [4, 4],
         alpha: 0.6,
       });
-      ctx.fillStyle = colors.pink;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('+V_rms', padX + 2, yAt(rmsParseval) - 3);
+      drawLabel(ctx, {
+        x: padX + 2,
+        y: yAt(rmsParseval) - 3,
+        text: '+V_rms',
+        color: colors.pink,
+        size: 9,
+      });
     },
     [rmsParseval],
   );

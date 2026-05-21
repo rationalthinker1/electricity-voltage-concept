@@ -22,6 +22,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -176,14 +177,12 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
       // Disclosure caption — what's fixed vs what's varying.
       ctx.save();
       ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(
-        'try this: drag d. The arrows between the plates do not change length.',
-        padX,
-        h - 14,
-      );
+      drawLabel(ctx, {
+        x: padX,
+        y: h - 14,
+        text: 'try this: drag d. The arrows between the plates do not change length.',
+        color: colors.textDim,
+      });
       ctx.restore();
     },
     [],

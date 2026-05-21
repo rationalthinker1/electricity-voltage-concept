@@ -29,6 +29,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -285,11 +286,14 @@ function drawPanel(
   ctx.fillText(`−${(Imax * 1000).toFixed(2)} mA`, padL - 4, yOf(-Imax));
 
   // V_A annotation
-  ctx.fillStyle = getCanvasColors().accent;
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'top';
-  ctx.fillText(`V_A = ${c.V_A.toFixed(3)} V`, padL, padT + 4);
+  drawLabel(ctx, {
+    x: padL,
+    y: padT + 4,
+    text: `V_A = ${c.V_A.toFixed(3)} V`,
+    color: getCanvasColors().accent,
+    size: 9,
+    baseline: 'top',
+  });
 
   ctx.restore();
 }

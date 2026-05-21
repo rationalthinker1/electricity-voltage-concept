@@ -16,6 +16,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -113,10 +114,13 @@ export function DiffractionGratingDemo({ figure }: Props) {
         ctx.lineTo(xx, yBase + 4);
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = getCanvasColors().textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(`m=${m}`, xx, yBase + 16);
+        drawLabel(ctx, {
+          x: xx,
+          y: yBase + 16,
+          text: `m=${m}`,
+          color: getCanvasColors().textDim,
+          align: 'center',
+        });
         ctx.setLineDash([3, 4]);
       }
       ctx.setLineDash([]);

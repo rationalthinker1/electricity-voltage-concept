@@ -12,7 +12,7 @@
  * ~70% rated speed for a typical PMSM, near 95% for premium machines.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -214,11 +214,14 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
       ctx.fillText('0.40', cbX + cbW + 4, padT + cbH - 2);
 
       // Title
-      ctx.fillStyle = colors.accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(motor.name + ' — efficiency map', padL + 6, padT + 4);
+      drawLabel(ctx, {
+        x: padL + 6,
+        y: padT + 4,
+        text: motor.name + ' — efficiency map',
+        color: colors.accent,
+        size: 11,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }
@@ -247,7 +250,7 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
           <button
             key={m}
             type="button"
-            className={`mini-toggle${motorType === m ? ' on' : ''}`}
+            className={`mini-toggle${motorType === m ? 'on' : ''}`}
             onClick={() => setMotorType(m)}
             aria-pressed={motorType === m}
           >

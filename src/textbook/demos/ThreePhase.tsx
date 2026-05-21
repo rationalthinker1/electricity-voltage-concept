@@ -11,7 +11,7 @@
  * Right side: rotating phasor diagram showing the three vectors at 120° apart.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -198,11 +198,15 @@ export function ThreePhaseDemo({ figure }: Props) {
         ctx.lineTo(ax - 8 * Math.cos(ang + 0.4), ay - 8 * Math.sin(ang + 0.4));
         ctx.closePath();
         ctx.fill();
-        ctx.fillStyle = cols[k];
-        ctx.font = 'bold 10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(labels[k], ax + 10 * Math.cos(ang), ay + 10 * Math.sin(ang));
+        drawLabel(ctx, {
+          x: ax + 10 * Math.cos(ang),
+          y: ay + 10 * Math.sin(ang),
+          text: labels[k],
+          color: cols[k],
+          align: 'center',
+          baseline: 'middle',
+          weight: 'bold',
+        });
       }
 
       ctx.fillStyle = colors.textDim;

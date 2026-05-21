@@ -32,6 +32,7 @@ import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Formula } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
@@ -217,11 +218,16 @@ function drawGaussE(
   ctx.beginPath();
   ctx.arc(origin.x, origin.y, rad, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = getCanvasColors().bg;
-  ctx.font = 'bold 13px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(q >= 0 ? '+' : '−', origin.x, origin.y);
+  drawLabel(ctx, {
+    x: origin.x,
+    y: origin.y,
+    text: q >= 0 ? '+' : '−',
+    color: getCanvasColors().bg,
+    size: 13,
+    align: 'center',
+    baseline: 'middle',
+    weight: 'bold',
+  });
   ctx.restore();
 
   // 2. Field-line seeds on a small sphere around the charge.
@@ -449,11 +455,13 @@ function drawFaraday(
   const labelP = project(v3(R_LOOP + 0.25, 0, 0), cam, w, h);
   ctx.save();
   ctx.globalAlpha = 0.75;
-  ctx.fillStyle = getCanvasColors().text;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('induced E', labelP.x + 6, labelP.y);
+  drawLabel(ctx, {
+    x: labelP.x + 6,
+    y: labelP.y,
+    text: 'induced E',
+    color: getCanvasColors().text,
+    baseline: 'middle',
+  });
   ctx.restore();
 }
 
@@ -497,11 +505,15 @@ function drawAmpere(
     ctx.fill();
     ctx.stroke();
     // Label at one corner.
-    ctx.fillStyle = color;
-    ctx.font = 'bold 10px "JetBrains Mono", monospace';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(label, pts[1]!.x + 12, pts[1]!.y - 8);
+    drawLabel(ctx, {
+      x: pts[1]!.x + 12,
+      y: pts[1]!.y - 8,
+      text: label,
+      color: color,
+      align: 'center',
+      baseline: 'middle',
+      weight: 'bold',
+    });
   }
   drawPlate(+GAP_HALF, '+', getCanvasColors().pink);
   drawPlate(-GAP_HALF, '−', getCanvasColors().blue);
@@ -582,11 +594,13 @@ function drawAmpere(
   const gapLabel = project(v3(PLATE_HALF + 0.2, 0, 0), cam, w, h);
   ctx.save();
   ctx.globalAlpha = 0.75;
-  ctx.fillStyle = getCanvasColors().text;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('gap: dE/dt + B-curl', gapLabel.x + 4, gapLabel.y);
+  drawLabel(ctx, {
+    x: gapLabel.x + 4,
+    y: gapLabel.y,
+    text: 'gap: dE/dt + B-curl',
+    color: getCanvasColors().text,
+    baseline: 'middle',
+  });
   ctx.restore();
 }
 
@@ -691,9 +705,14 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.fillText('drag to orbit · same box for all four laws', 12, 12);
       ctx.restore();
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = 'bold 11px "JetBrains Mono", monospace';
-      ctx.fillText(MODE_TITLES[s.mode], 12, h - 22);
+      drawLabel(ctx, {
+        x: 12,
+        y: h - 22,
+        text: MODE_TITLES[s.mode],
+        color: getCanvasColors().accent,
+        size: 11,
+        weight: 'bold',
+      });
 
       raf = requestAnimationFrame(draw);
     }

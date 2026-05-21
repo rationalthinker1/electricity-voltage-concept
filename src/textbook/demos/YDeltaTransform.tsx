@@ -26,6 +26,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -83,11 +84,16 @@ export function YDeltaTransformDemo({ figure }: Props) {
       ctx.stroke();
 
       // Equivalence arrow
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = 'bold 14px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('⇌', halfW, h / 2);
+      drawLabel(ctx, {
+        x: halfW,
+        y: h / 2,
+        text: '⇌',
+        color: getCanvasColors().accent,
+        size: 14,
+        align: 'center',
+        baseline: 'middle',
+        weight: 'bold',
+      });
 
       raf = requestAnimationFrame(draw);
     }
@@ -188,11 +194,15 @@ function drawYNetwork(
   ctx.arc(N.x, N.y, 3, 0, Math.PI * 2);
   ctx.fill();
 
-  ctx.fillStyle = getCanvasColors().textDim;
-  ctx.font = '11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText('Y (star)', cx, 12);
+  drawLabel(ctx, {
+    x: cx,
+    y: 12,
+    text: 'Y (star)',
+    color: getCanvasColors().textDim,
+    size: 11,
+    align: 'center',
+    baseline: 'top',
+  });
   ctx.restore();
 }
 
@@ -226,11 +236,15 @@ function drawDeltaNetwork(
   drawTerminal(ctx, B, 'B');
   drawTerminal(ctx, C, 'C');
 
-  ctx.fillStyle = getCanvasColors().textDim;
-  ctx.font = '11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText('Δ (delta)', cx, 12);
+  drawLabel(ctx, {
+    x: cx,
+    y: 12,
+    text: 'Δ (delta)',
+    color: getCanvasColors().textDim,
+    size: 11,
+    align: 'center',
+    baseline: 'top',
+  });
   ctx.restore();
 }
 
@@ -239,11 +253,16 @@ function drawTerminal(ctx: CanvasRenderingContext2D, p: { x: number; y: number }
   ctx.beginPath();
   ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = 'rgba(255,255,255,0.9)';
-  ctx.font = 'bold 12px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(label, p.x, p.y - 8);
+  drawLabel(ctx, {
+    x: p.x,
+    y: p.y - 8,
+    text: label,
+    color: 'rgba(255,255,255,0.9)',
+    size: 12,
+    align: 'center',
+    baseline: 'bottom',
+    weight: 'bold',
+  });
 }
 
 function drawLineResistor(
@@ -302,9 +321,12 @@ function drawLineResistor(
   // Label at midpoint, offset perpendicular
   const mx = (x0 + x1) / 2 + px * 14;
   const my = (y0 + y1) / 2 + py * 14;
-  ctx.fillStyle = getCanvasColors().accent;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(label, mx, my);
+  drawLabel(ctx, {
+    x: mx,
+    y: my,
+    text: label,
+    color: getCanvasColors().accent,
+    align: 'center',
+    baseline: 'middle',
+  });
 }

@@ -14,6 +14,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -97,11 +98,16 @@ export function DotConventionDemo({ figure }: Props) {
           sign > 0
             ? 'mutual term: + M dI₁/dt   (fluxes ADD — aiding)'
             : 'mutual term: − M dI₁/dt   (fluxes SUBTRACT — opposing)';
-        ctx.fillStyle = sign > 0 ? 'rgba(255,107,42,0.95)' : 'rgba(91,174,248,0.95)';
-        ctx.font = 'bold 11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText(signLabel, w / 2, h - 24);
+        drawLabel(ctx, {
+          x: w / 2,
+          y: h - 24,
+          text: signLabel,
+          color: sign > 0 ? 'rgba(255,107,42,0.95)' : 'rgba(91,174,248,0.95)',
+          size: 11,
+          align: 'center',
+          baseline: 'top',
+          weight: 'bold',
+        });
 
         raf = requestAnimationFrame(draw);
       }
@@ -202,9 +208,12 @@ function drawSchematicCoil(
   ctx.fillText(label, cx - 5, cy + h / 2 + 16);
   ctx.save();
   ctx.globalAlpha = 0.75;
-  ctx.fillStyle = getCanvasColors().textDim;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.fillText(valueLabel, cx - 5, cy);
+  drawLabel(ctx, {
+    x: cx - 5,
+    y: cy,
+    text: valueLabel,
+    color: getCanvasColors().textDim,
+  });
   ctx.restore();
 }
 

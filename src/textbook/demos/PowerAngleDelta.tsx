@@ -16,6 +16,7 @@ import { useMemo, useState } from 'react';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawAxes, drawHLine, drawLinePlot, drawVLine, makePlotMappers } from '@/lib/drawPlot';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -131,11 +132,16 @@ export function PowerAngleDeltaDemo({ figure }: Props) {
         ctx.beginPath();
         ctx.arc(xOf(90), yOf(P_MAX), 8, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = colors.pink;
-        ctx.font = 'bold 11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('POLE SLIP — TRIP', xOf(90), yOf(P_MAX) - 12);
+        drawLabel(ctx, {
+          x: xOf(90),
+          y: yOf(P_MAX) - 12,
+          text: 'POLE SLIP — TRIP',
+          color: colors.pink,
+          size: 11,
+          align: 'center',
+          baseline: 'bottom',
+          weight: 'bold',
+        });
       }
 
       // P_max label

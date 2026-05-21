@@ -14,6 +14,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props {
@@ -208,9 +209,13 @@ export function CyclotronDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.6;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.fillText('orbit drawn at log-scaled radius', w - 14, 32);
+      drawLabel(ctx, {
+        x: w - 14,
+        y: 32,
+        text: 'orbit drawn at log-scaled radius',
+        color: colors.textDim,
+        size: 9,
+      });
       ctx.restore();
 
       raf = requestAnimationFrame(draw);

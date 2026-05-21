@@ -42,6 +42,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -637,11 +638,13 @@ function drawCapacitorV(
   ctx.lineTo(cx + 14, cy + 4);
   ctx.stroke();
   ctx.strokeStyle = getCanvasColors().textDim;
-  ctx.fillStyle = getCanvasColors().teal;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(`${label} = ${value}`, cx + 18, cy);
+  drawLabel(ctx, {
+    x: cx + 18,
+    y: cy,
+    text: `${label} = ${value}`,
+    color: getCanvasColors().teal,
+    baseline: 'middle',
+  });
 }
 
 function drawProbe(ctx: CanvasRenderingContext2D, p: Pt, color: string, sym: string) {
@@ -654,11 +657,16 @@ function drawProbe(ctx: CanvasRenderingContext2D, p: Pt, color: string, sym: str
   ctx.beginPath();
   ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = color;
-  ctx.font = 'bold 11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(sym, p.x + 18, p.y - 12);
+  drawLabel(ctx, {
+    x: p.x + 18,
+    y: p.y - 12,
+    text: sym,
+    color: color,
+    size: 11,
+    align: 'center',
+    baseline: 'middle',
+    weight: 'bold',
+  });
 }
 
 function drawCurrentDotsPath(ctx: CanvasRenderingContext2D, t: number, pts: Pt[], Iscale: number) {

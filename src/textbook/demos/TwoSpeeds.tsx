@@ -152,11 +152,7 @@ export function TwoSpeedsDemo({ figure }: Props) {
           unit="mm"
         />
         <MiniReadout label="signal trips" value={<Num value={signalTrips} />} unit="× 20 cm" />
-        <MiniReadout
-          label="signal / drift"
-          value={<Num value={speedRatio} />}
-          unit="×"
-        />
+        <MiniReadout label="signal / drift" value={<Num value={speedRatio} />} unit="×" />
       </DemoControls>
       <EquationStrip
         leftLabel="The two speeds"

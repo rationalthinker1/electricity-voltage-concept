@@ -7,7 +7,7 @@
  * step count, steps per revolution.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -118,11 +118,13 @@ export function StepperMotorDemo({ figure }: Props) {
       ctx.fill();
 
       // Labels
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('hybrid stepper · 200 steps/rev (1.8°/step)', 12, 12);
+      drawLabel(ctx, {
+        x: 12,
+        y: 12,
+        text: 'hybrid stepper · 200 steps/rev (1.8°/step)',
+        color: 'rgba(160,158,149,0.75)',
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }

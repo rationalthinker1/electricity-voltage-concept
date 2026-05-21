@@ -11,6 +11,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -86,10 +87,15 @@ export function SnellsLawDemo({ figure }: Props) {
         const rx = cx + L * Math.sin(th1);
         const ry = cy - L * Math.cos(th1);
         drawRay(ctx, cx, cy, rx, ry, 'rgba(255,59,110,0.9)', 2.2);
-        ctx.fillStyle = getCanvasColors().pink;
-        ctx.font = 'bold 12px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('TOTAL INTERNAL REFLECTION', cx, H - 16);
+        drawLabel(ctx, {
+          x: cx,
+          y: H - 16,
+          text: 'TOTAL INTERNAL REFLECTION',
+          color: getCanvasColors().pink,
+          size: 12,
+          align: 'center',
+          weight: 'bold',
+        });
       } else {
         // Refracted ray in medium 2
         const tx = cx + L * Math.sin(th2);

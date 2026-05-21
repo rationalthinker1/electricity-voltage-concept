@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 
@@ -166,11 +167,14 @@ export function RLCResonanceDemo({ figure }: Props) {
       ctx.textBaseline = 'bottom';
       ctx.fillText(`Q ≈ ${Qnow.toFixed(2)}`, x0, plotY + plotH - 0.95 * plotH - 4);
 
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('frequency (log scale)', plotX + plotW / 2, plotY + plotH + 18);
+      drawLabel(ctx, {
+        x: plotX + plotW / 2,
+        y: plotY + plotH + 18,
+        text: 'frequency (log scale)',
+        color: colors.textDim,
+        align: 'center',
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }

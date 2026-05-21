@@ -27,6 +27,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -416,10 +417,15 @@ function drawMeshLoop(
   ctx.closePath();
   ctx.fill();
 
-  ctx.fillStyle = color;
-  ctx.font = 'bold 12px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(`${label} = ${fmtA(I)}`, cx, cy);
+  drawLabel(ctx, {
+    x: cx,
+    y: cy,
+    text: `${label} = ${fmtA(I)}`,
+    color: color,
+    size: 12,
+    align: 'center',
+    baseline: 'middle',
+    weight: 'bold',
+  });
   ctx.restore();
 }

@@ -12,6 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -139,19 +140,20 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
         ctx.lineTo(cx + R * Math.cos(thS), cy - R * Math.sin(thS));
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = getCanvasColors().teal;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.fillText(
-          `θ_steer = ${((thS * 180) / Math.PI).toFixed(1)}°`,
-          cx + R * Math.cos(thS) + 6,
-          cy - R * Math.sin(thS),
-        );
+        drawLabel(ctx, {
+          x: cx + R * Math.cos(thS) + 6,
+          y: cy - R * Math.sin(thS),
+          text: `θ_steer = ${((thS * 180) / Math.PI).toFixed(1)}°`,
+          color: getCanvasColors().teal,
+        });
       } else {
-        ctx.fillStyle = getCanvasColors().pink;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('|sin θ_steer| > 1 — grating lobe regime', cx, cy + R + 20);
+        drawLabel(ctx, {
+          x: cx,
+          y: cy + R + 20,
+          text: '|sin θ_steer| > 1 — grating lobe regime',
+          color: getCanvasColors().pink,
+          align: 'center',
+        });
       }
 
       // Pattern axis labels

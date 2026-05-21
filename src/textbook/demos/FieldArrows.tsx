@@ -200,8 +200,14 @@ export function FieldArrowsDemo({ figure }: Props) {
             fieldCtx.fillStyle = withAlpha(colors.accent, headAlpha);
             fieldCtx.beginPath();
             fieldCtx.moveTo(ex, ey);
-            fieldCtx.lineTo(ex - ux * headLen + tx * headHalfWidth, ey - uy * headLen + ty * headHalfWidth);
-            fieldCtx.lineTo(ex - ux * headLen - tx * headHalfWidth, ey - uy * headLen - ty * headHalfWidth);
+            fieldCtx.lineTo(
+              ex - ux * headLen + tx * headHalfWidth,
+              ey - uy * headLen + ty * headHalfWidth,
+            );
+            fieldCtx.lineTo(
+              ex - ux * headLen - tx * headHalfWidth,
+              ey - uy * headLen - ty * headHalfWidth,
+            );
             fieldCtx.closePath();
             fieldCtx.fill();
           }

@@ -12,7 +12,7 @@
  * operating point on the I_B trace nearest the user's slider value.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -152,11 +152,14 @@ export function BJTCharacteristicDemo({ figure }: Props) {
 
         // I_B label at right end
         const yEnd = yOf(Math.min(Imax, I_C(Vmax, IB, beta)));
-        ctx.fillStyle = colorFor(k);
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(`I_B = ${(IB * 1e6).toFixed(0)} µA`, padL + plotW - 6, yEnd - 8);
+        drawLabel(ctx, {
+          x: padL + plotW - 6,
+          y: yEnd - 8,
+          text: `I_B = ${(IB * 1e6).toFixed(0)} µA`,
+          color: colorFor(k),
+          align: 'right',
+          baseline: 'middle',
+        });
       });
 
       // operating point: where V_CE slider crosses the picked I_B curve
@@ -179,15 +182,13 @@ export function BJTCharacteristicDemo({ figure }: Props) {
       ctx.fill();
 
       // header
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        `npn BJT family   β = ${beta.toFixed(0)}   V_A (Early) = ${V_A} V   I_C(op) = ${(Iop * 1000).toFixed(2)} mA`,
-        padL,
-        6,
-      );
+      drawLabel(ctx, {
+        x: padL,
+        y: 6,
+        text: `npn BJT family   β = ${beta.toFixed(0)}   V_A (Early) = ${V_A} V   I_C(op) = ${(Iop * 1000).toFixed(2)} mA`,
+        color: colors.textDim,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }

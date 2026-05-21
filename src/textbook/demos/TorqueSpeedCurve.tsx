@@ -10,7 +10,7 @@
  * canonical "match the motor to your load" diagram.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 
@@ -109,11 +109,13 @@ export function TorqueSpeedCurveDemo({ figure }: Props) {
       function legendLine(color: string, label: string) {
         ctx.fillStyle = color;
         ctx.fillRect(legendX, legendY + 4, 18, 2);
-        ctx.fillStyle = colors.text;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(label, legendX + 24, legendY + 5);
+        drawLabel(ctx, {
+          x: legendX + 24,
+          y: legendY + 5,
+          text: label,
+          color: colors.text,
+          baseline: 'middle',
+        });
         legendY += 16;
       }
 

@@ -32,6 +32,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
@@ -334,11 +335,16 @@ export function RotatingMagField3DDemo({ figure }: Props) {
             // Polarity glyph: + / − on the face at the centre.
             const cx = (screen[0]!.x + screen[2]!.x) / 2;
             const cy = (screen[0]!.y + screen[2]!.y) / 2;
-            ctx.fillStyle = colors.text;
-            ctx.font = 'bold 14px "JetBrains Mono", monospace';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(isPos ? '+' : '−', cx, cy);
+            drawLabel(ctx, {
+              x: cx,
+              y: cy,
+              text: isPos ? '+' : '−',
+              color: colors.text,
+              size: 14,
+              align: 'center',
+              baseline: 'middle',
+              weight: 'bold',
+            });
 
             // Label A/B/C just outside the coil face.
             const labelP = project(
@@ -348,11 +354,16 @@ export function RotatingMagField3DDemo({ figure }: Props) {
               h,
             );
             if (labelP.depth > 0) {
-              ctx.fillStyle = ci.color;
-              ctx.font = 'bold 13px "JetBrains Mono", monospace';
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'middle';
-              ctx.fillText(ci.label, labelP.x, labelP.y);
+              drawLabel(ctx, {
+                x: labelP.x,
+                y: labelP.y,
+                text: ci.label,
+                color: ci.color,
+                size: 13,
+                align: 'center',
+                baseline: 'middle',
+                weight: 'bold',
+              });
             }
           },
         });

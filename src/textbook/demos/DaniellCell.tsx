@@ -10,6 +10,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -156,11 +157,15 @@ export function DaniellCellDemo({ figure }: Props) {
         for (let i = 0; i < arrowCount; i++) {
           const frac = (phase * 0.6 + i / arrowCount) % 1;
           const xa = leftX + beakerW / 2 + frac * (rightX + beakerW / 2 - (leftX + beakerW / 2));
-          ctx.fillStyle = getCanvasColors().blue;
-          ctx.font = '11px "JetBrains Mono", monospace';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('e⁻ →', xa, wireY - 10);
+          drawLabel(ctx, {
+            x: xa,
+            y: wireY - 10,
+            text: 'e⁻ →',
+            color: getCanvasColors().blue,
+            size: 11,
+            align: 'center',
+            baseline: 'middle',
+          });
         }
       }
 
@@ -241,9 +246,12 @@ function drawBeaker(
   ctx.fillStyle = fluidColor;
   ctx.fillRect(x + 2, y + 12, w - 4, h - 14);
   // Fluid label
-  ctx.fillStyle = getCanvasColors().textDim;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'bottom';
-  ctx.fillText(label, x + w / 2, y + h - 4);
+  drawLabel(ctx, {
+    x: x + w / 2,
+    y: y + h - 4,
+    text: label,
+    color: getCanvasColors().textDim,
+    align: 'center',
+    baseline: 'bottom',
+  });
 }

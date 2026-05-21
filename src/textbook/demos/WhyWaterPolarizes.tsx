@@ -9,7 +9,7 @@
  * and lower temperatures push higher).
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 
@@ -116,9 +116,14 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
         ctx.beginPath();
         ctx.arc(hx, hy, 12, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = colors.bg;
-        ctx.font = 'bold 11px "JetBrains Mono", monospace';
-        ctx.fillText('H', hx, hy);
+        drawLabel(ctx, {
+          x: hx,
+          y: hy,
+          text: 'H',
+          color: colors.bg,
+          size: 11,
+          weight: 'bold',
+        });
       }
 
       // Dipole moment vector p (from H-centroid to O ≈ along theta from molecule)

@@ -14,6 +14,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -64,10 +65,13 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
           ctx.beginPath();
           ctx.arc(cx - Rt * Math.sin(a), cy + Rt * Math.cos(a), 4, 0, Math.PI * 2);
           ctx.fill();
-          ctx.font = '10px "JetBrains Mono", monospace';
-          ctx.fillStyle = getCanvasColors().textDim;
-          ctx.textAlign = 'center';
-          ctx.fillText(label, cx, H - 14);
+          drawLabel(ctx, {
+            x: cx,
+            y: H - 14,
+            text: label,
+            color: getCanvasColors().textDim,
+            align: 'center',
+          });
         }
         dipole(colW * 0.5, 0, 'rgba(255,107,42,0.95)', 'TX (vertical)');
         dipole(colW * 2.5, alphaDeg, 'rgba(108,197,194,0.95)', `RX (α = ${alphaDeg}°)`);

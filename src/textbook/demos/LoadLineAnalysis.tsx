@@ -9,7 +9,7 @@
  * and the swing capacity (room above / below the operating point).
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -141,15 +141,14 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
           else ctx.lineTo(x, y);
         }
         ctx.stroke();
-        ctx.fillStyle = col;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(
-          `I_B = ${(IB * 1e6).toFixed(1)} µA`,
-          padL + plotW - 6,
-          yOf(Math.min(Imax, I_C(Vmax, IB, beta))) - 8,
-        );
+        drawLabel(ctx, {
+          x: padL + plotW - 6,
+          y: yOf(Math.min(Imax, I_C(Vmax, IB, beta))) - 8,
+          text: `I_B = ${(IB * 1e6).toFixed(1)} µA`,
+          color: col,
+          align: 'right',
+          baseline: 'middle',
+        });
       });
 
       // load line: from (V_CC, 0) to (0, V_CC/R_C)

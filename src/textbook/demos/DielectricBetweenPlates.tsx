@@ -12,6 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawArrow } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 
@@ -200,10 +201,13 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
       }
 
       // Readout overlay
-      ctx.fillStyle = colors.accent;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText(`E_inside = E₀ / ε_r = ${(V / 4e-3 / erEff).toFixed(0)} V/m`, 14, h - 14);
+      drawLabel(ctx, {
+        x: 14,
+        y: h - 14,
+        text: `E_inside = E₀ / ε_r = ${(V / 4e-3 / erEff).toFixed(0)} V/m`,
+        color: colors.accent,
+        size: 11,
+      });
 
       raf = requestAnimationFrame(draw);
     }

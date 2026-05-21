@@ -209,8 +209,8 @@ export function PointCharge3DDemo({ figure }: Props) {
           are ~80 sample arrows on an invisible sphere of radius <strong>r</strong> around the same
           point charge. Drag to orbit, then slide <strong>r</strong> from 1 to 2 and the entire
           spiky shell shrinks by exactly <strong>4×</strong> — the ratio readout locks there. That
-          factor of four is the inverse-square law made geometric, and the reason it's a four (not
-          a two) is the same reason the surface area of a sphere is <strong>4πr²</strong>: a fixed
+          factor of four is the inverse-square law made geometric, and the reason it's a four (not a
+          two) is the same reason the surface area of a sphere is <strong>4πr²</strong>: a fixed
           amount of "flux" spreads over a larger and larger spherical area as <strong>r</strong>{' '}
           grows.
         </>

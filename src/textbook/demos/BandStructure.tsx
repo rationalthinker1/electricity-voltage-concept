@@ -18,6 +18,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
 
 interface Props {
@@ -172,15 +173,13 @@ export function BandStructureDemo({ figure }: Props) {
       ctx.fillText('conduction band', padL + plotW - 150, yOf(cbBot + 0.4));
 
       // header
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        `${MATERIALS[mat].label}   T = ${T.toFixed(0)} K   kT = ${(((PHYS.k_B * T) / EV) * 1000).toFixed(1)} meV   exp(−E_g/2kT) ≈ ${occ.toExponential(2)}`,
-        padL,
-        6,
-      );
+      drawLabel(ctx, {
+        x: padL,
+        y: 6,
+        text: `${MATERIALS[mat].label}   T = ${T.toFixed(0)} K   kT = ${(((PHYS.k_B * T) / EV) * 1000).toFixed(1)} meV   exp(−E_g/2kT) ≈ ${occ.toExponential(2)}`,
+        color: colors.textDim,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }

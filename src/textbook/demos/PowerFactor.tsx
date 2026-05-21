@@ -13,7 +13,7 @@
  * to zero, the load draws current but absorbs no net energy — pure reactive.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -197,15 +197,13 @@ export function PowerFactorDemo({ figure }: Props) {
 
       // Header
       ctx.restore();
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        `φ = ${((phi * 180) / Math.PI).toFixed(1)}°,   pf = cos(φ) = ${Math.cos(phi).toFixed(3)}`,
-        padL,
-        4,
-      );
+      drawLabel(ctx, {
+        x: padL,
+        y: 4,
+        text: `φ = ${((phi * 180) / Math.PI).toFixed(1)}°,   pf = cos(φ) = ${Math.cos(phi).toFixed(3)}`,
+        color: colors.textDim,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }

@@ -15,7 +15,7 @@
  * Sliders: carrier frequency f_sw (1–50 kHz), modulation index m (0–1).
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -227,11 +227,13 @@ export function PWMInverterOutputDemo({ figure }: Props) {
       // Labels
       ctx.save();
       ctx.globalAlpha = 0.8;
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('output spectrum  (60 Hz fundamental + carrier sidelobes)', padL + 4, bot + 4);
+      drawLabel(ctx, {
+        x: padL + 4,
+        y: bot + 4,
+        text: 'output spectrum  (60 Hz fundamental + carrier sidelobes)',
+        color: colors.textDim,
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
       ctx.restore();

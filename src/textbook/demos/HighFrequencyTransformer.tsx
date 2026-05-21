@@ -11,7 +11,7 @@
  * Slider: operating frequency 50 Hz to 1 MHz.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
@@ -110,11 +110,14 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
       else if (f < 200e3) tag = 'modern SMPS / wall-wart';
       else tag = 'GaN / SiC high-density';
       ctx.restore();
-      ctx.fillStyle = colors.accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(tag, rightCX, h - 16);
+      drawLabel(ctx, {
+        x: rightCX,
+        y: h - 16,
+        text: tag,
+        color: colors.accent,
+        align: 'center',
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }

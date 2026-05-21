@@ -30,6 +30,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -223,9 +224,12 @@ export function TransformerDesignerDemo({ figure }: Props) {
         ctx.fillStyle = getCanvasColors().pink;
         ctx.font = 'bold 11px "JetBrains Mono", monospace';
         ctx.fillText('CORE SATURATING', W - 12, 10);
-        ctx.fillStyle = 'rgba(255,59,110,0.8)';
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillText('μ collapses → huge I_mag → heat', W - 12, 24);
+        drawLabel(ctx, {
+          x: W - 12,
+          y: 24,
+          text: 'μ collapses → huge I_mag → heat',
+          color: 'rgba(255,59,110,0.8)',
+        });
       }
 
       raf = requestAnimationFrame(draw);
@@ -266,7 +270,7 @@ export function TransformerDesignerDemo({ figure }: Props) {
           <button
             key={k}
             type="button"
-            className={`mini-toggle${k === coreKey ? ' on' : ''}`}
+            className={`mini-toggle${k === coreKey ? 'on' : ''}`}
             onClick={() => setCoreKey(k)}
             aria-pressed={k === coreKey}
           >
@@ -447,11 +451,13 @@ function drawECore(
   ctx.lineTo(loadX, loadY2);
   ctx.stroke();
   drawResistorZigzag(ctx, loadX, loadY1, loadX, loadY2, '#6cc5c2');
-  ctx.fillStyle = getCanvasColors().teal;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('R_load', loadX + 14, cy);
+  drawLabel(ctx, {
+    x: loadX + 14,
+    y: cy,
+    text: 'R_load',
+    color: getCanvasColors().teal,
+    baseline: 'middle',
+  });
 }
 
 function drawToroid(
@@ -537,11 +543,13 @@ function drawToroid(
   ctx.lineTo(loadX, loadY2);
   ctx.stroke();
   drawResistorZigzag(ctx, loadX, loadY1, loadX, loadY2, '#6cc5c2');
-  ctx.fillStyle = getCanvasColors().teal;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('R_load', loadX + 14, cy);
+  drawLabel(ctx, {
+    x: loadX + 14,
+    y: cy,
+    text: 'R_load',
+    color: getCanvasColors().teal,
+    baseline: 'middle',
+  });
 }
 
 /**
@@ -574,11 +582,14 @@ function drawWindingTopDown(
   }
   ctx.restore();
 
-  ctx.fillStyle = color;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText(`${label} (${N})`, cx, yBot + 6);
+  drawLabel(ctx, {
+    x: cx,
+    y: yBot + 6,
+    text: `${label} (${N})`,
+    color: color,
+    align: 'center',
+    baseline: 'top',
+  });
 }
 
 /**
@@ -629,11 +640,14 @@ function drawToroidalWinding(
   const thMid = (thStart + thEnd) / 2;
   const lx = cx + Math.cos(thMid) * (Router + 22);
   const ly = cy + Math.sin(thMid) * (Router + 22);
-  ctx.fillStyle = color;
-  ctx.font = '10px "JetBrains Mono", monospace';
-  ctx.textAlign = side === 'left' ? 'right' : 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(`${label} (${N})`, lx, ly);
+  drawLabel(ctx, {
+    x: lx,
+    y: ly,
+    text: `${label} (${N})`,
+    color: color,
+    align: side === 'left' ? 'right' : 'left',
+    baseline: 'middle',
+  });
 }
 
 function drawResistorZigzag(

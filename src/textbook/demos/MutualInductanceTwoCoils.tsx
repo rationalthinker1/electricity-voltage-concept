@@ -15,6 +15,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -74,15 +75,13 @@ export function MutualInductanceTwoCoilsDemo({ figure }: Props) {
       drawCoil(ctx, c2x, cy, tiltDeg, 'C2');
 
       // Readout strip at the bottom: how many lines thread C2
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(
-        `k = ${k.toFixed(3)}   |   M ≈ ${(k * Math.sqrt(L1 * L2) * 1e6).toFixed(0)} µH`,
-        12,
-        h - 8,
-      );
+      drawLabel(ctx, {
+        x: 12,
+        y: h - 8,
+        text: `k = ${k.toFixed(3)}   |   M ≈ ${(k * Math.sqrt(L1 * L2) * 1e6).toFixed(0)} µH`,
+        color: getCanvasColors().textDim,
+        baseline: 'bottom',
+      });
 
       raf = requestAnimationFrame(draw);
     }
@@ -155,11 +154,16 @@ function drawCoil(
     ctx.stroke();
   }
   // Label
-  ctx.fillStyle = getCanvasColors().accent;
-  ctx.font = 'bold 11px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(label, 0, colH / 2 + 14);
+  drawLabel(ctx, {
+    x: 0,
+    y: colH / 2 + 14,
+    text: label,
+    color: getCanvasColors().accent,
+    size: 11,
+    align: 'center',
+    baseline: 'middle',
+    weight: 'bold',
+  });
   ctx.restore();
 }
 
@@ -218,10 +222,14 @@ function drawFieldLines(
   ctx.setLineDash([]);
 
   // Direction arrow on coil 1
-  ctx.fillStyle = getCanvasColors().accent;
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.fillText('I₁', c1x, c1y - 56);
+  drawLabel(ctx, {
+    x: c1x,
+    y: c1y - 56,
+    text: 'I₁',
+    color: getCanvasColors().accent,
+    size: 9,
+    align: 'center',
+  });
 
   // Hint that dx exists to silence unused
   void dx;

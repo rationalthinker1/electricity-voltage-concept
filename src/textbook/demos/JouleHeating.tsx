@@ -12,6 +12,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { pathRoundRect } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS, pretty } from '@/lib/physics';
@@ -173,14 +174,13 @@ export function JouleHeatingDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillText(describeGlow(T, P_), w - 14, 30);
 
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(
-        `I = ${s.I.toFixed(2)} A   ·   R = ${s.R.toFixed(2)} Ω   ·   surface ≈ 1 cm²`,
-        w / 2,
-        bot + 14,
-      );
+      drawLabel(ctx, {
+        x: w / 2,
+        y: bot + 14,
+        text: `I = ${s.I.toFixed(2)} A   ·   R = ${s.R.toFixed(2)} Ω   ·   surface ≈ 1 cm²`,
+        color: colors.textDim,
+        align: 'center',
+      });
     },
     [],
     () => ({ context: [] as Shim[] }),

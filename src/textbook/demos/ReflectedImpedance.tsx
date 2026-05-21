@@ -18,6 +18,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -174,11 +175,14 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       );
 
       // Reflected ghost-impedance label below
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`reflected: (${reflRe.toFixed(1)}) + j (${reflIm.toFixed(1)}) Ω`, 12, h - 8);
+      drawLabel(ctx, {
+        x: 12,
+        y: h - 8,
+        text: `reflected: (${reflRe.toFixed(1)}) + j (${reflIm.toFixed(1)}) Ω`,
+        color: getCanvasColors().textDim,
+        size: 9,
+        baseline: 'bottom',
+      });
 
       raf = requestAnimationFrame(draw);
     }
@@ -275,8 +279,12 @@ function drawCoilTwo(
   ctx.fillText(label, cx, cy + colH / 2 + 4);
   ctx.save();
   ctx.globalAlpha = 0.75;
-  ctx.fillStyle = getCanvasColors().textDim;
-  ctx.font = '9px "JetBrains Mono", monospace';
-  ctx.fillText(value, cx, cy + colH / 2 + 18);
+  drawLabel(ctx, {
+    x: cx,
+    y: cy + colH / 2 + 18,
+    text: value,
+    color: getCanvasColors().textDim,
+    size: 9,
+  });
   ctx.restore();
 }

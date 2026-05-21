@@ -23,6 +23,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import {
   add,
@@ -312,9 +313,13 @@ export function ImageChargeField3DDemo({ figure }: Props) {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('−', imgPos.x, imgPos.y);
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.blue;
-        ctx.fillText('image (fictitious)', imgPos.x, imgPos.y + imgR + 12);
+        drawLabel(ctx, {
+          x: imgPos.x,
+          y: imgPos.y + imgR + 12,
+          text: 'image (fictitious)',
+          color: colors.blue,
+          size: 9,
+        });
         ctx.restore();
       }
 
@@ -323,9 +328,12 @@ export function ImageChargeField3DDemo({ figure }: Props) {
       ctx.font = '11px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('grounded conducting plane (y = 0)', 14, h - 14);
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.fillText('drag to orbit', 14, 18);
+      drawLabel(ctx, {
+        x: 14,
+        y: 18,
+        text: 'drag to orbit',
+        color: colors.textDim,
+      });
 
       raf = requestAnimationFrame(draw);
     }

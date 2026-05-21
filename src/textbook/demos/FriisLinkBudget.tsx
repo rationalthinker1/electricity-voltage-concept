@@ -12,6 +12,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -121,9 +122,14 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
       );
 
       // Received power
-      ctx.font = 'bold 12px "JetBrains Mono", monospace';
-      ctx.fillStyle = '#ffd040';
-      ctx.fillText(`P_r ≈ ${PrdBm.toFixed(1)} dBm`, (txX + rxX) / 2, 22);
+      drawLabel(ctx, {
+        x: (txX + rxX) / 2,
+        y: 22,
+        text: `P_r ≈ ${PrdBm.toFixed(1)} dBm`,
+        color: '#ffd040',
+        size: 12,
+        weight: 'bold',
+      });
 
       raf = requestAnimationFrame(draw);
     }

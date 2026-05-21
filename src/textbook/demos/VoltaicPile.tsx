@@ -10,6 +10,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -133,10 +134,13 @@ export function VoltaicPileDemo({ figure }: Props) {
           ctx.lineTo(sx + (Math.random() - 0.5) * 14, sy - 16);
           ctx.stroke();
         }
-        ctx.fillStyle = 'rgba(255,235,80,0.85)';
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('ZAP', fx, fy - 50);
+        drawLabel(ctx, {
+          x: fx,
+          y: fy - 50,
+          text: 'ZAP',
+          color: 'rgba(255,235,80,0.85)',
+          align: 'center',
+        });
       }
 
       // Voltmeter readout

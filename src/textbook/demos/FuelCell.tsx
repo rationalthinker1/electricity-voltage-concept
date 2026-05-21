@@ -13,6 +13,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
 interface Props {
@@ -107,11 +108,16 @@ export function FuelCellDemo({ figure }: Props) {
         const t = (phase + j * 0.2) % 1;
         const ix = x + t * membraneW;
         const iy = cellY + cellH * (0.2 + 0.7 * ((j * 0.31) % 1));
-        ctx.fillStyle = colors.text;
-        ctx.font = 'bold 9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('H⁺', ix, iy);
+        drawLabel(ctx, {
+          x: ix,
+          y: iy,
+          text: 'H⁺',
+          color: colors.text,
+          size: 9,
+          align: 'center',
+          baseline: 'middle',
+          weight: 'bold',
+        });
       }
 
       x += membraneW;

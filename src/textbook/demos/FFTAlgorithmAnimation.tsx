@@ -6,7 +6,7 @@
  * N = 8 DFT. Reader picks N up to 4096 and sees the speed-up factor.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -132,10 +132,13 @@ export function FFTAlgorithmAnimationDemo() {
       const colW = bw / (stages + 1);
       const rowH = bh / Nbf;
 
-      ctx.fillStyle = colors.textDim;
-      ctx.font = '9px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('Cooley-Tukey butterfly (N = 8)', bx0, by0 - 2);
+      drawLabel(ctx, {
+        x: bx0,
+        y: by0 - 2,
+        text: 'Cooley-Tukey butterfly (N = 8)',
+        color: colors.textDim,
+        size: 9,
+      });
 
       // Draw nodes per stage
       const nodes: Array<Array<{ x: number; y: number }>> = [];

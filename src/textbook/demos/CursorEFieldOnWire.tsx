@@ -11,6 +11,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniSlider, MiniToggle } from '@/components/Demo';
+import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
 import { drawArrow } from '@/lib/canvasPrimitives';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -121,10 +122,12 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
         }
         ctx.save();
         ctx.globalAlpha = 0.6;
-        ctx.fillStyle = colors.accent;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.fillText('E_battery', wireLeft + 4, wireBot + 14);
+        drawLabel(ctx, {
+          x: wireLeft + 4,
+          y: wireBot + 14,
+          text: 'E_battery',
+          color: colors.accent,
+        });
         ctx.restore();
       }
 
@@ -173,11 +176,15 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
         ctx.beginPath();
         ctx.arc(ui.cx, ui.cy, 7, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = colors.bg;
-        ctx.font = 'bold 10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(s.cursorPos ? '+' : '−', ui.cx, ui.cy + 1);
+        drawLabel(ctx, {
+          x: ui.cx,
+          y: ui.cy + 1,
+          text: s.cursorPos ? '+' : '−',
+          color: colors.bg,
+          align: 'center',
+          baseline: 'middle',
+          weight: 'bold',
+        });
       }
 
       // Surface-charge indicators

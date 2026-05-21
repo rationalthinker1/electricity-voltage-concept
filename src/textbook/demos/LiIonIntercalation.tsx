@@ -9,6 +9,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -96,11 +97,16 @@ export function LiIonIntercalationDemo({ figure }: Props) {
         const dir = s.soc < 0.5 ? -1 : +1;
         const xx = electrolyteX + (dir > 0 ? t : 1 - t) * electrolyteW;
         const yy = topY + colH * (0.25 + 0.5 * ((j * 0.37) % 1));
-        ctx.fillStyle = getCanvasColors().blue;
-        ctx.font = 'bold 11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('Li⁺', xx, yy);
+        drawLabel(ctx, {
+          x: xx,
+          y: yy,
+          text: 'Li⁺',
+          color: getCanvasColors().blue,
+          size: 11,
+          align: 'center',
+          baseline: 'middle',
+          weight: 'bold',
+        });
       }
 
       // Labels

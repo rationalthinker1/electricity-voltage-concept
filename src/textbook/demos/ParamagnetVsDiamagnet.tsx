@@ -11,7 +11,7 @@
  * Live readouts: net magnetization (in arbitrary units) for each box.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-
+import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 
@@ -133,14 +133,14 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
         ctx.setLineDash([3, 3]);
         ctx.strokeRect(box.x0, box.y0, box.w, box.h);
         ctx.setLineDash([]);
-        ctx.fillStyle = box.kind === 'para' ? 'rgba(255,107,42,0.85)' : 'rgba(108,197,194,0.85)';
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.fillText(
-          box.kind === 'para' ? 'PARAMAGNET (permanent moments)' : 'DIAMAGNET (induced moments)',
-          box.x0 + 8,
-          box.y0 - 8,
-        );
+        drawLabel(ctx, {
+          x: box.x0 + 8,
+          y: box.y0 - 8,
+          text:
+            box.kind === 'para' ? 'PARAMAGNET (permanent moments)' : 'DIAMAGNET (induced moments)',
+          color: box.kind === 'para' ? 'rgba(255,107,42,0.85)' : 'rgba(108,197,194,0.85)',
+          size: 11,
+        });
       }
 
       // Draw moments

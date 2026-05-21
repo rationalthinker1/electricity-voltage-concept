@@ -16,6 +16,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS, pretty } from '@/lib/physics';
 
 interface Props {
@@ -167,11 +168,14 @@ export function BCirculationDemo({ figure }: Props) {
       // Bottom: surface B value
       const a_m_ = a_mm * 1e-3;
       const B_ = (PHYS.mu_0 * Math.abs(I)) / (2 * Math.PI * a_m_);
-      ctx.fillStyle = colors.teal;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'alphabetic';
-      ctx.fillText(`B at surface (r = a) = μ₀ I / (2π a) = ${pretty(B_)} T`, w / 2, h - 12);
+      drawLabel(ctx, {
+        x: w / 2,
+        y: h - 12,
+        text: `B at surface (r = a) = μ₀ I / (2π a) = ${pretty(B_)} T`,
+        color: colors.teal,
+        size: 11,
+        align: 'center',
+      });
 
       raf = requestAnimationFrame(draw);
     }

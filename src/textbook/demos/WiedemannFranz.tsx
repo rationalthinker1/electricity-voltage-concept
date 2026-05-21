@@ -117,14 +117,13 @@ export function WiedemannFranzDemo({ figure }: Props) {
 
         // Per-metal Lorenz value
         const L_m = mm.kappa / (mm.sigma * T_K);
-        ctx.fillStyle = isSel ? '#ff6b2a' : 'rgba(160,158,149,0.7)';
-        ctx.textAlign = 'left';
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.fillText(
-          `L = ${(L_m * 1e8).toFixed(2)}×10⁻⁸`,
-          padL + Math.max(kappaW, sigmaW) + 6,
-          yMid,
-        );
+        drawLabel(ctx, {
+          x: padL + Math.max(kappaW, sigmaW) + 6,
+          y: yMid,
+          text: `L = ${(L_m * 1e8).toFixed(2)}×10⁻⁸`,
+          color: isSel ? '#ff6b2a' : 'rgba(160,158,149,0.7)',
+          size: 9,
+        });
       });
 
       // Headers
@@ -184,7 +183,7 @@ export function WiedemannFranzDemo({ figure }: Props) {
           <button
             key={mm.key}
             type="button"
-            className={`mini-toggle${mm.key === metalKey ? ' on' : ''}`}
+            className={`mini-toggle${mm.key === metalKey ? 'on' : ''}`}
             onClick={() => setMetalKey(mm.key)}
             aria-pressed={mm.key === metalKey}
           >

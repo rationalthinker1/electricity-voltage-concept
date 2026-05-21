@@ -30,6 +30,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -213,11 +214,13 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
       ctx.textBaseline = 'top';
       ctx.fillText(`B   ${V_B.toFixed(3)} V`, xB + 8, yBot + 6);
 
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('Wheatstone bridge — not reducible by series/parallel rules', 12, 10);
+      drawLabel(ctx, {
+        x: 12,
+        y: 10,
+        text: 'Wheatstone bridge — not reducible by series/parallel rules',
+        color: 'rgba(160,158,149,0.75)',
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }
@@ -326,10 +329,14 @@ function drawGalvanometer(
   ctx.lineTo(x + 14 * Math.cos(ang), y + 14 * Math.sin(ang));
   ctx.stroke();
 
-  ctx.fillStyle = getCanvasColors().teal;
-  ctx.font = 'bold 10px "JetBrains Mono", monospace';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  ctx.fillText('G', x, y + 22);
+  drawLabel(ctx, {
+    x: x,
+    y: y + 22,
+    text: 'G',
+    color: getCanvasColors().teal,
+    align: 'center',
+    baseline: 'top',
+    weight: 'bold',
+  });
   ctx.restore();
 }

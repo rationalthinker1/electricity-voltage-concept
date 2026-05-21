@@ -17,6 +17,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors } from '@/lib/canvasTheme';
 
@@ -215,11 +216,15 @@ export function LinearRegulatorDemo({ figure }: Props) {
       ctx.fillText(`${Vout.toFixed(2)} V × I_load`, xOut + outW / 2, yTop + barH + 6);
 
       // Dynamic overlay: efficiency badge.
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`η = P_out / P_in = ${(eta * 100).toFixed(1)} %`, w / 2, 12);
+      drawLabel(ctx, {
+        x: w / 2,
+        y: 12,
+        text: `η = P_out / P_in = ${(eta * 100).toFixed(1)} %`,
+        color: getCanvasColors().textDim,
+        size: 11,
+        align: 'center',
+        baseline: 'top',
+      });
 
       raf = requestAnimationFrame(draw);
     }
