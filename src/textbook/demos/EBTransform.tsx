@@ -25,7 +25,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/co
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
-import { PHYS } from '@/lib/physics';
+import { PHYS, sciTeX } from '@/lib/physics';
 
 interface Props {
   figure?: string;
@@ -222,8 +222,8 @@ export function EBTransformDemo({ figure }: Props) {
           <InlineMath
             tex={
               `E_{y}' \\;=\\; \\gamma\\,E_{y} \\;=\\; ` +
-              `${gamma.toFixed(3)} \\cdot ${Ey.toExponential(1)} \\;\\approx\\; ` +
-              `${Ey_new.toExponential(2)}\\ \\text{V/m}`
+              `${gamma.toFixed(3)} \\cdot ${sciTeX(Ey, 1)} \\;\\approx\\; ` +
+              `${sciTeX(Ey_new, 2)}\\ \\text{V/m}`
             }
           />
         }
@@ -232,7 +232,7 @@ export function EBTransformDemo({ figure }: Props) {
           <InlineMath
             tex={
               `B_{z}' \\;=\\; -\\dfrac{\\gamma\\beta\\,E_{y}}{c} \\;\\approx\\; ` +
-              `${Bz_new.toExponential(2)}\\ \\text{T}`
+              `${sciTeX(Bz_new, 2)}\\ \\text{T}`
             }
           />
         }

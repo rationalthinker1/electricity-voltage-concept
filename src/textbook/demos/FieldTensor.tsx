@@ -119,6 +119,36 @@ export function FieldTensorDemo({ figure }: Props) {
     return (i === 0 && j !== 0) || (j === 0 && i !== 0);
   }
 
+  /**
+   * Resolve a tensor cell's background and foreground colour from the
+   * chosen role + magnitude. Opacity math and the choice of theme tokens
+   * live in one place so the matrix is easy to tweak without hunting
+   * through inline `color-mix` strings.
+   */
+  function tintedCellColors({
+    tint,
+    isE,
+    isZero,
+  }: {
+    tint: number;
+    isE: boolean;
+    isZero: boolean;
+  }): { bg: string; fg: string } {
+    if (isZero) {
+      return {
+        bg: 'color-mix(in srgb, var(--color-text) 2%, transparent)',
+        fg: 'color-mix(in srgb, var(--color-text-dim) 45%, transparent)',
+      };
+    }
+    const token = isE ? 'var(--color-accent)' : 'var(--color-teal)';
+    const bgPct = ((0.05 + 0.3 * tint) * 100).toFixed(1);
+    const fgPct = ((0.55 + 0.45 * tint) * 100).toFixed(1);
+    return {
+      bg: `color-mix(in srgb, ${token} ${bgPct}%, transparent)`,
+      fg: `color-mix(in srgb, ${token} ${fgPct}%, transparent)`,
+    };
+  }
+
   return (
     <Demo
       figure={figure ?? 'Fig. 11.4'}
@@ -161,17 +191,10 @@ export function FieldTensorDemo({ figure }: Props) {
               <div className="text-text-dim text-1 px-xs py-xs self-center text-center">{rl}</div>
               {labels.map((_, j) => {
                 const val = cell[i][j];
-                const abs = Math.abs(val);
-                const tint = abs / maxAbs;
+                const tint = Math.abs(val) / maxAbs;
                 const isE = isEComponent(i, j);
                 const isZero = i === j;
-                const bgToken = isE ? 'var(--color-accent)' : 'var(--color-teal)';
-                const bg = isZero
-                  ? 'color-mix(in srgb, var(--color-text) 2%, transparent)'
-                  : `color-mix(in srgb, ${bgToken} ${((0.05 + 0.3 * tint) * 100).toFixed(1)}%, transparent)`;
-                const fg = isZero
-                  ? 'color-mix(in srgb, var(--color-text-dim) 45%, transparent)'
-                  : `color-mix(in srgb, ${bgToken} ${((0.55 + 0.45 * tint) * 100).toFixed(1)}%, transparent)`;
+                const { bg, fg } = tintedCellColors({ tint, isE, isZero });
                 return (
                   <div
                     key={`${i}-${j}`}

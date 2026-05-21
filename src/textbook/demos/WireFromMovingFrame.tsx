@@ -31,6 +31,7 @@ import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/co
 import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
+import { sciTeX } from '@/lib/physics';
 
 interface Props {
   figure?: string;
@@ -315,7 +316,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
           <InlineMath
             tex={
               `\\lambda' \\;=\\; \\lambda_{0}\\,(\\gamma_{\\text{test}} - \\gamma_{e}') ` +
-              `\\;\\approx\\; ${lambda_new.toExponential(2)}\\ \\text{C/m}`
+              `\\;\\approx\\; ${sciTeX(lambda_new, 2)}\\ \\text{C/m}`
             }
           />
         }

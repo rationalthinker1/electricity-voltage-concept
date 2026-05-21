@@ -94,6 +94,22 @@ export function sciJsx(n: number, digits = 2): ReactNode {
   );
 }
 
+/** Scientific notation, TeX-source version. For numbers inside an
+ *  `<InlineMath tex={…}/>` or `<Formula tex>`, embedding raw
+ *  `Number.toExponential()` produces ugly `3.0e+5`-style output in math
+ *  mode. This returns a proper TeX fragment like `3.00\times 10^{5}` so
+ *  KaTeX renders real scientific notation. For normal ranges
+ *  (1e-2 ≤ |n| < 1e4) it falls back to a fixed-decimal string so the
+ *  equation reads naturally. */
+export function sciTeX(n: number, digits = 2): string {
+  if (n === 0 || !isFinite(n)) return '0';
+  const abs = Math.abs(n);
+  if (abs >= 1e-2 && abs < 1e4) return n.toFixed(digits);
+  const exp = Math.floor(Math.log10(abs));
+  const mantissa = n / Math.pow(10, exp);
+  return `${mantissa.toFixed(digits)}\\times 10^{${exp}}`;
+}
+
 /** Engineering notation with SI prefix. */
 export function eng(n: number, digits = 3, unit = ''): string {
   if (n === 0 || !isFinite(n)) return `0${unit ? ' ' + unit : ''}`;
