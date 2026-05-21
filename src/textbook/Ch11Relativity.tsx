@@ -1,23 +1,24 @@
 /**
- * Chapter 9 — Relativity and electromagnetism
+ * Chapter 11 — Relativity and electromagnetism
  *
- * The redeemer of Chapter 4's promise: "magnetism is the relativistic
+ * The redeemer of Chapter 6's promise: "magnetism is the relativistic
  * shadow of electricity." Short, punchy chapter, focused on the wire-and-
  * test-charge thought experiment, the Lorentz boost that converts it, the
  * exact numerical match, the unification into the field tensor, and what
  * the unification means for the rest of physics.
  *
  * Embedded demos:
- *   9.1 WireFromRest         — lab frame: neutral wire, motionless test charge, zero force
- *   9.2 WireFromMovingFrame  — boosted frame: charged wire, zero v_test, electric force
- *   9.3 EBTransform          — pure E_y in one frame becomes E + B in a boosted frame
- *   9.4 FieldTensor          — the 4×4 antisymmetric F^μν matrix, components mix under boost
+ *   11.1 WireFromRest         — lab frame: neutral wire, motionless test charge, zero force
+ *   11.2 WireFromMovingFrame  — boosted frame: charged wire, zero v_test, electric force
+ *   11.3 EBTransform          — pure E_y in one frame becomes E + B in a boosted frame
+ *   11.4 FieldTensor          — the 4×4 antisymmetric F^μν matrix, components mix under boost
  */
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
+import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { EBTransformDemo } from './demos/EBTransform';
@@ -33,7 +34,7 @@ export default function Ch11Relativity() {
   return (
     <ChapterShell chapter={chapter}>
       <p className="chapter-intro">
-        Five chapters ago we made a promise. At the end of Chapter&nbsp;4, after teaching the
+        Five chapters ago we made a promise. At the end of Chapter&nbsp;6, after teaching the
         Biot–Savart law, the right-hand rule, and the magnetic force on two parallel wires, we
         claimed that none of it was really a separate force.{' '}
         <em className="text-text italic">
@@ -63,7 +64,7 @@ export default function Ch11Relativity() {
       </p>
 
       <h2 className="chapter-h2">
-        A promise from <em>Chapter 4</em>
+        A promise from <em>Chapter 6</em>
       </h2>
 
       <p className="mb-prose-3">
@@ -76,7 +77,7 @@ export default function Ch11Relativity() {
       </p>
       <p className="mb-prose-3">
         Place a small positive test charge <strong className="text-text font-medium">q</strong> next
-        to it, also at rest in the lab. What force does it feel? Run through the chapter-4 catalog.
+        to it, also at rest in the lab. What force does it feel? Run through the chapter-6 catalog.
         The wire is neutral, so <strong className="text-text font-medium">E</strong> from the wire
         is zero — no electric force. The wire makes a magnetic field{' '}
         <strong className="text-text font-medium">B</strong> that wraps around it according to
@@ -91,7 +92,7 @@ export default function Ch11Relativity() {
         So far so good. Now imagine the test charge had a small velocity along the wire — same
         direction as the current, say. Now <InlineMath>v × B</InlineMath> is nonzero and the test
         charge experiences a magnetic force pulling it toward the wire (or pushing it away — depends
-        on sign conventions; pick one). The magnitude follows from chapter 4:{' '}
+        on sign conventions; pick one). The magnitude follows from chapter 6:{' '}
         <InlineMath>F = q v B = q v · μ₀ I / (2π d)</InlineMath>, with
         <InlineMath> d</InlineMath> the distance to the wire.
       </p>
@@ -115,10 +116,10 @@ export default function Ch11Relativity() {
       </p>
       <p className="mb-prose-3">
         In the lab frame the ions were stationary and the electrons drifted rightward at{' '}
-        <InlineMath>v_d</InlineMath>. On the train (moving rightward at{' '}
-        <InlineMath>v_test</InlineMath>), the ions appear to drift leftward at
-        <InlineMath> -v_test</InlineMath>, and the electrons appear to drift at the relativistic
-        difference
+        <InlineMath>v_d</InlineMath> (the drift velocity). On the train (moving rightward at{' '}
+        <InlineMath>v_test</InlineMath>, the boost speed), the ions appear to drift leftward at
+        <InlineMath> -v_test</InlineMath>, and the electrons appear to drift at the
+        relativistically composed velocity
         <InlineMath> v_d' = (v_d - v_test) / (1 - v_d · v_test / c²)</InlineMath>. Both speeds are
         nonzero. The positive lattice is now moving and{' '}
         <Term
@@ -197,12 +198,10 @@ export default function Ch11Relativity() {
         <Cite id="feynman-II-13" in={SOURCES} />
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
-      <p className="pullout">
-        Magnetism is not a separate force. It is the geometry of moving charge.
-      </p>
+      <Pullout>Magnetism is not a separate force. It is the geometry of moving charge.</Pullout>
       <p className="mb-prose-3">
-        The drift velocity in copper is on the order of a millimeter per second — vastly less than c
-        — so the{' '}
+        The drift velocity in copper is tens of microns to a millimeter per second depending on
+        current and gauge — vastly less than c — so the{' '}
         <Term
           def={
             <>
@@ -519,7 +518,7 @@ export default function Ch11Relativity() {
 
       <CaseStudies intro="Four places where the relativistic structure of electromagnetism stops being a thought experiment and starts being a budget item.">
         <CaseStudy
-          tag="Case 9.1"
+          tag="Case 11.1"
           title="GPS — the satellite clocks were tuned for relativity before launch"
           summary={
             <em className="text-text italic">
@@ -573,14 +572,14 @@ export default function Ch11Relativity() {
             That single number, 10.22999999543 MHz, is special and general relativity entering a
             consumer-electronics product specification. Every time your phone's location reads
             "accurate to within 5 m," Einstein has been quietly invoiced. The relativistic shadow of
-            electricity that Chapter 9 opened with is the same one operating here — Maxwell's
+            electricity that Chapter 11 opened with is the same one operating here — Maxwell's
             equations are the same in every inertial frame, and propagating signals must be timed in
             a way that respects that.
           </p>
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 9.2"
+          tag="Case 11.2"
           title="The wire-and-test-charge, with actual numbers"
           summary={
             <em className="text-text italic">
@@ -637,7 +636,7 @@ export default function Ch11Relativity() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 9.3"
+          tag="Case 11.3"
           title="The LHC — protons close enough to c that γ matters by the gigaelectronvolt"
           summary={
             <em className="text-text italic">
@@ -716,13 +715,13 @@ export default function Ch11Relativity() {
             protons. The beam itself, viewed from a co-moving frame, would see a 26 km ring
             Lorentz-contracted to under four metres in the direction of motion — and the dipole's
             quasi-static magnetic field would, in that frame, contain a substantial electric
-            component, exactly the way Chapter 9 says. Particle physics spends most of its hardware
+            component, exactly the way Chapter 11 says. Particle physics spends most of its hardware
             budget paying for γ.
           </p>
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 9.4"
+          tag="Case 11.4"
           title="Synchrotron radiation — γ⁴ in your photon budget"
           summary={
             <em className="text-text italic">
@@ -746,8 +745,9 @@ export default function Ch11Relativity() {
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            A non-relativistic accelerating charge radiates the dipole pattern of Chapter 7 — broad,
-            sin²θ around the acceleration axis. Push the charge to relativistic speed and that
+            A non-relativistic accelerating charge radiates the dipole pattern of Chapter 19 —
+            broad, sin²θ around the acceleration axis. Push the charge to relativistic speed and
+            that
             pattern, viewed in the lab frame, gets Lorentz-aberrated into a tight cone of half-angle{' '}
             <strong className="text-text font-medium">~1/γ</strong> in the forward direction. The
             total radiated power picks up an additional factor of{' '}
@@ -760,10 +760,10 @@ export default function Ch11Relativity() {
           <p className="mb-prose-2 last:mb-0">
             Julian Schwinger worked out the classical theory in 1949
             <Cite id="schwinger-1949" in={SOURCES} />. The angular distribution is the boosted
-            dipole pattern of §5 of Chapter 7 — you can derive it by applying a Lorentz
-            transformation to the rest-frame angular distribution, the same kind of transformation
-            that turns "magnetic" force into "electric" force in §3 of this chapter. The radiation
-            is a direct consequence of the field tensor mixing under boosts.
+            dipole pattern of Chapter 19 — you can derive it by applying a Lorentz transformation to
+            the rest-frame angular distribution, the same kind of transformation that turns
+            "magnetic" force into "electric" force in this chapter's central derivation. The
+            radiation is a direct consequence of the field tensor mixing under boosts.
           </p>
           <p className="mb-prose-2 last:mb-0">
             Practically: every third-generation synchrotron light source — Diamond, the APS, ESRF,
@@ -941,7 +941,7 @@ export default function Ch11Relativity() {
             is replaced by an operator-valued field built out of photon creation and annihilation
             operators. The physical content is the same: E and B are still entries in one tensor,
             that tensor still transforms under Lorentz boosts the same way, and the dynamics is
-            still gauge-invariant. The classical chapter-9 picture survives quantization more or
+            still gauge-invariant. The classical chapter-11 picture survives quantization more or
             less intact — the photon is the gauge boson that mediates interactions of{' '}
             <InlineMath>
               F<sup>μν</sup>

@@ -1,5 +1,5 @@
 /**
- * Demo D9.1 — A current-carrying wire seen from the lab frame
+ * Demo D11.1 — A current-carrying wire seen from the lab frame
  *
  * Top-down view. A long horizontal wire shown as a strip down the middle.
  * Two interleaved rows of charges along the wire:
@@ -23,6 +23,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { withAlpha } from '@/lib/canvasTheme';
 
 interface Props {
   figure?: string;
@@ -70,9 +71,9 @@ export function WireFromRestDemo({ figure }: Props) {
 
       // ─── Wire body
       const grd = ctx.createLinearGradient(0, wireTop, 0, wireBot);
-      grd.addColorStop(0, 'rgba(255,107,42,0.06)');
-      grd.addColorStop(0.5, 'rgba(255,107,42,0.16)');
-      grd.addColorStop(1, 'rgba(255,107,42,0.06)');
+      grd.addColorStop(0, withAlpha(colors.accent, 0.06));
+      grd.addColorStop(0.5, withAlpha(colors.accent, 0.16));
+      grd.addColorStop(1, withAlpha(colors.accent, 0.06));
       ctx.fillStyle = grd;
       ctx.fillRect(wireXL, wireTop, wireLen, wireH);
       ctx.strokeStyle = colors.accent;
@@ -86,8 +87,8 @@ export function WireFromRestDemo({ figure }: Props) {
           const y = wireY - 14;
           ctx.fillStyle = colors.pink;
           const halo = ctx.createRadialGradient(x, y, 0, x, y, 12);
-          halo.addColorStop(0, 'rgba(255,59,110,0.55)');
-          halo.addColorStop(1, 'rgba(255,59,110,0)');
+          halo.addColorStop(0, withAlpha(colors.pink, 0.55));
+          halo.addColorStop(1, withAlpha(colors.pink, 0));
           ctx.fillStyle = halo;
           ctx.beginPath();
           ctx.arc(x, y, 12, 0, Math.PI * 2);
@@ -113,8 +114,8 @@ export function WireFromRestDemo({ figure }: Props) {
           const x = wireXL + offset;
           const y = wireY + 14;
           const halo = ctx.createRadialGradient(x, y, 0, x, y, 12);
-          halo.addColorStop(0, 'rgba(91,174,248,0.55)');
-          halo.addColorStop(1, 'rgba(91,174,248,0)');
+          halo.addColorStop(0, withAlpha(colors.blue, 0.55));
+          halo.addColorStop(1, withAlpha(colors.blue, 0));
           ctx.fillStyle = halo;
           ctx.beginPath();
           ctx.arc(x, y, 12, 0, Math.PI * 2);
@@ -143,8 +144,8 @@ export function WireFromRestDemo({ figure }: Props) {
         const ty = h * 0.22;
         // halo
         const halo = ctx.createRadialGradient(tx, ty, 0, tx, ty, 22);
-        halo.addColorStop(0, 'rgba(255,107,42,0.55)');
-        halo.addColorStop(1, 'rgba(255,107,42,0)');
+        halo.addColorStop(0, withAlpha(colors.accent, 0.55));
+        halo.addColorStop(1, withAlpha(colors.accent, 0));
         ctx.fillStyle = halo;
         ctx.beginPath();
         ctx.arc(tx, ty, 22, 0, Math.PI * 2);
@@ -172,7 +173,7 @@ export function WireFromRestDemo({ figure }: Props) {
       }
 
       // ─── Frame label
-      ctx.fillStyle = 'rgba(160,158,149,0.75)';
+      ctx.fillStyle = withAlpha(colors.textDim, 0.75);
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.fillText('LAB FRAME · wire neutral, test charge at rest', 14, 18);
@@ -185,7 +186,7 @@ export function WireFromRestDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 9.1'}
+      figure={figure ?? 'Fig. 11.1'}
       title="The wire from the lab frame"
       question="A wire carries current. A test charge sits next to it, motionless. Does it feel a force?"
       caption={
