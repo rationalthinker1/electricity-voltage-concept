@@ -80,7 +80,7 @@ export default function Ch1WhatIsElectricity() {
           def={
             <>
               <strong className="text-text font-medium">proton</strong> — the positively charged
-              constituent of atomic nuclei, with charge +<em className="text-text italic">e</em>.
+              constituent of atomic nuclei, with charge <InlineMath tex="+e" />.
               Bound inside the nucleus and effectively immobile in everyday chemistry and
               electronics.
             </>
@@ -93,8 +93,7 @@ export default function Ch1WhatIsElectricity() {
           def={
             <>
               <strong className="text-text font-medium">electron</strong> — the elementary
-              negatively charged particle of ordinary matter, with charge −
-              <em className="text-text italic">e</em>. The mobile carrier in metals, semiconductors,
+              negatively charged particle of ordinary matter, with charge <InlineMath tex="-e" />. The mobile carrier in metals, semiconductors,
               and almost every triboelectric process.
             </>
           }
@@ -459,7 +458,7 @@ export default function Ch1WhatIsElectricity() {
             </p>
             <Formula tex="|\vec{E}| = \dfrac{kQ}{r^2} = \dfrac{(8.99\times 10^{9})(10\times 10^{-9})}{(0.05)^2} = 3.60\times 10^{4}\ \text{N/C}" />
             <p className="mb-prose-1 last:mb-0">
-              An electron carries charge −<em className="text-text italic">e</em>, so the force has
+              An electron carries charge <InlineMath tex="-e" />, so the force has
               magnitude
             </p>
             <Formula tex="F = eE = (1.602\times 10^{-19})(3.60\times 10^{4}) \approx 5.76\times 10^{-15}\ \text{N}" />
@@ -492,9 +491,9 @@ export default function Ch1WhatIsElectricity() {
           def={
             <>
               <strong className="text-text font-medium">equipotential</strong> — a surface (or curve
-              in 2D) on which the electrostatic potential <em className="text-text italic">V</em>{' '}
+              in 2D) on which the electrostatic potential <InlineMath tex="V" />{' '}
               has a single value. The electric field is everywhere perpendicular to equipotentials
-              and points toward lower <em className="text-text italic">V</em>.
+              and points toward lower <InlineMath tex="V" />.
             </>
           }
         >

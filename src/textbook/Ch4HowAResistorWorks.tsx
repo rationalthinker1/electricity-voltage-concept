@@ -68,15 +68,15 @@ export default function Ch4HowAResistorWorks() {
       </p>
       <Formula size="lg" tex="R = \dfrac{\rho L}{A}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">R</strong> is the resistance (in ohms, Ω),{' '}
-        <strong className="text-text font-medium">ρ</strong> is the material's resistivity (in Ω·m;
-        ≈ 1.7×10⁻⁸ for copper), <strong className="text-text font-medium">L</strong> is the
+        where <InlineMath tex="R" /> is the resistance (in ohms, Ω),{' '}
+        <InlineMath tex="\rho" /> is the material's resistivity (in Ω·m;
+        ≈ 1.7×10⁻⁸ for copper), <InlineMath tex="L" /> is the
         conductor length (in metres), and
-        <strong className="text-text font-medium"> A</strong> is its cross-sectional area (in m²).
+        <InlineMath tex="A" /> is its cross-sectional area (in m²).
         Resistance is resistivity times length over cross-section. For a fixed bit of material
         that's a relation between three numbers, and you can dial any one of them by changing the
         geometry. A real resistor is a small, mass-produced device engineered to land at one
-        specific value of <strong className="text-text font-medium">R</strong>, with one specific
+        specific value of <InlineMath tex="R" />, with one specific
         tolerance, and to dissipate up to one specific amount of power before it catches fire.
         Everything you read in the rest of this chapter is about how manufacturers actually do that.
       </p>
@@ -245,19 +245,19 @@ export default function Ch4HowAResistorWorks() {
       <h2 className="chapter-h2">Power, heat, and why ratings derate</h2>
 
       <p className="mb-prose-3">
-        When current <strong className="text-text font-medium">I</strong> flows through a resistor
-        of value <strong className="text-text font-medium">R</strong>, power is dissipated at the
+        When current <InlineMath tex="I" /> flows through a resistor
+        of value <InlineMath tex="R" />, power is dissipated at the
         rate
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula size="lg" tex="P = I^2 R = \dfrac{V^2}{R}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">P</strong> is the power dissipated as heat
+        where <InlineMath tex="P" /> is the power dissipated as heat
         in the resistor (in watts, W = J/s),
-        <strong className="text-text font-medium"> I</strong> is the current through it (in
-        amperes), <strong className="text-text font-medium">V</strong> is the voltage across it (in
-        volts), and <strong className="text-text font-medium">R</strong> is its resistance (in
-        ohms). The two forms are equivalent via <em className="text-text italic">V = IR</em>. That
+        <InlineMath tex="I" /> is the current through it (in
+        amperes), <InlineMath tex="V" /> is the voltage across it (in
+        volts), and <InlineMath tex="R" /> is its resistance (in
+        ohms). The two forms are equivalent via <InlineMath tex="V = IR" />. That
         power becomes heat inside the resistor body. The body has to dump that heat into the
         surrounding air, mostly by natural convection, before its internal temperature climbs past
         the safe limit (around <strong className="text-text font-medium">155 °C</strong> for a
@@ -350,7 +350,7 @@ export default function Ch4HowAResistorWorks() {
       <h2 className="chapter-h2">R is not constant: temperature coefficient</h2>
 
       <p className="mb-prose-3">
-        The resistivity ρ that goes into <em className="text-text italic">R = ρL/A</em> is itself a
+        The resistivity ρ that goes into <InlineMath tex="R = \rho L/A" /> is itself a
         function of temperature.{' '}
         <Term def="The empirical statement that the resistivity of a metal can be decomposed additively into a temperature-independent impurity/defect term and a temperature-dependent phonon-scattering term: ρ(T) = ρ_residual + ρ_phonon(T).">
           Matthiessen's rule
@@ -360,14 +360,14 @@ export default function Ch4HowAResistorWorks() {
       </p>
       <Formula size="lg" tex="\rho(T) = \rho_{\text{residual}} + \rho_{\text{phonon}}(T)" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">ρ(T)</strong> is the metal's resistivity at
-        temperature <strong className="text-text font-medium">T</strong> (in Ω·m),{' '}
-        <strong className="text-text font-medium">ρ<sub>residual</sub></strong> is the
+        where <InlineMath tex="\rho(T)" /> is the metal's resistivity at
+        temperature <InlineMath tex="T" /> (in Ω·m),{' '}
+        <InlineMath tex="\rho_{\text{residual}}" /> is the
         temperature-independent scattering off impurities and lattice defects (Ω·m),{' '}
-        <strong className="text-text font-medium">ρ<sub>phonon</sub>(T)</strong> is the
+        <InlineMath tex="\rho_{\text{phonon}}(T)" /> is the
         temperature-dependent scattering off phonons — quantized lattice vibrations whose amplitude
         grows with temperature (Ω·m) — and{' '}
-        <strong className="text-text font-medium">T</strong> is the absolute temperature in kelvin.
+        <InlineMath tex="T" /> is the absolute temperature in kelvin.
         Well above the Debye temperature, ρ<sub>phonon</sub> is linear in T, giving the familiar
         straight-line plot of resistance versus temperature for an unalloyed metal
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />. The slope is the
@@ -401,12 +401,12 @@ export default function Ch4HowAResistorWorks() {
       </p>
       <Formula size="lg" tex="\dfrac{1}{T} = A + B \ln R + C (\ln R)^3" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">T</strong> is the absolute temperature of
+        where <InlineMath tex="T" /> is the absolute temperature of
         the thermistor bead (in kelvin),
-        <strong className="text-text font-medium"> R</strong> is its measured resistance (in ohms),
-        and <strong className="text-text font-medium">A</strong>,{' '}
-        <strong className="text-text font-medium">B</strong>,
-        <strong className="text-text font-medium"> C</strong> are empirical fitting constants
+        <InlineMath tex="R" /> is its measured resistance (in ohms),
+        and <InlineMath tex="A" />,{' '}
+        <InlineMath tex="B" />,
+        <InlineMath tex="C" /> are empirical fitting constants
         specific to a given thermistor part (units chosen so each term comes out in K⁻¹; typical
         magnitudes: A ~ 10⁻³, B ~ 2–4×10⁻⁴, C ~ 10⁻⁷). NTCs are how every electronics enclosure
         measures its own temperature: read R, plug into Steinhart–Hart, get T.
@@ -414,17 +414,15 @@ export default function Ch4HowAResistorWorks() {
       <p className="mb-prose-3">
         The shape of the equation is worth unpacking. A semiconducting thermistor's resistance is
         dominated by the carrier population, which is thermally activated:{' '}
-        <em className="text-text italic">
-          R ∝ exp(E<sub>g</sub>/2k<sub>B</sub>T)
-        </em>
-        . Take the logarithm and you get <em className="text-text italic">ln R</em> linear in{' '}
-        <strong className="text-text font-medium">1/T</strong> — that's the leading{' '}
-        <em className="text-text italic">B · ln R</em> term, and it would suffice for a 10 K window.
+        <InlineMath tex="R \propto \exp(E_g / 2k_B T)" />
+        . Take the logarithm and you get <InlineMath tex="\ln R" /> linear in{' '}
+        <InlineMath tex="1/T" /> — that's the leading{' '}
+        <InlineMath tex="B \cdot \ln R" /> term, and it would suffice for a 10 K window.
         Across a real range (−40 °C to +125 °C, the typical span of a CPU thermistor) the bandgap
         drifts, the mobility curves over, and the linear law in{' '}
-        <em className="text-text italic">1/T</em> versus <em className="text-text italic">ln R</em>{' '}
+        <InlineMath tex="1/T" /> versus <InlineMath tex="\ln R" />{' '}
         bows gently. Steinhart and Hart found in 1968 that adding a single cubic term{' '}
-        <em className="text-text italic">C · (ln R)³</em> — no quadratic, empirically, since it
+        <InlineMath tex="C \cdot (\ln R)^{3}" /> — no quadratic, empirically, since it
         added nothing — flattens the residual to within millikelvins over the entire range
         <Cite id="steinhart-hart-1968" in={SOURCES} />. It is a Taylor-like fit in the right
         variable, not a derivation from first principles.
@@ -461,9 +459,7 @@ export default function Ch4HowAResistorWorks() {
       <p className="mb-prose-3">
         A pot has three terminals: the two ends of the resistive track (A and B), and the wiper (W).
         Treat it as two resistors in series, with{' '}
-        <strong className="text-text font-medium">
-          R<sub>AW</sub> + R<sub>WB</sub> = R<sub>total</sub>
-        </strong>
+        <InlineMath tex="R_{AW} + R_{WB} = R_{\text{total}}" />
         . Wire all three terminals as a voltage divider and the wiper sweeps an output voltage from
         0 to V_in. Wire only two — say A and W — and you have a
         <em className="text-text italic"> rheostat</em>: a variable two-terminal resistor, useful
@@ -486,7 +482,7 @@ export default function Ch4HowAResistorWorks() {
         four orders of magnitude. <em className="text-text italic">Strain gauges</em> are very thin
         metal foils glued to the surface whose strain you want to measure: stretching the foil
         narrows its cross-section and slightly increases its resistance via the
-        <em className="text-text italic"> R = ρL/A</em> geometry, by a factor of ~2 of the strain
+        <InlineMath tex="R = \rho L/A" /> geometry, by a factor of ~2 of the strain
         itself. Every kitchen scale, bathroom scale, and tensile testing machine on Earth uses one.
       </p>
 
@@ -507,7 +503,7 @@ export default function Ch4HowAResistorWorks() {
         </Term>
         <Cite id="wiedemann-franz-1853" in={SOURCES} />. Ludvig Lorenz extended the result two
         decades later by showing the ratio scales as{' '}
-        <strong className="text-text font-medium">L₀·T</strong>, with L₀ called the{' '}
+        <InlineMath tex="L_0 \cdot T" />, with L₀ called the{' '}
         <Term def="The universal proportionality constant in the Wiedemann–Franz law, L₀ ≈ 2.44×10⁻⁸ W·Ω·K⁻². Sommerfeld derived it from the free-electron model as L₀ = (π²/3)(k_B/e)².">
           Lorenz number
         </Term>
@@ -515,12 +511,12 @@ export default function Ch4HowAResistorWorks() {
       </p>
       <Formula size="lg" tex="\dfrac{\kappa}{\sigma} = L_0 \, T" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">κ</strong> is the thermal conductivity (in
-        W/(m·K)), <strong className="text-text font-medium">σ</strong> is the electrical
-        conductivity (in S/m), <strong className="text-text font-medium">T</strong> is the absolute
-        temperature (in kelvin), and <strong className="text-text font-medium">L₀</strong> is the
+        where <InlineMath tex="\kappa" /> is the thermal conductivity (in
+        W/(m·K)), <InlineMath tex="\sigma" /> is the electrical
+        conductivity (in S/m), <InlineMath tex="T" /> is the absolute
+        temperature (in kelvin), and <InlineMath tex="L_0" /> is the
         Lorenz number. With{' '}
-        <strong className="text-text font-medium">L₀ ≈ 2.44×10⁻⁸ W·Ω·K⁻²</strong>, Sommerfeld
+        <InlineMath tex="L_0 \approx 2.44\times 10^{-8}\,\text{W}{\cdot}\Omega{\cdot}\text{K}^{-2}" />, Sommerfeld
         later extended Drude's classical picture to a Fermi gas and derived L₀ exactly:{' '}
         L₀ = (π²/3)(k<sub>B</sub>/e)² with k<sub>B</sub> the Boltzmann constant and e the
         elementary charge
@@ -590,7 +586,7 @@ export default function Ch4HowAResistorWorks() {
       <p className="mb-prose-3">
         A real resistor is a ceramic cylinder with a film of carbon, metal, or metal oxide wrapped
         around it — or, for high power, a coil of nichrome or manganin wire.{' '}
-        <em className="text-text italic">R = ρL/A</em> sets the value; the colour bands report it to
+        <InlineMath tex="R = \rho L/A" /> sets the value; the colour bands report it to
         two or three significant figures plus a tolerance. The body has a power rating, which
         derates above ~70 °C ambient because the heat has to leave the package somehow. R is itself
         a function of T: positive and steep for pure metals, near-zero for nichrome and manganin,

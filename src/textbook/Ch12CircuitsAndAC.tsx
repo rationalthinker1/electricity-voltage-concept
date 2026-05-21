@@ -179,23 +179,9 @@ export default function Ch12CircuitsAndAC() {
         V<sub>out</sub> = V<sub>in</sub> · R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>)
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <strong className="text-text font-medium">
-          V<sub>in</sub>
-        </strong>{' '}
-        is the source voltage applied across the series pair (in volts),{' '}
-        <strong className="text-text font-medium">
-          V<sub>out</sub>
-        </strong>{' '}
-        is the voltage across the lower resistor (in volts), and{' '}
-        <strong className="text-text font-medium">
-          R<sub>1</sub>
-        </strong>{' '}
-        and{' '}
-        <strong className="text-text font-medium">
-          R<sub>2</sub>
-        </strong>
-        are the upper and lower resistor values (in ohms). The output is the supply scaled by the
+        where <InlineMath tex="V_{\text{in}}" /> is the source voltage applied across the series pair (in volts),{' '}
+        <InlineMath tex="V_{\text{out}}" /> is the voltage across the lower resistor (in volts), and{' '}
+        <InlineMath tex="R_1" /> and <InlineMath tex="R_2" /> are the upper and lower resistor values (in ohms). The output is the supply scaled by the
         ratio of the lower leg to the total series resistance.
       </p>
       <p className="mb-prose-3">
@@ -337,15 +323,10 @@ export default function Ch12CircuitsAndAC() {
         V<sub>0</sub> = I R + Q/C
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <strong className="text-text font-medium">
-          V<sub>0</sub>
-        </strong>{' '}
-        is the battery EMF (in volts), <strong className="text-text font-medium">I</strong>
-        is the (time-varying) loop current (in amperes),{' '}
-        <strong className="text-text font-medium">R</strong> is the series resistance (in ohms),{' '}
-        <strong className="text-text font-medium">Q</strong> is the charge on the capacitor (in
-        coulombs), and <strong className="text-text font-medium">C</strong> is the capacitance (in
+        where <InlineMath tex="V_0" /> is the battery EMF (in volts), <InlineMath tex="I" /> is the (time-varying) loop current (in amperes),{' '}
+        <InlineMath tex="R" /> is the series resistance (in ohms),{' '}
+        <InlineMath tex="Q" /> is the charge on the capacitor (in
+        coulombs), and <InlineMath tex="C" /> is the capacitance (in
         farads). The two RHS terms are the voltage drop across the resistor and the voltage across
         the capacitor at the same instant.
       </p>
@@ -357,22 +338,14 @@ export default function Ch12CircuitsAndAC() {
         V<sub>C</sub>(t) = V<sub>0</sub> ( 1 − e<sup>−t/τ</sup> ), τ = R C
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <strong className="text-text font-medium">
-          V<sub>C</sub>(t)
-        </strong>{' '}
-        is the capacitor voltage at time
-        <strong className="text-text font-medium"> t</strong> (both in SI: volts and seconds),{' '}
-        <strong className="text-text font-medium">
-          V<sub>0</sub>
-        </strong>
-        is the supply EMF (in volts) — also the final voltage the cap asymptotically reaches — and{' '}
-        <strong className="text-text font-medium">τ = RC</strong> is the circuit's time constant (in
+        where <InlineMath tex="V_C(t)" /> is the capacitor voltage at time <InlineMath tex="t" /> (both in SI: volts and seconds),{' '}
+        <InlineMath tex="V_0" /> is the supply EMF (in volts) — also the final voltage the cap asymptotically reaches — and{' '}
+        <InlineMath tex="\tau = RC" /> is the circuit's time constant (in
         seconds), the product of resistance (ohms) and capacitance (farads).
       </p>
       <p className="mb-prose-3">
         After one time constant, the cap reaches{' '}
-        <strong className="text-text font-medium">1 − 1/e ≈ 63%</strong> of the final voltage; after
+        <InlineMath tex="1 - 1/e \approx 63\%" /> of the final voltage; after
         three, about 95%; after five, you've effectively arrived. Discharging through R follows the
         mirror curve, decaying as{' '}
         <InlineMath>
@@ -462,9 +435,9 @@ export default function Ch12CircuitsAndAC() {
         L (d<sup>2</sup>Q/dt<sup>2</sup>) + Q/C = 0
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">L</strong> is the inductance (in henries),{' '}
-        <strong className="text-text font-medium">C</strong> is the capacitance (in farads), and{' '}
-        <strong className="text-text font-medium">Q(t)</strong> is the charge on the capacitor
+        where <InlineMath tex="L" /> is the inductance (in henries),{' '}
+        <InlineMath tex="C" /> is the capacitance (in farads), and{' '}
+        <InlineMath tex="Q(t)" /> is the charge on the capacitor
         plates (in coulombs) as a function of time. The first term is the voltage across the
         inductor (L·dI/dt with I = dQ/dt); the second is the voltage across the capacitor. KVL says
         they sum to zero around the loop.
@@ -474,17 +447,10 @@ export default function Ch12CircuitsAndAC() {
         ω<sub>0</sub> = 1 / √(L C), f<sub>0</sub> = 1 / (2π √(L C))
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <strong className="text-text font-medium">
-          ω<sub>0</sub>
-        </strong>{' '}
-        is the resonant angular frequency (in radians per second),{' '}
-        <strong className="text-text font-medium">
-          f<sub>0</sub>
-        </strong>{' '}
-        is the corresponding ordinary frequency (in hertz, i.e., cycles per second),{' '}
-        <strong className="text-text font-medium">L</strong> is the inductance (in henries), and{' '}
-        <strong className="text-text font-medium">C</strong> is the capacitance (in farads). Larger
+        where <InlineMath tex="\omega_0" /> is the resonant angular frequency (in radians per second),{' '}
+        <InlineMath tex="f_0" /> is the corresponding ordinary frequency (in hertz, i.e., cycles per second),{' '}
+        <InlineMath tex="L" /> is the inductance (in henries), and{' '}
+        <InlineMath tex="C" /> is the capacitance (in farads). Larger
         L or C means a slower oscillation.
       </p>
       <p className="mb-prose-3">
@@ -582,18 +548,13 @@ export default function Ch12CircuitsAndAC() {
         |I(ω)| = V<sub>0</sub> / √(R<sup>2</sup> + (ωL − 1/ωC)<sup>2</sup>)
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">|I(ω)|</strong> is the steady-state current
-        amplitude (in amperes) at driving angular frequency{' '}
-        <strong className="text-text font-medium">ω</strong> (in radians per second),
-        <strong className="text-text font-medium">
-          {' '}
-          V<sub>0</sub>
-        </strong>{' '}
-        is the source peak voltage (in volts),
-        <strong className="text-text font-medium"> R</strong> is the series resistance (in ohms),{' '}
-        <strong className="text-text font-medium">L</strong> is the inductance (in henries), and{' '}
-        <strong className="text-text font-medium">C</strong> is the capacitance (in farads). The
-        bracketed term <em className="text-text italic">(ωL − 1/ωC)</em> is the net reactance, also
+        where <InlineMath tex="|I(\omega)|" /> is the steady-state current
+        amplitude (in amperes) at driving angular frequency <InlineMath tex="\omega" /> (in radians per second),{' '}
+        <InlineMath tex="V_0" /> is the source peak voltage (in volts),{' '}
+        <InlineMath tex="R" /> is the series resistance (in ohms),{' '}
+        <InlineMath tex="L" /> is the inductance (in henries), and{' '}
+        <InlineMath tex="C" /> is the capacitance (in farads). The
+        bracketed term <InlineMath tex="(\omega L - 1/\omega C)" /> is the net reactance, also
         in ohms.
       </p>
       <p className="mb-prose-3">
@@ -621,16 +582,11 @@ export default function Ch12CircuitsAndAC() {
         Q = ω<sub>0</sub> L / R = (1/R) √(L/C)
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">Q</strong> is the dimensionless quality
-        factor,
-        <strong className="text-text font-medium">
-          {' '}
-          ω<sub>0</sub> = 1/√(LC)
-        </strong>{' '}
-        is the resonant angular frequency (in radians per second),{' '}
-        <strong className="text-text font-medium">L</strong> is the inductance (in henries),
-        <strong className="text-text font-medium"> C</strong> is the capacitance (in farads), and{' '}
-        <strong className="text-text font-medium">R</strong> is the series resistance (in ohms).
+        where <InlineMath tex="Q" /> is the dimensionless quality
+        factor, <InlineMath tex="\omega_0 = 1/\sqrt{LC}" /> is the resonant angular frequency (in radians per second),{' '}
+        <InlineMath tex="L" /> is the inductance (in henries),{' '}
+        <InlineMath tex="C" /> is the capacitance (in farads), and{' '}
+        <InlineMath tex="R" /> is the series resistance (in ohms).
         High Q means the resonator stores many cycles' worth of energy for every cycle's worth
         dissipated.
       </p>
@@ -722,7 +678,7 @@ export default function Ch12CircuitsAndAC() {
           phasor
         </Term>{' '}
         V₀ e<sup>jφ</sup> at a fixed ω. Then time-derivatives become multiplications by jω, and
-        Ohm's law generalises to <strong className="text-text font-medium">V = I Z</strong>, where Z
+        Ohm's law generalises to <InlineMath tex="V = IZ" />, where Z
         is the complex{' '}
         <Term
           def={
@@ -749,25 +705,18 @@ export default function Ch12CircuitsAndAC() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          Z<sub>R</sub>
-        </strong>
+        <InlineMath tex="Z_R" />
         ,{' '}
-        <strong className="text-text font-medium">
-          Z<sub>L</sub>
-        </strong>
-        , and
-        <strong className="text-text font-medium">
-          {' '}
-          Z<sub>C</sub>
-        </strong>{' '}
+        <InlineMath tex="Z_L" />
+        , and{' '}
+        <InlineMath tex="Z_C" />{' '}
         are the complex impedances (in ohms) of a resistor, inductor, and capacitor at angular
-        frequency <strong className="text-text font-medium">ω</strong> (in radians per second),{' '}
-        <strong className="text-text font-medium">R</strong> is the resistance (in ohms),{' '}
-        <strong className="text-text font-medium">L</strong> is the inductance (in henries),{' '}
-        <strong className="text-text font-medium">C</strong> is the capacitance (in farads), and
-        <strong className="text-text font-medium"> j = √−1</strong> is the imaginary unit. Each Z is
-        in general a complex number; multiplication by <em className="text-text italic">j</em>{' '}
+        frequency <InlineMath tex="\omega" /> (in radians per second),{' '}
+        <InlineMath tex="R" /> is the resistance (in ohms),{' '}
+        <InlineMath tex="L" /> is the inductance (in henries),{' '}
+        <InlineMath tex="C" /> is the capacitance (in farads), and{' '}
+        <InlineMath tex="j = \sqrt{-1}" /> is the imaginary unit. Each Z is
+        in general a complex number; multiplication by <InlineMath tex="j" />{' '}
         represents a +90° phase rotation in the complex plane.
       </p>
       <p className="mb-prose-3">

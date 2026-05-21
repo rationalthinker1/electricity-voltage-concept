@@ -15,7 +15,7 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { Pullout } from '@/components/Prose';
@@ -99,16 +99,14 @@ export default function Ch7Induction() {
       <Formula size="lg" tex="\Phi_B = \iint \vec{B} \cdot d\vec{A}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          Φ<sub>B</sub>
-        </strong>{' '}
+        <InlineMath tex="\Phi_B" />{' '}
         is the magnetic flux through the loop (in webers, Wb = T·m² = V·s),
-        <strong className="text-text font-medium"> B</strong> is the magnetic field (a vector, in
+        <InlineMath tex="B" /> is the magnetic field (a vector, in
         teslas) at each point of the surface, and
-        <strong className="text-text font-medium"> dA</strong> is the outward-normal area element of
+        <InlineMath tex="d\mathbf{A}" /> is the outward-normal area element of
         any surface bounded by the loop. For a flat loop in a uniform field, this is just{' '}
-        <strong className="text-text font-medium">BA cos θ</strong>, where{' '}
-        <strong className="text-text font-medium">θ</strong> is the angle between the field and the
+        <InlineMath tex="BA\cos\theta" />, where{' '}
+        <InlineMath tex="\theta" /> is the angle between the field and the
         loop's normal. SI unit is the{' '}
         <Term def="SI unit of magnetic flux. 1 Wb = 1 T·m² = 1 V·s. The flux through a one-turn loop changing by one weber per second produces one volt of induced EMF.">
           weber
@@ -127,15 +125,13 @@ export default function Ch7Induction() {
       </p>
       <Formula size="lg" tex="\text{EMF} = -\dfrac{d\Phi_B}{dt}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">EMF</strong> is the electromotive force
+        where <InlineMath tex="\text{EMF}" /> is the electromotive force
         around the loop (in volts — the line integral
-        <strong className="text-text font-medium"> ∮ E·dℓ</strong> of the induced electric field,
+        <InlineMath tex="\oint E \cdot d\ell" /> of the induced electric field,
         equivalently the work per unit charge a free charge would gain in one trip around the loop),{' '}
-        <strong className="text-text font-medium">
-          Φ<sub>B</sub>
-        </strong>{' '}
+        <InlineMath tex="\Phi_B" />{' '}
         is the magnetic flux through any surface bounded by the loop (in webers),{' '}
-        <strong className="text-text font-medium">t</strong> is time (in seconds), and the minus
+        <InlineMath tex="t" /> is time (in seconds), and the minus
         sign encodes Lenz's law — the induced EMF drives a current whose own flux opposes the change
         in Φ<sub>B</sub> that produced it
         <Cite id="feynman-II-17" in={SOURCES} />.
@@ -145,17 +141,17 @@ export default function Ch7Induction() {
         integral is
         <em className="text-text italic"> any</em> surface bounded by the loop — flat, curved,
         weirdly shaped, doesn't matter. The integral comes out the same, because{' '}
-        <strong className="text-text font-medium">∇ · B = 0</strong> guarantees that flux is
+        <InlineMath tex="\nabla \cdot B = 0" /> guarantees that flux is
         conserved through closed surfaces and therefore depends only on the boundary
         <Cite id="griffiths-2017" in={SOURCES} />. Second, if the loop is wound
-        <strong className="text-text font-medium"> N</strong> times around the same flux path, every
+        <InlineMath tex="N" /> times around the same flux path, every
         turn sees the same dΦ/dt and the EMFs add: the total is{' '}
-        <strong className="text-text font-medium">N · dΦ/dt</strong>. That's why coils have lots of
+        <InlineMath tex="N \cdot d\Phi/dt" />. That's why coils have lots of
         turns. Third, the minus sign is doing real work — we'll come back to it.
       </p>
       <p className="mb-prose-3">
         In differential form, the same statement reads{' '}
-        <strong className="text-text font-medium">∇ × E = −∂B/∂t</strong>. A magnetic field that
+        <InlineMath tex="\nabla \times E = -\partial B/\partial t" />. A magnetic field that
         changes in time produces an electric field that <em className="text-text italic">curls</em>.
         Crucially, this E exists everywhere in space, not just where the loop happens to be. The
         wire is a probe; the field is what's actually there
@@ -179,8 +175,8 @@ export default function Ch7Induction() {
         question={
           <>
             A 100-turn coil sees the flux through it change by{' '}
-            <strong className="text-text font-medium">ΔΦ = 10⁻⁴ Wb</strong> over{' '}
-            <strong className="text-text font-medium">Δt = 1 ms</strong>. What is the magnitude of
+            <InlineMath tex="\Delta\Phi = 10^{-4}\,\text{Wb}" /> over{' '}
+            <InlineMath tex="\Delta t = 1\,\text{ms}" />. What is the magnitude of
             the induced EMF?
           </>
         }
@@ -206,14 +202,14 @@ export default function Ch7Induction() {
         lamp dark. A permanent magnet is sitting right inside the coil delivering a perfectly real
         magnetic field, and the loop does absolutely nothing with it. Second, the faster you move
         the magnet, the brighter the lamp burns. The induced EMF scales with{' '}
-        <strong className="text-text font-medium">|dΦ/dt|</strong>, not with{' '}
-        <strong className="text-text font-medium">Φ</strong> itself. Drag the turn count up and the
+        <InlineMath tex="|d\Phi/dt|" />, not with{' '}
+        <InlineMath tex="\Phi" /> itself. Drag the turn count up and the
         lamp gets brighter again, because every turn sees the same dΦ/dt and they add in series.
       </p>
       <p className="mb-prose-3">
         The lamp also <em className="text-text italic">changes color</em> when you reverse the
         magnet's direction. That is the minus sign in
-        <strong className="text-text font-medium"> EMF = −dΦ/dt</strong> made visible: flip the sign
+        <InlineMath tex="\text{EMF} = -d\Phi/dt" /> made visible: flip the sign
         of dΦ/dt, flip the sign of the EMF, flip the direction the current flows. The next section
         is what that minus sign actually means.
       </p>

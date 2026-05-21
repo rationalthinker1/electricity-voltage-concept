@@ -82,8 +82,8 @@ export default function Ch13NetworkAnalysis() {
             <>
               <strong className="text-text font-medium">branch</strong> — a single two-terminal
               element (resistor, source, capacitor) joining two nodes in a network. A network with{' '}
-              <em className="text-text italic">B</em> branches has{' '}
-              <em className="text-text italic">B</em> unknown branch currents.
+              <InlineMath tex="B" /> branches has{' '}
+              <InlineMath tex="B" /> unknown branch currents.
             </>
           }
         >
@@ -111,7 +111,7 @@ export default function Ch13NetworkAnalysis() {
               <strong className="text-text font-medium">loop</strong> — any closed path through the
               network. Independent loops correspond to the "holes" in a planar drawing of the
               schematic; on an N-node, B-branch network there are{' '}
-              <em className="text-text italic">B − N + 1</em> of them.
+              <InlineMath tex="B - N + 1" /> of them.
             </>
           }
         >
@@ -126,18 +126,18 @@ export default function Ch13NetworkAnalysis() {
         # equations = (N − 1)<sub>KCL</sub> + (B − N + 1)<sub>KVL</sub> = B
       </Formula>
       <p className="mb-prose-3">
-        Why <em className="text-text italic">N − 1</em> KCL equations rather than{' '}
-        <em className="text-text italic">N</em>? Add up the KCL equation at every single node and
+        Why <InlineMath tex="N - 1" /> KCL equations rather than{' '}
+        <InlineMath tex="N" />? Add up the KCL equation at every single node and
         every branch current appears exactly twice — once entering, once leaving — so the grand
-        total is identically zero. The <em className="text-text italic">N</em>-th equation is the
+        total is identically zero. The <InlineMath tex="N" />-th equation is the
         negative sum of the other
         <InlineMath> N − 1</InlineMath>; it carries no new information. The same accounting trick
-        explains <em className="text-text italic">B − N + 1</em> for KVL: write KVL on a big loop
+        explains <InlineMath tex="B - N + 1" /> for KVL: write KVL on a big loop
         that encloses several smaller loops and you get the sum of the smaller ones' KVL equations,
         so only the irreducibly small "windowpane" loops count. The two independent counts{' '}
-        <em className="text-text italic">N − 1</em> and
-        <em className="text-text italic"> B − N + 1</em> add to exactly{' '}
-        <em className="text-text italic">B</em> — one equation per branch current, no redundancy, no
+        <InlineMath tex="N - 1" /> and
+        <InlineMath tex="B - N + 1" /> add to exactly{' '}
+        <InlineMath tex="B" /> — one equation per branch current, no redundancy, no
         shortfall. The number falls out of topology alone
         <Cite id="kirchhoff-1845" in={SOURCES} />.
       </p>
@@ -151,8 +151,8 @@ export default function Ch13NetworkAnalysis() {
         <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        Each move yields a square linear system. With <em className="text-text italic">m</em> meshes
-        you get an m × m system; with <em className="text-text italic">n</em> independent nodes (the
+        Each move yields a square linear system. With <InlineMath tex="m" /> meshes
+        you get an m × m system; with <InlineMath tex="n" /> independent nodes (the
         reference node taken for granted) you get an n × n system. Whichever number is smaller wins,
         and modern circuit simulators internally do{' '}
         <Term
@@ -225,7 +225,7 @@ export default function Ch13NetworkAnalysis() {
             <>
               <strong className="text-text font-medium">mesh current</strong> — a fictitious
               clockwise current circulating around a single independent loop in a planar circuit
-              diagram. Maxwell's 1873 device for replacing <em className="text-text italic">B</em>{' '}
+              diagram. Maxwell's 1873 device for replacing <InlineMath tex="B" />{' '}
               branch-current unknowns with the much smaller number of loop-current unknowns.
             </>
           }
@@ -236,7 +236,7 @@ export default function Ch13NetworkAnalysis() {
         equals zero, with each resistor's drop computed from the net current through it (a shared
         resistor sees the mesh's own current minus whatever the neighbour mesh is pushing the other
         way). The result is a symmetric linear system of dimension{' '}
-        <em className="text-text italic">m</em> = B − N + 1, the number of independent loops.
+        <InlineMath tex="m" /> = B − N + 1, the number of independent loops.
       </p>
       <p className="mb-prose-3">
         Take the two-mesh network below: a battery V₁ on the left driving R₁ and the shared middle
@@ -273,9 +273,9 @@ export default function Ch13NetworkAnalysis() {
         Slide the source voltages and resistor values and the two mesh currents track instantly. The
         system has a beautifully symmetric structure: the diagonal entries are the total resistance
         around each mesh, the off-diagonal entries are minus the resistance shared between mesh{' '}
-        <em className="text-text italic">i</em> and mesh <em className="text-text italic">j</em>,
+        <InlineMath tex="i" /> and mesh <InlineMath tex="j" />,
         and the right-hand side is the algebraic sum of source EMFs in the direction of the mesh.
-        That structure generalises: on an <em className="text-text italic">m</em>-mesh network, the
+        That structure generalises: on an <InlineMath tex="m" />-mesh network, the
         coefficient matrix is symmetric and positive-definite (for passive networks), exactly the
         kind of matrix LU-decomposition and Gaussian elimination devour at machine speed.
       </p>
@@ -454,10 +454,10 @@ export default function Ch13NetworkAnalysis() {
         individual sources add at the output terminal exactly because superposition lets them
         <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />. The price of admission is that every
         element in the network must obey a linear constitutive equation:{' '}
-        <em className="text-text italic">V = I R</em>,{' '}
-        <em className="text-text italic">V = L dI/dt</em>,
-        <em className="text-text italic"> I = C dV/dt</em>. A diode breaks superposition (its{' '}
-        <em className="text-text italic">I-V</em> is exponential), and so does a transistor outside
+        <InlineMath tex="V = IR" />,{' '}
+        <InlineMath tex="V = L\,dI/dt" />,
+        <InlineMath tex="I = C\,dV/dt" />. A diode breaks superposition (its{' '}
+        <InlineMath tex="I\text{-}V" /> is exponential), and so does a transistor outside
         its small-signal limit, and so does an iron-core transformer driven into saturation. Inside
         the linear zone, superposition is a precise tool. Outside it, the whole catalogue of this
         chapter collapses and the only path forward is numerical simulation

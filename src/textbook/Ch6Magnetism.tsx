@@ -17,7 +17,7 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -92,9 +92,9 @@ export default function Ch6Magnetism() {
 
       <p className="mb-prose-3">
         For a single, infinitely long, straight wire carrying current{' '}
-        <strong className="text-text font-medium">I</strong>, the magnetic field is one of the
+        <InlineMath tex="I" />, the magnetic field is one of the
         cleanest formulas in classical physics. At a perpendicular distance{' '}
-        <strong className="text-text font-medium">r</strong> from the wire, the magnitude is
+        <InlineMath tex="r" /> from the wire, the magnitude is
       </p>
       <Formula size="lg" tex="|\vec{B}| = \dfrac{\mu_0 I}{2\pi r}" />
       <p className="mb-prose-3">
@@ -104,12 +104,12 @@ export default function Ch6Magnetism() {
           right-hand rule
         </Term>{' '}
         fixes which way: point your thumb along the current and your fingers curl around the wire in
-        the direction of <strong className="text-text font-medium">B</strong>. The constant{' '}
-        <strong className="text-text font-medium">μ₀ ≈ 1.257×10⁻⁶ T·m/A</strong>
+        the direction of <InlineMath tex="B" />. The constant{' '}
+        <InlineMath tex="\mu_0 \approx 1.257\times 10^{-6}\,\text{T·m/A}" />
         is the permeability of free space <Cite id="codata-2018" in={SOURCES} />; it plays the same
-        role for magnetism that <strong className="text-text font-medium">1/(4π ε₀)</strong> plays
+        role for magnetism that <InlineMath tex="1/(4\pi\varepsilon_0)" /> plays
         for electricity, and the two are linked by{' '}
-        <strong className="text-text font-medium">μ₀ ε₀ = 1/c²</strong>. The SI unit for B is the{' '}
+        <InlineMath tex="\mu_0\varepsilon_0 = 1/c^{2}" />. The SI unit for B is the{' '}
         <Term def="SI unit of magnetic flux density. 1 T = 1 kg / (A·s²) = 1 V·s/m². Earth's field is ~50 µT, a fridge magnet ~5 mT, a clinical MRI 1.5–3 T, a neutron-star magnetar ~10¹⁰ T.">
           tesla
         </Term>{' '}
@@ -155,13 +155,13 @@ export default function Ch6Magnetism() {
       />
 
       <p className="mb-prose-3">
-        The factor of <strong className="text-text font-medium">2π</strong> is geometric, the same
-        way the <strong className="text-text font-medium">4π</strong> in Coulomb's law is geometric
+        The factor of <InlineMath tex="2\pi" /> is geometric, the same
+        way the <InlineMath tex="4\pi" /> in Coulomb's law is geometric
         — it counts how field lines spread around a wire (cylindrically) instead of around a point
-        (spherically). The fall-off here is <strong className="text-text font-medium">1/r</strong>,
-        not 1/r². A line of charge spreads its influence over a cylinder of area{' '}
-        <strong className="text-text font-medium">2π r L</strong>, so the per-area intensity drops
-        as 1/r, not 1/r². Geometry, again.
+        (spherically). The fall-off here is <InlineMath tex="1/r" />,
+        not <InlineMath tex="1/r^{2}" />. A line of charge spreads its influence over a cylinder of area{' '}
+        <InlineMath tex="2\pi r L" />, so the per-area intensity drops
+        as <InlineMath tex="1/r" />, not <InlineMath tex="1/r^{2}" />. Geometry, again.
       </p>
 
       <h2 className="chapter-h2">
@@ -180,38 +180,38 @@ export default function Ch6Magnetism() {
       <p className="mb-prose-3">The force per unit length on either wire works out to</p>
       <Formula size="lg" tex="\dfrac{F}{L} = \dfrac{\mu_0 I_1 I_2}{2\pi d}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">F</strong> is the magnitude of the force one
+        where <InlineMath tex="F" /> is the magnitude of the force one
         wire exerts on a segment of the other (in newtons),
-        <strong className="text-text font-medium"> L</strong> is the length of that segment (in
-        metres) so <strong className="text-text font-medium">F/L</strong> has units of N/m,
-        <strong className="text-text font-medium"> I₁</strong> and{' '}
-        <strong className="text-text font-medium">I₂</strong> are the currents in the two wires (in
+        <InlineMath tex="L" /> is the length of that segment (in
+        metres) so <InlineMath tex="F/L" /> has units of N/m,
+        <InlineMath tex="I_1" /> and{' '}
+        <InlineMath tex="I_2" /> are the currents in the two wires (in
         amperes, signed by direction),
-        <strong className="text-text font-medium"> d</strong> is the perpendicular spacing between
+        <InlineMath tex="d" /> is the perpendicular spacing between
         the wires (in metres), and
-        <strong className="text-text font-medium"> μ₀ ≈ 1.257×10⁻⁶ T·m/A</strong> is the
+        <InlineMath tex="\mu_0 \approx 1.257\times 10^{-6}\,\text{T·m/A}" /> is the
         permeability of free space <Cite id="codata-2018" in={SOURCES} />. Same sign of current →
         attractive (negative if you've adopted the sign convention that "outward" is positive).
         Opposite signs → repulsive. From 1948 to 2019 the SI ampere was defined operationally as
         exactly the current that, flowing in two infinitely long parallel wires one meter apart,
-        produces a force of <strong className="text-text font-medium">2×10⁻⁷ N/m</strong> between
+        produces a force of <InlineMath tex="2\times 10^{-7}\,\text{N/m}" /> between
         them <Cite id="griffiths-2017" in={SOURCES} />. That definition is what the{' '}
-        <strong className="text-text font-medium">μ₀ = 4π × 10⁻⁷</strong> exact value used to be;
+        <InlineMath tex="\mu_0 = 4\pi \times 10^{-7}" /> exact value used to be;
         the 2019 SI redefinition based the ampere instead on the elementary charge{' '}
-        <strong className="text-text font-medium">e</strong>, demoting μ₀ to a measured quantity.
+        <InlineMath tex="e" />, demoting μ₀ to a measured quantity.
       </p>
       <p className="mb-prose-3">
         The product structure is not mysterious — it's just{' '}
-        <strong className="text-text font-medium">F = IL × B</strong> applied twice. Each wire sits
+        <InlineMath tex="F = IL \times B" /> applied twice. Each wire sits
         in the field produced by the other: wire 2 feels its partner's field{' '}
-        <strong className="text-text font-medium">B₁ = μ₀ I₁ / (2π d)</strong> (the 1/r law from the
+        <InlineMath tex="B_1 = \mu_0 I_1 / (2\pi d)" /> (the 1/r law from the
         previous section), and the magnetic force on a length{' '}
-        <strong className="text-text font-medium">L</strong> of current{' '}
-        <strong className="text-text font-medium">I₂</strong> in that field is{' '}
-        <strong className="text-text font-medium">F = I₂ L B₁</strong>. Substitute and divide by L
+        <InlineMath tex="L" /> of current{' '}
+        <InlineMath tex="I_2" /> in that field is{' '}
+        <InlineMath tex="F = I_2 L B_1" />. Substitute and divide by L
         to get the force per unit length. The
-        <strong className="text-text font-medium"> 1/d</strong> falloff is the same cylindrical
-        geometry as a single wire; the <strong className="text-text font-medium">I₁ I₂</strong> on
+        <InlineMath tex="1/d" /> falloff is the same cylindrical
+        geometry as a single wire; the <InlineMath tex="I_1 I_2" /> on
         top is one factor of current for the source field and one for the responding wire. Reverse
         either current and the cross-product sign flips, which is why same-sign currents attract
         while opposite-sign currents repel — opposite of charges, same underlying right-hand rule
@@ -253,9 +253,9 @@ export default function Ch6Magnetism() {
       <p className="mb-prose-3">
         The result is striking enough that you might wonder why we never see two power lines pulling
         each other together. The answer is the size of{' '}
-        <strong className="text-text font-medium">μ₀</strong>: between two wires carrying 100 A
+        <InlineMath tex="\mu_0" />: between two wires carrying 100 A
         each, separated by a meter, the force is just{' '}
-        <strong className="text-text font-medium">2×10⁻³ N/m</strong> — about a fifth of a gram
+        <InlineMath tex="2\times 10^{-3}\,\text{N/m}" /> — about a fifth of a gram
         weight per meter. Detectable with a torsion balance, invisible against gravity and tension.
         Magnetism is, gram for gram, an extraordinarily weak force compared to electrostatics. (For
         comparison: the electrical force between one mole of electrons and one mole of protons
@@ -278,12 +278,12 @@ export default function Ch6Magnetism() {
       </p>
       <Formula size="lg" tex="\vec{F} = q\,(\vec{v} \times \vec{B})" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">F</strong> is the force vector on the
-        charged particle (in newtons), <strong className="text-text font-medium">q</strong> is its
-        charge (in coulombs, signed), <strong className="text-text font-medium">v</strong> is its
-        velocity vector (in m/s), <strong className="text-text font-medium">B</strong> is the local
+        where <InlineMath tex="F" /> is the force vector on the
+        charged particle (in newtons), <InlineMath tex="q" /> is its
+        charge (in coulombs, signed), <InlineMath tex="v" /> is its
+        velocity vector (in m/s), <InlineMath tex="B" /> is the local
         magnetic flux density vector (in tesla), and{' '}
-        <strong className="text-text font-medium">×</strong> denotes the vector cross product — so
+        <InlineMath tex="\times" /> denotes the vector cross product — so
         the force comes out perpendicular to <em className="text-text italic">both</em> the velocity
         and the field. The two facts worth pausing on:
       </p>

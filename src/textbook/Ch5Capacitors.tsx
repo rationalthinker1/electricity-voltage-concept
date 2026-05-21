@@ -154,10 +154,10 @@ export default function Ch5Capacitors() {
         tex="C \;\equiv\; \dfrac{Q}{V}, \qquad V \;=\; -\!\!\int_{-}^{+}\!\! \mathbf{E}\cdot d\boldsymbol{\ell}"
       />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">Q</strong> is the magnitude of the charge
+        where <InlineMath tex="Q" /> is the magnitude of the charge
         stored on one conductor (in coulombs),{' '}
-        <strong className="text-text font-medium">V</strong> is the resulting potential difference
-        (in volts), <strong className="text-text font-medium">E</strong> is the electric field in
+        <InlineMath tex="V" /> is the resulting potential difference
+        (in volts), <InlineMath tex="E" /> is the electric field in
         the gap (in V/m), and the integral runs from the negative to the positive plate along any
         path through the gap. Maxwell's equations make the result path-independent for an
         electrostatic configuration; the ratio depends only on geometry and the dielectric, never
@@ -171,10 +171,10 @@ export default function Ch5Capacitors() {
       </p>
       <Formula size="lg" tex="Q = CV" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">Q</strong> is the magnitude of charge on
+        where <InlineMath tex="Q" /> is the magnitude of charge on
         each plate (in coulombs; the two plates carry +Q and −Q),{' '}
-        <strong className="text-text font-medium">V</strong> is the voltage across the gap (in
-        volts), and <strong className="text-text font-medium">C</strong> is the capacitance —
+        <InlineMath tex="V" /> is the voltage across the gap (in
+        volts), and <InlineMath tex="C" /> is the capacitance —
         measured in{' '}
         <Term def="SI unit of capacitance. 1 F = 1 coulomb per volt. A huge unit — practical capacitors range from picofarads to millifarads; only supercapacitors reach whole farads.">
           farads
@@ -188,12 +188,12 @@ export default function Ch5Capacitors() {
         <Term def="The textbook capacitor geometry: two flat conductors of area A separated by a thin gap d, with C = ε₀εᵣA/d. The basis for almost every capacitance calculation.">
           parallel-plate
         </Term>
-        s of area <strong className="text-text font-medium">A</strong> separated by a vacuum gap of
-        width <strong className="text-text font-medium">d</strong>, Gauss's law applied to the
+        s of area <InlineMath tex="A" /> separated by a vacuum gap of
+        width <InlineMath tex="d" />, Gauss's law applied to the
         surface of one plate gives a uniform field{' '}
-        <strong className="text-text font-medium">E = Q/(ε₀A)</strong> in the gap, and integrating
+        <InlineMath tex="E = Q/(\varepsilon_0 A)" /> in the gap, and integrating
         that field across the gap yields a voltage{' '}
-        <strong className="text-text font-medium">V = Ed = Qd/(ε₀A)</strong>. Re-arranging
+        <InlineMath tex="V = Ed = Qd/(\varepsilon_0 A)" />. Re-arranging
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula size="lg" tex="C = \dfrac{\varepsilon_0 A}{d}" />
@@ -205,8 +205,8 @@ export default function Ch5Capacitors() {
           dielectric
         </Term>{' '}
         — into the gap and its molecules polarise: each one sets up a tiny counter-field that
-        partially cancels the applied one, dropping V for a given Q and pushing C up by a factor
-        <strong className="text-text font-medium"> εᵣ</strong>, the material's{' '}
+        partially cancels the applied one, dropping V for a given Q and pushing C up by a factor{' '}
+        <InlineMath tex="\varepsilon_r" />, the material's{' '}
         <Term def="Dimensionless number εᵣ giving how much a dielectric reduces the field for the same charge on the plates. Vacuum is 1; air ≈ 1; water ≈ 80; specialised ceramics push past 1000.">
           relative permittivity
         </Term>
@@ -226,17 +226,17 @@ export default function Ch5Capacitors() {
       <ParallelPlate3DDemo />
 
       <p className="mb-prose-3">
-        The 3D view above makes the underlying picture geometrical. The surface-charge density
-        <strong className="text-text font-medium"> σ = Q/A</strong> sits on the inner faces of the
+        The 3D view above makes the underlying picture geometrical. The surface-charge density{' '}
+        <InlineMath tex="\sigma = Q/A" /> sits on the inner faces of the
         two plates as equal and opposite sheets; between them, the field is the same everywhere —
-        uniform in magnitude and direction — with
-        <strong className="text-text font-medium"> E = σ/ε₀ = V/d</strong>. Toggle the Gauss pillbox
+        uniform in magnitude and direction — with{' '}
+        <InlineMath tex="E = \sigma/\varepsilon_0 = V/d" />. Toggle the Gauss pillbox
         to see the operational statement of Gauss's law: a closed cylinder piercing one plate has
         its top cap outside the conductor (where E = 0) and its bottom cap in the field-filled gap.
-        The only nonzero contribution to
-        <strong className="text-text font-medium"> ∮ D · dA</strong> comes from that bottom cap, and
-        it equals exactly the charge
-        <strong className="text-text font-medium"> σA</strong> on the slice of plate the pillbox
+        The only nonzero contribution to{' '}
+        <InlineMath tex="\oint \mathbf{D} \cdot d\mathbf{A}" /> comes from that bottom cap, and
+        it equals exactly the charge{' '}
+        <InlineMath tex="\sigma A" /> on the slice of plate the pillbox
         encloses
         <Cite id="jackson-1999" in={SOURCES} />. Re-arrange and you get back{' '}
         <InlineMath>C = ε₀ A / d</InlineMath>.
@@ -346,29 +346,29 @@ export default function Ch5Capacitors() {
         This is also why the capacitor is the cleanest physical model of the
         running-out-of-easy-wins phenomenon — the more you've put in, the harder the next addition.
         It is the single-line summary of why charging takes work, why discharging gives the work
-        back, and why the total energy stored is not <em className="text-text italic">QV</em> but
-        half of <em className="text-text italic">QV</em>.
+        back, and why the total energy stored is not <InlineMath tex="QV" /> but
+        half of <InlineMath tex="QV" />.
       </p>
 
       <h2 className="chapter-h2">Where the energy goes</h2>
 
       <p className="mb-prose-3">
         Sum the work from empty to full charge: integrate{' '}
-        <strong className="text-text font-medium">v(q)·dq</strong> from 0 to Q, with v = q/C.
+        <InlineMath tex="v(q)\cdot dq" /> from 0 to Q, with v = q/C.
       </p>
       <Formula
         size="lg"
         tex="U = \int_0^Q \dfrac{q}{C}\, dq = \dfrac{Q^2}{2C} = \tfrac{1}{2} C V^2"
       />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">U</strong> is the total energy stored in the
-        capacitor (in joules), <strong className="text-text font-medium">Q</strong> is the final
+        where <InlineMath tex="U" /> is the total energy stored in the
+        capacitor (in joules), <InlineMath tex="Q" /> is the final
         charge on each plate (in coulombs),{' '}
-        <strong className="text-text font-medium">V = Q/C</strong> is the final voltage across it
+        <InlineMath tex="V = Q/C" /> is the final voltage across it
         (in volts),
-        <strong className="text-text font-medium"> C</strong> is the capacitance (in farads), and
-        the dummy variable <strong className="text-text font-medium">q</strong> runs from 0 to{' '}
-        <em className="text-text italic">Q</em>
+        <InlineMath tex="C" /> is the capacitance (in farads), and
+        the dummy variable <InlineMath tex="q" /> runs from 0 to{' '}
+        <InlineMath tex="Q" />
         across the integration. The factor of one half is doing real work in that formula. If the
         relationship between charge and voltage were not linear — if the (N+1)<sup>th</sup> charge
         cost the <em className="text-text italic">same</em> as the first — the answer would be QV.
@@ -389,18 +389,13 @@ export default function Ch5Capacitors() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          u<sub>E</sub>
-        </strong>{' '}
+        <InlineMath tex="u_E" />{' '}
         is the electric-field energy per unit volume (in J/m³),
-        <strong className="text-text font-medium"> ε₀ ≈ 8.854×10⁻¹² F/m</strong> is the vacuum
+        <InlineMath tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" /> is the vacuum
         permittivity <Cite id="codata-2018" in={SOURCES} />,
-        <strong className="text-text font-medium">
-          {' '}
-          ε<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="\varepsilon_r" />{' '}
         is the dimensionless relative permittivity of whatever fills the gap (1 for vacuum), and{' '}
-        <strong className="text-text font-medium">E</strong> is the local electric-field magnitude
+        <InlineMath tex="E" /> is the local electric-field magnitude
         (in V/m).
       </p>
 
@@ -408,8 +403,8 @@ export default function Ch5Capacitors() {
 
       <p className="mb-prose-3">
         Multiply this density by the gap volume{' '}
-        <strong className="text-text font-medium">A·d</strong> for an idealised parallel-plate cap
-        and you recover exactly <strong className="text-text font-medium">½ CV²</strong>. The two
+        <InlineMath tex="A \cdot d" /> for an idealised parallel-plate cap
+        and you recover exactly <InlineMath tex="\tfrac{1}{2}CV^2" />. The two
         answers — the integrated work and the field-volume integral — are the same number, computed
         two different ways. That equivalence is not a coincidence; it is a special case of the more
         general statement that electromagnetic fields carry energy in their own right

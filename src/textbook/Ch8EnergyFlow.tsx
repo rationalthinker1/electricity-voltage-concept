@@ -85,11 +85,11 @@ export default function Ch8EnergyFlow() {
       <p className="mb-prose-3">
         Three physical fields are present in the picture above, and the demo lets you toggle each
         one on and off. The yellow dots are the conduction electrons, drifting along the copper at
-        roughly <strong className="text-text font-medium">~3×10⁻⁵ m/s</strong> (≈0.03 mm/s). The teal circles are
-        the magnetic field <strong className="text-text font-medium">B</strong> curling around each
+        roughly <InlineMath tex="{\sim}3\times 10^{-5}\,\text{m/s}" /> (≈0.03 mm/s). The teal circles are
+        the magnetic field <InlineMath tex="B" /> curling around each
         wire segment, set by Ampère's law
         <Cite id="feynman-II-27" in={SOURCES} />. The pink arrows are the electric field{' '}
-        <strong className="text-text font-medium">E</strong> — axial inside the conductor (Ohm's law
+        <InlineMath tex="E" /> — axial inside the conductor (Ohm's law
         demands it) and dipole-style in the surrounding air, threading from the positive terminal to
         the negative. The amber arrows are the Poynting vector <InlineMath id="poynting-vector" />,
         drawn at every grid point where the other two are visible. Look at where those amber arrows
@@ -119,22 +119,22 @@ export default function Ch8EnergyFlow() {
       <p className="mb-prose-3">
         First, an electric field along the wire's axis. It has to be there: from Chapter&nbsp;3,
         microscopic Ohm's law says
-        <strong className="text-text font-medium"> J = σ E</strong>, so a steady current density
-        implies a non-zero <strong className="text-text font-medium">E</strong> inside the
-        conductor. In a uniform wire of length <strong className="text-text font-medium">L</strong>{' '}
-        with voltage drop <strong className="text-text font-medium">V</strong> across its ends, the
-        integral of <strong className="text-text font-medium">E·dℓ</strong> along the axis must
-        equal <strong className="text-text font-medium">V</strong>, and by symmetry{' '}
-        <strong className="text-text font-medium">E</strong> is uniform along the way
+        <InlineMath tex="J = \sigma E" />, so a steady current density
+        implies a non-zero <InlineMath tex="E" /> inside the
+        conductor. In a uniform wire of length <InlineMath tex="L" />{' '}
+        with voltage drop <InlineMath tex="V" /> across its ends, the
+        integral of <InlineMath tex="E \cdot d\ell" /> along the axis must
+        equal <InlineMath tex="V" />, and by symmetry{' '}
+        <InlineMath tex="E" /> is uniform along the way
         <Cite id="feynman-II-27" in={SOURCES} />:
       </p>
       <Formula tex="E = V / L" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">E</strong> is the magnitude of the axial
+        where <InlineMath tex="E" /> is the magnitude of the axial
         electric field inside the wire (in V/m, pointing along the wire's axis in the direction of
-        conventional current), <strong className="text-text font-medium">V</strong> is the voltage
+        conventional current), <InlineMath tex="V" /> is the voltage
         drop across the wire's ends (in volts), and{' '}
-        <strong className="text-text font-medium">L</strong> is the wire's length (in meters). This
+        <InlineMath tex="L" /> is the wire's length (in meters). This
         is a point that surprises people. In the electrostatic case, the field inside a conductor is
         zero — the free charges rearrange until it is. In a{' '}
         <em className="text-text italic">current-carrying resistive</em> conductor, the field inside
@@ -147,21 +147,21 @@ export default function Ch8EnergyFlow() {
       <p className="mb-prose-3">
         Second, a magnetic field circling the wire. From Chapter&nbsp;6, Ampère's law tells you that
         any line integral of
-        <strong className="text-text font-medium"> B·dℓ</strong> around a closed loop equals μ
+        <InlineMath tex="B \cdot d\ell" /> around a closed loop equals μ
         <sub>0</sub> times the enclosed current. Wrap that loop around the wire at radius
-        <strong className="text-text font-medium"> a</strong> and you get
+        <InlineMath tex="a" /> and you get
       </p>
       <Formula tex="B = \\dfrac{\\mu_0\\, I}{2\\pi a}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">B</strong> is the magnitude of the magnetic
+        where <InlineMath tex="B" /> is the magnitude of the magnetic
         field at the wire's surface (in teslas),
-        <strong className="text-text font-medium"> I</strong> is the current through the wire (in
-        amperes), <strong className="text-text font-medium">a</strong> is the wire's radius (in
-        meters), and <strong className="text-text font-medium">μ₀ = 4π×10⁻⁷ T·m/A</strong> is the
+        <InlineMath tex="I" /> is the current through the wire (in
+        amperes), <InlineMath tex="a" /> is the wire's radius (in
+        meters), and <InlineMath tex="\mu_0 = 4\pi\times 10^{-7}\,\text{T·m/A}" /> is the
         vacuum permeability
         <Cite id="codata-2018" in={SOURCES} />. The direction is set by the right-hand rule: thumb
         along the current, fingers curl with the field. It's a circumferential field. Perpendicular
-        at every point to the axial <strong className="text-text font-medium">E</strong> we just
+        at every point to the axial <InlineMath tex="E" /> we just
         identified.
       </p>
 
@@ -182,8 +182,8 @@ export default function Ch8EnergyFlow() {
         <Cite id="maxwell-1865" in={SOURCES} />. The full derivation was tidied up nineteen years
         later by John Henry Poynting, who showed in a single elegant paper that the energy flux per
         unit area at any point in space is given by the cross product of{' '}
-        <strong className="text-text font-medium">E</strong> and{' '}
-        <strong className="text-text font-medium">B</strong>, scaled by the permeability of free
+        <InlineMath tex="E" /> and{' '}
+        <InlineMath tex="B" />, scaled by the permeability of free
         space
         <Cite id="poynting-1884" in={SOURCES} />, a quantity now known as the{' '}
         <Term
@@ -202,19 +202,17 @@ export default function Ch8EnergyFlow() {
       </p>
       <Formula size="lg" id="poynting-vector" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">S</strong> (a vector) is the local
+        where <InlineMath tex="S" /> (a vector) is the local
         electromagnetic energy-flux density at a point in space,
-        <strong className="text-text font-medium"> E</strong> is the local electric field (in V/m),{' '}
-        <strong className="text-text font-medium">B</strong> is the local magnetic field (in
+        <InlineMath tex="E" /> is the local electric field (in V/m),{' '}
+        <InlineMath tex="B" /> is the local magnetic field (in
         teslas),{' '}
-        <strong className="text-text font-medium">
-          μ<sub>0</sub> = 4π×10⁻⁷ T·m/A
-        </strong>{' '}
-        is the vacuum permeability, and "<strong className="text-text font-medium">×</strong>" is
-        the ordinary vector cross product (so <strong className="text-text font-medium">S</strong>{' '}
-        is perpendicular to both <strong className="text-text font-medium">E</strong> and
-        <strong className="text-text font-medium"> B</strong>).{' '}
-        <strong className="text-text font-medium">S</strong> has units of watts per square meter —
+        <InlineMath tex="\mu_0 = 4\pi\times 10^{-7}\,\text{T·m/A}" />{' '}
+        is the vacuum permeability, and "<InlineMath tex="\times" />" is
+        the ordinary vector cross product (so <InlineMath tex="S" />{' '}
+        is perpendicular to both <InlineMath tex="E" /> and
+        <InlineMath tex="B" />).{' '}
+        <InlineMath tex="S" /> has units of watts per square meter —
         energy per unit time, per unit cross-sectional area, in the direction the energy is moving.
         It is a real, local field defined at every point in space where electric and magnetic fields
         are both present
@@ -222,8 +220,8 @@ export default function Ch8EnergyFlow() {
       </p>
       <p className="mb-prose-3">
         Now turn the right-hand rule on the situation we built in the last section.{' '}
-        <strong className="text-text font-medium">E</strong> points along the wire's axis;
-        <strong className="text-text font-medium"> B</strong> circles the wire. Their cross product
+        <InlineMath tex="E" /> points along the wire's axis;
+        <InlineMath tex="B" /> circles the wire. Their cross product
         points{' '}
         <Term
           def={
@@ -246,8 +244,8 @@ export default function Ch8EnergyFlow() {
       </p>
       <p className="mb-prose-3">
         "Since the wire has resistance, there is an electric field along it, driving the current…
-        the <strong className="text-text font-medium">E</strong> and
-        <strong className="text-text font-medium"> B</strong> are at right angles; therefore there
+        the <InlineMath tex="E" /> and
+        <InlineMath tex="B" /> are at right angles; therefore there
         is a Poynting vector directed radially inward…{' '}
         <em className="text-text italic">there is a flow of energy into the wire all around.</em>"
       </p>
@@ -262,21 +260,19 @@ export default function Ch8EnergyFlow() {
       </p>
       <Formula tex="|S|_{\\text{surf}} = \\dfrac{E B}{\\mu_0} = \\dfrac{V I}{2\\pi a L}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">|S|</strong><sub>surf</sub> is the magnitude
+        where <InlineMath tex="|S|_{\text{surf}}" /> is the magnitude
         of the Poynting vector at the wire's surface (in W/m²),{' '}
-        <strong className="text-text font-medium">E</strong> is the axial electric field inside the
-        wire (in V/m), <strong className="text-text font-medium">B</strong> is the magnetic field at
-        the surface (in T), <strong className="text-text font-medium">μ₀</strong> is the vacuum
-        permeability (in T·m/A), <strong className="text-text font-medium">V</strong> is the voltage
-        drop across the wire (in V), <strong className="text-text font-medium">I</strong> is the
-        current (in A), <strong className="text-text font-medium">a</strong> is the wire's radius
-        (in m), and <strong className="text-text font-medium">L</strong> is the wire's length (in
-        m). The second equality just substitutes <em className="text-text italic">E = V/L</em> and{' '}
-        <em className="text-text italic">
-          B = μ<sub>0</sub>I/(2πa)
-        </em>{' '}
+        <InlineMath tex="E" /> is the axial electric field inside the
+        wire (in V/m), <InlineMath tex="B" /> is the magnetic field at
+        the surface (in T), <InlineMath tex="\mu_0" /> is the vacuum
+        permeability (in T·m/A), <InlineMath tex="V" /> is the voltage
+        drop across the wire (in V), <InlineMath tex="I" /> is the
+        current (in A), <InlineMath tex="a" /> is the wire's radius
+        (in m), and <InlineMath tex="L" /> is the wire's length (in
+        m). The second equality just substitutes <InlineMath tex="E = V/L" /> and{' '}
+        <InlineMath tex="B = \mu_0 I/(2\pi a)" />{' '}
         from above. The wire's lateral surface area is{' '}
-        <strong className="text-text font-medium">2πaL</strong>. So the total energy flowing inward
+        <InlineMath tex="2\pi a L" />. So the total energy flowing inward
         through that surface, per second, is the{' '}
         <Term
           def={
@@ -292,17 +288,17 @@ export default function Ch8EnergyFlow() {
       </p>
       <Formula tex="\\oint \\vec{S}\\cdot d\\vec{A} = |S|_{\\text{surf}} \\cdot 2\\pi a L = V I" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">S</strong> is the Poynting vector (in W/m²),{' '}
-        <strong className="text-text font-medium">dA</strong> is the infinitesimal area element vector
-        (in m²), <strong className="text-text font-medium">|S|</strong><sub>surf</sub> is its
-        magnitude at the wire's surface (in W/m²), <strong className="text-text font-medium">2πaL</strong>{' '}
-        is the wire's lateral surface area (in m²), <strong className="text-text font-medium">V</strong>{' '}
-        is the voltage drop (in V), and <strong className="text-text font-medium">I</strong> is the
-        current (in A), so <strong className="text-text font-medium">VI</strong> is the dissipated
+        where <InlineMath tex="S" /> is the Poynting vector (in W/m²),{' '}
+        <InlineMath tex="d\vec{A}" /> is the infinitesimal area element vector
+        (in m²), <InlineMath tex="|S|_{\text{surf}}" /> is its
+        magnitude at the wire's surface (in W/m²), <InlineMath tex="2\pi a L" />{' '}
+        is the wire's lateral surface area (in m²), <InlineMath tex="V" />{' '}
+        is the voltage drop (in V), and <InlineMath tex="I" /> is the
+        current (in A), so <InlineMath tex="VI" /> is the dissipated
         power (in W).
       </p>
       <p className="mb-prose-3">
-        Exactly <strong className="text-text font-medium">VI</strong>. The{' '}
+        Exactly <InlineMath tex="VI" />. The{' '}
         <Term
           def={
             <>
@@ -358,9 +354,9 @@ export default function Ch8EnergyFlow() {
         That demo collapses the geometry into a flat side-view, which is the right move for getting
         the algebra to land but hides the cross product structure of{' '}
         <InlineMath id="poynting-vector" />. Spin the next one — a coaxial cable in 3D. Pink radial{' '}
-        <strong className="text-text font-medium">E</strong> threads from the inner conductor to the
+        <InlineMath tex="E" /> threads from the inner conductor to the
         outer braid, teal circumferential
-        <strong className="text-text font-medium"> B</strong> wraps the inner conductor, and their
+        <InlineMath tex="B" /> wraps the inner conductor, and their
         cross product points <em className="text-text italic">along</em> the cable axis
         <Cite id="pozar-2011" in={SOURCES} />. Every joule the source delivers to the load streams
         through the empty dielectric between the two conductors, not through the copper itself.

@@ -69,18 +69,18 @@ export default function Ch11Relativity() {
 
       <p className="mb-prose-3">
         The setup. A long straight wire carrying a steady current{' '}
-        <strong className="text-text font-medium">I</strong>. Far enough from the ends that you can
+        <InlineMath tex="I" />. Far enough from the ends that you can
         treat it as infinite. The wire is{' '}
         <strong className="text-text font-medium">electrically neutral</strong> — the lattice of
         positive ions and the drifting electrons have equal linear charge densities in the wire's
         rest frame, so the net charge per unit length is zero.
       </p>
       <p className="mb-prose-3">
-        Place a small positive test charge <strong className="text-text font-medium">q</strong> next
+        Place a small positive test charge <InlineMath tex="q" /> next
         to it, also at rest in the lab. What force does it feel? Run through the chapter-6 catalog.
-        The wire is neutral, so <strong className="text-text font-medium">E</strong> from the wire
+        The wire is neutral, so <InlineMath tex="E" /> from the wire
         is zero — no electric force. The wire makes a magnetic field{' '}
-        <strong className="text-text font-medium">B</strong> that wraps around it according to
+        <InlineMath tex="B" /> that wraps around it according to
         Ampère, but the magnetic Lorentz force <InlineMath>F = q v × B</InlineMath> requires the
         test charge to be <em className="text-text italic">moving</em>, and ours isn't.{' '}
         <strong className="text-text font-medium">The test charge feels nothing.</strong>
@@ -175,18 +175,13 @@ export default function Ch11Relativity() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          F<sub>magnetic</sub>(lab)
-        </strong>{' '}
+        <InlineMath tex="F_{\text{magnetic}}(\text{lab})" />{' '}
         is the magnetic Lorentz force the test charge feels in the wire's rest frame (in newtons,
-        given by <em className="text-text italic">qv × B</em> with{' '}
-        <em className="text-text italic">B</em> from Biot–Savart) and
-        <strong className="text-text font-medium">
-          {' '}
-          F<sub>electric</sub>(boosted)
-        </strong>{' '}
+        given by <InlineMath tex="qv \times B" /> with{' '}
+        <InlineMath tex="B" /> from Biot–Savart) and
+        {' '}<InlineMath tex="F_{\text{electric}}(\text{boosted})" />{' '}
         is the ordinary Coulomb force the same test charge feels in the frame in which it is
-        momentarily at rest (also in newtons, given by <em className="text-text italic">qE</em> from
+        momentarily at rest (also in newtons, given by <InlineMath tex="qE" /> from
         the residual linear charge density of the now-non-neutral wire). Both are the force on one
         and the same physical test charge; only the label changes with the choice of frame. It holds
         because the entire apparatus of magnetism is the leading-order correction to the Coulomb
@@ -217,7 +212,7 @@ export default function Ch11Relativity() {
         ≈ 1 to fifteen decimal places, and the relativistic correction looks ridiculously small. It
         <em className="text-text italic"> is</em> ridiculously small per electron. But there are
         about
-        <strong className="text-text font-medium"> 10²³</strong> electrons per cubic centimeter of
+        <InlineMath tex="10^{23}" /> electrons per cubic centimeter of
         copper, and the imbalance times that number is what gives the wire its measurable magnetic
         effect. Magnetism is a colossal pile of tiny relativistic corrections, summed coherently{' '}
         <Cite id="purcell-morin-2013" in={SOURCES} />.
@@ -228,7 +223,7 @@ export default function Ch11Relativity() {
         question={
           <>
             Compute the Lorentz factor γ for an object moving at{' '}
-            <em className="text-text italic">v</em> = 0.1c, 0.5c, 0.9c, and 0.99c.
+            <InlineMath tex="v" /> = 0.1c, 0.5c, 0.9c, and 0.99c.
           </>
         }
         hint="γ = 1/√(1 − β²), where β = v/c."
@@ -410,7 +405,7 @@ export default function Ch11Relativity() {
         tag="Try 11.2"
         question={
           <>
-            A 1-metre rod flies past you lengthwise at <em className="text-text italic">v</em> =
+            A 1-metre rod flies past you lengthwise at <InlineMath tex="v" /> =
             0.5c. What length do you measure?
           </>
         }
@@ -434,8 +429,8 @@ export default function Ch11Relativity() {
         tag="Try 11.3"
         question={
           <>
-            GPS satellites orbit at <em className="text-text italic">v</em> ≈ 3.87 km/s with a
-            gravitational potential ≈ 5.3×10⁻¹⁰ <em className="text-text italic">c²</em>
+            GPS satellites orbit at <InlineMath tex="v" /> ≈ 3.87 km/s with a
+            gravitational potential ≈ 5.3×10⁻¹⁰ <InlineMath tex="c^{2}" />
             shallower than at Earth's surface. Roughly, how much do their clocks gain or lose per
             day relative to the ground?
           </>

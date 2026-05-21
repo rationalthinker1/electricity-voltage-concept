@@ -56,8 +56,8 @@ export default function Ch9EMWaves() {
           def={
             <>
               <strong className="text-text font-medium">electromagnetic wave</strong> — a
-              self-sustaining oscillation of <em className="text-text italic">E</em> and{' '}
-              <em className="text-text italic">B</em> fields in vacuum, mutually perpendicular and
+              self-sustaining oscillation of <InlineMath tex="E" /> and{' '}
+              <InlineMath tex="B" /> fields in vacuum, mutually perpendicular and
               in phase, propagating at the speed of light c.
             </>
           }
@@ -74,38 +74,37 @@ export default function Ch9EMWaves() {
 
       <p className="mb-prose-3">
         Ch.8's punchline was that energy travels through the space around a conductor as
-        <strong className="text-text font-medium"> S = (1/μ₀) E × B</strong>, the Poynting vector,
+        <InlineMath tex="\vec{S} = (1/\mu_0)\,\vec{E}\times\vec{B}" />, the Poynting vector,
         and lands wherever there's a resistive medium to absorb it. The flow is a property of the
         field, not of the conductor. What happens, then, if the absorbing conductor isn't there? If
         the field exists in vacuum — no copper, no battery, no resistor, just{' '}
-        <strong className="text-text font-medium">E</strong> and
-        <strong className="text-text font-medium"> B</strong> at some point in space — what's the
+        <InlineMath tex="E" /> and <InlineMath tex="B" /> at some point in space — what's the
         flow doing?
       </p>
       <p className="mb-prose-3">
         It's still doing what Poynting's expression says
         <Cite id="poynting-1884" in={SOURCES} />.{' '}
-        <strong className="text-text font-medium">S</strong> is a property of{' '}
-        <strong className="text-text font-medium">E</strong> and{' '}
-        <strong className="text-text font-medium">B</strong> alone, not of the medium they live in.
+        <InlineMath tex="S" /> is a property of{' '}
+        <InlineMath tex="E" /> and{' '}
+        <InlineMath tex="B" /> alone, not of the medium they live in.
         The energy density of the field, also written down by Poynting and Maxwell, is
       </p>
       <Formula tex="u = \\tfrac{1}{2} \\varepsilon_0 |\\vec{E}|^2 + \\dfrac{1}{2\\mu_0} |\\vec{B}|^2" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">u</strong> is the local electromagnetic
+        where <InlineMath tex="u" /> is the local electromagnetic
         energy density (in J/m³),
-        <strong className="text-text font-medium"> |E|</strong> is the magnitude of the electric
+        <InlineMath tex="|E|" /> is the magnitude of the electric
         field at that point (in V/m),
-        <strong className="text-text font-medium"> |B|</strong> is the magnitude of the magnetic
+        <InlineMath tex="|B|" /> is the magnitude of the magnetic
         field (in teslas), and
-        <strong className="text-text font-medium"> ε₀ = 8.854×10⁻¹² F/m</strong> and{' '}
-        <strong className="text-text font-medium">μ₀ = 4π×10⁻⁷ T·m/A</strong> are the vacuum
+        <InlineMath tex="\varepsilon_0 = 8.854\times 10^{-12}\,\text{F/m}" /> and{' '}
+        <InlineMath tex="\mu_0 = 4\pi\times 10^{-7}\,\text{T·m/A}" /> are the vacuum
         permittivity and permeability respectively
         <Cite id="codata-2018" in={SOURCES} />. The two terms split the total cleanly into an
         electric and a magnetic contribution. The local conservation law is{' '}
         <InlineMath tex="\\partial u/\\partial t + \\nabla\\cdot\\vec{S} = 0" /> in empty space —
         energy in a region either stays put or flows out through the boundary as{' '}
-        <strong className="text-text font-medium">S</strong>
+        <InlineMath tex="S" />
         <Cite id="jackson-1999" in={SOURCES} />. Take a hand-sized region of empty space and stir up
         a field in it. The field cannot just sit there; energy at the boundary has to balance. The
         way nature solves that constraint is to let the field propagate outward.
@@ -154,9 +153,9 @@ export default function Ch9EMWaves() {
       </p>
       <Formula size="lg" id="maxwell-faraday" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">∇ × E</strong> is the curl of the electric
+        where <InlineMath tex="\nabla\times E" /> is the curl of the electric
         field (a vector measuring how E loops around each point, in V/m²), and{' '}
-        <strong className="text-text font-medium">∂B/∂t</strong> is the rate of change of the
+        <InlineMath tex="\partial B/\partial t" /> is the rate of change of the
         magnetic field at a fixed point in space (in T/s). The minus sign is the Lenz-law
         bookkeeping from Ch. 7.
       </p>
@@ -167,10 +166,10 @@ export default function Ch9EMWaves() {
       </p>
       <Formula tex="\\nabla\\times\\vec{B} = \\mu_0\\varepsilon_0\\dfrac{\\partial \\vec{E}}{\\partial t}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">∇ × B</strong> is the curl of the magnetic
-        field (in T/m), <strong className="text-text font-medium">∂E/∂t</strong> is the rate of
+        where <InlineMath tex="\nabla\times B" /> is the curl of the magnetic
+        field (in T/m), <InlineMath tex="\partial E/\partial t" /> is the rate of
         change of the electric field at a fixed point (in V/(m·s)), and{' '}
-        <strong className="text-text font-medium">μ₀ε₀ = 1/c²</strong> is the product of the vacuum
+        <InlineMath tex="\mu_0\varepsilon_0 = 1/c^{2}" /> is the product of the vacuum
         permeability and permittivity (in s²/m²). (In vacuum, with no real currents.) Take the curl
         of the first equation, plug in the second on the right-hand side, and use a standard vector
         identity. After a few lines of algebra what falls out is a clean second-order partial
@@ -180,20 +179,20 @@ export default function Ch9EMWaves() {
       </p>
       <Formula tex="\\nabla^2 \\vec{E} = \\mu_0\\varepsilon_0\\dfrac{\\partial^2 \\vec{E}}{\\partial t^2}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">∇²E</strong> is the vector Laplacian of the
+        where <InlineMath tex="\nabla^{2}E" /> is the vector Laplacian of the
         electric field (the sum of second spatial derivatives, with units of V/m³),{' '}
-        <strong className="text-text font-medium">∂²E/∂t²</strong> is the second time derivative of
+        <InlineMath tex="\partial^{2}E/\partial t^{2}" /> is the second time derivative of
         E at a fixed point (in V/(m·s²)), and the coefficient{' '}
-        <strong className="text-text font-medium">μ₀ε₀</strong> has units of s²/m² — so its
+        <InlineMath tex="\mu_0\varepsilon_0" /> has units of s²/m² — so its
         reciprocal is a squared speed. And the identical equation for{' '}
-        <strong className="text-text font-medium">B</strong>. This is the{' '}
+        <InlineMath tex="B" />. This is the{' '}
         <Term
           def={
             <>
               <strong className="text-text font-medium">wave equation</strong> — a second-order PDE
-              of the form <em className="text-text italic">∇²ψ = (1/v²) ∂²ψ/∂t²</em> whose solutions
-              propagate at speed <em className="text-text italic">v</em>. For EM waves in vacuum,{' '}
-              <em className="text-text italic">v = 1/√(μ₀ε₀) = c</em>.
+              of the form <InlineMath tex="\nabla^{2}\psi = (1/v^{2})\,\partial^{2}\psi/\partial t^{2}" /> whose solutions
+              propagate at speed <InlineMath tex="v" />. For EM waves in vacuum,{' '}
+              <InlineMath tex="v = 1/\sqrt{\mu_0\varepsilon_0} = c" />.
             </>
           }
         >
@@ -202,7 +201,7 @@ export default function Ch9EMWaves() {
         , and it has a propagation speed sitting right there in the coefficient:{' '}
         <InlineMath tex="v^2 = 1/(\\mu_0 \\varepsilon_0)" />. Plug in the measured values of the two
         constants — ε₀ = 8.854×10⁻¹² F/m and μ₀ = 1.257×10⁻⁶ T·m/A — and you get
-        <strong className="text-text font-medium"> v = 2.998×10⁸ m/s</strong>
+        <InlineMath tex="v = 2.998\times 10^{8}\,\text{m/s}" />
         <Cite id="codata-2018" in={SOURCES} />. Which is, to six figures, the speed of light
         measured by Fizeau (1849) and Foucault (1862) in the decades before. Maxwell wrote, in 1865:{' '}
         <em className="text-text italic">
@@ -280,14 +279,14 @@ export default function Ch9EMWaves() {
       </p>
       <Formula tex="\\vec{E}(x, t) = E_0 \\sin(k x - \\omega t)\\,\\hat{y}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">E₀</strong> is the peak electric-field
+        where <InlineMath tex="E_0" /> is the peak electric-field
         amplitude (in V/m),
-        <strong className="text-text font-medium"> k</strong> is the wavenumber (in rad/m),{' '}
-        <strong className="text-text font-medium">ω</strong> is the angular frequency (in rad/s),
-        and the wave's phase speed is <InlineMath tex="v = \\omega/k" />. Plug this into Maxwell's
+        <InlineMath tex="k" /> is the wavenumber (in rad/m),{' '}
+        <InlineMath tex="\omega" /> is the angular frequency (in rad/s),
+        and the wave's phase speed is <InlineMath tex="v = \omega/k" />. Plug this into Maxwell's
         equations and three facts fall out immediately
         <Cite id="griffiths-2017" in={SOURCES} />. First,{' '}
-        <strong className="text-text font-medium">E</strong> is{' '}
+        <InlineMath tex="E" /> is{' '}
         <Term
           def={
             <>
@@ -301,18 +300,18 @@ export default function Ch9EMWaves() {
         </Term>{' '}
         — perpendicular to the direction of travel. (In our example, the wave moves in x and E
         points in y.) Second, the same equations force{' '}
-        <strong className="text-text font-medium">B</strong> to be perpendicular to both{' '}
-        <strong className="text-text font-medium">E</strong> and{' '}
-        <strong className="text-text font-medium">k̂</strong>, so in our example B points in z.
+        <InlineMath tex="B" /> to be perpendicular to both{' '}
+        <InlineMath tex="E" /> and{' '}
+        <InlineMath tex="\hat{k}" />, so in our example B points in z.
         Third, the ratio of their amplitudes is fixed:
       </p>
       <Formula tex="|\\vec{B}| = |\\vec{E}| / c" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">|B|</strong> is the magnitude of the magnetic
+        where <InlineMath tex="|B|" /> is the magnitude of the magnetic
         field (in teslas),
-        <strong className="text-text font-medium"> |E|</strong> is the magnitude of the electric
+        <InlineMath tex="|E|" /> is the magnitude of the electric
         field (in V/m), and
-        <strong className="text-text font-medium"> c ≈ 2.998×10⁸ m/s</strong> is the speed of light
+        <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light
         in vacuum. The two fields oscillate in phase — both reach their peak at the same time and
         the same place. The whole picture rolls forward together at speed c.
       </p>
@@ -383,7 +382,7 @@ export default function Ch9EMWaves() {
       </h2>
 
       <p className="mb-prose-3">
-        Once you know <strong className="text-text font-medium">E</strong> is transverse to the
+        Once you know <InlineMath tex="E" /> is transverse to the
         propagation direction, the next question is which transverse direction it points. That
         direction is the wave's{' '}
         <Term
@@ -398,9 +397,9 @@ export default function Ch9EMWaves() {
         >
           polarization
         </Term>
-        . A linearly polarized wave has its <strong className="text-text font-medium">E</strong>{' '}
+        . A linearly polarized wave has its <InlineMath tex="E" />{' '}
         oscillating along one fixed line (the line might be vertical, horizontal, or tilted). A
-        circularly polarized wave has its <strong className="text-text font-medium">E</strong>{' '}
+        circularly polarized wave has its <InlineMath tex="E" />{' '}
         rotating in a circle at the wave's frequency — produced by superposing two perpendicular
         linear components 90° out of phase. Anything in between those two limits is elliptical
         polarization.
@@ -412,11 +411,11 @@ export default function Ch9EMWaves() {
       <p className="mb-prose-3">
         Polarization is what 3D glasses, polarized sunglasses, and LCD displays manipulate. A
         polarized sunglass lens is a sheet of molecules aligned along one axis that absorbs the{' '}
-        <strong className="text-text font-medium">E</strong>-component along that axis and lets
+        <InlineMath tex="E" />-component along that axis and lets
         through the perpendicular one — so glare off horizontal water, which is mostly horizontally
         polarized, gets blocked while the rest of the scene passes through. An antenna's orientation
         matters for the same reason: a half-wave dipole picks up only the{' '}
-        <strong className="text-text font-medium">E</strong>-component aligned with its long axis.
+        <InlineMath tex="E" />-component aligned with its long axis.
       </p>
       <Pullout>
         A wave is what a field does when it has nowhere to go and nothing to push on.
@@ -454,13 +453,13 @@ export default function Ch9EMWaves() {
       </p>
       <Formula tex="I(\\theta) \\propto \\sin^2\\theta / r^2" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">I(θ)</strong> is the time-averaged radiated
+        where <InlineMath tex="I(\theta)" /> is the time-averaged radiated
         intensity (in W/m²),
-        <strong className="text-text font-medium"> θ</strong> is the polar angle measured from the
+        <InlineMath tex="\theta" /> is the polar angle measured from the
         dipole's axis (so θ = 0 along the antenna, θ = π/2 in the equatorial plane), and{' '}
-        <strong className="text-text font-medium">r</strong> is the distance from the dipole (in
+        <InlineMath tex="r" /> is the distance from the dipole (in
         metres). The
-        <em className="text-text italic"> 1/r²</em> falloff is what energy conservation across an
+        <InlineMath tex="1/r^{2}" /> falloff is what energy conservation across an
         expanding sphere requires
         <Cite id="feynman-II-21" in={SOURCES} />
         <Cite id="jackson-1999" in={SOURCES} />. The pattern has a maximum perpendicular to the
@@ -484,8 +483,8 @@ export default function Ch9EMWaves() {
         One more move is worth making before we leave the radiation story. We have so far treated
         "circuit" and "antenna" as separate categories — wires for circuits, antennas for radio.
         They are not. They are two ends of the same axis. A piece of wire of length{' '}
-        <strong className="text-text font-medium">L</strong> driven at frequency
-        <strong className="text-text font-medium"> f</strong> behaves as a lumped circuit element
+        <InlineMath tex="L" /> driven at frequency
+        <InlineMath tex="f" /> behaves as a lumped circuit element
         when <InlineMath tex="\\lambda \\gg L" />, and as a radiator when{' '}
         <InlineMath tex="\\lambda \\lesssim 2L" />. Nothing about the metal changes; only the ratio
         <InlineMath tex="L/\\lambda" /> does. The next demo holds the wire at a constant 1 m and
