@@ -24,6 +24,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { fmtCurrent } from "@/lib/formatters";
 
 interface Props {
   figure?: string;
@@ -132,11 +133,11 @@ export function NodalSolverDemo({ figure }: Props) {
           offCtx.font = '10px "JetBrains Mono", monospace';
           offCtx.textAlign = 'center';
           offCtx.textBaseline = 'bottom';
-          offCtx.fillText(`I_R₁ = ${fmtA(nodal.I_R1)}`, (xLeft + xMid) / 2, yTop - 14);
-          offCtx.fillText(`I_R₃ = ${fmtA(nodal.I_R3)}`, (xMid + xRight) / 2, yTop - 14);
+          offCtx.fillText(`I_R₁ = ${fmtCurrent(nodal.I_R1)}`, (xLeft + xMid) / 2, yTop - 14);
+          offCtx.fillText(`I_R₃ = ${fmtCurrent(nodal.I_R3)}`, (xMid + xRight) / 2, yTop - 14);
           offCtx.textBaseline = 'middle';
           offCtx.textAlign = 'left';
-          offCtx.fillText(`I_R₂ = ${fmtA(nodal.I_R2)}`, xMid + 14, h / 2);
+          offCtx.fillText(`I_R₂ = ${fmtCurrent(nodal.I_R2)}`, xMid + 14, h / 2);
           void yBot;
           offCtx.restore();
         }
@@ -351,10 +352,4 @@ function buildNodalSchematic(
     },
     { kind: 'ground', at: { x: xMid, y: yBot }, color: withAlpha(getCanvasColors().teal, 0.85) },
   ];
-}
-
-function fmtA(I: number): string {
-  if (Math.abs(I) >= 1) return I.toFixed(3) + ' A';
-  if (Math.abs(I) >= 1e-3) return (I * 1000).toFixed(1) + ' mA';
-  return (I * 1e6).toFixed(0) + ' µA';
 }

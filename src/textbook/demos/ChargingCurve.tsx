@@ -15,6 +15,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { fmtResistance, fmtTime } from "@/lib/formatters";
 
 interface Props {
   figure?: string;
@@ -184,7 +185,7 @@ export function ChargingCurveDemo({ figure }: Props) {
       ctx.fillText(`V_C = ${s.Vc.toFixed(2)} V`, pX + pW, 8);
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
-      ctx.fillText(`window: ${fmtT(PLOT_DURATION)} (6τ)`, pX + pW / 2, H - 6);
+      ctx.fillText(`window: ${fmtTime(PLOT_DURATION)} (6τ)`, pX + pW / 2, H - 6);
 
       raf = requestAnimationFrame(draw);
     }
@@ -221,7 +222,7 @@ export function ChargingCurveDemo({ figure }: Props) {
           min={100}
           max={10000}
           step={100}
-          format={fmtR}
+          format={fmtResistance}
           onChange={setR}
         />
         <MiniSlider
@@ -233,23 +234,10 @@ export function ChargingCurveDemo({ figure }: Props) {
           format={(v) => v.toFixed(0) + ' µF'}
           onChange={setCuf}
         />
-        <MiniReadout label="τ = RC" value={fmtT(tau)} />
-        <MiniReadout label="5τ (≈99%)" value={fmtT(t99)} />
+        <MiniReadout label="τ = RC" value={fmtTime(tau)} />
+        <MiniReadout label="5τ (≈99%)" value={fmtTime(t99)} />
         <MiniReadout label="V_C(now)" value={<Num value={VcDisplay} />} unit="V" />
       </DemoControls>
     </Demo>
   );
-}
-
-function fmtR(R: number): string {
-  if (R >= 1e6) return (R / 1e6).toFixed(1) + ' MΩ';
-  if (R >= 1e3) return (R / 1e3).toFixed(1) + ' kΩ';
-  return R.toFixed(0) + ' Ω';
-}
-function fmtT(s: number): string {
-  if (!isFinite(s) || s <= 0) return '—';
-  if (s < 1e-6) return (s * 1e9).toFixed(1) + ' ns';
-  if (s < 1e-3) return (s * 1e6).toFixed(1) + ' µs';
-  if (s < 1) return (s * 1e3).toFixed(1) + ' ms';
-  return s.toFixed(2) + ' s';
 }

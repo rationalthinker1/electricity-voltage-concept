@@ -53,6 +53,7 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
+import { fmtFreqShort } from "@/lib/formatters";
 
 interface Props {
   figure?: string;
@@ -349,7 +350,7 @@ export function FilterDesignerDemo({ figure }: Props) {
         drawLabel(ctx, {
           x: x,
           y: by + bh + 2,
-          text: fmtFreq(f),
+          text: fmtFreqShort(f),
           color: colors.textDim,
           size: 9,
           align: 'center',
@@ -547,12 +548,4 @@ export function FilterDesignerDemo({ figure }: Props) {
       </DemoControls>
     </Demo>
   );
-}
-
-function fmtFreq(f: number): string {
-  if (!isFinite(f) || f <= 0) return '—';
-  if (f >= 1e6) return (f / 1e6).toFixed(0) + 'M';
-  if (f >= 1e3) return (f / 1e3).toFixed(0) + 'k';
-  if (f >= 1) return f.toFixed(0);
-  return f.toFixed(2);
 }

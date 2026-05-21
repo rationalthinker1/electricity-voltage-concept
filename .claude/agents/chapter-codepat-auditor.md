@@ -1,6 +1,6 @@
 ---
 name: chapter-codepat-auditor
-description: Audit a Field·Theory chapter and its embedded demos for code-pattern issues — missing in-demo equation displays (CLAUDE.md §6b), known JSX traps from CLAUDE.md §13 (pretty() inside MiniReadout, p.math instead of Formula, AutoResizeCanvas setup that captures state at construction, TanStack Link without params), and hardcoded hex/rgba colours in canvas draw loops instead of theme tokens. Invoked by chapter-reviewer.
+description: Audit a Field·Theory chapter and its embedded demos for code-pattern issues — missing in-demo equation displays (CLAUDE.md §6b), known JSX traps from CLAUDE.md §13 (pretty() inside MiniReadout, p.math instead of Formula, hand-rolled useRef+useEffect+useCallback+rAF boilerplate instead of useSimState+useSimLoop, TanStack Link without params), and hardcoded hex/rgba colours in canvas draw loops instead of theme tokens. Invoked by chapter-reviewer.
 tools: Read, Bash, Glob, Grep
 model: sonnet
 color: orange
@@ -27,10 +27,10 @@ Scan the chapter file and every demo file it embeds for the known traps:
 
 1. **`<MiniReadout value={pretty(…)} />`** — `pretty()` returns an HTML string; React renders it as literal text. Should be `<Num value={x}/>`.
 2. **`<p className="math">…</p>`** — legacy math style. Should be `<Formula>…</Formula>` or `<InlineMath tex="…" />`.
-3. **`AutoResizeCanvas` setup that reads state directly** instead of via a `stateRef`. Symptom: `setup` callback references a state variable inside the per-frame `draw()`, or `useCallback`'s dependency array contains state instead of being empty `[]`. The canvas re-initialises on every render.
+3. **Hand-rolled rAF boilerplate instead of `useSimState` / `useSimLoop`.** The legacy pattern was `const stateRef = useRef({…}); useEffect(() => { stateRef.current = … }, [...])` plus `const setup = useCallback((info) => { let raf = 0; function draw() { … raf = requestAnimationFrame(draw); } raf = requestAnimationFrame(draw); return () => cancelAnimationFrame(raf); }, [])`. New demos use `const stateRef = useSimState({…})` and `const setup = useSimLoop(stateRef, draw, [], init?)` from `@/lib/useSimState` and `@/lib/useSimLoop`. Flag any demo that still imports `useCallback`/`useEffect`/`useRef` for the canvas setup, or any `function draw()` declared inside a `useCallback` block. Recommend running `scripts/refactor-demos.ts` (which auto-migrates the simple cases) and the suggested manual shape for the rest. Related red flags inside an existing `useSimLoop` draw callback: a `let phase = 0;` (or similar accumulator) declared at the top of the draw body — it resets every frame and must either be derived from `simTime` or moved into the `init` callback's `context`. Event listeners (`canvas.addEventListener(…)`) inside the draw callback have the same problem — they belong in `init`.
 4. **TanStack Router `<Link to="/labs/$slug">`** without `params={{ slug: '…' }}`.
-5. **Hardcoded hex or rgba colours in canvas draw loops**. The draw loop must call `getCanvasColors()` *inside* the per-frame `draw` function (not just once at setup) and use named tokens (`colors.accent`, `colors.blue`, `colors.text`, etc.). For translucency, use `withAlpha(token, alpha)` or `ctx.globalAlpha` — never bake in `rgba(255,107,42,…)`. Flag any literal `#......` or `rgba(...)` inside `ctx.fillStyle = / ctx.strokeStyle = / ctx.shadowColor =` lines.
-6. **Pass-by-`info.colors` captured at setup**. If the setup callback does `const colors = info.colors;` and the per-frame `draw` closes over that, the canvas won't repaint after a light/dark toggle. Should call `getCanvasColors()` per frame.
+5. **Hardcoded hex or rgba colours in canvas draw loops**. Use named tokens (`colors.accent`, `colors.blue`, `colors.text`, etc.). For translucency, use `withAlpha(token, alpha)` or `ctx.globalAlpha` — never bake in `rgba(255,107,42,…)`. Flag any literal `#......` or `rgba(...)` inside `ctx.fillStyle = / ctx.strokeStyle = / ctx.shadowColor =` lines.
+6. **Stale colours after light/dark toggle.** The `colors` value that `useSimLoop` (and `AutoResizeCanvas` directly) hands to draw is captured at setup time — `info.colors` is set once when the canvas mounts. For animated demos that should re-paint immediately on theme toggle (not wait for the next resize/visibility/intersection), the draw body should call `getCanvasColors()` itself and use that result. Per-frame calls are cheap because the cache in `src/lib/canvasTheme.ts` is invalidated by a `MutationObserver` watching `[data-theme]`. Flag any long-running animation that uses only the destructured `colors` from `info` if you have reason to think the user toggles themes — but be sparing here: most demos look fine with capture-once, and flagging every demo would be noise. Reserve this for cases where you can show evidence of a theme regression.
 7. **Math expression rendered as text, `<em>`, or `<strong>` instead of `<InlineMath>`.** Four sub-cases:
     - **Equation in prose with an `=` or `≈` sign.** Any inline equality/approximation in chapter prose, FAQ answers, case-study text, Term defs, or TryIt question/hint/answer blocks must be wrapped in `<InlineMath tex="…" />`. Flag literal strings like `1 V = 1 J/C`, `work = force × distance`, `One ampere = one coulomb per second`, `k = 8.99×10⁹ N·m²/C²`, or `0.30 / (2×10⁸) = 1.5 ns` that sit raw in JSX text — they should typeset as math, not body type. Wrapping in `<em className="text-text italic">…</em>` or `<strong className="text-text font-medium">…</strong>` is the same bug.
     - **Single math symbol wrapped in `<em className="text-text italic">`.** Variables like `V`, `q`, `mgh`, `qV`, `V_a`, `V_ab`, `v_F`, `e`, `c`, `τ`, `ω`, `Δ U`, or any subscripted/Greek symbol should be `<InlineMath tex="V" />`, not `<em className="text-text italic">V</em>`. The `<em>` form renders in DM Sans italic; `<InlineMath>` renders in STIX Two and matches the surrounding equations. Emphatic English words (*difference*, *how badly*, *Electrophorus electricus*, *e-marker*) stay as `<em>` — only symbols and formulas convert.
@@ -69,7 +69,7 @@ Beyond per-demo theme leaks (Rule B.5/B.6), watch for **theme-aware tokens that 
    - If `EquationStrip` is present, read its `left=` / `right=` props and confirm at least one side has a `${…}` interpolation tied to a state variable.
    - `grep -nE 'value=\{pretty\(' <demo-file>` for trap #1.
    - `grep -nE 'className="math"' <demo-file>` for trap #2.
-   - Scan `useCallback` for the `setup` callback and check its dependency array.
+   - `grep -nE '\b(useCallback|useEffect|useRef)\b' <demo-file>` for trap #3 — if any hit fires *and* the file does not also import `useSimState` or `useSimLoop`, it's still on the old boilerplate. (Some demos legitimately keep a separate `useRef`/`useEffect` for non-canvas concerns — history buffers, geometry-reset effects — alongside `useSimState` + `useSimLoop`. Don't false-positive on those.)
    - `grep -nE '(fillStyle|strokeStyle|shadowColor)\s*=\s*["'"'"']?#[0-9a-fA-F]{3,8}' <demo-file>` and similar for `rgba(`.
 5. Also run traps #1, #2, and #4 against the chapter file itself.
 
@@ -85,8 +85,9 @@ Two markdown sections. If either is clean, return the header with a confirmation
 
 ### Conventions / pitfalls
 - src/textbook/Ch2VoltageAndCurrent.tsx:L312: `<MiniReadout value={pretty(I)} />` — pretty() returns HTML; use `<Num value={I} />`.
-- demos/CapacitorPlates.tsx:L84: setup callback depends on `[plateSpacing]` — canvas re-initialises on every slider change. Move plateSpacing into stateRef.
-- demos/MagneticField.tsx:L156: `ctx.fillStyle = '#ff6b2a'` — hardcoded amber. Replace with colors.accent from getCanvasColors() called per frame.
+- demos/CapacitorPlates.tsx:L84: hand-rolled `useCallback`/`useRef`/`useEffect` + `function draw()` boilerplate. Migrate to `useSimState` + `useSimLoop` (run `scripts/refactor-demos.ts` or rewrite by hand; see CLAUDE.md §7).
+- demos/RotatingField.tsx:L62: `let phase = 0;` declared inside the `useSimLoop` draw body — resets every frame. Replace with `phase = simTime * 0.72` (or move into `init` context if frame-rate-independence isn't equivalent).
+- demos/MagneticField.tsx:L156: `ctx.fillStyle = '#ff6b2a'` — hardcoded amber. Replace with `colors.accent`.
 ```
 
 If clean:

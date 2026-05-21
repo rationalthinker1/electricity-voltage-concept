@@ -516,29 +516,31 @@ Each demo is a small component in `src/textbook/demos/{Name}.tsx`. Roughly
 canonical example):
 
 ```tsx
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { useState } from 'react';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniSlider, MiniToggle, MiniReadout } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 import { PHYS } from '@/lib/physics';
 
 export function SomeDemo() {
   const [a, setA] = useState(/*…*/);
-  // stateRef so the canvas draw loop sees the latest state without
-  // re-running the setup function:
-  const stateRef = useRef({ a });
-  useEffect(() => { stateRef.current = { a }; }, [a]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas } = info;
-    let raf = 0;
-    function draw() {
-      const { a } = stateRef.current;
-      // … draw …
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
+  // Bridges React state into a ref so the rAF loop reads fresh values without
+  // re-running setup on every render. Replaces the old manual
+  //   const stateRef = useRef({ a });
+  //   useEffect(() => { stateRef.current = { a }; }, [a]);
+  // pair.
+  const stateRef = useSimState({ a });
+
+  // Returns an AutoResizeCanvas-compatible setup callback that owns the rAF
+  // loop and hands the per-frame draw three values it almost always wants:
+  // `dt` (capped at 0.1 s) and accumulated `simTime`. State arrives via
+  // `stateRef`; no useCallback / useEffect / useRef boilerplate needed.
+  const setup = useSimLoop(stateRef, ({ ctx, w, h, colors }, state, dt, simTime) => {
+    const { a } = state;
+    // … draw …
   }, []);
 
   return (
@@ -563,6 +565,37 @@ export function SomeDemo() {
 **Important: don't pass `pretty(x)` to `MiniReadout`'s `value` prop.**
 `pretty()` returns an HTML string; React renders it as literal text.
 Use `<Num value={x} />` which returns JSX with proper `<sup>` elements.
+
+### Per-mount state via `useSimLoop`'s init callback
+
+The default `useSimLoop(stateRef, draw, deps)` form is right when every
+frame is a pure function of `state + dt + simTime + colors`. Reach for the
+four-argument form when the demo needs **one-time per-mount setup** that
+must persist across frames — orbit cameras, event listeners, mutable
+buffers, frame accumulators that aren't expressible from `simTime`. Pass
+an `init(info) => { context, cleanup? }` callback; the `context` becomes
+the 5th argument to `draw` and the `cleanup` runs when the canvas
+unmounts.
+
+```tsx
+const setup = useSimLoop(
+  stateRef,
+  ({ ctx, w, h }, state, dt, simTime, scene) => {
+    scene.cam.update(dt);
+    // draw using scene.cam, scene.depthSort, …
+  },
+  [],
+  (info) => {
+    const scene = createOrbitScene(info.canvas);
+    return { context: scene, cleanup: () => scene.dispose() };
+  },
+);
+```
+
+Same shape for pointer listeners, accumulators (`{ phase: 0 }`), Web
+Audio graphs, etc. Anything you would have written as `let x = 0;`
+*outside* `function draw()` in the old `useCallback` boilerplate belongs
+in the `context` here.
 
 ### Demos should show the equation(s) they exercise
 
@@ -634,23 +667,31 @@ The lab also has its own prose deep-dive and sources block (rendered by
 
 ## 9. Conventions
 
-- **State + canvas:** state in `useState`, computed in `useMemo`, canvas
-  setup in `useCallback` with empty deps and a `stateRef` for animation.
-  Return a cleanup function from the setup callback that cancels rAF and
-  removes event listeners.
-- **Theme-aware drawing:** canvas draw loops must call `getCanvasColors()`
-  inside the per-frame `draw` function, not just capture `info.colors`
-  once at `setup` time. The cache in `src/lib/canvasTheme.ts` is
-  invalidated by a `MutationObserver` watching `[data-theme]` on the
-  root, so re-reading every frame is essentially free and lets the
-  canvas re-paint in the new palette on the next frame after a
-  light/dark toggle — no remount required. Use the named tokens
-  (`colors.accent`, `colors.blue`, `colors.teal`, `colors.pink`,
-  `colors.text`, `colors.textDim`, `colors.borderStrong`, `colors.bg`,
-  etc.) instead of hardcoded hex or rgba. When you need a translucent
-  variant, derive it from the token at draw time (a small
-  `withAlpha(token, alpha)` helper, or `ctx.globalAlpha`) — never bake
-  in `rgba(255,107,42,…)`.
+- **State + canvas:** state in `useState`, computed in `useMemo`. For
+  canvas animations, use `useSimState({…})` to bridge React state into a
+  ref the draw loop can read, and `useSimLoop(stateRef, draw, deps, init?)`
+  to own the rAF loop. Don't hand-roll the
+  `useRef + useEffect + useCallback + requestAnimationFrame` dance — see
+  `src/lib/useSimState.ts` and `src/lib/useSimLoop.ts`. Persistent
+  per-mount state (event listeners, orbit cameras, mutable buffers,
+  frame accumulators that can't be derived from `simTime`) goes in
+  `useSimLoop`'s `init` callback, which also returns the cleanup.
+- **Theme-aware drawing:** the `colors` value that `useSimLoop` (and
+  `AutoResizeCanvas` directly) hands to draw is captured at setup time.
+  The cache in `src/lib/canvasTheme.ts` is invalidated by a
+  `MutationObserver` watching `[data-theme]` on the root, so any
+  *per-frame* call to `getCanvasColors()` will pick up the new palette
+  on the next tick — but the destructured `colors` from `info` will
+  not, until the canvas next re-mounts (resize / visibility /
+  intersection). For demos that should re-paint immediately after a
+  light/dark toggle, call `getCanvasColors()` inside the per-frame
+  draw body and use that result instead of the destructured `colors`.
+  Either way: use the named tokens (`colors.accent`, `colors.blue`,
+  `colors.teal`, `colors.pink`, `colors.text`, `colors.textDim`,
+  `colors.borderStrong`, `colors.bg`, etc.) instead of hardcoded hex or
+  rgba. When you need a translucent variant, derive it from the token
+  at draw time (`withAlpha(token, alpha)` or `ctx.globalAlpha`) — never
+  bake in `rgba(255,107,42,…)`.
 - **No `pretty()` in JSX text:** use `<Num value={x}/>`. `pretty()` only
   for `dangerouslySetInnerHTML` (legacy callers).
 - **Formula blocks:** `<Formula>F = k Q₁ Q₂ / r²</Formula>`, not
@@ -746,11 +787,29 @@ The build runs strict TypeScript and Vite together. Anything that fails
 - **Citing a key not in the chapter's `sources` array** renders `[?]` in
   red. Add the key to the array (and to `src/lib/sources.ts` if it isn't
   there yet).
-- **`AutoResizeCanvas` setup re-running on every render** — if the
-  `setup` prop isn't memoized (or if it depends on state directly rather
-  than via `stateRef`), the canvas re-initializes constantly. Wrap setup
-  in `useCallback(…, [])` and read state via `stateRef.current` inside
-  the draw loop.
+- **Re-rolling the rAF boilerplate by hand.** `useSimState` +
+  `useSimLoop` (in `src/lib/`) hide the
+  `useRef + useEffect + useCallback + requestAnimationFrame` dance that
+  ~95% of demos used to repeat. Don't import `useCallback` / `useEffect` /
+  `useRef` (or `type CanvasInfo`) just to write a canvas animation — reach
+  for the hooks. If you find yourself writing `function draw()` inside a
+  `useCallback`, stop and migrate. The script
+  `scripts/refactor-demos.ts` does the bulk migration automatically;
+  read it for what it does and doesn't handle (orbit cameras, mutable
+  buffers, event listeners need the `init` callback by hand).
+- **Persistent per-frame state inside the `useSimLoop` draw closure.**
+  A `let phase = 0;` declared at the top of the draw callback resets
+  every frame. Either derive it from `simTime` (frame-rate independent —
+  preferred) or stash it in `init`'s `context` so it persists across
+  frames (see §7).
+- **Event listeners directly in the `useSimLoop` draw callback.** They'd
+  re-bind every tick. Listeners go in `init` with a `cleanup` that
+  removes them.
+- **Stale `info.colors` after theme toggle.** `useSimLoop` captures
+  `info.colors` at setup time. For demos that should re-paint
+  immediately after a light/dark toggle, call `getCanvasColors()` inside
+  the per-frame draw body instead of relying on the destructured
+  `colors` (see §9).
 - **TanStack Router `<Link>` to `/labs/$slug`** requires the params:
   `<Link to="/labs/$slug" params={{ slug: 'coulomb' }}>`.
 - **Adding case studies / FAQs in parallel agents:** if more than one

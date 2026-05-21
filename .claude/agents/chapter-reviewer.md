@@ -62,7 +62,7 @@ If the request is ambiguous (e.g. "review the magnetism chapter" matches multipl
 5. **Sort by severity.** Anything that breaks the build or renders `[?]` in the live page goes to the top:
    1. Broken citations (`<Cite>` keys not in registry / not in chapter sources array) — from `chapter-fact-checker`.
    2. Factual errors with corrected values — from `chapter-fact-checker`.
-   3. Code-pattern traps that break behaviour (`pretty()` in JSX, `AutoResizeCanvas` state-dep) — from `chapter-codepat-auditor`.
+   3. Code-pattern traps that break behaviour (`pretty()` in JSX, hand-rolled `useRef + useEffect + useCallback + rAF` instead of `useSimState` + `useSimLoop`, per-frame accumulators reset inside the draw closure) — from `chapter-codepat-auditor`.
    4. Stale chapter cross-references — from `chapter-xrefs-auditor`.
    5. Structural gaps (vs §6 checklist) — from `chapter-checklist-auditor`.
    6. Three-tier order issues — from `chapter-pedagogy-auditor`.

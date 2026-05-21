@@ -19,6 +19,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
+import { fmtFrequency, fmtTime, fmtCurrent } from "@/lib/formatters";
 
 interface Props {
   figure?: string;
@@ -162,10 +163,10 @@ export function LCOscillationDemo({ figure }: Props) {
         ctx.textBaseline = 'top';
         ctx.fillText(`L = ${Lmh.toFixed(1)} mH    C = ${Cuf.toFixed(0)} µF`, 10, 8);
         ctx.textAlign = 'right';
-        ctx.fillText(`f₀ = ${fmtFreq(f0)}`, splitX - 10, 8);
+        ctx.fillText(`f₀ = ${fmtFrequency(f0)}`, splitX - 10, 8);
         ctx.textAlign = 'left';
         ctx.textBaseline = 'bottom';
-        ctx.fillText(`I → ${fmtA(I)}`, 10, h - 6);
+        ctx.fillText(`I → ${fmtCurrent(I)}`, 10, h - 6);
 
         ctx.restore();
 
@@ -276,29 +277,10 @@ export function LCOscillationDemo({ figure }: Props) {
           onChange={setCuf}
         />
         <MiniReadout label="f₀ = 1/(2π√(LC))" value={<Num value={f0} />} unit="Hz" />
-        <MiniReadout label="T₀ = 1/f₀" value={fmtT(T0)} />
+        <MiniReadout label="T₀ = 1/f₀" value={fmtTime(T0)} />
       </DemoControls>
     </Demo>
   );
-}
-
-function fmtFreq(f: number): string {
-  if (!isFinite(f)) return '—';
-  if (f >= 1e6) return (f / 1e6).toFixed(2) + ' MHz';
-  if (f >= 1e3) return (f / 1e3).toFixed(2) + ' kHz';
-  return f.toFixed(1) + ' Hz';
-}
-function fmtT(s: number): string {
-  if (!isFinite(s) || s <= 0) return '—';
-  if (s < 1e-6) return (s * 1e9).toFixed(1) + ' ns';
-  if (s < 1e-3) return (s * 1e6).toFixed(1) + ' µs';
-  if (s < 1) return (s * 1e3).toFixed(1) + ' ms';
-  return s.toFixed(2) + ' s';
-}
-function fmtA(I: number): string {
-  if (Math.abs(I) >= 1) return I.toFixed(2) + ' A';
-  if (Math.abs(I) >= 1e-3) return (I * 1000).toFixed(1) + ' mA';
-  return (I * 1e6).toFixed(1) + ' µA';
 }
 
 function drawInductorV(ctx: CanvasRenderingContext2D, x: number, cy: number, L: number) {

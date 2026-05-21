@@ -16,6 +16,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawAxes, drawLinePlot, drawVLine, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -56,58 +57,44 @@ export function BJTCharacteristicDemo({ figure }: Props) {
                 padR = 20,
                 padT = 20,
                 padB = 36;
-        const plotW = w - padL - padR;
-        const plotH = h - padT - padB;
+        const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
         const Vmin = 0,
                 Vmax = 10;
         const Imax = 0.012;
-        const xOf = (v: number) => padL + ((v - Vmin) / (Vmax - Vmin)) * plotW;
-        const yOf = (i: number) => padT + plotH - (i / Imax) * plotH;
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(padL, padT, plotW, plotH);
-        ctx.strokeStyle = colors.border;
-        ctx.beginPath();
-        for (let v = 0; v <= Vmax; v += 2) {
-                ctx.moveTo(xOf(v), padT);
-                ctx.lineTo(xOf(v), padT + plotH);
-              }
-        for (let i = 0; i <= Imax + 1e-9; i += 0.002) {
-                ctx.moveTo(padL, yOf(i));
-                ctx.lineTo(padL + plotW, yOf(i));
-              }
-        ctx.stroke();
+        const xTicks: number[] = [];
+        for (let v = 0; v <= Vmax; v += 2) xTicks.push(v);
+        const yTicks: number[] = [];
+        for (let i = 0; i <= Imax + 1e-9; i += 0.002) yTicks.push(i);
+
+        drawAxes(ctx, rect, {
+          xMin: Vmin,
+          xMax: Vmax,
+          yMin: 0,
+          yMax: Imax,
+          xTicks,
+          yTicks,
+          xLabel: 'V_CE (volts)',
+          xTickFormat: (v) => v.toFixed(0),
+          yTickFormat: (i) => `${(i * 1000).toFixed(0)} mA`,
+        });
+        const { xOf, yOf } = makePlotMappers(rect, Vmin, Vmax, 0, Imax);
+        // Rotated y-axis label — drawAxes' yLabel sits a fixed distance from
+        // the frame which is too close in this layout; keep this manual.
         ctx.save();
-        ctx.globalAlpha = 0.65;
         ctx.fillStyle = colors.textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        for (let v = 0; v <= Vmax; v += 2) {
-                ctx.fillText(v.toFixed(0), xOf(v), padT + plotH + 4);
-                ctx.restore();
-              }
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        for (let i = 0; i <= Imax + 1e-9; i += 0.002) {
-                ctx.fillText(`${(i * 1000).toFixed(0)} mA`, padL - 4, yOf(i));
-              }
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('V_CE (volts)', padL + plotW / 2, padT + plotH + 18);
-        ctx.save();
-        ctx.translate(14, padT + plotH / 2);
+        ctx.translate(14, padT + rect.h / 2);
         ctx.rotate(-Math.PI / 2);
+        ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('I_C (mA)', 0, 0);
         ctx.restore();
-        ctx.strokeStyle = colors.border;
-        ctx.setLineDash([2, 4]);
-        ctx.beginPath();
-        ctx.moveTo(xOf(V_CE_SAT), padT);
-        ctx.lineTo(xOf(V_CE_SAT), padT + plotH);
-        ctx.stroke();
-        ctx.setLineDash([]);
+        // V_CE_SAT marker (dashed vertical)
+        drawVLine(ctx, rect, V_CE_SAT, Vmin, Vmax, {
+          color: colors.border,
+          dash: [2, 4],
+          alpha: 1,
+        });
         const colorFor = (k: number) => {
                 const t = k / (IB_TRACES.length - 1);
                 const r = Math.round(255 - 100 * t);
@@ -116,27 +103,25 @@ export function BJTCharacteristicDemo({ figure }: Props) {
                 return `rgba(${r},${g},${b},0.95)`;
               };
         IB_TRACES.forEach((IB, k) => {
-                ctx.strokeStyle = colorFor(k);
-                ctx.lineWidth = IB === I_B_pick ? 2.2 : 1.3;
-                ctx.beginPath();
+                const color = colorFor(k);
                 const N = 240;
+                const pts: { x: number; y: number }[] = [];
                 for (let j = 0; j <= N; j++) {
                   const v = Vmin + (j / N) * (Vmax - Vmin);
-                  const i = I_C(v, IB, beta);
-                  const x = xOf(v);
-                  const y = yOf(Math.min(Imax, i));
-                  if (j === 0) ctx.moveTo(x, y);
-                  else ctx.lineTo(x, y);
+                  pts.push({ x: v, y: Math.min(Imax, I_C(v, IB, beta)) });
                 }
-                ctx.stroke();
-        
+                drawLinePlot(ctx, rect, pts, Vmin, Vmax, 0, Imax, {
+                  color,
+                  lineWidth: IB === I_B_pick ? 2.2 : 1.3,
+                });
+
                 // I_B label at right end
                 const yEnd = yOf(Math.min(Imax, I_C(Vmax, IB, beta)));
                 drawLabel(ctx, {
-                  x: padL + plotW - 6,
+                  x: padL + rect.w - 6,
                   y: yEnd - 8,
                   text: `I_B = ${(IB * 1e6).toFixed(0)} µA`,
-                  color: colorFor(k),
+                  color,
                   align: 'right',
                   baseline: 'middle',
                 });
@@ -144,16 +129,11 @@ export function BJTCharacteristicDemo({ figure }: Props) {
         const Iop = I_C(V_CE, I_B_pick, beta);
         const opX = xOf(V_CE);
         const opY = yOf(Math.min(Imax, Iop));
-        ctx.save();
-        ctx.globalAlpha = 0.45;
-        ctx.strokeStyle = colors.text;
-        ctx.setLineDash([3, 3]);
-        ctx.beginPath();
-        ctx.moveTo(opX, padT);
-        ctx.lineTo(opX, padT + plotH);
-        ctx.stroke();
-        ctx.restore();
-        ctx.setLineDash([]);
+        drawVLine(ctx, rect, V_CE, Vmin, Vmax, {
+          color: colors.text,
+          dash: [3, 3],
+          alpha: 0.45,
+        });
         ctx.fillStyle = colors.text;
         ctx.beginPath();
         ctx.arc(opX, opY, 4, 0, Math.PI * 2);

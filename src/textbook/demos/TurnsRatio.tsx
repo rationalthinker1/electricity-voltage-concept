@@ -11,6 +11,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawAxes, drawHLine, drawLinePlot } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -44,62 +45,56 @@ export function TurnsRatioDemo({ figure }: Props) {
                 padR = 30;
         const padT = 24,
                 padB = 30;
-        const plotW = w - padL - padR;
-        const plotH = h - padT - padB;
-        const cy = padT + plotH / 2;
-        ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(padL, padT, plotW, plotH);
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.beginPath();
-        ctx.moveTo(padL, cy);
-        ctx.lineTo(padL + plotW, cy);
-        ctx.stroke();
+        const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
+        // Symmetric voltage axis. yMax originally was 200; we keep the same
+        // ±yMax span and the 8 % bottom/top padding by scaling the data range
+        // a touch wider than ±yMax so the curves don't ride the frame.
         const yMax = 200;
-        const yScale = ((plotH / 2) * 0.92) / yMax;
-        ctx.strokeStyle = colors.border;
-        [-150, -100, -50, 50, 100, 150].forEach((v) => {
-                const y = cy - v * yScale;
-                ctx.beginPath();
-                ctx.moveTo(padL, y);
-                ctx.lineTo(padL + plotW, y);
-                ctx.stroke();
-              });
-        ctx.fillStyle = withAlpha(colors.textDim, 0.6);
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        [-150, 0, 150].forEach((v) => {
-                const y = cy - v * yScale;
-                ctx.fillText((v > 0 ? '+' : '') + v.toFixed(0), padL - 6, y);
-              });
+        const yRange = yMax / 0.92;
+
+        // Tick marks at -150,-100,-50,0,50,100,150 — labels at -150,0,+150 only.
+        const yGridTicks = [-150, -100, -50, 0, 50, 100, 150];
+        const yLabelSet = new Set([-150, 0, 150]);
+        drawAxes(ctx, rect, {
+          xMin: 0,
+          xMax: 1,
+          yMin: -yRange,
+          yMax: yRange,
+          xTicks: [],
+          yTicks: yGridTicks,
+          gridColor: colors.border,
+          axisColor: colors.border,
+          yTickFormat: (v) =>
+            yLabelSet.has(v) ? (v > 0 ? '+' : '') + v.toFixed(0) : '',
+        });
+        // The 0-axis on top of the dashed grid for extra weight.
+        drawHLine(ctx, rect, 0, -yRange, yRange, {
+          color: colors.borderStrong,
+          alpha: 1,
+          dash: undefined,
+        });
         const tWindow = 2 / F_HZ;
         const samples = 320;
         const omega = 2 * Math.PI * F_HZ;
-        ctx.strokeStyle = colors.pink;
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
+        const primPts: { x: number; y: number }[] = [];
+        const secPts: { x: number; y: number }[] = [];
         for (let i = 0; i <= samples; i++) {
-                const tau = (i / samples) * tWindow;
-                const v = VP_PEAK * Math.sin(omega * (tVis + tau));
-                const x = padL + (i / samples) * plotW;
-                const y = cy - v * yScale;
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        for (let i = 0; i <= samples; i++) {
-                const tau = (i / samples) * tWindow;
-                const v = VP_PEAK * ratio * Math.sin(omega * (tVis + tau));
-                const x = padL + (i / samples) * plotW;
-                const y = cy - v * yScale;
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
+          const tau = (i / samples) * tWindow;
+          const u = i / samples; // 0..1
+          const v = VP_PEAK * Math.sin(omega * (tVis + tau));
+          primPts.push({ x: u, y: v });
+          secPts.push({ x: u, y: VP_PEAK * ratio * Math.sin(omega * (tVis + tau)) });
+        }
+        drawLinePlot(ctx, rect, primPts, 0, 1, -yRange, yRange, {
+          color: colors.pink,
+          lineWidth: 1.8,
+        });
+        drawLinePlot(ctx, rect, secPts, 0, 1, -yRange, yRange, {
+          color: colors.accent,
+          lineWidth: 1.8,
+        });
+        const plotW = rect.w;
+        const plotH = rect.h;
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';

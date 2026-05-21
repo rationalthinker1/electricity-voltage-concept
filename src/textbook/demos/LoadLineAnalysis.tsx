@@ -14,6 +14,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawAxes, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -69,62 +70,47 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
                 padR = 20,
                 padT = 22,
                 padB = 36;
-        const plotW = w - padL - padR;
-        const plotH = h - padT - padB;
-        const Vmin = 0,
-                Vmax = Math.max(15, V_CC * 1.05);
+        const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
+        const Vmin = 0;
+        const Vmax = Math.max(15, V_CC * 1.05);
         const Imax = Math.max(0.015, (V_CC / R_C) * 1.1);
-        const xOf = (v: number) => padL + ((v - Vmin) / (Vmax - Vmin)) * plotW;
-        const yOf = (i: number) => padT + plotH - (i / Imax) * plotH;
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(padL, padT, plotW, plotH);
-        ctx.strokeStyle = colors.border;
-        ctx.beginPath();
         const vStep = Vmax > 20 ? 5 : 2;
-        for (let v = 0; v <= Vmax + 1e-9; v += vStep) {
-                ctx.moveTo(xOf(v), padT);
-                ctx.lineTo(xOf(v), padT + plotH);
-              }
-        ctx.stroke();
-        ctx.save();
-        ctx.globalAlpha = 0.65;
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        for (let v = 0; v <= Vmax + 1e-9; v += vStep) {
-                ctx.fillText(v.toFixed(0), xOf(v), padT + plotH + 4);
-              }
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
         const iStep = Imax > 0.02 ? 0.005 : 0.002;
-        for (let i = 0; i <= Imax + 1e-9; i += iStep) {
-                ctx.fillText(`${(i * 1000).toFixed(1)} mA`, padL - 4, yOf(i));
-              }
-        ctx.restore();
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('V_CE (volts)', padL + plotW / 2, padT + plotH + 18);
+        const xTicks: number[] = [];
+        for (let v = 0; v <= Vmax + 1e-9; v += vStep) xTicks.push(v);
+        const yTicks: number[] = [];
+        for (let i = 0; i <= Imax + 1e-9; i += iStep) yTicks.push(i);
+
+        drawAxes(ctx, rect, {
+          xMin: Vmin,
+          xMax: Vmax,
+          yMin: 0,
+          yMax: Imax,
+          xTicks,
+          yTicks,
+          xLabel: 'V_CE (volts)',
+          xTickFormat: (v) => v.toFixed(0),
+          yTickFormat: (i) => `${(i * 1000).toFixed(1)} mA`,
+        });
+
+        const { xOf, yOf } = makePlotMappers(rect, Vmin, Vmax, 0, Imax);
+
         const traces = [0.5 * I_B, I_B, 1.5 * I_B];
         traces.forEach((IB, k) => {
                 const lit = k === 1;
                 const col = lit ? withAlpha(colors.accent, 0.95) : withAlpha(colors.accent, 0.4);
-                ctx.strokeStyle = col;
-                ctx.lineWidth = lit ? 2.0 : 1.2;
-                ctx.beginPath();
                 const N = 200;
+                const pts: { x: number; y: number }[] = [];
                 for (let j = 0; j <= N; j++) {
                   const v = Vmin + (j / N) * (Vmax - Vmin);
-                  const i = I_C(v, IB, beta);
-                  const x = xOf(v);
-                  const y = yOf(Math.min(Imax, i));
-                  if (j === 0) ctx.moveTo(x, y);
-                  else ctx.lineTo(x, y);
+                  pts.push({ x: v, y: Math.min(Imax, I_C(v, IB, beta)) });
                 }
-                ctx.stroke();
+                drawLinePlot(ctx, rect, pts, Vmin, Vmax, 0, Imax, {
+                  color: col,
+                  lineWidth: lit ? 2.0 : 1.2,
+                });
                 drawLabel(ctx, {
-                  x: padL + plotW - 6,
+                  x: padL + rect.w - 6,
                   y: yOf(Math.min(Imax, I_C(Vmax, IB, beta))) - 8,
                   text: `I_B = ${(IB * 1e6).toFixed(1)} µA`,
                   color: col,
@@ -133,13 +119,21 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
                 });
               });
         const I_sat = V_CC / R_C;
-        ctx.strokeStyle = colors.teal;
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        ctx.moveTo(xOf(V_CC), yOf(0));
-        ctx.lineTo(xOf(0), yOf(Math.min(Imax, I_sat)));
-        ctx.stroke();
+        drawLinePlot(
+          ctx,
+          rect,
+          [
+            { x: V_CC, y: 0 },
+            { x: 0, y: Math.min(Imax, I_sat) },
+          ],
+          Vmin,
+          Vmax,
+          0,
+          Imax,
+          { color: colors.teal, lineWidth: 1.8 },
+        );
         ctx.fillStyle = colors.teal;
+        ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
         ctx.fillText(`V_CC = ${V_CC.toFixed(1)} V`, xOf(V_CC), yOf(0) - 4);

@@ -16,6 +16,7 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath, renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { fmtResistance, fmtTime } from "@/lib/formatters";
 
 type Mode = 'open' | 'charging' | 'discharging';
 
@@ -158,7 +159,7 @@ export function RCTransientDemo({ figure }: Props) {
             kind: 'resistor',
             from: { x: resX - 20, y: yTop },
             to: { x: resX + 20, y: yTop },
-            label: fmtR(st.R),
+            label: fmtResistance(st.R),
             labelOffset: { x: 0, y: -10 },
           },
           {
@@ -303,7 +304,7 @@ export function RCTransientDemo({ figure }: Props) {
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText(
-        `R = ${fmtR(st.R)}   C = ${(st.C * 1e6).toFixed(0)} µF   τ = ${fmtT(tauNow)}`,
+        `R = ${fmtResistance(st.R)}   C = ${(st.C * 1e6).toFixed(0)} µF   τ = ${fmtTime(tauNow)}`,
         10,
         8,
       );
@@ -353,13 +354,13 @@ export function RCTransientDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText(`τ = ${fmtT(tauNow)}`, Math.min(xTau + 4, plotX + plotW - 80), plotY + 4);
+      ctx.fillText(`τ = ${fmtTime(tauNow)}`, Math.min(xTau + 4, plotX + plotW - 80), plotY + 4);
       ctx.fillStyle = getCanvasColors().textDim;
       ctx.textAlign = 'right';
       ctx.fillText(`V_C = ${st.Vc.toFixed(2)} V`, plotX + plotW, 8);
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
-      ctx.fillText(`window: ${fmtT(PLOT_DURATION)} (6τ)`, plotX + plotW / 2, h - 6);
+      ctx.fillText(`window: ${fmtTime(PLOT_DURATION)} (6τ)`, plotX + plotW / 2, h - 6);
 
       ctx.restore();
       raf = requestAnimationFrame(draw);
@@ -401,7 +402,7 @@ export function RCTransientDemo({ figure }: Props) {
           min={100}
           max={10000}
           step={100}
-          format={fmtR}
+          format={fmtResistance}
           onChange={setR}
         />
         <MiniSlider
@@ -413,24 +414,11 @@ export function RCTransientDemo({ figure }: Props) {
           format={(v) => v.toFixed(0) + ' µF'}
           onChange={setCuf}
         />
-        <MiniReadout label="τ = RC" value={fmtT(tau)} />
+        <MiniReadout label="τ = RC" value={fmtTime(tau)} />
         <MiniReadout label="V_C(now)" value={<Num value={VcDisplay} />} unit="V" />
       </DemoControls>
     </Demo>
   );
-}
-
-function fmtR(R: number): string {
-  if (R >= 1e6) return (R / 1e6).toFixed(1) + ' MΩ';
-  if (R >= 1e3) return (R / 1e3).toFixed(1) + ' kΩ';
-  return R.toFixed(0) + ' Ω';
-}
-function fmtT(s: number): string {
-  if (!isFinite(s) || s <= 0) return '—';
-  if (s < 1e-6) return (s * 1e9).toFixed(1) + ' ns';
-  if (s < 1e-3) return (s * 1e6).toFixed(1) + ' µs';
-  if (s < 1) return (s * 1e3).toFixed(1) + ' ms';
-  return s.toFixed(2) + ' s';
 }
 
 function drawCapacitorV(

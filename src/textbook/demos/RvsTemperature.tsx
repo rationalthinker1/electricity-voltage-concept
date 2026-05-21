@@ -14,7 +14,7 @@ import { getCanvasColors } from '@/lib/canvasTheme';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-
+import { fmtRatio } from "@/lib/formatters";
 
 interface Props {
   figure?: string;
@@ -222,13 +222,4 @@ export function RvsTemperatureDemo({ figure }: Props) {
       </DemoControls>
     </Demo>
   );
-}
-
-function fmtRatio(r: number): string {
-  if (!isFinite(r)) return '—';
-  if (r >= 100) return r.toExponential(2);
-  if (r >= 10) return r.toFixed(1);
-  if (r >= 1) return r.toFixed(2);
-  if (r >= 0.1) return r.toFixed(2);
-  return r.toExponential(2);
 }

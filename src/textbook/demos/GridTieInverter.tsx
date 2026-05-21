@@ -19,6 +19,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawAxes, drawHLine, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -57,58 +58,65 @@ export function GridTieInverterDemo({ figure }: Props) {
                 padR = 80,
                 padT = 18,
                 padB = 28;
-        const plotW = w - padL - padR;
-        const plotH = h - padT - padB;
-        const cy = padT + plotH / 2;
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(padL, padT, plotW, plotH);
-        ctx.beginPath();
-        ctx.moveTo(padL, cy);
-        ctx.lineTo(padL + plotW, cy);
-        ctx.stroke();
+        const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
+        // Original scales each trace into ±(plotH/2 - 8), an 8 px breathing
+        // gap from the frame. Reproduce that by widening the data range
+        // proportionally.
+        const halfH = rect.h / 2;
+        const yPad = 8 / halfH;
+        const vRange = V_PK / (1 - yPad);
+        const iRange = Math.max(Ipk, 1) / (1 - yPad);
+        const pRange = (V_PK * Math.max(Ipk, 1)) / (1 - yPad);
+        drawAxes(ctx, rect, {
+          xMin: 0,
+          xMax: 1,
+          yMin: -vRange,
+          yMax: vRange,
+          xTicks: [],
+          yTicks: [],
+        });
+        drawHLine(ctx, rect, 0, -vRange, vRange, {
+          color: colors.border,
+          alpha: 1,
+          dash: undefined,
+        });
         const tWindow = 2 / F_GRID;
         const samples = 600;
-        const vScale = (plotH / 2 - 8) / V_PK;
-        const iScale = (plotH / 2 - 8) / Math.max(Ipk, 1);
-        const pScale = (plotH / 2 - 8) / (V_PK * Math.max(Ipk, 1));
+        const cy = padT + halfH;
+        const plotW = rect.w;
+        const plotH = rect.h;
+        const vPts: { x: number; y: number }[] = [];
+        const iPts: { x: number; y: number }[] = [];
+        for (let i = 0; i <= samples; i++) {
+          const u = i / samples;
+          const t = u * tWindow;
+          vPts.push({ x: u, y: V_PK * Math.cos(2 * Math.PI * F_GRID * t + phase) });
+          iPts.push({ x: u, y: Ipk * Math.cos(2 * Math.PI * F_GRID * t + phase - theta) });
+        }
         ctx.save();
         ctx.globalAlpha = 0.8;
-        ctx.strokeStyle = colors.text;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        for (let i = 0; i <= samples; i++) {
-                const t = (i / samples) * tWindow;
-                const v = V_PK * Math.cos(2 * Math.PI * F_GRID * t + phase);
-                const x = padL + (i / samples) * plotW;
-                const y = cy - v * vScale;
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
+        drawLinePlot(ctx, rect, vPts, 0, 1, -vRange, vRange, {
+          color: colors.text,
+          lineWidth: 1.5,
+        });
         ctx.restore();
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 1.7;
-        ctx.beginPath();
-        for (let i = 0; i <= samples; i++) {
-                const t = (i / samples) * tWindow;
-                const ii = Ipk * Math.cos(2 * Math.PI * F_GRID * t + phase - theta);
-                const x = padL + (i / samples) * plotW;
-                const y = cy - ii * iScale;
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
+        drawLinePlot(ctx, rect, iPts, 0, 1, -iRange, iRange, {
+          color: colors.accent,
+          lineWidth: 1.7,
+        });
+        // Instantaneous power v·i — closed polygon to the centre axis. drawLinePlot
+        // closes to the bottom of the rect, so the fill stays as raw ctx calls.
+        const { xOf, yOf } = makePlotMappers(rect, 0, 1, -pRange, pRange);
         ctx.fillStyle = colors.tealSoft;
         ctx.beginPath();
         ctx.moveTo(padL, cy);
         for (let i = 0; i <= samples; i++) {
-                const t = (i / samples) * tWindow;
+                const u = i / samples;
+                const t = u * tWindow;
                 const v = V_PK * Math.cos(2 * Math.PI * F_GRID * t + phase);
                 const ii = Ipk * Math.cos(2 * Math.PI * F_GRID * t + phase - theta);
                 const p = v * ii;
-                const x = padL + (i / samples) * plotW;
-                const y = cy - p * pScale;
-                ctx.lineTo(x, y);
+                ctx.lineTo(xOf(u), yOf(p));
               }
         ctx.lineTo(padL + plotW, cy);
         ctx.closePath();

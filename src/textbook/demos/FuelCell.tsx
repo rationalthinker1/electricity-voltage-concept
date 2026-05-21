@@ -14,6 +14,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
+import { drawAxes, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -131,22 +132,29 @@ export function FuelCellDemo({ figure }: Props) {
         const pW = W - pX - 30;
         const pH = H - 60;
         ctx.restore();
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(pX, pY, pW, pH);
-        const xI = (ii: number) => pX + (ii / I_LIMIT) * pW;
-        const yV = (vv: number) => pY + pH - (vv / V_OCV) * pH;
-        ctx.strokeStyle = colors.teal;
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
+        const rect = { x: pX, y: pY, w: pW, h: pH };
+        // Original demo draws only the frame (no tick grid, no tick labels);
+        // pass empty tick arrays to keep the same visual.
+        drawAxes(ctx, rect, {
+          xMin: 0,
+          xMax: I_LIMIT,
+          yMin: 0,
+          yMax: V_OCV,
+          xTicks: [],
+          yTicks: [],
+        });
+        const { xOf: xI, yOf: yV } = makePlotMappers(rect, 0, I_LIMIT, 0, V_OCV);
+
+        const curvePts: { x: number; y: number }[] = [];
         for (let k = 0; k <= 80; k++) {
-                const ii = (k / 80) * (I_LIMIT - 0.01);
-                const vv = V_of_I(ii);
-                const px = xI(ii);
-                const py = yV(vv);
-                if (k === 0) ctx.moveTo(px, py);
-                else ctx.lineTo(px, py);
-              }
-        ctx.stroke();
+          const ii = (k / 80) * (I_LIMIT - 0.01);
+          curvePts.push({ x: ii, y: V_of_I(ii) });
+        }
+        drawLinePlot(ctx, rect, curvePts, 0, I_LIMIT, 0, V_OCV, {
+          color: colors.teal,
+          lineWidth: 1.8,
+        });
+
         const opX = xI(s.i);
         const opY = yV(s.V);
         ctx.fillStyle = colors.pink;

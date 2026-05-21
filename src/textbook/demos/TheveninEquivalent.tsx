@@ -20,6 +20,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { fmtResistance } from "@/lib/formatters";
 
 interface Props {
   figure?: string;
@@ -221,7 +222,7 @@ function buildOriginalElements(
       from: { x: xR1 - 20, y: yTop },
       to: { x: xR1 + 20, y: yTop },
       color: '#ff6b2a',
-      label: `R₁ ${fmtR(st.R1)}`,
+      label: `R₁ ${fmtResistance(st.R1)}`,
       labelOffset: { x: 0, y: -10 },
     },
     {
@@ -244,7 +245,7 @@ function buildOriginalElements(
       from: { x: xMid, y: cy - 18 },
       to: { x: xMid, y: cy + 18 },
       color: '#ff6b2a',
-      label: `R₂ ${fmtR(st.R2)}`,
+      label: `R₂ ${fmtResistance(st.R2)}`,
       labelOffset: { x: 12, y: 0 },
     },
     {
@@ -286,7 +287,7 @@ function buildOriginalElements(
       from: { x: xLoad, y: cy - 18 },
       to: { x: xLoad, y: cy + 18 },
       color: '#6cc5c2',
-      label: `R_L ${fmtR(st.RL)}`,
+      label: `R_L ${fmtResistance(st.RL)}`,
       labelOffset: { x: 12, y: 0 },
     },
     {
@@ -334,7 +335,7 @@ function buildTheveninElements(
       from: { x: xR - 20, y: yTop },
       to: { x: xR + 20, y: yTop },
       color: '#ff6b2a',
-      label: `R_th ${fmtR(st.Rth)}`,
+      label: `R_th ${fmtResistance(st.Rth)}`,
       labelOffset: { x: 0, y: -10 },
     },
     {
@@ -362,7 +363,7 @@ function buildTheveninElements(
       from: { x: xLoad, y: cy - 18 },
       to: { x: xLoad, y: cy + 18 },
       color: '#6cc5c2',
-      label: `R_L ${fmtR(st.RL)}`,
+      label: `R_L ${fmtResistance(st.RL)}`,
       labelOffset: { x: 12, y: 0 },
     },
     {
@@ -399,10 +400,4 @@ function drawLoadReadouts(
   ctx.fillText(`V_L = ${st.Vload.toFixed(2)} V`, xLoad + 12, cy - 8);
   ctx.fillStyle = getCanvasColors().blue;
   ctx.fillText(`I_L = ${(st.Iload * 1000).toFixed(1)} mA`, xLoad + 12, cy + 8);
-}
-
-function fmtR(R: number): string {
-  if (R >= 1e6) return (R / 1e6).toFixed(1) + ' MΩ';
-  if (R >= 1e3) return (R / 1e3).toFixed(1) + ' kΩ';
-  return R.toFixed(0) + ' Ω';
 }

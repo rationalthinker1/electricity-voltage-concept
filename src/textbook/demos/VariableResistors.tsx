@@ -18,7 +18,7 @@ import { pathRoundRect } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-
+import { fmtResistance } from "@/lib/formatters";
 
 interface Props {
   figure?: string;
@@ -111,7 +111,7 @@ export function VariableResistorsDemo({ figure }: Props) {
                 x: trackL,
                 y: trackY + 28,
                 label: 'R_AW',
-                value: fmtOhms(R_TOTAL * (1 - wiper)),
+                value: fmtResistance(R_TOTAL * (1 - wiper)),
                 labelColor: colors.blue,
                 valueColor: colors.blue,
                 align: 'left',
@@ -123,7 +123,7 @@ export function VariableResistorsDemo({ figure }: Props) {
                 x: trackR,
                 y: trackY + 28,
                 label: 'R_WB',
-                value: fmtOhms(R_TOTAL * wiper),
+                value: fmtResistance(R_TOTAL * wiper),
                 labelColor: colors.pink,
                 valueColor: colors.pink,
                 align: 'right',
@@ -200,7 +200,7 @@ export function VariableResistorsDemo({ figure }: Props) {
         ctx.font = '10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText(`${lux.toFixed(lux < 10 ? 1 : 0)} lux`, ldrCX, ldrCY - pH / 2 - 36);
-        ctx.fillText(`R = ${fmtOhms(R_LDR)}`, ldrCX, ldrCY + pH / 2 + 22);
+        ctx.fillText(`R = ${fmtResistance(R_LDR)}`, ldrCX, ldrCY + pH / 2 + 22);
         drawLabel(ctx, {
                 x: splitX + 12,
                 y: 8,
@@ -254,12 +254,4 @@ export function VariableResistorsDemo({ figure }: Props) {
       </DemoControls>
     </Demo>
   );
-}
-
-function fmtOhms(R: number): string {
-  if (!isFinite(R)) return '—';
-  if (R >= 1e6) return (R / 1e6).toFixed(2) + ' MΩ';
-  if (R >= 1e3) return (R / 1e3).toFixed(2) + ' kΩ';
-  if (R >= 1) return R.toFixed(0) + ' Ω';
-  return R.toFixed(2) + ' Ω';
 }

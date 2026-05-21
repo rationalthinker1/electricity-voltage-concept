@@ -16,6 +16,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { drawAxes, drawLinePlot, drawVLine, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -59,19 +60,27 @@ export function LoadFollowingDemo({ figure }: Props) {
                 padR = 24,
                 padT = 24,
                 padB = 38;
-        const plotW = w - padL - padR;
-        const plotH = h - padT - padB;
-        const xAt = (hr: number) => padL + (hr / 24) * plotW;
-        const yAt = (frac: number) => padT + plotH - frac * plotH;
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(padL, padT, plotW, plotH);
-        for (let i = 1; i < 4; i++) {
-                const y = padT + (i / 4) * plotH;
-                ctx.beginPath();
-                ctx.moveTo(padL, y);
-                ctx.lineTo(padL + plotW, y);
-                ctx.stroke();
-              }
+        const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
+        const xHourTicks: number[] = [];
+        for (let hr = 0; hr <= 24; hr += 4) xHourTicks.push(hr);
+        const yFracLabels = new Map<number, string>([
+          [0, '0'],
+          [0.5, '½'],
+          [1, 'peak'],
+        ]);
+        drawAxes(ctx, rect, {
+          xMin: 0,
+          xMax: 24,
+          yMin: 0,
+          yMax: 1,
+          xTicks: xHourTicks,
+          yTicks: [0, 0.25, 0.5, 0.75, 1],
+          xTickFormat: (hr) => hr.toString().padStart(2, '0') + ':00',
+          yTickFormat: (v) => yFracLabels.get(v) ?? '',
+        });
+        const { xOf: xAt, yOf: yAt } = makePlotMappers(rect, 0, 24, 0, 1);
+        const plotW = rect.w;
+        // Baseload band (teal fill)
         ctx.save();
         ctx.globalAlpha = 0.2;
         ctx.fillStyle = colors.teal;
@@ -92,78 +101,56 @@ export function LoadFollowingDemo({ figure }: Props) {
         ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
         ctx.stroke();
         ctx.restore();
+        const N = 200;
+        const loadPts: { x: number; y: number }[] = [];
+        for (let i = 0; i <= N; i++) {
+          const hr = (i / N) * 24;
+          loadPts.push({ x: hr, y: loadFracAt(hr) });
+        }
+        // Peaker shaded band above baseload — closed polygon to BASELOAD_FRAC,
+        // which doesn't match drawLinePlot's fill (it closes to the bottom of
+        // the rect), so keep this as raw ctx.
         ctx.save();
         ctx.globalAlpha = 0.25;
         ctx.fillStyle = colors.accent;
         ctx.beginPath();
-        const N = 200;
         for (let i = 0; i <= N; i++) {
-                const hr = (i / N) * 24;
-                const x = xAt(hr);
-                const y = yAt(loadFracAt(hr));
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
+          const hr = (i / N) * 24;
+          const x = xAt(hr);
+          const y = yAt(loadFracAt(hr));
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
         ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
         ctx.lineTo(padL, yAt(BASELOAD_FRAC));
         ctx.closePath();
         ctx.fill();
         ctx.restore();
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        for (let i = 0; i <= N; i++) {
-                const hr = (i / N) * 24;
-                const x = xAt(hr);
-                const y = yAt(loadFracAt(hr));
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
+        drawLinePlot(ctx, rect, loadPts, 0, 24, 0, 1, {
+          color: colors.accent,
+          lineWidth: 1.8,
+        });
+        // Reserve dashed line (load + 10% headroom)
+        const reservePts = loadPts.map((p) => ({ x: p.x, y: p.y + 0.1 }));
         ctx.save();
         ctx.globalAlpha = 0.55;
-        ctx.strokeStyle = colors.pink;
         ctx.setLineDash([5, 4]);
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        for (let i = 0; i <= N; i++) {
-                const hr = (i / N) * 24;
-                const x = xAt(hr);
-                const y = yAt(loadFracAt(hr) + 0.1);
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
+        drawLinePlot(ctx, rect, reservePts, 0, 24, 0, 1, {
+          color: colors.pink,
+          lineWidth: 1.2,
+        });
         ctx.setLineDash([]);
-        const mx = xAt(hour);
         ctx.restore();
-        ctx.save();
-        ctx.globalAlpha = 0.7;
-        ctx.strokeStyle = colors.text;
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        ctx.moveTo(mx, padT);
-        ctx.lineTo(mx, padT + plotH);
-        ctx.stroke();
-        ctx.restore();
+        drawVLine(ctx, rect, hour, 0, 24, {
+          color: colors.text,
+          lineWidth: 1.2,
+          alpha: 0.7,
+          dash: undefined,
+        });
         ctx.fillStyle = colors.accent;
         ctx.beginPath();
-        ctx.arc(mx, yAt(loadFracAt(hour)), 5, 0, Math.PI * 2);
+        ctx.arc(xAt(hour), yAt(loadFracAt(hour)), 5, 0, Math.PI * 2);
         ctx.fill();
-        ctx.save();
-        ctx.globalAlpha = 0.75;
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        for (let hr = 0; hr <= 24; hr += 4) {
-                ctx.fillText(hr.toString().padStart(2, '0') + ':00', xAt(hr), padT + plotH + 6);
-              }
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('peak', padL - 6, yAt(1));
-        ctx.fillText('½', padL - 6, yAt(0.5));
-        ctx.fillText('0', padL - 6, yAt(0));
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
         const legX = padL + 8;

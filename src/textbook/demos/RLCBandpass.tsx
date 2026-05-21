@@ -22,7 +22,7 @@ import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-
+import { fmtFreqShort } from "@/lib/formatters";
 
 interface Props {
   figure?: string;
@@ -88,7 +88,7 @@ export function RLCBandpassDemo({ figure }: Props) {
                 ctx.save();
                 ctx.globalAlpha = 0.6;
                 ctx.fillStyle = colors.textDim;
-                ctx.fillText(fmtFreq(f), x, plotY + plotH + 4);
+                ctx.fillText(fmtFreqShort(f), x, plotY + plotH + 4);
                 ctx.restore();
               }
         const xf0 = plotX + ((Math.log10(f0) - logMin) / (logMax - logMin)) * plotW;
@@ -146,7 +146,7 @@ export function RLCBandpassDemo({ figure }: Props) {
         ctx.fillText(`|H(f)|  band-pass`, plotX + 4, plotY + 4);
         ctx.fillStyle = colors.teal;
         ctx.textAlign = 'right';
-        ctx.fillText(`f₀ = ${fmtFreq(f0)}   Q = ${Q.toFixed(1)}`, plotX + plotW - 4, plotY + 4);
+        ctx.fillText(`f₀ = ${fmtFreqShort(f0)}   Q = ${Q.toFixed(1)}`, plotX + plotW - 4, plotY + 4);
       },
       [],
     );
@@ -201,13 +201,4 @@ export function RLCBandpassDemo({ figure }: Props) {
       </DemoControls>
     </Demo>
   );
-}
-
-function fmtFreq(f: number): string {
-  if (!isFinite(f) || f <= 0) return '—';
-  if (f >= 1e9) return (f / 1e9).toFixed(0) + 'G';
-  if (f >= 1e6) return (f / 1e6).toFixed(0) + 'M';
-  if (f >= 1e3) return (f / 1e3).toFixed(0) + 'k';
-  if (f >= 1) return f.toFixed(0);
-  return f.toFixed(2);
 }

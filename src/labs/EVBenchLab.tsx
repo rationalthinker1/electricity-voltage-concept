@@ -47,6 +47,7 @@ import type {
   DriveCycleId,
   MotorKind,
 } from './ev-bench/types';
+import { fmtFloat, fmtClockTime } from "@/lib/formatters";
 
 const SLUG = 'ev-bench';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -514,21 +515,6 @@ function plugLabel(k: ChargerKind): string {
   }
 }
 
-function fmt(n: number, dp = 1): string {
-  if (!Number.isFinite(n)) return '—';
-  return n.toFixed(dp);
-}
-
-function fmtTime(s: number): string {
-  if (!Number.isFinite(s) || s < 0) return '—';
-  if (s < 60) return `${s.toFixed(0)} s`;
-  const m = Math.floor(s / 60);
-  const sec = Math.round(s - m * 60);
-  if (m < 60) return `${m}m ${sec}s`;
-  const h = Math.floor(m / 60);
-  return `${h}h ${m - h * 60}m`;
-}
-
 /* ──────────────────────────── palettes ──────────────────────────── */
 
 interface PaletteCommon {
@@ -606,31 +592,31 @@ function PackPalette({
           <span>
             V<sub>nom</sub>
           </span>
-          <span>{fmt(info.vNomPack, 0)} V</span>
+          <span>{fmtFloat(info.vNomPack, 0)} V</span>
         </div>
         <div>
           <span>
             Q<sub>pack</sub>
           </span>
-          <span>{fmt(info.capacityAh, 1)} A·h</span>
+          <span>{fmtFloat(info.capacityAh, 1)} A·h</span>
         </div>
         <div>
           <span>
             E<sub>nom</sub>
           </span>
-          <span>{fmt(info.energyNomKWh, 1)} kWh</span>
+          <span>{fmtFloat(info.energyNomKWh, 1)} kWh</span>
         </div>
         <div>
           <span>
             R<sub>pack</sub>
           </span>
-          <span>{fmt(info.rPack * 1000, 1)} mΩ</span>
+          <span>{fmtFloat(info.rPack * 1000, 1)} mΩ</span>
         </div>
         <div>
           <span>
             m<sub>pack</sub>
           </span>
-          <span>{fmt(info.massKg, 0)} kg</span>
+          <span>{fmtFloat(info.massKg, 0)} kg</span>
         </div>
         <div>
           <span>cycle life</span>
@@ -865,16 +851,16 @@ function LivePanel({ sample, cfg }: { sample: BenchSample | null; cfg: BenchConf
   return (
     <section className="bg-bg-card border-border rounded-3 p-md border">
       <div className="font-3 text-1 text-accent tracking-4 mb-[10px] uppercase">
-        Live · t = {fmtTime(sample.t)}
+        Live · t = {fmtClockTime(sample.t)}
       </div>
-      <ReadRow label="Speed" value={`${fmt(sample.vKph, 1)} km/h`} />
-      <ReadRow label="Motor torque" value={`${fmt(sample.motorTorqueNm, 0)} N·m`} />
+      <ReadRow label="Speed" value={`${fmtFloat(sample.vKph, 1)} km/h`} />
+      <ReadRow label="Motor torque" value={`${fmtFloat(sample.motorTorqueNm, 0)} N·m`} />
       <ReadRow
         label="Battery I"
-        value={`${fmt(sample.iPack, 1)} A`}
+        value={`${fmtFloat(sample.iPack, 1)} A`}
         accent={sample.iPack < 0 ? 'teal' : sample.iPack > 100 ? 'pink' : undefined}
       />
-      <ReadRow label="Pack power" value={`${fmt(sample.pKW, 1)} kW`} />
+      <ReadRow label="Pack power" value={`${fmtFloat(sample.pKW, 1)} kW`} />
       <ReadRow
         label="SOC"
         value={`${(sample.soc * 100).toFixed(1)} %`}
@@ -882,7 +868,7 @@ function LivePanel({ sample, cfg }: { sample: BenchSample | null; cfg: BenchConf
       />
       <ReadRow
         label="Pack T"
-        value={`${fmt(sample.packTempC, 1)} °C`}
+        value={`${fmtFloat(sample.packTempC, 1)} °C`}
         accent={sample.packTempC > 45 ? 'pink' : undefined}
       />
       <ReadRow label="Mode" value={modeLabel(sample.mode)} />
@@ -895,11 +881,11 @@ function DriveSummaryPanel({ stats }: { stats: ReturnType<typeof summarise> }) {
   return (
     <section className="bg-bg-card border-border rounded-3 p-md border">
       <div className="font-3 text-1 text-accent tracking-4 mb-[10px] uppercase">This drive</div>
-      <ReadRow label="Distance" value={`${fmt(stats.distanceKm, 2)} km`} />
-      <ReadRow label="Energy used" value={`${fmt(stats.energyKWh, 3)} kWh`} />
-      <ReadRow label="Consumption" value={`${fmt(stats.whPerKm, 0)} Wh/km`} />
-      <ReadRow label="Remaining range" value={`${fmt(stats.remainingRangeKm, 0)} km`} />
-      <ReadRow label="MPGe" value={`${fmt(stats.mpge, 0)}`} />
+      <ReadRow label="Distance" value={`${fmtFloat(stats.distanceKm, 2)} km`} />
+      <ReadRow label="Energy used" value={`${fmtFloat(stats.energyKWh, 3)} kWh`} />
+      <ReadRow label="Consumption" value={`${fmtFloat(stats.whPerKm, 0)} Wh/km`} />
+      <ReadRow label="Remaining range" value={`${fmtFloat(stats.remainingRangeKm, 0)} km`} />
+      <ReadRow label="MPGe" value={`${fmtFloat(stats.mpge, 0)}`} />
     </section>
   );
 }
@@ -916,9 +902,9 @@ function ChargeSummaryPanel({
   return (
     <section className="bg-bg-card border-border rounded-3 p-md border">
       <div className="font-3 text-1 text-accent tracking-4 mb-[10px] uppercase">This charge</div>
-      <ReadRow label="Peak charging" value={`${fmt(peakKW, 1)} kW`} />
-      <ReadRow label="Time to 80 %" value={fmtTime(stats.timeTo80S)} />
-      <ReadRow label="Time to 100 %" value={fmtTime(stats.timeTo100S)} />
+      <ReadRow label="Peak charging" value={`${fmtFloat(peakKW, 1)} kW`} />
+      <ReadRow label="Time to 80 %" value={fmtClockTime(stats.timeTo80S)} />
+      <ReadRow label="Time to 100 %" value={fmtClockTime(stats.timeTo100S)} />
       <ReadRow
         label="η_charge"
         value={

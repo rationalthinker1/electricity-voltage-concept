@@ -22,6 +22,12 @@ export interface AxisOptions {
   gridColor?: string;
   textColor?: string;
   font?: string;
+  /** Custom formatter for x-axis tick labels. Receives the data-space value. */
+  xTickFormat?: (v: number) => string;
+  /** Custom formatter for y-axis tick labels. Receives the data-space value. */
+  yTickFormat?: (v: number) => string;
+  /** Suppress grid lines while keeping the frame + tick labels. */
+  noGrid?: boolean;
 }
 
 export interface LinePlotOptions {
@@ -29,6 +35,26 @@ export interface LinePlotOptions {
   lineWidth?: number;
   fill?: boolean;
   fillColor?: string;
+}
+
+export interface GridLinesOptions {
+  /** Stroke colour for the grid. Defaults to a low-contrast textMuted alpha. */
+  color?: string;
+  /** Line width. Default 0.5. */
+  lineWidth?: number;
+  /** Dash pattern. Default [2, 4]. Pass `null` for a solid line. */
+  dash?: number[] | null;
+  /** Data-space x extents — used to map xTicks values into pixels. */
+  xMin?: number;
+  xMax?: number;
+  /** Data-space y extents — used to map yTicks values into pixels. */
+  yMin?: number;
+  yMax?: number;
+  /**
+   * If false, omit the boundary tick lines that would overlap the axis
+   * frame (xMin / xMax / yMin / yMax). Default true.
+   */
+  skipBoundary?: boolean;
 }
 
 export interface BarChartOptions {
@@ -123,29 +149,31 @@ export function drawAxes(ctx: CanvasRenderingContext2D, rect: PlotRect, opts: Ax
       );
 
   // Grid lines
-  ctx.strokeStyle = gridColor;
-  ctx.lineWidth = 0.5;
-  ctx.setLineDash([2, 4]);
+  if (!opts.noGrid) {
+    ctx.strokeStyle = gridColor;
+    ctx.lineWidth = 0.5;
+    ctx.setLineDash([2, 4]);
 
-  for (const v of xTickArray) {
-    if (v === opts.xMin || v === opts.xMax) continue;
-    const x = ((v - opts.xMin) / (opts.xMax - opts.xMin)) * rect.w;
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, rect.h);
-    ctx.stroke();
+    for (const v of xTickArray) {
+      if (v === opts.xMin || v === opts.xMax) continue;
+      const x = ((v - opts.xMin) / (opts.xMax - opts.xMin)) * rect.w;
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, rect.h);
+      ctx.stroke();
+    }
+
+    for (const v of yTickArray) {
+      if (v === opts.yMin || v === opts.yMax) continue;
+      const y = rect.h - ((v - opts.yMin) / (opts.yMax - opts.yMin)) * rect.h;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(rect.w, y);
+      ctx.stroke();
+    }
+
+    ctx.setLineDash([]);
   }
-
-  for (const v of yTickArray) {
-    if (v === opts.yMin || v === opts.yMax) continue;
-    const y = rect.h - ((v - opts.yMin) / (opts.yMax - opts.yMin)) * rect.h;
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(rect.w, y);
-    ctx.stroke();
-  }
-
-  ctx.setLineDash([]);
 
   // Tick labels
   ctx.fillStyle = textColor;
@@ -153,16 +181,18 @@ export function drawAxes(ctx: CanvasRenderingContext2D, rect: PlotRect, opts: Ax
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
 
+  const xFmt = opts.xTickFormat ?? fmtTick;
+  const yFmt = opts.yTickFormat ?? fmtTick;
   for (const v of xTickArray) {
     const x = ((v - opts.xMin) / (opts.xMax - opts.xMin)) * rect.w;
-    ctx.fillText(fmtTick(v), x, rect.h + 4);
+    ctx.fillText(xFmt(v), x, rect.h + 4);
   }
 
   ctx.textAlign = 'right';
   ctx.textBaseline = 'middle';
   for (const v of yTickArray) {
     const y = rect.h - ((v - opts.yMin) / (opts.yMax - opts.yMin)) * rect.h;
-    ctx.fillText(fmtTick(v), -4, y);
+    ctx.fillText(yFmt(v), -4, y);
   }
 
   // Axis labels
@@ -184,6 +214,63 @@ export function drawAxes(ctx: CanvasRenderingContext2D, rect: PlotRect, opts: Ax
     ctx.restore();
   }
 
+  ctx.restore();
+}
+
+/**
+ * Draw just the grid lines (no frame, no labels) at the given data-space
+ * tick positions. Useful when a demo wants the frame and tick labels in a
+ * non-standard place but still wants the grid raster behind its curves.
+ *
+ *   drawGridLines(ctx, rect, [0, 5, 10, 15], [-1, 0, 1], {
+ *     xMin: 0, xMax: 20, yMin: -1, yMax: 1,
+ *   });
+ *
+ * When `xMin`/`xMax` (or `yMin`/`yMax`) are omitted, the tick arrays are
+ * treated as already-pixel-space positions inside the rect — equivalent to
+ * `xMin = 0` and `xMax = rect.w`.
+ */
+export function drawGridLines(
+  ctx: CanvasRenderingContext2D,
+  rect: PlotRect,
+  xTicks: number[],
+  yTicks: number[],
+  opts: GridLinesOptions = {},
+) {
+  const colors = getCanvasColors();
+  const gridColor = opts.color ?? withAlpha(colors.textMuted, 0.25);
+  const lineWidth = opts.lineWidth ?? 0.5;
+  const dash = opts.dash === undefined ? [2, 4] : opts.dash;
+  const skipBoundary = opts.skipBoundary ?? true;
+
+  const xMin = opts.xMin ?? 0;
+  const xMax = opts.xMax ?? rect.w;
+  const yMin = opts.yMin ?? 0;
+  const yMax = opts.yMax ?? rect.h;
+
+  ctx.save();
+  ctx.strokeStyle = gridColor;
+  ctx.lineWidth = lineWidth;
+  if (dash) ctx.setLineDash(dash);
+
+  for (const v of xTicks) {
+    if (skipBoundary && (v === xMin || v === xMax)) continue;
+    const x = rect.x + ((v - xMin) / (xMax - xMin)) * rect.w;
+    ctx.beginPath();
+    ctx.moveTo(x, rect.y);
+    ctx.lineTo(x, rect.y + rect.h);
+    ctx.stroke();
+  }
+  for (const v of yTicks) {
+    if (skipBoundary && (v === yMin || v === yMax)) continue;
+    const y = rect.y + rect.h - ((v - yMin) / (yMax - yMin)) * rect.h;
+    ctx.beginPath();
+    ctx.moveTo(rect.x, y);
+    ctx.lineTo(rect.x + rect.w, y);
+    ctx.stroke();
+  }
+
+  if (dash) ctx.setLineDash([]);
   ctx.restore();
 }
 

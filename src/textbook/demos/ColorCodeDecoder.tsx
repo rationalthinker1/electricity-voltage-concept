@@ -8,6 +8,7 @@
 import { useState } from 'react';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
+import { fmtResistance, fmtTolerance } from "@/lib/formatters";
 
 interface Props {
   figure?: string;
@@ -113,11 +114,11 @@ export function ColorCodeDecoderDemo({ figure }: Props) {
         >
           5-band
         </button>
-        <MiniReadout label="Value" value={fmtOhms(nominal)} />
-        <MiniReadout label="Tolerance" value={`±${fmtTol(tol)}`} />
+        <MiniReadout label="Value" value={fmtResistance(nominal)} />
+        <MiniReadout label="Tolerance" value={`±${fmtTolerance(tol)}`} />
         <MiniReadout
           label="Range"
-          value={`${fmtOhms(nominal * (1 - tol))} – ${fmtOhms(nominal * (1 + tol))}`}
+          value={`${fmtResistance(nominal * (1 - tol))} – ${fmtResistance(nominal * (1 + tol))}`}
         />
       </DemoControls>
 
@@ -252,17 +253,4 @@ function ResistorSVG({ bands }: ResistorSVGProps) {
       })}
     </svg>
   );
-}
-
-function fmtOhms(R: number): string {
-  if (!isFinite(R)) return '—';
-  if (R >= 1e9) return (R / 1e9).toFixed(R >= 10e9 ? 1 : 2) + ' GΩ';
-  if (R >= 1e6) return (R / 1e6).toFixed(R >= 10e6 ? 1 : 2) + ' MΩ';
-  if (R >= 1e3) return (R / 1e3).toFixed(R >= 10e3 ? 1 : 2) + ' kΩ';
-  if (R >= 1) return R.toFixed(R >= 10 ? 1 : 2) + ' Ω';
-  if (R >= 0.01) return (R * 1e3).toFixed(0) + ' mΩ';
-  return R.toExponential(2) + ' Ω';
-}
-function fmtTol(t: number): string {
-  return (t * 100).toFixed(t < 0.01 ? 2 : t < 0.05 ? 1 : 0) + '%';
 }

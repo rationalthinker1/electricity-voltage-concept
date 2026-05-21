@@ -94,3 +94,70 @@ export function fmtPercent(p: number, digits = 1): string {
 export function fmtTime(t: number, digits?: number): string {
   return fmt(t, 's', digits);
 }
+
+/**
+ * Short axis-label form for frequency: "1.5k" / "1.5M" / "1.5G" — no Hz.
+ * Use this on canvas tick labels where space is tight; reach for
+ * fmtFrequency() when the unit needs to be visible (prose / readouts).
+ */
+export function fmtFreqShort(f: number): string {
+  if (!Number.isFinite(f) || f <= 0) return '—';
+  if (f >= 1e9) return (f / 1e9).toFixed(0) + 'G';
+  if (f >= 1e6) return (f / 1e6).toFixed(0) + 'M';
+  if (f >= 1e3) return (f / 1e3).toFixed(0) + 'k';
+  if (f >= 1) return f.toFixed(0);
+  return f.toFixed(2);
+}
+
+/** Resistivity in Ω·m (always shown in exponential form). */
+export function fmtResistivity(rho: number, digits = 2): string {
+  if (!Number.isFinite(rho)) return '—';
+  return rho.toExponential(digits) + ' Ω·m';
+}
+
+/**
+ * Bare dimensionless ratio with adaptive precision.
+ * Useful for things like R(T)/R(T₀) plots where the y-axis is a pure number.
+ */
+export function fmtRatio(r: number, digits = 2): string {
+  if (!Number.isFinite(r)) return '—';
+  if (Math.abs(r) >= 100) return r.toExponential(digits);
+  if (Math.abs(r) >= 10) return r.toFixed(1);
+  if (Math.abs(r) >= 0.1) return r.toFixed(digits);
+  return r.toExponential(digits);
+}
+
+/**
+ * Tolerance as a percentage. Input is a fraction (0.05 → "5%"), with
+ * tighter tolerances getting one or two decimals.
+ */
+export function fmtTolerance(t: number): string {
+  return (t * 100).toFixed(t < 0.01 ? 2 : t < 0.05 ? 1 : 0) + '%';
+}
+
+/** Decibels with explicit sign (so 0 dB renders as "+0.0 dB"). */
+export function fmtDb(v: number, digits = 1): string {
+  return `${v >= 0 ? '+' : ''}${v.toFixed(digits)} dB`;
+}
+
+/**
+ * Wall-clock-style elapsed time: "30 s" / "5m 30s" / "2h 30m".
+ * Different from fmtTime(), which uses SI prefixes (ms / µs / ns) and is
+ * meant for sub-second physical times. Use this one for things like battery
+ * runtime, charge duration, or other human-scale intervals.
+ */
+export function fmtClockTime(s: number): string {
+  if (!Number.isFinite(s) || s < 0) return '—';
+  if (s < 60) return `${s.toFixed(0)} s`;
+  const m = Math.floor(s / 60);
+  const sec = Math.round(s - m * 60);
+  if (m < 60) return `${m}m ${sec}s`;
+  const h = Math.floor(m / 60);
+  return `${h}h ${m - h * 60}m`;
+}
+
+/** Plain toFixed wrapper that returns "—" for non-finite values. */
+export function fmtFloat(n: number, dp = 1): string {
+  if (!Number.isFinite(n)) return '—';
+  return n.toFixed(dp);
+}

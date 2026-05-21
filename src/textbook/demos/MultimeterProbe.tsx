@@ -45,6 +45,7 @@ import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { renderCircuitToCanvas, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { fmtResistance, fmtVoltage, fmtCurrent } from "@/lib/formatters";
 
 interface StaticCache {
   key: string;
@@ -160,29 +161,6 @@ function eqI(a: TPId, b: TPId): number {
 }
 
 /* ── Formatting helpers ─────────────────────────────────────────────── */
-function fmtVolts(v: number): string {
-  if (!Number.isFinite(v)) return '— V';
-  const a = Math.abs(v);
-  if (a >= 1) return v.toFixed(3) + ' V';
-  if (a >= 1e-3) return (v * 1000).toFixed(2) + ' mV';
-  if (a === 0) return '0.000 V';
-  return (v * 1e6).toFixed(1) + ' µV';
-}
-function fmtAmps(i: number): string {
-  if (!Number.isFinite(i)) return '— A';
-  const a = Math.abs(i);
-  if (a === 0) return '0.000 A';
-  if (a >= 1) return i.toFixed(3) + ' A';
-  if (a >= 1e-3) return (i * 1000).toFixed(3) + ' mA';
-  return (i * 1e6).toFixed(1) + ' µA';
-}
-function fmtOhms(r: number): string {
-  if (!Number.isFinite(r)) return 'OL';
-  if (r >= 1e6) return (r / 1e6).toFixed(3) + ' MΩ';
-  if (r >= 1e3) return (r / 1e3).toFixed(3) + ' kΩ';
-  return r.toFixed(2) + ' Ω';
-}
-
 /* ── Component ──────────────────────────────────────────────────────── */
 export function MultimeterProbeDemo({ figure }: { figure?: string }) {
   // Test-point positions (CSS px). Computed once relative to canvas size.
@@ -236,7 +214,7 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
     const vb = V_NODE[blackProbe];
     switch (mode) {
       case 'V_DC':
-        return { value: fmtVolts(va - vb), label: 'V DC' };
+        return { value: fmtVoltage(va - vb), label: 'V DC' };
       case 'V_AC': {
         // The only AC-relevant excitation is the small voltage across the
         // capacitor branch as it charges/discharges with R4. At steady
@@ -249,11 +227,11 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
         if (!Number.isFinite(i)) {
           return { value: '— A', label: 'I DC (no series path)' };
         }
-        return { value: fmtAmps(i), label: 'I DC' };
+        return { value: fmtCurrent(i), label: 'I DC' };
       }
       case 'R': {
         const r = eqR(redProbe, blackProbe);
-        return { value: fmtOhms(r), label: 'Resistance' };
+        return { value: fmtResistance(r), label: 'Resistance' };
       }
     }
   }, [redProbe, blackProbe, mode]);

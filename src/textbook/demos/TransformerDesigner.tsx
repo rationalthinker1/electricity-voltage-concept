@@ -35,7 +35,7 @@ import { PHYS } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-
+import { fmtFrequency } from "@/lib/formatters";
 
 interface Props {
   figure?: string;
@@ -298,7 +298,7 @@ export function TransformerDesignerDemo({ figure }: Props) {
           min={50}
           max={100000}
           step={50}
-          format={fmtFreq}
+          format={fmtFrequency}
           onChange={setF}
         />
         <MiniSlider
@@ -677,8 +677,3 @@ function drawResistorZigzag(
 }
 
 /* ────────────────────────────── formatters ────────────────────────────── */
-
-function fmtFreq(v: number): string {
-  if (v >= 1000) return (v / 1000).toFixed(v >= 10000 ? 0 : 1) + ' kHz';
-  return v.toFixed(0) + ' Hz';
-}

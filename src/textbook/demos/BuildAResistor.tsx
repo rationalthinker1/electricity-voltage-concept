@@ -20,7 +20,7 @@ import { Num } from '@/components/Num';
 import { pathRoundRect } from '@/lib/canvasPrimitives';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-
+import { fmtResistance, fmtResistivity } from "@/lib/formatters";
 
 interface Props {
   figure?: string;
@@ -238,15 +238,15 @@ export function BuildAResistorDemo({ figure }: Props) {
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
         ctx.fillText(f.label.toUpperCase(), 12, 10);
-        ctx.fillText(`ρ = ${fmtRho(f.rho)} Ω·m`, 12, 24);
+        ctx.fillText(`ρ = ${fmtResistivity(f.rho)} Ω·m`, 12, 24);
         ctx.fillText(`L = ${Lmm.toFixed(0)} mm`, 12, 38);
         ctx.fillText(`A = ${Amm2.toFixed(3)} mm²`, 12, 52);
         ctx.textAlign = 'right';
         ctx.fillStyle = colors.accent;
-        ctx.fillText(`R = ${fmtOhms(R)}`, W - 12, 10);
+        ctx.fillText(`R = ${fmtResistance(R)}`, W - 12, 10);
         ctx.fillStyle = colors.textDim;
         ctx.fillText(
-                `±${(f.tol * 100).toFixed(f.tol < 0.01 ? 2 : 0)}%   ${fmtOhms(Rmin)} … ${fmtOhms(Rmax)}`,
+                `±${(f.tol * 100).toFixed(f.tol < 0.01 ? 2 : 0)}%   ${fmtResistance(Rmin)} … ${fmtResistance(Rmax)}`,
                 W - 12,
                 24,
               );
@@ -316,18 +316,6 @@ export function BuildAResistorDemo({ figure }: Props) {
 }
 
 /* ─── Helpers ─── */
-
-function fmtOhms(R: number): string {
-  if (!isFinite(R)) return '—';
-  if (R >= 1e6) return (R / 1e6).toFixed(2) + ' MΩ';
-  if (R >= 1e3) return (R / 1e3).toFixed(2) + ' kΩ';
-  if (R >= 1) return R.toFixed(2) + ' Ω';
-  if (R >= 1e-3) return (R * 1e3).toFixed(2) + ' mΩ';
-  return R.toExponential(2) + ' Ω';
-}
-function fmtRho(r: number): string {
-  return r.toExponential(2);
-}
 
 /** Map R (Ω) onto a four-band colour sequence (two digit bands, multiplier, gold tolerance). */
 function decodeFourBand(R: number): string[] {

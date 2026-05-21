@@ -18,6 +18,7 @@ import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { PHYS, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
+import { fmtDb } from "@/lib/formatters";
 
 const SLUG = 'rf-link';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;
@@ -99,10 +100,6 @@ const PRESETS: RFPreset[] = [
 
 function dbmToW(dbm: number) {
   return 10 ** ((dbm - 30) / 10);
-}
-
-function fmtDb(v: number) {
-  return `${v >= 0 ? '+' : ''}${v.toFixed(1)} dB`;
 }
 
 export default function RFLinkLab() {

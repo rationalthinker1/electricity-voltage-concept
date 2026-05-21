@@ -24,7 +24,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-
+import { fmtFreqShort } from "@/lib/formatters";
 
 interface Props {
   figure?: string;
@@ -268,12 +268,4 @@ export function SallenKeyFilterDemo({ figure }: Props) {
       </DemoControls>
     </Demo>
   );
-}
-
-function fmtFreqShort(f: number): string {
-  if (!isFinite(f)) return '—';
-  if (f >= 1e6) return (f / 1e6).toFixed(0) + 'M';
-  if (f >= 1e3) return (f / 1e3).toFixed(0) + 'k';
-  if (f >= 1) return f.toFixed(0);
-  return f.toFixed(2);
 }

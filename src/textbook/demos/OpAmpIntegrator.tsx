@@ -18,7 +18,7 @@ import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-
+import { fmtTime } from "@/lib/formatters";
 
 type WaveKind = 'square' | 'sine' | 'triangle';
 
@@ -148,7 +148,7 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
         ctx.fillText('V_out = -(1/RC)∫V_in dt', plotX + 100, plotY + 4);
         ctx.fillStyle = colors.text;
         ctx.textAlign = 'right';
-        ctx.fillText(`τ = RC = ${fmtT(tau)}`, plotX + plotW - 4, plotY + 4);
+        ctx.fillText(`τ = RC = ${fmtTime(tau)}`, plotX + plotW - 4, plotY + 4);
       },
       [],
     );
@@ -213,17 +213,9 @@ export function OpAmpIntegratorDemo({ figure }: Props) {
           format={(v) => v.toFixed(1) + ' V'}
           onChange={setVinAmp}
         />
-        <MiniReadout label="τ = RC" value={fmtT(tau)} />
+        <MiniReadout label="τ = RC" value={fmtTime(tau)} />
         <MiniReadout label="1/(ωRC)" value={sineGainMag.toFixed(3)} unit="(sine gain)" />
       </DemoControls>
     </Demo>
   );
-}
-
-function fmtT(s: number): string {
-  if (!isFinite(s) || s <= 0) return '—';
-  if (s < 1e-6) return (s * 1e9).toFixed(0) + ' ns';
-  if (s < 1e-3) return (s * 1e6).toFixed(1) + ' µs';
-  if (s < 1) return (s * 1e3).toFixed(2) + ' ms';
-  return s.toFixed(2) + ' s';
 }
