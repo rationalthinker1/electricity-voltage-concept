@@ -482,6 +482,93 @@ export function drawBarChart(
   ctx.restore();
 }
 
+/* ───────────────────────────────────────────────────────────────────────────
+ *  drawPlotTitle — centred title at the top of a plot area.
+ *
+ *  Replaces the recurring 4-line preamble:
+ *    ctx.font = '10px ...'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+ *    ctx.fillText(title, w / 2, 8);
+ * ─────────────────────────────────────────────────────────────────────── */
+
+interface PlotTitleOptions {
+  x: number;
+  y?: number;
+  title: string;
+  color?: string;
+  size?: number;
+}
+
+export function drawPlotTitle(
+  ctx: CanvasRenderingContext2D,
+  options: PlotTitleOptions,
+): void {
+  const colors = getCanvasColors();
+  ctx.save();
+  ctx.fillStyle = options.color ?? colors.textDim;
+  ctx.font = `${options.size ?? 10}px "JetBrains Mono", monospace`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText(options.title, options.x, options.y ?? 8);
+  ctx.restore();
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ *  drawPlotLegend — inline legend with coloured swatches inside a plot rect.
+ *
+ *  Replaces hand-rolled legend blocks that pair a small coloured rectangle
+ *  with a label (e.g. DiodeCharacteristic, VoltageDrivesFlow).
+ *
+ *  Entries are stacked vertically starting at (x, y).
+ * ─────────────────────────────────────────────────────────────────────── */
+
+export interface PlotLegendEntry {
+  color: string;
+  label: string;
+}
+
+interface PlotLegendOptions {
+  x: number;
+  y: number;
+  entries: PlotLegendEntry[];
+  swatchWidth?: number;
+  swatchHeight?: number;
+  swatchGap?: number;
+  rowHeight?: number;
+  textColor?: string;
+  textSize?: number;
+}
+
+export function drawPlotLegend(
+  ctx: CanvasRenderingContext2D,
+  options: PlotLegendOptions,
+): void {
+  const colors = getCanvasColors();
+  const swatchW = options.swatchWidth ?? 10;
+  const swatchH = options.swatchHeight ?? 2;
+  const swatchGap = options.swatchGap ?? 6;
+  const rowHeight = options.rowHeight ?? 14;
+  const textSize = options.textSize ?? 10;
+  const textColor = options.textColor ?? colors.text;
+
+  ctx.save();
+  ctx.font = `${textSize}px "JetBrains Mono", monospace`;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+
+  for (let i = 0; i < options.entries.length; i++) {
+    const entry = options.entries[i]!;
+    const rowY = options.y + i * rowHeight;
+
+    ctx.fillStyle = entry.color;
+    ctx.fillRect(options.x, rowY - swatchH / 2, swatchW, swatchH);
+
+    ctx.fillStyle = textColor;
+    ctx.fillText(entry.label, options.x + swatchW + swatchGap, rowY);
+  }
+
+  ctx.restore();
+}
+
 function fmtTick(v: number): string {
   if (Math.abs(v) >= 10000) return v.toExponential(1);
   if (Math.abs(v) >= 1) return v.toFixed(1).replace(/\.0$/, '');

@@ -19,6 +19,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { Num } from '@/components/Num';
+import { fmtFrequency } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -84,7 +85,7 @@ export function RLCResonanceDemo({ figure }: Props) {
                 ctx.moveTo(x, plotY);
                 ctx.lineTo(x, plotY + plotH);
                 ctx.stroke();
-                ctx.fillText(fmtFreq(tf), x, plotY + plotH + 4);
+                ctx.fillText(fmtFrequency(tf), x, plotY + plotH + 4);
               }
         const x0 = plotX + ((Math.log10(f0) - logMin) / (logMax - logMin)) * plotW;
         ctx.restore();
@@ -134,7 +135,7 @@ export function RLCResonanceDemo({ figure }: Props) {
         ctx.fillText('|I(f)| / Imax', plotX, 8);
         ctx.fillStyle = colors.teal;
         ctx.textAlign = 'right';
-        ctx.fillText(`f₀ = ${fmtFreq(f0)}`, plotX + plotW, 8);
+        ctx.fillText(`f₀ = ${fmtFrequency(f0)}`, plotX + plotW, 8);
         ctx.fillStyle = colors.pink;
         ctx.fillText('−3 dB (½ power)', plotX + plotW, plotY + plotH * 0.18);
         const Qnow = (2 * Math.PI * f0 * L) / R;
@@ -212,9 +213,3 @@ export function RLCResonanceDemo({ figure }: Props) {
   );
 }
 
-function fmtFreq(f: number): string {
-  if (!isFinite(f)) return '—';
-  if (f >= 1e6) return (f / 1e6).toFixed(2) + ' MHz';
-  if (f >= 1e3) return (f / 1e3).toFixed(1) + ' kHz';
-  return f.toFixed(0) + ' Hz';
-}

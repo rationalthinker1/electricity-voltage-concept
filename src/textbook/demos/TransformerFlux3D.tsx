@@ -30,14 +30,11 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import {
-  attachOrbit,
-  project,
-  v3,
-  type OrbitCamera,
-  type Point2D,
+import {  project,
+  v3,  type Point2D,
   type Vec3,
 } from '@/lib/projection3d';
+import { createOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
   figure?: string;
@@ -156,8 +153,8 @@ export function TransformerFlux3DDemo({ figure }: Props) {
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H, canvas } = info;
     let raf = 0;
-    const cam: OrbitCamera = { yaw: 0.55, pitch: 0.22, distance: 7.5, fov: Math.PI / 4 };
-    const dispose = attachOrbit(canvas, cam);
+    const scene = createOrbitScene(canvas, { yaw: 0.55, pitch: 0.22, distance: 7.5, fov: Math.PI / 4 });
+    const cam = scene.cam;
     let t = 0;
     let last = performance.now();
 
@@ -542,7 +539,7 @@ export function TransformerFlux3DDemo({ figure }: Props) {
     raf = requestAnimationFrame(draw);
     return () => {
       cancelAnimationFrame(raf);
-      dispose();
+      scene.dispose();
     };
   }, []);
 

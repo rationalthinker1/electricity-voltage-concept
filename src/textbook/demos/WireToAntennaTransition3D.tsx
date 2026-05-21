@@ -28,7 +28,8 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
+import { project, type Vec3 } from '@/lib/projection3d';
+import { createOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
   figure?: string;
@@ -133,13 +134,12 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
     const { ctx, w: W, h: H, canvas } = info;
     let raf = 0;
 
-    const cam: OrbitCamera = {
+    const scene = createOrbitScene(canvas, {
       yaw: 0.6,
       pitch: 0.28,
       distance: 4.0,
-      fov: Math.PI / 4,
-    };
-    const disposeOrbit = attachOrbit(canvas, cam);
+    });
+    const cam = scene.cam;
 
     // Surface cache; rebuild whenever kL changes.
     let cachedKL = NaN;
@@ -406,7 +406,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
     raf = requestAnimationFrame(draw);
     return () => {
       cancelAnimationFrame(raf);
-      disposeOrbit();
+      scene.dispose();
     };
   }, []);
 

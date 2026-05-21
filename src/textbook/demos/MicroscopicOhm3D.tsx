@@ -33,13 +33,13 @@ import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { MATERIALS, type MaterialKey, PHYS } from '@/lib/physics';
 import {
-  attachOrbit,
   project,
   v3,
   type OrbitCamera,
   type Point2D,
   type Vec3,
 } from '@/lib/projection3d';
+import { createOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
   figure?: string;
@@ -135,8 +135,8 @@ export function MicroscopicOhm3DDemo({ figure }: Props) {
     (info) => {
       const { canvas } = info;
 
-      const cam: OrbitCamera = { yaw: 0.55, pitch: 0.22, distance: 7, fov: Math.PI / 4 };
-      const dispose = attachOrbit(canvas, cam);
+      const scene = createOrbitScene(canvas, { yaw: 0.55, pitch: 0.22, distance: 7 });
+      const cam = scene.cam;
 
       // Initialise electrons uniformly inside the cylinder.
       const electrons: Electron[] = [];
@@ -148,7 +148,7 @@ export function MicroscopicOhm3DDemo({ figure }: Props) {
         electrons.push({ pos: v3(x, r * Math.cos(phi), r * Math.sin(phi)) });
       }
 
-      return { context: { cam, electrons }, cleanup: dispose };
+      return { context: { cam, electrons }, cleanup: () => scene.dispose() };
     },
   );
 

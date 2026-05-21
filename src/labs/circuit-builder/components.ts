@@ -11,6 +11,7 @@
  *   - rotation is implicit in the direction of (p0 → p1)
  */
 
+import { fmtSIPrecision } from '@/lib/formatters';
 import type { PlacedComponent } from './types';
 
 export const GRID_PX = 20;
@@ -460,13 +461,13 @@ export function componentLabel(c: PlacedComponent): string {
     case 'ac':
       return `${c.value.toPrecision(3)} V₀ · ${c.acFreq ?? 60} Hz`;
     case 'resistor':
-      return fmtOhm(c.value);
+      return fmtSIPrecision(c.value, 'Ω');
     case 'bulb':
-      return fmtOhm(c.value);
+      return fmtSIPrecision(c.value, 'Ω');
     case 'capacitor':
-      return fmtF(c.value);
+      return fmtSIPrecision(c.value, 'F');
     case 'inductor':
-      return fmtH(c.value);
+      return fmtSIPrecision(c.value, 'H');
     case 'switch':
       return c.switchOpen ? 'open' : 'closed';
     case 'diode':
@@ -476,23 +477,6 @@ export function componentLabel(c: PlacedComponent): string {
   }
 }
 
-function fmtOhm(v: number): string {
-  if (v >= 1e6) return (v / 1e6).toPrecision(3) + ' MΩ';
-  if (v >= 1e3) return (v / 1e3).toPrecision(3) + ' kΩ';
-  return v.toPrecision(3) + ' Ω';
-}
-function fmtF(v: number): string {
-  if (v >= 1) return v.toPrecision(3) + ' F';
-  if (v >= 1e-3) return (v * 1e3).toPrecision(3) + ' mF';
-  if (v >= 1e-6) return (v * 1e6).toPrecision(3) + ' µF';
-  if (v >= 1e-9) return (v * 1e9).toPrecision(3) + ' nF';
-  return (v * 1e12).toPrecision(3) + ' pF';
-}
-function fmtH(v: number): string {
-  if (v >= 1) return v.toPrecision(3) + ' H';
-  if (v >= 1e-3) return (v * 1e3).toPrecision(3) + ' mH';
-  return (v * 1e6).toPrecision(3) + ' µH';
-}
 
 export interface TooltipInfo {
   title: string;

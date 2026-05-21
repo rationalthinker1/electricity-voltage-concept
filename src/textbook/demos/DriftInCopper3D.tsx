@@ -45,7 +45,8 @@ import { MATERIALS, PHYS } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { attachOrbit, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
+import { project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
+import { createOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
   figure?: string;
@@ -389,8 +390,8 @@ export function DriftInCopper3DDemo({ figure }: Props) {
     (info) => {
       const { canvas } = info;
 
-      const cam: OrbitCamera = { yaw: 0.55, pitch: 0.22, distance: 6.5, fov: Math.PI / 4 };
-      const dispose = attachOrbit(canvas, cam);
+      const scene = createOrbitScene(canvas, { yaw: 0.55, pitch: 0.22, distance: 6.5 });
+      const cam = scene.cam;
 
       // Initialise electrons uniformly inside the cylinder.
       function randInCylinder(): Vec3 {
@@ -422,7 +423,7 @@ export function DriftInCopper3DDemo({ figure }: Props) {
         }
       }
 
-      return { context: { cam, electrons, ions }, cleanup: dispose };
+      return { context: { cam, electrons, ions }, cleanup: () => scene.dispose() };
     },
   );
 

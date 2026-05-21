@@ -31,6 +31,7 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { fmtCurrent } from '@/lib/formatters';
 import { useCircuitCache } from '@/lib/useCircuitCache';
 
 interface Props {
@@ -211,11 +212,11 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
-      ctx.fillText(`I₁ = ${fmtA(I1)}`, (batX + nodeA_x) / 2, yTop - 8);
-      ctx.fillText(`I₃ = ${fmtA(I3)}`, (nodeA_x + outX) / 2, yTop - 8);
+      ctx.fillText(`I₁ = ${fmtCurrent(I1)}`, (batX + nodeA_x) / 2, yTop - 8);
+      ctx.fillText(`I₃ = ${fmtCurrent(I3)}`, (nodeA_x + outX) / 2, yTop - 8);
       ctx.textBaseline = 'middle';
       ctx.textAlign = 'left';
-      ctx.fillText(`I₂ = ${fmtA(I2)}`, nodeA_x + 26, h / 2);
+      ctx.fillText(`I₂ = ${fmtCurrent(I2)}`, nodeA_x + 26, h / 2);
 
       // Dynamic overlay: KCL / KVL annotation boxes (toggled by the controls).
       if (showKCL) {
@@ -253,7 +254,7 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         drawLabel(ctx, {
           x: boxX + 8,
           y: boxY + 36,
-          text: `${fmtA(I1)} = ${fmtA(I2)} + ${fmtA(I3)} ✓`,
+          text: `${fmtCurrent(I1)} = ${fmtCurrent(I2)} + ${fmtCurrent(I3)} ✓`,
           color: getCanvasColors().textDim,
         });
       }
@@ -386,11 +387,6 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
   );
 }
 
-function fmtA(I: number): string {
-  if (Math.abs(I) >= 1) return I.toFixed(2) + ' A';
-  if (Math.abs(I) >= 1e-3) return (I * 1000).toFixed(1) + ' mA';
-  return (I * 1e6).toFixed(0) + ' µA';
-}
 
 function drawCurrentDotsPath(
   ctx: CanvasRenderingContext2D,

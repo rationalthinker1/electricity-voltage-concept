@@ -1070,6 +1070,101 @@ export function drawCurrentDots(
   ctx.restore();
 }
 
+/* ───────────────────────────────────────────────────────────────────────────
+ *  drawArrowWithLabel — stroke an arrow and place a text label beside it.
+ *
+ *  Replaces the common pattern of calling drawArrow() followed by a 5-line
+ *  text preamble and fillText(). The label is positioned at the arrow's
+ *  mid-point by default; use `labelOffset` to nudge it.
+ * ─────────────────────────────────────────────────────────────────────── */
+
+interface ArrowWithLabelOptions extends ArrowOptions {
+  label?: string;
+  labelColor?: string;
+  labelSize?: number;
+  labelOffset?: CanvasPoint;
+}
+
+export function drawArrowWithLabel(
+  ctx: CanvasRenderingContext2D,
+  from: CanvasPoint,
+  to: CanvasPoint,
+  options: ArrowWithLabelOptions = {},
+) {
+  const colors = getCanvasColors();
+  drawArrow(ctx, from, to, options);
+
+  const label = options.label;
+  if (!label) return;
+
+  const labelSize = options.labelSize ?? 10;
+  const labelColor = options.labelColor ?? options.color ?? colors.blue;
+  const offset = options.labelOffset ?? { x: 0, y: -10 };
+  const cx = (from.x + to.x) / 2 + offset.x;
+  const cy = (from.y + to.y) / 2 + offset.y;
+
+  ctx.save();
+  ctx.fillStyle = labelColor;
+  ctx.font = `${labelSize}px "JetBrains Mono", monospace`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(label, cx, cy);
+  ctx.restore();
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ *  drawVoltageProbe — boxed voltage readout floating at a probe position.
+ *
+ *  Centralises the helper duplicated in SeriesParallelMix and SeriesVsParallel.
+ *  Draws a small rounded-rect badge with the value + unit centred at (x, y).
+ * ─────────────────────────────────────────────────────────────────────── */
+
+interface VoltageProbeOptions {
+  x: number;
+  y: number;
+  value: number;
+  unit?: string;
+  decimals?: number;
+  color?: string;
+  bgAlpha?: number;
+  strokeAlpha?: number;
+}
+
+export function drawVoltageProbe(
+  ctx: CanvasRenderingContext2D,
+  options: VoltageProbeOptions,
+): void {
+  const colors = getCanvasColors();
+  const { x, y, value, unit = 'V', decimals = 2 } = options;
+  const color = options.color ?? colors.accent;
+  const bgAlpha = options.bgAlpha ?? 0.85;
+  const strokeAlpha = options.strokeAlpha ?? 0.55;
+  const text = `${value.toFixed(decimals)} ${unit}`;
+
+  ctx.save();
+  ctx.font = '10px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const m = ctx.measureText(text);
+  const boxW = m.width + 12;
+  const boxH = 16;
+
+  ctx.globalAlpha = bgAlpha;
+  ctx.fillStyle = colors.bg;
+  ctx.fillRect(x - boxW / 2, y - boxH / 2, boxW, boxH);
+  ctx.globalAlpha = 1;
+
+  ctx.globalAlpha = strokeAlpha;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1;
+  ctx.strokeRect(x - boxW / 2, y - boxH / 2, boxW, boxH);
+  ctx.globalAlpha = 1;
+
+  ctx.fillStyle = color;
+  ctx.fillText(text, x, y);
+  ctx.restore();
+}
+
 function translucent(color: string, alpha: number): string {
   // #rrggbb or #rrggbbaa
   if (color.startsWith('#')) {

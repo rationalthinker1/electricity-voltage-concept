@@ -37,7 +37,8 @@ import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
+import { project, type Vec3 } from '@/lib/projection3d';
+import { createOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
   figure?: string;
@@ -84,8 +85,8 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
     const { ctx, w: W, h: H, canvas } = info;
     let raf = 0;
 
-    const cam: OrbitCamera = { yaw: 0.65, pitch: 0.28, distance: 6.0, fov: Math.PI / 4 };
-    const dispose = attachOrbit(canvas, cam);
+    const scene = createOrbitScene(canvas, { yaw: 0.65, pitch: 0.28, distance: 6.0 });
+    const cam = scene.cam;
 
     function depthFade(pDepth: number, base = 0.95): number {
       // Map camera-space depth into a 0.35..1.0 alpha multiplier.
@@ -511,7 +512,7 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
     raf = requestAnimationFrame(draw);
     return () => {
       cancelAnimationFrame(raf);
-      dispose();
+      scene.dispose();
     };
   }, []);
 

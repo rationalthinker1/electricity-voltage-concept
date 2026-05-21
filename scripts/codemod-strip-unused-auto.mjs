@@ -50,28 +50,36 @@ for (const sourceFile of project.getSourceFiles()) {
   let removedHere = 0;
   let declsRemovedHere = 0;
 
+  // Fast per-file reference count: build a map of identifier → count,
+  // excluding identifiers that live inside import declarations.
+  const idCounts = new Map();
+  for (const id of sourceFile.getDescendantsOfKind(SyntaxKind.Identifier)) {
+    const text = id.getText();
+    // Skip identifiers inside import declarations.
+    let parent = id.getParent();
+    let insideImport = false;
+    while (parent) {
+      if (Node.isImportDeclaration(parent)) {
+        insideImport = true;
+        break;
+      }
+      parent = parent.getParent();
+    }
+    if (insideImport) continue;
+    idCounts.set(text, (idCounts.get(text) || 0) + 1);
+  }
+
   for (const importDecl of [...sourceFile.getImportDeclarations()]) {
     // Skip default / namespace imports — too risky.
     if (importDecl.getDefaultImport() || importDecl.getNamespaceImport()) continue;
 
     const namedImports = importDecl.getNamedImports();
     for (const spec of [...namedImports]) {
-      const nameNode = spec.getNameNode();
-      if (!nameNode) continue;
-
-      // ts-morph reference finder includes the declaration site by default;
-      // we only care about references *inside this file* excluding the import
-      // specifier itself.
-      const refs = nameNode.findReferencesAsNodes();
-      const localUses = refs.filter((r) => {
-        if (r.getSourceFile() !== sourceFile) return false;
-        // Exclude the import specifier itself.
-        const parent = r.getParent();
-        if (Node.isImportSpecifier(parent)) return false;
-        return true;
-      });
-
-      if (localUses.length === 0) {
+      const name = spec.getName();
+      // Also check the alias if one exists (import { Foo as Bar }).
+      const alias = spec.getAliasNode()?.getText() ?? name;
+      const uses = (idCounts.get(alias) || 0);
+      if (uses === 0) {
         spec.remove();
         removedHere++;
       }

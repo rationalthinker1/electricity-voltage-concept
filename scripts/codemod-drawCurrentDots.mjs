@@ -165,8 +165,16 @@ for (const sourceFile of project.getSourceFiles()) {
 
   if (functionsRemovedHere === 0) continue;
 
-  // Apply in reverse source order so offsets stay valid.
+  totalFiles++;
+  totalFunctionsRemoved += functionsRemovedHere;
+
   const textMigrations = migrations.filter((m) => m.kind === 'replace-call');
+  totalMigrations += textMigrations.length;
+  console.log(`  ${filename}  +${textMigrations.length} call sites, -${functionsRemovedHere} fn`);
+
+  if (DRY) continue;
+
+  // Apply in reverse source order so offsets stay valid.
   textMigrations.sort((a, b) => b.start - a.start);
   for (const m of textMigrations) {
     sourceFile.replaceText([m.start, m.end], m.replacement);
@@ -175,17 +183,16 @@ for (const sourceFile of project.getSourceFiles()) {
   // Remove functions after call-site text is stable.
   const fnMigrations = migrations.filter((m) => m.kind === 'remove-function');
   for (const m of fnMigrations) {
-    m.node.remove();
+    try {
+      m.node.remove();
+    } catch {
+      // Fallback for ts-morph edge cases: blank the function text.
+      sourceFile.replaceText([m.node.getStart(), m.node.getEnd()], '');
+    }
   }
 
   ensureDrawCurrentDotsImport(sourceFile);
-
-  totalFiles++;
-  totalFunctionsRemoved += functionsRemovedHere;
-  totalMigrations += textMigrations.length;
-  console.log(`  ${filename}  +${textMigrations.length} call sites, -${functionsRemovedHere} fn`);
-
-  if (!DRY) sourceFile.saveSync();
+  sourceFile.saveSync();
 }
 
 console.log('');

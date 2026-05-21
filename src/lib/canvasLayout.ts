@@ -55,6 +55,41 @@ export function drawLabel(ctx: CanvasRenderingContext2D, opts: LabelOptions): vo
 }
 
 /* ───────────────────────────────────────────────────────────────────────────
+ *  drawDivider — vertical or horizontal separator line.
+ *
+ *  Thin wrapper around a single stroked line with theme-correct defaults.
+ *  Common in multi-panel demos that split the canvas into two or more
+ *  sections (e.g. VoltageDivider, CoreLosses).
+ * ─────────────────────────────────────────────────────────────────────── */
+
+interface DividerOptions {
+  x0: number;
+  y0: number;
+  x1: number;
+  y1: number;
+  color?: string;
+  lineWidth?: number;
+  dash?: number[] | null;
+}
+
+export function drawDivider(
+  ctx: CanvasRenderingContext2D,
+  options: DividerOptions,
+): void {
+  const colors = getCanvasColors();
+  ctx.save();
+  ctx.strokeStyle = options.color ?? colors.borderStrong;
+  ctx.lineWidth = options.lineWidth ?? 1;
+  if (options.dash) ctx.setLineDash(options.dash);
+  ctx.beginPath();
+  ctx.moveTo(options.x0, options.y0);
+  ctx.lineTo(options.x1, options.y1);
+  ctx.stroke();
+  if (options.dash) ctx.setLineDash([]);
+  ctx.restore();
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
  *  drawCaption — top-edge canvas caption.
  *
  *  Thin wrapper around drawLabel that pins the semantic intent: a short

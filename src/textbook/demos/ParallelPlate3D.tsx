@@ -30,7 +30,8 @@ import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { attachOrbit, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
+import { project, v3, type Vec3 } from '@/lib/projection3d';
+import { createOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
   figure?: string;
@@ -82,8 +83,8 @@ export function ParallelPlate3DDemo({ figure }: Props) {
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H, canvas } = info;
-    const cam: OrbitCamera = { yaw: 0.55, pitch: 0.32, distance: 7.2, fov: Math.PI / 4 };
-    const dispose = attachOrbit(canvas, cam);
+    const scene = createOrbitScene(canvas, { yaw: 0.55, pitch: 0.32, distance: 7.2, fov: Math.PI / 4 });
+    const cam = scene.cam;
     let raf = 0;
 
     function draw() {
@@ -426,7 +427,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
     raf = requestAnimationFrame(draw);
     return () => {
       cancelAnimationFrame(raf);
-      dispose();
+      scene.dispose();
     };
   }, []);
 

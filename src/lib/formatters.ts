@@ -85,6 +85,24 @@ export function fmtSI(value: number, unit: string, digits?: number): string {
   return fmt(value, unit, digits);
 }
 
+/**
+ * Generic SI formatter that rounds with `toPrecision` instead of `toFixed`.
+ * Use this when the caller wants N significant figures regardless of
+ * magnitude (component value pickers, datasheet-style labels). The
+ * default-`fmt` version uses decimal-place rounding which gives prettier
+ * round numbers but variable significant figures.
+ *
+ *   fmtSIPrecision(0.001, 'F', 3)   → "1.00 mF"
+ *   fmtSIPrecision(1500, 'Ω', 3)    → "1.50 kΩ"
+ *   fmtSIPrecision(1e-9, 'H', 3)    → "1.00 nH"
+ */
+export function fmtSIPrecision(value: number, unit: string, precision = 3): string {
+  if (!Number.isFinite(value)) return `— ${unit}`;
+  const prefix = pickPrefix(value);
+  const scaled = value * prefix.scale;
+  return `${scaled.toPrecision(precision)} ${prefix.symbol}${unit}`;
+}
+
 /** Compact percentage (0–100). */
 export function fmtPercent(p: number, digits = 1): string {
   return `${p.toFixed(digits)}%`;

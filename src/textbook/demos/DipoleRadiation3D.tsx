@@ -20,7 +20,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
+import { project, type Vec3 } from '@/lib/projection3d';
+import { createOrbitScene } from '@/lib/useOrbitScene';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 
@@ -83,13 +84,12 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
     const { ctx, w: W, h: H, canvas } = info;
     let raf = 0;
 
-    const cam: OrbitCamera = {
+    const scene = createOrbitScene(canvas, {
       yaw: 0.6,
       pitch: 0.32,
       distance: 4.2,
-      fov: Math.PI / 4,
-    };
-    const disposeOrbit = attachOrbit(canvas, cam);
+    });
+    const cam = scene.cam;
 
     // Latitude × longitude resolution. 18 lat × 24 lon ≈ a 'classic' globe grid.
     const NLAT = 18;
@@ -359,7 +359,7 @@ export function DipoleRadiation3DDemo({ figure }: Props) {
     raf = requestAnimationFrame(draw);
     return () => {
       cancelAnimationFrame(raf);
-      disposeOrbit();
+      scene.dispose();
     };
   }, []);
 

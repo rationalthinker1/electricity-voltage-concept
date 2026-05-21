@@ -35,7 +35,8 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
+import { project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
+import { useOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
   figure?: string;
@@ -85,11 +86,10 @@ export function RotatingMagField3DDemo({ figure }: Props) {
     stateRef.current.showContribs = showContribs;
   }, [freq, I0, showContribs]);
 
-  const camRef = useRef<OrbitCamera>({
+  const { camRef, attach: attachOrbitScene } = useOrbitScene({
     yaw: 0.55,
     pitch: 0.45,
     distance: 6.2,
-    fov: Math.PI / 4,
   });
 
   const [readouts, setReadouts] = useState({
@@ -102,7 +102,7 @@ export function RotatingMagField3DDemo({ figure }: Props) {
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, canvas, colors } = info;
-    const dispose = attachOrbit(canvas, camRef.current);
+    const dispose = attachOrbitScene(canvas);
     let raf = 0;
     let lastReal = performance.now();
 

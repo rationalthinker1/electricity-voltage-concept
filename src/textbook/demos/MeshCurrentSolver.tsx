@@ -30,6 +30,7 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { fmtCurrent } from '@/lib/formatters';
 import { useCircuitCache } from '@/lib/useCircuitCache';
 
 interface Props {
@@ -123,7 +124,7 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
-      ctx.fillText(`I_R₂ = I₁ − I₂ = ${fmtA(sol.I_R2)}`, xMid + 14, h / 2);
+      ctx.fillText(`I_R₂ = I₁ − I₂ = ${fmtCurrent(sol.I_R2)}`, xMid + 14, h / 2);
       ctx.restore();
 
       ctx.save();
@@ -356,12 +357,6 @@ function buildMeshSchematic(
   ];
 }
 
-function fmtA(I: number): string {
-  if (Math.abs(I) >= 1) return I.toFixed(3) + ' A';
-  if (Math.abs(I) >= 1e-3) return (I * 1000).toFixed(1) + ' mA';
-  return (I * 1e6).toFixed(0) + ' µA';
-}
-
 function drawMeshLoop(
   ctx: CanvasRenderingContext2D,
   x0: number,
@@ -408,7 +403,7 @@ function drawMeshLoop(
   drawLabel(ctx, {
     x: cx,
     y: cy,
-    text: `${label} = ${fmtA(I)}`,
+    text: `${label} = ${fmtCurrent(I)}`,
     color: color,
     size: 12,
     align: 'center',

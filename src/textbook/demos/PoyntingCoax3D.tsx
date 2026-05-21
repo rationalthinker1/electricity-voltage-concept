@@ -30,7 +30,6 @@ import { PHYS } from '@/lib/physics';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import {
-  attachOrbit,
   depthSortIndices,
   project,
   v3,
@@ -38,6 +37,7 @@ import {
   type Vec3,
 } from '@/lib/projection3d';
 import { useCanvasCache } from '@/lib/useCanvasCache';
+import { useOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
   figure?: string;
@@ -80,11 +80,10 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
   // time and the per-frame setup passes the quantized angles as the
   // hook's `frameKey` so the cache invalidates when the camera moves
   // past a ~0.04 rad threshold.
-  const camRef = useRef<OrbitCamera>({
+  const { camRef, attach: attachOrbitScene } = useOrbitScene({
     yaw: 0.6,
     pitch: 0.25,
     distance: 6.5,
-    fov: Math.PI / 4,
   });
 
   const getStatic = useCanvasCache(
@@ -169,7 +168,7 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
     let raf = 0;
 
     const cam = camRef.current;
-    const dispose = attachOrbit(canvas, cam);
+    const dispose = attachOrbitScene(canvas);
 
     function draw() {
       ctx.fillStyle = getCanvasColors().bg;

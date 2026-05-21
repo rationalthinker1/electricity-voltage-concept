@@ -24,7 +24,8 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { attachOrbit, project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
+import { project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
+import { useOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
   figure?: string;
@@ -52,11 +53,10 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
     stateRef.current.showNormal = showNormal;
   }, [omega, B, showDisc, showNormal]);
 
-  const camRef = useRef<OrbitCamera>({
+  const { camRef, attach: attachOrbitScene } = useOrbitScene({
     yaw: 0.6,
     pitch: 0.25,
     distance: 6,
-    fov: Math.PI / 4,
   });
 
   // Live readouts (rendered outside the canvas).
@@ -67,7 +67,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, canvas, colors } = info;
-    const dispose = attachOrbit(canvas, camRef.current);
+    const dispose = attachOrbitScene(canvas);
     let raf = 0;
     let lastReal = performance.now();
     // Rolling scope buffer.
