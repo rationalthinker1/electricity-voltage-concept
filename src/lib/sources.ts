@@ -217,6 +217,14 @@ export const SOURCES: Record<string, Source> = {
     venue: 'Annalen der Physik 306 (3), 566–613',
     note: 'Original classical free-electron model of metallic conduction.',
   },
+  'oersted-1820': {
+    id: 'oersted-1820',
+    title: 'Experimenta circa effectum conflictus electrici in acum magneticam',
+    author: 'Hans Christian Ørsted',
+    year: 1820,
+    venue: 'Privately printed pamphlet, Copenhagen, 21 July 1820',
+    note: 'First report that a current-carrying wire deflects a nearby compass needle — the founding observation that current produces magnetism. Public demonstration on 21 April 1820 preceded the published pamphlet.',
+  },
   'biot-savart-1820': {
     id: 'biot-savart-1820',
     title: 'Note sur le magnétisme de la pile de Volta',

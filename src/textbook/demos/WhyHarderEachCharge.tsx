@@ -41,9 +41,9 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
   const V_now = Q_now / C;
   const workForNext = Q_UNIT * V_now;
 
-  // Cumulative work to charge from 0 to N+1 (sum approximation; exact integral
+  // Cumulative work to charge from 0 to N (sum approximation; exact integral
   // for continuum is ½ C V², which we also display so the reader sees both).
-  // Sum_{k=0..N} q · k · q / C  =  q²/C · N(N+1)/2
+  // Sum_{k=0..N-1} q · k · q / C  =  q²/C · N(N-1)/2
   const W_so_far = (((Q_UNIT * Q_UNIT) / C) * (N * (N - 1))) / 2; // work spent up to N
   const W_integral = 0.5 * C * V_now * V_now;
 
@@ -64,8 +64,8 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
       const xL = cx - plateW / 2;
       const topY = cy - gap / 2;
       const botY = cy + gap / 2;
-      drawBar(ctx, xL, topY - plateThick, plateW, plateThick, '#ff3b6e');
-      drawBar(ctx, xL, botY, plateW, plateThick, '#5baef8');
+      drawBar(ctx, xL, topY - plateThick, plateW, plateThick, colors.pink);
+      drawBar(ctx, xL, botY, plateW, plateThick, colors.blue);
       const drawN = Math.min(40, s.N);
       ctx.fillStyle = colors.pink;
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
@@ -164,7 +164,7 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.2'}
+      figure={figure ?? 'Fig. 5.4'}
       title="Why each charge is harder than the last"
       question="What does the (N+1)ᵗʰ charge actually push against?"
       caption={

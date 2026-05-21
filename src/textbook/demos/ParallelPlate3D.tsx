@@ -139,9 +139,9 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       }
 
       // Sparse 6×6 grid of σ-marks on a plate. `sign` decides + or −,
-      // `colorRgb` is the marker fill colour, and `sigmaRel` (0..1) scales
-      // the symbol size.
-      function drawSigmaMarks(y: number, sign: '+' | '−', colorRgb: string, sigmaRel: number) {
+      // `markColor` is a resolved theme-token colour string, and `sigmaRel`
+      // (0..1) scales the symbol size.
+      function drawSigmaMarks(y: number, sign: '+' | '−', markColor: string, sigmaRel: number) {
         const N = 6;
         // Marks placed at cell centres of a 6×6 grid inside the plate.
         const step = (2 * half) / N;
@@ -163,11 +163,11 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         for (const c of cells) {
           if (c.p.depth <= 0) continue;
           // Subtle "stamp" disc behind the symbol for readability.
-          ctx.fillStyle = `rgba(${colorRgb},0.18)`;
+          ctx.fillStyle = withAlpha(markColor, 0.18);
           ctx.beginPath();
           ctx.arc(c.p.x, c.p.y, baseSize * 0.7, 0, Math.PI * 2);
           ctx.fill();
-          ctx.fillStyle = `rgba(${colorRgb},0.95)`;
+          ctx.fillStyle = withAlpha(markColor, 0.95);
           ctx.fillText(sign, c.p.x, c.p.y + 1);
         }
       }
@@ -186,9 +186,9 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       const sigmaRel = Math.sqrt(Math.max(0, s.computed.sigma) / sigmaRef);
 
       if (topIsBack) {
-        drawSigmaMarks(yTop, '+', '255,59,110', sigmaRel);
+        drawSigmaMarks(yTop, '+', getCanvasColors().pink, sigmaRel);
       } else {
-        drawSigmaMarks(yBot, '−', '91,174,248', sigmaRel);
+        drawSigmaMarks(yBot, '−', getCanvasColors().blue, sigmaRel);
       }
 
       // ─── 2. Translucent amber gap volume ───────────────────────────
@@ -223,6 +223,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         ctx.stroke();
       }
       ctx.setLineDash([]);
+      ctx.restore();
 
       // ─── 3. E-field arrows on a 4×4 grid across the gap, from top to bot ─
       // Arrow length scales with E (== V/d). Visual cap so the slider feels
@@ -262,7 +263,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         const dMid = (p1.depth + p2.depth) / 2;
         const tDepth = Math.max(0, Math.min(1, (cam.distance + 1.5 - dMid) / 3.5));
         const fade = 0.32 + 0.55 * tDepth;
-        const baseColor = `rgba(255,107,42,${(0.92 * fade).toFixed(3)})`;
+        const baseColor = withAlpha(getCanvasColors().accent, 0.92 * fade);
 
         // Body.
         ctx.strokeStyle = baseColor;
@@ -294,11 +295,11 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       if (topIsBack) {
         drawPlateFill(yBot, withAlpha(getCanvasColors().blue, 0.1));
         drawPlateOutline(yBot, withAlpha(getCanvasColors().blue, 0.65));
-        drawSigmaMarks(yBot, '−', '91,174,248', sigmaRel);
+        drawSigmaMarks(yBot, '−', getCanvasColors().blue, sigmaRel);
       } else {
         drawPlateFill(yTop, withAlpha(getCanvasColors().pink, 0.1));
         drawPlateOutline(yTop, withAlpha(getCanvasColors().pink, 0.65));
-        drawSigmaMarks(yTop, '+', '255,59,110', sigmaRel);
+        drawSigmaMarks(yTop, '+', getCanvasColors().pink, sigmaRel);
       }
 
       // ─── 5. Gauss pillbox (on top of everything) ────────────────────
@@ -340,6 +341,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
           ctx.closePath();
           ctx.fill();
         }
+        ctx.restore();
 
         // Glow-outline the two rims and a couple of side generators.
         drawGlowPath(ctx, [...rimU, rimU[0]!], {
@@ -387,23 +389,24 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         const boxX = Math.min(W - boxW - 8, Math.max(8, anchor.x + 18));
         const boxY = Math.min(H - boxH - 8, Math.max(8, anchor.y - boxH - 10));
         // Connector from anchor to box.
-        ctx.restore();
         ctx.strokeStyle = getCanvasColors().teal;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(anchor.x, anchor.y);
         ctx.lineTo(boxX + 6, boxY + boxH);
         ctx.stroke();
-        // Box.
+        // Box: opaque background + teal stroke.
         ctx.save();
         ctx.globalAlpha = 0.92;
         ctx.fillStyle = getCanvasColors().canvasBg;
+        ctx.beginPath();
+        ctx.rect(boxX, boxY, boxW, boxH);
+        ctx.fill();
         ctx.restore();
         ctx.strokeStyle = getCanvasColors().teal;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.rect(boxX, boxY, boxW, boxH);
-        ctx.fill();
         ctx.stroke();
         // Lines.
         ctx.fillStyle = getCanvasColors().teal;
@@ -417,7 +420,6 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.restore();
       ctx.fillStyle = getCanvasColors().textDim;
       drawLabel(ctx, { text: 'drag to orbit', x: 12, y: 12 });
       ctx.fillStyle = getCanvasColors().pink;
@@ -439,7 +441,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 5.4'}
+      figure={figure ?? 'Fig. 5.3'}
       title="A parallel-plate capacitor, in 3D"
       question="What does the field in the gap actually look like — and why is ∮D·dA on a pillbox piercing the plate exactly Q_enclosed?"
       caption={

@@ -1,5 +1,5 @@
 /**
- * Chapter 4 — Magnetism
+ * Chapter 6 — Magnetism
  *
  * The rotational half. Currents make B fields; B fields steer charges; two
  * wires talk through their fields; a coil is the simplest practical magnet;
@@ -7,10 +7,11 @@
  * moving frame.
  *
  * Embedded demos:
- *   4.1 Field around a long straight wire (B = μ₀I/2πr)
- *   4.2 Two parallel wires (F/L = μ₀I₁I₂/2πd)
- *   4.3 Cyclotron motion (Lorentz force, r = mv/qB)
- *   4.4 Solenoid (B = μ₀nI)
+ *   6.1 Field around a long straight wire (B = μ₀I/2πr)
+ *   6.2 Biot–Savart law in 3D (line integral around a long wire)
+ *   6.3 Two parallel wires (F/L = μ₀I₁I₂/2πd)
+ *   6.4 Cyclotron motion (Lorentz force, r = mv/qB)
+ *   6.5 Solenoid (B = μ₀nI)
  */
 import { ChapterShell } from '@/components/ChapterShell';
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
@@ -38,7 +39,8 @@ export default function Ch6Magnetism() {
         needle, which had been pointing north, swung sideways. He uncrossed the wires. The needle
         swung back. He hadn't been looking for a connection between electricity and magnetism.
         Nobody in 1820 thought there was one. By that summer the pamphlet was circulating across
-        Europe and the rest of the century was spent figuring out what had just happened.
+        Europe and the rest of the century was spent figuring out what had just happened
+        <Cite id="oersted-1820" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         What had happened was this: a current in a wire produces a{' '}
@@ -456,7 +458,7 @@ export default function Ch6Magnetism() {
         cars at a junkyard. The same geometry, used backwards, is the
         <em className="text-text italic"> inductor</em>: a coil that opposes any change in current
         through it because changing current means changing field, and changing field means an
-        induced voltage. We meet that in Chapter 5.
+        induced voltage. We meet that in Chapter 7.
       </p>
 
       <h2 className="chapter-h2">
@@ -496,11 +498,15 @@ export default function Ch6Magnetism() {
         This wasn't how Maxwell or Ampère thought about it. They had two coupled fields,{' '}
         <strong className="text-text font-medium">E</strong> and
         <strong className="text-text font-medium"> B</strong>, with their own equations. It took
-        Einstein in 1905 to point out that the same fields are just two faces of one tensor, and
-        that Maxwell's equations, properly written, are already relativistic — no modifications
-        needed. They had been the whole time. Maxwell's electromagnetism was the first relativistic
-        theory in physics. Nobody at the time noticed, because there was nothing else to compare it
-        to.
+        Einstein in 1905 to show that <strong className="text-text font-medium">E</strong> and{' '}
+        <strong className="text-text font-medium">B</strong> transform into each other under a
+        change of inertial frame
+        <Cite id="einstein-1905" in={SOURCES} />, and Minkowski in 1908 to write them as two faces
+        of one antisymmetric tensor. Maxwell's equations, properly written, were already
+        relativistic — no modifications needed. They had been the whole time. Maxwell's
+        electromagnetism was the first relativistic theory in physics. Nobody at the time noticed,
+        because there was nothing else to compare it to
+        <Cite id="purcell-morin-2013" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         So when you look at a refrigerator magnet and feel its quiet pull, you're feeling the
@@ -520,7 +526,7 @@ export default function Ch6Magnetism() {
         }
       >
         <CaseStudy
-          tag="Case 4.1"
+          tag="Case 6.1"
           title="The clinical MRI scanner"
           summary={
             <em className="text-text italic">
@@ -577,7 +583,7 @@ export default function Ch6Magnetism() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 4.2"
+          tag="Case 6.2"
           title="The Large Hadron Collider's dipole magnets"
           summary={
             <em className="text-text italic">
@@ -632,7 +638,7 @@ export default function Ch6Magnetism() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 4.3"
+          tag="Case 6.3"
           title="Earth's magnetic field"
           summary={
             <em className="text-text italic">
@@ -679,7 +685,7 @@ export default function Ch6Magnetism() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 4.4"
+          tag="Case 6.4"
           title="A magnetar"
           summary={
             <em className="text-text italic">
@@ -702,7 +708,8 @@ export default function Ch6Magnetism() {
             <strong className="text-text font-medium">10¹⁰–10¹¹ T</strong>
             <Cite id="duncan-thompson-1992" in={SOURCES} />. They named the objects{' '}
             <em className="text-text italic">magnetars</em>. About thirty confirmed examples are
-            known in our galaxy.
+            known in our galaxy
+            <Cite id="duncan-thompson-1992" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
             At these field strengths the energy density{' '}

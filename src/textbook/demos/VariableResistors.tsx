@@ -54,7 +54,7 @@ export function VariableResistorsDemo({ figure }: Props) {
       const trackR = splitX - 30;
       const trackY = H * 0.42;
       const trackH = 18;
-      ctx.fillStyle = 'rgba(190,160,140,0.32)';
+      ctx.fillStyle = withAlpha(colors.accent, 0.28);
       pathRoundRect(ctx, trackL, trackY - trackH / 2, trackR - trackL, trackH, 4);
       ctx.fill();
       ctx.strokeStyle = colors.borderStrong;
@@ -76,7 +76,7 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.fillRect(trackL - 14, trackY - 4, 12, 8);
       ctx.fillStyle = colors.pink;
       ctx.fillRect(trackR + 2, trackY - 4, 12, 8);
-      ctx.strokeStyle = 'rgba(200,200,205,0.7)';
+      ctx.strokeStyle = withAlpha(colors.text, 0.62);
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(trackL - 8, trackY + 4);
@@ -88,7 +88,7 @@ export function VariableResistorsDemo({ figure }: Props) {
       drawLabel(ctx, { text: 'A', x: trackL - 8, y: H - 4, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabel(ctx, { text: 'B', x: trackR + 8, y: H - 4, font: '10px "JetBrains Mono", monospace', align: 'center' });
       const wiperX = trackL + wiper * (trackR - trackL);
-      ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+      ctx.strokeStyle = withAlpha(colors.text, 0.85);
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(wiperX, trackY - 26);
@@ -98,10 +98,10 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(wiperX, trackY - trackH / 2 - 2, 6, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+      ctx.strokeStyle = withAlpha(colors.text, 0.85);
       ctx.lineWidth = 1;
       ctx.stroke();
-      ctx.fillStyle = '#ffb84a';
+      ctx.fillStyle = withAlpha(colors.accent, 0.85);
       ctx.fillRect(wiperX - 6, trackY - 36, 12, 8);
       drawLabel(ctx, { text: 'W (wiper)', x: wiperX, y: trackY - 42, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabeledValue(ctx, {
@@ -144,10 +144,10 @@ export function VariableResistorsDemo({ figure }: Props) {
       const ldrCY = H / 2;
       const pW = 80,
         pH = 50;
-      ctx.fillStyle = 'rgba(200,200,205,0.18)';
+      ctx.fillStyle = withAlpha(colors.text, 0.16);
       pathRoundRect(ctx, ldrCX - pW / 2, ldrCY - pH / 2, pW, pH, 5);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+      ctx.strokeStyle = withAlpha(colors.text, 0.22);
       ctx.stroke();
       const luxNorm = Math.min(1, Math.max(0, (Math.log10(lux) + 1) / 5));
       const cdsColor = `rgba(255,180,${40 + Math.floor(luxNorm * 180)},${0.6 + luxNorm * 0.35})`;
@@ -185,7 +185,7 @@ export function VariableResistorsDemo({ figure }: Props) {
         ctx.fillStyle = `rgba(255,230,160,${lightAlpha})`;
         ctx.fill();
       }
-      ctx.strokeStyle = 'rgba(200,200,205,0.7)';
+      ctx.strokeStyle = withAlpha(colors.text, 0.62);
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(ldrCX - pW / 2 + 12, ldrCY + pH / 2);

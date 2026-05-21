@@ -1,5 +1,5 @@
 /**
- * Demo D4.3 — Charged particle in a uniform B field
+ * Demo D6.4 — Charged particle in a uniform B field
  *
  * Background: scattered × marks indicate B pointing into the page.
  * A charged particle is launched at the left moving right; magnetic force
@@ -17,6 +17,7 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { PHYS, pretty } from '@/lib/physics';
+import { fmtSIPrecision } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -78,9 +79,9 @@ export function CyclotronDemo({ figure }: Props) {
           ctx.moveTo(x + k, y - k);
           ctx.lineTo(x - k, y + k);
           ctx.stroke();
-          ctx.restore();
         }
       }
+      ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.55;
       drawLabel(ctx, { text: `B = ${pretty(B, 3)} T  (into page)`, x: 14, y: 18, color: colors.teal, font: '10px "JetBrains Mono", monospace' });
@@ -114,7 +115,7 @@ export function CyclotronDemo({ figure }: Props) {
       ctx.arc(cx0, cy0, rPx, theta - sign * trailLen, theta, sign < 0);
       ctx.stroke();
       ctx.restore();
-      const color = positive ? '#ff3b6e' : '#5baef8';
+      const color = positive ? colors.pink : colors.blue;
       drawHalo(ctx, {
         x: px,
         y: py,
@@ -168,7 +169,7 @@ export function CyclotronDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.3'}
+      figure={figure ?? 'Fig. 6.4'}
       title="Magnetic force only steers"
       question="A charge in a B field never speeds up. So what does it do?"
       caption={
@@ -206,7 +207,7 @@ export function CyclotronDemo({ figure }: Props) {
           min={0.0001}
           max={1}
           step={0.0001}
-          format={(v) => pretty(v, 2) + ' T'}
+          format={(v) => fmtSIPrecision(v, 'T', 2)}
           onChange={setB}
         />
         <MiniReadout label="radius" value={<Num value={r_real} digits={3} />} unit="m" />

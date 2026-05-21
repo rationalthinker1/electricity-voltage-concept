@@ -96,7 +96,7 @@ export function LeydenJarReplayDemo({ figure }: Props) {
       ctx.stroke();
       const innerCharge = s.charge;
       ctx.restore();
-      ctx.fillStyle = `rgba(255,59,110,${0.15 + innerCharge * 0.6})`;
+      ctx.fillStyle = withAlpha(colors.pink, 0.15 + innerCharge * 0.6);
       ctx.fillRect(xL + 10, yT + 25, jarW - 20, jarH - 35);
       ctx.fillStyle = colors.textDim;
       ctx.fillRect(cx - 3, yT - 60, 6, 60);
@@ -104,7 +104,7 @@ export function LeydenJarReplayDemo({ figure }: Props) {
       ctx.arc(cx, yT - 64, 11, 0, Math.PI * 2);
       ctx.fill();
       if (innerCharge > 0) {
-        ctx.fillStyle = `rgba(255,59,110,${innerCharge * 0.6})`;
+        ctx.fillStyle = withAlpha(colors.pink, innerCharge * 0.6);
         ctx.beginPath();
         ctx.arc(cx, yT - 64, 11, 0, Math.PI * 2);
         ctx.fill();
@@ -112,14 +112,14 @@ export function LeydenJarReplayDemo({ figure }: Props) {
       if (innerCharge > 0.05) {
         const r = 14 + 10 * innerCharge + Math.sin(phase * 6) * 1.5;
         const grd = ctx.createRadialGradient(cx, yT - 64, 8, cx, yT - 64, r);
-        grd.addColorStop(0, `rgba(255,107,42,${0.3 * innerCharge})`);
+        grd.addColorStop(0, withAlpha(colors.accent, 0.3 * innerCharge));
         grd.addColorStop(1, withAlpha(colors.accent, 0));
         ctx.fillStyle = grd;
         ctx.beginPath();
         ctx.arc(cx, yT - 64, r, 0, Math.PI * 2);
         ctx.fill();
       }
-      ctx.fillStyle = `rgba(255,59,110,${0.5 + innerCharge * 0.5})`;
+      ctx.fillStyle = withAlpha(colors.pink, 0.5 + innerCharge * 0.5);
       ctx.font = 'bold 11px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -127,7 +127,7 @@ export function LeydenJarReplayDemo({ figure }: Props) {
         const y = yT + 50 + i * 28;
         ctx.fillText('+', cx, y);
       }
-      ctx.fillStyle = `rgba(91,174,248,${0.5 + innerCharge * 0.5})`;
+      ctx.fillStyle = withAlpha(colors.blue, 0.5 + innerCharge * 0.5);
       for (let i = 0; i < 4; i++) {
         const y = yT + 60 + i * 30;
         ctx.fillText('−', xL - 14, y);
@@ -173,9 +173,9 @@ export function LeydenJarReplayDemo({ figure }: Props) {
           }
           sparkPts.push({ x: tx, y: ty });
           drawGlowPath(ctx, sparkPts, {
-            color: `rgba(255,255,200,${alpha})`,
+            color: withAlpha(colors.text, alpha),
             lineWidth: 2.5,
-            glowColor: `rgba(255,200,80,${0.6 * alpha})`,
+            glowColor: withAlpha(colors.accent, 0.6 * alpha),
             glowWidth: 9,
           });
         }
@@ -203,7 +203,7 @@ export function LeydenJarReplayDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.6'}
+      figure={figure ?? 'Fig. 5.7'}
       title="The Leyden jar"
       question="What did electricity look like before there were batteries?"
       caption={

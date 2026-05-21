@@ -93,7 +93,7 @@ export function WiedemannFranzDemo({ figure }: Props) {
         ctx.fillRect(padL, y + rowH / 2 + 2, sigmaW, rowH / 2 - 8);
 
         // Material label
-        ctx.fillStyle = isSel ? '#ff6b2a' : withAlpha(colors.text, 0.75);
+        ctx.fillStyle = isSel ? colors.accent : withAlpha(colors.text, 0.75);
         drawLabel(ctx, { text: mm.name.toUpperCase(), x: padL - 10, y: yMid, font: isSel
                     ? 'bold 10px "JetBrains Mono", monospace'
                     : '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
@@ -104,7 +104,7 @@ export function WiedemannFranzDemo({ figure }: Props) {
           x: padL + Math.max(kappaW, sigmaW) + 6,
           y: yMid,
           text: `L = ${(L_m * 1e8).toFixed(2)}×10⁻⁸`,
-          color: isSel ? '#ff6b2a' : withAlpha(colors.textDim, 0.7),
+          color: isSel ? colors.accent : withAlpha(colors.textDim, 0.7),
           size: 9,
         });
       });
@@ -159,7 +159,7 @@ export function WiedemannFranzDemo({ figure }: Props) {
           <button
             key={mm.key}
             type="button"
-            className={`mini-toggle${mm.key === metalKey ? 'on' : ''}`}
+            className={`mini-toggle${mm.key === metalKey ? ' on' : ''}`}
             onClick={() => setMetalKey(mm.key)}
             aria-pressed={mm.key === metalKey}
           >

@@ -1,13 +1,14 @@
 /**
- * Chapter 4 — Capacitors
+ * Chapter 5 — Capacitors
  *
- * Two plates, a gap, and a stored field. Built around six embedded demos:
- *   4.1 Build-a-capacitor  (centerpiece — click charges on, watch V and U rise)
- *   4.2 Why each charge is harder than the last
- *   4.3 Plate geometry  (C = ε₀A/d)
- *   4.4 Energy in the gap  (u_E = ½ε₀E²)
- *   4.5 RC charging curve
- *   4.6 Leyden jar replay  (historical flavour)
+ * Two plates, a gap, and a stored field. Built around seven embedded demos:
+ *   5.1 Build-a-capacitor  (centerpiece — click charges on, watch V and U rise)
+ *   5.2 Plate geometry  (C = ε₀A/d)
+ *   5.3 A parallel-plate capacitor in 3D (Gauss pillbox)
+ *   5.4 Why each charge is harder than the last
+ *   5.5 Energy in the gap  (u_E = ½ε₀E²)
+ *   5.6 RC charging curve
+ *   5.7 Leyden jar replay  (historical flavour)
  *
  * Every numerical and historical claim is cited inline via <Cite/> against
  * the chapter's `sources` array (defined in src/textbook/data/chapters.ts).
@@ -125,28 +126,61 @@ export default function Ch5Capacitors() {
         <Term def="The proportionality between charge stored and voltage applied: C = Q/V. SI unit is the farad. Determined by geometry and the dielectric, not by the source or the charge.">
           capacitance
         </Term>{' '}
-        now, and write it as
+        now, and it has three layers worth pulling apart.
+      </p>
+
+      <h3 className="chapter-h3">Formal: charge divided by potential</h3>
+      <p className="mb-prose-3">
+        At the field-theoretic level, capacitance is defined as the ratio of the charge on a
+        conductor to the resulting potential difference between it and a chosen reference (the
+        other plate, or infinity). The potential itself is the line integral of the electric field
+        across the gap,
+      </p>
+      <Formula
+        size="lg"
+        tex="C \;\equiv\; \dfrac{Q}{V}, \qquad V \;=\; -\!\!\int_{-}^{+}\!\! \mathbf{E}\cdot d\boldsymbol{\ell}"
+      />
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">Q</strong> is the magnitude of the charge
+        stored on one conductor (in coulombs),{' '}
+        <strong className="text-text font-medium">V</strong> is the resulting potential difference
+        (in volts), <strong className="text-text font-medium">E</strong> is the electric field in
+        the gap (in V/m), and the integral runs from the negative to the positive plate along any
+        path through the gap. Maxwell's equations make the result path-independent for an
+        electrostatic configuration; the ratio depends only on geometry and the dielectric, never
+        on the source
+        <Cite id="jackson-1999" in={SOURCES} />.
+      </p>
+
+      <h3 className="chapter-h3">Operational: Q = CV</h3>
+      <p className="mb-prose-3">
+        For working with circuits the form you reach for is the rearrangement
       </p>
       <Formula size="lg" tex="Q = CV" />
       <p className="mb-prose-3">
         where <strong className="text-text font-medium">Q</strong> is the magnitude of charge on
-        each plate (in coulombs; the two plates carry +Q and −Q),
-        <strong className="text-text font-medium"> V</strong> is the voltage across the gap (in
-        volts), and <strong className="text-text font-medium">C</strong> is the capacitance of the
-        device — its proportionality constant between charge and voltage, measured in{' '}
+        each plate (in coulombs; the two plates carry +Q and −Q),{' '}
+        <strong className="text-text font-medium">V</strong> is the voltage across the gap (in
+        volts), and <strong className="text-text font-medium">C</strong> is the capacitance —
+        measured in{' '}
         <Term def="SI unit of capacitance. 1 F = 1 coulomb per volt. A huge unit — practical capacitors range from picofarads to millifarads; only supercapacitors reach whole farads.">
-          farad
+          farads
         </Term>
-        s — one coulomb per volt. For an idealised pair of{' '}
+        , one coulomb per volt.
+      </p>
+
+      <h3 className="chapter-h3">Special case: parallel-plate geometry</h3>
+      <p className="mb-prose-3">
+        For an idealised pair of{' '}
         <Term def="The textbook capacitor geometry: two flat conductors of area A separated by a thin gap d, with C = ε₀εᵣA/d. The basis for almost every capacitance calculation.">
           parallel-plate
         </Term>
-        s of area <strong className="text-text font-medium">A</strong>
-        separated by a vacuum gap of width <strong className="text-text font-medium">d</strong>,
-        Gauss's law applied to the surface of one plate gives a uniform field{' '}
+        s of area <strong className="text-text font-medium">A</strong> separated by a vacuum gap of
+        width <strong className="text-text font-medium">d</strong>, Gauss's law applied to the
+        surface of one plate gives a uniform field{' '}
         <strong className="text-text font-medium">E = Q/(ε₀A)</strong> in the gap, and integrating
-        that field across the gap yields a voltage
-        <strong className="text-text font-medium"> V = Ed = Qd/(ε₀A)</strong>. Re-arranging
+        that field across the gap yields a voltage{' '}
+        <strong className="text-text font-medium">V = Ed = Qd/(ε₀A)</strong>. Re-arranging
         <Cite id="griffiths-2017" in={SOURCES} />:
       </p>
       <Formula size="lg" tex="C = \dfrac{\varepsilon_0 A}{d}" />
@@ -359,7 +393,7 @@ export default function Ch5Capacitors() {
         answers — the integrated work and the field-volume integral — are the same number, computed
         two different ways. That equivalence is not a coincidence; it is a special case of the more
         general statement that electromagnetic fields carry energy in their own right
-        <Cite id="feynman-II-2" in={SOURCES} />, which will become the Poynting story in Chapter 7.
+        <Cite id="feynman-II-27" in={SOURCES} />, which will become the Poynting story in Chapter 8.
       </p>
 
       <Pullout>
@@ -511,9 +545,9 @@ export default function Ch5Capacitors() {
         <Term def="A capacitor whose effective plates are the metal-electrolyte interfaces inside porous carbon electrodes. Effective surface area is square kilometres per gram and the effective gap is the Debye length; the device reaches thousands of farads per cell at a few volts working voltage.">
           supercapacitor
         </Term>
-        s exploit double-layer effects at the surface of porous electrodes to reach hundreds of
-        farads — at the cost of a low working voltage of a few volts per cell. We'll get to those
-        families in Chapter 12.
+        s exploit double-layer effects at the surface of porous electrodes to reach thousands of
+        farads — at the cost of a low working voltage of a few volts per cell. We'll come back to
+        the supercapacitor family in Chapter 26.
       </p>
 
       <h2 className="chapter-h2">What we have so far</h2>
@@ -534,8 +568,8 @@ export default function Ch5Capacitors() {
         Next chapter: the rotational half of the story. Currents — moving charges — make magnetic
         fields, and the magnetic field will turn out to be electricity viewed from a moving frame.
         The plates and the gap will reappear later when we ask where the energy actually{' '}
-        <em className="text-text italic">flows</em> as a capacitor charges (Chapter 7), and again as
-        one of the two reactive ingredients in every AC circuit (Chapter 11).
+        <em className="text-text italic">flows</em> as a capacitor charges (Chapter 8), and again as
+        one of the two reactive ingredients in every AC circuit (Chapter 12).
       </p>
 
       <CaseStudies
@@ -548,7 +582,7 @@ export default function Ch5Capacitors() {
         }
       >
         <CaseStudy
-          tag="Case 4.1"
+          tag="Case 5.1"
           title="Defibrillator: a lethal amount of stored energy, on purpose"
           summary="A clinical defibrillator dumps a few hundred joules through the chest in tens of milliseconds, sourced from a single capacitor."
           specs={[
@@ -605,7 +639,7 @@ export default function Ch5Capacitors() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 4.2"
+          tag="Case 5.2"
           title="Capacitive touchscreens: counting picofarads with your fingertip"
           summary="The grid under the glass is thousands of tiny capacitors; your finger changes a few of them by a few pF."
           specs={[
@@ -650,7 +684,7 @@ export default function Ch5Capacitors() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 4.3"
+          tag="Case 5.3"
           title="Supercapacitors in regenerative braking"
           summary="Banks of thousand-farad cells absorb a bus's kinetic energy in seconds and dump it back in seconds."
           specs={[
@@ -686,7 +720,7 @@ export default function Ch5Capacitors() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 4.4"
+          tag="Case 5.4"
           title="Camera flash: slow charge, fast dump"
           summary="A small electrolytic capacitor trickles up to a few hundred volts over seconds, then unloads in a millisecond."
           specs={[

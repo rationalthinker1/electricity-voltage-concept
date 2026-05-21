@@ -59,7 +59,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
           const r_m = R / 1000;
           const B = (PHYS.mu_0 * Math.abs(I)) / (2 * Math.PI * r_m);
           const op = Math.min(0.35, 0.05 + Math.log10(B * 1e6 + 1) * 0.05);
-          ctx.strokeStyle = `rgba(108,197,194,${op.toFixed(3)})`;
+          ctx.strokeStyle = withAlpha(colors.teal, op);
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.arc(cx, cy_, R, 0, Math.PI * 2);
@@ -107,15 +107,15 @@ export function TwoParallelWiresDemo({ figure }: Props) {
           alpha: 0.5,
           extent: 1,
         });
-        ctx.fillStyle = '#1c1c22';
-        ctx.strokeStyle = '#ff6b2a';
+        ctx.fillStyle = colors.surfaceHover;
+        ctx.strokeStyle = colors.accent;
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.arc(cx, cy_, wireR, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
 
-        ctx.strokeStyle = '#ff6b2a';
+        ctx.strokeStyle = colors.accent;
         ctx.fillStyle = colors.accent;
         if (intoPage) {
           ctx.lineWidth = 1.8;
@@ -164,7 +164,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
         drawArr(cx2, cy, -dirSign);
       }
       ctx.setLineDash([4, 4]);
-      ctx.strokeStyle = 'rgba(255,255,255,.18)';
+      ctx.strokeStyle = withAlpha(colors.text, 0.18);
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(cx1, cy + 60);
@@ -185,7 +185,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.2'}
+      figure={figure ?? 'Fig. 6.3'}
       title="Two wires that talk"
       question="Same direction or opposite — do the wires pull or push?"
       caption={

@@ -386,7 +386,7 @@ export default function Ch2VoltageAndCurrent() {
       <p className="mb-prose-3">
         In a copper wire, roughly one of each atom's electrons is loose — not bound to any
         particular nucleus, free to wander. That gives a free-electron density of about{' '}
-        <strong className="text-text font-medium">n ≈ 8.5×10²⁸ /m³</strong>{' '}
+        <InlineMath tex="n \approx 8.5\times 10^{28}\ /\text{m}^3" />{' '}
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />. These electrons are not at rest. They
         scream around at the{' '}
         <Term
@@ -394,14 +394,15 @@ export default function Ch2VoltageAndCurrent() {
             <>
               <strong className="text-text font-medium">Fermi velocity</strong> — the speed of
               electrons at the Fermi surface of a metal, set by quantum degeneracy. For copper,{' '}
-              <InlineMath tex="v_F" /> ≈ 1.6×10⁶ m/s — about 0.5% of <InlineMath tex="c" />.
+              <InlineMath tex="v_F \approx 1.6\times 10^6\ \text{m/s}" /> — about 0.5% of{' '}
+              <InlineMath tex="c" />.
             </>
           }
         >
           Fermi velocity
         </Term>
         , roughly <strong className="text-text font-medium">1.6×10⁶ m/s</strong>, bouncing off
-        lattice ions every <strong className="text-text font-medium">τ ≈ 2×10⁻¹⁴ s</strong>{' '}
+        lattice ions every <InlineMath tex="\tau \approx 2\times 10^{-14}\ \text{s}" />{' '}
         <Cite id="kittel-2005" in={SOURCES} />
         <Cite id="libretexts-conduction" in={SOURCES} />. Apply a field and on top of all that
         random motion they pick up a tiny <em className="text-text italic">average</em>{' '}
@@ -444,10 +445,14 @@ export default function Ch2VoltageAndCurrent() {
         is the average drift speed of the carriers (in m/s),
         <strong className="text-text font-medium"> I</strong> is the current (in amperes),{' '}
         <strong className="text-text font-medium">n</strong> is the free-carrier number density (in
-        carriers per m³; ≈ 8.5×10²⁸/m³ for copper <Cite id="ashcroft-mermin-1976" in={SOURCES} />
+        carriers per m³;{' '}
+        <InlineMath tex="\approx 8.5\times 10^{28}\ /\text{m}^3" /> for copper{' '}
+        <Cite id="ashcroft-mermin-1976" in={SOURCES} />
         ),
         <strong className="text-text font-medium"> q</strong> is the charge per carrier (in
-        coulombs; for electrons, the elementary charge <InlineMath tex="e" /> ≈ 1.602×10⁻¹⁹ C), and{' '}
+        coulombs; for electrons, the elementary charge{' '}
+        <InlineMath tex="e \approx 1.602\times 10^{-19}\ \text{C}" />
+        ), and{' '}
         <strong className="text-text font-medium">A</strong> is the wire's cross-sectional area (in
         m²).
       </p>
@@ -510,7 +515,7 @@ export default function Ch2VoltageAndCurrent() {
           <>
             A <strong className="text-text font-medium">1.5 mm²</strong> copper wire carries{' '}
             <strong className="text-text font-medium">5 A</strong>. Compute the drift velocity,
-            using <InlineMath tex="n" /> ≈ 8.5×10²⁸ /m³ for copper.
+            using <InlineMath tex="n \approx 8.5\times 10^{28}\ /\text{m}^3" /> for copper.
           </>
         }
         hint={
@@ -522,8 +527,8 @@ export default function Ch2VoltageAndCurrent() {
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              With <InlineMath tex="A" /> = 1.5×10⁻⁶ m², and <InlineMath tex="n" /> from Ashcroft
-              &amp; Mermin <Cite id="ashcroft-mermin-1976" in={SOURCES} />:
+              With <InlineMath tex="A = 1.5\times 10^{-6}\ \text{m}^2" />, and <InlineMath tex="n" />{' '}
+              from Ashcroft &amp; Mermin <Cite id="ashcroft-mermin-1976" in={SOURCES} />:
             </p>
             <Formula tex="v_d = \dfrac{I}{nqA} = \dfrac{5}{(8.5\times 10^{28})(1.602\times 10^{-19})(1.5\times 10^{-6})} \approx 2.4\times 10^{-4}\ \text{m/s}" />
             <p className="mb-prose-1 last:mb-0">
@@ -570,8 +575,9 @@ export default function Ch2VoltageAndCurrent() {
         tag="Try 2.4"
         question={
           <>
-            Take the drift velocity from Try 2.3 (≈ 0.24 mm/s) and the typical signal speed in
-            copper (≈ 2×10⁸ m/s). What is the ratio{' '}
+            Take the drift velocity from Try 2.3
+            (<InlineMath tex="\approx 0.24\ \text{mm/s}" />) and the typical signal speed in copper
+            (<InlineMath tex="\approx 2\times 10^{8}\ \text{m/s}" />). What is the ratio{' '}
             <InlineMath tex="v_{\text{signal}}/v_{\text{drift}}" />, and how long would the signal
             take to travel 30 cm compared to the electron?
           </>

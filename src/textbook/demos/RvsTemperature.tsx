@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { drawLabel } from '@/lib/canvasLayout';
-import { getCanvasColors } from '@/lib/canvasTheme';
+import type { ThemeColors } from '@/lib/canvasTheme';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -20,12 +20,24 @@ interface Props {
   figure?: string;
 }
 
+type CurveColorKey = 'accent' | 'tungsten' | 'teal' | 'blue' | 'pink';
+
 interface Curve {
   key: string;
   label: string;
-  color: string;
+  /** Resolved at draw time so light/dark theme toggles repaint correctly. */
+  colorKey: CurveColorKey;
   /** R(T) / R(T_ref) where T is in °C. T_ref = 20 °C. */
   ratio: (T_C: number) => number;
+}
+
+// Tungsten has no theme token (warm amber distinct from the brand orange),
+// so it stays a literal and is resolved alongside the tokens below.
+const TUNGSTEN_HEX = '#ffb84a';
+
+function resolveCurveColor(key: CurveColorKey, colors: ThemeColors): string {
+  if (key === 'tungsten') return TUNGSTEN_HEX;
+  return colors[key];
 }
 
 const T_REF = 20;
@@ -57,11 +69,11 @@ const ptcRatio = (T_C: number) => {
 };
 
 const CURVES: Curve[] = [
-  { key: 'copper', label: 'Copper', color: getCanvasColors().accent, ratio: cuRatio },
-  { key: 'tungsten', label: 'Tungsten', color: '#ffb84a', ratio: wRatio },
-  { key: 'nichrome', label: 'Nichrome', color: getCanvasColors().teal, ratio: nicrRatio },
-  { key: 'ntc', label: 'NTC therm.', color: getCanvasColors().blue, ratio: ntcRatio },
-  { key: 'ptc', label: 'PTC polyswitch', color: getCanvasColors().pink, ratio: ptcRatio },
+  { key: 'copper', label: 'Copper', colorKey: 'accent', ratio: cuRatio },
+  { key: 'tungsten', label: 'Tungsten', colorKey: 'tungsten', ratio: wRatio },
+  { key: 'nichrome', label: 'Nichrome', colorKey: 'teal', ratio: nicrRatio },
+  { key: 'ntc', label: 'NTC therm.', colorKey: 'blue', ratio: ntcRatio },
+  { key: 'ptc', label: 'PTC polyswitch', colorKey: 'pink', ratio: ptcRatio },
 ];
 
 export function RvsTemperatureDemo({ figure }: Props) {
@@ -139,7 +151,7 @@ export function RvsTemperatureDemo({ figure }: Props) {
       drawLabel(ctx, { text: '20 °C ref', x: xT(T_REF) + 4, y: padT + 10 });
       for (const c of CURVES) {
         if (!shown[c.key]) continue;
-        ctx.strokeStyle = c.color;
+        ctx.strokeStyle = resolveCurveColor(c.colorKey, colors);
         ctx.lineWidth = 2;
         ctx.beginPath();
         for (let i = 0; i <= 220; i++) {
@@ -163,7 +175,7 @@ export function RvsTemperatureDemo({ figure }: Props) {
         if (!shown[c.key]) continue;
         const r = c.ratio(T_C);
         const y = yR(r);
-        ctx.fillStyle = c.color;
+        ctx.fillStyle = resolveCurveColor(c.colorKey, colors);
         ctx.beginPath();
         ctx.arc(cx, y, 4, 0, Math.PI * 2);
         ctx.fill();

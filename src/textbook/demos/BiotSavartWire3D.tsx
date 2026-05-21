@@ -158,8 +158,8 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       const fade = depthFade(dMid);
       // Per-ring colour: inner saturated teal, middle teal, outer teal-dim.
       const baseAlpha = a.ringIdx === 0 ? 1.0 : a.ringIdx === 1 ? 0.88 : 0.72;
-      const alpha = (baseAlpha * fade).toFixed(3);
-      const colour = `rgba(108,197,194,${alpha})`;
+      const alpha = baseAlpha * fade;
+      const colour = withAlpha(getCanvasColors().teal, alpha);
       ctx.strokeStyle = colour;
       ctx.lineWidth = 1.0 + 0.4 * a.scale;
       ctx.beginPath();
@@ -277,8 +277,8 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
         }
         ctx.strokeStyle =
           pass === 'front'
-            ? `rgba(108,197,194,${baseAlpha.toFixed(3)})`
-            : `rgba(108,197,194,${(baseAlpha * 0.35).toFixed(3)})`;
+            ? withAlpha(getCanvasColors().teal, baseAlpha)
+            : withAlpha(getCanvasColors().teal, baseAlpha * 0.35);
         ctx.lineWidth = 1.0;
         ctx.setLineDash(pass === 'back' ? [3, 4] : []);
         ctx.stroke();
@@ -514,7 +514,7 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 6.x'}
+      figure={figure ?? 'Fig. 6.2'}
       title="The B-field around a wire, in three dimensions"
       question="Why do magnetic field lines circle a wire instead of pointing at it?"
       caption={

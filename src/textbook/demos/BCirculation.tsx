@@ -1,5 +1,5 @@
 /**
- * Demo D6.3 — B circulates around the wire
+ * Demo D8.4 — B circulates around the wire
  *
  * End-on view of a current-carrying wire (cross section as a small disc
  * with × indicating current into the page). Concentric teal B-field
@@ -154,7 +154,7 @@ export function BCirculationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 6.3'}
+      figure={figure ?? 'Fig. 8.4'}
       title="B wraps the wire"
       question="And the magnetic field — which way does that point?"
       caption={

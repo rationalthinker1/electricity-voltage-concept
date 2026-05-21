@@ -360,27 +360,30 @@ export default function Ch4HowAResistorWorks() {
       </p>
       <Formula size="lg" tex="\rho(T) = \rho_{\text{residual}} + \rho_{\text{phonon}}(T)" />
       <p className="mb-prose-3">
-        The first term is the temperature-independent scattering off impurities and lattice defects.
-        The second comes from scattering off phonons — quantized lattice vibrations whose amplitude
-        grows with temperature. Well above the Debye temperature,{' '}
-        <strong className="text-text font-medium">
-          ρ<sub>phonon</sub>
-        </strong>{' '}
-        is linear in T, giving the familiar straight-line plot of resistance versus temperature for
-        an unalloyed metal
+        where <strong className="text-text font-medium">ρ(T)</strong> is the metal's resistivity at
+        temperature <strong className="text-text font-medium">T</strong> (in Ω·m),{' '}
+        <strong className="text-text font-medium">ρ<sub>residual</sub></strong> is the
+        temperature-independent scattering off impurities and lattice defects (Ω·m),{' '}
+        <strong className="text-text font-medium">ρ<sub>phonon</sub>(T)</strong> is the
+        temperature-dependent scattering off phonons — quantized lattice vibrations whose amplitude
+        grows with temperature (Ω·m) — and{' '}
+        <strong className="text-text font-medium">T</strong> is the absolute temperature in kelvin.
+        Well above the Debye temperature, ρ<sub>phonon</sub> is linear in T, giving the familiar
+        straight-line plot of resistance versus temperature for an unalloyed metal
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />. The slope is the
         <em className="text-text italic"> temperature coefficient of resistance</em>, or TCR,
         usually quoted in parts per million per kelvin.
       </p>
       <p className="mb-prose-3">
         For copper, TCR ≈ +3900 ppm/K — a copper wire's resistance climbs by about 0.4% per kelvin
-        near room temperature. For pure tungsten the slope is steeper, around +4500 ppm/K, and the
-        dynamic range is enormous: a tungsten incandescent filament at 2700 K has roughly ten times
-        the resistance of the same filament at room temperature. That's why an incandescent bulb at
-        switch-on draws ~10× its steady-state current for the few milliseconds before the filament
-        heats up — the famous <em className="text-text italic">inrush</em>. Alloy films (nichrome,
-        manganin) are engineered for nearly zero TCR — manganin's was the original reason for its
-        existence as the alloy of the bench-standard resistor box
+        near room temperature<Cite id="crc-resistivity" in={SOURCES} />. For pure tungsten the slope
+        is steeper, around +4500 ppm/K, and the dynamic range is enormous: a tungsten incandescent
+        filament at 2700 K has roughly 10–15× the resistance of the same filament at room
+        temperature. That's why an incandescent bulb at switch-on draws roughly an order of
+        magnitude more current than its steady-state value for the few milliseconds before the
+        filament heats up — the famous <em className="text-text italic">inrush</em>. Alloy films
+        (nichrome, manganin) are engineered for nearly zero TCR — manganin's was the original
+        reason for its existence as the alloy of the bench-standard resistor box
         <Cite id="kanthal" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -518,8 +521,9 @@ export default function Ch4HowAResistorWorks() {
         temperature (in kelvin), and <strong className="text-text font-medium">L₀</strong> is the
         Lorenz number. With{' '}
         <strong className="text-text font-medium">L₀ ≈ 2.44×10⁻⁸ W·Ω·K⁻²</strong>, Sommerfeld
-        derived L₀ exactly from the free-electron model in 1928: L₀ = (π²/3)(k<sub>B</sub>/e)² with
-        k<sub>B</sub> the Boltzmann constant and e the elementary charge
+        later extended Drude's classical picture to a Fermi gas and derived L₀ exactly:{' '}
+        L₀ = (π²/3)(k<sub>B</sub>/e)² with k<sub>B</sub> the Boltzmann constant and e the
+        elementary charge
         <Cite id="codata-2018" in={SOURCES} />
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />.
       </p>
@@ -916,11 +920,13 @@ export default function Ch4HowAResistorWorks() {
 
         <FAQItem q="Why does the inrush current of an incandescent bulb light up the wire so fiercely?">
           <p>
-            Tungsten's TCR is large and positive: the filament at room temperature has roughly one
-            tenth the resistance of the same filament at its operating temperature (~2700 K)
+            Tungsten's TCR is large and positive: the filament at room temperature has somewhere
+            between a tenth and a fifteenth of the resistance of the same filament at its
+            operating temperature (~2700 K)
             <Cite id="ashcroft-mermin-1976" in={SOURCES} />. So at the instant the switch closes,
-            with the filament still cold, the current is roughly ten times its steady-state value —
-            for a 60 W, 120 V bulb that's about 5 A peak versus 0.5 A steady. The filament heats in
+            with the filament still cold, the current is roughly an order of magnitude above its
+            steady-state value — for a 60 W, 120 V bulb that's several amps peak versus 0.5 A
+            steady. The filament heats in
             tens of milliseconds, R climbs, current falls to its operating value. The high inrush is
             what makes incandescent bulbs so prone to burning out at switch-on rather than mid-life:
             the cold-filament I²R pulse stresses the thinnest point.

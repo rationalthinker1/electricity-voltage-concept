@@ -280,8 +280,10 @@ export const CHAPTERS: ChapterEntry[] = [
       'Currents make magnetic fields. Magnetic fields steer moving charges. Two parallel wires attract or repel each other depending on whether their currents agree. None of this is a separate force — magnetism is what electricity looks like when you change reference frames.',
     relatedLabs: ['biot-savart', 'ampere', 'lorentz'],
     sources: [
+      'oersted-1820',
       'biot-savart-1820',
       'ampere-1826',
+      'einstein-1905',
       'feynman-II-13',
       'griffiths-2017',
       'jackson-1999',
@@ -291,6 +293,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'bruning-lhc-2004',
       'chulliat-wmm-2020',
       'duncan-thompson-1992',
+      'purcell-morin-2013',
     ],
     punchline:
       'Moving charges make B-fields and B-fields push moving charges sideways — the rotational half of electromagnetism that nature has been holding back until you got the linear half right.',

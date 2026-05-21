@@ -18,6 +18,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { pathRoundRect } from '@/lib/canvasPrimitives';
+import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { fmtResistance, fmtResistivity } from '@/lib/formatters';
@@ -150,7 +151,7 @@ export function BuildAResistorDemo({ figure }: Props) {
       const bodyL = cx - bodyW / 2;
       const bodyT = cy - bodyH / 2;
       const isWirewound = familyKey.startsWith('wirewound');
-      ctx.strokeStyle = 'rgba(200,200,205,0.85)';
+      ctx.strokeStyle = withAlpha(colors.text, 0.78);
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(bodyL - 80, cy);
@@ -158,7 +159,9 @@ export function BuildAResistorDemo({ figure }: Props) {
       ctx.moveTo(bodyL + bodyW - 4, cy);
       ctx.lineTo(bodyL + bodyW + 80, cy);
       ctx.stroke();
-      const shellColor = isWirewound ? 'rgba(220,220,220,0.18)' : 'rgba(190,160,140,0.22)';
+      const shellColor = isWirewound
+        ? withAlpha(colors.text, 0.18)
+        : withAlpha(colors.accent, 0.18);
       pathRoundRect(ctx, bodyL, bodyT, bodyW, bodyH, 18);
       ctx.fillStyle = shellColor;
       ctx.fill();
@@ -173,7 +176,7 @@ export function BuildAResistorDemo({ figure }: Props) {
       ctx.clip();
       const subH = cutH * 0.55;
       const subT = cutT + (cutH - subH) / 2;
-      ctx.fillStyle = 'rgba(230,225,210,0.22)';
+      ctx.fillStyle = withAlpha(colors.text, 0.18);
       pathRoundRect(ctx, bodyL + 12, subT, bodyW - 24, subH, 4);
       ctx.fill();
       if (!isWirewound) {
@@ -271,7 +274,7 @@ export function BuildAResistorDemo({ figure }: Props) {
           <button
             key={k}
             type="button"
-            className={`mini-toggle${k === familyKey ? 'on' : ''}`}
+            className={`mini-toggle${k === familyKey ? ' on' : ''}`}
             onClick={() => setFamilyKey(k)}
             aria-pressed={k === familyKey}
           >

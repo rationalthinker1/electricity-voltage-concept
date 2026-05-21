@@ -20,6 +20,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
+import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -122,8 +123,8 @@ export function BuildACapacitorDemo({ figure }: Props) {
       const topY = cy - gapPx / 2 - plateThick / 2;
       const botY = cy + gapPx / 2 + plateThick / 2;
       const topPos = s.Q > 0;
-      const colTop = topPos ? '#ff3b6e' : '#5baef8';
-      const colBot = topPos ? '#5baef8' : '#ff3b6e';
+      const colTop = topPos ? colors.pink : colors.blue;
+      const colBot = topPos ? colors.blue : colors.pink;
       const symTop = topPos ? '+' : '−';
       const symBot = topPos ? '−' : '+';
       if (Math.abs(s.Q) > 0) {
@@ -131,9 +132,9 @@ export function BuildACapacitorDemo({ figure }: Props) {
         const uE = 0.5 * PHYS.eps_0 * E * E;
         const haze = Math.max(0.05, Math.min(0.5, Math.log10(uE + 1) * 0.1 + 0.1));
         const grd = ctx.createLinearGradient(0, topY + plateThick, 0, botY - plateThick);
-        grd.addColorStop(0, `rgba(255,107,42,${haze * 0.4})`);
-        grd.addColorStop(0.5, `rgba(255,107,42,${haze})`);
-        grd.addColorStop(1, `rgba(255,107,42,${haze * 0.4})`);
+        grd.addColorStop(0, withAlpha(colors.accent, haze * 0.4));
+        grd.addColorStop(0.5, withAlpha(colors.accent, haze));
+        grd.addColorStop(1, withAlpha(colors.accent, haze * 0.4));
         ctx.fillStyle = grd;
         ctx.fillRect(xL, topY + plateThick, plateW, botY - topY - plateThick * 2);
       }
@@ -253,7 +254,7 @@ export function BuildACapacitorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.1'}
+      figure={figure ?? 'Fig. 5.1'}
       title="Build a capacitor, one charge at a time"
       question="Why does each new charge cost more work than the last?"
       caption={

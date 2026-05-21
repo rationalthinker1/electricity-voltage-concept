@@ -114,7 +114,7 @@ export function WireBFieldDemo({ figure }: Props) {
         const B = (PHYS.mu_0 * Math.abs(I)) / (2 * Math.PI * r_m);
         // Map log(B) to opacity. Floor + scale.
         const op = Math.min(0.55, 0.08 + 0.08 * Math.log10(B * 1e6 + 1) + I_norm * 0.18);
-        ctx.strokeStyle = `rgba(108,197,194,${op.toFixed(3)})`;
+        ctx.strokeStyle = withAlpha(colors.teal, op);
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.arc(cx0, cy0, R, 0, Math.PI * 2);
@@ -135,7 +135,7 @@ export function WireBFieldDemo({ figure }: Props) {
           const tx = -Math.sin(theta) * arrowDir;
           const ty = Math.cos(theta) * arrowDir;
           const len = 7 + I_norm * 5;
-          ctx.strokeStyle = `rgba(108,197,194,${Math.min(0.95, op + 0.25).toFixed(3)})`;
+          ctx.strokeStyle = withAlpha(colors.teal, Math.min(0.95, op + 0.25));
           ctx.fillStyle = ctx.strokeStyle;
           ctx.lineWidth = 1.2;
           ctx.beginPath();
@@ -167,8 +167,8 @@ export function WireBFieldDemo({ figure }: Props) {
         alpha: 0.55,
         extent: 1,
       });
-      ctx.fillStyle = '#1c1c22';
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.fillStyle = colors.surfaceHover;
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(cx0, cy0, wireR, 0, Math.PI * 2);
@@ -176,7 +176,7 @@ export function WireBFieldDemo({ figure }: Props) {
       ctx.stroke();
 
       // × (into page) or • (out of page) glyph.
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.strokeStyle = colors.accent;
       ctx.fillStyle = colors.accent;
       if (intoPage) {
         ctx.lineWidth = 2;
@@ -216,8 +216,8 @@ export function WireBFieldDemo({ figure }: Props) {
       ctx.stroke();
       ctx.setLineDash([]);
 
-      ctx.fillStyle = 'rgba(10,10,11,.9)';
-      ctx.strokeStyle = '#ff6b2a';
+      ctx.fillStyle = withAlpha(colors.bg, 0.9);
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(px, py, 9, 0, Math.PI * 2);
@@ -253,7 +253,7 @@ export function WireBFieldDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.1'}
+      figure={figure ?? 'Fig. 6.1'}
       title="The field around a current"
       question="What does the magnetic field of a wire actually look like?"
       caption={

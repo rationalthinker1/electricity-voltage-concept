@@ -186,7 +186,7 @@ export function ChargingCurveDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.5'}
+      figure={figure ?? 'Fig. 5.6'}
       title="The RC charging curve"
       question="How long does it take a capacitor to charge through a resistor?"
       caption={

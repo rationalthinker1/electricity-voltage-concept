@@ -102,7 +102,7 @@ export function PlateGeometryDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.3'}
+      figure={figure ?? 'Fig. 5.2'}
       title="Geometry is the capacity"
       question="Why does the shape of the plates set the capacitance?"
       caption={

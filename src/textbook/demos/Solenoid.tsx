@@ -55,7 +55,7 @@ export function SolenoidDemo({ figure }: Props) {
       const opTurn = Math.min(0.85, 0.35 + I / 30);
       for (let i = 0; i < Nvis; i++) {
         const x = sxL + (i / (Nvis - 1 || 1)) * sW;
-        ctx.strokeStyle = `rgba(255,107,42,${(opTurn * 0.35).toFixed(3)})`;
+        ctx.strokeStyle = withAlpha(colors.accent, opTurn * 0.35);
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.ellipse(x, cy, ringRx, ringRy, 0, Math.PI, 2 * Math.PI);
@@ -69,7 +69,7 @@ export function SolenoidDemo({ figure }: Props) {
         const aLen = 36 + I_norm * 14;
         const phase = (dt * 1.4 + i * 0.15) % 1;
         const op = 0.6 + 0.3 * Math.sin(phase * Math.PI * 2);
-        ctx.strokeStyle = `rgba(108,197,194,${op.toFixed(3)})`;
+        ctx.strokeStyle = withAlpha(colors.teal, op);
         ctx.fillStyle = ctx.strokeStyle;
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -85,7 +85,7 @@ export function SolenoidDemo({ figure }: Props) {
       }
       for (let i = 0; i < Nvis; i++) {
         const x = sxL + (i / (Nvis - 1 || 1)) * sW;
-        ctx.strokeStyle = `rgba(255,107,42,${opTurn.toFixed(3)})`;
+        ctx.strokeStyle = withAlpha(colors.accent, opTurn);
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.ellipse(x, cy, ringRx, ringRy, 0, 0, Math.PI);
@@ -93,7 +93,7 @@ export function SolenoidDemo({ figure }: Props) {
         // tiny arrow on front-bottom of each turn to show current direction
         // current "comes out" on the bottom-front and "goes in" at the top-back.
         if (i % 3 === 0) {
-          ctx.fillStyle = `rgba(255,107,42,${opTurn.toFixed(3)})`;
+          ctx.fillStyle = withAlpha(colors.accent, opTurn);
           ctx.beginPath();
           ctx.moveTo(x + 5, cy + ringRy);
           ctx.lineTo(x - 1, cy + ringRy - 3);
@@ -146,7 +146,7 @@ export function SolenoidDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 4.4'}
+      figure={figure ?? 'Fig. 6.5'}
       title="Solenoid: a controllable magnet"
       question="What if you wrap the wire around itself?"
       caption={

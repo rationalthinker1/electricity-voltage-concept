@@ -12,6 +12,7 @@ import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
+import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -50,9 +51,9 @@ export function EnergyInTheGapDemo({ figure }: Props) {
       const botY = cy + gap / 2 + plateThick / 2;
       const haze = Math.max(0.06, Math.min(0.7, Math.log10(s.u_E + 1) * 0.12 + 0.1));
       const grd = ctx.createLinearGradient(0, topY + plateThick, 0, botY - plateThick);
-      grd.addColorStop(0, `rgba(255,107,42,${haze * 0.45})`);
-      grd.addColorStop(0.5, `rgba(255,107,42,${haze})`);
-      grd.addColorStop(1, `rgba(255,107,42,${haze * 0.45})`);
+      grd.addColorStop(0, withAlpha(colors.accent, haze * 0.45));
+      grd.addColorStop(0.5, withAlpha(colors.accent, haze));
+      grd.addColorStop(1, withAlpha(colors.accent, haze * 0.45));
       ctx.fillStyle = grd;
       ctx.fillRect(xL, topY + plateThick, plateW, botY - topY - plateThick * 2);
       const usable = botY - topY - plateThick * 2 - 16;
@@ -76,8 +77,8 @@ export function EnergyInTheGapDemo({ figure }: Props) {
         ctx.closePath();
         ctx.fill();
       }
-      drawPlate(ctx, xL, topY, plateW, plateThick, '#ff3b6e');
-      drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, '#5baef8');
+      drawPlate(ctx, xL, topY, plateW, plateThick, colors.pink);
+      drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, colors.blue);
       drawLabel(ctx, { text: 'u_E = ½ ε₀ E²', x: 14, y: 12, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: `E = ${(s.E / 1000).toFixed(1)} kV/m`, x: 14, y: 28, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
