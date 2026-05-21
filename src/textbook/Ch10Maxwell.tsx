@@ -1,8 +1,8 @@
 /**
- * Chapter 8 — Maxwell's equations together
+ * Chapter 10 — Maxwell's equations together
  *
- * Synthesis chapter. Ch.1 gave us Gauss for E; Ch.4 introduced Ampère and
- * implicitly no-monopoles; Ch.5 was Faraday; Ch.6 made Maxwell's
+ * Synthesis chapter. Ch.1 gave us Gauss for E; Ch.6 introduced Ampère and
+ * implicitly no-monopoles; Ch.7 was Faraday; Ch.8 made Maxwell's
  * displacement-current addition load-bearing. This chapter stacks all four
  * laws on one page, then runs the famous calculation that pulls c out of
  * ε₀ and μ₀ alone.
@@ -10,12 +10,14 @@
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
+import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { AmpereMaxwellLawDemo } from './demos/AmpereMaxwellLaw';
 import { CFromMaxwellDemo } from './demos/CFromMaxwell';
+import { EMWaveSpeedDemo } from './demos/EMWaveSpeed';
 import { FaradayLawDemo } from './demos/FaradayLaw';
 import { GaussBLawDemo } from './demos/GaussBLaw';
 import { GaussELawDemo } from './demos/GaussELaw';
@@ -29,12 +31,18 @@ export default function Ch10Maxwell() {
   return (
     <ChapterShell chapter={chapter}>
       <p className="chapter-intro">
+        Hold an AM radio near a running microwave and you will hear the crackle: the same four laws
+        that heat your dinner leak through the door seal as electromagnetic waves, are picked up by
+        the radio's antenna, and converted back into sound. The physics is not abstract — it is
+        sitting in your kitchen.
+      </p>
+      <p className="mb-prose-3">
         Up to now you've met each law in its own setting. Gauss's law for the electric field
         appeared in Chapter&nbsp;1, the moment we asked how a point charge sprays its influence into
         a sphere of empty space. The no-monopole rule for the magnetic field was implicit in
-        Chapter&nbsp;4, every time we drew B-field circles closing on themselves around a wire.
-        Faraday's law was the entire subject of Chapter&nbsp;5: change a flux, get a voltage. And
-        Ampère's law — promoted by Maxwell's correction — quietly made Chapter&nbsp;6's Poynting
+        Chapter&nbsp;6, every time we drew B-field circles closing on themselves around a wire.
+        Faraday's law was the entire subject of Chapter&nbsp;7: change a flux, get a voltage. And
+        Ampère's law — promoted by Maxwell's correction — quietly made Chapter&nbsp;8's Poynting
         picture self-consistent, with the displacement-current term tying off a hole that Ampère
         alone could not close.
       </p>
@@ -89,8 +97,8 @@ export default function Ch10Maxwell() {
         </strong>{' '}
         are the magnetic and electric fluxes through a surface bounded by the loop (in webers and
         V·m respectively); and
-        <strong className="text-text font-medium"> ε₀ = 8.854×10⁻¹² F/m</strong> and{' '}
-        <strong className="text-text font-medium">μ₀ = 4π×10⁻⁷ T·m/A</strong> are the vacuum
+        <strong className="text-text font-medium"> ε₀ = 8.854×10⁻¹² F/m</strong>;{' '}
+        <strong className="text-text font-medium">μ₀ is defined as 4π×10⁻⁷ T·m/A in the SI system</strong>. These are the vacuum
         permittivity and permeability
         <Cite id="codata-2018" in={SOURCES} />.
       </p>
@@ -115,7 +123,7 @@ export default function Ch10Maxwell() {
         loud and you have everything classical electromagnetism knows
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
-      <p className="pullout">
+      <p className="mb-prose-3">
         Two{' '}
         <Term
           def={
@@ -484,10 +492,10 @@ export default function Ch10Maxwell() {
         }
       />
 
-      <p className="pullout">
+      <Pullout>
         The displacement current isn't a current. It's the universe insisting that changing electric
         fields make magnetic ones.
-      </p>
+      </Pullout>
       <p className="mb-prose-3">
         This was Maxwell's stroke of genius, and the moment electromagnetism became one theory. Now
         both curl equations are symmetric: a changing B sources circulating E (Faraday), and a
@@ -559,6 +567,8 @@ export default function Ch10Maxwell() {
 
       <CFromMaxwellDemo />
 
+      <EMWaveSpeedDemo />
+
       <p className="mb-prose-3">
         With modern CODATA values
         <Cite id="codata-2018" in={SOURCES} />, the calculated speed matches the measured speed to
@@ -599,15 +609,15 @@ export default function Ch10Maxwell() {
         }
       />
       <p className="mb-prose-3">
-        Chapter&nbsp;7's electromagnetic waves are the natural sequel: they're solutions to the very
+        Chapter&nbsp;9's electromagnetic waves are the natural sequel: they're solutions to the very
         wave equation we just derived. Everything from radio to X-rays, from photonics to wireless
         networks, from sunlight reaching your retina to the cosmic microwave background, lives in
         these four lines.
       </p>
 
-      <CaseStudies intro="Three case studies that turn the four equations into verifiable hardware: the experiment that proved Maxwell, the demonstration that crossed an ocean, and the constellation that puts the four laws in your pocket.">
+      <CaseStudies intro="Four case studies that turn the four equations into verifiable hardware: the experiment that proved Maxwell, the demonstration that crossed an ocean, the constellation that puts the four laws in your pocket, and the atomic line that maps the galaxy.">
         <CaseStudy
-          tag="Case 8.1"
+          tag="Case 10.1"
           title="Hertz, 1887–1888 — the first verification"
           summary={
             <em className="text-text italic">
@@ -617,8 +627,8 @@ export default function Ch10Maxwell() {
           }
           specs={[
             { label: 'Transmitter', value: 'Ruhmkorff coil + spark-gap dipole' },
-            { label: 'Wavelength range', value: 'roughly 0.6 to 6 m' },
-            { label: 'Frequency range', value: '~50 MHz to ~500 MHz' },
+            { label: 'Wavelength range', value: 'roughly 0.6 to 6 m (estimated)' },
+            { label: 'Frequency range', value: 'roughly 50–500 MHz (estimated)' },
             { label: 'Detector', value: 'Resonant copper loop with micrometer spark gap' },
             {
               label: 'Standing-wave measurement',
@@ -632,7 +642,8 @@ export default function Ch10Maxwell() {
         >
           <p className="mb-prose-2 last:mb-0">
             Maxwell published the unified theory in 1865
-            <Cite id="maxwell-1865" in={SOURCES} />. He died in 1879 without having seen it tested
+            <Cite id="maxwell-1865" in={SOURCES} />. Maxwell died in 1879
+            <Cite id="griffiths-2017" in={SOURCES} /> without having seen it tested
             at radio wavelengths. The experimental verification came from the Karlsruhe laboratory
             of <strong className="text-text font-medium">Heinrich Hertz</strong>, who in 1887–1888
             built the first deliberate electromagnetic-wave transmitter and detector and showed that
@@ -642,8 +653,8 @@ export default function Ch10Maxwell() {
           <p className="mb-prose-2 last:mb-0">
             The transmitter was an oscillating dipole — two metal rods with a small gap between
             them, charged by an induction coil until the gap broke down in a spark. Each spark
-            damped-rang the rod-pair as a tuned LC oscillator at radio frequency, radiating a short
-            burst of the kind of wave §5 of Chapter 7 describes. The detector, a few metres away,
+            damped ringing of the rod-pair as a tuned LC oscillator at radio frequency, radiating a short
+            burst of the kind of wave §5 of Chapter 9 describes. The detector, a few meters away,
             was a resonant loop with its own micrometer gap; when the wave arrived, the induced EMF
             reached breakdown and a tiny secondary spark jumped
             <Cite id="hertz-1888" in={SOURCES} />.
@@ -651,7 +662,7 @@ export default function Ch10Maxwell() {
           <p className="mb-prose-2 last:mb-0">
             Hertz did three things with the apparatus, each of which was Maxwell falling out clean.
             He measured the wavelength by reflecting the wave off a metal sheet and mapping the
-            resulting standing-wave nodes (a millimetre ruler, two sparks, one weekend's work). He
+            resulting standing-wave nodes (a millimeter ruler, two sparks, one weekend's work). He
             confirmed transverse polarization by rotating the detector loop. And — multiplying λ by
             the known f of the spark oscillator — he obtained a propagation speed consistent with c.
             The four equations had just become physics, not algebra.
@@ -659,7 +670,7 @@ export default function Ch10Maxwell() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 8.2"
+          tag="Case 10.2"
           title="Marconi, 1901 — Maxwell crosses an ocean"
           summary={
             <em className="text-text italic">
@@ -672,7 +683,7 @@ export default function Ch10Maxwell() {
             { label: 'Path', value: 'Poldhu, Cornwall → Signal Hill, Newfoundland' },
             { label: 'Great-circle distance', value: '~3500 km' },
             { label: 'Transmitter type', value: 'Spark-gap, capacitor-driven, ~20 kW input' },
-            { label: 'Carrier wavelength', value: '~366 m (estimated ~820 kHz, MF band)' },
+            { label: 'Carrier wavelength', value: '~366 m (~820 kHz, estimated)' },
             { label: 'Receiver antenna', value: '~150 m wire on a kite' },
           ]}
         >
@@ -689,9 +700,9 @@ export default function Ch10Maxwell() {
           <p className="mb-prose-2 last:mb-0">
             Several things had to be true for the experiment to work, and all of them ride on
             Maxwell. The propagating wave had to be a real physical object that could carry coded
-            information across thousands of kilometres of empty atmosphere — guaranteed by the wave
+            information across thousands of kilometers of empty atmosphere — guaranteed by the wave
             equation derived from the four laws. The antenna had to convert oscillating current into
-            far-field radiation — that's §5 of Chapter 7. The receiving antenna had to convert the
+            far-field radiation — that's §5 of Chapter 9. The receiving antenna had to convert the
             arriving <strong className="text-text font-medium">E</strong>-field back into a
             measurable current — Faraday's law in its open-circuit form. None of it should have
             surprised anyone who had read Maxwell; all of it was new in 1901, because no one had
@@ -701,7 +712,7 @@ export default function Ch10Maxwell() {
           <p className="mb-prose-2 last:mb-0">
             Marconi did not know it at the time, but his signal travelled by bouncing off the
             <em className="text-text italic"> ionosphere</em>, an upper-atmospheric plasma layer
-            whose refractive index becomes imaginary for radio frequencies below ~30 MHz. The
+            whose refractive index becomes effectively imaginary for radio frequencies below roughly 30 MHz. The
             reflection is itself a Maxwell-equations boundary problem. Within a decade,
             transatlantic radio was a working commercial service. Within thirty, it had broken the
             British Admiralty's monopoly on long-range signalling and rewired every navy.
@@ -709,11 +720,11 @@ export default function Ch10Maxwell() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 8.3"
+          tag="Case 10.3"
           title="GPS — twenty-four satellites running on Maxwell's equations"
           summary={
             <em className="text-text italic">
-              1575.42 MHz, 20,200 km altitude, position to a few metres anywhere on Earth.
+              1575.42 MHz, 20,200 km altitude, position to a few meters anywhere on Earth.
             </em>
           }
           specs={[
@@ -722,11 +733,11 @@ export default function Ch10Maxwell() {
             { label: 'Constellation', value: '~24+ active satellites in 6 orbital planes' },
             { label: 'Orbital altitude', value: '~20,200 km (≈12 sidereal-hour orbit)' },
             { label: 'Broadcast EIRP per satellite', value: '~27 dBW (≈500 W effective)' },
-            { label: 'Received signal level at Earth', value: '~−130 dBm (below thermal noise)' },
+            { label: 'Received signal level at Earth', value: 'approximately −130 dBm (below thermal noise)' },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            Twenty-thousand kilometres above your head, two dozen-odd satellites broadcast a
+            Twenty thousand kilometers above your head, two dozen-odd satellites broadcast a
             continuous, phase-coherent{' '}
             <strong className="text-text font-medium">1575.42 MHz</strong> carrier modulated with a
             pseudo-random ranging code
@@ -742,15 +753,16 @@ export default function Ch10Maxwell() {
             The numbers force respect. The received signal at the ground is around{' '}
             <strong className="text-text font-medium">−130 dBm</strong> — roughly{' '}
             <InlineMath>10⁻¹⁶</InlineMath> watts, well below the receiver's thermal noise floor. GPS
-            works only because the pseudo-random code provides ~43 dB of processing gain when
-            correlated against the receiver's local replica. That a planet's worth of users can be
-            located to within metres using a signal weaker than the static in their headphones is
+            works only because the pseudo-random code provides roughly 43 dB of processing gain when
+            correlated against the receiver's local replica
+            <Cite id="kaplan-hegarty-2017" in={SOURCES} />. That a planet's worth of users can be
+            located to within meters using a signal weaker than the static in their headphones is
             one of Maxwell's quieter triumphs.
           </p>
           <p className="mb-prose-2 last:mb-0">
             And the timing precision needed for it to work — nanoseconds per microsecond of
             round-trip — turns out to require <em className="text-text italic">relativistic</em>{' '}
-            corrections to the satellite clocks before launch. Chapter 9 picks that thread up. Here
+            corrections to the satellite clocks before launch. Chapter 11 picks that thread up. Here
             it is enough to say: every "you are here" arrow on a map is, underneath, a confirmation
             that the four equations of §1 hold to twelve decimal places after they bounce off
             atmospheric refraction, orbital mechanics, and an EIRP budget that would have astonished
@@ -759,7 +771,7 @@ export default function Ch10Maxwell() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 8.4"
+          tag="Case 10.4"
           title="The 21 cm hydrogen line"
           summary={
             <em className="text-text italic">
@@ -767,7 +779,7 @@ export default function Ch10Maxwell() {
             </em>
           }
           specs={[
-            { label: 'Frequency', value: '1420.40575177 MHz' },
+            { label: 'Frequency', value: '1420.406 MHz' },
             { label: 'Wavelength', value: '21.106 cm' },
             { label: 'Transition', value: 'Hyperfine spin-flip of hydrogen 1s ground state' },
             { label: 'Predicted', value: 'H. C. van de Hulst, 1944' },
@@ -782,11 +794,11 @@ export default function Ch10Maxwell() {
             One of the most useful EM waves in all of astronomy is produced by neutral hydrogen
             atoms with essentially no help from any laboratory. In the 1s ground state of H, the
             electron's spin can be parallel or antiparallel to the proton's; the parallel
-            configuration sits about
-            <strong className="text-text font-medium"> 5.87 μeV</strong> higher. The forbidden
-            magnetic-dipole transition between them has a mean lifetime around{' '}
+            configuration sits approximately
+            <strong className="text-text font-medium"> 5.9 μeV</strong> higher. The forbidden
+            magnetic-dipole transition between them has a mean lifetime on the order of{' '}
             <strong className="text-text font-medium">10⁷ years</strong>, but the interstellar
-            medium contains so many hydrogen atoms — <InlineMath>~10⁶⁷</InlineMath> in the Milky Way
+            medium contains so many hydrogen atoms — on the order of <InlineMath>10⁶⁷</InlineMath> in the Milky Way
             alone — that the integrated emission is comfortably detectable from Earth
             <Cite id="ewen-purcell-1951" in={SOURCES} />.
           </p>
@@ -889,7 +901,9 @@ export default function Ch10Maxwell() {
             extraordinarily heavy
             <Cite id="griffiths-2017" in={SOURCES} />. Dirac showed in 1931 that the existence of
             even one monopole anywhere in the universe would explain why electric charge is
-            quantized — making their absence one of physics's open puzzles.
+            quantized
+            <Cite id="dirac-1931" in={SOURCES} /> — making their absence one of physics's open
+            puzzles.
           </p>
         </FAQItem>
 
@@ -1009,7 +1023,7 @@ export default function Ch10Maxwell() {
         <FAQItem q="Can you derive Coulomb's law from Maxwell's equations?">
           <p>
             Yes — it's a direct consequence of Gauss's law for E plus the assumption of spherical
-            symmetry around a point source. Draw a sphere of radius r centred on the charge; by
+            symmetry around a point source. Draw a sphere of radius r centered on the charge; by
             symmetry E is radial and constant on the sphere; the integral{' '}
             <strong className="text-text font-medium">∮E·dA = E·4πr²</strong> equals{' '}
             <strong className="text-text font-medium">Q/ε₀</strong>; solve for

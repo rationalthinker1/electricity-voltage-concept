@@ -8,7 +8,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { drawLabel } from '@/lib/canvasLayout';
@@ -138,6 +139,24 @@ export function PlateGeometryDemo({ figure }: Props) {
         />
         <MiniReadout label="C = ε₀A/d" value={<Num value={C} />} unit="F" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Geometry sets capacitance"
+        left={
+          <InlineMath
+            tex={
+              `C \\;=\\; \\dfrac{\\varepsilon_{0} A}{d} \\;=\\; ` +
+              `\\dfrac{(8.854\\!\\times\\!10^{-12})(${(A_m2 * 1e4).toFixed(0)}\\!\\times\\!10^{-4})}{${(d_m * 1e3).toFixed(2)}\\!\\times\\!10^{-3}} ` +
+              `\\;\\approx\\; ${(C * 1e12).toFixed(1)}\\ \\text{pF}`
+            }
+          />
+        }
+        rightLabel="Halve d, double C"
+        right={
+          <InlineMath
+            tex={`C \\propto \\dfrac{A}{d}`}
+          />
+        }
+      />
     </Demo>
   );
 }

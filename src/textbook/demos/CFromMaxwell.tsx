@@ -5,7 +5,8 @@
  * c = 1/√(ε₀μ₀), and compare to the exact (post-1983 SI) value of the
  * speed of light. The match to 9 figures is the punchline.
  */
-import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
@@ -37,8 +38,8 @@ export function CFromMaxwellDemo({ figure }: Props) {
       <div
         style={{
           padding: '24px 20px',
-          background: '#0d0d10',
-          border: '1px solid rgba(255,255,255,0.07)',
+          background: getCanvasColors().canvasBg,
+          border: `1px solid ${getCanvasColors().border}`,
           borderRadius: 4,
           fontFamily: '"JetBrains Mono", monospace',
           fontSize: 13,
@@ -48,28 +49,28 @@ export function CFromMaxwellDemo({ figure }: Props) {
       >
         <div style={{ color: withAlpha(getCanvasColors().textDim, 0.85) }}>
           ε₀ ={' '}
-          <span style={{ color: '#ff6b2a' }}>
+          <span style={{ color: getCanvasColors().accent }}>
             <Num value={PHYS.eps_0} digits={4} />
           </span>{' '}
           F/m
         </div>
         <div style={{ color: withAlpha(getCanvasColors().textDim, 0.85) }}>
           μ₀ ={' '}
-          <span style={{ color: '#ff6b2a' }}>
+          <span style={{ color: getCanvasColors().accent }}>
             <Num value={PHYS.mu_0} digits={4} />
           </span>{' '}
           T·m/A
         </div>
         <div style={{ marginTop: 12, color: withAlpha(getCanvasColors().textDim, 0.85) }}>
           1/√(ε₀ μ₀) ={' '}
-          <span style={{ color: '#ff6b2a', fontWeight: 500 }}>
+          <span style={{ color: getCanvasColors().accent, fontWeight: 500 }}>
             {cPredicted.toLocaleString('en-US', { maximumFractionDigits: 1 })}
           </span>{' '}
           m/s
         </div>
         <div style={{ color: withAlpha(getCanvasColors().textDim, 0.85) }}>
           c (1983 SI, exact) ={' '}
-          <span style={{ color: '#6cc5c2', fontWeight: 500 }}>
+          <span style={{ color: getCanvasColors().teal, fontWeight: 500 }}>
             {cMeasured.toLocaleString('en-US')}
           </span>{' '}
           m/s
@@ -78,12 +79,12 @@ export function CFromMaxwellDemo({ figure }: Props) {
           style={{
             marginTop: 14,
             paddingTop: 12,
-            borderTop: '1px dashed rgba(255,255,255,0.12)',
+            borderTop: `1px dashed ${withAlpha(getCanvasColors().text, 0.12)}`,
             color: withAlpha(getCanvasColors().text, 0.75),
           }}
         >
           fractional difference:{' '}
-          <span style={{ color: '#ff6b2a' }}>
+          <span style={{ color: getCanvasColors().accent }}>
             <Num value={fractionalDiff} digits={2} />
           </span>
         </div>
@@ -92,6 +93,20 @@ export function CFromMaxwellDemo({ figure }: Props) {
         <MiniReadout label="c predicted" value={<Num value={cPredicted} digits={4} />} unit="m/s" />
         <MiniReadout label="c measured" value={<Num value={cMeasured} digits={4} />} unit="m/s" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Maxwell's prediction"
+        left={
+          <InlineMath
+            tex={`c \\;=\\; \\dfrac{1}{\\sqrt{\\mu_0 \\varepsilon_0}} \\;=\\; ${cPredicted.toFixed(0)}\\ \\text{m/s}`}
+          />
+        }
+        rightLabel="SI exact value"
+        right={
+          <InlineMath
+            tex={`c_{\\text{SI}} \\;=\\; ${cMeasured.toFixed(0)}\\ \\text{m/s}`}
+          />
+        }
+      />
     </Demo>
   );
 }

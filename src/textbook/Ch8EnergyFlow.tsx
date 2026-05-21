@@ -1,12 +1,12 @@
 /**
- * Chapter 6 — Where the energy actually flows
+ * Chapter 8 — Where the energy actually flows
  *
  * The capstone. Five embedded demos:
- *   6.1 Old picture vs real picture (battery + bulb)
- *   6.2 Axial E inside a resistive wire
- *   6.3 B circulating around a wire
- *   6.4 Poynting inflow — the punchline ∮S·dA = VI
- *   6.5 Superconductor limit — the energy passes parallel, no absorption
+ *   8.1 Old picture vs real picture (battery + bulb)
+ *   8.2 Axial E inside a resistive wire
+ *   8.3 B circulating around a wire
+ *   8.4 Poynting inflow — the punchline ∮S·dA = VI
+ *   8.5 Superconductor limit — the energy passes parallel, no absorption
  *
  * The whole textbook lands here: charge → field → voltage → current →
  * resistance → magnetism → induction → and finally, the wire wasn't the
@@ -18,6 +18,7 @@ import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
+import { Pullout } from '@/components/Prose';
 import { TryIt } from '@/components/TryIt';
 import { PredictThenObserve } from '@/components/PredictThenObserve';
 import { BatteryBulbFieldsDemo } from './demos/BatteryBulbFields';
@@ -74,7 +75,8 @@ export default function Ch8EnergyFlow() {
         moment you flip the switch. If energy rode in on the backs of the drifting electrons, you
         would wait several hours after closing the circuit before the first energy-laden electrons
         made it from one end of the wire to the other. They don't carry the energy. Something else
-        does — and that something else moves at about ⅔ the speed of light, which is the speed of an
+        does — and that something else moves at about ⅔ the speed of light
+        <Cite id="libretexts-conduction" in={SOURCES} />, which is the speed of an
         electromagnetic disturbance through the material surrounding a copper wire.
       </p>
 
@@ -83,7 +85,7 @@ export default function Ch8EnergyFlow() {
       <p className="mb-prose-3">
         Three physical fields are present in the picture above, and the demo lets you toggle each
         one on and off. The yellow dots are the conduction electrons, drifting along the copper at
-        roughly <strong className="text-text font-medium">10⁻⁴ m/s</strong>. The teal circles are
+        roughly <strong className="text-text font-medium">~3×10⁻⁵ m/s</strong> (≈0.03 mm/s). The teal circles are
         the magnetic field <strong className="text-text font-medium">B</strong> curling around each
         wire segment, set by Ampère's law
         <Cite id="feynman-II-27" in={SOURCES} />. The pink arrows are the electric field{' '}
@@ -132,7 +134,7 @@ export default function Ch8EnergyFlow() {
         electric field inside the wire (in V/m, pointing along the wire's axis in the direction of
         conventional current), <strong className="text-text font-medium">V</strong> is the voltage
         drop across the wire's ends (in volts), and{' '}
-        <strong className="text-text font-medium">L</strong> is the wire's length (in metres). This
+        <strong className="text-text font-medium">L</strong> is the wire's length (in meters). This
         is a point that surprises people. In the electrostatic case, the field inside a conductor is
         zero — the free charges rearrange until it is. In a{' '}
         <em className="text-text italic">current-carrying resistive</em> conductor, the field inside
@@ -143,7 +145,7 @@ export default function Ch8EnergyFlow() {
       <EAxialFieldDemo />
 
       <p className="mb-prose-3">
-        Second, a magnetic field circling the wire. From Chapter&nbsp;4, Ampère's law tells you that
+        Second, a magnetic field circling the wire. From Chapter&nbsp;6, Ampère's law tells you that
         any line integral of
         <strong className="text-text font-medium"> B·dℓ</strong> around a closed loop equals μ
         <sub>0</sub> times the enclosed current. Wrap that loop around the wire at radius
@@ -155,7 +157,7 @@ export default function Ch8EnergyFlow() {
         field at the wire's surface (in teslas),
         <strong className="text-text font-medium"> I</strong> is the current through the wire (in
         amperes), <strong className="text-text font-medium">a</strong> is the wire's radius (in
-        metres), and <strong className="text-text font-medium">μ₀ = 4π×10⁻⁷ T·m/A</strong> is the
+        meters), and <strong className="text-text font-medium">μ₀ = 4π×10⁻⁷ T·m/A</strong> is the
         vacuum permeability
         <Cite id="codata-2018" in={SOURCES} />. The direction is set by the right-hand rule: thumb
         along the current, fingers curl with the field. It's a circumferential field. Perpendicular
@@ -242,7 +244,7 @@ export default function Ch8EnergyFlow() {
         This is the picture Feynman puts in the bluntest possible terms in Volume II of the Lectures
         <Cite id="feynman-II-27" in={SOURCES} />:
       </p>
-      <p className="pullout">
+      <p className="mb-prose-3">
         "Since the wire has resistance, there is an electric field along it, driving the current…
         the <strong className="text-text font-medium">E</strong> and
         <strong className="text-text font-medium"> B</strong> are at right angles; therefore there
@@ -260,7 +262,16 @@ export default function Ch8EnergyFlow() {
       </p>
       <Formula tex="|S|_{\\text{surf}} = \\dfrac{E B}{\\mu_0} = \\dfrac{V I}{2\\pi a L}" />
       <p className="mb-prose-3">
-        where the second equality just substitutes <em className="text-text italic">E = V/L</em> and{' '}
+        where <strong className="text-text font-medium">|S|</strong><sub>surf</sub> is the magnitude
+        of the Poynting vector at the wire's surface (in W/m²),{' '}
+        <strong className="text-text font-medium">E</strong> is the axial electric field inside the
+        wire (in V/m), <strong className="text-text font-medium">B</strong> is the magnetic field at
+        the surface (in T), <strong className="text-text font-medium">μ₀</strong> is the vacuum
+        permeability (in T·m/A), <strong className="text-text font-medium">V</strong> is the voltage
+        drop across the wire (in V), <strong className="text-text font-medium">I</strong> is the
+        current (in A), <strong className="text-text font-medium">a</strong> is the wire's radius
+        (in m), and <strong className="text-text font-medium">L</strong> is the wire's length (in
+        m). The second equality just substitutes <em className="text-text italic">E = V/L</em> and{' '}
         <em className="text-text italic">
           B = μ<sub>0</sub>I/(2πa)
         </em>{' '}
@@ -280,6 +291,16 @@ export default function Ch8EnergyFlow() {
         </Term>
       </p>
       <Formula tex="\\oint \\vec{S}\\cdot d\\vec{A} = |S|_{\\text{surf}} \\cdot 2\\pi a L = V I" />
+      <p className="mb-prose-3">
+        where <strong className="text-text font-medium">S</strong> is the Poynting vector (in W/m²),{' '}
+        <strong className="text-text font-medium">dA</strong> is the infinitesimal area element vector
+        (in m²), <strong className="text-text font-medium">|S|</strong><sub>surf</sub> is its
+        magnitude at the wire's surface (in W/m²), <strong className="text-text font-medium">2πaL</strong>{' '}
+        is the wire's lateral surface area (in m²), <strong className="text-text font-medium">V</strong>{' '}
+        is the voltage drop (in V), and <strong className="text-text font-medium">I</strong> is the
+        current (in A), so <strong className="text-text font-medium">VI</strong> is the dissipated
+        power (in W).
+      </p>
       <p className="mb-prose-3">
         Exactly <strong className="text-text font-medium">VI</strong>. The{' '}
         <Term
@@ -335,7 +356,7 @@ export default function Ch8EnergyFlow() {
 
       <p className="mb-prose-3">
         That demo collapses the geometry into a flat side-view, which is the right move for getting
-        the algebra to land but hides the cross-product structure of{' '}
+        the algebra to land but hides the cross product structure of{' '}
         <InlineMath id="poynting-vector" />. Spin the next one — a coaxial cable in 3D. Pink radial{' '}
         <strong className="text-text font-medium">E</strong> threads from the inner conductor to the
         outer braid, teal circumferential
@@ -387,8 +408,8 @@ export default function Ch8EnergyFlow() {
             <Formula tex="|S|_{\\text{surf}} = 60 / 6.283\\times 10^{-3} \\approx 9.55\\times 10^{3}\\ \\text{W/m}^2" />
             <p className="mb-prose-1 last:mb-0">
               About <strong className="text-text font-medium">9.5 kW/m²</strong> of Poynting flux
-              pouring radially inward at every point on the wire's surface — a few times the solar
-              constant
+              pouring radially inward at every point on the wire's surface — several times the solar
+              constant (about seven times)
               <Cite id="kopp-lean-2011" in={SOURCES} />, in the air around a modestly resistive bit
               of copper.
             </p>
@@ -431,7 +452,7 @@ export default function Ch8EnergyFlow() {
         }
       />
 
-      <p className="pullout">The wire is not the medium. The wire is the destination.</p>
+      <Pullout>The wire is not the medium. The wire is the destination.</Pullout>
 
       <h2 className="chapter-h2">
         Davis &amp; Kaplan and the <em>real</em> circuit
@@ -633,7 +654,7 @@ export default function Ch8EnergyFlow() {
         asked what charge actually is. We built up a field that fills space (Ch.&nbsp;1), figured
         out the language of potential and current (Ch.&nbsp;2), the atomic-scale choreography of
         resistance and dissipation (Ch.&nbsp;3), the magnetism that any moving charge produces
-        (Ch.&nbsp;4), and the way changing fields give birth to other fields (Ch.&nbsp;5). At every
+        (Ch.&nbsp;6), and the way changing fields give birth to other fields (Ch.&nbsp;7). At every
         stage the wire kept showing up, and at every stage we were tempted to think of the wire as
         the protagonist — the thing energy was traveling through.
       </p>
@@ -656,7 +677,7 @@ export default function Ch8EnergyFlow() {
         }
       >
         <CaseStudy
-          tag="Case 6.1"
+          tag="Case 8.1"
           title="Coaxial cable"
           summary={
             <em className="text-text italic">
@@ -679,7 +700,7 @@ export default function Ch8EnergyFlow() {
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
-            A coaxial cable is the cleanest possible test of Chapter 6's central claim. For an ideal
+            A coaxial cable is the cleanest possible test of Chapter 8's central claim. For an ideal
             lossless line with inner radius <strong className="text-text font-medium">a</strong> and
             outer radius <strong className="text-text font-medium">b</strong>, the static{' '}
             <strong className="text-text font-medium">E</strong>
@@ -709,8 +730,21 @@ export default function Ch8EnergyFlow() {
             speed of light" number that keeps appearing throughout this book.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            At gigahertz frequencies the skin effect pushes whatever current does flow in the metal
-            out to the surface within a few micrometers. From the field's point of view, the inside
+            At gigahertz frequencies the{' '}
+            <Term
+              def={
+                <>
+                  <strong className="text-text font-medium">skin effect</strong> — the tendency of
+                  alternating current to concentrate near the surface of a conductor at high
+                  frequencies, reducing the effective cross-sectional area. The skin depth δ
+                  decreases as 1/√f.
+                </>
+              }
+            >
+              skin effect
+            </Term>{' '}
+            pushes whatever current does flow in the metal out to the surface within a few
+            micrometers. From the field's point of view, the inside
             of the conductor is empty space the signal never visits
             <Cite id="griffiths-2017" in={SOURCES} />. The wire is, more literally than the rest of
             the book makes it sound, just a guide for the field's boundary condition.
@@ -718,7 +752,7 @@ export default function Ch8EnergyFlow() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 6.2"
+          tag="Case 8.2"
           title="A solar panel and the Sun's Poynting flux"
           summary={
             <em className="text-text italic">
@@ -727,9 +761,9 @@ export default function Ch8EnergyFlow() {
           }
           specs={[
             { label: 'Total solar irradiance at 1 AU', value: '1360.8 ± 0.5 W/m²' },
-            { label: 'Distance traveled', value: '~1.496 × 10¹¹ m' },
-            { label: 'Travel time', value: '~8.3 min' },
-            { label: "Earth's intercepted power", value: '~1.74 × 10¹⁷ W' },
+            { label: 'Distance traveled', value: <>~1.496 × 10¹¹ m <Cite id="codata-2018" in={SOURCES} /></> },
+            { label: 'Travel time', value: <>~8.3 min <Cite id="codata-2018" in={SOURCES} /></> },
+            { label: "Earth's intercepted power", value: <>~1.74 × 10¹⁷ W <Cite id="codata-2018" in={SOURCES} /></> },
             { label: 'Annual global energy demand (2024)', value: '~6 × 10²⁰ J' },
             { label: "Same as Earth's intercept for", value: '~1 hour' },
           ]}
@@ -755,8 +789,9 @@ export default function Ch8EnergyFlow() {
             <Cite id="jackson-1999" in={SOURCES} />. Plugging in the solar constant gives a peak
             field amplitude near Earth of{' '}
             <strong className="text-text font-medium">E₀ ≈ 1000 V/m</strong>, with a corresponding{' '}
-            <strong className="text-text font-medium">B₀ ≈ 3 µT</strong> — comparable in magnitude
-            to the geomagnetic field. The Sun quietly streams a few microtesla of oscillating{' '}
+            <strong className="text-text font-medium">B₀ ≈ 3 µT</strong> — roughly an order of
+            magnitude smaller than the geomagnetic field (~50 µT). The Sun quietly streams a few
+            microtesla of oscillating{' '}
             <strong className="text-text font-medium">B</strong> through every cubic meter of empty
             space inside Earth's orbit, all day, forever.
           </p>
@@ -774,7 +809,7 @@ export default function Ch8EnergyFlow() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 6.3"
+          tag="Case 8.3"
           title="The HTS power cable demonstration"
           summary={
             <em className="text-text italic">
@@ -803,7 +838,7 @@ export default function Ch8EnergyFlow() {
             overhead of keeping the cryostat cold.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            In the Chapter 6 language: as <InlineMath tex="\\sigma \\to \\infty" />, the axial{' '}
+            In the Chapter 8 language: as <InlineMath tex="\\sigma \\to \\infty" />, the axial{' '}
             <strong className="text-text font-medium">E</strong> inside the conductor goes to zero,
             and so does the radial component of <strong className="text-text font-medium">S</strong>{' '}
             at the conductor's surface
@@ -814,10 +849,11 @@ export default function Ch8EnergyFlow() {
             is where the joules actually land.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            Conventional copper transmission cables lose a few percent of delivered power to I²R
-            heating across hundreds of kilometers; HTS demonstrators have shown that, in principle,
+            Conventional copper transmission cables can lose a few percent or more of delivered
+            power to I²R heating across hundreds of kilometers; HTS demonstrators have shown that, in
+            principle,
             that loss can be moved off the conductor entirely. The reason it hasn't displaced copper
-            in the grid is not the physics — the Poynting integral works exactly as Chapter 6
+            in the grid is not the physics — the Poynting integral works exactly as Chapter 8
             predicts — but the engineering of cryogenics at kilometer scale.
           </p>
         </CaseStudy>
@@ -914,7 +950,12 @@ export default function Ch8EnergyFlow() {
           </p>
           <Formula tex="\\langle\\vec{S}\\rangle \\cdot d\\vec{A}\\ \\text{averaged over a cycle} = \\langle VI \\rangle = V_{\\text{rms}} I_{\\text{rms}} \\cos\\varphi" />
           <p>
-            where <em className="text-text italic">φ</em> is the load's phase angle
+            where <strong className="text-text font-medium">⟨S⟩</strong> is the time-averaged
+            Poynting vector (in W/m²), <strong className="text-text font-medium">dA</strong> is the
+            infinitesimal area element (in m²), <strong className="text-text font-medium">V</strong><sub>rms</sub>{' '}
+            is the root-mean-square voltage (in V), <strong className="text-text font-medium">I</strong><sub>rms</sub>{' '}
+            is the root-mean-square current (in A), and <em className="text-text italic">φ</em> is
+            the load's phase angle (in rad)
             <Cite id="jackson-1999" in={SOURCES} />. For purely reactive components — ideal
             capacitors and inductors — <InlineMath tex="\\langle\\vec{S}\\rangle = 0" />. Energy
             sloshes in and out through space twice per cycle with no net transfer; that's exactly
@@ -986,6 +1027,14 @@ export default function Ch8EnergyFlow() {
           </p>
           <Formula tex="|S|_{\\text{surf}} \\cdot 2\\pi a L = (V I) / (2\\pi a L) \\cdot 2\\pi a L = V I" />
           <p>
+            where <strong className="text-text font-medium">|S|</strong><sub>surf</sub> is the
+            Poynting-vector magnitude at the surface (in W/m²),{' '}
+            <strong className="text-text font-medium">2πaL</strong> is the wire's lateral surface
+            area (in m²), <strong className="text-text font-medium">V</strong> is the voltage drop
+            (in V), and <strong className="text-text font-medium">I</strong> is the current (in A),
+            so <strong className="text-text font-medium">VI</strong> is the dissipated power (in W).
+          </p>
+          <p>
             The lateral surface area <InlineMath tex="2\\pi a L" /> meets the field's{' '}
             <InlineMath tex="1/(2\\pi a L)" /> dependence and the geometry drops out completely
             <Cite id="feynman-II-27" in={SOURCES} />. The identity is exact for any uniform
@@ -1049,7 +1098,13 @@ export default function Ch8EnergyFlow() {
           </p>
           <Formula tex="u = \\tfrac{1}{2} \\varepsilon_0 E^2 + \\dfrac{1}{2\\mu_0} B^2" />
           <p>
-            with a clean partition into electric and magnetic pieces
+            where <strong className="text-text font-medium">u</strong> is the electromagnetic energy
+            density (in J/m³), <strong className="text-text font-medium">ε₀</strong> is the vacuum
+            permittivity (in F/m), <strong className="text-text font-medium">E</strong> is the
+            electric field magnitude (in V/m), <strong className="text-text font-medium">μ₀</strong>{' '}
+            is the vacuum permeability (in T·m/A), and{' '}
+            <strong className="text-text font-medium">B</strong> is the magnetic field magnitude (in
+            T), giving a clean partition into electric and magnetic pieces
             <Cite id="griffiths-2017" in={SOURCES} />. Around a DC current-carrying wire, the
             magnetic term dominates near the surface; in the gap of a charged capacitor, the
             electric term dominates; in a propagating plane wave the two terms are equal on
@@ -1082,9 +1137,10 @@ export default function Ch8EnergyFlow() {
           <p>
             Because nothing in you is electromagnetically resonant at the frequencies dominating
             ambient fields, and the intensities are absurdly low. Earth's static magnetic field is
-            ~50 μT and 60 Hz electric fields near a wall outlet are a few V/m, giving an ambient
-            time-averaged <strong className="text-text font-medium">|S|</strong> on the order of
-            microwatts per square meter — far below thermal noise in any biological receptor
+            on the order of 50 μT, and 60 Hz electric fields near a wall outlet are roughly a few
+            V/m, giving an ambient time-averaged <strong className="text-text font-medium">|S|</strong>{' '}
+            on the order of microwatts per square meter — far below thermal noise in any biological
+            receptor
             <Cite id="griffiths-2017" in={SOURCES} />. You
             <em className="text-text italic">do</em> feel Poynting flux when it gets concentrated
             and lossy: a microwave oven, an induction stove, sunlight on skin. Same physics, many

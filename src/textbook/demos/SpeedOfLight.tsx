@@ -12,7 +12,14 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+} from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
@@ -116,6 +123,27 @@ export function SpeedOfLightDemo({ figure }: Props) {
         <MiniReadout label="n = √(εᵣ μᵣ)" value={n.toFixed(3)} />
         <MiniReadout label="v/c" value={ratio.toFixed(3)} unit="×" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Phase speed"
+        left={
+          <InlineMath
+            tex={
+              `v \\;=\\; \\dfrac{c}{\\sqrt{\\varepsilon_{r}\\mu_{r}}} \\;=\\; ` +
+              `\\dfrac{c}{\\sqrt{${er.toFixed(2)}\\cdot${mr.toFixed(2)}}} ` +
+              `\\;\\approx\\; ${ratio.toFixed(3)}\\,c`
+            }
+          />
+        }
+        rightLabel="Refractive index"
+        right={
+          <InlineMath
+            tex={
+              `n \\;=\\; \\sqrt{\\varepsilon_{r}\\mu_{r}} \\;=\\; ` +
+              `\\sqrt{${er.toFixed(2)}\\cdot${mr.toFixed(2)}} \\;\\approx\\; ${n.toFixed(3)}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

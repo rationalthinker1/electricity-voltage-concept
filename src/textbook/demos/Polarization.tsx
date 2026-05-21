@@ -14,10 +14,17 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+} from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure?: string;
@@ -181,6 +188,27 @@ export function PolarizationDemo({ figure }: Props) {
         <MiniReadout label="δ" value={((delta * 180) / Math.PI).toFixed(0)} unit="°" />
         <MiniReadout label="φ" value={((phi * 180) / Math.PI).toFixed(0)} unit="°" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="E-field (y)"
+        left={
+          <InlineMath
+            tex={
+              `E_{y} \\;=\\; \\cos\\varphi\\,\\cos(\\omega t) \\;=\\; ` +
+              `\\cos(${((phi * 180) / Math.PI).toFixed(0)}^{\\circ})\\,\\cos(\\omega t)`
+            }
+          />
+        }
+        rightLabel="E-field (z)"
+        right={
+          <InlineMath
+            tex={
+              `E_{z} \\;=\\; \\sin\\varphi\\,\\cos(\\omega t - \\delta) \\;=\\; ` +
+              `\\sin(${((phi * 180) / Math.PI).toFixed(0)}^{\\circ})\\,` +
+              `\\cos(\\omega t - ${((delta * 180) / Math.PI).toFixed(0)}^{\\circ})`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

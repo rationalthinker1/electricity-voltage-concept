@@ -22,17 +22,20 @@
  * the geometry is so symmetric): back-plate marks first, then field
  * arrows, then front-plate marks, then the optional pillbox on top.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
 import { project, v3, type Vec3 } from '@/lib/projection3d';
-import { createOrbitScene } from '@/lib/useOrbitScene';
+import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
 import { drawLabel } from "@/lib/canvasLayout";
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -77,25 +80,13 @@ export function ParallelPlate3DDemo({ figure }: Props) {
     return { A_m2, d_m, C, Q, U, E, sigma, sigmaA };
   }, [A_cm2, d_mm, V]);
 
-  const stateRef = useRef({ A_cm2, d_mm, V, showGauss, computed });
-  useEffect(() => {
-    stateRef.current = { A_cm2, d_mm, V, showGauss, computed };
-  }, [A_cm2, d_mm, V, showGauss, computed]);
+  const stateRef = useSimState({ A_cm2, d_mm, V, showGauss, computed });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H, canvas } = info;
-    const scene = createOrbitScene(canvas, {
-      yaw: 0.55,
-      pitch: 0.32,
-      distance: 7.2,
-      fov: Math.PI / 4,
-    });
-    const cam = scene.cam;
-    let raf = 0;
-
-    function draw() {
-      const s = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, s, _dt, _simTime, scene: OrbitScene) => {
+      const cam = scene.cam;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
       const half = plateHalfWorld(s.A_cm2);
@@ -174,11 +165,11 @@ export function ParallelPlate3DDemo({ figure }: Props) {
 
       // ─── 1. Back plate (fill + outline + σ-marks) ───────────────────
       if (topIsBack) {
-        drawPlateFill(yTop, withAlpha(getCanvasColors().pink, 0.1));
-        drawPlateOutline(yTop, withAlpha(getCanvasColors().pink, 0.55));
+        drawPlateFill(yTop, withAlpha(colors.pink, 0.1));
+        drawPlateOutline(yTop, withAlpha(colors.pink, 0.55));
       } else {
-        drawPlateFill(yBot, withAlpha(getCanvasColors().blue, 0.1));
-        drawPlateOutline(yBot, withAlpha(getCanvasColors().blue, 0.55));
+        drawPlateFill(yBot, withAlpha(colors.blue, 0.1));
+        drawPlateOutline(yBot, withAlpha(colors.blue, 0.55));
       }
 
       // σ-density relative to a reference. Use sqrt to keep tiny σ visible.
@@ -186,9 +177,9 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       const sigmaRel = Math.sqrt(Math.max(0, s.computed.sigma) / sigmaRef);
 
       if (topIsBack) {
-        drawSigmaMarks(yTop, '+', getCanvasColors().pink, sigmaRel);
+        drawSigmaMarks(yTop, '+', colors.pink, sigmaRel);
       } else {
-        drawSigmaMarks(yBot, '−', getCanvasColors().blue, sigmaRel);
+        drawSigmaMarks(yBot, '−', colors.blue, sigmaRel);
       }
 
       // ─── 2. Translucent amber gap volume ───────────────────────────
@@ -200,7 +191,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         const j = (i + 1) % 4;
         ctx.save();
         ctx.globalAlpha = 0.045;
-        ctx.fillStyle = getCanvasColors().accent;
+        ctx.fillStyle = colors.accent;
         ctx.beginPath();
         ctx.moveTo(top[i]!.x, top[i]!.y);
         ctx.lineTo(top[j]!.x, top[j]!.y);
@@ -213,7 +204,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       // Faint amber edges connecting the corners (gap volume wireframe).
       ctx.save();
       ctx.globalAlpha = 0.18;
-      ctx.strokeStyle = getCanvasColors().accent;
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 3]);
       for (let i = 0; i < 4; i++) {
@@ -263,7 +254,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         const dMid = (p1.depth + p2.depth) / 2;
         const tDepth = Math.max(0, Math.min(1, (cam.distance + 1.5 - dMid) / 3.5));
         const fade = 0.32 + 0.55 * tDepth;
-        const baseColor = withAlpha(getCanvasColors().accent, 0.92 * fade);
+        const baseColor = withAlpha(colors.accent, 0.92 * fade);
 
         // Body.
         ctx.strokeStyle = baseColor;
@@ -293,13 +284,13 @@ export function ParallelPlate3DDemo({ figure }: Props) {
 
       // ─── 4. Front plate (fill + outline + σ-marks) ──────────────────
       if (topIsBack) {
-        drawPlateFill(yBot, withAlpha(getCanvasColors().blue, 0.1));
-        drawPlateOutline(yBot, withAlpha(getCanvasColors().blue, 0.65));
-        drawSigmaMarks(yBot, '−', getCanvasColors().blue, sigmaRel);
+        drawPlateFill(yBot, withAlpha(colors.blue, 0.1));
+        drawPlateOutline(yBot, withAlpha(colors.blue, 0.65));
+        drawSigmaMarks(yBot, '−', colors.blue, sigmaRel);
       } else {
-        drawPlateFill(yTop, withAlpha(getCanvasColors().pink, 0.1));
-        drawPlateOutline(yTop, withAlpha(getCanvasColors().pink, 0.65));
-        drawSigmaMarks(yTop, '+', getCanvasColors().pink, sigmaRel);
+        drawPlateFill(yTop, withAlpha(colors.pink, 0.1));
+        drawPlateOutline(yTop, withAlpha(colors.pink, 0.65));
+        drawSigmaMarks(yTop, '+', colors.pink, sigmaRel);
       }
 
       // ─── 5. Gauss pillbox (on top of everything) ────────────────────
@@ -330,7 +321,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         // Translucent side fill (quad strip).
         ctx.save();
         ctx.globalAlpha = 0.1;
-        ctx.fillStyle = getCanvasColors().teal;
+        ctx.fillStyle = colors.teal;
         for (let i = 0; i < RIM_N; i++) {
           const j = (i + 1) % RIM_N;
           ctx.beginPath();
@@ -345,23 +336,23 @@ export function ParallelPlate3DDemo({ figure }: Props) {
 
         // Glow-outline the two rims and a couple of side generators.
         drawGlowPath(ctx, [...rimU, rimU[0]!], {
-          color: withAlpha(getCanvasColors().teal, 0.95),
+          color: withAlpha(colors.teal, 0.95),
           lineWidth: 1.4,
-          glowColor: withAlpha(getCanvasColors().teal, 0.3),
+          glowColor: withAlpha(colors.teal, 0.3),
           glowWidth: 5,
         });
         drawGlowPath(ctx, [...rimL, rimL[0]!], {
-          color: withAlpha(getCanvasColors().teal, 0.95),
+          color: withAlpha(colors.teal, 0.95),
           lineWidth: 1.4,
-          glowColor: withAlpha(getCanvasColors().teal, 0.3),
+          glowColor: withAlpha(colors.teal, 0.3),
           glowWidth: 5,
         });
         // Two generator lines (front & back) for shape readability.
         for (const k of [0, Math.floor(RIM_N / 2)]) {
           drawGlowPath(ctx, [rimU[k]!, rimL[k]!], {
-            color: withAlpha(getCanvasColors().teal, 0.85),
+            color: withAlpha(colors.teal, 0.85),
             lineWidth: 1.2,
-            glowColor: withAlpha(getCanvasColors().teal, 0.2),
+            glowColor: withAlpha(colors.teal, 0.2),
             glowWidth: 4,
           });
         }
@@ -389,7 +380,7 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         const boxX = Math.min(W - boxW - 8, Math.max(8, anchor.x + 18));
         const boxY = Math.min(H - boxH - 8, Math.max(8, anchor.y - boxH - 10));
         // Connector from anchor to box.
-        ctx.strokeStyle = getCanvasColors().teal;
+        ctx.strokeStyle = colors.teal;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(anchor.x, anchor.y);
@@ -398,18 +389,18 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         // Box: opaque background + teal stroke.
         ctx.save();
         ctx.globalAlpha = 0.92;
-        ctx.fillStyle = getCanvasColors().canvasBg;
+        ctx.fillStyle = colors.canvasBg;
         ctx.beginPath();
         ctx.rect(boxX, boxY, boxW, boxH);
         ctx.fill();
         ctx.restore();
-        ctx.strokeStyle = getCanvasColors().teal;
+        ctx.strokeStyle = colors.teal;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.rect(boxX, boxY, boxW, boxH);
         ctx.stroke();
         // Lines.
-        ctx.fillStyle = getCanvasColors().teal;
+        ctx.fillStyle = colors.teal;
         ctx.textBaseline = 'top';
         for (let i = 0; i < labelLines.length; i++) {
           ctx.fillText(labelLines[i]!, boxX + pad, boxY + pad + i * lineH);
@@ -420,24 +411,26 @@ export function ParallelPlate3DDemo({ figure }: Props) {
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: 'drag to orbit', x: 12, y: 12 });
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = colors.pink;
       drawLabel(ctx, { text: '+ plate', x: 12, y: H - 42 });
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = colors.blue;
       drawLabel(ctx, { text: '− plate', x: 12, y: H - 28 });
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       drawLabel(ctx, { text: 'E-field in the gap', x: 12, y: H - 14 });
-
-      raf = requestAnimationFrame(draw);
-    }
-
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      scene.dispose();
-    };
-  }, []);
+    },
+    [],
+    ({ canvas }) => {
+      const scene = createOrbitScene(canvas, {
+        yaw: 0.55,
+        pitch: 0.32,
+        distance: 7.2,
+        fov: Math.PI / 4,
+      });
+      return { context: scene, cleanup: () => scene.dispose() };
+    },
+  );
 
   return (
     <Demo
@@ -495,6 +488,26 @@ export function ParallelPlate3DDemo({ figure }: Props) {
         <MiniReadout label="U = ½ C V²" value={<Num value={computed.U * 1e9} />} unit="nJ" />
         <MiniReadout label="E = V / d" value={<Num value={computed.E} />} unit="V/m" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Geometry"
+        left={
+          <InlineMath
+            tex={
+              `C \\;=\\; \\dfrac{\\varepsilon_{0} A}{d} \\;\\approx\\; ${(computed.C * 1e12).toFixed(1)}\\ \\text{pF}`
+            }
+          />
+        }
+        rightLabel="Uniform field in the gap"
+        right={
+          <InlineMath
+            tex={
+              `E \\;=\\; \\dfrac{V}{d} \\;=\\; ` +
+              `\\dfrac{${V.toFixed(1)}}{${(d_mm * 1e-3).toExponential(1)}} ` +
+              `\\;\\approx\\; ${computed.E.toExponential(2)}\\ \\text{V/m}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

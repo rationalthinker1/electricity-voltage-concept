@@ -354,6 +354,15 @@ export const SOURCES: Record<string, Source> = {
     venue: 'Annalen der Physik 270 (8), 609–623',
     note: 'First experimental detection of electromagnetic waves predicted by Maxwell; standing waves between parallel reflectors gave a propagation speed consistent with c.',
   },
+  'dirac-1931': {
+    id: 'dirac-1931',
+    title: 'Quantised Singularities in the Electromagnetic Field',
+    author: 'P. A. M. Dirac',
+    year: 1931,
+    venue: 'Proceedings of the Royal Society A 133, 60–72',
+    url: 'https://doi.org/10.1098/rspa.1931.0130',
+    note: 'Dirac monopole argument: the existence of a single magnetic monopole implies quantization of electric charge.',
+  },
   'feynman-II-18': {
     id: 'feynman-II-18',
     title: 'The Feynman Lectures on Physics, Vol. II, Ch. 18 — The Maxwell Equations',

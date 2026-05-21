@@ -25,6 +25,7 @@ import { BuildACapacitorDemo } from './demos/BuildACapacitor';
 import { ChargingCurveDemo } from './demos/ChargingCurve';
 import { EnergyInTheGapDemo } from './demos/EnergyInTheGap';
 import { LeydenJarReplayDemo } from './demos/LeydenJarReplay';
+import { DielectricSlideDemo } from './demos/DielectricSlide';
 import { ParallelPlate3DDemo } from './demos/ParallelPlate3D';
 import { PlateGeometryDemo } from './demos/PlateGeometry';
 import { WhyHarderEachChargeDemo } from './demos/WhyHarderEachCharge';
@@ -37,7 +38,7 @@ export default function Ch5Capacitors() {
   return (
     <ChapterShell chapter={chapter}>
       <p className="chapter-intro">
-        Hold two coins a millimeter apart and connect each to a different terminal of a battery.
+        Hold two coins a millimetre apart and connect each to a different terminal of a battery.
         Charges slosh onto the metal until the two faces opposite the gap carry equal and opposite
         amounts, and the field between them matches the battery's pull. You have just built a{' '}
         <Term def="A two-terminal device that stores energy in the electric field between two conductors separated by an insulating gap (the dielectric). Defined by Q = CV.">
@@ -129,6 +130,18 @@ export default function Ch5Capacitors() {
         now, and it has three layers worth pulling apart.
       </p>
 
+      <h3 className="chapter-h3">Intuition: how much charge fits per volt</h3>
+      <p className="mb-prose-3">
+        Before any equation, the picture: capacitance is the size of the bucket. Push a volt
+        across the gap and some amount of charge piles up on the plates. Push two volts and twice
+        as much fits. The capacitor's <em className="text-text italic">capacity</em> is how
+        steeply that line rises — how many coulombs per volt the geometry will hold. Big plates,
+        thin gap, easy-to-polarise material in between: a deep bucket. Small plates, wide gap:
+        shallow. The earlier "Build one charge at a time" demo is exactly this picture made
+        kinetic — each electron drops in, the voltage climbs, and the slope of that climb is
+        determined by the geometry, not by you.
+      </p>
+
       <h3 className="chapter-h3">Formal: charge divided by potential</h3>
       <p className="mb-prose-3">
         At the field-theoretic level, capacitance is defined as the ratio of the charge on a
@@ -200,8 +213,15 @@ export default function Ch5Capacitors() {
         <Cite id="jackson-1999" in={SOURCES} />.
       </p>
       <Formula size="lg" tex="C = \dfrac{\varepsilon_0 \varepsilon_r A}{d}" />
+      <p className="mb-prose-3">
+        Same geometry rule, now with the dielectric factor folded in: εᵣ is the relative
+        permittivity of the material in the gap (dimensionless; vacuum recovers εᵣ = 1 and the
+        previous form). The other symbols are unchanged.
+      </p>
 
       <PlateGeometryDemo />
+
+      <DielectricSlideDemo />
 
       <ParallelPlate3DDemo />
 
@@ -260,7 +280,7 @@ export default function Ch5Capacitors() {
         <strong className="text-text font-medium"> C ≈ 0.9 pF</strong>. A whole farad in air would
         need plates the size of a small lake. The reason the capacitor industry exists at all is the
         εᵣ trick: stack thin layers of high-permittivity ceramic between thin metallised foils and
-        you can fit a microfarad into a millimeter cube
+        you can fit a microfarad into a millimetre cube
         <Cite id="horowitz-hill-2015" in={SOURCES} />.
       </p>
 
@@ -542,7 +562,7 @@ export default function Ch5Capacitors() {
         into a package about 0.4 mm on a side, by stacking dozens of thin metallised dielectric
         layers in parallel
         <Cite id="horowitz-hill-2015" in={SOURCES} />. At the other extreme, electrochemical{' '}
-        <Term def="A capacitor whose effective plates are the metal-electrolyte interfaces inside porous carbon electrodes. Effective surface area is square kilometres per gram and the effective gap is the Debye length; the device reaches thousands of farads per cell at a few volts working voltage.">
+        <Term def="A capacitor whose effective plates are the metal-electrolyte interfaces inside porous carbon electrodes. Effective surface area is on the order of thousands of square metres per gram and the effective gap is the Debye length; the device reaches thousands of farads per cell at a few volts working voltage.">
           supercapacitor
         </Term>
         s exploit double-layer effects at the surface of porous electrodes to reach thousands of
@@ -703,8 +723,8 @@ export default function Ch5Capacitors() {
           <p className="mb-prose-2 last:mb-0">
             Pure electrochemical supercapacitors store charge in the "electric double layer" that
             forms at the boundary between a porous electrode and a liquid electrolyte. The effective
-            plate area is enormous — square kilometers per gram of activated carbon — and the
-            effective gap d is the Debye length of the electrolyte, a nanometer or so. Putting both
+            plate area is enormous — thousands of square metres per gram of activated carbon — and the
+            effective gap d is the Debye length of the electrolyte, a nanometre or so. Putting both
             into <strong className="text-text font-medium">C = ε₀ εᵣ A / d</strong> gives
             capacitances in the thousands of farads per cell
             <Cite id="horowitz-hill-2015" in={SOURCES} />.
@@ -876,7 +896,7 @@ export default function Ch5Capacitors() {
           </p>
         </FAQItem>
 
-        <FAQItem q="Why are electrolytic capacitors polarized?">
+        <FAQItem q="Why are electrolytic capacitors polarised?">
           <p>
             Aluminium electrolytic capacitors achieve their high capacitance per volume by growing
             an ultra-thin aluminium-oxide dielectric layer on the anode through electrochemistry.
@@ -920,8 +940,8 @@ export default function Ch5Capacitors() {
             An electrochemical double-layer supercapacitor stores charge in the few-Ångström-wide
             layer of electrolyte ions that crowd up against a charged porous electrode. The "plates"
             are the metal-electrolyte interface; the "gap" is the Debye length of the electrolyte, a
-            nanometer or less; and the effective area is the internal surface area of activated
-            carbon, hundreds of m² per gram. The geometry rule{' '}
+            nanometre or less; and the effective area is the internal surface area of activated
+            carbon, thousands of m² per gram. The geometry rule{' '}
             <strong className="text-text font-medium">C = ε₀ εᵣ A / d</strong> then gives
             capacitances in the thousands of farads per cell. The penalty is the breakdown voltage
             of the electrolyte (~2.7 V per cell), so high-voltage supercap banks need many cells in
@@ -974,7 +994,7 @@ export default function Ch5Capacitors() {
             even a single molecule has internal capacitance in the sense that you can write down its
             electric polarisability and read it as a tiny "self-capacitance." Practically, the
             smallest engineered capacitors are the gate capacitors of transistors on modern silicon
-            chips: a few attofarads (10⁻¹⁸ F), with a gate oxide a couple of nanometers thick
+            chips: a few attofarads (10⁻¹⁸ F), with a gate oxide a couple of nanometres thick
             <Cite id="horowitz-hill-2015" in={SOURCES} />. Push much smaller and quantum effects
             (tunnelling through the oxide, single-electron charging energies) take over and the
             classical Q = CV picture breaks down. The parallel-plate idealisation has a floor, and

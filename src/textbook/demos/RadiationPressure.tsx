@@ -10,14 +10,23 @@
  * a (massively exaggerated) speed so the radiation pressure is visible.
  * Readouts: real I (in W/m²) and real P = I/c (in Pa).
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+} from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors } from '@/lib/canvasTheme';
-import { drawLabel } from "@/lib/canvasLayout";
+import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure?: string;
@@ -28,6 +37,19 @@ interface Packet {
   amp: number;
 }
 
+interface SimCtx {
+  packets: Packet[];
+  targetX: number;
+  spawnAcc: number;
+}
+
+function latexSci(n: number, digits = 2): string {
+  const s = n.toExponential(digits);
+  const m = s.match(/^([\d.]+)e([+-]?\d+)$/);
+  if (!m) return s;
+  return `${m[1]}\\times10^{${parseInt(m[2], 10)}}`;
+}
+
 export function RadiationPressureDemo({ figure }: Props) {
   // Intensity in W/m². Default ≈ solar constant.
   const [I, setI] = useState(1361);
@@ -35,22 +57,12 @@ export function RadiationPressureDemo({ figure }: Props) {
   const P = I / PHYS.c; // pressure for full absorption, Pa
   const P_refl = (2 * I) / PHYS.c; // perfect reflector, for the readout
 
-  const stateRef = useRef({ I });
-  useEffect(() => {
-    stateRef.current = { I };
-  }, [I]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
-
-    const packets: Packet[] = [];
-    let targetX = W * 0.62; // target position (visual only)
-    let spawnAcc = 0;
-
-    function draw() {
-      const { I } = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+  const stateRef = useSimState({ I });
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, state, _dt, _simTime, simCtx: SimCtx) => {
+      const { I } = state;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
       const cy = H / 2;
@@ -58,25 +70,25 @@ export function RadiationPressureDemo({ figure }: Props) {
 
       // Spawn rate scales mildly with intensity (sub-linear so it stays readable)
       const rate = 0.06 + Math.log10(I + 10) * 0.08;
-      spawnAcc += rate;
-      while (spawnAcc >= 1) {
-        spawnAcc -= 1;
-        packets.push({ x: xL, amp: 0.5 + Math.random() * 0.6 });
+      simCtx.spawnAcc += rate;
+      while (simCtx.spawnAcc >= 1) {
+        simCtx.spawnAcc -= 1;
+        simCtx.packets.push({ x: xL, amp: 0.5 + Math.random() * 0.6 });
       }
 
       // Wave-packets fly right
       const speed = 2.8;
-      for (let i = packets.length - 1; i >= 0; i--) {
-        const p = packets[i]!;
+      for (let i = simCtx.packets.length - 1; i >= 0; i--) {
+        const p = simCtx.packets[i]!;
         p.x += speed;
-        if (p.x > targetX - 4) {
+        if (p.x > simCtx.targetX - 4) {
           // Absorbed — remove and nudge target right
-          packets.splice(i, 1);
+          simCtx.packets.splice(i, 1);
           // Visual push proportional to wave-packet amplitude (≈ energy)
-          targetX += 0.06 * p.amp * (1 + Math.log10(I + 1) * 0.15);
+          simCtx.targetX += 0.06 * p.amp * (1 + Math.log10(I + 1) * 0.15);
           continue;
         }
-        drawPacket(ctx, p.x, cy, p.amp);
+        drawPacket(ctx, p.x, cy, p.amp, colors);
       }
 
       // Target
@@ -85,45 +97,49 @@ export function RadiationPressureDemo({ figure }: Props) {
       const targetW = 18;
       ctx.save();
       ctx.globalAlpha = 0.18;
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillRect(targetX, targetTop, targetW, targetBot - targetTop);
+      ctx.fillStyle = colors.textDim;
+      ctx.fillRect(simCtx.targetX, targetTop, targetW, targetBot - targetTop);
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.85;
-      ctx.strokeStyle = getCanvasColors().textDim;
+      ctx.strokeStyle = colors.textDim;
       ctx.lineWidth = 1.4;
-      ctx.strokeRect(targetX, targetTop, targetW, targetBot - targetTop);
+      ctx.strokeRect(simCtx.targetX, targetTop, targetW, targetBot - targetTop);
       // Force arrow on the target — small, but consistently rightward
       const armLen = 22 + Math.log10(I + 10) * 6;
       ctx.restore();
-      ctx.strokeStyle = getCanvasColors().accent;
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.strokeStyle = colors.accent;
+      ctx.fillStyle = colors.accent;
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(targetX + targetW + 2, cy);
-      ctx.lineTo(targetX + targetW + armLen, cy);
+      ctx.moveTo(simCtx.targetX + targetW + 2, cy);
+      ctx.lineTo(simCtx.targetX + targetW + armLen, cy);
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(targetX + targetW + armLen, cy);
-      ctx.lineTo(targetX + targetW + armLen - 8, cy - 5);
-      ctx.lineTo(targetX + targetW + armLen - 8, cy + 5);
+      ctx.moveTo(simCtx.targetX + targetW + armLen, cy);
+      ctx.lineTo(simCtx.targetX + targetW + armLen - 8, cy - 5);
+      ctx.lineTo(simCtx.targetX + targetW + armLen - 8, cy + 5);
       ctx.closePath();
       ctx.fill();
 
       // Drift target back if it has wandered far (kept on-screen)
-      if (targetX > W - 80) targetX = W * 0.62;
+      if (simCtx.targetX > W - 80) simCtx.targetX = W * 0.62;
 
       // Labels
-      ctx.fillStyle = getCanvasColors().accent;
-      drawLabel(ctx, { text: 'absorbing target · feels P = I/c', x: targetX - 80, y: targetTop - 8, font: '10px "JetBrains Mono", monospace' });
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.accent;
+      drawLabel(ctx, { text: 'absorbing target · feels P = I/c', x: simCtx.targetX - 80, y: targetTop - 8, font: '10px "JetBrains Mono", monospace' });
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: 'EM wave packets →', x: xL, y: 22, font: '10px "JetBrains Mono", monospace' });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    (info: CanvasInfo) => ({
+      context: {
+        packets: [] as Packet[],
+        targetX: info.w * 0.62,
+        spawnAcc: 0,
+      },
+    }),
+  );
 
   return (
     <Demo
@@ -155,13 +171,41 @@ export function RadiationPressureDemo({ figure }: Props) {
         <MiniReadout label="absorber pressure P = I/c" value={<Num value={P} />} unit="Pa" />
         <MiniReadout label="reflector pressure 2I/c" value={<Num value={P_refl} />} unit="Pa" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Absorbing surface"
+        left={
+          <InlineMath
+            tex={
+              `P \\;=\\; \\dfrac{I}{c} \\;=\\; ` +
+              `\\dfrac{${I.toFixed(0)}}{2.998\\times10^{8}} ` +
+              `\\;\\approx\\; ${latexSci(P)}\\ \text{Pa}`
+            }
+          />
+        }
+        rightLabel="Perfect reflector"
+        right={
+          <InlineMath
+            tex={
+              `P \\;=\\; \\dfrac{2I}{c} \\;=\\; ` +
+              `\\dfrac{2\\times${I.toFixed(0)}}{2.998\\times10^{8}} ` +
+              `\\;\\approx\\; ${latexSci(P_refl)}\\ \text{Pa}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }
 
-function drawPacket(ctx: CanvasRenderingContext2D, cx: number, cy: number, amp: number) {
+function drawPacket(
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  amp: number,
+  colors: ReturnType<typeof getCanvasColors>,
+) {
   const W = 22;
-  ctx.strokeStyle = `rgba(255,107,42,${0.4 + amp * 0.5})`;
+  ctx.strokeStyle = withAlpha(colors.accent, 0.4 + amp * 0.5);
   ctx.lineWidth = 1.5;
   ctx.beginPath();
   for (let i = -W; i <= W; i++) {

@@ -8,18 +8,29 @@
  * Distinct from the appendix RCTransientDemo: this is the simpler "look at
  * the curve" version, with no discharge mode.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
 import { fmtResistance, fmtTime } from '@/lib/formatters';
 import { drawLabel } from "@/lib/canvasLayout";
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
+}
+
+interface RCContext {
+  Vc: number;
+  simT: number;
+  trace: Array<{ t: number; v: number }>;
+  vcDisplaySetter: (v: number) => void;
+  vcDisplayAccum: number;
 }
 
 export function ChargingCurveDemo({ figure }: Props) {
@@ -32,63 +43,47 @@ export function ChargingCurveDemo({ figure }: Props) {
   const tau = R * C;
   const t99 = 5 * tau; // ~99.3% in 5τ
 
-  const stateRef = useRef({
-    R,
-    C,
-    closed,
-    Vc: 0,
-    lastT: performance.now(),
-    simT: 0,
-    trace: [] as Array<{ t: number; v: number }>,
-  });
+  const [VcDisplay, setVcDisplay] = useState(0);
+
+  const stateRef = useSimState({ R, C, closed, setVcDisplay });
+
+  // Reset the integrator when the switch toggles.
+  // Resetting goes through a ref so we don't re-create the rAF loop.
+  const [resetTick, setResetTick] = useState(0);
   useEffect(() => {
-    stateRef.current.R = R;
-    stateRef.current.C = C;
-  }, [R, C]);
-  useEffect(() => {
-    stateRef.current.closed = closed;
-    stateRef.current.simT = 0;
-    stateRef.current.Vc = 0;
-    stateRef.current.trace = [];
+    setResetTick((t) => t + 1);
   }, [closed]);
 
-  const [VcDisplay, setVcDisplay] = useState(0);
-  useEffect(() => {
-    const id = window.setInterval(() => setVcDisplay(stateRef.current.Vc), 80);
-    return () => window.clearInterval(id);
-  }, []);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
-    stateRef.current.lastT = performance.now();
-
-    function draw() {
-      const s = stateRef.current;
-      const now = performance.now();
-      let dt = (now - s.lastT) / 1000;
-      s.lastT = now;
-      if (dt > 0.1) dt = 0.1;
-
-      const tauNow = Math.max(s.R * s.C, 1e-9);
-      if (s.closed) {
-        s.Vc += (V0 - s.Vc) * (dt / tauNow);
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, state, dt, _simTime, c) => {
+      const { R: Rnow, C: Cnow, closed: closedNow, setVcDisplay: setVc } = state;
+      const tauNow = Math.max(Rnow * Cnow, 1e-9);
+      if (closedNow) {
+        c.Vc += (V0 - c.Vc) * (dt / tauNow);
       }
-      s.simT += dt;
-      s.trace.push({ t: s.simT, v: s.Vc });
+      c.simT += dt;
+      c.trace.push({ t: c.simT, v: c.Vc });
+
+      // Throttled JSX readout — sample at ~12 Hz to avoid flooding React.
+      c.vcDisplayAccum += dt;
+      if (c.vcDisplayAccum >= 0.08) {
+        c.vcDisplayAccum = 0;
+        setVc(c.Vc);
+      }
 
       const PLOT_DURATION = Math.max(6 * tauNow, 0.05);
-      const tCut = Math.max(0, s.simT - PLOT_DURATION);
-      while (s.trace.length && s.trace[0]!.t < tCut) s.trace.shift();
+      const tCut = Math.max(0, c.simT - PLOT_DURATION);
+      while (c.trace.length && c.trace[0]!.t < tCut) c.trace.shift();
 
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
       const pX = 30,
         pY = 26;
       const pW = W - 60,
         pH = H - 60;
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.strokeRect(pX, pY, pW, pH);
 
@@ -98,7 +93,7 @@ export function ChargingCurveDemo({ figure }: Props) {
       // Reference lines: V0, 63%, 99%
       ctx.save();
       ctx.globalAlpha = 0.35;
-      ctx.strokeStyle = getCanvasColors().accent;
+      ctx.strokeStyle = colors.accent;
       ctx.setLineDash([4, 4]);
       const y0line = yV(V0);
       ctx.beginPath();
@@ -109,7 +104,7 @@ export function ChargingCurveDemo({ figure }: Props) {
 
       ctx.save();
       ctx.globalAlpha = 0.35;
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = colors.teal;
       const y63 = yV(V0 * (1 - 1 / Math.E));
       ctx.beginPath();
       ctx.moveTo(pX, y63);
@@ -117,7 +112,7 @@ export function ChargingCurveDemo({ figure }: Props) {
       ctx.stroke();
       ctx.restore();
 
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = colors.borderStrong;
       const y99 = yV(V0 * 0.99);
       ctx.beginPath();
       ctx.moveTo(pX, y99);
@@ -128,7 +123,7 @@ export function ChargingCurveDemo({ figure }: Props) {
       // τ and 5τ markers
       ctx.save();
       ctx.globalAlpha = 0.6;
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = colors.teal;
       ctx.setLineDash([3, 3]);
       const xTau = xT(tauNow);
       if (xTau < pX + pW) {
@@ -138,7 +133,7 @@ export function ChargingCurveDemo({ figure }: Props) {
         ctx.stroke();
       }
       ctx.restore();
-      ctx.strokeStyle = getCanvasColors().borderStrong;
+      ctx.strokeStyle = colors.borderStrong;
       const x5tau = xT(5 * tauNow);
       if (x5tau < pX + pW) {
         ctx.beginPath();
@@ -149,40 +144,46 @@ export function ChargingCurveDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // Trace
-      if (s.trace.length > 1) {
+      if (c.trace.length > 1) {
         const pts: { x: number; y: number }[] = [];
-        for (let i = 0; i < s.trace.length; i++) {
-          const p = s.trace[i]!;
+        for (let i = 0; i < c.trace.length; i++) {
+          const p = c.trace[i]!;
           pts.push({ x: xT(p.t - tCut), y: yV(p.v) });
         }
         drawGlowPath(ctx, pts, {
-          color: withAlpha(getCanvasColors().pink, 0.95),
-          glowColor: withAlpha(getCanvasColors().pink, 0.35),
+          color: withAlpha(colors.pink, 0.95),
+          glowColor: withAlpha(colors.pink, 0.35),
           lineWidth: 1.8,
         });
       }
 
       // Labels
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       drawLabel(ctx, { text: `V₀ = ${V0} V`, x: pX + pW - 4, y: y0line - 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = colors.teal;
       drawLabel(ctx, { text: '63% V₀  (after 1τ)', x: pX + pW - 4, y: y63 - 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: '99% V₀  (after 5τ)', x: pX + pW - 4, y: y99 - 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
 
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = colors.teal;
       drawLabel(ctx, { text: `τ = RC`, x: Math.min(xTau + 4, pX + pW - 60), y: pY + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
 
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: 'V_C(t)', x: pX, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `V_C = ${s.Vc.toFixed(2)} V`, x: pX + pW, y: 8, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, { text: `V_C = ${c.Vc.toFixed(2)} V`, x: pX + pW, y: 8, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       drawLabel(ctx, { text: `window: ${fmtTime(PLOT_DURATION)} (6τ)`, x: pX + pW / 2, y: H - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [resetTick],
+    () => ({
+      context: {
+        Vc: 0,
+        simT: 0,
+        trace: [] as Array<{ t: number; v: number }>,
+        vcDisplaySetter: () => undefined,
+        vcDisplayAccum: 0,
+      } as RCContext,
+    }),
+  );
 
   return (
     <Demo
@@ -229,6 +230,27 @@ export function ChargingCurveDemo({ figure }: Props) {
         <MiniReadout label="5τ (≈99%)" value={fmtTime(t99)} />
         <MiniReadout label="V_C(now)" value={<Num value={VcDisplay} />} unit="V" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Capacitor voltage vs. time"
+        left={
+          <InlineMath
+            tex={
+              `V_{C}(t) \\;=\\; V_{0}\\!\\left(1 - e^{-t/\\tau}\\right) ` +
+              `\\quad\\text{with } V_{0} = 12\\ \\text{V}`
+            }
+          />
+        }
+        rightLabel="Current setting"
+        right={
+          <InlineMath
+            tex={
+              `\\tau \\;=\\; RC \\;=\\; ` +
+              `(${(R / 1000).toFixed(2)}\\ \\text{k}\\Omega)(${Cuf}\\ \\mu\\text{F}) ` +
+              `\\;\\approx\\; ${tau >= 1 ? tau.toFixed(2) + '\\ \\text{s}' : (tau * 1000).toFixed(1) + '\\ \\text{ms}'}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

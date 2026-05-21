@@ -1,13 +1,13 @@
 /**
- * Chapter 5 — Induction
+ * Chapter 7 — Induction
  *
  * Six sections, four embedded demos:
- *   5.1 Faraday's discovery
- *   5.2 The law (EMF = −dΦ/dt) and its consequences
- *   5.3 Move a magnet, get a voltage   → <MagnetThroughCoilDemo/>
- *   5.4 The minus sign — Lenz's law    → <LenzsLawDemo/>
- *   5.5 Spinning a coil = AC           → <RotatingCoilDemo/>
- *   5.6 Transformers                   → <TransformerDemo/>
+ *   7.1 Faraday's discovery
+ *   7.2 The law (EMF = −dΦ/dt) and its consequences
+ *   7.3 Move a magnet, get a voltage   → <MagnetThroughCoilDemo/>
+ *   7.4 The minus sign — Lenz's law    → <LenzsLawDemo/>
+ *   7.5 Spinning a coil = AC           → <RotatingCoilDemo/>
+ *   7.6 Transformers                   → <TransformerDemo/>
  *
  * Cite only from chapter.sources. Match Ch1 voice.
  */
@@ -18,6 +18,7 @@ import { Cite } from '@/components/SourcesList';
 import { Formula } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { EddyCurrentTubeDemo } from './demos/EddyCurrentTube';
 import { LenzsLawDemo } from './demos/LenzsLaw';
 import { MagnetThroughCoilDemo } from './demos/MagnetThroughCoil';
 import { RotatingCoilDemo } from './demos/RotatingCoil';
@@ -252,6 +253,8 @@ export default function Ch7Induction() {
       </p>
 
       <LenzsLawDemo />
+
+      <EddyCurrentTubeDemo />
 
       <p className="pullout">
         Magnetism never <em className="text-text italic">moves</em>; only the flux does. Move the
@@ -516,7 +519,7 @@ export default function Ch7Induction() {
         <Cite id="maxwell-1865" in={SOURCES} />. Pair the two and you have a self-sustaining
         oscillation: E regenerates B, B regenerates E, and the whole disturbance walks off through
         the vacuum at the speed of light. That is electromagnetic radiation, and it is what powers
-        Chapter 6 — where the field stops being a mathematical bookkeeper for forces and starts
+        the next chapter — where the field stops being a mathematical bookkeeper for forces and starts
         carrying actual energy across actual empty space.
       </p>
 
@@ -530,7 +533,7 @@ export default function Ch7Induction() {
         }
       >
         <CaseStudy
-          tag="Case 5.1"
+          tag="Case 7.1"
           title="The power grid and the synchronous generator"
           summary={
             <em className="text-text italic">
@@ -541,9 +544,9 @@ export default function Ch7Induction() {
           specs={[
             { label: 'Grid frequency (North America)', value: '60 Hz' },
             { label: 'Grid frequency (Europe / most of Asia)', value: '50 Hz' },
-            { label: 'Shaft angular rate at 60 Hz', value: '~377 rad/s (3600 rpm)' },
+            { label: 'Shaft angular rate at 60 Hz', value: '~377 rad/s (3600 rpm, 2-pole)' },
             { label: 'Iron-core saturation field', value: '~1.5–2 T' },
-            { label: 'Output of a large turbogenerator', value: 'up to ~1.5 GW' },
+            { label: 'Output of a large turbogenerator', value: '~1 GW class' },
             { label: 'Transmission voltages', value: '110–765 kV' },
           ]}
         >
@@ -587,7 +590,7 @@ export default function Ch7Induction() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 5.2"
+          tag="Case 7.2"
           title="Wireless phone charging (Qi)"
           summary={
             <em className="text-text italic">
@@ -640,7 +643,7 @@ export default function Ch7Induction() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 5.3"
+          tag="Case 7.3"
           title="The induction cooktop"
           summary={
             <em className="text-text italic">

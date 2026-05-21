@@ -14,13 +14,24 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { PHYS, pretty } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+
+function fmtLatex(n: number, digits = 2): string {
+  if (!isFinite(n)) return '—';
+  const abs = Math.abs(n);
+  if (abs === 0) return '0';
+  if (abs >= 1e-2 && abs < 1e6) return n.toFixed(digits);
+  const s = n.toExponential(digits);
+  const [m, e] = s.split('e');
+  return `${m} \\times 10^{${parseInt(e!, 10)}}`;
+}
 
 interface Props {
   figure?: string;
@@ -190,6 +201,18 @@ export function BCirculationDemo({ figure }: Props) {
         />
         <MiniReadout label="|B| at surface" value={<Num value={Bsurf} />} unit="T" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Magnetic field at surface"
+        left={
+          <InlineMath
+            tex={
+              `|B| = \\dfrac{\\mu_0 I}{2\\pi a} = \\dfrac{(${fmtLatex(PHYS.mu_0, 2)})(${I.toFixed(1)})}{2\\pi (${fmtLatex(a_mm * 1e-3, 2)})} \\approx ${fmtLatex(Bsurf, 2)} \\text{ T}`
+            }
+          />
+        }
+        rightLabel="Scaling"
+        right={<InlineMath tex={`B \\propto I / a`} />}
+      />
     </Demo>
   );
 }

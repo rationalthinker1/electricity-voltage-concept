@@ -17,16 +17,19 @@
  * time axis, scrolling right→left. Seeing the two curves shifted by π/2
  * makes the time-derivative relationship visible directly.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { project, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 import { useOrbitScene } from '@/lib/useOrbitScene';
 import { drawLabel } from "@/lib/canvasLayout";
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -38,21 +41,22 @@ interface Props {
 const LOOP_W = 1.0; // half-width along z (so full width = 2)
 const LOOP_H = 0.5; // half-height along y (so full height = 1)
 const LOOP_AREA = 2 * LOOP_W * (2 * LOOP_H); // = 2 (normalised units)
+const SCOPE_SECONDS = 6;
+
+interface RotFlux3DContext {
+  cleanup: () => void;
+  theta: number;
+  scope: { t: number; phi: number; emf: number }[];
+  readoutsTimer: number;
+}
 
 export function RotatingCoilFlux3DDemo({ figure }: Props) {
   const [omega, setOmega] = useState(1.2); // rad/s (visual)
   const [B, setB] = useState(1.0); // normalised
   const [showDisc, setShowDisc] = useState(true);
   const [showNormal, setShowNormal] = useState(true);
-  const [, setTick] = useState(0);
 
-  const stateRef = useRef({ omega, B, showDisc, showNormal, t: 0, theta: 0 });
-  useEffect(() => {
-    stateRef.current.omega = omega;
-    stateRef.current.B = B;
-    stateRef.current.showDisc = showDisc;
-    stateRef.current.showNormal = showNormal;
-  }, [omega, B, showDisc, showNormal]);
+  const stateRef = useSimState({ omega, B, showDisc, showNormal });
 
   const { camRef, attach: attachOrbitScene } = useOrbitScene({
     yaw: 0.6,
@@ -62,84 +66,72 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
 
   // Live readouts (rendered outside the canvas).
   const [readouts, setReadouts] = useState({ phi: 0, emf: 0 });
-  const readoutsTimer = useRef(0);
+  const setReadoutsRef = useRef(setReadouts);
+  setReadoutsRef.current = setReadouts;
 
   const phiMax = useMemo(() => B * LOOP_AREA, [B]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
-    const dispose = attachOrbitScene(canvas);
-    let raf = 0;
-    let lastReal = performance.now();
-    // Rolling scope buffer.
-    const SCOPE_SECONDS = 6;
-    const scope: { t: number; phi: number; emf: number }[] = [];
-
-    function rotY(p: Vec3, theta: number): Vec3 {
-      const c = Math.cos(theta),
-        s = Math.sin(theta);
-      return { x: p.x * c - p.z * s, y: p.y, z: p.x * s + p.z * c };
-    }
-
-    function drawArrow3D(
-      from: Vec3,
-      to: Vec3,
-      color: string,
-      lineWidth: number,
-      cam: OrbitCamera,
-      cw: number,
-      ch: number,
-    ) {
-      const p0 = project(from, cam, cw, ch);
-      const p1 = project(to, cam, cw, ch);
-      if (p0.depth <= 0 || p1.depth <= 0) return;
-      ctx.strokeStyle = color;
-      ctx.fillStyle = color;
-      ctx.lineWidth = lineWidth;
-      ctx.beginPath();
-      ctx.moveTo(p0.x, p0.y);
-      ctx.lineTo(p1.x, p1.y);
-      ctx.stroke();
-      // Arrow head in 2D screen space.
-      const dx = p1.x - p0.x,
-        dy = p1.y - p0.y;
-      const len = Math.hypot(dx, dy);
-      if (len < 1e-3) return;
-      const ux = dx / len,
-        uy = dy / len;
-      const headLen = Math.min(8, len * 0.5);
-      const headW = headLen * 0.55;
-      const baseX = p1.x - ux * headLen;
-      const baseY = p1.y - uy * headLen;
-      ctx.beginPath();
-      ctx.moveTo(p1.x, p1.y);
-      ctx.lineTo(baseX - uy * headW, baseY + ux * headW);
-      ctx.lineTo(baseX + uy * headW, baseY - ux * headW);
-      ctx.closePath();
-      ctx.fill();
-    }
-
-    function draw() {
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, st, dt, simTime, c: RotFlux3DContext) => {
       const cam = camRef.current;
-      const st = stateRef.current;
-      const now = performance.now();
-      let dt = (now - lastReal) / 1000;
-      lastReal = now;
-      if (dt > 0.1) dt = 0.1;
-      st.t += dt;
-      st.theta += dt * st.omega;
-      const theta = st.theta;
+      c.theta += dt * st.omega;
+      const theta = c.theta;
 
       const phi = st.B * LOOP_AREA * Math.cos(theta);
       const emf = st.B * LOOP_AREA * st.omega * Math.sin(theta);
 
-      scope.push({ t: st.t, phi, emf });
-      const tCut = st.t - SCOPE_SECONDS;
-      while (scope.length > 0 && scope[0]!.t < tCut) scope.shift();
+      c.scope.push({ t: simTime, phi, emf });
+      const tCut = simTime - SCOPE_SECONDS;
+      while (c.scope.length > 0 && c.scope[0]!.t < tCut) c.scope.shift();
 
       // Throttle React state updates for the live readouts (every 4 frames).
-      readoutsTimer.current = (readoutsTimer.current + 1) % 4;
-      if (readoutsTimer.current === 0) setReadouts({ phi, emf });
+      c.readoutsTimer = (c.readoutsTimer + 1) % 4;
+      if (c.readoutsTimer === 0) setReadoutsRef.current({ phi, emf });
+
+      function rotY(p: Vec3, theta: number): Vec3 {
+        const cc = Math.cos(theta),
+          ss = Math.sin(theta);
+        return { x: p.x * cc - p.z * ss, y: p.y, z: p.x * ss + p.z * cc };
+      }
+
+      function drawArrow3D(
+        from: Vec3,
+        to: Vec3,
+        color: string,
+        lineWidth: number,
+        cam: OrbitCamera,
+        cw: number,
+        ch: number,
+      ) {
+        const p0 = project(from, cam, cw, ch);
+        const p1 = project(to, cam, cw, ch);
+        if (p0.depth <= 0 || p1.depth <= 0) return;
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = lineWidth;
+        ctx.beginPath();
+        ctx.moveTo(p0.x, p0.y);
+        ctx.lineTo(p1.x, p1.y);
+        ctx.stroke();
+        // Arrow head in 2D screen space.
+        const dx = p1.x - p0.x,
+          dy = p1.y - p0.y;
+        const len = Math.hypot(dx, dy);
+        if (len < 1e-3) return;
+        const ux = dx / len,
+          uy = dy / len;
+        const headLen = Math.min(8, len * 0.5);
+        const headW = headLen * 0.55;
+        const baseX = p1.x - ux * headLen;
+        const baseY = p1.y - uy * headLen;
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(baseX - uy * headW, baseY + ux * headW);
+        ctx.lineTo(baseX + uy * headW, baseY - ux * headW);
+        ctx.closePath();
+        ctx.fill();
+      }
 
       // ───── background ─────
       ctx.fillStyle = colors.bg;
@@ -188,7 +180,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
         // Fade with depth so far arrows recede.
         const fade = Math.max(0.12, Math.min(0.55, 1 - (ga.depthAvg - 3) * 0.12));
         const alpha = 0.18 + 0.4 * fade * Math.min(1, st.B);
-        drawArrow3D(ga.from, ga.to, `rgba(108,197,194,${alpha.toFixed(3)})`, 1, cam, w, sceneH);
+        drawArrow3D(ga.from, ga.to, withAlpha(colors.teal, alpha), 1, cam, w, sceneH);
       }
 
       // ───── 2. Translucent flux disc (the loop's face) ─────
@@ -210,8 +202,8 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
         // Tint flips: amber when Φ > 0, blue when Φ < 0.
         const color =
           cosT >= 0
-            ? `rgba(255,107,42,${alpha.toFixed(3)})`
-            : `rgba(91,174,248,${alpha.toFixed(3)})`;
+            ? withAlpha(colors.accent, alpha)
+            : withAlpha(colors.blue, alpha);
         ctx.fillStyle = color;
         ctx.beginPath();
         ctx.moveTo(cornersScreen[0]!.x, cornersScreen[0]!.y);
@@ -229,7 +221,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
         { x: cornersScreen[0]!.x, y: cornersScreen[0]!.y },
       ];
       drawGlowPath(ctx, edgePts, {
-        color: `rgba(255,107,42,${loopEdgeOpacity})`,
+        color: withAlpha(colors.accent, loopEdgeOpacity),
         lineWidth: 2,
         glowColor: withAlpha(colors.accent, 0.28),
         glowWidth: 7,
@@ -303,7 +295,7 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       // Build trace points.
       const phiPts: { x: number; y: number }[] = [];
       const emfPts: { x: number; y: number }[] = [];
-      for (const s of scope) {
+      for (const s of c.scope) {
         const u = (s.t - tCut) / SCOPE_SECONDS;
         const x = plotLeft + u * plotW;
         phiPts.push({ x, y: plotCy - (s.phi / phiMaxLocal) * plotHalfH });
@@ -339,18 +331,20 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.65;
       drawLabel(ctx, { text: 'time →', x: plotRight - 4, y: plotY0 + plotH - 14, align: 'right' });
-
-      // Force re-renders so MiniReadouts stay alive even if React optimises us out.
-      setTick((t) => (t + 1) % 1000);
-      raf = requestAnimationFrame(draw);
       ctx.restore();
-    }
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      dispose();
-    };
-  }, []);
+    },
+    [],
+    ({ canvas }) => {
+      const dispose = attachOrbitScene(canvas);
+      const c: RotFlux3DContext = {
+        cleanup: dispose,
+        theta: 0,
+        scope: [],
+        readoutsTimer: 0,
+      };
+      return { context: c, cleanup: () => dispose() };
+    },
+  );
 
   return (
     <Demo
@@ -396,6 +390,20 @@ export function RotatingCoilFlux3DDemo({ figure }: Props) {
         <MiniReadout label="ε = −dΦ/dt" value={<Num value={readouts.emf} />} />
         <MiniReadout label="Φ_max = B·A" value={<Num value={phiMax} />} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Flux follows cos(θ)"
+        left={
+          <InlineMath
+            tex={`\\Phi_{B}(t) \\;=\\; B A \\cos(\\omega t)`}
+          />
+        }
+        rightLabel="EMF is its derivative"
+        right={
+          <InlineMath
+            tex={`\\varepsilon(t) \\;=\\; -\\dfrac{d\\Phi_{B}}{dt} \\;=\\; B A \\omega \\sin(\\omega t)`}
+          />
+        }
+      />
     </Demo>
   );
 }

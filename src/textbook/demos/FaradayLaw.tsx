@@ -9,12 +9,15 @@
  * EMF (amber) overlaid in real time. The 90° phase shift is visible at a
  * glance; sign matches Lenz (the induced current opposes the change).
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from "@/lib/canvasLayout";
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -25,10 +28,7 @@ export function FaradayLawDemo({ figure }: Props) {
   const [freq, setFreq] = useState(1.2); // Hz
   const [area_cm2, setAreaCm2] = useState(40); // loop area, cm²
 
-  const stateRef = useRef({ B0_mT, freq, area_cm2 });
-  useEffect(() => {
-    stateRef.current = { B0_mT, freq, area_cm2 };
-  }, [B0_mT, freq, area_cm2]);
+  const stateRef = useSimState({ B0_mT, freq, area_cm2 });
 
   // Live readout — updated from the draw loop
   const emfRef = useRef(0);
@@ -38,20 +38,11 @@ export function FaradayLawDemo({ figure }: Props) {
     return () => window.clearInterval(id);
   }, []);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    const t0 = performance.now();
-    // Ring buffers for the trace
-    const N = 240;
-    const phiBuf = new Float32Array(N);
-    const emfBuf = new Float32Array(N);
-    let head = 0;
-    let lastT = 0;
-
-    function draw(now: number) {
-      const t = (now - t0) / 1000;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, _state, dt, simTime, ctx0) => {
       const { B0_mT, freq, area_cm2 } = stateRef.current;
+      const t = simTime;
       const B0 = B0_mT * 1e-3; // T
       const A = area_cm2 * 1e-4; // m²
       const omega = 2 * Math.PI * freq;
@@ -60,11 +51,12 @@ export function FaradayLawDemo({ figure }: Props) {
       emfRef.current = emf;
 
       // Throttle buffer at ~60Hz
-      if (now - lastT > 14) {
-        phiBuf[head] = phi;
-        emfBuf[head] = emf;
-        head = (head + 1) % N;
-        lastT = now;
+      ctx0.accum += dt;
+      if (ctx0.accum > 0.014) {
+        ctx0.phiBuf[ctx0.head] = phi;
+        ctx0.emfBuf[ctx0.head] = emf;
+        ctx0.head = (ctx0.head + 1) % ctx0.N;
+        ctx0.accum = 0;
       }
 
       ctx.fillStyle = colors.bg;
@@ -80,7 +72,7 @@ export function FaradayLawDemo({ figure }: Props) {
       const intensity = Math.max(0, Math.abs(B0) / 0.1);
       const sym = phi >= 0 ? '⊗' : '⊙';
       const symCount = Math.round(6 + intensity * 8);
-      ctx.fillStyle = `rgba(108,197,194,${(0.25 + Math.min(0.6, (Math.abs(phi) / (B0 * A + 1e-12)) * 0.6)).toFixed(2)})`;
+      ctx.fillStyle = withAlpha(colors.teal, 0.25 + Math.min(0.6, (Math.abs(phi) / (B0 * A + 1e-12)) * 0.6));
       ctx.font = '14px JetBrains Mono';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -114,8 +106,9 @@ export function FaradayLawDemo({ figure }: Props) {
         const tx = -Math.sin(theta) * dirSign;
         const ty = Math.cos(theta) * dirSign;
         const L = 7;
-        ctx.strokeStyle = `rgba(255,107,42,${(0.4 + 0.55 * Math.min(1, Math.abs(emf) / 0.05)).toFixed(2)})`;
-        ctx.fillStyle = ctx.strokeStyle;
+        const arrowAlpha = 0.4 + 0.55 * Math.min(1, Math.abs(emf) / 0.05);
+        ctx.strokeStyle = withAlpha(colors.accent, arrowAlpha);
+        ctx.fillStyle = withAlpha(colors.accent, arrowAlpha);
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.moveTo(x - (tx * L) / 2, y - (ty * L) / 2);
@@ -170,17 +163,17 @@ export function FaradayLawDemo({ figure }: Props) {
         ctx.strokeStyle = color;
         ctx.lineWidth = 1.4;
         ctx.beginPath();
-        for (let i = 0; i < N; i++) {
-          const idx = (head + i) % N;
-          const x = oscX + (i / (N - 1)) * oscW;
+        for (let i = 0; i < ctx0.N; i++) {
+          const idx = (ctx0.head + i) % ctx0.N;
+          const x = oscX + (i / (ctx0.N - 1)) * oscW;
           const y = cyOsc - buf[idx] * scale;
           if (i === 0) ctx.moveTo(x, y);
           else ctx.lineTo(x, y);
         }
         ctx.stroke();
       }
-      plotTrace(phiBuf, phiScale, withAlpha(colors.teal, 0.9)); // teal: Φ_B
-      plotTrace(emfBuf, emfScale, withAlpha(colors.accent, 0.95)); // amber: EMF
+      plotTrace(ctx0.phiBuf, phiScale, withAlpha(colors.teal, 0.9)); // teal: Φ_B
+      plotTrace(ctx0.emfBuf, emfScale, withAlpha(colors.accent, 0.95)); // amber: EMF
 
       // Legend
       ctx.font = '10px "JetBrains Mono", monospace';
@@ -189,12 +182,21 @@ export function FaradayLawDemo({ figure }: Props) {
       ctx.restore();
       drawLabel(ctx, { text: 'Φ_B  (teal)', x: oscX + 10, y: oscY + 8, color: colors.teal });
       drawLabel(ctx, { text: 'EMF = −dΦ/dt  (amber)', x: oscX + 10, y: oscY + 22, color: colors.accent });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    () => {
+      const N = 240;
+      return {
+        context: {
+          N,
+          phiBuf: new Float32Array(N),
+          emfBuf: new Float32Array(N),
+          head: 0,
+          accum: 0,
+        },
+      };
+    },
+  );
 
   return (
     <Demo
@@ -241,6 +243,23 @@ export function FaradayLawDemo({ figure }: Props) {
         />
         <MiniReadout label="EMF (instant.)" value={<Num value={emfNow} digits={2} />} unit="V" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Faraday's law"
+        left={
+          <InlineMath
+            tex={`\\text{EMF} \\;=\\; -\\dfrac{d\\Phi_B}{dt}`}
+          />
+        }
+        rightLabel="Live substitution"
+        right={
+          <InlineMath
+            tex={
+              `-(${B0_mT.toFixed(0)}\\times10^{-3})(${area_cm2.toFixed(0)}\\times10^{-4})(2\\pi\\cdot${freq.toFixed(2)})\\cos(\\omega t) ` +
+              `\\;=\\; ${emfNow.toFixed(3)}\\ \\text{V}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

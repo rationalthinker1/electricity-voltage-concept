@@ -12,11 +12,12 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawHalo } from '@/lib/canvasPrimitives';
-import { PHYS, pretty } from '@/lib/physics';
+import { PHYS } from '@/lib/physics';
 import { fmtSIPrecision } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -84,7 +85,7 @@ export function CyclotronDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.55;
-      drawLabel(ctx, { text: `B = ${pretty(B, 3)} T  (into page)`, x: 14, y: 18, color: colors.teal, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `B = ${fmtSIPrecision(B, 'T', 3)}  (into page)`, x: 14, y: 18, color: colors.teal, font: '10px "JetBrains Mono", monospace' });
       ctx.restore();
       const cx0 = w / 2;
       const cy0 = h / 2 + sign * 0;
@@ -149,7 +150,7 @@ export function CyclotronDemo({ figure }: Props) {
       drawLabel(ctx, { text: 'v', x: hx + tx * 8, y: hy + ty * 8, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center' });
       ctx.save();
       ctx.globalAlpha = 0.85;
-      drawLabel(ctx, { text: `r (real) = ${pretty(r_phys, 2)} m`, x: w - 14, y: 18, color: colors.text, align: 'right' });
+      drawLabel(ctx, { text: `r (real) = ${fmtSIPrecision(r_phys, 'm', 2)}`, x: w - 14, y: 18, color: colors.text, align: 'right' });
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.6;
@@ -214,6 +215,24 @@ export function CyclotronDemo({ figure }: Props) {
         <MiniReadout label="period" value={<Num value={T_real} digits={3} />} unit="s" />
         <MiniReadout label="frequency" value={<Num value={f_real} digits={3} />} unit="Hz" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Larmor radius"
+        left={
+          <InlineMath
+            tex={
+              `r \\;=\\; \\dfrac{mv}{qB} \\;\\approx\\; ${r_real.toExponential(2)}\\ \\text{m}`
+            }
+          />
+        }
+        rightLabel="Cyclotron period (mass-only)"
+        right={
+          <InlineMath
+            tex={
+              `T \\;=\\; \\dfrac{2\\pi m}{qB} \\;\\approx\\; ${T_real.toExponential(2)}\\ \\text{s}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

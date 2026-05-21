@@ -9,11 +9,18 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+} from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure?: string;
@@ -146,6 +153,19 @@ export function PlaneWaveDemo({ figure }: Props) {
         <MiniReadout label="frequency f" value={f.toFixed(2)} unit="Hz" />
         <MiniReadout label="wavelength λ" value={lambdaPx.toFixed(0)} unit="px" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Field amplitudes"
+        left={<InlineMath tex={`|B| \\;=\\; \\dfrac{|E|}{c}`} />}
+        rightLabel="Wavelength"
+        right={
+          <InlineMath
+            tex={
+              `\\lambda \\;=\\; \\dfrac{c}{f} \\;=\\; ` +
+              `\\dfrac{${C_SIM}}{${f.toFixed(2)}} \\;\\approx\\; ${lambdaPx.toFixed(0)}\\ \text{px}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

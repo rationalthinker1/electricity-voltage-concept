@@ -26,11 +26,11 @@
  * intuition transfers between equations. The slider re-maps per mode to
  * the most diagnostic quantity (Q, B, dB/dt, dE/dt).
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
-import { Formula } from '@/components/Formula';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
@@ -47,7 +47,16 @@ import {
   type OrbitCamera,
   type Vec3,
 } from '@/lib/projection3d';
-import { createOrbitScene } from '@/lib/useOrbitScene';
+import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+
+function fmtSci(n: number) {
+  const s = n.toExponential(2);
+  const m = s.match(/^(-?[\d.]+)e([+-]?\d+)$/);
+  if (!m) return s;
+  return `${m[1]}\\times10^{${m[2]!.replace(/^\+/, '')}}`;
+}
 
 interface Props {
   figure?: string;
@@ -214,7 +223,7 @@ function drawGaussE(
     origin.y,
     rad,
   );
-  grad.addColorStop(0, q >= 0 ? '#ffb0c4' : '#a8d4f8');
+  grad.addColorStop(0, q >= 0 ? withAlpha(getCanvasColors().pink, 0.65) : withAlpha(getCanvasColors().blue, 0.65));
   grad.addColorStop(1, q >= 0 ? getCanvasColors().pink : getCanvasColors().blue);
   ctx.fillStyle = grad;
   ctx.beginPath();
@@ -585,7 +594,7 @@ function drawAmpere(
       const a1 = a0 + Bsign * ((2 * Math.PI) / N_RING) * 0.55;
       const from = v3(r * Math.cos(a0), y, r * Math.sin(a0));
       const to = v3(r * Math.cos(a1), y, r * Math.sin(a1));
-      drawArrow3D(ctx, from, to, cam, w, h, `rgba(108,197,194,${teal.toFixed(2)})`, 1.8, 7);
+      drawArrow3D(ctx, from, to, cam, w, h, withAlpha(getCanvasColors().teal, teal), 1.8, 7);
     }
   }
 
@@ -659,44 +668,30 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
   }, [q, mDipole, dBdt, dEdt]);
   void mDipole; // mDipole has no closed-form scalar readout — it just sets visual scale.
 
-  const stateRef = useRef({ mode, q, mDipole, dBdt, dEdt });
-  useEffect(() => {
-    stateRef.current = { mode, q, mDipole, dBdt, dEdt };
-  }, [mode, q, mDipole, dBdt, dEdt]);
+  const stateRef = useSimState({ mode, q, mDipole, dBdt, dEdt, computed });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas } = info;
-    const scene = createOrbitScene(canvas, {
-      yaw: 0.55,
-      pitch: 0.3,
-      distance: 6.0,
-      fov: Math.PI / 4,
-    });
-    const cam = scene.cam;
-    let raf = 0;
-    const t0 = performance.now();
-
-    function draw() {
-      const tNow = (performance.now() - t0) / 1000;
-      const s = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state, _dt, simTime, scene: OrbitScene) => {
+      const s = state;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
       // Shared wireframe cube.
-      drawCube(ctx, cam, w, h);
+      drawCube(ctx, scene.cam, w, h);
 
       switch (s.mode) {
         case 'gauss-e':
-          drawGaussE(ctx, cam, w, h, s.q);
+          drawGaussE(ctx, scene.cam, w, h, s.q);
           break;
         case 'gauss-b':
-          drawGaussB(ctx, cam, w, h, s.mDipole);
+          drawGaussB(ctx, scene.cam, w, h, s.mDipole);
           break;
         case 'faraday':
-          drawFaraday(ctx, cam, w, h, s.dBdt, tNow);
+          drawFaraday(ctx, scene.cam, w, h, s.dBdt, simTime);
           break;
         case 'ampere':
-          drawAmpere(ctx, cam, w, h, s.dEdt, tNow);
+          drawAmpere(ctx, scene.cam, w, h, s.dEdt, simTime);
           break;
       }
 
@@ -707,7 +702,7 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
         x: 12,
         y: 12,
         text: 'drag to orbit · same box for all four laws',
-        color: getCanvasColors().textDim,
+        color: colors.textDim,
         baseline: 'top',
       });
       ctx.restore();
@@ -715,19 +710,22 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
         x: 12,
         y: h - 22,
         text: MODE_TITLES[s.mode],
-        color: getCanvasColors().accent,
+        color: colors.accent,
         size: 11,
         weight: 'bold',
       });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      scene.dispose();
-    };
-  }, []);
+    },
+    [],
+    (info) => {
+      const scene = createOrbitScene(info.canvas, {
+        yaw: 0.55,
+        pitch: 0.3,
+        distance: 6.0,
+        fov: Math.PI / 4,
+      });
+      return { context: scene, cleanup: () => scene.dispose() };
+    },
+  );
 
   // Slider config per mode.
   const slider = (() => {
@@ -892,8 +890,8 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
               fontFamily: '"JetBrains Mono", monospace',
               fontSize: 11,
               color: mode === m ? getCanvasColors().canvasBg : getCanvasColors().textDim,
-              background: mode === m ? getCanvasColors().accent : 'rgba(255,255,255,0.04)',
-              border: mode === m ? '1px solid #ff6b2a' : '1px solid rgba(255,255,255,0.10)',
+              background: mode === m ? getCanvasColors().accent : withAlpha(getCanvasColors().text, 0.04),
+              border: mode === m ? `1px solid ${getCanvasColors().accent}` : `1px solid ${withAlpha(getCanvasColors().text, 0.10)}`,
               borderRadius: 4,
               cursor: 'pointer',
               transition: 'background 120ms, color 120ms',
@@ -923,6 +921,78 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
         {slider}
         {readouts}
       </DemoControls>
+      {(() => {
+        switch (mode) {
+          case 'gauss-e':
+            return (
+              <EquationStrip
+                leftLabel="LHS"
+                left={
+                  <InlineMath
+                    tex={`\\oint \\vec{E}\\cdot d\\vec{A} \\;=\\; ${fmtSci(computed.fluxE)}\\ \\text{V·m}`}
+                  />
+                }
+                rightLabel="RHS"
+                right={
+                  <InlineMath
+                    tex={`\\dfrac{Q_{enc}}{\\varepsilon_0} \\;=\\; \\dfrac{${q.toFixed(1)}\\times10^{-9}}{\\varepsilon_0} \\;=\\; ${fmtSci(computed.fluxE)}\\ \\text{V·m}`}
+                  />
+                }
+              />
+            );
+          case 'gauss-b':
+            return (
+              <EquationStrip
+                leftLabel="LHS"
+                left={
+                  <InlineMath
+                    tex={`\\oint \\vec{B}\\cdot d\\vec{A} \\;=\\; 0`}
+                  />
+                }
+                rightLabel="RHS"
+                right={
+                  <InlineMath
+                    tex={`0\\ \\text{T·m}^2`}
+                  />
+                }
+              />
+            );
+          case 'faraday':
+            return (
+              <EquationStrip
+                leftLabel="LHS"
+                left={
+                  <InlineMath
+                    tex={`|\\oint \\vec{E}\\cdot d\\vec{\\ell}| \\;=\\; ${computed.emf.toFixed(3)}\\ \\text{V}`}
+                  />
+                }
+                rightLabel="RHS"
+                right={
+                  <InlineMath
+                    tex={`\\left|\\dfrac{d\\Phi_B}{dt}\\right| \\;=\\; |${dBdt.toFixed(2)}|\\cdot ${computed.A_loop.toFixed(2)} \\;=\\; ${computed.emf.toFixed(3)}\\ \\text{V}`}
+                  />
+                }
+              />
+            );
+          case 'ampere':
+            return (
+              <EquationStrip
+                leftLabel="LHS"
+                left={
+                  <InlineMath
+                    tex={`\\oint \\vec{B}\\cdot d\\vec{\\ell} \\;=\\; ${fmtSci(computed.closedBline)}\\ \\text{T·m}`}
+                  />
+                }
+                rightLabel="RHS"
+                right={
+                  <InlineMath
+                    tex={`\\mu_0(I_{enc} + \\varepsilon_0 \\dfrac{d\\Phi_E}{dt}) \\;=\\; ${fmtSci(computed.closedBline)}\\ \\text{T·m}`}
+                  />
+                }
+              />
+            );
+        }
+      })()}
     </Demo>
   );
 }

@@ -12,7 +12,9 @@
 import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
+import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
@@ -54,7 +56,7 @@ export function GaussBLawDemo({ figure }: Props) {
           const ry = 18 + t * 110;
           // Two loops: upper and lower (mirror)
           for (const side of [-1, 1]) {
-            ctx.strokeStyle = `rgba(108,197,194,${(0.6 - 0.04 * i).toFixed(2)})`;
+            ctx.strokeStyle = withAlpha(colors.teal, 0.6 - 0.04 * i);
             ctx.lineWidth = 1.2;
             ctx.beginPath();
             // ellipse, half above/below
@@ -77,7 +79,7 @@ export function GaussBLawDemo({ figure }: Props) {
             // Cleaner: external field always points N→S, so on top of bar (upper loop),
             // the tangent at the apex points LEFT. On the bottom apex of lower loop,
             // tangent also points LEFT. Both arrows point left.
-            ctx.fillStyle = `rgba(108,197,194,${(0.7 - 0.04 * i).toFixed(2)})`;
+            ctx.fillStyle = withAlpha(colors.teal, 0.7 - 0.04 * i);
             ctx.beginPath();
             ctx.moveTo(tipX - 6, tipY);
             ctx.lineTo(tipX + 1, tipY - 3);
@@ -103,10 +105,10 @@ export function GaussBLawDemo({ figure }: Props) {
 
         // Bar magnet body
         const grd = ctx.createLinearGradient(sx, cy, nx, cy);
-        grd.addColorStop(0, '#5baef8');
-        grd.addColorStop(0.5, '#5baef8');
-        grd.addColorStop(0.5, '#ff3b6e');
-        grd.addColorStop(1, '#ff3b6e');
+        grd.addColorStop(0, colors.blue);
+        grd.addColorStop(0.5, colors.blue);
+        grd.addColorStop(0.5, colors.pink);
+        grd.addColorStop(1, colors.pink);
         ctx.fillStyle = grd;
         ctx.fillRect(sx, cy - magH / 2, magW, magH);
         ctx.save();
@@ -120,8 +122,7 @@ export function GaussBLawDemo({ figure }: Props) {
         drawLabel(ctx, { text: 'N', x: nx - magW / 4, y: cy, color: colors.bg, weight: 'bold', size: 13, font: '13px "JetBrains Mono"', align: 'center', baseline: 'middle' });
 
         // Animated dots travelling along one loop, showing closure
-        const period = 4000;
-        phase = (performance.now() / period) % 1;
+        phase = (_simTime / 4) % 1;
         const t = phase;
         const rx = magW / 2 + 60,
           ry = 60;
@@ -138,7 +139,7 @@ export function GaussBLawDemo({ figure }: Props) {
         for (let i = 0; i < yLines; i++) {
           const y = by + (i + 0.5) * (bh / yLines);
           // Outside lines on both sides too, to make it clear they pass through.
-          ctx.strokeStyle = `rgba(108,197,194,0.55)`;
+          ctx.strokeStyle = withAlpha(colors.teal, 0.55);
           ctx.lineWidth = 1.1;
           ctx.beginPath();
           ctx.moveTo(bx - 80, y);
@@ -201,6 +202,12 @@ export function GaussBLawDemo({ figure }: Props) {
         />
         <MiniReadout label="∮B·dA" value="0" unit="T·m²" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Gauss's law for B"
+        left={<InlineMath tex={`\\oint \\vec{B}\\cdot d\\vec{A} \\;=\\; 0`} />}
+        rightLabel="Always"
+        right={<InlineMath tex={`\\text{no magnetic monopoles}`} />}
+      />
     </Demo>
   );
 }

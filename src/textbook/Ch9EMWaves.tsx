@@ -1,28 +1,31 @@
 /**
- * Chapter 7 — Electromagnetic waves
+ * Chapter 9 — Electromagnetic waves
  *
- * Sequel to Ch.6: take the Poynting picture, remove the absorbing conductor,
+ * Sequel to Ch.8: take the Poynting picture, remove the absorbing conductor,
  * and ask what the field does in empty space. Maxwell's prediction → plane
  * waves → polarization → radiation from accelerating charges → energy and
  * momentum → the spectrum.
  *
  * Five embedded demos:
- *   7.1 SpeedOfLight       — v = 1/√(εᵣ μᵣ ε₀ μ₀); slider for the medium
- *   7.2 PlaneWave          — E ⊥ B ⊥ k, in phase, |B| = |E|/c
- *   7.3 Polarization       — linear / circular / elliptical, looking down k̂
- *   7.4 OscillatingDipole  — sin²θ pattern; ω slider; λ = c/f
- *   7.5 RadiationPressure  — P = I/c; solar-constant default
+ *   9.1 SpeedOfLight       — v = 1/√(εᵣ μᵣ ε₀ μ₀); slider for the medium
+ *   9.2 PlaneWave          — E ⊥ B ⊥ k, in phase, |B| = |E|/c
+ *   9.3 Polarization       — linear / circular / elliptical, looking down k̂
+ *   9.4 OscillatingDipole  — sin²θ pattern; ω slider; λ = c/f
+ *   9.5 RadiationPressure  — P = I/c; solar-constant default
  */
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
+import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { EMSpectrumDemo } from './demos/EMSpectrum';
 import { OscillatingDipoleDemo } from './demos/OscillatingDipole';
 import { PlaneWaveDemo } from './demos/PlaneWave';
 import { PolarizationDemo } from './demos/Polarization';
+import { PolarizationMalusLawDemo } from './demos/PolarizationMalusLaw';
 import { RadiationPressureDemo } from './demos/RadiationPressure';
 import { SpeedOfLightDemo } from './demos/SpeedOfLight';
 import { WireToAntennaTransition3DDemo } from './demos/WireToAntennaTransition3D';
@@ -35,7 +38,7 @@ export default function Ch9EMWaves() {
   return (
     <ChapterShell chapter={chapter}>
       <p className="chapter-intro">
-        Chapter&nbsp;6 left us with an unsettling picture. Energy doesn't ride down the wire; it
+        Chapter&nbsp;8 left us with an unsettling picture. Energy doesn't ride down the wire; it
         flows through the empty space beside the wire, the field carrying it, the copper just
         absorbing it where it ends. Now take a pair of scissors to the last part.{' '}
         <em className="text-text italic">Remove the wire.</em> What stops? Nothing, it turns out.
@@ -70,7 +73,7 @@ export default function Ch9EMWaves() {
       </h2>
 
       <p className="mb-prose-3">
-        Ch.6's punchline was that energy travels through the space around a conductor as
+        Ch.8's punchline was that energy travels through the space around a conductor as
         <strong className="text-text font-medium"> S = (1/μ₀) E × B</strong>, the Poynting vector,
         and lands wherever there's a resistive medium to absorb it. The flow is a property of the
         field, not of the conductor. What happens, then, if the absorbing conductor isn't there? If
@@ -108,12 +111,44 @@ export default function Ch9EMWaves() {
         way nature solves that constraint is to let the field propagate outward.
       </p>
 
+      <TryIt
+        tag="Try 9.1"
+        question={
+          <>
+            Wi-Fi (and a microwave oven's magnetron) operate near{' '}
+            <strong className="text-text font-medium">2.4 GHz</strong>. What is the wavelength of
+            that wave in air?
+          </>
+        }
+        hint={
+          <>
+            <InlineMath tex="\\lambda = c/f" />, with{' '}
+            <InlineMath tex="c \\approx 3.00\\times 10^{8}\\ \\text{m/s}" />.
+          </>
+        }
+        answer={
+          <>
+            <p className="mb-prose-1 last:mb-0">
+              Use <em className="text-text italic">λ = c/f</em>
+              <Cite id="codata-2018" in={SOURCES} />:
+            </p>
+            <Formula tex="\\lambda = (2.998\\times 10^{8}\\ \\text{m/s}) / (2.4\\times 10^{9}\\ \\text{Hz}) \\approx 0.125\\ \\text{m}" />
+            <p className="mb-prose-1 last:mb-0">
+              About <strong className="text-text font-medium">12.5 cm</strong> — comparable to the
+              width of your hand, and roughly half the cavity of a microwave oven (which is why the
+              standing-wave nodes are spaced a few centimetres apart and the turntable exists)
+              <Cite id="buffler-1993" in={SOURCES} />.
+            </p>
+          </>
+        }
+      />
+
       <h2 className="chapter-h2">
         Maxwell's 1865 <em>prediction</em>
       </h2>
 
       <p className="mb-prose-3">
-        Chapter&nbsp;8 will collect Maxwell's four equations cleanly on one page. For now we only
+        Chapter&nbsp;10 will collect Maxwell's four equations cleanly on one page. For now we only
         need two of them, and the trick that links them. Faraday's law says a changing magnetic
         field produces an electric field that curls around it:
       </p>
@@ -169,7 +204,7 @@ export default function Ch9EMWaves() {
         constants — ε₀ = 8.854×10⁻¹² F/m and μ₀ = 1.257×10⁻⁶ T·m/A — and you get
         <strong className="text-text font-medium"> v = 2.998×10⁸ m/s</strong>
         <Cite id="codata-2018" in={SOURCES} />. Which is, to six figures, the speed of light
-        measured by Fizeau and Foucault decades earlier. Maxwell wrote, in 1865:{' '}
+        measured by Fizeau (1849) and Foucault (1862) in the decades before. Maxwell wrote, in 1865:{' '}
         <em className="text-text italic">
           "We can scarcely avoid the inference that light consists in the transverse undulations of
           the same medium which is the cause of electric and magnetic phenomena."
@@ -203,7 +238,7 @@ export default function Ch9EMWaves() {
       </p>
 
       <TryIt
-        tag="Try 9.1"
+        tag="Try 9.2"
         question={
           <>
             What is the speed of light inside ordinary window glass, for which{' '}
@@ -245,9 +280,12 @@ export default function Ch9EMWaves() {
       </p>
       <Formula tex="\\vec{E}(x, t) = E_0 \\sin(k x - \\omega t)\\,\\hat{y}" />
       <p className="mb-prose-3">
-        where k is the wavenumber, ω the angular frequency, and the wave's phase speed is
-        <InlineMath tex="v = \\omega/k" />. Plug this into Maxwell's equations and three facts fall
-        out immediately
+        where <strong className="text-text font-medium">E₀</strong> is the peak electric-field
+        amplitude (in V/m),
+        <strong className="text-text font-medium"> k</strong> is the wavenumber (in rad/m),{' '}
+        <strong className="text-text font-medium">ω</strong> is the angular frequency (in rad/s),
+        and the wave's phase speed is <InlineMath tex="v = \\omega/k" />. Plug this into Maxwell's
+        equations and three facts fall out immediately
         <Cite id="griffiths-2017" in={SOURCES} />. First,{' '}
         <strong className="text-text font-medium">E</strong> is{' '}
         <Term
@@ -270,8 +308,13 @@ export default function Ch9EMWaves() {
       </p>
       <Formula tex="|\\vec{B}| = |\\vec{E}| / c" />
       <p className="mb-prose-3">
-        And they oscillate in phase — both reach their peak at the same time and the same place. The
-        whole picture rolls forward together at speed c.
+        where <strong className="text-text font-medium">|B|</strong> is the magnitude of the magnetic
+        field (in teslas),
+        <strong className="text-text font-medium"> |E|</strong> is the magnitude of the electric
+        field (in V/m), and
+        <strong className="text-text font-medium"> c ≈ 2.998×10⁸ m/s</strong> is the speed of light
+        in vacuum. The two fields oscillate in phase — both reach their peak at the same time and
+        the same place. The whole picture rolls forward together at speed c.
       </p>
 
       <PlaneWaveDemo />
@@ -303,38 +346,6 @@ export default function Ch9EMWaves() {
         Yellow light at 5×10¹⁴ Hz has λ ≈ 600 nm. An X-ray at 10¹⁸ Hz has λ ≈ 0.3 nm. Same wave
         equation, same speed; different λ.
       </p>
-
-      <TryIt
-        tag="Try 9.2"
-        question={
-          <>
-            Wi-Fi (and a microwave oven's magnetron) operate near{' '}
-            <strong className="text-text font-medium">2.4 GHz</strong>. What is the wavelength of
-            that wave in air?
-          </>
-        }
-        hint={
-          <>
-            <InlineMath tex="\\lambda = c/f" />, with{' '}
-            <InlineMath tex="c \\approx 3.00\\times 10^{8}\\ \\text{m/s}" />.
-          </>
-        }
-        answer={
-          <>
-            <p className="mb-prose-1 last:mb-0">
-              Use <em className="text-text italic">λ = c/f</em>
-              <Cite id="codata-2018" in={SOURCES} />:
-            </p>
-            <Formula tex="\\lambda = (2.998\\times 10^{8}\\ \\text{m/s}) / (2.4\\times 10^{9}\\ \\text{Hz}) \\approx 0.125\\ \\text{m}" />
-            <p className="mb-prose-1 last:mb-0">
-              About <strong className="text-text font-medium">12.5 cm</strong> — comparable to the
-              width of your hand, and roughly half the cavity of a microwave oven (which is why the
-              standing-wave nodes are spaced a few centimetres apart and the turntable exists)
-              <Cite id="buffler-1993" in={SOURCES} />.
-            </p>
-          </>
-        }
-      />
 
       <TryIt
         tag="Try 9.3"
@@ -396,6 +407,7 @@ export default function Ch9EMWaves() {
       </p>
 
       <PolarizationDemo />
+      <PolarizationMalusLawDemo />
 
       <p className="mb-prose-3">
         Polarization is what 3D glasses, polarized sunglasses, and LCD displays manipulate. A
@@ -406,9 +418,9 @@ export default function Ch9EMWaves() {
         matters for the same reason: a half-wave dipole picks up only the{' '}
         <strong className="text-text font-medium">E</strong>-component aligned with its long axis.
       </p>
-      <p className="pullout">
+      <Pullout>
         A wave is what a field does when it has nowhere to go and nothing to push on.
-      </p>
+      </Pullout>
 
       <h2 className="chapter-h2">
         <em>Radiation</em>: where waves come from
@@ -488,9 +500,15 @@ export default function Ch9EMWaves() {
       </p>
       <Formula>F(θ) = ( cos(kL cosθ / 2) − cos(kL/2) ) / sinθ</Formula>
       <p className="mb-prose-3">
-        develops a single fat toroidal lobe broadside to the conductor (the half-wave dipole). Push
-        higher and the lobe splits — at <InlineMath>L = λ</InlineMath> the current reverses sign on
-        the two halves of the wire and the pattern develops multiple lobes
+        where <strong className="text-text font-medium">F(θ)</strong> is the normalized radiation
+        pattern (dimensionless),
+        <strong className="text-text font-medium"> k</strong> is the wavenumber (in rad/m),{' '}
+        <strong className="text-text font-medium">L</strong> is the total wire length (in m), and{' '}
+        <strong className="text-text font-medium">θ</strong> is the polar angle measured from the
+        wire axis (in rad). The expression develops a single fat toroidal lobe broadside to the
+        conductor (the half-wave dipole). Push higher and the lobe splits — at{' '}
+        <InlineMath>L = λ</InlineMath> the current reverses sign on the two halves of the wire and
+        the pattern develops multiple lobes
         <Cite id="jackson-1999" in={SOURCES} />. The wire never stopped being a wire; what changed
         was how its electromagnetic field behaves at the new wavelength.
       </p>
@@ -502,23 +520,42 @@ export default function Ch9EMWaves() {
       </h2>
 
       <p className="mb-prose-3">
-        The Poynting expression from Ch.6 still applies, with{' '}
+        The Poynting expression from Ch.8 still applies, with{' '}
         <strong className="text-text font-medium">E</strong> and{' '}
         <strong className="text-text font-medium">B</strong> now the oscillating wave fields. For a
         plane wave with <InlineMath>|B| = |E|/c</InlineMath>:
       </p>
       <Formula>|S| = (1/μ₀) |E × B| = (1/μ₀) E² / c = ε₀ c E²</Formula>
       <p className="mb-prose-3">
-        (using <InlineMath>1/(μ₀ c) = ε₀ c</InlineMath>, which follows from{' '}
+        where <strong className="text-text font-medium">|S|</strong> is the magnitude of the Poynting
+        vector (in W/m²),
+        <strong className="text-text font-medium"> μ₀ = 4π×10⁻⁷ T·m/A</strong> is the vacuum
+        permeability,
+        <strong className="text-text font-medium"> E</strong> is the electric-field amplitude (in
+        V/m),
+        <strong className="text-text font-medium"> B</strong> is the magnetic-field amplitude (in
+        T),
+        <strong className="text-text font-medium"> ε₀ = 8.854×10⁻¹² F/m</strong> is the vacuum
+        permittivity, and
+        <strong className="text-text font-medium"> c ≈ 2.998×10⁸ m/s</strong> is the speed of light
+        in vacuum. (Using <InlineMath>1/(μ₀ c) = ε₀ c</InlineMath>, which follows from{' '}
         <InlineMath>c² = 1/(μ₀ ε₀)</InlineMath>.) The instantaneous flux oscillates at twice the
         wave frequency; the time-averaged intensity is
       </p>
       <Formula>⟨I⟩ = ½ ε₀ c E₀²</Formula>
       <p className="mb-prose-3">
-        where E₀ is the wave's peak amplitude
+        where <strong className="text-text font-medium">⟨I⟩</strong> is the time-averaged intensity
+        (in W/m²),
+        <strong className="text-text font-medium"> ε₀ = 8.854×10⁻¹² F/m</strong> is the vacuum
+        permittivity,
+        <strong className="text-text font-medium"> c ≈ 2.998×10⁸ m/s</strong> is the speed of light
+        in vacuum, and
+        <strong className="text-text font-medium"> E₀</strong> is the wave's peak electric-field
+        amplitude (in V/m)
         <Cite id="griffiths-2017" in={SOURCES} />. Sunlight at Earth's distance delivers{' '}
-        <strong className="text-text font-medium">⟨I⟩ ≈ 1361 W/m²</strong> — the solar constant, the
-        quantity every solar-panel calculation starts from.
+        <strong className="text-text font-medium">⟨I⟩ ≈ 1361 W/m²</strong>
+        <Cite id="kopp-lean-2011" in={SOURCES} /> — the solar constant, the quantity every
+        solar-panel calculation starts from.
       </p>
       <p className="mb-prose-3">
         Maxwell's theory makes a second, sharper prediction: the wave carries not just energy but
@@ -647,9 +684,11 @@ export default function Ch9EMWaves() {
         left is everything else.
       </p>
 
+      <EMSpectrumDemo />
+
       <CaseStudies intro="Four real engineering systems, all running on solutions of the same wave equation. Different λ, different hardware, identical physics.">
         <CaseStudy
-          tag="Case 7.1"
+          tag="Case 9.1"
           title="The microwave oven"
           summary={
             <em className="text-text italic">
@@ -703,7 +742,7 @@ export default function Ch9EMWaves() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 7.2"
+          tag="Case 9.2"
           title="Wi-Fi and 5G — same wave equation, three orders of magnitude apart"
           summary={
             <em className="text-text italic">
@@ -755,7 +794,7 @@ export default function Ch9EMWaves() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 7.3"
+          tag="Case 9.3"
           title="IKAROS — the first spacecraft driven by photon pressure"
           summary={
             <em className="text-text italic">
@@ -805,7 +844,7 @@ export default function Ch9EMWaves() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 7.4"
+          tag="Case 9.4"
           title="Röntgen's hand — X-rays as the short-wavelength end of the spectrum"
           summary={
             <em className="text-text italic">
@@ -820,7 +859,7 @@ export default function Ch9EMWaves() {
             },
             { label: 'Diagnostic X-ray wavelength', value: '~0.01–0.1 nm (10–100 pm)' },
             { label: 'Photon energy range', value: '~10–100 keV' },
-            { label: 'Frequency', value: '~3×10¹⁶ to 3×10¹⁹ Hz' },
+            { label: 'Frequency', value: '~3×10¹⁸ to 3×10¹⁹ Hz' },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
@@ -940,7 +979,7 @@ export default function Ch9EMWaves() {
             electromagnetic field — with two faces. The distinction between "the E part" and "the B
             part" only matters when you ask how the wave interacts with matter: charges respond
             directly to <strong className="text-text font-medium">E</strong>, currents respond to{' '}
-            <strong className="text-text font-medium">B</strong>. Chapter 9 makes the unification
+            <strong className="text-text font-medium">B</strong>. Chapter 11 makes the unification
             explicit: <strong className="text-text font-medium">E</strong> and{' '}
             <strong className="text-text font-medium">B</strong> are different components of a
             single rank-2 tensor that mixes them under a Lorentz boost
@@ -971,8 +1010,7 @@ export default function Ch9EMWaves() {
             <strong className="text-text font-medium"> 100 / 3×10⁸ ≈ 3×10⁻⁷ N</strong> total
             momentum per second, spread over a sphere. The pressure on your hand at arm's length is
             something like <strong className="text-text font-medium">10⁻⁹ Pa</strong> — eight orders
-            of magnitude below atmospheric. Detectable in vacuum with a sensitive torsion balance
-            (Nichols and Hull, 1903), not detectable in any everyday way
+            of magnitude below atmospheric. Detectable in vacuum with a sensitive torsion balance, not detectable in any everyday way
             <Cite id="jackson-1999" in={SOURCES} />. Solar sails work because they patiently
             integrate this tiny pressure over thousands of square metres and weeks of flight.
           </p>
@@ -1006,7 +1044,8 @@ export default function Ch9EMWaves() {
             <strong className="text-text font-medium"> B</strong> are fields in their own right, and
             their wave equation holds in vacuum exactly because their propagation speed is a
             fundamental constant, not a property of any underlying material
-            <Cite id="jackson-1999" in={SOURCES} />. Chapter 9 is the longer version of that story.
+            <Cite id="einstein-1905" in={SOURCES} />
+            <Cite id="jackson-1999" in={SOURCES} />. Chapter 11 is the longer version of that story.
           </p>
         </FAQItem>
 
@@ -1018,7 +1057,7 @@ export default function Ch9EMWaves() {
             that sum has the same frequency but a slightly retarded phase — equivalent to a slower
             wave
             <Cite id="feynman-II-21" in={SOURCES} />. The macroscopic statement of this slowdown is
-            εᵣ {'>'} 1 (the molecules' bound electrons polarise the medium); the wave speed becomes
+            εᵣ {'>'} 1 (the molecules' bound electrons polarize the medium); the wave speed becomes
             <InlineMath> v = c / √(εᵣ μᵣ)</InlineMath>. No individual photon is being "slowed down";
             the wave that emerges is the dressed superposition.
           </p>
@@ -1074,7 +1113,7 @@ export default function Ch9EMWaves() {
             Air molecules are much smaller than the wavelength of visible light, and small
             scatterers preferentially re-radiate shorter wavelengths. Sunlight scatters off air
             molecules with an efficiency that grows as roughly <InlineMath>1/λ⁴</InlineMath>{' '}
-            (Rayleigh scattering), so blue light at ~450 nm scatters about ten times as readily as
+            (Rayleigh scattering), so blue light at ~450 nm scatters about six times as readily as
             red light at ~700 nm. Looking away from the sun, you see scattered sunlight, which is
             disproportionately blue. Looking at the sun near the horizon, you see the direct light
             minus what's been scattered out of the path — disproportionately red. Same scattering
@@ -1123,7 +1162,7 @@ export default function Ch9EMWaves() {
             every inertial frame sees the same c and Galilean addition of velocities has to give
             way. Einstein took the third option in 1905
             <Cite id="jackson-1999" in={SOURCES} />. Special relativity is largely the consequence
-            of insisting that Maxwell's equations hold for everyone. Chapter 9 unpacks this.
+            of insisting that Maxwell's equations hold for everyone. Chapter 11 unpacks this.
           </p>
         </FAQItem>
       </FAQ>

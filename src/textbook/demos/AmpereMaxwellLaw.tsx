@@ -17,7 +17,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawWire } from '@/lib/canvasPrimitives';
@@ -25,6 +26,13 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { PHYS } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+
+function fmtSci(n: number) {
+  const s = n.toExponential(2);
+  const m = s.match(/^(-?[\d.]+)e([+-]?\d+)$/);
+  if (!m) return s;
+  return `${m[1]}\\times10^{${m[2]!.replace(/^\+/, '')}}`;
+}
 
 interface Props {
   figure?: string;
@@ -123,7 +131,7 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
         },
         { x: (plate2X + endX) / 2, label: '∮B·dℓ = μ₀ I', kind: 'conduction' as const },
       ];
-      phase = (performance.now() / 2000) % 1;
+      phase = (_simTime / 2) % 1;
       for (const p of positions) {
         // Two ellipses (top + bottom) — a side-view "ring" around the wire / gap
         ctx.strokeStyle =
@@ -234,6 +242,23 @@ export function AmpereMaxwellLawDemo({ figure }: Props) {
         <MiniReadout label="|B| at r" value={<Num value={B} digits={2} />} unit="T" />
         <MiniReadout label="I_disp" value={<Num value={I_disp} digits={2} />} unit="A" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Ampère–Maxwell law"
+        left={
+          <InlineMath
+            tex={`\\oint \\vec{B}\\cdot d\\vec{\\ell} \\;=\\; \\mu_0\\left(I + \\varepsilon_0 \\dfrac{d\\Phi_E}{dt}\\right)`}
+          />
+        }
+        rightLabel="Live substitution"
+        right={
+          <InlineMath
+            tex={
+              `\\mu_0(${I.toFixed(2)} + ${I_disp.toFixed(2)}) ` +
+              `\\;=\\; ${fmtSci(PHYS.mu_0 * I)}\\ \\text{T·m}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

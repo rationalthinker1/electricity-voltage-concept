@@ -10,10 +10,12 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
+import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -60,11 +62,11 @@ export function GaussELawDemo({ figure }: Props) {
           // length scales with log(|q|/r²); cap for sanity
           const intensity = Math.log10((mag * 1e3) / (r * r) + 1) * 6;
           const L = Math.max(2, Math.min(14, intensity));
-          // Color: pink if positive (out), blue if negative (in)
-          const color = sign > 0 ? '255,107,42' : '108,197,194';
+          // Color: accent if positive (out), teal if negative (in)
+          const color = sign > 0 ? colors.accent : colors.teal;
           // Direction reverses for negative charge
           const dir = sign;
-          ctx.strokeStyle = `rgba(${color},0.55)`;
+          ctx.strokeStyle = withAlpha(color, 0.55);
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(x - ux * L * dir * 0.5, y - uy * L * dir * 0.5);
@@ -75,7 +77,7 @@ export function GaussELawDemo({ figure }: Props) {
           const hy = y + uy * L * dir * 0.5;
           const nx = -uy * dir,
             ny = ux * dir;
-          ctx.fillStyle = `rgba(${color},0.55)`;
+          ctx.fillStyle = withAlpha(color, 0.55);
           ctx.beginPath();
           ctx.moveTo(hx, hy);
           ctx.lineTo(hx - ux * dir * 3 + nx * 2, hy - uy * dir * 3 + ny * 2);
@@ -91,7 +93,7 @@ export function GaussELawDemo({ figure }: Props) {
       ctx.setLineDash([]);
       drawLabel(ctx, { text: 'Gaussian surface', x: bx + 8, y: by - 16, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       const cR = 10 + Math.min(8, Math.abs(qNC) * 0.6);
-      const cColor = qNC >= 0 ? '#ff3b6e' : '#5baef8';
+      const cColor = qNC >= 0 ? colors.pink : colors.blue;
       drawHalo(ctx, {
         x: chargeX,
         y: chargeY,
@@ -144,6 +146,23 @@ export function GaussELawDemo({ figure }: Props) {
         />
         <MiniReadout label="∮E·dA" value={<Num value={flux} digits={2} />} unit="V·m" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Gauss's law for E"
+        left={
+          <InlineMath
+            tex={`\\oint \\vec{E}\\cdot d\\vec{A} \\;=\\; \\dfrac{Q_{enc}}{\\varepsilon_0}`}
+          />
+        }
+        rightLabel="Live substitution"
+        right={
+          <InlineMath
+            tex={
+              `\\dfrac{${outside ? '0' : qNC.toFixed(1)}\\times10^{-9}}{\\varepsilon_0} ` +
+              `\\;=\\; ${flux.toExponential(2).replace('e+', '\\times10^{').replace('e-', '\\times10^{-') + '}'}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

@@ -11,7 +11,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -238,6 +239,24 @@ export function TwoParallelWiresDemo({ figure }: Props) {
           unit="N/m"
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Force per unit length"
+        left={
+          <InlineMath
+            tex={
+              `\\dfrac{F}{L} \\;=\\; \\dfrac{\\mu_{0} I_{1} I_{2}}{2\\pi d} \\;=\\; ` +
+              `\\dfrac{(4\\pi\\!\\times\\!10^{-7})(${I1.toFixed(1)})(${I2.toFixed(1)})}{2\\pi(${(d_m * 100).toFixed(1)}\\!\\times\\!10^{-2})} ` +
+              `\\;\\approx\\; ${Math.abs(F_per_L).toExponential(2)}\\ \\text{N/m}`
+            }
+          />
+        }
+        rightLabel="Sign convention"
+        right={
+          <InlineMath
+            tex={attractive ? `\\text{parallel currents} \\to \\text{attract}` : `\\text{antiparallel currents} \\to \\text{repel}`}
+          />
+        }
+      />
     </Demo>
   );
 }

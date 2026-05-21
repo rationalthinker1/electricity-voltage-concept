@@ -10,7 +10,8 @@
 import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -199,7 +200,7 @@ export function TransformerDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 5.4'}
+      figure={figure ?? 'Fig. 7.6'}
       title="Transformer — turns ratio sets the voltage ratio"
       question="Why does the secondary voltage track N₂/N₁?"
       caption={
@@ -245,6 +246,27 @@ export function TransformerDemo({ figure }: Props) {
         <MiniReadout label="V₂ = V₁·N₂/N₁" value={<Num value={V2} />} unit="V" />
         <MiniReadout label="ratio" value={(N2 / N1).toFixed(3)} unit="×" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Turns-ratio identity"
+        left={
+          <InlineMath
+            tex={
+              `\\dfrac{V_{2}}{V_{1}} \\;=\\; \\dfrac{N_{2}}{N_{1}} \\;=\\; ` +
+              `\\dfrac{${N2}}{${N1}} \\;\\approx\\; ${(N2 / N1).toFixed(3)}`
+            }
+          />
+        }
+        rightLabel="Substituted output"
+        right={
+          <InlineMath
+            tex={
+              `V_{2} \\;=\\; V_{1}\\,\\dfrac{N_{2}}{N_{1}} \\;=\\; ` +
+              `(${V1.toFixed(0)})(${(N2 / N1).toFixed(3)}) ` +
+              `\\;\\approx\\; ${V2.toFixed(1)}\\ \\text{V}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

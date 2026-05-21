@@ -13,7 +13,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
 import { pretty } from '@/lib/physics';
@@ -164,6 +165,24 @@ export function EAxialFieldDemo({ figure }: Props) {
         />
         <MiniReadout label="E along axis" value={<Num value={E} />} unit="V/m" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Axial electric field"
+        left={
+          <InlineMath
+            tex={
+              `E = \\dfrac{V}{L} = \\dfrac{${V.toFixed(1)}}{${L.toFixed(2)}} = ${E.toFixed(2)} \\text{ V/m}`
+            }
+          />
+        }
+        rightLabel="Voltage drop"
+        right={
+          <InlineMath
+            tex={
+              `V = E \\cdot L = ${E.toFixed(2)} \\times ${L.toFixed(2)} = ${V.toFixed(1)} \\text{ V}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

@@ -17,7 +17,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -301,6 +302,26 @@ export function BuildACapacitorDemo({ figure }: Props) {
         <MiniReadout label="V = Q/C" value={<Num value={V} />} unit="V" />
         <MiniReadout label="U = ½CV²" value={<Num value={U} />} unit="J" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Voltage from stored charge"
+        left={
+          <InlineMath
+            tex={
+              `V \\;=\\; \\dfrac{Q}{C} \\;=\\; ` +
+              `\\dfrac{${(Q * 1e9).toFixed(2)}\\ \\text{nC}}{${(C * 1e12).toFixed(1)}\\ \\text{pF}} ` +
+              `\\;\\approx\\; ${V.toFixed(2)}\\ \\text{V}`
+            }
+          />
+        }
+        rightLabel="Energy stored in the field"
+        right={
+          <InlineMath
+            tex={
+              `U \\;=\\; \\tfrac{1}{2} C V^{2} \\;\\approx\\; ${(U * 1e9).toFixed(2)}\\ \\text{nJ}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

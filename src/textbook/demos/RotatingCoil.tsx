@@ -6,15 +6,18 @@
  * Right half: oscilloscope plot of EMF(t) sweeping right→left.
  * Sliders: ω, B; readouts: peak EMF, frequency, V_rms.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
-import { pretty } from '@/lib/physics';
+import { fmtVoltage } from '@/lib/formatters';
 import { drawLabel } from "@/lib/canvasLayout";
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -23,14 +26,15 @@ interface Props {
 const N_TURNS = 100;
 const A_M2 = 0.01; // 100 cm² fixed area for the inline demo
 
+interface RotatingContext {
+  scope: { t: number; emf: number }[];
+}
+
 export function RotatingCoilDemo({ figure }: Props) {
   const [B, setB] = useState(0.5); // T
   const [omega, setOmega] = useState(60); // rad/s
 
-  const stateRef = useRef({ B, omega });
-  useEffect(() => {
-    stateRef.current = { B, omega };
-  }, [B, omega]);
+  const stateRef = useSimState({ B, omega });
 
   const computed = useMemo(() => {
     const peak = N_TURNS * B * A_M2 * omega;
@@ -39,24 +43,14 @@ export function RotatingCoilDemo({ figure }: Props) {
     return { peak, f, Vrms };
   }, [B, omega]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    let simT = 0;
-    let lastRealT = performance.now();
-    const scope: { t: number; emf: number }[] = [];
-    const SCOPE_DURATION = 0.2;
+  const SCOPE_DURATION = 0.2;
 
-    function draw() {
-      const { B, omega } = stateRef.current;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state, _dt, simT, c: RotatingContext) => {
+      const { B, omega } = state;
       const peak = N_TURNS * B * A_M2 * omega;
-
-      const now = performance.now();
-      let dt = (now - lastRealT) / 1000;
-      lastRealT = now;
-      if (dt > 0.1) dt = 0.1;
       const visualOmega = Math.min(omega, 3.0);
-      simT += dt;
 
       const emf = N_TURNS * B * A_M2 * omega * Math.sin(omega * simT);
 
@@ -74,8 +68,9 @@ export function RotatingCoilDemo({ figure }: Props) {
       // B field rows
       if (B > 0.005) {
         const op = Math.min(0.4, 0.1 + B * 0.2);
-        ctx.strokeStyle = `rgba(108,197,194,${op})`;
-        ctx.fillStyle = `rgba(108,197,194,${op})`;
+        const tealStr = withAlpha(colors.teal, op);
+        ctx.strokeStyle = tealStr;
+        ctx.fillStyle = tealStr;
         ctx.lineWidth = 1;
         const rows = 6;
         for (let i = 0; i < rows; i++) {
@@ -112,7 +107,7 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // coil rectangle
-      ctx.strokeStyle = `rgba(255,107,42,${0.45 + 0.4 * Math.abs(Math.sin(angle))})`;
+      ctx.strokeStyle = withAlpha(colors.accent, 0.45 + 0.4 * Math.abs(Math.sin(angle)));
       ctx.lineWidth = 2;
       const xL = coilCx - visW / 2;
       const xR = coilCx + visW / 2;
@@ -166,9 +161,9 @@ export function RotatingCoilDemo({ figure }: Props) {
       const scopeCy = h / 2;
       const scopeH = h * 0.66;
 
-      scope.push({ t: simT, emf });
+      c.scope.push({ t: simT, emf });
       const tCut = simT - SCOPE_DURATION;
-      while (scope.length && scope[0].t < tCut) scope.shift();
+      while (c.scope.length && c.scope[0]!.t < tCut) c.scope.shift();
 
       const yScale = Math.max(peak, 0.01);
 
@@ -205,10 +200,10 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.setLineDash([]);
 
       // trace
-      if (scope.length > 2) {
+      if (c.scope.length > 2) {
         const tracePts: { x: number; y: number }[] = [];
-        for (let i = 0; i < scope.length; i++) {
-          const s = scope[i];
+        for (let i = 0; i < c.scope.length; i++) {
+          const s = c.scope[i]!;
           tracePts.push({
             x: scopeX + ((s.t - tCut) / SCOPE_DURATION) * scopeW,
             y: scopeCy - (s.emf / yScale) * (scopeH / 2) * 0.9,
@@ -227,19 +222,21 @@ export function RotatingCoilDemo({ figure }: Props) {
       ctx.globalAlpha = 0.75;
       drawLabel(ctx, { text: 'EMF(t)', x: scopeX, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.restore();
-      drawLabel(ctx, { text: `peak = ${pretty(peak)} V`, x: scopeX + scopeW, y: 12, color: colors.accent });
+      drawLabel(ctx, { text: `peak = ${fmtVoltage(peak)}`, x: scopeX + scopeW, y: 12, color: colors.accent });
 
       ctx.restore();
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    () => ({
+      context: {
+        scope: [] as { t: number; emf: number }[],
+      } as RotatingContext,
+    }),
+  );
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 5.3'}
+      figure={figure ?? 'Fig. 7.5'}
       title="Spinning a coil = generating AC"
       question="Constant rotation, constant field — why is the output a sine wave?"
       caption={
@@ -276,6 +273,26 @@ export function RotatingCoilDemo({ figure }: Props) {
         <MiniReadout label="f" value={<Num value={computed.f} />} unit="Hz" />
         <MiniReadout label="Vᵣₘₛ" value={<Num value={computed.Vrms} />} unit="V" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Peak amplitude"
+        left={
+          <InlineMath
+            tex={
+              `\\varepsilon_{\\text{pk}} \\;=\\; NBA\\omega \\;=\\; ` +
+              `(${N_TURNS})(${B.toFixed(2)})(${A_M2})(${omega}) ` +
+              `\\;\\approx\\; ${computed.peak.toFixed(2)}\\ \\text{V}`
+            }
+          />
+        }
+        rightLabel="AC frequency"
+        right={
+          <InlineMath
+            tex={
+              `f \\;=\\; \\dfrac{\\omega}{2\\pi} \\;\\approx\\; ${computed.f.toFixed(2)}\\ \\text{Hz}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

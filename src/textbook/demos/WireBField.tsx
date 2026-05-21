@@ -7,18 +7,26 @@
  * direction by the right-hand rule. A draggable orange probe reads
  * |B| = μ₀ I / (2π r) at its location.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { PHYS, pretty } from '@/lib/physics';
+import { PHYS } from '@/lib/physics';
+import { fmtSIPrecision } from '@/lib/formatters';
 import { drawLabel } from "@/lib/canvasLayout";
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
+}
+
+interface WireBFieldContext {
+  cleanup: () => void;
 }
 
 export function WireBFieldDemo({ figure }: Props) {
@@ -26,77 +34,12 @@ export function WireBFieldDemo({ figure }: Props) {
   const [intoPage, setIntoPage] = useState(true);
   const [probe, setProbe] = useState({ x: 0.72, y: 0.36 });
 
-  const stateRef = useRef({ I, intoPage, probe });
-  useEffect(() => {
-    stateRef.current = { I, intoPage, probe };
-  }, [I, intoPage, probe]);
+  const stateRef = useSimState({ I, intoPage, probe });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
-    let raf = 0;
-    let dragging = false;
-
-    function getMouse(e: MouseEvent | TouchEvent): [number, number] {
-      const r = canvas.getBoundingClientRect();
-      const t = 'touches' in e ? e.touches[0] : e;
-      if (!t) return [0, 0];
-      return [t.clientX - r.left, t.clientY - r.top];
-    }
-    function onMouseDown(e: MouseEvent) {
-      const [mx, my] = getMouse(e);
-      const px = stateRef.current.probe.x * w;
-      const py = stateRef.current.probe.y * h;
-      if (Math.hypot(mx - px, my - py) < 22) {
-        dragging = true;
-        canvas.style.cursor = 'grabbing';
-      }
-    }
-    function onMouseMove(e: MouseEvent) {
-      const [mx, my] = getMouse(e);
-      if (dragging) {
-        setProbe({
-          x: Math.max(0.05, Math.min(0.95, mx / w)),
-          y: Math.max(0.08, Math.min(0.92, my / h)),
-        });
-      } else {
-        const px = stateRef.current.probe.x * w;
-        const py = stateRef.current.probe.y * h;
-        canvas.style.cursor = Math.hypot(mx - px, my - py) < 22 ? 'grab' : 'default';
-      }
-    }
-    function onMouseUp() {
-      dragging = false;
-      canvas.style.cursor = 'default';
-    }
-    function onTouchStart(e: TouchEvent) {
-      e.preventDefault();
-      const [mx, my] = getMouse(e);
-      const px = stateRef.current.probe.x * w;
-      const py = stateRef.current.probe.y * h;
-      if (Math.hypot(mx - px, my - py) < 30) dragging = true;
-    }
-    function onTouchMove(e: TouchEvent) {
-      e.preventDefault();
-      if (!dragging) return;
-      const [mx, my] = getMouse(e);
-      setProbe({
-        x: Math.max(0.05, Math.min(0.95, mx / w)),
-        y: Math.max(0.08, Math.min(0.92, my / h)),
-      });
-    }
-    function onTouchEnd() {
-      dragging = false;
-    }
-
-    canvas.addEventListener('mousedown', onMouseDown);
-    canvas.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
-    canvas.addEventListener('touchstart', onTouchStart, { passive: false });
-    canvas.addEventListener('touchmove', onTouchMove, { passive: false });
-    canvas.addEventListener('touchend', onTouchEnd);
-
-    function draw() {
-      const { I, intoPage, probe } = stateRef.current;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state) => {
+      const { I, intoPage, probe } = state;
       ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, w, h);
 
@@ -121,17 +64,12 @@ export function WireBFieldDemo({ figure }: Props) {
         ctx.stroke();
 
         // Tangent arrows at intervals around the circle.
-        // RHR: thumb out of page (• ; intoPage=false) → fingers curl CCW viewed from +z.
-        // intoPage=true → CW. We use angle direction sign accordingly.
-        const arrowDir = intoPage ? +1 : -1; // +1 → CW in screen coords
+        const arrowDir = intoPage ? +1 : -1;
         const nArrows = Math.max(4, Math.floor(R / 18));
         for (let i = 0; i < nArrows; i++) {
           const theta = (i / nArrows) * Math.PI * 2;
           const ax = cx0 + R * Math.cos(theta);
           const ay = cy0 + R * Math.sin(theta);
-          // Tangent direction: perpendicular to radial. For CW (positive arrowDir)
-          // tangent at angle θ is (sin θ, -cos θ) in standard math coords; in
-          // screen coords y is flipped, so direction = (-sin θ, cos θ) for CW.
           const tx = -Math.sin(theta) * arrowDir;
           const ty = Math.cos(theta) * arrowDir;
           const len = 7 + I_norm * 5;
@@ -145,7 +83,6 @@ export function WireBFieldDemo({ figure }: Props) {
           // arrowhead
           const hx = ax + tx * len * 0.5;
           const hy = ay + ty * len * 0.5;
-          // perpendicular for head wings
           const nx = -ty,
             ny = tx;
           ctx.beginPath();
@@ -228,21 +165,84 @@ export function WireBFieldDemo({ figure }: Props) {
       // Probe distance label
       ctx.fillStyle = withAlpha(colors.text, 0.85);
       drawLabel(ctx, { text: `r = ${(r_m * 1000).toFixed(0)} mm`, x: px, y: py - 16, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: `|B| = ${pretty(Bprobe, 2)} T`, x: px, y: py + 22, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: `|B| = ${fmtSIPrecision(Bprobe, 'T', 2)}`, x: px, y: py + 22, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center' });
+    },
+    [],
+    ({ canvas, w, h }) => {
+      let dragging = false;
 
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      canvas.removeEventListener('mousedown', onMouseDown);
-      canvas.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
-      canvas.removeEventListener('touchstart', onTouchStart);
-      canvas.removeEventListener('touchmove', onTouchMove);
-      canvas.removeEventListener('touchend', onTouchEnd);
-    };
-  }, []);
+      function getMouse(e: MouseEvent | TouchEvent): [number, number] {
+        const r = canvas.getBoundingClientRect();
+        const t = 'touches' in e ? e.touches[0] : e;
+        if (!t) return [0, 0];
+        return [t.clientX - r.left, t.clientY - r.top];
+      }
+      function onMouseDown(e: MouseEvent) {
+        const [mx, my] = getMouse(e);
+        const px = stateRef.current.probe.x * w;
+        const py = stateRef.current.probe.y * h;
+        if (Math.hypot(mx - px, my - py) < 22) {
+          dragging = true;
+          canvas.style.cursor = 'grabbing';
+        }
+      }
+      function onMouseMove(e: MouseEvent) {
+        const [mx, my] = getMouse(e);
+        if (dragging) {
+          setProbe({
+            x: Math.max(0.05, Math.min(0.95, mx / w)),
+            y: Math.max(0.08, Math.min(0.92, my / h)),
+          });
+        } else {
+          const px = stateRef.current.probe.x * w;
+          const py = stateRef.current.probe.y * h;
+          canvas.style.cursor = Math.hypot(mx - px, my - py) < 22 ? 'grab' : 'default';
+        }
+      }
+      function onMouseUp() {
+        dragging = false;
+        canvas.style.cursor = 'default';
+      }
+      function onTouchStart(e: TouchEvent) {
+        e.preventDefault();
+        const [mx, my] = getMouse(e);
+        const px = stateRef.current.probe.x * w;
+        const py = stateRef.current.probe.y * h;
+        if (Math.hypot(mx - px, my - py) < 30) dragging = true;
+      }
+      function onTouchMove(e: TouchEvent) {
+        e.preventDefault();
+        if (!dragging) return;
+        const [mx, my] = getMouse(e);
+        setProbe({
+          x: Math.max(0.05, Math.min(0.95, mx / w)),
+          y: Math.max(0.08, Math.min(0.92, my / h)),
+        });
+      }
+      function onTouchEnd() {
+        dragging = false;
+      }
+
+      canvas.addEventListener('mousedown', onMouseDown);
+      canvas.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+      canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+      canvas.addEventListener('touchmove', onTouchMove, { passive: false });
+      canvas.addEventListener('touchend', onTouchEnd);
+
+      return {
+        context: { cleanup: () => undefined } as WireBFieldContext,
+        cleanup: () => {
+          canvas.removeEventListener('mousedown', onMouseDown);
+          canvas.removeEventListener('mousemove', onMouseMove);
+          window.removeEventListener('mouseup', onMouseUp);
+          canvas.removeEventListener('touchstart', onTouchStart);
+          canvas.removeEventListener('touchmove', onTouchMove);
+          canvas.removeEventListener('touchend', onTouchEnd);
+        },
+      };
+    },
+  );
 
   // Static readout uses an estimated canvas width to avoid threading dims out.
   const W_est = 880;
@@ -284,6 +284,22 @@ export function WireBFieldDemo({ figure }: Props) {
         />
         <MiniReadout label="|B| at probe" value={<Num value={Bprobe} digits={2} />} unit="T" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Long-wire B-field"
+        left={
+          <InlineMath
+            tex={
+              `|\\vec{B}| \\;=\\; \\dfrac{\\mu_{0} I}{2\\pi r} \\;\\approx\\; ${Bprobe.toExponential(2)}\\ \\text{T}`
+            }
+          />
+        }
+        rightLabel="Falls as 1 / r"
+        right={
+          <InlineMath
+            tex={`|\\vec{B}(2r)| \\;=\\; \\tfrac{1}{2}\\,|\\vec{B}(r)|`}
+          />
+        }
+      />
     </Demo>
   );
 }

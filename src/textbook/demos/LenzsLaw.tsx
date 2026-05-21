@@ -11,23 +11,29 @@
  * The "rate of change" is computed from changes in the slider value over real
  * time, so the lamp is dark when you stop moving.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
+import { withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
+}
+
+interface LenzContext {
+  lastD: number;
+  smoothedRate: number;
 }
 
 export function LenzsLawDemo({ figure }: Props) {
   // Distance from loop, in arbitrary "cm" units (1 = touching loop, large = far)
   const [d, setD] = useState(8);
 
-  const stateRef = useRef({ d });
-  useEffect(() => {
-    stateRef.current = { d };
-  }, [d]);
+  const stateRef = useSimState({ d });
 
   // Direction sign: +1 = magnet approaching (induced current opposes; CCW from above), −1 = retreating (CW)
   const [direction, setDirection] = useState<0 | 1 | -1>(0);
@@ -41,26 +47,19 @@ export function LenzsLawDemo({ figure }: Props) {
     return () => window.clearInterval(id);
   }, []);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, colors } = info;
-    let raf = 0;
-    let lastT = performance.now();
-    let lastD = stateRef.current.d;
-    let smoothedRate = 0;
-
-    function draw() {
-      const { d } = stateRef.current;
-      const now = performance.now();
-      let dt = (now - lastT) / 1000;
-      lastT = now;
-      if (dt <= 0) dt = 1e-3;
-      const dD = d - lastD; // + = moving away, − = approaching
-      lastD = d;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state, dt, _simTime, c: LenzContext) => {
+      const { d } = state;
+      const safeDt = dt <= 0 ? 1e-3 : dt;
+      const dD = d - c.lastD; // + = moving away, − = approaching
+      c.lastD = d;
       // raw rate of change of flux ∝ -dD/dt (closer = more flux)
-      const rawRate = -dD / dt;
+      const rawRate = -dD / safeDt;
       // smooth toward 0 if user holds still, decay quickly
-      smoothedRate = smoothedRate * 0.5 + rawRate * 0.5;
-      if (Math.abs(smoothedRate) < 0.01) smoothedRate = 0;
+      c.smoothedRate = c.smoothedRate * 0.5 + rawRate * 0.5;
+      if (Math.abs(c.smoothedRate) < 0.01) c.smoothedRate = 0;
+      const smoothedRate = c.smoothedRate;
       const dir: 0 | 1 | -1 = smoothedRate > 0.05 ? 1 : smoothedRate < -0.05 ? -1 : 0;
       dirRef.current = { dir, rate: smoothedRate };
 
@@ -130,8 +129,9 @@ export function LenzsLawDemo({ figure }: Props) {
       // dir = −1 (retreating) → B_ind DOWN (into loop, supporting fading flux).
       if (dir !== 0) {
         const tealAlpha = Math.min(0.9, 0.35 + Math.abs(smoothedRate) * 0.5);
-        ctx.strokeStyle = `rgba(108,197,194,${tealAlpha})`;
-        ctx.fillStyle = `rgba(108,197,194,${tealAlpha})`;
+        const tealStr = withAlpha(colors.teal, tealAlpha);
+        ctx.strokeStyle = tealStr;
+        ctx.fillStyle = tealStr;
         ctx.lineWidth = 1.8;
         if (dir > 0) {
           // arrow inside loop pointing UP (out of plane toward viewer = up-axis)
@@ -162,7 +162,7 @@ export function LenzsLawDemo({ figure }: Props) {
           x: cx + 12,
           y: cy,
           text: 'B (induced)',
-          color: `rgba(108,197,194,${tealAlpha})`,
+          color: tealStr,
         });
       }
 
@@ -173,8 +173,9 @@ export function LenzsLawDemo({ figure }: Props) {
         // dir −1 → reversed.
         const ccw = dir > 0;
         const arrowAlpha = Math.min(0.95, 0.4 + Math.abs(smoothedRate) * 0.5);
-        ctx.strokeStyle = `rgba(255,107,42,${arrowAlpha})`;
-        ctx.fillStyle = `rgba(255,107,42,${arrowAlpha})`;
+        const accentStr = withAlpha(colors.accent, arrowAlpha);
+        ctx.strokeStyle = accentStr;
+        ctx.fillStyle = accentStr;
         ctx.lineWidth = 1.6;
         // small chevrons placed along the ellipse
         const chevrons = 6;
@@ -198,7 +199,7 @@ export function LenzsLawDemo({ figure }: Props) {
           x: cx,
           y: cy + loopRy + 18,
           text: `induced current (${ccw ? 'opposes' : 'attracts'})`,
-          color: `rgba(255,107,42,${arrowAlpha})`,
+          color: accentStr,
           align: 'center',
           baseline: 'top',
         });
@@ -221,16 +222,19 @@ export function LenzsLawDemo({ figure }: Props) {
             ? 'magnet retreating · Φ ↓ · current sustains'
             : 'static · no induction';
       drawLabel(ctx, { text: status, x: 14, y: 14, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+    },
+    [],
+    () => ({
+      context: {
+        lastD: stateRef.current.d,
+        smoothedRate: 0,
+      } as LenzContext,
+    }),
+  );
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 5.2'}
+      figure={figure ?? 'Fig. 7.4'}
       title="Lenz's law — the induced current always pushes back"
       question="Push the magnet closer. What direction does the induced current flow — and why?"
       caption={
@@ -265,6 +269,20 @@ export function LenzsLawDemo({ figure }: Props) {
           value={direction > 0 ? 'opposing' : direction < 0 ? 'attracting' : 'idle'}
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="The minus sign is the whole story"
+        left={
+          <InlineMath
+            tex={`\\varepsilon \\;=\\; -\\dfrac{d\\Phi}{dt}`}
+          />
+        }
+        rightLabel="Rate of change (signed, a.u.)"
+        right={
+          <InlineMath
+            tex={`\\dfrac{d\\Phi}{dt} \\;\\approx\\; ${rate === 0 ? '0' : (rate > 0 ? '+' : '') + rate.toFixed(2)}`}
+          />
+        }
+      />
     </Demo>
   );
 }

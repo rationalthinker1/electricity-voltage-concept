@@ -13,14 +13,29 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+} from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawCharge } from '@/lib/canvasPrimitives';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure?: string;
+}
+
+function hexToRgb(hex: string) {
+  return {
+    r: parseInt(hex.slice(1, 3), 16),
+    g: parseInt(hex.slice(3, 5), 16),
+    b: parseInt(hex.slice(5, 7), 16),
+  };
 }
 
 export function OscillatingDipoleDemo({ figure }: Props) {
@@ -50,6 +65,8 @@ export function OscillatingDipoleDemo({ figure }: Props) {
       const img = ctx.createImageData(W, H);
       const data = img.data;
       const step = 2;
+      const pinkRGB = hexToRgb(colors.pink);
+      const blueRGB = hexToRgb(colors.blue);
       for (let py = 0; py < H; py += step) {
         for (let px = 0; px < W; px += step) {
           const dx = px - cx;
@@ -63,9 +80,9 @@ export function OscillatingDipoleDemo({ figure }: Props) {
           const amp = (pat / Math.sqrt(r)) * Math.sin(k * r - om * t);
           // Map to colour: +amp → pink, −amp → blue, balanced background
           const v = Math.max(-1, Math.min(1, amp * 3.4));
-          const r8 = v > 0 ? 255 : 0x5b;
-          const g8 = v > 0 ? 59 : 0xae;
-          const b8 = v > 0 ? 110 : 0xf8;
+          const r8 = v > 0 ? pinkRGB.r : blueRGB.r;
+          const g8 = v > 0 ? pinkRGB.g : blueRGB.g;
+          const b8 = v > 0 ? pinkRGB.b : blueRGB.b;
           const alpha = Math.min(180, Math.abs(v) * 220);
           // Fill the step×step block
           for (let oy = 0; oy < step && py + oy < H; oy++) {
@@ -87,22 +104,22 @@ export function OscillatingDipoleDemo({ figure }: Props) {
         ctx,
         { x: cx, y: yPos },
         {
-          color: '#ff3b6e',
+          color: colors.pink,
           glow: true,
           radius: 11,
           sign: '+',
-          textColor: '#0a0a0b',
+          textColor: colors.bg,
         },
       );
       drawCharge(
         ctx,
         { x: cx, y: yNeg },
         {
-          color: '#5baef8',
+          color: colors.blue,
           glow: true,
           radius: 11,
           sign: '−',
-          textColor: '#0a0a0b',
+          textColor: colors.bg,
         },
       );
       ctx.setLineDash([4, 6]);
@@ -149,6 +166,19 @@ export function OscillatingDipoleDemo({ figure }: Props) {
         <MiniReadout label="frequency f" value={f.toFixed(2)} unit="Hz" />
         <MiniReadout label="wavelength λ" value={lambdaPx.toFixed(0)} unit="px" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Radiation pattern"
+        left={<InlineMath tex={`I(\\theta) \\;\\propto\\; \\sin^{2}\\theta`} />}
+        rightLabel="Wavelength"
+        right={
+          <InlineMath
+            tex={
+              `\\lambda \\;=\\; \\dfrac{c}{f} \\;=\\; ` +
+              `\\dfrac{${C_SIM}}{${f.toFixed(2)}} \\;\\approx\\; ${lambdaPx.toFixed(0)}\\ \text{px}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

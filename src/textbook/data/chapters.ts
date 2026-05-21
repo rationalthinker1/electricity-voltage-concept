@@ -359,6 +359,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'kopp-lean-2011',
       'green-bohn-2015',
       'codata-2018',
+      'libretexts-conduction',
     ],
     punchline:
       'Energy flows through the field surrounding the wire, not through the copper — and the Poynting vector S = E × B / μ₀ tells you exactly where it goes.',
@@ -379,11 +380,12 @@ export const CHAPTERS: ChapterEntry[] = [
     title: 'Electromagnetic waves',
     subtitle: 'Strip the wire. The field still moves.',
     blurb:
-      "Take Ch.6's picture and remove the absorbing conductor. The field doesn't stop — it propagates outward at c, carrying energy and momentum through empty space. Maxwell predicted it in 1865; Hertz produced and detected it in 1887. Light, radio, X-rays — same physics, different wavelengths.",
+      "Take Ch.8's picture and remove the absorbing conductor. The field doesn't stop — it propagates outward at c, carrying energy and momentum through empty space. Maxwell predicted it in 1865; Hertz produced and detected it in 1887. Light, radio, X-rays — same physics, different wavelengths.",
     relatedLabs: ['poynting', 'energy-density'],
     sources: [
       'maxwell-1865',
       'hertz-1888',
+      'einstein-1905',
       'feynman-II-21',
       'griffiths-2017',
       'jackson-1999',
@@ -430,6 +432,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'hong-2001-wireless',
       'kaplan-hegarty-2017',
       'ewen-purcell-1951',
+      'dirac-1931',
     ],
     punchline:
       'Four equations — two divergences and two curls — say that E and B are a single propagating field whose speed in vacuum is exactly c.',

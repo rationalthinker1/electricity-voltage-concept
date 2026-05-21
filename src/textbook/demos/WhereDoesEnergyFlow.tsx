@@ -13,39 +13,47 @@
  * No sliders; this is a contrast viz. The whole point is the side-by-side
  * mental flip when you switch the toggle.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, EquationStrip, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useCanvasCache } from '@/lib/useCanvasCache';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
 }
 
 interface Carrier {
-  // path parameter 0..1 along the polyline
   s: number;
-  // small jitter offset perpendicular to path
   jitter: number;
 }
 interface Inflow {
-  // angle around the bulb in radians
   theta: number;
-  // radial fraction 1 → far, 0 → at bulb surface
   r: number;
+}
+
+interface SimCtx {
+  batteryX: number;
+  bulbX: number;
+  cyTop: number;
+  cyBot: number;
+  bulbR: number;
+  carriers: Carrier[];
+  inflow: Inflow[];
+  pointAt(s: number): [number, number];
+  spawnInflow(): void;
 }
 
 export function WhereDoesEnergyFlowDemo({ figure }: Props) {
   const [realPicture, setRealPicture] = useState(false);
 
-  const stateRef = useRef({ realPicture });
-  useEffect(() => {
-    stateRef.current = { realPicture };
-  }, [realPicture]);
+  const stateRef = useSimState({ realPicture });
 
   // Static backdrop: loop wire + battery + polarity glyphs + bulb glass /
   // glow / filament squiggle. Doesn't fit useCircuitCache because the bulb's
@@ -67,53 +75,54 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
     ];
     const wirePath = path.map(([x, y]) => ({ x, y }));
 
+    const colors = getCanvasColors();
     const schematic: CircuitElement[] = [
       {
         kind: 'wire',
         points: wirePath,
-        color: withAlpha(getCanvasColors().accent, 0.55),
+        color: withAlpha(colors.accent, 0.55),
         lineWidth: 3.5,
       },
       {
         kind: 'battery',
         at: { x: batteryX, y: (cyTop + cyBot) / 2 },
-        color: 'rgba(255,255,255,0)',
+        color: withAlpha(colors.text, 0),
         label: 'battery',
         labelOffset: { x: 0, y: 0 },
         leadLength: (cyBot - cyTop) / 2,
-        negativeColor: '#ecebe5',
+        negativeColor: colors.text,
         negativePlateLength: 20,
         plateGap: (cyBot - cyTop) / 2,
-        positiveColor: '#ecebe5',
+        positiveColor: colors.text,
         positivePlateLength: 36,
       },
     ];
     drawCircuit(octx, { elements: schematic });
 
     // Battery polarity glyphs.
-    octx.fillStyle = '#ff3b6e';
+    octx.fillStyle = colors.pink;
     octx.font = 'bold 16px "JetBrains Mono", monospace';
     octx.textAlign = 'center';
     octx.textBaseline = 'middle';
     octx.fillText('+', batteryX - 30, cyTop);
-    octx.fillStyle = '#5baef8';
+    octx.fillStyle = colors.blue;
     octx.fillText('−', batteryX - 30, cyBot);
 
     // Bulb (glow halo, glass envelope, filament squiggle, label).
     const cy = (cyTop + cyBot) / 2;
     const glow = octx.createRadialGradient(bulbX, cy, 0, bulbX, cy, bulbR * 2.6);
-    glow.addColorStop(0, 'rgba(255,200,120,0.35)');
-    glow.addColorStop(1, 'rgba(255,200,120,0)');
+    glow.addColorStop(0, withAlpha(colors.accent, 0.35));
+    glow.addColorStop(1, withAlpha(colors.accent, 0));
     octx.fillStyle = glow;
     octx.beginPath();
     octx.arc(bulbX, cy, bulbR * 2.6, 0, Math.PI * 2);
     octx.fill();
-    octx.strokeStyle = 'rgba(255,200,120,0.85)';
+    octx.strokeStyle = withAlpha(colors.accent, 0.85);
     octx.lineWidth = 1.5;
     octx.beginPath();
     octx.arc(bulbX, cy, bulbR, 0, Math.PI * 2);
     octx.stroke();
-    octx.strokeStyle = 'rgba(255,200,120,0.95)';
+    octx.strokeStyle = withAlpha(colors.accent, 0.95);
     octx.lineWidth = 1.8;
     octx.beginPath();
     const turns = 6;
@@ -125,37 +134,105 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
       else octx.lineTo(xx, yy);
     }
     octx.stroke();
-    octx.fillStyle = 'rgba(255,200,120,0.85)';
+    octx.fillStyle = withAlpha(colors.accent, 0.85);
     octx.font = '10px "JetBrains Mono", monospace';
     octx.textAlign = 'center';
     octx.textBaseline = 'top';
     octx.fillText('bulb', bulbX, cy + bulbR + 8);
   }, []);
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h, dpr } = info;
-      let raf = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, dpr, colors }, state, _dt, _simT, context: SimCtx) => {
+      const { realPicture } = state;
+      const { batteryX: _batteryX, bulbX, cyTop, cyBot, bulbR, carriers, inflow, pointAt, spawnInflow } = context;
 
-      // Battery on the left, bulb on the right; wires form a loop.
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+
+      const off = getStatic(w, h, dpr);
+      if (off) ctx.drawImage(off, 0, 0, w, h);
+
+      // Per-frame overlay: header label whose color and text toggle with the picture mode.
+      drawLabel(ctx, {
+        x: 18,
+        y: 14,
+        text: realPicture
+          ? 'Real picture — energy flows through the field, into the bulb from outside'
+          : 'Old picture — electrons stream along the wire, carrying energy',
+        color: realPicture ? colors.accent : colors.textDim,
+        size: 11,
+        baseline: 'top',
+      });
+
+      if (!realPicture) {
+        // Old picture: carriers drifting along the loop.
+        ctx.fillStyle = colors.blue;
+        for (const c of carriers) {
+          c.s += 0.0025;
+          if (c.s > 1) c.s -= 1;
+          const [px, py] = pointAt(c.s);
+          // perp jitter using path tangent
+          const [px2, py2] = pointAt((c.s + 0.001) % 1);
+          const tx = px2 - px,
+            ty = py2 - py;
+          const len = Math.hypot(tx, ty) || 1;
+          const nx = -ty / len,
+            ny = tx / len;
+          const x = px + nx * c.jitter;
+          const y = py + ny * c.jitter;
+          ctx.beginPath();
+          ctx.arc(x, y, 2.6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else {
+        // Real picture: field arrows streaming inward toward the bulb.
+        const cy = (cyTop + cyBot) / 2;
+        spawnInflow();
+        for (let i = inflow.length - 1; i >= 0; i--) {
+          const p = inflow[i]!;
+          p.r -= 0.012;
+          if (p.r <= 0.0) {
+            inflow.splice(i, 1);
+            continue;
+          }
+          const distFar = bulbR + p.r * bulbR * 5;
+          const distNear = bulbR + Math.max(0, p.r - 0.05) * bulbR * 5;
+          const fx = bulbX + Math.cos(p.theta) * distFar;
+          const fy = cy + Math.sin(p.theta) * distFar;
+          const tx = bulbX + Math.cos(p.theta) * distNear;
+          const ty = cy + Math.sin(p.theta) * distNear;
+          const alpha = 0.9 * (1 - p.r * 0.4);
+          ctx.strokeStyle = withAlpha(colors.accent, alpha);
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.moveTo(fx, fy);
+          ctx.lineTo(tx, ty);
+          ctx.stroke();
+          ctx.fillStyle = withAlpha(colors.accent, alpha);
+          ctx.beginPath();
+          ctx.arc(tx, ty, 1.8, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    },
+    [getStatic],
+    (info) => {
+      const { w, h } = info;
       const batteryX = 90;
       const bulbX = w - 100;
       const cyTop = h * 0.32;
       const cyBot = h * 0.78;
       const bulbR = 30;
 
-      // Polyline path of the conventional current loop, used by the
-      // "old picture" carriers. Goes + terminal → top wire → bulb top →
-      // through bulb → bulb bottom → bottom wire → − terminal.
       const path: Array<[number, number]> = [
-        [batteryX + 18, cyTop], // top of + terminal
-        [bulbX - bulbR, cyTop], // top wire
-        [bulbX, cyTop], // up to bulb top
-        [bulbX, cyBot], // through the filament
-        [bulbX - bulbR, cyBot], // out the bulb bottom
-        [batteryX + 18, cyBot], // bottom wire back
+        [batteryX + 18, cyTop],
+        [bulbX - bulbR, cyTop],
+        [bulbX, cyTop],
+        [bulbX, cyBot],
+        [bulbX - bulbR, cyBot],
+        [batteryX + 18, cyBot],
       ];
-      // Cumulative arc lengths
       const segLen: number[] = [];
       let totalLen = 0;
       for (let i = 0; i < path.length - 1; i++) {
@@ -166,7 +243,6 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
         totalLen += d;
       }
       function pointAt(s: number): [number, number] {
-        // s in [0,1]
         let dist = s * totalLen;
         for (let i = 0; i < segLen.length; i++) {
           if (dist <= segLen[i]!) {
@@ -181,15 +257,12 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
         return [last[0], last[1]];
       }
 
-      // 60 carriers spaced evenly along the loop, drift slowly.
       const carriers: Carrier[] = [];
       for (let i = 0; i < 60; i++) {
         carriers.push({ s: i / 60, jitter: (Math.random() - 0.5) * 4 });
       }
-      // Field inflow particles for the real picture.
       const inflow: Inflow[] = [];
       const MAX_INFLOW = 90;
-
       function spawnInflow() {
         while (inflow.length < MAX_INFLOW) {
           inflow.push({
@@ -199,83 +272,8 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
         }
       }
 
-      function draw() {
-        const { realPicture } = stateRef.current;
-        ctx.fillStyle = getCanvasColors().bg;
-        ctx.fillRect(0, 0, w, h);
-
-        const off = getStatic(w, h, dpr);
-        if (off) ctx.drawImage(off, 0, 0, w, h);
-
-        // Per-frame overlay: header label whose color and text toggle with the picture mode.
-        drawLabel(ctx, {
-          x: 18,
-          y: 14,
-          text: realPicture
-            ? 'Real picture — energy flows through the field, into the bulb from outside'
-            : 'Old picture — electrons stream along the wire, carrying energy',
-          color: realPicture ? '#ff6b2a' : '#a09e95',
-          size: 11,
-          baseline: 'top',
-        });
-
-        if (!realPicture) {
-          // Old picture: carriers drifting along the loop.
-          ctx.fillStyle = getCanvasColors().blue;
-          for (const c of carriers) {
-            c.s += 0.0025;
-            if (c.s > 1) c.s -= 1;
-            const [px, py] = pointAt(c.s);
-            // perp jitter using path tangent
-            const [px2, py2] = pointAt((c.s + 0.001) % 1);
-            const tx = px2 - px,
-              ty = py2 - py;
-            const len = Math.hypot(tx, ty) || 1;
-            const nx = -ty / len,
-              ny = tx / len;
-            const x = px + nx * c.jitter;
-            const y = py + ny * c.jitter;
-            ctx.beginPath();
-            ctx.arc(x, y, 2.6, 0, Math.PI * 2);
-            ctx.fill();
-          }
-        } else {
-          // Real picture: field arrows streaming inward toward the bulb.
-          const cy = (cyTop + cyBot) / 2;
-          spawnInflow();
-          for (let i = inflow.length - 1; i >= 0; i--) {
-            const p = inflow[i]!;
-            p.r -= 0.012;
-            if (p.r <= 0.0) {
-              inflow.splice(i, 1);
-              continue;
-            }
-            const distFar = bulbR + p.r * bulbR * 5;
-            const distNear = bulbR + Math.max(0, p.r - 0.05) * bulbR * 5;
-            const fx = bulbX + Math.cos(p.theta) * distFar;
-            const fy = cy + Math.sin(p.theta) * distFar;
-            const tx = bulbX + Math.cos(p.theta) * distNear;
-            const ty = cy + Math.sin(p.theta) * distNear;
-            const alpha = 0.9 * (1 - p.r * 0.4);
-            ctx.strokeStyle = `rgba(255,107,42,${alpha.toFixed(3)})`;
-            ctx.lineWidth = 1.4;
-            ctx.beginPath();
-            ctx.moveTo(fx, fy);
-            ctx.lineTo(tx, ty);
-            ctx.stroke();
-            ctx.fillStyle = `rgba(255,107,42,${alpha.toFixed(3)})`;
-            ctx.beginPath();
-            ctx.arc(tx, ty, 1.8, 0, Math.PI * 2);
-            ctx.fill();
-          }
-        }
-
-        raf = requestAnimationFrame(draw);
-      }
-      raf = requestAnimationFrame(draw);
-      return () => cancelAnimationFrame(raf);
+      return { context: { batteryX, bulbX, cyTop, cyBot, bulbR, carriers, inflow, pointAt, spawnInflow } };
     },
-    [getStatic],
   );
 
   return (
@@ -302,6 +300,16 @@ export function WhereDoesEnergyFlowDemo({ figure }: Props) {
           onChange={setRealPicture}
         />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Old picture"
+        left={<InlineMath tex={`P = I^2 R`} />}
+        rightLabel="Real picture"
+        right={
+          <InlineMath
+            tex={`\\vec{S} = \\dfrac{1}{\\mu_0} \\vec{E} \\times \\vec{B}`}
+          />
+        }
+      />
     </Demo>
   );
 }

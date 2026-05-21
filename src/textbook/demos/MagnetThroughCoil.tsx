@@ -10,12 +10,16 @@
  * The flux model is a stylised single-axis dipole — the *direction* of
  * dΦ/dt is what matters here, not its absolute calibration.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawHalo } from '@/lib/canvasPrimitives';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
+import { withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -28,15 +32,16 @@ function fluxAt(magnetX: number, coilX: number): number {
   return 1.0 / Math.pow(1 + (dx * dx) / (a * a), 1.5);
 }
 
+interface MagnetCtx {
+  lastFlux: number;
+}
+
 export function MagnetThroughCoilDemo({ figure }: Props) {
   // Magnet x position as fraction of canvas width (0..1)
   const [magnetX, setMagnetX] = useState(0.18);
   const [N, setN] = useState(40);
 
-  const stateRef = useRef({ magnetX, N });
-  useEffect(() => {
-    stateRef.current = { magnetX, N };
-  }, [magnetX, N]);
+  const stateRef = useSimState({ magnetX, N });
 
   // EMF readout — populated from the draw loop, throttled
   const [emfNow, setEmfNow] = useState(0);
@@ -46,79 +51,19 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
     return () => window.clearInterval(id);
   }, []);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, canvas, colors } = info;
-    let raf = 0;
-    let dragging = false;
-    let lastT = performance.now();
-    let lastFlux = fluxAt(stateRef.current.magnetX * w, w / 2);
-
-    function getMouseX(e: MouseEvent | TouchEvent): number {
-      const r = canvas.getBoundingClientRect();
-      const t = 'touches' in e ? e.touches[0] : e;
-      if (!t) return 0;
-      return t.clientX - r.left;
-    }
-    function magnetPx() {
-      return stateRef.current.magnetX * w;
-    }
-
-    function onDown(e: MouseEvent) {
-      const mx = getMouseX(e);
-      if (Math.abs(mx - magnetPx()) < 50) {
-        dragging = true;
-        canvas.style.cursor = 'grabbing';
-      }
-    }
-    function onMove(e: MouseEvent) {
-      const mx = getMouseX(e);
-      if (dragging) {
-        setMagnetX(Math.max(0.04, Math.min(0.96, mx / w)));
-      } else {
-        canvas.style.cursor = Math.abs(mx - magnetPx()) < 50 ? 'grab' : 'default';
-      }
-    }
-    function onUp() {
-      dragging = false;
-      canvas.style.cursor = 'default';
-    }
-    function onTDown(e: TouchEvent) {
-      e.preventDefault();
-      const mx = getMouseX(e);
-      if (Math.abs(mx - magnetPx()) < 60) dragging = true;
-    }
-    function onTMove(e: TouchEvent) {
-      e.preventDefault();
-      if (!dragging) return;
-      const mx = getMouseX(e);
-      setMagnetX(Math.max(0.04, Math.min(0.96, mx / w)));
-    }
-    function onTEnd() {
-      dragging = false;
-    }
-
-    canvas.addEventListener('mousedown', onDown);
-    canvas.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onUp);
-    canvas.addEventListener('touchstart', onTDown, { passive: false });
-    canvas.addEventListener('touchmove', onTMove, { passive: false });
-    canvas.addEventListener('touchend', onTEnd);
-
-    function draw() {
-      const { magnetX, N } = stateRef.current;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, state, dt, _simTime, c: MagnetCtx) => {
+      const { magnetX, N } = state;
       const cy = h / 2;
       const coilCx = w / 2;
       const mx = magnetX * w;
 
-      // Compute dPhi/dt via finite difference (per second, real time)
-      const now = performance.now();
-      let dt = (now - lastT) / 1000;
-      lastT = now;
-      if (dt <= 0) dt = 1e-3;
+      const safeDt = dt <= 0 ? 1e-3 : dt;
       const phi = fluxAt(mx, coilCx);
-      const dPhi = phi - lastFlux;
-      lastFlux = phi;
-      const emf = -N * (dPhi / dt); // V (in arbitrary units; visual)
+      const dPhi = phi - c.lastFlux;
+      c.lastFlux = phi;
+      const emf = -N * (dPhi / safeDt);
       emfRef.current = emf;
 
       // Background
@@ -139,8 +84,6 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // Each loop — two small dots (top/bottom) connected by a faint vertical
-      // line with current-direction indicators (× / ·) on each side
       const dir = Math.sign(emf);
       for (let i = 0; i < loops; i++) {
         const t = i / (loops - 1);
@@ -154,7 +97,6 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
         ctx.ellipse(lx, cy, 4, loopHeight / 2, 0, 0, Math.PI * 2);
         ctx.stroke();
 
-        // current direction indicators (only when |emf| meaningful)
         if (Math.abs(emf) > 0.05 && i % 2 === 0) {
           const sym = dir > 0 ? '·' : '×';
           ctx.save();
@@ -193,18 +135,18 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
 
       // Indicator lamp — color depends on current direction; brightness on |emf|
       const intensity = Math.min(1, Math.abs(emf) / 8);
-      const lampColor = dir > 0 ? '255,107,42' : '108,197,194';
+      const lampBase = dir > 0 ? colors.accent : colors.teal;
       drawHalo(ctx, {
         x: lampX,
         y: lampY,
         radius: 38,
-        color: `rgba(${lampColor},${0.85 * intensity})`,
+        color: withAlpha(lampBase, 0.85 * intensity),
         alpha: 1,
         extent: 1,
       });
-      ctx.strokeStyle = `rgba(${lampColor},${0.3 + 0.7 * intensity})`;
+      ctx.strokeStyle = withAlpha(lampBase, 0.3 + 0.7 * intensity);
       ctx.lineWidth = 1.6;
-      ctx.fillStyle = `rgba(${lampColor},${0.15 + 0.65 * intensity})`;
+      ctx.fillStyle = withAlpha(lampBase, 0.15 + 0.65 * intensity);
       ctx.beginPath();
       ctx.arc(lampX, lampY, 12, 0, Math.PI * 2);
       ctx.fill();
@@ -215,7 +157,6 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       const magW = 84,
         magH = 32;
       const magY = cy;
-      // shadow
       const grd = ctx.createLinearGradient(mx - magW / 2, magY, mx + magW / 2, magY);
       grd.addColorStop(0, colors.blue);
       grd.addColorStop(0.5, colors.blue);
@@ -260,25 +201,82 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
         color: colors.textDim,
         baseline: 'top',
       });
-
-      raf = requestAnimationFrame(draw);
       ctx.restore();
-    }
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      canvas.removeEventListener('mousedown', onDown);
-      canvas.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseup', onUp);
-      canvas.removeEventListener('touchstart', onTDown);
-      canvas.removeEventListener('touchmove', onTMove);
-      canvas.removeEventListener('touchend', onTEnd);
-    };
-  }, []);
+    },
+    [],
+    ({ canvas, w }) => {
+      let dragging = false;
+
+      function getMouseX(e: MouseEvent | TouchEvent): number {
+        const r = canvas.getBoundingClientRect();
+        const t = 'touches' in e ? e.touches[0] : e;
+        if (!t) return 0;
+        return t.clientX - r.left;
+      }
+      function magnetPx() {
+        return stateRef.current.magnetX * w;
+      }
+
+      function onDown(e: MouseEvent) {
+        const mx = getMouseX(e);
+        if (Math.abs(mx - magnetPx()) < 50) {
+          dragging = true;
+          canvas.style.cursor = 'grabbing';
+        }
+      }
+      function onMove(e: MouseEvent) {
+        const mx = getMouseX(e);
+        if (dragging) {
+          setMagnetX(Math.max(0.04, Math.min(0.96, mx / w)));
+        } else {
+          canvas.style.cursor = Math.abs(mx - magnetPx()) < 50 ? 'grab' : 'default';
+        }
+      }
+      function onUp() {
+        dragging = false;
+        canvas.style.cursor = 'default';
+      }
+      function onTDown(e: TouchEvent) {
+        e.preventDefault();
+        const mx = getMouseX(e);
+        if (Math.abs(mx - magnetPx()) < 60) dragging = true;
+      }
+      function onTMove(e: TouchEvent) {
+        e.preventDefault();
+        if (!dragging) return;
+        const mx = getMouseX(e);
+        setMagnetX(Math.max(0.04, Math.min(0.96, mx / w)));
+      }
+      function onTEnd() {
+        dragging = false;
+      }
+
+      canvas.addEventListener('mousedown', onDown);
+      canvas.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onUp);
+      canvas.addEventListener('touchstart', onTDown, { passive: false });
+      canvas.addEventListener('touchmove', onTMove, { passive: false });
+      canvas.addEventListener('touchend', onTEnd);
+
+      return {
+        context: {
+          lastFlux: fluxAt(stateRef.current.magnetX * w, w / 2),
+        } as MagnetCtx,
+        cleanup: () => {
+          canvas.removeEventListener('mousedown', onDown);
+          canvas.removeEventListener('mousemove', onMove);
+          window.removeEventListener('mouseup', onUp);
+          canvas.removeEventListener('touchstart', onTDown);
+          canvas.removeEventListener('touchmove', onTMove);
+          canvas.removeEventListener('touchend', onTEnd);
+        },
+      };
+    },
+  );
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 5.1'}
+      figure={figure ?? 'Fig. 7.3'}
       title="Move a magnet, get a voltage"
       question="What is the lamp doing — and why does it flip color when you reverse direction?"
       caption={
@@ -303,6 +301,22 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
         />
         <MiniReadout label="EMF (instant.)" value={<Num value={emfNow} />} unit="V" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Faraday's law"
+        left={
+          <InlineMath
+            tex={`\\varepsilon \\;=\\; -N\\,\\dfrac{d\\Phi}{dt}`}
+          />
+        }
+        rightLabel="Live readout"
+        right={
+          <InlineMath
+            tex={
+              `N \\;=\\; ${N}, \\quad \\varepsilon \\;\\approx\\; ${emfNow.toFixed(3)}\\ \\text{(a.u.)}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

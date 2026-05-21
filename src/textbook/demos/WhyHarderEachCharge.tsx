@@ -14,7 +14,8 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS } from '@/lib/physics';
@@ -192,6 +193,25 @@ export function WhyHarderEachChargeDemo({ figure }: Props) {
         <MiniReadout label="Σ work so far" value={<Num value={W_so_far} />} unit="J" />
         <MiniReadout label="½CV² (continuum)" value={<Num value={W_integral} />} unit="J" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Work to add the next packet"
+        left={
+          <InlineMath
+            tex={
+              `\\delta W \\;\\approx\\; \\delta q \\cdot V \\;\\approx\\; ` +
+              `${workForNext.toExponential(2)}\\ \\text{J}`
+            }
+          />
+        }
+        rightLabel="Total stored energy"
+        right={
+          <InlineMath
+            tex={
+              `U \\;=\\; \\tfrac{1}{2} C V^{2} \\;\\approx\\; ${W_integral.toExponential(2)}\\ \\text{J}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

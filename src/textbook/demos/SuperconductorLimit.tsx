@@ -15,14 +15,17 @@
  * The lesson: resistance is what couples the field to the lattice.
  * Without it, the energy slides past untouched.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniToggle } from '@/components/Demo';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { PHYS, pretty } from '@/lib/physics';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -34,12 +37,27 @@ interface InflowParticle {
   r: number;
 }
 interface ParallelParticle {
-  // axial fraction, 0 → left end, 1 → right end
   x: number;
-  // angular position around the wire, theta
   theta: number;
-  // radial distance fraction (1 → far, 0 → at wire)
   rFrac: number;
+}
+
+interface SimCtx {
+  inflow: InflowParticle[];
+  parallel: ParallelParticle[];
+  getWireGeom(): { wireXL: number; wireXR: number; wireCY: number; r: number };
+  spawnInflow(S: number): void;
+  spawnParallel(): void;
+}
+
+function fmtLatex(n: number, digits = 2): string {
+  if (!isFinite(n)) return '—';
+  const abs = Math.abs(n);
+  if (abs === 0) return '0';
+  if (abs >= 1e-2 && abs < 1e6) return n.toFixed(digits);
+  const s = n.toExponential(digits);
+  const [m, e] = s.split('e');
+  return `${m} \\times 10^{${parseInt(e!, 10)}}`;
 }
 
 export function SuperconductorLimitDemo({ figure }: Props) {
@@ -61,48 +79,14 @@ export function SuperconductorLimitDemo({ figure }: Props) {
   const S_in = (E_in * B_surf) / PHYS.mu_0;
   const P_dissipated = supercon ? 0 : V_emf * I;
 
-  const stateRef = useRef({ supercon, S_in, B_surf, E_in });
-  useEffect(() => {
-    stateRef.current = { supercon, S_in, B_surf, E_in };
-  }, [supercon, S_in, B_surf, E_in]);
+  const stateRef = useSimState({ supercon, S_in, B_surf, E_in });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
-    const inflow: InflowParticle[] = [];
-    const parallel: ParallelParticle[] = [];
-    const MAX_INFLOW = 140;
-    const MAX_PARALLEL = 90;
-
-    function getWireGeom() {
-      const margin = 80;
-      const wireXL = margin;
-      const wireXR = W - margin;
-      const wireCY = H * 0.55;
-      const r_px = Math.max(24, Math.min(60, Math.min(W, H) * 0.1));
-      return { wireXL, wireXR, wireCY, r: r_px };
-    }
-
-    function spawnInflow(S: number) {
-      const rate = Math.min(6, Math.max(0.3, Math.log10(S + 10) - 1));
-      for (let k = 0; k < rate; k++) {
-        if (inflow.length >= MAX_INFLOW) break;
-        inflow.push({ theta: Math.random() * Math.PI * 2, t: Math.random(), r: 1.0 });
-      }
-    }
-    function spawnParallel() {
-      while (parallel.length < MAX_PARALLEL) {
-        parallel.push({
-          x: Math.random(),
-          theta: Math.random() * Math.PI * 2,
-          rFrac: 0.4 + Math.random() * 0.6,
-        });
-      }
-    }
-
-    function draw() {
-      const s = stateRef.current;
-      ctx.fillStyle = getCanvasColors().bg;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, state, _dt, _simT, context: SimCtx) => {
+      const s = state;
+      const { inflow, parallel, getWireGeom, spawnInflow, spawnParallel } = context;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
       const g = getWireGeom();
@@ -111,7 +95,7 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       const er = r * ellipseRatio;
 
       // BACK-half B-field ellipses (always shown — Ampère doesn't care about σ)
-      ctx.strokeStyle = withAlpha(getCanvasColors().teal, 0.32);
+      ctx.strokeStyle = withAlpha(colors.teal, 0.32);
       ctx.lineWidth = 1.1;
       const nB = 7;
       for (let i = 0; i < nB; i++) {
@@ -143,13 +127,13 @@ export function SuperconductorLimitDemo({ figure }: Props) {
           const innerR = r + (p.r - 0.05) * r * 4;
           const tx = cx + Math.sin(p.theta) * innerR * ellipseRatio;
           const ty = g.wireCY - Math.cos(p.theta) * innerR;
-          ctx.strokeStyle = `rgba(255,107,42,${alpha})`;
+          ctx.strokeStyle = withAlpha(colors.accent, alpha);
           ctx.lineWidth = 1.4;
           ctx.beginPath();
           ctx.moveTo(px, py);
           ctx.lineTo(tx, ty);
           ctx.stroke();
-          ctx.fillStyle = `rgba(255,107,42,${alpha})`;
+          ctx.fillStyle = withAlpha(colors.accent, alpha);
           ctx.beginPath();
           ctx.arc(tx, ty, 1.7, 0, Math.PI * 2);
           ctx.fill();
@@ -173,14 +157,14 @@ export function SuperconductorLimitDemo({ figure }: Props) {
           const py = g.wireCY + yOff;
           const back = p.theta > Math.PI;
           const alpha = back ? 0.35 : 0.85;
-          ctx.strokeStyle = `rgba(255,107,42,${alpha})`;
+          ctx.strokeStyle = withAlpha(colors.accent, alpha);
           ctx.lineWidth = 1.3;
           // small horizontal arrow
           ctx.beginPath();
           ctx.moveTo(px - 6, py);
           ctx.lineTo(px + 6, py);
           ctx.stroke();
-          ctx.fillStyle = `rgba(255,107,42,${alpha})`;
+          ctx.fillStyle = withAlpha(colors.accent, alpha);
           ctx.beginPath();
           ctx.moveTo(px + 6, py);
           ctx.lineTo(px + 2, py - 3);
@@ -193,10 +177,10 @@ export function SuperconductorLimitDemo({ figure }: Props) {
 
       // ── Wire body
       const sideGrd = ctx.createLinearGradient(0, g.wireCY - r, 0, g.wireCY + r);
-      const tint = s.supercon ? '108,197,194' : '255,107,42';
-      sideGrd.addColorStop(0, `rgba(${tint},0.10)`);
-      sideGrd.addColorStop(0.5, `rgba(${tint},0.28)`);
-      sideGrd.addColorStop(1, `rgba(${tint},0.10)`);
+      const tintColor = s.supercon ? colors.teal : colors.accent;
+      sideGrd.addColorStop(0, withAlpha(tintColor, 0.10));
+      sideGrd.addColorStop(0.5, withAlpha(tintColor, 0.28));
+      sideGrd.addColorStop(1, withAlpha(tintColor, 0.10));
       ctx.fillStyle = sideGrd;
       ctx.beginPath();
       ctx.moveTo(g.wireXL, g.wireCY - r);
@@ -207,7 +191,7 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fill();
 
-      ctx.strokeStyle = `rgba(${tint},0.6)`;
+      ctx.strokeStyle = withAlpha(tintColor, 0.6);
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(g.wireXL, g.wireCY - r);
@@ -225,8 +209,8 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       // ── E axial arrows — drawn only if non-zero
       if (!s.supercon) {
         const nE = 5;
-        ctx.strokeStyle = getCanvasColors().pink;
-        ctx.fillStyle = getCanvasColors().pink;
+        ctx.strokeStyle = colors.pink;
+        ctx.fillStyle = colors.pink;
         ctx.lineWidth = 2;
         const arrLen = 50;
         for (let i = 0; i < nE; i++) {
@@ -250,7 +234,7 @@ export function SuperconductorLimitDemo({ figure }: Props) {
           x: (g.wireXL + g.wireXR) / 2,
           y: g.wireCY,
           text: 'E_inside = 0',
-          color: getCanvasColors().teal,
+          color: colors.teal,
           size: 12,
           align: 'center',
           baseline: 'middle',
@@ -258,7 +242,7 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       }
 
       // FRONT-half B ellipses
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1.4;
       for (let i = 0; i < nB; i++) {
         const t = (i + 0.5) / nB;
@@ -268,7 +252,7 @@ export function SuperconductorLimitDemo({ figure }: Props) {
         ctx.stroke();
         const ax = cx + er * 1.6;
         const ay = g.wireCY;
-        ctx.fillStyle = getCanvasColors().teal;
+        ctx.fillStyle = colors.teal;
         ctx.beginPath();
         ctx.moveTo(ax, ay);
         ctx.lineTo(ax - 6, ay - 4);
@@ -278,23 +262,55 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       }
 
       // Numerics overlay
-      drawLabel(ctx, { text: s.supercon ? 'Mode: superconductor (σ → ∞)' : 'Mode: normal conductor', x: 18, y: 14, color: s.supercon ? '#6cc5c2' : '#ff6b2a', size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: s.supercon ? 'Mode: superconductor (σ → ∞)' : 'Mode: normal conductor', x: 18, y: 14, color: s.supercon ? colors.teal : colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
 
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = colors.pink;
       drawLabel(ctx, { text: `E_inside = ${pretty(s.E_in)} V/m`, x: 18, y: 30, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = colors.teal;
       drawLabel(ctx, { text: `B_surface = ${pretty(s.B_surf)} T`, x: 18, y: 46, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       drawLabel(ctx, { text: `|S|_inside = ${pretty(s.S_in)} W/m²`, x: 18, y: 62, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.85);
+      ctx.fillStyle = withAlpha(colors.textDim, 0.85);
       drawLabel(ctx, { text: `I = ${I.toFixed(1)} A   a = ${a_mm.toFixed(2)} mm`, x: W - 18, y: 14, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: s.supercon ? 'Energy passes parallel — never absorbed' : 'Energy absorbed at surface = V·I', x: W - 18, y: 30, color: s.supercon ? '#6cc5c2' : '#ff6b2a', size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, { text: s.supercon ? 'Energy passes parallel — never absorbed' : 'Energy absorbed at surface = V·I', x: W - 18, y: 30, color: s.supercon ? colors.teal : colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+    },
+    [],
+    (info) => {
+      const { w: W, h: H } = info;
+      const inflow: InflowParticle[] = [];
+      const parallel: ParallelParticle[] = [];
+      const MAX_INFLOW = 140;
+      const MAX_PARALLEL = 90;
 
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+      function getWireGeom() {
+        const margin = 80;
+        const wireXL = margin;
+        const wireXR = W - margin;
+        const wireCY = H * 0.55;
+        const r_px = Math.max(24, Math.min(60, Math.min(W, H) * 0.1));
+        return { wireXL, wireXR, wireCY, r: r_px };
+      }
+
+      function spawnInflow(S: number) {
+        const rate = Math.min(6, Math.max(0.3, Math.log10(S + 10) - 1));
+        for (let k = 0; k < rate; k++) {
+          if (inflow.length >= MAX_INFLOW) break;
+          inflow.push({ theta: Math.random() * Math.PI * 2, t: Math.random(), r: 1.0 });
+        }
+      }
+      function spawnParallel() {
+        while (parallel.length < MAX_PARALLEL) {
+          parallel.push({
+            x: Math.random(),
+            theta: Math.random() * Math.PI * 2,
+            rFrac: 0.4 + Math.random() * 0.6,
+          });
+        }
+      }
+
+      return { context: { inflow, parallel, getWireGeom, spawnInflow, spawnParallel } };
+    },
+  );
 
   return (
     <Demo
@@ -324,6 +340,22 @@ export function SuperconductorLimitDemo({ figure }: Props) {
         <MiniReadout label="|S| inside" value={<Num value={S_in} />} unit="W/m²" />
         <MiniReadout label="P dissipated" value={<Num value={P_dissipated} />} unit="W" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Poynting inflow"
+        left={
+          <InlineMath
+            tex={
+              `|S| = \\dfrac{E B}{\\mu_0} = \\dfrac{(${fmtLatex(E_in, 1)})(${fmtLatex(B_surf, 2)})}{\\mu_0} \\approx ${fmtLatex(S_in, 2)} \\text{ W/m}^2`
+            }
+          />
+        }
+        rightLabel="Power dissipated"
+        right={
+          <InlineMath
+            tex={`P = V I = ${fmtLatex(P_dissipated, 2)} \\text{ W}`}
+          />
+        }
+      />
     </Demo>
   );
 }

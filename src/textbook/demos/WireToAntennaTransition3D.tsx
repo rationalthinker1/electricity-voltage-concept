@@ -21,16 +21,26 @@
  * wire follows I(z) ∝ sin(k(L/2 − |z|)); the reader can toggle small in-wire
  * arrows showing direction and amplitude at each height.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import {
+  Demo,
+  DemoControls,
+  EquationStrip,
+  MiniReadout,
+  MiniSlider,
+  MiniToggle,
+} from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { PHYS } from '@/lib/physics';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { withAlpha } from '@/lib/canvasTheme';
 import { project, type Vec3 } from '@/lib/projection3d';
-import { createOrbitScene } from '@/lib/useOrbitScene';
-import { drawLabel } from "@/lib/canvasLayout";
+import { createOrbitScene, type OrbitScene } from '@/lib/useOrbitScene';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure?: string;
@@ -115,6 +125,19 @@ function formatHz(f: number): string {
   return f.toFixed(1) + ' Hz';
 }
 
+interface SimCtx {
+  scene: OrbitScene;
+  cachedKL: number;
+  cachedPeak: number;
+  surface: Vec3[][];
+}
+
+function depthAlpha(cam: OrbitScene['cam'], avgDepth: number, base: number): number {
+  const t = (cam.distance + 1.2 - avgDepth) / 2.4;
+  const k = Math.max(0.08, Math.min(1, t));
+  return base * k;
+}
+
 export function WireToAntennaTransition3DDemo({ figure }: Props) {
   // Frequency in Hz; default at the half-wave resonance, f = c/(2L) = 150 MHz.
   const [fMHz, setFMHz] = useState(150);
@@ -126,54 +149,31 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
   const LoverLambda = L_METERS / lambda;
   const regime = useMemo(() => classifyRegime(LoverLambda), [LoverLambda]);
 
-  const stateRef = useRef({ fMHz, showMesh, showCurrent });
-  useEffect(() => {
-    stateRef.current = { fMHz, showMesh, showCurrent };
-  }, [fMHz, showMesh, showCurrent]);
-
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H, canvas } = info;
-    let raf = 0;
-
-    const scene = createOrbitScene(canvas, {
-      yaw: 0.6,
-      pitch: 0.28,
-      distance: 4.0,
-    });
-    const cam = scene.cam;
-
-    // Surface cache; rebuild whenever kL changes.
-    let cachedKL = NaN;
-    let cachedPeak = 1;
-    let surface: Vec3[][] = [];
-
-    function ensureSurface(kL: number) {
-      if (kL === cachedKL) return;
-      cachedPeak = patternPeak(kL);
-      surface = buildSurface(kL, cachedPeak);
-      cachedKL = kL;
-    }
-
-    function depthAlpha(avgDepth: number, base: number): number {
-      const t = (cam.distance + 1.2 - avgDepth) / 2.4;
-      const k = Math.max(0.08, Math.min(1, t));
-      return base * k;
-    }
-
-    function draw(now: number) {
-      const s = stateRef.current;
+  const stateRef = useSimState({ fMHz, showMesh, showCurrent });
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, state, _dt, simTime, simCtx: SimCtx) => {
+      const s = state;
       const fHz = s.fMHz * 1e6;
       const lam = PHYS.c / fHz;
       const kL = (2 * Math.PI * L_METERS) / lam;
-      ensureSurface(kL);
+
+      if (kL !== simCtx.cachedKL) {
+        simCtx.cachedPeak = patternPeak(kL);
+        simCtx.surface = buildSurface(kL, simCtx.cachedPeak);
+        simCtx.cachedKL = kL;
+      }
+
+      const { scene } = simCtx;
+      const cam = scene.cam;
 
       // Background.
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
       // Faint equatorial reference circle (radius 1 in xz).
       const NEQ = 64;
-      ctx.strokeStyle = getCanvasColors().border;
+      ctx.strokeStyle = colors.border;
       ctx.lineWidth = 1;
       ctx.beginPath();
       for (let i = 0; i <= NEQ; i++) {
@@ -189,7 +189,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       for (let i = 0; i <= NLAT; i++) {
         const row: Array<{ x: number; y: number; depth: number }> = [];
         for (let j = 0; j <= NLON; j++) {
-          row.push(project(surface[i]![j]!, cam, W, H));
+          row.push(project(simCtx.surface[i]![j]!, cam, W, H));
         }
         projected.push(row);
       }
@@ -236,9 +236,9 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
         segs.sort((a, b) => b.depth - a.depth);
         for (const seg of segs) {
           const baseAlpha = seg.kind === 'lat' ? 0.55 : 0.4;
-          const baseColor = seg.kind === 'lat' ? 'rgba(108,197,194,' : 'rgba(255,107,42,';
-          const a = depthAlpha(seg.depth, baseAlpha);
-          ctx.strokeStyle = baseColor + a.toFixed(3) + ')';
+          const baseColor = seg.kind === 'lat' ? colors.teal : colors.accent;
+          const a = depthAlpha(cam, seg.depth, baseAlpha);
+          ctx.strokeStyle = withAlpha(baseColor, a);
           ctx.lineWidth = 1.0;
           ctx.beginPath();
           ctx.moveTo(seg.x1, seg.y1);
@@ -260,15 +260,15 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
           { x: pBot.x, y: pBot.y },
         ],
         {
-          color: withAlpha(getCanvasColors().text, 0.95),
+          color: withAlpha(colors.text, 0.95),
           lineWidth: 2.0,
-          glowColor: withAlpha(getCanvasColors().text, 0.18),
+          glowColor: withAlpha(colors.text, 0.18),
           glowWidth: 8,
         },
       );
       // Feedpoint marker.
       const pCen = project({ x: 0, y: 0, z: 0 }, cam, W, H);
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       ctx.beginPath();
       ctx.arc(pCen.x, pCen.y, 3.5, 0, Math.PI * 2);
       ctx.fill();
@@ -277,7 +277,7 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       // the standing wave breathes — purely visual; readouts stay static.
       if (s.showCurrent) {
         const NARR = 11;
-        const phase = Math.sin((now / 1000) * 2 * Math.PI * 1.2);
+        const phase = Math.sin(simTime * 2 * Math.PI * 1.2);
         for (let i = 0; i < NARR; i++) {
           // z in metres, evenly spaced along the wire.
           const z = -L_METERS / 2 + (L_METERS * i) / (NARR - 1);
@@ -300,8 +300,8 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
           // Colour: pink for +I, blue for −I (matching charge-polarity palette).
           const col =
             Iraw >= 0
-              ? withAlpha(getCanvasColors().pink, 0.85)
-              : withAlpha(getCanvasColors().blue, 0.85);
+              ? withAlpha(colors.pink, 0.85)
+              : withAlpha(colors.blue, 0.85);
           ctx.strokeStyle = col;
           ctx.fillStyle = col;
           ctx.lineWidth = 1.4;
@@ -321,18 +321,18 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       }
 
       // Wire-tip labels.
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: '+L/2', x: pTop.x, y: pTop.y - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       drawLabel(ctx, { text: '−L/2', x: pBot.x, y: pBot.y + 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
       // Top-left readout overlay.
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       drawLabel(ctx, { text: `f = ${formatHz(fHz)}`, x: 14, y: 14, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = colors.teal;
       drawLabel(ctx, { text: `λ = ${lam >= 1 ? lam.toFixed(2) + ' m' : (lam * 100).toFixed(1) + ' cm'}`, x: 14, y: 30, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      ctx.fillStyle = withAlpha(getCanvasColors().text, 0.78);
+      ctx.fillStyle = withAlpha(colors.text, 0.78);
       drawLabel(ctx, { text: `L/λ = ${(L_METERS / lam).toFixed(3)}`, x: 14, y: 46, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.65);
+      ctx.fillStyle = withAlpha(colors.textDim, 0.65);
       drawLabel(ctx, { text: 'drag to orbit', x: 14, y: H - 18, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
 
       // Bottom scale bar — L vs λ on a common axis. Highlight when L = λ/2.
@@ -347,20 +347,20 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       const lamPix = Math.min(barW, lam * ppm);
 
       // Wire bar (always white, fixed length).
-      ctx.strokeStyle = withAlpha(getCanvasColors().text, 0.85);
+      ctx.strokeStyle = withAlpha(colors.text, 0.85);
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(barX0, barY);
       ctx.lineTo(barX0 + wirePix, barY);
       ctx.stroke();
-      ctx.fillStyle = getCanvasColors().text;
+      ctx.fillStyle = colors.text;
       drawLabel(ctx, { text: 'L = 1 m', x: barX0, y: barY - 4, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
 
       // λ bar (teal; highlights amber near half-wave).
       const halfWave = LoverLambda > 0.45 && LoverLambda < 0.6;
       const lamCol = halfWave
-        ? withAlpha(getCanvasColors().accent, 0.95)
-        : withAlpha(getCanvasColors().teal, 0.85);
+        ? withAlpha(colors.accent, 0.95)
+        : withAlpha(colors.teal, 0.85);
       ctx.strokeStyle = lamCol;
       ctx.lineWidth = halfWave ? 3 : 2;
       ctx.beginPath();
@@ -377,18 +377,28 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
       ctx.stroke();
       drawLabel(ctx, { text: lam > 2 ? `λ = ${lam.toFixed(2)} m (off-scale)` : `λ = ${lam.toFixed(2)} m`, x: barX0, y: barY + 14, color: lamCol, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       if (halfWave) {
-        ctx.fillStyle = getCanvasColors().accent;
+        ctx.fillStyle = colors.accent;
         drawLabel(ctx, { text: 'half-wave resonance', x: barX1, y: barY - 18, align: 'right' });
       }
-
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      scene.dispose();
-    };
-  }, []);
+    },
+    [],
+    (info: CanvasInfo) => {
+      const scene = createOrbitScene(info.canvas, {
+        yaw: 0.6,
+        pitch: 0.28,
+        distance: 4.0,
+      });
+      return {
+        context: {
+          scene,
+          cachedKL: NaN,
+          cachedPeak: 1,
+          surface: [] as Vec3[][],
+        },
+        cleanup: () => scene.dispose(),
+      };
+    },
+  );
 
   return (
     <Demo
@@ -429,6 +439,20 @@ export function WireToAntennaTransition3DDemo({ figure }: Props) {
         <MiniReadout label="L/λ" value={LoverLambda.toFixed(3)} />
         <MiniReadout label="regime" value={regime} />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Wavelength"
+        left={
+          <InlineMath
+            tex={
+              `\\lambda \\;=\\; \\dfrac{c}{f} \\;=\\; ` +
+              `\\dfrac{2.998\\times10^{8}}{${(fMHz * 1e6).toExponential(0).replace('+', '')}} ` +
+              `\\;\\approx\\; ${lambda >= 1 ? lambda.toFixed(2) : (lambda * 100).toFixed(1)}\\ \text{${lambda >= 1 ? 'm' : 'cm'}}`
+            }
+          />
+        }
+        rightLabel="Regime"
+        right={<InlineMath tex={`L/\\lambda \\;=\\; ${LoverLambda.toFixed(3)}\\quad\\text{(${regime})}`} />}
+      />
     </Demo>
   );
 }

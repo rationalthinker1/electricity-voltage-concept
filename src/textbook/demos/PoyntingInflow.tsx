@@ -13,15 +13,18 @@
  * Drawing logic adapted from src/labs/PoyntingLab.tsx — same wire viz,
  * smaller, and with the readouts trimmed down to the punchline.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { Num } from '@/components/Num';
 import { PHYS, pretty } from '@/lib/physics';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { drawLabel } from "@/lib/canvasLayout";
+import { withAlpha } from '@/lib/canvasTheme';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
+import { drawLabel } from '@/lib/canvasLayout';
 
 interface Props {
   figure?: string;
@@ -31,6 +34,22 @@ interface InflowParticle {
   theta: number;
   t: number;
   r: number;
+}
+
+interface SimCtx {
+  inflow: InflowParticle[];
+  getWireGeom(): { wireXL: number; wireXR: number; wireCY: number; r: number };
+  spawnInflow(S: number): void;
+}
+
+function fmtLatex(n: number, digits = 2): string {
+  if (!isFinite(n)) return '—';
+  const abs = Math.abs(n);
+  if (abs === 0) return '0';
+  if (abs >= 1e-2 && abs < 1e6) return n.toFixed(digits);
+  const s = n.toExponential(digits);
+  const [m, e] = s.split('e');
+  return `${m} \\times 10^{${parseInt(e!, 10)}}`;
 }
 
 export function PoyntingInflowDemo({ figure }: Props) {
@@ -52,43 +71,16 @@ export function PoyntingInflowDemo({ figure }: Props) {
     return { E, B, S, Asurf, P_surf, P_vi, match };
   }, [I, V]);
 
-  const stateRef = useRef({ I, V, computed });
-  useEffect(() => {
-    stateRef.current = { I, V, computed };
-  }, [I, V, computed]);
+  const stateRef = useSimState({ I, V, computed });
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H } = info;
-    let raf = 0;
-    const inflow: InflowParticle[] = [];
-    const MAX_INFLOW = 160;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, state, _dt, _simT, context: SimCtx) => {
+      const { computed } = state;
+      const out = computed;
+      const { inflow, getWireGeom, spawnInflow } = context;
 
-    function getWireGeom() {
-      const margin = 80;
-      const wireXL = margin;
-      const wireXR = W - margin;
-      const wireCY = H * 0.55;
-      const r_px = Math.min(W, H) * 0.1;
-      const r_px_clamped = Math.max(24, Math.min(60, r_px));
-      return { wireXL, wireXR, wireCY, r: r_px_clamped };
-    }
-
-    function spawnInflow(S: number) {
-      const rate = Math.min(6, Math.max(0.5, Math.log10(S + 10) - 1));
-      for (let k = 0; k < rate; k++) {
-        if (inflow.length >= MAX_INFLOW) break;
-        inflow.push({
-          theta: Math.random() * Math.PI * 2,
-          t: Math.random(),
-          r: 1.0,
-        });
-      }
-    }
-
-    function draw() {
-      const s = stateRef.current;
-      const out = s.computed;
-      ctx.fillStyle = getCanvasColors().bg;
+      ctx.fillStyle = colors.bg;
       ctx.fillRect(0, 0, W, H);
 
       const g = getWireGeom();
@@ -99,7 +91,7 @@ export function PoyntingInflowDemo({ figure }: Props) {
       // BACK-half B-field ellipses
       ctx.save();
       ctx.globalAlpha = 0.32;
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1.1;
       const nB = 7;
       for (let i = 0; i < nB; i++) {
@@ -134,13 +126,13 @@ export function PoyntingInflowDemo({ figure }: Props) {
         const tx = cx + Math.sin(p.theta) * innerR * ellipseRatio;
         const ty = g.wireCY - Math.cos(p.theta) * innerR;
 
-        ctx.strokeStyle = `rgba(255,107,42,${alpha})`;
+        ctx.strokeStyle = withAlpha(colors.accent, alpha);
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.moveTo(px, py);
         ctx.lineTo(tx, ty);
         ctx.stroke();
-        ctx.fillStyle = `rgba(255,107,42,${alpha})`;
+        ctx.fillStyle = withAlpha(colors.accent, alpha);
         ctx.beginPath();
         ctx.arc(tx, ty, 1.7, 0, Math.PI * 2);
         ctx.fill();
@@ -148,9 +140,9 @@ export function PoyntingInflowDemo({ figure }: Props) {
 
       // Wire body
       const sideGrd = ctx.createLinearGradient(0, g.wireCY - r, 0, g.wireCY + r);
-      sideGrd.addColorStop(0, withAlpha(getCanvasColors().accent, 0.14));
-      sideGrd.addColorStop(0.5, withAlpha(getCanvasColors().accent, 0.32));
-      sideGrd.addColorStop(1, withAlpha(getCanvasColors().accent, 0.14));
+      sideGrd.addColorStop(0, withAlpha(colors.accent, 0.14));
+      sideGrd.addColorStop(0.5, withAlpha(colors.accent, 0.32));
+      sideGrd.addColorStop(1, withAlpha(colors.accent, 0.14));
       ctx.restore();
       ctx.fillStyle = sideGrd;
       ctx.beginPath();
@@ -164,7 +156,7 @@ export function PoyntingInflowDemo({ figure }: Props) {
 
       ctx.save();
       ctx.globalAlpha = 0.6;
-      ctx.strokeStyle = getCanvasColors().accent;
+      ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(g.wireXL, g.wireCY - r);
@@ -188,9 +180,9 @@ export function PoyntingInflowDemo({ figure }: Props) {
           { x: g.wireXR, y: g.wireCY - r },
         ],
         {
-          color: withAlpha(getCanvasColors().accent, 0.4),
+          color: withAlpha(colors.accent, 0.4),
           lineWidth: 0.5,
-          glowColor: withAlpha(getCanvasColors().accent, 0.35),
+          glowColor: withAlpha(colors.accent, 0.35),
           glowWidth: 10,
         },
       );
@@ -201,19 +193,19 @@ export function PoyntingInflowDemo({ figure }: Props) {
           { x: g.wireXR, y: g.wireCY + r },
         ],
         {
-          color: withAlpha(getCanvasColors().accent, 0.4),
+          color: withAlpha(colors.accent, 0.4),
           lineWidth: 0.5,
-          glowColor: withAlpha(getCanvasColors().accent, 0.35),
+          glowColor: withAlpha(colors.accent, 0.35),
           glowWidth: 10,
         },
       );
 
       // E axial arrows
-      const nE = 5;
       ctx.restore();
-      ctx.strokeStyle = getCanvasColors().pink;
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.strokeStyle = colors.pink;
+      ctx.fillStyle = colors.pink;
       ctx.lineWidth = 2;
+      const nE = 5;
       const arrLen = 50;
       for (let i = 0; i < nE; i++) {
         const t = (i + 0.5) / nE;
@@ -232,7 +224,7 @@ export function PoyntingInflowDemo({ figure }: Props) {
       }
 
       // FRONT-half B ellipses with arrowheads
-      ctx.strokeStyle = getCanvasColors().teal;
+      ctx.strokeStyle = colors.teal;
       ctx.lineWidth = 1.4;
       for (let i = 0; i < nB; i++) {
         const t = (i + 0.5) / nB;
@@ -242,7 +234,7 @@ export function PoyntingInflowDemo({ figure }: Props) {
         ctx.stroke();
         const ax = cx + er * 1.6;
         const ay = g.wireCY;
-        ctx.fillStyle = getCanvasColors().teal;
+        ctx.fillStyle = colors.teal;
         ctx.beginPath();
         ctx.moveTo(ax, ay);
         ctx.lineTo(ax - 6, ay - 4);
@@ -252,35 +244,61 @@ export function PoyntingInflowDemo({ figure }: Props) {
       }
 
       // Terminals
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = colors.pink;
       ctx.fillRect(g.wireXL - 22, g.wireCY - r - 4, 4, 2 * r + 8);
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = colors.blue;
       ctx.fillRect(g.wireXR + 18, g.wireCY - r - 4, 4, 2 * r + 8);
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = colors.pink;
       drawLabel(ctx, { text: '+', x: g.wireXL - 36, y: g.wireCY, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-      ctx.fillStyle = getCanvasColors().blue;
+      ctx.fillStyle = colors.blue;
       drawLabel(ctx, { text: '−', x: g.wireXR + 36, y: g.wireCY, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
 
       // Numerics overlay
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       drawLabel(ctx, { text: `|S| = ${pretty(out.S)} W/m²`, x: 18, y: 14, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      ctx.fillStyle = getCanvasColors().pink;
+      ctx.fillStyle = colors.pink;
       drawLabel(ctx, { text: `E = ${pretty(out.E)} V/m`, x: 18, y: 30, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      ctx.fillStyle = getCanvasColors().teal;
+      ctx.fillStyle = colors.teal;
       drawLabel(ctx, { text: `B = ${pretty(out.B)} T`, x: 18, y: 46, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.save();
       ctx.globalAlpha = 0.85;
-      ctx.fillStyle = getCanvasColors().textDim;
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: `a = ${a_mm.toFixed(2)} mm   L = ${L.toFixed(2)} m`, x: W - 18, y: 14 });
       ctx.restore();
-      ctx.fillStyle = getCanvasColors().accent;
+      ctx.fillStyle = colors.accent;
       drawLabel(ctx, { text: `P_surf / P_VI = ${out.match.toFixed(3)}`, x: W - 18, y: 30 });
+    },
+    [],
+    (info) => {
+      const { w: W, h: H } = info;
+      const inflow: InflowParticle[] = [];
+      const MAX_INFLOW = 160;
 
-      raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+      function getWireGeom() {
+        const margin = 80;
+        const wireXL = margin;
+        const wireXR = W - margin;
+        const wireCY = H * 0.55;
+        const r_px = Math.min(W, H) * 0.1;
+        const r_px_clamped = Math.max(24, Math.min(60, r_px));
+        return { wireXL, wireXR, wireCY, r: r_px_clamped };
+      }
+
+      function spawnInflow(S: number) {
+        const rate = Math.min(6, Math.max(0.5, Math.log10(S + 10) - 1));
+        for (let k = 0; k < rate; k++) {
+          if (inflow.length >= MAX_INFLOW) break;
+          inflow.push({
+            theta: Math.random() * Math.PI * 2,
+            t: Math.random(),
+            r: 1.0,
+          });
+        }
+      }
+
+      return { context: { inflow, getWireGeom, spawnInflow } };
+    },
+  );
 
   return (
     <Demo
@@ -323,6 +341,22 @@ export function PoyntingInflowDemo({ figure }: Props) {
         <MiniReadout label="P_VI = V·I" value={<Num value={computed.P_vi} />} unit="W" />
         <MiniReadout label="match" value={computed.match.toFixed(3)} unit="×" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Poynting vector magnitude"
+        left={
+          <InlineMath
+            tex={
+              `|S| = \\dfrac{E B}{\\mu_0} = \\dfrac{(${fmtLatex(computed.E, 1)})(${fmtLatex(computed.B, 2)})}{\\mu_0} \\approx ${fmtLatex(computed.S, 2)} \\text{ W/m}^2`
+            }
+          />
+        }
+        rightLabel="Power balance"
+        right={
+          <InlineMath
+            tex={`P_{\\text{surf}} = P_{VI} = V I = ${fmtLatex(computed.P_vi, 2)} \\text{ W}`}
+          />
+        }
+      />
     </Demo>
   );
 }

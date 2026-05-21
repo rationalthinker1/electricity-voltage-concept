@@ -13,10 +13,12 @@
 import { useState } from 'react';
 
 import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
-import { PHYS, pretty } from '@/lib/physics';
+import { PHYS } from '@/lib/physics';
+import { fmtSIPrecision } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
@@ -136,8 +138,8 @@ export function SolenoidDemo({ figure }: Props) {
         ctx.stroke();
       }
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
-      drawLabel(ctx, { text: `L = ${Lcm.toFixed(1)} cm  ·  N = ${N}  ·  n = ${pretty(N / (Lcm * 1e-2), 2)} /m`, x: w / 2, y: h - 18, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: `B (inside) = ${pretty(PHYS.mu_0 * (N / (Lcm * 1e-2)) * I, 3)} T`, x: w / 2, y: 24, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: `L = ${Lcm.toFixed(1)} cm  ·  N = ${N}  ·  n = ${fmtSIPrecision(N / (Lcm * 1e-2), '/m', 2)}`, x: w / 2, y: h - 18, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: `B (inside) = ${fmtSIPrecision(PHYS.mu_0 * (N / (Lcm * 1e-2)) * I, 'T', 3)}`, x: w / 2, y: 24, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center' });
       ctx0.t0 = t0;
     },
     [],
@@ -154,7 +156,7 @@ export function SolenoidDemo({ figure }: Props) {
           Inside a long solenoid the field is uniform and axial:
           <em> B = μ₀ n I</em>, with <em>n = N/L</em> turns per meter. Outside it's nearly zero (the
           return field threads back through everything else). This is the canonical electromagnet —
-          and the inductor we'll meet in Chapter&nbsp;5.
+          and the inductor we'll meet in Chapter&nbsp;7.
         </>
       }
       deeperLab={{ slug: 'inductance', label: 'See full lab' }}
@@ -191,6 +193,26 @@ export function SolenoidDemo({ figure }: Props) {
         <MiniReadout label="n = N/L" value={<Num value={n} digits={3} />} unit="/m" />
         <MiniReadout label="B (inside)" value={<Num value={B_in} digits={3} />} unit="T" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Turn density"
+        left={
+          <InlineMath
+            tex={
+              `n \\;=\\; \\dfrac{N}{L} \\;=\\; ` +
+              `\\dfrac{${N}}{${(L_m).toFixed(3)}\\ \\text{m}} ` +
+              `\\;\\approx\\; ${n.toFixed(0)}\\ \\text{/m}`
+            }
+          />
+        }
+        rightLabel="Uniform field inside"
+        right={
+          <InlineMath
+            tex={
+              `B \\;=\\; \\mu_{0} n I \\;\\approx\\; ${B_in.toExponential(2)}\\ \\text{T}`
+            }
+          />
+        }
+      />
     </Demo>
   );
 }

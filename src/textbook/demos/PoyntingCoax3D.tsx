@@ -21,18 +21,21 @@
  * orientation (yaw, pitch) plus canvas size — small camera nudges
  * recompute, slider changes do not invalidate the static cache.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
+import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
+import { InlineMath } from '@/components/Formula';
 import { Num } from '@/components/Num';
-import { PHYS } from '@/lib/physics';
+
 import { drawGlowPath } from '@/lib/canvasPrimitives';
-import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
+import { getCanvasColors, withAlpha, type ThemeColors } from '@/lib/canvasTheme';
 import { depthSortIndices, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 import { useCanvasCache } from '@/lib/useCanvasCache';
 import { useOrbitScene } from '@/lib/useOrbitScene';
-import { drawLabel } from "@/lib/canvasLayout";
+import { drawLabel } from '@/lib/canvasLayout';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 
 interface Props {
   figure?: string;
@@ -61,6 +64,16 @@ interface ArrowSpec {
   from: Vec3;
   to: Vec3;
   kind: 'E' | 'B' | 'S';
+}
+
+function fmtLatex(n: number, digits = 2): string {
+  if (!isFinite(n)) return '—';
+  const abs = Math.abs(n);
+  if (abs === 0) return '0';
+  if (abs >= 1e-2 && abs < 1e6) return n.toFixed(digits);
+  const s = n.toExponential(digits);
+  const [m, e] = s.split('e');
+  return `${m} \\times 10^{${parseInt(e!, 10)}}`;
 }
 
 export function PoyntingCoax3DDemo({ figure }: Props) {
@@ -150,149 +163,135 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
     return { P, S_at_inner, integral, match, logba };
   }, [I, V]);
 
-  const stateRef = useRef({ I, V, showE, showB, showS, computed });
-  useEffect(() => {
-    stateRef.current = { I, V, showE, showB, showS, computed };
-  }, [I, V, showE, showB, showS, computed]);
+  const stateRef = useSimState({ I, V, showE, showB, showS, computed });
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w: W, h: H, dpr, canvas } = info;
-      let raf = 0;
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w: W, h: H, dpr, colors }, state, _dt, _simT, context) => {
+      const { I, V, showE, showB, showS, computed: _computed } = state;
+      const cam = (context as { cam: OrbitCamera }).cam;
 
-      const cam = camRef.current;
-      const dispose = attachOrbitScene(canvas);
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
 
-      function draw() {
-        ctx.fillStyle = getCanvasColors().bg;
-        ctx.fillRect(0, 0, W, H);
+      // Background scaffolding (cached). Camera angles quantized to 0.04 rad
+      // buckets become the cache key; small nudges share a bake.
+      const yawQ = Math.round(cam.yaw / 0.04) * 0.04;
+      const pitQ = Math.round(cam.pitch / 0.04) * 0.04;
+      const off = getStatic(W, H, dpr, `y${yawQ.toFixed(2)}|p${pitQ.toFixed(2)}`);
+      if (off) ctx.drawImage(off, 0, 0, W, H);
 
-        const s = stateRef.current;
+      // ── Build the dynamic arrow list ─────────────────────────────────
+      const arrows: ArrowSpec[] = [];
 
-        // Background scaffolding (cached).
-        // Background scaffolding (cached). Camera angles quantized to 0.04 rad
-        // buckets become the cache key; small nudges share a bake.
-        const yawQ = Math.round(cam.yaw / 0.04) * 0.04;
-        const pitQ = Math.round(cam.pitch / 0.04) * 0.04;
-        const off = getStatic(W, H, dpr, `y${yawQ.toFixed(2)}|p${pitQ.toFixed(2)}`);
-        if (off) ctx.drawImage(off, 0, 0, W, H);
-
-        // ── Build the dynamic arrow list ─────────────────────────────────
-        const arrows: ArrowSpec[] = [];
-
-        // E-field arrows: radial, inside dielectric, on a sparse grid of
-        // (x, phi) at a single mid-radius for clarity.
-        if (s.showE) {
-          const nx = 5,
-            nphi = 8;
-          const r_mid = (R_INNER + R_OUTER) / 2;
-          for (let i = 0; i < nx; i++) {
-            const x = -X_HALF + ((i + 0.5) / nx) * (2 * X_HALF);
-            for (let j = 0; j < nphi; j++) {
-              const phi = (j / nphi) * Math.PI * 2;
-              const r0 = R_INNER + 0.04;
-              const r1 = R_OUTER - 0.04;
-              const cy = Math.cos(phi),
-                sy = Math.sin(phi);
-              const from = v3(x, r0 * cy, r0 * sy);
-              const to = v3(x, r1 * cy, r1 * sy);
-              arrows.push({
-                from,
-                to,
-                anchor: v3(x, r_mid * cy, r_mid * sy),
-                kind: 'E',
-              });
-            }
-          }
-        }
-
-        // B-field arrows: tangential to a circle in the y-z plane, at a
-        // few axial slices. Each arrow is a short chord representing the
-        // local azimuthal direction.
-        if (s.showB) {
-          const nx = 4,
-            nphi = 12;
-          const r_b = (R_INNER + R_OUTER) / 2 + 0.05;
-          const arc = ((2 * Math.PI) / nphi) * 0.55; // half-length of chord in radians
-          for (let i = 0; i < nx; i++) {
-            const x = -X_HALF + ((i + 0.5) / nx) * (2 * X_HALF);
-            for (let j = 0; j < nphi; j++) {
-              const phi = (j / nphi) * Math.PI * 2;
-              const phi0 = phi - arc;
-              const phi1 = phi + arc;
-              const from = v3(x, r_b * Math.cos(phi0), r_b * Math.sin(phi0));
-              const to = v3(x, r_b * Math.cos(phi1), r_b * Math.sin(phi1));
-              arrows.push({
-                from,
-                to,
-                anchor: v3(x, r_b * Math.cos(phi), r_b * Math.sin(phi)),
-                kind: 'B',
-              });
-            }
-          }
-        }
-
-        // Poynting arrows: axial (+x), inside the dielectric, at a sparse
-        // (phi, r) grid spanning the cross-section. Length depends on V·I
-        // for visual emphasis, but always axial.
-        if (s.showS) {
-          const nphi = 8,
-            nr = 2;
-          const power = Math.min(1.6, Math.max(0.5, 0.6 + 0.05 * Math.log10(s.I * s.V + 1)));
-          const baseLen = 0.55 * power;
+      // E-field arrows: radial, inside dielectric, on a sparse grid of
+      // (x, phi) at a single mid-radius for clarity.
+      if (showE) {
+        const nx = 5,
+          nphi = 8;
+        const r_mid = (R_INNER + R_OUTER) / 2;
+        for (let i = 0; i < nx; i++) {
+          const x = -X_HALF + ((i + 0.5) / nx) * (2 * X_HALF);
           for (let j = 0; j < nphi; j++) {
-            const phi = (j / nphi) * Math.PI * 2 + Math.PI / nphi;
-            for (let k = 0; k < nr; k++) {
-              const r = R_INNER + 0.1 + (k + 0.5) * ((R_OUTER - R_INNER - 0.2) / nr);
-              const cy = Math.cos(phi),
-                sz = Math.sin(phi);
-              const x0 = -baseLen / 2;
-              // Stagger axially so multiple streams are visible per slice.
-              const stagger = (((j + k) % 3) - 1) * 0.6;
-              const from = v3(x0 + stagger, r * cy, r * sz);
-              const to = v3(x0 + stagger + baseLen, r * cy, r * sz);
-              arrows.push({
-                from,
-                to,
-                anchor: v3(stagger, r * cy, r * sz),
-                kind: 'S',
-              });
-            }
+            const phi = (j / nphi) * Math.PI * 2;
+            const r0 = R_INNER + 0.04;
+            const r1 = R_OUTER - 0.04;
+            const cy = Math.cos(phi),
+              sy = Math.sin(phi);
+            const from = v3(x, r0 * cy, r0 * sy);
+            const to = v3(x, r1 * cy, r1 * sy);
+            arrows.push({
+              from,
+              to,
+              anchor: v3(x, r_mid * cy, r_mid * sy),
+              kind: 'E',
+            });
           }
         }
-
-        // Painter's-algorithm: draw back-to-front.
-        const order = depthSortIndices(arrows, cam, W, H);
-        for (const idx of order) {
-          const a = arrows[idx]!;
-          drawArrow(ctx, a, cam, W, H);
-        }
-
-        // Annotations
-        ctx.fillStyle = getCanvasColors().textDim;
-        drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-        ctx.save();
-        ctx.globalAlpha = 0.6;
-        ctx.fillStyle = getCanvasColors().textDim;
-        drawLabel(ctx, { text: `inner radius a = ${R_INNER.toFixed(2)}   outer b = ${R_OUTER.toFixed(2)}`, x: 12, y: 28 });
-        ctx.restore();
-        ctx.fillStyle = getCanvasColors().pink;
-        drawLabel(ctx, { text: 'E  pink · radial', x: W - 12, y: 12 });
-        ctx.fillStyle = getCanvasColors().teal;
-        drawLabel(ctx, { text: 'B  teal · circumferential', x: W - 12, y: 28 });
-        ctx.fillStyle = getCanvasColors().accent;
-        drawLabel(ctx, { text: 'S = E × B / μ₀ · axial', x: W - 12, y: 44 });
-
-        raf = requestAnimationFrame(draw);
       }
 
-      raf = requestAnimationFrame(draw);
-      return () => {
-        cancelAnimationFrame(raf);
-        dispose();
-      };
+      // B-field arrows: tangential to a circle in the y-z plane, at a
+      // few axial slices. Each arrow is a short chord representing the
+      // local azimuthal direction.
+      if (showB) {
+        const nx = 4,
+          nphi = 12;
+        const r_b = (R_INNER + R_OUTER) / 2 + 0.05;
+        const arc = ((2 * Math.PI) / nphi) * 0.55; // half-length of chord in radians
+        for (let i = 0; i < nx; i++) {
+          const x = -X_HALF + ((i + 0.5) / nx) * (2 * X_HALF);
+          for (let j = 0; j < nphi; j++) {
+            const phi = (j / nphi) * Math.PI * 2;
+            const phi0 = phi - arc;
+            const phi1 = phi + arc;
+            const from = v3(x, r_b * Math.cos(phi0), r_b * Math.sin(phi0));
+            const to = v3(x, r_b * Math.cos(phi1), r_b * Math.sin(phi1));
+            arrows.push({
+              from,
+              to,
+              anchor: v3(x, r_b * Math.cos(phi), r_b * Math.sin(phi)),
+              kind: 'B',
+            });
+          }
+        }
+      }
+
+      // Poynting arrows: axial (+x), inside the dielectric, at a sparse
+      // (phi, r) grid spanning the cross-section. Length depends on V·I
+      // for visual emphasis, but always axial.
+      if (showS) {
+        const nphi = 8,
+          nr = 2;
+        const power = Math.min(1.6, Math.max(0.5, 0.6 + 0.05 * Math.log10(I * V + 1)));
+        const baseLen = 0.55 * power;
+        for (let j = 0; j < nphi; j++) {
+          const phi = (j / nphi) * Math.PI * 2 + Math.PI / nphi;
+          for (let k = 0; k < nr; k++) {
+            const r = R_INNER + 0.1 + (k + 0.5) * ((R_OUTER - R_INNER - 0.2) / nr);
+            const cy = Math.cos(phi),
+              sz = Math.sin(phi);
+            const x0 = -baseLen / 2;
+            // Stagger axially so multiple streams are visible per slice.
+            const stagger = (((j + k) % 3) - 1) * 0.6;
+            const from = v3(x0 + stagger, r * cy, r * sz);
+            const to = v3(x0 + stagger + baseLen, r * cy, r * sz);
+            arrows.push({
+              from,
+              to,
+              anchor: v3(stagger, r * cy, r * sz),
+              kind: 'S',
+            });
+          }
+        }
+      }
+
+      // Painter's-algorithm: draw back-to-front.
+      const order = depthSortIndices(arrows, cam, W, H);
+      for (const idx of order) {
+        const a = arrows[idx]!;
+        drawArrow(ctx, a, cam, W, H, colors);
+      }
+
+      // Annotations
+      ctx.fillStyle = colors.textDim;
+      drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = colors.textDim;
+      drawLabel(ctx, { text: `inner radius a = ${R_INNER.toFixed(2)}   outer b = ${R_OUTER.toFixed(2)}`, x: 12, y: 28 });
+      ctx.restore();
+      ctx.fillStyle = colors.pink;
+      drawLabel(ctx, { text: 'E  pink · radial', x: W - 12, y: 12 });
+      ctx.fillStyle = colors.teal;
+      drawLabel(ctx, { text: 'B  teal · circumferential', x: W - 12, y: 28 });
+      ctx.fillStyle = colors.accent;
+      drawLabel(ctx, { text: 'S = E × B / μ₀ · axial', x: W - 12, y: 44 });
     },
     [getStatic],
+    (info) => {
+      const dispose = attachOrbitScene(info.canvas);
+      return { context: { cam: camRef.current }, cleanup: () => dispose() };
+    },
   );
 
   return (
@@ -343,6 +342,20 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
         <MiniReadout label="∮ S · dA" value={<Num value={computed.integral} />} unit="W" />
         <MiniReadout label="match" value={computed.match.toFixed(3)} unit="×" />
       </DemoControls>
+      <EquationStrip
+        leftLabel="Power delivered"
+        left={
+          <InlineMath
+            tex={`P = V I = ${V.toFixed(0)} \\times ${I.toFixed(1)} = ${fmtLatex(computed.P, 2)} \\text{ W}`}
+          />
+        }
+        rightLabel="Integral identity"
+        right={
+          <InlineMath
+            tex={`\\oint \\vec{S} \\cdot d\\vec{A} = V I`}
+          />
+        }
+      />
     </Demo>
   );
 }
@@ -450,6 +463,7 @@ function drawArrow(
   cam: OrbitCamera,
   W: number,
   H: number,
+  colors: ThemeColors,
 ) {
   const p1 = project(a.from, cam, W, H);
   const p2 = project(a.to, cam, W, H);
@@ -463,13 +477,13 @@ function drawArrow(
   let baseColor: string;
   switch (a.kind) {
     case 'E':
-      baseColor = `rgba(255,59,110,${(0.85 * fade).toFixed(3)})`;
+      baseColor = withAlpha(colors.pink, 0.85 * fade);
       break;
     case 'B':
-      baseColor = `rgba(108,197,194,${(0.85 * fade).toFixed(3)})`;
+      baseColor = withAlpha(colors.teal, 0.85 * fade);
       break;
     case 'S':
-      baseColor = `rgba(255,107,42,${(0.98 * fade).toFixed(3)})`;
+      baseColor = withAlpha(colors.accent, 0.98 * fade);
       break;
   }
 
@@ -478,7 +492,7 @@ function drawArrow(
     drawGlowPath(ctx, [p1, p2], {
       color: baseColor,
       lineWidth: 2.0,
-      glowColor: `rgba(255,107,42,${(0.3 * fade).toFixed(3)})`,
+      glowColor: withAlpha(colors.accent, 0.3 * fade),
       glowWidth: 7,
     });
   } else {
@@ -507,7 +521,3 @@ function drawArrow(
   ctx.closePath();
   ctx.fill();
 }
-
-// Silence unused warnings for PHYS — kept imported for future expansion
-// of the readout to show E_max, B_max, etc.
-void PHYS;
