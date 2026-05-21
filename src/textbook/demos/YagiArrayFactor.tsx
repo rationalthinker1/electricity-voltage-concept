@@ -16,7 +16,6 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -34,104 +33,102 @@ export function YagiArrayFactorDemo({ figure }: Props) {
   const Gdbi = gainDbi(nDir);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const { nDir } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const split = W * 0.42;
-        const cyTop = H / 2;
-        const baseX = 30;
-        const spacing = 28;
-        const xRef = baseX;
-        const xDrv = baseX + spacing;
-        const xDirs: number[] = [];
-        for (let k = 0; k < nDir; k++) xDirs.push(baseX + (2 + k) * spacing);
-        function drawElement(x: number, len: number, label: string, accent: boolean) {
-                ctx.strokeStyle = accent
-                  ? withAlpha(colors.accent, 0.95)
-                  : withAlpha(colors.textDim, 0.85);
-                ctx.lineWidth = accent ? 2.5 : 1.8;
-                ctx.beginPath();
-                ctx.moveTo(x, cyTop - len / 2);
-                ctx.lineTo(x, cyTop + len / 2);
-                ctx.stroke();
-                drawLabel(ctx, {
-                  x: x,
-                  y: cyTop + len / 2 + 12,
-                  text: label,
-                  color: colors.textDim,
-                  size: 9,
-                  align: 'center',
-                });
-              }
-        drawElement(xRef, 78, 'refl', false);
-        drawElement(xDrv, 70, 'driven', true);
-        xDirs.forEach((x, i) => drawElement(x, 60 - i * 1.5, `D${i + 1}`, false));
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1;
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const { nDir } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const split = W * 0.42;
+      const cyTop = H / 2;
+      const baseX = 30;
+      const spacing = 28;
+      const xRef = baseX;
+      const xDrv = baseX + spacing;
+      const xDirs: number[] = [];
+      for (let k = 0; k < nDir; k++) xDirs.push(baseX + (2 + k) * spacing);
+      function drawElement(x: number, len: number, label: string, accent: boolean) {
+        ctx.strokeStyle = accent ? withAlpha(colors.accent, 0.95) : withAlpha(colors.textDim, 0.85);
+        ctx.lineWidth = accent ? 2.5 : 1.8;
         ctx.beginPath();
-        ctx.moveTo(xRef, cyTop);
-        ctx.lineTo(xDirs.length ? xDirs[xDirs.length - 1] : xDrv, cyTop);
+        ctx.moveTo(x, cyTop - len / 2);
+        ctx.lineTo(x, cyTop + len / 2);
         ctx.stroke();
-        ctx.fillStyle = colors.accent;
+        drawLabel(ctx, {
+          x: x,
+          y: cyTop + len / 2 + 12,
+          text: label,
+          color: colors.textDim,
+          size: 9,
+          align: 'center',
+        });
+      }
+      drawElement(xRef, 78, 'refl', false);
+      drawElement(xDrv, 70, 'driven', true);
+      xDirs.forEach((x, i) => drawElement(x, 60 - i * 1.5, `D${i + 1}`, false));
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(xRef, cyTop);
+      ctx.lineTo(xDirs.length ? xDirs[xDirs.length - 1] : xDrv, cyTop);
+      ctx.stroke();
+      ctx.fillStyle = colors.accent;
+      ctx.beginPath();
+      const ax = split - 18;
+      ctx.moveTo(ax, cyTop);
+      ctx.lineTo(ax - 8, cyTop - 4);
+      ctx.lineTo(ax - 8, cyTop + 4);
+      ctx.closePath();
+      ctx.fill();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.accent;
+      ctx.textAlign = 'right';
+      ctx.fillText('forward →', ax - 12, cyTop - 6);
+      const cx = (split + W) / 2;
+      const cy = H / 2;
+      const R = Math.min((W - split) * 0.42, H * 0.42);
+      ctx.strokeStyle = colors.border;
+      ctx.lineWidth = 1;
+      for (let f = 0.25; f <= 1.001; f += 0.25) {
         ctx.beginPath();
-        const ax = split - 18;
-        ctx.moveTo(ax, cyTop);
-        ctx.lineTo(ax - 8, cyTop - 4);
-        ctx.lineTo(ax - 8, cyTop + 4);
-        ctx.closePath();
-        ctx.fill();
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.accent;
-        ctx.textAlign = 'right';
-        ctx.fillText('forward →', ax - 12, cyTop - 6);
-        const cx = (split + W) / 2;
-        const cy = H / 2;
-        const R = Math.min((W - split) * 0.42, H * 0.42);
-        ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1;
-        for (let f = 0.25; f <= 1.001; f += 0.25) {
-                ctx.beginPath();
-                ctx.arc(cx, cy, R * f, 0, Math.PI * 2);
-                ctx.stroke();
-              }
-        ctx.strokeStyle = colors.border;
-        ctx.beginPath();
-        ctx.moveTo(cx - R, cy);
-        ctx.lineTo(cx + R, cy);
-        ctx.moveTo(cx, cy - R);
-        ctx.lineTo(cx, cy + R);
+        ctx.arc(cx, cy, R * f, 0, Math.PI * 2);
         ctx.stroke();
-        const sharp = 1.5 + nDir * 0.9;
-        ctx.strokeStyle = colors.accent;
-        ctx.fillStyle = withAlpha(colors.accent, 0.18);
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        const N = 360;
-        for (let i = 0; i <= N; i++) {
-                const phi = (i / N) * 2 * Math.PI;
-                // Forward direction in screen-space is +x (to the right).
-                const r = Math.pow(Math.max(0, Math.cos(phi / 2)), 2 * sharp);
-                // Add small back-lobe so the pattern isn't pathologically zero on the back
-                const rb = 0.08 * Math.max(0, Math.cos((phi - Math.PI) / 2)) ** 2;
-                const rN = Math.min(1, r + rb);
-                const x = cx + R * rN * Math.cos(phi);
-                const y = cy + R * rN * Math.sin(phi);
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'center';
-        ctx.fillText('forward (+x)', cx + R + 12, cy + 4);
-        ctx.fillText('back (−x)', cx - R - 12, cy + 4);
-      },
-      [],
-    );
+      }
+      ctx.strokeStyle = colors.border;
+      ctx.beginPath();
+      ctx.moveTo(cx - R, cy);
+      ctx.lineTo(cx + R, cy);
+      ctx.moveTo(cx, cy - R);
+      ctx.lineTo(cx, cy + R);
+      ctx.stroke();
+      const sharp = 1.5 + nDir * 0.9;
+      ctx.strokeStyle = colors.accent;
+      ctx.fillStyle = withAlpha(colors.accent, 0.18);
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      const N = 360;
+      for (let i = 0; i <= N; i++) {
+        const phi = (i / N) * 2 * Math.PI;
+        // Forward direction in screen-space is +x (to the right).
+        const r = Math.pow(Math.max(0, Math.cos(phi / 2)), 2 * sharp);
+        // Add small back-lobe so the pattern isn't pathologically zero on the back
+        const rb = 0.08 * Math.max(0, Math.cos((phi - Math.PI) / 2)) ** 2;
+        const rN = Math.min(1, r + rb);
+        const x = cx + R * rN * Math.cos(phi);
+        const y = cy + R * rN * Math.sin(phi);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'center';
+      ctx.fillText('forward (+x)', cx + R + 12, cy + 4);
+      ctx.fillText('back (−x)', cx - R - 12, cy + 4);
+    },
+    [],
+  );
 
   return (
     <Demo

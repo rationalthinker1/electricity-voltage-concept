@@ -15,7 +15,6 @@ import { PHYS } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -33,69 +32,69 @@ export function EnergyInTheGapDemo({ figure }: Props) {
 
   const stateRef = useSimState({ V, E, u_E });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
-        let phase = ctx0.phase;
-        const s = stateRef.current;
-        phase += 0.02;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const plateW = Math.min(W * 0.7, 460);
-        const gap = 100;
-        const plateThick = 8;
-        const cx = W / 2;
-        const cy = H / 2;
-        const xL = cx - plateW / 2;
-        const topY = cy - gap / 2 - plateThick / 2;
-        const botY = cy + gap / 2 + plateThick / 2;
-        const haze = Math.max(0.06, Math.min(0.7, Math.log10(s.u_E + 1) * 0.12 + 0.1));
-        const grd = ctx.createLinearGradient(0, topY + plateThick, 0, botY - plateThick);
-        grd.addColorStop(0, `rgba(255,107,42,${haze * 0.45})`);
-        grd.addColorStop(0.5, `rgba(255,107,42,${haze})`);
-        grd.addColorStop(1, `rgba(255,107,42,${haze * 0.45})`);
-        ctx.fillStyle = grd;
-        ctx.fillRect(xL, topY + plateThick, plateW, botY - topY - plateThick * 2);
-        const usable = botY - topY - plateThick * 2 - 16;
-        const Nfield = 14;
-        const arrLen = Math.min(22, usable * 0.45);
-        for (let i = 0; i < Nfield; i++) {
-                const fx = xL + 18 + ((plateW - 36) * (i + 0.5)) / Nfield;
-                const cycle = (phase * 70 + i * 11) % usable;
-                const y1 = topY + plateThick + 8 + cycle;
-                ctx.strokeStyle = colors.pink;
-                ctx.lineWidth = 1.3;
-                ctx.beginPath();
-                ctx.moveTo(fx, y1 - arrLen);
-                ctx.lineTo(fx, y1);
-                ctx.stroke();
-                ctx.fillStyle = colors.pink;
-                ctx.beginPath();
-                ctx.moveTo(fx, y1);
-                ctx.lineTo(fx - 3.5, y1 - 6);
-                ctx.lineTo(fx + 3.5, y1 - 6);
-                ctx.closePath();
-                ctx.fill();
-              }
-        drawPlate(ctx, xL, topY, plateW, plateThick, '#ff3b6e');
-        drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, '#5baef8');
-        ctx.fillStyle = colors.accent;
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('u_E = ½ ε₀ E²', 14, 12);
-        ctx.fillStyle = colors.textDim;
-        ctx.fillText(`E = ${(s.E / 1000).toFixed(1)} kV/m`, 14, 28);
-        ctx.fillText(`u_E = ${s.u_E.toExponential(2)} J/m³`, 14, 42);
-        ctx.fillStyle = colors.accent;
-        ctx.textAlign = 'right';
-        ctx.fillText('← the energy lives here', W - 14, cy - 6);
-        ctx.fillStyle = colors.textDim;
-        ctx.fillText('not in the plates', W - 14, cy + 8);
-        ctx0.phase = phase;
-      },
-      [],
-      () => ({ context: { phase: 0 } }),
-    );
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
+      let phase = ctx0.phase;
+      const s = stateRef.current;
+      phase += 0.02;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const plateW = Math.min(W * 0.7, 460);
+      const gap = 100;
+      const plateThick = 8;
+      const cx = W / 2;
+      const cy = H / 2;
+      const xL = cx - plateW / 2;
+      const topY = cy - gap / 2 - plateThick / 2;
+      const botY = cy + gap / 2 + plateThick / 2;
+      const haze = Math.max(0.06, Math.min(0.7, Math.log10(s.u_E + 1) * 0.12 + 0.1));
+      const grd = ctx.createLinearGradient(0, topY + plateThick, 0, botY - plateThick);
+      grd.addColorStop(0, `rgba(255,107,42,${haze * 0.45})`);
+      grd.addColorStop(0.5, `rgba(255,107,42,${haze})`);
+      grd.addColorStop(1, `rgba(255,107,42,${haze * 0.45})`);
+      ctx.fillStyle = grd;
+      ctx.fillRect(xL, topY + plateThick, plateW, botY - topY - plateThick * 2);
+      const usable = botY - topY - plateThick * 2 - 16;
+      const Nfield = 14;
+      const arrLen = Math.min(22, usable * 0.45);
+      for (let i = 0; i < Nfield; i++) {
+        const fx = xL + 18 + ((plateW - 36) * (i + 0.5)) / Nfield;
+        const cycle = (phase * 70 + i * 11) % usable;
+        const y1 = topY + plateThick + 8 + cycle;
+        ctx.strokeStyle = colors.pink;
+        ctx.lineWidth = 1.3;
+        ctx.beginPath();
+        ctx.moveTo(fx, y1 - arrLen);
+        ctx.lineTo(fx, y1);
+        ctx.stroke();
+        ctx.fillStyle = colors.pink;
+        ctx.beginPath();
+        ctx.moveTo(fx, y1);
+        ctx.lineTo(fx - 3.5, y1 - 6);
+        ctx.lineTo(fx + 3.5, y1 - 6);
+        ctx.closePath();
+        ctx.fill();
+      }
+      drawPlate(ctx, xL, topY, plateW, plateThick, '#ff3b6e');
+      drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, '#5baef8');
+      ctx.fillStyle = colors.accent;
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('u_E = ½ ε₀ E²', 14, 12);
+      ctx.fillStyle = colors.textDim;
+      ctx.fillText(`E = ${(s.E / 1000).toFixed(1)} kV/m`, 14, 28);
+      ctx.fillText(`u_E = ${s.u_E.toExponential(2)} J/m³`, 14, 42);
+      ctx.fillStyle = colors.accent;
+      ctx.textAlign = 'right';
+      ctx.fillText('← the energy lives here', W - 14, cy - 6);
+      ctx.fillStyle = colors.textDim;
+      ctx.fillText('not in the plates', W - 14, cy + 8);
+      ctx0.phase = phase;
+    },
+    [],
+    () => ({ context: { phase: 0 } }),
+  );
 
   return (
     <Demo

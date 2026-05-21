@@ -24,7 +24,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { fmtCurrent } from "@/lib/formatters";
+import { fmtCurrent } from '@/lib/formatters';
 import { useCircuitCache } from '@/lib/useCircuitCache';
 
 interface Props {
@@ -78,65 +78,68 @@ export function NodalSolverDemo({ figure }: Props) {
     [V1, V2, R1, R2, R3],
   );
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, dpr } = info;
-    let raf = 0;
+  const setup = useCallback(
+    (info: CanvasInfo) => {
+      const { ctx, w, h, dpr } = info;
+      let raf = 0;
 
-    function draw() {
-      const { nodal } = stateRef.current;
+      function draw() {
+        const { nodal } = stateRef.current;
 
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, w, h);
+        ctx.fillStyle = getCanvasColors().bg;
+        ctx.fillRect(0, 0, w, h);
 
-      const off = getStaticSchematic(w, h, dpr);
-      if (off) ctx.drawImage(off, 0, 0, w, h);
+        const off = getStaticSchematic(w, h, dpr);
+        if (off) ctx.drawImage(off, 0, 0, w, h);
 
-      // Per-frame text overlay (node labels, current readouts, KCL caption).
-      // Used to be baked into the offscreen canvas; pulled out so the cache
-      // is a plain CircuitSpec. Costs a dozen ctx calls — negligible.
-      const padX = 56;
-      const yTop = h / 2 - 70;
-      const xLeft = padX;
-      const xRight = w - padX;
-      const xMid = (xLeft + xRight) / 2;
+        // Per-frame text overlay (node labels, current readouts, KCL caption).
+        // Used to be baked into the offscreen canvas; pulled out so the cache
+        // is a plain CircuitSpec. Costs a dozen ctx calls — negligible.
+        const padX = 56;
+        const yTop = h / 2 - 70;
+        const xLeft = padX;
+        const xRight = w - padX;
+        const xMid = (xLeft + xRight) / 2;
 
-      ctx.save();
-      ctx.globalAlpha = 0.85;
-      ctx.fillStyle = getCanvasColors().text;
-      ctx.font = 'bold 12px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`A   V_A = ${nodal.V_A.toFixed(3)} V`, xMid + 10, yTop - 6);
-      ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.85;
+        ctx.fillStyle = getCanvasColors().text;
+        ctx.font = 'bold 12px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(`A   V_A = ${nodal.V_A.toFixed(3)} V`, xMid + 10, yTop - 6);
+        ctx.restore();
 
-      ctx.save();
-      ctx.globalAlpha = 0.75;
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('Bottom rail = reference (V = 0)', 12, 10);
-      ctx.fillText('KCL at A: (V₁−V_A)/R₁ + (V₂−V_A)/R₃ = V_A/R₂', 12, 24);
-      ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = getCanvasColors().textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('Bottom rail = reference (V = 0)', 12, 10);
+        ctx.fillText('KCL at A: (V₁−V_A)/R₁ + (V₂−V_A)/R₃ = V_A/R₂', 12, 24);
+        ctx.restore();
 
-      ctx.save();
-      ctx.globalAlpha = 0.95;
-      ctx.fillStyle = getCanvasColors().blue;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`I_R₁ = ${fmtCurrent(nodal.I_R1)}`, (xLeft + xMid) / 2, yTop - 14);
-      ctx.fillText(`I_R₃ = ${fmtCurrent(nodal.I_R3)}`, (xMid + xRight) / 2, yTop - 14);
-      ctx.textBaseline = 'middle';
-      ctx.textAlign = 'left';
-      ctx.fillText(`I_R₂ = ${fmtCurrent(nodal.I_R2)}`, xMid + 14, h / 2);
-      ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.95;
+        ctx.fillStyle = getCanvasColors().blue;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(`I_R₁ = ${fmtCurrent(nodal.I_R1)}`, (xLeft + xMid) / 2, yTop - 14);
+        ctx.fillText(`I_R₃ = ${fmtCurrent(nodal.I_R3)}`, (xMid + xRight) / 2, yTop - 14);
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'left';
+        ctx.fillText(`I_R₂ = ${fmtCurrent(nodal.I_R2)}`, xMid + 14, h / 2);
+        ctx.restore();
 
+        raf = requestAnimationFrame(draw);
+      }
       raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, [getStaticSchematic]);
+      return () => cancelAnimationFrame(raf);
+    },
+    [getStaticSchematic],
+  );
 
   // Sanity-check the two methods agree.
   const meshSumCheck = Math.abs(nodal.I_R2 - mesh.I_R2);

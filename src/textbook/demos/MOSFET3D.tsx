@@ -28,12 +28,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import {  project,
-  v3,
-  type OrbitCamera,
-  type Point2D,
-  type Vec3,
-} from '@/lib/projection3d';
+import { project, v3, type OrbitCamera, type Point2D, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
@@ -268,7 +263,12 @@ export function MOSFET3DDemo({ figure }: Props) {
     const { ctx, w: W, h: H, canvas } = info;
     let raf = 0;
 
-    const scene = createOrbitScene(canvas, { yaw: 0.7, pitch: 0.45, distance: 6.5, fov: Math.PI / 4 });
+    const scene = createOrbitScene(canvas, {
+      yaw: 0.7,
+      pitch: 0.45,
+      distance: 6.5,
+      fov: Math.PI / 4,
+    });
     const cam = scene.cam;
 
     // Persistent electron cloud. ~80 dots; spawned across the channel

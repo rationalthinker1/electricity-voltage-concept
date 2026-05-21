@@ -37,7 +37,8 @@ import { PHYS } from '@/lib/physics';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import {
-  add,  length,
+  add,
+  length,
   normalize,
   project,
   scale,
@@ -668,7 +669,12 @@ export function MaxwellEquations3DDemo({ figure }: Props) {
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, canvas } = info;
-    const scene = createOrbitScene(canvas, { yaw: 0.55, pitch: 0.3, distance: 6.0, fov: Math.PI / 4 });
+    const scene = createOrbitScene(canvas, {
+      yaw: 0.55,
+      pitch: 0.3,
+      distance: 6.0,
+      fov: Math.PI / 4,
+    });
     const cam = scene.cam;
     let raf = 0;
     const t0 = performance.now();

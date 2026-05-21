@@ -20,7 +20,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -38,164 +37,164 @@ export function CoreLossesDemo({ figure }: Props) {
   const totalLoss = hystLoss + eddyLoss;
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
-        let simT = ctx0.simT;
-        const { drive, laminated } = stateRef.current;
-        simT += dt;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const splitX = w * 0.5;
-        ctx.save();
-        ctx.beginPath();
-        ctx.rect(0, 0, splitX, h);
-        ctx.clip();
-        const pad = 30;
-        const cxL = splitX / 2;
-        const cyL = h / 2;
-        const plotW = splitX - 2 * pad;
-        const plotH = h - 2 * pad;
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(pad, pad, plotW, plotH);
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.beginPath();
-        ctx.moveTo(pad, cyL);
-        ctx.lineTo(pad + plotW, cyL);
-        ctx.moveTo(cxL, pad);
-        ctx.lineTo(cxL, pad + plotH);
-        ctx.stroke();
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('B', cxL + 4, pad + 2);
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('H', pad + plotW - 4, cyL - 4);
-        const omega = 2.0;
-        const Hmax = drive;
-        const Bmax = 1.0;
-        const Hscale = plotW * 0.4;
-        const Bscale = plotH * 0.4;
-        const PHASE = 0.55;
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 1.6;
-        ctx.beginPath();
-        const steps = 240;
-        for (let i = 0; i <= steps; i++) {
-                const tau = (i / steps) * 2 * Math.PI;
-                const H = Hmax * Math.sin(tau);
-                // Approximation: B saturates softly with H but with PHASE lag.
-                const Bsat = Math.tanh(Hmax * Math.sin(tau - PHASE) * 2);
-                const B = Bmax * Bsat;
-                const x = cxL + (H / Math.max(1, Hmax)) * Hscale * Hmax;
-                const y = cyL - B * Bscale;
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
-        ctx.save();
-        ctx.globalAlpha = 0.1;
-        ctx.fillStyle = colors.accent;
-        ctx.fill();
-        ctx.restore();
-        const tau = (omega * simT) % (2 * Math.PI);
+    stateRef,
+    ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
+      let simT = ctx0.simT;
+      const { drive, laminated } = stateRef.current;
+      simT += dt;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const splitX = w * 0.5;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, splitX, h);
+      ctx.clip();
+      const pad = 30;
+      const cxL = splitX / 2;
+      const cyL = h / 2;
+      const plotW = splitX - 2 * pad;
+      const plotH = h - 2 * pad;
+      ctx.strokeStyle = colors.border;
+      ctx.strokeRect(pad, pad, plotW, plotH);
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.beginPath();
+      ctx.moveTo(pad, cyL);
+      ctx.lineTo(pad + plotW, cyL);
+      ctx.moveTo(cxL, pad);
+      ctx.lineTo(cxL, pad + plotH);
+      ctx.stroke();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('B', cxL + 4, pad + 2);
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('H', pad + plotW - 4, cyL - 4);
+      const omega = 2.0;
+      const Hmax = drive;
+      const Bmax = 1.0;
+      const Hscale = plotW * 0.4;
+      const Bscale = plotH * 0.4;
+      const PHASE = 0.55;
+      ctx.strokeStyle = colors.accent;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      const steps = 240;
+      for (let i = 0; i <= steps; i++) {
+        const tau = (i / steps) * 2 * Math.PI;
         const H = Hmax * Math.sin(tau);
+        // Approximation: B saturates softly with H but with PHASE lag.
         const Bsat = Math.tanh(Hmax * Math.sin(tau - PHASE) * 2);
         const B = Bmax * Bsat;
-        const dx = cxL + (H / Math.max(1, Hmax)) * Hscale * Hmax;
-        const dy = cyL - B * Bscale;
-        ctx.fillStyle = colors.pink;
+        const x = cxL + (H / Math.max(1, Hmax)) * Hscale * Hmax;
+        const y = cyL - B * Bscale;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = colors.accent;
+      ctx.fill();
+      ctx.restore();
+      const tau = (omega * simT) % (2 * Math.PI);
+      const H = Hmax * Math.sin(tau);
+      const Bsat = Math.tanh(Hmax * Math.sin(tau - PHASE) * 2);
+      const B = Bmax * Bsat;
+      const dx = cxL + (H / Math.max(1, Hmax)) * Hscale * Hmax;
+      const dy = cyL - B * Bscale;
+      ctx.fillStyle = colors.pink;
+      ctx.beginPath();
+      ctx.arc(dx, dy, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('B-H hysteresis loop', pad + 4, pad + 4);
+      ctx.fillText('area = energy/cycle/m³', pad + 4, pad + 18);
+      ctx.restore();
+      ctx.strokeStyle = colors.border;
+      ctx.beginPath();
+      ctx.moveTo(splitX, 0);
+      ctx.lineTo(splitX, h);
+      ctx.stroke();
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(splitX, 0, w - splitX, h);
+      ctx.clip();
+      const rpad = 30;
+      const rx = splitX + rpad;
+      const ry = rpad;
+      const rw = w - splitX - 2 * rpad;
+      const rh = h - 2 * rpad;
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.textDim;
+      ctx.lineWidth = 1.4;
+      ctx.strokeRect(rx, ry, rw, rh);
+      ctx.restore();
+      ctx.fillStyle = colors.teal;
+      for (let i = 0; i < 16; i++) {
+        const px = rx + (((i % 4) + 1) * rw) / 5;
+        const py = ry + (Math.floor(i / 4 + 1) * rh) / 5;
         ctx.beginPath();
-        ctx.arc(dx, dy, 4, 0, Math.PI * 2);
+        ctx.arc(px, py, 1.5, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('B-H hysteresis loop', pad + 4, pad + 4);
-        ctx.fillText('area = energy/cycle/m³', pad + 4, pad + 18);
-        ctx.restore();
-        ctx.strokeStyle = colors.border;
-        ctx.beginPath();
-        ctx.moveTo(splitX, 0);
-        ctx.lineTo(splitX, h);
-        ctx.stroke();
-        ctx.save();
-        ctx.beginPath();
-        ctx.rect(splitX, 0, w - splitX, h);
-        ctx.clip();
-        const rpad = 30;
-        const rx = splitX + rpad;
-        const ry = rpad;
-        const rw = w - splitX - 2 * rpad;
-        const rh = h - 2 * rpad;
-        ctx.save();
-        ctx.globalAlpha = 0.45;
-        ctx.strokeStyle = colors.textDim;
-        ctx.lineWidth = 1.4;
-        ctx.strokeRect(rx, ry, rw, rh);
-        ctx.restore();
+      }
+      const tt = simT * 1.5;
+      const animPhase = (Math.sin(tt) + 1) / 2;
+      if (laminated) {
+        // Many thin laminations stacked vertically; each has its own small loop
+        const nLam = 8;
+        for (let i = 0; i < nLam; i++) {
+          const y0 = ry + ((i + 0.5) * rh) / nLam;
+          ctx.save();
+          ctx.globalAlpha = 0.25 + 0.5 * animPhase;
+          ctx.strokeStyle = colors.accent;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.rect(rx + 8, y0 - rh / (nLam * 2) + 3, rw - 16, rh / nLam - 6);
+          ctx.stroke();
+          ctx.restore();
+        }
+        // Lamination divider lines
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.setLineDash([2, 3]);
+        for (let i = 1; i < nLam; i++) {
+          const y0 = ry + (i * rh) / nLam;
+          ctx.beginPath();
+          ctx.moveTo(rx, y0);
+          ctx.lineTo(rx + rw, y0);
+          ctx.stroke();
+        }
+        ctx.setLineDash([]);
         ctx.fillStyle = colors.teal;
-        for (let i = 0; i < 16; i++) {
-                const px = rx + (((i % 4) + 1) * rw) / 5;
-                const py = ry + (Math.floor(i / 4 + 1) * rh) / 5;
-                ctx.beginPath();
-                ctx.arc(px, py, 1.5, 0, Math.PI * 2);
-                ctx.fill();
-              }
-        const tt = simT * 1.5;
-        const animPhase = (Math.sin(tt) + 1) / 2;
-        if (laminated) {
-                // Many thin laminations stacked vertically; each has its own small loop
-                const nLam = 8;
-                for (let i = 0; i < nLam; i++) {
-                  const y0 = ry + ((i + 0.5) * rh) / nLam;
-                  ctx.save();
-                  ctx.globalAlpha = 0.25 + 0.5 * animPhase;
-                  ctx.strokeStyle = colors.accent;
-                  ctx.lineWidth = 1.2;
-                  ctx.beginPath();
-                  ctx.rect(rx + 8, y0 - rh / (nLam * 2) + 3, rw - 16, rh / nLam - 6);
-                  ctx.stroke();
-                  ctx.restore();
-                }
-                // Lamination divider lines
-                ctx.strokeStyle = colors.borderStrong;
-                ctx.setLineDash([2, 3]);
-                for (let i = 1; i < nLam; i++) {
-                  const y0 = ry + (i * rh) / nLam;
-                  ctx.beginPath();
-                  ctx.moveTo(rx, y0);
-                  ctx.lineTo(rx + rw, y0);
-                  ctx.stroke();
-                }
-                ctx.setLineDash([]);
-                ctx.fillStyle = colors.teal;
-              } else {
-                // One big loop spanning the whole cross-section
-                ctx.save();
-                ctx.globalAlpha = 0.45 + 0.5 * animPhase;
-                ctx.strokeStyle = colors.pink;
-                ctx.lineWidth = 2.4;
-                ctx.beginPath();
-                ctx.rect(rx + 6, ry + 6, rw - 12, rh - 12);
-                ctx.stroke();
-                ctx.restore();
-                ctx.fillStyle = colors.pink;
-              }
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText(laminated ? 'LAMINATED (50 thin layers)' : 'SOLID CORE', rx + 4, ry - 16);
-        ctx.fillStyle = colors.textDim;
-        ctx.fillText('eddy-current loops in cross-section', rx + 4, h - 18);
+      } else {
+        // One big loop spanning the whole cross-section
+        ctx.save();
+        ctx.globalAlpha = 0.45 + 0.5 * animPhase;
+        ctx.strokeStyle = colors.pink;
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.rect(rx + 6, ry + 6, rw - 12, rh - 12);
+        ctx.stroke();
         ctx.restore();
-        ctx0.simT = simT;
-      },
-      [],
-      () => ({ context: { simT: 0 } }),
-    );
+        ctx.fillStyle = colors.pink;
+      }
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(laminated ? 'LAMINATED (50 thin layers)' : 'SOLID CORE', rx + 4, ry - 16);
+      ctx.fillStyle = colors.textDim;
+      ctx.fillText('eddy-current loops in cross-section', rx + 4, h - 18);
+      ctx.restore();
+      ctx0.simT = simT;
+    },
+    [],
+    () => ({ context: { simT: 0 } }),
+  );
 
   return (
     <Demo

@@ -13,7 +13,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -37,81 +36,81 @@ export function NernstEquationDemo({ figure }: Props) {
 
   const stateRef = useSimState({ V, V_STD });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const s = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const pX = 36,
-                  pY = 26;
-        const pW = W - 60,
-                  pH = H - 60;
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(pX, pY, pW, pH);
-        const vMin = V_STD - 0.4;
-        const vMax = V_STD + 0.4;
-        const yV = (v: number) => pY + pH - ((v - vMin) / (vMax - vMin)) * pH;
-        const lqMin = -14;
-        const lqMax = 14;
-        const xLQ = (lq: number) => pX + ((lq - lqMin) / (lqMax - lqMin)) * pW;
-        ctx.save();
-        ctx.globalAlpha = 0.35;
-        ctx.strokeStyle = colors.accent;
-        ctx.setLineDash([4, 4]);
-        const ystd = yV(V_STD);
-        ctx.beginPath();
-        ctx.moveTo(pX, ystd);
-        ctx.lineTo(pX + pW, ystd);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.restore();
-        ctx.save();
-        ctx.globalAlpha = 0.75;
-        ctx.fillStyle = colors.accent;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('V° = 1.10 V', pX + pW - 4, ystd - 2);
-        const slope = (R_GAS * T) / (N_ELECTRONS * F_FARADAY);
-        ctx.restore();
-        ctx.strokeStyle = colors.teal;
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        for (let i = 0; i <= 80; i++) {
-                  const lq = lqMin + (i / 80) * (lqMax - lqMin);
-                  const v = V_STD - slope * lq;
-                  const x = xLQ(lq);
-                  const y = yV(v);
-                  if (i === 0) ctx.moveTo(x, y);
-                  else ctx.lineTo(x, y);
-                }
-        ctx.stroke();
-        const lqNow = Math.log(Q);
-        const px = xLQ(Math.max(lqMin, Math.min(lqMax, lqNow)));
-        const py = yV(Math.max(vMin, Math.min(vMax, s.V)));
-        ctx.fillStyle = colors.pink;
-        ctx.beginPath();
-        ctx.arc(px, py, 5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.save();
-        ctx.globalAlpha = 0.4;
-        ctx.strokeStyle = colors.pink;
-        ctx.beginPath();
-        ctx.arc(px, py, 9, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.restore();
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('V (cell potential)', pX, 6);
-        ctx.textAlign = 'right';
-        ctx.fillText('ln Q', pX + pW, pY + pH + 4);
-        ctx.textAlign = 'left';
-        ctx.fillText(`T = ${T.toFixed(0)} K`, pX, pY + pH + 4);
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const s = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const pX = 36,
+        pY = 26;
+      const pW = W - 60,
+        pH = H - 60;
+      ctx.strokeStyle = colors.border;
+      ctx.strokeRect(pX, pY, pW, pH);
+      const vMin = V_STD - 0.4;
+      const vMax = V_STD + 0.4;
+      const yV = (v: number) => pY + pH - ((v - vMin) / (vMax - vMin)) * pH;
+      const lqMin = -14;
+      const lqMax = 14;
+      const xLQ = (lq: number) => pX + ((lq - lqMin) / (lqMax - lqMin)) * pW;
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = colors.accent;
+      ctx.setLineDash([4, 4]);
+      const ystd = yV(V_STD);
+      ctx.beginPath();
+      ctx.moveTo(pX, ystd);
+      ctx.lineTo(pX + pW, ystd);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.accent;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('V° = 1.10 V', pX + pW - 4, ystd - 2);
+      const slope = (R_GAS * T) / (N_ELECTRONS * F_FARADAY);
+      ctx.restore();
+      ctx.strokeStyle = colors.teal;
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      for (let i = 0; i <= 80; i++) {
+        const lq = lqMin + (i / 80) * (lqMax - lqMin);
+        const v = V_STD - slope * lq;
+        const x = xLQ(lq);
+        const y = yV(v);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      const lqNow = Math.log(Q);
+      const px = xLQ(Math.max(lqMin, Math.min(lqMax, lqNow)));
+      const py = yV(Math.max(vMin, Math.min(vMax, s.V)));
+      ctx.fillStyle = colors.pink;
+      ctx.beginPath();
+      ctx.arc(px, py, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.pink;
+      ctx.beginPath();
+      ctx.arc(px, py, 9, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('V (cell potential)', pX, 6);
+      ctx.textAlign = 'right';
+      ctx.fillText('ln Q', pX + pW, pY + pH + 4);
+      ctx.textAlign = 'left';
+      ctx.fillText(`T = ${T.toFixed(0)} K`, pX, pY + pH + 4);
+    },
+    [],
+  );
 
   return (
     <Demo

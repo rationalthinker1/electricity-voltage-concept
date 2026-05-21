@@ -18,7 +18,6 @@ import { drawCharge } from '@/lib/canvasPrimitives';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -37,92 +36,92 @@ export function OscillatingDipoleDemo({ figure }: Props) {
 
   const stateRef = useSimState({ omega });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, simTime) => {
-        const t = simTime;
-        const om = stateRef.current.omega;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const cx = W / 2;
-        const cy = H / 2;
-        const dipoleHalf = 22;
-        const k = om / C_SIM;
-        const img = ctx.createImageData(W, H);
-        const data = img.data;
-        const step = 2;
-        for (let py = 0; py < H; py += step) {
-                for (let px = 0; px < W; px += step) {
-                  const dx = px - cx;
-                  const dy = py - cy;
-                  const r = Math.sqrt(dx * dx + dy * dy);
-                  if (r < dipoleHalf + 4) continue;
-                  // θ measured from the vertical dipole axis (so along axis = 0, equator = π/2)
-                  const sinTheta = Math.abs(dx) / r;
-                  const pat = sinTheta * sinTheta;
-                  // 1/r far-field falloff for radiation, plus pattern, plus phase
-                  const amp = (pat / Math.sqrt(r)) * Math.sin(k * r - om * t);
-                  // Map to colour: +amp → pink, −amp → blue, balanced background
-                  const v = Math.max(-1, Math.min(1, amp * 3.4));
-                  const r8 = v > 0 ? 255 : 0x5b;
-                  const g8 = v > 0 ? 59 : 0xae;
-                  const b8 = v > 0 ? 110 : 0xf8;
-                  const alpha = Math.min(180, Math.abs(v) * 220);
-                  // Fill the step×step block
-                  for (let oy = 0; oy < step && py + oy < H; oy++) {
-                    for (let ox = 0; ox < step && px + ox < W; ox++) {
-                      const idx = ((py + oy) * W + (px + ox)) * 4;
-                      data[idx] = r8;
-                      data[idx + 1] = g8;
-                      data[idx + 2] = b8;
-                      data[idx + 3] = alpha;
-                    }
-                  }
-                }
-              }
-        ctx.putImageData(img, 0, 0);
-        const disp = Math.sin(om * t) * dipoleHalf * 0.5;
-        const yPos = cy - dipoleHalf - disp;
-        const yNeg = cy + dipoleHalf - disp;
-        drawCharge(
-                ctx,
-                { x: cx, y: yPos },
-                {
-                  color: '#ff3b6e',
-                  glow: true,
-                  radius: 11,
-                  sign: '+',
-                  textColor: '#0a0a0b',
-                },
-              );
-        drawCharge(
-                ctx,
-                { x: cx, y: yNeg },
-                {
-                  color: '#5baef8',
-                  glow: true,
-                  radius: 11,
-                  sign: '−',
-                  textColor: '#0a0a0b',
-                },
-              );
-        ctx.setLineDash([4, 6]);
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(cx, 8);
-        ctx.lineTo(cx, H - 8);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'center';
-        ctx.fillText('axis · zero radiation', cx, 18);
-        ctx.textAlign = 'left';
-        ctx.fillStyle = colors.accent;
-        ctx.fillText('equator · max radiation →', 14, cy + 4);
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, simTime) => {
+      const t = simTime;
+      const om = stateRef.current.omega;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const cx = W / 2;
+      const cy = H / 2;
+      const dipoleHalf = 22;
+      const k = om / C_SIM;
+      const img = ctx.createImageData(W, H);
+      const data = img.data;
+      const step = 2;
+      for (let py = 0; py < H; py += step) {
+        for (let px = 0; px < W; px += step) {
+          const dx = px - cx;
+          const dy = py - cy;
+          const r = Math.sqrt(dx * dx + dy * dy);
+          if (r < dipoleHalf + 4) continue;
+          // θ measured from the vertical dipole axis (so along axis = 0, equator = π/2)
+          const sinTheta = Math.abs(dx) / r;
+          const pat = sinTheta * sinTheta;
+          // 1/r far-field falloff for radiation, plus pattern, plus phase
+          const amp = (pat / Math.sqrt(r)) * Math.sin(k * r - om * t);
+          // Map to colour: +amp → pink, −amp → blue, balanced background
+          const v = Math.max(-1, Math.min(1, amp * 3.4));
+          const r8 = v > 0 ? 255 : 0x5b;
+          const g8 = v > 0 ? 59 : 0xae;
+          const b8 = v > 0 ? 110 : 0xf8;
+          const alpha = Math.min(180, Math.abs(v) * 220);
+          // Fill the step×step block
+          for (let oy = 0; oy < step && py + oy < H; oy++) {
+            for (let ox = 0; ox < step && px + ox < W; ox++) {
+              const idx = ((py + oy) * W + (px + ox)) * 4;
+              data[idx] = r8;
+              data[idx + 1] = g8;
+              data[idx + 2] = b8;
+              data[idx + 3] = alpha;
+            }
+          }
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+      const disp = Math.sin(om * t) * dipoleHalf * 0.5;
+      const yPos = cy - dipoleHalf - disp;
+      const yNeg = cy + dipoleHalf - disp;
+      drawCharge(
+        ctx,
+        { x: cx, y: yPos },
+        {
+          color: '#ff3b6e',
+          glow: true,
+          radius: 11,
+          sign: '+',
+          textColor: '#0a0a0b',
+        },
+      );
+      drawCharge(
+        ctx,
+        { x: cx, y: yNeg },
+        {
+          color: '#5baef8',
+          glow: true,
+          radius: 11,
+          sign: '−',
+          textColor: '#0a0a0b',
+        },
+      );
+      ctx.setLineDash([4, 6]);
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(cx, 8);
+      ctx.lineTo(cx, H - 8);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'center';
+      ctx.fillText('axis · zero radiation', cx, 18);
+      ctx.textAlign = 'left';
+      ctx.fillStyle = colors.accent;
+      ctx.fillText('equator · max radiation →', 14, cy + 4);
+    },
+    [],
+  );
 
   return (
     <Demo

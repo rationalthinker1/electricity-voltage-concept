@@ -18,7 +18,6 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 export function FiberLinkBudgetDemo() {
   const [launchDbm, setLaunchDbm] = useState(0); // dBm launched at TX
   const [alpha, setAlpha] = useState(0.22); // dB/km fiber loss
@@ -32,84 +31,84 @@ export function FiberLinkBudgetDemo() {
   const reachKm = budget > 0 && alpha > 0 ? budget / alpha : 0;
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const { launchDbm, alpha, extraLoss, rxSens } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const padL = 50,
-                padR = 18,
-                padT = 18,
-                padB = 30;
-        const plotW = W - padL - padR;
-        const plotH = H - padT - padB;
-        const kmMax = 250;
-        const dBmMax = 5,
-                dBmMin = -35;
-        const xOfKm = (km: number) => padL + (km / kmMax) * plotW;
-        const yOfDbm = (db: number) => padT + ((dBmMax - db) / (dBmMax - dBmMin)) * plotH;
-        ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(padL, padT, plotW, plotH);
-        ctx.strokeStyle = colors.pink;
-        ctx.setLineDash([4, 3]);
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const { launchDbm, alpha, extraLoss, rxSens } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const padL = 50,
+        padR = 18,
+        padT = 18,
+        padB = 30;
+      const plotW = W - padL - padR;
+      const plotH = H - padT - padB;
+      const kmMax = 250;
+      const dBmMax = 5,
+        dBmMin = -35;
+      const xOfKm = (km: number) => padL + (km / kmMax) * plotW;
+      const yOfDbm = (db: number) => padT + ((dBmMax - db) / (dBmMax - dBmMin)) * plotH;
+      ctx.strokeStyle = colors.border;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(padL, padT, plotW, plotH);
+      ctx.strokeStyle = colors.pink;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      const yRx = yOfDbm(rxSens);
+      ctx.moveTo(padL, yRx);
+      ctx.lineTo(padL + plotW, yRx);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = colors.pink;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText(`Rx sens ${rxSens.toFixed(0)} dBm`, padL + 6, yRx - 4);
+      const pAtZero = launchDbm - extraLoss;
+      ctx.strokeStyle = colors.accent;
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(padL, yOfDbm(launchDbm));
+      ctx.lineTo(padL + 2, yOfDbm(launchDbm));
+      ctx.lineTo(padL + 2, yOfDbm(pAtZero));
+      for (let km = 0; km <= kmMax; km += 1) {
+        const p = pAtZero - alpha * km;
+        ctx.lineTo(xOfKm(km), yOfDbm(p));
+      }
+      ctx.stroke();
+      const reach = (pAtZero - rxSens) / Math.max(alpha, 0.0001);
+      if (reach > 0 && reach <= kmMax) {
+        const xR = xOfKm(reach);
+        ctx.strokeStyle = colors.teal;
+        ctx.setLineDash([2, 3]);
         ctx.beginPath();
-        const yRx = yOfDbm(rxSens);
-        ctx.moveTo(padL, yRx);
-        ctx.lineTo(padL + plotW, yRx);
+        ctx.moveTo(xR, padT);
+        ctx.lineTo(xR, padT + plotH);
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = colors.pink;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.fillText(`Rx sens ${rxSens.toFixed(0)} dBm`, padL + 6, yRx - 4);
-        const pAtZero = launchDbm - extraLoss;
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        ctx.moveTo(padL, yOfDbm(launchDbm));
-        ctx.lineTo(padL + 2, yOfDbm(launchDbm));
-        ctx.lineTo(padL + 2, yOfDbm(pAtZero));
-        for (let km = 0; km <= kmMax; km += 1) {
-                const p = pAtZero - alpha * km;
-                ctx.lineTo(xOfKm(km), yOfDbm(p));
-              }
-        ctx.stroke();
-        const reach = (pAtZero - rxSens) / Math.max(alpha, 0.0001);
-        if (reach > 0 && reach <= kmMax) {
-                const xR = xOfKm(reach);
-                ctx.strokeStyle = colors.teal;
-                ctx.setLineDash([2, 3]);
-                ctx.beginPath();
-                ctx.moveTo(xR, padT);
-                ctx.lineTo(xR, padT + plotH);
-                ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.fillStyle = colors.teal;
-                ctx.textAlign = 'center';
-                ctx.fillText(`reach ${reach.toFixed(0)} km`, xR, padT + 12);
-              }
-        ctx.fillStyle = colors.textMuted;
+        ctx.fillStyle = colors.teal;
         ctx.textAlign = 'center';
-        for (const km of [0, 50, 100, 150, 200, 250]) {
-                ctx.fillText(`${km}`, xOfKm(km), padT + plotH + 14);
-              }
-        ctx.textAlign = 'right';
-        for (const db of [0, -10, -20, -30]) {
-                ctx.fillText(`${db}`, padL - 6, yOfDbm(db) + 3);
-              }
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'left';
-        ctx.fillText('distance (km)', padL, H - 6);
-        ctx.save();
-        ctx.translate(12, padT + plotH / 2);
-        ctx.rotate(-Math.PI / 2);
-        ctx.textAlign = 'center';
-        ctx.fillText('power (dBm)', 0, 0);
-        ctx.restore();
-      },
-      [],
-    );
+        ctx.fillText(`reach ${reach.toFixed(0)} km`, xR, padT + 12);
+      }
+      ctx.fillStyle = colors.textMuted;
+      ctx.textAlign = 'center';
+      for (const km of [0, 50, 100, 150, 200, 250]) {
+        ctx.fillText(`${km}`, xOfKm(km), padT + plotH + 14);
+      }
+      ctx.textAlign = 'right';
+      for (const db of [0, -10, -20, -30]) {
+        ctx.fillText(`${db}`, padL - 6, yOfDbm(db) + 3);
+      }
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      ctx.fillText('distance (km)', padL, H - 6);
+      ctx.save();
+      ctx.translate(12, padT + plotH / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.textAlign = 'center';
+      ctx.fillText('power (dBm)', 0, 0);
+      ctx.restore();
+    },
+    [],
+  );
 
   return (
     <Demo

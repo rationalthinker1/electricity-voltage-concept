@@ -31,7 +31,6 @@ import { getCanvasColors } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -58,32 +57,32 @@ export function YDeltaTransformDemo({ figure }: Props) {
 
   const stateRef = useSimState({ Ra, Rb, Rc, delta });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { Ra, Rb, Rc, delta } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const halfW = w / 2;
-        drawYNetwork(ctx, 0, 0, halfW, h, Ra, Rb, Rc);
-        drawDeltaNetwork(ctx, halfW, 0, halfW, h, delta.R_AB, delta.R_BC, delta.R_CA);
-        ctx.strokeStyle = colors.border;
-        ctx.beginPath();
-        ctx.moveTo(halfW, 8);
-        ctx.lineTo(halfW, h - 8);
-        ctx.stroke();
-        drawLabel(ctx, {
-                x: halfW,
-                y: h / 2,
-                text: '⇌',
-                color: colors.accent,
-                size: 14,
-                align: 'center',
-                baseline: 'middle',
-                weight: 'bold',
-              });
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { Ra, Rb, Rc, delta } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const halfW = w / 2;
+      drawYNetwork(ctx, 0, 0, halfW, h, Ra, Rb, Rc);
+      drawDeltaNetwork(ctx, halfW, 0, halfW, h, delta.R_AB, delta.R_BC, delta.R_CA);
+      ctx.strokeStyle = colors.border;
+      ctx.beginPath();
+      ctx.moveTo(halfW, 8);
+      ctx.lineTo(halfW, h - 8);
+      ctx.stroke();
+      drawLabel(ctx, {
+        x: halfW,
+        y: h / 2,
+        text: '⇌',
+        color: colors.accent,
+        size: 14,
+        align: 'center',
+        baseline: 'middle',
+        weight: 'bold',
+      });
+    },
+    [],
+  );
 
   return (
     <Demo

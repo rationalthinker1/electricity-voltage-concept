@@ -20,7 +20,6 @@ import { drawAxes, drawLinePlot, drawVLine, makePlotMappers } from '@/lib/drawPl
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -51,128 +50,128 @@ export function LoadFollowingDemo({ figure }: Props) {
   }, [hour]);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { hour } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padL = 48,
-                padR = 24,
-                padT = 24,
-                padB = 38;
-        const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
-        const xHourTicks: number[] = [];
-        for (let hr = 0; hr <= 24; hr += 4) xHourTicks.push(hr);
-        const yFracLabels = new Map<number, string>([
-          [0, '0'],
-          [0.5, '½'],
-          [1, 'peak'],
-        ]);
-        drawAxes(ctx, rect, {
-          xMin: 0,
-          xMax: 24,
-          yMin: 0,
-          yMax: 1,
-          xTicks: xHourTicks,
-          yTicks: [0, 0.25, 0.5, 0.75, 1],
-          xTickFormat: (hr) => hr.toString().padStart(2, '0') + ':00',
-          yTickFormat: (v) => yFracLabels.get(v) ?? '',
-        });
-        const { xOf: xAt, yOf: yAt } = makePlotMappers(rect, 0, 24, 0, 1);
-        const plotW = rect.w;
-        // Baseload band (teal fill)
-        ctx.save();
-        ctx.globalAlpha = 0.2;
-        ctx.fillStyle = colors.teal;
-        ctx.beginPath();
-        ctx.moveTo(padL, yAt(0));
-        ctx.lineTo(padL + plotW, yAt(0));
-        ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
-        ctx.lineTo(padL, yAt(BASELOAD_FRAC));
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-        ctx.save();
-        ctx.globalAlpha = 0.6;
-        ctx.strokeStyle = colors.teal;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(padL, yAt(BASELOAD_FRAC));
-        ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
-        ctx.stroke();
-        ctx.restore();
-        const N = 200;
-        const loadPts: { x: number; y: number }[] = [];
-        for (let i = 0; i <= N; i++) {
-          const hr = (i / N) * 24;
-          loadPts.push({ x: hr, y: loadFracAt(hr) });
-        }
-        // Peaker shaded band above baseload — closed polygon to BASELOAD_FRAC,
-        // which doesn't match drawLinePlot's fill (it closes to the bottom of
-        // the rect), so keep this as raw ctx.
-        ctx.save();
-        ctx.globalAlpha = 0.25;
-        ctx.fillStyle = colors.accent;
-        ctx.beginPath();
-        for (let i = 0; i <= N; i++) {
-          const hr = (i / N) * 24;
-          const x = xAt(hr);
-          const y = yAt(loadFracAt(hr));
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
-        ctx.lineTo(padL, yAt(BASELOAD_FRAC));
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-        drawLinePlot(ctx, rect, loadPts, 0, 24, 0, 1, {
-          color: colors.accent,
-          lineWidth: 1.8,
-        });
-        // Reserve dashed line (load + 10% headroom)
-        const reservePts = loadPts.map((p) => ({ x: p.x, y: p.y + 0.1 }));
-        ctx.save();
-        ctx.globalAlpha = 0.55;
-        ctx.setLineDash([5, 4]);
-        drawLinePlot(ctx, rect, reservePts, 0, 24, 0, 1, {
-          color: colors.pink,
-          lineWidth: 1.2,
-        });
-        ctx.setLineDash([]);
-        ctx.restore();
-        drawVLine(ctx, rect, hour, 0, 24, {
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { hour } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padL = 48,
+        padR = 24,
+        padT = 24,
+        padB = 38;
+      const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
+      const xHourTicks: number[] = [];
+      for (let hr = 0; hr <= 24; hr += 4) xHourTicks.push(hr);
+      const yFracLabels = new Map<number, string>([
+        [0, '0'],
+        [0.5, '½'],
+        [1, 'peak'],
+      ]);
+      drawAxes(ctx, rect, {
+        xMin: 0,
+        xMax: 24,
+        yMin: 0,
+        yMax: 1,
+        xTicks: xHourTicks,
+        yTicks: [0, 0.25, 0.5, 0.75, 1],
+        xTickFormat: (hr) => hr.toString().padStart(2, '0') + ':00',
+        yTickFormat: (v) => yFracLabels.get(v) ?? '',
+      });
+      const { xOf: xAt, yOf: yAt } = makePlotMappers(rect, 0, 24, 0, 1);
+      const plotW = rect.w;
+      // Baseload band (teal fill)
+      ctx.save();
+      ctx.globalAlpha = 0.2;
+      ctx.fillStyle = colors.teal;
+      ctx.beginPath();
+      ctx.moveTo(padL, yAt(0));
+      ctx.lineTo(padL + plotW, yAt(0));
+      ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
+      ctx.lineTo(padL, yAt(BASELOAD_FRAC));
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = colors.teal;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(padL, yAt(BASELOAD_FRAC));
+      ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
+      ctx.stroke();
+      ctx.restore();
+      const N = 200;
+      const loadPts: { x: number; y: number }[] = [];
+      for (let i = 0; i <= N; i++) {
+        const hr = (i / N) * 24;
+        loadPts.push({ x: hr, y: loadFracAt(hr) });
+      }
+      // Peaker shaded band above baseload — closed polygon to BASELOAD_FRAC,
+      // which doesn't match drawLinePlot's fill (it closes to the bottom of
+      // the rect), so keep this as raw ctx.
+      ctx.save();
+      ctx.globalAlpha = 0.25;
+      ctx.fillStyle = colors.accent;
+      ctx.beginPath();
+      for (let i = 0; i <= N; i++) {
+        const hr = (i / N) * 24;
+        const x = xAt(hr);
+        const y = yAt(loadFracAt(hr));
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.lineTo(padL + plotW, yAt(BASELOAD_FRAC));
+      ctx.lineTo(padL, yAt(BASELOAD_FRAC));
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+      drawLinePlot(ctx, rect, loadPts, 0, 24, 0, 1, {
+        color: colors.accent,
+        lineWidth: 1.8,
+      });
+      // Reserve dashed line (load + 10% headroom)
+      const reservePts = loadPts.map((p) => ({ x: p.x, y: p.y + 0.1 }));
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.setLineDash([5, 4]);
+      drawLinePlot(ctx, rect, reservePts, 0, 24, 0, 1, {
+        color: colors.pink,
+        lineWidth: 1.2,
+      });
+      ctx.setLineDash([]);
+      ctx.restore();
+      drawVLine(ctx, rect, hour, 0, 24, {
+        color: colors.text,
+        lineWidth: 1.2,
+        alpha: 0.7,
+        dash: undefined,
+      });
+      ctx.fillStyle = colors.accent;
+      ctx.beginPath();
+      ctx.arc(xAt(hour), yAt(loadFracAt(hour)), 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      const legX = padL + 8;
+      let legY = padT + 8;
+      const lg = (color: string, label: string) => {
+        ctx.fillStyle = color;
+        ctx.fillRect(legX, legY + 4, 14, 4);
+        drawLabel(ctx, {
+          x: legX + 20,
+          y: legY + 2,
+          text: label,
           color: colors.text,
-          lineWidth: 1.2,
-          alpha: 0.7,
-          dash: undefined,
         });
-        ctx.fillStyle = colors.accent;
-        ctx.beginPath();
-        ctx.arc(xAt(hour), yAt(loadFracAt(hour)), 5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        const legX = padL + 8;
-        let legY = padT + 8;
-        const lg = (color: string, label: string) => {
-                ctx.fillStyle = color;
-                ctx.fillRect(legX, legY + 4, 14, 4);
-                drawLabel(ctx, {
-                  x: legX + 20,
-                  y: legY + 2,
-                  text: label,
-                  color: colors.text,
-                });
-                legY += 14;
-              };
-        lg(withAlpha(colors.teal, 0.6), 'baseload');
-        lg(withAlpha(colors.accent, 0.7), 'peakers');
-        lg(withAlpha(colors.pink, 0.7), 'reserve (dashed)');
-        ctx.restore();
-      },
-      [],
-    );
+        legY += 14;
+      };
+      lg(withAlpha(colors.teal, 0.6), 'baseload');
+      lg(withAlpha(colors.accent, 0.7), 'peakers');
+      lg(withAlpha(colors.pink, 0.7), 'reserve (dashed)');
+      ctx.restore();
+    },
+    [],
+  );
 
   return (
     <Demo

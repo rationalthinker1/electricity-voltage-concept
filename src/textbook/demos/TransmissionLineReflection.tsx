@@ -25,7 +25,6 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -42,114 +41,114 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
 
   const stateRef = useSimState({ Gamma });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, simTime) => {
-        const { Gamma } = stateRef.current;
-        const t = (simTime) % 5;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padL = 50,
-                padR = 50,
-                padT = 40,
-                padB = 40;
-        const lineX0 = padL,
-                lineX1 = w - padR;
-        const cy = padT + (h - padT - padB) / 2;
-        ctx.strokeStyle = colors.textDim;
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        ctx.moveTo(lineX0, cy - 18);
-        ctx.lineTo(lineX1, cy - 18);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(lineX0, cy + 18);
-        ctx.lineTo(lineX1, cy + 18);
-        ctx.stroke();
-        ctx.strokeStyle = '#ff6b2a';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(lineX0 - 16, cy - 18);
-        ctx.lineTo(lineX0, cy - 18);
-        ctx.moveTo(lineX0 - 16, cy + 18);
-        ctx.lineTo(lineX0, cy + 18);
-        ctx.moveTo(lineX0 - 16, cy - 22);
-        ctx.lineTo(lineX0 - 16, cy + 22);
-        ctx.stroke();
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('source', lineX0 - 22, cy);
-        ctx.strokeStyle = colors.teal;
-        ctx.lineWidth = 2;
-        const y0r = cy - 14,
-                y1r = cy + 14;
-        const stepN = 6;
-        ctx.beginPath();
-        ctx.moveTo(lineX1, cy - 18);
-        ctx.lineTo(lineX1, y0r);
-        for (let i = 0; i < stepN; i++) {
-                const y = y0r + ((i + 0.5) / stepN) * (y1r - y0r);
-                const x = lineX1 + (i % 2 === 0 ? -6 : 6);
-                ctx.lineTo(x, y);
-              }
-        ctx.lineTo(lineX1, y1r);
-        ctx.lineTo(lineX1, cy + 18);
-        ctx.stroke();
-        ctx.fillStyle = colors.teal;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(`Z_L = ${ZL >= 1e5 ? '∞' : ZL.toFixed(0) + ' Ω'}`, lineX1 + 8, cy);
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText(`Z₀ = ${Z0} Ω`, (lineX0 + lineX1) / 2, cy + 28);
-        const Lx = lineX1 - lineX0;
-        const yPulse = (level: number) => cy - 24 - 26 * level;
-        const drawPulse = (xc: number, s: number) => {
-                if (Math.abs(s) < 0.01) return;
-                const sigma = 0.06 * Lx;
-                const pts: { x: number; y: number }[] = [];
-                for (let x = lineX0; x <= lineX1; x += 1) {
-                  const u = (x - xc) / sigma;
-                  const v = s * Math.exp((-u * u) / 2);
-                  pts.push({ x, y: yPulse(v) });
-                }
-                drawGlowPath(ctx, pts, {
-                  color: s > 0 ? withAlpha(colors.accent, 0.95) : withAlpha(colors.blue, 0.95),
-                  glowColor: s > 0 ? withAlpha(colors.accent, 0.35) : withAlpha(colors.blue, 0.35),
-                  lineWidth: 1.8,
-                });
-              };
-        if (t < 2) {
-                // Incident pulse moving right
-                const xc = lineX0 + (t / 2) * Lx;
-                drawPulse(xc, 1);
-              } else if (t < 4) {
-                // Reflected pulse moving left
-                const u = (t - 2) / 2;
-                const xc = lineX1 - u * Lx;
-                // also show transmitted (1+Γ) component as a small marker absorbed
-                drawPulse(xc, Gamma);
-              } else {
-                // brief pause then loop
-              }
-        ctx.fillStyle = colors.text;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('Γ = (Z_L − Z₀)/(Z_L + Z₀)', 10, 8);
-        ctx.textAlign = 'right';
-        ctx.fillText(
-                `Γ = ${Gamma.toFixed(3)}    |Γ| = ${Math.abs(Gamma).toFixed(3)}    VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`,
-                w - 10,
-                8,
-              );
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, simTime) => {
+      const { Gamma } = stateRef.current;
+      const t = simTime % 5;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padL = 50,
+        padR = 50,
+        padT = 40,
+        padB = 40;
+      const lineX0 = padL,
+        lineX1 = w - padR;
+      const cy = padT + (h - padT - padB) / 2;
+      ctx.strokeStyle = colors.textDim;
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(lineX0, cy - 18);
+      ctx.lineTo(lineX1, cy - 18);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(lineX0, cy + 18);
+      ctx.lineTo(lineX1, cy + 18);
+      ctx.stroke();
+      ctx.strokeStyle = '#ff6b2a';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(lineX0 - 16, cy - 18);
+      ctx.lineTo(lineX0, cy - 18);
+      ctx.moveTo(lineX0 - 16, cy + 18);
+      ctx.lineTo(lineX0, cy + 18);
+      ctx.moveTo(lineX0 - 16, cy - 22);
+      ctx.lineTo(lineX0 - 16, cy + 22);
+      ctx.stroke();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('source', lineX0 - 22, cy);
+      ctx.strokeStyle = colors.teal;
+      ctx.lineWidth = 2;
+      const y0r = cy - 14,
+        y1r = cy + 14;
+      const stepN = 6;
+      ctx.beginPath();
+      ctx.moveTo(lineX1, cy - 18);
+      ctx.lineTo(lineX1, y0r);
+      for (let i = 0; i < stepN; i++) {
+        const y = y0r + ((i + 0.5) / stepN) * (y1r - y0r);
+        const x = lineX1 + (i % 2 === 0 ? -6 : 6);
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(lineX1, y1r);
+      ctx.lineTo(lineX1, cy + 18);
+      ctx.stroke();
+      ctx.fillStyle = colors.teal;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`Z_L = ${ZL >= 1e5 ? '∞' : ZL.toFixed(0) + ' Ω'}`, lineX1 + 8, cy);
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText(`Z₀ = ${Z0} Ω`, (lineX0 + lineX1) / 2, cy + 28);
+      const Lx = lineX1 - lineX0;
+      const yPulse = (level: number) => cy - 24 - 26 * level;
+      const drawPulse = (xc: number, s: number) => {
+        if (Math.abs(s) < 0.01) return;
+        const sigma = 0.06 * Lx;
+        const pts: { x: number; y: number }[] = [];
+        for (let x = lineX0; x <= lineX1; x += 1) {
+          const u = (x - xc) / sigma;
+          const v = s * Math.exp((-u * u) / 2);
+          pts.push({ x, y: yPulse(v) });
+        }
+        drawGlowPath(ctx, pts, {
+          color: s > 0 ? withAlpha(colors.accent, 0.95) : withAlpha(colors.blue, 0.95),
+          glowColor: s > 0 ? withAlpha(colors.accent, 0.35) : withAlpha(colors.blue, 0.35),
+          lineWidth: 1.8,
+        });
+      };
+      if (t < 2) {
+        // Incident pulse moving right
+        const xc = lineX0 + (t / 2) * Lx;
+        drawPulse(xc, 1);
+      } else if (t < 4) {
+        // Reflected pulse moving left
+        const u = (t - 2) / 2;
+        const xc = lineX1 - u * Lx;
+        // also show transmitted (1+Γ) component as a small marker absorbed
+        drawPulse(xc, Gamma);
+      } else {
+        // brief pause then loop
+      }
+      ctx.fillStyle = colors.text;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('Γ = (Z_L − Z₀)/(Z_L + Z₀)', 10, 8);
+      ctx.textAlign = 'right';
+      ctx.fillText(
+        `Γ = ${Gamma.toFixed(3)}    |Γ| = ${Math.abs(Gamma).toFixed(3)}    VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`,
+        w - 10,
+        8,
+      );
+    },
+    [],
+  );
 
   return (
     <Demo

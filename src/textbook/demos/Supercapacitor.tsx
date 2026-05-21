@@ -17,7 +17,6 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -57,55 +56,55 @@ export function SupercapacitorDemo({ figure }: Props) {
 
   const stateRef = useSimState({ V, V_max });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const s = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const pX = 40,
-                pY = 22;
-        const pW = W - 56,
-                pH = H - 50;
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(pX, pY, pW, pH);
-        const yV = (v: number) => pY + pH - (v / s.V_max) * pH;
-        ctx.strokeStyle = withAlpha(colors.accent, 0.35);
-        ctx.setLineDash([4, 4]);
-        const yvm = yV(s.V_max);
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const s = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const pX = 40,
+        pY = 22;
+      const pW = W - 56,
+        pH = H - 50;
+      ctx.strokeStyle = colors.border;
+      ctx.strokeRect(pX, pY, pW, pH);
+      const yV = (v: number) => pY + pH - (v / s.V_max) * pH;
+      ctx.strokeStyle = withAlpha(colors.accent, 0.35);
+      ctx.setLineDash([4, 4]);
+      const yvm = yV(s.V_max);
+      ctx.beginPath();
+      ctx.moveTo(pX, yvm);
+      ctx.lineTo(pX + pW, yvm);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const trace = traceRef.current;
+      if (trace.length > 1) {
+        const tMin = trace[0]!.t;
+        const tMax = trace[trace.length - 1]!.t;
+        const tSpan = Math.max(tMax - tMin, 1e-6);
+        ctx.strokeStyle = colors.pink;
+        ctx.lineWidth = 1.8;
         ctx.beginPath();
-        ctx.moveTo(pX, yvm);
-        ctx.lineTo(pX + pW, yvm);
+        for (let i = 0; i < trace.length; i++) {
+          const p = trace[i]!;
+          const x = pX + ((p.t - tMin) / tSpan) * pW;
+          const y = yV(p.v);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
         ctx.stroke();
-        ctx.setLineDash([]);
-        const trace = traceRef.current;
-        if (trace.length > 1) {
-                const tMin = trace[0]!.t;
-                const tMax = trace[trace.length - 1]!.t;
-                const tSpan = Math.max(tMax - tMin, 1e-6);
-                ctx.strokeStyle = colors.pink;
-                ctx.lineWidth = 1.8;
-                ctx.beginPath();
-                for (let i = 0; i < trace.length; i++) {
-                  const p = trace[i]!;
-                  const x = pX + ((p.t - tMin) / tSpan) * pW;
-                  const y = yV(p.v);
-                  if (i === 0) ctx.moveTo(x, y);
-                  else ctx.lineTo(x, y);
-                }
-                ctx.stroke();
-              }
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('V(t)', pX, 6);
-        ctx.textAlign = 'right';
-        ctx.fillText(`V_max = ${s.V_max.toFixed(2)} V`, pX + pW - 4, yvm - 4);
-        ctx.textAlign = 'right';
-        ctx.fillText(`V = ${s.V.toFixed(2)} V`, pX + pW, pY + pH + 4);
-      },
-      [],
-    );
+      }
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('V(t)', pX, 6);
+      ctx.textAlign = 'right';
+      ctx.fillText(`V_max = ${s.V_max.toFixed(2)} V`, pX + pW - 4, yvm - 4);
+      ctx.textAlign = 'right';
+      ctx.fillText(`V = ${s.V.toFixed(2)} V`, pX + pW, pY + pH + 4);
+    },
+    [],
+  );
 
   return (
     <Demo

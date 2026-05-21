@@ -29,13 +29,7 @@ import { Num } from '@/components/Num';
 import { PHYS } from '@/lib/physics';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import {
-  depthSortIndices,
-  project,
-  v3,
-  type OrbitCamera,
-  type Vec3,
-} from '@/lib/projection3d';
+import { depthSortIndices, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 import { useCanvasCache } from '@/lib/useCanvasCache';
 import { useOrbitScene } from '@/lib/useOrbitScene';
 
@@ -86,57 +80,54 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
     distance: 6.5,
   });
 
-  const getStatic = useCanvasCache(
-    (octx, sw, sh, _dpr) => {
-      const cam = camRef.current;
-      octx.clearRect(0, 0, sw, sh);
+  const getStatic = useCanvasCache((octx, sw, sh, _dpr) => {
+    const cam = camRef.current;
+    octx.clearRect(0, 0, sw, sh);
 
-      // Outer braid rims (front + back, at both ends + a few middle hoops).
-      const xs = [-X_HALF, -X_HALF / 2, 0, X_HALF / 2, X_HALF];
-      for (const x of xs) {
-        drawRim(octx, rimPoints(R_OUTER, x), cam, sw, sh, {
-          frontColor: withAlpha(getCanvasColors().textDim, 0.55),
-          backColor: withAlpha(getCanvasColors().textDim, 0.18),
-          lineWidth: 1.0,
-          backDash: [4, 4],
-        });
-      }
-      // Inner conductor rims (more saturated).
-      for (const x of [-X_HALF, 0, X_HALF]) {
-        drawRim(octx, rimPoints(R_INNER, x), cam, sw, sh, {
-          frontColor: withAlpha(getCanvasColors().accent, 0.85),
-          backColor: withAlpha(getCanvasColors().accent, 0.35),
-          lineWidth: 1.2,
-          backDash: [4, 4],
-        });
-      }
+    // Outer braid rims (front + back, at both ends + a few middle hoops).
+    const xs = [-X_HALF, -X_HALF / 2, 0, X_HALF / 2, X_HALF];
+    for (const x of xs) {
+      drawRim(octx, rimPoints(R_OUTER, x), cam, sw, sh, {
+        frontColor: withAlpha(getCanvasColors().textDim, 0.55),
+        backColor: withAlpha(getCanvasColors().textDim, 0.18),
+        lineWidth: 1.0,
+        backDash: [4, 4],
+      });
+    }
+    // Inner conductor rims (more saturated).
+    for (const x of [-X_HALF, 0, X_HALF]) {
+      drawRim(octx, rimPoints(R_INNER, x), cam, sw, sh, {
+        frontColor: withAlpha(getCanvasColors().accent, 0.85),
+        backColor: withAlpha(getCanvasColors().accent, 0.35),
+        lineWidth: 1.2,
+        backDash: [4, 4],
+      });
+    }
 
-      // Axial wireframe lines along the outer braid (8 longitudinal lines).
-      const N_LONG = 8;
-      for (let i = 0; i < N_LONG; i++) {
-        const phi = (i / N_LONG) * Math.PI * 2;
-        const y = R_OUTER * Math.cos(phi);
-        const z = R_OUTER * Math.sin(phi);
-        const front = z >= 0;
-        const p1 = project(v3(-X_HALF, y, z), cam, sw, sh);
-        const p2 = project(v3(+X_HALF, y, z), cam, sw, sh);
-        octx.strokeStyle = front
-          ? withAlpha(getCanvasColors().textDim, 0.45)
-          : withAlpha(getCanvasColors().textDim, 0.14);
-        octx.lineWidth = 1;
-        octx.setLineDash(front ? [] : [4, 4]);
-        octx.beginPath();
-        octx.moveTo(p1.x, p1.y);
-        octx.lineTo(p2.x, p2.y);
-        octx.stroke();
-      }
-      octx.setLineDash([]);
+    // Axial wireframe lines along the outer braid (8 longitudinal lines).
+    const N_LONG = 8;
+    for (let i = 0; i < N_LONG; i++) {
+      const phi = (i / N_LONG) * Math.PI * 2;
+      const y = R_OUTER * Math.cos(phi);
+      const z = R_OUTER * Math.sin(phi);
+      const front = z >= 0;
+      const p1 = project(v3(-X_HALF, y, z), cam, sw, sh);
+      const p2 = project(v3(+X_HALF, y, z), cam, sw, sh);
+      octx.strokeStyle = front
+        ? withAlpha(getCanvasColors().textDim, 0.45)
+        : withAlpha(getCanvasColors().textDim, 0.14);
+      octx.lineWidth = 1;
+      octx.setLineDash(front ? [] : [4, 4]);
+      octx.beginPath();
+      octx.moveTo(p1.x, p1.y);
+      octx.lineTo(p2.x, p2.y);
+      octx.stroke();
+    }
+    octx.setLineDash([]);
 
-      // Inner conductor body — tinted band drawn as filled silhouette.
-      drawInnerConductorBody(octx, cam, sw, sh);
-    },
-    [],
-  );
+    // Inner conductor body — tinted band drawn as filled silhouette.
+    drawInnerConductorBody(octx, cam, sw, sh);
+  }, []);
 
   const computed = useMemo(() => {
     // Power delivered.
@@ -163,151 +154,154 @@ export function PoyntingCoax3DDemo({ figure }: Props) {
     stateRef.current = { I, V, showE, showB, showS, computed };
   }, [I, V, showE, showB, showS, computed]);
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w: W, h: H, dpr, canvas } = info;
-    let raf = 0;
+  const setup = useCallback(
+    (info: CanvasInfo) => {
+      const { ctx, w: W, h: H, dpr, canvas } = info;
+      let raf = 0;
 
-    const cam = camRef.current;
-    const dispose = attachOrbitScene(canvas);
+      const cam = camRef.current;
+      const dispose = attachOrbitScene(canvas);
 
-    function draw() {
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, W, H);
+      function draw() {
+        ctx.fillStyle = getCanvasColors().bg;
+        ctx.fillRect(0, 0, W, H);
 
-      const s = stateRef.current;
+        const s = stateRef.current;
 
-      // Background scaffolding (cached).
-      // Background scaffolding (cached). Camera angles quantized to 0.04 rad
-      // buckets become the cache key; small nudges share a bake.
-      const yawQ = Math.round(cam.yaw / 0.04) * 0.04;
-      const pitQ = Math.round(cam.pitch / 0.04) * 0.04;
-      const off = getStatic(W, H, dpr, `y${yawQ.toFixed(2)}|p${pitQ.toFixed(2)}`);
-      if (off) ctx.drawImage(off, 0, 0, W, H);
+        // Background scaffolding (cached).
+        // Background scaffolding (cached). Camera angles quantized to 0.04 rad
+        // buckets become the cache key; small nudges share a bake.
+        const yawQ = Math.round(cam.yaw / 0.04) * 0.04;
+        const pitQ = Math.round(cam.pitch / 0.04) * 0.04;
+        const off = getStatic(W, H, dpr, `y${yawQ.toFixed(2)}|p${pitQ.toFixed(2)}`);
+        if (off) ctx.drawImage(off, 0, 0, W, H);
 
-      // ── Build the dynamic arrow list ─────────────────────────────────
-      const arrows: ArrowSpec[] = [];
+        // ── Build the dynamic arrow list ─────────────────────────────────
+        const arrows: ArrowSpec[] = [];
 
-      // E-field arrows: radial, inside dielectric, on a sparse grid of
-      // (x, phi) at a single mid-radius for clarity.
-      if (s.showE) {
-        const nx = 5,
-          nphi = 8;
-        const r_mid = (R_INNER + R_OUTER) / 2;
-        for (let i = 0; i < nx; i++) {
-          const x = -X_HALF + ((i + 0.5) / nx) * (2 * X_HALF);
+        // E-field arrows: radial, inside dielectric, on a sparse grid of
+        // (x, phi) at a single mid-radius for clarity.
+        if (s.showE) {
+          const nx = 5,
+            nphi = 8;
+          const r_mid = (R_INNER + R_OUTER) / 2;
+          for (let i = 0; i < nx; i++) {
+            const x = -X_HALF + ((i + 0.5) / nx) * (2 * X_HALF);
+            for (let j = 0; j < nphi; j++) {
+              const phi = (j / nphi) * Math.PI * 2;
+              const r0 = R_INNER + 0.04;
+              const r1 = R_OUTER - 0.04;
+              const cy = Math.cos(phi),
+                sy = Math.sin(phi);
+              const from = v3(x, r0 * cy, r0 * sy);
+              const to = v3(x, r1 * cy, r1 * sy);
+              arrows.push({
+                from,
+                to,
+                anchor: v3(x, r_mid * cy, r_mid * sy),
+                kind: 'E',
+              });
+            }
+          }
+        }
+
+        // B-field arrows: tangential to a circle in the y-z plane, at a
+        // few axial slices. Each arrow is a short chord representing the
+        // local azimuthal direction.
+        if (s.showB) {
+          const nx = 4,
+            nphi = 12;
+          const r_b = (R_INNER + R_OUTER) / 2 + 0.05;
+          const arc = ((2 * Math.PI) / nphi) * 0.55; // half-length of chord in radians
+          for (let i = 0; i < nx; i++) {
+            const x = -X_HALF + ((i + 0.5) / nx) * (2 * X_HALF);
+            for (let j = 0; j < nphi; j++) {
+              const phi = (j / nphi) * Math.PI * 2;
+              const phi0 = phi - arc;
+              const phi1 = phi + arc;
+              const from = v3(x, r_b * Math.cos(phi0), r_b * Math.sin(phi0));
+              const to = v3(x, r_b * Math.cos(phi1), r_b * Math.sin(phi1));
+              arrows.push({
+                from,
+                to,
+                anchor: v3(x, r_b * Math.cos(phi), r_b * Math.sin(phi)),
+                kind: 'B',
+              });
+            }
+          }
+        }
+
+        // Poynting arrows: axial (+x), inside the dielectric, at a sparse
+        // (phi, r) grid spanning the cross-section. Length depends on V·I
+        // for visual emphasis, but always axial.
+        if (s.showS) {
+          const nphi = 8,
+            nr = 2;
+          const power = Math.min(1.6, Math.max(0.5, 0.6 + 0.05 * Math.log10(s.I * s.V + 1)));
+          const baseLen = 0.55 * power;
           for (let j = 0; j < nphi; j++) {
-            const phi = (j / nphi) * Math.PI * 2;
-            const r0 = R_INNER + 0.04;
-            const r1 = R_OUTER - 0.04;
-            const cy = Math.cos(phi),
-              sy = Math.sin(phi);
-            const from = v3(x, r0 * cy, r0 * sy);
-            const to = v3(x, r1 * cy, r1 * sy);
-            arrows.push({
-              from,
-              to,
-              anchor: v3(x, r_mid * cy, r_mid * sy),
-              kind: 'E',
-            });
+            const phi = (j / nphi) * Math.PI * 2 + Math.PI / nphi;
+            for (let k = 0; k < nr; k++) {
+              const r = R_INNER + 0.1 + (k + 0.5) * ((R_OUTER - R_INNER - 0.2) / nr);
+              const cy = Math.cos(phi),
+                sz = Math.sin(phi);
+              const x0 = -baseLen / 2;
+              // Stagger axially so multiple streams are visible per slice.
+              const stagger = (((j + k) % 3) - 1) * 0.6;
+              const from = v3(x0 + stagger, r * cy, r * sz);
+              const to = v3(x0 + stagger + baseLen, r * cy, r * sz);
+              arrows.push({
+                from,
+                to,
+                anchor: v3(stagger, r * cy, r * sz),
+                kind: 'S',
+              });
+            }
           }
         }
-      }
 
-      // B-field arrows: tangential to a circle in the y-z plane, at a
-      // few axial slices. Each arrow is a short chord representing the
-      // local azimuthal direction.
-      if (s.showB) {
-        const nx = 4,
-          nphi = 12;
-        const r_b = (R_INNER + R_OUTER) / 2 + 0.05;
-        const arc = ((2 * Math.PI) / nphi) * 0.55; // half-length of chord in radians
-        for (let i = 0; i < nx; i++) {
-          const x = -X_HALF + ((i + 0.5) / nx) * (2 * X_HALF);
-          for (let j = 0; j < nphi; j++) {
-            const phi = (j / nphi) * Math.PI * 2;
-            const phi0 = phi - arc;
-            const phi1 = phi + arc;
-            const from = v3(x, r_b * Math.cos(phi0), r_b * Math.sin(phi0));
-            const to = v3(x, r_b * Math.cos(phi1), r_b * Math.sin(phi1));
-            arrows.push({
-              from,
-              to,
-              anchor: v3(x, r_b * Math.cos(phi), r_b * Math.sin(phi)),
-              kind: 'B',
-            });
-          }
+        // Painter's-algorithm: draw back-to-front.
+        const order = depthSortIndices(arrows, cam, W, H);
+        for (const idx of order) {
+          const a = arrows[idx]!;
+          drawArrow(ctx, a, cam, W, H);
         }
+
+        // Annotations
+        ctx.font = '11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillStyle = getCanvasColors().textDim;
+        ctx.fillText('drag to rotate', 12, 12);
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.fillStyle = getCanvasColors().textDim;
+        ctx.fillText(
+          `inner radius a = ${R_INNER.toFixed(2)}   outer b = ${R_OUTER.toFixed(2)}`,
+          12,
+          28,
+        );
+
+        ctx.textAlign = 'right';
+        ctx.restore();
+        ctx.fillStyle = getCanvasColors().pink;
+        ctx.fillText('E  pink · radial', W - 12, 12);
+        ctx.fillStyle = getCanvasColors().teal;
+        ctx.fillText('B  teal · circumferential', W - 12, 28);
+        ctx.fillStyle = getCanvasColors().accent;
+        ctx.fillText('S = E × B / μ₀ · axial', W - 12, 44);
+
+        raf = requestAnimationFrame(draw);
       }
-
-      // Poynting arrows: axial (+x), inside the dielectric, at a sparse
-      // (phi, r) grid spanning the cross-section. Length depends on V·I
-      // for visual emphasis, but always axial.
-      if (s.showS) {
-        const nphi = 8,
-          nr = 2;
-        const power = Math.min(1.6, Math.max(0.5, 0.6 + 0.05 * Math.log10(s.I * s.V + 1)));
-        const baseLen = 0.55 * power;
-        for (let j = 0; j < nphi; j++) {
-          const phi = (j / nphi) * Math.PI * 2 + Math.PI / nphi;
-          for (let k = 0; k < nr; k++) {
-            const r = R_INNER + 0.1 + (k + 0.5) * ((R_OUTER - R_INNER - 0.2) / nr);
-            const cy = Math.cos(phi),
-              sz = Math.sin(phi);
-            const x0 = -baseLen / 2;
-            // Stagger axially so multiple streams are visible per slice.
-            const stagger = (((j + k) % 3) - 1) * 0.6;
-            const from = v3(x0 + stagger, r * cy, r * sz);
-            const to = v3(x0 + stagger + baseLen, r * cy, r * sz);
-            arrows.push({
-              from,
-              to,
-              anchor: v3(stagger, r * cy, r * sz),
-              kind: 'S',
-            });
-          }
-        }
-      }
-
-      // Painter's-algorithm: draw back-to-front.
-      const order = depthSortIndices(arrows, cam, W, H);
-      for (const idx of order) {
-        const a = arrows[idx]!;
-        drawArrow(ctx, a, cam, W, H);
-      }
-
-      // Annotations
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText('drag to rotate', 12, 12);
-      ctx.save();
-      ctx.globalAlpha = 0.6;
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.fillText(
-        `inner radius a = ${R_INNER.toFixed(2)}   outer b = ${R_OUTER.toFixed(2)}`,
-        12,
-        28,
-      );
-
-      ctx.textAlign = 'right';
-      ctx.restore();
-      ctx.fillStyle = getCanvasColors().pink;
-      ctx.fillText('E  pink · radial', W - 12, 12);
-      ctx.fillStyle = getCanvasColors().teal;
-      ctx.fillText('B  teal · circumferential', W - 12, 28);
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.fillText('S = E × B / μ₀ · axial', W - 12, 44);
 
       raf = requestAnimationFrame(draw);
-    }
-
-    raf = requestAnimationFrame(draw);
-    return () => {
-      cancelAnimationFrame(raf);
-      dispose();
-    };
-  }, [getStatic]);
+      return () => {
+        cancelAnimationFrame(raf);
+        dispose();
+      };
+    },
+    [getStatic],
+  );
 
   return (
     <Demo

@@ -16,7 +16,6 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -35,73 +34,73 @@ export function SnellsLawDemo({ figure }: Props) {
   const critDeg = n1 > n2 ? (Math.asin(n2 / n1) * 180) / Math.PI : NaN;
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const { thetaDeg, n1, n2 } = stateRef.current;
-        const th1 = (thetaDeg * Math.PI) / 180;
-        const sr = (n1 / n2) * Math.sin(th1);
-        const totalIntRefl = Math.abs(sr) > 1;
-        const th2 = totalIntRefl ? 0 : Math.asin(sr);
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const cx = W / 2;
-        const cy = H / 2;
-        ctx.fillStyle = withAlpha(colors.blue, 0.06);
-        ctx.fillRect(0, 0, W, cy);
-        ctx.fillStyle = withAlpha(colors.teal, 0.1);
-        ctx.fillRect(0, cy, W, H - cy);
-        ctx.strokeStyle = colors.textDim;
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        ctx.moveTo(0, cy);
-        ctx.lineTo(W, cy);
-        ctx.stroke();
-        ctx.setLineDash([4, 5]);
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(cx, 10);
-        ctx.lineTo(cx, H - 10);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        const L = Math.min(W, H) * 0.42;
-        const ix = cx - L * Math.sin(th1);
-        const iy = cy - L * Math.cos(th1);
-        drawRay(ctx, ix, iy, cx, cy, withAlpha(colors.accent, 0.9), 2.2);
-        if (totalIntRefl) {
-                // Reflected ray inside medium 1 (mirror about the normal)
-                const rx = cx + L * Math.sin(th1);
-                const ry = cy - L * Math.cos(th1);
-                drawRay(ctx, cx, cy, rx, ry, withAlpha(colors.pink, 0.9), 2.2);
-                drawLabel(ctx, {
-                  x: cx,
-                  y: H - 16,
-                  text: 'TOTAL INTERNAL REFLECTION',
-                  color: colors.pink,
-                  size: 12,
-                  align: 'center',
-                  weight: 'bold',
-                });
-              } else {
-                // Refracted ray in medium 2
-                const tx = cx + L * Math.sin(th2);
-                const ty = cy + L * Math.cos(th2);
-                drawRay(ctx, cx, cy, tx, ty, withAlpha(colors.teal, 0.95), 2.2);
-              }
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'left';
-        ctx.fillText(`n₁ = ${n1.toFixed(2)}`, 12, 18);
-        ctx.fillText(`n₂ = ${n2.toFixed(2)}`, 12, H - 8);
-        ctx.fillStyle = colors.accent;
-        ctx.fillText(`θ₁ = ${thetaDeg.toFixed(1)}°`, cx + 8, cy - 30);
-        if (!totalIntRefl) {
-                ctx.fillStyle = colors.teal;
-                ctx.fillText(`θ₂ = ${((th2 * 180) / Math.PI).toFixed(1)}°`, cx + 8, cy + 36);
-              }
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const { thetaDeg, n1, n2 } = stateRef.current;
+      const th1 = (thetaDeg * Math.PI) / 180;
+      const sr = (n1 / n2) * Math.sin(th1);
+      const totalIntRefl = Math.abs(sr) > 1;
+      const th2 = totalIntRefl ? 0 : Math.asin(sr);
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const cx = W / 2;
+      const cy = H / 2;
+      ctx.fillStyle = withAlpha(colors.blue, 0.06);
+      ctx.fillRect(0, 0, W, cy);
+      ctx.fillStyle = withAlpha(colors.teal, 0.1);
+      ctx.fillRect(0, cy, W, H - cy);
+      ctx.strokeStyle = colors.textDim;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(0, cy);
+      ctx.lineTo(W, cy);
+      ctx.stroke();
+      ctx.setLineDash([4, 5]);
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(cx, 10);
+      ctx.lineTo(cx, H - 10);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const L = Math.min(W, H) * 0.42;
+      const ix = cx - L * Math.sin(th1);
+      const iy = cy - L * Math.cos(th1);
+      drawRay(ctx, ix, iy, cx, cy, withAlpha(colors.accent, 0.9), 2.2);
+      if (totalIntRefl) {
+        // Reflected ray inside medium 1 (mirror about the normal)
+        const rx = cx + L * Math.sin(th1);
+        const ry = cy - L * Math.cos(th1);
+        drawRay(ctx, cx, cy, rx, ry, withAlpha(colors.pink, 0.9), 2.2);
+        drawLabel(ctx, {
+          x: cx,
+          y: H - 16,
+          text: 'TOTAL INTERNAL REFLECTION',
+          color: colors.pink,
+          size: 12,
+          align: 'center',
+          weight: 'bold',
+        });
+      } else {
+        // Refracted ray in medium 2
+        const tx = cx + L * Math.sin(th2);
+        const ty = cy + L * Math.cos(th2);
+        drawRay(ctx, cx, cy, tx, ty, withAlpha(colors.teal, 0.95), 2.2);
+      }
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      ctx.fillText(`n₁ = ${n1.toFixed(2)}`, 12, 18);
+      ctx.fillText(`n₂ = ${n2.toFixed(2)}`, 12, H - 8);
+      ctx.fillStyle = colors.accent;
+      ctx.fillText(`θ₁ = ${thetaDeg.toFixed(1)}°`, cx + 8, cy - 30);
+      if (!totalIntRefl) {
+        ctx.fillStyle = colors.teal;
+        ctx.fillText(`θ₂ = ${((th2 * 180) / Math.PI).toFixed(1)}°`, cx + 8, cy + 36);
+      }
+    },
+    [],
+  );
 
   return (
     <Demo

@@ -23,7 +23,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -52,208 +51,208 @@ export function MOSFETOperationDemo({ figure }: Props) {
 
   const stateRef = useSimState({ V_GS, V_DS });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { V_GS, V_DS } = stateRef.current;
-        const Vov = Math.max(0, V_GS - V_T);
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const split = Math.floor(w * 0.5);
-        const dL = 18,
-                dR = split - 12,
-                dT = 30,
-                dB = h - 26;
-        const dW = dR - dL,
-                dH = dB - dT;
-        ctx.save();
-        ctx.globalAlpha = 0.1;
-        ctx.fillStyle = colors.blue;
-        ctx.fillRect(dL, dT + dH * 0.4, dW, dH * 0.6);
-        ctx.restore();
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(dL, dT + dH * 0.4, dW, dH * 0.6);
-        const srcL = dL + 6,
-                srcR = dL + dW * 0.28;
-        const drnL = dL + dW * 0.72,
-                drnR = dR - 6;
-        const ndT = dT + dH * 0.4;
-        const ndB = ndT + dH * 0.35;
-        ctx.fillStyle = colors.pink;
-        ctx.fillRect(srcL, ndT, srcR - srcL, ndB - ndT);
-        ctx.fillRect(drnL, ndT, drnR - drnL, ndB - ndT);
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(srcL, ndT, srcR - srcL, ndB - ndT);
-        ctx.strokeRect(drnL, ndT, drnR - drnL, ndB - ndT);
-        const oxL = srcR + 2,
-                oxR = drnL - 2;
-        const oxT = ndT - 8,
-                oxB = ndT;
-        ctx.save();
-        ctx.globalAlpha = 0.12;
-        ctx.fillStyle = colors.text;
-        ctx.fillRect(oxL, oxT, oxR - oxL, oxB - oxT);
-        ctx.restore();
-        ctx.save();
-        ctx.globalAlpha = 0.22;
-        ctx.fillStyle = colors.accent;
-        ctx.fillRect(oxL, dT + 14, oxR - oxL, oxT - (dT + 14));
-        ctx.restore();
-        ctx.strokeStyle = colors.accent;
-        ctx.strokeRect(oxL, dT + 14, oxR - oxL, oxT - (dT + 14));
-        ctx.fillStyle = colors.textDim;
-        ctx.font = 'bold 10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('S', (srcL + srcR) / 2, (ndT + ndB) / 2);
-        ctx.fillText('D', (drnL + drnR) / 2, (ndT + ndB) / 2);
-        ctx.fillText('G', (oxL + oxR) / 2, dT + 22);
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.save();
-        ctx.globalAlpha = 0.65;
-        ctx.fillStyle = colors.textDim;
-        ctx.textBaseline = 'top';
-        ctx.fillText('oxide', (oxL + oxR) / 2, oxT - 1);
-        ctx.fillText('p-substrate (body)', (dL + dR) / 2, dT + dH * 0.85);
-        ctx.fillText('n+', (srcL + srcR) / 2, ndB - 12);
-        ctx.fillText('n+', (drnL + drnR) / 2, ndB - 12);
-        if (Vov > 0) {
-                // density ∝ Vov
-                const channelAlpha = Math.min(0.85, 0.15 + 0.7 * (Vov / 4));
-                // for V_DS < Vov, channel is uniform; for V_DS > Vov, channel
-                // is pinched off at the drain end.
-                const pinched = V_DS > Vov;
-                ctx.fillStyle = `rgba(255,107,42,${channelAlpha})`;
-                ctx.beginPath();
-                ctx.moveTo(oxL, ndT - 1);
-                ctx.lineTo(oxR, ndT - 1);
-                if (pinched) {
-                  // taper to a point at the drain side
-                  ctx.lineTo(oxR - 4, ndT + 4);
-                  ctx.lineTo(oxL, ndT + 5);
-                } else {
-                  ctx.lineTo(oxR, ndT + 5);
-                  ctx.lineTo(oxL, ndT + 5);
-                }
-                ctx.closePath();
-                ctx.fill();
-              }
-        if (Vov > 0 && V_DS > 0) {
-                ctx.strokeStyle = colors.accent;
-                ctx.lineWidth = 1.4;
-                ctx.beginPath();
-                ctx.moveTo(oxR - 4, ndT + 2);
-                ctx.lineTo(oxL + 8, ndT + 2);
-                ctx.stroke();
-                ctx.fillStyle = colors.accent;
-                ctx.beginPath();
-                ctx.moveTo(oxL + 4, ndT + 2);
-                ctx.lineTo(oxL + 10, ndT - 1);
-                ctx.lineTo(oxL + 10, ndT + 5);
-                ctx.closePath();
-                ctx.fill();
-              } else if (Vov === 0) {
-                drawLabel(ctx, {
-                  x: (oxL + oxR) / 2,
-                  y: ndT + 2,
-                  text: 'no channel',
-                  color: colors.textDim,
-                  align: 'center',
-                  baseline: 'middle',
-                });
-              }
-        ctx.restore();
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText(`n-MOSFET (V_T = ${V_T.toFixed(1)} V)`, dL, 8);
-        const pL = split + 50,
-                pR = w - 12,
-                pT = 30,
-                pB = h - 26;
-        const pW = pR - pL,
-                pH = pB - pT;
-        const Vmin = 0,
-                Vmax = 5;
-        const Imax = (k_n / 2) * 16;
-        const xOf = (v: number) => pL + ((v - Vmin) / (Vmax - Vmin)) * pW;
-        const yOf = (i: number) => pT + pH - (i / Imax) * pH;
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(pL, pT, pW, pH);
-        ctx.strokeStyle = colors.border;
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { V_GS, V_DS } = stateRef.current;
+      const Vov = Math.max(0, V_GS - V_T);
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const split = Math.floor(w * 0.5);
+      const dL = 18,
+        dR = split - 12,
+        dT = 30,
+        dB = h - 26;
+      const dW = dR - dL,
+        dH = dB - dT;
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = colors.blue;
+      ctx.fillRect(dL, dT + dH * 0.4, dW, dH * 0.6);
+      ctx.restore();
+      ctx.strokeStyle = colors.border;
+      ctx.strokeRect(dL, dT + dH * 0.4, dW, dH * 0.6);
+      const srcL = dL + 6,
+        srcR = dL + dW * 0.28;
+      const drnL = dL + dW * 0.72,
+        drnR = dR - 6;
+      const ndT = dT + dH * 0.4;
+      const ndB = ndT + dH * 0.35;
+      ctx.fillStyle = colors.pink;
+      ctx.fillRect(srcL, ndT, srcR - srcL, ndB - ndT);
+      ctx.fillRect(drnL, ndT, drnR - drnL, ndB - ndT);
+      ctx.strokeStyle = colors.border;
+      ctx.strokeRect(srcL, ndT, srcR - srcL, ndB - ndT);
+      ctx.strokeRect(drnL, ndT, drnR - drnL, ndB - ndT);
+      const oxL = srcR + 2,
+        oxR = drnL - 2;
+      const oxT = ndT - 8,
+        oxB = ndT;
+      ctx.save();
+      ctx.globalAlpha = 0.12;
+      ctx.fillStyle = colors.text;
+      ctx.fillRect(oxL, oxT, oxR - oxL, oxB - oxT);
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle = colors.accent;
+      ctx.fillRect(oxL, dT + 14, oxR - oxL, oxT - (dT + 14));
+      ctx.restore();
+      ctx.strokeStyle = colors.accent;
+      ctx.strokeRect(oxL, dT + 14, oxR - oxL, oxT - (dT + 14));
+      ctx.fillStyle = colors.textDim;
+      ctx.font = 'bold 10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('S', (srcL + srcR) / 2, (ndT + ndB) / 2);
+      ctx.fillText('D', (drnL + drnR) / 2, (ndT + ndB) / 2);
+      ctx.fillText('G', (oxL + oxR) / 2, dT + 22);
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
+      ctx.textBaseline = 'top';
+      ctx.fillText('oxide', (oxL + oxR) / 2, oxT - 1);
+      ctx.fillText('p-substrate (body)', (dL + dR) / 2, dT + dH * 0.85);
+      ctx.fillText('n+', (srcL + srcR) / 2, ndB - 12);
+      ctx.fillText('n+', (drnL + drnR) / 2, ndB - 12);
+      if (Vov > 0) {
+        // density ∝ Vov
+        const channelAlpha = Math.min(0.85, 0.15 + 0.7 * (Vov / 4));
+        // for V_DS < Vov, channel is uniform; for V_DS > Vov, channel
+        // is pinched off at the drain end.
+        const pinched = V_DS > Vov;
+        ctx.fillStyle = `rgba(255,107,42,${channelAlpha})`;
         ctx.beginPath();
-        for (let v = 0; v <= Vmax; v++) {
-                ctx.moveTo(xOf(v), pT);
-                ctx.lineTo(xOf(v), pT + pH);
-              }
-        ctx.stroke();
-        ctx.save();
-        ctx.globalAlpha = 0.65;
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        for (let v = 0; v <= Vmax; v++) {
-                ctx.fillText(v.toFixed(0), xOf(v), pT + pH + 4);
-              }
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(`${(Imax * 1000).toFixed(0)} mA`, pL - 4, yOf(Imax));
-        ctx.fillText('0', pL - 4, yOf(0));
-        ctx.restore();
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('V_DS (volts)', pL + pW / 2, pT + pH + 18);
-        const traces = [1.5, 2.0, 2.5, 3.0];
-        traces.forEach((Vgs, k) => {
-                const t = k / (traces.length - 1);
-                const col = `rgba(${Math.round(255 - 100 * t)},${Math.round(107 + 30 * t)},${Math.round(42 + 80 * t)},0.95)`;
-                const lit = Math.abs(Vgs - V_GS) < 0.26;
-                ctx.strokeStyle = col;
-                ctx.lineWidth = lit ? 2.2 : 1.3;
-                ctx.beginPath();
-                const N = 200;
-                for (let j = 0; j <= N; j++) {
-                  const v = Vmin + (j / N) * (Vmax - Vmin);
-                  const i = ID(Vgs, v);
-                  const x = xOf(v);
-                  const y = yOf(Math.min(Imax, i));
-                  if (j === 0) ctx.moveTo(x, y);
-                  else ctx.lineTo(x, y);
-                }
-                ctx.stroke();
-        
-                const yEnd = yOf(Math.min(Imax, ID(Vgs, Vmax)));
-                drawLabel(ctx, {
-                  x: pL + pW - 6,
-                  y: yEnd - 8,
-                  text: `V_GS = ${Vgs.toFixed(1)} V`,
-                  color: col,
-                  align: 'right',
-                  baseline: 'middle',
-                });
-              });
-        const I_op = ID(V_GS, V_DS);
-        const opX = xOf(V_DS);
-        const opY = yOf(Math.min(Imax, I_op));
-        ctx.save();
-        ctx.globalAlpha = 0.45;
-        ctx.strokeStyle = colors.text;
-        ctx.setLineDash([3, 3]);
-        ctx.beginPath();
-        ctx.moveTo(opX, pT);
-        ctx.lineTo(opX, pT + pH);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.restore();
-        ctx.fillStyle = colors.text;
-        ctx.beginPath();
-        ctx.arc(opX, opY, 4, 0, Math.PI * 2);
+        ctx.moveTo(oxL, ndT - 1);
+        ctx.lineTo(oxR, ndT - 1);
+        if (pinched) {
+          // taper to a point at the drain side
+          ctx.lineTo(oxR - 4, ndT + 4);
+          ctx.lineTo(oxL, ndT + 5);
+        } else {
+          ctx.lineTo(oxR, ndT + 5);
+          ctx.lineTo(oxL, ndT + 5);
+        }
+        ctx.closePath();
         ctx.fill();
-      },
-      [],
-    );
+      }
+      if (Vov > 0 && V_DS > 0) {
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(oxR - 4, ndT + 2);
+        ctx.lineTo(oxL + 8, ndT + 2);
+        ctx.stroke();
+        ctx.fillStyle = colors.accent;
+        ctx.beginPath();
+        ctx.moveTo(oxL + 4, ndT + 2);
+        ctx.lineTo(oxL + 10, ndT - 1);
+        ctx.lineTo(oxL + 10, ndT + 5);
+        ctx.closePath();
+        ctx.fill();
+      } else if (Vov === 0) {
+        drawLabel(ctx, {
+          x: (oxL + oxR) / 2,
+          y: ndT + 2,
+          text: 'no channel',
+          color: colors.textDim,
+          align: 'center',
+          baseline: 'middle',
+        });
+      }
+      ctx.restore();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(`n-MOSFET (V_T = ${V_T.toFixed(1)} V)`, dL, 8);
+      const pL = split + 50,
+        pR = w - 12,
+        pT = 30,
+        pB = h - 26;
+      const pW = pR - pL,
+        pH = pB - pT;
+      const Vmin = 0,
+        Vmax = 5;
+      const Imax = (k_n / 2) * 16;
+      const xOf = (v: number) => pL + ((v - Vmin) / (Vmax - Vmin)) * pW;
+      const yOf = (i: number) => pT + pH - (i / Imax) * pH;
+      ctx.strokeStyle = colors.border;
+      ctx.strokeRect(pL, pT, pW, pH);
+      ctx.strokeStyle = colors.border;
+      ctx.beginPath();
+      for (let v = 0; v <= Vmax; v++) {
+        ctx.moveTo(xOf(v), pT);
+        ctx.lineTo(xOf(v), pT + pH);
+      }
+      ctx.stroke();
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      for (let v = 0; v <= Vmax; v++) {
+        ctx.fillText(v.toFixed(0), xOf(v), pT + pH + 4);
+      }
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`${(Imax * 1000).toFixed(0)} mA`, pL - 4, yOf(Imax));
+      ctx.fillText('0', pL - 4, yOf(0));
+      ctx.restore();
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('V_DS (volts)', pL + pW / 2, pT + pH + 18);
+      const traces = [1.5, 2.0, 2.5, 3.0];
+      traces.forEach((Vgs, k) => {
+        const t = k / (traces.length - 1);
+        const col = `rgba(${Math.round(255 - 100 * t)},${Math.round(107 + 30 * t)},${Math.round(42 + 80 * t)},0.95)`;
+        const lit = Math.abs(Vgs - V_GS) < 0.26;
+        ctx.strokeStyle = col;
+        ctx.lineWidth = lit ? 2.2 : 1.3;
+        ctx.beginPath();
+        const N = 200;
+        for (let j = 0; j <= N; j++) {
+          const v = Vmin + (j / N) * (Vmax - Vmin);
+          const i = ID(Vgs, v);
+          const x = xOf(v);
+          const y = yOf(Math.min(Imax, i));
+          if (j === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        const yEnd = yOf(Math.min(Imax, ID(Vgs, Vmax)));
+        drawLabel(ctx, {
+          x: pL + pW - 6,
+          y: yEnd - 8,
+          text: `V_GS = ${Vgs.toFixed(1)} V`,
+          color: col,
+          align: 'right',
+          baseline: 'middle',
+        });
+      });
+      const I_op = ID(V_GS, V_DS);
+      const opX = xOf(V_DS);
+      const opY = yOf(Math.min(Imax, I_op));
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.text;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(opX, pT);
+      ctx.lineTo(opX, pT + pH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+      ctx.fillStyle = colors.text;
+      ctx.beginPath();
+      ctx.arc(opX, opY, 4, 0, Math.PI * 2);
+      ctx.fill();
+    },
+    [],
+  );
 
   return (
     <Demo

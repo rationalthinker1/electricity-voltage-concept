@@ -13,7 +13,6 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -31,104 +30,104 @@ export function DoubleSlitDemo({ figure }: Props) {
   const fringeMm = ((lam * L) / d) * 1000;
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const { lamNm, dMicron, LMm } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const lam_ = lamNm * 1e-9;
-        const d_ = dMicron * 1e-6;
-        const L_ = LMm * 1e-3;
-        const fringe = (lam_ * L_) / d_;
-        const slitX = 40;
-        const screenX = W * 0.55;
-        const padTop = 30;
-        const padBot = 30;
-        const cy = H / 2;
-        ctx.save();
-        ctx.globalAlpha = 0.4;
-        ctx.strokeStyle = colors.text;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(slitX, padTop);
-        ctx.lineTo(slitX, H - padBot);
-        ctx.stroke();
-        const halfSlit = 22;
-        const slitTop = { x: slitX, y: cy - halfSlit };
-        const slitBot = { x: slitX, y: cy + halfSlit };
-        ctx.restore();
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(slitX - 3, slitTop.y - 4, 6, 8);
-        ctx.fillRect(slitX - 3, slitBot.y - 4, 6, 8);
-        ctx.strokeStyle = colors.teal;
-        ctx.lineWidth = 1.5;
-        ctx.strokeRect(slitX - 3, slitTop.y - 4, 6, 8);
-        ctx.strokeRect(slitX - 3, slitBot.y - 4, 6, 8);
-        ctx.save();
-        ctx.globalAlpha = 0.4;
-        ctx.strokeStyle = colors.text;
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        ctx.moveTo(screenX, padTop);
-        ctx.lineTo(screenX, H - padBot);
-        ctx.stroke();
-        const screenHalfMm = 25;
-        const Nrows = H - padTop - padBot;
-        const intensities: number[] = [];
-        for (let i = 0; i < Nrows; i++) {
-                const u = i / (Nrows - 1) - 0.5;
-                const y_m = u * screenHalfMm * 2 * 1e-3;
-                const sinTh = y_m / Math.sqrt(L_ * L_ + y_m * y_m);
-                const phi = (Math.PI * d_ * sinTh) / lam_;
-                const I = Math.cos(phi) ** 2;
-                intensities.push(I);
-              }
-        const [r, g, b] = wavelengthRGB(lamNm);
-        for (let i = 0; i < Nrows; i++) {
-                const I = intensities[i];
-                const alpha = 0.05 + 0.95 * I;
-                ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
-                ctx.fillRect(screenX - 5, padTop + i, 10, 1);
-              }
-        const plotL = screenX + 12;
-        const plotR = W - 20;
-        const plotW = plotR - plotL;
-        ctx.restore();
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(plotL, padTop);
-        ctx.lineTo(plotL, H - padBot);
-        ctx.stroke();
-        ctx.strokeStyle = `rgba(${r},${g},${b},0.95)`;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        for (let i = 0; i < Nrows; i++) {
-                const I = intensities[i];
-                const xx = plotL + I * plotW;
-                const yy = padTop + i;
-                if (i === 0) ctx.moveTo(xx, yy);
-                else ctx.lineTo(xx, yy);
-              }
-        ctx.stroke();
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(slitTop.x, slitTop.y);
-        ctx.lineTo(screenX, cy);
-        ctx.moveTo(slitBot.x, slitBot.y);
-        ctx.lineTo(screenX, cy);
-        ctx.stroke();
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'center';
-        ctx.fillText('slits', slitX, padTop - 8);
-        ctx.fillText('screen', screenX, padTop - 8);
-        ctx.fillText('I(y)', (plotL + plotR) / 2, H - 8);
-        ctx.fillText(`fringe Δy = ${(fringe * 1000).toFixed(2)} mm`, screenX + 4, H - padBot + 18);
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const { lamNm, dMicron, LMm } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const lam_ = lamNm * 1e-9;
+      const d_ = dMicron * 1e-6;
+      const L_ = LMm * 1e-3;
+      const fringe = (lam_ * L_) / d_;
+      const slitX = 40;
+      const screenX = W * 0.55;
+      const padTop = 30;
+      const padBot = 30;
+      const cy = H / 2;
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.text;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(slitX, padTop);
+      ctx.lineTo(slitX, H - padBot);
+      ctx.stroke();
+      const halfSlit = 22;
+      const slitTop = { x: slitX, y: cy - halfSlit };
+      const slitBot = { x: slitX, y: cy + halfSlit };
+      ctx.restore();
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(slitX - 3, slitTop.y - 4, 6, 8);
+      ctx.fillRect(slitX - 3, slitBot.y - 4, 6, 8);
+      ctx.strokeStyle = colors.teal;
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(slitX - 3, slitTop.y - 4, 6, 8);
+      ctx.strokeRect(slitX - 3, slitBot.y - 4, 6, 8);
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.text;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(screenX, padTop);
+      ctx.lineTo(screenX, H - padBot);
+      ctx.stroke();
+      const screenHalfMm = 25;
+      const Nrows = H - padTop - padBot;
+      const intensities: number[] = [];
+      for (let i = 0; i < Nrows; i++) {
+        const u = i / (Nrows - 1) - 0.5;
+        const y_m = u * screenHalfMm * 2 * 1e-3;
+        const sinTh = y_m / Math.sqrt(L_ * L_ + y_m * y_m);
+        const phi = (Math.PI * d_ * sinTh) / lam_;
+        const I = Math.cos(phi) ** 2;
+        intensities.push(I);
+      }
+      const [r, g, b] = wavelengthRGB(lamNm);
+      for (let i = 0; i < Nrows; i++) {
+        const I = intensities[i];
+        const alpha = 0.05 + 0.95 * I;
+        ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
+        ctx.fillRect(screenX - 5, padTop + i, 10, 1);
+      }
+      const plotL = screenX + 12;
+      const plotR = W - 20;
+      const plotW = plotR - plotL;
+      ctx.restore();
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(plotL, padTop);
+      ctx.lineTo(plotL, H - padBot);
+      ctx.stroke();
+      ctx.strokeStyle = `rgba(${r},${g},${b},0.95)`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      for (let i = 0; i < Nrows; i++) {
+        const I = intensities[i];
+        const xx = plotL + I * plotW;
+        const yy = padTop + i;
+        if (i === 0) ctx.moveTo(xx, yy);
+        else ctx.lineTo(xx, yy);
+      }
+      ctx.stroke();
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(slitTop.x, slitTop.y);
+      ctx.lineTo(screenX, cy);
+      ctx.moveTo(slitBot.x, slitBot.y);
+      ctx.lineTo(screenX, cy);
+      ctx.stroke();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'center';
+      ctx.fillText('slits', slitX, padTop - 8);
+      ctx.fillText('screen', screenX, padTop - 8);
+      ctx.fillText('I(y)', (plotL + plotR) / 2, H - 8);
+      ctx.fillText(`fringe Δy = ${(fringe * 1000).toFixed(2)} mm`, screenX + 4, H - padBot + 18);
+    },
+    [],
+  );
 
   return (
     <Demo

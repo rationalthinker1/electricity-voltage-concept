@@ -17,7 +17,6 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -35,118 +34,118 @@ export function OpAmpInvertingDemo({ figure }: Props) {
 
   const stateRef = useSimState({ gain, Vamp });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, simTime) => {
-        const { gain, Vamp } = stateRef.current;
-        const tnow = simTime;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padL = 50,
-                padR = 30,
-                padT = 24,
-                padB = 24;
-        const plotX = padL,
-                plotY = padT;
-        const plotW = w - padL - padR;
-        const plotH = h - padT - padB;
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(plotX, plotY, plotW, plotH);
-        const yV = (v: number) => plotY + plotH / 2 - (v / V_SUP) * (plotH / 2 - 6);
-        ctx.strokeStyle = colors.border;
-        for (let v = -10; v <= 10; v += 2) {
-                const y = yV(v);
-                ctx.beginPath();
-                ctx.moveTo(plotX, y);
-                ctx.lineTo(plotX + plotW, y);
-                ctx.stroke();
-              }
-        ctx.strokeStyle = colors.borderStrong;
-        const y0 = yV(0);
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, simTime) => {
+      const { gain, Vamp } = stateRef.current;
+      const tnow = simTime;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padL = 50,
+        padR = 30,
+        padT = 24,
+        padB = 24;
+      const plotX = padL,
+        plotY = padT;
+      const plotW = w - padL - padR;
+      const plotH = h - padT - padB;
+      ctx.strokeStyle = colors.border;
+      ctx.strokeRect(plotX, plotY, plotW, plotH);
+      const yV = (v: number) => plotY + plotH / 2 - (v / V_SUP) * (plotH / 2 - 6);
+      ctx.strokeStyle = colors.border;
+      for (let v = -10; v <= 10; v += 2) {
+        const y = yV(v);
         ctx.beginPath();
-        ctx.moveTo(plotX, y0);
-        ctx.lineTo(plotX + plotW, y0);
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
         ctx.stroke();
-        ctx.save();
-        ctx.globalAlpha = 0.35;
-        ctx.strokeStyle = colors.pink;
-        ctx.setLineDash([4, 4]);
-        const yPos = yV(V_SUP);
-        const yNeg = yV(-V_SUP);
-        ctx.beginPath();
-        ctx.moveTo(plotX, yPos);
-        ctx.lineTo(plotX + plotW, yPos);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(plotX, yNeg);
-        ctx.lineTo(plotX + plotW, yNeg);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        const freq = 2.0;
-        const N = 400;
-        ctx.restore();
-        ctx.save();
-        ctx.globalAlpha = 0.9;
-        ctx.strokeStyle = colors.blue;
-        ctx.lineWidth = 1.6;
-        ctx.beginPath();
-        for (let i = 0; i <= N; i++) {
-                const u = i / N;
-                const t = (u * 2) / freq - tnow * 0; // static window
-                const vin = Vamp * Math.sin(2 * Math.PI * freq * t + tnow * 2 * Math.PI * 0.5);
-                const x = plotX + u * plotW;
-                const y = yV(vin);
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
-        const voutPts: { x: number; y: number }[] = [];
-        for (let i = 0; i <= N; i++) {
-                const u = i / N;
-                const t = (u * 2) / freq;
-                const vin = Vamp * Math.sin(2 * Math.PI * freq * t + tnow * 2 * Math.PI * 0.5);
-                let vout = gain * vin;
-                if (vout > V_SUP) vout = V_SUP;
-                else if (vout < -V_SUP) vout = -V_SUP;
-                voutPts.push({ x: plotX + u * plotW, y: yV(vout) });
-              }
-        drawGlowPath(ctx, voutPts, {
-                color: withAlpha(colors.accent, 0.95),
-                lineWidth: 1.8,
-                glowColor: withAlpha(colors.accent, 0.35),
-                glowWidth: 5,
-              });
-        ctx.restore();
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('+10 V', plotX - 4, yPos);
-        ctx.fillText('0', plotX - 4, y0);
-        ctx.fillText('-10 V', plotX - 4, yNeg);
-        ctx.fillStyle = colors.blue;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('V_in', plotX + 4, plotY + 4);
-        ctx.fillStyle = colors.accent;
-        ctx.fillText('V_out', plotX + 40, plotY + 4);
-        ctx.fillStyle = colors.text;
-        ctx.textAlign = 'right';
-        ctx.fillText(`gain = ${gain.toFixed(1)}×`, plotX + plotW - 4, plotY + 4);
-        const peakOut = Math.abs(gain * Vamp);
-        if (peakOut > V_SUP) {
-                ctx.fillStyle = colors.pink;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'bottom';
-                ctx.fillText(
-                  'RAILED — V_out clipped to ±10 V supply',
-                  plotX + plotW / 2,
-                  plotY + plotH - 4,
-                );
-              }
-      },
-      [],
-    );
+      }
+      ctx.strokeStyle = colors.borderStrong;
+      const y0 = yV(0);
+      ctx.beginPath();
+      ctx.moveTo(plotX, y0);
+      ctx.lineTo(plotX + plotW, y0);
+      ctx.stroke();
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = colors.pink;
+      ctx.setLineDash([4, 4]);
+      const yPos = yV(V_SUP);
+      const yNeg = yV(-V_SUP);
+      ctx.beginPath();
+      ctx.moveTo(plotX, yPos);
+      ctx.lineTo(plotX + plotW, yPos);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(plotX, yNeg);
+      ctx.lineTo(plotX + plotW, yNeg);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const freq = 2.0;
+      const N = 400;
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.9;
+      ctx.strokeStyle = colors.blue;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      for (let i = 0; i <= N; i++) {
+        const u = i / N;
+        const t = (u * 2) / freq - tnow * 0; // static window
+        const vin = Vamp * Math.sin(2 * Math.PI * freq * t + tnow * 2 * Math.PI * 0.5);
+        const x = plotX + u * plotW;
+        const y = yV(vin);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      const voutPts: { x: number; y: number }[] = [];
+      for (let i = 0; i <= N; i++) {
+        const u = i / N;
+        const t = (u * 2) / freq;
+        const vin = Vamp * Math.sin(2 * Math.PI * freq * t + tnow * 2 * Math.PI * 0.5);
+        let vout = gain * vin;
+        if (vout > V_SUP) vout = V_SUP;
+        else if (vout < -V_SUP) vout = -V_SUP;
+        voutPts.push({ x: plotX + u * plotW, y: yV(vout) });
+      }
+      drawGlowPath(ctx, voutPts, {
+        color: withAlpha(colors.accent, 0.95),
+        lineWidth: 1.8,
+        glowColor: withAlpha(colors.accent, 0.35),
+        glowWidth: 5,
+      });
+      ctx.restore();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('+10 V', plotX - 4, yPos);
+      ctx.fillText('0', plotX - 4, y0);
+      ctx.fillText('-10 V', plotX - 4, yNeg);
+      ctx.fillStyle = colors.blue;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('V_in', plotX + 4, plotY + 4);
+      ctx.fillStyle = colors.accent;
+      ctx.fillText('V_out', plotX + 40, plotY + 4);
+      ctx.fillStyle = colors.text;
+      ctx.textAlign = 'right';
+      ctx.fillText(`gain = ${gain.toFixed(1)}×`, plotX + plotW - 4, plotY + 4);
+      const peakOut = Math.abs(gain * Vamp);
+      if (peakOut > V_SUP) {
+        ctx.fillStyle = colors.pink;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(
+          'RAILED — V_out clipped to ±10 V supply',
+          plotX + plotW / 2,
+          plotY + plotH - 4,
+        );
+      }
+    },
+    [],
+  );
 
   return (
     <Demo

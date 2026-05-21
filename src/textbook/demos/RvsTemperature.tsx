@@ -14,7 +14,7 @@ import { getCanvasColors } from '@/lib/canvasTheme';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { fmtRatio } from "@/lib/formatters";
+import { fmtRatio } from '@/lib/formatters';
 
 interface Props {
   figure?: string;
@@ -76,111 +76,111 @@ export function RvsTemperatureDemo({ figure }: Props) {
 
   const stateRef = useSimState({ shown, T_C });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const { shown, T_C } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const padL = 56,
-                padR = 18,
-                padT = 26,
-                padB = 32;
-        const gW = W - padL - padR;
-        const gH = H - padT - padB;
-        const tMin = -20,
-                tMax = 200;
-        const yMin = 0.05,
-                yMax = 50;
-        const logYmin = Math.log10(yMin),
-                logYmax = Math.log10(yMax);
-        const xT = (t: number) => padL + ((t - tMin) / (tMax - tMin)) * gW;
-        const yR = (r: number) => {
-                const lr = Math.log10(Math.max(yMin * 0.5, Math.min(yMax * 2, r)));
-                return padT + (1 - (lr - logYmin) / (logYmax - logYmin)) * gH;
-              };
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1;
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const { shown, T_C } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const padL = 56,
+        padR = 18,
+        padT = 26,
+        padB = 32;
+      const gW = W - padL - padR;
+      const gH = H - padT - padB;
+      const tMin = -20,
+        tMax = 200;
+      const yMin = 0.05,
+        yMax = 50;
+      const logYmin = Math.log10(yMin),
+        logYmax = Math.log10(yMax);
+      const xT = (t: number) => padL + ((t - tMin) / (tMax - tMin)) * gW;
+      const yR = (r: number) => {
+        const lr = Math.log10(Math.max(yMin * 0.5, Math.min(yMax * 2, r)));
+        return padT + (1 - (lr - logYmin) / (logYmax - logYmin)) * gH;
+      };
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(padL, padT);
+      ctx.lineTo(padL, padT + gH);
+      ctx.lineTo(padL + gW, padT + gH);
+      ctx.stroke();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      for (let t = -20; t <= 200; t += 40) {
+        const x = xT(t);
+        ctx.strokeStyle = colors.border;
         ctx.beginPath();
-        ctx.moveTo(padL, padT);
-        ctx.lineTo(padL, padT + gH);
-        ctx.lineTo(padL + gW, padT + gH);
+        ctx.moveTo(x, padT);
+        ctx.lineTo(x, padT + gH);
         ctx.stroke();
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        for (let t = -20; t <= 200; t += 40) {
-                const x = xT(t);
-                ctx.strokeStyle = colors.border;
-                ctx.beginPath();
-                ctx.moveTo(x, padT);
-                ctx.lineTo(x, padT + gH);
-                ctx.stroke();
-                ctx.fillText(`${t}`, x, padT + gH + 14);
-              }
-        ctx.fillText('Temperature (°C)', padL + gW / 2, padT + gH + 26);
-        ctx.textAlign = 'right';
-        for (let lp = -1; lp <= 1; lp++) {
-                const v = Math.pow(10, lp);
-                const y = yR(v);
-                ctx.strokeStyle = colors.border;
-                ctx.beginPath();
-                ctx.moveTo(padL, y);
-                ctx.lineTo(padL + gW, y);
-                ctx.stroke();
-                ctx.fillText(`${v < 1 ? v.toFixed(1) : v.toFixed(0)}×`, padL - 6, y + 3);
-              }
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.setLineDash([3, 3]);
+        ctx.fillText(`${t}`, x, padT + gH + 14);
+      }
+      ctx.fillText('Temperature (°C)', padL + gW / 2, padT + gH + 26);
+      ctx.textAlign = 'right';
+      for (let lp = -1; lp <= 1; lp++) {
+        const v = Math.pow(10, lp);
+        const y = yR(v);
+        ctx.strokeStyle = colors.border;
         ctx.beginPath();
-        ctx.moveTo(xT(T_REF), padT);
-        ctx.lineTo(xT(T_REF), padT + gH);
+        ctx.moveTo(padL, y);
+        ctx.lineTo(padL + gW, y);
         ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'left';
-        ctx.fillText('20 °C ref', xT(T_REF) + 4, padT + 10);
-        for (const c of CURVES) {
-                if (!shown[c.key]) continue;
-                ctx.strokeStyle = c.color;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                for (let i = 0; i <= 220; i++) {
-                  const t = tMin + (i / 220) * (tMax - tMin);
-                  const r = c.ratio(t);
-                  if (i === 0) ctx.moveTo(xT(t), yR(r));
-                  else ctx.lineTo(xT(t), yR(r));
-                }
-                ctx.stroke();
-              }
-        const cx = xT(T_C);
-        ctx.save();
-        ctx.globalAlpha = 0.65;
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 1;
+        ctx.fillText(`${v < 1 ? v.toFixed(1) : v.toFixed(0)}×`, padL - 6, y + 3);
+      }
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(xT(T_REF), padT);
+      ctx.lineTo(xT(T_REF), padT + gH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      ctx.fillText('20 °C ref', xT(T_REF) + 4, padT + 10);
+      for (const c of CURVES) {
+        if (!shown[c.key]) continue;
+        ctx.strokeStyle = c.color;
+        ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(cx, padT);
-        ctx.lineTo(cx, padT + gH);
+        for (let i = 0; i <= 220; i++) {
+          const t = tMin + (i / 220) * (tMax - tMin);
+          const r = c.ratio(t);
+          if (i === 0) ctx.moveTo(xT(t), yR(r));
+          else ctx.lineTo(xT(t), yR(r));
+        }
         ctx.stroke();
-        for (const c of CURVES) {
-                if (!shown[c.key]) continue;
-                const r = c.ratio(T_C);
-                const y = yR(r);
-                ctx.fillStyle = c.color;
-                ctx.beginPath();
-                ctx.arc(cx, y, 4, 0, Math.PI * 2);
-                ctx.fill();
-              }
-        ctx.restore();
-        drawLabel(ctx, {
-                x: padL,
-                y: 8,
-                text: 'R(T) / R(20 °C)   — log scale',
-                color: colors.accent,
-                baseline: 'top',
-              });
-      },
-      [],
-    );
+      }
+      const cx = xT(T_C);
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.strokeStyle = colors.accent;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(cx, padT);
+      ctx.lineTo(cx, padT + gH);
+      ctx.stroke();
+      for (const c of CURVES) {
+        if (!shown[c.key]) continue;
+        const r = c.ratio(T_C);
+        const y = yR(r);
+        ctx.fillStyle = c.color;
+        ctx.beginPath();
+        ctx.arc(cx, y, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+      drawLabel(ctx, {
+        x: padL,
+        y: 8,
+        text: 'R(T) / R(20 °C)   — log scale',
+        color: colors.accent,
+        baseline: 'top',
+      });
+    },
+    [],
+  );
 
   return (
     <Demo

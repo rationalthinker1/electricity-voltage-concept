@@ -20,7 +20,6 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -58,95 +57,91 @@ export function WiedemannFranzDemo({ figure }: Props) {
   const L = m.kappa / (m.sigma * T_K);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const { metalKey } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const padL = 100;
-        const padR = 24;
-        const padT = 38;
-        const padB = 40;
-        const gW = W - padL - padR;
-        const gH = H - padT - padB;
-        const rowH = gH / METALS.length;
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.beginPath();
-        ctx.moveTo(padL, padT);
-        ctx.lineTo(padL, padT + gH);
-        ctx.lineTo(padL + gW, padT + gH);
-        ctx.stroke();
-        const maxK = 450;
-        const maxS = 7e7;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        METALS.forEach((mm, i) => {
-                const y = padT + rowH * i;
-                const yMid = y + rowH / 2;
-                const isSel = mm.key === metalKey;
-        
-                // κ bar (top half of row)
-                const kappaW = (mm.kappa / maxK) * gW;
-                ctx.fillStyle = isSel
-                  ? withAlpha(colors.accent, 0.85)
-                  : withAlpha(colors.accent, 0.3);
-                ctx.fillRect(padL, y + 6, kappaW, rowH / 2 - 8);
-        
-                // σ bar (bottom half of row)
-                const sigmaW = (mm.sigma / maxS) * gW;
-                ctx.fillStyle = isSel
-                  ? withAlpha(colors.teal, 0.85)
-                  : withAlpha(colors.teal, 0.3);
-                ctx.fillRect(padL, y + rowH / 2 + 2, sigmaW, rowH / 2 - 8);
-        
-                // Material label
-                ctx.fillStyle = isSel ? '#ff6b2a' : withAlpha(colors.text, 0.75);
-                ctx.font = isSel
-                  ? 'bold 10px "JetBrains Mono", monospace'
-                  : '10px "JetBrains Mono", monospace';
-                ctx.textAlign = 'right';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(mm.name.toUpperCase(), padL - 10, yMid);
-        
-                // Per-metal Lorenz value
-                const L_m = mm.kappa / (mm.sigma * T_K);
-                drawLabel(ctx, {
-                  x: padL + Math.max(kappaW, sigmaW) + 6,
-                  y: yMid,
-                  text: `L = ${(L_m * 1e8).toFixed(2)}×10⁻⁸`,
-                  color: isSel ? '#ff6b2a' : withAlpha(colors.textDim, 0.7),
-                  size: 9,
-                });
-              });
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const { metalKey } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const padL = 100;
+      const padR = 24;
+      const padT = 38;
+      const padB = 40;
+      const gW = W - padL - padR;
+      const gH = H - padT - padB;
+      const rowH = gH / METALS.length;
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.beginPath();
+      ctx.moveTo(padL, padT);
+      ctx.lineTo(padL, padT + gH);
+      ctx.lineTo(padL + gW, padT + gH);
+      ctx.stroke();
+      const maxK = 450;
+      const maxS = 7e7;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      METALS.forEach((mm, i) => {
+        const y = padT + rowH * i;
+        const yMid = y + rowH / 2;
+        const isSel = mm.key === metalKey;
+
+        // κ bar (top half of row)
+        const kappaW = (mm.kappa / maxK) * gW;
+        ctx.fillStyle = isSel ? withAlpha(colors.accent, 0.85) : withAlpha(colors.accent, 0.3);
+        ctx.fillRect(padL, y + 6, kappaW, rowH / 2 - 8);
+
+        // σ bar (bottom half of row)
+        const sigmaW = (mm.sigma / maxS) * gW;
+        ctx.fillStyle = isSel ? withAlpha(colors.teal, 0.85) : withAlpha(colors.teal, 0.3);
+        ctx.fillRect(padL, y + rowH / 2 + 2, sigmaW, rowH / 2 - 8);
+
+        // Material label
+        ctx.fillStyle = isSel ? '#ff6b2a' : withAlpha(colors.text, 0.75);
+        ctx.font = isSel
+          ? 'bold 10px "JetBrains Mono", monospace'
+          : '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(mm.name.toUpperCase(), padL - 10, yMid);
+
+        // Per-metal Lorenz value
+        const L_m = mm.kappa / (mm.sigma * T_K);
         drawLabel(ctx, {
-                x: padL,
-                y: 8,
-                text: 'κ — thermal conductivity (W/m·K)',
-                color: colors.accent,
-                size: 9,
-                baseline: 'top',
-              });
-        drawLabel(ctx, {
-                x: padL,
-                y: 22,
-                text: 'σ — electrical conductivity (S/m)',
-                color: colors.teal,
-                size: 9,
-                baseline: 'top',
-              });
-        drawLabel(ctx, {
-                x: W - 12,
-                y: 8,
-                text: `L₀ = 2.44×10⁻⁸ W·Ω·K⁻²`,
-                color: colors.accent,
-                align: 'right',
-                baseline: 'top',
-              });
-      },
-      [],
-    );
+          x: padL + Math.max(kappaW, sigmaW) + 6,
+          y: yMid,
+          text: `L = ${(L_m * 1e8).toFixed(2)}×10⁻⁸`,
+          color: isSel ? '#ff6b2a' : withAlpha(colors.textDim, 0.7),
+          size: 9,
+        });
+      });
+      drawLabel(ctx, {
+        x: padL,
+        y: 8,
+        text: 'κ — thermal conductivity (W/m·K)',
+        color: colors.accent,
+        size: 9,
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        x: padL,
+        y: 22,
+        text: 'σ — electrical conductivity (S/m)',
+        color: colors.teal,
+        size: 9,
+        baseline: 'top',
+      });
+      drawLabel(ctx, {
+        x: W - 12,
+        y: 8,
+        text: `L₀ = 2.44×10⁻⁸ W·Ω·K⁻²`,
+        color: colors.accent,
+        align: 'right',
+        baseline: 'top',
+      });
+    },
+    [],
+  );
 
   return (
     <Demo
@@ -171,7 +166,7 @@ export function WiedemannFranzDemo({ figure }: Props) {
           <button
             key={mm.key}
             type="button"
-            className={`mini-toggle${mm.key === metalKey ? ' on' : ''}`}
+            className={`mini-toggle${mm.key === metalKey ? 'on' : ''}`}
             onClick={() => setMetalKey(mm.key)}
             aria-pressed={mm.key === metalKey}
           >

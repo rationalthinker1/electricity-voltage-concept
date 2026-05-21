@@ -39,7 +39,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ROOT = resolve(__dirname, '..');
 const DEMOS_GLOB = 'src/textbook/demos/*.tsx';
-const DRY = process.argv.includes('--dry');
+const WRITE_MODE = process.argv.includes('--write');
 const VERBOSE = process.argv.includes('--verbose');
 
 const project = new Project({
@@ -105,7 +105,7 @@ for (const sourceFile of project.getSourceFiles()) {
     // Mark function for removal.
     migrations.push({
       kind: 'remove-function',
-      node: fn,
+      fn,
     });
     functionsRemovedHere++;
 
@@ -156,8 +156,7 @@ for (const sourceFile of project.getSourceFiles()) {
 
       migrations.push({
         kind: 'replace-call',
-        start: call.getStart(),
-        end: call.getEnd(),
+        call,
         replacement,
       });
     }
@@ -172,23 +171,20 @@ for (const sourceFile of project.getSourceFiles()) {
   totalMigrations += textMigrations.length;
   console.log(`  ${filename}  +${textMigrations.length} call sites, -${functionsRemovedHere} fn`);
 
-  if (DRY) continue;
+  if (!WRITE_MODE) continue;
 
-  // Apply in reverse source order so offsets stay valid.
-  textMigrations.sort((a, b) => b.start - a.start);
-  for (const m of textMigrations) {
-    sourceFile.replaceText([m.start, m.end], m.replacement);
+  // Apply call-site replacements using AST-level replaceWithText so
+  // ts-morph keeps sibling positions valid. Process bottom-to-top.
+  const callMigrations = migrations.filter((m) => m.kind === 'replace-call');
+  callMigrations.sort((a, b) => b.call.getStart() - a.call.getStart());
+  for (const m of callMigrations) {
+    m.call.replaceWithText(m.replacement);
   }
 
-  // Remove functions after call-site text is stable.
+  // Remove functions after call sites are stable.
   const fnMigrations = migrations.filter((m) => m.kind === 'remove-function');
   for (const m of fnMigrations) {
-    try {
-      m.node.remove();
-    } catch {
-      // Fallback for ts-morph edge cases: blank the function text.
-      sourceFile.replaceText([m.node.getStart(), m.node.getEnd()], '');
-    }
+    m.fn.replaceWithText('');
   }
 
   ensureDrawCurrentDotsImport(sourceFile);
@@ -205,7 +201,7 @@ if (VERBOSE && skipped.length) {
   console.log('Skipped sites:');
   skipped.forEach((s) => console.log('  ' + s));
 }
-if (DRY) console.log('(dry run — no files written)');
+if (!WRITE_MODE) console.log('(dry run — no files written)');
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 

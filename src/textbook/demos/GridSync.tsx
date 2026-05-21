@@ -18,7 +18,6 @@ import { drawAxes, drawHLine, drawLinePlot, makePlotMappers } from '@/lib/drawPl
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -42,117 +41,117 @@ export function GridSyncDemo({ figure }: Props) {
   }, [fGen, phiDeg, vGen]);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
-        let simT = ctx0.simT;
-        const { fGen, phiDeg, vGen } = stateRef.current;
-        simT += dt * 0.06;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padL = 50,
-                padR = 30,
-                padT = 30,
-                padB = 40;
-        const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
-        // 85% scaling factor in original keeps curves off the frame edges;
-        // expand the data range proportionally so drawLinePlot reproduces it.
-        const yRange = Math.max(V_GRID, vGen) / 0.85;
-        drawAxes(ctx, rect, {
-          xMin: 0,
-          xMax: 1,
-          yMin: -yRange,
-          yMax: yRange,
-          xTicks: [],
-          yTicks: [],
-        });
-        drawHLine(ctx, rect, 0, -yRange, yRange, {
-          color: colors.border,
-          alpha: 1,
-          dash: undefined,
-        });
-        const cy = padT + rect.h / 2;
-        const tWindow = 0.05;
-        const samples = 320;
-        const phi = (phiDeg * Math.PI) / 180;
-        const gridPts: { x: number; y: number }[] = [];
-        const genPts: { x: number; y: number }[] = [];
-        for (let i = 0; i <= samples; i++) {
-          const u = i / samples;
-          const t = simT + u * tWindow;
-          gridPts.push({ x: u, y: V_GRID * Math.cos(2 * Math.PI * F_GRID * t) });
-          genPts.push({ x: u, y: vGen * Math.cos(2 * Math.PI * fGen * t + phi) });
+    stateRef,
+    ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
+      let simT = ctx0.simT;
+      const { fGen, phiDeg, vGen } = stateRef.current;
+      simT += dt * 0.06;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padL = 50,
+        padR = 30,
+        padT = 30,
+        padB = 40;
+      const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
+      // 85% scaling factor in original keeps curves off the frame edges;
+      // expand the data range proportionally so drawLinePlot reproduces it.
+      const yRange = Math.max(V_GRID, vGen) / 0.85;
+      drawAxes(ctx, rect, {
+        xMin: 0,
+        xMax: 1,
+        yMin: -yRange,
+        yMax: yRange,
+        xTicks: [],
+        yTicks: [],
+      });
+      drawHLine(ctx, rect, 0, -yRange, yRange, {
+        color: colors.border,
+        alpha: 1,
+        dash: undefined,
+      });
+      const cy = padT + rect.h / 2;
+      const tWindow = 0.05;
+      const samples = 320;
+      const phi = (phiDeg * Math.PI) / 180;
+      const gridPts: { x: number; y: number }[] = [];
+      const genPts: { x: number; y: number }[] = [];
+      for (let i = 0; i <= samples; i++) {
+        const u = i / samples;
+        const t = simT + u * tWindow;
+        gridPts.push({ x: u, y: V_GRID * Math.cos(2 * Math.PI * F_GRID * t) });
+        genPts.push({ x: u, y: vGen * Math.cos(2 * Math.PI * fGen * t + phi) });
+      }
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      drawLinePlot(ctx, rect, gridPts, 0, 1, -yRange, yRange, {
+        color: colors.text,
+        lineWidth: 1.6,
+      });
+      ctx.restore();
+      drawLinePlot(ctx, rect, genPts, 0, 1, -yRange, yRange, {
+        color: ready ? withAlpha(colors.teal, 0.95) : withAlpha(colors.accent, 0.9),
+        lineWidth: 1.6,
+      });
+      // Difference fill: closed polygon between (gridPts - genPts) and the
+      // centre axis. drawLinePlot.fill closes to the bottom of the rect, not
+      // the centre, so the fill stays as raw ctx calls.
+      const { xOf, yOf } = makePlotMappers(rect, 0, 1, -yRange, yRange);
+      const plotW = rect.w;
+      const plotH = rect.h;
+      ctx.fillStyle = colors.pink;
+      ctx.beginPath();
+      let started = false;
+      for (let i = 0; i <= samples; i++) {
+        const u = i / samples;
+        const t = simT + u * tWindow;
+        const vG = V_GRID * Math.cos(2 * Math.PI * F_GRID * t);
+        const vGen2 = vGen * Math.cos(2 * Math.PI * fGen * t + phi);
+        const diff = vG - vGen2;
+        const x = xOf(u);
+        const yDiff = yOf(diff);
+        if (!started) {
+          ctx.moveTo(x, cy);
+          started = true;
         }
-        ctx.save();
-        ctx.globalAlpha = 0.85;
-        drawLinePlot(ctx, rect, gridPts, 0, 1, -yRange, yRange, {
-          color: colors.text,
-          lineWidth: 1.6,
-        });
-        ctx.restore();
-        drawLinePlot(ctx, rect, genPts, 0, 1, -yRange, yRange, {
-          color: ready ? withAlpha(colors.teal, 0.95) : withAlpha(colors.accent, 0.9),
-          lineWidth: 1.6,
-        });
-        // Difference fill: closed polygon between (gridPts - genPts) and the
-        // centre axis. drawLinePlot.fill closes to the bottom of the rect, not
-        // the centre, so the fill stays as raw ctx calls.
-        const { xOf, yOf } = makePlotMappers(rect, 0, 1, -yRange, yRange);
-        const plotW = rect.w;
-        const plotH = rect.h;
-        ctx.fillStyle = colors.pink;
-        ctx.beginPath();
-        let started = false;
-        for (let i = 0; i <= samples; i++) {
-                const u = i / samples;
-                const t = simT + u * tWindow;
-                const vG = V_GRID * Math.cos(2 * Math.PI * F_GRID * t);
-                const vGen2 = vGen * Math.cos(2 * Math.PI * fGen * t + phi);
-                const diff = vG - vGen2;
-                const x = xOf(u);
-                const yDiff = yOf(diff);
-                if (!started) {
-                  ctx.moveTo(x, cy);
-                  started = true;
-                }
-                ctx.lineTo(x, yDiff);
-              }
-        ctx.lineTo(padL + plotW, cy);
-        ctx.closePath();
-        ctx.fill();
-        ctx.fillStyle = ready ? withAlpha(colors.teal, 0.85) : withAlpha(colors.pink, 0.85);
-        ctx.beginPath();
-        ctx.arc(padL + plotW - 18, padT + 14, 7, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = ready ? '#6cc5c2' : '#ff3b6e';
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(ready ? 'READY TO CLOSE' : 'NOT SYNCHRONISED', padL + plotW - 30, padT + 14);
-        ctx.save();
-        ctx.globalAlpha = 0.75;
-        ctx.fillStyle = colors.text;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('grid', padL + 6, padT + 14);
-        ctx.restore();
-        ctx.fillStyle = ready ? '#6cc5c2' : '#ff6b2a';
-        ctx.fillText('generator', padL + 40, padT + 14);
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        const dPhi = Math.abs(phiDeg) % 360;
-        const dPhiMin = Math.min(dPhi, 360 - dPhi);
-        ctx.fillText(
-                `Δf = ${(fGen - F_GRID).toFixed(2)} Hz   ·   Δφ = ${dPhiMin.toFixed(0)}°   ·   ΔV = ${((vGen - V_GRID) * 100).toFixed(1)}%`,
-                padL + plotW / 2,
-                padT + plotH + 26,
-              );
-        ctx0.simT = simT;
-      },
-      [],
-      () => ({ context: { simT: 0 } }),
-    );
+        ctx.lineTo(x, yDiff);
+      }
+      ctx.lineTo(padL + plotW, cy);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = ready ? withAlpha(colors.teal, 0.85) : withAlpha(colors.pink, 0.85);
+      ctx.beginPath();
+      ctx.arc(padL + plotW - 18, padT + 14, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = ready ? '#6cc5c2' : '#ff3b6e';
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(ready ? 'READY TO CLOSE' : 'NOT SYNCHRONISED', padL + plotW - 30, padT + 14);
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.text;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('grid', padL + 6, padT + 14);
+      ctx.restore();
+      ctx.fillStyle = ready ? '#6cc5c2' : '#ff6b2a';
+      ctx.fillText('generator', padL + 40, padT + 14);
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      const dPhi = Math.abs(phiDeg) % 360;
+      const dPhiMin = Math.min(dPhi, 360 - dPhi);
+      ctx.fillText(
+        `Δf = ${(fGen - F_GRID).toFixed(2)} Hz   ·   Δφ = ${dPhiMin.toFixed(0)}°   ·   ΔV = ${((vGen - V_GRID) * 100).toFixed(1)}%`,
+        padL + plotW / 2,
+        padT + plotH + 26,
+      );
+      ctx0.simT = simT;
+    },
+    [],
+    () => ({ context: { simT: 0 } }),
+  );
 
   return (
     <Demo

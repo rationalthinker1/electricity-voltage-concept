@@ -15,7 +15,6 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -30,76 +29,76 @@ export function PlateGeometryDemo({ figure }: Props) {
 
   const stateRef = useSimState({ A_cm2, d_mm });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const s = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const cx = W / 2;
-        const cy = H / 2;
-        const refW = Math.min(W * 0.72, 460);
-        const wScale = Math.sqrt(s.A_cm2 / 500);
-        const plateW = Math.max(100, refW * (0.3 + 0.8 * wScale));
-        const dNorm = (Math.log10(s.d_mm) - Math.log10(0.05)) / (Math.log10(10) - Math.log10(0.05));
-        const gap = 16 + Math.max(0, Math.min(1, dNorm)) * (H * 0.55);
-        const plateThick = 8;
-        const xL = cx - plateW / 2;
-        const topY = cy - gap / 2 - plateThick / 2;
-        const botY = cy + gap / 2 + plateThick / 2;
-        drawPlate(ctx, xL, topY, plateW, plateThick, colors.pink);
-        drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, colors.blue);
-        ctx.save();
-        ctx.globalAlpha = 0.6;
-        ctx.strokeStyle = colors.textDim;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(xL, topY - 18);
-        ctx.lineTo(xL + plateW, topY - 18);
-        ctx.moveTo(xL, topY - 22);
-        ctx.lineTo(xL, topY - 14);
-        ctx.moveTo(xL + plateW, topY - 22);
-        ctx.lineTo(xL + plateW, topY - 14);
-        ctx.stroke();
-        ctx.restore();
-        drawLabel(ctx, {
-                x: cx,
-                y: topY - 24,
-                text: `A = ${s.A_cm2.toFixed(0)} cm²`,
-                color: colors.text,
-                align: 'center',
-                baseline: 'bottom',
-              });
-        const xD = xL + plateW + 26;
-        ctx.save();
-        ctx.globalAlpha = 0.6;
-        ctx.strokeStyle = colors.textDim;
-        ctx.beginPath();
-        ctx.moveTo(xD - 4, topY + plateThick);
-        ctx.lineTo(xD + 4, topY + plateThick);
-        ctx.moveTo(xD - 4, botY - plateThick);
-        ctx.lineTo(xD + 4, botY - plateThick);
-        ctx.moveTo(xD, topY + plateThick);
-        ctx.lineTo(xD, botY - plateThick);
-        ctx.stroke();
-        ctx.restore();
-        drawLabel(ctx, {
-                x: xD + 10,
-                y: cy,
-                text: `d = ${s.d_mm.toFixed(2)} mm`,
-                color: colors.text,
-                baseline: 'middle',
-              });
-        drawLabel(ctx, {
-                x: 14,
-                y: 12,
-                text: `C = ε₀ A / d`,
-                color: colors.accent,
-                size: 11,
-                baseline: 'top',
-              });
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const s = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const cx = W / 2;
+      const cy = H / 2;
+      const refW = Math.min(W * 0.72, 460);
+      const wScale = Math.sqrt(s.A_cm2 / 500);
+      const plateW = Math.max(100, refW * (0.3 + 0.8 * wScale));
+      const dNorm = (Math.log10(s.d_mm) - Math.log10(0.05)) / (Math.log10(10) - Math.log10(0.05));
+      const gap = 16 + Math.max(0, Math.min(1, dNorm)) * (H * 0.55);
+      const plateThick = 8;
+      const xL = cx - plateW / 2;
+      const topY = cy - gap / 2 - plateThick / 2;
+      const botY = cy + gap / 2 + plateThick / 2;
+      drawPlate(ctx, xL, topY, plateW, plateThick, colors.pink);
+      drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, colors.blue);
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = colors.textDim;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(xL, topY - 18);
+      ctx.lineTo(xL + plateW, topY - 18);
+      ctx.moveTo(xL, topY - 22);
+      ctx.lineTo(xL, topY - 14);
+      ctx.moveTo(xL + plateW, topY - 22);
+      ctx.lineTo(xL + plateW, topY - 14);
+      ctx.stroke();
+      ctx.restore();
+      drawLabel(ctx, {
+        x: cx,
+        y: topY - 24,
+        text: `A = ${s.A_cm2.toFixed(0)} cm²`,
+        color: colors.text,
+        align: 'center',
+        baseline: 'bottom',
+      });
+      const xD = xL + plateW + 26;
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = colors.textDim;
+      ctx.beginPath();
+      ctx.moveTo(xD - 4, topY + plateThick);
+      ctx.lineTo(xD + 4, topY + plateThick);
+      ctx.moveTo(xD - 4, botY - plateThick);
+      ctx.lineTo(xD + 4, botY - plateThick);
+      ctx.moveTo(xD, topY + plateThick);
+      ctx.lineTo(xD, botY - plateThick);
+      ctx.stroke();
+      ctx.restore();
+      drawLabel(ctx, {
+        x: xD + 10,
+        y: cy,
+        text: `d = ${s.d_mm.toFixed(2)} mm`,
+        color: colors.text,
+        baseline: 'middle',
+      });
+      drawLabel(ctx, {
+        x: 14,
+        y: 12,
+        text: `C = ε₀ A / d`,
+        color: colors.accent,
+        size: 11,
+        baseline: 'top',
+      });
+    },
+    [],
+  );
 
   return (
     <Demo

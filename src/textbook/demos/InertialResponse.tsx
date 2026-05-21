@@ -20,7 +20,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -66,90 +65,90 @@ export function InertialResponseDemo({ figure }: Props) {
 
   const stateRef = useSimState({ deltaP, showHigh, showLow });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { deltaP, showHigh, showLow } = stateRef.current;
-        const traceHigh = showHigh ? simulate(5, deltaP) : null;
-        const traceLow = showLow ? simulate(1, deltaP) : null;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padL = 56,
-                padR = 24,
-                padT = 22,
-                padB = 38;
-        const plotW = w - padL - padR;
-        const plotH = h - padT - padB;
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(padL, padT, plotW, plotH);
-        const fMin = F_NOM - 3;
-        const fMax = F_NOM + 0.2;
-        const xAt = (t: number) => padL + (t / SIM_DURATION) * plotW;
-        const yAt = (f: number) => padT + plotH - ((f - fMin) / (fMax - fMin)) * plotH;
-        ctx.strokeStyle = colors.border;
-        for (let f = Math.ceil(fMin); f <= fMax; f += 0.5) {
-                const y = yAt(f);
-                ctx.beginPath();
-                ctx.moveTo(padL, y);
-                ctx.lineTo(padL + plotW, y);
-                ctx.stroke();
-              }
-        ctx.strokeStyle = colors.teal;
-        ctx.setLineDash([4, 4]);
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { deltaP, showHigh, showLow } = stateRef.current;
+      const traceHigh = showHigh ? simulate(5, deltaP) : null;
+      const traceLow = showLow ? simulate(1, deltaP) : null;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padL = 56,
+        padR = 24,
+        padT = 22,
+        padB = 38;
+      const plotW = w - padL - padR;
+      const plotH = h - padT - padB;
+      ctx.strokeStyle = colors.border;
+      ctx.strokeRect(padL, padT, plotW, plotH);
+      const fMin = F_NOM - 3;
+      const fMax = F_NOM + 0.2;
+      const xAt = (t: number) => padL + (t / SIM_DURATION) * plotW;
+      const yAt = (f: number) => padT + plotH - ((f - fMin) / (fMax - fMin)) * plotH;
+      ctx.strokeStyle = colors.border;
+      for (let f = Math.ceil(fMin); f <= fMax; f += 0.5) {
+        const y = yAt(f);
         ctx.beginPath();
-        ctx.moveTo(padL, yAt(F_NOM));
-        ctx.lineTo(padL + plotW, yAt(F_NOM));
+        ctx.moveTo(padL, y);
+        ctx.lineTo(padL + plotW, y);
         ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        for (let f = Math.ceil(fMin); f <= 60; f += 1) {
-                ctx.fillText(f.toFixed(0), padL - 6, yAt(f));
-              }
-        ctx.save();
-        ctx.translate(16, padT + plotH / 2);
-        ctx.rotate(-Math.PI / 2);
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('frequency (Hz) →', 0, 0);
-        ctx.restore();
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        for (let t = 0; t <= SIM_DURATION; t += 5) {
-                ctx.fillText(t.toFixed(0), xAt(t), padT + plotH + 4);
-              }
-        ctx.fillText('time after trip (s) →', padL + plotW / 2, padT + plotH + 20);
-        function plotTrace(trace: Trace, color: string) {
-                ctx.strokeStyle = color;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                for (let i = 0; i < trace.ts.length; i++) {
-                  const x = xAt(trace.ts[i]);
-                  const y = yAt(Math.max(fMin, trace.fs[i]));
-                  if (i === 0) ctx.moveTo(x, y);
-                  else ctx.lineTo(x, y);
-                }
-                ctx.stroke();
-              }
-        if (traceHigh) plotTrace(traceHigh, '#6cc5c2');
-        if (traceLow) plotTrace(traceLow, '#ff3b6e');
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        const legX = padL + 8;
-        let legY = padT + 6;
-        const lg = (color: string, label: string) => {
-                ctx.fillStyle = color;
-                ctx.fillRect(legX, legY + 4, 14, 3);
-                ctx.fillStyle = colors.text;
-                ctx.fillText(label, legX + 20, legY + 1);
-                legY += 14;
-              };
-        if (showHigh) lg('#6cc5c2', 'high inertia, H = 5 s (synchronous-rich)');
-        if (showLow) lg('#ff3b6e', 'low inertia, H = 1 s (inverter-rich)');
-      },
-      [],
-    );
+      }
+      ctx.strokeStyle = colors.teal;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(padL, yAt(F_NOM));
+      ctx.lineTo(padL + plotW, yAt(F_NOM));
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      for (let f = Math.ceil(fMin); f <= 60; f += 1) {
+        ctx.fillText(f.toFixed(0), padL - 6, yAt(f));
+      }
+      ctx.save();
+      ctx.translate(16, padT + plotH / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('frequency (Hz) →', 0, 0);
+      ctx.restore();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      for (let t = 0; t <= SIM_DURATION; t += 5) {
+        ctx.fillText(t.toFixed(0), xAt(t), padT + plotH + 4);
+      }
+      ctx.fillText('time after trip (s) →', padL + plotW / 2, padT + plotH + 20);
+      function plotTrace(trace: Trace, color: string) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let i = 0; i < trace.ts.length; i++) {
+          const x = xAt(trace.ts[i]);
+          const y = yAt(Math.max(fMin, trace.fs[i]));
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      if (traceHigh) plotTrace(traceHigh, '#6cc5c2');
+      if (traceLow) plotTrace(traceLow, '#ff3b6e');
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      const legX = padL + 8;
+      let legY = padT + 6;
+      const lg = (color: string, label: string) => {
+        ctx.fillStyle = color;
+        ctx.fillRect(legX, legY + 4, 14, 3);
+        ctx.fillStyle = colors.text;
+        ctx.fillText(label, legX + 20, legY + 1);
+        legY += 14;
+      };
+      if (showHigh) lg('#6cc5c2', 'high inertia, H = 5 s (synchronous-rich)');
+      if (showLow) lg('#ff3b6e', 'low inertia, H = 1 s (inverter-rich)');
+    },
+    [],
+  );
 
   // Compute initial rate of change (RoCoF) for the readouts.
   const rocofHigh = (-deltaP * F_NOM) / (2 * 5);

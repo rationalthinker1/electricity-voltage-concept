@@ -23,7 +23,6 @@ import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -43,17 +42,17 @@ export function OpAmpFollowerDemo({ figure }: Props) {
 
   const stateRef = useSimState({ Vs, Rs, RL, VdirectLoad, bufferOn });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { Vs, Rs, RL, VdirectLoad, bufferOn } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const splitY = Math.floor(h * 0.62);
-        drawSchematic(ctx, 0, 0, w, splitY, Vs, Rs, RL, bufferOn, VdirectLoad);
-        drawBars(ctx, 0, splitY, w, h - splitY, Vs, VdirectLoad, bufferOn);
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { Vs, Rs, RL, VdirectLoad, bufferOn } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const splitY = Math.floor(h * 0.62);
+      drawSchematic(ctx, 0, 0, w, splitY, Vs, Rs, RL, bufferOn, VdirectLoad);
+      drawBars(ctx, 0, splitY, w, h - splitY, Vs, VdirectLoad, bufferOn);
+    },
+    [],
+  );
 
   return (
     <Demo

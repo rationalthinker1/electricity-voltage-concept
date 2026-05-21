@@ -20,7 +20,6 @@ import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -42,61 +41,59 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
   }, [L1mH, L2mH, k, aiding]);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { L1mH, L2mH, k, aiding } = stateRef.current;
-        const Mh = k * Math.sqrt(L1mH * L2mH);
-        const Laid = L1mH + L2mH + 2 * Mh;
-        const Lopp = L1mH + L2mH - 2 * Mh;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const cy = h / 2;
-        const c1x = w * 0.3;
-        const c2x = w * 0.62;
-        drawCoilSeries(ctx, c1x, cy, 'L₁', `${L1mH.toFixed(1)} mH`, +1);
-        drawCoilSeries(ctx, c2x, cy, 'L₂', `${L2mH.toFixed(1)} mH`, aiding ? +1 : -1);
-        ctx.save();
-        ctx.globalAlpha = 0.5;
-        ctx.strokeStyle = colors.textDim;
-        ctx.lineWidth = 1.4;
-        ctx.beginPath();
-        ctx.moveTo(c1x + 22, cy);
-        ctx.lineTo(c2x - 22, cy);
-        ctx.stroke();
-        ctx.restore();
-        ctx.fillStyle = colors.teal;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(`M = ${Mh.toFixed(2)} mH`, (c1x + c2x) / 2, cy + 24);
-        ctx.fillStyle = aiding
-                ? withAlpha(colors.accent, 0.95)
-                : withAlpha(colors.blue, 0.95);
-        ctx.font = 'bold 18px "STIX Two Text", "Fraunces", serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText(`L_eq = ${(aiding ? Laid : Lopp).toFixed(2)} mH`, w / 2, 14);
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillText(
-                aiding ? 'series aiding:  L₁ + L₂ + 2M' : 'series opposing:  L₁ + L₂ − 2M',
-                w / 2,
-                38,
-              );
-        ctx.save();
-        ctx.globalAlpha = 0.65;
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(`L_aid = ${Laid.toFixed(2)} mH`, 12, h - 22);
-        ctx.fillText(`L_opp = ${Lopp.toFixed(2)} mH`, 12, h - 8);
-        ctx.textAlign = 'right';
-        ctx.restore();
-        ctx.fillStyle = colors.accent;
-        ctx.fillText(`M = (L_aid − L_opp) / 4 = ${((Laid - Lopp) / 4).toFixed(2)} mH`, w - 12, h - 8);
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { L1mH, L2mH, k, aiding } = stateRef.current;
+      const Mh = k * Math.sqrt(L1mH * L2mH);
+      const Laid = L1mH + L2mH + 2 * Mh;
+      const Lopp = L1mH + L2mH - 2 * Mh;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const cy = h / 2;
+      const c1x = w * 0.3;
+      const c2x = w * 0.62;
+      drawCoilSeries(ctx, c1x, cy, 'L₁', `${L1mH.toFixed(1)} mH`, +1);
+      drawCoilSeries(ctx, c2x, cy, 'L₂', `${L2mH.toFixed(1)} mH`, aiding ? +1 : -1);
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = colors.textDim;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(c1x + 22, cy);
+      ctx.lineTo(c2x - 22, cy);
+      ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle = colors.teal;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(`M = ${Mh.toFixed(2)} mH`, (c1x + c2x) / 2, cy + 24);
+      ctx.fillStyle = aiding ? withAlpha(colors.accent, 0.95) : withAlpha(colors.blue, 0.95);
+      ctx.font = 'bold 18px "STIX Two Text", "Fraunces", serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText(`L_eq = ${(aiding ? Laid : Lopp).toFixed(2)} mH`, w / 2, 14);
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillText(
+        aiding ? 'series aiding:  L₁ + L₂ + 2M' : 'series opposing:  L₁ + L₂ − 2M',
+        w / 2,
+        38,
+      );
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(`L_aid = ${Laid.toFixed(2)} mH`, 12, h - 22);
+      ctx.fillText(`L_opp = ${Lopp.toFixed(2)} mH`, 12, h - 8);
+      ctx.textAlign = 'right';
+      ctx.restore();
+      ctx.fillStyle = colors.accent;
+      ctx.fillText(`M = (L_aid − L_opp) / 4 = ${((Laid - Lopp) / 4).toFixed(2)} mH`, w - 12, h - 8);
+    },
+    [],
+  );
 
   return (
     <Demo

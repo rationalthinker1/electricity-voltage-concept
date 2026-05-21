@@ -47,7 +47,7 @@ import type {
   DriveCycleId,
   MotorKind,
 } from './ev-bench/types';
-import { fmtFloat, fmtClockTime } from "@/lib/formatters";
+import { fmtFloat, fmtClockTime } from '@/lib/formatters';
 
 const SLUG = 'ev-bench';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;

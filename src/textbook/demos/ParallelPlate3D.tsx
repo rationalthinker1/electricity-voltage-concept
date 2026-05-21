@@ -83,7 +83,12 @@ export function ParallelPlate3DDemo({ figure }: Props) {
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H, canvas } = info;
-    const scene = createOrbitScene(canvas, { yaw: 0.55, pitch: 0.32, distance: 7.2, fov: Math.PI / 4 });
+    const scene = createOrbitScene(canvas, {
+      yaw: 0.55,
+      pitch: 0.32,
+      distance: 7.2,
+      fov: Math.PI / 4,
+    });
     const cam = scene.cam;
     let raf = 0;
 

@@ -72,10 +72,7 @@ interface DividerOptions {
   dash?: number[] | null;
 }
 
-export function drawDivider(
-  ctx: CanvasRenderingContext2D,
-  options: DividerOptions,
-): void {
+export function drawDivider(ctx: CanvasRenderingContext2D, options: DividerOptions): void {
   const colors = getCanvasColors();
   ctx.save();
   ctx.strokeStyle = options.color ?? colors.borderStrong;

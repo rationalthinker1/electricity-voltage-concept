@@ -22,7 +22,7 @@ import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { fmtFreqShort } from "@/lib/formatters";
+import { fmtFreqShort } from '@/lib/formatters';
 
 interface Props {
   figure?: string;
@@ -42,114 +42,114 @@ export function RLCBandpassDemo({ figure }: Props) {
 
   const stateRef = useSimState({ R, L, C, f0, Q });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { R, L, C, f0, Q } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const logCenter = Math.log10(Math.max(f0, 1));
-        const logMin = logCenter - 2.5;
-        const logMax = logCenter + 2.5;
-        const padL = 50,
-                padR = 30,
-                padT = 26,
-                padB = 32;
-        const plotX = padL,
-                plotY = padT;
-        const plotW = w - padL - padR;
-        const plotH = h - padT - padB;
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { R, L, C, f0, Q } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const logCenter = Math.log10(Math.max(f0, 1));
+      const logMin = logCenter - 2.5;
+      const logMax = logCenter + 2.5;
+      const padL = 50,
+        padR = 30,
+        padT = 26,
+        padB = 32;
+      const plotX = padL,
+        plotY = padT;
+      const plotW = w - padL - padR;
+      const plotH = h - padT - padB;
+      ctx.strokeStyle = colors.border;
+      ctx.strokeRect(plotX, plotY, plotW, plotH);
+      const dBmin = -40,
+        dBmax = 5;
+      const yDb = (db: number) => plotY + plotH - ((db - dBmin) / (dBmax - dBmin)) * plotH;
+      ctx.strokeStyle = colors.border;
+      for (let db = dBmin; db <= dBmax; db += 10) {
+        const y = yDb(db);
+        ctx.beginPath();
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
+        ctx.stroke();
+      }
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      for (let lf = Math.ceil(logMin); lf <= Math.floor(logMax); lf++) {
+        const f = Math.pow(10, lf);
+        const x = plotX + ((lf - logMin) / (logMax - logMin)) * plotW;
         ctx.strokeStyle = colors.border;
-        ctx.strokeRect(plotX, plotY, plotW, plotH);
-        const dBmin = -40,
-                dBmax = 5;
-        const yDb = (db: number) => plotY + plotH - ((db - dBmin) / (dBmax - dBmin)) * plotH;
-        ctx.strokeStyle = colors.border;
-        for (let db = dBmin; db <= dBmax; db += 10) {
-                const y = yDb(db);
-                ctx.beginPath();
-                ctx.moveTo(plotX, y);
-                ctx.lineTo(plotX + plotW, y);
-                ctx.stroke();
-              }
+        ctx.beginPath();
+        ctx.moveTo(x, plotY);
+        ctx.lineTo(x, plotY + plotH);
+        ctx.stroke();
         ctx.save();
         ctx.globalAlpha = 0.6;
         ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        for (let lf = Math.ceil(logMin); lf <= Math.floor(logMax); lf++) {
-                const f = Math.pow(10, lf);
-                const x = plotX + ((lf - logMin) / (logMax - logMin)) * plotW;
-                ctx.strokeStyle = colors.border;
-                ctx.beginPath();
-                ctx.moveTo(x, plotY);
-                ctx.lineTo(x, plotY + plotH);
-                ctx.stroke();
-                ctx.save();
-                ctx.globalAlpha = 0.6;
-                ctx.fillStyle = colors.textDim;
-                ctx.fillText(fmtFreqShort(f), x, plotY + plotH + 4);
-                ctx.restore();
-              }
-        const xf0 = plotX + ((Math.log10(f0) - logMin) / (logMax - logMin)) * plotW;
+        ctx.fillText(fmtFreqShort(f), x, plotY + plotH + 4);
         ctx.restore();
-        ctx.strokeStyle = colors.teal;
-        ctx.setLineDash([3, 3]);
-        ctx.beginPath();
-        ctx.moveTo(xf0, plotY);
-        ctx.lineTo(xf0, plotY + plotH);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        const yM3 = yDb(-3);
-        ctx.save();
-        ctx.globalAlpha = 0.35;
-        ctx.strokeStyle = colors.pink;
-        ctx.setLineDash([2, 4]);
-        ctx.beginPath();
-        ctx.moveTo(plotX, yM3);
-        ctx.lineTo(plotX + plotW, yM3);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        const N = 260;
-        const curvePts: { x: number; y: number }[] = [];
-        for (let i = 0; i <= N; i++) {
-                const u = i / N;
-                const lf = logMin + u * (logMax - logMin);
-                const f = Math.pow(10, lf);
-                const om = 2 * Math.PI * f;
-                // H = jωRC / (1 − ω²LC + jωRC); |H|² = (ωRC)² / ((1−ω²LC)² + (ωRC)²)
-                const num = om * R * C;
-                const den = Math.sqrt(Math.pow(1 - om * om * L * C, 2) + num * num);
-                const Hmag = num / Math.max(den, 1e-12);
-                const dB = 20 * Math.log10(Math.max(Hmag, 1e-6));
-                const x = plotX + u * plotW;
-                const y = yDb(Math.max(dBmin, Math.min(dBmax, dB)));
-                curvePts.push({ x, y });
-              }
-        drawGlowPath(ctx, curvePts, {
-                color: withAlpha(colors.accent, 0.95),
-                glowColor: withAlpha(colors.accent, 0.35),
-                lineWidth: 1.8,
-              });
-        ctx.restore();
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('0 dB', plotX - 4, yDb(0));
-        ctx.fillText('-20', plotX - 4, yDb(-20));
-        ctx.fillText('-40', plotX - 4, yDb(-40));
-        ctx.fillStyle = colors.accent;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText(`|H(f)|  band-pass`, plotX + 4, plotY + 4);
-        ctx.fillStyle = colors.teal;
-        ctx.textAlign = 'right';
-        ctx.fillText(`f₀ = ${fmtFreqShort(f0)}   Q = ${Q.toFixed(1)}`, plotX + plotW - 4, plotY + 4);
-      },
-      [],
-    );
+      }
+      const xf0 = plotX + ((Math.log10(f0) - logMin) / (logMax - logMin)) * plotW;
+      ctx.restore();
+      ctx.strokeStyle = colors.teal;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(xf0, plotY);
+      ctx.lineTo(xf0, plotY + plotH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const yM3 = yDb(-3);
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = colors.pink;
+      ctx.setLineDash([2, 4]);
+      ctx.beginPath();
+      ctx.moveTo(plotX, yM3);
+      ctx.lineTo(plotX + plotW, yM3);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const N = 260;
+      const curvePts: { x: number; y: number }[] = [];
+      for (let i = 0; i <= N; i++) {
+        const u = i / N;
+        const lf = logMin + u * (logMax - logMin);
+        const f = Math.pow(10, lf);
+        const om = 2 * Math.PI * f;
+        // H = jωRC / (1 − ω²LC + jωRC); |H|² = (ωRC)² / ((1−ω²LC)² + (ωRC)²)
+        const num = om * R * C;
+        const den = Math.sqrt(Math.pow(1 - om * om * L * C, 2) + num * num);
+        const Hmag = num / Math.max(den, 1e-12);
+        const dB = 20 * Math.log10(Math.max(Hmag, 1e-6));
+        const x = plotX + u * plotW;
+        const y = yDb(Math.max(dBmin, Math.min(dBmax, dB)));
+        curvePts.push({ x, y });
+      }
+      drawGlowPath(ctx, curvePts, {
+        color: withAlpha(colors.accent, 0.95),
+        glowColor: withAlpha(colors.accent, 0.35),
+        lineWidth: 1.8,
+      });
+      ctx.restore();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('0 dB', plotX - 4, yDb(0));
+      ctx.fillText('-20', plotX - 4, yDb(-20));
+      ctx.fillText('-40', plotX - 4, yDb(-40));
+      ctx.fillStyle = colors.accent;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(`|H(f)|  band-pass`, plotX + 4, plotY + 4);
+      ctx.fillStyle = colors.teal;
+      ctx.textAlign = 'right';
+      ctx.fillText(`f₀ = ${fmtFreqShort(f0)}   Q = ${Q.toFixed(1)}`, plotX + plotW - 4, plotY + 4);
+    },
+    [],
+  );
 
   return (
     <Demo

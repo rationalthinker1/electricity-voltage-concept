@@ -45,12 +45,7 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import {  depthSortIndices,
-  project,
-  v3,
-  type OrbitCamera,
-  type Vec3,
-} from '@/lib/projection3d';
+import { depthSortIndices, project, v3, type OrbitCamera, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
@@ -151,7 +146,12 @@ export function PanelBus3DDemo({ figure }: Props) {
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w: W, h: H, canvas } = info;
     let raf = 0;
-    const scene = createOrbitScene(canvas, { yaw: 0.55, pitch: 0.18, distance: 7.5, fov: Math.PI / 4 });
+    const scene = createOrbitScene(canvas, {
+      yaw: 0.55,
+      pitch: 0.18,
+      distance: 7.5,
+      fov: Math.PI / 4,
+    });
     const cam = scene.cam;
 
     // Neutral-flow dot phase for the animated routing overlay.

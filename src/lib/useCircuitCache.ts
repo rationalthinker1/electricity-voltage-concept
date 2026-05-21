@@ -52,11 +52,7 @@ import { useMemo, useRef } from 'react';
 import { renderCircuitToCanvas, type CircuitSpec } from '@/lib/canvasPrimitives';
 
 /** Build the static layer. Receives the current canvas size + DPR. */
-export type CircuitCacheBuilder = (
-  w: number,
-  h: number,
-  dpr: number,
-) => CircuitSpec;
+export type CircuitCacheBuilder = (w: number, h: number, dpr: number) => CircuitSpec;
 
 /**
  * Returns a stable getter to call inside the draw loop. The getter rebuilds
@@ -100,10 +96,7 @@ export function useCircuitCache(
   );
 }
 
-function shallowEqual(
-  a: ReadonlyArray<unknown>,
-  b: ReadonlyArray<unknown>,
-): boolean {
+function shallowEqual(a: ReadonlyArray<unknown>, b: ReadonlyArray<unknown>): boolean {
   if (a.length !== b.length) return false;
   for (let i = 0; i < a.length; i++) {
     if (!Object.is(a[i], b[i])) return false;

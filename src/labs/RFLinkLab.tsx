@@ -18,7 +18,7 @@ import { Cite } from '@/components/SourcesList';
 import { Slider } from '@/components/Slider';
 import { PHYS, prettyJsx } from '@/lib/physics';
 import { BASE_LAB_SOURCES } from '@/labs/data/manifest';
-import { fmtDb } from "@/lib/formatters";
+import { fmtDb } from '@/lib/formatters';
 
 const SLUG = 'rf-link';
 const SOURCES = BASE_LAB_SOURCES[SLUG]!;

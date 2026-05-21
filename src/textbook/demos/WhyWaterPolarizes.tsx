@@ -16,7 +16,6 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -29,120 +28,120 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
   const er_estimate = (80 * 300) / T;
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
-        let theta = ctx0.theta;
-        let omega = ctx0.omega;
-        const { E_on, T } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        if (E_on) {
-                ctx.strokeStyle = withAlpha(colors.accent, 0.2);
-                ctx.lineWidth = 1;
-                for (let y = 26; y < h; y += 40) {
-                  ctx.beginPath();
-                  ctx.moveTo(20, y);
-                  ctx.lineTo(w - 20, y);
-                  ctx.stroke();
-                  ctx.fillStyle = withAlpha(colors.accent, 0.4);
-                  ctx.beginPath();
-                  ctx.moveTo(w - 20, y);
-                  ctx.lineTo(w - 28, y - 4);
-                  ctx.lineTo(w - 28, y + 4);
-                  ctx.closePath();
-                  ctx.fill();
-                }
-              }
-        const E_strength = E_on ? 0.06 : 0;
-        const noiseAmp = Math.sqrt(T / 300) * 0.18;
-        const torque = -E_strength * Math.sin(theta) + (Math.random() - 0.5) * noiseAmp;
-        omega = (omega + torque) * 0.86;
-        theta += omega;
-        const cx = w / 2,
-                cy = h / 2;
-        const bondLen = 50;
-        const hOffsetAng = (104.5 * Math.PI) / 180 / 2;
-        const hAng1 = theta + Math.PI - hOffsetAng;
-        const hAng2 = theta + Math.PI + hOffsetAng;
-        const h1x = cx + Math.cos(hAng1) * bondLen;
-        const h1y = cy + Math.sin(hAng1) * bondLen;
-        const h2x = cx + Math.cos(hAng2) * bondLen;
-        const h2y = cy + Math.sin(hAng2) * bondLen;
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 2;
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
+      let theta = ctx0.theta;
+      let omega = ctx0.omega;
+      const { E_on, T } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      if (E_on) {
+        ctx.strokeStyle = withAlpha(colors.accent, 0.2);
+        ctx.lineWidth = 1;
+        for (let y = 26; y < h; y += 40) {
+          ctx.beginPath();
+          ctx.moveTo(20, y);
+          ctx.lineTo(w - 20, y);
+          ctx.stroke();
+          ctx.fillStyle = withAlpha(colors.accent, 0.4);
+          ctx.beginPath();
+          ctx.moveTo(w - 20, y);
+          ctx.lineTo(w - 28, y - 4);
+          ctx.lineTo(w - 28, y + 4);
+          ctx.closePath();
+          ctx.fill();
+        }
+      }
+      const E_strength = E_on ? 0.06 : 0;
+      const noiseAmp = Math.sqrt(T / 300) * 0.18;
+      const torque = -E_strength * Math.sin(theta) + (Math.random() - 0.5) * noiseAmp;
+      omega = (omega + torque) * 0.86;
+      theta += omega;
+      const cx = w / 2,
+        cy = h / 2;
+      const bondLen = 50;
+      const hOffsetAng = (104.5 * Math.PI) / 180 / 2;
+      const hAng1 = theta + Math.PI - hOffsetAng;
+      const hAng2 = theta + Math.PI + hOffsetAng;
+      const h1x = cx + Math.cos(hAng1) * bondLen;
+      const h1y = cy + Math.sin(hAng1) * bondLen;
+      const h2x = cx + Math.cos(hAng2) * bondLen;
+      const h2y = cy + Math.sin(hAng2) * bondLen;
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(h1x, h1y);
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(h2x, h2y);
+      ctx.stroke();
+      ctx.fillStyle = colors.blue;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 22, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colors.bg;
+      ctx.font = 'bold 14px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('O', cx, cy);
+      for (const [hx, hy] of [
+        [h1x, h1y],
+        [h2x, h2y],
+      ]) {
+        ctx.fillStyle = colors.pink;
         ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(h1x, h1y);
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(h2x, h2y);
-        ctx.stroke();
-        ctx.fillStyle = colors.blue;
-        ctx.beginPath();
-        ctx.arc(cx, cy, 22, 0, Math.PI * 2);
+        ctx.arc(hx, hy, 12, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = colors.bg;
-        ctx.font = 'bold 14px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('O', cx, cy);
-        for (const [hx, hy] of [
-                [h1x, h1y],
-                [h2x, h2y],
-              ]) {
-                ctx.fillStyle = colors.pink;
-                ctx.beginPath();
-                ctx.arc(hx, hy, 12, 0, Math.PI * 2);
-                ctx.fill();
-                drawLabel(ctx, {
-                  x: hx,
-                  y: hy,
-                  text: 'H',
-                  color: colors.bg,
-                  size: 11,
-                  weight: 'bold',
-                });
-              }
-        const pLen = 56;
-        const pTipX = cx + Math.cos(theta) * pLen;
-        const pTipY = cy + Math.sin(theta) * pLen;
-        ctx.strokeStyle = colors.accent;
+        drawLabel(ctx, {
+          x: hx,
+          y: hy,
+          text: 'H',
+          color: colors.bg,
+          size: 11,
+          weight: 'bold',
+        });
+      }
+      const pLen = 56;
+      const pTipX = cx + Math.cos(theta) * pLen;
+      const pTipY = cy + Math.sin(theta) * pLen;
+      ctx.strokeStyle = colors.accent;
+      ctx.fillStyle = colors.accent;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(pTipX, pTipY);
+      ctx.stroke();
+      const ux = Math.cos(theta),
+        uy = Math.sin(theta);
+      ctx.beginPath();
+      ctx.moveTo(pTipX, pTipY);
+      ctx.lineTo(pTipX - ux * 9 - uy * 4, pTipY - uy * 9 + ux * 4);
+      ctx.lineTo(pTipX - ux * 9 + uy * 4, pTipY - uy * 9 - ux * 4);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = colors.accent;
+      ctx.font = 'italic 12px "Fraunces", serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('p', pTipX + 8, pTipY);
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText(`T = ${T.toFixed(0)} K`, 14, h - 16);
+      ctx.textAlign = 'right';
+      ctx.fillText(`θ = ${((theta * 180) / Math.PI).toFixed(0)}°`, w - 14, h - 16);
+      if (E_on) {
         ctx.fillStyle = colors.accent;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(pTipX, pTipY);
-        ctx.stroke();
-        const ux = Math.cos(theta),
-                uy = Math.sin(theta);
-        ctx.beginPath();
-        ctx.moveTo(pTipX, pTipY);
-        ctx.lineTo(pTipX - ux * 9 - uy * 4, pTipY - uy * 9 + ux * 4);
-        ctx.lineTo(pTipX - ux * 9 + uy * 4, pTipY - uy * 9 - ux * 4);
-        ctx.closePath();
-        ctx.fill();
-        ctx.fillStyle = colors.accent;
-        ctx.font = 'italic 12px "Fraunces", serif';
         ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('p', pTipX + 8, pTipY);
-        ctx.textBaseline = 'alphabetic';
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.fillText(`T = ${T.toFixed(0)} K`, 14, h - 16);
-        ctx.textAlign = 'right';
-        ctx.fillText(`θ = ${((theta * 180) / Math.PI).toFixed(0)}°`, w - 14, h - 16);
-        if (E_on) {
-                ctx.fillStyle = colors.accent;
-                ctx.textAlign = 'left';
-                ctx.fillText('E (external) →', 14, 18);
-              }
-        ctx0.theta = theta;
-        ctx0.omega = omega;
-      },
-      [],
-      () => ({ context: { theta: Math.PI / 4, omega: 0 } }),
-    );
+        ctx.fillText('E (external) →', 14, 18);
+      }
+      ctx0.theta = theta;
+      ctx0.omega = omega;
+    },
+    [],
+    () => ({ context: { theta: Math.PI / 4, omega: 0 } }),
+  );
 
   return (
     <Demo

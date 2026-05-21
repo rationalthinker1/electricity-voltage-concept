@@ -16,7 +16,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -35,101 +34,101 @@ export function SynchronousMotorDemo({ figure }: Props) {
   }, [f, loadAngleDeg]);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
-        let statorAng = ctx0.statorAng;
-        const { f, loadAngleDeg } = stateRef.current;
-        const omega = (4 * Math.PI * f) / POLES;
-        const visCap = 2.0;
-        const scale = omega > visCap ? visCap / omega : 1;
-        statorAng += omega * scale * dt;
-        const delta = (loadAngleDeg * Math.PI) / 180;
-        const rotorAng = statorAng - delta;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const cx = w / 2;
-        const cy = h / 2;
-        const R = Math.min(w, h) * 0.36;
-        ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        ctx.arc(cx, cy, R + 18, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(cx, cy, R - 4, 0, Math.PI * 2);
-        ctx.stroke();
-        const sFx = cx + Math.cos(statorAng) * R * 0.95;
-        const sFy = cy - Math.sin(statorAng) * R * 0.95;
-        const sSx = cx - Math.cos(statorAng) * R * 0.95;
-        const sSy = cy + Math.sin(statorAng) * R * 0.95;
-        ctx.strokeStyle = colors.teal;
-        ctx.setLineDash([4, 4]);
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(sSx, sSy);
-        ctx.lineTo(sFx, sFy);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.fillStyle = colors.teal;
-        ctx.beginPath();
-        ctx.arc(sFx, sFy, 9, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = colors.teal;
-        ctx.beginPath();
-        ctx.arc(sSx, sSy, 9, 0, Math.PI * 2);
-        ctx.fill();
-        const rotR = R * 0.62;
-        const rcos = Math.cos(rotorAng);
-        const rsin = Math.sin(rotorAng);
-        const nx = cx + rcos * rotR;
-        const ny = cy - rsin * rotR;
-        const sxx = cx - rcos * rotR;
-        const syy = cy + rsin * rotR;
-        ctx.strokeStyle = 'rgba(255,255,255,0.4)';
-        ctx.lineWidth = 14;
-        ctx.lineCap = 'round';
-        ctx.beginPath();
-        ctx.moveTo(sxx, syy);
-        ctx.lineTo(nx, ny);
-        ctx.stroke();
-        ctx.fillStyle = colors.pink;
-        ctx.beginPath();
-        ctx.arc(nx, ny, 12, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = colors.blue;
-        ctx.beginPath();
-        ctx.arc(sxx, syy, 12, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = colors.bg;
-        ctx.font = 'bold 11px JetBrains Mono';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('N', nx, ny);
-        ctx.fillText('S', sxx, syy);
-        ctx.lineCap = 'butt';
-        ctx.strokeStyle = withAlpha(colors.accent, 0.55);
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.arc(cx, cy, 30, -statorAng, -rotorAng, statorAng < rotorAng);
-        ctx.stroke();
-        ctx.fillStyle = colors.accent;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.fillText('δ', cx + 36, cy + 4);
-        ctx.fillStyle = withAlpha(colors.textDim, 0.75);
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('field (dashed) = rotor (locked)', 12, 12);
-        ctx.textAlign = 'right';
-        const stallWarn = Math.abs(loadAngleDeg) > 80 ? '  ← near pull-out!' : '';
-        ctx.fillStyle = Math.abs(loadAngleDeg) > 80 ? '#ff6b2a' : withAlpha(colors.textDim, 0.75);
-        ctx.fillText(`δ = ${loadAngleDeg.toFixed(0)}°${stallWarn}`, w - 12, 12);
-        ctx0.statorAng = statorAng;
-      },
-      [],
-      () => ({ context: { statorAng: 0 } }),
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
+      let statorAng = ctx0.statorAng;
+      const { f, loadAngleDeg } = stateRef.current;
+      const omega = (4 * Math.PI * f) / POLES;
+      const visCap = 2.0;
+      const scale = omega > visCap ? visCap / omega : 1;
+      statorAng += omega * scale * dt;
+      const delta = (loadAngleDeg * Math.PI) / 180;
+      const rotorAng = statorAng - delta;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const cx = w / 2;
+      const cy = h / 2;
+      const R = Math.min(w, h) * 0.36;
+      ctx.strokeStyle = colors.border;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R + 18, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, R - 4, 0, Math.PI * 2);
+      ctx.stroke();
+      const sFx = cx + Math.cos(statorAng) * R * 0.95;
+      const sFy = cy - Math.sin(statorAng) * R * 0.95;
+      const sSx = cx - Math.cos(statorAng) * R * 0.95;
+      const sSy = cy + Math.sin(statorAng) * R * 0.95;
+      ctx.strokeStyle = colors.teal;
+      ctx.setLineDash([4, 4]);
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(sSx, sSy);
+      ctx.lineTo(sFx, sFy);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = colors.teal;
+      ctx.beginPath();
+      ctx.arc(sFx, sFy, 9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colors.teal;
+      ctx.beginPath();
+      ctx.arc(sSx, sSy, 9, 0, Math.PI * 2);
+      ctx.fill();
+      const rotR = R * 0.62;
+      const rcos = Math.cos(rotorAng);
+      const rsin = Math.sin(rotorAng);
+      const nx = cx + rcos * rotR;
+      const ny = cy - rsin * rotR;
+      const sxx = cx - rcos * rotR;
+      const syy = cy + rsin * rotR;
+      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.lineWidth = 14;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(sxx, syy);
+      ctx.lineTo(nx, ny);
+      ctx.stroke();
+      ctx.fillStyle = colors.pink;
+      ctx.beginPath();
+      ctx.arc(nx, ny, 12, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colors.blue;
+      ctx.beginPath();
+      ctx.arc(sxx, syy, 12, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colors.bg;
+      ctx.font = 'bold 11px JetBrains Mono';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('N', nx, ny);
+      ctx.fillText('S', sxx, syy);
+      ctx.lineCap = 'butt';
+      ctx.strokeStyle = withAlpha(colors.accent, 0.55);
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 30, -statorAng, -rotorAng, statorAng < rotorAng);
+      ctx.stroke();
+      ctx.fillStyle = colors.accent;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText('δ', cx + 36, cy + 4);
+      ctx.fillStyle = withAlpha(colors.textDim, 0.75);
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('field (dashed) = rotor (locked)', 12, 12);
+      ctx.textAlign = 'right';
+      const stallWarn = Math.abs(loadAngleDeg) > 80 ? '  ← near pull-out!' : '';
+      ctx.fillStyle = Math.abs(loadAngleDeg) > 80 ? '#ff6b2a' : withAlpha(colors.textDim, 0.75);
+      ctx.fillText(`δ = ${loadAngleDeg.toFixed(0)}°${stallWarn}`, w - 12, 12);
+      ctx0.statorAng = statorAng;
+    },
+    [],
+    () => ({ context: { statorAng: 0 } }),
+  );
 
   return (
     <Demo

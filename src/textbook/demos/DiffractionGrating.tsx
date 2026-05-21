@@ -20,7 +20,6 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -39,93 +38,93 @@ export function DiffractionGratingDemo({ figure }: Props) {
   const theta1Deg = (theta1 * 180) / Math.PI;
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const { nIdx, lamNm, linesPerMm } = stateRef.current;
-        const N = Nvals[nIdx];
-        const lam_ = lamNm * 1e-9;
-        const d_ = 1e-3 / linesPerMm;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const padL = 28;
-        const padR = 20;
-        const padTop = 20;
-        const padBot = 30;
-        const plotW = W - padL - padR;
-        const plotH = H - padTop - padBot;
-        const x0 = padL;
-        const y0 = padTop;
-        const yBase = y0 + plotH;
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1;
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const { nIdx, lamNm, linesPerMm } = stateRef.current;
+      const N = Nvals[nIdx];
+      const lam_ = lamNm * 1e-9;
+      const d_ = 1e-3 / linesPerMm;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const padL = 28;
+      const padR = 20;
+      const padTop = 20;
+      const padBot = 30;
+      const plotW = W - padL - padR;
+      const plotH = H - padTop - padBot;
+      const x0 = padL;
+      const y0 = padTop;
+      const yBase = y0 + plotH;
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(x0, yBase);
+      ctx.lineTo(x0 + plotW, yBase);
+      ctx.moveTo(x0 + plotW / 2, y0);
+      ctx.lineTo(x0 + plotW / 2, yBase);
+      ctx.stroke();
+      const [r, g, b] = wavelengthRGB(lamNm);
+      const Nsamp = Math.max(1200, plotW * 3);
+      const Imax = 1;
+      ctx.strokeStyle = `rgba(${r},${g},${b},0.95)`;
+      ctx.lineWidth = 1.3;
+      ctx.beginPath();
+      for (let i = 0; i <= Nsamp; i++) {
+        const s = -1 + 2 * (i / Nsamp); // sin θ
+        const beta = (Math.PI * d_ * s) / lam_;
+        let I: number;
+        const sb = Math.sin(beta);
+        const sNb = Math.sin(N * beta);
+        if (Math.abs(sb) < 1e-9) {
+          I = 1; // principal max
+        } else {
+          I = (sNb * sNb) / (N * N * sb * sb);
+        }
+        const xPlot = x0 + (i / Nsamp) * plotW;
+        const yPlot = yBase - (I / Imax) * plotH;
+        if (i === 0) ctx.moveTo(xPlot, yPlot);
+        else ctx.lineTo(xPlot, yPlot);
+      }
+      ctx.stroke();
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.setLineDash([3, 4]);
+      const mMax = Math.floor(d_ / lam_);
+      for (let m = -mMax; m <= mMax; m++) {
+        const s = (m * lam_) / d_;
+        if (Math.abs(s) > 1) continue;
+        const xx = x0 + ((s + 1) / 2) * plotW;
         ctx.beginPath();
-        ctx.moveTo(x0, yBase);
-        ctx.lineTo(x0 + plotW, yBase);
-        ctx.moveTo(x0 + plotW / 2, y0);
-        ctx.lineTo(x0 + plotW / 2, yBase);
+        ctx.moveTo(xx, y0);
+        ctx.lineTo(xx, yBase + 4);
         ctx.stroke();
-        const [r, g, b] = wavelengthRGB(lamNm);
-        const Nsamp = Math.max(1200, plotW * 3);
-        const Imax = 1;
-        ctx.strokeStyle = `rgba(${r},${g},${b},0.95)`;
-        ctx.lineWidth = 1.3;
-        ctx.beginPath();
-        for (let i = 0; i <= Nsamp; i++) {
-                const s = -1 + 2 * (i / Nsamp); // sin θ
-                const beta = (Math.PI * d_ * s) / lam_;
-                let I: number;
-                const sb = Math.sin(beta);
-                const sNb = Math.sin(N * beta);
-                if (Math.abs(sb) < 1e-9) {
-                  I = 1; // principal max
-                } else {
-                  I = (sNb * sNb) / (N * N * sb * sb);
-                }
-                const xPlot = x0 + (i / Nsamp) * plotW;
-                const yPlot = yBase - (I / Imax) * plotH;
-                if (i === 0) ctx.moveTo(xPlot, yPlot);
-                else ctx.lineTo(xPlot, yPlot);
-              }
-        ctx.stroke();
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.setLineDash([3, 4]);
-        const mMax = Math.floor(d_ / lam_);
-        for (let m = -mMax; m <= mMax; m++) {
-                const s = (m * lam_) / d_;
-                if (Math.abs(s) > 1) continue;
-                const xx = x0 + ((s + 1) / 2) * plotW;
-                ctx.beginPath();
-                ctx.moveTo(xx, y0);
-                ctx.lineTo(xx, yBase + 4);
-                ctx.stroke();
-                ctx.setLineDash([]);
-                drawLabel(ctx, {
-                  x: xx,
-                  y: yBase + 16,
-                  text: `m=${m}`,
-                  color: colors.textDim,
-                  align: 'center',
-                });
-                ctx.setLineDash([3, 4]);
-              }
         ctx.setLineDash([]);
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'left';
-        ctx.fillText(`N = ${N}`, padL + 4, padTop + 12);
-        ctx.fillText(`λ = ${lamNm.toFixed(0)} nm`, padL + 4, padTop + 26);
-        ctx.fillText(`d = 1/${linesPerMm} mm`, padL + 4, padTop + 40);
-        ctx.textAlign = 'right';
-        ctx.fillText('I/I₀', x0 + 30, padTop + 12);
-        ctx.textAlign = 'center';
-        ctx.fillText('sin θ', x0 + plotW / 2, H - 8);
-        ctx.textAlign = 'left';
-        ctx.fillText('−1', x0 + 2, yBase + 16);
-        ctx.textAlign = 'right';
-        ctx.fillText('+1', x0 + plotW - 2, yBase + 16);
-      },
-      [],
-    );
+        drawLabel(ctx, {
+          x: xx,
+          y: yBase + 16,
+          text: `m=${m}`,
+          color: colors.textDim,
+          align: 'center',
+        });
+        ctx.setLineDash([3, 4]);
+      }
+      ctx.setLineDash([]);
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      ctx.fillText(`N = ${N}`, padL + 4, padTop + 12);
+      ctx.fillText(`λ = ${lamNm.toFixed(0)} nm`, padL + 4, padTop + 26);
+      ctx.fillText(`d = 1/${linesPerMm} mm`, padL + 4, padTop + 40);
+      ctx.textAlign = 'right';
+      ctx.fillText('I/I₀', x0 + 30, padTop + 12);
+      ctx.textAlign = 'center';
+      ctx.fillText('sin θ', x0 + plotW / 2, H - 8);
+      ctx.textAlign = 'left';
+      ctx.fillText('−1', x0 + 2, yBase + 16);
+      ctx.textAlign = 'right';
+      ctx.fillText('+1', x0 + plotW - 2, yBase + 16);
+    },
+    [],
+  );
 
   return (
     <Demo

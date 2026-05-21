@@ -20,7 +20,6 @@ import { getCanvasColors } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -49,28 +48,28 @@ export function MutualInductanceTwoCoilsDemo({ figure }: Props) {
   }, [distanceCm, tiltDeg]);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { distanceCm, tiltDeg } = stateRef.current;
-        const k = couplingK(distanceCm, tiltDeg);
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const cy = h / 2;
-        const c1x = w * 0.32;
-        const c2x = c1x + 70 + distanceCm * 9;
-        drawFieldLines(ctx, c1x, cy, c2x, cy, tiltDeg, k);
-        drawCoil(ctx, c1x, cy, 0, 'C1');
-        drawCoil(ctx, c2x, cy, tiltDeg, 'C2');
-        drawLabel(ctx, {
-                x: 12,
-                y: h - 8,
-                text: `k = ${k.toFixed(3)}   |   M ≈ ${(k * Math.sqrt(L1 * L2) * 1e6).toFixed(0)} µH`,
-                color: colors.textDim,
-                baseline: 'bottom',
-              });
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { distanceCm, tiltDeg } = stateRef.current;
+      const k = couplingK(distanceCm, tiltDeg);
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const cy = h / 2;
+      const c1x = w * 0.32;
+      const c2x = c1x + 70 + distanceCm * 9;
+      drawFieldLines(ctx, c1x, cy, c2x, cy, tiltDeg, k);
+      drawCoil(ctx, c1x, cy, 0, 'C1');
+      drawCoil(ctx, c2x, cy, tiltDeg, 'C2');
+      drawLabel(ctx, {
+        x: 12,
+        y: h - 8,
+        text: `k = ${k.toFixed(3)}   |   M ≈ ${(k * Math.sqrt(L1 * L2) * 1e6).toFixed(0)} µH`,
+        color: colors.textDim,
+        baseline: 'bottom',
+      });
+    },
+    [],
+  );
 
   return (
     <Demo

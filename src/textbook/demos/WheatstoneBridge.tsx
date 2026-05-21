@@ -72,11 +72,35 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
       const xR3 = (xL + xB) / 2;
       const xRx = (xB + xR) / 2;
       const elements: CircuitElement[] = [
-        { kind: 'wire', points: [{ x: xL, y: yTop }, { x: xL, y: yMid - 22 }] },
-        { kind: 'wire', points: [{ x: xL, y: yMid + 22 }, { x: xL, y: yBot }] },
-        { kind: 'wire', points: [{ x: xR, y: yTop }, { x: xR, y: yBot }] },
+        {
+          kind: 'wire',
+          points: [
+            { x: xL, y: yTop },
+            { x: xL, y: yMid - 22 },
+          ],
+        },
+        {
+          kind: 'wire',
+          points: [
+            { x: xL, y: yMid + 22 },
+            { x: xL, y: yBot },
+          ],
+        },
+        {
+          kind: 'wire',
+          points: [
+            { x: xR, y: yTop },
+            { x: xR, y: yBot },
+          ],
+        },
         { kind: 'battery', at: { x: xL, y: yMid }, label: `${V.toFixed(1)} V`, leadLength: 22 },
-        { kind: 'wire', points: [{ x: xL, y: yTop }, { x: xR1 - 22, y: yTop }] },
+        {
+          kind: 'wire',
+          points: [
+            { x: xL, y: yTop },
+            { x: xR1 - 22, y: yTop },
+          ],
+        },
         {
           kind: 'resistor',
           from: { x: xR1 - 20, y: yTop },
@@ -99,8 +123,20 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
           label: `R2=${R2.toFixed(0)}Ω`,
           labelOffset: { x: 0, y: -12 },
         },
-        { kind: 'wire', points: [{ x: xR2 + 22, y: yTop }, { x: xR, y: yTop }] },
-        { kind: 'wire', points: [{ x: xL, y: yBot }, { x: xR3 - 22, y: yBot }] },
+        {
+          kind: 'wire',
+          points: [
+            { x: xR2 + 22, y: yTop },
+            { x: xR, y: yTop },
+          ],
+        },
+        {
+          kind: 'wire',
+          points: [
+            { x: xL, y: yBot },
+            { x: xR3 - 22, y: yBot },
+          ],
+        },
         {
           kind: 'resistor',
           from: { x: xR3 - 20, y: yBot },
@@ -123,7 +159,13 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
           label: `Rx=${Rx.toFixed(0)}Ω`,
           labelOffset: { x: 0, y: 20 },
         },
-        { kind: 'wire', points: [{ x: xRx + 22, y: yBot }, { x: xR, y: yBot }] },
+        {
+          kind: 'wire',
+          points: [
+            { x: xRx + 22, y: yBot },
+            { x: xR, y: yBot },
+          ],
+        },
         {
           kind: 'node',
           at: { x: xA, y: yTop },
@@ -142,53 +184,56 @@ export function WheatstoneBridgeDemo({ figure }: Props) {
     [V, R1, R2, R3, Rx],
   );
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, dpr } = info;
-    let raf = 0;
+  const setup = useCallback(
+    (info: CanvasInfo) => {
+      const { ctx, w, h, dpr } = info;
+      let raf = 0;
 
-    function draw() {
-      const { V, V_A, V_B, dV } = stateRef.current;
+      function draw() {
+        const { V, V_A, V_B, dV } = stateRef.current;
 
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, w, h);
+        ctx.fillStyle = getCanvasColors().bg;
+        ctx.fillRect(0, 0, w, h);
 
-      const padX = 60;
-      const xL = padX;
-      const xR = w - padX;
-      const xA = (xL + xR) * 0.42;
-      const xB = (xL + xR) * 0.42;
-      const yTop = h * 0.28;
-      const yBot = h * 0.72;
-      const yMid = (yTop + yBot) / 2;
+        const padX = 60;
+        const xL = padX;
+        const xR = w - padX;
+        const xA = (xL + xR) * 0.42;
+        const xB = (xL + xR) * 0.42;
+        const yTop = h * 0.28;
+        const yBot = h * 0.72;
+        const yMid = (yTop + yBot) / 2;
 
-      const off = getStaticSchematic(w, h, dpr);
-      if (off) ctx.drawImage(off, 0, 0, w, h);
+        const off = getStaticSchematic(w, h, dpr);
+        if (off) ctx.drawImage(off, 0, 0, w, h);
 
-      // Dynamic overlay: galvanometer needle deflects with the live imbalance dV.
-      drawGalvanometer(ctx, xA, yMid, dV, V);
+        // Dynamic overlay: galvanometer needle deflects with the live imbalance dV.
+        drawGalvanometer(ctx, xA, yMid, dV, V);
 
-      // Dynamic overlay: live node potentials and chapter header.
-      ctx.fillStyle = 'rgba(255,255,255,0.85)';
-      ctx.font = 'bold 11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`A   ${V_A.toFixed(3)} V`, xA + 8, yTop - 6);
-      ctx.textBaseline = 'top';
-      ctx.fillText(`B   ${V_B.toFixed(3)} V`, xB + 8, yBot + 6);
+        // Dynamic overlay: live node potentials and chapter header.
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.font = 'bold 11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(`A   ${V_A.toFixed(3)} V`, xA + 8, yTop - 6);
+        ctx.textBaseline = 'top';
+        ctx.fillText(`B   ${V_B.toFixed(3)} V`, xB + 8, yBot + 6);
 
-      drawLabel(ctx, {
-        x: 12,
-        y: 10,
-        text: 'Wheatstone bridge — not reducible by series/parallel rules',
-        color: withAlpha(getCanvasColors().textDim, 0.75),
-        baseline: 'top',
-      });
+        drawLabel(ctx, {
+          x: 12,
+          y: 10,
+          text: 'Wheatstone bridge — not reducible by series/parallel rules',
+          color: withAlpha(getCanvasColors().textDim, 0.75),
+          baseline: 'top',
+        });
 
+        raf = requestAnimationFrame(draw);
+      }
       raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, [getStaticSchematic]);
+      return () => cancelAnimationFrame(raf);
+    },
+    [getStaticSchematic],
+  );
 
   return (
     <Demo

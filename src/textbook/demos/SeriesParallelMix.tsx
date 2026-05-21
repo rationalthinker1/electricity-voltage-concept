@@ -34,7 +34,6 @@ interface Props {
   figure?: string;
 }
 
-
 const V_FIXED = 12; // V — source voltage
 // Visual scaling reference. The trunk current at the default config (R1=8,
 // R2=20, R3=30, topology = series→parallel) is ~0.6 A.
@@ -288,7 +287,7 @@ export function SeriesParallelMixDemo({ figure }: Props) {
           <button
             key={tp.id}
             type="button"
-            className={`mini-toggle${topology === tp.id ? ' on' : ''}`}
+            className={`mini-toggle${topology === tp.id ? 'on' : ''}`}
             onClick={() => setTopology(tp.id)}
             aria-pressed={topology === tp.id}
           >

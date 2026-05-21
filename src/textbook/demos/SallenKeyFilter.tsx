@@ -24,7 +24,7 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { fmtFreqShort } from "@/lib/formatters";
+import { fmtFreqShort } from '@/lib/formatters';
 
 interface Props {
   figure?: string;
@@ -42,181 +42,181 @@ export function SallenKeyFilterDemo({ figure }: Props) {
 
   const stateRef = useSimState({ f0, K, Q });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { f0, K, Q } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padL = 50,
-                padR = 40,
-                padT = 22,
-                padB = 22;
-        const totalH = h - padT - padB - 14;
-        const magH = totalH * 0.58;
-        const phH = totalH * 0.42;
-        const magY0 = padT;
-        const phY0 = padT + magH + 14;
-        const plotX = padL;
-        const plotW = w - padL - padR;
-        const logMin = Math.log10(Math.max(f0 / 100, 1));
-        const logMax = Math.log10(Math.max(f0 * 100, 100));
-        const dBmin = -60,
-                dBmax = 30;
-        const yMag = (db: number) => magY0 + magH - ((db - dBmin) / (dBmax - dBmin)) * magH;
-        const phMin = -190,
-                phMax = 10;
-        const yPh = (p: number) => phY0 + phH - ((p - phMin) / (phMax - phMin)) * phH;
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { f0, K, Q } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padL = 50,
+        padR = 40,
+        padT = 22,
+        padB = 22;
+      const totalH = h - padT - padB - 14;
+      const magH = totalH * 0.58;
+      const phH = totalH * 0.42;
+      const magY0 = padT;
+      const phY0 = padT + magH + 14;
+      const plotX = padL;
+      const plotW = w - padL - padR;
+      const logMin = Math.log10(Math.max(f0 / 100, 1));
+      const logMax = Math.log10(Math.max(f0 * 100, 100));
+      const dBmin = -60,
+        dBmax = 30;
+      const yMag = (db: number) => magY0 + magH - ((db - dBmin) / (dBmax - dBmin)) * magH;
+      const phMin = -190,
+        phMax = 10;
+      const yPh = (p: number) => phY0 + phH - ((p - phMin) / (phMax - phMin)) * phH;
+      ctx.strokeStyle = colors.border;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(plotX, magY0, plotW, magH);
+      ctx.strokeRect(plotX, phY0, plotW, phH);
+      ctx.strokeStyle = colors.border;
+      for (let db = dBmin; db <= dBmax; db += 20) {
+        const y = yMag(db);
+        ctx.beginPath();
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
+        ctx.stroke();
+      }
+      for (let p = phMin; p <= phMax; p += 45) {
+        const y = yPh(p);
+        ctx.beginPath();
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
+        ctx.stroke();
+      }
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      for (let lf = Math.ceil(logMin); lf <= Math.floor(logMax); lf++) {
+        const f = Math.pow(10, lf);
+        const x = plotX + ((lf - logMin) / (logMax - logMin)) * plotW;
         ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(plotX, magY0, plotW, magH);
-        ctx.strokeRect(plotX, phY0, plotW, phH);
-        ctx.strokeStyle = colors.border;
-        for (let db = dBmin; db <= dBmax; db += 20) {
-                const y = yMag(db);
-                ctx.beginPath();
-                ctx.moveTo(plotX, y);
-                ctx.lineTo(plotX + plotW, y);
-                ctx.stroke();
-              }
-        for (let p = phMin; p <= phMax; p += 45) {
-                const y = yPh(p);
-                ctx.beginPath();
-                ctx.moveTo(plotX, y);
-                ctx.lineTo(plotX + plotW, y);
-                ctx.stroke();
-              }
+        ctx.beginPath();
+        ctx.moveTo(x, magY0);
+        ctx.lineTo(x, magY0 + magH);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x, phY0);
+        ctx.lineTo(x, phY0 + phH);
+        ctx.stroke();
         ctx.save();
         ctx.globalAlpha = 0.6;
         ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        for (let lf = Math.ceil(logMin); lf <= Math.floor(logMax); lf++) {
-                const f = Math.pow(10, lf);
-                const x = plotX + ((lf - logMin) / (logMax - logMin)) * plotW;
-                ctx.strokeStyle = colors.border;
-                ctx.beginPath();
-                ctx.moveTo(x, magY0);
-                ctx.lineTo(x, magY0 + magH);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(x, phY0);
-                ctx.lineTo(x, phY0 + phH);
-                ctx.stroke();
-                ctx.save();
-                ctx.globalAlpha = 0.6;
-                ctx.fillStyle = colors.textDim;
-                ctx.fillText(fmtFreqShort(f), x, phY0 + phH + 4);
-                ctx.restore();
-              }
-        const xf0 = plotX + ((Math.log10(f0) - logMin) / (logMax - logMin)) * plotW;
+        ctx.fillText(fmtFreqShort(f), x, phY0 + phH + 4);
         ctx.restore();
-        ctx.strokeStyle = colors.teal;
-        ctx.setLineDash([3, 3]);
-        ctx.beginPath();
-        ctx.moveTo(xf0, magY0);
-        ctx.lineTo(xf0, magY0 + magH);
-        ctx.moveTo(xf0, phY0);
-        ctx.lineTo(xf0, phY0 + phH);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        const N = 280;
-        const magPts: { x: number; y: number }[] = [];
-        for (let i = 0; i <= N; i++) {
-                const u = i / N;
-                const lf = logMin + u * (logMax - logMin);
-                const f = Math.pow(10, lf);
-                const r = f / f0;
-                // H = K / ((1 - r²) + j r (3 − K))
-                const re = 1 - r * r;
-                const im = r * (3 - K);
-                const mag = K / Math.sqrt(re * re + im * im);
-                const dB = 20 * Math.log10(Math.max(mag, 1e-6));
-                magPts.push({
-                  x: plotX + u * plotW,
-                  y: yMag(Math.max(dBmin, Math.min(dBmax, dB))),
-                });
-              }
-        drawGlowPath(ctx, magPts, {
-                color: withAlpha(colors.accent, 0.95),
-                lineWidth: 1.8,
-                glowColor: withAlpha(colors.accent, 0.4),
-                glowWidth: 7,
-              });
-        ctx.save();
-        ctx.globalAlpha = 0.45;
-        ctx.strokeStyle = colors.textDim;
-        ctx.setLineDash([3, 3]);
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        for (let i = 0; i <= N; i++) {
-                const u = i / N;
-                const lf = logMin + u * (logMax - logMin);
-                const f = Math.pow(10, lf);
-                const r = f / f0;
-                const mag = 1 / Math.sqrt(1 + r * r);
-                const dB = 20 * Math.log10(Math.max(mag, 1e-6));
-                const x = plotX + u * plotW;
-                const y = yMag(Math.max(dBmin, Math.min(dBmax, dB)));
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
-        ctx.setLineDash([]);
-        const phPts: { x: number; y: number }[] = [];
-        let lastPhase = 0;
-        for (let i = 0; i <= N; i++) {
-                const u = i / N;
-                const lf = logMin + u * (logMax - logMin);
-                const f = Math.pow(10, lf);
-                const r = f / f0;
-                const re = 1 - r * r;
-                const im = r * (3 - K);
-                // arg(1/(re+j·im)) = -atan2(im, re)
-                let ph = (-Math.atan2(im, re) * 180) / Math.PI;
-                // Unwrap toward continuous negative angles past r > 1
-                while (ph - lastPhase > 90) ph -= 360;
-                while (lastPhase - ph > 90) ph += 360;
-                lastPhase = ph;
-                phPts.push({
-                  x: plotX + u * plotW,
-                  y: yPh(Math.max(phMin, Math.min(phMax, ph))),
-                });
-              }
-        drawGlowPath(ctx, phPts, {
-                color: withAlpha(colors.teal, 0.95),
-                lineWidth: 1.6,
-                glowColor: withAlpha(colors.teal, 0.35),
-                glowWidth: 5,
-              });
-        ctx.restore();
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('+20 dB', plotX - 4, yMag(20));
-        ctx.fillText('0', plotX - 4, yMag(0));
-        ctx.fillText('-40', plotX - 4, yMag(-40));
-        ctx.fillText('0°', plotX - 4, yPh(0));
-        ctx.fillText('-90°', plotX - 4, yPh(-90));
-        ctx.fillText('-180°', plotX - 4, yPh(-180));
-        ctx.fillStyle = colors.accent;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('|H(jω)|  [dB]   (dashed = 1st-order RC reference)', plotX + 4, magY0 + 4);
-        ctx.fillStyle = colors.teal;
-        ctx.fillText('arg H(jω)  [deg]', plotX + 4, phY0 + 4);
-        ctx.fillStyle = colors.text;
-        ctx.textAlign = 'right';
-        ctx.fillText(
-                `K = ${K.toFixed(2)},  Q = ${Q.toFixed(2)},  f₀ = ${fmtFreqShort(f0)}`,
-                plotX + plotW - 4,
-                magY0 + 4,
-              );
-      },
-      [],
-    );
+      }
+      const xf0 = plotX + ((Math.log10(f0) - logMin) / (logMax - logMin)) * plotW;
+      ctx.restore();
+      ctx.strokeStyle = colors.teal;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(xf0, magY0);
+      ctx.lineTo(xf0, magY0 + magH);
+      ctx.moveTo(xf0, phY0);
+      ctx.lineTo(xf0, phY0 + phH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const N = 280;
+      const magPts: { x: number; y: number }[] = [];
+      for (let i = 0; i <= N; i++) {
+        const u = i / N;
+        const lf = logMin + u * (logMax - logMin);
+        const f = Math.pow(10, lf);
+        const r = f / f0;
+        // H = K / ((1 - r²) + j r (3 − K))
+        const re = 1 - r * r;
+        const im = r * (3 - K);
+        const mag = K / Math.sqrt(re * re + im * im);
+        const dB = 20 * Math.log10(Math.max(mag, 1e-6));
+        magPts.push({
+          x: plotX + u * plotW,
+          y: yMag(Math.max(dBmin, Math.min(dBmax, dB))),
+        });
+      }
+      drawGlowPath(ctx, magPts, {
+        color: withAlpha(colors.accent, 0.95),
+        lineWidth: 1.8,
+        glowColor: withAlpha(colors.accent, 0.4),
+        glowWidth: 7,
+      });
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.textDim;
+      ctx.setLineDash([3, 3]);
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      for (let i = 0; i <= N; i++) {
+        const u = i / N;
+        const lf = logMin + u * (logMax - logMin);
+        const f = Math.pow(10, lf);
+        const r = f / f0;
+        const mag = 1 / Math.sqrt(1 + r * r);
+        const dB = 20 * Math.log10(Math.max(mag, 1e-6));
+        const x = plotX + u * plotW;
+        const y = yMag(Math.max(dBmin, Math.min(dBmax, dB)));
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const phPts: { x: number; y: number }[] = [];
+      let lastPhase = 0;
+      for (let i = 0; i <= N; i++) {
+        const u = i / N;
+        const lf = logMin + u * (logMax - logMin);
+        const f = Math.pow(10, lf);
+        const r = f / f0;
+        const re = 1 - r * r;
+        const im = r * (3 - K);
+        // arg(1/(re+j·im)) = -atan2(im, re)
+        let ph = (-Math.atan2(im, re) * 180) / Math.PI;
+        // Unwrap toward continuous negative angles past r > 1
+        while (ph - lastPhase > 90) ph -= 360;
+        while (lastPhase - ph > 90) ph += 360;
+        lastPhase = ph;
+        phPts.push({
+          x: plotX + u * plotW,
+          y: yPh(Math.max(phMin, Math.min(phMax, ph))),
+        });
+      }
+      drawGlowPath(ctx, phPts, {
+        color: withAlpha(colors.teal, 0.95),
+        lineWidth: 1.6,
+        glowColor: withAlpha(colors.teal, 0.35),
+        glowWidth: 5,
+      });
+      ctx.restore();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('+20 dB', plotX - 4, yMag(20));
+      ctx.fillText('0', plotX - 4, yMag(0));
+      ctx.fillText('-40', plotX - 4, yMag(-40));
+      ctx.fillText('0°', plotX - 4, yPh(0));
+      ctx.fillText('-90°', plotX - 4, yPh(-90));
+      ctx.fillText('-180°', plotX - 4, yPh(-180));
+      ctx.fillStyle = colors.accent;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('|H(jω)|  [dB]   (dashed = 1st-order RC reference)', plotX + 4, magY0 + 4);
+      ctx.fillStyle = colors.teal;
+      ctx.fillText('arg H(jω)  [deg]', plotX + 4, phY0 + 4);
+      ctx.fillStyle = colors.text;
+      ctx.textAlign = 'right';
+      ctx.fillText(
+        `K = ${K.toFixed(2)},  Q = ${Q.toFixed(2)},  f₀ = ${fmtFreqShort(f0)}`,
+        plotX + plotW - 4,
+        magY0 + 4,
+      );
+    },
+    [],
+  );
 
   return (
     <Demo

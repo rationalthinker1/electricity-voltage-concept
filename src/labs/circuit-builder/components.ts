@@ -477,7 +477,6 @@ export function componentLabel(c: PlacedComponent): string {
   }
 }
 
-
 export interface TooltipInfo {
   title: string;
   description: string;

@@ -20,7 +20,6 @@ import { PHYS, pretty } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -46,139 +45,139 @@ export function CyclotronDemo({ figure }: Props) {
   const f_real = 1 / T_real;
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
-        let theta = ctx0.theta;
-        const { vLog, B, positive, proton } = stateRef.current;
-        const v = Math.pow(10, vLog);
-        const m = proton ? PHYS.mp : PHYS.me;
-        const q = PHYS.e;
-        const r_phys = (m * v) / (q * B);
-        const omega = (q * B) / m;
-        const sign = positive ? +1 : -1;
-        const rMin_m = 1e-10,
-                rMax_m = 1e2;
-        const rPxMin = 28,
-                rPxMax = Math.min(w, h) * 0.4;
-        const ll = Math.log10(Math.max(rMin_m, Math.min(rMax_m, r_phys)));
-        const t = (ll - Math.log10(rMin_m)) / (Math.log10(rMax_m) - Math.log10(rMin_m));
-        const rPx = rPxMin + t * (rPxMax - rPxMin);
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        ctx.save();
-        ctx.globalAlpha = 0.28;
-        ctx.strokeStyle = colors.teal;
-        ctx.lineWidth = 1;
-        const spacing = 38;
-        for (let y = spacing / 2; y < h; y += spacing) {
-                for (let x = spacing / 2; x < w; x += spacing) {
-                  const k = 3.5;
-                  ctx.beginPath();
-                  ctx.moveTo(x - k, y - k);
-                  ctx.lineTo(x + k, y + k);
-                  ctx.moveTo(x + k, y - k);
-                  ctx.lineTo(x - k, y + k);
-                  ctx.stroke();
-                  ctx.restore();
-                }
-              }
-        ctx.save();
-        ctx.globalAlpha = 0.55;
-        ctx.fillStyle = colors.teal;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.fillText(`B = ${pretty(B, 3)} T  (into page)`, 14, 18);
-        ctx.restore();
-        const cx0 = w / 2;
-        const cy0 = h / 2 + sign * 0;
-        const visScale = (Math.min(1, 5 / (omega + 1e-6)) * Math.min(50, omega)) / Math.max(1, omega);
-        const omegaVis = Math.min(4, Math.log10(omega + 1) * 0.6 + 1.0);
-        void visScale;
-        theta += sign * omegaVis * dt;
-        ctx.save();
-        ctx.globalAlpha = 0.3;
-        ctx.strokeStyle = colors.accent;
-        ctx.setLineDash([4, 4]);
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.arc(cx0, cy0, rPx, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.restore();
-        ctx.setLineDash([]);
-        const px = cx0 + rPx * Math.cos(theta);
-        const py = cy0 + rPx * Math.sin(theta);
-        const tx = -Math.sin(theta) * sign;
-        const ty = Math.cos(theta) * sign;
-        ctx.save();
-        ctx.globalAlpha = 0.55;
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        const trailLen = 1.2;
-        ctx.arc(cx0, cy0, rPx, theta - sign * trailLen, theta, sign < 0);
-        ctx.stroke();
-        ctx.restore();
-        const color = positive ? '#ff3b6e' : '#5baef8';
-        drawHalo(ctx, {
-                x: px,
-                y: py,
-                radius: 22,
-                color: color,
-                alpha: 1,
-                extent: 1,
-              });
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(px, py, 7, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = colors.bg;
-        ctx.font = 'bold 9px JetBrains Mono';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(positive ? '+' : '−', px, py);
-        ctx.strokeStyle = colors.accent;
-        ctx.fillStyle = colors.accent;
-        ctx.lineWidth = 1.5;
-        const aLen = 22;
-        ctx.beginPath();
-        ctx.moveTo(px, py);
-        ctx.lineTo(px + tx * aLen, py + ty * aLen);
-        ctx.stroke();
-        ctx.beginPath();
-        const hx = px + tx * aLen,
-                hy = py + ty * aLen;
-        const nx = -ty,
-                ny = tx;
-        ctx.moveTo(hx, hy);
-        ctx.lineTo(hx - tx * 5 + nx * 3, hy - ty * 5 + ny * 3);
-        ctx.lineTo(hx - tx * 5 - nx * 3, hy - ty * 5 - ny * 3);
-        ctx.closePath();
-        ctx.fill();
-        ctx.textBaseline = 'alphabetic';
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('v', hx + tx * 8, hy + ty * 8);
-        ctx.save();
-        ctx.globalAlpha = 0.85;
-        ctx.fillStyle = colors.text;
-        ctx.textAlign = 'right';
-        ctx.fillText(`r (real) = ${pretty(r_phys, 2)} m`, w - 14, 18);
-        ctx.restore();
-        ctx.save();
-        ctx.globalAlpha = 0.6;
-        drawLabel(ctx, {
-                x: w - 14,
-                y: 32,
-                text: 'orbit drawn at log-scaled radius',
-                color: colors.textDim,
-                size: 9,
-              });
-        ctx.restore();
-        ctx0.theta = theta;
-      },
-      [],
-      () => ({ context: { theta: 0 } }),
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
+      let theta = ctx0.theta;
+      const { vLog, B, positive, proton } = stateRef.current;
+      const v = Math.pow(10, vLog);
+      const m = proton ? PHYS.mp : PHYS.me;
+      const q = PHYS.e;
+      const r_phys = (m * v) / (q * B);
+      const omega = (q * B) / m;
+      const sign = positive ? +1 : -1;
+      const rMin_m = 1e-10,
+        rMax_m = 1e2;
+      const rPxMin = 28,
+        rPxMax = Math.min(w, h) * 0.4;
+      const ll = Math.log10(Math.max(rMin_m, Math.min(rMax_m, r_phys)));
+      const t = (ll - Math.log10(rMin_m)) / (Math.log10(rMax_m) - Math.log10(rMin_m));
+      const rPx = rPxMin + t * (rPxMax - rPxMin);
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      ctx.save();
+      ctx.globalAlpha = 0.28;
+      ctx.strokeStyle = colors.teal;
+      ctx.lineWidth = 1;
+      const spacing = 38;
+      for (let y = spacing / 2; y < h; y += spacing) {
+        for (let x = spacing / 2; x < w; x += spacing) {
+          const k = 3.5;
+          ctx.beginPath();
+          ctx.moveTo(x - k, y - k);
+          ctx.lineTo(x + k, y + k);
+          ctx.moveTo(x + k, y - k);
+          ctx.lineTo(x - k, y + k);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = colors.teal;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText(`B = ${pretty(B, 3)} T  (into page)`, 14, 18);
+      ctx.restore();
+      const cx0 = w / 2;
+      const cy0 = h / 2 + sign * 0;
+      const visScale = (Math.min(1, 5 / (omega + 1e-6)) * Math.min(50, omega)) / Math.max(1, omega);
+      const omegaVis = Math.min(4, Math.log10(omega + 1) * 0.6 + 1.0);
+      void visScale;
+      theta += sign * omegaVis * dt;
+      ctx.save();
+      ctx.globalAlpha = 0.3;
+      ctx.strokeStyle = colors.accent;
+      ctx.setLineDash([4, 4]);
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(cx0, cy0, rPx, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+      ctx.setLineDash([]);
+      const px = cx0 + rPx * Math.cos(theta);
+      const py = cy0 + rPx * Math.sin(theta);
+      const tx = -Math.sin(theta) * sign;
+      const ty = Math.cos(theta) * sign;
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = colors.accent;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      const trailLen = 1.2;
+      ctx.arc(cx0, cy0, rPx, theta - sign * trailLen, theta, sign < 0);
+      ctx.stroke();
+      ctx.restore();
+      const color = positive ? '#ff3b6e' : '#5baef8';
+      drawHalo(ctx, {
+        x: px,
+        y: py,
+        radius: 22,
+        color: color,
+        alpha: 1,
+        extent: 1,
+      });
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(px, py, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colors.bg;
+      ctx.font = 'bold 9px JetBrains Mono';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(positive ? '+' : '−', px, py);
+      ctx.strokeStyle = colors.accent;
+      ctx.fillStyle = colors.accent;
+      ctx.lineWidth = 1.5;
+      const aLen = 22;
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.lineTo(px + tx * aLen, py + ty * aLen);
+      ctx.stroke();
+      ctx.beginPath();
+      const hx = px + tx * aLen,
+        hy = py + ty * aLen;
+      const nx = -ty,
+        ny = tx;
+      ctx.moveTo(hx, hy);
+      ctx.lineTo(hx - tx * 5 + nx * 3, hy - ty * 5 + ny * 3);
+      ctx.lineTo(hx - tx * 5 - nx * 3, hy - ty * 5 - ny * 3);
+      ctx.closePath();
+      ctx.fill();
+      ctx.textBaseline = 'alphabetic';
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('v', hx + tx * 8, hy + ty * 8);
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = colors.text;
+      ctx.textAlign = 'right';
+      ctx.fillText(`r (real) = ${pretty(r_phys, 2)} m`, w - 14, 18);
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      drawLabel(ctx, {
+        x: w - 14,
+        y: 32,
+        text: 'orbit drawn at log-scaled radius',
+        color: colors.textDim,
+        size: 9,
+      });
+      ctx.restore();
+      ctx0.theta = theta;
+    },
+    [],
+    () => ({ context: { theta: 0 } }),
+  );
 
   return (
     <Demo

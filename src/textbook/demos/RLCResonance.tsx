@@ -23,7 +23,6 @@ import { fmtFrequency } from '@/lib/formatters';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -43,123 +42,123 @@ export function RLCResonanceDemo({ figure }: Props) {
 
   const stateRef = useSimState({ R, L, C, f0, omega0 });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { R, L, C, f0 } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padL = 50;
-        const padR = 20;
-        const padT = 28;
-        const padB = 32;
-        const plotX = padL;
-        const plotY = padT;
-        const plotW = w - padL - padR;
-        const plotH = h - padT - padB;
-        const fMin = 0.2 * f0;
-        const fMax = 5 * f0;
-        const logMin = Math.log10(fMin);
-        const logMax = Math.log10(fMax);
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(plotX, plotY, plotW, plotH);
-        const Imax = V0 / R;
-        ctx.strokeStyle = colors.border;
-        for (let i = 1; i < 5; i++) {
-                const y = plotY + (i * plotH) / 5;
-                ctx.beginPath();
-                ctx.moveTo(plotX, y);
-                ctx.lineTo(plotX + plotW, y);
-                ctx.stroke();
-              }
-        const tickFs = [f0 / 2, f0, 2 * f0];
-        ctx.save();
-        ctx.globalAlpha = 0.6;
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        for (const tf of tickFs) {
-                const x = plotX + ((Math.log10(tf) - logMin) / (logMax - logMin)) * plotW;
-                ctx.strokeStyle = colors.border;
-                ctx.beginPath();
-                ctx.moveTo(x, plotY);
-                ctx.lineTo(x, plotY + plotH);
-                ctx.stroke();
-                ctx.fillText(fmtFrequency(tf), x, plotY + plotH + 4);
-              }
-        const x0 = plotX + ((Math.log10(f0) - logMin) / (logMax - logMin)) * plotW;
-        ctx.restore();
-        ctx.strokeStyle = colors.teal;
-        ctx.setLineDash([4, 4]);
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { R, L, C, f0 } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padL = 50;
+      const padR = 20;
+      const padT = 28;
+      const padB = 32;
+      const plotX = padL;
+      const plotY = padT;
+      const plotW = w - padL - padR;
+      const plotH = h - padT - padB;
+      const fMin = 0.2 * f0;
+      const fMax = 5 * f0;
+      const logMin = Math.log10(fMin);
+      const logMax = Math.log10(fMax);
+      ctx.strokeStyle = colors.border;
+      ctx.strokeRect(plotX, plotY, plotW, plotH);
+      const Imax = V0 / R;
+      ctx.strokeStyle = colors.border;
+      for (let i = 1; i < 5; i++) {
+        const y = plotY + (i * plotH) / 5;
         ctx.beginPath();
-        ctx.moveTo(x0, plotY);
-        ctx.lineTo(x0, plotY + plotH);
+        ctx.moveTo(plotX, y);
+        ctx.lineTo(plotX + plotW, y);
         ctx.stroke();
-        ctx.setLineDash([]);
-        const N = 250;
-        const curvePts: { x: number; y: number }[] = [];
-        for (let i = 0; i <= N; i++) {
-                const u = i / N;
-                const lf = logMin + u * (logMax - logMin);
-                const f = Math.pow(10, lf);
-                const om = 2 * Math.PI * f;
-                const X = om * L - 1 / (om * C);
-                const Zmag = Math.sqrt(R * R + X * X);
-                const I = V0 / Zmag;
-                curvePts.push({
-                  x: plotX + u * plotW,
-                  y: plotY + plotH - (I / Imax) * plotH * 0.95,
-                });
-              }
-        drawGlowPath(ctx, curvePts, {
-                color: withAlpha(colors.accent, 0.95),
-                lineWidth: 1.8,
-                glowColor: withAlpha(colors.accent, 0.4),
-                glowWidth: 7,
-              });
-        const yHalf = plotY + plotH - 0.707 * plotH * 0.95;
-        ctx.save();
-        ctx.globalAlpha = 0.45;
-        ctx.strokeStyle = colors.pink;
-        ctx.setLineDash([3, 3]);
+      }
+      const tickFs = [f0 / 2, f0, 2 * f0];
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      for (const tf of tickFs) {
+        const x = plotX + ((Math.log10(tf) - logMin) / (logMax - logMin)) * plotW;
+        ctx.strokeStyle = colors.border;
         ctx.beginPath();
-        ctx.moveTo(plotX, yHalf);
-        ctx.lineTo(plotX + plotW, yHalf);
+        ctx.moveTo(x, plotY);
+        ctx.lineTo(x, plotY + plotH);
         ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.restore();
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('|I(f)| / Imax', plotX, 8);
-        ctx.fillStyle = colors.teal;
-        ctx.textAlign = 'right';
-        ctx.fillText(`f₀ = ${fmtFrequency(f0)}`, plotX + plotW, 8);
-        ctx.fillStyle = colors.pink;
-        ctx.fillText('−3 dB (½ power)', plotX + plotW, plotY + plotH * 0.18);
-        const Qnow = (2 * Math.PI * f0 * L) / R;
-        drawLabel(ctx, {
-                x: x0,
-                y: plotY + plotH - 0.95 * plotH - 4,
-                text: `Q ≈ ${Qnow.toFixed(2)}`,
-                color: colors.text,
-                size: 11,
-                align: 'center',
-                baseline: 'bottom',
-                weight: 'bold',
-              });
-        drawLabel(ctx, {
-                x: plotX + plotW / 2,
-                y: plotY + plotH + 18,
-                text: 'frequency (log scale)',
-                color: colors.textDim,
-                align: 'center',
-                baseline: 'top',
-              });
-      },
-      [],
-    );
+        ctx.fillText(fmtFrequency(tf), x, plotY + plotH + 4);
+      }
+      const x0 = plotX + ((Math.log10(f0) - logMin) / (logMax - logMin)) * plotW;
+      ctx.restore();
+      ctx.strokeStyle = colors.teal;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(x0, plotY);
+      ctx.lineTo(x0, plotY + plotH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const N = 250;
+      const curvePts: { x: number; y: number }[] = [];
+      for (let i = 0; i <= N; i++) {
+        const u = i / N;
+        const lf = logMin + u * (logMax - logMin);
+        const f = Math.pow(10, lf);
+        const om = 2 * Math.PI * f;
+        const X = om * L - 1 / (om * C);
+        const Zmag = Math.sqrt(R * R + X * X);
+        const I = V0 / Zmag;
+        curvePts.push({
+          x: plotX + u * plotW,
+          y: plotY + plotH - (I / Imax) * plotH * 0.95,
+        });
+      }
+      drawGlowPath(ctx, curvePts, {
+        color: withAlpha(colors.accent, 0.95),
+        lineWidth: 1.8,
+        glowColor: withAlpha(colors.accent, 0.4),
+        glowWidth: 7,
+      });
+      const yHalf = plotY + plotH - 0.707 * plotH * 0.95;
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.pink;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(plotX, yHalf);
+      ctx.lineTo(plotX + plotW, yHalf);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('|I(f)| / Imax', plotX, 8);
+      ctx.fillStyle = colors.teal;
+      ctx.textAlign = 'right';
+      ctx.fillText(`f₀ = ${fmtFrequency(f0)}`, plotX + plotW, 8);
+      ctx.fillStyle = colors.pink;
+      ctx.fillText('−3 dB (½ power)', plotX + plotW, plotY + plotH * 0.18);
+      const Qnow = (2 * Math.PI * f0 * L) / R;
+      drawLabel(ctx, {
+        x: x0,
+        y: plotY + plotH - 0.95 * plotH - 4,
+        text: `Q ≈ ${Qnow.toFixed(2)}`,
+        color: colors.text,
+        size: 11,
+        align: 'center',
+        baseline: 'bottom',
+        weight: 'bold',
+      });
+      drawLabel(ctx, {
+        x: plotX + plotW / 2,
+        y: plotY + plotH + 18,
+        text: 'frequency (log scale)',
+        color: colors.textDim,
+        align: 'center',
+        baseline: 'top',
+      });
+    },
+    [],
+  );
 
   return (
     <Demo
@@ -212,4 +211,3 @@ export function RLCResonanceDemo({ figure }: Props) {
     </Demo>
   );
 }
-

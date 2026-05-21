@@ -26,7 +26,6 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -42,141 +41,141 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
   const fracOut = qwp ? 0.25 : 0.5 * Math.cos(dTheta) ** 2;
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
-        let tAnim = ctx0.tAnim;
-        const { t1Deg, t2Deg, qwp } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        tAnim += 0.04;
-        const panelW = W / 3;
-        const cyMid = H / 2;
-        const Rwheel = Math.min(panelW * 0.32, H * 0.34);
-        function panel(
-                  idx: number,
-                  title: string,
-                  drawE: (cx: number, cy: number) => void,
-                  axisDeg: number | null,
-                ) {
-                  const cx = panelW * idx + panelW / 2;
-                  const cy = cyMid;
-                  // Background wheel
-                  ctx.strokeStyle = colors.border;
-                  ctx.lineWidth = 1;
-                  ctx.beginPath();
-                  ctx.arc(cx, cy, Rwheel, 0, Math.PI * 2);
-                  ctx.stroke();
-                  // Polariser axis line, if any
-                  if (axisDeg !== null) {
-                    const a = (axisDeg * Math.PI) / 180;
-                    ctx.strokeStyle = colors.teal;
-                    ctx.lineWidth = 2.5;
-                    ctx.beginPath();
-                    ctx.moveTo(cx - Rwheel * 1.1 * Math.cos(a), cy + Rwheel * 1.1 * Math.sin(a));
-                    ctx.lineTo(cx + Rwheel * 1.1 * Math.cos(a), cy - Rwheel * 1.1 * Math.sin(a));
-                    ctx.stroke();
-                  }
-                  // E-vector(s)
-                  drawE(cx, cy);
-                  // Title
-                  drawLabel(ctx, {
-                    x: cx,
-                    y: cy + Rwheel + 22,
-                    text: title,
-                    color: colors.textDim,
-                    align: 'center',
-                  });
-                }
-        panel(
-                  0,
-                  'unpolarised',
-                  (cx, cy) => {
-                    ctx.strokeStyle = colors.accent;
-                    ctx.lineWidth = 1.5;
-                    const Nv = 8;
-                    for (let i = 0; i < Nv; i++) {
-                      // Use deterministic-but-varying angles per frame
-                      const ang = (i * Math.PI) / Nv + 0.4 * Math.sin(tAnim + i);
-                      const len = Rwheel * (0.55 + 0.25 * Math.cos(tAnim * 1.7 + i));
-                      ctx.beginPath();
-                      ctx.moveTo(cx - len * Math.cos(ang), cy + len * Math.sin(ang));
-                      ctx.lineTo(cx + len * Math.cos(ang), cy - len * Math.sin(ang));
-                      ctx.stroke();
-                    }
-                  },
-                  null,
-                );
-        panel(
-                  1,
-                  qwp ? 'after λ/4 plate' : `after P₁ @ ${t1Deg.toFixed(0)}°`,
-                  (cx, cy) => {
-                    if (qwp) {
-                      // Circular: rotating arrow at fixed amplitude r = Rwheel*0.7
-                      const ang = tAnim * 1.5;
-                      const r = Rwheel * 0.7;
-                      drawArrow(
-                        ctx,
-                        { x: cx, y: cy },
-                        { x: cx + r * Math.cos(ang), y: cy - r * Math.sin(ang) },
-                        { color: withAlpha(colors.accent, 0.95), lineWidth: 2 },
-                      );
-                    } else {
-                      const a = (t1Deg * Math.PI) / 180;
-                      const amp = Rwheel * 0.7;
-                      // Animate amplitude with a sinusoid to suggest oscillation
-                      const phase = Math.cos(tAnim * 2);
-                      drawArrow(
-                        ctx,
-                        { x: cx - amp * phase * Math.cos(a), y: cy + amp * phase * Math.sin(a) },
-                        { x: cx + amp * phase * Math.cos(a), y: cy - amp * phase * Math.sin(a) },
-                        { color: withAlpha(colors.accent, 0.95), lineWidth: 2 },
-                      );
-                    }
-                  },
-                  t1Deg,
-                );
-        panel(
-                  2,
-                  `after P₂ @ ${t2Deg.toFixed(0)}°`,
-                  (cx, cy) => {
-                    const a = (t2Deg * Math.PI) / 180;
-                    const ampScale = Math.sqrt(2 * fracOut); // 0 .. 1
-                    const amp = Rwheel * 0.7 * ampScale;
-                    const phase = Math.cos(tAnim * 2);
-                    if (amp > 0.5) {
-                      drawArrow(
-                        ctx,
-                        { x: cx - amp * phase * Math.cos(a), y: cy + amp * phase * Math.sin(a) },
-                        { x: cx + amp * phase * Math.cos(a), y: cy - amp * phase * Math.sin(a) },
-                        { color: withAlpha(colors.teal, 0.95), lineWidth: 2 },
-                      );
-                    }
-                  },
-                  t2Deg,
-                );
-        ctx.strokeStyle = colors.borderStrong;
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
+      let tAnim = ctx0.tAnim;
+      const { t1Deg, t2Deg, qwp } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      tAnim += 0.04;
+      const panelW = W / 3;
+      const cyMid = H / 2;
+      const Rwheel = Math.min(panelW * 0.32, H * 0.34);
+      function panel(
+        idx: number,
+        title: string,
+        drawE: (cx: number, cy: number) => void,
+        axisDeg: number | null,
+      ) {
+        const cx = panelW * idx + panelW / 2;
+        const cy = cyMid;
+        // Background wheel
+        ctx.strokeStyle = colors.border;
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(panelW * 0.95, cyMid);
-        ctx.lineTo(panelW * 1.05, cyMid);
-        ctx.moveTo(panelW * 1.95, cyMid);
-        ctx.lineTo(panelW * 2.05, cyMid);
+        ctx.arc(cx, cy, Rwheel, 0, Math.PI * 2);
         ctx.stroke();
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'left';
-        ctx.fillText(`I/I₀ = ${fracOut.toFixed(3)}`, 12, 18);
-        ctx.textAlign = 'right';
-        ctx.fillText(
-                  qwp ? 'λ/4 plate inserted between P₁ and P₂' : 'Δθ = ' + (t2Deg - t1Deg).toFixed(0) + '°',
-                  W - 12,
-                  18,
-                );
-        ctx0.tAnim = tAnim;
-      },
-      [],
-      () => ({ context: { tAnim: 0 } }),
-    );
+        // Polariser axis line, if any
+        if (axisDeg !== null) {
+          const a = (axisDeg * Math.PI) / 180;
+          ctx.strokeStyle = colors.teal;
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(cx - Rwheel * 1.1 * Math.cos(a), cy + Rwheel * 1.1 * Math.sin(a));
+          ctx.lineTo(cx + Rwheel * 1.1 * Math.cos(a), cy - Rwheel * 1.1 * Math.sin(a));
+          ctx.stroke();
+        }
+        // E-vector(s)
+        drawE(cx, cy);
+        // Title
+        drawLabel(ctx, {
+          x: cx,
+          y: cy + Rwheel + 22,
+          text: title,
+          color: colors.textDim,
+          align: 'center',
+        });
+      }
+      panel(
+        0,
+        'unpolarised',
+        (cx, cy) => {
+          ctx.strokeStyle = colors.accent;
+          ctx.lineWidth = 1.5;
+          const Nv = 8;
+          for (let i = 0; i < Nv; i++) {
+            // Use deterministic-but-varying angles per frame
+            const ang = (i * Math.PI) / Nv + 0.4 * Math.sin(tAnim + i);
+            const len = Rwheel * (0.55 + 0.25 * Math.cos(tAnim * 1.7 + i));
+            ctx.beginPath();
+            ctx.moveTo(cx - len * Math.cos(ang), cy + len * Math.sin(ang));
+            ctx.lineTo(cx + len * Math.cos(ang), cy - len * Math.sin(ang));
+            ctx.stroke();
+          }
+        },
+        null,
+      );
+      panel(
+        1,
+        qwp ? 'after λ/4 plate' : `after P₁ @ ${t1Deg.toFixed(0)}°`,
+        (cx, cy) => {
+          if (qwp) {
+            // Circular: rotating arrow at fixed amplitude r = Rwheel*0.7
+            const ang = tAnim * 1.5;
+            const r = Rwheel * 0.7;
+            drawArrow(
+              ctx,
+              { x: cx, y: cy },
+              { x: cx + r * Math.cos(ang), y: cy - r * Math.sin(ang) },
+              { color: withAlpha(colors.accent, 0.95), lineWidth: 2 },
+            );
+          } else {
+            const a = (t1Deg * Math.PI) / 180;
+            const amp = Rwheel * 0.7;
+            // Animate amplitude with a sinusoid to suggest oscillation
+            const phase = Math.cos(tAnim * 2);
+            drawArrow(
+              ctx,
+              { x: cx - amp * phase * Math.cos(a), y: cy + amp * phase * Math.sin(a) },
+              { x: cx + amp * phase * Math.cos(a), y: cy - amp * phase * Math.sin(a) },
+              { color: withAlpha(colors.accent, 0.95), lineWidth: 2 },
+            );
+          }
+        },
+        t1Deg,
+      );
+      panel(
+        2,
+        `after P₂ @ ${t2Deg.toFixed(0)}°`,
+        (cx, cy) => {
+          const a = (t2Deg * Math.PI) / 180;
+          const ampScale = Math.sqrt(2 * fracOut); // 0 .. 1
+          const amp = Rwheel * 0.7 * ampScale;
+          const phase = Math.cos(tAnim * 2);
+          if (amp > 0.5) {
+            drawArrow(
+              ctx,
+              { x: cx - amp * phase * Math.cos(a), y: cy + amp * phase * Math.sin(a) },
+              { x: cx + amp * phase * Math.cos(a), y: cy - amp * phase * Math.sin(a) },
+              { color: withAlpha(colors.teal, 0.95), lineWidth: 2 },
+            );
+          }
+        },
+        t2Deg,
+      );
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(panelW * 0.95, cyMid);
+      ctx.lineTo(panelW * 1.05, cyMid);
+      ctx.moveTo(panelW * 1.95, cyMid);
+      ctx.lineTo(panelW * 2.05, cyMid);
+      ctx.stroke();
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      ctx.fillText(`I/I₀ = ${fracOut.toFixed(3)}`, 12, 18);
+      ctx.textAlign = 'right';
+      ctx.fillText(
+        qwp ? 'λ/4 plate inserted between P₁ and P₂' : 'Δθ = ' + (t2Deg - t1Deg).toFixed(0) + '°',
+        W - 12,
+        18,
+      );
+      ctx0.tAnim = tAnim;
+    },
+    [],
+    () => ({ context: { tAnim: 0 } }),
+  );
 
   return (
     <Demo

@@ -19,7 +19,6 @@ import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -42,66 +41,63 @@ export function DotConventionDemo({ figure }: Props) {
   }, [c2DotTop, i1IntoDot]);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { c2DotTop, i1IntoDot } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const cy = h / 2;
-        const c1x = w * 0.3;
-        const c2x = w * 0.7;
-        const coilH = 90;
-        drawSchematicCoil(ctx, c1x, cy, coilH, 'C1', 'L₁');
-        drawSchematicCoil(ctx, c2x, cy, coilH, 'C2', 'L₂');
-        drawDot(ctx, c1x - 24, cy - coilH / 2 + 6);
-        if (c2DotTop) drawDot(ctx, c2x + 24, cy - coilH / 2 + 6);
-                else drawDot(ctx, c2x + 24, cy + coilH / 2 - 6);
-        drawCurrentArrow(
-                  ctx,
-                  c1x - 70,
-                  cy - (i1IntoDot ? coilH / 2 + 14 : -coilH / 2 + -14),
-                  c1x - 26,
-                  cy - (i1IntoDot ? coilH / 2 - 4 : -coilH / 2 + -4),
-                  'I₁',
-                );
-        ctx.save();
-        ctx.globalAlpha = 0.4;
-        ctx.strokeStyle = colors.teal;
-        ctx.setLineDash([4, 4]);
-        ctx.lineWidth = 1.4;
-        ctx.beginPath();
-        ctx.moveTo(c1x + 24, cy);
-        ctx.lineTo(c2x - 24, cy);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.restore();
-        drawLabel(ctx, {
-                  x: (c1x + c2x) / 2,
-                  y: cy - 8,
-                  text: 'M',
-                  color: colors.teal,
-                  align: 'center',
-                });
-        const signLabel =
-                  sign > 0
-                    ? 'mutual term: + M dI₁/dt   (fluxes ADD — aiding)'
-                    : 'mutual term: − M dI₁/dt   (fluxes SUBTRACT — opposing)';
-        drawLabel(ctx, {
-                  x: w / 2,
-                  y: h - 24,
-                  text: signLabel,
-                  color:
-                    sign > 0
-                      ? withAlpha(colors.accent, 0.95)
-                      : withAlpha(colors.blue, 0.95),
-                  size: 11,
-                  align: 'center',
-                  baseline: 'top',
-                  weight: 'bold',
-                });
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { c2DotTop, i1IntoDot } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const cy = h / 2;
+      const c1x = w * 0.3;
+      const c2x = w * 0.7;
+      const coilH = 90;
+      drawSchematicCoil(ctx, c1x, cy, coilH, 'C1', 'L₁');
+      drawSchematicCoil(ctx, c2x, cy, coilH, 'C2', 'L₂');
+      drawDot(ctx, c1x - 24, cy - coilH / 2 + 6);
+      if (c2DotTop) drawDot(ctx, c2x + 24, cy - coilH / 2 + 6);
+      else drawDot(ctx, c2x + 24, cy + coilH / 2 - 6);
+      drawCurrentArrow(
+        ctx,
+        c1x - 70,
+        cy - (i1IntoDot ? coilH / 2 + 14 : -coilH / 2 + -14),
+        c1x - 26,
+        cy - (i1IntoDot ? coilH / 2 - 4 : -coilH / 2 + -4),
+        'I₁',
+      );
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.teal;
+      ctx.setLineDash([4, 4]);
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(c1x + 24, cy);
+      ctx.lineTo(c2x - 24, cy);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+      drawLabel(ctx, {
+        x: (c1x + c2x) / 2,
+        y: cy - 8,
+        text: 'M',
+        color: colors.teal,
+        align: 'center',
+      });
+      const signLabel =
+        sign > 0
+          ? 'mutual term: + M dI₁/dt   (fluxes ADD — aiding)'
+          : 'mutual term: − M dI₁/dt   (fluxes SUBTRACT — opposing)';
+      drawLabel(ctx, {
+        x: w / 2,
+        y: h - 24,
+        text: signLabel,
+        color: sign > 0 ? withAlpha(colors.accent, 0.95) : withAlpha(colors.blue, 0.95),
+        size: 11,
+        align: 'center',
+        baseline: 'top',
+        weight: 'bold',
+      });
+    },
+    [],
+  );
 
   return (
     <Demo

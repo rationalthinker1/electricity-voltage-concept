@@ -20,7 +20,6 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -37,108 +36,108 @@ export function PatchAntennaDemo({ figure }: Props) {
   const f0GHz = f0 / 1e9;
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
-        let tAnim = ctx0.tAnim;
-        const { Lmm, eps } = stateRef.current;
-        tAnim += 0.05;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const splitX = W * 0.45;
-        const cxL = splitX / 2;
-        const cyL = H / 2;
-        const subW = splitX * 0.75;
-        const subH = H * 0.55;
-        ctx.save();
-        ctx.globalAlpha = 0.1;
-        ctx.fillStyle = colors.teal;
-        ctx.fillRect(cxL - subW / 2, cyL - subH / 2, subW, subH);
-        ctx.restore();
-        ctx.strokeStyle = colors.teal;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(cxL - subW / 2, cyL - subH / 2, subW, subH);
-        const patchPxPerMm = Math.min((subW * 0.7) / 60, (subH * 0.7) / 60);
-        const Lpx = Lmm * patchPxPerMm;
-        const Wpatch = Lpx * 0.8;
-        ctx.fillStyle = colors.accent;
-        ctx.fillRect(cxL - Lpx / 2, cyL - Wpatch / 2, Lpx, Wpatch);
-        const phase = Math.cos(tAnim * 2);
-        const arrowLen = Wpatch * 0.55 * phase;
-        ctx.strokeStyle = colors.canvasBg;
-        ctx.fillStyle = colors.bg;
-        ctx.lineWidth = 2;
-        drawArr(ctx, cxL - Lpx / 2, cyL, cxL - Lpx / 2, cyL - arrowLen);
-        drawArr(ctx, cxL + Lpx / 2, cyL, cxL + Lpx / 2, cyL + arrowLen);
-        ctx.save();
-        ctx.globalAlpha = 0.85;
-        ctx.fillStyle = colors.text;
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
+      let tAnim = ctx0.tAnim;
+      const { Lmm, eps } = stateRef.current;
+      tAnim += 0.05;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const splitX = W * 0.45;
+      const cxL = splitX / 2;
+      const cyL = H / 2;
+      const subW = splitX * 0.75;
+      const subH = H * 0.55;
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = colors.teal;
+      ctx.fillRect(cxL - subW / 2, cyL - subH / 2, subW, subH);
+      ctx.restore();
+      ctx.strokeStyle = colors.teal;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(cxL - subW / 2, cyL - subH / 2, subW, subH);
+      const patchPxPerMm = Math.min((subW * 0.7) / 60, (subH * 0.7) / 60);
+      const Lpx = Lmm * patchPxPerMm;
+      const Wpatch = Lpx * 0.8;
+      ctx.fillStyle = colors.accent;
+      ctx.fillRect(cxL - Lpx / 2, cyL - Wpatch / 2, Lpx, Wpatch);
+      const phase = Math.cos(tAnim * 2);
+      const arrowLen = Wpatch * 0.55 * phase;
+      ctx.strokeStyle = colors.canvasBg;
+      ctx.fillStyle = colors.bg;
+      ctx.lineWidth = 2;
+      drawArr(ctx, cxL - Lpx / 2, cyL, cxL - Lpx / 2, cyL - arrowLen);
+      drawArr(ctx, cxL + Lpx / 2, cyL, cxL + Lpx / 2, cyL + arrowLen);
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = colors.text;
+      ctx.beginPath();
+      ctx.arc(cxL - Lpx / 4, cyL, 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.restore();
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'center';
+      ctx.fillText('feed', cxL - Lpx / 4, cyL + 14);
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      ctx.fillText(`L = ${Lmm.toFixed(1)} mm`, 12, 18);
+      ctx.fillText(`εᵣ = ${eps.toFixed(2)}`, 12, 32);
+      ctx.textAlign = 'center';
+      ctx.fillText('patch (top view)', cxL, H - 12);
+      const cxR = splitX + (W - splitX) / 2;
+      const cyR = H / 2;
+      const R = Math.min((W - splitX) * 0.4, H * 0.4);
+      ctx.strokeStyle = colors.border;
+      ctx.lineWidth = 1;
+      for (let f = 0.25; f <= 1.001; f += 0.25) {
         ctx.beginPath();
-        ctx.arc(cxL - Lpx / 4, cyL, 3, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.restore();
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'center';
-        ctx.fillText('feed', cxL - Lpx / 4, cyL + 14);
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'left';
-        ctx.fillText(`L = ${Lmm.toFixed(1)} mm`, 12, 18);
-        ctx.fillText(`εᵣ = ${eps.toFixed(2)}`, 12, 32);
-        ctx.textAlign = 'center';
-        ctx.fillText('patch (top view)', cxL, H - 12);
-        const cxR = splitX + (W - splitX) / 2;
-        const cyR = H / 2;
-        const R = Math.min((W - splitX) * 0.4, H * 0.4);
-        ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1;
-        for (let f = 0.25; f <= 1.001; f += 0.25) {
-                  ctx.beginPath();
-                  ctx.arc(cxR, cyR, R * f, 0, Math.PI * 2);
-                  ctx.stroke();
-                }
-        ctx.strokeStyle = colors.teal;
-        ctx.setLineDash([3, 4]);
-        ctx.beginPath();
-        ctx.moveTo(cxR - R, cyR);
-        ctx.lineTo(cxR + R, cyR);
+        ctx.arc(cxR, cyR, R * f, 0, Math.PI * 2);
         ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.strokeStyle = colors.accent;
-        ctx.save();
-        ctx.globalAlpha = 0.12;
-        ctx.fillStyle = colors.accent;
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        const Ns = 180;
-        const nExp = 1.6;
-        for (let i = 0; i <= Ns; i++) {
-                  // θ from -π/2 (left horizon) to +π/2 (right horizon), pattern in upper half only.
-                  const theta = -Math.PI / 2 + (i / Ns) * Math.PI;
-                  const rrFactor = Math.max(0, Math.cos(theta)) ** nExp;
-                  const rr = rrFactor * R;
-                  const x = cxR + rr * Math.sin(theta);
-                  const y = cyR - rr * Math.cos(theta);
-                  if (i === 0) ctx.moveTo(x, y);
-                  else ctx.lineTo(x, y);
-                }
-        ctx.lineTo(cxR - 0, cyR);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.restore();
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'center';
-        ctx.fillText('broadside (zenith)', cxR, cyR - R - 8);
-        ctx.fillText('ground plane', cxR, cyR + 14);
-        ctx.textAlign = 'right';
-        ctx.fillText(`f₀ ≈ ${f0GHz.toFixed(2)} GHz`, W - 12, 18);
-        ctx0.tAnim = tAnim;
-      },
-      [],
-      () => ({ context: { tAnim: 0 } }),
-    );
+      }
+      ctx.strokeStyle = colors.teal;
+      ctx.setLineDash([3, 4]);
+      ctx.beginPath();
+      ctx.moveTo(cxR - R, cyR);
+      ctx.lineTo(cxR + R, cyR);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.strokeStyle = colors.accent;
+      ctx.save();
+      ctx.globalAlpha = 0.12;
+      ctx.fillStyle = colors.accent;
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      const Ns = 180;
+      const nExp = 1.6;
+      for (let i = 0; i <= Ns; i++) {
+        // θ from -π/2 (left horizon) to +π/2 (right horizon), pattern in upper half only.
+        const theta = -Math.PI / 2 + (i / Ns) * Math.PI;
+        const rrFactor = Math.max(0, Math.cos(theta)) ** nExp;
+        const rr = rrFactor * R;
+        const x = cxR + rr * Math.sin(theta);
+        const y = cyR - rr * Math.cos(theta);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.lineTo(cxR - 0, cyR);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.restore();
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'center';
+      ctx.fillText('broadside (zenith)', cxR, cyR - R - 8);
+      ctx.fillText('ground plane', cxR, cyR + 14);
+      ctx.textAlign = 'right';
+      ctx.fillText(`f₀ ≈ ${f0GHz.toFixed(2)} GHz`, W - 12, 18);
+      ctx0.tAnim = tAnim;
+    },
+    [],
+    () => ({ context: { tAnim: 0 } }),
+  );
 
   return (
     <Demo

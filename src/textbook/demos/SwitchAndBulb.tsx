@@ -208,7 +208,6 @@ export function SwitchAndBulbDemo({ figure }: Props) {
         w / 2,
         h - 14,
       );
-
     },
     [],
     () => ({ context: { closedAtSimTime: null } }),

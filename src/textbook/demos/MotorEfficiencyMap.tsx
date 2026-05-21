@@ -19,7 +19,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -102,108 +101,108 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
   }, [motorType, tauOp, omegaOp]);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { motorType, tauOp, omegaOp } = stateRef.current;
-        const motor = MOTORS[motorType];
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padL = 56,
-                padR = 100,
-                padT = 22,
-                padB = 38;
-        const plotW = w - padL - padR;
-        const plotH = h - padT - padB;
-        const cellsX = 40;
-        const cellsY = 30;
-        const cw = plotW / cellsX;
-        const ch = plotH / cellsY;
-        for (let i = 0; i < cellsX; i++) {
-                for (let j = 0; j < cellsY; j++) {
-                  const om = (i + 0.5) / cellsX;
-                  const ta = 1 - (j + 0.5) / cellsY; // top = high τ
-                  const e = efficiency(motor, ta, om);
-                  // Map e ∈ [0, 0.96] to color: dark → amber → white.
-                  const t = Math.min(1, Math.max(0, (e - 0.4) / 0.55));
-                  // Amber palette
-                  const r = Math.round(20 + t * 235);
-                  const g = Math.round(20 + t * 130);
-                  const b = Math.round(30 + t * 30);
-                  ctx.fillStyle = `rgb(${r},${g},${b})`;
-                  ctx.fillRect(padL + i * cw, padT + j * ch, cw + 1, ch + 1);
-                }
-              }
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(padL, padT, plotW, plotH);
-        const opX = padL + omegaOp * plotW;
-        const opY = padT + (1 - tauOp) * plotH;
-        ctx.strokeStyle = colors.blue;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(opX, opY, 8, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(opX - 12, opY);
-        ctx.lineTo(opX + 12, opY);
-        ctx.moveTo(opX, opY - 12);
-        ctx.lineTo(opX, opY + 12);
-        ctx.stroke();
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('speed (per unit) →', padL + plotW / 2, padT + plotH + 18);
-        ctx.save();
-        ctx.translate(16, padT + plotH / 2);
-        ctx.rotate(-Math.PI / 2);
-        ctx.textBaseline = 'middle';
-        ctx.fillText('torque (per unit) →', 0, 0);
-        ctx.restore();
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        for (let i = 0; i <= 4; i++) {
-                const x = padL + (i / 4) * plotW;
-                ctx.fillText((i / 4).toFixed(2), x, padT + plotH + 4);
-              }
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        for (let j = 0; j <= 4; j++) {
-                const y = padT + (j / 4) * plotH;
-                ctx.fillText((1 - j / 4).toFixed(2), padL - 6, y);
-              }
-        const cbX = padL + plotW + 16;
-        const cbW = 16;
-        const cbH = plotH;
-        for (let j = 0; j < cbH; j++) {
-                const t = 1 - j / cbH;
-                const r = Math.round(20 + t * 235);
-                const g = Math.round(20 + t * 130);
-                const b = Math.round(30 + t * 30);
-                ctx.fillStyle = `rgb(${r},${g},${b})`;
-                ctx.fillRect(cbX, padT + j, cbW, 1);
-              }
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.strokeRect(cbX, padT, cbW, cbH);
-        ctx.fillStyle = colors.text;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillText('η = 0.95', cbX + cbW + 4, padT + 2);
-        ctx.fillText('0.80', cbX + cbW + 4, padT + cbH * 0.4);
-        ctx.fillText('0.60', cbX + cbW + 4, padT + cbH * 0.75);
-        ctx.fillText('0.40', cbX + cbW + 4, padT + cbH - 2);
-        drawLabel(ctx, {
-                x: padL + 6,
-                y: padT + 4,
-                text: motor.name + ' — efficiency map',
-                color: colors.accent,
-                size: 11,
-                baseline: 'top',
-              });
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { motorType, tauOp, omegaOp } = stateRef.current;
+      const motor = MOTORS[motorType];
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padL = 56,
+        padR = 100,
+        padT = 22,
+        padB = 38;
+      const plotW = w - padL - padR;
+      const plotH = h - padT - padB;
+      const cellsX = 40;
+      const cellsY = 30;
+      const cw = plotW / cellsX;
+      const ch = plotH / cellsY;
+      for (let i = 0; i < cellsX; i++) {
+        for (let j = 0; j < cellsY; j++) {
+          const om = (i + 0.5) / cellsX;
+          const ta = 1 - (j + 0.5) / cellsY; // top = high τ
+          const e = efficiency(motor, ta, om);
+          // Map e ∈ [0, 0.96] to color: dark → amber → white.
+          const t = Math.min(1, Math.max(0, (e - 0.4) / 0.55));
+          // Amber palette
+          const r = Math.round(20 + t * 235);
+          const g = Math.round(20 + t * 130);
+          const b = Math.round(30 + t * 30);
+          ctx.fillStyle = `rgb(${r},${g},${b})`;
+          ctx.fillRect(padL + i * cw, padT + j * ch, cw + 1, ch + 1);
+        }
+      }
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(padL, padT, plotW, plotH);
+      const opX = padL + omegaOp * plotW;
+      const opY = padT + (1 - tauOp) * plotH;
+      ctx.strokeStyle = colors.blue;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(opX, opY, 8, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(opX - 12, opY);
+      ctx.lineTo(opX + 12, opY);
+      ctx.moveTo(opX, opY - 12);
+      ctx.lineTo(opX, opY + 12);
+      ctx.stroke();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('speed (per unit) →', padL + plotW / 2, padT + plotH + 18);
+      ctx.save();
+      ctx.translate(16, padT + plotH / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.textBaseline = 'middle';
+      ctx.fillText('torque (per unit) →', 0, 0);
+      ctx.restore();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      for (let i = 0; i <= 4; i++) {
+        const x = padL + (i / 4) * plotW;
+        ctx.fillText((i / 4).toFixed(2), x, padT + plotH + 4);
+      }
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      for (let j = 0; j <= 4; j++) {
+        const y = padT + (j / 4) * plotH;
+        ctx.fillText((1 - j / 4).toFixed(2), padL - 6, y);
+      }
+      const cbX = padL + plotW + 16;
+      const cbW = 16;
+      const cbH = plotH;
+      for (let j = 0; j < cbH; j++) {
+        const t = 1 - j / cbH;
+        const r = Math.round(20 + t * 235);
+        const g = Math.round(20 + t * 130);
+        const b = Math.round(30 + t * 30);
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.fillRect(cbX, padT + j, cbW, 1);
+      }
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.strokeRect(cbX, padT, cbW, cbH);
+      ctx.fillStyle = colors.text;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillText('η = 0.95', cbX + cbW + 4, padT + 2);
+      ctx.fillText('0.80', cbX + cbW + 4, padT + cbH * 0.4);
+      ctx.fillText('0.60', cbX + cbW + 4, padT + cbH * 0.75);
+      ctx.fillText('0.40', cbX + cbW + 4, padT + cbH - 2);
+      drawLabel(ctx, {
+        x: padL + 6,
+        y: padT + 4,
+        text: motor.name + ' — efficiency map',
+        color: colors.accent,
+        size: 11,
+        baseline: 'top',
+      });
+    },
+    [],
+  );
 
   return (
     <Demo
@@ -226,7 +225,7 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
           <button
             key={m}
             type="button"
-            className={`mini-toggle${motorType === m ? ' on' : ''}`}
+            className={`mini-toggle${motorType === m ? 'on' : ''}`}
             onClick={() => setMotorType(m)}
             aria-pressed={motorType === m}
           >

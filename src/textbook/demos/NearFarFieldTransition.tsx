@@ -14,7 +14,6 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -27,97 +26,97 @@ export function NearFarFieldTransitionDemo({ figure }: Props) {
 
   const stateRef = useSimState({ omega });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, simTime) => {
-        const t = simTime;
-        const om = stateRef.current.omega;
-        const k = om / C_SIM;
-        const lam = (2 * Math.PI) / k;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const cx = W / 2;
-        const cy = H / 2;
-        const rNF = lam / (2 * Math.PI);
-        ctx.save();
-        ctx.globalAlpha = 0.1;
-        ctx.fillStyle = colors.pink;
-        ctx.beginPath();
-        ctx.arc(cx, cy, rNF, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-        ctx.save();
-        ctx.globalAlpha = 0.45;
-        ctx.strokeStyle = colors.pink;
-        ctx.lineWidth = 1.5;
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, simTime) => {
+      const t = simTime;
+      const om = stateRef.current.omega;
+      const k = om / C_SIM;
+      const lam = (2 * Math.PI) / k;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const cx = W / 2;
+      const cy = H / 2;
+      const rNF = lam / (2 * Math.PI);
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = colors.pink;
+      ctx.beginPath();
+      ctx.arc(cx, cy, rNF, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = colors.pink;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([3, 4]);
+      ctx.beginPath();
+      ctx.arc(cx, cy, rNF, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const rFF = 2 * lam;
+      if (rFF < Math.min(W, H) / 2) {
+        ctx.strokeStyle = colors.teal;
         ctx.setLineDash([3, 4]);
         ctx.beginPath();
-        ctx.arc(cx, cy, rNF, 0, Math.PI * 2);
+        ctx.arc(cx, cy, rFF, 0, Math.PI * 2);
         ctx.stroke();
         ctx.setLineDash([]);
-        const rFF = 2 * lam;
-        if (rFF < Math.min(W, H) / 2) {
-                ctx.strokeStyle = colors.teal;
-                ctx.setLineDash([3, 4]);
-                ctx.beginPath();
-                ctx.arc(cx, cy, rFF, 0, Math.PI * 2);
-                ctx.stroke();
-                ctx.setLineDash([]);
-              }
-        const step = 3;
-        const img = ctx.createImageData(W, H);
-        const data = img.data;
-        for (let py = 0; py < H; py += step) {
-                for (let px = 0; px < W; px += step) {
-                  const dx = px - cx;
-                  const dy = py - cy;
-                  const r = Math.sqrt(dx * dx + dy * dy);
-                  if (r < 8) continue;
-                  const sinTheta = Math.abs(dx) / r;
-                  // Near-field: dipole potential ∝ cos θ / r² * cos(ωt). Sign from cos θ.
-                  const cosTheta = dy / r;
-                  const near = (1 / (r * r)) * cosTheta * Math.cos(om * t);
-                  // Far-field: sin θ component × sin(kr − ωt), 1/r
-                  const far = (1 / r) * sinTheta * Math.sin(k * r - om * t);
-                  // Weighted blend: near dominates inside rNF, far dominates outside
-                  const wNear = Math.exp(-k * r);
-                  const v = wNear * 80 * near + (1 - wNear) * 60 * far;
-                  const vClamped = Math.max(-1, Math.min(1, v));
-                  const r8 = vClamped > 0 ? 255 : 0x5b;
-                  const g8 = vClamped > 0 ? 59 : 0xae;
-                  const b8 = vClamped > 0 ? 110 : 0xf8;
-                  const alpha = Math.min(160, Math.abs(vClamped) * 220);
-                  for (let oy = 0; oy < step && py + oy < H; oy++) {
-                    for (let ox = 0; ox < step && px + ox < W; ox++) {
-                      const idx = ((py + oy) * W + (px + ox)) * 4;
-                      data[idx] = r8;
-                      data[idx + 1] = g8;
-                      data[idx + 2] = b8;
-                      data[idx + 3] = alpha;
-                    }
-                  }
-                }
-              }
-        ctx.putImageData(img, 0, 0);
-        ctx.restore();
-        ctx.fillStyle = colors.pink;
-        ctx.beginPath();
-        ctx.arc(cx, cy - 6, 4, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = colors.blue;
-        ctx.beginPath();
-        ctx.arc(cx, cy + 6, 4, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.pink;
-        ctx.textAlign = 'left';
-        ctx.fillText(`near-field r ≲ λ/2π = ${rNF.toFixed(0)} px`, 12, 18);
-        ctx.fillStyle = colors.teal;
-        ctx.fillText(`far-field r ≫ λ/2π`, 12, 32);
-        ctx.fillStyle = colors.textDim;
-        ctx.fillText(`λ = ${lam.toFixed(0)} px`, 12, 46);
-      },
-      [],
-    );
+      }
+      const step = 3;
+      const img = ctx.createImageData(W, H);
+      const data = img.data;
+      for (let py = 0; py < H; py += step) {
+        for (let px = 0; px < W; px += step) {
+          const dx = px - cx;
+          const dy = py - cy;
+          const r = Math.sqrt(dx * dx + dy * dy);
+          if (r < 8) continue;
+          const sinTheta = Math.abs(dx) / r;
+          // Near-field: dipole potential ∝ cos θ / r² * cos(ωt). Sign from cos θ.
+          const cosTheta = dy / r;
+          const near = (1 / (r * r)) * cosTheta * Math.cos(om * t);
+          // Far-field: sin θ component × sin(kr − ωt), 1/r
+          const far = (1 / r) * sinTheta * Math.sin(k * r - om * t);
+          // Weighted blend: near dominates inside rNF, far dominates outside
+          const wNear = Math.exp(-k * r);
+          const v = wNear * 80 * near + (1 - wNear) * 60 * far;
+          const vClamped = Math.max(-1, Math.min(1, v));
+          const r8 = vClamped > 0 ? 255 : 0x5b;
+          const g8 = vClamped > 0 ? 59 : 0xae;
+          const b8 = vClamped > 0 ? 110 : 0xf8;
+          const alpha = Math.min(160, Math.abs(vClamped) * 220);
+          for (let oy = 0; oy < step && py + oy < H; oy++) {
+            for (let ox = 0; ox < step && px + ox < W; ox++) {
+              const idx = ((py + oy) * W + (px + ox)) * 4;
+              data[idx] = r8;
+              data[idx + 1] = g8;
+              data[idx + 2] = b8;
+              data[idx + 3] = alpha;
+            }
+          }
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+      ctx.restore();
+      ctx.fillStyle = colors.pink;
+      ctx.beginPath();
+      ctx.arc(cx, cy - 6, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colors.blue;
+      ctx.beginPath();
+      ctx.arc(cx, cy + 6, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.pink;
+      ctx.textAlign = 'left';
+      ctx.fillText(`near-field r ≲ λ/2π = ${rNF.toFixed(0)} px`, 12, 18);
+      ctx.fillStyle = colors.teal;
+      ctx.fillText(`far-field r ≫ λ/2π`, 12, 32);
+      ctx.fillStyle = colors.textDim;
+      ctx.fillText(`λ = ${lam.toFixed(0)} px`, 12, 46);
+    },
+    [],
+  );
 
   return (
     <Demo

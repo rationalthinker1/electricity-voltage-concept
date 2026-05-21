@@ -19,7 +19,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -50,148 +49,148 @@ export function BLDCCommutationDemo({ figure }: Props) {
   const rpm = (fElec / 2) * 60;
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
-        let phase = ctx0.phase;
-        let rotorAng = ctx0.rotorAng;
-        const { stepHz } = stateRef.current;
-        phase += stepHz * dt;
-        phase = ((phase % 6) + 6) % 6;
-        const idx = Math.floor(phase) as 0 | 1 | 2 | 3 | 4 | 5;
-        const step = STEPS[idx];
-        const axisA = Math.PI / 2;
-        const axisB = axisA - (2 * Math.PI) / 3;
-        const axisC = axisA - (4 * Math.PI) / 3;
-        const fx = step.a * Math.cos(axisA) + step.b * Math.cos(axisB) + step.c * Math.cos(axisC);
-        const fy = step.a * Math.sin(axisA) + step.b * Math.sin(axisB) + step.c * Math.sin(axisC);
-        const statorAng = Math.atan2(fy, fx);
-        let diff = statorAng - rotorAng;
-        while (diff > Math.PI) diff -= 2 * Math.PI;
-        while (diff < -Math.PI) diff += 2 * Math.PI;
-        rotorAng += diff * Math.min(1, dt * 12);
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const cx = w / 2;
-        const cy = h / 2;
-        const R = Math.min(w, h) * 0.38;
-        ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1;
+    stateRef,
+    ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
+      let phase = ctx0.phase;
+      let rotorAng = ctx0.rotorAng;
+      const { stepHz } = stateRef.current;
+      phase += stepHz * dt;
+      phase = ((phase % 6) + 6) % 6;
+      const idx = Math.floor(phase) as 0 | 1 | 2 | 3 | 4 | 5;
+      const step = STEPS[idx];
+      const axisA = Math.PI / 2;
+      const axisB = axisA - (2 * Math.PI) / 3;
+      const axisC = axisA - (4 * Math.PI) / 3;
+      const fx = step.a * Math.cos(axisA) + step.b * Math.cos(axisB) + step.c * Math.cos(axisC);
+      const fy = step.a * Math.sin(axisA) + step.b * Math.sin(axisB) + step.c * Math.sin(axisC);
+      const statorAng = Math.atan2(fy, fx);
+      let diff = statorAng - rotorAng;
+      while (diff > Math.PI) diff -= 2 * Math.PI;
+      while (diff < -Math.PI) diff += 2 * Math.PI;
+      rotorAng += diff * Math.min(1, dt * 12);
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const cx = w / 2;
+      const cy = h / 2;
+      const R = Math.min(w, h) * 0.38;
+      ctx.strokeStyle = colors.border;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R + 16, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, R - 8, 0, Math.PI * 2);
+      ctx.stroke();
+      const phases = [
+        { ax: axisA, drive: step.a, label: 'A' },
+        { ax: axisB, drive: step.b, label: 'B' },
+        { ax: axisC, drive: step.c, label: 'C' },
+      ];
+      for (const p of phases) {
+        const sx = cx + Math.cos(p.ax) * R;
+        const sy = cy - Math.sin(p.ax) * R;
+        let fill = 'rgba(255,255,255,0.12)';
+        let stroke = 'rgba(255,255,255,0.25)';
+        let glyph = '∅';
+        if (p.drive === 1) {
+          fill = withAlpha(colors.accent, 0.45);
+          stroke = withAlpha(colors.accent, 0.9);
+          glyph = '+';
+        } else if (p.drive === -1) {
+          fill = withAlpha(colors.blue, 0.45);
+          stroke = withAlpha(colors.blue, 0.9);
+          glyph = '−';
+        }
+        ctx.fillStyle = fill;
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.arc(cx, cy, R + 16, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(cx, cy, R - 8, 0, Math.PI * 2);
-        ctx.stroke();
-        const phases = [
-                { ax: axisA, drive: step.a, label: 'A' },
-                { ax: axisB, drive: step.b, label: 'B' },
-                { ax: axisC, drive: step.c, label: 'C' },
-              ];
-        for (const p of phases) {
-                const sx = cx + Math.cos(p.ax) * R;
-                const sy = cy - Math.sin(p.ax) * R;
-                let fill = 'rgba(255,255,255,0.12)';
-                let stroke = 'rgba(255,255,255,0.25)';
-                let glyph = '∅';
-                if (p.drive === 1) {
-                  fill = withAlpha(colors.accent, 0.45);
-                  stroke = withAlpha(colors.accent, 0.9);
-                  glyph = '+';
-                } else if (p.drive === -1) {
-                  fill = withAlpha(colors.blue, 0.45);
-                  stroke = withAlpha(colors.blue, 0.9);
-                  glyph = '−';
-                }
-                ctx.fillStyle = fill;
-                ctx.strokeStyle = stroke;
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                ctx.arc(sx, sy, 22, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.stroke();
-                ctx.fillStyle = colors.text;
-                ctx.font = 'bold 13px JetBrains Mono';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(p.label, sx, sy - 4);
-                ctx.font = 'bold 11px JetBrains Mono';
-                ctx.fillText(glyph, sx, sy + 9);
-              }
-        const fmag = Math.hypot(fx, fy);
-        if (fmag > 0.01) {
-                const ax = cx + Math.cos(statorAng) * R * 0.6;
-                const ay = cy - Math.sin(statorAng) * R * 0.6;
-                ctx.strokeStyle = colors.borderStrong;
-                ctx.setLineDash([5, 4]);
-                ctx.lineWidth = 1.2;
-                ctx.beginPath();
-                ctx.moveTo(cx, cy);
-                ctx.lineTo(ax, ay);
-                ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.save();
-                ctx.globalAlpha = 0.65;
-                drawLabel(ctx, {
-                  x: ax + 4,
-                  y: ay - 8,
-                  text: 'B_stator',
-                  color: colors.text,
-                  align: 'center',
-                });
-                ctx.restore();
-              }
-        const rotR = R * 0.5;
-        const rcos = Math.cos(rotorAng);
-        const rsin = Math.sin(rotorAng);
-        const nx = cx + rcos * rotR;
-        const ny = cy - rsin * rotR;
-        const sxx = cx - rcos * rotR;
-        const syy = cy + rsin * rotR;
-        ctx.save();
-        ctx.globalAlpha = 0.4;
-        ctx.strokeStyle = colors.text;
-        ctx.lineWidth = 12;
-        ctx.lineCap = 'round';
-        ctx.beginPath();
-        ctx.moveTo(sxx, syy);
-        ctx.lineTo(nx, ny);
-        ctx.stroke();
-        ctx.restore();
-        ctx.fillStyle = colors.pink;
-        ctx.beginPath();
-        ctx.arc(nx, ny, 11, 0, Math.PI * 2);
+        ctx.arc(sx, sy, 22, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = colors.blue;
-        ctx.beginPath();
-        ctx.arc(sxx, syy, 11, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = colors.bg;
-        ctx.font = 'bold 11px JetBrains Mono';
+        ctx.stroke();
+        ctx.fillStyle = colors.text;
+        ctx.font = 'bold 13px JetBrains Mono';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('N', nx, ny);
-        ctx.fillText('S', sxx, syy);
-        ctx.lineCap = 'butt';
+        ctx.fillText(p.label, sx, sy - 4);
+        ctx.font = 'bold 11px JetBrains Mono';
+        ctx.fillText(glyph, sx, sy + 9);
+      }
+      const fmag = Math.hypot(fx, fy);
+      if (fmag > 0.01) {
+        const ax = cx + Math.cos(statorAng) * R * 0.6;
+        const ay = cy - Math.sin(statorAng) * R * 0.6;
+        ctx.strokeStyle = colors.borderStrong;
+        ctx.setLineDash([5, 4]);
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(ax, ay);
+        ctx.stroke();
+        ctx.setLineDash([]);
         ctx.save();
-        ctx.globalAlpha = 0.75;
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText(`step ${idx + 1} / 6`, 12, 12);
+        ctx.globalAlpha = 0.65;
+        drawLabel(ctx, {
+          x: ax + 4,
+          y: ay - 8,
+          text: 'B_stator',
+          color: colors.text,
+          align: 'center',
+        });
         ctx.restore();
-        ctx.textAlign = 'right';
-        ctx.fillText(
-                `A=${step.a > 0 ? '+' : step.a < 0 ? '−' : '·'}  B=${step.b > 0 ? '+' : step.b < 0 ? '−' : '·'}  C=${step.c > 0 ? '+' : step.c < 0 ? '−' : '·'}`,
-                w - 12,
-                12,
-              );
-        ctx0.phase = phase;
-        ctx0.rotorAng = rotorAng;
-      },
-      [],
-      () => ({ context: { phase: 0, rotorAng: -Math.PI / 2 } }),
-    );
+      }
+      const rotR = R * 0.5;
+      const rcos = Math.cos(rotorAng);
+      const rsin = Math.sin(rotorAng);
+      const nx = cx + rcos * rotR;
+      const ny = cy - rsin * rotR;
+      const sxx = cx - rcos * rotR;
+      const syy = cy + rsin * rotR;
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.text;
+      ctx.lineWidth = 12;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(sxx, syy);
+      ctx.lineTo(nx, ny);
+      ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle = colors.pink;
+      ctx.beginPath();
+      ctx.arc(nx, ny, 11, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colors.blue;
+      ctx.beginPath();
+      ctx.arc(sxx, syy, 11, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colors.bg;
+      ctx.font = 'bold 11px JetBrains Mono';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('N', nx, ny);
+      ctx.fillText('S', sxx, syy);
+      ctx.lineCap = 'butt';
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(`step ${idx + 1} / 6`, 12, 12);
+      ctx.restore();
+      ctx.textAlign = 'right';
+      ctx.fillText(
+        `A=${step.a > 0 ? '+' : step.a < 0 ? '−' : '·'}  B=${step.b > 0 ? '+' : step.b < 0 ? '−' : '·'}  C=${step.c > 0 ? '+' : step.c < 0 ? '−' : '·'}`,
+        w - 12,
+        12,
+      );
+      ctx0.phase = phase;
+      ctx0.rotorAng = rotorAng;
+    },
+    [],
+    () => ({ context: { phase: 0, rotorAng: -Math.PI / 2 } }),
+  );
 
   return (
     <Demo

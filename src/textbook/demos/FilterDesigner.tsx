@@ -53,7 +53,7 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { fmtFreqShort } from "@/lib/formatters";
+import { fmtFreqShort } from '@/lib/formatters';
 
 interface Props {
   figure?: string;

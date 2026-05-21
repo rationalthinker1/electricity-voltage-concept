@@ -498,10 +498,7 @@ interface PlotTitleOptions {
   size?: number;
 }
 
-export function drawPlotTitle(
-  ctx: CanvasRenderingContext2D,
-  options: PlotTitleOptions,
-): void {
+export function drawPlotTitle(ctx: CanvasRenderingContext2D, options: PlotTitleOptions): void {
   const colors = getCanvasColors();
   ctx.save();
   ctx.fillStyle = options.color ?? colors.textDim;
@@ -538,10 +535,7 @@ interface PlotLegendOptions {
   textSize?: number;
 }
 
-export function drawPlotLegend(
-  ctx: CanvasRenderingContext2D,
-  options: PlotLegendOptions,
-): void {
+export function drawPlotLegend(ctx: CanvasRenderingContext2D, options: PlotLegendOptions): void {
   const colors = getCanvasColors();
   const swatchW = options.swatchWidth ?? 10;
   const swatchH = options.swatchHeight ?? 2;

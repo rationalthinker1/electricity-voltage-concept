@@ -35,7 +35,7 @@ import { PHYS } from '@/lib/physics';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
-import { fmtFrequency } from "@/lib/formatters";
+import { fmtFrequency } from '@/lib/formatters';
 
 interface Props {
   figure?: string;
@@ -189,46 +189,46 @@ export function TransformerDesignerDemo({ figure }: Props) {
   // State the canvas needs.
   const stateRef = useSimState({ Np, Ns, shape, coreKey, fluxFill, saturating, sat_frac });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const { Np, Ns, shape, coreKey, fluxFill, saturating } = stateRef.current;
-        const mat = CORE_MATERIALS[coreKey];
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const cx = W / 2;
-        const cy = H / 2;
-        if (shape === 'e-core') {
-                drawECore(ctx, cx, cy, W, H, fluxFill, saturating, mat.color, Np, Ns);
-              } else {
-                drawToroid(ctx, cx, cy, W, H, fluxFill, saturating, mat.color, Np, Ns);
-              }
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText(mat.name.toUpperCase(), 12, 10);
-        ctx.fillText(`B_sat = ${mat.B_sat.toFixed(2)} T`, 12, 24);
-        ctx.fillText(`μ_r  = ${mat.mu_r}`, 12, 38);
-        if (saturating) {
-                drawLabel(ctx, {
-                  x: W - 12,
-                  y: 10,
-                  text: 'CORE SATURATING',
-                  color: colors.pink,
-                  size: 11,
-                  align: 'right',
-                  weight: 'bold',
-                });
-                drawLabel(ctx, {
-                  x: W - 12,
-                  y: 24,
-                  text: 'μ collapses → huge I_mag → heat',
-                  color: withAlpha(colors.pink, 0.8),
-                });
-              }
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const { Np, Ns, shape, coreKey, fluxFill, saturating } = stateRef.current;
+      const mat = CORE_MATERIALS[coreKey];
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const cx = W / 2;
+      const cy = H / 2;
+      if (shape === 'e-core') {
+        drawECore(ctx, cx, cy, W, H, fluxFill, saturating, mat.color, Np, Ns);
+      } else {
+        drawToroid(ctx, cx, cy, W, H, fluxFill, saturating, mat.color, Np, Ns);
+      }
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(mat.name.toUpperCase(), 12, 10);
+      ctx.fillText(`B_sat = ${mat.B_sat.toFixed(2)} T`, 12, 24);
+      ctx.fillText(`μ_r  = ${mat.mu_r}`, 12, 38);
+      if (saturating) {
+        drawLabel(ctx, {
+          x: W - 12,
+          y: 10,
+          text: 'CORE SATURATING',
+          color: colors.pink,
+          size: 11,
+          align: 'right',
+          weight: 'bold',
+        });
+        drawLabel(ctx, {
+          x: W - 12,
+          y: 24,
+          text: 'μ collapses → huge I_mag → heat',
+          color: withAlpha(colors.pink, 0.8),
+        });
+      }
+    },
+    [],
+  );
 
   // Caption: combine the static intro with the material's blurb so the
   // reader sees why their choice matters.
@@ -262,7 +262,7 @@ export function TransformerDesignerDemo({ figure }: Props) {
           <button
             key={k}
             type="button"
-            className={`mini-toggle${k === coreKey ? ' on' : ''}`}
+            className={`mini-toggle${k === coreKey ? 'on' : ''}`}
             onClick={() => setCoreKey(k)}
             aria-pressed={k === coreKey}
           >

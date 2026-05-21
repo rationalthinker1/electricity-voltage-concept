@@ -19,7 +19,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors } from '@/lib/canvasTheme';
-import { fmtFrequency, fmtTime, fmtCurrent } from "@/lib/formatters";
+import { fmtFrequency, fmtTime, fmtCurrent } from '@/lib/formatters';
 
 interface Props {
   figure?: string;

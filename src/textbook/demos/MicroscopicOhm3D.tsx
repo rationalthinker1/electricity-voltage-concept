@@ -32,13 +32,7 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 import { MATERIALS, type MaterialKey, PHYS } from '@/lib/physics';
-import {
-  project,
-  v3,
-  type OrbitCamera,
-  type Point2D,
-  type Vec3,
-} from '@/lib/projection3d';
+import { project, v3, type OrbitCamera, type Point2D, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {

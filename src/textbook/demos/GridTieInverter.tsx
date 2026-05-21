@@ -23,7 +23,6 @@ import { drawAxes, drawHLine, drawLinePlot, makePlotMappers } from '@/lib/drawPl
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -46,111 +45,111 @@ export function GridTieInverterDemo({ figure }: Props) {
 
   const stateRef = useSimState({ Ipk, thetaDeg, P, Q });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
-        let phase = ctx0.phase;
-        const { Ipk, thetaDeg } = stateRef.current;
-        const theta = (thetaDeg * Math.PI) / 180;
-        phase += 0.012;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padL = 50,
-                padR = 80,
-                padT = 18,
-                padB = 28;
-        const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
-        // Original scales each trace into ±(plotH/2 - 8), an 8 px breathing
-        // gap from the frame. Reproduce that by widening the data range
-        // proportionally.
-        const halfH = rect.h / 2;
-        const yPad = 8 / halfH;
-        const vRange = V_PK / (1 - yPad);
-        const iRange = Math.max(Ipk, 1) / (1 - yPad);
-        const pRange = (V_PK * Math.max(Ipk, 1)) / (1 - yPad);
-        drawAxes(ctx, rect, {
-          xMin: 0,
-          xMax: 1,
-          yMin: -vRange,
-          yMax: vRange,
-          xTicks: [],
-          yTicks: [],
-        });
-        drawHLine(ctx, rect, 0, -vRange, vRange, {
-          color: colors.border,
-          alpha: 1,
-          dash: undefined,
-        });
-        const tWindow = 2 / F_GRID;
-        const samples = 600;
-        const cy = padT + halfH;
-        const plotW = rect.w;
-        const plotH = rect.h;
-        const vPts: { x: number; y: number }[] = [];
-        const iPts: { x: number; y: number }[] = [];
-        for (let i = 0; i <= samples; i++) {
-          const u = i / samples;
-          const t = u * tWindow;
-          vPts.push({ x: u, y: V_PK * Math.cos(2 * Math.PI * F_GRID * t + phase) });
-          iPts.push({ x: u, y: Ipk * Math.cos(2 * Math.PI * F_GRID * t + phase - theta) });
-        }
-        ctx.save();
-        ctx.globalAlpha = 0.8;
-        drawLinePlot(ctx, rect, vPts, 0, 1, -vRange, vRange, {
-          color: colors.text,
-          lineWidth: 1.5,
-        });
-        ctx.restore();
-        drawLinePlot(ctx, rect, iPts, 0, 1, -iRange, iRange, {
-          color: colors.accent,
-          lineWidth: 1.7,
-        });
-        // Instantaneous power v·i — closed polygon to the centre axis. drawLinePlot
-        // closes to the bottom of the rect, so the fill stays as raw ctx calls.
-        const { xOf, yOf } = makePlotMappers(rect, 0, 1, -pRange, pRange);
-        ctx.fillStyle = colors.tealSoft;
-        ctx.beginPath();
-        ctx.moveTo(padL, cy);
-        for (let i = 0; i <= samples; i++) {
-                const u = i / samples;
-                const t = u * tWindow;
-                const v = V_PK * Math.cos(2 * Math.PI * F_GRID * t + phase);
-                const ii = Ipk * Math.cos(2 * Math.PI * F_GRID * t + phase - theta);
-                const p = v * ii;
-                ctx.lineTo(xOf(u), yOf(p));
-              }
-        ctx.lineTo(padL + plotW, cy);
-        ctx.closePath();
-        ctx.fill();
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        const lx = padL + plotW + 8;
-        ctx.fillStyle = colors.text;
-        ctx.fillRect(lx, padT + 8 - 1, 10, 2);
-        ctx.fillText('V_grid', lx + 14, padT + 8);
-        ctx.fillStyle = colors.accent;
-        ctx.fillRect(lx, padT + 24 - 1, 10, 2);
-        ctx.fillText('I_inj', lx + 14, padT + 24);
-        ctx.save();
-        ctx.globalAlpha = 0.6;
-        ctx.fillStyle = colors.teal;
-        ctx.fillRect(lx, padT + 40 - 2, 10, 4);
-        ctx.fillText('p(t)', lx + 14, padT + 40);
-        ctx.restore();
-        drawLabel(ctx, {
-                x: padL + plotW / 2,
-                y: padT + plotH + 6,
-                text: `θ = ${thetaDeg.toFixed(0)}°   ·   cos θ = ${Math.cos(theta).toFixed(2)}`,
-                color: colors.textDim,
-                size: 11,
-                align: 'center',
-                baseline: 'top',
-              });
-        ctx0.phase = phase;
-      },
-      [],
-      () => ({ context: { phase: 0 } }),
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
+      let phase = ctx0.phase;
+      const { Ipk, thetaDeg } = stateRef.current;
+      const theta = (thetaDeg * Math.PI) / 180;
+      phase += 0.012;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padL = 50,
+        padR = 80,
+        padT = 18,
+        padB = 28;
+      const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
+      // Original scales each trace into ±(plotH/2 - 8), an 8 px breathing
+      // gap from the frame. Reproduce that by widening the data range
+      // proportionally.
+      const halfH = rect.h / 2;
+      const yPad = 8 / halfH;
+      const vRange = V_PK / (1 - yPad);
+      const iRange = Math.max(Ipk, 1) / (1 - yPad);
+      const pRange = (V_PK * Math.max(Ipk, 1)) / (1 - yPad);
+      drawAxes(ctx, rect, {
+        xMin: 0,
+        xMax: 1,
+        yMin: -vRange,
+        yMax: vRange,
+        xTicks: [],
+        yTicks: [],
+      });
+      drawHLine(ctx, rect, 0, -vRange, vRange, {
+        color: colors.border,
+        alpha: 1,
+        dash: undefined,
+      });
+      const tWindow = 2 / F_GRID;
+      const samples = 600;
+      const cy = padT + halfH;
+      const plotW = rect.w;
+      const plotH = rect.h;
+      const vPts: { x: number; y: number }[] = [];
+      const iPts: { x: number; y: number }[] = [];
+      for (let i = 0; i <= samples; i++) {
+        const u = i / samples;
+        const t = u * tWindow;
+        vPts.push({ x: u, y: V_PK * Math.cos(2 * Math.PI * F_GRID * t + phase) });
+        iPts.push({ x: u, y: Ipk * Math.cos(2 * Math.PI * F_GRID * t + phase - theta) });
+      }
+      ctx.save();
+      ctx.globalAlpha = 0.8;
+      drawLinePlot(ctx, rect, vPts, 0, 1, -vRange, vRange, {
+        color: colors.text,
+        lineWidth: 1.5,
+      });
+      ctx.restore();
+      drawLinePlot(ctx, rect, iPts, 0, 1, -iRange, iRange, {
+        color: colors.accent,
+        lineWidth: 1.7,
+      });
+      // Instantaneous power v·i — closed polygon to the centre axis. drawLinePlot
+      // closes to the bottom of the rect, so the fill stays as raw ctx calls.
+      const { xOf, yOf } = makePlotMappers(rect, 0, 1, -pRange, pRange);
+      ctx.fillStyle = colors.tealSoft;
+      ctx.beginPath();
+      ctx.moveTo(padL, cy);
+      for (let i = 0; i <= samples; i++) {
+        const u = i / samples;
+        const t = u * tWindow;
+        const v = V_PK * Math.cos(2 * Math.PI * F_GRID * t + phase);
+        const ii = Ipk * Math.cos(2 * Math.PI * F_GRID * t + phase - theta);
+        const p = v * ii;
+        ctx.lineTo(xOf(u), yOf(p));
+      }
+      ctx.lineTo(padL + plotW, cy);
+      ctx.closePath();
+      ctx.fill();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      const lx = padL + plotW + 8;
+      ctx.fillStyle = colors.text;
+      ctx.fillRect(lx, padT + 8 - 1, 10, 2);
+      ctx.fillText('V_grid', lx + 14, padT + 8);
+      ctx.fillStyle = colors.accent;
+      ctx.fillRect(lx, padT + 24 - 1, 10, 2);
+      ctx.fillText('I_inj', lx + 14, padT + 24);
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = colors.teal;
+      ctx.fillRect(lx, padT + 40 - 2, 10, 4);
+      ctx.fillText('p(t)', lx + 14, padT + 40);
+      ctx.restore();
+      drawLabel(ctx, {
+        x: padL + plotW / 2,
+        y: padT + plotH + 6,
+        text: `θ = ${thetaDeg.toFixed(0)}°   ·   cos θ = ${Math.cos(theta).toFixed(2)}`,
+        color: colors.textDim,
+        size: 11,
+        align: 'center',
+        baseline: 'top',
+      });
+      ctx0.phase = phase;
+    },
+    [],
+    () => ({ context: { phase: 0 } }),
+  );
 
   return (
     <Demo

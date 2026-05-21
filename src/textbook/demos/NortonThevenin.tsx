@@ -65,51 +65,54 @@ export function NortonTheveninDemo({ figure }: Props) {
     [V_oc, R_Th, I_N, RL],
   );
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, dpr } = info;
-    let raf = 0;
+  const setup = useCallback(
+    (info: CanvasInfo) => {
+      const { ctx, w, h, dpr } = info;
+      let raf = 0;
 
-    function draw() {
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, w, h);
+      function draw() {
+        ctx.fillStyle = getCanvasColors().bg;
+        ctx.fillRect(0, 0, w, h);
 
-      const off = getStaticSchematic(w, h, dpr);
-      if (off) ctx.drawImage(off, 0, 0, w, h);
+        const off = getStaticSchematic(w, h, dpr);
+        if (off) ctx.drawImage(off, 0, 0, w, h);
 
-      // Per-frame overlay: panel titles (used to bake into the cache),
-      // panel-divider strokes, and the ⇌ glyphs.
-      const colW = w / 3;
+        // Per-frame overlay: panel titles (used to bake into the cache),
+        // panel-divider strokes, and the ⇌ glyphs.
+        const colW = w / 3;
 
-      ctx.save();
-      ctx.globalAlpha = 0.85;
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '11px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('Original network', colW / 2, 12);
-      ctx.fillText('Thévenin equivalent + load', colW + colW / 2, 12);
-      ctx.fillText('Norton equivalent + load', 2 * colW + colW / 2, 12);
-      ctx.restore();
-      ctx.strokeStyle = getCanvasColors().border;
-      ctx.beginPath();
-      ctx.moveTo(colW, 8);
-      ctx.lineTo(colW, h - 8);
-      ctx.moveTo(2 * colW, 8);
-      ctx.lineTo(2 * colW, h - 8);
-      ctx.stroke();
+        ctx.save();
+        ctx.globalAlpha = 0.85;
+        ctx.fillStyle = getCanvasColors().textDim;
+        ctx.font = '11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('Original network', colW / 2, 12);
+        ctx.fillText('Thévenin equivalent + load', colW + colW / 2, 12);
+        ctx.fillText('Norton equivalent + load', 2 * colW + colW / 2, 12);
+        ctx.restore();
+        ctx.strokeStyle = getCanvasColors().border;
+        ctx.beginPath();
+        ctx.moveTo(colW, 8);
+        ctx.lineTo(colW, h - 8);
+        ctx.moveTo(2 * colW, 8);
+        ctx.lineTo(2 * colW, h - 8);
+        ctx.stroke();
 
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = 'bold 14px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('⇌', colW, h * 0.45);
-      ctx.fillText('⇌', 2 * colW, h * 0.45);
+        ctx.fillStyle = getCanvasColors().accent;
+        ctx.font = 'bold 14px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('⇌', colW, h * 0.45);
+        ctx.fillText('⇌', 2 * colW, h * 0.45);
 
+        raf = requestAnimationFrame(draw);
+      }
       raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, [getStaticSchematic]);
+      return () => cancelAnimationFrame(raf);
+    },
+    [getStaticSchematic],
+  );
 
   return (
     <Demo

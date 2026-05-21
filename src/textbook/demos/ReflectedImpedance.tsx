@@ -23,7 +23,6 @@ import { getCanvasColors } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -62,107 +61,107 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
   }, [omegaKrad, k, L1mH, L2mH, RLOhm]);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { omegaKrad, k, L1mH, L2mH, RLOhm } = stateRef.current;
-        const omega = omegaKrad * 1000;
-        const L1 = L1mH * 1e-3;
-        const L2 = L2mH * 1e-3;
-        const M = k * Math.sqrt(L1 * L2);
-        const z2re = RLOhm;
-        const z2im = omega * L2;
-        const z2magSq = z2re * z2re + z2im * z2im;
-        const reflRe = (omega * M * omega * M * z2re) / z2magSq;
-        const reflIm = -(omega * M * omega * M * z2im) / z2magSq;
-        const zinRe = reflRe;
-        const zinIm = omega * L1 + reflIm;
-        const mag = Math.sqrt(zinRe * zinRe + zinIm * zinIm);
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const cy = h / 2;
-        const srcX = 24;
-        const srcW = 70,
-                srcH = 60;
-        ctx.fillStyle = colors.surface;
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 1.4;
-        ctx.fillRect(srcX, cy - srcH / 2, srcW, srcH);
-        ctx.strokeRect(srcX, cy - srcH / 2, srcW, srcH);
-        ctx.fillStyle = colors.accent;
-        ctx.font = 'bold 10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('AC', srcX + srcW / 2, cy - 8);
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.fillText(`ω = ${omegaKrad} krad/s`, srcX + srcW / 2, cy + 8);
-        const c1x = srcX + srcW + 50;
-        drawCoilTwo(ctx, c1x, cy, 'L₁', `${L1mH.toFixed(1)} mH`);
-        const c2x = c1x + 100;
-        drawCoilTwo(ctx, c2x, cy, 'L₂', `${L2mH.toFixed(1)} mH`);
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(srcX + srcW, cy - 6);
-        ctx.lineTo(c1x - 22, cy - 6);
-        ctx.moveTo(srcX + srcW, cy + 6);
-        ctx.lineTo(c1x - 22, cy + 6);
-        ctx.stroke();
-        ctx.strokeStyle = colors.teal;
-        ctx.setLineDash([4, 4]);
-        ctx.beginPath();
-        ctx.moveTo(c1x + 22, cy);
-        ctx.lineTo(c2x - 22, cy);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.fillStyle = colors.teal;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(`M = ${(M * 1e6).toFixed(0)} µH`, (c1x + c2x) / 2, cy - 30);
-        const ldX = c2x + 50;
-        const ldW = 70,
-                ldH = 60;
-        ctx.fillStyle = colors.surface;
-        ctx.strokeStyle = colors.teal;
-        ctx.lineWidth = 1.4;
-        ctx.fillRect(ldX, cy - ldH / 2, ldW, ldH);
-        ctx.strokeRect(ldX, cy - ldH / 2, ldW, ldH);
-        ctx.fillStyle = colors.teal;
-        ctx.font = 'bold 10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('R_L', ldX + ldW / 2, cy - 8);
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.fillText(`${RLOhm.toFixed(0)} Ω`, ldX + ldW / 2, cy + 8);
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(c2x + 22, cy - 6);
-        ctx.lineTo(ldX, cy - 6);
-        ctx.moveTo(c2x + 22, cy + 6);
-        ctx.lineTo(ldX, cy + 6);
-        ctx.stroke();
-        ctx.fillStyle = colors.accent;
-        ctx.font = 'bold 12px "STIX Two Text", "Fraunces", serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText(
-                `|Z_in| = ${mag.toFixed(1)} Ω    Z_in = ${zinRe.toFixed(1)} + j ${zinIm.toFixed(1)} Ω`,
-                w / 2,
-                6,
-              );
-        drawLabel(ctx, {
-                x: 12,
-                y: h - 8,
-                text: `reflected: (${reflRe.toFixed(1)}) + j (${reflIm.toFixed(1)}) Ω`,
-                color: colors.textDim,
-                size: 9,
-                baseline: 'bottom',
-              });
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { omegaKrad, k, L1mH, L2mH, RLOhm } = stateRef.current;
+      const omega = omegaKrad * 1000;
+      const L1 = L1mH * 1e-3;
+      const L2 = L2mH * 1e-3;
+      const M = k * Math.sqrt(L1 * L2);
+      const z2re = RLOhm;
+      const z2im = omega * L2;
+      const z2magSq = z2re * z2re + z2im * z2im;
+      const reflRe = (omega * M * omega * M * z2re) / z2magSq;
+      const reflIm = -(omega * M * omega * M * z2im) / z2magSq;
+      const zinRe = reflRe;
+      const zinIm = omega * L1 + reflIm;
+      const mag = Math.sqrt(zinRe * zinRe + zinIm * zinIm);
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const cy = h / 2;
+      const srcX = 24;
+      const srcW = 70,
+        srcH = 60;
+      ctx.fillStyle = colors.surface;
+      ctx.strokeStyle = colors.accent;
+      ctx.lineWidth = 1.4;
+      ctx.fillRect(srcX, cy - srcH / 2, srcW, srcH);
+      ctx.strokeRect(srcX, cy - srcH / 2, srcW, srcH);
+      ctx.fillStyle = colors.accent;
+      ctx.font = 'bold 10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('AC', srcX + srcW / 2, cy - 8);
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.fillText(`ω = ${omegaKrad} krad/s`, srcX + srcW / 2, cy + 8);
+      const c1x = srcX + srcW + 50;
+      drawCoilTwo(ctx, c1x, cy, 'L₁', `${L1mH.toFixed(1)} mH`);
+      const c2x = c1x + 100;
+      drawCoilTwo(ctx, c2x, cy, 'L₂', `${L2mH.toFixed(1)} mH`);
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(srcX + srcW, cy - 6);
+      ctx.lineTo(c1x - 22, cy - 6);
+      ctx.moveTo(srcX + srcW, cy + 6);
+      ctx.lineTo(c1x - 22, cy + 6);
+      ctx.stroke();
+      ctx.strokeStyle = colors.teal;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(c1x + 22, cy);
+      ctx.lineTo(c2x - 22, cy);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = colors.teal;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(`M = ${(M * 1e6).toFixed(0)} µH`, (c1x + c2x) / 2, cy - 30);
+      const ldX = c2x + 50;
+      const ldW = 70,
+        ldH = 60;
+      ctx.fillStyle = colors.surface;
+      ctx.strokeStyle = colors.teal;
+      ctx.lineWidth = 1.4;
+      ctx.fillRect(ldX, cy - ldH / 2, ldW, ldH);
+      ctx.strokeRect(ldX, cy - ldH / 2, ldW, ldH);
+      ctx.fillStyle = colors.teal;
+      ctx.font = 'bold 10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('R_L', ldX + ldW / 2, cy - 8);
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.fillText(`${RLOhm.toFixed(0)} Ω`, ldX + ldW / 2, cy + 8);
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(c2x + 22, cy - 6);
+      ctx.lineTo(ldX, cy - 6);
+      ctx.moveTo(c2x + 22, cy + 6);
+      ctx.lineTo(ldX, cy + 6);
+      ctx.stroke();
+      ctx.fillStyle = colors.accent;
+      ctx.font = 'bold 12px "STIX Two Text", "Fraunces", serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText(
+        `|Z_in| = ${mag.toFixed(1)} Ω    Z_in = ${zinRe.toFixed(1)} + j ${zinIm.toFixed(1)} Ω`,
+        w / 2,
+        6,
+      );
+      drawLabel(ctx, {
+        x: 12,
+        y: h - 8,
+        text: `reflected: (${reflRe.toFixed(1)}) + j (${reflIm.toFixed(1)}) Ω`,
+        color: colors.textDim,
+        size: 9,
+        baseline: 'bottom',
+      });
+    },
+    [],
+  );
 
   return (
     <Demo

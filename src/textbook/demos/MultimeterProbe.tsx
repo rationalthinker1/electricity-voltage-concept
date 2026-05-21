@@ -45,7 +45,7 @@ import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawCircuit, type CircuitElement } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { fmtResistance, fmtVoltage, fmtCurrent } from "@/lib/formatters";
+import { fmtResistance, fmtVoltage, fmtCurrent } from '@/lib/formatters';
 import { useCanvasCache } from '@/lib/useCanvasCache';
 
 type Mode = 'V_DC' | 'V_AC' | 'I_DC' | 'R';
@@ -236,117 +236,114 @@ export function MultimeterProbeDemo({ figure }: { figure?: string }) {
   // value is a module-level constant. Mixes CircuitElement rendering with
   // raw-ctx work (header label, capacitor symbol, TP dots + labels), so
   // useCanvasCache + drawCircuit fits cleanly.
-  const getStatic = useCanvasCache(
-    (octx, sw, sh, _dpr) => {
-      const projectAt = (tp: TP) => ({ x: tp.x * sw, y: tp.y * sh });
-      const p_bat = projectAt(TPS[0]);
-      const p1 = projectAt(TPS[1]);
-      const p2 = projectAt(TPS[2]);
-      const p3 = projectAt(TPS[3]);
-      const p4 = projectAt(TPS[4]);
-      const p5 = projectAt(TPS[5]);
-      const p6 = projectAt(TPS[6]);
-      const p_gnd = projectAt(TPS[7]);
-      const r1cx = (p_bat.x + p1.x - 24) / 2;
-      const r2cy = (p1.y + p3.y) / 2;
-      const r3cy = (p3.y + p5.y) / 2;
-      const r4cy = (p4.y + p6.y) / 2;
-      const capCy = (p2.y + p4.y) / 2;
+  const getStatic = useCanvasCache((octx, sw, sh, _dpr) => {
+    const projectAt = (tp: TP) => ({ x: tp.x * sw, y: tp.y * sh });
+    const p_bat = projectAt(TPS[0]);
+    const p1 = projectAt(TPS[1]);
+    const p2 = projectAt(TPS[2]);
+    const p3 = projectAt(TPS[3]);
+    const p4 = projectAt(TPS[4]);
+    const p5 = projectAt(TPS[5]);
+    const p6 = projectAt(TPS[6]);
+    const p_gnd = projectAt(TPS[7]);
+    const r1cx = (p_bat.x + p1.x - 24) / 2;
+    const r2cy = (p1.y + p3.y) / 2;
+    const r3cy = (p3.y + p5.y) / 2;
+    const r4cy = (p4.y + p6.y) / 2;
+    const capCy = (p2.y + p4.y) / 2;
 
-      const elements: CircuitElement[] = [
-        { kind: 'wire', points: [p_bat, { x: p_bat.x, y: p1.y }, { x: p1.x - 24, y: p1.y }] },
-        {
-          kind: 'resistor',
-          from: { x: r1cx - 20, y: p1.y },
-          to: { x: r1cx + 20, y: p1.y },
-          amplitude: 6,
-          label: `R₁ = ${R1} Ω`,
-          labelOffset: { x: 0, y: -10 },
-        },
-        { kind: 'wire', points: [{ x: r1cx + 20, y: p1.y }, p1] },
-        { kind: 'wire', points: [p1, p2] },
-        { kind: 'wire', points: [p1, { x: p1.x, y: r2cy - 20 }] },
-        {
-          kind: 'resistor',
-          from: { x: p1.x, y: r2cy - 20 },
-          to: { x: p1.x, y: r2cy + 20 },
-          amplitude: 6,
-          label: `R₂ = ${R2} Ω`,
-          labelOffset: { x: 12, y: 0 },
-        },
-        { kind: 'wire', points: [{ x: p1.x, y: r2cy + 20 }, p3] },
-        { kind: 'wire', points: [p2, { x: p2.x, y: capCy - 14 }] },
-        { kind: 'wire', points: [{ x: p2.x, y: capCy + 14 }, p4] },
-        { kind: 'wire', points: [p3, { x: p3.x, y: r3cy - 20 }] },
-        {
-          kind: 'resistor',
-          from: { x: p3.x, y: r3cy - 20 },
-          to: { x: p3.x, y: r3cy + 20 },
-          amplitude: 6,
-          label: `R₃ = ${R3} Ω`,
-          labelOffset: { x: 12, y: 0 },
-        },
-        { kind: 'wire', points: [{ x: p3.x, y: r3cy + 20 }, p5] },
-        { kind: 'wire', points: [p4, { x: p4.x, y: r4cy - 20 }] },
-        {
-          kind: 'resistor',
-          from: { x: p4.x, y: r4cy - 20 },
-          to: { x: p4.x, y: r4cy + 20 },
-          amplitude: 6,
-          label: `R₄ = ${R4} Ω`,
-          labelOffset: { x: 12, y: 0 },
-        },
-        { kind: 'wire', points: [{ x: p4.x, y: r4cy + 20 }, p6] },
-        { kind: 'wire', points: [p5, p6] },
-        { kind: 'wire', points: [p5, { x: p_gnd.x, y: p5.y }, p_gnd] },
-        {
-          kind: 'battery',
-          at: { x: p_bat.x, y: p_bat.y - 24 },
-          label: `${V_BATT.toFixed(0)} V`,
-          labelOffset: { x: 28, y: 0 },
-          leadLength: 14,
-          negativePlateLength: 14,
-          plateGap: 4,
-          positivePlateLength: 24,
-        },
-        {
-          kind: 'ground',
-          at: p_gnd,
-          color: withAlpha(getCanvasColors().textDim, 0.85),
-          size: 20,
-          leadLength: 4,
-        },
-      ];
-      drawCircuit(octx, {
-        elements,
-        defaultWireColor: 'rgba(255,255,255,0.55)',
-        defaultWireWidth: 1.5,
-      });
+    const elements: CircuitElement[] = [
+      { kind: 'wire', points: [p_bat, { x: p_bat.x, y: p1.y }, { x: p1.x - 24, y: p1.y }] },
+      {
+        kind: 'resistor',
+        from: { x: r1cx - 20, y: p1.y },
+        to: { x: r1cx + 20, y: p1.y },
+        amplitude: 6,
+        label: `R₁ = ${R1} Ω`,
+        labelOffset: { x: 0, y: -10 },
+      },
+      { kind: 'wire', points: [{ x: r1cx + 20, y: p1.y }, p1] },
+      { kind: 'wire', points: [p1, p2] },
+      { kind: 'wire', points: [p1, { x: p1.x, y: r2cy - 20 }] },
+      {
+        kind: 'resistor',
+        from: { x: p1.x, y: r2cy - 20 },
+        to: { x: p1.x, y: r2cy + 20 },
+        amplitude: 6,
+        label: `R₂ = ${R2} Ω`,
+        labelOffset: { x: 12, y: 0 },
+      },
+      { kind: 'wire', points: [{ x: p1.x, y: r2cy + 20 }, p3] },
+      { kind: 'wire', points: [p2, { x: p2.x, y: capCy - 14 }] },
+      { kind: 'wire', points: [{ x: p2.x, y: capCy + 14 }, p4] },
+      { kind: 'wire', points: [p3, { x: p3.x, y: r3cy - 20 }] },
+      {
+        kind: 'resistor',
+        from: { x: p3.x, y: r3cy - 20 },
+        to: { x: p3.x, y: r3cy + 20 },
+        amplitude: 6,
+        label: `R₃ = ${R3} Ω`,
+        labelOffset: { x: 12, y: 0 },
+      },
+      { kind: 'wire', points: [{ x: p3.x, y: r3cy + 20 }, p5] },
+      { kind: 'wire', points: [p4, { x: p4.x, y: r4cy - 20 }] },
+      {
+        kind: 'resistor',
+        from: { x: p4.x, y: r4cy - 20 },
+        to: { x: p4.x, y: r4cy + 20 },
+        amplitude: 6,
+        label: `R₄ = ${R4} Ω`,
+        labelOffset: { x: 12, y: 0 },
+      },
+      { kind: 'wire', points: [{ x: p4.x, y: r4cy + 20 }, p6] },
+      { kind: 'wire', points: [p5, p6] },
+      { kind: 'wire', points: [p5, { x: p_gnd.x, y: p5.y }, p_gnd] },
+      {
+        kind: 'battery',
+        at: { x: p_bat.x, y: p_bat.y - 24 },
+        label: `${V_BATT.toFixed(0)} V`,
+        labelOffset: { x: 28, y: 0 },
+        leadLength: 14,
+        negativePlateLength: 14,
+        plateGap: 4,
+        positivePlateLength: 24,
+      },
+      {
+        kind: 'ground',
+        at: p_gnd,
+        color: withAlpha(getCanvasColors().textDim, 0.85),
+        size: 20,
+        leadLength: 4,
+      },
+    ];
+    drawCircuit(octx, {
+      elements,
+      defaultWireColor: 'rgba(255,255,255,0.55)',
+      defaultWireWidth: 1.5,
+    });
 
-      // Header, standalone capacitor symbol, TP dots + labels.
-      octx.fillStyle = getCanvasColors().textDim;
-      octx.font = '10px "JetBrains Mono", monospace';
-      octx.textAlign = 'left';
-      octx.textBaseline = 'top';
-      octx.fillText('Six-node bench network — drag the probes to any TP', 12, 10);
-      drawCapacitorV(octx, p2.x, capCy, 'C', `${(C_VAL * 1e6).toFixed(0)} µF`);
-      for (const tp of TPS) {
-        const p = projectAt(tp);
-        octx.fillStyle = getCanvasColors().accent;
-        octx.beginPath();
-        octx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-        octx.fill();
-        octx.fillStyle = getCanvasColors().text;
-        octx.font = 'bold 10px "JetBrains Mono", monospace';
-        const onLeftSide = tp.x < 0.5;
-        octx.textAlign = onLeftSide ? 'right' : 'left';
-        octx.textBaseline = 'middle';
-        const dx = onLeftSide ? -8 : 8;
-        octx.fillText(tp.label, p.x + dx, p.y);
-      }
-    },
-    [],
-  );
+    // Header, standalone capacitor symbol, TP dots + labels.
+    octx.fillStyle = getCanvasColors().textDim;
+    octx.font = '10px "JetBrains Mono", monospace';
+    octx.textAlign = 'left';
+    octx.textBaseline = 'top';
+    octx.fillText('Six-node bench network — drag the probes to any TP', 12, 10);
+    drawCapacitorV(octx, p2.x, capCy, 'C', `${(C_VAL * 1e6).toFixed(0)} µF`);
+    for (const tp of TPS) {
+      const p = projectAt(tp);
+      octx.fillStyle = getCanvasColors().accent;
+      octx.beginPath();
+      octx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+      octx.fill();
+      octx.fillStyle = getCanvasColors().text;
+      octx.font = 'bold 10px "JetBrains Mono", monospace';
+      const onLeftSide = tp.x < 0.5;
+      octx.textAlign = onLeftSide ? 'right' : 'left';
+      octx.textBaseline = 'middle';
+      const dx = onLeftSide ? -8 : 8;
+      octx.fillText(tp.label, p.x + dx, p.y);
+    }
+  }, []);
 
   /* ── Drawing ─────────────────────────────────────────────────────── */
   const setup = useCallback(

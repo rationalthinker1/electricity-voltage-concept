@@ -19,7 +19,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -48,67 +47,67 @@ export function HighFrequencyTransformerDemo({ figure }: Props) {
   }, [f]);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { f } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const cy = h * 0.5;
-        const refSide = Math.min(h * 0.55, w * 0.18);
-        const scale = F_REF / f;
-        const newSide = refSide * Math.cbrt(scale);
-        const leftCX = w * 0.28;
-        const rightCX = w * 0.72;
-        drawIsoCube(
-                ctx,
-                leftCX,
-                cy,
-                refSide,
-                withAlpha(colors.accent, 0.85),
-                withAlpha(colors.accent, 0.18),
-              );
-        const accentColor = scale > 1 ? withAlpha(colors.accent, 0.95) : withAlpha(colors.teal, 0.95);
-        const accentFill = scale > 1 ? withAlpha(colors.accent, 0.2) : withAlpha(colors.teal, 0.18);
-        drawIsoCube(ctx, rightCX, cy, newSide, accentColor, accentFill);
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('60 Hz mains (Si steel)', leftCX, 12);
-        ctx.fillText(`${formatHz(f)}`, rightCX, 12);
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillText(`V ≈ ${V_REF_CM3} cm³`, leftCX, cy + refSide / 2 + 24);
-        ctx.fillText(`mass ≈ ${M_REF_G} g`, leftCX, cy + refSide / 2 + 38);
-        ctx.fillStyle = colors.text;
-        ctx.fillText(`V ≈ ${formatVol(V_REF_CM3 * scale)}`, rightCX, cy + refSide / 2 + 24);
-        ctx.fillText(`mass ≈ ${formatMass(M_REF_G * scale)}`, rightCX, cy + refSide / 2 + 38);
-        ctx.save();
-        ctx.globalAlpha = 0.65;
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('100 W reference', 8, h - 16);
-        ctx.textAlign = 'right';
-        ctx.fillText('V ∝ 1/f   (constant V, B_max, N)', w - 8, h - 16);
-        let tag = '';
-        if (f < 100) tag = '1950s linear supply';
-              else if (f < 1000) tag = 'mains transformer';
-              else if (f < 30e3) tag = 'aircraft 400 Hz / audio';
-              else if (f < 200e3) tag = 'modern SMPS / wall-wart';
-              else tag = 'GaN / SiC high-density';
-        ctx.restore();
-        drawLabel(ctx, {
-                x: rightCX,
-                y: h - 16,
-                text: tag,
-                color: colors.accent,
-                align: 'center',
-                baseline: 'top',
-              });
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { f } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const cy = h * 0.5;
+      const refSide = Math.min(h * 0.55, w * 0.18);
+      const scale = F_REF / f;
+      const newSide = refSide * Math.cbrt(scale);
+      const leftCX = w * 0.28;
+      const rightCX = w * 0.72;
+      drawIsoCube(
+        ctx,
+        leftCX,
+        cy,
+        refSide,
+        withAlpha(colors.accent, 0.85),
+        withAlpha(colors.accent, 0.18),
+      );
+      const accentColor = scale > 1 ? withAlpha(colors.accent, 0.95) : withAlpha(colors.teal, 0.95);
+      const accentFill = scale > 1 ? withAlpha(colors.accent, 0.2) : withAlpha(colors.teal, 0.18);
+      drawIsoCube(ctx, rightCX, cy, newSide, accentColor, accentFill);
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('60 Hz mains (Si steel)', leftCX, 12);
+      ctx.fillText(`${formatHz(f)}`, rightCX, 12);
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillText(`V ≈ ${V_REF_CM3} cm³`, leftCX, cy + refSide / 2 + 24);
+      ctx.fillText(`mass ≈ ${M_REF_G} g`, leftCX, cy + refSide / 2 + 38);
+      ctx.fillStyle = colors.text;
+      ctx.fillText(`V ≈ ${formatVol(V_REF_CM3 * scale)}`, rightCX, cy + refSide / 2 + 24);
+      ctx.fillText(`mass ≈ ${formatMass(M_REF_G * scale)}`, rightCX, cy + refSide / 2 + 38);
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('100 W reference', 8, h - 16);
+      ctx.textAlign = 'right';
+      ctx.fillText('V ∝ 1/f   (constant V, B_max, N)', w - 8, h - 16);
+      let tag = '';
+      if (f < 100) tag = '1950s linear supply';
+      else if (f < 1000) tag = 'mains transformer';
+      else if (f < 30e3) tag = 'aircraft 400 Hz / audio';
+      else if (f < 200e3) tag = 'modern SMPS / wall-wart';
+      else tag = 'GaN / SiC high-density';
+      ctx.restore();
+      drawLabel(ctx, {
+        x: rightCX,
+        y: h - 16,
+        text: tag,
+        color: colors.accent,
+        align: 'center',
+        baseline: 'top',
+      });
+    },
+    [],
+  );
 
   return (
     <Demo

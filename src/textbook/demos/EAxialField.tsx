@@ -20,7 +20,6 @@ import { pretty } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -33,114 +32,114 @@ export function EAxialFieldDemo({ figure }: Props) {
   const E = V / L;
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
-        let phase = ctx0.phase;
-        const { V, L } = stateRef.current;
-        const E_ = V / L;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const margin = 80;
-        const wireXL = margin;
-        const wireXR = w - margin;
-        const wireCY = h * 0.55;
-        const r = Math.min(60, h * 0.22);
-        const er = r * 0.32;
-        const sideGrd = ctx.createLinearGradient(0, wireCY - r, 0, wireCY + r);
-        sideGrd.addColorStop(0, withAlpha(colors.accent, 0.1));
-        sideGrd.addColorStop(0.5, withAlpha(colors.accent, 0.28));
-        sideGrd.addColorStop(1, withAlpha(colors.accent, 0.1));
-        ctx.fillStyle = sideGrd;
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
+      let phase = ctx0.phase;
+      const { V, L } = stateRef.current;
+      const E_ = V / L;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const margin = 80;
+      const wireXL = margin;
+      const wireXR = w - margin;
+      const wireCY = h * 0.55;
+      const r = Math.min(60, h * 0.22);
+      const er = r * 0.32;
+      const sideGrd = ctx.createLinearGradient(0, wireCY - r, 0, wireCY + r);
+      sideGrd.addColorStop(0, withAlpha(colors.accent, 0.1));
+      sideGrd.addColorStop(0.5, withAlpha(colors.accent, 0.28));
+      sideGrd.addColorStop(1, withAlpha(colors.accent, 0.1));
+      ctx.fillStyle = sideGrd;
+      ctx.beginPath();
+      ctx.moveTo(wireXL, wireCY - r);
+      ctx.lineTo(wireXR, wireCY - r);
+      ctx.ellipse(wireXR, wireCY, er, r, 0, -Math.PI / 2, Math.PI / 2);
+      ctx.lineTo(wireXL, wireCY + r);
+      ctx.ellipse(wireXL, wireCY, er, r, 0, Math.PI / 2, -Math.PI / 2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = colors.accent;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(wireXL, wireCY - r);
+      ctx.lineTo(wireXR, wireCY - r);
+      ctx.moveTo(wireXL, wireCY + r);
+      ctx.lineTo(wireXR, wireCY + r);
+      ctx.stroke();
+      ctx.restore();
+      ctx.strokeStyle = colors.accent;
+      ctx.beginPath();
+      ctx.ellipse(wireXL, wireCY, er, r, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(wireXR, wireCY, er, r, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      const nArrows = 6;
+      const arrLen = Math.min(80, 32 + Math.log10(Math.max(1, E_)) * 14);
+      ctx.strokeStyle = colors.pink;
+      ctx.fillStyle = colors.pink;
+      ctx.lineWidth = 2;
+      for (let i = 0; i < nArrows; i++) {
+        const t = (i + 0.5) / nArrows;
+        const cx = wireXL + t * (wireXR - wireXL) - arrLen / 2;
+        const cy = wireCY;
         ctx.beginPath();
-        ctx.moveTo(wireXL, wireCY - r);
-        ctx.lineTo(wireXR, wireCY - r);
-        ctx.ellipse(wireXR, wireCY, er, r, 0, -Math.PI / 2, Math.PI / 2);
-        ctx.lineTo(wireXL, wireCY + r);
-        ctx.ellipse(wireXL, wireCY, er, r, 0, Math.PI / 2, -Math.PI / 2);
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + arrLen, cy);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(cx + arrLen, cy);
+        ctx.lineTo(cx + arrLen - 8, cy - 5);
+        ctx.lineTo(cx + arrLen - 8, cy + 5);
         ctx.closePath();
         ctx.fill();
-        ctx.save();
-        ctx.globalAlpha = 0.55;
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 1.2;
+      }
+      phase += 0.012;
+      ctx.fillStyle = colors.pink;
+      const nDots = 5;
+      for (let i = 0; i < nDots; i++) {
+        const f = (i / nDots + phase) % 1;
+        const tx = wireXL + 18 + f * (wireXR - wireXL - 36);
         ctx.beginPath();
-        ctx.moveTo(wireXL, wireCY - r);
-        ctx.lineTo(wireXR, wireCY - r);
-        ctx.moveTo(wireXL, wireCY + r);
-        ctx.lineTo(wireXR, wireCY + r);
-        ctx.stroke();
-        ctx.restore();
-        ctx.strokeStyle = colors.accent;
-        ctx.beginPath();
-        ctx.ellipse(wireXL, wireCY, er, r, 0, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.ellipse(wireXR, wireCY, er, r, 0, 0, Math.PI * 2);
-        ctx.stroke();
-        const nArrows = 6;
-        const arrLen = Math.min(80, 32 + Math.log10(Math.max(1, E_)) * 14);
-        ctx.strokeStyle = colors.pink;
-        ctx.fillStyle = colors.pink;
-        ctx.lineWidth = 2;
-        for (let i = 0; i < nArrows; i++) {
-                const t = (i + 0.5) / nArrows;
-                const cx = wireXL + t * (wireXR - wireXL) - arrLen / 2;
-                const cy = wireCY;
-                ctx.beginPath();
-                ctx.moveTo(cx, cy);
-                ctx.lineTo(cx + arrLen, cy);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(cx + arrLen, cy);
-                ctx.lineTo(cx + arrLen - 8, cy - 5);
-                ctx.lineTo(cx + arrLen - 8, cy + 5);
-                ctx.closePath();
-                ctx.fill();
-              }
-        phase += 0.012;
-        ctx.fillStyle = colors.pink;
-        const nDots = 5;
-        for (let i = 0; i < nDots; i++) {
-                const f = (i / nDots + phase) % 1;
-                const tx = wireXL + 18 + f * (wireXR - wireXL - 36);
-                ctx.beginPath();
-                ctx.arc(tx, wireCY, 1.6, 0, Math.PI * 2);
-                ctx.fill();
-              }
-        ctx.fillStyle = colors.pink;
-        ctx.fillRect(wireXL - 22, wireCY - r - 4, 4, 2 * r + 8);
-        ctx.fillStyle = colors.blue;
-        ctx.fillRect(wireXR + 18, wireCY - r - 4, 4, 2 * r + 8);
-        ctx.fillStyle = colors.pink;
-        ctx.font = 'bold 14px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('+', wireXL - 36, wireCY);
-        ctx.fillStyle = colors.blue;
-        ctx.fillText('−', wireXR + 36, wireCY);
-        ctx.fillStyle = colors.pink;
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('E  (axial)', (wireXL + wireXR) / 2, wireCY - r - 14);
-        ctx.save();
-        ctx.globalAlpha = 0.85;
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText(`V = ${V.toFixed(1)} V`, 18, h - 24);
-        ctx.textAlign = 'right';
-        ctx.fillText(`L = ${L.toFixed(2)} m`, w - 18, h - 24);
-        ctx.textAlign = 'center';
-        ctx.restore();
-        ctx.fillStyle = colors.accent;
-        ctx.fillText(`E = V / L = ${pretty(E_)} V/m`, w / 2, h - 24);
-        ctx0.phase = phase;
-      },
-      [],
-      () => ({ context: { phase: 0 } }),
-    );
+        ctx.arc(tx, wireCY, 1.6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = colors.pink;
+      ctx.fillRect(wireXL - 22, wireCY - r - 4, 4, 2 * r + 8);
+      ctx.fillStyle = colors.blue;
+      ctx.fillRect(wireXR + 18, wireCY - r - 4, 4, 2 * r + 8);
+      ctx.fillStyle = colors.pink;
+      ctx.font = 'bold 14px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('+', wireXL - 36, wireCY);
+      ctx.fillStyle = colors.blue;
+      ctx.fillText('−', wireXR + 36, wireCY);
+      ctx.fillStyle = colors.pink;
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('E  (axial)', (wireXL + wireXR) / 2, wireCY - r - 14);
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(`V = ${V.toFixed(1)} V`, 18, h - 24);
+      ctx.textAlign = 'right';
+      ctx.fillText(`L = ${L.toFixed(2)} m`, w - 18, h - 24);
+      ctx.textAlign = 'center';
+      ctx.restore();
+      ctx.fillStyle = colors.accent;
+      ctx.fillText(`E = V / L = ${pretty(E_)} V/m`, w / 2, h - 24);
+      ctx0.phase = phase;
+    },
+    [],
+    () => ({ context: { phase: 0 } }),
+  );
 
   return (
     <Demo

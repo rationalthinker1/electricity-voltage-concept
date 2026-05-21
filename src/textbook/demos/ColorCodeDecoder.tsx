@@ -8,7 +8,7 @@
 import { useState } from 'react';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { Demo, DemoControls, MiniReadout } from '@/components/Demo';
-import { fmtResistance, fmtTolerance } from "@/lib/formatters";
+import { fmtResistance, fmtTolerance } from '@/lib/formatters';
 
 interface Props {
   figure?: string;
@@ -102,14 +102,14 @@ export function ColorCodeDecoderDemo({ figure }: Props) {
       <DemoControls>
         <button
           type="button"
-          className={`mini-toggle${mode === 4 ? ' on' : ''}`}
+          className={`mini-toggle${mode === 4 ? 'on' : ''}`}
           onClick={() => setMode(4)}
         >
           4-band
         </button>
         <button
           type="button"
-          className={`mini-toggle${mode === 5 ? ' on' : ''}`}
+          className={`mini-toggle${mode === 5 ? 'on' : ''}`}
           onClick={() => setMode(5)}
         >
           5-band

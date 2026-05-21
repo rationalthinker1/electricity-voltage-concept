@@ -15,7 +15,6 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 const N_HARMONICS = 25;
 const f0 = 1; // fundamental (arbitrary units)
 
@@ -31,117 +30,117 @@ export function SquareThroughLPFDemo() {
   const Hfund = 1 / Math.sqrt(1 + (1 / fcRatio) ** 2);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { fcRatio } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padX = 32;
-        const padY = 16;
-        const panelH = (h - 2 * padY) / 3;
-        const samples = 500;
-        const cycles = 2;
-        function panel(
-                  idx: number,
-                  plot: (mx: number, my: number, ph: number) => void,
-                  label: string,
-                ) {
-                  const top = padY + idx * panelH;
-                  const mid = top + panelH / 2;
-                  ctx.strokeStyle = colors.border;
-                  ctx.beginPath();
-                  ctx.moveTo(padX, mid);
-                  ctx.lineTo(w - padX, mid);
-                  ctx.stroke();
-                  plot(padX, mid, panelH / 2);
-                  drawLabel(ctx, {
-                    x: padX,
-                    y: top + 10,
-                    text: label,
-                    color: colors.textDim,
-                    size: 9,
-                  });
-                }
-        panel(
-                  0,
-                  (mx, my, half) => {
-                    ctx.strokeStyle = colors.blue;
-                    ctx.lineWidth = 2;
-                    ctx.beginPath();
-                    for (let i = 0; i <= samples; i++) {
-                      const x = mx + (i / samples) * (w - 2 * padX);
-                      const phase = (i / samples) * cycles * 2 * Math.PI;
-                      let s = 0;
-                      for (const h of harms) s += h.amp * Math.sin(h.n * phase);
-                      const y = my - s * half * 0.7;
-                      if (i === 0) ctx.moveTo(x, y);
-                      else ctx.lineTo(x, y);
-                    }
-                    ctx.stroke();
-                  },
-                  'input — square wave',
-                );
-        panel(
-                  1,
-                  (mx, my, half) => {
-                    // Plot the gain curve from 0..N_HARMONICS f0
-                    ctx.strokeStyle = withAlpha(colors.teal, 0.8);
-                    ctx.lineWidth = 1.5;
-                    ctx.beginPath();
-                    for (let i = 0; i <= samples; i++) {
-                      const f = (i / samples) * N_HARMONICS * f0;
-                      const Hm = 1 / Math.sqrt(1 + (f / fcRatio) ** 2);
-                      const x = mx + (i / samples) * (w - 2 * padX);
-                      const y = my + half - Hm * 2 * half * 0.85;
-                      if (i === 0) ctx.moveTo(x, y);
-                      else ctx.lineTo(x, y);
-                    }
-                    ctx.stroke();
-                    // f_c marker
-                    const xc = mx + (fcRatio / N_HARMONICS) * (w - 2 * padX);
-                    ctx.setLineDash([3, 4]);
-                    ctx.strokeStyle = colors.accent;
-                    ctx.beginPath();
-                    ctx.moveTo(xc, my - half);
-                    ctx.lineTo(xc, my + half);
-                    ctx.stroke();
-                    ctx.setLineDash([]);
-                    ctx.fillStyle = colors.accent;
-                    ctx.font = '9px "JetBrains Mono", monospace';
-                    ctx.textAlign = 'left';
-                    ctx.fillText(`f_c = ${fcRatio.toFixed(1)}·f₀`, xc + 4, my - half + 12);
-                    ctx.fillStyle = colors.textDim;
-                    ctx.textAlign = 'right';
-                    ctx.fillText('|H(f)|', w - padX - 2, my + half - 4);
-                  },
-                  'filter |H(f)|',
-                );
-        panel(
-                  2,
-                  (mx, my, half) => {
-                    ctx.strokeStyle = '#ff6b2a';
-                    ctx.lineWidth = 2;
-                    ctx.beginPath();
-                    for (let i = 0; i <= samples; i++) {
-                      const x = mx + (i / samples) * (w - 2 * padX);
-                      const phase = (i / samples) * cycles * 2 * Math.PI;
-                      let s = 0;
-                      for (const h of harms) {
-                        const Hm = 1 / Math.sqrt(1 + (h.n / fcRatio) ** 2);
-                        const phi = -Math.atan2(h.n, fcRatio); // phase shift
-                        s += h.amp * Hm * Math.sin(h.n * phase + phi);
-                      }
-                      const y = my - s * half * 0.7;
-                      if (i === 0) ctx.moveTo(x, y);
-                      else ctx.lineTo(x, y);
-                    }
-                    ctx.stroke();
-                  },
-                  'output — after LPF',
-                );
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { fcRatio } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padX = 32;
+      const padY = 16;
+      const panelH = (h - 2 * padY) / 3;
+      const samples = 500;
+      const cycles = 2;
+      function panel(
+        idx: number,
+        plot: (mx: number, my: number, ph: number) => void,
+        label: string,
+      ) {
+        const top = padY + idx * panelH;
+        const mid = top + panelH / 2;
+        ctx.strokeStyle = colors.border;
+        ctx.beginPath();
+        ctx.moveTo(padX, mid);
+        ctx.lineTo(w - padX, mid);
+        ctx.stroke();
+        plot(padX, mid, panelH / 2);
+        drawLabel(ctx, {
+          x: padX,
+          y: top + 10,
+          text: label,
+          color: colors.textDim,
+          size: 9,
+        });
+      }
+      panel(
+        0,
+        (mx, my, half) => {
+          ctx.strokeStyle = colors.blue;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          for (let i = 0; i <= samples; i++) {
+            const x = mx + (i / samples) * (w - 2 * padX);
+            const phase = (i / samples) * cycles * 2 * Math.PI;
+            let s = 0;
+            for (const h of harms) s += h.amp * Math.sin(h.n * phase);
+            const y = my - s * half * 0.7;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        },
+        'input — square wave',
+      );
+      panel(
+        1,
+        (mx, my, half) => {
+          // Plot the gain curve from 0..N_HARMONICS f0
+          ctx.strokeStyle = withAlpha(colors.teal, 0.8);
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          for (let i = 0; i <= samples; i++) {
+            const f = (i / samples) * N_HARMONICS * f0;
+            const Hm = 1 / Math.sqrt(1 + (f / fcRatio) ** 2);
+            const x = mx + (i / samples) * (w - 2 * padX);
+            const y = my + half - Hm * 2 * half * 0.85;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          // f_c marker
+          const xc = mx + (fcRatio / N_HARMONICS) * (w - 2 * padX);
+          ctx.setLineDash([3, 4]);
+          ctx.strokeStyle = colors.accent;
+          ctx.beginPath();
+          ctx.moveTo(xc, my - half);
+          ctx.lineTo(xc, my + half);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.fillStyle = colors.accent;
+          ctx.font = '9px "JetBrains Mono", monospace';
+          ctx.textAlign = 'left';
+          ctx.fillText(`f_c = ${fcRatio.toFixed(1)}·f₀`, xc + 4, my - half + 12);
+          ctx.fillStyle = colors.textDim;
+          ctx.textAlign = 'right';
+          ctx.fillText('|H(f)|', w - padX - 2, my + half - 4);
+        },
+        'filter |H(f)|',
+      );
+      panel(
+        2,
+        (mx, my, half) => {
+          ctx.strokeStyle = '#ff6b2a';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          for (let i = 0; i <= samples; i++) {
+            const x = mx + (i / samples) * (w - 2 * padX);
+            const phase = (i / samples) * cycles * 2 * Math.PI;
+            let s = 0;
+            for (const h of harms) {
+              const Hm = 1 / Math.sqrt(1 + (h.n / fcRatio) ** 2);
+              const phi = -Math.atan2(h.n, fcRatio); // phase shift
+              s += h.amp * Hm * Math.sin(h.n * phase + phi);
+            }
+            const y = my - s * half * 0.7;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        },
+        'output — after LPF',
+      );
+    },
+    [],
+  );
 
   return (
     <Demo

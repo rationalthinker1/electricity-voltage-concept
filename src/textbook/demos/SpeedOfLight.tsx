@@ -20,7 +20,6 @@ import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -36,47 +35,47 @@ export function SpeedOfLightDemo({ figure }: Props) {
 
   const stateRef = useSimState({ er, mr });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, simTime) => {
-        const t = simTime;
-        const { er, mr } = stateRef.current;
-        const ratio = 1 / Math.sqrt(er * mr);
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const xL = 60;
-        const xR = W - 30;
-        const lineLen = xR - xL;
-        const cycleTime = 5;
-        const C_PX_S = lineLen / cycleTime;
-        const yA = H * 0.32;
-        drawLane(ctx, xL, xR, yA, 'vacuum · v = c', withAlpha(colors.textDim, 0.85));
-        const xRef = xL + ((C_PX_S * t) % lineLen);
-        drawPulse(ctx, xRef, yA, withAlpha(colors.accent, 0.85));
-        const yB = H * 0.7;
-        drawLane(
-                ctx,
-                xL,
-                xR,
-                yB,
-                `medium · v = c / √(εᵣ μᵣ) = c / ${Math.sqrt(er * mr).toFixed(2)}`,
-                withAlpha(colors.textDim, 0.85),
-              );
-        const xMed = xL + ((C_PX_S * ratio * t) % lineLen);
-        drawPulse(ctx, xMed, yB, withAlpha(colors.teal, 0.85));
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.setLineDash([3, 5]);
-        ctx.beginPath();
-        ctx.moveTo(xRef, yA);
-        ctx.lineTo(xRef, yB);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(xMed, yA);
-        ctx.lineTo(xMed, yB);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, simTime) => {
+      const t = simTime;
+      const { er, mr } = stateRef.current;
+      const ratio = 1 / Math.sqrt(er * mr);
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const xL = 60;
+      const xR = W - 30;
+      const lineLen = xR - xL;
+      const cycleTime = 5;
+      const C_PX_S = lineLen / cycleTime;
+      const yA = H * 0.32;
+      drawLane(ctx, xL, xR, yA, 'vacuum · v = c', withAlpha(colors.textDim, 0.85));
+      const xRef = xL + ((C_PX_S * t) % lineLen);
+      drawPulse(ctx, xRef, yA, withAlpha(colors.accent, 0.85));
+      const yB = H * 0.7;
+      drawLane(
+        ctx,
+        xL,
+        xR,
+        yB,
+        `medium · v = c / √(εᵣ μᵣ) = c / ${Math.sqrt(er * mr).toFixed(2)}`,
+        withAlpha(colors.textDim, 0.85),
+      );
+      const xMed = xL + ((C_PX_S * ratio * t) % lineLen);
+      drawPulse(ctx, xMed, yB, withAlpha(colors.teal, 0.85));
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.setLineDash([3, 5]);
+      ctx.beginPath();
+      ctx.moveTo(xRef, yA);
+      ctx.lineTo(xRef, yB);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(xMed, yA);
+      ctx.lineTo(xMed, yB);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    },
+    [],
+  );
 
   return (
     <Demo

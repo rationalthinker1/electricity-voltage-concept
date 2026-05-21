@@ -21,7 +21,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -84,114 +83,114 @@ export function BridgeRectifierDemo({ figure }: Props) {
 
   const stateRef = useSimState({ Vp, sim });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
-        let phase = ctx0.phase;
-        const { Vp, sim } = stateRef.current;
-        phase += 0.005;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padL = 50,
-                padR = 80,
-                padT = 18,
-                padB = 30;
-        const plotW = w - padL - padR;
-        const plotH = h - padT - padB;
-        const cy = padT + plotH * 0.55;
-        const vMax = Math.max(Vp * 1.1, 1);
-        const yOf = (v: number) => cy - (v / vMax) * (plotH * 0.45);
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(padL, padT, plotW, plotH);
-        ctx.beginPath();
-        ctx.moveTo(padL, cy);
-        ctx.lineTo(padL + plotW, cy);
-        ctx.stroke();
-        ctx.save();
-        ctx.globalAlpha = 0.65;
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        for (let k = 0; k <= 3; k++) {
-                const x = padL + (k / 3) * plotW;
-                ctx.fillText(`${(k * 16.67).toFixed(1)} ms`, x, padT + plotH + 4);
-                ctx.restore();
-              }
-        ctx.save();
-        ctx.globalAlpha = 0.55;
-        ctx.strokeStyle = colors.text;
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        for (let k = 0; k <= sim.N; k++) {
-                const t = k * sim.dt;
-                const vin = Vp * Math.sin(2 * Math.PI * F_LINE * t + phase);
-                const x = padL + (k / sim.N) * plotW;
-                const y = yOf(vin);
-                if (k === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
+      let phase = ctx0.phase;
+      const { Vp, sim } = stateRef.current;
+      phase += 0.005;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padL = 50,
+        padR = 80,
+        padT = 18,
+        padB = 30;
+      const plotW = w - padL - padR;
+      const plotH = h - padT - padB;
+      const cy = padT + plotH * 0.55;
+      const vMax = Math.max(Vp * 1.1, 1);
+      const yOf = (v: number) => cy - (v / vMax) * (plotH * 0.45);
+      ctx.strokeStyle = colors.border;
+      ctx.strokeRect(padL, padT, plotW, plotH);
+      ctx.beginPath();
+      ctx.moveTo(padL, cy);
+      ctx.lineTo(padL + plotW, cy);
+      ctx.stroke();
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      for (let k = 0; k <= 3; k++) {
+        const x = padL + (k / 3) * plotW;
+        ctx.fillText(`${(k * 16.67).toFixed(1)} ms`, x, padT + plotH + 4);
         ctx.restore();
-        ctx.strokeStyle = colors.teal;
-        ctx.lineWidth = 1.3;
-        ctx.beginPath();
-        for (let k = 0; k <= sim.N; k++) {
-                const x = padL + (k / sim.N) * plotW;
-                const y = yOf(sim.vRect[k]);
-                if (k === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 1.9;
-        ctx.beginPath();
-        for (let k = 0; k <= sim.N; k++) {
-                const x = padL + (k / sim.N) * plotW;
-                const y = yOf(sim.vCap[k]);
-                if (k === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
-        ctx.save();
-        ctx.globalAlpha = 0.35;
-        ctx.strokeStyle = colors.accent;
-        ctx.setLineDash([4, 4]);
-        ctx.beginPath();
-        ctx.moveTo(padL, yOf(sim.vMean));
-        ctx.lineTo(padL + plotW, yOf(sim.vMean));
-        ctx.stroke();
-        ctx.restore();
-        ctx.setLineDash([]);
-        ctx.save();
-        ctx.globalAlpha = 0.65;
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('0', padL - 4, cy);
-        ctx.restore();
-        ctx.fillText(`+${Vp.toFixed(0)} V`, padL - 4, yOf(Vp));
-        ctx.fillText(`−${Vp.toFixed(0)} V`, padL - 4, yOf(-Vp));
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        const lx = padL + plotW + 8;
-        ctx.fillStyle = colors.text;
-        ctx.fillRect(lx, padT + 8 - 1, 10, 2);
-        ctx.fillStyle = colors.text;
-        ctx.fillText('V_in', lx + 14, padT + 8);
-        ctx.fillStyle = colors.teal;
-        ctx.fillRect(lx, padT + 24 - 1, 10, 2);
-        ctx.fillStyle = colors.text;
-        ctx.fillText('|V_rect|', lx + 14, padT + 24);
-        ctx.fillStyle = colors.accent;
-        ctx.fillRect(lx, padT + 40 - 1, 10, 2);
-        ctx.fillStyle = colors.text;
-        ctx.fillText('V_out', lx + 14, padT + 40);
-        ctx0.phase = phase;
-      },
-      [],
-      () => ({ context: { phase: 0 } }),
-    );
+      }
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = colors.text;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      for (let k = 0; k <= sim.N; k++) {
+        const t = k * sim.dt;
+        const vin = Vp * Math.sin(2 * Math.PI * F_LINE * t + phase);
+        const x = padL + (k / sim.N) * plotW;
+        const y = yOf(vin);
+        if (k === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.restore();
+      ctx.strokeStyle = colors.teal;
+      ctx.lineWidth = 1.3;
+      ctx.beginPath();
+      for (let k = 0; k <= sim.N; k++) {
+        const x = padL + (k / sim.N) * plotW;
+        const y = yOf(sim.vRect[k]);
+        if (k === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.strokeStyle = colors.accent;
+      ctx.lineWidth = 1.9;
+      ctx.beginPath();
+      for (let k = 0; k <= sim.N; k++) {
+        const x = padL + (k / sim.N) * plotW;
+        const y = yOf(sim.vCap[k]);
+        if (k === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.save();
+      ctx.globalAlpha = 0.35;
+      ctx.strokeStyle = colors.accent;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(padL, yOf(sim.vMean));
+      ctx.lineTo(padL + plotW, yOf(sim.vMean));
+      ctx.stroke();
+      ctx.restore();
+      ctx.setLineDash([]);
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('0', padL - 4, cy);
+      ctx.restore();
+      ctx.fillText(`+${Vp.toFixed(0)} V`, padL - 4, yOf(Vp));
+      ctx.fillText(`−${Vp.toFixed(0)} V`, padL - 4, yOf(-Vp));
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      const lx = padL + plotW + 8;
+      ctx.fillStyle = colors.text;
+      ctx.fillRect(lx, padT + 8 - 1, 10, 2);
+      ctx.fillStyle = colors.text;
+      ctx.fillText('V_in', lx + 14, padT + 8);
+      ctx.fillStyle = colors.teal;
+      ctx.fillRect(lx, padT + 24 - 1, 10, 2);
+      ctx.fillStyle = colors.text;
+      ctx.fillText('|V_rect|', lx + 14, padT + 24);
+      ctx.fillStyle = colors.accent;
+      ctx.fillRect(lx, padT + 40 - 1, 10, 2);
+      ctx.fillStyle = colors.text;
+      ctx.fillText('V_out', lx + 14, padT + 40);
+      ctx0.phase = phase;
+    },
+    [],
+    () => ({ context: { phase: 0 } }),
+  );
 
   return (
     <Demo

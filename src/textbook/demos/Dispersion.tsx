@@ -16,7 +16,6 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -42,118 +41,118 @@ export function DispersionDemo({ figure }: Props) {
   const nViolet = A + B / Math.pow(0.42, 2);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const { A, B } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const cx = W * 0.42;
-        const cy = H / 2 + 30;
-        const side = Math.min(W * 0.34, H * 0.85);
-        const halfBase = side / 2;
-        const apexY = cy - (side * Math.sqrt(3)) / 2;
-        const apex = { x: cx, y: apexY };
-        const leftBase = { x: cx - halfBase, y: cy };
-        const rightBase = { x: cx + halfBase, y: cy };
-        ctx.save();
-        ctx.globalAlpha = 0.1;
-        ctx.fillStyle = colors.teal;
-        ctx.beginPath();
-        ctx.moveTo(apex.x, apex.y);
-        ctx.lineTo(leftBase.x, leftBase.y);
-        ctx.lineTo(rightBase.x, rightBase.y);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-        ctx.save();
-        ctx.globalAlpha = 0.4;
-        ctx.strokeStyle = colors.text;
-        ctx.lineWidth = 1.2;
-        ctx.stroke();
-        const lex = leftBase.x - apex.x;
-        const ley = leftBase.y - apex.y;
-        const lel = Math.sqrt(lex * lex + ley * ley);
-        const ltx = lex / lel;
-        const lty = ley / lel;
-        const lnx = -lty;
-        const lny = ltx;
-        const rex = rightBase.x - apex.x;
-        const rey = rightBase.y - apex.y;
-        const rel = Math.sqrt(rex * rex + rey * rey);
-        const rtx = rex / rel;
-        const rty = rey / rel;
-        const rnx = rty;
-        const rny = -rtx;
-        const entry = {
-                x: (apex.x + leftBase.x) / 2,
-                y: (apex.y + leftBase.y) / 2,
-              };
-        const incomingDir = { x: 1, y: 0 };
-        const inLnx = -lnx;
-        const inLny = -lny;
-        const cos1L = -(incomingDir.x * inLnx + incomingDir.y * inLny);
-        const sin1L = Math.sqrt(Math.max(0, 1 - cos1L * cos1L));
-        drawSegment(ctx, 0, entry.y, entry.x, entry.y, 'rgba(255,255,255,0.9)', 2);
-        for (const c of COLOURS) {
-                const lam_um = c.lam / 1000;
-                const n = A + B / (lam_um * lam_um);
-                // n_air sin θ1 = n sin θ2  →  sin θ2 = sin θ1 / n
-                const sin2L = sin1L / n;
-                const cos2L = Math.sqrt(Math.max(0, 1 - sin2L * sin2L));
-                // Refracted direction inside the glass: bend incoming toward inward normal
-                // Build orthonormal frame at the surface: inward normal (inLnx,inLny) and
-                // a tangent perp to the normal in the plane (lty, -ltx) chosen so that
-                // the tangential component of the incoming ray is along it.
-                const tx = lty;
-                const ty = -ltx; // some unit tangent
-                // Tangential component of incoming
-                const inTan = incomingDir.x * tx + incomingDir.y * ty;
-                const sgn = Math.sign(inTan) || 1;
-                const innerDir = {
-                  x: sgn * sin2L * tx + cos2L * inLnx,
-                  y: sgn * sin2L * ty + cos2L * inLny,
-                };
-        
-                // Find exit point on right face: param along (rightBase - apex), entry parameterised
-                // along the inner ray from entry point.
-                const exit = lineSegmentIntersect(entry, innerDir, apex, rightBase);
-                if (!exit) continue;
-        
-                // Draw the inside-prism segment, faintly
-                drawSegment(ctx, entry.x, entry.y, exit.x, exit.y, fadedRgba(c.rgb, 0.55), 1.5);
-        
-                // Snell at the right face: cos of internal incidence
-                // cos of angle between innerDir and outward normal (rnx, rny)
-                const cosInt = innerDir.x * rnx + innerDir.y * rny;
-                const sinInt = Math.sqrt(Math.max(0, 1 - cosInt * cosInt));
-                // Exit Snell: n sin = 1 sin_out
-                const sinOut = n * sinInt;
-                if (sinOut > 1) continue; // TIR — skip this colour
-                const cosOut = Math.sqrt(Math.max(0, 1 - sinOut * sinOut));
-                // Tangent at right face perp to (rnx,rny); preserve sign of tangential
-                const tx2 = -rny;
-                const ty2 = rnx;
-                const inTan2 = innerDir.x * tx2 + innerDir.y * ty2;
-                const sgn2 = Math.sign(inTan2) || 1;
-                const outDir = {
-                  x: sgn2 * sinOut * tx2 + cosOut * rnx,
-                  y: sgn2 * sinOut * ty2 + cosOut * rny,
-                };
-                // Trace out to right edge of canvas
-                const tMax = (W - 6 - exit.x) / Math.max(1e-6, outDir.x);
-                const endX = exit.x + outDir.x * tMax;
-                const endY = exit.y + outDir.y * tMax;
-                drawSegment(ctx, exit.x, exit.y, endX, endY, c.rgb, 1.8);
-              }
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.restore();
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'left';
-        ctx.fillText(`n(λ) = A + B/λ²`, 12, 18);
-        ctx.fillText(`A = ${A.toFixed(2)}, B = ${B.toFixed(4)} µm²`, 12, 32);
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const { A, B } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const cx = W * 0.42;
+      const cy = H / 2 + 30;
+      const side = Math.min(W * 0.34, H * 0.85);
+      const halfBase = side / 2;
+      const apexY = cy - (side * Math.sqrt(3)) / 2;
+      const apex = { x: cx, y: apexY };
+      const leftBase = { x: cx - halfBase, y: cy };
+      const rightBase = { x: cx + halfBase, y: cy };
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = colors.teal;
+      ctx.beginPath();
+      ctx.moveTo(apex.x, apex.y);
+      ctx.lineTo(leftBase.x, leftBase.y);
+      ctx.lineTo(rightBase.x, rightBase.y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.text;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      const lex = leftBase.x - apex.x;
+      const ley = leftBase.y - apex.y;
+      const lel = Math.sqrt(lex * lex + ley * ley);
+      const ltx = lex / lel;
+      const lty = ley / lel;
+      const lnx = -lty;
+      const lny = ltx;
+      const rex = rightBase.x - apex.x;
+      const rey = rightBase.y - apex.y;
+      const rel = Math.sqrt(rex * rex + rey * rey);
+      const rtx = rex / rel;
+      const rty = rey / rel;
+      const rnx = rty;
+      const rny = -rtx;
+      const entry = {
+        x: (apex.x + leftBase.x) / 2,
+        y: (apex.y + leftBase.y) / 2,
+      };
+      const incomingDir = { x: 1, y: 0 };
+      const inLnx = -lnx;
+      const inLny = -lny;
+      const cos1L = -(incomingDir.x * inLnx + incomingDir.y * inLny);
+      const sin1L = Math.sqrt(Math.max(0, 1 - cos1L * cos1L));
+      drawSegment(ctx, 0, entry.y, entry.x, entry.y, 'rgba(255,255,255,0.9)', 2);
+      for (const c of COLOURS) {
+        const lam_um = c.lam / 1000;
+        const n = A + B / (lam_um * lam_um);
+        // n_air sin θ1 = n sin θ2  →  sin θ2 = sin θ1 / n
+        const sin2L = sin1L / n;
+        const cos2L = Math.sqrt(Math.max(0, 1 - sin2L * sin2L));
+        // Refracted direction inside the glass: bend incoming toward inward normal
+        // Build orthonormal frame at the surface: inward normal (inLnx,inLny) and
+        // a tangent perp to the normal in the plane (lty, -ltx) chosen so that
+        // the tangential component of the incoming ray is along it.
+        const tx = lty;
+        const ty = -ltx; // some unit tangent
+        // Tangential component of incoming
+        const inTan = incomingDir.x * tx + incomingDir.y * ty;
+        const sgn = Math.sign(inTan) || 1;
+        const innerDir = {
+          x: sgn * sin2L * tx + cos2L * inLnx,
+          y: sgn * sin2L * ty + cos2L * inLny,
+        };
+
+        // Find exit point on right face: param along (rightBase - apex), entry parameterised
+        // along the inner ray from entry point.
+        const exit = lineSegmentIntersect(entry, innerDir, apex, rightBase);
+        if (!exit) continue;
+
+        // Draw the inside-prism segment, faintly
+        drawSegment(ctx, entry.x, entry.y, exit.x, exit.y, fadedRgba(c.rgb, 0.55), 1.5);
+
+        // Snell at the right face: cos of internal incidence
+        // cos of angle between innerDir and outward normal (rnx, rny)
+        const cosInt = innerDir.x * rnx + innerDir.y * rny;
+        const sinInt = Math.sqrt(Math.max(0, 1 - cosInt * cosInt));
+        // Exit Snell: n sin = 1 sin_out
+        const sinOut = n * sinInt;
+        if (sinOut > 1) continue; // TIR — skip this colour
+        const cosOut = Math.sqrt(Math.max(0, 1 - sinOut * sinOut));
+        // Tangent at right face perp to (rnx,rny); preserve sign of tangential
+        const tx2 = -rny;
+        const ty2 = rnx;
+        const inTan2 = innerDir.x * tx2 + innerDir.y * ty2;
+        const sgn2 = Math.sign(inTan2) || 1;
+        const outDir = {
+          x: sgn2 * sinOut * tx2 + cosOut * rnx,
+          y: sgn2 * sinOut * ty2 + cosOut * rny,
+        };
+        // Trace out to right edge of canvas
+        const tMax = (W - 6 - exit.x) / Math.max(1e-6, outDir.x);
+        const endX = exit.x + outDir.x * tMax;
+        const endY = exit.y + outDir.y * tMax;
+        drawSegment(ctx, exit.x, exit.y, endX, endY, c.rgb, 1.8);
+      }
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.restore();
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      ctx.fillText(`n(λ) = A + B/λ²`, 12, 18);
+      ctx.fillText(`A = ${A.toFixed(2)}, B = ${B.toFixed(4)} µm²`, 12, 32);
+    },
+    [],
+  );
 
   return (
     <Demo

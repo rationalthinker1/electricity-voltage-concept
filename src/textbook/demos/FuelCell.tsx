@@ -18,7 +18,6 @@ import { drawAxes, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -43,137 +42,137 @@ export function FuelCellDemo({ figure }: Props) {
 
   const stateRef = useSimState({ i, V });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
-        let phase = ctx0.phase;
-        const s = stateRef.current;
-        phase += 0.04;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const splitX = W * 0.45;
-        const cellX = 30;
-        const cellW = splitX - 50;
-        const cellY = 40;
-        const cellH = H - 80;
-        const anodeW = cellW * 0.3;
-        const membraneW = cellW * 0.16;
-        const cathodeW = cellW * 0.3;
-        const flowW = (cellW - anodeW - membraneW - cathodeW) / 2;
-        let x = cellX;
-        ctx.save();
-        ctx.globalAlpha = 0.1;
-        ctx.fillStyle = colors.blue;
-        ctx.fillRect(x, cellY, flowW, cellH);
-        ctx.restore();
-        ctx.fillStyle = colors.blue;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('H₂', x + flowW / 2, cellY + 4);
-        x += flowW;
-        ctx.fillStyle = '#444';
-        ctx.fillRect(x, cellY, anodeW, cellH);
-        ctx.fillStyle = colors.text;
-        ctx.fillText('anode', x + anodeW / 2, cellY + 4);
-        x += anodeW;
-        ctx.save();
-        ctx.globalAlpha = 0.3;
-        ctx.fillStyle = colors.accent;
-        ctx.fillRect(x, cellY, membraneW, cellH);
-        ctx.restore();
-        ctx.save();
-        ctx.globalAlpha = 0.85;
-        ctx.fillStyle = colors.text;
-        ctx.fillText('Nafion', x + membraneW / 2, cellY + 4);
-        const ionCount = Math.max(0, Math.min(8, Math.floor(s.i * 6)));
-        for (let j = 0; j < ionCount; j++) {
-                const t = (phase + j * 0.2) % 1;
-                const ix = x + t * membraneW;
-                const iy = cellY + cellH * (0.2 + 0.7 * ((j * 0.31) % 1));
-                drawLabel(ctx, {
-                  x: ix,
-                  y: iy,
-                  text: 'H⁺',
-                  color: colors.text,
-                  size: 9,
-                  align: 'center',
-                  baseline: 'middle',
-                  weight: 'bold',
-                });
-              }
-        x += membraneW;
-        ctx.restore();
-        ctx.fillStyle = '#444';
-        ctx.fillRect(x, cellY, cathodeW, cellH);
-        ctx.fillStyle = colors.text;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('cathode', x + cathodeW / 2, cellY + 4);
-        x += cathodeW;
-        ctx.save();
-        ctx.globalAlpha = 0.1;
-        ctx.fillStyle = colors.accent;
-        ctx.fillRect(x, cellY, flowW, cellH);
-        ctx.restore();
-        ctx.fillStyle = colors.accent;
-        ctx.fillText('O₂', x + flowW / 2, cellY + 4);
-        ctx.save();
-        ctx.globalAlpha = 0.75;
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('H₂ → 2H⁺ + 2e⁻', cellX, cellY + cellH + 6);
-        ctx.textAlign = 'right';
-        ctx.fillText('½O₂ + 2H⁺ + 2e⁻ → H₂O', cellX + cellW, cellY + cellH + 6);
-        const pX = splitX + 16;
-        const pY = 30;
-        const pW = W - pX - 30;
-        const pH = H - 60;
-        ctx.restore();
-        const rect = { x: pX, y: pY, w: pW, h: pH };
-        // Original demo draws only the frame (no tick grid, no tick labels);
-        // pass empty tick arrays to keep the same visual.
-        drawAxes(ctx, rect, {
-          xMin: 0,
-          xMax: I_LIMIT,
-          yMin: 0,
-          yMax: V_OCV,
-          xTicks: [],
-          yTicks: [],
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
+      let phase = ctx0.phase;
+      const s = stateRef.current;
+      phase += 0.04;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const splitX = W * 0.45;
+      const cellX = 30;
+      const cellW = splitX - 50;
+      const cellY = 40;
+      const cellH = H - 80;
+      const anodeW = cellW * 0.3;
+      const membraneW = cellW * 0.16;
+      const cathodeW = cellW * 0.3;
+      const flowW = (cellW - anodeW - membraneW - cathodeW) / 2;
+      let x = cellX;
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = colors.blue;
+      ctx.fillRect(x, cellY, flowW, cellH);
+      ctx.restore();
+      ctx.fillStyle = colors.blue;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('H₂', x + flowW / 2, cellY + 4);
+      x += flowW;
+      ctx.fillStyle = '#444';
+      ctx.fillRect(x, cellY, anodeW, cellH);
+      ctx.fillStyle = colors.text;
+      ctx.fillText('anode', x + anodeW / 2, cellY + 4);
+      x += anodeW;
+      ctx.save();
+      ctx.globalAlpha = 0.3;
+      ctx.fillStyle = colors.accent;
+      ctx.fillRect(x, cellY, membraneW, cellH);
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = colors.text;
+      ctx.fillText('Nafion', x + membraneW / 2, cellY + 4);
+      const ionCount = Math.max(0, Math.min(8, Math.floor(s.i * 6)));
+      for (let j = 0; j < ionCount; j++) {
+        const t = (phase + j * 0.2) % 1;
+        const ix = x + t * membraneW;
+        const iy = cellY + cellH * (0.2 + 0.7 * ((j * 0.31) % 1));
+        drawLabel(ctx, {
+          x: ix,
+          y: iy,
+          text: 'H⁺',
+          color: colors.text,
+          size: 9,
+          align: 'center',
+          baseline: 'middle',
+          weight: 'bold',
         });
-        const { xOf: xI, yOf: yV } = makePlotMappers(rect, 0, I_LIMIT, 0, V_OCV);
+      }
+      x += membraneW;
+      ctx.restore();
+      ctx.fillStyle = '#444';
+      ctx.fillRect(x, cellY, cathodeW, cellH);
+      ctx.fillStyle = colors.text;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('cathode', x + cathodeW / 2, cellY + 4);
+      x += cathodeW;
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = colors.accent;
+      ctx.fillRect(x, cellY, flowW, cellH);
+      ctx.restore();
+      ctx.fillStyle = colors.accent;
+      ctx.fillText('O₂', x + flowW / 2, cellY + 4);
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('H₂ → 2H⁺ + 2e⁻', cellX, cellY + cellH + 6);
+      ctx.textAlign = 'right';
+      ctx.fillText('½O₂ + 2H⁺ + 2e⁻ → H₂O', cellX + cellW, cellY + cellH + 6);
+      const pX = splitX + 16;
+      const pY = 30;
+      const pW = W - pX - 30;
+      const pH = H - 60;
+      ctx.restore();
+      const rect = { x: pX, y: pY, w: pW, h: pH };
+      // Original demo draws only the frame (no tick grid, no tick labels);
+      // pass empty tick arrays to keep the same visual.
+      drawAxes(ctx, rect, {
+        xMin: 0,
+        xMax: I_LIMIT,
+        yMin: 0,
+        yMax: V_OCV,
+        xTicks: [],
+        yTicks: [],
+      });
+      const { xOf: xI, yOf: yV } = makePlotMappers(rect, 0, I_LIMIT, 0, V_OCV);
 
-        const curvePts: { x: number; y: number }[] = [];
-        for (let k = 0; k <= 80; k++) {
-          const ii = (k / 80) * (I_LIMIT - 0.01);
-          curvePts.push({ x: ii, y: V_of_I(ii) });
-        }
-        drawLinePlot(ctx, rect, curvePts, 0, I_LIMIT, 0, V_OCV, {
-          color: colors.teal,
-          lineWidth: 1.8,
-        });
+      const curvePts: { x: number; y: number }[] = [];
+      for (let k = 0; k <= 80; k++) {
+        const ii = (k / 80) * (I_LIMIT - 0.01);
+        curvePts.push({ x: ii, y: V_of_I(ii) });
+      }
+      drawLinePlot(ctx, rect, curvePts, 0, I_LIMIT, 0, V_OCV, {
+        color: colors.teal,
+        lineWidth: 1.8,
+      });
 
-        const opX = xI(s.i);
-        const opY = yV(s.V);
-        ctx.fillStyle = colors.pink;
-        ctx.beginPath();
-        ctx.arc(opX, opY, 5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('V (V)', pX, 4);
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'top';
-        ctx.fillText('i (A/cm²)', pX + pW, pY + pH + 4);
-        ctx0.phase = phase;
-      },
-      [],
-      () => ({ context: { phase: 0 } }),
-    );
+      const opX = xI(s.i);
+      const opY = yV(s.V);
+      ctx.fillStyle = colors.pink;
+      ctx.beginPath();
+      ctx.arc(opX, opY, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('V (V)', pX, 4);
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'top';
+      ctx.fillText('i (A/cm²)', pX + pW, pY + pH + 4);
+      ctx0.phase = phase;
+    },
+    [],
+    () => ({ context: { phase: 0 } }),
+  );
 
   return (
     <Demo

@@ -20,7 +20,6 @@ import { PHYS, pretty } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -36,120 +35,120 @@ export function SolenoidDemo({ figure }: Props) {
   const B_in = PHYS.mu_0 * n * I;
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
-        const t0 = ctx0.t0;
-        const now = performance.now();
-        const dt = (now - t0) / 1000;
-        const { N, I, Lcm } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const margin = 80;
-        const sW = Math.min(w - margin * 2, 560);
-        const sxL = (w - sW) / 2;
-        const sxR = sxL + sW;
-        const cy = h / 2;
-        const ringRy = 60;
-        const ringRx = 12;
-        const Nvis = Math.min(N, 30);
-        const opTurn = Math.min(0.85, 0.35 + I / 30);
-        for (let i = 0; i < Nvis; i++) {
-                const x = sxL + (i / (Nvis - 1 || 1)) * sW;
-                ctx.strokeStyle = `rgba(255,107,42,${(opTurn * 0.35).toFixed(3)})`;
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.ellipse(x, cy, ringRx, ringRy, 0, Math.PI, 2 * Math.PI);
-                ctx.stroke();
-              }
-        const I_norm = Math.max(0, Math.min(1, I / 10));
-        const arrowsN = 7;
-        for (let i = 0; i < arrowsN; i++) {
-                const ax = sxL + 28 + (i / (arrowsN - 1)) * (sW - 56);
-                const ay = cy;
-                const aLen = 36 + I_norm * 14;
-                const phase = (dt * 1.4 + i * 0.15) % 1;
-                const op = 0.6 + 0.3 * Math.sin(phase * Math.PI * 2);
-                ctx.strokeStyle = `rgba(108,197,194,${op.toFixed(3)})`;
-                ctx.fillStyle = ctx.strokeStyle;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(ax - aLen / 2, ay);
-                ctx.lineTo(ax + aLen / 2, ay);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(ax + aLen / 2, ay);
-                ctx.lineTo(ax + aLen / 2 - 7, ay - 4);
-                ctx.lineTo(ax + aLen / 2 - 7, ay + 4);
-                ctx.closePath();
-                ctx.fill();
-              }
-        for (let i = 0; i < Nvis; i++) {
-                const x = sxL + (i / (Nvis - 1 || 1)) * sW;
-                ctx.strokeStyle = `rgba(255,107,42,${opTurn.toFixed(3)})`;
-                ctx.lineWidth = 1.4;
-                ctx.beginPath();
-                ctx.ellipse(x, cy, ringRx, ringRy, 0, 0, Math.PI);
-                ctx.stroke();
-                // tiny arrow on front-bottom of each turn to show current direction
-                // current "comes out" on the bottom-front and "goes in" at the top-back.
-                if (i % 3 === 0) {
-                  ctx.fillStyle = `rgba(255,107,42,${opTurn.toFixed(3)})`;
-                  ctx.beginPath();
-                  ctx.moveTo(x + 5, cy + ringRy);
-                  ctx.lineTo(x - 1, cy + ringRy - 3);
-                  ctx.lineTo(x - 1, cy + ringRy + 3);
-                  ctx.closePath();
-                  ctx.fill();
-                }
-              }
-        ctx.strokeStyle = colors.tealSoft;
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
+      const t0 = ctx0.t0;
+      const now = performance.now();
+      const dt = (now - t0) / 1000;
+      const { N, I, Lcm } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const margin = 80;
+      const sW = Math.min(w - margin * 2, 560);
+      const sxL = (w - sW) / 2;
+      const sxR = sxL + sW;
+      const cy = h / 2;
+      const ringRy = 60;
+      const ringRx = 12;
+      const Nvis = Math.min(N, 30);
+      const opTurn = Math.min(0.85, 0.35 + I / 30);
+      for (let i = 0; i < Nvis; i++) {
+        const x = sxL + (i / (Nvis - 1 || 1)) * sW;
+        ctx.strokeStyle = `rgba(255,107,42,${(opTurn * 0.35).toFixed(3)})`;
         ctx.lineWidth = 1;
-        const yOff = ringRy + 36;
-        for (const yDir of [-1, +1]) {
-                const yy = cy + yDir * yOff;
-                const segs = 14;
-                for (let i = 0; i < segs; i++) {
-                  const x1 = sxL + (i / segs) * sW;
-                  const x2 = sxL + ((i + 0.7) / segs) * sW;
-                  // Arrow direction outside: opposite to inside arrows (returns).
-                  ctx.beginPath();
-                  ctx.moveTo(x2, yy);
-                  ctx.lineTo(x1, yy);
-                  ctx.stroke();
-                  ctx.fillStyle = withAlpha(colors.teal, 0.3);
-                  ctx.beginPath();
-                  ctx.moveTo(x1, yy);
-                  ctx.lineTo(x1 + 5, yy - 2.5);
-                  ctx.lineTo(x1 + 5, yy + 2.5);
-                  ctx.closePath();
-                  ctx.fill();
-                }
-                // Curve hints at the ends (left turnaround going up-and-in, right turnaround going down-and-in)
-                ctx.strokeStyle = colors.tealSoft;
-                ctx.beginPath();
-                ctx.moveTo(sxL, yy);
-                ctx.quadraticCurveTo(sxL - 30, cy, sxL, cy);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(sxR, cy);
-                ctx.quadraticCurveTo(sxR + 30, cy, sxR, yy);
-                ctx.stroke();
-              }
-        ctx.fillStyle = withAlpha(colors.textDim, 0.85);
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(
-                `L = ${Lcm.toFixed(1)} cm  ·  N = ${N}  ·  n = ${pretty(N / (Lcm * 1e-2), 2)} /m`,
-                w / 2,
-                h - 18,
-              );
-        ctx.fillStyle = colors.teal;
-        ctx.fillText(`B (inside) = ${pretty(PHYS.mu_0 * (N / (Lcm * 1e-2)) * I, 3)} T`, w / 2, 24);
-        ctx0.t0 = t0;
-      },
-      [],
-      () => ({ context: { t0: performance.now() } }),
-    );
+        ctx.beginPath();
+        ctx.ellipse(x, cy, ringRx, ringRy, 0, Math.PI, 2 * Math.PI);
+        ctx.stroke();
+      }
+      const I_norm = Math.max(0, Math.min(1, I / 10));
+      const arrowsN = 7;
+      for (let i = 0; i < arrowsN; i++) {
+        const ax = sxL + 28 + (i / (arrowsN - 1)) * (sW - 56);
+        const ay = cy;
+        const aLen = 36 + I_norm * 14;
+        const phase = (dt * 1.4 + i * 0.15) % 1;
+        const op = 0.6 + 0.3 * Math.sin(phase * Math.PI * 2);
+        ctx.strokeStyle = `rgba(108,197,194,${op.toFixed(3)})`;
+        ctx.fillStyle = ctx.strokeStyle;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(ax - aLen / 2, ay);
+        ctx.lineTo(ax + aLen / 2, ay);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(ax + aLen / 2, ay);
+        ctx.lineTo(ax + aLen / 2 - 7, ay - 4);
+        ctx.lineTo(ax + aLen / 2 - 7, ay + 4);
+        ctx.closePath();
+        ctx.fill();
+      }
+      for (let i = 0; i < Nvis; i++) {
+        const x = sxL + (i / (Nvis - 1 || 1)) * sW;
+        ctx.strokeStyle = `rgba(255,107,42,${opTurn.toFixed(3)})`;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.ellipse(x, cy, ringRx, ringRy, 0, 0, Math.PI);
+        ctx.stroke();
+        // tiny arrow on front-bottom of each turn to show current direction
+        // current "comes out" on the bottom-front and "goes in" at the top-back.
+        if (i % 3 === 0) {
+          ctx.fillStyle = `rgba(255,107,42,${opTurn.toFixed(3)})`;
+          ctx.beginPath();
+          ctx.moveTo(x + 5, cy + ringRy);
+          ctx.lineTo(x - 1, cy + ringRy - 3);
+          ctx.lineTo(x - 1, cy + ringRy + 3);
+          ctx.closePath();
+          ctx.fill();
+        }
+      }
+      ctx.strokeStyle = colors.tealSoft;
+      ctx.lineWidth = 1;
+      const yOff = ringRy + 36;
+      for (const yDir of [-1, +1]) {
+        const yy = cy + yDir * yOff;
+        const segs = 14;
+        for (let i = 0; i < segs; i++) {
+          const x1 = sxL + (i / segs) * sW;
+          const x2 = sxL + ((i + 0.7) / segs) * sW;
+          // Arrow direction outside: opposite to inside arrows (returns).
+          ctx.beginPath();
+          ctx.moveTo(x2, yy);
+          ctx.lineTo(x1, yy);
+          ctx.stroke();
+          ctx.fillStyle = withAlpha(colors.teal, 0.3);
+          ctx.beginPath();
+          ctx.moveTo(x1, yy);
+          ctx.lineTo(x1 + 5, yy - 2.5);
+          ctx.lineTo(x1 + 5, yy + 2.5);
+          ctx.closePath();
+          ctx.fill();
+        }
+        // Curve hints at the ends (left turnaround going up-and-in, right turnaround going down-and-in)
+        ctx.strokeStyle = colors.tealSoft;
+        ctx.beginPath();
+        ctx.moveTo(sxL, yy);
+        ctx.quadraticCurveTo(sxL - 30, cy, sxL, cy);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(sxR, cy);
+        ctx.quadraticCurveTo(sxR + 30, cy, sxR, yy);
+        ctx.stroke();
+      }
+      ctx.fillStyle = withAlpha(colors.textDim, 0.85);
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(
+        `L = ${Lcm.toFixed(1)} cm  ·  N = ${N}  ·  n = ${pretty(N / (Lcm * 1e-2), 2)} /m`,
+        w / 2,
+        h - 18,
+      );
+      ctx.fillStyle = colors.teal;
+      ctx.fillText(`B (inside) = ${pretty(PHYS.mu_0 * (N / (Lcm * 1e-2)) * I, 3)} T`, w / 2, 24);
+      ctx0.t0 = t0;
+    },
+    [],
+    () => ({ context: { t0: performance.now() } }),
+  );
 
   return (
     <Demo

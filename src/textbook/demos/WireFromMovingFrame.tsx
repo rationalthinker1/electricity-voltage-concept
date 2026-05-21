@@ -34,7 +34,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -78,167 +77,167 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
   const lambda_new = lambda0 * (gamma_test - gamma_e_new);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
-        let phaseIon = ctx0.phaseIon;
-        let phaseElec = ctx0.phaseElec;
-        const N = ctx0.N;
-        const s = stateRef.current;
-        const b = Math.max(0, Math.min(0.99, s.betaPct / 100));
-        const g_test = 1 / Math.sqrt(1 - b * b);
-        const visIonSpeed = -b * 80;
-        const visElecSpeed = visIonSpeed * 1.04;
-        phaseIon += visIonSpeed * dt;
-        phaseElec += visElecSpeed * dt;
-        const ionContract = Math.pow(g_test, 1.0);
-        const elecContract = Math.pow(g_test, 1.0) * 0.94;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const wireY = h * 0.65;
-        const wireH = 70;
-        const wireTop = wireY - wireH / 2;
-        const wireBot = wireY + wireH / 2;
-        const margin = 30;
-        const wireXL = margin;
-        const wireXR = w - margin;
-        const wireLen = wireXR - wireXL;
-        const wireGrd = ctx.createLinearGradient(0, wireTop, 0, wireBot);
-        const tintPink = Math.min(0.3, b * 0.45);
-        wireGrd.addColorStop(0, `rgba(255,59,110,${(tintPink * 0.6).toFixed(3)})`);
-        wireGrd.addColorStop(0.5, `rgba(255,59,110,${tintPink.toFixed(3)})`);
-        wireGrd.addColorStop(1, `rgba(255,59,110,${(tintPink * 0.6).toFixed(3)})`);
-        ctx.fillStyle = wireGrd;
-        ctx.fillRect(wireXL, wireTop, wireLen, wireH);
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(wireXL, wireTop, wireLen, wireH);
-        const ionSpacing = wireLen / N / ionContract;
-        const elecSpacing = wireLen / N / elecContract;
-        const ionCount = Math.ceil(wireLen / ionSpacing) + 2;
-        const elecCount = Math.ceil(wireLen / elecSpacing) + 2;
-        for (let i = 0; i < ionCount; i++) {
-                const raw = i * ionSpacing + phaseIon;
-                const off = ((raw % wireLen) + wireLen) % wireLen;
-                const x = wireXL + off;
-                const y = wireY - 14;
-                drawHalo(ctx, {
-                  x: x,
-                  y: y,
-                  radius: 11,
-                  color: colors.pink,
-                  alpha: 0.55,
-                  extent: 1,
-                });
-                ctx.fillStyle = colors.pink;
-                ctx.beginPath();
-                ctx.arc(x, y, 4.5, 0, Math.PI * 2);
-                ctx.fill();
-                drawLabel(ctx, {
-                  x: x,
-                  y: y,
-                  text: '+',
-                  color: colors.bg,
-                  size: 8,
-                  align: 'center',
-                  baseline: 'middle',
-                  weight: 'bold',
-                });
-              }
-        for (let i = 0; i < elecCount; i++) {
-                const raw = i * elecSpacing + phaseElec;
-                const off = ((raw % wireLen) + wireLen) % wireLen;
-                const x = wireXL + off;
-                const y = wireY + 14;
-                drawHalo(ctx, {
-                  x: x,
-                  y: y,
-                  radius: 11,
-                  color: colors.blue,
-                  alpha: 0.55,
-                  extent: 1,
-                });
-                ctx.fillStyle = colors.blue;
-                ctx.beginPath();
-                ctx.arc(x, y, 4.5, 0, Math.PI * 2);
-                ctx.fill();
-                drawLabel(ctx, {
-                  x: x,
-                  y: y,
-                  text: '−',
-                  color: colors.bg,
-                  size: 8,
-                  align: 'center',
-                  baseline: 'middle',
-                  weight: 'bold',
-                });
-              }
-        const tx = w * 0.5;
-        const ty = h * 0.22;
+    stateRef,
+    ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
+      let phaseIon = ctx0.phaseIon;
+      let phaseElec = ctx0.phaseElec;
+      const N = ctx0.N;
+      const s = stateRef.current;
+      const b = Math.max(0, Math.min(0.99, s.betaPct / 100));
+      const g_test = 1 / Math.sqrt(1 - b * b);
+      const visIonSpeed = -b * 80;
+      const visElecSpeed = visIonSpeed * 1.04;
+      phaseIon += visIonSpeed * dt;
+      phaseElec += visElecSpeed * dt;
+      const ionContract = Math.pow(g_test, 1.0);
+      const elecContract = Math.pow(g_test, 1.0) * 0.94;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const wireY = h * 0.65;
+      const wireH = 70;
+      const wireTop = wireY - wireH / 2;
+      const wireBot = wireY + wireH / 2;
+      const margin = 30;
+      const wireXL = margin;
+      const wireXR = w - margin;
+      const wireLen = wireXR - wireXL;
+      const wireGrd = ctx.createLinearGradient(0, wireTop, 0, wireBot);
+      const tintPink = Math.min(0.3, b * 0.45);
+      wireGrd.addColorStop(0, `rgba(255,59,110,${(tintPink * 0.6).toFixed(3)})`);
+      wireGrd.addColorStop(0.5, `rgba(255,59,110,${tintPink.toFixed(3)})`);
+      wireGrd.addColorStop(1, `rgba(255,59,110,${(tintPink * 0.6).toFixed(3)})`);
+      ctx.fillStyle = wireGrd;
+      ctx.fillRect(wireXL, wireTop, wireLen, wireH);
+      ctx.strokeStyle = colors.accent;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(wireXL, wireTop, wireLen, wireH);
+      const ionSpacing = wireLen / N / ionContract;
+      const elecSpacing = wireLen / N / elecContract;
+      const ionCount = Math.ceil(wireLen / ionSpacing) + 2;
+      const elecCount = Math.ceil(wireLen / elecSpacing) + 2;
+      for (let i = 0; i < ionCount; i++) {
+        const raw = i * ionSpacing + phaseIon;
+        const off = ((raw % wireLen) + wireLen) % wireLen;
+        const x = wireXL + off;
+        const y = wireY - 14;
         drawHalo(ctx, {
-                x: tx,
-                y: ty,
-                radius: 22,
-                color: colors.accent,
-                alpha: 0.55,
-                extent: 1,
-              });
-        ctx.fillStyle = colors.accent;
+          x: x,
+          y: y,
+          radius: 11,
+          color: colors.pink,
+          alpha: 0.55,
+          extent: 1,
+        });
+        ctx.fillStyle = colors.pink;
         ctx.beginPath();
-        ctx.arc(tx, ty, 9, 0, Math.PI * 2);
+        ctx.arc(x, y, 4.5, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = colors.bg;
-        ctx.font = 'bold 10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('+', tx, ty);
         drawLabel(ctx, {
-                x: tx,
-                y: ty - 26,
-                text: "test charge   v' = 0",
-                color: colors.text,
-              });
-        const lam = gamma_test - 1 / Math.sqrt(1 - 0 * 0);
-        if (b > 0.02) {
-                const arrowLen = Math.min(48, 10 + Math.log10(1 + b * 100) * 22);
-                ctx.strokeStyle = colors.accent;
-                ctx.fillStyle = colors.accent;
-                ctx.lineWidth = 2;
-                // arrow from below the test charge upward (repulsion: wire is +, test is +)
-                const ax = tx;
-                const ay0 = ty + 26;
-                const ay1 = ay0 - arrowLen;
-                ctx.beginPath();
-                ctx.moveTo(ax, ay0);
-                ctx.lineTo(ax, ay1);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(ax, ay1);
-                ctx.lineTo(ax - 5, ay1 + 8);
-                ctx.lineTo(ax + 5, ay1 + 8);
-                ctx.closePath();
-                ctx.fill();
-                drawLabel(ctx, {
-                  x: ax + 14,
-                  y: ay0 - arrowLen / 2,
-                  text: 'F = q E',
-                  color: colors.accent,
-                  size: 11,
-                });
-                void lam;
-              }
+          x: x,
+          y: y,
+          text: '+',
+          color: colors.bg,
+          size: 8,
+          align: 'center',
+          baseline: 'middle',
+          weight: 'bold',
+        });
+      }
+      for (let i = 0; i < elecCount; i++) {
+        const raw = i * elecSpacing + phaseElec;
+        const off = ((raw % wireLen) + wireLen) % wireLen;
+        const x = wireXL + off;
+        const y = wireY + 14;
+        drawHalo(ctx, {
+          x: x,
+          y: y,
+          radius: 11,
+          color: colors.blue,
+          alpha: 0.55,
+          extent: 1,
+        });
+        ctx.fillStyle = colors.blue;
+        ctx.beginPath();
+        ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+        ctx.fill();
         drawLabel(ctx, {
-                x: 14,
-                y: 18,
-                text: `BOOSTED FRAME · v_test = ${b.toFixed(2)} c → wire has net λ' ≠ 0`,
-                color: withAlpha(colors.textDim, 0.75),
-              });
-        ctx0.phaseIon = phaseIon;
-        ctx0.phaseElec = phaseElec;
-        ctx0.N = N;
-      },
-      [],
-      () => ({ context: { phaseIon: 0, phaseElec: 0, N: 22 } }),
-    );
+          x: x,
+          y: y,
+          text: '−',
+          color: colors.bg,
+          size: 8,
+          align: 'center',
+          baseline: 'middle',
+          weight: 'bold',
+        });
+      }
+      const tx = w * 0.5;
+      const ty = h * 0.22;
+      drawHalo(ctx, {
+        x: tx,
+        y: ty,
+        radius: 22,
+        color: colors.accent,
+        alpha: 0.55,
+        extent: 1,
+      });
+      ctx.fillStyle = colors.accent;
+      ctx.beginPath();
+      ctx.arc(tx, ty, 9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colors.bg;
+      ctx.font = 'bold 10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('+', tx, ty);
+      drawLabel(ctx, {
+        x: tx,
+        y: ty - 26,
+        text: "test charge   v' = 0",
+        color: colors.text,
+      });
+      const lam = gamma_test - 1 / Math.sqrt(1 - 0 * 0);
+      if (b > 0.02) {
+        const arrowLen = Math.min(48, 10 + Math.log10(1 + b * 100) * 22);
+        ctx.strokeStyle = colors.accent;
+        ctx.fillStyle = colors.accent;
+        ctx.lineWidth = 2;
+        // arrow from below the test charge upward (repulsion: wire is +, test is +)
+        const ax = tx;
+        const ay0 = ty + 26;
+        const ay1 = ay0 - arrowLen;
+        ctx.beginPath();
+        ctx.moveTo(ax, ay0);
+        ctx.lineTo(ax, ay1);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(ax, ay1);
+        ctx.lineTo(ax - 5, ay1 + 8);
+        ctx.lineTo(ax + 5, ay1 + 8);
+        ctx.closePath();
+        ctx.fill();
+        drawLabel(ctx, {
+          x: ax + 14,
+          y: ay0 - arrowLen / 2,
+          text: 'F = q E',
+          color: colors.accent,
+          size: 11,
+        });
+        void lam;
+      }
+      drawLabel(ctx, {
+        x: 14,
+        y: 18,
+        text: `BOOSTED FRAME · v_test = ${b.toFixed(2)} c → wire has net λ' ≠ 0`,
+        color: withAlpha(colors.textDim, 0.75),
+      });
+      ctx0.phaseIon = phaseIon;
+      ctx0.phaseElec = phaseElec;
+      ctx0.N = N;
+    },
+    [],
+    () => ({ context: { phaseIon: 0, phaseElec: 0, N: 22 } }),
+  );
 
   return (
     <Demo

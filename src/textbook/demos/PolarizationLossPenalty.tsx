@@ -19,7 +19,6 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -32,106 +31,101 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
   const lossDb = frac > 1e-6 ? -10 * Math.log10(frac) : Infinity;
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
-        let tAnim = ctx0.tAnim;
-        const { alphaDeg } = stateRef.current;
-        tAnim += 0.05;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const colW = W / 3;
-        const cy = H / 2;
-        const Rt = Math.min(colW * 0.32, H * 0.35);
-        function dipole(cx: number, axisDeg: number, color: string, label: string) {
-                  const a = (axisDeg * Math.PI) / 180;
-                  ctx.strokeStyle = color;
-                  ctx.lineWidth = 3;
-                  ctx.beginPath();
-                  ctx.moveTo(cx - Rt * Math.sin(a), cy + Rt * Math.cos(a));
-                  ctx.lineTo(cx + Rt * Math.sin(a), cy - Rt * Math.cos(a));
-                  ctx.stroke();
-                  // End "balls"
-                  ctx.fillStyle = color;
-                  ctx.beginPath();
-                  ctx.arc(cx + Rt * Math.sin(a), cy - Rt * Math.cos(a), 4, 0, Math.PI * 2);
-                  ctx.fill();
-                  ctx.beginPath();
-                  ctx.arc(cx - Rt * Math.sin(a), cy + Rt * Math.cos(a), 4, 0, Math.PI * 2);
-                  ctx.fill();
-                  drawLabel(ctx, {
-                    x: cx,
-                    y: H - 14,
-                    text: label,
-                    color: colors.textDim,
-                    align: 'center',
-                  });
-                }
-        dipole(colW * 0.5, 0, withAlpha(colors.accent, 0.95), 'TX (vertical)');
-        dipole(
-                  colW * 2.5,
-                  alphaDeg,
-                  withAlpha(colors.teal, 0.95),
-                  `RX (α = ${alphaDeg}°)`,
-                );
-        const wcx = colW * 1.5;
-        const Rmid = Math.min(colW * 0.3, H * 0.32);
-        ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1;
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
+      let tAnim = ctx0.tAnim;
+      const { alphaDeg } = stateRef.current;
+      tAnim += 0.05;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const colW = W / 3;
+      const cy = H / 2;
+      const Rt = Math.min(colW * 0.32, H * 0.35);
+      function dipole(cx: number, axisDeg: number, color: string, label: string) {
+        const a = (axisDeg * Math.PI) / 180;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(wcx, cy, Rmid, 0, Math.PI * 2);
+        ctx.moveTo(cx - Rt * Math.sin(a), cy + Rt * Math.cos(a));
+        ctx.lineTo(cx + Rt * Math.sin(a), cy - Rt * Math.cos(a));
         ctx.stroke();
-        const ampPhase = Math.cos(tAnim * 2);
-        const E = Rmid * 0.85 * ampPhase;
-        ctx.strokeStyle = colors.accent;
-        ctx.fillStyle = colors.accent;
-        ctx.lineWidth = 2.2;
+        // End "balls"
+        ctx.fillStyle = color;
         ctx.beginPath();
-        ctx.moveTo(wcx, cy);
-        ctx.lineTo(wcx, cy - E);
-        ctx.stroke();
-        const dir = E >= 0 ? -1 : 1;
-        ctx.beginPath();
-        ctx.moveTo(wcx, cy - E);
-        ctx.lineTo(wcx - 4, cy - E + 6 * dir);
-        ctx.lineTo(wcx + 4, cy - E + 6 * dir);
-        ctx.closePath();
+        ctx.arc(cx + Rt * Math.sin(a), cy - Rt * Math.cos(a), 4, 0, Math.PI * 2);
         ctx.fill();
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'center';
-        ctx.fillText('E-field (vertical)', wcx, cy + Rmid + 14);
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(colW * 0.5 + Rt + 6, cy);
-        ctx.lineTo(wcx - Rmid - 4, cy);
-        ctx.moveTo(wcx + Rmid + 4, cy);
-        ctx.lineTo(colW * 2.5 - Rt - 6, cy);
-        ctx.stroke();
-        const a = (alphaDeg * Math.PI) / 180;
-        const projAmp = Rmid * 0.85 * ampPhase * Math.cos(a);
-        const ux = Math.sin(a);
-        const uy = -Math.cos(a);
-        const rxCx = colW * 2.5;
-        ctx.strokeStyle = colors.teal;
-        ctx.fillStyle = colors.teal;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(rxCx, cy);
-        ctx.lineTo(rxCx + projAmp * ux, cy + projAmp * uy);
-        ctx.stroke();
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'left';
-        ctx.fillText(`P_r / P_r,max = cos²(α) = ${frac.toFixed(3)}`, 12, 18);
-        ctx.textAlign = 'right';
-        const lossLabel = Number.isFinite(lossDb) ? `loss = ${lossDb.toFixed(2)} dB` : 'loss = ∞';
-        ctx.fillText(lossLabel, W - 12, 18);
-        ctx0.tAnim = tAnim;
-      },
-      [],
-      () => ({ context: { tAnim: 0 } }),
-    );
+        ctx.arc(cx - Rt * Math.sin(a), cy + Rt * Math.cos(a), 4, 0, Math.PI * 2);
+        ctx.fill();
+        drawLabel(ctx, {
+          x: cx,
+          y: H - 14,
+          text: label,
+          color: colors.textDim,
+          align: 'center',
+        });
+      }
+      dipole(colW * 0.5, 0, withAlpha(colors.accent, 0.95), 'TX (vertical)');
+      dipole(colW * 2.5, alphaDeg, withAlpha(colors.teal, 0.95), `RX (α = ${alphaDeg}°)`);
+      const wcx = colW * 1.5;
+      const Rmid = Math.min(colW * 0.3, H * 0.32);
+      ctx.strokeStyle = colors.border;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(wcx, cy, Rmid, 0, Math.PI * 2);
+      ctx.stroke();
+      const ampPhase = Math.cos(tAnim * 2);
+      const E = Rmid * 0.85 * ampPhase;
+      ctx.strokeStyle = colors.accent;
+      ctx.fillStyle = colors.accent;
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.moveTo(wcx, cy);
+      ctx.lineTo(wcx, cy - E);
+      ctx.stroke();
+      const dir = E >= 0 ? -1 : 1;
+      ctx.beginPath();
+      ctx.moveTo(wcx, cy - E);
+      ctx.lineTo(wcx - 4, cy - E + 6 * dir);
+      ctx.lineTo(wcx + 4, cy - E + 6 * dir);
+      ctx.closePath();
+      ctx.fill();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'center';
+      ctx.fillText('E-field (vertical)', wcx, cy + Rmid + 14);
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(colW * 0.5 + Rt + 6, cy);
+      ctx.lineTo(wcx - Rmid - 4, cy);
+      ctx.moveTo(wcx + Rmid + 4, cy);
+      ctx.lineTo(colW * 2.5 - Rt - 6, cy);
+      ctx.stroke();
+      const a = (alphaDeg * Math.PI) / 180;
+      const projAmp = Rmid * 0.85 * ampPhase * Math.cos(a);
+      const ux = Math.sin(a);
+      const uy = -Math.cos(a);
+      const rxCx = colW * 2.5;
+      ctx.strokeStyle = colors.teal;
+      ctx.fillStyle = colors.teal;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(rxCx, cy);
+      ctx.lineTo(rxCx + projAmp * ux, cy + projAmp * uy);
+      ctx.stroke();
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      ctx.fillText(`P_r / P_r,max = cos²(α) = ${frac.toFixed(3)}`, 12, 18);
+      ctx.textAlign = 'right';
+      const lossLabel = Number.isFinite(lossDb) ? `loss = ${lossDb.toFixed(2)} dB` : 'loss = ∞';
+      ctx.fillText(lossLabel, W - 12, 18);
+      ctx0.tAnim = tAnim;
+    },
+    [],
+    () => ({ context: { tAnim: 0 } }),
+  );
 
   return (
     <Demo

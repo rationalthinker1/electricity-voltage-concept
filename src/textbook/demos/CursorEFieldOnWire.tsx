@@ -52,46 +52,43 @@ export function CursorEFieldOnWireDemo({ figure }: Props) {
   // Static wire pill + polarity terminals + glyphs. The bake is raw ctx
   // drawing (rounded-pill shape via lineTo + arc) so it uses useCanvasCache,
   // the sibling of useCircuitCache for non-CircuitSpec bakes.
-  const getStatic = useCanvasCache(
-    (octx, sw, sh, _dpr) => {
-      const colors = getCanvasColors();
-      const margin = 70;
-      const wireTop = sh * 0.42;
-      const wireBot = sh * 0.66;
-      const wireLeft = margin;
-      const wireRight = sw - margin;
-      const r = (wireBot - wireTop) / 2;
+  const getStatic = useCanvasCache((octx, sw, sh, _dpr) => {
+    const colors = getCanvasColors();
+    const margin = 70;
+    const wireTop = sh * 0.42;
+    const wireBot = sh * 0.66;
+    const wireLeft = margin;
+    const wireRight = sw - margin;
+    const r = (wireBot - wireTop) / 2;
 
-      // Wire pill (rounded-end rectangle).
-      octx.fillStyle = withAlpha(colors.accent, 0.06);
-      octx.beginPath();
-      octx.moveTo(wireLeft + r, wireTop);
-      octx.lineTo(wireRight - r, wireTop);
-      octx.arc(wireRight - r, wireTop + r, r, -Math.PI / 2, Math.PI / 2);
-      octx.lineTo(wireLeft + r, wireBot);
-      octx.arc(wireLeft + r, wireTop + r, r, Math.PI / 2, -Math.PI / 2);
-      octx.closePath();
-      octx.fill();
-      octx.strokeStyle = withAlpha(colors.text, 0.1);
-      octx.lineWidth = 1;
-      octx.stroke();
+    // Wire pill (rounded-end rectangle).
+    octx.fillStyle = withAlpha(colors.accent, 0.06);
+    octx.beginPath();
+    octx.moveTo(wireLeft + r, wireTop);
+    octx.lineTo(wireRight - r, wireTop);
+    octx.arc(wireRight - r, wireTop + r, r, -Math.PI / 2, Math.PI / 2);
+    octx.lineTo(wireLeft + r, wireBot);
+    octx.arc(wireLeft + r, wireTop + r, r, Math.PI / 2, -Math.PI / 2);
+    octx.closePath();
+    octx.fill();
+    octx.strokeStyle = withAlpha(colors.text, 0.1);
+    octx.lineWidth = 1;
+    octx.stroke();
 
-      // Polarity terminals + glyphs + caption.
-      octx.fillStyle = colors.pink;
-      octx.fillRect(wireLeft - 12, wireTop + 4, 4, wireBot - wireTop - 8);
-      octx.fillStyle = colors.blue;
-      octx.fillRect(wireRight + 8, wireTop + 4, 4, wireBot - wireTop - 8);
-      octx.fillStyle = withAlpha(colors.textDim, 0.85);
-      octx.font = '10px "JetBrains Mono", monospace';
-      octx.textAlign = 'center';
-      octx.fillText('+', wireLeft - 10, wireTop - 4);
-      octx.fillText('−', wireRight + 10, wireTop - 4);
-      octx.textAlign = 'left';
-      octx.fillStyle = withAlpha(colors.textDim, 0.7);
-      octx.fillText('battery drives drift  →', wireLeft, wireTop - 14);
-    },
-    [],
-  );
+    // Polarity terminals + glyphs + caption.
+    octx.fillStyle = colors.pink;
+    octx.fillRect(wireLeft - 12, wireTop + 4, 4, wireBot - wireTop - 8);
+    octx.fillStyle = colors.blue;
+    octx.fillRect(wireRight + 8, wireTop + 4, 4, wireBot - wireTop - 8);
+    octx.fillStyle = withAlpha(colors.textDim, 0.85);
+    octx.font = '10px "JetBrains Mono", monospace';
+    octx.textAlign = 'center';
+    octx.fillText('+', wireLeft - 10, wireTop - 4);
+    octx.fillText('−', wireRight + 10, wireTop - 4);
+    octx.textAlign = 'left';
+    octx.fillStyle = withAlpha(colors.textDim, 0.7);
+    octx.fillText('battery drives drift  →', wireLeft, wireTop - 14);
+  }, []);
 
   const setup = useSimLoop<SimState, SimContext>(
     stateRef,

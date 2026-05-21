@@ -19,7 +19,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -42,196 +41,196 @@ export function BrushedDCMotorDemo({ figure }: Props) {
   }, [V]);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
-        let theta = ctx0.theta;
-        let omega = ctx0.omega;
-        const { V } = stateRef.current;
-        const I = V / COIL_R;
-        const tauPeak = COIL_N * I * COIL_A * COIL_B;
-        const drive = tauPeak * Math.abs(Math.sin(theta));
-        const friction = 0.05 * omega;
-        omega += (drive * 6 - friction) * dt;
-        if (omega < 0) omega = 0;
-        if (omega > 10) omega = 10;
-        theta += omega * dt;
-        const cx = w / 2;
-        const cy = h / 2;
-        const R = Math.min(w, h) * 0.36;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const magW = R * 0.45;
-        const magH = R * 1.35;
-        ctx.save();
-        ctx.globalAlpha = 0.22;
-        ctx.fillStyle = colors.pink;
-        ctx.fillRect(cx - R - magW, cy - magH / 2, magW, magH);
-        ctx.restore();
-        ctx.save();
-        ctx.globalAlpha = 0.5;
-        ctx.strokeStyle = colors.pink;
-        ctx.lineWidth = 1.2;
-        ctx.strokeRect(cx - R - magW, cy - magH / 2, magW, magH);
-        ctx.restore();
-        ctx.fillStyle = colors.pink;
-        ctx.font = 'bold 14px JetBrains Mono';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('N', cx - R - magW / 2, cy);
-        ctx.save();
-        ctx.globalAlpha = 0.22;
-        ctx.fillStyle = colors.blue;
-        ctx.fillRect(cx + R, cy - magH / 2, magW, magH);
-        ctx.restore();
-        ctx.save();
-        ctx.globalAlpha = 0.5;
-        ctx.strokeStyle = colors.blue;
-        ctx.strokeRect(cx + R, cy - magH / 2, magW, magH);
-        ctx.restore();
-        ctx.fillStyle = colors.blue;
-        ctx.fillText('S', cx + R + magW / 2, cy);
-        ctx.save();
-        ctx.globalAlpha = 0.22;
-        ctx.strokeStyle = colors.teal;
-        ctx.save();
-        ctx.globalAlpha = 0.22;
-        ctx.fillStyle = colors.teal;
-        ctx.lineWidth = 1;
-        const rows = 4;
-        for (let i = 0; i < rows; i++) {
-                const y = cy - magH * 0.35 + (i * magH * 0.7) / (rows - 1);
-                ctx.beginPath();
-                ctx.moveTo(cx - R + 6, y);
-                ctx.lineTo(cx + R - 6, y);
-                ctx.stroke();
-                ctx.restore();
-                ctx.restore();
-                // arrowhead
-                ctx.beginPath();
-                ctx.moveTo(cx + R - 6, y);
-                ctx.lineTo(cx + R - 14, y - 4);
-                ctx.lineTo(cx + R - 14, y + 4);
-                ctx.closePath();
-                ctx.fill();
-              }
-        ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1;
+    stateRef,
+    ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
+      let theta = ctx0.theta;
+      let omega = ctx0.omega;
+      const { V } = stateRef.current;
+      const I = V / COIL_R;
+      const tauPeak = COIL_N * I * COIL_A * COIL_B;
+      const drive = tauPeak * Math.abs(Math.sin(theta));
+      const friction = 0.05 * omega;
+      omega += (drive * 6 - friction) * dt;
+      if (omega < 0) omega = 0;
+      if (omega > 10) omega = 10;
+      theta += omega * dt;
+      const cx = w / 2;
+      const cy = h / 2;
+      const R = Math.min(w, h) * 0.36;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const magW = R * 0.45;
+      const magH = R * 1.35;
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle = colors.pink;
+      ctx.fillRect(cx - R - magW, cy - magH / 2, magW, magH);
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = colors.pink;
+      ctx.lineWidth = 1.2;
+      ctx.strokeRect(cx - R - magW, cy - magH / 2, magW, magH);
+      ctx.restore();
+      ctx.fillStyle = colors.pink;
+      ctx.font = 'bold 14px JetBrains Mono';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('N', cx - R - magW / 2, cy);
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle = colors.blue;
+      ctx.fillRect(cx + R, cy - magH / 2, magW, magH);
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = colors.blue;
+      ctx.strokeRect(cx + R, cy - magH / 2, magW, magH);
+      ctx.restore();
+      ctx.fillStyle = colors.blue;
+      ctx.fillText('S', cx + R + magW / 2, cy);
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.strokeStyle = colors.teal;
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle = colors.teal;
+      ctx.lineWidth = 1;
+      const rows = 4;
+      for (let i = 0; i < rows; i++) {
+        const y = cy - magH * 0.35 + (i * magH * 0.7) / (rows - 1);
         ctx.beginPath();
-        ctx.arc(cx, cy, R + 4, 0, Math.PI * 2);
+        ctx.moveTo(cx - R + 6, y);
+        ctx.lineTo(cx + R - 6, y);
         ctx.stroke();
-        const coilW = R * 0.18;
-        const coilLen = R * 1.7;
-        const cos = Math.cos(theta);
-        const sin = Math.sin(theta);
-        const corners = [
-                { x: -coilLen / 2, y: -coilW / 2 },
-                { x: coilLen / 2, y: -coilW / 2 },
-                { x: coilLen / 2, y: coilW / 2 },
-                { x: -coilLen / 2, y: coilW / 2 },
-              ].map((p) => ({
-                x: cx + p.x * cos - p.y * sin,
-                y: cy + p.x * sin + p.y * cos,
-              }));
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 3;
+        ctx.restore();
+        ctx.restore();
+        // arrowhead
         ctx.beginPath();
-        ctx.moveTo(corners[0].x, corners[0].y);
-        for (let i = 1; i < 4; i++) ctx.lineTo(corners[i].x, corners[i].y);
-        ctx.closePath();
-        ctx.stroke();
-        const endAx = cx + (coilLen / 2) * cos;
-        const endAy = cy + (coilLen / 2) * sin;
-        const endBx = cx - (coilLen / 2) * cos;
-        const endBy = cy - (coilLen / 2) * sin;
-        const topEnd = endAy < endBy ? { x: endAx, y: endAy } : { x: endBx, y: endBy };
-        const botEnd = endAy < endBy ? { x: endBx, y: endBy } : { x: endAx, y: endAy };
-        ctx.fillStyle = colors.pink;
-        ctx.beginPath();
-        ctx.arc(topEnd.x, topEnd.y, 7, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = colors.bg;
-        ctx.font = 'bold 10px JetBrains Mono';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('×', topEnd.x, topEnd.y);
-        ctx.fillStyle = colors.blue;
-        ctx.beginPath();
-        ctx.arc(botEnd.x, botEnd.y, 7, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = colors.bg;
-        ctx.fillText('·', botEnd.x, botEnd.y);
-        const fLen = Math.max(8, Math.min(36, drive * 30 + 10));
-        ctx.strokeStyle = colors.accent;
-        ctx.fillStyle = colors.accent;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(topEnd.x, topEnd.y);
-        ctx.lineTo(topEnd.x, topEnd.y - fLen);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(topEnd.x, topEnd.y - fLen);
-        ctx.lineTo(topEnd.x - 4, topEnd.y - fLen + 6);
-        ctx.lineTo(topEnd.x + 4, topEnd.y - fLen + 6);
+        ctx.moveTo(cx + R - 6, y);
+        ctx.lineTo(cx + R - 14, y - 4);
+        ctx.lineTo(cx + R - 14, y + 4);
         ctx.closePath();
         ctx.fill();
-        ctx.beginPath();
-        ctx.moveTo(botEnd.x, botEnd.y);
-        ctx.lineTo(botEnd.x, botEnd.y + fLen);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(botEnd.x, botEnd.y + fLen);
-        ctx.lineTo(botEnd.x - 4, botEnd.y + fLen - 6);
-        ctx.lineTo(botEnd.x + 4, botEnd.y + fLen - 6);
-        ctx.closePath();
-        ctx.fill();
-        const commR = R * 0.18;
-        ctx.strokeStyle = '#d4a050';
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.arc(cx, cy, commR, theta + 0.15, theta + Math.PI - 0.15);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(cx, cy, commR, theta + Math.PI + 0.15, theta + 2 * Math.PI - 0.15);
-        ctx.stroke();
-        ctx.fillStyle = '#888';
-        ctx.fillRect(cx - 3, cy - commR - 10, 6, 8);
-        ctx.fillRect(cx - 3, cy + commR + 2, 6, 8);
-        ctx.save();
-        ctx.globalAlpha = 0.4;
-        ctx.strokeStyle = colors.text;
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy - commR - 10);
-        ctx.lineTo(cx, cy - commR - 30);
-        ctx.moveTo(cx, cy + commR + 10);
-        ctx.lineTo(cx, cy + commR + 30);
-        ctx.stroke();
-        ctx.restore();
-        ctx.save();
-        ctx.globalAlpha = 0.8;
-        ctx.fillStyle = colors.text;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('+', cx + 8, cy - commR - 22);
-        ctx.restore();
-        ctx.fillText('−', cx + 8, cy + commR + 22);
-        ctx.save();
-        ctx.globalAlpha = 0.75;
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('rotor coil + split-ring commutator', 12, 12);
-        ctx.restore();
-        ctx.textAlign = 'right';
-        ctx.fillText(`I = ${I.toFixed(2)} A   ω(vis) = ${omega.toFixed(1)} rad/s`, w - 12, 12);
-        ctx0.theta = theta;
-        ctx0.omega = omega;
-      },
-      [],
-      () => ({ context: { theta: 0, omega: 0 } }),
-    );
+      }
+      ctx.strokeStyle = colors.border;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R + 4, 0, Math.PI * 2);
+      ctx.stroke();
+      const coilW = R * 0.18;
+      const coilLen = R * 1.7;
+      const cos = Math.cos(theta);
+      const sin = Math.sin(theta);
+      const corners = [
+        { x: -coilLen / 2, y: -coilW / 2 },
+        { x: coilLen / 2, y: -coilW / 2 },
+        { x: coilLen / 2, y: coilW / 2 },
+        { x: -coilLen / 2, y: coilW / 2 },
+      ].map((p) => ({
+        x: cx + p.x * cos - p.y * sin,
+        y: cy + p.x * sin + p.y * cos,
+      }));
+      ctx.strokeStyle = colors.accent;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(corners[0].x, corners[0].y);
+      for (let i = 1; i < 4; i++) ctx.lineTo(corners[i].x, corners[i].y);
+      ctx.closePath();
+      ctx.stroke();
+      const endAx = cx + (coilLen / 2) * cos;
+      const endAy = cy + (coilLen / 2) * sin;
+      const endBx = cx - (coilLen / 2) * cos;
+      const endBy = cy - (coilLen / 2) * sin;
+      const topEnd = endAy < endBy ? { x: endAx, y: endAy } : { x: endBx, y: endBy };
+      const botEnd = endAy < endBy ? { x: endBx, y: endBy } : { x: endAx, y: endAy };
+      ctx.fillStyle = colors.pink;
+      ctx.beginPath();
+      ctx.arc(topEnd.x, topEnd.y, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colors.bg;
+      ctx.font = 'bold 10px JetBrains Mono';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('×', topEnd.x, topEnd.y);
+      ctx.fillStyle = colors.blue;
+      ctx.beginPath();
+      ctx.arc(botEnd.x, botEnd.y, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colors.bg;
+      ctx.fillText('·', botEnd.x, botEnd.y);
+      const fLen = Math.max(8, Math.min(36, drive * 30 + 10));
+      ctx.strokeStyle = colors.accent;
+      ctx.fillStyle = colors.accent;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(topEnd.x, topEnd.y);
+      ctx.lineTo(topEnd.x, topEnd.y - fLen);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(topEnd.x, topEnd.y - fLen);
+      ctx.lineTo(topEnd.x - 4, topEnd.y - fLen + 6);
+      ctx.lineTo(topEnd.x + 4, topEnd.y - fLen + 6);
+      ctx.closePath();
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(botEnd.x, botEnd.y);
+      ctx.lineTo(botEnd.x, botEnd.y + fLen);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(botEnd.x, botEnd.y + fLen);
+      ctx.lineTo(botEnd.x - 4, botEnd.y + fLen - 6);
+      ctx.lineTo(botEnd.x + 4, botEnd.y + fLen - 6);
+      ctx.closePath();
+      ctx.fill();
+      const commR = R * 0.18;
+      ctx.strokeStyle = '#d4a050';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(cx, cy, commR, theta + 0.15, theta + Math.PI - 0.15);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, commR, theta + Math.PI + 0.15, theta + 2 * Math.PI - 0.15);
+      ctx.stroke();
+      ctx.fillStyle = '#888';
+      ctx.fillRect(cx - 3, cy - commR - 10, 6, 8);
+      ctx.fillRect(cx - 3, cy + commR + 2, 6, 8);
+      ctx.save();
+      ctx.globalAlpha = 0.4;
+      ctx.strokeStyle = colors.text;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - commR - 10);
+      ctx.lineTo(cx, cy - commR - 30);
+      ctx.moveTo(cx, cy + commR + 10);
+      ctx.lineTo(cx, cy + commR + 30);
+      ctx.stroke();
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = colors.text;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('+', cx + 8, cy - commR - 22);
+      ctx.restore();
+      ctx.fillText('−', cx + 8, cy + commR + 22);
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('rotor coil + split-ring commutator', 12, 12);
+      ctx.restore();
+      ctx.textAlign = 'right';
+      ctx.fillText(`I = ${I.toFixed(2)} A   ω(vis) = ${omega.toFixed(1)} rad/s`, w - 12, 12);
+      ctx0.theta = theta;
+      ctx0.omega = omega;
+    },
+    [],
+    () => ({ context: { theta: 0, omega: 0 } }),
+  );
 
   return (
     <Demo

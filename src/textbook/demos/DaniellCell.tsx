@@ -15,7 +15,6 @@ import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -42,140 +41,124 @@ export function DaniellCellDemo({ figure }: Props) {
 
   const stateRef = useSimState({ loaded, V_term, I, erosion });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
-        let phase = ctx0.phase;
-        const s = stateRef.current;
-        phase += 0.04;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const beakerW = Math.min(160, (W - 80) / 2);
-        const beakerH = H - 90;
-        const beakerY = 60;
-        const leftX = W / 2 - beakerW - 12;
-        const rightX = W / 2 + 12;
-        drawBeaker(
-                ctx,
-                leftX,
-                beakerY,
-                beakerW,
-                beakerH,
-                withAlpha(colors.blue, 0.18),
-                'ZnSO₄',
-              );
-        drawBeaker(
-                ctx,
-                rightX,
-                beakerY,
-                beakerW,
-                beakerH,
-                withAlpha(colors.accent, 0.18),
-                'CuSO₄',
-              );
-        ctx.fillStyle = colors.textDim;
-        ctx.fillRect(W / 2 - 6, beakerY + 20, 12, beakerH - 30);
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('porous', W / 2, beakerY + beakerH - 8);
-        const znRodWBase = 16;
-        const znRodW = znRodWBase * (1 - 0.5 * s.erosion);
-        const rodX_Zn = leftX + beakerW / 2 - znRodW / 2;
-        ctx.fillStyle = '#c4c8cc';
-        ctx.fillRect(rodX_Zn, beakerY + 10, znRodW, beakerH - 30);
-        ctx.fillStyle = 'rgba(196,200,204,0.85)';
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('Zn', leftX + beakerW / 2, beakerY - 6);
-        const cuRodW = 16 + 12 * s.erosion;
-        const rodX_Cu = rightX + beakerW / 2 - cuRodW / 2;
-        ctx.fillStyle = '#b87333';
-        ctx.fillRect(rodX_Cu, beakerY + 10, cuRodW, beakerH - 30);
-        if (s.erosion > 0.05) {
-                ctx.fillStyle = '#d18a4a';
-                for (let i = 0; i < Math.floor(s.erosion * 18); i++) {
-                  const cy = beakerY + 14 + Math.random() * (beakerH - 36);
-                  const cxOffset = (Math.random() - 0.5) * cuRodW;
-                  ctx.beginPath();
-                  ctx.arc(rodX_Cu + cuRodW / 2 + cxOffset, cy, 1.6, 0, Math.PI * 2);
-                  ctx.fill();
-                }
-              }
-        ctx.fillStyle = 'rgba(184,115,51,0.95)';
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('Cu', rightX + beakerW / 2, beakerY - 6);
-        const wireY = beakerY - 22;
-        ctx.save();
-        ctx.globalAlpha = 0.85;
-        ctx.strokeStyle = colors.text;
-        ctx.lineWidth = 2;
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
+      let phase = ctx0.phase;
+      const s = stateRef.current;
+      phase += 0.04;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const beakerW = Math.min(160, (W - 80) / 2);
+      const beakerH = H - 90;
+      const beakerY = 60;
+      const leftX = W / 2 - beakerW - 12;
+      const rightX = W / 2 + 12;
+      drawBeaker(ctx, leftX, beakerY, beakerW, beakerH, withAlpha(colors.blue, 0.18), 'ZnSO₄');
+      drawBeaker(ctx, rightX, beakerY, beakerW, beakerH, withAlpha(colors.accent, 0.18), 'CuSO₄');
+      ctx.fillStyle = colors.textDim;
+      ctx.fillRect(W / 2 - 6, beakerY + 20, 12, beakerH - 30);
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('porous', W / 2, beakerY + beakerH - 8);
+      const znRodWBase = 16;
+      const znRodW = znRodWBase * (1 - 0.5 * s.erosion);
+      const rodX_Zn = leftX + beakerW / 2 - znRodW / 2;
+      ctx.fillStyle = '#c4c8cc';
+      ctx.fillRect(rodX_Zn, beakerY + 10, znRodW, beakerH - 30);
+      ctx.fillStyle = 'rgba(196,200,204,0.85)';
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('Zn', leftX + beakerW / 2, beakerY - 6);
+      const cuRodW = 16 + 12 * s.erosion;
+      const rodX_Cu = rightX + beakerW / 2 - cuRodW / 2;
+      ctx.fillStyle = '#b87333';
+      ctx.fillRect(rodX_Cu, beakerY + 10, cuRodW, beakerH - 30);
+      if (s.erosion > 0.05) {
+        ctx.fillStyle = '#d18a4a';
+        for (let i = 0; i < Math.floor(s.erosion * 18); i++) {
+          const cy = beakerY + 14 + Math.random() * (beakerH - 36);
+          const cxOffset = (Math.random() - 0.5) * cuRodW;
+          ctx.beginPath();
+          ctx.arc(rodX_Cu + cuRodW / 2 + cxOffset, cy, 1.6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.fillStyle = 'rgba(184,115,51,0.95)';
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('Cu', rightX + beakerW / 2, beakerY - 6);
+      const wireY = beakerY - 22;
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.strokeStyle = colors.text;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(leftX + beakerW / 2, beakerY);
+      ctx.lineTo(leftX + beakerW / 2, wireY);
+      ctx.lineTo(W / 2 - 22, wireY);
+      ctx.stroke();
+      ctx.restore();
+      ctx.beginPath();
+      ctx.moveTo(W / 2 + 22, wireY);
+      ctx.lineTo(rightX + beakerW / 2, wireY);
+      ctx.lineTo(rightX + beakerW / 2, beakerY);
+      ctx.stroke();
+      if (s.loaded) {
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.6;
         ctx.beginPath();
-        ctx.moveTo(leftX + beakerW / 2, beakerY);
-        ctx.lineTo(leftX + beakerW / 2, wireY);
-        ctx.lineTo(W / 2 - 22, wireY);
+        const x0 = W / 2 - 22,
+          x1 = W / 2 + 22;
+        const zigs = 6;
+        for (let i = 0; i <= zigs; i++) {
+          const x = x0 + ((x1 - x0) * i) / zigs;
+          const y = wireY + (i % 2 === 0 ? -4 : 4);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      } else {
+        // Open switch tick
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.strokeStyle = colors.textDim;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(W / 2 - 22, wireY);
+        ctx.lineTo(W / 2 + 14, wireY - 12);
         ctx.stroke();
         ctx.restore();
-        ctx.beginPath();
-        ctx.moveTo(W / 2 + 22, wireY);
-        ctx.lineTo(rightX + beakerW / 2, wireY);
-        ctx.lineTo(rightX + beakerW / 2, beakerY);
-        ctx.stroke();
-        if (s.loaded) {
-                ctx.strokeStyle = colors.accent;
-                ctx.lineWidth = 1.6;
-                ctx.beginPath();
-                const x0 = W / 2 - 22,
-                  x1 = W / 2 + 22;
-                const zigs = 6;
-                for (let i = 0; i <= zigs; i++) {
-                  const x = x0 + ((x1 - x0) * i) / zigs;
-                  const y = wireY + (i % 2 === 0 ? -4 : 4);
-                  if (i === 0) ctx.moveTo(x, y);
-                  else ctx.lineTo(x, y);
-                }
-                ctx.stroke();
-              } else {
-                // Open switch tick
-                ctx.save();
-                ctx.globalAlpha = 0.6;
-                ctx.strokeStyle = colors.textDim;
-                ctx.lineWidth = 1.4;
-                ctx.beginPath();
-                ctx.moveTo(W / 2 - 22, wireY);
-                ctx.lineTo(W / 2 + 14, wireY - 12);
-                ctx.stroke();
-                ctx.restore();
-              }
-        if (s.loaded && s.I > 0.001) {
-                const arrowCount = 4;
-                for (let i = 0; i < arrowCount; i++) {
-                  const frac = (phase * 0.6 + i / arrowCount) % 1;
-                  const xa = leftX + beakerW / 2 + frac * (rightX + beakerW / 2 - (leftX + beakerW / 2));
-                  drawLabel(ctx, {
-                    x: xa,
-                    y: wireY - 10,
-                    text: 'e⁻ →',
-                    color: colors.blue,
-                    size: 11,
-                    align: 'center',
-                    baseline: 'middle',
-                  });
-                }
-              }
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('anode: Zn → Zn²⁺ + 2e⁻', 10, H - 24);
-        ctx.textAlign = 'right';
-        ctx.fillText('cathode: Cu²⁺ + 2e⁻ → Cu', W - 10, H - 24);
-        ctx0.phase = phase;
-      },
-      [],
-      () => ({ context: { phase: 0 } }),
-    );
+      }
+      if (s.loaded && s.I > 0.001) {
+        const arrowCount = 4;
+        for (let i = 0; i < arrowCount; i++) {
+          const frac = (phase * 0.6 + i / arrowCount) % 1;
+          const xa = leftX + beakerW / 2 + frac * (rightX + beakerW / 2 - (leftX + beakerW / 2));
+          drawLabel(ctx, {
+            x: xa,
+            y: wireY - 10,
+            text: 'e⁻ →',
+            color: colors.blue,
+            size: 11,
+            align: 'center',
+            baseline: 'middle',
+          });
+        }
+      }
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('anode: Zn → Zn²⁺ + 2e⁻', 10, H - 24);
+      ctx.textAlign = 'right';
+      ctx.fillText('cathode: Cu²⁺ + 2e⁻ → Cu', W - 10, H - 24);
+      ctx0.phase = phase;
+    },
+    [],
+    () => ({ context: { phase: 0 } }),
+  );
 
   return (
     <Demo

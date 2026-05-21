@@ -149,7 +149,7 @@ export function MaterialPickerDemo({ figure }: Props) {
           <button
             key={k}
             type="button"
-            className={`mini-toggle${k === mat ? ' on' : ''}`}
+            className={`mini-toggle${k === mat ? 'on' : ''}`}
             onClick={() => setMat(k)}
             aria-pressed={k === mat}
           >

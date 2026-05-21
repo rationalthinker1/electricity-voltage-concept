@@ -26,14 +26,7 @@ import { Num } from '@/components/Num';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import {
-  add,  length,
-  normalize,
-  project,
-  scale,
-  sub,
-  v3,  type Vec3,
-} from '@/lib/projection3d';
+import { add, length, normalize, project, scale, sub, v3, type Vec3 } from '@/lib/projection3d';
 import { createOrbitScene } from '@/lib/useOrbitScene';
 
 interface Props {
@@ -99,7 +92,12 @@ export function ImageChargeField3DDemo({ figure }: Props) {
 
   const setup = useCallback((info: CanvasInfo) => {
     const { ctx, w, h, canvas, colors } = info;
-    const scene = createOrbitScene(canvas, { yaw: 0.6, pitch: 0.35, distance: 9, fov: Math.PI / 4 });
+    const scene = createOrbitScene(canvas, {
+      yaw: 0.6,
+      pitch: 0.35,
+      distance: 9,
+      fov: Math.PI / 4,
+    });
     const cam = scene.cam;
     let raf = 0;
 

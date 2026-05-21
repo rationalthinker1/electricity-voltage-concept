@@ -20,7 +20,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -46,137 +45,137 @@ export function PowerFactorDemo({ figure }: Props) {
 
   const stateRef = useSimState({ Vp, Ip, phi, omega, Preal });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { Vp, Ip, phi, omega, Preal } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padL = 50,
-                padR = 60,
-                padT = 18,
-                padB = 22;
-        const plotW = w - padL - padR;
-        const plotH = h - padT - padB;
-        const yMid = padT + plotH / 2;
-        const T = (2 * Math.PI) / omega;
-        const tMax = 2 * T;
-        const xOf = (t: number) => padL + (t / tMax) * plotW;
-        const pMax = Vp * Ip;
-        const yScaleP = plotH / 2 / Math.max(pMax, 1e-3);
-        const yScaleV = plotH / 2 / Math.max(Vp, 1e-3);
-        const yScaleI = plotH / 2 / Math.max(Ip, 1e-3);
-        ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(padL, padT, plotW, plotH);
-        ctx.beginPath();
-        ctx.moveTo(padL, yMid);
-        ctx.lineTo(padL + plotW, yMid);
-        ctx.stroke();
-        ctx.strokeStyle = colors.border;
-        ctx.setLineDash([2, 3]);
-        ctx.beginPath();
-        ctx.moveTo(xOf(T), padT);
-        ctx.lineTo(xOf(T), padT + plotH);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        const N = 320;
-        ctx.fillStyle = colors.pink;
-        ctx.beginPath();
-        ctx.moveTo(padL, yMid);
-        for (let i = 0; i <= N; i++) {
-                const t = (i / N) * tMax;
-                const v = Vp * Math.cos(omega * t);
-                const ii = Ip * Math.cos(omega * t - phi);
-                const p = v * ii;
-                const x = xOf(t);
-                const y = yMid - p * yScaleP;
-                ctx.lineTo(x, y);
-              }
-        ctx.lineTo(padL + plotW, yMid);
-        ctx.closePath();
-        ctx.fill();
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 1.6;
-        ctx.beginPath();
-        for (let i = 0; i <= N; i++) {
-                const t = (i / N) * tMax;
-                const v = Vp * Math.cos(omega * t);
-                const x = xOf(t);
-                const y = yMid - v * yScaleV;
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
-        ctx.strokeStyle = colors.teal;
-        ctx.lineWidth = 1.6;
-        ctx.beginPath();
-        for (let i = 0; i <= N; i++) {
-                const t = (i / N) * tMax;
-                const ii = Ip * Math.cos(omega * t - phi);
-                const x = xOf(t);
-                const y = yMid - ii * yScaleI;
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
-        ctx.strokeStyle = colors.pink;
-        ctx.lineWidth = 1.6;
-        ctx.beginPath();
-        for (let i = 0; i <= N; i++) {
-                const t = (i / N) * tMax;
-                const v = Vp * Math.cos(omega * t);
-                const ii = Ip * Math.cos(omega * t - phi);
-                const p = v * ii;
-                const x = xOf(t);
-                const y = yMid - p * yScaleP;
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              }
-        ctx.stroke();
-        const yMean = yMid - Preal * yScaleP;
-        ctx.save();
-        ctx.globalAlpha = 0.6;
-        ctx.strokeStyle = colors.accent;
-        ctx.setLineDash([4, 4]);
-        ctx.lineWidth = 1.4;
-        ctx.beginPath();
-        ctx.moveTo(padL, yMean);
-        ctx.lineTo(padL + plotW, yMean);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        ctx.restore();
-        ctx.fillStyle = colors.accent;
-        ctx.fillText('v(t)', padL + plotW + 4, padT + 10);
-        ctx.fillStyle = colors.teal;
-        ctx.fillText('i(t)', padL + plotW + 4, padT + 24);
-        ctx.fillStyle = colors.pink;
-        ctx.fillText('p(t)=v·i', padL + plotW + 4, padT + 38);
-        ctx.save();
-        ctx.globalAlpha = 0.8;
-        ctx.fillStyle = colors.accent;
-        ctx.fillText('⟨p⟩ = P', padL + plotW + 4, yMean);
-        ctx.restore();
-        ctx.save();
-        ctx.globalAlpha = 0.65;
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('T', xOf(T), padT + plotH + 4);
-        ctx.fillText('2T', xOf(tMax), padT + plotH + 4);
-        ctx.restore();
-        drawLabel(ctx, {
-                x: padL,
-                y: 4,
-                text: `φ = ${((phi * 180) / Math.PI).toFixed(1)}°,   pf = cos(φ) = ${Math.cos(phi).toFixed(3)}`,
-                color: colors.textDim,
-                baseline: 'top',
-              });
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { Vp, Ip, phi, omega, Preal } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padL = 50,
+        padR = 60,
+        padT = 18,
+        padB = 22;
+      const plotW = w - padL - padR;
+      const plotH = h - padT - padB;
+      const yMid = padT + plotH / 2;
+      const T = (2 * Math.PI) / omega;
+      const tMax = 2 * T;
+      const xOf = (t: number) => padL + (t / tMax) * plotW;
+      const pMax = Vp * Ip;
+      const yScaleP = plotH / 2 / Math.max(pMax, 1e-3);
+      const yScaleV = plotH / 2 / Math.max(Vp, 1e-3);
+      const yScaleI = plotH / 2 / Math.max(Ip, 1e-3);
+      ctx.strokeStyle = colors.border;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(padL, padT, plotW, plotH);
+      ctx.beginPath();
+      ctx.moveTo(padL, yMid);
+      ctx.lineTo(padL + plotW, yMid);
+      ctx.stroke();
+      ctx.strokeStyle = colors.border;
+      ctx.setLineDash([2, 3]);
+      ctx.beginPath();
+      ctx.moveTo(xOf(T), padT);
+      ctx.lineTo(xOf(T), padT + plotH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const N = 320;
+      ctx.fillStyle = colors.pink;
+      ctx.beginPath();
+      ctx.moveTo(padL, yMid);
+      for (let i = 0; i <= N; i++) {
+        const t = (i / N) * tMax;
+        const v = Vp * Math.cos(omega * t);
+        const ii = Ip * Math.cos(omega * t - phi);
+        const p = v * ii;
+        const x = xOf(t);
+        const y = yMid - p * yScaleP;
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(padL + plotW, yMid);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = colors.accent;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      for (let i = 0; i <= N; i++) {
+        const t = (i / N) * tMax;
+        const v = Vp * Math.cos(omega * t);
+        const x = xOf(t);
+        const y = yMid - v * yScaleV;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.strokeStyle = colors.teal;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      for (let i = 0; i <= N; i++) {
+        const t = (i / N) * tMax;
+        const ii = Ip * Math.cos(omega * t - phi);
+        const x = xOf(t);
+        const y = yMid - ii * yScaleI;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.strokeStyle = colors.pink;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      for (let i = 0; i <= N; i++) {
+        const t = (i / N) * tMax;
+        const v = Vp * Math.cos(omega * t);
+        const ii = Ip * Math.cos(omega * t - phi);
+        const p = v * ii;
+        const x = xOf(t);
+        const y = yMid - p * yScaleP;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      const yMean = yMid - Preal * yScaleP;
+      ctx.save();
+      ctx.globalAlpha = 0.6;
+      ctx.strokeStyle = colors.accent;
+      ctx.setLineDash([4, 4]);
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(padL, yMean);
+      ctx.lineTo(padL + plotW, yMean);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.restore();
+      ctx.fillStyle = colors.accent;
+      ctx.fillText('v(t)', padL + plotW + 4, padT + 10);
+      ctx.fillStyle = colors.teal;
+      ctx.fillText('i(t)', padL + plotW + 4, padT + 24);
+      ctx.fillStyle = colors.pink;
+      ctx.fillText('p(t)=v·i', padL + plotW + 4, padT + 38);
+      ctx.save();
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = colors.accent;
+      ctx.fillText('⟨p⟩ = P', padL + plotW + 4, yMean);
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('T', xOf(T), padT + plotH + 4);
+      ctx.fillText('2T', xOf(tMax), padT + plotH + 4);
+      ctx.restore();
+      drawLabel(ctx, {
+        x: padL,
+        y: 4,
+        text: `φ = ${((phi * 180) / Math.PI).toFixed(1)}°,   pf = cos(φ) = ${Math.cos(phi).toFixed(3)}`,
+        color: colors.textDim,
+        baseline: 'top',
+      });
+    },
+    [],
+  );
 
   return (
     <Demo

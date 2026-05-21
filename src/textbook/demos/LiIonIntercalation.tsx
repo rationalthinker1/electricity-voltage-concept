@@ -15,7 +15,6 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -32,91 +31,91 @@ export function LiIonIntercalationDemo({ figure }: Props) {
 
   const stateRef = useSimState({ soc, nAnode, nCathode });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
-        let phase = ctx0.phase;
-        const s = stateRef.current;
-        phase += 0.03;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const anodeX = 40;
-        const anodeW = (W - 80) * 0.35;
-        const cathodeX = W - 40 - anodeW;
-        const electrolyteX = anodeX + anodeW;
-        const electrolyteW = cathodeX - electrolyteX;
-        const topY = 40;
-        const botY = H - 40;
-        const colH = botY - topY;
-        drawLayers(
-                ctx,
-                anodeX,
-                topY,
-                anodeW,
-                colH,
-                '#3a3a3a',
-                withAlpha(colors.textDim, 0.7),
-                'graphite',
-              );
-        drawLayers(ctx, cathodeX, topY, anodeW, colH, '#2a1a1a', 'rgba(184,115,51,0.8)', 'LiCoO₂');
-        ctx.save();
-        ctx.globalAlpha = 0.06;
-        ctx.fillStyle = colors.accent;
-        ctx.fillRect(electrolyteX, topY, electrolyteW, colH);
-        ctx.restore();
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(anodeX, topY, anodeW, colH);
-        ctx.strokeRect(cathodeX, topY, anodeW, colH);
-        function drawIonsIn(x: number, w: number, count: number) {
-                ctx.fillStyle = colors.blue;
-                ctx.font = 'bold 10px "JetBrains Mono", monospace';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                const cols = 4;
-                const rows = Math.ceil(N_LI / cols);
-                for (let i = 0; i < count; i++) {
-                  const r = Math.floor(i / cols);
-                  const c = i % cols;
-                  const ix = x + (w * (c + 0.5)) / cols;
-                  const iy = topY + (colH * (r + 0.5)) / rows;
-                  ctx.fillText('Li⁺', ix, iy);
-                }
-              }
-        drawIonsIn(anodeX, anodeW, s.nAnode);
-        drawIonsIn(cathodeX, anodeW, s.nCathode);
-        const shuttling = Math.max(0, Math.min(3, Math.round(Math.abs(0.5 - s.soc) * 6)));
-        for (let j = 0; j < shuttling; j++) {
-                const t = (phase + j * 0.33) % 1;
-                // direction depends on discharge (soc decreasing) — here just show motion
-                const dir = s.soc < 0.5 ? -1 : +1;
-                const xx = electrolyteX + (dir > 0 ? t : 1 - t) * electrolyteW;
-                const yy = topY + colH * (0.25 + 0.5 * ((j * 0.37) % 1));
-                drawLabel(ctx, {
-                  x: xx,
-                  y: yy,
-                  text: 'Li⁺',
-                  color: colors.blue,
-                  size: 11,
-                  align: 'center',
-                  baseline: 'middle',
-                  weight: 'bold',
-                });
-              }
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
+      let phase = ctx0.phase;
+      const s = stateRef.current;
+      phase += 0.03;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const anodeX = 40;
+      const anodeW = (W - 80) * 0.35;
+      const cathodeX = W - 40 - anodeW;
+      const electrolyteX = anodeX + anodeW;
+      const electrolyteW = cathodeX - electrolyteX;
+      const topY = 40;
+      const botY = H - 40;
+      const colH = botY - topY;
+      drawLayers(
+        ctx,
+        anodeX,
+        topY,
+        anodeW,
+        colH,
+        '#3a3a3a',
+        withAlpha(colors.textDim, 0.7),
+        'graphite',
+      );
+      drawLayers(ctx, cathodeX, topY, anodeW, colH, '#2a1a1a', 'rgba(184,115,51,0.8)', 'LiCoO₂');
+      ctx.save();
+      ctx.globalAlpha = 0.06;
+      ctx.fillStyle = colors.accent;
+      ctx.fillRect(electrolyteX, topY, electrolyteW, colH);
+      ctx.restore();
+      ctx.strokeStyle = colors.border;
+      ctx.strokeRect(anodeX, topY, anodeW, colH);
+      ctx.strokeRect(cathodeX, topY, anodeW, colH);
+      function drawIonsIn(x: number, w: number, count: number) {
+        ctx.fillStyle = colors.blue;
+        ctx.font = 'bold 10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('anode (graphite)', anodeX + anodeW / 2, topY - 4);
-        ctx.fillText('cathode (LiCoO₂)', cathodeX + anodeW / 2, topY - 4);
-        ctx.textBaseline = 'top';
-        ctx.fillText('electrolyte', electrolyteX + electrolyteW / 2, botY + 4);
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'left';
-        ctx.fillText(`SOC = ${(s.soc * 100).toFixed(0)} %`, 10, 10);
-        ctx0.phase = phase;
-      },
-      [],
-      () => ({ context: { phase: 0 } }),
-    );
+        ctx.textBaseline = 'middle';
+        const cols = 4;
+        const rows = Math.ceil(N_LI / cols);
+        for (let i = 0; i < count; i++) {
+          const r = Math.floor(i / cols);
+          const c = i % cols;
+          const ix = x + (w * (c + 0.5)) / cols;
+          const iy = topY + (colH * (r + 0.5)) / rows;
+          ctx.fillText('Li⁺', ix, iy);
+        }
+      }
+      drawIonsIn(anodeX, anodeW, s.nAnode);
+      drawIonsIn(cathodeX, anodeW, s.nCathode);
+      const shuttling = Math.max(0, Math.min(3, Math.round(Math.abs(0.5 - s.soc) * 6)));
+      for (let j = 0; j < shuttling; j++) {
+        const t = (phase + j * 0.33) % 1;
+        // direction depends on discharge (soc decreasing) — here just show motion
+        const dir = s.soc < 0.5 ? -1 : +1;
+        const xx = electrolyteX + (dir > 0 ? t : 1 - t) * electrolyteW;
+        const yy = topY + colH * (0.25 + 0.5 * ((j * 0.37) % 1));
+        drawLabel(ctx, {
+          x: xx,
+          y: yy,
+          text: 'Li⁺',
+          color: colors.blue,
+          size: 11,
+          align: 'center',
+          baseline: 'middle',
+          weight: 'bold',
+        });
+      }
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('anode (graphite)', anodeX + anodeW / 2, topY - 4);
+      ctx.fillText('cathode (LiCoO₂)', cathodeX + anodeW / 2, topY - 4);
+      ctx.textBaseline = 'top';
+      ctx.fillText('electrolyte', electrolyteX + electrolyteW / 2, botY + 4);
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      ctx.fillText(`SOC = ${(s.soc * 100).toFixed(0)} %`, 10, 10);
+      ctx0.phase = phase;
+    },
+    [],
+    () => ({ context: { phase: 0 } }),
+  );
 
   return (
     <Demo

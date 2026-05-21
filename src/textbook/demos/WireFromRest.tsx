@@ -28,7 +28,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -42,149 +41,149 @@ export function WireFromRestDemo({ figure }: Props) {
 
   const stateRef = useSimState({ vd, showIons, showElectrons, showTest });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
-        let phase = ctx0.phase;
-        const N = ctx0.N;
-        const s = stateRef.current;
-        phase += dt * s.vd * 60;
+    stateRef,
+    ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
+      let phase = ctx0.phase;
+      const N = ctx0.N;
+      const s = stateRef.current;
+      phase += dt * s.vd * 60;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const wireY = h * 0.65;
+      const wireH = 70;
+      const wireTop = wireY - wireH / 2;
+      const wireBot = wireY + wireH / 2;
+      const margin = 30;
+      const wireXL = margin;
+      const wireXR = w - margin;
+      const wireLen = wireXR - wireXL;
+      const grd = ctx.createLinearGradient(0, wireTop, 0, wireBot);
+      grd.addColorStop(0, withAlpha(colors.accent, 0.06));
+      grd.addColorStop(0.5, withAlpha(colors.accent, 0.16));
+      grd.addColorStop(1, withAlpha(colors.accent, 0.06));
+      ctx.fillStyle = grd;
+      ctx.fillRect(wireXL, wireTop, wireLen, wireH);
+      ctx.strokeStyle = colors.accent;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(wireXL, wireTop, wireLen, wireH);
+      if (s.showIons) {
+        for (let i = 0; i < N; i++) {
+          const x = wireXL + (i + 0.5) * (wireLen / N);
+          const y = wireY - 14;
+          ctx.fillStyle = colors.pink;
+          drawHalo(ctx, {
+            x: x,
+            y: y,
+            radius: 12,
+            color: colors.pink,
+            alpha: 0.55,
+            extent: 1,
+          });
+          ctx.fillStyle = colors.pink;
+          ctx.beginPath();
+          ctx.arc(x, y, 5, 0, Math.PI * 2);
+          ctx.fill();
+          drawLabel(ctx, {
+            x: x,
+            y: y,
+            text: '+',
+            color: colors.bg,
+            size: 8,
+            align: 'center',
+            baseline: 'middle',
+            weight: 'bold',
+          });
+        }
+      }
+      if (s.showElectrons) {
+        for (let i = 0; i < N; i++) {
+          const base = (i + 0.5) * (wireLen / N);
+          // drift visually: add phase, wrap around within wire length
+          const offset = (((base + phase) % wireLen) + wireLen) % wireLen;
+          const x = wireXL + offset;
+          const y = wireY + 14;
+          drawHalo(ctx, {
+            x: x,
+            y: y,
+            radius: 12,
+            color: colors.blue,
+            alpha: 0.55,
+            extent: 1,
+          });
+          ctx.fillStyle = colors.blue;
+          ctx.beginPath();
+          ctx.arc(x, y, 5, 0, Math.PI * 2);
+          ctx.fill();
+          drawLabel(ctx, {
+            x: x,
+            y: y,
+            text: '−',
+            color: colors.bg,
+            size: 9,
+            align: 'center',
+            baseline: 'middle',
+            weight: 'bold',
+          });
+        }
+      }
+      drawLabel(ctx, {
+        x: wireXR,
+        y: wireBot + 18,
+        text: 'I →   (electrons drift, ions fixed)',
+        color: colors.accent,
+        align: 'right',
+      });
+      if (s.showTest) {
+        const tx = w * 0.5;
+        const ty = h * 0.22;
+        // halo
+        drawHalo(ctx, {
+          x: tx,
+          y: ty,
+          radius: 22,
+          color: colors.accent,
+          alpha: 0.55,
+          extent: 1,
+        });
+        ctx.fillStyle = colors.accent;
+        ctx.beginPath();
+        ctx.arc(tx, ty, 9, 0, Math.PI * 2);
+        ctx.fill();
         ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const wireY = h * 0.65;
-        const wireH = 70;
-        const wireTop = wireY - wireH / 2;
-        const wireBot = wireY + wireH / 2;
-        const margin = 30;
-        const wireXL = margin;
-        const wireXR = w - margin;
-        const wireLen = wireXR - wireXL;
-        const grd = ctx.createLinearGradient(0, wireTop, 0, wireBot);
-        grd.addColorStop(0, withAlpha(colors.accent, 0.06));
-        grd.addColorStop(0.5, withAlpha(colors.accent, 0.16));
-        grd.addColorStop(1, withAlpha(colors.accent, 0.06));
-        ctx.fillStyle = grd;
-        ctx.fillRect(wireXL, wireTop, wireLen, wireH);
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(wireXL, wireTop, wireLen, wireH);
-        if (s.showIons) {
-                for (let i = 0; i < N; i++) {
-                  const x = wireXL + (i + 0.5) * (wireLen / N);
-                  const y = wireY - 14;
-                  ctx.fillStyle = colors.pink;
-                  drawHalo(ctx, {
-                    x: x,
-                    y: y,
-                    radius: 12,
-                    color: colors.pink,
-                    alpha: 0.55,
-                    extent: 1,
-                  });
-                  ctx.fillStyle = colors.pink;
-                  ctx.beginPath();
-                  ctx.arc(x, y, 5, 0, Math.PI * 2);
-                  ctx.fill();
-                  drawLabel(ctx, {
-                    x: x,
-                    y: y,
-                    text: '+',
-                    color: colors.bg,
-                    size: 8,
-                    align: 'center',
-                    baseline: 'middle',
-                    weight: 'bold',
-                  });
-                }
-              }
-        if (s.showElectrons) {
-                for (let i = 0; i < N; i++) {
-                  const base = (i + 0.5) * (wireLen / N);
-                  // drift visually: add phase, wrap around within wire length
-                  const offset = (((base + phase) % wireLen) + wireLen) % wireLen;
-                  const x = wireXL + offset;
-                  const y = wireY + 14;
-                  drawHalo(ctx, {
-                    x: x,
-                    y: y,
-                    radius: 12,
-                    color: colors.blue,
-                    alpha: 0.55,
-                    extent: 1,
-                  });
-                  ctx.fillStyle = colors.blue;
-                  ctx.beginPath();
-                  ctx.arc(x, y, 5, 0, Math.PI * 2);
-                  ctx.fill();
-                  drawLabel(ctx, {
-                    x: x,
-                    y: y,
-                    text: '−',
-                    color: colors.bg,
-                    size: 9,
-                    align: 'center',
-                    baseline: 'middle',
-                    weight: 'bold',
-                  });
-                }
-              }
+        ctx.font = 'bold 10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('+', tx, ty);
+
+        // "v = 0" label
         drawLabel(ctx, {
-                x: wireXR,
-                y: wireBot + 18,
-                text: 'I →   (electrons drift, ions fixed)',
-                color: colors.accent,
-                align: 'right',
-              });
-        if (s.showTest) {
-                const tx = w * 0.5;
-                const ty = h * 0.22;
-                // halo
-                drawHalo(ctx, {
-                  x: tx,
-                  y: ty,
-                  radius: 22,
-                  color: colors.accent,
-                  alpha: 0.55,
-                  extent: 1,
-                });
-                ctx.fillStyle = colors.accent;
-                ctx.beginPath();
-                ctx.arc(tx, ty, 9, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillStyle = colors.bg;
-                ctx.font = 'bold 10px "JetBrains Mono", monospace';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('+', tx, ty);
-        
-                // "v = 0" label
-                drawLabel(ctx, {
-                  x: tx,
-                  y: ty - 26,
-                  text: 'test charge   v = 0',
-                  color: colors.text,
-                });
-        
-                // "F = 0" marker (no arrow)
-                drawLabel(ctx, {
-                  x: tx,
-                  y: ty + 36,
-                  text: 'F = q v × B = 0',
-                  color: colors.teal,
-                  size: 11,
-                });
-              }
+          x: tx,
+          y: ty - 26,
+          text: 'test charge   v = 0',
+          color: colors.text,
+        });
+
+        // "F = 0" marker (no arrow)
         drawLabel(ctx, {
-                x: 14,
-                y: 18,
-                text: 'LAB FRAME · wire neutral, test charge at rest',
-                color: withAlpha(colors.textDim, 0.75),
-              });
-        ctx0.phase = phase;
-        ctx0.N = N;
-      },
-      [],
-      () => ({ context: { phase: 0, N: 22 } }),
-    );
+          x: tx,
+          y: ty + 36,
+          text: 'F = q v × B = 0',
+          color: colors.teal,
+          size: 11,
+        });
+      }
+      drawLabel(ctx, {
+        x: 14,
+        y: 18,
+        text: 'LAB FRAME · wire neutral, test charge at rest',
+        color: withAlpha(colors.textDim, 0.75),
+      });
+      ctx0.phase = phase;
+      ctx0.N = N;
+    },
+    [],
+    () => ({ context: { phase: 0, N: 22 } }),
+  );
 
   return (
     <Demo

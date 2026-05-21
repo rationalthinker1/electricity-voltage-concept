@@ -16,7 +16,6 @@ import { withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -49,94 +48,94 @@ export function ThinFilmDemo({ figure }: Props) {
   }
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const { thickNm, n2, n1, n3 } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const stripTop = 20;
-        const stripH = 32;
-        const stripLeft = 70;
-        const stripRight = W - 20;
-        const stripW = stripRight - stripLeft;
-        const halfFlip = n1 < n2 !== n2 < n3;
-        function reflectance(lamNm: number) {
-                const lam = lamNm; // both in nm
-                // Phase difference 2π · (2 n₂ t)/λ plus net π if halfFlip.
-                const phi = (2 * Math.PI * 2 * n2 * thickNm) / lam + (halfFlip ? Math.PI : 0);
-                // Equal-amplitude two-beam interference: R ∝ (1 - cos φ) / 2
-                const R = (1 - Math.cos(phi)) / 2;
-                return R;
-              }
-        for (let x = 0; x < stripW; x++) {
-                const lam = 380 + (x / stripW) * (740 - 380);
-                const R = reflectance(lam);
-                const [r, g, b] = wavelengthRGB(lam);
-                const alpha = 0.15 + 0.85 * R;
-                ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
-                ctx.fillRect(stripLeft + x, stripTop, 1, stripH);
-              }
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(stripLeft, stripTop, stripW, stripH);
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'right';
-        ctx.fillText('R(λ)', stripLeft - 6, stripTop + 18);
-        ctx.textAlign = 'left';
-        ctx.fillText('380 nm', stripLeft, stripTop + stripH + 12);
-        ctx.textAlign = 'right';
-        ctx.fillText('740 nm', stripRight, stripTop + stripH + 12);
-        const sectionY = 110;
-        const sectionH = 130;
-        ctx.fillStyle = withAlpha(colors.blue, 0.1);
-        ctx.fillRect(stripLeft, sectionY, stripW, 40);
-        const filmPxH = Math.max(6, Math.min(40, thickNm / 12));
-        ctx.fillStyle = 'rgba(255,255,255,0.18)';
-        ctx.fillRect(stripLeft, sectionY + 40, stripW, filmPxH);
-        ctx.fillStyle = withAlpha(colors.teal, 0.18);
-        ctx.fillRect(stripLeft, sectionY + 40 + filmPxH, stripW, sectionH - 40 - filmPxH);
-        ctx.strokeStyle = colors.textDim;
-        ctx.beginPath();
-        ctx.moveTo(stripLeft, sectionY + 40);
-        ctx.lineTo(stripRight, sectionY + 40);
-        ctx.moveTo(stripLeft, sectionY + 40 + filmPxH);
-        ctx.lineTo(stripRight, sectionY + 40 + filmPxH);
-        ctx.stroke();
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'left';
-        ctx.fillText(`air · n=${n1.toFixed(2)}`, stripLeft + 6, sectionY + 18);
-        ctx.fillText(
-                `film · n=${n2.toFixed(2)}, t=${thickNm.toFixed(0)} nm`,
-                stripLeft + 6,
-                sectionY + 40 + filmPxH / 2 + 3,
-              );
-        ctx.fillText(`water · n=${n3.toFixed(2)}`, stripLeft + 6, sectionY + 40 + filmPxH + 18);
-        const rx0 = stripLeft + 70;
-        ctx.strokeStyle = 'rgba(255,255,255,0.85)';
-        ctx.lineWidth = 1.4;
-        ctx.beginPath();
-        ctx.moveTo(rx0 - 18, sectionY + 8);
-        ctx.lineTo(rx0, sectionY + 40);
-        ctx.stroke();
-        ctx.strokeStyle = colors.accent;
-        ctx.beginPath();
-        ctx.moveTo(rx0, sectionY + 40);
-        ctx.lineTo(rx0 + 18, sectionY + 8);
-        ctx.stroke();
-        ctx.strokeStyle = withAlpha(colors.textDim, 0.6);
-        ctx.beginPath();
-        ctx.moveTo(rx0, sectionY + 40);
-        ctx.lineTo(rx0 + 8, sectionY + 40 + filmPxH);
-        ctx.stroke();
-        ctx.strokeStyle = colors.teal;
-        ctx.beginPath();
-        ctx.moveTo(rx0 + 8, sectionY + 40 + filmPxH);
-        ctx.lineTo(rx0 + 26, sectionY + 8);
-        ctx.stroke();
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const { thickNm, n2, n1, n3 } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const stripTop = 20;
+      const stripH = 32;
+      const stripLeft = 70;
+      const stripRight = W - 20;
+      const stripW = stripRight - stripLeft;
+      const halfFlip = n1 < n2 !== n2 < n3;
+      function reflectance(lamNm: number) {
+        const lam = lamNm; // both in nm
+        // Phase difference 2π · (2 n₂ t)/λ plus net π if halfFlip.
+        const phi = (2 * Math.PI * 2 * n2 * thickNm) / lam + (halfFlip ? Math.PI : 0);
+        // Equal-amplitude two-beam interference: R ∝ (1 - cos φ) / 2
+        const R = (1 - Math.cos(phi)) / 2;
+        return R;
+      }
+      for (let x = 0; x < stripW; x++) {
+        const lam = 380 + (x / stripW) * (740 - 380);
+        const R = reflectance(lam);
+        const [r, g, b] = wavelengthRGB(lam);
+        const alpha = 0.15 + 0.85 * R;
+        ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
+        ctx.fillRect(stripLeft + x, stripTop, 1, stripH);
+      }
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(stripLeft, stripTop, stripW, stripH);
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'right';
+      ctx.fillText('R(λ)', stripLeft - 6, stripTop + 18);
+      ctx.textAlign = 'left';
+      ctx.fillText('380 nm', stripLeft, stripTop + stripH + 12);
+      ctx.textAlign = 'right';
+      ctx.fillText('740 nm', stripRight, stripTop + stripH + 12);
+      const sectionY = 110;
+      const sectionH = 130;
+      ctx.fillStyle = withAlpha(colors.blue, 0.1);
+      ctx.fillRect(stripLeft, sectionY, stripW, 40);
+      const filmPxH = Math.max(6, Math.min(40, thickNm / 12));
+      ctx.fillStyle = 'rgba(255,255,255,0.18)';
+      ctx.fillRect(stripLeft, sectionY + 40, stripW, filmPxH);
+      ctx.fillStyle = withAlpha(colors.teal, 0.18);
+      ctx.fillRect(stripLeft, sectionY + 40 + filmPxH, stripW, sectionH - 40 - filmPxH);
+      ctx.strokeStyle = colors.textDim;
+      ctx.beginPath();
+      ctx.moveTo(stripLeft, sectionY + 40);
+      ctx.lineTo(stripRight, sectionY + 40);
+      ctx.moveTo(stripLeft, sectionY + 40 + filmPxH);
+      ctx.lineTo(stripRight, sectionY + 40 + filmPxH);
+      ctx.stroke();
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      ctx.fillText(`air · n=${n1.toFixed(2)}`, stripLeft + 6, sectionY + 18);
+      ctx.fillText(
+        `film · n=${n2.toFixed(2)}, t=${thickNm.toFixed(0)} nm`,
+        stripLeft + 6,
+        sectionY + 40 + filmPxH / 2 + 3,
+      );
+      ctx.fillText(`water · n=${n3.toFixed(2)}`, stripLeft + 6, sectionY + 40 + filmPxH + 18);
+      const rx0 = stripLeft + 70;
+      ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(rx0 - 18, sectionY + 8);
+      ctx.lineTo(rx0, sectionY + 40);
+      ctx.stroke();
+      ctx.strokeStyle = colors.accent;
+      ctx.beginPath();
+      ctx.moveTo(rx0, sectionY + 40);
+      ctx.lineTo(rx0 + 18, sectionY + 8);
+      ctx.stroke();
+      ctx.strokeStyle = withAlpha(colors.textDim, 0.6);
+      ctx.beginPath();
+      ctx.moveTo(rx0, sectionY + 40);
+      ctx.lineTo(rx0 + 8, sectionY + 40 + filmPxH);
+      ctx.stroke();
+      ctx.strokeStyle = colors.teal;
+      ctx.beginPath();
+      ctx.moveTo(rx0 + 8, sectionY + 40 + filmPxH);
+      ctx.lineTo(rx0 + 26, sectionY + 8);
+      ctx.stroke();
+    },
+    [],
+  );
 
   return (
     <Demo

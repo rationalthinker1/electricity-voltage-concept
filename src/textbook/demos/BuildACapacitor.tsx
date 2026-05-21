@@ -23,7 +23,6 @@ import { PHYS } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -98,173 +97,173 @@ export function BuildACapacitorDemo({ figure }: Props) {
   const drawDotsCount = useMemo(() => Math.min(60, Math.abs(clicks)), [clicks]);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
-        let phase = ctx0.phase;
-        const s = stateRef.current;
-        phase += 0.02;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const splitX = Math.min(W * 0.62, Math.max(W - 220, W * 0.55));
-        ctx.save();
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime, ctx0) => {
+      let phase = ctx0.phase;
+      const s = stateRef.current;
+      phase += 0.02;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const splitX = Math.min(W * 0.62, Math.max(W - 220, W * 0.55));
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, splitX, H);
+      ctx.clip();
+      const padX = 40;
+      const wScale = Math.sqrt(A_cm2 / 200);
+      const plateW = Math.max(140, Math.min(splitX - 2 * padX, 360 * wScale));
+      const dNorm = (Math.log10(d_mm) - Math.log10(0.1)) / (Math.log10(10) - Math.log10(0.1));
+      const gapPx = 22 + Math.max(0, Math.min(1, dNorm)) * (H * 0.45);
+      const plateThick = 7;
+      const cx = splitX / 2;
+      const cy = H / 2;
+      const xL = cx - plateW / 2;
+      const topY = cy - gapPx / 2 - plateThick / 2;
+      const botY = cy + gapPx / 2 + plateThick / 2;
+      const topPos = s.Q > 0;
+      const colTop = topPos ? '#ff3b6e' : '#5baef8';
+      const colBot = topPos ? '#5baef8' : '#ff3b6e';
+      const symTop = topPos ? '+' : '−';
+      const symBot = topPos ? '−' : '+';
+      if (Math.abs(s.Q) > 0) {
+        const E = Math.abs(s.V) / s.d_m;
+        const uE = 0.5 * PHYS.eps_0 * E * E;
+        const haze = Math.max(0.05, Math.min(0.5, Math.log10(uE + 1) * 0.1 + 0.1));
+        const grd = ctx.createLinearGradient(0, topY + plateThick, 0, botY - plateThick);
+        grd.addColorStop(0, `rgba(255,107,42,${haze * 0.4})`);
+        grd.addColorStop(0.5, `rgba(255,107,42,${haze})`);
+        grd.addColorStop(1, `rgba(255,107,42,${haze * 0.4})`);
+        ctx.fillStyle = grd;
+        ctx.fillRect(xL, topY + plateThick, plateW, botY - topY - plateThick * 2);
+      }
+      const usable = botY - topY - plateThick * 2 - 14;
+      if (Math.abs(s.Q) > 0 && usable > 8) {
+        const Nfield = Math.max(
+          3,
+          Math.min(22, Math.round(Math.log10(Math.abs(s.Q) / Q_PER_CLICK + 1) * 9)),
+        );
+        const arrLen = Math.min(20, usable * 0.45);
+        const dirDown = topPos; // E points + → −; if top is +, E points down
+        for (let i = 0; i < Nfield; i++) {
+          const fx = xL + 18 + ((plateW - 36) * (i + 0.5)) / Nfield;
+          const cycle = (phase * 60 + i * 9) % usable;
+          const y1 = dirDown ? topY + plateThick + 6 + cycle : botY - plateThick - 6 - cycle;
+          const y0 = dirDown ? y1 - arrLen : y1 + arrLen;
+          ctx.strokeStyle = colors.pink;
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          ctx.moveTo(fx, y0);
+          ctx.lineTo(fx, y1);
+          ctx.stroke();
+          ctx.fillStyle = colors.pink;
+          ctx.beginPath();
+          ctx.moveTo(fx, y1);
+          ctx.lineTo(fx - 3.5, y1 + (dirDown ? -6 : 6));
+          ctx.lineTo(fx + 3.5, y1 + (dirDown ? -6 : 6));
+          ctx.closePath();
+          ctx.fill();
+        }
+      }
+      drawPlate(ctx, xL, topY, plateW, plateThick, colTop);
+      drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, colBot);
+      drawChargeDots(ctx, xL, topY - 9, plateW, drawDotsCount, symTop, colTop);
+      drawChargeDots(ctx, xL, botY + plateThick + 9, plateW, drawDotsCount, symBot, colBot);
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(`N = ${clicks}`, 12, 10);
+      ctx.fillText(`Q_top = ${(s.Q * 1e9).toFixed(1)} nC`, 12, 24);
+      ctx.restore();
+      ctx.strokeStyle = colors.border;
+      ctx.beginPath();
+      ctx.moveTo(splitX, 0);
+      ctx.lineTo(splitX, H);
+      ctx.stroke();
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(splitX, 0, W - splitX, H);
+      ctx.clip();
+      const pX = splitX + 18;
+      const pW = W - splitX - 30;
+      const gH = Math.max(80, H * 0.55);
+      const gY = 24;
+      ctx.strokeStyle = colors.border;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(pX, gY, pW, gH);
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('V (line)  ·  U (curve)  vs  N', pX, gY - 4);
+      const hist = historyRef.current;
+      if (hist.length > 1) {
+        let maxV = 1e-12,
+          maxU = 1e-24;
+        for (const p of hist) {
+          if (Math.abs(p.V) > maxV) maxV = Math.abs(p.V);
+          if (Math.abs(p.U) > maxU) maxU = Math.abs(p.U);
+        }
+        const lastN = hist[hist.length - 1]!.n;
+        const xN = (n: number) => pX + (n / Math.max(lastN, 1)) * pW;
+        const yV = (v: number) => gY + gH - (Math.abs(v) / maxV) * (gH * 0.92);
+        const yU = (u: number) => gY + gH - (Math.abs(u) / maxU) * (gH * 0.92);
+
+        // V line (pink)
+        ctx.strokeStyle = colors.pink;
+        ctx.lineWidth = 1.6;
         ctx.beginPath();
-        ctx.rect(0, 0, splitX, H);
-        ctx.clip();
-        const padX = 40;
-        const wScale = Math.sqrt(A_cm2 / 200);
-        const plateW = Math.max(140, Math.min(splitX - 2 * padX, 360 * wScale));
-        const dNorm = (Math.log10(d_mm) - Math.log10(0.1)) / (Math.log10(10) - Math.log10(0.1));
-        const gapPx = 22 + Math.max(0, Math.min(1, dNorm)) * (H * 0.45);
-        const plateThick = 7;
-        const cx = splitX / 2;
-        const cy = H / 2;
-        const xL = cx - plateW / 2;
-        const topY = cy - gapPx / 2 - plateThick / 2;
-        const botY = cy + gapPx / 2 + plateThick / 2;
-        const topPos = s.Q > 0;
-        const colTop = topPos ? '#ff3b6e' : '#5baef8';
-        const colBot = topPos ? '#5baef8' : '#ff3b6e';
-        const symTop = topPos ? '+' : '−';
-        const symBot = topPos ? '−' : '+';
-        if (Math.abs(s.Q) > 0) {
-                  const E = Math.abs(s.V) / s.d_m;
-                  const uE = 0.5 * PHYS.eps_0 * E * E;
-                  const haze = Math.max(0.05, Math.min(0.5, Math.log10(uE + 1) * 0.1 + 0.1));
-                  const grd = ctx.createLinearGradient(0, topY + plateThick, 0, botY - plateThick);
-                  grd.addColorStop(0, `rgba(255,107,42,${haze * 0.4})`);
-                  grd.addColorStop(0.5, `rgba(255,107,42,${haze})`);
-                  grd.addColorStop(1, `rgba(255,107,42,${haze * 0.4})`);
-                  ctx.fillStyle = grd;
-                  ctx.fillRect(xL, topY + plateThick, plateW, botY - topY - plateThick * 2);
-                }
-        const usable = botY - topY - plateThick * 2 - 14;
-        if (Math.abs(s.Q) > 0 && usable > 8) {
-                  const Nfield = Math.max(
-                    3,
-                    Math.min(22, Math.round(Math.log10(Math.abs(s.Q) / Q_PER_CLICK + 1) * 9)),
-                  );
-                  const arrLen = Math.min(20, usable * 0.45);
-                  const dirDown = topPos; // E points + → −; if top is +, E points down
-                  for (let i = 0; i < Nfield; i++) {
-                    const fx = xL + 18 + ((plateW - 36) * (i + 0.5)) / Nfield;
-                    const cycle = (phase * 60 + i * 9) % usable;
-                    const y1 = dirDown ? topY + plateThick + 6 + cycle : botY - plateThick - 6 - cycle;
-                    const y0 = dirDown ? y1 - arrLen : y1 + arrLen;
-                    ctx.strokeStyle = colors.pink;
-                    ctx.lineWidth = 1.3;
-                    ctx.beginPath();
-                    ctx.moveTo(fx, y0);
-                    ctx.lineTo(fx, y1);
-                    ctx.stroke();
-                    ctx.fillStyle = colors.pink;
-                    ctx.beginPath();
-                    ctx.moveTo(fx, y1);
-                    ctx.lineTo(fx - 3.5, y1 + (dirDown ? -6 : 6));
-                    ctx.lineTo(fx + 3.5, y1 + (dirDown ? -6 : 6));
-                    ctx.closePath();
-                    ctx.fill();
-                  }
-                }
-        drawPlate(ctx, xL, topY, plateW, plateThick, colTop);
-        drawPlate(ctx, xL, botY - plateThick, plateW, plateThick, colBot);
-        drawChargeDots(ctx, xL, topY - 9, plateW, drawDotsCount, symTop, colTop);
-        drawChargeDots(ctx, xL, botY + plateThick + 9, plateW, drawDotsCount, symBot, colBot);
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText(`N = ${clicks}`, 12, 10);
-        ctx.fillText(`Q_top = ${(s.Q * 1e9).toFixed(1)} nC`, 12, 24);
-        ctx.restore();
-        ctx.strokeStyle = colors.border;
-        ctx.beginPath();
-        ctx.moveTo(splitX, 0);
-        ctx.lineTo(splitX, H);
+        for (let i = 0; i < hist.length; i++) {
+          const p = hist[i]!;
+          const x = xN(p.n);
+          const y = yV(p.V);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
         ctx.stroke();
-        ctx.save();
+
+        // U curve (amber)
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1.6;
         ctx.beginPath();
-        ctx.rect(splitX, 0, W - splitX, H);
-        ctx.clip();
-        const pX = splitX + 18;
-        const pW = W - splitX - 30;
-        const gH = Math.max(80, H * 0.55);
-        const gY = 24;
-        ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(pX, gY, pW, gH);
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('V (line)  ·  U (curve)  vs  N', pX, gY - 4);
-        const hist = historyRef.current;
-        if (hist.length > 1) {
-                  let maxV = 1e-12,
-                    maxU = 1e-24;
-                  for (const p of hist) {
-                    if (Math.abs(p.V) > maxV) maxV = Math.abs(p.V);
-                    if (Math.abs(p.U) > maxU) maxU = Math.abs(p.U);
-                  }
-                  const lastN = hist[hist.length - 1]!.n;
-                  const xN = (n: number) => pX + (n / Math.max(lastN, 1)) * pW;
-                  const yV = (v: number) => gY + gH - (Math.abs(v) / maxV) * (gH * 0.92);
-                  const yU = (u: number) => gY + gH - (Math.abs(u) / maxU) * (gH * 0.92);
-        
-                  // V line (pink)
-                  ctx.strokeStyle = colors.pink;
-                  ctx.lineWidth = 1.6;
-                  ctx.beginPath();
-                  for (let i = 0; i < hist.length; i++) {
-                    const p = hist[i]!;
-                    const x = xN(p.n);
-                    const y = yV(p.V);
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                  }
-                  ctx.stroke();
-        
-                  // U curve (amber)
-                  ctx.strokeStyle = colors.accent;
-                  ctx.lineWidth = 1.6;
-                  ctx.beginPath();
-                  for (let i = 0; i < hist.length; i++) {
-                    const p = hist[i]!;
-                    const x = xN(p.n);
-                    const y = yU(p.U);
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                  }
-                  ctx.stroke();
-                }
-        const barY = gY + gH + 24;
-        const barH = 12;
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '9px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('Work to add the next charge  ∝  V', pX, barY - 4);
-        const histMaxV = (() => {
-                  let mv = 1e-12;
-                  for (const p of historyRef.current) if (Math.abs(p.V) > mv) mv = Math.abs(p.V);
-                  return mv;
-                })();
-        const fill = Math.max(0, Math.min(1, Math.abs(s.V) / Math.max(histMaxV, 1e-12)));
-        ctx.fillStyle = colors.border;
-        ctx.fillRect(pX, barY, pW, barH);
-        ctx.fillStyle = colors.accent;
-        ctx.fillRect(pX, barY, pW * fill, barH);
-        ctx.fillStyle = colors.text;
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'top';
-        ctx.fillText(`${(s.workForNext * 1e9).toFixed(3)} nJ`, pX + pW, barY + barH + 4);
-        ctx.textAlign = 'left';
-        ctx.fillText('next click', pX, barY + barH + 4);
-        ctx.restore();
-        ctx0.phase = phase;
-      },
-      [],
-      () => ({ context: { phase: 0 } }),
-    );
+        for (let i = 0; i < hist.length; i++) {
+          const p = hist[i]!;
+          const x = xN(p.n);
+          const y = yU(p.U);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      const barY = gY + gH + 24;
+      const barH = 12;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('Work to add the next charge  ∝  V', pX, barY - 4);
+      const histMaxV = (() => {
+        let mv = 1e-12;
+        for (const p of historyRef.current) if (Math.abs(p.V) > mv) mv = Math.abs(p.V);
+        return mv;
+      })();
+      const fill = Math.max(0, Math.min(1, Math.abs(s.V) / Math.max(histMaxV, 1e-12)));
+      ctx.fillStyle = colors.border;
+      ctx.fillRect(pX, barY, pW, barH);
+      ctx.fillStyle = colors.accent;
+      ctx.fillRect(pX, barY, pW * fill, barH);
+      ctx.fillStyle = colors.text;
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'top';
+      ctx.fillText(`${(s.workForNext * 1e9).toFixed(3)} nJ`, pX + pW, barY + barH + 4);
+      ctx.textAlign = 'left';
+      ctx.fillText('next click', pX, barY + barH + 4);
+      ctx.restore();
+      ctx0.phase = phase;
+    },
+    [],
+    () => ({ context: { phase: 0 } }),
+  );
 
   return (
     <Demo

@@ -17,7 +17,7 @@ import { drawLabel } from '@/lib/canvasLayout';
 import { drawGlowPath, type CircuitElement } from '@/lib/canvasPrimitives';
 import { useCircuitCache } from '@/lib/useCircuitCache';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { fmtResistance, fmtTime } from "@/lib/formatters";
+import { fmtResistance, fmtTime } from '@/lib/formatters';
 
 type Mode = 'open' | 'charging' | 'discharging';
 
@@ -79,15 +79,26 @@ export function RCTransientDemo({ figure }: Props) {
       const yTop = cy - 50;
       const yBot = cy + 50;
       const elements: CircuitElement[] = [
-        { kind: 'wire', points: [{ x: batX, y: yTop }, { x: swX - 14, y: yTop }] },
+        {
+          kind: 'wire',
+          points: [
+            { x: batX, y: yTop },
+            { x: swX - 14, y: yTop },
+          ],
+        },
         {
           kind: 'switch',
           at: { x: swX, y: yTop },
           label: mode.toUpperCase(),
-          state:
-            mode === 'charging' ? 'closed' : mode === 'discharging' ? 'open-down' : 'open-up',
+          state: mode === 'charging' ? 'closed' : mode === 'discharging' ? 'open-down' : 'open-up',
         },
-        { kind: 'wire', points: [{ x: swX + 14, y: yTop }, { x: resX - 22, y: yTop }] },
+        {
+          kind: 'wire',
+          points: [
+            { x: swX + 14, y: yTop },
+            { x: resX - 22, y: yTop },
+          ],
+        },
         {
           kind: 'resistor',
           from: { x: resX - 20, y: yTop },
@@ -95,10 +106,20 @@ export function RCTransientDemo({ figure }: Props) {
           label: fmtResistance(R),
           labelOffset: { x: 0, y: -10 },
         },
-        { kind: 'wire', points: [{ x: resX + 22, y: yTop }, { x: capX, y: yTop }] },
         {
           kind: 'wire',
-          points: [{ x: capX, y: cy + 14 }, { x: capX, y: yBot }, { x: batX, y: yBot }],
+          points: [
+            { x: resX + 22, y: yTop },
+            { x: capX, y: yTop },
+          ],
+        },
+        {
+          kind: 'wire',
+          points: [
+            { x: capX, y: cy + 14 },
+            { x: capX, y: yBot },
+            { x: batX, y: yBot },
+          ],
         },
         {
           kind: 'battery',
@@ -114,239 +135,242 @@ export function RCTransientDemo({ figure }: Props) {
     [mode, R],
   );
 
-  const setup = useCallback((info: CanvasInfo) => {
-    const { ctx, w, h, dpr } = info;
-    let raf = 0;
-    stateRef.current.lastT = performance.now();
+  const setup = useCallback(
+    (info: CanvasInfo) => {
+      const { ctx, w, h, dpr } = info;
+      let raf = 0;
+      stateRef.current.lastT = performance.now();
 
-    function draw() {
-      const st = stateRef.current;
-      const now = performance.now();
-      let dt = (now - st.lastT) / 1000;
-      st.lastT = now;
-      if (dt > 0.1) dt = 0.1;
+      function draw() {
+        const st = stateRef.current;
+        const now = performance.now();
+        let dt = (now - st.lastT) / 1000;
+        st.lastT = now;
+        if (dt > 0.1) dt = 0.1;
 
-      // Integrate Vc
-      const tauNow = st.R * st.C;
-      if (tauNow > 0) {
-        if (st.mode === 'charging') {
-          // dVc/dt = (V0 − Vc)/τ
-          st.Vc += (V0 - st.Vc) * (dt / tauNow);
-        } else if (st.mode === 'discharging') {
-          // dVc/dt = −Vc/τ
-          st.Vc -= st.Vc * (dt / tauNow);
+        // Integrate Vc
+        const tauNow = st.R * st.C;
+        if (tauNow > 0) {
+          if (st.mode === 'charging') {
+            // dVc/dt = (V0 − Vc)/τ
+            st.Vc += (V0 - st.Vc) * (dt / tauNow);
+          } else if (st.mode === 'discharging') {
+            // dVc/dt = −Vc/τ
+            st.Vc -= st.Vc * (dt / tauNow);
+          }
         }
-      }
-      st.simT += dt;
-      st.trace.push({ t: st.simT, v: st.Vc });
+        st.simT += dt;
+        st.trace.push({ t: st.simT, v: st.Vc });
 
-      // Plot window: 6τ
-      const PLOT_DURATION = Math.max(6 * tauNow, 0.05);
-      const tCut = Math.max(0, st.simT - PLOT_DURATION);
-      while (st.trace.length && st.trace[0].t < tCut) st.trace.shift();
+        // Plot window: 6τ
+        const PLOT_DURATION = Math.max(6 * tauNow, 0.05);
+        const tCut = Math.max(0, st.simT - PLOT_DURATION);
+        while (st.trace.length && st.trace[0].t < tCut) st.trace.shift();
 
-      ctx.fillStyle = getCanvasColors().bg;
-      ctx.fillRect(0, 0, w, h);
+        ctx.fillStyle = getCanvasColors().bg;
+        ctx.fillRect(0, 0, w, h);
 
-      const splitX = Math.min(w * 0.42, 320);
+        const splitX = Math.min(w * 0.42, 320);
 
-      const cy = h / 2;
-      const padX = 30;
-      const innerW = splitX - 2 * padX;
-      const batX = padX + 10;
-      const swX = padX + innerW * 0.35;
-      const resX = padX + innerW * 0.55;
-      const capX = padX + innerW * 0.85;
-      const yTop = cy - 50;
-      const yBot = cy + 50;
+        const cy = h / 2;
+        const padX = 30;
+        const innerW = splitX - 2 * padX;
+        const batX = padX + 10;
+        const swX = padX + innerW * 0.35;
+        const resX = padX + innerW * 0.55;
+        const capX = padX + innerW * 0.85;
+        const yTop = cy - 50;
+        const yBot = cy + 50;
 
-      const plotX = splitX + 36;
-      const plotW = w - splitX - 56;
-      const plotY = 28;
-      const plotH = h - 60;
-      const yV = (v: number) => plotY + plotH - (v / V0) * plotH;
-      const y0line = yV(V0);
-      const y63 = yV(V0 * (1 - 1 / Math.E));
+        const plotX = splitX + 36;
+        const plotW = w - splitX - 56;
+        const plotY = 28;
+        const plotH = h - 60;
+        const yV = (v: number) => plotY + plotH - (v / V0) * plotH;
+        const y0line = yV(V0);
+        const y63 = yV(V0 * (1 - 1 / Math.E));
 
-      const off = getStaticSchematic(w, h, dpr);
-      if (off) ctx.drawImage(off, 0, 0, w, h);
+        const off = getStaticSchematic(w, h, dpr);
+        if (off) ctx.drawImage(off, 0, 0, w, h);
 
-      // Plot frame + grid + V0 + 63% reference lines + their labels — used to
-      // be baked into the same offscreen canvas as the schematic; pulled into
-      // per-frame ctx calls so the cache is a plain CircuitSpec. Cost is
-      // ~12 draw calls, negligible.
-      ctx.strokeStyle = getCanvasColors().border;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(plotX, plotY, plotW, plotH);
-      for (let i = 0; i <= 4; i++) {
-        const y = plotY + (i * plotH) / 4;
-        ctx.beginPath();
-        ctx.moveTo(plotX, y);
-        ctx.lineTo(plotX + plotW, y);
-        ctx.stroke();
-      }
-      ctx.save();
-      ctx.globalAlpha = 0.35;
-      ctx.strokeStyle = getCanvasColors().accent;
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath();
-      ctx.moveTo(plotX, y0line);
-      ctx.lineTo(plotX + plotW, y0line);
-      ctx.stroke();
-      ctx.restore();
-      ctx.save();
-      ctx.globalAlpha = 0.35;
-      ctx.strokeStyle = getCanvasColors().teal;
-      ctx.beginPath();
-      ctx.moveTo(plotX, y63);
-      ctx.lineTo(plotX + plotW, y63);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.restore();
-      ctx.fillStyle = getCanvasColors().accent;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`V₀ = ${V0} V`, plotX + plotW - 4, y0line - 2);
-      ctx.fillStyle = getCanvasColors().teal;
-      ctx.fillText('63% V₀', plotX + plotW - 4, y63 - 2);
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('V_C(t)', plotX, 8);
-
-      // Divider between the two panes.
-      ctx.strokeStyle = getCanvasColors().border;
-      ctx.beginPath();
-      ctx.moveTo(splitX, 0);
-      ctx.lineTo(splitX, h);
-      ctx.stroke();
-
-      // ── LEFT: schematic dynamic overlays
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(0, 0, splitX, h);
-      ctx.clip();
-
-      // Dynamic overlay: capacitor plates whose colour brightens as Vc rises.
-      drawCapacitorV(ctx, capX, cy, st.Vc, V0);
-
-      // Dynamic overlay: animated current dots, only while mode != open and dV is meaningful.
-      const dV = st.mode === 'charging' ? V0 - st.Vc : st.mode === 'discharging' ? st.Vc : 0;
-      const I = Math.abs(dV) / Math.max(st.R, 1e-9);
-      const Iscale = Math.min(1, I / (V0 / Math.max(st.R, 1e-9)));
-      if (st.mode === 'charging' && Iscale > 0.005) {
-        drawCurrentDotsPath(
-          ctx,
-          st.simT * 60,
-          [
-            { x: batX, y: yTop },
-            { x: capX, y: yTop },
-            { x: capX, y: cy - 16 },
-          ],
-          Iscale,
-        );
-        drawCurrentDotsPath(
-          ctx,
-          st.simT * 60,
-          [
-            { x: capX, y: cy + 16 },
-            { x: capX, y: yBot },
-            { x: batX, y: yBot },
-          ],
-          Iscale,
-        );
-      } else if (st.mode === 'discharging' && Iscale > 0.005) {
-        // Discharge loops the other way — but with the switch in discharge position
-        // we model the cap as discharging through R back to its own other plate.
-        drawCurrentDotsPath(
-          ctx,
-          st.simT * 60,
-          [
-            { x: capX, y: cy - 16 },
-            { x: capX, y: yTop },
-            { x: resX + 22, y: yTop },
-            { x: resX - 22, y: yTop },
-            { x: swX, y: yTop },
-            { x: swX, y: cy + 30 },
-            { x: capX, y: cy + 30 },
-            { x: capX, y: cy + 16 },
-          ],
-          Iscale,
-        );
-      }
-
-      // Dynamic overlay: live R / C / τ readout in the schematic pane.
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        `R = ${fmtResistance(st.R)}   C = ${(st.C * 1e6).toFixed(0)} µF   τ = ${fmtTime(tauNow)}`,
-        10,
-        8,
-      );
-
-      ctx.restore();
-
-      // ── RIGHT: plot dynamic overlays (τ marker, glow trace, live readouts).
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(splitX, 0, w - splitX, h);
-      ctx.clip();
-
-      const xT = (tt: number) => plotX + (tt / PLOT_DURATION) * plotW;
-      const xTau = xT(tauNow);
-
-      // Dynamic overlay: τ vertical marker — its position slides with R*C.
-      ctx.save();
-      ctx.globalAlpha = 0.6;
-      ctx.strokeStyle = getCanvasColors().teal;
-      ctx.setLineDash([3, 3]);
-      if (xTau < plotX + plotW) {
-        ctx.beginPath();
-        ctx.moveTo(xTau, plotY);
-        ctx.lineTo(xTau, plotY + plotH);
-        ctx.stroke();
-      }
-      ctx.setLineDash([]);
-
-      // Dynamic overlay: V_C(t) trace with a soft halo (drawGlowPath avoids shadowBlur).
-      if (st.trace.length > 1) {
-        const tracePts: { x: number; y: number }[] = new Array(st.trace.length);
-        for (let i = 0; i < st.trace.length; i++) {
-          const p = st.trace[i];
-          tracePts[i] = { x: xT(p.t - tCut), y: yV(p.v) };
+        // Plot frame + grid + V0 + 63% reference lines + their labels — used to
+        // be baked into the same offscreen canvas as the schematic; pulled into
+        // per-frame ctx calls so the cache is a plain CircuitSpec. Cost is
+        // ~12 draw calls, negligible.
+        ctx.strokeStyle = getCanvasColors().border;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(plotX, plotY, plotW, plotH);
+        for (let i = 0; i <= 4; i++) {
+          const y = plotY + (i * plotH) / 4;
+          ctx.beginPath();
+          ctx.moveTo(plotX, y);
+          ctx.lineTo(plotX + plotW, y);
+          ctx.stroke();
         }
-        drawGlowPath(ctx, tracePts, {
-          color: withAlpha(getCanvasColors().pink, 0.95),
-          glowColor: withAlpha(getCanvasColors().pink, 0.35),
-          lineWidth: 1.8,
-          glowWidth: 6,
-        });
+        ctx.save();
+        ctx.globalAlpha = 0.35;
+        ctx.strokeStyle = getCanvasColors().accent;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(plotX, y0line);
+        ctx.lineTo(plotX + plotW, y0line);
+        ctx.stroke();
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.35;
+        ctx.strokeStyle = getCanvasColors().teal;
+        ctx.beginPath();
+        ctx.moveTo(plotX, y63);
+        ctx.lineTo(plotX + plotW, y63);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+        ctx.fillStyle = getCanvasColors().accent;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(`V₀ = ${V0} V`, plotX + plotW - 4, y0line - 2);
+        ctx.fillStyle = getCanvasColors().teal;
+        ctx.fillText('63% V₀', plotX + plotW - 4, y63 - 2);
+        ctx.fillStyle = getCanvasColors().textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText('V_C(t)', plotX, 8);
+
+        // Divider between the two panes.
+        ctx.strokeStyle = getCanvasColors().border;
+        ctx.beginPath();
+        ctx.moveTo(splitX, 0);
+        ctx.lineTo(splitX, h);
+        ctx.stroke();
+
+        // ── LEFT: schematic dynamic overlays
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0, 0, splitX, h);
+        ctx.clip();
+
+        // Dynamic overlay: capacitor plates whose colour brightens as Vc rises.
+        drawCapacitorV(ctx, capX, cy, st.Vc, V0);
+
+        // Dynamic overlay: animated current dots, only while mode != open and dV is meaningful.
+        const dV = st.mode === 'charging' ? V0 - st.Vc : st.mode === 'discharging' ? st.Vc : 0;
+        const I = Math.abs(dV) / Math.max(st.R, 1e-9);
+        const Iscale = Math.min(1, I / (V0 / Math.max(st.R, 1e-9)));
+        if (st.mode === 'charging' && Iscale > 0.005) {
+          drawCurrentDotsPath(
+            ctx,
+            st.simT * 60,
+            [
+              { x: batX, y: yTop },
+              { x: capX, y: yTop },
+              { x: capX, y: cy - 16 },
+            ],
+            Iscale,
+          );
+          drawCurrentDotsPath(
+            ctx,
+            st.simT * 60,
+            [
+              { x: capX, y: cy + 16 },
+              { x: capX, y: yBot },
+              { x: batX, y: yBot },
+            ],
+            Iscale,
+          );
+        } else if (st.mode === 'discharging' && Iscale > 0.005) {
+          // Discharge loops the other way — but with the switch in discharge position
+          // we model the cap as discharging through R back to its own other plate.
+          drawCurrentDotsPath(
+            ctx,
+            st.simT * 60,
+            [
+              { x: capX, y: cy - 16 },
+              { x: capX, y: yTop },
+              { x: resX + 22, y: yTop },
+              { x: resX - 22, y: yTop },
+              { x: swX, y: yTop },
+              { x: swX, y: cy + 30 },
+              { x: capX, y: cy + 30 },
+              { x: capX, y: cy + 16 },
+            ],
+            Iscale,
+          );
+        }
+
+        // Dynamic overlay: live R / C / τ readout in the schematic pane.
+        ctx.fillStyle = getCanvasColors().textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(
+          `R = ${fmtResistance(st.R)}   C = ${(st.C * 1e6).toFixed(0)} µF   τ = ${fmtTime(tauNow)}`,
+          10,
+          8,
+        );
+
+        ctx.restore();
+
+        // ── RIGHT: plot dynamic overlays (τ marker, glow trace, live readouts).
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(splitX, 0, w - splitX, h);
+        ctx.clip();
+
+        const xT = (tt: number) => plotX + (tt / PLOT_DURATION) * plotW;
+        const xTau = xT(tauNow);
+
+        // Dynamic overlay: τ vertical marker — its position slides with R*C.
+        ctx.save();
+        ctx.globalAlpha = 0.6;
+        ctx.strokeStyle = getCanvasColors().teal;
+        ctx.setLineDash([3, 3]);
+        if (xTau < plotX + plotW) {
+          ctx.beginPath();
+          ctx.moveTo(xTau, plotY);
+          ctx.lineTo(xTau, plotY + plotH);
+          ctx.stroke();
+        }
+        ctx.setLineDash([]);
+
+        // Dynamic overlay: V_C(t) trace with a soft halo (drawGlowPath avoids shadowBlur).
+        if (st.trace.length > 1) {
+          const tracePts: { x: number; y: number }[] = new Array(st.trace.length);
+          for (let i = 0; i < st.trace.length; i++) {
+            const p = st.trace[i];
+            tracePts[i] = { x: xT(p.t - tCut), y: yV(p.v) };
+          }
+          drawGlowPath(ctx, tracePts, {
+            color: withAlpha(getCanvasColors().pink, 0.95),
+            glowColor: withAlpha(getCanvasColors().pink, 0.35),
+            lineWidth: 1.8,
+            glowWidth: 6,
+          });
+        }
+
+        // Dynamic overlay: τ-marker label + live V_C readout + (6τ) window legend.
+        ctx.restore();
+        ctx.fillStyle = getCanvasColors().teal;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(`τ = ${fmtTime(tauNow)}`, Math.min(xTau + 4, plotX + plotW - 80), plotY + 4);
+        ctx.fillStyle = getCanvasColors().textDim;
+        ctx.textAlign = 'right';
+        ctx.fillText(`V_C = ${st.Vc.toFixed(2)} V`, plotX + plotW, 8);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(`window: ${fmtTime(PLOT_DURATION)} (6τ)`, plotX + plotW / 2, h - 6);
+
+        ctx.restore();
+        raf = requestAnimationFrame(draw);
       }
-
-      // Dynamic overlay: τ-marker label + live V_C readout + (6τ) window legend.
-      ctx.restore();
-      ctx.fillStyle = getCanvasColors().teal;
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`τ = ${fmtTime(tauNow)}`, Math.min(xTau + 4, plotX + plotW - 80), plotY + 4);
-      ctx.fillStyle = getCanvasColors().textDim;
-      ctx.textAlign = 'right';
-      ctx.fillText(`V_C = ${st.Vc.toFixed(2)} V`, plotX + plotW, 8);
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(`window: ${fmtTime(PLOT_DURATION)} (6τ)`, plotX + plotW / 2, h - 6);
-
-      ctx.restore();
       raf = requestAnimationFrame(draw);
-    }
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
-  }, [getStaticSchematic]);
+      return () => cancelAnimationFrame(raf);
+    },
+    [getStaticSchematic],
+  );
 
   return (
     <Demo

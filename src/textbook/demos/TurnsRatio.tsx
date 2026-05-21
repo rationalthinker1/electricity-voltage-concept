@@ -15,7 +15,6 @@ import { drawAxes, drawHLine, drawLinePlot } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -34,81 +33,80 @@ export function TurnsRatioDemo({ figure }: Props) {
   }, [ratio]);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, simTime) => {
-        const { ratio } = stateRef.current;
-        const t = simTime;
-        const tVis = t * (2 / F_HZ);
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padL = 50,
-                padR = 30;
-        const padT = 24,
-                padB = 30;
-        const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
-        // Symmetric voltage axis. yMax originally was 200; we keep the same
-        // ±yMax span and the 8 % bottom/top padding by scaling the data range
-        // a touch wider than ±yMax so the curves don't ride the frame.
-        const yMax = 200;
-        const yRange = yMax / 0.92;
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, simTime) => {
+      const { ratio } = stateRef.current;
+      const t = simTime;
+      const tVis = t * (2 / F_HZ);
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padL = 50,
+        padR = 30;
+      const padT = 24,
+        padB = 30;
+      const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
+      // Symmetric voltage axis. yMax originally was 200; we keep the same
+      // ±yMax span and the 8 % bottom/top padding by scaling the data range
+      // a touch wider than ±yMax so the curves don't ride the frame.
+      const yMax = 200;
+      const yRange = yMax / 0.92;
 
-        // Tick marks at -150,-100,-50,0,50,100,150 — labels at -150,0,+150 only.
-        const yGridTicks = [-150, -100, -50, 0, 50, 100, 150];
-        const yLabelSet = new Set([-150, 0, 150]);
-        drawAxes(ctx, rect, {
-          xMin: 0,
-          xMax: 1,
-          yMin: -yRange,
-          yMax: yRange,
-          xTicks: [],
-          yTicks: yGridTicks,
-          gridColor: colors.border,
-          axisColor: colors.border,
-          yTickFormat: (v) =>
-            yLabelSet.has(v) ? (v > 0 ? '+' : '') + v.toFixed(0) : '',
-        });
-        // The 0-axis on top of the dashed grid for extra weight.
-        drawHLine(ctx, rect, 0, -yRange, yRange, {
-          color: colors.borderStrong,
-          alpha: 1,
-          dash: undefined,
-        });
-        const tWindow = 2 / F_HZ;
-        const samples = 320;
-        const omega = 2 * Math.PI * F_HZ;
-        const primPts: { x: number; y: number }[] = [];
-        const secPts: { x: number; y: number }[] = [];
-        for (let i = 0; i <= samples; i++) {
-          const tau = (i / samples) * tWindow;
-          const u = i / samples; // 0..1
-          const v = VP_PEAK * Math.sin(omega * (tVis + tau));
-          primPts.push({ x: u, y: v });
-          secPts.push({ x: u, y: VP_PEAK * ratio * Math.sin(omega * (tVis + tau)) });
-        }
-        drawLinePlot(ctx, rect, primPts, 0, 1, -yRange, yRange, {
-          color: colors.pink,
-          lineWidth: 1.8,
-        });
-        drawLinePlot(ctx, rect, secPts, 0, 1, -yRange, yRange, {
-          color: colors.accent,
-          lineWidth: 1.8,
-        });
-        const plotW = rect.w;
-        const plotH = rect.h;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillStyle = colors.pink;
-        ctx.fillText('— V_p (170 V peak)', padL + 8, padT + 6);
-        ctx.fillStyle = colors.accent;
-        ctx.fillText(`— V_s = n · V_p`, padL + 8, padT + 22);
-        ctx.fillStyle = withAlpha(colors.textDim, 0.6);
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'top';
-        ctx.fillText('t (60 Hz · 2 cycles)', padL + plotW, padT + plotH + 4);
-      },
-      [],
-    );
+      // Tick marks at -150,-100,-50,0,50,100,150 — labels at -150,0,+150 only.
+      const yGridTicks = [-150, -100, -50, 0, 50, 100, 150];
+      const yLabelSet = new Set([-150, 0, 150]);
+      drawAxes(ctx, rect, {
+        xMin: 0,
+        xMax: 1,
+        yMin: -yRange,
+        yMax: yRange,
+        xTicks: [],
+        yTicks: yGridTicks,
+        gridColor: colors.border,
+        axisColor: colors.border,
+        yTickFormat: (v) => (yLabelSet.has(v) ? (v > 0 ? '+' : '') + v.toFixed(0) : ''),
+      });
+      // The 0-axis on top of the dashed grid for extra weight.
+      drawHLine(ctx, rect, 0, -yRange, yRange, {
+        color: colors.borderStrong,
+        alpha: 1,
+        dash: undefined,
+      });
+      const tWindow = 2 / F_HZ;
+      const samples = 320;
+      const omega = 2 * Math.PI * F_HZ;
+      const primPts: { x: number; y: number }[] = [];
+      const secPts: { x: number; y: number }[] = [];
+      for (let i = 0; i <= samples; i++) {
+        const tau = (i / samples) * tWindow;
+        const u = i / samples; // 0..1
+        const v = VP_PEAK * Math.sin(omega * (tVis + tau));
+        primPts.push({ x: u, y: v });
+        secPts.push({ x: u, y: VP_PEAK * ratio * Math.sin(omega * (tVis + tau)) });
+      }
+      drawLinePlot(ctx, rect, primPts, 0, 1, -yRange, yRange, {
+        color: colors.pink,
+        lineWidth: 1.8,
+      });
+      drawLinePlot(ctx, rect, secPts, 0, 1, -yRange, yRange, {
+        color: colors.accent,
+        lineWidth: 1.8,
+      });
+      const plotW = rect.w;
+      const plotH = rect.h;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillStyle = colors.pink;
+      ctx.fillText('— V_p (170 V peak)', padL + 8, padT + 6);
+      ctx.fillStyle = colors.accent;
+      ctx.fillText(`— V_s = n · V_p`, padL + 8, padT + 22);
+      ctx.fillStyle = withAlpha(colors.textDim, 0.6);
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'top';
+      ctx.fillText('t (60 Hz · 2 cycles)', padL + plotW, padT + plotH + 4);
+    },
+    [],
+  );
 
   return (
     <Demo

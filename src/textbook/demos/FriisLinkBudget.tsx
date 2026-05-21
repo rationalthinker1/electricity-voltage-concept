@@ -17,7 +17,6 @@ import { PHYS } from '@/lib/physics';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -41,81 +40,81 @@ export function FriisLinkBudgetDemo({ figure }: Props) {
   const fsplDb = 10 * Math.log10(fspl);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const { Ptmw, GtDbi, GrDbi, fMHz, dM } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const cy = H / 2;
-        const txX = 60;
-        const rxX = W - 60;
-        const Pt_ = Ptmw * 1e-3;
-        const f_ = fMHz * 1e6;
-        const lam_ = PHYS.c / f_;
-        const fspl_ = Math.pow(lam_ / (4 * Math.PI * dM), 2);
-        const Pr_ = Pt_ * Math.pow(10, GtDbi / 10) * Math.pow(10, GrDbi / 10) * fspl_;
-        const PrdBm = 10 * Math.log10(Pr_ / 1e-3);
-        const t = performance.now() / 1000;
-        const ringSpeedPxPerSec = 80;
-        const spacing = 60;
-        for (let i = 0; i < 8; i++) {
-                const phase = (t * ringSpeedPxPerSec + i * spacing) % (rxX - txX);
-                const r = phase;
-                if (r < 5) continue;
-                const alpha = Math.max(0, 0.55 - (r / (rxX - txX)) * 0.4);
-                ctx.strokeStyle = `rgba(255,107,42,${alpha})`;
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                ctx.arc(txX, cy, r, -Math.PI / 4, Math.PI / 4);
-                ctx.stroke();
-              }
-        ctx.save();
-        ctx.globalAlpha = 0.85;
-        ctx.strokeStyle = colors.text;
-        ctx.lineWidth = 2.5;
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const { Ptmw, GtDbi, GrDbi, fMHz, dM } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const cy = H / 2;
+      const txX = 60;
+      const rxX = W - 60;
+      const Pt_ = Ptmw * 1e-3;
+      const f_ = fMHz * 1e6;
+      const lam_ = PHYS.c / f_;
+      const fspl_ = Math.pow(lam_ / (4 * Math.PI * dM), 2);
+      const Pr_ = Pt_ * Math.pow(10, GtDbi / 10) * Math.pow(10, GrDbi / 10) * fspl_;
+      const PrdBm = 10 * Math.log10(Pr_ / 1e-3);
+      const t = performance.now() / 1000;
+      const ringSpeedPxPerSec = 80;
+      const spacing = 60;
+      for (let i = 0; i < 8; i++) {
+        const phase = (t * ringSpeedPxPerSec + i * spacing) % (rxX - txX);
+        const r = phase;
+        if (r < 5) continue;
+        const alpha = Math.max(0, 0.55 - (r / (rxX - txX)) * 0.4);
+        ctx.strokeStyle = `rgba(255,107,42,${alpha})`;
+        ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.moveTo(txX, cy - 22);
-        ctx.lineTo(txX, cy + 22);
+        ctx.arc(txX, cy, r, -Math.PI / 4, Math.PI / 4);
         ctx.stroke();
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.restore();
-        ctx.fillStyle = colors.accent;
-        ctx.textAlign = 'center';
-        ctx.fillText(`TX · ${Ptmw.toFixed(0)} mW`, txX, cy + 40);
-        ctx.fillText(`G_t = ${GtDbi.toFixed(1)} dBi`, txX, cy + 54);
-        ctx.strokeStyle = colors.teal;
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.moveTo(rxX, cy - 22);
-        ctx.lineTo(rxX, cy + 22);
-        ctx.stroke();
-        ctx.fillStyle = colors.teal;
-        ctx.fillText(`RX`, rxX, cy + 40);
-        ctx.fillText(`G_r = ${GrDbi.toFixed(1)} dBi`, rxX, cy + 54);
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.setLineDash([4, 4]);
-        ctx.beginPath();
-        ctx.moveTo(txX, cy);
-        ctx.lineTo(rxX, cy);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.fillStyle = colors.textDim;
-        ctx.fillText(
-                `d = ${dM.toFixed(1)} m, f = ${fMHz.toFixed(0)} MHz, λ = ${((PHYS.c / (fMHz * 1e6)) * 1000).toFixed(1)} mm`,
-                (txX + rxX) / 2,
-                cy - 14,
-              );
-        drawLabel(ctx, {
-                x: (txX + rxX) / 2,
-                y: 22,
-                text: `P_r ≈ ${PrdBm.toFixed(1)} dBm`,
-                color: '#ffd040',
-                size: 12,
-                weight: 'bold',
-              });
-      },
-      [],
-    );
+      }
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.strokeStyle = colors.text;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(txX, cy - 22);
+      ctx.lineTo(txX, cy + 22);
+      ctx.stroke();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.restore();
+      ctx.fillStyle = colors.accent;
+      ctx.textAlign = 'center';
+      ctx.fillText(`TX · ${Ptmw.toFixed(0)} mW`, txX, cy + 40);
+      ctx.fillText(`G_t = ${GtDbi.toFixed(1)} dBi`, txX, cy + 54);
+      ctx.strokeStyle = colors.teal;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(rxX, cy - 22);
+      ctx.lineTo(rxX, cy + 22);
+      ctx.stroke();
+      ctx.fillStyle = colors.teal;
+      ctx.fillText(`RX`, rxX, cy + 40);
+      ctx.fillText(`G_r = ${GrDbi.toFixed(1)} dBi`, rxX, cy + 54);
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(txX, cy);
+      ctx.lineTo(rxX, cy);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = colors.textDim;
+      ctx.fillText(
+        `d = ${dM.toFixed(1)} m, f = ${fMHz.toFixed(0)} MHz, λ = ${((PHYS.c / (fMHz * 1e6)) * 1000).toFixed(1)} mm`,
+        (txX + rxX) / 2,
+        cy - 14,
+      );
+      drawLabel(ctx, {
+        x: (txX + rxX) / 2,
+        y: 22,
+        text: `P_r ≈ ${PrdBm.toFixed(1)} dBm`,
+        color: '#ffd040',
+        size: 12,
+        weight: 'bold',
+      });
+    },
+    [],
+  );
 
   return (
     <Demo

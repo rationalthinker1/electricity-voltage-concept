@@ -21,7 +21,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -65,165 +64,165 @@ export function ExcitationControlDemo({ figure }: Props) {
   }, [iField, loaded, pRef]);
 
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { iField, loaded, pRef } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padL = 56,
-                padR = 24,
-                padT = 22,
-                padB = 38;
-        const plotW = w - padL - padR;
-        const plotH = h - padT - padB;
-        ctx.strokeStyle = colors.border;
-        ctx.strokeRect(padL, padT, plotW, plotH);
-        ctx.strokeStyle = colors.border;
-        for (let i = 1; i < 5; i++) {
-                const x = padL + (i / 5) * plotW;
-                ctx.beginPath();
-                ctx.moveTo(x, padT);
-                ctx.lineTo(x, padT + plotH);
-                ctx.stroke();
-                const y = padT + (i / 5) * plotH;
-                ctx.beginPath();
-                ctx.moveTo(padL, y);
-                ctx.lineTo(padL + plotW, y);
-                ctx.stroke();
-              }
-        const ifMin = 0.4,
-                ifMax = 2.5;
-        const xAt = (iF: number) => padL + ((iF - ifMin) / (ifMax - ifMin)) * plotW;
-        if (!loaded) {
-                // No-load: V_t = E_f = K_F·i_F (linear). Plot V_t vs i_F.
-                const yMax = K_F * ifMax;
-                const yAt = (v: number) => padT + plotH - (v / yMax) * plotH;
-                ctx.strokeStyle = colors.accent;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                for (let i = 0; i <= 60; i++) {
-                  const iF = ifMin + (i / 60) * (ifMax - ifMin);
-                  const Vt = K_F * iF;
-                  const x = xAt(iF);
-                  const y = yAt(Vt);
-                  if (i === 0) ctx.moveTo(x, y);
-                  else ctx.lineTo(x, y);
-                }
-                ctx.stroke();
-                // Marker
-                ctx.fillStyle = colors.accent;
-                ctx.beginPath();
-                ctx.arc(xAt(iField), yAt(K_F * iField), 6, 0, Math.PI * 2);
-                ctx.fill();
-                // Y axis label
-                ctx.fillStyle = colors.textDim;
-                ctx.font = '10px "JetBrains Mono", monospace';
-                ctx.textAlign = 'right';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('|V_t| (pu)', padL - 6, padT + plotH / 2);
-                // Title
-                ctx.textAlign = 'left';
-                ctx.textBaseline = 'top';
-                ctx.fillText('no-load: |V_t| = |E_f| = k_f · I_field', padL + 6, padT + 4);
-              } else {
-                // Loaded: V curve — |I_a| vs i_F, for fixed P.
-                const yMax = 2.0;
-                const yAt = (v: number) => padT + plotH - (v / yMax) * plotH;
-                // V curve
-                ctx.strokeStyle = colors.accent;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                let started = false;
-                for (let i = 0; i <= 200; i++) {
-                  const iF = ifMin + (i / 200) * (ifMax - ifMin);
-                  const Ef = K_F * iF;
-                  const sinD = (pRef * X_S) / (V_GRID * Ef);
-                  if (Math.abs(sinD) > 1) continue;
-                  const d = Math.asin(sinD);
-                  const Q = ((V_GRID * Ef) / X_S) * Math.cos(d) - (V_GRID * V_GRID) / X_S;
-                  const Ia = Math.sqrt(pRef * pRef + Q * Q) / V_GRID;
-                  const x = xAt(iF);
-                  const y = yAt(Math.min(Ia, yMax));
-                  if (!started) {
-                    ctx.moveTo(x, y);
-                    started = true;
-                  } else ctx.lineTo(x, y);
-                }
-                ctx.stroke();
-        
-                // Q = 0 reference (unity power-factor) - dashed horizontal
-                // Find min of curve by sampling.
-                ctx.strokeStyle = colors.teal;
-                ctx.setLineDash([4, 4]);
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(padL, yAt(pRef));
-                ctx.lineTo(padL + plotW, yAt(pRef));
-                ctx.stroke();
-                ctx.setLineDash([]);
-                ctx.save();
-                ctx.globalAlpha = 0.8;
-                ctx.fillStyle = colors.teal;
-                ctx.font = '10px "JetBrains Mono", monospace';
-                ctx.textAlign = 'left';
-                ctx.textBaseline = 'bottom';
-                ctx.fillText('|I_a| = P at unity PF', padL + 6, yAt(pRef) - 2);
-        
-                // Marker
-                const Ef = K_F * iField;
-                const sinD = (pRef * X_S) / (V_GRID * Ef);
-                if (Math.abs(sinD) <= 1) {
-                  const d = Math.asin(sinD);
-                  const Q = ((V_GRID * Ef) / X_S) * Math.cos(d) - (V_GRID * V_GRID) / X_S;
-                  const Ia = Math.sqrt(pRef * pRef + Q * Q) / V_GRID;
-                  ctx.fillStyle = Q > 0 ? '#ff3b6e' : '#5baef8';
-                  ctx.beginPath();
-                  ctx.arc(xAt(iField), yAt(Math.min(Ia, yMax)), 6, 0, Math.PI * 2);
-                  ctx.fill();
-                }
-        
-                // Y axis label
-                ctx.restore();
-                ctx.fillStyle = colors.textDim;
-                ctx.font = '10px "JetBrains Mono", monospace';
-                ctx.textAlign = 'right';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('|I_a| (pu)', padL - 6, padT + plotH / 2);
-                // Title
-                ctx.textAlign = 'left';
-                ctx.textBaseline = 'top';
-                ctx.fillText(
-                  `loaded V-curve: |I_a| vs I_field at P = ${pRef.toFixed(2)} pu`,
-                  padL + 6,
-                  padT + 4,
-                );
-        
-                // Region labels
-                ctx.save();
-                ctx.globalAlpha = 0.75;
-                ctx.fillStyle = colors.blue;
-                ctx.textAlign = 'left';
-                ctx.textBaseline = 'bottom';
-                ctx.fillText('under-excited (Q < 0)', padL + 8, padT + plotH - 6);
-                ctx.restore();
-                ctx.save();
-                ctx.globalAlpha = 0.75;
-                ctx.fillStyle = colors.pink;
-                ctx.textAlign = 'right';
-                ctx.fillText('over-excited (Q > 0)', padL + plotW - 8, padT + plotH - 6);
-                ctx.restore();
-              }
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { iField, loaded, pRef } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padL = 56,
+        padR = 24,
+        padT = 22,
+        padB = 38;
+      const plotW = w - padL - padR;
+      const plotH = h - padT - padB;
+      ctx.strokeStyle = colors.border;
+      ctx.strokeRect(padL, padT, plotW, plotH);
+      ctx.strokeStyle = colors.border;
+      for (let i = 1; i < 5; i++) {
+        const x = padL + (i / 5) * plotW;
+        ctx.beginPath();
+        ctx.moveTo(x, padT);
+        ctx.lineTo(x, padT + plotH);
+        ctx.stroke();
+        const y = padT + (i / 5) * plotH;
+        ctx.beginPath();
+        ctx.moveTo(padL, y);
+        ctx.lineTo(padL + plotW, y);
+        ctx.stroke();
+      }
+      const ifMin = 0.4,
+        ifMax = 2.5;
+      const xAt = (iF: number) => padL + ((iF - ifMin) / (ifMax - ifMin)) * plotW;
+      if (!loaded) {
+        // No-load: V_t = E_f = K_F·i_F (linear). Plot V_t vs i_F.
+        const yMax = K_F * ifMax;
+        const yAt = (v: number) => padT + plotH - (v / yMax) * plotH;
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let i = 0; i <= 60; i++) {
+          const iF = ifMin + (i / 60) * (ifMax - ifMin);
+          const Vt = K_F * iF;
+          const x = xAt(iF);
+          const y = yAt(Vt);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        // Marker
+        ctx.fillStyle = colors.accent;
+        ctx.beginPath();
+        ctx.arc(xAt(iField), yAt(K_F * iField), 6, 0, Math.PI * 2);
+        ctx.fill();
+        // Y axis label
         ctx.fillStyle = colors.textDim;
         ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('|V_t| (pu)', padL - 6, padT + plotH / 2);
+        // Title
+        ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
-        for (let iF = 0.5; iF <= 2.5; iF += 0.5) {
-                ctx.fillText(iF.toFixed(1), xAt(iF), padT + plotH + 4);
-              }
-        ctx.fillText('I_field (pu) →', padL + plotW / 2, padT + plotH + 20);
-      },
-      [],
-    );
+        ctx.fillText('no-load: |V_t| = |E_f| = k_f · I_field', padL + 6, padT + 4);
+      } else {
+        // Loaded: V curve — |I_a| vs i_F, for fixed P.
+        const yMax = 2.0;
+        const yAt = (v: number) => padT + plotH - (v / yMax) * plotH;
+        // V curve
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        let started = false;
+        for (let i = 0; i <= 200; i++) {
+          const iF = ifMin + (i / 200) * (ifMax - ifMin);
+          const Ef = K_F * iF;
+          const sinD = (pRef * X_S) / (V_GRID * Ef);
+          if (Math.abs(sinD) > 1) continue;
+          const d = Math.asin(sinD);
+          const Q = ((V_GRID * Ef) / X_S) * Math.cos(d) - (V_GRID * V_GRID) / X_S;
+          const Ia = Math.sqrt(pRef * pRef + Q * Q) / V_GRID;
+          const x = xAt(iF);
+          const y = yAt(Math.min(Ia, yMax));
+          if (!started) {
+            ctx.moveTo(x, y);
+            started = true;
+          } else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // Q = 0 reference (unity power-factor) - dashed horizontal
+        // Find min of curve by sampling.
+        ctx.strokeStyle = colors.teal;
+        ctx.setLineDash([4, 4]);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padL, yAt(pRef));
+        ctx.lineTo(padL + plotW, yAt(pRef));
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.save();
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = colors.teal;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('|I_a| = P at unity PF', padL + 6, yAt(pRef) - 2);
+
+        // Marker
+        const Ef = K_F * iField;
+        const sinD = (pRef * X_S) / (V_GRID * Ef);
+        if (Math.abs(sinD) <= 1) {
+          const d = Math.asin(sinD);
+          const Q = ((V_GRID * Ef) / X_S) * Math.cos(d) - (V_GRID * V_GRID) / X_S;
+          const Ia = Math.sqrt(pRef * pRef + Q * Q) / V_GRID;
+          ctx.fillStyle = Q > 0 ? '#ff3b6e' : '#5baef8';
+          ctx.beginPath();
+          ctx.arc(xAt(iField), yAt(Math.min(Ia, yMax)), 6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Y axis label
+        ctx.restore();
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('|I_a| (pu)', padL - 6, padT + plotH / 2);
+        // Title
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(
+          `loaded V-curve: |I_a| vs I_field at P = ${pRef.toFixed(2)} pu`,
+          padL + 6,
+          padT + 4,
+        );
+
+        // Region labels
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = colors.blue;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('under-excited (Q < 0)', padL + 8, padT + plotH - 6);
+        ctx.restore();
+        ctx.save();
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = colors.pink;
+        ctx.textAlign = 'right';
+        ctx.fillText('over-excited (Q > 0)', padL + plotW - 8, padT + plotH - 6);
+        ctx.restore();
+      }
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      for (let iF = 0.5; iF <= 2.5; iF += 0.5) {
+        ctx.fillText(iF.toFixed(1), xAt(iF), padT + plotH + 4);
+      }
+      ctx.fillText('I_field (pu) →', padL + plotW / 2, padT + plotH + 20);
+    },
+    [],
+  );
 
   return (
     <Demo

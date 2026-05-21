@@ -34,7 +34,6 @@ import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -74,50 +73,41 @@ export function SuperpositionDemo({ figure }: Props) {
 
   const stateRef = useSimState({ onlyV1, onlyV2, both, v1on, v2on });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { onlyV1, onlyV2, both, v1on, v2on } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const colW = w / 3;
-        drawPanel(
-                ctx,
-                0,
-                0,
-                colW,
-                h,
-                'V1 only (V2 → short)',
-                onlyV1,
-                withAlpha(colors.pink, 0.85),
-              );
-        drawPanel(
-                ctx,
-                colW,
-                0,
-                colW,
-                h,
-                'V2 only (V1 → short)',
-                onlyV2,
-                withAlpha(colors.blue, 0.85),
-              );
-        const label =
-                v1on && v2on
-                  ? 'Both on (live)'
-                  : v1on
-                    ? 'Live: V1 only'
-                    : v2on
-                      ? 'Live: V2 only'
-                      : 'Both off';
-        drawPanel(ctx, 2 * colW, 0, colW, h, label, both, withAlpha(colors.accent, 0.95));
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('+', colW, 4);
-        ctx.fillText('=', 2 * colW, 4);
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { onlyV1, onlyV2, both, v1on, v2on } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const colW = w / 3;
+      drawPanel(ctx, 0, 0, colW, h, 'V1 only (V2 → short)', onlyV1, withAlpha(colors.pink, 0.85));
+      drawPanel(
+        ctx,
+        colW,
+        0,
+        colW,
+        h,
+        'V2 only (V1 → short)',
+        onlyV2,
+        withAlpha(colors.blue, 0.85),
+      );
+      const label =
+        v1on && v2on
+          ? 'Both on (live)'
+          : v1on
+            ? 'Live: V1 only'
+            : v2on
+              ? 'Live: V2 only'
+              : 'Both off';
+      drawPanel(ctx, 2 * colW, 0, colW, h, label, both, withAlpha(colors.accent, 0.95));
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('+', colW, 4);
+      ctx.fillText('=', 2 * colW, 4);
+    },
+    [],
+  );
 
   return (
     <Demo

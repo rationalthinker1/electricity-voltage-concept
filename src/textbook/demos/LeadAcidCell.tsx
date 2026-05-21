@@ -17,7 +17,6 @@ import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -46,66 +45,66 @@ export function LeadAcidCellDemo({ figure }: Props) {
 
   const stateRef = useSimState({ soc, SG, V_cell });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
-        const s = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, W, H);
-        const jarX = 40,
-                jarY = 30;
-        const jarW = W - 80,
-                jarH = H - 70;
-        ctx.strokeStyle = colors.borderStrong;
-        ctx.lineWidth = 1.5;
-        ctx.strokeRect(jarX, jarY, jarW, jarH);
-        const acidAlpha = 0.1 + 0.18 * s.soc;
-        ctx.fillStyle = `rgba(255,107,42,${acidAlpha})`;
-        ctx.fillRect(jarX + 2, jarY + 12, jarW - 4, jarH - 14);
-        const plateW = 36;
-        const gap = 30;
-        const negX = jarX + jarW / 2 - gap / 2 - plateW;
-        const posX = jarX + jarW / 2 + gap / 2;
-        const plateY = jarY + 14;
-        const plateH = jarH - 22;
-        ctx.fillStyle = '#7d8082';
-        ctx.fillRect(negX, plateY, plateW, plateH);
-        ctx.fillStyle = '#3e3232';
-        ctx.fillRect(posX, plateY, plateW, plateH);
-        const dischargeFrac = 1 - s.soc;
-        if (dischargeFrac > 0.02) {
-                ctx.fillStyle = `rgba(236,235,229,${0.3 + 0.5 * dischargeFrac})`;
-                const nodCount = Math.floor(dischargeFrac * 60);
-                for (let i = 0; i < nodCount; i++) {
-                  // Use deterministic-ish pattern from i for stability
-                  const seed = (i * 2654435761) >>> 0;
-                  const r1 = (seed & 0xffff) / 0xffff;
-                  const r2 = ((seed >>> 16) & 0xffff) / 0xffff;
-                  const py = plateY + 6 + r1 * (plateH - 12);
-                  ctx.beginPath();
-                  ctx.arc(negX + 4 + r2 * (plateW - 8), py, 1.6, 0, Math.PI * 2);
-                  ctx.arc(posX + 4 + r2 * (plateW - 8), py, 1.6, 0, Math.PI * 2);
-                  ctx.fill();
-                }
-              }
-        ctx.fillStyle = colors.textDim;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('Pb', negX + plateW / 2, plateY - 2);
-        ctx.fillText('PbO₂', posX + plateW / 2, plateY - 2);
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('H₂SO₄(aq)', jarX + 8, jarY + jarH - 16);
-        ctx.save();
-        ctx.globalAlpha = 0.75;
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('discharge:  Pb + PbO₂ + 2 H₂SO₄  →  2 PbSO₄ + 2 H₂O', jarX, jarY + jarH + 10);
-        ctx.restore();
-      },
-      [],
-    );
+    stateRef,
+    ({ ctx, w: W, h: H, colors }, _state, _dt, _simTime) => {
+      const s = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, W, H);
+      const jarX = 40,
+        jarY = 30;
+      const jarW = W - 80,
+        jarH = H - 70;
+      ctx.strokeStyle = colors.borderStrong;
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(jarX, jarY, jarW, jarH);
+      const acidAlpha = 0.1 + 0.18 * s.soc;
+      ctx.fillStyle = `rgba(255,107,42,${acidAlpha})`;
+      ctx.fillRect(jarX + 2, jarY + 12, jarW - 4, jarH - 14);
+      const plateW = 36;
+      const gap = 30;
+      const negX = jarX + jarW / 2 - gap / 2 - plateW;
+      const posX = jarX + jarW / 2 + gap / 2;
+      const plateY = jarY + 14;
+      const plateH = jarH - 22;
+      ctx.fillStyle = '#7d8082';
+      ctx.fillRect(negX, plateY, plateW, plateH);
+      ctx.fillStyle = '#3e3232';
+      ctx.fillRect(posX, plateY, plateW, plateH);
+      const dischargeFrac = 1 - s.soc;
+      if (dischargeFrac > 0.02) {
+        ctx.fillStyle = `rgba(236,235,229,${0.3 + 0.5 * dischargeFrac})`;
+        const nodCount = Math.floor(dischargeFrac * 60);
+        for (let i = 0; i < nodCount; i++) {
+          // Use deterministic-ish pattern from i for stability
+          const seed = (i * 2654435761) >>> 0;
+          const r1 = (seed & 0xffff) / 0xffff;
+          const r2 = ((seed >>> 16) & 0xffff) / 0xffff;
+          const py = plateY + 6 + r1 * (plateH - 12);
+          ctx.beginPath();
+          ctx.arc(negX + 4 + r2 * (plateW - 8), py, 1.6, 0, Math.PI * 2);
+          ctx.arc(posX + 4 + r2 * (plateW - 8), py, 1.6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('Pb', negX + plateW / 2, plateY - 2);
+      ctx.fillText('PbO₂', posX + plateW / 2, plateY - 2);
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('H₂SO₄(aq)', jarX + 8, jarY + jarH - 16);
+      ctx.save();
+      ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText('discharge:  Pb + PbO₂ + 2 H₂SO₄  →  2 PbSO₄ + 2 H₂O', jarX, jarY + jarH + 10);
+      ctx.restore();
+    },
+    [],
+  );
 
   return (
     <Demo

@@ -15,7 +15,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/compo
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { fmtResistance, fmtTime } from "@/lib/formatters";
+import { fmtResistance, fmtTime } from '@/lib/formatters';
 
 interface Props {
   figure?: string;

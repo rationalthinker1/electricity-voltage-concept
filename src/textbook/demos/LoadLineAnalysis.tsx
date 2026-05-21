@@ -18,7 +18,6 @@ import { drawAxes, drawLinePlot, makePlotMappers } from '@/lib/drawPlot';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
 
-
 interface Props {
   figure?: string;
 }
@@ -61,113 +60,113 @@ export function LoadLineAnalysisDemo({ figure }: Props) {
 
   const stateRef = useSimState({ V_CC, R_C, I_B });
   const setup = useSimLoop(
-      stateRef,
-      ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
-        const { V_CC, R_C, I_B } = stateRef.current;
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
-        const padL = 60,
-                padR = 20,
-                padT = 22,
-                padB = 36;
-        const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
-        const Vmin = 0;
-        const Vmax = Math.max(15, V_CC * 1.05);
-        const Imax = Math.max(0.015, (V_CC / R_C) * 1.1);
-        const vStep = Vmax > 20 ? 5 : 2;
-        const iStep = Imax > 0.02 ? 0.005 : 0.002;
-        const xTicks: number[] = [];
-        for (let v = 0; v <= Vmax + 1e-9; v += vStep) xTicks.push(v);
-        const yTicks: number[] = [];
-        for (let i = 0; i <= Imax + 1e-9; i += iStep) yTicks.push(i);
+    stateRef,
+    ({ ctx, w, h, colors }, _state, _dt, _simTime) => {
+      const { V_CC, R_C, I_B } = stateRef.current;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
+      const padL = 60,
+        padR = 20,
+        padT = 22,
+        padB = 36;
+      const rect = { x: padL, y: padT, w: w - padL - padR, h: h - padT - padB };
+      const Vmin = 0;
+      const Vmax = Math.max(15, V_CC * 1.05);
+      const Imax = Math.max(0.015, (V_CC / R_C) * 1.1);
+      const vStep = Vmax > 20 ? 5 : 2;
+      const iStep = Imax > 0.02 ? 0.005 : 0.002;
+      const xTicks: number[] = [];
+      for (let v = 0; v <= Vmax + 1e-9; v += vStep) xTicks.push(v);
+      const yTicks: number[] = [];
+      for (let i = 0; i <= Imax + 1e-9; i += iStep) yTicks.push(i);
 
-        drawAxes(ctx, rect, {
-          xMin: Vmin,
-          xMax: Vmax,
-          yMin: 0,
-          yMax: Imax,
-          xTicks,
-          yTicks,
-          xLabel: 'V_CE (volts)',
-          xTickFormat: (v) => v.toFixed(0),
-          yTickFormat: (i) => `${(i * 1000).toFixed(1)} mA`,
+      drawAxes(ctx, rect, {
+        xMin: Vmin,
+        xMax: Vmax,
+        yMin: 0,
+        yMax: Imax,
+        xTicks,
+        yTicks,
+        xLabel: 'V_CE (volts)',
+        xTickFormat: (v) => v.toFixed(0),
+        yTickFormat: (i) => `${(i * 1000).toFixed(1)} mA`,
+      });
+
+      const { xOf, yOf } = makePlotMappers(rect, Vmin, Vmax, 0, Imax);
+
+      const traces = [0.5 * I_B, I_B, 1.5 * I_B];
+      traces.forEach((IB, k) => {
+        const lit = k === 1;
+        const col = lit ? withAlpha(colors.accent, 0.95) : withAlpha(colors.accent, 0.4);
+        const N = 200;
+        const pts: { x: number; y: number }[] = [];
+        for (let j = 0; j <= N; j++) {
+          const v = Vmin + (j / N) * (Vmax - Vmin);
+          pts.push({ x: v, y: Math.min(Imax, I_C(v, IB, beta)) });
+        }
+        drawLinePlot(ctx, rect, pts, Vmin, Vmax, 0, Imax, {
+          color: col,
+          lineWidth: lit ? 2.0 : 1.2,
         });
-
-        const { xOf, yOf } = makePlotMappers(rect, Vmin, Vmax, 0, Imax);
-
-        const traces = [0.5 * I_B, I_B, 1.5 * I_B];
-        traces.forEach((IB, k) => {
-                const lit = k === 1;
-                const col = lit ? withAlpha(colors.accent, 0.95) : withAlpha(colors.accent, 0.4);
-                const N = 200;
-                const pts: { x: number; y: number }[] = [];
-                for (let j = 0; j <= N; j++) {
-                  const v = Vmin + (j / N) * (Vmax - Vmin);
-                  pts.push({ x: v, y: Math.min(Imax, I_C(v, IB, beta)) });
-                }
-                drawLinePlot(ctx, rect, pts, Vmin, Vmax, 0, Imax, {
-                  color: col,
-                  lineWidth: lit ? 2.0 : 1.2,
-                });
-                drawLabel(ctx, {
-                  x: padL + rect.w - 6,
-                  y: yOf(Math.min(Imax, I_C(Vmax, IB, beta))) - 8,
-                  text: `I_B = ${(IB * 1e6).toFixed(1)} µA`,
-                  color: col,
-                  align: 'right',
-                  baseline: 'middle',
-                });
-              });
-        const I_sat = V_CC / R_C;
-        drawLinePlot(
-          ctx,
-          rect,
-          [
-            { x: V_CC, y: 0 },
-            { x: 0, y: Math.min(Imax, I_sat) },
-          ],
-          Vmin,
-          Vmax,
-          0,
-          Imax,
-          { color: colors.teal, lineWidth: 1.8 },
-        );
-        ctx.fillStyle = colors.teal;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(`V_CC = ${V_CC.toFixed(1)} V`, xOf(V_CC), yOf(0) - 4);
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(
-                `V_CC/R_C = ${(I_sat * 1000).toFixed(1)} mA`,
-                xOf(0) + 6,
-                yOf(Math.min(Imax, I_sat)),
-              );
-        ctx.fillStyle = colors.text;
-        ctx.beginPath();
-        ctx.arc(xOf(Vq), yOf(Math.min(Imax, Iq)), 5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = colors.text;
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(
-                `Q-point  (${Vq.toFixed(2)} V, ${(Iq * 1000).toFixed(2)} mA)`,
-                xOf(Vq) + 8,
-                yOf(Math.min(Imax, Iq)) - 6,
-              );
-        ctx.fillStyle = colors.textDim;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText(
-                `V_CC = ${V_CC.toFixed(1)} V   R_C = ${R_C.toFixed(0)} Ω   I_B = ${(I_B * 1e6).toFixed(1)} µA   β = ${beta}`,
-                padL,
-                6,
-              );
-      },
-      [],
-    );
+        drawLabel(ctx, {
+          x: padL + rect.w - 6,
+          y: yOf(Math.min(Imax, I_C(Vmax, IB, beta))) - 8,
+          text: `I_B = ${(IB * 1e6).toFixed(1)} µA`,
+          color: col,
+          align: 'right',
+          baseline: 'middle',
+        });
+      });
+      const I_sat = V_CC / R_C;
+      drawLinePlot(
+        ctx,
+        rect,
+        [
+          { x: V_CC, y: 0 },
+          { x: 0, y: Math.min(Imax, I_sat) },
+        ],
+        Vmin,
+        Vmax,
+        0,
+        Imax,
+        { color: colors.teal, lineWidth: 1.8 },
+      );
+      ctx.fillStyle = colors.teal;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(`V_CC = ${V_CC.toFixed(1)} V`, xOf(V_CC), yOf(0) - 4);
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(
+        `V_CC/R_C = ${(I_sat * 1000).toFixed(1)} mA`,
+        xOf(0) + 6,
+        yOf(Math.min(Imax, I_sat)),
+      );
+      ctx.fillStyle = colors.text;
+      ctx.beginPath();
+      ctx.arc(xOf(Vq), yOf(Math.min(Imax, Iq)), 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colors.text;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(
+        `Q-point  (${Vq.toFixed(2)} V, ${(Iq * 1000).toFixed(2)} mA)`,
+        xOf(Vq) + 8,
+        yOf(Math.min(Imax, Iq)) - 6,
+      );
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(
+        `V_CC = ${V_CC.toFixed(1)} V   R_C = ${R_C.toFixed(0)} Ω   I_B = ${(I_B * 1e6).toFixed(1)} µA   β = ${beta}`,
+        padL,
+        6,
+      );
+    },
+    [],
+  );
 
   return (
     <Demo
