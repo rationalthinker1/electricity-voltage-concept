@@ -11,9 +11,9 @@
  * operating point. The "sweet spot" sits at ~80% rated torque and
  * ~70% rated speed for a typical PMSM, near 95% for premium machines.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';

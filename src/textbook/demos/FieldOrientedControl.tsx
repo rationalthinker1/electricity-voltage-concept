@@ -11,9 +11,9 @@
  * required i_a/i_b/i_c. Two synchronised panels: instantaneous abc on
  * the left, d-q on the right.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -43,7 +43,7 @@ export function FieldOrientedControlDemo({ figure }: Props) {
   const setup = useSimLoop(
       stateRef,
       ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
-        let t0 = ctx0.t0;
+        const t0 = ctx0.t0;
         const now = performance.now();
         const t = (now - t0) / 1000;
         const { iqRef, idRef } = stateRef.current;

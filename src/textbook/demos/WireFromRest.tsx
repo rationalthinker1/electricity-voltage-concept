@@ -18,11 +18,11 @@
  * is visible. The readout shows the *real* expected magnetic force as zero
  * because v_test = 0.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -45,7 +45,7 @@ export function WireFromRestDemo({ figure }: Props) {
       stateRef,
       ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
         let phase = ctx0.phase;
-        let N = ctx0.N;
+        const N = ctx0.N;
         const s = stateRef.current;
         phase += dt * s.vd * 60;
         ctx.fillStyle = colors.bg;

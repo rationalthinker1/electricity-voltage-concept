@@ -7,9 +7,9 @@
  * Animated tracer dots circulate around the iron core to suggest the shared
  * flux Φ. The dots' speed and brightness scale with |V₁|.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';

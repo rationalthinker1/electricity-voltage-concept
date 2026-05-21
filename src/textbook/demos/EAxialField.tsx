@@ -10,9 +10,9 @@
  * E arrows running along the axis. Sliders for V (voltage drop) and L
  * (length). Live readout E = V/L.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';

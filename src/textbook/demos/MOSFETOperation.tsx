@@ -15,9 +15,9 @@
  * 2 mA/V² to give numbers that map onto a generic small-signal device.
  * V_T = 1 V (n-channel enhancement). See Sedra & Smith §5.2.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';

@@ -7,9 +7,9 @@
  * box outline contribute signed flux. Readout shows ∮E·dA = Q_enc/ε₀ — and
  * by construction the relationship is exact and linear in Q_enc.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';

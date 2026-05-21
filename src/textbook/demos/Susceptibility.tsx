@@ -14,10 +14,10 @@
  * |χ_m| from Griffiths Ch.6 Table 6.1 / CRC Handbook:
  *   vacuum 0, copper −9.7×10⁻⁶, aluminum +2.2×10⁻⁵, iron ~5000 (soft-iron μ_r ~5000+).
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniToggle } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';

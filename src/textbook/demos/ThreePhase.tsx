@@ -10,10 +10,10 @@
  *
  * Right side: rotating phasor diagram showing the three vectors at 120° apart.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { withAlpha } from '@/lib/canvasTheme';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
@@ -35,7 +35,7 @@ export function ThreePhaseDemo({ figure }: Props) {
       stateRef,
       ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
         let simT = ctx0.simT;
-        let SCOPE_DURATION = ctx0.SCOPE_DURATION;
+        const SCOPE_DURATION = ctx0.SCOPE_DURATION;
         const { f } = stateRef.current;
         const slow = f > 120 ? 120 / f : 1;
         simT += dt * slow;

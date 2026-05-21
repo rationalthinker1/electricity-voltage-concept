@@ -24,11 +24,11 @@
  * β grows, the ion stripe contracts toward higher density and the electron
  * stripe to a different density, and a tiny excess net charge appears.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { drawLabel } from '@/lib/canvasLayout';
 import { drawHalo } from '@/lib/canvasPrimitives';
 import { withAlpha } from '@/lib/canvasTheme';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
@@ -82,7 +82,7 @@ export function WireFromMovingFrameDemo({ figure }: Props) {
       ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
         let phaseIon = ctx0.phaseIon;
         let phaseElec = ctx0.phaseElec;
-        let N = ctx0.N;
+        const N = ctx0.N;
         const s = stateRef.current;
         const b = Math.max(0, Math.min(0.99, s.betaPct / 100));
         const g_test = 1 / Math.sqrt(1 - b * b);

@@ -10,9 +10,9 @@
  * Sliders for N (total turns over the solenoid's length) and current I.
  * Live readout B = μ₀ n I where n = N / L.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { withAlpha } from '@/lib/canvasTheme';
@@ -38,7 +38,7 @@ export function SolenoidDemo({ figure }: Props) {
   const setup = useSimLoop(
       stateRef,
       ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
-        let t0 = ctx0.t0;
+        const t0 = ctx0.t0;
         const now = performance.now();
         const dt = (now - t0) / 1000;
         const { N, I, Lcm } = stateRef.current;

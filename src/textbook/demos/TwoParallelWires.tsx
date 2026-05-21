@@ -8,9 +8,9 @@
  * away from each other in the canvas to convey attraction vs repulsion;
  * the readout shows |F/L| in N/m.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawHalo } from '@/lib/canvasPrimitives';
@@ -38,7 +38,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
   const setup = useSimLoop(
       stateRef,
       ({ ctx, w, h, colors }, _state, _dt, _simTime, ctx0) => {
-        let t0 = ctx0.t0;
+        const t0 = ctx0.t0;
         const now = performance.now();
         const dt = (now - t0) / 1000;
         const { I1, I2, dCm, parallel } = stateRef.current;

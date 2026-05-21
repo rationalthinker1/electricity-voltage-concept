@@ -9,9 +9,9 @@
  * Sliders: N_p, N_s, V_p (peak), R_load.
  * Ideal-transformer math (no losses): V_s/V_p = N_s/N_p, I_p = (N_s/N_p) I_s.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
