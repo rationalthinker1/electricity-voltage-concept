@@ -104,6 +104,8 @@ export function DielectricBetweenPlatesDemo({ figure }: Props) {
         }
 
         // Bound-charge labels
+        ctx.fillStyle = colors.textDim;
+        ctx.textAlign = 'left';
         drawLabel(ctx, { text: 'bound − on top face', x: px + 18, y: slabTop + 28 });
         drawLabel(ctx, { text: 'bound + on bottom face', x: px + 18, y: slabBot - 14 });
 

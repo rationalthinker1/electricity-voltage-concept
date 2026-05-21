@@ -114,10 +114,12 @@ export function RadiationPressureDemo({ figure }: Props) {
       if (targetX > W - 80) targetX = W * 0.62;
 
       // Labels
+      ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = getCanvasColors().accent;
+      ctx.textAlign = 'left';
       drawLabel(ctx, { text: 'absorbing target · feels P = I/c', x: targetX - 80, y: targetTop - 8, font: '10px "JetBrains Mono", monospace' });
       ctx.fillStyle = getCanvasColors().textDim;
-      drawLabel(ctx, { text: 'EM wave packets →', x: xL, y: 22 });
+      drawLabel(ctx, { text: 'EM wave packets →', x: xL, y: 22, font: '10px "JetBrains Mono", monospace' });
 
       raf = requestAnimationFrame(draw);
     }

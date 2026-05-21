@@ -158,12 +158,13 @@ export function JouleHeatingDemo({ figure }: Props) {
       }
 
       // Overlays
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `P = ${pretty(P_).replace(/<[^>]+>/g, '')} W`, x: 14, y: 12, color: colors.accent, size: 13, font: '13px "JetBrains Mono", monospace', baseline: 'top' });
 
       ctx.fillStyle = visiblePower
         ? `rgb(${col.r},${col.g},${col.b})`
         : withAlpha(colors.textDim, 0.85);
-      drawLabel(ctx, { text: `T ≈ ${T.toFixed(0)} K`, x: w - 14, y: 12, size: 13, font: '13px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, { text: `T ≈ ${T.toFixed(0)} K`, x: w - 14, y: 12, size: 13, font: '13px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       drawLabel(ctx, {
         x: w - 14,
         y: 30,

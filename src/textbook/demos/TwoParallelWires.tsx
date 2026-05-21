@@ -133,8 +133,10 @@ export function TwoParallelWiresDemo({ figure }: Props) {
         }
 
         ctx.fillStyle = withAlpha(colors.textDim, 0.9);
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
         drawLabel(ctx, { text: label, x: cx, y: cy_ - wireR - 10, font: '10px "JetBrains Mono", monospace', align: 'center' });
-        drawLabel(ctx, { text: `${I.toFixed(1)} A ${intoPage ? '⊗' : '⊙'}`, x: cx, y: cy_ + wireR + 22 });
+        drawLabel(ctx, { text: `${I.toFixed(1)} A ${intoPage ? '⊗' : '⊙'}`, x: cx, y: cy_ + wireR + 22, font: '10px "JetBrains Mono", monospace', align: 'center' });
       }
       drawWire(cx1, cy, true, 'I₁', I1);
       drawWire(cx2, cy, parallel, 'I₂', I2);
@@ -172,6 +174,7 @@ export function TwoParallelWiresDemo({ figure }: Props) {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
+      ctx.textAlign = 'center';
       drawLabel(ctx, { text: `d = ${dCm.toFixed(1)} cm`, x: (cx1 + cx2) / 2, y: cy + 76, font: '10px "JetBrains Mono", monospace', align: 'center' });
       ctx.fillStyle = parallel ? withAlpha(colors.accent, 0.9) : withAlpha(colors.pink, 0.9);
       ctx.font = '11px "DM Sans", sans-serif';

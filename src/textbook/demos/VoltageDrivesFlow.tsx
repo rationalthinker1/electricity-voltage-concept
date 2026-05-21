@@ -249,10 +249,12 @@ export function VoltageDrivesFlowDemo({ figure }: Props) {
       ctx.restore();
 
       // Legend strip
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
       ctx.fillStyle = withAlpha(colors.teal, 0.4 + 0.5 * Inorm);
       drawLabel(ctx, { text: 'B  (circles wire; |B| ∝ I)', x: legendCol1X, y: legendRow1Y, font: '10px "JetBrains Mono", monospace' });
       ctx.fillStyle = withAlpha(colors.textDim, 0.7);
-      drawLabel(ctx, { text: 'fixed: R = 10 Ω · A = 1 mm² · n = 8.5×10²⁸/m³ (Cu) · dot motion ≠ to scale', x: legendCol1X, y: legendRow3Y });
+      drawLabel(ctx, { text: 'fixed: R = 10 Ω · A = 1 mm² · n = 8.5×10²⁸/m³ (Cu) · dot motion ≠ to scale', x: legendCol1X, y: legendRow3Y, font: '10px "JetBrains Mono", monospace' });
 
       // Drift dots
       const visSpeed = 90 * Inorm;

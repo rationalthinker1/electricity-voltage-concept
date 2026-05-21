@@ -167,12 +167,16 @@ export function FerromagnetDemo({ figure }: Props) {
       ctx.moveTo(cx_ax, py0);
       ctx.lineTo(cx_ax, py1);
       ctx.stroke();
+
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
       drawLabel(ctx, { text: 'M', x: cx_ax + 4, y: py0 + 10, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'B', x: px1 - 14, y: cy_ax - 4 });
-      drawLabel(ctx, { text: '+1', x: cx_ax + 4, y: py0 + 12 });
-      drawLabel(ctx, { text: '−1', x: cx_ax + 4, y: py1 - 2 });
-      drawLabel(ctx, { text: '−1', x: px0 - 2, y: cy_ax + 12 });
-      drawLabel(ctx, { text: '+1', x: px1 - 14, y: cy_ax + 12 });
+      drawLabel(ctx, { text: 'B', x: px1 - 14, y: cy_ax - 4, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: '+1', x: cx_ax + 4, y: py0 + 12, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: '−1', x: cx_ax + 4, y: py1 - 2, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: '−1', x: px0 - 2, y: cy_ax + 12, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: '+1', x: px1 - 14, y: cy_ax + 12, font: '10px "JetBrains Mono", monospace' });
 
       function xOf(b: number) {
         return cx_ax + ((b * (px1 - px0)) / 2) * 0.92;

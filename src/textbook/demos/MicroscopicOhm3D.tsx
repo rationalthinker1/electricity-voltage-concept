@@ -447,16 +447,20 @@ function drawLegend(
   H: number,
   matName: string,
 ) {
+  ctx.font = '11px "JetBrains Mono", monospace';
+  ctx.textBaseline = 'top';
   drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+
+  ctx.textAlign = 'right';
   ctx.fillStyle = withAlpha(colors.accent, 0.95);
-  drawLabel(ctx, { text: 'E   applied field', x: W - 12, y: 12, align: 'right' });
+  drawLabel(ctx, { text: 'E   applied field', x: W - 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
   ctx.fillStyle = withAlpha(colors.pink, 0.95);
-  drawLabel(ctx, { text: 'J = σE   current density', x: W - 12, y: 28 });
+  drawLabel(ctx, { text: 'J = σE   current density', x: W - 12, y: 28, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
   ctx.fillStyle = withAlpha(colors.teal, 0.95);
-  drawLabel(ctx, { text: 'B   magnetic field', x: W - 12, y: 44 });
+  drawLabel(ctx, { text: 'B   magnetic field', x: W - 12, y: 44, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
   ctx.fillStyle = withAlpha(colors.blue, 0.95);
-  drawLabel(ctx, { text: 'electrons (drift)', x: W - 12, y: 60 });
-  drawLabel(ctx, { text: `${matName} · 1 mm² cross-section · arrows scaled, vectors real`, x: 12, y: H - 12, baseline: 'bottom' });
+  drawLabel(ctx, { text: 'electrons (drift)', x: W - 12, y: 60, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+  drawLabel(ctx, { text: `${matName} · 1 mm² cross-section · arrows scaled, vectors real`, x: 12, y: H - 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'bottom' });
 }
 
 /* ─── Vector / arrowhead primitives ────────────────────────────────────── */

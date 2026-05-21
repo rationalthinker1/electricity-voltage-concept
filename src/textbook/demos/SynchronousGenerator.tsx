@@ -141,11 +141,20 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(sxx, syy, 10, 0, Math.PI * 2);
       ctx.fill();
+      ctx.fillStyle = colors.bg;
+      ctx.font = 'bold 10px JetBrains Mono';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: 'N', x: nx, y: ny, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'S', x: sxx, y: syy });
+      drawLabel(ctx, { text: 'S', x: sxx, y: syy, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       ctx.lineCap = 'butt';
+
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'rotor (PM or DC-excited)', x: 8, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: '3 stator coils @ 120°', x: 8, y: 22 });
+      drawLabel(ctx, { text: '3 stator coils @ 120°', x: 8, y: 22, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.restore();
 
       // Divider
@@ -188,10 +197,11 @@ export function SynchronousGeneratorDemo({ figure }: Props) {
         }
         ctx.stroke();
       }
+      ctx.font = '10px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: 'V_A', x: scopeX + 4, y: scopeY + 12, color: phaseColors[0], font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'V_B', x: scopeX + 38, y: scopeY + 12, color: phaseColors[1] });
-      drawLabel(ctx, { text: 'V_C', x: scopeX + 72, y: scopeY + 12, color: phaseColors[2] });
-      drawLabel(ctx, { text: `${f.toFixed(0)} Hz`, x: scopeX + scopeW - 4, y: scopeY + 12, align: 'right' });
+      drawLabel(ctx, { text: 'V_B', x: scopeX + 38, y: scopeY + 12, color: phaseColors[1], font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: 'V_C', x: scopeX + 72, y: scopeY + 12, color: phaseColors[2], font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `${f.toFixed(0)} Hz`, x: scopeX + scopeW - 4, y: scopeY + 12, font: '10px "JetBrains Mono", monospace', align: 'right' });
       ctx.restore();
 
       raf = requestAnimationFrame(draw);

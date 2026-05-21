@@ -396,11 +396,16 @@ export function DipoleAlignment3DDemo({ figure }: Props) {
       }
 
       // ── Annotations ────────────────────────────────────────────────
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'drag to rotate', x: 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'E_ext  teal · along +x', x: 12, y: 28, color: colors.teal });
-      drawLabel(ctx, { text: 'dielectric block', x: 12, y: 44, color: 'rgba(240,200,80,0.85)' });
-      drawLabel(ctx, { text: 'p  aligned dipole', x: w - 12, y: 12, color: colors.accent, align: 'right' });
-      drawLabel(ctx, { text: 'p  scrambled (thermal)', x: w - 12, y: 28, color: 'rgba(200,195,170,0.75)' });
+      drawLabel(ctx, { text: 'E_ext  teal · along +x', x: 12, y: 28, color: colors.teal, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'dielectric block', x: 12, y: 44, color: 'rgba(240,200,80,0.85)', size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+
+      ctx.textAlign = 'right';
+      drawLabel(ctx, { text: 'p  aligned dipole', x: w - 12, y: 12, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, { text: 'p  scrambled (thermal)', x: w - 12, y: 28, color: 'rgba(200,195,170,0.75)', size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
 
       raf = requestAnimationFrame(draw);
     }

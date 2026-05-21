@@ -177,8 +177,9 @@ export function ParamagnetVsDiamagnetDemo({ figure }: Props) {
 
       // Labels showing net M magnitude on each box
       ctx.restore();
+      ctx.textAlign = 'right';
       drawLabel(ctx, { text: `M = ${mPara.toFixed(2)}`, x: boxes[0].x0 + boxes[0].w - 8, y: h - 12, color: colors.accent, align: 'right' });
-      drawLabel(ctx, { text: `M = ${mDia.toFixed(2)}`, x: boxes[1].x0 + boxes[1].w - 8, y: h - 12, color: colors.teal });
+      drawLabel(ctx, { text: `M = ${mDia.toFixed(2)}`, x: boxes[1].x0 + boxes[1].w - 8, y: h - 12, color: colors.teal, align: 'right' });
 
       // Throttle React state updates
       const now = performance.now();

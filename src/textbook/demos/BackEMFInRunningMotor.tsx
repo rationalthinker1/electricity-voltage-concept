@@ -153,9 +153,13 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
         ctx.stroke();
 
         // Axis labels
+        ctx.fillStyle = colors.textDim;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
         drawLabel(ctx, { text: 'I → V/R', x: padL - 6, y: yI(V_SUPPLY / R_WIND), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-        drawLabel(ctx, { text: '0', x: padL - 6, y: yI(0) });
-        drawLabel(ctx, { text: 'E_back → V', x: padL + plotW + 6, y: yE(V_SUPPLY) });
+        drawLabel(ctx, { text: '0', x: padL - 6, y: yI(0), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+        drawLabel(ctx, { text: 'E_back → V', x: padL + plotW + 6, y: yE(V_SUPPLY), font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
 
         // Legend
         ctx.textAlign = 'left';

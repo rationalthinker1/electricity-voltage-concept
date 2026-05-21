@@ -39,9 +39,12 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
       ctx.fillRect(0, 0, W, H);
       const splitX = W * 0.32;
       const cyEl = H / 2;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
       drawLabel(ctx, { text: `N = ${N} elements`, x: 12, y: 18, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `d = ${dOverLam.toFixed(2)}λ`, x: 12, y: 32 });
-      drawLabel(ctx, { text: `Δφ = ${phiDeg.toFixed(0)}°/elem`, x: 12, y: 46 });
+      drawLabel(ctx, { text: `d = ${dOverLam.toFixed(2)}λ`, x: 12, y: 32, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `Δφ = ${phiDeg.toFixed(0)}°/elem`, x: 12, y: 46, font: '10px "JetBrains Mono", monospace' });
       const stripH = Math.min(H - 80, N * 18);
       const dy = stripH / Math.max(N - 1, 1);
       const x0 = splitX * 0.45;
@@ -132,9 +135,12 @@ export function PhasedArraySteeringDemo({ figure }: Props) {
         });
       }
       ctx.restore();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
       drawLabel(ctx, { text: 'broadside (θ=0)', x: cx + R + 12, y: cy + 4, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'θ = +90°', x: cx, y: cy - R - 6 });
-      drawLabel(ctx, { text: 'θ = −90°', x: cx, y: cy + R + 14 });
+      drawLabel(ctx, { text: 'θ = +90°', x: cx, y: cy - R - 6, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: 'θ = −90°', x: cx, y: cy + R + 14, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center' });
     },
     [],
   );

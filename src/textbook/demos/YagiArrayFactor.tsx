@@ -118,8 +118,11 @@ export function YagiArrayFactorDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fill();
       ctx.stroke();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'center';
       drawLabel(ctx, { text: 'forward (+x)', x: cx + R + 12, y: cy + 4, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'back (−x)', x: cx - R - 12, y: cy + 4 });
+      drawLabel(ctx, { text: 'back (−x)', x: cx - R - 12, y: cy + 4, font: '10px "JetBrains Mono", monospace', align: 'center' });
     },
     [],
   );

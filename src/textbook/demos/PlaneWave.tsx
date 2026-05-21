@@ -109,9 +109,11 @@ export function PlaneWaveDemo({ figure }: Props) {
         else ctx.lineTo(bx2, by2);
       }
       ctx.stroke();
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
       drawLabel(ctx, { text: 'E (y)', x: 14, y: 22, color: colors.pink, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'B (z)', x: 14, y: 38, color: colors.teal });
-      drawLabel(ctx, { text: 'in phase · |B| = |E|/c', x: 14, y: 54 });
+      drawLabel(ctx, { text: 'B (z)', x: 14, y: 38, color: colors.teal, size: 11, font: '11px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: 'in phase · |B| = |E|/c', x: 14, y: 54, size: 11, font: '11px "JetBrains Mono", monospace' });
     },
     [],
   );

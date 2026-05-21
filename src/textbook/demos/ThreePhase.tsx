@@ -97,10 +97,13 @@ export function ThreePhaseDemo({ figure }: Props) {
       }
       ctx.stroke();
       ctx.setLineDash([]);
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'V_a', x: plotX + 4, y: plotY + 4, color: phaseColors[0], font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'V_b', x: plotX + 36, y: plotY + 4, color: phaseColors[1] });
-      drawLabel(ctx, { text: 'V_c', x: plotX + 68, y: plotY + 4, color: phaseColors[2] });
-      drawLabel(ctx, { text: 'Σ = 0', x: plotX + 100, y: plotY + 4, color: colors.text });
+      drawLabel(ctx, { text: 'V_b', x: plotX + 36, y: plotY + 4, color: phaseColors[1], font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'V_c', x: plotX + 68, y: plotY + 4, color: phaseColors[2], font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'Σ = 0', x: plotX + 100, y: plotY + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: `${f.toFixed(0)} Hz — 120° apart`, x: plotX + plotW / 2, y: h - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       ctx.restore();
       ctx.strokeStyle = colors.border;
@@ -157,8 +160,11 @@ export function ThreePhaseDemo({ figure }: Props) {
           weight: 'bold',
         });
       }
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
       drawLabel(ctx, { text: 'phasors at 120°', x: pcx, y: 10, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `Σ vectors → 0`, x: pcx, y: h - 8, baseline: 'bottom' });
+      drawLabel(ctx, { text: `Σ vectors → 0`, x: pcx, y: h - 8, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       ctx.restore();
       ctx0.simT = simT;
       ctx0.SCOPE_DURATION = SCOPE_DURATION;

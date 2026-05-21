@@ -91,8 +91,12 @@ export function InductionMotorSlipDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(sSx, sSy, 9, 0, Math.PI * 2);
       ctx.fill();
+      ctx.fillStyle = colors.bg;
+      ctx.font = 'bold 10px JetBrains Mono';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: 'N', x: sFx, y: sFy, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'S', x: sSx, y: sSy });
+      drawLabel(ctx, { text: 'S', x: sSx, y: sSy, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       const bars = 12;
       const rBar = R * 0.55;
       for (let i = 0; i < bars; i++) {
@@ -124,10 +128,15 @@ export function InductionMotorSlipDemo({ figure }: Props) {
       ctx.fill();
       ctx.save();
       ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'rotating stator field (dashed)', x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'squirrel-cage rotor', x: 12, y: 26 });
-      drawLabel(ctx, { text: `load = ${(load * 100).toFixed(0)}%`, x: w - 12, y: 12, align: 'right' });
-      drawLabel(ctx, { text: `slip = ${(slip * 100).toFixed(2)}%`, x: w - 12, y: 26 });
+      drawLabel(ctx, { text: 'squirrel-cage rotor', x: 12, y: 26, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      ctx.textAlign = 'right';
+      drawLabel(ctx, { text: `load = ${(load * 100).toFixed(0)}%`, x: w - 12, y: 12, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, { text: `slip = ${(slip * 100).toFixed(2)}%`, x: w - 12, y: 26, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       ctx.restore();
       ctx0.statorAng = statorAng;
       ctx0.rotorAng = rotorAng;

@@ -111,11 +111,14 @@ export function CouplingCoefficientDemo({ figure }: Props) {
       ctx.globalAlpha = 0.65;
       drawLabel(ctx, { text: 'η', x: plotX - 4, y: plotY + 4, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       ctx.restore();
+      ctx.textAlign = 'right';
       drawLabel(ctx, { text: '1', x: plotX - 4, y: plotY + plotH * 0.05, align: 'right' });
-      drawLabel(ctx, { text: '0', x: plotX - 4, y: plotY + plotH });
+      drawLabel(ctx, { text: '0', x: plotX - 4, y: plotY + plotH, align: 'right' });
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: '0', x: plotX, y: plotY + plotH + 4, align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: '1', x: plotX + plotW, y: plotY + plotH + 4 });
-      drawLabel(ctx, { text: 'k', x: plotX + plotW / 2, y: plotY + plotH + 4 });
+      drawLabel(ctx, { text: '1', x: plotX + plotW, y: plotY + plotH + 4, align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: 'k', x: plotX + plotW / 2, y: plotY + plotH + 4, align: 'center', baseline: 'top' });
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.6;
       ctx.beginPath();

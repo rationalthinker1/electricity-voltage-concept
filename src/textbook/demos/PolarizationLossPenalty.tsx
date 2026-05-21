@@ -111,9 +111,11 @@ export function PolarizationLossPenaltyDemo({ figure }: Props) {
       ctx.moveTo(rxCx, cy);
       ctx.lineTo(rxCx + projAmp * ux, cy + projAmp * uy);
       ctx.stroke();
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: `P_r / P_r,max = cos²(α) = ${frac.toFixed(3)}`, x: 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace' });
       const lossLabel = Number.isFinite(lossDb) ? `loss = ${lossDb.toFixed(2)} dB` : 'loss = ∞';
-      drawLabel(ctx, { text: lossLabel, x: W - 12, y: 18, align: 'right' });
+      drawLabel(ctx, { text: lossLabel, x: W - 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right' });
       ctx0.tAnim = tAnim;
     },
     [],

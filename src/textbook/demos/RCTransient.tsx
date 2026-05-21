@@ -226,9 +226,12 @@ export function RCTransientDemo({ figure }: Props) {
         ctx.setLineDash([]);
         ctx.restore();
         ctx.fillStyle = getCanvasColors().accent;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
         drawLabel(ctx, { text: `V₀ = ${V0} V`, x: plotX + plotW - 4, y: y0line - 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
         ctx.fillStyle = getCanvasColors().teal;
-        drawLabel(ctx, { text: '63% V₀', x: plotX + plotW - 4, y: y63 - 2 });
+        drawLabel(ctx, { text: '63% V₀', x: plotX + plotW - 4, y: y63 - 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
         ctx.fillStyle = getCanvasColors().textDim;
         drawLabel(ctx, { text: 'V_C(t)', x: plotX, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
 
@@ -339,10 +342,12 @@ export function RCTransientDemo({ figure }: Props) {
         // Dynamic overlay: τ-marker label + live V_C readout + (6τ) window legend.
         ctx.restore();
         ctx.fillStyle = getCanvasColors().teal;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textBaseline = 'top';
         drawLabel(ctx, { text: `τ = ${fmtTime(tauNow)}`, x: Math.min(xTau + 4, plotX + plotW - 80), y: plotY + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
         ctx.fillStyle = getCanvasColors().textDim;
-        drawLabel(ctx, { text: `V_C = ${st.Vc.toFixed(2)} V`, x: plotX + plotW, y: 8, align: 'right' });
-        drawLabel(ctx, { text: `window: ${fmtTime(PLOT_DURATION)} (6τ)`, x: plotX + plotW / 2, y: h - 6, align: 'center', baseline: 'bottom' });
+        drawLabel(ctx, { text: `V_C = ${st.Vc.toFixed(2)} V`, x: plotX + plotW, y: 8, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+        drawLabel(ctx, { text: `window: ${fmtTime(PLOT_DURATION)} (6τ)`, x: plotX + plotW / 2, y: h - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
 
         ctx.restore();
         raf = requestAnimationFrame(draw);

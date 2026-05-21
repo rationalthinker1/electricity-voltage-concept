@@ -107,8 +107,11 @@ export function TheveninEquivalentDemo({ figure }: Props) {
         ctx.stroke();
 
         ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.85);
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
         drawLabel(ctx, { text: 'Original network', x: splitX / 2, y: 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-        drawLabel(ctx, { text: 'Thévenin equivalent', x: splitX + splitX / 2, y: 6 });
+        drawLabel(ctx, { text: 'Thévenin equivalent', x: splitX + splitX / 2, y: 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
         drawLoadReadouts(ctx, 0, 22, splitX, h - 22, st);
         drawLoadReadouts(ctx, splitX, 22, splitX, h - 22, st);
@@ -407,7 +410,10 @@ function drawLoadReadouts(
   const cy = y0 + h / 2;
   const xLoad = x0 + w - 40;
   ctx.fillStyle = getCanvasColors().teal;
+  ctx.font = 'bold 10px "JetBrains Mono", monospace';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
   drawLabel(ctx, { text: `V_L = ${st.Vload.toFixed(2)} V`, x: xLoad + 12, y: cy - 8, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'middle' });
   ctx.fillStyle = getCanvasColors().blue;
-  drawLabel(ctx, { text: `I_L = ${(st.Iload * 1000).toFixed(1)} mA`, x: xLoad + 12, y: cy + 8 });
+  drawLabel(ctx, { text: `I_L = ${(st.Iload * 1000).toFixed(1)} mA`, x: xLoad + 12, y: cy + 8, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'middle' });
 }

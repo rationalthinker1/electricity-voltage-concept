@@ -223,12 +223,15 @@ export function WireBFieldDemo({ figure }: Props) {
       ctx.arc(px, py, 9, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
+      ctx.textAlign = 'center';
       drawLabel(ctx, { text: 'P', x: px, y: py, color: colors.accent, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
 
       // Probe distance label
       ctx.fillStyle = withAlpha(colors.text, 0.85);
-      drawLabel(ctx, { text: `r = ${(r_m * 1000).toFixed(0)} mm`, x: px, y: py - 16, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `|B| = ${pretty(Bprobe, 2)} T`, x: px, y: py + 22, color: colors.teal });
+      ctx.textBaseline = 'alphabetic';
+      ctx.font = '10px "JetBrains Mono", monospace';
+      drawLabel(ctx, { text: `r = ${(r_m * 1000).toFixed(0)} mm`, x: px, y: py - 16, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: `|B| = ${pretty(Bprobe, 2)} T`, x: px, y: py + 22, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center' });
 
       raf = requestAnimationFrame(draw);
     }

@@ -171,6 +171,7 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       }
 
       // Coil label
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `Coil · N = ${N} turns`, x: coilCx, y: cy + loopHeight / 2 + 24, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
       // Wire from one end of coil down to indicator lamp on the right
@@ -208,7 +209,7 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       ctx.arc(lampX, lampY, 12, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
-      drawLabel(ctx, { text: 'lamp', x: lampX, y: lampY + 26, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: 'lamp', x: lampX, y: lampY + 26, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
       // Bar magnet — N (pink) / S (blue) halves
       const magW = 84,
@@ -228,8 +229,12 @@ export function MagnetThroughCoilDemo({ figure }: Props) {
       ctx.lineWidth = 1;
       ctx.strokeRect(mx - magW / 2, magY - magH / 2, magW, magH);
       ctx.restore();
+      ctx.fillStyle = colors.bg;
+      ctx.font = 'bold 14px JetBrains Mono';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: 'S', x: mx - magW / 4, y: magY, color: colors.bg, weight: 'bold', size: 14, font: '14px "JetBrains Mono"', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'N', x: mx + magW / 4, y: magY });
+      drawLabel(ctx, { text: 'N', x: mx + magW / 4, y: magY, color: colors.bg, weight: 'bold', size: 14, font: '14px "JetBrains Mono"', align: 'center', baseline: 'middle' });
 
       // Faint field-line cue from N pole pointing rightward
       ctx.save();

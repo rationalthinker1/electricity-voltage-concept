@@ -122,8 +122,11 @@ export function MaxPowerTransferDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(xCur, yCur, 5, 0, Math.PI * 2);
       ctx.fill();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'P_L  (W)  — amber', x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'η  — teal dashed', x: 12, y: 26, color: colors.teal });
+      drawLabel(ctx, { text: 'η  — teal dashed', x: 12, y: 26, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = colors.textDim;
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
@@ -141,9 +144,13 @@ export function MaxPowerTransferDemo({ figure }: Props) {
         ctx.fillStyle = colors.textDim;
         ctx.fillText(`${r}·R_S`, x, padT + plotH + 4);
       }
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: `P_max = ${P_max.toFixed(2)} W`, x: padL - 4, y: yOf(P_max), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: padL - 4, y: padT + plotH });
-      drawLabel(ctx, { text: '1', x: padL - 4, y: padT });
+      drawLabel(ctx, { text: '0', x: padL - 4, y: padT + plotH, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '1', x: padL - 4, y: padT, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       drawLabel(ctx, {
         x: xPeak,
         y: padT - 6,

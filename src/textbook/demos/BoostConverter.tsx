@@ -142,8 +142,10 @@ export function BoostConverterDemo({ figure }: Props) {
       drawLabel(ctx, { text: `${Iin_avg.toFixed(2)} A`, x: padL - 4, y: iOf(Iin_avg) });
       drawLabel(ctx, { text: `${Imin.toFixed(2)} A`, x: padL - 4, y: iOf(Imin) });
       drawLabel(ctx, { text: 'inductor current I_L  (= input current)', x: padL + 4, y: mid + 4, baseline: 'top' });
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: '0', x: padL, y: padT + plotH + 4, align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `${(tTotal * 1e6).toFixed(0)} µs`, x: padL + plotW, y: padT + plotH + 4 });
+      drawLabel(ctx, { text: `${(tTotal * 1e6).toFixed(0)} µs`, x: padL + plotW, y: padT + plotH + 4, align: 'center', baseline: 'top' });
       ctx.save();
       ctx.globalAlpha = 0.8;
       drawLabel(ctx, { text: `V_out = V_in / (1 − D) = ${Vout.toFixed(2)} V    I_out = ${Iout.toFixed(2)} A`, x: 4, y: 4, baseline: 'top' });

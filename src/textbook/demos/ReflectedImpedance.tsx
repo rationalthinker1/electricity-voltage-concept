@@ -87,8 +87,10 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       ctx.lineWidth = 1.4;
       ctx.fillRect(srcX, cy - srcH / 2, srcW, srcH);
       ctx.strokeRect(srcX, cy - srcH / 2, srcW, srcH);
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: 'AC', x: srcX + srcW / 2, y: cy - 8, color: colors.accent, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: `ω = ${omegaKrad} krad/s`, x: srcX + srcW / 2, y: cy + 8, size: 9, font: '9px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `ω = ${omegaKrad} krad/s`, x: srcX + srcW / 2, y: cy + 8, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       const c1x = srcX + srcW + 50;
       drawCoilTwo(ctx, c1x, cy, 'L₁', `${L1mH.toFixed(1)} mH`);
       const c2x = c1x + 100;
@@ -108,7 +110,7 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       ctx.lineTo(c2x - 22, cy);
       ctx.stroke();
       ctx.setLineDash([]);
-      drawLabel(ctx, { text: `M = ${(M * 1e6).toFixed(0)} µH`, x: (c1x + c2x) / 2, y: cy - 30, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: `M = ${(M * 1e6).toFixed(0)} µH`, x: (c1x + c2x) / 2, y: cy - 30, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       const ldX = c2x + 50;
       const ldW = 70,
         ldH = 60;
@@ -117,8 +119,10 @@ export function ReflectedImpedanceDemo({ figure }: Props) {
       ctx.lineWidth = 1.4;
       ctx.fillRect(ldX, cy - ldH / 2, ldW, ldH);
       ctx.strokeRect(ldX, cy - ldH / 2, ldW, ldH);
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: 'R_L', x: ldX + ldW / 2, y: cy - 8, color: colors.teal, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: `${RLOhm.toFixed(0)} Ω`, x: ldX + ldW / 2, y: cy + 8, size: 9, font: '9px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `${RLOhm.toFixed(0)} Ω`, x: ldX + ldW / 2, y: cy + 8, size: 9, font: '9px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.beginPath();

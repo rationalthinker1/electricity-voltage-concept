@@ -185,9 +185,11 @@ export function LinearRegulatorDemo({ figure }: Props) {
 
         // Dynamic overlay: live P_in / Vin numbers under the input column.
         ctx.fillStyle = getCanvasColors().text;
+        ctx.font = '11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
         drawLabel(ctx, { text: `${Pin.toFixed(2)} W`, x: xIn + inW / 2, y: yTop - 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
         ctx.fillStyle = getCanvasColors().textDim;
-        drawLabel(ctx, { text: `${Vin.toFixed(1)} V × I_load`, x: xIn + inW / 2, y: yTop + barH + 6, baseline: 'top' });
+        drawLabel(ctx, { text: `${Vin.toFixed(1)} V × I_load`, x: xIn + inW / 2, y: yTop + barH + 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
         // Dynamic overlay: animated heat wiggle + P_diss readout in the regulator.
         const heatFrac = Math.min(1, Pdiss / Math.max(Pin, 0.01));
@@ -202,9 +204,11 @@ export function LinearRegulatorDemo({ figure }: Props) {
 
         // Dynamic overlay: live P_out / Vout numbers under the output column.
         ctx.fillStyle = getCanvasColors().text;
+        ctx.font = '11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
         drawLabel(ctx, { text: `${Pout.toFixed(2)} W`, x: xOut + outW / 2, y: yTop - 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
         ctx.fillStyle = getCanvasColors().textDim;
-        drawLabel(ctx, { text: `${Vout.toFixed(2)} V × I_load`, x: xOut + outW / 2, y: yTop + barH + 6, baseline: 'top' });
+        drawLabel(ctx, { text: `${Vout.toFixed(2)} V × I_load`, x: xOut + outW / 2, y: yTop + barH + 6, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
         // Dynamic overlay: efficiency badge.
         drawLabel(ctx, {

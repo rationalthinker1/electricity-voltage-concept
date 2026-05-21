@@ -56,9 +56,12 @@ export function ImpedanceDemo({ figure }: Props) {
       ctx.moveTo(cx, 20);
       ctx.lineTo(cx, h - 20);
       ctx.stroke();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: 'Re (Ω)', x: w - 50, y: cy - 10, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
-      drawLabel(ctx, { text: '+jX (Ω)', x: cx + 38, y: 22, align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: '−jX (Ω)', x: cx + 38, y: h - 22, baseline: 'bottom' });
+      ctx.textAlign = 'center';
+      drawLabel(ctx, { text: '+jX (Ω)', x: cx + 38, y: 22, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: '−jX (Ω)', x: cx + 38, y: h - 22, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
       const p0x = cx,
         p0y = cy;
       const p1x = cx + R * scale,
@@ -79,10 +82,12 @@ export function ImpedanceDemo({ figure }: Props) {
         `1/(jωC) = ${XC.toFixed(1)} Ω`,
       );
       drawVector(ctx, p0x, p0y, p3x, p3y, withAlpha(colors.accent, 0.95), '', 2.2);
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
       const midX = (p0x + p3x) / 2 + 8;
       const midY = (p0y + p3y) / 2;
       drawLabel(ctx, { text: `|Z| = ${Zmag.toFixed(2)} Ω`, x: midX, y: midY, color: colors.accent, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'middle' });
-      drawLabel(ctx, { text: `φ = ${((phi * 180) / Math.PI).toFixed(1)}°`, x: midX, y: midY + 14, color: colors.text, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `φ = ${((phi * 180) / Math.PI).toFixed(1)}°`, x: midX, y: midY + 14, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
       ctx.strokeStyle = colors.accent;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
@@ -91,12 +96,15 @@ export function ImpedanceDemo({ figure }: Props) {
       ctx.stroke();
       ctx.save();
       ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `Z = R + j(ωL − 1/ωC)`, x: 10, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       drawLabel(ctx, { text: phi > 0.01
                   ? 'inductive (V leads I)'
                   : phi < -0.01
                     ? 'capacitive (I leads V)'
-                    : 'resistive (V, I in phase)', x: w - 10, y: 8, align: 'right' });
+                    : 'resistive (V, I in phase)', x: w - 10, y: 8, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       ctx.restore();
     },
     [],

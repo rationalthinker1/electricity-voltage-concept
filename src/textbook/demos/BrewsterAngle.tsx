@@ -122,8 +122,10 @@ export function BrewsterAngleDemo({ figure }: Props) {
       ctx.stroke();
       ctx.setLineDash([]);
       drawLabel(ctx, { text: `θ_B = ${brDeg.toFixed(2)}°`, x: bx, y: y1 - 4, color: colors.accent, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center' });
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
       drawLabel(ctx, { text: 'R_s · ⊥ to plane', x: x1 - 130, y: y1 + 14, color: colors.pink, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'R_p · ∥ to plane', x: x1 - 130, y: y1 + 28, color: colors.teal });
+      drawLabel(ctx, { text: 'R_p · ∥ to plane', x: x1 - 130, y: y1 + 28, color: colors.teal, size: 11, font: '11px "JetBrains Mono", monospace' });
     },
     [],
   );

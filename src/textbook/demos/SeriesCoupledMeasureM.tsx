@@ -69,11 +69,15 @@ export function SeriesCoupledMeasureMDemo({ figure }: Props) {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText(`L_eq = ${(aiding ? Laid : Lopp).toFixed(2)} mH`, w / 2, 14);
-      drawLabel(ctx, { text: aiding ? 'series aiding:  L₁ + L₂ + 2M' : 'series opposing:  L₁ + L₂ − 2M', x: w / 2, y: 38, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: aiding ? 'series aiding:  L₁ + L₂ + 2M' : 'series opposing:  L₁ + L₂ − 2M', x: w / 2, y: 38, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       ctx.save();
       ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'bottom';
       drawLabel(ctx, { text: `L_aid = ${Laid.toFixed(2)} mH`, x: 12, y: h - 22, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
-      drawLabel(ctx, { text: `L_opp = ${Lopp.toFixed(2)} mH`, x: 12, y: h - 8 });
+      drawLabel(ctx, { text: `L_opp = ${Lopp.toFixed(2)} mH`, x: 12, y: h - 8, font: '10px "JetBrains Mono", monospace', baseline: 'bottom' });
       ctx.textAlign = 'right';
       ctx.restore();
       drawLabel(ctx, { text: `M = (L_aid − L_opp) / 4 = ${((Laid - Lopp) / 4).toFixed(2)} mH`, x: w - 12, y: h - 8, color: colors.accent });

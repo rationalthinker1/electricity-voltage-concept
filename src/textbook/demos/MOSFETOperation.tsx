@@ -99,16 +99,22 @@ export function MOSFETOperationDemo({ figure }: Props) {
       ctx.restore();
       ctx.strokeStyle = colors.accent;
       ctx.strokeRect(oxL, dT + 14, oxR - oxL, oxT - (dT + 14));
+      ctx.fillStyle = colors.textDim;
+      ctx.font = 'bold 10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: 'S', x: (srcL + srcR) / 2, y: (ndT + ndB) / 2, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'D', x: (drnL + drnR) / 2, y: (ndT + ndB) / 2 });
-      drawLabel(ctx, { text: 'G', x: (oxL + oxR) / 2, y: dT + 22 });
+      drawLabel(ctx, { text: 'D', x: (drnL + drnR) / 2, y: (ndT + ndB) / 2, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: 'G', x: (oxL + oxR) / 2, y: dT + 22, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       ctx.font = '9px "JetBrains Mono", monospace';
       ctx.save();
       ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'oxide', x: (oxL + oxR) / 2, y: oxT - 1, baseline: 'top' });
-      drawLabel(ctx, { text: 'p-substrate (body)', x: (dL + dR) / 2, y: dT + dH * 0.85 });
-      drawLabel(ctx, { text: 'n+', x: (srcL + srcR) / 2, y: ndB - 12 });
-      drawLabel(ctx, { text: 'n+', x: (drnL + drnR) / 2, y: ndB - 12 });
+      drawLabel(ctx, { text: 'p-substrate (body)', x: (dL + dR) / 2, y: dT + dH * 0.85, baseline: 'top' });
+      drawLabel(ctx, { text: 'n+', x: (srcL + srcR) / 2, y: ndB - 12, baseline: 'top' });
+      drawLabel(ctx, { text: 'n+', x: (drnL + drnR) / 2, y: ndB - 12, baseline: 'top' });
       if (Vov > 0) {
         // density ∝ Vov
         const channelAlpha = Math.min(0.85, 0.15 + 0.7 * (Vov / 4));
@@ -185,8 +191,10 @@ export function MOSFETOperationDemo({ figure }: Props) {
       for (let v = 0; v <= Vmax; v++) {
         ctx.fillText(v.toFixed(0), xOf(v), pT + pH + 4);
       }
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: `${(Imax * 1000).toFixed(0)} mA`, x: pL - 4, y: yOf(Imax), align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: pL - 4, y: yOf(0) });
+      drawLabel(ctx, { text: '0', x: pL - 4, y: yOf(0), align: 'right', baseline: 'middle' });
       ctx.restore();
       drawLabel(ctx, { text: 'V_DS (volts)', x: pL + pW / 2, y: pT + pH + 18, align: 'center', baseline: 'top' });
       const traces = [1.5, 2.0, 2.5, 3.0];

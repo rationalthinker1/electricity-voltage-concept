@@ -535,6 +535,9 @@ export function MOSFET3DDemo({ figure }: Props) {
       }
 
       // 9. Labels.
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textBaseline = 'top';
+
       const labelAt = (world: Vec3, text: string, color: string) => {
         const p = project(world, cam, W, H);
         if (p.depth <= 0) return;
@@ -565,7 +568,7 @@ export function MOSFET3DDemo({ figure }: Props) {
       ctx.fillStyle = channelOn
         ? withAlpha(getCanvasColors().accent, 0.95)
         : withAlpha(getCanvasColors().textDim, 0.7);
-      drawLabel(ctx, { text: status, x: W - 12, y: 12, align: 'right' });
+      drawLabel(ctx, { text: status, x: W - 12, y: 12, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
 
       raf = requestAnimationFrame(draw);
     }

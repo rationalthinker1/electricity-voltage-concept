@@ -11,8 +11,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
-import { Demo, DemoControls, EquationStrip, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
-import { InlineMath } from '@/components/Formula';
+import { Demo, DemoControls, MiniReadout, MiniSlider, MiniToggle } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { drawGlowPath } from '@/lib/canvasPrimitives';
 import { getCanvasColors, withAlpha } from '@/lib/canvasTheme';
@@ -165,19 +164,23 @@ export function ChargingCurveDemo({ figure }: Props) {
 
       // Labels
       ctx.fillStyle = getCanvasColors().accent;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'bottom';
       drawLabel(ctx, { text: `V₀ = ${V0} V`, x: pX + pW - 4, y: y0line - 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
       ctx.fillStyle = getCanvasColors().teal;
-      drawLabel(ctx, { text: '63% V₀  (after 1τ)', x: pX + pW - 4, y: y63 - 2 });
+      drawLabel(ctx, { text: '63% V₀  (after 1τ)', x: pX + pW - 4, y: y63 - 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
       ctx.fillStyle = getCanvasColors().textDim;
-      drawLabel(ctx, { text: '99% V₀  (after 5τ)', x: pX + pW - 4, y: y99 - 2 });
+      drawLabel(ctx, { text: '99% V₀  (after 5τ)', x: pX + pW - 4, y: y99 - 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'bottom' });
 
       ctx.fillStyle = getCanvasColors().teal;
-      drawLabel(ctx, { text: `τ = RC`, x: Math.min(xTau + 4, pX + pW - 60), y: pY + 4, baseline: 'top' });
+      drawLabel(ctx, { text: `τ = RC`, x: Math.min(xTau + 4, pX + pW - 60), y: pY + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
 
       ctx.fillStyle = getCanvasColors().textDim;
-      drawLabel(ctx, { text: 'V_C(t)', x: pX, y: 8, baseline: 'top' });
-      drawLabel(ctx, { text: `V_C = ${s.Vc.toFixed(2)} V`, x: pX + pW, y: 8, align: 'right' });
-      drawLabel(ctx, { text: `window: ${fmtTime(PLOT_DURATION)} (6τ)`, x: pX + pW / 2, y: H - 6, align: 'center', baseline: 'bottom' });
+      ctx.textBaseline = 'top';
+      drawLabel(ctx, { text: 'V_C(t)', x: pX, y: 8, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `V_C = ${s.Vc.toFixed(2)} V`, x: pX + pW, y: 8, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, { text: `window: ${fmtTime(PLOT_DURATION)} (6τ)`, x: pX + pW / 2, y: H - 6, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
 
       raf = requestAnimationFrame(draw);
     }
@@ -230,16 +233,6 @@ export function ChargingCurveDemo({ figure }: Props) {
         <MiniReadout label="5τ (≈99%)" value={fmtTime(t99)} />
         <MiniReadout label="V_C(now)" value={<Num value={VcDisplay} />} unit="V" />
       </DemoControls>
-      <EquationStrip
-        leftLabel="Exponential approach"
-        left={<InlineMath tex="V_C(t) \;=\; V_0\,\bigl(1 - e^{-t/\tau}\bigr)" />}
-        rightLabel="With current R, C"
-        right={
-          <InlineMath
-            tex={`\\tau \\;=\\; R\\,C \\;=\\; ${fmtTime(tau)}`}
-          />
-        }
-      />
     </Demo>
   );
 }

@@ -179,10 +179,14 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
       }
       ctx.strokeStyle = colors.borderStrong;
       ctx.strokeRect(cbX, padT, cbW, cbH);
+      ctx.fillStyle = colors.text;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.font = '10px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: 'η = 0.95', x: cbX + cbW + 4, y: padT + 2, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
-      drawLabel(ctx, { text: '0.80', x: cbX + cbW + 4, y: padT + cbH * 0.4 });
-      drawLabel(ctx, { text: '0.60', x: cbX + cbW + 4, y: padT + cbH * 0.75 });
-      drawLabel(ctx, { text: '0.40', x: cbX + cbW + 4, y: padT + cbH - 2 });
+      drawLabel(ctx, { text: '0.80', x: cbX + cbW + 4, y: padT + cbH * 0.4, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, { text: '0.60', x: cbX + cbW + 4, y: padT + cbH * 0.75, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, { text: '0.40', x: cbX + cbW + 4, y: padT + cbH - 2, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
       drawLabel(ctx, {
         x: padL + 6,
         y: padT + 4,

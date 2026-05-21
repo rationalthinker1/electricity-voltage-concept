@@ -597,6 +597,111 @@ Audio graphs, etc. Anything you would have written as `let x = 0;`
 *outside* `function draw()` in the old `useCallback` boilerplate belongs
 in the `context` here.
 
+### Static-bake caching: `useCircuitCache` / `useCanvasCache`
+
+Many demos overlay a *static* schematic backdrop (battery + resistor +
+wires; bus + plates; cylinder rims) and animate only a thin layer of
+arrows or markers on top. The static backdrop is identical from frame to
+frame — but redrawing it costs dozens of `ctx.beginPath` / `stroke` /
+`fillText` calls per tick. The fix per MDN's canvas-optimisation guide
+is to bake the static layer into an offscreen canvas once and `drawImage`
+it each frame. Two hooks own that pattern:
+
+- **`useCircuitCache(build, deps)`** — when the static layer is a
+  `CircuitSpec` (battery / resistor / switch / bulb / arrow / wire /
+  ground / etc.). `build(w, h, dpr) => { elements, defaultWireColor? }`
+  returns the spec; the hook bakes via `renderCircuitToCanvas` and
+  re-bakes when `(w, h, dpr)` or any value in `deps` changes.
+  See `src/lib/useCircuitCache.ts` for the full doc.
+
+- **`useCanvasCache(draw, deps)`** — sibling for *arbitrary* ctx-2d
+  bakes (bar charts, pill-shaped wires, radial gradients, mixed
+  CircuitSpec + custom ctx work). `draw(octx, w, h, dpr) => void`
+  is called with a DPR-prepped offscreen context; you draw whatever you
+  like. Supports an optional `frameKey?: string` argument at call time
+  for caches whose validity depends on a value mutated inside the rAF
+  loop (typically an orbit-camera angle quantised to coarse buckets).
+
+```tsx
+// CircuitSpec-shaped bake:
+const getStatic = useCircuitCache(
+  (sw, sh, _dpr) => ({ elements: buildSchematicSpec(sw, sh, R1, R2) }),
+  [R1, R2],
+);
+
+const setup = useSimLoop(stateRef, ({ ctx, w, h, dpr }, state) => {
+  const off = getStatic(w, h, dpr);
+  if (off) ctx.drawImage(off, 0, 0, w, h);
+  // per-frame overlay: current arrows, value labels, etc.
+}, []);
+```
+
+```tsx
+// Arbitrary ctx bake + orbit-camera frame key:
+const { camRef, attach } = useOrbitScene({ distance: 6.5 });
+const getStatic = useCanvasCache((octx, sw, sh) => {
+  const cam = camRef.current;
+  drawRims(octx, cam, sw, sh);  // raw ctx work
+}, []);
+
+const setup = useCallback((info) => {
+  const dispose = attach(info.canvas);
+  function draw() {
+    const cam = camRef.current;
+    const yawQ = Math.round(cam.yaw / 0.04) * 0.04;
+    const pitQ = Math.round(cam.pitch / 0.04) * 0.04;
+    const off = getStatic(info.w, info.h, info.dpr,
+      `y${yawQ.toFixed(2)}|p${pitQ.toFixed(2)}`);
+    if (off) info.ctx.drawImage(off, 0, 0, info.w, info.h);
+    // per-frame arrows / markers …
+  }
+  // …rAF loop…
+  return () => dispose();
+}, [getStatic]);
+```
+
+Rules of thumb:
+
+- **Cache deps are React-state values.** If the static layer depends on
+  a slider value, list it in `deps`. The hook does a shallow-equal check
+  every render and invalidates synchronously when any dep changes.
+- **`(w, h, dpr)` are always part of the cache key**, so the hook handles
+  resize and DPR changes automatically — you don't need to add them to
+  `deps`.
+- **For per-frame-mutating values** that aren't React state (camera
+  angles, anything attached via `attachOrbit`), use `useCanvasCache`'s
+  optional `frameKey` arg. Quantise the value (`Math.round(yaw / 0.04) *
+  0.04`) so small drags share a bake — without quantisation the cache
+  re-bakes every drag frame and you've gained nothing.
+- **Post-bake work** (polarity glyphs, text labels, gradient highlights
+  that don't fit a CircuitElement) goes in `useCanvasCache`'s `draw` or
+  in the per-frame overlay — *not* in some second pass that mutates the
+  cached canvas. The hook's invariant is "the cache is the spec rendered
+  to pixels."
+
+### Orbit cameras: `useOrbitScene` / `createOrbitScene`
+
+3D demos that use `attachOrbit(canvas, cam)` from `src/lib/projection3d.ts`
+should reach for the bundled helpers in `src/lib/useOrbitScene.ts` rather
+than hand-rolling the `cam = { yaw, pitch, distance, fov }` declaration
+plus the dispose dance:
+
+- **`createOrbitScene(canvas, overrides?)`** — call inside the setup
+  callback. Returns `{ cam, dispose, depthSort, projectPoint }` with
+  sensible defaults (yaw 0.55, pitch 0.28, distance 7.5, fov π/4) that
+  individual demos override.
+- **`useOrbitScene(initial?)`** — component-level form. Returns
+  `{ camRef, attach, depthSort, projectPoint }`. Use this shape when
+  the camera needs to be readable at component scope — e.g. when
+  `useCanvasCache`'s build closure has to read `cam.yaw` to derive a
+  `frameKey`.
+
+The migration from hand-rolled to hook is mechanical: replace
+`const cam: OrbitCamera = {…}; const dispose = attachOrbit(canvas, cam);`
+with `const scene = createOrbitScene(canvas, {…}); const cam = scene.cam;`,
+then change the cleanup's `dispose()` to `scene.dispose()`. Per-frame
+`project(p, cam, w, h)` calls keep working through the `cam` alias.
+
 ### Demos should show the equation(s) they exercise
 
 Every demo should, in general, render the equation(s) it is illustrating

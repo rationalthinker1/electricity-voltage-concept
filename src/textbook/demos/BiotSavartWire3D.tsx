@@ -490,10 +490,12 @@ export function BiotSavartWire3DDemo({ figure }: Props) {
       ctx.fillStyle = getCanvasColors().textDim;
       drawLabel(ctx, { text: `r₁ = ${r1.toFixed(2)}   r₂ = ${r2.toFixed(2)}   r₃ = ${r3.toFixed(2)}`, x: 12, y: 28 });
       ctx.restore();
+
+      ctx.textAlign = 'right';
       ctx.fillStyle = getCanvasColors().accent;
       drawLabel(ctx, { text: s.reverse ? 'I  amber · current −ŷ' : 'I  amber · current +ŷ', x: W - 12, y: 12, align: 'right' });
       ctx.fillStyle = getCanvasColors().teal;
-      drawLabel(ctx, { text: 'B  teal · azimuthal (right-hand rule)', x: W - 12, y: 28 });
+      drawLabel(ctx, { text: 'B  teal · azimuthal (right-hand rule)', x: W - 12, y: 28, align: 'right' });
       ctx.save();
       ctx.globalAlpha = 0.7;
       ctx.fillStyle = getCanvasColors().text;

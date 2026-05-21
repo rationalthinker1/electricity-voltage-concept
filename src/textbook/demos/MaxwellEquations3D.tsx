@@ -322,6 +322,9 @@ function drawGaussB(
   ctx.arc(pt.x, pt.y, 9, 0, Math.PI * 2);
   ctx.fill();
   ctx.fillStyle = getCanvasColors().bg;
+  ctx.font = 'bold 11px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
   drawLabel(ctx, { text: 'N', x: pt.x, y: pt.y, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
   // S pole label (bottom, blue).
   ctx.fillStyle = getCanvasColors().blue;
@@ -329,7 +332,7 @@ function drawGaussB(
   ctx.arc(pb.x, pb.y, 9, 0, Math.PI * 2);
   ctx.fill();
   ctx.fillStyle = getCanvasColors().bg;
-  drawLabel(ctx, { text: 'S', x: pb.x, y: pb.y });
+  drawLabel(ctx, { text: 'S', x: pb.x, y: pb.y, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
 
   // 2. Trace closed B-field loops by integrating the dipole field forward
   //    *and* backward from a seed point. Concatenate to get a single loop.

@@ -64,11 +64,14 @@ export function FuelCellDemo({ figure }: Props) {
       ctx.fillStyle = colors.blue;
       ctx.fillRect(x, cellY, flowW, cellH);
       ctx.restore();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'H₂', x: x + flowW / 2, y: cellY + 4, color: colors.blue, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       x += flowW;
       ctx.fillStyle = '#444';
       ctx.fillRect(x, cellY, anodeW, cellH);
-      drawLabel(ctx, { text: 'anode', x: x + anodeW / 2, y: cellY + 4, color: colors.text });
+      drawLabel(ctx, { text: 'anode', x: x + anodeW / 2, y: cellY + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
       x += anodeW;
       ctx.save();
       ctx.globalAlpha = 0.3;
@@ -108,8 +111,11 @@ export function FuelCellDemo({ figure }: Props) {
       drawLabel(ctx, { text: 'O₂', x: x + flowW / 2, y: cellY + 4, color: colors.accent });
       ctx.save();
       ctx.globalAlpha = 0.75;
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'H₂ → 2H⁺ + 2e⁻', x: cellX, y: cellY + cellH + 6, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: '½O₂ + 2H⁺ + 2e⁻ → H₂O', x: cellX + cellW, y: cellY + cellH + 6, align: 'right' });
+      drawLabel(ctx, { text: '½O₂ + 2H⁺ + 2e⁻ → H₂O', x: cellX + cellW, y: cellY + cellH + 6, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       const pX = splitX + 16;
       const pY = 30;
       const pW = W - pX - 30;
@@ -144,8 +150,10 @@ export function FuelCellDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(opX, opY, 5, 0, Math.PI * 2);
       ctx.fill();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: 'V (V)', x: pX, y: 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'i (A/cm²)', x: pX + pW, y: pY + pH + 4, align: 'right', baseline: 'top' });
+      drawLabel(ctx, { text: 'i (A/cm²)', x: pX + pW, y: pY + pH + 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       ctx0.phase = phase;
     },
     [],

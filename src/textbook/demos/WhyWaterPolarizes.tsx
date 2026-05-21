@@ -116,8 +116,11 @@ export function WhyWaterPolarizesDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fill();
       drawLabel(ctx, { text: 'p', x: pTipX + 8, y: pTipY, color: colors.accent, font: 'italic 12px "Fraunces", serif', baseline: 'middle' });
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: `T = ${T.toFixed(0)} K`, x: 14, y: h - 16, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `θ = ${((theta * 180) / Math.PI).toFixed(0)}°`, x: w - 14, y: h - 16, align: 'right' });
+      drawLabel(ctx, { text: `θ = ${((theta * 180) / Math.PI).toFixed(0)}°`, x: w - 14, y: h - 16, font: '10px "JetBrains Mono", monospace', align: 'right' });
       if (E_on) {
         drawLabel(ctx, { text: 'E (external) →', x: 14, y: 18, color: colors.accent });
       }

@@ -144,9 +144,12 @@ export function ParallelPlateUniformFieldDemo({ figure }: Props) {
       }
 
       // ── Annotations ────────────────────────────────────────────────────
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textBaseline = 'alphabetic';
       // Plate labels (small + and − on the outside ends).
+      ctx.textAlign = 'left';
       drawLabel(ctx, { text: '+ plate (σ > 0)', x: padX, y: yTop - plateThickness - 6, color: colors.pink, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: '− plate (σ < 0)', x: padX, y: yBot + plateThickness + 14, color: colors.blue });
+      drawLabel(ctx, { text: '− plate (σ < 0)', x: padX, y: yBot + plateThickness + 14, color: colors.blue, font: '10px "JetBrains Mono", monospace' });
 
       // Separation indicator — a dashed bracket at the right edge.
       ctx.save();

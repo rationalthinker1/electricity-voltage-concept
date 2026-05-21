@@ -87,9 +87,13 @@ export function LeadAcidCellDemo({ figure }: Props) {
           ctx.fill();
         }
       }
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
       drawLabel(ctx, { text: 'Pb', x: negX + plateW / 2, y: plateY - 2, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: 'PbO₂', x: posX + plateW / 2, y: plateY - 2 });
-      drawLabel(ctx, { text: 'H₂SO₄(aq)', x: jarX + 8, y: jarY + jarH - 16, baseline: 'top' });
+      drawLabel(ctx, { text: 'PbO₂', x: posX + plateW / 2, y: plateY - 2, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: 'H₂SO₄(aq)', x: jarX + 8, y: jarY + jarH - 16, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.save();
       ctx.globalAlpha = 0.75;
       drawLabel(ctx, { text: 'discharge:  Pb + PbO₂ + 2 H₂SO₄  →  2 PbSO₄ + 2 H₂O', x: jarX, y: jarY + jarH + 10, baseline: 'top' });

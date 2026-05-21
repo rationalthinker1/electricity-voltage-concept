@@ -92,8 +92,12 @@ export function VoltageAsHeightDemo({ figure }: Props) {
       drawLabel(ctx, { text: `ΔV = ${V.toFixed(1)} V`, x: ax - 10, y: (ay + baseY) / 2, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
 
       // A and B labels
+      ctx.fillStyle = colors.accent;
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
       drawLabel(ctx, { text: 'A (high V)', x: ax, y: ay - 14, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: 'B (low V)', x: bx, y: by - 14 });
+      drawLabel(ctx, { text: 'B (low V)', x: bx, y: by - 14, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
 
       // Update ball physics
       const slope = dy / Math.max(len, 1);

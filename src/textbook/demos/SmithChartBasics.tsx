@@ -149,8 +149,11 @@ export function SmithChartBasicsDemo({ figure }: Props) {
         ctx.stroke();
         ctx.setLineDash([]);
       }
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: 'open  Γ=+1', x: cx + radius - 4, y: cy - 10, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: 'short  Γ=−1', x: cx - radius + 4, y: cy - 10 });
+      drawLabel(ctx, { text: 'short  Γ=−1', x: cx - radius + 4, y: cy - 10, size: 9, font: '9px "JetBrains Mono", monospace', baseline: 'middle' });
     },
     [],
   );

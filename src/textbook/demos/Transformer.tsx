@@ -187,11 +187,15 @@ export function TransformerDemo({ figure }: Props) {
       ctx.lineTo(secX + 22, loadY + 8);
       ctx.lineTo(loadX - 14, loadY + 8);
       ctx.stroke();
+      ctx.fillStyle = colors.accent;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `N₁ = ${N1}`, x: primX, y: coreBot + 6, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `V₁ = ${V1.toFixed(0)} V`, x: srcX, y: srcY + 26 });
-      drawLabel(ctx, { text: `N₂ = ${N2}`, x: secX, y: coreBot + 6 });
-      drawLabel(ctx, { text: `V₂ = ${V2.toFixed(1)} V`, x: loadX, y: loadY + 26 });
-      drawLabel(ctx, { text: 'iron core · shared Φ', x: (coreLeft + coreRight) / 2, y: coreTop - 14, align: 'center' });
+      drawLabel(ctx, { text: `V₁ = ${V1.toFixed(0)} V`, x: srcX, y: srcY + 26, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: `N₂ = ${N2}`, x: secX, y: coreBot + 6, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: `V₂ = ${V2.toFixed(1)} V`, x: loadX, y: loadY + 26, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: 'iron core · shared Φ', x: (coreLeft + coreRight) / 2, y: coreTop - 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
     },
     [],
   );

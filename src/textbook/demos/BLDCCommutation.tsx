@@ -164,8 +164,12 @@ export function BLDCCommutationDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(sxx, syy, 11, 0, Math.PI * 2);
       ctx.fill();
+      ctx.fillStyle = colors.bg;
+      ctx.font = 'bold 11px JetBrains Mono';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: 'N', x: nx, y: ny, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'S', x: sxx, y: syy });
+      drawLabel(ctx, { text: 'S', x: sxx, y: syy, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       ctx.lineCap = 'butt';
       ctx.save();
       ctx.globalAlpha = 0.75;

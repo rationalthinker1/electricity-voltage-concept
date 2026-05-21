@@ -145,8 +145,10 @@ export function BuckConverterDemo({ figure }: Props) {
       drawLabel(ctx, { text: `${Iout.toFixed(2)} A`, x: padL - 4, y: iOf(Iout) });
       drawLabel(ctx, { text: `${Imin.toFixed(2)} A`, x: padL - 4, y: iOf(Imin) });
       drawLabel(ctx, { text: 'inductor current  I_L', x: padL + 4, y: mid + 4, baseline: 'top' });
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `0`, x: padL, y: padT + plotH + 4, align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: `${(tTotal * 1e6).toFixed(0)} µs`, x: padL + plotW, y: padT + plotH + 4 });
+      drawLabel(ctx, { text: `${(tTotal * 1e6).toFixed(0)} µs`, x: padL + plotW, y: padT + plotH + 4, align: 'center', baseline: 'top' });
       ctx.save();
       ctx.globalAlpha = 0.8;
       drawLabel(ctx, {

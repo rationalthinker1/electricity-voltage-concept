@@ -116,12 +116,19 @@ export function OpAmpInvertingDemo({ figure }: Props) {
         glowWidth: 5,
       });
       ctx.restore();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: '+10 V', x: plotX - 4, y: yPos, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: plotX - 4, y: y0 });
-      drawLabel(ctx, { text: '-10 V', x: plotX - 4, y: yNeg });
+      drawLabel(ctx, { text: '0', x: plotX - 4, y: y0, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '-10 V', x: plotX - 4, y: yNeg, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'V_in', x: plotX + 4, y: plotY + 4, color: colors.blue, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'V_out', x: plotX + 40, y: plotY + 4, color: colors.accent });
-      drawLabel(ctx, { text: `gain = ${gain.toFixed(1)}×`, x: plotX + plotW - 4, y: plotY + 4, color: colors.text, align: 'right' });
+      drawLabel(ctx, { text: 'V_out', x: plotX + 40, y: plotY + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `gain = ${gain.toFixed(1)}×`, x: plotX + plotW - 4, y: plotY + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       const peakOut = Math.abs(gain * Vamp);
       if (peakOut > V_SUP) {
         drawLabel(ctx, { text: 'RAILED — V_out clipped to ±10 V supply', x: plotX + plotW / 2, y: plotY + plotH - 4, color: colors.pink, align: 'center', baseline: 'bottom' });

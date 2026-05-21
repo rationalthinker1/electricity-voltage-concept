@@ -94,10 +94,13 @@ export function TurnsRatioDemo({ figure }: Props) {
       });
       const plotW = rect.w;
       const plotH = rect.h;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: '— V_p (170 V peak)', x: padL + 8, y: padT + 6, color: colors.pink, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `— V_s = n · V_p`, x: padL + 8, y: padT + 22, color: colors.accent });
+      drawLabel(ctx, { text: `— V_s = n · V_p`, x: padL + 8, y: padT + 22, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = withAlpha(colors.textDim, 0.6);
-      drawLabel(ctx, { text: 't (60 Hz · 2 cycles)', x: padL + plotW, y: padT + plotH + 4, align: 'right', baseline: 'top' });
+      drawLabel(ctx, { text: 't (60 Hz · 2 cycles)', x: padL + plotW, y: padT + plotH + 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
     },
     [],
   );

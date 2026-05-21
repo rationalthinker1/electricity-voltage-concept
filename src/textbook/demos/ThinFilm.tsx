@@ -79,9 +79,11 @@ export function ThinFilmDemo({ figure }: Props) {
       ctx.strokeStyle = colors.borderStrong;
       ctx.lineWidth = 1;
       ctx.strokeRect(stripLeft, stripTop, stripW, stripH);
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: 'R(λ)', x: stripLeft - 6, y: stripTop + 18, font: '10px "JetBrains Mono", monospace', align: 'right' });
-      drawLabel(ctx, { text: '380 nm', x: stripLeft, y: stripTop + stripH + 12 });
-      drawLabel(ctx, { text: '740 nm', x: stripRight, y: stripTop + stripH + 12, align: 'right' });
+      drawLabel(ctx, { text: '380 nm', x: stripLeft, y: stripTop + stripH + 12, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: '740 nm', x: stripRight, y: stripTop + stripH + 12, font: '10px "JetBrains Mono", monospace', align: 'right' });
       const sectionY = 110;
       const sectionH = 130;
       ctx.fillStyle = withAlpha(colors.blue, 0.1);
@@ -98,9 +100,11 @@ export function ThinFilmDemo({ figure }: Props) {
       ctx.moveTo(stripLeft, sectionY + 40 + filmPxH);
       ctx.lineTo(stripRight, sectionY + 40 + filmPxH);
       ctx.stroke();
-      drawLabel(ctx, { text: `air · n=${n1.toFixed(2)}`, x: stripLeft + 6, y: sectionY + 18 });
-      drawLabel(ctx, { text: `film · n=${n2.toFixed(2)}, t=${thickNm.toFixed(0)} nm`, x: stripLeft + 6, y: sectionY + 40 + filmPxH / 2 + 3 });
-      drawLabel(ctx, { text: `water · n=${n3.toFixed(2)}`, x: stripLeft + 6, y: sectionY + 40 + filmPxH + 18 });
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      drawLabel(ctx, { text: `air · n=${n1.toFixed(2)}`, x: stripLeft + 6, y: sectionY + 18, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `film · n=${n2.toFixed(2)}, t=${thickNm.toFixed(0)} nm`, x: stripLeft + 6, y: sectionY + 40 + filmPxH / 2 + 3, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `water · n=${n3.toFixed(2)}`, x: stripLeft + 6, y: sectionY + 40 + filmPxH + 18, font: '10px "JetBrains Mono", monospace' });
       const rx0 = stripLeft + 70;
       ctx.strokeStyle = 'rgba(255,255,255,0.85)';
       ctx.lineWidth = 1.4;

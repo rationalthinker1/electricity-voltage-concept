@@ -257,17 +257,23 @@ export function PoyntingInflowDemo({ figure }: Props) {
       ctx.fillStyle = getCanvasColors().blue;
       ctx.fillRect(g.wireXR + 18, g.wireCY - r - 4, 4, 2 * r + 8);
       ctx.fillStyle = getCanvasColors().pink;
+      ctx.font = 'bold 14px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: '+', x: g.wireXL - 36, y: g.wireCY, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       ctx.fillStyle = getCanvasColors().blue;
-      drawLabel(ctx, { text: '−', x: g.wireXR + 36, y: g.wireCY });
+      drawLabel(ctx, { text: '−', x: g.wireXR + 36, y: g.wireCY, weight: 'bold', size: 14, font: 'bold 14px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
 
       // Numerics overlay
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillStyle = getCanvasColors().accent;
       drawLabel(ctx, { text: `|S| = ${pretty(out.S)} W/m²`, x: 18, y: 14, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = getCanvasColors().pink;
-      drawLabel(ctx, { text: `E = ${pretty(out.E)} V/m`, x: 18, y: 30 });
+      drawLabel(ctx, { text: `E = ${pretty(out.E)} V/m`, x: 18, y: 30, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = getCanvasColors().teal;
-      drawLabel(ctx, { text: `B = ${pretty(out.B)} T`, x: 18, y: 46 });
+      drawLabel(ctx, { text: `B = ${pretty(out.B)} T`, x: 18, y: 46, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
 
       ctx.textAlign = 'right';
       ctx.save();

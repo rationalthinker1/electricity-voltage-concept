@@ -108,13 +108,16 @@ export function DiffractionGratingDemo({ figure }: Props) {
         ctx.setLineDash([3, 4]);
       }
       ctx.setLineDash([]);
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
       drawLabel(ctx, { text: `N = ${N}`, x: padL + 4, y: padTop + 12, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `λ = ${lamNm.toFixed(0)} nm`, x: padL + 4, y: padTop + 26 });
-      drawLabel(ctx, { text: `d = 1/${linesPerMm} mm`, x: padL + 4, y: padTop + 40 });
-      drawLabel(ctx, { text: 'I/I₀', x: x0 + 30, y: padTop + 12, align: 'right' });
-      drawLabel(ctx, { text: 'sin θ', x: x0 + plotW / 2, y: H - 8, align: 'center' });
-      drawLabel(ctx, { text: '−1', x: x0 + 2, y: yBase + 16 });
-      drawLabel(ctx, { text: '+1', x: x0 + plotW - 2, y: yBase + 16, align: 'right' });
+      drawLabel(ctx, { text: `λ = ${lamNm.toFixed(0)} nm`, x: padL + 4, y: padTop + 26, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: `d = 1/${linesPerMm} mm`, x: padL + 4, y: padTop + 40, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: 'I/I₀', x: x0 + 30, y: padTop + 12, font: '10px "JetBrains Mono", monospace', align: 'right' });
+      drawLabel(ctx, { text: 'sin θ', x: x0 + plotW / 2, y: H - 8, font: '10px "JetBrains Mono", monospace', align: 'center' });
+      drawLabel(ctx, { text: '−1', x: x0 + 2, y: yBase + 16, font: '10px "JetBrains Mono", monospace' });
+      drawLabel(ctx, { text: '+1', x: x0 + plotW - 2, y: yBase + 16, font: '10px "JetBrains Mono", monospace', align: 'right' });
     },
     [],
   );

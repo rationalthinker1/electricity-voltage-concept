@@ -169,10 +169,16 @@ export function AutotransformerDemo({ figure }: Props) {
       ctx.stroke();
 
       // Labels
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: `V_p = ${Vp.toFixed(0)} V`, x: coilCX + r + 18, y: coilTop + (tapY - coilTop) / 2, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
-      drawLabel(ctx, { text: `V_s = ${(Vp * k).toFixed(0)} V`, x: coilCX + r + 18, y: tapY + (coilBot - tapY) / 2, color: colors.teal });
-      drawLabel(ctx, { text: 'autotransformer', x: coilCX, y: coilTop - 12, align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: `tap k = ${k.toFixed(2)}`, x: coilCX, y: coilBot + 12, baseline: 'top' });
+      drawLabel(ctx, { text: `V_s = ${(Vp * k).toFixed(0)} V`, x: coilCX + r + 18, y: tapY + (coilBot - tapY) / 2, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'center';
+      drawLabel(ctx, { text: 'autotransformer', x: coilCX, y: coilTop - 12, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+      drawLabel(ctx, { text: `tap k = ${k.toFixed(2)}`, x: coilCX, y: coilBot + 12, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
       // Divider
       ctx.strokeStyle = colors.border;
@@ -241,8 +247,12 @@ export function AutotransformerDemo({ figure }: Props) {
         ctx.stroke();
         ctx.restore();
       }
+
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
       drawLabel(ctx, { text: 'isolated 2-winding', x: (pX + sX) / 2, y: coilTop - 12, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-      drawLabel(ctx, { text: 'same V ratio', x: (pX + sX) / 2, y: coilBot + 12, baseline: 'top' });
+      drawLabel(ctx, { text: 'same V ratio', x: (pX + sX) / 2, y: coilBot + 12, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
 
       // Drag hint
       ctx.save();

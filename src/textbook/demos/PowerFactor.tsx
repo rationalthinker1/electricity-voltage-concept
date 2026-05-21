@@ -156,8 +156,11 @@ export function PowerFactorDemo({ figure }: Props) {
       ctx.restore();
       ctx.save();
       ctx.globalAlpha = 0.65;
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'T', x: xOf(T), y: padT + plotH + 4, align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: '2T', x: xOf(tMax), y: padT + plotH + 4 });
+      drawLabel(ctx, { text: '2T', x: xOf(tMax), y: padT + plotH + 4, align: 'center', baseline: 'top' });
       ctx.restore();
       drawLabel(ctx, {
         x: padL,

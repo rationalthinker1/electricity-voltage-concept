@@ -130,11 +130,16 @@ export function CellDischargeDemo({ figure }: Props) {
       ctx.fill();
 
       // Labels
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: 'V', x: pX, y: 6, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'full', x: pX, y: pY + pH + 4, baseline: 'top' });
-      drawLabel(ctx, { text: 'empty', x: pX + pW, y: pY + pH + 4, align: 'right' });
-      drawLabel(ctx, { text: 'V_OC (open)', x: pX + pW - 4, y: pY + 4, color: colors.teal, align: 'right', baseline: 'top' });
-      drawLabel(ctx, { text: 'V_term (loaded)', x: pX + pW - 4, y: pY + 18, color: colors.accent });
+      ctx.textBaseline = 'top';
+      drawLabel(ctx, { text: 'full', x: pX, y: pY + pH + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'empty', x: pX + pW, y: pY + pH + 4, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'top';
+      drawLabel(ctx, { text: 'V_OC (open)', x: pX + pW - 4, y: pY + 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, { text: 'V_term (loaded)', x: pX + pW - 4, y: pY + 18, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
     },
     [],
   );

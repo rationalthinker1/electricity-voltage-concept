@@ -152,17 +152,25 @@ export function InRushCurrentDemo({ figure }: Props) {
         else ctx.lineTo(x, y);
       }
       ctx.stroke();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: '+V', x: padL - 4, y: yV(1), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '0', x: padL - 4, y: topV + subH / 2 });
-      drawLabel(ctx, { text: '+B_sat', x: padL - 4, y: yB(Bsat) });
-      drawLabel(ctx, { text: '−B_sat', x: padL - 4, y: yB(-Bsat) });
-      drawLabel(ctx, { text: 'clip', x: padL - 4, y: yI(1.4) });
-      drawLabel(ctx, { text: `primary voltage  V_p(t) = sin(ωt + θ),  θ = ${thetaDeg.toFixed(0)}°`, x: padL + 4, y: topV + 4, baseline: 'top' });
-      drawLabel(ctx, { text: 'core flux  Φ(t)  (asymmetric if θ ≠ 90°)', x: padL + 4, y: midB + 4 });
-      drawLabel(ctx, { text: 'magnetising current  I_mag(t)', x: padL + 4, y: botI + 4 });
-      drawLabel(ctx, { text: '0', x: padL, y: padT + plotH + 4, align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: '3 cycles', x: padL + plotW / 2, y: padT + plotH + 4 });
-      drawLabel(ctx, { text: `${((nCyc / 60) * 1000).toFixed(0)} ms`, x: padL + plotW, y: padT + plotH + 4 });
+      drawLabel(ctx, { text: '0', x: padL - 4, y: topV + subH / 2, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '+B_sat', x: padL - 4, y: yB(Bsat), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '−B_sat', x: padL - 4, y: yB(-Bsat), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: 'clip', x: padL - 4, y: yI(1.4), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      drawLabel(ctx, { text: `primary voltage  V_p(t) = sin(ωt + θ),  θ = ${thetaDeg.toFixed(0)}°`, x: padL + 4, y: topV + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'core flux  Φ(t)  (asymmetric if θ ≠ 90°)', x: padL + 4, y: midB + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: 'magnetising current  I_mag(t)', x: padL + 4, y: botI + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      drawLabel(ctx, { text: '0', x: padL, y: padT + plotH + 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: '3 cycles', x: padL + plotW / 2, y: padT + plotH + 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
+      drawLabel(ctx, { text: `${((nCyc / 60) * 1000).toFixed(0)} ms`, x: padL + plotW, y: padT + plotH + 4, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
     },
     [],
   );

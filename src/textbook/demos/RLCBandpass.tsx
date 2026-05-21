@@ -133,11 +133,17 @@ export function RLCBandpassDemo({ figure }: Props) {
         lineWidth: 1.8,
       });
       ctx.restore();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: '0 dB', x: plotX - 4, y: yDb(0), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '-20', x: plotX - 4, y: yDb(-20) });
-      drawLabel(ctx, { text: '-40', x: plotX - 4, y: yDb(-40) });
+      drawLabel(ctx, { text: '-20', x: plotX - 4, y: yDb(-20), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '-40', x: plotX - 4, y: yDb(-40), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `|H(f)|  band-pass`, x: plotX + 4, y: plotY + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `f₀ = ${fmtFreqShort(f0)}   Q = ${Q.toFixed(1)}`, x: plotX + plotW - 4, y: plotY + 4, color: colors.teal, align: 'right' });
+      drawLabel(ctx, { text: `f₀ = ${fmtFreqShort(f0)}   Q = ${Q.toFixed(1)}`, x: plotX + plotW - 4, y: plotY + 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
     },
     [],
   );

@@ -269,27 +269,23 @@ for (const filePath of files) {
     for (const [block, fts] of byBlock) {
       const stmts = block.getStatements();
 
+      // ── Phase 1: trace styles for every fillText in this block ─────────
+      // Don't stop at fillText calls — they don't mutate canvas state, so
+      // styles above them are still active for later fillText calls.
+      const traced = []; // { ftExpr, stmt, ftIdx, args, styles, sameBlockSetters }
+
       for (const { ftExpr, stmt, ftIdx, args } of fts) {
-        const styles = {
-          fillStyle: null,
-          font: null,
-          textAlign: null,
-          textBaseline: null,
-        };
+        const styles = { fillStyle: null, font: null, textAlign: null, textBaseline: null };
         const sameBlockSetters = [];
         const LOOKBACK_LIMIT = 30;
 
-        // Walk backward from the statement before fillText
         for (let j = ftIdx - 1; j >= 0 && j >= ftIdx - LOOKBACK_LIMIT; j--) {
           const s = stmts[j];
-
-          // Stop at another fillText
-          if (isFillTextCall(s)) break;
 
           // Stop at save/restore (style scoping boundary)
           if (isSaveOrRestore(s)) break;
 
-          // Stop at control-flow boundaries (styles inside if/for don't leak out)
+          // Stop at control-flow boundaries
           const sk = s.getKind();
           if ([SyntaxKind.IfStatement, SyntaxKind.ForStatement, SyntaxKind.WhileStatement,
                SyntaxKind.SwitchStatement, SyntaxKind.TryStatement, SyntaxKind.WithStatement].includes(sk)) {
@@ -318,7 +314,6 @@ for (const filePath of files) {
             const parentStmts = parentNode.getStatements();
             const blockIndex = parentStmts.findIndex(s => {
               if (s === currentBlock) return true;
-              // Check if currentBlock is a descendant of s
               return s.getDescendants().some(d => d === currentBlock);
             });
             if (blockIndex >= 0) {
@@ -337,7 +332,6 @@ for (const filePath of files) {
                       styles[prop] = 'COMPLEX';
                     } else {
                       styles[prop] = val;
-                      // Don't add to sameBlockSetters since we can't remove parent-block statements
                     }
                   }
                 }
@@ -350,6 +344,25 @@ for (const filePath of files) {
             break;
           }
         }
+
+        traced.push({ ftExpr, stmt, ftIdx, args, styles, sameBlockSetters });
+      }
+
+      // ── Phase 2: count how many fillText calls use each setter ─────────
+      // A setter is "shared" if multiple traced fillTexts reference it.
+      const setterUsageCount = new Map(); // stmt -> count
+      for (const t of traced) {
+        for (const setter of t.sameBlockSetters) {
+          const key = setter.stmt;
+          setterUsageCount.set(key, (setterUsageCount.get(key) || 0) + 1);
+        }
+      }
+
+      // ── Phase 3: build migrations, filtering out shared setters ─────────
+      for (const t of traced) {
+        const { ftExpr, stmt, args, styles } = t;
+        // Only remove setters that are used by exactly this fillText
+        const privateSetters = t.sameBlockSetters.filter(s => setterUsageCount.get(s.stmt) === 1);
 
         // Build drawLabel options
         const hasFillStyle = styles.fillStyle && styles.fillStyle !== 'COMPLEX';
@@ -430,7 +443,7 @@ for (const filePath of files) {
           stmt,
           ftExpr,
           replacement,
-          sameBlockSetters,
+          sameBlockSetters: privateSetters,
         });
       }
     }

@@ -105,8 +105,9 @@ export function SquareThroughLPFDemo() {
           ctx.lineTo(xc, my + half);
           ctx.stroke();
           ctx.setLineDash([]);
+          ctx.font = '9px "JetBrains Mono", monospace';
           drawLabel(ctx, { text: `f_c = ${fcRatio.toFixed(1)}·f₀`, x: xc + 4, y: my - half + 12, color: colors.accent, size: 9, font: '9px "JetBrains Mono", monospace' });
-          drawLabel(ctx, { text: '|H(f)|', x: w - padX - 2, y: my + half - 4, align: 'right' });
+          drawLabel(ctx, { text: '|H(f)|', x: w - padX - 2, y: my + half - 4, size: 9, font: '9px "JetBrains Mono", monospace', align: 'right' });
         },
         'filter |H(f)|',
       );

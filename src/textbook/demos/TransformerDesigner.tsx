@@ -202,9 +202,13 @@ export function TransformerDesignerDemo({ figure }: Props) {
       } else {
         drawToroid(ctx, cx, cy, W, H, fluxFill, saturating, mat.color, Np, Ns);
       }
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: mat.name.toUpperCase(), x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `B_sat = ${mat.B_sat.toFixed(2)} T`, x: 12, y: 24 });
-      drawLabel(ctx, { text: `μ_r  = ${mat.mu_r}`, x: 12, y: 38 });
+      drawLabel(ctx, { text: `B_sat = ${mat.B_sat.toFixed(2)} T`, x: 12, y: 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `μ_r  = ${mat.mu_r}`, x: 12, y: 38, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       if (saturating) {
         drawLabel(ctx, {
           x: W - 12,

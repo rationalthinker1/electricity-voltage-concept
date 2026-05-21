@@ -234,12 +234,17 @@ export function BuildAResistorDemo({ figure }: Props) {
           ctx.fillRect(startX + i * (stripeW + gap), stripeT, stripeW, stripeH);
         });
       }
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: f.label.toUpperCase(), x: 12, y: 10, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `ρ = ${fmtResistivity(f.rho)} Ω·m`, x: 12, y: 24 });
-      drawLabel(ctx, { text: `L = ${Lmm.toFixed(0)} mm`, x: 12, y: 38 });
-      drawLabel(ctx, { text: `A = ${Amm2.toFixed(3)} mm²`, x: 12, y: 52 });
-      drawLabel(ctx, { text: `R = ${fmtResistance(R)}`, x: W - 12, y: 10, color: colors.accent, align: 'right' });
-      drawLabel(ctx, { text: `±${(f.tol * 100).toFixed(f.tol < 0.01 ? 2 : 0)}%   ${fmtResistance(Rmin)} … ${fmtResistance(Rmax)}`, x: W - 12, y: 24 });
+      drawLabel(ctx, { text: `ρ = ${fmtResistivity(f.rho)} Ω·m`, x: 12, y: 24, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `L = ${Lmm.toFixed(0)} mm`, x: 12, y: 38, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `A = ${Amm2.toFixed(3)} mm²`, x: 12, y: 52, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      ctx.textAlign = 'right';
+      drawLabel(ctx, { text: `R = ${fmtResistance(R)}`, x: W - 12, y: 10, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, { text: `±${(f.tol * 100).toFixed(f.tol < 0.01 ? 2 : 0)}%   ${fmtResistance(Rmin)} … ${fmtResistance(Rmax)}`, x: W - 12, y: 24, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       void phase;
       ctx0.phase = phase;
     },

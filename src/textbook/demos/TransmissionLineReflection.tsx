@@ -124,8 +124,11 @@ export function TransmissionLineReflectionDemo({ figure }: Props) {
       } else {
         // brief pause then loop
       }
+      ctx.fillStyle = colors.text;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'Γ = (Z_L − Z₀)/(Z_L + Z₀)', x: 10, y: 8, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `Γ = ${Gamma.toFixed(3)}    |Γ| = ${Math.abs(Gamma).toFixed(3)}    VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`, x: w - 10, y: 8, align: 'right' });
+      drawLabel(ctx, { text: `Γ = ${Gamma.toFixed(3)}    |Γ| = ${Math.abs(Gamma).toFixed(3)}    VSWR = ${VSWR === Infinity ? '∞' : VSWR.toFixed(2)}`, x: w - 10, y: 8, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
     },
     [],
   );

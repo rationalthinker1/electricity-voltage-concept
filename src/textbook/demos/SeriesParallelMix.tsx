@@ -952,11 +952,14 @@ function drawProbesAndLabels(
       drawVoltageProbe(ctx, (nodeB + L.outX) / 2, L.yTop - 16, 0);
       const colors = getCanvasColors();
       ctx.save();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillStyle = withAlpha(colors.blue, 0.95);
       drawLabel(ctx, { text: `I₂ = ${net.branches[0]!.value.toFixed(2)} A`, x: xR23, y: L.yTop + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: `I₃ = ${net.branches[1]!.value.toFixed(2)} A`, x: xR23, y: branchY + 14 });
+      drawLabel(ctx, { text: `I₃ = ${net.branches[1]!.value.toFixed(2)} A`, x: xR23, y: branchY + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       ctx.fillStyle = withAlpha(colors.accent, 0.85);
-      drawLabel(ctx, { text: `I = ${net.Itot.toFixed(2)} A`, x: (L.batX + nodeA) / 2, y: L.yTop + 14 });
+      drawLabel(ctx, { text: `I = ${net.Itot.toFixed(2)} A`, x: (L.batX + nodeA) / 2, y: L.yTop + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       ctx.restore();
       break;
     }
@@ -970,11 +973,14 @@ function drawProbesAndLabels(
       drawVoltageProbe(ctx, (xR3 + 22 + L.outX) / 2, L.yTop - 16, 0);
       const colors = getCanvasColors();
       ctx.save();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillStyle = withAlpha(colors.blue, 0.95);
       drawLabel(ctx, { text: `I₁ = ${net.branches[0]!.value.toFixed(2)} A`, x: xR12, y: L.yTop + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: `I₂ = ${net.branches[1]!.value.toFixed(2)} A`, x: xR12, y: branchY + 14 });
+      drawLabel(ctx, { text: `I₂ = ${net.branches[1]!.value.toFixed(2)} A`, x: xR12, y: branchY + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       ctx.fillStyle = withAlpha(colors.accent, 0.85);
-      drawLabel(ctx, { text: `I = ${net.Itot.toFixed(2)} A`, x: (nodeB + xR3) / 2, y: L.yTop + 14 });
+      drawLabel(ctx, { text: `I = ${net.Itot.toFixed(2)} A`, x: (nodeB + xR3) / 2, y: L.yTop + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       ctx.restore();
       break;
     }
@@ -1005,12 +1011,15 @@ function drawProbesAndLabels(
       const yR3 = L.yTop + 76;
       const colors = getCanvasColors();
       ctx.save();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       ctx.fillStyle = withAlpha(colors.blue, 0.95);
       drawLabel(ctx, { text: `I₁ = ${net.branches[0]!.value.toFixed(2)} A`, x: xR1, y: L.yTop + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: `I₂ = ${net.branches[1]!.value.toFixed(2)} A`, x: xR1, y: yR2 + 14 });
-      drawLabel(ctx, { text: `I₃ = ${net.branches[2]!.value.toFixed(2)} A`, x: xR1, y: yR3 + 14 });
+      drawLabel(ctx, { text: `I₂ = ${net.branches[1]!.value.toFixed(2)} A`, x: xR1, y: yR2 + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
+      drawLabel(ctx, { text: `I₃ = ${net.branches[2]!.value.toFixed(2)} A`, x: xR1, y: yR3 + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       ctx.fillStyle = withAlpha(colors.accent, 0.85);
-      drawLabel(ctx, { text: `I = ${net.Itot.toFixed(2)} A`, x: (L.batX + nodeA) / 2, y: L.yTop + 14 });
+      drawLabel(ctx, { text: `I = ${net.Itot.toFixed(2)} A`, x: (L.batX + nodeA) / 2, y: L.yTop + 14, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'middle' });
       ctx.restore();
       break;
     }

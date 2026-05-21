@@ -168,16 +168,19 @@ export function BridgeRectifierDemo({ figure }: Props) {
       ctx.restore();
       drawLabel(ctx, { text: `+${Vp.toFixed(0)} V`, x: padL - 4, y: yOf(Vp) });
       drawLabel(ctx, { text: `−${Vp.toFixed(0)} V`, x: padL - 4, y: yOf(-Vp) });
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
       const lx = padL + plotW + 8;
       ctx.fillStyle = colors.text;
       ctx.fillRect(lx, padT + 8 - 1, 10, 2);
       drawLabel(ctx, { text: 'V_in', x: lx + 14, y: padT + 8, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
       ctx.fillStyle = colors.teal;
       ctx.fillRect(lx, padT + 24 - 1, 10, 2);
-      drawLabel(ctx, { text: '|V_rect|', x: lx + 14, y: padT + 24, color: colors.text });
+      drawLabel(ctx, { text: '|V_rect|', x: lx + 14, y: padT + 24, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
       ctx.fillStyle = colors.accent;
       ctx.fillRect(lx, padT + 40 - 1, 10, 2);
-      drawLabel(ctx, { text: 'V_out', x: lx + 14, y: padT + 40, color: colors.text });
+      drawLabel(ctx, { text: 'V_out', x: lx + 14, y: padT + 40, color: colors.text, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
       ctx0.phase = phase;
     },
     [],

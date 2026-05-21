@@ -95,9 +95,11 @@ export function FFTAlgorithmAnimationDemo() {
         const M = 1 << lN;
         ctx.fillText('N=' + M, xOf(lN), padT + plotH + 12);
       }
+      ctx.textAlign = 'right';
       drawLabel(ctx, { text: '10⁰', x: padL - 3, y: padT + plotH + 3, align: 'right' });
-      drawLabel(ctx, { text: '10⁷', x: padL - 3, y: padT + 8 });
+      drawLabel(ctx, { text: '10⁷', x: padL - 3, y: padT + 8, align: 'right' });
       ctx.restore();
+      ctx.textAlign = 'left';
       drawLabel(ctx, { text: 'naive DFT — N²', x: padL + 4, y: padT + 10, color: colors.blue });
       drawLabel(ctx, { text: 'FFT — N log₂ N', x: padL + 4, y: padT + 22, color: colors.accent });
       const bx0 = splitX + 30,

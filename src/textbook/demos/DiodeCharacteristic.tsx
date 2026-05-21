@@ -146,9 +146,11 @@ export function DiodeCharacteristicDemo({ figure }: Props) {
         ctx.fillText(v.toFixed(0), xOf(v), yOf(0) + 4);
         ctx.restore();
       }
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: '+100 mA', x: padL - 4, y: yOf(0.1), align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '+50 mA', x: padL - 4, y: yOf(0.05) });
-      drawLabel(ctx, { text: '−50 mA', x: padL - 4, y: yOf(-0.05) });
+      drawLabel(ctx, { text: '+50 mA', x: padL - 4, y: yOf(0.05), align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '−50 mA', x: padL - 4, y: yOf(-0.05), align: 'right', baseline: 'middle' });
       (Object.keys(FAMILIES) as DiodeKind[]).forEach((kind) => {
         const { color } = FAMILIES[kind];
         ctx.strokeStyle = color;

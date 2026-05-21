@@ -99,8 +99,12 @@ export function SuperpositionDemo({ figure }: Props) {
               ? 'Live: V2 only'
               : 'Both off';
       drawPanel(ctx, 2 * colW, 0, colW, h, label, both, withAlpha(colors.accent, 0.95));
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: '+', x: colW, y: 4, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
-      drawLabel(ctx, { text: '=', x: 2 * colW, y: 4 });
+      drawLabel(ctx, { text: '=', x: 2 * colW, y: 4, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });
     },
     [],
   );
@@ -254,9 +258,12 @@ function drawPanel(
 
   // Scale ticks
   ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.65);
+  ctx.font = '8px "JetBrains Mono", monospace';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
   drawLabel(ctx, { text: `+${(Imax * 1000).toFixed(2)} mA`, x: padL - 4, y: yOf(Imax), size: 8, font: '8px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-  drawLabel(ctx, { text: '0', x: padL - 4, y: yMid });
-  drawLabel(ctx, { text: `−${(Imax * 1000).toFixed(2)} mA`, x: padL - 4, y: yOf(-Imax) });
+  drawLabel(ctx, { text: '0', x: padL - 4, y: yMid, size: 8, font: '8px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+  drawLabel(ctx, { text: `−${(Imax * 1000).toFixed(2)} mA`, x: padL - 4, y: yOf(-Imax), size: 8, font: '8px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
 
   // V_A annotation
   drawLabel(ctx, {

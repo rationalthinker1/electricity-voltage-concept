@@ -110,8 +110,10 @@ export function MeshCurrentSolverDemo({ figure }: Props) {
       ctx.save();
       ctx.globalAlpha = 0.8;
       ctx.fillStyle = getCanvasColors().text;
+      ctx.font = 'bold 11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
       drawLabel(ctx, { text: 'A', x: xMid + 6, y: yTop - 4, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'bottom' });
-      drawLabel(ctx, { text: 'B', x: xMid + 6, y: yBot + 6, baseline: 'top' });
+      drawLabel(ctx, { text: 'B', x: xMid + 6, y: yBot + 6, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.restore();
 
       ctx.save();

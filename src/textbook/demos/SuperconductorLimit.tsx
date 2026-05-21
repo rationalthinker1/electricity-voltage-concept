@@ -278,17 +278,22 @@ export function SuperconductorLimitDemo({ figure }: Props) {
       }
 
       // Numerics overlay
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: s.supercon ? 'Mode: superconductor (σ → ∞)' : 'Mode: normal conductor', x: 18, y: 14, color: s.supercon ? '#6cc5c2' : '#ff6b2a', size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
 
       ctx.fillStyle = getCanvasColors().pink;
-      drawLabel(ctx, { text: `E_inside = ${pretty(s.E_in)} V/m`, x: 18, y: 30 });
+      drawLabel(ctx, { text: `E_inside = ${pretty(s.E_in)} V/m`, x: 18, y: 30, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = getCanvasColors().teal;
-      drawLabel(ctx, { text: `B_surface = ${pretty(s.B_surf)} T`, x: 18, y: 46 });
+      drawLabel(ctx, { text: `B_surface = ${pretty(s.B_surf)} T`, x: 18, y: 46, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = getCanvasColors().accent;
-      drawLabel(ctx, { text: `|S|_inside = ${pretty(s.S_in)} W/m²`, x: 18, y: 62 });
+      drawLabel(ctx, { text: `|S|_inside = ${pretty(s.S_in)} W/m²`, x: 18, y: 62, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'top' });
+
+      ctx.textAlign = 'right';
       ctx.fillStyle = withAlpha(getCanvasColors().textDim, 0.85);
-      drawLabel(ctx, { text: `I = ${I.toFixed(1)} A   a = ${a_mm.toFixed(2)} mm`, x: W - 18, y: 14, align: 'right' });
-      drawLabel(ctx, { text: s.supercon ? 'Energy passes parallel — never absorbed' : 'Energy absorbed at surface = V·I', x: W - 18, y: 30, color: s.supercon ? '#6cc5c2' : '#ff6b2a' });
+      drawLabel(ctx, { text: `I = ${I.toFixed(1)} A   a = ${a_mm.toFixed(2)} mm`, x: W - 18, y: 14, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, { text: s.supercon ? 'Energy passes parallel — never absorbed' : 'Energy absorbed at surface = V·I', x: W - 18, y: 30, color: s.supercon ? '#6cc5c2' : '#ff6b2a', size: 11, font: '11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
 
       raf = requestAnimationFrame(draw);
     }

@@ -161,8 +161,10 @@ export function PolarizationMalusLawDemo({ figure }: Props) {
       ctx.moveTo(panelW * 1.95, cyMid);
       ctx.lineTo(panelW * 2.05, cyMid);
       ctx.stroke();
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors.textDim;
       drawLabel(ctx, { text: `I/I₀ = ${fracOut.toFixed(3)}`, x: 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: qwp ? 'λ/4 plate inserted between P₁ and P₂' : 'Δθ = ' + (t2Deg - t1Deg).toFixed(0) + '°', x: W - 12, y: 18, align: 'right' });
+      drawLabel(ctx, { text: qwp ? 'λ/4 plate inserted between P₁ and P₂' : 'Δθ = ' + (t2Deg - t1Deg).toFixed(0) + '°', x: W - 12, y: 18, size: 11, font: '11px "JetBrains Mono", monospace', align: 'right' });
       ctx0.tAnim = tAnim;
     },
     [],

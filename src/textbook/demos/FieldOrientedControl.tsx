@@ -135,9 +135,12 @@ export function FieldOrientedControlDemo({ figure }: Props) {
       ctx.moveTo(x0R, yIq);
       ctx.lineTo(x0R + colW, yIq);
       ctx.stroke();
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'rotor-aligned: i_d, i_q   (d-q frame)', x: x0R + 6, y: y0 + 4, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: `i_q = ${iqRef.toFixed(1)} A  (torque)`, x: x0R + colW - 6, y: yIq - 12, color: colors.accent, align: 'right' });
-      drawLabel(ctx, { text: `i_d = ${idRef.toFixed(1)} A  (flux)`, x: x0R + colW - 6, y: yId + 4, color: colors.pink });
+      ctx.textAlign = 'right';
+      drawLabel(ctx, { text: `i_q = ${iqRef.toFixed(1)} A  (torque)`, x: x0R + colW - 6, y: yIq - 12, color: colors.accent, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
+      drawLabel(ctx, { text: `i_d = ${idRef.toFixed(1)} A  (flux)`, x: x0R + colW - 6, y: yId + 4, color: colors.pink, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
       ctx0.t0 = t0;
     },
     [],

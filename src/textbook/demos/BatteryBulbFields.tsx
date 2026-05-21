@@ -331,8 +331,11 @@ export function BatteryBulbFieldsDemo({ figure }: Props) {
 
         // Polarity glyphs — used to bake into the offscreen canvas; pulled
         // out to per-frame ctx so the cache stays a plain CircuitSpec.
+        ctx.font = 'bold 12px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
         drawLabel(ctx, { text: '+', x: batX - 18, y: top, color: '#ff3b6e', weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-        drawLabel(ctx, { text: '−', x: batX - 12, y: bot, color: '#5baef8' });
+        drawLabel(ctx, { text: '−', x: batX - 12, y: bot, color: '#5baef8', weight: 'bold', size: 12, font: 'bold 12px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
 
         // ----- B-field circles around the wire (sample points along the loop).
         if (s.showB && current > 0.01) {

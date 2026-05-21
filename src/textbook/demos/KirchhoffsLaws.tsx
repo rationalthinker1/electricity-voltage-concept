@@ -184,8 +184,11 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         // Dynamic overlay: node identifier letters above each junction.
         ctx.save();
         ctx.globalAlpha = 0.8;
+        ctx.fillStyle = colors.text;
+        ctx.font = 'bold 11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
         drawLabel(ctx, { text: 'A', x: nodeA_x + 6, y: yTop - 4, color: colors.text, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'bottom' });
-        drawLabel(ctx, { text: 'B', x: nodeB_x + 6, y: yBot + 6, baseline: 'top' });
+        drawLabel(ctx, { text: 'B', x: nodeB_x + 6, y: yBot + 6, color: colors.text, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'top' });
 
         // Dynamic overlay: animated current dots crawling along each branch.
         const maxI = Math.max(I1, 1e-9);
@@ -235,9 +238,12 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
         // Dynamic overlay: live current readouts next to each branch.
         ctx.restore();
         ctx.fillStyle = getCanvasColors().blue;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
         drawLabel(ctx, { text: `I₁ = ${fmtCurrent(I1)}`, x: (batX + nodeA_x) / 2, y: yTop - 8, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
-        drawLabel(ctx, { text: `I₃ = ${fmtCurrent(I3)}`, x: (nodeA_x + outX) / 2, y: yTop - 8 });
-        drawLabel(ctx, { text: `I₂ = ${fmtCurrent(I2)}`, x: nodeA_x + 26, y: h / 2, baseline: 'middle' });
+        drawLabel(ctx, { text: `I₃ = ${fmtCurrent(I3)}`, x: (nodeA_x + outX) / 2, y: yTop - 8, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
+        drawLabel(ctx, { text: `I₂ = ${fmtCurrent(I2)}`, x: nodeA_x + 26, y: h / 2, font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
 
         // Dynamic overlay: KCL / KVL annotation boxes (toggled by the controls).
         if (showKCL) {
@@ -293,10 +299,13 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
 
           ctx.restore();
           ctx.fillStyle = getCanvasColors().teal;
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'top';
           drawLabel(ctx, { text: 'KVL loops (sum of drops = 0):', x: boxX + 8, y: boxY + 6, weight: 'bold', font: 'bold 10px "JetBrains Mono", monospace', baseline: 'top' });
           ctx.fillStyle = getCanvasColors().text;
-          drawLabel(ctx, { text: `Left:  V − I₁R₁ − I₂R₂ = 0`, x: boxX + 8, y: boxY + 22, font: '10px "JetBrains Mono", monospace' });
-          drawLabel(ctx, { text: `Right: I₂R₂ − I₃R₃ = 0`, x: boxX + 8, y: boxY + 36 });
+          ctx.font = '10px "JetBrains Mono", monospace';
+          drawLabel(ctx, { text: `Left:  V − I₁R₁ − I₂R₂ = 0`, x: boxX + 8, y: boxY + 22, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+          drawLabel(ctx, { text: `Right: I₂R₂ − I₃R₃ = 0`, x: boxX + 8, y: boxY + 36, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
 
           const drop1 = I1 * R1;
           const drop2 = I2 * R2;
@@ -304,8 +313,8 @@ export function KirchhoffsLawsDemo({ figure }: Props) {
           const lhsL = V - drop1 - drop2;
           const lhsR = drop2 - drop3;
           ctx.fillStyle = getCanvasColors().textDim;
-          drawLabel(ctx, { text: `${V.toFixed(2)} − ${drop1.toFixed(2)} − ${drop2.toFixed(2)} = ${lhsL.toFixed(3)} ✓`, x: boxX + 8, y: boxY + 52 });
-          drawLabel(ctx, { text: `${drop2.toFixed(2)} − ${drop3.toFixed(2)} = ${lhsR.toFixed(3)} ✓`, x: boxX + 8, y: boxY + 66 });
+          drawLabel(ctx, { text: `${V.toFixed(2)} − ${drop1.toFixed(2)} − ${drop2.toFixed(2)} = ${lhsL.toFixed(3)} ✓`, x: boxX + 8, y: boxY + 52, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+          drawLabel(ctx, { text: `${drop2.toFixed(2)} − ${drop3.toFixed(2)} = ${lhsR.toFixed(3)} ✓`, x: boxX + 8, y: boxY + 66, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
         }
 
         // Dynamic overlay: top-corner caption text.

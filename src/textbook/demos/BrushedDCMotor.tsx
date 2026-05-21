@@ -144,12 +144,15 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(topEnd.x, topEnd.y, 7, 0, Math.PI * 2);
       ctx.fill();
+      ctx.font = 'bold 10px JetBrains Mono';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: '×', x: topEnd.x, y: topEnd.y, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       ctx.fillStyle = colors.blue;
       ctx.beginPath();
       ctx.arc(botEnd.x, botEnd.y, 7, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: '·', x: botEnd.x, y: botEnd.y, color: colors.bg });
+      drawLabel(ctx, { text: '·', x: botEnd.x, y: botEnd.y, color: colors.bg, weight: 'bold', font: '10px "JetBrains Mono"', align: 'center', baseline: 'middle' });
       const fLen = Math.max(8, Math.min(36, drive * 30 + 10));
       ctx.strokeStyle = colors.accent;
       ctx.fillStyle = colors.accent;

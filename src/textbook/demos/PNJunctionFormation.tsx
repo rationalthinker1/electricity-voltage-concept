@@ -193,8 +193,10 @@ export function PNJunctionFormationDemo({ figure }: Props) {
       }
 
       // labels
+      ctx.font = 'bold 11px "JetBrains Mono", monospace';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: 'n-type', x: padL + 6, y: padT + 4, color: colors.pink, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'p-type', x: padL + plotW - 6, y: padT + 4, color: colors.blue, align: 'right' });
+      drawLabel(ctx, { text: 'p-type', x: padL + plotW - 6, y: padT + 4, color: colors.blue, weight: 'bold', size: 11, font: 'bold 11px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
 
       // depletion region label
       drawLabel(ctx, { text: `depletion region   (W/W₀ = ${w_rel.toFixed(2)})`, x: padL + plotW * 0.5, y: padT + plotH - 16, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'center', baseline: 'top' });

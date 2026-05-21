@@ -84,8 +84,11 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.moveTo(trackR + 8, trackY + 4);
       ctx.lineTo(trackR + 8, H - 16);
       ctx.stroke();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
       drawLabel(ctx, { text: 'A', x: trackL - 8, y: H - 4, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: 'B', x: trackR + 8, y: H - 4 });
+      drawLabel(ctx, { text: 'B', x: trackR + 8, y: H - 4, font: '10px "JetBrains Mono", monospace', align: 'center' });
       const wiperX = trackL + wiper * (trackR - trackL);
       ctx.strokeStyle = 'rgba(255,255,255,0.85)';
       ctx.lineWidth = 2;
@@ -102,7 +105,7 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.stroke();
       ctx.fillStyle = '#ffb84a';
       ctx.fillRect(wiperX - 6, trackY - 36, 12, 8);
-      drawLabel(ctx, { text: 'W (wiper)', x: wiperX, y: trackY - 42 });
+      drawLabel(ctx, { text: 'W (wiper)', x: wiperX, y: trackY - 42, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabeledValue(ctx, {
         x: trackL,
         y: trackY + 28,
@@ -192,8 +195,11 @@ export function VariableResistorsDemo({ figure }: Props) {
       ctx.moveTo(ldrCX + pW / 2 - 12, ldrCY + pH / 2);
       ctx.lineTo(ldrCX + pW / 2 - 12, H - 16);
       ctx.stroke();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
       drawLabel(ctx, { text: `${lux.toFixed(lux < 10 ? 1 : 0)} lux`, x: ldrCX, y: ldrCY - pH / 2 - 36, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: `R = ${fmtResistance(R_LDR)}`, x: ldrCX, y: ldrCY + pH / 2 + 22 });
+      drawLabel(ctx, { text: `R = ${fmtResistance(R_LDR)}`, x: ldrCX, y: ldrCY + pH / 2 + 22, font: '10px "JetBrains Mono", monospace', align: 'center' });
       drawLabel(ctx, {
         x: splitX + 12,
         y: 8,

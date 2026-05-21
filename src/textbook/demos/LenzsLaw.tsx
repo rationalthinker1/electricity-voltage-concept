@@ -101,8 +101,12 @@ export function LenzsLawDemo({ figure }: Props) {
       ctx.lineWidth = 1;
       ctx.strokeRect(cx - magW / 2, magY - magH / 2, magW, magH);
       ctx.restore();
+      ctx.fillStyle = colors.bg;
+      ctx.font = 'bold 11px JetBrains Mono';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: 'S', x: cx, y: magY - magH / 4, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
-      drawLabel(ctx, { text: 'N', x: cx, y: magY + magH / 4 });
+      drawLabel(ctx, { text: 'N', x: cx, y: magY + magH / 4, color: colors.bg, weight: 'bold', size: 11, font: '11px "JetBrains Mono"', align: 'center', baseline: 'middle' });
 
       // Magnet's own B-field arrow — pink, pointing down toward loop
       ctx.fillStyle = colors.pink;

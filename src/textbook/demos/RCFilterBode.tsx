@@ -167,15 +167,22 @@ export function RCFilterBodeDemo({ figure }: Props) {
         glowWidth: 5,
       });
       ctx.restore();
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: '0 dB', x: plotX - 4, y: yMag(0), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-      drawLabel(ctx, { text: '-20', x: plotX - 4, y: yMag(-20) });
-      drawLabel(ctx, { text: '-40', x: plotX - 4, y: yMag(-40) });
-      drawLabel(ctx, { text: '0°', x: plotX - 4, y: yPh(0) });
-      drawLabel(ctx, { text: '-90°', x: plotX - 4, y: yPh(-90) });
-      drawLabel(ctx, { text: '+90°', x: plotX - 4, y: yPh(90) });
+      drawLabel(ctx, { text: '-20', x: plotX - 4, y: yMag(-20), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '-40', x: plotX - 4, y: yMag(-40), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '0°', x: plotX - 4, y: yPh(0), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '-90°', x: plotX - 4, y: yPh(-90), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '+90°', x: plotX - 4, y: yPh(90), size: 9, font: '9px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: '|H(jω)|  [dB]', x: plotX + 4, y: magY0 + 4, color: colors.accent, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
-      drawLabel(ctx, { text: 'arg H(jω)  [deg]', x: plotX + 4, y: phaseY0 + 4, color: colors.teal });
-      drawLabel(ctx, { text: `${mode === 'low' ? 'low-pass' : 'high-pass'}  f_c = ${fmtFreqShort(fc)}`, x: plotX + plotW - 4, y: magY0 + 4, color: colors.text, align: 'right' });
+      drawLabel(ctx, { text: 'arg H(jω)  [deg]', x: plotX + 4, y: phaseY0 + 4, color: colors.teal, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `${mode === 'low' ? 'low-pass' : 'high-pass'}  f_c = ${fmtFreqShort(fc)}`, x: plotX + plotW - 4, y: magY0 + 4, color: colors.text, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'top' });
     },
     [],
   );

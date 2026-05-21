@@ -128,8 +128,10 @@ export function DipoleInFieldDemo({ figure }: Props) {
       }
 
       // Overlay alignment text
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
       drawLabel(ctx, { text: `⟨cos θ⟩ = ${meanCos.toFixed(2)}`, x: 12, y: 18, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: `E (applied) →`, x: w - 110, y: 18 });
+      drawLabel(ctx, { text: `E (applied) →`, x: w - 110, y: 18, size: 11, font: '11px "JetBrains Mono", monospace' });
 
       // Throttle React state updates to ~5 Hz
       setAlignThrottled(meanCos);

@@ -254,7 +254,7 @@ export const CHAPTERS: ChapterEntry[] = [
       'volta-1782',
       'griffiths-2017',
       'jackson-1999',
-      'feynman-II-27',
+      'feynman-II-2',
       'horowitz-hill-2015',
       'codata-2018',
     ],

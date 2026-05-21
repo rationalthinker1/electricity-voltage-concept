@@ -478,15 +478,18 @@ export function RotatingMagField3DDemo({ figure }: Props) {
       }
 
       // ───── HUD labels ─────
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       drawLabel(ctx, { text: `I_A = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[0]!)).toFixed(2)} A`, x: 12, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = coilColors()[0]!;
-      drawLabel(ctx, { text: `A`, x: 2, y: 12 });
-      drawLabel(ctx, { text: `I_B = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[1]!)).toFixed(2)} A`, x: 12, y: 26 });
+      drawLabel(ctx, { text: `A`, x: 2, y: 12, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `I_B = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[1]!)).toFixed(2)} A`, x: 12, y: 26, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = coilColors()[1]!;
-      drawLabel(ctx, { text: `B`, x: 2, y: 26 });
-      drawLabel(ctx, { text: `I_C = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[2]!)).toFixed(2)} A`, x: 12, y: 40 });
+      drawLabel(ctx, { text: `B`, x: 2, y: 26, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
+      drawLabel(ctx, { text: `I_C = ${(st.I0 * Math.cos(st.theta + COIL_PHASES[2]!)).toFixed(2)} A`, x: 12, y: 40, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
       ctx.fillStyle = coilColors()[2]!;
-      drawLabel(ctx, { text: `C`, x: 2, y: 40 });
+      drawLabel(ctx, { text: `C`, x: 2, y: 40, font: '10px "JetBrains Mono", monospace', baseline: 'top' });
 
       ctx.save();
       ctx.globalAlpha = 0.55;

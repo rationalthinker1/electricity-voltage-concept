@@ -136,8 +136,10 @@ export function SolenoidDemo({ figure }: Props) {
         ctx.stroke();
       }
       ctx.fillStyle = withAlpha(colors.textDim, 0.85);
+      ctx.font = '10px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
       drawLabel(ctx, { text: `L = ${Lcm.toFixed(1)} cm  ·  N = ${N}  ·  n = ${pretty(N / (Lcm * 1e-2), 2)} /m`, x: w / 2, y: h - 18, font: '10px "JetBrains Mono", monospace', align: 'center' });
-      drawLabel(ctx, { text: `B (inside) = ${pretty(PHYS.mu_0 * (N / (Lcm * 1e-2)) * I, 3)} T`, x: w / 2, y: 24, color: colors.teal });
+      drawLabel(ctx, { text: `B (inside) = ${pretty(PHYS.mu_0 * (N / (Lcm * 1e-2)) * I, 3)} T`, x: w / 2, y: 24, color: colors.teal, font: '10px "JetBrains Mono", monospace', align: 'center' });
       ctx0.t0 = t0;
     },
     [],

@@ -139,9 +139,13 @@ export function BandStructureDemo({ figure }: Props) {
       ctx.lineTo(arrowX + 4, yOf(cbBot) + 6);
       ctx.closePath();
       ctx.fill();
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textBaseline = 'middle';
       drawLabel(ctx, { text: `E_g = ${Eg.toFixed(2)} eV`, x: arrowX + 10, y: (yOf(vbTop) + yOf(cbBot)) / 2, color: colors.text, size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'middle' });
-      drawLabel(ctx, { text: 'valence band (full)', x: padL + plotW - 150, y: yOf(-0.4) });
-      drawLabel(ctx, { text: 'conduction band', x: padL + plotW - 150, y: yOf(cbBot + 0.4) });
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
+      drawLabel(ctx, { text: 'valence band (full)', x: padL + plotW - 150, y: yOf(-0.4), size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'middle' });
+      drawLabel(ctx, { text: 'conduction band', x: padL + plotW - 150, y: yOf(cbBot + 0.4), size: 11, font: '11px "JetBrains Mono", monospace', baseline: 'middle' });
       drawLabel(ctx, {
         x: padL,
         y: 6,

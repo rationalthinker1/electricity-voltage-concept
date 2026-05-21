@@ -51,8 +51,10 @@ export function PolarizationDemo({ figure }: Props) {
       ctx.lineTo(cx, cy + R);
       ctx.stroke();
       ctx.setLineDash([]);
+      ctx.fillStyle = colors.textDim;
+      ctx.font = '10px "JetBrains Mono", monospace';
       drawLabel(ctx, { text: 'y', x: cx + R + 6, y: cy + 4, font: '10px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'z', x: cx, y: cy - R - 6, align: 'center' });
+      drawLabel(ctx, { text: 'z', x: cx, y: cy - R - 6, font: '10px "JetBrains Mono", monospace', align: 'center' });
       function eVec(time: number) {
         const yEy = Math.cos(phi) * Math.cos(om * time);
         const zEz = Math.sin(phi) * Math.cos(om * time - delta);
@@ -136,8 +138,10 @@ export function PolarizationDemo({ figure }: Props) {
         stateLabel = 'circular';
       }
       ctx.restore();
+      ctx.font = '11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
       drawLabel(ctx, { text: `polarization: ${stateLabel}`, x: 14, y: 22, color: colors.accent, size: 11, font: '11px "JetBrains Mono", monospace' });
-      drawLabel(ctx, { text: 'view: looking down the propagation axis →', x: 14, y: 38 });
+      drawLabel(ctx, { text: 'view: looking down the propagation axis →', x: 14, y: 38, size: 11, font: '11px "JetBrains Mono", monospace' });
     },
     [],
   );

@@ -129,6 +129,8 @@ export function PowerDeratingDemo({ figure }: Props) {
       ctx.lineTo(xT(T_KNEE), padT + gH);
       ctx.stroke();
       ctx.setLineDash([]);
+      ctx.fillStyle = colors.textDim;
+      ctx.textAlign = 'left';
       drawLabel(ctx, { text: `Knee at ${T_KNEE} °C`, x: xT(T_KNEE) + 4, y: padT + 10 });
       drawLabel(ctx, { text: `Zero at ${T_ZERO} °C`, x: xT(T_ZERO) - 60, y: padT + 24 });
       drawLabel(ctx, {
