@@ -380,9 +380,10 @@ export default function Ch22MagneticallyCoupledCircuits() {
         in time. What voltage appears across each coil's terminals? Each coil sees two sources of
         changing flux at once: its own current's contribution (the self-inductance term) and the
         partner's contribution (the mutual term). By superposition — Maxwell's equations are linear,
-        so flux superposes whenever currents do — the total flux linkage in coil 1 is L₁ I₁ + M I₂,
-        and the total in coil 2 is L₂ I₂ + M I₁. Differentiate and (taking the passive-sign
-        convention where v = +L dI/dt across an inductor):
+        so flux superposes whenever currents do — the total flux linkage in coil 1 is{' '}
+        <InlineMath tex="L_1 I_1 + M I_2" />, and the total in coil 2 is{' '}
+        <InlineMath tex="L_2 I_2 + M I_1" />. Differentiate and (taking the passive-sign
+        convention where <InlineMath tex="v = +L\, dI/dt" /> across an inductor):
       </p>
       <Formula>v₁ = L₁ dI₁/dt ± M dI₂/dt</Formula>
       <Formula>v₂ = L₂ dI₂/dt ± M dI₁/dt</Formula>
@@ -632,11 +633,12 @@ export default function Ch22MagneticallyCoupledCircuits() {
             with <InlineMath tex="M = 1\,\text{mH}" />. The secondary is
             closed by a pure resistive load{' '}
             <InlineMath tex="Z_L = 50\,\Omega" />
-            , and L₂ is small enough that ωL₂ ≪ 50 Ω. Estimate the reflected impedance seen at the
-            primary.
+            , and <InlineMath tex="L_2" /> is small enough that{' '}
+            <InlineMath tex="\omega L_2 \ll 50\,\Omega" />. Estimate the reflected impedance seen at
+            the primary.
           </>
         }
-        hint="Z_reflected ≈ (ωM)² / Z_L when ωL₂ is negligible."
+        hint={<><InlineMath tex="Z_{\text{reflected}} \approx (\omega M)^{2} / Z_L" /> when <InlineMath tex="\omega L_2" /> is negligible.</>}
         answer={
           <>
             <Formula>ωM = 10⁶ · 10⁻³ = 1000 Ω</Formula>
@@ -934,14 +936,16 @@ export default function Ch22MagneticallyCoupledCircuits() {
 
         <FAQItem q="Can M be negative?">
           <p>
-            By convention, no — M is defined as a non-negative number, the unsigned proportionality
-            between flux linkage and current. What <em className="text-text italic">can</em> be
-            negative is the mutual <em className="text-text italic">term</em> in a circuit equation:
-            depending on dot convention (which way each coil is wound relative to the other), the
-            mutual contribution to a coil's voltage can be either +M dI/dt or −M dI/dt. The "sign"
-            lives in the wiring geometry, not in M itself. Old engineering texts occasionally write
-            a signed "M" when they want to shortcut the dot, but the modern convention keeps M
-            positive and lets the dot do the signing
+            By convention, no — <InlineMath tex="M" /> is defined as a non-negative number, the
+            unsigned proportionality between flux linkage and current. What{' '}
+            <em className="text-text italic">can</em> be negative is the mutual{' '}
+            <em className="text-text italic">term</em> in a circuit equation: depending on dot
+            convention (which way each coil is wound relative to the other), the mutual
+            contribution to a coil's voltage can be either <InlineMath tex="+M\, dI/dt" /> or{' '}
+            <InlineMath tex="-M\, dI/dt" />. The "sign" lives in the wiring geometry, not in{' '}
+            <InlineMath tex="M" /> itself. Old engineering texts occasionally write a signed "
+            <InlineMath tex="M" />" when they want to shortcut the dot, but the modern convention
+            keeps <InlineMath tex="M" /> positive and lets the dot do the signing
             <Cite id="hayt-kemmerly-durbin-2018" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1046,7 +1050,8 @@ export default function Ch22MagneticallyCoupledCircuits() {
             below 0.3), leakage inductance will dominate, and there will be no soft-iron path to
             concentrate the flux into the secondary. The volt-second capacity per turn at line
             frequency will be small, so air-core transformers don't work for power conversion at
-            50/60 Hz. Move to RF frequencies where ωL is large even for small L, or accept the
+            50/60 Hz. Move to RF frequencies where <InlineMath tex="\omega L" /> is large even for
+            small <InlineMath tex="L" />, or accept the
             inefficiency and add resonant compensation (as in a Tesla coil or a Qi pad), and
             air-core coupled coils become genuinely useful. For 60 Hz power transformers, the iron
             core is non-optional.

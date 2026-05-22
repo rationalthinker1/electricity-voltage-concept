@@ -933,8 +933,10 @@ export default function Ch21Generators() {
 
         <FAQItem q="What is reactive power and why does the grid worry about it?">
           <p>
-            Real power is V·I·cos(φ) — the part of the current that's in phase with the voltage and
-            actually delivers energy to the load. Reactive power is V·I·sin(φ) — the part 90° out of
+            Real power is <InlineMath tex="V \cdot I \cdot \cos\varphi" /> — the part of the
+            current that's in phase with the voltage and actually delivers energy to the load.
+            Reactive power is <InlineMath tex="V \cdot I \cdot \sin\varphi" /> — the part 90° out
+            of
             phase, which sloshes back and forth between source and load each cycle without net
             energy transfer. Inductive loads (motors, transformers) absorb reactive power;
             capacitive loads (long lines, certain rectifier loads) produce it. The grid has to

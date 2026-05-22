@@ -1310,8 +1310,10 @@ export default function Ch13NetworkAnalysis() {
         <FAQItem q="Why does superposition only work for linear circuits?">
           <p>
             Because the underlying constitutive equations have to be additive in the sources. Ohm's
-            law (V = IR), the capacitor equation (I = C dV/dt), and the inductor equation (V = L
-            dI/dt) are all linear in their variables: scale a source, scale the response by the same
+            law (<InlineMath tex="V = IR" />), the capacitor equation (
+            <InlineMath tex="I = C\, dV/dt" />), and the inductor equation (
+            <InlineMath tex="V = L\, dI/dt" />) are all linear in their variables: scale a source,
+            scale the response by the same
             factor; add two sources, add their responses. A diode breaks all of that — its current
             is an exponential in voltage, so two sources active together produce a different answer
             than the sum of their separate responses. Transistors, saturating ferromagnetic cores,

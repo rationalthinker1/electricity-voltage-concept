@@ -331,8 +331,8 @@ export default function Ch12CircuitsAndAC() {
         the capacitor at the same instant.
       </p>
       <p className="mb-prose-3">
-        and since I = dQ/dt, you get a first-order linear ODE whose solution is the canonical
-        exponential approach:
+        and since <InlineMath tex="I = dQ/dt" />, you get a first-order linear ODE whose solution
+        is the canonical exponential approach:
       </p>
       <Formula>
         V<sub>C</sub>(t) = V<sub>0</sub> ( 1 − e<sup>−t/τ</sup> ), τ = R C
@@ -429,7 +429,8 @@ export default function Ch12CircuitsAndAC() {
         energy back and forth indefinitely — the electrical analog of a mass on a spring.
       </p>
       <p className="mb-prose-3">
-        Kirchhoff's voltage law plus Q = CV plus V<sub>L</sub> = L dI/dt gives
+        Kirchhoff's voltage law plus <InlineMath tex="Q = CV" /> plus{' '}
+        <InlineMath tex="V_L = L\, dI/dt" /> gives
       </p>
       <Formula>
         L (d<sup>2</sup>Q/dt<sup>2</sup>) + Q/C = 0
@@ -439,7 +440,8 @@ export default function Ch12CircuitsAndAC() {
         <InlineMath tex="C" /> is the capacitance (in farads), and{' '}
         <InlineMath tex="Q(t)" /> is the charge on the capacitor
         plates (in coulombs) as a function of time. The first term is the voltage across the
-        inductor (L·dI/dt with I = dQ/dt); the second is the voltage across the capacitor. KVL says
+        inductor (<InlineMath tex="L \cdot dI/dt" /> with <InlineMath tex="I = dQ/dt" />); the
+        second is the voltage across the capacitor. KVL says
         they sum to zero around the loop.
       </p>
       <p className="mb-prose-3">which is the harmonic-oscillator equation with angular frequency</p>
@@ -558,8 +560,8 @@ export default function Ch12CircuitsAndAC() {
         in ohms.
       </p>
       <p className="mb-prose-3">
-        which peaks when ωL = 1/(ωC) — that is, at exactly ω = ω₀ = 1/√(LC). The sharpness of the
-        peak is the{' '}
+        which peaks when <InlineMath tex="\omega L = 1/(\omega C)" /> — that is, at exactly{' '}
+        <InlineMath tex="\omega = \omega_0 = 1/\sqrt{LC}" />. The sharpness of the peak is the{' '}
         <strong className="text-text font-medium">
           <Term
             def={
@@ -762,11 +764,14 @@ export default function Ch12CircuitsAndAC() {
       <ImpedanceDemo />
 
       <p className="mb-prose-3">
-        Slide ω. At low frequencies, 1/(ωC) dominates and Z lives in the lower half-plane (the
-        circuit looks capacitive — current leads). At high frequencies, ωL dominates and Z swings
-        into the upper half-plane (inductive — voltage leads). At exactly ω = ω₀, the L and C
-        contributions cancel: Z collapses onto the real axis at value R. That is resonance — the
-        same picture as the previous demo, viewed from a different angle.
+        Slide <InlineMath tex="\omega" />. At low frequencies, <InlineMath tex="1/(\omega C)" />{' '}
+        dominates and <InlineMath tex="Z" /> lives in the lower half-plane (the circuit looks
+        capacitive — current leads). At high frequencies, <InlineMath tex="\omega L" /> dominates
+        and <InlineMath tex="Z" /> swings into the upper half-plane (inductive — voltage leads). At
+        exactly <InlineMath tex="\omega = \omega_0" />, the <InlineMath tex="L" /> and{' '}
+        <InlineMath tex="C" /> contributions cancel: <InlineMath tex="Z" /> collapses onto the real
+        axis at value <InlineMath tex="R" />. That is resonance — the same picture as the previous
+        demo, viewed from a different angle.
       </p>
 
       <TryIt
@@ -1146,8 +1151,10 @@ export default function Ch12CircuitsAndAC() {
       <h2 className="chapter-h2">What we have so far</h2>
       <p className="mb-prose-3">
         At wavelengths much larger than the circuit, Maxwell's equations compress to Kirchhoff's two
-        laws plus three constitutive relations: V = IR for resistors, V = (1/C) ∫I dt for
-        capacitors, V = L dI/dt for inductors. The RC, LC, and RLC combinations cover the entire zoo
+        laws plus three constitutive relations: <InlineMath tex="V = IR" /> for resistors,{' '}
+        <InlineMath tex="V = (1/C) \int I\, dt" /> for capacitors,{' '}
+        <InlineMath tex="V = L\, dI/dt" /> for inductors. The RC, LC, and RLC combinations cover
+        the entire zoo
         of first- and second-order linear behaviour — exponential decay, free oscillation, damped
         driven oscillation, resonance. Recasting time-derivatives as multiplications by jω turns
         every linear-circuit problem into algebra in the complex plane: impedance, phase, power
@@ -1353,7 +1360,8 @@ export default function Ch12CircuitsAndAC() {
             coulombs per second. Multiply: [V/A][C/V] = [C/A] = [s]. R/C, in contrast, has units of
             (V/A)/(C/V) = V²/(A·C) = V·s/(A·s²·s⁻¹) — nonsensical. The product RC is the only
             combination of these two that comes out as a time, and it does for a deep structural
-            reason: the ODE dQ/dt = (V − Q/C)/R has the form τ dQ/dt = constant − Q, and τ = RC pops
+            reason: the ODE <InlineMath tex="dQ/dt = (V - Q/C)/R" /> has the form{' '}
+            <InlineMath tex="\tau\, dQ/dt = \text{constant} - Q" />, and <InlineMath tex="\tau = RC" /> pops
             out as the unique scaling constant
             <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
           </p>
@@ -1361,12 +1369,15 @@ export default function Ch12CircuitsAndAC() {
 
         <FAQItem q="What's the difference between Z, X, and R?">
           <p>
-            R is the real part of impedance (resistance, dissipative). X is the imaginary part
-            (reactance, energy-storing). Z is the complex combination Z = R + jX. The magnitude |Z|
-            = √(R² + X²) is the AC "Ohm's-law resistance" — the ratio of voltage amplitude to
-            current amplitude. R has the same value at every frequency for an ideal resistor. X is
-            frequency-dependent: X<sub>L</sub> = ωL grows with ω; X<sub>C</sub> = −1/(ωC) shrinks in
-            magnitude as ω grows
+            <InlineMath tex="R" /> is the real part of impedance (resistance, dissipative).{' '}
+            <InlineMath tex="X" /> is the imaginary part (reactance, energy-storing).{' '}
+            <InlineMath tex="Z" /> is the complex combination <InlineMath tex="Z = R + jX" />. The
+            magnitude <InlineMath tex="|Z| = \sqrt{R^{2} + X^{2}}" /> is the AC "Ohm's-law
+            resistance" — the ratio of voltage amplitude to current amplitude.{' '}
+            <InlineMath tex="R" /> has the same value at every frequency for an ideal resistor.{' '}
+            <InlineMath tex="X" /> is frequency-dependent: <InlineMath tex="X_L = \omega L" /> grows
+            with <InlineMath tex="\omega" />; <InlineMath tex="X_C = -1/(\omega C)" /> shrinks in
+            magnitude as <InlineMath tex="\omega" /> grows
             <Cite id="horowitz-hill-2015" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1423,12 +1434,14 @@ export default function Ch12CircuitsAndAC() {
         <FAQItem q="Why does an inductor make current lag and a capacitor make current lead?">
           <p>
             Because their constitutive equations differ in which variable is differentiated. For an
-            inductor V = L dI/dt: to change the current you need to apply a voltage{' '}
-            <em className="text-text italic">first</em>, and the current responds with a
-            quarter-cycle delay — V leads I by 90°. For a capacitor I = C dV/dt: current has to flow
-            before voltage can build up on the plates, so current leads V by 90°. The exactness of
-            90° comes from the fact that d/dt acting on cos(ωt) gives −ω sin(ωt), which is the same
-            cosine rotated by exactly π/2
+            inductor <InlineMath tex="V = L\, dI/dt" />: to change the current you need to apply a
+            voltage <em className="text-text italic">first</em>, and the current responds with a
+            quarter-cycle delay — <InlineMath tex="V" /> leads <InlineMath tex="I" /> by 90°. For a
+            capacitor <InlineMath tex="I = C\, dV/dt" />: current has to flow before voltage can
+            build up on the plates, so current leads <InlineMath tex="V" /> by 90°. The exactness
+            of 90° comes from the fact that <InlineMath tex="d/dt" /> acting on{' '}
+            <InlineMath tex="\cos(\omega t)" /> gives <InlineMath tex="-\omega \sin(\omega t)" />,
+            which is the same cosine rotated by exactly <InlineMath tex="\pi/2" />
             <Cite id="griffiths-2017" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1580,13 +1593,17 @@ export default function Ch12CircuitsAndAC() {
 
         <FAQItem q="Why is the Thévenin equivalent only valid for linear networks?">
           <p>
-            Because superposition is the engine of the proof. To collapse N sources and M resistors
-            to a single (V<sub>th</sub>, R<sub>th</sub>) pair, you compute the response of the
-            terminals one source at a time, sum the contributions, and read off the result.
-            Superposition only holds when the components obey linear constitutive equations: V = IR,
-            V = L dI/dt, I = C dV/dt. A diode (I = I<sub>s</sub>(e<sup>qV/kT</sup> − 1)) or a
-            transistor (gm = ∂I/∂V varies with bias) breaks superposition, and the network no longer
-            has a single fixed Thévenin equivalent — it has a different one at every operating point
+            Because superposition is the engine of the proof. To collapse{' '}
+            <InlineMath tex="N" /> sources and <InlineMath tex="M" /> resistors to a single{' '}
+            <InlineMath tex="(V_{\text{th}}, R_{\text{th}})" /> pair, you compute the response of
+            the terminals one source at a time, sum the contributions, and read off the result.
+            Superposition only holds when the components obey linear constitutive equations:{' '}
+            <InlineMath tex="V = IR" />, <InlineMath tex="V = L\, dI/dt" />,{' '}
+            <InlineMath tex="I = C\, dV/dt" />. A diode (
+            <InlineMath tex="I = I_s(e^{qV/kT} - 1)" />) or a transistor (
+            <InlineMath tex="g_m = \partial I/\partial V" /> varies with bias) breaks superposition,
+            and the network no longer has a single fixed Thévenin equivalent — it has a different
+            one at every operating point
             <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
           </p>
         </FAQItem>

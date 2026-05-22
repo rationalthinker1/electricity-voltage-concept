@@ -456,7 +456,7 @@ export default function Ch10Maxwell() {
             there?
           </>
         }
-        hint="J_D = ε₀ dE/dt."
+        hint={<><InlineMath tex="J_D = \varepsilon_0\, dE/dt" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">

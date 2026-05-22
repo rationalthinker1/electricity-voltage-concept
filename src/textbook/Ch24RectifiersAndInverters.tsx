@@ -846,7 +846,7 @@ export default function Ch19RectifiersAndInverters() {
             peak current?
           </>
         }
-        hint={<>For an inductor, V = L dI/dt; for sinusoidal steady state, |I| = V/(ωL).</>}
+        hint={<>For an inductor, <InlineMath tex="V = L\, dI/dt" />; for sinusoidal steady state, <InlineMath tex="|I| = V/(\omega L)" />.</>}
         answer={
           <>
             <Formula>ω = 2π · 60 ≈ 377 rad/s</Formula>
