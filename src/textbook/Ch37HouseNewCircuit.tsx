@@ -269,7 +269,7 @@ export default function Ch37HouseNewCircuit() {
           ampacity
         </Term>{' '}
         of 12 AWG is set by how hot the conductor gets at the rated current. But long runs have a
-        second problem: even well below the thermal limit, the I·R drop along the conductor pair
+        second problem: even well below the thermal limit, the <InlineMath tex="I \cdot R" /> drop along the conductor pair
         lowers the voltage delivered to the load. NEC 210.19 Informational Note 4 (not a hard
         requirement, just a strong recommendation) suggests keeping branch-circuit voltage drop
         under 3% and combined feeder-plus-branch drop under 5%
@@ -287,9 +287,9 @@ export default function Ch37HouseNewCircuit() {
         accounts for the round trip — current flows out on the hot and returns on the neutral,
         dropping voltage on both conductors
         <Cite id="nec-2023" in={SOURCES} />. For a 16 A operating current and a 100 ft one-way run,
-        the drop is 2 × 16 × 0.00159 × 100 ≈ 5.1 V, or about 4.2% of 120 V — slightly over the 3%
-        recommendation, which means a 100 ft run would prefer 10 AWG even though 12 AWG satisfies
-        ampacity.
+        the drop is <InlineMath tex="2 \times 16 \times 0.00159 \times 100 \approx 5.1\,\text{V}" />,
+        or about 4.2% of 120 V — slightly over the 3% recommendation, which means a 100 ft run would
+        prefer 10 AWG even though 12 AWG satisfies ampacity.
       </p>
 
       <TryIt
@@ -322,8 +322,9 @@ export default function Ch37HouseNewCircuit() {
             <p className="mb-prose-1 last:mb-0">
               Answer: <strong className="text-text font-medium">compliant, but at the limit</strong>
               . If the run length crept up by even ten feet (or if the load were nudged from 14 A to
-              16 A), the upsize is 10 AWG copper — R/ft ≈ 1.00 mΩ/ft — which roughly halves the
-              drop. The 20 A breaker stays the same; only the wire gets fatter.
+              16 A), the upsize is 10 AWG copper —{' '}
+              <InlineMath tex="R/\text{ft} \approx 1.00\,\text{m}\Omega/\text{ft}" /> — which
+              roughly halves the drop. The 20 A breaker stays the same; only the wire gets fatter.
             </p>
           </>
         }
@@ -840,8 +841,10 @@ export default function Ch37HouseNewCircuit() {
             <Formula tex="I = 1200\ \text{W} / 120\ \text{V} = 10\ \text{A}" />
             <Formula tex="V_{\text{drop}} = 2 \times 10 \times 0.00252 \times 100 = 5.04\ \text{V}" />
             <p className="mb-prose-1 last:mb-0">
-              On a 120 V branch that is 5.04 / 120 = 4.2%, well over the 3% informational
-              recommendation. Upsizing to 12 AWG (R/ft ≈ 1.59 mΩ/ft) gives:
+              On a 120 V branch that is{' '}
+              <InlineMath tex="5.04 / 120 = 4.2\%" />, well over the 3% informational
+              recommendation. Upsizing to 12 AWG (
+              <InlineMath tex="R/\text{ft} \approx 1.59\,\text{m}\Omega/\text{ft}" />) gives:
             </p>
             <Formula tex="V_{\text{drop,12AWG}} = 2 \times 10 \times 0.00159 \times 100 = 3.18\ \text{V} \to 2.65\%" />
             <p className="mb-prose-1 last:mb-0">

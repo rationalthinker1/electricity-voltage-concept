@@ -128,8 +128,9 @@ export default function Ch40HouseSurgeGrounding() {
         self-inductance of that conductor segment (in henries; a typical 30 ft overhead service drop
         is roughly 5 µH), and{' '}
         <InlineMath tex="dI/dt" /> is the rate of change of current
-        through it (in A/s). For L = 5 µH and a current ramping from zero to 10 kA in 8 µs (dI/dt =
-        1.25×10⁹ A/s), V<sub>drop</sub> ≈ 6.25 kV — that voltage appears across the inductance of
+        through it (in A/s). For L = 5 µH and a current ramping from zero to 10 kA in 8 µs (
+        <InlineMath tex="dI/dt = 1.25 \times 10^{9}\,\text{A/s}" />),{' '}
+        <InlineMath tex="V_{\text{drop}} \approx 6.25\,\text{kV}" /> — that voltage appears across the inductance of
         the service drop itself, on top of whatever the line was already carrying
         <Cite id="ieee-c62-41" in={SOURCES} />. A surge does not need to be a megavolt at the panel
         to be destructive. Six kilovolts across half a millimetre of varnish on a transformer
@@ -197,8 +198,8 @@ export default function Ch40HouseSurgeGrounding() {
             resistance is{' '}
             <InlineMath tex="R = 25\ \Omega" /> and whose self-inductance
             is <InlineMath tex="L = 6\ \mu\text{H}" />. Compute the resistive
-            voltage drop (I × R at peak) and the inductive voltage drop (L × dI/dt during the rising
-            edge). Which dominates?
+            voltage drop (<InlineMath tex="I \times R" /> at peak) and the inductive voltage drop
+            (<InlineMath tex="L \times dI/dt" /> during the rising edge). Which dominates?
           </>
         }
         hint={<>Treat the rod as a series R-L. Compute each term separately, then compare.</>}
@@ -209,8 +210,8 @@ export default function Ch40HouseSurgeGrounding() {
             </p>
             <Formula tex="V_R = I \times R = 10{,}000 \times 25 = 250{,}000\ \text{V} = 250\ \text{kV}" />
             <p className="mb-prose-1 last:mb-0">
-              The current's mean rate of rise over the 8 µs edge is dI/dt = 10 kA / 8 µs = 1.25×10⁹
-              A/s, so
+              The current's mean rate of rise over the 8 µs edge is{' '}
+              <InlineMath tex="dI/dt = 10\,\text{kA} / 8\,\mu\text{s} = 1.25 \times 10^{9}\,\text{A/s}" />, so
             </p>
             <Formula tex="V_L = L \times dI/dt = 6\times 10^{-6} \times 1.25\times 10^{9} = 7.5\times 10^{3}\ \text{V} = 7.5\ \text{kV}" />
             <p className="mb-prose-1 last:mb-0">
@@ -224,9 +225,7 @@ export default function Ch40HouseSurgeGrounding() {
               independent earth paths
               <Cite id="ieee-c62-41" in={SOURCES} />
               <Cite id="nec-2023" in={SOURCES} />. Answer:{' '}
-              <strong className="text-text font-medium">
-                V<sub>R</sub> ≈ 250 kV, V<sub>L</sub> ≈ 7.5 kV
-              </strong>
+              <InlineMath tex="V_R \approx 250\,\text{kV},\ V_L \approx 7.5\,\text{kV}" />
               ; on paper the resistive term dominates, but during the transient front the inductive
               term controls when the SPD's clamp actually sees ground.
             </p>
@@ -630,15 +629,18 @@ export default function Ch40HouseSurgeGrounding() {
           transient impedance
         </Term>{' '}
         of a ground rod differs from its 60 Hz resistance. A vertical 8 ft rod has a self-inductance
-        of roughly 6 µH end to end. For a 60 Hz signal, the inductive reactance ωL = 2π × 60 ×
-        6×10⁻⁶ ≈ 2 mΩ is completely negligible next to the 25 Ω spreading resistance. For a surge
-        with a 1 µs rise time the picture is different. The effective dω/dt of the surge front
-        corresponds to spectral content well above a megahertz, and the rod's inductive reactance at
-        1 MHz is ωL ≈ 38 Ω — already comparable to its DC resistance.
+        of roughly 6 µH end to end. For a 60 Hz signal, the inductive reactance{' '}
+        <InlineMath tex="\omega L = 2\pi \times 60 \times 6\times 10^{-6} \approx 2\,\text{m}\Omega" />{' '}
+        is completely negligible next to the 25 Ω spreading resistance. For a surge with a 1 µs rise
+        time the picture is different. The effective <InlineMath tex="d\omega/dt" /> of the surge
+        front corresponds to spectral content well above a megahertz, and the rod's inductive
+        reactance at 1 MHz is <InlineMath tex="\omega L \approx 38\,\Omega" /> — already comparable
+        to its DC resistance.
       </p>
       <p className="mb-prose-3">
-        The same V = L × dI/dt that ran the service-drop calculation runs the rod's behaviour. A 10
-        kA surge rising in 8 µs through a 6 µH rod creates a 7.5 kV inductive voltage at the top of
+        The same <InlineMath tex="V = L \times dI/dt" /> that ran the service-drop calculation runs
+        the rod's behaviour. A 10 kA surge rising in 8 µs through a 6 µH rod creates a 7.5 kV
+        inductive voltage at the top of
         the rod, relative to remote earth, during the rising edge of the pulse. That 7.5 kV adds to
         whatever the SPD has already clamped to — the top of the rod is not at zero volts during the
         surge, it is several kilovolts above remote soil, and the equipment-ground potential inside

@@ -64,10 +64,11 @@ export default function Ch33HouseSmartMeter() {
           def={
             <>
               <strong className="text-text font-medium">real energy</strong> (kWh) — the time
-              integral of the <em className="text-text italic">instantaneous</em> product V(t)·I(t).
-              Equal to the cumulative work done by the source on the load, counted in joules and
-              then converted to the engineering unit of kilowatt-hours (1 kWh = 3.6×10⁶ J). The only
-              one of the four meter quantities that residential customers pay for.
+              integral of the <em className="text-text italic">instantaneous</em> product{' '}
+              <InlineMath tex="V(t)\,I(t)" />. Equal to the cumulative work done by the source on
+              the load, counted in joules and then converted to the engineering unit of
+              kilowatt-hours (<InlineMath tex="1\,\text{kWh} = 3.6 \times 10^{6}\,\text{J}" />). The
+              only one of the four meter quantities that residential customers pay for.
             </>
           }
         >
@@ -78,14 +79,14 @@ export default function Ch33HouseSmartMeter() {
       <Formula tex="\\text{kWh} = \\int V(t)\\, I(t)\\, dt" />
       <p className="mb-prose-3">
         where the integral on the right runs over the billing period and yields joules (which the
-        meter then divides by 3.6×10⁶ to display kilowatt-hours).{' '}
+        meter then divides by <InlineMath tex="3.6 \times 10^{6}" /> to display kilowatt-hours).{' '}
         <InlineMath tex="V(t)" /> is the instantaneous service voltage
         in volts, <InlineMath tex="I(t)" /> is the instantaneous
         current flowing through the meter in amperes (signed — positive when energy is flowing into
         the house, negative when it is being exported), and{' '}
-        <InlineMath tex="t" /> is time in seconds. The product
-        V(t)·I(t) is the instantaneous real power in watts; its integral is the cumulative energy
-        delivered
+        <InlineMath tex="t" /> is time in seconds. The product{' '}
+        <InlineMath tex="V(t)\,I(t)" /> is the instantaneous real power in watts; its integral is
+        the cumulative energy delivered
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -122,10 +123,10 @@ export default function Ch33HouseSmartMeter() {
           def={
             <>
               <strong className="text-text font-medium">reactive energy</strong> (kVARh) — the
-              cumulative integral of V(t)·I(t-π/2): the part of the VI product that is 90° out of
-              phase. Represents the energy that sloshes into and out of inductors and capacitors
-              each cycle without being dissipated. Industrial customers pay penalties on it;
-              residential ones usually do not.
+              cumulative integral of <InlineMath tex="V(t)\,I(t - \pi/2)" />: the part of the VI
+              product that is 90° out of phase. Represents the energy that sloshes into and out of
+              inductors and capacitors each cycle without being dissipated. Industrial customers pay
+              penalties on it; residential ones usually do not.
             </>
           }
         >
@@ -145,9 +146,11 @@ export default function Ch33HouseSmartMeter() {
           def={
             <>
               <strong className="text-text font-medium">chapter 12's power triangle</strong> — the
-              right-triangle identity P² + Q² = S², where P is real power, Q is reactive power, and
-              S is apparent power. Each meter integrates each leg over time into its own register,
-              then the triangle holds for the cumulative energies as well: kWh² + kVARh² = kVAh².
+              right-triangle identity <InlineMath tex="P^{2} + Q^{2} = S^{2}" />, where{' '}
+              <InlineMath tex="P" /> is real power, <InlineMath tex="Q" /> is reactive power, and{' '}
+              <InlineMath tex="S" /> is apparent power. Each meter integrates each leg over time
+              into its own register, then the triangle holds for the cumulative energies as well:{' '}
+              <InlineMath tex="\text{kWh}^{2} + \text{kVARh}^{2} = \text{kVAh}^{2}" />.
             </>
           }
         >
@@ -162,7 +165,8 @@ export default function Ch33HouseSmartMeter() {
         kilowatts — the work-doing component), and{' '}
         <InlineMath tex="\text{kVAR}" /> is reactive power (in
         kilovolt-amperes reactive — the sloshing component). The same Pythagorean relation holds
-        between the three energies as well: kVAh² = kWh² + kVARh²
+        between the three energies as well:{' '}
+        <InlineMath tex="\text{kVAh}^{2} = \text{kWh}^{2} + \text{kVARh}^{2}" />
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
@@ -236,8 +240,8 @@ export default function Ch33HouseSmartMeter() {
           induction-disk meter
         </Term>
         . The mechanism is a small marvel of nineteenth-century electromechanical thinking — a meter
-        that integrates V·I·cos(φ) over time using nothing but eddy currents, geometry, and a
-        permanent magnet for braking
+        that integrates <InlineMath tex="V \cdot I \cdot \cos\varphi" /> over time using nothing but
+        eddy currents, geometry, and a permanent magnet for braking
         <Cite id="grainger-power-systems-2003" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
