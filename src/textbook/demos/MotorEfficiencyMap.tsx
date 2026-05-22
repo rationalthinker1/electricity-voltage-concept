@@ -201,7 +201,7 @@ export function MotorEfficiencyMapDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.9'}
+      figure={figure ?? 'Fig. 20.9'}
       title="The efficiency sweet spot"
       question="A motor isn't equally efficient everywhere on its torque–speed plane. Where's the good place to operate?"
       caption={

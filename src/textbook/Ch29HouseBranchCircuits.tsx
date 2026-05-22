@@ -74,7 +74,7 @@ export default function Ch29HouseBranchCircuits() {
 
       <p className="mb-prose-3">
         Copper has a finite resistivity. Push current through it and you dissipate{' '}
-        <em className="text-text italic">I²R</em> as heat along the whole length. The thermal limit
+        <InlineMath tex="I^{2}R" /> as heat along the whole length. The thermal limit
         on a wire is not melting copper — copper melts at 1085 °C, which you will never see — it is
         the <strong className="text-text font-medium">insulation</strong> around the copper
         softening, charring, or igniting. Residential NM-B cable has insulation rated to 90 °C
@@ -90,16 +90,16 @@ export default function Ch29HouseBranchCircuits() {
       </p>
       <Formula tex="P/L = \\dfrac{I^2 \\rho}{A}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">P/L</strong> is the power dissipated per
-        metre of wire (in W/m), <strong className="text-text font-medium">I</strong> is the current
-        through the conductor (in amperes), <strong className="text-text font-medium">ρ</strong> is
+        where <InlineMath tex="P/L" /> is the power dissipated per
+        metre of wire (in W/m), <InlineMath tex="I" /> is the current
+        through the conductor (in amperes), <InlineMath tex="\rho" /> is
         the resistivity of copper (≈ 1.68×10⁻⁸ Ω·m at 20 °C)
         <Cite id="codata-2018" in={SOURCES} />, and{' '}
-        <strong className="text-text font-medium">A</strong> is the conductor's cross-sectional area
+        <InlineMath tex="A" /> is the conductor's cross-sectional area
         (in m²). For a fixed maximum-allowable wire temperature, the cooling side scales roughly
         with the perimeter (i.e. √A), so the allowed current scales roughly with √A. Doubling the
         cross-section does <em className="text-text italic">not</em> double the ampacity; it raises
-        it by about <strong className="text-text font-medium">√2</strong> for a fixed insulation
+        it by about <InlineMath tex="\sqrt{2}" /> for a fixed insulation
         rating.
       </p>
       <p className="mb-prose-3">
@@ -333,18 +333,16 @@ export default function Ch29HouseBranchCircuits() {
       </p>
       <Formula tex="\\Delta V = 2 \\cdot I \\cdot R_{\\text{per metre}} \\cdot L" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">ΔV</strong> is the voltage lost in the wire
+        where <InlineMath tex="\Delta V" /> is the voltage lost in the wire
         from panel to load (in volts), the factor of{' '}
-        <strong className="text-text font-medium">2</strong> accounts for the round-trip path (hot
-        out plus neutral back), <strong className="text-text font-medium">I</strong> is the load
+        <InlineMath tex="2" /> accounts for the round-trip path (hot
+        out plus neutral back), <InlineMath tex="I" /> is the load
         current (in amperes),{' '}
-        <strong className="text-text font-medium">
-          R<sub>per metre</sub>
-        </strong>{' '}
+        <InlineMath tex="R_{\text{per metre}}" />{' '}
         is the wire's per-unit-length resistance at operating temperature (in Ω/m, tabulated in NEC
-        Chapter 9 Table 8), and <strong className="text-text font-medium">L</strong> is the one-way
+        Chapter 9 Table 8), and <InlineMath tex="L" /> is the one-way
         run length from the panel to the load (in metres). For 14 AWG copper at 75 °C, R
-        <sub>per metre</sub> ≈ <strong className="text-text font-medium">8.45 mΩ/m</strong>; for 12
+        <sub>per metre</sub> ≈ <InlineMath tex="8.45\,\text{m}\Omega/\text{m}" />; for 12
         AWG, it is ≈ 5.31 mΩ/m; for 10 AWG, ≈ 3.34 mΩ/m
         <Cite id="awg-table-nec" in={SOURCES} />.
       </p>
@@ -1008,7 +1006,7 @@ export default function Ch29HouseBranchCircuits() {
         intro={
           <>
             Branch-circuit rules are dense, but every one of them traces back to the wire's{' '}
-            <em className="text-text italic">I²R</em> and the sequence in which the breaker, the
+            <InlineMath tex="I^{2}R" /> and the sequence in which the breaker, the
             wire, and the insulation reach their respective limits. These are the questions that
             come up the first time you open a panel.
           </>

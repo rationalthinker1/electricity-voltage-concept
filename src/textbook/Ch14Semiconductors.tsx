@@ -137,7 +137,7 @@ export default function Ch14Semiconductors() {
 
       <p className="mb-prose-3">
         For silicon, E<sub>g</sub> = 1.12 eV. For germanium, 0.67 eV. For gallium arsenide, 1.42 eV.
-        For diamond, 5.5 eV. At room temperature kT ≈ 0.026 eV: small compared to any of these gaps,
+        For diamond, 5.5 eV. At room temperature <InlineMath tex="kT \approx 0.026\ \text{eV}" />: small compared to any of these gaps,
         but not negligibly so for silicon. The probability that a valence electron picks up enough
         thermal energy to be promoted into the conduction band scales as{' '}
         <InlineMath tex="\exp(-E_g / 2kT)" /> — Boltzmann's exponential, with the factor of two
@@ -382,7 +382,7 @@ export default function Ch14Semiconductors() {
               <strong className="text-text font-medium">thermal voltage</strong> V<sub>T</sub> =
               kT/q — the natural voltage scale of semiconductor physics. At 300 K, V<sub>T</sub> ≈
               25.85 mV. Every junction's I-V curve changes by a factor of{' '}
-              <em className="text-text italic">e</em> per V<sub>T</sub> of bias change.
+              <InlineMath tex="e" /> per V<sub>T</sub> of bias change.
             </>
           }
         >
@@ -390,7 +390,7 @@ export default function Ch14Semiconductors() {
         </Term>{' '}
         V<sub>T</sub> = kT/q ≈ 25.85 mV at 300 K is the natural unit
         <Cite id="codata-2018" in={SOURCES} />: it is the voltage scale over which the Boltzmann
-        factor changes by a factor of <em className="text-text italic">e</em>, and the voltage scale
+        factor changes by a factor of <InlineMath tex="e" />, and the voltage scale
         over which any junction physics changes meaningfully. Every "60 mV per decade" rule of thumb
         in this chapter comes from <InlineMath tex="V_T \cdot \ln(10) \approx 60\ \text{mV}" />.
       </p>

@@ -102,10 +102,10 @@ export default function Ch3ResistanceAndPower() {
       </p>
       <Formula size="lg" tex="\vec{J} = \sigma\vec{E}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">J</strong> is the current density vector
+        where <InlineMath tex="J" /> is the current density vector
         (current per unit cross-sectional area, in A/m²),
-        <strong className="text-text font-medium"> E</strong> is the local electric field driving
-        the carriers (in V/m), and <strong className="text-text font-medium">σ</strong> is the{' '}
+        <InlineMath tex="E" /> is the local electric field driving
+        the carriers (in V/m), and <InlineMath tex="\sigma" /> is the{' '}
         <Term
           def={
             <>
@@ -121,8 +121,8 @@ export default function Ch3ResistanceAndPower() {
         , a property of the material. Drude's 1900 free-electron picture gave a mechanical
         explanation
         <Cite id="drude-1900" in={SOURCES} />: an electron accelerates under{' '}
-        <strong className="text-text font-medium">E</strong> for an average time{' '}
-        <strong className="text-text font-medium">τ</strong> between collisions with ions in the
+        <InlineMath tex="E" /> for an average time{' '}
+        <InlineMath tex="\tau" /> between collisions with ions in the
         lattice, picks up a small drift velocity, then scatters and starts over. Average it out and
         you get a steady drift proportional to <InlineMath tex="\vec{E}" /> — friction with a clean
         linear law. Modern solid-state physics rewrote the inputs in quantum terms, but the linear
@@ -148,8 +148,8 @@ export default function Ch3ResistanceAndPower() {
 
       <p className="mb-prose-3">
         Wrap that microscopic law up over a whole wire — a length{' '}
-        <strong className="text-text font-medium">L</strong>, a cross-section{' '}
-        <strong className="text-text font-medium">A</strong>, a uniform field along the axis — and
+        <InlineMath tex="L" />, a cross-section{' '}
+        <InlineMath tex="A" />, a uniform field along the axis — and
         you get the macroscopic version every electrical engineer carries around:
       </p>
       <Formula size="lg" tex="R = \dfrac{L}{\sigma A}" />
@@ -341,10 +341,10 @@ export default function Ch3ResistanceAndPower() {
       </p>
       <Formula size="lg" tex="P = \dfrac{dW}{dt} = \dfrac{dW}{dq}\cdot\dfrac{dq}{dt} = V\cdot I" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">P</strong> is the instantaneous electrical
+        where <InlineMath tex="P" /> is the instantaneous electrical
         power delivered to the element (in watts, W = J/s),{' '}
-        <strong className="text-text font-medium">V</strong> is the potential difference across it
-        (V), and <strong className="text-text font-medium">I</strong> is the current through it (A).
+        <InlineMath tex="V" /> is the potential difference across it
+        (V), and <InlineMath tex="I" /> is the current through it (A).
         The units confirm it: joules per coulomb times coulombs per second is joules per second{' '}
         <Cite id="griffiths-2017" in={SOURCES} />. This identity makes no assumption about what the
         element is — battery, resistor, motor, capacitor, antenna. Whenever charge moves through a
@@ -452,7 +452,7 @@ export default function Ch3ResistanceAndPower() {
         <strong className="text-text font-medium">900 K</strong>, through cherry red and orange, and
         on to white-hot near <strong className="text-text font-medium">3000 K</strong>. The
         equilibrium temperature comes from radiation balance — Stefan–Boltzmann says a hot surface
-        radiates power proportional to <strong className="text-text font-medium">T⁴</strong>, so a
+        radiates power proportional to <InlineMath tex="T^{4}" />, so a
         wire dissipating <InlineMath tex="P" /> watts over surface area{' '}
         <InlineMath tex="A_{\text{surf}}" /> with emissivity <InlineMath tex="\varepsilon" /> sits
         at the temperature that solves{' '}
@@ -715,7 +715,7 @@ export default function Ch3ResistanceAndPower() {
           <p className="mb-prose-2 last:mb-0">
             An incandescent lamp is a deliberately bad conductor placed in series with an otherwise
             excellent one. Tungsten's room-temperature σ of about
-            <strong className="text-text font-medium"> 1.79×10⁷ S/m</strong>
+            <InlineMath tex="1.79\times 10^{7}\ \text{S/m}" />
             <Cite id="crc-resistivity" in={SOURCES} /> is six times worse than copper's, and at its
             operating temperature near{' '}
             <strong className="text-text font-medium">2700–3000 K</strong>

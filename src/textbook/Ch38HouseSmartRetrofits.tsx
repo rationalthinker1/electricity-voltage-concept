@@ -352,11 +352,11 @@ export default function Ch38HouseSmartRetrofits() {
 
       <Formula tex="P_{\text{bleeder}} = V_{\text{line}} \times I_{\text{bleeder}}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">P_bleeder</strong> is the steady-state power
+        where <InlineMath tex="P_{\text{bleeder}}" /> is the steady-state power
         that the bleeder pulls from the line (in watts),{' '}
-        <strong className="text-text font-medium">V_line</strong> is the RMS line voltage (120 V in
+        <InlineMath tex="V_{\text{line}}" /> is the RMS line voltage (120 V in
         North America, 230 V in most of Europe), and{' '}
-        <strong className="text-text font-medium">I_bleeder</strong> is the RMS bleeder current the
+        <InlineMath tex="I_{\text{bleeder}}" /> is the RMS bleeder current the
         switch draws through the load (in amperes). At I_bleeder = 50 mA on a 120 V line, P_bleeder
         = 6 W — and that 6 W has to be dissipated somewhere. The dimmer itself only keeps a few
         tenths of a watt for its MCU; the rest is burned in the load.
@@ -579,10 +579,10 @@ export default function Ch38HouseSmartRetrofits() {
 
       <Formula tex="V_{\text{rms}} = V_{\text{peak}} \times \sqrt{\dfrac{\alpha}{\pi} - \dfrac{\sin(2\alpha)}{2\pi}}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">V_rms</strong> is the RMS voltage delivered
-        to the load (in volts), <strong className="text-text font-medium">V_peak</strong> is the
+        where <InlineMath tex="V_{\text{rms}}" /> is the RMS voltage delivered
+        to the load (in volts), <InlineMath tex="V_{\text{peak}}" /> is the
         line peak voltage (in volts; 170 V on a 120 V North American line, since V_peak = √2 ×
-        V_rms_line), and <strong className="text-text font-medium">α</strong> is the conduction
+        V_rms_line), and <InlineMath tex="\alpha" /> is the conduction
         angle in radians, measured from the gate-on point to the next zero-crossing. The half-power
         point, α = π/2, evaluates the bracket as 1/2 − sin(π)/(2π) = 1/2 − 0 = 0.5, giving V_rms =
         170 × √0.5 ≈ 120 V × √0.5 ≈ 85 V. (For very deep dimming, α → 0 and V_rms → 0 as √α; for
@@ -596,7 +596,7 @@ export default function Ch38HouseSmartRetrofits() {
         question={
           <>
             A trailing-edge dimmer is driving an LED at{' '}
-            <strong className="text-text font-medium">α = 3π/4</strong> conduction angle on a 120 V
+            <InlineMath tex="\alpha = 3\pi/4" /> conduction angle on a 120 V
             RMS line. Compute V_rms at the load. What fraction of full power does the LED see?
           </>
         }

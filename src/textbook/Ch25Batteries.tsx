@@ -16,7 +16,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -186,7 +186,7 @@ export default function Ch18Batteries() {
       <p className="mb-prose-3">
         No more hydrogen bubbles. Instead, copper plates out as a solid metal onto the cathode while
         the anode zinc dissolves. The cell holds a remarkably stable{' '}
-        <strong className="text-text font-medium">≈ 1.10 V</strong> across the terminals for as long
+        <InlineMath tex="\approx 1.10\,\text{V}" /> across the terminals for as long
         as either rod has material left, and was the workhorse battery of 19th-century telegraphy
         <Cite id="daniell-1836" in={SOURCES} />.
       </p>
@@ -249,8 +249,8 @@ export default function Ch18Batteries() {
       <Formula>E°(Cu²⁺/Cu) = +0.34 V, E°(Zn²⁺/Zn) = −0.76 V</Formula>
       <p className="mb-prose-3">
         The cell voltage is the difference:{' '}
-        <em className="text-text italic">E°_cell = E°(cathode) − E°(anode)</em>. For Daniell:
-        <strong className="text-text font-medium"> E°_cell = +0.34 − (−0.76) = +1.10 V</strong>,
+        <InlineMath tex="E^\circ_{\text{cell}} = E^\circ(\text{cathode}) - E^\circ(\text{anode})" />. For Daniell:
+        <InlineMath tex="E^\circ_{\text{cell}} = +0.34 - (-0.76) = +1.10\,\text{V}" />,
         exactly what the voltmeter reads
         <Cite id="bard-faulkner-2001" in={SOURCES} />. This subtraction is how chemists predict
         whether a battery design will work and what voltage it will sit at, without doing any
@@ -262,9 +262,9 @@ export default function Ch18Batteries() {
 
       <p className="mb-prose-3">
         At the extremes: lithium metal has the most negative E° of any element in the periodic table
-        (Li⁺ + e⁻ → Li sits at <strong className="text-text font-medium">−3.04 V</strong>), making
-        it the strongest practical reducing agent. Fluorine sits at
-        <strong className="text-text font-medium"> +2.87 V</strong>, making F₂ the strongest
+        (Li⁺ + e⁻ → Li sits at <InlineMath tex="-3.04\,\text{V}" />), making
+        it the strongest practical reducing agent. Fluorine sits at{' '}
+        <InlineMath tex="+2.87\,\text{V}" />, making F₂ the strongest
         practical oxidizer. A theoretical Li / F₂ cell would deliver about{' '}
         <strong className="text-text font-medium">5.91 V</strong> per cell — about five times the
         voltage of Daniell. Nobody builds Li/F₂ batteries because fluorine reacts with everything
@@ -311,34 +311,34 @@ export default function Ch18Batteries() {
       </p>
       <Formula>V = V° − (RT / nF) · ln Q</Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">V</strong> is the open-circuit cell voltage
+        where <InlineMath tex="V" /> is the open-circuit cell voltage
         at the actual operating conditions (in volts),
-        <strong className="text-text font-medium"> V°</strong> is the standard cell potential at 1 M
+        <InlineMath tex="V^\circ" /> is the standard cell potential at 1 M
         concentrations, 1 atm, 298 K (in volts),
-        <strong className="text-text font-medium"> R</strong> is the universal gas constant 8.314
+        <InlineMath tex="R" /> is the universal gas constant 8.314
         J/(mol·K),
-        <strong className="text-text font-medium"> T</strong> is the absolute temperature (in
+        <InlineMath tex="T" /> is the absolute temperature (in
         kelvins),
-        <strong className="text-text font-medium"> n</strong> is the number of electrons transferred
+        <InlineMath tex="n" /> is the number of electrons transferred
         per reaction event (dimensionless integer),
-        <strong className="text-text font-medium"> F</strong> is the Faraday constant ≈ 96 485 C/mol
+        <InlineMath tex="F" /> is the Faraday constant ≈ 96 485 C/mol
         (the charge of one mole of electrons), and
-        <strong className="text-text font-medium"> Q</strong> is the dimensionless reaction quotient
+        <InlineMath tex="Q" /> is the dimensionless reaction quotient
         — the ratio of product activities to reactant activities at the moment of measurement
         <Cite id="codata-2018" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
         The log is not arbitrary. The chemical potential of a dilute species scales as{' '}
-        <em className="text-text italic">kT ln c</em> — a direct consequence of the Boltzmann factor
+        <InlineMath tex="kT \ln c" /> — a direct consequence of the Boltzmann factor
         governing how molecules populate energy levels at temperature T. Halve a reactant's
         concentration and its free energy per particle drops by{' '}
-        <em className="text-text italic">kT ln 2</em>; the cell voltage, which is free energy
+        <InlineMath tex="kT \ln 2" />; the cell voltage, which is free energy
         divided by the charge per electron, shifts by the same amount divided by{' '}
-        <em className="text-text italic">nF</em>. So a tenfold concentration change moves V by
-        exactly <em className="text-text italic">(RT/nF) ln 10</em>, the famous 59 mV per decade at
-        room temperature for a one-electron reaction. The <em className="text-text italic">nF</em>{' '}
-        in the denominator is just the unit-conversion: <em className="text-text italic">n</em>
-        electrons transferred per reaction event, <em className="text-text italic">F</em> coulombs
+        <InlineMath tex="nF" />. So a tenfold concentration change moves V by
+        exactly <InlineMath tex="(RT/nF) \ln 10" />, the famous 59 mV per decade at
+        room temperature for a one-electron reaction. The <InlineMath tex="nF" />{' '}
+        in the denominator is just the unit-conversion: <InlineMath tex="n" />
+        electrons transferred per reaction event, <InlineMath tex="F" /> coulombs
         per mole of electrons
         <Cite id="nernst-1889" in={SOURCES} />.
       </p>
@@ -350,7 +350,7 @@ export default function Ch18Batteries() {
         </Term>{' '}
         (the charge per mole of electrons, ≈ 96 485 C/mol)
         <Cite id="codata-2018" in={SOURCES} />, and{' '}
-        <strong className="text-text font-medium">Q</strong> is the{' '}
+        <InlineMath tex="Q" /> is the{' '}
         <em className="text-text italic">reaction quotient</em> — the ratio of product
         concentrations to reactant concentrations. For the Daniell cell:
       </p>
@@ -422,26 +422,15 @@ export default function Ch18Batteries() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>term</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{term}}" />{' '}
         is the loaded terminal voltage at the battery's posts (in volts),
-        <strong className="text-text font-medium">
-          {' '}
-          V<sub>OC</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{OC}}" />{' '}
         is the open-circuit (no-load) voltage set by the cell chemistry (in volts),
-        <strong className="text-text font-medium">
-          {' '}
-          R<sub>int</sub>
-        </strong>{' '}
+        <InlineMath tex="R_{\text{int}}" />{' '}
         is the cell's effective internal resistance (in ohms), and
-        <strong className="text-text font-medium">
-          {' '}
-          R<sub>L</sub>
-        </strong>{' '}
+        <InlineMath tex="R_{L}" />{' '}
         is the external load resistance (in ohms). The expression is just a voltage divider between
-        R<sub>int</sub> and R<sub>L</sub>.
+        <InlineMath tex="R_{\text{int}}" /> and <InlineMath tex="R_{L}" />.
       </p>
       <p className="mb-prose-3">
         R_int comes from three places: the bulk resistance of the electrolyte (limited ion
@@ -575,7 +564,7 @@ export default function Ch18Batteries() {
           <p className="mb-prose-2 last:mb-0">
             R_int is the limiting practical parameter. Each alkaline cell has R_int ~ 5–6 Ω, so six
             in series gives ~35 Ω. Short the terminals and you get about{' '}
-            <strong className="text-text font-medium">9 / 35 ≈ 0.26 A</strong>, dissipating ≈ 2.3 W
+            <InlineMath tex="9/35 \approx 0.26\,\text{A}" />, dissipating ≈ 2.3 W
             inside the battery — enough to warm the casing but not enough to start a fire. The high
             R_int is why 9 V batteries are happy in low-current circuits (smoke detectors, small
             radios) but useless for anything that wants amps
@@ -663,7 +652,7 @@ export default function Ch18Batteries() {
             the terminal voltage during cranking sags from 12.6 V to ~10.6 V — exactly the
             &quot;voltage dip&quot; you can see on a car's voltmeter as the starter engages. The
             heat dissipated inside the battery during that cranking is{' '}
-            <strong className="text-text font-medium">I²R = 400² · 0.005 = 800 W</strong>, but only
+            <InlineMath tex="I^{2}R = 400^{2} \cdot 0.005 = 800\,\text{W}" />, but only
             for a second or two, so the cell never gets dangerously hot
             <Cite id="bard-faulkner-2001" in={SOURCES} />. This is what lead-acid is built for: big
             current, briefly, then rest while the alternator recharges.
@@ -759,7 +748,7 @@ export default function Ch18Batteries() {
             Convention. When 19th-century chemists started tabulating half-cell potentials, they
             needed a reference that everybody could reproduce in their own lab, was conceptually
             clean, and didn't depend on any other arbitrary choice. The reaction{' '}
-            <em className="text-text italic">2H⁺ + 2e⁻ → H₂</em> with all species at unit activity
+            <InlineMath tex="2\text{H}^{+} + 2e^{-} \to \text{H}_2" /> with all species at unit activity
             met those criteria: just platinum-coated platinum in 1 M strong acid, with hydrogen
             bubbled over it at 1 atm. SHE potentials are independent of any acid identity (HCl vs
             H₂SO₄ etc.) because the only relevant species is H⁺ at unit activity
@@ -787,10 +776,7 @@ export default function Ch18Batteries() {
             F = 96 485 C/mol is the total electric charge of one mole of electrons. Avogadro's
             number of electrons, each carrying the elementary charge e = 1.602×10⁻¹⁹ C, multiplied
             out:
-            <strong className="text-text font-medium">
-              {' '}
-              F = N_A · e ≈ 6.022×10²³ · 1.602×10⁻¹⁹ ≈ 96 485 C/mol
-            </strong>
+            <InlineMath tex="F = N_A \cdot e \approx 6.022\times 10^{23} \cdot 1.602\times 10^{-19} \approx 96{,}485\,\text{C/mol}" />
             <Cite id="codata-2018" in={SOURCES} />. It is the unit-conversion constant that takes
             chemistry's natural unit (moles of electrons in a reaction) into physics's natural unit
             (coulombs of charge through a wire). Every time you compute the capacity of a battery
@@ -860,7 +846,7 @@ export default function Ch18Batteries() {
             Because a multimeter's voltage probe has very high input impedance — typically 10 MΩ —
             so the current it draws is microamps at most. The IR drop across the battery's internal
             resistance is negligible at that current (
-            <em className="text-text italic">I · R_int ≈ 1 µA · 1 Ω = 1 µV</em>), and the meter
+            <InlineMath tex="I \cdot R_{\text{int}} \approx 1\,\mu\text{A} \cdot 1\,\Omega = 1\,\mu\text{V}" />), and the meter
             reads essentially V_OC. To distinguish a fresh from a tired battery you have to apply a
             real load (50–500 mA depending on cell type) and read the terminal voltage under load —
             that's what a proper battery tester does

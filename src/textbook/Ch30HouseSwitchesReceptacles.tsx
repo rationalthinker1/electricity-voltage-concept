@@ -292,8 +292,8 @@ export default function Ch30HouseSwitchesReceptacles() {
       <p className="mb-prose-3">
         Every NEMA configuration is named <strong className="text-text font-medium">X-YYR</strong>{' '}
         for a receptacle or <strong className="text-text font-medium">X-YYP</strong> for a plug,
-        where <strong className="text-text font-medium">X</strong> is the configuration code and{' '}
-        <strong className="text-text font-medium">YY</strong> is the current rating in amperes
+        where <InlineMath tex="X" /> is the configuration code and{' '}
+        <InlineMath tex="YY" /> is the current rating in amperes
         <Cite id="nema-wd-6" in={SOURCES} />. The configuration code encodes the voltage and the
         wire count:
       </p>
@@ -340,11 +340,11 @@ export default function Ch30HouseSwitchesReceptacles() {
       </p>
       <Formula tex="P_{\\max} = V \\times I_{\\text{rated}}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">P_max</strong> is the maximum steady-state
+        where <InlineMath tex="P_{\max}" /> is the maximum steady-state
         power the receptacle can deliver (in watts),
-        <strong className="text-text font-medium"> V</strong> is the nominal voltage at the outlet
+        <InlineMath tex="V" /> is the nominal voltage at the outlet
         (in volts — 120 V for a 5-pattern, 240 V for a 6-pattern, 240 V line-to-line for a
-        14-pattern), and <strong className="text-text font-medium">I_rated</strong> is the current
+        14-pattern), and <InlineMath tex="I_{\text{rated}}" /> is the current
         rating stamped on the device (in amperes). Plugging in the common patterns:
       </p>
       <ul>
@@ -395,12 +395,12 @@ export default function Ch30HouseSwitchesReceptacles() {
       </p>
       <Formula tex="V_{\\text{outlet}} \\approx V_{\\text{line}} - I_{\\text{branch}} \\times R_{\\text{run}}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">V_outlet</strong> is the voltage available
-        at a given outlet (in volts), <strong className="text-text font-medium">V_line</strong> is
+        where <InlineMath tex="V_{\text{outlet}}" /> is the voltage available
+        at a given outlet (in volts), <InlineMath tex="V_{\text{line}}" /> is
         the nominal voltage at the panel (120 V for a standard branch),{' '}
-        <strong className="text-text font-medium">I_branch</strong> is the total current being drawn
+        <InlineMath tex="I_{\text{branch}}" /> is the total current being drawn
         by everything downstream of that point on the chain (in amperes), and
-        <strong className="text-text font-medium"> R_run</strong> is the round-trip resistance of
+        <InlineMath tex="R_{\text{run}}" /> is the round-trip resistance of
         the copper from the panel to that point (in ohms; see Ch.29 for the gauge tables). Every
         outlet on the string sees the same nominal 120 V minus a small voltage-drop term that grows
         with the length of wire upstream of it.
@@ -551,20 +551,20 @@ export default function Ch30HouseSwitchesReceptacles() {
       <p className="mb-prose-3">
         Wire two three-way switches with their commons at the line and the load and their travellers
         tied together between them, and the resulting circuit is a XOR. Call switch 1's state{' '}
-        <strong className="text-text font-medium">S₁ ∈ &#123;0,1&#125;</strong> for which traveller
+        <InlineMath tex="S_1 \in \{0,1\}" /> for which traveller
         it is currently pointing at, and the same for switch 2. The load is energised when the two
         switches have <em className="text-text italic">matching</em> travellers selected — both 0 or
         both 1 — and de-energised when they differ. In one line of truth-table:
       </p>
       <Formula tex="\\text{load\\_state} = \\neg(S_1 \\oplus S_2)" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">S₁</strong> and{' '}
-        <strong className="text-text font-medium">S₂</strong> are the binary states of the two
+        where <InlineMath tex="S_1" /> and{' '}
+        <InlineMath tex="S_2" /> are the binary states of the two
         switches (which traveller each is presently selecting; 0 or 1),{' '}
-        <strong className="text-text font-medium">⊕</strong> is the XOR operator, and{' '}
-        <strong className="text-text font-medium">load_state ∈ &#123;0,1&#125;</strong> is whether
+        <InlineMath tex="\oplus" /> is the XOR operator, and{' '}
+        <InlineMath tex="\text{load\_state} \in \{0,1\}" /> is whether
         the lamp is on (1) or off (0). Flipping either switch alone inverts{' '}
-        <strong className="text-text font-medium">load_state</strong>, which is the whole point.
+        <InlineMath tex="\text{load\_state}" />, which is the whole point.
       </p>
       <p className="mb-prose-3">
         Two physical topologies show up in the field. The first is{' '}
@@ -724,7 +724,7 @@ export default function Ch30HouseSwitchesReceptacles() {
                 <strong className="text-text font-medium">Leading-edge</strong> dimming — the dimmer
                 holds the load OFF at the start of each half-cycle then turns it ON for the
                 remainder. Built from a triac; cheap, robust, but generates a steep{' '}
-                <em className="text-text italic">di/dt</em> at switch-on that can stress small
+                <InlineMath tex="di/dt" /> at switch-on that can stress small
                 switching power supplies.
               </>
             }
@@ -734,7 +734,7 @@ export default function Ch30HouseSwitchesReceptacles() {
           (forward phase-cut): the dimmer holds the line OFF at the start of each half-cycle and
           turns it ON partway through. Built from a triac; cheap, robust, and the historical default
           for incandescent and halogen loads. The downside is the steep{' '}
-          <em className="text-text italic">di/dt</em> at turn-on — the load goes from zero current
+          <InlineMath tex="di/dt" /> at turn-on — the load goes from zero current
           to whatever the resistive load wants in microseconds, which can stress electronic loads
           not designed for the surge
           <Cite id="lutron-dimmer-app-note" in={SOURCES} />.
@@ -779,12 +779,12 @@ export default function Ch30HouseSwitchesReceptacles() {
       </p>
       <Formula tex="V_{\\text{rms}} = V_{\\text{peak}} \\times \\sqrt{\\dfrac{\\alpha}{\\pi} - \\dfrac{\\sin(2\\alpha)}{2\\pi}}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">V_rms</strong> is the root-mean-square
+        where <InlineMath tex="V_{\text{rms}}" /> is the root-mean-square
         voltage across the load (in volts),
-        <strong className="text-text font-medium"> V_peak</strong> is the peak of the AC line
+        <InlineMath tex="V_{\text{peak}}" /> is the peak of the AC line
         waveform (in volts; for a nominal 120 V_rms line,
         <InlineMath tex="V_{\\text{peak}} = 120 \\times \\sqrt{2} \\approx 170\\ \\text{V}" />
-        ), and <strong className="text-text font-medium">α</strong> is the conduction angle in
+        ), and <InlineMath tex="\alpha" /> is the conduction angle in
         radians (<InlineMath tex="0 \\le \\alpha \\le \\pi" />
         ). At
         <InlineMath tex="\\alpha = \\pi" /> (the triac is on for the entire half-cycle), the square

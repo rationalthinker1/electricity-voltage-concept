@@ -88,13 +88,9 @@ export default function Ch34HousePlugToChip() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>peak</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{peak}}" />{' '}
         is the instantaneous peak voltage of the rectified pulse train (in volts), and{' '}
-        <strong className="text-text font-medium">
-          V<sub>rms</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{rms}}" />{' '}
         is the root-mean-square value of the AC mains — the standard 120 V (US) or 230 V (EU) quoted
         on the outlet (also in volts). The factor √2 ≈ 1.414 is geometric, falling out of the
         time-integral of sin²(ωt) over one cycle
@@ -139,19 +135,13 @@ export default function Ch34HousePlugToChip() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          ΔV<sub>ripple</sub>
-        </strong>{' '}
+        <InlineMath tex="\Delta V_{\text{ripple}}" />{' '}
         is the peak-to-peak ripple voltage left on top of the DC bus (in volts),{' '}
-        <strong className="text-text font-medium">
-          I<sub>load</sub>
-        </strong>{' '}
+        <InlineMath tex="I_{\text{load}}" />{' '}
         is the steady DC current drawn from the bus (in amperes),{' '}
-        <strong className="text-text font-medium">
-          f<sub>line</sub>
-        </strong>{' '}
+        <InlineMath tex="f_{\text{line}}" />{' '}
         is the line frequency (60 Hz in the US, 50 Hz in Europe; in hertz), and{' '}
-        <strong className="text-text font-medium">C</strong> is the bulk-capacitor value (in
+        <InlineMath tex="C" /> is the bulk-capacitor value (in
         farads). The factor of two in the denominator comes from full-wave rectification: there are{' '}
         <em className="text-text italic">two</em> peaks per line cycle, so the cap only has to hold
         up the load for half a cycle between recharges
@@ -164,9 +154,7 @@ export default function Ch34HousePlugToChip() {
         up to half an amp and the ripple climbs to ~19 V, which is still acceptable for a flyback's
         input but starts to matter for power-factor correction — see the FAQ.) The output of stage 2
         is now what the engineer's schematic labels{' '}
-        <strong className="text-text font-medium">
-          V<sub>bulk</sub>
-        </strong>
+        <InlineMath tex="V_{\text{bulk}}" />
         : a roughly flat 170 V DC bus with a small triangular wobble on top at 120 Hz.
       </p>
 
@@ -244,7 +232,7 @@ export default function Ch34HousePlugToChip() {
       </p>
       <p className="mb-prose-3">
         The next stage, stage 4, is a transformer. The volume of magnetic core a transformer needs
-        to handle a given power scales as <em className="text-text italic">1/f</em> for the
+        to handle a given power scales as <InlineMath tex="1/f" /> for the
         operating frequency. Run the transformer at 60 Hz — the mains frequency — and you need a
         brick-sized lump of laminated iron, the kind of brick that sat on the floor between a 1990s
         laptop and its wall plug. Run the transformer at 100 kHz — three orders of magnitude faster
@@ -259,25 +247,15 @@ export default function Ch34HousePlugToChip() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          P<sub>avg</sub>
-        </strong>{' '}
+        <InlineMath tex="P_{\text{avg}}" />{' '}
         is the average power transferred through the flyback transformer (in watts),{' '}
-        <strong className="text-text font-medium">
-          L<sub>p</sub>
-        </strong>{' '}
+        <InlineMath tex="L_p" />{' '}
         is the primary-side inductance of the transformer (in henries; typically 0.5 to 2 mH for a
-        100 W charger),
-        <strong className="text-text font-medium">
-          {' '}
-          I<sub>peak</sub>
-        </strong>{' '}
+        100 W charger),{' '}
+        <InlineMath tex="I_{\text{peak}}" />{' '}
         is the peak primary current at the moment the MOSFET turns off (in amperes; typically 1 to 3
-        A), and
-        <strong className="text-text font-medium">
-          {' '}
-          f<sub>switching</sub>
-        </strong>{' '}
+        A), and{' '}
+        <InlineMath tex="f_{\text{switching}}" />{' '}
         is the chopping frequency (in hertz). This is just the energy stored in the primary's
         inductance, <InlineMath>(1/2) L I²</InlineMath>, delivered once per switching cycle
         <Cite id="erickson-maksimovic-2020" in={SOURCES} />.
@@ -313,22 +291,13 @@ export default function Ch34HousePlugToChip() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>p</sub>
-        </strong>{' '}
+        <InlineMath tex="V_p" />{' '}
         is the primary-side voltage (here, the bulk-bus voltage chopped against ground; in volts),{' '}
-        <strong className="text-text font-medium">
-          V<sub>s</sub>
-        </strong>{' '}
-        is the secondary-side voltage that appears across the secondary winding (in volts), and
-        <strong className="text-text font-medium">
-          {' '}
-          N<sub>p</sub>
-        </strong>
+        <InlineMath tex="V_s" />{' '}
+        is the secondary-side voltage that appears across the secondary winding (in volts), and{' '}
+        <InlineMath tex="N_p" />
         ,{' '}
-        <strong className="text-text font-medium">
-          N<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="N_s" />{' '}
         are the number of turns on the primary and secondary windings respectively (dimensionless
         integers).
       </p>
@@ -337,14 +306,9 @@ export default function Ch34HousePlugToChip() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          I<sub>p</sub>
-        </strong>{' '}
-        is the primary winding current (in amperes),
-        <strong className="text-text font-medium">
-          {' '}
-          I<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="I_p" />{' '}
+        is the primary winding current (in amperes),{' '}
+        <InlineMath tex="I_s" />{' '}
         is the secondary winding current (in amperes), and the turns counts are as defined above.
         The two ratios are inverse: voltage scales by N<sub>s</sub>/N<sub>p</sub>, current by the
         reciprocal, and the product V<sub>p</sub>I<sub>p</sub> = V<sub>s</sub>I<sub>s</sub> holds
@@ -478,14 +442,10 @@ export default function Ch34HousePlugToChip() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>s</sub>, I<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="V_s, I_s" />{' '}
         are the output voltage and current delivered at the USB-C cable (in volts and amperes; for a
         100 W charger, 20 V and 5 A), and{' '}
-        <strong className="text-text font-medium">
-          V<sub>in</sub>, I<sub>in</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{in}}, I_{\text{in}}" />{' '}
         are the line input voltage and current drawn from the wall (in volts and amperes). Modern{' '}
         <Term
           def={
@@ -678,16 +638,11 @@ export default function Ch34HousePlugToChip() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>out</sub>
-        </strong>{' '}
-        is the regulated output rail (in volts),
-        <strong className="text-text font-medium">
-          {' '}
-          V<sub>in</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{out}}" />{' '}
+        is the regulated output rail (in volts),{' '}
+        <InlineMath tex="V_{\text{in}}" />{' '}
         is the buck's input voltage (in volts; for the first stage of stage 7, V<sub>in</sub> = 20
-        V), and <strong className="text-text font-medium">D</strong> is the buck's{' '}
+        V), and <InlineMath tex="D" /> is the buck's{' '}
         <Term
           def={
             <>
@@ -754,7 +709,7 @@ export default function Ch34HousePlugToChip() {
           DVFS, dynamic voltage and frequency scaling
         </Term>
         . Heavier workload, higher clock, higher voltage; idle workload, lower clock, lower voltage.
-        Dynamic power scales as <em className="text-text italic">V²f</em>, so a 10 % voltage drop
+        Dynamic power scales as <InlineMath tex="V^{2}f" />, so a 10 % voltage drop
         saves roughly 20 % of dynamic power at the same frequency
         <Cite id="sedra-smith-2014" in={SOURCES} />
         <Cite id="horowitz-hill-2015" in={SOURCES} />.

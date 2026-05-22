@@ -143,8 +143,8 @@ export default function Ch27HouseGridArrives() {
       <p className="mb-prose-3">
         The transformer itself is just a Chapter-23 transformer with k near 1 and a turns ratio
         chosen to land the secondary at the right voltage. The primary-to-half-secondary ratio is
-        roughly <strong className="text-text font-medium">7,200/120 = 60:1</strong>, and the
-        full-secondary ratio is <strong className="text-text font-medium">7,200/240 = 30:1</strong>.
+        roughly <InlineMath tex="7200/120 = 60:1" />, and the
+        full-secondary ratio is <InlineMath tex="7200/240 = 30:1" />.
         Pick the ratio and the physics is fixed; everything else (KVA rating, oil volume, bushing
         geometry) is downstream engineering choice. Common residential-feeder sizes are{' '}
         <strong className="text-text font-medium">10, 15, 25, 37.5, 50, 75, and 100 kVA</strong>,
@@ -181,9 +181,9 @@ export default function Ch27HouseGridArrives() {
       </p>
       <Formula size="lg" id="power-vi" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">P</strong> is the real power delivered to
-        the load (in watts), <strong className="text-text font-medium">V</strong> is the RMS voltage
-        across the load (in volts), and <strong className="text-text font-medium">I</strong> is the
+        where <InlineMath tex="P" /> is the real power delivered to
+        the load (in watts), <InlineMath tex="V" /> is the RMS voltage
+        across the load (in volts), and <InlineMath tex="I" /> is the
         RMS current through it (in amperes), for a purely resistive load. Rearrange to read off the
         current required to deliver a given power at a given voltage:
       </p>
@@ -472,14 +472,14 @@ export default function Ch27HouseGridArrives() {
       </p>
       <Formula tex="W = \\int P\\, dt = \\int V(t)\\, I(t)\\, dt" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">W</strong> is the accumulated energy
+        where <InlineMath tex="W" /> is the accumulated energy
         delivered to the customer (in joules — or, the utility's unit of choice, kilowatt-hours),{' '}
-        <strong className="text-text font-medium">P</strong> is the instantaneous real power (in
+        <InlineMath tex="P" /> is the instantaneous real power (in
         watts, W = V · A),
-        <strong className="text-text font-medium"> V(t)</strong> and{' '}
-        <strong className="text-text font-medium">I(t)</strong> are the instantaneous service
+        <InlineMath tex="V(t)" /> and{' '}
+        <InlineMath tex="I(t)" /> are the instantaneous service
         voltage and the instantaneous current crossing the meter (in volts and amperes), and{' '}
-        <strong className="text-text font-medium">t</strong> is time (in seconds). The integral runs
+        <InlineMath tex="t" /> is time (in seconds). The integral runs
         from the moment the meter was installed (or last read).
       </p>
       <p className="mb-prose-3">
@@ -488,9 +488,9 @@ export default function Ch27HouseGridArrives() {
       </p>
       <Formula tex="W = P \\times t" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">W</strong>,{' '}
-        <strong className="text-text font-medium">P</strong>, and{' '}
-        <strong className="text-text font-medium">t</strong> mean the same things as above. The
+        where <InlineMath tex="W" />,{' '}
+        <InlineMath tex="P" />, and{' '}
+        <InlineMath tex="t" /> mean the same things as above. The
         practical unit is the{' '}
         <Term
           def={
@@ -504,7 +504,7 @@ export default function Ch27HouseGridArrives() {
           kilowatt-hour
         </Term>
         : one kWh is 1,000 W delivered for one hour, equal to{' '}
-        <strong className="text-text font-medium">3.6 × 10⁶ J</strong>. North-American residential
+        <InlineMath tex="3.6 \times 10^{6}\,\text{J}" />. North-American residential
         rates run roughly $0.10–$0.40 per kWh depending on jurisdiction and time of day
         <Cite id="ieee-std-3001-2-2017" in={SOURCES} />.
       </p>
@@ -711,16 +711,12 @@ export default function Ch27HouseGridArrives() {
       <Formula tex="V_{\\text{centre}} = V_{240} \\cdot \\dfrac{Z_1}{Z_1 + Z_2}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>centre</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{centre}}" />{' '}
         is the voltage of the floating centre node relative to L2 (in volts),{' '}
-        <strong className="text-text font-medium">
-          V<sub>240</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{240}" />{' '}
         is the end-to-end supply voltage (≈ 240 V RMS for a healthy service), and{' '}
-        <strong className="text-text font-medium">Z₁</strong> and{' '}
-        <strong className="text-text font-medium">Z₂</strong> are the total load impedances (in
+        <InlineMath tex="Z_1" /> and{' '}
+        <InlineMath tex="Z_2" /> are the total load impedances (in
         ohms) on the L1 and L2 legs respectively, lumped at their parallel equivalent. The voltages
         individually seen by L1 and L2 are:
       </p>

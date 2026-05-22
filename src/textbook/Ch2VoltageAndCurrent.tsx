@@ -17,6 +17,7 @@ import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { PredictThenObserve } from '@/components/PredictThenObserve';
+import { Pullout } from '@/components/Prose';
 import { ACElectronJitterDemo } from './demos/ACElectronJitter';
 import { CursorEFieldOnWireDemo } from './demos/CursorEFieldOnWire';
 import { DriftVelocityDemo } from './demos/DriftVelocity';
@@ -102,21 +103,15 @@ export default function Ch2VoltageAndCurrent() {
       <Formula size="lg" tex="V_{ab} = V_b - V_a = -\int_a^b \vec{E}\cdot d\vec{\ell}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>a</sub>
-        </strong>{' '}
+        <InlineMath tex="V_a" />{' '}
         and{' '}
-        <strong className="text-text font-medium">
-          V<sub>b</sub>
-        </strong>{' '}
+        <InlineMath tex="V_b" />{' '}
         are the potentials (in volts, J/C) at the two endpoints,{' '}
-        <strong className="text-text font-medium">
-          V<sub>ab</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{ab}" />{' '}
         is the potential difference between them,
-        <strong className="text-text font-medium"> E</strong> is the electric field vector (in V/m,
+        <InlineMath tex="E" /> is the electric field vector (in V/m,
         equivalently N/C),
-        <strong className="text-text font-medium"> dℓ</strong> is the infinitesimal vector element
+        <InlineMath tex="d\ell" /> is the infinitesimal vector element
         of any path from <InlineMath tex="a" /> to <InlineMath tex="b" /> (in metres), and the
         integral runs along that path.
       </p>
@@ -137,20 +132,20 @@ export default function Ch2VoltageAndCurrent() {
         The line integral is exact, but you'll rarely evaluate one. The way every working engineer
         holds voltage in their head — and the way every multimeter measures it — is operationally:
         as the energy it takes (or releases) per coulomb of charge moved from one point to the
-        other. Move a charge <strong className="text-text font-medium">q</strong> against a
-        potential difference <strong className="text-text font-medium">V</strong> and you do work
+        other. Move a charge <InlineMath tex="q" /> against a
+        potential difference <InlineMath tex="V" /> and you do work
       </p>
       <Formula size="lg" id="work-charge-voltage" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">W</strong> is the work done on the charge
-        (in joules), <strong className="text-text font-medium">q</strong> is the charge being moved
-        (in coulombs, signed), and <strong className="text-text font-medium">V</strong> is the
+        where <InlineMath tex="W" /> is the work done on the charge
+        (in joules), <InlineMath tex="q" /> is the charge being moved
+        (in coulombs, signed), and <InlineMath tex="V" /> is the
         potential difference between the start and end points (in volts). Equivalently, rearrange to
         read voltage off as work-per-charge:
       </p>
       <Formula size="lg" tex="V = \dfrac{W}{q} = \dfrac{\Delta U}{q}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">ΔU</strong> is the change in electrical
+        where <InlineMath tex="\Delta U" /> is the change in electrical
         potential energy of the charge (in joules). One volt is one joule per coulomb. That single
         identity is why "1.5 V" on a battery is a statement about energy: it says the cell can
         deposit 1.5 joules of energy onto every coulomb of charge that flows out one terminal and
@@ -207,18 +202,18 @@ export default function Ch2VoltageAndCurrent() {
         The line integral and the W/q view are the same statement; the easiest place to see that is
         when the field is uniform, because the integral collapses to a single product. Inside a
         parallel-plate capacitor with the plates a distance{' '}
-        <strong className="text-text font-medium">d</strong> apart, the electric field has the same
+        <InlineMath tex="d" /> apart, the electric field has the same
         magnitude and direction at every point in the gap. The voltage between the plates is then
       </p>
       <Formula size="lg" id="voltage-uniform-field" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">V</strong> is the potential difference
+        where <InlineMath tex="V" /> is the potential difference
         between the two plates (in volts),
-        <strong className="text-text font-medium"> E</strong> is the magnitude of the uniform
+        <InlineMath tex="E" /> is the magnitude of the uniform
         electric field in the gap (in V/m), and
-        <strong className="text-text font-medium"> d</strong> is the gap distance (in metres).
+        <InlineMath tex="d" /> is the gap distance (in metres).
         Voltage and field, in this geometry, are two ways of saying the same thing. The work to push
-        a charge <strong className="text-text font-medium">q</strong> from one plate to the other is
+        a charge <InlineMath tex="q" /> from one plate to the other is
         then
       </p>
       <Formula size="lg" tex="W = qV = qEd" />
@@ -234,9 +229,9 @@ export default function Ch2VoltageAndCurrent() {
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
 
-      <p className="pullout">
+      <Pullout>
         Voltage is not a property of a place. It is a property of the path between two places.
-      </p>
+      </Pullout>
 
       <TryIt
         tag="Try 2.1"
@@ -310,11 +305,11 @@ export default function Ch2VoltageAndCurrent() {
       </p>
       <Formula size="lg" id="current-def" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">I</strong> is the current (in amperes, A =
-        C/s), <strong className="text-text font-medium">Q</strong> is the net charge that has
+        where <InlineMath tex="I" /> is the current (in amperes, A =
+        C/s), <InlineMath tex="Q" /> is the net charge that has
         crossed a chosen fixed cross-section (in coulombs), and{' '}
-        <strong className="text-text font-medium">t</strong> is time (in seconds). The sign of
-        <strong className="text-text font-medium"> I</strong> follows the direction of conventional
+        <InlineMath tex="t" /> is time (in seconds). The sign of
+        <InlineMath tex="I" /> follows the direction of conventional
         positive-charge flow across that surface.
       </p>
       <p className="mb-prose-3">
@@ -439,21 +434,19 @@ export default function Ch2VoltageAndCurrent() {
       <Formula size="lg" tex="v_d = \dfrac{I}{n\, q\, A}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          v<sub>d</sub>
-        </strong>{' '}
+        <InlineMath tex="v_d" />{' '}
         is the average drift speed of the carriers (in m/s),
-        <strong className="text-text font-medium"> I</strong> is the current (in amperes),{' '}
-        <strong className="text-text font-medium">n</strong> is the free-carrier number density (in
+        <InlineMath tex="I" /> is the current (in amperes),{' '}
+        <InlineMath tex="n" /> is the free-carrier number density (in
         carriers per m³;{' '}
         <InlineMath tex="\approx 8.5\times 10^{28}\ /\text{m}^3" /> for copper{' '}
         <Cite id="ashcroft-mermin-1976" in={SOURCES} />
         ),
-        <strong className="text-text font-medium"> q</strong> is the charge per carrier (in
+        <InlineMath tex="q" /> is the charge per carrier (in
         coulombs; for electrons, the elementary charge{' '}
         <InlineMath tex="e \approx 1.602\times 10^{-19}\ \text{C}" />
         ), and{' '}
-        <strong className="text-text font-medium">A</strong> is the wire's cross-sectional area (in
+        <InlineMath tex="A" /> is the wire's cross-sectional area (in
         m²).
       </p>
       <p className="mb-prose-3">Plug in numbers. One amp through a 2.5 mm² copper wire:</p>
@@ -959,7 +952,7 @@ export default function Ch2VoltageAndCurrent() {
                 <>
                   <strong className="text-text font-medium">Poynting vector</strong> —{' '}
                   <InlineMath tex="\vec{S} = \vec{E}\times\vec{B}/\mu_0" />, the directional energy
-                  flux of the electromagnetic field (W/m²). Integrating <em>S</em> over any closed
+                  flux of the electromagnetic field (W/m²). Integrating <InlineMath tex="S" /> over any closed
                   surface gives the power flowing in through that surface.
                 </>
               }

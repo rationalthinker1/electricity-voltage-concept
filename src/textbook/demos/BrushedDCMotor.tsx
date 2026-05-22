@@ -18,6 +18,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { withAlpha } from '@/lib/canvasTheme';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
@@ -175,7 +176,7 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.closePath();
       ctx.fill();
       const commR = R * 0.18;
-      ctx.strokeStyle = '#d4a050';
+      ctx.strokeStyle = withAlpha(colors.accent, 0.75);
       ctx.lineWidth = 4;
       ctx.beginPath();
       ctx.arc(cx, cy, commR, theta + 0.15, theta + Math.PI - 0.15);
@@ -183,7 +184,7 @@ export function BrushedDCMotorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(cx, cy, commR, theta + Math.PI + 0.15, theta + 2 * Math.PI - 0.15);
       ctx.stroke();
-      ctx.fillStyle = '#888';
+      ctx.fillStyle = colors.textDim;
       ctx.fillRect(cx - 3, cy - commR - 10, 6, 8);
       ctx.fillRect(cx - 3, cy + commR + 2, 6, 8);
       ctx.save();
@@ -216,7 +217,7 @@ export function BrushedDCMotorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.1'}
+      figure={figure ?? 'Fig. 20.1'}
       title="The brushed DC motor"
       question="A coil in a steady field would oscillate. What does the commutator fix?"
       caption={

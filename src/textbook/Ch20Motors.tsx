@@ -1,5 +1,5 @@
 /**
- * Chapter 16 — Motors
+ * Chapter 20 — Motors
  *
  * F = q v × B applied to the conduction electrons of a current-carrying
  * coil gives a force on the coil; F·r is torque. Build that into a
@@ -27,7 +27,7 @@ import { TorqueSpeedCurveDemo } from './demos/TorqueSpeedCurve';
 import { MotorEfficiencyMapDemo } from './demos/MotorEfficiencyMap';
 import { getChapter } from './data/chapters';
 
-export default function Ch16Motors() {
+export default function Ch20Motors() {
   const chapter = getChapter('motors')!;
   const SOURCES = chapter.sources;
 
@@ -35,8 +35,8 @@ export default function Ch16Motors() {
     <ChapterShell chapter={chapter}>
       <p className="chapter-intro">
         Pry open a cheap cordless drill and you find a brick of copper and steel about the size of a
-        deck of cards. Apply 18 volts of lithium-ion DC across two contact strips and it converts{' '}
-        <strong className="text-text font-medium">600 W of electrical power</strong>
+        deck of cards. Apply 18 volts of lithium-ion DC across two contact strips and it converts
+        several hundred watts of electrical power
         into mechanical torque well enough to drive a four-inch lag screw into oak. There are no
         fluids inside, no combustion, no moving valves — just one rotating bit of iron wound with
         copper wire, two stationary magnets, and a pair of carbon brushes the size of pencil
@@ -46,8 +46,8 @@ export default function Ch16Motors() {
       </p>
       <p className="mb-prose-3">
         This chapter is about how it works. The bottom line is a single equation we already met in
-        Chapter 6: a current in a magnetic field feels a force, and a current loop in a field feels
-        a torque. Wrap that into a rotating bundle and you get a motor. The challenge — and the
+        the magnetism chapter: a current in a magnetic field feels a force, and a current loop in a
+        field feels a torque. Wrap that into a rotating bundle and you get a motor. The challenge — and the
         entire reason there are half a dozen distinct motor families rather than just one — is what
         to do at the moment the loop has rotated 180° and the torque, left to itself, would reverse
         and oscillate forever. Brushes, electronic switches, three-phase fields, and tooth counts
@@ -57,30 +57,30 @@ export default function Ch16Motors() {
       <h2 className="chapter-h2">Force on a wire = torque on a coil</h2>
 
       <p className="mb-prose-3">
-        Chapter 6 wrote down the{' '}
+        The magnetism chapter wrote down the{' '}
         <Term def="The total electromagnetic force on a point charge: F = q(E + v × B). For currents — many charges moving together — the magnetic piece becomes a force per length on the wire.">
           Lorentz force
         </Term>
         on a moving charge: <InlineMath id="lorentz-force" />. A current is moving charge — many of
         them, at the same drift velocity. Sum the per-charge force over a length{' '}
-        <em className="text-text italic">L</em> of wire carrying current{' '}
-        <em className="text-text italic">I</em> in a uniform field{' '}
-        <strong className="text-text font-medium">B</strong> and the wire itself feels
+        <InlineMath tex="L" /> of wire carrying current{' '}
+        <InlineMath tex="I" /> in a uniform field{' '}
+        <InlineMath tex="B" /> and the wire itself feels
         <Cite id="feynman-II-13" in={SOURCES} />:
       </p>
       <Formula size="lg" id="force-on-wire" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">F</strong> is the force on the wire segment
-        (in newtons), <strong className="text-text font-medium">I</strong> is the current flowing
-        through it (in amperes), <strong className="text-text font-medium">L</strong> is a vector
+        where <InlineMath tex="F" /> is the force on the wire segment
+        (in newtons), <InlineMath tex="I" /> is the current flowing
+        through it (in amperes), <InlineMath tex="L" /> is a vector
         along the wire of length equal to the segment (in metres) pointing in the direction of
-        conventional current, and <strong className="text-text font-medium">B</strong> is the
+        conventional current, and <InlineMath tex="B" /> is the
         magnetic field at the wire's location (in tesla).
       </p>
       <p className="mb-prose-3">
-        Bend the wire into a closed rectangular loop of <em className="text-text italic">N</em>{' '}
-        turns and area <em className="text-text italic">A</em>, place it in{' '}
-        <strong className="text-text font-medium">B</strong>, and the two long sides experience
+        Bend the wire into a closed rectangular loop of <InlineMath tex="N" />{' '}
+        turns and area <InlineMath tex="A" />, place it in{' '}
+        <InlineMath tex="B" />, and the two long sides experience
         equal-and-opposite forces displaced from the loop's central axis. Those forces don't cancel
         — they form a couple. The resulting{' '}
         <Term def="The rotational analog of force. Torque about an axis is force times the perpendicular distance from the axis. SI unit: N·m.">
@@ -91,30 +91,30 @@ export default function Ch16Motors() {
       </p>
       <Formula tex="\tau = N I A B \sin\theta" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">τ</strong> is the magnitude of the torque on
+        where <InlineMath tex="\tau" /> is the magnitude of the torque on
         the loop (in N·m),
-        <strong className="text-text font-medium"> N</strong> is the number of turns in the coil
+        <InlineMath tex="N" /> is the number of turns in the coil
         (dimensionless integer),
-        <strong className="text-text font-medium"> I</strong> is the current in the coil (in
-        amperes), <strong className="text-text font-medium">A</strong> is the area enclosed by one
-        turn (in m²), <strong className="text-text font-medium">B</strong> is the magnetic field
-        magnitude (in tesla), and <strong className="text-text font-medium">θ</strong> is the angle
+        <InlineMath tex="I" /> is the current in the coil (in
+        amperes), <InlineMath tex="A" /> is the area enclosed by one
+        turn (in m²), <InlineMath tex="B" /> is the magnetic field
+        magnitude (in tesla), and <InlineMath tex="\theta" /> is the angle
         between the loop's surface normal and the field (in radians). Maximum torque when the loop's
-        plane is parallel to <strong className="text-text font-medium">B</strong> (θ = 90°); zero
+        plane is parallel to <InlineMath tex="B" /> (θ = 90°); zero
         when the plane is perpendicular (θ = 0). That single formula is every electric motor in one
         line. Everything that follows is engineering: how to keep θ in the region where{' '}
-        <em className="text-text italic">sin(θ)</em> is positive, so the torque drives the rotor
+        <InlineMath tex="\sin(\theta)" /> is positive, so the torque drives the rotor
         forward instead of bouncing back and forth across one position.
       </p>
 
       <TryIt
-        tag="Try 16.1"
+        tag="Try 20.1"
         question={
           <>
-            A rectangular coil has <strong className="text-text font-medium">N = 100</strong> turns,
-            area <strong className="text-text font-medium">A = 30 cm²</strong>, sits in a field of{' '}
-            <strong className="text-text font-medium">B = 0.3 T</strong>, and carries{' '}
-            <strong className="text-text font-medium">I = 2 A</strong>. What is the maximum torque?
+            A rectangular coil has <InlineMath tex="N = 100" /> turns,
+            area <InlineMath tex="A = 30\,\text{cm}^{2}" />, sits in a field of{' '}
+            <InlineMath tex="B = 0.3\,\text{T}" />, and carries{' '}
+            <InlineMath tex="I = 2\,\text{A}" />. What is the maximum torque?
           </>
         }
         hint={
@@ -158,7 +158,7 @@ export default function Ch16Motors() {
         </Term>
         against the rings from outside the spinning rotor. Every half-rotation, the brushes break
         contact with one segment and make contact with the other, reversing the direction of current
-        in the coil. The trigonometry flips with it: <em className="text-text italic">sin(θ)</em>{' '}
+        in the coil. The trigonometry flips with it: <InlineMath tex="\sin(\theta)" />{' '}
         reverses sign, the current reverses sign, the product stays positive. Net torque always
         drives the rotor forward
         <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
@@ -191,10 +191,10 @@ export default function Ch16Motors() {
         brushed DC motor behaves between the moment you connect it and the moment it reaches a
         steady running speed. In a frozen rotor (<InlineMath tex="\omega = 0" />
         ), the back-EMF is zero, so the full supply voltage drops across the winding resistance and
-        <InlineMath tex="I = V/R" /> — an inrush current commonly 10× the rated running value. As
+        <InlineMath tex="I = V/R" /> — an inrush current several times the rated running value. As
         the rotor spins up, back-EMF rises in proportion to speed (
         <InlineMath tex="E_{\text{back}} = k_e\, \omega" />
-        ), the net voltage across <em className="text-text italic">R</em>
+        ), the net voltage across <InlineMath tex="R" />
         falls, and the current drops to whatever value is required to balance the load torque. The
         settling time is set by the mechanical inertia, not the electrical time constant: that is
         why inrush current is brief but ferocious
@@ -204,15 +204,13 @@ export default function Ch16Motors() {
       <BackEMFInRunningMotorDemo />
 
       <TryIt
-        tag="Try 16.2"
+        tag="Try 20.2"
         question={
           <>
-            A <strong className="text-text font-medium">12 V</strong> brushed DC motor has winding
-            resistance <strong className="text-text font-medium">R = 1 Ω</strong> and back-EMF
+            A <InlineMath tex="12\,\text{V}" /> brushed DC motor has winding
+            resistance <InlineMath tex="R = 1\,\Omega" /> and back-EMF
             constant{' '}
-            <strong className="text-text font-medium">
-              k<sub>e</sub> = 0.1 V·s/rad
-            </strong>
+            <InlineMath tex="k_e = 0.1\,\text{V·s/rad}" />
             . What is the starting current at stall? What is the steady-state current at{' '}
             <InlineMath tex="\omega = 100\ \text{rad/s}" /> with negligible load?
           </>
@@ -252,7 +250,7 @@ export default function Ch16Motors() {
       <p className="mb-prose-3">
         Invert the topology. Put the permanent magnets on the rotor — typically two, four, or eight
         pole-pairs of sintered{' '}
-        <Term def="A class of high-energy permanent magnets composed of neodymium, iron, and boron. Energy product ~280–440 kJ/m³; the workhorse magnet of every modern BLDC/PMSM motor.">
+        <Term def="A class of high-energy permanent magnets composed of neodymium, iron, and boron. The workhorse magnet of every modern BLDC/PMSM motor.">
           neodymium-iron-boron
         </Term>{' '}
         — and put the windings on the outer stator. Now no current has to enter or leave the
@@ -293,8 +291,8 @@ export default function Ch16Motors() {
           field-oriented control
         </Term>{' '}
         on the rotor-aligned current components, and you get an essentially ripple-free torque from
-        zero speed up through the field-weakening region. Every modern EV traction motor — Tesla
-        after 2017, all the European and Korean EVs — is a PMSM
+        zero speed up through the field-weakening region. Most modern EV traction drives are PMSMs
+        for this reason
         <Cite id="krishnan-2010-bldc" in={SOURCES} />.
       </p>
 
@@ -314,7 +312,7 @@ export default function Ch16Motors() {
       <FieldOrientedControlDemo />
 
       <TryIt
-        tag="Try 16.3"
+        tag="Try 20.3"
         question={
           <>
             A BLDC motor has 4 pole-pairs. The electrical commutation runs at{' '}
@@ -371,12 +369,10 @@ export default function Ch16Motors() {
       <Formula tex="n_s = 120\, f / p \quad (\text{RPM})" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          n<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="n_s" />{' '}
         is the synchronous (stator-field) rotational speed in revolutions per minute,{' '}
-        <strong className="text-text font-medium">f</strong> is the AC line frequency (in Hz), and
-        <strong className="text-text font-medium"> p</strong> is the total pole count of the machine
+        <InlineMath tex="f" /> is the AC line frequency (in Hz), and
+        <InlineMath tex="p" /> is the total pole count of the machine
         (a dimensionless even integer: 2, 4, 6, …). The factor of 120 packages the 60 s/min
         conversion with the two-poles-per-pole-pair convention. At 60 Hz a 4-pole machine spins its
         stator field at 1800 RPM; an 8-pole machine at 900 RPM. The rotor, sitting inside this
@@ -423,13 +419,11 @@ export default function Ch16Motors() {
       </p>
       <Formula tex="s = (n_s - n) / n_s" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">s</strong> is the dimensionless slip (a pure
+        where <InlineMath tex="s" /> is the dimensionless slip (a pure
         ratio, often quoted as a percentage),{' '}
-        <strong className="text-text font-medium">
-          n<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="n_s" />{' '}
         is the synchronous speed of the rotating stator field (in RPM, from the formula above), and{' '}
-        <strong className="text-text font-medium">n</strong> is the actual mechanical rotation speed
+        <InlineMath tex="n" /> is the actual mechanical rotation speed
         of the rotor (in RPM).
       </p>
       <p className="mb-prose-3">
@@ -448,7 +442,7 @@ export default function Ch16Motors() {
       </Pullout>
 
       <TryIt
-        tag="Try 16.4"
+        tag="Try 20.4"
         question={
           <>
             A 4-pole induction motor runs from a 60 Hz line and turns at{' '}
@@ -475,7 +469,7 @@ export default function Ch16Motors() {
       />
 
       <TryIt
-        tag="Try 16.5"
+        tag="Try 20.5"
         question={
           <>
             A 4-pole 60 Hz induction motor runs at{' '}
@@ -523,11 +517,13 @@ export default function Ch16Motors() {
       <p className="mb-prose-3">
         Synchronous motors are where you need precise speed: the spindle in a hard drive, the
         platter in a vinyl turntable, the rolling mill in a steel plant, the propeller shaft in an
-        icebreaker. A clock running on a synchronous motor keeps grid time to within a part in 10⁷
-        because the grid frequency itself is regulated that precisely. The trade-off is that a
-        synchronous motor doesn't start on its own — it has to be brought up to near-synchronous
-        speed by some other means (a starting cage, a variable-frequency drive, or a small pony
-        motor) before the rotor can lock onto the field.
+        icebreaker. A clock running on a synchronous motor keeps time to within a few seconds per
+        year, because grid operators schedule periodic frequency corrections to keep the accumulated
+        cycle count aligned with civil time
+        <Cite id="grainger-power-systems-2003" in={SOURCES} />. The trade-off is that a synchronous
+        motor doesn't start on its own — it has to be brought up to near-synchronous speed by some
+        other means (a starting cage, a variable-frequency drive, or a small pony motor) before the
+        rotor can lock onto the field.
       </p>
       <p className="mb-prose-3">
         The other branch is the{' '}
@@ -548,7 +544,7 @@ export default function Ch16Motors() {
       <StepperMotorDemo />
 
       <TryIt
-        tag="Try 16.6"
+        tag="Try 20.6"
         question={
           <>
             A NEMA-17 stepper has 200 steps per revolution. You drive it at{' '}
@@ -634,7 +630,7 @@ export default function Ch16Motors() {
       </p>
 
       <TryIt
-        tag="Try 16.7"
+        tag="Try 20.7"
         question={
           <>
             A brushed DC motor has stall torque{' '}
@@ -685,15 +681,15 @@ export default function Ch16Motors() {
       <CaseStudies
         intro={
           <>
-            Four motors in working systems, from a 310 kW EV traction motor down to a 3 W hard-drive
-            spindle.
+            Four motors in working systems, from a hundreds-of-kilowatt EV traction motor down to a
+            few-watt hard-drive spindle.
           </>
         }
       >
         <CaseStudy
-          tag="Case 16.1"
+          tag="Case 20.1"
           title="EV traction motor (Tesla Model S rear)"
-          summary="A 3-phase AC induction motor with copper rotor bars; ~310 kW peak, ~16 000 rpm max, 0.94 efficiency at cruise."
+          summary="A 3-phase AC induction motor with copper rotor bars, driven by a field-oriented inverter; the kind of machine that defined the early EV-performance era."
           specs={[
             {
               label: 'Topology',
@@ -704,19 +700,27 @@ export default function Ch16Motors() {
                 </>
               ),
             },
-            { label: 'Peak output', value: <>~310 kW (rear motor)</> },
             {
-              label: 'Maximum speed',
+              label: 'Peak output',
               value: (
                 <>
-                  ~16 000 rpm at full battery voltage{' '}
+                  several hundred kW (rear motor){' '}
                   <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
                 </>
               ),
             },
             {
+              label: 'Maximum speed',
+              value: <>well into the tens of thousands of rpm at full battery voltage</>,
+            },
+            {
               label: 'Cooling',
-              value: <>liquid (ethylene-glycol jacket around the stator iron)</>,
+              value: (
+                <>
+                  liquid (ethylene-glycol jacket around the stator iron){' '}
+                  <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
+                </>
+              ),
             },
             {
               label: 'Drive',
@@ -753,7 +757,7 @@ export default function Ch16Motors() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 16.2"
+          tag="Case 20.2"
           title="HDD spindle motor"
           summary="A BLDC at 7200 rpm spins three platters in a sealed helium-filled enclosure. ~3 W of electrical input keeps the read/write heads flying."
           specs={[
@@ -766,12 +770,28 @@ export default function Ch16Motors() {
                 </>
               ),
             },
-            { label: 'Speed', value: <>5400, 7200, 10 000, or 15 000 rpm (datasheet-fixed)</> },
+            {
+              label: 'Speed',
+              value: (
+                <>
+                  typically 5400, 7200, or higher rpm (datasheet-fixed){' '}
+                  <Cite id="krishnan-2010-bldc" in={SOURCES} />
+                </>
+              ),
+            },
             {
               label: 'Speed regulation',
-              value: <>±0.1 % of nominal — controlled by a PLL locking to a quartz reference</>,
+              value: <>tight: a PLL locks rotor frequency to the drive's quartz reference</>,
             },
-            { label: 'Power', value: <>~2–3 W steady-state at 7200 rpm</> },
+            {
+              label: 'Power',
+              value: (
+                <>
+                  a few watts steady-state at 7200 rpm{' '}
+                  <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
+                </>
+              ),
+            },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
@@ -797,7 +817,7 @@ export default function Ch16Motors() {
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 16.3"
+          tag="Case 20.3"
           title="The brushed motor in an 18 V cordless drill"
           summary="A two-pole brushed DC motor with a 7-segment commutator, fed PWM from the battery; speed scales with duty cycle."
           specs={[
@@ -805,43 +825,64 @@ export default function Ch16Motors() {
               label: 'Topology',
               value: (
                 <>
-                  2-pole permanent-magnet stator, 7-segment commutator{' '}
+                  2-pole permanent-magnet stator, multi-segment commutator{' '}
                   <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
                 </>
               ),
             },
-            { label: 'Supply', value: <>18 V or 20 V Li-ion battery</> },
-            { label: 'Peak power', value: <>~600 W (drilling stall)</> },
+            { label: 'Supply', value: <>18 V or 20 V Li-ion battery (consumer tool standard)</> },
+            {
+              label: 'Peak power',
+              value: (
+                <>
+                  several hundred watts at stall{' '}
+                  <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
+                </>
+              ),
+            },
             {
               label: 'Speed control',
-              value: <>variable-duty PWM via trigger (FET in series with motor)</>,
+              value: (
+                <>
+                  variable-duty PWM via trigger (FET in series with motor){' '}
+                  <Cite id="krishnan-2010-bldc" in={SOURCES} />
+                </>
+              ),
             },
-            { label: 'Brush life', value: <>~150–300 hours of cumulative running time</> },
+            {
+              label: 'Brush life',
+              value: (
+                <>
+                  on the order of hundreds of running hours{' '}
+                  <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
+                </>
+              ),
+            },
           ]}
         >
           <p className="mb-prose-2 last:mb-0">
             The classic brushed motor still dominates handheld power tools at the budget tier. The
-            cost calculus is stark: a 600 W brushed motor with PWM control comes in for $5–8 in
+            cost calculus is stark: a brushed motor with PWM control comes in for a few dollars of
             parts, while a brushless equivalent with its 3-phase inverter and Hall sensors costs
-            $25–40. The brushed version trades that against shorter brush life, more EMI, and a few
-            percent lower efficiency. For a drill that sees a few hours of duty per week, that's an
-            acceptable trade. Premium tool lines (and any high-duty industrial tool) have moved to
-            brushless because the lifetime cost flips at maybe 400 hours of cumulative running
+            many times that. The brushed version trades that against shorter brush life, more EMI,
+            and a few percent lower efficiency. For a drill that sees a few hours of duty per week,
+            that's an acceptable trade. Premium tool lines (and any high-duty industrial tool) have
+            moved to brushless because the lifetime cost flips long before the brushes give out
             <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
-            Speed control is dead simple. A power MOSFET in series with the motor is gated by a
-            10–20 kHz PWM signal whose duty cycle is set by the trigger position. At 50 % duty, the
-            average voltage across the motor is ~9 V; the rotor's mechanical inertia time-constant
-            is hundreds of milliseconds, vastly longer than the switching period, so the motor
-            responds as if it were running on 9 V DC. The brushed-DC torque-speed characteristic is
-            linear in V, so duty cycle linearly maps to no-load speed
+            Speed control is dead simple. A power MOSFET in series with the motor is gated by a PWM
+            signal in the low-tens-of-kilohertz range, whose duty cycle is set by the trigger
+            position. At 50 % duty, the average voltage across the motor is ~9 V; the rotor's
+            mechanical inertia time-constant is hundreds of milliseconds, vastly longer than the
+            switching period, so the motor responds as if it were running on 9 V DC. The brushed-DC
+            torque-speed characteristic is linear in V, so duty cycle linearly maps to no-load speed
             <Cite id="krishnan-2010-bldc" in={SOURCES} />.
           </p>
         </CaseStudy>
 
         <CaseStudy
-          tag="Case 16.4"
+          tag="Case 20.4"
           title="NEMA-17 stepper in a 3D printer"
           summary="A 200-step hybrid driven at 1/16 microstepping gives 3200 microsteps/rev. On a 40 mm/rev belt drive, that's 12.5 µm of head travel per microstep."
           specs={[
@@ -859,10 +900,23 @@ export default function Ch16Motors() {
               label: 'Microstepping',
               value: <>typically 1/16 or 1/32 in driver IC (TMC2209, A4988, etc.)</>,
             },
-            { label: 'Holding torque', value: <>~0.4–0.6 N·m typical NEMA-17 size</> },
+            {
+              label: 'Holding torque',
+              value: (
+                <>
+                  on the order of half a newton-metre for typical NEMA-17 sizes{' '}
+                  <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
+                </>
+              ),
+            },
             {
               label: 'Driver',
-              value: <>chopper-mode constant-current driver; rated 1.5–2 A per phase</>,
+              value: (
+                <>
+                  chopper-mode constant-current driver; a couple of amps per phase{' '}
+                  <Cite id="fitzgerald-kingsley-umans-2014" in={SOURCES} />
+                </>
+              ),
             },
           ]}
         >

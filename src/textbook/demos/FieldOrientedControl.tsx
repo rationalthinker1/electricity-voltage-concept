@@ -87,7 +87,7 @@ export function FieldOrientedControlDemo({ figure }: Props) {
       ctx.moveTo(x0L, y0 + plotH / 2);
       ctx.lineTo(x0L + colW, y0 + plotH / 2);
       ctx.stroke();
-      const phaseColors = ['#ff6b2a', '#5baef8', '#6cc5c2'];
+      const phaseColors = [colors.accent, colors.blue, colors.teal];
       const N = 160;
       for (let phase = 0; phase < 3; phase++) {
         ctx.strokeStyle = phaseColors[phase];
@@ -146,7 +146,7 @@ export function FieldOrientedControlDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.8'}
+      figure={figure ?? 'Fig. 20.8'}
       title="Field-oriented control: 3-phase becomes 2-axis"
       question="How does an EV inverter turn three messy AC stator currents into clean torque and flux knobs?"
       caption={

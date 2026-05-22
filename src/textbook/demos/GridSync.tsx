@@ -123,12 +123,12 @@ export function GridSyncDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(padL + plotW - 18, padT + 14, 7, 0, Math.PI * 2);
       ctx.fill();
-      drawLabel(ctx, { text: ready ? 'READY TO CLOSE' : 'NOT SYNCHRONISED', x: padL + plotW - 30, y: padT + 14, color: ready ? '#6cc5c2' : '#ff3b6e', font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: ready ? 'READY TO CLOSE' : 'NOT SYNCHRONISED', x: padL + plotW - 30, y: padT + 14, color: ready ? colors.teal : colors.pink, font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
       ctx.save();
       ctx.globalAlpha = 0.75;
       drawLabel(ctx, { text: 'grid', x: padL + 6, y: padT + 14, color: colors.text, baseline: 'middle' });
       ctx.restore();
-      drawLabel(ctx, { text: 'generator', x: padL + 40, y: padT + 14, color: ready ? '#6cc5c2' : '#ff6b2a' });
+      drawLabel(ctx, { text: 'generator', x: padL + 40, y: padT + 14, color: ready ? colors.teal : colors.accent });
       const dPhi = Math.abs(phiDeg) % 360;
       const dPhiMin = Math.min(dPhi, 360 - dPhi);
       drawLabel(ctx, { text: `Δf = ${(fGen - F_GRID).toFixed(2)} Hz   ·   Δφ = ${dPhiMin.toFixed(0)}°   ·   ΔV = ${((vGen - V_GRID) * 100).toFixed(1)}%`, x: padL + plotW / 2, y: padT + plotH + 26, size: 11, font: '11px "JetBrains Mono", monospace', align: 'center', baseline: 'bottom' });
@@ -140,7 +140,7 @@ export function GridSyncDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.4'}
+      figure={figure ?? 'Fig. 21.4'}
       title="Synchronising a generator to the grid"
       question="Three knobs to set before you can throw the breaker. What are they, and what's the penalty for getting them wrong?"
       caption={

@@ -89,8 +89,8 @@ export function BLDCCommutationDemo({ figure }: Props) {
       for (const p of phases) {
         const sx = cx + Math.cos(p.ax) * R;
         const sy = cy - Math.sin(p.ax) * R;
-        let fill = 'rgba(255,255,255,0.12)';
-        let stroke = 'rgba(255,255,255,0.25)';
+        let fill = withAlpha(colors.text, 0.12);
+        let stroke = withAlpha(colors.text, 0.25);
         let glyph = '∅';
         if (p.drive === 1) {
           fill = withAlpha(colors.accent, 0.45);
@@ -185,7 +185,7 @@ export function BLDCCommutationDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.2'}
+      figure={figure ?? 'Fig. 20.2'}
       title="Brushless DC — electronic commutation"
       question="No brushes, no commutator. What replaces them?"
       caption={
