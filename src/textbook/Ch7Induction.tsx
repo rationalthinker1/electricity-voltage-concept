@@ -15,9 +15,10 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { Pullout } from '@/components/Prose';
 import { EddyCurrentTubeDemo } from './demos/EddyCurrentTube';
 import { LenzsLawDemo } from './demos/LenzsLaw';
 import { MagnetThroughCoilDemo } from './demos/MagnetThroughCoil';
@@ -98,16 +99,14 @@ export default function Ch7Induction() {
       <Formula size="lg" tex="\Phi_B = \iint \vec{B} \cdot d\vec{A}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          Φ<sub>B</sub>
-        </strong>{' '}
+        <InlineMath tex="\Phi_B" />{' '}
         is the magnetic flux through the loop (in webers, Wb = T·m² = V·s),
-        <strong className="text-text font-medium"> B</strong> is the magnetic field (a vector, in
+        <InlineMath tex="B" /> is the magnetic field (a vector, in
         teslas) at each point of the surface, and
-        <strong className="text-text font-medium"> dA</strong> is the outward-normal area element of
+        <InlineMath tex="d\mathbf{A}" /> is the outward-normal area element of
         any surface bounded by the loop. For a flat loop in a uniform field, this is just{' '}
-        <strong className="text-text font-medium">BA cos θ</strong>, where{' '}
-        <strong className="text-text font-medium">θ</strong> is the angle between the field and the
+        <InlineMath tex="BA\cos\theta" />, where{' '}
+        <InlineMath tex="\theta" /> is the angle between the field and the
         loop's normal. SI unit is the{' '}
         <Term def="SI unit of magnetic flux. 1 Wb = 1 T·m² = 1 V·s. The flux through a one-turn loop changing by one weber per second produces one volt of induced EMF.">
           weber
@@ -126,15 +125,13 @@ export default function Ch7Induction() {
       </p>
       <Formula size="lg" tex="\text{EMF} = -\dfrac{d\Phi_B}{dt}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">EMF</strong> is the electromotive force
+        where <InlineMath tex="\text{EMF}" /> is the electromotive force
         around the loop (in volts — the line integral
-        <strong className="text-text font-medium"> ∮ E·dℓ</strong> of the induced electric field,
+        <InlineMath tex="\oint E \cdot d\ell" /> of the induced electric field,
         equivalently the work per unit charge a free charge would gain in one trip around the loop),{' '}
-        <strong className="text-text font-medium">
-          Φ<sub>B</sub>
-        </strong>{' '}
+        <InlineMath tex="\Phi_B" />{' '}
         is the magnetic flux through any surface bounded by the loop (in webers),{' '}
-        <strong className="text-text font-medium">t</strong> is time (in seconds), and the minus
+        <InlineMath tex="t" /> is time (in seconds), and the minus
         sign encodes Lenz's law — the induced EMF drives a current whose own flux opposes the change
         in Φ<sub>B</sub> that produced it
         <Cite id="feynman-II-17" in={SOURCES} />.
@@ -144,17 +141,17 @@ export default function Ch7Induction() {
         integral is
         <em className="text-text italic"> any</em> surface bounded by the loop — flat, curved,
         weirdly shaped, doesn't matter. The integral comes out the same, because{' '}
-        <strong className="text-text font-medium">∇ · B = 0</strong> guarantees that flux is
+        <InlineMath tex="\nabla \cdot B = 0" /> guarantees that flux is
         conserved through closed surfaces and therefore depends only on the boundary
         <Cite id="griffiths-2017" in={SOURCES} />. Second, if the loop is wound
-        <strong className="text-text font-medium"> N</strong> times around the same flux path, every
+        <InlineMath tex="N" /> times around the same flux path, every
         turn sees the same dΦ/dt and the EMFs add: the total is{' '}
-        <strong className="text-text font-medium">N · dΦ/dt</strong>. That's why coils have lots of
+        <InlineMath tex="N \cdot d\Phi/dt" />. That's why coils have lots of
         turns. Third, the minus sign is doing real work — we'll come back to it.
       </p>
       <p className="mb-prose-3">
         In differential form, the same statement reads{' '}
-        <strong className="text-text font-medium">∇ × E = −∂B/∂t</strong>. A magnetic field that
+        <InlineMath tex="\nabla \times E = -\partial B/\partial t" />. A magnetic field that
         changes in time produces an electric field that <em className="text-text italic">curls</em>.
         Crucially, this E exists everywhere in space, not just where the loop happens to be. The
         wire is a probe; the field is what's actually there
@@ -178,8 +175,8 @@ export default function Ch7Induction() {
         question={
           <>
             A 100-turn coil sees the flux through it change by{' '}
-            <strong className="text-text font-medium">ΔΦ = 10⁻⁴ Wb</strong> over{' '}
-            <strong className="text-text font-medium">Δt = 1 ms</strong>. What is the magnitude of
+            <InlineMath tex="\Delta\Phi = 10^{-4}\,\text{Wb}" /> over{' '}
+            <InlineMath tex="\Delta t = 1\,\text{ms}" />. What is the magnitude of
             the induced EMF?
           </>
         }
@@ -205,14 +202,14 @@ export default function Ch7Induction() {
         lamp dark. A permanent magnet is sitting right inside the coil delivering a perfectly real
         magnetic field, and the loop does absolutely nothing with it. Second, the faster you move
         the magnet, the brighter the lamp burns. The induced EMF scales with{' '}
-        <strong className="text-text font-medium">|dΦ/dt|</strong>, not with{' '}
-        <strong className="text-text font-medium">Φ</strong> itself. Drag the turn count up and the
+        <InlineMath tex="|d\Phi/dt|" />, not with{' '}
+        <InlineMath tex="\Phi" /> itself. Drag the turn count up and the
         lamp gets brighter again, because every turn sees the same dΦ/dt and they add in series.
       </p>
       <p className="mb-prose-3">
         The lamp also <em className="text-text italic">changes color</em> when you reverse the
         magnet's direction. That is the minus sign in
-        <strong className="text-text font-medium"> EMF = −dΦ/dt</strong> made visible: flip the sign
+        <InlineMath tex="\text{EMF} = -d\Phi/dt" /> made visible: flip the sign
         of dΦ/dt, flip the sign of the EMF, flip the direction the current flows. The next section
         is what that minus sign actually means.
       </p>
@@ -256,10 +253,10 @@ export default function Ch7Induction() {
 
       <EddyCurrentTubeDemo />
 
-      <p className="pullout">
+      <Pullout>
         Magnetism never <em className="text-text italic">moves</em>; only the flux does. Move the
         flux and electricity falls out — paid for in mechanical work, every joule.
-      </p>
+      </Pullout>
       <p className="mb-prose-3">
         If the sign were the other way — if the induced current attracted the approaching magnet
         instead of repelling it — the magnet would accelerate as it approached, accelerate again as
@@ -278,28 +275,28 @@ export default function Ch7Induction() {
         It was the realisation that you can run his discovery in reverse: instead of moving a magnet
         to generate a current, you can spin a coil in a fixed field and let the geometry do the
         work. The flux through a flat coil of area{' '}
-        <strong className="text-text font-medium">A</strong>
-        rotating at angular rate <strong className="text-text font-medium">ω</strong> in a uniform
-        field <strong className="text-text font-medium">B</strong> is
+        <InlineMath tex="A" />
+        {' '}rotating at angular rate <InlineMath tex="\omega" /> in a uniform
+        field <InlineMath tex="B" /> is
       </p>
       <Formula size="lg" tex="\Phi(t) = N B A \cos(\omega t)" />
       <p className="mb-prose-3">and Faraday's law immediately gives</p>
       <Formula size="lg" tex="\text{EMF}(t) = -\dfrac{d\Phi}{dt} = N B A \omega \sin(\omega t)" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">N</strong> is the number of turns in the
-        coil, <strong className="text-text font-medium">B</strong> the uniform magnetic field (in
-        teslas), <strong className="text-text font-medium">A</strong> the area of one turn (in m²),{' '}
-        <strong className="text-text font-medium">ω</strong> the angular rate of rotation (in
-        rad/s), and <strong className="text-text font-medium">t</strong> the time (in seconds); the
+        where <InlineMath tex="N" /> is the number of turns in the
+        coil, <InlineMath tex="B" /> the uniform magnetic field (in
+        teslas), <InlineMath tex="A" /> the area of one turn (in m²),{' '}
+        <InlineMath tex="\omega" /> the angular rate of rotation (in
+        rad/s), and <InlineMath tex="t" /> the time (in seconds); the
         result is an EMF in volts. A pure sine wave whose peak is{' '}
-        <strong className="text-text font-medium">NBAω</strong>. Crank up{' '}
-        <strong className="text-text font-medium">N, B, A,</strong> or{' '}
-        <strong className="text-text font-medium">ω</strong>
-        and the amplitude grows in proportion. The frequency you get is{' '}
-        <strong className="text-text font-medium">f = ω / (2π)</strong>. North American wall-outlet
+        <InlineMath tex="NBA\omega" />. Crank up{' '}
+        <InlineMath tex="N" />, <InlineMath tex="B" />, <InlineMath tex="A" />, or{' '}
+        <InlineMath tex="\omega" />
+        {' '}and the amplitude grows in proportion. The frequency you get is{' '}
+        <InlineMath tex="f = \omega/(2\pi)" />. North American wall-outlet
         power is 60 Hz, which corresponds to a generator shaft turning at{' '}
-        <strong className="text-text font-medium">ω = 2π · 60 ≈ 377 rad/s</strong>
-        — about 3,600 revolutions per minute. European 50 Hz is the same equation with a different
+        <InlineMath tex="\omega = 2\pi \cdot 60 \approx 377\,\text{rad/s}" />
+        {' '}— about 3,600 revolutions per minute. European 50 Hz is the same equation with a different
         pulley
         <Cite id="griffiths-2017" in={SOURCES} />.
       </p>
@@ -311,9 +308,9 @@ export default function Ch7Induction() {
         terminals; it does not, by itself, tell you
         <em className="text-text italic"> why</em> a constant rotation has to produce a sinusoid.
         The reason is geometric, and geometry is easier to see in three dimensions than two. The
-        flux through a flat loop is not
-        <strong className="text-text font-medium"> B·A</strong> — it is{' '}
-        <strong className="text-text font-medium">B·A·cos θ</strong>, where θ is the angle between
+        flux through a flat loop is not{' '}
+        <InlineMath tex="B \cdot A" /> — it is{' '}
+        <InlineMath tex="B \cdot A \cdot \cos\theta" />, where θ is the angle between
         the loop's normal and the field. Spinning the loop sweeps that angle linearly in time, so
         the flux traces a cosine, and the EMF — the negative time derivative — traces a sine shifted
         by a quarter cycle.
@@ -321,7 +318,7 @@ export default function Ch7Induction() {
       <p className="mb-prose-3">
         The demo below is the same physics, rendered in 3D so the projection is literal: drag to
         orbit, watch n̂ pivot relative to B, watch the translucent disc fill and fade as{' '}
-        <strong className="text-text font-medium">cos θ</strong> swings from +1 to 0 to −1. The
+        <InlineMath tex="\cos\theta" /> swings from +1 to 0 to −1. The
         rolling plot underneath stacks Φ<sub>B</sub>(t) on ε(t) with their phase offset visible at a
         glance
         <Cite id="feynman-II-17" in={SOURCES} />.
@@ -368,7 +365,7 @@ export default function Ch7Induction() {
         thing that turns the shaft is the only thing that varies between the wildly different kinds
         of power plants — what comes out the electrical end is identical, because the equation
         governing what comes out the electrical end is just{' '}
-        <strong className="text-text font-medium">EMF = NBAω sin(ωt)</strong>.
+        <InlineMath tex="\text{EMF} = NBA\omega\sin(\omega t)" />.
       </p>
 
       <h2 className="chapter-h2">
@@ -382,17 +379,17 @@ export default function Ch7Induction() {
           transformer
         </Term>
         . Wind two coils around a shared iron core and the same flux{' '}
-        <strong className="text-text font-medium">Φ(t)</strong> threads both of them. Apply
+        <InlineMath tex="\Phi(t)" /> threads both of them. Apply
         Faraday's law to each:
       </p>
       <Formula size="lg" tex="V_1 = N_1 \dfrac{d\Phi}{dt} \qquad V_2 = N_2 \dfrac{d\Phi}{dt}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">V₁</strong> and{' '}
-        <strong className="text-text font-medium">V₂</strong> are the (open-circuit) terminal
+        where <InlineMath tex="V_1" /> and{' '}
+        <InlineMath tex="V_2" /> are the (open-circuit) terminal
         voltages on the primary and secondary (in volts),{' '}
-        <strong className="text-text font-medium">N₁</strong> and{' '}
-        <strong className="text-text font-medium">N₂</strong> are the corresponding turn counts, and{' '}
-        <strong className="text-text font-medium">dΦ/dt</strong> is the time rate of change of the
+        <InlineMath tex="N_1" /> and{' '}
+        <InlineMath tex="N_2" /> are the corresponding turn counts, and{' '}
+        <InlineMath tex="d\Phi/dt" /> is the time rate of change of the
         shared core flux through one turn (in Wb/s = V). Divide and the dΦ/dt cancels exactly,
         leaving the transformer relation:
       </p>
@@ -402,9 +399,9 @@ export default function Ch7Induction() {
         scaled by the turns ratio. Step up: more turns on the secondary than the primary. Step down:
         fewer
         <Cite id="griffiths-2017" in={SOURCES} />. Energy conservation forces a complementary
-        relation on the currents — in the ideal lossless limit,
-        <strong className="text-text font-medium"> I₂ / I₁ = N₁ / N₂</strong>, so power{' '}
-        <strong className="text-text font-medium">VI</strong> is preserved across the transformer.
+        relation on the currents — in the ideal lossless limit,{' '}
+        <InlineMath tex="I_2/I_1 = N_1/N_2" />, so power{' '}
+        <InlineMath tex="VI" /> is preserved across the transformer.
         You trade volts for amps and back, at a cost (in a real transformer) of a few percent in
         core and copper losses.
       </p>
@@ -438,13 +435,10 @@ export default function Ch7Induction() {
 
       <p className="mb-prose-3">
         The reason this matters at planetary scale is the{' '}
-        <strong className="text-text font-medium">I²R</strong> loss in transmission lines. The power
-        delivered down a wire is <strong className="text-text font-medium">P = V · I</strong>, but
-        the heat dissipated along the way is
-        <strong className="text-text font-medium">
-          {' '}
-          I² · R<sub>line</sub>
-        </strong>
+        <InlineMath tex="I^{2}R" /> loss in transmission lines. The power
+        delivered down a wire is <InlineMath tex="P = V \cdot I" />, but
+        the heat dissipated along the way is{' '}
+        <InlineMath tex="I^{2} \cdot R_{\text{line}}" />
         . If you can carry the same power at ten times the voltage and a tenth the current, your
         transmission losses drop by a factor of{' '}
         <strong className="text-text font-medium">100</strong>. That is why the grid runs at
@@ -460,13 +454,13 @@ export default function Ch7Induction() {
         <Term def="The coil's own resistance to a changing current. A current I in a coil sets up flux Φ proportional to I, and dI/dt produces a back-EMF V = −L dI/dt. SI unit is the henry.">
           self-inductance
         </Term>{' '}
-        <strong className="text-text font-medium">L</strong>, defined by{' '}
-        <strong className="text-text font-medium">V = −L dI/dt</strong>. For two separate coils, a
+        <InlineMath tex="L" />, defined by{' '}
+        <InlineMath tex="V = -L\,dI/dt" />. For two separate coils, a
         changing current in one induces a voltage in the other through their shared flux — that is{' '}
         <Term def="The coupling coefficient M between two coils, defined by V₂ = −M dI₁/dt. A transformer is engineered to maximise M; a magnetically shielded inductor is engineered to minimise it.">
           mutual inductance
         </Term>{' '}
-        <strong className="text-text font-medium">M</strong>. Both have SI unit the{' '}
+        <InlineMath tex="M" />. Both have SI unit the{' '}
         <Term def="SI unit of inductance. 1 H = 1 V·s/A — a one-henry inductor produces a one-volt back-EMF when its current changes at one ampere per second. Named after Joseph Henry, who discovered self-induction independently of Faraday.">
           henry
         </Term>{' '}
@@ -509,13 +503,13 @@ export default function Ch7Induction() {
 
       <p className="mb-prose-3">
         Faraday's discovery had one more thing inside it that he didn't see, and that Maxwell did.
-        If a changing
-        <strong className="text-text font-medium"> B</strong> produces a curling{' '}
-        <strong className="text-text font-medium">E</strong> in empty space, then by symmetry — once
+        If a changing{' '}
+        <InlineMath tex="B" /> produces a curling{' '}
+        <InlineMath tex="E" /> in empty space, then by symmetry — once
         you add the
         <em className="text-text italic">displacement current</em> term to Ampère's law — a changing{' '}
-        <strong className="text-text font-medium">E</strong> produces a curling
-        <strong className="text-text font-medium"> B</strong> in empty space too
+        <InlineMath tex="E" /> produces a curling{' '}
+        <InlineMath tex="B" /> in empty space too
         <Cite id="maxwell-1865" in={SOURCES} />. Pair the two and you have a self-sustaining
         oscillation: E regenerates B, B regenerates E, and the whole disturbance walks off through
         the vacuum at the speed of light. That is electromagnetic radiation, and it is what powers
@@ -527,7 +521,7 @@ export default function Ch7Induction() {
         intro={
           <>
             Three industries built directly on top of{' '}
-            <strong className="text-text font-medium">EMF = −dΦ/dt</strong> — operating at wildly
+            <InlineMath tex="\text{EMF} = -d\Phi/dt" /> — operating at wildly
             different scales and frequencies, all running the same minus sign.
           </>
         }
@@ -553,17 +547,17 @@ export default function Ch7Induction() {
           <p className="mb-prose-2 last:mb-0">
             A modern synchronous generator is the chapter equation made of steel. Rotate a
             multi-pole field winding at angular rate{' '}
-            <strong className="text-text font-medium">ω</strong> inside a stator carrying{' '}
-            <strong className="text-text font-medium">N</strong> turns of copper, and the stator
+            <InlineMath tex="\omega" /> inside a stator carrying{' '}
+            <InlineMath tex="N" /> turns of copper, and the stator
             sees a flux that swings as{' '}
-            <strong className="text-text font-medium">Φ(t) = NBA cos(ωt)</strong>. Faraday's law
+            <InlineMath tex="\Phi(t) = NBA\cos(\omega t)" />. Faraday's law
             immediately gives the peak terminal voltage{' '}
-            <strong className="text-text font-medium">NBAω</strong> at exactly the angular frequency
+            <InlineMath tex="NBA\omega" /> at exactly the angular frequency
             of the rotor
             <Cite id="griffiths-2017" in={SOURCES} />. The whole continental grid is locked in phase
             with that sinusoid; every alternator on the system, in every country sharing a
             frequency, turns its rotor at a rational multiple of the same{' '}
-            <strong className="text-text font-medium">ω</strong>.
+            <InlineMath tex="\omega" />.
           </p>
           <p className="mb-prose-2 last:mb-0">
             The reason transmission lines run at hundreds of kilovolts is the other equation from
@@ -575,8 +569,8 @@ export default function Ch7Induction() {
             <strong className="text-text font-medium">7.65 kV</strong>
             link with one ten-thousandth the resistive loss along the way
             <Cite id="feynman-II-17" in={SOURCES} />. The whole multi-stage step-up / step-down
-            architecture of the grid exists because the relation
-            <strong className="text-text font-medium"> V₂/V₁ = N₂/N₁</strong> is exact in the
+            architecture of the grid exists because the relation{' '}
+            <InlineMath tex="V_2/V_1 = N_2/N_1" /> is exact in the
             lossless limit and stays within a few percent in practice.
           </p>
           <p className="mb-prose-2 last:mb-0">
@@ -619,7 +613,7 @@ export default function Ch7Induction() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             Without an iron core threading both coils, the coupling coefficient{' '}
-            <strong className="text-text font-medium">k = M / √(L₁ L₂)</strong>
+            <InlineMath tex="k = M/\sqrt{L_1 L_2}" />
             is well below unity — most of the primary's flux leaks into the surrounding air rather
             than threading the secondary
             <Cite id="griffiths-2017" in={SOURCES} />. The system is consequently far less efficient
@@ -635,9 +629,9 @@ export default function Ch7Induction() {
             The 100 kHz scale is not arbitrary: it sits in a sweet spot where copper losses are
             tolerable, where ferrite shielding can guide the flux effectively, and where the
             radiated emissions are easy to keep below the relevant EMC limits. The whole industry
-            runs the equation <strong className="text-text font-medium">EMF = −N dΦ/dt</strong>
-            written for an air-gap coupling, at a frequency chosen to make{' '}
-            <strong className="text-text font-medium">dΦ/dt</strong> large enough to deliver a
+            runs the equation <InlineMath tex="\text{EMF} = -N\,d\Phi/dt" />
+            {' '}written for an air-gap coupling, at a frequency chosen to make{' '}
+            <InlineMath tex="d\Phi/dt" /> large enough to deliver a
             meaningful current.
           </p>
         </CaseStudy>
@@ -664,7 +658,7 @@ export default function Ch7Induction() {
             in the
             <strong className="text-text font-medium"> 20–100 kHz</strong> range
             <Cite id="lucia-induction-2014" in={SOURCES} />. The resulting oscillating{' '}
-            <strong className="text-text font-medium">B</strong> field penetrates the glass (which
+            <InlineMath tex="B" /> field penetrates the glass (which
             is essentially invisible to it) and enters the iron base of any compatible pan placed on
             top.
           </p>
@@ -705,12 +699,12 @@ export default function Ch7Induction() {
       >
         <FAQItem q="Why does a magnet at rest near a coil produce no current, but one in motion does?">
           <p>
-            Faraday's law cares about <strong className="text-text font-medium">dΦ/dt</strong>, not{' '}
-            <em className="text-text italic">Φ</em>. A stationary magnet pins down a perfectly real
+            Faraday's law cares about <InlineMath tex="d\Phi/dt" />, not{' '}
+            <InlineMath tex="\Phi" />. A stationary magnet pins down a perfectly real
             flux through the loop, but the time derivative of a constant is zero, so the EMF around
             the loop is zero
             <Cite id="feynman-II-17" in={SOURCES} />. Move the magnet and the flux through the loop
-            changes, which (by <strong className="text-text font-medium">∇ × E = −∂B/∂t</strong>)
+            changes, which (by <InlineMath tex="\nabla \times E = -\partial B/\partial t" />)
             means a curling electric field appears in the wire and pushes the free electrons around
             <Cite id="jackson-1999" in={SOURCES} />. This is exactly what Faraday eventually saw in
             1831, after ten years of staring at static magnets that did nothing
@@ -727,7 +721,7 @@ export default function Ch7Induction() {
           <Formula size="lg" tex="\Phi_B = \iint \vec{B} \cdot d\vec{A}" />
           <p>
             For a flat loop in a uniform field, that's just{' '}
-            <strong className="text-text font-medium">BA cos θ</strong>: field strength times area
+            <InlineMath tex="BA\cos\theta" />: field strength times area
             times the cosine of the angle between the field and the loop's normal
             <Cite id="griffiths-2017" in={SOURCES} />. Tilt the loop edge-on to the field and Φ goes
             to zero even though B is unchanged — which is exactly the move that makes a rotating
@@ -755,11 +749,11 @@ export default function Ch7Induction() {
             Yes, and that's exactly how a{' '}
             <strong className="text-text font-medium">transformer</strong> works. Neither coil
             moves; an alternating current in the primary makes the iron core's{' '}
-            <strong className="text-text font-medium">B</strong> oscillate, and the oscillating flux
+            <InlineMath tex="B" /> oscillate, and the oscillating flux
             through the secondary loop induces an EMF
             <Cite id="feynman-II-17" in={SOURCES} />. Faraday's law makes no distinction between
-            &ldquo;the loop moved&rdquo; and &ldquo;the field changed&rdquo; — only
-            <strong className="text-text font-medium"> dΦ/dt</strong> appears in the equation
+            &ldquo;the loop moved&rdquo; and &ldquo;the field changed&rdquo; — only{' '}
+            <InlineMath tex="d\Phi/dt" /> appears in the equation
             <Cite id="griffiths-2017" in={SOURCES} />. The two cases even turn out to be the same
             case viewed from different reference frames, which is one of the things that pushed
             Einstein toward special relativity
@@ -770,8 +764,8 @@ export default function Ch7Induction() {
         <FAQItem q="Why is a transformer useless on DC?">
           <p>
             A DC current in the primary makes a steady magnetic flux through the core, so{' '}
-            <strong className="text-text font-medium">dΦ/dt = 0</strong>
-            in the secondary — no induced EMF
+            <InlineMath tex="d\Phi/dt = 0" />
+            {' '}in the secondary — no induced EMF
             <Cite id="feynman-II-17" in={SOURCES} />. The only moment a DC primary does anything is
             the instant you <em className="text-text italic">switch it on or off</em>, which is
             precisely the moment Faraday saw his galvanometer twitch in 1831
@@ -789,8 +783,8 @@ export default function Ch7Induction() {
             magnetic field that pushes <strong className="text-text font-medium">back</strong> on
             the magnet with exactly the force needed to make the mechanical work you do equal the
             electrical energy delivered to the loop
-            <Cite id="griffiths-2017" in={SOURCES} />. The magnet pushes the loop's current via
-            <strong className="text-text font-medium"> F = qv × B</strong>, and the loop's induced
+            <Cite id="griffiths-2017" in={SOURCES} />. The magnet pushes the loop's current via{' '}
+            <InlineMath tex="F = qv \times B" />, and the loop's induced
             current pushes the magnet via the equal-and-opposite field it generates. Energy
             conservation and momentum conservation are both intact
             <Cite id="feynman-II-17" in={SOURCES} />.
@@ -820,8 +814,8 @@ export default function Ch7Induction() {
             <strong className="text-text font-medium">EMF</strong> is the line integral of{' '}
             <em className="text-text italic">any</em> field that does work on charges around a loop,
             including the curling non-conservative E induced by a changing B
-            <Cite id="jackson-1999" in={SOURCES} />. For an induced EMF,
-            <strong className="text-text font-medium"> ∮ E · dℓ = − dΦ/dt ≠ 0</strong> — the field
+            <Cite id="jackson-1999" in={SOURCES} />. For an induced EMF,{' '}
+            <InlineMath tex="\oint E \cdot d\ell = -d\Phi/dt \neq 0" /> — the field
             isn't conservative, so calling it a &ldquo;potential difference&rdquo; is technically
             wrong, even though a voltmeter on the loop reads it just fine
             <Cite id="feynman-II-17" in={SOURCES} />.
@@ -845,12 +839,12 @@ export default function Ch7Induction() {
         <FAQItem q="Why do generators need to be physically big to make big currents?">
           <p>
             The peak EMF from a rotating coil is{' '}
-            <strong className="text-text font-medium">NBAω</strong>
+            <InlineMath tex="NBA\omega" />
             <Cite id="griffiths-2017" in={SOURCES} />. Frequency{' '}
-            <strong className="text-text font-medium">ω</strong> is fixed by the grid (377 rad/s in
+            <InlineMath tex="\omega" /> is fixed by the grid (377 rad/s in
             North America), and B is capped by the saturation field of iron (~1.5 T). That leaves
-            only <strong className="text-text font-medium">N</strong> (turns) and
-            <strong className="text-text font-medium"> A</strong> (loop area) as engineering knobs,
+            only <InlineMath tex="N" /> (turns) and{' '}
+            <InlineMath tex="A" /> (loop area) as engineering knobs,
             and the current you can draw from the machine is bounded by how much copper you can pack
             into those windings without melting it. Doubling power means roughly doubling physical
             size; that's why a 1-GW turbogenerator is the size of a locomotive and not the size of a
@@ -865,14 +859,14 @@ export default function Ch7Induction() {
             its own flux changes, and Faraday's law produces an EMF in the same coil opposing the
             change. That's
             <strong className="text-text font-medium"> self-inductance L</strong>, defined by{' '}
-            <em className="text-text italic">V = −L dI/dt</em>
+            <InlineMath tex="V = -L\,dI/dt" />
             <Cite id="griffiths-2017" in={SOURCES} />.
             <strong className="text-text font-medium"> Mutual inductance M</strong> is the same idea
             but between two separate coils: a changing current in coil 1 produces a changing flux
-            through coil 2, inducing EMF <em className="text-text italic">V₂ = −M dI₁/dt</em>. A
-            transformer is engineered to maximise <em className="text-text italic">M</em>; a
+            through coil 2, inducing EMF <InlineMath tex="V_2 = -M\,dI_1/dt" />. A
+            transformer is engineered to maximise <InlineMath tex="M" />; a
             noise-suppression choke is engineered to maximise its own{' '}
-            <em className="text-text italic">L</em>
+            <InlineMath tex="L" />
             <Cite id="feynman-II-17" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -894,11 +888,11 @@ export default function Ch7Induction() {
 
         <FAQItem q="Why does opening a switch on an inductor cause a spark?">
           <p>
-            An inductor stores energy <em className="text-text italic">½LI²</em> in its magnetic
+            An inductor stores energy <InlineMath tex="\tfrac{1}{2}LI^{2}" /> in its magnetic
             field. When you open the switch, you're trying to drive{' '}
-            <strong className="text-text font-medium">I</strong> to zero in microseconds, which
-            means <strong className="text-text font-medium">dI/dt</strong> spikes to a huge negative
-            number. The self-induced EMF <em className="text-text italic">V = −L dI/dt</em> spikes
+            <InlineMath tex="I" /> to zero in microseconds, which
+            means <InlineMath tex="dI/dt" /> spikes to a huge negative
+            number. The self-induced EMF <InlineMath tex="V = -L\,dI/dt" /> spikes
             to a correspondingly huge
             <em className="text-text italic">positive</em> voltage — often hundreds or thousands of
             volts across a small motor coil — and that voltage ionises the air in the switch gap and
@@ -930,8 +924,8 @@ export default function Ch7Induction() {
           <p>
             It's a compromise. Too low and you'd see visible flicker on incandescent bulbs and need
             physically larger transformers and motors — the volt-seconds per turn scale as{' '}
-            <strong className="text-text font-medium">V/(Nf)</strong>, so halving
-            <strong className="text-text font-medium"> f</strong> means doubling iron cross-section
+            <InlineMath tex="V/(Nf)" />, so halving{' '}
+            <InlineMath tex="f" /> means doubling iron cross-section
             to avoid saturation
             <Cite id="griffiths-2017" in={SOURCES} />. Too high and the I²R-like{' '}
             <em className="text-text italic">eddy-current</em> and{' '}
@@ -960,12 +954,12 @@ export default function Ch7Induction() {
 
         <FAQItem q="How fast does induction &ldquo;communicate&rdquo;? Is it instant?">
           <p>
-            No — it propagates at the speed of light. Faraday's law in differential form,
-            <strong className="text-text font-medium"> ∇ × E = −∂B/∂t</strong>, combined with
-            Maxwell's added displacement current
-            <strong className="text-text font-medium"> ∇ × B = μ₀ε₀ ∂E/∂t</strong>, has wave
-            solutions travelling at exactly
-            <em className="text-text italic"> c = 1/√(μ₀ε₀)</em>
+            No — it propagates at the speed of light. Faraday's law in differential form,{' '}
+            <InlineMath tex="\nabla \times E = -\partial B/\partial t" />, combined with
+            Maxwell's added displacement current{' '}
+            <InlineMath tex="\nabla \times B = \mu_0\varepsilon_0\,\partial E/\partial t" />, has wave
+            solutions travelling at exactly{' '}
+            <InlineMath tex="c = 1/\sqrt{\mu_0\varepsilon_0}" />
             <Cite id="maxwell-1865" in={SOURCES} />. So when you change the current in the primary,
             the secondary doesn't feel it &ldquo;instantly&rdquo; — it feels it after the EM
             disturbance crosses the gap at c, which for a benchtop transformer is roughly a

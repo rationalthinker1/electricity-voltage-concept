@@ -17,7 +17,8 @@ import { ChapterShell } from '@/components/ChapterShell';
 import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
+import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
 import { BiotSavartWire3DDemo } from './demos/BiotSavartWire3D';
@@ -91,9 +92,9 @@ export default function Ch6Magnetism() {
 
       <p className="mb-prose-3">
         For a single, infinitely long, straight wire carrying current{' '}
-        <strong className="text-text font-medium">I</strong>, the magnetic field is one of the
+        <InlineMath tex="I" />, the magnetic field is one of the
         cleanest formulas in classical physics. At a perpendicular distance{' '}
-        <strong className="text-text font-medium">r</strong> from the wire, the magnitude is
+        <InlineMath tex="r" /> from the wire, the magnitude is
       </p>
       <Formula size="lg" tex="|\vec{B}| = \dfrac{\mu_0 I}{2\pi r}" />
       <p className="mb-prose-3">
@@ -103,12 +104,12 @@ export default function Ch6Magnetism() {
           right-hand rule
         </Term>{' '}
         fixes which way: point your thumb along the current and your fingers curl around the wire in
-        the direction of <strong className="text-text font-medium">B</strong>. The constant{' '}
-        <strong className="text-text font-medium">μ₀ ≈ 1.257×10⁻⁶ T·m/A</strong>
+        the direction of <InlineMath tex="B" />. The constant{' '}
+        <InlineMath tex="\mu_0 \approx 1.257\times 10^{-6}\,\text{T·m/A}" />
         is the permeability of free space <Cite id="codata-2018" in={SOURCES} />; it plays the same
-        role for magnetism that <strong className="text-text font-medium">1/(4π ε₀)</strong> plays
+        role for magnetism that <InlineMath tex="1/(4\pi\varepsilon_0)" /> plays
         for electricity, and the two are linked by{' '}
-        <strong className="text-text font-medium">μ₀ ε₀ = 1/c²</strong>. The SI unit for B is the{' '}
+        <InlineMath tex="\mu_0\varepsilon_0 = 1/c^{2}" />. The SI unit for B is the{' '}
         <Term def="SI unit of magnetic flux density. 1 T = 1 kg / (A·s²) = 1 V·s/m². Earth's field is ~50 µT, a fridge magnet ~5 mT, a clinical MRI 1.5–3 T, a neutron-star magnetar ~10¹⁰ T.">
           tesla
         </Term>{' '}
@@ -154,13 +155,13 @@ export default function Ch6Magnetism() {
       />
 
       <p className="mb-prose-3">
-        The factor of <strong className="text-text font-medium">2π</strong> is geometric, the same
-        way the <strong className="text-text font-medium">4π</strong> in Coulomb's law is geometric
+        The factor of <InlineMath tex="2\pi" /> is geometric, the same
+        way the <InlineMath tex="4\pi" /> in Coulomb's law is geometric
         — it counts how field lines spread around a wire (cylindrically) instead of around a point
-        (spherically). The fall-off here is <strong className="text-text font-medium">1/r</strong>,
-        not 1/r². A line of charge spreads its influence over a cylinder of area{' '}
-        <strong className="text-text font-medium">2π r L</strong>, so the per-area intensity drops
-        as 1/r, not 1/r². Geometry, again.
+        (spherically). The fall-off here is <InlineMath tex="1/r" />,
+        not <InlineMath tex="1/r^{2}" />. A line of charge spreads its influence over a cylinder of area{' '}
+        <InlineMath tex="2\pi r L" />, so the per-area intensity drops
+        as <InlineMath tex="1/r" />, not <InlineMath tex="1/r^{2}" />. Geometry, again.
       </p>
 
       <h2 className="chapter-h2">
@@ -179,38 +180,38 @@ export default function Ch6Magnetism() {
       <p className="mb-prose-3">The force per unit length on either wire works out to</p>
       <Formula size="lg" tex="\dfrac{F}{L} = \dfrac{\mu_0 I_1 I_2}{2\pi d}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">F</strong> is the magnitude of the force one
+        where <InlineMath tex="F" /> is the magnitude of the force one
         wire exerts on a segment of the other (in newtons),
-        <strong className="text-text font-medium"> L</strong> is the length of that segment (in
-        metres) so <strong className="text-text font-medium">F/L</strong> has units of N/m,
-        <strong className="text-text font-medium"> I₁</strong> and{' '}
-        <strong className="text-text font-medium">I₂</strong> are the currents in the two wires (in
+        <InlineMath tex="L" /> is the length of that segment (in
+        metres) so <InlineMath tex="F/L" /> has units of N/m,
+        <InlineMath tex="I_1" /> and{' '}
+        <InlineMath tex="I_2" /> are the currents in the two wires (in
         amperes, signed by direction),
-        <strong className="text-text font-medium"> d</strong> is the perpendicular spacing between
+        <InlineMath tex="d" /> is the perpendicular spacing between
         the wires (in metres), and
-        <strong className="text-text font-medium"> μ₀ ≈ 1.257×10⁻⁶ T·m/A</strong> is the
+        <InlineMath tex="\mu_0 \approx 1.257\times 10^{-6}\,\text{T·m/A}" /> is the
         permeability of free space <Cite id="codata-2018" in={SOURCES} />. Same sign of current →
         attractive (negative if you've adopted the sign convention that "outward" is positive).
         Opposite signs → repulsive. From 1948 to 2019 the SI ampere was defined operationally as
         exactly the current that, flowing in two infinitely long parallel wires one meter apart,
-        produces a force of <strong className="text-text font-medium">2×10⁻⁷ N/m</strong> between
+        produces a force of <InlineMath tex="2\times 10^{-7}\,\text{N/m}" /> between
         them <Cite id="griffiths-2017" in={SOURCES} />. That definition is what the{' '}
-        <strong className="text-text font-medium">μ₀ = 4π × 10⁻⁷</strong> exact value used to be;
+        <InlineMath tex="\mu_0 = 4\pi \times 10^{-7}" /> exact value used to be;
         the 2019 SI redefinition based the ampere instead on the elementary charge{' '}
-        <strong className="text-text font-medium">e</strong>, demoting μ₀ to a measured quantity.
+        <InlineMath tex="e" />, demoting μ₀ to a measured quantity.
       </p>
       <p className="mb-prose-3">
         The product structure is not mysterious — it's just{' '}
-        <strong className="text-text font-medium">F = IL × B</strong> applied twice. Each wire sits
+        <InlineMath tex="F = IL \times B" /> applied twice. Each wire sits
         in the field produced by the other: wire 2 feels its partner's field{' '}
-        <strong className="text-text font-medium">B₁ = μ₀ I₁ / (2π d)</strong> (the 1/r law from the
+        <InlineMath tex="B_1 = \mu_0 I_1 / (2\pi d)" /> (the 1/r law from the
         previous section), and the magnetic force on a length{' '}
-        <strong className="text-text font-medium">L</strong> of current{' '}
-        <strong className="text-text font-medium">I₂</strong> in that field is{' '}
-        <strong className="text-text font-medium">F = I₂ L B₁</strong>. Substitute and divide by L
+        <InlineMath tex="L" /> of current{' '}
+        <InlineMath tex="I_2" /> in that field is{' '}
+        <InlineMath tex="F = I_2 L B_1" />. Substitute and divide by L
         to get the force per unit length. The
-        <strong className="text-text font-medium"> 1/d</strong> falloff is the same cylindrical
-        geometry as a single wire; the <strong className="text-text font-medium">I₁ I₂</strong> on
+        <InlineMath tex="1/d" /> falloff is the same cylindrical
+        geometry as a single wire; the <InlineMath tex="I_1 I_2" /> on
         top is one factor of current for the source field and one for the responding wire. Reverse
         either current and the cross-product sign flips, which is why same-sign currents attract
         while opposite-sign currents repel — opposite of charges, same underlying right-hand rule
@@ -252,9 +253,9 @@ export default function Ch6Magnetism() {
       <p className="mb-prose-3">
         The result is striking enough that you might wonder why we never see two power lines pulling
         each other together. The answer is the size of{' '}
-        <strong className="text-text font-medium">μ₀</strong>: between two wires carrying 100 A
+        <InlineMath tex="\mu_0" />: between two wires carrying 100 A
         each, separated by a meter, the force is just{' '}
-        <strong className="text-text font-medium">2×10⁻³ N/m</strong> — about a fifth of a gram
+        <InlineMath tex="2\times 10^{-3}\,\text{N/m}" /> — about a fifth of a gram
         weight per meter. Detectable with a torsion balance, invisible against gravity and tension.
         Magnetism is, gram for gram, an extraordinarily weak force compared to electrostatics. (For
         comparison: the electrical force between one mole of electrons and one mole of protons
@@ -277,12 +278,12 @@ export default function Ch6Magnetism() {
       </p>
       <Formula size="lg" tex="\vec{F} = q\,(\vec{v} \times \vec{B})" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">F</strong> is the force vector on the
-        charged particle (in newtons), <strong className="text-text font-medium">q</strong> is its
-        charge (in coulombs, signed), <strong className="text-text font-medium">v</strong> is its
-        velocity vector (in m/s), <strong className="text-text font-medium">B</strong> is the local
+        where <InlineMath tex="F" /> is the force vector on the
+        charged particle (in newtons), <InlineMath tex="q" /> is its
+        charge (in coulombs, signed), <InlineMath tex="v" /> is its
+        velocity vector (in m/s), <InlineMath tex="B" /> is the local
         magnetic flux density vector (in tesla), and{' '}
-        <strong className="text-text font-medium">×</strong> denotes the vector cross product — so
+        <InlineMath tex="\times" /> denotes the vector cross product — so
         the force comes out perpendicular to <em className="text-text italic">both</em> the velocity
         and the field. The two facts worth pausing on:
       </p>
@@ -293,32 +294,32 @@ export default function Ch6Magnetism() {
         </em>{' '}
         Energy in, energy out — unchanged. The kinetic energy of a free charge in a static magnetic
         field is conserved, exactly. This is structurally different from the electric case, where{' '}
-        <strong className="text-text font-medium">F = qE</strong> is parallel to{' '}
-        <strong className="text-text font-medium">E</strong> and does plenty of work.
+        <InlineMath tex="F = qE" /> is parallel to{' '}
+        <InlineMath tex="E" /> and does plenty of work.
       </p>
-      <p className="pullout">Magnetism doesn't do work. It only steers.</p>
+      <Pullout>Magnetism doesn't do work. It only steers.</Pullout>
       <p className="mb-prose-3">
-        Second, "perpendicular to <strong className="text-text font-medium">v</strong>" plus
+        Second, "perpendicular to <InlineMath tex="v" />" plus
         "constant magnitude" is the recipe for circular motion. A charged particle injected into a
         uniform magnetic field traces out a circle of radius
       </p>
       <Formula size="lg" tex="r = \dfrac{m v}{q B}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">r</strong> is the radius of the circular
-        orbit (in metres), <strong className="text-text font-medium">m</strong> is the particle's
-        mass (in kilograms), <strong className="text-text font-medium">v</strong> is its speed
-        perpendicular to <em className="text-text italic">B</em> (in m/s),{' '}
-        <strong className="text-text font-medium">q</strong> is its charge magnitude (in coulombs),
-        and <strong className="text-text font-medium">B</strong> is the magnetic flux density (in
+        where <InlineMath tex="r" /> is the radius of the circular
+        orbit (in metres), <InlineMath tex="m" /> is the particle's
+        mass (in kilograms), <InlineMath tex="v" /> is its speed
+        perpendicular to <InlineMath tex="B" /> (in m/s),{' '}
+        <InlineMath tex="q" /> is its charge magnitude (in coulombs),
+        and <InlineMath tex="B" /> is the magnetic flux density (in
         tesla).
       </p>
       <p className="mb-prose-3">It goes around it with period</p>
       <Formula size="lg" tex="T = \dfrac{2\pi m}{q B}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">T</strong> is the orbital period (in
-        seconds) and <em className="text-text italic">m</em>,{' '}
-        <em className="text-text italic">q</em>, <em className="text-text italic">B</em> are as
-        above — which, remarkably, has no <strong className="text-text font-medium">v</strong> in
+        where <InlineMath tex="T" /> is the orbital period (in
+        seconds) and <InlineMath tex="m" />,{' '}
+        <InlineMath tex="q" />, <InlineMath tex="B" /> are as
+        above — which, remarkably, has no <InlineMath tex="v" /> in
         it. Faster particles trace bigger circles in <em className="text-text italic">exactly</em>
         the same amount of time. That's the foundation of the{' '}
         <Term def="A particle accelerator that uses a uniform B field to bend charged particles into circular orbits and a fixed-frequency oscillating E field between two D-shaped electrodes to accelerate them. Invented by E. O. Lawrence in 1932; works because the cyclotron period T = 2πm/qB is independent of speed (non-relativistically).">
@@ -396,7 +397,7 @@ export default function Ch6Magnetism() {
         Inside an ordinary copper wire, the moving charges are conduction electrons, and the same
         Lorentz force still applies — but now in the presence of a billion-billion other charges and
         a fixed positive lattice. If you put a current-carrying conductor in a transverse{' '}
-        <strong className="text-text font-medium">B</strong> field, the magnetic force pushes the
+        <InlineMath tex="B" /> field, the magnetic force pushes the
         carriers sideways across the slab until enough of them pile up on one face to make a
         transverse <em className="text-text italic">electric</em> field that exactly cancels the
         magnetic deflection in steady state. This is the{' '}
@@ -429,14 +430,14 @@ export default function Ch6Magnetism() {
       </p>
       <Formula size="lg" tex="B = \mu_0 n I" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">B</strong> is the magnetic flux density on
+        where <InlineMath tex="B" /> is the magnetic flux density on
         the solenoid's axis (in tesla),
-        <strong className="text-text font-medium"> μ₀ ≈ 1.257×10⁻⁶ T·m/A</strong> is the
+        <InlineMath tex="\mu_0 \approx 1.257\times 10^{-6}\,\text{T·m/A}" /> is the
         permeability of free space <Cite id="codata-2018" in={SOURCES} />,
-        <strong className="text-text font-medium"> I</strong> is the current through the wire (in
-        amperes), and <strong className="text-text font-medium">n = N / L</strong> is the number of
-        turns per unit length (in turns per metre, with <em className="text-text italic">N</em> the
-        total turn count over solenoid length <em className="text-text italic">L</em>). No
+        <InlineMath tex="I" /> is the current through the wire (in
+        amperes), and <InlineMath tex="n = N / L" /> is the number of
+        turns per unit length (in turns per metre, with <InlineMath tex="N" /> the
+        total turn count over solenoid length <InlineMath tex="L" />). No
         dependence on radius (so long as you stay inside), no dependence on where along the axis you
         measure (so long as you're not near the ends). Outside the solenoid the field is, in the
         idealized limit, exactly zero — the mathematical statement of the fact that all the field
@@ -496,10 +497,10 @@ export default function Ch6Magnetism() {
       </p>
       <p className="mb-prose-3">
         This wasn't how Maxwell or Ampère thought about it. They had two coupled fields,{' '}
-        <strong className="text-text font-medium">E</strong> and
-        <strong className="text-text font-medium"> B</strong>, with their own equations. It took
-        Einstein in 1905 to show that <strong className="text-text font-medium">E</strong> and{' '}
-        <strong className="text-text font-medium">B</strong> transform into each other under a
+        <InlineMath tex="E" /> and
+        <InlineMath tex="B" />, with their own equations. It took
+        Einstein in 1905 to show that <InlineMath tex="E" /> and{' '}
+        <InlineMath tex="B" /> transform into each other under a
         change of inertial frame
         <Cite id="einstein-1905" in={SOURCES} />, and Minkowski in 1908 to write them as two faces
         of one antisymmetric tensor. Maxwell's equations, properly written, were already
@@ -520,7 +521,7 @@ export default function Ch6Magnetism() {
           <>
             Four places that magnetism shows up at industrial or astrophysical scale — spanning
             roughly twenty orders of magnitude in{' '}
-            <strong className="text-text font-medium">B</strong>, all running on the same
+            <InlineMath tex="B" />, all running on the same
             Biot–Savart and Lorentz equations from this chapter.
           </>
         }
@@ -545,12 +546,12 @@ export default function Ch6Magnetism() {
           <p className="mb-prose-2 last:mb-0">
             Paul Lauterbur's 1973 paper in <em className="text-text italic">Nature</em> proposed
             using superimposed magnetic-field gradients on top of a strong, uniform static{' '}
-            <strong className="text-text font-medium">B₀</strong> to spatially encode an NMR signal
+            <InlineMath tex="B_0" /> to spatially encode an NMR signal
             — the technique he called zeugmatography and that became magnetic resonance imaging
             <Cite id="lauterbur-1973" in={SOURCES} />. The entire scheme depends on the precession
-            of hydrogen nuclei in <strong className="text-text font-medium">B₀</strong>, with the
-            precession frequency set by <strong className="text-text font-medium">ω = γ B₀</strong>.
-            A bigger <strong className="text-text font-medium">B₀</strong> means a higher Larmor
+            of hydrogen nuclei in <InlineMath tex="B_0" />, with the
+            precession frequency set by <InlineMath tex="\omega = \gamma B_0" />.
+            A bigger <InlineMath tex="B_0" /> means a higher Larmor
             frequency, a larger population difference between spin states, and a stronger signal —
             which is why clinical scanners kept climbing from{' '}
             <strong className="text-text font-medium">0.3 T</strong> in the early 1980s to today's{' '}
@@ -561,7 +562,7 @@ export default function Ch6Magnetism() {
           <p className="mb-prose-2 last:mb-0">
             None of this is possible with copper. To produce{' '}
             <strong className="text-text font-medium">3 T</strong> uniformly over a meter-scale
-            bore, the formula <strong className="text-text font-medium">B = µ₀ n I</strong> for a
+            bore, the formula <InlineMath tex="B = \mu_0 n I" /> for a
             solenoid demands tens of thousands of ampere-turns. A resistive copper coil would
             dissipate megawatts as I²R heat and need active water cooling. Instead, clinical MRI
             magnets are wound from niobium–titanium superconducting wire and cooled in liquid helium
@@ -574,7 +575,7 @@ export default function Ch6Magnetism() {
             The Lorentz force on iron objects near the bore is dramatic: a steel oxygen cylinder
             pulled into a<strong className="text-text font-medium"> 3 T</strong> field has killed
             patients. The energy stored in the field,{' '}
-            <strong className="text-text font-medium">U = B²/(2µ₀)</strong>
+            <InlineMath tex="U = B^{2}/(2\mu_0)" />
             integrated over the bore, runs to several megajoules — comparable to the kinetic energy
             of a small car. A "quench," in which a tiny normal-conducting patch propagates through
             the windings and dumps that energy as helium boil-off, is one of the few engineering
@@ -601,7 +602,7 @@ export default function Ch6Magnetism() {
         >
           <p className="mb-prose-2 last:mb-0">
             A relativistic proton moving in a magnetic field traces out a circle of radius{' '}
-            <strong className="text-text font-medium">r = p / (qB)</strong>. For the LHC's design
+            <InlineMath tex="r = p/(qB)" />. For the LHC's design
             beam energy of <strong className="text-text font-medium">7 TeV</strong>, that radius
             works out — given the available real estate inside the existing LEP tunnel — to demand a
             bending field of <strong className="text-text font-medium">8.33 T</strong> in the dipole
@@ -628,7 +629,7 @@ export default function Ch6Magnetism() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             The fundamental physics is the Lorentz force from this chapter:{' '}
-            <strong className="text-text font-medium">F = q(v × B)</strong>, with the cross-product
+            <InlineMath tex="F = q(\vec{v} \times \vec{B})" />, with the cross-product
             geometry forcing the orbit closed. The engineering is everything that goes into
             producing a uniform <strong className="text-text font-medium">8.3 T</strong> field,
             persistent for hours, across <strong className="text-text font-medium">1232</strong>{' '}
@@ -669,7 +670,7 @@ export default function Ch6Magnetism() {
             The field is generated by convection of molten iron in Earth's outer core — a
             self-sustaining magnetohydrodynamic dynamo whose current loops are essentially Ampère's
             law writ planetary: moving electrically conducting fluid carries currents, currents make{' '}
-            <strong className="text-text font-medium">B</strong>, and feedback between the fluid
+            <InlineMath tex="B" />, and feedback between the fluid
             motion and the field locks the whole pattern into a quasi-stable dipole
             <Cite id="jackson-1999" in={SOURCES} />. The "north pole" of the dipole drifts at tens
             of kilometers per year and reverses irregularly on geological timescales.
@@ -678,7 +679,7 @@ export default function Ch6Magnetism() {
             Charged particles streaming from the Sun get deflected by this field via the Lorentz
             force, spiralling down field lines toward the poles where they finally collide with the
             upper atmosphere. The same equation that fixes the cyclotron radius in the earlier
-            section — <strong className="text-text font-medium">r = mv/(qB)</strong> — sets the
+            section — <InlineMath tex="r = mv/(qB)" /> — sets the
             geometry of the magnetosphere
             <Cite id="feynman-II-13" in={SOURCES} />.
           </p>
@@ -713,13 +714,13 @@ export default function Ch6Magnetism() {
           </p>
           <p className="mb-prose-2 last:mb-0">
             At these field strengths the energy density{' '}
-            <strong className="text-text font-medium">B²/(2µ₀)</strong> dominates over every other
+            <InlineMath tex="B^{2}/(2\mu_0)" /> dominates over every other
             astrophysical energy density nearby, including the rest-mass energy density of ordinary
             matter for fields above <strong className="text-text font-medium">~10¹⁰ T</strong>. The
             vacuum itself becomes birefringent, the quantum electrodynamic corrections to Maxwell's
             equations stop being small, and the atomic structure of any matter on the star's surface
             is reorganised by the field into long, anisotropic chains aligned with{' '}
-            <strong className="text-text font-medium">B</strong>
+            <InlineMath tex="B" />
             <Cite id="jackson-1999" in={SOURCES} />.
           </p>
           <p className="mb-prose-2 last:mb-0">
@@ -768,12 +769,12 @@ export default function Ch6Magnetism() {
 
         <FAQItem q="Why doesn't a magnetic force do work on a charged particle?">
           <p>
-            Because <strong className="text-text font-medium">F = q(v × B)</strong> is, by
-            construction, perpendicular to <strong className="text-text font-medium">v</strong>. The
-            rate of work done is <strong className="text-text font-medium">F · v</strong>, and the
+            Because <InlineMath tex="F = q(\vec{v} \times \vec{B})" /> is, by
+            construction, perpendicular to <InlineMath tex="v" />. The
+            rate of work done is <InlineMath tex="F \cdot v" />, and the
             dot product of any vector with something perpendicular to it is zero{' '}
             <Cite id="griffiths-2017" in={SOURCES} />. So a static{' '}
-            <strong className="text-text font-medium">B</strong> field can bend a trajectory but
+            <InlineMath tex="B" /> field can bend a trajectory but
             cannot change the speed.
           </p>
           <p>
@@ -789,7 +790,7 @@ export default function Ch6Magnetism() {
             Nobody has ever found one. Cut a bar magnet in half and you get two shorter magnets,
             each with its own north and south, not a north chunk and a south chunk{' '}
             <Cite id="feynman-II-13" in={SOURCES} />. Maxwell's equations encode this as{' '}
-            <strong className="text-text font-medium">∇ · B = 0</strong>: magnetic field lines never
+            <InlineMath tex="\nabla \cdot \vec{B} = 0" />: magnetic field lines never
             end on a source, they only form closed loops <Cite id="jackson-1999" in={SOURCES} />.
             Grand unified theories generically predict monopoles should exist, but the experimental
             upper limits on their cosmic abundance are extraordinarily tight.
@@ -798,7 +799,7 @@ export default function Ch6Magnetism() {
 
         <FAQItem q="Why is the tesla such a huge unit — most magnets seem to be in millitesla or microtesla?">
           <p>
-            Because <strong className="text-text font-medium">μ₀ = 4π × 10⁻⁷ T·m/A</strong> is tiny{' '}
+            Because <InlineMath tex="\mu_0 = 4\pi \times 10^{-7}\,\text{T·m/A}" /> is tiny{' '}
             <Cite id="codata-2018" in={SOURCES} />. Plug it into the field of a long wire and you
             find that <strong className="text-text font-medium">1 A</strong> at{' '}
             <strong className="text-text font-medium">1 cm</strong> produces only
@@ -815,7 +816,7 @@ export default function Ch6Magnetism() {
           <p>
             Because magnetic force is not a force between charges; it's a force between{' '}
             <em className="text-text italic">currents</em>, and the geometry of{' '}
-            <strong className="text-text font-medium">v × B</strong> flips the sign you'd naively
+            <InlineMath tex="\vec{v} \times \vec{B}" /> flips the sign you'd naively
             expect <Cite id="ampere-1826" in={SOURCES} />. Wire 1's field at wire 2 circles wire 1;
             wire 2's current crossed with that field gives a force pulling it toward wire 1. Run the
             right-hand rule both ways and the attraction is symmetric.
@@ -832,27 +833,27 @@ export default function Ch6Magnetism() {
         <FAQItem q="What is the right-hand rule actually doing geometrically?">
           <p>
             It's a mnemonic for the orientation of the cross product in a right-handed coordinate
-            system. <strong className="text-text font-medium">v × B</strong>
+            system. <InlineMath tex="\vec{v} \times \vec{B}" />
             is, by definition, perpendicular to both inputs and pointing in whichever of the two
             perpendicular directions makes{' '}
-            <strong className="text-text font-medium">{'(v, B, v × B)'}</strong> a right-handed
+            <InlineMath tex="(\vec{v},\, \vec{B},\, \vec{v} \times \vec{B})" /> a right-handed
             triple <Cite id="griffiths-2017" in={SOURCES} />. Your right hand happens to be a
             right-handed coordinate system, so curling fingers from{' '}
-            <strong className="text-text font-medium">v</strong> to
-            <strong className="text-text font-medium"> B</strong> with thumb extended encodes the
+            <InlineMath tex="v" /> to
+            <InlineMath tex="B" /> with thumb extended encodes the
             orientation manually.
           </p>
           <p>
             If physics had picked the left-handed convention instead, every formula would still work
-            — you'd just flip the sign of <strong className="text-text font-medium">B</strong>{' '}
+            — you'd just flip the sign of <InlineMath tex="B" />{' '}
             everywhere and use your left hand. The choice is conventional; the geometry is not.
           </p>
         </FAQItem>
 
         <FAQItem q="What is the cyclotron frequency, and why is it independent of the particle's speed?">
           <p>
-            From <strong className="text-text font-medium">r = mv/qB</strong> and{' '}
-            <strong className="text-text font-medium">T = 2π r/v</strong>, the speed cancels:
+            From <InlineMath tex="r = mv/(qB)" /> and{' '}
+            <InlineMath tex="T = 2\pi r/v" />, the speed cancels:
           </p>
           <Formula size="lg" tex="f = \dfrac{q B}{2\pi m}" />
           <p>
@@ -862,7 +863,7 @@ export default function Ch6Magnetism() {
             fixed-frequency oscillator, and the particles stay in phase as their orbit radius grows
             <Cite id="jackson-1999" in={SOURCES} />. The scheme breaks down only at relativistic
             speeds, where
-            <strong className="text-text font-medium"> m</strong> gets a γ-factor and the period
+            <InlineMath tex="m" /> gets a γ-factor and the period
             drifts — fixed by the <em className="text-text italic">synchrotron</em>.
           </p>
         </FAQItem>
@@ -887,36 +888,36 @@ export default function Ch6Magnetism() {
           q={`What's the difference between B and H — and which one is the "real" magnetic field?`}
         >
           <p>
-            <strong className="text-text font-medium">B</strong> (the magnetic flux density, in
+            <InlineMath tex="B" /> (the magnetic flux density, in
             tesla) is what shows up in the Lorentz force law and is what the rest of physics treats
-            as fundamental. <strong className="text-text font-medium">H</strong> (the magnetic field
+            as fundamental. <InlineMath tex="H" /> (the magnetic field
             intensity, in A/m) is an engineering bookkeeping construct that separates the field from{' '}
             <em className="text-text italic">free</em> currents you control from the field from{' '}
             <em className="text-text italic">bound</em> currents inside magnetized matter
             <Cite id="jackson-1999" in={SOURCES} />. In vacuum they're proportional:{' '}
-            <strong className="text-text font-medium">B = μ₀ H</strong>. In iron,{' '}
-            <strong className="text-text font-medium">B = μ₀(H + M)</strong>, where{' '}
-            <strong className="text-text font-medium">M</strong> is the magnetization of the
+            <InlineMath tex="B = \mu_0 H" />. In iron,{' '}
+            <InlineMath tex="B = \mu_0(H + M)" />, where{' '}
+            <InlineMath tex="M" /> is the magnetization of the
             material
             <Cite id="griffiths-2017" in={SOURCES} />.
           </p>
           <p>
             If you only care about what force a charged particle feels, you only need{' '}
-            <strong className="text-text font-medium">B</strong>.
+            <InlineMath tex="B" />.
           </p>
         </FAQItem>
 
         <FAQItem q="Why does iron concentrate magnetic field — what is it actually doing?">
           <p>
             Iron's atomic spins align with whatever external{' '}
-            <strong className="text-text font-medium">B</strong> field you apply to it, and their
-            cooperative magnetization <strong className="text-text font-medium">M</strong> adds to
+            <InlineMath tex="B" /> field you apply to it, and their
+            cooperative magnetization <InlineMath tex="M" /> adds to
             the original field
             <Cite id="griffiths-2017" in={SOURCES} />. The relative permeability{' '}
-            <strong className="text-text font-medium">μᵣ</strong> of soft iron is a few thousand,
-            meaning the <strong className="text-text font-medium">B</strong> inside the iron can be
+            <InlineMath tex="\mu_r" /> of soft iron is a few thousand,
+            meaning the <InlineMath tex="B" /> inside the iron can be
             a few thousand times the
-            <strong className="text-text font-medium"> B</strong> you'd have produced in vacuum with
+            <InlineMath tex="B" /> you'd have produced in vacuum with
             the same solenoid current. That's why an iron-cored electromagnet lifts a car and an
             air-cored one of the same wire would barely lift a paperclip
             <Cite id="feynman-II-13" in={SOURCES} />.
@@ -930,7 +931,7 @@ export default function Ch6Magnetism() {
             electric field is zero — but there are no mobile{' '}
             <em className="text-text italic">magnetic</em>
             charges to rearrange <Cite id="griffiths-2017" in={SOURCES} />. To shield a steady{' '}
-            <strong className="text-text font-medium">B</strong> you need a high-permeability
+            <InlineMath tex="B" /> you need a high-permeability
             material like mu-metal, which acts as a low-reluctance "preferred path" that field lines
             route through, leaving the interior weaker <Cite id="jackson-1999" in={SOURCES} />.
           </p>
@@ -945,10 +946,10 @@ export default function Ch6Magnetism() {
           <p>
             No — and this was the central insight Maxwell's equations forced on physics. Any change
             in the source propagates outward at the speed of light{' '}
-            <strong className="text-text font-medium">c</strong>, never faster
+            <InlineMath tex="c" />, never faster
             <Cite id="jackson-1999" in={SOURCES} />. The constants of magnetism and electricity
             satisfy
-            <strong className="text-text font-medium"> μ₀ ε₀ = 1/c²</strong>, which is no
+            <InlineMath tex="\mu_0 \varepsilon_0 = 1/c^{2}" />, which is no
             coincidence: it's how the wave equation falls out of Maxwell's equations{' '}
             <Cite id="codata-2018" in={SOURCES} />.
           </p>
@@ -966,7 +967,7 @@ export default function Ch6Magnetism() {
             charge in the nuclei as negative charge in the electrons. When you move neutral matter,
             you move equal-and-opposite charges together, and their magnetic contributions cancel
             exactly <Cite id="griffiths-2017" in={SOURCES} />. What you need for a net{' '}
-            <strong className="text-text font-medium">B</strong> is for one species to move relative
+            <InlineMath tex="B" /> is for one species to move relative
             to the other — which is exactly what an electric current is: electrons drifting through
             a stationary positive lattice
             <Cite id="feynman-II-13" in={SOURCES} />.
@@ -983,7 +984,7 @@ export default function Ch6Magnetism() {
         <FAQItem q="Why does the Hall voltage have a sign — and what did Edwin Hall actually learn from it in 1879?">
           <p>
             The Hall voltage's sign tells you which way the carriers had to deflect in the
-            transverse <strong className="text-text font-medium">B</strong>
+            transverse <InlineMath tex="B" />
             field — and therefore which sign of charge is doing the carrying. Hall measured it on
             gold and found that the carriers behaved as if{' '}
             <em className="text-text italic">negative</em>, two decades before J. J. Thomson
@@ -995,7 +996,7 @@ export default function Ch6Magnetism() {
             Today the Hall effect is the standard tool for measuring carrier density and sign in
             semiconductors — and the <em className="text-text italic">quantum</em> Hall effect,
             where the transverse conductance becomes precisely{' '}
-            <strong className="text-text font-medium">n e²/h</strong>, is one of the cleanest
+            <InlineMath tex="n e^{2}/h" />, is one of the cleanest
             measurements of fundamental constants we have.
           </p>
         </FAQItem>

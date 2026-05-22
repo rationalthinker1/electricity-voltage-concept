@@ -73,32 +73,23 @@ export default function Ch10Maxwell() {
         ∮ B · dℓ = μ₀ ( I<sub>enc</sub> + ε₀ dΦ<sub>E</sub>/dt )
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">E</strong> is the electric field (in V/m, a
-        vector at each point) and
-        <strong className="text-text font-medium"> B</strong> is the magnetic field (in teslas);{' '}
-        <strong className="text-text font-medium">dA</strong> is the outward-normal area element on
-        a closed surface (in m²) and <strong className="text-text font-medium">dℓ</strong> is the
+        where <InlineMath tex="E" /> is the electric field (in V/m, a
+        vector at each point) and{' '}
+        <InlineMath tex="B" /> is the magnetic field (in teslas);{' '}
+        <InlineMath tex="dA" /> is the outward-normal area element on
+        a closed surface (in m²) and <InlineMath tex="d\ell" /> is the
         tangent line element around a closed loop (in m);{' '}
-        <strong className="text-text font-medium">
-          Q<sub>enc</sub>
-        </strong>{' '}
+        <InlineMath tex="Q_{\text{enc}}" />{' '}
         is the total charge enclosed by the surface (in coulombs) and{' '}
-        <strong className="text-text font-medium">
-          I<sub>enc</sub>
-        </strong>{' '}
-        is the conduction current threading the loop (in amperes);
-        <strong className="text-text font-medium">
-          {' '}
-          Φ<sub>B</sub> = ∫∫ B · dA
-        </strong>{' '}
+        <InlineMath tex="I_{\text{enc}}" />{' '}
+        is the conduction current threading the loop (in amperes);{' '}
+        <InlineMath tex="\Phi_B = \iint B \cdot dA" />{' '}
         and{' '}
-        <strong className="text-text font-medium">
-          Φ<sub>E</sub> = ∫∫ E · dA
-        </strong>{' '}
+        <InlineMath tex="\Phi_E = \iint E \cdot dA" />{' '}
         are the magnetic and electric fluxes through a surface bounded by the loop (in webers and
-        V·m respectively); and
-        <strong className="text-text font-medium"> ε₀ = 8.854×10⁻¹² F/m</strong>;{' '}
-        <strong className="text-text font-medium">μ₀ is defined as 4π×10⁻⁷ T·m/A in the SI system</strong>. These are the vacuum
+        V·m respectively); and{' '}
+        <InlineMath tex="\varepsilon_0 = 8.854\times 10^{-12}\,\text{F/m}" />;{' '}
+        <InlineMath tex="\mu_0 = 4\pi\times 10^{-7}\,\text{T·m/A}" /> in the SI system. These are the vacuum
         permittivity and permeability
         <Cite id="codata-2018" in={SOURCES} />.
       </p>
@@ -169,7 +160,7 @@ export default function Ch10Maxwell() {
       <MaxwellEquations3DDemo />
 
       <h2 className="chapter-h2">
-        Gauss's law for <em>E</em>
+        Gauss's law for <InlineMath tex="E" />
       </h2>
 
       <p className="mb-prose-3">
@@ -230,7 +221,7 @@ export default function Ch10Maxwell() {
             </Formula>
             <p className="mb-prose-1 last:mb-0">
               ≈ <strong className="text-text font-medium">1.13×10⁵ V·m</strong>, with{' '}
-              <em className="text-text italic">ε₀</em> = 8.854×10⁻¹² F/m
+              <InlineMath tex="\varepsilon_0" /> = 8.854×10⁻¹² F/m
               <Cite id="codata-2018" in={SOURCES} />. The shape of the surface — sphere, cube, ugly
               potato — is irrelevant. Only the enclosed charge counts.
             </p>
@@ -239,7 +230,7 @@ export default function Ch10Maxwell() {
       />
 
       <h2 className="chapter-h2">
-        Gauss's law for <em>B</em>
+        Gauss's law for <InlineMath tex="B" />
       </h2>
 
       <p className="mb-prose-3">
@@ -300,7 +291,7 @@ export default function Ch10Maxwell() {
             </p>
             <Formula>∮ B · dA = 0</Formula>
             <p className="mb-prose-1 last:mb-0">
-              Whatever <strong className="text-text font-medium">B</strong>-flux enters one side of
+              Whatever <InlineMath tex="B" />-flux enters one side of
               any closed surface, the same amount comes out somewhere else. Every magnetic field
               line is a closed loop with no beginning and no end — because there is no isolated
               north or south pole to start or stop on
@@ -374,7 +365,7 @@ export default function Ch10Maxwell() {
             <p className="mb-prose-1 last:mb-0">
               <strong className="text-text font-medium">1 V</strong> exactly, for the duration of
               the ramp. (The minus sign sets direction — which way the induced current would flow —
-              but doesn't change the magnitude.) Multiply by <em className="text-text italic">N</em>{' '}
+              but doesn't change the magnitude.) Multiply by <InlineMath tex="N" />{' '}
               turns and the EMF scales linearly, which is the whole reason transformers work
               <Cite id="griffiths-2017" in={SOURCES} />.
             </p>
@@ -435,9 +426,7 @@ export default function Ch10Maxwell() {
           def={
             <>
               <strong className="text-text font-medium">displacement current</strong> — the term{' '}
-              <em className="text-text italic">
-                J<sub>D</sub> = ε₀ ∂E/∂t
-              </em>{' '}
+              <InlineMath tex="J_D = \varepsilon_0\,\partial E/\partial t" />{' '}
               that Maxwell added to Ampère's law in 1865. Not an actual flow of charge, but a
               changing electric flux that sources B exactly as a real current would. Without it,
               charge conservation fails in time-varying situations.
@@ -463,17 +452,15 @@ export default function Ch10Maxwell() {
             <strong className="text-text font-medium">1 GV/(m·s)</strong>
             (i.e. <strong className="text-text font-medium">10⁹ V/m per second</strong>). What is
             the displacement-current density{' '}
-            <em className="text-text italic">
-              J<sub>D</sub>
-            </em>{' '}
+            <InlineMath tex="J_D" />{' '}
             there?
           </>
         }
-        hint="J_D = ε₀ dE/dt."
+        hint={<><InlineMath tex="J_D = \varepsilon_0\, dE/dt" />.</>}
         answer={
           <>
             <p className="mb-prose-1 last:mb-0">
-              Plug in <em className="text-text italic">ε₀</em> = 8.854×10⁻¹² F/m
+              Plug in <InlineMath tex="\varepsilon_0" /> = 8.854×10⁻¹² F/m
               <Cite id="codata-2018" in={SOURCES} />:
             </p>
             <Formula>
@@ -515,13 +502,11 @@ export default function Ch10Maxwell() {
       <Formula>∇ × E = − ∂B/∂t</Formula>
       <Formula>∇ × B = μ₀ ε₀ ∂E/∂t</Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">∇ ×</strong> denotes the curl operator,{' '}
-        <strong className="text-text font-medium">∂B/∂t</strong> and{' '}
-        <strong className="text-text font-medium">∂E/∂t</strong>
+        where <InlineMath tex="\nabla \times" /> denotes the curl operator,{' '}
+        <InlineMath tex="\partial B/\partial t" /> and{' '}
+        <InlineMath tex="\partial E/\partial t" />{' '}
         are the partial derivatives of the fields with respect to time at a fixed point in space (in
-        T/s and V/(m·s) respectively), and <strong className="text-text font-medium">
-          μ₀ε₀
-        </strong>{' '}
+        T/s and V/(m·s) respectively), and <InlineMath tex="\mu_0\varepsilon_0" />{' '}
         has units of s²/m². These are the differential (point-by-point) forms of the third and
         fourth integral equations above, with no enclosed conduction current. Take the curl of the
         first equation; use the vector identity <InlineMath>∇×(∇×E) = ∇(∇·E) − ∇²E</InlineMath>;
@@ -530,17 +515,17 @@ export default function Ch10Maxwell() {
       </p>
       <Formula>∇² E = μ₀ ε₀ ∂²E/∂t²</Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">∇²E</strong> is the vector Laplacian of the
+        where <InlineMath tex="\nabla^{2}E" /> is the vector Laplacian of the
         electric field (the sum of its three second spatial derivatives, in V/m³) and{' '}
-        <strong className="text-text font-medium">∂²E/∂t²</strong> is the second derivative of E
+        <InlineMath tex="\partial^{2}E/\partial t^{2}" /> is the second derivative of E
         with respect to time at a fixed point in space (in V/(m·s²)). That's a{' '}
         <Term
           def={
             <>
               <strong className="text-text font-medium">wave equation</strong> — a PDE of the form{' '}
-              <em className="text-text italic">∇²ψ = (1/v²) ∂²ψ/∂t²</em> whose solutions are
-              travelling waves at speed <em className="text-text italic">v</em>. Maxwell's equations
-              in vacuum reduce to this with <em className="text-text italic">v = 1/√(μ₀ε₀) = c</em>.
+              <InlineMath tex="\nabla^{2}\psi = (1/v^{2})\,\partial^{2}\psi/\partial t^{2}" /> whose solutions are
+              travelling waves at speed <InlineMath tex="v" />. Maxwell's equations
+              in vacuum reduce to this with <InlineMath tex="v = 1/\sqrt{\mu_0\varepsilon_0} = c" />.
             </>
           }
         >
@@ -551,9 +536,9 @@ export default function Ch10Maxwell() {
       </p>
       <Formula>v = 1 / √(μ₀ ε₀)</Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">v</strong> is the propagation speed of the
-        wave (in m/s) and
-        <strong className="text-text font-medium"> μ₀, ε₀</strong> are the two vacuum constants
+        where <InlineMath tex="v" /> is the propagation speed of the
+        wave (in m/s) and{' '}
+        <InlineMath tex="\mu_0, \varepsilon_0" /> are the two vacuum constants
         introduced in §1. Maxwell plugged in the experimental values of μ₀ and ε₀ — the latter
         measured purely from electrostatics, the former from forces between current-carrying wires.
         He got 310,740,000 m/s by his 1865 numbers. Compared to Fizeau's 1849 toothed-wheel
@@ -583,7 +568,7 @@ export default function Ch10Maxwell() {
         tag="Try 10.5"
         question={
           <>
-            Compute the propagation speed <em className="text-text italic">c = 1/√(μ₀ ε₀)</em>{' '}
+            Compute the propagation speed <InlineMath tex="c = 1/\sqrt{\mu_0\varepsilon_0}" />{' '}
             directly from the modern values of the two constants.
           </>
         }
@@ -592,9 +577,9 @@ export default function Ch10Maxwell() {
           <>
             <p className="mb-prose-1 last:mb-0">
               Use CODATA values
-              <Cite id="codata-2018" in={SOURCES} />: <em className="text-text italic">μ₀</em> =
+              <Cite id="codata-2018" in={SOURCES} />: <InlineMath tex="\mu_0" /> =
               1.25664×10⁻⁶ T·m/A,
-              <em className="text-text italic"> ε₀</em> = 8.8542×10⁻¹² F/m. Then
+              <InlineMath tex="\varepsilon_0" /> = 8.8542×10⁻¹² F/m. Then
             </p>
             <Formula>μ₀ ε₀ = 1.25664×10⁻⁶ × 8.8542×10⁻¹² ≈ 1.1127×10⁻¹⁷ s²/m²</Formula>
             <Formula>c = 1 / √(1.1127×10⁻¹⁷) ≈ 2.998×10⁸ m/s</Formula>
@@ -703,7 +688,7 @@ export default function Ch10Maxwell() {
             information across thousands of kilometers of empty atmosphere — guaranteed by the wave
             equation derived from the four laws. The antenna had to convert oscillating current into
             far-field radiation — that's §5 of Chapter 9. The receiving antenna had to convert the
-            arriving <strong className="text-text font-medium">E</strong>-field back into a
+            arriving <InlineMath tex="E" />-field back into a
             measurable current — Faraday's law in its open-circuit form. None of it should have
             surprised anyone who had read Maxwell; all of it was new in 1901, because no one had
             thought to try the experiment at that range
@@ -839,8 +824,8 @@ export default function Ch10Maxwell() {
         <FAQItem q="Are Maxwell's equations linear? Why does that matter?">
           <p>
             Yes — in vacuum the equations are perfectly linear in{' '}
-            <strong className="text-text font-medium">E</strong> and{' '}
-            <strong className="text-text font-medium">B</strong>. That's why superposition works:
+            <InlineMath tex="E" /> and{' '}
+            <InlineMath tex="B" />. That's why superposition works:
             shine two flashlights at each other and the beams pass through each other unaffected.
             Two charges? Add their fields. Two radio signals on the same frequency? They simply sum.
             Linearity is what makes Fourier analysis work for EM waves, why antennas can transmit
@@ -856,7 +841,7 @@ export default function Ch10Maxwell() {
           <p>
             It's already there — built into the structure. Take the divergence of the Ampère–Maxwell
             equation and use Gauss for E: the result is{' '}
-            <strong className="text-text font-medium">∂ρ/∂t + ∇·J = 0</strong>, the continuity
+            <InlineMath tex="\partial\rho/\partial t + \nabla\cdot J = 0" />, the continuity
             equation, which is exactly the statement that charge is locally conserved. In fact, this
             is the reason Maxwell <em className="text-text italic">had</em> to add the
             displacement-current term: without it, the divergence of Ampère's right-hand side
@@ -910,9 +895,7 @@ export default function Ch10Maxwell() {
         <FAQItem q="What would change if we did find one?">
           <p>
             The second equation would gain a source term:{' '}
-            <strong className="text-text font-medium">
-              ∮B·dA = μ₀ Q<sub>m,enc</sub>
-            </strong>
+            <InlineMath tex="\oint B\cdot dA = \mu_0 Q_{m,\text{enc}}" />
             , and Faraday's law would gain a "magnetic current" term symmetric to the
             conduction-current term in Ampère–Maxwell. The theory becomes perfectly symmetric under
             the duality E ↔ cB. Nothing else has to change. The practical consequence: a brand-new
@@ -951,9 +934,7 @@ export default function Ch10Maxwell() {
         <FAQItem q="Are Maxwell's equations true in curved spacetime, near a black hole?">
           <p>
             Yes, in their covariant form. Written using the electromagnetic field tensor{' '}
-            <strong className="text-text font-medium">
-              F<sup>μν</sup>
-            </strong>
+            <InlineMath tex="F^{\mu\nu}" />{' '}
             and the covariant derivative, Maxwell's equations carry directly over to curved
             spacetime. The integral form we showed above is the flat-spacetime specialization; in
             curved spacetime the surfaces, loops, and derivatives all gain metric corrections, and
@@ -968,9 +949,9 @@ export default function Ch10Maxwell() {
             More the second than the first. In SI units, ε₀ and μ₀ are unit-conversion constants
             between the electrical quantities (charge, current) and the mechanical ones (force,
             length) that they happen to enter into equations with. In Gaussian units, both are
-            absent — there's just <em className="text-text italic">c</em>. The combination that's
+            absent — there's just <InlineMath tex="c" />. The combination that's
             truly physical is the fine-structure constant{' '}
-            <strong className="text-text font-medium">α = e²/(4πε₀ ℏ c)</strong>, which is
+            <InlineMath tex="\alpha = e^{2}/(4\pi\varepsilon_0 \hbar c)" />, which is
             dimensionless and equals roughly 1/137. Everything ε₀ and μ₀ tell you, dimensionally,
             can be repackaged into α and the speed of light
             <Cite id="codata-2018" in={SOURCES} />.
@@ -981,9 +962,9 @@ export default function Ch10Maxwell() {
           <p>
             No — and this is a recent change. Before 2019, μ₀ was defined to be exactly 4π×10⁻⁷
             T·m/A and ε₀ was exact via ε₀ = 1/(μ₀ c²). After the 2019 SI revision, the elementary
-            charge <em className="text-text italic">e</em>, Planck's constant
-            <em className="text-text italic"> h</em>, the Boltzmann constant{' '}
-            <em className="text-text italic">k</em>, and the Avogadro number became the exact
+            charge <InlineMath tex="e" />, Planck's constant{' '}
+            <InlineMath tex="h" />, the Boltzmann constant{' '}
+            <InlineMath tex="k" />, and the Avogadro number became the exact
             defining constants. ε₀ and μ₀ are now experimentally determined quantities, tied to the
             measured value of the fine-structure constant α. The numerical change is tiny — about
             2×10⁻¹⁰ relative — but conceptually it flipped them from "definitions" to "measurements"
@@ -1025,9 +1006,9 @@ export default function Ch10Maxwell() {
             Yes — it's a direct consequence of Gauss's law for E plus the assumption of spherical
             symmetry around a point source. Draw a sphere of radius r centered on the charge; by
             symmetry E is radial and constant on the sphere; the integral{' '}
-            <strong className="text-text font-medium">∮E·dA = E·4πr²</strong> equals{' '}
-            <strong className="text-text font-medium">Q/ε₀</strong>; solve for
-            <strong className="text-text font-medium"> E = Q/(4πε₀ r²)</strong>; multiply by a test
+            <InlineMath tex="\oint E\cdot dA = E\cdot 4\pi r^{2}" /> equals{' '}
+            <InlineMath tex="Q/\varepsilon_0" />; solve for{' '}
+            <InlineMath tex="E = Q/(4\pi\varepsilon_0 r^{2})" />; multiply by a test
             charge q to get the force. Coulomb's 1785 inverse-square law falls out of the more
             general law without further assumption
             <Cite id="griffiths-2017" in={SOURCES} />.
@@ -1038,22 +1019,14 @@ export default function Ch10Maxwell() {
           <p>
             With four-vectors, four becomes two; with differential forms or fully covariant tensor
             notation, two becomes one. Defining the electromagnetic field tensor{' '}
-            <strong className="text-text font-medium">
-              F<sup>μν</sup>
-            </strong>
-            , Maxwell's equations collapse to{' '}
-            <strong className="text-text font-medium">
-              ∂<sub>μ</sub>F<sup>μν</sup> = μ₀ J<sup>ν</sup>
-            </strong>{' '}
-            (the two source equations) and
-            <strong className="text-text font-medium">
-              {' '}
-              ∂<sub>[α</sub>F<sub>βγ]</sub> = 0
-            </strong>{' '}
+            <InlineMath tex="F^{\mu\nu}" />, Maxwell's equations collapse to{' '}
+            <InlineMath tex="\partial_{\mu}F^{\mu\nu} = \mu_0 J^{\nu}" />{' '}
+            (the two source equations) and{' '}
+            <InlineMath tex="\partial_{[\alpha}F_{\beta\gamma]} = 0" />{' '}
             (the two source-free equations, an algebraic Bianchi identity). In the language of
             differential forms, the second pair becomes{' '}
-            <strong className="text-text font-medium">dF = 0</strong> and the first{' '}
-            <strong className="text-text font-medium">d⋆F = J</strong>. None of this changes the
+            <InlineMath tex="dF = 0" /> and the first{' '}
+            <InlineMath tex="d{\star}F = J" />. None of this changes the
             physics, but it makes the relativistic structure of electromagnetism manifest — and it's
             the form that generalizes cleanly to curved spacetime
             <Cite id="jackson-1999" in={SOURCES} />.
@@ -1063,9 +1036,7 @@ export default function Ch10Maxwell() {
         <FAQItem q="How does QED relate to these — is QED just Maxwell + quantization?">
           <p>
             Close, but with a twist. Quantum electrodynamics promotes the classical field{' '}
-            <strong className="text-text font-medium">
-              F<sup>μν</sup>
-            </strong>
+            <InlineMath tex="F^{\mu\nu}" />{' '}
             to a quantum operator, treats the photon as the quantum of the field, and replaces
             classical charged sources with quantized matter fields (electrons, positrons). The
             result is one of the most precisely-tested theories in all of science — the electron's

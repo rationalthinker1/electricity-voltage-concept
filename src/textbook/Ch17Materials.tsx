@@ -20,6 +20,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Formula, InlineMath } from '@/components/Formula';
+import { Pullout } from '@/components/Prose';
 import { Cite } from '@/components/SourcesList';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -41,14 +42,9 @@ export default function Ch17Materials() {
     <ChapterShell chapter={chapter}>
       <p className="chapter-intro">
         Every demo in this textbook has had a quiet little slider labeled{' '}
-        <strong className="text-text font-medium">
-          ε<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="\varepsilon_r" />{' '}
         or
-        <strong className="text-text font-medium">
-          {' '}
-          μ<sub>r</sub>
-        </strong>
+        <InlineMath tex="\mu_r" />
         . Drag one and the field inside the dielectric drops; drag the other and the inductance of a
         coil skyrockets. We have been borrowing those numbers for many chapters without ever saying
         where they come from. This chapter opens the box.
@@ -69,7 +65,7 @@ export default function Ch17Materials() {
 
       <p className="mb-prose-3">
         In vacuum, Maxwell's equations are written in terms of two universal constants:
-        <strong className="text-text font-medium"> ε₀</strong> (the{' '}
+        <InlineMath tex="\varepsilon_0" /> (the{' '}
         <Term
           def={
             <>
@@ -90,7 +86,7 @@ export default function Ch17Materials() {
         >
           permittivity
         </Term>{' '}
-        of free space) and <strong className="text-text font-medium">μ₀</strong> (the{' '}
+        of free space) and <InlineMath tex="\mu_0" /> (the{' '}
         <Term
           def={
             <>
@@ -115,13 +111,9 @@ export default function Ch17Materials() {
         ). Together they fix the speed of light: <InlineMath>c = 1/√(ε₀ μ₀)</InlineMath>
         <Cite id="codata-2018" in={SOURCES} />. Once you put matter into the picture, every formula
         that contained ε₀ keeps working if you just replace ε₀ with{' '}
-        <strong className="text-text font-medium">
-          ε = ε₀ ε<sub>r</sub>
-        </strong>
+        <InlineMath tex="\varepsilon = \varepsilon_0 \varepsilon_r" />
         , and every formula that contained μ₀ keeps working if you replace μ₀ with{' '}
-        <strong className="text-text font-medium">
-          μ = μ₀ μ<sub>r</sub>
-        </strong>
+        <InlineMath tex="\mu = \mu_0 \mu_r" />
         .
       </p>
       <p className="mb-prose-3">
@@ -174,7 +166,7 @@ export default function Ch17Materials() {
           </Term>
         </strong>
         , written
-        <strong className="text-text font-medium"> P</strong>. Per unit volume, it's the number
+        <InlineMath tex="P" />. Per unit volume, it's the number
         density of dipoles times the average dipole moment per molecule. Inside the body of the
         material, neighboring dipoles cancel each other's bound charges — each "+" end of one
         molecule sits next to the "−" end of the next. What survives is a thin layer of{' '}
@@ -184,7 +176,7 @@ export default function Ch17Materials() {
 
       <p className="mb-prose-3">
         Those bound surface charges are negative on the side facing the applied{' '}
-        <strong className="text-text font-medium">E</strong> and positive on the far side —
+        <InlineMath tex="E" /> and positive on the far side —
         precisely the orientation needed to set up an internal field that
         <em className="text-text italic"> opposes</em> the applied one. The net field inside the
         material is the applied field minus the polarization's contribution:
@@ -194,36 +186,24 @@ export default function Ch17Materials() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          E<sub>inside</sub>
-        </strong>{' '}
+        <InlineMath tex="E_{\text{inside}}" />{' '}
         is the macroscopic electric field within the dielectric (in V/m),{' '}
-        <strong className="text-text font-medium">
-          E<sub>applied</sub>
-        </strong>{' '}
+        <InlineMath tex="E_{\text{applied}}" />{' '}
         is the external field that would be present without the material (in V/m),{' '}
-        <strong className="text-text font-medium">P</strong> is the polarization — the volume
+        <InlineMath tex="P" /> is the polarization — the volume
         density of dipole moment (in C/m²),{' '}
-        <strong className="text-text font-medium">ε₀ ≈ 8.854×10⁻¹² F/m</strong> is the permittivity
+        <InlineMath tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" /> is the permittivity
         of free space, and{' '}
-        <strong className="text-text font-medium">
-          ε<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="\varepsilon_r" />{' '}
         is the dimensionless relative permittivity of the material.
       </p>
       <p className="mb-prose-3">
         with{' '}
-        <strong className="text-text font-medium">
-          ε<sub>r</sub> = 1 + χ<sub>e</sub>
-        </strong>
+        <InlineMath tex="\varepsilon_r = 1 + \chi_e" />
         , where{' '}
-        <strong className="text-text font-medium">
-          χ<sub>e</sub>
-        </strong>{' '}
+        <InlineMath tex="\chi_e" />{' '}
         is the dimensionless electric susceptibility (linking{' '}
-        <em className="text-text italic">
-          P = ε₀ χ<sub>e</sub> E
-        </em>
+        <InlineMath tex="P = \varepsilon_0 \chi_e E" />
         ). The electric{' '}
         <Term
           def={
@@ -266,12 +246,10 @@ export default function Ch17Materials() {
 
       <p className="mb-prose-3">
         Drag the block to rotate it. At{' '}
-        <strong className="text-text font-medium">
-          E<sub>ext</sub> = 0
-        </strong>{' '}
+        <InlineMath tex="E_{\text{ext}} = 0" />{' '}
         the dipoles tumble isotropically — the mean of <em className="text-text italic">cos θ</em>{' '}
         over the population is zero, and so is the bulk{' '}
-        <strong className="text-text font-medium">P</strong>. Crank up the field and the
+        <InlineMath tex="P" />. Crank up the field and the
         deterministic torque begins to outrun the thermal kick; the equilibrium alignment is the
         Langevin function <em className="text-text italic">L(pE/kT) = coth(pE/kT) − kT/pE</em>,
         linear at small drive and saturating to 1 at large drive
@@ -298,33 +276,28 @@ export default function Ch17Materials() {
         Two things happen at once. The bound charge that appears on the dielectric's faces partially
         cancels the free charge on the plates — so the field inside the gap drops by exactly ε
         <sub>r</sub>. And because the voltage across the capacitor is the integral of{' '}
-        <strong className="text-text font-medium">E</strong> across the gap, the voltage drops too —
+        <InlineMath tex="E" /> across the gap, the voltage drops too —
         meaning the same plate charge now corresponds to a{' '}
         <em className="text-text italic">lower</em> voltage. Same definition{' '}
-        <strong className="text-text font-medium">C = Q/V</strong>, smaller V, so C goes up by the
+        <InlineMath tex="C = Q/V" />, smaller V, so C goes up by the
         factor ε<sub>r</sub>:
       </p>
       <Formula>
         C = ε<sub>r</sub> · C<sub>vacuum</sub>
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">C</strong> is the capacitance with the
-        dielectric in place (in farads),
-        <strong className="text-text font-medium">
-          {' '}
-          C<sub>vacuum</sub>
-        </strong>{' '}
+        where <InlineMath tex="C" /> is the capacitance with the
+        dielectric in place (in farads),{' '}
+        <InlineMath tex="C_{\text{vacuum}}" />{' '}
         is the capacitance of the same geometry with a vacuum gap (in farads), and{' '}
-        <strong className="text-text font-medium">
-          ε<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="\varepsilon_r" />{' '}
         is the dimensionless relative permittivity of the dielectric filling the gap.
       </p>
 
-      <p className="pullout">
+      <Pullout>
         ε<sub>r</sub> is the price of admission for a field into a material — the bigger the number,
         the more of the field gets bought off by bound charge before it reaches the other side.
-      </p>
+      </Pullout>
 
       <TryIt
         tag="Try 17.1"
@@ -368,7 +341,7 @@ export default function Ch17Materials() {
         question={
           <>
             For two identical capacitors charged to the same voltage{' '}
-            <em className="text-text italic">V</em>, one with a vacuum gap and one with a water
+            <InlineMath tex="V" />, one with a vacuum gap and one with a water
             dielectric (
             <em className="text-text italic">
               ε<sub>r</sub>
@@ -413,8 +386,8 @@ export default function Ch17Materials() {
         Debye worked out the full theory in 1929 <Cite id="debye-1929" in={SOURCES} />. At zero
         field the molecules tumble randomly and the bulk polarization is zero. Apply a field and the
         equilibrium distribution shifts: the Boltzmann factor <InlineMath>exp(p·E / kT)</InlineMath>{' '}
-        favors orientations with <strong className="text-text font-medium">p</strong> along{' '}
-        <strong className="text-text font-medium">E</strong>. Integrate over the angular
+        favors orientations with <InlineMath tex="p" /> along{' '}
+        <InlineMath tex="E" />. Integrate over the angular
         distribution and you recover the{' '}
         <em className="text-text italic">
           {' '}
@@ -455,10 +428,10 @@ export default function Ch17Materials() {
         That boundary condition has a beautiful consequence for the field of a point charge sitting
         above a grounded metal plane. The induced surface charge on the plane redistributes itself
         in exactly the pattern that, above the plane, the total field looks identical to two point
-        charges in vacuum: the real <strong className="text-text font-medium">+q</strong> at height{' '}
-        <em className="text-text italic">d</em>, plus a fictitious mirror{' '}
-        <strong className="text-text font-medium">−q</strong> at depth{' '}
-        <em className="text-text italic">d</em> below the plane. The mirror is not a real charge —
+        charges in vacuum: the real <InlineMath tex="+q" /> at height{' '}
+        <InlineMath tex="d" />, plus a fictitious mirror{' '}
+        <InlineMath tex="-q" /> at depth{' '}
+        <InlineMath tex="d" /> below the plane. The mirror is not a real charge —
         it is a mathematical stand-in for the induced surface charge — but the field it produces
         above the plane is the right one, because both configurations satisfy the same boundary
         condition (potential = 0 on the plane) and the same source equation (∇·E = ρ/ε₀ from the
@@ -471,7 +444,7 @@ export default function Ch17Materials() {
 
       <p className="mb-prose-3">
         Drag the scene to orbit. Every field line leaving{' '}
-        <strong className="text-text font-medium">+q</strong> terminates somewhere on the plane,
+        <InlineMath tex="+q" /> terminates somewhere on the plane,
         hitting it perpendicularly — and the induced surface-charge density σ peaks directly beneath
         the charge and falls off as <InlineMath>σ(r) = −qd/(2π(r²+d²)^(3/2))</InlineMath>. Integrate
         σ over the whole plane and you recover exactly −q: every field line that started on the real
@@ -509,10 +482,10 @@ export default function Ch17Materials() {
           </Term>
           .
         </strong>{' '}
-        Apply <strong className="text-text font-medium">B</strong> to any material — water, glass,
+        Apply <InlineMath tex="B" /> to any material — water, glass,
         copper, your own body. The change in flux through every electron orbit induces a tiny
         circulating current, and by Lenz's law that current opposes the applied{' '}
-        <strong className="text-text font-medium">B</strong>. The result is a feeble negative
+        <InlineMath tex="B" />. The result is a feeble negative
         magnetization. Every material has this; it's a property of the electrons' orbital response,
         not of any permanent moment <Cite id="griffiths-2017" in={SOURCES} />. χ<sub>m</sub> is on
         the order of −10⁻⁵ — small enough that you only notice it in clean laboratory measurements.
@@ -540,8 +513,8 @@ export default function Ch17Materials() {
           .
         </strong>{' '}
         Atoms or molecules with an unpaired electron carry a permanent magnetic moment. In zero
-        field they tumble randomly; in an applied field they weakly align with
-        <strong className="text-text font-medium"> B</strong>, fighting thermal noise. Langevin
+        field they tumble randomly; in an applied field they weakly align with{' '}
+        <InlineMath tex="B" />, fighting thermal noise. Langevin
         worked out the equilibrium theory in 1905 — the magnetization follows the same Langevin
         function as for electric dipoles
         <Cite id="langevin-1905" in={SOURCES} />, and in the weak-field, room-temperature limit it
@@ -578,7 +551,7 @@ export default function Ch17Materials() {
         entire macroscopic regions ("domains") align spontaneously, even with no applied field{' '}
         <Cite id="weiss-1907" in={SOURCES} />
         <Cite id="kittel-2005" in={SOURCES} />. Apply a weak external{' '}
-        <strong className="text-text font-medium">B</strong> and the favorably-aligned domains grow
+        <InlineMath tex="B" /> and the favorably-aligned domains grow
         at the expense of others. χ<sub>m</sub> can reach 5000 in soft iron and 10⁶ in mu-metal.
         This is the regime where you can feel the force with your fingers.
       </p>
@@ -594,7 +567,7 @@ export default function Ch17Materials() {
               χ<sub>m</sub>
             </em>{' '}
             = 1×10⁻⁴ and sits in a 1 T external field. Estimate its magnetization{' '}
-            <strong className="text-text font-medium">M</strong>.
+            <InlineMath tex="M" />.
           </>
         }
         hint={
@@ -626,10 +599,10 @@ export default function Ch17Materials() {
       <p className="mb-prose-3">
         The two boxes look superficially similar — both are bags of magnetic moments responding to
         the same external field. But the paramagnet's arrows weakly tilt with{' '}
-        <strong className="text-text font-medium">B</strong> (and the thermal noise scrambles them
+        <InlineMath tex="B" /> (and the thermal noise scrambles them
         right back), while the diamagnet's induced arrows point
         <em className="text-text italic"> against</em>{' '}
-        <strong className="text-text font-medium">B</strong>. One has permanent moments; the other
+        <InlineMath tex="B" />. One has permanent moments; the other
         has only the orbital response. In numbers, the difference comes out to maybe an order of
         magnitude or two — both are still tiny compared to ferromagnets.
       </p>
@@ -659,17 +632,17 @@ export default function Ch17Materials() {
         rotates from one direction to another
         <Cite id="weiss-1907" in={SOURCES} />. In an unmagnetized lump of iron the domains point
         every which way, cancelling on average. The lump as a whole has zero{' '}
-        <strong className="text-text font-medium">M</strong>.
+        <InlineMath tex="M" />.
       </p>
       <p className="mb-prose-3">
         Apply a field and the domains aligned with{' '}
-        <strong className="text-text font-medium">B</strong> grow at the expense of the others — the
-        walls move. Crank <strong className="text-text font-medium">B</strong> hard enough and every
+        <InlineMath tex="B" /> grow at the expense of the others — the
+        walls move. Crank <InlineMath tex="B" /> hard enough and every
         domain is aligned; the iron is
         <em className="text-text italic"> saturated</em>, with magnetization M<sub>s</sub>. Now ramp{' '}
-        <strong className="text-text font-medium">B</strong> back to zero. The walls don't unwind
+        <InlineMath tex="B" /> back to zero. The walls don't unwind
         cleanly. They get pinned on lattice imperfections, on grain boundaries, on crystal defects.
-        Some of the alignment survives <strong className="text-text font-medium">B = 0</strong> —
+        Some of the alignment survives <InlineMath tex="B = 0" /> —
         that's the
         <em className="text-text italic"> remanence</em>, the magnetization a permanent magnet has
         when nothing is pushing on it
@@ -782,7 +755,7 @@ export default function Ch17Materials() {
             <em className="text-text italic">
               M(T) ≈ M₀ (1 − T/T<sub>C</sub>)<sup>β</sup>
             </em>{' '}
-            with critical exponent <em className="text-text italic">β</em> ≈ 0.37, estimate the
+            with critical exponent <InlineMath tex="\beta" /> ≈ 0.37, estimate the
             fraction of saturation magnetization remaining 100 K below the Curie point.
           </>
         }
@@ -834,29 +807,17 @@ export default function Ch17Materials() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          ε<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="\varepsilon_r" />{' '}
         is the dimensionless relative permittivity (electric response),{' '}
-        <strong className="text-text font-medium">
-          μ<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="\mu_r" />{' '}
         is the dimensionless relative permeability (magnetic response),{' '}
-        <strong className="text-text font-medium">
-          χ<sub>e</sub>
-        </strong>{' '}
+        <InlineMath tex="\chi_e" />{' '}
         is the dimensionless electric susceptibility (
-        <em className="text-text italic">
-          P = ε₀ χ<sub>e</sub> E
-        </em>
+        <InlineMath tex="P = \varepsilon_0 \chi_e E" />
         ), and{' '}
-        <strong className="text-text font-medium">
-          χ<sub>m</sub>
-        </strong>{' '}
+        <InlineMath tex="\chi_m" />{' '}
         is the dimensionless magnetic susceptibility (
-        <em className="text-text italic">
-          M = χ<sub>m</sub> H
-        </em>
+        <InlineMath tex="M = \chi_m H" />
         ). All four numbers are unitless ratios of the material's response to the applied field.
       </p>
 
@@ -881,26 +842,20 @@ export default function Ch17Materials() {
         v = c / √(ε<sub>r</sub> μ<sub>r</sub>) = c/n
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">v</strong> is the phase speed of the EM wave
-        inside the material (in m/s),
-        <strong className="text-text font-medium"> c ≈ 2.998×10⁸ m/s</strong> is the speed of light
+        where <InlineMath tex="v" /> is the phase speed of the EM wave
+        inside the material (in m/s),{' '}
+        <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light
         in vacuum,{' '}
-        <strong className="text-text font-medium">
-          ε<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="\varepsilon_r" />{' '}
         and{' '}
-        <strong className="text-text font-medium">
-          μ<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="\mu_r" />{' '}
         are the dimensionless relative permittivity and permeability of the material, and{' '}
-        <strong className="text-text font-medium">
-          n = √(ε<sub>r</sub> μ<sub>r</sub>)
-        </strong>{' '}
+        <InlineMath tex="n = \sqrt{\varepsilon_r \mu_r}" />{' '}
         is the dimensionless refractive index. For non-magnetic materials, μ<sub>r</sub> ≈ 1 and n ≈
         √ε<sub>r</sub>.
       </p>
       <p className="mb-prose-3">
-        with <strong className="text-text font-medium">n</strong> the{' '}
+        with <InlineMath tex="n" /> the{' '}
         <em className="text-text italic">refractive index</em> of the material. Light slowing in
         glass is not the photons taking a leisurely path — it's the electromagnetic wave coupling to
         the bound electrons, the same dipoles you saw rotating in the polarization demo, and the
@@ -1119,7 +1074,7 @@ export default function Ch17Materials() {
             displacement of electrons relative to nuclei within neutral atoms, or the orientation of
             permanent molecular dipoles. It is not mobile in the usual sense — when you remove the
             applied field, it relaxes back. Both kinds produce real{' '}
-            <strong className="text-text font-medium">E</strong> fields; the distinction is purely
+            <InlineMath tex="E" /> fields; the distinction is purely
             about whether the charge can move freely on macroscopic scales{' '}
             <Cite id="griffiths-2017" in={SOURCES} />.
           </p>
@@ -1127,10 +1082,10 @@ export default function Ch17Materials() {
 
         <FAQItem q="Why does putting a dielectric in a capacitor increase its capacitance?">
           <p>
-            Capacitance is <strong className="text-text font-medium">C = Q/V</strong>. With a
+            Capacitance is <InlineMath tex="C = Q/V" />. With a
             dielectric in place, the bound surface charge partially cancels the free plate charge,
             dropping the field in the gap by ε<sub>r</sub>. The voltage{' '}
-            <strong className="text-text font-medium">V = E · d</strong> drops by the same factor,
+            <InlineMath tex="V = E \cdot d" /> drops by the same factor,
             while the free charge Q on the plates is unchanged. C goes up by exactly ε<sub>r</sub>.
             A 1 µF ceramic cap with ε<sub>r</sub> ≈ 2500 is roughly the same plate area as a 0.4 nF
             air-gap cap — that's why your phone has room for hundreds of them.
@@ -1176,9 +1131,9 @@ export default function Ch17Materials() {
 
         <FAQItem q="What's the difference between B and H — really?">
           <p>
-            <strong className="text-text font-medium">B</strong> is the magnetic field itself — the
+            <InlineMath tex="B" /> is the magnetic field itself — the
             thing that pushes on moving charges, the thing that appears in Maxwell's equations and
-            in the Lorentz force law. <strong className="text-text font-medium">H</strong> is a
+            in the Lorentz force law. <InlineMath tex="H" /> is a
             constructed bookkeeping field defined as <InlineMath>H = B/μ₀ − M</InlineMath>, which
             has the virtue that its source is only the <em className="text-text italic">free</em>{' '}
             current, not the bound currents inside magnetized matter. In vacuum the two are
@@ -1196,7 +1151,7 @@ export default function Ch17Materials() {
             <sub>s</sub>
             equals the density of atomic moments times the moment per atom — about 1.7×10⁶ A/m for
             iron, corresponding to roughly 2.2 Bohr magnetons per atom. Push{' '}
-            <strong className="text-text font-medium">B</strong> harder and magnetization can't rise
+            <InlineMath tex="B" /> harder and magnetization can't rise
             any further; only the vacuum contribution increases
             <Cite id="kittel-2005" in={SOURCES} />.
           </p>
@@ -1218,7 +1173,7 @@ export default function Ch17Materials() {
 
         <FAQItem q="Why does heating a magnet kill it? (Curie temperature)">
           <p>
-            Thermal energy <em className="text-text italic">kT</em> competes with the
+            Thermal energy <InlineMath tex="kT" /> competes with the
             exchange-coupling energy. Below the Curie temperature T<sub>C</sub>, exchange wins and
             the spins lock into domains. Above T<sub>C</sub>, thermal motion overwhelms the coupling
             and the domains evaporate — the material becomes a paramagnet, with χ<sub>m</sub>{' '}
@@ -1265,7 +1220,7 @@ export default function Ch17Materials() {
           <p>
             Sort of, and only as a pedagogical fiction. If magnetic monopoles existed, there would
             be a tidy 1/r² force law between them. They don't (no isolated magnetic charge has ever
-            been observed; Maxwell's <strong className="text-text font-medium">∇·B = 0</strong> is
+            been observed; Maxwell's <InlineMath tex="\nabla \cdot B = 0" /> is
             the field-theoretic statement of that fact), so the closest analog is the dipole-dipole
             interaction between two permanent magnets, which falls off as 1/r⁴ along the axis. There
             is no fundamental magnetic Coulomb's law — magnetism is what you get when electric
@@ -1286,7 +1241,7 @@ export default function Ch17Materials() {
             a normal metal. We mentioned this briefly in Ch. 3; the materials-side relevance is that
             a superconductor is also a perfect diamagnet (the Meissner effect): inside, χ
             <sub>m</sub> = −1 exactly, and external{' '}
-            <strong className="text-text font-medium">B</strong>
+            <InlineMath tex="B" />
             is expelled completely.
           </p>
         </FAQItem>
@@ -1306,9 +1261,9 @@ export default function Ch17Materials() {
           <p>
             Because the signal you want — the precession of proton spins — is proportional to the
             equilibrium nuclear polarization, which is proportional to{' '}
-            <strong className="text-text font-medium">B</strong>. At room temperature the proton's
-            Zeeman splitting <em className="text-text italic">μB</em> is tiny compared to{' '}
-            <em className="text-text italic">kT</em>, so only a few protons per million end up
+            <InlineMath tex="B" />. At room temperature the proton's
+            Zeeman splitting <InlineMath tex="\mu B" /> is tiny compared to{' '}
+            <InlineMath tex="kT" />, so only a few protons per million end up
             net-aligned with the field. Doubling B doubles the signal; tripling B nearly triples it.
             Clinical MRI runs at 1.5 to 3 T (compared to Earth's field of ∼50 µT) precisely because
             that's where the SNR becomes workable in reasonable scan times.
@@ -1339,14 +1294,12 @@ export default function Ch17Materials() {
           </Formula>
           <p>
             where{' '}
-            <strong className="text-text font-medium">
-              ε<sub>r</sub>
-            </strong>{' '}
+            <InlineMath tex="\varepsilon_r" />{' '}
             is the dimensionless relative permittivity of the bulk material,{' '}
-            <strong className="text-text font-medium">N</strong> is the number density of
-            polarizable molecules (in m⁻³), <strong className="text-text font-medium">α</strong> is
-            the molecular polarizability (in C·m²/V), and
-            <strong className="text-text font-medium"> ε₀ ≈ 8.854×10⁻¹² F/m</strong> is the
+            <InlineMath tex="N" /> is the number density of
+            polarizable molecules (in m⁻³), <InlineMath tex="\alpha" /> is
+            the molecular polarizability (in C·m²/V), and{' '}
+            <InlineMath tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" /> is the
             permittivity of free space.
           </p>
           <p>

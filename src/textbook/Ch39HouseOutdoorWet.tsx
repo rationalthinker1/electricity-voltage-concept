@@ -267,23 +267,13 @@ export default function Ch39HouseOutdoorWet() {
       <Formula tex="I_{\text{body}} = (V_{\text{water}} - V_{\text{ladder}}) / R_{\text{body}}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          I<sub>body</sub>
-        </strong>{' '}
+        <InlineMath tex="I_{\text{body}}" />{' '}
         is the current through the swimmer (in amperes),{' '}
-        <strong className="text-text font-medium">
-          V<sub>water</sub>
-        </strong>{' '}
-        is the potential the fault has imposed on the pool water (in volts),
-        <strong className="text-text font-medium">
-          {' '}
-          V<sub>ladder</sub>
-        </strong>{' '}
-        is the potential of the metal the swimmer is gripping (in volts), and
-        <strong className="text-text font-medium">
-          {' '}
-          R<sub>body</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{water}}" />{' '}
+        is the potential the fault has imposed on the pool water (in volts),{' '}
+        <InlineMath tex="V_{\text{ladder}}" />{' '}
+        is the potential of the metal the swimmer is gripping (in volts), and{' '}
+        <InlineMath tex="R_{\text{body}}" />{' '}
         is the{' '}
         <Term
           def={
@@ -324,15 +314,11 @@ export default function Ch39HouseOutdoorWet() {
       <Formula tex="V_{\text{step}} = E \times \Delta d_{\text{step}}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>step</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{step}}" />{' '}
         is the voltage difference across the gait between the two feet (in volts),{' '}
-        <strong className="text-text font-medium">E</strong> is the local potential gradient in the
+        <InlineMath tex="E" /> is the local potential gradient in the
         soil surface around the fault (in volts per metre), and{' '}
-        <strong className="text-text font-medium">
-          Δd<sub>step</sub>
-        </strong>{' '}
+        <InlineMath tex="\Delta d_{\text{step}}" />{' '}
         is the distance between the two feet (in metres; roughly 0.7 m for a normal walking gait).
         For a 10 kA ground-fault depositing into damp soil through a single rod, the spreading
         resistance can produce E ≈ 1 kV/m within a metre of the rod, giving V<sub>step</sub> ≈ 700 V
@@ -693,15 +679,13 @@ export default function Ch39HouseOutdoorWet() {
       <Formula tex="P_{\text{charge}} = V \times I \times \eta" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          P<sub>charge</sub>
-        </strong>{' '}
+        <InlineMath tex="P_{\text{charge}}" />{' '}
         is the AC power delivered to the vehicle's onboard charger (in watts),{' '}
-        <strong className="text-text font-medium">V</strong> is the line-to-line supply voltage at
+        <InlineMath tex="V" /> is the line-to-line supply voltage at
         the EVSE (in volts, nominally 240 V on a North-American split-phase service),{' '}
-        <strong className="text-text font-medium">I</strong> is the RMS current the EVSE has
+        <InlineMath tex="I" /> is the RMS current the EVSE has
         authorised the vehicle to draw via the control-pilot duty cycle (in amperes), and{' '}
-        <strong className="text-text font-medium">η</strong> is the{' '}
+        <InlineMath tex="\eta" /> is the{' '}
         <Term
           def={
             <>

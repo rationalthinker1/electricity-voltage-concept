@@ -217,19 +217,12 @@ export default function Ch28HousePanel() {
       <Formula tex="V_{LL} = V_{L1} - V_{L2} = (+120) - (-120) = 240\\ \\text{V}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>LL</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{LL}" />{' '}
         is the line-to-line voltage between the two ungrounded bus bars (in volts RMS),{' '}
-        <strong className="text-text font-medium">
-          V<sub>L1</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{L1}" />{' '}
         is the instantaneous voltage of bus L1 measured with respect to the centre-tap neutral (peak
-        ≈ +170 V; RMS ≈ +120 V at the positive crossing), and
-        <strong className="text-text font-medium">
-          {' '}
-          V<sub>L2</sub>
-        </strong>{' '}
+        ≈ +170 V; RMS ≈ +120 V at the positive crossing), and{' '}
+        <InlineMath tex="V_{L2}" />{' '}
         is the corresponding voltage of bus L2 referenced to the same neutral. L1 and L2 are exactly
         180° out of phase because they come from opposite ends of the centre-tapped secondary
         winding of the utility transformer (Ch.27): when one terminal is at its positive peak the
@@ -376,17 +369,11 @@ export default function Ch28HousePanel() {
       <Formula tex="I_{\\text{residual}} = |I_{\\text{hot}} - I_{\\text{neutral}}| > 5\\ \\text{mA}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          I<sub>hot</sub>
-        </strong>{' '}
+        <InlineMath tex="I_{\text{hot}}" />{' '}
         is the current leaving the panel on the ungrounded conductor (in amperes),{' '}
-        <strong className="text-text font-medium">
-          I<sub>neutral</sub>
-        </strong>{' '}
+        <InlineMath tex="I_{\text{neutral}}" />{' '}
         is the current returning on the grounded conductor (in amperes), and{' '}
-        <strong className="text-text font-medium">
-          I<sub>residual</sub>
-        </strong>{' '}
+        <InlineMath tex="I_{\text{residual}}" />{' '}
         is the{' '}
         <Term
           def={
@@ -520,21 +507,15 @@ export default function Ch28HousePanel() {
       <Formula tex="E_{\\text{arc}} \\approx V \\times I_{\\text{fault}} \\times t_{\\text{clear}}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          E<sub>arc</sub>
-        </strong>{' '}
-        is the energy released in the fault arc (in joules),
-        <strong className="text-text font-medium"> V</strong> is the system voltage across the arc
+        <InlineMath tex="E_{\text{arc}}" />{' '}
+        is the energy released in the fault arc (in joules),{' '}
+        <InlineMath tex="V" /> is the system voltage across the arc
         (in volts; 120 V for a single hot-to-neutral fault, 240 V for a hot-to-hot fault),{' '}
-        <strong className="text-text font-medium">
-          I<sub>fault</sub>
-        </strong>{' '}
+        <InlineMath tex="I_{\text{fault}}" />{' '}
         is the peak fault current the utility can deliver into the bolted short (in amperes), and{' '}
-        <strong className="text-text font-medium">
-          t<sub>clear</sub>
-        </strong>{' '}
+        <InlineMath tex="t_{\text{clear}}" />{' '}
         is the time the breaker takes to interrupt the arc (in seconds). For a numerical sense of
-        scale, take V = 120 V, I<sub>fault</sub> = 10 kA, t<sub>clear</sub> = 50 ms:
+        scale, take <InlineMath tex="V = 120\,\text{V}" />, <InlineMath tex="I_{\text{fault}} = 10\,\text{kA}" />, <InlineMath tex="t_{\text{clear}} = 50\,\text{ms}" />:
       </p>
       <Formula tex="E_{\\text{arc}} \\approx 120 \\times 10{,}000 \\times 0.050 = 60{,}000\\ \\text{J} = 60\\ \\text{kJ}" />
       <p className="mb-prose-3">
@@ -763,7 +744,7 @@ export default function Ch28HousePanel() {
             A sub-panel sits 50 m from the main, fed by a 100 A double-pole breaker through{' '}
             <strong className="text-text font-medium">1 AWG aluminium</strong> conductors
             (resistance ≈ 0.524 Ω per 1000 ft, or about{' '}
-            <strong className="text-text font-medium">1.72 mΩ/m</strong>). The sub is loaded at 80
+            <InlineMath tex="1.72\,\text{m}\Omega/\text{m}" />). The sub is loaded at 80
             A. What is the round-trip voltage drop from the main to the sub on each hot?
           </>
         }
@@ -1283,7 +1264,7 @@ export default function Ch28HousePanel() {
             Only obliquely: every current value in this chapter — 5 mA for a GFCI threshold, 10 kA
             for an available fault, 20 A for a kitchen branch — is a count of elementary charges per
             second through a cross-section, scaled by the CODATA 2018 value of{' '}
-            <em className="text-text italic">e</em> = 1.602176634×10⁻¹⁹ C exactly
+            <InlineMath tex="e" /> = 1.602176634×10⁻¹⁹ C exactly
             <Cite id="codata-2018" in={SOURCES} />. The chapter would still be coherent without ever
             quoting the number, but every ampere on every label in the panel ultimately reduces to
             that constant.

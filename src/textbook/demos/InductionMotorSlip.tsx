@@ -19,6 +19,7 @@ import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
 import { useSimLoop } from '@/lib/useSimLoop';
 import { useSimState } from '@/lib/useSimState';
+import { withAlpha } from '@/lib/canvasTheme';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
@@ -102,7 +103,7 @@ export function InductionMotorSlipDemo({ figure }: Props) {
         const by = cy - Math.sin(a) * rBar;
         // Induced current strength depends on slip — brighter at higher slip
         const intensity = Math.min(1, slip * 25 + 0.15);
-        ctx.fillStyle = `rgba(255,107,42,${0.4 + 0.5 * intensity})`;
+        ctx.fillStyle = withAlpha(colors.accent, 0.4 + 0.5 * intensity);
         ctx.beginPath();
         ctx.arc(bx, by, 5, 0, Math.PI * 2);
         ctx.fill();
@@ -140,7 +141,7 @@ export function InductionMotorSlipDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.3'}
+      figure={figure ?? 'Fig. 20.3'}
       title="The induction motor — slip is the signal"
       question="The rotor never catches up with the stator's field. Why is that a feature, not a bug?"
       caption={

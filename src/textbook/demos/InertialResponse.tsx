@@ -130,8 +130,8 @@ export function InertialResponseDemo({ figure }: Props) {
         }
         ctx.stroke();
       }
-      if (traceHigh) plotTrace(traceHigh, '#6cc5c2');
-      if (traceLow) plotTrace(traceLow, '#ff3b6e');
+      if (traceHigh) plotTrace(traceHigh, colors.teal);
+      if (traceLow) plotTrace(traceLow, colors.pink);
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       const legX = padL + 8;
@@ -142,8 +142,8 @@ export function InertialResponseDemo({ figure }: Props) {
         drawLabel(ctx, { text: label, x: legX + 20, y: legY + 1, color: colors.text });
         legY += 14;
       };
-      if (showHigh) lg('#6cc5c2', 'high inertia, H = 5 s (synchronous-rich)');
-      if (showLow) lg('#ff3b6e', 'low inertia, H = 1 s (inverter-rich)');
+      if (showHigh) lg(colors.teal, 'high inertia, H = 5 s (synchronous-rich)');
+      if (showLow) lg(colors.pink, 'low inertia, H = 1 s (inverter-rich)');
     },
     [],
   );
@@ -154,7 +154,7 @@ export function InertialResponseDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.7'}
+      figure={figure ?? 'Fig. 21.7'}
       title="Inertial response: what 'frequency dip' looks like"
       question="A generator trips. The grid's rotating mass is the only thing keeping frequency stable in the first second."
       caption={

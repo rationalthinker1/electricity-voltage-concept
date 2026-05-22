@@ -11,11 +11,13 @@
  * nearly cancels V; current collapses. Reader slides load torque; the
  * scope plots show I(t), V_applied (constant), back-EMF(t) approach steady.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { withAlpha } from '@/lib/canvasTheme';
-import { AutoResizeCanvas, type CanvasInfo } from '@/components/AutoResizeCanvas';
+import { AutoResizeCanvas } from '@/components/AutoResizeCanvas';
 import { Demo, DemoControls, MiniReadout, MiniSlider } from '@/components/Demo';
 import { Num } from '@/components/Num';
+import { useSimLoop } from '@/lib/useSimLoop';
+import { useSimState } from '@/lib/useSimState';
 import { drawLabel } from "@/lib/canvasLayout";
 
 interface Props {
@@ -36,10 +38,7 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
   const [tauLoad, setTauLoad] = useState(0.1); // N·m
   const [restartTick, setRestartTick] = useState(0);
 
-  const stateRef = useRef({ tauLoad });
-  useEffect(() => {
-    stateRef.current.tauLoad = tauLoad;
-  }, [tauLoad]);
+  const stateRef = useSimState({ tauLoad });
 
   // Steady-state algebra: at dω/dt = 0
   //   I·k_t = b·ω + τ_L
@@ -60,136 +59,119 @@ export function BackEMFInRunningMotorDemo({ figure }: Props) {
     };
   }, [tauLoad]);
 
-  const setup = useCallback(
-    (info: CanvasInfo) => {
-      const { ctx, w, h, colors } = info;
-      let raf = 0;
-      let lastT = performance.now();
-      let omega = 0;
-      const histI: number[] = [];
-      const histE: number[] = [];
+  const setup = useSimLoop(
+    stateRef,
+    ({ ctx, w, h, colors }, _state, dt, _simTime, ctx0) => {
+      const { tauLoad } = stateRef.current;
+      const backEMF = K_E * ctx0.omega;
+      const I = (V_SUPPLY - backEMF) / R_WIND;
+      const tauMotor = K_T * I;
+      const tauNet = tauMotor - B_VISC * ctx0.omega - tauLoad;
+      ctx0.omega += (tauNet / J_ROT) * dt;
+      if (ctx0.omega < 0) ctx0.omega = 0;
 
-      function draw() {
-        const now = performance.now();
-        let dt = (now - lastT) / 1000;
-        lastT = now;
-        if (dt > 0.05) dt = 0.05;
+      ctx0.histI.push(I);
+      ctx0.histE.push(backEMF);
+      if (ctx0.histI.length > HISTORY_LEN) ctx0.histI.shift();
+      if (ctx0.histE.length > HISTORY_LEN) ctx0.histE.shift();
 
-        const { tauLoad } = stateRef.current;
-        const backEMF = K_E * omega;
-        const I = (V_SUPPLY - backEMF) / R_WIND;
-        const tauMotor = K_T * I;
-        const tauNet = tauMotor - B_VISC * omega - tauLoad;
-        omega += (tauNet / J_ROT) * dt;
-        if (omega < 0) omega = 0;
+      ctx.fillStyle = colors.bg;
+      ctx.fillRect(0, 0, w, h);
 
-        histI.push(I);
-        histE.push(backEMF);
-        if (histI.length > HISTORY_LEN) histI.shift();
-        if (histE.length > HISTORY_LEN) histE.shift();
+      const padL = 56,
+        padR = 24,
+        padT = 18,
+        padB = 22;
+      const plotH = h - padT - padB;
+      const plotW = w - padL - padR;
 
-        // Layout: scope on top, bar plot below.
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = colors.border;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(padL, padT, plotW, plotH);
 
-        const padL = 56,
-          padR = 24,
-          padT = 18,
-          padB = 22;
-        const plotH = h - padT - padB;
-        const plotW = w - padL - padR;
+      // Y axes: current 0..V/R (max), back-EMF 0..V
+      const yI = (v: number) => padT + plotH - (v / (V_SUPPLY / R_WIND)) * plotH;
+      const yE = (v: number) => padT + plotH - (v / V_SUPPLY) * plotH;
+      const xT = (i: number) => padL + (i / (HISTORY_LEN - 1)) * plotW;
 
-        ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(padL, padT, plotW, plotH);
-
-        // Y axes: current 0..V/R (max), back-EMF 0..V
-        const yI = (v: number) => padT + plotH - (v / (V_SUPPLY / R_WIND)) * plotH;
-        const yE = (v: number) => padT + plotH - (v / V_SUPPLY) * plotH;
-        const xT = (i: number) => padL + (i / (HISTORY_LEN - 1)) * plotW;
-
-        // Gridlines
-        ctx.strokeStyle = colors.border;
-        for (let i = 1; i < 4; i++) {
-          const y = padT + (i / 4) * plotH;
-          ctx.beginPath();
-          ctx.moveTo(padL, y);
-          ctx.lineTo(padL + plotW, y);
-          ctx.stroke();
-        }
-
-        // V_applied — flat line at top (constant)
-        ctx.strokeStyle = colors.teal;
-        ctx.setLineDash([4, 4]);
-        ctx.lineWidth = 1.4;
+      // Gridlines
+      ctx.strokeStyle = colors.border;
+      for (let i = 1; i < 4; i++) {
+        const y = padT + (i / 4) * plotH;
         ctx.beginPath();
-        ctx.moveTo(padL, yE(V_SUPPLY));
-        ctx.lineTo(padL + plotW, yE(V_SUPPLY));
+        ctx.moveTo(padL, y);
+        ctx.lineTo(padL + plotW, y);
         ctx.stroke();
-        ctx.setLineDash([]);
-
-        // Current trace (amber)
-        ctx.strokeStyle = colors.accent;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        for (let i = 0; i < histI.length; i++) {
-          const x = xT(HISTORY_LEN - histI.length + i);
-          const y = yI(histI[i]);
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-
-        // Back-EMF trace (blue)
-        ctx.strokeStyle = colors.blue;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        for (let i = 0; i < histE.length; i++) {
-          const x = xT(HISTORY_LEN - histE.length + i);
-          const y = yE(histE[i]);
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-
-        // Axis labels
-        ctx.fillStyle = colors.textDim;
-        drawLabel(ctx, { text: 'I → V/R', x: padL - 6, y: yI(V_SUPPLY / R_WIND), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-        drawLabel(ctx, { text: '0', x: padL - 6, y: yI(0), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
-        drawLabel(ctx, { text: 'E_back → V', x: padL + plotW + 6, y: yE(V_SUPPLY), font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
-
-        // Legend
-        const legX = padL + 8;
-        let legY = padT + 6;
-        const lg = (color: string, label: string) => {
-          ctx.fillStyle = color;
-          ctx.fillRect(legX, legY + 4, 14, 3);
-          drawLabel(ctx, { text: label, x: legX + 20, y: legY + 1, color: colors.text });
-          legY += 14;
-        };
-        lg(withAlpha(colors.teal, 0.55), 'V_applied (constant)');
-        lg('#5baef8', 'back-EMF = k_e ω');
-        lg('#ff6b2a', 'current I = (V − E_back)/R');
-
-        // Time axis
-        ctx.save();
-        ctx.globalAlpha = 0.65;
-        drawLabel(ctx, { text: 'time →', x: padL + plotW / 2, y: padT + plotH + 6, align: 'center', baseline: 'top' });
-        ctx.restore();
-
-        raf = requestAnimationFrame(draw);
       }
-      raf = requestAnimationFrame(draw);
-      return () => cancelAnimationFrame(raf);
+
+      // V_applied — flat line at top (constant)
+      ctx.strokeStyle = colors.teal;
+      ctx.setLineDash([4, 4]);
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(padL, yE(V_SUPPLY));
+      ctx.lineTo(padL + plotW, yE(V_SUPPLY));
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Current trace (amber)
+      ctx.strokeStyle = colors.accent;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let i = 0; i < ctx0.histI.length; i++) {
+        const x = xT(HISTORY_LEN - ctx0.histI.length + i);
+        const y = yI(ctx0.histI[i]);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Back-EMF trace (blue)
+      ctx.strokeStyle = colors.blue;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let i = 0; i < ctx0.histE.length; i++) {
+        const x = xT(HISTORY_LEN - ctx0.histE.length + i);
+        const y = yE(ctx0.histE[i]);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Axis labels
+      ctx.fillStyle = colors.textDim;
+      drawLabel(ctx, { text: 'I → V/R', x: padL - 6, y: yI(V_SUPPLY / R_WIND), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: '0', x: padL - 6, y: yI(0), font: '10px "JetBrains Mono", monospace', align: 'right', baseline: 'middle' });
+      drawLabel(ctx, { text: 'E_back → V', x: padL + plotW + 6, y: yE(V_SUPPLY), font: '10px "JetBrains Mono", monospace', baseline: 'middle' });
+
+      // Legend
+      const legX = padL + 8;
+      let legY = padT + 6;
+      const lg = (color: string, label: string) => {
+        ctx.fillStyle = color;
+        ctx.fillRect(legX, legY + 4, 14, 3);
+        drawLabel(ctx, { text: label, x: legX + 20, y: legY + 1, color: colors.text });
+        legY += 14;
+      };
+      lg(withAlpha(colors.teal, 0.55), 'V_applied (constant)');
+      lg(colors.blue, 'back-EMF = k_e ω');
+      lg(colors.accent, 'current I = (V − E_back)/R');
+
+      // Time axis
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      drawLabel(ctx, { text: 'time →', x: padL + plotW / 2, y: padT + plotH + 6, align: 'center', baseline: 'top' });
+      ctx.restore();
     },
     [restartTick],
+    () => ({ context: { omega: 0, histI: [] as number[], histE: [] as number[] } }),
   );
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.7'}
+      figure={figure ?? 'Fig. 20.7'}
       title="Back-EMF and the inrush current"
-      question="Why does a stalled motor pull 10× its rated current — and what stops it from doing that once running?"
+      question="Why does a stalled motor pull several times its rated current — and what stops it from doing that once running?"
       caption={
         <>
           Brushed DC motor with V = 12 V, R = 1 Ω, k_e = 0.05 V·s/rad. At <em>t</em> = 0 the rotor

@@ -69,18 +69,18 @@ export default function Ch11Relativity() {
 
       <p className="mb-prose-3">
         The setup. A long straight wire carrying a steady current{' '}
-        <strong className="text-text font-medium">I</strong>. Far enough from the ends that you can
+        <InlineMath tex="I" />. Far enough from the ends that you can
         treat it as infinite. The wire is{' '}
         <strong className="text-text font-medium">electrically neutral</strong> — the lattice of
         positive ions and the drifting electrons have equal linear charge densities in the wire's
         rest frame, so the net charge per unit length is zero.
       </p>
       <p className="mb-prose-3">
-        Place a small positive test charge <strong className="text-text font-medium">q</strong> next
+        Place a small positive test charge <InlineMath tex="q" /> next
         to it, also at rest in the lab. What force does it feel? Run through the chapter-6 catalog.
-        The wire is neutral, so <strong className="text-text font-medium">E</strong> from the wire
+        The wire is neutral, so <InlineMath tex="E" /> from the wire
         is zero — no electric force. The wire makes a magnetic field{' '}
-        <strong className="text-text font-medium">B</strong> that wraps around it according to
+        <InlineMath tex="B" /> that wraps around it according to
         Ampère, but the magnetic Lorentz force <InlineMath>F = q v × B</InlineMath> requires the
         test charge to be <em className="text-text italic">moving</em>, and ours isn't.{' '}
         <strong className="text-text font-medium">The test charge feels nothing.</strong>
@@ -126,10 +126,10 @@ export default function Ch11Relativity() {
           def={
             <>
               <strong className="text-text font-medium">length contraction</strong> — in special
-              relativity, an object of proper length <em className="text-text italic">L₀</em>{' '}
+              relativity, an object of proper length <InlineMath tex="L_0" />{' '}
               measured along its direction of motion appears shortened to{' '}
-              <em className="text-text italic">L = L₀/γ</em> in any frame in which it moves at speed{' '}
-              <em className="text-text italic">v</em>.
+              <InlineMath tex="L = L_0/\gamma" /> in any frame in which it moves at speed{' '}
+              <InlineMath tex="v" />.
             </>
           }
         >
@@ -175,18 +175,13 @@ export default function Ch11Relativity() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          F<sub>magnetic</sub>(lab)
-        </strong>{' '}
+        <InlineMath tex="F_{\text{magnetic}}(\text{lab})" />{' '}
         is the magnetic Lorentz force the test charge feels in the wire's rest frame (in newtons,
-        given by <em className="text-text italic">qv × B</em> with{' '}
-        <em className="text-text italic">B</em> from Biot–Savart) and
-        <strong className="text-text font-medium">
-          {' '}
-          F<sub>electric</sub>(boosted)
-        </strong>{' '}
+        given by <InlineMath tex="qv \times B" /> with{' '}
+        <InlineMath tex="B" /> from Biot–Savart) and
+        {' '}<InlineMath tex="F_{\text{electric}}(\text{boosted})" />{' '}
         is the ordinary Coulomb force the same test charge feels in the frame in which it is
-        momentarily at rest (also in newtons, given by <em className="text-text italic">qE</em> from
+        momentarily at rest (also in newtons, given by <InlineMath tex="qE" /> from
         the residual linear charge density of the now-non-neutral wire). Both are the force on one
         and the same physical test charge; only the label changes with the choice of frame. It holds
         because the entire apparatus of magnetism is the leading-order correction to the Coulomb
@@ -206,8 +201,8 @@ export default function Ch11Relativity() {
           def={
             <>
               <strong className="text-text font-medium">gamma factor (γ)</strong> — the Lorentz
-              factor <em className="text-text italic">γ = 1/√(1 − v²/c²)</em>. Equal to 1 at rest,
-              diverging at <em className="text-text italic">v → c</em>. Controls time dilation,
+              factor <InlineMath tex="\gamma = 1/\sqrt{1 - v^{2}/c^{2}}" />. Equal to 1 at rest,
+              diverging at <InlineMath tex="v \to c" />. Controls time dilation,
               length contraction, and relativistic mass-energy.
             </>
           }
@@ -217,7 +212,7 @@ export default function Ch11Relativity() {
         ≈ 1 to fifteen decimal places, and the relativistic correction looks ridiculously small. It
         <em className="text-text italic"> is</em> ridiculously small per electron. But there are
         about
-        <strong className="text-text font-medium"> 10²³</strong> electrons per cubic centimeter of
+        <InlineMath tex="10^{23}" /> electrons per cubic centimeter of
         copper, and the imbalance times that number is what gives the wire its measurable magnetic
         effect. Magnetism is a colossal pile of tiny relativistic corrections, summed coherently{' '}
         <Cite id="purcell-morin-2013" in={SOURCES} />.
@@ -228,7 +223,7 @@ export default function Ch11Relativity() {
         question={
           <>
             Compute the Lorentz factor γ for an object moving at{' '}
-            <em className="text-text italic">v</em> = 0.1c, 0.5c, 0.9c, and 0.99c.
+            <InlineMath tex="v" /> = 0.1c, 0.5c, 0.9c, and 0.99c.
           </>
         }
         hint="γ = 1/√(1 − β²), where β = v/c."
@@ -270,8 +265,8 @@ export default function Ch11Relativity() {
                 electromagnetic field tensor (F<sup>μν</sup>)
               </strong>{' '}
               — the rank-2 antisymmetric tensor whose six independent components are the three of{' '}
-              <em className="text-text italic">E/c</em> and the three of{' '}
-              <em className="text-text italic">B</em>. Maxwell's equations rewrite as{' '}
+              <InlineMath tex="E/c" /> and the three of{' '}
+              <InlineMath tex="B" />. Maxwell's equations rewrite as{' '}
               <em className="text-text italic">
                 ∂<sub>μ</sub>F<sup>μν</sup> = μ₀J<sup>ν</sup>
               </em>{' '}
@@ -334,7 +329,7 @@ export default function Ch11Relativity() {
               <strong className="text-text font-medium">Lorentz invariant</strong> — a quantity
               built from four-vectors or tensors that takes the same value in every inertial frame.
               The spacetime <em className="text-text italic">invariant interval</em>{' '}
-              <em className="text-text italic">s² = c²t² − x² − y² − z²</em> is the canonical
+              <InlineMath tex="s^{2} = c^{2}t^{2} - x^{2} - y^{2} - z^{2}" /> is the canonical
               example.
             </>
           }
@@ -391,9 +386,9 @@ export default function Ch11Relativity() {
           def={
             <>
               <strong className="text-text font-medium">time dilation</strong> — a clock moving at
-              speed <em className="text-text italic">v</em> relative to an observer ticks slow by
-              the factor γ: an interval <em className="text-text italic">Δτ</em> in the clock's rest
-              frame appears as <em className="text-text italic">Δt = γ·Δτ</em> in the observer's
+              speed <InlineMath tex="v" /> relative to an observer ticks slow by
+              the factor γ: an interval <InlineMath tex="\Delta\tau" /> in the clock's rest
+              frame appears as <InlineMath tex="\Delta t = \gamma \cdot \Delta\tau" /> in the observer's
               frame.
             </>
           }
@@ -410,7 +405,7 @@ export default function Ch11Relativity() {
         tag="Try 11.2"
         question={
           <>
-            A 1-metre rod flies past you lengthwise at <em className="text-text italic">v</em> =
+            A 1-metre rod flies past you lengthwise at <InlineMath tex="v" /> =
             0.5c. What length do you measure?
           </>
         }
@@ -434,8 +429,8 @@ export default function Ch11Relativity() {
         tag="Try 11.3"
         question={
           <>
-            GPS satellites orbit at <em className="text-text italic">v</em> ≈ 3.87 km/s with a
-            gravitational potential ≈ 5.3×10⁻¹⁰ <em className="text-text italic">c²</em>
+            GPS satellites orbit at <InlineMath tex="v" /> ≈ 3.87 km/s with a
+            gravitational potential ≈ 5.3×10⁻¹⁰ <InlineMath tex="c^{2}" />
             shallower than at Earth's surface. Roughly, how much do their clocks gain or lose per
             day relative to the ground?
           </>
@@ -464,8 +459,8 @@ export default function Ch11Relativity() {
         question={
           <>
             At the LHC, 7 TeV protons (rest energy 938 MeV) have γ ≈ 7460. How close is their speed
-            to c? Express <em className="text-text italic">v/c</em> as{' '}
-            <em className="text-text italic">1 − ε</em> and estimate ε.
+            to c? Express <InlineMath tex="v/c" /> as{' '}
+            <InlineMath tex="1 - \varepsilon" /> and estimate ε.
           </>
         }
         hint={<>For large γ, β = √(1 − 1/γ²) ≈ 1 − 1/(2γ²).</>}
@@ -488,9 +483,9 @@ export default function Ch11Relativity() {
         question={
           <>
             A relativistic electron moves perpendicular to a uniform{' '}
-            <em className="text-text italic">B</em> = 1 T at <em className="text-text italic">v</em>{' '}
+            <InlineMath tex="B" /> = 1 T at <InlineMath tex="v" />{' '}
             = 0.9c. What is its cyclotron radius? Use the relativistic momentum{' '}
-            <em className="text-text italic">p = γmv</em>.
+            <InlineMath tex="p = \gamma mv" />.
           </>
         }
         hint={
@@ -603,7 +598,7 @@ export default function Ch11Relativity() {
           <p className="mb-prose-2 last:mb-0">
             The thought experiment in §1 is exact; let's run the arithmetic. In the lab frame,
             copper's electron density is{' '}
-            <strong className="text-text font-medium">n = 8.50 × 10²⁸ m⁻³</strong>, and at{' '}
+            <InlineMath tex="n = 8.50 \times 10^{28}\,\text{m}^{-3}" />, and at{' '}
             <strong className="text-text font-medium">1 A</strong> through a 12-gauge cross-section
             the drift velocity is about{' '}
             <strong className="text-text font-medium">2.2 × 10⁻⁵ m/s</strong> — slower than a snail
@@ -660,7 +655,7 @@ export default function Ch11Relativity() {
             <strong className="text-text font-medium">7 TeV</strong> per proton, against a rest-mass
             energy of
             <strong className="text-text font-medium"> 938 MeV</strong>, giving{' '}
-            <strong className="text-text font-medium">γ ≈ 7460</strong>
+            <InlineMath tex="\gamma \approx 7460" />
             <Cite id="bruning-lhc-2004" in={SOURCES} />. At that γ, the protons travel at{' '}
             <InlineMath>1 − 9 × 10⁻⁹</InlineMath> times c: their speed differs from light by under
             three metres per second, but their momentum is 7460 times the non-relativistic value,
@@ -670,7 +665,7 @@ export default function Ch11Relativity() {
             The relativistic momentum-radius relation is <InlineMath>p = q B ρ</InlineMath>, and at
             7 TeV / c the momentum that 1232 superconducting dipoles must steer into a 26.659 km
             ring forces
-            <strong className="text-text font-medium"> B = 8.33 T</strong> — at the edge of what
+            <InlineMath tex="B = 8.33\,\text{T}" /> — at the edge of what
             NbTi at 1.9 K will do
             <Cite id="bruning-lhc-2004" in={SOURCES} />. Drop γ to non-relativistic levels and the
             same momentum would imply a velocity above c, which doesn't exist. The four-momentum
@@ -684,7 +679,7 @@ export default function Ch11Relativity() {
                 <>
                   <strong className="text-text font-medium">four-vector</strong> — an object with
                   four components (one temporal, three spatial) that transforms under Lorentz boosts
-                  the way <em className="text-text italic">(ct, x, y, z)</em> does. Examples:
+                  the way <InlineMath tex="(ct, x, y, z)" /> does. Examples:
                   position{' '}
                   <em className="text-text italic">
                     x<sup>μ</sup>
@@ -749,9 +744,9 @@ export default function Ch11Relativity() {
             broad, sin²θ around the acceleration axis. Push the charge to relativistic speed and
             that
             pattern, viewed in the lab frame, gets Lorentz-aberrated into a tight cone of half-angle{' '}
-            <strong className="text-text font-medium">~1/γ</strong> in the forward direction. The
+            <InlineMath tex="\sim 1/\gamma" /> in the forward direction. The
             total radiated power picks up an additional factor of{' '}
-            <strong className="text-text font-medium">γ⁴</strong> for a circular orbit, which is why
+            <InlineMath tex="\gamma^{4}" /> for a circular orbit, which is why
             electron storage rings make excellent X-ray sources but proton ones mostly don't (γ at
             the same energy scales as 1/m, so protons radiate roughly
             <InlineMath> (m_e/m_p)⁴ ≈ 10⁻¹³</InlineMath> as efficiently)

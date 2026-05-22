@@ -14,6 +14,7 @@ import { Cite } from '@/components/SourcesList';
 import { Formula, InlineMath } from '@/components/Formula';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
+import { Pullout } from '@/components/Prose';
 import { RCFilterBodeDemo } from './demos/RCFilterBode';
 import { RLCBandpassDemo } from './demos/RLCBandpass';
 import { FilterDesignerDemo } from './demos/FilterDesigner';
@@ -65,9 +66,7 @@ export default function Ch16FiltersOpAmpsTLines() {
             <>
               <strong className="text-text font-medium">transfer function</strong> — the complex
               ratio of output to input phasors as a function of frequency:{' '}
-              <em className="text-text italic">
-                H(jω) = V<sub>out</sub>/V<sub>in</sub>
-              </em>
+              <InlineMath tex="H(j\omega) = V_{out}/V_{in}" />
               . Its magnitude tells you how much amplitude survives at each ω; its argument tells
               you the phase shift.
             </>
@@ -75,7 +74,7 @@ export default function Ch16FiltersOpAmpsTLines() {
         >
           transfer function
         </Term>{' '}
-        H(jω) = V<sub>out</sub>(jω) / V<sub>in</sub>(jω).
+        <InlineMath tex="H(j\omega) = V_{out}(j\omega) / V_{in}(j\omega)" />.
       </p>
       <p className="mb-prose-3">
         For an RC low-pass filter — a resistor R driving a capacitor C with V<sub>out</sub> taken
@@ -83,27 +82,24 @@ export default function Ch16FiltersOpAmpsTLines() {
       </p>
       <Formula tex="H(j\omega) = \dfrac{1/(j\omega C)}{R + 1/(j\omega C)} = \dfrac{1}{1 + j\omega RC}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">H(jω)</strong> is the complex transfer
+        where <InlineMath tex="H(j\omega)" /> is the complex transfer
         function (dimensionless ratio of output phasor to input phasor) at angular frequency{' '}
-        <strong className="text-text font-medium">ω</strong> (in radians per second),{' '}
-        <strong className="text-text font-medium">R</strong> is the series resistance (in ohms),
-        <strong className="text-text font-medium"> C</strong> is the shunt capacitance (in farads),
+        <InlineMath tex="\omega" /> (in radians per second),{' '}
+        <InlineMath tex="R" /> is the series resistance (in ohms),
+        <InlineMath tex="C" /> is the shunt capacitance (in farads),
         and
-        <strong className="text-text font-medium"> j = √−1</strong> is the imaginary unit.
+        <InlineMath tex="j = \sqrt{-1}" /> is the imaginary unit.
       </p>
       <p className="mb-prose-3">whose magnitude is</p>
       <Formula tex="|H(j\omega)| = \dfrac{1}{\sqrt{1 + (\omega/\omega_c)^2}}, \quad \omega_c = 1/RC" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">|H(jω)|</strong> is the dimensionless
+        where <InlineMath tex="|H(j\omega)|" /> is the dimensionless
         magnitude of the transfer function at angular frequency{' '}
-        <strong className="text-text font-medium">ω</strong> (in radians per second), and
-        <strong className="text-text font-medium">
-          {' '}
-          ω<sub>c</sub> = 1/RC
-        </strong>{' '}
+        <InlineMath tex="\omega" /> (in radians per second), and{' '}
+        <InlineMath tex="\omega_c = 1/RC" />{' '}
         is the cutoff angular frequency (also in radians per second), set by the resistance{' '}
-        <strong className="text-text font-medium">R</strong> (in ohms) and the capacitance{' '}
-        <strong className="text-text font-medium">C</strong> (in farads).
+        <InlineMath tex="R" /> (in ohms) and the capacitance{' '}
+        <InlineMath tex="C" /> (in farads).
       </p>
       <p className="mb-prose-3">
         Why does the corner land at exactly <InlineMath tex="\omega_c = 1/RC" />? It is the
@@ -125,13 +121,9 @@ export default function Ch16FiltersOpAmpsTLines() {
               <strong className="text-text font-medium">cutoff frequency</strong> — the frequency at
               which a filter's magnitude response has dropped to 1/√2 of its passband value (−3 dB).
               For an RC filter,{' '}
-              <em className="text-text italic">
-                ω<sub>c</sub> = 1/RC
-              </em>
+              <InlineMath tex="\omega_c = 1/RC" />
               ;{' '}
-              <em className="text-text italic">
-                f<sub>c</sub> = 1/(2πRC)
-              </em>
+              <InlineMath tex="f_c = 1/(2\pi RC)" />
               .
             </>
           }
@@ -153,8 +145,8 @@ export default function Ch16FiltersOpAmpsTLines() {
               <>
                 <strong className="text-text font-medium">Bode plot</strong> — a pair of plots of a
                 transfer function on logarithmic frequency axes:{' '}
-                <em className="text-text italic">|H(jω)|</em> in dB versus log ω (magnitude), and
-                arg <em className="text-text italic">H(jω)</em> versus log ω (phase). Named after
+                <InlineMath tex="|H(j\omega)|" /> in dB versus log ω (magnitude), and
+                arg <InlineMath tex="H(j\omega)" /> versus log ω (phase). Named after
                 Hendrik Bode at Bell Labs (1940s).
               </>
             }
@@ -184,13 +176,13 @@ export default function Ch16FiltersOpAmpsTLines() {
       </p>
       <Formula tex="H(j\omega) = \dfrac{R}{R + j\omega L + 1/(j\omega C)} = \dfrac{j\omega RC}{1 - \omega^2 LC + j\omega RC}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">H(jω)</strong> is the complex
+        where <InlineMath tex="H(j\omega)" /> is the complex
         (dimensionless) transfer function at angular frequency{' '}
-        <strong className="text-text font-medium">ω</strong> (in radians per second),{' '}
-        <strong className="text-text font-medium">R</strong> is the series resistance (in ohms),{' '}
-        <strong className="text-text font-medium">L</strong> is the inductance (in henries),
-        <strong className="text-text font-medium"> C</strong> is the capacitance (in farads), and{' '}
-        <strong className="text-text font-medium">j = √−1</strong>.
+        <InlineMath tex="\omega" /> (in radians per second),{' '}
+        <InlineMath tex="R" /> is the series resistance (in ohms),{' '}
+        <InlineMath tex="L" /> is the inductance (in henries),
+        <InlineMath tex="C" /> is the capacitance (in farads), and{' '}
+        <InlineMath tex="j = \sqrt{-1}" />.
       </p>
       <p className="mb-prose-3">
         which peaks at <InlineMath tex="\omega_0 = 1/\sqrt{LC}" /> and is small everywhere else — a{' '}
@@ -244,21 +236,16 @@ export default function Ch16FiltersOpAmpsTLines() {
       </p>
       <Formula tex="H(j\omega) = \dfrac{K}{1 - (\omega/\omega_0)^2 + j(\omega/\omega_0)(3 - K)}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">H(jω)</strong> is the (dimensionless)
+        where <InlineMath tex="H(j\omega)" /> is the (dimensionless)
         complex transfer function at angular frequency{' '}
-        <strong className="text-text font-medium">ω</strong> (in radians per second),
-        <strong className="text-text font-medium">
-          {' '}
-          K = 1 + R<sub>f</sub>/R<sub>g</sub>
-        </strong>{' '}
+        <InlineMath tex="\omega" /> (in radians per second),{' '}
+        <InlineMath tex="K = 1 + R_f/R_g" />{' '}
         is the dimensionless non-inverting DC gain set by the feedback divider,{' '}
-        <strong className="text-text font-medium">
-          ω<sub>0</sub> = 1/(RC)
-        </strong>{' '}
+        <InlineMath tex="\omega_0 = 1/(RC)" />{' '}
         is the cutoff angular frequency (in radians per second) for equal components{' '}
-        <strong className="text-text font-medium">R</strong> (in ohms) and{' '}
-        <strong className="text-text font-medium">C</strong> (in farads), and
-        <strong className="text-text font-medium"> j = √−1</strong>.
+        <InlineMath tex="R" /> (in ohms) and{' '}
+        <InlineMath tex="C" /> (in farads), and
+        <InlineMath tex="j = \sqrt{-1}" />.
       </p>
       <p className="mb-prose-3">
         with corner <InlineMath tex="\omega_0 = 1/(RC)" /> and <InlineMath tex="Q = 1/(3-K)" />. The
@@ -533,7 +520,7 @@ export default function Ch16FiltersOpAmpsTLines() {
               <>
                 <strong className="text-text font-medium">characteristic impedance</strong> — the
                 ratio of voltage to current in a traveling wave on a lossless transmission line:{' '}
-                <em className="text-text italic">Z₀ = √(L′/C′)</em>, where L′ and C′ are
+                <InlineMath tex="Z_0 = \sqrt{L'/C'}" />, where L′ and C′ are
                 per-unit-length inductance and capacitance. A purely real number (in ohms), but not
                 a resistor — Z₀ describes wave propagation, not dissipation.
               </>
@@ -546,12 +533,10 @@ export default function Ch16FiltersOpAmpsTLines() {
       <Formula tex="Z_0 = \sqrt{L'/C'}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          Z<sub>0</sub>
-        </strong>{' '}
+        <InlineMath tex="Z_0" />{' '}
         is the characteristic impedance of the line (in ohms),{' '}
-        <strong className="text-text font-medium">L′</strong> is the inductance per unit length (in
-        henries per metre), and <strong className="text-text font-medium">C′</strong> is the
+        <InlineMath tex="L'" /> is the inductance per unit length (in
+        henries per metre), and <InlineMath tex="C'" /> is the
         capacitance per unit length (in farads per metre). Z<sub>0</sub> is purely real for a
         lossless line but does not dissipate energy — it sets the ratio of voltage to current in a
         wave traveling along the line.
@@ -579,10 +564,8 @@ export default function Ch16FiltersOpAmpsTLines() {
               <>
                 <strong className="text-text font-medium">reflection coefficient</strong> — the
                 complex ratio of reflected to incident voltage at a transmission-line termination:{' '}
-                <em className="text-text italic">
-                  Γ = (Z<sub>L</sub> − Z₀)/(Z<sub>L</sub> + Z₀)
-                </em>
-                . <em className="text-text italic">Γ = 0</em> for matched,{' '}
+                <InlineMath tex="\Gamma = (Z_L - Z_0)/(Z_L + Z_0)" />
+                . <InlineMath tex="\Gamma = 0" /> for matched,{' '}
                 <em className="text-text italic">+1</em> for an open,{' '}
                 <em className="text-text italic">−1</em> for a short.
               </>
@@ -594,16 +577,12 @@ export default function Ch16FiltersOpAmpsTLines() {
       </p>
       <Formula tex="\Gamma = \dfrac{Z_L - Z_0}{Z_L + Z_0}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">Γ</strong> is the dimensionless (in general
+        where <InlineMath tex="\Gamma" /> is the dimensionless (in general
         complex) reflection coefficient — the ratio of the reflected to the incident voltage phasor
         at the termination —{' '}
-        <strong className="text-text font-medium">
-          Z<sub>L</sub>
-        </strong>{' '}
+        <InlineMath tex="Z_L" />{' '}
         is the load impedance at the end of the line (in ohms, in general complex), and{' '}
-        <strong className="text-text font-medium">
-          Z<sub>0</sub>
-        </strong>{' '}
+        <InlineMath tex="Z_0" />{' '}
         is the line's characteristic impedance (in ohms, real for a lossless line).
       </p>
       <p className="mb-prose-3">
@@ -628,7 +607,7 @@ export default function Ch16FiltersOpAmpsTLines() {
               <>
                 <strong className="text-text font-medium">VSWR</strong> — voltage standing-wave
                 ratio: the ratio of the maximum to minimum voltage magnitude along a mismatched
-                transmission line. <em className="text-text italic">VSWR = (1 + |Γ|)/(1 − |Γ|)</em>.{' '}
+                transmission line. <InlineMath tex="\text{VSWR} = (1 + |\Gamma|)/(1 - |\Gamma|)" />.{' '}
                 <em className="text-text italic">1:1</em> is perfect match;{' '}
                 <em className="text-text italic">2:1</em> is mediocre;{' '}
                 <em className="text-text italic">∞:1</em> is full reflection (short or open).
@@ -642,18 +621,13 @@ export default function Ch16FiltersOpAmpsTLines() {
       </p>
       <Formula tex="\text{VSWR} = \dfrac{V_{max}}{V_{min}} = \dfrac{1 + |\Gamma|}{1 - |\Gamma|}" />
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">VSWR</strong> is the dimensionless voltage
-        standing-wave ratio,
-        <strong className="text-text font-medium">
-          {' '}
-          V<sub>max</sub>
-        </strong>{' '}
+        where <InlineMath tex="\text{VSWR}" /> is the dimensionless voltage
+        standing-wave ratio,{' '}
+        <InlineMath tex="V_{\max}" />{' '}
         and{' '}
-        <strong className="text-text font-medium">
-          V<sub>min</sub>
-        </strong>{' '}
-        are the maximum and minimum voltage envelope magnitudes along the line (in volts), and
-        <strong className="text-text font-medium"> |Γ|</strong> is the magnitude of the reflection
+        <InlineMath tex="V_{\min}" />{' '}
+        are the maximum and minimum voltage envelope magnitudes along the line (in volts), and{' '}
+        <InlineMath tex="|\Gamma|" /> is the magnitude of the reflection
         coefficient (dimensionless, between 0 and 1 for a passive load).
       </p>
       <p className="mb-prose-3">
@@ -733,10 +707,10 @@ export default function Ch16FiltersOpAmpsTLines() {
         modern motherboard is engineered as a controlled-impedance trace, terminated to absorb its
         own reflections.
       </p>
-      <p className="pullout">
+      <Pullout>
         A wire is just a wire — until it isn't. The crossover is set by the ratio of length to
         wavelength, and modern silicon crossed it some time around 1990.
-      </p>
+      </Pullout>
 
       <TryIt
         tag="Try 16.3"

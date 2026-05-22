@@ -62,8 +62,8 @@ export function StepperMotorDemo({ figure }: Props) {
         // Which pair is energized depends on phase = steps mod 4
         const phase = ((stateRef.current.steps % 4) + 4) % 4;
         const energized = i % 4 === phase;
-        ctx.fillStyle = energized ? withAlpha(colors.accent, 0.5) : 'rgba(255,255,255,0.10)';
-        ctx.strokeStyle = energized ? withAlpha(colors.accent, 0.9) : 'rgba(255,255,255,0.3)';
+        ctx.fillStyle = energized ? withAlpha(colors.accent, 0.5) : withAlpha(colors.text, 0.1);
+        ctx.strokeStyle = energized ? withAlpha(colors.accent, 0.9) : withAlpha(colors.text, 0.3);
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.arc(px, py, 14, 0, Math.PI * 2);
@@ -82,7 +82,7 @@ export function StepperMotorDemo({ figure }: Props) {
         const y1 = cy + Math.sin(a) * R * 0.6;
         const x2 = cx + Math.cos(a) * R * 0.66;
         const y2 = cy + Math.sin(a) * R * 0.66;
-        ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+        ctx.strokeStyle = withAlpha(colors.text, 0.4);
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -96,7 +96,7 @@ export function StepperMotorDemo({ figure }: Props) {
       ctx.beginPath();
       ctx.arc(mkX, mkY, 6, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = 'rgba(255,255,255,0.10)';
+      ctx.fillStyle = withAlpha(colors.text, 0.1);
       ctx.beginPath();
       ctx.arc(cx, cy, 8, 0, Math.PI * 2);
       ctx.fill();
@@ -118,7 +118,7 @@ export function StepperMotorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 16.5'}
+      figure={figure ?? 'Fig. 20.5'}
       title="Stepper motor — one pulse, one step"
       question="What if you just want to command position, not torque?"
       caption={

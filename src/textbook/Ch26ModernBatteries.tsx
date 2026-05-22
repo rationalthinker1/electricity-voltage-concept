@@ -97,7 +97,7 @@ export default function Ch19ModernBatteries() {
       <Formula>PbO₂ + 3H⁺ + HSO₄⁻ + 2e⁻ → PbSO₄ + 2H₂O (cathode)</Formula>
       <p className="mb-prose-3">
         Summed:{' '}
-        <strong className="text-text font-medium">Pb + PbO₂ + 2 H₂SO₄ → 2 PbSO₄ + 2 H₂O</strong>.
+        <InlineMath tex="\text{Pb} + \text{PbO}_2 + 2\,\text{H}_2\text{SO}_4 \to 2\,\text{PbSO}_4 + 2\,\text{H}_2\text{O}" />.
         The acid gets diluted as discharge progresses — its specific gravity drops from about 1.27
         (fully charged) to 1.10 (fully discharged). For decades, mechanics measured the state of
         charge of a lead-acid cell by drawing a sample of electrolyte into a hydrometer and reading
@@ -315,18 +315,15 @@ export default function Ch19ModernBatteries() {
         V(t) = V<sub>0</sub> − (I / C) · t
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">V(t)</strong> is the terminal voltage at
+        where <InlineMath tex="V(t)" /> is the terminal voltage at
         time t (in volts),
-        <strong className="text-text font-medium">
-          {' '}
-          V<sub>0</sub>
-        </strong>{' '}
+        <InlineMath tex="V_0" />{' '}
         is the initial fully-charged voltage (in volts),
-        <strong className="text-text font-medium"> I</strong> is the constant discharge current (in
+        <InlineMath tex="I" /> is the constant discharge current (in
         amperes; positive when current flows out of the capacitor),{' '}
-        <strong className="text-text font-medium">C</strong> is the supercapacitor's capacitance (in
+        <InlineMath tex="C" /> is the supercapacitor's capacitance (in
         farads), and
-        <strong className="text-text font-medium"> t</strong> is the elapsed time since discharge
+        <InlineMath tex="t" /> is the elapsed time since discharge
         began (in seconds). The slope is a straight downward line — the signature of capacitive, not
         chemical, storage.
       </p>
@@ -398,7 +395,7 @@ export default function Ch19ModernBatteries() {
         ½O<sub>2</sub> + 2H⁺ + 2e⁻ → H<sub>2</sub>O (cathode)
       </Formula>
       <p className="mb-prose-3">
-        Net: <strong className="text-text font-medium">H₂ + ½O₂ → H₂O + electricity + heat</strong>.
+        Net: <InlineMath tex="\text{H}_2 + \tfrac{1}{2}\text{O}_2 \to \text{H}_2\text{O} + \text{electricity} + \text{heat}" />.
         The protons cross the Nafion membrane to balance charge; the electrons travel through the
         external circuit (this is the current). The only product is water. The thermodynamic
         open-circuit voltage at 25 °C is <strong className="text-text font-medium">1.23 V</strong>;
@@ -456,7 +453,7 @@ export default function Ch19ModernBatteries() {
             <p className="mb-prose-1 last:mb-0">
               Enough to run a small car at cruise. Hydrogen consumption at this operating point is
               roughly
-              <em className="text-text italic"> N · I / (2F)</em> mol/s ≈ 0.10 mol/s ≈ 200 g/min —
+              <InlineMath tex="N \cdot I / (2F)" /> mol/s ≈ 0.10 mol/s ≈ 200 g/min —
               the fuel cell drinks H₂ at a few hundred grams per minute under load, which is why the
               on-board tank is the size of a small carry-on suitcase
               <Cite id="larminie-dicks-2003-fuel-cells" in={SOURCES} />.

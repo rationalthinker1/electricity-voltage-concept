@@ -18,7 +18,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -72,7 +72,7 @@ export default function Ch19Antennas() {
       <p className="mb-prose-3">
         That radiation carries energy. By Poynting (Chapter 8), the time-averaged outward flux from
         an accelerating charge is{' '}
-        <strong className="text-text font-medium">⟨S⟩ = (1/2) ε₀ c |E|²</strong>. Integrate over a
+        <InlineMath tex="\langle S\rangle = \tfrac{1}{2}\varepsilon_0 c |E|^{2}" />. Integrate over a
         sphere far from the source and you get the total radiated power, which (for a non-
         relativistic charge) is the Larmor formula:
       </p>
@@ -81,15 +81,13 @@ export default function Ch19Antennas() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          P<sub>rad</sub>
-        </strong>{' '}
+        <InlineMath tex="P_{\text{rad}}" />{' '}
         is the total time-averaged radiated power (in watts),
-        <strong className="text-text font-medium"> q</strong> is the charge (in coulombs),{' '}
-        <strong className="text-text font-medium">a</strong> is the magnitude of the charge's
+        <InlineMath tex="q" /> is the charge (in coulombs),{' '}
+        <InlineMath tex="a" /> is the magnitude of the charge's
         acceleration (in m/s²),{' '}
-        <strong className="text-text font-medium">ε₀ ≈ 8.854×10⁻¹² F/m</strong> is the permittivity
-        of free space, and <strong className="text-text font-medium">c ≈ 2.998×10⁸ m/s</strong> is
+        <InlineMath tex="\varepsilon_0 \approx 8.854\times 10^{-12}\,\text{F/m}" /> is the permittivity
+        of free space, and <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is
         the speed of light.
       </p>
       <p className="mb-prose-3">
@@ -142,20 +140,18 @@ export default function Ch19Antennas() {
         E(r, θ) ∝ (I<sub>0</sub> L ω / c) · sin θ · cos(kr − ωt) / r
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">E(r, θ)</strong> is the magnitude of the
+        where <InlineMath tex="E(r,\theta)" /> is the magnitude of the
         radiated electric field (in V/m) at radial distance{' '}
-        <strong className="text-text font-medium">r</strong> (in metres) and polar angle{' '}
-        <strong className="text-text font-medium">θ</strong> measured from the dipole axis (in
+        <InlineMath tex="r" /> (in metres) and polar angle{' '}
+        <InlineMath tex="\theta" /> measured from the dipole axis (in
         radians),{' '}
-        <strong className="text-text font-medium">
-          I<sub>0</sub>
-        </strong>{' '}
+        <InlineMath tex="I_0" />{' '}
         is the peak current in the wire (in amperes),{' '}
-        <strong className="text-text font-medium">L</strong> is the dipole length (in metres),
-        <strong className="text-text font-medium"> ω = 2πf</strong> is the angular frequency (in
-        rad/s), <strong className="text-text font-medium">k = ω/c</strong> is the free-space
+        <InlineMath tex="L" /> is the dipole length (in metres),{' '}
+        <InlineMath tex="\omega = 2\pi f" /> is the angular frequency (in
+        rad/s), <InlineMath tex="k = \omega/c" /> is the free-space
         wavenumber (in m⁻¹), and{' '}
-        <strong className="text-text font-medium">c ≈ 2.998×10⁸ m/s</strong> is the speed of light.
+        <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light.
       </p>
       <p className="mb-prose-3">
         Two important features of that formula. (1) The 1/r dependence — far enough away, the field
@@ -229,33 +225,25 @@ export default function Ch19Antennas() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          P<sub>rad</sub>
-        </strong>{' '}
-        is the total time-averaged radiated power (in watts),
-        <strong className="text-text font-medium"> η₀</strong> is the impedance of free space (in
-        ohms; defined below),
-        <strong className="text-text font-medium"> L</strong> is the dipole's physical length (in
-        metres), <strong className="text-text font-medium">λ</strong> is the free-space wavelength
+        <InlineMath tex="P_{\text{rad}}" />{' '}
+        is the total time-averaged radiated power (in watts),{' '}
+        <InlineMath tex="\eta_0" /> is the impedance of free space (in
+        ohms; defined below),{' '}
+        <InlineMath tex="L" /> is the dipole's physical length (in
+        metres), <InlineMath tex="\lambda" /> is the free-space wavelength
         of the radiation (in metres), and{' '}
-        <strong className="text-text font-medium">
-          I<sub>0</sub>
-        </strong>{' '}
+        <InlineMath tex="I_0" />{' '}
         is the peak current at the feedpoint (in amperes).
       </p>
       <p className="mb-prose-3">
-        with <strong className="text-text font-medium">η₀ = √(μ₀/ε₀) ≈ 377 Ω</strong> the{' '}
+        with <InlineMath tex="\eta_0 = \sqrt{\mu_0/\varepsilon_0} \approx 377\,\Omega" /> the{' '}
         <Term def="η₀ = √(μ₀/ε₀) ≈ 377 Ω. The ratio |E|/|H| in a plane EM wave travelling in vacuum, with units of impedance. Sets the link between radiation pressure, Poynting flux, and antenna impedances.">
           impedance of free space
         </Term>
         . Pull out the I₀² and you have{' '}
-        <strong className="text-text font-medium">
-          P = ½ R<sub>rad</sub> I₀²
-        </strong>{' '}
+        <InlineMath tex="P = \tfrac{1}{2}R_{\text{rad}}I_0^{2}" />{' '}
         with{' '}
-        <strong className="text-text font-medium">
-          R<sub>rad</sub> = (2π η₀/3)(L/λ)²
-        </strong>
+        <InlineMath tex="R_{\text{rad}} = (2\pi\eta_0/3)(L/\lambda)^{2}" />
         .{' '}
         <Term def="The fictitious resistance that, in series with the antenna's reactance, accounts for the energy lost to radiation. Not heat — just energy converted to outgoing EM waves. For a short dipole R_rad = (2π η₀/3)(L/λ)²; for a half-wave dipole, ≈73 Ω.">
           Radiation resistance
@@ -282,12 +270,10 @@ export default function Ch19Antennas() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          f<sub>0</sub>
-        </strong>{' '}
+        <InlineMath tex="f_0" />{' '}
         is the fundamental resonant frequency of the dipole (in Hz),{' '}
-        <strong className="text-text font-medium">c ≈ 2.998×10⁸ m/s</strong> is the speed of light,
-        and <strong className="text-text font-medium">L</strong> is the total physical length of the
+        <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light,
+        and <InlineMath tex="L" /> is the total physical length of the
         dipole wire (in metres) — half a wavelength at resonance.
       </p>
       <p className="mb-prose-3">
@@ -358,19 +344,13 @@ export default function Ch19Antennas() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          F<sub>total</sub>(θ, φ)
-        </strong>{' '}
+        <InlineMath tex="F_{\text{total}}(\theta,\phi)" />{' '}
         is the dimensionless total radiation pattern of the array at polar angle{' '}
-        <strong className="text-text font-medium">θ</strong> and azimuthal angle{' '}
-        <strong className="text-text font-medium">φ</strong> (both in radians),{' '}
-        <strong className="text-text font-medium">
-          F<sub>element</sub>
-        </strong>{' '}
+        <InlineMath tex="\theta" /> and azimuthal angle{' '}
+        <InlineMath tex="\phi" /> (both in radians),{' '}
+        <InlineMath tex="F_{\text{element}}" />{' '}
         is the pattern of a single radiating element in isolation, and{' '}
-        <strong className="text-text font-medium">
-          F<sub>array</sub>
-        </strong>{' '}
+        <InlineMath tex="F_{\text{array}}" />{' '}
         is the array factor — the geometric interference pattern that the array of N elements would
         produce if every element were an isotropic point source.
       </p>
@@ -424,14 +404,12 @@ export default function Ch19Antennas() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          θ<sub>steer</sub>
-        </strong>{' '}
+        <InlineMath tex="\theta_{\text{steer}}" />{' '}
         is the angle the main beam makes with broadside (in radians),{' '}
-        <strong className="text-text font-medium">Δφ</strong> is the progressive phase shift applied
-        between adjacent elements (in radians), <strong className="text-text font-medium">λ</strong>{' '}
-        is the free-space wavelength (in metres), and
-        <strong className="text-text font-medium"> d</strong> is the spacing between adjacent
+        <InlineMath tex="\Delta\phi" /> is the progressive phase shift applied
+        between adjacent elements (in radians), <InlineMath tex="\lambda" />{' '}
+        is the free-space wavelength (in metres), and{' '}
+        <InlineMath tex="d" /> is the spacing between adjacent
         elements (in metres).
       </p>
       <p className="mb-prose-3">
@@ -517,26 +495,17 @@ export default function Ch19Antennas() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          P<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="P_r" />{' '}
         is the power delivered to the matched receive antenna (in watts),{' '}
-        <strong className="text-text font-medium">
-          P<sub>t</sub>
-        </strong>{' '}
-        is the transmitted power (in watts),
-        <strong className="text-text font-medium">
-          {' '}
-          G<sub>t</sub>
-        </strong>{' '}
+        <InlineMath tex="P_t" />{' '}
+        is the transmitted power (in watts),{' '}
+        <InlineMath tex="G_t" />{' '}
         and{' '}
-        <strong className="text-text font-medium">
-          G<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="G_r" />{' '}
         are the dimensionless transmit and receive antenna gains relative to isotropic (often quoted
-        in dBi),
-        <strong className="text-text font-medium"> λ</strong> is the operating wavelength (in
-        metres), and <strong className="text-text font-medium">d</strong> is the line-of-sight
+        in dBi),{' '}
+        <InlineMath tex="\lambda" /> is the operating wavelength (in
+        metres), and <InlineMath tex="d" /> is the line-of-sight
         distance between the antennas (in metres).
       </p>
       <p className="mb-prose-3">
@@ -572,7 +541,7 @@ export default function Ch19Antennas() {
         <Term def="The factor cos²α by which received power drops when transmitter and receiver linear polarisations are misaligned by angle α. The antenna analogue of Malus's law in optics — a dipole only couples to the E-field component along its axis.">
           polarisation-loss factor
         </Term>{' '}
-        of <strong className="text-text font-medium">cos²α</strong>, where α is the angle between
+        of <InlineMath tex="\cos^{2}\alpha" />, where α is the angle between
         the two linear polarisation axes. Same Malus's law as optics: an antenna is a polarisation
         filter that only couples to the E-field component along its own axis. A 45° mismatch costs 3
         dB; a 90° mismatch is a full null on paper and 20–40 dB of suppression in practice
@@ -617,7 +586,7 @@ export default function Ch19Antennas() {
       <h2 className="chapter-h2">Near field vs far field</h2>
 
       <p className="mb-prose-3">
-        Friis assumes <strong className="text-text font-medium">d ≫ λ</strong>. Closer to an antenna
+        Friis assumes <InlineMath tex="d \gg \lambda" />. Closer to an antenna
         than that, the simple 1/r far-field picture doesn't apply. The radiation field of any
         oscillating source has three components: a 1/r³ "near zone" piece that looks essentially
         like a quasi-static dipole, a 1/r² intermediate piece, and a 1/r "radiation zone" piece. The
@@ -628,7 +597,7 @@ export default function Ch19Antennas() {
       </p>
       <p className="mb-prose-3">
         The boundary between these regions is at{' '}
-        <strong className="text-text font-medium">r ≈ λ/(2π)</strong>. Inside that radius, the field
+        <InlineMath tex="r \approx \lambda/(2\pi)" />. Inside that radius, the field
         structure is dominated by the reactive near-zone terms. Outside, the radiation zone takes
         over and the field looks locally like a plane EM wave with |E|/|H| = η₀.
       </p>
@@ -637,12 +606,9 @@ export default function Ch19Antennas() {
 
       <p className="mb-prose-3">
         For large aperture antennas (a parabolic dish, a phased array), there's an additional
-        "Fraunhofer / Fresnel" distance set by the antenna's physical size:
-        <strong className="text-text font-medium">
-          {' '}
-          r<sub>far</sub> ≈ 2 D²/λ
-        </strong>
-        , where D is the largest aperture dimension. For a 70-m DSN dish at 8.4 GHz this works out
+        "Fraunhofer / Fresnel" distance set by the antenna's physical size:{' '}
+        <InlineMath tex="r_{\text{far}} \approx 2D^{2}/\lambda" />,
+        where D is the largest aperture dimension. For a 70-m DSN dish at 8.4 GHz this works out
         to ≈ 2.7 km — meaning the diffraction pattern over which the dish's gain pattern is properly
         defined doesn't start until you're several kilometres downstream of the antenna. For nearby
         satellites or aircraft, the antenna is effectively in its own near field
@@ -692,22 +658,15 @@ export default function Ch19Antennas() {
         L ≈ λ / (2 √ε<sub>r</sub>) &nbsp;⇔&nbsp; f<sub>0</sub> ≈ c / (2 L √ε<sub>r</sub>)
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">L</strong> is the physical length of the
+        where <InlineMath tex="L" /> is the physical length of the
         patch in the resonant direction (in metres),{' '}
-        <strong className="text-text font-medium">
-          λ = c/f<sub>0</sub>
-        </strong>{' '}
+        <InlineMath tex="\lambda = c/f_0" />{' '}
         is the free-space wavelength at the resonant frequency (in metres),{' '}
-        <strong className="text-text font-medium">
-          f<sub>0</sub>
-        </strong>{' '}
+        <InlineMath tex="f_0" />{' '}
         is the design resonant frequency (in Hz),{' '}
-        <strong className="text-text font-medium">c ≈ 2.998×10⁸ m/s</strong> is the speed of light,
-        and
-        <strong className="text-text font-medium">
-          {' '}
-          ε<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="c \approx 2.998\times 10^{8}\,\text{m/s}" /> is the speed of light,
+        and{' '}
+        <InlineMath tex="\varepsilon_r" />{' '}
         is the dimensionless relative permittivity of the dielectric substrate beneath the patch.
       </p>
       <p className="mb-prose-3">
@@ -983,8 +942,8 @@ export default function Ch19Antennas() {
             <em className="text-text italic">isotropic radiator</em> (a hypothetical antenna that
             emits equally in all directions, total solid angle 4π steradians). dBd is gain
             referenced to a <em className="text-text italic">half-wave dipole</em>. Since the
-            half-wave dipole itself has gain ≈2.15 dBi over isotropic, the conversion is simply
-            <strong className="text-text font-medium"> dBi = dBd + 2.15</strong>
+            half-wave dipole itself has gain ≈2.15 dBi over isotropic, the conversion is simply{' '}
+            <InlineMath tex="\text{dBi} = \text{dBd} + 2.15" />{' '}
             <Cite id="balanis-2016" in={SOURCES} />. A "10 dBi" antenna and a "7.85 dBd" antenna are
             the same thing. Manufacturers' marketing prefers dBi (the larger number), engineering
             practice often uses dBd (the smaller, more intuitive number for hams). Always check
@@ -1094,9 +1053,7 @@ export default function Ch19Antennas() {
           <p>
             Two factors that look like they're "of d" combine into the (λ/4πd)². The transmitter's
             radiated intensity at distance d falls as{' '}
-            <strong className="text-text font-medium">
-              I = P<sub>t</sub>G<sub>t</sub>/(4πd²)
-            </strong>
+            <InlineMath tex="I = P_t G_t / (4\pi d^{2})" />{' '}
             (power per unit area on the sphere). The receiver's{' '}
             <em className="text-text italic">effective aperture</em> — the area-equivalent of its
             sensitivity — is A<sub>eff</sub> = G<sub>r</sub> λ²/(4π). Power captured is P

@@ -20,7 +20,7 @@ import { CaseStudies, CaseStudy } from '@/components/CaseStudy';
 import { ChapterShell } from '@/components/ChapterShell';
 import { FAQ, FAQItem } from '@/components/FAQ';
 import { Cite } from '@/components/SourcesList';
-import { Formula } from '@/components/Formula';
+import { Formula, InlineMath } from '@/components/Formula';
 import { Pullout } from '@/components/Prose';
 import { Term } from '@/components/Term';
 import { TryIt } from '@/components/TryIt';
@@ -60,8 +60,8 @@ export default function Ch18Optics() {
           relative permittivity
         </Term>{' '}
         ε<sub>r</sub>, and through it the phase velocity. Boundary conditions on{' '}
-        <strong className="text-text font-medium">E</strong> and{' '}
-        <strong className="text-text font-medium">B</strong> across an interface — already mostly
+        <InlineMath tex="E" /> and{' '}
+        <InlineMath tex="B" /> across an interface — already mostly
         written down in Chs. 1 and 6 — force the laws of geometric optics to fall out as straight
         consequences. Snell's law, Fresnel's reflection formulae, Brewster's angle, total internal
         reflection, the thin-film colours of a soap bubble, the way a prism splits a sunbeam — all
@@ -73,22 +73,20 @@ export default function Ch18Optics() {
 
       <p className="mb-prose-3">
         Consider a plane EM wave travelling in vacuum, polarised so that{' '}
-        <strong className="text-text font-medium">E</strong>
-        oscillates in the <em className="text-text italic">y</em>-direction while{' '}
-        <strong className="text-text font-medium">B</strong> oscillates in{' '}
-        <em className="text-text italic">z</em>
-        and the whole package propagates in <em className="text-text italic">x</em>. Now place a
+        <InlineMath tex="E" />
+        oscillates in the <InlineMath tex="y" />-direction while{' '}
+        <InlineMath tex="B" /> oscillates in{' '}
+        <InlineMath tex="z" />
+        and the whole package propagates in <InlineMath tex="x" />. Now place a
         flat slab of glass with its front face perpendicular to{' '}
-        <em className="text-text italic">x</em>. The wave hits the boundary.
+        <InlineMath tex="x" />. The wave hits the boundary.
       </p>
       <p className="mb-prose-3">
         Inside the glass the same equations still apply, but with ε₀ → ε₀ε<sub>r</sub>. The phase
-        speed is no longer <em className="text-text italic">c</em> but{' '}
-        <strong className="text-text font-medium">c/n</strong>, where{' '}
-        <strong className="text-text font-medium">
-          n = √ε<sub>r</sub>
-        </strong>
-        is the{' '}
+        speed is no longer <InlineMath tex="c" /> but{' '}
+        <InlineMath tex="c/n" />, where{' '}
+        <InlineMath tex="n = \sqrt{\varepsilon_r}" />
+        {' '}is the{' '}
         <Term def="The ratio c/v of the phase speed in vacuum to the phase speed in the medium, equal to √(εᵣμᵣ) for a non-magnetic dielectric. For water n ≈ 1.33, for crown glass ≈ 1.52, for diamond ≈ 2.42.">
           refractive index
         </Term>
@@ -101,34 +99,29 @@ export default function Ch18Optics() {
       </Formula>
       <p className="mb-prose-3">
         These come straight from Gauss's laws for{' '}
-        <strong className="text-text font-medium">E</strong> and{' '}
-        <strong className="text-text font-medium">B</strong> and the Ampère/Faraday line-integral
+        <InlineMath tex="E" /> and{' '}
+        <InlineMath tex="B" /> and the Ampère/Faraday line-integral
         theorems applied to a thin pillbox / loop straddling the boundary
         <Cite id="griffiths-2017" in={SOURCES} />
         <Cite id="jackson-1999" in={SOURCES} />. Plug a plane-wave ansatz of the form{' '}
-        <em className="text-text italic">
-          e<sup>i(k·r − ωt)</sup>
-        </em>{' '}
+        <InlineMath tex="e^{i(\mathbf{k}\cdot\mathbf{r} - \omega t)}" />{' '}
         into the continuity conditions and the consequences write themselves: there has to be a
         reflected wave with k<sub>r</sub> · n̂ = −k<sub>i</sub> · n̂ (the angle of incidence equals
         the angle of reflection), and a transmitted wave with the tangential components of k matched
         across the interface. The matching condition on the tangential{' '}
-        <strong className="text-text font-medium">k</strong> is Snell's law
+        <InlineMath tex="k" /> is Snell's law
         <Cite id="hecht-2017" in={SOURCES} />.
       </p>
 
       <h2 className="chapter-h2">Snell's law from continuity</h2>
 
       <p className="mb-prose-3">
-        Continuity of the tangential <strong className="text-text font-medium">k</strong> across an
-        interface means
-        <strong className="text-text font-medium">
-          {' '}
-          k<sub>i</sub> sin θ<sub>i</sub> = k<sub>t</sub> sin θ<sub>t</sub>
-        </strong>
-        . Each <strong className="text-text font-medium">k</strong> is ω/v = ωn/c in its respective
+        Continuity of the tangential <InlineMath tex="k" /> across an
+        interface means{' '}
+        <InlineMath tex="k_i \sin\theta_i = k_t \sin\theta_t" />
+        . Each <InlineMath tex="k" /> is ω/v = ωn/c in its respective
         medium. ω is the same on both sides (the boundary doesn't shift frequency), so the{' '}
-        <strong className="text-text font-medium">k</strong>s differ only by their n's
+        <InlineMath tex="k" />s differ only by their n's
         <Cite id="hecht-2017" in={SOURCES} />
         <Cite id="fresnel-1823" in={SOURCES} />:
       </p>
@@ -137,22 +130,13 @@ export default function Ch18Optics() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          n<sub>1</sub>
-        </strong>{' '}
+        <InlineMath tex="n_1" />{' '}
         and{' '}
-        <strong className="text-text font-medium">
-          n<sub>2</sub>
-        </strong>{' '}
+        <InlineMath tex="n_2" />{' '}
         are the dimensionless refractive indices of the two media, and{' '}
-        <strong className="text-text font-medium">
-          θ<sub>1</sub>
-        </strong>{' '}
-        and
-        <strong className="text-text font-medium">
-          {' '}
-          θ<sub>2</sub>
-        </strong>{' '}
+        <InlineMath tex="\theta_1" />{' '}
+        and{' '}
+        <InlineMath tex="\theta_2" />{' '}
         are the angles (in radians or degrees) that the incident and refracted rays make with the
         normal to the interface.
       </p>
@@ -166,9 +150,7 @@ export default function Ch18Optics() {
           total internal reflection
         </Term>{' '}
         (TIR), and the critical angle is{' '}
-        <strong className="text-text font-medium">
-          sin θ<sub>c</sub> = n<sub>2</sub>/n<sub>1</sub>
-        </strong>
+        <InlineMath tex="\sin\theta_c = n_2/n_1" />
         .
       </p>
 
@@ -179,7 +161,7 @@ export default function Ch18Optics() {
         seeing: all four rays — incident, reflected, refracted, and the surface normal — lie in a
         single plane, called the <em className="text-text italic">plane of incidence</em>. That
         follows directly from matching the tangential component of{' '}
-        <strong className="text-text font-medium">k</strong> across the boundary: the in-plane
+        <InlineMath tex="k" /> across the boundary: the in-plane
         wavevector is preserved, so any out-of-plane component the reflected or refracted ray might
         acquire is forced to be zero
         <Cite id="griffiths-2017" in={SOURCES} />. Drag the next demo around to see the planarity in
@@ -245,23 +227,17 @@ export default function Ch18Optics() {
         1/f = 1/d<sub>o</sub> + 1/d<sub>i</sub>
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">f</strong> is the focal length of the lens
+        where <InlineMath tex="f" /> is the focal length of the lens
         (in metres, positive for converging lenses),{' '}
-        <strong className="text-text font-medium">
-          d<sub>o</sub>
-        </strong>{' '}
+        <InlineMath tex="d_o" />{' '}
         is the object distance from the lens (in metres, positive on the incoming side), and{' '}
-        <strong className="text-text font-medium">
-          d<sub>i</sub>
-        </strong>{' '}
+        <InlineMath tex="d_i" />{' '}
         is the image distance from the lens (in metres, positive on the outgoing side for a real
         image).
       </p>
       <p className="mb-prose-3">
         with magnification{' '}
-        <strong className="text-text font-medium">
-          m = −d<sub>i</sub>/d<sub>o</sub>
-        </strong>{' '}
+        <InlineMath tex="m = -d_i/d_o" />{' '}
         (a dimensionless ratio; negative values indicate an inverted image). A converging lens with
         the object placed beyond f forms a real, inverted image; placed inside f, a virtual,
         upright, enlarged image (the magnifying glass). The same equation runs a 50-mm camera lens,
@@ -320,12 +296,12 @@ export default function Ch18Optics() {
       </p>
       <Formula>n(λ) ≈ A + B/λ² + C/λ⁴ + …</Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">n(λ)</strong> is the dimensionless
-        refractive index at vacuum wavelength
-        <strong className="text-text font-medium"> λ</strong> (in µm by convention for the fitted
-        constants), and <strong className="text-text font-medium">A</strong>,
-        <strong className="text-text font-medium"> B</strong>,{' '}
-        <strong className="text-text font-medium">C</strong>, … are empirical material-specific
+        where <InlineMath tex="n(\lambda)" /> is the dimensionless
+        refractive index at vacuum wavelength{' '}
+        <InlineMath tex="\lambda" /> (in µm by convention for the fitted
+        constants), and <InlineMath tex="A" />,{' '}
+        <InlineMath tex="B" />,{' '}
+        <InlineMath tex="C" />, … are empirical material-specific
         constants (A dimensionless; B in µm²; C in µm⁴; etc.).
       </p>
       <p className="mb-prose-3">
@@ -345,9 +321,7 @@ export default function Ch18Optics() {
         frequency in the ultraviolet. When you drive it with an optical-frequency field below
         resonance, the electron oscillates with finite amplitude and partially screens the applied
         field; this is what makes{' '}
-        <strong className="text-text font-medium">
-          ε<sub>r</sub>
-        </strong>{' '}
+        <InlineMath tex="\varepsilon_r" />{' '}
         &gt; 1. Closer to the UV resonance the response is larger, so n rises. Hence{' '}
         <Term def="The variation of refractive index with wavelength. 'Normal' dispersion has dn/dλ < 0 (violet bends more than red), away from absorption lines; 'anomalous' dispersion reverses near a resonance.">
           normal dispersion
@@ -402,44 +376,28 @@ export default function Ch18Optics() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          r<sub>s</sub>
-        </strong>{' '}
+        <InlineMath tex="r_s" />{' '}
         and{' '}
-        <strong className="text-text font-medium">
-          r<sub>p</sub>
-        </strong>{' '}
+        <InlineMath tex="r_p" />{' '}
         are the dimensionless amplitude reflection coefficients for the s- and p-polarisations (the
         ratio of reflected to incident E-field amplitude),{' '}
-        <strong className="text-text font-medium">
-          n<sub>1</sub>
-        </strong>{' '}
+        <InlineMath tex="n_1" />{' '}
         and{' '}
-        <strong className="text-text font-medium">
-          n<sub>2</sub>
-        </strong>{' '}
-        are the dimensionless refractive indices on either side of the interface, and
-        <strong className="text-text font-medium">
-          {' '}
-          θ<sub>1</sub>
-        </strong>
+        <InlineMath tex="n_2" />{' '}
+        are the dimensionless refractive indices on either side of the interface, and{' '}
+        <InlineMath tex="\theta_1" />
         ,{' '}
-        <strong className="text-text font-medium">
-          θ<sub>2</sub>
-        </strong>{' '}
+        <InlineMath tex="\theta_2" />{' '}
         are the incidence and refraction angles measured from the surface normal.
       </p>
       <p className="mb-prose-3">
         Reflectance is R = |r|² (the dimensionless fraction of incident intensity that reflects). At
         normal incidence (θ<sub>1</sub> = 0), s and p degenerate to the same value{' '}
-        <strong className="text-text font-medium">R = ((n−1)/(n+1))²</strong> — about{' '}
+        <InlineMath tex="R = \left(\frac{n-1}{n+1}\right)^{2}" /> — about{' '}
         <strong className="text-text font-medium">4%</strong> for the glass-air interface. As θ
         <sub>1</sub> rises, R<sub>s</sub> climbs monotonically; R<sub>p</sub>
         first <em className="text-text italic">drops to zero</em> at the special angle
-        <strong className="text-text font-medium">
-          {' '}
-          θ<sub>B</sub> = arctan(n<sub>2</sub>/n<sub>1</sub>)
-        </strong>{' '}
+        {' '}<InlineMath tex="\theta_B = \arctan(n_2/n_1)" />{' '}
         and then climbs. That zero is{' '}
         <Term def="The incidence angle θ_B = arctan(n₂/n₁) at which the reflected wave is fully linearly polarised perpendicular to the plane of incidence — the p-component vanishes exactly. Polaroid sunglasses, optical isolators, and 3D-movie systems all exploit it.">
           Brewster's angle
@@ -466,10 +424,7 @@ export default function Ch18Optics() {
         first and you get Étienne-Louis Malus's 1809 law: light of intensity I<sub>0</sub> linearly
         polarised at angle θ<sub>1</sub>
         passes through an analyser oriented at θ<sub>2</sub> with intensity
-        <strong className="text-text font-medium">
-          {' '}
-          I = I<sub>0</sub> cos²(θ<sub>2</sub> − θ<sub>1</sub>)
-        </strong>
+        {' '}<InlineMath tex="I = I_0 \cos^2(\theta_2 - \theta_1)" />
         . Cross the two axes (90° apart) and the field has no component along the analyser — nothing
         gets through. Add a
         <Term def="A birefringent plate whose thickness is chosen so that the two orthogonal polarisation components emerge with a 90° relative phase shift. Converts linear polarisation at ±45° to its axes into circular polarisation, and vice versa.">
@@ -510,10 +465,10 @@ export default function Ch18Optics() {
         At an interface, part of the wave reflects and part transmits. Stack two interfaces close
         together — a thin film between two media — and the two reflected waves{' '}
         <em className="text-text italic">interfere</em>. For normal incidence on a film of thickness{' '}
-        <strong className="text-text font-medium">t</strong> and refractive index{' '}
-        <strong className="text-text font-medium">n</strong>, the path-length difference between the
+        <InlineMath tex="t" /> and refractive index{' '}
+        <InlineMath tex="n" />, the path-length difference between the
         wave that reflected off the top surface and the one that reflected off the bottom is{' '}
-        <strong className="text-text font-medium">2 n t</strong>. Account for the π phase shift
+        <InlineMath tex="2nt" />. Account for the π phase shift
         acquired at each "low → high" reflection, and the condition for constructive interference
         becomes
         <Cite id="hecht-2017" in={SOURCES} />
@@ -524,11 +479,11 @@ export default function Ch18Optics() {
         2 n t = m λ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (zero or two inverting reflections)
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">n</strong> is the dimensionless refractive
-        index of the film,
-        <strong className="text-text font-medium"> t</strong> is the film thickness (in metres),{' '}
-        <strong className="text-text font-medium">λ</strong> is the vacuum wavelength of the light
-        (in metres), and <strong className="text-text font-medium">m</strong> is a non-negative
+        where <InlineMath tex="n" /> is the dimensionless refractive
+        index of the film,{' '}
+        <InlineMath tex="t" /> is the film thickness (in metres),{' '}
+        <InlineMath tex="\lambda" /> is the vacuum wavelength of the light
+        (in metres), and <InlineMath tex="m" /> is a non-negative
         integer labelling the interference order (m = 0, 1, 2, …).
       </p>
       <p className="mb-prose-3">
@@ -610,33 +565,29 @@ export default function Ch18Optics() {
         <Cite id="young-1804" in={SOURCES} />.
       </p>
       <p className="mb-prose-3">
-        For slit separation <strong className="text-text font-medium">d</strong> and screen distance{' '}
-        <strong className="text-text font-medium">L ≫ d</strong>, the path-length difference to a
+        For slit separation <InlineMath tex="d" /> and screen distance{' '}
+        <InlineMath tex="L \gg d" />, the path-length difference to a
         point at lateral position y on the screen is approximately d·sin θ ≈ d·y/L. Constructive
         interference happens at:
       </p>
       <Formula>sin θ = m λ / d, &nbsp; m = 0, ±1, ±2, …</Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">θ</strong> is the angle from the central
-        axis to a bright fringe (in radians),
-        <strong className="text-text font-medium"> m</strong> is the integer order of the fringe (m
+        where <InlineMath tex="\theta" /> is the angle from the central
+        axis to a bright fringe (in radians),{' '}
+        <InlineMath tex="m" /> is the integer order of the fringe (m
         = 0 is the central maximum, ±1 the first order, etc.),{' '}
-        <strong className="text-text font-medium">λ</strong> is the light's vacuum wavelength (in
-        metres), and <strong className="text-text font-medium">d</strong> is the slit separation (in
+        <InlineMath tex="\lambda" /> is the light's vacuum wavelength (in
+        metres), and <InlineMath tex="d" /> is the slit separation (in
         metres).
       </p>
       <p className="mb-prose-3">
         and on the screen the bright fringes sit at{' '}
-        <strong className="text-text font-medium">
-          y<sub>m</sub> ≈ m λ L / d
-        </strong>
+        <InlineMath tex="y_m \approx m\lambda L / d" />
         , where{' '}
-        <strong className="text-text font-medium">
-          y<sub>m</sub>
-        </strong>{' '}
+        <InlineMath tex="y_m" />{' '}
         is the lateral position of the mth fringe on the screen (in metres) and{' '}
-        <strong className="text-text font-medium">L</strong> is the slit-to-screen distance (in
-        metres). Fringe spacing <strong className="text-text font-medium">Δy = λ L / d</strong>. For
+        <InlineMath tex="L" /> is the slit-to-screen distance (in
+        metres). Fringe spacing <InlineMath tex="\Delta y = \lambda L / d" />. For
         550-nm light, slits 50 µm apart and a screen 500 mm away, the fringes are about 5 mm apart
         and easily visible by eye. The same physics underlies every diffraction-pattern measurement,
         every grating spectrometer, every laser-speckle experiment, and every interferometric
@@ -674,11 +625,11 @@ export default function Ch18Optics() {
       <p className="mb-prose-3">
         Take Young's two slits and multiply them: N equally-spaced slits with spacing d. Each pair
         contributes its own two-beam interference, and the N partial-amplitudes sum to the N-slit
-        pattern <em className="text-text italic">|sin(Nβ)/(N sinβ)|²</em> where β = π d sinθ / λ.
+        pattern <InlineMath tex="|\sin(N\beta)/(N\sin\beta)|^{2}" /> where β = π d sinθ / λ.
         The principal maxima sit at the same angles as the double-slit (
-        <strong className="text-text font-medium">sin θ = m λ / d</strong>), but every peak now has
+        <InlineMath tex="\sin\theta = m\lambda/d" />), but every peak now has
         a full-width-at-half-maximum that scales as{' '}
-        <strong className="text-text font-medium">1/N</strong>. That's what makes a{' '}
+        <InlineMath tex="1/N" />. That's what makes a{' '}
         <Term def="An optical element with many regularly-spaced grooves (typically 300–2400 lines/mm). Diffracts incident light into a wavelength-dependent set of orders, and is the dispersive element in nearly every modern spectrometer.">
           diffraction grating
         </Term>{' '}
@@ -778,9 +729,9 @@ export default function Ch18Optics() {
 
       <p className="mb-prose-3">
         Light is the Chapter-9 plane wave. A slab of matter is a region where the EM wave equation
-        runs slower by a factor of <em className="text-text italic">n</em>. Boundary conditions on{' '}
-        <strong className="text-text font-medium">E</strong> and
-        <strong className="text-text font-medium"> B</strong> hand you Snell's law in one line,
+        runs slower by a factor of <InlineMath tex="n" />. Boundary conditions on{' '}
+        <InlineMath tex="E" /> and{' '}
+        <InlineMath tex="B" /> hand you Snell's law in one line,
         Fresnel's reflection formulae in ten, Brewster's polarisation zero in a paragraph, total
         internal reflection from the same algebra you used for Snell, and thin-film colours from
         two-beam interference. Young's double slit was the experiment that turned "wave or
@@ -1034,7 +985,7 @@ export default function Ch18Optics() {
           <p>
             In classical electrodynamics, light is a continuous EM wave with energy density
             (ε₀/2)|E|². Quantum electrodynamics adds that the wave's energy comes in quanta of
-            <strong className="text-text font-medium"> ℏω</strong>; each quantum is a photon. For
+            {' '}<InlineMath tex="\hbar\omega" />; each quantum is a photon. For
             the optics of this chapter — reflection, refraction, polarisation, interference, thin
             films, lasers — the classical wave picture suffices, because every observable is an
             intensity (proportional to |E|²) averaged over many photons. Photons matter when

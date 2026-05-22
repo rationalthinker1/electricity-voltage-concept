@@ -173,7 +173,7 @@ export function LoadFollowingDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.5'}
+      figure={figure ?? 'Fig. 21.5'}
       title="Load following — the grid as a real-time market"
       question="Demand swings ±40 % across a day. Supply has to match it second-by-second. How?"
       caption={

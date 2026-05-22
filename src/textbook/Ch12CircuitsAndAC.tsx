@@ -106,7 +106,7 @@ export default function Ch12CircuitsAndAC() {
               <>
                 <strong className="text-text font-medium">Kirchhoff's current law (KCL)</strong> —
                 at any node, the algebraic sum of currents in equals the sum out:{' '}
-                <em className="text-text italic">Σ I = 0</em>. A statement of charge conservation in
+                <InlineMath tex="\Sigma I = 0" />. A statement of charge conservation in
                 the lumped-element limit.
               </>
             }
@@ -129,7 +129,7 @@ export default function Ch12CircuitsAndAC() {
               <>
                 <strong className="text-text font-medium">Kirchhoff's voltage law (KVL)</strong> —
                 around any closed loop, the algebraic sum of voltage rises and drops is zero:{' '}
-                <em className="text-text italic">Σ V = 0</em>. A statement of energy conservation in
+                <InlineMath tex="\Sigma V = 0" />. A statement of energy conservation in
                 the lumped-element limit.
               </>
             }
@@ -179,23 +179,9 @@ export default function Ch12CircuitsAndAC() {
         V<sub>out</sub> = V<sub>in</sub> · R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>)
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <strong className="text-text font-medium">
-          V<sub>in</sub>
-        </strong>{' '}
-        is the source voltage applied across the series pair (in volts),{' '}
-        <strong className="text-text font-medium">
-          V<sub>out</sub>
-        </strong>{' '}
-        is the voltage across the lower resistor (in volts), and{' '}
-        <strong className="text-text font-medium">
-          R<sub>1</sub>
-        </strong>{' '}
-        and{' '}
-        <strong className="text-text font-medium">
-          R<sub>2</sub>
-        </strong>
-        are the upper and lower resistor values (in ohms). The output is the supply scaled by the
+        where <InlineMath tex="V_{\text{in}}" /> is the source voltage applied across the series pair (in volts),{' '}
+        <InlineMath tex="V_{\text{out}}" /> is the voltage across the lower resistor (in volts), and{' '}
+        <InlineMath tex="R_1" /> and <InlineMath tex="R_2" /> are the upper and lower resistor values (in ohms). The output is the supply scaled by the
         ratio of the lower leg to the total series resistance.
       </p>
       <p className="mb-prose-3">
@@ -337,42 +323,29 @@ export default function Ch12CircuitsAndAC() {
         V<sub>0</sub> = I R + Q/C
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <strong className="text-text font-medium">
-          V<sub>0</sub>
-        </strong>{' '}
-        is the battery EMF (in volts), <strong className="text-text font-medium">I</strong>
-        is the (time-varying) loop current (in amperes),{' '}
-        <strong className="text-text font-medium">R</strong> is the series resistance (in ohms),{' '}
-        <strong className="text-text font-medium">Q</strong> is the charge on the capacitor (in
-        coulombs), and <strong className="text-text font-medium">C</strong> is the capacitance (in
+        where <InlineMath tex="V_0" /> is the battery EMF (in volts), <InlineMath tex="I" /> is the (time-varying) loop current (in amperes),{' '}
+        <InlineMath tex="R" /> is the series resistance (in ohms),{' '}
+        <InlineMath tex="Q" /> is the charge on the capacitor (in
+        coulombs), and <InlineMath tex="C" /> is the capacitance (in
         farads). The two RHS terms are the voltage drop across the resistor and the voltage across
         the capacitor at the same instant.
       </p>
       <p className="mb-prose-3">
-        and since I = dQ/dt, you get a first-order linear ODE whose solution is the canonical
-        exponential approach:
+        and since <InlineMath tex="I = dQ/dt" />, you get a first-order linear ODE whose solution
+        is the canonical exponential approach:
       </p>
       <Formula>
         V<sub>C</sub>(t) = V<sub>0</sub> ( 1 − e<sup>−t/τ</sup> ), τ = R C
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <strong className="text-text font-medium">
-          V<sub>C</sub>(t)
-        </strong>{' '}
-        is the capacitor voltage at time
-        <strong className="text-text font-medium"> t</strong> (both in SI: volts and seconds),{' '}
-        <strong className="text-text font-medium">
-          V<sub>0</sub>
-        </strong>
-        is the supply EMF (in volts) — also the final voltage the cap asymptotically reaches — and{' '}
-        <strong className="text-text font-medium">τ = RC</strong> is the circuit's time constant (in
+        where <InlineMath tex="V_C(t)" /> is the capacitor voltage at time <InlineMath tex="t" /> (both in SI: volts and seconds),{' '}
+        <InlineMath tex="V_0" /> is the supply EMF (in volts) — also the final voltage the cap asymptotically reaches — and{' '}
+        <InlineMath tex="\tau = RC" /> is the circuit's time constant (in
         seconds), the product of resistance (ohms) and capacitance (farads).
       </p>
       <p className="mb-prose-3">
         After one time constant, the cap reaches{' '}
-        <strong className="text-text font-medium">1 − 1/e ≈ 63%</strong> of the final voltage; after
+        <InlineMath tex="1 - 1/e \approx 63\%" /> of the final voltage; after
         three, about 95%; after five, you've effectively arrived. Discharging through R follows the
         mirror curve, decaying as{' '}
         <InlineMath>
@@ -456,17 +429,19 @@ export default function Ch12CircuitsAndAC() {
         energy back and forth indefinitely — the electrical analog of a mass on a spring.
       </p>
       <p className="mb-prose-3">
-        Kirchhoff's voltage law plus Q = CV plus V<sub>L</sub> = L dI/dt gives
+        Kirchhoff's voltage law plus <InlineMath tex="Q = CV" /> plus{' '}
+        <InlineMath tex="V_L = L\, dI/dt" /> gives
       </p>
       <Formula>
         L (d<sup>2</sup>Q/dt<sup>2</sup>) + Q/C = 0
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">L</strong> is the inductance (in henries),{' '}
-        <strong className="text-text font-medium">C</strong> is the capacitance (in farads), and{' '}
-        <strong className="text-text font-medium">Q(t)</strong> is the charge on the capacitor
+        where <InlineMath tex="L" /> is the inductance (in henries),{' '}
+        <InlineMath tex="C" /> is the capacitance (in farads), and{' '}
+        <InlineMath tex="Q(t)" /> is the charge on the capacitor
         plates (in coulombs) as a function of time. The first term is the voltage across the
-        inductor (L·dI/dt with I = dQ/dt); the second is the voltage across the capacitor. KVL says
+        inductor (<InlineMath tex="L \cdot dI/dt" /> with <InlineMath tex="I = dQ/dt" />); the
+        second is the voltage across the capacitor. KVL says
         they sum to zero around the loop.
       </p>
       <p className="mb-prose-3">which is the harmonic-oscillator equation with angular frequency</p>
@@ -474,17 +449,10 @@ export default function Ch12CircuitsAndAC() {
         ω<sub>0</sub> = 1 / √(L C), f<sub>0</sub> = 1 / (2π √(L C))
       </Formula>
       <p className="mb-prose-3">
-        where{' '}
-        <strong className="text-text font-medium">
-          ω<sub>0</sub>
-        </strong>{' '}
-        is the resonant angular frequency (in radians per second),{' '}
-        <strong className="text-text font-medium">
-          f<sub>0</sub>
-        </strong>{' '}
-        is the corresponding ordinary frequency (in hertz, i.e., cycles per second),{' '}
-        <strong className="text-text font-medium">L</strong> is the inductance (in henries), and{' '}
-        <strong className="text-text font-medium">C</strong> is the capacitance (in farads). Larger
+        where <InlineMath tex="\omega_0" /> is the resonant angular frequency (in radians per second),{' '}
+        <InlineMath tex="f_0" /> is the corresponding ordinary frequency (in hertz, i.e., cycles per second),{' '}
+        <InlineMath tex="L" /> is the inductance (in henries), and{' '}
+        <InlineMath tex="C" /> is the capacitance (in farads). Larger
         L or C means a slower oscillation.
       </p>
       <p className="mb-prose-3">
@@ -527,8 +495,8 @@ export default function Ch12CircuitsAndAC() {
         question={
           <>
             Find the resonant frequency f₀ of an LC tank with{' '}
-            <em className="text-text italic">L</em> = 10 mH and{' '}
-            <em className="text-text italic">C</em> = 10 µF.
+            <InlineMath tex="L" /> = 10 mH and{' '}
+            <InlineMath tex="C" /> = 10 µF.
           </>
         }
         hint={<>f₀ = 1 / (2π √(L C)).</>}
@@ -565,7 +533,7 @@ export default function Ch12CircuitsAndAC() {
                 <strong className="text-text font-medium">resonance</strong> — the frequency at
                 which a driven oscillator stores energy most efficiently and responds with the
                 largest amplitude. In a series RLC circuit,{' '}
-                <em className="text-text italic">ω₀ = 1/√(LC)</em>, where the inductive and
+                <InlineMath tex="\omega_0 = 1/\sqrt{LC}" />, where the inductive and
                 capacitive reactances exactly cancel.
               </>
             }
@@ -582,32 +550,25 @@ export default function Ch12CircuitsAndAC() {
         |I(ω)| = V<sub>0</sub> / √(R<sup>2</sup> + (ωL − 1/ωC)<sup>2</sup>)
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">|I(ω)|</strong> is the steady-state current
-        amplitude (in amperes) at driving angular frequency{' '}
-        <strong className="text-text font-medium">ω</strong> (in radians per second),
-        <strong className="text-text font-medium">
-          {' '}
-          V<sub>0</sub>
-        </strong>{' '}
-        is the source peak voltage (in volts),
-        <strong className="text-text font-medium"> R</strong> is the series resistance (in ohms),{' '}
-        <strong className="text-text font-medium">L</strong> is the inductance (in henries), and{' '}
-        <strong className="text-text font-medium">C</strong> is the capacitance (in farads). The
-        bracketed term <em className="text-text italic">(ωL − 1/ωC)</em> is the net reactance, also
+        where <InlineMath tex="|I(\omega)|" /> is the steady-state current
+        amplitude (in amperes) at driving angular frequency <InlineMath tex="\omega" /> (in radians per second),{' '}
+        <InlineMath tex="V_0" /> is the source peak voltage (in volts),{' '}
+        <InlineMath tex="R" /> is the series resistance (in ohms),{' '}
+        <InlineMath tex="L" /> is the inductance (in henries), and{' '}
+        <InlineMath tex="C" /> is the capacitance (in farads). The
+        bracketed term <InlineMath tex="(\omega L - 1/\omega C)" /> is the net reactance, also
         in ohms.
       </p>
       <p className="mb-prose-3">
-        which peaks when ωL = 1/(ωC) — that is, at exactly ω = ω₀ = 1/√(LC). The sharpness of the
-        peak is the{' '}
+        which peaks when <InlineMath tex="\omega L = 1/(\omega C)" /> — that is, at exactly{' '}
+        <InlineMath tex="\omega = \omega_0 = 1/\sqrt{LC}" />. The sharpness of the peak is the{' '}
         <strong className="text-text font-medium">
           <Term
             def={
               <>
                 <strong className="text-text font-medium">Q factor</strong> — quality factor:{' '}
-                <em className="text-text italic">
-                  Q = 2π · (energy stored) / (energy dissipated per cycle)
-                </em>
-                . For a series RLC, <em className="text-text italic">Q = ω₀L/R = (1/R)√(L/C)</em>.
+                <InlineMath tex="Q = 2\pi \cdot \text{(energy stored)} / \text{(energy dissipated per cycle)}" />
+                . For a series RLC, <InlineMath tex="Q = \omega_0 L/R = (1/R)\sqrt{L/C}" />.
                 High-Q resonators ring long and select a narrow band of frequencies.
               </>
             }
@@ -621,16 +582,11 @@ export default function Ch12CircuitsAndAC() {
         Q = ω<sub>0</sub> L / R = (1/R) √(L/C)
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">Q</strong> is the dimensionless quality
-        factor,
-        <strong className="text-text font-medium">
-          {' '}
-          ω<sub>0</sub> = 1/√(LC)
-        </strong>{' '}
-        is the resonant angular frequency (in radians per second),{' '}
-        <strong className="text-text font-medium">L</strong> is the inductance (in henries),
-        <strong className="text-text font-medium"> C</strong> is the capacitance (in farads), and{' '}
-        <strong className="text-text font-medium">R</strong> is the series resistance (in ohms).
+        where <InlineMath tex="Q" /> is the dimensionless quality
+        factor, <InlineMath tex="\omega_0 = 1/\sqrt{LC}" /> is the resonant angular frequency (in radians per second),{' '}
+        <InlineMath tex="L" /> is the inductance (in henries),{' '}
+        <InlineMath tex="C" /> is the capacitance (in farads), and{' '}
+        <InlineMath tex="R" /> is the series resistance (in ohms).
         High Q means the resonator stores many cycles' worth of energy for every cycle's worth
         dissipated.
       </p>
@@ -661,9 +617,8 @@ export default function Ch12CircuitsAndAC() {
         tag="Try 12.3"
         question={
           <>
-            For the series RLC with <em className="text-text italic">R</em> = 1 Ω,{' '}
-            <em className="text-text italic">L</em> = 10 mH, <em className="text-text italic">C</em>{' '}
-            = 10 µF, compute the quality factor Q.
+            For the series RLC with <InlineMath tex="R" /> = 1 Ω,{' '}
+            <InlineMath tex="L" /> = 10 mH, <InlineMath tex="C" /> = 10 µF, compute the quality factor Q.
           </>
         }
         hint={<>Q = (1/R) √(L/C).</>}
@@ -689,10 +644,10 @@ export default function Ch12CircuitsAndAC() {
         feeds it to the demodulator. Modern silicon-tuned receivers do the same thing in principle —
         they just synthesize the LC behavior digitally.
       </p>
-      <p className="mb-prose-3">
+      <Pullout>
         Every radio is a tunable RLC circuit waiting for the frequency it agrees with. So is every
         quartz watch, every MRI coil, every cell tower.
-      </p>
+      </Pullout>
 
       <h2 className="chapter-h2">
         <em>Impedance</em> — AC's complex resistance
@@ -709,12 +664,10 @@ export default function Ch12CircuitsAndAC() {
           def={
             <>
               <strong className="text-text font-medium">phasor</strong> — a complex number{' '}
-              <em className="text-text italic">
-                V₀ e<sup>jφ</sup>
-              </em>{' '}
+              <InlineMath tex="V_0 e^{j\varphi}" />{' '}
               that encodes the amplitude and phase of a sinusoid at a fixed frequency.
-              Time-derivatives <em className="text-text italic">d/dt</em> become multiplications by{' '}
-              <em className="text-text italic">jω</em>, and linear differential equations turn into
+              Time-derivatives <InlineMath tex="d/dt" /> become multiplications by{' '}
+              <InlineMath tex="j\omega" />, and linear differential equations turn into
               linear algebra in ℂ.
             </>
           }
@@ -722,7 +675,7 @@ export default function Ch12CircuitsAndAC() {
           phasor
         </Term>{' '}
         V₀ e<sup>jφ</sup> at a fixed ω. Then time-derivatives become multiplications by jω, and
-        Ohm's law generalises to <strong className="text-text font-medium">V = I Z</strong>, where Z
+        Ohm's law generalises to <InlineMath tex="V = IZ" />, where Z
         is the complex{' '}
         <Term
           def={
@@ -749,25 +702,18 @@ export default function Ch12CircuitsAndAC() {
       </Formula>
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          Z<sub>R</sub>
-        </strong>
+        <InlineMath tex="Z_R" />
         ,{' '}
-        <strong className="text-text font-medium">
-          Z<sub>L</sub>
-        </strong>
-        , and
-        <strong className="text-text font-medium">
-          {' '}
-          Z<sub>C</sub>
-        </strong>{' '}
+        <InlineMath tex="Z_L" />
+        , and{' '}
+        <InlineMath tex="Z_C" />{' '}
         are the complex impedances (in ohms) of a resistor, inductor, and capacitor at angular
-        frequency <strong className="text-text font-medium">ω</strong> (in radians per second),{' '}
-        <strong className="text-text font-medium">R</strong> is the resistance (in ohms),{' '}
-        <strong className="text-text font-medium">L</strong> is the inductance (in henries),{' '}
-        <strong className="text-text font-medium">C</strong> is the capacitance (in farads), and
-        <strong className="text-text font-medium"> j = √−1</strong> is the imaginary unit. Each Z is
-        in general a complex number; multiplication by <em className="text-text italic">j</em>{' '}
+        frequency <InlineMath tex="\omega" /> (in radians per second),{' '}
+        <InlineMath tex="R" /> is the resistance (in ohms),{' '}
+        <InlineMath tex="L" /> is the inductance (in henries),{' '}
+        <InlineMath tex="C" /> is the capacitance (in farads), and{' '}
+        <InlineMath tex="j = \sqrt{-1}" /> is the imaginary unit. Each Z is
+        in general a complex number; multiplication by <InlineMath tex="j" />{' '}
         represents a +90° phase rotation in the complex plane.
       </p>
       <p className="mb-prose-3">
@@ -783,55 +729,49 @@ export default function Ch12CircuitsAndAC() {
             <>
               <strong className="text-text font-medium">reactance</strong> — the imaginary part of
               impedance, the energy-storing (non-dissipative) component:{' '}
-              <em className="text-text italic">
-                X<sub>L</sub> = ωL
-              </em>{' '}
+              <InlineMath tex="X_L = \omega L" />{' '}
               for inductors,{' '}
-              <em className="text-text italic">
-                X<sub>C</sub> = −1/(ωC)
-              </em>{' '}
+              <InlineMath tex="X_C = -1/(\omega C)" />{' '}
               for capacitors. SI unit: ohm.
             </>
           }
         >
           reactance
         </Term>
-        :
-        <em className="text-text italic">
-          {' '}
-          X<sub>L</sub> = ωL
-        </em>{' '}
+        :{' '}
+        <InlineMath tex="X_L = \omega L" />{' '}
         grows with frequency;{' '}
-        <em className="text-text italic">
-          |X<sub>C</sub>| = 1/(ωC)
-        </em>{' '}
+        <InlineMath tex="|X_C| = 1/(\omega C)" />{' '}
         shrinks.
       </p>
       <p className="mb-prose-3">Series impedances add. The full series RLC has impedance</p>
       <Formula>Z(ω) = R + j ( ωL − 1/ωC )</Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">Z(ω)</strong> is the total complex series
+        where <InlineMath tex="Z(\omega)" /> is the total complex series
         impedance (in ohms) at angular frequency{' '}
-        <strong className="text-text font-medium">ω</strong> (in radians per second),{' '}
-        <strong className="text-text font-medium">R</strong> is the resistance (in ohms, the real
-        part — dissipative), <strong className="text-text font-medium">L</strong> is the inductance
-        (in henries), <strong className="text-text font-medium">C</strong> is the capacitance (in
-        farads), and
-        <strong className="text-text font-medium"> j = √−1</strong>. The bracketed imaginary part is
-        the net reactance, also in ohms. The magnitude <em className="text-text italic">|Z|</em>{' '}
+        <InlineMath tex="\omega" /> (in radians per second),{' '}
+        <InlineMath tex="R" /> is the resistance (in ohms, the real
+        part — dissipative), <InlineMath tex="L" /> is the inductance
+        (in henries), <InlineMath tex="C" /> is the capacitance (in
+        farads), and{' '}
+        <InlineMath tex="j = \sqrt{-1}" />. The bracketed imaginary part is
+        the net reactance, also in ohms. The magnitude <InlineMath tex="|Z|" />{' '}
         sets the current amplitude per volt and the argument{' '}
-        <em className="text-text italic">∠Z</em> sets the V–I phase shift
+        <InlineMath tex="\angle Z" /> sets the V–I phase shift
         <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
       </p>
 
       <ImpedanceDemo />
 
       <p className="mb-prose-3">
-        Slide ω. At low frequencies, 1/(ωC) dominates and Z lives in the lower half-plane (the
-        circuit looks capacitive — current leads). At high frequencies, ωL dominates and Z swings
-        into the upper half-plane (inductive — voltage leads). At exactly ω = ω₀, the L and C
-        contributions cancel: Z collapses onto the real axis at value R. That is resonance — the
-        same picture as the previous demo, viewed from a different angle.
+        Slide <InlineMath tex="\omega" />. At low frequencies, <InlineMath tex="1/(\omega C)" />{' '}
+        dominates and <InlineMath tex="Z" /> lives in the lower half-plane (the circuit looks
+        capacitive — current leads). At high frequencies, <InlineMath tex="\omega L" /> dominates
+        and <InlineMath tex="Z" /> swings into the upper half-plane (inductive — voltage leads). At
+        exactly <InlineMath tex="\omega = \omega_0" />, the <InlineMath tex="L" /> and{' '}
+        <InlineMath tex="C" /> contributions cancel: <InlineMath tex="Z" /> collapses onto the real
+        axis at value <InlineMath tex="R" />. That is resonance — the same picture as the previous
+        demo, viewed from a different angle.
       </p>
 
       <TryIt
@@ -881,19 +821,15 @@ export default function Ch12CircuitsAndAC() {
         ⟨P⟩ = V<sub>rms</sub> I<sub>rms</sub> cos(φ)
       </Formula>
       <p className="mb-prose-3">
-        where <strong className="text-text font-medium">⟨P⟩</strong> is the average real power
+        where <InlineMath tex="\langle P \rangle" /> is the average real power
         delivered to the load (in watts),{' '}
-        <strong className="text-text font-medium">
-          V<sub>rms</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{rms}}" />{' '}
         and{' '}
-        <strong className="text-text font-medium">
-          I<sub>rms</sub>
-        </strong>{' '}
-        are the root-mean-square voltage and current (in volts and amperes), and
-        <strong className="text-text font-medium"> φ</strong> is the phase angle (in radians) by
+        <InlineMath tex="I_{\text{rms}}" />{' '}
+        are the root-mean-square voltage and current (in volts and amperes), and{' '}
+        <InlineMath tex="\varphi" /> is the phase angle (in radians) by
         which the current lags or leads the voltage.{' '}
-        <strong className="text-text font-medium">cos(φ)</strong> is the dimensionless power factor.
+        <InlineMath tex="\cos(\varphi)" /> is the dimensionless power factor.
       </p>
       <p className="mb-prose-3">
         with{' '}
@@ -902,21 +838,13 @@ export default function Ch12CircuitsAndAC() {
             <>
               <strong className="text-text font-medium">RMS (root-mean-square)</strong> — the square
               root of the time-averaged square of a waveform. For a sine of peak{' '}
-              <em className="text-text italic">
-                V<sub>p</sub>
-              </em>
+              <InlineMath tex="V_p" />
               ,{' '}
-              <em className="text-text italic">
-                V<sub>rms</sub> = V<sub>p</sub>/√2
-              </em>
+              <InlineMath tex="V_{\text{rms}} = V_p/\sqrt{2}" />
               . The "DC-equivalent" voltage for power dissipation: a resistor on{' '}
-              <em className="text-text italic">
-                V<sub>rms</sub>
-              </em>{' '}
+              <InlineMath tex="V_{\text{rms}}" />{' '}
               AC dissipates the same average power as on{' '}
-              <em className="text-text italic">
-                V<sub>rms</sub>
-              </em>{' '}
+              <InlineMath tex="V_{\text{rms}}" />{' '}
               DC.
             </>
           }
@@ -930,8 +858,8 @@ export default function Ch12CircuitsAndAC() {
             def={
               <>
                 <strong className="text-text font-medium">power factor</strong> — the ratio of real
-                to apparent power, <em className="text-text italic">cos(φ)</em>, where{' '}
-                <em className="text-text italic">φ</em> is the voltage–current phase shift. 1 for a
+                to apparent power, <InlineMath tex="\cos(\varphi)" />, where{' '}
+                <InlineMath tex="\varphi" /> is the voltage–current phase shift. 1 for a
                 purely resistive load, 0 for a purely reactive one.
               </>
             }
@@ -953,9 +881,7 @@ export default function Ch12CircuitsAndAC() {
                 <>
                   <strong className="text-text font-medium">real power</strong> — the time-averaged
                   power actually delivered to a load:{' '}
-                  <em className="text-text italic">
-                    P = V<sub>rms</sub> I<sub>rms</sub> cos(φ)
-                  </em>
+                  <InlineMath tex="P = V_{\text{rms}} I_{\text{rms}} \cos(\varphi)" />
                   . SI unit: watt (W).
                 </>
               }
@@ -973,9 +899,7 @@ export default function Ch12CircuitsAndAC() {
                 <>
                   <strong className="text-text font-medium">reactive power</strong> — the part of
                   the AC product that sloshes between source and load with no net energy transfer:{' '}
-                  <em className="text-text italic">
-                    Q = V<sub>rms</sub> I<sub>rms</sub> sin(φ)
-                  </em>
+                  <InlineMath tex="Q = V_{\text{rms}} I_{\text{rms}} \sin(\varphi)" />
                   . SI unit: volt-ampere reactive (VAR).
                 </>
               }
@@ -993,9 +917,7 @@ export default function Ch12CircuitsAndAC() {
                 <>
                   <strong className="text-text font-medium">apparent power</strong> — the product of
                   RMS voltage and RMS current,{' '}
-                  <em className="text-text italic">
-                    S = V<sub>rms</sub> I<sub>rms</sub>
-                  </em>
+                  <InlineMath tex="S = V_{\text{rms}} I_{\text{rms}}" />
                   . The magnitude of the complex power phasor; sets the wire and transformer
                   ratings. SI unit: volt-ampere (VA).
                 </>
@@ -1140,15 +1062,11 @@ export default function Ch12CircuitsAndAC() {
       </p>
       <p className="mb-prose-3">
         To find{' '}
-        <strong className="text-text font-medium">
-          V<sub>th</sub>
-        </strong>
+        <InlineMath tex="V_{\text{th}}" />
         , leave the network's two terminals open and measure (or compute) the voltage that appears
-        between them — that <em className="text-text italic">open-circuit voltage</em> is V
-        <sub>th</sub>. To find{' '}
-        <strong className="text-text font-medium">
-          R<sub>th</sub>
-        </strong>
+        between them — that <em className="text-text italic">open-circuit voltage</em> is{' '}
+        <InlineMath tex="V_{\text{th}}" />. To find{' '}
+        <InlineMath tex="R_{\text{th}}" />
         , mentally zero every independent source (short the voltage sources, open the current
         sources) and compute the resistance looking back into the network from the same two
         terminals. The two numbers together fully characterise the network's behaviour at those
@@ -1160,9 +1078,7 @@ export default function Ch12CircuitsAndAC() {
       </Formula>
       <p className="mb-prose-3">
         Equivalently, a current source{' '}
-        <strong className="text-text font-medium">
-          I<sub>n</sub> = V<sub>th</sub>/R<sub>th</sub>
-        </strong>
+        <InlineMath tex="I_n = V_{\text{th}}/R_{\text{th}}" />{' '}
         in parallel with the same R<sub>th</sub> produces identical terminal behaviour — that is the
         Norton form. Source-transformation is just the algebraic statement that the two are
         interchangeable: a real voltage source with internal resistance is indistinguishable, from
@@ -1235,8 +1151,10 @@ export default function Ch12CircuitsAndAC() {
       <h2 className="chapter-h2">What we have so far</h2>
       <p className="mb-prose-3">
         At wavelengths much larger than the circuit, Maxwell's equations compress to Kirchhoff's two
-        laws plus three constitutive relations: V = IR for resistors, V = (1/C) ∫I dt for
-        capacitors, V = L dI/dt for inductors. The RC, LC, and RLC combinations cover the entire zoo
+        laws plus three constitutive relations: <InlineMath tex="V = IR" /> for resistors,{' '}
+        <InlineMath tex="V = (1/C) \int I\, dt" /> for capacitors,{' '}
+        <InlineMath tex="V = L\, dI/dt" /> for inductors. The RC, LC, and RLC combinations cover
+        the entire zoo
         of first- and second-order linear behaviour — exponential decay, free oscillation, damped
         driven oscillation, resonance. Recasting time-derivatives as multiplications by jω turns
         every linear-circuit problem into algebra in the complex plane: impedance, phase, power
@@ -1274,11 +1192,8 @@ export default function Ch12CircuitsAndAC() {
             for commercial three-phase service, and a step-ladder of transmission classes — 69, 115,
             138, 230, 345, 500, and 765 kV — at the long-distance end
             <Cite id="ansi-c84-1-2020" in={SOURCES} />. Why so many tiers? Because transmission
-            losses scale as
-            <strong className="text-text font-medium">
-              {' '}
-              P<sub>loss</sub> = (P<sub>load</sub>/V)² R
-            </strong>
+            losses scale as{' '}
+            <InlineMath tex="P_{\text{loss}} = (P_{\text{load}}/V)^{2} R" />
             : doubling the line voltage quarters the I²R loss for the same delivered power
             <Cite id="grainger-power-systems-2003" in={SOURCES} />. 765 kV across a thousand
             kilometres loses a few percent; doing the same at 120 V would require conductors thicker
@@ -1299,7 +1214,7 @@ export default function Ch12CircuitsAndAC() {
             in the United States; AEG had already picked 50 Hz in Germany; both work, both are now
             locked in by a continent's worth of installed equipment. Aircraft electrical systems,
             where transformer mass matters more than line losses, use 400 Hz instead — the
-            transformer core volume scales roughly as 1/<em className="text-text italic">f</em> for
+            transformer core volume scales roughly as <InlineMath tex="1/f" /> for
             a given power handling
             <Cite id="horowitz-hill-2015" in={SOURCES} />.
           </p>
@@ -1386,7 +1301,7 @@ export default function Ch12CircuitsAndAC() {
               label: 'Transformer mass scaling',
               value: (
                 <>
-                  ∝ 1/<em className="text-text italic">f</em>
+                  <InlineMath tex="\propto 1/f" />
                 </>
               ),
             },
@@ -1404,7 +1319,7 @@ export default function Ch12CircuitsAndAC() {
             A switched-mode supply rearranges the problem. It rectifies the AC into ~170 V DC, then
             chops that DC with a MOSFET at 50–500 kHz into a small high-frequency transformer, and
             rectifies the secondary back into smooth DC. Transformer core volume scales roughly as
-            1/<em className="text-text italic">f</em> for a given power handling, so jumping from 60
+            <InlineMath tex="1/f" /> for a given power handling, so jumping from 60
             Hz to 100 kHz shrinks the magnetic mass by more than three orders of magnitude
             <Cite id="erickson-maksimovic-2020" in={SOURCES} />. That's why a modern USB-C charger
             weighs grams instead of kilograms.
@@ -1426,9 +1341,9 @@ export default function Ch12CircuitsAndAC() {
       <FAQ intro="The questions a careful reader asks after meeting a soldering iron for the first time.">
         <FAQItem q="When does the 'lumped element' picture stop being valid?">
           <p>
-            When the circuit's spatial extent <strong className="text-text font-medium">ℓ</strong>{' '}
+            When the circuit's spatial extent <InlineMath tex="\ell" />{' '}
             is no longer small compared to the wavelength{' '}
-            <strong className="text-text font-medium">λ = c/f</strong> of any signal in it. A
+            <InlineMath tex="\lambda = c/f" /> of any signal in it. A
             practical rule of thumb is ℓ ≲ λ/10. At 60 Hz, λ ≈ 5000 km, so an entire continent's
             power grid is borderline "lumped." At 1 GHz, λ ≈ 30 cm; a circuit board trace longer
             than 3 cm starts behaving like a transmission line, with propagation delay and
@@ -1445,7 +1360,8 @@ export default function Ch12CircuitsAndAC() {
             coulombs per second. Multiply: [V/A][C/V] = [C/A] = [s]. R/C, in contrast, has units of
             (V/A)/(C/V) = V²/(A·C) = V·s/(A·s²·s⁻¹) — nonsensical. The product RC is the only
             combination of these two that comes out as a time, and it does for a deep structural
-            reason: the ODE dQ/dt = (V − Q/C)/R has the form τ dQ/dt = constant − Q, and τ = RC pops
+            reason: the ODE <InlineMath tex="dQ/dt = (V - Q/C)/R" /> has the form{' '}
+            <InlineMath tex="\tau\, dQ/dt = \text{constant} - Q" />, and <InlineMath tex="\tau = RC" /> pops
             out as the unique scaling constant
             <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
           </p>
@@ -1453,12 +1369,15 @@ export default function Ch12CircuitsAndAC() {
 
         <FAQItem q="What's the difference between Z, X, and R?">
           <p>
-            R is the real part of impedance (resistance, dissipative). X is the imaginary part
-            (reactance, energy-storing). Z is the complex combination Z = R + jX. The magnitude |Z|
-            = √(R² + X²) is the AC "Ohm's-law resistance" — the ratio of voltage amplitude to
-            current amplitude. R has the same value at every frequency for an ideal resistor. X is
-            frequency-dependent: X<sub>L</sub> = ωL grows with ω; X<sub>C</sub> = −1/(ωC) shrinks in
-            magnitude as ω grows
+            <InlineMath tex="R" /> is the real part of impedance (resistance, dissipative).{' '}
+            <InlineMath tex="X" /> is the imaginary part (reactance, energy-storing).{' '}
+            <InlineMath tex="Z" /> is the complex combination <InlineMath tex="Z = R + jX" />. The
+            magnitude <InlineMath tex="|Z| = \sqrt{R^{2} + X^{2}}" /> is the AC "Ohm's-law
+            resistance" — the ratio of voltage amplitude to current amplitude.{' '}
+            <InlineMath tex="R" /> has the same value at every frequency for an ideal resistor.{' '}
+            <InlineMath tex="X" /> is frequency-dependent: <InlineMath tex="X_L = \omega L" /> grows
+            with <InlineMath tex="\omega" />; <InlineMath tex="X_C = -1/(\omega C)" /> shrinks in
+            magnitude as <InlineMath tex="\omega" /> grows
             <Cite id="horowitz-hill-2015" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1515,12 +1434,14 @@ export default function Ch12CircuitsAndAC() {
         <FAQItem q="Why does an inductor make current lag and a capacitor make current lead?">
           <p>
             Because their constitutive equations differ in which variable is differentiated. For an
-            inductor V = L dI/dt: to change the current you need to apply a voltage{' '}
-            <em className="text-text italic">first</em>, and the current responds with a
-            quarter-cycle delay — V leads I by 90°. For a capacitor I = C dV/dt: current has to flow
-            before voltage can build up on the plates, so current leads V by 90°. The exactness of
-            90° comes from the fact that d/dt acting on cos(ωt) gives −ω sin(ωt), which is the same
-            cosine rotated by exactly π/2
+            inductor <InlineMath tex="V = L\, dI/dt" />: to change the current you need to apply a
+            voltage <em className="text-text italic">first</em>, and the current responds with a
+            quarter-cycle delay — <InlineMath tex="V" /> leads <InlineMath tex="I" /> by 90°. For a
+            capacitor <InlineMath tex="I = C\, dV/dt" />: current has to flow before voltage can
+            build up on the plates, so current leads <InlineMath tex="V" /> by 90°. The exactness
+            of 90° comes from the fact that <InlineMath tex="d/dt" /> acting on{' '}
+            <InlineMath tex="\cos(\omega t)" /> gives <InlineMath tex="-\omega \sin(\omega t)" />,
+            which is the same cosine rotated by exactly <InlineMath tex="\pi/2" />
             <Cite id="griffiths-2017" in={SOURCES} />.
           </p>
         </FAQItem>
@@ -1622,9 +1543,7 @@ export default function Ch12CircuitsAndAC() {
             converter stations at each end
             <Cite id="grainger-power-systems-2003" in={SOURCES} />. The transmission losses
             themselves scale as{' '}
-            <strong className="text-text font-medium">
-              P<sub>loss</sub> = (P<sub>load</sub>/V)² R
-            </strong>
+            <InlineMath tex="P_{\text{loss}} = (P_{\text{load}}/V)^{2} R" />
             , so for a given delivered power, raising V cuts the current — and therefore cuts I²R
             losses — quadratically. That is exactly why the grid pushes 500 kV across the continent
             and steps it down at the substation.
@@ -1674,13 +1593,17 @@ export default function Ch12CircuitsAndAC() {
 
         <FAQItem q="Why is the Thévenin equivalent only valid for linear networks?">
           <p>
-            Because superposition is the engine of the proof. To collapse N sources and M resistors
-            to a single (V<sub>th</sub>, R<sub>th</sub>) pair, you compute the response of the
-            terminals one source at a time, sum the contributions, and read off the result.
-            Superposition only holds when the components obey linear constitutive equations: V = IR,
-            V = L dI/dt, I = C dV/dt. A diode (I = I<sub>s</sub>(e<sup>qV/kT</sup> − 1)) or a
-            transistor (gm = ∂I/∂V varies with bias) breaks superposition, and the network no longer
-            has a single fixed Thévenin equivalent — it has a different one at every operating point
+            Because superposition is the engine of the proof. To collapse{' '}
+            <InlineMath tex="N" /> sources and <InlineMath tex="M" /> resistors to a single{' '}
+            <InlineMath tex="(V_{\text{th}}, R_{\text{th}})" /> pair, you compute the response of
+            the terminals one source at a time, sum the contributions, and read off the result.
+            Superposition only holds when the components obey linear constitutive equations:{' '}
+            <InlineMath tex="V = IR" />, <InlineMath tex="V = L\, dI/dt" />,{' '}
+            <InlineMath tex="I = C\, dV/dt" />. A diode (
+            <InlineMath tex="I = I_s(e^{qV/kT} - 1)" />) or a transistor (
+            <InlineMath tex="g_m = \partial I/\partial V" /> varies with bias) breaks superposition,
+            and the network no longer has a single fixed Thévenin equivalent — it has a different
+            one at every operating point
             <Cite id="irwin-circuit-analysis-2015" in={SOURCES} />.
           </p>
         </FAQItem>

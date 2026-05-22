@@ -156,28 +156,19 @@ export default function Ch36HouseTroubleshooting() {
       <Formula tex="V_{\text{dmm}} = V_{\text{source}} \times \dfrac{Z_{\text{dmm}}}{Z_{\text{dmm}} + Z_{\text{leak}}}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          V<sub>dmm</sub>
-        </strong>{' '}
-        is the voltage the meter displays (in volts AC),
-        <strong className="text-text font-medium">
-          {' '}
-          V<sub>source</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{dmm}}" />{' '}
+        is the voltage the meter displays (in volts AC),{' '}
+        <InlineMath tex="V_{\text{source}}" />{' '}
         is the actual line voltage somewhere upstream in the building (in volts AC, typically 120 V
         at a North-American outlet),{' '}
-        <strong className="text-text font-medium">
-          Z<sub>dmm</sub>
-        </strong>{' '}
+        <InlineMath tex="Z_{\text{dmm}}" />{' '}
         is the input impedance of the meter on its volts range (in ohms; typically 10 MΩ for a
         handheld DMM)
         <Cite id="keysight-34465a-datasheet" in={SOURCES} />, and{' '}
-        <strong className="text-text font-medium">
-          Z<sub>leak</sub>
-        </strong>{' '}
+        <InlineMath tex="Z_{\text{leak}}" />{' '}
         is the impedance of whatever capacitive or resistive path is letting line voltage leak onto
-        the wire the meter is sitting on (in ohms). When Z<sub>leak</sub> is comparable to or
-        smaller than Z<sub>dmm</sub>, the reading approaches V<sub>source</sub> even though no
+        the wire the meter is sitting on (in ohms). When <InlineMath tex="Z_{\text{leak}}" /> is comparable to or
+        smaller than <InlineMath tex="Z_{\text{dmm}}" />, the reading approaches <InlineMath tex="V_{\text{source}}" /> even though no
         useful current is available behind that voltage.
       </p>
 
@@ -270,19 +261,13 @@ export default function Ch36HouseTroubleshooting() {
       <Formula tex="I_{\text{leak}} = \omega \times C_{\text{coupling}} \times V_{\text{hot}}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          I<sub>leak</sub>
-        </strong>{' '}
+        <InlineMath tex="I_{\text{leak}}" />{' '}
         is the displacement current the coupling capacitor injects into the floating wire U (in
-        amperes, AC), <strong className="text-text font-medium">ω = 2πf</strong> is the angular
+        amperes, AC), <InlineMath tex="\omega = 2\pi f" /> is the angular
         frequency of the line (in rad/s; ω ≈ 377 rad/s at 60 Hz),{' '}
-        <strong className="text-text font-medium">
-          C<sub>coupling</sub>
-        </strong>{' '}
+        <InlineMath tex="C_{\text{coupling}}" />{' '}
         is the capacitance between H and U (in farads), and{' '}
-        <strong className="text-text font-medium">
-          V<sub>hot</sub>
-        </strong>{' '}
+        <InlineMath tex="V_{\text{hot}}" />{' '}
         is the RMS voltage of the hot wire with respect to ground (in volts). For C
         <sub>coupling</sub> = 50 pF and V<sub>hot</sub> = 120 V:
       </p>
@@ -587,18 +572,13 @@ export default function Ch36HouseTroubleshooting() {
       <Formula tex="t_{\text{trip}} = K \times (I / I_{\text{rating}})^{-2}" />
       <p className="mb-prose-3">
         where{' '}
-        <strong className="text-text font-medium">
-          t<sub>trip</sub>
-        </strong>{' '}
+        <InlineMath tex="t_{\text{trip}}" />{' '}
         is the time from current onset to mechanical release (in seconds),{' '}
-        <strong className="text-text font-medium">I</strong> is the actual current through the
-        breaker (in amperes RMS),
-        <strong className="text-text font-medium">
-          {' '}
-          I<sub>rating</sub>
-        </strong>{' '}
+        <InlineMath tex="I" /> is the actual current through the
+        breaker (in amperes RMS),{' '}
+        <InlineMath tex="I_{\text{rating}}" />{' '}
         is the breaker's nameplate rating (in amperes; 15 A and 20 A are the common residential
-        branch ratings), and <strong className="text-text font-medium">K</strong> is a calibration
+        branch ratings), and <InlineMath tex="K" /> is a calibration
         constant set by the breaker design, typically in the range of a few hundred seconds for a
         residential branch breaker. At 1.5× rated current, t<sub>trip</sub> ≈ K / 2.25 — minutes. At
         5× rated current, t<sub>trip</sub> ≈ K / 25 — seconds. The curve is steep on purpose: it
@@ -1186,7 +1166,7 @@ export default function Ch36HouseTroubleshooting() {
           <p>
             Because the ampere is, since the 2019 SI revision, defined exactly as the flow rate of 1
             / 1.602176634×10⁻¹⁹ elementary charges per second — the CODATA-recommended fixed value
-            of the electron charge <em className="text-text italic">e</em>
+            of the electron charge <InlineMath tex="e" />
             <Cite id="codata-2018" in={SOURCES} />. Every 5 mA GFCI threshold, every 15 A breaker
             rating, every clamp-meter reading on the bench is, at its base, a count of electrons per
             second through a cross-section, scaled by a constant the SI now treats as exact. The

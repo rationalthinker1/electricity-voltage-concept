@@ -83,7 +83,7 @@ export function AlternatorDemo({ figure }: Props) {
       const samples = 240;
       const tWindow = 2 / Math.max(f, 1); // show 2 cycles
       const peak = 17; // ~17 V peak from a 14 V regulated output
-      const phaseColors = ['#ff3b6e', '#6cc5c2', '#ff6b2a'];
+      const phaseColors = [colors.pink, colors.teal, colors.accent];
 
       // Draw the three raw phases on the top plot.
       const phases = [0, -TAU3, -2 * TAU3];
@@ -146,7 +146,7 @@ export function AlternatorDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.3'}
+      figure={figure ?? 'Fig. 21.3'}
       title="The car alternator — AC, then a six-diode bridge"
       question="A car needs DC at 14 V. What's between the engine pulley and the battery?"
       caption={

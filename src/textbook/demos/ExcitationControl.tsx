@@ -167,7 +167,7 @@ export function ExcitationControlDemo({ figure }: Props) {
           const d = Math.asin(sinD);
           const Q = ((V_GRID * Ef) / X_S) * Math.cos(d) - (V_GRID * V_GRID) / X_S;
           const Ia = Math.sqrt(pRef * pRef + Q * Q) / V_GRID;
-          ctx.fillStyle = Q > 0 ? '#ff3b6e' : '#5baef8';
+          ctx.fillStyle = Q > 0 ? colors.pink : colors.blue;
           ctx.beginPath();
           ctx.arc(xAt(iField), yAt(Math.min(Ia, yMax)), 6, 0, Math.PI * 2);
           ctx.fill();
@@ -204,7 +204,7 @@ export function ExcitationControlDemo({ figure }: Props) {
 
   return (
     <Demo
-      figure={figure ?? 'Fig. 17.6'}
+      figure={figure ?? 'Fig. 21.6'}
       title="Excitation control: how a generator chooses VARs"
       question="Field current sets terminal voltage at no load — and reactive power at a stiff bus. Why the V?"
       caption={

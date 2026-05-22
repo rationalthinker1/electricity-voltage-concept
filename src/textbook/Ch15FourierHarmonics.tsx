@@ -105,10 +105,10 @@ export default function Ch15FourierHarmonics() {
       <h2 className="chapter-h2">The series formula</h2>
 
       <p className="mb-prose-3">
-        Let <strong className="text-text font-medium">f(t)</strong> be periodic with period{' '}
-        <strong className="text-text font-medium">T</strong>, so f(t + T) = f(t) for all t. Define
+        Let <InlineMath tex="f(t)" /> be periodic with period{' '}
+        <InlineMath tex="T" />, so f(t + T) = f(t) for all t. Define
         the fundamental angular frequency as{' '}
-        <strong className="text-text font-medium">ω₀ = 2π/T</strong>. Fourier's theorem says that f
+        <InlineMath tex="\omega_0 = 2\pi/T" />. Fourier's theorem says that f
         decomposes as
         <Cite id="oppenheim-willsky-1997" in={SOURCES} />:
       </p>
@@ -130,16 +130,14 @@ export default function Ch15FourierHarmonics() {
       </p>
       <p className="mb-prose-3">
         The{' '}
-        <strong className="text-text font-medium">
-          a<sub>0</sub>/2
-        </strong>{' '}
+        <InlineMath tex="a_0/2" />{' '}
         term out front is just the DC offset — the constant cosine (cos(0) = 1) that the sum needs
         in case f has a nonzero mean. The factor of 1/2 isn't a mistake; it falls out of the same
         projection formula the other coefficients use, applied to the n = 0 case. Writing it that
         way keeps all of the a<sub>n</sub> formulas below uniform.
       </p>
       <p className="mb-prose-3">
-        The integer <strong className="text-text font-medium">n</strong> indexes the{' '}
+        The integer <InlineMath tex="n" /> indexes the{' '}
         <Term def="A sinusoidal component of a periodic signal at an integer multiple of the fundamental frequency. The n-th harmonic is at nf₀.">
           harmonic
         </Term>{' '}
@@ -158,7 +156,7 @@ export default function Ch15FourierHarmonics() {
       <p className="mb-prose-3">
         These integrals look intimidating until you recognise them as{' '}
         <em className="text-text italic">dot products</em>. In ordinary 3D, the x-component of a
-        vector <strong className="text-text font-medium">v</strong> is{' '}
+        vector <InlineMath tex="v" /> is{' '}
         <em className="text-text italic">v · x̂</em> — the dot product with the unit vector along x.
         The integral
         <InlineMath tex="\int f(t) \cos(n\omega_0 t)\, dt" /> is the same construction, just applied
@@ -171,7 +169,7 @@ export default function Ch15FourierHarmonics() {
         ; it measures &ldquo;how much of <InlineMath tex="\cos(n\omega_0 t)" /> is in f.&rdquo;
       </p>
       <p className="mb-prose-3">
-        Where does the <strong className="text-text font-medium">2/T</strong> out front come from?
+        Where does the <InlineMath tex="2/T" /> out front come from?
         It is just normalisation by the length of the basis vector. In 3D, x̂ is a unit vector, so{' '}
         <InlineMath tex="\vec{v} \cdot \hat{x}" /> gives the x-component directly. The Fourier basis
         functions are
@@ -201,9 +199,7 @@ export default function Ch15FourierHarmonics() {
       </p>
       <p className="mb-prose-3">
         The{' '}
-        <strong className="text-text font-medium">
-          a<sub>0</sub>/2
-        </strong>{' '}
+        <InlineMath tex="a_0/2" />{' '}
         term is the DC component — the mean value of f over one period. A function with zero average
         has a<sub>0</sub> = 0. If f is{' '}
         <Term def="A function with f(−t) = f(t). Its Fourier series contains only cosine (and DC) terms; all b_n vanish.">
@@ -447,7 +443,7 @@ export default function Ch15FourierHarmonics() {
       </p>
       <p className="mb-prose-3">
         The practical implication: a non-sinusoidal voltage delivers more RMS — and therefore more{' '}
-        <strong className="text-text font-medium">I²R</strong> heating — into a resistive load than
+        <InlineMath tex="I^{2}R" /> heating — into a resistive load than
         its fundamental alone would suggest. A 1 V<sub>peak</sub> square wave has V<sub>RMS</sub> =
         1 V, not 0.707 V. The extra 41% comes from the harmonic ladder above the fundamental.
       </p>
@@ -657,14 +653,14 @@ export default function Ch15FourierHarmonics() {
         complex exponential <InlineMath tex="e^{-j 2\pi k n/N}" /> is just{' '}
         <InlineMath tex="\cos(2\pi k n/N) - j\sin(2\pi k n/N)" />, a pair of basis functions bundled
         into one rotating phasor. The sum is again an inner product:{' '}
-        <em className="text-text italic">X[k]</em> measures &ldquo;how much of the k-th complex
+        <InlineMath tex="X[k]" /> measures &ldquo;how much of the k-th complex
         sinusoid lives in the sample sequence x.&rdquo; The complex form is more compact than
         carrying separate a<sub>n</sub> and b<sub>n</sub>; the real and imaginary parts of X[k] hold
         the cosine and sine projections respectively.
       </p>
       <p className="mb-prose-3">
         Compute it naively and you have N multiplies and adds for each of the N output bins — a
-        total of <em className="text-text italic">N²</em>
+        total of <InlineMath tex="N^{2}" />
         complex operations. For N = 1024 that's about a million; for N = 65536 it's about four
         billion. In the 1960s — when computers ran at megahertz, not gigahertz — that was
         prohibitive for any real-time signal processing.
@@ -672,9 +668,7 @@ export default function Ch15FourierHarmonics() {
       <p className="mb-prose-3">
         James Cooley (IBM) and John Tukey (Princeton) published in 1965 a recursive decomposition
         that brings the count down to{' '}
-        <em className="text-text italic">
-          N log<sub>2</sub> N
-        </em>
+        <InlineMath tex="N \log_2 N" />
         <Cite id="cooley-tukey-1965" in={SOURCES} />. Their idea: split the N-point DFT into two
         N/2-point DFTs — one on the even-indexed samples, one on the odd-indexed — then combine the
         two with N/2 complex multiplies (the &ldquo;butterflies&rdquo;). Recurse the split log
